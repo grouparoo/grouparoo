@@ -11,7 +11,7 @@
   "main": "api/dist/index",
   "types": "api/dist/index",
   "scripts": {
-    "prepare": "npm run import && npm run build-api; npm run build-web",
+    "prepare": "npm run build-api; npm run build-web",
     "build-api": "cd api && rm -rf dist && tsc --declaration",
     "build-web": "cd web && next build",
     "start": "./api/bin/start",

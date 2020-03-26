@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import { getPluginManifest } from "./utils/pluginDetails";
+import { getPluginManifest, getParentPath } from "./utils/pluginDetails";
 
 // have a shorter shutdown timeout
 if (!process.env.ACTIONHERO_SHUTDOWN_TIMEOUT) {
@@ -11,7 +11,7 @@ if (!process.env.ACTIONHERO_SHUTDOWN_TIMEOUT) {
 // this needs to be done before requiring any part of actionhero
 const env = process.env.NODE_ENV || "development";
 if (env === "development") {
-  const envFile = path.resolve(path.join("..", ".env"));
+  const envFile = path.resolve(path.join(getParentPath(), ".env"));
   if (fs.existsSync(envFile)) {
     require("dotenv").config({ path: envFile });
     console.log(`modified your runtime environment with ${envFile}`);

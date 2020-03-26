@@ -20,7 +20,6 @@
   },
   "scripts": {
     "prepare": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public npm run prepare",
-    "import": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./api/bin/import",
     "start": "cd node_modules/@grouparoo/core && NEXT_DEVELOPMENT_MODE=false GROUPAROO_MONOREPO_APP=staging-public ./api/bin/start",
     "dev": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./api/bin/dev"
   },
