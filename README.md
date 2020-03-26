@@ -31,7 +31,6 @@ Want to move faster? Take control of your data and your destiny with the open so
     "@grouparoo/csv": "0.1.0"
   },
   "scripts": {
-    "import": "cd node_modules/@grouparoo/core && ./api/bin/import",
     "prepare": "cd node_modules/@grouparoo/core && npm run prepare",
     "start": "cd node_modules/@grouparoo/core && ./api/bin/start",
     "dev": "cd node_modules/@grouparoo/core && ./api/bin/dev"
@@ -42,23 +41,15 @@ Want to move faster? Take control of your data and your destiny with the open so
       "@grouparoo/postgres",
       "@grouparoo/mailchimp",
       "@grouparoo/csv"
-    ],
-    "includedFiles": ["assets"]
+    ]
   }
 }
 ```
 
-2. Create a copy of our example `.env` file to manage your environment variables locally (note: the `.env` file only works when running in `NODE_ENV=development`). You can modify the options as needed.
+This makes an "app" for Grouparoo to run. There is an example in the [staging-public](https://github.com/grouparoo/grouparoo/tree/master/apps/staging-public) directory.
 
-```bash
-mkdir -p assets/api
-cp node_modules/@grouparoo/core/api.env.example assets/api/.env
-open assets/api/.env
-
-# If you modify your `assets/api/.env` file, be sure to run `npm run import` again to re-import it back into the local core project.  `npm install` also runs `npm run import`
-```
-
-3. Run `npm install` to install dependencies. This will also include local files, like you new `.env` file, back into the Grouparoo core project.
+2. Create a copy of our [example](https://github.com/grouparoo/grouparoo/blob/master/apps/staging-public/.env.example) `.env` file to manage your environment variables locally. You can modify the options as needed. Make this as a peer to your `package.json` file. Note: the `.env` file only works when running in `NODE_ENV=development`. On your server, you should set up these same environment variables.
+3. Run `npm install` to install dependencies.
 4. Run `npm start` to start the server and visit `http://localhost:3000` to get started. Follow the on-screen instructions to create your account and first team.
 
 ---
@@ -80,7 +71,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 nvm install v12
 
 # Depending on your shell (bash, zsh, etc) you may need to ensure that nvm is loaded into your environment via .bashrc, .bash_profile, etc
-# On OSX/ZSH, we recommend installing Oh My ZSH (https://github.com/ohmyzsh/ohmyzsh) and enabling the nvm in plugins
+# On OSX/ZSH, we recommend installing Oh My ZSH (https://github.com/ohmyzsh/ohmyzsh) and enabling the nvm plugin
 
 # Install & run postgresql (v9.x)
 brew install postgresql
@@ -98,9 +89,8 @@ cd grouparoo
 npm install
 
 # Configure your local environment variables in .env
-cp core/.env.example core/.env
-open core/.env
-# See The "Obtaining API Keys" section for more details
+cp apps/staging-public/.env.example apps/staging-public/.env
+open apps/staging-public/.env
 
 # Create your local development database (Postgres)
 createdb "grouparoo_development"
@@ -129,7 +119,7 @@ npm run dev
 
 ## Environment Variables and API Keys
 
-Grouparoo needs to connect to a few services to run. When developing locally (`NODE_ENV=development` or not set), we will load in any variables you have defined in a `core/.env` file. Otherwise, these variables are to be set by your runtime environment/host.
+Grouparoo needs to connect to a few services to run. When developing locally (`NODE_ENV=development` or not set), we will load in any variables you have defined in a `.env` file in your "app" directory. Otherwise, these variables are to be set by your runtime environment/host.
 
 **General Settings**
 
@@ -201,9 +191,9 @@ npm test # I will also run the build and lint commands
 
 On your servers:
 
-1. ensure you have the proper environment variables set
-2. run `npm install` at the root of this project, which will also run `lerna bootstrap --hoist` (and the build steps too)
-3. run `cd apps/staging-public && npm run start`
+1. Ensure you have the proper environment variables set
+2. Run `npm install` at the root of this project, which will also run `lerna bootstrap --hoist` (and the build steps too)
+3. Run `cd apps/staging-public && npm run start`
 
 See the `Procfile` for an example of how to run a web and worker process independently.
 If you are deploying to Heroku or a similar PaaS, they might prune node_modules that aren't explicitly in "dependencies". However, due to the way lerna works, this might delete all of your modules. Check with your provider for how to disable this (ex: https://devcenter.heroku.com/articles/nodejs-support#build-behavior)
