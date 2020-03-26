@@ -197,3 +197,15 @@ On your servers:
 
 See the `Procfile` for an example of how to run a web and worker process independently.
 If you are deploying to Heroku or a similar PaaS, they might prune node_modules that aren't explicitly in "dependencies". However, due to the way lerna works, this might delete all of your modules. Check with your provider for how to disable this (ex: https://devcenter.heroku.com/articles/nodejs-support#build-behavior)
+
+### Publishing
+
+We use `lerna` to help publish and migrate the versions of all our packages in lock-step.
+
+```bash
+# Update the version of all packages to a new patch version
+lerna version patch
+
+# Publish a new canary version of the packages to NPM
+lerna publish --canary
+```
