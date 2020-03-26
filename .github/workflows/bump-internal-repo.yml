@@ -5,7 +5,7 @@ on:
     branches: [master]
 
 jobs:
-  build:
+  bump:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,7 +14,7 @@ jobs:
           repository: grouparoo/internal
           token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
       - name: Bump the bumpfile
-        run: rm -rf repo-bump.txt && date > repo-bump.txt
+        run: rm -rf .repo-bump && date > .repo-bump
       - name: Commit files
         run: |
           git config --local user.email "hello@grouparoo.com"
