@@ -45,10 +45,11 @@ else
     exit 1
 fi
 
-# 3. build apps
-echo "--- building apps in series ---"
-for d in $PROJECT_ROOT/apps/* ; do
-    cd "$d" && npm run prepare
-done
+# 3. build main app
+echo "--- building the main app ---"
+MAIN_APP=$(sed -n 1p $PROJECT_ROOT/Procfile | awk -F= '$1=="GROUPAROO_MONOREPO_APP"{print $2}' RS=' ')
+echo "    the main app is $MAIN_APP"
+cd $PROJECT_ROOT/apps/$MAIN_APP
+npm run prepare
 
 echo -e "\r\nDone!\r\n"
