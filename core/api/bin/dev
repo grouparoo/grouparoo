@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "$0")"
+cd ..
+
+../node_modules/.bin/ts-node-dev \
+  --transpile-only \
+  --ignore-watch=web \
+  --ignore-watch='../web' \
+  --no-deps \
+  --notify=false \
+  src/server.ts

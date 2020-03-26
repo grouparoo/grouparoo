@@ -1,0 +1,8 @@
+{
+  "actionhero": {
+    "welcomeMessage": "actionhero.welcomeMessage",
+    "cache": {
+      "objectNotFound": "actionhero.cache.objectNotFound"
+    }
+  }
+}

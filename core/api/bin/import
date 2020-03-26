@@ -1,0 +1,65 @@
+#!/usr/bin/env node
+
+const fs = require("fs-extra");
+const path = require("path");
+const glob = require("glob");
+const { getPluginManifest } = require("../src/utils/pluginDetails");
+
+async function main() {
+  const pluginManifest = getPluginManifest();
+  await importFiles(
+    pluginManifest.parent.path,
+    pluginManifest.parent.grouparoo
+  );
+  for (const i in pluginManifest.plugins) {
+    await importFiles(
+      pluginManifest.plugins[i].path,
+      pluginManifest.plugins[i].grouparoo
+    );
+  }
+}
+
+async function importFiles(sourcePath, grouparooData) {
+  const coreRootPath = path.join(__dirname, "..", "..");
+  let filesFound = 0;
+
+  console.debug(`checking ${sourcePath} for files to import`);
+
+  if (!fs.existsSync(sourcePath)) {
+    throw `   ${sourcePath} not found`;
+  }
+
+  if (grouparooData && grouparooData.includedFiles) {
+    for (const i in grouparooData.includedFiles) {
+      const dir = path.join(sourcePath, grouparooData.includedFiles[i]);
+      const assetPaths = await glob.sync(`${dir}/**/*`, { dot: true });
+      for (const j in assetPaths) {
+        const p = assetPaths[j];
+        const pathWithinCore = p.replace(dir, coreRootPath);
+        const stats = await fs.stat(p);
+        if (stats.isDirectory()) {
+          await fs.mkdirp(pathWithinCore);
+        } else {
+          console.log(
+            `   copying local file \`${p}\` to \`${pathWithinCore}\``
+          );
+          await fs.copyFile(p, pathWithinCore);
+          filesFound++;
+        }
+      }
+    }
+  }
+
+  console.log(`   copied ${filesFound} files`);
+}
+
+main().then(
+  () => {
+    console.log("success!");
+    process.exit(0);
+  },
+  error => {
+    console.error(`ERROR! ${error}`);
+    process.exit(1);
+  }
+);

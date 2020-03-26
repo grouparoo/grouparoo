@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+set -e
+
+PROJECT_ROOT=$(cd $(dirname $0)/.. && pwd)
+FAIL=0
+
+echo -e "🦘🦘🦘 BUILDING GROUPAROO MONOREPO 🦘🦘"
+echo -e "dir: $PROJECT_ROOT"
+echo -e ""
+
+# 0. build dependancies
+echo "--- (re)building dependancies in parallel ---"
+DEPS=""
+for p in $PROJECT_ROOT/node_modules/**/package.json ; do
+  # matching "install" will find both postinstall and install scripts!
+  if grep -q "install" $p; then
+    DEPS="$DEPS $(basename $(dirname $p))"
+  fi
+done
+echo "$DEPS"
+npm rebuild $DEPS
+echo -e  "\r\n✨ npm rebuild complete\r\n"
+
+# 1. build core/api
+echo "--- building core/api ---"
+cd $PROJECT_ROOT/core/api
+npm run build-api
+echo -e "\r\n✨ core API compiled from typescript\r\n"
+
+# 2. build plugins
+echo "--- building plugins in parallel ---"
+for d in $PROJECT_ROOT/plugins/*/* ; do
+    (cd "$d" && npm run prepare) &
+done
+for job in `jobs -p`
+do
+    wait $job || let "FAIL+=1"
+done
+if [ "$FAIL" == "0" ];
+then
+    echo -e "\r\n✨ all plugins built\r\n"
+else
+    echo -e "\r\n❗️ error building plugins\r\n"
+    exit 1
+fi
+
+# 3. build apps
+echo "--- building apps in series ---"
+for d in $PROJECT_ROOT/apps/* ; do
+    cd "$d" && npm run prepare
+done
+
+echo -e "\r\nDone!\r\n"

@@ -1,0 +1,41 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "@grouparoo/app-staging-public",
+  "description": "The Grouparoo Staging Application",
+  "version": "0.1.0",
+  "license": "MPL-2.0",
+  "private": false,
+  "engines": {
+    "node": "12.x.x"
+  },
+  "dependencies": {
+    "@grouparoo/core": "0.1.0",
+    "@grouparoo/mysql": "0.1.0",
+    "@grouparoo/postgres": "0.1.0",
+    "@grouparoo/mailchimp": "0.1.0",
+    "@grouparoo/logger": "0.1.0",
+    "@grouparoo/csv": "0.1.0",
+    "@grouparoo/email-authentication": "0.1.0",
+    "@grouparoo/newrelic": "0.1.0"
+  },
+  "scripts": {
+    "prepare": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public npm run prepare",
+    "import": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./api/bin/import",
+    "start": "cd node_modules/@grouparoo/core && NEXT_DEVELOPMENT_MODE=false GROUPAROO_MONOREPO_APP=staging-public ./api/bin/start",
+    "dev": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./api/bin/dev"
+  },
+  "grouparoo": {
+    "plugins": [
+      "@grouparoo/mysql",
+      "@grouparoo/postgres",
+      "@grouparoo/mailchimp",
+      "@grouparoo/logger",
+      "@grouparoo/csv",
+      "@grouparoo/email-authentication",
+      "@grouparoo/newrelic"
+    ],
+    "includedFiles": [
+      "assets"
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "packages": ["core", "plugins/*/*", "apps/*"],
+  "version": "0.1.0"
+}

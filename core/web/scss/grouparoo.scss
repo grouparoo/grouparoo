@@ -1,0 +1,48 @@
+@import "~bootswatch/dist/pulse/variables";
+@import "~bootstrap/scss/bootstrap";
+@import "~bootswatch/dist/pulse/bootswatch";
+@import "~@fortawesome/fontawesome-svg-core/styles.css";
+
+// Theme Overrides
+
+a {
+  color: black;
+}
+
+a:hover {
+  color: black;
+}
+
+.list-group-item {
+  border-width: 1px;
+  border-color: gray;
+  color: gray;
+}
+
+.btn {
+  border-radius: 4px;
+}
+
+.btn-group .btn {
+  border-radius: 0px;
+}
+
+#navigation a:hover {
+  text-decoration: none;
+}
+
+// New Classes
+
+.border-between-columns > [class*="col"]:before {
+  background: lightgray;
+  bottom: 0;
+  content: " ";
+  left: 0;
+  position: absolute;
+  width: 1px;
+  top: 0;
+}
+
+.border-between-columns > [class*="col"]:first-child:before {
+  display: none;
+}

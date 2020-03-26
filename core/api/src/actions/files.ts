@@ -1,0 +1,132 @@
+import { Action, api } from "actionhero";
+import { File } from "../models/File";
+import fs from "fs-extra";
+
+export class FilesList extends Action {
+  constructor() {
+    super();
+    this.name = "files:list";
+    this.description = "list all the files";
+    this.outputExample = {};
+    this.middleware = ["authenticated-team-member", "role-read"];
+    this.inputs = {
+      limit: { required: true, default: 1000, formatter: parseInt },
+      offset: { required: true, default: 0, formatter: parseInt },
+      order: {
+        required: true,
+        default: [
+          ["type", "desc"],
+          ["path", "desc"],
+        ],
+      },
+      type: { required: false },
+    };
+  }
+
+  async run({ response, params }) {
+    const search = {
+      limit: params.limit,
+      offset: params.offset,
+      order: params.order,
+      where: {},
+    };
+
+    if (params.type) {
+      search.where = { type: params.type };
+    }
+
+    const files = await File.findAll(search);
+    response.files = await Promise.all(files.map(async (f) => f.apiData()));
+    response.total = await File.count(search);
+  }
+}
+
+// to test:
+// curl -X POST -F 'file=@../web/public/images/roo.png' -d type=test http://localhost:8080/api/1/file
+export class FileCreate extends Action {
+  constructor() {
+    super();
+    this.name = "file:create";
+    this.description = "create and upload a file";
+    this.outputExample = {};
+    this.middleware = ["authenticated-team-member", "role-write"];
+    this.inputs = {
+      type: { required: true },
+      file: { required: true },
+    };
+  }
+
+  async run({ response, params }) {
+    const file = await api.files.set(
+      params.type,
+      params.file.name,
+      params.file.path
+    );
+    response.file = await file.apiData();
+  }
+}
+
+export class FileView extends Action {
+  constructor() {
+    super();
+    this.name = "file:view";
+    this.description = "view a file";
+    this.outputExample = {};
+    this.middleware = ["authenticated-team-member", "role-read"];
+    this.inputs = {
+      guid: { required: true },
+    };
+  }
+
+  async run(data) {
+    const { connection, params } = data;
+
+    const file = await File.findOne({ where: { guid: params.guid } });
+    if (!file) {
+      throw new Error("file not found");
+    }
+    const { localPath } = await api.files.downloadToServer(file);
+
+    const nameParts = file.path.split("/");
+    const fileName = nameParts[nameParts.length - 1];
+    const headers = {
+      "Content-Type": file.mime,
+      Length: file.sizeBytes,
+      "Content-Disposition": `attachment; filename="${fileName}"`,
+    };
+
+    await new Promise((resolve, reject) => {
+      fs.readFile(localPath, (error, fileBuffer) => {
+        if (error) {
+          return reject(error);
+        }
+        data.toRender = false;
+        connection.pipe(fileBuffer, headers);
+        return resolve();
+      });
+    });
+  }
+}
+
+export class FileDestroy extends Action {
+  constructor() {
+    super();
+    this.name = "file:destroy";
+    this.description = "destroy a file";
+    this.outputExample = {};
+    this.middleware = ["authenticated-team-member", "role-read"];
+    this.inputs = {
+      guid: { required: true },
+    };
+  }
+
+  async run({ response, params }) {
+    response.success = false;
+    const file = await File.findOne({ where: { guid: params.guid } });
+    if (!file) {
+      throw new Error("file not found");
+    }
+    await api.files.destroy(file);
+    response.success = true;
+  }
+}

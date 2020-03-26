@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+if [ $1 ]; then
+  echo "creating database grouparoo_test_$1"
+  if [ -n "$CI" ]; then
+    `createdb "grouparoo_test_$1" --host localhost --user postgres`
+  else
+    `createdb "grouparoo_test_$1"`
+  fi
+else
+  n=16
+  for ((i=1; i<=n; i++)) {
+    echo "creating database grouparoo_test_$i"
+    if [ -n "$CI" ]; then
+      `createdb "grouparoo_test_$i" --host localhost --user postgres`
+    else
+      `createdb "grouparoo_test_$i"`
+    fi
+  }
+fi
+
+

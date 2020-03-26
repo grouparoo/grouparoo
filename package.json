@@ -1,0 +1,31 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "grouparoo",
+  "version": "0.1.0",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "private": false,
+  "engines": {
+    "node": "12.x.x"
+  },
+  "description": "The main Grouparoo Application. Learn more at www.grouparoo.com.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grouparoo/grouparoo.git"
+  },
+  "devDependencies": {
+    "glob": "^7.1.6",
+    "lerna": "^3.20.2",
+    "lerna-update-wizard": "^0.17.7",
+    "license-checker": "grouparoo/license-checker",
+    "prettier": "^2.0.2"
+  },
+  "scripts": {
+    "prepare": "npm run bootstrap",
+    "bootstrap": "./node_modules/.bin/lerna bootstrap --hoist --strict --ignore-scripts && ./bin/build",
+    "license-checker": "./bin/license-checker",
+    "clean": "lerna clean",
+    "lint": "lerna run lint",
+    "test": "lerna run test",
+    "nuke": "rm -rf node_modules && rm -rf core/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/api/dist && rm -rf plugins/*/*/dist"
+  }
+}

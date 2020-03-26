@@ -1,0 +1,1140 @@
+import { helper } from "./../utils/specHelper";
+import { specHelper } from "actionhero";
+import { Log } from "./../../src/models/Log";
+import { Profile } from "./../../src/models/Profile";
+import { Group } from "./../../src/models/Group";
+import { Run } from "./../../src/models/Run";
+import { Import } from "./../../src/models/Import";
+import { GroupMember } from "./../../src/models/GroupMember";
+
+let actionhero, api;
+
+describe("models/group", () => {
+  beforeAll(async () => {
+    const env = await helper.prepareForAPITest();
+    actionhero = env.actionhero;
+    api = env.api;
+  }, 1000 * 30);
+
+  afterAll(async () => {
+    await helper.shutdown(actionhero);
+  });
+
+  test("a group can be created", async () => {
+    const group = new Group({ name: "test group", type: "manual" });
+
+    await group.save();
+
+    expect(group.guid.length).toBe(40);
+    expect(group.type).toBe("manual");
+    expect(group.createdAt).toBeTruthy();
+    expect(group.updatedAt).toBeTruthy();
+    expect(group.state).toBe("ready");
+  });
+
+  test("creating a group creates a log entry with a relevant message", async () => {
+    const log = await Log.findOne({
+      where: { verb: "create", topic: "group" },
+      order: [["createdAt", "desc"]],
+      limit: 1,
+    });
+
+    expect(log).toBeTruthy();
+    expect(log.message).toBe('group "test group" created');
+  });
+
+  test("deleting a group creates a log entry with a relevant message", async () => {
+    const group = await Group.create({ name: "doomed group", type: "manual" });
+    await group.destroy();
+
+    const log = await Log.findOne({
+      where: { verb: "destroy", topic: "group" },
+      order: [["createdAt", "desc"]],
+      limit: 1,
+    });
+
+    expect(log).toBeTruthy();
+    expect(log.message).toBe('group "doomed group" destroyed');
+  });
+
+  describe("validations", () => {
+    test("group names are unique", async () => {
+      const group = new Group({
+        name: "test group",
+        type: "manual",
+      });
+      await expect(group.save()).rejects.toThrow(/Validation error/);
+    });
+
+    test("group names must be longer than 3 characters", async () => {
+      const group = new Group({ name: "a", type: "manual" });
+      await expect(group.save()).rejects.toThrow(/Validation error/);
+    });
+
+    test("group state must be of a valid type", async () => {
+      const group = new Group({
+        name: "calc-group",
+        type: "calculated",
+        state: "bla",
+      });
+      await expect(group.save()).rejects.toThrow(/Validation error/);
+    });
+
+    test("groups can only be of types manual and calculated", async () => {
+      const group = new Group({
+        name: "a new group",
+        type: "mysterious",
+      });
+      await expect(group.save()).rejects.toThrow(
+        /type must be one of: manual, calculated/
+      );
+    });
+
+    test("manual groups cannot have rules set", async () => {
+      const group = new Group({
+        name: "a manual group with rules",
+        type: "manual",
+      });
+      await group.save();
+      await expect(group.setRules([])).rejects.toThrow(
+        /group type not calculated/
+      );
+    });
+
+    test("deleting a group creates a log entry", async () => {
+      const group = await Group.create({
+        name: "bye group",
+        type: "manual",
+      });
+      await group.destroy();
+
+      const latestLog = await Log.findOne({
+        where: { verb: "destroy", topic: "group" },
+        order: [["createdAt", "desc"]],
+        limit: 1,
+      });
+
+      expect(latestLog).toBeTruthy();
+    });
+
+    describe("with destinations", () => {
+      test("a group cannot be deleted if a destination is explicitly tracking it", async () => {
+        const group = await Group.create({
+          name: "tracked group",
+          type: "manual",
+        });
+
+        const destination = await helper.factories.destination();
+        await destination.trackGroup(group);
+
+        await expect(group.destroy()).rejects.toThrow(
+          /this group still in use by 1 destinations, cannot delete/
+        );
+
+        await destination.unTrackGroup(group);
+        await group.destroy(); // does not throw
+      });
+
+      test("adding a group when a destination is tracking all groups will create a destinationGroup", async () => {
+        const destination = await helper.factories.destination();
+        await destination.update({ trackAllGroups: true });
+
+        const group = await Group.create({
+          name: "tracked group",
+          type: "manual",
+        });
+
+        const destinationGroupCount = await group.$count("destinationGroups");
+        expect(destinationGroupCount).toBe(1);
+
+        await group.destroy();
+        await destination.destroy();
+      });
+
+      test("a group can be deleted if a destination tracking all groups is tracking it, and the destinationGroup will be removed", async () => {
+        const group = await Group.create({
+          name: "tracked group",
+          type: "manual",
+        });
+
+        const destination = await helper.factories.destination();
+        await destination.update({ trackAllGroups: true });
+
+        let destinationGroupCount = await group.$count("destinationGroups");
+        expect(destinationGroupCount).toBe(1);
+
+        await group.destroy();
+        destinationGroupCount = await group.$count("destinationGroups");
+        expect(destinationGroupCount).toBe(0);
+
+        await destination.destroy();
+      });
+    });
+  });
+
+  describe("with members", () => {
+    test("adding and removing a group member creates a custom log message and imports", async () => {
+      const group = await helper.factories.group();
+      const profile = await helper.factories.profile();
+      await group.addProfile(profile);
+
+      let log = await Log.findOne({
+        where: { topic: "groupMember", verb: "create" },
+      });
+      expect(log.message).toMatch(/added to group/);
+
+      await group.removeProfile(profile);
+
+      log = await Log.findOne({
+        where: { topic: "groupMember", verb: "destroy" },
+      });
+      expect(log.message).toMatch(/removed from group/);
+
+      const imports = await Import.findAll();
+      expect(imports.length).toBe(2);
+      // import#profileGuid is set directly
+      expect(imports[0].profileGuid).toBe(profile.guid);
+      expect(imports[1].profileGuid).toBe(profile.guid);
+    });
+
+    test("a group with members cannot be deleted", async () => {
+      const group = await helper.factories.group();
+      const profile = await helper.factories.profile();
+      const groupMember = await GroupMember.create({
+        profileGuid: profile.guid,
+        groupGuid: group.guid,
+      });
+
+      await expect(group.destroy()).rejects.toThrow(
+        /this group still has 1 members, cannot delete/
+      );
+
+      await groupMember.destroy();
+      await group.destroy(); // does not throw
+
+      const memberCount = await GroupMember.count({
+        where: { groupGuid: group.guid },
+      });
+      expect(memberCount).toBe(0);
+    });
+  });
+
+  describe("profile helpers", () => {
+    let group;
+    let profile;
+    let anotherProfile;
+    beforeAll(async () => {
+      group = new Group({ name: "the group", type: "manual" });
+      await group.save();
+      profile = new Profile();
+      await profile.save();
+      anotherProfile = new Profile();
+      await anotherProfile.save();
+    });
+
+    test("it can add a member", async () => {
+      await group.addProfile(profile);
+      const profiles = await group.$get("profiles");
+      expect(profiles.length).toBe(1);
+      const profileGuids = profiles.map((p) => p.guid);
+      expect(profileGuids).toContain(profile.guid);
+    });
+
+    test("it cannot add a member a second time", async () => {
+      await expect(group.addProfile(profile)).rejects.toThrow(
+        /Validation error/
+      );
+
+      const profiles = await group.$get("profiles");
+      expect(profiles.length).toBe(1);
+    });
+
+    test("it can list members", async () => {
+      await group.addProfile(anotherProfile);
+      const profiles = await group.$get("profiles");
+      expect(profiles.length).toBe(2);
+    });
+
+    test("it can count members", async () => {
+      const count = await group.profilesCount();
+      expect(count).toBe(2);
+    });
+
+    test("it can remove a member", async () => {
+      await group.removeProfile(anotherProfile);
+      const profiles = await group.$get("profiles");
+      expect(profiles.length).toBe(1);
+      const profileGuids = profiles.map((p) => p.guid);
+      expect(profileGuids).toContain(profile.guid);
+      expect(profileGuids).not.toContain(anotherProfile.guid);
+    });
+
+    test("it cannot remove a non-member", async () => {
+      await expect(group.removeProfile(anotherProfile)).rejects.toThrow(
+        /profile is not a member of this group/
+      );
+    });
+  });
+
+  describe("calculated groups", () => {
+    let run: Run;
+    let group: Group;
+    let mario: Profile;
+    let luigi: Profile;
+    let peach: Profile;
+    let toad: Profile;
+
+    beforeAll(async () => {
+      await helper.factories.profilePropertyRules();
+      helper.disableTestPluginImport();
+    });
+
+    beforeEach(async () => {
+      group = await Group.create({
+        name: "test calculated group",
+        type: "calculated",
+        rules: {},
+      });
+
+      run = await helper.factories.run();
+    });
+
+    afterEach(async () => {
+      const members = await group.$get("groupMembers");
+      await Promise.all(members.map((m) => m.destroy()));
+      await group.destroy();
+      await run.destroy();
+      await Import.destroy({ truncate: true });
+    });
+
+    beforeAll(async () => {
+      await Profile.destroy({ truncate: true });
+
+      mario = await Profile.create();
+      luigi = await Profile.create();
+      peach = await Profile.create();
+      toad = await Profile.create();
+
+      await mario.addOrUpdateProperties({
+        userId: 1,
+        firstName: "Mario",
+        lastName: "Mario",
+        email: "mario@example.com",
+        ltv: 100.0,
+        isVIP: true,
+        lastLoginAt: new Date(0),
+      });
+
+      await luigi.addOrUpdateProperties({
+        userId: 2,
+        firstName: "Luigi",
+        lastName: "Mario",
+        email: "luigi@example.com",
+        ltv: 50.01,
+        isVIP: false,
+        lastLoginAt: new Date(),
+      });
+
+      await peach.addOrUpdateProperties({
+        userId: 3,
+        firstName: "Peach",
+        lastName: "Toadstool",
+        email: "peach@example.com",
+        ltv: 999.99,
+        isVIP: true,
+        lastLoginAt: new Date(0),
+      });
+
+      await toad.addOrUpdateProperties({
+        userId: 4,
+        firstName: "Toad",
+        lastName: "Toadstool",
+        email: "toad@example.com",
+        ltv: 0,
+        isVIP: false,
+        lastLoginAt: new Date(),
+      });
+    });
+
+    test("an empty calculated group can be created", async () => {
+      const members = await group.$get("groupMembers");
+      expect(members.length).toBe(0);
+      expect(group.state).toBe("ready");
+    });
+
+    test("changing group rules changes the state to initializing and enquires a run, and then back to ready when complete", async () => {
+      await group.setRules([{ key: "firstName", match: "nobody", op: "eq" }]);
+      await group.reload();
+      expect(group.state).toBe("initializing");
+
+      let foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0].groupGuid).toBe(group.guid);
+      await specHelper.runTask("group:run", foundTasks[0].args[0]); // first run to check additions
+
+      foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      expect(foundTasks.length).toBe(2);
+      expect(foundTasks[1].args[0].groupGuid).toBe(group.guid);
+      expect(foundTasks[1].args[0].method).toBe("runRemoveGroupMembers");
+      await specHelper.runTask("group:run", foundTasks[1].args[0]); // second run to check subtractions
+
+      await group.reload();
+      expect(group.state).toBe("ready");
+    });
+
+    test("group#runAddGroupMembers will create an import for new members, and touch the updatedAt for existing members", async () => {
+      await group.setRules([{ key: "firstName", match: "Mario", op: "eq" }]);
+      const groupMembersCount = await group.runAddGroupMembers(run);
+      expect(groupMembersCount).toBe(1);
+
+      // first time
+      const _import = await Import.findOne({
+        where: { creatorGuid: run.guid },
+      });
+      expect(_import.profileGuid).toBe(mario.guid);
+
+      // create the groupMember
+      await mario.updateGroupMembership();
+      const groupMember = await GroupMember.findOne({
+        where: { groupGuid: group.guid, profileGuid: mario.guid },
+      });
+      const firstTime = groupMember.updatedAt.getTime();
+
+      await helper.sleep(1001);
+
+      // second time
+      await group.runAddGroupMembers(run);
+      await groupMember.reload();
+      expect(groupMember.updatedAt.getTime()).toBeGreaterThan(
+        groupMember.createdAt.getTime()
+      );
+      expect(groupMember.updatedAt.getTime()).toBeGreaterThan(firstTime);
+    });
+
+    test("group#runRemoveGroupMembers will create imports for profiles which should no longer be part of the group and mark removedAt on the group member", async () => {
+      await group.setRules([{ key: "lastName", match: "Mario", op: "eq" }]);
+      const groupMembersCount = await group.runAddGroupMembers(run);
+      expect(groupMembersCount).toBe(2);
+
+      // create the groupMembers
+      await mario.updateGroupMembership();
+      await luigi.updateGroupMembership();
+      const firstGroupMembers = await GroupMember.findAll({
+        where: { groupGuid: group.guid },
+      });
+      expect(firstGroupMembers.length).toBe(2);
+
+      // next run
+      await group.setRules([{ key: "firstName", match: "Mario", op: "eq" }]);
+      const nextRun = await helper.factories.run();
+      await group.runAddGroupMembers(nextRun);
+      await group.runRemoveGroupMembers(nextRun);
+      const imports = await Import.findAll({
+        where: { creatorGuid: nextRun.guid },
+      });
+      expect(imports.length).toBe(1);
+      expect(imports[0].profileGuid).toBe(luigi.guid);
+
+      const luigiGroupMember = await GroupMember.findOne({
+        where: { profileGuid: luigi.guid, groupGuid: group.guid },
+      });
+      expect(luigiGroupMember.removedAt).toBeTruthy();
+
+      await mario.updateGroupMembership();
+      await luigi.updateGroupMembership();
+
+      const secondGroupMembers = await GroupMember.findAll({
+        where: { groupGuid: group.guid },
+      });
+      expect(secondGroupMembers.length).toBe(1);
+
+      await nextRun.destroy();
+    });
+
+    test("runAddGroupMembers updates calculatedAt", async () => {
+      expect(group.calculatedAt).toBeFalsy();
+      await group.setRules([{ key: "firstName", match: "Mario", op: "eq" }]);
+      await group.runAddGroupMembers(run);
+      await group.reload();
+      expect(group.calculatedAt).toBeTruthy();
+    });
+
+    test("runRemoveGroupMembers updates calculatedAt", async () => {
+      expect(group.calculatedAt).toBeFalsy();
+      await group.setRules([{ key: "firstName", match: "Mario", op: "eq" }]);
+      await group.runRemoveGroupMembers(run);
+      await group.reload();
+      expect(group.calculatedAt).toBeTruthy();
+    });
+
+    test("groups can calculate when they will next be calculated based on the setting", async () => {
+      expect(group.calculatedAt).toBeFalsy();
+      expect((await group.nextCalculatedAt()).getTime() / 1000).toBeCloseTo(
+        new Date().getTime() / 1000
+      );
+      await group.setRules([{ key: "firstName", match: "Mario", op: "eq" }]);
+      await group.runAddGroupMembers(run);
+      await group.reload();
+      expect((await group.nextCalculatedAt()).getTime()).toBeGreaterThan(
+        new Date().getTime()
+      );
+    });
+
+    test("runUpdateMembers will create imports for every group member", async () => {
+      await group.update({ type: "manual" });
+      await group.addProfile(mario);
+      await group.addProfile(luigi);
+
+      let imports = await Import.findAll();
+      expect(imports.length).toBe(2);
+      await Import.destroy({ truncate: true });
+
+      const newRun = await helper.factories.run();
+      await group.runUpdateMembers(newRun);
+      imports = await Import.findAll();
+      expect(imports.map((i) => i.profileGuid).sort()).toEqual(
+        [mario, luigi].map((p) => p.guid).sort()
+      );
+
+      expect(imports[0].data).toEqual({});
+      expect(imports[0].rawData).toEqual({});
+      expect(imports[1].data).toEqual({});
+      expect(imports[1].rawData).toEqual({});
+
+      await newRun.destroy();
+    });
+
+    test("runUpdateMembers will create imports which include a destinationGuid in _meta if provided", async () => {
+      await group.update({ type: "manual" });
+      await group.addProfile(mario);
+      await group.addProfile(luigi);
+
+      let imports = await Import.findAll();
+      expect(imports.length).toBe(2);
+      await Import.destroy({ truncate: true });
+
+      const newRun = await helper.factories.run();
+      await group.runUpdateMembers(newRun, 100, 0, "abc123");
+      imports = await Import.findAll();
+      expect(imports.map((i) => i.profileGuid).sort()).toEqual(
+        [mario, luigi].map((p) => p.guid).sort()
+      );
+
+      const data = { _meta: { destinationGuid: "abc123" } };
+      expect(imports[0].data).toEqual(data);
+      expect(imports[0].rawData).toEqual(data);
+      expect(imports[1].data).toEqual(data);
+      expect(imports[1].rawData).toEqual(data);
+
+      await newRun.destroy();
+    });
+
+    test("group rules must have a related profileProperty Ryle", async () => {
+      try {
+        await group.setRules([{ key: "a", match: "cool", op: "eq" }]);
+        throw new Error("should not get here");
+      } catch (error) {
+        expect(error.toString()).toMatch(/cannot find Profile Property Rule a/);
+      }
+    });
+
+    test("recalculating group membership will reuse existing groupMembers", async () => {
+      await group.update({ matchType: "all" });
+      await group.setRules([
+        { key: "lastName", match: "Mario", op: "eq" },
+        { key: "firstName", match: "Mario", op: "eq" },
+      ]);
+      await group.runAddGroupMembers(run);
+      await mario.updateGroupMembership();
+      const members = await group.$get("groupMembers");
+      expect(members.length).toBe(1);
+      const groupMemberGuid = members[0].guid;
+
+      const secondRun = await helper.factories.run();
+      await group.runAddGroupMembers(secondRun);
+      await mario.updateGroupMembership();
+      const membersAgain = await group.$get("groupMembers");
+      expect(membersAgain[0].guid).toBe(groupMemberGuid);
+      await secondRun.destroy();
+    });
+
+    test("adding and removing members from a calculated group produces log entries", async () => {
+      await Log.destroy({ truncate: true });
+
+      await group.update({ matchType: "all" });
+      await group.setRules([{ key: "lastName", match: "Mario", op: "eq" }]);
+      await mario.updateGroupMembership();
+      await luigi.updateGroupMembership();
+      let members = await group.$get("groupMembers");
+      expect(members.length).toBe(2);
+
+      let createCount = await Log.count({
+        where: { topic: "groupMember", verb: "create" },
+      });
+      expect(createCount).toBe(2);
+
+      await group.setRules([
+        { key: "lastName", match: "Mario", op: "eq" },
+        { key: "firstName", match: "Mario", op: "eq" },
+      ]);
+      const secondRun = await helper.factories.run();
+      await mario.updateGroupMembership();
+      await luigi.updateGroupMembership();
+      members = await group.$get("groupMembers");
+      expect(members.length).toBe(1);
+
+      createCount = await Log.count({
+        where: { topic: "groupMember", verb: "create" },
+      });
+      expect(createCount).toBe(2); // no change
+
+      const destroyCount = await Log.count({
+        where: { topic: "groupMember", verb: "destroy" },
+      });
+      expect(destroyCount).toBe(1);
+
+      await secondRun.destroy();
+    });
+
+    test("calculating a group with more than 5 rules produces an error", async () => {
+      group.matchType = "all";
+      await group.setRules([
+        { key: "userId", match: "Mario", op: "eq" },
+        { key: "lastName", match: "Mario", op: "eq" },
+        { key: "firstName", match: "Mario", op: "eq" },
+        { key: "email", match: "Mario", op: "eq" },
+        { key: "ltv", match: "Mario", op: "eq" },
+        { key: "isVIP", match: "Mario", op: "eq" },
+      ]);
+
+      try {
+        await group.runAddGroupMembers(run);
+        throw new Error("should not get here");
+      } catch (error) {
+        expect(error.toString()).toMatch(/too many group rules/);
+      }
+    });
+
+    describe("group rules", () => {
+      describe("strings", () => {
+        test("exact matches", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "lastName", match: "Mario", op: "eq" }]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("partial matches", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "lastName", match: "%toad%", op: "iLike" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("multiple rules with same key", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "lastName", match: "Mario", op: "eq" },
+            { key: "lastName", match: "%a%", op: "iLike" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("multiple matches (ALL)", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "lastName", match: "%toad%", op: "iLike" },
+            { key: "firstName", match: "Peach", op: "eq" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(1);
+        });
+
+        test("multiple matches (ANY)", async () => {
+          await group.update({ matchType: "any" });
+          await group.setRules([
+            { key: "lastName", match: "%toad%", op: "iLike" },
+            { key: "firstName", match: "Peach", op: "eq" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("null match", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "lastName", match: "null", op: "eq" }]);
+          expect(await group.countPotentialMembers()).toBe(0);
+        });
+
+        test("not null match", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "lastName", match: "null", op: "ne" }]);
+          expect(await group.countPotentialMembers()).toBe(4);
+        });
+      });
+
+      describe("integers", () => {
+        test("exact matches", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "userId", match: 1, op: "eq" }]);
+          expect(await group.countPotentialMembers()).toBe(1);
+        });
+
+        test("comparison matches", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "userId", match: 1, op: "gt" }]);
+          expect(await group.countPotentialMembers()).toBe(3);
+        });
+
+        test("multiple rules with same key", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "userId", match: 1, op: "gt" },
+            { key: "userId", match: 99, op: "lt" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(3);
+        });
+
+        test("multiple matches (ALL)", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "userId", match: 1, op: "eq" },
+            { key: "lastName", match: "mario", op: "iLike" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(1);
+        });
+
+        test("multiple matches (ANY)", async () => {
+          await group.update({ matchType: "any" });
+          await group.setRules([
+            { key: "userId", match: 1, op: "eq" },
+            { key: "lastName", match: "mario", op: "iLike" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("null match", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "userId", match: "null", op: "eq" }]);
+          expect(await group.countPotentialMembers()).toBe(0);
+        });
+
+        test("not null match", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "userId", match: "null", op: "ne" }]);
+          expect(await group.countPotentialMembers()).toBe(4);
+        });
+      });
+
+      describe("floats", () => {
+        test("exact matches", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "ltv", match: 100, op: "eq" }]);
+          expect(await group.countPotentialMembers()).toBe(1);
+        });
+
+        test("comparison matches", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "ltv", match: 1, op: "gte" }]);
+          expect(await group.countPotentialMembers()).toBe(3);
+        });
+
+        test("multiple rules with same key", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "ltv", match: 1, op: "gte" },
+            { key: "ltv", match: 9999, op: "lt" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(3);
+        });
+
+        test("multiple matches (ALL)", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "ltv", match: 1, op: "gte" },
+            { key: "lastName", match: "mario", op: "iLike" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("multiple matches (ANY)", async () => {
+          await group.update({ matchType: "any" });
+          await group.setRules([
+            { key: "ltv", match: 1, op: "gte" },
+            { key: "lastName", match: "%toad%", op: "iLike" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(4);
+        });
+
+        test("null match", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "ltv", match: "null", op: "eq" }]);
+          expect(await group.countPotentialMembers()).toBe(0);
+        });
+
+        test("not null match", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "ltv", match: "null", op: "ne" }]);
+          expect(await group.countPotentialMembers()).toBe(4);
+        });
+      });
+
+      describe("booleans", () => {
+        test("exact matches", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "isVIP", match: true, op: "eq" }]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("multiple rules with same key", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "isVIP", match: true, op: "eq" },
+            { key: "isVIP", match: false, op: "ne" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("multiple matches (ALL)", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "isVIP", match: true, op: "eq" },
+            { key: "lastName", match: "mario", op: "iLike" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(1);
+        });
+
+        test("multiple matches (ANY)", async () => {
+          await group.update({ matchType: "any" });
+          await group.setRules([
+            { key: "isVIP", match: true, op: "eq" },
+            { key: "lastName", match: "mario", op: "iLike" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(3);
+        });
+
+        test("null match", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "isVIP", match: "null", op: "eq" }]);
+          expect(await group.countPotentialMembers()).toBe(0);
+        });
+
+        test("not null match", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "isVIP", match: "null", op: "ne" }]);
+          expect(await group.countPotentialMembers()).toBe(4);
+        });
+      });
+
+      describe("absolute dates", () => {
+        test("exact matches", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "lastLoginAt", match: new Date(0).getTime(), op: "eq" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("comparison matches", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "lastLoginAt", match: new Date(0).getTime(), op: "gt" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("multiple rules with same key", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "lastLoginAt", match: new Date(0).getTime(), op: "gt" },
+            { key: "lastLoginAt", match: new Date().getTime(), op: "lte" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("multiple matches (ALL)", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "lastLoginAt", match: new Date(0).getTime(), op: "gt" },
+            { key: "lastName", match: "mario", op: "iLike" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(1);
+        });
+
+        test("multiple matches (ANY)", async () => {
+          await group.update({ matchType: "any" });
+          await group.setRules([
+            { key: "lastLoginAt", match: new Date(0).getTime(), op: "gt" },
+            { key: "lastName", match: "mario", op: "iLike" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(3);
+        });
+
+        test("null match", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "lastLoginAt", match: "null", op: "eq" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(0);
+        });
+
+        test("not null match", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "lastLoginAt", match: "null", op: "ne" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(4);
+        });
+      });
+
+      describe("relative dates", () => {
+        test("comparison matches (with matches)", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            {
+              key: "lastLoginAt",
+              relativeMatchNumber: 2,
+              relativeMatchUnit: "days",
+              relativeMatchDirection: "subtract",
+              op: "gt",
+            },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("comparison matches (no matches)", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            {
+              key: "lastLoginAt",
+              relativeMatchNumber: 2,
+              relativeMatchUnit: "days",
+              relativeMatchDirection: "add",
+              op: "gt",
+            },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(0);
+        });
+
+        test("multiple rules with same key", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            {
+              key: "lastLoginAt",
+              relativeMatchNumber: 2,
+              relativeMatchUnit: "days",
+              relativeMatchDirection: "subtract",
+              op: "gt",
+            },
+            {
+              key: "lastLoginAt",
+              relativeMatchNumber: 1,
+              relativeMatchUnit: "days",
+              relativeMatchDirection: "add",
+              op: "lt",
+            },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("multiple matches (ALL)", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            {
+              key: "lastLoginAt",
+              relativeMatchNumber: 2,
+              relativeMatchUnit: "days",
+              relativeMatchDirection: "subtract",
+              op: "gt",
+            },
+            { key: "lastName", match: "mario", op: "iLike" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(1);
+        });
+
+        test("multiple matches (ANY)", async () => {
+          await group.update({ matchType: "any" });
+          await group.setRules([
+            {
+              key: "lastLoginAt",
+              relativeMatchNumber: 2,
+              relativeMatchUnit: "days",
+              relativeMatchDirection: "subtract",
+              op: "gt",
+            },
+            { key: "lastName", match: "mario", op: "iLike" },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(3);
+        });
+      });
+    });
+
+    describe("#updateProfileMembership", () => {
+      describe("manual group", () => {
+        test("manual groups leave memberships where they are", async () => {
+          await group.update({ type: "manual" });
+          await group.addProfile(mario);
+
+          let members = await group.$get("groupMembers");
+          expect(members.length).toBe(1);
+
+          let belongs = await group.updateProfileMembership(mario);
+          expect(belongs).toBe(true);
+
+          belongs = await group.updateProfileMembership(luigi);
+          expect(belongs).toBe(false);
+        });
+
+        test("manual groups will remove members if the group is deleted", async () => {
+          await group.update({ type: "manual", state: "deleted" });
+          await group.addProfile(mario);
+
+          let members = await group.$get("groupMembers");
+          expect(members.length).toBe(1);
+
+          let belongs = await group.updateProfileMembership(mario);
+          expect(belongs).toBe(false);
+
+          belongs = await group.updateProfileMembership(luigi);
+          expect(belongs).toBe(false);
+
+          members = await group.$get("groupMembers");
+          expect(members.length).toBe(0);
+        });
+      });
+
+      describe("calculated group", () => {
+        test("groups with no rules will not have members added", async () => {
+          await group.setRules([]);
+          const belongs = await group.updateProfileMembership(mario);
+          expect(belongs).toBe(false);
+        });
+
+        test("it will add a profile not yet in the group", async () => {
+          let members = await group.$get("groupMembers");
+          expect(members.length).toBe(0);
+
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "lastName", match: "Mario", op: "eq" },
+            { key: "firstName", match: "Mario", op: "eq" },
+          ]);
+
+          const belongs = await group.updateProfileMembership(mario);
+          expect(belongs).toBe(true);
+
+          members = await group.$get("groupMembers");
+          expect(members.length).toBe(1);
+          expect(members[0].profileGuid).toBe(mario.guid);
+        });
+
+        test("it will leave a group member in the group", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "lastName", match: "Mario", op: "eq" },
+            { key: "firstName", match: "Mario", op: "eq" },
+          ]);
+
+          const belongsA = await group.updateProfileMembership(mario);
+          expect(belongsA).toBe(true);
+
+          const belongsB = await group.updateProfileMembership(mario);
+          expect(belongsB).toBe(true);
+
+          const members = await group.$get("groupMembers");
+          expect(members.length).toBe(1);
+          expect(members[0].profileGuid).toBe(mario.guid);
+        });
+
+        test("it will remove a profile from the group", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "lastName", match: "Mario", op: "eq" },
+            { key: "firstName", match: "Mario", op: "eq" },
+          ]);
+
+          let belongs = await group.updateProfileMembership(mario);
+          expect(belongs).toBe(true);
+
+          let members = await group.$get("groupMembers");
+          expect(members.length).toBe(1);
+          expect(members[0].profileGuid).toBe(mario.guid);
+
+          await group.setRules([
+            { key: "lastName", match: "Lakitu", op: "eq" },
+          ]);
+
+          belongs = await group.updateProfileMembership(mario);
+          expect(belongs).toBe(false);
+
+          members = await group.$get("groupMembers");
+          expect(members.length).toBe(0);
+        });
+      });
+    });
+
+    describe("#countPotentialMembers", () => {
+      test("it will count the profiles which would become members at the next run by default", async () => {
+        await group.update({ matchType: "any" });
+        await group.setRules([
+          { key: "lastLoginAt", match: new Date(0).getTime(), op: "gt" },
+          { key: "lastName", match: "mario", op: "iLike" },
+        ]);
+        const count = await group.countPotentialMembers();
+        expect(count).toBe(3);
+      });
+
+      test("it can return a count of profiles which would match an arbitrary rule set", async () => {
+        await group.update({ matchType: "all" });
+        await group.setRules([]);
+        const rules = [
+          { key: "lastLoginAt", match: new Date(100000).getTime(), op: "gte" },
+          { key: "lastName", match: "mario", op: "iLike" },
+        ];
+        const count = await group.countPotentialMembers(rules);
+        expect(count).toBe(1);
+      });
+    });
+
+    describe("#countComponentMembersFromRules", () => {
+      test("we can count the membership subtotals for each part of the group rule", async () => {
+        await group.update({ matchType: "all" });
+        await group.setRules([]);
+
+        const rules = [
+          {
+            key: "firstName",
+            match: "%",
+            op: "iLike",
+          },
+          {
+            key: "lastLoginAt",
+            match: new Date(100000).getTime(),
+            op: "gte",
+          },
+          {
+            key: "lastName",
+            match: "mario",
+            op: "iLike",
+          },
+        ];
+
+        const count = await group.countPotentialMembers(rules);
+        expect(count).toBe(1);
+
+        const {
+          componentCounts,
+          funnelCounts,
+        } = await group.countComponentMembersFromRules(rules);
+
+        // if we just had the rule `firstName: { match: "%", op: "iLike" },` there would be 4 group members
+        // if we just had the rule `lastLoginAt: { match: new Date(100000).getTime(), op: "gte" }` there would be 2 group members
+        // if we just had the rule `lastName: { match: "mario", op: "iLike" }` there would be 2 group members
+        expect(componentCounts).toEqual([4, 2, 2]);
+
+        // checking just the first rule (`firstName`) there would have been 2 group members
+        // checking the first & second rule (`firstName` + `lastLoginAt`) there would have been 2 group members
+        // checking all 3 rules (`firstName` + `lastLoginAt` + `lastLoginAt`), there would have been 1 group member
+        expect(funnelCounts).toEqual([4, 2, 1]);
+      });
+    });
+  });
+});
