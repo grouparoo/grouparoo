@@ -204,8 +204,8 @@ We use `lerna` to help publish and migrate the versions of all our packages in l
 
 ```bash
 # Update the version of all packages to a new patch version
-lerna version patch
+lerna version patch --ignore-scripts
 
 # Publish a new version of the packages to NPM (interactive)
-lerna publish
+lerna publish patch --ignore-scripts #(--canary)
 ```
