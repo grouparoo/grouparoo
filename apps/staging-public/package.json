@@ -16,7 +16,8 @@
     "@grouparoo/mailchimp": "^0.1.1-aplha.4",
     "@grouparoo/mysql": "^0.1.1-aplha.4",
     "@grouparoo/newrelic": "^0.1.1-aplha.4",
-    "@grouparoo/postgres": "^0.1.1-aplha.4"
+    "@grouparoo/postgres": "^0.1.1-aplha.4",
+    "@grouparoo/google-sheets": "^0.1.1-aplha.4"
   },
   "scripts": {
     "prepare": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public npm run prepare",
@@ -31,7 +32,8 @@
       "@grouparoo/logger",
       "@grouparoo/csv",
       "@grouparoo/email-authentication",
-      "@grouparoo/newrelic"
+      "@grouparoo/newrelic",
+      "@grouparoo/google-sheets"
     ],
     "includedFiles": [
       "assets"
