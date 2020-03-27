@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
+import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import Router from "next/router";
@@ -24,6 +25,7 @@ export default function ({ apiVersion, errorHandler, hideSearch, query }) {
   const [tab, setTab] = useState(
     query.tab ? (query.tab === "edit" ? "profiles" : query.tab) : ""
   );
+  useHistoryPagination(offset, "offset", setOffset);
 
   useEffect(() => {
     load();
@@ -81,7 +83,9 @@ export default function ({ apiVersion, errorHandler, hideSearch, query }) {
       url += `searchValue=${searchValue}&`;
     }
 
-    Router.push(Router.route, url, { shallow: true });
+    const routerMethod =
+      url === `${window.location.pathname}?` ? "replace" : "push";
+    Router[routerMethod](Router.route, url, { shallow: true });
   }
 
   const uniqueProfileProperties = [];

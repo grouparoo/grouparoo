@@ -11,7 +11,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { guid } = query;
 
   // pagination
-  const limit = 100;
+  const limit = 999;
   const [offset, setOffset] = useState(query.offset || 0);
 
   useEffect(() => {

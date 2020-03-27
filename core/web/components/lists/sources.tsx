@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
+import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import Link from "next/link";
 import Router from "next/router";
 import Pagination from "../pagination";
@@ -23,6 +24,7 @@ export default function (props) {
   // pagination
   const limit = 100;
   const [offset, setOffset] = useState(query.offset || 0);
+  useHistoryPagination(offset, "offset", setOffset);
 
   useEffect(() => {
     load();
@@ -54,7 +56,9 @@ export default function (props) {
       url += `offset=${offset}&`;
     }
 
-    Router.push(Router.route, url, { shallow: true });
+    const routerMethod =
+      url === `${window.location.pathname}?` ? "replace" : "push";
+    Router[routerMethod](Router.route, url, { shallow: true });
   }
 
   return (
