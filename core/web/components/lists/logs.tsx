@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
+import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import Link from "next/link";
 import Router from "next/router";
 import { ButtonGroup, Button } from "react-bootstrap";
@@ -17,6 +18,7 @@ export default function ({ apiVersion, errorHandler, query, ownerType }) {
   const [offset, setOffset] = useState(query.offset || 0);
   const ownerGuid = query.guid;
   const [topic, setTopic] = useState(query.topic || null);
+  useHistoryPagination(offset, "offset", setOffset);
 
   let topics = [
     "group",
@@ -102,7 +104,9 @@ export default function ({ apiVersion, errorHandler, query, ownerType }) {
       url += `topic=${topic}&`;
     }
 
-    Router.push(Router.route, url, { shallow: true });
+    const routerMethod =
+      url === `${window.location.pathname}?` ? "replace" : "push";
+    Router[routerMethod](Router.route, url, { shallow: true });
   }
 
   return (

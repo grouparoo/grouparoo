@@ -1,5 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
+import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import Link from "next/link";
 import Router from "next/router";
 import { Badge, ButtonGroup, Button, Alert } from "react-bootstrap";
@@ -23,6 +24,7 @@ export default function ({ apiVersion, errorHandler, query }) {
   const [offset, setOffset] = useState(query.offset || 0);
   const profileGuid = query.guid.match(/^pro_/) ? query.guid : null;
   const destinationGuid = query.guid.match(/^dst_/) ? query.guid : null;
+  useHistoryPagination(offset, "offset", setOffset);
 
   useEffect(() => {
     load();
@@ -95,7 +97,9 @@ export default function ({ apiVersion, errorHandler, query }) {
       url += `offset=${offset}&`;
     }
 
-    Router.push(Router.route, url, { shallow: true });
+    const routerMethod =
+      url === `${window.location.pathname}?` ? "replace" : "push";
+    Router[routerMethod](Router.route, url, { shallow: true });
   }
 
   const allButtonVariant = selectedDestinationGuid !== "" ? "info" : "success";

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
+import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import Link from "next/link";
 import Router from "next/router";
 import { Button } from "react-bootstrap";
@@ -24,6 +25,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const limit = 100;
   const [offset, setOffset] = useState(query.offset || 0);
   const [total, setTotal] = useState(0);
+  useHistoryPagination(offset, "offset", setOffset);
 
   useEffect(() => {
     async function loadAll() {
@@ -137,7 +139,9 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       url += `offset=${offset}&`;
     }
 
-    Router.push(Router.route, url, { shallow: true });
+    const routerMethod =
+      url === `${window.location.pathname}?` ? "replace" : "push";
+    Router[routerMethod](Router.route, url, { shallow: true });
   }
 
   const uniqueProfileProperties = [];

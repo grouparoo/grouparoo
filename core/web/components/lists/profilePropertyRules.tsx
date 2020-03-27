@@ -1,5 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
+import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import Router from "next/router";
 import Link from "next/link";
 import Moment from "react-moment";
@@ -17,6 +18,7 @@ export default function ({ apiVersion, errorHandler, query }) {
   const limit = 1000;
   const [offset, setOffset] = useState(query.offset || 0);
   const [total, setTotal] = useState(0);
+  useHistoryPagination(offset, "offset", setOffset);
 
   useEffect(() => {
     updateURLParams();
@@ -53,7 +55,9 @@ export default function ({ apiVersion, errorHandler, query }) {
       url += `offset=${offset}&`;
     }
 
-    Router.push(Router.route, url, { shallow: true });
+    const routerMethod =
+      url === `${window.location.pathname}?` ? "replace" : "push";
+    Router[routerMethod](Router.route, url, { shallow: true });
   }
 
   return (
