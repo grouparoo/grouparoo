@@ -64,6 +64,7 @@
     "reflect-metadata": "^0.1.13",
     "sequelize": "^5.21.5",
     "sequelize-typescript": "^1.1.0",
+    "ts-node-dev": "latest",
     "typescript": "^3.8.3",
     "umzug": "^2.2.0",
     "uuid": "^7.0.2",
@@ -86,8 +87,7 @@
     "prettier": "^2.0.2",
     "prop-types": "^15.7.2",
     "sequelize-cli": "^5.5.1",
-    "ts-jest": "^25.2.1",
-    "ts-node-dev": "latest"
+    "ts-jest": "^25.2.1"
   },
   "gitHead": "e9f1dd3cd79c004627df328f68fc95b704faff1a"
 }
