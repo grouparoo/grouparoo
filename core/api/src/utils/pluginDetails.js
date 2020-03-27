@@ -20,7 +20,7 @@ function getParentPath() {
         "apps",
         process.env.GROUPAROO_MONOREPO_APP
       )
-    : path.join(__dirname, "..", "..", "..", "..", "..");
+    : path.join(__dirname, "..", "..", "..", "..", "..", "..");
 }
 
 function getPluginManifest() {

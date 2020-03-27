@@ -6,11 +6,30 @@ import InjectedPlugins from "./pluginInjection";
 let localNodeModulesPath: string;
 if (
   fs.existsSync(
-    join(__dirname, "..", "..", "..", "node_modules", "ah-sequelize-plugin")
+    join(
+      __dirname,
+      "..",
+      "..",
+      "..",
+      "..",
+      "..",
+      "..",
+      "node_modules",
+      "ah-sequelize-plugin"
+    )
   )
 ) {
   // things are installed normally
-  localNodeModulesPath = join(__dirname, "..", "..", "..", "node_modules");
+  localNodeModulesPath = join(
+    __dirname,
+    "..",
+    "..",
+    "..",
+    "..",
+    "..",
+    "..",
+    "node_modules"
+  );
 } else {
   // we are using hoisted lerna modules
   localNodeModulesPath = join(
