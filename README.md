@@ -209,3 +209,5 @@ lerna version patch --ignore-scripts
 # Publish a new version of the packages to NPM (interactive)
 lerna publish patch --ignore-scripts #(--canary)
 ```
+
+🦘
