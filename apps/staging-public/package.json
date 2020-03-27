@@ -2,21 +2,21 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/app-staging-public",
   "description": "The Grouparoo Staging Application",
-  "version": "0.1.1-alpha.1",
+  "version": "0.1.1-alpha.2",
   "license": "MPL-2.0",
   "private": true,
   "engines": {
     "node": "12.x.x"
   },
   "dependencies": {
-    "@grouparoo/core": "^0.1.1-alpha.1",
-    "@grouparoo/csv": "^0.1.1-alpha.1",
-    "@grouparoo/email-authentication": "^0.1.1-alpha.1",
-    "@grouparoo/logger": "^0.1.1-alpha.1",
-    "@grouparoo/mailchimp": "^0.1.1-alpha.1",
-    "@grouparoo/mysql": "^0.1.1-alpha.1",
-    "@grouparoo/newrelic": "^0.1.1-alpha.1",
-    "@grouparoo/postgres": "^0.1.1-alpha.1"
+    "@grouparoo/core": "^0.1.1-alpha.2",
+    "@grouparoo/csv": "^0.1.1-alpha.2",
+    "@grouparoo/email-authentication": "^0.1.1-alpha.2",
+    "@grouparoo/logger": "^0.1.1-alpha.2",
+    "@grouparoo/mailchimp": "^0.1.1-alpha.2",
+    "@grouparoo/mysql": "^0.1.1-alpha.2",
+    "@grouparoo/newrelic": "^0.1.1-alpha.2",
+    "@grouparoo/postgres": "^0.1.1-alpha.2"
   },
   "scripts": {
     "prepare": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public npm run prepare",
