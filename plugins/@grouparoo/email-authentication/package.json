@@ -8,6 +8,9 @@
   "engines": {
     "node": "12.x.x"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "prepare": "rm -rf dist && tsc --declaration",
     "test": "jest",
@@ -39,5 +42,6 @@
         "emailSignIn"
       ]
     }
-  }
+  },
+  "gitHead": "e9f1dd3cd79c004627df328f68fc95b704faff1a"
 }

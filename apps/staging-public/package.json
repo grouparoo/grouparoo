@@ -4,7 +4,7 @@
   "description": "The Grouparoo Staging Application",
   "version": "0.1.1-alpha.0",
   "license": "MPL-2.0",
-  "private": false,
+  "private": true,
   "engines": {
     "node": "12.x.x"
   },

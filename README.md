@@ -206,6 +206,6 @@ We use `lerna` to help publish and migrate the versions of all our packages in l
 # Update the version of all packages to a new patch version
 lerna version patch
 
-# Publish a new canary version of the packages to NPM
-lerna publish --canary
+# Publish a new version of the packages to NPM (interactive)
+lerna publish
 ```

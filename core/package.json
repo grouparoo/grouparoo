@@ -5,6 +5,9 @@
   "version": "0.1.1-alpha.0",
   "license": "MPL-2.0",
   "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": "12.x.x"
   },
@@ -85,5 +88,6 @@
     "sequelize-cli": "^5.5.1",
     "ts-jest": "^25.2.1",
     "ts-node-dev": "latest"
-  }
+  },
+  "gitHead": "e9f1dd3cd79c004627df328f68fc95b704faff1a"
 }

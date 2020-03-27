@@ -3,7 +3,7 @@
   "name": "grouparoo",
   "version": "0.1.0",
   "license": "SEE LICENSE IN LICENSE.txt",
-  "private": false,
+  "private": true,
   "engines": {
     "node": "12.x.x"
   },
