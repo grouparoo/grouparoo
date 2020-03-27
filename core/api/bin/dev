@@ -3,7 +3,13 @@
 cd "$(dirname "$0")"
 cd ..
 
-../node_modules/.bin/ts-node-dev \
+if [ -f "../node_modules/.bin/ts-node-dev" ]; then
+  EXECUTABLE="../node_modules/.bin/ts-node-dev"
+else
+  EXECUTABLE="ts-node-dev"
+fi
+
+"$EXECUTABLE" \
   --transpile-only \
   --ignore-watch=web \
   --ignore-watch='../web' \
