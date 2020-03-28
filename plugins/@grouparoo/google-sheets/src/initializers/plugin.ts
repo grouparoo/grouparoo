@@ -2,11 +2,11 @@ import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
 import { test } from "../lib/test";
-import { sourceOptions } from "../lib/file-import/sourceOptions";
-import { sourcePreview } from "../lib/file-import/sourcePreview";
-import { profiles } from "../lib/file-import/profiles";
-import { profileProperty } from "../lib/file-import/profileProperty";
-import { profilePropertyRuleOptions } from "../lib/file-import/profilePropertyRuleOptions";
+import { sourceOptions } from "../lib/sheet-import/sourceOptions";
+import { sourcePreview } from "../lib/sheet-import/sourcePreview";
+import { profiles } from "../lib/sheet-import/profiles";
+import { profileProperty } from "../lib/sheet-import/profileProperty";
+import { profilePropertyRuleOptions } from "../lib/sheet-import/profilePropertyRuleOptions";
 
 const packageJSON = require("./../../package.json");
 
@@ -46,7 +46,7 @@ export class Plugins extends Initializer {
           name: "google-sheet-import",
           direction: "import",
           description: "import or update profiles from a Google Sheet",
-          app: "google-sheet",
+          app: "google-sheets",
           options: [
             {
               key: "sheet_url",
