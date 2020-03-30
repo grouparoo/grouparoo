@@ -20,6 +20,7 @@ const data = async (props = {}) => {
 export default async (source?, props: { [key: string]: any } = {}) => {
   if (!source) {
     source = await SourceFactory();
+    await source.setOptions({ table: "__testTable" });
   }
 
   props.sourceGuid = source.guid;

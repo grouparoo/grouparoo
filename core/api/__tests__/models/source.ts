@@ -59,6 +59,8 @@ describe("models/source", () => {
         name: "test source",
         appGuid: app.guid,
       });
+      await source.setOptions({ table: "test table" });
+
       const schedule = await helper.factories.schedule(source);
       await expect(source.destroy()).rejects.toThrow(
         /cannot delete a source that has a schedule/

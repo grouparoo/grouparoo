@@ -9,9 +9,9 @@ import {
   ForeignKey,
   BeforeUpdate,
   BeforeCreate,
+  BeforeSave,
   AfterDestroy,
 } from "sequelize-typescript";
-import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Source, SimpleSourceOptions, SourceMapping } from "./Source";
 import { App, SimpleAppOptions } from "./App";
@@ -74,6 +74,13 @@ export class Schedule extends LoggedModel<Schedule> {
 
   @BelongsTo(() => Source)
   source: Source;
+
+  @BeforeSave
+  static async ensureSourceOptions(instance: Schedule) {
+    const source = await instance.$get("source");
+    const sourceOptions = await source.getOptions();
+    await source.validateOptions(sourceOptions);
+  }
 
   @BeforeUpdate
   static async checkRecurringFrequency(instance: Schedule) {

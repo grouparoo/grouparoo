@@ -37,6 +37,7 @@ describe("models/schedule", () => {
         type: "test-plugin-import",
         appGuid: app.guid,
       });
+      await source.setOptions({ table: "test table" });
     });
 
     test("a schedule can be created with a source, and it can find the related app", async () => {
