@@ -2,7 +2,6 @@ import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
 import { test } from "../lib/test";
-import { sourceOptions } from "../lib/sheet-import/sourceOptions";
 import { sourcePreview } from "../lib/sheet-import/sourcePreview";
 import { profiles } from "../lib/sheet-import/profiles";
 import { profileProperty } from "../lib/sheet-import/profileProperty";
@@ -56,7 +55,6 @@ export class Plugins extends Initializer {
           ],
           profilePropertyRuleOptions,
           methods: {
-            sourceOptions,
             sourcePreview,
             profiles,
             profileProperty,
