@@ -13,6 +13,7 @@ export default async (
   }
 ) => {
   const source = await SourceFactory();
+  await source.setOptions({ table: "__test_table" });
   const sourceGuid = source.guid;
 
   for (const key in props) {
