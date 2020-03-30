@@ -68,6 +68,7 @@ describe("models/profile", () => {
 
     beforeAll(async () => {
       source = await helper.factories.source();
+      await source.setOptions({ table: "test table" });
 
       emailRule = await ProfilePropertyRule.create({
         sourceGuid: source.guid,
@@ -225,6 +226,7 @@ describe("models/profile", () => {
 
       beforeAll(async () => {
         const source = await helper.factories.source();
+        await source.setOptions({ table: "test table" });
 
         const rules = await ProfilePropertyRule.findAll();
 
@@ -455,6 +457,7 @@ describe("models/profile", () => {
         name: "test import source",
         type: "test-plugin-import",
       });
+      await source.setOptions({ table: "test table" });
 
       emailRule = await ProfilePropertyRule.create({
         sourceGuid: source.guid,

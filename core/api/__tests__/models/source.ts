@@ -74,6 +74,7 @@ describe("models/source", () => {
         name: "test source",
         appGuid: app.guid,
       });
+      await source.setOptions({ table: "test table" });
 
       const rule = await ProfilePropertyRule.create({
         key: "thing",
@@ -261,6 +262,7 @@ describe("models/source", () => {
         name: "test source",
         appGuid: app.guid,
       });
+      await source.setOptions({ table: "test table" });
 
       profile = await helper.factories.profile();
 

@@ -1,5 +1,5 @@
 import { helper } from "./../utils/specHelper";
-import { specHelper, config } from "actionhero";
+import { specHelper } from "actionhero";
 import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
 let actionhero;
 let guid;
@@ -26,6 +26,7 @@ describe("actions/profilePropertyRules", () => {
     await ProfilePropertyRule.destroy({ truncate: true });
 
     source = await helper.factories.source();
+    await source.setOptions({ table: "test table" });
   });
 
   describe("administrator signed in", () => {

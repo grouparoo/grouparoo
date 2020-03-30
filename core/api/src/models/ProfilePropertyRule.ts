@@ -163,6 +163,13 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
 
   @BeforeSave
+  static async ensureSourceOptions(instance: ProfilePropertyRule) {
+    const source = await instance.$get("source");
+    const sourceOptions = await source.getOptions();
+    await source.validateOptions(sourceOptions);
+  }
+
+  @BeforeSave
   static async validateQuery(instance: ProfilePropertyRule) {
     await instance.test();
   }

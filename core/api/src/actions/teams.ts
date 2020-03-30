@@ -145,7 +145,7 @@ export class TeamView extends Action {
   async run({ params, response }) {
     const team = await Team.findOne({
       where: { guid: params.guid },
-      include: [{ model: TeamMember, order: [["email", "DESC"]] }],
+      include: [{ model: TeamMember }],
     });
 
     if (!team) {
@@ -158,6 +158,13 @@ export class TeamView extends Action {
         return await mem.apiData();
       })
     );
+    response.teamMembers.sort((a, b) => {
+      if (a.email < b.email) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
   }
 }
 

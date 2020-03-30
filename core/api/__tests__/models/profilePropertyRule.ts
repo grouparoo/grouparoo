@@ -28,12 +28,32 @@ describe("models/profilePropertyRule", () => {
     expect(foundTasks.length).toBe(rulesCount);
   });
 
+  test("a profile property rule cannot be created if the source does not have all the required options set", async () => {
+    const app = await helper.factories.app();
+    await app.update({ type: "manual" });
+    const source = await helper.factories.source(app);
+    const sourceOptions = await source.getOptions();
+    await expect(source.validateOptions(sourceOptions)).rejects.toThrow(
+      /table is required/
+    );
+
+    await expect(
+      ProfilePropertyRule.create({
+        sourceGuid: source.guid,
+        key: "thing",
+        type: "string",
+        unique: false,
+      })
+    ).rejects.toThrow(/table is required/);
+  });
+
   test("creating a profile property rule for a manual app did enqueue an internalRun", async () => {
     await api.resque.queue.connection.redis.flushdb();
 
     const app = await helper.factories.app();
     await app.update({ type: "manual" });
     const source = await helper.factories.source(app);
+    await source.setOptions({ table: "some table" });
 
     const profilePropertyRule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
@@ -120,6 +140,7 @@ describe("models/profilePropertyRule", () => {
 
   test("creating a profile property rule creates a log entry", async () => {
     const source = await helper.factories.source();
+    await source.setOptions({ table: "test table" });
     const rule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
       key: "thing",
@@ -137,6 +158,7 @@ describe("models/profilePropertyRule", () => {
 
   test("a profile property rule cannot be deleted if a calculated group is using it", async () => {
     const source = await helper.factories.source();
+    await source.setOptions({ table: "some table" });
 
     const rule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
@@ -159,6 +181,7 @@ describe("models/profilePropertyRule", () => {
 
   test("deleting a profile property rule deleted the options", async () => {
     const source = await helper.factories.source();
+    await source.setOptions({ table: "some table" });
 
     const rule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,

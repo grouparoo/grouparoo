@@ -332,6 +332,7 @@ describe("models/run", () => {
         type: "test-error-connection",
         appGuid: app.guid,
       });
+      await source.setOptions({ query: "test table" });
 
       // the app throws whatever the query is a new error (see above)
       await rule.update({ sourceGuid: source.guid });

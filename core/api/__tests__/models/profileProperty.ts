@@ -28,6 +28,7 @@ describe("models/profileProperty", () => {
 
   beforeAll(async () => {
     source = await helper.factories.source();
+    await source.setOptions({ table: "test table" });
 
     profile = new Profile();
     await profile.save();

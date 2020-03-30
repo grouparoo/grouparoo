@@ -28,6 +28,7 @@ describe("integration/runs/internalRun", () => {
 
     test("adding a profile property rule with a query creates a run and internalRun task", async () => {
       const source = await helper.factories.source();
+      await source.setOptions({ table: "test table" });
 
       const rule = await ProfilePropertyRule.create({
         sourceGuid: source.guid,
