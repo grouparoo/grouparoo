@@ -1,10 +1,17 @@
-import { connect } from "./connect";
-import { Profile, App, Destination, SimpleAppOptions } from "@grouparoo/core";
+import { connect } from "./../connect";
+import {
+  Profile,
+  App,
+  Destination,
+  SimpleAppOptions,
+  SimpleDestinationOptions,
+} from "@grouparoo/core";
 
 export async function exportProfile(
-  destination: Destination,
   app: App,
-  options: SimpleAppOptions,
+  appOptions: SimpleAppOptions,
+  destination: Destination,
+  destinationOptions: SimpleDestinationOptions,
   profile: Profile,
   oldProfileProperties: { [key: string]: any },
   newProfileProperties: { [key: string]: any },
@@ -15,7 +22,7 @@ export async function exportProfile(
   let success = false;
   let error;
 
-  const client = await connect(options);
+  const client = await connect(appOptions);
   const {
     table,
     primaryKey,

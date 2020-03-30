@@ -1,12 +1,19 @@
-import { Profile, App, Destination, SimpleAppOptions } from "@grouparoo/core";
+import {
+  Profile,
+  App,
+  Destination,
+  SimpleAppOptions,
+  SimpleDestinationOptions,
+} from "@grouparoo/core";
 import * as fs from "fs";
 import * as path from "path";
 import { config, log } from "actionhero";
 
 export async function exportProfile(
-  destination: Destination,
   app: App,
-  options: SimpleAppOptions,
+  appOptions: SimpleAppOptions,
+  destination: Destination,
+  destinationOptions: SimpleDestinationOptions,
   profile: Profile,
   oldProfileProperties: { [key: string]: any },
   newProfileProperties: { [key: string]: any },
@@ -14,7 +21,7 @@ export async function exportProfile(
   newGroups: Array<string>,
   toDelete: boolean
 ) {
-  const filePath = path.join(config.general.paths.log[0], options.filename);
+  const filePath = path.join(config.general.paths.log[0], appOptions.filename);
 
   const line =
     JSON.stringify({
@@ -27,7 +34,7 @@ export async function exportProfile(
       toDelete,
     }) + "\r\n";
 
-  if (options.stdout?.toString() === "true") {
+  if (appOptions.stdout?.toString() === "true") {
     log(`[ logger destination ] ${line}`);
   }
 

@@ -1,12 +1,19 @@
-import { connect } from "./connect";
-import { Profile, App, Destination, SimpleAppOptions } from "@grouparoo/core";
-import { validateQuery } from "./validateQuery";
+import { connect } from "../connect";
+import {
+  Profile,
+  App,
+  Destination,
+  SimpleAppOptions,
+  SimpleDestinationOptions,
+} from "@grouparoo/core";
+import { validateQuery } from "../validateQuery";
 import format from "pg-format";
 
 export async function exportProfile(
-  destination: Destination,
   app: App,
-  options: SimpleAppOptions,
+  appOptions: SimpleAppOptions,
+  destination: Destination,
+  destinationOptions: SimpleDestinationOptions,
   profile: Profile,
   oldProfileProperties: { [key: string]: any },
   newProfileProperties: { [key: string]: any },
@@ -17,7 +24,7 @@ export async function exportProfile(
   let success = false;
   let error: Error;
 
-  const client = await connect(options);
+  const client = await connect(appOptions);
   const {
     table,
     primaryKey,

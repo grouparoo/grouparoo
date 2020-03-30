@@ -1,11 +1,11 @@
+import { App, AppOption, SimpleAppOptions } from "../models/App";
+import { Source, SimpleSourceOptions, SourceMapping } from "../models/Source";
+import { Destination, SimpleDestinationOptions } from "../models/Destination";
 import { Run } from "../models/Run";
 import {
   PluginConnectionProfilePropertyRuleOption,
   SimpleProfilePropertyRuleOptions,
 } from "../models/ProfilePropertyRule";
-import { Destination } from "../models/Destination";
-import { App, AppOption, SimpleAppOptions } from "../models/App";
-import { Source, SimpleSourceOptions, SourceMapping } from "../models/Source";
 import { Profile } from "../models/Profile";
 import { RunFilter } from "../models/Run";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
@@ -49,26 +49,13 @@ export interface PluginConnection {
   methods?: {
     sourceOptions?: SourceOptionsMethod;
     sourcePreview?: SourcePreviewMethod;
-    columns?: ColumnsPluginMethod;
     profiles?: ProfilesPluginMethod;
     profileProperty?: ProfilePropertyPluginMethod;
     nextFilter?: NextFilterPluginMethod;
+    destinationOptions?: DestinationOptionsMethod;
+    destinationPreview?: DestinationPreviewMethod;
     exportProfile?: ExportProfilePluginMethod;
   };
-}
-
-/**
- * Return the "columns" available for this source to use in a mapping
- */
-export interface ColumnsPluginMethod {
-  (
-    schedule: Schedule | Destination,
-    app: App,
-    options: SimpleAppOptions
-  ): Promise<{
-    rows: Array<{ [key: string]: any }>;
-    columns: Array<string>;
-  }>;
 }
 
 /**
@@ -132,9 +119,10 @@ export interface NextFilterPluginMethod {
  */
 export interface ExportProfilePluginMethod {
   (
-    destination: Destination,
     app: App,
     appOptions: SimpleAppOptions,
+    destination: Destination,
+    destinationOptions: SimpleDestinationOptions,
     profile: Profile,
     oldProfileProperties: { [key: string]: any },
     newProfileProperties: { [key: string]: any },
@@ -176,5 +164,31 @@ export interface SourcePreviewMethod {
     appOptions: SimpleAppOptions,
     source: Source,
     sourceOptions: SimpleSourceOptions
+  ): Promise<Array<{ [column: string]: any }>>;
+}
+
+/**
+ * Method to return the options available to this destination.
+ * Returns a collection of data to display to the user.
+ */
+export interface DestinationOptionsMethod {
+  (app: App, appOptions: SimpleAppOptions): Promise<{
+    [optionName: string]: {
+      type: string;
+      options?: string[];
+      descriptions?: string[];
+    };
+  }>;
+}
+
+/**
+ * Given SimpleDestinationOptions, render a preview of the data present in the destination.
+ */
+export interface DestinationPreviewMethod {
+  (
+    app: App,
+    appOptions: SimpleAppOptions,
+    destination: Destination,
+    destinationOptions: SimpleDestinationOptions
   ): Promise<Array<{ [column: string]: any }>>;
 }

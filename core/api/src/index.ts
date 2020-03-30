@@ -5,7 +5,7 @@ export { Source, SimpleSourceOptions, SourceMapping } from "./models/Source";
 export { Schedule, SimpleScheduleOptions } from "./models/Schedule";
 export { Run } from "./models/Run";
 export { Import } from "./models/Import";
-export { Destination } from "./models/Destination";
+export { Destination, SimpleDestinationOptions } from "./models/Destination";
 export {
   ProfilePropertyRule,
   SimpleProfilePropertyRuleOptions,

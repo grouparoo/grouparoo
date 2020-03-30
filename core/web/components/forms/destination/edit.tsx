@@ -1,49 +1,53 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
-import Link from "next/link";
-import { Row, Col, Form, Button, ListGroup, Badge } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Form,
+  Button,
+  Badge,
+  Table,
+  ListGroup,
+} from "react-bootstrap";
 import Router from "next/router";
-import AppIcon from "../../appIcon";
+import Link from "next/link";
+import AppIcon from "./../../appIcon";
 
-export default function ({
-  apiVersion,
-  errorHandler,
-  successHandler,
-  query,
-  destinationHandler,
-}) {
+export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
-  const [loading, setLoading] = useState(false);
-  const [apps, setApps] = useState([]);
-  const [connections, setConnections] = useState([]);
+  const [connectionOptions, setConnectionOptions] = useState([]);
+  const [preview, setPreview] = useState([]);
   const [groups, setGroups] = useState([]);
   const [destination, setDestination] = useState({
     guid: "",
     name: "",
+    type: "",
+    appGuid: "",
     trackAllGroups: false,
-    destinationGroups: [],
-    app: {
-      guid: "",
-      type: "",
-      icon: "",
-    },
     options: {},
+    app: { name: "", guid: "", icon: "" },
+    connection: { name: "", description: "", options: [] },
+    destinationGroups: [],
   });
-
   const { guid } = query;
 
   useEffect(() => {
     load();
-
-    destinationHandler.subscribe("destination-edit", load.bind(this));
-
-    return () => {
-      destinationHandler.unsubscribe("destination-edit", load.bind(this));
-    };
   }, []);
 
   async function load() {
-    setLoading(true);
+    const connectionOptionsResponse = await execApi(
+      "get",
+      `/api/${apiVersion}/destination/${guid}/connectionOptions`
+    );
+    if (connectionOptionsResponse?.options) {
+      setConnectionOptions(connectionOptionsResponse.options);
+    }
+
+    const groupsResponse = await execApi("get", `/api/${apiVersion}/groups`);
+    if (groupsResponse?.groups) {
+      setGroups(groupsResponse.groups);
+    }
 
     const destinationResponse = await execApi(
       "get",
@@ -53,39 +57,41 @@ export default function ({
       setDestination(destinationResponse.destination);
     }
 
-    const optionsResponse = await execApi(
-      "get",
-      `/api/${apiVersion}/destinationOptions`
-    );
-    if (optionsResponse?.connections) {
-      setConnections(optionsResponse.connections);
-    }
-
-    const appsResponse = await execApi("get", `/api/${apiVersion}/apps`);
-    if (appsResponse?.apps) {
-      setApps(appsResponse.apps);
-    }
-
-    const groupsResponse = await execApi("get", `/api/${apiVersion}/groups`);
-    if (groupsResponse?.groups) {
-      setGroups(groupsResponse.groups);
-    }
-
-    setLoading(false);
+    await loadPreview();
   }
 
-  async function edit(event) {
+  async function loadPreview() {
+    const response = await execApi(
+      "get",
+      `/api/${apiVersion}/destination/${guid}/preview`,
+      {
+        options:
+          Object.keys(destination.options).length > 0
+            ? destination.options
+            : null,
+      },
+      null,
+      null,
+      false
+    );
+    if (response?.preview) {
+      setPreview(response.preview);
+    }
+  }
+
+  const onSubmit = async (event) => {
     event.preventDefault();
+
     const response = await execApi(
       "put",
       `/api/${apiVersion}/destination/${guid}`,
       destination
     );
     if (response?.destination) {
-      successHandler.set({ message: "Destination Updated" });
+      successHandler.set({ message: "Destination updated" });
       setDestination(response.destination);
     }
-  }
+  };
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
@@ -96,17 +102,6 @@ export default function ({
       if (response) {
         Router.push("/destinations");
       }
-    }
-  }
-
-  async function toggleDestinationGroup(group, add) {
-    const path = `/api/${apiVersion}/destination/${guid}/${
-      add ? "track" : "unTrack"
-    }`;
-    const response = await execApi("post", path, { groupGuid: group.guid });
-    if (response) {
-      successHandler.set({ message: "Group Updated" });
-      await load();
     }
   }
 
@@ -121,22 +116,33 @@ export default function ({
 
   const updateOption = async (event) => {
     const _destination = Object.assign({}, destination);
-    _destination.options[event.target.id] =
+    const optKey = event.target.id.replace("_opt~", "");
+    _destination.options[optKey] =
       event.target.type === "checkbox"
         ? event.target.checked
         : event.target.value;
     setDestination(_destination);
+    loadPreview();
   };
 
-  let chosenConnection;
-  connections.forEach((conn) => {
-    if (
-      conn.app.indexOf(destination.app.type) >= 0 &&
-      conn.direction === "export"
-    ) {
-      chosenConnection = conn;
+  // not every row returned is guaranteed to have the same columns
+  const previewColumns = preview
+    .map((row) => Object.keys(row))
+    .flat()
+    .filter((value, index, self) => {
+      return self.indexOf(value) === index;
+    });
+
+  async function toggleDestinationGroup(group, add) {
+    const path = `/api/${apiVersion}/destination/${guid}/${
+      add ? "track" : "unTrack"
+    }`;
+    const response = await execApi("post", path, { groupGuid: group.guid });
+    if (response) {
+      successHandler.set({ message: "Group Updated" });
+      await load();
     }
-  });
+  }
 
   const destinationGroupGuids = destination.destinationGroups.map(
     (dsg) => dsg.guid
@@ -144,23 +150,25 @@ export default function ({
 
   return (
     <>
+      <h2>Edit Destination</h2>
       <p>
         <span className="text-muted">{destination.guid}</span>
       </p>
+
       <Row>
         <Col md={1}>
           <br />
-          <AppIcon src={destination?.app.icon} fluid size={100} />
+          <AppIcon src={destination.app.icon} fluid size={100} />
         </Col>
         <Col>
-          <Form id="form" onSubmit={edit} noValidate>
+          <Form id="form" onSubmit={onSubmit}>
             <Form.Group controlId="name">
               <Form.Label>Name</Form.Label>
               <Form.Control
                 required
                 type="text"
-                placeholder="Name"
-                value={destination.name}
+                placeholder="Destination Name"
+                defaultValue={destination.name}
                 onChange={(e) => update(e)}
               />
               <Form.Control.Feedback type="invalid">
@@ -177,74 +185,129 @@ export default function ({
               />
             </Form.Group>
 
-            <Form.Group controlId="appGuid">
-              <Form.Label>Connected App</Form.Label>
-              <Form.Control
-                disabled
-                as="select"
-                value={destination.app.guid}
-                onChange={(e) => update(e)}
-              >
-                {apps.map((app) => (
-                  <option key={`app-${app.guid}`} value={app.guid}>
-                    {app.name}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
+            <p>
+              <strong>App</strong>:{" "}
+              <Link href="/app/[guid]" as={`/app/${destination.app.guid}`}>
+                <a>
+                  {destination.app.name} ({destination.app.guid})
+                </a>
+              </Link>
+              <br />
+              <strong>Connection</strong>: {destination.connection.name}:{" "}
+              {destination.connection.description}
+            </p>
 
-            {chosenConnection && chosenConnection.options.length > 0 ? (
-              <>
-                <hr />
-                <strong>
-                  Options for a {chosenConnection.name} connection
-                </strong>
-                <br />
-                <br />
-                <p>
-                  You can use mustache variables in your query. You have access
-                  to "now" and "destination". Timestamps are expanded into
-                  "hour", "day", and "sql" i.e.{" "}
-                  <code>
-                    select * from "users" where updatedAt >= '&#123;&#123;
-                    now.sql &#125;&#125;'
-                  </code>
-                </p>
-                <br />
+            <hr />
+            <strong>Options for a {destination.type} destination</strong>
+            <br />
+            <br />
 
-                {chosenConnection.options.map((opt) => {
-                  return (
-                    <Form.Group key={`opt-${opt.key}`} controlId={opt.key}>
-                      <Form.Label>
-                        {opt.required ? (
-                          <>
-                            <Badge variant="info">required</Badge>&nbsp;
-                          </>
-                        ) : null}
-                        <code>{opt.key}</code>: <small>{opt.description}</small>
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        required={opt.required}
-                        placeholder="..."
-                        value={destination.options[opt.key] || ""}
-                        onChange={(e) => updateOption(e)}
-                      />
-                    </Form.Group>
-                  );
-                })}
-              </>
+            {Object.keys(destination.connection.options).length === 0 ? (
+              <p>No options for this type of destination</p>
             ) : null}
+
+            {destination.connection.options.map((opt) => {
+              return (
+                <Form.Group
+                  key={`group-${opt.key}`}
+                  controlId={`_opt~${opt.key}`}
+                >
+                  <Form.Label>
+                    {opt.required ? (
+                      <>
+                        <Badge variant="info">required</Badge>&nbsp;
+                      </>
+                    ) : null}
+                    <code>{opt.key}</code>: <small>{opt.description}</small>
+                  </Form.Label>
+                  {(() => {
+                    if (connectionOptions[opt.key]?.type === "list") {
+                      return (
+                        <Form.Control
+                          as="select"
+                          required={opt.required}
+                          defaultValue={destination.options[opt.key] || ""}
+                          onChange={(e) => updateOption(e)}
+                        >
+                          <option value={""} disabled>
+                            Choose an option
+                          </option>
+                          {connectionOptions[opt.key].options.map((o, idx) => (
+                            <option key={`opt~${opt.key}-${o}`} value={o}>
+                              {o}{" "}
+                              {connectionOptions[opt.key]?.descriptions &&
+                              connectionOptions[opt.key]?.descriptions[idx]
+                                ? ` | ${
+                                    connectionOptions[opt.key]?.descriptions[
+                                      idx
+                                    ]
+                                  }`
+                                : null}
+                            </option>
+                          ))}
+                        </Form.Control>
+                      );
+                    } else {
+                      return (
+                        <Form.Control
+                          required={opt.required}
+                          type="text"
+                          defaultValue={destination.options[opt.key]}
+                          onChange={(e) => updateOption(e)}
+                        />
+                      );
+                    }
+                  })()}
+                </Form.Group>
+              );
+            })}
+
+            <br />
+            <br />
+            <h3>Data Preview</h3>
+
+            {previewColumns.length === 0 ? <p>No preview</p> : null}
+
+            <div style={{ overflow: "auto" }}>
+              <Table striped size="sm">
+                <thead>
+                  <tr>
+                    {previewColumns.map((col) => (
+                      <th key={`head-${col}`}>{col}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {preview.map((row, i) => (
+                    <tr key={`row-${i}`}>
+                      {previewColumns.map((col, j) => (
+                        <td key={`table-${i}-${j}`}>{row[col]}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
+
+            <br />
+            <br />
 
             <Button variant="primary" type="submit">
               Update
             </Button>
             <hr />
-            <Button variant="danger" size="sm" onClick={handleDelete}>
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={() => {
+                handleDelete();
+              }}
+            >
               Delete
             </Button>
           </Form>
         </Col>
+
         {!destination.trackAllGroups ? (
           <Col md={5}>
             <h4>Groups</h4>

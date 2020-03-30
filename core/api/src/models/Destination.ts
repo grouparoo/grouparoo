@@ -26,7 +26,7 @@ import { Export } from "./Export";
 import { DestinationGroup } from "./DestinationGroup";
 import {
   GrouparooPlugin,
-  ColumnsPluginMethod,
+  PluginConnection,
   ExportProfilePluginMethod,
 } from "../classes/plugin";
 import { plugin } from "../modules/plugin";
@@ -36,8 +36,8 @@ export interface DestinationMappings {
   [key: string]: any;
 }
 
-export interface DestinationOptions {
-  [key: string]: any;
+export interface SimpleDestinationOptions {
+  [key: string]: string;
 }
 
 @Table({ tableName: "destinations", paranoid: false })
@@ -54,6 +54,10 @@ export class Destination extends LoggedModel<Destination> {
   @AllowNull(false)
   @Column
   name: string;
+
+  @AllowNull(false)
+  @Column
+  type: string;
 
   @Default(false)
   @Column
@@ -76,11 +80,6 @@ export class Destination extends LoggedModel<Destination> {
 
   @HasMany(() => Export)
   exports: Export[];
-
-  @BeforeCreate
-  static async checkCreateTypes(instance: Destination) {
-    await instance.validateAllowedTypes();
-  }
 
   @BeforeSave
   static async ensureOnlyOneDestinationPerApp(instance: Destination) {
@@ -125,17 +124,6 @@ export class Destination extends LoggedModel<Destination> {
     }
   }
 
-  @BeforeUpdate
-  static async checkOptions(instance: Destination) {
-    const options = await instance.getOptions();
-    await instance.validateRequiredOptions(options);
-  }
-
-  @BeforeUpdate
-  static async checkUpdateTypes(instance: Destination) {
-    await instance.validateAllowedTypes();
-  }
-
   @AfterDestroy
   static async destroyDestinationMappings(instance: Destination) {
     return Mapping.destroy({
@@ -166,17 +154,20 @@ export class Destination extends LoggedModel<Destination> {
 
   async apiData() {
     const app = await this.$get("app");
-    const mappings = await this.getMapping();
+    const mapping = await this.getMapping();
     const options = await this.getOptions();
     const groups = await this.$get("groups");
+    const { pluginConnection } = this.getPlugin();
 
     return {
       guid: this.guid,
       name: this.name,
+      type: this.type,
       app: await app.apiData(),
       trackAllGroups: this.trackAllGroups,
-      mappings,
+      mapping,
       options,
+      connection: pluginConnection,
       destinationGroups: await Promise.all(groups.map((grp) => grp.apiData())),
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
@@ -247,7 +238,7 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async getOptions() {
-    const optionsObject: DestinationMappings = {};
+    const optionsObject: SimpleDestinationOptions = {};
     const options = await this.$get("_options");
 
     options.forEach((option) => {
@@ -257,11 +248,11 @@ export class Destination extends LoggedModel<Destination> {
     return optionsObject;
   }
 
-  async setOptions(options: DestinationMappings) {
+  async setOptions(options: SimpleDestinationOptions) {
     const transaction = await api.sequelize.transaction();
 
     try {
-      await this.validateRequiredOptions(options);
+      await this.validateOptions(options);
 
       await Option.destroy({
         where: { ownerGuid: this.guid },
@@ -318,7 +309,7 @@ export class Destination extends LoggedModel<Destination> {
     return destinationGroup.destroy();
   }
 
-  async parameterizedOptions(): Promise<DestinationOptions> {
+  async parameterizedOptions(): Promise<SimpleDestinationOptions> {
     const parameterizedOptions = {};
     const options = await this.getOptions();
     const keys = Object.keys(options);
@@ -333,32 +324,44 @@ export class Destination extends LoggedModel<Destination> {
     return parameterizedOptions;
   }
 
-  async columns(): Promise<{
-    rows: { [key: string]: any };
-    columns: Array<string>;
-  }> {
+  async destinationConnectionOptions() {
+    const { pluginConnection } = this.getPlugin();
     const app = await this.$get("app");
-    const options = this.getOptions();
-    await this.validateRequiredOptions(options);
+    const appOptions = await app.getOptions();
 
-    let method: ColumnsPluginMethod;
-    api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
-      if (plugin.connections) {
-        plugin.connections.forEach((connection) => {
-          if (connection.app.indexOf(app.type) >= 0) {
-            method = connection.methods.columns;
-          }
-        });
-      }
-    });
-
-    if (!method) {
-      throw new Error(`cannot find a columns method for app type ${app.type}`);
+    if (!pluginConnection.methods.destinationOptions) {
+      throw new Error(`cannot return destination options for ${this.type}`);
     }
 
+    return pluginConnection.methods.destinationOptions(app, appOptions);
+  }
+
+  async destinationPreview(destinationOptions?: SimpleDestinationOptions) {
+    if (!destinationOptions) {
+      destinationOptions = await this.getOptions();
+    }
+
+    try {
+      // if the options aren't set yet, return an empty array of rows
+      await this.validateOptions(destinationOptions);
+    } catch {
+      return [];
+    }
+
+    const { pluginConnection } = this.getPlugin();
+    const app = await this.$get("app");
     const appOptions = await app.getOptions();
-    await app.validateOptions(appOptions);
-    return method(this, app, appOptions);
+
+    if (!pluginConnection.methods.destinationPreview) {
+      throw new Error(`cannot return a destination preview for ${this.type}`);
+    }
+
+    return pluginConnection.methods.destinationPreview(
+      app,
+      appOptions,
+      this,
+      destinationOptions
+    );
   }
 
   async exportProfile(
@@ -369,24 +372,14 @@ export class Destination extends LoggedModel<Destination> {
     oldGroups: Array<Group>,
     newGroups: Array<Group>
   ) {
+    const options = await this.getOptions();
     const app = await this.$get("app");
     let method: ExportProfilePluginMethod;
     let ignoreMapping = false;
 
-    api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
-      if (plugin.connections) {
-        plugin.connections.forEach((connection) => {
-          if (
-            connection.app.indexOf(app.type) >= 0 &&
-            connection.direction === "export" &&
-            connection?.methods?.exportProfile
-          ) {
-            method = connection.methods.exportProfile;
-            ignoreMapping = connection.ignoreMapping;
-          }
-        });
-      }
-    });
+    const { pluginConnection } = this.getPlugin();
+    method = pluginConnection.methods.exportProfile;
+    ignoreMapping = pluginConnection.ignoreMapping;
 
     if (!method) {
       throw new Error(`cannot find an export method for app type ${app.type}`);
@@ -437,9 +430,10 @@ export class Destination extends LoggedModel<Destination> {
       await _export.associateImports(imports);
 
       const success = await method(
-        this,
         app,
         appOptions,
+        this,
+        options,
         profile,
         mappedOldProfileProperties,
         mappedNewProfileProperties,
@@ -460,73 +454,52 @@ export class Destination extends LoggedModel<Destination> {
     }
   }
 
-  async validateRequiredOptions(options: DestinationOptions) {
-    let appOptions;
-
-    const app = await this.$get("app");
-
-    api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
-      if (plugin.connections) {
-        plugin.connections.forEach((connection) => {
-          if (
-            connection.app.indexOf(app.type) >= 0 &&
-            connection.direction === "export"
-          ) {
-            appOptions = connection.options;
-          }
-        });
-      }
-    });
-
-    if (!appOptions) {
-      throw new Error(`cannot create a destination for type ${app.type}`);
-    }
-
-    const optionKeys = Object.keys(options);
-    if (optionKeys.length === 0) {
-      return;
-    }
-
-    const requiredOptions = appOptions.filter((opt) => opt.required);
-
+  async validateOptions(options: { [key: string]: string }) {
+    const requiredOptions = this.getRequiredOptions();
     requiredOptions.forEach((requiredOption) => {
-      if (!options[requiredOption.key]) {
+      if (!options[requiredOption]) {
         throw new Error(
-          `${requiredOption.key} is required for a destination of type ${app.type}`
+          `${requiredOption} is required for a source of type ${this.type}`
         );
       }
     });
 
-    for (const i in optionKeys) {
-      if (appOptions.map((opt) => opt.key).indexOf(optionKeys[i]) < 0) {
-        throw new Error(
-          `${optionKeys[i]} is not an option for a ${app.type} destination`
-        );
+    const { pluginConnection } = this.getPlugin();
+    const allOptions = pluginConnection.options.map((o) => o.key);
+    for (const k in options) {
+      if (allOptions.indexOf(k) < 0) {
+        throw new Error(`${k} is not an option for a ${this.type} source`);
       }
     }
   }
 
-  async validateAllowedTypes() {
-    let allowedAppType: string;
-
-    const app = await this.$get("app");
+  getPlugin() {
+    let match: {
+      plugin: GrouparooPlugin;
+      pluginConnection: PluginConnection;
+    } = { plugin: null, pluginConnection: null };
 
     api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
       if (plugin.connections) {
-        plugin.connections.forEach((connection) => {
-          if (
-            connection.app.indexOf(app.type) >= 0 &&
-            connection.direction === "export"
-          ) {
-            allowedAppType = connection.app;
+        plugin.connections.forEach((pluginConnection) => {
+          if (pluginConnection.name === this.type) {
+            match = { plugin, pluginConnection };
           }
         });
       }
     });
 
-    if (allowedAppType !== app.type) {
-      throw new Error("this app cannot be used for this type of destination");
+    return match;
+  }
+
+  private getRequiredOptions() {
+    const { pluginConnection } = this.getPlugin();
+
+    if (!pluginConnection) {
+      throw new Error(`cannot find a pluginConnection for type ${this.type}`);
     }
+
+    return pluginConnection.options.filter((o) => o.required).map((o) => o.key);
   }
 
   // --- Class Methods --- //

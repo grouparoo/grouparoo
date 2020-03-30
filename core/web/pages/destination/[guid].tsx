@@ -2,7 +2,7 @@ import TabbedContainer from "../../components/layouts/tabbedContainer";
 import { Fragment } from "react";
 import { Card } from "react-bootstrap";
 import DestinationEditForm from "../../components/forms/destination/edit";
-import DestinationMappings from "../../components/lists/destinationMappings";
+import DestinationMappings from "../../components/forms/destination/mapping";
 import ExportsList from "../../components/lists/exports";
 
 export default function (props) {

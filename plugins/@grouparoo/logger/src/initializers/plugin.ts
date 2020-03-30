@@ -2,8 +2,9 @@ import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
-import { columns } from "./../lib/columns";
-import { exportProfile } from "./../lib/exportProfile";
+import { exportProfile } from "./../lib/export/exportProfile";
+import { destinationOptions } from "../lib/export/destinationOptions";
+import { destinationPreview } from "../lib/export/destinationPreview";
 
 const packageJSON = require("./../../package.json");
 
@@ -45,7 +46,8 @@ export class Plugins extends Initializer {
           ignoreMapping: true,
           methods: {
             exportProfile,
-            columns,
+            destinationOptions,
+            destinationPreview,
           },
         },
       ],

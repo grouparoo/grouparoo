@@ -1,5 +1,6 @@
 import { Action, api } from "actionhero";
 import { Destination } from "../models/Destination";
+import { App } from "../models/App";
 import { Group } from "../models/Group";
 import { GrouparooPlugin } from "../classes/plugin";
 
@@ -66,31 +67,44 @@ export class DestinationOptions extends Action {
   }
 }
 
-export class DestinationColumns extends Action {
+export class DestinationConnectionApps extends Action {
   constructor() {
     super();
-    this.name = "destination:columns";
+    this.name = "destinations:connectionApps";
     this.description =
-      "generate a preview of the columns the destination provides and sample data";
+      "enumerate the connection and app pairs for creating a new destination";
     this.outputExample = {};
     this.middleware = ["authenticated-team-member", "role-read"];
-    this.inputs = {
-      guid: { required: true },
-    };
+    this.inputs = {};
   }
 
-  async run({ params, response }) {
-    const destination = await Destination.findOne({
-      where: { guid: params.guid },
+  async run({ response }) {
+    const apps = await App.findAll();
+    const existingAppTypes = apps.map((a) => a.type);
+
+    let importConnections = [];
+    api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
+      if (plugin.connections) {
+        plugin.connections
+          .filter((c) => c.direction === "export")
+          .filter((c) => existingAppTypes.includes(c.app))
+          .map((c) => importConnections.push(c));
+      }
     });
 
-    if (!destination) {
-      throw new Error("destination not found");
+    const connectionApps = [];
+    for (const i in apps) {
+      for (const j in importConnections) {
+        if (apps[i].type === importConnections[j].app) {
+          connectionApps.push({
+            app: await apps[i].apiData(),
+            connection: importConnections[j],
+          });
+        }
+      }
     }
 
-    const { rows, columns } = await destination.columns();
-    response.rows = rows;
-    response.columns = columns;
+    response.connectionApps = connectionApps;
   }
 }
 
@@ -103,33 +117,24 @@ export class DestinationCreate extends Action {
     this.middleware = ["authenticated-team-member", "role-admin"];
     this.inputs = {
       name: { required: true },
+      type: { required: true },
       appGuid: { required: true },
       trackAllGroups: { required: false },
       options: { required: false },
-      mappings: { required: false, default: {} },
+      mapping: { required: false, default: {} },
     };
   }
 
   async run({ params, response }) {
-    const transaction = await api.sequelize.transaction();
-
-    try {
-      const destination = await Destination.create(params, { transaction });
-
-      if (params.options) {
-        await destination.setOptions(params.options);
-      }
-      if (params.mappings) {
-        await destination.setMapping(params.mappings);
-      }
-
-      await transaction.commit();
-
-      response.destination = await destination.apiData();
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
+    const destination = await Destination.create(params);
+    if (params.options) {
+      await destination.setOptions(params.options);
     }
+    if (params.mapping) {
+      await destination.setMapping(params.mapping);
+    }
+
+    response.destination = await destination.apiData();
   }
 }
 
@@ -143,10 +148,9 @@ export class DestinationEdit extends Action {
     this.inputs = {
       guid: { required: true },
       name: { required: false },
-      appGuid: { required: false },
       trackAllGroups: { required: false },
       options: { required: false },
-      mappings: { required: false },
+      mapping: { required: false },
     };
   }
 
@@ -163,11 +167,65 @@ export class DestinationEdit extends Action {
     if (params.options) {
       await destination.setOptions(params.options);
     }
-    if (params.mappings) {
-      await destination.setMapping(params.mappings);
+    if (params.mapping) {
+      await destination.setMapping(params.mapping);
     }
 
     response.destination = await destination.apiData();
+  }
+}
+
+export class DestinationConnectionOptions extends Action {
+  constructor() {
+    super();
+    this.name = "destination:connectionOptions";
+    this.description = "return option choices from this destination";
+    this.outputExample = {};
+    this.middleware = ["authenticated-team-member", "role-read"];
+    this.inputs = {
+      guid: { required: false },
+    };
+  }
+
+  async run({ params, response }) {
+    const destination = await Destination.findOne({
+      where: { guid: params.guid },
+    });
+    if (!destination) {
+      throw new Error("destination not found");
+    }
+    destination;
+
+    response.options = await destination.destinationConnectionOptions();
+  }
+}
+
+export class DestinationPreview extends Action {
+  constructor() {
+    super();
+    this.name = "destination:preview";
+    this.description = "preview the data from this destination";
+    this.outputExample = {};
+    this.middleware = ["authenticated-team-member", "role-read"];
+    this.inputs = {
+      guid: { required: true },
+      options: { required: false },
+    };
+  }
+
+  async run({ params, response }) {
+    const destination = await Destination.findOne({
+      where: { guid: params.guid },
+    });
+    if (!destination) {
+      throw new Error("destination not found");
+    }
+
+    const options =
+      typeof params.options === "string"
+        ? JSON.parse(params.options)
+        : params.options;
+    response.preview = await destination.destinationPreview(options);
   }
 }
 
