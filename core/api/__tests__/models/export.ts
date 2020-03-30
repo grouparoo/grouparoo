@@ -20,6 +20,7 @@ describe("models/export", () => {
   });
 
   beforeAll(async () => {
+    await helper.factories.profilePropertyRules();
     destination = await helper.factories.destination();
     profile = await helper.factories.profile();
   });

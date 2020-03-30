@@ -60,6 +60,7 @@ describe("models/source", () => {
         appGuid: app.guid,
       });
       await source.setOptions({ table: "test table" });
+      await source.setMapping({ id: "userId" });
 
       const schedule = await helper.factories.schedule(source);
       await expect(source.destroy()).rejects.toThrow(
@@ -421,6 +422,7 @@ describe("models/source", () => {
       await source.setOptions({
         table: "{{ previousRun.createdAt.sql }}",
       });
+      await source.setMapping({ id: "userId" });
 
       const schedule = await Schedule.create({
         sourceGuid: source.guid,

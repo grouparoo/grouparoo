@@ -17,6 +17,8 @@ describe("actions/schedules", () => {
   });
 
   beforeAll(async () => {
+    await helper.factories.profilePropertyRules();
+
     await specHelper.runAction("team:initialize", {
       firstName: "Mario",
       lastName: "Mario",
@@ -41,6 +43,7 @@ describe("actions/schedules", () => {
 
       source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
+      await source.setMapping({ id: "userId" });
     });
 
     test("an administrator can create a new schedule", async () => {

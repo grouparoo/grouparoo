@@ -82,6 +82,15 @@ export class Schedule extends LoggedModel<Schedule> {
     await source.validateOptions(sourceOptions);
   }
 
+  @BeforeSave
+  static async ensureSourceMapping(instance: Schedule) {
+    const source = await instance.$get("source");
+    const sourceMapping = await source.getMapping();
+    if (!sourceMapping || Object.keys(sourceMapping).length === 0) {
+      throw new Error("source has no mapping");
+    }
+  }
+
   @BeforeUpdate
   static async checkRecurringFrequency(instance: Schedule) {
     // we cannot use the @Min validator as null is also allowed
