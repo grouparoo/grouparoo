@@ -70,7 +70,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   async function test() {
     const response = await execApi(
       "put",
-      `/api/${apiVersion}/app/${guid}/test`
+      `/api/${apiVersion}/app/${guid}/test`,
+      { options: app.options }
     );
     if (response) {
       setRanTest(true);

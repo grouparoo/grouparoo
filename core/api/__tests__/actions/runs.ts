@@ -1,5 +1,6 @@
 import { helper } from "./../utils/specHelper";
 import { specHelper } from "actionhero";
+import { Run } from "../../src";
 let actionhero;
 let connection;
 let csrfToken;
@@ -17,6 +18,9 @@ describe("actions/runs", () => {
   });
 
   beforeAll(async () => {
+    await helper.factories.profilePropertyRules();
+    await Run.destroy({ truncate: true });
+
     await specHelper.runAction("team:initialize", {
       firstName: "Mario",
       lastName: "Mario",

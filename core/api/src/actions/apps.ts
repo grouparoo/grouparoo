@@ -127,6 +127,7 @@ export class AppTest extends Action {
     this.middleware = ["authenticated-team-member", "role-admin"];
     this.inputs = {
       guid: { required: true },
+      options: { required: false },
     };
   }
 
@@ -136,7 +137,7 @@ export class AppTest extends Action {
       throw new Error("app not found");
     }
 
-    let { result, error } = await app.test();
+    let { result, error } = await app.test(params.options);
     if (error) {
       error = String(error);
     }

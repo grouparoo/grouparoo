@@ -70,12 +70,27 @@ describe("actions/apps", () => {
       expect(names).toContain("test-plugin-app");
     });
 
-    test("an administrator can test the app options", async () => {
+    test("an administrator can test the app options with the saved app options", async () => {
       connection.params = {
         csrfToken,
         guid,
       };
       const { error, test } = await specHelper.runAction(
+        "app:test",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(test.result).toBe(true);
+      expect(test.error).toBeFalsy();
+    });
+
+    test("an administrator can test the app options with new app options", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+        options: { thing: "stuff" },
+      };
+      const { error, test, app } = await specHelper.runAction(
         "app:test",
         connection
       );

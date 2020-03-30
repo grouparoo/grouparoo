@@ -20,6 +20,11 @@ describe("tasks/sweeper", () => {
   });
 
   describe("sweeper", () => {
+    beforeAll(async () => {
+      await helper.factories.profilePropertyRules();
+      await Log.destroy({ truncate: true });
+    });
+
     test("settings are loaded at boot", async () => {
       const setting = await plugin.readSetting(
         "core",
