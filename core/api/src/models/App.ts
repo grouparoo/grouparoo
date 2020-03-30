@@ -71,7 +71,7 @@ export class App extends LoggedModel<App> {
     });
   }
 
-  async test() {
+  async test(options?: SimpleAppOptions) {
     let result = false;
     let error;
 
@@ -80,19 +80,18 @@ export class App extends LoggedModel<App> {
       throw new Error(`cannot find a pluginApp type of ${this.type}`);
     }
 
-    log(`[ app ] testing app ${this.name} (${this.guid}, ${this.type})`);
-
-    const appOptions = await this.getOptions();
+    if (!options) {
+      options = await this.getOptions();
+    }
 
     try {
-      result = await pluginApp.test(this, appOptions);
+      result = await pluginApp.test(this, options);
     } catch (err) {
       error = err;
       result = false;
       log(`[ app ] testing app threw error: ${error}`);
     }
 
-    log(`[ app ] app ${this.guid} (${this.type}) test result: ${result}`);
     return { result, error };
   }
 
