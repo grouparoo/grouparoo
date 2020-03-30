@@ -1,6 +1,15 @@
 import { SimpleAppOptions } from "@grouparoo/core";
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 
+const RECONNECT_ATTEMPTS = 5;
+const RECONNECT_SLEEP_MS = 250;
+
+async function sleep() {
+  return new Promise((resolve) => {
+    setTimeout(resolve, RECONNECT_SLEEP_MS);
+  });
+}
+
 const DOC_REGEX = /\/spreadsheets\/.\/([\w-]+)\/edit/g;
 const SHEET_REGEX = /edit#gid=(\d+)/g;
 function parseUrl(sheetUrl: string) {
@@ -46,7 +55,7 @@ export default class Spreadsheet {
     this.sheet = null;
   }
 
-  async connect() {
+  async tryConnect() {
     if (this.connected) {
       return;
     }
@@ -56,7 +65,7 @@ export default class Spreadsheet {
     this.connected = true;
   }
 
-  async load() {
+  async tryLoad() {
     if (this.sheet) {
       return this.sheet;
     }
@@ -75,6 +84,12 @@ export default class Spreadsheet {
     return this.sheet;
   }
 
+  async connect() {
+    return await this.withRetry(this.tryConnect.bind(this));
+  }
+  async load() {
+    return await this.withRetry(this.tryLoad.bind(this));
+  }
   async read({ limit, offset }) {
     const sheet = await this.load();
     const rows = await sheet.getRows({ limit, offset });
@@ -87,5 +102,23 @@ export default class Spreadsheet {
       results.push(result);
     }
     return results;
+  }
+
+  async withRetry(asyncFunc) {
+    // Google API error - [404] Requested entity was not found.
+    // This is happening somewhat intermittently. Let's try a few times.
+    let lastError = null;
+    for (let i = 0; i < RECONNECT_ATTEMPTS; i++) {
+      if (i > 0) {
+        await sleep();
+      }
+      try {
+        return await asyncFunc();
+      } catch (err) {
+        console.error(i, err);
+        lastError = err;
+      }
+    }
+    throw lastError;
   }
 }
