@@ -148,6 +148,7 @@ describe("integration/runs/postgres", () => {
       type: "postgres-table-import",
       appGuid: app.guid,
       options: { table: sourceTableName },
+      mapping: { id: "userId" },
     };
     const sourceResponse = await specHelper.runAction("source:create", session);
     expect(sourceResponse.error).toBeUndefined();
