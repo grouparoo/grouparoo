@@ -10,20 +10,22 @@ async function sleep() {
   });
 }
 
-const DOC_REGEX = /\/spreadsheets\/.\/([\w-]+)\/edit/g;
-const SHEET_REGEX = /edit#gid=(\d+)/g;
 function parseUrl(sheetUrl: string) {
   // e.g. https://docs.google.com/spreadsheets/d/1-QDnY0N4obyqnyDpncfr6dooyC2mWw2hn1RY8XlZLWM/edit
   // e.g. https://docs.google.com/spreadsheets/d/1-QDnY0N4obyqnyDpncfr6dooyC2mWw2hn1RY8XlZLWM/edit#gid=0
   // e.g. https://docs.google.com/spreadsheets/d/1-QDnY0N4obyqnyDpncfr6dooyC2mWw2hn1RY8XlZLWM/edit#gid=1859698494
+  const docRegex = /\/spreadsheets\/.\/(.+)\/edit/g;
+  const sheetRegex = /edit#gid=(\d+)/g;
 
-  const docMatch = DOC_REGEX.exec(sheetUrl);
+  const docMatch = docRegex.exec(sheetUrl);
   let docId = null;
+
+  console.log("docMatch", sheetUrl, docMatch);
   if (docMatch) {
     docId = docMatch[1];
   }
 
-  const sheetMatch = SHEET_REGEX.exec(sheetUrl);
+  const sheetMatch = docRegex.exec(sheetUrl);
   let sheetId = null;
   if (sheetMatch) {
     sheetId = sheetMatch[1];
@@ -48,6 +50,9 @@ export default class Spreadsheet {
     this.connected = false;
 
     const { docId, sheetId } = parseUrl(sheetUrl);
+    if (!docId) {
+      throw `no spreadsheet document given: ${sheetUrl}`;
+    }
     this.docId = docId;
     this.sheetId = sheetId;
 
@@ -55,7 +60,7 @@ export default class Spreadsheet {
     this.sheet = null;
   }
 
-  async tryConnect() {
+  async connect() {
     if (this.connected) {
       return;
     }
@@ -65,7 +70,7 @@ export default class Spreadsheet {
     this.connected = true;
   }
 
-  async tryLoad() {
+  async load() {
     if (this.sheet) {
       return this.sheet;
     }
@@ -84,12 +89,6 @@ export default class Spreadsheet {
     return this.sheet;
   }
 
-  async connect() {
-    return await this.withRetry(this.tryConnect.bind(this));
-  }
-  async load() {
-    return await this.withRetry(this.tryLoad.bind(this));
-  }
   async read({ limit, offset }) {
     const sheet = await this.load();
     const rows = await sheet.getRows({ limit, offset });
@@ -102,23 +101,5 @@ export default class Spreadsheet {
       results.push(result);
     }
     return results;
-  }
-
-  async withRetry(asyncFunc) {
-    // Google API error - [404] Requested entity was not found.
-    // This is happening somewhat intermittently. Let's try a few times.
-    let lastError = null;
-    for (let i = 0; i < RECONNECT_ATTEMPTS; i++) {
-      if (i > 0) {
-        await sleep();
-      }
-      try {
-        return await asyncFunc();
-      } catch (err) {
-        console.error(i, err);
-        lastError = err;
-      }
-    }
-    throw lastError;
   }
 }
