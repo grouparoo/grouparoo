@@ -106,6 +106,7 @@ describe("integration/runs/csv", () => {
         name: "csv source",
         appGuid: app.guid,
         options: { fileGuid: file.guid },
+        mapping: { id: "userId" },
       };
       const sourceResponse = await specHelper.runAction(
         "source:create",

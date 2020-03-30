@@ -126,6 +126,21 @@ describe("integration/happyPath", () => {
     await specHelper.runAction("profilePropertyRule:create", connection);
   });
 
+  test("an admin can set the source mapping", async () => {
+    connection.params = {
+      csrfToken,
+      guid: sourceGuid,
+      mapping: { email: "email" },
+    };
+    const { error, source } = await specHelper.runAction(
+      "source:edit",
+      connection
+    );
+
+    expect(error).toBeUndefined();
+    expect(source.mapping).toEqual({ email: "email" });
+  });
+
   describe("manual group", () => {
     let groupGuid;
 

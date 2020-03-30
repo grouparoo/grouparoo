@@ -37,6 +37,8 @@ describe("models/schedule", () => {
         type: "test-plugin-import",
         appGuid: app.guid,
       });
+      await source.setOptions({ table: "test table" });
+      await source.setMapping({ id: "userId" });
     });
 
     test("a schedule can be created with a source, and it can find the related app", async () => {
@@ -87,6 +89,39 @@ describe("models/schedule", () => {
       });
 
       expect(latestLog).toBeTruthy();
+    });
+
+    test("a schedule cannot be created if the source does not have all the required options set", async () => {
+      const app = await helper.factories.app();
+      await app.update({ type: "manual" });
+      const source = await helper.factories.source(app);
+      const sourceOptions = await source.getOptions();
+      await expect(source.validateOptions(sourceOptions)).rejects.toThrow(
+        /table is required/
+      );
+
+      await expect(
+        Schedule.create({
+          name: "test schedule",
+          type: "test-plugin-import",
+          sourceGuid: source.guid,
+        })
+      ).rejects.toThrow(/table is required/);
+    });
+
+    test("a schedule cannot be created if the source does not have a mapping set", async () => {
+      const app = await helper.factories.app();
+      await app.update({ type: "manual" });
+      const source = await helper.factories.source(app);
+      await source.setOptions({ table: "test table" });
+
+      await expect(
+        Schedule.create({
+          name: "test schedule",
+          type: "test-plugin-import",
+          sourceGuid: source.guid,
+        })
+      ).rejects.toThrow(/source has no mapping/);
     });
 
     describe("validations", () => {
@@ -257,6 +292,7 @@ describe("models/schedule", () => {
         type: "import-from-test-template-app",
         appGuid: app.guid,
       });
+      await source.setMapping({ id: "userId" });
     });
 
     test("schedules can retrieve their options from the source", async () => {

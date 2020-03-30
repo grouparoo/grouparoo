@@ -27,6 +27,7 @@ describe("models/run", () => {
   });
 
   beforeAll(async () => {
+    await helper.factories.profilePropertyRules();
     schedule = await helper.factories.schedule();
   });
 
@@ -320,13 +321,12 @@ describe("models/run", () => {
     });
 
     test("creating a run will throw and become complete if there is an error with a profilePropertyRule", async () => {
-      await helper.factories.profilePropertyRules();
-
       const rule = await ProfilePropertyRule.findOne();
       const app = await App.create({
         name: "bad app",
         type: "test-error-app",
       });
+
       const source = await Source.create({
         name: "bad source",
         type: "test-error-connection",

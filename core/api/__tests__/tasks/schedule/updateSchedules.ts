@@ -24,6 +24,7 @@ describe("tasks/schedule:updateSchedules", () => {
     let schedule: Schedule;
 
     beforeAll(async () => {
+      await helper.factories.profilePropertyRules();
       schedule = await helper.factories.schedule();
     });
 

@@ -1,8 +1,7 @@
 import { helper } from "../utils/specHelper";
 import { specHelper } from "actionhero";
-import { App } from "../../src/models/App";
 import { Source } from "../../src/models/Source";
-import { Option } from "../../src/models/Option";
+
 let actionhero;
 let guid;
 let source: Source;
@@ -18,6 +17,8 @@ describe("actions/schedules", () => {
   });
 
   beforeAll(async () => {
+    await helper.factories.profilePropertyRules();
+
     await specHelper.runAction("team:initialize", {
       firstName: "Mario",
       lastName: "Mario",
@@ -41,6 +42,8 @@ describe("actions/schedules", () => {
       csrfToken = sessionResponse.csrfToken;
 
       source = await helper.factories.source();
+      await source.setOptions({ table: "test table" });
+      await source.setMapping({ id: "userId" });
     });
 
     test("an administrator can create a new schedule", async () => {
