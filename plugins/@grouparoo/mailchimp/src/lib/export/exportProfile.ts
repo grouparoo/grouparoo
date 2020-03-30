@@ -81,7 +81,8 @@ export async function exportProfile(
         exists = true;
       }
 
-      existingTagNames = getResponse.tags.map((t) => t.name);
+      // mailchimp changes the case of tags...
+      existingTagNames = getResponse.tags.map((t) => t.name.toLowerCase());
 
       // delete old merge tags
       for (const k in getResponse.merge_fields) {
@@ -110,8 +111,9 @@ export async function exportProfile(
     const tagPayload = [];
 
     // add new tags
-    for (const i in newGroups) {
-      const tag = newGroups[i];
+    const lowerCaseNewGroups = newGroups.map((g) => g.toLocaleLowerCase());
+    for (const i in lowerCaseNewGroups) {
+      const tag = lowerCaseNewGroups[i];
       if (!existingTagNames.includes(tag)) {
         tagPayload.push({ name: tag, status: "active" });
       }
@@ -120,7 +122,7 @@ export async function exportProfile(
     // remove old tags
     for (const i in existingTagNames) {
       const existingTag = existingTagNames[i];
-      if (!newGroups.includes(existingTag)) {
+      if (!lowerCaseNewGroups.includes(existingTag)) {
         tagPayload.push({ name: existingTag, status: "inactive" });
       }
     }
