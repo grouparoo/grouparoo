@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import { Card } from "react-bootstrap";
 import DestinationEditForm from "../../components/forms/destination/edit";
 import DestinationMappings from "../../components/forms/destination/mapping";
+import DestinationGroups from "../../components/forms/destination/groups";
 import ExportsList from "../../components/lists/exports";
 
 export default function (props) {
@@ -21,6 +22,11 @@ export default function (props) {
             <DestinationEditForm {...props} />
           </Card.Body>
         </Card>
+      </Fragment>
+
+      <Fragment key="groups">
+        <h1>Groups</h1>
+        <DestinationGroups {...props} />
       </Fragment>
 
       <Fragment key="exports">

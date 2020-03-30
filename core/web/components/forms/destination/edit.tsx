@@ -1,14 +1,6 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
-import {
-  Row,
-  Col,
-  Form,
-  Button,
-  Badge,
-  Table,
-  ListGroup,
-} from "react-bootstrap";
+import { Row, Col, Form, Button, Badge, Table } from "react-bootstrap";
 import Router from "next/router";
 import Link from "next/link";
 import AppIcon from "./../../appIcon";
@@ -17,13 +9,11 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [connectionOptions, setConnectionOptions] = useState([]);
   const [preview, setPreview] = useState([]);
-  const [groups, setGroups] = useState([]);
   const [destination, setDestination] = useState({
     guid: "",
     name: "",
     type: "",
     appGuid: "",
-    trackAllGroups: false,
     options: {},
     app: { name: "", guid: "", icon: "" },
     connection: { name: "", description: "", options: [] },
@@ -42,11 +32,6 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     );
     if (connectionOptionsResponse?.options) {
       setConnectionOptions(connectionOptionsResponse.options);
-    }
-
-    const groupsResponse = await execApi("get", `/api/${apiVersion}/groups`);
-    if (groupsResponse?.groups) {
-      setGroups(groupsResponse.groups);
     }
 
     const destinationResponse = await execApi(
@@ -176,15 +161,6 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
               </Form.Control.Feedback>
             </Form.Group>
 
-            <Form.Group controlId="trackAllGroups">
-              <Form.Check
-                checked={destination.trackAllGroups}
-                type="checkbox"
-                label="Track All Groups?"
-                onChange={(e) => update(e)}
-              />
-            </Form.Group>
-
             <p>
               <strong>App</strong>:{" "}
               <Link href="/app/[guid]" as={`/app/${destination.app.guid}`}>
@@ -307,54 +283,6 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             </Button>
           </Form>
         </Col>
-
-        {!destination.trackAllGroups ? (
-          <Col md={5}>
-            <h4>Groups</h4>
-
-            <ListGroup>
-              {groups.map((group) => {
-                const tracked = destinationGroupGuids.indexOf(group.guid) >= 0;
-
-                return (
-                  <ListGroup.Item
-                    key={group.guid}
-                    variant={tracked ? "success" : "info"}
-                  >
-                    <table>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <Button
-                              size="sm"
-                              variant={tracked ? "warning" : "info"}
-                              onClick={() => {
-                                toggleDestinationGroup(group, !tracked);
-                              }}
-                            >
-                              {!tracked ? "track" : "stop tracking"}
-                            </Button>
-                          </td>
-                          <td>&nbsp;</td>
-                          <td>
-                            <Link
-                              href="/group/[guid]"
-                              as={`/group/${group.guid}`}
-                            >
-                              <a>{group.name}</a>
-                            </Link>
-                            <br />
-                            <small>{group.profilesCount} members</small>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </ListGroup.Item>
-                );
-              })}
-            </ListGroup>
-          </Col>
-        ) : null}
       </Row>
     </>
   );
