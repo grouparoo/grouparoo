@@ -83,7 +83,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       <>
         <h2>Profile Identification</h2>
         <p>
-          There is no preview four this source, and therefore no mapping can be
+          There is no preview for this source, and therefore no mapping can be
           set.
         </p>
       </>
