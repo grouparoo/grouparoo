@@ -100,6 +100,7 @@ describe("tasks/profile:export", () => {
 
         destination = await Destination.create({
           name: "test destination",
+          type: "import-from-test-template-app",
           appGuid: app.guid,
         });
         await destination.setMapping({

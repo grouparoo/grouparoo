@@ -178,7 +178,7 @@ describe("integration/runs/postgres", () => {
     session.params = {
       csrfToken,
       name: "test destination",
-      type: "mysql-export",
+      type: "postgres-export",
       appGuid: app.guid,
       trackAllGroups: true,
       options: {
@@ -188,7 +188,7 @@ describe("integration/runs/postgres", () => {
         groupForeignKey: "userId",
         groupColumnName: "group",
       },
-      mappings: {
+      mapping: {
         id: "userId",
         customer_email: "email",
         fname: "firstName",

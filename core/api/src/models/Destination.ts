@@ -11,7 +11,6 @@ import {
   BeforeCreate,
   BeforeSave,
   AfterSave,
-  BeforeUpdate,
   AfterDestroy,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
@@ -80,6 +79,19 @@ export class Destination extends LoggedModel<Destination> {
 
   @HasMany(() => Export)
   exports: Export[];
+
+  @BeforeCreate
+  static async ensureExportProfilesMethod(instance: Destination) {
+    const { pluginConnection } = instance.getPlugin();
+    if (!pluginConnection) {
+      throw new Error(`a destination of type ${instance.type} cannot be found`);
+    }
+    if (!pluginConnection.methods.exportProfile) {
+      throw new Error(
+        `a destination of type ${instance.type} cannot be created as there is no exportProfile method`
+      );
+    }
+  }
 
   @BeforeSave
   static async ensureOnlyOneDestinationPerApp(instance: Destination) {
@@ -459,7 +471,7 @@ export class Destination extends LoggedModel<Destination> {
     requiredOptions.forEach((requiredOption) => {
       if (!options[requiredOption]) {
         throw new Error(
-          `${requiredOption} is required for a source of type ${this.type}`
+          `${requiredOption} is required for a destination of type ${this.type}`
         );
       }
     });
@@ -468,7 +480,7 @@ export class Destination extends LoggedModel<Destination> {
     const allOptions = pluginConnection.options.map((o) => o.key);
     for (const k in options) {
       if (allOptions.indexOf(k) < 0) {
-        throw new Error(`${k} is not an option for a ${this.type} source`);
+        throw new Error(`${k} is not an option for a ${this.type} destination`);
       }
     }
   }

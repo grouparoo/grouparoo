@@ -199,7 +199,7 @@ describe("integration/runs/mysql", () => {
         groupForeignKey: "userId",
         groupColumnName: "group",
       },
-      mappings: {
+      mapping: {
         id: "userId",
         customer_email: "email",
         fname: "firstName",
