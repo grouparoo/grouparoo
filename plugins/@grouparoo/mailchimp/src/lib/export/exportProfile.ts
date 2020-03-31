@@ -6,7 +6,7 @@ import {
   SimpleDestinationOptions,
 } from "@grouparoo/core";
 import { connect } from "../connect";
-import * as crypto from "crypto";
+import { generateMailchimpId } from "./../generateMailchimpId";
 
 export async function exportProfile(
   app: App,
@@ -134,12 +134,4 @@ export async function exportProfile(
 
     return true;
   }
-}
-
-function generateMailchimpId(email: string) {
-  let hash = crypto
-    .createHash("md5")
-    .update(email.toLowerCase().trim())
-    .digest("hex");
-  return hash;
 }
