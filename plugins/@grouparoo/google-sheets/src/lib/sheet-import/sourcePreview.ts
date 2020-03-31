@@ -16,6 +16,6 @@ export async function sourcePreview(
   sourceOptions: SimpleSourceOptions
 ) {
   const sheet = new Spreadsheet(appOptions, sourceOptions.sheet_url || "");
-  const rows = await sheet.read({ limit: 5, offset: 0 });
+  const rows = await sheet.read({ limit: 10, offset: 0 });
   return rows;
 }

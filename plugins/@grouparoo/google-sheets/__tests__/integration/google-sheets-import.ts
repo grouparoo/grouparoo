@@ -2,7 +2,7 @@
 jest.mock(
   `${__dirname}/../../../../../core/api/src/config/pluginInjection.ts`,
   () => ({
-    "@grouparoo/csv": { path: `${__dirname}/../..` },
+    "@grouparoo/google-sheets": { path: `${__dirname}/../..` },
   })
 );
 
@@ -19,10 +19,22 @@ import { ProfileProperty } from "../../../../../core/api/src/models/ProfilePrope
 import { ProfilePropertyRule } from "../../../../../core/api/src/models/ProfilePropertyRule";
 import { Run } from "../../../../../core/api/src/models/Run";
 
+let envFile = path.resolve(path.join(__dirname, "../", ".env"));
+if (fs.existsSync(envFile)) {
+  require("dotenv").config({ path: envFile });
+} else {
+  envFile = path.resolve(path.join(__dirname, "../", ".env.example"));
+  require("dotenv").config({ path: envFile });
+}
+const GOOGLE_SERVICE_CLIENT_EMAIL = process.env.GOOGLE_SERVICE_CLIENT_EMAIL;
+const GOOGLE_SERVICE_PRIVATE_KEY = process.env.GOOGLE_SERVICE_PRIVATE_KEY;
+const SHEET_URL =
+  "https://docs.google.com/spreadsheets/d/11zccS101c27B9mYLMJiaAPfDgoj2chOq39n3MZrcKTk/edit#gid=0";
+
 let actionhero;
 let api;
 
-describe("integration/runs/csv", () => {
+describe("integration/runs/google-sheets", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
@@ -56,18 +68,6 @@ describe("integration/runs/csv", () => {
     let app;
     let schedule;
 
-    beforeAll(async () => {
-      const file = "/tmp/profiles-10.csv";
-      if (await fs.pathExists(file)) {
-        fs.unlinkSync(file);
-      }
-      await fs.copy(
-        path.join(process.cwd(), "__tests__", "data", "profiles-10.csv"),
-        "/tmp/profiles-10.csv"
-      );
-      await fs.emptyDir(`/tmp/grouparoo-test-${process.env.JEST_WORKER_ID}`);
-    });
-
     test("an administrator can create the related import app and schedule", async () => {
       // sign in
       session = await specHelper.buildConnection();
@@ -79,21 +79,15 @@ describe("integration/runs/csv", () => {
       expect(sessionResponse.error).toBeUndefined();
       csrfToken = sessionResponse.csrfToken;
 
-      // upload a CSV file
-      session.params = {
-        csrfToken,
-        type: "csv",
-        file: { name: "profiles-10.csv", path: "/tmp/profiles-10.csv" },
-      };
-      const fileResponse = await specHelper.runAction("file:create", session);
-      expect(fileResponse.error).toBeUndefined();
-      file = fileResponse.file;
-
-      // create a CSV app with an uploaded file
+      // create a sheet app with an uploaded file
       session.params = {
         csrfToken,
         name: "test import app",
-        type: "csv",
+        type: "google-sheets",
+        options: {
+          client_email: GOOGLE_SERVICE_CLIENT_EMAIL,
+          private_key: GOOGLE_SERVICE_PRIVATE_KEY,
+        },
       };
       const appResponse = await specHelper.runAction("app:create", session);
       expect(appResponse.error).toBeUndefined();
@@ -102,10 +96,13 @@ describe("integration/runs/csv", () => {
       // create the source
       session.params = {
         csrfToken,
-        type: "csv-file-import",
-        name: "csv source",
+        type: "google-sheet-import",
+        name: "sheet source",
         appGuid: app.guid,
-        options: { fileGuid: file.guid },
+        options: {
+          sheet_url: SHEET_URL,
+        },
+        mapping: { id: "userId" },
       };
       const sourceResponse = await specHelper.runAction(
         "source:create",
@@ -118,7 +115,7 @@ describe("integration/runs/csv", () => {
       session.params = {
         csrfToken,
         name: "test import schedule",
-        type: "csv-import",
+        type: "google-sheet-import",
         sourceGuid: source.guid,
         recurring: false,
         mappings: {
@@ -142,17 +139,22 @@ describe("integration/runs/csv", () => {
       session.params = {
         csrfToken,
         guid: app.guid,
+        options: {
+          client_email: GOOGLE_SERVICE_CLIENT_EMAIL,
+          private_key: GOOGLE_SERVICE_PRIVATE_KEY,
+        },
       };
       const { error, test } = await specHelper.runAction("app:test", session);
       expect(error).toBeUndefined();
-      expect(test.result).toBe(true);
       expect(test.error).toBeUndefined();
+      expect(test.result).toBe(true);
     });
 
-    test("we can see a preview of the CSV", async () => {
+    test("we can see a preview of the sheet", async () => {
       session.params = {
         csrfToken,
         guid: source.guid,
+        options: { sheet_url: SHEET_URL },
       };
       const { error, preview } = await specHelper.runAction(
         "source:preview",
@@ -161,16 +163,16 @@ describe("integration/runs/csv", () => {
       expect(error).toBeUndefined();
       expect(preview.length).toBe(10);
       expect(preview[0]).toEqual({
-        android_app: "false",
+        android_app: "FALSE",
         email: "ejervois0@example.com",
         first_name: "Erie",
         gender: "Male",
         id: "1",
-        ios_app: "true",
+        ios_app: "TRUE",
         ip_address: "15.247.38.72",
         last_name: "Jervois",
         ltv: "259.12",
-        vip: "true",
+        vip: "TRUE",
       });
     });
 
@@ -228,7 +230,7 @@ describe("integration/runs/csv", () => {
     });
 
     test(
-      "a CSV schedule can run and create profiles",
+      "a google sheet schedule can run and create profiles",
       async () => {
         // enqueue the run
         session.params = {
@@ -339,7 +341,7 @@ describe("integration/runs/csv", () => {
     });
 
     test(
-      "a CSV schedule can run and update profiles",
+      "a google sheet schedule can run and update profiles",
       async () => {
         // enqueue the run
         session.params = {

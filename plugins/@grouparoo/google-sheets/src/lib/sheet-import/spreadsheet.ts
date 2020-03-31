@@ -20,7 +20,6 @@ function parseUrl(sheetUrl: string) {
   const docMatch = docRegex.exec(sheetUrl);
   let docId = null;
 
-  console.log("docMatch", sheetUrl, docMatch);
   if (docMatch) {
     docId = docMatch[1];
   }
