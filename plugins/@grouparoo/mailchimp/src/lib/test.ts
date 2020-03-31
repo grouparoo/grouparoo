@@ -7,5 +7,7 @@ export async function test(app: App, options: SimpleAppOptions) {
 
   if (lists) {
     return true;
+  } else {
+    return false;
   }
 }
