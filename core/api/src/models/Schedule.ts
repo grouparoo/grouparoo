@@ -218,11 +218,8 @@ export class Schedule extends LoggedModel<Schedule> {
     if (!pluginConnection) {
       throw new Error(`cannot find a pluginConnection for type ${source.type}`);
     }
-    if (
-      !pluginConnection.scheduleOptions ||
-      pluginConnection.scheduleOptions.length === 0
-    ) {
-      throw new Error(`cannot find scheduleOptions for type ${source.type}`);
+    if (!pluginConnection.scheduleOptions) {
+      return [];
     }
 
     return pluginConnection.scheduleOptions
@@ -233,13 +230,6 @@ export class Schedule extends LoggedModel<Schedule> {
   async pluginOptions() {
     const source = await this.$get("source");
     const { pluginConnection } = source.getPlugin();
-
-    if (!pluginConnection) {
-      throw new Error(`cannot find a pluginConnection for type ${source.type}`);
-    }
-    if (!pluginConnection.scheduleOptions) {
-      throw new Error(`cannot find scheduleOptions for type ${source.type}`);
-    }
 
     const response: Array<{
       key: string;
@@ -252,6 +242,14 @@ export class Schedule extends LoggedModel<Schedule> {
         examples?: Array<any>;
       }>;
     }> = [];
+
+    if (!pluginConnection) {
+      throw new Error(`cannot find a pluginConnection for type ${source.type}`);
+    }
+    if (!pluginConnection.scheduleOptions) {
+      return response;
+    }
+
     const app = await source.$get("app");
     const appOptions = await app.getOptions();
     const sourceOptions = await source.getOptions();
