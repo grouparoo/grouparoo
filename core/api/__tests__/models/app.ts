@@ -179,12 +179,6 @@ describe("models/app", () => {
             direction: "import" as "import",
             options: [],
             methods: {
-              columns: async (schedule, app) => {
-                return {
-                  columns: ["name", "email"],
-                  rows: [{ name: "test person", email: "test@example.com" }],
-                };
-              },
               profiles: async (schedule, app, run, limit, offset) => {
                 return { importsCount: 0, nextHighWaterMark: "0" };
               },
