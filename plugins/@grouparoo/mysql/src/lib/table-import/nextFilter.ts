@@ -4,7 +4,7 @@ import {
   SimpleAppOptions,
   Source,
   SimpleSourceOptions,
-  SourceMapping,
+  SourceMappings,
   Schedule,
   SimpleScheduleOptions,
   Run,
@@ -16,7 +16,7 @@ export async function nextFilter(
   appOptions: SimpleAppOptions,
   source: Source,
   sourceOptions: SimpleSourceOptions,
-  sourceMapping: SourceMapping,
+  sourceMapping: SourceMappings,
   schedule: Schedule,
   scheduleOptions: SimpleScheduleOptions,
   run: Run

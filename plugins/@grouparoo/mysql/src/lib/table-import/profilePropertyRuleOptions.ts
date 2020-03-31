@@ -3,7 +3,7 @@ import {
   SimpleAppOptions,
   Source,
   SimpleSourceOptions,
-  SourceMapping,
+  SourceMappings,
 } from "@grouparoo/core";
 import { sourcePreview } from "./sourcePreview";
 
@@ -18,7 +18,7 @@ export const profilePropertyRuleOptions = [
       appOptions: SimpleAppOptions,
       source: Source,
       sourceOptions: SimpleSourceOptions,
-      sourceMapping: SourceMapping
+      sourceMapping: SourceMappings
     ) => {
       const rows = await sourcePreview(app, appOptions, source, sourceOptions);
       const columns = Object.keys(rows[0]);

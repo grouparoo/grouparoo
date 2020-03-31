@@ -19,7 +19,7 @@ import { LoggedModel } from "../classes/loggedModel";
 import { Profile } from "./Profile";
 import { ProfileProperty } from "./ProfileProperty";
 import { App, SimpleAppOptions } from "./App";
-import { Source, SimpleSourceOptions, SourceMapping } from "./Source";
+import { Source, SimpleSourceOptions, SourceMappings } from "./Source";
 import { Option } from "./Option";
 import { Group } from "./Group";
 import { GroupRule } from "./GroupRule";
@@ -109,7 +109,7 @@ export interface PluginConnectionProfilePropertyRuleOption {
     appOptions: SimpleAppOptions,
     source: Source,
     sourceOptions: SimpleSourceOptions,
-    sourceMapping: SourceMapping
+    sourceMapping: SourceMappings
   ) => Promise<
     Array<{
       key: string;
@@ -340,7 +340,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   async pluginOptions() {
     const source = await this.$get("source");
-    const { pluginConnection } = source.getPlugin();
+    const { pluginConnection } = await source.getPlugin();
 
     if (!pluginConnection) {
       throw new Error(`cannot find a pluginConnection for type ${source.type}`);
@@ -408,7 +408,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   private async getRequiredOptions() {
     const source = await this.$get("source");
-    const { pluginConnection } = source.getPlugin();
+    const { pluginConnection } = await source.getPlugin();
 
     if (!pluginConnection) {
       throw new Error(`cannot find a pluginConnection for type ${source.type}`);

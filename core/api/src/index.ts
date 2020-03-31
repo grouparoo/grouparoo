@@ -1,7 +1,7 @@
 // Models
 export { Profile } from "./models/Profile";
 export { App, SimpleAppOptions } from "./models/App";
-export { Source, SimpleSourceOptions, SourceMapping } from "./models/Source";
+export { Source, SimpleSourceOptions, SourceMappings } from "./models/Source";
 export { Schedule, SimpleScheduleOptions } from "./models/Schedule";
 export { Run } from "./models/Run";
 export { Import } from "./models/Import";

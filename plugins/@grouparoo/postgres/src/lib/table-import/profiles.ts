@@ -8,7 +8,7 @@ import {
   SimpleAppOptions,
   Source,
   SimpleSourceOptions,
-  SourceMapping,
+  SourceMappings,
   Run,
 } from "@grouparoo/core";
 
@@ -18,7 +18,7 @@ export async function profiles(
   appOptions: SimpleAppOptions,
   source: Source,
   sourceOptions: SimpleSourceOptions,
-  sourceMapping: SourceMapping,
+  sourceMapping: SourceMappings,
   run: Run,
   limit: number,
   filter: { [key: string]: any },

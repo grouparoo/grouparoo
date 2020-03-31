@@ -1,5 +1,5 @@
 import { App, AppOption, SimpleAppOptions } from "../models/App";
-import { Source, SimpleSourceOptions, SourceMapping } from "../models/Source";
+import { Source, SimpleSourceOptions, SourceMappings } from "../models/Source";
 import { Destination, SimpleDestinationOptions } from "../models/Destination";
 import { Run } from "../models/Run";
 import {
@@ -70,7 +70,7 @@ export interface ProfilesPluginMethod {
     appOptions: SimpleAppOptions,
     source: Source,
     sourceOptions: SimpleSourceOptions,
-    sourceMapping: SourceMapping,
+    sourceMapping: SourceMappings,
     run: Run,
     limit: number,
     filter: RunFilter,
@@ -88,7 +88,7 @@ export interface ProfilePropertyPluginMethod {
     appOptions: SimpleAppOptions,
     source: Source,
     sourceOptions: SimpleSourceOptions,
-    sourceMapping: SourceMapping,
+    sourceMapping: SourceMappings,
     profilePropertyRule: ProfilePropertyRule,
     profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions,
     profile: Profile
@@ -106,7 +106,7 @@ export interface NextFilterPluginMethod {
     appOptions: SimpleAppOptions,
     source: Source,
     sourceOptions: SimpleSourceOptions,
-    sourceMapping: SourceMapping,
+    sourceMapping: SourceMappings,
     schedule: Schedule,
     scheduleOptions: SimpleScheduleOptions,
     run: Run
