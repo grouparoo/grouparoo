@@ -1,4 +1,4 @@
-import { api, log, task } from "actionhero";
+import { api, task } from "actionhero";
 import {
   Table,
   Column,
@@ -14,30 +14,22 @@ import {
   AfterDestroy,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
+import { ModelWithOptions, SimpleOptions } from "../mixins/modelWithOptions";
+import { ModelWithMapping, Mappings } from "../mixins/modelWithMapping";
 import { App } from "./App";
-import { Mapping } from "./Mapping";
-import { Option } from "./Option";
-import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Profile } from "./Profile";
 import { Group } from "./Group";
 import { Import } from "./Import";
 import { Export } from "./Export";
 import { DestinationGroup } from "./DestinationGroup";
-import {
-  GrouparooPlugin,
-  PluginConnection,
-  ExportProfilePluginMethod,
-} from "../classes/plugin";
+import { ExportProfilePluginMethod } from "../classes/plugin";
 import { plugin } from "../modules/plugin";
 import { Op } from "sequelize";
 
-export interface DestinationMappings {
-  [key: string]: any;
-}
-
-export interface SimpleDestinationOptions {
-  [key: string]: string;
-}
+export interface Destination extends ModelWithOptions<Destination> {}
+export interface Destination extends ModelWithMapping<Destination> {}
+export interface SimpleDestinationOptions extends SimpleOptions {}
+export interface DestinationMappings extends Mappings {}
 
 @Table({ tableName: "destinations", paranoid: false })
 export class Destination extends LoggedModel<Destination> {
@@ -70,12 +62,6 @@ export class Destination extends LoggedModel<Destination> {
 
   @BelongsToMany(() => Group, () => DestinationGroup)
   groups: Group[];
-
-  @HasMany(() => Mapping)
-  mappings: Mapping[];
-
-  @HasMany(() => Option, "ownerGuid")
-  _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
 
   @HasMany(() => Export)
   exports: Export[];
@@ -137,20 +123,6 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @AfterDestroy
-  static async destroyDestinationMappings(instance: Destination) {
-    return Mapping.destroy({
-      where: { ownerGuid: instance.guid },
-    });
-  }
-
-  @AfterDestroy
-  static async destroyDestinationOptions(instance: Destination) {
-    return Option.destroy({
-      where: { ownerGuid: instance.guid },
-    });
-  }
-
-  @AfterDestroy
   static async destroyDestinationGroups(instance: Destination) {
     // need to go 1-by-1 for callbacks
     const destinationGroups = await instance.$get("destinationGroups");
@@ -186,112 +158,13 @@ export class Destination extends LoggedModel<Destination> {
     };
   }
 
-  async getMapping() {
-    const MappingObject: DestinationMappings = {};
-    const mappings = await this.$get("mappings");
-
-    for (const i in mappings) {
-      const mapping = mappings[i];
-      const rule = await mapping.$get("profilePropertyRule");
-      MappingObject[mapping.remoteKey] = rule.key;
-    }
-
-    return MappingObject;
-  }
-
-  async setMapping(mappings: DestinationMappings) {
-    const transaction = await api.sequelize.transaction();
-
-    try {
-      await Mapping.destroy({
-        where: { ownerGuid: this.guid },
-        transaction,
+  async afterSetMapping() {
+    // re-sync all groups to this destination
+    const destinationGroups = await this.$get("destinationGroups");
+    for (const i in destinationGroups) {
+      await task.enqueue("group:updateMembers", {
+        groupGuid: destinationGroups[i].groupGuid,
       });
-
-      const keys = Object.keys(mappings);
-      for (const i in keys) {
-        const remoteKey = keys[i];
-        const key = mappings[remoteKey];
-        const profilePropertyRule = await ProfilePropertyRule.findOne({
-          where: { key },
-        });
-
-        if (!profilePropertyRule) {
-          throw new Error(`cannot find profile property rule ${key}`);
-        }
-
-        await Mapping.create(
-          {
-            ownerGuid: this.guid,
-            ownerType: "destination",
-            profilePropertyRuleGuid: profilePropertyRule.guid,
-            remoteKey,
-          },
-          { transaction }
-        );
-      }
-
-      this.changed("updatedAt", true);
-      await this.save({ transaction });
-
-      await transaction.commit();
-
-      // re-sync all groups to this destination
-      const destinationGroups = await this.$get("destinationGroups");
-      for (const i in destinationGroups) {
-        await task.enqueue("group:updateMembers", {
-          groupGuid: destinationGroups[i].groupGuid,
-        });
-      }
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
-    }
-  }
-
-  async getOptions() {
-    const optionsObject: SimpleDestinationOptions = {};
-    const options = await this.$get("_options");
-
-    options.forEach((option) => {
-      optionsObject[option.key] = option.value;
-    });
-
-    return optionsObject;
-  }
-
-  async setOptions(options: SimpleDestinationOptions) {
-    const transaction = await api.sequelize.transaction();
-
-    try {
-      await this.validateOptions(options);
-
-      await Option.destroy({
-        where: { ownerGuid: this.guid },
-        transaction,
-      });
-
-      const keys = Object.keys(options);
-      for (const i in keys) {
-        const key = keys[i];
-        await Option.create(
-          {
-            ownerGuid: this.guid,
-            ownerType: "destination",
-            key,
-            value: options[key],
-          },
-          { transaction }
-        );
-      }
-
-      this.changed("updatedAt", true);
-      await this.save({ transaction });
-
-      await transaction.commit();
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
     }
   }
 
@@ -464,54 +337,6 @@ export class Destination extends LoggedModel<Destination> {
       error.message = `error exporting profile ${profile.guid} to destination ${this.guid}: ${error}`;
       throw error;
     }
-  }
-
-  async validateOptions(options: { [key: string]: string }) {
-    const requiredOptions = this.getRequiredOptions();
-    requiredOptions.forEach((requiredOption) => {
-      if (!options[requiredOption]) {
-        throw new Error(
-          `${requiredOption} is required for a destination of type ${this.type}`
-        );
-      }
-    });
-
-    const { pluginConnection } = this.getPlugin();
-    const allOptions = pluginConnection.options.map((o) => o.key);
-    for (const k in options) {
-      if (allOptions.indexOf(k) < 0) {
-        throw new Error(`${k} is not an option for a ${this.type} destination`);
-      }
-    }
-  }
-
-  getPlugin() {
-    let match: {
-      plugin: GrouparooPlugin;
-      pluginConnection: PluginConnection;
-    } = { plugin: null, pluginConnection: null };
-
-    api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
-      if (plugin.connections) {
-        plugin.connections.forEach((pluginConnection) => {
-          if (pluginConnection.name === this.type) {
-            match = { plugin, pluginConnection };
-          }
-        });
-      }
-    });
-
-    return match;
-  }
-
-  private getRequiredOptions() {
-    const { pluginConnection } = this.getPlugin();
-
-    if (!pluginConnection) {
-      throw new Error(`cannot find a pluginConnection for type ${this.type}`);
-    }
-
-    return pluginConnection.options.filter((o) => o.required).map((o) => o.key);
   }
 
   // --- Class Methods --- //
