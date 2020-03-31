@@ -289,7 +289,7 @@ export class Source extends LoggedModel<Source> {
     const appOptions = await app.getOptions();
 
     if (!pluginConnection.methods.sourceOptions) {
-      throw new Error(`cannot return source options for ${this.type}`);
+      return {};
     }
 
     return pluginConnection.methods.sourceOptions(app, appOptions);
