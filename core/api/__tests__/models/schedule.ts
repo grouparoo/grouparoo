@@ -73,6 +73,18 @@ describe("models/schedule", () => {
       expect(latestLog).toBeTruthy();
     });
 
+    test("a schedule name will be generated from the source if one is not provided", async () => {
+      const schedule = await Schedule.create({
+        type: "test-plugin-import",
+        sourceGuid: source.guid,
+      });
+
+      await schedule.reload();
+      expect(schedule.name).toBe("test source schedule");
+
+      await schedule.destroy();
+    });
+
     test("deleting a schedule creates a log entry", async () => {
       const schedule = await Schedule.create({
         name: "bye schedule",

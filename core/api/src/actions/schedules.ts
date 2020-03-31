@@ -72,7 +72,7 @@ export class ScheduleCreate extends Action {
     this.outputExample = {};
     this.middleware = ["authenticated-team-member", "role-admin"];
     this.inputs = {
-      name: { required: true },
+      name: { required: false },
       sourceGuid: { required: true },
       recurring: { required: true },
       options: { required: false },

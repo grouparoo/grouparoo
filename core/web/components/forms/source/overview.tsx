@@ -12,7 +12,7 @@ import {
 import AppIcon from "./../../appIcon";
 import Link from "next/link";
 import ProfilePropertyRuleAddModal from "./../../modals/profilePropertyRuleAdd";
-import ScheduleAddModal from "./../../modals/scheduleAdd";
+import ScheduleAddButton from "./../schedule/add";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -156,11 +156,10 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                 <strong>Frequency</strong>: {source.schedule.recurringFrequency}
               </p>
             ) : (
-              <ScheduleAddModal
+              <ScheduleAddButton
                 apiVersion={apiVersion}
                 errorHandler={errorHandler}
                 successHandler={successHandler}
-                query={query}
                 source={source}
               />
             )

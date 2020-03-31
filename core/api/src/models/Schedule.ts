@@ -7,6 +7,7 @@ import {
   BelongsTo,
   HasMany,
   ForeignKey,
+  BeforeValidate,
   BeforeUpdate,
   BeforeCreate,
   BeforeSave,
@@ -103,6 +104,14 @@ export class Schedule extends LoggedModel<Schedule> {
           "recurring frequency is required to be one minute or greater"
         );
       }
+    }
+  }
+
+  @BeforeValidate
+  static async ensureName(instance: Schedule) {
+    if (!instance.name) {
+      const source = await instance.$get("source");
+      instance.name = `${source.name} schedule`;
     }
   }
 
