@@ -6,29 +6,19 @@ import {
   HasOne,
   HasMany,
   BeforeCreate,
-  AfterDestroy,
   BeforeDestroy,
   ForeignKey,
 } from "sequelize-typescript";
-import { api } from "actionhero";
 import { LoggedModel } from "../classes/loggedModel";
+import { ModelWithOptions, SimpleOptions } from "../mixins/modelWithOptions";
+import { ModelWithMappings, Mappings } from "../mixins/modelWithMapping";
 import { Schedule } from "./Schedule";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
-import { Option } from "./Option";
 import { App } from "./App";
 import { Run } from "./Run";
 import { Profile } from "./Profile";
-import { Mapping } from "./Mapping";
-import { GrouparooPlugin, PluginConnection } from "../classes/plugin";
 import { plugin } from "../modules/plugin";
-
-export interface SimpleSourceOptions {
-  [key: string]: string;
-}
-
-export interface SourceMapping {
-  [key: string]: string;
-}
+import { applyMixins } from "./../utils/mixins";
 
 @Table({ tableName: "sources", paranoid: false })
 export class Source extends LoggedModel<Source> {
@@ -55,18 +45,12 @@ export class Source extends LoggedModel<Source> {
   @HasOne(() => Schedule)
   schedule: Schedule;
 
-  @HasMany(() => Mapping)
-  mappings: Mapping[];
-
   @HasMany(() => ProfilePropertyRule)
   profilePropertyRules: ProfilePropertyRule[];
 
-  @HasMany(() => Option, "ownerGuid")
-  _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
-
   @BeforeCreate
   static async ensurePluginConnection(instance: Source) {
-    const { plugin } = instance.getPlugin();
+    const { plugin } = await instance.getPlugin();
     if (!plugin) {
       throw new Error(
         `cannot find an import connection for a source of ${instance.type}`
@@ -92,83 +76,8 @@ export class Source extends LoggedModel<Source> {
     }
   }
 
-  @AfterDestroy
-  static async destroyAppOptions(instance: Source) {
-    return Option.destroy({
-      where: {
-        ownerGuid: instance.guid,
-      },
-    });
-  }
-
-  async getOptions() {
-    const optionsObject: SimpleSourceOptions = {};
-    const options = await this.$get("_options");
-
-    options.forEach((option) => {
-      optionsObject[option.key] = option.value;
-    });
-
-    return optionsObject;
-  }
-
-  async setOptions(options: { [key: string]: string }) {
-    if (Object.keys(options).length === 0) {
-      return;
-    }
-
-    await this.validateOptions(options);
-
-    const transaction = await api.sequelize.transaction();
-
-    try {
-      await Option.destroy({
-        where: {
-          ownerGuid: this.guid,
-        },
-        transaction,
-      });
-
-      const keys = Object.keys(options);
-      for (const i in keys) {
-        const key = keys[i];
-        await Option.create(
-          {
-            ownerGuid: this.guid,
-            ownerType: "source",
-            key,
-            value: options[key],
-          },
-          { transaction }
-        );
-      }
-
-      this.changed("updatedAt", true);
-      await this.save({ transaction });
-
-      await transaction.commit();
-    } catch {
-      await transaction.rollback();
-    }
-  }
-
-  async validateOptions(options: { [key: string]: string }) {
-    const requiredOptions = this.getRequiredOptions();
-    requiredOptions.forEach((requiredOption) => {
-      if (!options[requiredOption]) {
-        throw new Error(
-          `${requiredOption} is required for a source of type ${this.type}`
-        );
-      }
-    });
-
-    const { pluginConnection } = this.getPlugin();
-    const allOptions = pluginConnection.options.map((o) => o.key);
-    for (const k in options) {
-      if (allOptions.indexOf(k) < 0) {
-        throw new Error(`${k} is not an option for a ${this.type} source`);
-      }
-    }
+  requiredOptionsPluginKey() {
+    return "options";
   }
 
   async parameterizedOptions(run?: Run): Promise<SimpleSourceOptions> {
@@ -186,61 +95,6 @@ export class Source extends LoggedModel<Source> {
     return parameterizedOptions;
   }
 
-  async getMapping() {
-    const MappingObject: SourceMapping = {};
-    const mappings = await this.$get("mappings");
-
-    for (const i in mappings) {
-      const mapping = mappings[i];
-      const rule = await mapping.$get("profilePropertyRule");
-      MappingObject[mapping.remoteKey] = rule.key;
-    }
-
-    return MappingObject;
-  }
-
-  async setMapping(mappings: SourceMapping) {
-    const transaction = await api.sequelize.transaction();
-
-    try {
-      await Mapping.destroy({
-        where: { ownerGuid: this.guid },
-        transaction,
-      });
-
-      const keys = Object.keys(mappings);
-      for (const i in keys) {
-        const remoteKey = keys[i];
-        const key = mappings[remoteKey];
-        const profilePropertyRule = await ProfilePropertyRule.findOne({
-          where: { key },
-        });
-
-        if (!profilePropertyRule) {
-          throw new Error(`cannot find profile property rule ${key}`);
-        }
-
-        await Mapping.create(
-          {
-            ownerGuid: this.guid,
-            ownerType: "source",
-            profilePropertyRuleGuid: profilePropertyRule.guid,
-            remoteKey,
-          },
-          { transaction }
-        );
-      }
-
-      this.changed("updatedAt", true);
-      await this.save({ transaction });
-
-      await transaction.commit();
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
-    }
-  }
-
   async importProfileProperty(
     profile: Profile,
     profilePropertyRule: ProfilePropertyRule,
@@ -250,7 +104,7 @@ export class Source extends LoggedModel<Source> {
       return;
     }
 
-    const { pluginConnection } = this.getPlugin();
+    const { pluginConnection } = await this.getPlugin();
     if (!pluginConnection) {
       throw new Error(
         `cannot find connection for source ${this.type} (${this.guid})`
@@ -284,7 +138,7 @@ export class Source extends LoggedModel<Source> {
   }
 
   async sourceConnectionOptions() {
-    const { pluginConnection } = this.getPlugin();
+    const { pluginConnection } = await this.getPlugin();
     const app = await this.$get("app");
     const appOptions = await app.getOptions();
 
@@ -307,7 +161,7 @@ export class Source extends LoggedModel<Source> {
       return [];
     }
 
-    const { pluginConnection } = this.getPlugin();
+    const { pluginConnection } = await this.getPlugin();
     const app = await this.$get("app");
     const appOptions = await app.getOptions();
 
@@ -344,7 +198,7 @@ export class Source extends LoggedModel<Source> {
 
     const options = await this.getOptions();
     const mapping = await this.getMapping();
-    const { pluginConnection } = this.getPlugin();
+    const { pluginConnection } = await this.getPlugin();
 
     return {
       guid: this.guid,
@@ -352,7 +206,7 @@ export class Source extends LoggedModel<Source> {
       type: this.type,
       mapping,
       app: app ? await app.apiData() : null,
-      scheduleAvailable: this.scheduleAvailable(),
+      scheduleAvailable: await this.scheduleAvailable(),
       schedule: schedule ? await schedule.apiData() : null,
       options,
       connection: pluginConnection,
@@ -364,8 +218,8 @@ export class Source extends LoggedModel<Source> {
     };
   }
 
-  scheduleAvailable() {
-    const { pluginConnection } = this.getPlugin();
+  async scheduleAvailable() {
+    const { pluginConnection } = await this.getPlugin();
     if (typeof pluginConnection?.methods?.profiles === "function") {
       return true;
     }
@@ -441,33 +295,12 @@ export class Source extends LoggedModel<Source> {
 
     return hash;
   }
-
-  getPlugin() {
-    let match: {
-      plugin: GrouparooPlugin;
-      pluginConnection: PluginConnection;
-    } = { plugin: null, pluginConnection: null };
-
-    api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
-      if (plugin.connections) {
-        plugin.connections.forEach((pluginConnection) => {
-          if (pluginConnection.name === this.type) {
-            match = { plugin, pluginConnection };
-          }
-        });
-      }
-    });
-
-    return match;
-  }
-
-  private getRequiredOptions() {
-    const { pluginConnection } = this.getPlugin();
-
-    if (!pluginConnection) {
-      throw new Error(`cannot find a pluginConnection for type ${this.type}`);
-    }
-
-    return pluginConnection.options.filter((o) => o.required).map((o) => o.key);
-  }
 }
+
+export interface Source extends ModelWithOptions<Source> {}
+export interface Source extends ModelWithMappings<Source> {}
+
+export interface SimpleSourceOptions extends SimpleOptions {}
+export interface SourceMappings extends Mappings {}
+
+applyMixins(Source, [ModelWithOptions, ModelWithMappings]);

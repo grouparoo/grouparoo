@@ -13,7 +13,6 @@ import {
 import * as uuid from "uuid";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Schedule } from "./Schedule";
-import { Destination } from "./Destination";
 import { Source } from "./Source";
 
 @Table({ tableName: "mappings", paranoid: false })
@@ -39,9 +38,6 @@ export class Mapping extends Model<Mapping> {
   updatedAt: Date;
 
   @AllowNull(false)
-  @ForeignKey(() => Schedule)
-  @ForeignKey(() => Destination)
-  @ForeignKey(() => Source)
   @Column
   ownerGuid: string;
 
@@ -58,12 +54,6 @@ export class Mapping extends Model<Mapping> {
   @Length({ min: 1, max: 191 })
   @Column
   remoteKey: string;
-
-  @BelongsTo(() => Destination)
-  destination: Destination;
-
-  @BelongsTo(() => Source)
-  source: Source;
 
   @BelongsTo(() => ProfilePropertyRule)
   profilePropertyRule: ProfilePropertyRule;

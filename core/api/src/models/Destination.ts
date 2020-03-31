@@ -1,4 +1,4 @@
-import { api, task } from "actionhero";
+import { task } from "actionhero";
 import {
   Table,
   Column,
@@ -15,7 +15,7 @@ import {
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { ModelWithOptions, SimpleOptions } from "../mixins/modelWithOptions";
-import { ModelWithMapping, Mappings } from "../mixins/modelWithMapping";
+import { ModelWithMappings, Mappings } from "../mixins/modelWithMapping";
 import { App } from "./App";
 import { Profile } from "./Profile";
 import { Group } from "./Group";
@@ -25,11 +25,7 @@ import { DestinationGroup } from "./DestinationGroup";
 import { ExportProfilePluginMethod } from "../classes/plugin";
 import { plugin } from "../modules/plugin";
 import { Op } from "sequelize";
-
-export interface Destination extends ModelWithOptions<Destination> {}
-export interface Destination extends ModelWithMapping<Destination> {}
-export interface SimpleDestinationOptions extends SimpleOptions {}
-export interface DestinationMappings extends Mappings {}
+import { applyMixins } from "./../utils/mixins";
 
 @Table({ tableName: "destinations", paranoid: false })
 export class Destination extends LoggedModel<Destination> {
@@ -68,7 +64,7 @@ export class Destination extends LoggedModel<Destination> {
 
   @BeforeCreate
   static async ensureExportProfilesMethod(instance: Destination) {
-    const { pluginConnection } = instance.getPlugin();
+    const { pluginConnection } = await instance.getPlugin();
     if (!pluginConnection) {
       throw new Error(`a destination of type ${instance.type} cannot be found`);
     }
@@ -136,12 +132,16 @@ export class Destination extends LoggedModel<Destination> {
     });
   }
 
+  requireOptionsPluginKey() {
+    return "options";
+  }
+
   async apiData() {
     const app = await this.$get("app");
     const mapping = await this.getMapping();
     const options = await this.getOptions();
     const groups = await this.$get("groups");
-    const { pluginConnection } = this.getPlugin();
+    const { pluginConnection } = await this.getPlugin();
 
     return {
       guid: this.guid,
@@ -210,7 +210,7 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async destinationConnectionOptions() {
-    const { pluginConnection } = this.getPlugin();
+    const { pluginConnection } = await this.getPlugin();
     const app = await this.$get("app");
     const appOptions = await app.getOptions();
 
@@ -233,7 +233,7 @@ export class Destination extends LoggedModel<Destination> {
       return [];
     }
 
-    const { pluginConnection } = this.getPlugin();
+    const { pluginConnection } = await this.getPlugin();
     const app = await this.$get("app");
     const appOptions = await app.getOptions();
 
@@ -262,7 +262,7 @@ export class Destination extends LoggedModel<Destination> {
     let method: ExportProfilePluginMethod;
     let ignoreMapping = false;
 
-    const { pluginConnection } = this.getPlugin();
+    const { pluginConnection } = await this.getPlugin();
     method = pluginConnection.methods.exportProfile;
     ignoreMapping = pluginConnection.ignoreMapping;
 
@@ -366,3 +366,11 @@ export class Destination extends LoggedModel<Destination> {
     return relevantDestinations;
   }
 }
+
+export interface Destination extends ModelWithOptions<Destination> {}
+export interface Destination extends ModelWithMappings<Destination> {}
+
+export interface SimpleDestinationOptions extends SimpleOptions {}
+export interface DestinationMappings extends Mappings {}
+
+applyMixins(Destination, [ModelWithOptions, ModelWithMappings]);

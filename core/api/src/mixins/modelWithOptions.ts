@@ -1,8 +1,9 @@
 import { GrouparooPlugin, PluginConnection } from "../classes/plugin";
 import { api } from "actionhero";
-import { LoggedModel } from "./../classes/loggedModel";
-import { Column, HasMany, AfterDestroy } from "sequelize-typescript";
+import { Model, Column, HasMany, AfterDestroy } from "sequelize-typescript";
 import { Option } from "../models/Option";
+import { Source } from "../models/Source";
+import { LoggedModel } from "../classes/loggedModel";
 
 export interface SimpleOptions {
   [key: string]: string;
@@ -24,7 +25,7 @@ export abstract class ModelWithOptions<T> extends LoggedModel<T> {
 
   async getOptions() {
     const optionsObject: SimpleOptions = {};
-    const options = await this.$get("_options");
+    const options = await Option.findAll({ where: { ownerGuid: this.guid } });
 
     options.forEach((option) => {
       optionsObject[option.key] = option.value;
@@ -68,16 +69,28 @@ export abstract class ModelWithOptions<T> extends LoggedModel<T> {
     }
   }
 
-  getPlugin() {
+  async getPlugin() {
     let match: {
       plugin: GrouparooPlugin;
       pluginConnection: PluginConnection;
     } = { plugin: null, pluginConnection: null };
 
+    let type = this.type;
+    if (!type) {
+      if (this["sourceGuid"]) {
+        const source = await Source.findOne({
+          where: { guid: this["sourceGuid"] },
+        });
+        if (source) {
+          type = source.type;
+        }
+      }
+    }
+
     api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
       if (plugin.connections) {
         plugin.connections.forEach((pluginConnection) => {
-          if (pluginConnection.name === this.type) {
+          if (pluginConnection.name === type) {
             match = { plugin, pluginConnection };
           }
         });
@@ -88,31 +101,52 @@ export abstract class ModelWithOptions<T> extends LoggedModel<T> {
   }
 
   async validateOptions(options: { [key: string]: string }) {
-    const requiredOptions = this.getRequiredOptions();
+    const requiredOptions = await this.getRequiredOptions();
+
+    let type = this.type;
+    if (!type) {
+      if (this["sourceGuid"]) {
+        const source = await Source.findOne({
+          where: { guid: this["sourceGuid"] },
+        });
+        if (source) {
+          type = source.type;
+        }
+      }
+    }
+
     requiredOptions.forEach((requiredOption) => {
       if (!options[requiredOption]) {
         throw new Error(
-          `${requiredOption} is required for a destination of type ${this.type}`
+          `${requiredOption} is required for a ${this.constructor.name} of type ${type}`
         );
       }
     });
 
-    const { pluginConnection } = this.getPlugin();
-    const allOptions = pluginConnection.options.map((o) => o.key);
+    const { pluginConnection } = await this.getPlugin();
+    const allOptions = pluginConnection[this.requiredOptionsPluginKey()].map(
+      (o) => o.key
+    );
     for (const k in options) {
       if (allOptions.indexOf(k) < 0) {
-        throw new Error(`${k} is not an option for a ${this.type} destination`);
+        throw new Error(
+          `${k} is not an option for a ${type} ${this.constructor.name}`
+        );
       }
     }
   }
 
-  private getRequiredOptions() {
-    const { pluginConnection } = this.getPlugin();
+  abstract requiredOptionsPluginKey: () => string;
+
+  async getRequiredOptions() {
+    const { pluginConnection } = await this.getPlugin();
 
     if (!pluginConnection) {
       throw new Error(`cannot find a pluginConnection for type ${this.type}`);
     }
 
-    return pluginConnection.options.filter((o) => o.required).map((o) => o.key);
+    return pluginConnection[this.requiredOptionsPluginKey()]
+      .filter((o) => o.required)
+      .map((o) => o.key);
   }
 }

@@ -1,14 +1,13 @@
 import { api } from "actionhero";
+import { Model, HasMany, AfterDestroy } from "sequelize-typescript";
 import { LoggedModel } from "./../classes/loggedModel";
-import { HasMany, AfterDestroy } from "sequelize-typescript";
 import { Mapping } from "../models/Mapping";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
 
 export interface Mappings {
   [key: string]: any;
 }
-
-export abstract class ModelWithMapping<T> extends LoggedModel<T> {
+export abstract class ModelWithMappings<T> extends LoggedModel<T> {
   @HasMany(() => Mapping)
   mappings: Mapping[];
 
@@ -21,7 +20,7 @@ export abstract class ModelWithMapping<T> extends LoggedModel<T> {
 
   async getMapping() {
     const MappingObject: Mappings = {};
-    const mappings = await this.$get("mappings");
+    const mappings = await Mapping.findAll({ where: { ownerGuid: this.guid } });
 
     for (const i in mappings) {
       const mapping = mappings[i];
@@ -79,5 +78,5 @@ export abstract class ModelWithMapping<T> extends LoggedModel<T> {
     }
   }
 
-  abstract async afterSetMapping?();
+  abstract afterSetMapping?: () => Promise<any>;
 }
