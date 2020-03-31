@@ -8,6 +8,7 @@ import {
   Card,
   Badge,
   Alert,
+  Button,
 } from "react-bootstrap";
 import AppIcon from "./../../appIcon";
 import Link from "next/link";
@@ -135,26 +136,34 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
           <br />
           {source.scheduleAvailable ? (
             source.schedule ? (
-              <p>
-                <Link
-                  href="/schedule/[guid]"
-                  as={`/schedule/${source.schedule.guid}`}
-                >
-                  <a>
-                    <strong>Name</strong>: {source.schedule.name} (
-                    {source.schedule.guid})
-                  </a>
-                </Link>
-                <br />
-                <strong>Recurring</strong>:{" "}
-                <Badge
-                  variant={source.schedule.recurring ? "success" : "secondary"}
-                >
-                  {source.schedule.recurring.toString()}
-                </Badge>
-                <br />
-                <strong>Frequency</strong>: {source.schedule.recurringFrequency}
-              </p>
+              <>
+                <p>
+                  <Link
+                    href="/schedule/[guid]"
+                    as={`/schedule/${source.schedule.guid}`}
+                  >
+                    <a>
+                      <strong>Name</strong>: {source.schedule.name} (
+                      {source.schedule.guid})
+                    </a>
+                  </Link>
+                  <br />
+                  <strong>Recurring</strong>:{" "}
+                  <Badge
+                    variant={
+                      source.schedule.recurring ? "success" : "secondary"
+                    }
+                  >
+                    {source.schedule.recurring.toString()}
+                  </Badge>
+                  <br />
+                  <strong>Frequency</strong>:{" "}
+                  {source.schedule.recurringFrequency}
+                </p>
+                <Button size="sm" href={`/schedule/${source.schedule.guid}`}>
+                  See Schedule Details
+                </Button>
+              </>
             ) : (
               <ScheduleAddButton
                 apiVersion={apiVersion}
