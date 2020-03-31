@@ -38,6 +38,9 @@ import { plugin } from "../../src/index";
 
 const { api, cache, Process } = require("actionhero");
 
+import fs from "fs";
+import nock from "nock";
+
 export namespace helper {
   export const factories = {
     log: LogFactory,
@@ -258,5 +261,19 @@ export namespace helper {
     )[0].connections[0].methods.profileProperty = async () => {
       return null;
     };
+  }
+
+  export function recordNock(nockFile) {
+    if (fs.existsSync(nockFile)) {
+      fs.unlinkSync(nockFile);
+    }
+    const appendLogToFile = (content) => {
+      fs.appendFileSync(nockFile, content);
+    };
+    appendLogToFile("const nock = require('nock');\n");
+    nock.recorder.rec({
+      logging: appendLogToFile,
+      use_separator: false,
+    });
   }
 }
