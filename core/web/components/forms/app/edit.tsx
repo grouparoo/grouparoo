@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Form, Button, Badge } from "react-bootstrap";
+import { Row, Col, Form, Button, Badge, Alert } from "react-bootstrap";
 import Router from "next/router";
 import AppIcon from "../../appIcon";
 
@@ -177,23 +177,19 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
         <hr />
 
         <Row>
-          <Col>
+          <Col md={3}>
             <Button variant="secondary" onClick={test}>
               Test Connection
             </Button>
           </Col>
           <Col>
-            <br />
             {testResult.result ? (
-              <span className="text-success">Test Passed</span>
+              <Alert variant="success">Test Passed</Alert>
             ) : ranTest ? (
-              <span className="text-danger">Test Failed</span>
+              <Alert variant="warning">Test Failed</Alert>
             ) : null}
-          </Col>
-          <Col>
-            <br />
             {testResult.error ? (
-              <span className="text-danger">{testResult.error}</span>
+              <Alert variant="danger">{testResult.error}</Alert>
             ) : null}
           </Col>
         </Row>
