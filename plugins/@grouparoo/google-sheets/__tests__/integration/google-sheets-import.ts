@@ -31,6 +31,8 @@ const GOOGLE_SERVICE_PRIVATE_KEY = process.env.GOOGLE_SERVICE_PRIVATE_KEY;
 const SHEET_URL =
   "https://docs.google.com/spreadsheets/d/11zccS101c27B9mYLMJiaAPfDgoj2chOq39n3MZrcKTk/edit#gid=0";
 
+require("./../fixtures/nock");
+
 let actionhero;
 let api;
 
