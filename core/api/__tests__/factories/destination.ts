@@ -5,6 +5,7 @@ import AppFactory from "./app";
 const data = async (props = {}) => {
   const defaultProps = {
     name: `destination ${faker.company.companyName()}-${Math.random()}`,
+    type: "test-plugin-export",
     options: {},
     mapping: {},
 

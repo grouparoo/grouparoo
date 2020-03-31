@@ -45,7 +45,7 @@ describe("models/destination", () => {
     test("a destination can be created with a source, and it can find the related app", async () => {
       destination = new Destination({
         name: "test destination",
-        type: "export-test",
+        type: "test-plugin-export",
         appGuid: app.guid,
       });
 
@@ -75,7 +75,7 @@ describe("models/destination", () => {
     test("deleting a destination creates a log entry and enqueued a destroyExports task", async () => {
       destination = await Destination.create({
         name: "bye destination",
-        type: "test-plugin-app",
+        type: "test-plugin-export",
         appGuid: app.guid,
       });
 
@@ -98,11 +98,39 @@ describe("models/destination", () => {
       });
     });
 
+    test("a destination can get options from a connection", async () => {
+      const options = await destination.destinationConnectionOptions();
+      expect(options).toEqual({
+        table: { type: "list", options: ["users_out"] },
+      });
+    });
+
+    test("a destination can see a preview of a source with and without providing options", async () => {
+      let preview = await destination.destinationPreview();
+      expect(preview).toEqual([]);
+
+      await destination.setOptions({ table: "test", where: "test" });
+      preview = await destination.destinationPreview();
+      expect(preview).toEqual([
+        { fname: "mario", id: 1, lname: "mario" },
+        { fname: "luigi", id: 2, lname: "mario" },
+      ]);
+
+      preview = await destination.destinationPreview({
+        table: "other",
+        where: "stuff",
+      });
+      expect(preview).toEqual([
+        { fname: "mario", id: 1, lname: "mario" },
+        { fname: "luigi", id: 2, lname: "mario" },
+      ]);
+    });
+
     describe("validations", () => {
       test("options must match the app options (extra options needed by connection)", async () => {
         destination = new Destination({
           name: "incoming destination - too many options",
-          type: "test-plugin-app",
+          type: "test-plugin-export",
           appGuid: app.guid,
         });
         await destination.save();
@@ -118,7 +146,7 @@ describe("models/destination", () => {
             groupColumnName: "groupName",
           })
         ).rejects.toThrow(
-          /something is not an option for a test-plugin-app destination/
+          /something is not an option for a test-plugin-export destination/
         );
       });
 
@@ -148,12 +176,14 @@ describe("models/destination", () => {
         destination = await Destination.create({
           name: "first destination",
           appGuid: app.guid,
+          type: "test-plugin-export",
         });
 
         await expect(
           Destination.create({
             name: "second destination",
             appGuid: app.guid,
+            type: "test-plugin-export",
           })
         ).rejects.toThrow(
           /destination "first destination" is already using this app/
@@ -169,6 +199,7 @@ describe("models/destination", () => {
         destination = await Destination.create({
           name: "test destination",
           appGuid: app.guid,
+          type: "test-plugin-export",
         });
 
         group = await helper.factories.group();
@@ -345,7 +376,7 @@ describe("models/destination", () => {
             name: "import-from-test-template-app",
             description: "a test app connection",
             app: "test-template-app",
-            direction: "import",
+            direction: "export",
             options: [],
             methods: {},
           },
@@ -365,20 +396,23 @@ describe("models/destination", () => {
     test("you are prevented from making a destination against an app with no export methods", async () => {
       await expect(
         Destination.create({
-          name: "test plugin destination app missing data",
-          type: "test-template-app",
+          name: "test plugin destination app missing methods",
+          type: "import-from-test-template-app",
           appGuid: app.guid,
         })
-      ).rejects.toThrow(/this app cannot be used for this type of destination/);
+      ).rejects.toThrow(
+        /cannot be created as there is no exportProfile method/
+      );
     });
   });
 
   describe("with custom plugin", () => {
     let app: App;
     let exportArgs = {
-      dest: null,
       app: null,
       options: null,
+      dest: null,
+      destOptions: null,
       profile: null,
       oldProfileProperties: null,
       newProfileProperties: null,
@@ -389,9 +423,10 @@ describe("models/destination", () => {
 
     beforeEach(() => {
       exportArgs = {
-        dest: null,
         app: null,
         options: null,
+        dest: null,
+        destOptions: null,
         profile: null,
         oldProfileProperties: null,
         newProfileProperties: null,
@@ -421,16 +456,17 @@ describe("models/destination", () => {
             direction: "export",
             options: [],
             methods: {
-              columns: async (destination, app) => {
-                return {
-                  columns: ["name", "email"],
-                  rows: [{ name: "test person", email: "test@example.com" }],
-                };
-              },
+              // columns: async (destination, app) => {
+              //   return {
+              //     columns: ["name", "email"],
+              //     rows: [{ name: "test person", email: "test@example.com" }],
+              //   };
+              // },
               exportProfile: async (
-                dest,
                 app,
                 options,
+                dest,
+                destOptions,
                 profile,
                 oldProfileProperties,
                 newProfileProperties,
@@ -439,9 +475,10 @@ describe("models/destination", () => {
                 toDelete
               ) => {
                 exportArgs = {
-                  dest,
                   app,
                   options,
+                  dest,
+                  destOptions,
                   profile,
                   oldProfileProperties,
                   newProfileProperties,
@@ -462,44 +499,44 @@ describe("models/destination", () => {
       });
     });
 
-    test("asking for columns checks the app options", async () => {
-      const destination = await Destination.create({
-        name: "test plugin destination app missing data",
-        type: "test-template-app",
-        appGuid: app.guid,
-      });
+    // test("asking for columns checks the app options", async () => {
+    //   const destination = await Destination.create({
+    //     name: "test plugin destination app missing data",
+    //     type: "test-template-app",
+    //     appGuid: app.guid,
+    //   });
 
-      try {
-        await destination.columns();
-        throw new Error("should not get here");
-      } catch (error) {
-        expect(error.toString()).toMatch(
-          /test_key is required for a app of type test-template-app/
-        );
+    //   try {
+    //     await destination.columns();
+    //     throw new Error("should not get here");
+    //   } catch (error) {
+    //     expect(error.toString()).toMatch(
+    //       /test_key is required for a app of type test-template-app/
+    //     );
 
-        await destination.destroy();
-      }
-    });
+    //     await destination.destroy();
+    //   }
+    // });
 
-    test("the destination can get the columns from an attached app", async () => {
-      await app.setOptions({
-        test_key: "abc123",
-      });
+    // test("the destination can get the columns from an attached app", async () => {
+    //   await app.setOptions({
+    //     test_key: "abc123",
+    //   });
 
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "test-template-app",
-        appGuid: app.guid,
-      });
+    //   const destination = await Destination.create({
+    //     name: "test plugin destination",
+    //     type: "test-template-app",
+    //     appGuid: app.guid,
+    //   });
 
-      const { columns, rows } = await destination.columns();
-      expect(columns).toEqual(["name", "email"]);
-      expect(rows).toEqual([
-        { name: "test person", email: "test@example.com" },
-      ]);
+    //   const { columns, rows } = await destination.columns();
+    //   expect(columns).toEqual(["name", "email"]);
+    //   expect(rows).toEqual([
+    //     { name: "test person", email: "test@example.com" },
+    //   ]);
 
-      await destination.destroy();
-    });
+    //   await destination.destroy();
+    // });
 
     test("the app exportProfiles method can be called by the destination and exports will be created and mappings followed", async () => {
       await app.setOptions({
@@ -508,7 +545,7 @@ describe("models/destination", () => {
 
       const destination = await Destination.create({
         name: "test plugin destination",
-        type: "test-template-app",
+        type: "export-from-test-template-app",
         appGuid: app.guid,
       });
 
@@ -592,7 +629,7 @@ describe("models/destination", () => {
 
       const destination = await Destination.create({
         name: "test plugin destination",
-        type: "test-template-app",
+        type: "export-from-test-template-app",
         appGuid: app.guid,
       });
 

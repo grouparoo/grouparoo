@@ -2,8 +2,10 @@ import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
-import { columns } from "./../lib/columns";
-import { exportProfile } from "./../lib/exportProfile";
+import { exportProfile } from "../lib/export/exportProfile";
+
+import { destinationOptions } from "../lib/export/destinationOptions";
+import { destinationPreview } from "../lib/export/destinationPreview";
 
 const packageJSON = require("./../../package.json");
 
@@ -26,11 +28,6 @@ export class Plugins extends Initializer {
               required: true,
               description: "your mailchimp api key",
             },
-            {
-              key: "listId",
-              required: true,
-              description: "your mailchimp list id",
-            },
           ],
           test,
         },
@@ -41,10 +38,17 @@ export class Plugins extends Initializer {
           direction: "export",
           description: "export profiles to a mailchimp list",
           app: "mailchimp",
-          options: [],
+          options: [
+            {
+              key: "listId",
+              required: true,
+              description: "your mailchimp list id",
+            },
+          ],
           methods: {
             exportProfile,
-            columns,
+            destinationOptions,
+            destinationPreview,
           },
         },
       ],

@@ -56,6 +56,7 @@ describe("actions/destinations", () => {
       connection.params = {
         csrfToken,
         name: "test destination",
+        type: "test-plugin-export",
         appGuid: app.guid,
       };
       const { error, destination } = await specHelper.runAction(
@@ -74,6 +75,7 @@ describe("actions/destinations", () => {
       connection.params = {
         csrfToken,
         name: "test destination again",
+        type: "test-plugin-export",
         appGuid: app.guid,
       };
       const { error } = await specHelper.runAction(
@@ -84,6 +86,20 @@ describe("actions/destinations", () => {
       expect(error.message).toMatch(
         'destination "test destination" is already using this app'
       );
+    });
+
+    test("an administrator can see the combinations of apps and connections available for a new destination", async () => {
+      connection.params = {
+        csrfToken,
+      };
+      const { error, connectionApps } = await specHelper.runAction(
+        "destinations:connectionApps",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(connectionApps.length).toBe(1);
+      expect(connectionApps[0].app.guid).toBe(app.guid);
+      expect(connectionApps[0].connection.name).toBe("test-plugin-export");
     });
 
     test("an administrator can list all the destinations", async () => {
@@ -164,6 +180,48 @@ describe("actions/destinations", () => {
         connection
       );
       expect(error).toBeUndefined();
+    });
+
+    test("an administrator can see connectionOptions", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+      };
+      const { options } = await specHelper.runAction(
+        "destination:connectionOptions",
+        connection
+      );
+      expect(options).toEqual({
+        table: { type: "list", options: ["users_out"] },
+      });
+    });
+
+    test("an administrator cannot see a destination preview with no options set", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+      };
+      const { preview } = await specHelper.runAction(
+        "destination:preview",
+        connection
+      );
+      expect(preview).toEqual([]);
+    });
+
+    test("an administrator cannot see a destination preview with options provided", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+        options: { table: "aaa", where: "aaa" },
+      };
+      const { preview } = await specHelper.runAction(
+        "destination:preview",
+        connection
+      );
+      expect(preview).toEqual([
+        { fname: "mario", id: 1, lname: "mario" },
+        { fname: "luigi", id: 2, lname: "mario" },
+      ]);
     });
 
     test("an administrator can destroy a destination", async () => {

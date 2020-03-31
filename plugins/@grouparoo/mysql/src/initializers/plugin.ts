@@ -2,7 +2,7 @@ import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
-import { exportProfile } from "./../lib/exportProfile";
+import { exportProfile } from "./../lib/export/exportProfile";
 
 import { sourcePreview as tableSourcePreview } from "../lib/table-import/sourcePreview";
 import { sourceOptions as tableSourceOptions } from "../lib/table-import/sourceOptions";
@@ -16,6 +16,9 @@ import { sourcePreview as querySourcePreview } from "../lib/query-import/sourceP
 import { sourceOptions as querySourceOptions } from "../lib/query-import/sourceOptions";
 import { profileProperty as queryProfileProperty } from "../lib/query-import/profileProperty";
 import { profilePropertyRuleOptions as queryProfilePropertyRuleOptions } from "../lib/query-import/profilePropertyRuleOptions";
+
+import { destinationOptions } from "../lib/export/destinationOptions";
+import { destinationPreview } from "../lib/export/destinationPreview";
 
 const packageJSON = require("./../../package.json");
 
@@ -122,6 +125,8 @@ export class Plugins extends Initializer {
           ],
           methods: {
             exportProfile,
+            destinationOptions,
+            destinationPreview,
           },
         },
       ],

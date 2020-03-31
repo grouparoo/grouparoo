@@ -237,6 +237,15 @@ export namespace helper {
             exportProfile: async () => {
               return true;
             },
+            destinationOptions: async () => {
+              return { table: { type: "list", options: ["users_out"] } };
+            },
+            destinationPreview: async () => {
+              return [
+                { id: 1, fname: "mario", lname: "mario" },
+                { id: 2, fname: "luigi", lname: "mario" },
+              ];
+            },
           },
         },
       ],

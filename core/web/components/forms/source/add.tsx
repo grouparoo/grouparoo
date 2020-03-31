@@ -5,17 +5,9 @@ import AppIcon from "../../appIcon";
 import Link from "next/link";
 import Router from "next/router";
 
-export default function ({
-  apiVersion,
-  errorHandler,
-  successHandler,
-  sourceHandler,
-  onClose,
-}) {
+export default function ({ apiVersion, errorHandler, successHandler }) {
   const { execApi } = useApi(errorHandler);
-  const [tabKey, setTabKey] = useState("connection");
   const [connectionApps, setConnectionApps] = useState([]);
-  const [connection, setConnection] = useState({ app: [], options: [] });
   const [source, setSource] = useState({
     name: "",
     appGuid: "",
@@ -30,7 +22,7 @@ export default function ({
   async function loadApps() {
     const connectionsResponse = await execApi(
       "get",
-      `/api/${apiVersion}/connectionApps`
+      `/api/${apiVersion}/sources/connectionApps`
     );
     if (connectionsResponse?.connectionApps) {
       setConnectionApps(connectionsResponse.connectionApps);
@@ -119,8 +111,6 @@ export default function ({
                     _source.type = _connection.name;
                     _source.appGuid = _app.guid;
                     setSource(_source);
-                    setConnection(_connection);
-                    setTabKey("details");
                   }}
                 >
                   <Card.Body>
