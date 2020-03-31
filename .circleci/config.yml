@@ -190,6 +190,30 @@ jobs:
           name: test
           command: cd plugins/@grouparoo/csv && npm run test
 
+  test-plugin-mailchimp:
+    docker:
+      - image: circleci/node:12
+      - image: redis:latest
+      - image: circleci/postgres:9
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/mailchimp && npm run test
+
   test-plugin-email-authentication:
     docker:
       - image: circleci/node:12
@@ -300,6 +324,13 @@ workflows:
             - test-core-api
             - test-core-web
 
+      - test-plugin-mailchimp:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - test-core-api
+            - test-core-web
+
       - test-plugin-email-authentication:
           filters:
             <<: *ignored-branches
@@ -325,5 +356,6 @@ workflows:
             - test-plugin-postgres
             - test-plugin-mysql
             - test-plugin-csv
+            - test-plugin-mailchimp
             - test-plugin-email-authentication
             - test-plugin-newrelic
