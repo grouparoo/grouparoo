@@ -7,8 +7,9 @@ import {
   plugin,
 } from "@grouparoo/core";
 
-// TODO: be nice to have signature of what this should return
-// pretty sure it's array of objects with header keys
+// return array of "rows" of the "table"
+// [ { id: 1, fname: "John", lname: "Jones" },
+//   { id: 2, fname: "Jane", lname: "Smith" } ]
 export async function sourcePreview(
   app: App,
   appOptions: SimpleAppOptions,

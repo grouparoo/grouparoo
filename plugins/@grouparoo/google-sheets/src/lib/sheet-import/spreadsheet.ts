@@ -1,15 +1,6 @@
 import { SimpleAppOptions } from "@grouparoo/core";
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 
-const RECONNECT_ATTEMPTS = 5;
-const RECONNECT_SLEEP_MS = 250;
-
-async function sleep() {
-  return new Promise((resolve) => {
-    setTimeout(resolve, RECONNECT_SLEEP_MS);
-  });
-}
-
 function parseUrl(sheetUrl: string) {
   // e.g. https://docs.google.com/spreadsheets/d/1-QDnY0N4obyqnyDpncfr6dooyC2mWw2hn1RY8XlZLWM/edit
   // e.g. https://docs.google.com/spreadsheets/d/1-QDnY0N4obyqnyDpncfr6dooyC2mWw2hn1RY8XlZLWM/edit#gid=0
