@@ -111,7 +111,7 @@ export default function ({ apiVersion, errorHandler, onClose, appHandler }) {
                     autoFocus
                     required={opt.required}
                     type="text"
-                    placeholder="..."
+                    placeholder={opt.placeholder || "..."}
                     value={app.options[opt.key] || ""}
                     onChange={(e) => updateOption(e)}
                   />

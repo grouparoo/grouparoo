@@ -17,6 +17,7 @@ export interface AppOption {
   key: string;
   required: boolean;
   description?: string;
+  placeholder?: string;
 }
 
 export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}

@@ -160,7 +160,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                   <Form.Control
                     type="text"
                     required={opt.required}
-                    placeholder="..."
+                    placeholder={opt.placeholder || "..."}
                     value={app.options[opt.key] || ""}
                     onChange={(e) => updateOption(e)}
                   />
