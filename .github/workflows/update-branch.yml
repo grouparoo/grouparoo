@@ -1,0 +1,21 @@
+name: update-branch
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Update lerna
+        run: |
+          cd tools/lerna && ./github_action
+      - name: Commit files
+        run: |
+          git config --local user.email "hello@grouparoo.com"
+          git config --local user.name "Grouparoo Bot"
+          git commit -m "Update lerna things automatically" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
