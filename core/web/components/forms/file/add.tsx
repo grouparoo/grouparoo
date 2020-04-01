@@ -2,14 +2,9 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { Form, Button } from "react-bootstrap";
+import Router from "next/router";
 
-export default function ({
-  apiVersion,
-  errorHandler,
-  successHandler,
-  onClose,
-  fileHandler,
-}) {
+export default function ({ apiVersion, errorHandler, successHandler }) {
   const { execApi } = useApi(errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
@@ -23,8 +18,7 @@ export default function ({
     setLoading(false);
     if (response?.file) {
       successHandler.set({ message: "File Created" });
-      fileHandler.set();
-      onClose();
+      Router.push("/files");
     }
   }
 

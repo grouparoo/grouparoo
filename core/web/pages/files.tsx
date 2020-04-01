@@ -1,6 +1,7 @@
 import Head from "next/head";
 import FilesList from "../components/lists/files";
-import FileAddModal from "../components/modals/fileAdd";
+import { Button } from "react-bootstrap";
+import Router from "next/router";
 
 export default function (props) {
   return (
@@ -11,7 +12,15 @@ export default function (props) {
 
       <h1>Files</h1>
       <FilesList {...props} />
-      <FileAddModal {...props} />
+      <Button
+        size="sm"
+        variant="warning"
+        onClick={() => {
+          Router.push("/file/new");
+        }}
+      >
+        Add File
+      </Button>
     </>
   );
 }

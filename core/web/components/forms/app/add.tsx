@@ -3,7 +3,7 @@ import { useApi } from "../../../hooks/useApi";
 import { Form, Button, Badge } from "react-bootstrap";
 import Router from "next/router";
 
-export default function ({ apiVersion, errorHandler, onClose, appHandler }) {
+export default function ({ apiVersion, errorHandler }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [types, setTypes] = useState([]);
@@ -28,7 +28,6 @@ export default function ({ apiVersion, errorHandler, onClose, appHandler }) {
     const response = await execApi("post", `/api/${apiVersion}/app`, app);
     setLoading(false);
     if (response?.app) {
-      onClose();
       return Router.push(`/app/${response.app.guid}`);
     }
   }
