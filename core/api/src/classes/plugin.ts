@@ -157,6 +157,8 @@ export interface SourceOptionsMethod {
 
 /**
  * Given SimpleSourceOptions, render a preview of the data present in the source.
+ * The response should be an array of objects where each object is a profile record with the keys matching that of the source, ie:
+ * [{id: 1, firstName: "Mario"}, {id: 2, firstName: "Luigi"}]
  */
 export interface SourcePreviewMethod {
   (
