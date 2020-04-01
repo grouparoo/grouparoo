@@ -133,7 +133,7 @@ export class Schedule extends LoggedModel<Schedule> {
       where: { guid: instance.sourceGuid },
     });
 
-    const scheduleAvailable = source.scheduleAvailable();
+    const scheduleAvailable = await source.scheduleAvailable();
     if (!scheduleAvailable) {
       throw new Error(`source ${instance.sourceGuid} cannot have a schedule`);
     }

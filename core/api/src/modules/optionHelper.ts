@@ -11,6 +11,12 @@ import { Schedule } from "./../models/Schedule";
 import { ProfilePropertyRule } from "./../models/ProfilePropertyRule";
 import { App } from "./../models/App";
 
+function modelName(instance): string {
+  let name = instance.constructor.name;
+  name = name[0].toLowerCase() + name.substr(1);
+  return name;
+}
+
 export namespace OptionHelper {
   export interface SimpleOptions {
     [key: string]: any;
@@ -35,60 +41,55 @@ export namespace OptionHelper {
     instance: Source | Destination | Schedule | ProfilePropertyRule | App,
     options: SimpleOptions
   ) {
+    await validateOptions(instance, options);
+
+    const oldOptions = await getOptions(instance);
+    let hasChanges = false;
+    for (const i in oldOptions) {
+      if (oldOptions[i] !== options[i]) {
+        hasChanges = true;
+      }
+    }
+    for (const i in options) {
+      if (oldOptions[i] !== options[i]) {
+        hasChanges = true;
+      }
+    }
+
+    if (!hasChanges) {
+      return;
+    }
+
     const transaction = await api.sequelize.transaction();
 
-    try {
-      await validateOptions(instance, options);
+    await Option.destroy({
+      where: { ownerGuid: instance.guid },
+      transaction,
+    });
 
-      const oldOptions = await getOptions(instance);
-      let hasChanges = false;
-      for (const i in oldOptions) {
-        if (oldOptions[i] !== options[i]) {
-          hasChanges = true;
-        }
-      }
-      for (const i in options) {
-        if (oldOptions[i] !== options[i]) {
-          hasChanges = true;
-        }
-      }
+    const keys = Object.keys(options);
+    for (const i in keys) {
+      const key = keys[i];
+      await Option.create(
+        {
+          ownerGuid: instance.guid,
+          ownerType: modelName(instance),
+          key,
+          value: options[key],
+        },
+        { transaction }
+      );
+    }
 
-      if (!hasChanges) {
-        return;
-      }
+    // @ts-ignore
+    instance.changed("updatedAt", true);
+    await instance.save({ transaction });
 
-      await Option.destroy({
-        where: { ownerGuid: instance.guid },
-        transaction,
-      });
+    await transaction.commit();
 
-      const keys = Object.keys(options);
-      for (const i in keys) {
-        const key = keys[i];
-        await Option.create(
-          {
-            ownerGuid: instance.guid,
-            ownerType: "destination",
-            key,
-            value: options[key],
-          },
-          { transaction }
-        );
-      }
-
-      // @ts-ignore
-      instance.changed("updatedAt", true);
-      await instance.save({ transaction });
-
-      await transaction.commit();
-
-      // if there's an afterSetMapping hook
-      if (typeof instance["afterSetOptions"] === "function") {
-        await instance["afterSetOptions"]();
-      }
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
+    // if there's an afterSetMapping hook
+    if (typeof instance["afterSetOptions"] === "function") {
+      await instance["afterSetOptions"]();
     }
   }
 
@@ -167,7 +168,9 @@ export namespace OptionHelper {
     requiredOptions.forEach((requiredOption) => {
       if (!options[requiredOption]) {
         throw new Error(
-          `${requiredOption} is required for a ${instance.constructor.name} of type ${type}`
+          `${requiredOption} is required for a ${modelName(
+            instance
+          )} of type ${type}`
         );
       }
     });
@@ -175,7 +178,7 @@ export namespace OptionHelper {
     for (const k in options) {
       if (allOptions.indexOf(k) < 0) {
         throw new Error(
-          `${k} is not an option for a ${type} ${instance.constructor.name}`
+          `${k} is not an option for a ${type} ${modelName(instance)}`
         );
       }
     }
