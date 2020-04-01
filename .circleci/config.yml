@@ -29,6 +29,7 @@ jobs:
             - plugins/@grouparoo/csv/node_modules
             - plugins/@grouparoo/logger/node_modules
             - plugins/@grouparoo/mailchimp/node_modules
+            - plugins/@grouparoo/google-sheets/node_modules
             - plugins/@grouparoo/mysql/node_modules
             - plugins/@grouparoo/postgres/node_modules
             - plugins/@grouparoo/email-authentication/node_modules
