@@ -126,10 +126,15 @@ export namespace OptionHelper {
 
   export async function validateOptions(
     instance: Source | Destination | Schedule | ProfilePropertyRule | App,
-    options: { [key: string]: string }
+    options: { [key: string]: string },
+    allowEmpty = false
   ) {
     let requiredOptions: string[];
     let allOptions: string[];
+
+    if (allowEmpty && Object.keys(options).length === 0) {
+      return;
+    }
 
     const type = await getInstanceType(instance);
 

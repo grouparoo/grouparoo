@@ -250,7 +250,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     }
 
     if (!this.passive) {
-      return OptionHelper.validateOptions(this, options);
+      return OptionHelper.validateOptions(this, options, true);
     }
   }
 
