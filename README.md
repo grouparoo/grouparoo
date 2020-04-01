@@ -219,4 +219,8 @@ We use `lerna` to help publish and migrate the versions of all our packages in l
 npm run publish
 ```
 
+## Attribution
+
+The Pencil/Manual icon used in this plugin is from https://www.iconfinder.com/icons/1608787/pencil_icon
+
 🦘
