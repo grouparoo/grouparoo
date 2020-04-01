@@ -24,6 +24,7 @@ import { Option } from "./Option";
 import { Group } from "./Group";
 import { GroupRule } from "./GroupRule";
 import { internalRun } from "../modules/internalRun";
+import { OptionHelper } from "./../modules/optionHelper";
 
 export function profilePropertyRuleJSToSQLType(jsType: string) {
   const map = {
@@ -91,9 +92,8 @@ interface ProfilePropertyRulesCache {
   };
 }
 
-export interface SimpleProfilePropertyRuleOptions {
-  [key: string]: string;
-}
+export interface SimpleProfilePropertyRuleOptions
+  extends OptionHelper.SimpleOptions {}
 
 /**
  * Metadata and methods to return the options a Profile Property Rule for this connection/app.
@@ -165,8 +165,8 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @BeforeSave
   static async ensureSourceOptions(instance: ProfilePropertyRule) {
     const source = await instance.$get("source");
-    const sourceOptions = await source.getOptions();
-    await source.validateOptions(sourceOptions);
+    await source.validateOptions();
+    await instance.validateOptions();
   }
 
   @BeforeSave
@@ -233,70 +233,29 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   async getOptions() {
-    const optionsObject: SimpleProfilePropertyRuleOptions = {};
-    const options = await this.$get("_options");
-
-    options.forEach((option) => {
-      optionsObject[option.key] = option.value;
-    });
-
-    return optionsObject;
+    return OptionHelper.getOptions(this);
   }
 
-  async setOptions(options: SimpleProfilePropertyRuleOptions) {
-    if (Object.keys(options).length === 0) {
-      return;
-    }
+  async setOptions(options: SimpleSourceOptions) {
+    return OptionHelper.setOptions(this, options);
+  }
 
-    await this.validateOptions(options);
-    await this.test(options);
-
-    // don't run if the options haven't changed
-    const oldOptions = await this.getOptions();
-    let hasChanges = false;
-    for (const i in oldOptions) {
-      if (oldOptions[i] !== options[i]) {
-        hasChanges = true;
-      }
-    }
-    for (const i in options) {
-      if (oldOptions[i] !== options[i]) {
-        hasChanges = true;
-      }
-    }
-
-    if (!hasChanges) {
-      return;
-    }
-
-    const transaction = await api.sequelize.transaction();
-
-    await Option.destroy({
-      where: {
-        ownerGuid: this.guid,
-      },
-      transaction,
-    });
-
-    const keys = Object.keys(options);
-    for (const i in keys) {
-      const key = keys[i];
-      await Option.create(
-        {
-          ownerGuid: this.guid,
-          ownerType: "profilePropertyRule",
-          key,
-          value: options[key],
-        },
-        { transaction }
-      );
-    }
-
-    this.changed("updatedAt", true);
-    await this.save({ transaction });
-
-    await transaction.commit();
+  async afterSetOptions() {
     await this.enqueueRuns();
+  }
+
+  async validateOptions(options?: SimpleProfilePropertyRuleOptions) {
+    if (!options) {
+      options = await this.getOptions();
+    }
+
+    if (!this.passive) {
+      return OptionHelper.validateOptions(this, options, true);
+    }
+  }
+
+  async getPlugin() {
+    return OptionHelper.getPlugin(this);
   }
 
   async enqueueRuns() {
@@ -318,29 +277,9 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     }
   }
 
-  async validateOptions(options: { [key: string]: string }) {
-    const source = await this.$get("source");
-    const requiredOptions = await this.getRequiredOptions();
-    requiredOptions.forEach((requiredOption) => {
-      if (!options[requiredOption]) {
-        throw new Error(
-          `${requiredOption} is required for a profile property rule of type ${source.type}`
-        );
-      }
-    });
-
-    for (const k in options) {
-      if (requiredOptions.indexOf(k) < 0) {
-        throw new Error(
-          `${k} is not an option for a ${source.type} profile property rule`
-        );
-      }
-    }
-  }
-
   async pluginOptions() {
     const source = await this.$get("source");
-    const { pluginConnection } = source.getPlugin();
+    const { pluginConnection } = await source.getPlugin();
 
     if (!pluginConnection) {
       throw new Error(`cannot find a pluginConnection for type ${source.type}`);
@@ -404,27 +343,6 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
-  }
-
-  private async getRequiredOptions() {
-    const source = await this.$get("source");
-    const { pluginConnection } = source.getPlugin();
-
-    if (!pluginConnection) {
-      throw new Error(`cannot find a pluginConnection for type ${source.type}`);
-    }
-    if (
-      !pluginConnection.profilePropertyRuleOptions ||
-      pluginConnection.profilePropertyRuleOptions.length === 0
-    ) {
-      throw new Error(
-        `cannot find profilePropertyRuleOptions for type ${source.type}`
-      );
-    }
-
-    return pluginConnection.profilePropertyRuleOptions
-      .filter((o) => o.required)
-      .map((o) => o.key);
   }
 
   // --- Class Cache Methods --- //

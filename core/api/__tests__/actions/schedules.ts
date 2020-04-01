@@ -53,7 +53,6 @@ describe("actions/schedules", () => {
         type: "test-plugin-import",
         sourceGuid: source.guid,
         recurring: false,
-        options: {},
       };
       const { error, schedule } = await specHelper.runAction(
         "schedule:create",

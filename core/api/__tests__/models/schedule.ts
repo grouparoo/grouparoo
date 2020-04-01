@@ -351,14 +351,14 @@ describe("models/schedule", () => {
     });
 
     test("a source using a plugin with no profiles method cannot have a schedule", async () => {
-      expect(source.scheduleAvailable()).toBe(true);
+      expect(await source.scheduleAvailable()).toBe(true);
 
       // delete the profiles method
       const plugin = api.plugins.plugins.filter(
         (p) => p.name === "test-plugin"
       )[0];
       delete plugin.connections[0].methods.profiles;
-      expect(source.scheduleAvailable()).toBe(false);
+      expect(await source.scheduleAvailable()).toBe(false);
 
       await expect(
         Schedule.create({

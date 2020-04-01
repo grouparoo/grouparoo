@@ -186,7 +186,7 @@ export class Run extends Model<Run> {
 
     const source = await schedule.$get("source");
     const app = await source.$get("app");
-    const { pluginConnection } = source.getPlugin();
+    const { pluginConnection } = await source.getPlugin();
     if (!pluginConnection || !pluginConnection?.methods.nextFilter) {
       return nextFilter;
     }

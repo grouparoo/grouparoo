@@ -2,7 +2,6 @@ import { helper } from "./../utils/specHelper";
 import { App } from "./../../src/models/App";
 import { Option } from "./../../src/models/Option";
 import { Log } from "./../../src/models/Log";
-import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
 import { plugin } from "./../../src/modules/plugin";
 let actionhero;
 

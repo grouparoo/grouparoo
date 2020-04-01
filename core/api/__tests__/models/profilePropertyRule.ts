@@ -114,13 +114,13 @@ describe("models/profilePropertyRule", () => {
       where: { key: "email" },
     });
     await expect(rule.setOptions({ notThing: "abc" })).rejects.toThrow(
-      /column is required for a profile property rule of type test-plugin-import/
+      /column is required for a profilePropertyRule of type test-plugin-import/
     );
 
     await expect(
       rule.setOptions({ column: "userId", otherThing: "false" })
     ).rejects.toThrow(
-      /otherThing is not an option for a test-plugin-import profile property rule/
+      /otherThing is not an option for a test-plugin-import profilePropertyRule/
     );
   });
 
@@ -370,14 +370,14 @@ describe("models/profilePropertyRule", () => {
 
       // +1 checking the options
       // +2 from the afterSave hook updating the rule
-      // +2 from the internalRun app check
-      expect(queryCounter).toBe(6);
+      // +1 from the internalRun app check
+      expect(queryCounter).toBe(5);
       await expect(rule.setOptions({ column: "throw" })).rejects.toThrow(
         /throw/
       );
 
       // no change
-      expect(queryCounter).toBe(6);
+      expect(queryCounter).toBe(8);
       await rule.destroy();
     });
 
