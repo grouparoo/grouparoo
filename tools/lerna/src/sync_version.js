@@ -1,6 +1,7 @@
 const glob = require("glob");
 const path = require("path");
 const fs = require("fs");
+const execSync = require("../../shared/exec");
 
 module.exports.cmd = async function (vargs) {
   await updateAllPkgVersions(vargs);
@@ -18,36 +19,19 @@ function parseJsonFile(path) {
   return JSON.parse(data);
 }
 
-function getLernaVersion() {
-  return parseJsonFile(path.join(__dirname, "..", "..", "..", "lerna.json"))
-    .version;
-}
-
 async function updateAllPkgVersions(vargs) {
-  const lernaVersion = getLernaVersion();
+  const rootPath = path.join(__dirname, "..", "..", "..");
+
+  const lernaVersion = parseJsonFile(path.join(rootPath, "lerna.json")).version;
   const pkgValue = `^${lernaVersion}`;
   log(vargs, 1, `Setting all to lerna version: ${pkgValue}`);
 
   const appPkgFiles = glob.sync(
-    path.resolve(
-      path.join(__dirname, "..", "..", "..", "apps", "*", "package.json")
-    )
+    path.join(rootPath, "apps", "*", "package.json")
   );
   const pluginPkgFiles = glob.sync(
-    path.resolve(
-      path.join(
-        __dirname,
-        "..",
-        "..",
-        "..",
-        "plugins",
-        "*",
-        "*",
-        "package.json"
-      )
-    )
+    path.join(rootPath, "plugins", "*", "*", "package.json")
   );
-
   const pkgFiles = [].concat(appPkgFiles, pluginPkgFiles);
 
   for (const p of pkgFiles) {
@@ -85,9 +69,21 @@ async function updateAllPkgVersions(vargs) {
     );
 
     if (changed) {
+      const root = path.resolve(path.join());
       log(vargs, 4, `${p}: writing file.`);
       const contents = JSON.stringify(data, null, 2);
       fs.writeFileSync(p, contents + "\r\n");
+
+      const pCmd = path.join(
+        rootPath,
+        "tools",
+        "lerna",
+        "node_modules",
+        ".bin",
+        "prettier"
+      );
+      const pConfig = path.join(rootPath, ".prettierrc");
+      await execSync(`'${pCmd}' --config '${pConfig}' --write '${p}'`);
     }
   }
 }
