@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { Row, Col, Form, Button, Table, Badge } from "react-bootstrap";
-import GroupStateBadge from "../../badges/group/state";
+import StateBadge from "../../stateBadge";
 import Moment from "react-moment";
 import Router from "next/router";
 
@@ -70,6 +70,9 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   return (
     <>
+      <StateBadge state={group.state} />
+      <br />
+      <br />
       <Row>
         <Col md={9}>
           <Form id="form" onSubmit={handleSubmit(onSubmit)}>
@@ -128,9 +131,6 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
           </Form>
         </Col>
         <Col>
-          <h4>
-            State: <GroupStateBadge state={group.state} />
-          </h4>
           <p>
             {group.calculatedAt ? (
               <span>

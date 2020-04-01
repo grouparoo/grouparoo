@@ -3,6 +3,7 @@ import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Button, Badge, Alert } from "react-bootstrap";
 import Router from "next/router";
 import AppIcon from "../../appIcon";
+import StateBadge from "../../stateBadge";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -142,9 +143,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             </Form.Group>
 
             <p>
-              <Badge variant={app.state === "ready" ? "success" : "warning"}>
-                {app.state}
-              </Badge>
+              <StateBadge state={app.state} />
             </p>
           </Col>
         </Row>

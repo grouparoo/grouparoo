@@ -7,7 +7,7 @@ import { Button } from "react-bootstrap";
 import Moment from "react-moment";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
-import GroupStateBadge from "../badges/group/state";
+import StateBadge from "../stateBadge";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -153,10 +153,10 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   return (
     <>
-      <p>{group.profilesCount} profiles in this group</p>
       <p>
-        Group State: <GroupStateBadge state={group.state} />
+        <StateBadge state={group.state} />
       </p>
+      <p>{group.profilesCount} profiles in this group</p>
       <Button
         disabled={group.state !== "ready"}
         variant="info"

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Form, Button, Table, Badge } from "react-bootstrap";
-import GroupStateBadge from "../../badges/group/state";
+import StateBadge from "../../stateBadge";
 import Loader from "../../loader";
 
 export default function RulesBuilder({
@@ -161,14 +161,14 @@ export default function RulesBuilder({
     <>
       <h3>Rules for {group.name}</h3>
       <p>
-        <Badge style={{ fontSize: 20 }} variant="success">
+        <Badge style={{ fontSize: 20 }} variant="info">
           {countPotentialMembers}
         </Badge>{" "}
         profiles matching {group.matchType} rules
       </p>
 
       <p>
-        State: <GroupStateBadge state={group.state} />
+        <StateBadge state={group.state} />
       </p>
 
       <Form>

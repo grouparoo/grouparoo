@@ -7,6 +7,7 @@ import Moment from "react-moment";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import AppIcon from "../appIcon";
+import StateBadge from "../stateBadge";
 
 export default function ({ apiVersion, errorHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -65,6 +66,7 @@ export default function ({ apiVersion, errorHandler, query }) {
             <th></th>
             <th>Name</th>
             <th>Type</th>
+            <th>State</th>
             <th>Created At</th>
             <th>Updated At</th>
           </tr>
@@ -86,6 +88,9 @@ export default function ({ apiVersion, errorHandler, query }) {
                   </Link>
                 </td>
                 <td>{app.type}</td>
+                <td>
+                  <StateBadge state={app.state} />
+                </td>
                 <td>
                   <Moment fromNow>{app.createdAt}</Moment>
                 </td>
