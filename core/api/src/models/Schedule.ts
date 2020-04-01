@@ -18,6 +18,7 @@ import { Source, SimpleSourceOptions, SourceMapping } from "./Source";
 import { App, SimpleAppOptions } from "./App";
 import { Run } from "./Run";
 import { Option } from "./Option";
+import { OptionHelper } from "./../modules/optionHelper";
 
 /**
  * Metadata and methods to return the options a Schedule for this connection/app.
@@ -43,9 +44,7 @@ export interface PluginConnectionScheduleOption {
   >;
 }
 
-export interface SimpleScheduleOptions {
-  [key: string]: any;
-}
+export interface SimpleScheduleOptions extends OptionHelper.SimpleOptions {}
 
 @Table({ tableName: "schedules", paranoid: false })
 export class Schedule extends LoggedModel<Schedule> {
@@ -150,95 +149,20 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   async getOptions() {
-    const optionsObject: SimpleSourceOptions = {};
-    const options = await this.$get("_options");
-
-    options.forEach((option) => {
-      optionsObject[option.key] = option.value;
-    });
-
-    return optionsObject;
+    return OptionHelper.getOptions(this);
   }
 
-  async setOptions(options: { [key: string]: string }) {
-    if (Object.keys(options).length === 0) {
-      return;
-    }
-
-    await this.validateOptions(options);
-
-    const transaction = await api.sequelize.transaction();
-
-    try {
-      await Option.destroy({
-        where: {
-          ownerGuid: this.guid,
-        },
-        transaction,
-      });
-
-      const keys = Object.keys(options);
-      for (const i in keys) {
-        const key = keys[i];
-        await Option.create(
-          {
-            ownerGuid: this.guid,
-            ownerType: "schedule",
-            key,
-            value: options[key],
-          },
-          { transaction }
-        );
-      }
-
-      this.changed("updatedAt", true);
-      await this.save({ transaction });
-
-      await transaction.commit();
-    } catch {
-      await transaction.rollback();
-    }
+  async setOptions(options: SimpleScheduleOptions) {
+    return OptionHelper.setOptions(this, options);
   }
 
-  async validateOptions(options: { [key: string]: string }) {
-    const source = await this.$get("source");
-    const requiredOptions = await this.getRequiredOptions();
-    requiredOptions.forEach((requiredOption) => {
-      if (!options[requiredOption]) {
-        throw new Error(
-          `${requiredOption} is required for a schedule of type ${source.type}`
-        );
-      }
-    });
-
-    const { pluginConnection } = source.getPlugin();
-    const allOptions = pluginConnection.scheduleOptions?.map((o) => o.key);
-    for (const k in options) {
-      if (allOptions.indexOf(k) < 0) {
-        throw new Error(`${k} is not an option for a ${source.type} schedule`);
-      }
-    }
-  }
-
-  private async getRequiredOptions() {
-    const source = await this.$get("source");
-    const { pluginConnection } = source.getPlugin();
-
-    if (!pluginConnection) {
-      throw new Error(`cannot find a pluginConnection for type ${source.type}`);
-    }
-    if (!pluginConnection.scheduleOptions) {
-      return [];
-    }
-
-    return pluginConnection.scheduleOptions
-      .filter((o) => o.required)
-      .map((o) => o.key);
+  async getPlugin() {
+    return OptionHelper.getPlugin(this);
   }
 
   async pluginOptions() {
     const source = await this.$get("source");
-    const { pluginConnection } = source.getPlugin();
+    const { pluginConnection } = await source.getPlugin();
 
     const response: Array<{
       key: string;
@@ -313,7 +237,7 @@ export class Schedule extends LoggedModel<Schedule> {
   async run(run: Run, limit: number, highWaterMark: string | number) {
     const source = await this.$get("source");
     const app = await source.$get("app");
-    const { pluginConnection } = source.getPlugin();
+    const { pluginConnection } = await source.getPlugin();
     const method = pluginConnection.methods.profiles;
 
     if (!method) {

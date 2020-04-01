@@ -8,6 +8,7 @@ import {
 import { LoggedModel } from "../classes/loggedModel";
 import { App } from "./App";
 import { Source } from "./Source";
+import { Destination } from "./Destination";
 
 @Table({ tableName: "options", paranoid: false })
 export class Option extends LoggedModel<Option> {
@@ -37,6 +38,9 @@ export class Option extends LoggedModel<Option> {
 
   @BelongsTo(() => Source, "ownerGuid")
   source: Source;
+
+  @BelongsTo(() => Destination, "ownerGuid")
+  destination: Destination;
 
   async apiData() {
     return {

@@ -1,3 +1,4 @@
+import { log } from "actionhero";
 import {
   Table,
   Column,
@@ -7,13 +8,10 @@ import {
   AfterDestroy,
   HasMany,
 } from "sequelize-typescript";
-import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
-import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Source } from "./Source";
 import { Option } from "./Option";
-import { GrouparooPlugin, PluginApp } from "../classes/plugin";
-import { api, log } from "actionhero";
+import { OptionHelper } from "./../modules/optionHelper";
 
 export interface AppOption {
   key: string;
@@ -21,9 +19,7 @@ export interface AppOption {
   description?: string;
 }
 
-export interface SimpleAppOptions {
-  [key: string]: string;
-}
+export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}
 
 @Table({ tableName: "apps", paranoid: false })
 export class App extends LoggedModel<App> {
@@ -47,7 +43,7 @@ export class App extends LoggedModel<App> {
 
   @BeforeSave
   static async validateType(instance: App) {
-    instance.getRequiredOptions();
+    instance.getPlugin();
   }
 
   @BeforeDestroy
@@ -63,7 +59,7 @@ export class App extends LoggedModel<App> {
   }
 
   @AfterDestroy
-  static async destroyAppOptions(instance: App) {
+  static async destroyOptions(instance: App) {
     return Option.destroy({
       where: {
         ownerGuid: instance.guid,
@@ -75,7 +71,7 @@ export class App extends LoggedModel<App> {
     let result = false;
     let error;
 
-    const { pluginApp } = this.getPlugin();
+    const { pluginApp } = await this.getPlugin();
     if (!pluginApp) {
       throw new Error(`cannot find a pluginApp type of ${this.type}`);
     }
@@ -96,78 +92,33 @@ export class App extends LoggedModel<App> {
   }
 
   async getOptions() {
-    const optionsObject: SimpleAppOptions = {};
-    const options = await this.$get("_options");
-
-    options.forEach((option) => {
-      optionsObject[option.key] = option.value;
-    });
-
-    return optionsObject;
+    return OptionHelper.getOptions(this);
   }
 
-  async setOptions(options: { [key: string]: string }) {
-    await this.validateOptions(options);
-
-    const transaction = await api.sequelize.transaction();
-
-    try {
-      await Option.destroy({
-        where: {
-          ownerGuid: this.guid,
-        },
-        transaction,
-      });
-
-      const keys = Object.keys(options);
-      for (const i in keys) {
-        const key = keys[i];
-        await Option.create(
-          {
-            ownerGuid: this.guid,
-            ownerType: "app",
-            key,
-            value: options[key],
-          },
-          { transaction }
-        );
-      }
-
-      this.changed("updatedAt", true);
-      await this.save({ transaction });
-
-      await transaction.commit();
-    } catch {
-      await transaction.rollback();
-    }
+  async setOptions(options: SimpleAppOptions) {
+    return OptionHelper.setOptions(this, options);
   }
 
-  async validateOptions(options: { [key: string]: string }) {
-    const requiredOptions = this.getRequiredOptions();
-    requiredOptions.forEach((requiredOption) => {
-      if (!options[requiredOption]) {
-        throw new Error(
-          `${requiredOption} is required for a app of type ${this.type}`
-        );
-      }
-    });
-
-    const { pluginApp } = this.getPlugin();
-    const allOptions = pluginApp.options.map((o) => o.key);
-    for (const k in options) {
-      if (allOptions.indexOf(k) < 0) {
-        throw new Error(`${k} is not an option for a ${this.type} app`);
-      }
+  async validateOptions(options?: SimpleAppOptions) {
+    if (!options) {
+      options = await this.getOptions();
     }
+
+    return OptionHelper.validateOptions(this, options);
+  }
+
+  async getPlugin() {
+    return OptionHelper.getPlugin(this);
   }
 
   async apiData() {
     const options = await this.getOptions();
+    const icon = await this.getIcon();
 
     return {
       guid: this.guid,
       name: this.name,
-      icon: this.getIcon(),
+      icon,
       type: this.type,
       options,
       createdAt: this.createdAt,
@@ -175,36 +126,8 @@ export class App extends LoggedModel<App> {
     };
   }
 
-  getPlugin() {
-    let match: {
-      plugin: GrouparooPlugin;
-      pluginApp: PluginApp;
-    } = { plugin: null, pluginApp: null };
-
-    api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
-      if (plugin.apps) {
-        plugin.apps.forEach((pluginApp) => {
-          if (pluginApp.name === this.type) {
-            match = { plugin, pluginApp };
-          }
-        });
-      }
-    });
-
-    return match;
-  }
-
-  private getIcon() {
-    return this.getPlugin()?.plugin?.icon;
-  }
-
-  private getRequiredOptions() {
-    const { pluginApp } = this.getPlugin();
-
-    if (!pluginApp) {
-      throw new Error(`cannot find a pluginApp for type ${this.type}`);
-    }
-
-    return pluginApp.options.filter((o) => o.required).map((o) => o.key);
+  private async getIcon() {
+    const { plugin } = await this.getPlugin();
+    return plugin?.icon;
   }
 }

@@ -23,21 +23,14 @@ import { Group } from "./Group";
 import { Import } from "./Import";
 import { Export } from "./Export";
 import { DestinationGroup } from "./DestinationGroup";
-import {
-  GrouparooPlugin,
-  PluginConnection,
-  ExportProfilePluginMethod,
-} from "../classes/plugin";
+import { ExportProfilePluginMethod } from "../classes/plugin";
 import { plugin } from "../modules/plugin";
 import { Op } from "sequelize";
+import { OptionHelper } from "./../modules/optionHelper";
+import { MappingHelper } from "./../modules/mappingHelper";
 
-export interface DestinationMappings {
-  [key: string]: any;
-}
-
-export interface SimpleDestinationOptions {
-  [key: string]: string;
-}
+export interface DestinationMappings extends MappingHelper.Mappings {}
+export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 
 @Table({ tableName: "destinations", paranoid: false })
 export class Destination extends LoggedModel<Destination> {
@@ -82,7 +75,7 @@ export class Destination extends LoggedModel<Destination> {
 
   @BeforeCreate
   static async ensureExportProfilesMethod(instance: Destination) {
-    const { pluginConnection } = instance.getPlugin();
+    const { pluginConnection } = await instance.getPlugin();
     if (!pluginConnection) {
       throw new Error(`a destination of type ${instance.type} cannot be found`);
     }
@@ -169,7 +162,7 @@ export class Destination extends LoggedModel<Destination> {
     const mapping = await this.getMapping();
     const options = await this.getOptions();
     const groups = await this.$get("groups");
-    const { pluginConnection } = this.getPlugin();
+    const { pluginConnection } = await this.getPlugin();
 
     return {
       guid: this.guid,
@@ -187,112 +180,36 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async getMapping() {
-    const MappingObject: DestinationMappings = {};
-    const mappings = await this.$get("mappings");
-
-    for (const i in mappings) {
-      const mapping = mappings[i];
-      const rule = await mapping.$get("profilePropertyRule");
-      MappingObject[mapping.remoteKey] = rule.key;
-    }
-
-    return MappingObject;
+    return MappingHelper.getMapping(this);
   }
 
   async setMapping(mappings: DestinationMappings) {
-    const transaction = await api.sequelize.transaction();
+    return MappingHelper.setMapping(this, mappings);
+  }
 
-    try {
-      await Mapping.destroy({
-        where: { ownerGuid: this.guid },
-        transaction,
+  async afterSetMapping() {
+    const destinationGroups = await this.$get("destinationGroups");
+    for (const i in destinationGroups) {
+      await task.enqueue("group:updateMembers", {
+        groupGuid: destinationGroups[i].groupGuid,
       });
-
-      const keys = Object.keys(mappings);
-      for (const i in keys) {
-        const remoteKey = keys[i];
-        const key = mappings[remoteKey];
-        const profilePropertyRule = await ProfilePropertyRule.findOne({
-          where: { key },
-        });
-
-        if (!profilePropertyRule) {
-          throw new Error(`cannot find profile property rule ${key}`);
-        }
-
-        await Mapping.create(
-          {
-            ownerGuid: this.guid,
-            ownerType: "destination",
-            profilePropertyRuleGuid: profilePropertyRule.guid,
-            remoteKey,
-          },
-          { transaction }
-        );
-      }
-
-      this.changed("updatedAt", true);
-      await this.save({ transaction });
-
-      await transaction.commit();
-
-      // re-sync all groups to this destination
-      const destinationGroups = await this.$get("destinationGroups");
-      for (const i in destinationGroups) {
-        await task.enqueue("group:updateMembers", {
-          groupGuid: destinationGroups[i].groupGuid,
-        });
-      }
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
     }
   }
 
   async getOptions() {
-    const optionsObject: SimpleDestinationOptions = {};
-    const options = await this.$get("_options");
-
-    options.forEach((option) => {
-      optionsObject[option.key] = option.value;
-    });
-
-    return optionsObject;
+    return OptionHelper.getOptions(this);
   }
 
   async setOptions(options: SimpleDestinationOptions) {
-    const transaction = await api.sequelize.transaction();
+    return OptionHelper.setOptions(this, options);
+  }
 
-    try {
-      await this.validateOptions(options);
+  async validateOptions(options: SimpleDestinationOptions) {
+    return OptionHelper.validateOptions(this, options);
+  }
 
-      await Option.destroy({
-        where: { ownerGuid: this.guid },
-        transaction,
-      });
-
-      const keys = Object.keys(options);
-      for (const i in keys) {
-        const key = keys[i];
-        await Option.create(
-          {
-            ownerGuid: this.guid,
-            ownerType: "destination",
-            key,
-            value: options[key],
-          },
-          { transaction }
-        );
-      }
-
-      this.changed("updatedAt", true);
-      await this.save({ transaction });
-
-      await transaction.commit();
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
-    }
+  async getPlugin() {
+    return OptionHelper.getPlugin(this);
   }
 
   async trackGroup(group: Group) {
@@ -337,7 +254,7 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async destinationConnectionOptions() {
-    const { pluginConnection } = this.getPlugin();
+    const { pluginConnection } = await this.getPlugin();
     const app = await this.$get("app");
     const appOptions = await app.getOptions();
 
@@ -360,7 +277,7 @@ export class Destination extends LoggedModel<Destination> {
       return [];
     }
 
-    const { pluginConnection } = this.getPlugin();
+    const { pluginConnection } = await this.getPlugin();
     const app = await this.$get("app");
     const appOptions = await app.getOptions();
 
@@ -389,7 +306,7 @@ export class Destination extends LoggedModel<Destination> {
     let method: ExportProfilePluginMethod;
     let ignoreMapping = false;
 
-    const { pluginConnection } = this.getPlugin();
+    const { pluginConnection } = await this.getPlugin();
     method = pluginConnection.methods.exportProfile;
     ignoreMapping = pluginConnection.ignoreMapping;
 
@@ -464,54 +381,6 @@ export class Destination extends LoggedModel<Destination> {
       error.message = `error exporting profile ${profile.guid} to destination ${this.guid}: ${error}`;
       throw error;
     }
-  }
-
-  async validateOptions(options: { [key: string]: string }) {
-    const requiredOptions = this.getRequiredOptions();
-    requiredOptions.forEach((requiredOption) => {
-      if (!options[requiredOption]) {
-        throw new Error(
-          `${requiredOption} is required for a destination of type ${this.type}`
-        );
-      }
-    });
-
-    const { pluginConnection } = this.getPlugin();
-    const allOptions = pluginConnection.options.map((o) => o.key);
-    for (const k in options) {
-      if (allOptions.indexOf(k) < 0) {
-        throw new Error(`${k} is not an option for a ${this.type} destination`);
-      }
-    }
-  }
-
-  getPlugin() {
-    let match: {
-      plugin: GrouparooPlugin;
-      pluginConnection: PluginConnection;
-    } = { plugin: null, pluginConnection: null };
-
-    api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
-      if (plugin.connections) {
-        plugin.connections.forEach((pluginConnection) => {
-          if (pluginConnection.name === this.type) {
-            match = { plugin, pluginConnection };
-          }
-        });
-      }
-    });
-
-    return match;
-  }
-
-  private getRequiredOptions() {
-    const { pluginConnection } = this.getPlugin();
-
-    if (!pluginConnection) {
-      throw new Error(`cannot find a pluginConnection for type ${this.type}`);
-    }
-
-    return pluginConnection.options.filter((o) => o.required).map((o) => o.key);
   }
 
   // --- Class Methods --- //

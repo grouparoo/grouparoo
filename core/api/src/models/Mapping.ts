@@ -12,7 +12,6 @@ import {
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
-import { Schedule } from "./Schedule";
 import { Destination } from "./Destination";
 import { Source } from "./Source";
 
@@ -39,7 +38,6 @@ export class Mapping extends Model<Mapping> {
   updatedAt: Date;
 
   @AllowNull(false)
-  @ForeignKey(() => Schedule)
   @ForeignKey(() => Destination)
   @ForeignKey(() => Source)
   @Column
