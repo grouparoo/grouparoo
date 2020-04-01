@@ -31,6 +31,20 @@ describe("models/file", () => {
     expect(file.updatedAt).toBeTruthy();
   });
 
+  test("a file needs to have a valid type", async () => {
+    await expect(
+      File.create({
+        type: "_picture",
+        path: "/images/test.png",
+        transport: "local",
+        bucket: "/tmp/test",
+        extension: ".png",
+        mime: "image/png",
+        sizeBytes: 1,
+      })
+    ).rejects.toThrow(/_picture is not a valid file type/);
+  });
+
   test("creating a file creates a log entry", async () => {
     const latestLog = await Log.findOne({
       where: { verb: "create", topic: "file" },

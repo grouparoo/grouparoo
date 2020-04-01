@@ -54,6 +54,7 @@ export const DEFAULT = {
         { path: "/:apiVersion/destination/:guid/connectionOptions", action: "destination:connectionOptions" },
         { path: "/:apiVersion/destination/:guid/preview", action: "destination:preview" },
         { path: "/:apiVersion/files", action: "files:list" },
+        { path: "/:apiVersion/files/options", action: "files:options" },
         { path: "/:apiVersion/file/:guid", action: "file:view" }
       ],
 
