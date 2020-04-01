@@ -12,8 +12,8 @@ import {
 } from "react-bootstrap";
 import AppIcon from "./../../appIcon";
 import Link from "next/link";
-import ProfilePropertyRuleAddModal from "./../../modals/profilePropertyRuleAdd";
 import ScheduleAddButton from "./../schedule/add";
+import Router from "next/router";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -118,13 +118,15 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             </tbody>
           </Table>
 
-          <ProfilePropertyRuleAddModal
-            apiVersion={apiVersion}
-            errorHandler={errorHandler}
-            successHandler={successHandler}
-            query={query}
-            sourceGuid={guid}
-          />
+          <Button
+            size="sm"
+            variant="warning"
+            onClick={() => {
+              Router.push(`/source/${guid}/profilePropertyRule/new`);
+            }}
+          >
+            Add Profile Property Rule
+          </Button>
         </Card.Body>
       </Card>
 

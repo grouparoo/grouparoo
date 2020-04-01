@@ -5,17 +5,13 @@ import { Form, Button } from "react-bootstrap";
 import Router from "next/router";
 import Loader from "./../../loader";
 
-export default function ({
-  apiVersion,
-  errorHandler,
-  successHandler,
-  sourceGuid,
-}) {
+export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
   const [types, setTypes] = useState([]);
   const [sources, setSources] = useState([]);
+  const { guid } = query;
 
   useEffect(() => {
     loadOptions();
@@ -97,8 +93,8 @@ export default function ({
             name="sourceGuid"
             required
             ref={register}
-            disabled={sourceGuid ? true : false}
-            defaultValue={sourceGuid ? sourceGuid : null}
+            disabled={guid ? true : false}
+            defaultValue={guid ? guid : null}
           >
             {sources.map((source) => (
               <option key={`source-${source.guid}`} value={source.guid}>

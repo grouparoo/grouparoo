@@ -1,9 +1,9 @@
-import TabbedContainer from "../../components/layouts/tabbedContainer";
+import TabbedContainer from "../../../components/layouts/tabbedContainer";
 import { Fragment } from "react";
 import { Card } from "react-bootstrap";
-import SourceOverview from "../../components/forms/source/overview";
-import SourceEdit from "../../components/forms/source/edit";
-import SourceMapping from "../../components/forms/source/mapping";
+import SourceOverview from "../../../components/forms/source/overview";
+import SourceEdit from "../../../components/forms/source/edit";
+import SourceMapping from "../../../components/forms/source/mapping";
 
 export default function (props) {
   return (

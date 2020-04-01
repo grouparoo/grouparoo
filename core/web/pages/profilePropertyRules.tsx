@@ -1,6 +1,7 @@
 import Head from "next/head";
 import ProfilePropertyRulesList from "../components/lists/profilePropertyRules";
-import ProfilePropertyRuleAddModal from "../components/modals/profilePropertyRuleAdd";
+import { Button } from "react-bootstrap";
+import Router from "next/router";
 
 export default function (props) {
   return (
@@ -11,7 +12,15 @@ export default function (props) {
 
       <h1>Profile Property Rules</h1>
       <ProfilePropertyRulesList {...props} />
-      <ProfilePropertyRuleAddModal {...props} />
+      <Button
+        size="sm"
+        variant="warning"
+        onClick={() => {
+          Router.push("/profilePropertyRule/new");
+        }}
+      >
+        Add Profile Property Rule
+      </Button>
     </>
   );
 }
