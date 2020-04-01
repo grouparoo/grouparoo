@@ -3,13 +3,13 @@ import { useApi } from "../../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { Form, Button } from "react-bootstrap";
 import Loader from "../../loader";
+import Router from "next/router";
 
 export default function ({
   apiVersion,
   errorHandler,
   query,
   successHandler,
-  onClose,
   teamMemberHandler,
 }) {
   const { execApi } = useApi(errorHandler);
@@ -42,7 +42,7 @@ export default function ({
     if (response?.teamMember) {
       successHandler.set({ message: "Team Member Created" });
       teamMemberHandler.set();
-      onClose();
+      Router.push(`/team/${response.teamMember.teamGuid}?tab=members`);
     }
   }
 
