@@ -4,12 +4,7 @@ import { useForm } from "react-hook-form";
 import Router from "next/router";
 import { Form, Button } from "react-bootstrap";
 
-export default function ({
-  apiVersion,
-  errorHandler,
-  successHandler,
-  onClose,
-}) {
+export default function ({ apiVersion, errorHandler, successHandler }) {
   const { execApi } = useApi(errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
@@ -20,7 +15,6 @@ export default function ({
     setLoading(false);
     if (response?.group) {
       successHandler.set({ message: "Group Created" });
-      onClose();
       Router.push(`/group/${response.group.guid}`);
     }
   }
