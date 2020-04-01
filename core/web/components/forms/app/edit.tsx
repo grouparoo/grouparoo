@@ -15,6 +15,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     guid: "",
     name: "",
     type: "",
+    state: "",
     options: {},
   });
   const { guid } = query;
@@ -41,11 +42,12 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function edit(event) {
     event.preventDefault();
+    const state = app.state === "ready" ? undefined : "ready";
     setLoading(true);
     const response = await execApi(
       "put",
       `/api/${apiVersion}/app/${guid}`,
-      app
+      Object.assign(app, { state })
     );
     setLoading(false);
     if (response?.app) {
@@ -131,12 +133,19 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                 as="select"
                 value={app.type}
                 onChange={(e) => update(e)}
+                disabled
               >
                 {types.map((type) => (
                   <option key={`type-${type.name}`}>{type.name}</option>
                 ))}
               </Form.Control>
             </Form.Group>
+
+            <p>
+              <Badge variant={app.state === "ready" ? "success" : "warning"}>
+                {app.state}
+              </Badge>
+            </p>
           </Col>
         </Row>
         {typeOptions.length > 0 ? (

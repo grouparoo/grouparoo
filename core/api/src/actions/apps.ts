@@ -46,9 +46,15 @@ export class AppOptions extends Action {
 
   async run({ response }) {
     response.types = [];
-    api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
+    api.plugins.plugins.map((plugin: GrouparooPlugin) => {
       if (plugin.apps) {
-        response.types = response.types.concat(plugin.apps);
+        plugin.apps.map((app) => {
+          response.types.push({
+            name: app.name,
+            options: app.options,
+            plugin: { name: plugin.name, icon: plugin.icon },
+          });
+        });
       }
     });
   }
@@ -62,7 +68,7 @@ export class AppCreate extends Action {
     this.outputExample = {};
     this.middleware = ["authenticated-team-member", "role-admin"];
     this.inputs = {
-      name: { required: true },
+      name: { required: false },
       type: { required: true },
       options: { required: false },
     };
@@ -100,6 +106,7 @@ export class AppEdit extends Action {
       guid: { required: true },
       name: { required: false },
       type: { required: false },
+      state: { required: false },
       options: { required: false },
     };
   }
@@ -113,6 +120,7 @@ export class AppEdit extends Action {
     if (params.options) {
       await app.setOptions(params.options);
     }
+
     response.app = await app.apiData();
     response.app.options = await app.getOptions();
   }
