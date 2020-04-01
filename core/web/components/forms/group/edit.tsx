@@ -74,7 +74,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       <br />
       <br />
       <Row>
-        <Col md={9}>
+        <Col md={group.type === "calculated" ? 8 : 12}>
           <Form id="form" onSubmit={handleSubmit(onSubmit)}>
             <Form.Group>
               <Form.Label>Name</Form.Label>
@@ -130,25 +130,27 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             </Button>
           </Form>
         </Col>
-        <Col>
-          <p>
-            {group.calculatedAt ? (
-              <span>
-                Last Member Calculation:{" "}
-                <Moment fromNow>{group.calculatedAt}</Moment>
-              </span>
-            ) : (
-              "Never Calculated"
-            )}
-            <br />
-            {group.nextCalculatedAt ? (
-              <span>
-                Next Member Calculation:{" "}
-                <Moment fromNow>{group.nextCalculatedAt}</Moment>
-              </span>
-            ) : null}
-          </p>
-        </Col>
+        {group.type === "calculated" ? (
+          <Col>
+            <p>
+              {group.calculatedAt ? (
+                <span>
+                  Last Member Calculation:{" "}
+                  <Moment fromNow>{group.calculatedAt}</Moment>
+                </span>
+              ) : (
+                "Never Calculated"
+              )}
+              <br />
+              {group.nextCalculatedAt ? (
+                <span>
+                  Next Member Calculation:{" "}
+                  <Moment fromNow>{group.nextCalculatedAt}</Moment>
+                </span>
+              ) : null}
+            </p>
+          </Col>
+        ) : null}
       </Row>
     </>
   );

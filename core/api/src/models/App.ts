@@ -71,7 +71,7 @@ export class App extends LoggedModel<App> {
 
   @BeforeSave
   static async updateState(instance: App) {
-    StateMachine.transition(instance, STATE_TRANSITIONS);
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeDestroy
