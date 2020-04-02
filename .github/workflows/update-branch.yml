@@ -6,9 +6,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Set output
-        id: vars
-        run: echo ::set-output name=branch_name::${GITHUB_REF#refs/*/}
       - uses: actions/checkout@master
         with:
           ref: ${{ github.head_ref }}
@@ -23,5 +20,5 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          branch: ${{ steps.vars.outputs.branch_name }}
+          branch: ${{ github.event.pull_request.head.ref }}
           github_token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
