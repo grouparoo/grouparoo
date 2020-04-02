@@ -13,8 +13,7 @@ export namespace StateMachine {
   ) {
     const klass = modelName(instance);
     const newState: string = instance["state"];
-    //@ts-ignore
-    const oldState: string = instance._previousDataValues["state"];
+    const oldState: string = instance["_previousDataValues"]["state"];
     if (!newState || !oldState || newState === oldState) {
       return;
     }
@@ -46,7 +45,7 @@ export namespace StateMachine {
     })[0];
   }
 
-  function modelName(instance): string {
+  function modelName(instance: Model): string {
     let name = instance.constructor.name;
     name = name[0].toLowerCase() + name.substr(1);
     return name;
