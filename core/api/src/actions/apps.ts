@@ -75,23 +75,13 @@ export class AppCreate extends Action {
   }
 
   async run({ params, response }) {
-    const transaction = await api.sequelize.transaction();
+    const app = await App.create(params);
 
-    try {
-      const app = await App.create(params, { transaction });
-
-      if (params.options) {
-        await app.setOptions(params.options);
-      }
-
-      await transaction.commit();
-
-      response.app = await app.apiData();
-      response.app.options = await app.getOptions();
-    } catch (error) {
-      transaction.rollback();
-      throw error;
+    if (params.options) {
+      await app.setOptions(params.options);
     }
+
+    response.app = await app.apiData();
   }
 }
 
@@ -116,13 +106,12 @@ export class AppEdit extends Action {
     if (!app) {
       throw new Error("app not found");
     }
-    await app.update(params);
     if (params.options) {
       await app.setOptions(params.options);
     }
+    await app.update(params);
 
     response.app = await app.apiData();
-    response.app.options = await app.getOptions();
   }
 }
 
@@ -151,7 +140,6 @@ export class AppTest extends Action {
     }
     response.test = { result, error };
     response.app = await app.apiData();
-    response.app.options = await app.getOptions();
   }
 }
 
@@ -173,7 +161,6 @@ export class AppView extends Action {
       throw new Error("app not found");
     }
     response.app = await app.apiData();
-    response.app.options = await app.getOptions();
   }
 }
 
