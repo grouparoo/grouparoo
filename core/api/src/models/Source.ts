@@ -179,8 +179,8 @@ export class Source extends LoggedModel<Source> {
   }
 
   async validateMapping() {
-    const { pluginConnection } = await this.getPlugin();
-    if (!pluginConnection.methods.sourcePreview) {
+    const previewAvailable = await this.previewAvailable();
+    if (!previewAvailable) {
       return true;
     }
 
@@ -294,10 +294,10 @@ export class Source extends LoggedModel<Source> {
     }
 
     const options = await this.getOptions();
-    const mapping = await this.getMapping();
     const { pluginConnection } = await this.getPlugin();
     const scheduleAvailable = await this.scheduleAvailable();
     const previewAvailable = await this.previewAvailable();
+    const mapping = await this.getMapping();
 
     return {
       guid: this.guid,
@@ -344,10 +344,6 @@ export class Source extends LoggedModel<Source> {
 
     for (const i in rules) {
       const rule = rules[i];
-
-      if (rule.state !== "active") {
-        continue;
-      }
 
       let rawResponse;
       const queryKey =
@@ -405,5 +401,29 @@ export class Source extends LoggedModel<Source> {
     }
 
     return hash;
+  }
+
+  /**
+   * This method is used to bootstrap a new source which requires a profile property rule for a mapping, but the rule doesn't yet exist.
+   */
+  async bootstrapUniqueProfilePropertyRule(key: string, type: string) {
+    const rule = ProfilePropertyRule.build({
+      key,
+      type,
+      state: "draft",
+      unique: true,
+      sourceGuid: this.guid,
+    });
+
+    // manually run the hooks we want
+    await ProfilePropertyRule.generateGuid(rule);
+    await ProfilePropertyRule.ensureKey(rule);
+
+    // @ts-ignore
+    // danger zone!
+    await rule.save({ hooks: false });
+    await ProfilePropertyRule.clearCacheAfterSave();
+
+    return rule;
   }
 }

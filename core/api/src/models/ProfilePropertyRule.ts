@@ -28,6 +28,7 @@ import { GroupRule } from "./GroupRule";
 import { internalRun } from "../modules/internalRun";
 import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
+import { Mapping } from "./Mapping";
 
 export function profilePropertyRuleJSToSQLType(jsType: string) {
   const map = {
@@ -230,6 +231,15 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
       throw new Error(
         `cannot delete profile property rule "${instance.key}", group ${group.name} (${group.guid}) is based on it`
+      );
+    }
+
+    const mapping = await Mapping.findOne({
+      where: { profilePropertyRuleGuid: instance.guid },
+    });
+    if (mapping) {
+      throw new Error(
+        `cannot delete profile property rule "${instance.key}" as ${mapping.ownerGuid} is using it in a mapping`
       );
     }
   }

@@ -70,6 +70,7 @@ export const DEFAULT = {
         { path: "/:apiVersion/profilePropertyRule/:guid/query", action: "profilePropertyRule:buildQuery" },
         { path: "/:apiVersion/app", action: "app:create" },
         { path: "/:apiVersion/source", action: "source:create" },
+        { path: "/:apiVersion/source/:guid/bootstrapUniqueProfilePropertyRule", action: "source:bootstrapUniqueProfilePropertyRule" },
         { path: "/:apiVersion/schedule", action: "schedule:create" },
         { path: "/:apiVersion/schedule/:guid/run", action: "schedule:run" },
         { path: "/:apiVersion/destination", action: "destination:create" },

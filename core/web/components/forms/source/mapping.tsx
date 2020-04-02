@@ -9,6 +9,11 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const [profilePropertyRules, setProfilePropertyRules] = useState([]);
   const [newMappingKey, setNewMappingKey] = useState("");
   const [newMappingValue, setNewMappingValue] = useState("");
+  const [types, setTypes] = useState([]);
+  const [newProfilePropertyRule, setNewProfilePropertyRule] = useState({
+    key: "",
+    type: "",
+  });
   const [
     profilePropertyRuleExamples,
     setProfilePropertyRuleExamples,
@@ -23,6 +28,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   useEffect(() => {
     load();
+    loadOptions();
   }, []);
 
   async function load() {
@@ -61,6 +67,30 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       setProfilePropertyRuleExamples(prrResponse.examples);
     }
   }
+
+  async function loadOptions() {
+    const response = await execApi(
+      "get",
+      `/api/${apiVersion}/profilePropertyRuleOptions`
+    );
+    if (response?.types) {
+      setTypes(response.types);
+    }
+  }
+
+  const bootstrapUniqueProfilePropertyRule = async () => {
+    if (confirm("are you sure?")) {
+      const response = await execApi(
+        "post",
+        `/api/${apiVersion}/source/${guid}/bootstrapUniqueProfilePropertyRule`,
+        newProfilePropertyRule
+      );
+      if (response?.profilePropertyRule) {
+        successHandler.set({ message: "Profile Property Rule created" });
+        await load();
+      }
+    }
+  };
 
   const updateMapping = async (event) => {
     event.preventDefault();
@@ -154,6 +184,10 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                 </tbody>
               </Table>
             </fieldset>
+
+            <Button type="submit" onClick={(e) => updateMapping(e)}>
+              Save Mapping
+            </Button>
           </Col>
 
           <Col>
@@ -198,12 +232,69 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                 </tbody>
               </Table>
             </fieldset>
+
+            <hr />
+            <p>Or create a new Unique Profile Property Rule</p>
+            <p>
+              This profile property should be unique, meaning only one profile
+              in your entire customer base will have this value. Normally this
+              is an email or a user id.
+            </p>
+
+            <Form.Group controlId="key">
+              <Form.Label>Key</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                placeholder="Profile Property Rule Key"
+                defaultValue={newProfilePropertyRule.key}
+                onChange={(e) => {
+                  setNewProfilePropertyRule(
+                    Object.assign({}, newProfilePropertyRule, {
+                      key: e.target.value,
+                    })
+                  );
+                }}
+              />
+              <Form.Control.Feedback type="invalid">
+                Key is required
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group controlId="type">
+              <Form.Label>Type</Form.Label>
+
+              <Form.Control
+                as="select"
+                required
+                defaultValue={newProfilePropertyRule.type}
+                onChange={(e) => {
+                  setNewProfilePropertyRule(
+                    Object.assign({}, newProfilePropertyRule, {
+                      //@ts-ignore
+                      type: e.target.value,
+                    })
+                  );
+                }}
+              >
+                <option value={""} disabled>
+                  Choose a type
+                </option>
+                {types.map((type) => (
+                  <option key={`type-${type}`}>{type}</option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+
+            <Button
+              size="sm"
+              variant="warning"
+              onClick={bootstrapUniqueProfilePropertyRule}
+            >
+              Create Profile Property Rule
+            </Button>
           </Col>
         </Row>
-
-        <Button type="submit" onClick={(e) => updateMapping(e)}>
-          Save Mapping
-        </Button>
       </Form>
     </>
   );

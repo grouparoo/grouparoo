@@ -164,6 +164,36 @@ export class SourceEdit extends Action {
   }
 }
 
+export class SourceBootstrapUniqueProfilePropertyRule extends Action {
+  constructor() {
+    super();
+    this.name = "source:bootstrapUniqueProfilePropertyRule";
+    this.description =
+      "bootstrap a new unique profile property for this source before the mapping is set";
+    this.outputExample = {};
+    this.middleware = ["authenticated-team-member", "role-write"];
+    this.inputs = {
+      guid: { required: true },
+      key: { required: true },
+      type: { required: true },
+    };
+  }
+
+  async run({ params, response }) {
+    const source = await Source.findOne({ where: { guid: params.guid } });
+    if (!source) {
+      throw new Error("source not found");
+    }
+
+    const rule = await source.bootstrapUniqueProfilePropertyRule(
+      params.key,
+      params.type
+    );
+    response.profilePropertyRule = await rule.apiData();
+    response.source = await source.apiData();
+  }
+}
+
 export class sourceConnectionOptions extends Action {
   constructor() {
     super();
