@@ -19,7 +19,7 @@ jobs:
         run: |
           git config --local user.email "hello@grouparoo.com"
           git config --local user.name "Grouparoo Bot"
-          git commit -m "Update lerna things automatically" -a
+          git diff-index --quiet HEAD || git commit -m "Update lerna things automatically" -a
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
