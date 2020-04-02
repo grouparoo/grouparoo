@@ -1,7 +1,7 @@
 module.exports = {
   testEnvironment: "node",
   transform: {
-    "^.+\\.ts?$": "ts-jest"
+    "^.+\\.ts?$": "ts-jest",
   },
-  testPathIgnorePatterns: ["<rootDir>/src", "<rootDir>/dist"]
+  testPathIgnorePatterns: ["<rootDir>/src", "<rootDir>/dist"],
 };
