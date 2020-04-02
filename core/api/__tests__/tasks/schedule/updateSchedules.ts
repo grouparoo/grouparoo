@@ -2,6 +2,7 @@ import { helper } from "../../utils/specHelper";
 import { task, specHelper } from "actionhero";
 import { Schedule } from "./../../../src/models/Schedule";
 import { Run } from "./../../../src/models/Run";
+import { shape } from "prop-types";
 
 let actionhero, api;
 
@@ -49,11 +50,23 @@ describe("tasks/schedule:updateSchedules", () => {
       expect(found.length).toBe(0);
     });
 
-    test("it will enqueue a run for a recurring schedule that has never run", async () => {
+    test("it will not enqueue a run for a recurring schedule that has never run but is a draft", async () => {
       await schedule.update({
         recurring: true,
         recurringFrequency: 60 * 1000,
       });
+      expect(schedule.state).toBe("draft");
+
+      await specHelper.runTask("schedule:updateSchedules", {});
+
+      const found = await specHelper.findEnqueuedTasks("schedule:run");
+      expect(found.length).toBe(0);
+    });
+
+    test("it will enqueue a run for a recurring schedule that has never run and is ready", async () => {
+      await schedule.setOptions({ maxColumn: "updatedAt" });
+      await schedule.update({ state: "ready" });
+      expect(schedule.state).toBe("ready");
 
       await specHelper.runTask("schedule:updateSchedules", {});
 
