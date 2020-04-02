@@ -69,18 +69,18 @@ describe("models/profile", () => {
     beforeAll(async () => {
       source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
+      await source.bootstrapUniqueProfilePropertyRule("userId", "integer");
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
+
+      userIdRule = await ProfilePropertyRule.findOne({
+        where: { key: "userId" },
+      });
 
       emailRule = await ProfilePropertyRule.create({
         sourceGuid: source.guid,
         key: "email",
         type: "email",
-        unique: true,
-      });
-
-      userIdRule = await ProfilePropertyRule.create({
-        sourceGuid: source.guid,
-        key: "userId",
-        type: "integer",
         unique: true,
       });
 
@@ -108,6 +108,7 @@ describe("models/profile", () => {
     });
 
     afterAll(async () => {
+      await source.setMapping({});
       await toad.destroy();
       await userIdRule.destroy();
       await emailRule.destroy();
@@ -211,14 +212,9 @@ describe("models/profile", () => {
     });
 
     test("it cannot add a profile property that is not defined", async () => {
-      try {
-        await profile.addOrUpdateProperty({ email: "luigi@example.com" });
-        throw new Error("should not get here");
-      } catch (error) {
-        expect(error.toString()).toMatch(
-          /cannot find a profile property rule for key email/
-        );
-      }
+      await expect(
+        profile.addOrUpdateProperty({ email: "luigi@example.com" })
+      ).rejects.toThrow(/cannot find a profile property rule for key email/);
     });
 
     describe("with profilePropertyRules", () => {
@@ -227,6 +223,9 @@ describe("models/profile", () => {
       beforeAll(async () => {
         const source = await helper.factories.source();
         await source.setOptions({ table: "test table" });
+        await source.bootstrapUniqueProfilePropertyRule("userId", "integer");
+        await source.setMapping({ id: "userId" });
+        await source.update({ state: "ready" });
 
         const rules = await ProfilePropertyRule.findAll();
 
@@ -249,11 +248,6 @@ describe("models/profile", () => {
           sourceGuid: source.guid,
           key: "color",
           type: "string",
-        });
-        await ProfilePropertyRule.create({
-          sourceGuid: source.guid,
-          key: "userId",
-          type: "integer",
         });
       });
 
@@ -458,6 +452,9 @@ describe("models/profile", () => {
         type: "test-plugin-import",
       });
       await source.setOptions({ table: "test table" });
+      await source.bootstrapUniqueProfilePropertyRule("userId", "integer");
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
 
       emailRule = await ProfilePropertyRule.create({
         sourceGuid: source.guid,
@@ -481,7 +478,8 @@ describe("models/profile", () => {
       const members = await group.$get("groupMembers");
       await Promise.all(members.map((m) => m.destroy()));
       await group.destroy();
-      await emailRule.destroy();
+      await source.setMapping({});
+      await ProfilePropertyRule.destroy({ truncate: true });
       await source.destroy();
       await app.destroy();
     });
@@ -561,13 +559,15 @@ describe("models/profile", () => {
         name: "test import source",
         type: "import-from-test-template-app",
       });
+      await source.bootstrapUniqueProfilePropertyRule("userId", "integer");
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
 
       emailRule = await ProfilePropertyRule.create({
         sourceGuid: source.guid,
         key: "email",
         type: "string",
         unique: true,
-        passive: false,
       });
 
       colorRule = await ProfilePropertyRule.create({
@@ -575,13 +575,16 @@ describe("models/profile", () => {
         key: "color",
         type: "string",
         unique: false,
-        passive: false,
       });
+
+      await emailRule.update({ state: "ready" });
+      await colorRule.update({ state: "ready" });
     });
 
     afterAll(async () => {
       await app.destroy();
-      await emailRule.destroy();
+      await source.setMapping({});
+      await ProfilePropertyRule.destroy({ truncate: true });
       await source.destroy();
       await colorRule.destroy();
     });
@@ -598,6 +601,7 @@ describe("models/profile", () => {
 
       properties = await profile.properties();
       expect(simpleProfileValues(properties)).toEqual({
+        userId: null,
         email: "peach@example.com",
         color: "pink",
       });
@@ -612,6 +616,7 @@ describe("models/profile", () => {
 
       properties = await profile.properties();
       expect(simpleProfileValues(properties)).toEqual({
+        userId: null,
         email: null,
         color: "pink",
       });

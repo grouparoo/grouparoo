@@ -22,6 +22,7 @@ export default async (source?, props: { [key: string]: any } = {}) => {
     source = await SourceFactory();
     await source.setOptions({ table: "__testTable" });
     await source.setMapping({ id: "userId" });
+    await source.update({ state: "ready" });
   }
 
   props.sourceGuid = source.guid;

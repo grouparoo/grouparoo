@@ -35,7 +35,6 @@ describe("integration/runs/internalRun", () => {
         type: "string",
         key: "email",
         unique: true,
-        passive: false,
       });
       await rule.setOptions({ column: "id" });
 

@@ -155,7 +155,6 @@ describe("integration/runs/postgres", () => {
       key: "email",
       type: "string",
       unique: true,
-      passive: false,
     };
 
     const {

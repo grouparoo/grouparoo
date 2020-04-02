@@ -6,7 +6,7 @@ export default async (
     email: "email",
     firstName: "string",
     lastName: "string",
-    userId: "integer",
+    // userId: "integer",
     lastLoginAt: "date",
     ltv: "float",
     isVIP: "boolean",
@@ -14,6 +14,9 @@ export default async (
 ) => {
   const source = await SourceFactory();
   await source.setOptions({ table: "__test_table" });
+  await source.bootstrapUniqueProfilePropertyRule("userId", "integer");
+  await source.setMapping({ userId: "userId" });
+  await source.update({ state: "ready" });
   const sourceGuid = source.guid;
 
   for (const key in props) {
@@ -29,7 +32,6 @@ export default async (
       key,
       type,
       unique,
-      passive: false,
     });
 
     await rule.setOptions({ column: key });

@@ -34,6 +34,27 @@ describe("models/app", () => {
     await app.destroy();
   });
 
+  test("apps start in the draft state", async () => {
+    const app = await App.create({
+      name: "test app",
+      type: "test-plugin-app",
+    });
+
+    expect(app.state).toBe("draft");
+
+    await app.destroy();
+  });
+
+  test("creating an app without a name will generate a name", async () => {
+    const app = await App.create({
+      type: "test-plugin-app",
+    });
+
+    expect(app.name).toMatch(/new test-plugin-app app/);
+
+    await app.destroy();
+  });
+
   test("deleting an app removes the appOptions", async () => {
     const app = new App({
       name: "test app",
@@ -113,12 +134,10 @@ describe("models/app", () => {
     });
 
     test("adding the wrong options for the app produces an error", async () => {
-      const app = new App({
+      const app = await App.create({
         name: "test app",
         type: "test-plugin-app",
       });
-
-      await app.save();
 
       await expect(app.setOptions({ thing: "stuff" })).rejects.toThrow(
         /fileGuid is required for a app of type test-plugin-app/
@@ -128,6 +147,33 @@ describe("models/app", () => {
         app.setOptions({ fileGuid: "abc123", otherThing: "123" })
       ).rejects.toThrow(
         /otherThing is not an option for a test-plugin-app app/
+      );
+
+      await app.destroy();
+    });
+
+    test("an app cannot be changed to to the ready state if there are missing required options", async () => {
+      const app = await App.create({
+        name: "test app",
+        type: "test-plugin-app",
+      });
+
+      await expect(app.update({ state: "ready" })).rejects.toThrow();
+
+      await app.destroy();
+    });
+
+    test("an app that is ready cannot move back to draft", async () => {
+      const app = await App.create({
+        name: "test app",
+        type: "test-plugin-app",
+      });
+      await app.setOptions({ fileGuid: "abc123" });
+      await app.update({ state: "ready" });
+      expect(app.state).toBe("ready");
+
+      await expect(app.update({ state: "draft" })).rejects.toThrow(
+        /cannot transition app from ready to draft/
       );
 
       await app.destroy();

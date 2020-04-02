@@ -25,7 +25,7 @@ describe("models/profilePropertyRule", () => {
   test("creating a profile property rule for non-manual apps with options enqueued an internalRun", async () => {
     const rulesCount = await ProfilePropertyRule.count();
     const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
-    expect(foundTasks.length).toBe(rulesCount);
+    expect(foundTasks.length).toBe(rulesCount - 1); // the bootstrapped rule does not get a run
   });
 
   test("a profile property rule cannot be created if the source does not have all the required options set", async () => {
@@ -47,6 +47,24 @@ describe("models/profilePropertyRule", () => {
     ).rejects.toThrow(/table is required/);
   });
 
+  test("a profile property rule cannot be created if the source is not ready", async () => {
+    const app = await helper.factories.app();
+    await app.update({ type: "manual" });
+    const source = await helper.factories.source(app);
+    await source.setOptions({ table: "some table" });
+    await source.setMapping({ id: "userId" });
+
+    await expect(
+      ProfilePropertyRule.create({
+        sourceGuid: source.guid,
+        key: "thing",
+        type: "string",
+        unique: false,
+      })
+    ).rejects.toThrow(/source is not ready/);
+    await source.destroy();
+  });
+
   test("creating a profile property rule for a manual app did enqueue an internalRun", async () => {
     await api.resque.queue.connection.redis.flushdb();
 
@@ -54,6 +72,8 @@ describe("models/profilePropertyRule", () => {
     await app.update({ type: "manual" });
     const source = await helper.factories.source(app);
     await source.setOptions({ table: "some table" });
+    await source.setMapping({ id: "userId" });
+    await source.update({ state: "ready" });
 
     const profilePropertyRule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
@@ -141,6 +161,9 @@ describe("models/profilePropertyRule", () => {
   test("creating a profile property rule creates a log entry", async () => {
     const source = await helper.factories.source();
     await source.setOptions({ table: "test table" });
+    await source.setMapping({ id: "userId" });
+    await source.update({ state: "ready" });
+
     const rule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
       key: "thing",
@@ -159,6 +182,8 @@ describe("models/profilePropertyRule", () => {
   test("a profile property rule cannot be deleted if a calculated group is using it", async () => {
     const source = await helper.factories.source();
     await source.setOptions({ table: "some table" });
+    await source.setMapping({ id: "userId" });
+    await source.update({ state: "ready" });
 
     const rule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
@@ -182,6 +207,8 @@ describe("models/profilePropertyRule", () => {
   test("deleting a profile property rule deleted the options", async () => {
     const source = await helper.factories.source();
     await source.setOptions({ table: "some table" });
+    await source.setMapping({ id: "userId" });
+    await source.update({ state: "ready" });
 
     const rule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
@@ -314,6 +341,8 @@ describe("models/profilePropertyRule", () => {
         type: "import-from-test-app",
         appGuid: app.guid,
       });
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
 
       const firstNameRule = await ProfilePropertyRule.findOne({
         where: { key: "firstName" },
@@ -356,28 +385,30 @@ describe("models/profilePropertyRule", () => {
 
     test("creating or editing a profile property rule options will test the query against a profile", async () => {
       expect(queryCounter).toBe(0);
+
       const profile = await helper.factories.profile();
       const rule = await ProfilePropertyRule.create({
         key: "test",
         type: "string",
-        passive: false,
         sourceGuid: source.guid,
       });
+
+      // not ready yet
+      await rule.update({ state: "ready" });
 
       // initial test
       expect(queryCounter).toBe(1);
       await rule.setOptions({ column: "id" });
 
       // +1 checking the options
-      // +2 from the afterSave hook updating the rule
-      // +1 from the internalRun app check
-      expect(queryCounter).toBe(5);
+      // +1 from the afterSave hook updating the rule
+      expect(queryCounter).toBe(3);
       await expect(rule.setOptions({ column: "throw" })).rejects.toThrow(
         /throw/
       );
 
       // no change
-      expect(queryCounter).toBe(8);
+      expect(queryCounter).toBe(4);
       await rule.destroy();
     });
 
@@ -387,8 +418,8 @@ describe("models/profilePropertyRule", () => {
         key: "test",
         type: "string",
         sourceGuid: source.guid,
-        passive: false,
       });
+      await rule.update({ state: "ready" });
 
       await profile.addOrUpdateProperties({ test: true });
 

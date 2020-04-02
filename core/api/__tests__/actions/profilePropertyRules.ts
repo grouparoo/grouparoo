@@ -80,7 +80,6 @@ describe("actions/profilePropertyRules", () => {
       expect(profilePropertyRule.guid).toBeTruthy();
       expect(profilePropertyRule.key).toBe("email");
       expect(profilePropertyRule.unique).toBe(false);
-      expect(profilePropertyRule.passive).toBe(true);
       expect(profilePropertyRule.source.guid).toBe(source.guid);
       expect(pluginOptions[0].key).toBe("column");
 
@@ -99,7 +98,6 @@ describe("actions/profilePropertyRules", () => {
       } = await specHelper.runAction("profilePropertyRule:view", connection);
 
       expect(error).toBeUndefined();
-      expect(profilePropertyRule.passive).toBe(true);
       expect(profilePropertyRule.key).toBe("email");
       expect(profilePropertyRule.unique).toBe(false);
       expect(profilePropertyRule.source.guid).toBe(source.guid);

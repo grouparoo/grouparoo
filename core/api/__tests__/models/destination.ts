@@ -42,14 +42,12 @@ describe("models/destination", () => {
       }
     });
 
-    test("a destination can be created with a source, and it can find the related app", async () => {
-      destination = new Destination({
+    test("a destination can be created, and it can find the related app", async () => {
+      destination = await Destination.create({
         name: "test destination",
         type: "test-plugin-export",
         appGuid: app.guid,
       });
-
-      await destination.save();
 
       expect(destination.guid.length).toBe(40);
       expect(destination.createdAt).toBeTruthy();
@@ -60,6 +58,15 @@ describe("models/destination", () => {
 
       const _app = await destination.$get("app");
       expect(_app.guid).toBe(app.guid);
+    });
+
+    test("creating a destination without a name will generate a name", async () => {
+      destination = await Destination.create({
+        type: "test-plugin-export",
+        appGuid: app.guid,
+      });
+
+      expect(destination.name).toMatch(/new test-plugin-export destination/);
     });
 
     test("creating a destination creates a log entry", async () => {
@@ -105,7 +112,7 @@ describe("models/destination", () => {
       });
     });
 
-    test("a destination can see a preview of a source with and without providing options", async () => {
+    test("a destination can see a preview of a destination with and without providing options", async () => {
       let preview = await destination.destinationPreview();
       expect(preview).toEqual([]);
 
@@ -170,6 +177,21 @@ describe("models/destination", () => {
             local_user_id: "TheUserID",
           })
         ).rejects.toThrow(/cannot find profile property rule TheUserID/);
+      });
+
+      test("a destination cannot be changed to to the ready state if there are missing required options", async () => {
+        destination = await helper.factories.destination();
+        await expect(destination.update({ state: "ready" })).rejects.toThrow();
+      });
+
+      test("a destination that is ready cannot move back to draft", async () => {
+        destination = await helper.factories.destination();
+        await destination.setOptions({ table: "users" });
+        await destination.update({ state: "ready" });
+
+        await expect(destination.update({ state: "draft" })).rejects.toThrow(
+          /cannot transition destination from ready to draft/
+        );
       });
 
       test("an app can only have one destination", async () => {
@@ -295,10 +317,21 @@ describe("models/destination", () => {
           const profile = await helper.factories.profile();
           await group.addProfile(profile);
 
-          const destinations = await Destination.destinationsForGroups(
+          // before the destinations are ready
+          let destinations = await Destination.destinationsForGroups(
             await profile.$get("groups")
           );
+          expect(destinations.length).toBe(0);
 
+          // after the destinations are ready
+          await destination.setOptions({ table: "some table" });
+          await destination.update({ state: "ready" });
+          await otherDestination.setOptions({ table: "some table" });
+          await otherDestination.update({ state: "ready" });
+
+          destinations = await Destination.destinationsForGroups(
+            await profile.$get("groups")
+          );
           expect(destinations.length).toBe(1);
           expect(destinations[0].guid).toBe(destination.guid);
 
@@ -314,10 +347,21 @@ describe("models/destination", () => {
           const profile = await helper.factories.profile();
           await group.addProfile(profile);
 
-          const destinations = await Destination.destinationsForGroups(
+          // before the destinations are ready
+          let destinations = await Destination.destinationsForGroups(
             await profile.$get("groups")
           );
+          expect(destinations.length).toEqual(0);
 
+          // after the destinations are ready
+          await destination.setOptions({ table: "some table" });
+          await destination.update({ state: "ready" });
+          await otherDestination.setOptions({ table: "some table" });
+          await otherDestination.update({ state: "ready" });
+
+          destinations = await Destination.destinationsForGroups(
+            await profile.$get("groups")
+          );
           expect(destinations.length).toEqual(2);
 
           await group.removeProfile(profile);
@@ -456,12 +500,9 @@ describe("models/destination", () => {
             direction: "export",
             options: [],
             methods: {
-              // columns: async (destination, app) => {
-              //   return {
-              //     columns: ["name", "email"],
-              //     rows: [{ name: "test person", email: "test@example.com" }],
-              //   };
-              // },
+              destinationPreview: async () => {
+                return [{ a: 1, b: 2 }];
+              },
               exportProfile: async (
                 app,
                 options,
@@ -499,44 +540,21 @@ describe("models/destination", () => {
       });
     });
 
-    // test("asking for columns checks the app options", async () => {
-    //   const destination = await Destination.create({
-    //     name: "test plugin destination app missing data",
-    //     type: "test-template-app",
-    //     appGuid: app.guid,
-    //   });
+    test("destinations can show a preview", async () => {
+      const destination = await Destination.create({
+        name: "test plugin destination app missing data",
+        type: "export-from-test-template-app",
+        appGuid: app.guid,
+      });
 
-    //   try {
-    //     await destination.columns();
-    //     throw new Error("should not get here");
-    //   } catch (error) {
-    //     expect(error.toString()).toMatch(
-    //       /test_key is required for a app of type test-template-app/
-    //     );
+      const previewAvailable = await destination.previewAvailable();
+      expect(previewAvailable).toBe(true);
 
-    //     await destination.destroy();
-    //   }
-    // });
+      const preview = await destination.destinationPreview();
+      expect(preview).toEqual([{ a: 1, b: 2 }]);
 
-    // test("the destination can get the columns from an attached app", async () => {
-    //   await app.setOptions({
-    //     test_key: "abc123",
-    //   });
-
-    //   const destination = await Destination.create({
-    //     name: "test plugin destination",
-    //     type: "test-template-app",
-    //     appGuid: app.guid,
-    //   });
-
-    //   const { columns, rows } = await destination.columns();
-    //   expect(columns).toEqual(["name", "email"]);
-    //   expect(rows).toEqual([
-    //     { name: "test person", email: "test@example.com" },
-    //   ]);
-
-    //   await destination.destroy();
-    // });
+      await destination.destroy();
+    });
 
     test("the app exportProfiles method can be called by the destination and exports will be created and mappings followed", async () => {
       await app.setOptions({

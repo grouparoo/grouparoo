@@ -274,7 +274,6 @@ describe("integration/runs/mysql", () => {
       key: "email",
       type: "string",
       unique: true,
-      passive: false,
     };
 
     const {

@@ -197,7 +197,6 @@ describe("integration/runs/csv", () => {
         key: "email",
         type: "string",
         unique: true,
-        passive: false,
       };
 
       const {

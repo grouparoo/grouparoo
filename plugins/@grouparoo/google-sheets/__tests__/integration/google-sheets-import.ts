@@ -206,7 +206,6 @@ describe("integration/runs/google-sheets", () => {
         key: "email",
         type: "string",
         unique: true,
-        passive: false,
       };
 
       const {
