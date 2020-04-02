@@ -197,7 +197,7 @@ export class Source extends LoggedModel<Source> {
     profilePropertyRule: ProfilePropertyRule,
     profilePropertyRuleOptionsOverride?: { [key: string]: any }
   ) {
-    if (profilePropertyRule.passive) {
+    if (profilePropertyRule.state !== "ready") {
       return;
     }
 
@@ -345,7 +345,7 @@ export class Source extends LoggedModel<Source> {
     for (const i in rules) {
       const rule = rules[i];
 
-      if (rule.passive) {
+      if (rule.state !== "active") {
         continue;
       }
 
