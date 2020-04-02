@@ -4,6 +4,7 @@ import Moment from "react-moment";
 import { Alert, Row, Col, Form, Button, Badge, Table } from "react-bootstrap";
 import Router from "next/router";
 import AppIcon from "../../appIcon";
+import StateBadge from "../../stateBadge";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -22,6 +23,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const [schedule, setSchedule] = useState({
     guid: "",
     name: "",
+    state: "",
     direction: "",
     source: {
       guid: "",
@@ -74,7 +76,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     const response = await execApi(
       "put",
       `/api/${apiVersion}/schedule/${guid}`,
-      schedule
+      Object.assign({}, schedule, { state: "ready" })
     );
     if (response?.schedule) {
       successHandler.set({ message: "Schedule Updated" });
@@ -126,6 +128,10 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             <AppIcon src={schedule?.source?.app?.icon} fluid size={100} />
           </Col>
           <Col>
+            <StateBadge state={schedule.state} />
+            <br />
+            <br />
+
             <Form.Group controlId="name">
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -334,7 +340,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
           </Col>
         </Row>
 
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" disabled={loading}>
           Update
         </Button>
         <hr />

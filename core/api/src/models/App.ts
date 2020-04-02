@@ -57,7 +57,7 @@ export class App extends LoggedModel<App> {
   @BeforeValidate
   static async ensureName(instance: App) {
     if (!instance.name) {
-      instance.name = `new ${instance.type} app`;
+      instance.name = `new ${instance.type} app ${new Date().getTime()}`;
     }
   }
 

@@ -48,7 +48,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     const response = await execApi(
       "put",
       `/api/${apiVersion}/app/${guid}`,
-      Object.assign(app, { state })
+      Object.assign({}, app, { state })
     );
     setLoading(false);
     if (response?.app) {

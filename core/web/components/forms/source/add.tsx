@@ -9,10 +9,8 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
   const { execApi } = useApi(errorHandler);
   const [connectionApps, setConnectionApps] = useState([]);
   const [source, setSource] = useState({
-    name: "",
     appGuid: "",
     type: "",
-    options: {},
   });
 
   useEffect(() => {
@@ -61,21 +59,6 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
       <h2>Choose App and Connection</h2>
 
       <Form id="form" onSubmit={onSubmit}>
-        <Form.Group controlId="name">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            autoFocus
-            required
-            type="text"
-            placeholder="Source Name"
-            value={source.name}
-            onChange={(e) => update(e)}
-          />
-          <Form.Control.Feedback type="invalid">
-            Name is required
-          </Form.Control.Feedback>
-        </Form.Group>
-
         <Form.Group controlId="type">
           <Form.Control
             hidden={true}

@@ -4,6 +4,8 @@ import {
   AllowNull,
   DataType,
   Default,
+  BeforeValidate,
+  BeforeCreate,
   BeforeSave,
   BeforeDestroy,
   AfterSave,
@@ -25,6 +27,7 @@ import { Group } from "./Group";
 import { GroupRule } from "./GroupRule";
 import { internalRun } from "../modules/internalRun";
 import { OptionHelper } from "./../modules/optionHelper";
+import { StateMachine } from "./../modules/stateMachine";
 
 export function profilePropertyRuleJSToSQLType(jsType: string) {
   const map = {
@@ -95,6 +98,10 @@ interface ProfilePropertyRulesCache {
 export interface SimpleProfilePropertyRuleOptions
   extends OptionHelper.SimpleOptions {}
 
+const STATE_TRANSITIONS = [
+  { from: "draft", to: "ready", checks: ["validateOptions"] },
+];
+
 /**
  * Metadata and methods to return the options a Profile Property Rule for this connection/app.
  * Options is a method which will poll the source for available options to select (ie: names of tables or columns)
@@ -152,9 +159,9 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   sourceGuid: string;
 
   @AllowNull(false)
-  @Default(true)
-  @Column
-  passive: boolean;
+  @Default("draft")
+  @Column(DataType.ENUM("draft", "ready"))
+  state: string;
 
   @BelongsTo(() => Source)
   source: Source;
@@ -162,11 +169,33 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @HasMany(() => Option, "ownerGuid")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
 
+  @BeforeValidate
+  static async ensureKey(instance: ProfilePropertyRule) {
+    if (!instance.key) {
+      instance.key = `rule ${new Date().getTime()}`;
+    }
+  }
+
   @BeforeSave
-  static async ensureSourceOptions(instance: ProfilePropertyRule) {
+  static async ensureOptions(instance: ProfilePropertyRule) {
     const source = await instance.$get("source");
     await source.validateOptions();
-    await instance.validateOptions();
+  }
+
+  @BeforeSave
+  static async updateState(instance: ProfilePropertyRule) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
+
+  @BeforeCreate
+  static async ensureSourceIsReady(instance: ProfilePropertyRule) {
+    const source = await Source.findOne({
+      where: { guid: instance.sourceGuid },
+    });
+
+    if (source.state !== "ready") {
+      throw new Error("source is not ready");
+    }
   }
 
   @BeforeSave
@@ -249,9 +278,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       options = await this.getOptions();
     }
 
-    if (!this.passive) {
-      return OptionHelper.validateOptions(this, options, true);
-    }
+    return OptionHelper.validateOptions(this, options, true);
   }
 
   async getPlugin() {
@@ -337,8 +364,8 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       source: await source.apiData(false, true, false),
       key: this.key,
       type: this.type,
+      state: this.state,
       unique: this.unique,
-      passive: this.passive,
       options,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,

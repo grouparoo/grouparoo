@@ -15,11 +15,17 @@ module.exports = {
         allowNull: false,
       });
     }
+
+    await migration.removeColumn("profilePropertyRules", "passive");
   },
 
   down: async function (migration, DataTypes) {
     for (const i in tables) {
       await migration.removeColumn(tables[i], "state");
     }
+
+    await migration.addColumn("profilePropertyRules", "passive", {
+      type: DataTypes.BOOLEAN,
+    });
   },
 };

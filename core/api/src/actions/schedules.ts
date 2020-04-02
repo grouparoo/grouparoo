@@ -75,6 +75,7 @@ export class ScheduleCreate extends Action {
       name: { required: false },
       sourceGuid: { required: true },
       recurring: { required: true },
+      state: { required: false },
       options: { required: false },
       recurringFrequency: { required: true, default: 0 },
     };
@@ -102,6 +103,7 @@ export class ScheduleEdit extends Action {
       name: { required: false },
       sourceGuid: { required: false },
       recurring: { required: false },
+      state: { required: false },
       options: { required: false },
       recurringFrequency: { required: false },
     };

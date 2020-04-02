@@ -4,6 +4,7 @@ import { Row, Col, Form, Button, Badge, Table } from "react-bootstrap";
 import Router from "next/router";
 import Link from "next/link";
 import AppIcon from "./../../appIcon";
+import StateBadge from "./../../stateBadge";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -13,10 +14,12 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     guid: "",
     name: "",
     type: "",
+    state: "",
     appGuid: "",
     options: {},
     app: { name: "", guid: "", icon: "" },
     connection: { name: "", description: "", options: [] },
+    previewAvailable: false,
   });
   const { guid } = query;
 
@@ -41,10 +44,16 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       setSource(sourceResponse.source);
     }
 
-    await loadPreview();
+    await loadPreview(sourceResponse.source.previewAvailable);
   }
 
-  async function loadPreview() {
+  async function loadPreview(
+    previewAvailable: boolean = source.previewAvailable
+  ) {
+    if (!previewAvailable) {
+      return;
+    }
+
     const response = await execApi(
       "get",
       `/api/${apiVersion}/source/${guid}/preview`,
@@ -62,15 +71,19 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    const state = source.previewAvailable ? undefined : "ready";
 
     const response = await execApi(
       "put",
       `/api/${apiVersion}/source/${guid}`,
-      source
+      Object.assign({}, source, { state })
     );
     if (response?.source) {
       successHandler.set({ message: "Source updated" });
       setSource(response.source);
+      if (response.source.state !== "ready") {
+        Router.push(`/source/${guid}?tab=mapping`);
+      }
     }
   };
 
@@ -127,6 +140,9 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
           <AppIcon src={source.app.icon} fluid size={100} />
         </Col>
         <Col>
+          <StateBadge state={source.state} />
+          <br />
+          <br />
           <Form id="form" onSubmit={onSubmit}>
             <Form.Group controlId="name">
               <Form.Label>Name</Form.Label>

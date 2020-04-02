@@ -13,7 +13,7 @@ export class UpdateSchedules extends Task {
 
   async run() {
     const schedules = await Schedule.findAll({
-      where: { recurring: true },
+      where: { recurring: true, state: "ready" },
     });
 
     for (const i in schedules) {

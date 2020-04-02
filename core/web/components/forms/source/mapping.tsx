@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Form, Button } from "react-bootstrap";
+import Router from "next/router";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -13,7 +14,10 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     setProfilePropertyRuleExamples,
   ] = useState({});
   const [source, setSource] = useState({
+    previewAvailable: false,
+    type: "",
     mapping: {},
+    state: "draft",
   });
   const { guid } = query;
 
@@ -33,6 +37,10 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
         setNewMappingKey(key || "");
         setNewMappingValue(sourceResponse.source.mapping[key] || "");
       }
+    }
+
+    if (sourceResponse.source.previewAvailable === false) {
+      return;
     }
 
     const previewResponse = await execApi(
@@ -62,11 +70,14 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     const response = await execApi(
       "put",
       `/api/${apiVersion}/source/${guid}`,
-      source
+      Object.assign(source, { state: "ready" })
     );
     if (response?.source) {
       successHandler.set({ message: "Source updated" });
       setSource(response.source);
+      if (source.state !== response.source.state) {
+        Router.push(`/source/${guid}`);
+      }
     }
   };
 
@@ -78,14 +89,20 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       return self.indexOf(value) === index;
     });
 
+  if (!source.previewAvailable) {
+    return (
+      <>
+        <h2>Profile Identification</h2>
+        <p>Mapping not available for a {source.type} source</p>
+      </>
+    );
+  }
+
   if (previewColumns.length === 0) {
     return (
       <>
         <h2>Profile Identification</h2>
-        <p>
-          There is no preview four this source, and therefore no mapping can be
-          set.
-        </p>
+        <p>Set the options first!</p>
       </>
     );
   }
@@ -113,6 +130,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                       <td>
                         <Form.Check
                           inline
+                          required
                           type="radio"
                           id={col}
                           name="remoteProfileIdColumn"
@@ -155,6 +173,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                       <td>
                         <Form.Check
                           inline
+                          required
                           type="radio"
                           id={rule.guid}
                           name="remoteProfileRuleGuid"

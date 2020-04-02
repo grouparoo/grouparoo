@@ -5,10 +5,14 @@ import {
   BelongsTo,
   HasOne,
   HasMany,
+  BeforeValidate,
   BeforeCreate,
+  BeforeSave,
   AfterDestroy,
   BeforeDestroy,
   ForeignKey,
+  Default,
+  DataType,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { Schedule } from "./Schedule";
@@ -21,9 +25,18 @@ import { Mapping } from "./Mapping";
 import { plugin } from "../modules/plugin";
 import { OptionHelper } from "./../modules/optionHelper";
 import { MappingHelper } from "./../modules/mappingHelper";
+import { StateMachine } from "./../modules/stateMachine";
 
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}
+
+const STATE_TRANSITIONS = [
+  {
+    from: "draft",
+    to: "ready",
+    checks: ["validateOptions", "validateMapping"],
+  },
+];
 
 @Table({ tableName: "sources", paranoid: false })
 export class Source extends LoggedModel<Source> {
@@ -44,6 +57,11 @@ export class Source extends LoggedModel<Source> {
   @Column
   type: string;
 
+  @AllowNull(false)
+  @Default("draft")
+  @Column(DataType.ENUM("draft", "ready"))
+  state: string;
+
   @BelongsTo(() => App)
   app: App;
 
@@ -59,6 +77,13 @@ export class Source extends LoggedModel<Source> {
   @HasMany(() => Option, "ownerGuid")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
 
+  @BeforeValidate
+  static async ensureName(instance: App) {
+    if (!instance.name) {
+      instance.name = `new ${instance.type} source ${new Date().getTime()}`;
+    }
+  }
+
   @BeforeCreate
   static async ensurePluginConnection(instance: Source) {
     const { plugin } = await instance.getPlugin();
@@ -67,6 +92,11 @@ export class Source extends LoggedModel<Source> {
         `cannot find an import connection for a source of ${instance.type}`
       );
     }
+  }
+
+  @BeforeSave
+  static async updateState(instance: App) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeDestroy
@@ -146,6 +176,20 @@ export class Source extends LoggedModel<Source> {
 
   async setMapping(mappings: SourceMapping) {
     return MappingHelper.setMapping(this, mappings);
+  }
+
+  async validateMapping() {
+    const { pluginConnection } = await this.getPlugin();
+    if (!pluginConnection.methods.sourcePreview) {
+      return true;
+    }
+
+    const mapping = await this.getMapping();
+    if (Object.keys(mapping).length === 1) {
+      return true;
+    } else {
+      throw new Error("mapping not set");
+    }
   }
 
   async importProfileProperty(
@@ -253,15 +297,18 @@ export class Source extends LoggedModel<Source> {
     const mapping = await this.getMapping();
     const { pluginConnection } = await this.getPlugin();
     const scheduleAvailable = await this.scheduleAvailable();
+    const previewAvailable = await this.previewAvailable();
 
     return {
       guid: this.guid,
       name: this.name,
       type: this.type,
+      state: this.state,
       mapping,
       app: app ? await app.apiData() : null,
       scheduleAvailable,
       schedule: schedule ? await schedule.apiData() : null,
+      previewAvailable,
       options,
       connection: pluginConnection,
       profilePropertyRules: profilePropertyRules
@@ -280,10 +327,20 @@ export class Source extends LoggedModel<Source> {
     return false;
   }
 
+  async previewAvailable() {
+    const { pluginConnection } = await this.getPlugin();
+    if (typeof pluginConnection?.methods?.sourcePreview === "function") {
+      return true;
+    }
+    return false;
+  }
+
   async import(profile: Profile) {
     const hash = {};
     const queryResponses = {};
-    const rules = await this.$get("profilePropertyRules");
+    const rules = await this.$get("profilePropertyRules", {
+      where: { state: "ready" },
+    });
 
     for (const i in rules) {
       const rule = rules[i];

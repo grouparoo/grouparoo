@@ -184,7 +184,7 @@ export class Profile extends LoggedModel<Profile> {
 
   async import() {
     let hash = {};
-    const sources = await Source.findAll();
+    const sources = await Source.findAll({ where: { state: "ready" } });
     for (const i in sources) {
       hash = Object.assign(hash, await sources[i].import(this));
     }

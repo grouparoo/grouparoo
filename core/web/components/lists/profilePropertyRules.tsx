@@ -6,6 +6,7 @@ import Link from "next/link";
 import Moment from "react-moment";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
+import StateBadge from "../stateBadge";
 
 export default function ({ apiVersion, errorHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -88,6 +89,7 @@ export default function ({ apiVersion, errorHandler, query }) {
                   <th>Key</th>
                   <th>Type</th>
                   <th>Unique</th>
+                  <th>State</th>
                   <th>Updated At</th>
                   <th>Example Values</th>
                 </tr>
@@ -109,6 +111,9 @@ export default function ({ apiVersion, errorHandler, query }) {
                       <td>{rule.type}</td>
                       <td>
                         <input readOnly type="checkbox" checked={rule.unique} />
+                      </td>
+                      <td>
+                        <StateBadge state={rule.state} />
                       </td>
                       <td>
                         <Moment fromNow>{rule.updatedAt}</Moment>

@@ -7,6 +7,7 @@ import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import Moment from "react-moment";
 import AppIcon from "../appIcon";
+import StateBadge from "../stateBadge";
 
 export default function (props) {
   const {
@@ -79,6 +80,7 @@ export default function (props) {
             <th>Name</th>
             <th>Type</th>
             <th>App</th>
+            <th>State</th>
             <th>Created At</th>
           </tr>
         </thead>
@@ -108,6 +110,9 @@ export default function (props) {
                       {source.app.guid}
                     </a>
                   </Link>
+                </td>
+                <td>
+                  <StateBadge state={source.state} />
                 </td>
                 <td>
                   <Moment fromNow>{source.createdAt}</Moment>

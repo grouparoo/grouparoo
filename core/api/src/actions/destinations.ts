@@ -116,8 +116,9 @@ export class DestinationCreate extends Action {
     this.outputExample = {};
     this.middleware = ["authenticated-team-member", "role-admin"];
     this.inputs = {
-      name: { required: true },
+      name: { required: false },
       type: { required: true },
+      state: { required: false },
       appGuid: { required: true },
       trackAllGroups: { required: false },
       options: { required: false },
@@ -148,6 +149,7 @@ export class DestinationEdit extends Action {
     this.inputs = {
       guid: { required: true },
       name: { required: false },
+      state: { required: false },
       trackAllGroups: { required: false },
       options: { required: false },
       mapping: { required: false },

@@ -18,14 +18,19 @@ export default function ({ apiVersion, errorHandler, successHandler, source }) {
 
     if (response?.schedule) {
       successHandler.set({ message: "Schedule Created" });
-      Router.push(`/schedule/${response.schedule.guid}`);
+      Router.push(`/schedule/${response.schedule.guid}?tab=edit`);
     } else {
       setLoading(false);
     }
   }
 
   return (
-    <Button size="sm" variant="warning" disabled={loading} onClick={create}>
+    <Button
+      size="sm"
+      variant="warning"
+      disabled={loading || source.state === "draft"}
+      onClick={create}
+    >
       Add Schedule
     </Button>
   );

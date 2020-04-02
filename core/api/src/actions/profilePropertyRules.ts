@@ -125,10 +125,10 @@ export class ProfilePropertyRuleCreate extends Action {
     this.outputExample = {};
     this.middleware = ["authenticated-team-member", "role-admin"];
     this.inputs = {
-      key: { required: true },
+      key: { required: false },
       type: { required: true },
       unique: { required: false },
-      passive: { required: false },
+      state: { required: false },
       sourceGuid: { required: false },
       options: { required: false },
     };
@@ -158,7 +158,7 @@ export class ProfilePropertyRuleEdit extends Action {
       key: { required: false },
       type: { required: false },
       unique: { required: false },
-      passive: { required: false },
+      state: { required: false },
       sourceGuid: { required: false },
       options: { required: false },
     };

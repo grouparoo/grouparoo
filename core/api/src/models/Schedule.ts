@@ -12,6 +12,7 @@ import {
   BeforeCreate,
   BeforeSave,
   AfterDestroy,
+  DataType,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { Source, SimpleSourceOptions, SourceMapping } from "./Source";
@@ -19,6 +20,7 @@ import { App, SimpleAppOptions } from "./App";
 import { Run } from "./Run";
 import { Option } from "./Option";
 import { OptionHelper } from "./../modules/optionHelper";
+import { StateMachine } from "./../modules/stateMachine";
 
 /**
  * Metadata and methods to return the options a Schedule for this connection/app.
@@ -46,6 +48,10 @@ export interface PluginConnectionScheduleOption {
 
 export interface SimpleScheduleOptions extends OptionHelper.SimpleOptions {}
 
+const STATE_TRANSITIONS = [
+  { from: "draft", to: "ready", checks: ["validateOptions"] },
+];
+
 @Table({ tableName: "schedules", paranoid: false })
 export class Schedule extends LoggedModel<Schedule> {
   guidPrefix() {
@@ -60,6 +66,11 @@ export class Schedule extends LoggedModel<Schedule> {
   @AllowNull(false)
   @Column
   name: string;
+
+  @AllowNull(false)
+  @Default("draft")
+  @Column(DataType.ENUM("draft", "ready"))
+  state: string;
 
   @AllowNull(false)
   @Default(false)
@@ -110,7 +121,7 @@ export class Schedule extends LoggedModel<Schedule> {
   static async ensureName(instance: Schedule) {
     if (!instance.name) {
       const source = await instance.$get("source");
-      instance.name = `${source.name} schedule`;
+      instance.name = `${source.name} schedule ${new Date().getTime()}`;
     }
   }
 
@@ -133,10 +144,19 @@ export class Schedule extends LoggedModel<Schedule> {
       where: { guid: instance.sourceGuid },
     });
 
+    if (source.state !== "ready") {
+      throw new Error("source is not ready");
+    }
+
     const scheduleAvailable = await source.scheduleAvailable();
     if (!scheduleAvailable) {
       throw new Error(`source ${instance.sourceGuid} cannot have a schedule`);
     }
+  }
+
+  @BeforeSave
+  static async updateState(instance: Schedule) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @AfterDestroy
@@ -154,6 +174,14 @@ export class Schedule extends LoggedModel<Schedule> {
 
   async setOptions(options: SimpleScheduleOptions) {
     return OptionHelper.setOptions(this, options);
+  }
+
+  async validateOptions(options?: SimpleSourceOptions) {
+    if (!options) {
+      options = await this.getOptions();
+    }
+
+    return OptionHelper.validateOptions(this, options);
   }
 
   async getPlugin() {
@@ -217,6 +245,7 @@ export class Schedule extends LoggedModel<Schedule> {
     return {
       guid: this.guid,
       name: this.name,
+      state: this.state,
       source: await source.apiData(false),
       recurring: this.recurring,
       options,

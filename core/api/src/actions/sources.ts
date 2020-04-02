@@ -87,8 +87,9 @@ export class SourceCreate extends Action {
     this.middleware = ["authenticated-team-member", "role-admin"];
     this.inputs = {
       appGuid: { required: true },
-      name: { required: true },
+      name: { required: false },
       type: { required: true },
+      state: { required: false },
       remoteProfileIdColumn: { required: false },
       remoteProfilePropertyRuleGuid: { required: false },
       options: { required: false },
@@ -141,6 +142,7 @@ export class SourceEdit extends Action {
       appGuid: { required: false },
       name: { required: false },
       type: { required: false },
+      state: { required: false },
       options: { required: false },
       mapping: { required: false },
     };
@@ -151,15 +153,13 @@ export class SourceEdit extends Action {
     if (!source) {
       throw new Error("source not found");
     }
-
-    await source.update(params);
     if (params.options) {
       await source.setOptions(params.options);
     }
     if (params.mapping) {
       await source.setMapping(params.mapping);
     }
-
+    await source.update(params);
     response.source = await source.apiData();
   }
 }
