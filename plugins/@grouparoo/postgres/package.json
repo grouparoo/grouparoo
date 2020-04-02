@@ -23,7 +23,7 @@
     "pg-hstore": "^2.3.3"
   },
   "peerDependencies": {
-    "@grouparoo/core": "0.1.0",
+    "@grouparoo/core": "^0.1.1-aplha.4",
     "actionhero": "^22.0.5"
   },
   "devDependencies": {
