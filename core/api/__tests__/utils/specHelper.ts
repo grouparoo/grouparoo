@@ -24,6 +24,7 @@ import { Export } from "../../src/models/Export";
 import { ExportImport } from "../../src/models/ExportImport";
 import { Group } from "../../src/models/Group";
 import { GroupMember } from "../../src/models/GroupMember";
+import { GroupRule } from "../../src/models/GroupRule";
 import { Log } from "../../src/models/Log";
 import { Profile } from "../../src/models/Profile";
 import { ProfileProperty } from "../../src/models/ProfileProperty";
@@ -76,6 +77,7 @@ export namespace helper {
       File,
       Group,
       GroupMember,
+      GroupRule,
       Export,
       ExportImport,
       Log,

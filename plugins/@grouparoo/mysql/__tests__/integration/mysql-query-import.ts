@@ -99,7 +99,7 @@ describe("integration/runs/mysql", () => {
     await client.end();
   });
 
-  test("an administrator can create the related import app and schedule", async () => {
+  test("an administrator can create the related import app", async () => {
     // sign in
     session = await specHelper.buildConnection();
     session.params = { email: "mario@example.com", password: "P@ssw0rd!" };
@@ -110,7 +110,7 @@ describe("integration/runs/mysql", () => {
     expect(sessionResponse.error).toBeUndefined();
     csrfToken = sessionResponse.csrfToken;
 
-    // create a mysql app with the proper schedule
+    // create a mysql app
     session.params = {
       csrfToken,
       name: "test app",
@@ -127,6 +127,7 @@ describe("integration/runs/mysql", () => {
       name: "mysql source",
       type: "mysql-query-import",
       appGuid: app.guid,
+      state: "ready",
     };
     const sourceResponse = await specHelper.runAction("source:create", session);
     expect(sourceResponse.error).toBeUndefined();
@@ -156,6 +157,7 @@ describe("integration/runs/mysql", () => {
       key: "email",
       type: "string",
       unique: true,
+      state: "ready",
     };
 
     const {

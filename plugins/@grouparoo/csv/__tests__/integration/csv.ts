@@ -107,6 +107,7 @@ describe("integration/runs/csv", () => {
         appGuid: app.guid,
         options: { fileGuid: file.guid },
         mapping: { id: "userId" },
+        state: "ready",
       };
       const sourceResponse = await specHelper.runAction(
         "source:create",
@@ -128,6 +129,7 @@ describe("integration/runs/csv", () => {
           first_name: "firstName",
           last_name: "lastName",
         },
+        state: "ready",
       };
       const scheduleResponse = await specHelper.runAction(
         "schedule:create",

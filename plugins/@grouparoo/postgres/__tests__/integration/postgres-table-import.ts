@@ -124,7 +124,7 @@ describe("integration/runs/postgres", () => {
     expect(sessionResponse.error).toBeUndefined();
     csrfToken = sessionResponse.csrfToken;
 
-    // create a postgres app with the proper schedule
+    // create a postgres app
     session.params = {
       csrfToken,
       name: "test app",
@@ -149,6 +149,7 @@ describe("integration/runs/postgres", () => {
       appGuid: app.guid,
       options: { table: sourceTableName },
       mapping: { id: "userId" },
+      state: "ready",
     };
     const sourceResponse = await specHelper.runAction("source:create", session);
     expect(sourceResponse.error).toBeUndefined();
@@ -164,6 +165,7 @@ describe("integration/runs/postgres", () => {
       options: {
         column: "id",
       },
+      state: "ready",
     };
     const buildScheduleResponse = await specHelper.runAction(
       "schedule:create",
@@ -188,12 +190,6 @@ describe("integration/runs/postgres", () => {
         groupForeignKey: "userId",
         groupColumnName: "group",
       },
-      mapping: {
-        id: "userId",
-        customer_email: "email",
-        fname: "firstName",
-        lname: "lastName",
-      },
     };
     const buildDestinationResponse = await specHelper.runAction(
       "destination:create",
@@ -202,7 +198,7 @@ describe("integration/runs/postgres", () => {
     expect(buildDestinationResponse.error).toBeUndefined();
     expect(buildDestinationResponse.destination.guid).toBeTruthy();
     expect(buildDestinationResponse.destination.name).toBe("test destination");
-    destination = buildDestinationResponse.schedule;
+    destination = buildDestinationResponse.destination;
   });
 
   test("we can test the app options", async () => {
@@ -252,17 +248,20 @@ describe("integration/runs/postgres", () => {
   });
 
   test("replace the email profile property rule with a new one for this source", async () => {
+    // delete the old rule
     const oldRule = await ProfilePropertyRule.findOne({
       where: { key: "email" },
     });
     await oldRule.destroy();
 
+    // create the new rule
     session.params = {
       csrfToken,
       sourceGuid: source.guid,
       key: "email",
       type: "string",
       unique: true,
+      state: "ready",
     };
 
     const {
@@ -293,14 +292,26 @@ describe("integration/runs/postgres", () => {
       session
     );
     expect(editError).toBeUndefined();
+  });
 
-    // update the destination mappings
-    const destinationMapping = await Mapping.findOne({
-      where: { remoteKey: "customer_email" },
-    });
-    await destinationMapping.update({
-      profilePropertyRuleGuid: profilePropertyRule.guid,
-    });
+  test("the destination can use the new rule in a mapping and be made ready", async () => {
+    session.params = {
+      csrfToken,
+      guid: destination.guid,
+      mapping: {
+        id: "userId",
+        customer_email: "email",
+        fname: "firstName",
+        lname: "lastName",
+      },
+      state: "ready",
+    };
+    const {
+      error,
+      destination: destinationResponse,
+    } = await specHelper.runAction("destination:edit", session);
+    expect(error).toBeUndefined();
+    expect(destinationResponse.state).toBe("ready");
   });
 
   test("create the test group", async () => {
