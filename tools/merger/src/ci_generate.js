@@ -86,7 +86,7 @@ class Generator {
   }
 
   bindJobMethods() {
-    const methods = ["setup_steps", "core_job_name_list"];
+    const methods = ["core_job_name_list"];
 
     for (const job of this.jobList) {
       for (const method of methods) {

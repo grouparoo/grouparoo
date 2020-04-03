@@ -9,7 +9,15 @@
       - checkout
       - restore_cache:
           <<: *cache-options  
-{{{setup_steps}}}
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
       - run:
           name: test
           command: cd {{{relative_path}}} && npm run test
