@@ -1,17 +1,15 @@
-# THIS FILE IS AUTO-GENERATED. DO NOT CHANGE IT DIRECTLY.
-# SEE tools/merger TO MAKE CHANGES.
-#
 version: 2
-#
+
 # Define common steps all parts of the test workflow use
 references:
   ignored-branches: &ignored-branches
     branches:
       ignore:
         - gh-pages
+
   cache-options: &cache-options
     key: package-cache-{{ .Branch }}-{{ .Revision }}
-#
+
 # Define Jobs to run
 jobs:
   build:
@@ -27,21 +25,20 @@ jobs:
       - save_cache:
           <<: *cache-options
           paths:
-            - apps/staging-public/node_modules
-            - core/node_modules
             - node_modules
             - plugins/@grouparoo/csv/node_modules
-            - plugins/@grouparoo/email-authentication/node_modules
-            - plugins/@grouparoo/google-sheets/node_modules
             - plugins/@grouparoo/logger/node_modules
             - plugins/@grouparoo/mailchimp/node_modules
+            - plugins/@grouparoo/google-sheets/node_modules
             - plugins/@grouparoo/mysql/node_modules
-            - plugins/@grouparoo/newrelic/node_modules
             - plugins/@grouparoo/postgres/node_modules
-            - tools/lerna/node_modules
-            - tools/merger/node_modules
+            - plugins/@grouparoo/email-authentication/node_modules
+            - plugins/@grouparoo/newrelic/node_modules
+            - apps/staging-public/node_modules
+            - core/node_modules
             - core/web/.next
             - core/api/dist
+
   license-checker:
     docker:
       - image: circleci/node:12
@@ -52,6 +49,7 @@ jobs:
       - run:
           name: license-checker
           command: ./tools/license-checker/check
+
   linter:
     docker:
       - image: circleci/node:12
@@ -62,6 +60,7 @@ jobs:
       - run:
           name: linter
           command: npm run lint
+
   test-core-api:
     docker:
       - image: circleci/node:12
@@ -85,14 +84,15 @@ jobs:
       - run:
           name: test
           command: cd core/api && ./../node_modules/.bin/jest --ci --maxWorkers 4
+
   test-core-web:
     docker:
       - image: circleci/node:12
+      - image: selenium/standalone-chrome:latest
       - image: redis:latest
       - image: circleci/postgres:9
         environment:
           POSTGRES_PASSWORD: password
-      - image: selenium/standalone-chrome:latest
     steps:
       - checkout
       - restore_cache:
@@ -111,174 +111,7 @@ jobs:
           command: cd core/web && ./../node_modules/.bin/jest --ci --maxWorkers 4
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
-  test-plugin-csv:
-    docker:
-      - image: circleci/node:12
-      - image: redis:latest
-      - image: circleci/postgres:9
-        environment:
-          POSTGRES_PASSWORD: password
-    steps:
-      - checkout
-      - restore_cache:
-          <<: *cache-options
-      - run:
-          name: install postgresql client
-          command: sudo apt install -y postgresql-client
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run:
-          name: create test databases
-          command: cd core/api && ./bin/create_test_databases
-      - run:
-          name: test
-          command: cd plugins/@grouparoo/csv && npm run test
-  test-plugin-email-authentication:
-    docker:
-      - image: circleci/node:12
-      - image: redis:latest
-      - image: circleci/postgres:9
-        environment:
-          POSTGRES_PASSWORD: password
-    steps:
-      - checkout
-      - restore_cache:
-          <<: *cache-options
-      - run:
-          name: install postgresql client
-          command: sudo apt install -y postgresql-client
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run:
-          name: create test databases
-          command: cd core/api && ./bin/create_test_databases
-      - run:
-          name: test
-          command: cd plugins/@grouparoo/email-authentication && npm run test
-  test-plugin-google-sheets:
-    docker:
-      - image: circleci/node:12
-      - image: redis:latest
-      - image: circleci/postgres:9
-        environment:
-          POSTGRES_PASSWORD: password
-    steps:
-      - checkout
-      - restore_cache:
-          <<: *cache-options
-      - run:
-          name: install postgresql client
-          command: sudo apt install -y postgresql-client
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run:
-          name: create test databases
-          command: cd core/api && ./bin/create_test_databases
-      - run:
-          name: test
-          command: cd plugins/@grouparoo/google-sheets && npm run test
-  test-plugin-logger:
-    docker:
-      - image: circleci/node:12
-      - image: redis:latest
-      - image: circleci/postgres:9
-        environment:
-          POSTGRES_PASSWORD: password
-    steps:
-      - checkout
-      - restore_cache:
-          <<: *cache-options
-      - run:
-          name: install postgresql client
-          command: sudo apt install -y postgresql-client
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run:
-          name: create test databases
-          command: cd core/api && ./bin/create_test_databases
-      - run:
-          name: test
-          command: cd plugins/@grouparoo/logger && npm run test
-  test-plugin-mailchimp:
-    docker:
-      - image: circleci/node:12
-      - image: redis:latest
-      - image: circleci/postgres:9
-        environment:
-          POSTGRES_PASSWORD: password
-    steps:
-      - checkout
-      - restore_cache:
-          <<: *cache-options
-      - run:
-          name: install postgresql client
-          command: sudo apt install -y postgresql-client
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run:
-          name: create test databases
-          command: cd core/api && ./bin/create_test_databases
-      - run:
-          name: test
-          command: cd plugins/@grouparoo/mailchimp && npm run test
-  test-plugin-mysql:
-    docker:
-      - image: circleci/node:12
-      - image: redis:latest
-      - image: circleci/postgres:9
-        environment:
-          POSTGRES_PASSWORD: password
-      - image: circleci/mysql:5
-    steps:
-      - checkout
-      - restore_cache:
-          <<: *cache-options
-      - run:
-          name: install postgresql client
-          command: sudo apt install -y postgresql-client
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run:
-          name: create test databases
-          command: cd core/api && ./bin/create_test_databases
-      - run:
-          name: install mysql client
-          command: sudo apt install -y mysql-client
-      - run:
-          name: create mysql databases
-          command: mysql -e "create database grouparoo_test" -u root -h 127.0.0.1
-      - run:
-          name: test
-          command: cd plugins/@grouparoo/mysql && npm run test
-  test-plugin-newrelic:
-    docker:
-      - image: circleci/node:12
-      - image: redis:latest
-      - image: circleci/postgres:9
-        environment:
-          POSTGRES_PASSWORD: password
-    steps:
-      - checkout
-      - restore_cache:
-          <<: *cache-options
-      - run:
-          name: install postgresql client
-          command: sudo apt install -y postgresql-client
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run:
-          name: create test databases
-          command: cd core/api && ./bin/create_test_databases
-      - run:
-          name: test
-          command: cd plugins/@grouparoo/newrelic && npm run test
+
   test-plugin-postgres:
     docker:
       - image: circleci/node:12
@@ -302,6 +135,157 @@ jobs:
       - run:
           name: test
           command: cd plugins/@grouparoo/postgres && npm run test
+
+  test-plugin-mysql:
+    docker:
+      - image: circleci/node:12
+      - image: redis:latest
+      - image: circleci/postgres:9
+        environment:
+          POSTGRES_PASSWORD: password
+      - image: circleci/mysql:5
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: install mysql client
+          command: sudo apt install -y mysql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: create mysql databases
+          command: mysql -e "create database grouparoo_test" -u root -h 127.0.0.1
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/mysql && npm run test
+
+  test-plugin-csv:
+    docker:
+      - image: circleci/node:12
+      - image: redis:latest
+      - image: circleci/postgres:9
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/csv && npm run test
+
+  test-plugin-mailchimp:
+    docker:
+      - image: circleci/node:12
+      - image: redis:latest
+      - image: circleci/postgres:9
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/mailchimp && npm run test
+  test-plugin-google-sheets:
+    docker:
+      - image: circleci/node:12
+      - image: redis:latest
+      - image: circleci/postgres:9
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/google-sheets && npm run test
+
+  test-plugin-email-authentication:
+    docker:
+      - image: circleci/node:12
+      - image: redis:latest
+      - image: circleci/postgres:9
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/email-authentication && npm run test
+
+  test-plugin-newrelic:
+    docker:
+      - image: circleci/node:12
+      - image: redis:latest
+      - image: circleci/postgres:9
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/newrelic && npm run test
+
   complete:
     docker:
       - image: circleci/node:12
@@ -309,8 +293,8 @@ jobs:
       - run:
           name: complete
           command: echo "Tests Complete!"
-#
-# Run all the tests in parallel
+
+# Run all the tests is parallel
 workflows:
   version: 2
   test-grouparoo:
@@ -318,87 +302,92 @@ workflows:
       - build:
           filters:
             <<: *ignored-branches
+
       - license-checker:
           filters:
             <<: *ignored-branches
           requires:
             - build
+
       - linter:
           filters:
             <<: *ignored-branches
           requires:
             - build
+
       - test-core-api:
           filters:
             <<: *ignored-branches
           requires:
             - build
+
       - test-core-web:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-plugin-csv:
-          filters:
-            <<: *ignored-branches
-          requires:
-            - test-core-api
-            - test-core-web
-      - test-plugin-email-authentication:
-          filters:
-            <<: *ignored-branches
-          requires:
-            - test-core-api
-            - test-core-web
-      - test-plugin-google-sheets:
-          filters:
-            <<: *ignored-branches
-          requires:
-            - test-core-api
-            - test-core-web
-      - test-plugin-logger:
-          filters:
-            <<: *ignored-branches
-          requires:
-            - test-core-api
-            - test-core-web
-      - test-plugin-mailchimp:
-          filters:
-            <<: *ignored-branches
-          requires:
-            - test-core-api
-            - test-core-web
-      - test-plugin-mysql:
-          filters:
-            <<: *ignored-branches
-          requires:
-            - test-core-api
-            - test-core-web
-      - test-plugin-newrelic:
-          filters:
-            <<: *ignored-branches
-          requires:
-            - test-core-api
-            - test-core-web
+
       - test-plugin-postgres:
           filters:
             <<: *ignored-branches
           requires:
             - test-core-api
             - test-core-web
+
+      - test-plugin-mysql:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - test-core-api
+            - test-core-web
+
+      - test-plugin-csv:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - test-core-api
+            - test-core-web
+
+      - test-plugin-mailchimp:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - test-core-api
+            - test-core-web
+
+      - test-plugin-google-sheets:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - test-core-api
+            - test-core-web
+
+      - test-plugin-email-authentication:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - test-core-api
+            - test-core-web
+
+      - test-plugin-newrelic:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - test-core-api
+            - test-core-web
+
       - complete:
           filters:
             <<: *ignored-branches
           requires:
-            - license-checker
             - linter
+            - license-checker
             - test-core-api
             - test-core-web
-            - test-plugin-csv
-            - test-plugin-email-authentication
-            - test-plugin-google-sheets
-            - test-plugin-logger
-            - test-plugin-mailchimp
-            - test-plugin-mysql
-            - test-plugin-newrelic
             - test-plugin-postgres
+            - test-plugin-mysql
+            - test-plugin-csv
+            - test-plugin-mailchimp
+            - test-plugin-google-sheets
+            - test-plugin-email-authentication
+            - test-plugin-newrelic
