@@ -9,7 +9,7 @@ module.exports = {
 
   down: async function (migration, DataTypes) {
     await migration.changeColumn("profilePropertyRules", "type", {
-      type: DataTypes.ENUM("float", "integer", "date", "string", "boolean"),
+      type: DataTypes.STRING(191),
       allowNull: false,
       defaultValue: "string",
     });

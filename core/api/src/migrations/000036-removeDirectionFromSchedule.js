@@ -4,10 +4,6 @@ module.exports = {
   },
 
   down: async function (migration, DataTypes) {
-    await migration.addColumn(
-      "schedules",
-      "direction",
-      DataTypes.ENUM("import", "export")
-    );
+    await migration.addColumn("schedules", "direction", DataTypes.STRING(191));
   },
 };
