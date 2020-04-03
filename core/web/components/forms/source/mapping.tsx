@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Form, Button } from "react-bootstrap";
+import { createSchedule } from "../schedule/add";
 import Router from "next/router";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
@@ -10,6 +11,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const [newMappingKey, setNewMappingKey] = useState("");
   const [newMappingValue, setNewMappingValue] = useState("");
   const [types, setTypes] = useState([]);
+  const [scheduleCount, setScheduleCount] = useState(0);
   const [newProfilePropertyRule, setNewProfilePropertyRule] = useState({
     key: "",
     type: "",
@@ -29,6 +31,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   useEffect(() => {
     load();
     loadOptions();
+    countSchedules();
   }, []);
 
   async function load() {
@@ -92,6 +95,11 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     }
   };
 
+  const countSchedules = async () => {
+    const { total } = await execApi("get", `/api/${apiVersion}/schedules`);
+    setScheduleCount(total);
+  };
+
   const updateMapping = async (event) => {
     event.preventDefault();
 
@@ -105,6 +113,19 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     if (response?.source) {
       successHandler.set({ message: "Source updated" });
       setSource(response.source);
+
+      // this source can have a schedule, and we have no schedules yet
+      if (scheduleCount === 0 && response.source.scheduleAvailable) {
+        createSchedule({
+          sourceGuid: response.source.guid,
+          setLoading: () => {},
+          apiVersion,
+          successHandler,
+          execApi,
+        });
+      }
+
+      // we just went 'ready'
       if (source.state !== response.source.state) {
         Router.push(`/source/${guid}`);
       }
