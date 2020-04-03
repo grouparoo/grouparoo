@@ -3,7 +3,7 @@ name: update-branch
 on: pull_request
 
 jobs:
-  build:
+  lerna:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -17,6 +17,25 @@ jobs:
           git config --local user.email "hello@grouparoo.com"
           git config --local user.name "Grouparoo Bot"
           git diff-index --quiet HEAD || git commit -m "Update lerna things automatically" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: ${{ github.event.pull_request.head.ref }}
+          github_token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+  merger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Update merged items
+        run: |
+          cd tools/merger && ./github_action
+      - name: Commit files
+        run: |
+          git config --local user.email "hello@grouparoo.com"
+          git config --local user.name "Grouparoo Bot"
+          git diff-index --quiet HEAD || git commit -m "Update merged items automatically" -a
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
