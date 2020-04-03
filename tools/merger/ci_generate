@@ -2,7 +2,7 @@
 const argv = require("yargs")
   .help("h")
   .alias("h", "help")
-  .example("$0", "generate yml file for continuous")
+  .example("$0", "generate yml file for continuous integration")
   .count("verbose")
   .alias("verbose", "v")
   .describe("verbose", "show steps")

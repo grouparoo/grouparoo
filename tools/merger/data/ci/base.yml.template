@@ -1,5 +1,8 @@
+# THIS FILE IS AUTO-GENERATED. DO NOT CHANGE IT DIRECTLY.
+# SEE tools/merger TO MAKE CHANGES.
+#
 version: 2
-
+#
 # Define common steps all parts of the test workflow use
 references:
   ignored-branches: &ignored-branches
@@ -9,7 +12,7 @@ references:
 
   cache-options: &cache-options
     key: package-cache-{{ .Branch }}-{{ .Revision }}
-
+#
 # Define Jobs to run
 jobs:
   build:
@@ -38,8 +41,8 @@ jobs:
       - run:
           name: complete
           command: echo "Tests Complete!"
-
-# Run all the tests is parallel
+#
+# Run all the tests in parallel
 workflows:
   version: 2
   test-grouparoo:
