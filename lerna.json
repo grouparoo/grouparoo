@@ -1,9 +1,5 @@
 {
-  "packages": [
-    "apps/*",
-    "core",
-    "plugins/*/*"
-  ],
+  "packages": ["apps/*", "core", "plugins/*/*"],
   "version": "0.1.1-aplha.4",
   "command": {
     "version": {

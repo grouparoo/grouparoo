@@ -48,7 +48,7 @@ jobs:
           <<: *cache-options
       - run:
           name: license-checker
-          command: ./bin/license-checker
+          command: ./tools/license-checker/check
 
   linter:
     docker:

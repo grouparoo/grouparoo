@@ -11,7 +11,7 @@ const excludePackages = [
   "@newrelic/aws-sdk@1.1.2",
   "@newrelic/koa@3.0.0",
   "@newrelic/native-metrics@5.0.0",
-  "@newrelic/superagent@2.0.1"
+  "@newrelic/superagent@2.0.1",
 ];
 
 const onlyAllow = [
@@ -28,17 +28,21 @@ const onlyAllow = [
   "CC-BY-3.0",
   "CC-BY-4.0",
   "Unlicense",
-  "WTFPL"
+  "WTFPL",
 ];
 
+const rootPath = path.join(__dirname, "..", "..");
 const packageFiles = [].concat(
-  glob.sync(path.join(__dirname, "..", "package.json")),
-  glob.sync(path.join(__dirname, "..", "*", "package.json")),
-  glob.sync(path.join(__dirname, "..", "plugins", "*", "*", "package.json"))
+  glob.sync(path.join(rootPath, "package.json")),
+  glob.sync(path.join(rootPath, "*", "package.json")),
+  glob.sync(path.join(rootPath, "plugins", "*", "*", "package.json")),
+  glob.sync(path.join(rootPath, "internal", "*", "package.json")),
+  glob.sync(path.join(rootPath, "apps", "*", "package.json")),
+  glob.sync(path.join(rootPath, "tools", "*", "package.json"))
 );
 
 // the packages in this repository are explicitly allowed, regardless of their license.
-packageFiles.forEach(pkgFile => {
+packageFiles.forEach((pkgFile) => {
   const pkgJson = JSON.parse(fs.readFileSync(pkgFile));
   const nameAndVersion = `${pkgJson.name}@${pkgJson.version}`;
   excludePackages.push(nameAndVersion);
@@ -57,7 +61,7 @@ for (const i in packageFiles) {
   const options = {
     start: projectRoot,
     excludePackages: excludePackages.join(";"),
-    onlyAllow: onlyAllow.join(";")
+    onlyAllow: onlyAllow.join(";"),
   };
   checker.init(options, (error, packages) => {
     if (error) {
@@ -72,7 +76,7 @@ for (const i in packageFiles) {
   });
 }
 
-process.on("uncaughtException", error => {
+process.on("uncaughtException", (error) => {
   console.error(`🚫 | ${error}`);
   process.exit(1);
 });
