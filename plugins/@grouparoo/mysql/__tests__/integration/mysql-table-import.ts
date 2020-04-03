@@ -461,7 +461,7 @@ describe("integration/runs/mysql", () => {
   });
 
   test(
-    "a mysql schedule can run and update profiles",
+    "a mysql schedule can run and update profiles only finding updated records",
     async () => {
       // enqueue the run
       session.params = {

@@ -454,7 +454,7 @@ describe("integration/runs/postgres", () => {
   });
 
   test(
-    "a postgres schedule can run and update profiles",
+    "a postgres schedule can run and update profiles only finding updated records",
     async () => {
       // enqueue the run
       session.params = {
