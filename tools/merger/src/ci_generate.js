@@ -173,6 +173,15 @@ class Generator {
     for (const method of methods) {
       view[method] = this[method].bind(this);
     }
+
+    const customs = ["cache"];
+    for (const section of customs) {
+      const method = `custom_${section}`;
+      view[method] = function () {
+        const template = readTemplate(section, "global", "base");
+        return Mustache.render(template, {});
+      };
+    }
     return view;
   }
 
