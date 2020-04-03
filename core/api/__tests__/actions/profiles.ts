@@ -168,7 +168,7 @@ describe("actions/profiles", () => {
 
       const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
       const rulesCount = await ProfilePropertyRule.count();
-      expect(foundTasks.length).toBe(rulesCount + 1);
+      expect(foundTasks.length).toBe(rulesCount);
     });
 
     test("a writer can destroy a profile", async () => {

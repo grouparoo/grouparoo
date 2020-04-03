@@ -44,6 +44,7 @@ describe("actions/schedules", () => {
       source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
     });
 
     test("an administrator can create a new schedule", async () => {
