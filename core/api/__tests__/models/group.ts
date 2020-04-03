@@ -77,7 +77,7 @@ describe("models/group", () => {
         type: "calculated",
         state: "bla",
       });
-      await expect(group.save()).rejects.toThrow(/Validation error/);
+      await expect(group.save()).rejects.toThrow(/invalid input value/);
     });
 
     test("groups can only be of types manual and calculated", async () => {

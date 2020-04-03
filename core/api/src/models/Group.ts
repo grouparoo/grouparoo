@@ -45,8 +45,6 @@ export interface GroupRuleWithKey {
   relativeMatchDirection?: string;
 }
 
-const validStates = ["ready", "initializing", "updating", "deleted"];
-
 // we have no checks, as those are managed by the lifecycle methods below (and tasks)
 const STATE_TRANSITIONS = [
   { from: "ready", to: "initializing", checks: [] },
@@ -90,12 +88,7 @@ export class Group extends LoggedModel<Group> {
 
   @AllowNull(false)
   @Default("ready")
-  @Is("ofValidState", (value) => {
-    if (value && validStates.indexOf(value) < 0) {
-      throw new Error(`state must be one of: ${validStates.join(",")}`);
-    }
-  })
-  @Column(DataType.ENUM(...validStates))
+  @Column(DataType.ENUM("ready", "initializing", "updating", "deleted"))
   state: string;
 
   @Column
