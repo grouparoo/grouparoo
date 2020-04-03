@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const Mustache = require("mustache");
 const { allPackagePaths, allPluginPaths } = require("../../shared/packages");
+const execSync = require("../../shared/exec");
 
 module.exports.cmd = async function (vargs) {
   const instance = new Generator(vargs);
@@ -78,20 +79,25 @@ class Generator {
     this.addCore("web");
   }
 
-  addPlugin(fullPath) {
+  getPlugin(fullPath) {
     const relative_path = path.relative(this.rootPath, fullPath);
     const name = path.basename(fullPath);
-    this.jobList.push({
+    return {
       type: "plugin",
       job_name: `test-plugin-${name}`,
       name,
       relative_path,
-    });
+    };
   }
   addPlugins(name) {
     const pluginPaths = allPluginPaths();
+    let plugins = [];
     for (const fullPath of pluginPaths) {
-      this.addPlugin(fullPath);
+      plugins.push(this.getPlugin(fullPath));
+    }
+    plugins.sort((a, b) => a.name.localeCompare(b.name));
+    for (const plugin of plugins) {
+      this.jobList.push(plugin);
     }
   }
 
@@ -124,7 +130,10 @@ class Generator {
     }
 
     const prefix = " ".repeat(12) + "- ";
-    return relativePaths.map((p) => `${prefix}${p}`).join("\n");
+    return relativePaths
+      .map((p) => `${prefix}${p}`)
+      .sort()
+      .join("\n");
   }
 
   renderJob(job, name) {
@@ -170,6 +179,24 @@ class Generator {
     this.compile();
     const baseTemplate = readTemplate("base");
     const rendered = Mustache.render(baseTemplate, this.baseView());
-    console.log(rendered);
+
+    // removes empty lines
+    const toWrite = rendered.replace(/^\s*$(?:\r\n?|\n)/gm, "");
+    this.log(1, toWrite);
+
+    const ymlPath = path.join(this.rootPath, ".circleci", "config.yml");
+    fs.writeFileSync(ymlPath, toWrite);
+
+    // prettier format
+    const pCmd = path.join(
+      this.rootPath,
+      "tools",
+      "merger",
+      "node_modules",
+      ".bin",
+      "prettier"
+    );
+    const pConfig = path.join(this.rootPath, ".prettierrc");
+    await execSync(`'${pCmd}' --config '${pConfig}' --write '${ymlPath}'`);
   }
 }
