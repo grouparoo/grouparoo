@@ -29,6 +29,7 @@ jobs:
           <<: *cache-options
           paths:
 {{{node_module_list}}}
+{{{custom_cache}}}
             - core/web/.next
             - core/api/dist
 
