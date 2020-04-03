@@ -10,6 +10,7 @@ import {
   UpdatedAt,
   AllowNull,
   DataType,
+  BeforeSave,
   BeforeCreate,
   Default,
   BelongsTo,
@@ -20,10 +21,14 @@ import {
 import * as uuid from "uuid";
 import { Schedule } from "./Schedule";
 import { Import } from "./Import";
+import { StateMachine } from "./../modules/stateMachine";
 
 export interface RunFilter {
   [key: string]: any;
 }
+
+// we have no checks, as those are managed by the lifecycle methods below (and tasks)
+const STATE_TRANSITIONS = [{ from: "running", to: "complete", checks: [] }];
 
 @Table({ tableName: "runs", paranoid: false })
 export class Run extends Model<Run> {
@@ -103,6 +108,11 @@ export class Run extends Model<Run> {
 
   @HasMany(() => Import, "creatorGuid")
   imports: Import[];
+
+  @BeforeSave
+  static async updateState(instance: Run) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
 
   @AfterCreate
   static async testRun(instance: Run) {
