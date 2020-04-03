@@ -135,10 +135,19 @@ export class ProfilePropertyRuleCreate extends Action {
   }
 
   async run({ params, response }) {
-    const profilePropertyRule = new ProfilePropertyRule(params);
-    await profilePropertyRule.save();
+    const profilePropertyRule = await ProfilePropertyRule.create({
+      key: params.key,
+      type: params.type,
+      unique: params.unique,
+      sourceGuid: params.sourceGuid,
+    });
+
     if (params.options) {
       await profilePropertyRule.setOptions(params.options);
+    }
+
+    if (params.state) {
+      await profilePropertyRule.update({ state: params.state });
     }
 
     response.profilePropertyRule = await profilePropertyRule.apiData();
@@ -175,6 +184,7 @@ export class ProfilePropertyRuleEdit extends Action {
     if (params.options) {
       await profilePropertyRule.setOptions(params.options);
     }
+
     await profilePropertyRule.update(params);
 
     response.profilePropertyRule = await profilePropertyRule.apiData();

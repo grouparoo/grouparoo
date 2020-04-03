@@ -70,15 +70,23 @@ export class AppCreate extends Action {
     this.inputs = {
       name: { required: false },
       type: { required: true },
+      state: { required: false },
       options: { required: false },
     };
   }
 
   async run({ params, response }) {
-    const app = await App.create(params);
+    const app = await App.create({
+      name: params.name,
+      type: params.type,
+    });
 
     if (params.options) {
       await app.setOptions(params.options);
+    }
+
+    if (params.state) {
+      await app.update({ state: params.state });
     }
 
     response.app = await app.apiData();

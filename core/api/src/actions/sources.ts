@@ -90,21 +90,28 @@ export class SourceCreate extends Action {
       name: { required: false },
       type: { required: true },
       state: { required: false },
-      remoteProfileIdColumn: { required: false },
-      remoteProfilePropertyRuleGuid: { required: false },
       options: { required: false },
       mapping: { required: false },
     };
   }
 
   async run({ params, response }) {
-    const source = await Source.create(params);
+    const source = await Source.create({
+      appGuid: params.appGuid,
+      name: params.name,
+      type: params.type,
+    });
     if (params.options) {
       await source.setOptions(params.options);
     }
     if (params.mapping) {
       await source.setMapping(params.mapping);
     }
+
+    if (params.state) {
+      await source.update({ state: params.state });
+    }
+
     response.source = await source.apiData();
   }
 }

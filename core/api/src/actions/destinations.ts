@@ -127,12 +127,23 @@ export class DestinationCreate extends Action {
   }
 
   async run({ params, response }) {
-    const destination = await Destination.create(params);
+    const destination = await Destination.create({
+      name: params.name,
+      type: params.type,
+      appGuid: params.appGuid,
+      trackAllGroups: params.trackAllGroups,
+    });
+
     if (params.options) {
       await destination.setOptions(params.options);
     }
+
     if (params.mapping) {
       await destination.setMapping(params.mapping);
+    }
+
+    if (params.state) {
+      await destination.update({ state: params.state });
     }
 
     response.destination = await destination.apiData();
