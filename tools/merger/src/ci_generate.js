@@ -8,14 +8,24 @@ module.exports.cmd = async function (vargs) {
   await instance.generate();
 };
 
-function readTemplate(name, type) {
+function readTemplate(name, type, sub) {
   const dirPath = path.resolve(path.join(__dirname, "..", "data", "ci"));
   const fileName = `${name}.yml.template`;
   let templatePath;
-  if (type) {
+  if (sub) {
+    templatePath = path.join(dirPath, type, sub, fileName);
+  } else if (type) {
     templatePath = path.join(dirPath, type, fileName);
   } else {
     templatePath = path.join(dirPath, fileName);
+  }
+  if (!fs.existsSync(templatePath)) {
+    if (sub) {
+      // this is ok, not there
+      return "";
+    } else {
+      throw `template not found: ${templatePath}`;
+    }
   }
   return fs.readFileSync(templatePath).toString();
 }
@@ -85,18 +95,22 @@ class Generator {
     }
   }
 
-  bindJobMethods() {
-    const methods = ["core_job_name_list"];
+  bindJobMethod(job) {
+    job.core_job_name_list = this.core_job_name_list.bind(this);
 
-    for (const job of this.jobList) {
-      for (const method of methods) {
-        job[method] = this[method].bind(this, job);
-      }
+    const customs = ["docker", "steps", "test"];
+    for (const section of customs) {
+      const method = `custom_${section}`;
+      job[method] = function () {
+        const template = readTemplate(section, job.type, job.name);
+        return Mustache.render(template, job);
+      };
     }
   }
-  setup_steps(job) {
-    const template = readTemplate("setup_steps");
-    return Mustache.render(template, job);
+  bindJobMethods() {
+    for (const job of this.jobList) {
+      this.bindJobMethod(job);
+    }
   }
 
   node_module_list() {
