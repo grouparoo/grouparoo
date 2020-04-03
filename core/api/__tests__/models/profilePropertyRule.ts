@@ -144,6 +144,21 @@ describe("models/profilePropertyRule", () => {
     );
   });
 
+  test("a profile property rule cannot be created in the ready state with missing required options", async () => {
+    const source = await helper.factories.source();
+    const rule = ProfilePropertyRule.build({
+      sourceGuid: source.guid,
+      name: "no opts",
+      type: "test-plugin-import",
+      state: "ready",
+    });
+
+    await expect(rule.save()).rejects.toThrow(
+      /table is required for a source of type test-plugin-import/
+    );
+    await source.destroy();
+  });
+
   test("if there is no change to options, the internalRun will not be enqueued", async () => {
     await api.resque.queue.connection.redis.flushdb();
     const rule = await ProfilePropertyRule.findOne({ where: { key: "email" } });

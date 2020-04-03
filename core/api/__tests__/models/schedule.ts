@@ -183,6 +183,16 @@ describe("models/schedule", () => {
         await schedule.destroy();
       });
 
+      test("a schedule cannot be created in the ready state with missing required options", async () => {
+        const schedule = Schedule.build({
+          sourceGuid: source.guid,
+          name: "no opts",
+          state: "ready",
+        });
+
+        await expect(schedule.save()).rejects.toThrow(/maxColumn is required/);
+      });
+
       test("a schedule that is ready cannot move back to draft", async () => {
         const schedule = await helper.factories.schedule();
         await schedule.setOptions({ maxColumn: "abc" });

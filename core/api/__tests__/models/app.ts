@@ -179,6 +179,15 @@ describe("models/app", () => {
       await app.destroy();
     });
 
+    test("an app cannot be created in the ready state with missing required options", async () => {
+      const app = App.build({
+        type: "test-plugin-app",
+        state: "ready",
+      });
+
+      await expect(app.save()).rejects.toThrow(/fileGuid is required/);
+    });
+
     test("an app with a source cannot be deleted", async () => {
       const app = await App.create({
         name: "test app",

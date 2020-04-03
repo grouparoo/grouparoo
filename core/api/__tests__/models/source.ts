@@ -102,9 +102,9 @@ describe("models/source", () => {
     });
 
     test("a source cannot be created in the ready state with missing required options", async () => {
-      const source = await Source.build({
+      const source = Source.build({
         appGuid: app.guid,
-        name: "no opts source",
+        name: "no opts",
         type: "test-plugin-import",
         state: "ready",
       });

@@ -179,6 +179,16 @@ describe("models/destination", () => {
         ).rejects.toThrow(/cannot find profile property rule TheUserID/);
       });
 
+      test("a destination cannot be created in the ready state with missing required options", async () => {
+        const destination = Destination.build({
+          appGuid: app.guid,
+          type: "test-plugin-export",
+          state: "ready",
+        });
+
+        await expect(destination.save()).rejects.toThrow(/table is required/);
+      });
+
       test("a destination cannot be changed to to the ready state if there are missing required options", async () => {
         destination = await helper.factories.destination();
         await expect(destination.update({ state: "ready" })).rejects.toThrow();

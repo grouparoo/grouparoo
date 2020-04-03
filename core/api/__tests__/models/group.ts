@@ -31,7 +31,7 @@ describe("models/group", () => {
     expect(group.state).toBe("draft");
   });
 
-  test("groups ban be created in the ready state", async () => {
+  test("groups can be created in the ready state", async () => {
     const group = new Group({
       name: "test group ready",
       type: "manual",
