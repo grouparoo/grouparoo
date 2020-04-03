@@ -31,7 +31,7 @@ const onlyAllow = [
   "WTFPL",
 ];
 
-const packageFiles = allPackageFiles();
+const packageFiles = allPackageFiles(glob);
 
 // the packages in this repository are explicitly allowed, regardless of their license.
 packageFiles.forEach((pkgFile) => {

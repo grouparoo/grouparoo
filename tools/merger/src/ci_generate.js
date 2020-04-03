@@ -1,3 +1,4 @@
+const glob = require("glob");
 const fs = require("fs");
 const path = require("path");
 const Mustache = require("mustache");
@@ -90,7 +91,7 @@ class Generator {
     };
   }
   addPlugins(name) {
-    const pluginPaths = allPluginPaths();
+    const pluginPaths = allPluginPaths(glob);
     let plugins = [];
     for (const fullPath of pluginPaths) {
       plugins.push(this.getPlugin(fullPath));
@@ -121,7 +122,7 @@ class Generator {
 
   node_module_list() {
     const indent = 12;
-    const packagePaths = allPackagePaths();
+    const packagePaths = allPackagePaths(glob);
     const relativePaths = [];
     for (const packagePath of packagePaths) {
       const fullPath = path.join(packagePath, "node_modules");

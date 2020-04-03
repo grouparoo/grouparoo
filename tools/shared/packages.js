@@ -1,19 +1,18 @@
-const glob = require("glob");
 const path = require("path");
 const fs = require("fs");
 
 const rootPath = path.resolve(path.join(__dirname, "..", ".."));
 
-function allPluginFiles() {
+function allPluginFiles(glob) {
   const packageFiles = [].concat(
     glob.sync(path.join(rootPath, "plugins", "*", "*", "package.json"))
   );
   return packageFiles;
 }
 
-function allPackageFiles() {
+function allPackageFiles(glob) {
   const packageFiles = [].concat(
-    allPluginFiles(),
+    allPluginFiles(glob),
     glob.sync(path.join(rootPath, "package.json")),
     glob.sync(path.join(rootPath, "*", "package.json")),
     glob.sync(path.join(rootPath, "internal", "*", "package.json")),
@@ -23,13 +22,13 @@ function allPackageFiles() {
   return packageFiles;
 }
 
-function allPackagePaths() {
-  const allJson = allPackageFiles();
+function allPackagePaths(glob) {
+  const allJson = allPackageFiles(glob);
   return allJson.map((f) => path.resolve(path.join(f, "..")));
 }
 
-function allPluginPaths() {
-  const allJson = allPluginFiles();
+function allPluginPaths(glob) {
+  const allJson = allPluginFiles(glob);
   return allJson.map((f) => path.resolve(path.join(f, "..")));
 }
 
