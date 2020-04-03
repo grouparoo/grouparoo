@@ -83,11 +83,12 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
             return (
               <Col key={`connection-${_app.name}-${_connection.name}`} md={3}>
                 <Card
+                  style={{ marginBottom: 20 }}
                   bg={
                     source.appGuid === _app.guid &&
                     source.type === _connection.name
                       ? "success"
-                      : "light"
+                      : "secondary"
                   }
                   onClick={() => {
                     const _source = Object.assign({}, source);
@@ -97,17 +98,29 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
                   }}
                 >
                   <Card.Body>
-                    <AppIcon className="card-img" src={_app.icon} size={1000} />
+                    <AppIcon className="card-img" src={_app.icon} fluid />
                     <br />
                     <br />
-                    <strong>App</strong>: {_app.name}
+                    <div style={{ textAlign: "center" }}>
+                      <h4>{_connection.name}</h4>
+                      <strong>{_app.name}</strong>
+                    </div>
                     <br />
-                    <strong>connection</strong>: {_connection.name}
+                    {_connection.description}
                   </Card.Body>
                 </Card>
               </Col>
             );
           })}
+
+          <Col md={3}>
+            <Card onClick={() => Router.push("/app/new")}>
+              <Card.Body style={{ textAlign: "center" }}>
+                <p>Don’t see what you’re looking for?</p>
+                <p>Connect a new App</p>
+              </Card.Body>
+            </Card>
+          </Col>
         </Row>
 
         <br />

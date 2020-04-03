@@ -33,12 +33,14 @@ export default function AppIcon({
     return <Image src={src} className={className} rounded fluid />;
   } else {
     return (
-      <Image
-        src={src}
-        rounded
-        className={className}
-        style={{ maxHeight: size, maxWidth: size }}
-      />
+      <div style={{ paddingTop: fluid ? "100%" : undefined }}>
+        <Image
+          src={src}
+          rounded
+          className={className}
+          style={{ height: size, width: size }}
+        />
+      </div>
     );
   }
 }

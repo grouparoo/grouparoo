@@ -41,7 +41,8 @@ export default function ({ apiVersion, errorHandler }) {
             return (
               <Col key={`plugin-${_app.name}`} md={3}>
                 <Card
-                  bg={app.type === _app.name ? "success" : "light"}
+                  style={{ marginBottom: 20 }}
+                  bg={app.type === _app.name ? "success" : "secondary"}
                   onClick={() => {
                     const __app = Object.assign({}, app);
                     __app.type = _app.name;
@@ -52,11 +53,13 @@ export default function ({ apiVersion, errorHandler }) {
                     <AppIcon
                       className="card-img"
                       src={_app.plugin.icon}
-                      size={1000}
+                      fluid
                     />
                     <br />
                     <br />
-                    <strong>App</strong>: {_app.name}
+                    <div style={{ textAlign: "center" }}>
+                      <h4>{_app.name}</h4>
+                    </div>
                   </Card.Body>
                 </Card>
               </Col>
