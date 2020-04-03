@@ -31,7 +31,9 @@ export interface RunFilter {
 const STATE_TRANSITIONS = [
   { from: "draft", to: "running", checks: [] },
   { from: "draft", to: "complete", checks: [] },
+  { from: "draft", to: "stopped", checks: [] },
   { from: "running", to: "complete", checks: [] },
+  { from: "running", to: "stopped", checks: [] },
 ];
 
 @Table({ tableName: "runs", paranoid: false })
@@ -65,7 +67,7 @@ export class Run extends Model<Run> {
   creatorType: string;
 
   @AllowNull(false)
-  @Column(DataType.ENUM("draft", "running", "complete"))
+  @Column(DataType.ENUM("draft", "running", "complete", "stopped"))
   state: string;
 
   @Column
@@ -124,7 +126,7 @@ export class Run extends Model<Run> {
   }
 
   async determineState() {
-    if (this.state === "complete") {
+    if (this.state === "complete" || this.state === "stopped") {
       return;
     }
 
@@ -140,33 +142,41 @@ export class Run extends Model<Run> {
     });
 
     if (completeImportsCount === totalImportsCount) {
-      const importErrorCounts = await Import.findAll({
-        attributes: [
-          "errorMessage",
-          [api.sequelize.fn("COUNT", "guid"), "errorCount"],
-        ],
-        where: {
-          creatorGuid: this.guid,
-          errorMessage: { [Op.not]: null },
-        },
-        group: ["errorMessage"],
-      });
-
-      const errorMessage = importErrorCounts
-        .map((emc) => `${emc.errorMessage} (x${emc.get("errorCount")})`)
-        .join("\r\n");
-
       this.state = "complete";
       this.completedAt = new Date();
-
-      if (importErrorCounts.length > 0) {
-        this.error = this.error
-          ? this.error + "\r\n" + errorMessage
-          : errorMessage;
-      }
-
-      return this.save();
+      await this.buildErrorMessage();
     }
+  }
+
+  async buildErrorMessage() {
+    const importErrorCounts = await Import.findAll({
+      attributes: [
+        "errorMessage",
+        [api.sequelize.fn("COUNT", "guid"), "errorCount"],
+      ],
+      where: {
+        creatorGuid: this.guid,
+        errorMessage: { [Op.not]: null },
+      },
+      group: ["errorMessage"],
+    });
+
+    const errorMessage = importErrorCounts
+      .map((emc) => `${emc.errorMessage} (x${emc.get("errorCount")})`)
+      .join("\r\n");
+
+    if (importErrorCounts.length > 0) {
+      this.error = this.error
+        ? this.error + "\r\n" + errorMessage
+        : errorMessage;
+    }
+
+    return this.save();
+  }
+
+  async stop() {
+    await this.update({ state: "stopped", completedAt: new Date() });
+    await this.buildErrorMessage();
   }
 
   /**
