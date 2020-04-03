@@ -8,20 +8,13 @@ export default function ({ apiVersion, errorHandler, successHandler, source }) {
   const [loading, setLoading] = useState(false);
 
   async function create() {
-    const data = {
+    createSchedule({
       sourceGuid: source.guid,
-      recurring: false,
-    };
-
-    setLoading(true);
-    const response = await execApi("post", `/api/${apiVersion}/schedule`, data);
-
-    if (response?.schedule) {
-      successHandler.set({ message: "Schedule Created" });
-      Router.push(`/schedule/${response.schedule.guid}?tab=edit`);
-    } else {
-      setLoading(false);
-    }
+      setLoading,
+      apiVersion,
+      successHandler,
+      execApi,
+    });
   }
 
   return (
@@ -34,4 +27,27 @@ export default function ({ apiVersion, errorHandler, successHandler, source }) {
       Add Schedule
     </Button>
   );
+}
+
+export async function createSchedule({
+  sourceGuid,
+  setLoading,
+  apiVersion,
+  successHandler,
+  execApi,
+}) {
+  const data = {
+    sourceGuid,
+    recurring: false,
+  };
+
+  setLoading(true);
+  const response = await execApi("post", `/api/${apiVersion}/schedule`, data);
+
+  if (response?.schedule) {
+    successHandler.set({ message: "Schedule Created" });
+    Router.push(`/schedule/${response.schedule.guid}?tab=edit`);
+  } else {
+    setLoading(false);
+  }
 }
