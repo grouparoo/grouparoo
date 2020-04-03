@@ -31,6 +31,10 @@ export class DetermineRunState extends Task {
       throw new Error(`run ${params.runGuid} not found`);
     }
 
+    if (run.state === "stopped") {
+      return;
+    }
+
     const profiles = await Profile.findAll({
       order: [["createdAt", "asc"]],
       limit,

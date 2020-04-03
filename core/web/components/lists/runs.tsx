@@ -131,6 +131,13 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             >
               Complete
             </Button>
+            <Button
+              size="sm"
+              variant={stateFilter === "stopped" ? "success" : "info"}
+              onClick={() => setStateFilter("stopped")}
+            >
+              Stopped
+            </Button>
           </ButtonGroup>
         </Col>
         <Col>

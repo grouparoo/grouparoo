@@ -100,6 +100,12 @@ describe("models/run", () => {
       expect(run.state).toBe("complete");
     });
 
+    it("a complete run will remain complete", async () => {
+      await run.determineState();
+      await run.reload();
+      expect(run.state).toBe("complete");
+    });
+
     it("will mark the run with an error comprised of the counts of the import errors", async () => {
       await Import.create({
         creatorType: "run",
@@ -121,6 +127,48 @@ describe("models/run", () => {
       await run.reload();
       expect(run.state).toBe("complete");
       expect(run.error).toBe("error class A (x2)\r\nerror class B (x1)");
+    });
+  });
+
+  describe("stopping a run", () => {
+    let run: Run;
+
+    beforeAll(async () => {
+      Import.destroy({ truncate: true });
+
+      run = await Run.create({
+        creatorGuid: schedule.guid,
+        creatorType: "schedule",
+        state: "running",
+      });
+    });
+
+    it("can stop a run and include errors", async () => {
+      await Import.create({
+        creatorType: "run",
+        creatorGuid: run.guid,
+        errorMessage: "error class A",
+      });
+      await Import.create({
+        creatorType: "run",
+        creatorGuid: run.guid,
+        errorMessage: "error class A",
+      });
+      await Import.create({
+        creatorType: "run",
+        creatorGuid: run.guid,
+        errorMessage: "error class B",
+      });
+
+      await run.stop();
+      expect(run.state).toBe("stopped");
+      expect(run.error).toBe("error class A (x2)\r\nerror class B (x1)");
+    });
+
+    it("a stopped run will remain stopped", async () => {
+      await run.determineState();
+      await run.reload();
+      expect(run.state).toBe("stopped");
     });
   });
 
