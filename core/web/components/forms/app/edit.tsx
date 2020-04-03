@@ -3,6 +3,7 @@ import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Button, Badge, Alert } from "react-bootstrap";
 import Router from "next/router";
 import AppIcon from "../../appIcon";
+import StateBadge from "../../stateBadge";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -15,6 +16,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     guid: "",
     name: "",
     type: "",
+    state: "",
     options: {},
   });
   const { guid } = query;
@@ -41,11 +43,12 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function edit(event) {
     event.preventDefault();
+    const state = app.state === "ready" ? undefined : "ready";
     setLoading(true);
     const response = await execApi(
       "put",
       `/api/${apiVersion}/app/${guid}`,
-      app
+      Object.assign({}, app, { state })
     );
     setLoading(false);
     if (response?.app) {
@@ -131,12 +134,17 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                 as="select"
                 value={app.type}
                 onChange={(e) => update(e)}
+                disabled
               >
                 {types.map((type) => (
                   <option key={`type-${type.name}`}>{type.name}</option>
                 ))}
               </Form.Control>
             </Form.Group>
+
+            <p>
+              <StateBadge state={app.state} />
+            </p>
           </Col>
         </Row>
         {typeOptions.length > 0 ? (

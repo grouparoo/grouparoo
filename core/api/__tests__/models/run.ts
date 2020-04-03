@@ -333,10 +333,13 @@ describe("models/run", () => {
         appGuid: app.guid,
       });
       await source.setOptions({ query: "test table" });
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
 
       // the app throws whatever the query is a new error (see above)
       await rule.update({ sourceGuid: source.guid });
       await rule.setOptions({ column: "abc" });
+      await rule.update({ state: "ready" });
 
       // we need at least one profile to test against
       const profile = await helper.factories.profile();

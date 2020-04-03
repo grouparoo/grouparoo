@@ -63,6 +63,24 @@ describe("actions/files", () => {
       await fs.emptyDir(`/tmp/grouparoo-test-${process.env.JEST_WORKER_ID}`);
     });
 
+    test("file type can be retrieved", async () => {
+      connection.params = { csrfToken };
+      const { error, options } = await specHelper.runAction(
+        "files:options",
+        connection
+      );
+
+      expect(error).toBeUndefined();
+      expect(options.types).toEqual([
+        "csv",
+        "json",
+        "image",
+        "video",
+        "audio",
+        "other",
+      ]);
+    });
+
     test("a writer can upload a file", async () => {
       connection.params = {
         csrfToken,

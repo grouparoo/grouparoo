@@ -75,17 +75,29 @@ export class ScheduleCreate extends Action {
       name: { required: false },
       sourceGuid: { required: true },
       recurring: { required: true },
+      state: { required: false },
       options: { required: false },
       recurringFrequency: { required: true, default: 0 },
     };
   }
 
   async run({ params, response }) {
-    const schedule = await Schedule.create(params);
-    response.schedule = await schedule.apiData();
+    const schedule = await Schedule.create({
+      name: params.name,
+      sourceGuid: params.sourceGuid,
+      recurring: params.recurring,
+      recurringFrequency: params.recurringFrequency,
+    });
+
     if (params.options) {
       await schedule.setOptions(params.options);
     }
+
+    if (params.state) {
+      await schedule.update({ state: params.state });
+    }
+
+    response.schedule = await schedule.apiData();
     response.pluginOptions = await schedule.pluginOptions();
   }
 }
@@ -102,6 +114,7 @@ export class ScheduleEdit extends Action {
       name: { required: false },
       sourceGuid: { required: false },
       recurring: { required: false },
+      state: { required: false },
       options: { required: false },
       recurringFrequency: { required: false },
     };

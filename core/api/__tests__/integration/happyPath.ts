@@ -63,7 +63,7 @@ describe("integration/happyPath", () => {
     appGuid = app.guid;
   });
 
-  test("an admin can create the first source", async () => {
+  test("an admin can create the first source and bootstrap it with a profile property rule", async () => {
     connection.params = {
       csrfToken,
       name: "test source",
@@ -71,17 +71,40 @@ describe("integration/happyPath", () => {
       appGuid,
       options: { table: "users" },
     };
-    const { error, source } = await specHelper.runAction(
+    const createResponse = await specHelper.runAction(
       "source:create",
       connection
     );
 
-    expect(error).toBeUndefined();
-    expect(source.guid).toBeTruthy();
-    expect(source.name).toBe("test source");
-    expect(source.type).toBe("test-plugin-import");
-    expect(source.app.type).toBe("test-plugin-app");
-    sourceGuid = source.guid;
+    expect(createResponse.error).toBeUndefined();
+    expect(createResponse.source.guid).toBeTruthy();
+    expect(createResponse.source.name).toBe("test source");
+    expect(createResponse.source.type).toBe("test-plugin-import");
+    expect(createResponse.source.app.type).toBe("test-plugin-app");
+    sourceGuid = createResponse.source.guid;
+
+    connection.params = {
+      csrfToken,
+      guid: sourceGuid,
+      key: "userId",
+      type: "integer",
+    };
+    const bootstrapResponse = await specHelper.runAction(
+      "source:bootstrapUniqueProfilePropertyRule",
+      connection
+    );
+    expect(bootstrapResponse.error).toBeUndefined();
+    expect(bootstrapResponse.profilePropertyRule.guid).toBeTruthy();
+
+    connection.params = {
+      csrfToken,
+      guid: sourceGuid,
+      mapping: { id: "userId" },
+      state: "ready",
+    };
+    const editResponse = await specHelper.runAction("source:edit", connection);
+    expect(editResponse.error).toBeUndefined();
+    expect(editResponse.source.state).toBe("ready");
   });
 
   test("an admin can create profile property rules", async () => {
@@ -331,6 +354,21 @@ describe("integration/happyPath", () => {
       expect(schedule.guid).toBeTruthy();
 
       scheduleGuid = schedule.guid;
+    });
+
+    test("a schedule can be made ready", async () => {
+      connection.params = {
+        csrfToken,
+        guid: scheduleGuid,
+        state: "ready",
+        options: { maxColumn: "updatedAt" },
+      };
+      const { error, schedule } = await specHelper.runAction(
+        "schedule:edit",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(schedule.state).toBe("ready");
     });
 
     test("a run can be created", async () => {

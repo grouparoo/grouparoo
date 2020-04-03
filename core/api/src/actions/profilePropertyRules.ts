@@ -125,20 +125,29 @@ export class ProfilePropertyRuleCreate extends Action {
     this.outputExample = {};
     this.middleware = ["authenticated-team-member", "role-admin"];
     this.inputs = {
-      key: { required: true },
+      key: { required: false },
       type: { required: true },
       unique: { required: false },
-      passive: { required: false },
+      state: { required: false },
       sourceGuid: { required: false },
       options: { required: false },
     };
   }
 
   async run({ params, response }) {
-    const profilePropertyRule = new ProfilePropertyRule(params);
-    await profilePropertyRule.save();
+    const profilePropertyRule = await ProfilePropertyRule.create({
+      key: params.key,
+      type: params.type,
+      unique: params.unique,
+      sourceGuid: params.sourceGuid,
+    });
+
     if (params.options) {
       await profilePropertyRule.setOptions(params.options);
+    }
+
+    if (params.state) {
+      await profilePropertyRule.update({ state: params.state });
     }
 
     response.profilePropertyRule = await profilePropertyRule.apiData();
@@ -158,7 +167,7 @@ export class ProfilePropertyRuleEdit extends Action {
       key: { required: false },
       type: { required: false },
       unique: { required: false },
-      passive: { required: false },
+      state: { required: false },
       sourceGuid: { required: false },
       options: { required: false },
     };
@@ -175,6 +184,7 @@ export class ProfilePropertyRuleEdit extends Action {
     if (params.options) {
       await profilePropertyRule.setOptions(params.options);
     }
+
     await profilePropertyRule.update(params);
 
     response.profilePropertyRule = await profilePropertyRule.apiData();

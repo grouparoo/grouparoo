@@ -1,7 +1,7 @@
 module.exports = {
   up: async function (migration, DataTypes) {
     await migration.addColumn("groups", "state", {
-      type: DataTypes.ENUM("ready", "initializing", "updating", "deleted"),
+      type: DataTypes.STRING(191),
       allowNull: false,
       defaultValue: "ready",
     });

@@ -32,6 +32,9 @@ export class RunSchedule extends Task {
     if (!schedule) {
       throw new Error(`cannot find schedule ${params.scheduleGuid}`);
     }
+    if (schedule.state !== "ready") {
+      throw new Error(`schedule ${params.scheduleGuid} is not ready`);
+    }
 
     let run: Run;
     if (params.runGuid) {

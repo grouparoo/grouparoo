@@ -25,7 +25,7 @@ module.exports = {
         },
 
         direction: {
-          type: DataTypes.ENUM("import", "export"),
+          type: DataTypes.STRING(191),
           allowNull: false,
         },
 

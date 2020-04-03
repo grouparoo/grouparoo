@@ -39,6 +39,7 @@ describe("models/schedule", () => {
       });
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
     });
 
     test("a schedule can be created with a source, and it can find the related app", async () => {
@@ -80,7 +81,7 @@ describe("models/schedule", () => {
       });
 
       await schedule.reload();
-      expect(schedule.name).toBe("test source schedule");
+      expect(schedule.name).toMatch(/test source schedule/);
 
       await schedule.destroy();
     });
@@ -171,6 +172,34 @@ describe("models/schedule", () => {
         );
 
         schedule.update({ recurring: true, recurringFrequency: 1000 * 60 }); // OK
+        await schedule.destroy();
+      });
+
+      test("a schedule cannot be changed to to the ready state if there are missing required options", async () => {
+        const schedule = await helper.factories.schedule();
+        await expect(schedule.update({ state: "ready" })).rejects.toThrow(
+          /maxColumn is required/
+        );
+        await schedule.destroy();
+      });
+
+      test("a schedule cannot be created in the ready state with missing required options", async () => {
+        const schedule = Schedule.build({
+          sourceGuid: source.guid,
+          name: "no opts",
+          state: "ready",
+        });
+
+        await expect(schedule.save()).rejects.toThrow(/maxColumn is required/);
+      });
+
+      test("a schedule that is ready cannot move back to draft", async () => {
+        const schedule = await helper.factories.schedule();
+        await schedule.setOptions({ maxColumn: "abc" });
+        await schedule.update({ state: "ready" });
+        await expect(schedule.update({ state: "draft" })).rejects.toThrow(
+          /cannot transition schedule state from ready to draft/
+        );
         await schedule.destroy();
       });
     });
@@ -305,6 +334,7 @@ describe("models/schedule", () => {
         appGuid: app.guid,
       });
       await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
     });
 
     test("schedules can retrieve their options from the source", async () => {

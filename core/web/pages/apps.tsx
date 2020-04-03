@@ -1,6 +1,7 @@
 import Head from "next/head";
 import AppsList from "../components/lists/apps";
-import AppAddModal from "../components/modals/appAdd";
+import { Button } from "react-bootstrap";
+import Router from "next/router";
 
 export default function (props) {
   return (
@@ -11,7 +12,15 @@ export default function (props) {
 
       <h1>Apps</h1>
       <AppsList {...props} />
-      <AppAddModal {...props} />
+      <Button
+        size="sm"
+        variant="warning"
+        onClick={() => {
+          Router.push("/app/new");
+        }}
+      >
+        Add App
+      </Button>
     </>
   );
 }

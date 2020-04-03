@@ -3,10 +3,11 @@ import { useApi } from "../../hooks/useApi";
 import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import Router from "next/router";
 import Link from "next/link";
-import GroupStateBadge from "../badges/group/state";
 import Moment from "react-moment";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
+import stateBadge from "../stateBadge";
+import StateBadge from "../stateBadge";
 
 export default function ({ apiVersion, errorHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -86,7 +87,7 @@ export default function ({ apiVersion, errorHandler, query }) {
                 <td>{group.type}</td>
                 <td>{group.profilesCount}</td>
                 <td>
-                  <GroupStateBadge state={group.state} />
+                  <StateBadge state={group.state} />
                 </td>
                 <td>
                   {group.calculatedAt ? (

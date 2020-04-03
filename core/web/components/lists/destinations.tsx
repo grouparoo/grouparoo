@@ -7,6 +7,7 @@ import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import Moment from "react-moment";
 import AppIcon from "../appIcon";
+import StateBadge from "../stateBadge";
 
 export default function ({
   apiVersion,
@@ -76,6 +77,7 @@ export default function ({
             <th></th>
             <th>Destination Name</th>
             <th>App</th>
+            <th>State</th>
             <th>Created At</th>
           </tr>
         </thead>
@@ -106,6 +108,9 @@ export default function ({
                       {destination.app.guid}
                     </a>
                   </Link>
+                </td>
+                <td>
+                  <StateBadge state={destination.state} />
                 </td>
                 <td>
                   <Moment fromNow>{destination.createdAt}</Moment>

@@ -15,7 +15,7 @@ module.exports = {
         },
 
         state: {
-          type: DataTypes.ENUM("running", "complete"),
+          type: DataTypes.STRING(191),
           allowNull: false,
         },
 

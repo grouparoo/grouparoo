@@ -26,18 +26,38 @@ describe("models/source", () => {
     await helper.factories.profilePropertyRules();
   });
 
-  test("creating a source creates a log entry", async () => {
-    const source = await Source.create({
-      type: "test-plugin-import",
-      name: "test source",
-      appGuid: app.guid,
+  describe("plugin connections", () => {
+    let source: Source;
+
+    beforeAll(async () => {
+      source = await Source.create({
+        type: "test-plugin-import",
+        name: "test source",
+        appGuid: app.guid,
+      });
+      await source.setOptions({ table: "test table" });
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
     });
 
-    const log = await Log.findOne({
-      where: { topic: "source", verb: "create", ownerGuid: source.guid },
+    afterAll(async () => {
+      await source.destroy();
     });
-    expect(log.message).toBe(`source "${source.name}" created`);
-    await source.destroy();
+
+    test("creating a source creates a log entry", async () => {
+      const log = await Log.findOne({
+        where: { topic: "source", verb: "create", ownerGuid: source.guid },
+      });
+      expect(log.message).toBe(`source "${source.name}" created`);
+    });
+
+    test("scheduleAvailable", async () => {
+      expect(await source.scheduleAvailable()).toBe(true);
+    });
+
+    test("previewAvailable", async () => {
+      expect(await source.previewAvailable()).toBe(true);
+    });
   });
 
   describe("validations", () => {
@@ -53,6 +73,47 @@ describe("models/source", () => {
       );
     });
 
+    test("a source cannot be changed to to the ready state if there are missing required options", async () => {
+      const source = await helper.factories.source();
+      await expect(source.update({ state: "ready" })).rejects.toThrow(
+        /table is required/
+      );
+      await source.destroy();
+    });
+
+    test("a source cannot be changed to to the ready state if there is not mapping", async () => {
+      const source = await helper.factories.source();
+      await source.setOptions({ table: "abc" });
+      await expect(source.update({ state: "ready" })).rejects.toThrow(
+        /mapping not set/
+      );
+      await source.destroy();
+    });
+
+    test("a source that is ready cannot move back to draft", async () => {
+      const source = await helper.factories.source();
+      await source.setOptions({ table: "abc" });
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
+      await expect(source.update({ state: "draft" })).rejects.toThrow(
+        /cannot transition source state from ready to draft/
+      );
+      await source.destroy();
+    });
+
+    test("a source cannot be created in the ready state with missing required options", async () => {
+      const source = Source.build({
+        appGuid: app.guid,
+        name: "no opts",
+        type: "test-plugin-import",
+        state: "ready",
+      });
+
+      await expect(source.save()).rejects.toThrow(
+        /table is required for a source of type test-plugin-import/
+      );
+    });
+
     test("a source with a schedule cannot be deleted", async () => {
       const source = await Source.create({
         type: "test-plugin-import",
@@ -61,6 +122,7 @@ describe("models/source", () => {
       });
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
 
       const schedule = await helper.factories.schedule(source);
       await expect(source.destroy()).rejects.toThrow(
@@ -78,6 +140,8 @@ describe("models/source", () => {
         appGuid: app.guid,
       });
       await source.setOptions({ table: "test table" });
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
 
       const rule = await ProfilePropertyRule.create({
         key: "thing",
@@ -253,6 +317,42 @@ describe("models/source", () => {
     });
   });
 
+  describe("bootstrapUniqueProfilePropertyRule", () => {
+    let source: Source;
+
+    beforeAll(async () => {
+      source = await Source.create({
+        type: "test-plugin-import",
+        name: "test source",
+        appGuid: app.guid,
+      });
+    });
+
+    afterAll(async () => {
+      await source.destroy();
+    });
+
+    test("bootstrapUniqueProfilePropertyRule will create a new profile property rule", async () => {
+      const rule = await source.bootstrapUniqueProfilePropertyRule(
+        "uniqueId",
+        "integer"
+      );
+
+      expect(rule.key).toBe("uniqueId");
+      expect(rule.type).toBe("integer");
+      expect(rule.state).toBe("draft");
+      expect(rule.unique).toBe(true);
+
+      await rule.destroy();
+    });
+
+    test("bootstrapUniqueProfilePropertyRule will fail if the rule cannot be created", async () => {
+      await expect(
+        source.bootstrapUniqueProfilePropertyRule("userId", "integer")
+      ).rejects.toThrow(/error/);
+    });
+  });
+
   describe("import", () => {
     let source: Source;
     let profile: Profile;
@@ -266,6 +366,8 @@ describe("models/source", () => {
         appGuid: app.guid,
       });
       await source.setOptions({ table: "test table" });
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
 
       profile = await helper.factories.profile();
 
@@ -273,7 +375,6 @@ describe("models/source", () => {
         key: "__fname",
         sourceGuid: source.guid,
         type: "string",
-        passive: false,
       });
 
       originalProfilePropertyMethod = api.plugins.plugins.filter(
@@ -293,7 +394,20 @@ describe("models/source", () => {
       )[0].connections[0].methods.profileProperty = originalProfilePropertyMethod;
     });
 
+    test("it will not import a draft rule (single)", async () => {
+      expect(lnameRule.state).toBe("draft");
+      const property = await source.importProfileProperty(profile, lnameRule);
+      expect(property).toBeUndefined();
+    });
+
+    test("it will not import a draft rule (batch)", async () => {
+      expect(lnameRule.state).toBe("draft");
+      const properties = await source.import(profile);
+      expect(properties).toEqual({});
+    });
+
     test("it can import one profile property for a profile", async () => {
+      await lnameRule.update({ state: "ready" });
       const property = await source.importProfileProperty(profile, lnameRule);
       expect(property).toEqual("mario...");
     });
@@ -377,7 +491,7 @@ describe("models/source", () => {
       );
     });
 
-    test("it will check properties for each profilePropertyRule with a query and try to reuse query responses", async () => {
+    test("it will check properties for each profilePropertyRule with a response and try to reuse query responses", async () => {
       let counter = 0;
       api.plugins.plugins.filter(
         (p) => p.name === "@grouparoo/test-plugin"
@@ -390,7 +504,7 @@ describe("models/source", () => {
         key: "__newProp",
         sourceGuid: source.guid,
         type: "string",
-        passive: false,
+        state: "ready",
       });
 
       counter = 0; // it was incremented to validate the new rule
@@ -412,6 +526,10 @@ describe("models/source", () => {
         name: "test source",
         appGuid: app.guid,
       });
+
+      await source.setOptions({ table: "test table" });
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
     });
 
     afterAll(async () => {

@@ -41,6 +41,23 @@ export class FilesList extends Action {
   }
 }
 
+export class FileOptions extends Action {
+  constructor() {
+    super();
+    this.name = "files:options";
+    this.description = "options for creating a file";
+    this.outputExample = {};
+    this.middleware = ["authenticated-team-member", "role-read"];
+    this.inputs = {};
+  }
+
+  async run({ response }) {
+    response.options = {
+      types: api.files.types,
+    };
+  }
+}
+
 // to test:
 // curl -X POST -F 'file=@../web/public/images/roo.png' -d type=test http://localhost:8080/api/1/file
 export class FileCreate extends Action {

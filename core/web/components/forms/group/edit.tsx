@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { Row, Col, Form, Button, Table, Badge } from "react-bootstrap";
-import GroupStateBadge from "../../badges/group/state";
+import StateBadge from "../../stateBadge";
 import Moment from "react-moment";
 import Router from "next/router";
 
@@ -70,8 +70,11 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   return (
     <>
+      <StateBadge state={group.state} />
+      <br />
+      <br />
       <Row>
-        <Col md={9}>
+        <Col md={group.type === "calculated" ? 8 : 12}>
           <Form id="form" onSubmit={handleSubmit(onSubmit)}>
             <Form.Group>
               <Form.Label>Name</Form.Label>
@@ -127,28 +130,27 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             </Button>
           </Form>
         </Col>
-        <Col>
-          <h4>
-            State: <GroupStateBadge state={group.state} />
-          </h4>
-          <p>
-            {group.calculatedAt ? (
-              <span>
-                Last Member Calculation:{" "}
-                <Moment fromNow>{group.calculatedAt}</Moment>
-              </span>
-            ) : (
-              "Never Calculated"
-            )}
-            <br />
-            {group.nextCalculatedAt ? (
-              <span>
-                Next Member Calculation:{" "}
-                <Moment fromNow>{group.nextCalculatedAt}</Moment>
-              </span>
-            ) : null}
-          </p>
-        </Col>
+        {group.type === "calculated" ? (
+          <Col>
+            <p>
+              {group.calculatedAt ? (
+                <span>
+                  Last Member Calculation:{" "}
+                  <Moment fromNow>{group.calculatedAt}</Moment>
+                </span>
+              ) : (
+                "Never Calculated"
+              )}
+              <br />
+              {group.nextCalculatedAt ? (
+                <span>
+                  Next Member Calculation:{" "}
+                  <Moment fromNow>{group.nextCalculatedAt}</Moment>
+                </span>
+              ) : null}
+            </p>
+          </Col>
+        ) : null}
       </Row>
     </>
   );

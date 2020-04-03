@@ -11,18 +11,28 @@ import {
   Button,
 } from "react-bootstrap";
 import AppIcon from "./../../appIcon";
+import StateBadge from "./../../stateBadge";
 import Link from "next/link";
-import ProfilePropertyRuleAddModal from "./../../modals/profilePropertyRuleAdd";
 import ScheduleAddButton from "./../schedule/add";
+import ProfilePropertyRuleAddButton from "./../profilePropertyRule/add";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [source, setSource] = useState({
     name: "",
+    type: "",
+    state: "",
     mapping: {},
     options: {},
     scheduleAvailable: false,
-    schedule: { name: "", guid: "", recurring: false, recurringFrequency: 0 },
+    previewAvailable: false,
+    schedule: {
+      name: "",
+      guid: "",
+      recurring: false,
+      state: "ready",
+      recurringFrequency: 0,
+    },
     connection: { name: "", description: "" },
     app: { icon: "", name: "", guid: "" },
     profilePropertyRules: [],
@@ -52,6 +62,9 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
           </Col>
           <Col>
             <h1>{source.name}</h1>
+            <StateBadge state={source.state} />
+            <br />
+            <br />
             <p>
               <strong>App</strong>:{" "}
               <Link href="/app/[guid]" as={`/app/${source.app.guid}`}>
@@ -88,7 +101,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                 <th>Key</th>
                 <th>Type</th>
                 <th>Unique</th>
-                <th>Passive</th>
+                <th>State</th>
               </tr>
             </thead>
             <tbody>
@@ -111,19 +124,18 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                     <input readOnly type="checkbox" checked={rule.unique} />
                   </td>
                   <td>
-                    <input readOnly type="checkbox" checked={rule.passive} />
+                    <StateBadge state={rule.state} />
                   </td>
                 </tr>
               ))}
             </tbody>
           </Table>
 
-          <ProfilePropertyRuleAddModal
+          <ProfilePropertyRuleAddButton
             apiVersion={apiVersion}
             errorHandler={errorHandler}
             successHandler={successHandler}
-            query={query}
-            sourceGuid={guid}
+            source={source}
           />
         </Card.Body>
       </Card>
@@ -159,8 +171,15 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                   <br />
                   <strong>Frequency</strong>:{" "}
                   {source.schedule.recurringFrequency}
+                  <br />
+                  <strong>State</strong>:{" "}
+                  <StateBadge state={source.schedule.state} />
                 </p>
-                <Button size="sm" href={`/schedule/${source.schedule.guid}`}>
+                <Button
+                  size="sm"
+                  href={`/schedule/${source.schedule.guid}`}
+                  disabled={source.state === "draft"}
+                >
                   See Schedule Details
                 </Button>
               </>
@@ -185,19 +204,23 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       <Card border="info">
         <Card.Body>
           <h2>Profile Identification</h2>
-          {Object.keys(source.mapping).length === 1 ? (
-            <Row>
-              <Col>
-                Remote Column: <code>{Object.keys(source.mapping)[0]}</code>
-              </Col>
-              <Col>▶</Col>
-              <Col>
-                Profile Property:{" "}
-                <code>{source.mapping[Object.keys(source.mapping)[0]]}</code>
-              </Col>
-            </Row>
+          {source.previewAvailable ? (
+            Object.keys(source.mapping).length === 1 ? (
+              <Row>
+                <Col>
+                  Remote Column: <code>{Object.keys(source.mapping)[0]}</code>
+                </Col>
+                <Col>▶</Col>
+                <Col>
+                  Profile Property:{" "}
+                  <code>{source.mapping[Object.keys(source.mapping)[0]]}</code>
+                </Col>
+              </Row>
+            ) : (
+              <Alert variant="warning">Mapping not set yet</Alert>
+            )
           ) : (
-            <Alert variant="warning">
+            <Alert variant="secondary">
               Mapping not available for this connection type
             </Alert>
           )}

@@ -12,6 +12,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   ] = useState({});
   const [destination, setDestination] = useState({
     guid: "",
+    type: "",
+    previewAvailable: false,
     mapping: {},
   });
   const { guid } = query;
@@ -27,6 +29,10 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     );
     if (destinationResponse?.destination) {
       setDestination(destinationResponse.destination);
+    }
+
+    if (destinationResponse.destination.previewAvailable === false) {
+      return;
     }
 
     const previewResponse = await execApi(
@@ -52,7 +58,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     const response = await execApi(
       "put",
       `/api/${apiVersion}/destination/${guid}`,
-      { guid: destination.guid, mapping: destination.mapping }
+      { guid: destination.guid, mapping: destination.mapping, state: "ready" }
     );
     if (response?.destination) {
       successHandler.set({ message: "Destination Updated" });
@@ -80,14 +86,18 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       return self.indexOf(value) === index;
     });
 
+  if (!destination.previewAvailable) {
+    return (
+      <>
+        <p>Mapping not available for a {destination.type} source</p>
+      </>
+    );
+  }
+
   if (previewColumns.length === 0) {
     return (
       <>
-        <h2>Profile Mapping</h2>
-        <p>
-          There is no preview four this destination, and therefore no mapping
-          can be set.
-        </p>
+        <p>Set the options first!</p>
       </>
     );
   }

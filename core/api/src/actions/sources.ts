@@ -87,23 +87,31 @@ export class SourceCreate extends Action {
     this.middleware = ["authenticated-team-member", "role-admin"];
     this.inputs = {
       appGuid: { required: true },
-      name: { required: true },
+      name: { required: false },
       type: { required: true },
-      remoteProfileIdColumn: { required: false },
-      remoteProfilePropertyRuleGuid: { required: false },
+      state: { required: false },
       options: { required: false },
       mapping: { required: false },
     };
   }
 
   async run({ params, response }) {
-    const source = await Source.create(params);
+    const source = await Source.create({
+      appGuid: params.appGuid,
+      name: params.name,
+      type: params.type,
+    });
     if (params.options) {
       await source.setOptions(params.options);
     }
     if (params.mapping) {
       await source.setMapping(params.mapping);
     }
+
+    if (params.state) {
+      await source.update({ state: params.state });
+    }
+
     response.source = await source.apiData();
   }
 }
@@ -141,6 +149,7 @@ export class SourceEdit extends Action {
       appGuid: { required: false },
       name: { required: false },
       type: { required: false },
+      state: { required: false },
       options: { required: false },
       mapping: { required: false },
     };
@@ -151,15 +160,43 @@ export class SourceEdit extends Action {
     if (!source) {
       throw new Error("source not found");
     }
-
-    await source.update(params);
     if (params.options) {
       await source.setOptions(params.options);
     }
     if (params.mapping) {
       await source.setMapping(params.mapping);
     }
+    await source.update(params);
+    response.source = await source.apiData();
+  }
+}
 
+export class SourceBootstrapUniqueProfilePropertyRule extends Action {
+  constructor() {
+    super();
+    this.name = "source:bootstrapUniqueProfilePropertyRule";
+    this.description =
+      "bootstrap a new unique profile property for this source before the mapping is set";
+    this.outputExample = {};
+    this.middleware = ["authenticated-team-member", "role-write"];
+    this.inputs = {
+      guid: { required: true },
+      key: { required: true },
+      type: { required: true },
+    };
+  }
+
+  async run({ params, response }) {
+    const source = await Source.findOne({ where: { guid: params.guid } });
+    if (!source) {
+      throw new Error("source not found");
+    }
+
+    const rule = await source.bootstrapUniqueProfilePropertyRule(
+      params.key,
+      params.type
+    );
+    response.profilePropertyRule = await rule.apiData();
     response.source = await source.apiData();
   }
 }

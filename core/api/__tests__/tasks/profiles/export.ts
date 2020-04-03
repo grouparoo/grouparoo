@@ -109,6 +109,7 @@ describe("tasks/profile:export", () => {
           lastName: "lastName",
         });
         await destination.trackGroup(group);
+        await destination.update({ state: "ready" });
 
         await api.resque.queue.connection.redis.flushdb();
       });

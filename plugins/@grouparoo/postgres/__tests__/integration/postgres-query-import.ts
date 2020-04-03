@@ -92,7 +92,7 @@ describe("integration/runs/postgres", () => {
     });
   });
 
-  test("an administrator can create the related import app and schedule", async () => {
+  test("an administrator can create the related import app", async () => {
     // sign in
     session = await specHelper.buildConnection();
     session.params = { email: "mario@example.com", password: "P@ssw0rd!" };
@@ -103,7 +103,7 @@ describe("integration/runs/postgres", () => {
     expect(sessionResponse.error).toBeUndefined();
     csrfToken = sessionResponse.csrfToken;
 
-    // create a postgres app with the proper schedule
+    // create a postgres app
     session.params = {
       csrfToken,
       name: "test app",
@@ -126,6 +126,7 @@ describe("integration/runs/postgres", () => {
       name: "pg import source",
       type: "postgres-query-import",
       appGuid: app.guid,
+      state: "ready",
     };
     const sourceResponse = await specHelper.runAction("source:create", session);
     expect(sourceResponse.error).toBeUndefined();
@@ -155,7 +156,7 @@ describe("integration/runs/postgres", () => {
       key: "email",
       type: "string",
       unique: true,
-      passive: false,
+      state: "ready",
     };
 
     const {

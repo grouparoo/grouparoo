@@ -265,6 +265,8 @@ Examples:
   ci_generate  generate yml file for continuous integration
 ```
 
----
+## Attribution
+
+The Pencil/Manual icon used in this plugin is from https://www.iconfinder.com/icons/1608787/pencil_icon
 
 🦘

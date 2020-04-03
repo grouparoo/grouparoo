@@ -111,6 +111,7 @@ describe("integration/runs/google-sheets", () => {
           sheet_url: SHEET_URL,
         },
         mapping: { id: "userId" },
+        state: "ready",
       };
       const sourceResponse = await specHelper.runAction(
         "source:create",
@@ -132,6 +133,7 @@ describe("integration/runs/google-sheets", () => {
           first_name: "firstName",
           last_name: "lastName",
         },
+        state: "ready",
       };
       const scheduleResponse = await specHelper.runAction(
         "schedule:create",
@@ -206,7 +208,6 @@ describe("integration/runs/google-sheets", () => {
         key: "email",
         type: "string",
         unique: true,
-        passive: false,
       };
 
       const {

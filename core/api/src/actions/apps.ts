@@ -46,9 +46,15 @@ export class AppOptions extends Action {
 
   async run({ response }) {
     response.types = [];
-    api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
+    api.plugins.plugins.map((plugin: GrouparooPlugin) => {
       if (plugin.apps) {
-        response.types = response.types.concat(plugin.apps);
+        plugin.apps.map((app) => {
+          response.types.push({
+            name: app.name,
+            options: app.options,
+            plugin: { name: plugin.name, icon: plugin.icon },
+          });
+        });
       }
     });
   }
@@ -62,30 +68,28 @@ export class AppCreate extends Action {
     this.outputExample = {};
     this.middleware = ["authenticated-team-member", "role-admin"];
     this.inputs = {
-      name: { required: true },
+      name: { required: false },
       type: { required: true },
+      state: { required: false },
       options: { required: false },
     };
   }
 
   async run({ params, response }) {
-    const transaction = await api.sequelize.transaction();
+    const app = await App.create({
+      name: params.name,
+      type: params.type,
+    });
 
-    try {
-      const app = await App.create(params, { transaction });
-
-      if (params.options) {
-        await app.setOptions(params.options);
-      }
-
-      await transaction.commit();
-
-      response.app = await app.apiData();
-      response.app.options = await app.getOptions();
-    } catch (error) {
-      transaction.rollback();
-      throw error;
+    if (params.options) {
+      await app.setOptions(params.options);
     }
+
+    if (params.state) {
+      await app.update({ state: params.state });
+    }
+
+    response.app = await app.apiData();
   }
 }
 
@@ -100,6 +104,7 @@ export class AppEdit extends Action {
       guid: { required: true },
       name: { required: false },
       type: { required: false },
+      state: { required: false },
       options: { required: false },
     };
   }
@@ -109,12 +114,12 @@ export class AppEdit extends Action {
     if (!app) {
       throw new Error("app not found");
     }
-    await app.update(params);
     if (params.options) {
       await app.setOptions(params.options);
     }
+    await app.update(params);
+
     response.app = await app.apiData();
-    response.app.options = await app.getOptions();
   }
 }
 
@@ -143,7 +148,6 @@ export class AppTest extends Action {
     }
     response.test = { result, error };
     response.app = await app.apiData();
-    response.app.options = await app.getOptions();
   }
 }
 
@@ -165,7 +169,6 @@ export class AppView extends Action {
       throw new Error("app not found");
     }
     response.app = await app.apiData();
-    response.app.options = await app.getOptions();
   }
 }
 

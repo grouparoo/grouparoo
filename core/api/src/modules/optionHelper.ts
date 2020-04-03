@@ -150,13 +150,15 @@ export namespace OptionHelper {
     } else if (instance instanceof Schedule) {
       requiredOptions = await getRequiredScheduleOptions(instance);
       const { pluginConnection } = await getPlugin(instance);
-      allOptions = pluginConnection.scheduleOptions.map((o) => o.key);
+      allOptions = pluginConnection.scheduleOptions
+        ? pluginConnection.scheduleOptions.map((o) => o.key)
+        : [];
     } else if (instance instanceof ProfilePropertyRule) {
       requiredOptions = await getRequiredProfilePropertyRuleOptions(instance);
       const { pluginConnection } = await getPlugin(instance);
-      allOptions = pluginConnection.profilePropertyRuleOptions.map(
-        (o) => o.key
-      );
+      allOptions = pluginConnection.profilePropertyRuleOptions
+        ? pluginConnection.profilePropertyRuleOptions.map((o) => o.key)
+        : [];
     } else if (instance instanceof App) {
       requiredOptions = await getRequiredAppOptions(instance);
       const { pluginApp } = await getPlugin(instance);
@@ -205,6 +207,10 @@ export namespace OptionHelper {
       throw new Error(`cannot find a schedule for type ${type}`);
     }
 
+    if (!pluginConnection.scheduleOptions) {
+      return [];
+    }
+
     return pluginConnection.scheduleOptions
       .filter((o) => o.required)
       .map((o) => o.key);
@@ -218,6 +224,10 @@ export namespace OptionHelper {
 
     if (!pluginConnection) {
       throw new Error(`cannot find a profile property rule for type ${type}`);
+    }
+
+    if (!pluginConnection.profilePropertyRuleOptions) {
+      return [];
     }
 
     return pluginConnection.profilePropertyRuleOptions

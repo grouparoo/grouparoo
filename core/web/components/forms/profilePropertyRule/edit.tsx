@@ -4,6 +4,7 @@ import { Row, Col, Button, Form, Table, Badge } from "react-bootstrap";
 import Router from "next/router";
 import Loader from "../../loader";
 import AppIcon from "../../appIcon";
+import StateBadge from "../../stateBadge";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -15,7 +16,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     guid: "",
     type: "",
     unique: false,
-    passive: false,
+    state: "",
     sourceGuid: "",
     options: {},
     source: {
@@ -73,7 +74,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       const response = await execApi(
         "put",
         `/api/${apiVersion}/profilePropertyRule/${guid}`,
-        profilePropertyRule
+        Object.assign({}, profilePropertyRule, { state: "ready" })
       );
       setLoading(false);
       if (response?.profilePropertyRule) {
@@ -134,6 +135,10 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             />
           </Col>
           <Col>
+            <StateBadge state={profilePropertyRule.state} />
+            <br />
+            <br />
+
             <Form.Group controlId="key">
               <Form.Label>Key</Form.Label>
               <Form.Control
@@ -169,15 +174,6 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
               />
             </Form.Group>
 
-            <Form.Group controlId="passive">
-              <Form.Check
-                type="checkbox"
-                label="Passive"
-                checked={profilePropertyRule.passive}
-                onChange={(e) => update(e)}
-              />
-            </Form.Group>
-
             <Form.Group controlId="sourceGuid">
               <Form.Label>Profile Property Rule Source</Form.Label>
               <Form.Control
@@ -193,123 +189,103 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
             <hr />
 
-            {profilePropertyRule.passive ? (
-              <p>
-                Passive profile property rules will not be used to import
-                profile properties. However, information for the{" "}
-                <code>{profilePropertyRule.key}</code> can still be updated by
-                schedule runs, depending on the plugin
-              </p>
-            ) : (
-              <>
+            <p>
+              <strong>
+                Options for a {profilePropertyRule.source.type} Profile Property
+                Rule
+              </strong>
+            </p>
+            {pluginOptions.map((opt, idx) => (
+              <div key={`opt-${idx}`}>
                 <p>
-                  <strong>
-                    Options for a {profilePropertyRule.source.type} Profile
-                    Property Rule
-                  </strong>
+                  {opt.required ? (
+                    <>
+                      <Badge variant="info">required</Badge>&nbsp;
+                    </>
+                  ) : null}
+                  <code>{opt.key}</code>: <small>{opt.description}</small>
                 </p>
-                {pluginOptions.map((opt, idx) => (
-                  <div key={`opt-${idx}`}>
-                    <p>
-                      {opt.required ? (
-                        <>
-                          <Badge variant="info">required</Badge>&nbsp;
-                        </>
-                      ) : null}
-                      <code>{opt.key}</code>: <small>{opt.description}</small>
-                    </p>
 
-                    {/* list options */}
-                    {opt.type === "list" ? (
-                      <Table size="sm" variant="dark">
-                        <thead>
-                          <tr>
-                            <th></th>
-                            <th>Key</th>
-                            {opt?.options[0].description ? (
-                              <th>Description</th>
-                            ) : null}
-                            {opt?.options[0].examples ? (
-                              <th>Examples</th>
-                            ) : null}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {opt?.options?.map((col) => (
-                            <tr key={`source-${col.key}`}>
-                              <td>
-                                <Form.Check
-                                  inline
-                                  type="radio"
-                                  id={col}
-                                  name={opt.key}
-                                  defaultChecked={
-                                    profilePropertyRule.options[opt.key] ===
-                                    col.key
-                                  }
-                                  onClick={() => updateOption(opt.key, col.key)}
-                                />
-                              </td>
-                              <td>
-                                <strong>{col.key}</strong>
-                              </td>
-                              {col.description ? (
-                                <td>{col.description}</td>
-                              ) : null}
+                {/* list options */}
+                {opt.type === "list" ? (
+                  <Table size="sm" variant="dark">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Key</th>
+                        {opt?.options[0].description ? (
+                          <th>Description</th>
+                        ) : null}
+                        {opt?.options[0].examples ? <th>Examples</th> : null}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {opt?.options?.map((col) => (
+                        <tr key={`source-${col.key}`}>
+                          <td>
+                            <Form.Check
+                              inline
+                              type="radio"
+                              id={col}
+                              name={opt.key}
+                              defaultChecked={
+                                profilePropertyRule.options[opt.key] === col.key
+                              }
+                              onClick={() => updateOption(opt.key, col.key)}
+                            />
+                          </td>
+                          <td>
+                            <strong>{col.key}</strong>
+                          </td>
+                          {col.description ? <td>{col.description}</td> : null}
 
-                              {col.examples ? (
-                                <td>{col.examples.slice(0, 3).join(", ")}</td>
-                              ) : null}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </Table>
-                    ) : null}
+                          {col.examples ? (
+                            <td>{col.examples.slice(0, 3).join(", ")}</td>
+                          ) : null}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                ) : null}
 
-                    {/* textarea options */}
-                    {opt.type === "text" ? (
-                      <Form.Group controlId="key">
-                        <Form.Control
-                          required
-                          type="text"
-                          value={profilePropertyRule.options[opt.key]}
-                          onChange={(e) =>
-                            updateOption(opt.key, e.target.value)
-                          }
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Key is required
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                    ) : null}
+                {/* textarea options */}
+                {opt.type === "text" ? (
+                  <Form.Group controlId="key">
+                    <Form.Control
+                      required
+                      type="text"
+                      value={profilePropertyRule.options[opt.key]}
+                      onChange={(e) => updateOption(opt.key, e.target.value)}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Key is required
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                ) : null}
 
-                    {/* text options */}
-                    {opt.type === "textarea" ? (
-                      <Form.Group controlId="key">
-                        <Form.Control
-                          required
-                          as="textarea"
-                          rows={5}
-                          value={profilePropertyRule.options[opt.key]}
-                          onChange={(e) =>
-                            updateOption(opt.key, e.target["value"])
-                          }
-                          placeholder="select statement with mustache template"
-                          style={{
-                            fontFamily:
-                              'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                            color: "#e83e8c",
-                          }}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Key is required
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                    ) : null}
-                  </div>
-                ))}
-              </>
-            )}
+                {/* text options */}
+                {opt.type === "textarea" ? (
+                  <Form.Group controlId="key">
+                    <Form.Control
+                      required
+                      as="textarea"
+                      rows={5}
+                      value={profilePropertyRule.options[opt.key]}
+                      onChange={(e) => updateOption(opt.key, e.target["value"])}
+                      placeholder="select statement with mustache template"
+                      style={{
+                        fontFamily:
+                          'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                        color: "#e83e8c",
+                      }}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Key is required
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                ) : null}
+              </div>
+            ))}
 
             <hr />
             <Button variant="primary" type="submit" active={!loading}>

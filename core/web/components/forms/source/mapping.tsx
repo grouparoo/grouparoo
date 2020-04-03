@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Form, Button } from "react-bootstrap";
+import Router from "next/router";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -8,17 +9,26 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const [profilePropertyRules, setProfilePropertyRules] = useState([]);
   const [newMappingKey, setNewMappingKey] = useState("");
   const [newMappingValue, setNewMappingValue] = useState("");
+  const [types, setTypes] = useState([]);
+  const [newProfilePropertyRule, setNewProfilePropertyRule] = useState({
+    key: "",
+    type: "",
+  });
   const [
     profilePropertyRuleExamples,
     setProfilePropertyRuleExamples,
   ] = useState({});
   const [source, setSource] = useState({
+    previewAvailable: false,
+    type: "",
     mapping: {},
+    state: "draft",
   });
   const { guid } = query;
 
   useEffect(() => {
     load();
+    loadOptions();
   }, []);
 
   async function load() {
@@ -33,6 +43,10 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
         setNewMappingKey(key || "");
         setNewMappingValue(sourceResponse.source.mapping[key] || "");
       }
+    }
+
+    if (sourceResponse.source.previewAvailable === false) {
+      return;
     }
 
     const previewResponse = await execApi(
@@ -54,6 +68,30 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     }
   }
 
+  async function loadOptions() {
+    const response = await execApi(
+      "get",
+      `/api/${apiVersion}/profilePropertyRuleOptions`
+    );
+    if (response?.types) {
+      setTypes(response.types);
+    }
+  }
+
+  const bootstrapUniqueProfilePropertyRule = async () => {
+    if (confirm("are you sure?")) {
+      const response = await execApi(
+        "post",
+        `/api/${apiVersion}/source/${guid}/bootstrapUniqueProfilePropertyRule`,
+        newProfilePropertyRule
+      );
+      if (response?.profilePropertyRule) {
+        successHandler.set({ message: "Profile Property Rule created" });
+        await load();
+      }
+    }
+  };
+
   const updateMapping = async (event) => {
     event.preventDefault();
 
@@ -62,11 +100,14 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     const response = await execApi(
       "put",
       `/api/${apiVersion}/source/${guid}`,
-      source
+      Object.assign(source, { state: "ready" })
     );
     if (response?.source) {
       successHandler.set({ message: "Source updated" });
       setSource(response.source);
+      if (source.state !== response.source.state) {
+        Router.push(`/source/${guid}`);
+      }
     }
   };
 
@@ -78,14 +119,20 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       return self.indexOf(value) === index;
     });
 
+  if (!source.previewAvailable) {
+    return (
+      <>
+        <h2>Profile Identification</h2>
+        <p>Mapping not available for a {source.type} source</p>
+      </>
+    );
+  }
+
   if (previewColumns.length === 0) {
     return (
       <>
         <h2>Profile Identification</h2>
-        <p>
-          There is no preview for this source, and therefore no mapping can be
-          set.
-        </p>
+        <p>Set the options first!</p>
       </>
     );
   }
@@ -113,6 +160,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                       <td>
                         <Form.Check
                           inline
+                          required
                           type="radio"
                           id={col}
                           name="remoteProfileIdColumn"
@@ -136,6 +184,10 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                 </tbody>
               </Table>
             </fieldset>
+
+            <Button type="submit" onClick={(e) => updateMapping(e)}>
+              Save Mapping
+            </Button>
           </Col>
 
           <Col>
@@ -155,6 +207,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                       <td>
                         <Form.Check
                           inline
+                          required
                           type="radio"
                           id={rule.guid}
                           name="remoteProfileRuleGuid"
@@ -179,12 +232,69 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                 </tbody>
               </Table>
             </fieldset>
+
+            <hr />
+            <p>Or create a new Unique Profile Property Rule</p>
+            <p>
+              This profile property should be unique, meaning only one profile
+              in your entire customer base will have this value. Normally this
+              is an email or a user id.
+            </p>
+
+            <Form.Group controlId="key">
+              <Form.Label>Key</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                placeholder="Profile Property Rule Key"
+                defaultValue={newProfilePropertyRule.key}
+                onChange={(e) => {
+                  setNewProfilePropertyRule(
+                    Object.assign({}, newProfilePropertyRule, {
+                      key: e.target.value,
+                    })
+                  );
+                }}
+              />
+              <Form.Control.Feedback type="invalid">
+                Key is required
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group controlId="type">
+              <Form.Label>Type</Form.Label>
+
+              <Form.Control
+                as="select"
+                required
+                defaultValue={newProfilePropertyRule.type}
+                onChange={(e) => {
+                  setNewProfilePropertyRule(
+                    Object.assign({}, newProfilePropertyRule, {
+                      //@ts-ignore
+                      type: e.target.value,
+                    })
+                  );
+                }}
+              >
+                <option value={""} disabled>
+                  Choose a type
+                </option>
+                {types.map((type) => (
+                  <option key={`type-${type}`}>{type}</option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+
+            <Button
+              size="sm"
+              variant="warning"
+              onClick={bootstrapUniqueProfilePropertyRule}
+            >
+              Create Profile Property Rule
+            </Button>
           </Col>
         </Row>
-
-        <Button type="submit" onClick={(e) => updateMapping(e)}>
-          Save Mapping
-        </Button>
       </Form>
     </>
   );

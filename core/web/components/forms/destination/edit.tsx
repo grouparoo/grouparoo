@@ -4,6 +4,7 @@ import { Row, Col, Form, Button, Badge, Table } from "react-bootstrap";
 import Router from "next/router";
 import Link from "next/link";
 import AppIcon from "./../../appIcon";
+import StateBadge from "./../../stateBadge";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -13,11 +14,13 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     guid: "",
     name: "",
     type: "",
+    state: "",
     appGuid: "",
     options: {},
     app: { name: "", guid: "", icon: "" },
     connection: { name: "", description: "", options: [] },
     destinationGroups: [],
+    previewAvailable: false,
   });
   const { guid } = query;
 
@@ -42,10 +45,14 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       setDestination(destinationResponse.destination);
     }
 
-    await loadPreview();
+    await loadPreview(destinationResponse.destination.previewAvailable);
   }
 
-  async function loadPreview() {
+  async function loadPreview(previewAvailable = destination.previewAvailable) {
+    if (!previewAvailable) {
+      return;
+    }
+
     const response = await execApi(
       "get",
       `/api/${apiVersion}/destination/${guid}/preview`,
@@ -66,15 +73,19 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    const state = destination.previewAvailable ? undefined : "ready";
 
     const response = await execApi(
       "put",
       `/api/${apiVersion}/destination/${guid}`,
-      destination
+      Object.assign({}, destination, { state })
     );
     if (response?.destination) {
       successHandler.set({ message: "Destination updated" });
       setDestination(response.destination);
+      if (response.destination.state === "draft") {
+        Router.push(`/destination/${guid}?tab=mapping`);
+      }
     }
   };
 
@@ -146,6 +157,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
           <AppIcon src={destination.app.icon} fluid size={100} />
         </Col>
         <Col>
+          <StateBadge state={destination.state} />
+
           <Form id="form" onSubmit={onSubmit}>
             <Form.Group controlId="name">
               <Form.Label>Name</Form.Label>

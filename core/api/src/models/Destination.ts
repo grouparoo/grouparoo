@@ -8,10 +8,12 @@ import {
   HasMany,
   BelongsToMany,
   ForeignKey,
+  BeforeValidate,
   BeforeCreate,
   BeforeSave,
   AfterSave,
   AfterDestroy,
+  DataType,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { App } from "./App";
@@ -28,9 +30,14 @@ import { plugin } from "../modules/plugin";
 import { Op } from "sequelize";
 import { OptionHelper } from "./../modules/optionHelper";
 import { MappingHelper } from "./../modules/mappingHelper";
+import { StateMachine } from "./../modules/stateMachine";
 
 export interface DestinationMappings extends MappingHelper.Mappings {}
 export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
+
+const STATE_TRANSITIONS = [
+  { from: "draft", to: "ready", checks: ["validateOptions"] },
+];
 
 @Table({ tableName: "destinations", paranoid: false })
 export class Destination extends LoggedModel<Destination> {
@@ -50,6 +57,11 @@ export class Destination extends LoggedModel<Destination> {
   @AllowNull(false)
   @Column
   type: string;
+
+  @AllowNull(false)
+  @Default("draft")
+  @Column(DataType.ENUM("draft", "ready"))
+  state: string;
 
   @Default(false)
   @Column
@@ -72,6 +84,15 @@ export class Destination extends LoggedModel<Destination> {
 
   @HasMany(() => Export)
   exports: Export[];
+
+  @BeforeValidate
+  static async ensureName(instance: App) {
+    if (!instance.name) {
+      instance.name = `new ${
+        instance.type
+      } destination ${new Date().getTime()}`;
+    }
+  }
 
   @BeforeCreate
   static async ensureExportProfilesMethod(instance: Destination) {
@@ -100,6 +121,11 @@ export class Destination extends LoggedModel<Destination> {
         `destination "${otherDestination.name}" is already using this app`
       );
     }
+  }
+
+  @BeforeSave
+  static async updateState(instance: Destination) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @AfterSave
@@ -163,20 +189,31 @@ export class Destination extends LoggedModel<Destination> {
     const options = await this.getOptions();
     const groups = await this.$get("groups");
     const { pluginConnection } = await this.getPlugin();
+    const previewAvailable = await this.previewAvailable();
 
     return {
       guid: this.guid,
       name: this.name,
       type: this.type,
+      state: this.state,
       app: await app.apiData(),
       trackAllGroups: this.trackAllGroups,
       mapping,
       options,
+      previewAvailable,
       connection: pluginConnection,
       destinationGroups: await Promise.all(groups.map((grp) => grp.apiData())),
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
+  }
+
+  async previewAvailable() {
+    const { pluginConnection } = await this.getPlugin();
+    if (typeof pluginConnection?.methods?.destinationPreview === "function") {
+      return true;
+    }
+    return false;
   }
 
   async getMapping() {
@@ -205,6 +242,10 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async validateOptions(options: SimpleDestinationOptions) {
+    if (!options) {
+      options = await this.getOptions();
+    }
+
     return OptionHelper.validateOptions(this, options);
   }
 
@@ -395,7 +436,10 @@ export class Destination extends LoggedModel<Destination> {
     const combinedGroups = oldGroups.concat(newGroups);
     const relevantDestinations: Array<Destination> = [];
 
-    const destinations = await Destination.findAll({ include: [Group] });
+    const destinations = await Destination.findAll({
+      include: [Group],
+      where: { state: "ready" },
+    });
     for (const i in destinations) {
       const destination = destinations[i];
       const destinationGroupGuids = destination.groups.map((dsg) => dsg.guid);

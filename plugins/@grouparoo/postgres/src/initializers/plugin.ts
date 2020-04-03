@@ -12,7 +12,6 @@ import { profilePropertyRuleOptions as tableProfilePropertyRuleOptions } from ".
 import { nextFilter as tableNextFilter } from "../lib/table-import/nextFilter";
 import { scheduleOptions as tableScheduleOptions } from "../lib/table-import/scheduleOptions";
 
-import { sourcePreview as querySourcePreview } from "../lib/query-import/sourcePreview";
 import { sourceOptions as querySourceOptions } from "../lib/query-import/sourceOptions";
 import { profileProperty as queryProfileProperty } from "../lib/query-import/profileProperty";
 import { profilePropertyRuleOptions as queryProfilePropertyRuleOptions } from "../lib/query-import/profilePropertyRuleOptions";
@@ -86,7 +85,6 @@ export class Plugins extends Initializer {
           profilePropertyRuleOptions: queryProfilePropertyRuleOptions,
           methods: {
             sourceOptions: querySourceOptions,
-            sourcePreview: querySourcePreview,
             profileProperty: queryProfileProperty,
           },
         },

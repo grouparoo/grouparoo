@@ -6,6 +6,7 @@ import { App } from "./../../src/models/App";
 let actionhero;
 let app;
 let guid;
+let profilePropertyRuleGuid;
 
 describe("actions/sources", () => {
   beforeAll(async () => {
@@ -60,6 +61,7 @@ describe("actions/sources", () => {
       expect(source.guid).toBeTruthy();
       expect(source.app.guid).toBe(app.guid);
       expect(source.app.name).toBe("test app");
+      expect(source.state).toBe("draft");
 
       guid = source.guid;
     });
@@ -76,6 +78,22 @@ describe("actions/sources", () => {
       expect(sources.length).toBe(1);
       expect(sources[0].app.name).toBe("test app");
       expect(total).toBe(1);
+    });
+
+    test("a source can be bootstrapped with a profile property rule", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+        key: "userId",
+        type: "integer",
+      };
+      const { profilePropertyRule, error } = await specHelper.runAction(
+        "source:bootstrapUniqueProfilePropertyRule",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(profilePropertyRule.guid).toBeTruthy();
+      profilePropertyRuleGuid = profilePropertyRule.guid;
     });
 
     test("an administrator can list the connection + app pairs available for a new connection", async () => {
@@ -166,6 +184,34 @@ describe("actions/sources", () => {
       ]);
     });
 
+    test("a source can have mapping set", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+        mapping: { id: "userId" },
+      };
+      const { error, source } = await specHelper.runAction(
+        "source:edit",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(source.mapping).toEqual({ id: "userId" });
+    });
+
+    test("a source can be made active", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+        state: "ready",
+      };
+      const { error, source } = await specHelper.runAction(
+        "source:edit",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(source.state).toBe("ready");
+    });
+
     test("an administrator can view a source", async () => {
       connection.params = {
         csrfToken,
@@ -182,6 +228,27 @@ describe("actions/sources", () => {
     });
 
     test("an administrator can destroy a source", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+        mapping: {},
+      };
+      const editResponse = await specHelper.runAction(
+        "source:edit",
+        connection
+      );
+      expect(editResponse.error).toBeUndefined();
+
+      connection.params = {
+        csrfToken,
+        guid: profilePropertyRuleGuid,
+      };
+      const deleteRuleResponse = await specHelper.runAction(
+        "profilePropertyRule:destroy",
+        connection
+      );
+      expect(deleteRuleResponse.error).toBeUndefined();
+
       connection.params = {
         csrfToken,
         guid,

@@ -1,9 +1,11 @@
 import { helper } from "./../utils/specHelper";
 import { specHelper } from "actionhero";
 import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
+import { Source } from "./../../src/models/Source";
+
 let actionhero;
 let guid;
-let source;
+let source: Source;
 
 describe("actions/profilePropertyRules", () => {
   beforeAll(async () => {
@@ -27,6 +29,9 @@ describe("actions/profilePropertyRules", () => {
 
     source = await helper.factories.source();
     await source.setOptions({ table: "test table" });
+    await source.bootstrapUniqueProfilePropertyRule("userId", "integer");
+    await source.setMapping({ id: "userId" });
+    await source.update({ state: "ready" });
   });
 
   describe("administrator signed in", () => {
@@ -80,7 +85,6 @@ describe("actions/profilePropertyRules", () => {
       expect(profilePropertyRule.guid).toBeTruthy();
       expect(profilePropertyRule.key).toBe("email");
       expect(profilePropertyRule.unique).toBe(false);
-      expect(profilePropertyRule.passive).toBe(true);
       expect(profilePropertyRule.source.guid).toBe(source.guid);
       expect(pluginOptions[0].key).toBe("column");
 
@@ -99,7 +103,6 @@ describe("actions/profilePropertyRules", () => {
       } = await specHelper.runAction("profilePropertyRule:view", connection);
 
       expect(error).toBeUndefined();
-      expect(profilePropertyRule.passive).toBe(true);
       expect(profilePropertyRule.key).toBe("email");
       expect(profilePropertyRule.unique).toBe(false);
       expect(profilePropertyRule.source.guid).toBe(source.guid);
@@ -169,13 +172,13 @@ describe("actions/profilePropertyRules", () => {
         total,
       } = await specHelper.runAction("profilePropertyRules:list", connection);
       expect(error).toBeUndefined();
-      expect(profilePropertyRules.length).toBe(1);
-      expect(profilePropertyRules[0].source.guid).toBe(source.guid);
-      expect(profilePropertyRules[0].type).toBe("string");
-      expect(profilePropertyRules[0].unique).toBe(false);
-      expect(total).toBe(1);
+      expect(profilePropertyRules.length).toBe(2); // this + userId
+      expect(profilePropertyRules[1].source.guid).toBe(source.guid);
+      expect(profilePropertyRules[1].type).toBe("string");
+      expect(profilePropertyRules[1].unique).toBe(false);
+      expect(total).toBe(2);
 
-      expect(examples[profilePropertyRules[0].guid]).toEqual([
+      expect(examples[profilePropertyRules[1].guid]).toEqual([
         "person@example.com",
       ]);
 

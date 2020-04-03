@@ -2,8 +2,11 @@ import { log } from "actionhero";
 import {
   Table,
   Column,
+  Default,
   AllowNull,
+  BeforeValidate,
   BeforeSave,
+  DataType,
   BeforeDestroy,
   AfterDestroy,
   HasMany,
@@ -12,6 +15,7 @@ import { LoggedModel } from "../classes/loggedModel";
 import { Source } from "./Source";
 import { Option } from "./Option";
 import { OptionHelper } from "./../modules/optionHelper";
+import { StateMachine } from "./../modules/stateMachine";
 
 export interface AppOption {
   key: string;
@@ -21,6 +25,10 @@ export interface AppOption {
 }
 
 export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}
+
+const STATE_TRANSITIONS = [
+  { from: "draft", to: "ready", checks: ["validateOptions"] },
+];
 
 @Table({ tableName: "apps", paranoid: false })
 export class App extends LoggedModel<App> {
@@ -36,11 +44,23 @@ export class App extends LoggedModel<App> {
   @Column
   type: string;
 
+  @AllowNull(false)
+  @Default("draft")
+  @Column(DataType.ENUM("draft", "ready"))
+  state: string;
+
   @HasMany(() => Option, "ownerGuid")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
 
   @HasMany(() => Source)
   sources: Array<Source>;
+
+  @BeforeValidate
+  static async ensureName(instance: App) {
+    if (!instance.name) {
+      instance.name = `new ${instance.type} app ${new Date().getTime()}`;
+    }
+  }
 
   @BeforeSave
   static async validateType(instance: App) {
@@ -48,6 +68,11 @@ export class App extends LoggedModel<App> {
     if (!pluginApp) {
       throw new Error(`cannot find a pluginApp for type ${instance.type}`);
     }
+  }
+
+  @BeforeSave
+  static async updateState(instance: App) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeDestroy
@@ -124,6 +149,7 @@ export class App extends LoggedModel<App> {
       name: this.name,
       icon,
       type: this.type,
+      state: this.state,
       options,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,

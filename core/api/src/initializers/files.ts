@@ -13,6 +13,8 @@ export class Files extends Initializer {
   async initialize() {
     api.files = {};
 
+    api.files.types = ["csv", "json", "image", "video", "audio", "other"];
+
     if (config.files.transport === "local") {
       api.files.transport = new FileTransportLocal();
     } else if (config.files.transport === "s3") {

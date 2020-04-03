@@ -2,17 +2,26 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { Form, Button } from "react-bootstrap";
+import Router from "next/router";
 
-export default function ({
-  apiVersion,
-  errorHandler,
-  successHandler,
-  onClose,
-  fileHandler,
-}) {
+export default function ({ apiVersion, errorHandler, successHandler }) {
   const { execApi } = useApi(errorHandler);
   const { handleSubmit, register } = useForm();
+  const [types, setTypes] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  async function load() {
+    setLoading(true);
+    const response = await execApi("get", `/api/${apiVersion}/files/options`);
+    setLoading(false);
+    if (response?.options) {
+      setTypes(response.options.types);
+    }
+  }
 
   async function onSubmit(data) {
     setLoading(true);
@@ -23,8 +32,7 @@ export default function ({
     setLoading(false);
     if (response?.file) {
       successHandler.set({ message: "File Created" });
-      fileHandler.set();
-      onClose();
+      Router.push("/files");
     }
   }
 
@@ -32,18 +40,13 @@ export default function ({
     <>
       <Form id="form" onSubmit={handleSubmit(onSubmit)}>
         <Form.Group>
-          <Form.Label>Type</Form.Label>
-          <Form.Control
-            autoFocus
-            required
-            type="text"
-            name="type"
-            placeholder="File Type"
-            ref={register}
-          />
-          <Form.Control.Feedback type="invalid">
-            Type is required
-          </Form.Control.Feedback>
+          <Form.Label>File Type</Form.Label>
+          <Form.Control as="select" name="type" ref={register}>
+            <option disabled>choose a type</option>
+            {types.map((type) => (
+              <option>{type}</option>
+            ))}
+          </Form.Control>
         </Form.Group>
 
         <Form.Group>

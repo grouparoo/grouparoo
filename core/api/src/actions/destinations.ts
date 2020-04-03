@@ -116,8 +116,9 @@ export class DestinationCreate extends Action {
     this.outputExample = {};
     this.middleware = ["authenticated-team-member", "role-admin"];
     this.inputs = {
-      name: { required: true },
+      name: { required: false },
       type: { required: true },
+      state: { required: false },
       appGuid: { required: true },
       trackAllGroups: { required: false },
       options: { required: false },
@@ -126,12 +127,23 @@ export class DestinationCreate extends Action {
   }
 
   async run({ params, response }) {
-    const destination = await Destination.create(params);
+    const destination = await Destination.create({
+      name: params.name,
+      type: params.type,
+      appGuid: params.appGuid,
+      trackAllGroups: params.trackAllGroups,
+    });
+
     if (params.options) {
       await destination.setOptions(params.options);
     }
+
     if (params.mapping) {
       await destination.setMapping(params.mapping);
+    }
+
+    if (params.state) {
+      await destination.update({ state: params.state });
     }
 
     response.destination = await destination.apiData();
@@ -148,6 +160,7 @@ export class DestinationEdit extends Action {
     this.inputs = {
       guid: { required: true },
       name: { required: false },
+      state: { required: false },
       trackAllGroups: { required: false },
       options: { required: false },
       mapping: { required: false },

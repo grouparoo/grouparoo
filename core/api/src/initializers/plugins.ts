@@ -18,6 +18,7 @@ export class Plugins extends Initializer {
 
     plugin.registerPlugin({
       name: "@grouparoo/core",
+      icon: "/public/@grouparoo/manual/manual.png",
       apps: [
         {
           name: "manual",

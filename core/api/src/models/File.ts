@@ -1,4 +1,5 @@
-import { Table, Column, AllowNull } from "sequelize-typescript";
+import { api } from "actionhero";
+import { Table, Column, AllowNull, BeforeSave } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 
 @Table({ tableName: "files", paranoid: false })
@@ -34,6 +35,14 @@ export class File extends LoggedModel<File> {
   @AllowNull(false)
   @Column
   sizeBytes: number;
+
+  @BeforeSave
+  static async enureValidType(instance: File) {
+    const validTypes: Array<string> = api.files.types;
+    if (!validTypes.includes(instance.type)) {
+      throw new Error(`${instance.type} is not a valid file type`);
+    }
+  }
 
   async apiData() {
     return {

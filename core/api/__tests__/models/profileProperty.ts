@@ -29,9 +29,16 @@ describe("models/profileProperty", () => {
   beforeAll(async () => {
     source = await helper.factories.source();
     await source.setOptions({ table: "test table" });
+    await source.bootstrapUniqueProfilePropertyRule("userId", "integer");
+    await source.setMapping({ id: "userId" });
+    await source.update({ state: "ready" });
 
     profile = new Profile();
     await profile.save();
+
+    userIdRule = await ProfilePropertyRule.findOne({
+      where: { key: "userId" },
+    });
 
     firstNameRule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
@@ -42,11 +49,6 @@ describe("models/profileProperty", () => {
       sourceGuid: source.guid,
       key: "email",
       type: "email",
-    });
-    userIdRule = await ProfilePropertyRule.create({
-      sourceGuid: source.guid,
-      key: "userId",
-      type: "integer",
     });
     lastLoginRule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,

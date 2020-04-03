@@ -7,6 +7,7 @@ import {
   HasMany,
   Default,
   BelongsToMany,
+  BeforeSave,
   AfterCreate,
   BeforeDestroy,
   AfterDestroy,
@@ -30,6 +31,7 @@ import {
   ProfilePropertyRule,
   profilePropertyRuleJSToSQLType,
 } from "./ProfilePropertyRule";
+import { StateMachine } from "./../modules/stateMachine";
 
 const numbers = [1, 2, 3, 4, 5].reverse();
 export const GROUP_RULE_LIMIT = numbers.length;
@@ -42,6 +44,21 @@ export interface GroupRuleWithKey {
   relativeMatchUnit?: string;
   relativeMatchDirection?: string;
 }
+
+// we have no checks, as those are managed by the lifecycle methods below (and tasks)
+const STATE_TRANSITIONS = [
+  { from: "draft", to: "ready", checks: [] },
+  { from: "draft", to: "initializing", checks: [] },
+  { from: "draft", to: "deleted", checks: [] },
+  { from: "draft", to: "updating", checks: [] },
+  { from: "ready", to: "initializing", checks: [] },
+  { from: "initializing", to: "ready", checks: [] },
+  { from: "initializing", to: "updating", checks: [] },
+  { from: "initializing", to: "deleted", checks: [] },
+  { from: "ready", to: "updating", checks: [] },
+  { from: "updating", to: "ready", checks: [] },
+  { from: "ready", to: "deleted", checks: [] },
+];
 
 @Table({ tableName: "groups", paranoid: false })
 export class Group extends LoggedModel<Group> {
@@ -74,18 +91,10 @@ export class Group extends LoggedModel<Group> {
   matchType: "all" | "any";
 
   @AllowNull(false)
-  @Default("ready")
-  @Is("ofValidState", (value) => {
-    if (
-      value &&
-      ["ready", "initializing", "updating", "deleted"].indexOf(value) < 0
-    ) {
-      throw new Error(
-        "state must be one of: ready, initializing, updating, or deleted"
-      );
-    }
-  })
-  @Column(DataType.ENUM("ready", "initializing", "updating", "deleted"))
+  @Default("draft")
+  @Column(
+    DataType.ENUM("draft", "ready", "initializing", "updating", "deleted")
+  )
   state: string;
 
   @Column
@@ -105,6 +114,11 @@ export class Group extends LoggedModel<Group> {
 
   @BelongsToMany(() => Profile, () => GroupMember)
   profiles: Profile[];
+
+  @BeforeSave
+  static async updateState(instance: Group) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
 
   @AfterCreate
   static async linkToDestinationsTrackingAllGroups(instance: Group) {
