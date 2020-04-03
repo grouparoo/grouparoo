@@ -96,9 +96,22 @@ describe("models/source", () => {
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
       await expect(source.update({ state: "draft" })).rejects.toThrow(
-        /cannot transition source from ready to draft/
+        /cannot transition source state from ready to draft/
       );
       await source.destroy();
+    });
+
+    test("a source cannot be created in the ready state with missing required options", async () => {
+      const source = await Source.build({
+        appGuid: app.guid,
+        name: "no opts source",
+        type: "test-plugin-import",
+        state: "ready",
+      });
+
+      await expect(source.save()).rejects.toThrow(
+        /table is required for a source of type test-plugin-import/
+      );
     });
 
     test("a source with a schedule cannot be deleted", async () => {

@@ -47,6 +47,10 @@ export interface GroupRuleWithKey {
 
 // we have no checks, as those are managed by the lifecycle methods below (and tasks)
 const STATE_TRANSITIONS = [
+  { from: "draft", to: "ready", checks: [] },
+  { from: "draft", to: "initializing", checks: [] },
+  { from: "draft", to: "deleted", checks: [] },
+  { from: "draft", to: "updating", checks: [] },
   { from: "ready", to: "initializing", checks: [] },
   { from: "initializing", to: "ready", checks: [] },
   { from: "initializing", to: "updating", checks: [] },
@@ -87,8 +91,10 @@ export class Group extends LoggedModel<Group> {
   matchType: "all" | "any";
 
   @AllowNull(false)
-  @Default("ready")
-  @Column(DataType.ENUM("ready", "initializing", "updating", "deleted"))
+  @Default("draft")
+  @Column(
+    DataType.ENUM("draft", "ready", "initializing", "updating", "deleted")
+  )
   state: string;
 
   @Column

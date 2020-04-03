@@ -7,13 +7,12 @@ import { Run } from "./../../src/models/Run";
 import { Import } from "./../../src/models/Import";
 import { GroupMember } from "./../../src/models/GroupMember";
 
-let actionhero, api;
+let actionhero;
 
 describe("models/group", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
   }, 1000 * 30);
 
   afterAll(async () => {
@@ -29,6 +28,16 @@ describe("models/group", () => {
     expect(group.type).toBe("manual");
     expect(group.createdAt).toBeTruthy();
     expect(group.updatedAt).toBeTruthy();
+    expect(group.state).toBe("draft");
+  });
+
+  test("groups ban be created in the ready state", async () => {
+    const group = new Group({
+      name: "test group ready",
+      type: "manual",
+      state: "ready",
+    });
+    await group.save();
     expect(group.state).toBe("ready");
   });
 
@@ -40,7 +49,7 @@ describe("models/group", () => {
     });
 
     expect(log).toBeTruthy();
-    expect(log.message).toBe('group "test group" created');
+    expect(log.message).toBe('group "test group ready" created');
   });
 
   test("deleting a group creates a log entry with a relevant message", async () => {
@@ -77,7 +86,9 @@ describe("models/group", () => {
         type: "calculated",
         state: "bla",
       });
-      await expect(group.save()).rejects.toThrow(/invalid input value/);
+      await expect(group.save()).rejects.toThrow(
+        /cannot transition group state from draft to bla/
+      );
     });
 
     test("groups can only be of types manual and calculated", async () => {
@@ -359,7 +370,7 @@ describe("models/group", () => {
     test("an empty calculated group can be created", async () => {
       const members = await group.$get("groupMembers");
       expect(members.length).toBe(0);
-      expect(group.state).toBe("ready");
+      expect(group.state).toBe("draft");
     });
 
     test("changing group rules changes the state to initializing and enquires a run, and then back to ready when complete", async () => {

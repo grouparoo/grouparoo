@@ -28,7 +28,11 @@ export interface RunFilter {
 }
 
 // we have no checks, as those are managed by the lifecycle methods below (and tasks)
-const STATE_TRANSITIONS = [{ from: "running", to: "complete", checks: [] }];
+const STATE_TRANSITIONS = [
+  { from: "draft", to: "running", checks: [] },
+  { from: "draft", to: "complete", checks: [] },
+  { from: "running", to: "complete", checks: [] },
+];
 
 @Table({ tableName: "runs", paranoid: false })
 export class Run extends Model<Run> {
@@ -61,7 +65,7 @@ export class Run extends Model<Run> {
   creatorType: string;
 
   @AllowNull(false)
-  @Column(DataType.ENUM("running", "complete"))
+  @Column(DataType.ENUM("draft", "running", "complete"))
   state: string;
 
   @Column

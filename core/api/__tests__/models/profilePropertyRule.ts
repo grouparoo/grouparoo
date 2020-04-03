@@ -96,7 +96,7 @@ describe("models/profilePropertyRule", () => {
     const rule = await ProfilePropertyRule.findOne({ where: { key: "email" } });
 
     const group = await helper.factories.group();
-    expect(group.state).toBe("ready");
+    expect(group.state).toBe("draft");
     await group.update({ type: "calculated" });
     await group.setRules([
       {

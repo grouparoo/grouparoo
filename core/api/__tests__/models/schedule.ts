@@ -188,7 +188,7 @@ describe("models/schedule", () => {
         await schedule.setOptions({ maxColumn: "abc" });
         await schedule.update({ state: "ready" });
         await expect(schedule.update({ state: "draft" })).rejects.toThrow(
-          /cannot transition schedule from ready to draft/
+          /cannot transition schedule state from ready to draft/
         );
         await schedule.destroy();
       });

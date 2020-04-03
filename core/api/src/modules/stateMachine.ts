@@ -13,15 +13,17 @@ export namespace StateMachine {
   ) {
     const klass = modelName(instance);
     const newState: string = instance["state"];
-    const oldState: string = instance["_previousDataValues"]["state"];
-    if (!newState || !oldState || newState === oldState) {
+    const oldState: string =
+      instance["_previousDataValues"]["state"] || "draft";
+
+    if (!newState || newState === oldState) {
       return;
     }
 
     const transition = findTransition(oldState, newState, transitions);
     if (!transition) {
       throw new Error(
-        `cannot transition ${klass} from ${oldState} to ${newState}`
+        `cannot transition ${klass} state from ${oldState} to ${newState}`
       );
     }
 

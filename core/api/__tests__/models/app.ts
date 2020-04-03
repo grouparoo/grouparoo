@@ -173,7 +173,7 @@ describe("models/app", () => {
       expect(app.state).toBe("ready");
 
       await expect(app.update({ state: "draft" })).rejects.toThrow(
-        /cannot transition app from ready to draft/
+        /cannot transition app state from ready to draft/
       );
 
       await app.destroy();

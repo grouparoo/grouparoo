@@ -190,7 +190,7 @@ describe("models/destination", () => {
         await destination.update({ state: "ready" });
 
         await expect(destination.update({ state: "draft" })).rejects.toThrow(
-          /cannot transition destination from ready to draft/
+          /cannot transition destination state from ready to draft/
         );
       });
 
