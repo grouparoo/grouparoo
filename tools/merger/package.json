@@ -1,0 +1,18 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "@grouparoo/merger",
+  "description": "Combining things from monorepo packages for fun and profit",
+  "version": "0.1.0",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "node": "12.x.x"
+  },
+  "dependencies": {
+    "glob": "^7.1.6",
+    "mustache": "^4.0.1",
+    "prettier": "^2.0.2",
+    "yargs": "^15.3.1"
+  },
+  "devDependencies": {}
+}

@@ -250,6 +250,21 @@ Examples:
   sync_version  make sure everything is using current lerna.json version
 ```
 
+### merger/ci_generate
+
+```sh
+./tools/merger/ci_generate -h
+Usage: ci_generate
+
+Options:
+  --version      Show version number                                   [boolean]
+  -h, --help     Show help                                             [boolean]
+  --verbose, -v  show steps                                              [count]
+
+Examples:
+  ci_generate  generate yml file for continuous integration
+```
+
 ---
 
 🦘
