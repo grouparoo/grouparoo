@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+const argv = require("yargs")
+  .help("h")
+  .alias("h", "help")
+  .example("$0", "generate yml file for continuous")
+  .count("verbose")
+  .alias("verbose", "v")
+  .describe("verbose", "show steps")
+  .usage("Usage: $0").argv;
+
+require("./src/ci_generate")
+  .cmd(argv)
+  .then(
+    () => {
+      process.exit(0);
+    },
+    (error) => {
+      console.error(`ERROR! ${error}`);
+      throw error;
+      process.exit(1);
+    }
+  );

@@ -1,0 +1,10 @@
+  {{{job_name}}}:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *cache-options
+      - run:
+          name: {{{name}}}
+          command: {{{command}}}

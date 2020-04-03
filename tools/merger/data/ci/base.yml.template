@@ -1,0 +1,58 @@
+version: 2
+
+# Define common steps all parts of the test workflow use
+references:
+  ignored-branches: &ignored-branches
+    branches:
+      ignore:
+        - gh-pages
+
+  cache-options: &cache-options
+    key: package-cache-{{ .Branch }}-{{ .Revision }}
+
+# Define Jobs to run
+jobs:
+  build:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *cache-options
+      - run:
+          name: npm-install
+          command: npm install
+      - save_cache:
+          <<: *cache-options
+          paths:
+{{{node_module_list}}}
+            - core/web/.next
+            - core/api/dist
+
+{{{jobs}}}
+
+  complete:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - run:
+          name: complete
+          command: echo "Tests Complete!"
+
+# Run all the tests is parallel
+workflows:
+  version: 2
+  test-grouparoo:
+    jobs:
+      - build:
+          filters:
+            <<: *ignored-branches
+
+{{{workflows}}}
+
+      - complete:
+          filters:
+            <<: *ignored-branches
+          requires:
+{{{job_name_list}}}
+

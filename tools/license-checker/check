@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-
 const checker = require("license-checker");
 const glob = require("glob");
 const path = require("path");
 const fs = require("fs");
+const { allPackageFiles } = require("../shared/packages");
 
 const excludePackages = [
   // custom exclusions for newrelic
@@ -31,15 +31,7 @@ const onlyAllow = [
   "WTFPL",
 ];
 
-const rootPath = path.join(__dirname, "..", "..");
-const packageFiles = [].concat(
-  glob.sync(path.join(rootPath, "package.json")),
-  glob.sync(path.join(rootPath, "*", "package.json")),
-  glob.sync(path.join(rootPath, "plugins", "*", "*", "package.json")),
-  glob.sync(path.join(rootPath, "internal", "*", "package.json")),
-  glob.sync(path.join(rootPath, "apps", "*", "package.json")),
-  glob.sync(path.join(rootPath, "tools", "*", "package.json"))
-);
+const packageFiles = allPackageFiles();
 
 // the packages in this repository are explicitly allowed, regardless of their license.
 packageFiles.forEach((pkgFile) => {
