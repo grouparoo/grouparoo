@@ -1,0 +1,24 @@
+name: update-branch
+
+on: pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Update lerna
+        run: |
+          cd tools/lerna && ./github_action
+      - name: Update merged files
+        run: |
+          cd tools/merger && ./github_action
+      - uses: stefanzweifel/git-auto-commit-action@v4.1.2
+        with:
+          commit_message: Updating things automatically
+          commit_user_name: Grouparoo Bot
+          commit_user_email: hello@grouparoo.com
+          commit_author: Grouparoo Bot <hello@grouparoo.com>
+          branch: ${{ github.head_ref }}

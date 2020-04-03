@@ -22,7 +22,7 @@
   "scripts": {
     "prepare": "npm run bootstrap",
     "bootstrap": "./node_modules/.bin/lerna bootstrap --hoist --strict --ignore-scripts && ./bin/build",
-    "license-checker": "./bin/license-checker",
+    "license-checker": "./tools/license-checker/check",
     "publish": "npm run bootstrap && ./node_modules/.bin/lerna publish --ignore-scripts",
     "clean": "lerna clean",
     "lint": "lerna run lint",

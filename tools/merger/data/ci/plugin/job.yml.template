@@ -1,0 +1,26 @@
+  {{{job_name}}}:
+    docker:
+      - image: circleci/node:12
+      - image: redis:latest
+      - image: circleci/postgres:9
+        environment:
+          POSTGRES_PASSWORD: password
+{{{custom_docker}}}
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *cache-options  
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+{{{custom_steps}}}          
+      - run:
+          name: test
+          command: cd {{{relative_path}}} && npm run test
+{{custom_test}}

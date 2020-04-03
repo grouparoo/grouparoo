@@ -18,11 +18,11 @@
     "google-spreadsheet": "^3.0.10"
   },
   "peerDependencies": {
-    "@grouparoo/core": "0.1.1-aplha.4",
+    "@grouparoo/core": "^0.1.1-aplha.4",
     "actionhero": "^22.0.5"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.1.1-aplha.4",
+    "@grouparoo/core": "^0.1.1-aplha.4",
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.0",
     "actionhero": "^22.0.5",
