@@ -101,6 +101,7 @@ export namespace helper {
   }
 
   export async function shutdown(server1, server2?) {
+    await api.resque.queue.connection.redis.flushdb();
     await Promise.all(
       [server1, server2].map(async (server) => {
         if (server) {
