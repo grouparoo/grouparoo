@@ -16,7 +16,7 @@
     "glob": "^7.1.6",
     "lerna": "^3.20.2",
     "lerna-update-wizard": "^0.17.8",
-    "license-checker": "grouparoo/license-checker",
+    "license-checker": "github:grouparoo/license-checker",
     "npm-check-updates": "latest",
     "prettier": "^2.0.4"
   },
