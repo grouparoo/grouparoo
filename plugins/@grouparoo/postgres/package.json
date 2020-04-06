@@ -23,7 +23,7 @@
     "pg-hstore": "^2.3.3"
   },
   "peerDependencies": {
-    "@grouparoo/core": "^0.1.1-aplha.4",
+    "@grouparoo/core": "^0.1.1-alpha.6",
     "actionhero": "^22.0.7"
   },
   "devDependencies": {
@@ -37,5 +37,5 @@
     "ts-jest": "^25.3.1",
     "typescript": "^3.8.3"
   },
-  "gitHead": "e9f1dd3cd79c004627df328f68fc95b704faff1a"
+  "gitHead": "d180097c68e2e0db22918e7d51c0e84abd9202c0"
 }

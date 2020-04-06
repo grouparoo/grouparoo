@@ -90,5 +90,5 @@
     "sequelize-cli": "^5.5.1",
     "ts-jest": "^25.3.1"
   },
-  "gitHead": "e9f1dd3cd79c004627df328f68fc95b704faff1a"
+  "gitHead": "d180097c68e2e0db22918e7d51c0e84abd9202c0"
 }
