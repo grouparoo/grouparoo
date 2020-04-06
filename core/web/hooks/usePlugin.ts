@@ -1,5 +1,5 @@
-import dynamic from "next/dynamic";
 import PluginManifest from "./../tmp/pluginManifest.json";
+import PluginLoader from "./../tmp/pluginLoader";
 
 export function usePlugins(key: string) {
   const pluginComponents = [];
@@ -26,23 +26,7 @@ export function usePlugins(key: string) {
               key: lastWordFromCamelCase(file),
             });
 
-            if (process.env.GROUPAROO_MONOREPO_APP) {
-              pluginComponents.push(
-                dynamic(() =>
-                  import(
-                    `../../../plugins/${pluginName}/src/components/${file}.plugin`
-                  )
-                )
-              );
-            } else {
-              pluginComponents.push(
-                dynamic(() =>
-                  import(
-                    `../../node_modules/${pluginName}/src/components/${file}.plugin`
-                  )
-                )
-              );
-            }
+            pluginComponents.push(PluginLoader(pluginName, file));
           });
         }
       }

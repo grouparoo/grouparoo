@@ -1,7 +1,7 @@
 import Axios, { AxiosRequestConfig, Method } from "axios";
 import Router from "next/router";
 import { isBrowser } from "../utils/isBrowser";
-import PackageJSON from "../../../package.json";
+import PackageJSON from "../../package.json";
 
 interface ClientCacheObject {
   locked: boolean;
