@@ -10,18 +10,15 @@ fs.writeFileSync(
 );
 
 // write the require path loader for the webpack plugin loader
-const pluginLoaderPaths = {
-  monorepo: "../../../plugins/${pluginName}/src/components/${file}.plugin",
-  dist: "../../node_modules/${pluginName}/src/components/${file}.plugin",
-};
-const pluginLoaderPath =
-  pluginLoaderPaths[process.env.GROUPAROO_MONOREPO_APP ? "monorepo" : "dist"];
-
 const loader = `import dynamic from "next/dynamic";
 
 export default function LoadPlugin (pluginName: string, file: string) {
   return dynamic(() =>
-    import(\`${pluginLoaderPath}\`)
+    import(\`${
+      process.env.GROUPAROO_MONOREPO_APP
+        ? "../../../plugins/${pluginName}/src/components/${file}.plugin"
+        : "../../node_modules/${pluginName}/src/components/${file}.plugin"
+    }\`)
   )
 };
 `;
