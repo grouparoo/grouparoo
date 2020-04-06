@@ -15,10 +15,10 @@
   "devDependencies": {
     "glob": "^7.1.6",
     "lerna": "^3.20.2",
-    "lerna-update-wizard": "^0.17.7",
-    "license-checker": "grouparoo/license-checker",
+    "lerna-update-wizard": "^0.17.8",
+    "license-checker": "github:grouparoo/license-checker",
     "npm-check-updates": "latest",
-    "prettier": "^2.0.2"
+    "prettier": "^2.0.4"
   },
   "scripts": {
     "prepare": "npm run bootstrap",
@@ -29,6 +29,6 @@
     "lint": "lerna run lint",
     "test": "lerna run test",
     "nuke": "rm -rf node_modules && rm -rf core/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/api/dist && rm -rf plugins/*/*/dist",
-    "update": "lerna exec -- npm-check-updates -u && npm run nuke && npm install"
+    "update": "npm-check-updates -u && lerna exec -- npm-check-updates -u && npm run nuke && npm install"
   }
 }
