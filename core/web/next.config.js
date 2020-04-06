@@ -51,9 +51,13 @@ const overwriteNextBabelLoaderToIncludePluginNodeModules = (config) => {
     .concat(plugins)
     .map((p) => path.join("node_modules", p.name));
 
-  const NextBabelLoader = config.module.rules.filter(
-    (r) => r?.use?.loader === "next-babel-loader"
-  )[0];
+  const NextBabelLoader = config.module.rules.filter((r) => {
+    if (r.use && r.use.loader === "next-babel-loader") {
+      return true;
+    } else {
+      return false;
+    }
+  })[0];
 
   const originalExclude = NextBabelLoader.exclude;
 
