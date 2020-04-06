@@ -24,11 +24,11 @@ Want to move faster? Take control of your data and your destiny with the open so
     "node": "12.x.x"
   },
   "dependencies": {
-    "@grouparoo/core": "0.1.0",
-    "@grouparoo/mysql": "0.1.0",
-    "@grouparoo/postgres": "0.1.0",
-    "@grouparoo/mailchimp": "0.1.0",
-    "@grouparoo/csv": "0.1.0"
+    "@grouparoo/core": "0.1.1-alpha.5",
+    "@grouparoo/mysql": "0.1.1-alpha.5",
+    "@grouparoo/postgres": "0.1.1-alpha.5",
+    "@grouparoo/mailchimp": "0.1.1-alpha.5",
+    "@grouparoo/csv": "0.1.1-alpha.5"
   },
   "scripts": {
     "prepare": "cd node_modules/@grouparoo/core && npm run prepare",
