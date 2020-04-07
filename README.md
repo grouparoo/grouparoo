@@ -17,18 +17,18 @@ Want to move faster? Take control of your data and your destiny with the open so
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "my-grouparoo-project",
   "description": "A Grouparoo Deployment",
-  "version": "0.1.0",
+  "version": "0.1.1-alpha.8",
   "license": "UNLICENSED",
   "private": true,
   "engines": {
     "node": "12.x.x"
   },
   "dependencies": {
-    "@grouparoo/core": "0.1.1-alpha.5",
-    "@grouparoo/mysql": "0.1.1-alpha.5",
-    "@grouparoo/postgres": "0.1.1-alpha.5",
-    "@grouparoo/mailchimp": "0.1.1-alpha.5",
-    "@grouparoo/csv": "0.1.1-alpha.5"
+    "@grouparoo/core": "0.1.1-alpha.8",
+    "@grouparoo/mysql": "0.1.1-alpha.8",
+    "@grouparoo/postgres": "0.1.1-alpha.8",
+    "@grouparoo/mailchimp": "0.1.1-alpha.8",
+    "@grouparoo/csv": "0.1.1-alpha.8"
   },
   "scripts": {
     "prepare": "cd node_modules/@grouparoo/core && npm run prepare",
