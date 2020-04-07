@@ -54,15 +54,22 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     }
   }
 
-  async function enqueueRun() {
+  async function enqueueScheduleRun() {
     setLoading(true);
-    const response = await execApi(
-      "post",
-      `/api/${apiVersion}/schedule/${guid}/run`
-    );
-    setLoading(false);
-
-    successHandler.set({ message: "run enqueued" });
+    try {
+      const { source } = await execApi(
+        "get",
+        `/api/${apiVersion}/source/${guid}`
+      );
+      await execApi(
+        "post",
+        `/api/${apiVersion}/schedule/${source.schedule.guid}/run`
+      );
+      await load();
+      successHandler.set({ message: "run enqueued" });
+    } finally {
+      setLoading(false);
+    }
   }
 
   function updateURLParams() {
@@ -87,13 +94,13 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   return (
     <>
-      {guid && window.location.pathname.match("schedule") ? (
+      {guid && window.location.pathname.match("source") ? (
         <>
           <Button
             size="sm"
             variant="warning"
             onClick={() => {
-              enqueueRun();
+              enqueueScheduleRun();
             }}
           >
             Run Now
