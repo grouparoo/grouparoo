@@ -12,7 +12,10 @@ export default function (props) {
   const { query, errorHandler, apiVersion } = props;
   const { guid } = query;
   const { execApi } = useApi(errorHandler);
-  const [source, setSource] = useState({ schedule: { guid: "" } });
+  const [source, setSource] = useState({
+    previewAvailable: false,
+    schedule: { guid: "" },
+  });
 
   useEffect(() => {
     load();
@@ -46,9 +49,11 @@ export default function (props) {
         </Card>
       </Fragment>
 
-      <Fragment key="mapping">
-        <SourceMapping {...props} />
-      </Fragment>
+      {source.previewAvailable ? (
+        <Fragment key="mapping">
+          <SourceMapping {...props} />
+        </Fragment>
+      ) : null}
 
       {hasSchedule ? (
         <Fragment key="schedule">
