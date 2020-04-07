@@ -17,7 +17,7 @@ export default function LoadPlugin (pluginName: string, file: string) {
     import(\`${
       process.env.GROUPAROO_MONOREPO_APP
         ? "../../../plugins/${pluginName}/src/components/${file}.plugin"
-        : "../../node_modules/${pluginName}/src/components/${file}.plugin"
+        : "../../../../${pluginName}/src/components/${file}.plugin"
     }\`)
   )
 };

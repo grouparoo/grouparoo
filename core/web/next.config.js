@@ -40,12 +40,7 @@ module.exports = {
   },
 };
 
-let OVERWRITTEN = false;
 const overwriteNextBabelLoaderToIncludePluginNodeModules = (config) => {
-  if (OVERWRITTEN) {
-    return;
-  }
-
   const { plugins } = getPluginManifest();
   const pluginNamesWithinNodeModules = [{ name: "@grouparoo/core" }]
     .concat(plugins)
@@ -62,14 +57,12 @@ const overwriteNextBabelLoaderToIncludePluginNodeModules = (config) => {
   const originalExclude = NextBabelLoader.exclude;
 
   NextBabelLoader.exclude = (moduleName, ...args) => {
-    pluginNamesWithinNodeModules.forEach((pluginPath) => {
-      if (moduleName.indexOf(pluginPath) >= 0) {
+    for (const i in pluginNamesWithinNodeModules) {
+      if (moduleName.indexOf(pluginNamesWithinNodeModules[i]) >= 0) {
         return false;
       }
-    });
+    }
 
     return originalExclude(moduleName, ...args);
   };
-
-  OVERWRITTEN = true;
 };
