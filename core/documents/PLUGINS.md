@@ -9,20 +9,20 @@ In your Grouparoo deployment project, simply install the plugin with NPM:
 1. `npm install @grouparoo/awesome-plugin`
 2. Add the plugin to your `grouparoo/plugins` hash within your package.json. When complete, your `package.json` using `@grouparoo/awesome-plugin` will look like:
 
-```json
+```json:plugins_example
 {
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/example-app",
   "description": "A Grouparoo Example Application",
-  "version": "0.1.0",
+  "version": "0.1.1-alpha.8",
   "license": "UNLICENSED",
   "private": true,
   "engines": {
     "node": "12.x.x"
   },
   "dependencies": {
-    "@grouparoo/core": "0.1.0",
-    "@grouparoo/awesome-plugin": "0.1.0"
+    "@grouparoo/core": "0.1.1-alpha.8",
+    "@grouparoo/awesome-plugin": "0.1.1-alpha.8"
   },
   "scripts": {
     "prepare": "cd node_modules/@grouparoo/core && npm run prepare",
@@ -82,11 +82,11 @@ Below, we will enumerate the types of things your plugins can do:
 
 In your plugin's `package.json`, we use a `grouparoo` section to list certain options:
 
-```json
+```json:plugins_package
 {
   "name": "@grouparoo/awesome-plugin",
   "description": "a Grouparoo plugin",
-  "version": "0.1.0",
+  "version": "0.1.1-alpha.8",
   "license": "UNLICENSED",
   "private": true,
   "engines": {
@@ -102,11 +102,11 @@ In your plugin's `package.json`, we use a `grouparoo` section to list certain op
     "something": "^5.10.0"
   },
   "peerDependencies": {
-    "@grouparoo/core": "0.1.0",
+    "@grouparoo/core": "0.1.1-alpha.8",
     "actionhero": "^22.0.5"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.1.0",
+    "@grouparoo/core": "0.1.1-alpha.8",
     "actionhero": "^22.0.5",
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.0",
@@ -171,7 +171,7 @@ import { test } from "./../lib/test";
 import { columns } from "./../lib/columns";
 import {
   profilePropertyRuleQueryOptions,
-  buildProfilePropertyRuleQuery
+  buildProfilePropertyRuleQuery,
 } from "./../lib/buildProfileQuery";
 import { profiles } from "./../lib/profiles";
 import { profileProperty } from "./../lib/profileProperty";
@@ -194,12 +194,12 @@ export class Plugins extends Initializer {
           name: "postgres",
           options: [
             { key: "host", required: false, description: "the postgres host" },
-            { key: "port", required: false, description: "the postgres port" }
+            { key: "port", required: false, description: "the postgres port" },
           ],
           test: test,
           profilePropertyRuleQueryOptions,
-          buildProfilePropertyRuleQuery
-        }
+          buildProfilePropertyRuleQuery,
+        },
       ],
       connections: [
         {
@@ -208,13 +208,13 @@ export class Plugins extends Initializer {
           description: "import or update profiles from a postgres database",
           app: ["postgres"],
           options: [
-            { key: "table", required: true, description: "the table to scan" }
+            { key: "table", required: true, description: "the table to scan" },
           ],
           methods: {
             profiles,
             profileProperty,
-            columns
-          }
+            columns,
+          },
         },
         {
           name: "postgres-export",
@@ -225,15 +225,15 @@ export class Plugins extends Initializer {
             {
               key: "table",
               required: true,
-              description: "the table to write profiles to"
-            }
+              description: "the table to write profiles to",
+            },
           ],
           methods: {
             exportProfile,
-            columns
-          }
-        }
-      ]
+            columns,
+          },
+        },
+      ],
     });
   }
 }
