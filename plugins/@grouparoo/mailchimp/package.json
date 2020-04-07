@@ -21,7 +21,7 @@
     "mailchimp-api-v3": "^1.13.1"
   },
   "peerDependencies": {
-    "@grouparoo/core": "^0.1.1-alpha.6",
+    "@grouparoo/core": "^0.1.1-alpha.8",
     "actionhero": "^22.0.7"
   },
   "devDependencies": {
