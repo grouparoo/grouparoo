@@ -318,7 +318,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
               <Alert variant="warning">Mapping not set yet</Alert>
             )
           ) : (
-            <Alert variant="secondary">
+            <Alert variant="warning">
               Mapping not available for this connection type
             </Alert>
           )}
