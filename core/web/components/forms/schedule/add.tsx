@@ -46,7 +46,7 @@ export async function createSchedule({
 
   if (response?.schedule) {
     successHandler.set({ message: "Schedule Created" });
-    Router.push(`/schedule/${response.schedule.guid}?tab=edit`);
+    Router.push(`/source/${sourceGuid}?tab=schedule`);
   } else {
     setLoading(false);
   }

@@ -1,6 +1,7 @@
 import { Action } from "actionhero";
 import { Run } from "../models/Run";
 import { Op } from "sequelize";
+import { Schedule } from "../models/Schedule";
 
 export class ListRuns extends Action {
   constructor() {
@@ -20,10 +21,23 @@ export class ListRuns extends Action {
   }
 
   async run({ params, response }) {
+    let guid = params.guid;
+
+    if (guid && guid.match(/^src_/)) {
+      const schedule = await Schedule.findOne({
+        where: { sourceGuid: params.guid },
+      });
+      if (!schedule) {
+        throw new Error("no schedule for this source");
+      } else {
+        guid = schedule.guid;
+      }
+    }
+
     const where = {};
 
-    if (params.guid) {
-      where["creatorGuid"] = params.guid;
+    if (guid) {
+      where["creatorGuid"] = guid;
     }
 
     if (params.state) {

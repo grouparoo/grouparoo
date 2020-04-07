@@ -3,14 +3,17 @@ import { useApi } from "../../../hooks/useApi";
 import Moment from "react-moment";
 import { Alert, Row, Col, Form, Button, Badge, Table } from "react-bootstrap";
 import Router from "next/router";
+import Link from "next/link";
 import AppIcon from "../../appIcon";
 import StateBadge from "../../stateBadge";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
+  const [guid, setGuid] = useState("");
   const [pluginOptions, setPluginOptions] = useState([]);
   const [run, setRun] = useState({
+    guid: "",
     state: "",
     createdAt: "",
     updatedAt: "",
@@ -27,6 +30,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     direction: "",
     source: {
       guid: "",
+      name: "",
       type: "string",
       app: {
         guid: "",
@@ -40,18 +44,33 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     recurringFrequencyMinutes: 0,
   });
 
-  const { guid } = query;
+  const { guid: sourceGuid } = query;
 
   useEffect(() => {
-    load();
+    loadSource();
   }, []);
 
-  async function load() {
+  async function loadSource() {
+    setLoading(true);
+
+    const sourceResponse = await execApi(
+      "get",
+      `/api/${apiVersion}/source/${sourceGuid}`
+    );
+    setLoading(false);
+
+    if (sourceResponse?.source?.schedule?.guid) {
+      setGuid(sourceResponse.source.schedule.guid);
+      load(sourceResponse.source.schedule.guid);
+    }
+  }
+
+  async function load(_guid = guid) {
     setLoading(true);
 
     const scheduleResponse = await execApi(
       "get",
-      `/api/${apiVersion}/schedule/${guid}`
+      `/api/${apiVersion}/schedule/${_guid}`
     );
     if (scheduleResponse?.schedule) {
       scheduleResponse.schedule.recurringFrequencyMinutes =
@@ -61,7 +80,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     }
 
     const runsResponse = await execApi("get", `/api/${apiVersion}/runs`, {
-      guid,
+      guid: _guid,
       limit: 1,
     });
     if (runsResponse?.runs) {
@@ -128,24 +147,13 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             <AppIcon src={schedule?.source?.app?.icon} fluid size={100} />
           </Col>
           <Col>
+            <h2>
+              Schedule for source{" "}
+              <Badge variant="secondary">{schedule.source.name}</Badge>
+            </h2>
             <StateBadge state={schedule.state} />
             <br />
             <br />
-
-            <Form.Group controlId="name">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                placeholder="Name"
-                value={schedule.name}
-                onChange={(e) => update(e)}
-              />
-              <Form.Control.Feedback type="invalid">
-                Name is required
-              </Form.Control.Feedback>
-            </Form.Group>
-
             <Form.Group controlId="recurring">
               <Form.Check
                 type="checkbox"
@@ -190,10 +198,15 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                           <span>never run</span>
                         )}
                         {run.completedAt ? (
-                          <>
+                          <p>
                             Completed <Moment fromNow>{run.completedAt}</Moment>
-                          </>
+                          </p>
                         ) : null}
+                        <p>
+                          <Link href="/run/[guid]" as={`/run/${run.guid}`}>
+                            <a>See More</a>
+                          </Link>
+                        </p>
                       </>
                     ) : (
                       <p>no runs yet</p>
@@ -229,14 +242,17 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                           new Date().getTime() &&
                         schedule.recurringFrequencyMinutes) ||
                       !run ? (
-                        <p>ASAP</p>
+                        schedule.recurring ? (
+                          <strong>ASAP</strong>
+                        ) : (
+                          "N/A"
+                        )
                       ) : null}
                     </p>
                   </Alert>
                 </Col>
               </Row>
             ) : null}
-
             <>
               <p>
                 <strong>Options for a {schedule.source.type} Schedule</strong>

@@ -5,24 +5,6 @@ const { getPluginManifest } = require("../api/src/utils/pluginDetails");
 module.exports = {
   env,
 
-  experimental: {
-    modern: true,
-    async redirects() {
-      return [
-        {
-          source: "/schedules/",
-          destination: "/sources",
-          statusCode: 302,
-        },
-        {
-          source: "/schedules",
-          destination: "/sources",
-          statusCode: 302,
-        },
-      ];
-    },
-  },
-
   webpack: (config, options) => {
     overwriteNextBabelLoaderToIncludePluginNodeModules(config);
 

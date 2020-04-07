@@ -2,8 +2,8 @@ import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
-import { exportProfile } from "../lib/export/exportProfile";
 
+import { exportProfile } from "../lib/export/exportProfile";
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationPreview } from "../lib/export/destinationPreview";
 
