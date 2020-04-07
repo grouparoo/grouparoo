@@ -13,6 +13,7 @@ import {
 import AppIcon from "./../../appIcon";
 import StateBadge from "./../../stateBadge";
 import Link from "next/link";
+import Moment from "react-moment";
 import ScheduleAddButton from "./../schedule/add";
 import ProfilePropertyRuleAddButton from "./../profilePropertyRule/add";
 
@@ -37,6 +38,17 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     app: { icon: "", name: "", guid: "" },
     profilePropertyRules: [],
   });
+  const [run, setRun] = useState({
+    guid: "",
+    state: "",
+    createdAt: "",
+    updatedAt: "",
+    completedAt: "",
+    importsCreated: 0,
+    profilesCreated: 0,
+    profilesImported: 0,
+    profilesExported: 0,
+  });
   const { guid } = query;
 
   useEffect(() => {
@@ -44,14 +56,29 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   }, []);
 
   async function load() {
-    const sourceResponse = await execApi(
-      "get",
-      `/api/${apiVersion}/source/${guid}`
-    );
-    if (sourceResponse?.source) {
-      setSource(sourceResponse.source);
+    const response = await execApi("get", `/api/${apiVersion}/source/${guid}`);
+    if (response?.source) {
+      setSource(response.source);
+
+      if (response.source?.schedule?.guid) {
+        loadRun(response.source.schedule.guid);
+      }
     }
   }
+
+  async function loadRun(scheduleGuid = source.schedule.guid) {
+    const response = await execApi("get", `/api/${apiVersion}/runs`, {
+      guid: scheduleGuid,
+      limit: 1,
+    });
+    if (response?.runs) {
+      setRun(response.runs[0]);
+    }
+  }
+
+  const recurringFrequencyMinutes = source?.schedule?.recurringFrequency
+    ? Math.round(source.schedule.recurringFrequency / 1000 / 60)
+    : null;
 
   return (
     <>
@@ -148,41 +175,119 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
           <br />
           {source.scheduleAvailable ? (
             source.schedule ? (
-              <>
-                <p>
-                  <Link
-                    href="/schedule/[guid]"
-                    as={`/schedule/${source.schedule.guid}`}
+              <Row>
+                <Col>
+                  <p>
+                    <Link
+                      href="/schedule/[guid]"
+                      as={`/schedule/${source.schedule.guid}`}
+                    >
+                      <a>
+                        <strong>Guid</strong>: {source.schedule.guid}
+                      </a>
+                    </Link>
+                    <br />
+                    <strong>Recurring</strong>:{" "}
+                    <Badge
+                      variant={
+                        source.schedule.recurring ? "success" : "secondary"
+                      }
+                    >
+                      {source.schedule.recurring.toString()}
+                    </Badge>
+                    <br />
+                    <strong>Frequency</strong>:{" "}
+                    {source.schedule.recurringFrequency
+                      ? `${recurringFrequencyMinutes} minutes`
+                      : "N/A"}
+                    <br />
+                    <strong>State</strong>:{" "}
+                    <StateBadge state={source.schedule.state} />
+                  </p>
+                  <Button
+                    size="sm"
+                    href={`/schedule/${source.schedule.guid}`}
+                    disabled={source.state === "draft"}
                   >
-                    <a>
-                      <strong>Name</strong>: {source.schedule.name} (
-                      {source.schedule.guid})
-                    </a>
-                  </Link>
-                  <br />
-                  <strong>Recurring</strong>:{" "}
-                  <Badge
-                    variant={
-                      source.schedule.recurring ? "success" : "secondary"
-                    }
-                  >
-                    {source.schedule.recurring.toString()}
-                  </Badge>
-                  <br />
-                  <strong>Frequency</strong>:{" "}
-                  {source.schedule.recurringFrequency}
-                  <br />
-                  <strong>State</strong>:{" "}
-                  <StateBadge state={source.schedule.state} />
-                </p>
-                <Button
-                  size="sm"
-                  href={`/schedule/${source.schedule.guid}`}
-                  disabled={source.state === "draft"}
-                >
-                  See Schedule Details
-                </Button>
-              </>
+                    See Schedule Details
+                  </Button>
+                </Col>
+                <Col>
+                  <Alert variant="success">
+                    <strong>Most Recent Run</strong>
+                    {run ? (
+                      <>
+                        <br /> State: {run.state}
+                        <br />
+                        {run.createdAt ? (
+                          <>
+                            Started <Moment fromNow>{run.createdAt}</Moment>
+                            <ul>
+                              <li>Imports Created: {run.importsCreated}</li>
+                              <li>Profiles Created: {run.profilesCreated}</li>
+                              <li>Profiles Imported: {run.profilesImported}</li>
+                              <li>Profiles Exported: {run.profilesExported}</li>
+                            </ul>
+                          </>
+                        ) : (
+                          <span>never run</span>
+                        )}
+                        {run.completedAt ? (
+                          <p>
+                            Completed <Moment fromNow>{run.completedAt}</Moment>
+                          </p>
+                        ) : null}
+                        <p>
+                          <Link href="/run/[guid]" as={`/run/${run.guid}`}>
+                            <a>See More</a>
+                          </Link>
+                        </p>
+                      </>
+                    ) : (
+                      <p>no runs yet</p>
+                    )}{" "}
+                  </Alert>
+                </Col>
+                <Col>
+                  <Alert variant="info">
+                    <p>
+                      <strong>Next Run</strong>
+                      <br />
+                      {run?.updatedAt &&
+                      Date.parse(run.updatedAt) +
+                        source.schedule.recurringFrequency >
+                        new Date().getTime() &&
+                      recurringFrequencyMinutes > 0 ? (
+                        <>
+                          in{" "}
+                          <Moment
+                            add={{
+                              minutes: recurringFrequencyMinutes,
+                            }}
+                            toNow
+                            ago
+                          >
+                            {run.updatedAt}
+                          </Moment>
+                        </>
+                      ) : null}
+
+                      {(run?.updatedAt &&
+                        Date.parse(run.updatedAt) +
+                          source.schedule.recurringFrequency <=
+                          new Date().getTime() &&
+                        recurringFrequencyMinutes) ||
+                      !run ? (
+                        source.schedule.recurring ? (
+                          <strong>ASAP</strong>
+                        ) : (
+                          "N/A"
+                        )
+                      ) : null}
+                    </p>
+                  </Alert>
+                </Col>
+              </Row>
             ) : (
               <ScheduleAddButton
                 apiVersion={apiVersion}

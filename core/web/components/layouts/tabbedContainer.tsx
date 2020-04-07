@@ -100,16 +100,18 @@ export default function ({
         unmountOnExit
       >
         {children.map((child) => {
-          return (
-            <Tab
-              key={`_tab-${child.key}`}
-              eventKey={child.key}
-              title={capitalize(child.key)}
-            >
-              <br />
-              {child}
-            </Tab>
-          );
+          if (child && child.key) {
+            return (
+              <Tab
+                key={`_tab-${child.key}`}
+                eventKey={child.key}
+                title={capitalize(child.key)}
+              >
+                <br />
+                {child}
+              </Tab>
+            );
+          }
         })}
       </Tabs>
     </>
