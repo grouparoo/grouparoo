@@ -2,9 +2,10 @@ const glob = require("glob");
 const path = require("path");
 const fs = require("fs");
 const execSync = require("../../shared/exec");
+const { appPackageFiles } = require("../../shared/packages");
 
-const rootPath = path.join(__dirname, "..", "..", "..");
-const toolPath = path.join(rootPath, "tools", "lerna");
+const rootPath = path.resolve(path.join(__dirname, "..", "..", ".."));
+const toolPath = path.resolve(path.join(rootPath, "tools", "lerna"));
 
 module.exports.cmd = async function (vargs) {
   await updateAllPkgVersions(vargs);
@@ -117,15 +118,9 @@ async function updateAllPkgVersions(vargs) {
   const pkgValue = `^${lernaVersion}`;
   log(vargs, 1, `Setting all to lerna version: ${lernaVersion}`);
 
-  const appPkgFiles = glob.sync(
-    path.join(rootPath, "apps", "*", "package.json")
-  );
-  const pluginPkgFiles = glob.sync(
-    path.join(rootPath, "plugins", "*", "*", "package.json")
-  );
-  const pkgFiles = [].concat(appPkgFiles, pluginPkgFiles);
+  const packageFiles = appPackageFiles(glob);
 
-  for (const p of pkgFiles) {
+  for (const p of packageFiles) {
     await updatePkgVersions(vargs, p, lernaVersion, pkgValue);
   }
 }
