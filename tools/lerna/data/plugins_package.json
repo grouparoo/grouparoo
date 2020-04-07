@@ -1,0 +1,42 @@
+{
+  "name": "@grouparoo/awesome-plugin",
+  "description": "a Grouparoo plugin",
+  "version": "0.1.1-alpha.8",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "node": "12.x.x"
+  },
+  "scripts": {
+    "prepare": "rm -rf dist && tsc --declaration",
+    "test": "jest",
+    "pretest": "npm run lint && npm run prepare",
+    "lint": "prettier --check src/**/*.ts __tests__/**/*.ts"
+  },
+  "dependencies": {
+    "something": "^5.10.0"
+  },
+  "peerDependencies": {
+    "@grouparoo/core": "0.1.1-alpha.8",
+    "actionhero": "^22.0.5"
+  },
+  "devDependencies": {
+    "@grouparoo/core": "0.1.1-alpha.8",
+    "actionhero": "^22.0.5",
+    "@types/jest": "^25.1.4",
+    "@types/node": "^13.9.0",
+    "jest": "^25.1.0",
+    "prettier": "^1.19.1",
+    "ts-jest": "^25.2.1",
+    "typescript": "^3.8.3"
+  },
+  "grouparoo": {
+    "webComponents": {
+      "session/sign-in": ["newSignIn"]
+    },
+    "env": {
+      "api": ["APP_API_KEY"],
+      "web": ["APP_CLIENT_ID"]
+    }
+  }
+}
