@@ -8,7 +8,6 @@ import {
   Card,
   Badge,
   Alert,
-  Button,
 } from "react-bootstrap";
 import AppIcon from "./../../appIcon";
 import StateBadge from "./../../stateBadge";
@@ -178,14 +177,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
               <Row>
                 <Col>
                   <p>
-                    <Link
-                      href="/schedule/[guid]"
-                      as={`/schedule/${source.schedule.guid}`}
-                    >
-                      <a>
-                        <strong>Guid</strong>: {source.schedule.guid}
-                      </a>
-                    </Link>
+                    <strong>Guid</strong>: {source.schedule.guid}
                     <br />
                     <strong>Recurring</strong>:{" "}
                     <Badge
