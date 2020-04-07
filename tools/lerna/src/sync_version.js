@@ -8,7 +8,7 @@ const toolPath = path.join(rootPath, "tools", "lerna");
 
 module.exports.cmd = async function (vargs) {
   await updateAllPkgVersions(vargs);
-  await updateReadme(vargs);
+  await updateMarkdown(vargs);
 };
 
 function log(vargs, level, ...toLog) {
@@ -33,20 +33,18 @@ async function prettierFormat(filePath) {
   await execSync(`'${pCmd}' --config '${pConfig}' --write '${filePath}'`);
 }
 
-async function updateReadme(vargs) {
-  const readmePath = path.join(rootPath, "README.md");
-  const readmeContents = fs.readFileSync(readmePath).toString();
+async function updatePkgMarkdown(vargs, filePath, blockKey) {
+  const readmeContents = fs.readFileSync(filePath).toString();
   const lernaVersion = getLernaVersion();
-
-  const jsonPath = path.join(toolPath, "data", "readme_deploy.json");
+  const jsonPath = path.join(toolPath, "data", `${blockKey}.json`);
   await updatePkgVersions(vargs, jsonPath, lernaVersion, lernaVersion);
   const jsonContents = fs.readFileSync(jsonPath).toString();
 
   // assumes it's the first of these blocks in current README
-  const startBlock = "```json:readme_deploy";
+  const startBlock = "```json:" + blockKey;
   const startIndex = readmeContents.indexOf(startBlock);
   if (startIndex < 0) {
-    throw `README content for json not found.`;
+    throw `Markdown content for json not found: ${startBlock}`;
   }
   const startLineEnd = readmeContents.indexOf("\n", startIndex);
   const beforeContent = readmeContents.slice(0, startLineEnd + 1);
@@ -58,10 +56,15 @@ async function updateReadme(vargs) {
   // put together new file
   const newContent = beforeContent + jsonContents + endContent;
   if (newContent !== readmeContents) {
-    log(vargs, 1, `Updating deploy in README -> ${lernaVersion}`);
-    fs.writeFileSync(readmePath, newContent);
-    await prettierFormat(readmePath);
+    log(vargs, 1, `Updating ${filePath} ${blockKey} -> ${lernaVersion}`);
+    fs.writeFileSync(filePath, newContent);
+    await prettierFormat(filePath);
   }
+}
+
+async function updateMarkdown(vargs) {
+  const readmePath = path.join(rootPath, "README.md");
+  await updatePkgMarkdown(vargs, readmePath, "readme_deploy");
 }
 
 async function updatePkgVersions(vargs, p, lernaVersion, pkgValue) {
