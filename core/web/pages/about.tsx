@@ -4,6 +4,17 @@ import Head from "next/head";
 import { Table } from "react-bootstrap";
 import { useApi } from "../hooks/useApi";
 
+function formatUrl(s) {
+  let url = s;
+  url = url.replace(/\.git$/, "");
+
+  return (
+    <a target="_blank" href={url}>
+      {url}
+    </a>
+  );
+}
+
 export default function ({ apiVersion, errorHandler }) {
   const year = new Date().getFullYear();
   const [version, setVersion] = useState("...");
@@ -50,6 +61,7 @@ export default function ({ apiVersion, errorHandler }) {
             <th>Name</th>
             <th>Version</th>
             <th>License</th>
+            <th>URL</th>
           </tr>
         </thead>
         <tbody>
@@ -58,6 +70,7 @@ export default function ({ apiVersion, errorHandler }) {
               <td>{plugin.name}</td>
               <td>{plugin.version}</td>
               <td>{plugin.license}</td>
+              <td>{formatUrl(plugin.url)}</td>
             </tr>
           ))}
         </tbody>
