@@ -121,7 +121,7 @@ export class Schedule extends LoggedModel<Schedule> {
   static async ensureName(instance: Schedule) {
     if (!instance.name) {
       const source = await instance.$get("source");
-      instance.name = `${source.name} schedule ${new Date().getTime()}`;
+      instance.name = `${source.name} schedule`;
     }
   }
 
