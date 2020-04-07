@@ -9,6 +9,8 @@ else
   EXECUTABLE="ts-node-dev"
 fi
 
+export NEXT_DEVELOPMENT_MODE=true
+
 "$EXECUTABLE" \
   --transpile-only \
   --ignore-watch=web \
