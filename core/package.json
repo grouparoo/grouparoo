@@ -35,7 +35,8 @@
     "lint": "npm run lint-api && npm run lint-web",
     "lint-api": "cd api && prettier --check src __tests__",
     "lint-web": "cd web && prettier --check pages components classes client utils hooks __tests__",
-    "import": "./api/bin/import"
+    "import": "./api/bin/import",
+    "prepublish": "cp ../README.md ."
   },
   "dependencies": {
     "@auth0/s3": "^1.0.0",
