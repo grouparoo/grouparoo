@@ -1,0 +1,23 @@
+# General
+node_modules
+.DS_Store
+.vscode
+npm-debug.log
+yarn-error.log
+.env
+dump.rdb
+newrelic_agent.log
+*.retry
+coverage
+
+# API
+api/log
+api/pids
+api/newrelic_agent.log
+api/public/javascript/ActionheroWebsocketClient.js
+api/public/javascript/ActionheroWebsocketClient.min.js
+
+# WEB
+web/.next
+web/tmp/plugin*
+web/out
