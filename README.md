@@ -12,7 +12,7 @@ Want to move faster? Take control of your data and your destiny with the open so
 
 1. Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/) project, and we use NPM to manage our dependencies.
 
-```json
+```json:readme_deploy
 {
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "my-grouparoo-project",
@@ -48,7 +48,7 @@ Want to move faster? Take control of your data and your destiny with the open so
 
 This makes an "app" for Grouparoo to run. There is an example in the [staging-public](https://github.com/grouparoo/grouparoo/tree/master/apps/staging-public) directory.
 
-There are some environment variables needed by Grouparoo that need to be set by your host/docker image. In development, we can also lod these variables from a `.env` file that lives alongside your `package.json`. Sensible defaults are:
+There are some environment variables needed by Grouparoo that need to be set by your host/docker image. In development, we can also lod these variables from a `.env` file that lives alongside your `package.json`.
 
 2. Create a copy of our [example](https://github.com/grouparoo/grouparoo/blob/master/apps/staging-public/.env.example) `.env` file to manage your environment variables locally. You can modify the options as needed. Make this as a peer to your `package.json` file. Note: the `.env` file only works when running in `NODE_ENV=development`. On your server, you should set up these same environment variables. At minimum, you will need to set the following variables:
 
