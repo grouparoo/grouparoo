@@ -11,6 +11,15 @@
   "publishConfig": {
     "access": "public"
   },
+  "homepage": "https://www.grouparoo.com",
+  "bugs": {
+    "url": "https://github.com/grouparoo/grouparoo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grouparoo/grouparoo.git",
+    "directory": "plugins/@grouparoo/email-authentication"
+  },
   "scripts": {
     "prepare": "rm -rf dist && tsc --declaration",
     "test": "jest",
