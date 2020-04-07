@@ -7,16 +7,16 @@ import Moment from "react-moment";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import StateBadge from "../stateBadge";
+import ProfilePropertyRuleAddButton from "./../forms/profilePropertyRule/add";
 
-export default function ({ apiVersion, errorHandler, query }) {
+export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [profilePropertyRules, setProfilePropertyRules] = useState([]);
   const [examples, setExamples] = useState({});
   const [sources, setSources] = useState([]);
 
   // pagination
-  const limit = 1000;
+  const limit = 100;
   const [offset, setOffset] = useState(query.offset || 0);
   const [total, setTotal] = useState(0);
   useHistoryPagination(offset, "offset", setOffset);
@@ -31,22 +31,28 @@ export default function ({ apiVersion, errorHandler, query }) {
     setLoading(true);
     const response = await execApi(
       "get",
-      `/api/${apiVersion}/profilePropertyRules`
+      `/api/${apiVersion}/profilePropertyRules`,
+      {
+        limit: limit * (total === 0 ? 1 : total),
+        offset: 0,
+      }
     );
     setLoading(false);
     if (response?.profilePropertyRules) {
-      setProfilePropertyRules(response.profilePropertyRules);
       setExamples(response.examples);
-      setTotal(response.total);
     }
   }
 
   async function loadSources() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/sources`);
+    const response = await execApi("get", `/api/${apiVersion}/sources`, {
+      limit,
+      offset,
+    });
     setLoading(false);
     if (response?.sources) {
       setSources(response.sources);
+      setTotal(response.total);
     }
   }
 
@@ -80,9 +86,17 @@ export default function ({ apiVersion, errorHandler, query }) {
                 <a>{source.name}</a>
               </Link>
             </h4>
-            type: {source.type}
+            <strong>Type</strong>: {source.type}
             <br />
-            app: {source.app.name} ({source.app.type})
+            <strong>App</strong>: {source.app.name} ({source.app.type})
+            <p style={{ marginTop: 10 }}>
+              <ProfilePropertyRuleAddButton
+                apiVersion={apiVersion}
+                errorHandler={errorHandler}
+                successHandler={successHandler}
+                source={source}
+              />
+            </p>
             <LoadingTable loading={loading}>
               <thead>
                 <tr>

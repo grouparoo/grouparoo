@@ -204,13 +204,6 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                     <strong>State</strong>:{" "}
                     <StateBadge state={source.schedule.state} />
                   </p>
-                  <Button
-                    size="sm"
-                    href={`/schedule/${source.schedule.guid}`}
-                    disabled={source.state === "draft"}
-                  >
-                    See Schedule Details
-                  </Button>
                 </Col>
                 <Col>
                   <Alert variant="success">
@@ -325,7 +318,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
               <Alert variant="warning">Mapping not set yet</Alert>
             )
           ) : (
-            <Alert variant="secondary">
+            <Alert variant="warning">
               Mapping not available for this connection type
             </Alert>
           )}
