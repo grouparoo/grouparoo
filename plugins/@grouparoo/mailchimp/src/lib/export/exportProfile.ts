@@ -82,7 +82,9 @@ export async function exportProfile(
       }
 
       // mailchimp changes the case of tags...
-      existingTagNames = getResponse.tags.map((t) => t.name.toLowerCase());
+      existingTagNames = getResponse.tags.map((t) =>
+        t.name.toLocaleLowerCase()
+      );
 
       // delete old merge tags
       for (const k in getResponse.merge_fields) {
