@@ -48,9 +48,11 @@ function getPluginManifest() {
         version: pluginPkg.version,
         license: pluginPkg.license,
         url:
-          pluginPkg.url || pluginPkg.homepage || pluginPkg.repository
+          pluginPkg.url ||
+          (pluginPkg.repository && pluginPkg.repository.url
             ? pluginPkg.repository.url
-            : null,
+            : null) ||
+          pluginPkg.homepage,
         path: pluginPath,
         grouparoo: pluginPkg.grouparoo || null,
       });
