@@ -1,6 +1,7 @@
 import { helper } from "./../utils/specHelper";
 import { specHelper } from "actionhero";
 import { Run } from "../../src";
+import { Source } from "../../src";
 let actionhero;
 let connection;
 let csrfToken;
@@ -67,6 +68,26 @@ describe("actions/runs", () => {
     connection.params = {
       csrfToken,
       guid: scheduleA.guid,
+    };
+
+    const { error, runs, total } = await specHelper.runAction(
+      "runs:list",
+      connection
+    );
+    expect(error).toBeUndefined();
+    expect(total).toBe(1);
+    expect(runs.length).toBe(1);
+    expect(runs[0].guid).toBe(runA.guid);
+  });
+
+  test("when providing a sourceGuid, the runs for the schedule belonging to that source will be returned", async () => {
+    const source = await Source.findOne({
+      where: { guid: scheduleA.sourceGuid },
+    });
+
+    connection.params = {
+      csrfToken,
+      guid: source.guid,
     };
 
     const { error, runs, total } = await specHelper.runAction(
