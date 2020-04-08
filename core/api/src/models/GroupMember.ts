@@ -65,6 +65,7 @@ export class GroupMember extends Model<GroupMember> {
       topic: "groupMember",
       verb: "create",
       data: await instance.apiData(),
+      ownerGuid: instance.profileGuid,
       message: `added to group ${group ? group.name : ""} (${
         instance.groupGuid
       })`,
@@ -79,6 +80,7 @@ export class GroupMember extends Model<GroupMember> {
       topic: "groupMember",
       verb: "destroy",
       data: await instance.apiData(),
+      ownerGuid: instance.profileGuid,
       message: `removed from group ${group ? group.name : ""} (${
         instance.groupGuid
       })`,
