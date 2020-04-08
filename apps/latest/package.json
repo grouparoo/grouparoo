@@ -2,21 +2,21 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/app-latest",
   "description": "The Grouparoo Staging Application",
-  "version": "0.0.1",
+  "version": "0.1.1-alpha.11",
   "license": "MPL-2.0",
   "private": true,
   "engines": {
     "node": "12.x.x"
   },
   "dependencies": {
-    "@grouparoo/core": "latest",
-    "@grouparoo/csv": "latest",
-    "@grouparoo/email-authentication": "latest",
-    "@grouparoo/google-sheets": "latest",
-    "@grouparoo/logger": "latest",
-    "@grouparoo/mailchimp": "latest",
-    "@grouparoo/mysql": "latest",
-    "@grouparoo/postgres": "latest"
+    "@grouparoo/core": "^0.1.1-alpha.11",
+    "@grouparoo/csv": "^0.1.1-alpha.11",
+    "@grouparoo/email-authentication": "^0.1.1-alpha.11",
+    "@grouparoo/google-sheets": "^0.1.1-alpha.11",
+    "@grouparoo/logger": "^0.1.1-alpha.11",
+    "@grouparoo/mailchimp": "^0.1.1-alpha.11",
+    "@grouparoo/mysql": "^0.1.1-alpha.11",
+    "@grouparoo/postgres": "^0.1.1-alpha.11"
   },
   "scripts": {
     "prepare": "cd node_modules/@grouparoo/core && npm run prepare",

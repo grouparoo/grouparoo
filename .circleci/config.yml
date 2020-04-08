@@ -27,6 +27,7 @@ jobs:
       - save_cache:
           <<: *cache-options
           paths:
+            - apps/latest/node_modules
             - apps/staging-public/node_modules
             - core/node_modules
             - node_modules
