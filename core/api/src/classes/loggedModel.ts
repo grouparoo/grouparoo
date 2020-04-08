@@ -46,6 +46,7 @@ export abstract class LoggedModel<T> extends Model<T> {
     await Log.create({
       topic: modelName(instance),
       verb: "create",
+      ownerGuid: instance.guid,
       data: await instance.filteredDataForLogging(),
       message: await instance.logMessage("create"),
     });
@@ -58,6 +59,7 @@ export abstract class LoggedModel<T> extends Model<T> {
       await Log.create({
         topic: modelName(instance),
         verb: "create",
+        ownerGuid: instance.guid,
         data: await instance.filteredDataForLogging(),
         message: await instance.logMessage("create"),
       });
@@ -69,6 +71,7 @@ export abstract class LoggedModel<T> extends Model<T> {
     await Log.create({
       topic: modelName(instance),
       verb: "update",
+      ownerGuid: instance.guid,
       data: await instance.filteredDataForLogging(),
       message: await instance.logMessage("update"),
     });
@@ -79,6 +82,7 @@ export abstract class LoggedModel<T> extends Model<T> {
     await Log.create({
       topic: modelName(instance),
       verb: "destroy",
+      ownerGuid: instance.guid,
       data: await instance.filteredDataForLogging(),
       message: await instance.logMessage("destroy"),
     });

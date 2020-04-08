@@ -44,22 +44,6 @@ export class Team extends LoggedModel<Team> {
   @HasMany(() => TeamMember)
   teamMembers: TeamMember[];
 
-  async apiData() {
-    const membersCount = await this.$count("teamMembers");
-
-    return {
-      guid: this.guid,
-      name: this.name,
-      read: this.read,
-      write: this.write,
-      administer: this.administer,
-      deletable: this.deletable,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
-      membersCount,
-    };
-  }
-
   @BeforeDestroy
   static async ensureDeletable(instance: Team) {
     if (instance.deletable === false) {
@@ -74,5 +58,21 @@ export class Team extends LoggedModel<Team> {
     if (teamMembersCount > 0) {
       throw new Error("you cannot delete a team that has members");
     }
+  }
+
+  async apiData() {
+    const membersCount = await this.$count("teamMembers");
+
+    return {
+      guid: this.guid,
+      name: this.name,
+      read: this.read,
+      write: this.write,
+      administer: this.administer,
+      deletable: this.deletable,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      membersCount,
+    };
   }
 }

@@ -37,6 +37,10 @@ describe("tasks/destination:destroyExports", () => {
       const _export = await Export.create({
         destinationGuid: destination.guid,
         profileGuid: profile.guid,
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        oldGroups: [],
+        newGroups: [],
       });
       await ExportImport.create({
         exportGuid: _export.guid,

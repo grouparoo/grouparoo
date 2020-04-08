@@ -27,37 +27,22 @@ export class TeamInitalize extends Action {
       throw new Error("an administration team already exists, please sign in");
     }
 
-    let transaction = await api.sequelize.transaction();
+    team = await Team.create({
+      name: "Administrators",
+      deletable: false,
+      read: true,
+      write: true,
+      administer: true,
+    });
 
-    try {
-      team = await Team.create(
-        {
-          name: "Administrators",
-          deletable: false,
-          read: true,
-          write: true,
-          administer: true,
-        },
-        { transaction }
-      );
+    teamMember = await TeamMember.create({
+      teamGuid: team.guid,
+      email: params.email,
+      firstName: params.firstName,
+      lastName: params.lastName,
+    });
 
-      teamMember = await TeamMember.create(
-        {
-          teamGuid: team.guid,
-          email: params.email,
-          firstName: params.firstName,
-          lastName: params.lastName,
-        },
-        { transaction }
-      );
-
-      await teamMember.updatePassword(params.password, transaction);
-
-      await transaction.commit();
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
-    }
+    await teamMember.updatePassword(params.password);
 
     response.team = await team.apiData();
     response.teamMember = await teamMember.apiData();
