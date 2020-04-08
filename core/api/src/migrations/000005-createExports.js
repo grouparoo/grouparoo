@@ -63,6 +63,11 @@ module.exports = {
         allowNull: false,
       },
 
+      startedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+
       completedAt: {
         type: DataTypes.DATE,
         allowNull: true,
