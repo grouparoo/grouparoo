@@ -32,7 +32,7 @@
     "pg-hstore": "^2.3.3"
   },
   "peerDependencies": {
-    "@grouparoo/core": "^0.1.1-alpha.8",
+    "@grouparoo/core": "^0.1.1-alpha.11",
     "actionhero": "^22.0.7"
   },
   "devDependencies": {
