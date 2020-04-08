@@ -1,0 +1,55 @@
+version: "3.1"
+services:
+  redis:
+    image: redis
+    restart: always
+    networks:
+      - grouparoo_backend
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: grouparoo_docker
+    networks:
+      - grouparoo_backend
+
+  grouparoo-web:
+    build: ./
+    ports:
+      - 3000:3000
+    environment:
+      PORT: 3000
+      REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: postgresql://postgres:password@db:5432/grouparoo_docker
+      WEB_SERVER: "true"
+      SCHEDULER: "false"
+      WORKERS: 0
+    depends_on:
+      - db
+      - redis
+    networks:
+      - grouparoo_frontend
+      - grouparoo_backend
+
+  grouparoo-worker:
+    build: ./
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: postgresql://postgres:password@db:5432/grouparoo_docker
+      WEB_SERVER: "false"
+      SCHEDULER: "true"
+      WORKERS: 10
+    depends_on:
+      - db
+      - redis
+    networks:
+      - grouparoo_frontend
+      - grouparoo_backend
+
+networks:
+  grouparoo_frontend:
+    driver: overlay
+  grouparoo_backend:
+    driver: overlay

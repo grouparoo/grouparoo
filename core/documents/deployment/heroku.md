@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-1. Create a new git project
+1. Create a new git repository
    - Do not include an environment file, `.env`. Your environment variables will be manged by Heroku
    - Include a `package.json` file which contains your dependencies and commands per the [main Grouparoo Readme](https://github.com/grouparoo/grouparoo/blob/master/README.md)
    - Include a `Procfile` which is similar the to the below. Heroku uses `Procfile`s to define the multiple processes which run for the same application. In the `Procfile` we use Environment variables to differentiate between our web and worker processes. we also skip using `npm` as our process runner, and call the grouparoo start command directly.
@@ -22,6 +22,8 @@ Visit your new Heroku URL and create your first Grouparoo Team member!
 ## Notes
 
 Grouparoo will source Heroku's `PORT` variable automatically to bind to the proper variable port.
+
+Grouparoo will automatically build your project (compiling typescript and including your plugins) after any `npm install`, which Heroku will automatically run, as there is a `package.json` checked into your git repository.
 
 You can scale the number of `web` and `worker` processes with the `heroku ps` command. Depending on your workload, you may need more of one type of process than another.
 

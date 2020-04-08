@@ -1,0 +1,40 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "@grouparoo/app-latest",
+  "description": "The Grouparoo Staging Application",
+  "version": "0.0.1",
+  "license": "MPL-2.0",
+  "private": true,
+  "engines": {
+    "node": "12.x.x"
+  },
+  "dependencies": {
+    "@grouparoo/core": "latest",
+    "@grouparoo/csv": "latest",
+    "@grouparoo/email-authentication": "latest",
+    "@grouparoo/google-sheets": "latest",
+    "@grouparoo/logger": "latest",
+    "@grouparoo/mailchimp": "latest",
+    "@grouparoo/mysql": "latest",
+    "@grouparoo/postgres": "latest"
+  },
+  "scripts": {
+    "prepare": "cd node_modules/@grouparoo/core && npm run prepare",
+    "start": "cd node_modules/@grouparoo/core && ./api/bin/start",
+    "dev": "cd node_modules/@grouparoo/core && ./api/bin/dev"
+  },
+  "grouparoo": {
+    "plugins": [
+      "@grouparoo/mysql",
+      "@grouparoo/postgres",
+      "@grouparoo/mailchimp",
+      "@grouparoo/logger",
+      "@grouparoo/csv",
+      "@grouparoo/email-authentication",
+      "@grouparoo/google-sheets"
+    ],
+    "includedFiles": [
+      "assets"
+    ]
+  }
+}
