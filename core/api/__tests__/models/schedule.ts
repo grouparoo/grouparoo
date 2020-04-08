@@ -329,7 +329,7 @@ describe("models/schedule", () => {
       });
 
       source = await Source.create({
-        name: "test source",
+        name: "test source from plugin",
         type: "import-from-test-template-app",
         appGuid: app.guid,
       });

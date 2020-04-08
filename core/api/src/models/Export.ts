@@ -12,6 +12,7 @@ import {
   ForeignKey,
   DataType,
   AfterDestroy,
+  Default,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { Import } from "./Import";
@@ -124,9 +125,11 @@ export class Export extends Model<Export> {
     this.setDataValue("newGroups", JSON.stringify(value));
   }
 
+  @Default(false)
   @Column
   toDelete: boolean;
 
+  @Default(false)
   @Column
   mostRecent: boolean;
 

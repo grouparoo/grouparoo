@@ -1,6 +1,5 @@
 import {
   Table,
-  Model,
   CreatedAt,
   UpdatedAt,
   BeforeCreate,
@@ -10,32 +9,17 @@ import {
   BelongsTo,
   Length,
 } from "sequelize-typescript";
+import { LoggedModel } from "../classes/loggedModel";
 import * as uuid from "uuid";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Destination } from "./Destination";
 import { Source } from "./Source";
 
 @Table({ tableName: "mappings", paranoid: false })
-export class Mapping extends Model<Mapping> {
+export class Mapping extends LoggedModel<Mapping> {
   guidPrefix() {
     return "map";
   }
-
-  @Column({ primaryKey: true })
-  guid: string;
-
-  @BeforeCreate
-  static generateGuid(instance) {
-    if (!instance.guid) {
-      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
-    }
-  }
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
 
   @AllowNull(false)
   @ForeignKey(() => Destination)

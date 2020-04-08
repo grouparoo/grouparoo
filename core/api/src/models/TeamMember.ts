@@ -4,6 +4,7 @@ import {
   AllowNull,
   IsEmail,
   BelongsTo,
+  BeforeSave,
   ForeignKey,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
@@ -44,6 +45,14 @@ export class TeamMember extends LoggedModel<TeamMember> {
 
   @BelongsTo(() => Team)
   team: Team;
+
+  @BeforeSave
+  static async ensureTeamExists(instance: TeamMember) {
+    const team = await instance.$get("team");
+    if (!team) {
+      throw new Error("team not found");
+    }
+  }
 
   async apiData() {
     return {

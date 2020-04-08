@@ -18,6 +18,7 @@ describe("models/log", () => {
       topic: "profile",
       verb: "create",
       message: "hello",
+      ownerGuid: "abc",
       data: {
         key: "value",
       },
@@ -37,6 +38,7 @@ describe("models/log", () => {
       topic: "profile",
       verb: "create",
       message: "",
+      ownerGuid: "abc",
       data: {},
     });
 

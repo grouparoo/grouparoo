@@ -45,6 +45,7 @@ export class Log extends Model<Log> {
     this.setDataValue("data", JSON.stringify(value));
   }
 
+  @AllowNull(false)
   @Column
   @ForeignKey(() => {
     // need to load this dynamically to prevent cyclic load errors
