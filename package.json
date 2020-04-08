@@ -1,7 +1,7 @@
 {
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "grouparoo",
-  "version": "0.1.1-alpha.8",
+  "version": "0.1.1-alpha.11",
   "license": "SEE LICENSE IN LICENSE.txt",
   "private": true,
   "engines": {

@@ -14,15 +14,15 @@ In your Grouparoo deployment project, simply install the plugin with NPM:
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/example-app",
   "description": "A Grouparoo Example Application",
-  "version": "0.1.1-alpha.8",
+  "version": "0.1.1-alpha.11",
   "license": "UNLICENSED",
   "private": true,
   "engines": {
     "node": "12.x.x"
   },
   "dependencies": {
-    "@grouparoo/core": "0.1.1-alpha.8",
-    "@grouparoo/awesome-plugin": "0.1.1-alpha.8"
+    "@grouparoo/core": "0.1.1-alpha.11",
+    "@grouparoo/awesome-plugin": "0.1.1-alpha.11"
   },
   "scripts": {
     "prepare": "cd node_modules/@grouparoo/core && npm run prepare",
@@ -86,7 +86,7 @@ In your plugin's `package.json`, we use a `grouparoo` section to list certain op
 {
   "name": "@grouparoo/awesome-plugin",
   "description": "a Grouparoo plugin",
-  "version": "0.1.1-alpha.8",
+  "version": "0.1.1-alpha.11",
   "license": "UNLICENSED",
   "private": true,
   "engines": {
@@ -102,11 +102,11 @@ In your plugin's `package.json`, we use a `grouparoo` section to list certain op
     "something": "^5.10.0"
   },
   "peerDependencies": {
-    "@grouparoo/core": "0.1.1-alpha.8",
+    "@grouparoo/core": "0.1.1-alpha.11",
     "actionhero": "^22.0.5"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.1.1-alpha.8",
+    "@grouparoo/core": "0.1.1-alpha.11",
     "actionhero": "^22.0.5",
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.0",
