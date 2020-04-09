@@ -12,10 +12,11 @@ Learn more at [www.grouparoo.com](https://www.grouparoo.com)
 
 ### For Grouparoo Users
 
-- [ ⌨️ Getting Started with Grouparoo](https://github.com/grouparoo/grouparoo/blob/master/documents/deplyment/getting-started.md)
-  - [Deploying to Heroku](https://github.com/grouparoo/grouparoo/blob/master/documents/deplyment/heroku.md)
-  - [Deploying with Docker](https://github.com/grouparoo/grouparoo/blob/master/documents/deplyment/docker.md)
-- [🕵️ SUPPORT](https://github.com/grouparoo/grouparoo/blob/master/.github/SUPPORT.md)
+- [ ⌨️ Getting Started with Grouparoo](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/getting-started.md)
+  - [Deploying to Heroku](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/heroku.md)
+  - [Deploying with Docker](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/docker.md)
+  - [Deploying with Kubernetes and AWS](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/aws-and-k8s.md)
+- [🕵️ Support](https://github.com/grouparoo/grouparoo/blob/master/.github/SUPPORT.md)
 
 ### For Grouparoo Developers
 
