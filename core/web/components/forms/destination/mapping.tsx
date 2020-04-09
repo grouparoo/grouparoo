@@ -151,21 +151,14 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
         <thead>
           <tr>
             <th>Sending?</th>
-            <th>Remote Column</th>
             <th>Grouparoo Profile Property Rule</th>
+            <th>Remote Column</th>
           </tr>
         </thead>
         <tbody>
           {previewColumns.map((col) => (
             <tr key={`destination-${col}`}>
               <td>{destination.mapping[col] ? "✅" : null}</td>
-              <td>
-                <h5>{col}</h5>
-                {preview
-                  .map((p) => p[col])
-                  .slice(0, 3)
-                  .join(", ")}
-              </td>
               <td>
                 <Form.Group>
                   <Form.Control
@@ -186,6 +179,13 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                       .slice(0, 3)
                       .join(", ")
                   : null}
+              </td>
+              <td>
+                <h5>{col}</h5>
+                {preview
+                  .map((p) => p[col])
+                  .slice(0, 3)
+                  .join(", ")}
               </td>
             </tr>
           ))}
