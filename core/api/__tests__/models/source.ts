@@ -340,7 +340,7 @@ describe("models/source", () => {
 
       expect(rule.key).toBe("uniqueId");
       expect(rule.type).toBe("integer");
-      expect(rule.state).toBe("draft");
+      expect(rule.state).toBe("ready");
       expect(rule.unique).toBe(true);
 
       await rule.destroy();
