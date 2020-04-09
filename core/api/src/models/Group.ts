@@ -254,6 +254,8 @@ export class Group extends LoggedModel<Group> {
         this.changed("updatedAt", true);
         await this.save({ transaction });
         await transaction.commit();
+
+        await this.stopPreviousRuns();
         await task.enqueue("group:run", { groupGuid: this.guid });
       } else {
         await transaction.commit();
@@ -282,6 +284,19 @@ export class Group extends LoggedModel<Group> {
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
+  }
+
+  async stopPreviousRuns() {
+    const previousRuns = await Run.findAll({
+      where: {
+        creatorGuid: this.guid,
+        state: "running",
+      },
+    });
+
+    for (const i in previousRuns) {
+      await previousRuns[i].stop();
+    }
   }
 
   async nextCalculatedAt() {
