@@ -30,6 +30,11 @@ export async function profileProperty(
     return;
   }
 
+  if (tableCol === column && aggregationMethod === "exact") {
+    // don't return userId where userId = userId
+    return;
+  }
+
   let aggSelect = `\`${column}\``;
   switch (aggregationMethod) {
     case "average":
