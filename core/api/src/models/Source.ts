@@ -410,7 +410,7 @@ export class Source extends LoggedModel<Source> {
     const rule = ProfilePropertyRule.build({
       key,
       type,
-      state: "draft",
+      state: "ready",
       unique: true,
       sourceGuid: this.guid,
     });
