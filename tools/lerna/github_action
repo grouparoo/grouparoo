@@ -1,2 +1,4 @@
+#!/bin/bash
+set -e
 npm install
 ./sync_version
