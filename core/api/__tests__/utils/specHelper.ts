@@ -150,8 +150,13 @@ export namespace helper {
               required: true,
             },
           ],
-          test: async () => {
-            return true;
+          methods: {
+            test: async () => {
+              return true;
+            },
+            appOptions: async () => {
+              return { fileGuid: { type: "list", options: ["a", "b"] } };
+            },
           },
         },
       ],

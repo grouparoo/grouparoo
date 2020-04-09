@@ -219,9 +219,14 @@ describe("models/app", () => {
           {
             name: "test-template-app",
             options: [{ key: "test_key", required: true }],
-            test: async () => {
-              testCounter++;
-              return true;
+            methods: {
+              test: async () => {
+                testCounter++;
+                return true;
+              },
+              appOptions: async () => {
+                return { fileGuid: { type: "list", options: ["a", "b"] } };
+              },
             },
           },
         ],
@@ -255,6 +260,13 @@ describe("models/app", () => {
     test("plugins can provide icons", async () => {
       const apiData = await app.apiData();
       expect(apiData.icon).toBe("/path/to/icon.svg");
+    });
+
+    test("it can return the appOptions from the plugin", async () => {
+      const options = await app.appOptions();
+      expect(options).toEqual({
+        fileGuid: { type: "list", options: ["a", "b"] },
+      });
     });
 
     test("it can run a plugin's test method", async () => {

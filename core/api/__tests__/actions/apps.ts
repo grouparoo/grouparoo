@@ -70,6 +70,21 @@ describe("actions/apps", () => {
       expect(names).toContain("test-plugin-app");
     });
 
+    test("an administrator can get the options for the app options", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+      };
+      const { error, options } = await specHelper.runAction(
+        "app:optionOptions",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(options).toEqual({
+        fileGuid: { options: ["a", "b"], type: "list" },
+      });
+    });
+
     test("an administrator can test the app options with the saved app options", async () => {
       connection.params = {
         csrfToken,

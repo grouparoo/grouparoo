@@ -37,7 +37,7 @@ export class Plugins extends Initializer {
               placeholder: "e.g. -----BEGIN PRIVATE KEY-----\nMII ...",
             },
           ],
-          test,
+          methods: { test },
         },
       ],
       connections: [

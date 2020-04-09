@@ -322,8 +322,10 @@ describe("models/run", () => {
           {
             name: "test-error-app",
             options: [],
-            test: async () => {
-              return true;
+            methods: {
+              test: async () => {
+                return true;
+              },
             },
           },
         ],

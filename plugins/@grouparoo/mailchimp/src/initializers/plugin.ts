@@ -29,7 +29,7 @@ export class Plugins extends Initializer {
               description: "your mailchimp api key",
             },
           ],
-          test,
+          methods: { test },
         },
       ],
       connections: [

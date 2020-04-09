@@ -72,8 +72,10 @@ describe("tasks/profile:export", () => {
             {
               name: "test-template-app",
               options: [],
-              test: async () => {
-                return true;
+              methods: {
+                test: async () => {
+                  return true;
+                },
               },
             },
           ],

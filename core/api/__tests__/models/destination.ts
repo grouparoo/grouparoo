@@ -420,8 +420,10 @@ describe("models/destination", () => {
           {
             name: "test-template-app",
             options: [],
-            test: async () => {
-              return true;
+            methods: {
+              test: async () => {
+                return true;
+              },
             },
           },
         ],
@@ -497,8 +499,10 @@ describe("models/destination", () => {
           {
             name: "test-template-app",
             options: [{ key: "test_key", required: true }],
-            test: async () => {
-              return true;
+            methods: {
+              test: async () => {
+                return true;
+              },
             },
           },
         ],

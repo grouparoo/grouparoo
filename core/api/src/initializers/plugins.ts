@@ -23,8 +23,10 @@ export class Plugins extends Initializer {
         {
           name: "manual",
           options: [],
-          test: async () => {
-            return true;
+          methods: {
+            test: async () => {
+              return true;
+            },
           },
         },
       ],

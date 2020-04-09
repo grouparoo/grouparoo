@@ -110,7 +110,7 @@ export class App extends LoggedModel<App> {
     }
 
     try {
-      result = await pluginApp.test(this, options);
+      result = await pluginApp.methods.test(this, options);
     } catch (err) {
       error = err;
       result = false;
@@ -118,6 +118,16 @@ export class App extends LoggedModel<App> {
     }
 
     return { result, error };
+  }
+
+  async appOptions() {
+    const { pluginApp } = await this.getPlugin();
+
+    if (!pluginApp.methods.appOptions) {
+      return {};
+    }
+
+    return pluginApp.methods.appOptions();
   }
 
   async getOptions() {
