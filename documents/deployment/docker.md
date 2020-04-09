@@ -1,9 +1,9 @@
-# Deploying Grouparoo to Docker
+# Deploying Grouparoo with Docker
 
 ## Getting Started
 
 1. Create a new git repository
-   - Do not include an environment file, `.env`. Your environment variables will be manged by Heroku
+   - Do not include an environment file, `.env`. Your environment variables will be manged by Docker
    - Include a `package.json` file which contains your dependencies and commands per the [main Grouparoo Readme](https://github.com/grouparoo/grouparoo/blob/master/README.md)
    - Include a `.dockerignore` file which excludes `node_modules` and any local config you might have (ie: `.env`)
    - Include a `Dockerfile` which is similar the to the below. We are building a `Dockerfile` which can be used in multiple modes, as a background task worker or webserver, which are controlled by Environment Variables.
