@@ -1,5 +1,9 @@
 # Deploying Grouparoo to Heroku
 
+## Example
+
+An example project can be found at https://github.com/grouparoo/latest
+
 ## Getting Started
 
 1. Create a new git repository
