@@ -44,7 +44,6 @@ export class Plugins extends Initializer {
           description: "export profiles to a log file for debugging",
           app: "logger",
           options: [],
-          ignoreMapping: true,
           methods: {
             exportProfile,
             destinationOptions,

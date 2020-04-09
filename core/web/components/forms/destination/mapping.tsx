@@ -31,16 +31,14 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       setDestination(destinationResponse.destination);
     }
 
-    if (destinationResponse.destination.previewAvailable === false) {
-      return;
-    }
-
-    const previewResponse = await execApi(
-      "get",
-      `/api/${apiVersion}/destination/${guid}/preview`
-    );
-    if (previewResponse?.preview) {
-      setPreview(previewResponse.preview);
+    if (destinationResponse.destination.previewAvailable) {
+      const previewResponse = await execApi(
+        "get",
+        `/api/${apiVersion}/destination/${guid}/preview`
+      );
+      if (previewResponse?.preview) {
+        setPreview(previewResponse.preview);
+      }
     }
 
     const prrResponse = await execApi(
@@ -67,10 +65,16 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   }
 
   const updateMapping = async (column, event) => {
-    destination.mapping[column] =
-      event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value;
+    destination.mapping[column] = event.target.value;
+    if (destination.mapping[column] === "_none") {
+      delete destination.mapping[column];
+    }
+    await setDestination(destination);
+    await update();
+  };
+
+  const updateReflexiveMapping = async (column, event) => {
+    destination.mapping[column] = event.target.checked ? column : "_none";
     if (destination.mapping[column] === "_none") {
       delete destination.mapping[column];
     }
@@ -86,15 +90,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       return self.indexOf(value) === index;
     });
 
-  if (!destination.previewAvailable) {
-    return (
-      <>
-        <p>Mapping not available for a {destination.type} source</p>
-      </>
-    );
-  }
-
-  if (previewColumns.length === 0) {
+  if (destination.previewAvailable && previewColumns.length === 0) {
     return (
       <>
         <p>Set the options first!</p>
@@ -108,6 +104,47 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     pprExamplesByKey[rule.key] = profilePropertyRuleExamples[guid];
   }
 
+  // if there is no mapping, return a checklist of profile property rules, and we will map them 1-to-1
+  if (!destination.previewAvailable) {
+    return (
+      <>
+        <Table variant="dark">
+          <thead>
+            <tr>
+              <th>Sending?</th>
+              <th>Grouparoo Profile Property Rule</th>
+            </tr>
+          </thead>
+          <tbody>
+            {profilePropertyRules.map((rule) => (
+              <tr key={`rule-${rule.key}`}>
+                {/* <td>{destination.mapping[rule.key] ? "✅" : null}</td> */}
+                <td>
+                  <Form.Group>
+                    <Form.Check
+                      type="checkbox"
+                      name="read"
+                      label=""
+                      checked={destination.mapping[rule.key] === rule.key}
+                      onChange={(e) => updateReflexiveMapping(rule.key, e)}
+                    />
+                  </Form.Group>
+                </td>
+                <td>
+                  <h5>{rule.key}</h5>
+                  {pprExamplesByKey[rule.key]
+                    ? pprExamplesByKey[rule.key].slice(0, 3).join(", ")
+                    : null}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </>
+    );
+  }
+
+  // if there is a preview to map against, show a dropdown list for each remote column
   return (
     <>
       <Table variant="dark">

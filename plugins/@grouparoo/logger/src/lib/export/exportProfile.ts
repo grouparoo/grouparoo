@@ -26,7 +26,7 @@ export async function exportProfile(
   const line =
     JSON.stringify({
       time: new Date(),
-      profile,
+      guid: profile.guid,
       oldProfileProperties,
       newProfileProperties,
       oldGroups,

@@ -62,7 +62,6 @@ export interface PluginConnection {
   options: ConnectionOption[];
   profilePropertyRuleOptions?: PluginConnectionProfilePropertyRuleOption[];
   scheduleOptions?: PluginConnectionScheduleOption[];
-  ignoreMapping?: boolean;
   methods?: {
     sourceOptions?: SourceOptionsMethod;
     sourcePreview?: SourcePreviewMethod;

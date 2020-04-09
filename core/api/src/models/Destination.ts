@@ -345,11 +345,8 @@ export class Destination extends LoggedModel<Destination> {
     const options = await this.getOptions();
     const app = await this.$get("app");
     let method: ExportProfilePluginMethod;
-    let ignoreMapping = false;
-
     const { pluginConnection } = await this.getPlugin();
     method = pluginConnection.methods.exportProfile;
-    ignoreMapping = pluginConnection.ignoreMapping;
 
     if (!method) {
       throw new Error(`cannot find an export method for app type ${app.type}`);
@@ -362,15 +359,10 @@ export class Destination extends LoggedModel<Destination> {
     const mappingKeys = Object.keys(mapping);
     let mappedOldProfileProperties = {};
     let mappedNewProfileProperties = {};
-    if (!ignoreMapping) {
-      mappingKeys.forEach((k) => {
-        mappedOldProfileProperties[k] = oldProfileProperties[mapping[k]];
-        mappedNewProfileProperties[k] = newProfileProperties[mapping[k]];
-      });
-    } else {
-      mappedOldProfileProperties = Object.assign({}, oldProfileProperties);
-      mappedNewProfileProperties = Object.assign({}, newProfileProperties);
-    }
+    mappingKeys.forEach((k) => {
+      mappedOldProfileProperties[k] = oldProfileProperties[mapping[k]];
+      mappedNewProfileProperties[k] = newProfileProperties[mapping[k]];
+    });
 
     const oldGroupNames = oldGroups.map((g) => g.name);
     const newGroupNames = newGroups.map((g) => g.name);
