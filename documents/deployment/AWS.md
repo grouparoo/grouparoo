@@ -1,5 +1,9 @@
 # Deploying Grouparoo with AWS & Kubernetes
 
+## Example
+
+An example project can be found at https://github.com/grouparoo/app-example
+
 ## Getting Started
 
 We will be deploying a docker image for our Grouparoo application to AWS. We will Elastic Kubernetes Service (EKS) to manage our deployments. Our Grouparoo instances will be connecting to a Amazon Aurora database (postgres) and a Redis cluster managed by Amazon Elasticashe.
@@ -31,7 +35,8 @@ Configure Docker Hub to automatically build your docker image from your new repo
   - create and add a new SSH keypair.
   - allow remote access from 'all'
 
-- configure `kubectl` on your computer to deploy to your new cluster
+- Configure `kubectl` on your computer to deploy to your new cluster\
+
   - https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html
   - if you need the AWS CLI https://aws.amazon.com/cli/
   - you'll run a command like `aws eks --region us-east-1 update-kubeconfig --name grouparoo-eks-cluster`
@@ -61,7 +66,7 @@ The default postgres username is `postgres`
 
 When the redis cluster is created, note the endpoint, something like `grouparoo-redis.es9zaf.ng.0001.use1.cache.amazonaws.com:6379`. This is the redis hostname.
 
-## Deploy the Kubernetes Pods'
+## Deploy the Kubernetes Pods
 
 ⚠️ Note: In this example we will be using the database credentials directly. You will likely want to use [Kubernetes secrets](https://kubernetes.io/docs/concepts/configuration/secret/) to store the database connection strings.
 
@@ -156,7 +161,7 @@ You can deploy these applications to your cluster with `kubectl`:
 
 ## Connecting to the web Application
 
-When you created the EKS cluster, AWS also created an Elastic Load Balancer for your cluster. Navigate to https://console.aws.amazon.com/ec2/v2/home?#LoadBalancers:sort=loadBalancerName to see it. There will be a DNS name, like `a4998aa13bd13400a9bec419e9aaa493-1296181369.us-east-1.elb.amazonaws.com` which should be publicly accessible.
+When you created the EKS cluster, AWS also created an Elastic Load Balancer for your cluster. Navigate to https://console.aws.amazon.com/ec2/v2/home?#LoadBalancers:sort=loadBalancerName to see it. There will be a DNS name, like `xxx-yyy.us-east-1.elb.amazonaws.com` which should be publicly accessible.
 
 ⚠️ By default, this load balancer will be using port 80 (un-encrypted). You can upload an SSL certificate and switch the port to 443 for HTTPS, or migrate to the new "NLB" network load balancer product.
 

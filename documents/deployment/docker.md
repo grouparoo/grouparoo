@@ -1,8 +1,8 @@
-# Deploying Grouparoo with Docker
+# Deploying Grouparoo with Docker & Docker Compose
 
 ## Example
 
-An example project can be found at https://github.com/grouparoo/latest
+An example project can be found at https://github.com/grouparoo/app-example
 
 ## Getting Started
 
