@@ -17,9 +17,6 @@ FROM node:12
 
 WORKDIR /grouparoo
 
-ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
-RUN npm -g config set user $USER
-
 ENV NODE_ENV='production'
 ENV PORT=3000
 ENV WEB_URL=http://localhost:$PORT
@@ -36,6 +33,7 @@ ENV S3_BUCKET=""
 COPY . .
 RUN npm install
 RUN npm run prepare
+RUN npm prune
 
 WORKDIR /grouparoo/node_modules/@grouparoo/core
 CMD ["./api/bin/start"]
