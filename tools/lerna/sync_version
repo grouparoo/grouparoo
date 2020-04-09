@@ -16,7 +16,6 @@ require("./src/sync_version")
     },
     (error) => {
       console.error(`ERROR! ${error}`);
-      throw error;
       process.exit(1);
     }
   );
