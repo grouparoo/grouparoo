@@ -67,7 +67,12 @@ async function updateMarkdown(vargs) {
   const readmePath = path.join(rootPath, "README.md");
   await updatePkgMarkdown(vargs, readmePath, "readme_deploy");
 
-  const pluginsPath = path.join(rootPath, "core", "documents", "PLUGINS.md");
+  const pluginsPath = path.join(
+    rootPath,
+    "documents",
+    "development",
+    "plugins.md"
+  );
   await updatePkgMarkdown(vargs, pluginsPath, "plugins_package");
   await updatePkgMarkdown(vargs, pluginsPath, "plugins_example");
 }
