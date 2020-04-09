@@ -9,6 +9,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [types, setTypes] = useState([]);
+  const [optionOptions, setOptionOptions] = useState([]);
   const [testResult, setTestResult] = useState({ result: null, error: null });
   const [ranTest, setRanTest] = useState(false);
   const [app, setApp] = useState({
@@ -36,6 +37,14 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     const typesResponse = await execApi("get", `/api/${apiVersion}/appOptions`);
     if (typesResponse?.types) {
       setTypes(typesResponse.types);
+    }
+
+    const optionsResponse = await execApi(
+      "get",
+      `/api/${apiVersion}/app/${guid}/optionOptions`
+    );
+    if (optionsResponse?.options) {
+      setOptionOptions(optionsResponse.options);
     }
 
     setLoading(false);
@@ -165,13 +174,42 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                     ) : null}
                     <code>{opt.key}</code>: <small>{opt.description}</small>
                   </Form.Label>
-                  <Form.Control
-                    type="text"
-                    required={opt.required}
-                    placeholder={opt.placeholder || "..."}
-                    value={app.options[opt.key] || ""}
-                    onChange={(e) => updateOption(e)}
-                  />
+                  {(() => {
+                    if (optionOptions[opt.key]?.type === "list") {
+                      return (
+                        <Form.Control
+                          as="select"
+                          required={opt.required}
+                          defaultValue={app.options[opt.key] || ""}
+                          onChange={(e) => updateOption(e)}
+                        >
+                          <option value={""} disabled>
+                            Choose an option
+                          </option>
+                          {optionOptions[opt.key].options.map((o, idx) => (
+                            <option key={`opt~${opt.key}-${o}`} value={o}>
+                              {o}{" "}
+                              {optionOptions[opt.key]?.descriptions &&
+                              optionOptions[opt.key]?.descriptions[idx]
+                                ? ` | ${
+                                    optionOptions[opt.key]?.descriptions[idx]
+                                  }`
+                                : null}
+                            </option>
+                          ))}
+                        </Form.Control>
+                      );
+                    } else {
+                      return (
+                        <Form.Control
+                          required={opt.required}
+                          type="text"
+                          defaultValue={app.options[opt.key]}
+                          onChange={(e) => updateOption(e)}
+                        />
+                      );
+                    }
+                  })()}
                 </Form.Group>
               );
             })}

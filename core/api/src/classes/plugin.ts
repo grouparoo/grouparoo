@@ -31,7 +31,24 @@ export interface GrouparooPlugin {
 export interface PluginApp {
   name: string;
   options: AppOption[];
-  test: TestPluginMethod;
+  methods: {
+    test: TestPluginMethod;
+    appOptions?: AppOptionsMethod;
+  };
+}
+
+/**
+ * Method to return the options available to this app.
+ * Returns a collection of data to display to the user.
+ */
+export interface AppOptionsMethod {
+  (): Promise<{
+    [optionName: string]: {
+      type: string;
+      options?: string[];
+      descriptions?: string[];
+    };
+  }>;
 }
 
 /**

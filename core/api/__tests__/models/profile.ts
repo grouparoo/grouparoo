@@ -517,8 +517,10 @@ describe("models/profile", () => {
           {
             name: "test-template-app",
             options: [],
-            test: async () => {
-              return true;
+            methods: {
+              test: async () => {
+                return true;
+              },
             },
           },
         ],

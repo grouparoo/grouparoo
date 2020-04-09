@@ -60,6 +60,28 @@ export class AppOptions extends Action {
   }
 }
 
+export class AppOptionOptions extends Action {
+  constructor() {
+    super();
+    this.name = "app:optionOptions";
+    this.description = "return option choices from this app";
+    this.outputExample = {};
+    this.middleware = ["authenticated-team-member", "role-read"];
+    this.inputs = {
+      guid: { required: true },
+    };
+  }
+
+  async run({ params, response }) {
+    const app = await App.findOne({ where: { guid: params.guid } });
+    if (!app) {
+      throw new Error("app not found");
+    }
+
+    response.options = await app.appOptions();
+  }
+}
+
 export class AppCreate extends Action {
   constructor() {
     super();

@@ -24,7 +24,7 @@ export class Plugins extends Initializer {
         {
           name: "csv",
           options: [],
-          test,
+          methods: { test },
         },
       ],
       connections: [

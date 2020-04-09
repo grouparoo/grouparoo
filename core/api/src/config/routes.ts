@@ -41,6 +41,7 @@ export const DEFAULT = {
         { path: "/:apiVersion/runs", action: "runs:list" },
         { path: "/:apiVersion/run/:guid", action: "run:view" },
         { path: "/:apiVersion/appOptions", action: "app:options" },
+        { path: "/:apiVersion/app/:guid/optionOptions", action: "app:optionOptions" },
         { path: "/:apiVersion/app/:guid", action: "app:view" },
         { path: "/:apiVersion/sources/connectionApps", action: "sources:connectionApps" },
         { path: "/:apiVersion/source/:guid", action: "source:view" },

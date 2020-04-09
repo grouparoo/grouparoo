@@ -209,7 +209,7 @@ export class sourceConnectionOptions extends Action {
     this.outputExample = {};
     this.middleware = ["authenticated-team-member", "role-read"];
     this.inputs = {
-      guid: { required: false },
+      guid: { required: true },
     };
   }
 

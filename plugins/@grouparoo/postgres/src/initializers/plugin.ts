@@ -49,7 +49,7 @@ export class Plugins extends Initializer {
               description: "the postgres user's password",
             },
           ],
-          test,
+          methods: { test },
         },
       ],
       connections: [
