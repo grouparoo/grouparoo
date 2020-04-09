@@ -50,6 +50,9 @@ export class RunGroup extends Task {
       if (!run) {
         throw new Error(`cannot find run ${params.runGuid}`);
       }
+      if (run.state === "stopped") {
+        return;
+      }
     } else {
       run = await Run.create({
         creatorGuid: group.guid,

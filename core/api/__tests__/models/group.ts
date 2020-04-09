@@ -6,6 +6,7 @@ import { Group } from "./../../src/models/Group";
 import { Run } from "./../../src/models/Run";
 import { Import } from "./../../src/models/Import";
 import { GroupMember } from "./../../src/models/GroupMember";
+import { Op } from "sequelize";
 
 let actionhero;
 
@@ -311,6 +312,9 @@ describe("models/group", () => {
     });
 
     afterEach(async () => {
+      await specHelper.deleteEnqueuedTasks("group:run", {
+        groupGuid: group.guid,
+      });
       const members = await group.$get("groupMembers");
       await Promise.all(members.map((m) => m.destroy()));
       await group.destroy();
@@ -391,6 +395,21 @@ describe("models/group", () => {
 
       await group.reload();
       expect(group.state).toBe("ready");
+    });
+
+    test("changing the rules will stop previously running runs", async () => {
+      await group.setRules([{ key: "firstName", match: "nobody", op: "eq" }]);
+      let foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      await specHelper.runTask("group:run", foundTasks[0].args[0]);
+      const firstRun = await Run.findOne({
+        where: { creatorGuid: group.guid },
+      });
+      expect(firstRun.state).toBe("running");
+
+      await group.setRules([{ key: "lastName", match: "nobody", op: "eq" }]);
+      foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      await firstRun.reload();
+      expect(firstRun.state).toBe("stopped");
     });
 
     test("group#runAddGroupMembers will create an import for new members, and touch the updatedAt for existing members", async () => {
