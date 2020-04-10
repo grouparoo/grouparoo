@@ -212,50 +212,54 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
           </Col>
 
           <Col>
-            <p>Pick the Unique Grouparoo Profile Property:</p>
-            <fieldset>
-              <Table size="sm">
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Profile Property Rule</th>
-                    <th>Examples</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {profilePropertyRules.map((rule) => (
-                    <tr key={`prr-${rule.guid}`}>
-                      <td>
-                        <Form.Check
-                          inline
-                          required
-                          type="radio"
-                          id={rule.guid}
-                          name="remoteProfileRuleGuid"
-                          defaultChecked={
-                            Object.values(source.mapping)[0] === rule.key
-                          }
-                          onClick={() => setNewMappingValue(rule.key)}
-                        />
-                      </td>
-                      <td>
-                        <strong>{rule.key}</strong>
-                      </td>
-                      <td>
-                        {profilePropertyRuleExamples[rule.guid]
-                          ? profilePropertyRuleExamples[rule.guid]
-                              .slice(0, 3)
-                              .join(", ")
-                          : null}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </fieldset>
+            {profilePropertyRules.length > 0 ? (
+              <>
+                <p>Choose the Unique Grouparoo Profile Property:</p>
+                <fieldset>
+                  <Table size="sm">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Profile Property Rule</th>
+                        <th>Examples</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {profilePropertyRules.map((rule) => (
+                        <tr key={`prr-${rule.guid}`}>
+                          <td>
+                            <Form.Check
+                              inline
+                              required
+                              type="radio"
+                              id={rule.guid}
+                              name="remoteProfileRuleGuid"
+                              defaultChecked={
+                                Object.values(source.mapping)[0] === rule.key
+                              }
+                              onClick={() => setNewMappingValue(rule.key)}
+                            />
+                          </td>
+                          <td>
+                            <strong>{rule.key}</strong>
+                          </td>
+                          <td>
+                            {profilePropertyRuleExamples[rule.guid]
+                              ? profilePropertyRuleExamples[rule.guid]
+                                  .slice(0, 3)
+                                  .join(", ")
+                              : null}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </fieldset>
+                <hr />
+              </>
+            ) : null}
 
-            <hr />
-            <p>Or create a new Unique Profile Property Rule</p>
+            <p>Create a new Unique Profile Property Rule</p>
             <p>
               This profile property should be unique, meaning only one profile
               in your entire customer base will have this value. Normally this
