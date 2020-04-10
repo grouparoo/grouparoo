@@ -31,7 +31,11 @@ async function getUser(): Promise<any> {
     fields: { keys: 1, vars: 1, lists: 1 },
   };
 
-  return client.get("user", payload);
+  try {
+    return await client.get("user", payload);
+  } catch (err) {
+    return null;
+  }
 }
 
 describe("sailthru/exportProfile", () => {
@@ -40,9 +44,18 @@ describe("sailthru/exportProfile", () => {
 
     // delete it if it's there
     const sid = await client.findSid({ email });
-    console.log("sid before", sid);
     if (sid) {
       await client.deleteSid(sid);
+    }
+  }, 1000 * 30);
+
+  afterAll(async () => {
+    if (userSid) {
+      try {
+        await client.deleteSid(userSid);
+      } catch (err) {
+        // no big deal
+      }
     }
   }, 1000 * 30);
 
@@ -119,5 +132,68 @@ describe("sailthru/exportProfile", () => {
     const user = await getUser();
     expect(user.keys.sid).toBe(userSid);
     expect(user.vars.first_name).toBeFalsy();
+  });
+
+  test("can add to a list", async () => {
+    await exportProfile(
+      null,
+      appOptions,
+      null,
+      null,
+      null,
+      { first_name: null },
+      { email: email, first_name: "Brian" },
+      [], // old groups
+      ["Test Group 1", "Test Group 2"], // new groups
+      false
+    );
+
+    const user = await getUser();
+    expect(user.keys.sid).toBe(userSid);
+    expect(user.vars.first_name).toBe("Brian");
+    expect(user.lists["Test Group 1"]).toBeTruthy();
+    expect(user.lists["Test Group 2"]).toBeTruthy();
+  });
+
+  test("can remove from a list", async () => {
+    await exportProfile(
+      null,
+      appOptions,
+      null,
+      null,
+      null,
+      {},
+      { email: email, first_name: "Brian" },
+      ["Test Group 2"], // old groups
+      ["Test Group 1"], // new groups
+      false
+    );
+
+    const user = await getUser();
+    expect(user.keys.sid).toBe(userSid);
+    expect(user.vars.first_name).toBe("Brian");
+    expect(user.lists["Test Group 1"]).toBeTruthy();
+    expect(user.lists["Test Group 2"]).toBeFalsy();
+  });
+
+  test("can delete a user", async () => {
+    await exportProfile(
+      null,
+      appOptions,
+      null,
+      null,
+      null,
+      {},
+      { email: email, first_name: "Brian" },
+      ["Test Group 2", "Test Group 1"], // old groups
+      [], // new groups
+      true // delete!
+    );
+
+    const user = await getUser();
+    expect(user).toBeNull();
+
+    const sid = await client.findSid({ email });
+    expect(sid).toBeNull();
   });
 });

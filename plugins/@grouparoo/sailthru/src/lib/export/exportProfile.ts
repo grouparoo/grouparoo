@@ -27,11 +27,9 @@ export async function exportProfile(
   if (!email) {
     throw new Error(`newProfileProperties[email] is a required mapping`);
   }
-  delete newProfileProperties.email; // won't be in merge vars
 
   const sid = await client.findSid(newProfileProperties, oldProfileProperties);
 
-  console.log("sailthruId", sid);
   if (toDelete) {
     if (sid) {
       // otherwise, not found anyway
@@ -40,6 +38,7 @@ export async function exportProfile(
     return;
   }
 
+  delete newProfileProperties.email; // won't be in merge vars
   const payload: any = {
     id: sid,
     key: "sid",

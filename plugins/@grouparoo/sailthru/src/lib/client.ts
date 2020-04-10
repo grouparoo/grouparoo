@@ -17,6 +17,9 @@ export default class SailthruClient {
     let sid = null;
     // TODO: use extid first
     if (!sid) {
+      if (!newProperties.email) {
+        throw `findSid: email expected`;
+      }
       sid = await this.getSidBy("email", newProperties.email);
     }
     if (!sid && oldProperties.email) {
@@ -36,7 +39,6 @@ export default class SailthruClient {
 
     try {
       const response: any = await this.get("user", payload);
-      console.log("getSidBy", payload, response);
       return response?.keys?.sid;
     } catch (err) {
       // TODO: check for 404 or something more specific to
@@ -51,7 +53,6 @@ export default class SailthruClient {
       key: "sid",
     };
     const response: any = await this.delete("user", payload);
-    console.log("deleteSid", payload, response);
     return response;
   }
 
@@ -61,7 +62,6 @@ export default class SailthruClient {
     payload.fields.keys = 1;
 
     const response: any = await this.post("user", payload);
-    console.log("updateUser", payload, response);
     if (!response.ok) {
       throw `Sailthru updateUser not ok`;
     }
@@ -93,7 +93,6 @@ export default class SailthruClient {
     return new Promise((resolve, reject) => {
       this.sailthru[method](apiName, options, function (err, response) {
         if (err) {
-          console.log("Sailthru Error", err);
           reject(err);
         } else {
           resolve(response);
