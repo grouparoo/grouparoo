@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 
+const grouparooMonorepoApp = process.env.GROUPAROO_MONOREPO_APP;
+
 function readPackageJson(path) {
   if (!fs.existsSync(path)) {
     return {};
@@ -10,16 +12,8 @@ function readPackageJson(path) {
 }
 
 function getParentPath() {
-  return process.env.GROUPAROO_MONOREPO_APP
-    ? path.join(
-        __dirname,
-        "..",
-        "..",
-        "..",
-        "..",
-        "apps",
-        process.env.GROUPAROO_MONOREPO_APP
-      )
+  return grouparooMonorepoApp
+    ? path.join(__dirname, "..", "..", "..", "..", "apps", grouparooMonorepoApp)
     : path.join(__dirname, "..", "..", "..", "..", "..", "..");
 }
 
@@ -62,6 +56,7 @@ function getPluginManifest() {
   return manifest;
 }
 
+exports.grouparooMonorepoApp = grouparooMonorepoApp;
 exports.readPackageJson = readPackageJson;
 exports.getParentPath = getParentPath;
 exports.getPluginManifest = getPluginManifest;

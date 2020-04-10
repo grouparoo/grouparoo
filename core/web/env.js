@@ -1,6 +1,9 @@
 const fs = require("fs");
 const path = require("path");
-const { getPluginManifest } = require("../api/src/utils/pluginDetails");
+const {
+  getPluginManifest,
+  grouparooMonorepoApp,
+} = require("../api/src/utils/pluginDetails");
 const pluginManifest = getPluginManifest();
 
 // write the plugins manifest to a file for the web to consume
@@ -15,7 +18,7 @@ const loader = `import dynamic from "next/dynamic";
 export default function LoadPlugin (pluginName: string, file: string) {
   return dynamic(() =>
     import(\`${
-      process.env.GROUPAROO_MONOREPO_APP
+      grouparooMonorepoApp
         ? "../../../plugins/${pluginName}/src/components/${file}.plugin"
         : "../../../../${pluginName}/src/components/${file}.plugin"
     }\`)
@@ -27,7 +30,7 @@ fs.writeFileSync(path.join(__dirname, "tmp", "pluginLoader.ts"), loader);
 // build the web ENVIRONMENT object
 const _exports = {
   API_VERSION: process.env.API_VERSION || "1",
-  GROUPAROO_MONOREPO_APP: process.env.GROUPAROO_MONOREPO_APP,
+  GROUPAROO_MONOREPO_APP: grouparooMonorepoApp,
 };
 
 // pass plugin env/web to the build
