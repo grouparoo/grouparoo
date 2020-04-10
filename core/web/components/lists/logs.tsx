@@ -164,13 +164,15 @@ export default function ({ apiVersion, errorHandler, query, ownerType }) {
               <tr key={`log-${log.guid}`}>
                 <td>{formatCreatedAt(log.createdAt)}</td>
                 <td>
+                  <strong>{log.message}</strong>{" "}
                   {log.ownerGuid ? (
                     <>
-                      {log.ownerGuid}
                       <br />
+                      <Link href={`/object/${log.ownerGuid}`}>
+                        <a className="text-muted">{log.ownerGuid}</a>
+                      </Link>
                     </>
                   ) : null}
-                  <strong>{log.message}</strong>
                 </td>
                 <td>
                   {formatTopicsAndLinks(log).map((link) => (

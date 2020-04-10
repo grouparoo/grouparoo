@@ -193,12 +193,10 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
           <tr>
             <th>Guid</th>
             <th>Created At</th>
-            {guid ? null : <th>Creator Type</th>}
-            {guid ? null : <th>Creator Guid</th>}
+            <th>Creator Type</th>
             <th>Completed At</th>
             <th>State</th>
             <th>Filter</th>
-            <th>Counts</th>
           </tr>
         </thead>
         <tbody>
@@ -207,6 +205,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
               <Fragment key={`profile-${run.guid}`}>
                 <tr>
                   <td>
+                    Guid:{" "}
                     <Link href="/run/[guid]" as={`/run/${run.guid}`}>
                       <a>{run.guid}</a>
                     </Link>
@@ -214,17 +213,14 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                   <td>
                     <Moment fromNow>{run.createdAt}</Moment>
                   </td>
-                  {guid ? null : <td>{run.creatorType}</td>}
-                  {guid ? null : (
-                    <td>
-                      <Link
-                        prefetch={false}
-                        href={`/${run.creatorType}/${run.creatorGuid}`}
-                      >
-                        <a>{run.creatorGuid}</a>
-                      </Link>
-                    </td>
-                  )}
+                  <td>
+                    <Link
+                      prefetch={false}
+                      href={`/${run.creatorType}/${run.creatorGuid}`}
+                    >
+                      <a>{run.creatorType}</a>
+                    </Link>
+                  </td>
                   <td>
                     {run.completedAt ? (
                       <>
@@ -244,20 +240,25 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                   <td>
                     <code>{JSON.stringify(run.filter)}</code>
                   </td>
-                  <td>
-                    <ul>
-                      <li>
-                        <Link
-                          href="/imports/[creatorGuid]"
-                          as={`/imports/${run.guid}`}
-                        >
-                          <a>Imports Created: {run.importsCreated}</a>
-                        </Link>
-                      </li>
-                      <li>Profiles Created: {run.profilesCreated}</li>
-                      <li>Profiles Imported: {run.profilesImported}</li>
-                      <li>Profiles Exported: {run.profilesExported}</li>
-                    </ul>
+                </tr>
+
+                <tr>
+                  <td colSpan={7} style={{ border: 0 }}>
+                    <Alert variant="secondary">
+                      <Row>
+                        <Col>
+                          <Link
+                            href="/imports/[creatorGuid]"
+                            as={`/imports/${run.guid}`}
+                          >
+                            <a>Imports Created: {run.importsCreated}</a>
+                          </Link>
+                        </Col>
+                        <Col>Profiles Created: {run.profilesCreated}</Col>
+                        <Col>Profiles Imported: {run.profilesImported}</Col>
+                        <Col>Profiles Exported: {run.profilesExported}</Col>
+                      </Row>
+                    </Alert>
                   </td>
                 </tr>
 
