@@ -13,6 +13,7 @@ export default function (props) {
   const { guid } = query;
   const { execApi } = useApi(errorHandler);
   const [source, setSource] = useState({
+    name: "",
     previewAvailable: false,
     schedule: { guid: "" },
   });
@@ -31,6 +32,7 @@ export default function (props) {
 
   return (
     <TabbedContainer
+      name={source.name}
       errorHandler={props.errorHandler}
       apiVersion={props.apiVersion}
       type="source"

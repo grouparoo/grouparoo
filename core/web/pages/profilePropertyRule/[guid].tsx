@@ -24,6 +24,13 @@ export default function (props) {
 
   useEffect(() => {
     load();
+    props.profilePropertyRulesHandler.subscribe("rule-tabs", () => {
+      load();
+    });
+
+    return () => {
+      props.profilePropertyRulesHandler.unsubscribe("rule-tabs");
+    };
   }, []);
 
   async function load() {
@@ -89,6 +96,7 @@ export default function (props) {
         apiVersion={props.apiVersion}
         type="profilePropertyRule"
         defaultTab="edit"
+        name={profilePropertyRule.key}
         query={props.query}
       >
         {Tabs}

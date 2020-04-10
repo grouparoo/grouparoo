@@ -1,11 +1,30 @@
 import TabbedContainer from "../../components/layouts/tabbedContainer";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import AppEditForm from "../../components/forms/app/edit";
+import { useApi } from "../../hooks/useApi";
 
 export default function (props) {
+  const [app, setApp] = useState({ name: "" });
+  const { execApi } = useApi(props.errorHandler);
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  async function load() {
+    const response = await execApi(
+      "get",
+      `/api/${props.apiVersion}/app/${props.query.guid}`
+    );
+    if (response?.app) {
+      setApp(response.app);
+    }
+  }
+
   return (
     <TabbedContainer
+      name={app.name}
       errorHandler={props.errorHandler}
       apiVersion={props.apiVersion}
       type="app"

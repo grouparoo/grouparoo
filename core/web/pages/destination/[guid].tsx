@@ -1,14 +1,33 @@
 import TabbedContainer from "../../components/layouts/tabbedContainer";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import DestinationEditForm from "../../components/forms/destination/edit";
 import DestinationMappings from "../../components/forms/destination/mapping";
 import DestinationGroups from "../../components/forms/destination/groups";
 import ExportsList from "../../components/lists/exports";
+import { useApi } from "./../../hooks/useApi";
 
 export default function (props) {
+  const [destination, setDestination] = useState({ name: "" });
+  const { execApi } = useApi(props.errorHandler);
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  async function load() {
+    const response = await execApi(
+      "get",
+      `/api/${props.apiVersion}/destination/${props.query.guid}`
+    );
+    if (response?.destination) {
+      setDestination(response.destination);
+    }
+  }
+
   return (
     <TabbedContainer
+      name={destination.name}
       errorHandler={props.errorHandler}
       apiVersion={props.apiVersion}
       type="destination"

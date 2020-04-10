@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { Tab, Tabs, Breadcrumb } from "react-bootstrap";
 import { ErrorHandler } from "../../utils/errorHandler";
@@ -10,7 +10,7 @@ export default function ({
   query,
   defaultTab,
   errorHandler,
-  apiVersion,
+  name,
   children,
 }: {
   type: string; // the name of the type, like "profile"
@@ -18,45 +18,12 @@ export default function ({
   defaultTab: string; // the starting tab when none is set in the URL
   errorHandler: ErrorHandler; //the error subscription object
   apiVersion: string | number; // the version of the Grouparoo API we are using
+  name: string; // the name to render in the breadcrumb
   children: any; // react children
 }) {
   const { guid, tab } = query;
   const [key, setKey] = useState(tab && tab !== "" ? tab : defaultTab);
   const { execApi } = useApi(errorHandler);
-  const [name, setName] = useState(guid);
-
-  useEffect(() => {
-    load();
-  }, []);
-
-  async function load() {
-    const response = await execApi("get", `/api/${apiVersion}/${type}/${guid}`);
-    const possibleNameKeys = ["name", "key"];
-    possibleNameKeys.forEach((key) => {
-      if (response && response[type] && response[type][key]) {
-        return setName(response[type][key]);
-      }
-    });
-
-    if (type === "profile") {
-      const propertiesArray = [];
-      for (const k in response?.profile?.properties) {
-        const hash = response.profile.properties[k];
-        hash.key = k;
-        propertiesArray.push(hash);
-      }
-
-      const uniqueProperties = propertiesArray.filter((prp) => prp.unique);
-      if (uniqueProperties.length > 0) {
-        const emails = uniqueProperties.filter((prp) => prp.type === "email");
-        if (emails[0]) {
-          setName(emails[0].value);
-        } else {
-          setName(uniqueProperties[0].value);
-        }
-      }
-    }
-  }
 
   if (!Array.isArray(children)) {
     children = [children];
