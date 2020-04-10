@@ -3,6 +3,7 @@ const path = require("path");
 const {
   getPluginManifest,
   grouparooMonorepoApp,
+  runningCoreDirectly,
 } = require("../api/src/utils/pluginDetails");
 const pluginManifest = getPluginManifest();
 
@@ -18,7 +19,7 @@ const loader = `import dynamic from "next/dynamic";
 export default function LoadPlugin (pluginName: string, file: string) {
   return dynamic(() =>
     import(\`${
-      grouparooMonorepoApp
+      grouparooMonorepoApp || runningCoreDirectly()
         ? "../../../plugins/${pluginName}/src/components/${file}.plugin"
         : "../../../../${pluginName}/src/components/${file}.plugin"
     }\`)

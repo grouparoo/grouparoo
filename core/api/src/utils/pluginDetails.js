@@ -56,7 +56,27 @@ function getPluginManifest() {
   return manifest;
 }
 
+function runningCoreDirectly() {
+  const monorepoPackageJSON = path.join(
+    __dirname,
+    "..",
+    "..",
+    "..",
+    "..",
+    "package.json"
+  );
+  if (fs.existsSync(monorepoPackageJSON)) {
+    const pkgPkg = readPackageJson(monorepoPackageJSON);
+    if (pkgPkg.name === "@grouparoo/grouparoo") {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 exports.grouparooMonorepoApp = grouparooMonorepoApp;
 exports.readPackageJson = readPackageJson;
 exports.getParentPath = getParentPath;
 exports.getPluginManifest = getPluginManifest;
+exports.runningCoreDirectly = runningCoreDirectly;
