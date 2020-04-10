@@ -22,8 +22,8 @@ export default function ({ apiVersion, errorHandler, query }) {
   // pagination
   const limit = 100;
   const [offset, setOffset] = useState(query.offset || 0);
-  const profileGuid = query.guid.match(/^pro_/) ? query.guid : null;
-  const destinationGuid = query.guid.match(/^dst_/) ? query.guid : null;
+  const profileGuid = query?.guid?.match(/^pro_/) ? query.guid : null;
+  const destinationGuid = query?.guid?.match(/^dst_/) ? query.guid : null;
   useHistoryPagination(offset, "offset", setOffset);
 
   useEffect(() => {
