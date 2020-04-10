@@ -13,6 +13,7 @@ export class SourcesList extends Action {
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
+      state: { required: false },
       order: {
         required: true,
         default: [
@@ -24,7 +25,14 @@ export class SourcesList extends Action {
   }
 
   async run({ params, response }) {
+    const where = {};
+
+    if (params.state) {
+      where["state"] = params.state;
+    }
+
     const sources = await Source.findAll({
+      where,
       limit: params.limit,
       offset: params.offset,
       order: params.order,
@@ -33,7 +41,8 @@ export class SourcesList extends Action {
     response.sources = await Promise.all(
       sources.map(async (source) => source.apiData())
     );
-    response.total = await Source.count();
+
+    response.total = await Source.count({ where });
   }
 }
 
