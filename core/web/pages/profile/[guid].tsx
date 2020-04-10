@@ -5,6 +5,7 @@ import ProfileEditForm from "../../components/forms/profile/edit";
 import ProfilePropertiesList from "../../components/lists/profileProperties";
 import ProfileGroupsList from "../../components/lists/profileGroups";
 import LogsList from "../../components/lists/logs";
+import ImportsList from "../../components/lists/imports";
 import ExportsList from "../../components/lists/exports";
 import { useApi } from "../../hooks/useApi";
 
@@ -82,6 +83,10 @@ export default function (props) {
             <ProfilePropertiesList {...props} />
           </Col>
         </Row>
+      </Fragment>
+
+      <Fragment key="imports">
+        <ImportsList {...props} />
       </Fragment>
 
       <Fragment key="exports">
