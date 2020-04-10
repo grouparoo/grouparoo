@@ -59,10 +59,17 @@ export async function exportProfile(
 
   // TODO: extid if that's a thing
 
-  for (const key in newProfileProperties) {
-    const value = newProfileProperties[key];
+  // set profile properties, including old ones
+  const newKeys = Object.keys(newProfileProperties);
+  const oldKeys = Object.keys(oldProfileProperties);
+  const allKeys = oldKeys.concat(newKeys);
+  for (const key of allKeys) {
+    const value = newProfileProperties[key]; // includes clearing out removed ones
     payload.vars[key] = formatVar(value);
   }
+
+  // TODO: make "job" to remove these
+  // const removedKeys = oldKeys.filter((k) => !newKeys.includes(k));
 
   // add new lists
   for (const newGroup of newGroups) {

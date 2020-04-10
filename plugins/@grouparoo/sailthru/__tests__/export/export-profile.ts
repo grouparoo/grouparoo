@@ -22,6 +22,17 @@ const appOptions: SimpleAppOptions = {
 
 let client: Sailthru;
 const email = "brian@bleonard.com";
+let userSid = null;
+
+async function getUser(): Promise<any> {
+  const payload = {
+    id: userSid,
+    key: "sid",
+    fields: { keys: 1, vars: 1, lists: 1 },
+  };
+
+  return client.get("user", payload);
+}
 
 describe("sailthru/exportProfile", () => {
   beforeAll(async () => {
@@ -48,6 +59,65 @@ describe("sailthru/exportProfile", () => {
       [], // new groups
       false
     );
-    expect(1 + 1).toBe(2);
+
+    userSid = await client.findSid({ email });
+    expect(userSid).toBeTruthy();
+  });
+
+  test("can add user variables", async () => {
+    await exportProfile(
+      null,
+      appOptions,
+      null,
+      null,
+      null,
+      {}, // old Props
+      { email: email, first_name: "Evan" },
+      [], // old groups
+      [], // new groups
+      false
+    );
+
+    const user = await getUser();
+    expect(user.keys.sid).toBe(userSid);
+    expect(user.vars.first_name).toBe("Evan");
+  });
+
+  test("can change user variables", async () => {
+    await exportProfile(
+      null,
+      appOptions,
+      null,
+      null,
+      null,
+      { first_name: "Evan" }, // old Props
+      { email: email, first_name: "Brian" },
+      [], // old groups
+      [], // new groups
+      false
+    );
+
+    const user = await getUser();
+    expect(user.keys.sid).toBe(userSid);
+    expect(user.vars.first_name).toBe("Brian");
+  });
+
+  test("can clear user variables", async () => {
+    await exportProfile(
+      null,
+      appOptions,
+      null,
+      null,
+      null,
+      { first_name: "Brian" }, // old Props
+      { email: email },
+      [], // old groups
+      [], // new groups
+      false
+    );
+
+    const user = await getUser();
+    expect(user.keys.sid).toBe(userSid);
+    expect(user.vars.first_name).toBeFalsy();
   });
 });
