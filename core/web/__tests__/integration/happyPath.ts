@@ -50,12 +50,6 @@ describe("integration", () => {
 
       const button = await browser.findElement(by.id("bottomNavigationMenu"));
       await button.click();
-
-      await helper.sleep(3 * 1000);
-
-      const tags = await browser.findElements(by.tagName("a"));
-      const links = await Promise.all(tags.map(async (t) => await t.getText()));
-      expect(links).toContain("Create Team");
     },
     testTimeout
   );
