@@ -8,7 +8,7 @@ export default function (props) {
         <title>Grouparoo: Account</title>
       </Head>
 
-      <h1>Account</h1>
+      <h1>Your Account</h1>
       <AccountForm {...props} />
     </>
   );
