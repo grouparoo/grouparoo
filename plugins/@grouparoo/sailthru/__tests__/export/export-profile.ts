@@ -84,7 +84,7 @@ describe("sailthru/exportProfile", () => {
       null,
       null,
       null,
-      {}, // old Props
+      { email: email }, // old Props
       { email: email, first_name: "Evan" },
       [], // old groups
       [], // new groups
@@ -103,7 +103,7 @@ describe("sailthru/exportProfile", () => {
       null,
       null,
       null,
-      { first_name: "Evan" }, // old Props
+      { email: email, first_name: "Evan" }, // old Props
       { email: email, first_name: "Brian" },
       [], // old groups
       [], // new groups
@@ -141,7 +141,7 @@ describe("sailthru/exportProfile", () => {
       null,
       null,
       null,
-      { first_name: null },
+      { email: email, first_name: null },
       { email: email, first_name: "Brian" },
       [], // old groups
       ["Test Group 1", "Test Group 2"], // new groups
@@ -162,9 +162,9 @@ describe("sailthru/exportProfile", () => {
       null,
       null,
       null,
-      {},
       { email: email, first_name: "Brian" },
-      ["Test Group 2"], // old groups
+      { email: email, first_name: "Brian" },
+      ["Test Group 1", "Test Group 2"], // old groups
       ["Test Group 1"], // new groups
       false
     );
@@ -172,8 +172,8 @@ describe("sailthru/exportProfile", () => {
     const user = await getUser();
     expect(user.keys.sid).toBe(userSid);
     expect(user.vars.first_name).toBe("Brian");
-    expect(user.lists["Test Group 1"]).toBeTruthy();
-    expect(user.lists["Test Group 2"]).toBeFalsy();
+    expect(user.lists["Test Group 1"]).toBeTruthy(); // still have it
+    expect(user.lists["Test Group 2"]).toBeFalsy(); // not have it any more
   });
 
   test("can delete a user", async () => {

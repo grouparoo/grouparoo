@@ -38,7 +38,6 @@ export async function exportProfile(
     return;
   }
 
-  delete newProfileProperties.email; // won't be in merge vars
   const payload: any = {
     id: sid,
     key: "sid",
@@ -63,6 +62,10 @@ export async function exportProfile(
   const oldKeys = Object.keys(oldProfileProperties);
   const allKeys = oldKeys.concat(newKeys);
   for (const key of allKeys) {
+    if (key === "email") {
+      // not doing this one
+      continue;
+    }
     const value = newProfileProperties[key]; // includes clearing out removed ones
     payload.vars[key] = formatVar(value);
   }
@@ -75,9 +78,11 @@ export async function exportProfile(
     const listName = formatList(newGroup);
     payload.lists[listName] = 1;
   }
-  // remove old lists
-  for (const oldGroup of oldGroups) {
-    const listName = formatList(oldGroup);
+
+  const removedLists = oldGroups.filter((k) => !newGroups.includes(k));
+  // remove list I'm not on anymore
+  for (const removedGroup of removedLists) {
+    const listName = formatList(removedGroup);
     payload.lists[listName] = 0;
   }
 
