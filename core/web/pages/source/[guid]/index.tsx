@@ -20,6 +20,14 @@ export default function (props) {
 
   useEffect(() => {
     load();
+
+    props.sourceHandler.subscribe("tabs", () => {
+      load();
+    });
+
+    return () => {
+      props.sourceHandler.unsubscribe("tabs");
+    };
   }, []);
 
   async function load() {

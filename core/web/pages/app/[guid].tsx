@@ -10,6 +10,14 @@ export default function (props) {
 
   useEffect(() => {
     load();
+
+    props.appHandler.subscribe("tabs", () => {
+      load();
+    });
+
+    return () => {
+      props.appHandler.unsubscribe("tabs");
+    };
   }, []);
 
   async function load() {

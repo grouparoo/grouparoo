@@ -6,7 +6,13 @@ import StateBadge from "../../stateBadge";
 import Moment from "react-moment";
 import Router from "next/router";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({
+  apiVersion,
+  errorHandler,
+  successHandler,
+  groupHandler,
+  query,
+}) {
   const { execApi } = useApi(errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
@@ -46,6 +52,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     if (response?.group) {
       successHandler.set({ message: "Group Updated" });
       setGroup(response.group);
+      groupHandler.set();
     }
   }
 

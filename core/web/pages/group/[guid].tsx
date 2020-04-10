@@ -17,6 +17,14 @@ export default function (props) {
 
   useEffect(() => {
     load();
+
+    props.groupHandler.subscribe("tabs", () => {
+      load();
+    });
+
+    return () => {
+      props.groupHandler.unsubscribe("tabs");
+    };
   }, []);
 
   async function load() {

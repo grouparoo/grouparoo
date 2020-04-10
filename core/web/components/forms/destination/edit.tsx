@@ -6,7 +6,13 @@ import Link from "next/link";
 import AppIcon from "./../../appIcon";
 import StateBadge from "./../../stateBadge";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({
+  apiVersion,
+  errorHandler,
+  successHandler,
+  destinationHandler,
+  query,
+}) {
   const { execApi } = useApi(errorHandler);
   const [connectionOptions, setConnectionOptions] = useState([]);
   const [preview, setPreview] = useState([]);
@@ -83,6 +89,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     if (response?.destination) {
       successHandler.set({ message: "Destination updated" });
       setDestination(response.destination);
+      destinationHandler.set();
       if (response.destination.state === "draft") {
         Router.push(`/destination/${guid}?tab=mapping`);
       }

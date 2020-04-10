@@ -13,6 +13,14 @@ export default function (props) {
 
   useEffect(() => {
     load();
+
+    props.destinationHandler.subscribe("tabs", () => {
+      load();
+    });
+
+    return () => {
+      props.destinationHandler.unsubscribe("tabs");
+    };
   }, []);
 
   async function load() {
