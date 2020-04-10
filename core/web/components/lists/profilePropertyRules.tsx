@@ -48,6 +48,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     const response = await execApi("get", `/api/${apiVersion}/sources`, {
       limit,
       offset,
+      state: "ready",
     });
     setLoading(false);
     if (response?.sources) {
