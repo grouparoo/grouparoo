@@ -4,7 +4,13 @@ import { useForm } from "react-hook-form";
 import { Form, Button } from "react-bootstrap";
 import Router from "next/router";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({
+  apiVersion,
+  errorHandler,
+  successHandler,
+  teamHandler,
+  query,
+}) {
   const { execApi } = useApi(errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
@@ -42,6 +48,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     if (response?.team) {
       successHandler.set({ message: "Team updated" });
       setTeam(response.team);
+      teamHandler.set();
     }
   };
 

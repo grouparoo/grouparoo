@@ -13,6 +13,14 @@ export default function (props) {
 
   useEffect(() => {
     load();
+
+    props.teamHandler.subscribe("tabs", () => {
+      load();
+    });
+
+    return () => {
+      props.teamHandler.unsubscribe("tabs");
+    };
   }, []);
 
   async function load() {
