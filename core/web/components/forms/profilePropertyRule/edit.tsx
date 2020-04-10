@@ -6,7 +6,13 @@ import Loader from "../../loader";
 import AppIcon from "../../appIcon";
 import StateBadge from "../../stateBadge";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({
+  apiVersion,
+  errorHandler,
+  successHandler,
+  profilePropertyRulesHandler,
+  query,
+}) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [types, setTypes] = useState([]);
@@ -81,6 +87,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
         successHandler.set({ message: "Profile Property Rule Updated" });
         setProfilePropertyRule(response.profilePropertyRule);
         setPluginOptions(response.pluginOptions);
+        profilePropertyRulesHandler.set();
       }
     }
   }

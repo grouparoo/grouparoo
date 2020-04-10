@@ -123,7 +123,7 @@ export class App extends LoggedModel<App> {
   async appOptions() {
     const { pluginApp } = await this.getPlugin();
 
-    if (!pluginApp.methods.appOptions) {
+    if (!pluginApp?.methods?.appOptions) {
       return {};
     }
 

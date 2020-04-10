@@ -5,7 +5,13 @@ import Router from "next/router";
 import AppIcon from "../../appIcon";
 import StateBadge from "../../stateBadge";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({
+  apiVersion,
+  errorHandler,
+  successHandler,
+  appHandler,
+  query,
+}) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [types, setTypes] = useState([]);
@@ -63,6 +69,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     if (response?.app) {
       successHandler.set({ message: "App Updated" });
       await load();
+      appHandler.set();
     }
   }
 

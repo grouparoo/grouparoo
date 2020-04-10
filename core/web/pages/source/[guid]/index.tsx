@@ -13,12 +13,21 @@ export default function (props) {
   const { guid } = query;
   const { execApi } = useApi(errorHandler);
   const [source, setSource] = useState({
+    name: "",
     previewAvailable: false,
     schedule: { guid: "" },
   });
 
   useEffect(() => {
     load();
+
+    props.sourceHandler.subscribe("tabs", () => {
+      load();
+    });
+
+    return () => {
+      props.sourceHandler.unsubscribe("tabs");
+    };
   }, []);
 
   async function load() {
@@ -31,6 +40,7 @@ export default function (props) {
 
   return (
     <TabbedContainer
+      name={source.name}
       errorHandler={props.errorHandler}
       apiVersion={props.apiVersion}
       type="source"

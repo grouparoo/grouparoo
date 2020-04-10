@@ -1,5 +1,5 @@
 import TabbedContainer from "../../components/layouts/tabbedContainer";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { usePlugins } from "../../hooks/usePlugin";
 import { Card } from "react-bootstrap";
@@ -11,7 +11,31 @@ import LogsList from "./../../components/lists/logs";
 import GroupDestinationsList from "../../components/lists/groupDestinations";
 
 export default function (props) {
+  const [group, setGroup] = useState({ name: "" });
   const [plugins, pluginMetadata] = usePlugins("group/tabs");
+  const { execApi } = useApi(props.errorHandler);
+
+  useEffect(() => {
+    load();
+
+    props.groupHandler.subscribe("tabs", () => {
+      load();
+    });
+
+    return () => {
+      props.groupHandler.unsubscribe("tabs");
+    };
+  }, []);
+
+  async function load() {
+    const response = await execApi(
+      "get",
+      `/api/${props.apiVersion}/group/${props.query.guid}`
+    );
+    if (response?.group) {
+      setGroup(response.group);
+    }
+  }
 
   const Tabs = [
     <Fragment key="edit">
@@ -65,6 +89,7 @@ export default function (props) {
 
   return (
     <TabbedContainer
+      name={group.name}
       errorHandler={props.errorHandler}
       apiVersion={props.apiVersion}
       type="group"

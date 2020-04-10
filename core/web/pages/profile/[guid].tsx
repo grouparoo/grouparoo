@@ -1,13 +1,56 @@
 import TabbedContainer from "../../components/layouts/tabbedContainer";
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import ProfileEditForm from "../../components/forms/profile/edit";
 import ProfilePropertiesList from "../../components/lists/profileProperties";
 import ProfileGroupsList from "../../components/lists/profileGroups";
 import LogsList from "../../components/lists/logs";
 import ExportsList from "../../components/lists/exports";
+import { useApi } from "../../hooks/useApi";
 
 export default function (props) {
+  const { execApi } = useApi(props.errorHandler);
+  const [profile, setProfile] = useState({ guid: "", properties: {} });
+
+  useEffect(() => {
+    load();
+    props.profileHandler.subscribe("tabs", () => {
+      load();
+    });
+
+    return () => {
+      props.profileHandler.unsubscribe("tabs");
+    };
+  }, []);
+
+  async function load() {
+    const response = await execApi(
+      "get",
+      `/api/${props.apiVersion}/profile/${props.query.guid}`
+    );
+    if (response?.profile) {
+      setProfile(response.profile);
+    }
+  }
+
+  const propertiesArray = [];
+  for (const k in profile.properties) {
+    const hash = profile.properties[k];
+    hash.key = k;
+    propertiesArray.push(hash);
+  }
+
+  let name = profile.guid;
+  const uniqueProperties = propertiesArray.filter((prp) => prp.unique);
+  if (uniqueProperties.length > 0) {
+    const emails = uniqueProperties.filter((prp) => prp.type === "email");
+    if (emails[0]) {
+      name = emails[0].value;
+    } else {
+      name = uniqueProperties[0].value;
+    }
+  }
+
   return (
     <TabbedContainer
       errorHandler={props.errorHandler}
@@ -15,6 +58,7 @@ export default function (props) {
       type="profile"
       defaultTab="edit"
       query={props.query}
+      name={name}
     >
       <Fragment key="edit">
         <h1>Edit Profile</h1>
