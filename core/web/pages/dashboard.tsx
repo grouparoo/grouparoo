@@ -1,15 +1,47 @@
+import { useApi } from "./../hooks/useApi";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import TotalsList from "../components/visualizations/totals";
+import Welcome from "../components/visualizations/welcome";
+import Loader from "./../components/loader";
 
 export default function (props) {
-  return (
-    <>
-      <Head>
-        <title>Grouparoo: Dashboard</title>
-      </Head>
+  const [appsCount, setAppsCount] = useState(-1);
+  const { execApi } = useApi(props.errorHandler);
 
-      <h1>Dashboard</h1>
-      <TotalsList {...props} />
-    </>
+  useEffect(() => {
+    load();
+  }, []);
+
+  async function load() {
+    const { total } = await execApi("get", `/api/${props.apiVersion}/apps/`);
+    setAppsCount(total);
+  }
+
+  if (appsCount === -1) {
+    return <Loader />;
+  } else if (appsCount === 0) {
+    return (
+      <>
+        <HeaderTitle title="Welcome" />
+        <Welcome {...props} />
+      </>
+    );
+  } else if (appsCount > 0) {
+    return (
+      <>
+        <HeaderTitle title="Dashboard" />
+        <h1>Dashboard</h1>
+        <TotalsList {...props} />
+      </>
+    );
+  }
+}
+
+function HeaderTitle({ title }) {
+  return (
+    <Head>
+      <title>Grouparoo: {title}</title>
+    </Head>
   );
 }

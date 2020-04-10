@@ -90,14 +90,14 @@ describe("integration", () => {
       const button = await browser.findElement(by.className("btn-primary"));
       await button.click();
 
-      // we should be taken to the dashboard
+      // we should be taken to the welcome page
       await browser.wait(
         until.elementLocated(by.className("jumbotron")),
         1000 * 4
       );
 
       const header = await browser.findElement(by.tagName("h1")).getText();
-      expect(header).toContain("Dashboard");
+      expect(header).toContain("Welcome");
     },
     testTimeout * 2
   );
