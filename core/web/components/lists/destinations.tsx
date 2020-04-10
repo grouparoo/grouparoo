@@ -46,6 +46,10 @@ export default function ({
     if (response?.destinations) {
       setDestinations(response.destinations);
       setTotal(response.total);
+
+      if (response.total === 0) {
+        Router.push("/destination/new");
+      }
     }
   }
 

@@ -9,14 +9,7 @@ import Moment from "react-moment";
 import AppIcon from "../appIcon";
 import StateBadge from "../stateBadge";
 
-export default function (props) {
-  const {
-    apiVersion,
-    errorHandler,
-    sourceHandler,
-    successHandler,
-    query,
-  } = props;
+export default function ({ apiVersion, errorHandler, sourceHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [sources, setSources] = useState([]);
@@ -48,6 +41,10 @@ export default function (props) {
     if (response?.sources) {
       setSources(response.sources);
       setTotal(response.total);
+
+      if (response.total === 0) {
+        Router.push("/source/new");
+      }
     }
   }
 

@@ -35,6 +35,10 @@ export default function ({ apiVersion, errorHandler, query }) {
     if (response?.apps) {
       setApps(response.apps);
       setTotal(response.total);
+
+      if (response.total === 0) {
+        Router.push("/app/new");
+      }
     }
   }
 
