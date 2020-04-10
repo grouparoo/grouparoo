@@ -91,10 +91,12 @@ export default function ({ apiVersion, errorHandler, sourceHandler, query }) {
                 <td>
                   <Link href="/source/[guid]" as={`/source/${source.guid}`}>
                     <a>
-                      {" "}
-                      <strong>{source.name}</strong>
-                      <br />
-                      {source.guid}
+                      <strong>
+                        {source.name ||
+                          `${source.state} created on ${
+                            source.createdAt.split("T")[0]
+                          }`}
+                      </strong>
                     </a>
                   </Link>
                 </td>
@@ -103,8 +105,6 @@ export default function ({ apiVersion, errorHandler, sourceHandler, query }) {
                   <Link href="/app/[guid]" as={`/app/${source.app.guid}`}>
                     <a>
                       <strong>{source.app.name}</strong>
-                      <br />
-                      {source.app.guid}
                     </a>
                   </Link>
                 </td>

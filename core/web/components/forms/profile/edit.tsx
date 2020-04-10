@@ -102,8 +102,7 @@ export default function ({
           <ProfileImageFromEmail email={email} />
         </Col>
         <Col md={10}>
-          <strong>{guid}</strong>
-          <br /> <span className="text-muted">Created At: </span>
+          <span className="text-muted">Created At: </span>
           <Moment fromNow>{profile.createdAt}</Moment>
           <br />
           <span className="text-muted">Updated At: </span>

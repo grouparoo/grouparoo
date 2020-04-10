@@ -114,8 +114,6 @@ export default function ({
                   <strong>{fileName}</strong>
                   <br />
                   {file.path}
-                  <br />
-                  {file.guid}
                 </td>
                 <td>{file.type}</td>
                 {/* <td>{file.bucket}</td> */}
