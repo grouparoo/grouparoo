@@ -7,6 +7,7 @@ import { Run } from "./../../src/models/Run";
 import { Import } from "./../../src/models/Import";
 import { GroupMember } from "./../../src/models/GroupMember";
 import { Op } from "sequelize";
+import group from "../factories/group";
 
 let actionhero;
 
@@ -68,17 +69,40 @@ describe("models/group", () => {
   });
 
   describe("validations", () => {
-    test("group names are unique", async () => {
-      const group = new Group({
-        name: "test group",
+    // test("group names are unique", async () => {
+    //   const group = new Group({
+    //     name: "test group",
+    //     type: "manual",
+    //   });
+    //   await expect(group.save()).rejects.toThrow(/Validation error/);
+    // });
+
+    test("a new group will have a '' name", async () => {
+      const group = await Group.create({
         type: "manual",
       });
-      await expect(group.save()).rejects.toThrow(/Validation error/);
+
+      expect(group.name).toBe("");
+
+      await group.destroy();
     });
 
-    test("group names must be longer than 3 characters", async () => {
-      const group = new Group({ name: "a", type: "manual" });
-      await expect(group.save()).rejects.toThrow(/Validation error/);
+    test("draft groups can share the same name, but not with ready groups", async () => {
+      const groupOne = await Group.create({ type: "manual" });
+      const groupTwo = await Group.create({ type: "manual" });
+
+      expect(groupOne.name).toBe("");
+      expect(groupTwo.name).toBe("");
+
+      await groupOne.update({ name: "name" });
+      await groupOne.update({ state: "ready" });
+
+      await expect(groupTwo.update({ name: "name" })).rejects.toThrow(
+        /name "name" is already in use/
+      );
+
+      await groupOne.destroy();
+      await groupTwo.destroy();
     });
 
     test("group state must be of a valid type", async () => {

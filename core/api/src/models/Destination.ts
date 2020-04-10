@@ -6,6 +6,7 @@ import {
   AllowNull,
   BelongsTo,
   HasMany,
+  Length,
   BelongsToMany,
   ForeignKey,
   BeforeValidate,
@@ -50,7 +51,9 @@ export class Destination extends LoggedModel<Destination> {
   @ForeignKey(() => App)
   appGuid: string;
 
-  @AllowNull(false)
+  @AllowNull(true)
+  @Length({ min: 0, max: 191 })
+  @Default("")
   @Column
   name: string;
 
@@ -85,12 +88,17 @@ export class Destination extends LoggedModel<Destination> {
   @HasMany(() => Export)
   exports: Export[];
 
-  @BeforeValidate
-  static async ensureName(instance: App) {
-    if (!instance.name) {
-      instance.name = `new ${
-        instance.type
-      } destination ${new Date().getTime()}`;
+  @BeforeSave
+  static async ensureUniqueName(instance: Destination) {
+    const count = await Destination.count({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        name: instance.name,
+        state: { [Op.ne]: "draft" },
+      },
+    });
+    if (count > 0) {
+      throw new Error(`name "${instance.name}" is already in use`);
     }
   }
 

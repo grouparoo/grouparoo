@@ -5,7 +5,7 @@ import {
   BelongsTo,
   HasOne,
   HasMany,
-  BeforeValidate,
+  Length,
   BeforeCreate,
   BeforeSave,
   AfterDestroy,
@@ -14,6 +14,7 @@ import {
   Default,
   DataType,
 } from "sequelize-typescript";
+import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Schedule } from "./Schedule";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
@@ -49,7 +50,9 @@ export class Source extends LoggedModel<Source> {
   @Column
   appGuid: string;
 
-  @AllowNull(false)
+  @AllowNull(true)
+  @Length({ min: 0, max: 191 })
+  @Default("")
   @Column
   name: string;
 
@@ -77,10 +80,17 @@ export class Source extends LoggedModel<Source> {
   @HasMany(() => Option, "ownerGuid")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
 
-  @BeforeValidate
-  static async ensureName(instance: App) {
-    if (!instance.name) {
-      instance.name = `new ${instance.type} source ${new Date().getTime()}`;
+  @BeforeSave
+  static async ensureUniqueName(instance: Source) {
+    const count = await Source.count({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        name: instance.name,
+        state: { [Op.ne]: "draft" },
+      },
+    });
+    if (count > 0) {
+      throw new Error(`name "${instance.name}" is already in use`);
     }
   }
 
@@ -416,8 +426,8 @@ export class Source extends LoggedModel<Source> {
     });
 
     // manually run the hooks we want
-    await ProfilePropertyRule.generateGuid(rule);
-    await ProfilePropertyRule.ensureKey(rule);
+    ProfilePropertyRule.generateGuid(rule);
+    await ProfilePropertyRule.ensureUniqueKey(rule);
 
     // @ts-ignore
     // danger zone!

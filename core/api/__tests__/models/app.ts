@@ -3,6 +3,7 @@ import { App } from "./../../src/models/App";
 import { Option } from "./../../src/models/Option";
 import { Log } from "./../../src/models/Log";
 import { plugin } from "./../../src/modules/plugin";
+import app from "../factories/app";
 let actionhero;
 
 describe("models/app", () => {
@@ -45,14 +46,33 @@ describe("models/app", () => {
     await app.destroy();
   });
 
-  test("creating an app without a name will generate a name", async () => {
+  test("a new app will have a '' name", async () => {
     const app = await App.create({
       type: "test-plugin-app",
     });
 
-    expect(app.name).toMatch(/new test-plugin-app app/);
+    expect(app.name).toBe("");
 
     await app.destroy();
+  });
+
+  test("draft apps can share the same name, but not with ready apps", async () => {
+    const appOne = await App.create({ type: "test-plugin-app" });
+    const appTwo = await App.create({ type: "test-plugin-app" });
+
+    expect(appOne.name).toBe("");
+    expect(appTwo.name).toBe("");
+
+    await appOne.update({ name: "name" });
+    await appOne.setOptions({ fileGuid: "abc123" });
+    await appOne.update({ state: "ready" });
+
+    await expect(appTwo.update({ name: "name" })).rejects.toThrow(
+      /name "name" is already in use/
+    );
+
+    await appOne.destroy();
+    await appTwo.destroy();
   });
 
   test("deleting an app removes the appOptions", async () => {

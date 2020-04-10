@@ -3,8 +3,8 @@ import {
   Column,
   AllowNull,
   DataType,
+  Length,
   Default,
-  BeforeValidate,
   BeforeCreate,
   BeforeSave,
   BeforeDestroy,
@@ -15,6 +15,7 @@ import {
   BelongsTo,
   HasMany,
 } from "sequelize-typescript";
+import { Op } from "sequelize";
 import { env, api, task } from "actionhero";
 import { plugin } from "../modules/plugin";
 import { LoggedModel } from "../classes/loggedModel";
@@ -24,6 +25,7 @@ import { App, SimpleAppOptions } from "./App";
 import { Source, SimpleSourceOptions, SourceMapping } from "./Source";
 import { Option } from "./Option";
 import { Group } from "./Group";
+import { Run } from "./Run";
 import { GroupRule } from "./GroupRule";
 import { internalRun } from "../modules/internalRun";
 import { OptionHelper } from "./../modules/optionHelper";
@@ -138,7 +140,9 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     return "rul";
   }
 
-  @AllowNull(false)
+  @AllowNull(true)
+  @Length({ min: 0, max: 191 })
+  @Default("")
   @Column
   key: string;
 
@@ -170,10 +174,17 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @HasMany(() => Option, "ownerGuid")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
 
-  @BeforeValidate
-  static async ensureKey(instance: ProfilePropertyRule) {
-    if (!instance.key) {
-      instance.key = `rule ${new Date().getTime()}`;
+  @BeforeSave
+  static async ensureUniqueKey(instance: ProfilePropertyRule) {
+    const count = await ProfilePropertyRule.count({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        key: instance.key,
+        state: { [Op.ne]: "draft" },
+      },
+    });
+    if (count > 0) {
+      throw new Error(`key "${instance.key}" is already in use`);
     }
   }
 
@@ -245,9 +256,16 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   @AfterDestroy
-  static async deleteOptions(instance: ProfilePropertyRule) {
+  static async destroyOptions(instance: ProfilePropertyRule) {
     await Option.destroy({
       where: { ownerGuid: instance.guid },
+    });
+  }
+
+  @AfterDestroy
+  static async destroyRuns(instance: ProfilePropertyRule) {
+    await Run.destroy({
+      where: { creatorGuid: instance.guid },
     });
   }
 

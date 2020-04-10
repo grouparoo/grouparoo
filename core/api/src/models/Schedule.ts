@@ -1,8 +1,9 @@
-import { log, task, api } from "actionhero";
+import { log, task } from "actionhero";
 import {
   Table,
   Column,
   AllowNull,
+  Length,
   Default,
   BelongsTo,
   HasMany,
@@ -14,6 +15,7 @@ import {
   AfterDestroy,
   DataType,
 } from "sequelize-typescript";
+import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Source, SimpleSourceOptions, SourceMapping } from "./Source";
 import { App, SimpleAppOptions } from "./App";
@@ -63,7 +65,9 @@ export class Schedule extends LoggedModel<Schedule> {
   @ForeignKey(() => Source)
   sourceGuid: string;
 
-  @AllowNull(false)
+  @AllowNull(true)
+  @Length({ min: 0, max: 191 })
+  @Default("")
   @Column
   name: string;
 
@@ -125,6 +129,20 @@ export class Schedule extends LoggedModel<Schedule> {
     }
   }
 
+  @BeforeSave
+  static async ensureUniqueName(instance: Schedule) {
+    const count = await Schedule.count({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        name: instance.name,
+        state: { [Op.ne]: "draft" },
+      },
+    });
+    if (count > 0) {
+      throw new Error(`name "${instance.name}" is already in use`);
+    }
+  }
+
   @BeforeCreate
   static async ensureOnePerSource(instance: Schedule) {
     const existingCount = await Schedule.count({
@@ -165,6 +183,13 @@ export class Schedule extends LoggedModel<Schedule> {
       where: {
         ownerGuid: instance.guid,
       },
+    });
+  }
+
+  @AfterDestroy
+  static async destroyRuns(instance: Schedule) {
+    await Run.destroy({
+      where: { creatorGuid: instance.guid },
     });
   }
 

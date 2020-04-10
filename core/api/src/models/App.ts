@@ -3,6 +3,7 @@ import {
   Table,
   Column,
   Default,
+  Length,
   AllowNull,
   BeforeValidate,
   BeforeSave,
@@ -11,6 +12,7 @@ import {
   AfterDestroy,
   HasMany,
 } from "sequelize-typescript";
+import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Source } from "./Source";
 import { Option } from "./Option";
@@ -36,7 +38,9 @@ export class App extends LoggedModel<App> {
     return "app";
   }
 
-  @AllowNull(false)
+  @AllowNull(true)
+  @Length({ min: 0, max: 191 })
+  @Default("")
   @Column
   name: string;
 
@@ -55,10 +59,17 @@ export class App extends LoggedModel<App> {
   @HasMany(() => Source)
   sources: Array<Source>;
 
-  @BeforeValidate
-  static async ensureName(instance: App) {
-    if (!instance.name) {
-      instance.name = `new ${instance.type} app ${new Date().getTime()}`;
+  @BeforeSave
+  static async ensureUniqueName(instance: App) {
+    const count = await App.count({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        name: instance.name,
+        state: { [Op.ne]: "draft" },
+      },
+    });
+    if (count > 0) {
+      throw new Error(`name "${instance.name}" is already in use`);
     }
   }
 
