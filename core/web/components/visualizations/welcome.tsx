@@ -19,7 +19,7 @@ export default function Welcomes() {
             <Button href="/teams">Add Team Members</Button>
           </Col>
           <Col>
-            <Button href="/apps">Add Apps</Button>
+            <Button href="/app/new">Add Apps</Button>
           </Col>
         </Row>
 
