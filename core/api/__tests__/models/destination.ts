@@ -60,13 +60,47 @@ describe("models/destination", () => {
       expect(_app.guid).toBe(app.guid);
     });
 
-    test("creating a destination without a name will generate a name", async () => {
+    test("a new destination will have a '' name", async () => {
       destination = await Destination.create({
         type: "test-plugin-export",
         appGuid: app.guid,
       });
 
-      expect(destination.name).toMatch(/new test-plugin-export destination/);
+      expect(destination.name).toBe("");
+
+      await destination.destroy();
+    });
+
+    test("draft destination can share the same name, but not with ready destination", async () => {
+      const destinationOne = await Destination.create({
+        type: "test-plugin-export",
+        appGuid: app.guid,
+      });
+
+      const otherApp = await App.create({
+        name: "other app",
+        type: "test-plugin-app",
+        options: { database: "db" },
+      });
+      const destinationTwo = await Destination.create({
+        type: "test-plugin-export",
+        appGuid: otherApp.guid,
+      });
+
+      expect(destinationOne.name).toBe("");
+      expect(destinationTwo.name).toBe("");
+
+      await destinationOne.update({ name: "name" });
+      await destinationOne.setOptions({ table: "abc123" });
+      await destinationOne.update({ state: "ready" });
+
+      await expect(destinationTwo.update({ name: "name" })).rejects.toThrow(
+        /name "name" is already in use/
+      );
+
+      await destinationOne.destroy();
+      await destinationTwo.destroy();
+      await otherApp.destroy();
     });
 
     test("creating a destination creates a log entry", async () => {

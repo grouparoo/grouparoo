@@ -35,6 +35,10 @@ export default function ({ apiVersion, errorHandler, query }) {
     if (response?.apps) {
       setApps(response.apps);
       setTotal(response.total);
+
+      if (response.total === 0) {
+        Router.push("/app/new");
+      }
     }
   }
 
@@ -81,9 +85,10 @@ export default function ({ apiVersion, errorHandler, query }) {
                 <td>
                   <Link href="/app/[guid]" as={`/app/${app.guid}`}>
                     <a>
-                      <strong>{app.name}</strong>
-                      <br />
-                      <span className="text-muted">{app.guid}</span>
+                      <strong>
+                        {app.name ||
+                          `${app.state} created ${app.createdAt.split("T")[0]}`}
+                      </strong>
                     </a>
                   </Link>
                 </td>

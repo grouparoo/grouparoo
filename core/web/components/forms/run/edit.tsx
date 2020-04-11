@@ -102,20 +102,25 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             </>
           ) : null}
         </p>
+
         <Row>
           <Col>
-            <strong>Stats</strong>
-            <ul>
-              <li>Imports Created: {run.importsCreated}</li>
-              <li>Profiles Created: {run.profilesCreated}</li>
-              <li>Profiles Imported: {run.profilesImported}</li>
-              <li>Profiles Exported: {run.profilesExported}</li>
-              <li>High Water Mark: {run.highWaterMark}</li>
-              <li>
-                Filter: <code>{JSON.stringify(run.filter)}</code>
-              </li>
-            </ul>
+            <Alert variant="secondary">
+              <Row>
+                <Col>
+                  <Link href="/imports/[creatorGuid]" as={`/imports/${guid}`}>
+                    <a>Imports Created: {run.importsCreated}</a>
+                  </Link>
+                </Col>
+                <Col>Profiles Created: {run.profilesCreated}</Col>
+                <Col>Profiles Imported: {run.profilesImported}</Col>
+                <Col>Profiles Exported: {run.profilesExported}</Col>
+              </Row>
+            </Alert>
           </Col>
+        </Row>
+
+        <Row>
           <Col>
             <strong>Error</strong>
             {run.error ? (

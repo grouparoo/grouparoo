@@ -154,9 +154,6 @@ export default function ({
   return (
     <>
       <h2>Edit Destination</h2>
-      <p>
-        <span className="text-muted">{destination.guid}</span>
-      </p>
 
       <Row>
         <Col md={1}>
@@ -184,9 +181,7 @@ export default function ({
             <p>
               <strong>App</strong>:{" "}
               <Link href="/app/[guid]" as={`/app/${destination.app.guid}`}>
-                <a>
-                  {destination.app.name} ({destination.app.guid})
-                </a>
+                <a>{destination.app.name}</a>
               </Link>
               <br />
               <strong>Connection</strong>: {destination.connection.name}:{" "}

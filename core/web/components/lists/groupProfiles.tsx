@@ -198,7 +198,6 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       <LoadingTable loading={loading}>
         <thead>
           <tr>
-            <th>Guid</th>
             <th>Unique Properties</th>
             <th>Joined At</th>
             <th />
@@ -210,19 +209,22 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
               <tr key={`profile-${profile.guid}`}>
                 <td>
                   <Link href="/profile/[guid]" as={`/profile/${profile.guid}`}>
-                    <a>{profile.guid}</a>
+                    <a>
+                      {uniqueProfileProperties.map((key) => {
+                        return (
+                          <div key={`key-${profile.guid}-${key}`}>
+                            <span className="text-muted">{key}: </span>
+                            {profile.properties[key].value}
+                            <br />
+                          </div>
+                        );
+                      })}
+
+                      <span className="text-muted">
+                        Grouparoo Guid: {profile.guid}
+                      </span>
+                    </a>
                   </Link>
-                </td>
-                <td>
-                  {uniqueProfileProperties.map((key) => {
-                    return (
-                      <div key={`key-${profile.guid}-${key}`}>
-                        <span className="text-muted">{key}: </span>
-                        {profile.properties[key].value}
-                        <br />
-                      </div>
-                    );
-                  })}
                 </td>
                 <td>
                   <Moment fromNow>{profile.joinedAt}</Moment>

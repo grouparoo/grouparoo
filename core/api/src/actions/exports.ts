@@ -38,3 +38,25 @@ export class ListExports extends Action {
     response.total = await Export.count({ where });
   }
 }
+
+export class ExportView extends Action {
+  constructor() {
+    super();
+    this.name = "export:view";
+    this.description = "view an export";
+    this.outputExample = {};
+    this.middleware = ["authenticated-team-member", "role-read"];
+    this.inputs = {
+      guid: { required: true },
+    };
+  }
+
+  async run({ params, response }) {
+    const _export = await Export.findOne({ where: { guid: params.guid } });
+    if (!_export) {
+      throw new Error("export not found");
+    }
+
+    response.export = await _export.apiData();
+  }
+}

@@ -22,8 +22,8 @@ export default function ({ apiVersion, errorHandler, query }) {
   // pagination
   const limit = 100;
   const [offset, setOffset] = useState(query.offset || 0);
-  const profileGuid = query.guid.match(/^pro_/) ? query.guid : null;
-  const destinationGuid = query.guid.match(/^dst_/) ? query.guid : null;
+  const profileGuid = query?.guid?.match(/^pro_/) ? query.guid : null;
+  const destinationGuid = query?.guid?.match(/^dst_/) ? query.guid : null;
   useHistoryPagination(offset, "offset", setOffset);
 
   useEffect(() => {
@@ -148,10 +148,10 @@ export default function ({ apiVersion, errorHandler, query }) {
       <LoadingTable loading={loading}>
         <thead>
           <tr>
-            <th>Guid</th>
-            <th>Time</th>
-            <th>Profile Properties</th>
-            <th>Groups</th>
+            <th>Guids</th>
+            <th>Times</th>
+            <th>Profile Properties Exported</th>
+            <th>Groups Exported</th>
           </tr>
         </thead>
         <tbody>
@@ -160,62 +160,55 @@ export default function ({ apiVersion, errorHandler, query }) {
               <Fragment key={`export-${_export.guid}`}>
                 <tr>
                   <td>
-                    <ul>
-                      <li>guid: {_export.guid}</li>
-                      <li>
-                        Profile:{" "}
-                        <Link
-                          href="/profile/[guid]"
-                          as={`/profile/${_export.profileGuid}`}
-                        >
-                          <a>{_export.profileGuid}</a>
-                        </Link>
-                      </li>
-                      <li>
-                        Destination:{" "}
-                        <Link
-                          href="/destination/[guid]"
-                          as={`/destination/${_export.destination.guid}`}
-                        >
-                          <a>{_export.destination.name}</a>
-                        </Link>
-                      </li>
-                      <li>
-                        App:{" "}
-                        <Link
-                          href="/app/[guid]"
-                          as={`/app/${_export.destination.app.guid}`}
-                        >
-                          <a>{_export.destination.app.name}</a>
-                        </Link>
-                      </li>
-                      <li>
-                        To Delete?{" "}
-                        {_export.toDelete ? (
-                          <Badge variant="danger">true</Badge>
-                        ) : (
-                          "false"
-                        )}
-                      </li>
-                    </ul>
+                    <span className="text-info">Guid</span>:{" "}
+                    <Link href="/export/[guid]" as={`/export/${_export.guid}`}>
+                      <a>{_export.guid}</a>
+                    </Link>
+                    <br />
+                    Profile:{" "}
+                    <Link
+                      href="/profile/[guid]"
+                      as={`/profile/${_export.profileGuid}`}
+                    >
+                      <a>{_export.profileGuid}</a>
+                    </Link>
+                    <br />
+                    Destination:{" "}
+                    <Link
+                      href="/destination/[guid]"
+                      as={`/destination/${_export.destination.guid}`}
+                    >
+                      <a>{_export.destination.name}</a>
+                    </Link>
+                    <br />
+                    App:{" "}
+                    <Link
+                      href="/app/[guid]"
+                      as={`/app/${_export.destination.app.guid}`}
+                    >
+                      <a>{_export.destination.app.name}</a>
+                    </Link>
+                    <br />
+                    To Delete?{" "}
+                    {_export.toDelete ? (
+                      <Badge variant="danger">true</Badge>
+                    ) : (
+                      "false"
+                    )}
                   </td>
                   <td>
-                    <ul>
-                      <li>Start: {formatCreatedAt(_export.startedAt)}</li>
-                      <li>
-                        End:{" "}
-                        {_export.completedAt
-                          ? formatCreatedAt(_export.completedAt)
-                          : null}
-                      </li>
-                      <li>
-                        Duration:{" "}
-                        <Moment
-                          duration={_export.startedAt}
-                          date={_export.completedAt}
-                        />
-                      </li>
-                    </ul>
+                    Start: {formatCreatedAt(_export.startedAt)}
+                    <br />
+                    End:{" "}
+                    {_export.completedAt
+                      ? formatCreatedAt(_export.completedAt)
+                      : null}
+                    <br />
+                    Duration:{" "}
+                    <Moment
+                      duration={_export.startedAt}
+                      date={_export.completedAt}
+                    />
                   </td>
                   <td>
                     <ul>

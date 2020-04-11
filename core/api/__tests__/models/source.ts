@@ -73,6 +73,43 @@ describe("models/source", () => {
       );
     });
 
+    test("a new source will have a '' name", async () => {
+      const source = await Source.create({
+        type: "test-plugin-import",
+        appGuid: app.guid,
+      });
+
+      expect(source.name).toBe("");
+
+      await source.destroy();
+    });
+
+    test("draft sources can share the same name, but not with ready sources", async () => {
+      const sourceOne = await Source.create({
+        type: "test-plugin-import",
+        appGuid: app.guid,
+      });
+      const sourceTwo = await Source.create({
+        type: "test-plugin-import",
+        appGuid: app.guid,
+      });
+
+      expect(sourceOne.name).toBe("");
+      expect(sourceTwo.name).toBe("");
+
+      await sourceOne.update({ name: "name" });
+      await sourceOne.setOptions({ table: "abc123" });
+      await sourceOne.setMapping({ id: "userId" });
+      await sourceOne.update({ state: "ready" });
+
+      await expect(sourceTwo.update({ name: "name" })).rejects.toThrow(
+        /name "name" is already in use/
+      );
+
+      await sourceOne.destroy();
+      await sourceTwo.destroy();
+    });
+
     test("a source cannot be changed to to the ready state if there are missing required options", async () => {
       const source = await helper.factories.source();
       await expect(source.update({ state: "ready" })).rejects.toThrow(
@@ -349,7 +386,7 @@ describe("models/source", () => {
     test("bootstrapUniqueProfilePropertyRule will fail if the rule cannot be created", async () => {
       await expect(
         source.bootstrapUniqueProfilePropertyRule("userId", "integer")
-      ).rejects.toThrow(/error/);
+      ).rejects.toThrow(/already in use/);
     });
   });
 

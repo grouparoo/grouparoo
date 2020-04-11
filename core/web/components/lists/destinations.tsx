@@ -46,6 +46,10 @@ export default function ({
     if (response?.destinations) {
       setDestinations(response.destinations);
       setTotal(response.total);
+
+      if (response.total === 0) {
+        Router.push("/destination/new");
+      }
     }
   }
 
@@ -94,9 +98,12 @@ export default function ({
                     as={`/destination/${destination.guid}`}
                   >
                     <a>
-                      <strong>{destination.name}</strong>
-                      <br />
-                      {destination.guid}
+                      <strong>
+                        {destination.name ||
+                          `${destination.state} created on ${
+                            destination.createdAt.split("T")[0]
+                          }`}
+                      </strong>
                     </a>
                   </Link>
                 </td>
@@ -104,8 +111,6 @@ export default function ({
                   <Link href="/app/[guid]" as={`/app/${destination.app.guid}`}>
                     <a>
                       <strong>{destination.app.name}</strong>
-                      <br />
-                      {destination.app.guid}
                     </a>
                   </Link>
                 </td>

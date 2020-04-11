@@ -77,8 +77,9 @@ export class NavigationList extends Action {
 
       platformItems.push(
         { type: "link", title: "Apps", href: "/apps" },
+        { type: "link", title: "Runs", href: "/runs" },
         { type: "link", title: "Imports", href: "/imports" },
-        { type: "link", title: "Runs", href: "/runs" }
+        { type: "link", title: "Exports", href: "/exports" }
       );
 
       if (administer) {

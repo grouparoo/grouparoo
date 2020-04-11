@@ -223,12 +223,6 @@ export default function ({
           </>
         ) : null}
 
-        <Button variant="primary" type="submit">
-          Update
-        </Button>
-
-        <hr />
-
         <Row>
           <Col md={3}>
             <Button variant="secondary" onClick={test}>
@@ -246,6 +240,10 @@ export default function ({
             ) : null}
           </Col>
         </Row>
+        <hr />
+        <Button variant="primary" type="submit">
+          Update
+        </Button>
 
         <hr />
 

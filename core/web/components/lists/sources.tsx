@@ -9,14 +9,7 @@ import Moment from "react-moment";
 import AppIcon from "../appIcon";
 import StateBadge from "../stateBadge";
 
-export default function (props) {
-  const {
-    apiVersion,
-    errorHandler,
-    sourceHandler,
-    successHandler,
-    query,
-  } = props;
+export default function ({ apiVersion, errorHandler, sourceHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [sources, setSources] = useState([]);
@@ -48,6 +41,10 @@ export default function (props) {
     if (response?.sources) {
       setSources(response.sources);
       setTotal(response.total);
+
+      if (response.total === 0) {
+        Router.push("/source/new");
+      }
     }
   }
 
@@ -94,10 +91,12 @@ export default function (props) {
                 <td>
                   <Link href="/source/[guid]" as={`/source/${source.guid}`}>
                     <a>
-                      {" "}
-                      <strong>{source.name}</strong>
-                      <br />
-                      {source.guid}
+                      <strong>
+                        {source.name ||
+                          `${source.state} created on ${
+                            source.createdAt.split("T")[0]
+                          }`}
+                      </strong>
                     </a>
                   </Link>
                 </td>
@@ -106,8 +105,6 @@ export default function (props) {
                   <Link href="/app/[guid]" as={`/app/${source.app.guid}`}>
                     <a>
                       <strong>{source.app.name}</strong>
-                      <br />
-                      {source.app.guid}
                     </a>
                   </Link>
                 </td>

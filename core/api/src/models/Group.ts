@@ -67,8 +67,9 @@ export class Group extends LoggedModel<Group> {
     return "grp";
   }
 
-  @AllowNull(false)
-  @Length({ min: 3, max: 190 })
+  @AllowNull(true)
+  @Length({ min: 0, max: 191 })
+  @Default("")
   @Column
   name: string;
 
@@ -115,6 +116,20 @@ export class Group extends LoggedModel<Group> {
 
   @BelongsToMany(() => Profile, () => GroupMember)
   profiles: Profile[];
+
+  @BeforeSave
+  static async ensureUniqueName(instance: Group) {
+    const count = await Group.count({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        name: instance.name,
+        state: { [Op.ne]: "draft" },
+      },
+    });
+    if (count > 0) {
+      throw new Error(`name "${instance.name}" is already in use`);
+    }
+  }
 
   @BeforeSave
   static async updateState(instance: Group) {
@@ -174,6 +189,13 @@ export class Group extends LoggedModel<Group> {
       where: {
         groupGuid: instance.guid,
       },
+    });
+  }
+
+  @AfterDestroy
+  static async destroyRuns(instance: Group) {
+    await Run.destroy({
+      where: { creatorGuid: instance.guid },
     });
   }
 

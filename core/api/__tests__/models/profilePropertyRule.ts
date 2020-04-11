@@ -65,6 +65,54 @@ describe("models/profilePropertyRule", () => {
     await source.destroy();
   });
 
+  describe("key", () => {
+    let source: Source;
+
+    beforeAll(async () => {
+      source = await helper.factories.source();
+      await source.setOptions({ table: "some table" });
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
+    });
+
+    afterAll(async () => {
+      await source.destroy();
+    });
+
+    test("a new rule will have a '' key", async () => {
+      const rule = await ProfilePropertyRule.create({
+        sourceGuid: source.guid,
+      });
+
+      expect(rule.key).toBe("");
+
+      await rule.destroy();
+    });
+
+    test("draft rule can share the same key, but not with ready rule", async () => {
+      const ruleOne = await ProfilePropertyRule.create({
+        sourceGuid: source.guid,
+      });
+      const ruleTwo = await ProfilePropertyRule.create({
+        sourceGuid: source.guid,
+      });
+
+      expect(ruleOne.key).toBe("");
+      expect(ruleTwo.key).toBe("");
+
+      await ruleOne.update({ key: "key" });
+      await ruleOne.setOptions({ column: "abc123" });
+      await ruleOne.update({ state: "ready" });
+
+      await expect(ruleTwo.update({ key: "key" })).rejects.toThrow(
+        /key "key" is already in use/
+      );
+
+      await ruleOne.destroy();
+      await ruleTwo.destroy();
+    });
+  });
+
   test("creating a profile property rule for a manual app did enqueue an internalRun", async () => {
     await api.resque.queue.connection.redis.flushdb();
 

@@ -11,6 +11,7 @@ export class ImportsList extends Action {
     this.middleware = ["authenticated-team-member", "role-read"];
     this.inputs = {
       creatorGuid: { required: false },
+      profileGuid: { required: false },
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
       order: {
@@ -25,6 +26,10 @@ export class ImportsList extends Action {
 
     if (params.creatorGuid) {
       where["creatorGuid"] = params.creatorGuid;
+    }
+
+    if (params.profileGuid) {
+      where["profileGuid"] = params.profileGuid;
     }
 
     const search = {

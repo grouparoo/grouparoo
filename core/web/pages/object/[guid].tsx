@@ -12,6 +12,8 @@ const guidPrefixes = {
   evt: "/event",
   tea: "/team",
   tem: "/teamMember",
+  imp: "/import",
+  exp: "/export",
 };
 
 export default function FindObject({ query, errorHandler }) {

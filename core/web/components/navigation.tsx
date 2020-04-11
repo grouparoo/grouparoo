@@ -85,9 +85,7 @@ export default function ({ apiVersion, errorHandler, sessionHandler }) {
     setTeamMember(response.teamMember);
   }
 
-  const subMenuGreeting = teamMember.guid
-    ? `Hello ${teamMember.firstName} »`
-    : "Get Started »";
+  const subMenuGreeting = `Hello ${teamMember.firstName} »`;
 
   const logoLink = teamMember.guid ? "/dashboard" : "/";
 

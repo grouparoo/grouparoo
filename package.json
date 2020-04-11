@@ -1,6 +1,6 @@
 {
   "author": "Grouparoo Inc <hello@grouparoo.com>",
-  "name": "grouparoo",
+  "name": "@grouparoo/grouparoo",
   "version": "0.1.1-alpha.11",
   "license": "SEE LICENSE IN LICENSE.txt",
   "private": true,

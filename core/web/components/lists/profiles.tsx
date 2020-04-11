@@ -164,7 +164,6 @@ export default function ({ apiVersion, errorHandler, hideSearch, query }) {
       <LoadingTable loading={loading}>
         <thead>
           <tr>
-            <th>Guid</th>
             {searchKey !== "" ? (
               <th>Searched Properties</th>
             ) : (
@@ -180,33 +179,36 @@ export default function ({ apiVersion, errorHandler, hideSearch, query }) {
               <tr key={`profile-${profile.guid}`}>
                 <td>
                   <Link href="/profile/[guid]" as={`/profile/${profile.guid}`}>
-                    <a>{profile.guid}</a>
-                  </Link>
-                </td>
-                <td>
-                  {searchKey === "" ? (
-                    uniqueProfileProperties.map((key) => {
-                      if (!profile.properties[key]) {
-                        return null;
-                      }
+                    <a>
+                      {searchKey === "" ? (
+                        uniqueProfileProperties.map((key) => {
+                          if (!profile.properties[key]) {
+                            return null;
+                          }
 
-                      return (
-                        <div key={`key-${profile.guid}-${key}`}>
-                          <span className="text-muted">{key}: </span>
-                          {String(profile.properties[key].value)}
+                          return (
+                            <div key={`key-${profile.guid}-${key}`}>
+                              <span className="text-muted">{key}: </span>
+                              {String(profile.properties[key].value)}
+                              <br />
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <div key={`key-${profile.guid}-${searchKey}`}>
+                          <span className="text-muted">{searchKey}: </span>
+                          {profile.properties[searchKey]
+                            ? profile.properties[searchKey].value.toString()
+                            : null}
                           <br />
                         </div>
-                      );
-                    })
-                  ) : (
-                    <div key={`key-${profile.guid}-${searchKey}`}>
-                      <span className="text-muted">{searchKey}: </span>
-                      {profile.properties[searchKey]
-                        ? profile.properties[searchKey].value.toString()
-                        : null}
-                      <br />
-                    </div>
-                  )}
+                      )}
+
+                      <span className="text-muted">
+                        Grouparoo Guid: {profile.guid}
+                      </span>
+                    </a>
+                  </Link>
                 </td>
                 <td>
                   <Moment fromNow>{profile.createdAt}</Moment>

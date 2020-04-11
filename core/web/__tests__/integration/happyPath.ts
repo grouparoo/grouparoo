@@ -46,16 +46,10 @@ describe("integration", () => {
       const menuText = await browser
         .findElement(by.id("bottomNavigationMenu"))
         .getText();
-      expect(menuText).toEqual("Get Started »");
+      expect(menuText).toEqual("Hello »");
 
       const button = await browser.findElement(by.id("bottomNavigationMenu"));
       await button.click();
-
-      await helper.sleep(3 * 1000);
-
-      const tags = await browser.findElements(by.tagName("a"));
-      const links = await Promise.all(tags.map(async (t) => await t.getText()));
-      expect(links).toContain("Create Team");
     },
     testTimeout
   );
@@ -90,14 +84,14 @@ describe("integration", () => {
       const button = await browser.findElement(by.className("btn-primary"));
       await button.click();
 
-      // we should be taken to the dashboard
+      // we should be taken to the welcome page
       await browser.wait(
         until.elementLocated(by.className("jumbotron")),
         1000 * 4
       );
 
       const header = await browser.findElement(by.tagName("h1")).getText();
-      expect(header).toContain("Dashboard");
+      expect(header).toContain("Welcome");
     },
     testTimeout * 2
   );
