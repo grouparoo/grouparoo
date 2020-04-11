@@ -27,13 +27,14 @@ describe("actions/exports", () => {
     let csrfToken;
     let destination;
     let profile;
+    let guid;
 
     beforeAll(async () => {
       profile = await helper.factories.profile();
       destination = await helper.factories.destination();
       const otherDestination = await helper.factories.destination();
 
-      await Export.create({
+      const firstExport = await Export.create({
         destinationGuid: destination.guid,
         profileGuid: profile.guid,
         startedAt: new Date(),
@@ -42,6 +43,7 @@ describe("actions/exports", () => {
         oldGroups: [],
         newGroups: [],
       });
+      guid = firstExport.guid;
 
       await Export.create({
         destinationGuid: destination.guid,
@@ -84,6 +86,21 @@ describe("actions/exports", () => {
       expect(error).toBeUndefined();
       expect(exports.length).toBe(3);
       expect(total).toBe(3);
+    });
+
+    test("a reader can view an export", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+      };
+      const { error, export: _export } = await specHelper.runAction(
+        "export:view",
+        connection
+      );
+
+      expect(error).toBeUndefined();
+      expect(_export.guid).toBe(guid);
+      expect(_export.destination.guid).toBe(destination.guid);
     });
 
     test("a reader can ask for exports about a profile", async () => {

@@ -11,6 +11,7 @@ export const DEFAULT = {
         { path: "/:apiVersion/imports", action: "imports:list" },
         { path: "/:apiVersion/import/:guid", action: "import:view" },
         { path: "/:apiVersion/exports", action: "exports:list" },
+        { path: "/:apiVersion/export/:guid", action: "export:view" },
         { path: "/:apiVersion/navigation", action: "navigation:list" },
         { path: "/:apiVersion/teams", action: "teams:list" },
         { path: "/:apiVersion/team/:guid", action: "team:view" },

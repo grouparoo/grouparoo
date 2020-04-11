@@ -160,7 +160,10 @@ export default function ({ apiVersion, errorHandler, query }) {
               <Fragment key={`export-${_export.guid}`}>
                 <tr>
                   <td>
-                    <span className="text-info">Guid</span>: {_export.guid}
+                    <span className="text-info">Guid</span>:{" "}
+                    <Link href="/export/[guid]" as={`/export/${_export.guid}`}>
+                      <a>{_export.guid}</a>
+                    </Link>
                     <br />
                     Profile:{" "}
                     <Link
