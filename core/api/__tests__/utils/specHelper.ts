@@ -40,6 +40,7 @@ import { plugin } from "../../src/index";
 const { api, cache, Process } = require("actionhero");
 
 import fs from "fs";
+import lineByLine from "n-readlines";
 import nock from "nock";
 
 export namespace helper {
@@ -275,12 +276,54 @@ export namespace helper {
     if (fs.existsSync(nockFile)) {
       fs.unlinkSync(nockFile);
     }
-    const appendLogToFile = (content) => {
-      fs.appendFileSync(nockFile, content);
+
+    // write this as the first line.
+    const prepend = "const nock = require('nock');\n";
+    fs.appendFileSync(nockFile, prepend);
+
+    const prependLogToFile = (toAdd) => {
+      const tmpFile = nockFile + ".tmp";
+      if (fs.existsSync(tmpFile)) {
+        fs.unlinkSync(tmpFile);
+      }
+
+      const liner = new lineByLine(nockFile);
+      let line;
+      let lineNum = 0;
+      while ((line = liner.next())) {
+        lineNum++;
+        fs.appendFileSync(tmpFile, line);
+        if (lineNum === 1) {
+          fs.appendFileSync(tmpFile, toAdd);
+        }
+      }
+
+      fs.unlinkSync(nockFile);
+      fs.renameSync(tmpFile, nockFile);
     };
-    appendLogToFile("const nock = require('nock');\n");
+
+    const onlyCallOnce = (content) => {
+      let methodIndex = -1;
+      if (methodIndex < 0) methodIndex = content.indexOf(".get(");
+      if (methodIndex < 0) methodIndex = content.indexOf(".post(");
+      if (methodIndex < 0) methodIndex = content.indexOf(".delete(");
+      if (methodIndex < 0) methodIndex = content.indexOf(".put(");
+      if (methodIndex < 0) {
+        throw `nock method not found: ${content}`;
+      }
+      const closeIndex = content.indexOf(")", methodIndex) + 1;
+      // make sure each is only called once
+      const updated =
+        content.slice(0, closeIndex) + ".once()" + content.slice(closeIndex);
+      return updated;
+    };
+    const addRecording = (content) => {
+      content = onlyCallOnce(content);
+      prependLogToFile(content);
+    };
+
     nock.recorder.rec({
-      logging: appendLogToFile,
+      logging: addRecording,
       use_separator: false,
     });
   }
