@@ -22,7 +22,11 @@ export default class SailthruClient {
       }
       sid = await this.getSidBy("email", newProperties.email);
     }
-    if (!sid && oldProperties.email) {
+    if (
+      !sid &&
+      oldProperties.email &&
+      oldProperties.email !== newProperties.email
+    ) {
       sid = await this.getSidBy("email", oldProperties.email);
     }
     return sid;

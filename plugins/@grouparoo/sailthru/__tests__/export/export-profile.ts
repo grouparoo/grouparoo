@@ -1,38 +1,60 @@
-import fs from "fs-extra";
-import path from "path";
+// ~ jump over to core for this test ~
+process.chdir(`${__dirname}/../../../../../core/api`);
 
-let envFile = path.resolve(path.join(__dirname, "../", ".env"));
-if (fs.existsSync(envFile)) {
-  require("dotenv").config({ path: envFile });
-} else {
-  envFile = path.resolve(path.join(__dirname, "../", ".env.example"));
-  require("dotenv").config({ path: envFile });
-}
-const SAILTHRU_API_KEY = process.env.SAILTHRU_API_KEY;
-const SAILTHRU_API_SECRET = process.env.SAILTHRU_API_SECRET;
+import path from "path";
 
 import { exportProfile } from "../../src/lib/export/exportProfile";
 import { SimpleAppOptions } from "../../../../../core/api/dist/models/App";
 import Sailthru from "../../src/lib/client";
-
-const appOptions: SimpleAppOptions = {
-  apiKey: SAILTHRU_API_KEY,
-  apiSecret: SAILTHRU_API_SECRET,
-};
+import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
+import loadAppOptions from "../utils/loadAppOptions";
 
 let client: Sailthru;
 const email = "brian@bleonard.com";
 let userSid = null;
 
+const appOptions = loadAppOptions(false);
+require("./../fixtures/export-profile");
+
+// switch comments to record new nock file: have to change "assertion" afterwards for google auth
+// const appOptions = loadAppOptions(true);
+// const nockFile = path.resolve(
+//   path.join(__dirname, "../", "fixtures", "export-profile.js")
+// );
+// helper.recordNock(nockFile);
+
+let getUserCallNum = 0; // increment to change each time for nock
 async function getUser(): Promise<any> {
+  getUserCallNum++;
+
   const payload = {
     id: userSid,
     key: "sid",
-    fields: { keys: 1, vars: 1, lists: 1 },
+    fields: { keys: getUserCallNum, vars: 1, lists: 1 },
   };
 
   try {
     return await client.get("user", payload);
+  } catch (err) {
+    return null;
+  }
+}
+
+let findSidCallNum = 0; // increment to change each time for nock
+async function findSid() {
+  findSidCallNum++;
+
+  const payload = {
+    id: email,
+    key: "email",
+    fields: {
+      keys: findSidCallNum,
+    },
+  };
+
+  try {
+    const response: any = await client.get("user", payload);
+    return response?.keys?.sid;
   } catch (err) {
     return null;
   }
@@ -43,7 +65,7 @@ describe("sailthru/exportProfile", () => {
     client = new Sailthru(appOptions);
 
     // delete it if it's there
-    const sid = await client.findSid({ email });
+    const sid = await findSid();
     if (sid) {
       await client.deleteSid(sid);
     }
@@ -73,7 +95,7 @@ describe("sailthru/exportProfile", () => {
       false
     );
 
-    userSid = await client.findSid({ email });
+    userSid = await findSid();
     expect(userSid).toBeTruthy();
   });
 
@@ -193,7 +215,7 @@ describe("sailthru/exportProfile", () => {
     const user = await getUser();
     expect(user).toBeNull();
 
-    const sid = await client.findSid({ email });
+    const sid = await findSid();
     expect(sid).toBeNull();
   });
 });
