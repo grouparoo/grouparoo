@@ -6,22 +6,23 @@ import path from "path";
 import { exportProfile } from "../../src/lib/export/exportProfile";
 import { SimpleAppOptions } from "../../../../../core/api/dist/models/App";
 import Sailthru from "../../src/lib/client";
+import { loadAppOptions, rewriteNockEnv } from "../utils/nockHelper";
 import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
-import loadAppOptions from "../utils/loadAppOptions";
 
 let client: Sailthru;
 const email = "brian@bleonard.com";
 let userSid = null;
 
-const appOptions = loadAppOptions(false);
-require("./../fixtures/export-profile");
+const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 
-// switch comments to record new nock file: have to change "assertion" afterwards for google auth
-// const appOptions = loadAppOptions(true);
-// const nockFile = path.resolve(
-//   path.join(__dirname, "../", "fixtures", "export-profile.js")
-// );
-// helper.recordNock(nockFile);
+// these comments to use nock
+const newNock = false;
+require("./../fixtures/export-profile");
+// or these to make it true
+// const newNock = true;
+// helper.recordNock(nockFile, rewriteNockEnv);
+
+const appOptions = loadAppOptions(newNock);
 
 async function getUser(): Promise<any> {
   const payload = {

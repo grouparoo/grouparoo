@@ -40,6 +40,7 @@ import { plugin } from "../../src/index";
 const { api, cache, Process } = require("actionhero");
 
 import fs from "fs";
+import path from "path";
 import nock from "nock";
 
 export namespace helper {
@@ -271,7 +272,8 @@ export namespace helper {
     };
   }
 
-  export function recordNock(nockFile) {
+  export function recordNock(nockFile, rewriteFunction = null) {
+    nockFile = path.resolve(nockFile);
     if (fs.existsSync(nockFile)) {
       fs.unlinkSync(nockFile);
     }
@@ -281,6 +283,9 @@ export namespace helper {
     fs.appendFileSync(nockFile, prepend);
 
     const appendLogToFile = (toAdd) => {
+      if (rewriteFunction) {
+        toAdd = rewriteFunction(toAdd);
+      }
       fs.appendFileSync(nockFile, toAdd);
     };
 
