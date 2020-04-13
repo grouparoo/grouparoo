@@ -33,17 +33,13 @@ export async function exportProfile(
   const sid = await client.findSid(newProfileProperties, oldProfileProperties);
 
   if (toDelete) {
-    if (sid) {
-      // otherwise, not found anyway
-      await client.deleteSid(sid);
-    } else {
-      // ok, where were they? try this.
-      try {
-        await client.deleteEmail(email);
-      } catch (err) {
-        log(`Error deleting ${email}`, "error", err);
-      }
-    }
+    await deleteUser(
+      client,
+      newProfileProperties,
+      oldProfileProperties,
+      sid,
+      1
+    );
     return;
   }
 
@@ -112,4 +108,53 @@ function formatList(name) {
   // some things not possible
   let updated = name.replace("$", "-");
   return updated;
+}
+
+const MAX_DELETE_ATTEMPTS = 5;
+async function sleep(time = 1000) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, time);
+  });
+}
+async function deleteUser(
+  client: Sailthru,
+  newProfileProperties: { [key: string]: any },
+  oldProfileProperties: { [key: string]: any },
+  cachedSid: string,
+  attemptNum: number
+) {
+  const sid =
+    cachedSid ||
+    (await client.findSid(newProfileProperties, oldProfileProperties));
+  const email = newProfileProperties.email;
+
+  if (attemptNum > MAX_DELETE_ATTEMPTS) {
+    await client.deleteEmail(email);
+    throw `Max attempts to deleted reached sid:${sid} email:${email}`;
+  }
+
+  if (sid) {
+    // delete them!
+    await client.deleteSid(sid);
+  } else {
+    // one more time for good measure
+    try {
+      await client.deleteEmail(email);
+    } catch (err) {
+      log(`Error deleting ${email}`, "error", err);
+    }
+    return true;
+  }
+
+  // try again just to make sure
+  await sleep(1000);
+  attemptNum++;
+  await deleteUser(
+    client,
+    newProfileProperties,
+    oldProfileProperties,
+    null, // look up by email again
+    attemptNum
+  );
+  return false;
 }
