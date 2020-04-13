@@ -45,9 +45,20 @@ export function profilePropertyRuleJSToSQLType(jsType: string) {
   return map[jsType];
 }
 
-const _boolean_ops = ["eq", "ne"];
-const _number_ops = ["eq", "ne", "gt", "gte", "lt", "lte"];
+const _boolean_ops = ["exists", "notExists", "eq", "ne"];
+const _number_ops = [
+  "exists",
+  "notExists",
+  "eq",
+  "ne",
+  "gt",
+  "gte",
+  "lt",
+  "lte",
+];
 const _string_ops = [
+  "exists",
+  "notExists",
   "eq",
   "ne",
   "like",
@@ -66,6 +77,8 @@ export const PROFILE_PROPERTY_RULE_OPS = {
   boolean: _boolean_ops,
   date: _number_ops,
   _dictionary: {
+    exists: "any value exists",
+    notExists: "no value exists",
     eq: "equals",
     ne: "not equals",
     gt: "greater than",
@@ -79,6 +92,10 @@ export const PROFILE_PROPERTY_RULE_OPS = {
     startsWith: "starts with",
     endsWith: "ends with",
     substring: "has the string",
+  },
+  _conniventRules: {
+    exists: { op: "ne", match: "null" },
+    notExists: { op: "eq", match: "null" },
   },
 };
 

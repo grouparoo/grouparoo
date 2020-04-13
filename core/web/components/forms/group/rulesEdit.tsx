@@ -269,19 +269,23 @@ export default function RulesBuilder({
                   </td>
 
                   <td>
-                    <Form.Group controlId={`${rule.key}-match-${idx}`}>
-                      <Form.Control
-                        required
-                        type="text"
-                        value={rule.match.toString()}
-                        onChange={(e: any) => {
-                          const _rules = [...localRules];
-                          rule.match = e.target.value;
-                          _rules[idx] = rule;
-                          setLocalRules(_rules);
-                        }}
-                      />
-                    </Form.Group>
+                    {rule.op === "exists" || rule.op === "notExists" ? (
+                      "N/A"
+                    ) : (
+                      <Form.Group controlId={`${rule.key}-match-${idx}`}>
+                        <Form.Control
+                          required
+                          type="text"
+                          value={rule.match.toString()}
+                          onChange={(e: any) => {
+                            const _rules = [...localRules];
+                            rule.match = e.target.value;
+                            _rules[idx] = rule;
+                            setLocalRules(_rules);
+                          }}
+                        />
+                      </Form.Group>
+                    )}
                   </td>
 
                   <td>

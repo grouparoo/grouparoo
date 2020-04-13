@@ -235,6 +235,7 @@ describe("actions/groups", () => {
         expect(error).toBeUndefined();
         expect(ruleLimit).toBe(5);
         expect(Object.keys(ops).sort()).toEqual([
+          "_conniventRules",
           "_dictionary",
           "boolean",
           "date",
