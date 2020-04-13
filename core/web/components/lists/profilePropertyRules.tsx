@@ -119,7 +119,12 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                           as={`/profilePropertyRule/${rule.guid}`}
                         >
                           <a>
-                            <strong>{rule.key}</strong>
+                            <strong>
+                              {rule.key ||
+                                `${rule.state} created on ${
+                                  rule.createdAt.split("T")[0]
+                                }`}
+                            </strong>
                           </a>
                         </Link>
                       </td>
