@@ -116,6 +116,18 @@ async function sleep(time = 1000) {
     setTimeout(resolve, time);
   });
 }
+async function deleteEmail(client, email) {
+  try {
+    await client.deleteEmail(email);
+    return true;
+  } catch (err) {
+    if (err.statusCode === 404 && err.error === 99) {
+      return true;
+    }
+    log(`Error deleting ${email}`, "error", err);
+  }
+  return false;
+}
 async function deleteUser(
   client: Sailthru,
   newProfileProperties: { [key: string]: any },
@@ -129,8 +141,10 @@ async function deleteUser(
   const email = newProfileProperties.email;
 
   if (attemptNum > MAX_DELETE_ATTEMPTS) {
-    await client.deleteEmail(email);
-    throw `Max attempts to deleted reached sid:${sid} email:${email}`;
+    if (!(await deleteEmail(client, email))) {
+      throw `Max attempts to deleted reached sid:${sid} email:${email}`;
+    }
+    return true;
   }
 
   if (sid) {
@@ -138,17 +152,13 @@ async function deleteUser(
     await client.deleteSid(sid);
   } else {
     // one more time for good measure
-    try {
-      await client.deleteEmail(email);
-    } catch (err) {
-      log(`Error deleting ${email}`, "error", err);
-    }
+    await deleteEmail(client, email);
     return true;
   }
 
   // try again just to make sure
-  await sleep(1000);
   attemptNum++;
+  await sleep(1000);
   await deleteUser(
     client,
     newProfileProperties,
