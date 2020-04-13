@@ -220,10 +220,10 @@ export default function ({
                       <tr>
                         <th></th>
                         <th>Key</th>
-                        {opt?.options[0].description ? (
+                        {opt?.options[0]?.description ? (
                           <th>Description</th>
                         ) : null}
-                        {opt?.options[0].examples ? <th>Examples</th> : null}
+                        {opt?.options[0]?.examples ? <th>Examples</th> : null}
                       </tr>
                     </thead>
                     <tbody>
