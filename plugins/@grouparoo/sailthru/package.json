@@ -27,7 +27,6 @@
     "lint": "prettier --check src "
   },
   "dependencies": {
-    "mailchimp-api-v3": "^1.13.1",
     "sailthru-client": "^3.0.5"
   },
   "peerDependencies": {
