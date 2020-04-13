@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Badge, Table, Form, Button } from "react-bootstrap";
+import { Table, Form } from "react-bootstrap";
+import Router from "next/router";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -13,6 +14,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const [destination, setDestination] = useState({
     guid: "",
     type: "",
+    state: "",
     previewAvailable: false,
     mapping: {},
   });
@@ -61,6 +63,12 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     if (response?.destination) {
       successHandler.set({ message: "Destination Updated" });
       setDestination(response.destination);
+      if (
+        response.destination.state === "ready" &&
+        destination.state === "draft"
+      ) {
+        Router.push(`/destinations`);
+      }
     }
   }
 

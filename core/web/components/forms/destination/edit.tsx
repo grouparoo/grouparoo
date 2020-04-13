@@ -93,6 +93,12 @@ export default function ({
       if (response.destination.state === "draft") {
         Router.push(`/destination/${guid}?tab=mapping`);
       }
+      if (
+        response.destination.state === "ready" &&
+        destination.state === "draft"
+      ) {
+        Router.push(`/destinations`);
+      }
     }
   };
 

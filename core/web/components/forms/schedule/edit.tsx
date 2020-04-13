@@ -102,6 +102,9 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       response.schedule.recurringFrequencyMinutes =
         response.schedule.recurringFrequency / (60 * 1000);
       setSchedule(response.schedule);
+      if (response.schedule.state === "ready" && schedule.state === "draft") {
+        Router.push(`/source/${schedule.source.guid}`);
+      }
     }
   }
 

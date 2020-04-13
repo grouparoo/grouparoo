@@ -68,6 +68,9 @@ export default function ({
     setLoading(false);
     if (response?.app) {
       successHandler.set({ message: "App Updated" });
+      if (response.app.state === "ready" && app.state === "draft") {
+        Router.push("/apps");
+      }
       await load();
       appHandler.set();
     }

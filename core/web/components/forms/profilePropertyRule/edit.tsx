@@ -88,6 +88,12 @@ export default function ({
         setProfilePropertyRule(response.profilePropertyRule);
         setPluginOptions(response.pluginOptions);
         profilePropertyRulesHandler.set();
+        if (
+          response.profilePropertyRule.state === "ready" &&
+          profilePropertyRule.state === "draft"
+        ) {
+          Router.push(`/profilePropertyRules`);
+        }
       }
     }
   }
