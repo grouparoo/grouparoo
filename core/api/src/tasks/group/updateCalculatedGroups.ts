@@ -4,7 +4,6 @@ import { Group } from "../../models/Group";
 import { plugin } from "../../modules/plugin";
 import { Op } from "sequelize";
 import Moment from "moment";
-import { log } from "actionhero";
 
 export class RunSchedule extends RetryableTask {
   constructor() {
@@ -23,8 +22,6 @@ export class RunSchedule extends RetryableTask {
     );
     const delayMinutes = parseInt(setting.value);
     const lastCheckTime = Moment().subtract(delayMinutes, "minutes");
-
-    log(`checking to update calculated groups since ${lastCheckTime}`);
 
     const calculatedGroups = await Group.findAll({
       where: {
