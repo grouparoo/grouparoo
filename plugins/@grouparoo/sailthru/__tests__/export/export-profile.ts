@@ -23,14 +23,14 @@ require("./../fixtures/export-profile");
 // );
 // helper.recordNock(nockFile);
 
-let getUserCallNum = 0; // increment to change each time for nock
+let requestNum; // increment to change each time for nock
 async function getUser(): Promise<any> {
-  getUserCallNum++;
+  requestNum++;
 
   const payload = {
     id: userSid,
     key: "sid",
-    fields: { keys: getUserCallNum, vars: 1, lists: 1 },
+    fields: { keys: requestNum, vars: 1, lists: 1 },
   };
 
   try {
@@ -41,21 +41,24 @@ async function getUser(): Promise<any> {
 }
 
 let findSidCallNum = 0; // increment to change each time for nock
-async function findSid() {
-  findSidCallNum++;
+async function findSid(): Promise<string> {
+  requestNum++;
 
   const payload = {
     id: email,
     key: "email",
     fields: {
-      keys: findSidCallNum,
+      keys: requestNum,
     },
   };
 
   try {
+    console.log("findSid Payload", payload);
     const response: any = await client.get("user", payload);
+    console.log("findSid", response);
     return response?.keys?.sid;
   } catch (err) {
+    console.log("findSid Error", err);
     return null;
   }
 }
@@ -69,6 +72,7 @@ describe("sailthru/exportProfile", () => {
     if (sid) {
       await client.deleteSid(sid);
     }
+    requestNum = 300;
   }, 1000 * 30);
 
   afterAll(async () => {
@@ -95,6 +99,7 @@ describe("sailthru/exportProfile", () => {
       false
     );
 
+    console.log("work????");
     userSid = await findSid();
     expect(userSid).toBeTruthy();
   });

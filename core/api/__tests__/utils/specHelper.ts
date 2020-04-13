@@ -282,24 +282,7 @@ export namespace helper {
     fs.appendFileSync(nockFile, prepend);
 
     const prependLogToFile = (toAdd) => {
-      const tmpFile = nockFile + ".tmp";
-      if (fs.existsSync(tmpFile)) {
-        fs.unlinkSync(tmpFile);
-      }
-
-      const liner = new lineByLine(nockFile);
-      let line;
-      let lineNum = 0;
-      while ((line = liner.next())) {
-        lineNum++;
-        fs.appendFileSync(tmpFile, line);
-        if (lineNum === 1) {
-          fs.appendFileSync(tmpFile, toAdd);
-        }
-      }
-
-      fs.unlinkSync(nockFile);
-      fs.renameSync(tmpFile, nockFile);
+      fs.appendFileSync(nockFile, toAdd);
     };
 
     const onlyCallOnce = (content) => {
