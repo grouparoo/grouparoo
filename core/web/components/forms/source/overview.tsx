@@ -94,9 +94,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             <p>
               <strong>App</strong>:{" "}
               <Link href="/app/[guid]" as={`/app/${source.app.guid}`}>
-                <a>
-                  {source.app.name} ({source.app.guid})
-                </a>
+                <a>{source.app.name}</a>
               </Link>
               <br />
               <strong>Connection</strong>: {source.connection.name}:{" "}
@@ -139,9 +137,12 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                       as={`/profilePropertyRule/${rule.guid}`}
                     >
                       <a>
-                        <strong>{rule.key}</strong>
-                        <br />
-                        <small>{rule.guid}</small>
+                        <strong>
+                          {rule.key ||
+                            `${rule.state} created on ${
+                              rule.createdAt.split("T")[0]
+                            }`}
+                        </strong>
                       </a>
                     </Link>
                   </td>
@@ -177,8 +178,6 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
               <Row>
                 <Col>
                   <p>
-                    <strong>Guid</strong>: {source.schedule.guid}
-                    <br />
                     <strong>Recurring</strong>:{" "}
                     <Badge
                       variant={
