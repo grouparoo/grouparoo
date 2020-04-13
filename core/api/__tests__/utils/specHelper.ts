@@ -40,7 +40,6 @@ import { plugin } from "../../src/index";
 const { api, cache, Process } = require("actionhero");
 
 import fs from "fs";
-import lineByLine from "n-readlines";
 import nock from "nock";
 
 export namespace helper {
@@ -281,7 +280,7 @@ export namespace helper {
     const prepend = "const nock = require('nock');\n";
     fs.appendFileSync(nockFile, prepend);
 
-    const prependLogToFile = (toAdd) => {
+    const appendLogToFile = (toAdd) => {
       fs.appendFileSync(nockFile, toAdd);
     };
 
@@ -302,7 +301,7 @@ export namespace helper {
     };
     const addRecording = (content) => {
       content = onlyCallOnce(content);
-      prependLogToFile(content);
+      appendLogToFile(content);
     };
 
     nock.recorder.rec({
