@@ -1,6 +1,7 @@
 import { helper } from "./../utils/specHelper";
 import { specHelper } from "actionhero";
 import { Source } from "./../../src/models/Source";
+import { Option } from "./../../src/models/Option";
 import { App } from "./../../src/models/App";
 
 let actionhero;
@@ -52,6 +53,7 @@ describe("actions/sources", () => {
         name: "test source",
         type: "test-plugin-import",
         appGuid: app.guid,
+        options: { table: "users" },
       };
       const { error, source } = await specHelper.runAction(
         "source:create",
@@ -86,6 +88,7 @@ describe("actions/sources", () => {
         guid,
         key: "userId",
         type: "integer",
+        mappedColumn: "id",
       };
       const { profilePropertyRule, error } = await specHelper.runAction(
         "source:bootstrapUniqueProfilePropertyRule",
@@ -125,6 +128,9 @@ describe("actions/sources", () => {
     });
 
     test("a source with no options will see an empty preview", async () => {
+      const options = await Option.findAll({ where: { ownerGuid: guid } });
+      await Promise.all(options.map((o) => o.destroy()));
+
       connection.params = {
         csrfToken,
         guid,

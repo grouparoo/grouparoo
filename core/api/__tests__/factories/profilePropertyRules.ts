@@ -14,7 +14,7 @@ export default async (
 ) => {
   const source = await SourceFactory();
   await source.setOptions({ table: "__test_table" });
-  await source.bootstrapUniqueProfilePropertyRule("userId", "integer");
+  await source.bootstrapUniqueProfilePropertyRule("userId", "integer", "id");
   await source.setMapping({ userId: "userId" });
   await source.update({ state: "ready" });
   const sourceGuid = source.guid;

@@ -192,6 +192,7 @@ export class SourceBootstrapUniqueProfilePropertyRule extends Action {
       guid: { required: true },
       key: { required: true },
       type: { required: true },
+      mappedColumn: { required: true },
     };
   }
 
@@ -203,7 +204,8 @@ export class SourceBootstrapUniqueProfilePropertyRule extends Action {
 
     const rule = await source.bootstrapUniqueProfilePropertyRule(
       params.key,
-      params.type
+      params.type,
+      params.mappedColumn
     );
     response.profilePropertyRule = await rule.apiData();
     response.source = await source.apiData();

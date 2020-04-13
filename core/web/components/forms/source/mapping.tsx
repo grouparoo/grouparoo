@@ -43,8 +43,10 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       setSource(sourceResponse.source);
       if (Object.keys(sourceResponse.source.mapping).length > 0) {
         const key = Object.keys(sourceResponse.source.mapping)[0];
-        setNewMappingKey(key || "");
-        setNewMappingValue(sourceResponse.source.mapping[key] || "");
+        setNewMappingKey(key || newMappingKey);
+        setNewMappingValue(
+          sourceResponse.source.mapping[key] || newMappingValue
+        );
       }
     }
 
@@ -82,15 +84,34 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   }
 
   const bootstrapUniqueProfilePropertyRule = async () => {
+    if (newMappingKey === "") {
+      return errorHandler.set({ error: "select profile identification" });
+    }
+
     if (confirm("are you sure?")) {
       const response = await execApi(
         "post",
         `/api/${apiVersion}/source/${guid}/bootstrapUniqueProfilePropertyRule`,
-        newProfilePropertyRule
+        Object.assign(newProfilePropertyRule, { mappedColumn: newMappingKey })
       );
       if (response?.profilePropertyRule) {
         successHandler.set({ message: "Profile Property Rule created" });
-        await load();
+
+        const prrResponse = await execApi(
+          "get",
+          `/api/${apiVersion}/profilePropertyRules`,
+          { unique: true }
+        );
+        if (prrResponse?.profilePropertyRules) {
+          setProfilePropertyRules(prrResponse.profilePropertyRules);
+          setProfilePropertyRuleExamples(prrResponse.examples);
+        }
+
+        setNewMappingValue(response.profilePropertyRule.key);
+        document.getElementById(
+          response.profilePropertyRule.guid
+          // @ts-ignore
+        ).checked = true;
       }
     }
   };
@@ -255,69 +276,70 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                     </tbody>
                   </Table>
                 </fieldset>
-                <hr />
               </>
             ) : null}
 
-            <p>Create a new Unique Profile Property Rule</p>
-            <p>
-              This profile property should be unique, meaning only one profile
-              in your entire customer base will have this value. Normally this
-              is an email or a user id.
-            </p>
+            {newMappingValue === "" ? (
+              <>
+                <hr />
+                <p>Create a new Unique Profile Property Rule</p>
+                <p>
+                  This profile property should be unique, meaning only one
+                  profile in your entire customer base will have this value.
+                  Normally this is an email or a user id.
+                </p>
+                <Form.Group controlId="key">
+                  <Form.Label>Key</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Profile Property Rule Key"
+                    defaultValue={newProfilePropertyRule.key}
+                    onChange={(e) => {
+                      setNewProfilePropertyRule(
+                        Object.assign({}, newProfilePropertyRule, {
+                          key: e.target.value,
+                        })
+                      );
+                    }}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Key is required
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group controlId="type">
+                  <Form.Label>Type</Form.Label>
 
-            <Form.Group controlId="key">
-              <Form.Label>Key</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                placeholder="Profile Property Rule Key"
-                defaultValue={newProfilePropertyRule.key}
-                onChange={(e) => {
-                  setNewProfilePropertyRule(
-                    Object.assign({}, newProfilePropertyRule, {
-                      key: e.target.value,
-                    })
-                  );
-                }}
-              />
-              <Form.Control.Feedback type="invalid">
-                Key is required
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group controlId="type">
-              <Form.Label>Type</Form.Label>
-
-              <Form.Control
-                as="select"
-                required
-                defaultValue={newProfilePropertyRule.type}
-                onChange={(e) => {
-                  setNewProfilePropertyRule(
-                    Object.assign({}, newProfilePropertyRule, {
-                      //@ts-ignore
-                      type: e.target.value,
-                    })
-                  );
-                }}
-              >
-                <option value={""} disabled>
-                  Choose a type
-                </option>
-                {types.map((type) => (
-                  <option key={`type-${type}`}>{type}</option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-
-            <Button
-              size="sm"
-              variant="warning"
-              onClick={bootstrapUniqueProfilePropertyRule}
-            >
-              Create Profile Property Rule
-            </Button>
+                  <Form.Control
+                    as="select"
+                    required
+                    defaultValue={newProfilePropertyRule.type}
+                    onChange={(e) => {
+                      setNewProfilePropertyRule(
+                        Object.assign({}, newProfilePropertyRule, {
+                          //@ts-ignore
+                          type: e.target.value,
+                        })
+                      );
+                    }}
+                  >
+                    <option value={""} disabled>
+                      Choose a type
+                    </option>
+                    {types.map((type) => (
+                      <option key={`type-${type}`}>{type}</option>
+                    ))}
+                  </Form.Control>
+                </Form.Group>
+                <Button
+                  size="sm"
+                  variant="warning"
+                  onClick={bootstrapUniqueProfilePropertyRule}
+                >
+                  Create Profile Property Rule
+                </Button>
+              </>
+            ) : null}
           </Col>
         </Row>
       </Form>
