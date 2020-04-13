@@ -137,9 +137,6 @@ export default function ({
   return (
     <>
       <h2>Edit Source</h2>
-      <p>
-        <span className="text-muted">{source.guid}</span>
-      </p>
 
       <Row>
         <Col md={1}>
