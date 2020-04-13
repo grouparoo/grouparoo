@@ -7,6 +7,8 @@ import {
 } from "@grouparoo/core";
 import Sailthru from "../client";
 
+import { log } from "actionhero";
+
 // https://getstarted.sailthru.com/developers/api/user/
 
 export async function exportProfile(
@@ -34,6 +36,13 @@ export async function exportProfile(
     if (sid) {
       // otherwise, not found anyway
       await client.deleteSid(sid);
+    } else {
+      // ok, where were they? try this.
+      try {
+        await client.deleteEmail(email);
+      } catch (err) {
+        log(`Error deleting ${email}`, "error", err);
+      }
     }
     return;
   }

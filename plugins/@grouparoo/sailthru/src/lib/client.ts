@@ -43,12 +43,28 @@ export default class SailthruClient {
 
     try {
       const response: any = await this.get("user", payload);
-      return response?.keys?.sid;
+      return response.keys.sid;
     } catch (err) {
-      // TODO: check for 404 or something more specific to
-      // differentiate between not found and network errors
-      return null;
+      // {
+      //   statusCode: 400,
+      //   error: 99,
+      //   errormsg: 'User not found with email: brian@bleonard.com'
+      // }
+      if (err.statusCode === 400 && err.error === 99) {
+        // really not found
+        return null;
+      }
+      throw err;
     }
+  }
+
+  async deleteEmail(email: string) {
+    const payload = {
+      id: email,
+      key: "email",
+    };
+    const response: any = await this.delete("user", payload);
+    return response;
   }
 
   async deleteSid(sid: string) {

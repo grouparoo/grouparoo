@@ -31,29 +31,11 @@ async function getUser(): Promise<any> {
     fields: { keys: 1, vars: 1, lists: 1 },
   };
 
-  try {
-    return await client.get("user", payload);
-  } catch (err) {
-    return null;
-  }
+  return await client.get("user", payload);
 }
 
-let findSidCallNum = 0; // increment to change each time for nock
 async function findSid(): Promise<string> {
-  const payload = {
-    id: email,
-    key: "email",
-    fields: {
-      keys: 1,
-    },
-  };
-
-  try {
-    const response: any = await client.get("user", payload);
-    return response?.keys?.sid;
-  } catch (err) {
-    return null;
-  }
+  return client.findSid({ email });
 }
 
 describe("sailthru/exportProfile", () => {
@@ -208,10 +190,14 @@ describe("sailthru/exportProfile", () => {
       true // delete!
     );
 
-    const user = await getUser();
-    expect(user).toBeNull();
+    expect(await findSid()).toBeNull();
 
-    const sid = await findSid();
-    expect(sid).toBeNull();
+    let message = "";
+    try {
+      await getUser();
+    } catch (err) {
+      message = err.errormsg;
+    }
+    expect(message).toMatch("User not found with sid");
   });
 });
