@@ -69,7 +69,11 @@ describe("models/profile", () => {
     beforeAll(async () => {
       source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
-      await source.bootstrapUniqueProfilePropertyRule("userId", "integer");
+      await source.bootstrapUniqueProfilePropertyRule(
+        "userId",
+        "integer",
+        "id"
+      );
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
@@ -223,7 +227,11 @@ describe("models/profile", () => {
       beforeAll(async () => {
         const source = await helper.factories.source();
         await source.setOptions({ table: "test table" });
-        await source.bootstrapUniqueProfilePropertyRule("userId", "integer");
+        await source.bootstrapUniqueProfilePropertyRule(
+          "userId",
+          "integer",
+          "id"
+        );
         await source.setMapping({ id: "userId" });
         await source.update({ state: "ready" });
 
@@ -452,7 +460,11 @@ describe("models/profile", () => {
         type: "test-plugin-import",
       });
       await source.setOptions({ table: "test table" });
-      await source.bootstrapUniqueProfilePropertyRule("userId", "integer");
+      await source.bootstrapUniqueProfilePropertyRule(
+        "userId",
+        "integer",
+        "id"
+      );
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
@@ -561,7 +573,11 @@ describe("models/profile", () => {
         name: "test import source",
         type: "import-from-test-template-app",
       });
-      await source.bootstrapUniqueProfilePropertyRule("userId", "integer");
+      await source.bootstrapUniqueProfilePropertyRule(
+        "userId",
+        "integer",
+        "id"
+      );
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 

@@ -29,9 +29,16 @@ describe("integration/runs/internalRun", () => {
     test("adding a profile property rule with a query creates a run and internalRun task", async () => {
       const source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
-      await source.bootstrapUniqueProfilePropertyRule("userId", "integer");
+      await source.bootstrapUniqueProfilePropertyRule(
+        "userId",
+        "integer",
+        "id"
+      );
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
+
+      await api.resque.queue.connection.redis.flushdb();
+      await Run.destroy({ truncate: true });
 
       const rule = await ProfilePropertyRule.create({
         sourceGuid: source.guid,

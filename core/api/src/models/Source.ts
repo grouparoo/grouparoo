@@ -416,7 +416,11 @@ export class Source extends LoggedModel<Source> {
   /**
    * This method is used to bootstrap a new source which requires a profile property rule for a mapping, but the rule doesn't yet exist.
    */
-  async bootstrapUniqueProfilePropertyRule(key: string, type: string) {
+  async bootstrapUniqueProfilePropertyRule(
+    key: string,
+    type: string,
+    mappedColumn: string
+  ) {
     const rule = ProfilePropertyRule.build({
       key,
       type,
@@ -433,6 +437,26 @@ export class Source extends LoggedModel<Source> {
     // danger zone!
     await rule.save({ hooks: false });
     await ProfilePropertyRule.clearCacheAfterSave();
+
+    // build the default options
+    const { pluginConnection } = await this.getPlugin();
+    if (
+      typeof pluginConnection.methods
+        .uniqueProfilePropertyRuleBootstrapOptions === "function"
+    ) {
+      const app = await this.$get("app");
+      const appOptions = await app.getOptions();
+      const options = await this.getOptions();
+      const ruleOptions = await pluginConnection.methods.uniqueProfilePropertyRuleBootstrapOptions(
+        app,
+        appOptions,
+        this,
+        options,
+        mappedColumn
+      );
+
+      await rule.setOptions(ruleOptions);
+    }
 
     return rule;
   }

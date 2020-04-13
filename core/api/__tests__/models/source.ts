@@ -363,6 +363,7 @@ describe("models/source", () => {
         name: "test source",
         appGuid: app.guid,
       });
+      await source.setOptions({ table: "some table" });
     });
 
     afterAll(async () => {
@@ -372,7 +373,8 @@ describe("models/source", () => {
     test("bootstrapUniqueProfilePropertyRule will create a new profile property rule", async () => {
       const rule = await source.bootstrapUniqueProfilePropertyRule(
         "uniqueId",
-        "integer"
+        "integer",
+        "id"
       );
 
       expect(rule.key).toBe("uniqueId");
@@ -383,9 +385,17 @@ describe("models/source", () => {
       await rule.destroy();
     });
 
+    test("the plugin provides uniqueProfilePropertyRuleBootstrapOptions", async () => {
+      const rule = await ProfilePropertyRule.findOne({
+        where: { key: "userId" },
+      });
+      const options = await rule.getOptions();
+      expect(options).toEqual({ column: "__default_column" }); // from the plugin; see specHelper.ts
+    });
+
     test("bootstrapUniqueProfilePropertyRule will fail if the rule cannot be created", async () => {
       await expect(
-        source.bootstrapUniqueProfilePropertyRule("userId", "integer")
+        source.bootstrapUniqueProfilePropertyRule("userId", "integer", "id")
       ).rejects.toThrow(/already in use/);
     });
   });

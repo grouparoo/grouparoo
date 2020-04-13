@@ -65,6 +65,7 @@ export interface PluginConnection {
   methods?: {
     sourceOptions?: SourceOptionsMethod;
     sourcePreview?: SourcePreviewMethod;
+    uniqueProfilePropertyRuleBootstrapOptions?: UniqueProfilePropertyRuleBootstrapOptions;
     profiles?: ProfilesPluginMethod;
     profileProperty?: ProfilePropertyPluginMethod;
     nextFilter?: NextFilterPluginMethod;
@@ -183,6 +184,19 @@ export interface SourcePreviewMethod {
     source: Source,
     sourceOptions: SimpleSourceOptions
   ): Promise<Array<{ [column: string]: any }>>;
+}
+
+/**
+ * If a Profile Property Rule is created within the source creation workflow, what default options should that new rule get?
+ */
+export interface UniqueProfilePropertyRuleBootstrapOptions {
+  (
+    app: App,
+    appOptions: SimpleAppOptions,
+    source: Source,
+    sourceOptions: SimpleSourceOptions,
+    mappedColumn: string
+  ): Promise<SimpleProfilePropertyRuleOptions>;
 }
 
 /**

@@ -88,6 +88,7 @@ describe("integration/happyPath", () => {
       guid: sourceGuid,
       key: "userId",
       type: "integer",
+      mappedColumn: "id",
     };
     const bootstrapResponse = await specHelper.runAction(
       "source:bootstrapUniqueProfilePropertyRule",

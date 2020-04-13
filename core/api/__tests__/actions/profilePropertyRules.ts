@@ -29,7 +29,7 @@ describe("actions/profilePropertyRules", () => {
 
     source = await helper.factories.source();
     await source.setOptions({ table: "test table" });
-    await source.bootstrapUniqueProfilePropertyRule("userId", "integer");
+    await source.bootstrapUniqueProfilePropertyRule("userId", "integer", "id");
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
   });

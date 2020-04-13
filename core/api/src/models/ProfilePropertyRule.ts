@@ -136,7 +136,8 @@ export interface PluginConnectionProfilePropertyRuleOption {
     appOptions: SimpleAppOptions,
     source: Source,
     sourceOptions: SimpleSourceOptions,
-    sourceMapping: SourceMapping
+    sourceMapping: SourceMapping,
+    profilePropertyRule: ProfilePropertyRule
   ) => Promise<
     Array<{
       key: string;
@@ -310,7 +311,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     return OptionHelper.getOptions(this);
   }
 
-  async setOptions(options: SimpleSourceOptions) {
+  async setOptions(options: SimpleProfilePropertyRuleOptions) {
     return OptionHelper.setOptions(this, options);
   }
 
@@ -385,7 +386,8 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
         appOptions,
         source,
         sourceOptions,
-        sourceMapping
+        sourceMapping,
+        this
       );
 
       response.push({

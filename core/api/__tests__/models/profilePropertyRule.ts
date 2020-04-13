@@ -25,7 +25,7 @@ describe("models/profilePropertyRule", () => {
   test("creating a profile property rule for non-manual apps with options enqueued an internalRun", async () => {
     const rulesCount = await ProfilePropertyRule.count();
     const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
-    expect(foundTasks.length).toBe(rulesCount - 1); // the bootstrapped rule does not get a run
+    expect(foundTasks.length).toBe(rulesCount);
   });
 
   test("a profile property rule cannot be created if the source does not have all the required options set", async () => {

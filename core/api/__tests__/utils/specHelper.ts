@@ -209,6 +209,11 @@ export namespace helper {
                 { id: 2, fname: "luigi", lname: "mario" },
               ];
             },
+            uniqueProfilePropertyRuleBootstrapOptions: async () => {
+              return {
+                column: "__default_column",
+              };
+            },
             profiles: async () => {
               return { importsCount: 0, nextHighWaterMark: 0 };
             },
