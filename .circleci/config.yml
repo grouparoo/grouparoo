@@ -38,6 +38,7 @@ jobs:
             - plugins/@grouparoo/mysql/node_modules
             - plugins/@grouparoo/newrelic/node_modules
             - plugins/@grouparoo/postgres/node_modules
+            - plugins/@grouparoo/sailthru/node_modules
             - tools/lerna/node_modules
             - tools/merger/node_modules
             - core/web/.next
@@ -302,6 +303,29 @@ jobs:
       - run:
           name: test
           command: cd plugins/@grouparoo/postgres && npm run test
+  test-plugin-sailthru:
+    docker:
+      - image: circleci/node:12
+      - image: redis:latest
+      - image: circleci/postgres:9
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/sailthru && npm run test
   complete:
     docker:
       - image: circleci/node:12
@@ -386,6 +410,12 @@ workflows:
           requires:
             - test-core-api
             - test-core-web
+      - test-plugin-sailthru:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - test-core-api
+            - test-core-web
       - complete:
           filters:
             <<: *ignored-branches
@@ -402,3 +432,4 @@ workflows:
             - test-plugin-mysql
             - test-plugin-newrelic
             - test-plugin-postgres
+            - test-plugin-sailthru
