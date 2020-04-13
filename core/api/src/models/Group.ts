@@ -30,6 +30,7 @@ import { DestinationGroup } from "./DestinationGroup";
 import {
   ProfilePropertyRule,
   profilePropertyRuleJSToSQLType,
+  PROFILE_PROPERTY_RULE_OPS,
 } from "./ProfilePropertyRule";
 import { StateMachine } from "./../modules/stateMachine";
 
@@ -227,7 +228,7 @@ export class Group extends LoggedModel<Group> {
       });
     }
 
-    return rulesWithKey;
+    return this.fromConniventRules(rulesWithKey);
   }
 
   async setRules(rules: GroupRuleWithKey[]) {
@@ -306,6 +307,31 @@ export class Group extends LoggedModel<Group> {
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
+  }
+
+  fromConniventRules(rules) {
+    const conniventRules = PROFILE_PROPERTY_RULE_OPS._conniventRules;
+    for (const i in rules) {
+      if (conniventRules[rules[i].op]) {
+        rules[i] = Object.assign(rules[i], conniventRules[rules[i].op]);
+      }
+    }
+    return rules;
+  }
+
+  toConniventRules(rules) {
+    const conniventRules = PROFILE_PROPERTY_RULE_OPS._conniventRules;
+    for (const i in rules) {
+      for (const k in conniventRules) {
+        if (
+          conniventRules[k].op === rules[i].op &&
+          conniventRules[k].match === rules[i].match
+        ) {
+          rules[i] = Object.assign(rules[i], { op: k });
+        }
+      }
+    }
+    return rules;
   }
 
   async stopPreviousRuns() {
