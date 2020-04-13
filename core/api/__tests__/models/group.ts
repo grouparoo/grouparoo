@@ -69,14 +69,6 @@ describe("models/group", () => {
   });
 
   describe("validations", () => {
-    // test("group names are unique", async () => {
-    //   const group = new Group({
-    //     name: "test group",
-    //     type: "manual",
-    //   });
-    //   await expect(group.save()).rejects.toThrow(/Validation error/);
-    // });
-
     test("a new group will have a '' name", async () => {
       const group = await Group.create({
         type: "manual",
@@ -723,6 +715,18 @@ describe("models/group", () => {
           await group.setRules([{ key: "lastName", match: "null", op: "ne" }]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
+
+        test("exists", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "lastName", op: "exists" }]);
+          expect(await group.countPotentialMembers()).toBe(4);
+        });
+
+        test("notExists", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "lastName", op: "notExists" }]);
+          expect(await group.countPotentialMembers()).toBe(0);
+        });
       });
 
       describe("integers", () => {
@@ -775,6 +779,18 @@ describe("models/group", () => {
           await group.update({ matchType: "all" });
           await group.setRules([{ key: "userId", match: "null", op: "ne" }]);
           expect(await group.countPotentialMembers()).toBe(4);
+        });
+
+        test("exists", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "userId", op: "exists" }]);
+          expect(await group.countPotentialMembers()).toBe(4);
+        });
+
+        test("notExists", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "userId", op: "notExists" }]);
+          expect(await group.countPotentialMembers()).toBe(0);
         });
       });
 
@@ -829,6 +845,18 @@ describe("models/group", () => {
           await group.setRules([{ key: "ltv", match: "null", op: "ne" }]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
+
+        test("exists", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "ltv", op: "exists" }]);
+          expect(await group.countPotentialMembers()).toBe(4);
+        });
+
+        test("notExists", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "ltv", op: "notExists" }]);
+          expect(await group.countPotentialMembers()).toBe(0);
+        });
       });
 
       describe("booleans", () => {
@@ -875,6 +903,18 @@ describe("models/group", () => {
           await group.update({ matchType: "all" });
           await group.setRules([{ key: "isVIP", match: "null", op: "ne" }]);
           expect(await group.countPotentialMembers()).toBe(4);
+        });
+
+        test("exists", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "isVIP", op: "exists" }]);
+          expect(await group.countPotentialMembers()).toBe(4);
+        });
+
+        test("notExists", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "isVIP", op: "notExists" }]);
+          expect(await group.countPotentialMembers()).toBe(0);
         });
       });
 
@@ -936,6 +976,18 @@ describe("models/group", () => {
             { key: "lastLoginAt", match: "null", op: "ne" },
           ]);
           expect(await group.countPotentialMembers()).toBe(4);
+        });
+
+        test("exists", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "lastLoginAt", op: "exists" }]);
+          expect(await group.countPotentialMembers()).toBe(4);
+        });
+
+        test("notExists", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([{ key: "lastLoginAt", op: "notExists" }]);
+          expect(await group.countPotentialMembers()).toBe(0);
         });
       });
 
