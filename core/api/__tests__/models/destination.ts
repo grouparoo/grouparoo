@@ -500,9 +500,9 @@ describe("models/destination", () => {
     let app: App;
     let exportArgs = {
       app: null,
-      options: null,
-      dest: null,
-      destOptions: null,
+      appOptions: null,
+      destination: null,
+      destinationOptions: null,
       profile: null,
       oldProfileProperties: null,
       newProfileProperties: null,
@@ -514,9 +514,9 @@ describe("models/destination", () => {
     beforeEach(() => {
       exportArgs = {
         app: null,
-        options: null,
-        dest: null,
-        destOptions: null,
+        appOptions: null,
+        destination: null,
+        destinationOptions: null,
         profile: null,
         oldProfileProperties: null,
         newProfileProperties: null,
@@ -551,23 +551,23 @@ describe("models/destination", () => {
               destinationPreview: async () => {
                 return [{ a: 1, b: 2 }];
               },
-              exportProfile: async (
+              exportProfile: async ({
                 app,
-                options,
-                dest,
-                destOptions,
+                appOptions,
+                destination,
+                destinationOptions,
                 profile,
                 oldProfileProperties,
                 newProfileProperties,
                 oldGroups,
                 newGroups,
-                toDelete
-              ) => {
+                toDelete,
+              }) => {
                 exportArgs = {
                   app,
-                  options,
-                  dest,
-                  destOptions,
+                  appOptions,
+                  destination,
+                  destinationOptions,
                   profile,
                   oldProfileProperties,
                   newProfileProperties,
@@ -644,7 +644,7 @@ describe("models/destination", () => {
       );
 
       expect(response).toEqual(true);
-      expect(exportArgs.dest.guid).toEqual(destination.guid);
+      expect(exportArgs.destination.guid).toEqual(destination.guid);
       expect(exportArgs.app.guid).toEqual(app.guid);
       expect(exportArgs.profile.guid).toEqual(profile.guid);
       expect(exportArgs.oldProfileProperties).toEqual({

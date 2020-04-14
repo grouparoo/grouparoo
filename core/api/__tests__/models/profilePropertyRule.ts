@@ -364,16 +364,11 @@ describe("models/profilePropertyRule", () => {
               },
             ],
             methods: {
-              profileProperty: async (
-                App,
-                appOptions,
-                source,
-                sourceOptions,
-                sourceMapping,
+              profileProperty: async ({
                 profilePropertyRule,
                 profilePropertyRuleOptions,
-                profile
-              ) => {
+                profile,
+              }) => {
                 const s = `the time is {{now.sql}} + ${JSON.stringify(
                   profilePropertyRuleOptions
                 )}`;

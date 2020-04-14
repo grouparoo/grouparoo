@@ -220,7 +220,7 @@ export class Run extends Model<Run> {
     const sourceMapping = await source.getMapping();
     const scheduleOptions = await schedule.getOptions();
 
-    return pluginConnection.methods.nextFilter(
+    return pluginConnection.methods.nextFilter({
       app,
       appOptions,
       source,
@@ -228,8 +228,8 @@ export class Run extends Model<Run> {
       sourceMapping,
       schedule,
       scheduleOptions,
-      this
-    );
+      run: this,
+    });
   }
 
   /**

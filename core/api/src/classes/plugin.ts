@@ -5,6 +5,8 @@ import { Run } from "../models/Run";
 import {
   PluginConnectionProfilePropertyRuleOption,
   SimpleProfilePropertyRuleOptions,
+  PluginConnectionProfilePropertyRuleFilter,
+  ProfilePropertyRuleFiltersWithColumn,
 } from "../models/ProfilePropertyRule";
 import { Profile } from "../models/Profile";
 import { RunFilter } from "../models/Run";
@@ -61,6 +63,7 @@ export interface PluginConnection {
   app: string;
   options: ConnectionOption[];
   profilePropertyRuleOptions?: PluginConnectionProfilePropertyRuleOption[];
+  profilePropertyRuleFilters?: PluginConnectionProfilePropertyRuleFilter[];
   scheduleOptions?: PluginConnectionScheduleOption[];
   methods?: {
     sourceOptions?: SourceOptionsMethod;
@@ -81,18 +84,18 @@ export interface PluginConnection {
  * Within this method you should call plugin.createImport()
  */
 export interface ProfilesPluginMethod {
-  (
-    schedule: Schedule,
-    app: App,
-    appOptions: SimpleAppOptions,
-    source: Source,
-    sourceOptions: SimpleSourceOptions,
-    sourceMapping: SourceMapping,
-    run: Run,
-    limit: number,
-    filter: RunFilter,
-    highWaterMark: string | number
-  ): Promise<{ importsCount: number; nextHighWaterMark: string | number }>;
+  (argument: {
+    schedule: Schedule;
+    app: App;
+    appOptions: SimpleAppOptions;
+    source: Source;
+    sourceOptions: SimpleSourceOptions;
+    sourceMapping: SourceMapping;
+    run: Run;
+    limit: number;
+    filter: RunFilter;
+    highWaterMark: string | number;
+  }): Promise<{ importsCount: number; nextHighWaterMark: string | number }>;
 }
 
 /**
@@ -100,16 +103,17 @@ export interface ProfilesPluginMethod {
  * It returns a key/value hash for the new Profile Property values
  */
 export interface ProfilePropertyPluginMethod {
-  (
-    app: App,
-    appOptions: SimpleAppOptions,
-    source: Source,
-    sourceOptions: SimpleSourceOptions,
-    sourceMapping: SourceMapping,
-    profilePropertyRule: ProfilePropertyRule,
-    profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions,
-    profile: Profile
-  ): Promise<any>;
+  (argument: {
+    app: App;
+    appOptions: SimpleAppOptions;
+    source: Source;
+    sourceOptions: SimpleSourceOptions;
+    sourceMapping: SourceMapping;
+    profilePropertyRule: ProfilePropertyRule;
+    profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions;
+    profilePropertyRuleFilters: ProfilePropertyRuleFiltersWithColumn[];
+    profile: Profile;
+  }): Promise<any>;
 }
 
 /**
@@ -118,16 +122,16 @@ export interface ProfilePropertyPluginMethod {
  * Ie: `select MAX(updated_at) from users`
  */
 export interface NextFilterPluginMethod {
-  (
-    app: App,
-    appOptions: SimpleAppOptions,
-    source: Source,
-    sourceOptions: SimpleSourceOptions,
-    sourceMapping: SourceMapping,
-    schedule: Schedule,
-    scheduleOptions: SimpleScheduleOptions,
-    run: Run
-  ): Promise<RunFilter>;
+  (argument: {
+    app: App;
+    appOptions: SimpleAppOptions;
+    source: Source;
+    sourceOptions: SimpleSourceOptions;
+    sourceMapping: SourceMapping;
+    schedule: Schedule;
+    scheduleOptions: SimpleScheduleOptions;
+    run: Run;
+  }): Promise<RunFilter>;
 }
 
 /**
@@ -135,18 +139,18 @@ export interface NextFilterPluginMethod {
  * Should only return a boolean indicating success, or throw an error if something went wrong.
  */
 export interface ExportProfilePluginMethod {
-  (
-    app: App,
-    appOptions: SimpleAppOptions,
-    destination: Destination,
-    destinationOptions: SimpleDestinationOptions,
-    profile: Profile,
-    oldProfileProperties: { [key: string]: any },
-    newProfileProperties: { [key: string]: any },
-    oldGroups: Array<string>,
-    newGroups: Array<string>,
-    toDelete: boolean
-  ): Promise<boolean>;
+  (argument: {
+    app: App;
+    appOptions: SimpleAppOptions;
+    destination: Destination;
+    destinationOptions: SimpleDestinationOptions;
+    profile: Profile;
+    oldProfileProperties: { [key: string]: any };
+    newProfileProperties: { [key: string]: any };
+    oldGroups: Array<string>;
+    newGroups: Array<string>;
+    toDelete: boolean;
+  }): Promise<boolean>;
 }
 
 export interface ConnectionOption extends AppOption {}
@@ -155,7 +159,7 @@ export interface ConnectionOption extends AppOption {}
  * Method is used to test the connection options for the app.  Returns either a boolean or throws an error to be displayed to the user
  */
 export interface TestPluginMethod {
-  (app: App, appOptions: SimpleAppOptions): Promise<boolean>;
+  (argument: { app: App; appOptions: SimpleAppOptions }): Promise<boolean>;
 }
 
 /**
@@ -163,7 +167,7 @@ export interface TestPluginMethod {
  * Returns a collection of data to display to the user.
  */
 export interface SourceOptionsMethod {
-  (app: App, appOptions: SimpleAppOptions): Promise<{
+  (argument: { app: App; appOptions: SimpleAppOptions }): Promise<{
     [optionName: string]: {
       type: string;
       options?: string[];
@@ -178,25 +182,25 @@ export interface SourceOptionsMethod {
  * [{id: 1, firstName: "Mario"}, {id: 2, firstName: "Luigi"}]
  */
 export interface SourcePreviewMethod {
-  (
-    app: App,
-    appOptions: SimpleAppOptions,
-    source: Source,
-    sourceOptions: SimpleSourceOptions
-  ): Promise<Array<{ [column: string]: any }>>;
+  (argument: {
+    app: App;
+    appOptions: SimpleAppOptions;
+    source: Source;
+    sourceOptions: SimpleSourceOptions;
+  }): Promise<Array<{ [column: string]: any }>>;
 }
 
 /**
  * If a Profile Property Rule is created within the source creation workflow, what default options should that new rule get?
  */
 export interface UniqueProfilePropertyRuleBootstrapOptions {
-  (
-    app: App,
-    appOptions: SimpleAppOptions,
-    source: Source,
-    sourceOptions: SimpleSourceOptions,
-    mappedColumn: string
-  ): Promise<SimpleProfilePropertyRuleOptions>;
+  (argument: {
+    app: App;
+    appOptions: SimpleAppOptions;
+    source: Source;
+    sourceOptions: SimpleSourceOptions;
+    mappedColumn: string;
+  }): Promise<SimpleProfilePropertyRuleOptions>;
 }
 
 /**
@@ -204,7 +208,7 @@ export interface UniqueProfilePropertyRuleBootstrapOptions {
  * Returns a collection of data to display to the user.
  */
 export interface DestinationOptionsMethod {
-  (app: App, appOptions: SimpleAppOptions): Promise<{
+  (argument: { app: App; appOptions: SimpleAppOptions }): Promise<{
     [optionName: string]: {
       type: string;
       options?: string[];
@@ -217,10 +221,10 @@ export interface DestinationOptionsMethod {
  * Given SimpleDestinationOptions, render a preview of the data present in the destination.
  */
 export interface DestinationPreviewMethod {
-  (
-    app: App,
-    appOptions: SimpleAppOptions,
-    destination: Destination,
-    destinationOptions: SimpleDestinationOptions
-  ): Promise<Array<{ [column: string]: any }>>;
+  (argument: {
+    app: App;
+    appOptions: SimpleAppOptions;
+    destination: Destination;
+    destinationOptions: SimpleDestinationOptions;
+  }): Promise<Array<{ [column: string]: any }>>;
 }

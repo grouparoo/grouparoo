@@ -27,6 +27,7 @@ import { Option } from "./Option";
 import { Group } from "./Group";
 import { Run } from "./Run";
 import { GroupRule } from "./GroupRule";
+import { ProfilePropertyRuleFilter } from "./ProfilePropertyRuleFilter";
 import { internalRun } from "../modules/internalRun";
 import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
@@ -131,20 +132,50 @@ export interface PluginConnectionProfilePropertyRuleOption {
   required: boolean;
   description: string;
   type: string;
-  options: (
-    app: App,
-    appOptions: SimpleAppOptions,
-    source: Source,
-    sourceOptions: SimpleSourceOptions,
-    sourceMapping: SourceMapping,
-    profilePropertyRule: ProfilePropertyRule
-  ) => Promise<
+  options: (argument: {
+    app: App;
+    appOptions: SimpleAppOptions;
+    source: Source;
+    sourceOptions: SimpleSourceOptions;
+    sourceMapping: SourceMapping;
+    profilePropertyRule: ProfilePropertyRule;
+  }) => Promise<
     Array<{
       key: string;
       description?: string;
       examples?: Array<any>;
     }>
   >;
+}
+
+export interface PluginConnectionProfilePropertyRuleFilter {
+  column: string;
+  description: string;
+  type: string;
+  options: (argument: {
+    app: App;
+    appOptions: SimpleAppOptions;
+    source: Source;
+    sourceOptions: SimpleSourceOptions;
+    sourceMapping: SourceMapping;
+    profilePropertyRule: ProfilePropertyRule;
+    profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions;
+  }) => Promise<
+    Array<{
+      key: string;
+      ops: string[];
+      canHaveRelativeMatch: boolean;
+    }>
+  >;
+}
+
+export interface ProfilePropertyRuleFiltersWithColumn {
+  column: string;
+  op: string;
+  match?: string | number | boolean;
+  relativeMatchNumber?: number;
+  relativeMatchUnit?: string;
+  relativeMatchDirection?: string;
 }
 
 let CACHE: ProfilePropertyRulesCache = {
@@ -191,6 +222,9 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   @HasMany(() => Option, "ownerGuid")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
+
+  @HasMany(() => ProfilePropertyRuleFilter)
+  profilePropertyRuleFilters: ProfilePropertyRuleFilter[];
 
   @BeforeSave
   static async ensureUniqueKey(instance: ProfilePropertyRule) {
@@ -288,6 +322,15 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   @AfterDestroy
+  static async destroyProfilePropertyRuleFilters(
+    instance: ProfilePropertyRule
+  ) {
+    await ProfilePropertyRuleFilter.destroy({
+      where: { profilePropertyRuleGuid: instance.guid },
+    });
+  }
+
+  @AfterDestroy
   static async clearCacheAfterDestroy(instance: ProfilePropertyRule) {
     await this.clearCache();
     await ProfileProperty.destroy({
@@ -381,14 +424,14 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
     for (const i in pluginConnection.profilePropertyRuleOptions) {
       const opt = pluginConnection.profilePropertyRuleOptions[i];
-      const options = await opt.options(
+      const options = await opt.options({
         app,
         appOptions,
         source,
         sourceOptions,
         sourceMapping,
-        this
-      );
+        profilePropertyRule: this,
+      });
 
       response.push({
         key: opt.key,
@@ -402,8 +445,118 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     return response;
   }
 
+  async getFilters() {
+    const filtersWithCol: ProfilePropertyRuleFiltersWithColumn[] = [];
+    const filters = await this.$get("profilePropertyRuleFilters", {
+      order: [["position", "asc"]],
+    });
+
+    for (const i in filters) {
+      const filter = filters[i];
+      filtersWithCol.push({
+        column: filter.column,
+        op: filter.op,
+        match: filter.match,
+        relativeMatchNumber: filter.relativeMatchNumber,
+        relativeMatchUnit: filter.relativeMatchUnit,
+        relativeMatchDirection: filter.relativeMatchDirection,
+      });
+    }
+
+    return filtersWithCol;
+  }
+
+  async setFilters(filters: ProfilePropertyRuleFiltersWithColumn[]) {
+    await this.validateFilters(filters);
+
+    const transaction = await api.sequelize.transaction();
+
+    try {
+      await ProfilePropertyRuleFilter.destroy({
+        where: {
+          profilePropertyRuleGuid: this.guid,
+        },
+        transaction,
+      });
+
+      for (const i in filters) {
+        const filter = filters[i];
+
+        await GroupRule.create(
+          {
+            position: parseInt(i) + 1,
+            profilePropertyRuleGuid: this.guid,
+            column: filter.column,
+            op: filter.op,
+            match: filter.match,
+            relativeMatchNumber: filter.relativeMatchNumber,
+            relativeMatchUnit: filter.relativeMatchUnit,
+            relativeMatchDirection: filter.relativeMatchDirection,
+          },
+          { transaction }
+        );
+      }
+
+      await transaction.commit();
+      await this.enqueueRuns();
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  }
+
+  async pluginFilterOptions() {
+    const pluginFilterOptions: Array<{
+      column: string;
+      description: string;
+      type: string;
+      options: Array<{
+        key: string;
+        ops: string[];
+        canHaveRelativeMatch: boolean;
+      }>;
+    }> = [];
+
+    const { pluginConnection } = await this.getPlugin();
+    if (!pluginConnection.profilePropertyRuleFilters) {
+      throw new Error("plugin does not provide profilePropertyRuleFilters");
+    }
+
+    const profilePropertyRuleOptions = await this.getOptions();
+    const source = await this.$get("source");
+    const sourceOptions = await source.getOptions();
+    const sourceMapping = await source.getMapping();
+    const app = await source.$get("app");
+    const appOptions = await app.getOptions();
+
+    const profilePropertyRuleFilters =
+      pluginConnection.profilePropertyRuleFilters;
+
+    for (const i in profilePropertyRuleFilters) {
+      const options = await profilePropertyRuleFilters[i].options({
+        app,
+        appOptions,
+        source,
+        sourceOptions,
+        sourceMapping,
+        profilePropertyRule: this,
+        profilePropertyRuleOptions,
+      });
+      pluginFilterOptions.push(
+        Object.assign(profilePropertyRuleFilters[i], { options })
+      );
+    }
+
+    return pluginFilterOptions;
+  }
+
+  async validateFilters(filters: ProfilePropertyRuleFiltersWithColumn[]) {
+    // TODO
+  }
+
   async apiData() {
     const options = await this.getOptions();
+    const filters = await this.getFilters();
     const source = await this.$get("source");
 
     return {
@@ -414,6 +567,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       state: this.state,
       unique: this.unique,
       options,
+      filters,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };

@@ -258,10 +258,14 @@ describe("models/app", () => {
             direction: "import" as "import",
             options: [],
             methods: {
-              profiles: async (schedule, app, run, limit, offset) => {
+              profiles: async ({ schedule, app, run, limit }) => {
                 return { importsCount: 0, nextHighWaterMark: "0" };
               },
-              profileProperty: async (app, profilePropertyRule, profile) => {
+              profileProperty: async ({
+                app,
+                profilePropertyRule,
+                profile,
+              }) => {
                 profilePropertyCount++;
                 return { email: "test@example.com" };
               },

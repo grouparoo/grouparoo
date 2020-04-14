@@ -218,7 +218,7 @@ export namespace helper {
             profiles: async () => {
               return { importsCount: 0, nextHighWaterMark: 0 };
             },
-            profileProperty: async (
+            profileProperty: async ({
               app,
               appOptions,
               source,
@@ -226,8 +226,8 @@ export namespace helper {
               sourceMapping,
               profilePropertyRule,
               profilePropertyRuleOptions,
-              profile
-            ) => {
+              profile,
+            }) => {
               const data = {
                 userId: new Date().getTime(),
                 isVIP: true,

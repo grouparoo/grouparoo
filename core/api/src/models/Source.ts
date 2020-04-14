@@ -229,19 +229,21 @@ export class Source extends LoggedModel<Source> {
     const sourceOptions = await this.getOptions();
     const sourceMapping = await this.getMapping();
     const profilePropertyRuleOptions = await profilePropertyRule.getOptions();
+    const profilePropertyRuleFilters = await profilePropertyRule.getFilters();
 
-    return method(
+    return method({
       app,
       appOptions,
-      this,
+      source: this,
       sourceOptions,
       sourceMapping,
       profilePropertyRule,
-      profilePropertyRuleOptionsOverride
+      profilePropertyRuleOptions: profilePropertyRuleOptionsOverride
         ? profilePropertyRuleOptionsOverride
         : profilePropertyRuleOptions,
-      profile
-    );
+      profilePropertyRuleFilters,
+      profile,
+    });
   }
 
   async sourceConnectionOptions() {
@@ -253,7 +255,7 @@ export class Source extends LoggedModel<Source> {
       return {};
     }
 
-    return pluginConnection.methods.sourceOptions(app, appOptions);
+    return pluginConnection.methods.sourceOptions({ app, appOptions });
   }
 
   async sourcePreview(sourceOptions?: SimpleSourceOptions) {
@@ -276,12 +278,12 @@ export class Source extends LoggedModel<Source> {
       throw new Error(`cannot return a source preview for ${this.type}`);
     }
 
-    return pluginConnection.methods.sourcePreview(
+    return pluginConnection.methods.sourcePreview({
       app,
       appOptions,
-      this,
-      sourceOptions
-    );
+      source: this,
+      sourceOptions,
+    });
   }
 
   async apiData(
@@ -448,11 +450,13 @@ export class Source extends LoggedModel<Source> {
       const appOptions = await app.getOptions();
       const options = await this.getOptions();
       const ruleOptions = await pluginConnection.methods.uniqueProfilePropertyRuleBootstrapOptions(
-        app,
-        appOptions,
-        this,
-        options,
-        mappedColumn
+        {
+          app,
+          appOptions,
+          source: this,
+          sourceOptions: options,
+          mappedColumn,
+        }
       );
 
       await rule.setOptions(ruleOptions);
