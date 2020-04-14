@@ -9,8 +9,6 @@ else
   N=4
 fi
 
-echo $N
-
 echo -e "🦘🦘🦘 BUILDING GROUPAROO MONOREPO 🦘🦘"
 echo -e "dir: $PROJECT_ROOT"
 echo -e ""
