@@ -74,7 +74,8 @@ export default function RulesBuilder({
     setLoading(true);
     const response = await execApi(
       "get",
-      `/api/${apiVersion}/profilePropertyRules`
+      `/api/${apiVersion}/profilePropertyRules`,
+      { state: "ready" }
     );
     setLoading(false);
     if (response?.profilePropertyRules) {
