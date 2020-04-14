@@ -40,6 +40,7 @@ import { plugin } from "../../src/index";
 const { api, cache, Process } = require("actionhero");
 
 import fs from "fs";
+import path from "path";
 import nock from "nock";
 
 export namespace helper {
@@ -276,16 +277,45 @@ export namespace helper {
     };
   }
 
-  export function recordNock(nockFile) {
+  export function recordNock(nockFile, rewriteFunction = null) {
+    nockFile = path.resolve(nockFile);
     if (fs.existsSync(nockFile)) {
       fs.unlinkSync(nockFile);
     }
-    const appendLogToFile = (content) => {
-      fs.appendFileSync(nockFile, content);
+
+    // write this as the first line.
+    const prepend = "const nock = require('nock');\n";
+    fs.appendFileSync(nockFile, prepend);
+
+    const appendLogToFile = (toAdd) => {
+      if (rewriteFunction) {
+        toAdd = rewriteFunction(toAdd);
+      }
+      fs.appendFileSync(nockFile, toAdd);
     };
-    appendLogToFile("const nock = require('nock');\n");
+
+    const onlyCallOnce = (content) => {
+      let methodIndex = -1;
+      if (methodIndex < 0) methodIndex = content.indexOf(".get(");
+      if (methodIndex < 0) methodIndex = content.indexOf(".post(");
+      if (methodIndex < 0) methodIndex = content.indexOf(".delete(");
+      if (methodIndex < 0) methodIndex = content.indexOf(".put(");
+      if (methodIndex < 0) {
+        throw `nock method not found: ${content}`;
+      }
+      const closeIndex = content.indexOf(")", methodIndex) + 1;
+      // make sure each is only called once
+      const updated =
+        content.slice(0, closeIndex) + ".once()" + content.slice(closeIndex);
+      return updated;
+    };
+    const addRecording = (content) => {
+      content = onlyCallOnce(content);
+      appendLogToFile(content);
+    };
+
     nock.recorder.rec({
-      logging: appendLogToFile,
+      logging: addRecording,
       use_separator: false,
     });
   }
