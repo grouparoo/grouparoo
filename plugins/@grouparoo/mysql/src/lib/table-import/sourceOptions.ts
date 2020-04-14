@@ -1,7 +1,7 @@
 import { connect } from "../connect";
-import { App, SimpleAppOptions } from "@grouparoo/core";
+import { SourceOptionsMethod } from "@grouparoo/core";
 
-export async function sourceOptions(app: App, appOptions: SimpleAppOptions) {
+export const sourceOptions: SourceOptionsMethod = async ({ appOptions }) => {
   const response = { table: { type: "list", options: [] } };
 
   const client = await connect(appOptions);
@@ -17,4 +17,4 @@ export async function sourceOptions(app: App, appOptions: SimpleAppOptions) {
 
   await client.asyncEnd();
   return response;
-}
+};

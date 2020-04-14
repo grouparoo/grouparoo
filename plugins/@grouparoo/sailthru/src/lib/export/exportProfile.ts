@@ -1,28 +1,18 @@
-import {
-  Profile,
-  App,
-  Destination,
-  SimpleAppOptions,
-  SimpleDestinationOptions,
-} from "@grouparoo/core";
+import { ExportProfilePluginMethod } from "@grouparoo/core";
 import Sailthru from "../client";
 
 import { log } from "actionhero";
 
 // https://getstarted.sailthru.com/developers/api/user/
 
-export async function exportProfile(
-  app: App,
-  appOptions: SimpleAppOptions,
-  destination: Destination,
-  destinationOptions: SimpleDestinationOptions,
-  profile: Profile,
-  oldProfileProperties: { [key: string]: any },
-  newProfileProperties: { [key: string]: any },
-  oldGroups: Array<string>,
-  newGroups: Array<string>,
-  toDelete: boolean
-) {
+export const exportProfile: ExportProfilePluginMethod = async ({
+  appOptions,
+  newProfileProperties,
+  oldProfileProperties,
+  newGroups,
+  oldGroups,
+  toDelete,
+}) => {
   const client = new Sailthru(appOptions);
   const email = newProfileProperties.email;
 
@@ -94,7 +84,7 @@ export async function exportProfile(
   await client.updateUser(payload);
 
   return true;
-}
+};
 
 function formatVar(value) {
   if (!value) {

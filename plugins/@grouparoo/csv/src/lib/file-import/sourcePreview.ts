@@ -1,19 +1,8 @@
 import fs from "fs-extra";
 import csvParser from "csv-parser";
-import {
-  App,
-  Source,
-  SimpleAppOptions,
-  SimpleSourceOptions,
-  plugin,
-} from "@grouparoo/core";
+import { plugin, SourcePreviewMethod } from "@grouparoo/core";
 
-export async function sourcePreview(
-  app: App,
-  appOptions: SimpleAppOptions,
-  source: Source,
-  sourceOptions: SimpleSourceOptions
-) {
+export const sourcePreview: SourcePreviewMethod = async ({ sourceOptions }) => {
   const response = [];
 
   if (!sourceOptions.fileGuid) {
@@ -42,4 +31,4 @@ export async function sourcePreview(
   });
 
   return response;
-}
+};

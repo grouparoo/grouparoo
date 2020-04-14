@@ -1,25 +1,15 @@
-import {
-  Profile,
-  App,
-  Destination,
-  SimpleAppOptions,
-  SimpleDestinationOptions,
-} from "@grouparoo/core";
+import { ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { generateMailchimpId } from "./../generateMailchimpId";
 
-export async function exportProfile(
-  app: App,
-  appOptions: SimpleAppOptions,
-  destination: Destination,
-  destinationOptions: SimpleDestinationOptions,
-  profile: Profile,
-  oldProfileProperties: { [key: string]: any },
-  newProfileProperties: { [key: string]: any },
-  oldGroups: Array<string>,
-  newGroups: Array<string>,
-  toDelete: boolean
-) {
+export const exportProfile: ExportProfilePluginMethod = async ({
+  appOptions,
+  destinationOptions,
+  toDelete,
+  newProfileProperties,
+  oldProfileProperties,
+  newGroups,
+}) => {
   const client = await connect(appOptions);
   let response;
 
@@ -136,4 +126,4 @@ export async function exportProfile(
 
     return true;
   }
-}
+};

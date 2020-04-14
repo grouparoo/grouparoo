@@ -1,5 +1,5 @@
-import { App, SimpleAppOptions } from "@grouparoo/core";
+import { SourceOptionsMethod } from "@grouparoo/core";
 
-export async function sourceOptions(app: App, appOptions: SimpleAppOptions) {
+export const sourceOptions: SourceOptionsMethod = async () => {
   return {}; // no options at the source level
-}
+};

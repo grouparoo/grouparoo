@@ -1,25 +1,14 @@
 import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
-import {
-  App,
-  SimpleAppOptions,
-  Source,
-  SimpleSourceOptions,
-  Profile,
-  ProfilePropertyRule,
-  SimpleProfilePropertyRuleOptions,
-} from "@grouparoo/core";
+import { ProfilePropertyPluginMethod } from "@grouparoo/core";
 
-export async function profileProperty(
-  app: App,
-  appOptions: SimpleAppOptions,
-  source: Source,
-  sourceOptions: SimpleSourceOptions,
-  sourceMapping: SimpleSourceOptions,
-  profilePropertyRule: ProfilePropertyRule,
-  profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions,
-  profile: Profile
-) {
+export const profileProperty: ProfilePropertyPluginMethod = async ({
+  profile,
+  appOptions,
+  sourceMapping,
+  profilePropertyRule,
+  profilePropertyRuleOptions,
+}) => {
   const parameterizedQuery = await profilePropertyRule.parameterizedQueryFromProfile(
     profilePropertyRuleOptions.query,
     profile
@@ -48,4 +37,4 @@ export async function profileProperty(
   }
 
   return row;
-}
+};

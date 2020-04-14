@@ -1,15 +1,6 @@
 import fs from "fs-extra";
 import csvParser from "csv-parser";
-import {
-  plugin,
-  Schedule,
-  App,
-  SimpleAppOptions,
-  Source,
-  SimpleSourceOptions,
-  SourceMapping,
-  Run,
-} from "@grouparoo/core";
+import { plugin, ProfilesPluginMethod } from "@grouparoo/core";
 
 async function sleep() {
   return new Promise((resolve) => {
@@ -17,18 +8,14 @@ async function sleep() {
   });
 }
 
-export async function profiles(
-  schedule: Schedule,
-  app: App,
-  appOptions: SimpleAppOptions,
-  source: Source,
-  sourceOptions: SimpleSourceOptions,
-  sourceMapping: SourceMapping,
-  run: Run,
-  limit: number,
-  filter: { [key: string]: any },
-  highWaterMark: number
-) {
+export const profiles: ProfilesPluginMethod = async ({
+  source,
+  sourceOptions,
+  sourceMapping,
+  run,
+  limit,
+  highWaterMark,
+}) => {
   let combinedMapping = sourceMapping;
   const profilePropertyRules = await source.$get("profilePropertyRules");
   for (const i in profilePropertyRules) {
@@ -49,7 +36,7 @@ export async function profiles(
   //       Scanning the whole file each time seems silly.
   let importsCount = 0;
   let rowId = -1;
-  const offset = highWaterMark || 0;
+  const offset = highWaterMark ? parseInt(highWaterMark.toString()) : 0;
 
   await new Promise((resolve, reject) => {
     parser.once("readable", async () => {
@@ -79,4 +66,4 @@ export async function profiles(
 
   const nextHighWaterMark = limit + offset;
   return { importsCount, nextHighWaterMark };
-}
+};

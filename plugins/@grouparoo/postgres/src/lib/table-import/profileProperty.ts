@@ -1,25 +1,15 @@
 import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
-import {
-  App,
-  SimpleAppOptions,
-  Source,
-  SimpleSourceOptions,
-  Profile,
-  ProfilePropertyRule,
-  SimpleProfilePropertyRuleOptions,
-} from "@grouparoo/core";
+import { ProfilePropertyPluginMethod } from "@grouparoo/core";
 
-export async function profileProperty(
-  app: App,
-  appOptions: SimpleAppOptions,
-  source: Source,
-  sourceOptions: SimpleSourceOptions,
-  sourceMapping: SimpleSourceOptions,
-  profilePropertyRule: ProfilePropertyRule,
-  profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions,
-  profile: Profile
-) {
+export const profileProperty: ProfilePropertyPluginMethod = async ({
+  profile,
+  appOptions,
+  profilePropertyRule,
+  sourceOptions,
+  sourceMapping,
+  profilePropertyRuleOptions,
+}) => {
   const table = sourceOptions.table;
   const tableCol = Object.keys(sourceMapping)[0];
   const profilePropertyMatch = Object.values(sourceMapping)[0];
@@ -85,4 +75,4 @@ export async function profileProperty(
   }
 
   return row;
-}
+};

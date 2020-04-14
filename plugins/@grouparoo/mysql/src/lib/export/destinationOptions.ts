@@ -1,10 +1,9 @@
 import { connect } from "../connect";
-import { App, SimpleAppOptions } from "@grouparoo/core";
+import { DestinationOptionsMethod } from "@grouparoo/core";
 
-export async function destinationOptions(
-  app: App,
-  appOptions: SimpleAppOptions
-) {
+export const destinationOptions: DestinationOptionsMethod = async ({
+  appOptions,
+}) => {
   const response = {
     table: { type: "list", options: [] },
     groupsTable: { type: "list", options: [] },
@@ -48,4 +47,4 @@ export async function destinationOptions(
   response.groupColumnName.options = columns;
 
   return response;
-}
+};

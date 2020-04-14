@@ -1,26 +1,14 @@
-import {
-  App,
-  SimpleAppOptions,
-  Source,
-  SimpleSourceOptions,
-  SourceMapping,
-} from "@grouparoo/core";
+import { PluginConnectionScheduleOption } from "@grouparoo/core";
 import { sourcePreview } from "./sourcePreview";
 
-export const scheduleOptions = [
+export const scheduleOptions: PluginConnectionScheduleOption[] = [
   {
     key: "column",
     required: true,
     description: "which column to scan for changes",
     type: "list",
-    options: async (
-      app: App,
-      appOptions: SimpleAppOptions,
-      source: Source,
-      sourceOptions: SimpleSourceOptions,
-      sourceMapping: SourceMapping
-    ) => {
-      const rows = await sourcePreview(app, appOptions, source, sourceOptions);
+    options: async (args) => {
+      const rows = await sourcePreview(args);
 
       const columns = [];
       Object.keys(rows[0]).map((k) => {

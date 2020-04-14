@@ -17,6 +17,19 @@ import {
   PluginConnectionScheduleOption,
 } from "../models/Schedule";
 
+export {
+  SimpleProfilePropertyRuleOptions,
+  PluginConnectionProfilePropertyRuleOption,
+  PluginConnectionProfilePropertyRuleFilter,
+  ProfilePropertyRuleFiltersWithColumn,
+} from "../models/ProfilePropertyRule";
+
+export { PluginConnectionScheduleOption } from "../models/Schedule";
+
+export { SimpleAppOptions } from "../models/App";
+export { SimpleSourceOptions } from "../models/Source";
+export { SimpleDestinationOptions } from "../models/Destination";
+
 /**
  * The plugin class
  */
@@ -177,7 +190,7 @@ export interface SourceOptionsMethod {
 }
 
 /**
- * Given SimpleSourceOptions, render a preview of the data present in the source.
+ * Render a preview of the data present in the source.
  * The response should be an array of objects where each object is a profile record with the keys matching that of the source, ie:
  * [{id: 1, firstName: "Mario"}, {id: 2, firstName: "Luigi"}]
  */

@@ -1,19 +1,9 @@
-import {
-  App,
-  Source,
-  SimpleAppOptions,
-  SimpleSourceOptions,
-  SourceMapping,
-} from "@grouparoo/core";
+import { UniqueProfilePropertyRuleBootstrapOptions } from "@grouparoo/core";
 
-export async function uniqueProfilePropertyRuleBootstrapOptions(
-  app: App,
-  appOptions: SimpleAppOptions,
-  source: Source,
-  sourceOptions: SimpleSourceOptions,
-  mappedColumn: string
-) {
+export const uniqueProfilePropertyRuleBootstrapOptions: UniqueProfilePropertyRuleBootstrapOptions = async ({
+  mappedColumn,
+}) => {
   const options = { "aggregation method": "exact", column: mappedColumn };
 
   return options;
-}
+};
