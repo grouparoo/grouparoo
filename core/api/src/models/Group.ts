@@ -228,7 +228,7 @@ export class Group extends LoggedModel<Group> {
       });
     }
 
-    return this.fromConniventRules(rulesWithKey);
+    return this.fromConvenientRules(rulesWithKey);
   }
 
   async setRules(rules: GroupRuleWithKey[]) {
@@ -309,23 +309,23 @@ export class Group extends LoggedModel<Group> {
     };
   }
 
-  fromConniventRules(rules) {
-    const conniventRules = PROFILE_PROPERTY_RULE_OPS._conniventRules;
+  fromConvenientRules(rules) {
+    const convenientRules = PROFILE_PROPERTY_RULE_OPS._convenientRules;
     for (const i in rules) {
-      if (conniventRules[rules[i].op]) {
-        rules[i] = Object.assign(rules[i], conniventRules[rules[i].op]);
+      if (convenientRules[rules[i].op]) {
+        rules[i] = Object.assign(rules[i], convenientRules[rules[i].op]);
       }
     }
     return rules;
   }
 
-  toConniventRules(rules) {
-    const conniventRules = PROFILE_PROPERTY_RULE_OPS._conniventRules;
+  toConvenientRules(rules) {
+    const convenientRules = PROFILE_PROPERTY_RULE_OPS._convenientRules;
     for (const i in rules) {
-      for (const k in conniventRules) {
+      for (const k in convenientRules) {
         if (
-          conniventRules[k].op === rules[i].op &&
-          conniventRules[k].match === rules[i].match
+          convenientRules[k].op === rules[i].op &&
+          convenientRules[k].match === rules[i].match
         ) {
           rules[i] = Object.assign(rules[i], { op: k });
         }

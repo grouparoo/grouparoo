@@ -93,7 +93,7 @@ export const PROFILE_PROPERTY_RULE_OPS = {
     endsWith: "ends with",
     substring: "has the string",
   },
-  _conniventRules: {
+  _convenientRules: {
     exists: { op: "ne", match: "null" },
     notExists: { op: "eq", match: "null" },
   },
