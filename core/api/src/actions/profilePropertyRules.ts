@@ -29,19 +29,14 @@ export class ProfilePropertyRulesList extends Action {
   }
 
   async run({ params, response }) {
-    let unique = false;
-    if (params?.unique?.toString() === "true") {
-      unique = true;
-    }
-
     const where = {};
 
     if (params.state) {
       where["state"] = params.state;
     }
 
-    if (unique) {
-      where["unique"] = params.unique;
+    if (params?.unique?.toString().toLowerCase() === "true") {
+      where["unique"] = true;
     }
 
     const profilePropertyRules = await ProfilePropertyRule.findAll({
