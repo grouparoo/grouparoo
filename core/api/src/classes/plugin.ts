@@ -5,8 +5,7 @@ import { Run } from "../models/Run";
 import {
   PluginConnectionProfilePropertyRuleOption,
   SimpleProfilePropertyRuleOptions,
-  PluginConnectionProfilePropertyRuleFilter,
-  ProfilePropertyRuleFiltersWithColumn,
+  ProfilePropertyRuleFiltersWithKey,
 } from "../models/ProfilePropertyRule";
 import { Profile } from "../models/Profile";
 import { RunFilter } from "../models/Run";
@@ -20,8 +19,7 @@ import {
 export {
   SimpleProfilePropertyRuleOptions,
   PluginConnectionProfilePropertyRuleOption,
-  PluginConnectionProfilePropertyRuleFilter,
-  ProfilePropertyRuleFiltersWithColumn,
+  ProfilePropertyRuleFiltersWithKey,
 } from "../models/ProfilePropertyRule";
 
 export { PluginConnectionScheduleOption } from "../models/Schedule";
@@ -76,11 +74,11 @@ export interface PluginConnection {
   app: string;
   options: ConnectionOption[];
   profilePropertyRuleOptions?: PluginConnectionProfilePropertyRuleOption[];
-  profilePropertyRuleFilters?: PluginConnectionProfilePropertyRuleFilter[];
   scheduleOptions?: PluginConnectionScheduleOption[];
   methods?: {
     sourceOptions?: SourceOptionsMethod;
     sourcePreview?: SourcePreviewMethod;
+    sourceFilters?: SourceFilterMethod;
     uniqueProfilePropertyRuleBootstrapOptions?: UniqueProfilePropertyRuleBootstrapOptions;
     profiles?: ProfilesPluginMethod;
     profileProperty?: ProfilePropertyPluginMethod;
@@ -124,7 +122,7 @@ export interface ProfilePropertyPluginMethod {
     sourceMapping: SourceMapping;
     profilePropertyRule: ProfilePropertyRule;
     profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions;
-    profilePropertyRuleFilters: ProfilePropertyRuleFiltersWithColumn[];
+    profilePropertyRuleFilters: ProfilePropertyRuleFiltersWithKey[];
     profile: Profile;
   }): Promise<any>;
 }
@@ -201,6 +199,24 @@ export interface SourcePreviewMethod {
     source: Source;
     sourceOptions: SimpleSourceOptions;
   }): Promise<Array<{ [column: string]: any }>>;
+}
+
+/**
+ * Return a list of things that this profile property rule can be filtered by
+ * [{key: createdAt, ops: ['greater than', 'less than'], canHaveRelativeMatch: true}]
+ */
+export interface SourceFilterMethod {
+  (argument: {
+    app: App;
+    appOptions: SimpleAppOptions;
+    source: Source;
+    sourceOptions: SimpleSourceOptions;
+    sourceMapping: SourceMapping;
+    profilePropertyRule: ProfilePropertyRule;
+    profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions;
+  }): Promise<
+    Array<{ key: string; ops: Array<string>; canHaveRelativeMatch: boolean }>
+  >;
 }
 
 /**

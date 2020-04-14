@@ -43,7 +43,7 @@ export class ProfilePropertyRuleFilter extends Model<
 
   @AllowNull(false)
   @Column
-  column: string;
+  key: string;
 
   @AllowNull(false)
   @Column
@@ -72,7 +72,7 @@ export class ProfilePropertyRuleFilter extends Model<
     return {
       guid: this.guid,
       profilePropertyRuleGuid: this.profilePropertyRuleGuid,
-      column: this.column,
+      key: this.key,
       position: this.position,
       match: this.match,
       op: this.op,

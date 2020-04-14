@@ -23,7 +23,7 @@ module.exports = {
         allowNull: false,
       },
 
-      column: {
+      key: {
         type: DataTypes.STRING(191),
         allowNull: false,
       },

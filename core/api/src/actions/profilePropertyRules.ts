@@ -137,6 +137,7 @@ export class ProfilePropertyRuleCreate extends Action {
       state: { required: false },
       sourceGuid: { required: false },
       options: { required: false },
+      filters: { required: false },
     };
   }
 
@@ -150,6 +151,10 @@ export class ProfilePropertyRuleCreate extends Action {
 
     if (params.options) {
       await profilePropertyRule.setOptions(params.options);
+    }
+
+    if (params.filters) {
+      await profilePropertyRule.setFilters(params.filters);
     }
 
     if (params.state) {
@@ -176,6 +181,7 @@ export class ProfilePropertyRuleEdit extends Action {
       state: { required: false },
       sourceGuid: { required: false },
       options: { required: false },
+      filters: { required: false },
     };
   }
 
@@ -191,10 +197,38 @@ export class ProfilePropertyRuleEdit extends Action {
       await profilePropertyRule.setOptions(params.options);
     }
 
+    if (params.filters) {
+      await profilePropertyRule.setFilters(params.filters);
+    }
+
     await profilePropertyRule.update(params);
 
     response.profilePropertyRule = await profilePropertyRule.apiData();
     response.pluginOptions = await profilePropertyRule.pluginOptions();
+  }
+}
+
+export class ProfilePropertyRuleFilterOptions extends Action {
+  constructor() {
+    super();
+    this.name = "profilePropertyRule:filterOptions";
+    this.description = "view a the filter options for a profile property rule";
+    this.outputExample = {};
+    this.middleware = ["authenticated-team-member", "role-read"];
+    this.inputs = {
+      guid: { required: true },
+    };
+  }
+
+  async run({ params, response }) {
+    const profilePropertyRule = await ProfilePropertyRule.findOne({
+      where: { guid: params.guid },
+    });
+    if (!profilePropertyRule) {
+      throw new Error("profilePropertyRule not found");
+    }
+
+    response.options = await profilePropertyRule.pluginFilterOptions();
   }
 }
 
