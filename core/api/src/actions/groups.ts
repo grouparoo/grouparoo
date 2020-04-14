@@ -115,7 +115,7 @@ export class GroupEdit extends Action {
     }
 
     response.group = await group.apiData();
-    response.group.rules = group.toConniventRules(await group.getRules());
+    response.group.rules = group.toConvenientRules(await group.getRules());
   }
 }
 
@@ -254,7 +254,7 @@ export class GroupView extends Action {
     }
 
     response.group = await group.apiData();
-    response.group.rules = group.toConniventRules(await group.getRules());
+    response.group.rules = group.toConvenientRules(await group.getRules());
   }
 }
 
@@ -291,7 +291,7 @@ export class GroupCountComponentMembers extends Action {
       componentCounts,
       funnelCounts,
     } = await group.countComponentMembersFromRules(
-      group.fromConniventRules(rules)
+      group.fromConvenientRules(rules)
     );
     response.componentCounts = componentCounts;
     response.funnelCounts = funnelCounts;
@@ -328,7 +328,7 @@ export class GroupCountPotentialMembers extends Action {
     }
 
     const count = await group.countPotentialMembers(
-      group.fromConniventRules(rules)
+      group.fromConvenientRules(rules)
     );
     response.count = count;
   }
