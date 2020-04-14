@@ -16,6 +16,7 @@ export class ProfilePropertyRulesList extends Action {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
       unique: { required: false },
+      state: { required: false },
       order: {
         required: true,
         default: [
@@ -28,16 +29,21 @@ export class ProfilePropertyRulesList extends Action {
   }
 
   async run({ params, response }) {
-    let unique = false;
-    if (params?.unique?.toString() === "true") {
-      unique = true;
+    const where = {};
+
+    if (params.state) {
+      where["state"] = params.state;
+    }
+
+    if (params?.unique?.toString().toLowerCase() === "true") {
+      where["unique"] = true;
     }
 
     const profilePropertyRules = await ProfilePropertyRule.findAll({
       limit: params.limit,
       offset: params.offset,
       order: params.order,
-      where: unique ? { unique } : null,
+      where,
     });
 
     response.profilePropertyRules = [];

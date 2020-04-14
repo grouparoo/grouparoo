@@ -185,6 +185,32 @@ describe("actions/profilePropertyRules", () => {
       await profile.destroy();
     });
 
+    test("an administrator can list rules in a certain state", async () => {
+      connection.params = {
+        state: "ready",
+        csrfToken,
+      };
+      const { error, profilePropertyRules } = await specHelper.runAction(
+        "profilePropertyRules:list",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(profilePropertyRules.length).toBe(1); // just userId
+    });
+
+    test("an administrator can list unique rules", async () => {
+      connection.params = {
+        unique: "true",
+        csrfToken,
+      };
+      const { error, profilePropertyRules } = await specHelper.runAction(
+        "profilePropertyRules:list",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(profilePropertyRules.length).toBe(1); // just userId
+    });
+
     test("an administrator can see groups which rely on a profilePropertyRule", async () => {
       const group = await helper.factories.group({ type: "calculated" });
       await group.setRules([
