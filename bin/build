@@ -3,7 +3,13 @@
 set -e
 
 PROJECT_ROOT=$(cd $(dirname $0)/.. && pwd)
-N=4
+if [[ -z "${CI}" ]]; then
+  N=$(($(getconf _NPROCESSORS_ONLN)/2)) || 4
+else
+  N=4
+fi
+
+echo $N
 
 echo -e "🦘🦘🦘 BUILDING GROUPAROO MONOREPO 🦘🦘"
 echo -e "dir: $PROJECT_ROOT"
