@@ -10,7 +10,7 @@ echo -e "dir: $PROJECT_ROOT"
 echo -e ""
 
 # 0. build dependancies
-echo "--- (re)building npm dependancies in parallel ---"
+echo "--- (re)building npm dependancies ---"
 DEPS=""
 for p in $PROJECT_ROOT/node_modules/**/package.json ; do
   # matching "install" will find both postinstall and install scripts!
@@ -19,8 +19,13 @@ for p in $PROJECT_ROOT/node_modules/**/package.json ; do
   fi
 done
 echo "$DEPS"
-npm rebuild $DEPS
-echo -e  "\r\n✨ npm rebuild complete\r\n"
+if output=$(npm rebuild $DEPS); then
+  echo -e  "\r\n✨ npm rebuild complete\r\n"
+else
+  echo -e "\r\n❗️ error (re)building npm dependancies\r\n"
+  echo -e "$output"
+  exit 1
+fi
 
 # # 1. build core/api
 echo "--- building core/api ---"
@@ -42,7 +47,7 @@ done
 
 for job in `jobs -p`; do
   wait $job || (
-    echo -e "\r\n❗️ error building plugins\r\n" &&
+    echo -e "\r\n❗️ error building plugins\r\n"
     exit 1
   )
 done
