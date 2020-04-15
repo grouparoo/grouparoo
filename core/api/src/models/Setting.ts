@@ -37,4 +37,14 @@ export class Setting extends LoggedModel<Setting> {
       updatedAt: this.updatedAt,
     };
   }
+
+  // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
+  }
 }

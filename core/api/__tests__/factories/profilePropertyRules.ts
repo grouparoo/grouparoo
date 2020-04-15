@@ -17,7 +17,6 @@ export default async (
   await source.bootstrapUniqueProfilePropertyRule("userId", "integer", "id");
   await source.setMapping({ userId: "userId" });
   await source.update({ state: "ready" });
-  const sourceGuid = source.guid;
 
   for (const key in props) {
     const type = props[key];
@@ -28,12 +27,13 @@ export default async (
     }
 
     const rule = await ProfilePropertyRule.create({
-      sourceGuid,
+      sourceGuid: source.guid,
       key,
       type,
       unique,
     });
 
     await rule.setOptions({ column: key });
+    await rule.update({ state: "ready" });
   }
 };

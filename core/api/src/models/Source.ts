@@ -13,6 +13,7 @@ import {
   ForeignKey,
   Default,
   DataType,
+  DefaultScope,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
@@ -39,6 +40,9 @@ const STATE_TRANSITIONS = [
   },
 ];
 
+@DefaultScope(() => ({
+  where: { state: "ready" },
+}))
 @Table({ tableName: "sources", paranoid: false })
 export class Source extends LoggedModel<Source> {
   guidPrefix() {
@@ -104,6 +108,14 @@ export class Source extends LoggedModel<Source> {
     }
   }
 
+  @BeforeCreate
+  static async ensureAppReady(instance: Source) {
+    const app = await App.findByGuid(instance.appGuid);
+    if (app.state !== "ready") {
+      throw new Error(`app ${app.guid} is not ready`);
+    }
+  }
+
   @BeforeSave
   static async updateState(instance: App) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
@@ -111,7 +123,7 @@ export class Source extends LoggedModel<Source> {
 
   @BeforeDestroy
   static async ensureNoSchedule(instance: Source) {
-    const schedule = await instance.$get("schedule");
+    const schedule = await instance.$get("schedule", { scope: null });
     if (schedule) {
       throw new Error("you cannot delete a source that has a schedule");
     }
@@ -119,7 +131,9 @@ export class Source extends LoggedModel<Source> {
 
   @BeforeDestroy
   static async ensureNoProfilePropertyRules(instance: Source) {
-    const profilePropertyRules = await instance.$get("profilePropertyRules");
+    const profilePropertyRules = await instance.$get("profilePropertyRules", {
+      scope: null,
+    });
     if (profilePropertyRules.length > 0) {
       throw new Error(
         "you cannot delete a source that has profile property rules"
@@ -297,10 +311,14 @@ export class Source extends LoggedModel<Source> {
       app = await this.$get("app");
     }
     if (includeSchedule) {
-      schedule = await this.$get("schedule");
+      schedule = await this.$get("schedule", {
+        scope: null,
+      });
     }
     if (includeProfilePropertyRules) {
-      profilePropertyRules = await this.$get("profilePropertyRules");
+      profilePropertyRules = await this.$get("profilePropertyRules", {
+        scope: null,
+      });
     }
 
     const options = await this.getOptions();
@@ -429,35 +447,52 @@ export class Source extends LoggedModel<Source> {
       sourceGuid: this.guid,
     });
 
-    // manually run the hooks we want
-    ProfilePropertyRule.generateGuid(rule);
-    await ProfilePropertyRule.ensureUniqueKey(rule);
+    try {
+      // manually run the hooks we want
+      ProfilePropertyRule.generateGuid(rule);
+      await ProfilePropertyRule.ensureUniqueKey(rule);
 
-    // @ts-ignore
-    // danger zone!
-    await rule.save({ hooks: false });
-    await ProfilePropertyRule.clearCacheAfterSave();
+      // @ts-ignore
+      // danger zone!
+      await rule.save({ hooks: false });
+      await ProfilePropertyRule.clearCacheAfterSave();
 
-    // build the default options
-    const { pluginConnection } = await this.getPlugin();
-    if (
-      typeof pluginConnection.methods
-        .uniqueProfilePropertyRuleBootstrapOptions === "function"
-    ) {
-      const app = await this.$get("app");
-      const appOptions = await app.getOptions();
-      const options = await this.getOptions();
-      const ruleOptions = await pluginConnection.methods.uniqueProfilePropertyRuleBootstrapOptions(
-        app,
-        appOptions,
-        this,
-        options,
-        mappedColumn
-      );
+      // build the default options
+      const { pluginConnection } = await this.getPlugin();
+      if (
+        typeof pluginConnection.methods
+          .uniqueProfilePropertyRuleBootstrapOptions === "function"
+      ) {
+        const app = await this.$get("app");
+        const appOptions = await app.getOptions();
+        const options = await this.getOptions();
+        const ruleOptions = await pluginConnection.methods.uniqueProfilePropertyRuleBootstrapOptions(
+          app,
+          appOptions,
+          this,
+          options,
+          mappedColumn
+        );
 
-      await rule.setOptions(ruleOptions);
+        await rule.setOptions(ruleOptions);
+      }
+
+      return rule;
+    } catch (error) {
+      if (rule) {
+        await rule.destroy();
+        throw error;
+      }
     }
+  }
 
-    return rule;
+  // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
   }
 }

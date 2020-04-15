@@ -85,7 +85,6 @@ describe("tasks/group:run", () => {
       let imports = [];
       await group.setRules([{ key: "email", match: "%@%", op: "iLike" }]);
 
-      await group.reload();
       expect(group.state).toBe("initializing");
 
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
@@ -141,7 +140,6 @@ describe("tasks/group:run", () => {
         },
       ]);
 
-      await group.reload();
       expect(group.state).toBe("initializing");
 
       imports = await Import.findAll();

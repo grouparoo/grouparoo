@@ -27,10 +27,8 @@ describe("actions/sources", () => {
       email: "mario@example.com",
     });
 
-    app = await App.create({
-      name: "test app",
-      type: "test-plugin-app",
-    });
+    app = await helper.factories.app();
+    await app.update({ name: "test app" });
   });
 
   describe("administrator signed in", () => {

@@ -26,10 +26,7 @@ export class DetermineRunState extends Task {
         (await plugin.readSetting("core", "runs-profile-batch-size")).value
       );
 
-    const run = await Run.findOne({ where: { guid: params.runGuid } });
-    if (!run) {
-      throw new Error(`run ${params.runGuid} not found`);
-    }
+    const run = await Run.findByGuid(params.runGuid);
 
     if (run.state === "stopped") {
       return;

@@ -375,6 +375,7 @@ describe("models/run", () => {
       const app = await App.create({
         name: "bad app",
         type: "test-error-app",
+        state: "ready",
       });
 
       const source = await Source.create({

@@ -25,12 +25,7 @@ describe("models/schedule", () => {
 
     beforeAll(async () => {
       await helper.factories.profilePropertyRules();
-
-      app = await App.create({
-        name: "test app",
-        type: "test-plugin-app",
-        options: { fileGuid: "abc123" },
-      });
+      app = await helper.factories.app();
 
       source = await Source.create({
         name: "test source",
@@ -80,7 +75,6 @@ describe("models/schedule", () => {
         sourceGuid: source.guid,
       });
 
-      await schedule.reload();
       expect(schedule.name).toMatch(/test source schedule/);
 
       await schedule.destroy();
@@ -176,7 +170,11 @@ describe("models/schedule", () => {
       });
 
       test("a schedule cannot be changed to to the ready state if there are missing required options", async () => {
-        const schedule = await helper.factories.schedule();
+        const schedule = await Schedule.create({
+          sourceGuid: source.guid,
+          name: "no opts",
+        });
+
         await expect(schedule.update({ state: "ready" })).rejects.toThrow(
           /maxColumn is required/
         );
@@ -328,6 +326,7 @@ describe("models/schedule", () => {
       app = await App.create({
         name: "test app with real methods",
         type: "test-template-app",
+        state: "ready",
       });
 
       source = await Source.create({
@@ -362,11 +361,30 @@ describe("models/schedule", () => {
       await schedule.destroy();
     });
 
+    test("running a schedule that isn't ready will throw", async () => {
+      const schedule = await Schedule.create({
+        name: "test plugin schedule",
+        sourceGuid: source.guid,
+      });
+
+      await expect(
+        Run.create({
+          creatorGuid: schedule.guid,
+          creatorType: "schedule",
+          state: "running",
+        })
+      ).rejects.toThrow(/creator schedule is not ready/);
+
+      await schedule.destroy();
+    });
+
     test("running a schedule will save the filter and highWaterMark on the run", async () => {
       const schedule = await Schedule.create({
         name: "test plugin schedule",
         sourceGuid: source.guid,
       });
+      await schedule.setOptions({ maxColumn: "col" });
+      await schedule.update({ state: "ready" });
 
       const run = await Run.create({
         creatorGuid: schedule.guid,

@@ -146,4 +146,24 @@ export abstract class LoggedModel<T> extends Model<T> {
   }
 
   abstract apiData(): Promise<{ [key: string]: any }>;
+
+  /**
+   * Find an instance of this class, regardless of scope
+   */
+  static async findByGuid(guid: string): Promise<any> {
+    // static class definitions or type defining are not yet available in TS.  See:
+    // * https://github.com/microsoft/TypeScript/issues/14600
+    // * https://github.com/microsoft/TypeScript/issues/34516
+    // * https://github.com/microsoft/TypeScript/issues/33892
+
+    // So, each model will implement this method
+
+    throw new Error("not implemented");
+
+    // const instance: T = await this.scope(null).findOne({ where: { guid } });
+    // if (!instance) {
+    //   throw new Error(`cannot find ${this.name} ${guid}`);
+    // }
+    // return instance;
+  }
 }

@@ -45,10 +45,7 @@ export class TeamMemberCreate extends Action {
   }
 
   async run({ params, response }) {
-    const team = await Team.findOne({ where: { guid: params.guid } });
-    if (!team) {
-      throw new Error("team not found");
-    }
+    const team = await Team.findByGuid(params.guid);
     const teamMember = new TeamMember({
       firstName: params.firstName,
       lastName: params.lastName,
@@ -104,13 +101,7 @@ export class TeamMemberEdit extends Action {
   }
 
   async run({ params, response }) {
-    const teamMember = await TeamMember.findOne({
-      where: { guid: params.guid },
-    });
-
-    if (!teamMember) {
-      throw new Error("team member not found");
-    }
+    const teamMember = await TeamMember.findByGuid(params.guid);
 
     await teamMember.update(params);
 
@@ -136,12 +127,7 @@ export class TeamMemberDestroy extends Action {
 
   async run({ params, response, session: { teamMember: myself } }) {
     response.success = false;
-    const teamMember = await TeamMember.findOne({
-      where: { guid: params.guid },
-    });
-    if (!teamMember) {
-      throw new Error("team member not found");
-    }
+    const teamMember = await TeamMember.findByGuid(params.guid);
     if (myself.guid === teamMember.guid) {
       throw new Error("you cannot delete yourself");
     }

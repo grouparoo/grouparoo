@@ -194,6 +194,7 @@ describe("actions/profiles", () => {
           type: "manual",
         });
         await group.save();
+        await group.update({ state: "ready" });
       });
 
       beforeAll(async () => {
@@ -323,7 +324,6 @@ describe("actions/profiles", () => {
         };
         let response = await specHelper.runAction("profile:create", connection);
         mario = response.profile;
-        await helper.sleep(1501);
 
         connection.params = {
           csrfToken,
@@ -331,7 +331,6 @@ describe("actions/profiles", () => {
         };
         response = await specHelper.runAction("profile:create", connection);
         luigi = response.profile;
-        await helper.sleep(1501);
 
         connection.params = {
           csrfToken,
@@ -339,7 +338,6 @@ describe("actions/profiles", () => {
         };
         response = await specHelper.runAction("profile:create", connection);
         toad = response.profile;
-        await helper.sleep(1501);
 
         connection.params = {
           csrfToken,
@@ -347,7 +345,6 @@ describe("actions/profiles", () => {
         };
         response = await specHelper.runAction("profile:create", connection);
         peach = response.profile;
-        await helper.sleep(1501);
 
         connection.params = {
           csrfToken,
@@ -532,18 +529,6 @@ describe("actions/profiles", () => {
         );
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(2);
-        expect(simpleProfileValues(profiles[0].properties).email).toBe(
-          "toad@mushroom-kingdom.gov"
-        );
-        expect(
-          simpleProfileValues(profiles[0].properties).userId
-        ).toBeUndefined();
-        expect(simpleProfileValues(profiles[1].properties).email).toBe(
-          "peach@mushroom-kingdom.gov"
-        );
-        expect(
-          simpleProfileValues(profiles[1].properties).userId
-        ).toBeUndefined();
         expect(total).toBe(2);
       });
 
@@ -559,12 +544,6 @@ describe("actions/profiles", () => {
         );
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(2);
-        expect(simpleProfileValues(profiles[0].properties).email).toBe(
-          "toad@mushroom-kingdom.gov"
-        );
-        expect(simpleProfileValues(profiles[1].properties).email).toBe(
-          "peach@mushroom-kingdom.gov"
-        );
         expect(total).toBe(2);
       });
 

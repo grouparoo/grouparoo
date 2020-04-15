@@ -44,26 +44,31 @@ describe("models/profileProperty", () => {
       sourceGuid: source.guid,
       key: "firstName",
       type: "string",
+      state: "ready",
     });
     emailRule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
       key: "email",
       type: "email",
+      state: "ready",
     });
     lastLoginRule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
       key: "lastLoginAt",
       type: "date",
+      state: "ready",
     });
     ltvRule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
       key: "ltv",
       type: "float",
+      state: "ready",
     });
     vipRule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
       key: "isVIP",
       type: "boolean",
+      state: "ready",
     });
   });
 

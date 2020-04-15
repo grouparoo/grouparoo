@@ -17,12 +17,7 @@ export class AssociateProfileToImport extends RetryableTask {
 
   async run(params) {
     const { importGuid } = params;
-    const _import = await Import.findOne({
-      where: { guid: importGuid },
-    });
-    if (!_import) {
-      throw new Error(`import ${importGuid} not found`);
-    }
+    const _import = await Import.findByGuid(importGuid);
 
     try {
       const { profile, isNew } = await _import.associateProfile();

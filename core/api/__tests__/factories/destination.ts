@@ -6,7 +6,7 @@ const data = async (props = {}) => {
   const defaultProps = {
     name: `destination ${faker.company.companyName()}-${Math.random()}`,
     type: "test-plugin-export",
-    options: {},
+    options: { table: "out table" },
     mapping: {},
 
     createdAt: new Date(),
@@ -18,11 +18,7 @@ const data = async (props = {}) => {
 
 export default async (app?, props: { [key: string]: any } = {}) => {
   if (!app) {
-    // the postgres app has imports and exports
-    app = await AppFactory({ type: "test-plugin-app", options: {} });
-    await app.setOptions({
-      fileGuid: "abc123",
-    });
+    app = await AppFactory();
   }
 
   props.appGuid = app.guid;
@@ -37,6 +33,8 @@ export default async (app?, props: { [key: string]: any } = {}) => {
   if (Object.keys(mergedProps.mapping).length > 0) {
     await instance.setMapping(mergedProps.mapping);
   }
+
+  await instance.update({ state: "ready" });
 
   return instance;
 };

@@ -61,6 +61,22 @@ describe("models/source", () => {
   });
 
   describe("validations", () => {
+    test("the app must be in the ready state", async () => {
+      const app = await App.create({
+        type: "test-plugin-app",
+      });
+
+      await expect(
+        Source.create({
+          type: "test-plugin-import",
+          name: "test source",
+          appGuid: app.guid,
+        })
+      ).rejects.toThrow(/app .* not ready/);
+
+      await app.destroy();
+    });
+
     test("a source requires a plugin connection", async () => {
       await expect(
         Source.create({
@@ -593,6 +609,8 @@ describe("models/source", () => {
         sourceGuid: source.guid,
         name: "test schedule",
       });
+      await schedule.setOptions({ maxColumn: "abc" });
+      await schedule.update({ state: "ready" });
 
       const previousRun = await helper.factories.run(schedule, {
         createdAt: new Date(0),

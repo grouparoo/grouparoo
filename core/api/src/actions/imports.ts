@@ -58,11 +58,7 @@ export class ViewImport extends Action {
   }
 
   async run({ response, params }) {
-    const _import = await Import.findOne({ where: { guid: params.guid } });
-    if (!_import) {
-      throw new Error("import not found");
-    }
-
+    const _import = await Import.findByGuid(params.guid);
     response.import = await _import.apiData();
   }
 }

@@ -106,10 +106,7 @@ export class TeamEdit extends Action {
   }
 
   async run({ params, response }) {
-    const team = await Team.findOne({ where: { guid: params.guid } });
-    if (!team) {
-      throw new Error("team not found");
-    }
+    const team = await Team.findByGuid(params.guid);
     await team.update(params);
     response.team = await team.apiData();
   }
@@ -167,12 +164,7 @@ export class TeamDestroy extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const team = await Team.findOne({ where: { guid: params.guid } });
-
-    if (!team) {
-      throw new Error("team not found");
-    }
-
+    const team = await Team.findByGuid(params.guid);
     await team.destroy();
     response.success = true;
   }

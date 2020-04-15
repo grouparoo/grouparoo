@@ -28,13 +28,7 @@ export class ProfileImportAndUpdate extends RetryableTask {
   }
 
   async run(params) {
-    const profile = await Profile.findOne({
-      where: { guid: params.guid },
-    });
-
-    if (!profile) {
-      throw new Error(`cannot find profile with guid: ${params.guid}`);
-    }
+    const profile = await Profile.findByGuid(params.guid);
 
     const oldProfileProperties = await profile.properties();
 

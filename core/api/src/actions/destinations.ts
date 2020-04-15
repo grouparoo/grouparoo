@@ -14,6 +14,7 @@ export class DestinationsList extends Action {
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
+      state: { required: false },
       order: {
         required: true,
         default: [
@@ -25,7 +26,14 @@ export class DestinationsList extends Action {
   }
 
   async run({ params, response }) {
-    const destinations = await Destination.findAll({
+    const where = {};
+
+    if (params.state) {
+      where["state"] = params.state;
+    }
+
+    const destinations = await Destination.scope(null).findAll({
+      where,
       limit: params.limit,
       offset: params.offset,
       order: params.order,
@@ -35,7 +43,7 @@ export class DestinationsList extends Action {
       destinations.map(async (conn) => conn.apiData())
     );
 
-    response.total = await Destination.count();
+    response.total = await Destination.scope(null).count({ where });
   }
 }
 
@@ -168,14 +176,7 @@ export class DestinationEdit extends Action {
   }
 
   async run({ params, response }) {
-    const destination = await Destination.findOne({
-      where: { guid: params.guid },
-    });
-
-    if (!destination) {
-      throw new Error("destination not found");
-    }
-
+    const destination = await Destination.findByGuid(params.guid);
     await destination.update(params);
     if (params.options) {
       await destination.setOptions(params.options);
@@ -201,14 +202,7 @@ export class DestinationConnectionOptions extends Action {
   }
 
   async run({ params, response }) {
-    const destination = await Destination.findOne({
-      where: { guid: params.guid },
-    });
-    if (!destination) {
-      throw new Error("destination not found");
-    }
-    destination;
-
+    const destination = await Destination.findByGuid(params.guid);
     response.options = await destination.destinationConnectionOptions();
   }
 }
@@ -227,12 +221,7 @@ export class DestinationPreview extends Action {
   }
 
   async run({ params, response }) {
-    const destination = await Destination.findOne({
-      where: { guid: params.guid },
-    });
-    if (!destination) {
-      throw new Error("destination not found");
-    }
+    const destination = await Destination.findByGuid(params.guid);
 
     const options =
       typeof params.options === "string"
@@ -256,12 +245,7 @@ export class DestinationTrackGroup extends Action {
   }
 
   async run({ params, response }) {
-    const destination = await Destination.findOne({
-      where: { guid: params.guid },
-    });
-    if (!destination) {
-      throw new Error("destination not found");
-    }
+    const destination = await Destination.findByGuid(params.guid);
 
     const group = await Group.findOne({
       where: { guid: params.groupGuid },
@@ -289,12 +273,7 @@ export class DestinationUnTrackGroup extends Action {
   }
 
   async run({ params, response }) {
-    const destination = await Destination.findOne({
-      where: { guid: params.guid },
-    });
-    if (!destination) {
-      throw new Error("destination not found");
-    }
+    const destination = await Destination.findByGuid(params.guid);
 
     const group = await Group.findOne({
       where: { guid: params.groupGuid },
@@ -321,14 +300,7 @@ export class DestinationView extends Action {
   }
 
   async run({ params, response }) {
-    const destination = await Destination.findOne({
-      where: { guid: params.guid },
-    });
-
-    if (!destination) {
-      throw new Error("destination not found");
-    }
-
+    const destination = await Destination.findByGuid(params.guid);
     response.destination = await destination.apiData();
   }
 }
@@ -347,14 +319,7 @@ export class DestinationDestroy extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const destination = await Destination.findOne({
-      where: { guid: params.guid },
-    });
-
-    if (!destination) {
-      throw new Error("destination not found");
-    }
-
+    const destination = await Destination.findByGuid(params.guid);
     await destination.destroy();
     response.success = true;
   }

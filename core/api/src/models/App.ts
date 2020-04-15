@@ -5,12 +5,12 @@ import {
   Default,
   Length,
   AllowNull,
-  BeforeValidate,
   BeforeSave,
   DataType,
   BeforeDestroy,
   AfterDestroy,
   HasMany,
+  DefaultScope,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
@@ -18,6 +18,7 @@ import { Source } from "./Source";
 import { Option } from "./Option";
 import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
+import { Destination } from "./Destination";
 
 export interface AppOption {
   key: string;
@@ -32,6 +33,9 @@ const STATE_TRANSITIONS = [
   { from: "draft", to: "ready", checks: ["validateOptions"] },
 ];
 
+@DefaultScope(() => ({
+  where: { state: "ready" },
+}))
 @Table({ tableName: "apps", paranoid: false })
 export class App extends LoggedModel<App> {
   guidPrefix() {
@@ -88,12 +92,21 @@ export class App extends LoggedModel<App> {
 
   @BeforeDestroy
   static async checkDependents(instance: App) {
-    const sources = await Source.findAll({
+    const sources = await Source.scope(null).findAll({
       where: { appGuid: instance.guid },
     });
     if (sources.length > 0) {
       throw new Error(
         `cannot delete this app, source ${sources[0].guid} relies on it`
+      );
+    }
+
+    const destinations = await Destination.scope(null).findAll({
+      where: { appGuid: instance.guid },
+    });
+    if (destinations.length > 0) {
+      throw new Error(
+        `cannot delete this app, destination ${destinations[0].guid} relies on it`
       );
     }
   }
@@ -180,5 +193,15 @@ export class App extends LoggedModel<App> {
   private async getIcon() {
     const { plugin } = await this.getPlugin();
     return plugin?.icon;
+  }
+
+  // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
   }
 }

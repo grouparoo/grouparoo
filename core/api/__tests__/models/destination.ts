@@ -29,11 +29,7 @@ describe("models/destination", () => {
     let destination: Destination;
 
     beforeAll(async () => {
-      app = await App.create({
-        name: "test app",
-        type: "test-plugin-app",
-        options: { database: "db" },
-      });
+      app = await helper.factories.app();
     });
 
     afterEach(async () => {
@@ -77,11 +73,7 @@ describe("models/destination", () => {
         appGuid: app.guid,
       });
 
-      const otherApp = await App.create({
-        name: "other app",
-        type: "test-plugin-app",
-        options: { database: "db" },
-      });
+      const otherApp = await helper.factories.app();
       const destinationTwo = await Destination.create({
         type: "test-plugin-export",
         appGuid: otherApp.guid,
@@ -224,7 +216,11 @@ describe("models/destination", () => {
       });
 
       test("a destination cannot be changed to to the ready state if there are missing required options", async () => {
-        destination = await helper.factories.destination();
+        destination = await Destination.build({
+          appGuid: app.guid,
+          name: "missing options",
+          type: "test-plugin-export",
+        });
         await expect(destination.update({ state: "ready" })).rejects.toThrow();
       });
 
@@ -385,7 +381,13 @@ describe("models/destination", () => {
 
         it("informs all destinations if trackAllGroups is set", async () => {
           await destination.update({ trackAllGroups: true });
-          const otherDestination = await helper.factories.destination();
+
+          const otherApp = await helper.factories.app();
+          const otherDestination = await Destination.create({
+            name: "other destination",
+            appGuid: otherApp.guid,
+            type: "test-plugin-export",
+          });
           await otherDestination.update({ trackAllGroups: true });
 
           const profile = await helper.factories.profile();
@@ -408,6 +410,8 @@ describe("models/destination", () => {
           );
           expect(destinations.length).toEqual(2);
 
+          await otherDestination.destroy();
+          await otherApp.destroy();
           await group.removeProfile(profile);
         });
       });
@@ -477,6 +481,7 @@ describe("models/destination", () => {
         name: "test app with temp methods",
         type: "test-template-app",
       });
+      await app.update({ state: "ready" });
     });
 
     afterAll(async () => {
@@ -586,6 +591,8 @@ describe("models/destination", () => {
         name: "test with real methods",
         type: "test-template-app",
       });
+      await app.setOptions({ test_key: "abc" });
+      await app.update({ state: "ready" });
     });
 
     test("destinations can show a preview", async () => {

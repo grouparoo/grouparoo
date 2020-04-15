@@ -11,7 +11,12 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
 
   async function onSubmit(data) {
     setLoading(true);
-    const response = await execApi("post", `/api/${apiVersion}/group`, data);
+    const state = data.type === "manual" ? "ready" : "draft";
+    const response = await execApi(
+      "post",
+      `/api/${apiVersion}/group`,
+      Object.assign({}, data, { state })
+    );
     setLoading(false);
     if (response?.group) {
       successHandler.set({ message: "Group Created" });

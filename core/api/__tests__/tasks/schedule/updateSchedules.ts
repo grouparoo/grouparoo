@@ -2,7 +2,6 @@ import { helper } from "../../utils/specHelper";
 import { task, specHelper } from "actionhero";
 import { Schedule } from "./../../../src/models/Schedule";
 import { Run } from "./../../../src/models/Run";
-import { shape } from "prop-types";
 
 let actionhero, api;
 
@@ -51,7 +50,14 @@ describe("tasks/schedule:updateSchedules", () => {
     });
 
     test("it will not enqueue a run for a recurring schedule that has never run but is a draft", async () => {
-      await schedule.update({
+      const source = await helper.factories.source();
+      await source.setOptions({ table: "users" });
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
+
+      const schedule = await Schedule.create({
+        sourceGuid: source.guid,
+        name: "tmp",
         recurring: true,
         recurringFrequency: 60 * 1000,
       });
@@ -61,9 +67,17 @@ describe("tasks/schedule:updateSchedules", () => {
 
       const found = await specHelper.findEnqueuedTasks("schedule:run");
       expect(found.length).toBe(0);
+
+      await schedule.destroy();
+      await source.destroy();
     });
 
     test("it will enqueue a run for a recurring schedule that has never run and is ready", async () => {
+      await schedule.update({
+        recurring: true,
+        recurringFrequency: 60 * 1000,
+      });
+
       await schedule.setOptions({ maxColumn: "updatedAt" });
       await schedule.update({ state: "ready" });
       expect(schedule.state).toBe("ready");

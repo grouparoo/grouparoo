@@ -112,7 +112,7 @@ describe("actions/groups", () => {
 
     test("an administrator can view the destinations tracking a group", async () => {
       const destination = await helper.factories.destination();
-      const group = await Group.findOne({ where: { guid } });
+      const group = await Group.findByGuid(guid);
       await destination.trackGroup(group);
 
       connection.params = {
@@ -152,7 +152,7 @@ describe("actions/groups", () => {
 
     test("an administrator cannot destroy a group used by a destination", async () => {
       const destination = await helper.factories.destination();
-      const group = await Group.findOne({ where: { guid } });
+      const group = await Group.findByGuid(guid);
       await destination.trackGroup(group);
 
       connection.params = {

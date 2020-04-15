@@ -31,7 +31,7 @@ export class SourcesList extends Action {
       where["state"] = params.state;
     }
 
-    const sources = await Source.findAll({
+    const sources = await Source.scope(null).findAll({
       where,
       limit: params.limit,
       offset: params.offset,
@@ -42,7 +42,7 @@ export class SourcesList extends Action {
       sources.map(async (source) => source.apiData())
     );
 
-    response.total = await Source.count({ where });
+    response.total = await Source.scope(null).count({ where });
   }
 }
 
@@ -138,10 +138,7 @@ export class SourceView extends Action {
   }
 
   async run({ params, response }) {
-    const source = await Source.findOne({ where: { guid: params.guid } });
-    if (!source) {
-      throw new Error("source not found");
-    }
+    const source = await Source.findByGuid(params.guid);
     response.source = await source.apiData();
   }
 }
@@ -165,10 +162,7 @@ export class SourceEdit extends Action {
   }
 
   async run({ params, response }) {
-    const source = await Source.findOne({ where: { guid: params.guid } });
-    if (!source) {
-      throw new Error("source not found");
-    }
+    const source = await Source.findByGuid(params.guid);
     if (params.options) {
       await source.setOptions(params.options);
     }
@@ -197,10 +191,7 @@ export class SourceBootstrapUniqueProfilePropertyRule extends Action {
   }
 
   async run({ params, response }) {
-    const source = await Source.findOne({ where: { guid: params.guid } });
-    if (!source) {
-      throw new Error("source not found");
-    }
+    const source = await Source.findByGuid(params.guid);
 
     const rule = await source.bootstrapUniqueProfilePropertyRule(
       params.key,
@@ -225,11 +216,7 @@ export class sourceConnectionOptions extends Action {
   }
 
   async run({ params, response }) {
-    const source = await Source.findOne({ where: { guid: params.guid } });
-    if (!source) {
-      throw new Error("source not found");
-    }
-
+    const source = await Source.findByGuid(params.guid);
     response.options = await source.sourceConnectionOptions();
   }
 }
@@ -248,10 +235,7 @@ export class sourcePreview extends Action {
   }
 
   async run({ params, response }) {
-    const source = await Source.findOne({ where: { guid: params.guid } });
-    if (!source) {
-      throw new Error("source not found");
-    }
+    const source = await Source.findByGuid(params.guid);
 
     const options =
       typeof params.options === "string"
@@ -275,10 +259,7 @@ export class SourceDestroy extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const source = await Source.findOne({ where: { guid: params.guid } });
-    if (!source) {
-      throw new Error("source not found");
-    }
+    const source = await Source.findByGuid(params.guid);
     await source.destroy();
     response.success = true;
   }

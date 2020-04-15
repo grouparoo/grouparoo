@@ -141,10 +141,11 @@ describe("models/profilePropertyRule", () => {
   });
 
   test("updating a profile property rule with new options enqueued an internalRun and update groups relying on it", async () => {
+    await api.resque.queue.connection.redis.flushdb();
     const rule = await ProfilePropertyRule.findOne({ where: { key: "email" } });
 
     const group = await helper.factories.group();
-    expect(group.state).toBe("draft");
+    expect(group.state).toBe("ready");
     await group.update({ type: "calculated" });
     await group.setRules([
       {
@@ -164,7 +165,6 @@ describe("models/profilePropertyRule", () => {
     );
     expect(foundInternalRunTasks.length).toBe(1);
 
-    await group.reload();
     expect(group.state).toBe("initializing");
     foundGroupRunTasks = await specHelper.findEnqueuedTasks("group:run");
     expect(foundGroupRunTasks.length).toBe(2); // + the one from the profile property change
@@ -253,6 +253,7 @@ describe("models/profilePropertyRule", () => {
       key: "thing",
       type: "string",
       unique: false,
+      state: "ready",
     });
 
     const group = await helper.factories.group({ type: "calculated" });
@@ -399,6 +400,7 @@ describe("models/profilePropertyRule", () => {
       app = await App.create({
         name: "test app",
         type: "test-template-app",
+        state: "ready",
       });
 
       source = await Source.create({
@@ -456,24 +458,25 @@ describe("models/profilePropertyRule", () => {
         key: "test",
         type: "string",
         sourceGuid: source.guid,
+        state: "ready",
       });
 
       // not ready yet
       await rule.update({ state: "ready" });
 
       // initial test
-      expect(queryCounter).toBe(1);
+      expect(queryCounter).toBe(2);
       await rule.setOptions({ column: "id" });
 
-      // +1 checking the options
-      // +1 from the afterSave hook updating the rule
-      expect(queryCounter).toBe(3);
+      // +2 checking the options
+      // +2 from the afterSave hook updating the rule
+      expect(queryCounter).toBe(6);
       await expect(rule.setOptions({ column: "throw" })).rejects.toThrow(
         /throw/
       );
 
       // no change
-      expect(queryCounter).toBe(4);
+      expect(queryCounter).toBe(9);
       await rule.destroy();
     });
 

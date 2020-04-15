@@ -14,13 +14,15 @@ const data = async (props = {}) => {
   return Object.assign({}, defaultProps, props);
 };
 
-export default async (schedule?, props: { [key: string]: any } = {}) => {
-  if (!schedule) {
-    schedule = await ScheduleFactory();
+export default async (owner?, props: { [key: string]: any } = {}) => {
+  if (!owner) {
+    owner = await ScheduleFactory();
   }
 
-  props.creatorGuid = schedule.guid;
-  props.creatorType = "schedule";
+  props.creatorGuid = owner.guid;
+  props.creatorType = owner.guid.match(/^sch_/)
+    ? "schedule"
+    : "profilePropertyRule";
 
   const instance = await Run.create(await data(props));
   return instance;

@@ -43,12 +43,7 @@ export class SettingEdit extends Action {
   }
 
   async run({ response, params }) {
-    let setting = await Setting.findOne({ where: { guid: params.guid } });
-
-    if (!setting) {
-      throw new Error("setting not found");
-    }
-
+    let setting = await Setting.findByGuid(params.guid);
     setting = await plugin.updateSetting(
       setting.pluginName,
       setting.key,
