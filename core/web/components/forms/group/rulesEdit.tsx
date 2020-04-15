@@ -160,10 +160,11 @@ export default function RulesBuilder({
 
   return (
     <>
-      <h3>Rules for {group.name}</h3>
+      <h3>Group Rules for {group.name}</h3>
       <p>
         <StateBadge state={group.state} />
       </p>
+      <p>Define the profile properties that you want to segment by:</p>
 
       <Form>
         <Table bordered size="sm">
@@ -179,8 +180,9 @@ export default function RulesBuilder({
               <td>
                 <strong>Value</strong>
               </td>
-
-              <td>Profiles fitting rule</td>
+              <td>
+                <strong># of Profiles</strong>
+              </td>
               <td>&nbsp;</td>
             </tr>
           </thead>
@@ -319,15 +321,15 @@ export default function RulesBuilder({
             await getCounts(false);
           }}
         >
-          Count Potential Members
+          Count Potential Group Members
         </Button>
         <br />
         <br />
         <p>
-          <Badge style={{ fontSize: 20 }} variant="info">
+          Total Profiles in this group: &nbsp;
+          <Badge style={{ fontSize: 16 }} variant="info">
             {countPotentialMembers}
           </Badge>{" "}
-          profiles matching {group.matchType} rules
         </p>
         <Button
           active={!loading}
