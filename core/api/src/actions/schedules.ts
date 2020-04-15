@@ -23,7 +23,7 @@ export class SchedulesList extends Action {
   }
 
   async run({ params, response }) {
-    const schedules = await Schedule.findAll({
+    const schedules = await Schedule.scope(null).findAll({
       limit: params.limit,
       offset: params.offset,
       order: params.order,
@@ -121,7 +121,7 @@ export class ScheduleEdit extends Action {
   }
 
   async run({ params, response }) {
-    const schedule = await Schedule.findOne({
+    const schedule = await Schedule.scope(null).findOne({
       where: { guid: params.guid },
     });
 
@@ -151,7 +151,7 @@ export class ScheduleView extends Action {
   }
 
   async run({ params, response }) {
-    const schedule = await Schedule.findOne({
+    const schedule = await Schedule.scope(null).findOne({
       where: { guid: params.guid },
     });
 
@@ -178,7 +178,7 @@ export class ScheduleDestroy extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const schedule = await Schedule.findOne({
+    const schedule = await Schedule.scope(null).findOne({
       where: { guid: params.guid },
     });
 

@@ -5,12 +5,13 @@ import {
   Default,
   Length,
   AllowNull,
-  BeforeValidate,
   BeforeSave,
   DataType,
   BeforeDestroy,
   AfterDestroy,
   HasMany,
+  DefaultScope,
+  Scopes,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
@@ -32,6 +33,9 @@ const STATE_TRANSITIONS = [
   { from: "draft", to: "ready", checks: ["validateOptions"] },
 ];
 
+@DefaultScope(() => ({
+  where: { state: "ready" },
+}))
 @Table({ tableName: "apps", paranoid: false })
 export class App extends LoggedModel<App> {
   guidPrefix() {

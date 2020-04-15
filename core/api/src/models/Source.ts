@@ -13,6 +13,7 @@ import {
   ForeignKey,
   Default,
   DataType,
+  DefaultScope,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
@@ -39,6 +40,9 @@ const STATE_TRANSITIONS = [
   },
 ];
 
+@DefaultScope(() => ({
+  where: { state: "ready" },
+}))
 @Table({ tableName: "sources", paranoid: false })
 export class Source extends LoggedModel<Source> {
   guidPrefix() {
@@ -297,10 +301,14 @@ export class Source extends LoggedModel<Source> {
       app = await this.$get("app");
     }
     if (includeSchedule) {
-      schedule = await this.$get("schedule");
+      schedule = await this.$get("schedule", {
+        scope: null,
+      });
     }
     if (includeProfilePropertyRules) {
-      profilePropertyRules = await this.$get("profilePropertyRules");
+      profilePropertyRules = await this.$get("profilePropertyRules", {
+        scope: null,
+      });
     }
 
     const options = await this.getOptions();

@@ -12,6 +12,7 @@ import {
   BeforeDestroy,
   AfterDestroy,
   Is,
+  DefaultScope,
 } from "sequelize-typescript";
 import { api, task } from "actionhero";
 import { Op } from "sequelize";
@@ -62,6 +63,9 @@ const STATE_TRANSITIONS = [
   { from: "ready", to: "deleted", checks: [] },
 ];
 
+@DefaultScope(() => ({
+  where: { state: "ready" },
+}))
 @Table({ tableName: "groups", paranoid: false })
 export class Group extends LoggedModel<Group> {
   guidPrefix() {

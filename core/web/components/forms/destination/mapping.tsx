@@ -46,7 +46,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     const prrResponse = await execApi(
       "get",
       `/api/${apiVersion}/profilePropertyRules`,
-      { unique: false }
+      { unique: false, state: "ready" }
     );
     if (prrResponse?.profilePropertyRules) {
       setProfilePropertyRules(prrResponse.profilePropertyRules);

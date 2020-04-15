@@ -39,7 +39,7 @@ export class ProfilePropertyRulesList extends Action {
       where["unique"] = true;
     }
 
-    const profilePropertyRules = await ProfilePropertyRule.findAll({
+    const profilePropertyRules = await ProfilePropertyRule.scope(null).findAll({
       limit: params.limit,
       offset: params.offset,
       order: params.order,
@@ -99,7 +99,7 @@ export class ProfilePropertyRuleGroups extends Action {
   }
 
   async run({ params, response }) {
-    const profilePropertyRule = await ProfilePropertyRule.findOne({
+    const profilePropertyRule = await ProfilePropertyRule.scope(null).findOne({
       where: { guid: params.guid },
     });
 
@@ -180,7 +180,7 @@ export class ProfilePropertyRuleEdit extends Action {
   }
 
   async run({ params, response }) {
-    const profilePropertyRule = await ProfilePropertyRule.findOne({
+    const profilePropertyRule = await ProfilePropertyRule.scope(null).findOne({
       where: { guid: params.guid },
     });
     if (!profilePropertyRule) {
@@ -211,7 +211,7 @@ export class ProfilePropertyRuleView extends Action {
   }
 
   async run({ params, response }) {
-    const profilePropertyRule = await ProfilePropertyRule.findOne({
+    const profilePropertyRule = await ProfilePropertyRule.scope(null).findOne({
       where: { guid: params.guid },
     });
     if (!profilePropertyRule) {
@@ -236,7 +236,7 @@ export class ProfilePropertyRuleTest extends Action {
   }
 
   async run({ params, response }) {
-    const profilePropertyRule = await ProfilePropertyRule.findOne({
+    const profilePropertyRule = await ProfilePropertyRule.scope(null).findOne({
       where: { guid: params.guid },
     });
     if (!profilePropertyRule) {
@@ -261,7 +261,7 @@ export class ProfilePropertyRuleDestroy extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const profilePropertyRule = await ProfilePropertyRule.findOne({
+    const profilePropertyRule = await ProfilePropertyRule.scope(null).findOne({
       where: { guid: params.guid },
     });
     if (!profilePropertyRule) {

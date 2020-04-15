@@ -15,6 +15,7 @@ import {
   AfterSave,
   AfterDestroy,
   DataType,
+  DefaultScope,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { App } from "./App";
@@ -40,6 +41,9 @@ const STATE_TRANSITIONS = [
   { from: "draft", to: "ready", checks: ["validateOptions"] },
 ];
 
+@DefaultScope(() => ({
+  where: { state: "ready" },
+}))
 @Table({ tableName: "destinations", paranoid: false })
 export class Destination extends LoggedModel<Destination> {
   guidPrefix() {

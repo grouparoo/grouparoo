@@ -31,7 +31,7 @@ export class SourcesList extends Action {
       where["state"] = params.state;
     }
 
-    const sources = await Source.findAll({
+    const sources = await Source.scope(null).findAll({
       where,
       limit: params.limit,
       offset: params.offset,
@@ -138,7 +138,9 @@ export class SourceView extends Action {
   }
 
   async run({ params, response }) {
-    const source = await Source.findOne({ where: { guid: params.guid } });
+    const source = await Source.scope(null).findOne({
+      where: { guid: params.guid },
+    });
     if (!source) {
       throw new Error("source not found");
     }
@@ -165,7 +167,9 @@ export class SourceEdit extends Action {
   }
 
   async run({ params, response }) {
-    const source = await Source.findOne({ where: { guid: params.guid } });
+    const source = await Source.scope(null).findOne({
+      where: { guid: params.guid },
+    });
     if (!source) {
       throw new Error("source not found");
     }
@@ -197,7 +201,9 @@ export class SourceBootstrapUniqueProfilePropertyRule extends Action {
   }
 
   async run({ params, response }) {
-    const source = await Source.findOne({ where: { guid: params.guid } });
+    const source = await Source.scope(null).findOne({
+      where: { guid: params.guid },
+    });
     if (!source) {
       throw new Error("source not found");
     }
@@ -225,7 +231,9 @@ export class sourceConnectionOptions extends Action {
   }
 
   async run({ params, response }) {
-    const source = await Source.findOne({ where: { guid: params.guid } });
+    const source = await Source.scope(null).findOne({
+      where: { guid: params.guid },
+    });
     if (!source) {
       throw new Error("source not found");
     }
@@ -248,7 +256,9 @@ export class sourcePreview extends Action {
   }
 
   async run({ params, response }) {
-    const source = await Source.findOne({ where: { guid: params.guid } });
+    const source = await Source.scope(null).findOne({
+      where: { guid: params.guid },
+    });
     if (!source) {
       throw new Error("source not found");
     }
@@ -275,7 +285,9 @@ export class SourceDestroy extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const source = await Source.findOne({ where: { guid: params.guid } });
+    const source = await Source.scope(null).findOne({
+      where: { guid: params.guid },
+    });
     if (!source) {
       throw new Error("source not found");
     }

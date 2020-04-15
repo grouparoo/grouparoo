@@ -25,7 +25,7 @@ export class DestinationsList extends Action {
   }
 
   async run({ params, response }) {
-    const destinations = await Destination.findAll({
+    const destinations = await Destination.scope(null).findAll({
       limit: params.limit,
       offset: params.offset,
       order: params.order,
@@ -168,7 +168,7 @@ export class DestinationEdit extends Action {
   }
 
   async run({ params, response }) {
-    const destination = await Destination.findOne({
+    const destination = await Destination.scope(null).findOne({
       where: { guid: params.guid },
     });
 
@@ -201,7 +201,7 @@ export class DestinationConnectionOptions extends Action {
   }
 
   async run({ params, response }) {
-    const destination = await Destination.findOne({
+    const destination = await Destination.scope(null).findOne({
       where: { guid: params.guid },
     });
     if (!destination) {
@@ -227,7 +227,7 @@ export class DestinationPreview extends Action {
   }
 
   async run({ params, response }) {
-    const destination = await Destination.findOne({
+    const destination = await Destination.scope(null).findOne({
       where: { guid: params.guid },
     });
     if (!destination) {
@@ -256,7 +256,7 @@ export class DestinationTrackGroup extends Action {
   }
 
   async run({ params, response }) {
-    const destination = await Destination.findOne({
+    const destination = await Destination.scope(null).findOne({
       where: { guid: params.guid },
     });
     if (!destination) {
@@ -289,7 +289,7 @@ export class DestinationUnTrackGroup extends Action {
   }
 
   async run({ params, response }) {
-    const destination = await Destination.findOne({
+    const destination = await Destination.scope(null).findOne({
       where: { guid: params.guid },
     });
     if (!destination) {
@@ -321,7 +321,7 @@ export class DestinationView extends Action {
   }
 
   async run({ params, response }) {
-    const destination = await Destination.findOne({
+    const destination = await Destination.scope(null).findOne({
       where: { guid: params.guid },
     });
 
@@ -347,7 +347,7 @@ export class DestinationDestroy extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const destination = await Destination.findOne({
+    const destination = await Destination.scope(null).findOne({
       where: { guid: params.guid },
     });
 

@@ -58,7 +58,7 @@ export class ListRuns extends Action {
       order: params.order,
     };
 
-    const runs = await Run.findAll(search);
+    const runs = await Run.scope(null).findAll(search);
     response.runs = await Promise.all(runs.map(async (app) => app.apiData()));
     response.total = await Run.count({ where });
   }
@@ -77,7 +77,7 @@ export class RunView extends Action {
   }
 
   async run({ params, response }) {
-    const run = await Run.findOne({ where: { guid: params.guid } });
+    const run = await Run.scope(null).findOne({ where: { guid: params.guid } });
     if (!run) {
       throw new Error("run not found");
     }

@@ -23,7 +23,7 @@ export class AppsList extends Action {
   }
 
   async run({ params, response }) {
-    const apps = await App.findAll({
+    const apps = await App.scope(null).findAll({
       limit: params.limit,
       offset: params.offset,
       order: params.order,
@@ -73,7 +73,7 @@ export class AppOptionOptions extends Action {
   }
 
   async run({ params, response }) {
-    const app = await App.findOne({ where: { guid: params.guid } });
+    const app = await App.scope(null).findOne({ where: { guid: params.guid } });
     if (!app) {
       throw new Error("app not found");
     }
@@ -132,7 +132,7 @@ export class AppEdit extends Action {
   }
 
   async run({ params, response }) {
-    const app = await App.findOne({ where: { guid: params.guid } });
+    const app = await App.scope(null).findOne({ where: { guid: params.guid } });
     if (!app) {
       throw new Error("app not found");
     }
@@ -159,7 +159,7 @@ export class AppTest extends Action {
   }
 
   async run({ params, response }) {
-    const app = await App.findOne({ where: { guid: params.guid } });
+    const app = await App.scope(null).findOne({ where: { guid: params.guid } });
     if (!app) {
       throw new Error("app not found");
     }
@@ -186,7 +186,7 @@ export class AppView extends Action {
   }
 
   async run({ params, response }) {
-    const app = await App.findOne({ where: { guid: params.guid } });
+    const app = await App.scope(null).findOne({ where: { guid: params.guid } });
     if (!app) {
       throw new Error("app not found");
     }
@@ -208,7 +208,7 @@ export class AppDestroy extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const app = await App.findOne({ where: { guid: params.guid } });
+    const app = await App.scope(null).findOne({ where: { guid: params.guid } });
     if (!app) {
       throw new Error("app not found");
     }

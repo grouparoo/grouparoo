@@ -14,6 +14,7 @@ import {
   ForeignKey,
   BelongsTo,
   HasMany,
+  DefaultScope,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { env, api, task } from "actionhero";
@@ -152,6 +153,9 @@ let CACHE: ProfilePropertyRulesCache = {
   data: {},
 };
 
+@DefaultScope(() => ({
+  where: { state: "ready" },
+}))
 @Table({ tableName: "profilePropertyRules", paranoid: false })
 export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   guidPrefix() {
