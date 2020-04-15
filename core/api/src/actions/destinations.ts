@@ -14,6 +14,7 @@ export class DestinationsList extends Action {
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
+      state: { required: false },
       order: {
         required: true,
         default: [
@@ -25,7 +26,14 @@ export class DestinationsList extends Action {
   }
 
   async run({ params, response }) {
+    const where = {};
+
+    if (params.state) {
+      where["state"] = params.state;
+    }
+
     const destinations = await Destination.scope(null).findAll({
+      where,
       limit: params.limit,
       offset: params.offset,
       order: params.order,
@@ -35,7 +43,7 @@ export class DestinationsList extends Action {
       destinations.map(async (conn) => conn.apiData())
     );
 
-    response.total = await Destination.scope(null).count();
+    response.total = await Destination.scope(null).count({ where });
   }
 }
 

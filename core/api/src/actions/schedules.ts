@@ -12,6 +12,7 @@ export class SchedulesList extends Action {
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
+      state: { required: false },
       order: {
         required: true,
         default: [
@@ -23,7 +24,14 @@ export class SchedulesList extends Action {
   }
 
   async run({ params, response }) {
+    const where = {};
+
+    if (params.state) {
+      where["state"] = params.state;
+    }
+
     const schedules = await Schedule.scope(null).findAll({
+      where,
       limit: params.limit,
       offset: params.offset,
       order: params.order,
@@ -33,7 +41,7 @@ export class SchedulesList extends Action {
       schedules.map(async (conn) => conn.apiData())
     );
 
-    response.total = await Schedule.scope(null).count();
+    response.total = await Schedule.scope(null).count({ where });
   }
 }
 

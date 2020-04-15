@@ -13,6 +13,7 @@ export class GroupsList extends Action {
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
+      state: { required: false },
       order: {
         required: true,
         default: [
@@ -24,14 +25,21 @@ export class GroupsList extends Action {
   }
 
   async run({ params, response }) {
+    const where = {};
+
+    if (params.state) {
+      where["state"] = params.state;
+    }
+
     const groups = await Group.scope(null).findAll({
+      where,
       limit: params.limit,
       offset: params.offset,
       order: params.order,
     });
 
     response.groups = await Promise.all(groups.map(async (g) => g.apiData()));
-    response.total = await Group.scope(null).count();
+    response.total = await Group.scope(null).count({ where });
   }
 }
 
