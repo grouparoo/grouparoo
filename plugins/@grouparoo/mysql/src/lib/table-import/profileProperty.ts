@@ -9,6 +9,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   sourceMapping,
   profilePropertyRule,
   profilePropertyRuleOptions,
+  profilePropertyRuleFilters,
 }) => {
   const table = sourceOptions.table;
   const tableCol = Object.keys(sourceMapping)[0];
@@ -46,8 +47,45 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
 
   const baseQuery = `SELECT ${aggSelect} FROM \`${table}\` WHERE \`${tableCol}\` = "{{ ${profilePropertyMatch} }}"`;
 
+  let filteredQuery = baseQuery;
+  for (const i in profilePropertyRuleFilters) {
+    let { key, op, match } = profilePropertyRuleFilters[i];
+
+    let sqlOp = "";
+    switch (op) {
+      case "equals":
+        key = `\`${key}\``;
+        sqlOp = `=`;
+        break;
+      case "does not equal":
+        key = `\`${key}\``;
+        sqlOp = `!=`;
+        break;
+      case "contains":
+        key = `LOWER(\`${key}\`)`;
+        sqlOp = `like`;
+        match = `%${match.toString().toLowerCase()}%`;
+        break;
+      case "does not contain":
+        key = `LOWER(\`${key}\`)`;
+        sqlOp = `NOT LIKE`;
+        match = `%${match.toString().toLowerCase()}%`;
+        break;
+      case "greater than":
+        key = `\`${key}\``;
+        sqlOp = `>`;
+        break;
+      case "less than":
+        key = `\`${key}\``;
+        sqlOp = `<`;
+        break;
+    }
+
+    filteredQuery += ` AND ${key} ${sqlOp} '${match}'`;
+  }
+
   const parameterizedQuery = await profilePropertyRule.parameterizedQueryFromProfile(
-    baseQuery,
+    filteredQuery,
     profile
   );
   validateQuery(parameterizedQuery);
