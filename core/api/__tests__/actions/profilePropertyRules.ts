@@ -73,6 +73,7 @@ describe("actions/profilePropertyRules", () => {
         sourceGuid: source.guid,
         key: "email",
         type: "string",
+        unique: "true",
       };
 
       const {
@@ -84,7 +85,8 @@ describe("actions/profilePropertyRules", () => {
       expect(error).toBeUndefined();
       expect(profilePropertyRule.guid).toBeTruthy();
       expect(profilePropertyRule.key).toBe("email");
-      expect(profilePropertyRule.unique).toBe(false);
+      expect(profilePropertyRule.unique).toBe(true);
+      expect(profilePropertyRule.state).toBe("draft");
       expect(profilePropertyRule.source.guid).toBe(source.guid);
       expect(pluginOptions[0].key).toBe("column");
 
@@ -104,9 +106,23 @@ describe("actions/profilePropertyRules", () => {
 
       expect(error).toBeUndefined();
       expect(profilePropertyRule.key).toBe("email");
-      expect(profilePropertyRule.unique).toBe(false);
+      expect(profilePropertyRule.unique).toBe(true);
       expect(profilePropertyRule.source.guid).toBe(source.guid);
       expect(pluginOptions[0].key).toBe("column");
+    });
+
+    test("an administrator can make a rule ready", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+        state: "ready",
+      };
+      const { error, profilePropertyRule } = await specHelper.runAction(
+        "profilePropertyRule:edit",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(profilePropertyRule.state).toBe("ready");
     });
 
     test("an administrator can test a profile property rule", async () => {
@@ -175,7 +191,7 @@ describe("actions/profilePropertyRules", () => {
       expect(profilePropertyRules.length).toBe(2); // this + userId
       expect(profilePropertyRules[1].source.guid).toBe(source.guid);
       expect(profilePropertyRules[1].type).toBe("string");
-      expect(profilePropertyRules[1].unique).toBe(false);
+      expect(profilePropertyRules[1].unique).toBe(true);
       expect(total).toBe(2);
 
       expect(examples[profilePropertyRules[1].guid]).toEqual([
@@ -195,7 +211,7 @@ describe("actions/profilePropertyRules", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(profilePropertyRules.length).toBe(1); // just userId
+      expect(profilePropertyRules.length).toBe(2); // userId + email
     });
 
     test("an administrator can list unique rules", async () => {
@@ -208,7 +224,7 @@ describe("actions/profilePropertyRules", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(profilePropertyRules.length).toBe(1); // just userId
+      expect(profilePropertyRules.length).toBe(2); // userId + email
     });
 
     test("an administrator can see groups which rely on a profilePropertyRule", async () => {
@@ -220,6 +236,7 @@ describe("actions/profilePropertyRules", () => {
           match: "%@%",
         },
       ]);
+      await group.update({ state: "ready" });
 
       connection.params = {
         csrfToken,

@@ -30,7 +30,7 @@ export class AppsList extends Action {
     });
 
     response.apps = await Promise.all(apps.map(async (app) => app.apiData()));
-    response.total = await App.count();
+    response.total = await App.scope(null).count();
   }
 }
 
@@ -73,10 +73,7 @@ export class AppOptionOptions extends Action {
   }
 
   async run({ params, response }) {
-    const app = await App.scope(null).findOne({ where: { guid: params.guid } });
-    if (!app) {
-      throw new Error("app not found");
-    }
+    const app = await App.findByGuid(params.guid);
 
     response.options = await app.appOptions();
   }
@@ -132,10 +129,7 @@ export class AppEdit extends Action {
   }
 
   async run({ params, response }) {
-    const app = await App.scope(null).findOne({ where: { guid: params.guid } });
-    if (!app) {
-      throw new Error("app not found");
-    }
+    const app = await App.findByGuid(params.guid);
     if (params.options) {
       await app.setOptions(params.options);
     }
@@ -159,11 +153,7 @@ export class AppTest extends Action {
   }
 
   async run({ params, response }) {
-    const app = await App.scope(null).findOne({ where: { guid: params.guid } });
-    if (!app) {
-      throw new Error("app not found");
-    }
-
+    const app = await App.findByGuid(params.guid);
     let { result, error } = await app.test(params.options);
     if (error) {
       error = String(error);
@@ -186,10 +176,7 @@ export class AppView extends Action {
   }
 
   async run({ params, response }) {
-    const app = await App.scope(null).findOne({ where: { guid: params.guid } });
-    if (!app) {
-      throw new Error("app not found");
-    }
+    const app = await App.findByGuid(params.guid);
     response.app = await app.apiData();
   }
 }
@@ -208,10 +195,7 @@ export class AppDestroy extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const app = await App.scope(null).findOne({ where: { guid: params.guid } });
-    if (!app) {
-      throw new Error("app not found");
-    }
+    const app = await App.findByGuid(params.guid);
     await app.destroy();
     response.success = true;
   }

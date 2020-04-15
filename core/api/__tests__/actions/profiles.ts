@@ -194,6 +194,7 @@ describe("actions/profiles", () => {
           type: "manual",
         });
         await group.save();
+        await group.update({ state: "ready" });
       });
 
       beforeAll(async () => {

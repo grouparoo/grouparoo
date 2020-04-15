@@ -33,7 +33,7 @@ export class SchedulesList extends Action {
       schedules.map(async (conn) => conn.apiData())
     );
 
-    response.total = await Schedule.count();
+    response.total = await Schedule.scope(null).count();
   }
 }
 
@@ -51,14 +51,7 @@ export class ScheduleRun extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const schedule = await Schedule.findOne({
-      where: { guid: params.guid },
-    });
-
-    if (!schedule) {
-      throw new Error("schedule not found");
-    }
-
+    const schedule = await Schedule.findByGuid(params.guid);
     await schedule.enqueueRun();
     response.success = true;
   }
@@ -121,14 +114,7 @@ export class ScheduleEdit extends Action {
   }
 
   async run({ params, response }) {
-    const schedule = await Schedule.scope(null).findOne({
-      where: { guid: params.guid },
-    });
-
-    if (!schedule) {
-      throw new Error("schedule not found");
-    }
-
+    const schedule = await Schedule.findByGuid(params.guid);
     if (params.options) {
       await schedule.setOptions(params.options);
     }
@@ -151,14 +137,7 @@ export class ScheduleView extends Action {
   }
 
   async run({ params, response }) {
-    const schedule = await Schedule.scope(null).findOne({
-      where: { guid: params.guid },
-    });
-
-    if (!schedule) {
-      throw new Error("schedule not found");
-    }
-
+    const schedule = await Schedule.findByGuid(params.guid);
     response.schedule = await schedule.apiData();
     response.pluginOptions = await schedule.pluginOptions();
   }
@@ -178,14 +157,7 @@ export class ScheduleDestroy extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const schedule = await Schedule.scope(null).findOne({
-      where: { guid: params.guid },
-    });
-
-    if (!schedule) {
-      throw new Error("schedule not found");
-    }
-
+    const schedule = await Schedule.findByGuid(params.guid);
     await schedule.destroy();
     response.success = true;
   }

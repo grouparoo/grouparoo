@@ -94,6 +94,16 @@ export class Log extends Model<Log> {
     };
   }
 
+  // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
+  }
+
   static async sweep() {
     // NOTE: we cannot use the plugin module as requiring it would create a cyclic loop (Setting->LoggedModel->Log)
     const Setting = require("./Setting").Setting;

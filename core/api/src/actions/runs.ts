@@ -24,7 +24,7 @@ export class ListRuns extends Action {
     let guid = params.guid;
 
     if (guid && guid.match(/^src_/)) {
-      const schedule = await Schedule.findOne({
+      const schedule = await Schedule.scope(null).findOne({
         where: { sourceGuid: params.guid },
       });
       if (!schedule) {
@@ -60,7 +60,7 @@ export class ListRuns extends Action {
 
     const runs = await Run.scope(null).findAll(search);
     response.runs = await Promise.all(runs.map(async (app) => app.apiData()));
-    response.total = await Run.count({ where });
+    response.total = await Run.scope(null).count({ where });
   }
 }
 
@@ -77,10 +77,7 @@ export class RunView extends Action {
   }
 
   async run({ params, response }) {
-    const run = await Run.scope(null).findOne({ where: { guid: params.guid } });
-    if (!run) {
-      throw new Error("run not found");
-    }
+    const run = await Run.findByGuid(params.guid);
     response.run = await run.apiData();
     response.quantizedTimeline = await run.quantizedTimeline();
   }

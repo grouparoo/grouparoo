@@ -38,18 +38,8 @@ describe("actions/destinations", () => {
       );
       csrfToken = sessionResponse.csrfToken;
 
-      connection.params = {
-        csrfToken,
-        name: "test app",
-        type: "test-plugin-app",
-        options: { fileGuid: "abc123" },
-      };
-      const appCreateResponse = await specHelper.runAction(
-        "app:create",
-        connection
-      );
-
-      app = appCreateResponse.app;
+      app = await helper.factories.app();
+      await app.update({ name: "test app" });
     });
 
     test("an administrator can create a new destination from an app", async () => {

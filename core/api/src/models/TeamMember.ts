@@ -80,4 +80,14 @@ export class TeamMember extends LoggedModel<TeamMember> {
     const match: boolean = await bcrypt.compare(password, this.passwordHash);
     return match;
   }
+
+  // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
+  }
 }

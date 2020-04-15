@@ -52,11 +52,7 @@ export class ExportView extends Action {
   }
 
   async run({ params, response }) {
-    const _export = await Export.findOne({ where: { guid: params.guid } });
-    if (!_export) {
-      throw new Error("export not found");
-    }
-
+    const _export = await Export.findByGuid(params.guid);
     response.export = await _export.apiData();
   }
 }

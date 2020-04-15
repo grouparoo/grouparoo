@@ -98,10 +98,7 @@ export class FileView extends Action {
   async run(data) {
     const { connection, params } = data;
 
-    const file = await File.findOne({ where: { guid: params.guid } });
-    if (!file) {
-      throw new Error("file not found");
-    }
+    const file = await File.findByGuid(params.guid);
     const { localPath } = await api.files.downloadToServer(file);
 
     const nameParts = file.path.split("/");
@@ -139,10 +136,7 @@ export class FileDestroy extends Action {
 
   async run({ response, params }) {
     response.success = false;
-    const file = await File.findOne({ where: { guid: params.guid } });
-    if (!file) {
-      throw new Error("file not found");
-    }
+    const file = await File.findByGuid(params.guid);
     await api.files.destroy(file);
     response.success = true;
   }

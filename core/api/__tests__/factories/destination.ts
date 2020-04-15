@@ -6,7 +6,7 @@ const data = async (props = {}) => {
   const defaultProps = {
     name: `destination ${faker.company.companyName()}-${Math.random()}`,
     type: "test-plugin-export",
-    options: {},
+    options: { table: "out table" },
     mapping: {},
 
     createdAt: new Date(),
@@ -33,6 +33,8 @@ export default async (app?, props: { [key: string]: any } = {}) => {
   if (Object.keys(mergedProps.mapping).length > 0) {
     await instance.setMapping(mergedProps.mapping);
   }
+
+  await instance.update({ state: "ready" });
 
   return instance;
 };
