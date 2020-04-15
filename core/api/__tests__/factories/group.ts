@@ -14,5 +14,8 @@ const data = async (props = {}) => {
 };
 
 export default async (props = {}) => {
-  return Group.create(await data(props));
+  const instance = await Group.create(await data(props));
+  await instance.update({ state: "ready" });
+
+  return instance;
 };

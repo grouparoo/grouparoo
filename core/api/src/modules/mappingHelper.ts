@@ -40,7 +40,9 @@ export namespace MappingHelper {
       for (const i in keys) {
         const remoteKey = keys[i];
         const key = mappings[remoteKey];
-        const profilePropertyRule = await ProfilePropertyRule.findOne({
+        const profilePropertyRule = await ProfilePropertyRule.scope(
+          null
+        ).findOne({
           where: { key },
         });
 

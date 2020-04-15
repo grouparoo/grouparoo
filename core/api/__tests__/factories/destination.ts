@@ -18,11 +18,7 @@ const data = async (props = {}) => {
 
 export default async (app?, props: { [key: string]: any } = {}) => {
   if (!app) {
-    // the postgres app has imports and exports
-    app = await AppFactory({ type: "test-plugin-app", options: {} });
-    await app.setOptions({
-      fileGuid: "abc123",
-    });
+    app = await AppFactory();
   }
 
   props.appGuid = app.guid;

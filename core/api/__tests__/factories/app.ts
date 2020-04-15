@@ -22,5 +22,7 @@ export default async (props = {}) => {
     await instance.setOptions(mergedProps.options);
   }
 
+  await instance.update({ state: "ready" });
+
   return instance;
 };

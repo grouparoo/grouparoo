@@ -92,7 +92,7 @@ export class App extends LoggedModel<App> {
 
   @BeforeDestroy
   static async checkDependents(instance: App) {
-    const sources = await Source.findAll({
+    const sources = await Source.scope(null).findAll({
       where: { appGuid: instance.guid },
     });
     if (sources.length > 0) {

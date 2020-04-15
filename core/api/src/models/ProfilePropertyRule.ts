@@ -212,7 +212,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   @BeforeSave
   static async ensureOptions(instance: ProfilePropertyRule) {
-    const source = await instance.$get("source");
+    const source = await instance.$get("source", { scope: null });
     await source.validateOptions();
   }
 
@@ -244,7 +244,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   @AfterCreate
   static async buildManualProfileProperties(instance: ProfilePropertyRule) {
-    const source = await instance.$get("source");
+    const source = await instance.$get("source", { scope: null });
     const app = await source.$get("app");
     if (app.type === "manual") {
       await internalRun("profilePropertyRule", instance.guid);
@@ -306,7 +306,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   async test(options?: SimpleProfilePropertyRuleOptions) {
     const profile = await Profile.findOne({ order: api.sequelize.random() });
     if (profile) {
-      const source = await this.$get("source");
+      const source = await this.$get("source", { scope: null });
       return source.importProfileProperty(profile, this, options);
     }
   }
@@ -355,7 +355,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   async pluginOptions() {
-    const source = await this.$get("source");
+    const source = await this.$get("source", { scope: null });
     const { pluginConnection } = await source.getPlugin();
 
     if (!pluginConnection) {
@@ -408,7 +408,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   async apiData() {
     const options = await this.getOptions();
-    const source = await this.$get("source");
+    const source = await this.$get("source", { scope: null });
 
     return {
       guid: this.guid,

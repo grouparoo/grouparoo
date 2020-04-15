@@ -437,35 +437,42 @@ export class Source extends LoggedModel<Source> {
       sourceGuid: this.guid,
     });
 
-    // manually run the hooks we want
-    ProfilePropertyRule.generateGuid(rule);
-    await ProfilePropertyRule.ensureUniqueKey(rule);
+    try {
+      // manually run the hooks we want
+      ProfilePropertyRule.generateGuid(rule);
+      await ProfilePropertyRule.ensureUniqueKey(rule);
 
-    // @ts-ignore
-    // danger zone!
-    await rule.save({ hooks: false });
-    await ProfilePropertyRule.clearCacheAfterSave();
+      // @ts-ignore
+      // danger zone!
+      await rule.save({ hooks: false });
+      await ProfilePropertyRule.clearCacheAfterSave();
 
-    // build the default options
-    const { pluginConnection } = await this.getPlugin();
-    if (
-      typeof pluginConnection.methods
-        .uniqueProfilePropertyRuleBootstrapOptions === "function"
-    ) {
-      const app = await this.$get("app");
-      const appOptions = await app.getOptions();
-      const options = await this.getOptions();
-      const ruleOptions = await pluginConnection.methods.uniqueProfilePropertyRuleBootstrapOptions(
-        app,
-        appOptions,
-        this,
-        options,
-        mappedColumn
-      );
+      // build the default options
+      const { pluginConnection } = await this.getPlugin();
+      if (
+        typeof pluginConnection.methods
+          .uniqueProfilePropertyRuleBootstrapOptions === "function"
+      ) {
+        const app = await this.$get("app");
+        const appOptions = await app.getOptions();
+        const options = await this.getOptions();
+        const ruleOptions = await pluginConnection.methods.uniqueProfilePropertyRuleBootstrapOptions(
+          app,
+          appOptions,
+          this,
+          options,
+          mappedColumn
+        );
 
-      await rule.setOptions(ruleOptions);
+        await rule.setOptions(ruleOptions);
+      }
+
+      return rule;
+    } catch (error) {
+      if (rule) {
+        await rule.destroy();
+        throw error;
+      }
     }
-
-    return rule;
   }
 }

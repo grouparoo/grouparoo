@@ -21,7 +21,6 @@ import { LoggedModel } from "../classes/loggedModel";
 import { App } from "./App";
 import { Mapping } from "./Mapping";
 import { Option } from "./Option";
-import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Profile } from "./Profile";
 import { Group } from "./Group";
 import { Import } from "./Import";
@@ -107,6 +106,14 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeCreate
+  static async ensureAppReady(instance: Destination) {
+    const app = await App.findOne({ where: { guid: instance.appGuid } });
+    if (!app) {
+      throw new Error(`app not found or not ready`);
+    }
+  }
+
+  @BeforeCreate
   static async ensureExportProfilesMethod(instance: Destination) {
     const { pluginConnection } = await instance.getPlugin();
     if (!pluginConnection) {
@@ -121,7 +128,7 @@ export class Destination extends LoggedModel<Destination> {
 
   @BeforeSave
   static async ensureOnlyOneDestinationPerApp(instance: Destination) {
-    const otherDestination = await Destination.findOne({
+    const otherDestination = await Destination.scope(null).findOne({
       where: {
         appGuid: instance.appGuid,
         guid: { [Op.not]: instance.guid },
