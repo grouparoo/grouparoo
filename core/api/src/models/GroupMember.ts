@@ -59,7 +59,7 @@ export class GroupMember extends Model<GroupMember> {
 
   @AfterCreate
   static async logCreate(instance: GroupMember) {
-    const group = await instance.$get("group", { scope: null });
+    const group = await instance.$get("group");
 
     await Log.create({
       topic: "groupMember",
@@ -74,7 +74,7 @@ export class GroupMember extends Model<GroupMember> {
 
   @AfterDestroy
   static async logDestroy(instance: GroupMember) {
-    const group = await instance.$get("group", { scope: null });
+    const group = await instance.$get("group");
 
     await Log.create({
       topic: "groupMember",

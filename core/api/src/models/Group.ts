@@ -377,9 +377,7 @@ export class Group extends LoggedModel<Group> {
       oldProfileProperties[key] = properties[key].value;
     }
 
-    const oldGroupGuids = (await profile.$get("groups", { scope: null })).map(
-      (g) => g.guid
-    );
+    const oldGroupGuids = (await profile.$get("groups")).map((g) => g.guid);
 
     return Import.build({
       rawData: destinationGuid ? { _meta: { destinationGuid } } : {},

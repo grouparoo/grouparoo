@@ -5,7 +5,7 @@ import SourceFactory from "./source";
 const data = async (props = {}) => {
   const defaultProps = {
     name: `schedule ${faker.company.companyName()}-${Math.random()}`,
-    options: {},
+    options: { maxColumn: "updated_at" },
     mapping: {},
     recurring: false,
     recurringFrequency: null,
@@ -33,6 +33,8 @@ export default async (source?, props: { [key: string]: any } = {}) => {
   if (Object.keys(mergedProps.options).length > 0) {
     await instance.setOptions(mergedProps.options);
   }
+
+  await instance.update({ state: "ready" });
 
   return instance;
 };

@@ -238,7 +238,7 @@ export class Source extends LoggedModel<Source> {
       return;
     }
 
-    const app = await this.$get("app", { scope: null });
+    const app = await this.$get("app");
     const appOptions = await app.getOptions();
     const sourceOptions = await this.getOptions();
     const sourceMapping = await this.getMapping();
@@ -260,7 +260,7 @@ export class Source extends LoggedModel<Source> {
 
   async sourceConnectionOptions() {
     const { pluginConnection } = await this.getPlugin();
-    const app = await this.$get("app", { scope: null });
+    const app = await this.$get("app");
     const appOptions = await app.getOptions();
 
     if (!pluginConnection.methods.sourceOptions) {
@@ -283,7 +283,7 @@ export class Source extends LoggedModel<Source> {
     }
 
     const { pluginConnection } = await this.getPlugin();
-    const app = await this.$get("app", { scope: null });
+    const app = await this.$get("app");
     const appOptions = await app.getOptions();
 
     if (!pluginConnection.methods.sourcePreview) {
@@ -308,7 +308,7 @@ export class Source extends LoggedModel<Source> {
     let profilePropertyRules: ProfilePropertyRule[];
 
     if (includeApp) {
-      app = await this.$get("app", { scope: null });
+      app = await this.$get("app");
     }
     if (includeSchedule) {
       schedule = await this.$get("schedule", {
@@ -463,7 +463,7 @@ export class Source extends LoggedModel<Source> {
         typeof pluginConnection.methods
           .uniqueProfilePropertyRuleBootstrapOptions === "function"
       ) {
-        const app = await this.$get("app", { scope: null });
+        const app = await this.$get("app");
         const appOptions = await app.getOptions();
         const options = await this.getOptions();
         const ruleOptions = await pluginConnection.methods.uniqueProfilePropertyRuleBootstrapOptions(

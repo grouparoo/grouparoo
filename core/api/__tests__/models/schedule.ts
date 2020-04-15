@@ -170,7 +170,11 @@ describe("models/schedule", () => {
       });
 
       test("a schedule cannot be changed to to the ready state if there are missing required options", async () => {
-        const schedule = await helper.factories.schedule();
+        const schedule = await Schedule.create({
+          sourceGuid: source.guid,
+          name: "no opts",
+        });
+
         await expect(schedule.update({ state: "ready" })).rejects.toThrow(
           /maxColumn is required/
         );
@@ -357,11 +361,30 @@ describe("models/schedule", () => {
       await schedule.destroy();
     });
 
+    test("running a schedule that isn't ready will throw", async () => {
+      const schedule = await Schedule.create({
+        name: "test plugin schedule",
+        sourceGuid: source.guid,
+      });
+
+      await expect(
+        Run.create({
+          creatorGuid: schedule.guid,
+          creatorType: "schedule",
+          state: "running",
+        })
+      ).rejects.toThrow(/creator schedule is not ready/);
+
+      await schedule.destroy();
+    });
+
     test("running a schedule will save the filter and highWaterMark on the run", async () => {
       const schedule = await Schedule.create({
         name: "test plugin schedule",
         sourceGuid: source.guid,
       });
+      await schedule.setOptions({ maxColumn: "col" });
+      await schedule.update({ state: "ready" });
 
       const run = await Run.create({
         creatorGuid: schedule.guid,

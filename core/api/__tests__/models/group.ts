@@ -183,6 +183,7 @@ describe("models/group", () => {
         const group = await Group.create({
           name: "tracked group",
           type: "manual",
+          state: "ready",
         });
 
         const destination = await helper.factories.destination();

@@ -609,6 +609,8 @@ describe("models/source", () => {
         sourceGuid: source.guid,
         name: "test schedule",
       });
+      await schedule.setOptions({ maxColumn: "abc" });
+      await schedule.update({ state: "ready" });
 
       const previousRun = await helper.factories.run(schedule, {
         createdAt: new Date(0),

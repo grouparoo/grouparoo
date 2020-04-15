@@ -21,6 +21,8 @@ import {
 import * as uuid from "uuid";
 import { Schedule } from "./Schedule";
 import { Import } from "./Import";
+import { ProfilePropertyRule } from "./ProfilePropertyRule";
+import { Group } from "./Group";
 import { StateMachine } from "./../modules/stateMachine";
 
 export interface RunFilter {
@@ -115,6 +117,28 @@ export class Run extends Model<Run> {
   @HasMany(() => Import, "creatorGuid")
   imports: Import[];
 
+  @BeforeCreate
+  static async ensureCreatorReady(instance: Run) {
+    let ready = true;
+    // profile property rules are ok to enqueue if they are in draft at the time.  Options update before state
+    if (instance.creatorType === "group") {
+      let creator = await Group.findByGuid(instance.creatorGuid);
+      if (creator.state === "draft") {
+        ready = false;
+      }
+    }
+    if (instance.creatorType === "schedule") {
+      let creator = await Schedule.findByGuid(instance.creatorGuid);
+      if (creator.state === "draft") {
+        ready = false;
+      }
+    }
+
+    if (!ready) {
+      throw new Error(`creator ${instance.creatorType} is not ready`);
+    }
+  }
+
   @BeforeSave
   static async updateState(instance: Run) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
@@ -202,14 +226,14 @@ export class Run extends Model<Run> {
   async getNextFilter() {
     let nextFilter: RunFilter = {};
 
-    const schedule = await this.$get("schedule", { scope: null });
+    const schedule = await this.$get("schedule");
     if (!schedule) {
       // the run might not have been started by a schedule
       return nextFilter;
     }
 
-    const source = await schedule.$get("source", { scope: null });
-    const app = await source.$get("app", { scope: null });
+    const source = await schedule.$get("source");
+    const app = await source.$get("app");
     const { pluginConnection } = await source.getPlugin();
     if (!pluginConnection || !pluginConnection?.methods.nextFilter) {
       return nextFilter;

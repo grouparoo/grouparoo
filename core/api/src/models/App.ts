@@ -11,7 +11,6 @@ import {
   AfterDestroy,
   HasMany,
   DefaultScope,
-  Scopes,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
@@ -19,6 +18,7 @@ import { Source } from "./Source";
 import { Option } from "./Option";
 import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
+import { Destination } from "./Destination";
 
 export interface AppOption {
   key: string;
@@ -98,6 +98,15 @@ export class App extends LoggedModel<App> {
     if (sources.length > 0) {
       throw new Error(
         `cannot delete this app, source ${sources[0].guid} relies on it`
+      );
+    }
+
+    const destinations = await Destination.scope(null).findAll({
+      where: { appGuid: instance.guid },
+    });
+    if (destinations.length > 0) {
+      throw new Error(
+        `cannot delete this app, destination ${destinations[0].guid} relies on it`
       );
     }
   }

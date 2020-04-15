@@ -212,7 +212,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   @BeforeSave
   static async ensureOptions(instance: ProfilePropertyRule) {
-    const source = await instance.$get("source", { scope: null });
+    const source = await Source.findByGuid(instance.sourceGuid);
     await source.validateOptions();
   }
 
@@ -222,9 +222,8 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   @BeforeCreate
-  static async ensureSourceIsReady(instance: ProfilePropertyRule) {
+  static async ensureSourceReady(instance: ProfilePropertyRule) {
     const source = await Source.findByGuid(instance.sourceGuid);
-
     if (source.state !== "ready") {
       throw new Error("source is not ready");
     }
@@ -242,8 +241,8 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   @AfterCreate
   static async buildManualProfileProperties(instance: ProfilePropertyRule) {
-    const source = await instance.$get("source", { scope: null });
-    const app = await source.$get("app", { scope: null });
+    const source = await instance.$get("source");
+    const app = await source.$get("app");
     if (app.type === "manual") {
       await internalRun("profilePropertyRule", instance.guid);
     }
@@ -301,7 +300,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   async test(options?: SimpleProfilePropertyRuleOptions) {
     const profile = await Profile.findOne({ order: api.sequelize.random() });
     if (profile) {
-      const source = await this.$get("source", { scope: null });
+      const source = await Source.findByGuid(this.sourceGuid);
       return source.importProfileProperty(profile, this, options);
     }
   }
@@ -333,7 +332,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   async enqueueRuns() {
     await internalRun("profilePropertyRule", this.guid); // update *all* profiles
 
-    const groups = await Group.scope(null).findAll({
+    const groups = await Group.findAll({
       include: [
         {
           model: GroupRule,
@@ -350,7 +349,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   async pluginOptions() {
-    const source = await this.$get("source", { scope: null });
+    const source = await this.$get("source");
     const { pluginConnection } = await source.getPlugin();
 
     if (!pluginConnection) {
@@ -373,7 +372,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
         examples?: Array<any>;
       }>;
     }> = [];
-    const app = await source.$get("app", { scope: null });
+    const app = await source.$get("app");
     const appOptions = await app.getOptions();
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();
@@ -403,11 +402,11 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   async apiData() {
     const options = await this.getOptions();
-    const source = await this.$get("source", { scope: null });
+    const source = await this.$get("source");
 
     return {
       guid: this.guid,
-      source: await source.apiData(false, true, false),
+      source: source ? await source.apiData(false, true, false) : undefined,
       key: this.key,
       type: this.type,
       state: this.state,

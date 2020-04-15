@@ -96,14 +96,14 @@ export class Schedule extends LoggedModel<Schedule> {
 
   @BeforeSave
   static async ensureSourceOptions(instance: Schedule) {
-    const source = await instance.$get("source", { scope: null });
+    const source = await Source.findByGuid(instance.sourceGuid);
     const sourceOptions = await source.getOptions();
     await source.validateOptions(sourceOptions);
   }
 
   @BeforeSave
   static async ensureSourceMapping(instance: Schedule) {
-    const source = await instance.$get("source", { scope: null });
+    const source = await Source.findByGuid(instance.sourceGuid);
     const sourceMapping = await source.getMapping();
     if (!sourceMapping || Object.keys(sourceMapping).length === 0) {
       throw new Error("source has no mapping");
@@ -128,7 +128,7 @@ export class Schedule extends LoggedModel<Schedule> {
   @BeforeValidate
   static async ensureName(instance: Schedule) {
     if (!instance.name) {
-      const source = await instance.$get("source", { scope: null });
+      const source = await Source.findByGuid(instance.sourceGuid);
       instance.name = `${source.name} schedule`;
     }
   }
@@ -162,9 +162,7 @@ export class Schedule extends LoggedModel<Schedule> {
 
   @BeforeCreate
   static async ensureSourceCanUseSchedule(instance: Schedule) {
-    const source = await Source.findOne({
-      where: { guid: instance.sourceGuid },
-    });
+    const source = await Source.findByGuid(instance.sourceGuid);
 
     if (source.state !== "ready") {
       throw new Error("source is not ready");
@@ -218,7 +216,7 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   async pluginOptions() {
-    const source = await this.$get("source", { scope: null });
+    const source = await Source.findByGuid(this.sourceGuid);
     const { pluginConnection } = await source.getPlugin();
 
     const response: Array<{
@@ -240,7 +238,7 @@ export class Schedule extends LoggedModel<Schedule> {
       return response;
     }
 
-    const app = await source.$get("app", { scope: null });
+    const app = await source.$get("app");
     const appOptions = await app.getOptions();
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();
@@ -268,14 +266,14 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   async apiData() {
-    const source = await this.$get("source", { scope: null });
+    const source = await this.$get("source");
     const options = await this.getOptions();
 
     return {
       guid: this.guid,
       name: this.name,
       state: this.state,
-      source: await source.apiData(false),
+      source: source ? await source.apiData(false) : undefined,
       recurring: this.recurring,
       options,
       recurringFrequency: this.recurringFrequency,
@@ -293,8 +291,8 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   async run(run: Run, limit: number, highWaterMark: string | number) {
-    const source = await this.$get("source", { scope: null });
-    const app = await source.$get("app", { scope: null });
+    const source = await this.$get("source");
+    const app = await source.$get("app");
     const { pluginConnection } = await source.getPlugin();
     const method = pluginConnection.methods.profiles;
 

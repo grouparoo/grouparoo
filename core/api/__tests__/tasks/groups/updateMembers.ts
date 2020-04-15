@@ -33,6 +33,7 @@ describe("tasks/group:updateMembers", () => {
       group = await Group.create({
         name: "test calculated group",
         type: "manual",
+        state: "ready",
       });
 
       await Profile.destroy({ truncate: true });
