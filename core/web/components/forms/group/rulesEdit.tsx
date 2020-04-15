@@ -162,13 +162,6 @@ export default function RulesBuilder({
     <>
       <h3>Rules for {group.name}</h3>
       <p>
-        <Badge style={{ fontSize: 20 }} variant="info">
-          {countPotentialMembers}
-        </Badge>{" "}
-        profiles matching {group.matchType} rules
-      </p>
-
-      <p>
         <StateBadge state={group.state} />
       </p>
 
@@ -181,10 +174,10 @@ export default function RulesBuilder({
                 <strong>Profile Property</strong>
               </td>
               <td>
-                <strong>Op</strong>
+                <strong>Operation</strong>
               </td>
               <td>
-                <strong>Match</strong>
+                <strong>Value</strong>
               </td>
 
               <td>Profiles fitting rule</td>
@@ -330,6 +323,12 @@ export default function RulesBuilder({
         </Button>
         <br />
         <br />
+        <p>
+          <Badge style={{ fontSize: 20 }} variant="info">
+            {countPotentialMembers}
+          </Badge>{" "}
+          profiles matching {group.matchType} rules
+        </p>
         <Button
           active={!loading}
           variant="success"
