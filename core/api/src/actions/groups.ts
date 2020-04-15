@@ -63,6 +63,7 @@ export class GroupCreate extends Action {
       type: { required: true },
       matchType: { required: true, default: "all" },
       rules: { required: false },
+      state: { required: false },
     };
   }
 
