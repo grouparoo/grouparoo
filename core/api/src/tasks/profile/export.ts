@@ -20,10 +20,7 @@ export class ProfileExport extends RetryableTask {
   }
 
   async run(params) {
-    const profile = await Profile.findOne({ where: { guid: params.guid } });
-    if (!profile) {
-      throw new Error(`cannot find profile with guid: ${params.guid}`);
-    }
+    const profile = await Profile.findByGuid(params.guid);
 
     const imports = await Import.findAll({
       where: {

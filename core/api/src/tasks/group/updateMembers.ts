@@ -29,21 +29,11 @@ export class RunGroup extends Task {
       );
     const destinationGuid = params.destinationGuid;
 
-    const group = await Group.findOne({
-      where: { guid: params.groupGuid },
-    });
-    if (!group) {
-      throw new Error(`cannot find group ${params.groupGuid}`);
-    }
+    const group = await Group.findByGuid(params.groupGuid);
 
     let run: Run;
     if (params.runGuid) {
-      run = await Run.findOne({
-        where: { guid: params.runGuid },
-      });
-      if (!run) {
-        throw new Error(`cannot find run ${params.runGuid}`);
-      }
+      run = await Run.findByGuid(params.runGuid);
     } else {
       run = await Run.create({
         creatorGuid: group.guid,

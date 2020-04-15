@@ -25,12 +25,7 @@ describe("models/schedule", () => {
 
     beforeAll(async () => {
       await helper.factories.profilePropertyRules();
-
-      app = await App.create({
-        name: "test app",
-        type: "test-plugin-app",
-        options: { fileGuid: "abc123" },
-      });
+      app = await helper.factories.app();
 
       source = await Source.create({
         name: "test source",
@@ -80,7 +75,6 @@ describe("models/schedule", () => {
         sourceGuid: source.guid,
       });
 
-      await schedule.reload();
       expect(schedule.name).toMatch(/test source schedule/);
 
       await schedule.destroy();
@@ -328,6 +322,7 @@ describe("models/schedule", () => {
       app = await App.create({
         name: "test app with real methods",
         type: "test-template-app",
+        state: "ready",
       });
 
       source = await Source.create({

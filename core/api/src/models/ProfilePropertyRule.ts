@@ -223,9 +223,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   @BeforeCreate
   static async ensureSourceIsReady(instance: ProfilePropertyRule) {
-    const source = await Source.findOne({
-      where: { guid: instance.sourceGuid },
-    });
+    const source = await Source.findByGuid(instance.sourceGuid);
 
     if (source.state !== "ready") {
       throw new Error("source is not ready");
@@ -245,7 +243,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @AfterCreate
   static async buildManualProfileProperties(instance: ProfilePropertyRule) {
     const source = await instance.$get("source", { scope: null });
-    const app = await source.$get("app");
+    const app = await source.$get("app", { scope: null });
     if (app.type === "manual") {
       await internalRun("profilePropertyRule", instance.guid);
     }
@@ -258,10 +256,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     });
 
     if (groupRule) {
-      const group = await Group.findOne({
-        where: { guid: groupRule.groupGuid },
-      });
-
+      const group = await Group.findByGuid(groupRule.groupGuid);
       throw new Error(
         `cannot delete profile property rule "${instance.key}", group ${group.name} (${group.guid}) is based on it`
       );
@@ -338,7 +333,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   async enqueueRuns() {
     await internalRun("profilePropertyRule", this.guid); // update *all* profiles
 
-    const groups = await Group.findAll({
+    const groups = await Group.scope(null).findAll({
       include: [
         {
           model: GroupRule,
@@ -378,7 +373,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
         examples?: Array<any>;
       }>;
     }> = [];
-    const app = await source.$get("app");
+    const app = await source.$get("app", { scope: null });
     const appOptions = await app.getOptions();
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();

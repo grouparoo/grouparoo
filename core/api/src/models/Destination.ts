@@ -150,7 +150,7 @@ export class Destination extends LoggedModel<Destination> {
   @AfterSave
   static async buildDestinationGroupsWhenTrackingAll(instance: Destination) {
     if (instance.trackAllGroups === true) {
-      const groups = await Group.findAll();
+      const groups = await Group.scope(null).findAll();
       for (const i in groups) {
         await DestinationGroup.findOrCreate({
           where: { groupGuid: groups[i].guid, destinationGuid: instance.guid },
@@ -203,10 +203,10 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async apiData() {
-    const app = await this.$get("app");
+    const app = await this.$get("app", { scope: null });
     const mapping = await this.getMapping();
     const options = await this.getOptions();
-    const groups = await this.$get("groups");
+    const groups = await this.$get("groups", { scope: null });
     const { pluginConnection } = await this.getPlugin();
     const previewAvailable = await this.previewAvailable();
 
@@ -315,7 +315,7 @@ export class Destination extends LoggedModel<Destination> {
 
   async destinationConnectionOptions() {
     const { pluginConnection } = await this.getPlugin();
-    const app = await this.$get("app");
+    const app = await this.$get("app", { scope: null });
     const appOptions = await app.getOptions();
 
     if (!pluginConnection.methods.destinationOptions) {
@@ -338,7 +338,7 @@ export class Destination extends LoggedModel<Destination> {
     }
 
     const { pluginConnection } = await this.getPlugin();
-    const app = await this.$get("app");
+    const app = await this.$get("app", { scope: null });
     const appOptions = await app.getOptions();
 
     if (!pluginConnection.methods.destinationPreview) {
@@ -362,7 +362,7 @@ export class Destination extends LoggedModel<Destination> {
     newGroups: Array<Group>
   ) {
     const options = await this.getOptions();
-    const app = await this.$get("app");
+    const app = await this.$get("app", { scope: null });
     let method: ExportProfilePluginMethod;
     const { pluginConnection } = await this.getPlugin();
     method = pluginConnection.methods.exportProfile;
@@ -386,9 +386,9 @@ export class Destination extends LoggedModel<Destination> {
     const oldGroupNames = oldGroups.map((g) => g.name);
     const newGroupNames = newGroups.map((g) => g.name);
     const newGroupGuids = newGroups.map((g) => g.guid);
-    const destinationGroupGuids = (await this.$get("groups")).map(
-      (g) => g.guid
-    );
+    const destinationGroupGuids = (
+      await this.$get("groups", { scope: null })
+    ).map((g) => g.guid);
     let toDelete = true;
     newGroupGuids.forEach((newGroupGuid) => {
       if (destinationGroupGuids.includes(newGroupGuid)) {

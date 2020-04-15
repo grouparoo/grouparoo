@@ -18,11 +18,7 @@ export class DetermineRunState extends Task {
     const runGuid = params.runGuid;
     const attempts = params.attempts || 0;
 
-    const run = await Run.findOne({ where: { guid: runGuid } });
-
-    if (!run) {
-      throw new Error(`cannot find run ${runGuid}`);
-    }
+    const run = await Run.findByGuid(runGuid);
 
     await run.determineState();
     await run.reload();

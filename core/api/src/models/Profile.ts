@@ -211,8 +211,9 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   async updateGroupMembership() {
-    const groups = await Group.findAll();
     const results = {};
+    const groups = await Group.scope(null).findAll();
+
     for (const i in groups) {
       const group = groups[i];
       const belongs = await group.updateProfileMembership(this);
@@ -226,7 +227,7 @@ export class Profile extends LoggedModel<Profile> {
     let oldSimpleProperties = {};
     let oldGroups = [];
 
-    const groups = await this.$get("groups");
+    const groups = await this.$get("groups", { scope: null });
 
     const destinations = await Destination.destinationsForGroups(groups);
     const properties = await this.properties();

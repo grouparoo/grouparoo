@@ -35,7 +35,7 @@ export class UpdateSchedules extends Task {
         continue;
       }
 
-      const lastCompleteRun = await Run.findOne({
+      const lastCompleteRun = await Run.scope(null).findOne({
         where: {
           creatorGuid: schedule.guid,
           creatorType: "schedule",

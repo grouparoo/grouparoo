@@ -26,22 +26,14 @@ export class RunSchedule extends Task {
         (await plugin.readSetting("core", "runs-profile-batch-size")).value
       );
 
-    const schedule = await Schedule.findOne({
-      where: { guid: params.scheduleGuid },
-    });
-    if (!schedule) {
-      throw new Error(`cannot find schedule ${params.scheduleGuid}`);
-    }
+    const schedule = await Schedule.findByGuid(params.scheduleGuid);
     if (schedule.state !== "ready") {
       throw new Error(`schedule ${params.scheduleGuid} is not ready`);
     }
 
     let run: Run;
     if (params.runGuid) {
-      run = await Run.findOne({ where: { guid: params.runGuid } });
-      if (!run) {
-        throw new Error(`cannot find run ${params.runGuid}`);
-      }
+      run = await Run.findByGuid(params.runGuid);
     } else {
       run = await Run.create({
         creatorGuid: schedule.guid,

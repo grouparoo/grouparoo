@@ -202,14 +202,14 @@ export class Run extends Model<Run> {
   async getNextFilter() {
     let nextFilter: RunFilter = {};
 
-    const schedule = await this.$get("schedule");
+    const schedule = await this.$get("schedule", { scope: null });
     if (!schedule) {
       // the run might not have been started by a schedule
       return nextFilter;
     }
 
-    const source = await schedule.$get("source");
-    const app = await source.$get("app");
+    const source = await schedule.$get("source", { scope: null });
+    const app = await source.$get("app", { scope: null });
     const { pluginConnection } = await source.getPlugin();
     if (!pluginConnection || !pluginConnection?.methods.nextFilter) {
       return nextFilter;

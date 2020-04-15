@@ -108,6 +108,14 @@ export class Source extends LoggedModel<Source> {
     }
   }
 
+  @BeforeCreate
+  static async ensureAppReady(instance: Source) {
+    const app = await App.findByGuid(instance.appGuid);
+    if (app.state !== "ready") {
+      throw new Error(`app ${app.guid} is not ready`);
+    }
+  }
+
   @BeforeSave
   static async updateState(instance: App) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
@@ -115,7 +123,7 @@ export class Source extends LoggedModel<Source> {
 
   @BeforeDestroy
   static async ensureNoSchedule(instance: Source) {
-    const schedule = await instance.$get("schedule");
+    const schedule = await instance.$get("schedule", { scope: null });
     if (schedule) {
       throw new Error("you cannot delete a source that has a schedule");
     }
@@ -123,7 +131,9 @@ export class Source extends LoggedModel<Source> {
 
   @BeforeDestroy
   static async ensureNoProfilePropertyRules(instance: Source) {
-    const profilePropertyRules = await instance.$get("profilePropertyRules");
+    const profilePropertyRules = await instance.$get("profilePropertyRules", {
+      scope: null,
+    });
     if (profilePropertyRules.length > 0) {
       throw new Error(
         "you cannot delete a source that has profile property rules"
@@ -228,7 +238,7 @@ export class Source extends LoggedModel<Source> {
       return;
     }
 
-    const app = await this.$get("app");
+    const app = await this.$get("app", { scope: null });
     const appOptions = await app.getOptions();
     const sourceOptions = await this.getOptions();
     const sourceMapping = await this.getMapping();
@@ -250,7 +260,7 @@ export class Source extends LoggedModel<Source> {
 
   async sourceConnectionOptions() {
     const { pluginConnection } = await this.getPlugin();
-    const app = await this.$get("app");
+    const app = await this.$get("app", { scope: null });
     const appOptions = await app.getOptions();
 
     if (!pluginConnection.methods.sourceOptions) {
@@ -273,7 +283,7 @@ export class Source extends LoggedModel<Source> {
     }
 
     const { pluginConnection } = await this.getPlugin();
-    const app = await this.$get("app");
+    const app = await this.$get("app", { scope: null });
     const appOptions = await app.getOptions();
 
     if (!pluginConnection.methods.sourcePreview) {
@@ -298,7 +308,7 @@ export class Source extends LoggedModel<Source> {
     let profilePropertyRules: ProfilePropertyRule[];
 
     if (includeApp) {
-      app = await this.$get("app");
+      app = await this.$get("app", { scope: null });
     }
     if (includeSchedule) {
       schedule = await this.$get("schedule", {
@@ -453,7 +463,7 @@ export class Source extends LoggedModel<Source> {
         typeof pluginConnection.methods
           .uniqueProfilePropertyRuleBootstrapOptions === "function"
       ) {
-        const app = await this.$get("app");
+        const app = await this.$get("app", { scope: null });
         const appOptions = await app.getOptions();
         const options = await this.getOptions();
         const ruleOptions = await pluginConnection.methods.uniqueProfilePropertyRuleBootstrapOptions(

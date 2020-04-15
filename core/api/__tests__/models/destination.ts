@@ -216,7 +216,11 @@ describe("models/destination", () => {
       });
 
       test("a destination cannot be changed to to the ready state if there are missing required options", async () => {
-        destination = await helper.factories.destination();
+        destination = await Destination.build({
+          appGuid: app.guid,
+          name: "missing options",
+          type: "test-plugin-export",
+        });
         await expect(destination.update({ state: "ready" })).rejects.toThrow();
       });
 
@@ -377,7 +381,13 @@ describe("models/destination", () => {
 
         it("informs all destinations if trackAllGroups is set", async () => {
           await destination.update({ trackAllGroups: true });
-          const otherDestination = await helper.factories.destination();
+
+          const otherApp = await helper.factories.app();
+          const otherDestination = await Destination.create({
+            name: "other destination",
+            appGuid: otherApp.guid,
+            type: "test-plugin-export",
+          });
           await otherDestination.update({ trackAllGroups: true });
 
           const profile = await helper.factories.profile();
@@ -400,6 +410,8 @@ describe("models/destination", () => {
           );
           expect(destinations.length).toEqual(2);
 
+          await otherDestination.destroy();
+          await otherApp.destroy();
           await group.removeProfile(profile);
         });
       });
