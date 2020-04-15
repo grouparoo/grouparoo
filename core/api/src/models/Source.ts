@@ -469,11 +469,13 @@ export class Source extends LoggedModel<Source> {
         const appOptions = await app.getOptions();
         const options = await this.getOptions();
         const ruleOptions = await pluginConnection.methods.uniqueProfilePropertyRuleBootstrapOptions(
-          app,
-          appOptions,
-          this,
-          options,
-          mappedColumn
+          {
+            app,
+            appOptions,
+            source: this,
+            sourceOptions: options,
+            mappedColumn,
+          }
         );
 
         await rule.setOptions(ruleOptions);
