@@ -64,7 +64,7 @@ const STATE_TRANSITIONS = [
 ];
 
 @DefaultScope(() => ({
-  where: { state: "ready" },
+  where: { state: { [Op.ne]: "draft" } },
 }))
 @Table({ tableName: "groups", paranoid: false })
 export class Group extends LoggedModel<Group> {
