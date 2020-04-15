@@ -147,6 +147,7 @@ describe("integration/runs/mysql", () => {
       name: "test app",
       type: "mysql",
       options: MYSQL_OPTIONS,
+      state: "ready",
     };
     const appResponse = await specHelper.runAction("app:create", session);
     expect(appResponse.error).toBeUndefined();
