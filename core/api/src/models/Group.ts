@@ -748,6 +748,9 @@ export class Group extends LoggedModel<Group> {
       });
     }
 
+    if (rules.length === 0) {
+      wheres.push({ guid: "" });
+    }
     const joinType = matchType === "all" ? Op.and : Op.or;
     const whereContainer = {};
     whereContainer[joinType] = wheres;
