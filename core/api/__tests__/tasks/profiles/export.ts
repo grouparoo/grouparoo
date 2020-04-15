@@ -98,6 +98,7 @@ describe("tasks/profile:export", () => {
         app = await App.create({
           name: "test app",
           type: "test-template-app",
+          state: "ready",
         });
 
         destination = await Destination.create({
