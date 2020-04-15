@@ -12,6 +12,7 @@ export class SchedulesList extends Action {
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
+      state: { required: false },
       order: {
         required: true,
         default: [
@@ -23,7 +24,14 @@ export class SchedulesList extends Action {
   }
 
   async run({ params, response }) {
-    const schedules = await Schedule.findAll({
+    const where = {};
+
+    if (params.state) {
+      where["state"] = params.state;
+    }
+
+    const schedules = await Schedule.scope(null).findAll({
+      where,
       limit: params.limit,
       offset: params.offset,
       order: params.order,
@@ -33,7 +41,7 @@ export class SchedulesList extends Action {
       schedules.map(async (conn) => conn.apiData())
     );
 
-    response.total = await Schedule.count();
+    response.total = await Schedule.scope(null).count({ where });
   }
 }
 
@@ -51,14 +59,7 @@ export class ScheduleRun extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const schedule = await Schedule.findOne({
-      where: { guid: params.guid },
-    });
-
-    if (!schedule) {
-      throw new Error("schedule not found");
-    }
-
+    const schedule = await Schedule.findByGuid(params.guid);
     await schedule.enqueueRun();
     response.success = true;
   }
@@ -121,14 +122,7 @@ export class ScheduleEdit extends Action {
   }
 
   async run({ params, response }) {
-    const schedule = await Schedule.findOne({
-      where: { guid: params.guid },
-    });
-
-    if (!schedule) {
-      throw new Error("schedule not found");
-    }
-
+    const schedule = await Schedule.findByGuid(params.guid);
     if (params.options) {
       await schedule.setOptions(params.options);
     }
@@ -151,14 +145,7 @@ export class ScheduleView extends Action {
   }
 
   async run({ params, response }) {
-    const schedule = await Schedule.findOne({
-      where: { guid: params.guid },
-    });
-
-    if (!schedule) {
-      throw new Error("schedule not found");
-    }
-
+    const schedule = await Schedule.findByGuid(params.guid);
     response.schedule = await schedule.apiData();
     response.pluginOptions = await schedule.pluginOptions();
   }
@@ -178,14 +165,7 @@ export class ScheduleDestroy extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const schedule = await Schedule.findOne({
-      where: { guid: params.guid },
-    });
-
-    if (!schedule) {
-      throw new Error("schedule not found");
-    }
-
+    const schedule = await Schedule.findByGuid(params.guid);
     await schedule.destroy();
     response.success = true;
   }

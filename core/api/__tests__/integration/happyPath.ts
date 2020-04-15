@@ -22,6 +22,7 @@ describe("integration/happyPath", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
+    helper.disableTestPluginImport();
   }, 1000 * 30);
 
   afterAll(async () => {
@@ -53,6 +54,7 @@ describe("integration/happyPath", () => {
       name: "test app",
       type: "test-plugin-app",
       options: { fileGuid: "abc123" },
+      state: "ready",
     };
     const { error, app } = await specHelper.runAction("app:create", connection);
 
@@ -115,6 +117,7 @@ describe("integration/happyPath", () => {
       key: "email",
       type: "string",
       unique: true,
+      state: "ready",
     };
     let { error } = await specHelper.runAction(
       "profilePropertyRule:create",
@@ -128,6 +131,7 @@ describe("integration/happyPath", () => {
       key: "firstName",
       type: "string",
       unique: false,
+      state: "ready",
     };
     await specHelper.runAction("profilePropertyRule:create", connection);
 
@@ -137,6 +141,7 @@ describe("integration/happyPath", () => {
       key: "lastName",
       type: "string",
       unique: false,
+      state: "ready",
     };
     await specHelper.runAction("profilePropertyRule:create", connection);
 
@@ -146,6 +151,7 @@ describe("integration/happyPath", () => {
       key: "ltv",
       type: "float",
       unique: false,
+      state: "ready",
     };
     await specHelper.runAction("profilePropertyRule:create", connection);
   });
@@ -198,6 +204,7 @@ describe("integration/happyPath", () => {
         csrfToken,
         name: "manual group",
         type: "manual",
+        state: "ready",
       };
 
       const { error, group } = await specHelper.runAction(
@@ -208,6 +215,7 @@ describe("integration/happyPath", () => {
       expect(group.guid).toBeTruthy();
       expect(group.name).toBe("manual group");
       expect(group.type).toBe("manual");
+      expect(group.state).toBe("ready");
       groupGuid = group.guid;
     });
 
@@ -277,6 +285,7 @@ describe("integration/happyPath", () => {
         name: "calculated group",
         type: "calculated",
         rules: [{ key: "lastName", op: "iLike", match: "mario" }],
+        state: "ready",
       };
 
       const { error, group } = await specHelper.runAction(
@@ -287,6 +296,7 @@ describe("integration/happyPath", () => {
       expect(group.guid).toBeTruthy();
       expect(group.name).toBe("calculated group");
       expect(group.type).toBe("calculated");
+      expect(group.state).not.toBe("draft");
       groupGuid = group.guid;
 
       // import

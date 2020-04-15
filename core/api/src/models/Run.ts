@@ -21,6 +21,8 @@ import {
 import * as uuid from "uuid";
 import { Schedule } from "./Schedule";
 import { Import } from "./Import";
+import { ProfilePropertyRule } from "./ProfilePropertyRule";
+import { Group } from "./Group";
 import { StateMachine } from "./../modules/stateMachine";
 
 export interface RunFilter {
@@ -114,6 +116,28 @@ export class Run extends Model<Run> {
 
   @HasMany(() => Import, "creatorGuid")
   imports: Import[];
+
+  @BeforeCreate
+  static async ensureCreatorReady(instance: Run) {
+    let ready = true;
+    // profile property rules are ok to enqueue if they are in draft at the time.  Options update before state
+    if (instance.creatorType === "group") {
+      let creator = await Group.findByGuid(instance.creatorGuid);
+      if (creator.state === "draft") {
+        ready = false;
+      }
+    }
+    if (instance.creatorType === "schedule") {
+      let creator = await Schedule.findByGuid(instance.creatorGuid);
+      if (creator.state === "draft") {
+        ready = false;
+      }
+    }
+
+    if (!ready) {
+      throw new Error(`creator ${instance.creatorType} is not ready`);
+    }
+  }
 
   @BeforeSave
   static async updateState(instance: Run) {
@@ -330,5 +354,15 @@ export class Run extends Model<Run> {
       completedAt: this.completedAt,
       updatedAt: this.updatedAt,
     };
+  }
+
+  // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
   }
 }

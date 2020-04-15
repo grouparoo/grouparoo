@@ -57,14 +57,7 @@ export class ProfilesList extends Action {
     }
 
     if (params.guid) {
-      const group = await Group.findOne({
-        where: { guid: params.guid },
-      });
-
-      if (!group) {
-        throw new Error("group not found");
-      }
-
+      const group = await Group.findByGuid(params.guid);
       const groupMembers: Array<GroupMember> = await group.$get(
         "groupMembers",
         {
@@ -171,13 +164,7 @@ export class ProfileImportAndUpdate extends Action {
   async run({ params, response }) {
     response.success = false;
 
-    const profile = await Profile.findOne({
-      where: { guid: params.guid },
-    });
-
-    if (!profile) {
-      throw new Error("profile not found");
-    }
+    const profile = await Profile.findByGuid(params.guid);
 
     await profile.import();
     await profile.updateGroupMembership();
@@ -204,10 +191,7 @@ export class ProfileEdit extends Action {
   }
 
   async run({ params, response }) {
-    const profile = await Profile.findOne({ where: { guid: params.guid } });
-    if (!profile) {
-      throw new Error("profile not found");
-    }
+    const profile = await Profile.findByGuid(params.guid);
     await profile.update(params);
     await profile.addOrUpdateProperties(params.properties);
     await profile.removeProperties(params.removedProperties);
@@ -231,10 +215,7 @@ export class ProfileView extends Action {
   }
 
   async run({ params, response }) {
-    const profile = await Profile.findOne({ where: { guid: params.guid } });
-    if (!profile) {
-      throw new Error("profile not found");
-    }
+    const profile = await Profile.findByGuid(params.guid);
     response.profile = await profile.apiData();
     response.groups = await profile.$get("groups");
   }
@@ -254,10 +235,7 @@ export class ProfileDestroy extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const profile = await Profile.findOne({ where: { guid: params.guid } });
-    if (!profile) {
-      throw new Error("profile not found");
-    }
+    const profile = await Profile.findByGuid(params.guid);
     await profile.destroy();
     response.success = true;
   }

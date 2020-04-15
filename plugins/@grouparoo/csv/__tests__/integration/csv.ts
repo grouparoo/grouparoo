@@ -94,6 +94,7 @@ describe("integration/runs/csv", () => {
         csrfToken,
         name: "test import app",
         type: "csv",
+        state: "ready",
       };
       const appResponse = await specHelper.runAction("app:create", session);
       expect(appResponse.error).toBeUndefined();
@@ -199,6 +200,7 @@ describe("integration/runs/csv", () => {
         key: "email",
         type: "string",
         unique: true,
+        state: "ready",
       };
 
       const {

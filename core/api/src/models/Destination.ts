@@ -1,4 +1,4 @@
-import { api, log, task } from "actionhero";
+import { task } from "actionhero";
 import {
   Table,
   Column,
@@ -9,18 +9,17 @@ import {
   Length,
   BelongsToMany,
   ForeignKey,
-  BeforeValidate,
   BeforeCreate,
   BeforeSave,
   AfterSave,
   AfterDestroy,
   DataType,
+  DefaultScope,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { App } from "./App";
 import { Mapping } from "./Mapping";
 import { Option } from "./Option";
-import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Profile } from "./Profile";
 import { Group } from "./Group";
 import { Import } from "./Import";
@@ -40,6 +39,9 @@ const STATE_TRANSITIONS = [
   { from: "draft", to: "ready", checks: ["validateOptions"] },
 ];
 
+@DefaultScope(() => ({
+  where: { state: "ready" },
+}))
 @Table({ tableName: "destinations", paranoid: false })
 export class Destination extends LoggedModel<Destination> {
   guidPrefix() {
@@ -103,6 +105,14 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeCreate
+  static async ensureAppReady(instance: Destination) {
+    const app = await App.findByGuid(instance.appGuid);
+    if (app.state !== "ready") {
+      throw new Error(`app ${app.guid} is not ready`);
+    }
+  }
+
+  @BeforeCreate
   static async ensureExportProfilesMethod(instance: Destination) {
     const { pluginConnection } = await instance.getPlugin();
     if (!pluginConnection) {
@@ -117,7 +127,7 @@ export class Destination extends LoggedModel<Destination> {
 
   @BeforeSave
   static async ensureOnlyOneDestinationPerApp(instance: Destination) {
-    const otherDestination = await Destination.findOne({
+    const otherDestination = await Destination.scope(null).findOne({
       where: {
         appGuid: instance.appGuid,
         guid: { [Op.not]: instance.guid },
@@ -425,6 +435,14 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
+  }
 
   /**
    * Determine which destinations are interested in this profile due to the groups they are tracking

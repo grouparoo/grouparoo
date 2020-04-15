@@ -14,6 +14,7 @@ import {
   BeforeSave,
   AfterDestroy,
   DataType,
+  DefaultScope,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
@@ -54,6 +55,9 @@ const STATE_TRANSITIONS = [
   { from: "draft", to: "ready", checks: ["validateOptions"] },
 ];
 
+@DefaultScope(() => ({
+  where: { state: "ready" },
+}))
 @Table({ tableName: "schedules", paranoid: false })
 export class Schedule extends LoggedModel<Schedule> {
   guidPrefix() {
@@ -92,14 +96,14 @@ export class Schedule extends LoggedModel<Schedule> {
 
   @BeforeSave
   static async ensureSourceOptions(instance: Schedule) {
-    const source = await instance.$get("source");
+    const source = await Source.findByGuid(instance.sourceGuid);
     const sourceOptions = await source.getOptions();
     await source.validateOptions(sourceOptions);
   }
 
   @BeforeSave
   static async ensureSourceMapping(instance: Schedule) {
-    const source = await instance.$get("source");
+    const source = await Source.findByGuid(instance.sourceGuid);
     const sourceMapping = await source.getMapping();
     if (!sourceMapping || Object.keys(sourceMapping).length === 0) {
       throw new Error("source has no mapping");
@@ -124,14 +128,14 @@ export class Schedule extends LoggedModel<Schedule> {
   @BeforeValidate
   static async ensureName(instance: Schedule) {
     if (!instance.name) {
-      const source = await instance.$get("source");
+      const source = await Source.findByGuid(instance.sourceGuid);
       instance.name = `${source.name} schedule`;
     }
   }
 
   @BeforeSave
   static async ensureUniqueName(instance: Schedule) {
-    const count = await Schedule.count({
+    const count = await Schedule.scope(null).count({
       where: {
         guid: { [Op.ne]: instance.guid },
         name: instance.name,
@@ -145,7 +149,7 @@ export class Schedule extends LoggedModel<Schedule> {
 
   @BeforeCreate
   static async ensureOnePerSource(instance: Schedule) {
-    const existingCount = await Schedule.count({
+    const existingCount = await Schedule.scope(null).count({
       where: {
         sourceGuid: instance.sourceGuid,
       },
@@ -158,9 +162,7 @@ export class Schedule extends LoggedModel<Schedule> {
 
   @BeforeCreate
   static async ensureSourceCanUseSchedule(instance: Schedule) {
-    const source = await Source.findOne({
-      where: { guid: instance.sourceGuid },
-    });
+    const source = await Source.findByGuid(instance.sourceGuid);
 
     if (source.state !== "ready") {
       throw new Error("source is not ready");
@@ -214,7 +216,7 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   async pluginOptions() {
-    const source = await this.$get("source");
+    const source = await Source.findByGuid(this.sourceGuid);
     const { pluginConnection } = await source.getPlugin();
 
     const response: Array<{
@@ -271,7 +273,7 @@ export class Schedule extends LoggedModel<Schedule> {
       guid: this.guid,
       name: this.name,
       state: this.state,
-      source: await source.apiData(false),
+      source: source ? await source.apiData(false) : undefined,
       recurring: this.recurring,
       options,
       recurringFrequency: this.recurringFrequency,
@@ -342,5 +344,15 @@ export class Schedule extends LoggedModel<Schedule> {
     }
 
     return { importsCount, nextHighWaterMark };
+  }
+
+  // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
   }
 }

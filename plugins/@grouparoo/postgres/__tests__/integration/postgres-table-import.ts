@@ -136,6 +136,7 @@ describe("integration/runs/postgres", () => {
         port: config.sequelize.port,
         database: config.sequelize.database,
       },
+      state: "ready",
     };
     const appResponse = await specHelper.runAction("app:create", session);
     expect(appResponse.error).toBeUndefined();

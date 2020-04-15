@@ -96,6 +96,7 @@ describe("integration/runs/google-sheets", () => {
           client_email: GOOGLE_SERVICE_CLIENT_EMAIL,
           private_key: GOOGLE_SERVICE_PRIVATE_KEY,
         },
+        state: "ready",
       };
       const appResponse = await specHelper.runAction("app:create", session);
       expect(appResponse.error).toBeUndefined();
@@ -208,6 +209,7 @@ describe("integration/runs/google-sheets", () => {
         key: "email",
         type: "string",
         unique: true,
+        state: "ready",
       };
 
       const {

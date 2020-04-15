@@ -85,8 +85,8 @@ describe("tasks/group:destroy", () => {
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:destroy", foundTasks[0].args[0]); // remove the profiles
 
-      await group.reload();
-      expect(group.state).toBe("deleted");
+      const reloadedGroup = await Group.findByGuid(group.guid);
+      expect(reloadedGroup.state).toBe("deleted");
 
       _imports = await Import.findAll();
       expect(_imports.length).toBe(2);
@@ -120,7 +120,7 @@ describe("tasks/group:destroy", () => {
       let groupMemberCount = 0;
 
       const group = await Group.create({
-        name: "test group",
+        name: "test group 2",
         type: "calculated",
         state: "ready",
       });
@@ -142,8 +142,8 @@ describe("tasks/group:destroy", () => {
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:destroy", foundTasks[0].args[0]); // remove the profiles
 
-      await group.reload();
-      expect(group.state).toBe("deleted");
+      const reloadedGroup = await Group.findByGuid(group.guid);
+      expect(reloadedGroup.state).toBe("deleted");
 
       imports = await Import.findAll();
       expect(imports.length).toBe(2);

@@ -99,6 +99,7 @@ describe("integration/runs/mailchimp", () => {
       name: "test app",
       type: "mailchimp",
       options: { apiKey: MAILCHIMP_API_KEY },
+      state: "ready",
     };
     const appResponse = await specHelper.runAction("app:create", session);
     expect(appResponse.error).toBeUndefined();

@@ -213,6 +213,8 @@ describe("models/app", () => {
         name: "test app",
         type: "test-plugin-app",
       });
+      await app.setOptions({ fileGuid: "abc" });
+      await app.update({ state: "ready" });
 
       const source = await helper.factories.source(app);
 

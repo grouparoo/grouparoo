@@ -39,7 +39,7 @@ export class ProfilePropertyRulesList extends Action {
       where["unique"] = true;
     }
 
-    const profilePropertyRules = await ProfilePropertyRule.findAll({
+    const profilePropertyRules = await ProfilePropertyRule.scope(null).findAll({
       limit: params.limit,
       offset: params.offset,
       order: params.order,
@@ -67,7 +67,7 @@ export class ProfilePropertyRulesList extends Action {
       response.examples[rule.guid] = exampleValues;
     }
 
-    response.total = await ProfilePropertyRule.count();
+    response.total = await ProfilePropertyRule.scope(null).count();
   }
 }
 
@@ -99,13 +99,9 @@ export class ProfilePropertyRuleGroups extends Action {
   }
 
   async run({ params, response }) {
-    const profilePropertyRule = await ProfilePropertyRule.findOne({
-      where: { guid: params.guid },
-    });
-
-    if (!profilePropertyRule) {
-      throw new Error("profilePropertyRule not found");
-    }
+    const profilePropertyRule = await ProfilePropertyRule.findByGuid(
+      params.guid
+    );
 
     const groups = await Group.findAll({
       include: [
@@ -186,12 +182,9 @@ export class ProfilePropertyRuleEdit extends Action {
   }
 
   async run({ params, response }) {
-    const profilePropertyRule = await ProfilePropertyRule.findOne({
-      where: { guid: params.guid },
-    });
-    if (!profilePropertyRule) {
-      throw new Error("profilePropertyRule not found");
-    }
+    const profilePropertyRule = await ProfilePropertyRule.findByGuid(
+      params.guid
+    );
 
     if (params.options) {
       await profilePropertyRule.setOptions(params.options);
@@ -245,12 +238,9 @@ export class ProfilePropertyRuleView extends Action {
   }
 
   async run({ params, response }) {
-    const profilePropertyRule = await ProfilePropertyRule.findOne({
-      where: { guid: params.guid },
-    });
-    if (!profilePropertyRule) {
-      throw new Error("profilePropertyRule not found");
-    }
+    const profilePropertyRule = await ProfilePropertyRule.findByGuid(
+      params.guid
+    );
 
     response.profilePropertyRule = await profilePropertyRule.apiData();
     response.pluginOptions = await profilePropertyRule.pluginOptions();
@@ -270,12 +260,9 @@ export class ProfilePropertyRuleTest extends Action {
   }
 
   async run({ params, response }) {
-    const profilePropertyRule = await ProfilePropertyRule.findOne({
-      where: { guid: params.guid },
-    });
-    if (!profilePropertyRule) {
-      throw new Error("profilePropertyRule not found");
-    }
+    const profilePropertyRule = await ProfilePropertyRule.findByGuid(
+      params.guid
+    );
 
     response.test = (await profilePropertyRule.test()) || true;
   }
@@ -295,12 +282,10 @@ export class ProfilePropertyRuleDestroy extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const profilePropertyRule = await ProfilePropertyRule.findOne({
-      where: { guid: params.guid },
-    });
-    if (!profilePropertyRule) {
-      throw new Error("profilePropertyRule not found");
-    }
+    const profilePropertyRule = await ProfilePropertyRule.findByGuid(
+      params.guid
+    );
+
     await profilePropertyRule.destroy();
     response.success = true;
   }

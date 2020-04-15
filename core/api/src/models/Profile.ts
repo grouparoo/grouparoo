@@ -211,8 +211,9 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   async updateGroupMembership() {
-    const groups = await Group.findAll();
     const results = {};
+    const groups = await Group.findAll();
+
     for (const i in groups) {
       const group = groups[i];
       const belongs = await group.updateProfileMembership(this);
@@ -362,5 +363,15 @@ export class Profile extends LoggedModel<Profile> {
     }
 
     return message;
+  }
+
+  // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
   }
 }

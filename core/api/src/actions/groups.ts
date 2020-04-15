@@ -13,6 +13,7 @@ export class GroupsList extends Action {
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
+      state: { required: false },
       order: {
         required: true,
         default: [
@@ -24,14 +25,21 @@ export class GroupsList extends Action {
   }
 
   async run({ params, response }) {
-    const groups = await Group.findAll({
+    const where = {};
+
+    if (params.state) {
+      where["state"] = params.state;
+    }
+
+    const groups = await Group.scope(null).findAll({
+      where,
       limit: params.limit,
       offset: params.offset,
       order: params.order,
     });
 
     response.groups = await Promise.all(groups.map(async (g) => g.apiData()));
-    response.total = await Group.count();
+    response.total = await Group.scope(null).count({ where });
   }
 }
 
@@ -63,6 +71,7 @@ export class GroupCreate extends Action {
       type: { required: true },
       matchType: { required: true, default: "all" },
       rules: { required: false },
+      state: { required: false },
     };
   }
 
@@ -104,10 +113,7 @@ export class GroupEdit extends Action {
   }
 
   async run({ params, response }) {
-    const group = await Group.findOne({ where: { guid: params.guid } });
-    if (!group) {
-      throw new Error("group not found");
-    }
+    const group = await Group.findByGuid(params.guid);
     await group.update(params);
 
     if (params.rules) {
@@ -133,10 +139,7 @@ export class GroupRun extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const group = await Group.findOne({ where: { guid: params.guid } });
-    if (!group) {
-      throw new Error("group not found");
-    }
+    const group = await Group.findByGuid(params.guid);
     await task.enqueue("group:run", { groupGuid: group.guid });
     response.success = true;
   }
@@ -156,10 +159,7 @@ export class GroupUpdateMembers extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const group = await Group.findOne({ where: { guid: params.guid } });
-    if (!group) {
-      throw new Error("group not found");
-    }
+    const group = await Group.findByGuid(params.guid);
     await task.enqueue("group:updateMembers", { groupGuid: group.guid });
     response.success = true;
   }
@@ -180,21 +180,13 @@ export class GroupAddProfile extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const group = await Group.findOne({ where: { guid: params.guid } });
-    if (!group) {
-      throw new Error("group not found");
-    }
+    const group = await Group.findByGuid(params.guid);
     if (group.type !== "manual") {
       throw new Error(
         "only manual groups can have membership manipulated by this action"
       );
     }
-    const profile = await Profile.findOne({
-      where: { guid: params.profileGuid },
-    });
-    if (!profile) {
-      throw new Error("profile not found");
-    }
+    const profile = await Profile.findByGuid(params.profileGuid);
     await group.addProfile(profile);
     response.success = true;
   }
@@ -215,21 +207,13 @@ export class GroupRemoveProfile extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const group = await Group.findOne({ where: { guid: params.guid } });
-    if (!group) {
-      throw new Error("group not found");
-    }
+    const group = await Group.findByGuid(params.guid);
     if (group.type !== "manual") {
       throw new Error(
         "only manual groups can have membership manipulated by this action"
       );
     }
-    const profile = await Profile.findOne({
-      where: { guid: params.profileGuid },
-    });
-    if (!profile) {
-      throw new Error("profile not found");
-    }
+    const profile = await Profile.findByGuid(params.profileGuid);
     await group.removeProfile(profile);
     response.success = true;
   }
@@ -248,11 +232,7 @@ export class GroupView extends Action {
   }
 
   async run({ params, response }) {
-    const group = await Group.findOne({ where: { guid: params.guid } });
-    if (!group) {
-      throw new Error("group not found");
-    }
-
+    const group = await Group.findByGuid(params.guid);
     response.group = await group.apiData();
     response.group.rules = group.toConvenientRules(await group.getRules());
   }
@@ -273,10 +253,7 @@ export class GroupCountComponentMembers extends Action {
   }
 
   async run({ response, params }) {
-    const group = await Group.findOne({ where: { guid: params.guid } });
-    if (!group) {
-      throw new Error("group not found");
-    }
+    const group = await Group.findByGuid(params.guid);
 
     let rules;
     if (params.rules) {
@@ -313,10 +290,7 @@ export class GroupCountPotentialMembers extends Action {
   }
 
   async run({ response, params }) {
-    const group = await Group.findOne({ where: { guid: params.guid } });
-    if (!group) {
-      throw new Error("group not found");
-    }
+    const group = await Group.findByGuid(params.guid);
 
     let rules;
     if (params.rules) {
@@ -347,10 +321,7 @@ export class GroupListDestinations extends Action {
   }
 
   async run({ params, response }) {
-    const group = await Group.findOne({ where: { guid: params.guid } });
-    if (!group) {
-      throw new Error("group not found");
-    }
+    const group = await Group.findByGuid(params.guid);
 
     const destinations = await group.$get("destinations");
     response.destinations = await Promise.all(
@@ -374,10 +345,7 @@ export class GroupExport extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const group = await Group.findOne({ where: { guid: params.guid } });
-    if (!group) {
-      throw new Error("group not found");
-    }
+    const group = await Group.findByGuid(params.guid);
 
     if (params.type === "csv") {
       await task.enqueue("group:exportToCSV", { groupGuid: group.guid });
@@ -403,10 +371,7 @@ export class GroupDestroy extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const group = await Group.findOne({ where: { guid: params.guid } });
-    if (!group) {
-      throw new Error("group not found");
-    }
+    const group = await Group.findByGuid(params.guid);
 
     await Group.checkDestinationGroups(group);
 

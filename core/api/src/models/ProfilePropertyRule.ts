@@ -14,6 +14,7 @@ import {
   ForeignKey,
   BelongsTo,
   HasMany,
+  DefaultScope,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { env, api, task } from "actionhero";
@@ -162,6 +163,9 @@ let CACHE: ProfilePropertyRulesCache = {
   data: {},
 };
 
+@DefaultScope(() => ({
+  where: { state: "ready" },
+}))
 @Table({ tableName: "profilePropertyRules", paranoid: false })
 export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   guidPrefix() {
@@ -221,7 +225,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   @BeforeSave
   static async ensureOptions(instance: ProfilePropertyRule) {
-    const source = await instance.$get("source");
+    const source = await Source.findByGuid(instance.sourceGuid);
     await source.validateOptions();
   }
 
@@ -231,11 +235,8 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   @BeforeCreate
-  static async ensureSourceIsReady(instance: ProfilePropertyRule) {
-    const source = await Source.findOne({
-      where: { guid: instance.sourceGuid },
-    });
-
+  static async ensureSourceReady(instance: ProfilePropertyRule) {
+    const source = await Source.findByGuid(instance.sourceGuid);
     if (source.state !== "ready") {
       throw new Error("source is not ready");
     }
@@ -267,10 +268,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     });
 
     if (groupRule) {
-      const group = await Group.findOne({
-        where: { guid: groupRule.groupGuid },
-      });
-
+      const group = await Group.findByGuid(groupRule.groupGuid);
       throw new Error(
         `cannot delete profile property rule "${instance.key}", group ${group.name} (${group.guid}) is based on it`
       );
@@ -324,7 +322,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   async test(options?: SimpleProfilePropertyRuleOptions) {
     const profile = await Profile.findOne({ order: api.sequelize.random() });
     if (profile) {
-      const source = await this.$get("source");
+      const source = await Source.findByGuid(this.sourceGuid);
       return source.importProfileProperty(profile, this, options);
     }
   }
@@ -522,7 +520,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
     return {
       guid: this.guid,
-      source: await source.apiData(false, true, false),
+      source: source ? await source.apiData(false, true, false) : undefined,
       key: this.key,
       type: this.type,
       state: this.state,
@@ -534,7 +532,15 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     };
   }
 
-  // --- Class Cache Methods --- //
+  // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
+  }
 
   static async clearCache() {
     CACHE = {

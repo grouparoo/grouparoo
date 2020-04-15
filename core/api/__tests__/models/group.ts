@@ -183,6 +183,7 @@ describe("models/group", () => {
         const group = await Group.create({
           name: "tracked group",
           type: "manual",
+          state: "ready",
         });
 
         const destination = await helper.factories.destination();
@@ -395,7 +396,6 @@ describe("models/group", () => {
 
     test("changing group rules changes the state to initializing and enquires a run, and then back to ready when complete", async () => {
       await group.setRules([{ key: "firstName", match: "nobody", op: "eq" }]);
-      await group.reload();
       expect(group.state).toBe("initializing");
 
       let foundTasks = await specHelper.findEnqueuedTasks("group:run");
@@ -501,7 +501,6 @@ describe("models/group", () => {
       expect(group.calculatedAt).toBeFalsy();
       await group.setRules([{ key: "firstName", match: "Mario", op: "eq" }]);
       await group.runAddGroupMembers(run);
-      await group.reload();
       expect(group.calculatedAt).toBeTruthy();
     });
 
@@ -509,7 +508,6 @@ describe("models/group", () => {
       expect(group.calculatedAt).toBeFalsy();
       await group.setRules([{ key: "firstName", match: "Mario", op: "eq" }]);
       await group.runRemoveGroupMembers(run);
-      await group.reload();
       expect(group.calculatedAt).toBeTruthy();
     });
 
@@ -520,7 +518,6 @@ describe("models/group", () => {
       );
       await group.setRules([{ key: "firstName", match: "Mario", op: "eq" }]);
       await group.runAddGroupMembers(run);
-      await group.reload();
       expect((await group.nextCalculatedAt()).getTime()).toBeGreaterThan(
         new Date().getTime()
       );

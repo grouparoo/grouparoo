@@ -204,7 +204,7 @@ export namespace OptionHelper {
     const type = await getInstanceType(instance);
 
     if (!pluginConnection) {
-      throw new Error(`cannot find a schedule for type ${type}`);
+      throw new Error(`cannot find a pluginConnection for type ${type}`);
     }
 
     if (!pluginConnection.scheduleOptions) {
@@ -223,7 +223,7 @@ export namespace OptionHelper {
     const type = await getInstanceType(instance);
 
     if (!pluginConnection) {
-      throw new Error(`cannot find a profile property rule for type ${type}`);
+      throw new Error(`cannot find a pluginConnection for type ${type}`);
     }
 
     if (!pluginConnection.profilePropertyRuleOptions) {
@@ -240,7 +240,7 @@ export namespace OptionHelper {
     const type = await getInstanceType(instance);
 
     if (!pluginApp) {
-      throw new Error(`cannot find a app for type ${type}`);
+      throw new Error(`cannot find a pluginApp for type ${type}`);
     }
 
     return pluginApp.options.filter((o) => o.required).map((o) => o.key);
@@ -253,7 +253,7 @@ export namespace OptionHelper {
 
     if (!type || instance instanceof ProfilePropertyRule) {
       if (instance["sourceGuid"]) {
-        const source = await Source.findOne({
+        const source = await Source.scope(null).findOne({
           where: { guid: instance["sourceGuid"] },
         });
         if (source) {

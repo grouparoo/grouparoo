@@ -13,6 +13,7 @@ import {
   DataType,
   AfterDestroy,
   Default,
+  Scopes,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { Import } from "./Import";
@@ -186,13 +187,11 @@ export class Export extends Model<Export> {
   }
 
   async apiData() {
-    const destination = await this.$get("destination");
-    // const app = await destination.$get("app");
+    const destination = await this.$get("destination", { scope: null });
 
     return {
       guid: this.guid,
       destination: destination ? await destination.apiData() : null,
-      // destinationGuid: this.destinationGuid,
       profileGuid: this.profileGuid,
       startedAt: this.startedAt,
       completedAt: this.completedAt,
@@ -228,5 +227,15 @@ export class Export extends Model<Export> {
     }
 
     return { count: _exports.length, days };
+  }
+
+  // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
   }
 }

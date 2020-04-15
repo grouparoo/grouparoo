@@ -86,6 +86,7 @@ describe("models/profile", () => {
         key: "email",
         type: "email",
         unique: true,
+        state: "ready",
       });
 
       colorRule = await ProfilePropertyRule.create({
@@ -93,6 +94,7 @@ describe("models/profile", () => {
         key: "color",
         type: "string",
         unique: false,
+        state: "ready",
       });
 
       houseRule = await ProfilePropertyRule.create({
@@ -100,6 +102,7 @@ describe("models/profile", () => {
         key: "house",
         type: "string",
         unique: false,
+        state: "ready",
       });
 
       const profile = await Profile.create();
@@ -241,21 +244,25 @@ describe("models/profile", () => {
           sourceGuid: source.guid,
           key: "email",
           type: "string",
+          state: "ready",
         });
         await ProfilePropertyRule.create({
           sourceGuid: source.guid,
           key: "firstName",
           type: "string",
+          state: "ready",
         });
         await ProfilePropertyRule.create({
           sourceGuid: source.guid,
           key: "lastName",
           type: "string",
+          state: "ready",
         });
         await ProfilePropertyRule.create({
           sourceGuid: source.guid,
           key: "color",
           type: "string",
+          state: "ready",
         });
       });
 
@@ -412,6 +419,7 @@ describe("models/profile", () => {
       group = await Group.create({
         name: "test group",
         type: "manual",
+        state: "ready",
       });
 
       profile = await Profile.create();
@@ -451,8 +459,9 @@ describe("models/profile", () => {
       app = await App.create({
         name: "test app",
         type: "test-plugin-app",
-        options: {},
       });
+      await app.setOptions({ fileGuid: "abc123" });
+      await app.update({ state: "ready" });
 
       source = await Source.create({
         appGuid: app.guid,
@@ -473,6 +482,7 @@ describe("models/profile", () => {
         key: "email",
         type: "string",
         unique: true,
+        state: "ready",
       });
 
       group = await helper.factories.group({
@@ -558,6 +568,7 @@ describe("models/profile", () => {
         name: "test app",
         type: "test-template-app",
         options: {},
+        state: "ready",
       });
 
       source = await Source.create({

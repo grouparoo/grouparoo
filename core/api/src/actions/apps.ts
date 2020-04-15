@@ -12,6 +12,7 @@ export class AppsList extends Action {
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
+      state: { required: false },
       order: {
         required: true,
         default: [
@@ -23,14 +24,21 @@ export class AppsList extends Action {
   }
 
   async run({ params, response }) {
-    const apps = await App.findAll({
+    const where = {};
+
+    if (params.state) {
+      where["state"] = params.state;
+    }
+
+    const apps = await App.scope(null).findAll({
+      where,
       limit: params.limit,
       offset: params.offset,
       order: params.order,
     });
 
     response.apps = await Promise.all(apps.map(async (app) => app.apiData()));
-    response.total = await App.count();
+    response.total = await App.scope(null).count({ where });
   }
 }
 
@@ -73,10 +81,7 @@ export class AppOptionOptions extends Action {
   }
 
   async run({ params, response }) {
-    const app = await App.findOne({ where: { guid: params.guid } });
-    if (!app) {
-      throw new Error("app not found");
-    }
+    const app = await App.findByGuid(params.guid);
 
     response.options = await app.appOptions();
   }
@@ -132,10 +137,7 @@ export class AppEdit extends Action {
   }
 
   async run({ params, response }) {
-    const app = await App.findOne({ where: { guid: params.guid } });
-    if (!app) {
-      throw new Error("app not found");
-    }
+    const app = await App.findByGuid(params.guid);
     if (params.options) {
       await app.setOptions(params.options);
     }
@@ -159,11 +161,7 @@ export class AppTest extends Action {
   }
 
   async run({ params, response }) {
-    const app = await App.findOne({ where: { guid: params.guid } });
-    if (!app) {
-      throw new Error("app not found");
-    }
-
+    const app = await App.findByGuid(params.guid);
     let { result, error } = await app.test(params.options);
     if (error) {
       error = String(error);
@@ -186,10 +184,7 @@ export class AppView extends Action {
   }
 
   async run({ params, response }) {
-    const app = await App.findOne({ where: { guid: params.guid } });
-    if (!app) {
-      throw new Error("app not found");
-    }
+    const app = await App.findByGuid(params.guid);
     response.app = await app.apiData();
   }
 }
@@ -208,10 +203,7 @@ export class AppDestroy extends Action {
 
   async run({ params, response }) {
     response.success = false;
-    const app = await App.findOne({ where: { guid: params.guid } });
-    if (!app) {
-      throw new Error("app not found");
-    }
+    const app = await App.findByGuid(params.guid);
     await app.destroy();
     response.success = true;
   }

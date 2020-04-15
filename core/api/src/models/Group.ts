@@ -12,6 +12,7 @@ import {
   BeforeDestroy,
   AfterDestroy,
   Is,
+  DefaultScope,
 } from "sequelize-typescript";
 import { api, task } from "actionhero";
 import { Op } from "sequelize";
@@ -62,6 +63,9 @@ const STATE_TRANSITIONS = [
   { from: "ready", to: "deleted", checks: [] },
 ];
 
+@DefaultScope(() => ({
+  where: { state: { [Op.ne]: "draft" } },
+}))
 @Table({ tableName: "groups", paranoid: false })
 export class Group extends LoggedModel<Group> {
   guidPrefix() {
@@ -753,5 +757,15 @@ export class Group extends LoggedModel<Group> {
     whereContainer[joinType] = wheres;
 
     return { where: whereContainer, include };
+  }
+
+  // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
   }
 }
