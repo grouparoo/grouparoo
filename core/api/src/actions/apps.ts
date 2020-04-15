@@ -12,6 +12,7 @@ export class AppsList extends Action {
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
+      state: { required: false },
       order: {
         required: true,
         default: [
@@ -23,14 +24,21 @@ export class AppsList extends Action {
   }
 
   async run({ params, response }) {
+    const where = {};
+
+    if (params.state) {
+      where["state"] = params.state;
+    }
+
     const apps = await App.scope(null).findAll({
+      where,
       limit: params.limit,
       offset: params.offset,
       order: params.order,
     });
 
     response.apps = await Promise.all(apps.map(async (app) => app.apiData()));
-    response.total = await App.scope(null).count();
+    response.total = await App.scope(null).count({ where });
   }
 }
 
