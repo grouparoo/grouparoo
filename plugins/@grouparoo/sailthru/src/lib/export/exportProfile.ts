@@ -103,6 +103,10 @@ function formatList(name) {
 
 const MAX_DELETE_ATTEMPTS = 5;
 async function sleep(time = 1000) {
+  // don't sleep as much in tests bc intermittent timeout issues
+  if (process.env.NODE_ENV === "test") {
+    time = 1;
+  }
   return new Promise((resolve) => {
     setTimeout(resolve, time);
   });
