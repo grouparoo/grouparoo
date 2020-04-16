@@ -25,6 +25,7 @@ import { Run } from "./Run";
 import { Profile } from "./Profile";
 import { Mapping } from "./Mapping";
 import { plugin } from "../modules/plugin";
+import { ProfilePropertyPluginMethodResponse } from "../classes/plugin";
 import { OptionHelper } from "./../modules/optionHelper";
 import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
@@ -375,7 +376,7 @@ export class Source extends LoggedModel<Source> {
     for (const i in rules) {
       const rule = rules[i];
 
-      let rawResponse;
+      let rawResponse: ProfilePropertyPluginMethodResponse;
       const queryKey =
         this.guid + ":" + JSON.stringify(await rule.getOptions());
 
@@ -389,32 +390,21 @@ export class Source extends LoggedModel<Source> {
       if (rawResponse !== null && rawResponse !== undefined) {
         let rawValue;
 
-        if (
-          typeof rawResponse === "string" ||
-          typeof rawResponse === "number" ||
-          typeof rawResponse === "boolean" ||
-          rawResponse instanceof Date
-        ) {
-          rawValue = rawResponse;
-        } else if (Array.isArray(rawResponse)) {
-          rawValue = rawResponse[0];
+        const responseKeys = Object.keys(rawResponse);
+        if (responseKeys.length === 0) {
+          continue;
+        } else if (responseKeys.length === 1) {
+          rawValue = rawResponse[responseKeys[0]];
         } else {
-          const responseKeys = Object.keys(rawResponse);
-          if (responseKeys.length === 0) {
-            continue;
-          } else if (responseKeys.length === 1) {
-            rawValue = rawResponse[responseKeys[0]];
-          } else {
-            if (!rawResponse[rule.key]) {
-              throw new Error(
-                `source response contains multiple properties but none match ${
-                  rule.key
-                }: ${JSON.stringify(rawResponse)}`
-              );
-            }
-
-            rawValue = rawResponse[rule.key];
+          if (!rawResponse[rule.key]) {
+            throw new Error(
+              `source response contains multiple properties but none match ${
+                rule.key
+              }: ${JSON.stringify(rawResponse)}`
+            );
           }
+
+          rawValue = rawResponse[rule.key];
         }
 
         hash[rule.key] = rawValue;

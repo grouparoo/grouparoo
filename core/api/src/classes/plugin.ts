@@ -106,7 +106,12 @@ export interface ProfilesPluginMethod {
     limit: number;
     filter: RunFilter;
     highWaterMark: string | number;
-  }): Promise<{ importsCount: number; nextHighWaterMark: string | number }>;
+  }): Promise<ProfilesPluginMethodResponse>;
+}
+
+export interface ProfilesPluginMethodResponse {
+  importsCount: number;
+  nextHighWaterMark: string | number;
 }
 
 /**
@@ -124,7 +129,11 @@ export interface ProfilePropertyPluginMethod {
     profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions;
     profilePropertyRuleFilters: ProfilePropertyRuleFiltersWithKey[];
     profile: Profile;
-  }): Promise<any>;
+  }): Promise<ProfilePropertyPluginMethodResponse>;
+}
+
+export interface ProfilePropertyPluginMethodResponse {
+  [mappedKey: string]: any;
 }
 
 /**
@@ -178,13 +187,17 @@ export interface TestPluginMethod {
  * Returns a collection of data to display to the user.
  */
 export interface SourceOptionsMethod {
-  (argument: { app: App; appOptions: SimpleAppOptions }): Promise<{
-    [optionName: string]: {
-      type: string;
-      options?: string[];
-      descriptions?: string[];
-    };
-  }>;
+  (argument: { app: App; appOptions: SimpleAppOptions }): Promise<
+    SourceOptionsMethodResponse
+  >;
+}
+
+export interface SourceOptionsMethodResponse {
+  [optionName: string]: {
+    type: string;
+    options?: string[];
+    descriptions?: string[];
+  };
 }
 
 /**
@@ -198,7 +211,11 @@ export interface SourcePreviewMethod {
     appOptions: SimpleAppOptions;
     source: Source;
     sourceOptions: SimpleSourceOptions;
-  }): Promise<Array<{ [column: string]: any }>>;
+  }): Promise<Array<SourcePreviewMethodResponseRow>>;
+}
+
+export interface SourcePreviewMethodResponseRow {
+  [column: string]: any;
 }
 
 /**
@@ -214,9 +231,13 @@ export interface SourceFilterMethod {
     sourceMapping: SourceMapping;
     profilePropertyRule: ProfilePropertyRule;
     profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions;
-  }): Promise<
-    Array<{ key: string; ops: Array<string>; canHaveRelativeMatch: boolean }>
-  >;
+  }): Promise<Array<SourceFilterMethodResponseRow>>;
+}
+
+export interface SourceFilterMethodResponseRow {
+  key: string;
+  ops: Array<string>;
+  canHaveRelativeMatch: boolean;
 }
 
 /**
@@ -237,13 +258,17 @@ export interface UniqueProfilePropertyRuleBootstrapOptions {
  * Returns a collection of data to display to the user.
  */
 export interface DestinationOptionsMethod {
-  (argument: { app: App; appOptions: SimpleAppOptions }): Promise<{
-    [optionName: string]: {
-      type: string;
-      options?: string[];
-      descriptions?: string[];
-    };
-  }>;
+  (argument: { app: App; appOptions: SimpleAppOptions }): Promise<
+    DestinationOptionsMethodResponse
+  >;
+}
+
+export interface DestinationOptionsMethodResponse {
+  [optionName: string]: {
+    type: string;
+    options?: string[];
+    descriptions?: string[];
+  };
 }
 
 /**
@@ -255,5 +280,9 @@ export interface DestinationPreviewMethod {
     appOptions: SimpleAppOptions;
     destination: Destination;
     destinationOptions: SimpleDestinationOptions;
-  }): Promise<Array<{ [column: string]: any }>>;
+  }): Promise<Array<DestinationPreviewMethodResponseRow>>;
+}
+
+export interface DestinationPreviewMethodResponseRow {
+  [column: string]: any;
 }
