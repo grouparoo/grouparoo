@@ -39,7 +39,7 @@ export default function (props) {
       errorHandler={props.errorHandler}
       apiVersion={props.apiVersion}
       type="destination"
-      defaultTab="exports"
+      defaultTab="groups"
       query={props.query}
     >
       <Fragment key="edit">

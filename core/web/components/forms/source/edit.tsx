@@ -139,7 +139,7 @@ export default function ({
 
   return (
     <>
-      <h2>Edit Source</h2>
+      <h2>Edit this {source.app.name} Source</h2>
 
       <Row>
         <Col md={1}>
@@ -165,21 +165,10 @@ export default function ({
               </Form.Control.Feedback>
             </Form.Group>
 
-            <p>
-              <strong>App</strong>:{" "}
-              <Link href="/app/[guid]" as={`/app/${source.app.guid}`}>
-                <a>
-                  {source.app.name} ({source.app.guid})
-                </a>
-              </Link>
-              <br />
-              <strong>Connection</strong>: {source.connection.name}:{" "}
-              {source.connection.description}
-            </p>
-
             <hr />
-            <strong>Options for a {source.type} source</strong>
-            <br />
+            <strong>
+              Pick the database table that contains the data you’re looking for:
+            </strong>
             <br />
 
             {Object.keys(source.connection.options).length === 0 ? (
@@ -198,8 +187,8 @@ export default function ({
                         <Badge variant="info">required</Badge>&nbsp;
                       </>
                     ) : null}
-                    <code>{opt.key}</code>: <small>{opt.description}</small>
                   </Form.Label>
+
                   {(() => {
                     if (connectionOptions[opt.key]?.type === "list") {
                       return (
@@ -241,10 +230,8 @@ export default function ({
                 </Form.Group>
               );
             })}
-
             <br />
-            <br />
-            <h3>Data Preview</h3>
+            <h3>Example Data</h3>
 
             {previewColumns.length === 0 ? <p>No preview</p> : null}
 

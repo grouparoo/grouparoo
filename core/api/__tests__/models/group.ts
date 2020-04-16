@@ -659,6 +659,12 @@ describe("models/group", () => {
     });
 
     describe("group rules", () => {
+      test("it returns 0 members when no rules exist on the group", async () => {
+        await group.update({ matchType: "all" });
+        await group.setRules([]);
+        expect(await group.countPotentialMembers()).toBe(0);
+      });
+
       describe("strings", () => {
         test("exact matches", async () => {
           await group.update({ matchType: "all" });
