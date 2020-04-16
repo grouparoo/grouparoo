@@ -472,52 +472,19 @@ describe("models/source", () => {
     test("it can import one profile property for a profile", async () => {
       await lnameRule.update({ state: "ready" });
       const property = await source.importProfileProperty(profile, lnameRule);
-      expect(property).toEqual("mario...");
+      expect(property).toEqual({ __fname: "...mario" });
     });
 
     test("it can import one profile property for a profile with an override of the profile property rule options", async () => {
       const property = await source.importProfileProperty(profile, lnameRule, {
         something: "else",
       });
-      expect(property).toEqual("mario...");
+      expect(property).toEqual({ __fname: "...mario" });
     });
 
     test("it can import all profile property rules for this source, mapped to the keys properly", async () => {
       const properties = await source.import(profile);
-      expect(properties).toEqual({ __fname: "mario..." });
-    });
-
-    test("when returning only one property, the row mapping does not matter (object)", async () => {
-      api.plugins.plugins.filter(
-        (p) => p.name === "@grouparoo/test-plugin"
-      )[0].connections[0].methods.profileProperty = async () => {
-        return { something: "last name" };
-      };
-
-      const properties = await source.import(profile);
-      expect(properties).toEqual({ __fname: "last name" });
-    });
-
-    test("when returning only one property, the row mapping does not matter (array)", async () => {
-      api.plugins.plugins.filter(
-        (p) => p.name === "@grouparoo/test-plugin"
-      )[0].connections[0].methods.profileProperty = async () => {
-        return ["last name"];
-      };
-
-      const properties = await source.import(profile);
-      expect(properties).toEqual({ __fname: "last name" });
-    });
-
-    test("when returning only one property, the row mapping does not matter (literal)", async () => {
-      api.plugins.plugins.filter(
-        (p) => p.name === "@grouparoo/test-plugin"
-      )[0].connections[0].methods.profileProperty = async () => {
-        return "last name";
-      };
-
-      const properties = await source.import(profile);
-      expect(properties).toEqual({ __fname: "last name" });
+      expect(properties).toEqual({ __fname: "...mario" });
     });
 
     test("if importing returned null, it will not be included in the response hash to set profile properties", async () => {
@@ -560,7 +527,7 @@ describe("models/source", () => {
         (p) => p.name === "@grouparoo/test-plugin"
       )[0].connections[0].methods.profileProperty = async () => {
         counter++;
-        return "value";
+        return { __fname: "value", __newProp: "value" };
       };
 
       const newRule = await ProfilePropertyRule.create({

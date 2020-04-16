@@ -393,19 +393,17 @@ export class Source extends LoggedModel<Source> {
         const responseKeys = Object.keys(rawResponse);
         if (responseKeys.length === 0) {
           continue;
-        } else if (responseKeys.length === 1) {
-          rawValue = rawResponse[responseKeys[0]];
-        } else {
-          if (!rawResponse[rule.key]) {
-            throw new Error(
-              `source response contains multiple properties but none match ${
-                rule.key
-              }: ${JSON.stringify(rawResponse)}`
-            );
-          }
-
-          rawValue = rawResponse[rule.key];
         }
+
+        if (!rawResponse[rule.key]) {
+          throw new Error(
+            `source response contains multiple properties but none match ${
+              rule.key
+            }: ${JSON.stringify(rawResponse)}`
+          );
+        }
+
+        rawValue = rawResponse[rule.key];
 
         hash[rule.key] = rawValue;
       }
