@@ -13,6 +13,7 @@ import {
   AfterDestroy,
   Is,
   DefaultScope,
+  Scopes,
 } from "sequelize-typescript";
 import { api, task } from "actionhero";
 import { Op } from "sequelize";
@@ -66,6 +67,13 @@ const STATE_TRANSITIONS = [
 @DefaultScope(() => ({
   where: {
     state: { [Op.notIn]: ["draft", "deleted"] },
+  },
+}))
+@Scopes(() => ({
+  notDraft: {
+    where: {
+      state: { [Op.notIn]: ["draft"] },
+    },
   },
 }))
 @Table({ tableName: "groups", paranoid: false })

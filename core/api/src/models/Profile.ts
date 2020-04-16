@@ -212,7 +212,7 @@ export class Profile extends LoggedModel<Profile> {
 
   async updateGroupMembership() {
     const results = {};
-    const groups = await Group.findAll();
+    const groups = await Group.scope("notDraft").findAll();
 
     for (const i in groups) {
       const group = groups[i];
