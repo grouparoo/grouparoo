@@ -57,29 +57,29 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     let sqlOp = "";
     switch (op) {
       case "equals":
-        key = `'${key}'`;
+        key = `"${key}"`;
         sqlOp = `=`;
         break;
       case "does not equal":
-        key = `'${key}'`;
+        key = `"${key}"`;
         sqlOp = `!=`;
         break;
       case "contains":
         sqlOp = `like`;
         match = `%${match.toString().toLowerCase()}%`;
-        key = `LOWER('${key}')`;
+        key = `LOWER("${key}")`;
         break;
       case "does not contain":
         sqlOp = `NOT LIKE`;
         match = `%${match.toString().toLowerCase()}%`;
-        key = `LOWER('${key}')`;
+        key = `LOWER("${key}")`;
         break;
       case "greater than":
-        key = `'${key}'`;
+        key = `"${key}"`;
         sqlOp = `>`;
         break;
       case "less than":
-        key = `'${key}'`;
+        key = `"${key}"`;
         sqlOp = `<`;
         break;
     }
