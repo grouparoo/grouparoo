@@ -169,7 +169,7 @@ async function ensureList(client, name, make) {
       await client.createList(name);
     } else {
       // wait some amount of milliseconds and see if someone else made it
-      const randMilli = Math.random() * 750;
+      const randMilli = Math.random() * 4000;
       await sleep(randMilli);
       await ensureList(client, name, true);
     }
