@@ -19,7 +19,6 @@ import { Profile } from "../../../../../core/api/src/models/Profile";
 import { ProfilePropertyRule } from "../../../../../core/api/src/models/ProfilePropertyRule";
 import { ProfileProperty } from "../../../../../core/api/src/models/ProfileProperty";
 import { Run } from "../../../../../core/api/src/models/Run";
-import { Mapping } from "../../../../../core/api/src/models/Mapping";
 import { connect } from "../../src/lib/connect";
 
 let api, actionhero;
