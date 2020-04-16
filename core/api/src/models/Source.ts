@@ -25,7 +25,6 @@ import { Run } from "./Run";
 import { Profile } from "./Profile";
 import { Mapping } from "./Mapping";
 import { plugin } from "../modules/plugin";
-import { ProfilePropertyPluginMethodResponse } from "../classes/plugin";
 import { OptionHelper } from "./../modules/optionHelper";
 import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
@@ -217,50 +216,6 @@ export class Source extends LoggedModel<Source> {
     }
   }
 
-  async importProfileProperty(
-    profile: Profile,
-    profilePropertyRule: ProfilePropertyRule,
-    profilePropertyRuleOptionsOverride?: { [key: string]: any }
-  ) {
-    if (profilePropertyRule.state !== "ready") {
-      return;
-    }
-
-    const { pluginConnection } = await this.getPlugin();
-    if (!pluginConnection) {
-      throw new Error(
-        `cannot find connection for source ${this.type} (${this.guid})`
-      );
-    }
-
-    const method = pluginConnection.methods.profileProperty;
-
-    if (!method) {
-      return;
-    }
-
-    const app = await this.$get("app");
-    const appOptions = await app.getOptions();
-    const sourceOptions = await this.getOptions();
-    const sourceMapping = await this.getMapping();
-    const profilePropertyRuleOptions = await profilePropertyRule.getOptions();
-    const profilePropertyRuleFilters = await profilePropertyRule.getFilters();
-
-    return method({
-      app,
-      appOptions,
-      source: this,
-      sourceOptions,
-      sourceMapping,
-      profilePropertyRule,
-      profilePropertyRuleOptions: profilePropertyRuleOptionsOverride
-        ? profilePropertyRuleOptionsOverride
-        : profilePropertyRuleOptions,
-      profilePropertyRuleFilters,
-      profile,
-    });
-  }
-
   async sourceConnectionOptions() {
     const { pluginConnection } = await this.getPlugin();
     const app = await this.$get("app");
@@ -366,47 +321,60 @@ export class Source extends LoggedModel<Source> {
     return false;
   }
 
+  async importProfileProperty(
+    profile: Profile,
+    profilePropertyRule: ProfilePropertyRule,
+    profilePropertyRuleOptionsOverride?: { [key: string]: any }
+  ) {
+    if (profilePropertyRule.state !== "ready") {
+      return;
+    }
+
+    const { pluginConnection } = await this.getPlugin();
+    if (!pluginConnection) {
+      throw new Error(
+        `cannot find connection for source ${this.type} (${this.guid})`
+      );
+    }
+
+    const method = pluginConnection.methods.profileProperty;
+
+    if (!method) {
+      return;
+    }
+
+    const app = await this.$get("app");
+    const appOptions = await app.getOptions();
+    const sourceOptions = await this.getOptions();
+    const sourceMapping = await this.getMapping();
+    const profilePropertyRuleOptions = await profilePropertyRule.getOptions();
+    const profilePropertyRuleFilters = await profilePropertyRule.getFilters();
+
+    return method({
+      app,
+      appOptions,
+      source: this,
+      sourceOptions,
+      sourceMapping,
+      profilePropertyRule,
+      profilePropertyRuleOptions: profilePropertyRuleOptionsOverride
+        ? profilePropertyRuleOptionsOverride
+        : profilePropertyRuleOptions,
+      profilePropertyRuleFilters,
+      profile,
+    });
+  }
+
   async import(profile: Profile) {
     const hash = {};
-    const queryResponses = {};
     const rules = await this.$get("profilePropertyRules", {
       where: { state: "ready" },
     });
 
     for (const i in rules) {
       const rule = rules[i];
-
-      let rawResponse: ProfilePropertyPluginMethodResponse;
-      const queryKey =
-        this.guid + ":" + JSON.stringify(await rule.getOptions());
-
-      if (!queryResponses[queryKey]) {
-        rawResponse = await this.importProfileProperty(profile, rule);
-        queryResponses[queryKey] = rawResponse;
-      } else {
-        rawResponse = queryResponses[queryKey];
-      }
-
-      if (rawResponse !== null && rawResponse !== undefined) {
-        let rawValue;
-
-        const responseKeys = Object.keys(rawResponse);
-        if (responseKeys.length === 0) {
-          continue;
-        }
-
-        if (!rawResponse[rule.key]) {
-          throw new Error(
-            `source response contains multiple properties but none match ${
-              rule.key
-            }: ${JSON.stringify(rawResponse)}`
-          );
-        }
-
-        rawValue = rawResponse[rule.key];
-
-        hash[rule.key] = rawValue;
-      }
+      const response = await this.importProfileProperty(profile, rule);
+      hash[rule.key] = response;
     }
 
     // remove null and undefined as we cannot set that value

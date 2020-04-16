@@ -446,40 +446,28 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   async setFilters(filters: ProfilePropertyRuleFiltersWithKey[]) {
     await this.validateFilters(filters);
 
-    const transaction = await api.sequelize.transaction();
+    await ProfilePropertyRuleFilter.destroy({
+      where: {
+        profilePropertyRuleGuid: this.guid,
+      },
+    });
 
-    try {
-      await ProfilePropertyRuleFilter.destroy({
-        where: {
-          profilePropertyRuleGuid: this.guid,
-        },
-        transaction,
+    for (const i in filters) {
+      const filter = filters[i];
+
+      await ProfilePropertyRuleFilter.create({
+        position: parseInt(i) + 1,
+        profilePropertyRuleGuid: this.guid,
+        key: filter.key,
+        op: filter.op,
+        match: filter.match,
+        relativeMatchNumber: filter.relativeMatchNumber,
+        relativeMatchUnit: filter.relativeMatchUnit,
+        relativeMatchDirection: filter.relativeMatchDirection,
       });
-
-      for (const i in filters) {
-        const filter = filters[i];
-
-        await ProfilePropertyRuleFilter.create(
-          {
-            position: parseInt(i) + 1,
-            profilePropertyRuleGuid: this.guid,
-            key: filter.key,
-            op: filter.op,
-            match: filter.match,
-            relativeMatchNumber: filter.relativeMatchNumber,
-            relativeMatchUnit: filter.relativeMatchUnit,
-            relativeMatchDirection: filter.relativeMatchDirection,
-          },
-          { transaction }
-        );
-      }
-
-      await transaction.commit();
-      await this.enqueueRuns();
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
     }
+
+    await this.enqueueRuns();
   }
 
   async pluginFilterOptions() {

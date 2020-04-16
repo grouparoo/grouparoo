@@ -48,7 +48,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
       break;
   }
 
-  const baseQuery = `SELECT ${aggSelect} FROM \`${table}\` WHERE \`${tableCol}\` = "{{ ${profilePropertyMatch} }}"`;
+  const baseQuery = `SELECT ${aggSelect} as __result FROM \`${table}\` WHERE \`${tableCol}\` = "{{ ${profilePropertyMatch} }}"`;
 
   let filteredQuery = baseQuery;
   for (const i in profilePropertyRuleFilters) {
@@ -93,18 +93,12 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   );
   validateQuery(parameterizedQuery);
 
-  let row: ProfilePropertyPluginMethodResponse;
+  let response: ProfilePropertyPluginMethodResponse;
   const client = await connect(appOptions);
   try {
     const rows = await client.asyncQuery(parameterizedQuery);
     if (rows && rows.length > 0) {
-      row = rows[0];
-      for (const remoteKey in sourceMapping) {
-        const profileKey = sourceMapping[remoteKey];
-        if (row[remoteKey] && !row[profileKey]) {
-          row[profileKey] = row[remoteKey];
-        }
-      }
+      response = rows[0].__result;
     }
   } catch (error) {
     throw new Error(
@@ -114,5 +108,5 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     await client.asyncEnd();
   }
 
-  return row;
+  return response;
 };

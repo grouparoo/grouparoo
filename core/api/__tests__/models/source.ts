@@ -472,14 +472,14 @@ describe("models/source", () => {
     test("it can import one profile property for a profile", async () => {
       await lnameRule.update({ state: "ready" });
       const property = await source.importProfileProperty(profile, lnameRule);
-      expect(property).toEqual({ __fname: "...mario" });
+      expect(property).toEqual("...mario");
     });
 
     test("it can import one profile property for a profile with an override of the profile property rule options", async () => {
       const property = await source.importProfileProperty(profile, lnameRule, {
         something: "else",
       });
-      expect(property).toEqual({ __fname: "...mario" });
+      expect(property).toEqual("...mario");
     });
 
     test("it can import all profile property rules for this source, mapped to the keys properly", async () => {
@@ -507,43 +507,6 @@ describe("models/source", () => {
 
       const properties = await source.import(profile);
       expect(properties).toEqual({});
-    });
-
-    test("when returning multiple properties that do not match the rule keys, an error will be thrown", async () => {
-      api.plugins.plugins.filter(
-        (p) => p.name === "@grouparoo/test-plugin"
-      )[0].connections[0].methods.profileProperty = async () => {
-        return { a: 1, b: 2 };
-      };
-
-      await expect(source.import(profile)).rejects.toThrow(
-        /source response contains multiple properties but none match __fname/
-      );
-    });
-
-    test("it will check properties for each profilePropertyRule with a response and try to reuse query responses", async () => {
-      let counter = 0;
-      api.plugins.plugins.filter(
-        (p) => p.name === "@grouparoo/test-plugin"
-      )[0].connections[0].methods.profileProperty = async () => {
-        counter++;
-        return { __fname: "value", __newProp: "value" };
-      };
-
-      const newRule = await ProfilePropertyRule.create({
-        key: "__newProp",
-        sourceGuid: source.guid,
-        type: "string",
-        state: "ready",
-      });
-
-      counter = 0; // it was incremented to validate the new rule
-
-      const properties = await source.import(profile);
-      expect(properties).toEqual({ __fname: "value", __newProp: "value" });
-      expect(counter).toBe(1);
-
-      await newRule.destroy();
     });
   });
 

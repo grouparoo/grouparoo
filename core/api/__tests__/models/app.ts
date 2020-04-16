@@ -269,7 +269,7 @@ describe("models/app", () => {
                 profile,
               }) => {
                 profilePropertyCount++;
-                return { email: "test@example.com" };
+                return "test@example.com";
               },
             },
           },

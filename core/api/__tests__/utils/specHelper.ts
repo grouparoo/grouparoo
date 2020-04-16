@@ -247,10 +247,7 @@ export namespace helper {
                 ltv: 100.0,
                 lastLoginAt: new Date(),
               };
-              const response = {};
-              response[profilePropertyRule.key] =
-                data[profilePropertyRule.key] || "...mario";
-              return response;
+              return data[profilePropertyRule.key] || "...mario";
             },
           },
         },

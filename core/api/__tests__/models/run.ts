@@ -352,7 +352,7 @@ describe("models/run", () => {
                 if (profilePropertyRuleOptions.column) {
                   throw new Error(profilePropertyRuleOptions.column);
                 } else {
-                  return {};
+                  return "ok";
                 }
               },
             },

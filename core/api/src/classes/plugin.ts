@@ -132,9 +132,11 @@ export interface ProfilePropertyPluginMethod {
   }): Promise<ProfilePropertyPluginMethodResponse>;
 }
 
-export interface ProfilePropertyPluginMethodResponse {
-  [mappedKey: string]: any;
-}
+export type ProfilePropertyPluginMethodResponse =
+  | string
+  | number
+  | boolean
+  | Date;
 
 /**
  * Used by a Schedule to determine the maximum value/timestamp of a source that was imported by this run.

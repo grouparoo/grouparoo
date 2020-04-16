@@ -556,7 +556,7 @@ describe("models/profile", () => {
             methods: {
               profileProperty: async ({ profilePropertyRule }) => {
                 if (profilePropertyRule.key === "color") {
-                  return { color: "pink" };
+                  return "pink";
                 }
               },
             },

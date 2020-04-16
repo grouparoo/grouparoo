@@ -395,9 +395,7 @@ describe("models/profilePropertyRule", () => {
                   throw new Error(`throw`);
                 }
                 queryCounter++;
-                const response = {};
-                response[profilePropertyRule.key || "response"] = q;
-                return response;
+                return q;
               },
             },
           },
@@ -579,11 +577,11 @@ describe("models/profilePropertyRule", () => {
 
       // against saved query
       const response = await rule.test();
-      expect(response.test).toMatch("+ {}");
+      expect(response).toMatch("+ {}");
 
       // against new query
       const responseAgain = await rule.test({ column: "abc" });
-      expect(responseAgain.test).toMatch('+ {"column":"abc"}');
+      expect(responseAgain).toMatch('+ {"column":"abc"}');
 
       await profile.destroy();
       await rule.destroy();
