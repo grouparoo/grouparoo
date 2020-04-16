@@ -66,13 +66,11 @@ export async function profileProperty(
   const client = await connect(appOptions);
   try {
     const rows = await client.asyncQuery(parameterizedQuery);
-    if (rows) {
-      row = rows[0];
-      for (const remoteKey in sourceMapping) {
-        const profileKey = sourceMapping[remoteKey];
-        if (row[remoteKey] && !row[profileKey]) {
-          row[profileKey] = row[remoteKey];
-        }
+    const row = rows[0] || {};
+    for (const remoteKey in sourceMapping) {
+      const profileKey = sourceMapping[remoteKey];
+      if (!row.hasOwnProperty(profileKey)) {
+        row[profileKey] = row[remoteKey] || null;
       }
     }
   } catch (error) {
