@@ -1,6 +1,9 @@
 import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
-import { ProfilePropertyPluginMethod } from "@grouparoo/core";
+import {
+  ProfilePropertyPluginMethod,
+  ProfilePropertyPluginMethodResponse,
+} from "@grouparoo/core";
 
 export const profileProperty: ProfilePropertyPluginMethod = async ({
   profile,
@@ -90,11 +93,11 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   );
   validateQuery(parameterizedQuery);
 
-  let row;
+  let row: ProfilePropertyPluginMethodResponse;
   const client = await connect(appOptions);
   try {
     const rows = await client.asyncQuery(parameterizedQuery);
-    if (rows) {
+    if (rows && rows.length > 0) {
       row = rows[0];
       for (const remoteKey in sourceMapping) {
         const profileKey = sourceMapping[remoteKey];
