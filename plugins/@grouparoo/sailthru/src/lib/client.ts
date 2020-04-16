@@ -98,6 +98,22 @@ export default class SailthruClient {
     }
     return response.lists;
   }
+  async getList(name: string) {
+    try {
+      const response: any = await this.get("list", { list: name });
+      return response;
+    } catch (err) {
+      if (err.error === 15) {
+        // just not made yet
+        return null;
+      }
+      throw err;
+    }
+  }
+  async createList(name: string) {
+    const response: any = await this.post("list", { list: name });
+    return response;
+  }
 
   async get(apiName: string, options = {}) {
     return this.promiseFetch("apiGet", apiName, options);
