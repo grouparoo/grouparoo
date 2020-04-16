@@ -18,7 +18,10 @@ export namespace MappingHelper {
     for (const i in mappings) {
       const mapping = mappings[i];
       const rule = await mapping.$get("profilePropertyRule");
-      MappingObject[mapping.remoteKey] = rule.key;
+      // SUGGESTION: maybe this should be the profilePropertyRule guid.
+      // It would prevent issues in the middle of a name change
+      // of course, there are things to change downstream
+      MappingObject[mapping.remoteKey] = rule.guid;
     }
 
     return MappingObject;
