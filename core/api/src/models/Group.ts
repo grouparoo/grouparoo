@@ -65,10 +65,7 @@ const STATE_TRANSITIONS = [
 
 @DefaultScope(() => ({
   where: {
-    [Op.and]: [
-      { state: { [Op.ne]: "draft" } },
-      { state: { [Op.ne]: "deleted" } },
-    ],
+    state: { [Op.notIn]: ["draft", "deleted"] },
   },
 }))
 @Table({ tableName: "groups", paranoid: false })
