@@ -1,31 +1,19 @@
 import format from "pg-format";
 import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
-import {
-  plugin,
-  Schedule,
-  App,
-  SimpleAppOptions,
-  Source,
-  SimpleSourceOptions,
-  SourceMapping,
-  Run,
-} from "@grouparoo/core";
+import { plugin, ProfilesPluginMethod } from "@grouparoo/core";
 
-export async function profiles(
-  schedule: Schedule,
-  app: App,
-  appOptions: SimpleAppOptions,
-  source: Source,
-  sourceOptions: SimpleSourceOptions,
-  sourceMapping: SourceMapping,
-  run: Run,
-  limit: number,
-  filter: { [key: string]: any },
-  highWaterMark: number
-) {
+export const profiles: ProfilesPluginMethod = async ({
+  run,
+  appOptions,
+  sourceMapping,
+  source,
+  limit,
+  highWaterMark,
+  filter,
+}) => {
   let importsCount = 0;
-  const offset = highWaterMark || 0;
+  const offset = highWaterMark ? parseInt(highWaterMark.toString()) : 0;
 
   const { table } = await source.parameterizedOptions(run);
   const where =
@@ -59,4 +47,4 @@ export async function profiles(
 
   const nextHighWaterMark = offset + limit;
   return { importsCount, nextHighWaterMark };
-}
+};

@@ -216,48 +216,6 @@ export class Source extends LoggedModel<Source> {
     }
   }
 
-  async importProfileProperty(
-    profile: Profile,
-    profilePropertyRule: ProfilePropertyRule,
-    profilePropertyRuleOptionsOverride?: { [key: string]: any }
-  ) {
-    if (profilePropertyRule.state !== "ready") {
-      return;
-    }
-
-    const { pluginConnection } = await this.getPlugin();
-    if (!pluginConnection) {
-      throw new Error(
-        `cannot find connection for source ${this.type} (${this.guid})`
-      );
-    }
-
-    const method = pluginConnection.methods.profileProperty;
-
-    if (!method) {
-      return;
-    }
-
-    const app = await this.$get("app");
-    const appOptions = await app.getOptions();
-    const sourceOptions = await this.getOptions();
-    const sourceMapping = await this.getMapping();
-    const profilePropertyRuleOptions = await profilePropertyRule.getOptions();
-
-    return method(
-      app,
-      appOptions,
-      this,
-      sourceOptions,
-      sourceMapping,
-      profilePropertyRule,
-      profilePropertyRuleOptionsOverride
-        ? profilePropertyRuleOptionsOverride
-        : profilePropertyRuleOptions,
-      profile
-    );
-  }
-
   async sourceConnectionOptions() {
     const { pluginConnection } = await this.getPlugin();
     const app = await this.$get("app");
@@ -267,7 +225,7 @@ export class Source extends LoggedModel<Source> {
       return {};
     }
 
-    return pluginConnection.methods.sourceOptions(app, appOptions);
+    return pluginConnection.methods.sourceOptions({ app, appOptions });
   }
 
   async sourcePreview(sourceOptions?: SimpleSourceOptions) {
@@ -290,12 +248,12 @@ export class Source extends LoggedModel<Source> {
       throw new Error(`cannot return a source preview for ${this.type}`);
     }
 
-    return pluginConnection.methods.sourcePreview(
+    return pluginConnection.methods.sourcePreview({
       app,
       appOptions,
-      this,
-      sourceOptions
-    );
+      source: this,
+      sourceOptions,
+    });
   }
 
   async apiData(
@@ -363,60 +321,60 @@ export class Source extends LoggedModel<Source> {
     return false;
   }
 
+  async importProfileProperty(
+    profile: Profile,
+    profilePropertyRule: ProfilePropertyRule,
+    profilePropertyRuleOptionsOverride?: { [key: string]: any }
+  ) {
+    if (profilePropertyRule.state !== "ready") {
+      return;
+    }
+
+    const { pluginConnection } = await this.getPlugin();
+    if (!pluginConnection) {
+      throw new Error(
+        `cannot find connection for source ${this.type} (${this.guid})`
+      );
+    }
+
+    const method = pluginConnection.methods.profileProperty;
+
+    if (!method) {
+      return;
+    }
+
+    const app = await this.$get("app");
+    const appOptions = await app.getOptions();
+    const sourceOptions = await this.getOptions();
+    const sourceMapping = await this.getMapping();
+    const profilePropertyRuleOptions = await profilePropertyRule.getOptions();
+    const profilePropertyRuleFilters = await profilePropertyRule.getFilters();
+
+    return method({
+      app,
+      appOptions,
+      source: this,
+      sourceOptions,
+      sourceMapping,
+      profilePropertyRule,
+      profilePropertyRuleOptions: profilePropertyRuleOptionsOverride
+        ? profilePropertyRuleOptionsOverride
+        : profilePropertyRuleOptions,
+      profilePropertyRuleFilters,
+      profile,
+    });
+  }
+
   async import(profile: Profile) {
     const hash = {};
-    const queryResponses = {};
     const rules = await this.$get("profilePropertyRules", {
       where: { state: "ready" },
     });
 
     for (const i in rules) {
       const rule = rules[i];
-
-      let rawResponse;
-      const queryKey =
-        this.guid + ":" + JSON.stringify(await rule.getOptions());
-
-      if (!queryResponses[queryKey]) {
-        rawResponse = await this.importProfileProperty(profile, rule);
-        queryResponses[queryKey] = rawResponse;
-      } else {
-        rawResponse = queryResponses[queryKey];
-      }
-
-      if (rawResponse !== null && rawResponse !== undefined) {
-        let rawValue;
-
-        if (
-          typeof rawResponse === "string" ||
-          typeof rawResponse === "number" ||
-          typeof rawResponse === "boolean" ||
-          rawResponse instanceof Date
-        ) {
-          rawValue = rawResponse;
-        } else if (Array.isArray(rawResponse)) {
-          rawValue = rawResponse[0];
-        } else {
-          const responseKeys = Object.keys(rawResponse);
-          if (responseKeys.length === 0) {
-            continue;
-          } else if (responseKeys.length === 1) {
-            rawValue = rawResponse[responseKeys[0]];
-          } else {
-            if (!rawResponse[rule.key]) {
-              throw new Error(
-                `source response contains multiple properties but none match ${
-                  rule.key
-                }: ${JSON.stringify(rawResponse)}`
-              );
-            }
-
-            rawValue = rawResponse[rule.key];
-          }
-        }
-
-        hash[rule.key] = rawValue;
-      }
+      const response = await this.importProfileProperty(profile, rule);
+      hash[rule.key] = response;
     }
 
     // remove null and undefined as we cannot set that value
@@ -467,11 +425,13 @@ export class Source extends LoggedModel<Source> {
         const appOptions = await app.getOptions();
         const options = await this.getOptions();
         const ruleOptions = await pluginConnection.methods.uniqueProfilePropertyRuleBootstrapOptions(
-          app,
-          appOptions,
-          this,
-          options,
-          mappedColumn
+          {
+            app,
+            appOptions,
+            source: this,
+            sourceOptions: options,
+            mappedColumn,
+          }
         );
 
         await rule.setOptions(ruleOptions);

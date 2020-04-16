@@ -1,4 +1,6 @@
-export const profilePropertyRuleOptions = [
+import { PluginConnectionProfilePropertyRuleOption } from "@grouparoo/core";
+
+export const profilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOption[] = [
   {
     key: "query",
     required: true,

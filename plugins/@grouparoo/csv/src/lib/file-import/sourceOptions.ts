@@ -1,7 +1,7 @@
 import path from "path";
-import { App, plugin, SimpleAppOptions } from "@grouparoo/core";
+import { plugin, SourceOptionsMethod } from "@grouparoo/core";
 
-export async function sourceOptions(app: App, appOptions: SimpleAppOptions) {
+export const sourceOptions: SourceOptionsMethod = async () => {
   const response = {
     fileGuid: { type: "list", options: [], descriptions: [] },
   };
@@ -13,4 +13,4 @@ export async function sourceOptions(app: App, appOptions: SimpleAppOptions) {
   });
 
   return response;
-}
+};

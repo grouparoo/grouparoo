@@ -1,4 +1,6 @@
-export async function appOptions() {
+import { AppOptionsMethod } from "@grouparoo/core";
+
+export const appOptions: AppOptionsMethod = async () => {
   return {
     stdout: {
       type: "list",
@@ -9,4 +11,4 @@ export async function appOptions() {
       ],
     },
   };
-}
+};

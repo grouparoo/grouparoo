@@ -1,43 +1,29 @@
 import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
 import {
-  App,
-  SimpleAppOptions,
-  Source,
-  SimpleSourceOptions,
-  Profile,
-  ProfilePropertyRule,
-  SimpleProfilePropertyRuleOptions,
+  ProfilePropertyPluginMethod,
+  ProfilePropertyPluginMethodResponse,
 } from "@grouparoo/core";
 
-export async function profileProperty(
-  app: App,
-  appOptions: SimpleAppOptions,
-  source: Source,
-  sourceOptions: SimpleSourceOptions,
-  sourceMapping: SimpleSourceOptions,
-  profilePropertyRule: ProfilePropertyRule,
-  profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions,
-  profile: Profile
-) {
+export const profileProperty: ProfilePropertyPluginMethod = async ({
+  profile,
+  appOptions,
+  profilePropertyRule,
+  profilePropertyRuleOptions,
+}) => {
   const parameterizedQuery = await profilePropertyRule.parameterizedQueryFromProfile(
     profilePropertyRuleOptions.query,
     profile
   );
   validateQuery(parameterizedQuery);
 
-  let row;
+  let response: ProfilePropertyPluginMethodResponse;
   const client = await connect(appOptions);
   try {
     const { rows } = await client.query(parameterizedQuery);
-    if (rows) {
-      row = rows[0];
-      for (const remoteKey in sourceMapping) {
-        const profileKey = sourceMapping[remoteKey];
-        if (row[remoteKey] && !row[profileKey]) {
-          row[profileKey] = row[remoteKey];
-        }
-      }
+    if (rows && rows.length > 0) {
+      const row: { [key: string]: any } = rows[0];
+      response = Object.values(row)[0];
     }
   } catch (error) {
     throw new Error(
@@ -47,5 +33,5 @@ export async function profileProperty(
     await client.end();
   }
 
-  return row;
-}
+  return response;
+};

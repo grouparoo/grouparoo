@@ -1,10 +1,10 @@
-import { App, SimpleAppOptions } from "@grouparoo/core";
+import { TestPluginMethod } from "@grouparoo/core";
 import * as fs from "fs";
 import * as path from "path";
 import { config } from "actionhero";
 
-export async function test(app: App, options: SimpleAppOptions) {
-  const filePath = path.join(config.general.paths.log[0], options.filename);
+export const test: TestPluginMethod = async ({ appOptions }) => {
+  const filePath = path.join(config.general.paths.log[0], appOptions.filename);
   const now = new Date();
   try {
     // touch the file
@@ -15,4 +15,4 @@ export async function test(app: App, options: SimpleAppOptions) {
   }
 
   return true;
-}
+};

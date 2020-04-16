@@ -6,6 +6,7 @@ import { exportProfile } from "./../lib/export/exportProfile";
 
 import { sourcePreview as tableSourcePreview } from "../lib/table-import/sourcePreview";
 import { sourceOptions as tableSourceOptions } from "../lib/table-import/sourceOptions";
+import { sourceFilters as tableSourceFilters } from "../lib/table-import/sourceFilters";
 import { uniqueProfilePropertyRuleBootstrapOptions as tableUniqueProfilePropertyRuleBootstrapOptions } from "../lib/table-import/uniqueProfilePropertyRuleBootstrapOptions";
 import { profiles as tableProfiles } from "../lib/table-import/profiles";
 import { profileProperty as tableProfileProperty } from "../lib/table-import/profileProperty";
@@ -71,6 +72,7 @@ export class Plugins extends Initializer {
           methods: {
             sourceOptions: tableSourceOptions,
             sourcePreview: tableSourcePreview,
+            sourceFilters: tableSourceFilters,
             uniqueProfilePropertyRuleBootstrapOptions: tableUniqueProfilePropertyRuleBootstrapOptions,
             profiles: tableProfiles,
             profileProperty: tableProfileProperty,

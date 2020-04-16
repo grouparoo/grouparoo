@@ -65,6 +65,7 @@ export namespace plugin {
       Group,
       GroupMember,
       App,
+      Source,
       Schedule,
       Destination,
       DestinationGroup,

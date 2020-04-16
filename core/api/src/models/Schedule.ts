@@ -34,13 +34,13 @@ export interface PluginConnectionScheduleOption {
   required: boolean;
   description: string;
   type: string;
-  options: (
-    app: App,
-    appOptions: SimpleAppOptions,
-    source: Source,
-    sourceOptions: SimpleSourceOptions,
-    sourceMapping: SimpleSourceOptions
-  ) => Promise<
+  options: (argument: {
+    app: App;
+    appOptions: SimpleAppOptions;
+    source: Source;
+    sourceOptions: SimpleSourceOptions;
+    sourceMapping: SimpleSourceOptions;
+  }) => Promise<
     Array<{
       key: string;
       description?: string;
@@ -245,13 +245,13 @@ export class Schedule extends LoggedModel<Schedule> {
 
     for (const i in pluginConnection.scheduleOptions) {
       const opt = pluginConnection.scheduleOptions[i];
-      const options = await opt.options(
+      const options = await opt.options({
         app,
         appOptions,
         source,
         sourceOptions,
-        sourceMapping
-      );
+        sourceMapping,
+      });
 
       response.push({
         key: opt.key,
@@ -316,8 +316,8 @@ export class Schedule extends LoggedModel<Schedule> {
     let nextHighWaterMark: string | number;
 
     try {
-      const response = await method(
-        this,
+      const response = await method({
+        schedule: this,
         app,
         appOptions,
         source,
@@ -326,8 +326,8 @@ export class Schedule extends LoggedModel<Schedule> {
         run,
         limit,
         filter,
-        highWaterMark
-      );
+        highWaterMark,
+      });
 
       importsCount = response.importsCount;
       nextHighWaterMark = response.nextHighWaterMark;

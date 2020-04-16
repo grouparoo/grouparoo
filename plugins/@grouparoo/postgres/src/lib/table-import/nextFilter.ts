@@ -1,27 +1,12 @@
 import format from "pg-format";
 import { connect } from "../connect";
-import {
-  App,
-  SimpleAppOptions,
-  Source,
-  SimpleSourceOptions,
-  SourceMapping,
-  Schedule,
-  SimpleScheduleOptions,
-  Run,
-  plugin,
-} from "@grouparoo/core";
+import { plugin, NextFilterPluginMethod } from "@grouparoo/core";
 
-export async function nextFilter(
-  app: App,
-  appOptions: SimpleAppOptions,
-  source: Source,
-  sourceOptions: SimpleSourceOptions,
-  sourceMapping: SourceMapping,
-  schedule: Schedule,
-  scheduleOptions: SimpleScheduleOptions,
-  run: Run
-) {
+export const nextFilter: NextFilterPluginMethod = async ({
+  appOptions,
+  sourceOptions,
+  scheduleOptions,
+}) => {
   let filter = {};
   if (!scheduleOptions.column) {
     return filter;
@@ -47,4 +32,4 @@ export async function nextFilter(
   }
 
   return filter;
-}
+};

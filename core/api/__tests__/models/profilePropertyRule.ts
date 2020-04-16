@@ -6,6 +6,7 @@ import { App } from "./../../src/models/App";
 import { Source } from "./../../src/models/Source";
 import { Option } from "./../../src/models/Option";
 import { plugin } from "./../../src/modules/plugin";
+import { ProfilePropertyRuleFilter } from "../../src/models/ProfilePropertyRuleFilter";
 
 let actionhero;
 let api;
@@ -365,16 +366,20 @@ describe("models/profilePropertyRule", () => {
               },
             ],
             methods: {
-              profileProperty: async (
-                App,
-                appOptions,
-                source,
-                sourceOptions,
-                sourceMapping,
+              sourceFilters: async () => {
+                return [
+                  {
+                    key: "id",
+                    ops: ["greater than", "less than"],
+                    canHaveRelativeMatch: false,
+                  },
+                ];
+              },
+              profileProperty: async ({
                 profilePropertyRule,
                 profilePropertyRuleOptions,
-                profile
-              ) => {
+                profile,
+              }) => {
                 const s = `the time is {{now.sql}} + ${JSON.stringify(
                   profilePropertyRuleOptions
                 )}`;
@@ -390,7 +395,7 @@ describe("models/profilePropertyRule", () => {
                   throw new Error(`throw`);
                 }
                 queryCounter++;
-                return { response: q };
+                return q;
               },
             },
           },
@@ -427,6 +432,85 @@ describe("models/profilePropertyRule", () => {
 
     beforeEach(() => {
       queryCounter = 0;
+    });
+
+    describe("filters", () => {
+      test("it can get the filter options from the plugin", async () => {
+        const rule = await ProfilePropertyRule.create({
+          key: "test",
+          type: "string",
+          sourceGuid: source.guid,
+        });
+
+        const filterOptions = await rule.pluginFilterOptions();
+        expect(filterOptions).toEqual([
+          {
+            key: "id",
+            ops: ["greater than", "less than"],
+            canHaveRelativeMatch: false,
+          },
+        ]);
+
+        await rule.destroy();
+      });
+
+      test("filters that match the options can be set", async () => {
+        const rule = await ProfilePropertyRule.create({
+          key: "test",
+          type: "string",
+          sourceGuid: source.guid,
+        });
+
+        await rule.setFilters([
+          { op: "greater than", match: 1, key: "id" },
+          { op: "less than", match: 99, key: "id" },
+        ]);
+
+        const filters = await rule.getFilters();
+        expect(filters).toEqual([
+          {
+            op: "greater than",
+            match: "1",
+            key: "id",
+            relativeMatchDirection: null,
+            relativeMatchNumber: null,
+            relativeMatchUnit: null,
+          },
+          {
+            op: "less than",
+            match: "99",
+            key: "id",
+            relativeMatchDirection: null,
+            relativeMatchNumber: null,
+            relativeMatchUnit: null,
+          },
+        ]);
+
+        await rule.destroy();
+      });
+
+      test("deleting a rule also deleted the filters", async () => {
+        const count = await ProfilePropertyRuleFilter.count();
+        expect(count).toBe(0);
+      });
+
+      test("filters that do not match the options cannot be set", async () => {
+        const rule = await ProfilePropertyRule.create({
+          key: "test",
+          type: "string",
+          sourceGuid: source.guid,
+        });
+
+        await expect(
+          rule.setFilters([{ op: "greater than", match: 1, key: "other-key" }])
+        ).rejects.toThrow("other-key is not filterable");
+
+        await expect(
+          rule.setFilters([{ op: "max it out", match: 1, key: "id" }])
+        ).rejects.toThrow('"max it out" cannot be applied to id');
+
+        await rule.destroy();
+      });
     });
 
     test("profile property rules can retrieve their options from the source", async () => {
@@ -493,11 +577,11 @@ describe("models/profilePropertyRule", () => {
 
       // against saved query
       const response = await rule.test();
-      expect(response.response).toMatch("+ {}");
+      expect(response).toMatch("+ {}");
 
       // against new query
       const responseAgain = await rule.test({ column: "abc" });
-      expect(responseAgain.response).toMatch('+ {"column":"abc"}');
+      expect(responseAgain).toMatch('+ {"column":"abc"}');
 
       await profile.destroy();
       await rule.destroy();

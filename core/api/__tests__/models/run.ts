@@ -348,20 +348,11 @@ describe("models/run", () => {
               },
             ],
             methods: {
-              profileProperty: async (
-                app,
-                appOptions,
-                source,
-                sourceOptions,
-                sourceMapping,
-                profilePropertyRule,
-                profilePropertyRuleOptions,
-                profile
-              ) => {
+              profileProperty: async ({ profilePropertyRuleOptions }) => {
                 if (profilePropertyRuleOptions.column) {
                   throw new Error(profilePropertyRuleOptions.column);
                 } else {
-                  return {};
+                  return "ok";
                 }
               },
             },

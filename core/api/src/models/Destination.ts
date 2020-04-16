@@ -321,7 +321,7 @@ export class Destination extends LoggedModel<Destination> {
       throw new Error(`cannot return destination options for ${this.type}`);
     }
 
-    return pluginConnection.methods.destinationOptions(app, appOptions);
+    return pluginConnection.methods.destinationOptions({ app, appOptions });
   }
 
   async destinationPreview(destinationOptions?: SimpleDestinationOptions) {
@@ -344,12 +344,12 @@ export class Destination extends LoggedModel<Destination> {
       throw new Error(`cannot return a destination preview for ${this.type}`);
     }
 
-    return pluginConnection.methods.destinationPreview(
+    return pluginConnection.methods.destinationPreview({
       app,
       appOptions,
-      this,
-      destinationOptions
-    );
+      destination: this,
+      destinationOptions,
+    });
   }
 
   async exportProfile(
@@ -409,18 +409,18 @@ export class Destination extends LoggedModel<Destination> {
     try {
       await _export.associateImports(imports);
 
-      const success = await method(
+      const success = await method({
         app,
         appOptions,
-        this,
-        options,
+        destination: this,
+        destinationOptions: options,
         profile,
-        mappedOldProfileProperties,
-        mappedNewProfileProperties,
-        oldGroupNames,
-        newGroupNames,
-        toDelete
-      );
+        oldProfileProperties: mappedOldProfileProperties,
+        newProfileProperties: mappedNewProfileProperties,
+        oldGroups: oldGroupNames,
+        newGroups: newGroupNames,
+        toDelete,
+      });
 
       _export.completedAt = new Date();
       await _export.save();

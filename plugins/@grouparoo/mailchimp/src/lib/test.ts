@@ -1,8 +1,8 @@
-import { App, SimpleAppOptions } from "@grouparoo/core";
+import { TestPluginMethod } from "@grouparoo/core";
 import { connect } from "./connect";
 
-export async function test(app: App, options: SimpleAppOptions) {
-  const client = await connect(options);
+export const test: TestPluginMethod = async ({ appOptions }) => {
+  const client = await connect(appOptions);
   const { lists } = await client.get("/lists");
 
   if (lists) {
@@ -10,4 +10,4 @@ export async function test(app: App, options: SimpleAppOptions) {
   } else {
     return false;
   }
-}
+};

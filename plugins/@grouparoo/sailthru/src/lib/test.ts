@@ -1,12 +1,12 @@
-import { App, SimpleAppOptions } from "@grouparoo/core";
+import { TestPluginMethod } from "@grouparoo/core";
 import Sailthru from "./client";
 
-export async function test(app: App, options: SimpleAppOptions) {
+export const test: TestPluginMethod = async ({ appOptions }) => {
   try {
-    const client = new Sailthru(options);
+    const client = new Sailthru(appOptions);
     await client.getLists();
     return true;
   } catch (err) {
     return false;
   }
-}
+};

@@ -1,17 +1,10 @@
 import { connect } from "../connect";
-import {
-  App,
-  Source,
-  SimpleAppOptions,
-  SimpleSourceOptions,
-} from "@grouparoo/core";
+import { SourcePreviewMethod } from "@grouparoo/core";
 
-export async function sourcePreview(
-  app: App,
-  appOptions: SimpleAppOptions,
-  source: Source,
-  sourceOptions: SimpleSourceOptions
-) {
+export const sourcePreview: SourcePreviewMethod = async ({
+  appOptions,
+  sourceOptions,
+}) => {
   const response = [];
 
   const client = await connect(appOptions);
@@ -22,4 +15,4 @@ export async function sourcePreview(
   preview.map((row) => response.push(row));
   await client.asyncEnd();
   return response;
-}
+};

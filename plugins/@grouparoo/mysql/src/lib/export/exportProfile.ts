@@ -1,24 +1,13 @@
 import { connect } from "./../connect";
-import {
-  Profile,
-  App,
-  Destination,
-  SimpleAppOptions,
-  SimpleDestinationOptions,
-} from "@grouparoo/core";
+import { ExportProfilePluginMethod } from "@grouparoo/core";
 
-export async function exportProfile(
-  app: App,
-  appOptions: SimpleAppOptions,
-  destination: Destination,
-  destinationOptions: SimpleDestinationOptions,
-  profile: Profile,
-  oldProfileProperties: { [key: string]: any },
-  newProfileProperties: { [key: string]: any },
-  oldGroups: Array<string>,
-  newGroups: Array<string>,
-  toDelete: boolean
-) {
+export const exportProfile: ExportProfilePluginMethod = async ({
+  newProfileProperties,
+  newGroups,
+  toDelete,
+  appOptions,
+  destination,
+}) => {
   let success = false;
   let error;
 
@@ -133,4 +122,4 @@ export async function exportProfile(
 
     return success;
   }
-}
+};

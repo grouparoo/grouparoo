@@ -1,6 +1,6 @@
-# 🦘 Grouparoo
+# Grouparoo
 
-Achieve Marketing Autonomy
+**Achieve Marketing Autonomy**
 
 Want to move faster? Take control of your data and your destiny with the open source customer data platform that puts marketers in charge.
 

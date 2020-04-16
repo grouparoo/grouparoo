@@ -6,8 +6,8 @@ interface QueryResultObject {
   [key: string]: any;
 }
 
-export async function connect(options: SimpleAppOptions) {
-  const client = mysql.createConnection(options);
+export async function connect(appOptions: SimpleAppOptions) {
+  const client = mysql.createConnection(appOptions);
   await promisify(client.connect).bind(client)();
 
   const asyncQuery = function (
