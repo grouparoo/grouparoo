@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+N=$(($(getconf _NPROCESSORS_ONLN))) || 8
+
 if [ $1 ]; then
   echo "dropping database grouparoo_test_$1"
   if [ -n "$CI" ]; then
@@ -8,8 +10,7 @@ if [ $1 ]; then
     `dropdb "grouparoo_test_$1"`
   fi
 else
-  n=16
-  for ((i=1; i<=n; i++)) {
+  for ((i=1; i<=$N; i++)) {
     echo "dropping database grouparoo_test_$i"
     if [ -n "$CI" ]; then
       `dropdb "grouparoo_test_$i" --host localhost --user postgres`
