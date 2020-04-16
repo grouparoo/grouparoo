@@ -510,7 +510,24 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   async validateFilters(filters: ProfilePropertyRuleFiltersWithKey[]) {
-    // TODO
+    if (!filters) {
+      filters = await this.getFilters();
+    }
+
+    const pluginFilterOptions = await this.pluginFilterOptions();
+
+    for (const i in filters) {
+      const filter = filters[i];
+      const relevantOption = pluginFilterOptions.filter(
+        (pfo) => pfo.key === filter.key
+      )[0];
+      if (!relevantOption) {
+        throw new Error(`${filter.key} is not filterable`);
+      }
+      if (!relevantOption.ops.includes(filter.op)) {
+        throw new Error(`"${filter.op}" cannot be applied to ${filter.key}`);
+      }
+    }
   }
 
   async apiData() {

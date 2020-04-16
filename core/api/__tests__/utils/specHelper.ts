@@ -29,9 +29,9 @@ import { Log } from "../../src/models/Log";
 import { Profile } from "../../src/models/Profile";
 import { ProfileProperty } from "../../src/models/ProfileProperty";
 import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
+import { ProfilePropertyRuleFilter } from "../../src/models/ProfilePropertyRuleFilter";
 import { Run } from "../../src/models/Run";
 import { Mapping } from "../../src/models/Mapping";
-import { Setting } from "../../src/models/Setting";
 import { Team } from "../../src/models/Team";
 import { TeamMember } from "../../src/models/TeamMember";
 
@@ -85,6 +85,7 @@ export namespace helper {
       Profile,
       ProfileProperty,
       ProfilePropertyRule,
+      ProfilePropertyRuleFilter,
       Run,
       Mapping,
       Team,
@@ -214,6 +215,15 @@ export namespace helper {
               return {
                 column: "__default_column",
               };
+            },
+            sourceFilters: async () => {
+              return [
+                {
+                  key: "id",
+                  ops: ["greater than", "less than"],
+                  canHaveRelativeMatch: false,
+                },
+              ];
             },
             profiles: async () => {
               return { importsCount: 0, nextHighWaterMark: 0 };

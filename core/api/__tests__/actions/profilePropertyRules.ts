@@ -111,6 +111,50 @@ describe("actions/profilePropertyRules", () => {
       expect(pluginOptions[0].key).toBe("column");
     });
 
+    test("an administrator can view the filter options for a profile property rule", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+      };
+      const { error, options } = await specHelper.runAction(
+        "profilePropertyRule:filterOptions",
+        connection
+      );
+
+      expect(error).toBeUndefined();
+      expect(options).toEqual([
+        {
+          key: "id",
+          ops: ["greater than", "less than"],
+          canHaveRelativeMatch: false,
+        },
+      ]);
+    });
+
+    test("an administrator can set the filters for a profile property rule", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+        filters: [{ key: "id", op: "greater than", match: 6 }],
+      };
+      const { error, profilePropertyRule } = await specHelper.runAction(
+        "profilePropertyRule:edit",
+        connection
+      );
+
+      expect(error).toBeUndefined();
+      expect(profilePropertyRule.filters).toEqual([
+        {
+          key: "id",
+          match: "6",
+          op: "greater than",
+          relativeMatchDirection: null,
+          relativeMatchNumber: null,
+          relativeMatchUnit: null,
+        },
+      ]);
+    });
+
     test("an administrator can make a rule ready", async () => {
       connection.params = {
         csrfToken,

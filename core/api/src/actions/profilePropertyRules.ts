@@ -214,13 +214,9 @@ export class ProfilePropertyRuleFilterOptions extends Action {
   }
 
   async run({ params, response }) {
-    const profilePropertyRule = await ProfilePropertyRule.findOne({
-      where: { guid: params.guid },
-    });
-    if (!profilePropertyRule) {
-      throw new Error("profilePropertyRule not found");
-    }
-
+    const profilePropertyRule = await ProfilePropertyRule.findByGuid(
+      params.guid
+    );
     response.options = await profilePropertyRule.pluginFilterOptions();
   }
 }
