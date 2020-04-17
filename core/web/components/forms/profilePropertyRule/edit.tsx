@@ -268,7 +268,7 @@ export default function ({
 
                 {/* list options */}
                 {opt.type === "list" ? (
-                  <Table bordered striped hover size="sm" variant="light">
+                  <Table bordered striped size="sm" variant="light">
                     <thead>
                       <tr>
                         <th></th>

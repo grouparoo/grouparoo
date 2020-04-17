@@ -188,7 +188,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
           <Col>
             <p>What column identifies the user?</p>
             <fieldset>
-              <Table size="sm">
+              <Table bordered striped size="sm">
                 <thead>
                   <tr>
                     <th></th>
@@ -237,7 +237,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
               <>
                 <p>Choose the Unique Grouparoo Profile Property:</p>
                 <fieldset>
-                  <Table size="sm">
+                  <Table bordered striped size="sm">
                     <thead>
                       <tr>
                         <th></th>
