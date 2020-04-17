@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Form, Button, Row, Col, Card, CardColumns } from "react-bootstrap";
+import { Form, Button, Card, CardColumns } from "react-bootstrap";
 import Router from "next/router";
 import AppIcon from "../../appIcon";
 
@@ -36,57 +36,47 @@ export default function ({ apiVersion, errorHandler }) {
   return (
     <>
       <Form id="form" onSubmit={create}>
-        <Row>
-          <CardColumns>
-            {types.map((_app) => {
-              return (
-                <Col key={`plugin-${_app.name}`} md={3}>
-                  <Card
+        <CardColumns>
+          {types.map((_app) => {
+            return (
+              <Card
+                style={{
+                  width: "20em",
+                  borderRadius: "4px",
+                }}
+                bg={app.type === _app.name ? "primary" : "secondary"}
+                border={"primary"}
+                text={"white"}
+                onClick={() => {
+                  const __app = Object.assign({}, app);
+                  __app.type = _app.name;
+                  setApp(__app);
+                }}
+              >
+                <Card.Body style={{ textAlign: "center" }}>
+                  <div
                     style={{
-                      width: "16em",
+                      backgroundColor: "white",
+                      width: "100px",
+                      height: "100px",
                       borderRadius: "4px",
-                    }}
-                    bg={app.type === _app.name ? "success" : "secondary"}
-                    onClick={() => {
-                      const __app = Object.assign({}, app);
-                      __app.type = _app.name;
-                      setApp(__app);
+                      textAlign: "center",
+                      paddingTop: "5px",
                     }}
                   >
-                    <Card.Body>
-                      <div
-                        style={{
-                          textAlign: "center",
-                        }}
-                      >
-                        <div
-                          style={{
-                            backgroundColor: "white",
-                            width: "100px",
-                            height: "100px",
-                            borderRadius: "4px",
-                            textAlign: "center",
-                            paddingTop: "5px",
-                          }}
-                        >
-                          <AppIcon
-                            className="card-img"
-                            src={_app.plugin.icon}
-                            size={90}
-                          />
-                        </div>
-                        <br />
-                        <h4>
-                          <div style={{ color: "white" }}>{_app.name}</div>
-                        </h4>
-                      </div>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              );
-            })}
-          </CardColumns>
-        </Row>
+                    <AppIcon
+                      className="card-img"
+                      src={_app.plugin.icon}
+                      size={90}
+                    />
+                  </div>
+                  <br />
+                  <h4>{_app.name}</h4>
+                </Card.Body>
+              </Card>
+            );
+          })}
+        </CardColumns>
 
         <br />
 
