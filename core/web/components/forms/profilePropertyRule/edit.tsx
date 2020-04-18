@@ -268,7 +268,7 @@ export default function ({
 
                 {/* list options */}
                 {opt.type === "list" ? (
-                  <Table size="sm" variant="dark">
+                  <Table bordered striped size="sm" variant="light">
                     <thead>
                       <tr>
                         <th></th>
@@ -365,10 +365,10 @@ export default function ({
                         <strong>Key</strong>
                       </td>
                       <td>
-                        <strong>Op</strong>
+                        <strong>Operation</strong>
                       </td>
                       <td>
-                        <strong>Match</strong>
+                        <strong>Value</strong>
                       </td>
                       <td>&nbsp;</td>
                     </tr>

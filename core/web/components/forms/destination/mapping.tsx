@@ -116,7 +116,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   if (!destination.previewAvailable) {
     return (
       <>
-        <Table variant="dark">
+        <Table bordered striped variant="light">
           <thead>
             <tr>
               <th>Sending?</th>
@@ -155,7 +155,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   // if there is a preview to map against, show a dropdown list for each remote column
   return (
     <>
-      <Table variant="dark">
+      <Table bordered striped variant="light">
         <thead>
           <tr>
             <th>Sending?</th>
