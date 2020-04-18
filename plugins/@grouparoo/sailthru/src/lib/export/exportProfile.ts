@@ -71,6 +71,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   // add new lists
   for (const newGroup of newGroups) {
     const listName = formatList(newGroup);
+    await ensureList(client, listName, false);
     payload.lists[listName] = 1;
   }
 
@@ -102,6 +103,10 @@ function formatList(name) {
 
 const MAX_DELETE_ATTEMPTS = 5;
 async function sleep(time = 1000) {
+  // don't sleep as much in tests bc intermittent timeout issues
+  if (process.env.NODE_ENV === "test") {
+    time = 1;
+  }
   return new Promise((resolve) => {
     setTimeout(resolve, time);
   });
@@ -157,4 +162,22 @@ async function deleteUser(
     attemptNum
   );
   return false;
+}
+async function ensureList(client, name, make) {
+  // sailthru has a race condition that will have it make many lists
+  // with the same name if they are sent at the same time on profiles
+  const list = await client.getList(name);
+  if (!list) {
+    // now we have to make it.
+    if (make) {
+      await client.createList(name);
+    } else {
+      // wait some amount of milliseconds and see if someone else made it
+      const randMilli = Math.random() * 4000;
+      await sleep(randMilli);
+      await ensureList(client, name, true);
+    }
+  }
+
+  return true;
 }
