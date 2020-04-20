@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Form, Button, Card, CardColumns } from "react-bootstrap";
+import { Form, Button, Card, CardDeck } from "react-bootstrap";
 import Router from "next/router";
 import AppIcon from "../../appIcon";
 
@@ -36,32 +36,38 @@ export default function ({ apiVersion, errorHandler }) {
   return (
     <>
       <Form id="form" onSubmit={create}>
-        <CardColumns>
+        <CardDeck>
           {types.map((_app) => {
             return (
-              <Card
+              <div
                 style={{
-                  width: "20em",
+                  width: "150px",
                   borderRadius: "4px",
+                  backgroundColor: "#242436",
+                  borderColor: "gray",
+                  color: "white",
+                  margin: "10px",
+                  paddingTop: "20px",
+                  paddingBottom: "20px",
+                  paddingRight: "5px",
+                  paddingLeft: "5px",
                 }}
-                bg={app.type === _app.name ? "primary" : "secondary"}
-                border={"primary"}
-                text={"white"}
                 onClick={() => {
                   const __app = Object.assign({}, app);
                   __app.type = _app.name;
                   setApp(__app);
                 }}
               >
-                <Card.Body style={{ textAlign: "center" }}>
+                <div className="d-flex flex-column">
                   <div
+                    className="align-self-center"
                     style={{
                       backgroundColor: "white",
                       width: "100px",
                       height: "100px",
                       borderRadius: "4px",
-                      textAlign: "center",
                       paddingTop: "5px",
+                      textAlign: "center",
                     }}
                   >
                     <AppIcon
@@ -71,12 +77,12 @@ export default function ({ apiVersion, errorHandler }) {
                     />
                   </div>
                   <br />
-                  <h4>{_app.name}</h4>
-                </Card.Body>
-              </Card>
+                  <h4 className="align-self-center">{_app.name}</h4>
+                </div>
+              </div>
             );
           })}
-        </CardColumns>
+        </CardDeck>
 
         <br />
 
