@@ -576,6 +576,23 @@ describe("models/profilePropertyRule", () => {
       await rule.destroy();
     });
 
+    test("options cannot be saved if they fail testing import against a profile", async () => {
+      const profile = await helper.factories.profile();
+      const rule = await ProfilePropertyRule.create({
+        key: "test",
+        type: "string",
+        sourceGuid: source.guid,
+        state: "ready",
+      });
+
+      await expect(rule.setOptions({ column: "throw" })).rejects.toThrow(
+        /throw/
+      );
+
+      expect(await rule.getOptions()).toEqual({});
+      await rule.destroy();
+    });
+
     test("the profile property rule can be tested against the existing options or potential new options", async () => {
       const profile = await helper.factories.profile();
       const rule = await ProfilePropertyRule.create({

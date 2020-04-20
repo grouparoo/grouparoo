@@ -320,8 +320,6 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   async test(options?: SimpleProfilePropertyRuleOptions) {
-    console.log(options);
-
     const profile = await Profile.findOne({ order: api.sequelize.random() });
     if (profile) {
       const source = await Source.findByGuid(this.sourceGuid);
