@@ -27,7 +27,7 @@
     "lint": "prettier --check src __tests__"
   },
   "dependencies": {
-    "pg": "^8.0.0",
+    "pg": "^8.0.2",
     "pg-format": "^1.0.4",
     "pg-hstore": "^2.3.3"
   },
@@ -38,12 +38,12 @@
   "devDependencies": {
     "@grouparoo/core": "^0.1.1-alpha.11",
     "@types/jest": "^25.2.1",
-    "@types/node": "^13.11.1",
+    "@types/node": "^13.13.1",
     "@types/pg": "^7.14.3",
     "actionhero": "^22.0.7",
-    "jest": "^25.3.0",
+    "jest": "^25.4.0",
     "prettier": "^2.0.4",
-    "ts-jest": "^25.3.1",
+    "ts-jest": "^25.4.0",
     "typescript": "^3.8.3"
   },
   "gitHead": "d180097c68e2e0db22918e7d51c0e84abd9202c0"
