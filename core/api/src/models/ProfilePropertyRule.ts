@@ -328,10 +328,29 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   async getOptions() {
-    return OptionHelper.getOptions(this);
+    const options = await OptionHelper.getOptions(this);
+    for (const i in options) {
+      options[
+        i
+      ] = await plugin.replaceTemplateProfilePropertyGuidsWithProfilePropertyKeys(
+        options[i]
+      );
+    }
+
+    return options;
   }
 
   async setOptions(options: SimpleProfilePropertyRuleOptions) {
+    for (const i in options) {
+      options[
+        i
+      ] = await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyGuid(
+        options[i]
+      );
+    }
+
+    await this.test(options);
+
     return OptionHelper.setOptions(this, options);
   }
 
