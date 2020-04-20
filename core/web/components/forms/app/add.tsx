@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Form, Button, Card, CardDeck } from "react-bootstrap";
+import { Form, Button, CardDeck } from "react-bootstrap";
 import Router from "next/router";
 import AppIcon from "../../appIcon";
+import Selector from "../../selector";
 
 export default function ({ apiVersion, errorHandler }) {
   const { execApi } = useApi(errorHandler);
@@ -42,60 +43,25 @@ export default function ({ apiVersion, errorHandler }) {
               _app.name === app.type ? "button-color-selected" : "button-color";
             return (
               <div
-                style={{
-                  width: "150px",
-                  borderRadius: "4px",
-                  borderColor: "gray",
-                  color: "white",
-                  margin: "10px",
-                  paddingTop: "20px",
-                  paddingBottom: "20px",
-                  paddingRight: "5px",
-                  paddingLeft: "5px",
-                  cursor: "pointer",
-                }}
-                className={className}
-                key={`card-${idx}`}
                 onClick={() => {
                   const __app = Object.assign({}, app);
                   __app.type = _app.name;
                   setApp(__app);
                 }}
               >
-                <div className="d-flex flex-column">
-                  <div
-                    className="align-self-center"
-                    style={{
-                      backgroundColor: "white",
-                      width: "100px",
-                      height: "100px",
-                      borderRadius: "4px",
-                      paddingTop: "5px",
-                      textAlign: "center",
-                      wordWrap: "break-word",
-                    }}
-                  >
-                    <AppIcon
-                      className="card-img"
-                      src={_app.plugin.icon}
-                      size={90}
-                    />
-                  </div>
-                  <br />
-                  <h4
-                    className="align-self-center"
-                    style={{ textAlign: "center" }}
-                  >
-                    {_app.name}
-                  </h4>
-                </div>
+                <Selector
+                  src={_app.plugin.icon}
+                  name={_app.name}
+                  size={90}
+                  iconClassName="card-img"
+                  className={className}
+                  key={`card-${idx}`}
+                ></Selector>
               </div>
             );
           })}
         </CardDeck>
-
         <br />
-
         <Button variant="primary" type="submit" active={!loading}>
           Continue
         </Button>
