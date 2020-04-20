@@ -315,7 +315,7 @@ export namespace plugin {
       return string;
     }
 
-    const profilePropertyRules = await ProfilePropertyRule.findAll();
+    const profilePropertyRules = await ProfilePropertyRule.cached();
     const data = {};
     for (const i in profilePropertyRules) {
       const rule = profilePropertyRules[i];
@@ -336,7 +336,7 @@ export namespace plugin {
       return string;
     }
 
-    const profilePropertyRules = await ProfilePropertyRule.findAll();
+    const profilePropertyRules = await ProfilePropertyRule.cached();
     const data = {};
     for (const i in profilePropertyRules) {
       const rule = profilePropertyRules[i];
