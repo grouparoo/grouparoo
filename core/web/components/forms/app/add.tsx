@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Form, Button, CardDeck } from "react-bootstrap";
 import Router from "next/router";
-import AppIcon from "../../appIcon";
 import Selector from "../../selector";
 
 export default function ({ apiVersion, errorHandler }) {
@@ -56,7 +55,7 @@ export default function ({ apiVersion, errorHandler }) {
                   iconClassName="card-img"
                   className={className}
                   key={`card-${idx}`}
-                ></Selector>
+                />
               </div>
             );
           })}
