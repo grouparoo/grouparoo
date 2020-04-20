@@ -55,7 +55,7 @@ export default function ({
         <Breadcrumb.Item href={`/${pluralize(type)}`}>
           {capitalize(pluralize(type))}
         </Breadcrumb.Item>
-        <Breadcrumb.Item>{name !== "" ? name : "draft"}</Breadcrumb.Item>
+        <Breadcrumb.Item>{name !== "" ? name : "Draft"}</Breadcrumb.Item>
         <Breadcrumb.Item>{capitalize(key)}</Breadcrumb.Item>
       </Breadcrumb>
 
