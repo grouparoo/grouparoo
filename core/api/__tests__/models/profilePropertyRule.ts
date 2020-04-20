@@ -193,6 +193,18 @@ describe("models/profilePropertyRule", () => {
     );
   });
 
+  test("options will have mustache keys converted to mustache guids", async () => {
+    const rule = await ProfilePropertyRule.findOne({ where: { key: "email" } });
+    await rule.setOptions({
+      column: "{{   email}}@example.com",
+    });
+    let options = await rule.getOptions();
+    expect(options).toEqual({ column: "{{ email }}@example.com" }); //appears normal (but formatted) to the user
+
+    const rawOption = await Option.findOne({ where: { ownerGuid: rule.guid } });
+    expect(rawOption.value).toBe(`{{ ${rule.guid} }}@example.com`);
+  });
+
   test("a profile property rule cannot be created in the ready state with missing required options", async () => {
     const source = await helper.factories.source();
     const rule = ProfilePropertyRule.build({
@@ -209,10 +221,9 @@ describe("models/profilePropertyRule", () => {
   });
 
   test("if there is no change to options, the internalRun will not be enqueued", async () => {
-    await api.resque.queue.connection.redis.flushdb();
     const rule = await ProfilePropertyRule.findOne({ where: { key: "email" } });
-    const existingOptions = await rule.getOptions();
-    expect(existingOptions).toEqual({ column: "id" });
+    await rule.setOptions({ column: "id" });
+    await api.resque.queue.connection.redis.flushdb();
 
     await rule.setOptions({ column: "id" });
 
