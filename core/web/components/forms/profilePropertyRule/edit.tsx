@@ -19,6 +19,7 @@ export default function ({
   const [types, setTypes] = useState([]);
   const [pluginOptions, setPluginOptions] = useState([]);
   const [filterOptions, setFilterOptions] = useState([]);
+  const [profilePropertyRules, setProfilePropertyRules] = useState([]);
   const [profilePropertyRule, setProfilePropertyRule] = useState({
     key: "",
     guid: "",
@@ -44,6 +45,7 @@ export default function ({
       await loadOptions();
       await loadFilterOptions();
       await load();
+      await loadProfilePropertyRules();
     }
 
     loadAll();
@@ -60,6 +62,18 @@ export default function ({
       setProfilePropertyRule(response.profilePropertyRule);
       setPluginOptions(response.pluginOptions);
       setLocalFilters(response.profilePropertyRule.filters);
+    }
+  }
+
+  async function loadProfilePropertyRules() {
+    setLoading(true);
+    const response = await execApi(
+      "get",
+      `/api/${apiVersion}/profilePropertyRules`
+    );
+    setLoading(false);
+    if (response?.profilePropertyRules) {
+      setProfilePropertyRules(response.profilePropertyRules);
     }
   }
 
@@ -325,24 +339,55 @@ export default function ({
 
                 {/* text options */}
                 {opt.type === "textarea" ? (
-                  <Form.Group controlId="key">
-                    <Form.Control
-                      required
-                      as="textarea"
-                      rows={5}
-                      value={profilePropertyRule.options[opt.key]}
-                      onChange={(e) => updateOption(opt.key, e.target["value"])}
-                      placeholder="select statement with mustache template"
-                      style={{
-                        fontFamily:
-                          'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                        color: "#e83e8c",
-                      }}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      Key is required
-                    </Form.Control.Feedback>
-                  </Form.Group>
+                  <>
+                    <Form.Group controlId="key">
+                      <Form.Control
+                        required
+                        as="textarea"
+                        rows={5}
+                        value={profilePropertyRule.options[opt.key]}
+                        onChange={(e) =>
+                          updateOption(opt.key, e.target["value"])
+                        }
+                        placeholder="select statement with mustache template"
+                        style={{
+                          fontFamily:
+                            'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                          color: "#e83e8c",
+                        }}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Key is required
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    <p>
+                      Profile Property Variables:{" "}
+                      <Badge variant="light">{`{{ now }}`}</Badge>
+                      &nbsp;
+                      <Badge variant="light">{`{{ createdAt }}`}</Badge>&nbsp;
+                      <Badge variant="light">{`{{ updatedAt }}`}</Badge>&nbsp;
+                      {profilePropertyRules
+                        .sort((a, b) => {
+                          if (a.key > b.key) {
+                            return 1;
+                          } else {
+                            return -1;
+                          }
+                        })
+                        .map((ppr) => (
+                          <>
+                            <Badge variant="light">{`{{ ${ppr.key} }}`}</Badge>
+                            &nbsp;
+                          </>
+                        ))}
+                    </p>
+                    <p>
+                      For dates, you can expand them to the <code>sql</code>,{" "}
+                      <code>date</code>, <code>time</code>, or <code>iso</code>{" "}
+                      formats, ie:{" "}
+                      <Badge variant="light">{`{{ now.sql }}`}</Badge>
+                    </p>
+                  </>
                 ) : null}
               </div>
             ))}
