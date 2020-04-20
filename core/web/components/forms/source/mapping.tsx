@@ -129,7 +129,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     const response = await execApi(
       "put",
       `/api/${apiVersion}/source/${guid}`,
-      Object.assign(source, { state: "ready" })
+      Object.assign({}, source, { state: "ready" })
     );
     if (response?.source) {
       successHandler.set({ message: "Source updated" });

@@ -8,7 +8,7 @@ import ExportsList from "../../components/lists/exports";
 import { useApi } from "./../../hooks/useApi";
 
 export default function (props) {
-  const [destination, setDestination] = useState({ name: "" });
+  const [destination, setDestination] = useState({ name: "", state: "draft" });
   const { execApi } = useApi(props.errorHandler);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function (props) {
       errorHandler={props.errorHandler}
       apiVersion={props.apiVersion}
       type="destination"
-      defaultTab="groups"
+      defaultTab={destination.state === "draft" ? "edit" : "groups"}
       query={props.query}
     >
       <Fragment key="edit">
@@ -51,15 +51,19 @@ export default function (props) {
         </Card>
       </Fragment>
 
-      <Fragment key="groups">
-        <h1>Groups</h1>
-        <DestinationGroups {...props} />
-      </Fragment>
+      {destination.state !== "draft" ? (
+        <Fragment key="groups">
+          <h1>Groups</h1>
+          <DestinationGroups {...props} />
+        </Fragment>
+      ) : null}
 
-      <Fragment key="exports">
-        <h1>Exports</h1>
-        <ExportsList {...props} />
-      </Fragment>
+      {destination.state !== "draft" ? (
+        <Fragment key="exports">
+          <h1>Exports</h1>
+          <ExportsList {...props} />
+        </Fragment>
+      ) : null}
 
       <Fragment key="mapping">
         <h1>Mapping</h1>
