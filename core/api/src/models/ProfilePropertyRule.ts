@@ -320,6 +320,8 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   async test(options?: SimpleProfilePropertyRuleOptions) {
+    console.log(options);
+
     const profile = await Profile.findOne({ order: api.sequelize.random() });
     if (profile) {
       const source = await Source.findByGuid(this.sourceGuid);
@@ -341,6 +343,8 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   async setOptions(options: SimpleProfilePropertyRuleOptions) {
+    await this.test(options);
+
     for (const i in options) {
       options[
         i
@@ -348,8 +352,6 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
         options[i]
       );
     }
-
-    await this.test(options);
 
     return OptionHelper.setOptions(this, options);
   }
