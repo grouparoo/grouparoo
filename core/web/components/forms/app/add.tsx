@@ -37,13 +37,14 @@ export default function ({ apiVersion, errorHandler }) {
     <>
       <Form id="form" onSubmit={create}>
         <CardDeck>
-          {types.map((_app) => {
+          {types.map((_app, idx) => {
+            const className =
+              _app.name === app.type ? "button-color-selected" : "button-color";
             return (
               <div
                 style={{
                   width: "150px",
                   borderRadius: "4px",
-                  backgroundColor: "#242436",
                   borderColor: "gray",
                   color: "white",
                   margin: "10px",
@@ -51,7 +52,10 @@ export default function ({ apiVersion, errorHandler }) {
                   paddingBottom: "20px",
                   paddingRight: "5px",
                   paddingLeft: "5px",
+                  cursor: "pointer",
                 }}
+                className={className}
+                key={`card-${idx}`}
                 onClick={() => {
                   const __app = Object.assign({}, app);
                   __app.type = _app.name;
@@ -68,6 +72,7 @@ export default function ({ apiVersion, errorHandler }) {
                       borderRadius: "4px",
                       paddingTop: "5px",
                       textAlign: "center",
+                      wordWrap: "break-word",
                     }}
                   >
                     <AppIcon
@@ -77,7 +82,12 @@ export default function ({ apiVersion, errorHandler }) {
                     />
                   </div>
                   <br />
-                  <h4 className="align-self-center">{_app.name}</h4>
+                  <h4
+                    className="align-self-center"
+                    style={{ textAlign: "center" }}
+                  >
+                    {_app.name}
+                  </h4>
                 </div>
               </div>
             );
