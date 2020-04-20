@@ -14,6 +14,7 @@ export default function (props) {
   const { execApi } = useApi(errorHandler);
   const [source, setSource] = useState({
     name: "",
+    state: "draft",
     previewAvailable: false,
     schedule: { guid: "" },
   });
@@ -65,7 +66,7 @@ export default function (props) {
         </Fragment>
       ) : null}
 
-      {hasSchedule ? (
+      {hasSchedule && source.state !== "draft" ? (
         <Fragment key="schedule">
           <h1>Edit Schedule</h1>
           <Card border="success">
@@ -76,7 +77,7 @@ export default function (props) {
         </Fragment>
       ) : null}
 
-      {hasSchedule ? (
+      {hasSchedule && source.state !== "draft" ? (
         <Fragment key="runs">
           <h1>Runs</h1>
           <RunsList {...props} />

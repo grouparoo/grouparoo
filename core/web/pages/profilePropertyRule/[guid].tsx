@@ -13,6 +13,7 @@ import Link from "next/link";
 export default function (props) {
   const [profilePropertyRule, setProfilePropertyRule] = useState({
     key: "",
+    state: "draft",
     source: { name: "", guid: "" },
   });
   const { execApi } = useApi(props.errorHandler);
@@ -52,23 +53,31 @@ export default function (props) {
         </Card.Body>
       </Card>
     </Fragment>,
-
-    <Fragment key="profiles">
-      {profilePropertyRule.key === "" ? (
-        <Loader />
-      ) : (
-        <ProfilesList {...profilesListProps} />
-      )}
-    </Fragment>,
-
-    <Fragment key="groups">
-      <ProfilePropertyRulesGroupsList {...props} />
-    </Fragment>,
-
-    <Fragment key="runs">
-      <RunsList {...props} />
-    </Fragment>,
   ];
+
+  if (profilePropertyRule.state !== "draft") {
+    Tabs.push(
+      <Fragment key="profiles">
+        {profilePropertyRule.key === "" ? (
+          <Loader />
+        ) : (
+          <ProfilesList {...profilesListProps} />
+        )}
+      </Fragment>
+    );
+
+    Tabs.push(
+      <Fragment key="groups">
+        <ProfilePropertyRulesGroupsList {...props} />
+      </Fragment>
+    );
+
+    Tabs.push(
+      <Fragment key="runs">
+        <RunsList {...props} />
+      </Fragment>
+    );
+  }
 
   {
     plugins.map((PluginComponent, idx) => {
