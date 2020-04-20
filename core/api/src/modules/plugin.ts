@@ -228,6 +228,10 @@ export namespace plugin {
    * Takes a string with mustache variables and replaces them with the proper values for a schedule and run
    */
   export async function replaceTemplateRunVariables(string: string, run?: Run) {
+    if (string.indexOf("{{") < 0) {
+      return string;
+    }
+
     const data = {
       now: expandDates(new Date()),
       run: {},
@@ -275,9 +279,13 @@ export namespace plugin {
    * Takes a string with mustache variables and replaces them with the proper values for a profile
    */
   export async function replaceTemplateProfileVariables(
-    string,
+    string: string,
     profile: Profile
   ): Promise<string> {
+    if (string.indexOf("{{") < 0) {
+      return string;
+    }
+
     const data = {
       now: expandDates(new Date()),
       createdAt: expandDates(profile.createdAt),
@@ -291,6 +299,48 @@ export namespace plugin {
         properties[key].value instanceof Date
           ? expandDates(properties[key].value)
           : properties[key].value;
+    }
+
+    return Mustache.render(string, data);
+  }
+
+  /**
+   * Takes a string with mustache variable (keys) and replaces them with the profile property guids
+   * ie: `select * where id = {{ userId }}` => `select * where id = {{ ppr_abc123 }}`
+   */
+  export async function replaceTemplateProfilePropertyKeysWithProfilePropertyGuid(
+    string: string
+  ): Promise<string> {
+    if (string.indexOf("{{") < 0) {
+      return string;
+    }
+
+    const profilePropertyRules = await ProfilePropertyRule.cached();
+    const data = {};
+    for (const i in profilePropertyRules) {
+      const rule = profilePropertyRules[i];
+      data[rule.key] = `{{ ${rule.guid} }}`;
+    }
+
+    return Mustache.render(string, data);
+  }
+
+  /**
+   * Takes a string with mustache variable (guids) and replaces them with the profile property keys
+   * ie: `select * where id = {{ ppr_abc123 }}` => `select * where id = {{ userId }}`
+   */
+  export async function replaceTemplateProfilePropertyGuidsWithProfilePropertyKeys(
+    string: string
+  ): Promise<string> {
+    if (string.indexOf("{{") < 0) {
+      return string;
+    }
+
+    const profilePropertyRules = await ProfilePropertyRule.cached();
+    const data = {};
+    for (const i in profilePropertyRules) {
+      const rule = profilePropertyRules[i];
+      data[rule.guid] = `{{ ${rule.key} }}`;
     }
 
     return Mustache.render(string, data);

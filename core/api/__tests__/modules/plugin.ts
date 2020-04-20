@@ -4,6 +4,7 @@ import { Setting } from "./../../src/models/Setting";
 import { Run } from "./../../src/models/Run";
 import { Import } from "./../../src/models/Import";
 import { specHelper } from "actionhero";
+import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
 let actionhero;
 
 describe("modules/plugin", () => {
@@ -123,6 +124,25 @@ describe("modules/plugin", () => {
           "Profile Created at 1970-01-01 00:00:00"
         );
       });
+    });
+
+    test("replaceTemplateProfilePropertyKeysWithProfilePropertyGuid and replaceTemplateProfilePropertyGuidsWithProfilePropertyKeys", async () => {
+      const rule = await ProfilePropertyRule.findOne({
+        where: { key: "userId" },
+      });
+      const initialString = "select * from users where id = {{ userId }}";
+      const replacedWithGuid = await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyGuid(
+        initialString
+      );
+      expect(replacedWithGuid).toEqual(
+        `select * from users where id = {{ ${rule.guid} }}`
+      );
+
+      expect(
+        await plugin.replaceTemplateProfilePropertyGuidsWithProfilePropertyKeys(
+          replacedWithGuid
+        )
+      ).toEqual(initialString);
     });
 
     describe("createImport", () => {
