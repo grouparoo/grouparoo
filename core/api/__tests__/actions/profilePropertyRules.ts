@@ -159,6 +159,7 @@ describe("actions/profilePropertyRules", () => {
       connection.params = {
         csrfToken,
         guid,
+        options: { column: "email" },
         state: "ready",
       };
       const { error, profilePropertyRule } = await specHelper.runAction(

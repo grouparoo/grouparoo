@@ -44,32 +44,41 @@ describe("models/profileProperty", () => {
       sourceGuid: source.guid,
       key: "firstName",
       type: "string",
-      state: "ready",
     });
+    await firstNameRule.setOptions({ column: "firstName" });
+    await firstNameRule.update({ state: "ready" });
+
     emailRule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
       key: "email",
       type: "email",
-      state: "ready",
     });
+    await emailRule.setOptions({ column: "email" });
+    await emailRule.update({ state: "ready" });
+
     lastLoginRule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
       key: "lastLoginAt",
       type: "date",
-      state: "ready",
     });
+    await lastLoginRule.setOptions({ column: "lastLoginAt" });
+    await lastLoginRule.update({ state: "ready" });
+
     ltvRule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
       key: "ltv",
       type: "float",
-      state: "ready",
     });
+    await ltvRule.setOptions({ column: "ltv" });
+    await ltvRule.update({ state: "ready" });
+
     vipRule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
       key: "isVIP",
       type: "boolean",
-      state: "ready",
     });
+    await vipRule.setOptions({ column: "isVIP" });
+    await vipRule.update({ state: "ready" });
   });
 
   test("creating, editing, and deleting a profile property creates a relevant log message", async () => {

@@ -360,7 +360,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   async validateOptions(
     options?: SimpleProfilePropertyRuleOptions,
-    allowEmpty = true
+    allowEmpty = false
   ) {
     if (!options) {
       options = await this.getOptions();

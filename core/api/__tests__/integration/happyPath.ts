@@ -118,6 +118,9 @@ describe("integration/happyPath", () => {
       type: "string",
       unique: true,
       state: "ready",
+      options: {
+        column: "email",
+      },
     };
     let { error } = await specHelper.runAction(
       "profilePropertyRule:create",
@@ -132,6 +135,9 @@ describe("integration/happyPath", () => {
       type: "string",
       unique: false,
       state: "ready",
+      options: {
+        column: "firstName",
+      },
     };
     await specHelper.runAction("profilePropertyRule:create", connection);
 
@@ -142,6 +148,9 @@ describe("integration/happyPath", () => {
       type: "string",
       unique: false,
       state: "ready",
+      options: {
+        column: "lastName",
+      },
     };
     await specHelper.runAction("profilePropertyRule:create", connection);
 
@@ -152,6 +161,9 @@ describe("integration/happyPath", () => {
       type: "float",
       unique: false,
       state: "ready",
+      options: {
+        column: "ltv",
+      },
     };
     await specHelper.runAction("profilePropertyRule:create", connection);
   });

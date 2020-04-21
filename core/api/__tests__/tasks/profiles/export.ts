@@ -191,8 +191,6 @@ describe("tasks/profile:export", () => {
         expect(_export.completedAt).toBeTruthy();
         expect(_export.oldProfileProperties).toEqual({
           email: "mario@example.com",
-          firstName: null,
-          lastName: null,
         });
         expect(_export.newProfileProperties).toEqual({
           email: "mario@example.com",

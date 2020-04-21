@@ -314,6 +314,7 @@ describe("models/group", () => {
     let toad: Profile;
 
     beforeAll(async () => {
+      await Profile.destroy({ truncate: true });
       await helper.factories.profilePropertyRules();
       helper.disableTestPluginImport();
     });
@@ -340,8 +341,6 @@ describe("models/group", () => {
     });
 
     beforeAll(async () => {
-      await Profile.destroy({ truncate: true });
-
       mario = await Profile.create();
       luigi = await Profile.create();
       peach = await Profile.create();

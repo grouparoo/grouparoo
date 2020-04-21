@@ -22,10 +22,6 @@ describe("integration/runs/internalRun", () => {
   });
 
   describe("adding a new Profile Property will import and sync all profiles", () => {
-    beforeAll(async () => {
-      profile = await helper.factories.profile();
-    });
-
     test("adding a profile property rule with a query creates a run and internalRun task", async () => {
       const source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
@@ -37,6 +33,8 @@ describe("integration/runs/internalRun", () => {
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
+      profile = await helper.factories.profile();
+
       await api.resque.queue.connection.redis.flushdb();
       await Run.destroy({ truncate: true });
 
@@ -47,6 +45,7 @@ describe("integration/runs/internalRun", () => {
         unique: true,
       });
       await rule.setOptions({ column: "id" });
+      await rule.update({ state: "ready" });
 
       const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
       expect(foundTasks.length).toBe(1);
