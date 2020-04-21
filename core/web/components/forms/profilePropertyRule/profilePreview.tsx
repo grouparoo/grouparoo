@@ -26,7 +26,11 @@ export default function ProfilePreview({
     return () => {
       clearTimeout(timer);
     };
-  }, [profilePropertyRule.guid, JSON.stringify(profilePropertyRule.options)]);
+  }, [
+    profilePropertyRule.guid,
+    JSON.stringify(profilePropertyRule.options),
+    JSON.stringify(profilePropertyRule.filters),
+  ]);
 
   async function load() {
     setSleeping(true);
@@ -39,6 +43,7 @@ export default function ProfilePreview({
         `/api/${apiVersion}/profilePropertyRule/${profilePropertyRule.guid}/profilePreview`,
         {
           options: profilePropertyRule.options,
+          filters: profilePropertyRule.filters,
           profileGuid: profileGuid === "" ? undefined : profileGuid,
         }
       );

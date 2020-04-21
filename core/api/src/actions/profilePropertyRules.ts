@@ -256,6 +256,7 @@ export class ProfilePropertyRuleProfilePreview extends Action {
       guid: { required: true },
       profileGuid: { required: false },
       options: { required: false },
+      filters: { required: false },
     };
   }
 
@@ -283,6 +284,14 @@ export class ProfilePropertyRuleProfilePreview extends Action {
       } catch {}
     }
 
+    let parsedFilters = params.filters;
+    if (parsedFilters) {
+      try {
+        // as this is a GET, the options will be stringified
+        parsedFilters = parsedFilters.map((f) => JSON.parse(f));
+      } catch {}
+    }
+
     const apiData = await profile.apiData();
     const source = await profilePropertyRule.$get("source");
 
@@ -292,7 +301,8 @@ export class ProfilePropertyRuleProfilePreview extends Action {
       newProperty = await source.importProfileProperty(
         profile,
         profilePropertyRule,
-        parsedOptions
+        parsedOptions,
+        parsedFilters
       );
     } catch (error) {
       errorMessage = error.toString();
