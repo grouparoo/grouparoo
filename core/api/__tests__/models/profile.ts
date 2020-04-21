@@ -67,6 +67,8 @@ describe("models/profile", () => {
     let houseRule: ProfilePropertyRule;
 
     beforeAll(async () => {
+      await Profile.destroy({ truncate: true });
+
       source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
       await source.bootstrapUniqueProfilePropertyRule(
@@ -86,24 +88,27 @@ describe("models/profile", () => {
         key: "email",
         type: "email",
         unique: true,
-        state: "ready",
       });
+      await emailRule.setOptions({ column: "email" });
+      await emailRule.update({ state: "ready" });
 
       colorRule = await ProfilePropertyRule.create({
         sourceGuid: source.guid,
         key: "color",
         type: "string",
         unique: false,
-        state: "ready",
       });
+      await colorRule.setOptions({ column: "color" });
+      await colorRule.update({ state: "ready" });
 
       houseRule = await ProfilePropertyRule.create({
         sourceGuid: source.guid,
         key: "house",
         type: "string",
         unique: false,
-        state: "ready",
       });
+      await houseRule.setOptions({ column: "house" });
+      await houseRule.update({ state: "ready" });
 
       const profile = await Profile.create();
       await profile.addOrUpdateProperties({
@@ -214,14 +219,16 @@ describe("models/profile", () => {
   describe("profile property helpers", () => {
     let profile: Profile;
     beforeAll(async () => {
-      profile = new Profile();
-      await profile.save();
+      await Profile.destroy({ truncate: true });
     });
 
     test("it cannot add a profile property that is not defined", async () => {
+      profile = new Profile();
+      await profile.save();
       await expect(
         profile.addOrUpdateProperty({ email: "luigi@example.com" })
       ).rejects.toThrow(/cannot find a profile property rule for key email/);
+      await profile.destroy();
     });
 
     describe("with profilePropertyRules", () => {
@@ -240,30 +247,42 @@ describe("models/profile", () => {
 
         const rules = await ProfilePropertyRule.findAll();
 
-        await ProfilePropertyRule.create({
+        const emailRule = await ProfilePropertyRule.create({
           sourceGuid: source.guid,
           key: "email",
           type: "string",
-          state: "ready",
         });
-        await ProfilePropertyRule.create({
+        await emailRule.setOptions({ column: "email" });
+        await emailRule.update({ state: "ready" });
+
+        const firstNameRule = await ProfilePropertyRule.create({
           sourceGuid: source.guid,
           key: "firstName",
           type: "string",
-          state: "ready",
         });
-        await ProfilePropertyRule.create({
+        await firstNameRule.setOptions({ column: "firstName" });
+        await firstNameRule.update({ state: "ready" });
+
+        const lastNameRule = await ProfilePropertyRule.create({
           sourceGuid: source.guid,
           key: "lastName",
           type: "string",
-          state: "ready",
         });
-        await ProfilePropertyRule.create({
+        await lastNameRule.setOptions({ column: "lastName" });
+        await lastNameRule.update({ state: "ready" });
+
+        const colorRule = await ProfilePropertyRule.create({
           sourceGuid: source.guid,
           key: "color",
           type: "string",
-          state: "ready",
         });
+        await colorRule.setOptions({ column: "color" });
+        await colorRule.update({ state: "ready" });
+      });
+
+      beforeAll(async () => {
+        profile = new Profile();
+        await profile.save();
       });
 
       afterAll(async () => {
@@ -482,8 +501,9 @@ describe("models/profile", () => {
         key: "email",
         type: "string",
         unique: true,
-        state: "ready",
       });
+      await emailRule.setOptions({ column: "email" });
+      await emailRule.update({ state: "ready" });
 
       group = await helper.factories.group({
         name: "calculated-group",

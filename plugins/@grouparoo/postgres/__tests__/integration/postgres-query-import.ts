@@ -154,7 +154,6 @@ describe("integration/runs/postgres", () => {
       key: "email",
       type: "string",
       unique: true,
-      state: "ready",
     };
 
     const {
@@ -176,6 +175,7 @@ describe("integration/runs/postgres", () => {
       options: {
         query: `select email from ${sourceTableName} where id = {{ userId }}`,
       },
+      state: "ready",
     };
     const { error: editError } = await specHelper.runAction(
       "profilePropertyRule:edit",

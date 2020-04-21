@@ -256,6 +256,7 @@ export class ProfilePropertyRuleProfilePreview extends Action {
       guid: { required: true },
       profileGuid: { required: false },
       options: { required: false },
+      filters: { required: false },
     };
   }
 
@@ -271,7 +272,8 @@ export class ProfilePropertyRuleProfilePreview extends Action {
     } else {
       profile = await Profile.findOne({ order: api.sequelize.random() });
       if (!profile) {
-        throw new Error("profile not found");
+        response.errorMessage = "no profiles found";
+        return;
       }
     }
 
@@ -283,13 +285,29 @@ export class ProfilePropertyRuleProfilePreview extends Action {
       } catch {}
     }
 
+    let parsedFilters = params.filters;
+    if (parsedFilters) {
+      try {
+        // as this is a GET, the options will be stringified
+        parsedFilters = parsedFilters.map((f) => JSON.parse(f));
+      } catch {}
+    }
+
     const apiData = await profile.apiData();
     const source = await profilePropertyRule.$get("source");
-    const newProperty = await source.importProfileProperty(
-      profile,
-      profilePropertyRule,
-      parsedOptions
-    );
+
+    let newProperty: string | number | boolean | Date;
+    let errorMessage: string;
+    try {
+      newProperty = await source.importProfileProperty(
+        profile,
+        profilePropertyRule,
+        parsedOptions,
+        parsedFilters
+      );
+    } catch (error) {
+      errorMessage = error.toString();
+    }
 
     apiData.properties[profilePropertyRule.key] = {
       guid: profilePropertyRule.guid,
@@ -301,6 +319,7 @@ export class ProfilePropertyRuleProfilePreview extends Action {
     };
 
     response.profile = apiData;
+    response.errorMessage = errorMessage;
   }
 }
 

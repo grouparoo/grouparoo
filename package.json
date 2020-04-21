@@ -18,7 +18,7 @@
     "lerna-update-wizard": "^0.17.8",
     "license-checker": "github:grouparoo/license-checker",
     "npm-check-updates": "latest",
-    "prettier": "^2.0.4"
+    "prettier": "^2.0.5"
   },
   "scripts": {
     "prepare": "npm run bootstrap",

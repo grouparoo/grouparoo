@@ -358,12 +358,15 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     await this.enqueueRuns();
   }
 
-  async validateOptions(options?: SimpleProfilePropertyRuleOptions) {
+  async validateOptions(
+    options?: SimpleProfilePropertyRuleOptions,
+    allowEmpty = false
+  ) {
     if (!options) {
       options = await this.getOptions();
     }
 
-    return OptionHelper.validateOptions(this, options, true);
+    return OptionHelper.validateOptions(this, options, allowEmpty);
   }
 
   async getPlugin() {

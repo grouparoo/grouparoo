@@ -2,18 +2,20 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Card, ListGroup, Alert } from "react-bootstrap";
 import Loader from "../../loader";
-import { ErrorHandler } from "../../../utils/errorHandler";
 import ProfileImageFromEmail from "../../visualizations/profileImageFromEmail";
 
-export default function ProfilePreview({ apiVersion, profilePropertyRule }) {
+export default function ProfilePreview({
+  apiVersion,
+  errorHandler,
+  profilePropertyRule,
+}) {
   const [profileGuid, setProfileGuid] = useState("");
+  const [toHide, setToHide] = useState(true);
   const [profile, setProfile] = useState({ guid: "", properties: {} });
   const [sleeping, setSleeping] = useState(false);
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [debounceCounter, setDebounceCounter] = useState(0);
-
-  const localErrorHandler = new ErrorHandler();
-  const { execApi } = useApi(localErrorHandler);
+  const { execApi } = useApi(errorHandler);
 
   const sleep = debounceCounter === 0 ? 0 : 1000; // we only want to make one request every ~second, so wait for more input
 
@@ -21,20 +23,19 @@ export default function ProfilePreview({ apiVersion, profilePropertyRule }) {
 
   useEffect(() => {
     load();
-    localErrorHandler.subscribe(
-      "profile-preview-error",
-      subscription.bind(this)
-    );
 
     return () => {
-      localErrorHandler.unsubscribe("profile-preview-error");
       clearTimeout(timer);
     };
-  }, [profilePropertyRule.guid, JSON.stringify(profilePropertyRule.options)]);
+  }, [
+    profilePropertyRule.guid,
+    JSON.stringify(profilePropertyRule.options),
+    JSON.stringify(profilePropertyRule.filters),
+  ]);
 
   async function load() {
     setSleeping(true);
-    setError("");
+    setErrorMessage("");
     setDebounceCounter(debounceCounter + 1);
 
     timer = setTimeout(async () => {
@@ -43,11 +44,22 @@ export default function ProfilePreview({ apiVersion, profilePropertyRule }) {
         `/api/${apiVersion}/profilePropertyRule/${profilePropertyRule.guid}/profilePreview`,
         {
           options: profilePropertyRule.options,
+          filters: profilePropertyRule.filters,
           profileGuid: profileGuid === "" ? undefined : profileGuid,
         }
       );
 
       if (response?.profile) {
+        setToHide(false);
+        setErrorMessage(
+          response.errorMessage
+            ? response.errorMessage.match(
+                /is required for a profilePropertyRule of type/ // ignore errors about missing options
+              )
+              ? ""
+              : response.errorMessage
+            : ""
+        );
         setProfile(response.profile);
         setProfileGuid(response.profile.guid);
       }
@@ -56,8 +68,14 @@ export default function ProfilePreview({ apiVersion, profilePropertyRule }) {
     }, sleep);
   }
 
-  function subscription({ error: _error }) {
-    setError(_error.message);
+  if (toHide) {
+    return (
+      <Card bg="light">
+        <Card.Body style={{ textAlign: "center" }}>
+          Profile preview unavailable
+        </Card.Body>
+      </Card>
+    );
   }
 
   let email;
@@ -67,9 +85,19 @@ export default function ProfilePreview({ apiVersion, profilePropertyRule }) {
     }
   }
 
+  let thisProfilePropertyRuleValue: string;
+  const otherProfilePropertyRules = {};
+  for (const i in profile.properties) {
+    if (profile.properties[i].guid === profilePropertyRule.guid) {
+      thisProfilePropertyRuleValue = profile.properties[i]?.value?.toString();
+    } else {
+      otherProfilePropertyRules[i] = profile.properties[i];
+    }
+  }
+
   return (
-    <Card bg="secondary">
-      <Card.Body style={{ textAlign: "center" }}>
+    <Card bg="info">
+      <Card.Body style={{ textAlign: "center", color: "white" }}>
         <Card.Title>Example Profile</Card.Title>
         {sleeping ? (
           <>
@@ -80,36 +108,33 @@ export default function ProfilePreview({ apiVersion, profilePropertyRule }) {
           <>
             <ProfileImageFromEmail email={email} width={100} />
             <br />
-            <Card.Link href={`/profile/${profile.guid}`}>
+            <Card.Link
+              href={`/profile/${profile.guid}`}
+              style={{ color: "white" }}
+            >
               View Profile
             </Card.Link>
           </>
         )}
       </Card.Body>
 
-      {error !== "" ? <Alert variant="danger">{error}</Alert> : null}
-
-      {sleeping ? null : error === "" ? (
+      {sleeping ? null : (
         <ListGroup variant="flush">
-          {Object.keys(profile.properties).map((k) => (
-            <ListGroup.Item
-              key={`profile-preview-row-${k}`}
-              variant={
-                profile.properties[k].guid === profilePropertyRule.guid
-                  ? "success"
-                  : "secondary"
-              }
-            >
-              <strong>
-                {profile.properties[k].guid === profilePropertyRule.guid
-                  ? profilePropertyRule.key
-                  : k}
-              </strong>
-              : {profile.properties[k]?.value?.toString()}
+          <ListGroup.Item
+            variant={errorMessage !== "" ? "danger" : "secondary"}
+          >
+            <strong>{profilePropertyRule.key}</strong>:{" "}
+            {errorMessage !== "" ? errorMessage : thisProfilePropertyRuleValue}
+          </ListGroup.Item>
+
+          {Object.keys(otherProfilePropertyRules).map((k) => (
+            <ListGroup.Item key={`profile-preview-row-${k}`} variant="info">
+              <strong>{k}</strong>:{" "}
+              {otherProfilePropertyRules[k]?.value?.toString()}
             </ListGroup.Item>
           ))}
         </ListGroup>
-      ) : null}
+      )}
     </Card>
   );
 }

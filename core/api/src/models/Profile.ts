@@ -184,15 +184,18 @@ export class Profile extends LoggedModel<Profile> {
     return hash;
   }
 
-  async import() {
+  async import(toSave = true) {
     let hash = {};
     const sources = await Source.findAll({ where: { state: "ready" } });
     for (const i in sources) {
       hash = Object.assign(hash, await sources[i].import(this));
     }
-    await this.addOrUpdateProperties(hash);
-    await this.buildNullProperties();
-    return this.save();
+
+    if (toSave) {
+      await this.addOrUpdateProperties(hash);
+      await this.buildNullProperties();
+      return this.save();
+    }
   }
 
   async buildNullProperties() {

@@ -28,6 +28,7 @@ import { plugin } from "../modules/plugin";
 import { OptionHelper } from "./../modules/optionHelper";
 import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
+import { ProfilePropertyRuleFiltersWithKey } from "../classes/plugin";
 
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}
@@ -324,7 +325,8 @@ export class Source extends LoggedModel<Source> {
   async importProfileProperty(
     profile: Profile,
     profilePropertyRule: ProfilePropertyRule,
-    profilePropertyRuleOptionsOverride?: { [key: string]: any }
+    profilePropertyRuleOptionsOverride?: OptionHelper.SimpleOptions,
+    profilePropertyRuleFiltersOverride?: ProfilePropertyRuleFiltersWithKey[]
   ) {
     if (
       profilePropertyRule.state !== "ready" &&
@@ -332,6 +334,11 @@ export class Source extends LoggedModel<Source> {
     ) {
       return;
     }
+
+    await profilePropertyRule.validateOptions(
+      profilePropertyRuleOptionsOverride,
+      false
+    );
 
     const { pluginConnection } = await this.getPlugin();
     if (!pluginConnection) {
@@ -350,8 +357,6 @@ export class Source extends LoggedModel<Source> {
     const appOptions = await app.getOptions();
     const sourceOptions = await this.getOptions();
     const sourceMapping = await this.getMapping();
-    const profilePropertyRuleOptions = await profilePropertyRule.getOptions();
-    const profilePropertyRuleFilters = await profilePropertyRule.getFilters();
 
     return method({
       app,
@@ -362,8 +367,10 @@ export class Source extends LoggedModel<Source> {
       profilePropertyRule,
       profilePropertyRuleOptions: profilePropertyRuleOptionsOverride
         ? profilePropertyRuleOptionsOverride
-        : profilePropertyRuleOptions,
-      profilePropertyRuleFilters,
+        : await profilePropertyRule.getOptions(),
+      profilePropertyRuleFilters: profilePropertyRuleFiltersOverride
+        ? profilePropertyRuleFiltersOverride
+        : await profilePropertyRule.getFilters(),
       profile,
     });
   }

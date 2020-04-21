@@ -172,7 +172,9 @@ export namespace OptionHelper {
         throw new Error(
           `${requiredOption} is required for a ${modelName(
             instance
-          )} of type ${type}`
+          )} of type ${type} (${instance["name"] || instance["key"]}, ${
+            instance.guid
+          })`
         );
       }
     });
@@ -180,7 +182,9 @@ export namespace OptionHelper {
     for (const k in options) {
       if (allOptions.indexOf(k) < 0) {
         throw new Error(
-          `${k} is not an option for a ${type} ${modelName(instance)}`
+          `${k} is not an option for a ${type} ${modelName(instance)} (${
+            instance["name"] || instance["key"]
+          }, ${instance.guid})`
         );
       }
     }

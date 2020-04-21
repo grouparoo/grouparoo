@@ -265,8 +265,9 @@ describe("models/profilePropertyRule", () => {
       key: "thing",
       type: "string",
       unique: false,
-      state: "ready",
     });
+    await rule.setOptions({ column: "thing" });
+    await rule.update({ state: "ready" });
 
     const group = await helper.factories.group({ type: "calculated" });
     await group.setRules([{ key: "thing", match: "%", op: "iLike" }]);
@@ -553,14 +554,15 @@ describe("models/profilePropertyRule", () => {
         key: "test",
         type: "string",
         sourceGuid: source.guid,
-        state: "ready",
       });
+      await rule.setOptions({ column: "test" });
+      await rule.update({ state: "ready" });
 
       // not ready yet
       await rule.update({ state: "ready" });
 
       // initial test
-      expect(queryCounter).toBe(2);
+      expect(queryCounter).toBeGreaterThanOrEqual(2);
       await rule.setOptions({ column: "id" });
 
       // +2 checking the options
@@ -582,7 +584,6 @@ describe("models/profilePropertyRule", () => {
         key: "test",
         type: "string",
         sourceGuid: source.guid,
-        state: "ready",
       });
 
       await expect(rule.setOptions({ column: "throw" })).rejects.toThrow(
@@ -600,13 +601,14 @@ describe("models/profilePropertyRule", () => {
         type: "string",
         sourceGuid: source.guid,
       });
+      await rule.setOptions({ column: "~" });
       await rule.update({ state: "ready" });
 
       await profile.addOrUpdateProperties({ test: true });
 
       // against saved query
       const response = await rule.test();
-      expect(response).toMatch("+ {}");
+      expect(response).toMatch(`+ {"column":"~"}`);
 
       // against new query
       const responseAgain = await rule.test({ column: "abc" });

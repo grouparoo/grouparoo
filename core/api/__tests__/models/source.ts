@@ -470,16 +470,26 @@ describe("models/source", () => {
     });
 
     test("it can import one profile property for a profile", async () => {
+      await lnameRule.setOptions({ column: "lname" });
       await lnameRule.update({ state: "ready" });
       const property = await source.importProfileProperty(profile, lnameRule);
       expect(property).toEqual("...mario");
     });
 
     test("it can import one profile property for a profile with an override of the profile property rule options", async () => {
-      const property = await source.importProfileProperty(profile, lnameRule, {
-        something: "else",
-      });
-      expect(property).toEqual("...mario");
+      await expect(
+        source.importProfileProperty(profile, lnameRule, {
+          something: "else",
+        })
+      ).rejects.toThrow(/column is required/);
+
+      await source.importProfileProperty(profile, lnameRule, {
+        column: "abc",
+      }); // does not throw
+    });
+
+    test("it can import one profile property for a profile with an override of the profile property rule filters", async () => {
+      await source.importProfileProperty(profile, lnameRule, null, []); // does not throw
     });
 
     test("it can import all profile property rules for this source, mapped to the keys properly", async () => {

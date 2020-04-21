@@ -261,8 +261,6 @@ describe("integration/runs/postgres", () => {
       sourceGuid: source.guid,
       key: "email",
       type: "string",
-      unique: true,
-      state: "ready",
     };
 
     const {
@@ -286,7 +284,9 @@ describe("integration/runs/postgres", () => {
     session.params = {
       csrfToken,
       guid: profilePropertyRule.guid,
+      unique: true,
       options: { column: "email", "aggregation method": "exact" },
+      state: "ready",
     };
     const { error: editError } = await specHelper.runAction(
       "profilePropertyRule:edit",
