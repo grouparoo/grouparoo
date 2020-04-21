@@ -333,6 +333,11 @@ export class Source extends LoggedModel<Source> {
       return;
     }
 
+    const valid = await profilePropertyRule.validateOptions(
+      profilePropertyRuleOptionsOverride,
+      false
+    );
+
     const { pluginConnection } = await this.getPlugin();
     if (!pluginConnection) {
       throw new Error(
