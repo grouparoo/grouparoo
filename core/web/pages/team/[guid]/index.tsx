@@ -57,7 +57,10 @@ export default function (props) {
           size="sm"
           variant="warning"
           onClick={() => {
-            Router.push(`/team/${props.query.guid}/teamMember/new`);
+            Router.push(
+              "/team/[guid]/teamMember/new",
+              `/team/${props.query.guid}/teamMember/new`
+            );
           }}
         >
           Add Team Member

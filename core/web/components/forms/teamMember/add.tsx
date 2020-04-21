@@ -42,7 +42,10 @@ export default function ({
     if (response?.teamMember) {
       successHandler.set({ message: "Team Member Created" });
       teamMemberHandler.set();
-      Router.push(`/team/${response.teamMember.teamGuid}?tab=members`);
+      Router.push(
+        "/team/[guid]",
+        `/team/${response.teamMember.teamGuid}?tab=members`
+      );
     }
   }
 

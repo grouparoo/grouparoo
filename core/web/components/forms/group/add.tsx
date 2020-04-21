@@ -20,7 +20,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
     setLoading(false);
     if (response?.group) {
       successHandler.set({ message: "Group Created" });
-      Router.push(`/group/${response.group.guid}`);
+      Router.push('/group/[guid], `/group/${response.group.guid}`);
     }
   }
 

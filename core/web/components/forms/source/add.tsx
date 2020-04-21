@@ -32,7 +32,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
     const response = await execApi("post", `/api/${apiVersion}/source`, source);
     if (response?.source) {
       successHandler.set({ message: "Source Created" });
-      Router.push(`/source/${response.source.guid}?tab=edit`);
+      Router.push("/source/[guid]", `/source/${response.source.guid}?tab=edit`);
     }
   };
 

@@ -25,6 +25,7 @@ export default function ({ apiVersion, errorHandler, successHandler, source }) {
     if (response?.profilePropertyRule) {
       successHandler.set({ message: "Profile Property Rule Created" });
       Router.push(
+        "/profilePropertyRule/[guid]",
         `/profilePropertyRule/${response.profilePropertyRule.guid}?tab=edit`
       );
     }

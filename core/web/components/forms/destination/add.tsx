@@ -36,7 +36,10 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
     );
     if (response?.destination) {
       successHandler.set({ message: "Destination Created" });
-      Router.push(`/destination/${response.destination.guid}?tab=edit`);
+      Router.push(
+        "/destination/[guid]",
+        `/destination/${response.destination.guid}?tab=edit`
+      );
     }
   };
 

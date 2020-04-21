@@ -89,10 +89,10 @@ export default function ({
       setSource(response.source);
       sourceHandler.set();
       if (response.source.state !== "ready") {
-        Router.push(`/source/${guid}?tab=mapping`);
+        Router.push("/source/[guid]", `/source/${guid}?tab=mapping`);
       }
       if (response.source.state === "ready" && source.state === "draft") {
-        Router.push(`/source/${guid}`);
+        Router.push("/source/[guid]", `/source/${guid}`);
       }
     }
   };
