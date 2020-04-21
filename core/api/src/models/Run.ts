@@ -264,7 +264,7 @@ export class Run extends Model<Run> {
 
     if (profile) {
       try {
-        await profile.import();
+        await profile.import(false);
       } catch (error) {
         this.error = error.toString();
         this.state = "complete";
