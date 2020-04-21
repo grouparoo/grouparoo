@@ -65,20 +65,18 @@ export default function SelectorList({
           style={{
             width: "200px",
             borderRadius: "4px",
+            borderWidth: "1px",
             borderColor: "gray",
             borderStyle: "solid",
             margin: "15px",
-            paddingTop: "20px",
-            paddingBottom: "20px",
-            paddingRight: "5px",
-            paddingLeft: "5px",
+            padding: "20px",
             cursor: "pointer",
           }}
           onClick={() => Router.push("/app/new")}
         >
           <div className="d-flex flex-column">
             <p>Don’t see what you’re looking for?</p>
-            <p>Connect a new App</p>
+            <strong>Connect a new App</strong>
           </div>
         </div>
       ) : null}
