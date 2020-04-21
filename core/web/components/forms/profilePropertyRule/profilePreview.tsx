@@ -51,7 +51,15 @@ export default function ProfilePreview({
 
       if (response?.profile) {
         setToHide(false);
-        setErrorMessage(response.errorMessage || "");
+        setErrorMessage(
+          response.errorMessage
+            ? response.errorMessage.match(
+                /is required for a profilePropertyRule of type/ // ignore errors about missing options
+              )
+              ? ""
+              : response.errorMessage
+            : ""
+        );
         setProfile(response.profile);
         setProfileGuid(response.profile.guid);
       }
