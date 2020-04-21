@@ -67,6 +67,16 @@ export default function ProfilePreview({ apiVersion, profilePropertyRule }) {
     }
   }
 
+  let thisProfilePropertyRuleValue: string;
+  const otherProfilePropertyRules = {};
+  for (const i in profile.properties) {
+    if (profile.properties[i].guid === profilePropertyRule.guid) {
+      thisProfilePropertyRuleValue = profile.properties[i]?.value?.toString();
+    } else {
+      otherProfilePropertyRules[i] = profile.properties[i];
+    }
+  }
+
   return (
     <Card bg="info">
       <Card.Body style={{ textAlign: "center", color: "white" }}>
@@ -94,21 +104,15 @@ export default function ProfilePreview({ apiVersion, profilePropertyRule }) {
 
       {sleeping ? null : error === "" ? (
         <ListGroup variant="flush">
-          {Object.keys(profile.properties).map((k) => (
-            <ListGroup.Item
-              key={`profile-preview-row-${k}`}
-              variant={
-                profile.properties[k].guid === profilePropertyRule.guid
-                  ? "secondary"
-                  : "info"
-              }
-            >
-              <strong>
-                {profile.properties[k].guid === profilePropertyRule.guid
-                  ? profilePropertyRule.key
-                  : k}
-              </strong>
-              : {profile.properties[k]?.value?.toString()}
+          <ListGroup.Item variant="secondary">
+            <strong>{profilePropertyRule.key}</strong>:{" "}
+            {thisProfilePropertyRuleValue}
+          </ListGroup.Item>
+
+          {Object.keys(otherProfilePropertyRules).map((k) => (
+            <ListGroup.Item key={`profile-preview-row-${k}`} variant="info">
+              <strong>{k}</strong>:{" "}
+              {otherProfilePropertyRules[k]?.value?.toString()}
             </ListGroup.Item>
           ))}
         </ListGroup>
