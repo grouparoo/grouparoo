@@ -207,30 +207,6 @@ export class DestinationConnectionOptions extends Action {
   }
 }
 
-export class DestinationPreview extends Action {
-  constructor() {
-    super();
-    this.name = "destination:preview";
-    this.description = "preview the data from this destination";
-    this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
-    this.inputs = {
-      guid: { required: true },
-      options: { required: false },
-    };
-  }
-
-  async run({ params, response }) {
-    const destination = await Destination.findByGuid(params.guid);
-
-    const options =
-      typeof params.options === "string"
-        ? JSON.parse(params.options)
-        : params.options;
-    response.preview = await destination.destinationPreview(options);
-  }
-}
-
 export class DestinationTrackGroup extends Action {
   constructor() {
     super();
@@ -268,21 +244,12 @@ export class DestinationUnTrackGroup extends Action {
     this.middleware = ["authenticated-team-member", "role-admin"];
     this.inputs = {
       guid: { required: true },
-      groupGuid: { required: true },
     };
   }
 
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
-
-    const group = await Group.findOne({
-      where: { guid: params.groupGuid },
-    });
-    if (!group) {
-      throw new Error("group not found");
-    }
-
-    await destination.unTrackGroup(group);
+    await destination.unTrackGroup();
     response.destination = await destination.apiData();
   }
 }

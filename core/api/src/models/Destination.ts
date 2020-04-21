@@ -207,7 +207,6 @@ export class Destination extends LoggedModel<Destination> {
     const options = await this.getOptions();
     const groups = await this.$get("groups");
     const { pluginConnection } = await this.getPlugin();
-    const previewAvailable = await this.previewAvailable();
 
     return {
       guid: this.guid,
@@ -218,20 +217,11 @@ export class Destination extends LoggedModel<Destination> {
       trackAllGroups: this.trackAllGroups,
       mapping,
       options,
-      previewAvailable,
       connection: pluginConnection,
       destinationGroups: await Promise.all(groups.map((grp) => grp.apiData())),
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
-  }
-
-  async previewAvailable() {
-    const { pluginConnection } = await this.getPlugin();
-    if (typeof pluginConnection?.methods?.destinationPreview === "function") {
-      return true;
-    }
-    return false;
   }
 
   async getMapping() {
@@ -272,29 +262,24 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async trackGroup(group: Group) {
+    await this.update({ trackAllGroups: false });
+
+    await DestinationGroup.destroy({
+      where: { destinationGuid: this.guid },
+    });
+
     return DestinationGroup.create({
       groupGuid: group.guid,
       destinationGuid: this.guid,
     });
   }
 
-  async unTrackGroup(group: Group) {
-    if (this.trackAllGroups) {
-      throw new Error("destination is tracking all groups");
-    }
-
-    const destinationGroup = await DestinationGroup.findOne({
+  async unTrackGroup() {
+    await DestinationGroup.destroy({
       where: {
-        groupGuid: group.guid,
         destinationGuid: this.guid,
       },
     });
-
-    if (!destinationGroup) {
-      throw new Error("destination group not found");
-    }
-
-    return destinationGroup.destroy();
   }
 
   async parameterizedOptions(): Promise<SimpleDestinationOptions> {
@@ -322,34 +307,6 @@ export class Destination extends LoggedModel<Destination> {
     }
 
     return pluginConnection.methods.destinationOptions({ app, appOptions });
-  }
-
-  async destinationPreview(destinationOptions?: SimpleDestinationOptions) {
-    if (!destinationOptions) {
-      destinationOptions = await this.getOptions();
-    }
-
-    try {
-      // if the options aren't set yet, return an empty array of rows
-      await this.validateOptions(destinationOptions);
-    } catch {
-      return [];
-    }
-
-    const { pluginConnection } = await this.getPlugin();
-    const app = await this.$get("app");
-    const appOptions = await app.getOptions();
-
-    if (!pluginConnection.methods.destinationPreview) {
-      throw new Error(`cannot return a destination preview for ${this.type}`);
-    }
-
-    return pluginConnection.methods.destinationPreview({
-      app,
-      appOptions,
-      destination: this,
-      destinationOptions,
-    });
   }
 
   async exportProfile(

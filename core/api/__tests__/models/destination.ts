@@ -138,27 +138,6 @@ describe("models/destination", () => {
       });
     });
 
-    test("a destination can see a preview of a destination with and without providing options", async () => {
-      let preview = await destination.destinationPreview();
-      expect(preview).toEqual([]);
-
-      await destination.setOptions({ table: "test", where: "test" });
-      preview = await destination.destinationPreview();
-      expect(preview).toEqual([
-        { fname: "mario", id: 1, lname: "mario" },
-        { fname: "luigi", id: 2, lname: "mario" },
-      ]);
-
-      preview = await destination.destinationPreview({
-        table: "other",
-        where: "stuff",
-      });
-      expect(preview).toEqual([
-        { fname: "mario", id: 1, lname: "mario" },
-        { fname: "luigi", id: 2, lname: "mario" },
-      ]);
-    });
-
     describe("validations", () => {
       test("options must match the app options (extra options needed by connection)", async () => {
         destination = new Destination({
@@ -553,9 +532,6 @@ describe("models/destination", () => {
             direction: "export",
             options: [],
             methods: {
-              destinationPreview: async () => {
-                return [{ a: 1, b: 2 }];
-              },
               exportProfile: async ({
                 app,
                 appOptions,
@@ -593,22 +569,6 @@ describe("models/destination", () => {
       });
       await app.setOptions({ test_key: "abc" });
       await app.update({ state: "ready" });
-    });
-
-    test("destinations can show a preview", async () => {
-      const destination = await Destination.create({
-        name: "test plugin destination app missing data",
-        type: "export-from-test-template-app",
-        appGuid: app.guid,
-      });
-
-      const previewAvailable = await destination.previewAvailable();
-      expect(previewAvailable).toBe(true);
-
-      const preview = await destination.destinationPreview();
-      expect(preview).toEqual([{ a: 1, b: 2 }]);
-
-      await destination.destroy();
     });
 
     test("the app exportProfiles method can be called by the destination and exports will be created and mappings followed", async () => {

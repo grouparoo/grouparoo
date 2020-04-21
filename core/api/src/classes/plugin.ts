@@ -84,7 +84,6 @@ export interface PluginConnection {
     profileProperty?: ProfilePropertyPluginMethod;
     nextFilter?: NextFilterPluginMethod;
     destinationOptions?: DestinationOptionsMethod;
-    destinationPreview?: DestinationPreviewMethod;
     exportProfile?: ExportProfilePluginMethod;
   };
 }
@@ -271,20 +270,4 @@ export interface DestinationOptionsMethodResponse {
     options?: string[];
     descriptions?: string[];
   };
-}
-
-/**
- * Given SimpleDestinationOptions, render a preview of the data present in the destination.
- */
-export interface DestinationPreviewMethod {
-  (argument: {
-    app: App;
-    appOptions: SimpleAppOptions;
-    destination: Destination;
-    destinationOptions: SimpleDestinationOptions;
-  }): Promise<Array<DestinationPreviewMethodResponseRow>>;
-}
-
-export interface DestinationPreviewMethodResponseRow {
-  [column: string]: any;
 }
