@@ -7,7 +7,7 @@ export default function ({ apiVersion, errorHandler }) {
 
   async function create() {
     const response = await execApi("post", `/api/${apiVersion}/profile`);
-    Router.push(`/profile/${response.profile.guid}`);
+    Router.push("/profile/[guid]", `/profile/${response.profile.guid}`);
   }
 
   return (

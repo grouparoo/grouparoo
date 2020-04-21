@@ -148,7 +148,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
       // we just went 'ready'
       if (source.state !== response.source.state) {
-        Router.push(`/source/${guid}`);
+        Router.push("/source/[guid]", `/source/${guid}`);
       }
     }
   };

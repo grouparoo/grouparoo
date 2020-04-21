@@ -103,7 +103,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
         response.schedule.recurringFrequency / (60 * 1000);
       setSchedule(response.schedule);
       if (response.schedule.state === "ready" && schedule.state === "draft") {
-        Router.push(`/source/${schedule.source.guid}`);
+        Router.push("/source/[guid]", `/source/${schedule.source.guid}`);
       }
     }
   }
@@ -115,7 +115,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
         `/api/${apiVersion}/schedule/${guid}`
       );
       if (response) {
-        Router.push(`/source/${schedule.source.guid}`);
+        Router.push("/source/[guid]", `/source/${schedule.source.guid}`);
       }
     }
   }

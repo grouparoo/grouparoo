@@ -15,7 +15,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
     setLoading(false);
     if (response?.team) {
       successHandler.set({ message: "Team Created" });
-      Router.push(`/team/${response.team.guid}`);
+      Router.push("/team/[guid]", `/team/${response.team.guid}`);
     }
   }
 
