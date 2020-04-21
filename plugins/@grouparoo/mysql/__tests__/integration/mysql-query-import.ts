@@ -158,7 +158,6 @@ describe("integration/runs/mysql", () => {
       key: "email",
       type: "string",
       unique: true,
-      state: "ready",
     };
 
     const {
@@ -180,6 +179,7 @@ describe("integration/runs/mysql", () => {
       options: {
         query: `select email from ${sourceTableName} where id = {{ userId }}`,
       },
+      state: "ready",
     };
     const { error: editError } = await specHelper.runAction(
       "profilePropertyRule:edit",

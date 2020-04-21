@@ -209,6 +209,7 @@ describe("integration/runs/google-sheets", () => {
         key: "email",
         type: "string",
         unique: true,
+        options: { column: "email" },
         state: "ready",
       };
 
