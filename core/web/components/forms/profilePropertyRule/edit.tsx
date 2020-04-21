@@ -16,6 +16,7 @@ import Loader from "../../loader";
 import AppIcon from "../../appIcon";
 import StateBadge from "../../stateBadge";
 import { ErrorHandler } from "../../../utils/errorHandler";
+import ProfileImageFromEmail from "../../visualizations/profileImageFromEmail";
 
 export default function ({
   apiVersion,
@@ -670,9 +671,16 @@ function ProfilePreview({ apiVersion, profilePropertyRule }) {
     setError(_error.message);
   }
 
+  let email;
+  for (const key in profile.properties) {
+    if (profile.properties[key].type === "email") {
+      email = profile.properties[key].value;
+    }
+  }
+
   return (
     <Card bg="secondary">
-      <Card.Body>
+      <Card.Body style={{ textAlign: "center" }}>
         <Card.Title>Example Profile</Card.Title>
         {sleeping ? (
           <>
@@ -680,7 +688,13 @@ function ProfilePreview({ apiVersion, profilePropertyRule }) {
             <Loader />
           </>
         ) : (
-          <Card.Link href={`/profile/${profile.guid}`}>View Profile</Card.Link>
+          <>
+            <ProfileImageFromEmail email={email} width={100} />
+            <br />
+            <Card.Link href={`/profile/${profile.guid}`}>
+              View Profile
+            </Card.Link>
+          </>
         )}
       </Card.Body>
 
