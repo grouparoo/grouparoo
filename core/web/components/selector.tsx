@@ -2,24 +2,25 @@ import AppIcon from "../components/appIcon";
 
 export default function Selector({
   src = "",
-  name = "",
+  title = "",
   size = 50,
   iconClassName = "",
+  subheading = "",
+  description = "",
   className = "",
-  key = "",
 }: {
-  src?: string;
-  name?: string;
+  src: string;
+  title: string;
+  className: string;
   size?: number;
   iconClassName?: string;
-  className?: string;
-  key?: string;
+  subheading?: string;
+  description?: string;
 }) {
   return (
     <div
       style={{
-        width: "150px",
-        height: "200px",
+        width: "200px",
         borderRadius: "4px",
         borderColor: "gray",
         color: "white",
@@ -31,15 +32,14 @@ export default function Selector({
         cursor: "pointer",
       }}
       className={className}
-      key={key}
     >
       <div className="d-flex flex-column">
         <div
           className="align-self-center"
           style={{
             backgroundColor: "white",
-            width: "100px",
-            height: "100px",
+            width: "140px",
+            height: "140px",
             borderRadius: "4px",
             paddingTop: "5px",
             textAlign: "center",
@@ -50,8 +50,17 @@ export default function Selector({
         </div>
         <br />
         <h4 className="align-self-center" style={{ textAlign: "center" }}>
-          {name}
+          {title}
         </h4>
+        {subheading || description ? (
+          <p style={{ textAlign: "center" }}>
+            <br />
+            <strong>{subheading}</strong>
+            <br />
+            <br />
+            {description}
+          </p>
+        ) : null}
       </div>
     </div>
   );

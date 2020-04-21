@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Form, Button, CardDeck } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import Router from "next/router";
-import Selector from "../../selector";
+import SelectorList from "../../selectorList";
 
 export default function ({ apiVersion, errorHandler }) {
-  const { execApi } = useApi(errorHandler);
-  const [loading, setLoading] = useState(false);
-  const [types, setTypes] = useState([]);
   const [app, setApp] = useState({ type: "" });
+  const [loading, setLoading] = useState(false);
+  const [appTypes, setAppTypes] = useState([]);
+  const { execApi } = useApi(errorHandler);
 
   useEffect(() => {
     loadOptions();
@@ -19,7 +19,7 @@ export default function ({ apiVersion, errorHandler }) {
     const response = await execApi("get", `/api/${apiVersion}/appOptions`);
     setLoading(false);
     if (response?.types) {
-      setTypes(response.types);
+      setAppTypes(response.types);
     }
   }
 
@@ -29,37 +29,18 @@ export default function ({ apiVersion, errorHandler }) {
     const response = await execApi("post", `/api/${apiVersion}/app`, app);
     setLoading(false);
     if (response?.app) {
-      return Router.push(`/app/${response.app.guid}`);
+      return Router.push("/app/[guid]", `/app/${response.app.guid}`);
     }
+  }
+
+  function updateApp(clickedOnButton) {
+    setApp({ type: clickedOnButton.name });
   }
 
   return (
     <>
       <Form id="form" onSubmit={create}>
-        <CardDeck>
-          {types.map((_app, idx) => {
-            const className =
-              _app.name === app.type ? "button-color-selected" : "button-color";
-            return (
-              <div
-                onClick={() => {
-                  const __app = Object.assign({}, app);
-                  __app.type = _app.name;
-                  setApp(__app);
-                }}
-              >
-                <Selector
-                  src={_app.plugin.icon}
-                  name={_app.name}
-                  size={90}
-                  iconClassName="card-img"
-                  className={className}
-                  key={`card-${idx}`}
-                />
-              </div>
-            );
-          })}
-        </CardDeck>
+        <SelectorList onClick={updateApp} selectedItem={app} items={appTypes} />
         <br />
         <Button variant="primary" type="submit" active={!loading}>
           Continue
