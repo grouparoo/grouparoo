@@ -1,26 +1,17 @@
-import {
-  Profile,
-  App,
-  Destination,
-  SimpleAppOptions,
-  SimpleDestinationOptions,
-} from "@grouparoo/core";
+import { ExportProfilePluginMethod } from "@grouparoo/core";
 import * as fs from "fs";
 import * as path from "path";
 import { config, log } from "actionhero";
 
-export async function exportProfile(
-  app: App,
-  appOptions: SimpleAppOptions,
-  destination: Destination,
-  destinationOptions: SimpleDestinationOptions,
-  profile: Profile,
-  oldProfileProperties: { [key: string]: any },
-  newProfileProperties: { [key: string]: any },
-  oldGroups: Array<string>,
-  newGroups: Array<string>,
-  toDelete: boolean
-) {
+export const exportProfile: ExportProfilePluginMethod = async ({
+  profile,
+  appOptions,
+  oldProfileProperties,
+  newProfileProperties,
+  oldGroups,
+  newGroups,
+  toDelete,
+}) => {
   const filePath = path.join(config.general.paths.log[0], appOptions.filename);
 
   const line =
@@ -48,4 +39,4 @@ export async function exportProfile(
   });
 
   return true;
-}
+};

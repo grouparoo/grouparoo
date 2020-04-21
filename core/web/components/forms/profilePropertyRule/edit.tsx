@@ -5,6 +5,7 @@ import Router from "next/router";
 import Loader from "../../loader";
 import AppIcon from "../../appIcon";
 import StateBadge from "../../stateBadge";
+import { filter } from "bluebird";
 
 export default function ({
   apiVersion,
@@ -17,6 +18,7 @@ export default function ({
   const [loading, setLoading] = useState(false);
   const [types, setTypes] = useState([]);
   const [pluginOptions, setPluginOptions] = useState([]);
+  const [filterOptions, setFilterOptions] = useState([]);
   const [profilePropertyRule, setProfilePropertyRule] = useState({
     key: "",
     guid: "",
@@ -25,6 +27,7 @@ export default function ({
     state: "",
     sourceGuid: "",
     options: {},
+    filters: [],
     source: {
       name: "",
       guid: "",
@@ -32,12 +35,14 @@ export default function ({
       app: { name: "", guid: "", icon: "" },
     },
   });
+  const [localFilters, setLocalFilters] = useState([]);
 
   const { guid } = query;
 
   useEffect(() => {
     async function loadAll() {
       await loadOptions();
+      await loadFilterOptions();
       await load();
     }
 
@@ -54,6 +59,7 @@ export default function ({
     if (response?.profilePropertyRule) {
       setProfilePropertyRule(response.profilePropertyRule);
       setPluginOptions(response.pluginOptions);
+      setLocalFilters(response.profilePropertyRule.filters);
     }
   }
 
@@ -69,6 +75,18 @@ export default function ({
     }
   }
 
+  async function loadFilterOptions() {
+    setLoading(true);
+    const response = await execApi(
+      "get",
+      `/api/${apiVersion}/profilePropertyRule/${guid}/filterOptions`
+    );
+    setLoading(false);
+    if (response?.options) {
+      setFilterOptions(response.options);
+    }
+  }
+
   async function onSubmit(event) {
     event.preventDefault();
     if (
@@ -80,7 +98,10 @@ export default function ({
       const response = await execApi(
         "put",
         `/api/${apiVersion}/profilePropertyRule/${guid}`,
-        Object.assign({}, profilePropertyRule, { state: "ready" })
+        Object.assign({}, profilePropertyRule, {
+          filters: localFilters,
+          state: "ready",
+        })
       );
       setLoading(false);
       if (response?.profilePropertyRule) {
@@ -131,9 +152,35 @@ export default function ({
     setProfilePropertyRule(_profilePropertyRule);
   }
 
+  function addRule() {
+    const ruleLimit = 10;
+
+    const _localFilters = [...localFilters];
+    if (_localFilters.length >= ruleLimit) {
+      alert(`only ${ruleLimit} rules allowed`);
+      return;
+    }
+
+    _localFilters.push({
+      key: filterOptions[0].key,
+      op: filterOptions[0].ops[0],
+      match: "",
+    });
+
+    setLocalFilters(_localFilters);
+  }
+
+  function deleteRule(idx: number) {
+    const _localFilters = [...localFilters];
+    _localFilters.splice(idx, 1);
+    setLocalFilters(_localFilters);
+  }
+
   if (profilePropertyRule.guid === "") {
     return <Loader />;
   }
+
+  let rowChanges = false;
 
   return (
     <>
@@ -300,6 +347,159 @@ export default function ({
               </div>
             ))}
 
+            {filterOptions.length > 0 ? (
+              <>
+                <hr />
+                <strong>Filters</strong>
+                <p>
+                  Are there any criteria where you’d want to filter out rows
+                  from being included in{" "}
+                  <Badge variant="info">{profilePropertyRule.key}</Badge>?
+                </p>
+
+                <Table bordered size="sm">
+                  <thead>
+                    <tr>
+                      <td />
+                      <td>
+                        <strong>Key</strong>
+                      </td>
+                      <td>
+                        <strong>Op</strong>
+                      </td>
+                      <td>
+                        <strong>Match</strong>
+                      </td>
+                      <td>&nbsp;</td>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {localFilters.map((localFilter, idx) => {
+                      let rowChanged = false;
+                      if (
+                        !rulesAreEqual(
+                          profilePropertyRule.filters[idx],
+                          localFilters[idx]
+                        )
+                      ) {
+                        rowChanged = true;
+                        rowChanges = true;
+                      }
+
+                      return (
+                        <tr key={`rule-${localFilter.key}-${idx}`}>
+                          <td>
+                            <h5>
+                              <Badge variant={rowChanged ? "warning" : "light"}>
+                                {idx}
+                              </Badge>
+                            </h5>
+                          </td>
+                          <td>
+                            <Form.Group
+                              controlId={`${localFilter.key}-key-${idx}`}
+                            >
+                              <Form.Control
+                                as="select"
+                                value={localFilter.key}
+                                onChange={(e: any) => {
+                                  const _localFilters = [...localFilters];
+                                  localFilter.key = e.target.value;
+                                  _localFilters[idx] = localFilter;
+                                  setLocalFilters(_localFilters);
+                                }}
+                              >
+                                {filterOptions.map((filter) => (
+                                  <option
+                                    key={`ruleKeyOpt-${filter.key}-${idx}`}
+                                  >
+                                    {filter.key}
+                                  </option>
+                                ))}
+                              </Form.Control>
+                            </Form.Group>
+                          </td>
+
+                          <td>
+                            <Form.Group
+                              controlId={`${localFilter.key}-op-${idx}`}
+                            >
+                              <Form.Control
+                                as="select"
+                                value={localFilter.op}
+                                onChange={(e: any) => {
+                                  const _localFilters = [...localFilters];
+                                  localFilter.op = e.target.value;
+                                  _localFilters[idx] = localFilter;
+                                  setLocalFilters(_localFilters);
+                                }}
+                              >
+                                {filterOptions.filter(
+                                  (fo) => fo.key === localFilter.key
+                                ).length === 1
+                                  ? filterOptions
+                                      .filter(
+                                        (fo) => fo.key === localFilter.key
+                                      )[0]
+                                      .ops.map((op) => (
+                                        <option
+                                          key={`op-opt-${localFilter.key}-${op}`}
+                                        >
+                                          {op}
+                                        </option>
+                                      ))
+                                  : null}
+                              </Form.Control>
+                            </Form.Group>
+                          </td>
+
+                          <td>
+                            <Form.Group
+                              controlId={`${localFilter.key}-match-${idx}`}
+                            >
+                              <Form.Control
+                                required
+                                type="text"
+                                value={localFilter.match.toString()}
+                                onChange={(e: any) => {
+                                  const _localFilter = [...localFilters];
+                                  localFilter.match = e.target.value;
+                                  _localFilter[idx] = localFilter;
+                                  setLocalFilters(_localFilter);
+                                }}
+                              />
+                            </Form.Group>
+                          </td>
+
+                          <td>
+                            <Button
+                              variant="danger"
+                              size="sm"
+                              onClick={() => {
+                                deleteRule(idx);
+                              }}
+                            >
+                              x
+                            </Button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+                {localFilters.length < profilePropertyRule.filters.length ||
+                rowChanges ? (
+                  <p>
+                    <Badge variant="warning">Unsaved Rule Changes</Badge>
+                  </p>
+                ) : null}
+                <Button size="sm" variant="info" onClick={addRule}>
+                  Add Filter
+                </Button>
+              </>
+            ) : null}
+
             <hr />
             <Button variant="primary" type="submit" active={!loading}>
               Update
@@ -320,4 +520,39 @@ export default function ({
       </Form>
     </>
   );
+}
+
+function rulesAreEqual(a, b) {
+  let matched = true;
+
+  const keys = [
+    "key",
+    "op",
+    "match",
+    "relativeMatchNumber",
+    "relativeMatchUnit",
+    "relativeMatchDirection",
+  ];
+
+  if (!a || !b) {
+    return false;
+  }
+
+  for (const i in keys) {
+    const key = keys[i];
+
+    if (
+      (a[key] === undefined || a[key] == null) &&
+      (b[key] === undefined || b[key] == null)
+    ) {
+      continue;
+    }
+
+    if (a[key] !== b[key]) {
+      matched = false;
+      break;
+    }
+  }
+
+  return matched;
 }

@@ -134,7 +134,7 @@ export class App extends LoggedModel<App> {
     }
 
     try {
-      result = await pluginApp.methods.test(this, options);
+      result = await pluginApp.methods.test({ app: this, appOptions: options });
     } catch (err) {
       error = err;
       result = false;

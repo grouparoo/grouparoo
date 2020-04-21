@@ -1,10 +1,7 @@
-import { App, SimpleAppOptions } from "@grouparoo/core";
+import { DestinationOptionsMethod } from "@grouparoo/core";
 
-export async function destinationOptions(
-  app: App,
-  appOptions: SimpleAppOptions
-) {
+export const destinationOptions: DestinationOptionsMethod = async () => {
   // no options to set.
   // TODO: make this optional in the plugin definition?
   return {};
-}
+};

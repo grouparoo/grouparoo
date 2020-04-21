@@ -1,18 +1,11 @@
 import format from "pg-format";
 import { connect } from "../connect";
-import {
-  App,
-  Destination,
-  SimpleAppOptions,
-  SimpleDestinationOptions,
-} from "@grouparoo/core";
+import { DestinationPreviewMethod } from "@grouparoo/core";
 
-export async function destinationPreview(
-  app: App,
-  appOptions: SimpleAppOptions,
-  destination: Destination,
-  destinationOptions: SimpleDestinationOptions
-) {
+export const destinationPreview: DestinationPreviewMethod = async ({
+  appOptions,
+  destinationOptions,
+}) => {
   const response = [];
 
   const client = await connect(appOptions);
@@ -43,4 +36,4 @@ export async function destinationPreview(
 
   await client.end();
   return response;
-}
+};

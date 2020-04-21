@@ -28,6 +28,7 @@ import { Option } from "./Option";
 import { Group } from "./Group";
 import { Run } from "./Run";
 import { GroupRule } from "./GroupRule";
+import { ProfilePropertyRuleFilter } from "./ProfilePropertyRuleFilter";
 import { internalRun } from "../modules/internalRun";
 import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
@@ -132,20 +133,29 @@ export interface PluginConnectionProfilePropertyRuleOption {
   required: boolean;
   description: string;
   type: string;
-  options: (
-    app: App,
-    appOptions: SimpleAppOptions,
-    source: Source,
-    sourceOptions: SimpleSourceOptions,
-    sourceMapping: SourceMapping,
-    profilePropertyRule: ProfilePropertyRule
-  ) => Promise<
+  options: (argument: {
+    app: App;
+    appOptions: SimpleAppOptions;
+    source: Source;
+    sourceOptions: SimpleSourceOptions;
+    sourceMapping: SourceMapping;
+    profilePropertyRule: ProfilePropertyRule;
+  }) => Promise<
     Array<{
       key: string;
       description?: string;
       examples?: Array<any>;
     }>
   >;
+}
+
+export interface ProfilePropertyRuleFiltersWithKey {
+  key: string;
+  op: string;
+  match?: string | number | boolean;
+  relativeMatchNumber?: number;
+  relativeMatchUnit?: string;
+  relativeMatchDirection?: string;
 }
 
 let CACHE: ProfilePropertyRulesCache = {
@@ -195,6 +205,9 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   @HasMany(() => Option, "ownerGuid")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
+
+  @HasMany(() => ProfilePropertyRuleFilter)
+  profilePropertyRuleFilters: ProfilePropertyRuleFilter[];
 
   @BeforeSave
   static async ensureUniqueKey(instance: ProfilePropertyRule) {
@@ -282,6 +295,15 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   static async destroyRuns(instance: ProfilePropertyRule) {
     await Run.destroy({
       where: { creatorGuid: instance.guid },
+    });
+  }
+
+  @AfterDestroy
+  static async destroyProfilePropertyRuleFilters(
+    instance: ProfilePropertyRule
+  ) {
+    await ProfilePropertyRuleFilter.destroy({
+      where: { profilePropertyRuleGuid: instance.guid },
     });
   }
 
@@ -379,14 +401,14 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
     for (const i in pluginConnection.profilePropertyRuleOptions) {
       const opt = pluginConnection.profilePropertyRuleOptions[i];
-      const options = await opt.options(
+      const options = await opt.options({
         app,
         appOptions,
         source,
         sourceOptions,
         sourceMapping,
-        this
-      );
+        profilePropertyRule: this,
+      });
 
       response.push({
         key: opt.key,
@@ -400,8 +422,105 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     return response;
   }
 
+  async getFilters() {
+    const filtersWithCol: ProfilePropertyRuleFiltersWithKey[] = [];
+    const filters = await this.$get("profilePropertyRuleFilters", {
+      order: [["position", "asc"]],
+    });
+
+    for (const i in filters) {
+      const filter = filters[i];
+      filtersWithCol.push({
+        key: filter.key,
+        op: filter.op,
+        match: filter.match,
+        relativeMatchNumber: filter.relativeMatchNumber,
+        relativeMatchUnit: filter.relativeMatchUnit,
+        relativeMatchDirection: filter.relativeMatchDirection,
+      });
+    }
+
+    return filtersWithCol;
+  }
+
+  async setFilters(filters: ProfilePropertyRuleFiltersWithKey[]) {
+    await this.validateFilters(filters);
+
+    await ProfilePropertyRuleFilter.destroy({
+      where: {
+        profilePropertyRuleGuid: this.guid,
+      },
+    });
+
+    for (const i in filters) {
+      const filter = filters[i];
+
+      await ProfilePropertyRuleFilter.create({
+        position: parseInt(i) + 1,
+        profilePropertyRuleGuid: this.guid,
+        key: filter.key,
+        op: filter.op,
+        match: filter.match,
+        relativeMatchNumber: filter.relativeMatchNumber,
+        relativeMatchUnit: filter.relativeMatchUnit,
+        relativeMatchDirection: filter.relativeMatchDirection,
+      });
+    }
+
+    await this.enqueueRuns();
+  }
+
+  async pluginFilterOptions() {
+    const { pluginConnection } = await this.getPlugin();
+    if (!pluginConnection.methods.sourceFilters) {
+      return [];
+    }
+
+    const profilePropertyRuleOptions = await this.getOptions();
+    const source = await this.$get("source");
+    const sourceOptions = await source.getOptions();
+    const sourceMapping = await source.getMapping();
+    const app = await source.$get("app");
+    const appOptions = await app.getOptions();
+
+    const method = pluginConnection.methods.sourceFilters;
+    const options = await method({
+      app,
+      appOptions,
+      source,
+      sourceOptions,
+      sourceMapping,
+      profilePropertyRule: this,
+      profilePropertyRuleOptions,
+    });
+
+    return options;
+  }
+
+  async validateFilters(filters: ProfilePropertyRuleFiltersWithKey[]) {
+    if (!filters) {
+      filters = await this.getFilters();
+    }
+
+    const pluginFilterOptions = await this.pluginFilterOptions();
+
+    for (const i in filters) {
+      const filter = filters[i];
+      const relevantOption = pluginFilterOptions.filter(
+        (pfo) => pfo.key === filter.key
+      )[0];
+      if (!relevantOption) {
+        throw new Error(`${filter.key} is not filterable`);
+      }
+      if (!relevantOption.ops.includes(filter.op)) {
+        throw new Error(`"${filter.op}" cannot be applied to ${filter.key}`);
+      }
+    }
+  }
+
   async apiData() {
     const options = await this.getOptions();
+    const filters = await this.getFilters();
     const source = await this.$get("source");
 
     return {
@@ -412,6 +531,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       state: this.state,
       unique: this.unique,
       options,
+      filters,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };

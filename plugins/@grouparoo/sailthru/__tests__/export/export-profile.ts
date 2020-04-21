@@ -4,10 +4,8 @@ process.chdir(`${__dirname}/../../../../../core/api`);
 import path from "path";
 
 import { exportProfile } from "../../src/lib/export/exportProfile";
-import { SimpleAppOptions } from "../../../../../core/api/dist/models/App";
 import Sailthru from "../../src/lib/client";
 import { loadAppOptions, rewriteNockEnv } from "../utils/nockHelper";
-import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
 
 let client: Sailthru;
 const email = "brian@bleonard.com";
@@ -60,36 +58,36 @@ describe("sailthru/exportProfile", () => {
   }, 1000 * 30);
 
   test("can create profile on Sailthru", async () => {
-    await exportProfile(
-      null,
+    await exportProfile({
       appOptions,
-      null,
-      null,
-      null,
-      {}, // old Props
-      { email: email },
-      [], // old groups
-      [], // new groups
-      false
-    );
+      oldProfileProperties: {},
+      newProfileProperties: { email: email },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+      app: null,
+      profile: null,
+      destination: null,
+      destinationOptions: null,
+    });
 
     userSid = await findSid();
     expect(userSid).toBeTruthy();
   });
 
   test("can add user variables", async () => {
-    await exportProfile(
-      null,
+    await exportProfile({
       appOptions,
-      null,
-      null,
-      null,
-      { email: email }, // old Props
-      { email: email, first_name: "Evan" },
-      [], // old groups
-      [], // new groups
-      false
-    );
+      oldProfileProperties: { email: email },
+      newProfileProperties: { email: email, first_name: "Evan" },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+      app: null,
+      profile: null,
+      destination: null,
+      destinationOptions: null,
+    });
 
     const user = await getUser();
     expect(user.keys.sid).toBe(userSid);
@@ -97,18 +95,18 @@ describe("sailthru/exportProfile", () => {
   });
 
   test("can change user variables", async () => {
-    await exportProfile(
-      null,
+    await exportProfile({
       appOptions,
-      null,
-      null,
-      null,
-      { email: email, first_name: "Evan" }, // old Props
-      { email: email, first_name: "Brian" },
-      [], // old groups
-      [], // new groups
-      false
-    );
+      oldProfileProperties: { email: email, first_name: "Evan" },
+      newProfileProperties: { email: email, first_name: "Brian" },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+      app: null,
+      profile: null,
+      destination: null,
+      destinationOptions: null,
+    });
 
     const user = await getUser();
     expect(user.keys.sid).toBe(userSid);
@@ -116,18 +114,18 @@ describe("sailthru/exportProfile", () => {
   });
 
   test("can clear user variables", async () => {
-    await exportProfile(
-      null,
+    await exportProfile({
       appOptions,
-      null,
-      null,
-      null,
-      { first_name: "Brian" }, // old Props
-      { email: email },
-      [], // old groups
-      [], // new groups
-      false
-    );
+      oldProfileProperties: { first_name: "Brian" },
+      newProfileProperties: { email: email },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+      app: null,
+      profile: null,
+      destination: null,
+      destinationOptions: null,
+    });
 
     const user = await getUser();
     expect(user.keys.sid).toBe(userSid);
@@ -135,18 +133,18 @@ describe("sailthru/exportProfile", () => {
   });
 
   test("can add to a list", async () => {
-    await exportProfile(
-      null,
+    await exportProfile({
       appOptions,
-      null,
-      null,
-      null,
-      { email: email, first_name: null },
-      { email: email, first_name: "Brian" },
-      [], // old groups
-      ["Test Group 1", "Test Group 2"], // new groups
-      false
-    );
+      oldProfileProperties: { email: email, first_name: null },
+      newProfileProperties: { email: email, first_name: "Brian" },
+      oldGroups: [],
+      newGroups: ["Test Group 1", "Test Group 2"],
+      toDelete: false,
+      app: null,
+      profile: null,
+      destination: null,
+      destinationOptions: null,
+    });
 
     const user = await getUser();
     expect(user.keys.sid).toBe(userSid);
@@ -156,18 +154,18 @@ describe("sailthru/exportProfile", () => {
   });
 
   test("can remove from a list", async () => {
-    await exportProfile(
-      null,
+    await exportProfile({
       appOptions,
-      null,
-      null,
-      null,
-      { email: email, first_name: "Brian" },
-      { email: email, first_name: "Brian" },
-      ["Test Group 1", "Test Group 2"], // old groups
-      ["Test Group 1"], // new groups
-      false
-    );
+      oldProfileProperties: { email: email, first_name: "Brian" },
+      newProfileProperties: { email: email, first_name: "Brian" },
+      oldGroups: ["Test Group 1", "Test Group 2"],
+      newGroups: ["Test Group 1"],
+      toDelete: false,
+      app: null,
+      profile: null,
+      destination: null,
+      destinationOptions: null,
+    });
 
     const user = await getUser();
     expect(user.keys.sid).toBe(userSid);
@@ -177,18 +175,18 @@ describe("sailthru/exportProfile", () => {
   });
 
   test("can delete a user", async () => {
-    await exportProfile(
-      null,
+    await exportProfile({
       appOptions,
-      null,
-      null,
-      null,
-      {},
-      { email: email, first_name: "Brian" },
-      ["Test Group 2", "Test Group 1"], // old groups
-      [], // new groups
-      true // delete!
-    );
+      oldProfileProperties: { email: email, first_name: "Brian" },
+      newProfileProperties: { email: email, first_name: "Brian" },
+      oldGroups: ["Test Group 2", "Test Group 1"],
+      newGroups: [],
+      toDelete: true,
+      app: null,
+      profile: null,
+      destination: null,
+      destinationOptions: null,
+    });
 
     expect(await findSid()).toBeNull();
 

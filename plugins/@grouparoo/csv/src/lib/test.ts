@@ -1,5 +1,5 @@
-import { App, SimpleAppOptions } from "@grouparoo/core";
+import { TestPluginMethod } from "@grouparoo/core";
 
-export async function test(app: App, options: SimpleAppOptions) {
+export const test: TestPluginMethod = async () => {
   return true;
-}
+};

@@ -554,17 +554,9 @@ describe("models/profile", () => {
             direction: "import" as "import",
             options: [],
             methods: {
-              profileProperty: async (
-                app,
-                appOptions,
-                source,
-                sourceOptions,
-                sourceMapping,
-                profilePropertyRule,
-                profilePropertyRuleOptions
-              ) => {
+              profileProperty: async ({ profilePropertyRule }) => {
                 if (profilePropertyRule.key === "color") {
-                  return { color: "pink" };
+                  return "pink";
                 }
               },
             },

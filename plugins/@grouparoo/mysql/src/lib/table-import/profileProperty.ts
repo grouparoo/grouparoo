@@ -1,25 +1,19 @@
 import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
 import {
-  App,
-  SimpleAppOptions,
-  Source,
-  SimpleSourceOptions,
-  Profile,
-  ProfilePropertyRule,
-  SimpleProfilePropertyRuleOptions,
+  ProfilePropertyPluginMethod,
+  ProfilePropertyPluginMethodResponse,
 } from "@grouparoo/core";
 
-export async function profileProperty(
-  app: App,
-  appOptions: SimpleAppOptions,
-  source: Source,
-  sourceOptions: SimpleSourceOptions,
-  sourceMapping: SimpleSourceOptions,
-  profilePropertyRule: ProfilePropertyRule,
-  profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions,
-  profile: Profile
-) {
+export const profileProperty: ProfilePropertyPluginMethod = async ({
+  profile,
+  appOptions,
+  sourceOptions,
+  sourceMapping,
+  profilePropertyRule,
+  profilePropertyRuleOptions,
+  profilePropertyRuleFilters,
+}) => {
   const table = sourceOptions.table;
   const tableCol = Object.keys(sourceMapping)[0];
   const profilePropertyMatch = Object.values(sourceMapping)[0];
@@ -54,26 +48,57 @@ export async function profileProperty(
       break;
   }
 
-  const baseQuery = `SELECT ${aggSelect} FROM \`${table}\` WHERE \`${tableCol}\` = "{{ ${profilePropertyMatch} }}"`;
+  const baseQuery = `SELECT ${aggSelect} as __result FROM \`${table}\` WHERE \`${tableCol}\` = "{{ ${profilePropertyMatch} }}"`;
+
+  let filteredQuery = baseQuery;
+  for (const i in profilePropertyRuleFilters) {
+    let { key, op, match } = profilePropertyRuleFilters[i];
+
+    let sqlOp = "";
+    switch (op) {
+      case "equals":
+        key = `\`${key}\``;
+        sqlOp = `=`;
+        break;
+      case "does not equal":
+        key = `\`${key}\``;
+        sqlOp = `!=`;
+        break;
+      case "contains":
+        key = `LOWER(\`${key}\`)`;
+        sqlOp = `like`;
+        match = `%${match.toString().toLowerCase()}%`;
+        break;
+      case "does not contain":
+        key = `LOWER(\`${key}\`)`;
+        sqlOp = `NOT LIKE`;
+        match = `%${match.toString().toLowerCase()}%`;
+        break;
+      case "greater than":
+        key = `\`${key}\``;
+        sqlOp = `>`;
+        break;
+      case "less than":
+        key = `\`${key}\``;
+        sqlOp = `<`;
+        break;
+    }
+
+    filteredQuery += ` AND ${key} ${sqlOp} '${match}'`;
+  }
 
   const parameterizedQuery = await profilePropertyRule.parameterizedQueryFromProfile(
-    baseQuery,
+    filteredQuery,
     profile
   );
   validateQuery(parameterizedQuery);
 
-  let row;
+  let response: ProfilePropertyPluginMethodResponse;
   const client = await connect(appOptions);
   try {
     const rows = await client.asyncQuery(parameterizedQuery);
-    if (rows) {
-      row = rows[0];
-      for (const remoteKey in sourceMapping) {
-        const profileKey = sourceMapping[remoteKey];
-        if (row[remoteKey] && !row[profileKey]) {
-          row[profileKey] = row[remoteKey];
-        }
-      }
+    if (rows && rows.length > 0) {
+      response = rows[0].__result;
     }
   } catch (error) {
     throw new Error(
@@ -83,5 +108,5 @@ export async function profileProperty(
     await client.asyncEnd();
   }
 
-  return row;
-}
+  return response;
+};

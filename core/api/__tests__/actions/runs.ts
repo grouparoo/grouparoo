@@ -1,7 +1,7 @@
 import { helper } from "./../utils/specHelper";
 import { specHelper } from "actionhero";
-import { Run } from "../../src";
-import { Source } from "../../src";
+import { Run } from "../../src/models/Run";
+import { Source } from "../../src/models/Source";
 let actionhero;
 let connection;
 let csrfToken;
