@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Form, Button, Card, CardDeck } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import SelectorList from "../../selectorList";
 import Link from "next/link";
 import Router from "next/router";

@@ -1,5 +1,5 @@
 import Selector from "../components/selector";
-import { CardDeck, Card } from "react-bootstrap";
+import { CardDeck } from "react-bootstrap";
 import Router from "next/router";
 
 export default function SelectorList({
@@ -23,7 +23,7 @@ export default function SelectorList({
         let className: string;
 
         if (item?.app?.guid) {
-          // these itmes are connectionApps, i.e.: ({connection: {}, app: {}})
+          // these items are connectionApps, i.e.: ({connection: {}, app: {}})
           src = item.app.icon;
           title = item.connection.name;
           subheading = item.app.name;
@@ -34,7 +34,7 @@ export default function SelectorList({
               ? "button-color-selected"
               : "button-color";
         } else if (item?.plugin) {
-          // these itmes are apps theselves
+          // these items are apps theselves
           src = item.plugin.icon;
           title = item.name;
           className =
@@ -42,7 +42,7 @@ export default function SelectorList({
               ? "button-color-selected"
               : "button-color";
         } else {
-          throw new Error("i do not know what that is");
+          throw new Error("I do not know what that is");
         }
 
         return (
