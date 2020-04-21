@@ -63,7 +63,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
 
   return (
     <>
-      <h2>Choose App and Connection</h2>
+      <h1>Choose App and Connection</h1>
 
       <Form id="form" onSubmit={create}>
         <SelectorList
