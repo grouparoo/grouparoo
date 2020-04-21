@@ -292,6 +292,7 @@ export class ProfilePropertyRuleProfilePreview extends Action {
     );
 
     apiData.properties[profilePropertyRule.key] = {
+      guid: profilePropertyRule.guid,
       value: newProperty,
       type: profilePropertyRule.type,
       unique: profilePropertyRule.unique,

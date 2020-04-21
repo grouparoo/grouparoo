@@ -94,9 +94,18 @@ export default function ProfilePreview({ apiVersion, profilePropertyRule }) {
           {Object.keys(profile.properties).map((k) => (
             <ListGroup.Item
               key={`profile-preview-row-${k}`}
-              variant={k === profilePropertyRule.key ? "success" : "secondary"}
+              variant={
+                profile.properties[k].guid === profilePropertyRule.guid
+                  ? "success"
+                  : "secondary"
+              }
             >
-              <strong>{k}</strong>: {profile.properties[k].value}
+              <strong>
+                {profile.properties[k].guid === profilePropertyRule.guid
+                  ? profilePropertyRule.key
+                  : k}
+              </strong>
+              : {profile.properties[k]?.value?.toString()}
             </ListGroup.Item>
           ))}
         </ListGroup>
