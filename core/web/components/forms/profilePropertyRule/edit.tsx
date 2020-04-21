@@ -1,11 +1,11 @@
-import { Fragment, useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Button, Form, Table, Badge } from "react-bootstrap";
 import Router from "next/router";
 import Loader from "../../loader";
 import AppIcon from "../../appIcon";
 import StateBadge from "../../stateBadge";
-import { filter } from "bluebird";
+import ProfilePreview from "./profilePreview";
 
 export default function ({
   apiVersion,
@@ -208,7 +208,7 @@ export default function ({
               size={100}
             />
           </Col>
-          <Col>
+          <Col md={8}>
             <StateBadge state={profilePropertyRule.state} />
             <br />
             <br />
@@ -375,10 +375,10 @@ export default function ({
                           }
                         })
                         .map((ppr) => (
-                          <>
+                          <Fragment key={`var-badge-${ppr.key}`}>
                             <Badge variant="light">{`{{ ${ppr.key} }}`}</Badge>
                             &nbsp;
-                          </>
+                          </Fragment>
                         ))}
                     </p>
                     <p>
@@ -560,6 +560,12 @@ export default function ({
             >
               Delete
             </Button>
+          </Col>
+          <Col md={3}>
+            <ProfilePreview
+              apiVersion={apiVersion}
+              profilePropertyRule={profilePropertyRule}
+            />
           </Col>
         </Row>
       </Form>

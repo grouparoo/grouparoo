@@ -326,7 +326,10 @@ export class Source extends LoggedModel<Source> {
     profilePropertyRule: ProfilePropertyRule,
     profilePropertyRuleOptionsOverride?: { [key: string]: any }
   ) {
-    if (profilePropertyRule.state !== "ready") {
+    if (
+      profilePropertyRule.state !== "ready" &&
+      !profilePropertyRuleOptionsOverride
+    ) {
       return;
     }
 

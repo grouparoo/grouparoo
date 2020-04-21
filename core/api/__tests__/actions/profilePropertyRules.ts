@@ -311,6 +311,26 @@ describe("actions/profilePropertyRules", () => {
       expect(profilePropertyRule.unique).toBe(true);
     });
 
+    test("an administrator can see a profile preview of a profile property rule", async () => {
+      const _profile = await helper.factories.profile();
+      const originalProperties = _profile.properties();
+      expect(originalProperties["email"]).toBeFalsy();
+
+      connection.params = {
+        csrfToken,
+        guid,
+      };
+      const { error, profile } = await specHelper.runAction(
+        "profilePropertyRule:profilePreview",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(profile.guid).toBe(_profile.guid);
+      expect(profile.properties["email"].value).toBeTruthy();
+
+      await _profile.destroy();
+    });
+
     test("an administrator can remove a profilePropertyRule", async () => {
       connection.params = {
         csrfToken,

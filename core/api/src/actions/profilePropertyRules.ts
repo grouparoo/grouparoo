@@ -1,5 +1,6 @@
 import { api, Action } from "actionhero";
 import { Op } from "sequelize";
+import { Profile } from "../models/Profile";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { Group } from "../models/Group";
@@ -240,6 +241,66 @@ export class ProfilePropertyRuleView extends Action {
 
     response.profilePropertyRule = await profilePropertyRule.apiData();
     response.pluginOptions = await profilePropertyRule.pluginOptions();
+  }
+}
+
+export class ProfilePropertyRuleProfilePreview extends Action {
+  constructor() {
+    super();
+    this.name = "profilePropertyRule:profilePreview";
+    this.description =
+      "view a profilePropertyRule's new options against a profile";
+    this.outputExample = {};
+    this.middleware = ["authenticated-team-member", "role-read"];
+    this.inputs = {
+      guid: { required: true },
+      profileGuid: { required: false },
+      options: { required: false },
+    };
+  }
+
+  async run({ params, response }) {
+    let profile: Profile;
+
+    const profilePropertyRule = await ProfilePropertyRule.findByGuid(
+      params.guid
+    );
+
+    if (params.profileGuid) {
+      profile = await Profile.findByGuid(params.profileGuid);
+    } else {
+      profile = await Profile.findOne({ order: api.sequelize.random() });
+      if (!profile) {
+        throw new Error("profile not found");
+      }
+    }
+
+    let parsedOptions = params.options;
+    if (parsedOptions) {
+      try {
+        // as this is a GET, the options will be stringified
+        parsedOptions = JSON.parse(parsedOptions);
+      } catch {}
+    }
+
+    const apiData = await profile.apiData();
+    const source = await profilePropertyRule.$get("source");
+    const newProperty = await source.importProfileProperty(
+      profile,
+      profilePropertyRule,
+      parsedOptions
+    );
+
+    apiData.properties[profilePropertyRule.key] = {
+      guid: profilePropertyRule.guid,
+      value: newProperty,
+      type: profilePropertyRule.type,
+      unique: profilePropertyRule.unique,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    response.profile = apiData;
   }
 }
 

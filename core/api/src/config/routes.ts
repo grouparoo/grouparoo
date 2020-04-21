@@ -31,6 +31,7 @@ export const DEFAULT = {
         { path: "/:apiVersion/profilePropertyRule/:guid", action: "profilePropertyRule:view" },
         { path: "/:apiVersion/profilePropertyRule/:guid/filterOptions", action: "profilePropertyRule:filterOptions" },
         { path: "/:apiVersion/profilePropertyRule/:guid/groups", action: "profilePropertyRule:groups" },
+        { path: "/:apiVersion/profilePropertyRule/:guid/profilePreview", action: "profilePropertyRule:profilePreview" },
         { path: "/:apiVersion/profiles", action: "profiles:list" },
         { path: "/:apiVersion/profile/:guid", action: "profile:view" },
         { path: "/:apiVersion/profile/:profileGuid/logs", action: "logs:list" },

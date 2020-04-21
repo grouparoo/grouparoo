@@ -140,6 +140,7 @@ export class Profile extends LoggedModel<Profile> {
 
   async properties(): Promise<{
     [key: string]: {
+      guid: string;
       value: any;
       type: string;
       unique: boolean;
@@ -157,6 +158,7 @@ export class Profile extends LoggedModel<Profile> {
         const rule = await profileProperties[i].cachedProfilePropertyRule();
         const key = rule.key;
         hash[key] = {
+          guid: profileProperties[i].profilePropertyRuleGuid,
           value: await profileProperties[i].getValue(),
           type: rule.type,
           unique: rule.unique,
