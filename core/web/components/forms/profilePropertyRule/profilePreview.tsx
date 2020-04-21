@@ -10,6 +10,7 @@ export default function ProfilePreview({
   profilePropertyRule,
 }) {
   const [profileGuid, setProfileGuid] = useState("");
+  const [toHide, setToHide] = useState(true);
   const [profile, setProfile] = useState({ guid: "", properties: {} });
   const [sleeping, setSleeping] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -49,6 +50,7 @@ export default function ProfilePreview({
       );
 
       if (response?.profile) {
+        setToHide(false);
         setErrorMessage(response.errorMessage || "");
         setProfile(response.profile);
         setProfileGuid(response.profile.guid);
@@ -56,6 +58,16 @@ export default function ProfilePreview({
 
       setSleeping(false);
     }, sleep);
+  }
+
+  if (toHide) {
+    return (
+      <Card bg="light">
+        <Card.Body style={{ textAlign: "center" }}>
+          Profile preview unavailable
+        </Card.Body>
+      </Card>
+    );
   }
 
   let email;

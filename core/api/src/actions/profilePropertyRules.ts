@@ -272,7 +272,8 @@ export class ProfilePropertyRuleProfilePreview extends Action {
     } else {
       profile = await Profile.findOne({ order: api.sequelize.random() });
       if (!profile) {
-        throw new Error("profile not found");
+        response.errorMessage = "no profiles found";
+        return;
       }
     }
 
