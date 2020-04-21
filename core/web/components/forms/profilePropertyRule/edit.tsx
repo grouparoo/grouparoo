@@ -374,6 +374,7 @@ export default function ({
                             return -1;
                           }
                         })
+                        .filter((ppr) => ppr.state !== "draft")
                         .map((ppr) => (
                           <Fragment key={`var-badge-${ppr.key}`}>
                             <Badge variant="light">{`{{ ${ppr.key} }}`}</Badge>
