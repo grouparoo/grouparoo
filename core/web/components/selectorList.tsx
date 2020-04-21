@@ -2,6 +2,15 @@ import Selector from "../components/selector";
 import { CardDeck } from "react-bootstrap";
 import Router from "next/router";
 
+function humanizePluginName(name: string) {
+  name = name.replace(/-/g, " ");
+  name = name.replace(/_/g, " ");
+  const words = name.toLowerCase().split(" ");
+  return words
+    .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
+    .join(" ");
+}
+
 export default function SelectorList({
   onClick,
   items,
@@ -25,7 +34,7 @@ export default function SelectorList({
         if (item?.app?.guid) {
           // these items are connectionApps, i.e.: ({connection: {}, app: {}})
           src = item.app.icon;
-          title = item.connection.name;
+          title = humanizePluginName(item.connection.name);
           subheading = item.app.name;
           description = item.connection.description;
           className =
@@ -36,7 +45,7 @@ export default function SelectorList({
         } else if (item?.plugin) {
           // these items are apps theselves
           src = item.plugin.icon;
-          title = item.name;
+          title = humanizePluginName(item.name);
           className =
             item.name === selectedItem.type
               ? "button-color-selected"
