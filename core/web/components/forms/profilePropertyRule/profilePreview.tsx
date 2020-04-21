@@ -68,8 +68,8 @@ export default function ProfilePreview({ apiVersion, profilePropertyRule }) {
   }
 
   return (
-    <Card bg="secondary">
-      <Card.Body style={{ textAlign: "center" }}>
+    <Card bg="info">
+      <Card.Body style={{ textAlign: "center", color: "white" }}>
         <Card.Title>Example Profile</Card.Title>
         {sleeping ? (
           <>
@@ -80,7 +80,10 @@ export default function ProfilePreview({ apiVersion, profilePropertyRule }) {
           <>
             <ProfileImageFromEmail email={email} width={100} />
             <br />
-            <Card.Link href={`/profile/${profile.guid}`}>
+            <Card.Link
+              href={`/profile/${profile.guid}`}
+              style={{ color: "white" }}
+            >
               View Profile
             </Card.Link>
           </>
@@ -96,8 +99,8 @@ export default function ProfilePreview({ apiVersion, profilePropertyRule }) {
               key={`profile-preview-row-${k}`}
               variant={
                 profile.properties[k].guid === profilePropertyRule.guid
-                  ? "success"
-                  : "secondary"
+                  ? "secondary"
+                  : "info"
               }
             >
               <strong>
