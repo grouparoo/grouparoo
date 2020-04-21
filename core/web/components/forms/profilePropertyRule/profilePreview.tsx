@@ -2,18 +2,19 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Card, ListGroup, Alert } from "react-bootstrap";
 import Loader from "../../loader";
-import { ErrorHandler } from "../../../utils/errorHandler";
 import ProfileImageFromEmail from "../../visualizations/profileImageFromEmail";
 
-export default function ProfilePreview({ apiVersion, profilePropertyRule }) {
+export default function ProfilePreview({
+  apiVersion,
+  errorHandler,
+  profilePropertyRule,
+}) {
   const [profileGuid, setProfileGuid] = useState("");
   const [profile, setProfile] = useState({ guid: "", properties: {} });
   const [sleeping, setSleeping] = useState(false);
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [debounceCounter, setDebounceCounter] = useState(0);
-
-  const localErrorHandler = new ErrorHandler();
-  const { execApi } = useApi(localErrorHandler);
+  const { execApi } = useApi(errorHandler);
 
   const sleep = debounceCounter === 0 ? 0 : 1000; // we only want to make one request every ~second, so wait for more input
 
@@ -21,20 +22,15 @@ export default function ProfilePreview({ apiVersion, profilePropertyRule }) {
 
   useEffect(() => {
     load();
-    localErrorHandler.subscribe(
-      "profile-preview-error",
-      subscription.bind(this)
-    );
 
     return () => {
-      localErrorHandler.unsubscribe("profile-preview-error");
       clearTimeout(timer);
     };
   }, [profilePropertyRule.guid, JSON.stringify(profilePropertyRule.options)]);
 
   async function load() {
     setSleeping(true);
-    setError("");
+    setErrorMessage("");
     setDebounceCounter(debounceCounter + 1);
 
     timer = setTimeout(async () => {
@@ -48,16 +44,13 @@ export default function ProfilePreview({ apiVersion, profilePropertyRule }) {
       );
 
       if (response?.profile) {
+        setErrorMessage(response.errorMessage || "");
         setProfile(response.profile);
         setProfileGuid(response.profile.guid);
       }
 
       setSleeping(false);
     }, sleep);
-  }
-
-  function subscription({ error: _error }) {
-    setError(_error.message);
   }
 
   let email;
@@ -100,13 +93,13 @@ export default function ProfilePreview({ apiVersion, profilePropertyRule }) {
         )}
       </Card.Body>
 
-      {error !== "" ? <Alert variant="danger">{error}</Alert> : null}
-
-      {sleeping ? null : error === "" ? (
+      {sleeping ? null : (
         <ListGroup variant="flush">
-          <ListGroup.Item variant="secondary">
+          <ListGroup.Item
+            variant={errorMessage !== "" ? "danger" : "secondary"}
+          >
             <strong>{profilePropertyRule.key}</strong>:{" "}
-            {thisProfilePropertyRuleValue}
+            {errorMessage !== "" ? errorMessage : thisProfilePropertyRuleValue}
           </ListGroup.Item>
 
           {Object.keys(otherProfilePropertyRules).map((k) => (
@@ -116,7 +109,7 @@ export default function ProfilePreview({ apiVersion, profilePropertyRule }) {
             </ListGroup.Item>
           ))}
         </ListGroup>
-      ) : null}
+      )}
     </Card>
   );
 }

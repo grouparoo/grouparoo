@@ -564,6 +564,7 @@ export default function ({
           <Col md={3}>
             <ProfilePreview
               apiVersion={apiVersion}
+              errorHandler={errorHandler}
               profilePropertyRule={profilePropertyRule}
             />
           </Col>

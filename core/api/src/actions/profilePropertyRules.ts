@@ -285,11 +285,18 @@ export class ProfilePropertyRuleProfilePreview extends Action {
 
     const apiData = await profile.apiData();
     const source = await profilePropertyRule.$get("source");
-    const newProperty = await source.importProfileProperty(
-      profile,
-      profilePropertyRule,
-      parsedOptions
-    );
+
+    let newProperty: string | number | boolean | Date;
+    let errorMessage: string;
+    try {
+      newProperty = await source.importProfileProperty(
+        profile,
+        profilePropertyRule,
+        parsedOptions
+      );
+    } catch (error) {
+      errorMessage = error.toString();
+    }
 
     apiData.properties[profilePropertyRule.key] = {
       guid: profilePropertyRule.guid,
@@ -301,6 +308,7 @@ export class ProfilePropertyRuleProfilePreview extends Action {
     };
 
     response.profile = apiData;
+    response.errorMessage = errorMessage;
   }
 }
 
