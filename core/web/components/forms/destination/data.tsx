@@ -283,11 +283,13 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                                 <option disabled value={""}>
                                   choose a profile property rule
                                 </option>
-                                {profilePropertyRules.map((rule) => (
-                                  <option key={`opt-required-${rule.guid}`}>
-                                    {rule.key}
-                                  </option>
-                                ))}
+                                {profilePropertyRules
+                                  .filter((rule) => rule.unique)
+                                  .map((rule) => (
+                                    <option key={`opt-required-${rule.guid}`}>
+                                      {rule.key}
+                                    </option>
+                                  ))}
                               </Form.Control>
                             </td>
                             <td style={{ textAlign: "center" }}>---></td>
