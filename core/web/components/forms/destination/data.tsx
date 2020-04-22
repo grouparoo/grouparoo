@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Badge, Button, Table } from "react-bootstrap";
 import Link from "next/link";
+import { string } from "prop-types";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -30,6 +31,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     name: "",
     trackAllGroups: false,
     destinationGroups: [],
+    destinationGroupMemberships: [],
     mapping: {},
   });
   const { guid } = query;
@@ -63,7 +65,9 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   }
 
   async function loadGroups() {
-    const response = await execApi("get", `/api/${apiVersion}/groups`);
+    const response = await execApi("get", `/api/${apiVersion}/groups`, {
+      state: "ready",
+    });
     if (response?.groups) {
       setGroups(response.groups);
     }
@@ -72,7 +76,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   async function loadProfilePropertyRules() {
     const response = await execApi(
       "get",
-      `/api/${apiVersion}/profilePropertyRules`
+      `/api/${apiVersion}/profilePropertyRules`,
+      { state: "ready" }
     );
     if (response?.profilePropertyRules) {
       setProfilePropertyRules(response.profilePropertyRules);
@@ -115,6 +120,16 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       });
     }
 
+    // handle group mappings
+    const destinationGroupMembershipsObject = {};
+    destination.destinationGroupMemberships.forEach(
+      (dgm) =>
+        (destinationGroupMembershipsObject[dgm.groupGuid] = dgm.remoteKey)
+    );
+    await execApi("put", `/api/${apiVersion}/destination/${guid}`, {
+      destinationGroupMemberships: destinationGroupMembershipsObject,
+    });
+
     successHandler.set({ message: "Destination Updated" });
     await load();
   };
@@ -129,15 +144,6 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     return true;
   });
 
-  // const unusedMappingKeys = profilePropertyRules
-  //   .filter((rule) => {
-  //     if (Object.keys(destination.mapping).includes(rule.key)) {
-  //       return false;
-  //     }
-  //     return true;
-  //   })
-  //   .map((rule) => rule.key);
-
   function updateMapping(key, value, oldKey = null) {
     const _destination = Object.assign({}, destination);
     if (key) {
@@ -148,6 +154,48 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     }
     setDestination(_destination);
   }
+
+  function updateDestinationGroupMembership(
+    groupGuid,
+    remoteKey,
+    oldGroupGuid = null
+  ) {
+    const _destination = Object.assign({}, destination);
+    _destination.destinationGroupMemberships = _destination.destinationGroupMemberships.filter(
+      (dgm) => dgm.groupGuid !== oldGroupGuid
+    );
+
+    const groupName = groups.filter((g) => g.guid === groupGuid)[0]?.name;
+
+    let found = false;
+    for (const i in _destination.destinationGroupMemberships) {
+      if (_destination.destinationGroupMemberships[i].groupGuid === groupGuid) {
+        _destination.destinationGroupMemberships[i] = {
+          groupGuid,
+          groupName,
+          remoteKey: remoteKey ? remoteKey : groupName,
+        };
+        found = true;
+      }
+    }
+
+    if (!found && groupGuid) {
+      _destination.destinationGroupMemberships.push({
+        groupGuid,
+        groupName,
+        remoteKey: remoteKey ? remoteKey : groupName,
+      });
+    }
+
+    setDestination(_destination);
+  }
+
+  const groupsAvailalbeForDestinationGroupMemberships = groups.filter(
+    (group) =>
+      !destination.destinationGroupMemberships
+        .map((dgm) => dgm.groupGuid)
+        .includes(group.guid)
+  );
 
   console.log(destination);
 
@@ -383,11 +431,113 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             <Button
               size="sm"
               variant="primary"
+              disabled={profilePropertyRules.length === 0}
               onClick={() => {
                 updateMapping("new mapping", "");
               }}
             >
-              Add new Mapping
+              Add new {mappingOptions.labels.profilePropertyRule.singular}
+            </Button>
+
+            <br />
+            <br />
+
+            <p>
+              <strong style={{ textDecoration: "underline" }}>
+                {mappingOptions.labels.group.plural}
+              </strong>
+            </p>
+
+            <Table size="sm">
+              <thead>
+                <tr>
+                  <th>Grouparoo Group</th>
+                  <th />
+                  <th>{mappingOptions.labels.group.singular}</th>
+                  <th />
+                </tr>
+              </thead>
+              <tbody>
+                {destination.destinationGroupMemberships.map(
+                  ({ groupName, groupGuid, remoteKey }, idx) => (
+                    <tr key={`optional-mapping-${idx}`}>
+                      <td>
+                        <Form.Control
+                          as="select"
+                          required={false}
+                          value={groupGuid}
+                          onChange={(e) =>
+                            updateDestinationGroupMembership(
+                              e.target["value"],
+                              null,
+                              groupGuid
+                            )
+                          }
+                        >
+                          <option disabled value={""}>
+                            choose a group
+                          </option>
+                          {groups.map((group) => (
+                            <option
+                              value={group.guid}
+                              key={`group-remote-mapping-${group.guid}`}
+                            >
+                              {group.name}
+                            </option>
+                          ))}
+                        </Form.Control>
+                      </td>
+                      <td style={{ textAlign: "center" }}>---></td>
+                      <td>
+                        <Form.Control
+                          required
+                          type="text"
+                          value={remoteKey}
+                          onChange={(e) =>
+                            updateDestinationGroupMembership(
+                              groupGuid,
+                              e.target["value"]
+                            )
+                          }
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {mappingOptions.labels.group.singular} is required
+                        </Form.Control.Feedback>
+                      </td>
+                      <td>
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          onClick={() => {
+                            updateDestinationGroupMembership(
+                              null,
+                              null,
+                              groupGuid
+                            );
+                          }}
+                        >
+                          X
+                        </Button>
+                      </td>
+                    </tr>
+                  )
+                )}
+              </tbody>
+            </Table>
+            <Button
+              size="sm"
+              variant="primary"
+              disabled={
+                groupsAvailalbeForDestinationGroupMemberships.length === 0
+              }
+              onClick={() => {
+                updateDestinationGroupMembership(
+                  groupsAvailalbeForDestinationGroupMemberships[0].guid,
+                  groupsAvailalbeForDestinationGroupMemberships[0].name
+                );
+              }}
+            >
+              Add new {mappingOptions.labels.group.singular}
             </Button>
           </Col>
         </Row>

@@ -131,6 +131,7 @@ export class DestinationCreate extends Action {
       trackAllGroups: { required: false },
       options: { required: false },
       mapping: { required: false, default: {} },
+      destinationGroupMemberships: { required: false },
     };
   }
 
@@ -148,6 +149,12 @@ export class DestinationCreate extends Action {
 
     if (params.mapping) {
       await destination.setMapping(params.mapping);
+    }
+
+    if (params.destinationGroupMemberships) {
+      await destination.setDestinationGroupMemberships(
+        params.destinationGroupMemberships
+      );
     }
 
     if (params.state) {
@@ -172,17 +179,26 @@ export class DestinationEdit extends Action {
       trackAllGroups: { required: false },
       options: { required: false },
       mapping: { required: false },
+      destinationGroupMemberships: { required: false },
     };
   }
 
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
     await destination.update(params);
+
     if (params.options) {
       await destination.setOptions(params.options);
     }
+
     if (params.mapping) {
       await destination.setMapping(params.mapping);
+    }
+
+    if (params.destinationGroupMemberships) {
+      await destination.setDestinationGroupMemberships(
+        params.destinationGroupMemberships
+      );
     }
 
     response.destination = await destination.apiData();
@@ -240,14 +256,7 @@ export class DestinationTrackGroup extends Action {
 
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
-
-    const group = await Group.findOne({
-      where: { guid: params.groupGuid },
-    });
-    if (!group) {
-      throw new Error("group not found");
-    }
-
+    const group = await Group.findByGuid(params.groupGuid);
     await destination.trackGroup(group);
     response.destination = await destination.apiData();
   }

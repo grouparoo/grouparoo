@@ -8,7 +8,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
         plural: "Logger Profile Property Rules",
       },
       group: {
-        singular: "Logger Tags",
+        singular: "Logger Tag",
         plural: "Logger Tags",
       },
     },

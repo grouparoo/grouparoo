@@ -1,4 +1,4 @@
-import { task } from "actionhero";
+import { task, api } from "actionhero";
 import {
   Table,
   Column,
@@ -34,6 +34,11 @@ import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
+export interface SimpleDestinationGroupMembership {
+  remoteKey: string;
+  groupGuid: string;
+  groupName: string;
+}
 export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 
 const STATE_TRANSITIONS = [
@@ -216,6 +221,7 @@ export class Destination extends LoggedModel<Destination> {
     const app = await this.$get("app");
     const mapping = await this.getMapping();
     const options = await this.getOptions();
+    const destinationGroupMemberships = await this.getDestinationGroupMemberships();
     const groups = await this.$get("groups");
     const { pluginConnection } = await this.getPlugin();
 
@@ -230,6 +236,7 @@ export class Destination extends LoggedModel<Destination> {
       options,
       connection: pluginConnection,
       destinationGroups: await Promise.all(groups.map((grp) => grp.apiData())),
+      destinationGroupMemberships,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
@@ -258,6 +265,49 @@ export class Destination extends LoggedModel<Destination> {
 
   async setOptions(options: SimpleDestinationOptions) {
     return OptionHelper.setOptions(this, options);
+  }
+
+  async getDestinationGroupMemberships(): Promise<
+    SimpleDestinationGroupMembership[]
+  > {
+    const destinationGroupMemberships = await DestinationGroupMembership.findAll(
+      { where: { destinationGuid: this.guid }, include: [Group] }
+    );
+
+    return destinationGroupMemberships.map((dgm) => {
+      return {
+        remoteKey: dgm.remoteKey,
+        groupGuid: dgm.group.guid,
+        groupName: dgm.group.name,
+      };
+    });
+  }
+
+  async setDestinationGroupMemberships(newDestinationGroupMemberships: {
+    [groupGuid: string]: string;
+  }) {
+    const transaction = await api.sequelize.transaction();
+
+    await DestinationGroupMembership.destroy({
+      where: {
+        destinationGuid: this.guid,
+      },
+      transaction,
+    });
+
+    for (const groupGuid in newDestinationGroupMemberships) {
+      await DestinationGroupMembership.create(
+        {
+          destinationGuid: this.guid,
+          groupGuid,
+          remoteKey: newDestinationGroupMemberships[groupGuid],
+        },
+        { transaction }
+      );
+    }
+
+    await transaction.commit();
+    return this.getDestinationGroupMemberships();
   }
 
   async validateOptions(options: SimpleDestinationOptions) {
@@ -360,6 +410,7 @@ export class Destination extends LoggedModel<Destination> {
 
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);
+    const destinationGroupMemberships = await this.getDestinationGroupMemberships();
 
     const mapping = await this.getMapping();
     const mappingKeys = Object.keys(mapping);
@@ -370,8 +421,31 @@ export class Destination extends LoggedModel<Destination> {
       mappedNewProfileProperties[k] = newProfileProperties[mapping[k]];
     });
 
-    const oldGroupNames = oldGroups.map((g) => g.name);
-    const newGroupNames = newGroups.map((g) => g.name);
+    const oldGroupNames = oldGroups
+      .filter((group) =>
+        destinationGroupMemberships
+          .map((dgm) => dgm.groupGuid)
+          .includes(group.guid)
+      )
+      .map(
+        (group) =>
+          destinationGroupMemberships.filter(
+            (dgm) => dgm.groupGuid === group.guid
+          )[0].remoteKey
+      );
+    const newGroupNames = newGroups
+      .filter((group) =>
+        destinationGroupMemberships
+          .map((dgm) => dgm.groupGuid)
+          .includes(group.guid)
+      )
+      .map(
+        (group) =>
+          destinationGroupMemberships.filter(
+            (dgm) => dgm.groupGuid === group.guid
+          )[0].remoteKey
+      );
+
     const newGroupGuids = newGroups.map((g) => g.guid);
     const destinationGroupGuids = (await this.$get("groups")).map(
       (g) => g.guid
