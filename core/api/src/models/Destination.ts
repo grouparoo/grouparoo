@@ -378,7 +378,7 @@ export class Destination extends LoggedModel<Destination> {
     // optional rule can't be validated...
   }
 
-  async unTrackGroup() {
+  async unTrackGroups() {
     await DestinationGroup.destroy({
       where: {
         destinationGuid: this.guid,

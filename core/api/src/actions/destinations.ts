@@ -279,7 +279,7 @@ export class DestinationUnTrackGroup extends Action {
 
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
-    await destination.unTrackGroup();
+    await destination.unTrackGroups();
     response.destination = await destination.apiData();
   }
 }
