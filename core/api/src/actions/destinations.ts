@@ -187,7 +187,6 @@ export class DestinationEdit extends Action {
 
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
-    await destination.update(params);
 
     if (params.options) {
       await destination.setOptions(params.options);
@@ -202,6 +201,8 @@ export class DestinationEdit extends Action {
         params.destinationGroupMemberships
       );
     }
+
+    await destination.update(params);
 
     response.destination = await destination.apiData();
   }
