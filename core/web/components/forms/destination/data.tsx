@@ -15,12 +15,12 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     },
     labels: {
       profilePropertyRule: {
-        singular: "", // merge var
-        plural: "", // merge vars
+        singular: "",
+        plural: "",
       },
       group: {
-        singular: "", // mailchimp tag
-        plural: "", // mailchimp tags
+        singular: "",
+        plural: "",
       },
     },
   });
@@ -141,10 +141,18 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   };
 
   const optionalMappingKeys = Object.keys(destination.mapping).filter((key) => {
-    if (mappingOptions.profilePropertyRules.required.includes(key)) {
+    if (
+      mappingOptions.profilePropertyRules.required
+        .map((opt) => opt.key)
+        .includes(key)
+    ) {
       return false;
     }
-    if (mappingOptions.profilePropertyRules.known.includes(key)) {
+    if (
+      mappingOptions.profilePropertyRules.known
+        .map((opt) => opt.key)
+        .includes(key)
+    ) {
       return false;
     }
     return true;
@@ -269,7 +277,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                     </thead>
                     <tbody>
                       {mappingOptions.profilePropertyRules.required.map(
-                        (key, idx) => (
+                        ({ key, type }, idx) => (
                           <tr key={`required-mapping-${idx}`}>
                             <td>
                               <Form.Control
@@ -284,7 +292,9 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                                   choose a profile property rule
                                 </option>
                                 {profilePropertyRules
-                                  .filter((rule) => rule.unique)
+                                  .filter((rule) =>
+                                    type === "any" ? true : rule.type === type
+                                  )
                                   .map((rule) => (
                                     <option key={`opt-required-${rule.guid}`}>
                                       {rule.key}
@@ -323,7 +333,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                     </thead>
                     <tbody>
                       {mappingOptions.profilePropertyRules.known.map(
-                        (key, idx) => (
+                        ({ key, type }, idx) => (
                           <tr key={`known-mapping-${idx}`}>
                             <td>
                               <Form.Control
@@ -336,11 +346,15 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                               >
                                 <option value={""}>None</option>
                                 <option disabled>---</option>
-                                {profilePropertyRules.map((rule) => (
-                                  <option key={`opt-known-${rule.guid}`}>
-                                    {rule.key}
-                                  </option>
-                                ))}
+                                {profilePropertyRules
+                                  .filter((rule) =>
+                                    type === "any" ? true : rule.type === type
+                                  )
+                                  .map((rule) => (
+                                    <option key={`opt-known-${rule.guid}`}>
+                                      {rule.key}
+                                    </option>
+                                  ))}
                               </Form.Control>
                             </td>
                             <td style={{ textAlign: "center" }}>---></td>

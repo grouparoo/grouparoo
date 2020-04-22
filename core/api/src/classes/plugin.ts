@@ -285,8 +285,8 @@ export interface DestinationMappingOptionsMethod {
 
 export interface DestinationMappingOptionsMethodResponse {
   profilePropertyRules: {
-    required: Array<string>; // ['email']
-    known: Array<string>; // ['extid']
+    required: Array<{ key: string; type: string }>;
+    known: Array<{ key: string; type: string }>;
     allowOptionalFromProfilePropertyRules: boolean;
   };
   labels: {

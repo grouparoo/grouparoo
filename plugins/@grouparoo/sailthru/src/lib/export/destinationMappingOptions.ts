@@ -13,8 +13,8 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
       },
     },
     profilePropertyRules: {
-      required: ["email"],
-      known: ["extid"],
+      required: [{ key: "email", type: "email" }],
+      known: [{ key: "extid", type: "any" }],
       allowOptionalFromProfilePropertyRules: true,
     },
   };

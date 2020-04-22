@@ -287,6 +287,10 @@ export class Destination extends LoggedModel<Destination> {
   async setDestinationGroupMemberships(newDestinationGroupMemberships: {
     [groupGuid: string]: string;
   }) {
+    // TODO: Validations
+    // - remote key names
+    // - remote key types matching profile property types
+
     const transaction = await api.sequelize.transaction();
 
     await DestinationGroupMembership.destroy({

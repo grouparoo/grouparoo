@@ -20,7 +20,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
   const columns = [];
   for (const i in rows) {
     if (rows[i].column_name !== destinationOptions.primaryKey) {
-      columns.push(rows[i].column_name);
+      columns.push({ key: rows[i].column_name, type: "any" });
     }
   }
 
@@ -36,7 +36,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
       },
     },
     profilePropertyRules: {
-      required: [destinationOptions.primaryKey],
+      required: [{ key: destinationOptions.primaryKey, type: "any" }],
       known: columns,
       allowOptionalFromProfilePropertyRules: false,
     },
