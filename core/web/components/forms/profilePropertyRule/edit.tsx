@@ -1,6 +1,14 @@
 import { useState, useEffect, Fragment } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Button, Form, Table, Badge } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Button,
+  Form,
+  Table,
+  Badge,
+  Dropdown,
+} from "react-bootstrap";
 import Router from "next/router";
 import Loader from "../../loader";
 import AppIcon from "../../appIcon";
@@ -165,6 +173,7 @@ export default function ({
     const _profilePropertyRule = Object.assign({}, profilePropertyRule);
     _profilePropertyRule.options[key] = value;
     setProfilePropertyRule(_profilePropertyRule);
+    console.log({ value });
   }
 
   function addRule() {
@@ -280,9 +289,25 @@ export default function ({
                   ) : null}
                   <code>{opt.key}</code>: <small>{opt.description}</small>
                 </p>
+                <Dropdown>
+                  <Dropdown.Toggle id="options-dropdown">
+                    {opt?.key?.value ? opt.key.value : opt.key}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    {opt?.options?.map((col) => (
+                      <Dropdown.Item
+                        key={col.key}
+                        eventKey={col.key}
+                        onSelect={() => updateOption(opt.key, col.key)}
+                      >
+                        {col.key}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
 
                 {/* list options */}
-                {opt.type === "list" ? (
+                {/* {opt.type === "list" ? (
                   <Table bordered striped size="sm" variant="light">
                     <thead>
                       <tr>
@@ -321,8 +346,7 @@ export default function ({
                       ))}
                     </tbody>
                   </Table>
-                ) : null}
-
+                ) : null} */}
                 {/* textarea options */}
                 {opt.type === "text" ? (
                   <Form.Group controlId="key">
@@ -337,7 +361,6 @@ export default function ({
                     </Form.Control.Feedback>
                   </Form.Group>
                 ) : null}
-
                 {/* text options */}
                 {opt.type === "textarea" ? (
                   <>
