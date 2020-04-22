@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Badge, Button, Table } from "react-bootstrap";
-import Link from "next/link";
-import { string } from "prop-types";
+import ProfilePreview from "./profilePreview";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -197,90 +196,196 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
         .includes(group.guid)
   );
 
-  console.log(destination);
-
   return (
     <>
       <h1>Destination Data</h1>
-      <Form id="form" onSubmit={update}>
-        <Row>
-          <Col>
-            <h3>
-              Who should be sent to{" "}
-              <Badge variant="info">{destination.name}</Badge>?
-            </h3>
-            <Form.Control
-              as="select"
-              required={true}
-              value={trackedGroupGuid}
-              onChange={(e) => setTrackedGroupGuid(e.target["value"])}
-            >
-              <option value={"_none"}>No Group</option>
-              <option value={"_all"}>All Groups</option>
-              <option disabled>---</option>
-              {groups
-                .sort((a, b) => {
-                  if (a.name >= b.name) {
-                    return 1;
-                  } else {
-                    return -1;
-                  }
-                })
-                .map((group) => (
-                  <option key={`grp-${group.guid}`} value={group.guid}>
-                    {group.name} ({group.profilesCount} members)
-                  </option>
-                ))}
-            </Form.Control>
-          </Col>
-        </Row>
-
-        <br />
-
-        <Row>
-          <Col>
-            <h3>
-              What data do you want in{" "}
-              <Badge variant="info">{destination.name}</Badge>?
-            </h3>
+      <Row>
+        <Col>
+          <Form id="form" onSubmit={update}>
+            <Row>
+              <Col>
+                <h2>
+                  Who should be sent to{" "}
+                  <Badge variant="primary">{destination.name}</Badge>?
+                </h2>
+                <Form.Control
+                  as="select"
+                  required={true}
+                  value={trackedGroupGuid}
+                  onChange={(e) => setTrackedGroupGuid(e.target["value"])}
+                >
+                  <option value={"_none"}>No Group</option>
+                  <option value={"_all"}>All Groups</option>
+                  <option disabled>---</option>
+                  {groups
+                    .sort((a, b) => {
+                      if (a.name >= b.name) {
+                        return 1;
+                      } else {
+                        return -1;
+                      }
+                    })
+                    .map((group) => (
+                      <option key={`grp-${group.guid}`} value={group.guid}>
+                        {group.name} ({group.profilesCount} members)
+                      </option>
+                    ))}
+                </Form.Control>
+              </Col>
+            </Row>
 
             <br />
 
-            <p>
-              <strong style={{ textDecoration: "underline" }}>
-                Required {mappingOptions.labels.profilePropertyRule.plural}
-              </strong>
-            </p>
+            <Row>
+              <Col>
+                <h2>
+                  What data do you want in{" "}
+                  <Badge variant="primary">{destination.name}</Badge>?
+                </h2>
 
-            {mappingOptions.profilePropertyRules.required.length > 0 ? (
-              <Table size="sm">
-                <thead>
-                  <tr>
-                    <th>Grouparoo Profile Property Rule</th>
-                    <th />
-                    <th>
-                      {mappingOptions.labels.profilePropertyRule.singular}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {mappingOptions.profilePropertyRules.required.map(
-                    (key, idx) => (
-                      <tr key={`required-mapping-${idx}`}>
+                <br />
+
+                <h3>
+                  Required {mappingOptions.labels.profilePropertyRule.plural}
+                </h3>
+
+                {mappingOptions.profilePropertyRules.required.length > 0 ? (
+                  <Table size="sm">
+                    <thead>
+                      <tr>
+                        <th>Grouparoo Profile Property Rule</th>
+                        <th />
+                        <th>
+                          {mappingOptions.labels.profilePropertyRule.singular}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {mappingOptions.profilePropertyRules.required.map(
+                        (key, idx) => (
+                          <tr key={`required-mapping-${idx}`}>
+                            <td>
+                              <Form.Control
+                                as="select"
+                                required={true}
+                                value={destination.mapping[key] || ""}
+                                onChange={(e) =>
+                                  updateMapping(key, e.target["value"])
+                                }
+                              >
+                                <option disabled value={""}>
+                                  choose a profile property rule
+                                </option>
+                                {profilePropertyRules.map((rule) => (
+                                  <option key={`opt-required-${rule.guid}`}>
+                                    {rule.key}
+                                  </option>
+                                ))}
+                              </Form.Control>
+                            </td>
+                            <td style={{ textAlign: "center" }}>---></td>
+                            <td>
+                              <Badge variant="secondary">{key}</Badge>
+                            </td>
+                          </tr>
+                        )
+                      )}
+                    </tbody>
+                  </Table>
+                ) : (
+                  <p>None</p>
+                )}
+
+                <br />
+
+                <h3>
+                  Known {mappingOptions.labels.profilePropertyRule.plural}
+                </h3>
+                {mappingOptions.profilePropertyRules.known.length > 0 ? (
+                  <Table size="sm">
+                    <thead>
+                      <tr>
+                        <th>Grouparoo Profile Property Rule</th>
+                        <th />
+                        <th>
+                          {mappingOptions.labels.profilePropertyRule.singular}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {mappingOptions.profilePropertyRules.known.map(
+                        (key, idx) => (
+                          <tr key={`known-mapping-${idx}`}>
+                            <td>
+                              <Form.Control
+                                as="select"
+                                required={false}
+                                value={destination.mapping[key] || ""}
+                                onChange={(e) =>
+                                  updateMapping(key, e.target["value"])
+                                }
+                              >
+                                <option disabled value={""}>
+                                  choose a profile property rule
+                                </option>
+                                {profilePropertyRules.map((rule) => (
+                                  <option key={`opt-known-${rule.guid}`}>
+                                    {rule.key}
+                                  </option>
+                                ))}
+                              </Form.Control>
+                            </td>
+                            <td style={{ textAlign: "center" }}>---></td>
+                            <td>
+                              <Badge variant="secondary">{key}</Badge>
+                            </td>
+                          </tr>
+                        )
+                      )}
+                    </tbody>
+                  </Table>
+                ) : (
+                  <p>None</p>
+                )}
+
+                <br />
+
+                <h3>
+                  Optional {mappingOptions.labels.profilePropertyRule.plural}
+                </h3>
+
+                <Table size="sm">
+                  <thead>
+                    <tr>
+                      <th>Grouparoo Profile Property Rule</th>
+                      <th />
+                      <th>
+                        {mappingOptions.labels.profilePropertyRule.singular}
+                      </th>
+                      <th />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {optionalMappingKeys.map((key, idx) => (
+                      <tr key={`optional-mapping-${idx}`}>
                         <td>
                           <Form.Control
                             as="select"
-                            required={true}
+                            required={false}
                             value={destination.mapping[key] || ""}
                             onChange={(e) =>
-                              updateMapping(key, e.target["value"])
+                              updateMapping(
+                                e.target["value"],
+                                e.target["value"],
+                                key
+                              )
                             }
                           >
                             <option disabled value={""}>
                               choose a profile property rule
                             </option>
                             {profilePropertyRules.map((rule) => (
-                              <option key={`opt-required-${rule.guid}`}>
+                              <option key={`opt-optional-${rule.guid}`}>
                                 {rule.key}
                               </option>
                             ))}
@@ -288,269 +393,168 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                         </td>
                         <td style={{ textAlign: "center" }}>---></td>
                         <td>
-                          <Badge variant="secondary">{key}</Badge>
+                          <Form.Control
+                            required
+                            type="text"
+                            value={key}
+                            onChange={(e) =>
+                              updateMapping(
+                                e.target["value"],
+                                destination.mapping[key],
+                                key
+                              )
+                            }
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {mappingOptions.labels.profilePropertyRule.singular}{" "}
+                            is required
+                          </Form.Control.Feedback>
+                        </td>
+                        <td>
+                          <Button
+                            size="sm"
+                            variant="danger"
+                            onClick={() => {
+                              updateMapping(null, null, key);
+                            }}
+                          >
+                            X
+                          </Button>
                         </td>
                       </tr>
-                    )
-                  )}
-                </tbody>
-              </Table>
-            ) : (
-              <p>None</p>
-            )}
+                    ))}
+                  </tbody>
+                </Table>
+                <Button
+                  size="sm"
+                  variant="primary"
+                  disabled={profilePropertyRules.length === 0}
+                  onClick={() => {
+                    updateMapping("new mapping", "");
+                  }}
+                >
+                  Add new {mappingOptions.labels.profilePropertyRule.singular}
+                </Button>
 
-            <br />
+                <br />
+                <br />
 
-            <p>
-              <strong style={{ textDecoration: "underline" }}>
-                Known {mappingOptions.labels.profilePropertyRule.plural}
-              </strong>
-            </p>
-            {mappingOptions.profilePropertyRules.known.length > 0 ? (
-              <Table size="sm">
-                <thead>
-                  <tr>
-                    <th>Grouparoo Profile Property Rule</th>
-                    <th />
-                    <th>
-                      {mappingOptions.labels.profilePropertyRule.singular}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {mappingOptions.profilePropertyRules.known.map((key, idx) => (
-                    <tr key={`known-mapping-${idx}`}>
-                      <td>
-                        <Form.Control
-                          as="select"
-                          required={false}
-                          value={destination.mapping[key] || ""}
-                          onChange={(e) =>
-                            updateMapping(key, e.target["value"])
-                          }
-                        >
-                          <option disabled value={""}>
-                            choose a profile property rule
-                          </option>
-                          {profilePropertyRules.map((rule) => (
-                            <option key={`opt-known-${rule.guid}`}>
-                              {rule.key}
-                            </option>
-                          ))}
-                        </Form.Control>
-                      </td>
-                      <td style={{ textAlign: "center" }}>---></td>
-                      <td>
-                        <Badge variant="secondary">{key}</Badge>
-                      </td>
+                <h3>{mappingOptions.labels.group.plural}</h3>
+
+                <Table size="sm">
+                  <thead>
+                    <tr>
+                      <th>Grouparoo Group</th>
+                      <th />
+                      <th>{mappingOptions.labels.group.singular}</th>
+                      <th />
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
-            ) : (
-              <p>None</p>
-            )}
-
-            <br />
-
-            <p style={{ textDecoration: "underline" }}>
-              <strong>
-                Optional {mappingOptions.labels.profilePropertyRule.plural}
-              </strong>
-            </p>
-
-            <Table size="sm">
-              <thead>
-                <tr>
-                  <th>Grouparoo Profile Property Rule</th>
-                  <th />
-                  <th>{mappingOptions.labels.profilePropertyRule.singular}</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {optionalMappingKeys.map((key, idx) => (
-                  <tr key={`optional-mapping-${idx}`}>
-                    <td>
-                      <Form.Control
-                        as="select"
-                        required={false}
-                        value={destination.mapping[key] || ""}
-                        onChange={(e) =>
-                          updateMapping(
-                            e.target["value"],
-                            e.target["value"],
-                            key
-                          )
-                        }
-                      >
-                        <option disabled value={""}>
-                          choose a profile property rule
-                        </option>
-                        {profilePropertyRules.map((rule) => (
-                          <option key={`opt-optional-${rule.guid}`}>
-                            {rule.key}
-                          </option>
-                        ))}
-                      </Form.Control>
-                    </td>
-                    <td style={{ textAlign: "center" }}>---></td>
-                    <td>
-                      <Form.Control
-                        required
-                        type="text"
-                        value={key}
-                        onChange={(e) =>
-                          updateMapping(
-                            e.target["value"],
-                            destination.mapping[key],
-                            key
-                          )
-                        }
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {mappingOptions.labels.profilePropertyRule.singular} is
-                        required
-                      </Form.Control.Feedback>
-                    </td>
-                    <td>
-                      <Button
-                        size="sm"
-                        variant="danger"
-                        onClick={() => {
-                          updateMapping(null, null, key);
-                        }}
-                      >
-                        X
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-            <Button
-              size="sm"
-              variant="primary"
-              disabled={profilePropertyRules.length === 0}
-              onClick={() => {
-                updateMapping("new mapping", "");
-              }}
-            >
-              Add new {mappingOptions.labels.profilePropertyRule.singular}
-            </Button>
-
-            <br />
-            <br />
-
-            <p>
-              <strong style={{ textDecoration: "underline" }}>
-                {mappingOptions.labels.group.plural}
-              </strong>
-            </p>
-
-            <Table size="sm">
-              <thead>
-                <tr>
-                  <th>Grouparoo Group</th>
-                  <th />
-                  <th>{mappingOptions.labels.group.singular}</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {destination.destinationGroupMemberships.map(
-                  ({ groupName, groupGuid, remoteKey }, idx) => (
-                    <tr key={`optional-mapping-${idx}`}>
-                      <td>
-                        <Form.Control
-                          as="select"
-                          required={false}
-                          value={groupGuid}
-                          onChange={(e) =>
-                            updateDestinationGroupMembership(
-                              e.target["value"],
-                              null,
-                              groupGuid
-                            )
-                          }
-                        >
-                          <option disabled value={""}>
-                            choose a group
-                          </option>
-                          {groups.map((group) => (
-                            <option
-                              value={group.guid}
-                              key={`group-remote-mapping-${group.guid}`}
+                  </thead>
+                  <tbody>
+                    {destination.destinationGroupMemberships.map(
+                      ({ groupName, groupGuid, remoteKey }, idx) => (
+                        <tr key={`optional-mapping-${idx}`}>
+                          <td>
+                            <Form.Control
+                              as="select"
+                              required={false}
+                              value={groupGuid}
+                              onChange={(e) =>
+                                updateDestinationGroupMembership(
+                                  e.target["value"],
+                                  null,
+                                  groupGuid
+                                )
+                              }
                             >
-                              {group.name}
-                            </option>
-                          ))}
-                        </Form.Control>
-                      </td>
-                      <td style={{ textAlign: "center" }}>---></td>
-                      <td>
-                        <Form.Control
-                          required
-                          type="text"
-                          value={remoteKey}
-                          onChange={(e) =>
-                            updateDestinationGroupMembership(
-                              groupGuid,
-                              e.target["value"]
-                            )
-                          }
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {mappingOptions.labels.group.singular} is required
-                        </Form.Control.Feedback>
-                      </td>
-                      <td>
-                        <Button
-                          size="sm"
-                          variant="danger"
-                          onClick={() => {
-                            updateDestinationGroupMembership(
-                              null,
-                              null,
-                              groupGuid
-                            );
-                          }}
-                        >
-                          X
-                        </Button>
-                      </td>
-                    </tr>
-                  )
-                )}
-              </tbody>
-            </Table>
-            <Button
-              size="sm"
-              variant="primary"
-              disabled={
-                groupsAvailalbeForDestinationGroupMemberships.length === 0
-              }
-              onClick={() => {
-                updateDestinationGroupMembership(
-                  groupsAvailalbeForDestinationGroupMemberships[0].guid,
-                  groupsAvailalbeForDestinationGroupMemberships[0].name
-                );
-              }}
-            >
-              Add new {mappingOptions.labels.group.singular}
-            </Button>
-          </Col>
-        </Row>
+                              <option disabled value={""}>
+                                choose a group
+                              </option>
+                              {groups.map((group) => (
+                                <option
+                                  value={group.guid}
+                                  key={`group-remote-mapping-${group.guid}`}
+                                >
+                                  {group.name}
+                                </option>
+                              ))}
+                            </Form.Control>
+                          </td>
+                          <td style={{ textAlign: "center" }}>---></td>
+                          <td>
+                            <Form.Control
+                              required
+                              type="text"
+                              value={remoteKey}
+                              onChange={(e) =>
+                                updateDestinationGroupMembership(
+                                  groupGuid,
+                                  e.target["value"]
+                                )
+                              }
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              {mappingOptions.labels.group.singular} is required
+                            </Form.Control.Feedback>
+                          </td>
+                          <td>
+                            <Button
+                              size="sm"
+                              variant="danger"
+                              onClick={() => {
+                                updateDestinationGroupMembership(
+                                  null,
+                                  null,
+                                  groupGuid
+                                );
+                              }}
+                            >
+                              X
+                            </Button>
+                          </td>
+                        </tr>
+                      )
+                    )}
+                  </tbody>
+                </Table>
+                <Button
+                  size="sm"
+                  variant="primary"
+                  disabled={
+                    groupsAvailalbeForDestinationGroupMemberships.length === 0
+                  }
+                  onClick={() => {
+                    updateDestinationGroupMembership(
+                      groupsAvailalbeForDestinationGroupMemberships[0].guid,
+                      groupsAvailalbeForDestinationGroupMemberships[0].name
+                    );
+                  }}
+                >
+                  Add new {mappingOptions.labels.group.singular}
+                </Button>
+              </Col>
+            </Row>
 
-        <Row>
-          <Col>
-            <br />
-            <Button type="submit" variant="warning">
-              Save Destination Data
-            </Button>
-          </Col>
-        </Row>
-      </Form>
+            <Row>
+              <Col>
+                <br />
+                <hr />
+                <Button type="submit" variant="warning">
+                  Save Destination Data
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        </Col>
+        <Col md={3}>
+          <ProfilePreview
+            apiVersion={apiVersion}
+            errorHandler={errorHandler}
+            mappingOptions={mappingOptions}
+            destination={destination}
+          />
+        </Col>
+      </Row>
     </>
   );
 }

@@ -22,6 +22,7 @@ import { Mapping } from "./Mapping";
 import { Option } from "./Option";
 import { Profile } from "./Profile";
 import { Group } from "./Group";
+import { GroupMember } from "./GroupMember";
 import { Import } from "./Import";
 import { Export } from "./Export";
 import { DestinationGroup } from "./DestinationGroup";
@@ -387,6 +388,36 @@ export class Destination extends LoggedModel<Destination> {
       appOptions,
       destination: this,
       destinationOptions,
+    });
+  }
+
+  async profilePreview(
+    profile: Profile,
+    mapping: MappingHelper.Mappings,
+    destinationGroupMemberships: {
+      [groupGuid: string]: string;
+    }
+  ) {
+    const profileProperties = await profile.properties();
+    const mappingKeys = Object.keys(mapping);
+    const mappedProfileProperties = {};
+    mappingKeys.forEach((k) => {
+      mappedProfileProperties[k] = profileProperties[mapping[k]];
+    });
+
+    const groups = await profile.$get("groups");
+    const mappedGroupNames = groups
+      .filter((group) =>
+        Object.keys(destinationGroupMemberships).includes(group.guid)
+      )
+      .map((group) => destinationGroupMemberships[group.guid])
+      .sort();
+
+    const apiData = await profile.apiData();
+
+    return Object.assign(apiData, {
+      properties: mappedProfileProperties,
+      groupNames: mappedGroupNames,
     });
   }
 
