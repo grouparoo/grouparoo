@@ -450,7 +450,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                     </Button>
                   </>
                 ) : (
-                  <p>none</p>
+                  <p>None</p>
                 )}
 
                 <br />
@@ -569,6 +569,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             errorHandler={errorHandler}
             mappingOptions={mappingOptions}
             destination={destination}
+            groups={groups}
+            trackedGroupGuid={trackedGroupGuid}
           />
         </Col>
       </Row>

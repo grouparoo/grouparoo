@@ -142,21 +142,6 @@ export default function ({
       return self.indexOf(value) === index;
     });
 
-  async function toggleDestinationGroup(group, add) {
-    const path = `/api/${apiVersion}/destination/${guid}/${
-      add ? "track" : "unTrack"
-    }`;
-    const response = await execApi("post", path, { groupGuid: group.guid });
-    if (response) {
-      successHandler.set({ message: "Group Updated" });
-      await load();
-    }
-  }
-
-  const destinationGroupGuids = destination.destinationGroups.map(
-    (dsg) => dsg.guid
-  );
-
   return (
     <>
       <h2>Edit Destination</h2>

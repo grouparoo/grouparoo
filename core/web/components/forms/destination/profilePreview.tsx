@@ -7,6 +7,8 @@ export default function ProfilePreview({
   apiVersion,
   errorHandler,
   destination,
+  groups,
+  trackedGroupGuid,
   mappingOptions,
 }) {
   const [profileGuid, setProfileGuid] = useState("");
@@ -32,15 +34,21 @@ export default function ProfilePreview({
     };
   }, [
     destination.guid,
+    trackedGroupGuid,
     JSON.stringify(destination.destinationGroups),
     JSON.stringify(destination.mapping),
     JSON.stringify(destination.destinationGroupMemberships),
   ]);
 
+  console.log(destination);
+
   async function load() {
     setSleeping(true);
 
-    if (!destination.destinationGroups[0]?.guid) {
+    if (
+      !destination.destinationGroups[0]?.guid &&
+      trackedGroupGuid === "_none"
+    ) {
       return;
     }
 
@@ -53,11 +61,16 @@ export default function ProfilePreview({
           (destinationGroupMembershipsObject[dgm.groupGuid] = dgm.remoteKey)
       );
 
+      const groupGuid =
+        destination.trackAllGroups || trackedGroupGuid === "_all"
+          ? groups[0].guid
+          : destination.destinationGroups[0]?.guid || trackedGroupGuid;
+
       const response = await execApi(
         "get",
         `/api/${apiVersion}/destination/${destination.guid}/profilePreview`,
         {
-          groupGuid: destination.destinationGroups[0].guid,
+          groupGuid,
           mapping: destination.mapping,
           destinationGroupMemberships: destinationGroupMembershipsObject,
           profileGuid: profileGuid === "" ? undefined : profileGuid,
