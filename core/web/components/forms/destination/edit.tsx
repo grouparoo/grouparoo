@@ -15,7 +15,6 @@ export default function ({
 }) {
   const { execApi } = useApi(errorHandler);
   const [connectionOptions, setConnectionOptions] = useState([]);
-  const [preview, setPreview] = useState([]);
   const [destination, setDestination] = useState({
     guid: "",
     name: "",
@@ -26,7 +25,6 @@ export default function ({
     app: { name: "", guid: "", icon: "" },
     connection: { name: "", description: "", options: [] },
     destinationGroups: [],
-    previewAvailable: false,
   });
   const { guid } = query;
 
@@ -50,41 +48,15 @@ export default function ({
     if (destinationResponse?.destination) {
       setDestination(destinationResponse.destination);
     }
-
-    await loadPreview(destinationResponse.destination.previewAvailable);
-  }
-
-  async function loadPreview(previewAvailable = destination.previewAvailable) {
-    if (!previewAvailable) {
-      return;
-    }
-
-    const response = await execApi(
-      "get",
-      `/api/${apiVersion}/destination/${guid}/preview`,
-      {
-        options:
-          Object.keys(destination.options).length > 0
-            ? destination.options
-            : null,
-      },
-      null,
-      null,
-      false
-    );
-    if (response?.preview) {
-      setPreview(response.preview);
-    }
   }
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    const state = destination.previewAvailable ? undefined : "ready";
 
     const response = await execApi(
       "put",
       `/api/${apiVersion}/destination/${guid}`,
-      Object.assign({}, destination, { state })
+      Object.assign({}, destination, { state: "ready" })
     );
     if (response?.destination) {
       successHandler.set({ message: "Destination updated" });
@@ -131,16 +103,7 @@ export default function ({
         ? event.target.checked
         : event.target.value;
     setDestination(_destination);
-    loadPreview();
   };
-
-  // not every row returned is guaranteed to have the same columns
-  const previewColumns = preview
-    .map((row) => Object.keys(row))
-    .flat()
-    .filter((value, index, self) => {
-      return self.indexOf(value) === index;
-    });
 
   return (
     <>
@@ -243,33 +206,6 @@ export default function ({
                 </Form.Group>
               );
             })}
-
-            <br />
-            <br />
-            <h3>Data Preview</h3>
-
-            {previewColumns.length === 0 ? <p>No preview</p> : null}
-
-            <div style={{ overflow: "auto" }}>
-              <Table striped size="sm">
-                <thead>
-                  <tr>
-                    {previewColumns.map((col) => (
-                      <th key={`head-${col}`}>{col}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {preview.map((row, i) => (
-                    <tr key={`row-${i}`}>
-                      {previewColumns.map((col, j) => (
-                        <td key={`table-${i}-${j}`}>{row[col]}</td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </div>
 
             <br />
             <br />
