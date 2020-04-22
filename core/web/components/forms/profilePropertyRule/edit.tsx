@@ -69,7 +69,8 @@ export default function ({
     setLoading(true);
     const response = await execApi(
       "get",
-      `/api/${apiVersion}/profilePropertyRules`
+      `/api/${apiVersion}/profilePropertyRules`,
+      { state: "ready" }
     );
     setLoading(false);
     if (response?.profilePropertyRules) {
@@ -374,7 +375,6 @@ export default function ({
                             return -1;
                           }
                         })
-                        .filter((ppr) => ppr.state !== "draft")
                         .map((ppr) => (
                           <Fragment key={`var-badge-${ppr.key}`}>
                             <Badge variant="light">{`{{ ${ppr.key} }}`}</Badge>
