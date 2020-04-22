@@ -14,7 +14,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
     },
     profilePropertyRules: {
       required: ["primary id"],
-      known: [],
+      known: ["secondary id"],
       allowOptionalFromProfilePropertyRules: true,
     },
   };

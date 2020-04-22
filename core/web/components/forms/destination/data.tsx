@@ -96,9 +96,16 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const update = async (event) => {
     event.preventDefault();
 
+    const filteredMapping = {};
+    for (const k in destination.mapping) {
+      if (destination.mapping[k] && destination.mapping[k] !== "") {
+        filteredMapping[k] = destination.mapping[k];
+      }
+    }
+
     // update mapping
     await execApi("put", `/api/${apiVersion}/destination/${guid}`, {
-      mapping: destination.mapping,
+      mapping: filteredMapping,
     });
 
     // handle tracking
@@ -206,7 +213,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
               <Col>
                 <h2>
                   Who should be sent to{" "}
-                  <Badge variant="primary">{destination.name}</Badge>?
+                  <span className="text-primary">{destination.name}</span>?
                 </h2>
                 <Form.Control
                   as="select"
@@ -240,7 +247,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
               <Col>
                 <h2>
                   What data do you want in{" "}
-                  <Badge variant="primary">{destination.name}</Badge>?
+                  <span className="text-primary">{destination.name}</span>?
                 </h2>
 
                 <br />
@@ -325,9 +332,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                                   updateMapping(key, e.target["value"])
                                 }
                               >
-                                <option disabled value={""}>
-                                  choose a profile property rule
-                                </option>
+                                <option value={""}>None</option>
+                                <option disabled>---</option>
                                 {profilePropertyRules.map((rule) => (
                                   <option key={`opt-known-${rule.guid}`}>
                                     {rule.key}
@@ -354,87 +360,98 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                   Optional {mappingOptions.labels.profilePropertyRule.plural}
                 </h3>
 
-                <Table size="sm">
-                  <thead>
-                    <tr>
-                      <th>Grouparoo Profile Property Rule</th>
-                      <th />
-                      <th>
-                        {mappingOptions.labels.profilePropertyRule.singular}
-                      </th>
-                      <th />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {optionalMappingKeys.map((key, idx) => (
-                      <tr key={`optional-mapping-${idx}`}>
-                        <td>
-                          <Form.Control
-                            as="select"
-                            required={false}
-                            value={destination.mapping[key] || ""}
-                            onChange={(e) =>
-                              updateMapping(
-                                e.target["value"],
-                                e.target["value"],
-                                key
-                              )
-                            }
-                          >
-                            <option disabled value={""}>
-                              choose a profile property rule
-                            </option>
-                            {profilePropertyRules.map((rule) => (
-                              <option key={`opt-optional-${rule.guid}`}>
-                                {rule.key}
-                              </option>
-                            ))}
-                          </Form.Control>
-                        </td>
-                        <td style={{ textAlign: "center" }}>---></td>
-                        <td>
-                          <Form.Control
-                            required
-                            type="text"
-                            value={key}
-                            onChange={(e) =>
-                              updateMapping(
-                                e.target["value"],
-                                destination.mapping[key],
-                                key
-                              )
-                            }
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {mappingOptions.labels.profilePropertyRule.singular}{" "}
-                            is required
-                          </Form.Control.Feedback>
-                        </td>
-                        <td>
-                          <Button
-                            size="sm"
-                            variant="danger"
-                            onClick={() => {
-                              updateMapping(null, null, key);
-                            }}
-                          >
-                            X
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-                <Button
-                  size="sm"
-                  variant="primary"
-                  disabled={profilePropertyRules.length === 0}
-                  onClick={() => {
-                    updateMapping("new mapping", "");
-                  }}
-                >
-                  Add new {mappingOptions.labels.profilePropertyRule.singular}
-                </Button>
+                {mappingOptions.profilePropertyRules
+                  .allowOptionalFromProfilePropertyRules ? (
+                  <>
+                    <Table size="sm">
+                      <thead>
+                        <tr>
+                          <th>Grouparoo Profile Property Rule</th>
+                          <th />
+                          <th>
+                            {mappingOptions.labels.profilePropertyRule.singular}
+                          </th>
+                          <th />
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {optionalMappingKeys.map((key, idx) => (
+                          <tr key={`optional-mapping-${idx}`}>
+                            <td>
+                              <Form.Control
+                                as="select"
+                                required={false}
+                                value={destination.mapping[key] || ""}
+                                onChange={(e) =>
+                                  updateMapping(
+                                    e.target["value"],
+                                    e.target["value"],
+                                    key
+                                  )
+                                }
+                              >
+                                <option disabled value={""}>
+                                  choose a profile property rule
+                                </option>
+                                {profilePropertyRules.map((rule) => (
+                                  <option key={`opt-optional-${rule.guid}`}>
+                                    {rule.key}
+                                  </option>
+                                ))}
+                              </Form.Control>
+                            </td>
+                            <td style={{ textAlign: "center" }}>---></td>
+                            <td>
+                              <Form.Control
+                                required
+                                type="text"
+                                value={key}
+                                onChange={(e) =>
+                                  updateMapping(
+                                    e.target["value"],
+                                    destination.mapping[key],
+                                    key
+                                  )
+                                }
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {
+                                  mappingOptions.labels.profilePropertyRule
+                                    .singular
+                                }{" "}
+                                is required
+                              </Form.Control.Feedback>
+                            </td>
+                            <td>
+                              <Button
+                                size="sm"
+                                variant="danger"
+                                onClick={() => {
+                                  updateMapping(null, null, key);
+                                }}
+                              >
+                                X
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                    <Button
+                      size="sm"
+                      variant="primary"
+                      disabled={profilePropertyRules.length === 0}
+                      onClick={() => {
+                        updateMapping("new mapping", "");
+                      }}
+                    >
+                      Add new{" "}
+                      {mappingOptions.labels.profilePropertyRule.singular}
+                    </Button>
+                  </>
+                ) : (
+                  <p>none</p>
+                )}
 
                 <br />
                 <br />
