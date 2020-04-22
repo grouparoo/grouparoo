@@ -56,6 +56,7 @@ export const DEFAULT = {
         { path: "/:apiVersion/destination/:guid/columns", action: "destination:columns" },
         { path: "/:apiVersion/destination/:guid", action: "destination:view" },
         { path: "/:apiVersion/destination/:guid/connectionOptions", action: "destination:connectionOptions" },
+        { path: "/:apiVersion/destination/:guid/mappingOptions", action: "destination:mappingOptions" },
         { path: "/:apiVersion/destination/:guid/preview", action: "destination:preview" },
         { path: "/:apiVersion/files", action: "files:list" },
         { path: "/:apiVersion/files/options", action: "files:options" },

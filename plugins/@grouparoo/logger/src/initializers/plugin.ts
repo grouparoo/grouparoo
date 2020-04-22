@@ -5,6 +5,7 @@ import { test } from "./../lib/test";
 import { appOptions } from "./../lib/appOptions";
 import { exportProfile } from "./../lib/export/exportProfile";
 import { destinationOptions } from "../lib/export/destinationOptions";
+import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 
 const packageJSON = require("./../../package.json");
 
@@ -47,6 +48,7 @@ export class Plugins extends Initializer {
           methods: {
             exportProfile,
             destinationOptions,
+            destinationMappingOptions,
           },
         },
       ],

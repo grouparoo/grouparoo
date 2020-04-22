@@ -197,13 +197,31 @@ export class DestinationConnectionOptions extends Action {
     this.outputExample = {};
     this.middleware = ["authenticated-team-member", "role-read"];
     this.inputs = {
-      guid: { required: false },
+      guid: { required: true },
     };
   }
 
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
     response.options = await destination.destinationConnectionOptions();
+  }
+}
+
+export class DestinationMappingOptions extends Action {
+  constructor() {
+    super();
+    this.name = "destination:mappingOptions";
+    this.description = "return option choices from this destination mapping";
+    this.outputExample = {};
+    this.middleware = ["authenticated-team-member", "role-read"];
+    this.inputs = {
+      guid: { required: true },
+    };
+  }
+
+  async run({ params, response }) {
+    const destination = await Destination.findByGuid(params.guid);
+    response.mappingOptions = await destination.destinationMappingOptions();
   }
 }
 

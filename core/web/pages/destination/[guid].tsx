@@ -2,8 +2,7 @@ import TabbedContainer from "../../components/layouts/tabbedContainer";
 import { Fragment, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import DestinationEditForm from "../../components/forms/destination/edit";
-import DestinationMappings from "../../components/forms/destination/mapping";
-import DestinationGroups from "../../components/forms/destination/groups";
+import DestinationData from "../../components/forms/destination/data";
 import ExportsList from "../../components/lists/exports";
 import { useApi } from "./../../hooks/useApi";
 
@@ -39,7 +38,7 @@ export default function (props) {
       errorHandler={props.errorHandler}
       apiVersion={props.apiVersion}
       type="destination"
-      defaultTab={destination.state === "draft" ? "edit" : "groups"}
+      defaultTab={destination.state === "draft" ? "edit" : "data"}
       query={props.query}
     >
       <Fragment key="edit">
@@ -52,9 +51,8 @@ export default function (props) {
       </Fragment>
 
       {destination.state !== "draft" ? (
-        <Fragment key="groups">
-          <h1>Groups</h1>
-          <DestinationGroups {...props} />
+        <Fragment key="data">
+          <DestinationData {...props} />
         </Fragment>
       ) : null}
 
@@ -64,11 +62,6 @@ export default function (props) {
           <ExportsList {...props} />
         </Fragment>
       ) : null}
-
-      <Fragment key="mapping">
-        <h1>Mapping</h1>
-        <DestinationMappings {...props} />
-      </Fragment>
     </TabbedContainer>
   );
 }

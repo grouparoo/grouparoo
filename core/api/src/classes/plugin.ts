@@ -21,9 +21,7 @@ export {
   PluginConnectionProfilePropertyRuleOption,
   ProfilePropertyRuleFiltersWithKey,
 } from "../models/ProfilePropertyRule";
-
 export { PluginConnectionScheduleOption } from "../models/Schedule";
-
 export { SimpleAppOptions } from "../models/App";
 export { SimpleSourceOptions } from "../models/Source";
 export { SimpleDestinationOptions } from "../models/Destination";
@@ -84,6 +82,7 @@ export interface PluginConnection {
     profileProperty?: ProfilePropertyPluginMethod;
     nextFilter?: NextFilterPluginMethod;
     destinationOptions?: DestinationOptionsMethod;
+    destinationMappingOptions?: DestinationMappingOptionsMethod;
     exportProfile?: ExportProfilePluginMethod;
   };
 }
@@ -269,5 +268,35 @@ export interface DestinationOptionsMethodResponse {
     type: string;
     options?: string[];
     descriptions?: string[];
+  };
+}
+
+/**
+ * Method to return the details of how this destination wants to map it's profile property rules
+ */
+export interface DestinationMappingOptionsMethod {
+  (argument: {
+    app: App;
+    appOptions: SimpleAppOptions;
+    destination: Destination;
+    destinationOptions: SimpleDestinationOptions;
+  }): Promise<DestinationMappingOptionsMethodResponse>;
+}
+
+export interface DestinationMappingOptionsMethodResponse {
+  profilePropertyRules: {
+    required: Array<string>; // ['email']
+    known: Array<string>; // ['extid']
+    allowOptionalFromProfilePropertyRules: boolean;
+  };
+  labels: {
+    profilePropertyRule: {
+      singular: string; // merge var
+      plural: string; // merge vars
+    };
+    group: {
+      singular: string; // mailchimp tag
+      plural: string; // mailchimp tags
+    };
   };
 }

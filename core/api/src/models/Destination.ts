@@ -25,6 +25,7 @@ import { Group } from "./Group";
 import { Import } from "./Import";
 import { Export } from "./Export";
 import { DestinationGroup } from "./DestinationGroup";
+import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import { ExportProfilePluginMethod } from "../classes/plugin";
 import { plugin } from "../modules/plugin";
 import { Op } from "sequelize";
@@ -32,7 +33,7 @@ import { OptionHelper } from "./../modules/optionHelper";
 import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
 
-export interface DestinationMappings extends MappingHelper.Mappings {}
+export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 
 const STATE_TRANSITIONS = [
@@ -77,6 +78,9 @@ export class Destination extends LoggedModel<Destination> {
 
   @HasMany(() => DestinationGroup)
   destinationGroups: DestinationGroup[];
+
+  @HasMany(() => DestinationGroupMembership)
+  destinationGroupMemberships: DestinationGroupMembership[];
 
   @BelongsToMany(() => Group, () => DestinationGroup)
   groups: Group[];
@@ -188,6 +192,13 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @AfterDestroy
+  static async destroyDestinationGroupMemberships(instance: Destination) {
+    return DestinationGroupMembership.destroy({
+      where: { destinationGuid: instance.guid },
+    });
+  }
+
+  @AfterDestroy
   static async destroyDestinationGroups(instance: Destination) {
     // need to go 1-by-1 for callbacks
     const destinationGroups = await instance.$get("destinationGroups");
@@ -228,7 +239,7 @@ export class Destination extends LoggedModel<Destination> {
     return MappingHelper.getMapping(this);
   }
 
-  async setMapping(mappings: DestinationMappings) {
+  async setMapping(mappings: DestinationMapping) {
     return MappingHelper.setMapping(this, mappings);
   }
 
@@ -307,6 +318,26 @@ export class Destination extends LoggedModel<Destination> {
     }
 
     return pluginConnection.methods.destinationOptions({ app, appOptions });
+  }
+
+  async destinationMappingOptions() {
+    const { pluginConnection } = await this.getPlugin();
+    const app = await this.$get("app");
+    const appOptions = await app.getOptions();
+    const destinationOptions = await this.getOptions();
+
+    if (!pluginConnection.methods.destinationMappingOptions) {
+      throw new Error(
+        `cannot return destination mapping options for ${this.type}`
+      );
+    }
+
+    return pluginConnection.methods.destinationMappingOptions({
+      app,
+      appOptions,
+      destination: this,
+      destinationOptions,
+    });
   }
 
   async exportProfile(

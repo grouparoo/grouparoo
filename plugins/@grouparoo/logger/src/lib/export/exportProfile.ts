@@ -26,7 +26,9 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     }) + "\r\n";
 
   if (appOptions.stdout?.toString() === "true") {
-    log(`[ logger destination ] ${line}`);
+    log(
+      `[ logger destination ] ${newProfileProperties["primary id"]} --->  ${line}`
+    );
   }
 
   await new Promise((resolve, reject) => {
