@@ -88,8 +88,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       "get",
       `/api/${apiVersion}/destination/${guid}/mappingOptions`
     );
-    if (response?.mappingOptions) {
-      setMappingOptions(response.mappingOptions);
+    if (response?.options) {
+      setMappingOptions(response.options);
     }
   }
 

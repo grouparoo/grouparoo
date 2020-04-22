@@ -240,7 +240,7 @@ export class DestinationMappingOptions extends Action {
 
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
-    response.mappingOptions = await destination.destinationMappingOptions();
+    response.options = await destination.destinationMappingOptions();
   }
 }
 
@@ -315,18 +315,18 @@ export class DestinationProfilePreview extends Action {
       groupGuid: { required: false },
       profileGuid: { required: false },
       mapping: { required: false },
-      destinationGroupMemberships: { required: true },
+      destinationGroupMemberships: { required: false },
     };
   }
 
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
-    const group = await Group.findByGuid(params.groupGuid);
 
     let profile: Profile;
     if (params.profileGuid) {
       profile = await Profile.findByGuid(params.profileGuid);
     } else {
+      const group = await Group.findByGuid(params.groupGuid);
       const groupMember = await GroupMember.findOne({
         where: { groupGuid: group.guid },
       });

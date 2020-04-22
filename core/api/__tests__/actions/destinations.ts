@@ -1,6 +1,8 @@
 import { helper } from "./../utils/specHelper";
 import { specHelper } from "actionhero";
 import { Destination } from "./../../src/models/Destination";
+import { Group } from "./../../src/models/Group";
+import { Profile } from "./../../src/models/Profile";
 
 let actionhero;
 let app;
@@ -23,6 +25,7 @@ describe("actions/destinations", () => {
       password: "P@ssw0rd!",
       email: "mario@example.com",
     });
+    await helper.factories.profilePropertyRules();
   });
 
   describe("administrator signed in", () => {
@@ -87,9 +90,9 @@ describe("actions/destinations", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(connectionApps.length).toBe(1);
-      expect(connectionApps[0].app.guid).toBe(app.guid);
-      expect(connectionApps[0].connection.name).toBe("test-plugin-export");
+      expect(connectionApps.length).toBe(2); // this one + the app created for the profile property rules
+      expect(connectionApps[1].app.guid).toBe(app.guid);
+      expect(connectionApps[1].connection.name).toBe("test-plugin-export");
     });
 
     test("an administrator can list all the destinations", async () => {
@@ -123,95 +126,230 @@ describe("actions/destinations", () => {
       expect(destination.app.name).toBe("test app");
     });
 
-    test("an administrator can add a group to be tracked", async () => {
-      const group = await helper.factories.group();
-
-      connection.params = {
-        csrfToken,
-        guid,
-        groupGuid: group.guid,
-      };
-      const { error } = await specHelper.runAction(
-        "destination:trackGroup",
-        connection
-      );
-      expect(error).toBeUndefined();
-
-      connection.params = {
-        csrfToken,
-        guid,
-      };
-      const { destination } = await specHelper.runAction(
-        "destination:view",
-        connection
-      );
-      expect(destination.destinationGroups.length).toBe(1);
-      expect(destination.destinationGroups[0].guid).toBe(group.guid);
-    });
-
-    test("an administrator can list and remove a tracked group", async () => {
-      connection.params = {
-        csrfToken,
-        guid,
-      };
-      const { destination } = await specHelper.runAction(
-        "destination:view",
-        connection
-      );
-      expect(destination.destinationGroups.length).toBe(1);
-
-      connection.params = {
-        csrfToken,
-        guid,
-        groupGuid: destination.destinationGroups[0].guid,
-      };
-      const { error } = await specHelper.runAction(
-        "destination:unTrackGroup",
-        connection
-      );
-      expect(error).toBeUndefined();
-    });
-
     test("an administrator can see connectionOptions", async () => {
       connection.params = {
         csrfToken,
         guid,
       };
-      const { options } = await specHelper.runAction(
+      const { options, error } = await specHelper.runAction(
         "destination:connectionOptions",
         connection
       );
+      expect(error).toBeFalsy();
       expect(options).toEqual({
         table: { type: "list", options: ["users_out"] },
       });
     });
 
-    test("an administrator cannot see a destination preview with no options set", async () => {
+    test("an administrator can see mappingOptions", async () => {
       connection.params = {
         csrfToken,
         guid,
       };
-      const { preview } = await specHelper.runAction(
-        "destination:preview",
+      const { options, error } = await specHelper.runAction(
+        "destination:mappingOptions",
         connection
       );
-      expect(preview).toEqual([]);
+      expect(error).toBeFalsy();
+      expect(options).toEqual({
+        labels: {
+          group: {
+            singular: "list",
+            plural: "lists",
+          },
+          profilePropertyRule: {
+            singular: "var",
+            plural: "vars",
+          },
+        },
+        profilePropertyRules: {
+          required: [{ key: "primary-id", type: "any" }],
+          known: [{ key: "secondary-id", type: "any" }],
+          allowOptionalFromProfilePropertyRules: true,
+        },
+      });
     });
 
-    test("an administrator cannot see a destination preview with options provided", async () => {
+    test("an administrator can set the mapping with valid mappings", async () => {
       connection.params = {
         csrfToken,
         guid,
-        options: { table: "aaa", where: "aaa" },
+        mapping: {
+          "primary-id": "userId",
+          "something-else": "email",
+        },
       };
-      const { preview } = await specHelper.runAction(
-        "destination:preview",
+      const { destination, error } = await specHelper.runAction(
+        "destination:edit",
         connection
       );
-      expect(preview).toEqual([
-        { fname: "mario", id: 1, lname: "mario" },
-        { fname: "luigi", id: 2, lname: "mario" },
-      ]);
+      expect(error).toBeFalsy();
+      expect(destination.mapping).toEqual({
+        "primary-id": "userId",
+        "something-else": "email",
+      });
+    });
+
+    test("an administrator cannot set the mapping with invalid mappings", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+        mapping: {
+          "something-else": "email",
+        },
+      };
+      const { error } = await specHelper.runAction(
+        "destination:edit",
+        connection
+      );
+      expect(error.message).toMatch(
+        /primary-id is a required destination mapping option/
+      );
+    });
+
+    describe("with group", () => {
+      let group: Group;
+      let profile: Profile;
+      beforeAll(async () => {
+        profile = await helper.factories.profile();
+        await profile.addOrUpdateProperties({
+          userId: 1,
+          email: "yoshi@example.com",
+        });
+
+        group = await helper.factories.group();
+        await group.addProfile(profile);
+      });
+
+      test("an administrator can add a group to be tracked", async () => {
+        connection.params = {
+          csrfToken,
+          guid,
+          groupGuid: group.guid,
+        };
+        const { error } = await specHelper.runAction(
+          "destination:trackGroup",
+          connection
+        );
+        expect(error).toBeUndefined();
+
+        connection.params = {
+          csrfToken,
+          guid,
+        };
+        const { destination } = await specHelper.runAction(
+          "destination:view",
+          connection
+        );
+        expect(destination.destinationGroups.length).toBe(1);
+        expect(destination.destinationGroups[0].guid).toBe(group.guid);
+      });
+
+      test("an administrator can set the destination group memberships", async () => {
+        const destinationGroupMemberships = {};
+        destinationGroupMemberships[group.guid] = "remote-group-tag";
+
+        connection.params = {
+          csrfToken,
+          guid,
+          destinationGroupMemberships,
+        };
+        const { destination, error } = await specHelper.runAction(
+          "destination:edit",
+          connection
+        );
+        expect(error).toBeFalsy();
+        expect(destination.destinationGroupMemberships).toEqual([
+          {
+            groupGuid: group.guid,
+            groupName: group.name,
+            remoteKey: "remote-group-tag",
+          },
+        ]);
+      });
+
+      test("an administrator can get a preview of a profile to be exported to a destination, existing mapping & destinationGroupMemberships + no profile", async () => {
+        connection.params = {
+          csrfToken,
+          guid,
+          groupGuid: group.guid,
+        };
+        const { error, profile: _profile } = await specHelper.runAction(
+          "destination:profilePreview",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(_profile.properties["primary-id"].value).toBe(1);
+        expect(_profile.properties["something-else"].value).toBe(
+          "yoshi@example.com"
+        );
+        expect(_profile.groupNames).toEqual(["remote-group-tag"]);
+      });
+
+      test("an administrator can get a preview of a profile to be exported to a destination, existing mapping & destinationGroupMemberships + profile", async () => {
+        connection.params = {
+          csrfToken,
+          guid,
+          profileGuid: profile.guid,
+        };
+        const { error, profile: _profile } = await specHelper.runAction(
+          "destination:profilePreview",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(_profile.properties["primary-id"].value).toBe(1);
+        expect(_profile.properties["something-else"].value).toBe(
+          "yoshi@example.com"
+        );
+        expect(_profile.groupNames).toEqual(["remote-group-tag"]);
+      });
+
+      test("an administrator can get a preview of a profile to be exported to a destination, updated mapping & destinationGroupMemberships", async () => {
+        const destinationGroupMemberships = {};
+        destinationGroupMemberships[group.guid] = "another-group-tag";
+
+        connection.params = {
+          csrfToken,
+          guid,
+          profileGuid: profile.guid,
+          destinationGroupMemberships,
+          mapping: {
+            "primary-id": "userId",
+            email: "email",
+          },
+        };
+        const { error, profile: _profile } = await specHelper.runAction(
+          "destination:profilePreview",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(_profile.properties["primary-id"].value).toBe(1);
+        expect(_profile.properties["email"].value).toBe("yoshi@example.com");
+        expect(_profile.groupNames).toEqual(["another-group-tag"]);
+      });
+
+      test("an administrator can list and remove a tracked group", async () => {
+        connection.params = {
+          csrfToken,
+          guid,
+        };
+        const { destination } = await specHelper.runAction(
+          "destination:view",
+          connection
+        );
+        expect(destination.destinationGroups.length).toBe(1);
+
+        connection.params = {
+          csrfToken,
+          guid,
+          groupGuid: destination.destinationGroups[0].guid,
+        };
+        const { error } = await specHelper.runAction(
+          "destination:unTrackGroup",
+          connection
+        );
+        expect(error).toBeUndefined();
+      });
     });
 
     test("an administrator can destroy a destination", async () => {

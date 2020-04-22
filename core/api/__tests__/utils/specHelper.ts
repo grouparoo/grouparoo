@@ -228,16 +228,7 @@ export namespace helper {
             profiles: async () => {
               return { importsCount: 0, nextHighWaterMark: 0 };
             },
-            profileProperty: async ({
-              app,
-              appOptions,
-              source,
-              sourceOptions,
-              sourceMapping,
-              profilePropertyRule,
-              profilePropertyRuleOptions,
-              profile,
-            }) => {
+            profileProperty: async ({ profilePropertyRule, profile }) => {
               const data = {
                 userId: new Date().getTime(),
                 isVIP: true,
@@ -266,6 +257,25 @@ export namespace helper {
             },
             destinationOptions: async () => {
               return { table: { type: "list", options: ["users_out"] } };
+            },
+            destinationMappingOptions: async () => {
+              return {
+                labels: {
+                  group: {
+                    singular: "list",
+                    plural: "lists",
+                  },
+                  profilePropertyRule: {
+                    singular: "var",
+                    plural: "vars",
+                  },
+                },
+                profilePropertyRules: {
+                  required: [{ key: "primary-id", type: "any" }],
+                  known: [{ key: "secondary-id", type: "any" }],
+                  allowOptionalFromProfilePropertyRules: true,
+                },
+              };
             },
           },
         },

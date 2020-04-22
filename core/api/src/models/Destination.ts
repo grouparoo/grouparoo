@@ -339,6 +339,10 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async validateMappings(mappings: { [groupGuid: string]: string }) {
+    if (Object.keys(mappings).length === 0) {
+      return;
+    }
+
     const destinationMappingOptions = await this.destinationMappingOptions();
     const cachedProfilePropertyRules = await ProfilePropertyRule.cached();
 
