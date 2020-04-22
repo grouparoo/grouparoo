@@ -33,6 +33,7 @@ import { Op } from "sequelize";
 import { OptionHelper } from "./../modules/optionHelper";
 import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
+import { ProfilePropertyRule } from "./ProfilePropertyRule";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -248,6 +249,7 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async setMapping(mappings: DestinationMapping) {
+    await this.validateMappings(mappings);
     return MappingHelper.setMapping(this, mappings);
   }
 
@@ -287,10 +289,6 @@ export class Destination extends LoggedModel<Destination> {
   async setDestinationGroupMemberships(newDestinationGroupMemberships: {
     [groupGuid: string]: string;
   }) {
-    // TODO: Validations
-    // - remote key names
-    // - remote key types matching profile property types
-
     const transaction = await api.sequelize.transaction();
 
     await DestinationGroupMembership.destroy({
@@ -338,6 +336,42 @@ export class Destination extends LoggedModel<Destination> {
       groupGuid: group.guid,
       destinationGuid: this.guid,
     });
+  }
+
+  async validateMappings(mappings: { [groupGuid: string]: string }) {
+    const destinationMappingOptions = await this.destinationMappingOptions();
+    const cachedProfilePropertyRules = await ProfilePropertyRule.cached();
+
+    // required
+    for (const i in destinationMappingOptions.profilePropertyRules.required) {
+      const opt = destinationMappingOptions.profilePropertyRules.required[i];
+      if (!mappings[opt.key]) {
+        throw new Error(`${opt.key} is a required destination mapping option`);
+      }
+      const profilePropertyRule = cachedProfilePropertyRules[mappings[opt.key]];
+      if (opt.type !== "any") {
+        if (profilePropertyRule.type !== opt.type) {
+          throw new Error(
+            `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
+          );
+        }
+      }
+    }
+
+    // known
+    for (const i in destinationMappingOptions.profilePropertyRules.known) {
+      const opt = destinationMappingOptions.profilePropertyRules.known[i];
+      const profilePropertyRule = cachedProfilePropertyRules[mappings[opt.key]];
+      if (opt.type !== "any") {
+        if (profilePropertyRule.type !== opt.type) {
+          throw new Error(
+            `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
+          );
+        }
+      }
+    }
+
+    // optional rule can't be validated...
   }
 
   async unTrackGroup() {

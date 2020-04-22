@@ -304,7 +304,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                             </td>
                             <td style={{ textAlign: "center" }}>---></td>
                             <td>
-                              <Badge variant="secondary">{key}</Badge>
+                              <Badge variant="secondary">{key}</Badge>{" "}
+                              <span className="text-muted">({type})</span>
                             </td>
                           </tr>
                         )
@@ -359,7 +360,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                             </td>
                             <td style={{ textAlign: "center" }}>---></td>
                             <td>
-                              <Badge variant="secondary">{key}</Badge>
+                              <Badge variant="secondary">{key}</Badge>{" "}
+                              <span className="text-muted">({type})</span>
                             </td>
                           </tr>
                         )
