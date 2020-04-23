@@ -187,7 +187,6 @@ export default function ({
     const _profilePropertyRule = Object.assign({}, profilePropertyRule);
     _profilePropertyRule.options[key] = value;
     setProfilePropertyRule(_profilePropertyRule);
-    console.log({ value });
   }
 
   function addRule() {
@@ -304,77 +303,87 @@ export default function ({
                   <code>{opt.key}</code>: <small>{opt.description}</small>
                 </p>
 
-                {/* 
-                <Dropdown>
-                  <Dropdown.Toggle id="options-dropdown">
-                    {opt?.key?.value ? opt.key.value : opt.key}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    {opt?.options?.map((col) => (
-                      <Dropdown.Item
-                        key={col.key}
-                        eventKey={col.key}
-                        onSelect={() => updateOption(opt.key, col.key)}
-                      >
-                        {col.key}
-                      </Dropdown.Item>
-                    ))}
-                  </Dropdown.Menu>
-                </Dropdown> */}
-
-                {/* list options */}
-                {opt.type === "list" ? (
+                {/* typeahead options */}
+                {opt.type === "typeahead" ? (
                   <Typeahead
                     id="typeahead"
                     labelKey="key"
                     onChange={(selected) => {
-                      updateOption(opt.key, selected[0]);
+                      if (selected.length === 1 && selected[0].key) {
+                        updateOption(opt.key, selected[0].key);
+                      }
                     }}
-                    options={opt?.options?.map((col) => col.key)}
+                    options={opt?.options}
                     placeholder="Select a column"
-
-                    // defaultSelected={profilePropertyRule.options[opt?.key]}
-
-                    // add examples?
+                    renderMenuItemChildren={(opt, props, idx) => {
+                      return [
+                        <span key={`opt-${idx}-key`}>
+                          {opt.key}
+                          <br />
+                        </span>,
+                        <small
+                          key={`opt-${idx}-examples`}
+                          className="text-small"
+                        >
+                          <em>
+                            Examples:{" "}
+                            {opt.examples
+                              ? opt.examples.slice(0, 3).join("").trim() !== ""
+                                ? opt.examples.slice(0, 3).join(", ")
+                                : "None"
+                              : null}
+                          </em>
+                        </small>,
+                      ];
+                    }}
+                    defaultSelected={
+                      profilePropertyRule.options.length > 0
+                        ? [profilePropertyRule.options[opt?.key]]
+                        : []
+                    }
                   ></Typeahead>
-                ) : // <Table bordered striped size="sm" variant="light">
-                //   <thead>
-                //     <tr>
-                //       <th></th>
-                //       <th>Key</th>
-                //       {opt?.options[0]?.description ? (
-                //         <th>Description</th>
-                //       ) : null}
-                //       {opt?.options[0]?.examples ? <th>Examples</th> : null}
-                //     </tr>
-                //   </thead>
-                //   <tbody>
-                //     {opt?.options?.map((col) => (
-                //       <tr key={`source-${col.key}`}>
-                //         <td>
-                //           <Form.Check
-                //             inline
-                //             type="radio"
-                //             name={opt.key}
-                //             defaultChecked={
-                //               profilePropertyRule.options[opt.key] === col.key
-                //             }
-                //             onClick={() => updateOption(opt.key, col.key)}
-                //           />
-                //         </td>
-                //         <td>
-                //           <strong>{col.key}</strong>
-                //         </td>
-                //         {col.description ? <td>{col.description}</td> : null}
+                ) : null}
 
-                //         {col.examples ? (
-                //           <td>{col.examples.slice(0, 3).join(", ")}</td>
-                //         ) : null}
-                //       </tr>
-                //     ))}
-                //   </tbody>
-                // </Table>
-                null}
+                {/* list options */}
+                {opt.type === "list" ? (
+                  <Table bordered striped size="sm" variant="light">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Key</th>
+                        {opt?.options[0]?.description ? (
+                          <th>Description</th>
+                        ) : null}
+                        {opt?.options[0]?.examples ? <th>Examples</th> : null}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {opt?.options?.map((col) => (
+                        <tr key={`source-${col.key}`}>
+                          <td>
+                            <Form.Check
+                              inline
+                              type="radio"
+                              name={opt.key}
+                              defaultChecked={
+                                profilePropertyRule.options[opt.key] === col.key
+                              }
+                              onClick={() => updateOption(opt.key, col.key)}
+                            />
+                          </td>
+                          <td>
+                            <strong>{col.key}</strong>
+                          </td>
+                          {col.description ? <td>{col.description}</td> : null}
+
+                          {col.examples ? (
+                            <td>{col.examples.slice(0, 3).join(", ")}</td>
+                          ) : null}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                ) : null}
 
                 {/* textarea options */}
                 {opt.type === "text" ? (
