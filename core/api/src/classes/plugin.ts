@@ -21,9 +21,7 @@ export {
   PluginConnectionProfilePropertyRuleOption,
   ProfilePropertyRuleFiltersWithKey,
 } from "../models/ProfilePropertyRule";
-
 export { PluginConnectionScheduleOption } from "../models/Schedule";
-
 export { SimpleAppOptions } from "../models/App";
 export { SimpleSourceOptions } from "../models/Source";
 export { SimpleDestinationOptions } from "../models/Destination";
@@ -84,7 +82,7 @@ export interface PluginConnection {
     profileProperty?: ProfilePropertyPluginMethod;
     nextFilter?: NextFilterPluginMethod;
     destinationOptions?: DestinationOptionsMethod;
-    destinationPreview?: DestinationPreviewMethod;
+    destinationMappingOptions?: DestinationMappingOptionsMethod;
     exportProfile?: ExportProfilePluginMethod;
   };
 }
@@ -274,17 +272,31 @@ export interface DestinationOptionsMethodResponse {
 }
 
 /**
- * Given SimpleDestinationOptions, render a preview of the data present in the destination.
+ * Method to return the details of how this destination wants to map it's profile property rules
  */
-export interface DestinationPreviewMethod {
+export interface DestinationMappingOptionsMethod {
   (argument: {
     app: App;
     appOptions: SimpleAppOptions;
     destination: Destination;
     destinationOptions: SimpleDestinationOptions;
-  }): Promise<Array<DestinationPreviewMethodResponseRow>>;
+  }): Promise<DestinationMappingOptionsMethodResponse>;
 }
 
-export interface DestinationPreviewMethodResponseRow {
-  [column: string]: any;
+export interface DestinationMappingOptionsMethodResponse {
+  profilePropertyRules: {
+    required: Array<{ key: string; type: string }>;
+    known: Array<{ key: string; type: string }>;
+    allowOptionalFromProfilePropertyRules: boolean;
+  };
+  labels: {
+    profilePropertyRule: {
+      singular: string; // merge var
+      plural: string; // merge vars
+    };
+    group: {
+      singular: string; // mailchimp tag
+      plural: string; // mailchimp tags
+    };
+  };
 }

@@ -81,7 +81,7 @@ describe("tasks/profile:export", () => {
           ],
           connections: [
             {
-              name: "import-from-test-template-app",
+              name: "export-from-test-template-app",
               description: "a test app connection",
               app: "test-template-app",
               direction: "export",
@@ -89,6 +89,25 @@ describe("tasks/profile:export", () => {
               methods: {
                 exportProfile: async () => {
                   return true;
+                },
+                destinationMappingOptions: async () => {
+                  return {
+                    labels: {
+                      group: {
+                        singular: "list",
+                        plural: "lists",
+                      },
+                      profilePropertyRule: {
+                        singular: "var",
+                        plural: "vars",
+                      },
+                    },
+                    profilePropertyRules: {
+                      required: [],
+                      known: [],
+                      allowOptionalFromProfilePropertyRules: true,
+                    },
+                  };
                 },
               },
             },
@@ -103,7 +122,7 @@ describe("tasks/profile:export", () => {
 
         destination = await Destination.create({
           name: "test destination",
-          type: "import-from-test-template-app",
+          type: "export-from-test-template-app",
           appGuid: app.guid,
         });
         await destination.setMapping({
@@ -112,6 +131,11 @@ describe("tasks/profile:export", () => {
           lastName: "lastName",
         });
         await destination.trackGroup(group);
+        const destinationGroupMemberships = {};
+        destinationGroupMemberships[group.guid] = group.name;
+        await destination.setDestinationGroupMemberships(
+          destinationGroupMemberships
+        );
         await destination.update({ state: "ready" });
 
         await api.resque.queue.connection.redis.flushdb();

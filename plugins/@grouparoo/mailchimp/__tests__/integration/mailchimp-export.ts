@@ -121,6 +121,7 @@ describe("integration/runs/mailchimp", () => {
         FNAME: "firstName",
         LNAME: "lastName",
       },
+      state: "ready",
     };
     const buildDestinationResponse = await specHelper.runAction(
       "destination:create",
@@ -143,7 +144,7 @@ describe("integration/runs/mailchimp", () => {
     expect(test.error).toBeUndefined();
   });
 
-  test("we can read the mailchimp options", async () => {
+  test("we can read the mailchimp connection options", async () => {
     session.params = {
       csrfToken,
       guid: destination.guid,
@@ -162,31 +163,41 @@ describe("integration/runs/mailchimp", () => {
     });
   });
 
-  test("we can preview mailchimp the selected list", async () => {
+  test("we can read the mailchimp mapping options", async () => {
     session.params = {
       csrfToken,
       guid: destination.guid,
     };
-    const { error, preview } = await specHelper.runAction(
-      "destination:preview",
+    const { error, options } = await specHelper.runAction(
+      "destination:mappingOptions",
       session
     );
     expect(error).toBeUndefined();
-    expect(preview).toEqual([
-      {
-        ADDRESS: "",
-        COOL: "",
-        FNAME: "Luigi",
-        LNAME: "Mario",
-        LTV: "",
-        PHONE: "",
-        USERID: 100,
-        email_address: "luigi@grouparoo.com",
+    expect(options).toEqual({
+      labels: {
+        profilePropertyRule: {
+          singular: "Mailchimp Merge Var",
+          plural: "Mailchimp Merge Vars",
+        },
+        group: { singular: "Mailchimp Tag", plural: "Mailchimp Tags" },
       },
-    ]);
+      profilePropertyRules: {
+        required: [{ key: "email_address", type: "email" }],
+        known: [
+          { key: "ADDRESS", type: "any" },
+          { key: "COOL", type: "any" },
+          { key: "FNAME", type: "any" },
+          { key: "LNAME", type: "any" },
+          { key: "LTV", type: "any" },
+          { key: "PHONE", type: "any" },
+          { key: "USERID", type: "any" },
+        ],
+        allowOptionalFromProfilePropertyRules: false,
+      },
+    });
   });
 
-  test("create the test group", async () => {
+  test("create the test group and set the destination group membership", async () => {
     group = await helper.factories.group();
     await group.update({
       name: "mailchimp people",
@@ -194,6 +205,30 @@ describe("integration/runs/mailchimp", () => {
       type: "calculated",
     });
     await group.setRules([{ key: "email", match: "%@%", op: "iLike" }]);
+    await group.update({ state: "ready" });
+  });
+
+  test(`the destination group membership can be set`, async () => {
+    const destinationGroupMemberships = {};
+    destinationGroupMemberships[group.guid] = group.name;
+
+    session.params = {
+      csrfToken,
+      guid: destination.guid,
+      destinationGroupMemberships,
+    };
+    const { error, destination: _destination } = await specHelper.runAction(
+      "destination:edit",
+      session
+    );
+    expect(error).toBeUndefined();
+    expect(_destination.destinationGroupMemberships).toEqual([
+      {
+        groupGuid: group.guid,
+        groupName: "mailchimp people",
+        remoteKey: "mailchimp people",
+      },
+    ]);
   });
 
   test("a profile can be exported", async () => {
@@ -209,7 +244,6 @@ describe("integration/runs/mailchimp", () => {
     );
     expect(response.email_address).toBe("luigi@grouparoo.com");
     expect(response.status).toBe("subscribed");
-    expect(response.tags.map((t) => t.name)).toEqual(["mailchimp people"]);
     expect(response.merge_fields).toEqual({
       FNAME: "Luigi",
       LNAME: "Mario",
@@ -219,5 +253,6 @@ describe("integration/runs/mailchimp", () => {
       LTV: "",
       COOL: "",
     });
+    expect(response.tags.map((t) => t.name)).toEqual(["mailchimp people"]);
   });
 });

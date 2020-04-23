@@ -5,7 +5,11 @@ import { Log } from "../../src/models/Log";
 import { Destination } from "../../src/models/Destination";
 import { Group } from "../../src/models/Group";
 import { Export } from "../../src/models/Export";
+import { Mapping } from "../../src/models/Mapping";
+import { Option } from "../../src/models/Option";
+import { DestinationGroupMembership } from "../../src/models/DestinationGroupMembership";
 import { plugin } from "../../src/modules/plugin";
+import { DestinationGroup } from "../../src/models/DestinationGroup";
 let actionhero;
 let api;
 
@@ -105,6 +109,45 @@ describe("models/destination", () => {
       expect(latestLog).toBeTruthy();
     });
 
+    test("deleting a destination deletes related models", async () => {
+      const group = await helper.factories.group();
+      destination = await Destination.create({
+        name: "bye destination",
+        type: "test-plugin-export",
+        appGuid: app.guid,
+      });
+
+      await destination.setOptions({ table: "table" });
+      await destination.setMapping({ "primary-id": "userId" });
+      await destination.trackGroup(group);
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[group.guid] = "remote-tag";
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      await destination.destroy();
+
+      let count = await DestinationGroupMembership.count({
+        where: { destinationGuid: destination.guid },
+      });
+      expect(count).toBe(0);
+      count = await Option.count({
+        where: { ownerGuid: destination.guid },
+      });
+      expect(count).toBe(0);
+      count = await Mapping.count({
+        where: { ownerGuid: destination.guid },
+      });
+      expect(count).toBe(0);
+      count = await DestinationGroup.count({
+        where: { destinationGuid: destination.guid },
+      });
+      expect(count).toBe(0);
+
+      await group.destroy();
+    });
+
     test("deleting a destination creates a log entry and enqueued a destroyExports task", async () => {
       destination = await Destination.create({
         name: "bye destination",
@@ -138,27 +181,6 @@ describe("models/destination", () => {
       });
     });
 
-    test("a destination can see a preview of a destination with and without providing options", async () => {
-      let preview = await destination.destinationPreview();
-      expect(preview).toEqual([]);
-
-      await destination.setOptions({ table: "test", where: "test" });
-      preview = await destination.destinationPreview();
-      expect(preview).toEqual([
-        { fname: "mario", id: 1, lname: "mario" },
-        { fname: "luigi", id: 2, lname: "mario" },
-      ]);
-
-      preview = await destination.destinationPreview({
-        table: "other",
-        where: "stuff",
-      });
-      expect(preview).toEqual([
-        { fname: "mario", id: 1, lname: "mario" },
-        { fname: "luigi", id: 2, lname: "mario" },
-      ]);
-    });
-
     describe("validations", () => {
       test("options must match the app options (extra options needed by connection)", async () => {
         destination = new Destination({
@@ -183,15 +205,35 @@ describe("models/destination", () => {
         );
       });
 
+      test("required mappings must be included in the mappings", async () => {
+        destination = await helper.factories.destination();
+        await expect(
+          destination.setMapping({
+            local_first_name: "firstName",
+          })
+        ).rejects.toThrow(/primary-id is a required/);
+      });
+
+      test("required mappings with a type can only use profile properties that match the type", async () => {
+        destination = await helper.factories.destination();
+        await expect(
+          destination.setMapping({
+            "primary-id": "email",
+          })
+        ).rejects.toThrow(
+          /primary-id requires a profile property rule of type integer/
+        );
+      });
+
       test("mappings must map to profilePropertyRules", async () => {
         destination = await helper.factories.destination();
         await destination.setMapping({
-          local_user_id: "userId",
+          "primary-id": "userId",
           local_first_name: "firstName",
         });
         const mapping = await destination.getMapping();
         expect(mapping).toEqual({
-          local_user_id: "userId",
+          "primary-id": "userId",
           local_first_name: "firstName",
         });
       });
@@ -200,7 +242,7 @@ describe("models/destination", () => {
         destination = await helper.factories.destination();
         await expect(
           destination.setMapping({
-            local_user_id: "TheUserID",
+            "primary-id": "TheUserID",
           })
         ).rejects.toThrow(/cannot find profile property rule TheUserID/);
       });
@@ -281,10 +323,21 @@ describe("models/destination", () => {
 
       test("a group cannot be added twice", async () => {
         await destination.trackGroup(group);
+        await destination.trackGroup(group);
         const groups = await destination.$get("groups");
-        await expect(destination.trackGroup(group)).rejects.toThrow(
-          /Validation error/
-        );
+        expect(groups.length).toBe(1);
+      });
+
+      test("a destination can only track a single group", async () => {
+        const newGroup = await helper.factories.group();
+
+        await destination.trackGroup(group);
+        await destination.trackGroup(newGroup);
+        const groups = await destination.$get("groups");
+        expect(groups.length).toBe(1);
+        expect(groups[0].guid).toBe(newGroup.guid);
+
+        await newGroup.destroy();
       });
 
       test("a group can be unTracked", async () => {
@@ -292,7 +345,7 @@ describe("models/destination", () => {
         let groups = await destination.$get("groups");
         expect(groups.length).toBe(1);
 
-        await destination.unTrackGroup(group);
+        await destination.unTrackGroups();
         groups = await destination.$get("groups");
         expect(groups.length).toBe(0);
       });
@@ -308,7 +361,7 @@ describe("models/destination", () => {
 
         await api.resque.queue.connection.redis.flushdb();
         await destination.setMapping({
-          local_user_id_: "userId",
+          "primary-id": "userId",
           local_first_name_: "firstName",
         });
 
@@ -316,13 +369,41 @@ describe("models/destination", () => {
         expect(foundTasks.length).toBe(1);
       });
 
+      test("profilePreview - without updates - with group", async () => {
+        const profile = await helper.factories.profile();
+        await profile.addOrUpdateProperties({
+          userId: 1,
+          email: "yoshi@example.com",
+        });
+        await group.addProfile(profile);
+
+        const mapping = {
+          "primary-id": "userId",
+          email: "email",
+        };
+
+        const destinationGroupMemberships = {};
+        destinationGroupMemberships[group.guid] = "another-group-tag";
+
+        const _profile = await destination.profilePreview(
+          profile,
+          mapping,
+          destinationGroupMemberships
+        );
+        expect(_profile.properties["primary-id"].value).toBe(1);
+        expect(_profile.properties["email"].value).toBe("yoshi@example.com");
+        expect(_profile.groupNames).toEqual(["another-group-tag"]);
+
+        await profile.destroy();
+      });
+
       describe("trackAllGroups", () => {
         test("no groups can be added or removed if the destination is tracking all groups", async () => {
           await destination.update({ trackAllGroups: true });
           await expect(destination.trackGroup(group)).rejects.toThrow(
-            /Validation error/
+            /destination is tracking all groups/
           );
-          await expect(destination.unTrackGroup(group)).rejects.toThrow(
+          await expect(destination.unTrackGroups()).rejects.toThrow(
             /destination is tracking all groups/
           );
         });
@@ -375,7 +456,7 @@ describe("models/destination", () => {
           expect(destinations.length).toBe(1);
           expect(destinations[0].guid).toBe(destination.guid);
 
-          await destination.unTrackGroup(group);
+          await destination.unTrackGroups();
           await group.removeProfile(profile);
         });
 
@@ -553,8 +634,24 @@ describe("models/destination", () => {
             direction: "export",
             options: [],
             methods: {
-              destinationPreview: async () => {
-                return [{ a: 1, b: 2 }];
+              destinationMappingOptions: async () => {
+                return {
+                  labels: {
+                    group: {
+                      singular: "list",
+                      plural: "lists",
+                    },
+                    profilePropertyRule: {
+                      singular: "var",
+                      plural: "vars",
+                    },
+                  },
+                  profilePropertyRules: {
+                    required: [],
+                    known: [],
+                    allowOptionalFromProfilePropertyRules: true,
+                  },
+                };
               },
               exportProfile: async ({
                 app,
@@ -595,22 +692,6 @@ describe("models/destination", () => {
       await app.update({ state: "ready" });
     });
 
-    test("destinations can show a preview", async () => {
-      const destination = await Destination.create({
-        name: "test plugin destination app missing data",
-        type: "export-from-test-template-app",
-        appGuid: app.guid,
-      });
-
-      const previewAvailable = await destination.previewAvailable();
-      expect(previewAvailable).toBe(true);
-
-      const preview = await destination.destinationPreview();
-      expect(preview).toEqual([{ a: 1, b: 2 }]);
-
-      await destination.destroy();
-    });
-
     test("the app exportProfiles method can be called by the destination and exports will be created and mappings followed", async () => {
       await app.setOptions({
         test_key: "abc123",
@@ -631,7 +712,14 @@ describe("models/destination", () => {
       const groupB = await helper.factories.group();
 
       await destination.trackGroup(groupA);
-      await destination.trackGroup(groupB);
+
+      const destinationGroupMemberships = {};
+      // modify the membership name
+      destinationGroupMemberships[groupA.guid] = groupA.name + "+";
+      destinationGroupMemberships[groupB.guid] = groupB.name + "+";
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
 
       const profile = await helper.factories.profile();
       const oldProfileProperties = { email: "oldEmail" };
@@ -661,7 +749,9 @@ describe("models/destination", () => {
         customer_email: "newEmail",
       });
       expect(exportArgs.oldGroups).toEqual([]);
-      expect(exportArgs.newGroups).toEqual(newGroups.map((g) => g.name).sort());
+      expect(exportArgs.newGroups).toEqual(
+        newGroups.map((g) => `${g.name}+`).sort()
+      );
       expect(exportArgs.toDelete).toEqual(false);
 
       const _exports = await Export.findAll({
@@ -682,7 +772,7 @@ describe("models/destination", () => {
       });
       expect(_exports[0].oldGroups).toEqual([]);
       expect(_exports[0].newGroups).toEqual(
-        newGroups.map((g) => g.name).sort()
+        newGroups.map((g) => `${g.name}+`).sort()
       );
       expect(_exports[0].mostRecent).toBe(true);
 
@@ -690,8 +780,7 @@ describe("models/destination", () => {
       expect(exportedImports.length).toBe(1);
       expect(exportedImports[0].guid).toBe(_import.guid);
 
-      await destination.unTrackGroup(groupA);
-      await destination.unTrackGroup(groupB);
+      await destination.unTrackGroups();
       await destination.destroy();
     });
 
@@ -713,6 +802,13 @@ describe("models/destination", () => {
 
       const groupA = await helper.factories.group();
       const groupB = await helper.factories.group();
+
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[groupA.guid] = groupA.name;
+      destinationGroupMemberships[groupB.guid] = groupB.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
 
       const profile = await helper.factories.profile();
       const oldProfileProperties = { email: "oldEmail" };

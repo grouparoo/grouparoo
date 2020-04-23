@@ -1,4 +1,4 @@
-import { task } from "actionhero";
+import { task, api } from "actionhero";
 import {
   Table,
   Column,
@@ -22,17 +22,25 @@ import { Mapping } from "./Mapping";
 import { Option } from "./Option";
 import { Profile } from "./Profile";
 import { Group } from "./Group";
+import { GroupMember } from "./GroupMember";
 import { Import } from "./Import";
 import { Export } from "./Export";
 import { DestinationGroup } from "./DestinationGroup";
+import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import { ExportProfilePluginMethod } from "../classes/plugin";
 import { plugin } from "../modules/plugin";
 import { Op } from "sequelize";
 import { OptionHelper } from "./../modules/optionHelper";
 import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
+import { ProfilePropertyRule } from "./ProfilePropertyRule";
 
-export interface DestinationMappings extends MappingHelper.Mappings {}
+export interface DestinationMapping extends MappingHelper.Mappings {}
+export interface SimpleDestinationGroupMembership {
+  remoteKey: string;
+  groupGuid: string;
+  groupName: string;
+}
 export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 
 const STATE_TRANSITIONS = [
@@ -77,6 +85,9 @@ export class Destination extends LoggedModel<Destination> {
 
   @HasMany(() => DestinationGroup)
   destinationGroups: DestinationGroup[];
+
+  @HasMany(() => DestinationGroupMembership)
+  destinationGroupMemberships: DestinationGroupMembership[];
 
   @BelongsToMany(() => Group, () => DestinationGroup)
   groups: Group[];
@@ -188,6 +199,13 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @AfterDestroy
+  static async destroyDestinationGroupMemberships(instance: Destination) {
+    return DestinationGroupMembership.destroy({
+      where: { destinationGuid: instance.guid },
+    });
+  }
+
+  @AfterDestroy
   static async destroyDestinationGroups(instance: Destination) {
     // need to go 1-by-1 for callbacks
     const destinationGroups = await instance.$get("destinationGroups");
@@ -205,9 +223,9 @@ export class Destination extends LoggedModel<Destination> {
     const app = await this.$get("app");
     const mapping = await this.getMapping();
     const options = await this.getOptions();
+    const destinationGroupMemberships = await this.getDestinationGroupMemberships();
     const groups = await this.$get("groups");
     const { pluginConnection } = await this.getPlugin();
-    const previewAvailable = await this.previewAvailable();
 
     return {
       guid: this.guid,
@@ -218,27 +236,20 @@ export class Destination extends LoggedModel<Destination> {
       trackAllGroups: this.trackAllGroups,
       mapping,
       options,
-      previewAvailable,
       connection: pluginConnection,
       destinationGroups: await Promise.all(groups.map((grp) => grp.apiData())),
+      destinationGroupMemberships,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
-  }
-
-  async previewAvailable() {
-    const { pluginConnection } = await this.getPlugin();
-    if (typeof pluginConnection?.methods?.destinationPreview === "function") {
-      return true;
-    }
-    return false;
   }
 
   async getMapping() {
     return MappingHelper.getMapping(this);
   }
 
-  async setMapping(mappings: DestinationMappings) {
+  async setMapping(mappings: DestinationMapping) {
+    await this.validateMappings(mappings);
     return MappingHelper.setMapping(this, mappings);
   }
 
@@ -259,6 +270,56 @@ export class Destination extends LoggedModel<Destination> {
     return OptionHelper.setOptions(this, options);
   }
 
+  async getDestinationGroupMemberships(): Promise<
+    SimpleDestinationGroupMembership[]
+  > {
+    const destinationGroupMemberships = await DestinationGroupMembership.findAll(
+      { where: { destinationGuid: this.guid }, include: [Group] }
+    );
+
+    return destinationGroupMemberships.map((dgm) => {
+      return {
+        remoteKey: dgm.remoteKey,
+        groupGuid: dgm.group.guid,
+        groupName: dgm.group.name,
+      };
+    });
+  }
+
+  async setDestinationGroupMemberships(newDestinationGroupMemberships: {
+    [groupGuid: string]: string;
+  }) {
+    for (const groupGuid in newDestinationGroupMemberships) {
+      const group = await Group.findByGuid(groupGuid);
+      if (group.state === "draft" || group.state === "deleted") {
+        throw new Error(`group ${group.name} is not ready`);
+      }
+    }
+
+    const transaction = await api.sequelize.transaction();
+
+    await DestinationGroupMembership.destroy({
+      where: {
+        destinationGuid: this.guid,
+      },
+      transaction,
+    });
+
+    for (const groupGuid in newDestinationGroupMemberships) {
+      await DestinationGroupMembership.create(
+        {
+          destinationGuid: this.guid,
+          groupGuid,
+          remoteKey: newDestinationGroupMemberships[groupGuid],
+        },
+        { transaction }
+      );
+    }
+
+    await transaction.commit();
+    return this.getDestinationGroupMemberships();
+  }
+
   async validateOptions(options: SimpleDestinationOptions) {
     if (!options) {
       options = await this.getOptions();
@@ -272,29 +333,72 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async trackGroup(group: Group) {
+    if (this.trackAllGroups) {
+      throw new Error("destination is tracking all groups");
+    }
+
+    await DestinationGroup.destroy({
+      where: { destinationGuid: this.guid },
+    });
+
     return DestinationGroup.create({
       groupGuid: group.guid,
       destinationGuid: this.guid,
     });
   }
 
-  async unTrackGroup(group: Group) {
+  async unTrackGroups() {
     if (this.trackAllGroups) {
       throw new Error("destination is tracking all groups");
     }
 
-    const destinationGroup = await DestinationGroup.findOne({
+    await DestinationGroup.destroy({
       where: {
-        groupGuid: group.guid,
         destinationGuid: this.guid,
       },
     });
+  }
 
-    if (!destinationGroup) {
-      throw new Error("destination group not found");
+  async validateMappings(mappings: { [groupGuid: string]: string }) {
+    if (Object.keys(mappings).length === 0) {
+      return;
     }
 
-    return destinationGroup.destroy();
+    const destinationMappingOptions = await this.destinationMappingOptions();
+    const cachedProfilePropertyRules = await ProfilePropertyRule.cached();
+
+    // required
+    for (const i in destinationMappingOptions.profilePropertyRules.required) {
+      const opt = destinationMappingOptions.profilePropertyRules.required[i];
+      if (!mappings[opt.key]) {
+        throw new Error(`${opt.key} is a required destination mapping option`);
+      }
+      const profilePropertyRule = cachedProfilePropertyRules[mappings[opt.key]];
+      if (opt.type !== "any") {
+        // existence checks will happen within the mapping helper
+        if (profilePropertyRule && profilePropertyRule.type !== opt.type) {
+          throw new Error(
+            `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
+          );
+        }
+      }
+    }
+
+    // known
+    for (const i in destinationMappingOptions.profilePropertyRules.known) {
+      const opt = destinationMappingOptions.profilePropertyRules.known[i];
+      const profilePropertyRule = cachedProfilePropertyRules[mappings[opt.key]];
+      if (opt.type !== "any") {
+        // existence checks will happen within the mapping helper
+        if (profilePropertyRule && profilePropertyRule.type !== opt.type) {
+          throw new Error(
+            `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
+          );
+        }
+      }
+    }
+
+    // optional rule can't be validated...
   }
 
   async parameterizedOptions(): Promise<SimpleDestinationOptions> {
@@ -324,31 +428,53 @@ export class Destination extends LoggedModel<Destination> {
     return pluginConnection.methods.destinationOptions({ app, appOptions });
   }
 
-  async destinationPreview(destinationOptions?: SimpleDestinationOptions) {
-    if (!destinationOptions) {
-      destinationOptions = await this.getOptions();
-    }
-
-    try {
-      // if the options aren't set yet, return an empty array of rows
-      await this.validateOptions(destinationOptions);
-    } catch {
-      return [];
-    }
-
+  async destinationMappingOptions() {
     const { pluginConnection } = await this.getPlugin();
     const app = await this.$get("app");
     const appOptions = await app.getOptions();
+    const destinationOptions = await this.getOptions();
 
-    if (!pluginConnection.methods.destinationPreview) {
-      throw new Error(`cannot return a destination preview for ${this.type}`);
+    if (!pluginConnection.methods.destinationMappingOptions) {
+      throw new Error(
+        `cannot return destination mapping options for ${this.type}`
+      );
     }
 
-    return pluginConnection.methods.destinationPreview({
+    return pluginConnection.methods.destinationMappingOptions({
       app,
       appOptions,
       destination: this,
       destinationOptions,
+    });
+  }
+
+  async profilePreview(
+    profile: Profile,
+    mapping: MappingHelper.Mappings,
+    destinationGroupMemberships: {
+      [groupGuid: string]: string;
+    }
+  ) {
+    const profileProperties = await profile.properties();
+    const mappingKeys = Object.keys(mapping);
+    const mappedProfileProperties = {};
+    mappingKeys.forEach((k) => {
+      mappedProfileProperties[k] = profileProperties[mapping[k]];
+    });
+
+    const groups = await profile.$get("groups");
+    const mappedGroupNames = groups
+      .filter((group) =>
+        Object.keys(destinationGroupMemberships).includes(group.guid)
+      )
+      .map((group) => destinationGroupMemberships[group.guid])
+      .sort();
+
+    const apiData = await profile.apiData();
+
+    return Object.assign(apiData, {
+      properties: mappedProfileProperties,
+      groupNames: mappedGroupNames,
     });
   }
 
@@ -372,6 +498,7 @@ export class Destination extends LoggedModel<Destination> {
 
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);
+    const destinationGroupMemberships = await this.getDestinationGroupMemberships();
 
     const mapping = await this.getMapping();
     const mappingKeys = Object.keys(mapping);
@@ -382,8 +509,31 @@ export class Destination extends LoggedModel<Destination> {
       mappedNewProfileProperties[k] = newProfileProperties[mapping[k]];
     });
 
-    const oldGroupNames = oldGroups.map((g) => g.name);
-    const newGroupNames = newGroups.map((g) => g.name);
+    const oldGroupNames = oldGroups
+      .filter((group) =>
+        destinationGroupMemberships
+          .map((dgm) => dgm.groupGuid)
+          .includes(group.guid)
+      )
+      .map(
+        (group) =>
+          destinationGroupMemberships.filter(
+            (dgm) => dgm.groupGuid === group.guid
+          )[0].remoteKey
+      );
+    const newGroupNames = newGroups
+      .filter((group) =>
+        destinationGroupMemberships
+          .map((dgm) => dgm.groupGuid)
+          .includes(group.guid)
+      )
+      .map(
+        (group) =>
+          destinationGroupMemberships.filter(
+            (dgm) => dgm.groupGuid === group.guid
+          )[0].remoteKey
+      );
+
     const newGroupGuids = newGroups.map((g) => g.guid);
     const destinationGroupGuids = (await this.$get("groups")).map(
       (g) => g.guid

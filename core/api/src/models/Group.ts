@@ -29,6 +29,7 @@ import { ProfileMultipleAssociationShim } from "./ProfileMultipleAssociationShim
 import { ProfileProperty } from "./ProfileProperty";
 import { Destination } from "./Destination";
 import { DestinationGroup } from "./DestinationGroup";
+import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import {
   ProfilePropertyRule,
   profilePropertyRuleJSToSQLType,
@@ -190,12 +191,34 @@ export class Group extends LoggedModel<Group> {
   }
 
   @BeforeDestroy
+  static async checkDestinationGroupMembership(instance: Group) {
+    const count = await DestinationGroupMembership.count({
+      where: { groupGuid: instance.guid },
+    });
+
+    if (count > 0) {
+      throw new Error(
+        `this group still in use by ${count} destinations, cannot delete`
+      );
+    }
+  }
+
+  @AfterDestroy
   static async destroyDestinationGroup(instance: Group) {
     // need to go 1-by-1 for callbacks
     const destinationGroups = await instance.$get("destinationGroups");
     for (const i in destinationGroups) {
       await destinationGroups[i].destroy();
     }
+  }
+
+  @AfterDestroy
+  static async destroyDestinationGroupMembership(instance: Group) {
+    return DestinationGroupMembership.destroy({
+      where: {
+        groupGuid: instance.guid,
+      },
+    });
   }
 
   @AfterDestroy

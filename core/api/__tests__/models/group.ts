@@ -6,8 +6,6 @@ import { Group } from "./../../src/models/Group";
 import { Run } from "./../../src/models/Run";
 import { Import } from "./../../src/models/Import";
 import { GroupMember } from "./../../src/models/GroupMember";
-import { Op } from "sequelize";
-import group from "../factories/group";
 
 let actionhero;
 
@@ -159,7 +157,30 @@ describe("models/group", () => {
           /this group still in use by 1 destinations, cannot delete/
         );
 
-        await destination.unTrackGroup(group);
+        await destination.unTrackGroups();
+        await group.destroy(); // does not throw
+      });
+
+      test("a group cannot be deleted if a destination membership is using it", async () => {
+        const group = await Group.create({
+          name: "tracked group",
+          type: "manual",
+          state: "ready",
+        });
+
+        const destination = await helper.factories.destination();
+        const destinationGroupMemberships = {};
+        destinationGroupMemberships[group.guid] = "remote-tag";
+        await destination.setDestinationGroupMemberships(
+          destinationGroupMemberships
+        );
+
+        await expect(group.destroy()).rejects.toThrow(
+          /this group still in use by 1 destinations, cannot delete/
+        );
+
+        await destination.setDestinationGroupMemberships({});
+
         await group.destroy(); // does not throw
       });
 

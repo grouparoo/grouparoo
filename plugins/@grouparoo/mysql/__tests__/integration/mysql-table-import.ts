@@ -305,6 +305,74 @@ describe("integration/runs/mysql", () => {
     expect(editError).toBeUndefined();
   });
 
+  test("create the test group", async () => {
+    group = await helper.factories.group();
+    await group.update({
+      matchType: "all",
+      type: "calculated",
+    });
+    await group.setRules([
+      {
+        key: "email",
+        match: "%@%",
+        op: "iLike",
+      },
+    ]);
+  });
+
+  test("we can read the mysql mapping options", async () => {
+    session.params = {
+      csrfToken,
+      guid: destination.guid,
+    };
+    const { error, options } = await specHelper.runAction(
+      "destination:mappingOptions",
+      session
+    );
+    expect(error).toBeUndefined();
+    expect(options).toEqual({
+      labels: {
+        profilePropertyRule: {
+          singular: "Exported Profile Property Rule",
+          plural: "Exported Profile Property Rules",
+        },
+        group: { singular: "Exported Groups", plural: "Exported Groups" },
+      },
+      profilePropertyRules: {
+        required: [{ key: "id", type: "any" }],
+        known: [
+          { key: "customer_email", type: "any" },
+          { key: "fname", type: "any" },
+          { key: "lname", type: "any" },
+        ],
+        allowOptionalFromProfilePropertyRules: false,
+      },
+    });
+  });
+
+  test(`the destination group membership can be set`, async () => {
+    const destinationGroupMemberships = {};
+    destinationGroupMemberships[group.guid] = group.name;
+
+    session.params = {
+      csrfToken,
+      guid: destination.guid,
+      destinationGroupMemberships,
+    };
+    const { error, destination: _destination } = await specHelper.runAction(
+      "destination:edit",
+      session
+    );
+    expect(error).toBeUndefined();
+    expect(_destination.destinationGroupMemberships).toEqual([
+      {
+        groupGuid: group.guid,
+        groupName: group.name,
+        remoteKey: group.name,
+      },
+    ]);
+  });
+
   test("the destination can use the new rule in a mapping and be made ready", async () => {
     session.params = {
       csrfToken,
@@ -323,21 +391,6 @@ describe("integration/runs/mysql", () => {
     } = await specHelper.runAction("destination:edit", session);
     expect(error).toBeUndefined();
     expect(destinationResponse.state).toBe("ready");
-  });
-
-  test("create the test group", async () => {
-    group = await helper.factories.group();
-    await group.update({
-      matchType: "all",
-      type: "calculated",
-    });
-    await group.setRules([
-      {
-        key: "email",
-        match: "%@%",
-        op: "iLike",
-      },
-    ]);
   });
 
   test(

@@ -2,18 +2,23 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Card, ListGroup } from "react-bootstrap";
 import Loader from "../../loader";
-import ProfileImageFromEmail from "../../visualizations/profileImageFromEmail";
 
 export default function ProfilePreview({
   apiVersion,
   errorHandler,
-  profilePropertyRule,
+  destination,
+  groups,
+  trackedGroupGuid,
+  mappingOptions,
 }) {
   const [profileGuid, setProfileGuid] = useState("");
   const [toHide, setToHide] = useState(true);
-  const [profile, setProfile] = useState({ guid: "", properties: {} });
+  const [profile, setProfile] = useState({
+    guid: "",
+    properties: {},
+    groupNames: [],
+  });
   const [sleeping, setSleeping] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [debounceCounter, setDebounceCounter] = useState(0);
   const { execApi } = useApi(errorHandler);
 
@@ -28,38 +33,52 @@ export default function ProfilePreview({
       clearTimeout(timer);
     };
   }, [
-    profilePropertyRule.guid,
-    JSON.stringify(profilePropertyRule.options),
-    JSON.stringify(profilePropertyRule.filters),
+    destination.guid,
+    trackedGroupGuid,
+    JSON.stringify(destination.destinationGroups),
+    JSON.stringify(destination.mapping),
+    JSON.stringify(destination.destinationGroupMemberships),
   ]);
+
+  console.log(destination);
 
   async function load() {
     setSleeping(true);
-    setErrorMessage("");
+
+    if (
+      !destination.destinationGroups[0]?.guid &&
+      trackedGroupGuid === "_none"
+    ) {
+      return;
+    }
+
     setDebounceCounter(debounceCounter + 1);
 
     timer = setTimeout(async () => {
+      const destinationGroupMembershipsObject = {};
+      destination.destinationGroupMemberships.forEach(
+        (dgm) =>
+          (destinationGroupMembershipsObject[dgm.groupGuid] = dgm.remoteKey)
+      );
+
+      const groupGuid =
+        destination.trackAllGroups || trackedGroupGuid === "_all"
+          ? groups[0].guid
+          : destination.destinationGroups[0]?.guid || trackedGroupGuid;
+
       const response = await execApi(
         "get",
-        `/api/${apiVersion}/profilePropertyRule/${profilePropertyRule.guid}/profilePreview`,
+        `/api/${apiVersion}/destination/${destination.guid}/profilePreview`,
         {
-          options: profilePropertyRule.options,
-          filters: profilePropertyRule.filters,
+          groupGuid,
+          mapping: destination.mapping,
+          destinationGroupMemberships: destinationGroupMembershipsObject,
           profileGuid: profileGuid === "" ? undefined : profileGuid,
         }
       );
 
       if (response?.profile) {
         setToHide(false);
-        setErrorMessage(
-          response.errorMessage
-            ? response.errorMessage.match(
-                /is required for a profilePropertyRule of type/ // ignore errors about missing options
-              )
-              ? ""
-              : response.errorMessage
-            : ""
-        );
         setProfile(response.profile);
         setProfileGuid(response.profile.guid);
       }
@@ -85,16 +104,6 @@ export default function ProfilePreview({
     }
   }
 
-  let thisProfilePropertyRuleValue: string;
-  const otherProfilePropertyRules = {};
-  for (const i in profile.properties) {
-    if (profile.properties[i].guid === profilePropertyRule.guid) {
-      thisProfilePropertyRuleValue = profile.properties[i]?.value?.toString();
-    } else {
-      otherProfilePropertyRules[i] = profile.properties[i];
-    }
-  }
-
   return (
     <Card bg="info">
       <Card.Body style={{ textAlign: "center", color: "white" }}>
@@ -106,8 +115,6 @@ export default function ProfilePreview({
           </>
         ) : (
           <>
-            <ProfileImageFromEmail email={email} width={100} />
-            <br />
             <Card.Link
               href={`/profile/${profile.guid}`}
               style={{ color: "white" }}
@@ -119,21 +126,31 @@ export default function ProfilePreview({
       </Card.Body>
 
       {sleeping ? null : (
-        <ListGroup variant="flush">
-          <ListGroup.Item
-            variant={errorMessage !== "" ? "danger" : "secondary"}
-          >
-            <strong>{profilePropertyRule.key}</strong>:{" "}
-            {errorMessage !== "" ? errorMessage : thisProfilePropertyRuleValue}
-          </ListGroup.Item>
+        <>
+          <Card.Body style={{ textAlign: "center" }}>
+            <strong>{mappingOptions.labels.profilePropertyRule.plural}</strong>
+          </Card.Body>
 
-          {Object.keys(otherProfilePropertyRules).map((k) => (
-            <ListGroup.Item key={`profile-preview-row-${k}`} variant="info">
-              <strong>{k}</strong>:{" "}
-              {otherProfilePropertyRules[k]?.value?.toString()}
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
+          <ListGroup variant="flush">
+            {Object.keys(profile.properties).map((k) => (
+              <ListGroup.Item key={`profile-prop-${k}`} variant="info">
+                <strong>{k}</strong>: {profile.properties[k]?.value?.toString()}
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+
+          <Card.Body style={{ textAlign: "center" }}>
+            <strong>{mappingOptions.labels.group.plural}</strong>
+          </Card.Body>
+
+          <ListGroup variant="flush">
+            {profile.groupNames.map((groupName) => (
+              <ListGroup.Item key={`profile-prop-${groupName}`} variant="info">
+                <strong>{groupName}</strong>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </>
       )}
     </Card>
   );

@@ -1,7 +1,9 @@
 import { Action, api } from "actionhero";
 import { Destination } from "../models/Destination";
 import { App } from "../models/App";
+import { Profile } from "../models/Profile";
 import { Group } from "../models/Group";
+import { GroupMember } from "../models/GroupMember";
 import { GrouparooPlugin } from "../classes/plugin";
 
 export class DestinationsList extends Action {
@@ -131,6 +133,7 @@ export class DestinationCreate extends Action {
       trackAllGroups: { required: false },
       options: { required: false },
       mapping: { required: false, default: {} },
+      destinationGroupMemberships: { required: false },
     };
   }
 
@@ -148,6 +151,12 @@ export class DestinationCreate extends Action {
 
     if (params.mapping) {
       await destination.setMapping(params.mapping);
+    }
+
+    if (params.destinationGroupMemberships) {
+      await destination.setDestinationGroupMemberships(
+        params.destinationGroupMemberships
+      );
     }
 
     if (params.state) {
@@ -172,18 +181,28 @@ export class DestinationEdit extends Action {
       trackAllGroups: { required: false },
       options: { required: false },
       mapping: { required: false },
+      destinationGroupMemberships: { required: false },
     };
   }
 
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
-    await destination.update(params);
+
     if (params.options) {
       await destination.setOptions(params.options);
     }
+
     if (params.mapping) {
       await destination.setMapping(params.mapping);
     }
+
+    if (params.destinationGroupMemberships) {
+      await destination.setDestinationGroupMemberships(
+        params.destinationGroupMemberships
+      );
+    }
+
+    await destination.update(params);
 
     response.destination = await destination.apiData();
   }
@@ -197,7 +216,7 @@ export class DestinationConnectionOptions extends Action {
     this.outputExample = {};
     this.middleware = ["authenticated-team-member", "role-read"];
     this.inputs = {
-      guid: { required: false },
+      guid: { required: true },
     };
   }
 
@@ -207,27 +226,21 @@ export class DestinationConnectionOptions extends Action {
   }
 }
 
-export class DestinationPreview extends Action {
+export class DestinationMappingOptions extends Action {
   constructor() {
     super();
-    this.name = "destination:preview";
-    this.description = "preview the data from this destination";
+    this.name = "destination:mappingOptions";
+    this.description = "return option choices from this destination mapping";
     this.outputExample = {};
     this.middleware = ["authenticated-team-member", "role-read"];
     this.inputs = {
       guid: { required: true },
-      options: { required: false },
     };
   }
 
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
-
-    const options =
-      typeof params.options === "string"
-        ? JSON.parse(params.options)
-        : params.options;
-    response.preview = await destination.destinationPreview(options);
+    response.options = await destination.destinationMappingOptions();
   }
 }
 
@@ -246,14 +259,7 @@ export class DestinationTrackGroup extends Action {
 
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
-
-    const group = await Group.findOne({
-      where: { guid: params.groupGuid },
-    });
-    if (!group) {
-      throw new Error("group not found");
-    }
-
+    const group = await Group.findByGuid(params.groupGuid);
     await destination.trackGroup(group);
     response.destination = await destination.apiData();
   }
@@ -268,21 +274,12 @@ export class DestinationUnTrackGroup extends Action {
     this.middleware = ["authenticated-team-member", "role-admin"];
     this.inputs = {
       guid: { required: true },
-      groupGuid: { required: true },
     };
   }
 
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
-
-    const group = await Group.findOne({
-      where: { guid: params.groupGuid },
-    });
-    if (!group) {
-      throw new Error("group not found");
-    }
-
-    await destination.unTrackGroup(group);
+    await destination.unTrackGroups();
     response.destination = await destination.apiData();
   }
 }
@@ -302,6 +299,69 @@ export class DestinationView extends Action {
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
     response.destination = await destination.apiData();
+  }
+}
+
+export class DestinationProfilePreview extends Action {
+  constructor() {
+    super();
+    this.name = "destination:profilePreview";
+    this.description =
+      "view a preview of a profile being exported to this destination";
+    this.outputExample = {};
+    this.middleware = ["authenticated-team-member", "role-read"];
+    this.inputs = {
+      guid: { required: true },
+      groupGuid: { required: false },
+      profileGuid: { required: false },
+      mapping: { required: false },
+      destinationGroupMemberships: { required: false },
+    };
+  }
+
+  async run({ params, response }) {
+    const destination = await Destination.findByGuid(params.guid);
+
+    let profile: Profile;
+    if (params.profileGuid) {
+      profile = await Profile.findByGuid(params.profileGuid);
+    } else {
+      const group = await Group.findByGuid(params.groupGuid);
+      const groupMember = await GroupMember.findOne({
+        where: { groupGuid: group.guid },
+      });
+      profile = await Profile.findByGuid(groupMember.profileGuid);
+    }
+
+    let mapping = params.mapping;
+    if (!mapping) {
+      mapping = await destination.getMapping();
+    } else {
+      try {
+        // this is a GET, so we need to parse
+        mapping = JSON.parse(mapping);
+      } catch {}
+    }
+
+    let destinationGroupMemberships = params.destinationGroupMemberships;
+    if (!destinationGroupMemberships) {
+      const destinationGroupMembershipsArray = await destination.getDestinationGroupMemberships();
+      destinationGroupMemberships = {};
+      destinationGroupMembershipsArray.map(
+        (dgm) => (destinationGroupMemberships[dgm.groupGuid] = dgm.remoteKey)
+      );
+    } else {
+      try {
+        // this is a GET, so we need to parse
+        destinationGroupMemberships = JSON.parse(destinationGroupMemberships);
+      } catch {}
+    }
+
+    response.profile = await destination.profilePreview(
+      profile,
+      mapping,
+      destinationGroupMemberships
+    );
   }
 }
 

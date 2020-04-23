@@ -19,7 +19,7 @@ import { profileProperty as queryProfileProperty } from "../lib/query-import/pro
 import { profilePropertyRuleOptions as queryProfilePropertyRuleOptions } from "../lib/query-import/profilePropertyRuleOptions";
 
 import { destinationOptions } from "../lib/export/destinationOptions";
-import { destinationPreview } from "../lib/export/destinationPreview";
+import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 
 const packageJSON = require("./../../package.json");
 
@@ -129,7 +129,7 @@ export class Plugins extends Initializer {
           methods: {
             exportProfile,
             destinationOptions,
-            destinationPreview,
+            destinationMappingOptions,
           },
         },
       ],
