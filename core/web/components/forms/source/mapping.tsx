@@ -215,7 +215,13 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                       <td>
                         <strong>{col}</strong>
                       </td>
-                      <td>
+                      <td
+                        style={{
+                          textOverflow: "ellipsis",
+                          overflow: "hidden",
+                          maxWidth: "400px",
+                        }}
+                      >
                         {preview
                           .map((p) => p[col])
                           .slice(0, 3)

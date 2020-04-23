@@ -6,7 +6,7 @@ export const profilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOpti
     key: "column",
     required: true,
     description: "where the data comes from",
-    type: "list",
+    type: "typeahead",
     options: async (args) => {
       const rows = await sourcePreview(args);
       const columns = Object.keys(rows[0]);

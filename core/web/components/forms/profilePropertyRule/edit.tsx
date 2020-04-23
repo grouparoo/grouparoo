@@ -6,6 +6,7 @@ import Loader from "../../loader";
 import AppIcon from "../../appIcon";
 import StateBadge from "../../stateBadge";
 import ProfilePreview from "./profilePreview";
+import { Typeahead } from "react-bootstrap-typeahead";
 
 export default function ({
   apiVersion,
@@ -14,10 +15,22 @@ export default function ({
   profilePropertyRulesHandler,
   query,
 }) {
+  const defaultPluginOptions: Array<{
+    key: string;
+    description: string;
+    required: boolean;
+    type: string;
+    options: Array<{
+      key: string;
+      description?: string;
+      examples?: Array<any>;
+    }>;
+  }> = [];
+
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [types, setTypes] = useState([]);
-  const [pluginOptions, setPluginOptions] = useState([]);
+  const [pluginOptions, setPluginOptions] = useState(defaultPluginOptions);
   const [filterOptions, setFilterOptions] = useState([]);
   const [profilePropertyRules, setProfilePropertyRules] = useState([]);
   const [profilePropertyRule, setProfilePropertyRule] = useState({
@@ -281,6 +294,47 @@ export default function ({
                   <code>{opt.key}</code>: <small>{opt.description}</small>
                 </p>
 
+                {/* typeahead options */}
+                {opt.type === "typeahead" ? (
+                  <Typeahead
+                    id="typeahead"
+                    labelKey="key"
+                    onChange={(selected) => {
+                      if (selected.length === 1 && selected[0].key) {
+                        updateOption(opt.key, selected[0].key);
+                      }
+                    }}
+                    options={opt?.options}
+                    placeholder="Select a column"
+                    renderMenuItemChildren={(opt, props, idx) => {
+                      return [
+                        <span key={`opt-${idx}-key`}>
+                          {opt.key}
+                          <br />
+                        </span>,
+                        <small
+                          key={`opt-${idx}-examples`}
+                          className="text-small"
+                        >
+                          <em>
+                            Examples:{" "}
+                            {opt.examples
+                              ? opt.examples.slice(0, 3).join("").trim() !== ""
+                                ? opt.examples.slice(0, 3).join(", ")
+                                : "None"
+                              : null}
+                          </em>
+                        </small>,
+                      ];
+                    }}
+                    defaultSelected={
+                      profilePropertyRule.options[opt?.key]
+                        ? [profilePropertyRule.options[opt?.key]]
+                        : undefined
+                    }
+                  ></Typeahead>
+                ) : null}
+
                 {/* list options */}
                 {opt.type === "list" ? (
                   <Table bordered striped size="sm" variant="light">
@@ -301,7 +355,6 @@ export default function ({
                             <Form.Check
                               inline
                               type="radio"
-                              id={col}
                               name={opt.key}
                               defaultChecked={
                                 profilePropertyRule.options[opt.key] === col.key
