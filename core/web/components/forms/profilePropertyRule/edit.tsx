@@ -337,7 +337,7 @@ export default function ({
                       ];
                     }}
                     defaultSelected={
-                      profilePropertyRule.options.length > 0
+                      Object(profilePropertyRule.options).length > 0
                         ? [profilePropertyRule.options[opt?.key]]
                         : []
                     }
