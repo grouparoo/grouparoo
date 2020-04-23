@@ -219,12 +219,19 @@ export class Destination extends LoggedModel<Destination> {
     });
   }
 
-  async apiData() {
-    const app = await this.$get("app");
+  async apiData(includeApp = true, includeGroups = true) {
+    let app: App;
+    let groups: Group[];
+    if (includeApp) {
+      app = await this.$get("app");
+    }
+    if (includeGroups) {
+      groups = await this.$get("groups");
+    }
+
     const mapping = await this.getMapping();
     const options = await this.getOptions();
     const destinationGroupMemberships = await this.getDestinationGroupMemberships();
-    const groups = await this.$get("groups");
     const { pluginConnection } = await this.getPlugin();
 
     return {
@@ -232,12 +239,14 @@ export class Destination extends LoggedModel<Destination> {
       name: this.name,
       type: this.type,
       state: this.state,
-      app: await app.apiData(),
+      app: app ? await app.apiData() : null,
       trackAllGroups: this.trackAllGroups,
       mapping,
       options,
       connection: pluginConnection,
-      destinationGroups: await Promise.all(groups.map((grp) => grp.apiData())),
+      destinationGroups: groups
+        ? await Promise.all(groups.map((grp) => grp.apiData()))
+        : null,
       destinationGroupMemberships,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,

@@ -191,7 +191,7 @@ export class Export extends Model<Export> {
 
     return {
       guid: this.guid,
-      destination: destination ? await destination.apiData() : null,
+      destination: destination ? await destination.apiData(false, false) : null,
       profileGuid: this.profileGuid,
       startedAt: this.startedAt,
       completedAt: this.completedAt,
