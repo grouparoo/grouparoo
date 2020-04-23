@@ -314,9 +314,7 @@ export class Group extends LoggedModel<Group> {
         this.changed("updatedAt", true);
         await this.save({ transaction });
         await transaction.commit();
-
-        await this.stopPreviousRuns();
-        await task.enqueue("group:run", { groupGuid: this.guid });
+        await this.run();
       } else {
         await transaction.commit();
       }
@@ -369,6 +367,15 @@ export class Group extends LoggedModel<Group> {
       }
     }
     return rules;
+  }
+
+  async run(force = false, destinationGuid?: string) {
+    await this.stopPreviousRuns();
+    await task.enqueue("group:run", {
+      groupGuid: this.guid,
+      force,
+      destinationGuid,
+    });
   }
 
   async stopPreviousRuns() {
@@ -459,28 +466,43 @@ export class Group extends LoggedModel<Group> {
 
   validTypes = ["manual", "calculated"];
 
-  async runAddGroupMembers(run: Run, limit = 1000, offset = 0) {
+  async runAddGroupMembers(
+    run: Run,
+    limit = 1000,
+    offset = 0,
+    force = false,
+    destinationGuid?: string
+  ) {
     let groupMembersCount = 0;
+    let profiles: ProfileMultipleAssociationShim[];
 
-    const rules = await this.getRules();
+    if (this.type === "manual") {
+      profiles = await this.$get("profiles", {
+        attributes: ["guid"],
+        limit,
+        offset,
+        order: [["createdAt", "asc"]],
+      });
+    } else {
+      const rules = await this.getRules();
+      if (Object.keys(rules).length === 0) {
+        return 0;
+      }
 
-    if (Object.keys(rules).length === 0) {
-      return 0;
+      const { where, include } = await this.buildGroupMemberQueryParts(
+        rules,
+        this.matchType
+      );
+      profiles = await ProfileMultipleAssociationShim.findAll({
+        attributes: ["guid"],
+        where,
+        include,
+        limit,
+        offset,
+        order: [["createdAt", "asc"]],
+        subQuery: false,
+      });
     }
-
-    const { where, include } = await this.buildGroupMemberQueryParts(
-      rules,
-      this.matchType
-    );
-    const profiles = await ProfileMultipleAssociationShim.findAll({
-      attributes: ["guid"],
-      where,
-      include,
-      limit,
-      offset,
-      order: [["createdAt", "asc"]],
-      subQuery: false,
-    });
 
     for (const i in profiles) {
       const profile = profiles[i];
@@ -491,12 +513,13 @@ export class Group extends LoggedModel<Group> {
         },
       });
 
-      if (!groupMember) {
+      if (!groupMember || force) {
         const transaction = await api.sequelize.transaction();
         const _import = await this.buildProfileImport(
           profile.guid,
           "run",
-          run.guid
+          run.guid,
+          destinationGuid
         );
         await run.increment(["importsCreated"], { transaction });
         await _import.save({ transaction });
@@ -517,7 +540,13 @@ export class Group extends LoggedModel<Group> {
     return groupMembersCount;
   }
 
-  async runRemoveGroupMembers(run: Run, limit = 1000, offset = 0) {
+  async runRemoveGroupMembers(
+    run: Run,
+    limit = 1000,
+    offset = 0,
+    force = false,
+    destinationGuid?: string
+  ) {
     let groupMembersCount = 0;
 
     // The offset and order can be ignored as we will keep running this query until the set of results becomes 0.
@@ -539,50 +568,12 @@ export class Group extends LoggedModel<Group> {
       const _import = await this.buildProfileImport(
         member.profileGuid,
         "run",
-        run.guid
-      );
-      await run.increment(["importsCreated"], { transaction });
-      await _import.save({ transaction });
-      await transaction.commit();
-      groupMembersCount++;
-    }
-
-    this.calculatedAt = new Date();
-    await this.save();
-
-    return groupMembersCount;
-  }
-
-  async runUpdateMembers(
-    run: Run,
-    limit = 1000,
-    offset = 0,
-    destinationGuid = null
-  ) {
-    let groupMembersCount = 0;
-
-    const groupMembers = await GroupMember.findAll({
-      where: {
-        groupGuid: this.guid,
-      },
-      limit,
-      offset,
-      order: [["createdAt", "asc"]],
-    });
-
-    for (const i in groupMembers) {
-      const member = groupMembers[i];
-      const transaction = await api.sequelize.transaction();
-      const _import = await this.buildProfileImport(
-        member.profileGuid,
-        "run",
         run.guid,
         destinationGuid
       );
       await run.increment(["importsCreated"], { transaction });
       await _import.save({ transaction });
       await transaction.commit();
-
       groupMembersCount++;
     }
 

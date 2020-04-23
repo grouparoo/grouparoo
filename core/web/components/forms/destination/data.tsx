@@ -96,44 +96,30 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const update = async (event) => {
     event.preventDefault();
 
+    if (trackedGroupGuid.match(/^grp_/)) {
+      await execApi("post", `/api/${apiVersion}/destination/${guid}/track`, {
+        groupGuid: trackedGroupGuid,
+      });
+    } else if (trackedGroupGuid === "_none") {
+      await execApi("post", `/api/${apiVersion}/destination/${guid}/untrack`);
+    }
+
+    // handle destination group membership & mapping
     const filteredMapping = {};
     for (const k in destination.mapping) {
       if (destination.mapping[k] && destination.mapping[k] !== "") {
         filteredMapping[k] = destination.mapping[k];
       }
     }
-
-    // update mapping
-    await execApi("put", `/api/${apiVersion}/destination/${guid}`, {
-      mapping: filteredMapping,
-    });
-
-    // handle tracking
-    if (trackedGroupGuid === "_all") {
-      await execApi("put", `/api/${apiVersion}/destination/${guid}`, {
-        trackAllGroups: true,
-      });
-    } else if (trackedGroupGuid === "_none") {
-      // un track
-      await execApi("post", `/api/${apiVersion}/destination/${guid}/untrack`);
-      await execApi("put", `/api/${apiVersion}/destination/${guid}`, {
-        trackAllGroups: false,
-      });
-    } else if (trackedGroupGuid) {
-      // track
-      await execApi("post", `/api/${apiVersion}/destination/${guid}/track`, {
-        groupGuid: trackedGroupGuid,
-      });
-    }
-
-    // handle group mappings
     const destinationGroupMembershipsObject = {};
     destination.destinationGroupMemberships.forEach(
       (dgm) =>
         (destinationGroupMembershipsObject[dgm.groupGuid] = dgm.remoteKey)
     );
     await execApi("put", `/api/${apiVersion}/destination/${guid}`, {
+      mapping: filteredMapping,
       destinationGroupMemberships: destinationGroupMembershipsObject,
+      trackAllGroups: trackedGroupGuid === "_all" ? true : false,
     });
 
     successHandler.set({ message: "Destination Updated" });

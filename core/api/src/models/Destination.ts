@@ -254,11 +254,14 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async afterSetMapping() {
+    return this.exportGroupMembers();
+  }
+
+  async exportGroupMembers() {
     const destinationGroups = await this.$get("destinationGroups");
     for (const i in destinationGroups) {
-      await task.enqueue("group:updateMembers", {
-        groupGuid: destinationGroups[i].groupGuid,
-      });
+      const group = await destinationGroups[i].$get("group");
+      await group.run(true, this.guid);
     }
   }
 
@@ -317,6 +320,7 @@ export class Destination extends LoggedModel<Destination> {
     }
 
     await transaction.commit();
+    await this.exportGroupMembers();
     return this.getDestinationGroupMemberships();
   }
 
@@ -337,9 +341,18 @@ export class Destination extends LoggedModel<Destination> {
       throw new Error("destination is tracking all groups");
     }
 
-    await DestinationGroup.destroy({
-      where: { destinationGuid: this.guid },
-    });
+    const existingDestinationGroups = await this.$get("destinationGroups");
+    if (
+      existingDestinationGroups.length === 1 &&
+      existingDestinationGroups[0].groupGuid === group.guid
+    ) {
+      // no change
+      return;
+    }
+
+    for (const i in existingDestinationGroups) {
+      await existingDestinationGroups[i].destroy();
+    }
 
     return DestinationGroup.create({
       groupGuid: group.guid,
@@ -352,11 +365,10 @@ export class Destination extends LoggedModel<Destination> {
       throw new Error("destination is tracking all groups");
     }
 
-    await DestinationGroup.destroy({
-      where: {
-        destinationGuid: this.guid,
-      },
-    });
+    const existingDestinationGroups = await this.$get("destinationGroups");
+    for (const i in existingDestinationGroups) {
+      await existingDestinationGroups[i].destroy();
+    }
   }
 
   async validateMappings(mappings: { [groupGuid: string]: string }) {

@@ -10,6 +10,7 @@ export class RunGroup extends Task {
     this.description =
       "calculate the groups members and create imports to update them all";
     this.frequency = 0;
+    this.plugins = ["QueueLock"];
     this.queue = "groups";
     this.inputs = {
       groupGuid: { required: true },
@@ -17,6 +18,8 @@ export class RunGroup extends Task {
       method: { required: false },
       offset: { required: false },
       limit: { required: false },
+      force: { required: false },
+      destinationGuid: { required: false },
     };
   }
 
@@ -27,6 +30,8 @@ export class RunGroup extends Task {
     // 3. After the loop is done, loop thought those GroupMembers who have not had their updatedAt touched.  (group#runRemoveGroupMembers)
     //    > Create imports for those profiles whose last update is older than the run's start time to remove them
 
+    const force = params.force || false;
+    const destinationGuid = params.destinationGuid;
     const method = params.method || "runAddGroupMembers";
     const offset: number = params.offset || 0;
     const limit: number =
@@ -50,14 +55,29 @@ export class RunGroup extends Task {
         state: "running",
       });
       await group.update({ state: "updating" });
-      log(`starting run ${run.guid} for group ${group.guid}, ${group.name}`);
+      log(
+        `[ run ] starting run ${run.guid} for group ${group.guid}, ${group.name}`,
+        "notice"
+      );
     }
 
     let importCount = 0;
     if (method === "runAddGroupMembers") {
-      importCount = await group.runAddGroupMembers(run, limit, offset);
+      importCount = await group.runAddGroupMembers(
+        run,
+        limit,
+        offset,
+        force,
+        destinationGuid
+      );
     } else if (method === "runRemoveGroupMembers") {
-      importCount = await group.runRemoveGroupMembers(run, limit, offset);
+      importCount = await group.runRemoveGroupMembers(
+        run,
+        limit,
+        offset,
+        force,
+        destinationGuid
+      );
     } else {
       throw new Error(`${method} is not now a known method`);
     }
@@ -69,6 +89,7 @@ export class RunGroup extends Task {
         method: "runRemoveGroupMembers",
         offset: 0,
         limit,
+        force,
       });
     } else if (importCount > 0) {
       await task.enqueueIn(config.tasks.timeout + 1, "group:run", {
@@ -77,6 +98,7 @@ export class RunGroup extends Task {
         method,
         offset: offset + limit,
         limit,
+        force,
       });
     } else {
       await group.countComponentMembersFromRules(null);

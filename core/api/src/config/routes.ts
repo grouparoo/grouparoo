@@ -91,7 +91,6 @@ export const DEFAULT = {
         { path: "/:apiVersion/group/:guid", action: "group:edit" },
         { path: "/:apiVersion/group/:guid/add", action: "group:addProfile" },
         { path: "/:apiVersion/group/:guid/run", action: "group:run" },
-        { path: "/:apiVersion/group/:guid/updateMembers", action: "group:updateMembers" },
         { path: "/:apiVersion/group/:guid/export", action: "group:export" },
         { path: "/:apiVersion/group/:guid/remove", action: "group:removeProfile" },
         { path: "/:apiVersion/profile/:guid", action: "profile:edit" },
