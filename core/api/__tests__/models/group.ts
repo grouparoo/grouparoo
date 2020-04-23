@@ -7,12 +7,13 @@ import { Run } from "./../../src/models/Run";
 import { Import } from "./../../src/models/Import";
 import { GroupMember } from "./../../src/models/GroupMember";
 
-let actionhero;
+let actionhero, api;
 
 describe("models/group", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
+    api = env.api;
   }, 1000 * 30);
 
   afterAll(async () => {
@@ -415,6 +416,8 @@ describe("models/group", () => {
     });
 
     test("changing group rules changes the state to initializing and enquires a run, and then back to ready when complete", async () => {
+      await api.resque.queue.connection.redis.flushdb();
+
       await group.setRules([{ key: "firstName", match: "nobody", op: "eq" }]);
       expect(group.state).toBe("initializing");
 
@@ -434,6 +437,8 @@ describe("models/group", () => {
     });
 
     test("changing the rules will stop previously running runs", async () => {
+      await api.resque.queue.connection.redis.flushdb();
+
       await group.setRules([{ key: "firstName", match: "nobody", op: "eq" }]);
       let foundTasks = await specHelper.findEnqueuedTasks("group:run");
       await specHelper.runTask("group:run", foundTasks[0].args[0]);
@@ -543,8 +548,10 @@ describe("models/group", () => {
       );
     });
 
-    test("runUpdateMembers will create imports for every group member", async () => {
-      await group.update({ type: "manual" });
+    test("group#run will create imports for every group member when force=true", async () => {
+      await api.resque.queue.connection.redis.flushdb();
+
+      await group.update({ type: "manual", state: "ready" });
       await group.addProfile(mario);
       await group.addProfile(luigi);
 
@@ -553,7 +560,11 @@ describe("models/group", () => {
       await Import.destroy({ truncate: true });
 
       const newRun = await helper.factories.run();
-      await group.runUpdateMembers(newRun);
+      await group.run(true);
+      const foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      expect(foundTasks.length).toBe(1);
+      await specHelper.runTask("group:run", foundTasks[0].args[0]);
+
       imports = await Import.findAll();
       expect(imports.map((i) => i.profileGuid).sort()).toEqual(
         [mario, luigi].map((p) => p.guid).sort()
@@ -568,7 +579,9 @@ describe("models/group", () => {
     });
 
     test("runUpdateMembers will create imports which include a destinationGuid in _meta if provided", async () => {
-      await group.update({ type: "manual" });
+      await api.resque.queue.connection.redis.flushdb();
+
+      await group.update({ type: "manual", state: "ready" });
       await group.addProfile(mario);
       await group.addProfile(luigi);
 
@@ -577,7 +590,11 @@ describe("models/group", () => {
       await Import.destroy({ truncate: true });
 
       const newRun = await helper.factories.run();
-      await group.runUpdateMembers(newRun, 100, 0, "abc123");
+      await group.run(true, "abc123");
+      const foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      expect(foundTasks.length).toBe(1);
+      await specHelper.runTask("group:run", foundTasks[0].args[0]);
+
       imports = await Import.findAll();
       expect(imports.map((i) => i.profileGuid).sort()).toEqual(
         [mario, luigi].map((p) => p.guid).sort()

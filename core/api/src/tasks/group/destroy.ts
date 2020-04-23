@@ -44,7 +44,10 @@ export class RunGroup extends Task {
         await group.setRules([]);
       }
 
-      log(`starting run ${run.guid} for group ${group.guid}, ${group.name}`);
+      log(
+        `[ run ] starting run ${run.guid} for group ${group.guid}, ${group.name}`,
+        "notice"
+      );
     }
 
     const importsCounts = await group.runRemoveGroupMembers(run, limit, offset);

@@ -36,27 +36,28 @@ describe("models/destinationGroup", () => {
       await destination.destroy();
     });
 
-    test("creating a destination group will enqueue a group:updateMembers task", async () => {
+    test("creating a destination group will enqueue a group:run task", async () => {
       destinationGroup = await DestinationGroup.create({
         groupGuid: group.guid,
         destinationGuid: destination.guid,
       });
 
-      const foundTasks = await specHelper.findEnqueuedTasks(
-        "group:updateMembers"
-      );
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0]).toEqual({ groupGuid: group.guid });
-    });
-
-    test("deleting a destination group will enqueue a group:updateMembers task", async () => {
-      await destinationGroup.destroy();
-
-      const foundTasks = await specHelper.findEnqueuedTasks(
-        "group:updateMembers"
-      );
+      const foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(1);
       expect(foundTasks[0].args[0]).toEqual({
+        force: true,
+        groupGuid: group.guid,
+        destinationGuid: destination.guid,
+      });
+    });
+
+    test("deleting a destination group will enqueue a group:run task", async () => {
+      await destinationGroup.destroy();
+
+      const foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0]).toEqual({
+        force: true,
         groupGuid: group.guid,
         destinationGuid: destination.guid,
       });

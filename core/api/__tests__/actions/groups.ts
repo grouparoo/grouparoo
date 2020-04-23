@@ -326,16 +326,6 @@ describe("actions/groups", () => {
         expect(response.error).toBeUndefined();
         expect(response.success).toBe(true);
       });
-
-      test("group#updateMembers", async () => {
-        connection.params = { csrfToken, guid: group.guid };
-        let response = await specHelper.runAction(
-          "group:updateMembers",
-          connection
-        );
-        expect(response.error).toBeUndefined();
-        expect(response.success).toBe(true);
-      });
     });
   });
 

@@ -10,7 +10,6 @@ import {
 import { LoggedModel } from "../classes/loggedModel";
 import { Group } from "./Group";
 import { Destination } from "./Destination";
-import { task } from "actionhero";
 
 @Table({ tableName: "destinationGroups", paranoid: false })
 export class DestinationGroup extends LoggedModel<DestinationGroup> {
@@ -36,17 +35,21 @@ export class DestinationGroup extends LoggedModel<DestinationGroup> {
 
   @AfterCreate
   static async updateGroupMembersOnCreate(instance: DestinationGroup) {
-    await task.enqueue("group:updateMembers", {
-      groupGuid: instance.groupGuid,
-    });
+    const group = await Group.findByGuid(instance.groupGuid);
+    await group.run(true, instance.destinationGuid);
   }
 
   @AfterDestroy
   static async updateGroupMembersOnDestroy(instance: DestinationGroup) {
-    await task.enqueue("group:updateMembers", {
-      groupGuid: instance.groupGuid,
-      destinationGuid: instance.destinationGuid,
-    });
+    try {
+      const group = await Group.findByGuid(instance.groupGuid);
+      await group.run(true, instance.destinationGuid);
+    } catch (error) {
+      // we may be in the after-hook of the group being deleted
+      if (!error.toString().match(/cannot find Group/)) {
+        throw error;
+      }
+    }
   }
 
   async apiData() {

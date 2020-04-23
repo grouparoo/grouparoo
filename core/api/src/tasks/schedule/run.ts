@@ -42,7 +42,8 @@ export class RunSchedule extends Task {
       });
 
       log(
-        `starting run ${run.guid} for schedule ${schedule.guid}, ${schedule.name}`
+        `[ run ] starting run ${run.guid} for schedule ${schedule.guid}, ${schedule.name}`,
+        "notice"
       );
     }
 

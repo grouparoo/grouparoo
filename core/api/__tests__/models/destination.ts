@@ -336,7 +336,6 @@ describe("models/destination", () => {
         const groups = await destination.$get("groups");
         expect(groups.length).toBe(1);
         expect(groups[0].guid).toBe(newGroup.guid);
-
         await newGroup.destroy();
       });
 
@@ -350,13 +349,11 @@ describe("models/destination", () => {
         expect(groups.length).toBe(0);
       });
 
-      test("if the destination mapping changes, a group#updateMembers task will be enqueued", async () => {
+      test("if the destination mapping changes, a group#run task will be enqueued", async () => {
         await api.resque.queue.connection.redis.flushdb();
 
         await destination.trackGroup(group);
-        let foundTasks = await specHelper.findEnqueuedTasks(
-          "group:updateMembers"
-        );
+        let foundTasks = await specHelper.findEnqueuedTasks("group:run");
         expect(foundTasks.length).toBe(1);
 
         await api.resque.queue.connection.redis.flushdb();
@@ -365,7 +362,7 @@ describe("models/destination", () => {
           local_first_name_: "firstName",
         });
 
-        foundTasks = await specHelper.findEnqueuedTasks("group:updateMembers");
+        foundTasks = await specHelper.findEnqueuedTasks("group:run");
         expect(foundTasks.length).toBe(1);
       });
 
@@ -458,6 +455,53 @@ describe("models/destination", () => {
 
           await destination.unTrackGroups();
           await group.removeProfile(profile);
+        });
+
+        test("when the group being tracked is removed, the previous group should be exported one last time", async () => {
+          await api.resque.queue.connection.redis.flushdb();
+
+          await destination.trackGroup(group);
+          let foundTasks = await specHelper.findEnqueuedTasks("group:run");
+          expect(foundTasks.length).toBe(1);
+          expect(foundTasks[0].args[0]).toEqual({
+            force: true,
+            destinationGuid: destination.guid,
+            groupGuid: group.guid,
+          });
+
+          await api.resque.queue.connection.redis.flushdb();
+          await destination.unTrackGroups();
+          foundTasks = await specHelper.findEnqueuedTasks("group:run");
+          expect(foundTasks.length).toBe(1);
+          expect(foundTasks[0].args[0]).toEqual({
+            force: true,
+            destinationGuid: destination.guid,
+            groupGuid: group.guid,
+          });
+        });
+
+        test("when the group being tracked is changed, the previous group should be exported one last time", async () => {
+          const otherGroup = await helper.factories.group();
+          await otherGroup.update({ state: "ready" });
+          await destination.trackGroup(group);
+          await api.resque.queue.connection.redis.flushdb();
+
+          await destination.trackGroup(otherGroup);
+
+          let foundTasks = await specHelper.findEnqueuedTasks("group:run");
+          expect(foundTasks.length).toBe(2);
+          expect(foundTasks[0].args[0]).toEqual({
+            force: true,
+            destinationGuid: destination.guid,
+            groupGuid: group.guid,
+          });
+          expect(foundTasks[1].args[0]).toEqual({
+            force: true,
+            destinationGuid: destination.guid,
+            groupGuid: otherGroup.guid,
+          });
+
+          await otherGroup.destroy();
         });
 
         it("informs all destinations if trackAllGroups is set", async () => {

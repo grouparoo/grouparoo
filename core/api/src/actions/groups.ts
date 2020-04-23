@@ -140,27 +140,7 @@ export class GroupRun extends Action {
   async run({ params, response }) {
     response.success = false;
     const group = await Group.findByGuid(params.guid);
-    await task.enqueue("group:run", { groupGuid: group.guid });
-    response.success = true;
-  }
-}
-
-export class GroupUpdateMembers extends Action {
-  constructor() {
-    super();
-    this.name = "group:updateMembers";
-    this.description = "import and export all members of this group";
-    this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
-    this.inputs = {
-      guid: { required: true },
-    };
-  }
-
-  async run({ params, response }) {
-    response.success = false;
-    const group = await Group.findByGuid(params.guid);
-    await task.enqueue("group:updateMembers", { groupGuid: group.guid });
+    await group.run();
     response.success = true;
   }
 }
