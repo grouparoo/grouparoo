@@ -181,14 +181,6 @@ export default function ({ apiVersion, errorHandler, query }) {
                       <a>{_export.destination.name}</a>
                     </Link>
                     <br />
-                    App:{" "}
-                    <Link
-                      href="/app/[guid]"
-                      as={`/app/${_export.destination.app.guid}`}
-                    >
-                      <a>{_export.destination.app.name}</a>
-                    </Link>
-                    <br />
                     To Delete?{" "}
                     {_export.toDelete ? (
                       <Badge variant="danger">true</Badge>
