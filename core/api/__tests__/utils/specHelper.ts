@@ -271,7 +271,7 @@ export namespace helper {
                   },
                 },
                 profilePropertyRules: {
-                  required: [{ key: "primary-id", type: "any" }],
+                  required: [{ key: "primary-id", type: "integer" }],
                   known: [{ key: "secondary-id", type: "any" }],
                   allowOptionalFromProfilePropertyRules: true,
                 },

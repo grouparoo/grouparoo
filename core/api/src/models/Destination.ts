@@ -289,6 +289,13 @@ export class Destination extends LoggedModel<Destination> {
   async setDestinationGroupMemberships(newDestinationGroupMemberships: {
     [groupGuid: string]: string;
   }) {
+    for (const groupGuid in newDestinationGroupMemberships) {
+      const group = await Group.findByGuid(groupGuid);
+      if (group.state === "draft" || group.state === "deleted") {
+        throw new Error(`group ${group.name} is not ready`);
+      }
+    }
+
     const transaction = await api.sequelize.transaction();
 
     await DestinationGroupMembership.destroy({
@@ -326,7 +333,9 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async trackGroup(group: Group) {
-    await this.update({ trackAllGroups: false });
+    if (this.trackAllGroups) {
+      throw new Error("destination is tracking all groups");
+    }
 
     await DestinationGroup.destroy({
       where: { destinationGuid: this.guid },
@@ -335,6 +344,18 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationGroup.create({
       groupGuid: group.guid,
       destinationGuid: this.guid,
+    });
+  }
+
+  async unTrackGroups() {
+    if (this.trackAllGroups) {
+      throw new Error("destination is tracking all groups");
+    }
+
+    await DestinationGroup.destroy({
+      where: {
+        destinationGuid: this.guid,
+      },
     });
   }
 
@@ -354,7 +375,8 @@ export class Destination extends LoggedModel<Destination> {
       }
       const profilePropertyRule = cachedProfilePropertyRules[mappings[opt.key]];
       if (opt.type !== "any") {
-        if (profilePropertyRule.type !== opt.type) {
+        // existence checks will happen within the mapping helper
+        if (profilePropertyRule && profilePropertyRule.type !== opt.type) {
           throw new Error(
             `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
           );
@@ -367,7 +389,8 @@ export class Destination extends LoggedModel<Destination> {
       const opt = destinationMappingOptions.profilePropertyRules.known[i];
       const profilePropertyRule = cachedProfilePropertyRules[mappings[opt.key]];
       if (opt.type !== "any") {
-        if (profilePropertyRule.type !== opt.type) {
+        // existence checks will happen within the mapping helper
+        if (profilePropertyRule && profilePropertyRule.type !== opt.type) {
           throw new Error(
             `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
           );
@@ -376,14 +399,6 @@ export class Destination extends LoggedModel<Destination> {
     }
 
     // optional rule can't be validated...
-  }
-
-  async unTrackGroups() {
-    await DestinationGroup.destroy({
-      where: {
-        destinationGuid: this.guid,
-      },
-    });
   }
 
   async parameterizedOptions(): Promise<SimpleDestinationOptions> {
