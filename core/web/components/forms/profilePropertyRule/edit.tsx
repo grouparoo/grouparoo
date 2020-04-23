@@ -14,6 +14,7 @@ import Loader from "../../loader";
 import AppIcon from "../../appIcon";
 import StateBadge from "../../stateBadge";
 import ProfilePreview from "./profilePreview";
+import { Typeahead } from "react-bootstrap-typeahead";
 
 export default function ({
   apiVersion,
@@ -22,10 +23,22 @@ export default function ({
   profilePropertyRulesHandler,
   query,
 }) {
+  const defaultPluginOptions: Array<{
+    key: string;
+    description: string;
+    required: boolean;
+    type: string;
+    options: Array<{
+      key: string;
+      description?: string;
+      examples?: Array<any>;
+    }>;
+  }> = [];
+
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [types, setTypes] = useState([]);
-  const [pluginOptions, setPluginOptions] = useState([]);
+  const [pluginOptions, setPluginOptions] = useState(defaultPluginOptions);
   const [filterOptions, setFilterOptions] = useState([]);
   const [profilePropertyRules, setProfilePropertyRules] = useState([]);
   const [profilePropertyRule, setProfilePropertyRule] = useState({
@@ -45,6 +58,7 @@ export default function ({
     },
   });
   const [localFilters, setLocalFilters] = useState([]);
+  // const [selected, setSelected] = useState([]);
 
   const { guid } = query;
 
@@ -289,6 +303,8 @@ export default function ({
                   ) : null}
                   <code>{opt.key}</code>: <small>{opt.description}</small>
                 </p>
+
+                {/* 
                 <Dropdown>
                   <Dropdown.Toggle id="options-dropdown">
                     {opt?.key?.value ? opt.key.value : opt.key}
@@ -304,49 +320,62 @@ export default function ({
                       </Dropdown.Item>
                     ))}
                   </Dropdown.Menu>
-                </Dropdown>
+                </Dropdown> */}
 
                 {/* list options */}
-                {/* {opt.type === "list" ? (
-                  <Table bordered striped size="sm" variant="light">
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th>Key</th>
-                        {opt?.options[0]?.description ? (
-                          <th>Description</th>
-                        ) : null}
-                        {opt?.options[0]?.examples ? <th>Examples</th> : null}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {opt?.options?.map((col) => (
-                        <tr key={`source-${col.key}`}>
-                          <td>
-                            <Form.Check
-                              inline
-                              type="radio"
-                              id={col}
-                              name={opt.key}
-                              defaultChecked={
-                                profilePropertyRule.options[opt.key] === col.key
-                              }
-                              onClick={() => updateOption(opt.key, col.key)}
-                            />
-                          </td>
-                          <td>
-                            <strong>{col.key}</strong>
-                          </td>
-                          {col.description ? <td>{col.description}</td> : null}
+                {opt.type === "list" ? (
+                  <Typeahead
+                    id="typeahead"
+                    labelKey="key"
+                    onChange={(selected) => {
+                      updateOption(opt.key, selected[0]);
+                    }}
+                    options={opt?.options?.map((col) => col.key)}
+                    placeholder="Select a column"
 
-                          {col.examples ? (
-                            <td>{col.examples.slice(0, 3).join(", ")}</td>
-                          ) : null}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                ) : null} */}
+                    // defaultSelected={profilePropertyRule.options[opt?.key]}
+
+                    // add examples?
+                  ></Typeahead>
+                ) : // <Table bordered striped size="sm" variant="light">
+                //   <thead>
+                //     <tr>
+                //       <th></th>
+                //       <th>Key</th>
+                //       {opt?.options[0]?.description ? (
+                //         <th>Description</th>
+                //       ) : null}
+                //       {opt?.options[0]?.examples ? <th>Examples</th> : null}
+                //     </tr>
+                //   </thead>
+                //   <tbody>
+                //     {opt?.options?.map((col) => (
+                //       <tr key={`source-${col.key}`}>
+                //         <td>
+                //           <Form.Check
+                //             inline
+                //             type="radio"
+                //             name={opt.key}
+                //             defaultChecked={
+                //               profilePropertyRule.options[opt.key] === col.key
+                //             }
+                //             onClick={() => updateOption(opt.key, col.key)}
+                //           />
+                //         </td>
+                //         <td>
+                //           <strong>{col.key}</strong>
+                //         </td>
+                //         {col.description ? <td>{col.description}</td> : null}
+
+                //         {col.examples ? (
+                //           <td>{col.examples.slice(0, 3).join(", ")}</td>
+                //         ) : null}
+                //       </tr>
+                //     ))}
+                //   </tbody>
+                // </Table>
+                null}
+
                 {/* textarea options */}
                 {opt.type === "text" ? (
                   <Form.Group controlId="key">
@@ -361,6 +390,7 @@ export default function ({
                     </Form.Control.Feedback>
                   </Form.Group>
                 ) : null}
+
                 {/* text options */}
                 {opt.type === "textarea" ? (
                   <>
