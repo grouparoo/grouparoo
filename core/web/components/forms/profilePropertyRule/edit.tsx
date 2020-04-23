@@ -337,10 +337,12 @@ export default function ({
                       ];
                     }}
                     defaultSelected={
-                      Object(profilePropertyRule.options).length > 0
+                      profilePropertyRule.options[opt?.key]
                         ? [profilePropertyRule.options[opt?.key]]
-                        : []
+                        : undefined
                     }
+
+                    // defaultSelected={[profilePropertyRule.options[opt?.key]]}
                   ></Typeahead>
                 ) : null}
 
