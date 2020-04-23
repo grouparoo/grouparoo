@@ -1,14 +1,6 @@
 import { useState, useEffect, Fragment } from "react";
 import { useApi } from "../../../hooks/useApi";
-import {
-  Row,
-  Col,
-  Button,
-  Form,
-  Table,
-  Badge,
-  Dropdown,
-} from "react-bootstrap";
+import { Row, Col, Button, Form, Table, Badge } from "react-bootstrap";
 import Router from "next/router";
 import Loader from "../../loader";
 import AppIcon from "../../appIcon";
@@ -58,7 +50,6 @@ export default function ({
     },
   });
   const [localFilters, setLocalFilters] = useState([]);
-  // const [selected, setSelected] = useState([]);
 
   const { guid } = query;
 
@@ -341,8 +332,6 @@ export default function ({
                         ? [profilePropertyRule.options[opt?.key]]
                         : undefined
                     }
-
-                    // defaultSelected={[profilePropertyRule.options[opt?.key]]}
                   ></Typeahead>
                 ) : null}
 
