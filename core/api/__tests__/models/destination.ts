@@ -109,6 +109,44 @@ describe("models/destination", () => {
       expect(latestLog).toBeTruthy();
     });
 
+    test("a destination tracking a group cannot be deleted", async () => {
+      const group = await helper.factories.group();
+      destination = await Destination.create({
+        name: "bye destination",
+        type: "test-plugin-export",
+        appGuid: app.guid,
+      });
+      await destination.trackGroup(group);
+      await expect(destination.destroy()).rejects.toThrow(
+        /cannot delete a destination that is tracking a group/
+      );
+
+      await group.destroy();
+      await destination.destroy();
+    });
+
+    test("a destination tracking all groups cannot be deleted", async () => {
+      const group = await helper.factories.group();
+      destination = await Destination.create({
+        name: "bye destination",
+        type: "test-plugin-export",
+        appGuid: app.guid,
+      });
+      await destination.update({ trackAllGroups: true });
+      await expect(destination.destroy()).rejects.toThrow(
+        /cannot delete a destination that is tracking a group/
+      );
+
+      await group.destroy();
+
+      await expect(destination.destroy()).rejects.toThrow(
+        /cannot delete a destination that is tracking a group/
+      );
+
+      await destination.update({ trackAllGroups: false });
+      await destination.destroy(); // does not throw
+    });
+
     test("deleting a destination deletes related models", async () => {
       const group = await helper.factories.group();
       destination = await Destination.create({
@@ -126,6 +164,7 @@ describe("models/destination", () => {
         destinationGroupMemberships
       );
 
+      await destination.unTrackGroups();
       await destination.destroy();
 
       let count = await DestinationGroupMembership.count({
@@ -310,8 +349,9 @@ describe("models/destination", () => {
       });
 
       afterEach(async () => {
-        await destination.destroy();
         await group.destroy();
+        await destination.update({ trackAllGroups: false });
+        await destination.destroy();
       });
 
       test("a group can be tracked", async () => {
@@ -421,6 +461,7 @@ describe("models/destination", () => {
           let destinationGroups = await group.$get("destinationGroups");
           expect(destinationGroups.length).toBe(1);
 
+          await destination.update({ trackAllGroups: false });
           await destination.destroy();
 
           destinationGroups = await group.$get("destinationGroups");
@@ -535,6 +576,7 @@ describe("models/destination", () => {
           );
           expect(destinations.length).toEqual(2);
 
+          await otherDestination.update({ trackAllGroups: false });
           await otherDestination.destroy();
           await otherApp.destroy();
           await group.removeProfile(profile);

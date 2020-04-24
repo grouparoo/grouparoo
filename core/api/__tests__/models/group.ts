@@ -198,6 +198,7 @@ describe("models/group", () => {
         expect(destinationGroupCount).toBe(1);
 
         await group.destroy();
+        await destination.update({ trackAllGroups: false });
         await destination.destroy();
       });
 
@@ -218,6 +219,7 @@ describe("models/group", () => {
         destinationGroupCount = await group.$count("destinationGroups");
         expect(destinationGroupCount).toBe(0);
 
+        await destination.update({ trackAllGroups: false });
         await destination.destroy();
       });
     });
