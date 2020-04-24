@@ -126,32 +126,88 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     await load();
   };
 
-  const optionalMappingKeys = Object.keys(destination.mapping).filter((key) => {
-    if (
-      mappingOptions.profilePropertyRules.required
-        .map((opt) => opt.key)
-        .includes(key)
-    ) {
-      return false;
+  const remainingProfilePropertyRulesForKnown = [];
+  for (const i in profilePropertyRules) {
+    let inUse = false;
+    for (const j in mappingOptions.profilePropertyRules.required) {
+      const opt = mappingOptions.profilePropertyRules.required[j];
+      if (destination.mapping[opt.key] === profilePropertyRules[i].key) {
+        inUse = true;
+      }
     }
-    if (
-      mappingOptions.profilePropertyRules.known
-        .map((opt) => opt.key)
-        .includes(key)
-    ) {
-      return false;
+
+    if (!inUse) {
+      remainingProfilePropertyRulesForKnown.push(profilePropertyRules[i]);
     }
-    return true;
+  }
+
+  const remainingProfilePropertyRuleKeysForOptional = profilePropertyRules.map(
+    (rule) => rule.key
+  );
+  mappingOptions.profilePropertyRules.required.map((opt) => {
+    if (destination.mapping[opt.key]) {
+      remainingProfilePropertyRuleKeysForOptional.splice(
+        remainingProfilePropertyRuleKeysForOptional.indexOf(
+          destination.mapping[opt.key]
+        ),
+        1
+      );
+    }
   });
+  mappingOptions.profilePropertyRules.known.map((opt) => {
+    if (destination.mapping[opt.key]) {
+      remainingProfilePropertyRuleKeysForOptional.splice(
+        remainingProfilePropertyRuleKeysForOptional.indexOf(
+          destination.mapping[opt.key]
+        ),
+        1
+      );
+    }
+  });
+
+  const optionalMappingRemoteKeys = Object.keys(destination.mapping).filter(
+    (key) => {
+      if (
+        mappingOptions.profilePropertyRules.required
+          .map((opt) => opt.key)
+          .includes(key)
+      ) {
+        return false;
+      }
+      if (
+        mappingOptions.profilePropertyRules.known
+          .map((opt) => opt.key)
+          .includes(key)
+      ) {
+        return false;
+      }
+      return true;
+    }
+  );
 
   function updateMapping(key, value, oldKey = null) {
     const _destination = Object.assign({}, destination);
-    if (key) {
-      _destination.mapping[key] = value;
+    let destinationMappingKeys = Object.keys(_destination.mapping);
+    let insertIndex = destinationMappingKeys.length - 1;
+
+    if (oldKey && value) {
+      insertIndex = destinationMappingKeys.indexOf(oldKey);
+      destinationMappingKeys.splice(insertIndex, 1, key);
+    } else if (oldKey) {
+      insertIndex = destinationMappingKeys.indexOf(oldKey);
+      destinationMappingKeys.splice(insertIndex, 1);
+    } else {
+      destinationMappingKeys.push(key);
     }
-    if (oldKey) {
-      delete _destination.mapping[oldKey];
-    }
+
+    _destination.mapping[key] = value;
+
+    const newMapping = {};
+    destinationMappingKeys.map((k) => {
+      newMapping[k] = _destination.mapping[k];
+    });
+    _destination.mapping = newMapping;
+
     setDestination(_destination);
   }
 
@@ -246,6 +302,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
                 <br />
 
+                {/* Required Vars */}
+
                 {mappingOptions.profilePropertyRules.required.length > 0 ? (
                   <>
                     <h3>
@@ -303,6 +361,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                   </>
                 ) : null}
 
+                {/* Known Vars */}
+
                 {mappingOptions.profilePropertyRules.known.length > 0 ? (
                   <>
                     <h3>
@@ -333,7 +393,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                                 >
                                   <option value={""}>None</option>
                                   <option disabled>---</option>
-                                  {profilePropertyRules
+                                  {remainingProfilePropertyRulesForKnown
                                     .filter((rule) =>
                                       type === "any" ? true : rule.type === type
                                     )
@@ -358,6 +418,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                   </>
                 ) : null}
 
+                {/* Optional Vars */}
+
                 {mappingOptions.profilePropertyRules
                   .allowOptionalFromProfilePropertyRules ? (
                   <>
@@ -377,7 +439,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                         </tr>
                       </thead>
                       <tbody>
-                        {optionalMappingKeys.map((key, idx) => (
+                        {optionalMappingRemoteKeys.map((key, idx) => (
                           <tr key={`optional-mapping-${idx}`}>
                             <td>
                               <Form.Control
@@ -395,11 +457,13 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                                 <option disabled value={""}>
                                   choose a profile property rule
                                 </option>
-                                {profilePropertyRules.map((rule) => (
-                                  <option key={`opt-optional-${rule.guid}`}>
-                                    {rule.key}
-                                  </option>
-                                ))}
+                                {remainingProfilePropertyRuleKeysForOptional.map(
+                                  (k) => (
+                                    <option key={`opt-optional-${k}`}>
+                                      {k}
+                                    </option>
+                                  )
+                                )}
                               </Form.Control>
                             </td>
                             <td style={{ textAlign: "center" }}>---></td>
