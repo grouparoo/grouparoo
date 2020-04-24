@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Form, Button, Table, Badge } from "react-bootstrap";
 import StateBadge from "../../stateBadge";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import Loader from "../../loader";
 
 export default function RulesBuilder({
@@ -27,7 +28,10 @@ export default function RulesBuilder({
   const [ops, setOps] = useState({ _dictionary: {} });
   const [countPotentialMembers, setCountPotentialMembers] = useState(0);
   const [componentCounts, setComponentCounts] = useState({});
+  const [autocompleteResults, setAutoCompleteResults] = useState([]);
   // const [funnelCounts, setFunnelCounts] = useState([]);
+
+  const typeaheadTypes = ["email", "string"];
 
   const { guid } = query;
 
@@ -145,6 +149,24 @@ export default function RulesBuilder({
       successHandler.set({ message: "Group Updated" });
       setGroup(response.group);
       setLocalRules(response.group.rules);
+    }
+  }
+
+  async function autocompleteProfilePropertySearch(localRule, match) {
+    console.log({ localRule, match });
+    const profilePropertyRuleGuid = profilePropertyRules.filter(
+      (r) => r.key === localRule.key
+    )[0].guid;
+
+    setLoading(true);
+    const response = await execApi(
+      "get",
+      `/api/${apiVersion}/profiles/autocompleteProfileProperty`,
+      { profilePropertyRuleGuid, match }
+    );
+    setLoading(false);
+    if (response.profileProperties) {
+      setAutoCompleteResults(response.profileProperties);
     }
   }
 
@@ -267,6 +289,33 @@ export default function RulesBuilder({
                   <td>
                     {rule.op === "exists" || rule.op === "notExists" ? (
                       "N/A"
+                    ) : typeaheadTypes.includes(type) ? (
+                      <AsyncTypeahead
+                        id={`typeahead-${rule.key}`}
+                        labelKey="key"
+                        isLoading={loading}
+                        allowNew={true}
+                        onChange={(selected) => {
+                          if (!selected[0]) {
+                            return;
+                          }
+
+                          const _rules = [...localRules];
+                          rule.match = selected[0].key
+                            ? selected[0].key // when a new custom option is set
+                            : selected[0]; // when a list option is chosen
+                          _rules[idx] = rule;
+                          setLocalRules(_rules);
+                        }}
+                        options={autocompleteResults}
+                        onSearch={(_match) => {
+                          autocompleteProfilePropertySearch(rule, _match);
+                        }}
+                        placeholder={`matching string (% is wildcard)`}
+                        defaultSelected={
+                          rule.match ? [rule.match.toString()] : undefined
+                        }
+                      />
                     ) : (
                       <Form.Group controlId={`${rule.key}-match-${idx}`}>
                         <Form.Control
