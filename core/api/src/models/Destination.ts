@@ -15,6 +15,7 @@ import {
   AfterDestroy,
   DataType,
   DefaultScope,
+  BeforeDestroy,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { App } from "./App";
@@ -181,6 +182,16 @@ export class Destination extends LoggedModel<Destination> {
       for (const i in destinationGroups) {
         await destinationGroups[i].destroy();
       }
+    }
+  }
+
+  @BeforeDestroy
+  static async cannotDeleteDestinationWithTrackkedGroups(
+    instance: Destination
+  ) {
+    const destinationGroupsCount = await instance.$count("destinationGroups");
+    if (instance.trackAllGroups === true || destinationGroupsCount > 0) {
+      throw new Error("cannot delete a destination that is tracking a group");
     }
   }
 

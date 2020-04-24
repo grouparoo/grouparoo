@@ -52,6 +52,9 @@ export default function ({
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    delete destination["mapping"];
+    delete destination["destinationGroupMemberships"];
+    delete destination["groups"];
 
     const response = await execApi(
       "put",
@@ -69,7 +72,10 @@ export default function ({
         response.destination.state === "ready" &&
         destination.state === "draft"
       ) {
-        Router.push(`/destinations`);
+        Router.push({
+          pathname: `/destination/${destination.guid}`,
+          query: { tab: "data" },
+        });
       }
     }
   };

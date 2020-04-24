@@ -80,6 +80,7 @@ export default function ({
           <tr>
             <th></th>
             <th>Destination Name</th>
+            <th>Group Tracked</th>
             <th>App</th>
             <th>State</th>
             <th>Created At</th>
@@ -94,7 +95,7 @@ export default function ({
                 </td>
                 <td>
                   <Link
-                    href="/destination/[guid"
+                    href="/destination/[guid]"
                     as={`/destination/${destination.guid}`}
                   >
                     <a>
@@ -106,6 +107,20 @@ export default function ({
                       </strong>
                     </a>
                   </Link>
+                </td>
+                <td>
+                  {destination.trackAllGroups ? (
+                    "All Groups"
+                  ) : destination.destinationGroups[0]?.name ? (
+                    <Link
+                      href="/group/[guid]"
+                      as={`/group/${destination.destinationGroups[0].guid}`}
+                    >
+                      <a>{destination.destinationGroups[0].name}</a>
+                    </Link>
+                  ) : (
+                    "None"
+                  )}
                 </td>
                 <td>
                   <Link href="/app/[guid]" as={`/app/${destination.app.guid}`}>
