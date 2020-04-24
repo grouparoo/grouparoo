@@ -246,127 +246,125 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
                 <br />
 
-                <h3>
-                  Required {mappingOptions.labels.profilePropertyRule.plural}
-                </h3>
-
                 {mappingOptions.profilePropertyRules.required.length > 0 ? (
-                  <Table size="sm">
-                    <thead>
-                      <tr>
-                        <th>Grouparoo Profile Property Rule</th>
-                        <th />
-                        <th>
-                          {mappingOptions.labels.profilePropertyRule.singular}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {mappingOptions.profilePropertyRules.required.map(
-                        ({ key, type }, idx) => (
-                          <tr key={`required-mapping-${idx}`}>
-                            <td>
-                              <Form.Control
-                                as="select"
-                                required={true}
-                                value={destination.mapping[key] || ""}
-                                onChange={(e) =>
-                                  updateMapping(key, e.target["value"])
-                                }
-                              >
-                                <option disabled value={""}>
-                                  choose a profile property rule
-                                </option>
-                                {profilePropertyRules
-                                  .filter((rule) =>
-                                    type === "any" ? true : rule.type === type
-                                  )
-                                  .map((rule) => (
-                                    <option key={`opt-required-${rule.guid}`}>
-                                      {rule.key}
-                                    </option>
-                                  ))}
-                              </Form.Control>
-                            </td>
-                            <td style={{ textAlign: "center" }}>---></td>
-                            <td>
-                              <Badge variant="secondary">{key}</Badge>{" "}
-                              <span className="text-muted">({type})</span>
-                            </td>
-                          </tr>
-                        )
-                      )}
-                    </tbody>
-                  </Table>
-                ) : (
-                  <p>None</p>
-                )}
+                  <>
+                    <h3>
+                      Required{" "}
+                      {mappingOptions.labels.profilePropertyRule.plural}
+                    </h3>
+                    <Table size="sm">
+                      <thead>
+                        <tr>
+                          <th>Grouparoo Profile Property Rule</th>
+                          <th />
+                          <th>
+                            {mappingOptions.labels.profilePropertyRule.singular}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {mappingOptions.profilePropertyRules.required.map(
+                          ({ key, type }, idx) => (
+                            <tr key={`required-mapping-${idx}`}>
+                              <td>
+                                <Form.Control
+                                  as="select"
+                                  required={true}
+                                  value={destination.mapping[key] || ""}
+                                  onChange={(e) =>
+                                    updateMapping(key, e.target["value"])
+                                  }
+                                >
+                                  <option disabled value={""}>
+                                    choose a profile property rule
+                                  </option>
+                                  {profilePropertyRules
+                                    .filter((rule) =>
+                                      type === "any" ? true : rule.type === type
+                                    )
+                                    .map((rule) => (
+                                      <option key={`opt-required-${rule.guid}`}>
+                                        {rule.key}
+                                      </option>
+                                    ))}
+                                </Form.Control>
+                              </td>
+                              <td style={{ textAlign: "center" }}>---></td>
+                              <td>
+                                <Badge variant="secondary">{key}</Badge>{" "}
+                                <span className="text-muted">({type})</span>
+                              </td>
+                            </tr>
+                          )
+                        )}
+                      </tbody>
+                    </Table>{" "}
+                    <br />
+                  </>
+                ) : null}
 
-                <br />
-
-                <h3>
-                  Known {mappingOptions.labels.profilePropertyRule.plural}
-                </h3>
                 {mappingOptions.profilePropertyRules.known.length > 0 ? (
-                  <Table size="sm">
-                    <thead>
-                      <tr>
-                        <th>Grouparoo Profile Property Rule</th>
-                        <th />
-                        <th>
-                          {mappingOptions.labels.profilePropertyRule.singular}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {mappingOptions.profilePropertyRules.known.map(
-                        ({ key, type }, idx) => (
-                          <tr key={`known-mapping-${idx}`}>
-                            <td>
-                              <Form.Control
-                                as="select"
-                                required={false}
-                                value={destination.mapping[key] || ""}
-                                onChange={(e) =>
-                                  updateMapping(key, e.target["value"])
-                                }
-                              >
-                                <option value={""}>None</option>
-                                <option disabled>---</option>
-                                {profilePropertyRules
-                                  .filter((rule) =>
-                                    type === "any" ? true : rule.type === type
-                                  )
-                                  .map((rule) => (
-                                    <option key={`opt-known-${rule.guid}`}>
-                                      {rule.key}
-                                    </option>
-                                  ))}
-                              </Form.Control>
-                            </td>
-                            <td style={{ textAlign: "center" }}>---></td>
-                            <td>
-                              <Badge variant="secondary">{key}</Badge>{" "}
-                              <span className="text-muted">({type})</span>
-                            </td>
-                          </tr>
-                        )
-                      )}
-                    </tbody>
-                  </Table>
-                ) : (
-                  <p>None</p>
-                )}
-
-                <br />
-
-                <h3>
-                  Optional {mappingOptions.labels.profilePropertyRule.plural}
-                </h3>
+                  <>
+                    <h3>
+                      Known {mappingOptions.labels.profilePropertyRule.plural}
+                    </h3>
+                    <Table size="sm">
+                      <thead>
+                        <tr>
+                          <th>Grouparoo Profile Property Rule</th>
+                          <th />
+                          <th>
+                            {mappingOptions.labels.profilePropertyRule.singular}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {mappingOptions.profilePropertyRules.known.map(
+                          ({ key, type }, idx) => (
+                            <tr key={`known-mapping-${idx}`}>
+                              <td>
+                                <Form.Control
+                                  as="select"
+                                  required={false}
+                                  value={destination.mapping[key] || ""}
+                                  onChange={(e) =>
+                                    updateMapping(key, e.target["value"])
+                                  }
+                                >
+                                  <option value={""}>None</option>
+                                  <option disabled>---</option>
+                                  {profilePropertyRules
+                                    .filter((rule) =>
+                                      type === "any" ? true : rule.type === type
+                                    )
+                                    .map((rule) => (
+                                      <option key={`opt-known-${rule.guid}`}>
+                                        {rule.key}
+                                      </option>
+                                    ))}
+                                </Form.Control>
+                              </td>
+                              <td style={{ textAlign: "center" }}>---></td>
+                              <td>
+                                <Badge variant="secondary">{key}</Badge>{" "}
+                                <span className="text-muted">({type})</span>
+                              </td>
+                            </tr>
+                          )
+                        )}
+                      </tbody>
+                    </Table>{" "}
+                    <br />
+                  </>
+                ) : null}
 
                 {mappingOptions.profilePropertyRules
                   .allowOptionalFromProfilePropertyRules ? (
                   <>
+                    <h3>
+                      Optional{" "}
+                      {mappingOptions.labels.profilePropertyRule.plural}
+                    </h3>
                     <Table size="sm">
                       <thead>
                         <tr>
@@ -451,13 +449,11 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                     >
                       Add new{" "}
                       {mappingOptions.labels.profilePropertyRule.singular}
-                    </Button>
+                    </Button>{" "}
+                    <br />
                   </>
-                ) : (
-                  <p>None</p>
-                )}
+                ) : null}
 
-                <br />
                 <br />
 
                 <h3>{mappingOptions.labels.group.plural}</h3>
