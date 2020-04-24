@@ -3,6 +3,7 @@ import { useApi } from "../../hooks/useApi";
 import Link from "next/link";
 import Moment from "react-moment";
 import LoadingTable from "../loadingTable";
+import AppIcon from "./../appIcon";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
@@ -37,6 +38,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       <LoadingTable loading={loading}>
         <thead>
           <tr>
+            <th />
             <th>Destination</th>
             <th>App</th>
             <th>Created At</th>
@@ -47,24 +49,19 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             return (
               <tr key={`destination-${destination.guid}`}>
                 <td>
+                  <AppIcon src={destination.app.icon} />
+                </td>
+                <td>
                   <Link
                     href="/destination/[guid]"
                     as={`/destination/${destination.guid}`}
                   >
-                    <a>
-                      {destination.name}
-                      <br />
-                      {destination.guid}
-                    </a>
+                    <a>{destination.name}</a>
                   </Link>
                 </td>
                 <td>
                   <Link href="/app/[guid]" as={`/app/${destination.app.guid}`}>
-                    <a>
-                      {destination.app.name}
-                      <br />
-                      {destination.app.guid}
-                    </a>
+                    <a>{destination.app.name}</a>
                   </Link>
                 </td>
                 <td>
