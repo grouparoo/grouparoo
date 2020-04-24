@@ -113,6 +113,36 @@ export class ProfilesList extends Action {
   }
 }
 
+export class ProfileAutocompleteProfileProperty extends Action {
+  constructor() {
+    super();
+    this.name = "profiles:autocompleteProfileProperty";
+    this.description = "create a run to import and update every profile";
+    this.outputExample = {};
+    this.middleware = ["authenticated-team-member", "role-read"];
+    this.inputs = {
+      profilePropertyRuleGuid: { required: true },
+      match: { required: true },
+      limit: { required: false, default: 25 },
+      offset: { required: false, default: 0 },
+      order: { required: false, default: [["rawValue", "asc"]] },
+    };
+  }
+
+  async run({ params, response }) {
+    const profileProperties = await ProfileProperty.findAll({
+      where: { rawValue: { [Op.iLike]: `%${params.match}%` } },
+      limit: params.limit,
+      offset: params.offset,
+      order: params.order,
+    });
+
+    response.profileProperties = await Promise.all(
+      profileProperties.map((prop) => prop.getValue())
+    );
+  }
+}
+
 export class ProfilesImportAndUpdate extends Action {
   constructor() {
     super();

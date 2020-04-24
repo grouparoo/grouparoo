@@ -155,6 +155,25 @@ describe("actions/profiles", () => {
       expect(total).toBe(1);
     });
 
+    test("a writer can get autocomplete results from profile properties", async () => {
+      const emailRule = await ProfilePropertyRule.findOne({
+        where: { key: "email" },
+      });
+
+      connection.params = {
+        csrfToken,
+        profilePropertyRuleGuid: emailRule.guid,
+        match: "@example.com",
+      };
+      const { error, profileProperties } = await specHelper.runAction(
+        "profiles:autocompleteProfileProperty",
+        connection
+      );
+
+      expect(error).toBeUndefined();
+      expect(profileProperties).toEqual(["luigi@example.com"]);
+    });
+
     test("an administrator can import and update all profiles", async () => {
       connection.params = {
         csrfToken,
