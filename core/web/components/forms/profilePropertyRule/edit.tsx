@@ -296,43 +296,47 @@ export default function ({
 
                 {/* typeahead options */}
                 {opt.type === "typeahead" ? (
-                  <Typeahead
-                    id="typeahead"
-                    labelKey="key"
-                    onChange={(selected) => {
-                      if (selected.length === 1 && selected[0].key) {
-                        updateOption(opt.key, selected[0].key);
+                  <>
+                    <Typeahead
+                      id="typeahead"
+                      labelKey="key"
+                      onChange={(selected) => {
+                        if (selected.length === 1 && selected[0].key) {
+                          updateOption(opt.key, selected[0].key);
+                        }
+                      }}
+                      options={opt?.options}
+                      placeholder={`Select ${opt.key}`}
+                      renderMenuItemChildren={(opt, props, idx) => {
+                        return [
+                          <span key={`opt-${idx}-key`}>
+                            {opt.key}
+                            <br />
+                          </span>,
+                          <small
+                            key={`opt-${idx}-examples`}
+                            className="text-small"
+                          >
+                            <em>
+                              Examples:{" "}
+                              {opt.examples
+                                ? opt.examples.slice(0, 3).join("").trim() !==
+                                  ""
+                                  ? opt.examples.slice(0, 3).join(", ")
+                                  : "None"
+                                : null}
+                            </em>
+                          </small>,
+                        ];
+                      }}
+                      defaultSelected={
+                        profilePropertyRule.options[opt?.key]
+                          ? [profilePropertyRule.options[opt?.key]]
+                          : undefined
                       }
-                    }}
-                    options={opt?.options}
-                    placeholder="Select a column"
-                    renderMenuItemChildren={(opt, props, idx) => {
-                      return [
-                        <span key={`opt-${idx}-key`}>
-                          {opt.key}
-                          <br />
-                        </span>,
-                        <small
-                          key={`opt-${idx}-examples`}
-                          className="text-small"
-                        >
-                          <em>
-                            Examples:{" "}
-                            {opt.examples
-                              ? opt.examples.slice(0, 3).join("").trim() !== ""
-                                ? opt.examples.slice(0, 3).join(", ")
-                                : "None"
-                              : null}
-                          </em>
-                        </small>,
-                      ];
-                    }}
-                    defaultSelected={
-                      profilePropertyRule.options[opt?.key]
-                        ? [profilePropertyRule.options[opt?.key]]
-                        : undefined
-                    }
-                  ></Typeahead>
+                    />
+                    <br />
+                  </>
                 ) : null}
 
                 {/* list options */}
