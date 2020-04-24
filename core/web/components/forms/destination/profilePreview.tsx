@@ -40,8 +40,6 @@ export default function ProfilePreview({
     JSON.stringify(destination.destinationGroupMemberships),
   ]);
 
-  console.log(destination);
-
   async function load() {
     setSleeping(true);
 
