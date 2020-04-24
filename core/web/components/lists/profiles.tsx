@@ -1,21 +1,22 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useHistoryPagination } from "../../hooks/useHistoryPagination";
-import { useForm } from "react-hook-form";
 import Link from "next/link";
 import Router from "next/router";
 import { Form, Col, Button } from "react-bootstrap";
 import Moment from "react-moment";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
 export default function ({ apiVersion, errorHandler, hideSearch, query }) {
   const { execApi } = useApi(errorHandler);
-  const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
   const [total, setTotal] = useState(0);
   const [profiles, setProfiles] = useState([]);
   const [profilePropertyRules, setProfilePropertyRules] = useState([]);
+  const [autocompleteResults, setAutoCompleteResults] = useState([]);
 
   // pagination
   const limit = 100;
@@ -29,9 +30,13 @@ export default function ({ apiVersion, errorHandler, hideSearch, query }) {
 
   useEffect(() => {
     load();
-  }, [offset, limit, searchKey, searchValue]);
+  }, [offset, limit]);
 
-  async function load() {
+  async function load(event?) {
+    if (event) {
+      event.preventDefault();
+    }
+
     if (profilePropertyRules.length === 0) {
       await loadProfileProperties();
     }
@@ -89,7 +94,7 @@ export default function ({ apiVersion, errorHandler, hideSearch, query }) {
       url += `searchKey=${searchKey}&`;
     }
     if (searchValue && searchValue !== "") {
-      url += `searchValue=${searchValue}&`;
+      url += `searchValue=${escape(searchValue)}&`;
     }
 
     const routerMethod =
@@ -104,15 +109,32 @@ export default function ({ apiVersion, errorHandler, hideSearch, query }) {
     }
   });
 
-  function onSubmit(data) {
-    setSearchKey(data.searchKey);
-    setSearchValue(data.searchValue);
+  async function autocompleteProfilePropertySearch(
+    match,
+    _searchKey = searchKey
+  ) {
+    const profilePropertyRuleGuid = profilePropertyRules.filter(
+      (r) => r.key === _searchKey
+    )[0].guid;
+
+    setSearchLoading(true);
+    const response = await execApi(
+      "get",
+      `/api/${apiVersion}/profiles/autocompleteProfileProperty`,
+      { profilePropertyRuleGuid, match }
+    );
+    if (response.profileProperties) {
+      setAutoCompleteResults(
+        response.profileProperties.map((e) => e.toString())
+      );
+    }
+    setSearchLoading(false);
   }
 
   return (
     <>
       {hideSearch ? null : (
-        <Form id="search" onSubmit={handleSubmit(onSubmit)}>
+        <Form id="search" onSubmit={load}>
           <Form.Row>
             <Col md={3}>
               <Form.Group>
@@ -121,10 +143,11 @@ export default function ({ apiVersion, errorHandler, hideSearch, query }) {
                   name="searchKey"
                   as="select"
                   value={searchKey}
-                  ref={register}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                    setSearchKey(event.target.value)
-                  }
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setSearchKey(event.target.value);
+                    setSearchValue("");
+                    autocompleteProfilePropertySearch("%", event.target.value);
+                  }}
                 >
                   <option value="">Show All</option>
                   {profilePropertyRules.map((rule) => (
@@ -135,20 +158,39 @@ export default function ({ apiVersion, errorHandler, hideSearch, query }) {
             </Col>
             {searchKey !== "" ? (
               <Col md={7}>
-                <Form.Group>
-                  <Form.Label>Search Term (use * for fuzzy matches)</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="searchValue"
-                    placeholder="name@example.com"
-                    defaultValue={searchValue}
-                    ref={register}
+                <>
+                  <Form.Label>
+                    Search Term (use <code>%</code> for wildcards)
+                  </Form.Label>
+                  <AsyncTypeahead
+                    key={`typeahead-search-${searchKey}`}
+                    id={`typeahead-search-${searchKey}`}
+                    minLength={0}
+                    isLoading={searchLoading}
+                    allowNew={true}
+                    onChange={(selected) => {
+                      if (!selected[0]) {
+                        return;
+                      }
+
+                      setSearchValue(
+                        selected[0].label
+                          ? selected[0].label // when a new custom option is set
+                          : selected[0] // when a list option is chosen);
+                      );
+                    }}
+                    options={autocompleteResults}
+                    onSearch={autocompleteProfilePropertySearch}
+                    placeholder={`name@example.com`}
+                    defaultSelected={
+                      searchValue ? [searchValue.toString()] : undefined
+                    }
                   />
-                </Form.Group>
+                </>
               </Col>
             ) : null}
 
-            <Col md={2} style={{ marginTop: 34 }}>
+            <Col md={2} style={{ marginTop: 33 }}>
               <Button size="sm" type="submit">
                 Search
               </Button>

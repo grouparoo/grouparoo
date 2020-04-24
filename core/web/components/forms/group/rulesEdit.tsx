@@ -153,7 +153,6 @@ export default function RulesBuilder({
   }
 
   async function autocompleteProfilePropertySearch(localRule, match) {
-    console.log({ localRule, match });
     const profilePropertyRuleGuid = profilePropertyRules.filter(
       (r) => r.key === localRule.key
     )[0].guid;
@@ -164,10 +163,10 @@ export default function RulesBuilder({
       `/api/${apiVersion}/profiles/autocompleteProfileProperty`,
       { profilePropertyRuleGuid, match }
     );
-    setLoading(false);
     if (response.profileProperties) {
       setAutoCompleteResults(response.profileProperties);
     }
+    setLoading(false);
   }
 
   if (group.type === "") {
@@ -249,6 +248,10 @@ export default function RulesBuilder({
                           rule.key = e.target.value;
                           _rules[idx] = rule;
                           setLocalRules(_rules);
+                          autocompleteProfilePropertySearch(
+                            { key: e.target.value },
+                            "%"
+                          );
                         }}
                       >
                         {profilePropertyRules.map((rule) => (
@@ -291,7 +294,9 @@ export default function RulesBuilder({
                       "N/A"
                     ) : typeaheadTypes.includes(type) ? (
                       <AsyncTypeahead
+                        key={`typeahead-${rule.key}`}
                         id={`typeahead-${rule.key}`}
+                        minLength={0}
                         labelKey="key"
                         isLoading={loading}
                         allowNew={true}

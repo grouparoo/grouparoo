@@ -42,18 +42,7 @@ export class ProfilesList extends Action {
       }
 
       where.profilePropertyRuleGuid = rule.guid;
-
-      if (params.searchValue.indexOf("*") >= 0) {
-        where.rawValue = {
-          [Op.iLike]: `${params.searchValue.replace(/\*/g, "%")}`,
-        };
-      } else {
-        where.rawValue = api.sequelize.where(
-          api.sequelize.fn("LOWER", api.sequelize.col("rawValue")),
-          "=",
-          api.sequelize.fn("LOWER", params.searchValue)
-        );
-      }
+      where.rawValue = { [Op.iLike]: `${params.searchValue}` };
     }
 
     if (params.guid) {
@@ -131,7 +120,18 @@ export class ProfileAutocompleteProfileProperty extends Action {
 
   async run({ params, response }) {
     const profileProperties = await ProfileProperty.findAll({
-      where: { rawValue: { [Op.iLike]: `%${params.match}%` } },
+      attributes: [
+        [
+          api.sequelize.fn("DISTINCT", api.sequelize.col("rawValue")),
+          "rawValue",
+        ],
+        "profilePropertyRuleGuid",
+      ],
+      where: {
+        profilePropertyRuleGuid: params.profilePropertyRuleGuid,
+        rawValue: { [Op.iLike]: `%${params.match}%` },
+      },
+      group: ["rawValue", "profilePropertyRuleGuid"],
       limit: params.limit,
       offset: params.offset,
       order: params.order,

@@ -540,7 +540,7 @@ describe("actions/profiles", () => {
         connection.params = {
           csrfToken,
           searchKey: "email",
-          searchValue: "*@mushroom-kingdom.gov",
+          searchValue: "%@mushroom-kingdom.gov",
         };
         const { error, profiles, total } = await specHelper.runAction(
           "profiles:list",
@@ -555,7 +555,7 @@ describe("actions/profiles", () => {
         connection.params = {
           csrfToken,
           searchKey: "email",
-          searchValue: "*@MuShRoom-kingdom.GOV",
+          searchValue: "%@MuShRoom-kingdom.GOV",
         };
         const { error, profiles, total } = await specHelper.runAction(
           "profiles:list",
@@ -571,7 +571,7 @@ describe("actions/profiles", () => {
           csrfToken,
           guid: group.guid,
           searchKey: "email",
-          searchValue: "*@mushroom-kingdom.gov",
+          searchValue: "%@mushroom-kingdom.gov",
         };
         const { error, profiles, total } = await specHelper.runAction(
           "profiles:list",
