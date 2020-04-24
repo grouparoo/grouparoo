@@ -113,6 +113,10 @@ export default function ({ apiVersion, errorHandler, hideSearch, query }) {
     match,
     _searchKey = searchKey
   ) {
+    if (!_searchKey) {
+      return;
+    }
+
     const profilePropertyRuleGuid = profilePropertyRules.filter(
       (r) => r.key === _searchKey
     )[0].guid;
