@@ -60,11 +60,20 @@ export default function ({ apiVersion, errorHandler, hideSearch, query }) {
     setLoading(true);
     const response = await execApi(
       "get",
-      `/api/${apiVersion}/profilePropertyRules`
+      `/api/${apiVersion}/profilePropertyRules`,
+      { state: "ready" }
     );
     setLoading(false);
     if (response?.profilePropertyRules) {
-      setProfilePropertyRules(response.profilePropertyRules);
+      setProfilePropertyRules(
+        response.profilePropertyRules.sort((a, b) => {
+          if (a.key > b.key) {
+            return 1;
+          } else {
+            return -1;
+          }
+        })
+      );
     }
   }
 
