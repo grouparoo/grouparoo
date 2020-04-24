@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Button, Badge, Table } from "react-bootstrap";
 import Router from "next/router";
-import Link from "next/link";
 import AppIcon from "./../../appIcon";
 import StateBadge from "./../../stateBadge";
+import { Typeahead } from "react-bootstrap-typeahead";
 
 export default function ({
   apiVersion,
@@ -118,13 +118,9 @@ export default function ({
     setSource(_source);
   };
 
-  const updateOption = async (event) => {
+  const updateOption = async (optKey, optValue) => {
     const _source = Object.assign({}, source);
-    const optKey = event.target.id.replace("_opt~", "");
-    _source.options[optKey] =
-      event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value;
+    _source.options[optKey] = optValue;
     setSource(_source);
     loadPreview();
   };
@@ -166,10 +162,6 @@ export default function ({
             </Form.Group>
 
             <hr />
-            <strong>
-              Pick the database table that contains the data you’re looking for:
-            </strong>
-            <br />
 
             {Object.keys(source.connection.options).length === 0 ? (
               <p>No options for this type of source</p>
@@ -182,6 +174,7 @@ export default function ({
                   controlId={`_opt~${opt.key}`}
                 >
                   <Form.Label>
+                    <strong>{opt.key}</strong>{" "}
                     {opt.required ? (
                       <>
                         <Badge variant="info">required</Badge>&nbsp;
@@ -190,13 +183,63 @@ export default function ({
                   </Form.Label>
 
                   {(() => {
-                    if (connectionOptions[opt.key]?.type === "list") {
+                    if (connectionOptions[opt.key]?.type === "typeahead") {
+                      return (
+                        <Typeahead
+                          id="typeahead"
+                          labelKey="key"
+                          onChange={(selected) => {
+                            console.log(selected);
+                            updateOption(opt.key, selected[0]?.key);
+                          }}
+                          options={connectionOptions[opt.key]?.options.map(
+                            (k, idx) => {
+                              return {
+                                key: k,
+                                descriptions:
+                                  connectionOptions[k]?.descriptions[idx],
+                              };
+                            }
+                          )}
+                          placeholder={`Select ${opt.key}`}
+                          renderMenuItemChildren={(opt, props, idx) => {
+                            return [
+                              <span key={`opt-${idx}-key`}>
+                                {opt.key}
+                                <br />
+                              </span>,
+                              <small
+                                key={`opt-${idx}-descriptions`}
+                                className="text-small"
+                              >
+                                <em>
+                                  Descriptions:{" "}
+                                  {opt.descriptions
+                                    ? opt.descriptions.join(", ")
+                                    : "None"}
+                                </em>
+                              </small>,
+                            ];
+                          }}
+                          defaultSelected={
+                            source.options[opt.key]
+                              ? [source.options[opt.key]]
+                              : undefined
+                          }
+                        />
+                      );
+                    } else if (connectionOptions[opt.key]?.type === "list") {
                       return (
                         <Form.Control
                           as="select"
                           required={opt.required}
                           defaultValue={source.options[opt.key] || ""}
-                          onChange={(e) => updateOption(e)}
+                          onChange={(e) =>
+                            updateOption(
+                              e.target.id.replace("_opt~", ""),
+                              e.target.value
+                            )
+                          }
                         >
                           <option value={""} disabled>
                             Choose an option
@@ -222,11 +265,18 @@ export default function ({
                           required={opt.required}
                           type="text"
                           defaultValue={source.options[opt.key]}
-                          onChange={(e) => updateOption(e)}
+                          onChange={(e) =>
+                            updateOption(
+                              e.target.id.replace("_opt~", ""),
+                              e.target.value
+                            )
+                          }
                         />
                       );
                     }
                   })()}
+
+                  {/* list-type options */}
                 </Form.Group>
               );
             })}

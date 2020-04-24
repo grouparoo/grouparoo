@@ -2,7 +2,7 @@ import { connect } from "../connect";
 import { SourceOptionsMethod } from "@grouparoo/core";
 
 export const sourceOptions: SourceOptionsMethod = async ({ appOptions }) => {
-  const response = { table: { type: "list", options: [] } };
+  const response = { table: { type: "typeahead", options: [] } };
 
   const client = await connect(appOptions);
   const tables = await client.asyncQuery(
