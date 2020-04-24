@@ -89,7 +89,7 @@ export const PROFILE_PROPERTY_RULE_OPS = {
     lte: "less than or equals",
     like: "is like",
     iLike: "is like, case insensitive",
-    notLike: "is like",
+    notLike: "is not like",
     notILike: "is not like, case insensitive",
     startsWith: "starts with",
     endsWith: "ends with",

@@ -33,6 +33,7 @@ export const DEFAULT = {
         { path: "/:apiVersion/profilePropertyRule/:guid/groups", action: "profilePropertyRule:groups" },
         { path: "/:apiVersion/profilePropertyRule/:guid/profilePreview", action: "profilePropertyRule:profilePreview" },
         { path: "/:apiVersion/profiles", action: "profiles:list" },
+        { path: "/:apiVersion/profiles/autocompleteProfileProperty", action: "profiles:autocompleteProfileProperty" },
         { path: "/:apiVersion/profile/:guid", action: "profile:view" },
         { path: "/:apiVersion/profile/:profileGuid/logs", action: "logs:list" },
         { path: "/:apiVersion/account", action: "account:view" },

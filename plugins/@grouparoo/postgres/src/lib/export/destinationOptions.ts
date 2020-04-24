@@ -6,11 +6,11 @@ export const destinationOptions: DestinationOptionsMethod = async ({
   appOptions,
 }) => {
   const response = {
-    table: { type: "list", options: [] },
-    groupsTable: { type: "list", options: [] },
-    primaryKey: { type: "list", options: [] },
-    groupForeignKey: { type: "list", options: [] },
-    groupColumnName: { type: "list", options: [] },
+    table: { type: "typeahead", options: [] },
+    groupsTable: { type: "typeahead", options: [] },
+    primaryKey: { type: "typeahead", options: [] },
+    groupForeignKey: { type: "typeahead", options: [] },
+    groupColumnName: { type: "typeahead", options: [] },
   };
 
   const tables = [];

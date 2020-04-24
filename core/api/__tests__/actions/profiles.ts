@@ -155,6 +155,25 @@ describe("actions/profiles", () => {
       expect(total).toBe(1);
     });
 
+    test("a writer can get autocomplete results from profile properties", async () => {
+      const emailRule = await ProfilePropertyRule.findOne({
+        where: { key: "email" },
+      });
+
+      connection.params = {
+        csrfToken,
+        profilePropertyRuleGuid: emailRule.guid,
+        match: "@example.com",
+      };
+      const { error, profileProperties } = await specHelper.runAction(
+        "profiles:autocompleteProfileProperty",
+        connection
+      );
+
+      expect(error).toBeUndefined();
+      expect(profileProperties).toEqual(["luigi@example.com"]);
+    });
+
     test("an administrator can import and update all profiles", async () => {
       connection.params = {
         csrfToken,
@@ -521,7 +540,7 @@ describe("actions/profiles", () => {
         connection.params = {
           csrfToken,
           searchKey: "email",
-          searchValue: "*@mushroom-kingdom.gov",
+          searchValue: "%@mushroom-kingdom.gov",
         };
         const { error, profiles, total } = await specHelper.runAction(
           "profiles:list",
@@ -536,7 +555,7 @@ describe("actions/profiles", () => {
         connection.params = {
           csrfToken,
           searchKey: "email",
-          searchValue: "*@MuShRoom-kingdom.GOV",
+          searchValue: "%@MuShRoom-kingdom.GOV",
         };
         const { error, profiles, total } = await specHelper.runAction(
           "profiles:list",
@@ -552,7 +571,7 @@ describe("actions/profiles", () => {
           csrfToken,
           guid: group.guid,
           searchKey: "email",
-          searchValue: "*@mushroom-kingdom.gov",
+          searchValue: "%@mushroom-kingdom.gov",
         };
         const { error, profiles, total } = await specHelper.runAction(
           "profiles:list",

@@ -42,18 +42,7 @@ export class ProfilesList extends Action {
       }
 
       where.profilePropertyRuleGuid = rule.guid;
-
-      if (params.searchValue.indexOf("*") >= 0) {
-        where.rawValue = {
-          [Op.iLike]: `${params.searchValue.replace(/\*/g, "%")}`,
-        };
-      } else {
-        where.rawValue = api.sequelize.where(
-          api.sequelize.fn("LOWER", api.sequelize.col("rawValue")),
-          "=",
-          api.sequelize.fn("LOWER", params.searchValue)
-        );
-      }
+      where.rawValue = { [Op.iLike]: `${params.searchValue}` };
     }
 
     if (params.guid) {
@@ -110,6 +99,47 @@ export class ProfilesList extends Action {
         profiles.map(async (p) => p.apiData())
       );
     }
+  }
+}
+
+export class ProfileAutocompleteProfileProperty extends Action {
+  constructor() {
+    super();
+    this.name = "profiles:autocompleteProfileProperty";
+    this.description = "create a run to import and update every profile";
+    this.outputExample = {};
+    this.middleware = ["authenticated-team-member", "role-read"];
+    this.inputs = {
+      profilePropertyRuleGuid: { required: true },
+      match: { required: true },
+      limit: { required: false, default: 25 },
+      offset: { required: false, default: 0 },
+      order: { required: false, default: [["rawValue", "asc"]] },
+    };
+  }
+
+  async run({ params, response }) {
+    const profileProperties = await ProfileProperty.findAll({
+      attributes: [
+        [
+          api.sequelize.fn("DISTINCT", api.sequelize.col("rawValue")),
+          "rawValue",
+        ],
+        "profilePropertyRuleGuid",
+      ],
+      where: {
+        profilePropertyRuleGuid: params.profilePropertyRuleGuid,
+        rawValue: { [Op.iLike]: `%${params.match}%` },
+      },
+      group: ["rawValue", "profilePropertyRuleGuid"],
+      limit: params.limit,
+      offset: params.offset,
+      order: params.order,
+    });
+
+    response.profileProperties = await Promise.all(
+      profileProperties.map((prop) => prop.getValue())
+    );
   }
 }
 
