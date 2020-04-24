@@ -95,7 +95,7 @@ export default function ({
                 </td>
                 <td>
                   <Link
-                    href="/destination/[guid"
+                    href="/destination/[guid]"
                     as={`/destination/${destination.guid}`}
                   >
                     <a>
