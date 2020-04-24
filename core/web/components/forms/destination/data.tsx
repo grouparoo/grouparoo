@@ -64,11 +64,9 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   }
 
   async function loadGroups() {
-    const response = await execApi("get", `/api/${apiVersion}/groups`, {
-      state: "ready",
-    });
+    const response = await execApi("get", `/api/${apiVersion}/groups`);
     if (response?.groups) {
-      setGroups(response.groups);
+      setGroups(response.groups.filter((group) => group.state !== "draft"));
     }
   }
 
