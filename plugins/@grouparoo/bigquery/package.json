@@ -1,0 +1,51 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "@grouparoo/bigquery",
+  "description": "The Grouparoo BigQuery Plugin",
+  "version": "0.1.1-alpha.11",
+  "license": "MPL-2.0",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://www.grouparoo.com",
+  "bugs": {
+    "url": "https://github.com/grouparoo/grouparoo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grouparoo/grouparoo.git",
+    "directory": "plugins/@grouparoo/bigquery"
+  },
+  "engines": {
+    "node": "12.x.x"
+  },
+  "scripts": {
+    "prepare": "rm -rf dist && tsc --declaration",
+    "test": "jest",
+    "pretest": "npm run lint && npm run prepare",
+    "lint": "prettier --check src __tests__"
+  },
+  "dependencies": {
+    "@google-cloud/bigquery": "^4.7.0",
+    "pg": "^8.0.2",
+    "pg-format": "^1.0.4",
+    "pg-hstore": "^2.3.3"
+  },
+  "peerDependencies": {
+    "@grouparoo/core": "^0.1.1-alpha.11",
+    "actionhero": "^22.0.7"
+  },
+  "devDependencies": {
+    "@grouparoo/core": "^0.1.1-alpha.11",
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.13.1",
+    "@types/pg": "^7.14.3",
+    "actionhero": "^22.0.7",
+    "jest": "^25.4.0",
+    "prettier": "^2.0.5",
+    "ts-jest": "^25.4.0",
+    "typescript": "^3.8.3"
+  },
+  "gitHead": "d180097c68e2e0db22918e7d51c0e84abd9202c0"
+}
