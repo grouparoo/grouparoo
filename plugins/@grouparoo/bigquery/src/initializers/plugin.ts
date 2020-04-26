@@ -37,18 +37,24 @@ export class Plugins extends Initializer {
         {
           name: "bigquery",
           options: [
-            { key: "host", required: false, description: "the bigquery host" },
-            { key: "port", required: false, description: "the bigquery port" },
             {
-              key: "database",
+              key: "project_id",
               required: true,
-              description: "the bigquery database",
+              description: "project id from google",
+              placeholder: "e.g. grouparoo-sources",
             },
-            { key: "user", required: false, description: "the bigquery user" },
             {
-              key: "password",
-              required: false,
-              description: "the bigquery user's password",
+              key: "client_email",
+              required: true,
+              description: "email of service account",
+              placeholder:
+                "e.g. grouparoo-access@grouparoo-sources.iam.gserviceaccount.com",
+            },
+            {
+              key: "private_key",
+              required: true,
+              description: "private key of service account",
+              placeholder: "e.g. -----BEGIN PRIVATE KEY-----\nMII ...",
             },
           ],
           methods: { test },
