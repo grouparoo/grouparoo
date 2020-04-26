@@ -27,7 +27,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     }
   } catch (error) {
     throw new Error(
-      `Error with MySQL SQL Statement: Query - \`${parameterizedQuery}\`, Error - ${error}`
+      `Error with Postgres SQL Statement: Query - \`${parameterizedQuery}\`, Error - ${error}`
     );
   } finally {
     await client.end();
