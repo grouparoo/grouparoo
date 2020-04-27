@@ -51,10 +51,11 @@ jobs:
       - restore_cache:
           <<: *cache-options
       - run:
-        name: lerna version-alpha
-        command: npm run version-alpha
+          name: lerna version-alpha
+          command: npm run version-alpha
       - run:
-        name: ./bin/publish
+          name: publish
+          command: ./bin/publish
 
   publish-stable:
     docker:
@@ -64,10 +65,11 @@ jobs:
       - restore_cache:
           <<: *cache-options
       - run:
-        name: lerna version-stable
-        command: npm run version-stable
+          name: lerna version-stable
+          command: npm run version-stable
       - run:
-        name: ./bin/publish
+          name: publish
+          command: ./bin/publish
 
 #
 # Run all the tests in parallel
