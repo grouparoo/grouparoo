@@ -15,6 +15,7 @@
   "devDependencies": {
     "glob": "^7.1.6",
     "lerna": "^3.20.2",
+    "lerna-changelog": "^1.0.1",
     "lerna-update-wizard": "^0.17.8",
     "license-checker": "github:grouparoo/license-checker",
     "npm-check-updates": "latest",
@@ -28,6 +29,7 @@
     "clean": "lerna clean",
     "lint": "lerna run lint",
     "test": "lerna run test",
+    "append-changelog": "lerna-changelog > CHANGELOG.md",
     "nuke": "rm -rf node_modules && rm -rf core/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/api/dist && rm -rf plugins/*/*/dist",
     "update": "npm-check-updates -u && lerna exec -- npm-check-updates -u && npm run nuke && npm install"
   }
