@@ -25,3 +25,4 @@ web/out
 *.tgz
 tmp
 core/README.md
+lerna-debug.log

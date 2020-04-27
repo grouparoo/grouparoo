@@ -30,7 +30,7 @@
     "google-spreadsheet": "^3.0.11"
   },
   "peerDependencies": {
-    "@grouparoo/core": "^0.1.1-alpha.11",
+    "@grouparoo/core": "^0.1.1-alpha.12",
     "actionhero": "^22.0.7"
   },
   "devDependencies": {

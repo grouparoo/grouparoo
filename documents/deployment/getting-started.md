@@ -9,18 +9,18 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "my-grouparoo-project",
   "description": "A Grouparoo Deployment",
-  "version": "0.1.1-alpha.11",
+  "version": "0.1.1-alpha.12",
   "license": "UNLICENSED",
   "private": true,
   "engines": {
     "node": "12.x.x"
   },
   "dependencies": {
-    "@grouparoo/core": "0.1.1-alpha.11",
-    "@grouparoo/mysql": "0.1.1-alpha.11",
-    "@grouparoo/postgres": "0.1.1-alpha.11",
-    "@grouparoo/mailchimp": "0.1.1-alpha.11",
-    "@grouparoo/csv": "0.1.1-alpha.11"
+    "@grouparoo/core": "0.1.1-alpha.12",
+    "@grouparoo/mysql": "0.1.1-alpha.12",
+    "@grouparoo/postgres": "0.1.1-alpha.12",
+    "@grouparoo/mailchimp": "0.1.1-alpha.12",
+    "@grouparoo/csv": "0.1.1-alpha.12"
   },
   "scripts": {
     "prepare": "cd node_modules/@grouparoo/core && npm run prepare",
