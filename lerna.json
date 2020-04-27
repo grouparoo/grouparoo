@@ -1,14 +1,10 @@
 {
-  "packages": [
-    "apps/*",
-    "core",
-    "plugins/*/*"
-  ],
-  "version": "0.1.1-alpha.11",
+  "packages": ["apps/*", "core", "plugins/*/*"],
+  "version": "0.1.1-alpha.12",
   "command": {
     "version": {
       "allowBranch": "master",
-      "message": "chore(release): publish %s"
+      "message": "chore(release): publish %s [ci skip]"
     }
   }
 }
