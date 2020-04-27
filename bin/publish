@@ -1,26 +1,45 @@
 #!/bin/bash
 
+set -e
+
 # Inspired by https://github.com/zeit/next.js/blob/master/publish-release.sh
 
-# only publish if we match a tag directly (ie: 'v1.2.3')
-git describe --exact-match
-
-if [[ ! $? -eq 0 ]];then
-  echo "Nothing to publish, exiting.."
+if [[ -z "$GH_TOKEN" ]];then
+  echo "No GH_TOKEN, exiting.."
   exit 0;
 fi
 
 if [[ -z "$NPM_TOKEN" ]];then
   echo "No NPM_TOKEN, exiting.."
   exit 0;
+else
+  echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
 fi
 
-echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+# Push new version & tags to git with lerna
+BRANCH=`git rev-parse --abbrev-ref HEAD`
+echo "on $BRANCH branch"
+if [[ $BRANCH == 'master' ]];
+then
+  npm run version-alpha
+fi
+
+if [[ $BRANCH == 'stable' ]];
+then
+  npm run version-stable
+fi
+
+# only publish if we match a tag directly (ie: 'v1.2.3'); i.e. the lerna version command succeded
+git describe --exact-match
+if [[ ! $? -eq 0 ]];then
+  echo "Nothing to publish, exiting.."
+  exit 0;
+fi
+
 
 if [[ $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]];
 then
-  echo "Publishing alpha"
-  npm run version-alpha
+  echo "Publishing alpha pacakges to NPM"
   npm run lerna publish from-git --npm-tag alpha --yes
 
   # Make sure to exit script with code 1 if publish failed
@@ -28,13 +47,12 @@ then
     exit 1;
   fi
 else
-  echo "Did not publish alpha"
+  echo "Did not publish alpha packages"
 fi
 
 if [[ ! $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]];
 then
-  echo "Publishing stable"
-  npm run version-stable
+  echo "Publishing stable pacakges to NPM"
   npm run lerna publish from-git --yes
 
   # Make sure to exit script with code 1 if publish failed
@@ -42,5 +60,5 @@ then
     exit 1;
   fi
 else
-  echo "Did not publish stable"
+  echo "Did not publish stable packages"
 fi
