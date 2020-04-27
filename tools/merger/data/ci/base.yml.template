@@ -91,7 +91,7 @@ workflows:
 
       - publish-alpha:
           filters:
-            branch:
+            branches:
               only:
                 - master
           requires:
@@ -99,7 +99,7 @@ workflows:
 
       - publish-stable:
           filters:
-            branch:
+            branches:
               only:
                 - stable
           requires:

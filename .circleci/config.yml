@@ -461,14 +461,14 @@ workflows:
             - test-plugin-sailthru
       - publish-alpha:
           filters:
-            branch:
+            branches:
               only:
                 - master
           requires:
             - complete
       - publish-stable:
           filters:
-            branch:
+            branches:
               only:
                 - stable
           requires:
