@@ -333,6 +333,30 @@ jobs:
       - run:
           name: complete
           command: echo "Tests Complete!"
+  publish-alpha:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *cache-options
+      - run:
+        name: lerna version-alpha
+        command: npm run version-alpha
+      - run:
+        name: ./bin/publish
+  publish-stable:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *cache-options
+      - run:
+        name: lerna version-stable
+        command: npm run version-stable
+      - run:
+        name: ./bin/publish
 #
 # Run all the tests in parallel
 workflows:
@@ -433,3 +457,13 @@ workflows:
             - test-plugin-newrelic
             - test-plugin-postgres
             - test-plugin-sailthru
+      - publish-alpha:
+        filters:
+          branch:
+            only:
+              - master
+      - publish-stable:
+        filters:
+          branch:
+            only:
+              - stable
