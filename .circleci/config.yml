@@ -460,12 +460,16 @@ workflows:
             - test-plugin-postgres
             - test-plugin-sailthru
       - publish-alpha:
-        filters:
-          branch:
-            only:
-              - master
+          filters:
+            branch:
+              only:
+                - master
+          requires:
+            - complete
       - publish-stable:
-        filters:
-          branch:
-            only:
-              - stable
+          filters:
+            branch:
+              only:
+                - stable
+          requires:
+            - complete
