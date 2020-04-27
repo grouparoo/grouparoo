@@ -43,33 +43,16 @@ jobs:
           name: complete
           command: echo "Tests Complete!"
 
-  publish-alpha:
+  publish:
     docker:
       - image: circleci/node:12
     steps:
       - checkout
       - restore_cache:
           <<: *cache-options
-      - run:
-          name: lerna version-alpha
-          command: npm run version-alpha
-      - run:
-          name: publish
-          command: ./bin/publish
-
-  publish-stable:
-    docker:
-      - image: circleci/node:12
-    steps:
-      - checkout
-      - restore_cache:
-          <<: *cache-options
-      - run:
-          name: lerna version-stable
-          command: npm run version-stable
-      - run:
-          name: publish
-          command: ./bin/publish
+      - run: git config --global user.email "hello@grouparoo.com"
+      - run: git config --global user.name "Grouparoo Bot"
+      - run: ./bin/publish
 
 #
 # Run all the tests in parallel
@@ -89,18 +72,11 @@ workflows:
           requires:
 {{{job_name_list}}}
 
-      - publish-alpha:
+      - publish:
           filters:
             branches:
               only:
                 - master
-          requires:
-            - complete
-
-      - publish-stable:
-          filters:
-            branches:
-              only:
                 - stable
           requires:
             - complete
