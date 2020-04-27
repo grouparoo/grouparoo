@@ -18,13 +18,15 @@
     "lerna-update-wizard": "^0.17.8",
     "license-checker": "github:grouparoo/license-checker",
     "npm-check-updates": "latest",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "release": "6.0.1"
   },
   "scripts": {
     "prepare": "npm run bootstrap",
     "bootstrap": "./node_modules/.bin/lerna bootstrap --hoist --strict --ignore-scripts && ./bin/build",
     "license-checker": "./tools/license-checker/check",
-    "publish": "npm run bootstrap && ./node_modules/.bin/lerna publish --ignore-scripts",
+    "version-alpha": "lerna version prerelease --preid alpha --force-publish && release --pre",
+    "version-stable": "lerna version --force-publish",
     "clean": "lerna clean",
     "lint": "lerna run lint",
     "test": "lerna run test",
