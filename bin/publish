@@ -5,8 +5,8 @@ set -e
 GITHUB_ORG='grouparoo'
 GITHUB_REPO='grouparoo'
 
-if [[ -z "$GH_TOKEN" ]];then
-  echo "No GH_TOKEN, exiting.."
+if [[ -z "$GITHUB_AUTH" ]];then
+  echo "No GITHUB_AUTH, exiting.."
   exit 0;
 fi
 
