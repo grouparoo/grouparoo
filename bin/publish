@@ -31,13 +31,6 @@ then
   npm run version-stable
 fi
 
-## Update the realease with the changelog
-NEW_VERSION=`cat lerna.json | jq -r '.version'`
-CHANGELOG_BODY=`./node_modules/.bin/lerna-changelog --from v$OLD_VERSION --to v$NEW_VERSION`
-ESCAPED_CHANGELOG_BODY=`echo "$CHANGELOG_BODY" | jq -R -s -c`
-GITHUB_TAG_ID=`curl "https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/releases/latest" | jq -r '.id'`
-curl -H "Authorization: token $GITHUB_AUTH" --data "{\"body\": $ESCAPED_CHANGELOG_BODY}" -X PATCH "https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/releases/$GITHUB_TAG_ID"
-
 # only publish if we match a tag directly (ie: 'v1.2.3'); i.e. the lerna version command succeded
 git describe --exact-match
 if [[ ! $? -eq 0 ]];then
@@ -45,6 +38,12 @@ if [[ ! $? -eq 0 ]];then
   exit 0;
 fi
 
+## Update the realease with the changelog
+NEW_VERSION=`cat lerna.json | jq -r '.version'`
+CHANGELOG_BODY=`./node_modules/.bin/lerna-changelog --from v$OLD_VERSION --to v$NEW_VERSION`
+ESCAPED_CHANGELOG_BODY=`echo "$CHANGELOG_BODY" | jq -R -s -c`
+GITHUB_TAG_ID=`curl "https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/releases/latest" | jq -r '.id'`
+curl -H "Authorization: token $GITHUB_AUTH" --data "{\"body\": $ESCAPED_CHANGELOG_BODY}" -X PATCH "https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/releases/$GITHUB_TAG_ID"
 
 if [[ $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]];
 then
