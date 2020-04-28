@@ -115,7 +115,10 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
         `/api/${apiVersion}/schedule/${guid}`
       );
       if (response) {
-        Router.push("/source/[guid]", `/source/${schedule.source.guid}`);
+        Router.push({
+          pathname: `/source/${sourceGuid}`,
+          query: { tab: "overview" },
+        });
       }
     }
   }

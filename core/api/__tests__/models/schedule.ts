@@ -193,11 +193,24 @@ describe("models/schedule", () => {
 
       test("a schedule that is ready cannot move back to draft", async () => {
         const schedule = await helper.factories.schedule();
-        await schedule.setOptions({ maxColumn: "abc" });
         await schedule.update({ state: "ready" });
         await expect(schedule.update({ state: "draft" })).rejects.toThrow(
           /cannot transition schedule state from ready to draft/
         );
+        await schedule.destroy();
+      });
+
+      test("a schedule can not change it's options", async () => {
+        const schedule = await helper.factories.schedule();
+        const opts = await schedule.getOptions();
+        expect(opts).toEqual({ maxColumn: "updated_at" });
+
+        await expect(
+          schedule.setOptions({ maxColumn: "otherCol" })
+        ).rejects.toThrow(
+          /schedule already has option set for maxColumn, cannot update/
+        );
+
         await schedule.destroy();
       });
     });
