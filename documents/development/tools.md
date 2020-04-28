@@ -14,21 +14,6 @@ checking licenses in 12 package.json files...
 ✅ | makes sure each has valid licenses
 ```
 
-## lerna/sync_version
-
-```sh
-./tools/lerna/sync_version -h
-Usage: sync_version
-
-Options:
-  --version      Show version number                                   [boolean]
-  -h, --help     Show help                                             [boolean]
-  --verbose, -v  show steps                                              [count]
-
-Examples:
-  sync_version  make sure everything is using current lerna.json version
-```
-
 ## merger/ci_generate
 
 ```sh

@@ -9,9 +9,6 @@ jobs:
       - uses: actions/checkout@master
         with:
           ref: ${{ github.head_ref }}
-      - name: Update lerna
-        run: |
-          cd tools/lerna && ./github_action
       - name: Update merged files
         run: |
           cd tools/merger && ./github_action
