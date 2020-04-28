@@ -4,7 +4,7 @@
     "core",
     "plugins/*/*"
   ],
-  "version": "0.1.1-alpha.18",
+  "version": "0.1.1-alpha.19",
   "command": {
     "version": {
       "allowBranch": "master",
