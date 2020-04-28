@@ -33,6 +33,11 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     destinationGroupMemberships: [],
     mapping: {},
   });
+  const [
+    unlockedProfilePropertyRules,
+    setUnlockedProfilePropertyRules,
+  ] = useState({});
+  const [unlockedGroups, setUnlockedGroups] = useState([]);
   const { guid } = query;
 
   useEffect(() => {
@@ -53,6 +58,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     );
     if (response?.destination) {
       setDestination(response.destination);
+      setUnlockedProfilePropertyRules({});
+      setUnlockedGroups([]);
       setTrackedGroupGuid(
         response.destination.trackAllGroups
           ? "_all"
@@ -242,6 +249,28 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     }
 
     setDestination(_destination);
+  }
+
+  function toggleUnlockedProfilePropertyRule(key) {
+    const _unlockedProfilePropertyRules = Object.assign(
+      {},
+      unlockedProfilePropertyRules
+    );
+    _unlockedProfilePropertyRules[
+      destination.mapping[key]
+    ] = _unlockedProfilePropertyRules[destination.mapping[key]] ? false : true;
+    setUnlockedProfilePropertyRules(_unlockedProfilePropertyRules);
+  }
+
+  function toggleUnlockedGroup(groupGuid) {
+    const _unlockedGroups = [].concat(unlockedGroups);
+    if (_unlockedGroups.includes(groupGuid)) {
+      const index = _unlockedGroups.indexOf(groupGuid);
+      _unlockedGroups.splice(index, 1);
+    } else {
+      _unlockedGroups.push(groupGuid);
+    }
+    setUnlockedGroups(_unlockedGroups);
   }
 
   const groupsAvailalbeForDestinationGroupMemberships = groups.filter(
@@ -434,6 +463,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                             {mappingOptions.labels.profilePropertyRule.singular}
                           </th>
                           <th />
+                          <th />
                         </tr>
                       </thead>
                       <tbody>
@@ -470,6 +500,13 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                                 required
                                 type="text"
                                 value={key}
+                                disabled={
+                                  unlockedProfilePropertyRules[
+                                    destination.mapping[key]
+                                  ]
+                                    ? false
+                                    : true
+                                }
                                 onChange={(e) =>
                                   updateMapping(
                                     e.target["value"],
@@ -485,6 +522,17 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                                 }{" "}
                                 is required
                               </Form.Control.Feedback>
+                            </td>
+                            <td>
+                              <Button
+                                size="sm"
+                                variant="light"
+                                onClick={() =>
+                                  toggleUnlockedProfilePropertyRule(key)
+                                }
+                              >
+                                ✏️
+                              </Button>
                             </td>
                             <td>
                               <Button
@@ -527,6 +575,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                       <th />
                       <th>{mappingOptions.labels.group.singular}</th>
                       <th />
+                      <th />
                     </tr>
                   </thead>
                   <tbody>
@@ -564,6 +613,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                             <Form.Control
                               required
                               type="text"
+                              disabled={!unlockedGroups.includes(groupGuid)}
                               value={remoteKey}
                               onChange={(e) =>
                                 updateDestinationGroupMembership(
@@ -575,6 +625,15 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                             <Form.Control.Feedback type="invalid">
                               {mappingOptions.labels.group.singular} is required
                             </Form.Control.Feedback>
+                          </td>
+                          <td>
+                            <Button
+                              size="sm"
+                              variant="light"
+                              onClick={() => toggleUnlockedGroup(groupGuid)}
+                            >
+                              ✏️
+                            </Button>
                           </td>
                           <td>
                             <Button
