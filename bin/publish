@@ -24,11 +24,13 @@ echo "on $BRANCH branch"
 if [[ $BRANCH == 'master' ]];
 then
   npm run version-alpha
+  PRERELEASE='true'
 fi
 
 if [[ $BRANCH == 'stable' ]];
 then
   npm run version-stable
+  PRERELEASE='false'
 fi
 
 # only publish if we match a tag directly (ie: 'v1.2.3'); i.e. the lerna version command succeded
@@ -42,13 +44,17 @@ fi
 NEW_VERSION=`cat lerna.json | jq -r '.version'`
 CHANGELOG_BODY=`./node_modules/.bin/lerna-changelog --from v$OLD_VERSION --to v$NEW_VERSION`
 ESCAPED_CHANGELOG_BODY=`echo "$CHANGELOG_BODY" | jq -R -s -c`
-GITHUB_TAG_ID=`curl "https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/releases/latest" | jq -r '.id'`
-curl -H "Authorization: token $GITHUB_AUTH" --data "{\"body\": $ESCAPED_CHANGELOG_BODY}" -X PATCH "https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/releases/$GITHUB_TAG_ID"
+sleep 10
+curl -H "Authorization: token $GITHUB_AUTH" --data "{
+    \"tag_name\": \"v$NEW_VERSION\",
+    \"body\": $ESCAPED_CHANGELOG_BODY,
+    \"prerelease\": $PRERELEASE
+}" -X POST "https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/releases"
 
 if [[ $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]];
 then
   echo "Publishing alpha pacakges to NPM"
-  npm run lerna publish from-git --npm-tag alpha --yes
+  ./node_modules/.bin/lerna publish from-git --npm-tag alpha --yes
 
   # Make sure to exit script with code 1 if publish failed
   if [[ ! $? -eq 0 ]];then
@@ -61,7 +67,7 @@ fi
 if [[ ! $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]];
 then
   echo "Publishing stable pacakges to NPM"
-  npm run lerna publish from-git --yes
+  ./node_modules/.bin/lerna publish from-git --yes
 
   # Make sure to exit script with code 1 if publish failed
   if [[ ! $? -eq 0 ]];then
