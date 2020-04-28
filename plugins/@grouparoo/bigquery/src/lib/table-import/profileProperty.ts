@@ -1,5 +1,7 @@
 import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
+import { getColumns, makeWhereClause } from "./columns";
+
 import {
   ProfilePropertyPluginMethod,
   ProfilePropertyPluginMethodResponse,
@@ -14,8 +16,8 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   profilePropertyRuleOptions,
   profilePropertyRuleFilters,
 }) => {
-  const table = sourceOptions.table;
-  const tableCol = Object.keys(sourceMapping)[0];
+  const table = sourceOptions.table; // TODO: how to escape?
+  const tableCol = Object.keys(sourceMapping)[0]; // TODO: how to escape?
   const profilePropertyMatch = Object.values(sourceMapping)[0];
   const aggregationMethod = profilePropertyRuleOptions["aggregation method"];
   const column = profilePropertyRuleOptions["column"];
@@ -29,7 +31,15 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     return;
   }
 
-  let aggSelect = `"${column}"`;
+  const client = await connect(appOptions);
+  const columns = await getColumns(client, table);
+  console.log("columns", columns);
+
+  const [tables] = await client.getTables();
+  console.log("tables", tables);
+  console.log(tables[0].metadata);
+
+  let aggSelect = `\`${column}\``;
   switch (aggregationMethod) {
     case "average":
       aggSelect = `AVG(${aggSelect})`;
@@ -48,43 +58,47 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
       break;
   }
 
-  const baseQuery = `SELECT ${aggSelect} as __result FROM "${table}" WHERE "${tableCol}" = '{{ ${profilePropertyMatch} }}'`;
+  const whereClause = makeWhereClause(
+    columns,
+    tableCol,
+    tableCol,
+    "=",
+    `{{ ${profilePropertyMatch} }}`
+  );
+  const baseQuery = `SELECT ${aggSelect} as __result FROM \`${table}\` WHERE ${whereClause}`;
 
   let filteredQuery = baseQuery;
   for (const i in profilePropertyRuleFilters) {
     let { key, op, match } = profilePropertyRuleFilters[i];
-
+    const colName = key;
     let sqlOp = "";
     switch (op) {
       case "equals":
-        key = `"${key}"`;
         sqlOp = `=`;
         break;
       case "does not equal":
-        key = `"${key}"`;
         sqlOp = `!=`;
         break;
       case "contains":
         sqlOp = `like`;
         match = `%${match.toString().toLowerCase()}%`;
-        key = `LOWER("${key}")`;
+        key = `LOWER(\`${key}\`)`;
         break;
       case "does not contain":
         sqlOp = `NOT LIKE`;
         match = `%${match.toString().toLowerCase()}%`;
-        key = `LOWER("${key}")`;
+        key = `LOWER(\`${key}\`)`;
         break;
       case "greater than":
-        key = `"${key}"`;
         sqlOp = `>`;
         break;
       case "less than":
-        key = `"${key}"`;
         sqlOp = `<`;
         break;
     }
 
-    filteredQuery += ` AND ${key} ${sqlOp} '${match}'`;
+    const filterClause = makeWhereClause(columns, colName, key, sqlOp, match);
+    filteredQuery += ` AND ${filterClause}'`;
   }
 
   const parameterizedQuery = await profilePropertyRule.parameterizedQueryFromProfile(
@@ -93,20 +107,23 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   );
 
   validateQuery(parameterizedQuery);
+  console.log("parameterizedQuery", parameterizedQuery);
 
   let response: ProfilePropertyPluginMethodResponse;
-  const client = await connect(appOptions);
   try {
-    const { rows } = await client.query(parameterizedQuery);
+    const options = {
+      query: parameterizedQuery,
+    };
+    const [rows] = await client.query(options);
     if (rows && rows.length > 0) {
-      response = rows[0].__result;
+      const row: { [key: string]: any } = rows[0];
+      console.log("row", row);
+      response = row.__result;
     }
   } catch (error) {
     throw new Error(
       `Error with BigQuery SQL Statement: Query - \`${parameterizedQuery}\`, Error - ${error}`
     );
-  } finally {
-    await client.end();
   }
 
   return response;

@@ -1,5 +1,6 @@
 import { PluginConnectionProfilePropertyRuleOption } from "@grouparoo/core";
 import { sourcePreview } from "./sourcePreview";
+// TODO: could use getColumns here but also need examples
 
 export const profilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOption[] = [
   {
