@@ -487,6 +487,8 @@ export class Destination extends LoggedModel<Destination> {
       [groupGuid: string]: string;
     }
   ) {
+    await this.checkProfileWillBeExported(profile);
+
     const profileProperties = await profile.properties();
     const mappingKeys = Object.keys(mapping);
     const mappedProfileProperties = {};
@@ -508,6 +510,26 @@ export class Destination extends LoggedModel<Destination> {
       properties: mappedProfileProperties,
       groupNames: mappedGroupNames,
     });
+  }
+
+  async checkProfileWillBeExported(profile: Profile) {
+    const profileGroupGuids = (
+      await profile.$get("groups", { attributes: ["guid"] })
+    ).map((group) => group.guid);
+    const destinationGroupGuids = (
+      await this.$get("groups", { attributes: ["guid"] })
+    ).map((group) => group.guid);
+    const intersectingGroupGuids = profileGroupGuids.filter(
+      (value) => -1 !== destinationGroupGuids.indexOf(value)
+    );
+
+    if (intersectingGroupGuids.length === 0) {
+      throw new Error(
+        `profile ${profile.guid} will not be exported by this profile`
+      );
+    }
+
+    return true;
   }
 
   async exportProfile(
