@@ -24,5 +24,4 @@ web/out
 # Builds
 *.tgz
 tmp
-core/README.md
 lerna-debug.log
