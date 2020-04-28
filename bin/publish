@@ -54,7 +54,7 @@ curl -H "Authorization: token $GITHUB_AUTH" --data "{
 if [[ $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]];
 then
   echo "Publishing alpha pacakges to NPM"
-  ./node_modules/.bin/lerna publish from-git --npm-tag alpha --yes
+  ./node_modules/.bin/lerna publish from-git --ignore-scripts --dist-tag next --yes
 
   # Make sure to exit script with code 1 if publish failed
   if [[ ! $? -eq 0 ]];then
@@ -67,7 +67,7 @@ fi
 if [[ ! $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]];
 then
   echo "Publishing stable pacakges to NPM"
-  ./node_modules/.bin/lerna publish from-git --yes
+  ./node_modules/.bin/lerna publish from-git --ignore-scripts --yes
 
   # Make sure to exit script with code 1 if publish failed
   if [[ ! $? -eq 0 ]];then
