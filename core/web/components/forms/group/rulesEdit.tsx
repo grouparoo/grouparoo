@@ -28,7 +28,7 @@ export default function RulesBuilder({
   const [ops, setOps] = useState({ _dictionary: {} });
   const [countPotentialMembers, setCountPotentialMembers] = useState(0);
   const [componentCounts, setComponentCounts] = useState({});
-  const [autocompleteResults, setAutoCompleteResults] = useState([]);
+  const [autocompleteResults, setAutoCompleteResults] = useState({});
   // const [funnelCounts, setFunnelCounts] = useState([]);
 
   const typeaheadTypes = ["email", "string"];
@@ -56,6 +56,13 @@ export default function RulesBuilder({
       // TODO: Why is this require to break the object chain to rules?
       setGroup(JSON.parse(JSON.stringify(response.group)));
       setLocalRules(response.group.rules);
+
+      // seed typeahead responses
+      const _autocompleteResults = Object.assign({}, autocompleteResults);
+      response.group.rules.map((rule) => {
+        _autocompleteResults[rule.key] = [rule.match];
+      });
+      setAutoCompleteResults(_autocompleteResults);
     }
 
     return response.group;
@@ -164,7 +171,9 @@ export default function RulesBuilder({
       { profilePropertyRuleGuid, match }
     );
     if (response.profileProperties) {
-      setAutoCompleteResults(response.profileProperties);
+      const _autocompleteResults = Object.assign({}, autocompleteResults);
+      _autocompleteResults[localRule.key] = response.profileProperties;
+      setAutoCompleteResults(_autocompleteResults);
     }
     setLoading(false);
   }
@@ -312,7 +321,7 @@ export default function RulesBuilder({
                           _rules[idx] = rule;
                           setLocalRules(_rules);
                         }}
-                        options={autocompleteResults}
+                        options={autocompleteResults[rule.key] || []}
                         onSearch={(_match) => {
                           autocompleteProfilePropertySearch(rule, _match);
                         }}
