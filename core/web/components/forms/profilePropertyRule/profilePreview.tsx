@@ -33,7 +33,10 @@ export default function ProfilePreview({
     JSON.stringify(profilePropertyRule.filters),
   ]);
 
-  async function load() {
+  async function load(
+    _profileGuid = profileGuid === "" ? undefined : profileGuid,
+    _sleep = sleep
+  ) {
     setSleeping(true);
     setErrorMessage("");
     setDebounceCounter(debounceCounter + 1);
@@ -45,7 +48,7 @@ export default function ProfilePreview({
         {
           options: profilePropertyRule.options,
           filters: profilePropertyRule.filters,
-          profileGuid: profileGuid === "" ? undefined : profileGuid,
+          profileGuid: _profileGuid,
         }
       );
 
@@ -65,7 +68,15 @@ export default function ProfilePreview({
       }
 
       setSleeping(false);
-    }, sleep);
+    }, _sleep);
+  }
+
+  function chooseProfileProperty() {
+    const _profileGuid = prompt("Enter Profile Guid", profileGuid);
+    if (_profileGuid) {
+      setProfileGuid(_profileGuid);
+      load(_profileGuid, 1);
+    }
   }
 
   if (toHide) {
@@ -114,6 +125,8 @@ export default function ProfilePreview({
             >
               View Profile
             </Card.Link>
+            <br />
+            <small onClick={chooseProfileProperty}>change</small>
           </>
         )}
       </Card.Body>

@@ -40,7 +40,10 @@ export default function ProfilePreview({
     JSON.stringify(destination.destinationGroupMemberships),
   ]);
 
-  async function load() {
+  async function load(
+    _profileGuid = profileGuid === "" ? undefined : profileGuid,
+    _sleep = sleep
+  ) {
     setSleeping(true);
 
     if (
@@ -71,7 +74,7 @@ export default function ProfilePreview({
           groupGuid,
           mapping: destination.mapping,
           destinationGroupMemberships: destinationGroupMembershipsObject,
-          profileGuid: profileGuid === "" ? undefined : profileGuid,
+          profileGuid: _profileGuid,
         }
       );
 
@@ -82,7 +85,15 @@ export default function ProfilePreview({
       }
 
       setSleeping(false);
-    }, sleep);
+    }, _sleep);
+  }
+
+  function chooseProfileProperty() {
+    const _profileGuid = prompt("Enter Profile Guid", profileGuid);
+    if (_profileGuid) {
+      setProfileGuid(_profileGuid);
+      load(_profileGuid, 1);
+    }
   }
 
   if (toHide) {
@@ -118,7 +129,9 @@ export default function ProfilePreview({
               style={{ color: "white" }}
             >
               View Profile
-            </Card.Link>
+            </Card.Link>{" "}
+            <br />
+            <small onClick={chooseProfileProperty}>change</small>
           </>
         )}
       </Card.Body>
