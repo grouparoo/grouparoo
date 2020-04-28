@@ -30,7 +30,7 @@
     "sailthru-client": "^3.0.5"
   },
   "peerDependencies": {
-    "@grouparoo/core": "^0.1.1-alpha.12",
+    "@grouparoo/core": "^0.1.1-alpha.14",
     "actionhero": "^22.0.7"
   },
   "devDependencies": {
