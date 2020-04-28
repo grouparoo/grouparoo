@@ -69,6 +69,11 @@ then
   echo "Publishing stable pacakges to NPM"
   ./node_modules/.bin/lerna publish from-git --ignore-scripts --yes
 
+  # and update master with this new version
+  git checkout master
+  git merge stable
+  git push origin master
+
   # Make sure to exit script with code 1 if publish failed
   if [[ ! $? -eq 0 ]];then
     exit 1;
