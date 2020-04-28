@@ -44,6 +44,12 @@ export class Plugins extends Initializer {
               placeholder: "e.g. grouparoo-sources",
             },
             {
+              key: "dataset",
+              required: true,
+              description: "default dataset id to use for sources",
+              placeholder: "e.g. product-data",
+            },
+            {
               key: "client_email",
               required: true,
               description: "email of service account",
