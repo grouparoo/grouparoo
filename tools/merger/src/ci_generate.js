@@ -182,6 +182,16 @@ class Generator {
         return Mustache.render(template, {});
       };
     }
+
+    const internalPackages = allPluginPaths(glob).filter((p) =>
+      p.match(/@grouparoo-inc/)
+    );
+    if (internalPackages.length === 0) {
+      view.publish = readTemplate("core", "publish");
+    } else {
+      view.publish = readTemplate("internal", "publish");
+    }
+
     return view;
   }
 

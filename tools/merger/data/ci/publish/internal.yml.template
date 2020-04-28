@@ -1,0 +1,7 @@
+  publish:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - run:
+          name: not publishing
+          command: echo "Not automatically publishing"
