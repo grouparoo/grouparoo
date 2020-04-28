@@ -39,7 +39,6 @@ jobs:
             - plugins/@grouparoo/newrelic/node_modules
             - plugins/@grouparoo/postgres/node_modules
             - plugins/@grouparoo/sailthru/node_modules
-            - tools/lerna/node_modules
             - tools/merger/node_modules
             - core/web/.next
             - core/api/dist
