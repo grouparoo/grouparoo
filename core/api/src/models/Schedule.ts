@@ -200,6 +200,15 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   async setOptions(options: SimpleScheduleOptions) {
+    const existingOptions = await this.getOptions();
+    for (const key in options) {
+      if (existingOptions[key]) {
+        throw new Error(
+          `schedule already has option set for ${key}, cannot update`
+        );
+      }
+    }
+
     return OptionHelper.setOptions(this, options);
   }
 

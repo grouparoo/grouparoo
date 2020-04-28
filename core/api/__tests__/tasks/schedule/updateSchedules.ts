@@ -78,7 +78,6 @@ describe("tasks/schedule:updateSchedules", () => {
         recurringFrequency: 60 * 1000,
       });
 
-      await schedule.setOptions({ maxColumn: "updatedAt" });
       await schedule.update({ state: "ready" });
       expect(schedule.state).toBe("ready");
 
