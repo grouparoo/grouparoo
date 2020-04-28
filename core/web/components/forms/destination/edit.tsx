@@ -67,7 +67,10 @@ export default function ({
       setDestination(response.destination);
       destinationHandler.set();
       if (response.destination.state === "draft") {
-        Router.push("/destination/[guid]", `/destination/${guid}?tab=mapping`);
+        Router.push({
+          pathname: `/destination/${guid}`,
+          query: { tab: "mapping" },
+        });
       }
       if (
         response.destination.state === "ready" &&
