@@ -31,7 +31,7 @@
     "fs-extra": "^9.0.0"
   },
   "peerDependencies": {
-    "@grouparoo/core": "^0.1.1-alpha.14",
+    "@grouparoo/core": "^0.1.1",
     "actionhero": "^22.0.7"
   },
   "devDependencies": {
