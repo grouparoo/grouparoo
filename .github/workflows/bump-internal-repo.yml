@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@master
         with:
           repository: grouparoo/internal
-          token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
       - name: Bump the bumpfile
         run: rm -rf .repo-bump && date > .repo-bump
       - name: Commit files
@@ -24,4 +24,4 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           repository: grouparoo/internal
-          github_token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          github_token: ${{ secrets.GH_ACCESS_TOKEN }}
