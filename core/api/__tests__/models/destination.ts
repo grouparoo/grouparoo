@@ -413,6 +413,7 @@ describe("models/destination", () => {
           email: "yoshi@example.com",
         });
         await group.addProfile(profile);
+        await destination.trackGroup(group);
 
         const mapping = {
           "primary-id": "userId",
@@ -431,6 +432,27 @@ describe("models/destination", () => {
         expect(_profile.properties["email"].value).toBe("yoshi@example.com");
         expect(_profile.groupNames).toEqual(["another-group-tag"]);
 
+        await profile.destroy();
+      });
+
+      test("previewing a profile not in any groups tracked by this destination will throw", async () => {
+        const profile = await helper.factories.profile();
+
+        const mapping = {
+          "primary-id": "userId",
+          email: "email",
+        };
+
+        const destinationGroupMemberships = {};
+        destinationGroupMemberships[group.guid] = "another-group-tag";
+
+        await expect(
+          destination.profilePreview(
+            profile,
+            mapping,
+            destinationGroupMemberships
+          )
+        ).rejects.toThrow(/will not be exported by this profile/);
         await profile.destroy();
       });
 

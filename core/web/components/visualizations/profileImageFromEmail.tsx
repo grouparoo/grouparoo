@@ -12,7 +12,7 @@ export default function ({
     email = ""; // so we can still get an MD5 hash for a "profile missing" image
   }
 
-  const hash = md5(email.trim());
+  const hash = md5(email.toString().trim());
   const src = `https://www.gravatar.com/avatar/${hash}?s=${width}.png`;
 
   return <Image src={src} rounded style={{ maxWidth: width, width: "100%" }} />;
