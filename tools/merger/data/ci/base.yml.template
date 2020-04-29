@@ -1,6 +1,7 @@
 # THIS FILE IS AUTO-GENERATED. DO NOT CHANGE IT DIRECTLY.
 # SEE tools/merger TO MAKE CHANGES.
 #
+
 version: 2
 #
 # Define common steps all parts of the test workflow use
@@ -45,11 +46,37 @@ jobs:
 
 {{{publish}}}
 
-#
-# Run all the tests in parallel
 workflows:
   version: 2
-  test-grouparoo:
+
+  #
+  # Run the tests on push
+  test-grouparoo-push:
+    jobs:
+      - build:
+          filters:
+            <<: *ignored-branches
+
+{{{workflows}}}
+
+      - complete:
+          filters:
+            <<: *ignored-branches
+          requires:
+{{{job_name_list}}}
+
+  #
+  # Run the tests each night + publish
+  test-grouparoo-nightly:
+    triggers:
+       - schedule:
+           cron: "4 0 * * *"
+           filters:
+             branches:
+               only:
+                 - master
+
+
     jobs:
       - build:
           filters:
