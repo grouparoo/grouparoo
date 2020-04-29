@@ -24,7 +24,7 @@
     "prepare": "rm -rf dist && tsc --declaration",
     "test": "echo 'no tests'",
     "pretest": "npm run lint && npm run prepare",
-    "lint": "prettier --check src __tests__"
+    "lint": "prettier --check src"
   },
   "dependencies": {
     "fs-extra": "^9.0.0"
