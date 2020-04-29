@@ -63,7 +63,7 @@ echo "--- building the main app ---"
 
 if [[ -z "${SKIP_APP_BUILD}" ]]; then
   MAIN_APP=$(sed -n 1p $PROJECT_ROOT/Procfile | awk -F= '$1=="GROUPAROO_MONOREPO_APP"{print $2}' RS=' ')
-  echo "    the main app is $MAIN_APP"
+  echo "  > the main app is $MAIN_APP"
   cd $PROJECT_ROOT/apps/$MAIN_APP
   npm run prepare
 else
