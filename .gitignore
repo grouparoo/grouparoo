@@ -17,7 +17,6 @@ log
 pids
 dist
 core/api/files
-core/api/files-*
 
 # Web
 .next

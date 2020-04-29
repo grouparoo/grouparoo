@@ -15,9 +15,10 @@ export class FileTransportLocal extends FileTransport {
       process.env.FILES_LOCAL_STORAGE ||
       path.join(
         process.cwd(),
+        "files",
         process.env.JEST_WORKER_ID
-          ? `files-${env}-${process.env.JEST_WORKER_ID}`
-          : `files-${env}`
+          ? `${env}-${process.env.JEST_WORKER_ID}`
+          : env
       );
     this.client = fs;
 
