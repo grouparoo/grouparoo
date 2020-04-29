@@ -16,6 +16,7 @@ export class EmailAuth extends Initializer {
 
     const instance = new FileTransportLocal();
 
+    api.files.transport = packageJSON.name;
     api.files.downloadToServer = async (file) => {
       return instance.downloadToServer(file);
     };

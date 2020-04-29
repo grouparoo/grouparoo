@@ -57,7 +57,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Button variant="primary" type="submit" active={!loading}>
+        <Button variant="primary" type="submit" disabled={loading}>
           Submit
         </Button>
       </Form>
