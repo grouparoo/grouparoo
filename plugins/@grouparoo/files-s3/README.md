@@ -1,4 +1,4 @@
-# @grouparoo/files-st
+# @grouparoo/files-s3
 
 Store Grouparoo files on S3 (or compatible service).
 
