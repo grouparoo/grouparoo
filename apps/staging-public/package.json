@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@grouparoo/core": "^0.1.1",
+    "@grouparoo/files-s3": "^0.1.1",
     "@grouparoo/csv": "^0.1.1",
     "@grouparoo/email-authentication": "^0.1.1",
     "@grouparoo/google-sheets": "^0.1.1",
@@ -27,6 +28,7 @@
   },
   "grouparoo": {
     "plugins": [
+      "@grouparoo/files-s3",
       "@grouparoo/mysql",
       "@grouparoo/postgres",
       "@grouparoo/mailchimp",

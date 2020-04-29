@@ -1,0 +1,58 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "@grouparoo/files-s3",
+  "description": "The Grouparoo file transport for s3 file storage",
+  "version": "0.1.1",
+  "license": "MPL-2.0",
+  "private": false,
+  "engines": {
+    "node": "12.x.x"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://www.grouparoo.com",
+  "bugs": {
+    "url": "https://github.com/grouparoo/grouparoo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grouparoo/grouparoo.git",
+    "directory": "plugins/@grouparoo/files-s3"
+  },
+  "scripts": {
+    "prepare": "rm -rf dist && tsc --declaration",
+    "test": "echo 'no tests'",
+    "pretest": "npm run lint && npm run prepare",
+    "lint": "prettier --check src __tests__"
+  },
+  "dependencies": {
+    "@auth0/s3": "^1.0.0",
+    "fs-extra": "^9.0.0"
+  },
+  "peerDependencies": {
+    "@grouparoo/core": "^0.1.1",
+    "actionhero": "^22.0.7"
+  },
+  "devDependencies": {
+    "@grouparoo/core": "^0.1.1",
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.13.1",
+    "actionhero": "^22.0.7",
+    "jest": "^25.4.0",
+    "prettier": "^2.0.5",
+    "ts-jest": "^25.4.0",
+    "typescript": "^3.8.3"
+  },
+  "grouparoo": {
+    "env": {
+      "api": [
+        "S3_ACCESS_KEY",
+        "S3_SECRET_ACCESS_KEY",
+        "S3_REGION",
+        "S3_BUCKET"
+      ]
+    }
+  },
+  "gitHead": "d180097c68e2e0db22918e7d51c0e84abd9202c0"
+}

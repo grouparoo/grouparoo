@@ -16,6 +16,7 @@ api/public/javascript/ActionheroWebsocketClient.min.js
 log
 pids
 dist
+core/api/files
 
 # Web
 .next
