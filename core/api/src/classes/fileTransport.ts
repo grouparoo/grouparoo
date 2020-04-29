@@ -1,31 +1,31 @@
 import mime from "mime";
 import path from "path";
-import os from "os";
 import { File } from "../models/File";
+import { plugin } from "../index";
 
 const DEFAULT_MIME_TYPE = "application/octet-stream";
 
-export abstract class FileTransportBase {
+export abstract class FileTransport {
   name: string;
   tmp: string;
   bucket: string;
 
-  constructor() {
-    this.name = "_base";
-    this.tmp = os.tmpdir();
-  }
-
   abstract async downloadToServer(
-    file
+    file: File
   ): Promise<{
-    [key: string]: any;
+    localPath: string;
   }>;
 
-  abstract async set(type, remotePath, localFile): Promise<File>;
+  abstract async set(
+    type: string,
+    remotePath: string,
+    localFilePath: string
+  ): Promise<File>;
 
-  abstract async destroy(file: File);
+  abstract async destroy(file): Promise<File>;
 
   async afterSet(type, remotePath, sizeBytes): Promise<File> {
+    const { File } = plugin.models();
     const extension = path.extname(remotePath);
 
     const file = new File({
@@ -42,7 +42,7 @@ export abstract class FileTransportBase {
     return file;
   }
 
-  async afterDestroy(file: File) {
+  async afterDestroy(file) {
     await file.destroy();
     return file;
   }

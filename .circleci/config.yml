@@ -27,11 +27,14 @@ jobs:
       - save_cache:
           <<: *cache-options
           paths:
+            - apps/local-public/node_modules
             - apps/staging-public/node_modules
             - core/node_modules
             - node_modules
             - plugins/@grouparoo/csv/node_modules
             - plugins/@grouparoo/email-authentication/node_modules
+            - plugins/@grouparoo/files-local/node_modules
+            - plugins/@grouparoo/files-s3/node_modules
             - plugins/@grouparoo/google-sheets/node_modules
             - plugins/@grouparoo/logger/node_modules
             - plugins/@grouparoo/mailchimp/node_modules
@@ -157,6 +160,52 @@ jobs:
       - run:
           name: test
           command: cd plugins/@grouparoo/email-authentication && npm run test
+  test-plugin-files-local:
+    docker:
+      - image: circleci/node:12
+      - image: redis:latest
+      - image: circleci/postgres:9
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/files-local && npm run test
+  test-plugin-files-s3:
+    docker:
+      - image: circleci/node:12
+      - image: redis:latest
+      - image: circleci/postgres:9
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/files-s3 && npm run test
   test-plugin-google-sheets:
     docker:
       - image: circleci/node:12
@@ -387,6 +436,18 @@ workflows:
           requires:
             - test-core-api
             - test-core-web
+      - test-plugin-files-local:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - test-core-api
+            - test-core-web
+      - test-plugin-files-s3:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - test-core-api
+            - test-core-web
       - test-plugin-google-sheets:
           filters:
             <<: *ignored-branches
@@ -439,6 +500,8 @@ workflows:
             - test-core-web
             - test-plugin-csv
             - test-plugin-email-authentication
+            - test-plugin-files-local
+            - test-plugin-files-s3
             - test-plugin-google-sheets
             - test-plugin-logger
             - test-plugin-mailchimp
@@ -492,6 +555,18 @@ workflows:
           requires:
             - test-core-api
             - test-core-web
+      - test-plugin-files-local:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - test-core-api
+            - test-core-web
+      - test-plugin-files-s3:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - test-core-api
+            - test-core-web
       - test-plugin-google-sheets:
           filters:
             <<: *ignored-branches
@@ -544,6 +619,8 @@ workflows:
             - test-core-web
             - test-plugin-csv
             - test-plugin-email-authentication
+            - test-plugin-files-local
+            - test-plugin-files-s3
             - test-plugin-google-sheets
             - test-plugin-logger
             - test-plugin-mailchimp

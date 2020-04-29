@@ -1,37 +1,47 @@
-import { api, config, log, Initializer } from "actionhero";
-
-import { FileTransportLocal } from "../fileTransports/local";
-import { FileTransportS3 } from "../fileTransports/s3";
+import { api, Initializer } from "actionhero";
+import { File } from "../models/File";
+import { string } from "prop-types";
 
 export class Files extends Initializer {
   constructor() {
     super();
     this.name = "files";
-    this.loadPriority = 1001;
+    this.loadPriority = 999;
+    this.startPriority = 1;
   }
 
   async initialize() {
-    api.files = {};
+    api.files = {
+      types: ["csv", "json", "image", "video", "audio", "other"],
+      transport: undefined,
+      downloadToServer: async (file: File) => {
+        throw new Error("not implemented");
+      },
+      set: async (type: string, remotePath: string, localFile: string) => {
+        throw new Error("not implemented");
+      },
+      destroy: async (file: File) => {
+        throw new Error("not implemented");
+      },
+    };
+  }
 
-    api.files.types = ["csv", "json", "image", "video", "audio", "other"];
+  async start() {
+    // default to localFile if no file transport was loaded by a plugin
+    if (!api.files.transport) {
+      const { FileTransportLocal } = require("../classes/fileTransportLocal");
+      const instance = new FileTransportLocal();
+      api.files.downloadToServer = async (file) => {
+        return instance.downloadToServer(file);
+      };
 
-    if (config.files.transport === "local") {
-      api.files.transport = new FileTransportLocal();
-    } else if (config.files.transport === "s3") {
-      api.files.transport = new FileTransportS3();
-    } else {
-      throw new Error("unknown file transport type");
+      api.files.set = async (type, remotePath, localFile) => {
+        return instance.set(type, remotePath, localFile);
+      };
+
+      api.files.destroy = async (file) => {
+        return instance.destroy(file);
+      };
     }
-
-    log(`initialized file transport type: ${config.files.transport}`);
-    api.files.downloadToServer = async (file) => {
-      return api.files.transport.downloadToServer(file);
-    };
-    api.files.set = async (type, remotePath, localFile) => {
-      return api.files.transport.set(type, remotePath, localFile);
-    };
-    api.files.destroy = async (type, remotePath) => {
-      return api.files.transport.destroy(type, remotePath);
-    };
   }
 }

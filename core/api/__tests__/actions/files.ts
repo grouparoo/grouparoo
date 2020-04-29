@@ -97,7 +97,7 @@ describe("actions/files", () => {
       expect(file.transport).toBe("local");
       expect(file.type).toBe("image");
       expect(file.bucket).toBe(
-        `/tmp/grouparoo-test-${process.env.JEST_WORKER_ID}`
+        path.join(process.cwd(), "files", `test-${process.env.JEST_WORKER_ID}`)
       );
       expect(file.path).toBe("image/logo.svg");
       expect(file.extension).toBe(".svg");

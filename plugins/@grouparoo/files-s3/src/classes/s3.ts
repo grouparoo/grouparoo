@@ -1,31 +1,32 @@
-import { config, log } from "actionhero";
+import { log } from "actionhero";
 import fs from "fs-extra";
+import os from "os";
 import path from "path";
-import { FileTransportBase } from "./base";
-import { File } from "../models/File";
+import { FileTransport } from "@grouparoo/core";
 
-export class FileTransportS3 extends FileTransportBase {
+export class FileTransportS3 extends FileTransport {
   bucket: string;
   client: any;
 
   constructor() {
     super();
     this.name = "s3";
-    this.bucket = config.files.bucket;
+    this.bucket = process.env.S3_BUCKET;
     this.client = require("@auth0/s3").createClient({
       s3Options: {
-        accessKeyId: config.files.accessKeyId,
-        secretAccessKey: config.files.secretAccessKey,
-        region: config.files.region,
+        accessKeyId: process.env.S3_ACCESS_KEY,
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+        region: process.env.S3_REGION,
       },
     });
   }
 
-  async downloadToServer(file: File) {
-    const localPath = path.join(this.tmp, file.path);
+  async downloadToServer(file) {
+    const tmp = os.tmpdir();
+    const localPath = path.join(tmp, "grouparoo", file.path);
 
     await new Promise((resolve, reject) => {
-      var params = {
+      const params = {
         localFile: localPath,
         s3Params: {
           Bucket: this.bucket,
@@ -36,7 +37,7 @@ export class FileTransportS3 extends FileTransportBase {
       log("downloading from s3", "info", params);
       const getter = this.client.downloadFile(params);
       getter.on("error", (error) => {
-        console.log(error);
+        console.error(error);
         reject(error);
       });
       getter.on("end", () => {
@@ -47,12 +48,16 @@ export class FileTransportS3 extends FileTransportBase {
     return { localPath };
   }
 
-  async set(type, remotePath, localFile): Promise<File> {
-    const bytes = fs.statSync(localFile).size;
+  async set(
+    type: string,
+    remotePath: string,
+    localFilePath: string
+  ): Promise<any> {
+    const bytes = fs.statSync(localFilePath).size;
 
     return new Promise((resolve, reject) => {
-      var params = {
-        localFile,
+      const params = {
+        localFile: localFilePath,
         s3Params: {
           Bucket: this.bucket,
           Key: `${type}/${remotePath}`,
@@ -66,16 +71,16 @@ export class FileTransportS3 extends FileTransportBase {
         reject(error);
       });
 
-      uploader.on("end", () => {
-        const file = this.afterSet(type, `${type}/${remotePath}`, bytes);
+      uploader.on("end", async () => {
+        const file = await this.afterSet(type, `${type}/${remotePath}`, bytes);
         resolve(file);
       });
     });
   }
 
-  async destroy(file: File) {
+  async destroy(file) {
     await new Promise((resolve, reject) => {
-      var params = {
+      const params = {
         Bucket: this.bucket,
         Delete: {
           Objects: [{ Key: `${file.path}` }],
