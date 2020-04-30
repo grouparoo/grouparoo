@@ -23,7 +23,7 @@
   "main": "api/dist/index",
   "types": "api/dist/index",
   "scripts": {
-    "prepare": "npm run build-api && npm run build-web",
+    "prepare": "npm run snyk-protect && npm run build-api && npm run build-web",
     "build-api": "cd api && rm -rf dist && tsc --declaration",
     "build-web": "cd web && next build",
     "start": "./api/bin/start",
@@ -35,7 +35,8 @@
     "lint": "npm run lint-api && npm run lint-web",
     "lint-api": "cd api && prettier --check src __tests__",
     "lint-web": "cd web && prettier --check pages components classes client utils hooks __tests__",
-    "import": "./api/bin/import"
+    "import": "./api/bin/import",
+    "snyk-protect": "snyk protect"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
@@ -78,7 +79,8 @@
     "umzug": "^2.3.0",
     "uuid": "^7.0.3",
     "winston": "^3.2.1",
-    "ws": "^7.2.3"
+    "ws": "^7.2.3",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.30",
@@ -99,5 +101,6 @@
     "sequelize-cli": "^5.5.1",
     "ts-jest": "^25.4.0"
   },
-  "gitHead": "d180097c68e2e0db22918e7d51c0e84abd9202c0"
+  "gitHead": "d180097c68e2e0db22918e7d51c0e84abd9202c0",
+  "snyk": true
 }
