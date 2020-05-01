@@ -1,0 +1,54 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.14.1
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-LODASH-567746:
+    - '@grouparoo/core > @nivo/line > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > node-sass > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > sequelize > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/google-sheets > google-spreadsheet > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/mailchimp > mailchimp-api-v3 > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > @nivo/line > @nivo/scales > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > winston > async > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/newrelic > newrelic > async > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > next > @babel/core > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > next > babel-plugin-transform-define > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > node-sass > sass-graph > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/email-authentication > react-bootstrap > @restart/hooks > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > @nivo/line > @nivo/tooltip > @nivo/core > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > actionhero > winston > async > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > next > @babel/preset-env > @babel/plugin-transform-block-scoping > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > next > styled-jsx > @babel/types > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > node-sass > gaze > globule > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/email-authentication > react-bootstrap > react-overlays > @restart/hooks > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > next > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-define-map > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > next > @babel/preset-env > @babel/plugin-transform-unicode-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-regex > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > next > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > next > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/generator > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > next > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
+    - '@grouparoo/core > next > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-05-01T06:07:27.055Z'
