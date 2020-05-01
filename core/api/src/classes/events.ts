@@ -1,9 +1,7 @@
+import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
 import * as uuid from "uuid";
-
-// we need to use the Model classes from the plugin helper to ensure they've been attache to the core sequelzie instance
-import { plugin } from "../index";
 
 export interface EventArgs {
   guid?: string;
@@ -54,7 +52,7 @@ export abstract class EventPrototype {
 
   // profile methods
   async associate(primaryIdentifyingProfilePropertyRule: ProfilePropertyRule) {
-    const { Profile } = plugin.models();
+    // const { Profile } = plugin.models();
 
     if (this.profileGuid) {
       // we are already identified
@@ -97,7 +95,7 @@ export abstract class EventPrototype {
   }
 
   async getProfile() {
-    const { Profile } = plugin.models();
+    // const { Profile } = plugin.models();
     return Profile.findByGuid(this.profileGuid);
   }
 }
