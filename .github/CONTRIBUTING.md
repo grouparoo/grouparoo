@@ -2,7 +2,7 @@
 
 First, 🎉THANK YOU🎉.
 
-Grouparoo relies on the contributions of many people just like you to create the best marketing enablement & automation tools. Wihout community help, we won't be able to create all the tools and plugins needed to cover everyone's needs. Thank you for taking the time to help out this open source project, and create something we can all use!
+Grouparoo relies on the contributions of [many people]() just like you to create the best marketing enablement & automation tools. Wihout community help, we won't be able to create all the tools and plugins needed to cover everyone's needs. Thank you for taking the time to join this open source project, and create something we can all use!
 
 ## The Grouparoo Community
 
