@@ -1,5 +1,9 @@
 import { api } from "actionhero";
-import { EventPrototype, EventBackendPrototype } from "./events";
+import {
+  EventPrototype,
+  EventDataPrototype,
+  EventBackendPrototype,
+} from "./events";
 import {
   Table,
   Model,
@@ -20,10 +24,15 @@ export class Event extends EventPrototype {
 
   async save() {
     const [sequelizeEvent] = await SequelizeEvent.findOrCreate({
-      where: { guid: this.guid },
+      where: {
+        guid: this.guid,
+        type: this.type,
+        producerGuid: this.producerGuid,
+      },
     });
     Object.assign(sequelizeEvent, this);
     await sequelizeEvent.save();
+    await sequelizeEvent.setData(this.data);
     return this;
   }
 
@@ -32,9 +41,13 @@ export class Event extends EventPrototype {
   }
 
   async destroy() {
-    const sequelizeEvent = await Event.findByGuid(this.guid);
-    await sequelizeEvent.destroy();
-    return true;
+    const sequelizeEvent = await SequelizeEvent.findOne({
+      where: { guid: this.guid },
+    });
+
+    if (sequelizeEvent) {
+      await sequelizeEvent.destroy();
+    }
   }
 
   /**
@@ -49,6 +62,7 @@ export class Event extends EventPrototype {
     if (!sequelizeEvent) {
       throw new Error("cannot find event with guid " + guid);
     }
+
     return sequelizeEvent.toEvent();
   }
 
@@ -61,15 +75,8 @@ export class Event extends EventPrototype {
     offset?: number;
     order: ["occurredAt", "desc"];
   }) {
-    const {
-      profileGuid,
-      ipAddress,
-      type,
-      data,
-      limit,
-      offset,
-      order,
-    } = options;
+    const { profileGuid, ipAddress, type, data, limit, offset, order } =
+      options || {};
     const where = {};
     const includeWhere = {};
     if (profileGuid) {
@@ -88,13 +95,45 @@ export class Event extends EventPrototype {
     }
 
     const sequelizeEvents = await SequelizeEvent.findAll({
-      include: [{ model: SequelizeEventData, where: includeWhere }],
+      include: [
+        {
+          model: SequelizeEventData,
+          where: includeWhere,
+          required: false,
+        },
+      ],
       where,
       limit,
       offset,
       order,
     });
     return sequelizeEvents.map((sequelizeEvent) => sequelizeEvent.toEvent());
+  }
+}
+
+export class EventData extends EventDataPrototype {
+  async save() {
+    const [sequelizeEventData] = await SequelizeEventData.findOrCreate({
+      where: {
+        eventGuid: this.eventGuid,
+        guid: this.guid,
+        key: this.key,
+        value: this.value,
+      },
+    });
+    Object.assign(sequelizeEventData, this);
+    await sequelizeEventData.save();
+    return this;
+  }
+
+  async destroy() {
+    const sequelizeEventData = await SequelizeEventData.findOne({
+      where: { guid: this.guid },
+    });
+
+    if (sequelizeEventData) {
+      await sequelizeEventData.destroy();
+    }
   }
 }
 
@@ -164,8 +203,31 @@ class SequelizeEvent extends Model<SequelizeEvent> {
     });
   }
 
+  async setData(data: { [key: string]: any }) {
+    for (const key in data) {
+      const eventData = new EventData({
+        eventGuid: this.guid,
+        key,
+        value: data[key].toString(),
+      });
+      await eventData.save();
+    }
+  }
+
   toEvent() {
-    const event = new Event(this);
+    const event = new Event({
+      guid: this.guid,
+      producerGuid: this.producerGuid,
+      profileGuid: this.profileGuid,
+      ipAddress: this.ipAddress,
+      type: this.type,
+      userId: this.userId,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      occurredAt: this.occurredAt,
+    });
+
+    event.data = {};
     this.sequelizeEventData.map((_data) => {
       event.data[_data.key] = _data.value;
     });

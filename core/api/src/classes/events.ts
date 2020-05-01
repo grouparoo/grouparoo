@@ -1,6 +1,6 @@
 import { ProfileProperty } from "../models/ProfileProperty";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
-import uuid from "uuid/v4";
+import * as uuid from "uuid";
 
 // we need to use the Model classes from the plugin helper to ensure they've been attache to the core sequelzie instance
 import { plugin } from "../index";
@@ -39,7 +39,7 @@ export interface EventPrototype extends EventArgs {
 export abstract class EventPrototype {
   constructor(args: EventArgs) {
     Object.assign(this, args);
-    this.guid = this.guid || `evt_${uuid()}`;
+    this.guid = this.guid || `evt_${uuid.v4()}`;
     return this;
   }
 
@@ -50,7 +50,7 @@ export abstract class EventPrototype {
   // general methods
   abstract async save(): Promise<EventPrototype>;
   abstract async reload(): Promise<EventPrototype>;
-  abstract async destroy(): Promise<boolean>;
+  abstract async destroy(): Promise<void>;
 
   // profile methods
   async associate(primaryIdentifyingProfilePropertyRule: ProfilePropertyRule) {
@@ -100,6 +100,28 @@ export abstract class EventPrototype {
     const { Profile } = plugin.models();
     return Profile.findByGuid(this.profileGuid);
   }
+}
+
+export interface EventDataArgs {
+  guid?: string;
+  eventGuid: string;
+  key: string;
+  value: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface EventDataPrototype extends EventDataArgs {}
+
+export abstract class EventDataPrototype {
+  constructor(args: EventDataArgs) {
+    Object.assign(this, args);
+    this.guid = this.guid || `edt_${uuid.v4()}`;
+    return this;
+  }
+
+  abstract async save(): Promise<EventDataPrototype>;
+  abstract async destroy(): Promise<void>;
 }
 
 export abstract class EventBackendPrototype {
