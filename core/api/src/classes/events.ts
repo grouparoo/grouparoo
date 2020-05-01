@@ -52,8 +52,6 @@ export abstract class EventPrototype {
 
   // profile methods
   async associate(primaryIdentifyingProfilePropertyRule: ProfilePropertyRule) {
-    // const { Profile } = plugin.models();
-
     if (this.profileGuid) {
       // we are already identified
       return this.getProfile();
@@ -95,7 +93,6 @@ export abstract class EventPrototype {
   }
 
   async getProfile() {
-    // const { Profile } = plugin.models();
     return Profile.findByGuid(this.profileGuid);
   }
 }
