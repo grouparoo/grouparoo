@@ -2,15 +2,13 @@
 
 First, 🎉THANK YOU🎉.
 
-Grouparoo relies on the contributions of [many people]() just like you to create the best marketing enablement & automation tools. Wihout community help, we won't be able to create all the tools and plugins needed to cover everyone's needs. Thank you for taking the time to join this open source project, and create something we can all use!
+Grouparoo relies on the contributions of [many people](https://github.com/grouparoo/grouparoo/graphs/contributors) just like you to create the best marketing enablement & automation tools. Thank you for taking the time to join this open source community, and create something we can all use!
 
 ## The Grouparoo Community
 
 By contributing to Grouparoo and its related projects, you agree to abide by the [Grouparoo Code of Conduct](https://github.com/grouparoo/grouparoo/blob/master/CODE_OF_CONDUCT.md). Please read this document. We as contributors and maintainers pledge to making participation in our project and our community a harassment-free experience for everyone.
 
-✏️ TODO: How can I interact with the community? i.e. Slack\* / Spectrum / discourse.org?
-
-> Before you begin your contribution, please join the Grouparoo Slack team, which is available to join for free via ???. There are community members who can help you, and you may want to team up with another community member if this is your first contribution. This also helps ensure that more than one person isn't working on the same thing. The Grouparoo slack community is also a great place connect with other Grouparoo developers and users.
+Before you begin your contribution, please join the Grouparoo Slack team, which is available to join for free via ???. There are community members who can help you, and you may want to team up with another community member if this is your first contribution. This also helps ensure that more than one person isn't working on the same thing. The Grouparoo slack community is also a great place connect with other Grouparoo users.
 
 ## Bugs and Issues
 
