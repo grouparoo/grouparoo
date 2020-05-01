@@ -19,12 +19,14 @@
     "@grouparoo/mysql": "^0.1.2-alpha.1",
     "@grouparoo/newrelic": "^0.1.2-alpha.1",
     "@grouparoo/postgres": "^0.1.2-alpha.1",
-    "@grouparoo/sailthru": "^0.1.2-alpha.1"
+    "@grouparoo/sailthru": "^0.1.2-alpha.1",
+    "snyk": "^1.316.1"
   },
   "scripts": {
-    "prepare": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public npm run prepare",
+    "prepare": "npm run snyk-protect && cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public npm run prepare",
     "start": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./api/bin/start",
-    "dev": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./api/bin/dev"
+    "dev": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./api/bin/dev",
+    "snyk-protect": "snyk protect"
   },
   "grouparoo": {
     "plugins": [
@@ -42,5 +44,6 @@
     "includedFiles": [
       "assets"
     ]
-  }
+  },
+  "snyk": true
 }
