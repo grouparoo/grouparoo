@@ -36,7 +36,7 @@ By contributing to Grouparoo, you agree that you have granted ownership of the w
 
 ### Testing
 
-Grouparoo is a large project with lost of different plugins and tools. We don't expect you to know about everything, so that's why we have a robust test suite. This allows us to ensure that no matter who makes a change, Grouparoo will continue to work the way it is supposed to.
+Grouparoo is a large project with lots of different plugins and tools. We don't expect you to know about everything, so that's why we have a robust test suite. This allows us to ensure that no matter who makes a change, Grouparoo will continue to work the way it is supposed to.
 
 With that in mind, all new features to Grouparoo must also include additions to the test suite to ensure that in the future, we can maintain your work. When writing tests, write the smallest test that ensures that your work is tested. _Every contribution to the codebase should have an associated test._
 
