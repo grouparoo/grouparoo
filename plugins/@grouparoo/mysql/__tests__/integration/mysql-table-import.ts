@@ -13,12 +13,14 @@ process.chdir(`${__dirname}/../../../../../core/api`);
 import fs from "fs";
 import path from "path";
 import parse from "csv-parse/lib/sync";
-import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
+import { helper } from "@grouparoo/core/api/__tests__/utils/specHelper";
 import { specHelper } from "actionhero";
-import { Profile } from "../../../../../core/api/src/models/Profile";
-import { ProfilePropertyRule } from "../../../../../core/api/src/models/ProfilePropertyRule";
-import { ProfileProperty } from "../../../../../core/api/src/models/ProfileProperty";
-import { Run } from "../../../../../core/api/src/models/Run";
+import {
+  Profile,
+  ProfilePropertyRule,
+  ProfileProperty,
+  Run,
+} from "@grouparoo/core/api/src";
 import { connect } from "../../src/lib/connect";
 
 let api, actionhero;
