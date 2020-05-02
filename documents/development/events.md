@@ -76,6 +76,7 @@ Eventually, after visiting a few more pages, the user will sign in, and we’ll 
 
 ```js
 Gropuaroo.track({
+  anonymousId: "person_1",
   userId: 123,
   occurredAt: new Date(),
   type: "sign-in",
@@ -86,7 +87,7 @@ Gropuaroo.track({
 });
 ```
 
-From this point forward, we don’t need to send `anonymousId`. On the backend, Grouparoo will now be able to check if user 123 already has a `Profile`, and merge it with the profile we created for “person_1”. In this way, we will have a combined history for all the sessions of this user. If the same user signs in via another client / browser / phone, we will continue to create temporary profiles with an `anonymousId`, and eventually merge the profiles (and events!) once we have enough data.
+From this point forward, we will send send `anonymousId` and `userId` indicating we know how to identify this user. On the backend, Grouparoo will now be able to check if user 123 already has a `Profile`, and merge it with the profile we created for “person_1”. In this way, we will have a combined history for all the sessions of this user. If the same user signs in via another client / browser / phone, we will continue to create temporary profiles with an `anonymousId`, and eventually merge the profiles (and events!) once we have enough data. Both IDs are needed to help us handle race-conditions with multiple sessions for the same user.
 
 ## Creating events outside of Grouparoo
 
