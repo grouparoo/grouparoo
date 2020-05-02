@@ -1,7 +1,6 @@
 import mime from "mime";
 import path from "path";
 import { File } from "../models/File";
-import { plugin } from "../index";
 
 const DEFAULT_MIME_TYPE = "application/octet-stream";
 
@@ -25,7 +24,6 @@ export abstract class FileTransport {
   abstract async destroy(file): Promise<File>;
 
   async afterSet(type, remotePath, sizeBytes): Promise<File> {
-    const { File } = plugin.models();
     const extension = path.extname(remotePath);
 
     const file = new File({

@@ -1,24 +1,25 @@
 import { api, log } from "actionhero";
 import { GrouparooPlugin } from "../classes/plugin";
-import { Setting } from "../models/Setting";
-import { File } from "../models/File";
-import { Profile } from "../models/Profile";
-import { Group } from "../models/Group";
-import { GroupMember } from "../models/GroupMember";
-import { Source } from "../models/Source";
-import { Schedule } from "../models/Schedule";
+import Mustache from "mustache";
+
+import { App } from "../models/App";
 import { Destination } from "../models/Destination";
 import { DestinationGroup } from "../models/DestinationGroup";
-import { Run } from "../models/Run";
-import { App } from "../models/App";
+import { DestinationGroupMembership } from "../models/DestinationGroupMembership";
+import { File } from "../models/File";
+import { Group } from "../models/Group";
+import { GroupMember } from "../models/GroupMember";
 import { Import } from "../models/Import";
+import { Log } from "../models/Log";
+import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
-import { Log } from "../models/Log";
+import { Run } from "../models/Run";
+import { Schedule } from "../models/Schedule";
+import { Setting } from "../models/Setting";
+import { Source } from "../models/Source";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
-import { ProfileMultipleAssociationShim } from "../models/ProfileMultipleAssociationShim";
-import Mustache from "mustache";
 
 // This is needed when running in dev mode (TS) but you are using a compiled plugin (JS).
 // The plugin will actually load the JS model while core will be loading the TS model.
@@ -29,56 +30,29 @@ function ensureModelsMounted() {
     return;
   }
   api.sequelize.addModels([
-    Setting,
-    File,
-    Profile,
-    Group,
-    GroupMember,
     App,
-    Source,
-    Schedule,
     Destination,
     DestinationGroup,
-    Run,
+    DestinationGroupMembership,
+    File,
+    Group,
+    GroupMember,
     Import,
     Log,
+    Profile,
     ProfileProperty,
     ProfilePropertyRule,
+    Run,
+    Schedule,
+    Setting,
+    Source,
     Team,
     TeamMember,
-    ProfileMultipleAssociationShim,
   ]);
   modelsMounted = true;
 }
 
 export namespace plugin {
-  /**
-   * expose models to plugins
-   */
-  export function models() {
-    ensureModelsMounted();
-
-    return {
-      Setting,
-      File,
-      Profile,
-      Group,
-      GroupMember,
-      App,
-      Source,
-      Schedule,
-      Destination,
-      DestinationGroup,
-      Run,
-      Import,
-      Log,
-      ProfileProperty,
-      ProfilePropertyRule,
-      Team,
-      TeamMember,
-    };
-  }
-
   /**
    * Register a Grouparoo Plugin
    */
