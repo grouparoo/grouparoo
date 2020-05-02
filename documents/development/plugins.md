@@ -17,9 +17,6 @@ In your Grouparoo deployment project, simply install the plugin with NPM:
   "version": "0.1.0",
   "license": "UNLICENSED",
   "private": true,
-  "engines": {
-    "node": "12.x.x"
-  },
   "dependencies": {
     "@grouparoo/core": "latest",
     "@grouparoo/awesome-plugin": "latest"
@@ -90,7 +87,7 @@ In your plugin's `package.json`, we use a `grouparoo` section to list certain op
   "license": "UNLICENSED",
   "private": true,
   "engines": {
-    "node": "12.x.x"
+    "node": ">=12.0.0"
   },
   "scripts": {
     "prepare": "rm -rf dist && tsc --declaration",

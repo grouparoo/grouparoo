@@ -12,9 +12,6 @@
   "version": "0.1.0",
   "license": "UNLICENSED",
   "private": true,
-  "engines": {
-    "node": "12.x.x"
-  },
   "dependencies": {
     "@grouparoo/core": "latest",
     "@grouparoo/mysql": "latest",
