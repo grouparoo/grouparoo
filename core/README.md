@@ -10,13 +10,13 @@ Learn more at [www.grouparoo.com](https://www.grouparoo.com)
 
 <p align="center">
   <a aria-label="NPM version" href="https://www.npmjs.com/package/@grouparoo/core">
-    <img alt="" src="https://img.shields.io/npm/v/@grouparoo/core.svg?style=for-the-badge&labelColor=000000">
+    <img alt="" src="https://img.shields.io/npm/v/@grouparoo/core.svg?style=for-the-badge&labelColor=242436">
   </a>
   <a aria-label="Node version" href="https://www.npmjs.com/package/@grouparoo/core">
-    <img alt="" src="https://img.shields.io/node/v/@grouparoo/core.svg?style=for-the-badge&labelColor=000000">
+    <img alt="" src="https://img.shields.io/node/v/@grouparoo/core.svg?style=for-the-badge&labelColor=242436">
   </a>
   <a aria-label="License" href="https://github.com/grouparoo/grouparoo/blob/master/LICENSE.txt">
-    <img alt="" src="https://img.shields.io/npm/l/@grouparoo/core.svg?style=for-the-badge&labelColor=000000">
+    <img alt="" src="https://img.shields.io/npm/l/@grouparoo/core.svg?style=for-the-badge&labelColor=242436">
   </a>
 </p>
 
