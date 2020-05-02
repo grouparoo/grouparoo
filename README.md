@@ -29,7 +29,7 @@ Learn more at [www.grouparoo.com](https://www.grouparoo.com)
 - [📚 Publishing](https://github.com/grouparoo/grouparoo/blob/master/documents/development/publishing.md)
 - [👻Security](https://github.com/grouparoo/grouparoo/blob/master/.github/SECURITY.md)
 - 👨‍👩‍👧‍👦Community Guidelines
-  - [Code of Conduct](https://github.com/grouparoo/grouparoo/blob/master/.github/CODE_OF_CONDUCT.md)
+  - [Code of Conduct](https://github.com/grouparoo/grouparoo/blob/master/CODE_OF_CONDUCT.md)
   - [Contributing Guide](https://github.com/grouparoo/grouparoo/blob/master/.github/CONTRIBUTING.md)
 
 ### Other Documents
