@@ -33,15 +33,15 @@
     "pg-hstore": "^2.3.3"
   },
   "peerDependencies": {
-    "@grouparoo/core": "^0.1.1-alpha.11",
-    "actionhero": "^22.0.7"
+    "@grouparoo/core": "^0.1.1",
+    "actionhero": "22.0.8"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.1.1-alpha.11",
+    "@grouparoo/core": "^0.1.2-alpha.1",
     "@types/jest": "^25.2.1",
     "@types/node": "^13.13.1",
     "@types/pg": "^7.14.3",
-    "actionhero": "^22.0.7",
+    "actionhero": "^22.0.8",
     "jest": "^25.4.0",
     "prettier": "^2.0.5",
     "ts-jest": "^25.4.0",
