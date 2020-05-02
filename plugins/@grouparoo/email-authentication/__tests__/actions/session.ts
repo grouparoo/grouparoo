@@ -11,7 +11,7 @@ jest.mock(
 // ~ jump over to core for this test ~
 process.chdir(`${__dirname}/../../../../../core/api`);
 
-import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
+import { helper } from "@grouparoo/core/api/__tests__/utils/specHelper";
 import { specHelper } from "actionhero";
 
 let actionhero;

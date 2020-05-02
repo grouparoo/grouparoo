@@ -10,11 +10,15 @@ export { DestinationGroupMembership } from "./models/DestinationGroupMembership"
 export { File } from "./models/File";
 export { Group } from "./models/Group";
 export { GroupMember } from "./models/GroupMember";
+export { GroupRule } from "./models/GroupRule";
 export { Import } from "./models/Import";
 export { Log } from "./models/Log";
+export { Mapping } from "./models/Mapping";
+export { Option } from "./models/Option";
 export { Profile } from "./models/Profile";
 export { ProfileProperty } from "./models/ProfileProperty";
 export { ProfilePropertyRule } from "./models/ProfilePropertyRule";
+export { ProfilePropertyRuleFilter } from "./models/ProfilePropertyRuleFilter";
 export { Run } from "./models/Run";
 export { Schedule } from "./models/Schedule";
 export { Setting } from "./models/Setting";

@@ -9,11 +9,15 @@ import { DestinationGroupMembership } from "../models/DestinationGroupMembership
 import { File } from "../models/File";
 import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
+import { GroupRule } from "../models/GroupRule";
 import { Import } from "../models/Import";
 import { Log } from "../models/Log";
+import { Mapping } from "../models/Mapping";
+import { Option } from "../models/Option";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
+import { ProfilePropertyRuleFilter } from "../models/ProfilePropertyRuleFilter";
 import { Run } from "../models/Run";
 import { Schedule } from "../models/Schedule";
 import { Setting } from "../models/Setting";
@@ -37,11 +41,15 @@ function ensureModelsMounted() {
     File,
     Group,
     GroupMember,
+    GroupRule,
     Import,
     Log,
+    Mapping,
+    Option,
     Profile,
     ProfileProperty,
     ProfilePropertyRule,
+    ProfilePropertyRuleFilter,
     Run,
     Schedule,
     Setting,
