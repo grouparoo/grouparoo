@@ -3,15 +3,15 @@ import { validateQuery } from "../validateQuery";
 import {
   ProfilePropertyPluginMethod,
   ProfilePropertyPluginMethodResponse,
+  plugin,
 } from "@grouparoo/core";
 
 export const profileProperty: ProfilePropertyPluginMethod = async ({
   profile,
   appOptions,
-  profilePropertyRule,
   profilePropertyRuleOptions,
 }) => {
-  const parameterizedQuery = await profilePropertyRule.parameterizedQueryFromProfile(
+  const parameterizedQuery = await plugin.replaceTemplateProfileVariables(
     profilePropertyRuleOptions.query,
     profile
   );
