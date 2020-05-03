@@ -78,7 +78,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
 
   const client = await connect(appOptions);
   const columns = await getColumns(client, table);
-  const profileData = await plugin.getProfileData(profile);
+  const profileData = await profile.properties();
 
   if (!profileData.hasOwnProperty(profilePropertyMatch)) {
     throw `unknown profile property: ${profilePropertyMatch}`;
