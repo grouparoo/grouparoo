@@ -4,6 +4,7 @@ import ImportFactory from "../factories/import";
 import TeamFactory from "../factories/team";
 import TeamMemberFactory from "../factories/teamMember";
 import ProfileFactory from "../factories/profile";
+import ProfilePropertyRuleFactory from "../factories/profilePropertyRule";
 import ProfilePropertyRulesFactory from "../factories/profilePropertyRules";
 import AppFactory from "../factories/app";
 import SourceFactory from "../factories/source";
@@ -82,6 +83,7 @@ export namespace helper {
     team: TeamFactory,
     teamMember: TeamMemberFactory,
     profile: ProfileFactory,
+    profilePropertyRule: ProfilePropertyRuleFactory,
     profilePropertyRules: ProfilePropertyRulesFactory,
     app: AppFactory,
     source: SourceFactory,

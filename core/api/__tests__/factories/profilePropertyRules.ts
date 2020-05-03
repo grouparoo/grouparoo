@@ -1,5 +1,6 @@
 import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
 import SourceFactory from "./source";
+import ProfilePropertyRuleFactory from "./profilePropertyRule";
 
 export default async (
   props = {
@@ -26,14 +27,13 @@ export default async (
       unique = true;
     }
 
-    const rule = await ProfilePropertyRule.create({
+    const ruleProps = {
       sourceGuid: source.guid,
       key,
       type,
       unique,
-    });
-
-    await rule.setOptions({ column: key });
-    await rule.update({ state: "ready" });
+    };
+    const options = { column: key };
+    await ProfilePropertyRuleFactory(source, ruleProps, options);
   }
 };
