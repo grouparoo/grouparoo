@@ -5,12 +5,12 @@ import { getColumns, makeWhereClause } from "./columns";
 import {
   ProfilePropertyPluginMethod,
   ProfilePropertyPluginMethodResponse,
+  plugin,
 } from "@grouparoo/core";
 
 export const profileProperty: ProfilePropertyPluginMethod = async ({
   profile,
   appOptions,
-  profilePropertyRule,
   sourceOptions,
   sourceMapping,
   profilePropertyRuleOptions,
@@ -101,7 +101,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     filteredQuery += ` AND ${filterClause}'`;
   }
 
-  const parameterizedQuery = await profilePropertyRule.parameterizedQueryFromProfile(
+  const parameterizedQuery = await plugin.replaceTemplateProfileVariables(
     filteredQuery,
     profile
   );
