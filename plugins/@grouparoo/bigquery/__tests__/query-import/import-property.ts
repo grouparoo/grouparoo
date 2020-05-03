@@ -16,21 +16,7 @@ import { profileProperty } from "../../src/lib/query-import/profileProperty";
 import { loadAppOptions, rewriteNockEnv } from "../utils/nockHelper";
 import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
 
-import { plugin } from "@grouparoo/core";
-import {
-  SimpleProfilePropertyRuleOptions,
-  SimpleSourceOptions,
-  SimpleAppOptions,
-  ProfilePropertyRuleFiltersWithKey,
-} from "@grouparoo/core";
-
-// TODO: Ideally these export from @grouparoo/core so we don't have to put dist here
-import { App } from "@grouparoo/core/api/dist/models/App";
-import { Source, SourceMapping } from "@grouparoo/core/api/dist/models/Source";
-//import { ProfilePropertyRule } from "@grouparoo/core/api/dist/models/ProfilePropertyRule";
 import { ProfilePropertyRule } from "../../../../../core/api/src/models/ProfilePropertyRule";
-import { Profile } from "@grouparoo/core/api/dist/models/Profile";
-import { ProfilePropertyRuleTest } from "../../../../../core/api/src/actions/profilePropertyRules";
 
 const nockFile = path.join(
   __dirname,
@@ -46,32 +32,25 @@ const nockFile = path.join(
 const newNock = true;
 // helper.recordNock(nockFile, rewriteNockEnv);
 
-// these not actually used in implementation
-const app: App = null;
-const sourceOptions: SimpleSourceOptions = null;
-const sourceMapping: SourceMapping = null;
-const profilePropertyRuleFilters: ProfilePropertyRuleFiltersWithKey[] = null;
-
 // these used and set by test
 const appOptions = loadAppOptions(newNock); // TODO: : SimpleAppOptions = loadAppOptions(newNock);
 let profile; // TODO: Profile;
 let source; // TODO: Source = null; // not actually used, just for tests
-let profilePropertyRule; // TODO: : ProfilePropertyRule;
 let profilePropertyRuleOptions; // TODO: : SimpleProfilePropertyRuleOptions;
 
 let actionhero;
 
 async function getPropertyValue() {
   return profileProperty({
-    app,
     appOptions,
-    source,
-    sourceOptions,
-    sourceMapping,
-    profilePropertyRule,
-    profilePropertyRuleOptions,
-    profilePropertyRuleFilters,
     profile,
+    profilePropertyRuleOptions,
+    source: null,
+    app: null,
+    sourceOptions: null,
+    sourceMapping: null,
+    profilePropertyRule: null,
+    profilePropertyRuleFilters: null,
   });
 }
 
@@ -83,12 +62,12 @@ async function testRule(key: string, query: string) {
     await current.destroy();
   }
 
-  profilePropertyRule = await helper.factories.profilePropertyRule(
+  const rule = await helper.factories.profilePropertyRule(
     source,
     { key },
     { query }
   );
-  profilePropertyRuleOptions = await profilePropertyRule.getOptions();
+  profilePropertyRuleOptions = await rule.getOptions();
 }
 
 describe("bigquery/query/profileProperty", () => {
@@ -124,7 +103,7 @@ describe("bigquery/query/profileProperty", () => {
     await source.update({ state: "ready" });
 
     profile = await helper.factories.profile();
-    profilePropertyRule = await profile.addOrUpdateProperties({
+    await profile.addOrUpdateProperties({
       userId: 1,
       email: "ejervois0@example.com",
     });

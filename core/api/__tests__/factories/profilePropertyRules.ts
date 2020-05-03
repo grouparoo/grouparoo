@@ -1,4 +1,3 @@
-import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
 import SourceFactory from "./source";
 import ProfilePropertyRuleFactory from "./profilePropertyRule";
 
