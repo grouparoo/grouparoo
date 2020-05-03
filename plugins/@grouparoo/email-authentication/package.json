@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/email-authentication",
   "description": "The Grouparoo Email Authentication Plugin",
-  "version": "0.1.2-alpha.2",
+  "version": "0.1.2-alpha.3",
   "license": "MPL-2.0",
   "private": false,
   "engines": {
@@ -35,7 +35,7 @@
     "actionhero": "22.0.8"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.1.2-alpha.2",
+    "@grouparoo/core": "^0.1.2-alpha.3",
     "@types/jest": "^25.2.1",
     "@types/node": "^13.13.1",
     "actionhero": "^22.0.8",
