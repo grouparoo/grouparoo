@@ -16,8 +16,6 @@ import { profileProperty } from "../../src/lib/query-import/profileProperty";
 import { loadAppOptions, rewriteNockEnv } from "../utils/nockHelper";
 import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
 
-import { ProfilePropertyRule } from "../../../../../core/api/src/models/ProfilePropertyRule";
-
 const nockFile = path.join(
   __dirname,
   "../",
@@ -35,7 +33,6 @@ const newNock = true;
 // these used and set by test
 const appOptions = loadAppOptions(newNock); // TODO: : SimpleAppOptions = loadAppOptions(newNock);
 let profile; // TODO: Profile;
-let source; // TODO: Source = null; // not actually used, just for tests
 
 let actionhero;
 
@@ -70,29 +67,12 @@ describe("bigquery/query/profileProperty", () => {
   beforeAll(async () => {
     // all of these are in in the test plugin
     await helper.factories.profilePropertyRules();
-    // helper.disableTestPluginImport();
-
-    const app = await helper.factories.app({
-      name: "BQ",
-      type: "bigquery",
-      options: appOptions,
-    });
-
-    source = await helper.factories.source(app, {
-      name: "BQS",
-      type: "bigquery-query-import",
-    });
-    // no options in this source await source.setOptions({ key: "value" });
-    // no mappings in this source await source.setMapping({ userId: "userId" });
-    await source.update({ state: "ready" });
 
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({
       userId: 1,
       email: "ejervois0@example.com",
     });
-    // await profile.import();
-    // await profile.reload();
     expect(profile.guid).toBeTruthy();
   });
 
