@@ -101,13 +101,13 @@ describe("bigquery/query/profileProperty", () => {
     expect(value).toBe("Erie");
   });
 
-  test("can run a integer query to get a float", async () => {
+  test("can run a string query to get a float", async () => {
     const sql = "SELECT ltv FROM test.profiles WHERE email = '{{ email }}'";
     const value = await getPropertyValue(sql);
     expect(value).toBe(259.12);
   });
 
-  test("can run a integer query to get a boolean", async () => {
+  test("can run a string query to get a boolean", async () => {
     const sql = "SELECT ios_app FROM test.profiles WHERE email = '{{ email }}'";
     const value = await getPropertyValue(sql);
     expect(value).toBe(true);

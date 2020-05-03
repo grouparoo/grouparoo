@@ -33,16 +33,20 @@ const newNock = true;
 // these used and set by test
 const appOptions = loadAppOptions(newNock); // TODO: : SimpleAppOptions = loadAppOptions(newNock);
 let profile; // TODO: Profile;
-let source; // TODO: Source = null; // not actually used, just for tests
 
 let actionhero;
 
-async function getPropertyValue({
-  sourceOptions,
-  sourceMapping,
-  profilePropertyRuleOptions,
-  profilePropertyRuleFilters,
-}) {
+let sourceOptions;
+let aggregationMethod;
+async function getPropertyValue({ column, sourceMapping }) {
+  const profilePropertyRuleOptions = {
+    column,
+    "aggregation method": aggregationMethod,
+  };
+
+  // TODO: test filters
+  const profilePropertyRuleFilters = [];
+
   return profileProperty({
     appOptions,
     profile,
@@ -81,20 +85,52 @@ describe("bigquery/table/profileProperty", () => {
     expect(profile.guid).toBeTruthy();
   });
 
-  test("can run a integer query to get a string", async () => {
-    const sourceOptions = { table: "profiles" };
-    const sourceMapping = { id: "userId" };
-    const profilePropertyRuleOptions = {
-      column: "first_name",
-      "aggregation method": "exact",
-    };
-    const profilePropertyRuleFilters = [];
-    const value = await getPropertyValue({
-      sourceOptions,
-      sourceMapping,
-      profilePropertyRuleOptions,
-      profilePropertyRuleFilters,
+  describe("exact primary tables", () => {
+    beforeAll(() => {
+      sourceOptions = { table: "profiles" };
+      aggregationMethod = "exact";
     });
-    expect(value).toBe("Erie");
+
+    test("can run a integer query to get a string", async () => {
+      const column = "first_name";
+      const sourceMapping = { id: "userId" };
+      const value = await getPropertyValue({ column, sourceMapping });
+      expect(value).toBe("Erie");
+    });
+
+    test("can run a integer query to get a float", async () => {
+      const column = "ltv";
+      const sourceMapping = { id: "userId" };
+      const value = await getPropertyValue({ column, sourceMapping });
+      expect(value).toBe(259.12);
+    });
+
+    test("can run a integer query to get a boolean", async () => {
+      const column = "ios_app";
+      const sourceMapping = { id: "userId" };
+      const value = await getPropertyValue({ column, sourceMapping });
+      expect(value).toBe(true);
+    });
+
+    test("can run a string query to get a string", async () => {
+      const column = "first_name";
+      const sourceMapping = { email: "email" };
+      const value = await getPropertyValue({ column, sourceMapping });
+      expect(value).toBe("Erie");
+    });
+
+    test("can run a string query to get a float", async () => {
+      const column = "ltv";
+      const sourceMapping = { email: "email" };
+      const value = await getPropertyValue({ column, sourceMapping });
+      expect(value).toBe(259.12);
+    });
+
+    test("can run a string query to get a boolean", async () => {
+      const column = "ios_app";
+      const sourceMapping = { email: "email" };
+      const value = await getPropertyValue({ column, sourceMapping });
+      expect(value).toBe(true);
+    });
   });
 });
