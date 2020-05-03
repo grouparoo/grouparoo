@@ -36,11 +36,11 @@ const newNock = true;
 const appOptions = loadAppOptions(newNock); // TODO: : SimpleAppOptions = loadAppOptions(newNock);
 let profile; // TODO: Profile;
 let source; // TODO: Source = null; // not actually used, just for tests
-let profilePropertyRuleOptions; // TODO: : SimpleProfilePropertyRuleOptions;
 
 let actionhero;
 
-async function getPropertyValue() {
+async function getPropertyValue(query: string) {
+  const profilePropertyRuleOptions = { query };
   return profileProperty({
     appOptions,
     profile,
@@ -52,22 +52,6 @@ async function getPropertyValue() {
     profilePropertyRule: null,
     profilePropertyRuleFilters: null,
   });
-}
-
-async function testRule(key: string, query: string) {
-  const current = await ProfilePropertyRule.findOne({
-    where: { key },
-  });
-  if (current) {
-    await current.destroy();
-  }
-
-  const rule = await helper.factories.profilePropertyRule(
-    source,
-    { key },
-    { query }
-  );
-  profilePropertyRuleOptions = await rule.getOptions();
 }
 
 describe("bigquery/query/profileProperty", () => {
@@ -113,51 +97,39 @@ describe("bigquery/query/profileProperty", () => {
   });
 
   test("can run a integer query to get a string", async () => {
-    const rule = "firstName";
     const sql = "SELECT first_name FROM test.profiles WHERE id = {{ userId }}";
-    await testRule(rule, sql);
-    const value = await getPropertyValue();
+    const value = await getPropertyValue(sql);
     expect(value).toBe("Erie");
   });
 
   test("can run a integer query to get a float", async () => {
-    const rule = "ltv";
     const sql = "SELECT ltv FROM test.profiles WHERE id = {{ userId }}";
-    await testRule(rule, sql);
-    const value = await getPropertyValue();
+    const value = await getPropertyValue(sql);
     expect(value).toBe(259.12);
   });
 
   test("can run a integer query to get a boolean", async () => {
-    const rule = "iosApp";
     const sql = "SELECT ios_app FROM test.profiles WHERE id = {{ userId }}";
-    await testRule(rule, sql);
-    const value = await getPropertyValue();
+    const value = await getPropertyValue(sql);
     expect(value).toBe(true);
   });
 
   test("can run a string query to get a string", async () => {
-    const rule = "firstName";
     const sql =
       "SELECT first_name FROM test.profiles WHERE email = '{{ email }}'";
-    await testRule(rule, sql);
-    const value = await getPropertyValue();
+    const value = await getPropertyValue(sql);
     expect(value).toBe("Erie");
   });
 
   test("can run a integer query to get a float", async () => {
-    const rule = "ltv";
     const sql = "SELECT ltv FROM test.profiles WHERE email = '{{ email }}'";
-    await testRule(rule, sql);
-    const value = await getPropertyValue();
+    const value = await getPropertyValue(sql);
     expect(value).toBe(259.12);
   });
 
   test("can run a integer query to get a boolean", async () => {
-    const rule = "iosApp";
     const sql = "SELECT ios_app FROM test.profiles WHERE email = '{{ email }}'";
-    await testRule(rule, sql);
-    const value = await getPropertyValue();
+    const value = await getPropertyValue(sql);
     expect(value).toBe(true);
   });
 });
