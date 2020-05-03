@@ -27,7 +27,8 @@ import {
 // TODO: Ideally these export from @grouparoo/core so we don't have to put dist here
 import { App } from "@grouparoo/core/api/dist/models/App";
 import { Source, SourceMapping } from "@grouparoo/core/api/dist/models/Source";
-import { ProfilePropertyRule } from "@grouparoo/core/api/dist/models/ProfilePropertyRule";
+//import { ProfilePropertyRule } from "@grouparoo/core/api/dist/models/ProfilePropertyRule";
+import { ProfilePropertyRule } from "../../../../../core/api/src/models/ProfilePropertyRule";
 import { Profile } from "@grouparoo/core/api/dist/models/Profile";
 import { ProfilePropertyRuleTest } from "../../../../../core/api/src/actions/profilePropertyRules";
 
@@ -52,14 +53,13 @@ const sourceMapping: SourceMapping = null;
 const profilePropertyRuleFilters: ProfilePropertyRuleFiltersWithKey[] = null;
 
 // these used and set by test
-const appOptions: SimpleAppOptions = loadAppOptions(newNock);
+const appOptions = loadAppOptions(newNock); // TODO: : SimpleAppOptions = loadAppOptions(newNock);
 let profile; // TODO: Profile;
 let source; // TODO: Source = null; // not actually used, just for tests
-let profilePropertyRule: ProfilePropertyRule;
-let profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions;
+let profilePropertyRule; // TODO: : ProfilePropertyRule;
+let profilePropertyRuleOptions; // TODO: : SimpleProfilePropertyRuleOptions;
 
 let actionhero;
-let models;
 
 async function getPropertyValue() {
   return profileProperty({
@@ -76,17 +76,19 @@ async function getPropertyValue() {
 }
 
 async function testRule(key: string, query: string) {
-  const { ProfilePropertyRule } = plugin.models();
-  const rule = await ProfilePropertyRule.findOne({
+  const current = await ProfilePropertyRule.findOne({
     where: { key },
   });
+  if (current) {
+    await current.destroy();
+  }
 
-  rule.sourceGuid = source.guid;
-  rule.setOptions({ query });
-  await rule.save();
-
-  profilePropertyRule = rule;
-  profilePropertyRuleOptions = rule.getOptions();
+  profilePropertyRule = await helper.factories.profilePropertyRule(
+    source,
+    { key },
+    { query }
+  );
+  profilePropertyRuleOptions = await profilePropertyRule.getOptions();
 }
 
 describe("bigquery/query/profileProperty", () => {
@@ -122,13 +124,61 @@ describe("bigquery/query/profileProperty", () => {
     await source.update({ state: "ready" });
 
     profile = await helper.factories.profile();
-    profilePropertyRule = await profile.addOrUpdateProperties({ userId: 1 });
+    profilePropertyRule = await profile.addOrUpdateProperties({
+      userId: 1,
+      email: "ejervois0@example.com",
+    });
     // await profile.import();
     // await profile.reload();
     expect(profile.guid).toBeTruthy();
   });
 
-  test("can make a profile to use in other tests", async () => {
-    expect(1 + 1).toBe(2);
+  test("can run a integer query to get a string", async () => {
+    const rule = "firstName";
+    const sql = "SELECT first_name FROM test.profiles WHERE id = {{ userId }}";
+    await testRule(rule, sql);
+    const value = await getPropertyValue();
+    expect(value).toBe("Erie");
+  });
+
+  test("can run a integer query to get a float", async () => {
+    const rule = "ltv";
+    const sql = "SELECT ltv FROM test.profiles WHERE id = {{ userId }}";
+    await testRule(rule, sql);
+    const value = await getPropertyValue();
+    expect(value).toBe(259.12);
+  });
+
+  test("can run a integer query to get a boolean", async () => {
+    const rule = "iosApp";
+    const sql = "SELECT ios_app FROM test.profiles WHERE id = {{ userId }}";
+    await testRule(rule, sql);
+    const value = await getPropertyValue();
+    expect(value).toBe(true);
+  });
+
+  test("can run a string query to get a string", async () => {
+    const rule = "firstName";
+    const sql =
+      "SELECT first_name FROM test.profiles WHERE email = '{{ email }}'";
+    await testRule(rule, sql);
+    const value = await getPropertyValue();
+    expect(value).toBe("Erie");
+  });
+
+  test("can run a integer query to get a float", async () => {
+    const rule = "ltv";
+    const sql = "SELECT ltv FROM test.profiles WHERE email = '{{ email }}'";
+    await testRule(rule, sql);
+    const value = await getPropertyValue();
+    expect(value).toBe(259.12);
+  });
+
+  test("can run a integer query to get a boolean", async () => {
+    const rule = "iosApp";
+    const sql = "SELECT ios_app FROM test.profiles WHERE email = '{{ email }}'";
+    await testRule(rule, sql);
+    const value = await getPropertyValue();
+    expect(value).toBe(true);
   });
 });
