@@ -66,11 +66,11 @@ workflows:
 {{{job_name_list}}}
 
   #
-  # Run the tests each night + publish
+  # Run the tests each week + publish
   test-grouparoo-nightly:
     triggers:
        - schedule:
-           cron: "4 0 * * *"
+           cron: "0 0 * * 5"
            filters:
              branches:
                only:
