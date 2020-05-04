@@ -15,6 +15,7 @@ import { profileProperty } from "../../src/lib/table-import/profileProperty";
 
 import { loadAppOptions, rewriteNockEnv } from "../utils/nockHelper";
 import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
+import { SimpleAppOptions, Profile } from "@grouparoo/core";
 
 const nockFile = path.join(
   __dirname,
@@ -31,8 +32,8 @@ const newNock = true;
 // helper.recordNock(nockFile, rewriteNockEnv);
 
 // these used and set by test
-const appOptions = loadAppOptions(newNock); // TODO: : SimpleAppOptions = loadAppOptions(newNock);
-let profile; // TODO: Profile;
+const appOptions: SimpleAppOptions = loadAppOptions(newNock);
+let profile: Profile;
 
 let actionhero;
 

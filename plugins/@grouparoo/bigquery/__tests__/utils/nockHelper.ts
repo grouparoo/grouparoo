@@ -10,7 +10,7 @@ const realPath = path.join(dirPath, ".env");
 function readEnv(filePath) {
   return dotenv.parse(fs.readFileSync(filePath));
 }
-export function loadAppOptions(newNock: boolean = false): any {
+export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
   let envFile;
   if (newNock) {
     envFile = realPath;
