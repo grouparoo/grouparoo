@@ -5,13 +5,12 @@ import { getColumns } from "./columns";
 import {
   ProfilePropertyPluginMethod,
   ProfilePropertyPluginMethodResponse,
-  plugin,
 } from "@grouparoo/core";
 
 /*
  * Returns what to add to query and appends to arrays
  */
-export function makeWhereClause(
+function makeWhereClause(
   columnInfo: any,
   colName: string,
   transform: string | null,
@@ -51,6 +50,22 @@ export function makeWhereClause(
   params.push(match); // TODO: cast based on type?
   types.push(dataType);
   return ` ${key} ${sqlOp} ?`;
+}
+
+function castResult(result) {
+  if (!result) {
+    return null;
+  }
+  // might have to do by type or something here, but some have a "value"
+  if (typeof result === "object") {
+    // TODO: dates have values, should that return a Date Object?
+    if (result.hasOwnProperty("value")) {
+      return result.value;
+    }
+  }
+
+  // otherwise, regular value
+  return result;
 }
 
 export const profileProperty: ProfilePropertyPluginMethod = async ({
@@ -178,7 +193,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     const [rows] = await client.query(options);
     if (rows && rows.length > 0) {
       const row: { [key: string]: any } = rows[0];
-      response = row.__result;
+      response = castResult(row.__result);
     }
   } catch (error) {
     throw new Error(
