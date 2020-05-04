@@ -1,6 +1,7 @@
 import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
 import { getColumns } from "./columns";
+import { BigQuery } from "@google-cloud/bigquery";
 
 import {
   ProfilePropertyPluginMethod,
@@ -27,38 +28,52 @@ function makeWhereClause(
   const dataType = column.data_type;
   console.log(column);
 
-  // use column.data_type to do things
-  // const VALID_TYPES = [
-  //   "DATE",
-  //   "DATETIME",
-  //   "TIME",
-  //   "TIMESTAMP",
-  //   "BYTES",
-  //   "NUMERIC",
-  //   "BOOL",
-  //   "INT64",
-  //   "FLOAT64",
-  //   "STRING",
-  //   "GEOGRAPHY",
-  //   "ARRAY",
-  //   "STRUCT",
-  // ];
+  // interesting code in BigQuery library: function convert(schemaField, value)
+  let param;
+  switch (dataType) {
+    // TODO: do these work with js Date Objects?
+    case "DATE":
+      param = BigQuery.date(match);
+      break;
+    case "DATETIME":
+      param = BigQuery.datetime(match);
+      break;
+    case "TIME":
+      param = BigQuery.time(match);
+      break;
+    case "BOOL":
+    case "NUMERIC":
+    case "INT64":
+    case "FLOAT64":
+    case "STRING":
+      // TODO: need stronger casting on any of these?
+      param = match;
+      break;
+    case "TIMESTAMP":
+    case "GEOGRAPHY":
+    case "ARRAY":
+    case "STRUCT":
+    case "BYTES":
+    default:
+      throw `unsupported data type: ${dataType}`;
+  }
 
   const key = transform ? `${transform}(\`${colName}\`)` : `\`${colName}\``;
 
   // put the values and types in the array
-  params.push(match); // TODO: cast based on type?
+  params.push(param);
   types.push(dataType);
   return ` ${key} ${sqlOp} ?`;
 }
 
 function castResult(result) {
-  if (!result) {
+  console.log("castResult", result);
+  if (result === null || result === undefined) {
     return null;
   }
   // might have to do by type or something here, but some have a "value"
   if (typeof result === "object") {
-    // TODO: dates have values, should that return a Date Object?
+    // TODO: dates have values, should that return a Date Object if "BigQueryDate" or similar
     if (result.hasOwnProperty("value")) {
       return result.value;
     }
@@ -100,7 +115,6 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   }
   const columnValue = profileData[profilePropertyMatch].value;
 
-  console.log("profileData", profileData);
   console.log("columns", columns);
   console.log("columnValue", columnValue);
 

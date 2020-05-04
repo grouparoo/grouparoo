@@ -1,4 +1,4 @@
-const { BigQuery } = require("@google-cloud/bigquery");
+import { BigQuery } from "@google-cloud/bigquery";
 import { SimpleAppOptions } from "@grouparoo/core";
 
 export async function connect(options: SimpleAppOptions) {

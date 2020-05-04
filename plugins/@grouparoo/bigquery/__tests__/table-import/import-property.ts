@@ -40,6 +40,7 @@ let actionhero;
 let sourceOptions;
 async function getPropertyValue(
   { column, sourceMapping, aggregationMethod },
+  useProfilePropertyRuleFilters?,
   useProfile?: Profile
 ) {
   const profilePropertyRuleOptions = {
@@ -50,8 +51,8 @@ async function getPropertyValue(
   if (!useProfile) {
     useProfile = profile;
   }
-  // TODO: test filters
-  const profilePropertyRuleFilters = [];
+
+  const profilePropertyRuleFilters = useProfilePropertyRuleFilters || [];
 
   return profileProperty({
     appOptions,
@@ -96,71 +97,70 @@ describe("bigquery/table/profileProperty", () => {
     beforeAll(() => {
       sourceOptions = { table: "profiles" };
     });
-
-    test("can run a integer query to get a string", async () => {
-      const column = "first_name";
+    describe("integer mapping", () => {
       const sourceMapping = { id: "userId" };
-      const value = await getPropertyValue({
-        column,
-        sourceMapping,
-        aggregationMethod,
+      test("to get a string", async () => {
+        const column = "first_name";
+        const value = await getPropertyValue({
+          column,
+          sourceMapping,
+          aggregationMethod,
+        });
+        expect(value).toBe("Erie");
       });
-      expect(value).toBe("Erie");
+
+      test("to get a float", async () => {
+        const column = "ltv";
+        const value = await getPropertyValue({
+          column,
+          sourceMapping,
+          aggregationMethod,
+        });
+        expect(value).toBe(259.12);
+      });
+
+      test("to get a boolean", async () => {
+        const column = "ios_app";
+        const value = await getPropertyValue({
+          column,
+          sourceMapping,
+          aggregationMethod,
+        });
+        expect(value).toBe(true);
+      });
     });
 
-    test("can run a integer query to get a float", async () => {
-      const column = "ltv";
-      const sourceMapping = { id: "userId" };
-      const value = await getPropertyValue({
-        column,
-        sourceMapping,
-        aggregationMethod,
-      });
-      expect(value).toBe(259.12);
-    });
-
-    test("can run a integer query to get a boolean", async () => {
-      const column = "ios_app";
-      const sourceMapping = { id: "userId" };
-      const value = await getPropertyValue({
-        column,
-        sourceMapping,
-        aggregationMethod,
-      });
-      expect(value).toBe(true);
-    });
-
-    test("can run a string query to get a string", async () => {
-      const column = "first_name";
+    describe("string mapping", () => {
       const sourceMapping = { email: "email" };
-      const value = await getPropertyValue({
-        column,
-        sourceMapping,
-        aggregationMethod,
+      test("can run a string query to get a string", async () => {
+        const column = "first_name";
+        const value = await getPropertyValue({
+          column,
+          sourceMapping,
+          aggregationMethod,
+        });
+        expect(value).toBe("Erie");
       });
-      expect(value).toBe("Erie");
-    });
 
-    test("can run a string query to get a float", async () => {
-      const column = "ltv";
-      const sourceMapping = { email: "email" };
-      const value = await getPropertyValue({
-        column,
-        sourceMapping,
-        aggregationMethod,
+      test("can run a string query to get a float", async () => {
+        const column = "ltv";
+        const value = await getPropertyValue({
+          column,
+          sourceMapping,
+          aggregationMethod,
+        });
+        expect(value).toBe(259.12);
       });
-      expect(value).toBe(259.12);
-    });
 
-    test("can run a string query to get a boolean", async () => {
-      const column = "ios_app";
-      const sourceMapping = { email: "email" };
-      const value = await getPropertyValue({
-        column,
-        sourceMapping,
-        aggregationMethod,
+      test("can run a string query to get a boolean", async () => {
+        const column = "ios_app";
+        const value = await getPropertyValue({
+          column,
+          sourceMapping,
+          aggregationMethod,
+        });
+        expect(value).toBe(true);
       });
-      expect(value).toBe(true);
     });
   });
 
@@ -239,6 +239,444 @@ describe("bigquery/table/profileProperty", () => {
           });
           expect(value).toBe("2020-02-20");
         });
+      });
+    });
+  });
+
+  describe("filters", () => {
+    const sourceMapping = { profile_id: "userId" };
+    const column = "amount";
+    const aggregationMethod = "count";
+    beforeAll(() => {
+      sourceOptions = { table: "purchases" };
+    });
+    // export interface ProfilePropertyRuleFiltersWithKey {
+    //   key: string;
+    //   op: string;
+    //   match?: string | number | boolean;
+    //   relativeMatchNumber?: number;
+    //   relativeMatchUnit?: string;
+    //   relativeMatchDirection?: string;
+    // }
+    describe("equals", () => {
+      const op = "equals";
+      test("integer", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "id", match: "15" }]
+        );
+        expect(value).toBe(1);
+      });
+      test("string", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase", match: "Apple" }]
+        );
+        expect(value).toBe(2);
+      });
+      test("string is case sensitive", async () => {
+        // TODO: is this the right behavior?
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase", match: "apple" }]
+        );
+        expect(value).toBe(0);
+      });
+      test("date", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "date", match: "2020-02-15" }]
+        );
+        expect(value).toBe(1);
+      });
+      test("float", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "amount", match: "1.54" }]
+        );
+        expect(value).toBe(2);
+      });
+    });
+
+    describe("does not equal", () => {
+      const op = "does not equal";
+      test("integer", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "id", match: "15" }]
+        );
+        expect(value).toBe(5);
+      });
+      test("string", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase", match: "Apple" }]
+        );
+        expect(value).toBe(4);
+      });
+      test("string is case sensitive", async () => {
+        // TODO: is this the right behavior?
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase", match: "apple" }]
+        );
+        expect(value).toBe(6);
+      });
+      test("date", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "date", match: "2020-02-15" }]
+        );
+        expect(value).toBe(5);
+      });
+      test("float", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "amount", match: "1.54" }]
+        );
+        expect(value).toBe(4);
+      });
+    });
+
+    describe("contains", () => {
+      const op = "contains";
+      test("integer", async () => {
+        await expect(
+          getPropertyValue(
+            {
+              column,
+              sourceMapping,
+              aggregationMethod,
+            },
+            [{ op, key: "id", match: "15" }]
+          )
+        ).rejects.toThrow();
+      });
+      test("string", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase", match: "App" }]
+        );
+        expect(value).toBe(2);
+      });
+      test("string is not case sensitive", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase", match: "app" }]
+        );
+        expect(value).toBe(2);
+      });
+      test("date", async () => {
+        await expect(
+          getPropertyValue(
+            {
+              column,
+              sourceMapping,
+              aggregationMethod,
+            },
+            [{ op, key: "date", match: "2020-02-15" }]
+          )
+        ).rejects.toThrow();
+      });
+      test("float", async () => {
+        await expect(
+          getPropertyValue(
+            {
+              column,
+              sourceMapping,
+              aggregationMethod,
+            },
+            [{ op, key: "amount", match: "1.54" }]
+          )
+        ).rejects.toThrow();
+      });
+    });
+
+    describe("does not contain", () => {
+      const op = "does not contain";
+      test("integer", async () => {
+        await expect(
+          getPropertyValue(
+            {
+              column,
+              sourceMapping,
+              aggregationMethod,
+            },
+            [{ op, key: "id", match: "15" }]
+          )
+        ).rejects.toThrow();
+      });
+      test("string", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase", match: "Oran" }]
+        );
+        expect(value).toBe(4);
+      });
+      test("string is not case sensitive", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase", match: "oran" }]
+        );
+        expect(value).toBe(4);
+      });
+      test("date", async () => {
+        await expect(
+          getPropertyValue(
+            {
+              column,
+              sourceMapping,
+              aggregationMethod,
+            },
+            [{ op, key: "date", match: "2020-02-15" }]
+          )
+        ).rejects.toThrow();
+      });
+      test("float", async () => {
+        await expect(
+          getPropertyValue(
+            {
+              column,
+              sourceMapping,
+              aggregationMethod,
+            },
+            [{ op, key: "amount", match: "1.54" }]
+          )
+        ).rejects.toThrow();
+      });
+    });
+
+    describe("equals", () => {
+      const op = "equals";
+      test("integer", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "id", match: "15" }]
+        );
+        expect(value).toBe(1);
+      });
+      test("string", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase", match: "Apple" }]
+        );
+        expect(value).toBe(2);
+      });
+      test("string is case sensitive", async () => {
+        // TODO: is this the right behavior?
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase", match: "apple" }]
+        );
+        expect(value).toBe(0);
+      });
+      test("date", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "date", match: "2020-02-15" }]
+        );
+        expect(value).toBe(1);
+      });
+      test("float", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "amount", match: "1.54" }]
+        );
+        expect(value).toBe(2);
+      });
+    });
+
+    describe("greater than", () => {
+      const op = "greater than";
+      test("integer", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "id", match: "15" }]
+        );
+        expect(value).toBe(2);
+      });
+      test("string", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase", match: "Apple" }]
+        );
+        expect(value).toBe(4);
+      });
+      test("string is case sensitive", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase", match: "apple" }]
+        );
+        expect(value).toBe(0);
+      });
+      test("date", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "date", match: "2020-02-15" }]
+        );
+        expect(value).toBe(2);
+      });
+      test("float", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "amount", match: "1.54" }]
+        );
+        expect(value).toBe(2);
+      });
+    });
+
+    describe("less than", () => {
+      const op = "less than";
+      test("integer", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "id", match: "15" }]
+        );
+        expect(value).toBe(3);
+      });
+      test("string", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase", match: "Apple" }]
+        );
+        expect(value).toBe(0);
+      });
+      test("string is case sensitive", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase", match: "apple" }]
+        );
+        expect(value).toBe(6); // weird ascii math
+      });
+      test("date", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "date", match: "2020-02-15" }]
+        );
+        expect(value).toBe(3);
+      });
+      test("float", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "amount", match: "1.54" }]
+        );
+        expect(value).toBe(2);
       });
     });
   });
