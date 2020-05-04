@@ -1,13 +1,14 @@
-import { Action } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Export } from "../models/Export";
 
-export class ListExports extends Action {
+export class ListExports extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "exports:list";
     this.description = "list exports";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "export";
+    this.permissionMode = "read";
     this.inputs = {
       profileGuid: { required: false },
       destinationGuid: { required: false },
@@ -39,13 +40,14 @@ export class ListExports extends Action {
   }
 }
 
-export class ExportView extends Action {
+export class ExportView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "export:view";
     this.description = "view an export";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "export";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: true },
     };

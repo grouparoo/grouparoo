@@ -1,14 +1,15 @@
-import { Action } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { plugin } from "../modules/plugin";
 import { Setting } from "../models/Setting";
 
-export class SettingsList extends Action {
+export class SettingsList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "settings:list";
     this.description = "list all the settings";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "system";
+    this.permissionMode = "read";
     this.inputs = {
       order: {
         required: true,
@@ -29,13 +30,14 @@ export class SettingsList extends Action {
   }
 }
 
-export class SettingEdit extends Action {
+export class SettingEdit extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "setting:edit";
     this.description = "edit a setting";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "system";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
       value: { required: true },

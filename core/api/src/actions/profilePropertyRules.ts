@@ -1,4 +1,5 @@
-import { api, Action } from "actionhero";
+import { api } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Op } from "sequelize";
 import { Profile } from "../models/Profile";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
@@ -6,13 +7,14 @@ import { ProfileProperty } from "../models/ProfileProperty";
 import { Group } from "../models/Group";
 import { GroupRule } from "../models/GroupRule";
 
-export class ProfilePropertyRulesList extends Action {
+export class ProfilePropertyRulesList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profilePropertyRules:list";
     this.description = "list all the profilePropertyRules";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "profilePropertyRule";
+    this.permissionMode = "read";
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
@@ -72,14 +74,15 @@ export class ProfilePropertyRulesList extends Action {
   }
 }
 
-export class ProfilePropertyRulesOptions extends Action {
+export class ProfilePropertyRulesOptions extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profilePropertyRules:options";
     this.description =
       "enumerate the options for creating a new profilePropertyRule";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "profilePropertyRule";
+    this.permissionMode = "read";
     this.inputs = {};
   }
 
@@ -88,14 +91,15 @@ export class ProfilePropertyRulesOptions extends Action {
   }
 }
 
-export class ProfilePropertyRuleGroups extends Action {
+export class ProfilePropertyRuleGroups extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profilePropertyRule:groups";
     this.description =
       "enumerate the groups using this profile property rule in their rules";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "profilePropertyRule";
+    this.permissionMode = "read";
     this.inputs = { guid: { required: true } };
   }
 
@@ -120,13 +124,14 @@ export class ProfilePropertyRuleGroups extends Action {
   }
 }
 
-export class ProfilePropertyRuleCreate extends Action {
+export class ProfilePropertyRuleCreate extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profilePropertyRule:create";
     this.description = "create a profilePropertyRule";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "profilePropertyRule";
+    this.permissionMode = "write";
     this.inputs = {
       key: { required: false },
       type: { required: true },
@@ -163,13 +168,14 @@ export class ProfilePropertyRuleCreate extends Action {
   }
 }
 
-export class ProfilePropertyRuleEdit extends Action {
+export class ProfilePropertyRuleEdit extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profilePropertyRule:edit";
     this.description = "edit a profilePropertyRule";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "profilePropertyRule";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
       key: { required: false },
@@ -202,13 +208,14 @@ export class ProfilePropertyRuleEdit extends Action {
   }
 }
 
-export class ProfilePropertyRuleFilterOptions extends Action {
+export class ProfilePropertyRuleFilterOptions extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profilePropertyRule:filterOptions";
     this.description = "view a the filter options for a profile property rule";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "profilePropertyRule";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: true },
     };
@@ -222,13 +229,14 @@ export class ProfilePropertyRuleFilterOptions extends Action {
   }
 }
 
-export class ProfilePropertyRuleView extends Action {
+export class ProfilePropertyRuleView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profilePropertyRule:view";
     this.description = "view a profilePropertyRule";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "profilePropertyRule";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: true },
     };
@@ -244,14 +252,15 @@ export class ProfilePropertyRuleView extends Action {
   }
 }
 
-export class ProfilePropertyRuleProfilePreview extends Action {
+export class ProfilePropertyRuleProfilePreview extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profilePropertyRule:profilePreview";
     this.description =
       "view a profilePropertyRule's new options against a profile";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "profilePropertyRule";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: true },
       profileGuid: { required: false },
@@ -323,13 +332,14 @@ export class ProfilePropertyRuleProfilePreview extends Action {
   }
 }
 
-export class ProfilePropertyRuleTest extends Action {
+export class ProfilePropertyRuleTest extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profilePropertyRule:test";
     this.description = "test a profilePropertyRule";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "profilePropertyRule";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: true },
     };
@@ -344,13 +354,14 @@ export class ProfilePropertyRuleTest extends Action {
   }
 }
 
-export class ProfilePropertyRuleDestroy extends Action {
+export class ProfilePropertyRuleDestroy extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profilePropertyRule:destroy";
     this.description = "destroy a profilePropertyRule";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "profilePropertyRule";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
     };

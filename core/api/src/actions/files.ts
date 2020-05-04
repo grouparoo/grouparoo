@@ -1,14 +1,16 @@
-import { Action, api } from "actionhero";
+import { api } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { File } from "../models/File";
 import fs from "fs-extra";
 
-export class FilesList extends Action {
+export class FilesList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "files:list";
     this.description = "list all the files";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "file";
+    this.permissionMode = "read";
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
@@ -41,13 +43,14 @@ export class FilesList extends Action {
   }
 }
 
-export class FileOptions extends Action {
+export class FileOptions extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "files:options";
     this.description = "options for creating a file";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "file";
+    this.permissionMode = "read";
     this.inputs = {};
   }
 
@@ -60,13 +63,14 @@ export class FileOptions extends Action {
 
 // to test:
 // curl -X POST -F 'file=@../web/public/images/roo.png' -d type=test http://localhost:8080/api/1/file
-export class FileCreate extends Action {
+export class FileCreate extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "file:create";
     this.description = "create and upload a file";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
+    this.permissionTopic = "file";
+    this.permissionMode = "write";
     this.inputs = {
       type: { required: true },
       file: { required: true },
@@ -83,13 +87,14 @@ export class FileCreate extends Action {
   }
 }
 
-export class FileView extends Action {
+export class FileView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "file:view";
     this.description = "view a file";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "file";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: true },
     };
@@ -122,13 +127,14 @@ export class FileView extends Action {
   }
 }
 
-export class FileDestroy extends Action {
+export class FileDestroy extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "file:destroy";
     this.description = "destroy a file";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "file";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
     };

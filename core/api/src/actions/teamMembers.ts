@@ -1,14 +1,15 @@
-import { Action } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
 
-export class TeamMembersList extends Action {
+export class TeamMembersList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "teamMembers:list";
     this.description = "view all the members of a team";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "team";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: false },
     };
@@ -28,13 +29,14 @@ export class TeamMembersList extends Action {
   }
 }
 
-export class TeamMemberCreate extends Action {
+export class TeamMemberCreate extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "teamMember:create";
     this.description = "create a team member";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "team";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
       firstName: { required: true },
@@ -58,13 +60,14 @@ export class TeamMemberCreate extends Action {
   }
 }
 
-export class TeamMemberView extends Action {
+export class TeamMemberView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "teamMember:view";
     this.description = "view a team member";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "team";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: true },
     };
@@ -83,13 +86,14 @@ export class TeamMemberView extends Action {
   }
 }
 
-export class TeamMemberEdit extends Action {
+export class TeamMemberEdit extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "teamMember:edit";
     this.description = "edit a team member";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "team";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
       firstName: { required: false },
@@ -113,13 +117,14 @@ export class TeamMemberEdit extends Action {
   }
 }
 
-export class TeamMemberDestroy extends Action {
+export class TeamMemberDestroy extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "teamMember:destroy";
     this.description = "destroy a team member";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "team";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
     };

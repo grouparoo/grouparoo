@@ -1,13 +1,14 @@
-import { Action } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Log } from "../models/Log";
 
-export class LogsList extends Action {
+export class LogsList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "logs:list";
     this.description = "list all the log entries";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "log";
+    this.permissionMode = "read";
     this.inputs = {
       topic: { required: false },
       verb: { required: false },

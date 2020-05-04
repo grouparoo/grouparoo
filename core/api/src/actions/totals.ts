@@ -1,4 +1,5 @@
-import { Action, api } from "actionhero";
+import { api } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Op } from "sequelize";
 import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
@@ -43,13 +44,14 @@ function generateDates(
   return results;
 }
 
-export class TotalsAction extends Action {
+export class TotalsAction extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "totals";
     this.description = "return counts for a model";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "system";
+    this.permissionMode = "read";
     this.inputs = {
       model: { required: true },
     };

@@ -1,4 +1,5 @@
 import { Action, api } from "actionhero";
+import { AuthenticatedAction } from "./../classes/authenticatedAction";
 import { TeamMember } from "../models/TeamMember";
 
 export class sessionCreate extends Action {
@@ -34,19 +35,21 @@ export class sessionCreate extends Action {
   }
 }
 
-export class sessionView extends Action {
+export class sessionView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "session:view";
     this.description = "to view session information";
-    this.middleware = ["authenticated-team-member"];
+    this.permissionTopic = "*";
     this.outputExample = {};
   }
 
   async run({ connection, response, session: { teamMember } }) {
     const sessionData = await api.session.load(connection);
-    response.csrfToken = sessionData.csrfToken;
-    response.teamMember = await teamMember.apiData();
+    if (sessionData) {
+      response.csrfToken = sessionData.csrfToken;
+      response.teamMember = await teamMember.apiData();
+    }
   }
 }
 

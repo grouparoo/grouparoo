@@ -1,9 +1,9 @@
-import { Action, api } from "actionhero";
+import { Action } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
-import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
 
-export class TeamInitalize extends Action {
+export class TeamInitialize extends Action {
   constructor() {
     super();
     this.name = "team:initialize";
@@ -30,10 +30,18 @@ export class TeamInitalize extends Action {
     team = await Team.create({
       name: "Administrators",
       deletable: false,
-      read: true,
-      write: true,
-      administer: true,
     });
+
+    const permissions = await team.$get("permissions");
+    await Promise.all(
+      permissions.map((prm) =>
+        prm.update({
+          locked: true,
+          read: true,
+          write: true,
+        })
+      )
+    );
 
     teamMember = await TeamMember.create({
       teamGuid: team.guid,
@@ -49,13 +57,14 @@ export class TeamInitalize extends Action {
   }
 }
 
-export class TeamsList extends Action {
+export class TeamsList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "teams:list";
     this.description = "list all the teams";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "team";
+    this.permissionMode = "read";
     this.inputs = {};
   }
 
@@ -67,13 +76,14 @@ export class TeamsList extends Action {
   }
 }
 
-export class TeamCreate extends Action {
+export class TeamCreate extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "team:create";
     this.description = "create a team";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "team";
+    this.permissionMode = "write";
     this.inputs = {
       name: { required: true },
       read: { required: false, default: false },
@@ -89,13 +99,14 @@ export class TeamCreate extends Action {
   }
 }
 
-export class TeamEdit extends Action {
+export class TeamEdit extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "team:edit";
     this.description = "edit a team";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "team";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
       name: { required: false },
@@ -112,13 +123,14 @@ export class TeamEdit extends Action {
   }
 }
 
-export class TeamView extends Action {
+export class TeamView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "team:view";
     this.description = "view a team and members";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member"];
+    this.permissionTopic = "team";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: true },
     };
@@ -150,13 +162,14 @@ export class TeamView extends Action {
   }
 }
 
-export class TeamDestroy extends Action {
+export class TeamDestroy extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "team:destroy";
     this.description = "destroy a team";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "team";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
     };

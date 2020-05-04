@@ -1,13 +1,13 @@
-import { Action, api } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Team } from "../models/Team";
 
-export class NavigationList extends Action {
+export class NavigationList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "navigation:list";
     this.description =
       "returns a list of pages for the UI navigation for this user";
-    this.middleware = ["optional-team-member"];
+    this.permissionTopic = "*";
     this.outputExample = {};
   }
 
@@ -20,9 +20,33 @@ export class NavigationList extends Action {
     let administer = false;
     if (teamMember) {
       navigationMode = "authenticated";
-      if (teamMember.team.administer) {
-        administer = true;
-      }
+      const permissions = await teamMember.team.$get("permissions");
+      permissions.map((prm) => {
+        if (prm.topic === "system" && prm.read) {
+          administer = true;
+        }
+        if (prm.topic === "app" && prm.read) {
+          administer = true;
+        }
+        if (prm.topic === "file" && prm.read) {
+          administer = true;
+        }
+        if (prm.topic === "log" && prm.read) {
+          administer = true;
+        }
+        if (prm.topic === "import" && prm.read) {
+          administer = true;
+        }
+        if (prm.topic === "export" && prm.read) {
+          administer = true;
+        }
+        if (prm.topic === "run" && prm.read) {
+          administer = true;
+        }
+        if (prm.topic === "resque" && prm.read) {
+          administer = true;
+        }
+      });
     }
 
     if (navigationMode === "unauthenticated") {

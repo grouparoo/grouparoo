@@ -1,12 +1,14 @@
-import { Action, api } from "actionhero";
+import { api } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 
-export class EventsList extends Action {
+export class EventsList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "events:list";
     this.description = "list many events";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "event";
+    this.permissionMode = "read";
     this.inputs = {
       profileGuid: { required: false },
       type: { required: false },
@@ -43,13 +45,14 @@ export class EventsList extends Action {
   }
 }
 
-export class EventCreate extends Action {
+export class EventCreate extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "event:create";
     this.description = "create an event";
     this.outputExample = {};
-    this.middleware = []; // TODO - API Key Authentication
+    this.permissionTopic = "event";
+    this.permissionMode = "write";
     this.inputs = {
       apiKey: { required: true },
       type: { required: true },
@@ -95,13 +98,14 @@ export class EventCreate extends Action {
   }
 }
 
-export class EventView extends Action {
+export class EventView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "event:view";
     this.description = "view an event";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "event";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: true },
     };
@@ -113,13 +117,14 @@ export class EventView extends Action {
   }
 }
 
-export class EventDestroy extends Action {
+export class EventDestroy extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "event:destroy";
     this.description = "destroy an event";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
+    this.permissionTopic = "event";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
     };

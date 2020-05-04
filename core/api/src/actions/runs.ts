@@ -1,15 +1,16 @@
-import { Action } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Run } from "../models/Run";
 import { Op } from "sequelize";
 import { Schedule } from "../models/Schedule";
 
-export class ListRuns extends Action {
+export class ListRuns extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "runs:list";
     this.description = "list the runs";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "system";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: false },
       state: { required: false },
@@ -64,13 +65,14 @@ export class ListRuns extends Action {
   }
 }
 
-export class RunView extends Action {
+export class RunView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "run:view";
     this.description = "view a run";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "system";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: true },
     };

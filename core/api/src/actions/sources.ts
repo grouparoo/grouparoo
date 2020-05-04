@@ -1,15 +1,17 @@
-import { Action, api } from "actionhero";
+import { api } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { App } from "../models/App";
 import { Source } from "../models/Source";
 import { GrouparooPlugin } from "../classes/plugin";
 
-export class SourcesList extends Action {
+export class SourcesList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "sources:list";
     this.description = "list all the sources";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "source";
+    this.permissionMode = "read";
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
@@ -46,14 +48,15 @@ export class SourcesList extends Action {
   }
 }
 
-export class SourceConnectionApps extends Action {
+export class SourceConnectionApps extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "sources:connectionApps";
     this.description =
       "enumerate the connection and app pairs for creating a new source";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "source";
+    this.permissionMode = "read";
     this.inputs = {};
   }
 
@@ -87,13 +90,14 @@ export class SourceConnectionApps extends Action {
   }
 }
 
-export class SourceCreate extends Action {
+export class SourceCreate extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "source:create";
     this.description = "create a source";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "source";
+    this.permissionMode = "write";
     this.inputs = {
       appGuid: { required: true },
       name: { required: false },
@@ -125,13 +129,14 @@ export class SourceCreate extends Action {
   }
 }
 
-export class SourceView extends Action {
+export class SourceView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "source:view";
     this.description = "view a source";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "source";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: true },
     };
@@ -143,13 +148,14 @@ export class SourceView extends Action {
   }
 }
 
-export class SourceEdit extends Action {
+export class SourceEdit extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "source:edit";
     this.description = "edit a source";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
+    this.permissionTopic = "source";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
       appGuid: { required: false },
@@ -174,14 +180,15 @@ export class SourceEdit extends Action {
   }
 }
 
-export class SourceBootstrapUniqueProfilePropertyRule extends Action {
+export class SourceBootstrapUniqueProfilePropertyRule extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "source:bootstrapUniqueProfilePropertyRule";
     this.description =
       "bootstrap a new unique profile property for this source before the mapping is set";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
+    this.permissionTopic = "source";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
       key: { required: true },
@@ -203,13 +210,14 @@ export class SourceBootstrapUniqueProfilePropertyRule extends Action {
   }
 }
 
-export class sourceConnectionOptions extends Action {
+export class sourceConnectionOptions extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "source:connectionOptions";
     this.description = "return option choices from this source";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "source";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: true },
     };
@@ -221,13 +229,14 @@ export class sourceConnectionOptions extends Action {
   }
 }
 
-export class sourcePreview extends Action {
+export class sourcePreview extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "source:preview";
     this.description = "preview the data from this source";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "source";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: true },
       options: { required: false },
@@ -245,13 +254,14 @@ export class sourcePreview extends Action {
   }
 }
 
-export class SourceDestroy extends Action {
+export class SourceDestroy extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "source:destroy";
     this.description = "destroy a source";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "source";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
     };

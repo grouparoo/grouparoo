@@ -1,4 +1,5 @@
-import { Action, api } from "actionhero";
+import { api } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { Group } from "../models/Group";
@@ -7,13 +8,14 @@ import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
 import { internalRun } from "../modules/internalRun";
 import { Op } from "sequelize";
 
-export class ProfilesList extends Action {
+export class ProfilesList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profiles:list";
     this.description = "list all the profiles in a group";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "profile";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: false },
       searchKey: { required: false },
@@ -102,13 +104,14 @@ export class ProfilesList extends Action {
   }
 }
 
-export class ProfileAutocompleteProfileProperty extends Action {
+export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profiles:autocompleteProfileProperty";
     this.description = "create a run to import and update every profile";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "profile";
+    this.permissionMode = "read";
     this.inputs = {
       profilePropertyRuleGuid: { required: true },
       match: { required: true },
@@ -143,13 +146,14 @@ export class ProfileAutocompleteProfileProperty extends Action {
   }
 }
 
-export class ProfilesImportAndUpdate extends Action {
+export class ProfilesImportAndUpdate extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profiles:importAndUpdate";
     this.description = "create a run to import and update every profile";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "profile";
+    this.permissionMode = "write";
     this.inputs = {};
   }
 
@@ -159,13 +163,14 @@ export class ProfilesImportAndUpdate extends Action {
   }
 }
 
-export class ProfileCreate extends Action {
+export class ProfileCreate extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profile:create";
     this.description = "create a profile";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
+    this.permissionTopic = "profile";
+    this.permissionMode = "write";
     this.inputs = {
       properties: { required: false, default: {} },
     };
@@ -179,13 +184,14 @@ export class ProfileCreate extends Action {
   }
 }
 
-export class ProfileImportAndUpdate extends Action {
+export class ProfileImportAndUpdate extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profile:importAndUpdate";
     this.description = "fully import a profile from all apps and update groups";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
+    this.permissionTopic = "profile";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
     };
@@ -205,14 +211,15 @@ export class ProfileImportAndUpdate extends Action {
   }
 }
 
-export class ProfileEdit extends Action {
+export class ProfileEdit extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profile:edit";
     this.description =
       "edit a profile.  _delete is a special key to remote a property that already exists";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
+    this.permissionTopic = "profile";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
       properties: { required: false, default: {} },
@@ -232,13 +239,14 @@ export class ProfileEdit extends Action {
   }
 }
 
-export class ProfileView extends Action {
+export class ProfileView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profile:view";
     this.description = "view a profile and members";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "profile";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: true },
     };
@@ -251,13 +259,14 @@ export class ProfileView extends Action {
   }
 }
 
-export class ProfileDestroy extends Action {
+export class ProfileDestroy extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profile:destroy";
     this.description = "destroy a profile";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
+    this.permissionTopic = "profile";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
     };

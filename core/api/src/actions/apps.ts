@@ -1,14 +1,16 @@
-import { Action, api } from "actionhero";
+import { api } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { App } from "../models/App";
 import { GrouparooPlugin } from "../classes/plugin";
 
-export class AppsList extends Action {
+export class AppsList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "apps:list";
     this.description = "list all the apps";
+    this.permissionTopic = "app";
+    this.permissionMode = "read";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
@@ -42,13 +44,14 @@ export class AppsList extends Action {
   }
 }
 
-export class AppOptions extends Action {
+export class AppOptions extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "app:options";
     this.description = "enumerate the options for creating a new app";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "app";
+    this.permissionMode = "read";
     this.inputs = {};
   }
 
@@ -68,13 +71,14 @@ export class AppOptions extends Action {
   }
 }
 
-export class AppOptionOptions extends Action {
+export class AppOptionOptions extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "app:optionOptions";
     this.description = "return option choices from this app";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "app";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: true },
     };
@@ -87,13 +91,14 @@ export class AppOptionOptions extends Action {
   }
 }
 
-export class AppCreate extends Action {
+export class AppCreate extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "app:create";
     this.description = "create an app";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "app";
+    this.permissionMode = "write";
     this.inputs = {
       name: { required: false },
       type: { required: true },
@@ -120,13 +125,14 @@ export class AppCreate extends Action {
   }
 }
 
-export class AppEdit extends Action {
+export class AppEdit extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "app:edit";
     this.description = "edit an app";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "app";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
       name: { required: false },
@@ -147,13 +153,14 @@ export class AppEdit extends Action {
   }
 }
 
-export class AppTest extends Action {
+export class AppTest extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "app:test";
     this.description = "test the options passed to an app";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "app";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
       options: { required: false },
@@ -171,13 +178,14 @@ export class AppTest extends Action {
   }
 }
 
-export class AppView extends Action {
+export class AppView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "app:view";
     this.description = "view an app";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "app";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: true },
     };
@@ -189,13 +197,14 @@ export class AppView extends Action {
   }
 }
 
-export class AppDestroy extends Action {
+export class AppDestroy extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "app:destroy";
     this.description = "destroy an app";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permissionTopic = "app";
+    this.permissionMode = "write";
     this.inputs = {
       guid: { required: true },
     };

@@ -1,14 +1,15 @@
-import { Action } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Import } from "../models/Import";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
 
-export class ImportsList extends Action {
+export class ImportsList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "imports:list";
     this.description = "list imports";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "import";
+    this.permissionMode = "read";
     this.inputs = {
       creatorGuid: { required: false },
       profileGuid: { required: false },
@@ -45,13 +46,14 @@ export class ImportsList extends Action {
   }
 }
 
-export class ViewImport extends Action {
+export class ViewImport extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "import:view";
     this.description = "view an import";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permissionTopic = "import";
+    this.permissionMode = "read";
     this.inputs = {
       guid: { required: true },
     };
@@ -63,14 +65,14 @@ export class ViewImport extends Action {
   }
 }
 
-export class CreateImport extends Action {
+export class CreateImport extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "import:create";
     this.description = "create an import";
     this.outputExample = {};
-    // TODO: We will need other authentication schemes, like API keys
-    this.middleware = [];
+    this.permissionTopic = "import";
+    this.permissionMode = "write";
     this.inputs = {
       properties: { required: true },
     };
