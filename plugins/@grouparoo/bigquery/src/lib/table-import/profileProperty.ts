@@ -83,7 +83,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   if (!profileData.hasOwnProperty(profilePropertyMatch)) {
     throw `unknown profile property: ${profilePropertyMatch}`;
   }
-  const columnValue = profileData[profilePropertyMatch];
+  const columnValue = profileData[profilePropertyMatch].value;
 
   console.log("profileData", profileData);
   console.log("columns", columns);

@@ -38,19 +38,24 @@ let profile: Profile;
 let actionhero;
 
 let sourceOptions;
-let aggregationMethod;
-async function getPropertyValue({ column, sourceMapping }) {
+async function getPropertyValue(
+  { column, sourceMapping, aggregationMethod },
+  useProfile?: Profile
+) {
   const profilePropertyRuleOptions = {
     column,
     "aggregation method": aggregationMethod,
   };
 
+  if (!useProfile) {
+    useProfile = profile;
+  }
   // TODO: test filters
   const profilePropertyRuleFilters = [];
 
   return profileProperty({
     appOptions,
-    profile,
+    profile: useProfile,
     sourceOptions,
     profilePropertyRuleOptions,
     sourceMapping,
@@ -87,51 +92,154 @@ describe("bigquery/table/profileProperty", () => {
   });
 
   describe("exact primary tables", () => {
+    let aggregationMethod = "exact";
     beforeAll(() => {
       sourceOptions = { table: "profiles" };
-      aggregationMethod = "exact";
     });
 
     test("can run a integer query to get a string", async () => {
       const column = "first_name";
       const sourceMapping = { id: "userId" };
-      const value = await getPropertyValue({ column, sourceMapping });
+      const value = await getPropertyValue({
+        column,
+        sourceMapping,
+        aggregationMethod,
+      });
       expect(value).toBe("Erie");
     });
 
     test("can run a integer query to get a float", async () => {
       const column = "ltv";
       const sourceMapping = { id: "userId" };
-      const value = await getPropertyValue({ column, sourceMapping });
+      const value = await getPropertyValue({
+        column,
+        sourceMapping,
+        aggregationMethod,
+      });
       expect(value).toBe(259.12);
     });
 
     test("can run a integer query to get a boolean", async () => {
       const column = "ios_app";
       const sourceMapping = { id: "userId" };
-      const value = await getPropertyValue({ column, sourceMapping });
+      const value = await getPropertyValue({
+        column,
+        sourceMapping,
+        aggregationMethod,
+      });
       expect(value).toBe(true);
     });
 
     test("can run a string query to get a string", async () => {
       const column = "first_name";
       const sourceMapping = { email: "email" };
-      const value = await getPropertyValue({ column, sourceMapping });
+      const value = await getPropertyValue({
+        column,
+        sourceMapping,
+        aggregationMethod,
+      });
       expect(value).toBe("Erie");
     });
 
     test("can run a string query to get a float", async () => {
       const column = "ltv";
       const sourceMapping = { email: "email" };
-      const value = await getPropertyValue({ column, sourceMapping });
+      const value = await getPropertyValue({
+        column,
+        sourceMapping,
+        aggregationMethod,
+      });
       expect(value).toBe(259.12);
     });
 
     test("can run a string query to get a boolean", async () => {
       const column = "ios_app";
       const sourceMapping = { email: "email" };
-      const value = await getPropertyValue({ column, sourceMapping });
+      const value = await getPropertyValue({
+        column,
+        sourceMapping,
+        aggregationMethod,
+      });
       expect(value).toBe(true);
+    });
+  });
+
+  describe("secondary tables", () => {
+    const sourceMapping = { profile_id: "userId" };
+    beforeAll(() => {
+      sourceOptions = { table: "purchases" };
+    });
+
+    describe("numbers", () => {
+      const column = "amount";
+      test("average", async () => {
+        const value = await getPropertyValue({
+          column,
+          sourceMapping,
+          aggregationMethod: "average",
+        });
+        expect(value).toBe(1.73);
+      });
+      test("count", async () => {
+        const value = await getPropertyValue({
+          column,
+          sourceMapping,
+          aggregationMethod: "count",
+        });
+        expect(value).toBe(6);
+      });
+      test("sum", async () => {
+        const value = await getPropertyValue({
+          column,
+          sourceMapping,
+          aggregationMethod: "sum",
+        });
+        expect(value).toBe(10.38);
+      });
+      test("min", async () => {
+        const value = await getPropertyValue({
+          column,
+          sourceMapping,
+          aggregationMethod: "min",
+        });
+        expect(value).toBe(1.42);
+      });
+      test("max", async () => {
+        const value = await getPropertyValue({
+          column,
+          sourceMapping,
+          aggregationMethod: "max",
+        });
+        expect(value).toBe(2.23);
+      });
+
+      describe("dates", () => {
+        const column = "date";
+        test("count", async () => {
+          const value = await getPropertyValue({
+            column,
+            sourceMapping,
+            aggregationMethod: "count",
+          });
+          expect(value).toBe(6);
+        });
+        test("min", async () => {
+          const value = await getPropertyValue({
+            column,
+            sourceMapping,
+            aggregationMethod: "min",
+          });
+          expect(value).toBe("2020-02-01");
+        });
+        test("max", async () => {
+          const value = await getPropertyValue({
+            column,
+            sourceMapping,
+            aggregationMethod: "max",
+          });
+          expect(value).toBe("2020-02-20");
+        });
+      });
     });
   });
 });
