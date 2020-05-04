@@ -10,12 +10,9 @@ jest.mock(
 process.chdir(`${__dirname}/../../../../../core/api`);
 
 // import statements are still relative to the file, regardless of cwd
-import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
+import { helper } from "@grouparoo/core/test";
 import { specHelper } from "actionhero";
-import { Profile } from "../../../../../core/api/src/models/Profile";
-import { App } from "../../../../../core/api/src/models/App";
-import { Destination } from "../../../../../core/api/src/models/Destination";
-import { Group } from "../../../../../core/api/src/models/Group";
+import { Profile, App, Destination, Group } from "@grouparoo/core";
 import { generateMailchimpId } from "./../../src/lib/generateMailchimpId";
 import { connect } from "./../../src/lib/connect";
 

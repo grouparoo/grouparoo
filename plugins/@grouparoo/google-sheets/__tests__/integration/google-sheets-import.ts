@@ -12,12 +12,14 @@ process.chdir(`${__dirname}/../../../../../core/api`);
 // import statements are still relative to the file, regardless of cwd
 import fs from "fs-extra";
 import path from "path";
-import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
+import { helper } from "@grouparoo/core/test";
 import { specHelper } from "actionhero";
-import { Profile } from "../../../../../core/api/src/models/Profile";
-import { ProfileProperty } from "../../../../../core/api/src/models/ProfileProperty";
-import { ProfilePropertyRule } from "../../../../../core/api/src/models/ProfilePropertyRule";
-import { Run } from "../../../../../core/api/src/models/Run";
+import {
+  Profile,
+  ProfileProperty,
+  ProfilePropertyRule,
+  Run,
+} from "@grouparoo/core";
 
 let envFile = path.resolve(path.join(__dirname, "../", ".env"));
 if (fs.existsSync(envFile)) {
