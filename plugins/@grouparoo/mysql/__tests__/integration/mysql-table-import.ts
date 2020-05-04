@@ -13,7 +13,7 @@ process.chdir(`${__dirname}/../../../../../core/api`);
 import fs from "fs";
 import path from "path";
 import parse from "csv-parse/lib/sync";
-import { helper } from "@grouparoo/core/api/__tests__/utils/specHelper";
+import { helper } from "@grouparoo/core/test";
 import { specHelper } from "actionhero";
 import {
   Profile,

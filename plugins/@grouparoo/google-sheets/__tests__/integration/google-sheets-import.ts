@@ -12,7 +12,7 @@ process.chdir(`${__dirname}/../../../../../core/api`);
 // import statements are still relative to the file, regardless of cwd
 import fs from "fs-extra";
 import path from "path";
-import { helper } from "@grouparoo/core/api/__tests__/utils/specHelper";
+import { helper } from "@grouparoo/core/test";
 import { specHelper } from "actionhero";
 import {
   Profile,
