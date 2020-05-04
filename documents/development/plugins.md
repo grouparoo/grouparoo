@@ -291,7 +291,11 @@ exports.action = class AwesomeStatus extends Action {
     this.name = "awesome:getStatus";
     this.description = "I let you know how awesome you are";
     this.inputs = {};
-    this.middleware = ["authenticated-team-member", "role-admin"]; // <-- here
+    this.middleware = ["authenticated-action"]; // <-- here
+
+    // define the permissions needed to use this action
+    this.permissionTopic = "profile";
+    this.permissionMode = "read";
   }
 
   async run({ response }) {
@@ -300,12 +304,7 @@ exports.action = class AwesomeStatus extends Action {
 };
 ```
 
-If you want your action to require a logged-in web user, use the `authenticated-team-member` middleware.
-Team members are assigned to teams with the "read", "write", and "administer" privileges. There's a middleware for each:
-
-- role-admin
-- role-write
-- role-read
+If you want your action to require a logged-in web user or valid API Key, use the `authenticated-action` middleware. We will then check that this user/API Key has the proper permissions you specified.
 
 Unlike actions directly provided by Grouparoo Core, Actions created by plugins will need to be manually added to the roues file. You do this in an initializer within your plugin:
 
