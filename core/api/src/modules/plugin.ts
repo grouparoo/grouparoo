@@ -7,6 +7,8 @@ import { Destination } from "../models/Destination";
 import { DestinationGroup } from "../models/DestinationGroup";
 import { DestinationGroupMembership } from "../models/DestinationGroupMembership";
 import { File } from "../models/File";
+import { Export } from "../models/Export";
+import { ExportImport } from "../models/ExportImport";
 import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
 import { GroupRule } from "../models/GroupRule";
@@ -25,42 +27,47 @@ import { Source } from "../models/Source";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
 
-// This is needed when running in dev mode (TS) but you are using a compiled plugin (JS).
-// The plugin will actually load the JS model while core will be loading the TS model.
-// Both need to be "added" to sequelize to know which connection to use.
-let modelsMounted = false;
-function ensureModelsMounted() {
-  if (modelsMounted) {
-    return;
-  }
-  api.sequelize.addModels([
-    App,
-    Destination,
-    DestinationGroup,
-    DestinationGroupMembership,
-    File,
-    Group,
-    GroupMember,
-    GroupRule,
-    Import,
-    Log,
-    Mapping,
-    Option,
-    Profile,
-    ProfileProperty,
-    ProfilePropertyRule,
-    ProfilePropertyRuleFilter,
-    Run,
-    Schedule,
-    Setting,
-    Source,
-    Team,
-    TeamMember,
-  ]);
-  modelsMounted = true;
-}
+// the order matters here - the children need to come before the parents (destinationGroup -> destination)
+const models = [
+  App,
+  Source,
+  Schedule,
+  DestinationGroup,
+  Destination,
+  DestinationGroupMembership,
+  Option,
+  Import,
+  ExportImport,
+  Run,
+  Export,
+  File,
+  GroupMember,
+  Group,
+  GroupRule,
+  Log,
+  Profile,
+  ProfileProperty,
+  ProfilePropertyRule,
+  ProfilePropertyRuleFilter,
+  Mapping,
+  Team,
+  TeamMember,
+];
 
 export namespace plugin {
+  /**
+   * This is needed when running in dev mode (TS) but you are using a compiled plugin (JS).
+   * The plugin will actually load the JS model while core will be loading the TS model.
+   * Both need to be "added" to sequelize to know which connection to use.
+   */
+  export function mountModels() {
+    models.map((model) => {
+      if (!model.isInitialized) {
+        api.sequelize.addModels([model]);
+      }
+    });
+  }
+
   /**
    * Register a Grouparoo Plugin
    */
@@ -78,8 +85,6 @@ export namespace plugin {
     defaultValue: any,
     description: string
   ) {
-    ensureModelsMounted();
-
     const setting = await Setting.findOne({ where: { pluginName, key } });
 
     if (setting) {
@@ -112,8 +117,6 @@ export namespace plugin {
    * Read a setting for this plugin
    */
   export async function readSetting(pluginName: string, key: string) {
-    ensureModelsMounted();
-
     const setting = await Setting.findOne({ where: { pluginName, key } });
     if (!setting) {
       throw new Error(
@@ -131,8 +134,6 @@ export namespace plugin {
     key: string,
     value: any
   ) {
-    ensureModelsMounted();
-
     const setting = await plugin.readSetting(pluginName, key);
     setting.value = value;
     await setting.save();
@@ -149,7 +150,6 @@ export namespace plugin {
     run: Run,
     row: { [remoteKey: string]: any }
   ) {
-    ensureModelsMounted();
     const mappingKeys = Object.keys(mapping);
     const mappedProfileProperties = {};
     mappingKeys.forEach((k) => {
@@ -177,8 +177,6 @@ export namespace plugin {
    * Given a fileGuid, download the file to this server and return the readable local path
    */
   export async function getLocalFilePath(fileGuid: string): Promise<string> {
-    ensureModelsMounted();
-
     const file = await File.findOne({ where: { guid: fileGuid } });
 
     if (!file) {

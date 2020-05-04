@@ -23,7 +23,6 @@ import { Mapping } from "./Mapping";
 import { Option } from "./Option";
 import { Profile } from "./Profile";
 import { Group } from "./Group";
-import { GroupMember } from "./GroupMember";
 import { Import } from "./Import";
 import { Export } from "./Export";
 import { DestinationGroup } from "./DestinationGroup";

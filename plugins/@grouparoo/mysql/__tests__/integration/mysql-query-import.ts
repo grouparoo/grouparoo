@@ -15,7 +15,7 @@ import path from "path";
 import parse from "csv-parse/lib/sync";
 import { helper } from "@grouparoo/core/api/__tests__/utils/specHelper";
 import { specHelper } from "actionhero";
-import { ProfilePropertyRule } from "@grouparoo/core/api/src";
+import { ProfilePropertyRule } from "@grouparoo/core";
 import { connect } from "../../src/lib/connect";
 
 let api, actionhero;

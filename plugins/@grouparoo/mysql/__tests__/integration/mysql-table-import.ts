@@ -20,7 +20,7 @@ import {
   ProfilePropertyRule,
   ProfileProperty,
   Run,
-} from "@grouparoo/core/api/src";
+} from "@grouparoo/core";
 import { connect } from "../../src/lib/connect";
 
 let api, actionhero;

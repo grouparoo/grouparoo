@@ -54,4 +54,8 @@ export class Plugins extends Initializer {
       ],
     });
   }
+
+  async start() {
+    plugin.mountModels();
+  }
 }

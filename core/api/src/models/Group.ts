@@ -403,7 +403,7 @@ export class Group extends LoggedModel<Group> {
     return Moment(this.calculatedAt).add(delayMinutes, "minutes").toDate();
   }
 
-  private async buildProfileImport(
+  async _buildProfileImport(
     profileGuid: string,
     creatorType: string,
     creatorGuid: string,
@@ -432,7 +432,7 @@ export class Group extends LoggedModel<Group> {
   }
 
   async addProfile(profile: Profile) {
-    const _import = await this.buildProfileImport(
+    const _import = await this._buildProfileImport(
       profile.guid,
       "group",
       this.guid
@@ -455,7 +455,7 @@ export class Group extends LoggedModel<Group> {
       throw new Error("profile is not a member of this group");
     }
 
-    const _import = await this.buildProfileImport(
+    const _import = await this._buildProfileImport(
       profile.guid,
       "group",
       this.guid
@@ -489,7 +489,7 @@ export class Group extends LoggedModel<Group> {
         return 0;
       }
 
-      const { where, include } = await this.buildGroupMemberQueryParts(
+      const { where, include } = await this._buildGroupMemberQueryParts(
         rules,
         this.matchType
       );
@@ -515,7 +515,7 @@ export class Group extends LoggedModel<Group> {
 
       if (!groupMember || force) {
         const transaction = await api.sequelize.transaction();
-        const _import = await this.buildProfileImport(
+        const _import = await this._buildProfileImport(
           profile.guid,
           "run",
           run.guid,
@@ -565,7 +565,7 @@ export class Group extends LoggedModel<Group> {
       const transaction = await api.sequelize.transaction();
       member.removedAt = new Date();
       await member.save({ transaction });
-      const _import = await this.buildProfileImport(
+      const _import = await this._buildProfileImport(
         member.profileGuid,
         "run",
         run.guid,
@@ -609,7 +609,7 @@ export class Group extends LoggedModel<Group> {
         }
         return false;
       } else {
-        const { where, include } = await this.buildGroupMemberQueryParts(
+        const { where, include } = await this._buildGroupMemberQueryParts(
           rules,
           this.matchType
         );
@@ -654,7 +654,7 @@ export class Group extends LoggedModel<Group> {
       rules = await this.getRules();
     }
 
-    const { where, include } = await this.buildGroupMemberQueryParts(
+    const { where, include } = await this._buildGroupMemberQueryParts(
       rules,
       matchType
     );
@@ -695,7 +695,7 @@ export class Group extends LoggedModel<Group> {
     return { componentCounts, funnelCounts };
   }
 
-  private async buildGroupMemberQueryParts(
+  async _buildGroupMemberQueryParts(
     rules?: GroupRuleWithKey[],
     matchType: "any" | "all" = this.matchType
   ) {

@@ -43,6 +43,31 @@ import fs from "fs";
 import path from "path";
 import nock from "nock";
 
+const models = [
+  App,
+  Source,
+  Schedule,
+  Destination,
+  DestinationGroup,
+  Option,
+  Import,
+  File,
+  Group,
+  GroupMember,
+  GroupRule,
+  Export,
+  ExportImport,
+  Log,
+  Profile,
+  ProfileProperty,
+  ProfilePropertyRule,
+  ProfilePropertyRuleFilter,
+  Run,
+  Mapping,
+  Team,
+  TeamMember,
+];
+
 export namespace helper {
   export const factories = {
     log: LogFactory,
@@ -67,31 +92,6 @@ export namespace helper {
   }
 
   export async function truncate() {
-    const models = [
-      App,
-      Source,
-      Schedule,
-      Destination,
-      DestinationGroup,
-      Option,
-      Import,
-      File,
-      Group,
-      GroupMember,
-      GroupRule,
-      Export,
-      ExportImport,
-      Log,
-      Profile,
-      ProfileProperty,
-      ProfilePropertyRule,
-      ProfilePropertyRuleFilter,
-      Run,
-      Mapping,
-      Team,
-      TeamMember,
-    ];
-
     await Promise.all(
       models.map(
         async (model) => await model.destroy({ truncate: true, force: true })

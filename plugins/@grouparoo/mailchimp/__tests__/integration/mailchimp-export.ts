@@ -12,7 +12,7 @@ process.chdir(`${__dirname}/../../../../../core/api`);
 // import statements are still relative to the file, regardless of cwd
 import { helper } from "@grouparoo/core/api/__tests__/utils/specHelper";
 import { specHelper } from "actionhero";
-import { Profile, App, Destination, Group } from "@grouparoo/core/api/src";
+import { Profile, App, Destination, Group } from "@grouparoo/core";
 import { generateMailchimpId } from "./../../src/lib/generateMailchimpId";
 import { connect } from "./../../src/lib/connect";
 

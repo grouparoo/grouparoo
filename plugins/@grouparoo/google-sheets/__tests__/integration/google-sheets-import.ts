@@ -19,7 +19,7 @@ import {
   ProfileProperty,
   ProfilePropertyRule,
   Run,
-} from "@grouparoo/core/api/src";
+} from "@grouparoo/core";
 
 let envFile = path.resolve(path.join(__dirname, "../", ".env"));
 if (fs.existsSync(envFile)) {

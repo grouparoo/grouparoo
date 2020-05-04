@@ -143,9 +143,6 @@ export class Export extends Model<Export> {
   @BelongsToMany(() => Import, () => ExportImport)
   imports: Import[];
 
-  @BelongsToMany(() => Run, () => Import, "importGuid")
-  runs: Run[];
-
   @BelongsTo(() => Profile)
   profile: Profile;
 

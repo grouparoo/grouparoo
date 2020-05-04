@@ -176,7 +176,7 @@ export class App extends LoggedModel<App> {
 
   async apiData() {
     const options = await this.getOptions();
-    const icon = await this.getIcon();
+    const icon = await this._getIcon();
 
     return {
       guid: this.guid,
@@ -190,7 +190,7 @@ export class App extends LoggedModel<App> {
     };
   }
 
-  private async getIcon() {
+  async _getIcon() {
     const { plugin } = await this.getPlugin();
     return plugin?.icon;
   }
