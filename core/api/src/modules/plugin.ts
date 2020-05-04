@@ -20,6 +20,7 @@ import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
 import { ProfilePropertyRuleFilter } from "../models/ProfilePropertyRuleFilter";
+import { ProfileMultipleAssociationShim } from "../models/ProfileMultipleAssociationShim";
 import { Run } from "../models/Run";
 import { Schedule } from "../models/Schedule";
 import { Setting } from "../models/Setting";
@@ -49,6 +50,7 @@ const models = [
   ProfileProperty,
   ProfilePropertyRule,
   ProfilePropertyRuleFilter,
+  ProfileMultipleAssociationShim,
   Mapping,
   Team,
   TeamMember,
