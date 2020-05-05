@@ -16,15 +16,7 @@ export default function PermissionsList({
   update: (topic: string, read: boolean, write: boolean) => any;
 }) {
   return (
-    <Table>
-      {/* <thead>
-        <tr>
-          <th>Topic</th>
-          <th>Read</th>
-          <th>Write</th>
-          <th>Locked</th>
-        </tr>
-      </thead> */}
+    <Table size="sm">
       <tbody>
         {permissions.map((permission) => {
           return (
