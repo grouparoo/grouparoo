@@ -34,13 +34,17 @@ export default function ({ apiVersion, errorHandler, query }) {
     updateURLParams();
     setLoading(true);
     const groupsResponse = await execApi("get", `/api/${apiVersion}/groups`);
-    setGroups(groupsResponse.groups);
+    if (groupsResponse?.groups) {
+      setGroups(groupsResponse.groups);
+    }
 
     const destinationsResponse = await execApi(
       "get",
       `/api/${apiVersion}/destinations`
     );
-    setDestinations(destinationsResponse.destinations);
+    if (destinationsResponse?.destinations) {
+      setDestinations(destinationsResponse.destinations);
+    }
 
     const response = await execApi("get", `/api/${apiVersion}/exports`, {
       limit,

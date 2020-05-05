@@ -84,9 +84,6 @@ export class TeamCreate extends AuthenticatedAction {
     this.permission = { topic: "team", mode: "write" };
     this.inputs = {
       name: { required: true },
-      read: { required: false, default: false },
-      write: { required: false, default: false },
-      administer: { required: false, default: false },
     };
   }
 
@@ -107,15 +104,23 @@ export class TeamEdit extends AuthenticatedAction {
     this.inputs = {
       guid: { required: true },
       name: { required: false },
-      read: { required: false },
-      write: { required: false },
-      administer: { required: false },
+      permissions: { required: false },
     };
   }
 
   async run({ params, response }) {
     const team = await Team.findByGuid(params.guid);
     await team.update(params);
+
+    let permissions = params.permissions;
+    if (permissions) {
+      try {
+        permissions = JSON.parse(permissions);
+      } catch (error) {}
+
+      await team.setPermissions(permissions);
+    }
+
     response.team = await team.apiData();
   }
 }

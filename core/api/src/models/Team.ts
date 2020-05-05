@@ -41,13 +41,18 @@ export class Team extends LoggedModel<Team> {
     const topics = Permission.topics();
     for (const i in topics) {
       const topic = topics[i];
-      await Permission.findOrCreate({
+      const [permission, isNew] = await Permission.findOrCreate({
         where: {
           topic,
           ownerGuid: instance.guid,
           ownerType: "team",
         },
       });
+
+      if (isNew) {
+        // default new teams to having full 'read' access
+        await permission.update({ read: true });
+      }
     }
   }
 
@@ -74,11 +79,14 @@ export class Team extends LoggedModel<Team> {
 
   async apiData() {
     const membersCount = await this.$count("teamMembers");
-    const permissions = await this.$get("permissions");
+    const permissions = await this.$get("permissions", {
+      order: [["topic", "asc"]],
+    });
 
     return {
       guid: this.guid,
       name: this.name,
+      deletable: this.deletable,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       permissions: await Promise.all(permissions.map((prm) => prm.apiData())),
@@ -88,6 +96,26 @@ export class Team extends LoggedModel<Team> {
 
   async authorizeAction(topic: string, mode: "read" | "write") {
     return Permission.authorizeAction(this.guid, topic, mode);
+  }
+
+  async setPermissions(
+    permissions: Array<{ guid: string; read: boolean; write: boolean }>
+  ) {
+    for (const i in permissions) {
+      const permission = await Permission.findOne({
+        where: { ownerGuid: this.guid, guid: permissions[i].guid },
+      });
+      if (!permission) {
+        throw new Error(
+          `permission ${permissions[i].guid} not found for this team`
+        );
+      }
+      if (!permission.locked) {
+        permission.read = permissions[i].read;
+        permission.write = permissions[i].write;
+        await permission.save();
+      }
+    }
   }
 
   // --- Class Methods --- //

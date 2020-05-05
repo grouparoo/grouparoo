@@ -49,7 +49,9 @@ export class ApiKey extends LoggedModel<ApiKey> {
   }
 
   async apiData() {
-    const permissions = await this.$get("permissions");
+    const permissions = await this.$get("permissions", {
+      order: [["topic", "asc"]],
+    });
 
     return {
       guid: this.guid,

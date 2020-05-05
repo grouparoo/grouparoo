@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { useForm } from "react-hook-form";
 import { Form, Button } from "react-bootstrap";
+import PermissionsList from "../../lists/permissions";
 import Router from "next/router";
 
 export default function ({
@@ -12,15 +12,12 @@ export default function ({
   query,
 }) {
   const { execApi } = useApi(errorHandler);
-  const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
   const [team, setTeam] = useState({
     guid: "",
     name: "",
-    read: null,
-    write: null,
-    administer: null,
     deletable: null,
+    permissions: [],
   });
   const { guid } = query;
 
@@ -37,12 +34,14 @@ export default function ({
     }
   }
 
-  const onSubmit = async (data) => {
+  const updateTeam = async (event) => {
+    event.preventDefault();
+
     setLoading(true);
     const response = await execApi(
       "put",
       `/api/${apiVersion}/team/${guid}`,
-      data
+      team
     );
     setLoading(false);
     if (response?.team) {
@@ -64,73 +63,62 @@ export default function ({
     }
   }
 
+  function updatePermission(topic, read, write) {
+    const _team = Object.assign({}, team);
+    for (const i in _team.permissions) {
+      if (_team.permissions[i].topic === topic) {
+        _team.permissions[i].read = read;
+        _team.permissions[i].write = write;
+      }
+    }
+    setTeam(_team);
+  }
+
   return (
     <>
       <p>
         <span className="text-muted">{team.guid}</span>
       </p>
 
-      <Form id="form" onSubmit={handleSubmit(onSubmit)}>
+      <Form id="form" onSubmit={updateTeam}>
         <Form.Group>
           <Form.Label>Name</Form.Label>
           <Form.Control
             required
             type="text"
-            name="name"
             placeholder="Team Name"
-            defaultValue={team.name}
-            ref={register}
+            value={team.name}
+            onChange={(event) => {
+              const _team = Object.assign({}, team);
+              _team.name = event.target.value;
+              setTeam(_team);
+            }}
           />
           <Form.Control.Feedback type="invalid">
             Name is required
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group controlId="readAccess">
-          <Form.Check
-            type="checkbox"
-            name="read"
-            label="Read Access"
-            defaultChecked={team.read}
-            ref={register}
-          />
-        </Form.Group>
-
-        <Form.Group controlId="writeAccess">
-          <Form.Check
-            type="checkbox"
-            name="write"
-            label="Write Access"
-            defaultChecked={team.write}
-            ref={register}
-          />
-        </Form.Group>
-
-        <Form.Group controlId="adminAccess">
-          <Form.Check
-            type="checkbox"
-            name="administer"
-            label="Admin Access"
-            defaultChecked={team.administer}
-            ref={register}
-          />
-        </Form.Group>
+        <h3>Permissions</h3>
+        <PermissionsList
+          permissions={team.permissions}
+          update={updatePermission}
+        />
 
         <Button variant="primary" type="submit">
           Update
         </Button>
         <hr />
-        {team.deletable ? (
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={() => {
-              handleDelete();
-            }}
-          >
-            Delete
-          </Button>
-        ) : null}
+        <Button
+          disabled={loading || !team.deletable}
+          variant="danger"
+          size="sm"
+          onClick={() => {
+            handleDelete();
+          }}
+        >
+          Delete
+        </Button>
       </Form>
     </>
   );

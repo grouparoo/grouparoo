@@ -294,8 +294,7 @@ exports.action = class AwesomeStatus extends Action {
     this.middleware = ["authenticated-action"]; // <-- here
 
     // define the permissions needed to use this action
-    this.permissionTopic = "profile";
-    this.permissionMode = "read";
+    this.permission = { topic: "profile", mode: "read" };
   }
 
   async run({ response }) {

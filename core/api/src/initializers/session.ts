@@ -56,7 +56,7 @@ const authenticatedActionMiddleware: action.ActionMiddleware = {
         );
         if (!authorized) {
           throw new Error(
-            `not authorized for mode ${data.actionTemplate.permissionMode} on topic ${data.actionTemplate.permissionTopic}`
+            `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
           );
         }
 
@@ -115,7 +115,7 @@ const optionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
           );
           if (!authorized) {
             throw new Error(
-              `not authorized for mode ${data.actionTemplate.permissionMode} on topic ${data.actionTemplate.permissionTopic}`
+              `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
             );
           }
           data.session.data = sessionData;
