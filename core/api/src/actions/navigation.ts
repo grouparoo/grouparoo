@@ -1,7 +1,7 @@
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { OptionallyAuthenticatedAction } from "../classes/optionallyAuthenticatedAction";
 import { Team } from "../models/Team";
 
-export class NavigationList extends AuthenticatedAction {
+export class NavigationList extends OptionallyAuthenticatedAction {
   constructor() {
     super();
     this.name = "navigation:list";
@@ -24,26 +24,19 @@ export class NavigationList extends AuthenticatedAction {
       permissions.map((prm) => {
         if (prm.topic === "system" && prm.read) {
           administer = true;
-        }
-        if (prm.topic === "app" && prm.read) {
+        } else if (prm.topic === "app" && prm.read) {
           administer = true;
-        }
-        if (prm.topic === "file" && prm.read) {
+        } else if (prm.topic === "file" && prm.read) {
           administer = true;
-        }
-        if (prm.topic === "log" && prm.read) {
+        } else if (prm.topic === "log" && prm.read) {
           administer = true;
-        }
-        if (prm.topic === "import" && prm.read) {
+        } else if (prm.topic === "import" && prm.read) {
           administer = true;
-        }
-        if (prm.topic === "export" && prm.read) {
+        } else if (prm.topic === "export" && prm.read) {
           administer = true;
-        }
-        if (prm.topic === "run" && prm.read) {
+        } else if (prm.topic === "run" && prm.read) {
           administer = true;
-        }
-        if (prm.topic === "resque" && prm.read) {
+        } else if (prm.topic === "resque" && prm.read) {
           administer = true;
         }
       });
