@@ -22,7 +22,7 @@ describe("pages/about", () => {
 
   test("it changed the CTA to View Dashboard if you are signed in", async () => {
     const request = mockAxios.lastReqGet();
-    expect(request.url).toMatch("/api/1/navigation");
+    expect(request.url).toMatch("/api/v1/navigation");
 
     await act(async () => {
       await request.promise.resolve({
@@ -36,7 +36,7 @@ describe("pages/about", () => {
 
   test("it changes the CTA to Create Team if there are no teams", async () => {
     const request = mockAxios.lastReqGet();
-    expect(request.url).toMatch("/api/1/navigation");
+    expect(request.url).toMatch("/api/v1/navigation");
 
     await act(async () => {
       await request.promise.resolve({
