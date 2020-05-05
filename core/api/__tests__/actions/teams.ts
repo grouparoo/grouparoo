@@ -27,10 +27,8 @@ describe("actions/teams", () => {
       expect(response.team.guid.length).toBe(40);
       expect(response.team.name).toBe("Administrators");
       expect(response.team.deletable).toBe(false);
-      expect(response.team.read).toBe(true);
-      expect(response.team.write).toBe(true);
-      expect(response.team.administer).toBe(true);
       expect(response.team.membersCount).toBe(1);
+      expect(response.team.permissions.length).toBeGreaterThan(1);
     });
 
     test("you cannot initialize more than one team on the server", async () => {
@@ -73,9 +71,6 @@ describe("actions/teams", () => {
       expect(error).toBeUndefined();
       expect(team.guid).toBeTruthy();
       expect(team.name).toBe("new team");
-      expect(team.read).toBe(false);
-      expect(team.write).toBe(false);
-      expect(team.administer).toBe(false);
       guid = team.guid;
     });
 
@@ -106,9 +101,6 @@ describe("actions/teams", () => {
       );
       expect(error).toBeUndefined();
       expect(team.guid).toBeTruthy();
-      expect(team.read).toBe(true);
-      expect(team.write).toBe(false);
-      expect(team.administer).toBe(false);
       expect(team.name).toBe("new team name");
     });
 
@@ -134,6 +126,18 @@ describe("actions/teams", () => {
       expect(team.name).toBe("new team name");
       expect(teamMembers.length).toBe(1);
       expect(teamMembers[0].email).toBe("toad@example.com");
+    });
+
+    test("new teams are created with read permissions", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+      };
+      const { team } = await specHelper.runAction("team:view", connection);
+      team.permissions.forEach((permission) => {
+        expect(permission.read).toBe(true);
+        expect(permission.write).toBe(false);
+      });
     });
 
     test("an administrator can destroy a team with no members", async () => {
@@ -262,7 +266,9 @@ describe("actions/teams", () => {
         name: "team wario",
       };
       const { error } = await specHelper.runAction("team:create", connection);
-      expect(error.message).toMatch(/you do not have the admin privilege/);
+      expect(error.message).toEqual(
+        'not authorized for mode "write" on topic "team"'
+      );
     });
 
     test("a non-administrator cannot edit a team", async () => {
@@ -272,7 +278,9 @@ describe("actions/teams", () => {
         name: "team wario",
       };
       const { error } = await specHelper.runAction("team:edit", connection);
-      expect(error.message).toMatch(/you do not have the admin privilege/);
+      expect(error.message).toEqual(
+        'not authorized for mode "write" on topic "team"'
+      );
     });
 
     test("a non-administrator cannot destroy a team", async () => {
@@ -281,7 +289,9 @@ describe("actions/teams", () => {
         guid,
       };
       const { error } = await specHelper.runAction("team:destroy", connection);
-      expect(error.message).toMatch(/you do not have the admin privilege/);
+      expect(error.message).toEqual(
+        'not authorized for mode "write" on topic "team"'
+      );
     });
   });
 });

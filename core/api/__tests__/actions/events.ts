@@ -1,5 +1,6 @@
 import { helper } from "../utils/specHelper";
 import { specHelper } from "actionhero";
+import { createFactory } from "react";
 let actionhero;
 let guid;
 
@@ -25,6 +26,7 @@ describe("actions/events", () => {
   describe("administrator signed in", () => {
     let connection;
     let csrfToken;
+    let apiKey;
 
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
@@ -34,11 +36,28 @@ describe("actions/events", () => {
         connection
       );
       csrfToken = sessionResponse.csrfToken;
+
+      const apiKeyModel = await helper.factories.apiKey();
+      apiKey = apiKeyModel.apiKey;
+      const permissions = await apiKeyModel.$get("permissions", {
+        where: { topic: "event" },
+      });
+      await permissions[0].update({ write: true, read: true });
+    });
+
+    test("an event cannot be created without a valid apiKey", async () => {
+      const { error } = await specHelper.runAction("event:create", {
+        apiKey: "apiKey",
+        type: "pageview",
+        anonymousId: "abc123",
+        data: { path: "/" },
+      });
+      expect(error.code).toBe("AUTHENTICATION_ERROR");
     });
 
     test("an event can be created", async () => {
       const { error, event } = await specHelper.runAction("event:create", {
-        apiKey: "apiKey",
+        apiKey,
         type: "pageview",
         anonymousId: "abc123",
         data: { path: "/" },

@@ -313,7 +313,6 @@ describe("session", () => {
         let response = await specHelper.runAction("appReadAction", {
           apiKey: apiKey.apiKey,
         });
-        console.log(response);
         expect(response.error.code).toBe("AUTHENTICATION_ERROR");
         expect(response.success).toBeFalsy();
 

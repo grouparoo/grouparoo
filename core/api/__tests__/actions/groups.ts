@@ -378,7 +378,9 @@ describe("actions/groups", () => {
         type: "manual",
       };
       const { error } = await specHelper.runAction("group:create", connection);
-      expect(error.message).toMatch(/you do not have the write privilege/);
+      expect(error.message).toBe(
+        'not authorized for mode "write" on topic "group"'
+      );
     });
 
     test("a reader can list all the groups", async () => {
@@ -400,7 +402,9 @@ describe("actions/groups", () => {
         name: "new group name",
       };
       const { error } = await specHelper.runAction("group:edit", connection);
-      expect(error.message).toMatch(/you do not have the write privilege/);
+      expect(error.message).toBe(
+        'not authorized for mode "write" on topic "group"'
+      );
     });
 
     test("a reader can view a team", async () => {
@@ -426,8 +430,9 @@ describe("actions/groups", () => {
         "group:destroy",
         connection
       );
-      expect(destroyResponse.error.message).toMatch(
-        /you do not have the write privilege/
+
+      expect(destroyResponse.error.message).toBe(
+        'not authorized for mode "write" on topic "group"'
       );
     });
   });

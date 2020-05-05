@@ -4,6 +4,8 @@ import { Import } from "./../../src/models/Import";
 let actionhero;
 
 describe("actions/imports", () => {
+  let apiKey: string;
+
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
@@ -14,10 +16,34 @@ describe("actions/imports", () => {
     await helper.shutdown(actionhero);
   });
 
+  beforeAll(async () => {
+    const apiKeyModel = await helper.factories.apiKey();
+    apiKey = apiKeyModel.apiKey;
+    const permissions = await apiKeyModel.$get("permissions", {
+      where: { topic: "import" },
+    });
+    await permissions[0].update({ write: true, read: true });
+  });
+
+  test("an import cannot be created without an apiKey", async () => {
+    const { error, import: _import } = await specHelper.runAction(
+      "import:create",
+      {
+        properties: {
+          email: "toad@mushroom-kingdom.gov",
+          hat: "mushroom",
+        },
+      }
+    );
+
+    expect(error.code).toBe("AUTHENTICATION_ERROR");
+  });
+
   test("an import can be added that contains unique profile properties", async () => {
     const { error, import: _import } = await specHelper.runAction(
       "import:create",
       {
+        apiKey,
         properties: {
           email: "toad@mushroom-kingdom.gov",
           hat: "mushroom",
@@ -34,6 +60,7 @@ describe("actions/imports", () => {
     const { error, import: _import } = await specHelper.runAction(
       "import:create",
       {
+        apiKey,
         properties: JSON.stringify({
           email: "toad@mushroom-kingdom.gov",
           hat: "mushroom",
@@ -50,6 +77,7 @@ describe("actions/imports", () => {
     const { error, import: _import } = await specHelper.runAction(
       "import:create",
       {
+        apiKey,
         properties: { hat: "mushroom" },
       }
     );
