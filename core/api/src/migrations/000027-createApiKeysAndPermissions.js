@@ -27,6 +27,11 @@ module.exports = {
       },
     });
 
+    await migration.addIndex("apiKeys", ["name"], {
+      unique: true,
+      fields: ["name"],
+    });
+
     await migration.addIndex("apiKeys", ["apiKey"], {
       unique: true,
       fields: ["apiKey"],

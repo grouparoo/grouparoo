@@ -30,9 +30,6 @@ describe("actions/totals", () => {
 
     const readOnlyTeam = new Team({
       name: "read only team",
-      read: true,
-      write: false,
-      administer: false,
     });
     await readOnlyTeam.save();
 

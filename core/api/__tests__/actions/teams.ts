@@ -2,6 +2,7 @@ import { helper } from "./../utils/specHelper";
 import { specHelper } from "actionhero";
 import { Team } from "./../../src/models/Team";
 import { TeamMember } from "./../../src/models/TeamMember";
+import { Permission } from "./../../src/models/Permission";
 let actionhero;
 let guid;
 
@@ -91,9 +92,6 @@ describe("actions/teams", () => {
         csrfToken,
         guid,
         name: "new team name",
-        read: true,
-        write: false,
-        administer: false,
       };
       const { error, team } = await specHelper.runAction(
         "team:edit",
@@ -137,6 +135,34 @@ describe("actions/teams", () => {
       team.permissions.forEach((permission) => {
         expect(permission.read).toBe(true);
         expect(permission.write).toBe(false);
+      });
+    });
+
+    test("permissions can be updated", async () => {
+      const permission = await Permission.findOne({
+        where: { ownerGuid: guid, topic: "app" },
+      });
+
+      connection.params = {
+        csrfToken,
+        guid,
+        permissions: [
+          {
+            guid: permission.guid,
+            read: true,
+            write: true,
+          },
+        ],
+      };
+      const { team } = await specHelper.runAction("team:edit", connection);
+      team.permissions.forEach((_permission) => {
+        if (permission.guid === _permission.guid) {
+          expect(_permission.read).toBe(true);
+          expect(_permission.write).toBe(true);
+        } else {
+          expect(_permission.read).toBe(true);
+          expect(_permission.write).toBe(false);
+        }
       });
     });
 

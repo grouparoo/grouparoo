@@ -17,27 +17,27 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     let platformItems = [];
 
     let navigationMode = "unauthenticated";
-    let administer = false;
+    let showSystemLinks = false;
     if (teamMember) {
       navigationMode = "authenticated";
       const permissions = await teamMember.team.$get("permissions");
       permissions.map((prm) => {
         if (prm.topic === "system" && prm.read) {
-          administer = true;
+          showSystemLinks = true;
         } else if (prm.topic === "app" && prm.read) {
-          administer = true;
+          showSystemLinks = true;
         } else if (prm.topic === "file" && prm.read) {
-          administer = true;
+          showSystemLinks = true;
         } else if (prm.topic === "log" && prm.read) {
-          administer = true;
+          showSystemLinks = true;
         } else if (prm.topic === "import" && prm.read) {
-          administer = true;
+          showSystemLinks = true;
         } else if (prm.topic === "export" && prm.read) {
-          administer = true;
+          showSystemLinks = true;
         } else if (prm.topic === "run" && prm.read) {
-          administer = true;
+          showSystemLinks = true;
         } else if (prm.topic === "resque" && prm.read) {
-          administer = true;
+          showSystemLinks = true;
         }
       });
     }
@@ -99,7 +99,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         { type: "link", title: "Exports", href: "/exports" }
       );
 
-      if (administer) {
+      if (showSystemLinks) {
         platformItems.push({
           type: "link",
           title: "Settings",

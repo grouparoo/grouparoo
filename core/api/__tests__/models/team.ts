@@ -49,19 +49,6 @@ describe("models/team", () => {
     expect(latestLog).toBeTruthy();
   });
 
-  test("deleting a team creates a log entry", async () => {
-    const team = await Team.create({ name: "bye team" });
-    await team.destroy();
-
-    const latestLog = await Log.findOne({
-      where: { verb: "create", topic: "team" },
-      order: [["createdAt", "desc"]],
-      limit: 1,
-    });
-
-    expect(latestLog).toBeTruthy();
-  });
-
   test("teams with team members cannot be deleted", async () => {
     const team = await Team.create({ name: "people team" });
     const teamMember = await TeamMember.create({

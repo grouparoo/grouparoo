@@ -346,9 +346,6 @@ describe("actions/groups", () => {
 
       const readOnlyTeam = new Team({
         name: "read only team",
-        read: true,
-        write: false,
-        administer: false,
       });
       await readOnlyTeam.save();
       teamGuid = readOnlyTeam.guid;
