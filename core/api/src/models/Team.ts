@@ -68,7 +68,7 @@ export class Team extends LoggedModel<Team> {
     const teamMembersCount = await instance.$count("teamMembers");
 
     if (teamMembersCount > 0) {
-      throw new Error("you cannot delete a team that has members");
+      throw new Error("cannot delete a team that has members");
     }
   }
 

@@ -191,7 +191,7 @@ describe("actions/teams", () => {
         connection
       );
       expect(destroyResponse.error.message).toMatch(
-        /you cannot delete a team that has members/
+        /cannot delete a team that has members/
       );
       expect(destroyResponse.success).toBe(false);
     });
