@@ -3,6 +3,7 @@ import { GrouparooPlugin } from "../classes/plugin";
 import Mustache from "mustache";
 
 import { App } from "../models/App";
+import { ApiKey } from "../models/ApiKey";
 import { Destination } from "../models/Destination";
 import { DestinationGroup } from "../models/DestinationGroup";
 import { DestinationGroupMembership } from "../models/DestinationGroupMembership";
@@ -16,6 +17,7 @@ import { Import } from "../models/Import";
 import { Log } from "../models/Log";
 import { Mapping } from "../models/Mapping";
 import { Option } from "../models/Option";
+import { Permission } from "../models/Permission";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
@@ -31,6 +33,7 @@ import { TeamMember } from "../models/TeamMember";
 // the order matters here - the children need to come before the parents (destinationGroup -> destination)
 const models = [
   App,
+  ApiKey,
   Source,
   Schedule,
   DestinationGroup,
@@ -46,6 +49,7 @@ const models = [
   Group,
   GroupRule,
   Log,
+  Permission,
   Profile,
   ProfileProperty,
   ProfilePropertyRule,

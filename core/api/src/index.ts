@@ -4,6 +4,7 @@ export * from "./classes/plugin";
 export * from "./classes/fileTransport";
 
 export { App } from "./models/App";
+export { ApiKey } from "./models/ApiKey";
 export { Destination } from "./models/Destination";
 export { DestinationGroup } from "./models/DestinationGroup";
 export { DestinationGroupMembership } from "./models/DestinationGroupMembership";
@@ -15,6 +16,7 @@ export { Import } from "./models/Import";
 export { Log } from "./models/Log";
 export { Mapping } from "./models/Mapping";
 export { Option } from "./models/Option";
+export { Permission } from "./models/Permission";
 export { Profile } from "./models/Profile";
 export { ProfileProperty } from "./models/ProfileProperty";
 export { ProfilePropertyRule } from "./models/ProfilePropertyRule";

@@ -1,10 +1,9 @@
 import faker from "faker";
-import { Team } from "./../../src/models/Team";
+import { ApiKey } from "./../../src/models/ApiKey";
 
 const data = async (props = {}) => {
   const defaultProps = {
     name: faker.name.jobDescriptor(),
-    deletable: false,
 
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -14,5 +13,5 @@ const data = async (props = {}) => {
 };
 
 export default async (props = {}) => {
-  return Team.create(await data(props));
+  return ApiKey.create(await data(props));
 };

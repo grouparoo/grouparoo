@@ -11,8 +11,10 @@ import ScheduleFactory from "../factories/schedule";
 import DestinationFactory from "../factories/destination";
 import ExportFactory from "../factories/export";
 import RunFactory from "../factories/run";
+import ApiKeyFactory from "../factories/apiKey";
 
 import { App } from "../../src/models/App";
+import { ApiKey } from "../../src/models/ApiKey";
 import { Source } from "../../src/models/Source";
 import { Schedule } from "../../src/models/Schedule";
 import { Destination } from "../../src/models/Destination";
@@ -26,6 +28,7 @@ import { Group } from "../../src/models/Group";
 import { GroupMember } from "../../src/models/GroupMember";
 import { GroupRule } from "../../src/models/GroupRule";
 import { Log } from "../../src/models/Log";
+import { Permission } from "../../src/models/Permission";
 import { Profile } from "../../src/models/Profile";
 import { ProfileProperty } from "../../src/models/ProfileProperty";
 import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
@@ -45,6 +48,7 @@ import nock from "nock";
 
 const models = [
   App,
+  ApiKey,
   Source,
   Schedule,
   Destination,
@@ -58,6 +62,7 @@ const models = [
   Export,
   ExportImport,
   Log,
+  Permission,
   Profile,
   ProfileProperty,
   ProfilePropertyRule,
@@ -73,6 +78,7 @@ export namespace helper {
     log: LogFactory,
     group: GroupFactory,
     import: ImportFactory,
+    apiKey: ApiKeyFactory,
     team: TeamFactory,
     teamMember: TeamMemberFactory,
     profile: ProfileFactory,
