@@ -55,7 +55,7 @@ export class NavigationList extends Action {
         { type: "link", title: "Profiles", href: "/profiles", icon: "user" },
         {
           type: "link",
-          title: "Profile Property Rules",
+          title: "Profile Properties",
           href: "/profilePropertyRules",
           icon: "address-card",
         },
