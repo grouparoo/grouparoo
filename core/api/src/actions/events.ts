@@ -7,8 +7,7 @@ export class EventsList extends AuthenticatedAction {
     this.name = "events:list";
     this.description = "list many events";
     this.outputExample = {};
-    this.permissionTopic = "event";
-    this.permissionMode = "read";
+    this.permission = { topic: "event", mode: "read" };
     this.inputs = {
       profileGuid: { required: false },
       type: { required: false },
@@ -51,8 +50,7 @@ export class EventCreate extends AuthenticatedAction {
     this.name = "event:create";
     this.description = "create an event";
     this.outputExample = {};
-    this.permissionTopic = "event";
-    this.permissionMode = "write";
+    this.permission = { topic: "event", mode: "write" };
     this.inputs = {
       apiKey: { required: true },
       type: { required: true },
@@ -104,8 +102,7 @@ export class EventView extends AuthenticatedAction {
     this.name = "event:view";
     this.description = "view an event";
     this.outputExample = {};
-    this.permissionTopic = "event";
-    this.permissionMode = "read";
+    this.permission = { topic: "event", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -123,8 +120,7 @@ export class EventDestroy extends AuthenticatedAction {
     this.name = "event:destroy";
     this.description = "destroy an event";
     this.outputExample = {};
-    this.permissionTopic = "event";
-    this.permissionMode = "write";
+    this.permission = { topic: "event", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };

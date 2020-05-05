@@ -58,8 +58,8 @@ export class ApiKey extends LoggedModel<ApiKey> {
     };
   }
 
-  async authorizeAction(actionTopic, actionMode) {
-    return Permission.authorizeAction(this.guid, actionTopic, actionMode);
+  async authorizeAction(topic: string, mode: "read" | "write") {
+    return Permission.authorizeAction(this.guid, topic, mode);
   }
 
   // --- Class Methods --- //

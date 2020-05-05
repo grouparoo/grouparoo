@@ -13,8 +13,7 @@ export class DestinationsList extends AuthenticatedAction {
     this.name = "destinations:list";
     this.description = "list all the destinations";
     this.outputExample = {};
-    this.permissionTopic = "destination";
-    this.permissionMode = "read";
+    this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
@@ -57,8 +56,7 @@ export class DestinationOptions extends AuthenticatedAction {
     this.name = "destination:options";
     this.description = "enumerate the options for creating a new destination";
     this.outputExample = {};
-    this.permissionTopic = "destination";
-    this.permissionMode = "read";
+    this.permission = { topic: "destination", mode: "read" };
     this.inputs = {};
   }
 
@@ -87,8 +85,7 @@ export class DestinationConnectionApps extends AuthenticatedAction {
     this.description =
       "enumerate the connection and app pairs for creating a new destination";
     this.outputExample = {};
-    this.permissionTopic = "destination";
-    this.permissionMode = "read";
+    this.permission = { topic: "destination", mode: "read" };
     this.inputs = {};
   }
 
@@ -128,8 +125,7 @@ export class DestinationCreate extends AuthenticatedAction {
     this.name = "destination:create";
     this.description = "create a destination";
     this.outputExample = {};
-    this.permissionTopic = "destination";
-    this.permissionMode = "write";
+    this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
       name: { required: false },
       type: { required: true },
@@ -178,8 +174,7 @@ export class DestinationEdit extends AuthenticatedAction {
     this.name = "destination:edit";
     this.description = "edit a destination";
     this.outputExample = {};
-    this.permissionTopic = "destination";
-    this.permissionMode = "write";
+    this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
       guid: { required: true },
       name: { required: false },
@@ -220,8 +215,7 @@ export class DestinationConnectionOptions extends AuthenticatedAction {
     this.name = "destination:connectionOptions";
     this.description = "return option choices from this destination";
     this.outputExample = {};
-    this.permissionTopic = "destination";
-    this.permissionMode = "read";
+    this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -239,8 +233,7 @@ export class DestinationMappingOptions extends AuthenticatedAction {
     this.name = "destination:mappingOptions";
     this.description = "return option choices from this destination mapping";
     this.outputExample = {};
-    this.permissionTopic = "destination";
-    this.permissionMode = "read";
+    this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -258,8 +251,7 @@ export class DestinationTrackGroup extends AuthenticatedAction {
     this.name = "destination:trackGroup";
     this.description = "add a group to a destination";
     this.outputExample = {};
-    this.permissionTopic = "destination";
-    this.permissionMode = "write";
+    this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
       guid: { required: true },
       groupGuid: { required: true },
@@ -280,8 +272,7 @@ export class DestinationUnTrackGroup extends AuthenticatedAction {
     this.name = "destination:unTrackGroup";
     this.description = "add a group to a destination";
     this.outputExample = {};
-    this.permissionTopic = "destination";
-    this.permissionMode = "write";
+    this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };
@@ -299,8 +290,7 @@ export class DestinationView extends AuthenticatedAction {
     super();
     this.name = "destination:view";
     this.description = "view a destination";
-    this.permissionTopic = "destination";
-    this.permissionMode = "read";
+    this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -319,8 +309,7 @@ export class DestinationProfilePreview extends AuthenticatedAction {
     this.description =
       "view a preview of a profile being exported to this destination";
     this.outputExample = {};
-    this.permissionTopic = "destination";
-    this.permissionMode = "read";
+    this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
       guid: { required: true },
       groupGuid: { required: false },
@@ -382,8 +371,7 @@ export class DestinationDestroy extends AuthenticatedAction {
     this.name = "destination:destroy";
     this.description = "destroy a destination";
     this.outputExample = {};
-    this.permissionTopic = "destination";
-    this.permissionMode = "write";
+    this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };

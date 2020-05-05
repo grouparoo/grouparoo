@@ -7,8 +7,7 @@ export class ListExports extends AuthenticatedAction {
     this.name = "exports:list";
     this.description = "list exports";
     this.outputExample = {};
-    this.permissionTopic = "export";
-    this.permissionMode = "read";
+    this.permission = { topic: "export", mode: "read" };
     this.inputs = {
       profileGuid: { required: false },
       destinationGuid: { required: false },
@@ -46,8 +45,7 @@ export class ExportView extends AuthenticatedAction {
     this.name = "export:view";
     this.description = "view an export";
     this.outputExample = {};
-    this.permissionTopic = "export";
-    this.permissionMode = "read";
+    this.permission = { topic: "export", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };

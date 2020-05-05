@@ -7,8 +7,7 @@ export class LogsList extends AuthenticatedAction {
     this.name = "logs:list";
     this.description = "list all the log entries";
     this.outputExample = {};
-    this.permissionTopic = "log";
-    this.permissionMode = "read";
+    this.permission = { topic: "log", mode: "read" };
     this.inputs = {
       topic: { required: false },
       verb: { required: false },

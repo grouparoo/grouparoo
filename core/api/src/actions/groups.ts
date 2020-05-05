@@ -10,8 +10,7 @@ export class GroupsList extends AuthenticatedAction {
     this.name = "groups:list";
     this.description = "list all the groups";
     this.outputExample = {};
-    this.permissionTopic = "group";
-    this.permissionMode = "read";
+    this.permission = { topic: "group", mode: "read" };
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
@@ -51,8 +50,7 @@ export class GroupsRuleOptions extends AuthenticatedAction {
     this.name = "groups:ruleOptions";
     this.description = "send the options about groups to the UI";
     this.outputExample = {};
-    this.permissionTopic = "group";
-    this.permissionMode = "read";
+    this.permission = { topic: "group", mode: "read" };
     this.inputs = {};
   }
 
@@ -68,8 +66,7 @@ export class GroupCreate extends AuthenticatedAction {
     this.name = "group:create";
     this.description = "create a group";
     this.outputExample = {};
-    this.permissionTopic = "group";
-    this.permissionMode = "write";
+    this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       name: { required: true },
       type: { required: true },
@@ -106,8 +103,7 @@ export class GroupEdit extends AuthenticatedAction {
     this.name = "group:edit";
     this.description = "edit a group";
     this.outputExample = {};
-    this.permissionTopic = "group";
-    this.permissionMode = "write";
+    this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       guid: { required: true },
       name: { required: false },
@@ -136,8 +132,7 @@ export class GroupRun extends AuthenticatedAction {
     this.name = "group:run";
     this.description = "recalculate the members for a calculated group";
     this.outputExample = {};
-    this.permissionTopic = "group";
-    this.permissionMode = "write";
+    this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };
@@ -157,8 +152,7 @@ export class GroupAddProfile extends AuthenticatedAction {
     this.name = "group:addProfile";
     this.description = "add a profile to a manual group";
     this.outputExample = {};
-    this.permissionTopic = "group";
-    this.permissionMode = "write";
+    this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       guid: { required: true },
       profileGuid: { required: true },
@@ -185,8 +179,7 @@ export class GroupRemoveProfile extends AuthenticatedAction {
     this.name = "group:removeProfile";
     this.description = "remove a profile to a manual group";
     this.outputExample = {};
-    this.permissionTopic = "group";
-    this.permissionMode = "write";
+    this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       guid: { required: true },
       profileGuid: { required: true },
@@ -213,8 +206,7 @@ export class GroupView extends AuthenticatedAction {
     this.name = "group:view";
     this.description = "view a group and members";
     this.outputExample = {};
-    this.permissionTopic = "group";
-    this.permissionMode = "read";
+    this.permission = { topic: "group", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -234,8 +226,7 @@ export class GroupCountComponentMembers extends AuthenticatedAction {
     this.description =
       "return the counts of profiles which exist due to a certain rule";
     this.outputExample = {};
-    this.permissionTopic = "group";
-    this.permissionMode = "read";
+    this.permission = { topic: "group", mode: "read" };
     this.inputs = {
       guid: { required: true },
       rules: { required: false },
@@ -272,8 +263,7 @@ export class GroupCountPotentialMembers extends AuthenticatedAction {
     this.description =
       "return the count of profiles that would match these rules";
     this.outputExample = {};
-    this.permissionTopic = "group";
-    this.permissionMode = "read";
+    this.permission = { topic: "group", mode: "read" };
     this.inputs = {
       guid: { required: true },
       rules: { required: false },
@@ -305,8 +295,7 @@ export class GroupListDestinations extends AuthenticatedAction {
     this.name = "group:listDestinations";
     this.description = "list the destinations interested in this group";
     this.outputExample = {};
-    this.permissionTopic = "group";
-    this.permissionMode = "read";
+    this.permission = { topic: "group", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -328,8 +317,7 @@ export class GroupExport extends AuthenticatedAction {
     this.name = "group:export";
     this.description = "export the profiles in this group";
     this.outputExample = {};
-    this.permissionTopic = "group";
-    this.permissionMode = "write";
+    this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       guid: { required: true },
       type: { required: true },
@@ -356,8 +344,7 @@ export class GroupDestroy extends AuthenticatedAction {
     this.name = "group:destroy";
     this.description = "destroy a group";
     this.outputExample = {};
-    this.permissionTopic = "group";
-    this.permissionMode = "write";
+    this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };

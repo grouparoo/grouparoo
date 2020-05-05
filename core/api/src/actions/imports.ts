@@ -8,8 +8,7 @@ export class ImportsList extends AuthenticatedAction {
     this.name = "imports:list";
     this.description = "list imports";
     this.outputExample = {};
-    this.permissionTopic = "import";
-    this.permissionMode = "read";
+    this.permission = { topic: "import", mode: "read" };
     this.inputs = {
       creatorGuid: { required: false },
       profileGuid: { required: false },
@@ -52,8 +51,7 @@ export class ViewImport extends AuthenticatedAction {
     this.name = "import:view";
     this.description = "view an import";
     this.outputExample = {};
-    this.permissionTopic = "import";
-    this.permissionMode = "read";
+    this.permission = { topic: "import", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -71,8 +69,7 @@ export class CreateImport extends AuthenticatedAction {
     this.name = "import:create";
     this.description = "create an import";
     this.outputExample = {};
-    this.permissionTopic = "import";
-    this.permissionMode = "write";
+    this.permission = { topic: "import", mode: "write" };
     this.inputs = {
       properties: { required: true },
     };

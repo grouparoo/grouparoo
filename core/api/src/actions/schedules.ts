@@ -7,8 +7,7 @@ export class SchedulesList extends AuthenticatedAction {
     this.name = "schedules:list";
     this.description = "list all the schedules";
     this.outputExample = {};
-    this.permissionTopic = "source";
-    this.permissionMode = "read";
+    this.permission = { topic: "source", mode: "read" };
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
@@ -51,8 +50,7 @@ export class ScheduleRun extends AuthenticatedAction {
     this.name = "schedule:run";
     this.description = "run a schedule either importing or exporting data";
     this.outputExample = {};
-    this.permissionTopic = "source";
-    this.permissionMode = "write";
+    this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };
@@ -72,8 +70,7 @@ export class ScheduleCreate extends AuthenticatedAction {
     this.name = "schedule:create";
     this.description = "create a schedule";
     this.outputExample = {};
-    this.permissionTopic = "source";
-    this.permissionMode = "write";
+    this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       name: { required: false },
       sourceGuid: { required: true },
@@ -111,8 +108,7 @@ export class ScheduleEdit extends AuthenticatedAction {
     this.name = "schedule:edit";
     this.description = "edit a schedule";
     this.outputExample = {};
-    this.permissionTopic = "source";
-    this.permissionMode = "write";
+    this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       guid: { required: true },
       name: { required: false },
@@ -141,8 +137,7 @@ export class ScheduleView extends AuthenticatedAction {
     this.name = "schedule:view";
     this.description = "view a schedule";
     this.outputExample = {};
-    this.permissionTopic = "source";
-    this.permissionMode = "read";
+    this.permission = { topic: "source", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -161,8 +156,7 @@ export class ScheduleDestroy extends AuthenticatedAction {
     this.name = "schedule:destroy";
     this.description = "destroy a schedule";
     this.outputExample = {};
-    this.permissionTopic = "source";
-    this.permissionMode = "write";
+    this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };

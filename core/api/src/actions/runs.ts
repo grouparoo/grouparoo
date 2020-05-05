@@ -9,8 +9,7 @@ export class ListRuns extends AuthenticatedAction {
     this.name = "runs:list";
     this.description = "list the runs";
     this.outputExample = {};
-    this.permissionTopic = "system";
-    this.permissionMode = "read";
+    this.permission = { topic: "system", mode: "read" };
     this.inputs = {
       guid: { required: false },
       state: { required: false },
@@ -71,8 +70,7 @@ export class RunView extends AuthenticatedAction {
     this.name = "run:view";
     this.description = "view a run";
     this.outputExample = {};
-    this.permissionTopic = "system";
-    this.permissionMode = "read";
+    this.permission = { topic: "system", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };

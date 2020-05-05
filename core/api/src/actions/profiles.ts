@@ -14,8 +14,7 @@ export class ProfilesList extends AuthenticatedAction {
     this.name = "profiles:list";
     this.description = "list all the profiles in a group";
     this.outputExample = {};
-    this.permissionTopic = "profile";
-    this.permissionMode = "read";
+    this.permission = { topic: "profile", mode: "read" };
     this.inputs = {
       guid: { required: false },
       searchKey: { required: false },
@@ -110,8 +109,7 @@ export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
     this.name = "profiles:autocompleteProfileProperty";
     this.description = "create a run to import and update every profile";
     this.outputExample = {};
-    this.permissionTopic = "profile";
-    this.permissionMode = "read";
+    this.permission = { topic: "profile", mode: "read" };
     this.inputs = {
       profilePropertyRuleGuid: { required: true },
       match: { required: true },
@@ -152,8 +150,7 @@ export class ProfilesImportAndUpdate extends AuthenticatedAction {
     this.name = "profiles:importAndUpdate";
     this.description = "create a run to import and update every profile";
     this.outputExample = {};
-    this.permissionTopic = "profile";
-    this.permissionMode = "write";
+    this.permission = { topic: "profile", mode: "write" };
     this.inputs = {};
   }
 
@@ -169,8 +166,7 @@ export class ProfileCreate extends AuthenticatedAction {
     this.name = "profile:create";
     this.description = "create a profile";
     this.outputExample = {};
-    this.permissionTopic = "profile";
-    this.permissionMode = "write";
+    this.permission = { topic: "profile", mode: "write" };
     this.inputs = {
       properties: { required: false, default: {} },
     };
@@ -190,8 +186,7 @@ export class ProfileImportAndUpdate extends AuthenticatedAction {
     this.name = "profile:importAndUpdate";
     this.description = "fully import a profile from all apps and update groups";
     this.outputExample = {};
-    this.permissionTopic = "profile";
-    this.permissionMode = "write";
+    this.permission = { topic: "profile", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };
@@ -218,8 +213,7 @@ export class ProfileEdit extends AuthenticatedAction {
     this.description =
       "edit a profile.  _delete is a special key to remote a property that already exists";
     this.outputExample = {};
-    this.permissionTopic = "profile";
-    this.permissionMode = "write";
+    this.permission = { topic: "profile", mode: "write" };
     this.inputs = {
       guid: { required: true },
       properties: { required: false, default: {} },
@@ -245,8 +239,7 @@ export class ProfileView extends AuthenticatedAction {
     this.name = "profile:view";
     this.description = "view a profile and members";
     this.outputExample = {};
-    this.permissionTopic = "profile";
-    this.permissionMode = "read";
+    this.permission = { topic: "profile", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -265,8 +258,7 @@ export class ProfileDestroy extends AuthenticatedAction {
     this.name = "profile:destroy";
     this.description = "destroy a profile";
     this.outputExample = {};
-    this.permissionTopic = "profile";
-    this.permissionMode = "write";
+    this.permission = { topic: "profile", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };

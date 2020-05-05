@@ -10,8 +10,7 @@ export class SourcesList extends AuthenticatedAction {
     this.name = "sources:list";
     this.description = "list all the sources";
     this.outputExample = {};
-    this.permissionTopic = "source";
-    this.permissionMode = "read";
+    this.permission = { topic: "source", mode: "read" };
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
@@ -55,8 +54,7 @@ export class SourceConnectionApps extends AuthenticatedAction {
     this.description =
       "enumerate the connection and app pairs for creating a new source";
     this.outputExample = {};
-    this.permissionTopic = "source";
-    this.permissionMode = "read";
+    this.permission = { topic: "source", mode: "read" };
     this.inputs = {};
   }
 
@@ -96,8 +94,7 @@ export class SourceCreate extends AuthenticatedAction {
     this.name = "source:create";
     this.description = "create a source";
     this.outputExample = {};
-    this.permissionTopic = "source";
-    this.permissionMode = "write";
+    this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       appGuid: { required: true },
       name: { required: false },
@@ -135,8 +132,7 @@ export class SourceView extends AuthenticatedAction {
     this.name = "source:view";
     this.description = "view a source";
     this.outputExample = {};
-    this.permissionTopic = "source";
-    this.permissionMode = "read";
+    this.permission = { topic: "source", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -154,8 +150,7 @@ export class SourceEdit extends AuthenticatedAction {
     this.name = "source:edit";
     this.description = "edit a source";
     this.outputExample = {};
-    this.permissionTopic = "source";
-    this.permissionMode = "write";
+    this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       guid: { required: true },
       appGuid: { required: false },
@@ -187,8 +182,7 @@ export class SourceBootstrapUniqueProfilePropertyRule extends AuthenticatedActio
     this.description =
       "bootstrap a new unique profile property for this source before the mapping is set";
     this.outputExample = {};
-    this.permissionTopic = "source";
-    this.permissionMode = "write";
+    this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       guid: { required: true },
       key: { required: true },
@@ -216,8 +210,7 @@ export class sourceConnectionOptions extends AuthenticatedAction {
     this.name = "source:connectionOptions";
     this.description = "return option choices from this source";
     this.outputExample = {};
-    this.permissionTopic = "source";
-    this.permissionMode = "read";
+    this.permission = { topic: "source", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -235,8 +228,7 @@ export class sourcePreview extends AuthenticatedAction {
     this.name = "source:preview";
     this.description = "preview the data from this source";
     this.outputExample = {};
-    this.permissionTopic = "source";
-    this.permissionMode = "read";
+    this.permission = { topic: "source", mode: "read" };
     this.inputs = {
       guid: { required: true },
       options: { required: false },
@@ -260,8 +252,7 @@ export class SourceDestroy extends AuthenticatedAction {
     this.name = "source:destroy";
     this.description = "destroy a source";
     this.outputExample = {};
-    this.permissionTopic = "source";
-    this.permissionMode = "write";
+    this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };

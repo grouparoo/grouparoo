@@ -7,8 +7,7 @@ import { api, task } from "actionhero";
 abstract class ResqueAction extends AuthenticatedAction {
   constructor() {
     super();
-    this.permissionTopic = "resque";
-    this.permissionMode = "write";
+    this.permission = { topic: "resque", mode: "write" };
     this.logLevel = "debug";
     this.toDocument = false;
   }

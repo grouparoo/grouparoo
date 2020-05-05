@@ -50,8 +50,7 @@ export class TotalsAction extends AuthenticatedAction {
     this.name = "totals";
     this.description = "return counts for a model";
     this.outputExample = {};
-    this.permissionTopic = "system";
-    this.permissionMode = "read";
+    this.permission = { topic: "system", mode: "read" };
     this.inputs = {
       model: { required: true },
     };

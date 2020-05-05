@@ -8,8 +8,7 @@ export class AppsList extends AuthenticatedAction {
     super();
     this.name = "apps:list";
     this.description = "list all the apps";
-    this.permissionTopic = "app";
-    this.permissionMode = "read";
+    this.permission = { topic: "app", mode: "read" };
     this.outputExample = {};
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
@@ -50,8 +49,7 @@ export class AppOptions extends AuthenticatedAction {
     this.name = "app:options";
     this.description = "enumerate the options for creating a new app";
     this.outputExample = {};
-    this.permissionTopic = "app";
-    this.permissionMode = "read";
+    this.permission = { topic: "app", mode: "read" };
     this.inputs = {};
   }
 
@@ -77,8 +75,7 @@ export class AppOptionOptions extends AuthenticatedAction {
     this.name = "app:optionOptions";
     this.description = "return option choices from this app";
     this.outputExample = {};
-    this.permissionTopic = "app";
-    this.permissionMode = "read";
+    this.permission = { topic: "app", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -97,8 +94,7 @@ export class AppCreate extends AuthenticatedAction {
     this.name = "app:create";
     this.description = "create an app";
     this.outputExample = {};
-    this.permissionTopic = "app";
-    this.permissionMode = "write";
+    this.permission = { topic: "app", mode: "write" };
     this.inputs = {
       name: { required: false },
       type: { required: true },
@@ -131,8 +127,7 @@ export class AppEdit extends AuthenticatedAction {
     this.name = "app:edit";
     this.description = "edit an app";
     this.outputExample = {};
-    this.permissionTopic = "app";
-    this.permissionMode = "write";
+    this.permission = { topic: "app", mode: "write" };
     this.inputs = {
       guid: { required: true },
       name: { required: false },
@@ -159,8 +154,7 @@ export class AppTest extends AuthenticatedAction {
     this.name = "app:test";
     this.description = "test the options passed to an app";
     this.outputExample = {};
-    this.permissionTopic = "app";
-    this.permissionMode = "write";
+    this.permission = { topic: "app", mode: "write" };
     this.inputs = {
       guid: { required: true },
       options: { required: false },
@@ -184,8 +178,7 @@ export class AppView extends AuthenticatedAction {
     this.name = "app:view";
     this.description = "view an app";
     this.outputExample = {};
-    this.permissionTopic = "app";
-    this.permissionMode = "read";
+    this.permission = { topic: "app", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -203,8 +196,7 @@ export class AppDestroy extends AuthenticatedAction {
     this.name = "app:destroy";
     this.description = "destroy an app";
     this.outputExample = {};
-    this.permissionTopic = "app";
-    this.permissionMode = "write";
+    this.permission = { topic: "app", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };

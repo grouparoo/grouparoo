@@ -7,7 +7,7 @@ export class NavigationList extends AuthenticatedAction {
     this.name = "navigation:list";
     this.description =
       "returns a list of pages for the UI navigation for this user";
-    this.permissionTopic = "*";
+    this.permission = { topic: "*", mode: "read" };
     this.outputExample = {};
   }
 

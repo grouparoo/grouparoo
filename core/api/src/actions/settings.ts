@@ -8,8 +8,7 @@ export class SettingsList extends AuthenticatedAction {
     this.name = "settings:list";
     this.description = "list all the settings";
     this.outputExample = {};
-    this.permissionTopic = "system";
-    this.permissionMode = "read";
+    this.permission = { topic: "system", mode: "read" };
     this.inputs = {
       order: {
         required: true,
@@ -36,8 +35,7 @@ export class SettingEdit extends AuthenticatedAction {
     this.name = "setting:edit";
     this.description = "edit a setting";
     this.outputExample = {};
-    this.permissionTopic = "system";
-    this.permissionMode = "write";
+    this.permission = { topic: "system", mode: "write" };
     this.inputs = {
       guid: { required: true },
       value: { required: true },

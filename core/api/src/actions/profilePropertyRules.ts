@@ -13,8 +13,7 @@ export class ProfilePropertyRulesList extends AuthenticatedAction {
     this.name = "profilePropertyRules:list";
     this.description = "list all the profilePropertyRules";
     this.outputExample = {};
-    this.permissionTopic = "profilePropertyRule";
-    this.permissionMode = "read";
+    this.permission = { topic: "profilePropertyRule", mode: "read" };
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
@@ -81,8 +80,7 @@ export class ProfilePropertyRulesOptions extends AuthenticatedAction {
     this.description =
       "enumerate the options for creating a new profilePropertyRule";
     this.outputExample = {};
-    this.permissionTopic = "profilePropertyRule";
-    this.permissionMode = "read";
+    this.permission = { topic: "profilePropertyRule", mode: "read" };
     this.inputs = {};
   }
 
@@ -98,8 +96,7 @@ export class ProfilePropertyRuleGroups extends AuthenticatedAction {
     this.description =
       "enumerate the groups using this profile property rule in their rules";
     this.outputExample = {};
-    this.permissionTopic = "profilePropertyRule";
-    this.permissionMode = "read";
+    this.permission = { topic: "profilePropertyRule", mode: "read" };
     this.inputs = { guid: { required: true } };
   }
 
@@ -130,8 +127,7 @@ export class ProfilePropertyRuleCreate extends AuthenticatedAction {
     this.name = "profilePropertyRule:create";
     this.description = "create a profilePropertyRule";
     this.outputExample = {};
-    this.permissionTopic = "profilePropertyRule";
-    this.permissionMode = "write";
+    this.permission = { topic: "profilePropertyRule", mode: "write" };
     this.inputs = {
       key: { required: false },
       type: { required: true },
@@ -174,8 +170,7 @@ export class ProfilePropertyRuleEdit extends AuthenticatedAction {
     this.name = "profilePropertyRule:edit";
     this.description = "edit a profilePropertyRule";
     this.outputExample = {};
-    this.permissionTopic = "profilePropertyRule";
-    this.permissionMode = "write";
+    this.permission = { topic: "profilePropertyRule", mode: "write" };
     this.inputs = {
       guid: { required: true },
       key: { required: false },
@@ -214,8 +209,7 @@ export class ProfilePropertyRuleFilterOptions extends AuthenticatedAction {
     this.name = "profilePropertyRule:filterOptions";
     this.description = "view a the filter options for a profile property rule";
     this.outputExample = {};
-    this.permissionTopic = "profilePropertyRule";
-    this.permissionMode = "read";
+    this.permission = { topic: "profilePropertyRule", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -235,8 +229,7 @@ export class ProfilePropertyRuleView extends AuthenticatedAction {
     this.name = "profilePropertyRule:view";
     this.description = "view a profilePropertyRule";
     this.outputExample = {};
-    this.permissionTopic = "profilePropertyRule";
-    this.permissionMode = "read";
+    this.permission = { topic: "profilePropertyRule", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -259,8 +252,7 @@ export class ProfilePropertyRuleProfilePreview extends AuthenticatedAction {
     this.description =
       "view a profilePropertyRule's new options against a profile";
     this.outputExample = {};
-    this.permissionTopic = "profilePropertyRule";
-    this.permissionMode = "read";
+    this.permission = { topic: "profilePropertyRule", mode: "read" };
     this.inputs = {
       guid: { required: true },
       profileGuid: { required: false },
@@ -338,8 +330,7 @@ export class ProfilePropertyRuleTest extends AuthenticatedAction {
     this.name = "profilePropertyRule:test";
     this.description = "test a profilePropertyRule";
     this.outputExample = {};
-    this.permissionTopic = "profilePropertyRule";
-    this.permissionMode = "read";
+    this.permission = { topic: "profilePropertyRule", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };
@@ -360,8 +351,7 @@ export class ProfilePropertyRuleDestroy extends AuthenticatedAction {
     this.name = "profilePropertyRule:destroy";
     this.description = "destroy a profilePropertyRule";
     this.outputExample = {};
-    this.permissionTopic = "profilePropertyRule";
-    this.permissionMode = "write";
+    this.permission = { topic: "profilePropertyRule", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };

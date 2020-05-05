@@ -40,7 +40,7 @@ export class sessionView extends AuthenticatedAction {
     super();
     this.name = "session:view";
     this.description = "to view session information";
-    this.permissionTopic = "*";
+    this.permission = { topic: "*", mode: "read" };
     this.outputExample = {};
   }
 

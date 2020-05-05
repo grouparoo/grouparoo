@@ -9,8 +9,7 @@ export class FilesList extends AuthenticatedAction {
     this.name = "files:list";
     this.description = "list all the files";
     this.outputExample = {};
-    this.permissionTopic = "file";
-    this.permissionMode = "read";
+    this.permission = { topic: "file", mode: "read" };
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
@@ -49,8 +48,7 @@ export class FileOptions extends AuthenticatedAction {
     this.name = "files:options";
     this.description = "options for creating a file";
     this.outputExample = {};
-    this.permissionTopic = "file";
-    this.permissionMode = "read";
+    this.permission = { topic: "file", mode: "read" };
     this.inputs = {};
   }
 
@@ -69,8 +67,7 @@ export class FileCreate extends AuthenticatedAction {
     this.name = "file:create";
     this.description = "create and upload a file";
     this.outputExample = {};
-    this.permissionTopic = "file";
-    this.permissionMode = "write";
+    this.permission = { topic: "file", mode: "write" };
     this.inputs = {
       type: { required: true },
       file: { required: true },
@@ -93,8 +90,7 @@ export class FileView extends AuthenticatedAction {
     this.name = "file:view";
     this.description = "view a file";
     this.outputExample = {};
-    this.permissionTopic = "file";
-    this.permissionMode = "read";
+    this.permission = { topic: "file", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -133,8 +129,7 @@ export class FileDestroy extends AuthenticatedAction {
     this.name = "file:destroy";
     this.description = "destroy a file";
     this.outputExample = {};
-    this.permissionTopic = "file";
-    this.permissionMode = "write";
+    this.permission = { topic: "file", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };

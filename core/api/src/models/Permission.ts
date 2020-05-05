@@ -97,6 +97,7 @@ export class Permission extends LoggedModel<Permission> {
     const permission = await Permission.findOne({
       where: { ownerGuid: ownerGuid, topic: topic },
     });
+
     if (!permission) {
       throw new Error(`cannot find permission set for ${ownerGuid} - ${topic}`);
     }

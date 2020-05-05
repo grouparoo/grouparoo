@@ -5,7 +5,7 @@ export class AccountView extends AuthenticatedAction {
     super();
     this.name = "account:view";
     this.description = "view your account details";
-    this.permissionTopic = "*";
+    this.permission = { topic: "*", mode: "read" };
     this.outputExample = {};
     this.inputs = {};
   }
@@ -24,7 +24,7 @@ export class AccountEdit extends AuthenticatedAction {
     super();
     this.name = "account:edit";
     this.description = "edit your account details";
-    this.permissionTopic = "*";
+    this.permission = { topic: "*", mode: "write" };
     this.outputExample = {};
     this.inputs = {
       firstName: { required: false },

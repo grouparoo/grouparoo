@@ -51,8 +51,8 @@ const authenticatedActionMiddleware: action.ActionMiddleware = {
 
         const team = await teamMember.$get("team");
         const authorized = await team.authorizeAction(
-          data.actionTemplate.permissionTopic,
-          data.actionTemplate.permissionMode
+          data.actionTemplate.permission.topic,
+          data.actionTemplate.permission.mode
         );
         if (!authorized) {
           throw new Error(
@@ -110,8 +110,8 @@ const optionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
 
           const team = await teamMember.$get("team");
           const authorized = await team.authorizeAction(
-            data.actionTemplate.permissionTopic,
-            data.actionTemplate.permissionMode
+            data.actionTemplate.permission.topic,
+            data.actionTemplate.permission.mode
           );
           if (!authorized) {
             throw new Error(

@@ -63,8 +63,7 @@ export class TeamsList extends AuthenticatedAction {
     this.name = "teams:list";
     this.description = "list all the teams";
     this.outputExample = {};
-    this.permissionTopic = "team";
-    this.permissionMode = "read";
+    this.permission = { topic: "team", mode: "read" };
     this.inputs = {};
   }
 
@@ -82,8 +81,7 @@ export class TeamCreate extends AuthenticatedAction {
     this.name = "team:create";
     this.description = "create a team";
     this.outputExample = {};
-    this.permissionTopic = "team";
-    this.permissionMode = "write";
+    this.permission = { topic: "team", mode: "write" };
     this.inputs = {
       name: { required: true },
       read: { required: false, default: false },
@@ -105,8 +103,7 @@ export class TeamEdit extends AuthenticatedAction {
     this.name = "team:edit";
     this.description = "edit a team";
     this.outputExample = {};
-    this.permissionTopic = "team";
-    this.permissionMode = "write";
+    this.permission = { topic: "team", mode: "write" };
     this.inputs = {
       guid: { required: true },
       name: { required: false },
@@ -129,8 +126,7 @@ export class TeamView extends AuthenticatedAction {
     this.name = "team:view";
     this.description = "view a team and members";
     this.outputExample = {};
-    this.permissionTopic = "team";
-    this.permissionMode = "read";
+    this.permission = { topic: "team", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -168,8 +164,7 @@ export class TeamDestroy extends AuthenticatedAction {
     this.name = "team:destroy";
     this.description = "destroy a team";
     this.outputExample = {};
-    this.permissionTopic = "team";
-    this.permissionMode = "write";
+    this.permission = { topic: "team", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };
