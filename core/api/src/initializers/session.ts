@@ -55,7 +55,7 @@ const authenticatedActionMiddleware: action.ActionMiddleware = {
           data.actionTemplate.permission.mode
         );
         if (!authorized) {
-          throw new Error(
+          throw new AuthenticationError(
             `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
           );
         }
@@ -72,6 +72,15 @@ const authenticatedActionMiddleware: action.ActionMiddleware = {
       });
       if (!apiKey) {
         throw new AuthenticationError("apiKey not found");
+      }
+      const authorized = await apiKey.authorizeAction(
+        data.actionTemplate.permission.topic,
+        data.actionTemplate.permission.mode
+      );
+      if (!authorized) {
+        throw new AuthenticationError(
+          `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
+        );
       }
     }
 
@@ -114,7 +123,7 @@ const optionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
             data.actionTemplate.permission.mode
           );
           if (!authorized) {
-            throw new Error(
+            throw new AuthenticationError(
               `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
             );
           }
@@ -131,6 +140,15 @@ const optionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
       });
       if (!apiKey) {
         throw new AuthenticationError("apiKey not found");
+      }
+      const authorized = await apiKey.authorizeAction(
+        data.actionTemplate.permission.topic,
+        data.actionTemplate.permission.mode
+      );
+      if (!authorized) {
+        throw new AuthenticationError(
+          `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
+        );
       }
     }
 

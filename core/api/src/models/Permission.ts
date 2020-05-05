@@ -110,6 +110,7 @@ export class Permission extends LoggedModel<Permission> {
       "apiKey",
       "app",
       "destination",
+      "event",
       "export",
       "file",
       "group",

@@ -4,19 +4,13 @@ import { Form, Button } from "react-bootstrap";
 import PermissionsList from "../../lists/permissions";
 import Router from "next/router";
 
-export default function ({
-  apiVersion,
-  errorHandler,
-  successHandler,
-  teamHandler,
-  query,
-}) {
+export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [team, setTeam] = useState({
+  const [apiKey, setApiKey] = useState({
     guid: "",
     name: "",
-    deletable: null,
+    apiKey: "",
     permissions: [],
   });
   const { guid } = query;
@@ -27,27 +21,28 @@ export default function ({
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/team/${guid}`);
+    const response = await execApi("get", `/api/${apiVersion}/apiKey/${guid}`);
     setLoading(false);
-    if (response?.team) {
-      setTeam(response.team);
+    if (response?.apiKey) {
+      setApiKey(response.apiKey);
     }
   }
 
-  const updateTeam = async (event) => {
+  const updateApiKey = async (event) => {
     event.preventDefault();
+    const _apiKey = Object.assign({}, apiKey);
+    delete _apiKey.apiKey;
 
     setLoading(true);
     const response = await execApi(
       "put",
-      `/api/${apiVersion}/team/${guid}`,
-      team
+      `/api/${apiVersion}/apiKey/${guid}`,
+      _apiKey
     );
     setLoading(false);
-    if (response?.team) {
-      successHandler.set({ message: "Team updated" });
-      setTeam(response.team);
-      teamHandler.set();
+    if (response?.apiKey) {
+      successHandler.set({ message: "API Key updated" });
+      setApiKey(response.apiKey);
     }
   };
 
@@ -55,44 +50,40 @@ export default function ({
     if (window.confirm("are you sure?")) {
       const response = await execApi(
         "delete",
-        `/api/${apiVersion}/team/${guid}`
+        `/api/${apiVersion}/apiKey/${guid}`
       );
       if (response) {
-        successHandler.set({ message: "Team deleted" });
-        Router.push("/teams");
+        successHandler.set({ message: "API Key deleted" });
+        Router.push("/apiKeys");
       }
     }
   }
 
   function updatePermission(topic, read, write) {
-    const _team = Object.assign({}, team);
-    for (const i in _team.permissions) {
-      if (_team.permissions[i].topic === topic) {
-        _team.permissions[i].read = read;
-        _team.permissions[i].write = write;
+    const _apiKey = Object.assign({}, apiKey);
+    for (const i in _apiKey.permissions) {
+      if (_apiKey.permissions[i].topic === topic) {
+        _apiKey.permissions[i].read = read;
+        _apiKey.permissions[i].write = write;
       }
     }
-    setTeam(_team);
+    setApiKey(_apiKey);
   }
 
   return (
     <>
-      <p>
-        <span className="text-muted">{team.guid}</span>
-      </p>
-
-      <Form id="form" onSubmit={updateTeam}>
+      <Form id="form" onSubmit={updateApiKey}>
         <Form.Group>
           <Form.Label>Name</Form.Label>
           <Form.Control
             required
             type="text"
-            placeholder="Team Name"
-            value={team.name}
+            placeholder="API Key Name"
+            value={apiKey.name}
             onChange={(event) => {
-              const _team = Object.assign({}, team);
-              _team.name = event.target.value;
-              setTeam(_team);
+              const _apiKey = Object.assign({}, apiKey);
+              _apiKey.name = event.target.value;
+              setApiKey(_apiKey);
             }}
           />
           <Form.Control.Feedback type="invalid">
@@ -100,9 +91,19 @@ export default function ({
           </Form.Control.Feedback>
         </Form.Group>
 
+        <Form.Group>
+          <Form.Label>API Key</Form.Label>
+          <Form.Control
+            disabled
+            type="text"
+            placeholder="API Key"
+            value={apiKey.apiKey}
+          />
+        </Form.Group>
+
         <h3>Permissions</h3>
         <PermissionsList
-          permissions={team.permissions}
+          permissions={apiKey.permissions}
           update={updatePermission}
         />
 
@@ -111,7 +112,7 @@ export default function ({
         </Button>
         <hr />
         <Button
-          disabled={loading || !team.deletable}
+          disabled={loading}
           variant="danger"
           size="sm"
           onClick={() => {

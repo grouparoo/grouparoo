@@ -126,6 +126,12 @@ export class NavigationList extends OptionallyAuthenticatedAction {
 
         platformItems.push({
           type: "link",
+          title: "API Keys",
+          href: "/apiKeys",
+        });
+
+        platformItems.push({
+          type: "link",
           title: "Resque",
           href: "/resque",
         });

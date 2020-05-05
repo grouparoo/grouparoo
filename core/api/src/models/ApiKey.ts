@@ -6,11 +6,13 @@ import {
   HasMany,
   AfterSave,
   AfterDestroy,
+  BeforeValidate,
 } from "sequelize-typescript";
+import * as UUID from "uuid";
 import { LoggedModel } from "../classes/loggedModel";
 import { Permission } from "./Permission";
 
-@Table({ tableName: "apiKey", paranoid: false })
+@Table({ tableName: "apiKeys", paranoid: false })
 export class ApiKey extends LoggedModel<ApiKey> {
   guidPrefix() {
     return "key";
@@ -27,6 +29,16 @@ export class ApiKey extends LoggedModel<ApiKey> {
 
   @HasMany(() => Permission)
   permissions: Permission[];
+
+  @BeforeValidate
+  static async buildApiKey(instance: ApiKey) {
+    if (!instance.apiKey) {
+      instance.apiKey = UUID.v4()
+        .replace(/-/g, "")
+        .replace(/_/g, "")
+        .toLocaleLowerCase();
+    }
+  }
 
   @AfterSave
   static async buildPermissions(instance: ApiKey) {
@@ -56,12 +68,33 @@ export class ApiKey extends LoggedModel<ApiKey> {
     return {
       guid: this.guid,
       name: this.name,
+      apiKey: this.apiKey,
       permissions: await Promise.all(permissions.map((prm) => prm.apiData())),
     };
   }
 
   async authorizeAction(topic: string, mode: "read" | "write") {
     return Permission.authorizeAction(this.guid, topic, mode);
+  }
+
+  async setPermissions(
+    permissions: Array<{ guid: string; read: boolean; write: boolean }>
+  ) {
+    for (const i in permissions) {
+      const permission = await Permission.findOne({
+        where: { ownerGuid: this.guid, guid: permissions[i].guid },
+      });
+      if (!permission) {
+        throw new Error(
+          `permission ${permissions[i].guid} not found for this apiKey`
+        );
+      }
+      if (!permission.locked) {
+        permission.read = permissions[i].read;
+        permission.write = permissions[i].write;
+        await permission.save();
+      }
+    }
   }
 
   // --- Class Methods --- //
