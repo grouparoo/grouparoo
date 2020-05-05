@@ -26,7 +26,6 @@ function makeWhereClause(
     throw `column name not found: ${colName}`;
   }
   const dataType = column.data_type;
-  console.log(column);
 
   // interesting code in BigQuery library: function convert(schemaField, value)
   let param;
@@ -71,7 +70,6 @@ function makeWhereClause(
 }
 
 function castResult(result) {
-  console.log("castResult", result);
   if (result === null || result === undefined) {
     return null;
   }
@@ -119,9 +117,6 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     throw `unknown profile property: ${profilePropertyMatch}`;
   }
   const columnValue = profileData[profilePropertyMatch].value;
-
-  console.log("columns", columns);
-  console.log("columnValue", columnValue);
 
   let aggSelect = `\`${column}\``;
   switch (aggregationMethod) {
@@ -205,7 +200,6 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   validateQuery(query);
 
   const options = { query, params, types };
-  console.log("query options", options);
 
   let response: ProfilePropertyPluginMethodResponse;
   try {
