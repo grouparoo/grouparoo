@@ -108,7 +108,6 @@ describe("bigquery/table/profileProperty", () => {
         });
         expect(value).toBe("Erie");
       });
-
       test("to get a float", async () => {
         const column = "ltv";
         const value = await getPropertyValue({
@@ -118,7 +117,6 @@ describe("bigquery/table/profileProperty", () => {
         });
         expect(value).toBe(259.12);
       });
-
       test("to get a boolean", async () => {
         const column = "ios_app";
         const value = await getPropertyValue({
@@ -128,11 +126,29 @@ describe("bigquery/table/profileProperty", () => {
         });
         expect(value).toBe(true);
       });
+      test("to get a date", async () => {
+        const column = "date";
+        const value = await getPropertyValue({
+          column,
+          sourceMapping,
+          aggregationMethod,
+        });
+        expect(value).toBe("2020-02-01");
+      });
+      test("to get a timestamp", async () => {
+        const column = "stamp";
+        const value = await getPropertyValue({
+          column,
+          sourceMapping,
+          aggregationMethod,
+        });
+        expect(value).toBe("2020-02-01T12:13:14.000Z");
+      });
     });
 
     describe("string mapping", () => {
       const sourceMapping = { email: "email" };
-      test("can run a string query to get a string", async () => {
+      test("to get a string", async () => {
         const column = "first_name";
         const value = await getPropertyValue({
           column,
@@ -141,8 +157,7 @@ describe("bigquery/table/profileProperty", () => {
         });
         expect(value).toBe("Erie");
       });
-
-      test("can run a string query to get a float", async () => {
+      test("to get a float", async () => {
         const column = "ltv";
         const value = await getPropertyValue({
           column,
@@ -151,8 +166,7 @@ describe("bigquery/table/profileProperty", () => {
         });
         expect(value).toBe(259.12);
       });
-
-      test("can run a string query to get a boolean", async () => {
+      test("to get a boolean", async () => {
         const column = "ios_app";
         const value = await getPropertyValue({
           column,
@@ -160,6 +174,24 @@ describe("bigquery/table/profileProperty", () => {
           aggregationMethod,
         });
         expect(value).toBe(true);
+      });
+      test("to get a date", async () => {
+        const column = "date";
+        const value = await getPropertyValue({
+          column,
+          sourceMapping,
+          aggregationMethod,
+        });
+        expect(value).toBe("2020-02-01");
+      });
+      test("to get a timestamp", async () => {
+        const column = "stamp";
+        const value = await getPropertyValue({
+          column,
+          sourceMapping,
+          aggregationMethod,
+        });
+        expect(value).toBe("2020-02-01T12:13:14.000Z");
       });
     });
   });
@@ -305,6 +337,17 @@ describe("bigquery/table/profileProperty", () => {
         );
         expect(value).toBe(1);
       });
+      test("timestamp", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "stamp", match: "2020-02-15 12:13:14 UTC" }]
+        );
+        expect(value).toBe(1);
+      });
       test("float", async () => {
         const value = await getPropertyValue(
           {
@@ -365,6 +408,17 @@ describe("bigquery/table/profileProperty", () => {
         );
         expect(value).toBe(5);
       });
+      test("timestamp", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "stamp", match: "2020-02-15 12:13:14 UTC" }]
+        );
+        expect(value).toBe(5);
+      });
       test("float", async () => {
         const value = await getPropertyValue(
           {
@@ -422,7 +476,19 @@ describe("bigquery/table/profileProperty", () => {
               sourceMapping,
               aggregationMethod,
             },
-            [{ op, key: "date", match: "2020-02-15" }]
+            [{ op, key: "stamp", match: "2020-02-15" }]
+          )
+        ).rejects.toThrow();
+      });
+      test("timestamp", async () => {
+        await expect(
+          getPropertyValue(
+            {
+              column,
+              sourceMapping,
+              aggregationMethod,
+            },
+            [{ op, key: "stamp", match: "2020-02-15 12:13:14 UTC" }]
           )
         ).rejects.toThrow();
       });
@@ -488,6 +554,18 @@ describe("bigquery/table/profileProperty", () => {
           )
         ).rejects.toThrow();
       });
+      test("timestamp", async () => {
+        await expect(
+          getPropertyValue(
+            {
+              column,
+              sourceMapping,
+              aggregationMethod,
+            },
+            [{ op, key: "stamp", match: "2020-02-15 12:13:14 UTC" }]
+          )
+        ).rejects.toThrow();
+      });
       test("float", async () => {
         await expect(
           getPropertyValue(
@@ -546,6 +624,17 @@ describe("bigquery/table/profileProperty", () => {
             aggregationMethod,
           },
           [{ op, key: "date", match: "2020-02-15" }]
+        );
+        expect(value).toBe(1);
+      });
+      test("timestamp", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "stamp", match: "2020-02-15 12:13:14 UTC" }]
         );
         expect(value).toBe(1);
       });
@@ -608,6 +697,17 @@ describe("bigquery/table/profileProperty", () => {
         );
         expect(value).toBe(2);
       });
+      test("timestamp", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "stamp", match: "2020-02-15 12:13:14 UTC" }]
+        );
+        expect(value).toBe(2);
+      });
       test("float", async () => {
         const value = await getPropertyValue(
           {
@@ -664,6 +764,17 @@ describe("bigquery/table/profileProperty", () => {
             aggregationMethod,
           },
           [{ op, key: "date", match: "2020-02-15" }]
+        );
+        expect(value).toBe(3);
+      });
+      test("timestamp", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "stamp", match: "2020-02-15 12:13:14 UTC" }]
         );
         expect(value).toBe(3);
       });

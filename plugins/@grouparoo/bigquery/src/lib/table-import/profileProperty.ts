@@ -41,15 +41,19 @@ function makeWhereClause(
     case "TIME":
       param = BigQuery.time(match);
       break;
+    case "TIMESTAMP":
+      param = new Date(match);
+      if (!isFinite(param)) {
+        throw `invalid timestamp: ${match}`;
+      }
+      break;
     case "BOOL":
     case "NUMERIC":
     case "INT64":
     case "FLOAT64":
     case "STRING":
-      // TODO: need stronger casting on any of these?
       param = match;
       break;
-    case "TIMESTAMP":
     case "GEOGRAPHY":
     case "ARRAY":
     case "STRUCT":
@@ -73,7 +77,8 @@ function castResult(result) {
   }
   // might have to do by type or something here, but some have a "value"
   if (typeof result === "object") {
-    // TODO: dates have values, should that return a Date Object if "BigQueryDate" or similar
+    // TODO: dates have values, should that return a Date Object
+    // if "BigQueryDate" or "BigQueryTimestamp" or similar
     if (result.hasOwnProperty("value")) {
       return result.value;
     }
