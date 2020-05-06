@@ -106,7 +106,47 @@ describe("actions/apiKeys", () => {
       });
     });
 
-    test("permissions can be updated", async () => {
+    test("apiKeys without permissions get an error when running an action", async () => {
+      const { apiKey: key } = await ApiKey.findByGuid(guid);
+      const { error } = await specHelper.runAction("apiKey:view", {
+        apiKey: key,
+      });
+      expect(error).toEqual({
+        code: "AUTHENTICATION_ERROR",
+        message: 'not authorized for mode "read" on topic "apiKey"',
+      });
+    });
+
+    test("permissions can be set in bulk", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+        permissionAllRead: true,
+        permissionAllWrite: true,
+      };
+      const { apiKey } = await specHelper.runAction("apiKey:edit", connection);
+      apiKey.permissions.forEach((_permission) => {
+        expect(_permission.read).toBe(true);
+        expect(_permission.write).toBe(true);
+      });
+
+      connection.params = {
+        csrfToken,
+        guid,
+        permissionAllRead: true,
+        permissionAllWrite: false,
+      };
+      const { apiKey: apiKeyAgain } = await specHelper.runAction(
+        "apiKey:edit",
+        connection
+      );
+      apiKeyAgain.permissions.forEach((_permission) => {
+        expect(_permission.read).toBe(true);
+        expect(_permission.write).toBe(false);
+      });
+    });
+
+    test("permissions can be updated when not managing in bulk", async () => {
       const permission = await Permission.findOne({
         where: { ownerGuid: guid, topic: "app" },
       });
@@ -114,6 +154,8 @@ describe("actions/apiKeys", () => {
       connection.params = {
         csrfToken,
         guid,
+        disabledPermissionAllRead: true,
+        disabledPermissionAllWrite: true,
         permissions: [
           {
             guid: permission.guid,
@@ -128,7 +170,7 @@ describe("actions/apiKeys", () => {
           expect(_permission.read).toBe(true);
           expect(_permission.write).toBe(true);
         } else {
-          expect(_permission.read).toBe(false);
+          expect(_permission.read).toBe(true);
           expect(_permission.write).toBe(false);
         }
       });

@@ -27,6 +27,14 @@ export class ApiKey extends LoggedModel<ApiKey> {
   @Column
   apiKey: string;
 
+  @AllowNull(true)
+  @Column
+  permissionAllRead: boolean;
+
+  @AllowNull(true)
+  @Column
+  permissionAllWrite: boolean;
+
   @HasMany(() => Permission)
   permissions: Permission[];
 
@@ -45,13 +53,20 @@ export class ApiKey extends LoggedModel<ApiKey> {
     const topics = Permission.topics();
     for (const i in topics) {
       const topic = topics[i];
-      await Permission.findOrCreate({
+      const [permission] = await Permission.findOrCreate({
         where: {
           topic,
           ownerGuid: instance.guid,
           ownerType: "apiKey",
         },
       });
+
+      if (instance.permissionAllRead !== null) {
+        await permission.update({ read: instance.permissionAllRead });
+      }
+      if (instance.permissionAllWrite !== null) {
+        await permission.update({ write: instance.permissionAllWrite });
+      }
     }
   }
 
@@ -69,6 +84,8 @@ export class ApiKey extends LoggedModel<ApiKey> {
       guid: this.guid,
       name: this.name,
       apiKey: this.apiKey,
+      permissionAllRead: this.permissionAllRead,
+      permissionAllWrite: this.permissionAllWrite,
       permissions: await Promise.all(permissions.map((prm) => prm.apiData())),
     };
   }
@@ -90,8 +107,14 @@ export class ApiKey extends LoggedModel<ApiKey> {
         );
       }
       if (!permission.locked) {
-        permission.read = permissions[i].read;
-        permission.write = permissions[i].write;
+        permission.read =
+          this.permissionAllRead !== null
+            ? this.permissionAllRead
+            : permissions[i].read;
+        permission.write =
+          this.permissionAllWrite !== null
+            ? this.permissionAllWrite
+            : permissions[i].write;
         await permission.save();
       }
     }

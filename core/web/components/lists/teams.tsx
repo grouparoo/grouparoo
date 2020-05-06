@@ -35,7 +35,7 @@ export default function ({ apiVersion, errorHandler, teamHandler }) {
           <tr>
             <th>Name</th>
             <th>Members</th>
-            <th>Deletable</th>
+            <th>Locked</th>
           </tr>
         </thead>
         <tbody>
@@ -52,11 +52,7 @@ export default function ({ apiVersion, errorHandler, teamHandler }) {
                 </td>
                 <td>{team.membersCount}</td>
                 <td>
-                  <Form.Check
-                    type="checkbox"
-                    disabled
-                    checked={team.deletable}
-                  />
+                  <Form.Check type="checkbox" disabled checked={team.locked} />
                 </td>
               </tr>
             );

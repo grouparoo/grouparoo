@@ -29,19 +29,10 @@ export class TeamInitialize extends Action {
 
     team = await Team.create({
       name: "Administrators",
-      deletable: false,
+      locked: true,
+      permissionAllRead: true,
+      permissionAllWrite: true,
     });
-
-    const permissions = await team.$get("permissions");
-    await Promise.all(
-      permissions.map((prm) =>
-        prm.update({
-          locked: true,
-          read: true,
-          write: true,
-        })
-      )
-    );
 
     teamMember = await TeamMember.create({
       teamGuid: team.guid,
@@ -84,6 +75,8 @@ export class TeamCreate extends AuthenticatedAction {
     this.permission = { topic: "team", mode: "write" };
     this.inputs = {
       name: { required: true },
+      permissionAllRead: { required: false, default: true },
+      permissionAllWrite: { required: false, default: false },
     };
   }
 
@@ -104,13 +97,25 @@ export class TeamEdit extends AuthenticatedAction {
     this.inputs = {
       guid: { required: true },
       name: { required: false },
+      permissionAllRead: { required: false },
+      permissionAllWrite: { required: false },
+      disabledPermissionAllRead: { required: false },
+      disabledPermissionAllWrite: { required: false },
       permissions: { required: false },
     };
   }
 
   async run({ params, response }) {
     const team = await Team.findByGuid(params.guid);
-    await team.update(params);
+    const updateParams = Object.assign({}, params);
+    if (params.disabledPermissionAllRead) {
+      updateParams.permissionAllRead = null;
+    }
+    if (params.disabledPermissionAllWrite) {
+      updateParams.permissionAllWrite = null;
+    }
+
+    await team.update(updateParams);
 
     let permissions = params.permissions;
     if (permissions) {

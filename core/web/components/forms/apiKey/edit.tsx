@@ -12,6 +12,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     name: "",
     apiKey: "",
     permissions: [],
+    permissionAllRead: false,
+    permissionAllWrite: false,
   });
   const { guid } = query;
 
@@ -32,6 +34,13 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     event.preventDefault();
     const _apiKey = Object.assign({}, apiKey);
     delete _apiKey.apiKey;
+
+    if (_apiKey.permissionAllRead === null) {
+      _apiKey["disabledPermissionAllRead"] = true;
+    }
+    if (_apiKey.permissionAllWrite === null) {
+      _apiKey["disabledPermissionAllWrite"] = true;
+    }
 
     setLoading(true);
     const response = await execApi(
@@ -104,7 +113,15 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
         <h3>Permissions</h3>
         <PermissionsList
           permissions={apiKey.permissions}
-          update={updatePermission}
+          permissionAllRead={apiKey.permissionAllRead}
+          permissionAllWrite={apiKey.permissionAllWrite}
+          updatePermission={updatePermission}
+          updatePermissionAll={(read, write) => {
+            const _apiKey = Object.assign({}, apiKey);
+            _apiKey.permissionAllRead = read;
+            _apiKey.permissionAllWrite = write;
+            setApiKey(_apiKey);
+          }}
         />
 
         <Button variant="primary" type="submit">

@@ -16,8 +16,10 @@ export default function ({
   const [team, setTeam] = useState({
     guid: "",
     name: "",
-    deletable: null,
+    locked: null,
     permissions: [],
+    permissionAllRead: false,
+    permissionAllWrite: false,
   });
   const { guid } = query;
 
@@ -36,12 +38,19 @@ export default function ({
 
   const updateTeam = async (event) => {
     event.preventDefault();
+    const _team = Object.assign({}, team);
+    if (_team.permissionAllRead === null) {
+      _team["disabledPermissionAllRead"] = true;
+    }
+    if (_team.permissionAllWrite === null) {
+      _team["disabledPermissionAllWrite"] = true;
+    }
 
     setLoading(true);
     const response = await execApi(
       "put",
       `/api/${apiVersion}/team/${guid}`,
-      team
+      _team
     );
     setLoading(false);
     if (response?.team) {
@@ -103,7 +112,15 @@ export default function ({
         <h3>Permissions</h3>
         <PermissionsList
           permissions={team.permissions}
-          update={updatePermission}
+          permissionAllRead={team.permissionAllRead}
+          permissionAllWrite={team.permissionAllWrite}
+          updatePermission={updatePermission}
+          updatePermissionAll={(read, write) => {
+            const _team = Object.assign({}, team);
+            _team.permissionAllRead = read;
+            _team.permissionAllWrite = write;
+            setTeam(_team);
+          }}
         />
 
         <Button variant="primary" type="submit">
@@ -111,7 +128,7 @@ export default function ({
         </Button>
         <hr />
         <Button
-          disabled={loading || !team.deletable}
+          disabled={loading || team.locked}
           variant="danger"
           size="sm"
           onClick={() => {

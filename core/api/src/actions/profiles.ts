@@ -210,8 +210,7 @@ export class ProfileEdit extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profile:edit";
-    this.description =
-      "edit a profile.  _delete is a special key to remote a property that already exists";
+    this.description = "edit a profile";
     this.outputExample = {};
     this.permission = { topic: "profile", mode: "write" };
     this.inputs = {

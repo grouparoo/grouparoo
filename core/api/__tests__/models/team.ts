@@ -106,7 +106,7 @@ describe("models/team", () => {
     test("teams that are not deleable cannot be deleted", async () => {
       const team = new Team({
         name: "forever team",
-        deletable: false,
+        locked: false,
       });
       await expect(team.destroy()).rejects.toThrow(
         /you cannot delete this team/

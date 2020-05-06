@@ -4,7 +4,7 @@ import { Team } from "./../../src/models/Team";
 const data = async (props = {}) => {
   const defaultProps = {
     name: faker.name.jobDescriptor(),
-    deletable: false,
+    locked: false,
 
     createdAt: new Date(),
     updatedAt: new Date(),

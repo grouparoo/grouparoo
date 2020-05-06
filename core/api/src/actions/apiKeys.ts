@@ -28,6 +28,8 @@ export class ApiKeyCreate extends AuthenticatedAction {
     this.permission = { topic: "apiKey", mode: "write" };
     this.inputs = {
       name: { required: true },
+      permissionAllRead: { required: false },
+      permissionAllWrite: { required: false },
     };
   }
 
@@ -48,13 +50,25 @@ export class ApiKeyEdit extends AuthenticatedAction {
     this.inputs = {
       guid: { required: true },
       name: { required: false },
+      permissionAllRead: { required: false },
+      permissionAllWrite: { required: false },
+      disabledPermissionAllRead: { required: false },
+      disabledPermissionAllWrite: { required: false },
       permissions: { required: false },
     };
   }
 
   async run({ params, response }) {
     const apiKey = await ApiKey.findByGuid(params.guid);
-    await apiKey.update(params);
+    const updateParams = Object.assign({}, params);
+    if (params.disabledPermissionAllRead) {
+      updateParams.permissionAllRead = null;
+    }
+    if (params.disabledPermissionAllWrite) {
+      updateParams.permissionAllWrite = null;
+    }
+
+    await apiKey.update(updateParams);
 
     let permissions = params.permissions;
     if (permissions) {

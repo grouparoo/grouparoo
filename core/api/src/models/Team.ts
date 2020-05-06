@@ -9,6 +9,7 @@ import {
   BeforeDestroy,
   HasMany,
   AfterDestroy,
+  BeforeSave,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { TeamMember } from "./TeamMember";
@@ -26,15 +27,35 @@ export class Team extends LoggedModel<Team> {
   name: string;
 
   @AllowNull(false)
-  @Default(true)
+  @Default(false)
   @Column
-  deletable: boolean;
+  locked: boolean;
+
+  @AllowNull(true)
+  @Column
+  permissionAllRead: boolean;
+
+  @AllowNull(true)
+  @Column
+  permissionAllWrite: boolean;
 
   @HasMany(() => TeamMember)
   teamMembers: TeamMember[];
 
   @HasMany(() => Permission)
   permissions: Permission[];
+
+  @BeforeSave
+  static async checkLockedPermissions(instance: Team) {
+    if (
+      instance.locked &&
+      !instance.isNewRecord &&
+      (instance.permissionAllRead !== null ||
+        instance.permissionAllWrite !== null)
+    ) {
+      throw new Error("locked teams cannot change permissions");
+    }
+  }
 
   @AfterSave
   static async buildPermissions(instance: Team) {
@@ -53,12 +74,19 @@ export class Team extends LoggedModel<Team> {
         // default new teams to having full 'read' access
         await permission.update({ read: true });
       }
+
+      if (instance.permissionAllRead !== null) {
+        await permission.update({ read: instance.permissionAllRead });
+      }
+      if (instance.permissionAllWrite !== null) {
+        await permission.update({ write: instance.permissionAllWrite });
+      }
     }
   }
 
   @BeforeDestroy
-  static async ensureDeletable(instance: Team) {
-    if (instance.deletable === false) {
+  static async checkLocked(instance: Team) {
+    if (instance.locked === true) {
       throw new Error("you cannot delete this team");
     }
   }
@@ -86,7 +114,9 @@ export class Team extends LoggedModel<Team> {
     return {
       guid: this.guid,
       name: this.name,
-      deletable: this.deletable,
+      locked: this.locked,
+      permissionAllRead: this.permissionAllRead,
+      permissionAllWrite: this.permissionAllWrite,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       permissions: await Promise.all(permissions.map((prm) => prm.apiData())),
@@ -111,8 +141,14 @@ export class Team extends LoggedModel<Team> {
         );
       }
       if (!permission.locked) {
-        permission.read = permissions[i].read;
-        permission.write = permissions[i].write;
+        permission.read =
+          this.permissionAllRead !== null
+            ? this.permissionAllRead
+            : permissions[i].read;
+        permission.write =
+          this.permissionAllWrite !== null
+            ? this.permissionAllWrite
+            : permissions[i].write;
         await permission.save();
       }
     }

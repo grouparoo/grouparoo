@@ -27,7 +27,7 @@ describe("actions/teams", () => {
 
       expect(response.team.guid.length).toBe(40);
       expect(response.team.name).toBe("Administrators");
-      expect(response.team.deletable).toBe(false);
+      expect(response.team.locked).toBe(true);
       expect(response.team.membersCount).toBe(1);
       expect(response.team.permissions.length).toBeGreaterThan(1);
     });
@@ -138,7 +138,36 @@ describe("actions/teams", () => {
       });
     });
 
-    test("permissions can be updated", async () => {
+    test("permissions can be set in bulk", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+        permissionAllRead: true,
+        permissionAllWrite: true,
+      };
+      const { team } = await specHelper.runAction("team:edit", connection);
+      team.permissions.forEach((_permission) => {
+        expect(_permission.read).toBe(true);
+        expect(_permission.write).toBe(true);
+      });
+
+      connection.params = {
+        csrfToken,
+        guid,
+        permissionAllRead: true,
+        permissionAllWrite: false,
+      };
+      const { team: teamAgain } = await specHelper.runAction(
+        "team:edit",
+        connection
+      );
+      teamAgain.permissions.forEach((_permission) => {
+        expect(_permission.read).toBe(true);
+        expect(_permission.write).toBe(false);
+      });
+    });
+
+    test("permissions can be updated when not managing in bulk", async () => {
       const permission = await Permission.findOne({
         where: { ownerGuid: guid, topic: "app" },
       });
@@ -146,6 +175,8 @@ describe("actions/teams", () => {
       connection.params = {
         csrfToken,
         guid,
+        disabledPermissionAllRead: true,
+        disabledPermissionAllWrite: true,
         permissions: [
           {
             guid: permission.guid,
@@ -222,7 +253,7 @@ describe("actions/teams", () => {
       expect(destroyResponse.success).toBe(false);
     });
 
-    test("an administrator cannot destroy a non-deletable team", async () => {
+    test("an administrator cannot destroy a non-locked team", async () => {
       const adminTeam = await Team.findOne({
         where: { name: "Administrators" },
       });
