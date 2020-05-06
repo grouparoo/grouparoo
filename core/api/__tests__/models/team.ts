@@ -103,10 +103,10 @@ describe("models/team", () => {
       await expect(team.save()).rejects.toThrow(/Validation error/);
     });
 
-    test("teams that are not deleable cannot be deleted", async () => {
+    test("teams that are locked cannot be deleted", async () => {
       const team = new Team({
         name: "forever team",
-        locked: false,
+        locked: true,
       });
       await expect(team.destroy()).rejects.toThrow(
         /you cannot delete this team/
