@@ -30,7 +30,9 @@ export default function ({ apiVersion, errorHandler, query }) {
     updateURLParams();
     setLoading(true);
     const groupsResponse = await execApi("get", `/api/${apiVersion}/groups`);
-    setGroups(groupsResponse.groups);
+    if (groupsResponse?.groups) {
+      setGroups(groupsResponse.groups);
+    }
 
     const response = await execApi("get", `/api/${apiVersion}/imports`, {
       limit,

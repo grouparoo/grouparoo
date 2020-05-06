@@ -1,12 +1,12 @@
-import { Action } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 
-export class AccountView extends Action {
+export class AccountView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "account:view";
     this.description = "view your account details";
+    this.permission = { topic: "*", mode: "read" };
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member"];
     this.inputs = {};
   }
 
@@ -19,13 +19,13 @@ export class AccountView extends Action {
   }
 }
 
-export class AccountEdit extends Action {
+export class AccountEdit extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "account:edit";
     this.description = "edit your account details";
+    this.permission = { topic: "*", mode: "write" };
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member"];
     this.inputs = {
       firstName: { required: false },
       lastName: { required: false },

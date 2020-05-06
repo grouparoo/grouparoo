@@ -27,7 +27,7 @@ async function spawnPromise(
     });
 
     spawnProcess.on("close", (code) => {
-      console.log(stdout);
+      // console.log(stdout);
 
       if (code !== 0) {
         console.error(stderr);
@@ -86,9 +86,9 @@ export async function waitForAPI(count = 0) {
   const actionUrl = `${url}/api/1/status`;
   try {
     const response = await httpGet(actionUrl);
-    console.log(`API up and running @ ${url}`);
+    // console.log(`API up and running @ ${url}`);
   } catch (error) {
-    console.log(`cannot reach api: ${error}, sleeping and trying again...`);
+    // console.log(`cannot reach api: ${error}, sleeping and trying again...`);
     await sleep(1000);
     await waitForAPI(count + 1);
   }

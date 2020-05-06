@@ -1,15 +1,16 @@
-import { Action, task, api } from "actionhero";
+import { task, api } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Group, GROUP_RULE_LIMIT } from "../models/Group";
 import { PROFILE_PROPERTY_RULE_OPS } from "../models/ProfilePropertyRule";
 import { Profile } from "../models/Profile";
 
-export class GroupsList extends Action {
+export class GroupsList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "groups:list";
     this.description = "list all the groups";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permission = { topic: "group", mode: "read" };
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
@@ -43,13 +44,13 @@ export class GroupsList extends Action {
   }
 }
 
-export class GroupsRuleOptions extends Action {
+export class GroupsRuleOptions extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "groups:ruleOptions";
     this.description = "send the options about groups to the UI";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permission = { topic: "group", mode: "read" };
     this.inputs = {};
   }
 
@@ -59,13 +60,13 @@ export class GroupsRuleOptions extends Action {
   }
 }
 
-export class GroupCreate extends Action {
+export class GroupCreate extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "group:create";
     this.description = "create a group";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
+    this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       name: { required: true },
       type: { required: true },
@@ -96,13 +97,13 @@ export class GroupCreate extends Action {
   }
 }
 
-export class GroupEdit extends Action {
+export class GroupEdit extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "group:edit";
     this.description = "edit a group";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
+    this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       guid: { required: true },
       name: { required: false },
@@ -125,13 +126,13 @@ export class GroupEdit extends Action {
   }
 }
 
-export class GroupRun extends Action {
+export class GroupRun extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "group:run";
     this.description = "recalculate the members for a calculated group";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
+    this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };
@@ -145,13 +146,13 @@ export class GroupRun extends Action {
   }
 }
 
-export class GroupAddProfile extends Action {
+export class GroupAddProfile extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "group:addProfile";
     this.description = "add a profile to a manual group";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
+    this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       guid: { required: true },
       profileGuid: { required: true },
@@ -172,13 +173,13 @@ export class GroupAddProfile extends Action {
   }
 }
 
-export class GroupRemoveProfile extends Action {
+export class GroupRemoveProfile extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "group:removeProfile";
     this.description = "remove a profile to a manual group";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
+    this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       guid: { required: true },
       profileGuid: { required: true },
@@ -199,13 +200,13 @@ export class GroupRemoveProfile extends Action {
   }
 }
 
-export class GroupView extends Action {
+export class GroupView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "group:view";
     this.description = "view a group and members";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permission = { topic: "group", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -218,14 +219,14 @@ export class GroupView extends Action {
   }
 }
 
-export class GroupCountComponentMembers extends Action {
+export class GroupCountComponentMembers extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "group:countComponentMembers";
     this.description =
       "return the counts of profiles which exist due to a certain rule";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permission = { topic: "group", mode: "read" };
     this.inputs = {
       guid: { required: true },
       rules: { required: false },
@@ -255,14 +256,14 @@ export class GroupCountComponentMembers extends Action {
   }
 }
 
-export class GroupCountPotentialMembers extends Action {
+export class GroupCountPotentialMembers extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "group:countPotentialMembers";
     this.description =
       "return the count of profiles that would match these rules";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permission = { topic: "group", mode: "read" };
     this.inputs = {
       guid: { required: true },
       rules: { required: false },
@@ -288,13 +289,13 @@ export class GroupCountPotentialMembers extends Action {
   }
 }
 
-export class GroupListDestinations extends Action {
+export class GroupListDestinations extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "group:listDestinations";
     this.description = "list the destinations interested in this group";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
+    this.permission = { topic: "group", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -310,13 +311,13 @@ export class GroupListDestinations extends Action {
   }
 }
 
-export class GroupExport extends Action {
+export class GroupExport extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "group:export";
     this.description = "export the profiles in this group";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
+    this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       guid: { required: true },
       type: { required: true },
@@ -337,13 +338,13 @@ export class GroupExport extends Action {
   }
 }
 
-export class GroupDestroy extends Action {
+export class GroupDestroy extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "group:destroy";
     this.description = "destroy a group";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
+    this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };

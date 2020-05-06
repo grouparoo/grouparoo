@@ -4,11 +4,16 @@ import {
   AllowNull,
   Default,
   Length,
+  AfterCreate,
+  AfterSave,
   BeforeDestroy,
   HasMany,
+  AfterDestroy,
+  BeforeSave,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { TeamMember } from "./TeamMember";
+import { Permission } from "./Permission";
 
 @Table({ tableName: "teams", paranoid: false })
 export class Team extends LoggedModel<Team> {
@@ -22,31 +27,66 @@ export class Team extends LoggedModel<Team> {
   name: string;
 
   @AllowNull(false)
-  @Default(true)
-  @Column
-  read: boolean;
-
-  @AllowNull(false)
   @Default(false)
   @Column
-  write: boolean;
+  locked: boolean;
 
-  @AllowNull(false)
-  @Default(false)
+  @AllowNull(true)
   @Column
-  administer: boolean;
+  permissionAllRead: boolean;
 
-  @AllowNull(false)
-  @Default(true)
+  @AllowNull(true)
   @Column
-  deletable: boolean;
+  permissionAllWrite: boolean;
 
   @HasMany(() => TeamMember)
   teamMembers: TeamMember[];
 
+  @HasMany(() => Permission)
+  permissions: Permission[];
+
+  @BeforeSave
+  static async checkLockedPermissions(instance: Team) {
+    if (
+      instance.locked &&
+      !instance.isNewRecord &&
+      (instance.permissionAllRead !== null ||
+        instance.permissionAllWrite !== null)
+    ) {
+      throw new Error("locked teams cannot change permissions");
+    }
+  }
+
+  @AfterSave
+  static async buildPermissions(instance: Team) {
+    const topics = Permission.topics();
+    for (const i in topics) {
+      const topic = topics[i];
+      const [permission, isNew] = await Permission.findOrCreate({
+        where: {
+          topic,
+          ownerGuid: instance.guid,
+          ownerType: "team",
+        },
+      });
+
+      if (isNew) {
+        // default new teams to having full 'read' access
+        await permission.update({ read: true });
+      }
+
+      if (instance.permissionAllRead !== null) {
+        await permission.update({ read: instance.permissionAllRead });
+      }
+      if (instance.permissionAllWrite !== null) {
+        await permission.update({ write: instance.permissionAllWrite });
+      }
+    }
+  }
+
   @BeforeDestroy
-  static async ensureDeletable(instance: Team) {
-    if (instance.deletable === false) {
+  static async checkLocked(instance: Team) {
+    if (instance.locked === true) {
       throw new Error("you cannot delete this team");
     }
   }
@@ -56,24 +96,62 @@ export class Team extends LoggedModel<Team> {
     const teamMembersCount = await instance.$count("teamMembers");
 
     if (teamMembersCount > 0) {
-      throw new Error("you cannot delete a team that has members");
+      throw new Error("cannot delete a team that has members");
     }
+  }
+
+  @AfterDestroy
+  static async deletePermissions(instance: Team) {
+    return Permission.destroy({ where: { ownerGuid: instance.guid } });
   }
 
   async apiData() {
     const membersCount = await this.$count("teamMembers");
+    const permissions = await this.$get("permissions", {
+      order: [["topic", "asc"]],
+    });
 
     return {
       guid: this.guid,
       name: this.name,
-      read: this.read,
-      write: this.write,
-      administer: this.administer,
-      deletable: this.deletable,
+      locked: this.locked,
+      permissionAllRead: this.permissionAllRead,
+      permissionAllWrite: this.permissionAllWrite,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
+      permissions: await Promise.all(permissions.map((prm) => prm.apiData())),
       membersCount,
     };
+  }
+
+  async authorizeAction(topic: string, mode: "read" | "write") {
+    return Permission.authorizeAction(this.guid, topic, mode);
+  }
+
+  async setPermissions(
+    permissions: Array<{ guid: string; read: boolean; write: boolean }>
+  ) {
+    for (const i in permissions) {
+      const permission = await Permission.findOne({
+        where: { ownerGuid: this.guid, guid: permissions[i].guid },
+      });
+      if (!permission) {
+        throw new Error(
+          `permission ${permissions[i].guid} not found for this team`
+        );
+      }
+      if (!permission.locked) {
+        permission.read =
+          this.permissionAllRead !== null
+            ? this.permissionAllRead
+            : permissions[i].read;
+        permission.write =
+          this.permissionAllWrite !== null
+            ? this.permissionAllWrite
+            : permissions[i].write;
+        await permission.save();
+      }
+    }
   }
 
   // --- Class Methods --- //

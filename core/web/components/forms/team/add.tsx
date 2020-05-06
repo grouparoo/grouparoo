@@ -37,34 +37,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group controlId="readAccess">
-          <Form.Check
-            name="read"
-            type="checkbox"
-            label="Read Access"
-            ref={register}
-          />
-        </Form.Group>
-
-        <Form.Group controlId="writeAccess">
-          <Form.Check
-            name="write"
-            type="checkbox"
-            label="Write Access"
-            ref={register}
-          />
-        </Form.Group>
-
-        <Form.Group controlId="adminAccess">
-          <Form.Check
-            name="administer"
-            type="checkbox"
-            label="Admin Access"
-            ref={register}
-          />
-        </Form.Group>
-
-        <Button variant="primary" type="submit" active={!loading}>
+        <Button variant="primary" type="submit" disabled={loading}>
           Submit
         </Button>
       </Form>

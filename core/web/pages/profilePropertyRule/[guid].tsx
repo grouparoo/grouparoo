@@ -21,7 +21,7 @@ export default function (props) {
   const profilesListProps = Object.assign({}, props);
   profilesListProps.hideSearch = true;
   profilesListProps.query.searchKey = profilePropertyRule.key;
-  profilesListProps.query.searchValue = "*";
+  profilesListProps.query.searchValue = "%";
 
   useEffect(() => {
     load();

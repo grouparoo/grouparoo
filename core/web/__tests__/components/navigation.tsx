@@ -18,11 +18,12 @@ describe("navigation", () => {
 
   test("shows the nav returned from the server", async () => {
     const request = mockAxios.lastReqGet();
-    expect(request.url).toMatch("/api/1/navigation");
+    expect(request.url).toMatch("/api/v1/navigation");
 
     await act(async () => {
       await request.promise.resolve({
         data: {
+          navigationMode: "authenticated",
           navigation: {
             navigationItems: [
               { type: "link", title: "Dashboard", href: "/dashboard" },

@@ -2,6 +2,8 @@ import { helper } from "./../utils/specHelper";
 import { specHelper } from "actionhero";
 import { Team } from "./../../src/models/Team";
 import { TeamMember } from "./../../src/models/TeamMember";
+import { Permission } from "../../src/models/Permission";
+import { ApiKey } from "../../src/models/ApiKey";
 let actionhero, api;
 
 describe("session", () => {
@@ -118,72 +120,48 @@ describe("session", () => {
     });
   });
 
-  describe("roles", () => {
-    let toad: TeamMember;
-    let team: Team;
-    let connection;
-    let csrfToken: string;
-
-    beforeAll(async () => {
-      team = await helper.factories.team();
-
-      toad = new TeamMember({
-        teamGuid: team.guid,
-        firstName: "Toad",
-        lastName: "Toadstool",
-        email: "toad@example.com",
-      });
-
-      await toad.save();
-      await toad.updatePassword("mushrooms");
-
-      connection = await specHelper.buildConnection();
-      connection.params = { email: "toad@example.com", password: "mushrooms" };
-      const sessionResponse = await specHelper.runAction(
-        "session:create",
-        connection
-      );
-      csrfToken = sessionResponse.csrfToken;
-    });
-
+  describe("permissions", () => {
     beforeAll(() => {
-      api.actions.versions.adminAction = [1];
-      api.actions.versions.readAction = [1];
-      api.actions.versions.writeAction = [1];
+      api.actions.versions.appReadAction = [1];
+      api.actions.versions.appWriteAction = [1];
+      api.actions.versions.systemReadAction = [1];
 
-      api.actions.actions.adminAction = {
+      api.actions.actions.appReadAction = {
         1: {
-          name: "adminAction",
+          name: "appReadAction",
           description: "I am a test",
           version: 1,
           outputExample: {},
-          middleware: ["authenticated-team-member", "role-admin"],
+          middleware: ["authenticated-action"],
+          permission: { topic: "app", mode: "read" },
           run: (data) => {
             data.response.success = true;
           },
         },
       };
 
-      api.actions.actions.readAction = {
+      api.actions.actions.appWriteAction = {
         1: {
-          name: "readAction",
+          name: "appWriteAction",
           description: "I am a test",
           version: 1,
           outputExample: {},
-          middleware: ["authenticated-team-member", "role-read"],
+          middleware: ["authenticated-action"],
+          permission: { topic: "app", mode: "write" },
           run: (data) => {
             data.response.success = true;
           },
         },
       };
 
-      api.actions.actions.writeAction = {
+      api.actions.actions.systemReadAction = {
         1: {
-          name: "writeAction",
+          name: "systemReadAction",
           description: "I am a test",
           version: 1,
           outputExample: {},
-          middleware: ["authenticated-team-member", "role-write"],
+          middleware: ["authenticated-action"],
+          permission: { topic: "system", mode: "read" },
           run: (data) => {
             data.response.success = true;
           },
@@ -194,92 +172,212 @@ describe("session", () => {
     });
 
     afterAll(() => {
-      delete api.actions.actions.adminAction;
-      delete api.actions.versions.adminAction;
-      delete api.actions.actions.readAction;
-      delete api.actions.versions.writeAction;
-      delete api.actions.versions.writeAction;
+      delete api.actions.actions.appReadAction;
+      delete api.actions.versions.appReadAction;
+      delete api.actions.actions.appWriteAction;
+      delete api.actions.versions.appWriteAction;
+      delete api.actions.versions.systemReadAction;
+      delete api.actions.versions.systemReadAction;
     });
 
-    test("a member of an authenticated team can use an action with the role-admin middleware", async () => {
-      await team.update({ administer: true });
+    describe("session", () => {
+      let toad: TeamMember;
+      let team: Team;
+      let connection;
+      let csrfToken: string;
 
-      connection.params = { csrfToken };
-      const { error, success } = await specHelper.runAction(
-        "adminAction",
-        connection
-      );
+      beforeAll(async () => {
+        team = await helper.factories.team();
 
-      expect(error).toBeFalsy();
-      expect(success).toBe(true);
+        // start with no read or write permissions
+        const permissions = await team.$get("permissions");
+        for (const i in permissions) {
+          await permissions[i].update({ read: false, write: false });
+        }
+
+        toad = new TeamMember({
+          teamGuid: team.guid,
+          firstName: "Toad",
+          lastName: "Toadstool",
+          email: "toad@example.com",
+        });
+
+        await toad.save();
+        await toad.updatePassword("mushrooms");
+
+        connection = await specHelper.buildConnection();
+        connection.params = {
+          email: "toad@example.com",
+          password: "mushrooms",
+        };
+        const sessionResponse = await specHelper.runAction(
+          "session:create",
+          connection
+        );
+        csrfToken = sessionResponse.csrfToken;
+      });
+
+      test("without a csrfToken, actions are not authenticated", async () => {
+        let response = await specHelper.runAction("appReadAction", connection);
+        expect(response.error.message).toBe("CSRF error");
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.success).toBeFalsy();
+      });
+
+      test("a member of an authenticated team cannot view any action", async () => {
+        connection.params = { csrfToken };
+        let response = await specHelper.runAction("appReadAction", connection);
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.success).toBeFalsy();
+
+        response = await specHelper.runAction("appWriteAction", connection);
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.success).toBeFalsy();
+
+        response = await specHelper.runAction("systemReadAction", connection);
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.success).toBeFalsy();
+      });
+
+      test("changing the permission topic to read authorizes only the actions of that topic - read", async () => {
+        const permission = await Permission.findOne({
+          where: { ownerGuid: team.guid, topic: "app" },
+        });
+        await permission.update({ read: true, write: false });
+
+        connection.params = { csrfToken };
+        let response = await specHelper.runAction("appReadAction", connection);
+        expect(response.error).toBeFalsy();
+        expect(response.success).toBe(true);
+
+        response = await specHelper.runAction("appWriteAction", connection);
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.success).toBeFalsy();
+
+        response = await specHelper.runAction("systemReadAction", connection);
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.success).toBeFalsy();
+      });
+
+      test("changing the permission topic to read authorizes only the actions of that topic - write", async () => {
+        const permission = await Permission.findOne({
+          where: { ownerGuid: team.guid, topic: "app" },
+        });
+        await permission.update({ read: false, write: true });
+
+        connection.params = { csrfToken };
+        let response = await specHelper.runAction("appReadAction", connection);
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.success).toBeFalsy();
+
+        response = await specHelper.runAction("appWriteAction", connection);
+        expect(response.error).toBeFalsy();
+        expect(response.success).toBe(true);
+
+        response = await specHelper.runAction("systemReadAction", connection);
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.success).toBeFalsy();
+      });
     });
 
-    test("a member of a non-authenticated team cannot use an action with the role-admin middleware", async () => {
-      await team.update({ administer: false });
+    describe("apiKey", () => {
+      let apiKey: ApiKey;
 
-      connection.params = { csrfToken };
-      const { error, success } = await specHelper.runAction(
-        "adminAction",
-        connection
-      );
+      beforeAll(async () => {
+        apiKey = await helper.factories.apiKey();
 
-      expect(error.message).toMatch(/you do not have the admin privilege/);
-      expect(error.code).toBe("NO_ADMIN_PRIVILEGE");
-      expect(success).toBeFalsy();
-    });
+        // start with no read or write permissions
+        const permissions = await apiKey.$get("permissions");
+        for (const i in permissions) {
+          await permissions[i].update({ read: false, write: false });
+        }
+      });
 
-    test("a member of an writing team can use an action with the role-write middleware", async () => {
-      await team.update({ write: true });
+      test("without an apiKey, actions are not authenticated", async () => {
+        let response = await specHelper.runAction("appReadAction", {});
+        expect(response.error.message).toBe("Please log in to continue");
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.success).toBeFalsy();
+      });
 
-      connection.params = { csrfToken };
-      const { error, success } = await specHelper.runAction(
-        "writeAction",
-        connection
-      );
+      test("with an invalid apiKey, actions are not authorized", async () => {
+        let response = await specHelper.runAction("appReadAction", {
+          apiKey: "abc123",
+        });
+        expect(response.error.message).toBe("apiKey not found");
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.success).toBeFalsy();
+      });
 
-      expect(error).toBeFalsy();
-      expect(success).toBe(true);
-    });
+      test("an apiKey with no permissions can not run any actions", async () => {
+        let response = await specHelper.runAction("appReadAction", {
+          apiKey: apiKey.apiKey,
+        });
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.success).toBeFalsy();
 
-    test("a member of a non-writing team cannot use an action with the role-write middleware", async () => {
-      await team.update({ write: false });
+        response = await specHelper.runAction("appWriteAction", {
+          apiKey: apiKey.apiKey,
+        });
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.success).toBeFalsy();
 
-      connection.params = { csrfToken };
-      const { error, success } = await specHelper.runAction(
-        "writeAction",
-        connection
-      );
+        response = await specHelper.runAction("systemReadAction", {
+          apiKey: apiKey.apiKey,
+        });
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.success).toBeFalsy();
+      });
 
-      expect(error.message).toMatch(/you do not have the write privilege/);
-      expect(error.code).toBe("NO_WRITE_PRIVILEGE");
-      expect(success).toBeFalsy();
-    });
+      test("changing the permission topic to read authorizes only the actions of that topic - read", async () => {
+        const permission = await Permission.findOne({
+          where: { ownerGuid: apiKey.guid, topic: "app" },
+        });
+        await permission.update({ read: true, write: false });
 
-    test("a member of a reading team can use an action with the role-read middleware", async () => {
-      await team.update({ read: true });
+        let response = await specHelper.runAction("appReadAction", {
+          apiKey: apiKey.apiKey,
+        });
+        expect(response.error).toBeFalsy();
+        expect(response.success).toBe(true);
 
-      connection.params = { csrfToken };
-      const { error, success } = await specHelper.runAction(
-        "readAction",
-        connection
-      );
+        response = await specHelper.runAction("appWriteAction", {
+          apiKey: apiKey.apiKey,
+        });
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.success).toBeFalsy();
 
-      expect(error).toBeFalsy();
-      expect(success).toBe(true);
-    });
+        response = await specHelper.runAction("systemReadAction", {
+          apiKey: apiKey.apiKey,
+        });
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.success).toBeFalsy();
+      });
 
-    test("a member of a non-reading team cannot use an action with the role-read middleware", async () => {
-      await team.update({ read: false });
+      test("changing the permission topic to read authorizes only the actions of that topic - write", async () => {
+        const permission = await Permission.findOne({
+          where: { ownerGuid: apiKey.guid, topic: "app" },
+        });
+        await permission.update({ read: false, write: true });
 
-      connection.params = { csrfToken };
-      const { error, success } = await specHelper.runAction(
-        "readAction",
-        connection
-      );
+        let response = await specHelper.runAction("appReadAction", {
+          apiKey: apiKey.apiKey,
+        });
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.success).toBeFalsy();
 
-      expect(error.message).toMatch(/you do not have the read privilege/);
-      expect(error.code).toBe("NO_READ_PRIVILEGE");
-      expect(success).toBeFalsy();
+        response = await specHelper.runAction("appWriteAction", {
+          apiKey: apiKey.apiKey,
+        });
+        expect(response.error).toBeFalsy();
+        expect(response.success).toBe(true);
+
+        response = await specHelper.runAction("systemReadAction", {
+          apiKey: apiKey.apiKey,
+        });
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.success).toBeFalsy();
+      });
     });
   });
 });

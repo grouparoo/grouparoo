@@ -1,12 +1,13 @@
 import os from "os";
-import { api, task, Action } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { api, task } from "actionhero";
 
 // A helper class
 
-abstract class ResqueAction extends Action {
+abstract class ResqueAction extends AuthenticatedAction {
   constructor() {
     super();
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permission = { topic: "resque", mode: "write" };
     this.logLevel = "debug";
     this.toDocument = false;
   }

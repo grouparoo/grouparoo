@@ -1,13 +1,13 @@
-import { Action, api } from "actionhero";
+import { OptionallyAuthenticatedAction } from "../classes/optionallyAuthenticatedAction";
 import { Team } from "../models/Team";
 
-export class NavigationList extends Action {
+export class NavigationList extends OptionallyAuthenticatedAction {
   constructor() {
     super();
     this.name = "navigation:list";
     this.description =
       "returns a list of pages for the UI navigation for this user";
-    this.middleware = ["optional-team-member"];
+    this.permission = { topic: "*", mode: "read" };
     this.outputExample = {};
   }
 
@@ -17,12 +17,29 @@ export class NavigationList extends Action {
     let platformItems = [];
 
     let navigationMode = "unauthenticated";
-    let administer = false;
+    let showSystemLinks = false;
     if (teamMember) {
       navigationMode = "authenticated";
-      if (teamMember.team.administer) {
-        administer = true;
-      }
+      const permissions = await teamMember.team.$get("permissions");
+      permissions.map((prm) => {
+        if (prm.topic === "system" && prm.read) {
+          showSystemLinks = true;
+        } else if (prm.topic === "app" && prm.read) {
+          showSystemLinks = true;
+        } else if (prm.topic === "file" && prm.read) {
+          showSystemLinks = true;
+        } else if (prm.topic === "log" && prm.read) {
+          showSystemLinks = true;
+        } else if (prm.topic === "import" && prm.read) {
+          showSystemLinks = true;
+        } else if (prm.topic === "export" && prm.read) {
+          showSystemLinks = true;
+        } else if (prm.topic === "run" && prm.read) {
+          showSystemLinks = true;
+        } else if (prm.topic === "resque" && prm.read) {
+          showSystemLinks = true;
+        }
+      });
     }
 
     if (navigationMode === "unauthenticated") {
@@ -82,7 +99,7 @@ export class NavigationList extends Action {
         { type: "link", title: "Exports", href: "/exports" }
       );
 
-      if (administer) {
+      if (showSystemLinks) {
         platformItems.push({
           type: "link",
           title: "Settings",
@@ -105,6 +122,12 @@ export class NavigationList extends Action {
           type: "link",
           title: "Teams and Members",
           href: "/teams",
+        });
+
+        platformItems.push({
+          type: "link",
+          title: "API Keys",
+          href: "/apiKeys",
         });
 
         platformItems.push({

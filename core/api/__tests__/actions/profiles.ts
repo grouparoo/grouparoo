@@ -608,9 +608,6 @@ describe("actions/profiles", () => {
 
       const readOnlyTeam = new Team({
         name: "read only team",
-        read: true,
-        write: false,
-        administer: false,
       });
       await readOnlyTeam.save();
       teamGuid = readOnlyTeam.guid;
@@ -641,7 +638,9 @@ describe("actions/profiles", () => {
         "profile:create",
         connection
       );
-      expect(error.message).toMatch(/you do not have the write privilege/);
+      expect(error.message).toMatch(
+        /not authorized for mode "write" on topic "profile"/
+      );
     });
 
     test("a reader can list all the profiles", async () => {
@@ -662,7 +661,9 @@ describe("actions/profiles", () => {
         guid,
       };
       const { error } = await specHelper.runAction("profile:edit", connection);
-      expect(error.message).toMatch(/you do not have the write privilege/);
+      expect(error.message).toMatch(
+        /not authorized for mode "write" on topic "profile"/
+      );
     });
 
     test("a reader can view a profile", async () => {
@@ -691,8 +692,9 @@ describe("actions/profiles", () => {
         "profile:destroy",
         connection
       );
+
       expect(destroyResponse.error.message).toMatch(
-        /you do not have the write privilege/
+        /not authorized for mode "write" on topic "profile"/
       );
     });
   });

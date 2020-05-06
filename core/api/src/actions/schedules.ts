@@ -1,14 +1,13 @@
-import { Action, api } from "actionhero";
 import { Schedule } from "../models/Schedule";
-import { GrouparooPlugin } from "../classes/plugin";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 
-export class SchedulesList extends Action {
+export class SchedulesList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "schedules:list";
     this.description = "list all the schedules";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permission = { topic: "source", mode: "read" };
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
@@ -45,13 +44,13 @@ export class SchedulesList extends Action {
   }
 }
 
-export class ScheduleRun extends Action {
+export class ScheduleRun extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "schedule:run";
     this.description = "run a schedule either importing or exporting data";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-write"];
+    this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };
@@ -65,13 +64,13 @@ export class ScheduleRun extends Action {
   }
 }
 
-export class ScheduleCreate extends Action {
+export class ScheduleCreate extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "schedule:create";
     this.description = "create a schedule";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       name: { required: false },
       sourceGuid: { required: true },
@@ -103,13 +102,13 @@ export class ScheduleCreate extends Action {
   }
 }
 
-export class ScheduleEdit extends Action {
+export class ScheduleEdit extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "schedule:edit";
     this.description = "edit a schedule";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       guid: { required: true },
       name: { required: false },
@@ -132,13 +131,13 @@ export class ScheduleEdit extends Action {
   }
 }
 
-export class ScheduleView extends Action {
+export class ScheduleView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "schedule:view";
     this.description = "view a schedule";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permission = { topic: "source", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -151,13 +150,13 @@ export class ScheduleView extends Action {
   }
 }
 
-export class ScheduleDestroy extends Action {
+export class ScheduleDestroy extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "schedule:destroy";
     this.description = "destroy a schedule";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };

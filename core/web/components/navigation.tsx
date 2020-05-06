@@ -69,14 +69,18 @@ export default function ({ apiVersion, errorHandler, sessionHandler }) {
   async function load() {
     const response = await execApi("get", `/api/${apiVersion}/navigation`);
 
-    setNavigationMode(response.navigationMode);
-    setNavigation(response.navigation);
+    if (response?.navigationMode) {
+      setNavigationMode(response.navigationMode);
+      setNavigation(response.navigation);
 
-    if (
-      response.navigationMode !== "unauthenticated" &&
-      window.location.pathname !== "/session/sign-out"
-    ) {
-      loadSession();
+      if (
+        response.navigationMode !== "unauthenticated" &&
+        window.location.pathname !== "/session/sign-out"
+      ) {
+        loadSession();
+      }
+    } else {
+      window.location.href = "/session/sign-out";
     }
   }
 

@@ -1,4 +1,5 @@
-import { Action, api } from "actionhero";
+import { api } from "actionhero";
+import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Destination } from "../models/Destination";
 import { App } from "../models/App";
 import { Profile } from "../models/Profile";
@@ -6,13 +7,13 @@ import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
 import { GrouparooPlugin } from "../classes/plugin";
 
-export class DestinationsList extends Action {
+export class DestinationsList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "destinations:list";
     this.description = "list all the destinations";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
@@ -49,13 +50,13 @@ export class DestinationsList extends Action {
   }
 }
 
-export class DestinationOptions extends Action {
+export class DestinationOptions extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "destination:options";
     this.description = "enumerate the options for creating a new destination";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permission = { topic: "destination", mode: "read" };
     this.inputs = {};
   }
 
@@ -77,14 +78,14 @@ export class DestinationOptions extends Action {
   }
 }
 
-export class DestinationConnectionApps extends Action {
+export class DestinationConnectionApps extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "destinations:connectionApps";
     this.description =
       "enumerate the connection and app pairs for creating a new destination";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permission = { topic: "destination", mode: "read" };
     this.inputs = {};
   }
 
@@ -118,13 +119,13 @@ export class DestinationConnectionApps extends Action {
   }
 }
 
-export class DestinationCreate extends Action {
+export class DestinationCreate extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "destination:create";
     this.description = "create a destination";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
       name: { required: false },
       type: { required: true },
@@ -167,13 +168,13 @@ export class DestinationCreate extends Action {
   }
 }
 
-export class DestinationEdit extends Action {
+export class DestinationEdit extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "destination:edit";
     this.description = "edit a destination";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
       guid: { required: true },
       name: { required: false },
@@ -208,13 +209,13 @@ export class DestinationEdit extends Action {
   }
 }
 
-export class DestinationConnectionOptions extends Action {
+export class DestinationConnectionOptions extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "destination:connectionOptions";
     this.description = "return option choices from this destination";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -226,13 +227,13 @@ export class DestinationConnectionOptions extends Action {
   }
 }
 
-export class DestinationMappingOptions extends Action {
+export class DestinationMappingOptions extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "destination:mappingOptions";
     this.description = "return option choices from this destination mapping";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -244,13 +245,13 @@ export class DestinationMappingOptions extends Action {
   }
 }
 
-export class DestinationTrackGroup extends Action {
+export class DestinationTrackGroup extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "destination:trackGroup";
     this.description = "add a group to a destination";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
       guid: { required: true },
       groupGuid: { required: true },
@@ -265,13 +266,13 @@ export class DestinationTrackGroup extends Action {
   }
 }
 
-export class DestinationUnTrackGroup extends Action {
+export class DestinationUnTrackGroup extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "destination:unTrackGroup";
     this.description = "add a group to a destination";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };
@@ -284,13 +285,12 @@ export class DestinationUnTrackGroup extends Action {
   }
 }
 
-export class DestinationView extends Action {
+export class DestinationView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "destination:view";
     this.description = "view a destination";
-    this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
       guid: { required: true },
     };
@@ -302,14 +302,14 @@ export class DestinationView extends Action {
   }
 }
 
-export class DestinationProfilePreview extends Action {
+export class DestinationProfilePreview extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "destination:profilePreview";
     this.description =
       "view a preview of a profile being exported to this destination";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-read"];
+    this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
       guid: { required: true },
       groupGuid: { required: false },
@@ -365,13 +365,13 @@ export class DestinationProfilePreview extends Action {
   }
 }
 
-export class DestinationDestroy extends Action {
+export class DestinationDestroy extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "destination:destroy";
     this.description = "destroy a destination";
     this.outputExample = {};
-    this.middleware = ["authenticated-team-member", "role-admin"];
+    this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
       guid: { required: true },
     };

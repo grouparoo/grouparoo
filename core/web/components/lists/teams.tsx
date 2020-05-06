@@ -34,11 +34,8 @@ export default function ({ apiVersion, errorHandler, teamHandler }) {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Read</th>
-            <th>Write</th>
-            <th>Adminster</th>
-            <th>Deletable</th>
             <th>Members</th>
+            <th>Locked</th>
           </tr>
         </thead>
         <tbody>
@@ -53,27 +50,10 @@ export default function ({ apiVersion, errorHandler, teamHandler }) {
                     </a>
                   </Link>
                 </td>
-                <td>
-                  <Form.Check type="checkbox" disabled checked={team.read} />
-                </td>
-                <td>
-                  <Form.Check type="checkbox" disabled checked={team.write} />
-                </td>
-                <td>
-                  <Form.Check
-                    type="checkbox"
-                    disabled
-                    checked={team.administer}
-                  />
-                </td>
-                <td>
-                  <Form.Check
-                    type="checkbox"
-                    disabled
-                    checked={team.deletable}
-                  />
-                </td>
                 <td>{team.membersCount}</td>
+                <td>
+                  <Form.Check type="checkbox" disabled checked={team.locked} />
+                </td>
               </tr>
             );
           })}

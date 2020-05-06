@@ -1,6 +1,7 @@
 import { api, action, Initializer, Connection } from "actionhero";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
+import { ApiKey } from "../models/ApiKey";
 import crypto from "crypto";
 
 class AuthenticationError extends Error {
@@ -23,99 +24,139 @@ const randomBytesAsync = function (bytes = 64) {
   });
 };
 
-const authenticatedTeamMemberMiddleware: action.ActionMiddleware = {
-  name: "authenticated-team-member",
+const authenticatedActionMiddleware: action.ActionMiddleware = {
+  name: "authenticated-action",
   global: false,
   priority: 1000,
   preProcessor: async (data) => {
-    const sessionData = await api.session.load(data.connection);
-    if (!sessionData) {
-      throw new AuthenticationError("Please log in to continue");
-    } else if (
-      !data.params.csrfToken ||
-      data.params.csrfToken !== sessionData.csrfToken
-    ) {
-      throw new AuthenticationError("CSRF error");
-    } else {
-      const teamMember = await TeamMember.findOne({
-        where: { guid: sessionData.guid },
-        include: [Team],
-      });
+    // authenticate a web user with session cookie & csrfToken
+    async function authenticateTeamMember() {
+      const sessionData = await api.session.load(data.connection);
+      if (!sessionData) {
+        throw new AuthenticationError("Please log in to continue");
+      } else if (
+        !data.params.csrfToken ||
+        data.params.csrfToken !== sessionData.csrfToken
+      ) {
+        throw new AuthenticationError("CSRF error");
+      } else {
+        const teamMember = await TeamMember.findOne({
+          where: { guid: sessionData.guid },
+          include: [Team],
+        });
 
-      if (!teamMember) {
-        throw new AuthenticationError("Team member not found");
+        if (!teamMember) {
+          throw new AuthenticationError("Team member not found");
+        }
+
+        const team = await teamMember.$get("team");
+        const authorized = await team.authorizeAction(
+          data.actionTemplate.permission.topic,
+          data.actionTemplate.permission.mode
+        );
+        if (!authorized) {
+          throw new AuthenticationError(
+            `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
+          );
+        }
+
+        data.session.data = sessionData;
+        data.session.teamMember = teamMember;
       }
+    }
 
-      data.session.data = sessionData;
-      data.session.teamMember = teamMember;
+    // authenticate an API Request
+    async function authenticateApiKey() {
+      const apiKey = await ApiKey.findOne({
+        where: { apiKey: data.params.apiKey },
+      });
+      if (!apiKey) {
+        throw new AuthenticationError("apiKey not found");
+      }
+      const authorized = await apiKey.authorizeAction(
+        data.actionTemplate.permission.topic,
+        data.actionTemplate.permission.mode
+      );
+      if (!authorized) {
+        throw new AuthenticationError(
+          `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
+        );
+      }
+    }
+
+    // choose which mode to authenticate with
+    if (data.params.apiKey) {
+      return authenticateApiKey();
+    } else {
+      return authenticateTeamMember();
     }
   },
 };
 
-const optionalTeamMember: action.ActionMiddleware = {
-  name: "optional-team-member",
+const optionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
+  name: "optionally-authenticated-action",
   global: false,
   priority: 1000,
   preProcessor: async (data) => {
-    const sessionData = await api.session.load(data.connection);
-    if (sessionData) {
-      const teamMember = await TeamMember.findOne({
-        where: { guid: sessionData.guid },
-        include: [Team],
+    // authenticate a web user with session cookie & csrfToken
+    async function authenticateTeamMember() {
+      const sessionData = await api.session.load(data.connection);
+      if (sessionData) {
+        if (
+          !data.params.csrfToken ||
+          data.params.csrfToken !== sessionData.csrfToken
+        ) {
+          throw new AuthenticationError("CSRF error");
+        } else {
+          const teamMember = await TeamMember.findOne({
+            where: { guid: sessionData.guid },
+            include: [Team],
+          });
+
+          if (!teamMember) {
+            throw new AuthenticationError("Team member not found");
+          }
+
+          const team = await teamMember.$get("team");
+          const authorized = await team.authorizeAction(
+            data.actionTemplate.permission.topic,
+            data.actionTemplate.permission.mode
+          );
+          if (!authorized) {
+            throw new AuthenticationError(
+              `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
+            );
+          }
+          data.session.data = sessionData;
+          data.session.teamMember = teamMember;
+        }
+      }
+    }
+
+    // authenticate an API Request
+    async function authenticateApiKey() {
+      const apiKey = await ApiKey.findOne({
+        where: { apiKey: data.params.apiKey },
       });
-      data.session.data = sessionData;
-      data.session.teamMember = teamMember;
-    }
-  },
-};
-
-const roleReadMiddleware: action.ActionMiddleware = {
-  name: "role-read",
-  global: false,
-  priority: 1001,
-  preProcessor: async (data) => {
-    if (!data.session) {
-      throw new AuthenticationError("request is no associated session");
-    }
-    if (data.session.teamMember.team.read !== true) {
-      throw new AuthenticationError(
-        "you do not have the read privilege",
-        "NO_READ_PRIVILEGE"
+      if (!apiKey) {
+        throw new AuthenticationError("apiKey not found");
+      }
+      const authorized = await apiKey.authorizeAction(
+        data.actionTemplate.permission.topic,
+        data.actionTemplate.permission.mode
       );
+      if (!authorized) {
+        throw new AuthenticationError(
+          `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
+        );
+      }
     }
-  },
-};
 
-const roleWriteMiddleware: action.ActionMiddleware = {
-  name: "role-write",
-  global: false,
-  priority: 1001,
-  preProcessor: async (data) => {
-    if (!data.session) {
-      throw new AuthenticationError("request is no associated session");
-    }
-    if (data.session.teamMember.team.write !== true) {
-      throw new AuthenticationError(
-        "you do not have the write privilege",
-        "NO_WRITE_PRIVILEGE"
-      );
-    }
-  },
-};
-
-const roleAdminMiddleware: action.ActionMiddleware = {
-  name: "role-admin",
-  global: false,
-  priority: 1001,
-  preProcessor: async (data) => {
-    if (!data.session) {
-      throw new AuthenticationError("request is no associated session");
-    }
-    if (data.session.teamMember.team.administer !== true) {
-      throw new AuthenticationError(
-        "you do not have the admin privilege",
-        "NO_ADMIN_PRIVILEGE"
-      );
+    // choose which mode to authenticate with
+    if (data.params.apiKey) {
+      return authenticateApiKey();
+    } else {
+      return authenticateTeamMember();
     }
   },
 };
@@ -171,11 +212,10 @@ export class Session extends Initializer {
   }
 
   async start() {
-    action.addMiddleware(authenticatedTeamMemberMiddleware);
-    action.addMiddleware(optionalTeamMember);
-    action.addMiddleware(roleReadMiddleware);
-    action.addMiddleware(roleWriteMiddleware);
-    action.addMiddleware(roleAdminMiddleware);
+    action.addMiddleware(authenticatedActionMiddleware);
+    action.addMiddleware(optionallyAuthenticatedActionMiddleware);
+
     api.params.globalSafeParams.push("csrfToken");
+    api.params.globalSafeParams.push("apiKey");
   }
 }

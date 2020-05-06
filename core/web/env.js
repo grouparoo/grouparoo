@@ -30,7 +30,7 @@ fs.writeFileSync(path.join(__dirname, "tmp", "pluginLoader.ts"), loader);
 
 // build the web ENVIRONMENT object
 const _exports = {
-  API_VERSION: process.env.API_VERSION || "1",
+  API_VERSION: `v${process.env.API_VERSION || 1}`,
   GROUPAROO_MONOREPO_APP: grouparooMonorepoApp,
 };
 

@@ -22,10 +22,10 @@ describe("pages/about", () => {
 
   test("should load the current api version", async () => {
     let request = mockAxios.lastReqGet();
-    expect(request.url).toMatch("/api/1/status");
+    expect(request.url).toMatch("/api/v1/status");
 
     await act(async () => {
-      mockAxios.mockResponseFor("/api/1/status", {
+      mockAxios.mockResponseFor("/api/v1/status", {
         data: { version: "1.2.3" },
       });
     });
