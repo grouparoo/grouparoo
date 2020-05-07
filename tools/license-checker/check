@@ -1,24 +1,20 @@
 #!/usr/bin/env node
+
 const checker = require("license-checker");
 const glob = require("glob");
 const path = require("path");
 const fs = require("fs");
 const { allPackageFiles } = require("../shared/packages");
 
-const excludePackages = ["emitter-component@1.1.1"];
-
-// custom exclusions for newrelic
-const newRelicPackJSON = JSON.parse(
-  fs.readFileSync(
-    path.join(__dirname, "..", "..", "node_modules", "newrelic", "package.json")
-  )
-);
-excludePackages.push(`newrelic@${newRelicPackJSON.version}`);
-for (const pkg in newRelicPackJSON.dependencies) {
-  if (pkg.match(`@newrelic`)) {
-    excludePackages.push(`${pkg}@${newRelicPackJSON.dependencies[pkg]}`);
-  }
-}
+const excludePackages = [
+  // custom exclusions for newrelic
+  "newrelic@6.7.0",
+  "@newrelic/aws-sdk@1.1.2",
+  "@newrelic/koa@3.0.0",
+  "@newrelic/native-metrics@5.1.0",
+  "@newrelic/superagent@2.0.1",
+  "emitter-component@1.1.1",
+];
 
 const onlyAllow = [
   "MPL-2.0",
