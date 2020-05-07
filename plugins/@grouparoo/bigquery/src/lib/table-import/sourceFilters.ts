@@ -1,37 +1,25 @@
 import { SourceFilterMethod } from "@grouparoo/core";
-import { sourcePreview } from "./sourcePreview";
+import { connect } from "../connect";
+import { getColumns, supportedEquality } from "../util";
 
-export const sourceFilters: SourceFilterMethod = async (args) => {
+export const sourceFilters: SourceFilterMethod = async ({
+  sourceOptions,
+  appOptions,
+}) => {
+  const { table } = sourceOptions;
+  const client = await connect(appOptions);
+  const columns = await getColumns(client, table);
+
   const options = [];
-  const rows = await sourcePreview(args);
 
-  Object.keys(rows[0]).map((col) => {
-    const ops = ["equals", "does not equal"];
-    const value =
-      rows[0][col] ||
-      rows[1][col] ||
-      rows[2][col] ||
-      rows[3][col] ||
-      rows[4][col];
-
-    if (typeof value === "string") {
-      ops.push("contains");
-      ops.push("does not contain");
-    } else if (typeof value === "number") {
-      ops.push("greater than");
-      ops.push("less than");
-    } else if (value instanceof Date) {
-      // TODO: have to do something else here. probably should use getColumns.
-      ops.push("greater than");
-      ops.push("less than");
-    }
-
+  Object.keys(columns).map((colName) => {
+    const column = columns[colName];
+    const ops = supportedEquality(column);
     options.push({
-      key: col,
+      key: colName,
       ops: ops,
       canHaveRelativeMatch: false,
     });
   });
-
   return options;
 };

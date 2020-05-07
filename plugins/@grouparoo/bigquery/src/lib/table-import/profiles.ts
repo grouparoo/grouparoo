@@ -1,7 +1,7 @@
 import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
 import { plugin, ProfilesPluginMethod } from "@grouparoo/core";
-import { getColumns, makeWhereClause, castResult } from "../util";
+import { getColumns, makeWhereClause, castRow } from "../util";
 
 export const profiles: ProfilesPluginMethod = async ({
   schedule,
@@ -49,10 +49,7 @@ export const profiles: ProfilesPluginMethod = async ({
   const options = { query, params, types };
   const [rows] = await client.query(options);
   for (const row of rows) {
-    const result = {};
-    for (const key of Object.keys(row)) {
-      result[key] = castResult(row[key]);
-    }
+    const result = castRow(row);
     await plugin.createImport(sourceMapping, run, result);
     importsCount++;
   }

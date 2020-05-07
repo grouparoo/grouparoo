@@ -1,6 +1,10 @@
 import { BigQuery } from "@google-cloud/bigquery";
+import { validateQuery } from "./validateQuery";
 
-export async function getColumns(client, tableName: string) {
+export async function getColumns(
+  client,
+  tableName: string
+): Promise<{ [colName: string]: any }> {
   const dataset = "test"; // TODO: from dataset?
   const query = `SELECT column_name, data_type FROM \`${dataset}\`.INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName`;
   const options = {
@@ -80,20 +84,90 @@ export function makeWhereClause(
   return ` ${key} ${sqlOp} ?`;
 }
 
-export function castResult(result) {
-  if (result === null || result === undefined) {
+export function supportedEquality(column): Array<string> {
+  const dataType = column.data_type;
+  const ops = ["equals", "does not equal"];
+
+  switch (dataType) {
+    case "DATE":
+    case "DATETIME":
+    case "TIME":
+    case "TIMESTAMP":
+    case "NUMERIC":
+    case "INT64":
+    case "FLOAT64":
+      ops.push("greater than");
+      ops.push("less than");
+      break;
+    case "STRING":
+      ops.push("contains");
+      ops.push("does not contain");
+      break;
+    case "BOOL":
+      break;
+    case "GEOGRAPHY":
+    case "ARRAY":
+    case "STRUCT":
+    case "BYTES":
+    default:
+      break;
+  }
+
+  return ops;
+}
+
+export function castRow(row) {
+  const out = {};
+  Object.keys(row).forEach((colName) => {
+    out[colName] = castValue(row[colName]);
+  });
+  return out;
+}
+
+export function castValue(value) {
+  if (value === null || value === undefined) {
     return null;
   }
   // might have to do by type or something here, but some have a "value"
-  if (typeof result === "object") {
-    // TODO: dates have values, should that return a Date Object?
+  if (typeof value === "object") {
+    // TODO: datesvalue have values, should that return a Date Object?
     // Note: nextFilter wants it to be a string, so it making it a Date, keep that as a string
     // if "BigQueryDate" or "BigQueryTimestamp" or similar
-    if (result.hasOwnProperty("value")) {
-      return result.value;
+    if (value.hasOwnProperty("value")) {
+      return value.value;
     }
   }
 
   // otherwise, regular value
-  return result;
+  return value;
+}
+
+export async function getSampleRows(
+  client,
+  tableName,
+  columns?
+): Promise<Array<{ [colName: string]: any }>> {
+  const escapedTableName = tableName; // TODO: how to escape?
+  const query = `SELECT * FROM \`${escapedTableName}\` ORDER BY RAND() LIMIT 10`;
+  validateQuery(query);
+
+  const options = { query };
+  const [rows] = await client.query(options);
+
+  const response = [];
+  if (rows.length > 0) {
+    rows.map((row) => response.push(castRow(row)));
+  } else {
+    // use columns for preview
+    if (!columns) {
+      columns = await getColumns(client, tableName);
+      const sample = {};
+      Object.keys(columns).forEach((colName) => {
+        sample[colName] = castValue(null);
+      });
+      response.push(sample);
+    }
+  }
+
+  return response;
 }

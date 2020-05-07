@@ -1,6 +1,22 @@
 import { connect } from "../connect";
-import { plugin, NextFilterPluginMethod } from "@grouparoo/core";
-import { castResult } from "../util";
+import { NextFilterPluginMethod } from "@grouparoo/core";
+
+export function getFilterValue(result) {
+  if (result === null || result === undefined) {
+    throw `no filter value result`;
+  }
+  // might have to do by type or something here, but some have a "value"
+  if (typeof result === "object") {
+    if (result.hasOwnProperty("value")) {
+      return result.value;
+    } else {
+      throw `unknown object`;
+    }
+  }
+
+  // otherwise, regular value
+  return result;
+}
 
 export const nextFilter: NextFilterPluginMethod = async ({
   appOptions,
@@ -24,6 +40,6 @@ export const nextFilter: NextFilterPluginMethod = async ({
     return filter;
   }
 
-  filter[column] = castResult(rows[0].max);
+  filter[column] = getFilterValue(rows[0].max);
   return filter;
 };

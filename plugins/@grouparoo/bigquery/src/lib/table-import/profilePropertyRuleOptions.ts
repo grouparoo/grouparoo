@@ -1,6 +1,6 @@
 import { PluginConnectionProfilePropertyRuleOption } from "@grouparoo/core";
-import { sourcePreview } from "./sourcePreview";
-// TODO: could use getColumns here but also need examples
+import { connect } from "../connect";
+import { getSampleRows } from "../util";
 
 export const profilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOption[] = [
   {
@@ -8,8 +8,9 @@ export const profilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOpti
     required: true,
     description: "where the data comes from",
     type: "typeahead",
-    options: async (args) => {
-      const rows = await sourcePreview(args);
+    options: async ({ appOptions, sourceOptions }) => {
+      const client = await connect(appOptions);
+      const rows = await getSampleRows(client, sourceOptions.table);
       const columns = Object.keys(rows[0]);
       return columns.map((col) => {
         return {

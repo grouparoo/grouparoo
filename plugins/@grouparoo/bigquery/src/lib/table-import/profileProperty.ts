@@ -1,6 +1,6 @@
 import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
-import { getColumns, makeWhereClause, castResult } from "../util";
+import { getColumns, makeWhereClause, castValue } from "../util";
 
 import {
   ProfilePropertyPluginMethod,
@@ -127,7 +127,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     const [rows] = await client.query(options);
     if (rows && rows.length > 0) {
       const row: { [key: string]: any } = rows[0];
-      response = castResult(row.__result);
+      response = castValue(row.__result);
     }
   } catch (error) {
     throw new Error(
