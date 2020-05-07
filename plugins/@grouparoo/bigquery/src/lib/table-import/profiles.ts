@@ -1,9 +1,10 @@
-import format from "pg-format";
 import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
 import { plugin, ProfilesPluginMethod } from "@grouparoo/core";
+import { getColumns, makeWhereClause, castResult } from "../util";
 
 export const profiles: ProfilesPluginMethod = async ({
+  schedule,
   run,
   appOptions,
   sourceMapping,
@@ -15,35 +16,46 @@ export const profiles: ProfilesPluginMethod = async ({
   let importsCount = 0;
   const offset = highWaterMark ? parseInt(highWaterMark.toString()) : 0;
 
+  const { column } = await schedule.getOptions();
   const { table } = await source.parameterizedOptions(run);
-  const where =
-    Object.keys(filter).length === 1
-      ? format("%I >= %L", Object.keys(filter)[0], Object.values(filter)[0])
-      : null;
 
-  const query = where
-    ? validateQuery(
-        format(
-          `SELECT * FROM %I WHERE %s LIMIT %L OFFSET %L`,
-          table,
-          where,
-          limit,
-          offset
-        )
-      )
-    : validateQuery(
-        format(`SELECT * FROM %I LIMIT %L OFFSET %L`, table, limit, offset)
-      );
+  const hasFilter = Object.keys(filter).length === 1;
+  const filterCol = hasFilter ? Object.keys(filter)[0] : null;
+  const filterVal = hasFilter ? Object.values(filter)[0] : null;
 
   const client = await connect(appOptions);
+  const columns = await getColumns(client, table);
 
-  const response = await client.query(query);
-  for (const i in response.rows) {
-    await plugin.createImport(sourceMapping, run, response.rows[i]);
+  const params = [];
+  const types = [];
+  let query = `SELECT * FROM \`${table}\``;
+
+  if (filterCol) {
+    query += " WHERE";
+    query += makeWhereClause(
+      columns,
+      filterCol,
+      null,
+      ">=",
+      filterVal,
+      params,
+      types
+    );
+  }
+  query += ` ORDER BY \`${column}\` ASC`;
+  query += ` LIMIT ${limit} OFFSET ${offset}`;
+  validateQuery(query);
+
+  const options = { query, params, types };
+  const [rows] = await client.query(options);
+  for (const row of rows) {
+    const result = {};
+    for (const key of Object.keys(row)) {
+      result[key] = castResult(row[key]);
+    }
+    await plugin.createImport(sourceMapping, run, result);
     importsCount++;
   }
-
-  await client.end();
 
   const nextHighWaterMark = offset + limit;
   return { importsCount, nextHighWaterMark };

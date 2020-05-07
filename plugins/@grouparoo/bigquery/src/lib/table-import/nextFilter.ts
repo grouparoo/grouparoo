@@ -1,6 +1,6 @@
-import format from "pg-format";
 import { connect } from "../connect";
 import { plugin, NextFilterPluginMethod } from "@grouparoo/core";
+import { castResult } from "../util";
 
 export const nextFilter: NextFilterPluginMethod = async ({
   appOptions,
@@ -12,24 +12,18 @@ export const nextFilter: NextFilterPluginMethod = async ({
     return filter;
   }
 
-  const table = sourceOptions.table;
-  const query = format(
-    `SELECT MAX(%I) as max FROM %I`,
-    scheduleOptions.column,
-    table
-  );
+  const { table } = sourceOptions;
+  const { column } = scheduleOptions;
+  const query = `SELECT MAX(\`${column}\`) AS \`max\` FROM \`${table}\``;
 
   const client = await connect(appOptions);
-  const response = await client.query(query);
-  await client.end();
+  const options = { query };
+  const [rows] = await client.query(options);
 
-  filter[scheduleOptions.column] = response.rows[0].max;
-
-  if (filter[scheduleOptions.column] instanceof Date) {
-    filter[scheduleOptions.column] = plugin.expandDates(
-      filter[scheduleOptions.column]
-    ).sql;
+  if (rows.length === 0) {
+    return filter;
   }
 
+  filter[column] = castResult(rows[0].max);
   return filter;
 };

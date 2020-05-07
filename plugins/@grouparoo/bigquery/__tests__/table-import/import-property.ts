@@ -68,9 +68,6 @@ async function getPropertyValue(
 }
 
 describe("bigquery/table/profileProperty", () => {
-  // models defined as the sequelize ones, not the types
-  //
-
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
