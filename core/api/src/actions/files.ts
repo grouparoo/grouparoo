@@ -15,6 +15,7 @@ export class FilesList extends AuthenticatedAction {
       offset: { required: true, default: 0, formatter: parseInt },
       order: {
         required: true,
+        formatter: JSON.parse,
         default: [
           ["type", "desc"],
           ["path", "desc"],

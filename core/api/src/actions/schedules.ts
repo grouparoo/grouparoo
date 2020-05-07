@@ -14,6 +14,7 @@ export class SchedulesList extends AuthenticatedAction {
       state: { required: false },
       order: {
         required: true,
+        formatter: JSON.parse,
         default: [
           ["name", "desc"],
           ["createdAt", "desc"],

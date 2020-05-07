@@ -12,6 +12,7 @@ export class SettingsList extends AuthenticatedAction {
     this.inputs = {
       order: {
         required: true,
+        formatter: JSON.parse,
         default: [
           ["pluginName", "desc"],
           ["key", "desc"],

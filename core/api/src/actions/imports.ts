@@ -16,6 +16,7 @@ export class ImportsList extends AuthenticatedAction {
       offset: { required: true, default: 0, formatter: parseInt },
       order: {
         required: true,
+        formatter: JSON.parse,
         default: [["createdAt", "desc"]],
       },
     };

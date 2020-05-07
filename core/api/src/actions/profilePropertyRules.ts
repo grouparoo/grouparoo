@@ -21,6 +21,7 @@ export class ProfilePropertyRulesList extends AuthenticatedAction {
       state: { required: false },
       order: {
         required: true,
+        formatter: JSON.parse,
         default: [
           ["sourceGuid", "desc"],
           ["key", "desc"],

@@ -21,7 +21,11 @@ export class ProfilesList extends AuthenticatedAction {
       searchValue: { required: false },
       limit: { required: true, default: 1000 },
       offset: { required: true, default: 0 },
-      order: { required: true, default: [["createdAt", "desc"]] },
+      order: {
+        required: true,
+        formatter: JSON.parse,
+        default: [["createdAt", "desc"]],
+      },
     };
   }
 

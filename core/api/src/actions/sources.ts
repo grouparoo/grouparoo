@@ -17,6 +17,7 @@ export class SourcesList extends AuthenticatedAction {
       state: { required: false },
       order: {
         required: true,
+        formatter: JSON.parse,
         default: [
           ["appGuid", "desc"],
           ["createdAt", "asc"],
