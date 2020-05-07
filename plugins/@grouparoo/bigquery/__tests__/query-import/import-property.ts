@@ -13,7 +13,7 @@ import path from "path";
 
 import { profileProperty } from "../../src/lib/query-import/profileProperty";
 
-import { loadAppOptions, rewriteNockEnv } from "../utils/nockHelper";
+import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
 import { Profile, SimpleAppOptions } from "@grouparoo/core";
 
@@ -25,11 +25,11 @@ const nockFile = path.join(
 );
 
 // these comments to use nock
-//const newNock = false;
-//require("./../fixtures/export-profile");
+const newNock = false;
+require("./../fixtures/query-import-property");
 // or these to make it true
-const newNock = true;
-// helper.recordNock(nockFile, rewriteNockEnv);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);

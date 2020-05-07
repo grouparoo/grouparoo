@@ -5,7 +5,7 @@ import path from "path";
 
 import { exportProfile } from "../../src/lib/export/exportProfile";
 import Sailthru from "../../src/lib/client";
-import { loadAppOptions, rewriteNockEnv } from "../utils/nockHelper";
+import { loadAppOptions, updater } from "../utils/nockHelper";
 
 let client: Sailthru;
 const email = "brian@bleonard.com";
@@ -18,7 +18,7 @@ const newNock = false;
 require("./../fixtures/export-profile");
 // or these to make it true
 // const newNock = true;
-// helper.recordNock(nockFile, rewriteNockEnv);
+// helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 

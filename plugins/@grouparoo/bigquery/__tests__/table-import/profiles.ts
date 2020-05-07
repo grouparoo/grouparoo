@@ -13,18 +13,18 @@ import path from "path";
 
 import { profiles } from "../../src/lib/table-import/profiles";
 
-import { loadAppOptions, rewriteNockEnv } from "../utils/nockHelper";
+import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
 import { SimpleAppOptions, Import, plugin, Run } from "@grouparoo/core";
 
 const nockFile = path.join(__dirname, "../", "fixtures", "table-profiles.js");
 
 // these comments to use nock
-//const newNock = false;
-//require("./../fixtures/export-profile");
+const newNock = false;
+require("./../fixtures/table-profiles");
 // or these to make it true
-const newNock = true;
-// helper.recordNock(nockFile, rewriteNockEnv);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);

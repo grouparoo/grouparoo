@@ -7,5 +7,6 @@ module.exports = {
     "<rootDir>/src",
     "<rootDir>/dist",
     "<rootDir>/__tests__/utils",
+    "<rootDir>/__tests__/fixtures",
   ],
 };
