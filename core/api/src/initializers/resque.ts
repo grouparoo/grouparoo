@@ -9,80 +9,80 @@ export class Plugins extends Initializer {
   async initialize() {
     route.registerRoute(
       "get",
-      "/:apiVersion/resque/redisInfo",
+      "/v:apiVersion/resque/redisInfo",
       "resque:redisInfo"
     );
     route.registerRoute(
       "get",
-      "/:apiVersion/resque/resqueDetails",
+      "/v:apiVersion/resque/resqueDetails",
       "resque:resqueDetails"
     );
-    route.registerRoute("get", "/:apiVersion/resque/queued", "resque:queued");
+    route.registerRoute("get", "/v:apiVersion/resque/queued", "resque:queued");
     route.registerRoute(
       "get",
-      "/:apiVersion/resque/loadWorkerQueues",
+      "/v:apiVersion/resque/loadWorkerQueues",
       "resque:loadWorkerQueues"
     );
     route.registerRoute(
       "get",
-      "/:apiVersion/resque/resqueFailedCount",
+      "/v:apiVersion/resque/resqueFailedCount",
       "resque:resqueFailedCount"
     );
     route.registerRoute(
       "get",
-      "/:apiVersion/resque/resqueFailed",
+      "/v:apiVersion/resque/resqueFailed",
       "resque:resqueFailed"
     );
     route.registerRoute(
       "get",
-      "/:apiVersion/resque/delayedjobs",
+      "/v:apiVersion/resque/delayedjobs",
       "resque:delayedjobs"
     );
-    route.registerRoute("get", "/:apiVersion/resque/locks", "resque:locks");
+    route.registerRoute("get", "/v:apiVersion/resque/locks", "resque:locks");
 
     route.registerRoute(
       "post",
-      "/:apiVersion/resque/removeFailed",
+      "/v:apiVersion/resque/removeFailed",
       "resque:removeFailed"
     );
     route.registerRoute(
       "post",
-      "/:apiVersion/resque/retryAndRemoveFailed",
+      "/v:apiVersion/resque/retryAndRemoveFailed",
       "resque:retryAndRemoveFailed"
     );
     route.registerRoute(
       "post",
-      "/:apiVersion/resque/removeAllFailed",
+      "/v:apiVersion/resque/removeAllFailed",
       "resque:removeAllFailed"
     );
     route.registerRoute(
       "post",
-      "/:apiVersion/resque/retryAndRemoveAllFailed",
+      "/v:apiVersion/resque/retryAndRemoveAllFailed",
       "resque:retryAndRemoveAllFailed"
     );
     route.registerRoute(
       "post",
-      "/:apiVersion/resque/forceCleanWorker",
+      "/v:apiVersion/resque/forceCleanWorker",
       "resque:forceCleanWorker"
     );
     route.registerRoute(
       "post",
-      "/:apiVersion/resque/delQueue",
+      "/v:apiVersion/resque/delQueue",
       "resque:delQueue"
     );
     route.registerRoute(
       "post",
-      "/:apiVersion/resque/delDelayed",
+      "/v:apiVersion/resque/delDelayed",
       "resque:delDelayed"
     );
     route.registerRoute(
       "post",
-      "/:apiVersion/resque/runDelayed",
+      "/v:apiVersion/resque/runDelayed",
       "resque:runDelayed"
     );
     route.registerRoute(
       "post",
-      "/:apiVersion/resque/delLock",
+      "/v:apiVersion/resque/delLock",
       "resque:delLock"
     );
   }

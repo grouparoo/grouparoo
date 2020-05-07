@@ -15,7 +15,7 @@ export class AppsList extends AuthenticatedAction {
       offset: { required: true, default: 0, formatter: parseInt },
       state: { required: false },
       order: {
-        required: true,
+        required: false,
         default: [
           ["name", "desc"],
           ["createdAt", "desc"],

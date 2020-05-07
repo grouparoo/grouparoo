@@ -132,6 +132,12 @@ export class NavigationList extends OptionallyAuthenticatedAction {
 
         platformItems.push({
           type: "link",
+          title: "API Documentation",
+          href: "/swagger",
+        });
+
+        platformItems.push({
+          type: "link",
           title: "Resque",
           href: "/resque",
         });

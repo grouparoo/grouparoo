@@ -14,7 +14,7 @@ export class FilesList extends AuthenticatedAction {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
       order: {
-        required: true,
+        required: false,
         default: [
           ["type", "desc"],
           ["path", "desc"],

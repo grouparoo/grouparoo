@@ -4,6 +4,7 @@ export const DEFAULT = {
     return {
       get: [
         { path: "/v:apiVersion/status", action: "status" },
+        { path: "/v:apiVersion/swagger", action: "swagger" },
         { path: "/v:apiVersion/plugins", action: "plugins" },
         { path: "/v:apiVersion/session", action: "session:view" },
         { path: "/v:apiVersion/totals", action: "totals" },
@@ -27,7 +28,6 @@ export const DEFAULT = {
         { path: "/v:apiVersion/group/:guid/destinations", action: "group:listDestinations" },
         { path: "/v:apiVersion/group/:guid/countComponentMembers", action: "group:countComponentMembers" },
         { path: "/v:apiVersion/group/:guid/countPotentialMembers", action: "group:countPotentialMembers" },
-        { path: "/v:apiVersion/group/:guid/historicCounts", action: "group:viewHistoricCounts" },
         { path: "/v:apiVersion/profilePropertyRules", action: "profilePropertyRules:list" },
         { path: "/v:apiVersion/profilePropertyRuleOptions", action: "profilePropertyRules:options" },
         { path: "/v:apiVersion/profilePropertyRule/:guid", action: "profilePropertyRule:view" },
@@ -58,7 +58,6 @@ export const DEFAULT = {
         { path: "/v:apiVersion/destinations/connectionApps", action: "destinations:connectionApps" },
         { path: "/v:apiVersion/destinations", action: "destinations:list" },
         { path: "/v:apiVersion/destinationOptions", action: "destination:options" },
-        { path: "/v:apiVersion/destination/:guid/columns", action: "destination:columns" },
         { path: "/v:apiVersion/destination/:guid", action: "destination:view" },
         { path: "/v:apiVersion/destination/:guid/connectionOptions", action: "destination:connectionOptions" },
         { path: "/v:apiVersion/destination/:guid/mappingOptions", action: "destination:mappingOptions" },
@@ -78,7 +77,6 @@ export const DEFAULT = {
         { path: "/v:apiVersion/profile", action: "profile:create" },
         { path: "/v:apiVersion/profile/:guid/importAndUpdate", action: "profile:importAndUpdate" },
         { path: "/v:apiVersion/profilePropertyRule", action: "profilePropertyRule:create" },
-        { path: "/v:apiVersion/profilePropertyRule/:guid/query", action: "profilePropertyRule:buildQuery" },
         { path: "/v:apiVersion/app", action: "app:create" },
         { path: "/v:apiVersion/event", action: "event:create" },
         { path: "/v:apiVersion/track", action: "event:create" },

@@ -319,7 +319,7 @@ export class MySignIn extends Initializer {
   async initialize() {
     route.registerRoute(
       "post", // The HTTP Verb
-      "/:apiVersion/session/myApp", // The Route (with variables)
+      "/v:apiVersion/session/myApp", // The Route (with variables)
       "session:myApp:create" // the name of the action
     );
   }

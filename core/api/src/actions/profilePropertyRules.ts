@@ -20,7 +20,7 @@ export class ProfilePropertyRulesList extends AuthenticatedAction {
       unique: { required: false },
       state: { required: false },
       order: {
-        required: true,
+        required: false,
         default: [
           ["sourceGuid", "desc"],
           ["key", "desc"],

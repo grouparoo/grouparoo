@@ -16,7 +16,10 @@ export class ListRuns extends AuthenticatedAction {
       hasError: { required: false },
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
-      order: { required: true, default: [["createdAt", "desc"]] },
+      order: {
+        required: false,
+        default: [["createdAt", "desc"]],
+      },
     };
   }
 
