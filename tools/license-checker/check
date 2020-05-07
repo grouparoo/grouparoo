@@ -12,6 +12,7 @@ const excludePackages = [
   "@newrelic/koa@3.0.0",
   "@newrelic/native-metrics@5.0.0",
   "@newrelic/superagent@2.0.1",
+  "emitter-component@1.1.1",
 ];
 
 const onlyAllow = [
