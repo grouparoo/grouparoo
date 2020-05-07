@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const { Process, log } = require("actionhero");
-const { Team, Permission } = require("../dist");
+const { Team } = require("../dist");
 
 async function main() {
   const app = new Process();
