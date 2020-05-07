@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+
+const { Process, log } = require("actionhero");
+const { Team, Permission } = require("../dist");
+
+async function main() {
+  const app = new Process();
+  await app.initialize();
+
+  const teams = await Team.findAll();
+  for (const i in teams) {
+    await updateTeamPermissions(teams[i]);
+  }
+
+  console.log("Done!");
+  process.exit(0);
+}
+
+async function updateTeamPermissions(team) {
+  log("");
+  log(`updating permissions for team: ${team.name} (${team.guid})`);
+  const permissionsWithStatus = await Team.buildPermissions(team);
+  permissionsWithStatus.map(({ isNew, permission }) => {
+    log(
+      `     ${permission.topic}${isNew ? " (NEW)" : ""}`,
+      isNew ? "notice" : "info",
+      { read: permission.read, write: permission.write }
+    );
+  });
+}
+
+main();
