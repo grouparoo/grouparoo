@@ -66,25 +66,24 @@ export class Swagger extends Action {
           tags: [tag],
           summary: action.description,
           // description: action.description, // this is redundant
-          operationId: `${action.name}-${formattedPath}`,
           consumes: ["application/json"],
           produces: ["application/json"],
           parameters: Object.keys(action.inputs)
             .sort()
             .map((inputName) => {
               return {
-                in:
-                  method !== "get"
-                    ? "body"
-                    : route.path.includes(`:${inputName}`)
-                    ? "path"
-                    : "query",
+                in: route.path.includes(`:${inputName}`) ? "path" : "query",
                 name: inputName,
                 type: "string", // not really true, but helps the swagger validator
-                required: action.inputs[inputName].required || false,
+                required:
+                  action.inputs[inputName].required ||
+                  route.path.includes(`:${inputName}`)
+                    ? true
+                    : false,
                 default:
                   action.inputs[inputName].default !== null &&
-                  action.inputs[inputName].default !== undefined
+                  action.inputs[inputName].default !== undefined &&
+                  inputName !== "order" // this is a bit too complex to serialize
                     ? typeof action.inputs[inputName].default === "object"
                       ? JSON.stringify(action.inputs[inputName].default)
                       : `${action.inputs[inputName].default}`
@@ -118,8 +117,7 @@ export class Swagger extends Action {
         description: parentPackageJSON.description,
         version: parentPackageJSON.version,
         title: parentPackageJSON.name,
-        contact: parentPackageJSON.author,
-        license: parentPackageJSON.license,
+        license: { name: parentPackageJSON.license },
       },
       host:
         config.servers.web.allowedRequestHosts[0] ||
