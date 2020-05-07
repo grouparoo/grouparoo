@@ -1,4 +1,3 @@
-import format from "pg-format";
 import { connect } from "../connect";
 import { SourceOptionsMethod } from "@grouparoo/core";
 

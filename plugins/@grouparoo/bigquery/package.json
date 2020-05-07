@@ -27,10 +27,7 @@
     "lint": "prettier --check src __tests__"
   },
   "dependencies": {
-    "@google-cloud/bigquery": "^4.7.0",
-    "pg": "^8.0.2",
-    "pg-format": "^1.0.4",
-    "pg-hstore": "^2.3.3"
+    "@google-cloud/bigquery": "^4.7.0"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
@@ -40,7 +37,6 @@
     "@grouparoo/core": "^0.1.2-alpha.4",
     "@types/jest": "^25.2.1",
     "@types/node": "^13.13.1",
-    "@types/pg": "^7.14.3",
     "actionhero": "^22.0.8",
     "jest": "^25.4.0",
     "prettier": "^2.0.5",
