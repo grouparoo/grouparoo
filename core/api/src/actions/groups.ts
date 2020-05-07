@@ -16,8 +16,7 @@ export class GroupsList extends AuthenticatedAction {
       offset: { required: true, default: 0, formatter: parseInt },
       state: { required: false },
       order: {
-        required: true,
-        formatter: JSON.parse,
+        required: false,
         default: [
           ["name", "desc"],
           ["createdAt", "desc"],

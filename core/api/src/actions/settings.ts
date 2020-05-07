@@ -11,8 +11,7 @@ export class SettingsList extends AuthenticatedAction {
     this.permission = { topic: "system", mode: "read" };
     this.inputs = {
       order: {
-        required: true,
-        formatter: JSON.parse,
+        required: false,
         default: [
           ["pluginName", "desc"],
           ["key", "desc"],

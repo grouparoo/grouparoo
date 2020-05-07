@@ -17,8 +17,7 @@ export class ListRuns extends AuthenticatedAction {
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
       order: {
-        required: true,
-        formatter: JSON.parse,
+        required: false,
         default: [["createdAt", "desc"]],
       },
     };

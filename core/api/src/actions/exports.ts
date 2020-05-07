@@ -14,8 +14,7 @@ export class ListExports extends AuthenticatedAction {
       limit: { required: true, default: 1000 },
       offset: { required: true, default: 0 },
       order: {
-        required: true,
-        formatter: JSON.parse,
+        required: false,
         default: [["createdAt", "desc"]],
       },
     };
