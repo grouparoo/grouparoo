@@ -59,6 +59,10 @@ export class Team extends LoggedModel<Team> {
 
   @AfterSave
   static async buildPermissions(instance: Team) {
+    const permissionsWithStatus: Array<{
+      isNew: boolean;
+      permission: Permission;
+    }> = [];
     const topics = Permission.topics();
     for (const i in topics) {
       const topic = topics[i];
@@ -81,7 +85,11 @@ export class Team extends LoggedModel<Team> {
       if (instance.permissionAllWrite !== null) {
         await permission.update({ write: instance.permissionAllWrite });
       }
+
+      permissionsWithStatus.push({ isNew, permission });
     }
+
+    return permissionsWithStatus;
   }
 
   @BeforeDestroy
