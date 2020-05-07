@@ -21,6 +21,7 @@ export const sourceFilters: SourceFilterMethod = async (args) => {
       ops.push("greater than");
       ops.push("less than");
     } else if (value instanceof Date) {
+      // TODO: have to do something else here. probably should use getColumns.
       ops.push("greater than");
       ops.push("less than");
     }
