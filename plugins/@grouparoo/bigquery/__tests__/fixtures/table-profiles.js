@@ -9,7 +9,7 @@ nock('https://www.googleapis.com:443', {"encodedQueryParams":true})
   'Vary',
   'Origin',
   'Vary',
-  'X-Origin',
+  'X-Origin', 
   'Vary',
   'Referer',
   'Content-Encoding',
