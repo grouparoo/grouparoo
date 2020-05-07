@@ -5,8 +5,7 @@ export async function getColumns(
   client,
   tableName: string
 ): Promise<{ [colName: string]: any }> {
-  const dataset = "test"; // TODO: from dataset?
-  const query = `SELECT column_name, data_type FROM \`${dataset}\`.INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName`;
+  const query = `SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName`;
   const options = {
     query,
     params: {
@@ -45,7 +44,6 @@ export function makeWhereClause(
   // interesting code in BigQuery library: function convert(schemaField, value)
   let param;
   switch (dataType) {
-    // TODO: do these work with js Date Objects?
     case "DATE":
       param = BigQuery.date(match);
       break;
@@ -130,9 +128,7 @@ export function castValue(value) {
   }
   // might have to do by type or something here, but some have a "value"
   if (typeof value === "object") {
-    // TODO: datesvalue have values, should that return a Date Object?
-    // Note: nextFilter wants it to be a string, so it making it a Date, keep that as a string
-    // if "BigQueryDate" or "BigQueryTimestamp" or similar
+    // TODO: should that return a Date Object? Maybe only "BigQueryTimestamp"?
     if (value.hasOwnProperty("value")) {
       return value.value;
     }
@@ -147,7 +143,7 @@ export async function getSampleRows(
   tableName,
   columns?
 ): Promise<Array<{ [colName: string]: any }>> {
-  const escapedTableName = tableName; // TODO: how to escape?
+  const escapedTableName = tableName;
   const query = `SELECT * FROM \`${escapedTableName}\` ORDER BY RAND() LIMIT 10`;
   validateQuery(query);
 

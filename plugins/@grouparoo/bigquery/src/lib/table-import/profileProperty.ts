@@ -15,8 +15,8 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   profilePropertyRuleOptions,
   profilePropertyRuleFilters,
 }) => {
-  const table = sourceOptions.table; // TODO: how to escape?
-  const tableCol = Object.keys(sourceMapping)[0]; // TODO: how to escape?
+  const table = sourceOptions.table;
+  const tableCol = Object.keys(sourceMapping)[0];
   const profilePropertyMatch = Object.values(sourceMapping)[0];
   const aggregationMethod = profilePropertyRuleOptions["aggregation method"];
   const column = profilePropertyRuleOptions["column"];
