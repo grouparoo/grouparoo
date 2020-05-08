@@ -296,6 +296,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                                 type="radio"
                                 id={col}
                                 name={opt.key}
+                                disabled={schedule.state === "ready"}
                                 defaultChecked={
                                   schedule.options[opt.key] === col.key
                                 }
@@ -325,6 +326,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                         required
                         type="text"
                         value={schedule.options[opt.key]}
+                        disabled={schedule.state === "ready"}
                         onChange={(e) => updateOption(opt.key, e.target.value)}
                       />
                       <Form.Control.Feedback type="invalid">
@@ -341,6 +343,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                         as="textarea"
                         rows={5}
                         value={schedule.options[opt.key]}
+                        disabled={schedule.state === "ready"}
                         onChange={(e) =>
                           updateOption(opt.key, e.target["value"])
                         }
