@@ -107,10 +107,7 @@ export namespace helper {
       )
     );
 
-    const events = await api.events.model.findAll();
-    for (const i in events) {
-      await events[i].destroy();
-    }
+    await await api.events.model.destroyFor();
 
     await cache.destroy("profilePropertyRules:all");
     await api.resque.queue.connection.redis.flushdb();

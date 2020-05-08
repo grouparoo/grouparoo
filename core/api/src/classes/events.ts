@@ -3,6 +3,7 @@ import { App } from "../models/App";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
+import { Op } from "sequelize";
 import * as uuid from "uuid";
 
 export interface EventArgs {
@@ -40,6 +41,11 @@ export interface EventPrototype extends EventArgs {
     ipAddress?: string;
     type?: string;
     data?: { [key: string]: any };
+  }) => Promise<number>;
+  destroyFor: (options: {
+    profileGuid?: string;
+    type?: string;
+    before?: Date;
   }) => Promise<number>;
 }
 
@@ -98,10 +104,22 @@ export abstract class EventPrototype {
       const profileProperties = {};
       profileProperties[profilePropertyRule.key] = this.userId;
       await profile.addOrUpdateProperties(profileProperties);
-      await profile.update({ anonymousId: this.anonymousId });
+
       this.profileGuid = profile.guid;
       this.profileAssociatedAt = new Date();
       await this.save();
+
+      const otherProfileWithAnonymousId = await Profile.findOne({
+        where: {
+          guid: { [Op.ne]: profile.guid },
+          anonymousId: this.anonymousId,
+        },
+      });
+      if (!otherProfileWithAnonymousId) {
+        await profile.update({ anonymousId: this.anonymousId });
+      } else {
+        await Profile.merge(profile, otherProfileWithAnonymousId);
+      }
 
       return profile;
     } else if (this.anonymousId) {

@@ -4,6 +4,7 @@ import {
   EventDataPrototype,
   EventBackendPrototype,
 } from "./events";
+import { Op } from "sequelize";
 import { SequelizeEvent } from "./eventBackendSequelize/SequelizeEvent";
 import { SequelizeEventData } from "./eventBackendSequelize/SequelizeEventData";
 
@@ -60,17 +61,26 @@ export class Event extends EventPrototype {
     return sequelizeEvent.toEvent();
   }
 
-  static async findAll(options: {
-    profileGuid?: string;
-    ipAddress?: string;
-    type?: string;
-    data?: { [key: string]: any };
-    limit?: number;
-    offset?: number;
-    order: [["occurredAt", "desc"]];
-  }) {
-    const { profileGuid, ipAddress, type, data, limit, offset, order } =
-      options || {};
+  static async findAll(
+    options: {
+      profileGuid?: string;
+      ipAddress?: string;
+      type?: string;
+      data?: { [key: string]: any };
+      limit?: number;
+      offset?: number;
+      order?: [["occurredAt", "desc"]];
+    } = {}
+  ) {
+    const {
+      profileGuid,
+      ipAddress,
+      type,
+      data,
+      limit,
+      offset,
+      order,
+    } = options;
     const where = {};
     const includeWhere = {};
     if (profileGuid) {
@@ -104,13 +114,15 @@ export class Event extends EventPrototype {
     return sequelizeEvents.map((sequelizeEvent) => sequelizeEvent.toEvent());
   }
 
-  static async count(options: {
-    profileGuid?: string;
-    ipAddress?: string;
-    type?: string;
-    data?: { [key: string]: any };
-  }) {
-    const { profileGuid, ipAddress, type, data } = options || {};
+  static async count(
+    options: {
+      profileGuid?: string;
+      ipAddress?: string;
+      type?: string;
+      data?: { [key: string]: any };
+    } = {}
+  ) {
+    const { profileGuid, ipAddress, type, data } = options;
     const where = {};
     const includeWhere = {};
     if (profileGuid) {
@@ -128,7 +140,7 @@ export class Event extends EventPrototype {
       }
     }
 
-    return await SequelizeEvent.count({
+    return SequelizeEvent.count({
       include: [
         {
           model: SequelizeEventData,
@@ -138,6 +150,28 @@ export class Event extends EventPrototype {
       ],
       where,
     });
+  }
+
+  static async destroyFor(
+    options: {
+      profileGuid?: string;
+      type?: string;
+      before?: Date;
+    } = {}
+  ) {
+    const { profileGuid, type, before } = options;
+    const where = {};
+    if (profileGuid) {
+      where["profileGuid"] = profileGuid;
+    }
+    if (type) {
+      where["type"] = type;
+    }
+    if (before) {
+      where["occurredAt"] = { [Op.lt]: before };
+    }
+
+    return SequelizeEvent.destroy({ where, cascade: true });
   }
 }
 

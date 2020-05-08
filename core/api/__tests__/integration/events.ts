@@ -190,7 +190,7 @@ describe("integration/events", () => {
     const { event } = await specHelper.runAction("event:create", {
       apiKey,
       type: "pageview",
-      anonymousId: "456",
+      anonymousId: "def456",
       userId: 100,
       data: { path: "/mobile-sign-in" },
     });
@@ -211,7 +211,7 @@ describe("integration/events", () => {
     const { event: event1 } = await specHelper.runAction("event:create", {
       apiKey,
       type: "mobile-sceneview",
-      anonymousId: "def456",
+      anonymousId: "zzz999",
       data: { path: "/" },
     });
     await specHelper.runTask("event:associateProfile", {
@@ -224,7 +224,7 @@ describe("integration/events", () => {
     const { event: event2 } = await specHelper.runAction("event:create", {
       apiKey,
       type: "mobile-sceneview",
-      anonymousId: "def456",
+      anonymousId: "zzz999",
       userId: 100,
       data: { path: "/sign-in" },
     });
