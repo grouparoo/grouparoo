@@ -56,6 +56,11 @@ export class Profile extends LoggedModel<Profile> {
     });
   }
 
+  @AfterDestroy
+  static async destroyEvents(instance: Profile) {
+    await api.events.model.destroyFor({ profileGuid: instance.guid });
+  }
+
   async apiData() {
     const properties = await this.properties();
 
@@ -398,5 +403,43 @@ export class Profile extends LoggedModel<Profile> {
       throw new Error(`cannot find ${this.name} ${guid}`);
     }
     return instance;
+  }
+
+  static async merge(profile: Profile, otherProfile: Profile) {
+    // transfer events
+    let eventsCount = 1;
+    while (eventsCount > 0) {
+      const events = await otherProfile.events({ limit: 100 });
+      eventsCount = events.length;
+      await Promise.all(
+        events.map((event) => {
+          event.profileGuid = profile.guid;
+          return event.save();
+        })
+      );
+    }
+
+    // transfer properties, keeping the newest values
+    const properties = await profile.properties();
+    const otherProperties = await otherProfile.properties();
+    const newProperties = {};
+    for (const key in otherProperties) {
+      if (
+        !properties[key] ||
+        otherProperties[key].updatedAt.getTime() >
+          properties[key].updatedAt.getTime()
+      ) {
+        newProperties[key] = otherProperties[key].value;
+      }
+    }
+
+    // delete other profile so unique profile properties will be available
+    await otherProfile.destroy();
+    await profile.addOrUpdateProperties(newProperties);
+
+    // re-import and update groups
+    delete profile.profileProperties; // remove any cached values from the instance
+    await profile.import();
+    await profile.updateGroupMembership();
   }
 }

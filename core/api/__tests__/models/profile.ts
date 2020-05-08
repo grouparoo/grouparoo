@@ -7,6 +7,7 @@ import { GroupMember } from "./../../src/models/GroupMember";
 import { App } from "./../../src/models/App";
 import { Source } from "./../../src/models/Source";
 import { plugin } from "./../../src/modules/plugin";
+import { api } from "actionhero";
 
 let actionhero;
 
@@ -665,4 +666,143 @@ describe("models/profile", () => {
   });
 
   describe("#updateGroupMembership", () => {});
+
+  describe("events", () => {
+    let profile: Profile;
+
+    beforeAll(async () => {
+      profile = await helper.factories.profile();
+      await helper.factories.event({
+        profileGuid: profile.guid,
+        type: "pageview",
+        data: { page: "/" },
+        occurredAt: new Date(1000),
+      });
+      await helper.factories.event({
+        profileGuid: profile.guid,
+        type: "pageview",
+        data: { page: "/about" },
+        occurredAt: new Date(2000),
+      });
+      await helper.factories.event({
+        profileGuid: profile.guid,
+        type: "purchase",
+        data: { item: "red-shirt", value: 10 },
+        occurredAt: new Date(3000),
+      });
+    });
+
+    test("a profile can get events (all)", async () => {
+      const events = await profile.events();
+      expect(events.length).toBe(3);
+      expect(events.map((e) => e.type)).toEqual([
+        "pageview",
+        "pageview",
+        "purchase",
+      ]);
+    });
+
+    test("a profile can get events (type)", async () => {
+      const events = await profile.events({ type: "purchase" });
+      expect(events.length).toBe(1);
+      expect(events.map((e) => e.type)).toEqual(["purchase"]);
+    });
+
+    test("a profile can get events (custom data)", async () => {
+      const events = await profile.events({ data: { page: "/about" } });
+      expect(events.length).toBe(1);
+      expect(events.map((e) => e.type)).toEqual(["pageview"]);
+    });
+
+    test("when a profile is deleted, it will delete the events", async () => {
+      await profile.destroy();
+      const events = await api.events.model.count();
+      expect(events).toBe(0);
+    });
+  });
+
+  describe("merging", () => {
+    let profileA: Profile;
+    let profileB: Profile;
+
+    beforeAll(async () => {
+      await Profile.destroy({ truncate: true });
+
+      profileA = await helper.factories.profile();
+      await profileA.import();
+      profileB = await helper.factories.profile();
+      await profileB.import();
+
+      await helper.factories.event({
+        profileGuid: profileA.guid,
+        type: "pageview",
+        data: { page: "/" },
+      });
+      await helper.factories.event({
+        profileGuid: profileA.guid,
+        type: "pageview",
+        data: { page: "/sign-in" },
+      });
+      await helper.factories.event({
+        profileGuid: profileA.guid,
+        type: "pageview",
+        data: { page: "/sign-purchase" },
+      });
+
+      await helper.factories.event({
+        profileGuid: profileB.guid,
+        type: "pageview",
+        data: { page: "/about" },
+      });
+      await helper.factories.event({
+        profileGuid: profileB.guid,
+        type: "pageview",
+        data: { page: "/item-1" },
+      });
+
+      // disable the test plugin import so we can explicitly set profile properties
+      helper.disableTestPluginImport();
+    });
+
+    test("the profiles both have properties and events", async () => {
+      const propertiesA = await profileA.properties();
+      const propertiesB = await profileB.properties();
+      const eventsA = await profileA.events();
+      const eventsB = await profileB.events();
+      expect(Object.keys(propertiesA).length).toBe(3);
+      expect(Object.keys(propertiesB).length).toBe(3);
+      expect(eventsA.length).toBe(3);
+      expect(eventsB.length).toBe(2);
+    });
+
+    test("profile A has newer email, profile B has newer userId", async () => {
+      await profileA.addOrUpdateProperties({ email: "new-email@example.com" });
+      await profileB.addOrUpdateProperties({ userId: 100 });
+    });
+
+    test("merging profiles moved the events & properties", async () => {
+      await Profile.merge(profileA, profileB);
+
+      const propertiesA = await profileA.properties();
+      const propertiesB = await profileB.properties();
+      const eventsA = await profileA.events();
+      const eventsB = await profileB.events();
+      expect(Object.keys(propertiesA).length).toBe(3);
+      expect(Object.keys(propertiesB).length).toBe(0);
+      expect(eventsA.length).toBe(5);
+      expect(eventsB.length).toBe(0);
+    });
+
+    test("the merged profile kept the newer properties", async () => {
+      const properties = await profileA.properties();
+      expect(properties.email.value).toBe("new-email@example.com");
+      expect(properties.userId.value).toBe(100);
+    });
+
+    test("after merging the other profile is deleted", async () => {
+      await expect(profileB.reload()).rejects.toThrow(/does not exist/);
+      const profiles = await Profile.findAll();
+      expect(profiles.length).toBe(1);
+    });
+  });
 });
