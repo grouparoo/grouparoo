@@ -2,22 +2,22 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/app-local-public",
   "description": "The Grouparoo Local Demo Application",
-  "version": "0.1.2-alpha.4",
+  "version": "0.1.2-alpha.5",
   "license": "MPL-2.0",
   "private": true,
   "engines": {
     "node": ">=12.0.0"
   },
   "dependencies": {
-    "@grouparoo/core": "^0.1.2-alpha.4",
-    "@grouparoo/csv": "^0.1.2-alpha.4",
-    "@grouparoo/email-authentication": "^0.1.2-alpha.4",
-    "@grouparoo/google-sheets": "^0.1.2-alpha.4",
-    "@grouparoo/logger": "^0.1.2-alpha.4",
-    "@grouparoo/mailchimp": "^0.1.2-alpha.4",
-    "@grouparoo/mysql": "^0.1.2-alpha.4",
-    "@grouparoo/postgres": "^0.1.2-alpha.4",
-    "@grouparoo/sailthru": "^0.1.2-alpha.4"
+    "@grouparoo/core": "^0.1.2-alpha.5",
+    "@grouparoo/csv": "^0.1.2-alpha.5",
+    "@grouparoo/email-authentication": "^0.1.2-alpha.5",
+    "@grouparoo/google-sheets": "^0.1.2-alpha.5",
+    "@grouparoo/logger": "^0.1.2-alpha.5",
+    "@grouparoo/mailchimp": "^0.1.2-alpha.5",
+    "@grouparoo/mysql": "^0.1.2-alpha.5",
+    "@grouparoo/postgres": "^0.1.2-alpha.5",
+    "@grouparoo/sailthru": "^0.1.2-alpha.5"
   },
   "scripts": {
     "prepare": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=local-public npm run prepare",
