@@ -29,24 +29,26 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
   };
 }
 
-export function rewriteNockEnv(nockCall) {
-  const realEnv = readEnv(realPath);
-  const nockEnv = readEnv(nockPath);
+export const updater = {
+  rewrite: function (nockCall) {
+    const realEnv = readEnv(realPath);
+    const nockEnv = readEnv(nockPath);
 
-  nockCall = nockCall.replace(
-    new RegExp(realEnv.SAILTHRU_API_KEY, "g"),
-    nockEnv.SAILTHRU_API_KEY
-  );
-  nockCall = nockCall.replace(
-    new RegExp(realEnv.SAILTHRU_API_SECRET, "g"),
-    nockEnv.SAILTHRU_API_SECRET
-  );
+    nockCall = nockCall.replace(
+      new RegExp(realEnv.SAILTHRU_API_KEY, "g"),
+      nockEnv.SAILTHRU_API_KEY
+    );
+    nockCall = nockCall.replace(
+      new RegExp(realEnv.SAILTHRU_API_SECRET, "g"),
+      nockEnv.SAILTHRU_API_SECRET
+    );
 
-  nockCall = nockCall.replace(/sig=\w+/g, `sig=${SIGNATURE_STATIC}`);
-  nockCall = nockCall.replace(
-    /\"sig\"\s*:\s*\"\w+\"/g,
-    `"sig":"${SIGNATURE_STATIC}"`
-  );
+    nockCall = nockCall.replace(/sig=\w+/g, `sig=${SIGNATURE_STATIC}`);
+    nockCall = nockCall.replace(
+      /\"sig\"\s*:\s*\"\w+\"/g,
+      `"sig":"${SIGNATURE_STATIC}"`
+    );
 
-  return nockCall;
-}
+    return nockCall;
+  },
+};

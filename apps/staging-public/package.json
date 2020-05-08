@@ -9,6 +9,7 @@
     "node": ">=12.0.0"
   },
   "dependencies": {
+    "@grouparoo/bigquery": "^0.1.2-alpha.5",
     "@grouparoo/core": "^0.1.2-alpha.5",
     "@grouparoo/csv": "^0.1.2-alpha.5",
     "@grouparoo/email-authentication": "^0.1.2-alpha.5",
@@ -33,6 +34,7 @@
       "@grouparoo/postgres",
       "@grouparoo/mailchimp",
       "@grouparoo/logger",
+      "@grouparoo/bigquery",
       "@grouparoo/csv",
       "@grouparoo/email-authentication",
       "@grouparoo/newrelic",

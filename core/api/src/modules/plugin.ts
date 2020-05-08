@@ -262,16 +262,11 @@ export namespace plugin {
   }
 
   /**
-   * Takes a string with mustache variables and replaces them with the proper values for a profile
+   * Takes a profile and returns data with the values from the properties and current time.
    */
-  export async function replaceTemplateProfileVariables(
-    string: string,
+  export async function getProfileData(
     profile: Profile
-  ): Promise<string> {
-    if (string.indexOf("{{") < 0) {
-      return string;
-    }
-
+  ): Promise<{ [remoteKey: string]: any }> {
     const data = {
       now: expandDates(new Date()),
       createdAt: expandDates(profile.createdAt),
@@ -286,7 +281,20 @@ export namespace plugin {
           ? expandDates(properties[key].value)
           : properties[key].value;
     }
+    return data;
+  }
 
+  /**
+   * Takes a string with mustache variables and replaces them with the proper values for a profile
+   */
+  export async function replaceTemplateProfileVariables(
+    string: string,
+    profile: Profile
+  ): Promise<string> {
+    if (string.indexOf("{{") < 0) {
+      return string;
+    }
+    const data = await getProfileData(profile);
     return Mustache.render(string, data);
   }
 

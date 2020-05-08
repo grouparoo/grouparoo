@@ -31,6 +31,7 @@ jobs:
             - apps/staging-public/node_modules
             - core/node_modules
             - node_modules
+            - plugins/@grouparoo/bigquery/node_modules
             - plugins/@grouparoo/csv/node_modules
             - plugins/@grouparoo/email-authentication/node_modules
             - plugins/@grouparoo/files-local/node_modules
@@ -114,6 +115,29 @@ jobs:
           command: cd core/web && ./../node_modules/.bin/jest --ci --maxWorkers 4
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+  test-plugin-bigquery:
+    docker:
+      - image: circleci/node:12
+      - image: redis:latest
+      - image: circleci/postgres:9
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/bigquery && npm run test
   test-plugin-csv:
     docker:
       - image: circleci/node:12
@@ -424,6 +448,12 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-plugin-bigquery:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - test-core-api
+            - test-core-web
       - test-plugin-csv:
           filters:
             <<: *ignored-branches
@@ -498,6 +528,7 @@ workflows:
             - linter
             - test-core-api
             - test-core-web
+            - test-plugin-bigquery
             - test-plugin-csv
             - test-plugin-email-authentication
             - test-plugin-files-local
@@ -543,6 +574,12 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-plugin-bigquery:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - test-core-api
+            - test-core-web
       - test-plugin-csv:
           filters:
             <<: *ignored-branches
@@ -617,6 +654,7 @@ workflows:
             - linter
             - test-core-api
             - test-core-web
+            - test-plugin-bigquery
             - test-plugin-csv
             - test-plugin-email-authentication
             - test-plugin-files-local

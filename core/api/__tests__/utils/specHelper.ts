@@ -4,6 +4,7 @@ import ImportFactory from "../factories/import";
 import TeamFactory from "../factories/team";
 import TeamMemberFactory from "../factories/teamMember";
 import ProfileFactory from "../factories/profile";
+import ProfilePropertyRuleFactory from "../factories/profilePropertyRule";
 import ProfilePropertyRulesFactory from "../factories/profilePropertyRules";
 import AppFactory from "../factories/app";
 import SourceFactory from "../factories/source";
@@ -82,6 +83,7 @@ export namespace helper {
     team: TeamFactory,
     teamMember: TeamMemberFactory,
     profile: ProfileFactory,
+    profilePropertyRule: ProfilePropertyRuleFactory,
     profilePropertyRules: ProfilePropertyRulesFactory,
     app: AppFactory,
     source: SourceFactory,
@@ -302,7 +304,7 @@ export namespace helper {
     };
   }
 
-  export function recordNock(nockFile, rewriteFunction = null) {
+  export function recordNock(nockFile, updater: any) {
     nockFile = path.resolve(nockFile);
     if (fs.existsSync(nockFile)) {
       fs.unlinkSync(nockFile);
@@ -311,27 +313,29 @@ export namespace helper {
     // write this as the first line.
     const prepend = "const nock = require('nock');\n";
     fs.appendFileSync(nockFile, prepend);
+    if (updater.prepend) {
+      const toPrepend = updater.prepend();
+      if (toPrepend) {
+        fs.appendFileSync(nockFile, toPrepend + "\n");
+      }
+    }
 
     const appendLogToFile = (toAdd) => {
-      if (rewriteFunction) {
-        toAdd = rewriteFunction(toAdd);
+      if (updater.rewrite) {
+        toAdd = updater.rewrite(toAdd);
       }
       fs.appendFileSync(nockFile, toAdd);
     };
 
     const onlyCallOnce = (content) => {
       let methodIndex = -1;
-      if (methodIndex < 0) methodIndex = content.indexOf(".get(");
-      if (methodIndex < 0) methodIndex = content.indexOf(".post(");
-      if (methodIndex < 0) methodIndex = content.indexOf(".delete(");
-      if (methodIndex < 0) methodIndex = content.indexOf(".put(");
-      if (methodIndex < 0) {
-        throw `nock method not found: ${content}`;
+      const index = content.indexOf(".reply(");
+      if (index < 0) {
+        throw `nock replay not found: ${content}`;
       }
-      const closeIndex = content.indexOf(")", methodIndex) + 1;
       // make sure each is only called once
       const updated =
-        content.slice(0, closeIndex) + ".once()" + content.slice(closeIndex);
+        content.slice(0, index) + ".once()" + content.slice(index);
       return updated;
     };
     const addRecording = (content) => {
