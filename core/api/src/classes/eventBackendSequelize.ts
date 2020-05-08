@@ -67,7 +67,7 @@ export class Event extends EventPrototype {
     data?: { [key: string]: any };
     limit?: number;
     offset?: number;
-    order: ["occurredAt", "desc"];
+    order: [["occurredAt", "desc"]];
   }) {
     const { profileGuid, ipAddress, type, data, limit, offset, order } =
       options || {};
@@ -143,14 +143,17 @@ export class Event extends EventPrototype {
 
 export class EventData extends EventDataPrototype {
   async save() {
-    const [sequelizeEventData] = await SequelizeEventData.findOrCreate({
+    let sequelizeEventData = await SequelizeEventData.findOne({
       where: {
         eventGuid: this.eventGuid,
-        guid: this.guid,
         key: this.key,
-        value: this.value,
       },
     });
+
+    if (!sequelizeEventData) {
+      sequelizeEventData = SequelizeEventData.build();
+    }
+
     Object.assign(sequelizeEventData, this);
     await sequelizeEventData.save();
     return this;

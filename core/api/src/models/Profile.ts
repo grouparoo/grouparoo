@@ -1,10 +1,11 @@
 import {
   Table,
+  Column,
   HasMany,
   BelongsToMany,
   AfterDestroy,
 } from "sequelize-typescript";
-import { log } from "actionhero";
+import { log, api } from "actionhero";
 import { LoggedModel } from "../classes/loggedModel";
 import { GroupMember } from "./GroupMember";
 import { Group } from "./Group";
@@ -14,6 +15,7 @@ import { ProfileProperty } from "./ProfileProperty";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Import } from "./Import";
 import { Destination } from "./Destination";
+import { EventPrototype } from "./../classes/events";
 import { waitForLock } from "../modules/locks";
 
 @Table({ tableName: "profiles", paranoid: false })
@@ -21,6 +23,9 @@ export class Profile extends LoggedModel<Profile> {
   guidPrefix() {
     return "pro";
   }
+
+  @Column
+  anonymousId: string;
 
   @HasMany(() => ProfileProperty)
   profileProperties: ProfileProperty[];
@@ -56,6 +61,7 @@ export class Profile extends LoggedModel<Profile> {
 
     return {
       guid: this.guid,
+      anonymousId: this.anonymousId,
       properties,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
@@ -226,6 +232,20 @@ export class Profile extends LoggedModel<Profile> {
     }
 
     return results;
+  }
+
+  async events(
+    options: {
+      type?: string;
+      data?: { [key: string]: any };
+      limit?: number;
+      offset?: number;
+      order?: string[][];
+    } = {}
+  ) {
+    options["profileGuid"] = this.guid;
+    const profileEvents: EventPrototype[] = api.events.model.findAll(options);
+    return profileEvents;
   }
 
   async export(force = false) {

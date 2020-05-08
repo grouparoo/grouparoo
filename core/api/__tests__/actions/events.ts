@@ -66,6 +66,7 @@ describe("actions/events", () => {
       expect(error).toBeFalsy();
       expect(event.guid).toMatch(/evt_.*/);
       expect(event.type).toBe("pageview");
+      expect(event.anonymousId).toBe("abc123");
       expect(event.ipAddress).toBeTruthy();
       expect(event.profileGuid).toBeFalsy();
       expect(event.data).toEqual({ path: "/" });

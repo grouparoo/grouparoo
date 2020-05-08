@@ -33,7 +33,7 @@ export interface EventPrototype extends EventArgs {
     data?: { [key: string]: any };
     limit?: number;
     offset?: number;
-    order?: string[];
+    order?: string[][];
   }) => Promise<EventPrototype[]>;
   count: (options: {
     profileGuid?: string;
@@ -79,8 +79,8 @@ export abstract class EventPrototype {
       // we have a userId (primaryIdentifyingProfilePropertyRule)
       let profile = await Profile.findOne({
         include: [
-          ProfileProperty,
           {
+            model: ProfileProperty,
             where: {
               rawValue: this.userId,
               profilePropertyRuleGuid: profilePropertyRule.guid,
@@ -88,15 +88,21 @@ export abstract class EventPrototype {
           },
         ],
       });
+
       if (!profile) {
-        profile = await Profile.create({ anonymousId: this.anonymousId });
-        const profileProperties = {};
-        profileProperties[profilePropertyRule.key] = this.userId;
-        profile.addOrUpdateProperties(profileProperties);
-        this.profileGuid = profile.guid;
-        this.profileAssociatedAt = new Date();
-        await this.save();
+        [profile] = await Profile.findOrCreate({
+          where: { anonymousId: this.anonymousId },
+        });
       }
+
+      const profileProperties = {};
+      profileProperties[profilePropertyRule.key] = this.userId;
+      await profile.addOrUpdateProperties(profileProperties);
+      await profile.update({ anonymousId: this.anonymousId });
+      this.profileGuid = profile.guid;
+      this.profileAssociatedAt = new Date();
+      await this.save();
+
       return profile;
     } else if (this.anonymousId) {
       // we have an anonymousId

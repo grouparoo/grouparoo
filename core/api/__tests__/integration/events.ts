@@ -1,6 +1,7 @@
 import { helper } from "../utils/specHelper";
 import { specHelper } from "actionhero";
 import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
+import { Profile } from "../../src/models/Profile";
 
 let actionhero, api;
 
@@ -10,6 +11,8 @@ describe("integration/events", () => {
   let appGuid;
   let userIdRule;
   let apiKey;
+  let eventGuid;
+  let profile;
 
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
@@ -106,48 +109,133 @@ describe("integration/events", () => {
     expect(eventPermission.write).toBe(true);
   });
 
-  test.todo("an event with an anonymousId can be created");
+  test("an event with an anonymousId can be created and task enqueued", async () => {
+    const { error, event } = await specHelper.runAction("event:create", {
+      apiKey,
+      type: "pageview",
+      anonymousId: "abc123",
+      data: { path: "/" },
+    });
 
-  test.todo("the event can be processed, creating a profile");
+    expect(error).toBeFalsy();
+    expect(event.guid).toMatch(/evt_.*/);
+    expect(event.type).toBe("pageview");
+    expect(event.ipAddress).toBeTruthy();
+    expect(event.profileGuid).toBeFalsy();
+    expect(event.anonymousId).toBe("abc123");
+    expect(event.data).toEqual({ path: "/" });
 
-  test.todo(
-    "another event with the same anonymousId will utilize the existing profile"
-  );
+    const foundTasks = await specHelper.findEnqueuedTasks(
+      "event:associateProfile"
+    );
+    expect(foundTasks.length).toBe(1);
+    expect(foundTasks[0].args[0]).toEqual({ eventGuid: event.guid });
+    eventGuid = event.guid;
+  });
 
-  test.todo("sending a userId with an event will update the profile");
+  test("the event can be processed, creating a profile sharing the event anonymousId", async () => {
+    let profiles = await Profile.findAll();
+    expect(profiles.length).toBe(0);
 
-  test.todo(
-    "sending events with a different anonymousId but same userId will utilize the existing profile"
-  );
+    await specHelper.runTask("event:associateProfile", { eventGuid });
 
-  test.todo(
-    "events creating 2 anonymousId profiles can be merged into one when userId is provided with subsequent events"
-  );
+    profiles = await Profile.findAll();
+    expect(profiles.length).toBe(1);
+    profile = profiles[0];
 
-  // describe("event:associateProfile", () => {
-  //   test("can be enqueued", async () => {
-  //     await task.enqueue("event:associateProfile", { eventGuid: "abc123" });
-  //     const foundTasks = await specHelper.findEnqueuedTasks(
-  //       "event:associateProfile"
-  //     );
-  //     expect(foundTasks.length).toEqual(1);
-  //     expect(foundTasks[0].timestamp).toBeNull();
-  //   });
+    expect(profile.guid).toBeTruthy();
+    expect(profile.anonymousId).toBe("abc123");
+  });
 
-  //   test("it will create a new profile from provided event data", async () => {
-  //     const event = await helper.factories.event({
-  //       anonymousId: "abc123",
-  //     });
+  test("another event with the same anonymousId will utilize the existing profile", async () => {
+    const { event } = await specHelper.runAction("event:create", {
+      apiKey,
+      type: "pageview",
+      anonymousId: "abc123",
+      data: { path: "/about" },
+    });
+    await specHelper.runTask("event:associateProfile", {
+      eventGuid: event.guid,
+    });
 
-  //     await specHelper.runTask("event:associateProfile", {
-  //       eventGuid: event.guid,
-  //     });
+    const profiles = await Profile.findAll();
+    expect(profiles.length).toBe(1);
 
-  //     await event.reload();
-  //     const profile = await Profile.findOne();
-  //     expect(profile).toBeTruthy();
-  //     expect(event.profileGuid).toBe(profile.guid);
-  //     expect(event.profileAssociatedAt).toBeTruthy();
-  //   });
-  // });
+    const profileEvents = await profile.events();
+    expect(profileEvents.length).toBe(2);
+  });
+
+  test("sending a userId with an event will update the profile", async () => {
+    const { event } = await specHelper.runAction("event:create", {
+      apiKey,
+      type: "pageview",
+      anonymousId: "abc123",
+      userId: 100,
+      data: { path: "/web-sign-in" },
+    });
+    await specHelper.runTask("event:associateProfile", {
+      eventGuid: event.guid,
+    });
+
+    const profiles = await Profile.findAll();
+    expect(profiles.length).toBe(1);
+    const properties = await profile.properties();
+    expect(properties["userId"].value).toBe(100);
+
+    const profileEvents = await profile.events();
+    expect(profileEvents.length).toBe(3);
+  });
+
+  test("sending events with a different anonymousId but same userId will utilize the existing profile", async () => {
+    const { event } = await specHelper.runAction("event:create", {
+      apiKey,
+      type: "pageview",
+      anonymousId: "456",
+      userId: 100,
+      data: { path: "/mobile-sign-in" },
+    });
+    await specHelper.runTask("event:associateProfile", {
+      eventGuid: event.guid,
+    });
+
+    const profiles = await Profile.findAll();
+    expect(profiles.length).toBe(1);
+    const properties = await profile.properties();
+    expect(properties["userId"].value).toBe(100);
+
+    const profileEvents = await profile.events();
+    expect(profileEvents.length).toBe(4);
+  });
+
+  test("events creating 2 anonymousId profiles can be merged into one when userId is provided with subsequent events", async () => {
+    const { event: event1 } = await specHelper.runAction("event:create", {
+      apiKey,
+      type: "mobile-sceneview",
+      anonymousId: "def456",
+      data: { path: "/" },
+    });
+    await specHelper.runTask("event:associateProfile", {
+      eventGuid: event1.guid,
+    });
+
+    let profiles = await Profile.findAll();
+    expect(profiles.length).toBe(2);
+
+    const { event: event2 } = await specHelper.runAction("event:create", {
+      apiKey,
+      type: "mobile-sceneview",
+      anonymousId: "def456",
+      userId: 100,
+      data: { path: "/sign-in" },
+    });
+    await specHelper.runTask("event:associateProfile", {
+      eventGuid: event2.guid,
+    });
+
+    profiles = await Profile.findAll();
+    expect(profiles.length).toBe(1);
+
+    const profileEvents = await profile.events();
+    expect(profileEvents.length).toBe(6);
+  });
 });
