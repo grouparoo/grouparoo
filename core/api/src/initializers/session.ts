@@ -113,22 +113,20 @@ const optionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
             include: [Team],
           });
 
-          if (!teamMember) {
-            throw new AuthenticationError("Team member not found");
-          }
-
-          const team = await teamMember.$get("team");
-          const authorized = await team.authorizeAction(
-            data.actionTemplate.permission.topic,
-            data.actionTemplate.permission.mode
-          );
-          if (!authorized) {
-            throw new AuthenticationError(
-              `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
+          if (teamMember) {
+            const team = await teamMember.$get("team");
+            const authorized = await team.authorizeAction(
+              data.actionTemplate.permission.topic,
+              data.actionTemplate.permission.mode
             );
+            if (!authorized) {
+              throw new AuthenticationError(
+                `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
+              );
+            }
+            data.session.data = sessionData;
+            data.session.teamMember = teamMember;
           }
-          data.session.data = sessionData;
-          data.session.teamMember = teamMember;
         }
       }
     }
