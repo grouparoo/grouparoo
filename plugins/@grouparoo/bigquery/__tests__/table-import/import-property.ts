@@ -78,6 +78,7 @@ describe("bigquery/table/profileProperty", () => {
   });
 
   beforeAll(async () => {
+    jest.setTimeout(1000 * 10);
     // all of these are in in the test plugin
     await helper.factories.profilePropertyRules();
 
