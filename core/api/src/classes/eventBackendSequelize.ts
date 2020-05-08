@@ -4,18 +4,8 @@ import {
   EventDataPrototype,
   EventBackendPrototype,
 } from "./events";
-import {
-  Table,
-  Model,
-  Column,
-  Index,
-  CreatedAt,
-  UpdatedAt,
-  AllowNull,
-  HasMany,
-  BelongsTo,
-  AfterDestroy,
-} from "sequelize-typescript";
+import { SequelizeEvent } from "./eventBackendSequelize/SequelizeEvent";
+import { SequelizeEventData } from "./eventBackendSequelize/SequelizeEventData";
 
 export class Event extends EventPrototype {
   /**
@@ -109,6 +99,42 @@ export class Event extends EventPrototype {
     });
     return sequelizeEvents.map((sequelizeEvent) => sequelizeEvent.toEvent());
   }
+
+  static async count(options: {
+    profileGuid?: string;
+    ipAddress?: string;
+    type?: string;
+    data?: { [key: string]: any };
+  }) {
+    const { profileGuid, ipAddress, type, data } = options || {};
+    const where = {};
+    const includeWhere = {};
+    if (profileGuid) {
+      where["profileGuid"] = profileGuid;
+    }
+    if (ipAddress) {
+      where["ipAddress"] = profileGuid;
+    }
+    if (type) {
+      where["type"] = type;
+    }
+    if (data) {
+      for (const i in data) {
+        includeWhere[i] = data[i];
+      }
+    }
+
+    return await SequelizeEvent.count({
+      include: [
+        {
+          model: SequelizeEventData,
+          where: includeWhere,
+          required: false,
+        },
+      ],
+      where,
+    });
+  }
 }
 
 export class EventData extends EventDataPrototype {
@@ -145,121 +171,4 @@ export class EventBackend extends EventBackendPrototype {
   }
 
   async stop() {}
-}
-
-// Internal Sequelize Classes for this connection //
-
-@Table({ tableName: "events", paranoid: false })
-class SequelizeEvent extends Model<SequelizeEvent> {
-  @Column({ primaryKey: true })
-  guid: string;
-
-  @AllowNull(false)
-  @Column
-  producerGuid: string;
-
-  @AllowNull(true)
-  @Index
-  @Column
-  profileGuid: string;
-
-  @AllowNull(true)
-  @Index
-  @Column
-  ipAddress: string;
-
-  @AllowNull(false)
-  @Index
-  @Column
-  type: string;
-
-  @AllowNull(true)
-  @Column
-  userId: string;
-
-  @AllowNull(true)
-  @Column
-  anonymousId: string;
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
-
-  @UpdatedAt
-  @Index
-  occurredAt: Date;
-
-  @HasMany(() => SequelizeEventData, "eventGuid")
-  sequelizeEventData: Array<SequelizeEventData>;
-
-  @AfterDestroy
-  static async destroyOptions(instance: SequelizeEvent) {
-    return SequelizeEventData.destroy({
-      where: {
-        eventGuid: instance.guid,
-      },
-    });
-  }
-
-  async setData(data: { [key: string]: any }) {
-    for (const key in data) {
-      const eventData = new EventData({
-        eventGuid: this.guid,
-        key,
-        value: data[key].toString(),
-      });
-      await eventData.save();
-    }
-  }
-
-  toEvent() {
-    const event = new Event({
-      guid: this.guid,
-      producerGuid: this.producerGuid,
-      profileGuid: this.profileGuid,
-      ipAddress: this.ipAddress,
-      type: this.type,
-      userId: this.userId,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
-      occurredAt: this.occurredAt,
-    });
-
-    event.data = {};
-    this.sequelizeEventData.map((_data) => {
-      event.data[_data.key] = _data.value;
-    });
-
-    return event;
-  }
-}
-
-@Table({ tableName: "eventData", paranoid: false })
-class SequelizeEventData extends Model<SequelizeEventData> {
-  @Column({ primaryKey: true })
-  guid: string;
-
-  @AllowNull(false)
-  @Column
-  @Index
-  eventGuid: string;
-
-  @AllowNull(false)
-  @Column
-  key: string;
-
-  @AllowNull(false)
-  @Column
-  value: string;
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
-
-  @BelongsTo(() => SequelizeEvent, "eventGuid")
-  sequelizeEvent: SequelizeEvent;
 }

@@ -19,7 +19,7 @@ export default function ({ apiVersion, errorHandler }) {
     const response = await execApi("get", `/api/${apiVersion}/appOptions`);
     setLoading(false);
     if (response?.types) {
-      setAppTypes(response.types);
+      setAppTypes(response.types.filter((app) => app.addible !== false));
     }
   }
 

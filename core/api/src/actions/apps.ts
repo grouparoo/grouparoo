@@ -60,6 +60,7 @@ export class AppOptions extends AuthenticatedAction {
         plugin.apps.map((app) => {
           response.types.push({
             name: app.name,
+            addible: app.addible,
             options: app.options,
             plugin: { name: plugin.name, icon: plugin.icon },
           });

@@ -8,6 +8,7 @@ import {
   BeforeSave,
   DataType,
   BeforeDestroy,
+  BeforeCreate,
   AfterDestroy,
   HasMany,
   DefaultScope,
@@ -63,6 +64,16 @@ export class App extends LoggedModel<App> {
   @HasMany(() => Source)
   sources: Array<Source>;
 
+  @BeforeCreate
+  static async checkAddibleCreate(instance: App) {
+    const { pluginApp } = await instance.getPlugin();
+    if (pluginApp && pluginApp.addible === false) {
+      throw new Error(
+        `cannot create a new ${instance.type} app, it is not addible`
+      );
+    }
+  }
+
   @BeforeSave
   static async ensureUniqueName(instance: App) {
     const count = await App.count({
@@ -108,6 +119,14 @@ export class App extends LoggedModel<App> {
       throw new Error(
         `cannot delete this app, destination ${destinations[0].guid} relies on it`
       );
+    }
+  }
+
+  @BeforeDestroy
+  static async checkAddibleDestroy(instance: App) {
+    const { pluginApp } = await instance.getPlugin();
+    if (pluginApp && pluginApp.addible === false) {
+      throw new Error(`cannot delete a ${instance.type} app`);
     }
   }
 

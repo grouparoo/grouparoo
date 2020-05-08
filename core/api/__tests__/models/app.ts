@@ -228,6 +228,42 @@ describe("models/app", () => {
     });
   });
 
+  describe("events app", () => {
+    let eventApp: App;
+
+    beforeAll(async () => {
+      await helper.factories.profilePropertyRules();
+    });
+
+    test("the events app should be created automatically", async () => {
+      eventApp = await App.scope(null).findOne({ where: { type: "events" } });
+      expect(eventApp.guid).toBeTruthy();
+      expect(eventApp.name).toBe("events");
+    });
+
+    test("another events app cannot be created", async () => {
+      await expect(
+        App.create({
+          name: "events 2",
+          type: "events",
+        })
+      ).rejects.toThrow(/cannot create a new events app/);
+    });
+
+    test("the events app cannot be deleted", async () => {
+      await expect(eventApp.destroy()).rejects.toThrow(
+        /cannot delete a events app/
+      );
+    });
+
+    test("the appOptions for the events app only include unique profile property rules", async () => {
+      const appOptions = await eventApp.appOptions();
+      expect(
+        appOptions.identifyingProfilePropertyRuleGuid.descriptions.sort()
+      ).toEqual(["email", "userId"]);
+    });
+  });
+
   describe("with plugin", () => {
     let app: App;
     let testCounter = 0;

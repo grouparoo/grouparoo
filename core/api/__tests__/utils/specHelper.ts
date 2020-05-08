@@ -39,6 +39,7 @@ import { Team } from "../../src/models/Team";
 import { TeamMember } from "../../src/models/TeamMember";
 
 import { plugin } from "../../src/index";
+import { addEventsApp } from "../../src/classes/events";
 
 const { api, cache, Process } = require("actionhero");
 
@@ -142,6 +143,7 @@ export namespace helper {
     }
 
     enableTestPlugin();
+    addEventsApp();
 
     return {
       actionhero,

@@ -1,3 +1,5 @@
+import { log } from "actionhero";
+import { App } from "../models/App";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
@@ -32,6 +34,12 @@ export interface EventPrototype extends EventArgs {
     offset?: number;
     order?: string[];
   }) => Promise<EventPrototype[]>;
+  count: (options: {
+    profileGuid?: string;
+    ipAddress?: string;
+    type?: string;
+    data?: { [key: string]: any };
+  }) => Promise<number>;
 }
 
 export abstract class EventPrototype {
@@ -123,4 +131,23 @@ export abstract class EventBackendPrototype {
   // lifecycle hooks
   abstract async start?(): Promise<void>;
   abstract async stop?(): Promise<void>;
+}
+
+export async function addEventsApp() {
+  let eventsApp = await App.scope(null).findOne({
+    where: {
+      type: "events",
+    },
+  });
+  if (!eventsApp) {
+    eventsApp = App.build({
+      type: "events",
+      name: "events",
+      state: "draft",
+    });
+    App.generateGuid(eventsApp);
+    // @ts-ignore
+    await eventsApp.save({ hooks: false });
+    log("created events app");
+  }
 }
