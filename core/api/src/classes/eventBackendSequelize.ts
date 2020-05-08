@@ -94,7 +94,8 @@ export class Event extends EventPrototype {
     }
     if (data) {
       for (const i in data) {
-        includeWhere[i] = data[i];
+        includeWhere["key"] = i;
+        includeWhere["value"] = data[i];
       }
     }
 
@@ -103,7 +104,7 @@ export class Event extends EventPrototype {
         {
           model: SequelizeEventData,
           where: includeWhere,
-          required: false,
+          required: data ? true : false,
         },
       ],
       where,
@@ -136,7 +137,8 @@ export class Event extends EventPrototype {
     }
     if (data) {
       for (const i in data) {
-        includeWhere[i] = data[i];
+        includeWhere["key"] = i;
+        includeWhere["value"] = data[i];
       }
     }
 
@@ -145,7 +147,7 @@ export class Event extends EventPrototype {
         {
           model: SequelizeEventData,
           where: includeWhere,
-          required: false,
+          required: data ? true : false,
         },
       ],
       where,

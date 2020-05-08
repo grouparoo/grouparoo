@@ -113,7 +113,7 @@ describe("actions/events", () => {
       expect(events[0].data).toEqual({ path: "/" });
     });
 
-    test("an administrator can list events (with filter)", async () => {
+    test("an administrator can list events (with type filter)", async () => {
       connection.params = {
         csrfToken,
         type: "something-else",
@@ -124,6 +124,34 @@ describe("actions/events", () => {
       );
       expect(error).toBeFalsy();
       expect(events.length).toEqual(0);
+    });
+
+    test("an administrator can list events (with profileGuid filter)", async () => {
+      connection.params = {
+        csrfToken,
+        profileGuid: "000",
+      };
+      const { error, events } = await specHelper.runAction(
+        "events:list",
+        connection
+      );
+      expect(error).toBeFalsy();
+      expect(events.length).toEqual(0);
+    });
+
+    test("an administrator can list events (with data filter)", async () => {
+      connection.params = {
+        csrfToken,
+        data: {
+          path: "/",
+        },
+      };
+      const { error, events } = await specHelper.runAction(
+        "events:list",
+        connection
+      );
+      expect(error).toBeFalsy();
+      expect(events.length).toEqual(1);
     });
 
     test("an administrator can destroy an event", async () => {
