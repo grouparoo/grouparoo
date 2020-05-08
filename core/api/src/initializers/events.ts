@@ -1,4 +1,4 @@
-import { api, Initializer } from "actionhero";
+import { api, Initializer, task } from "actionhero";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
 import { plugin } from "../modules/plugin";
 import { addEventsApp } from "../classes/events";
@@ -67,6 +67,14 @@ export class Events extends Initializer {
       api.events.backend = new EventBackend();
       api.events.model = Event;
     }
+
+    // wrap event#save to include enqueuing the processing task
+    const eventSaveMethod = api.events.model.prototype.save;
+    api.events.model.prototype.save = async function (...args) {
+      await eventSaveMethod.apply(this, args);
+      await task.enqueue("event:associateProfile", { eventGuid: this.guid });
+      return this;
+    };
 
     await api.events.backend?.start();
     await addEventsApp();

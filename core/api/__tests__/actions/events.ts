@@ -55,7 +55,7 @@ describe("actions/events", () => {
       expect(error.code).toBe("AUTHENTICATION_ERROR");
     });
 
-    test("an event can be created", async () => {
+    test("an event can be created and task enqueued", async () => {
       const { error, event } = await specHelper.runAction("event:create", {
         apiKey,
         type: "pageview",
@@ -71,6 +71,12 @@ describe("actions/events", () => {
       expect(event.data).toEqual({ path: "/" });
 
       guid = event.guid;
+
+      const foundTasks = await specHelper.findEnqueuedTasks(
+        "event:associateProfile"
+      );
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0]).toEqual({ eventGuid: guid });
     });
 
     test("an administrator can view an event", async () => {

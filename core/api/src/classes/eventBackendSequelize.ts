@@ -27,7 +27,11 @@ export class Event extends EventPrototype {
   }
 
   async reload() {
-    return Event.findByGuid(this.guid);
+    const _event = await Event.findByGuid(this.guid);
+    for (const i in _event) {
+      this[i] = _event[i];
+    }
+    return this;
   }
 
   async destroy() {

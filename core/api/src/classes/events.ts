@@ -13,6 +13,7 @@ export interface EventArgs {
   createdAt?: Date;
   updatedAt?: Date;
   occurredAt?: Date;
+  profileAssociatedAt?: Date;
   type?: string;
   userId?: string;
   anonymousId?: string;
@@ -59,7 +60,18 @@ export abstract class EventPrototype {
   abstract async destroy(): Promise<void>;
 
   // profile methods
-  async associate(primaryIdentifyingProfilePropertyRule: ProfilePropertyRule) {
+  async associate(identifyingProfilePropertyRuleGuid: string) {
+    // find the cached profile property rule
+    const profilePropertyRules = await ProfilePropertyRule.cached();
+    const profilePropertyRuleCacheKey = Object.keys(
+      profilePropertyRules
+    ).filter(
+      (key) =>
+        profilePropertyRules[key].guid === identifyingProfilePropertyRuleGuid
+    )[0];
+    const profilePropertyRule =
+      profilePropertyRules[profilePropertyRuleCacheKey];
+
     if (this.profileGuid) {
       // we are already identified
       return this.getProfile();
@@ -71,8 +83,7 @@ export abstract class EventPrototype {
           {
             where: {
               rawValue: this.userId,
-              profilePropertyRuleGuid:
-                primaryIdentifyingProfilePropertyRule.guid,
+              profilePropertyRuleGuid: profilePropertyRule.guid,
             },
           },
         ],
@@ -80,10 +91,11 @@ export abstract class EventPrototype {
       if (!profile) {
         profile = await Profile.create({ anonymousId: this.anonymousId });
         const profileProperties = {};
-        profileProperties[
-          primaryIdentifyingProfilePropertyRule.key
-        ] = this.userId;
-        await profile.addOrUpdateProperties(profileProperties);
+        profileProperties[profilePropertyRule.key] = this.userId;
+        profile.addOrUpdateProperties(profileProperties);
+        this.profileGuid = profile.guid;
+        this.profileAssociatedAt = new Date();
+        await this.save();
       }
       return profile;
     } else if (this.anonymousId) {
@@ -91,6 +103,9 @@ export abstract class EventPrototype {
       const [profile] = await Profile.findOrCreate({
         where: { anonymousId: this.anonymousId },
       });
+      this.profileGuid = profile.guid;
+      this.profileAssociatedAt = new Date();
+      await this.save();
       return profile;
     } else {
       // we can't identify this event

@@ -1,6 +1,7 @@
 import LogFactory from "../factories/log";
 import GroupFactory from "../factories/group";
 import ImportFactory from "../factories/import";
+import EventFactory from "../factories/event";
 import TeamFactory from "../factories/team";
 import TeamMemberFactory from "../factories/teamMember";
 import ProfileFactory from "../factories/profile";
@@ -79,6 +80,7 @@ export namespace helper {
     log: LogFactory,
     group: GroupFactory,
     import: ImportFactory,
+    event: EventFactory,
     apiKey: ApiKeyFactory,
     team: TeamFactory,
     teamMember: TeamMemberFactory,

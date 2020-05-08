@@ -50,9 +50,13 @@ export class SequelizeEvent extends Model<SequelizeEvent> {
   @UpdatedAt
   updatedAt: Date;
 
-  @UpdatedAt
-  @Index
+  @AllowNull(true)
+  @Column
   occurredAt: Date;
+
+  @AllowNull(true)
+  @Column
+  profileAssociatedAt: Date;
 
   @HasMany(() => SequelizeEventData, "eventGuid")
   sequelizeEventData: Array<SequelizeEventData>;
@@ -85,9 +89,11 @@ export class SequelizeEvent extends Model<SequelizeEvent> {
       ipAddress: this.ipAddress,
       type: this.type,
       userId: this.userId,
+      anonymousId: this.anonymousId,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       occurredAt: this.occurredAt,
+      profileAssociatedAt: this.profileAssociatedAt,
     });
 
     event.data = {};
