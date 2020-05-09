@@ -69,7 +69,7 @@ export class Event extends EventPrototype {
       data?: { [key: string]: any };
       limit?: number;
       offset?: number;
-      order?: [["occurredAt", "desc"]];
+      order?: Array<[string, string]>;
     } = {}
   ) {
     const {
@@ -110,7 +110,7 @@ export class Event extends EventPrototype {
       where,
       limit,
       offset,
-      order,
+      order: order || [["occurredAt", "asc"]],
     });
     return sequelizeEvents.map((sequelizeEvent) => sequelizeEvent.toEvent());
   }

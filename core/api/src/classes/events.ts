@@ -34,7 +34,7 @@ export interface EventPrototype extends EventArgs {
     data?: { [key: string]: any };
     limit?: number;
     offset?: number;
-    order?: string[][];
+    order?: Array<[string, string]>;
   }) => Promise<EventPrototype[]>;
   count: (options: {
     profileGuid?: string;

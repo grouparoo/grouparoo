@@ -245,7 +245,7 @@ export class Profile extends LoggedModel<Profile> {
       data?: { [key: string]: any };
       limit?: number;
       offset?: number;
-      order?: string[][];
+      order?: Array<[string, string]>;
     } = {}
   ) {
     options["profileGuid"] = this.guid;

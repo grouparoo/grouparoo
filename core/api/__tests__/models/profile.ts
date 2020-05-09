@@ -678,12 +678,16 @@ describe("models/profile", () => {
         data: { page: "/" },
         occurredAt: new Date(1000),
       });
+
+      helper.sleep(1001);
       await helper.factories.event({
         profileGuid: profile.guid,
         type: "pageview",
         data: { page: "/about" },
         occurredAt: new Date(2000),
       });
+      helper.sleep(1001);
+
       await helper.factories.event({
         profileGuid: profile.guid,
         type: "purchase",
