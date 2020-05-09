@@ -4,6 +4,7 @@ import { Row, Col, Form, Button, Badge, Alert } from "react-bootstrap";
 import Router from "next/router";
 import AppIcon from "../../appIcon";
 import StateBadge from "../../stateBadge";
+import { Typeahead } from "react-bootstrap-typeahead";
 
 export default function ({
   apiVersion,
@@ -114,9 +115,9 @@ export default function ({
     setApp(_app);
   };
 
-  const updateOption = async (event) => {
+  const updateOption = async (optKey, optValue) => {
     const _app = Object.assign({}, app);
-    _app.options[event.target.id] = event.target.value;
+    _app.options[optKey] = optValue;
     setApp(_app);
   };
 
@@ -185,13 +186,60 @@ export default function ({
                     <code>{opt.key}</code>: <small>{opt.description}</small>
                   </Form.Label>
                   {(() => {
-                    if (optionOptions[opt.key]?.type === "list") {
+                    if (optionOptions[opt.key]?.type === "typeahead") {
+                      return (
+                        <Typeahead
+                          id="typeahead"
+                          labelKey="key"
+                          onChange={(selected) => {
+                            console.log(selected);
+                            updateOption(opt.key, selected[0]?.key);
+                          }}
+                          options={optionOptions[opt.key]?.options.map(
+                            (k, idx) => {
+                              return {
+                                key: k,
+                                descriptions:
+                                  optionOptions[k]?.descriptions[idx],
+                              };
+                            }
+                          )}
+                          placeholder={`Select ${opt.key}`}
+                          renderMenuItemChildren={(opt, props, idx) => {
+                            return [
+                              <span key={`opt-${idx}-key`}>
+                                {opt.key}
+                                <br />
+                              </span>,
+                              <small
+                                key={`opt-${idx}-descriptions`}
+                                className="text-small"
+                              >
+                                <em>
+                                  Descriptions:{" "}
+                                  {opt.descriptions
+                                    ? opt.descriptions.join(", ")
+                                    : "None"}
+                                </em>
+                              </small>,
+                            ];
+                          }}
+                          defaultSelected={
+                            app.options[opt.key]
+                              ? [app.options[opt.key]]
+                              : undefined
+                          }
+                        />
+                      );
+                    } else if (optionOptions[opt.key]?.type === "list") {
                       return (
                         <Form.Control
                           as="select"
                           required={opt.required}
                           defaultValue={app.options[opt.key] || ""}
-                          onChange={(e) => updateOption(e)}
+                          onChange={(e) => {
+                            updateOption(e.target.id, e.target.value);
+                          }}
                         >
                           <option value={""} disabled>
                             Choose an option
@@ -215,7 +263,9 @@ export default function ({
                           required={opt.required}
                           type="text"
                           defaultValue={app.options[opt.key]}
-                          onChange={(e) => updateOption(e)}
+                          onChange={(e) => {
+                            updateOption(e.target.id, e.target.value);
+                          }}
                         />
                       );
                     }
@@ -233,7 +283,7 @@ export default function ({
             </Button>
           </Col>
           <Col>
-            {testResult.result ? (
+            {testResult.result !== null && testResult.result !== undefined ? (
               <Alert variant="success">Test Passed</Alert>
             ) : ranTest ? (
               <Alert variant="warning">Test Failed</Alert>

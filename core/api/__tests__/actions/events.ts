@@ -1,5 +1,5 @@
 import { helper } from "../utils/specHelper";
-import { specHelper } from "actionhero";
+import { specHelper, api } from "actionhero";
 import { createFactory } from "react";
 let actionhero;
 let guid;
@@ -55,7 +55,7 @@ describe("actions/events", () => {
       expect(error.code).toBe("AUTHENTICATION_ERROR");
     });
 
-    test("an event can be created", async () => {
+    test("an event can be created and task enqueued", async () => {
       const { error, event } = await specHelper.runAction("event:create", {
         apiKey,
         type: "pageview",
@@ -66,11 +66,18 @@ describe("actions/events", () => {
       expect(error).toBeFalsy();
       expect(event.guid).toMatch(/evt_.*/);
       expect(event.type).toBe("pageview");
+      expect(event.anonymousId).toBe("abc123");
       expect(event.ipAddress).toBeTruthy();
       expect(event.profileGuid).toBeFalsy();
       expect(event.data).toEqual({ path: "/" });
 
       guid = event.guid;
+
+      const foundTasks = await specHelper.findEnqueuedTasks(
+        "event:associateProfile"
+      );
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0]).toEqual({ eventGuid: guid });
     });
 
     test("an administrator can view an event", async () => {
@@ -106,7 +113,7 @@ describe("actions/events", () => {
       expect(events[0].data).toEqual({ path: "/" });
     });
 
-    test("an administrator can list events (with filter)", async () => {
+    test("an administrator can list events (with type filter)", async () => {
       connection.params = {
         csrfToken,
         type: "something-else",
@@ -117,6 +124,34 @@ describe("actions/events", () => {
       );
       expect(error).toBeFalsy();
       expect(events.length).toEqual(0);
+    });
+
+    test("an administrator can list events (with profileGuid filter)", async () => {
+      connection.params = {
+        csrfToken,
+        profileGuid: "000",
+      };
+      const { error, events } = await specHelper.runAction(
+        "events:list",
+        connection
+      );
+      expect(error).toBeFalsy();
+      expect(events.length).toEqual(0);
+    });
+
+    test("an administrator can list events (with data filter)", async () => {
+      connection.params = {
+        csrfToken,
+        data: {
+          path: "/",
+        },
+      };
+      const { error, events } = await specHelper.runAction(
+        "events:list",
+        connection
+      );
+      expect(error).toBeFalsy();
+      expect(events.length).toEqual(1);
     });
 
     test("an administrator can destroy an event", async () => {
@@ -130,6 +165,88 @@ describe("actions/events", () => {
       );
       expect(error).toBeUndefined();
       expect(success).toBe(true);
+    });
+
+    describe("destroy multiple events", () => {
+      beforeEach(async () => {
+        await api.events.model.destroyFor();
+
+        await helper.factories.event({
+          profileGuid: "abc",
+          type: "pageview",
+          occurredAt: new Date(0),
+        });
+        await helper.factories.event({ profileGuid: "abc", type: "pageview" });
+        await helper.factories.event({ profileGuid: "abc", type: "purchase" });
+        await helper.factories.event({
+          profileGuid: "def",
+          type: "pageview",
+          occurredAt: new Date(0),
+        });
+        await helper.factories.event({ profileGuid: "def", type: "pageview" });
+        await helper.factories.event({ profileGuid: "def", type: "purchase" });
+      });
+
+      test("an administrator can destroy events for a profile", async () => {
+        connection.params = {
+          csrfToken,
+          profileGuid: "abc",
+        };
+        const { error, count } = await specHelper.runAction(
+          "events:destroy",
+          connection
+        );
+        expect(error).toBeFalsy();
+        expect(count).toBe(3);
+        const remainingEvents = await api.events.model.count();
+        expect(remainingEvents).toBe(3);
+      });
+
+      test("an administrator can destroy events for a topic", async () => {
+        connection.params = {
+          csrfToken,
+          type: "pageview",
+        };
+        const { error, count } = await specHelper.runAction(
+          "events:destroy",
+          connection
+        );
+        expect(error).toBeFalsy();
+        expect(count).toBe(4);
+        const remainingEvents = await api.events.model.count();
+        expect(remainingEvents).toBe(2);
+      });
+
+      test("an administrator can destroy events for a profile + topic", async () => {
+        connection.params = {
+          csrfToken,
+          profileGuid: "abc",
+          type: "pageview",
+        };
+        const { error, count } = await specHelper.runAction(
+          "events:destroy",
+          connection
+        );
+        expect(error).toBeFalsy();
+        expect(count).toBe(2);
+        const remainingEvents = await api.events.model.count();
+        expect(remainingEvents).toBe(4);
+      });
+
+      test("an administrator can destroy events before a date", async () => {
+        connection.params = {
+          csrfToken,
+          before: new Date(1000).getTime(),
+        };
+        const { error, count } = await specHelper.runAction(
+          "events:destroy",
+          connection
+        );
+        expect(error).toBeFalsy();
+        expect(count).toBe(2);
+        const remainingEvents = await api.events.model.count();
+        expect(remainingEvents).toBe(4);
+      });
     });
   });
 });

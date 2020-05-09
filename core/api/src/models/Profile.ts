@@ -1,10 +1,11 @@
 import {
   Table,
+  Column,
   HasMany,
   BelongsToMany,
   AfterDestroy,
 } from "sequelize-typescript";
-import { log } from "actionhero";
+import { log, api } from "actionhero";
 import { LoggedModel } from "../classes/loggedModel";
 import { GroupMember } from "./GroupMember";
 import { Group } from "./Group";
@@ -14,6 +15,7 @@ import { ProfileProperty } from "./ProfileProperty";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Import } from "./Import";
 import { Destination } from "./Destination";
+import { EventPrototype } from "./../classes/events";
 import { waitForLock } from "../modules/locks";
 
 @Table({ tableName: "profiles", paranoid: false })
@@ -21,6 +23,9 @@ export class Profile extends LoggedModel<Profile> {
   guidPrefix() {
     return "pro";
   }
+
+  @Column
+  anonymousId: string;
 
   @HasMany(() => ProfileProperty)
   profileProperties: ProfileProperty[];
@@ -51,11 +56,17 @@ export class Profile extends LoggedModel<Profile> {
     });
   }
 
+  @AfterDestroy
+  static async destroyEvents(instance: Profile) {
+    await api.events.model.destroyFor({ profileGuid: instance.guid });
+  }
+
   async apiData() {
     const properties = await this.properties();
 
     return {
       guid: this.guid,
+      anonymousId: this.anonymousId,
       properties,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
@@ -228,6 +239,20 @@ export class Profile extends LoggedModel<Profile> {
     return results;
   }
 
+  async events(
+    options: {
+      type?: string;
+      data?: { [key: string]: any };
+      limit?: number;
+      offset?: number;
+      order?: Array<[string, string]>;
+    } = {}
+  ) {
+    options["profileGuid"] = this.guid;
+    const profileEvents: EventPrototype[] = api.events.model.findAll(options);
+    return profileEvents;
+  }
+
   async export(force = false) {
     let oldSimpleProperties = {};
     let oldGroups = [];
@@ -378,5 +403,43 @@ export class Profile extends LoggedModel<Profile> {
       throw new Error(`cannot find ${this.name} ${guid}`);
     }
     return instance;
+  }
+
+  static async merge(profile: Profile, otherProfile: Profile) {
+    // transfer events
+    let eventsCount = 1;
+    while (eventsCount > 0) {
+      const events = await otherProfile.events({ limit: 100 });
+      eventsCount = events.length;
+      await Promise.all(
+        events.map((event) => {
+          event.profileGuid = profile.guid;
+          return event.save();
+        })
+      );
+    }
+
+    // transfer properties, keeping the newest values
+    const properties = await profile.properties();
+    const otherProperties = await otherProfile.properties();
+    const newProperties = {};
+    for (const key in otherProperties) {
+      if (
+        !properties[key] ||
+        otherProperties[key].updatedAt.getTime() >
+          properties[key].updatedAt.getTime()
+      ) {
+        newProperties[key] = otherProperties[key].value;
+      }
+    }
+
+    // delete other profile so unique profile properties will be available
+    await otherProfile.destroy();
+    await profile.addOrUpdateProperties(newProperties);
+
+    // re-import and update groups
+    delete profile.profileProperties; // remove any cached values from the instance
+    await profile.import();
+    await profile.updateGroupMembership();
   }
 }

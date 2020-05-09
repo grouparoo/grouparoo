@@ -1,6 +1,7 @@
 import LogFactory from "../factories/log";
 import GroupFactory from "../factories/group";
 import ImportFactory from "../factories/import";
+import EventFactory from "../factories/event";
 import TeamFactory from "../factories/team";
 import TeamMemberFactory from "../factories/teamMember";
 import ProfileFactory from "../factories/profile";
@@ -40,6 +41,7 @@ import { Team } from "../../src/models/Team";
 import { TeamMember } from "../../src/models/TeamMember";
 
 import { plugin } from "../../src/index";
+import { addEventsApp } from "../../src/classes/events";
 
 const { api, cache, Process } = require("actionhero");
 
@@ -79,6 +81,7 @@ export namespace helper {
     log: LogFactory,
     group: GroupFactory,
     import: ImportFactory,
+    event: EventFactory,
     apiKey: ApiKeyFactory,
     team: TeamFactory,
     teamMember: TeamMemberFactory,
@@ -106,10 +109,7 @@ export namespace helper {
       )
     );
 
-    const events = await api.events.model.findAll();
-    for (const i in events) {
-      await events[i].destroy();
-    }
+    await await api.events.model.destroyFor();
 
     await cache.destroy("profilePropertyRules:all");
     await api.resque.queue.connection.redis.flushdb();
@@ -144,6 +144,7 @@ export namespace helper {
     }
 
     enableTestPlugin();
+    addEventsApp();
 
     return {
       actionhero,

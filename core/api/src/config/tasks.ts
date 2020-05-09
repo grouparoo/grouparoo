@@ -6,6 +6,7 @@ export const DEFAULT = {
       // what queues should the taskProcessors work?
       queues: [
         "imports",
+        "events",
         "profiles",
         "exports",
         "runs",

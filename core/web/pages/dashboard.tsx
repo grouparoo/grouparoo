@@ -22,14 +22,14 @@ export default function (props) {
 
   if (appsCount === -1) {
     return <Loader />;
-  } else if (appsCount === 0) {
+  } else if (appsCount === 1) {
     return (
       <>
         <HeaderTitle title="Welcome" />
         <Welcome {...props} />
       </>
     );
-  } else if (appsCount > 0) {
+  } else if (appsCount > 1) {
     return (
       <>
         <HeaderTitle title="Dashboard" />

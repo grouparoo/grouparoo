@@ -133,3 +133,28 @@ export class EventDestroy extends AuthenticatedAction {
     response.success = true;
   }
 }
+
+export class EventsDestroy extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "events:destroy";
+    this.description = "destroy an event";
+    this.outputExample = {};
+    this.permission = { topic: "event", mode: "write" };
+    this.inputs = {
+      profileGuid: { required: false },
+      type: { required: false },
+      before: { required: false },
+    };
+  }
+
+  async run({ params, response }) {
+    response.success = false;
+    const where = { profileGuid: params.profileGuid, type: params.type };
+    if (params.before) {
+      where["before"] = new Date(params.before);
+    }
+    response.count = await api.events.model.destroyFor(where);
+    response.success = true;
+  }
+}

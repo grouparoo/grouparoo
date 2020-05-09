@@ -42,6 +42,7 @@ export interface GrouparooPlugin {
 export interface PluginApp {
   name: string;
   options: AppOption[];
+  addible?: boolean;
   methods: {
     test: TestPluginMethod;
     appOptions?: AppOptionsMethod;
