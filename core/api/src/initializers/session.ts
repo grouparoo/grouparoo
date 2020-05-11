@@ -80,6 +80,8 @@ const authenticatedActionMiddleware: action.ActionMiddleware = {
           `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
         );
       }
+
+      data.session.apiKey = apiKey;
     }
 
     // choose which mode to authenticate with

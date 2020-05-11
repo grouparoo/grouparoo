@@ -42,6 +42,12 @@ export interface EventPrototype extends EventArgs {
     type?: string;
     data?: { [key: string]: any };
   }) => Promise<number>;
+  types: (options: {
+    match?: string;
+    limit?: number;
+    offset?: number;
+    order?: Array<[string, string]>;
+  }) => Promise<string[]>;
   destroyFor: (options: {
     profileGuid?: string;
     type?: string;

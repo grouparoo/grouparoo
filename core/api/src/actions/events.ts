@@ -40,7 +40,14 @@ export class EventsList extends AuthenticatedAction {
       order: params.order,
     });
 
+    const total = await api.events.model.count({
+      profileGuid: params.profileGuid,
+      type: params.type,
+      data: Object.keys(data).length > 0 ? data : undefined,
+    });
+
     response.events = events;
+    response.total = total;
   }
 }
 
@@ -52,7 +59,6 @@ export class EventCreate extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "event", mode: "write" };
     this.inputs = {
-      apiKey: { required: true },
       type: { required: true },
       occurredAt: { required: false },
       userId: { required: false },
@@ -61,7 +67,7 @@ export class EventCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ connection, params, response }) {
+  async run({ session, connection, params, response }) {
     if (!params.userId && !params.anonymousId) {
       throw new Error(`either anonymousId or userId is required`);
     }
@@ -80,8 +86,12 @@ export class EventCreate extends AuthenticatedAction {
       data = JSON.parse(data);
     } catch (error) {}
 
+    const producerGuid = session.teamMember
+      ? session.teamMember.guid
+      : session.apiKey.guid;
+
     const event = new api.events.model({
-      producerGuid: params.apiKey,
+      producerGuid: producerGuid,
       type: params.type,
       userId: params.userId,
       anonymousId: params.anonymousId,
@@ -93,6 +103,26 @@ export class EventCreate extends AuthenticatedAction {
     await event.save();
 
     response.event = event;
+  }
+}
+
+export class EventAutocompleteType extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "events:autocompleteType";
+    this.description = "return matching event types";
+    this.outputExample = {};
+    this.permission = { topic: "event", mode: "read" };
+    this.inputs = {
+      match: { required: false },
+      limit: { required: false, default: 1000 },
+      offset: { required: false, default: 0 },
+      order: { required: false, default: [["type", "asc"]] },
+    };
+  }
+
+  async run({ params, response }) {
+    response.types = await api.events.model.types(params);
   }
 }
 

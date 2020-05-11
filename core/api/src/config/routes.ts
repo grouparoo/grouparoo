@@ -41,6 +41,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/account", action: "account:view" },
         { path: "/v:apiVersion/settings", action: "settings:list" },
         { path: "/v:apiVersion/events", action: "events:list" },
+        { path: "/v:apiVersion/events/autocompleteType", action: "events:autocompleteType" },
         { path: "/v:apiVersion/apps", action: "apps:list" },
         { path: "/v:apiVersion/sources", action: "sources:list" },
         { path: "/v:apiVersion/source/:guid/connectionOptions", action: "source:connectionOptions" },

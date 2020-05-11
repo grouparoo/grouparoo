@@ -110,7 +110,7 @@ export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "profiles:autocompleteProfileProperty";
-    this.description = "create a run to import and update every profile";
+    this.description = "return matching profile property values";
     this.outputExample = {};
     this.permission = { topic: "profile", mode: "read" };
     this.inputs = {

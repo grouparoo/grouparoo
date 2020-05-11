@@ -102,7 +102,7 @@ describe("actions/events", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, events } = await specHelper.runAction(
+      const { error, events, total } = await specHelper.runAction(
         "events:list",
         connection
       );
@@ -111,6 +111,7 @@ describe("actions/events", () => {
       expect(events[0].guid).toEqual(guid);
       expect(events[0].type).toEqual("pageview");
       expect(events[0].data).toEqual({ path: "/" });
+      expect(total).toBe(1);
     });
 
     test("an administrator can list events (with type filter)", async () => {
@@ -118,12 +119,13 @@ describe("actions/events", () => {
         csrfToken,
         type: "something-else",
       };
-      const { error, events } = await specHelper.runAction(
+      const { error, events, total } = await specHelper.runAction(
         "events:list",
         connection
       );
       expect(error).toBeFalsy();
       expect(events.length).toEqual(0);
+      expect(total).toBe(0);
     });
 
     test("an administrator can list events (with profileGuid filter)", async () => {
@@ -131,12 +133,13 @@ describe("actions/events", () => {
         csrfToken,
         profileGuid: "000",
       };
-      const { error, events } = await specHelper.runAction(
+      const { error, events, total } = await specHelper.runAction(
         "events:list",
         connection
       );
       expect(error).toBeFalsy();
       expect(events.length).toEqual(0);
+      expect(total).toBe(0);
     });
 
     test("an administrator can list events (with data filter)", async () => {
@@ -146,12 +149,38 @@ describe("actions/events", () => {
           path: "/",
         },
       };
-      const { error, events } = await specHelper.runAction(
+      const { error, events, total } = await specHelper.runAction(
         "events:list",
         connection
       );
       expect(error).toBeFalsy();
       expect(events.length).toEqual(1);
+      expect(total).toBe(1);
+    });
+
+    test("an administrator can autocomplete the types of events (no filter)", async () => {
+      connection.params = {
+        csrfToken,
+      };
+      const { error, types } = await specHelper.runAction(
+        "events:autocompleteType",
+        connection
+      );
+      expect(error).toBeFalsy();
+      expect(types).toEqual(["pageview"]);
+    });
+
+    test("an administrator can autocomplete the types of events (with type filter)", async () => {
+      connection.params = {
+        csrfToken,
+        match: "thing",
+      };
+      const { error, types } = await specHelper.runAction(
+        "events:autocompleteType",
+        connection
+      );
+      expect(error).toBeFalsy();
+      expect(types).toEqual([]);
     });
 
     test("an administrator can destroy an event", async () => {

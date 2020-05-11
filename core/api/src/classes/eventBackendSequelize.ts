@@ -154,6 +154,34 @@ export class Event extends EventPrototype {
     });
   }
 
+  static async types(
+    options: {
+      match?: string;
+      limit?: number;
+      offset?: number;
+      order?: Array<[string, string]>;
+    } = {}
+  ) {
+    const { match, limit, offset, order } = options;
+    const where = {};
+    if (match && match.length > 0) {
+      where["type"] = { [Op.iLike]: `%${match}%` };
+    }
+
+    const events = await SequelizeEvent.findAll({
+      attributes: [
+        [api.sequelize.fn("DISTINCT", api.sequelize.col("type")), "type"],
+      ],
+      where,
+      group: ["type"],
+      limit,
+      offset,
+      order,
+    });
+
+    return events.map((event) => event.type);
+  }
+
   static async destroyFor(
     options: {
       profileGuid?: string;
