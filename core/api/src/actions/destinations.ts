@@ -357,6 +357,14 @@ export class DestinationProfilePreview extends AuthenticatedAction {
       } catch {}
     }
 
+    if (
+      !params.mapping &&
+      !params.groupGuid &&
+      !params.destinationGroupMemberships
+    ) {
+      await destination.checkProfileWillBeExported(profile);
+    }
+
     response.profile = await destination.profilePreview(
       profile,
       mapping,
