@@ -9,6 +9,7 @@ else
   EXECUTABLE="ts-node-dev"
 fi
 
+export NEXT_TELEMETRY_DISABLED=true
 export NEXT_DEVELOPMENT_MODE=true
 
 "$EXECUTABLE" \
