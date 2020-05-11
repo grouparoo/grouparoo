@@ -1,0 +1,203 @@
+#!/usr/bin/env node
+
+const { Process, log, api, config } = require("actionhero");
+const { ApiKey, Profile } = require("../dist");
+const optimist = require("optimist");
+const fetch = require("isomorphic-fetch");
+const uuid = require("uuid");
+
+// prettier-ignore
+const funnel = [
+  { type: "pageview", data: { page: "/" }, percent: 100 },
+  { type: "pageview", data: { page: "/about" }, percent: 99 },
+  { type: "pageview", data: { page: "/sign-in" }, percent: 50 },
+  { type: "identify", data: { page: "/sign-in" }, percent: 100 },
+  { type: "pageview", data: { page: '/product'}, percent: 75, addToCartPercent : 50 },
+  { type: "pageview", data: { page: '/product'}, percent: 75, addToCartPercent : 50 },
+  { type: "pageview", data: { page: '/product'},  percent: 75, addToCartPercent : 50 },
+  { type: "pageView", data: { page: '/cart'},  percent: 80 },
+  { type: "pageView", data: { page: '/purchase'},  percent: 80 },
+  { type: "pageView", data: { page: '/thanks'}, percent: 100 },
+];
+
+const products = [
+  { name: "red-shell", price: 100 },
+  { name: "blue-shell", price: 150 },
+  { name: "green-shell", price: 50 },
+  { name: "coin", price: 1 },
+  { name: "banana-peel", price: 25 },
+  { name: "mushroom", price: 40 },
+  { name: "star", price: 99 },
+];
+
+const sleep = 100;
+const parallelSessions = 1;
+
+async function main() {
+  const app = new Process();
+  await app.initialize();
+
+  if (!optimist.argv["apiKey"]) {
+    throw new Error(`argument apiKey is required`);
+  }
+  const { apiKey } = await ApiKey.findOne({
+    where: { apiKey: optimist.argv["apiKey"] },
+  });
+  if (!apiKey) {
+    throw new Error("apiKey not found (--apiKey=abc123)");
+  }
+
+  if (!optimist.argv["url"]) {
+    throw new Error(`argument url is required (--url="http://localhost:3000")`);
+  }
+  const baseUrl = `${optimist.argv["url"]}/api/v1/track`;
+
+  const sessions = [];
+  for (let i = 0; i < parallelSessions; i++) {
+    sessions.push(new MockSession(i, baseUrl, apiKey));
+  }
+
+  const timer = setInterval(() => {
+    sessions.map((mockSession) => mockSession.tick());
+  }, sleep);
+}
+
+class MockSession {
+  constructor(id, baseUrl, apiKey) {
+    this.id = id;
+    this.baseUrl = baseUrl;
+    this.apiKey = apiKey;
+    this.anonymousId = null;
+    this.currentUser = null;
+    this.profileProperties = {};
+    this.currentStep = 0;
+    this.identified = false;
+    this.cart = [];
+  }
+
+  log(message) {
+    log(`[session ${this.id}] - ${message}`);
+  }
+
+  async tick() {
+    if (!this.currentStep) {
+      this.currentStep = 0;
+    }
+    const step = funnel[this.currentStep];
+    await this.setCurrentUser();
+    await this.checkPercent(step);
+    if (!this.currentUser) {
+      return;
+    }
+
+    await this.track(step);
+
+    this.currentStep++;
+    if (this.currentStep >= funnel.length) {
+      await this.empty();
+    }
+  }
+
+  async track(step) {
+    const params = {
+      apiKey: this.apiKey,
+      anonymousId: this.anonymousId,
+      occurredAt: new Date().getTime(),
+      type: step.type,
+      data: step.data || {},
+    };
+
+    if (step.type === "identify") {
+      this.identified = true;
+    }
+    if (this.identified) {
+      params.userId = this.profileProperties["userId"].value;
+    }
+
+    let relatedEventParams = {
+      apiKey: this.apiKey,
+      anonymousId: this.anonymousId,
+      occurredAt: new Date().getTime(),
+    };
+
+    if (step.type === "pageview" && step.data.page === "/product") {
+      const currentProduct =
+        products[Math.floor(Math.random() * products.length)];
+      const randomNumber = Math.floor(Math.random() * 101);
+      const added = randomNumber <= step.addToCartPercent;
+      if (added) {
+        this.cart.push(currentProduct);
+        relatedEventParams.type = "itemAddedToCart";
+        relatedEventParams.data = { name: currentProduct.name };
+        relatedEventParams.data = { price: currentProduct.price };
+      }
+    } else if (step.type === "pageview" && step.data.page === "/purchase") {
+      relatedEventParams.type = "purchase";
+      relatedEventParams.data.products = JSON.stringify([
+        this.cart.map((product) => product.name),
+      ]);
+      const total = 0;
+      relatedEventParams.data.total = this.cart.map(
+        (product) => (total = total + product.price)
+      );
+    }
+
+    const response = await fetch(this.baseUrl, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(params),
+    });
+    this.log(this.baseUrl + " " + JSON.stringify(params));
+
+    if (relatedEventParams.type) {
+      const relatedEventResponse = await fetch(this.baseUrl, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(params),
+      });
+      this.log(this.baseUrl + " " + JSON.stringify(relatedEventParams));
+    }
+  }
+
+  async setCurrentUser() {
+    if (this.currentUser) {
+      return;
+    }
+
+    this.currentUser = await Profile.findOne({
+      order: api.sequelize.random(),
+    });
+    this.anonymousId = `?-${uuid.v4()}`;
+    this.profileProperties = await this.currentUser.properties();
+    this.log(`using profile ${this.currentUser.guid}`);
+  }
+
+  async checkPercent(step) {
+    const randomNumber = Math.floor(Math.random() * 101);
+    if (randomNumber > step.percent) {
+      return this.empty();
+    }
+  }
+
+  async empty() {
+    this.currentUser = null;
+    this.profileProperties = {};
+    this.currentStep = 0;
+    this.identified = false;
+    this.cart = [];
+    this.log(`session complete`);
+  }
+}
+
+(async function () {
+  try {
+    await main();
+  } catch (error) {
+    log(error, "error");
+    process.exit(1);
+  }
+})();
