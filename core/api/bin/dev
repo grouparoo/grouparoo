@@ -11,6 +11,13 @@ fi
 
 export NEXT_DEVELOPMENT_MODE=true
 
+# in develeopment mode, often there is an orphan next.js/webpack process hanging around if the process crashes.
+GROUPAROO_PIDS=`ps | grep ts-node-dev | grep grouparoo | cut -f1 -d' '`
+for p in $GROUPAROO_PIDS; do
+  printf "stopping orphan process $p\r\n"
+  kill -9 $p
+done
+
 "$EXECUTABLE" \
   --transpile-only \
   --ignore-watch=web \
