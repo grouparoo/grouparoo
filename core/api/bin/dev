@@ -18,11 +18,14 @@ for p in $GROUPAROO_PIDS; do
   kill -9 $p
 done
 
-"$EXECUTABLE" \
+
+node \
   --max-old-space-size=4096 \
-  --transpile-only \
-  --ignore-watch=web \
-  --ignore-watch='../web' \
-  --no-deps \
-  --notify=false \
-  src/server.ts
+  -- "$EXECUTABLE" \
+    --transpile-only \
+    --ignore-watch=web \
+    --ignore-watch='../web' \
+    --no-deps \
+    --notify=false \
+      -- \
+      src/server.ts
