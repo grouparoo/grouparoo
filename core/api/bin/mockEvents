@@ -9,15 +9,15 @@ const uuid = require("uuid");
 // prettier-ignore
 const funnel = [
   { type: "pageview", data: { page: "/" }, percent: 100 },
-  { type: "pageview", data: { page: "/about" }, percent: 99 },
-  { type: "pageview", data: { page: "/sign-in" }, percent: 50 },
+  { type: "pageview", data: { page: "/about" }, percent: 100 },
+  { type: "pageview", data: { page: "/sign-in" }, percent: 100 },
   { type: "identify", data: { page: "/sign-in" }, percent: 100 },
-  { type: "pageview", data: { page: '/product'}, percent: 75, addToCartPercent : 50 },
-  { type: "pageview", data: { page: '/product'}, percent: 75, addToCartPercent : 50 },
-  { type: "pageview", data: { page: '/product'},  percent: 75, addToCartPercent : 50 },
-  { type: "pageView", data: { page: '/cart'},  percent: 80 },
-  { type: "pageView", data: { page: '/purchase'},  percent: 80 },
-  { type: "pageView", data: { page: '/thanks'}, percent: 100 },
+  { type: "pageview", data: { page: '/product'}, percent: 100, addToCartPercent : 50 },
+  { type: "pageview", data: { page: '/product'}, percent: 100, addToCartPercent : 50 },
+  { type: "pageview", data: { page: '/product'},  percent: 100, addToCartPercent : 50 },
+  { type: "pageview", data: { page: '/cart'},  percent: 100 },
+  { type: "pageview", data: { page: '/purchase'},  percent: 100 },
+  { type: "pageview", data: { page: '/thanks'}, percent: 100 },
 ];
 
 const products = [
@@ -57,9 +57,15 @@ async function main() {
     sessions.push(new MockSession(i, baseUrl, apiKey));
   }
 
-  const timer = setInterval(() => {
-    sessions.map((mockSession) => mockSession.tick());
-  }, sleep);
+  async function tick() {
+    for (const i in sessions) {
+      await sessions[i].tick();
+    }
+
+    setTimeout(tick, sleep);
+  }
+
+  await tick();
 }
 
 class MockSession {
@@ -128,18 +134,19 @@ class MockSession {
       if (added) {
         this.cart.push(currentProduct);
         relatedEventParams.type = "itemAddedToCart";
-        relatedEventParams.data = { name: currentProduct.name };
-        relatedEventParams.data = { price: currentProduct.price };
+        relatedEventParams.data = {
+          name: currentProduct.name,
+          price: currentProduct.price,
+        };
       }
     } else if (step.type === "pageview" && step.data.page === "/purchase") {
       relatedEventParams.type = "purchase";
-      relatedEventParams.data.products = JSON.stringify([
-        this.cart.map((product) => product.name),
-      ]);
-      const total = 0;
-      relatedEventParams.data.total = this.cart.map(
-        (product) => (total = total + product.price)
-      );
+      let total = 0;
+      this.cart.map((product) => (total = total + product.price));
+      relatedEventParams.data = {
+        products: JSON.stringify(this.cart.map((product) => product.name)),
+        total,
+      };
     }
 
     const response = await fetch(this.baseUrl, {
@@ -157,9 +164,10 @@ class MockSession {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(params),
+        body: JSON.stringify(relatedEventParams),
       });
       this.log(this.baseUrl + " " + JSON.stringify(relatedEventParams));
+      console.log(await relatedEventResponse.text());
     }
   }
 
@@ -173,7 +181,12 @@ class MockSession {
     });
     this.anonymousId = `?-${uuid.v4()}`;
     this.profileProperties = await this.currentUser.properties();
-    this.log(`using profile ${this.currentUser.guid}`);
+    if (!this.profileProperties["userId"]) {
+      return this.empty();
+    }
+    this.log(
+      `using profile ${this.currentUser.guid} (${this.profileProperties["userId"].value})`
+    );
   }
 
   async checkPercent(step) {
@@ -194,10 +207,5 @@ class MockSession {
 }
 
 (async function () {
-  try {
-    await main();
-  } catch (error) {
-    log(error, "error");
-    process.exit(1);
-  }
+  await main();
 })();
