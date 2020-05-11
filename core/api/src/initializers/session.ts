@@ -1,7 +1,5 @@
 import { api, action, Initializer, Connection } from "actionhero";
-import { Team } from "../models/Team";
-import { TeamMember } from "../models/TeamMember";
-import { ApiKey } from "../models/ApiKey";
+import { Team, TeamMember, ApiKey } from "../../..";
 import crypto from "crypto";
 
 class AuthenticationError extends Error {

@@ -1,6 +1,5 @@
 import { api, Initializer } from "actionhero";
-import { File } from "../models/File";
-import { string } from "prop-types";
+import { File } from "../../..";
 
 export class Files extends Initializer {
   constructor() {
