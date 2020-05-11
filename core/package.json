@@ -25,7 +25,7 @@
   "scripts": {
     "prepare": "npm run build-api && npm run build-web",
     "build-api": "cd api && rm -rf dist && tsc --declaration",
-    "build-web": "cd web && next build",
+    "build-web": "cd web && NEXT_TELEMETRY_DISABLED=true next build",
     "start": "./api/bin/start",
     "dev": "./api/bin/dev",
     "test": "npm run test-api && npm run test-web",
