@@ -144,7 +144,7 @@ export default function ({ apiVersion, errorHandler, query }) {
             <th>Guids</th>
             <th>UserId</th>
             <th>Data</th>
-            <th>Created At</th>
+            <th>Occurred At</th>
           </tr>
         </thead>
         <tbody>
@@ -190,7 +190,7 @@ export default function ({ apiVersion, errorHandler, query }) {
                   <code>{JSON.stringify(event.data)}</code>
                 </td>
                 <td>
-                  <Moment fromNow>{event.createdAt}</Moment>
+                  <Moment fromNow>{event.occurredAt}</Moment>
                 </td>
               </tr>
             );
