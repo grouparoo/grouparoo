@@ -1,5 +1,5 @@
 import { api, Initializer, task } from "actionhero";
-import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
+import { ProfilePropertyRule } from "../index";
 import { plugin } from "../modules/plugin";
 import { addEventsApp } from "../classes/events";
 

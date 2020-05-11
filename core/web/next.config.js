@@ -36,6 +36,10 @@ const overwriteNextBabelLoaderToIncludePluginNodeModules = (config) => {
     }
   })[0];
 
+  if (!NextBabelLoader) {
+    return;
+  }
+
   const originalExclude = NextBabelLoader.exclude;
 
   NextBabelLoader.exclude = (moduleName, ...args) => {
