@@ -9,14 +9,14 @@ const uuid = require("uuid");
 // prettier-ignore
 const funnel = [
   { type: "pageview", data: { page: "/" }, percent: 100 },
-  { type: "pageview", data: { page: "/about" }, percent: 100 },
-  { type: "pageview", data: { page: "/sign-in" }, percent: 100 },
+  { type: "pageview", data: { page: "/about" }, percent: 90 },
+  { type: "pageview", data: { page: "/sign-in" }, percent: 90 },
   { type: "identify", data: { page: "/sign-in" }, percent: 100 },
-  { type: "pageview", data: { page: '/product'}, percent: 100, addToCartPercent : 50 },
-  { type: "pageview", data: { page: '/product'}, percent: 100, addToCartPercent : 50 },
-  { type: "pageview", data: { page: '/product'},  percent: 100, addToCartPercent : 50 },
-  { type: "pageview", data: { page: '/cart'},  percent: 100 },
-  { type: "pageview", data: { page: '/purchase'},  percent: 100 },
+  { type: "pageview", data: { page: '/product'}, percent: 80, addToCartPercent : 50 },
+  { type: "pageview", data: { page: '/product'}, percent: 80, addToCartPercent : 50 },
+  { type: "pageview", data: { page: '/product'},  percent: 80, addToCartPercent : 50 },
+  { type: "pageview", data: { page: '/cart'},  percent: 75 },
+  { type: "pageview", data: { page: '/purchase'},  percent: 80 },
   { type: "pageview", data: { page: '/thanks'}, percent: 100 },
 ];
 
@@ -124,6 +124,7 @@ class MockSession {
       apiKey: this.apiKey,
       anonymousId: this.anonymousId,
       occurredAt: new Date().getTime(),
+      userId: this.profileProperties["userId"].value,
     };
 
     if (step.type === "pageview" && step.data.page === "/product") {
@@ -167,7 +168,6 @@ class MockSession {
         body: JSON.stringify(relatedEventParams),
       });
       this.log(this.baseUrl + " " + JSON.stringify(relatedEventParams));
-      console.log(await relatedEventResponse.text());
     }
   }
 
