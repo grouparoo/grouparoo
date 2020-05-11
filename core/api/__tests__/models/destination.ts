@@ -435,27 +435,6 @@ describe("models/destination", () => {
         await profile.destroy();
       });
 
-      test("previewing a profile not in any groups tracked by this destination will throw", async () => {
-        const profile = await helper.factories.profile();
-
-        const mapping = {
-          "primary-id": "userId",
-          email: "email",
-        };
-
-        const destinationGroupMemberships = {};
-        destinationGroupMemberships[group.guid] = "another-group-tag";
-
-        await expect(
-          destination.profilePreview(
-            profile,
-            mapping,
-            destinationGroupMemberships
-          )
-        ).rejects.toThrow(/will not be exported by this profile/);
-        await profile.destroy();
-      });
-
       describe("trackAllGroups", () => {
         test("no groups can be added or removed if the destination is tracking all groups", async () => {
           await destination.update({ trackAllGroups: true });

@@ -486,8 +486,6 @@ export class Destination extends LoggedModel<Destination> {
       [groupGuid: string]: string;
     }
   ) {
-    await this.checkProfileWillBeExported(profile);
-
     const profileProperties = await profile.properties();
     const mappingKeys = Object.keys(mapping);
     const mappedProfileProperties = {};
@@ -524,7 +522,7 @@ export class Destination extends LoggedModel<Destination> {
 
     if (intersectingGroupGuids.length === 0) {
       throw new Error(
-        `profile ${profile.guid} will not be exported by this profile`
+        `profile ${profile.guid} will not be exported by this destination`
       );
     }
 
