@@ -10,7 +10,7 @@ export default function (props) {
         <title>Grouparoo: API Keys</title>
       </Head>
 
-      <h1>AP Keys</h1>
+      <h1>API Keys</h1>
       <ApiKeysList {...props} />
       <Button
         size="sm"
