@@ -1,5 +1,5 @@
 import { api, action, Initializer, Connection } from "actionhero";
-import { Team, TeamMember, ApiKey } from "../../..";
+import { Team, TeamMember, ApiKey } from "../index";
 import crypto from "crypto";
 
 class AuthenticationError extends Error {

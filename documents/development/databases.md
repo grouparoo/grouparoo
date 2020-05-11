@@ -20,4 +20,4 @@
 
 ## Other Notes
 
-- If you are loading a model in an initializer in the `@grouparoo/core` project, you need to load it from Core's main export, not the Model file itself. ie: `import {Profile} from '../../..'` not `import {Profile} from '../models/Profile'`.
+- If you are loading a model in an initializer in the `@grouparoo/core` project, you need to load it from Core's main export, not the Model file itself. ie: `import {Profile} from '../index'` not `import {Profile} from '../models/Profile'`.

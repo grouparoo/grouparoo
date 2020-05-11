@@ -1,5 +1,5 @@
 import { api, Initializer } from "actionhero";
-import { File } from "../../..";
+import { File } from "../index";
 
 export class Files extends Initializer {
   constructor() {
