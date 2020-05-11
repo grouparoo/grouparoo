@@ -9,7 +9,7 @@ module.exports = {
     overwriteNextBabelLoaderToIncludePluginNodeModules(config);
 
     config.module.rules.push({
-      test: /\.plugin\.js|\.plugin\.jsx|\.plugin\.ts|\.plugin\.tsx$/,
+      test: /\.plugin\.js$|\.plugin\.jsx$|\.plugin\.ts$|\.plugin\.tsx$/,
       use: [options.defaultLoaders.babel],
     });
 
