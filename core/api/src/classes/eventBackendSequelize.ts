@@ -157,6 +157,7 @@ export class Event extends EventPrototype {
       where["profileGuid"] = { [Op.eq]: null };
     }
     return SequelizeEvent.count({
+      distinct: true,
       include: [
         {
           model: SequelizeEventData,
