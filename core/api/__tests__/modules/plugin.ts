@@ -82,7 +82,7 @@ describe("modules/plugin", () => {
         );
       });
 
-      test("it replaces string variables with UTC 0 when there is no previous run", async () => {
+      test("it replaces string variables with UTC 0 and a null guid when there is no previous run", async () => {
         const run = await helper.factories.run();
         const schedule = await helper.factories.schedule();
 
@@ -97,6 +97,13 @@ describe("modules/plugin", () => {
           "where updatedAt >= '1970-01-01 00:00:00'"
         );
         expect(replacedString).toContain(`# The Previous Run Guid is: `);
+      });
+
+      test("it throws an error if a template variable is missing", async () => {
+        const run = await helper.factories.run();
+        await expect(
+          plugin.replaceTemplateRunVariables(`hello {{world}}`, run)
+        ).rejects.toThrow('missing mustache key "world"');
       });
     });
 
@@ -124,25 +131,34 @@ describe("modules/plugin", () => {
           "Profile Created at 1970-01-01 00:00:00"
         );
       });
+
+      test("it throws an error if a template variable is missing", async () => {
+        const profile = await helper.factories.profile();
+        await expect(
+          plugin.replaceTemplateProfileVariables(`hello {{world}}`, profile)
+        ).rejects.toThrow('missing mustache key "world"');
+      });
     });
 
-    test("replaceTemplateProfilePropertyKeysWithProfilePropertyGuid and replaceTemplateProfilePropertyGuidsWithProfilePropertyKeys", async () => {
-      const rule = await ProfilePropertyRule.findOne({
-        where: { key: "userId" },
-      });
-      const initialString = "select * from users where id = {{ userId }}";
-      const replacedWithGuid = await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyGuid(
-        initialString
-      );
-      expect(replacedWithGuid).toEqual(
-        `select * from users where id = {{ ${rule.guid} }}`
-      );
+    describe("replaceTemplateProfilePropertyKeysWithProfilePropertyGuid and replaceTemplateProfilePropertyGuidsWithProfilePropertyKeys", () => {
+      test("they work to convert each other", async () => {
+        const rule = await ProfilePropertyRule.findOne({
+          where: { key: "userId" },
+        });
+        const initialString = "select * from users where id = {{ userId }}";
+        const replacedWithGuid = await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyGuid(
+          initialString
+        );
+        expect(replacedWithGuid).toEqual(
+          `select * from users where id = {{ ${rule.guid} }}`
+        );
 
-      expect(
-        await plugin.replaceTemplateProfilePropertyGuidsWithProfilePropertyKeys(
-          replacedWithGuid
-        )
-      ).toEqual(initialString);
+        expect(
+          await plugin.replaceTemplateProfilePropertyGuidsWithProfilePropertyKeys(
+            replacedWithGuid
+          )
+        ).toEqual(initialString);
+      });
     });
 
     describe("createImport", () => {

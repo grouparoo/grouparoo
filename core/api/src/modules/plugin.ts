@@ -222,9 +222,9 @@ export namespace plugin {
       now: expandDates(new Date()),
       run: {},
       previousRun: {
-        guid: null,
-        creatorGuid: null,
-        creatorType: null,
+        guid: "",
+        creatorGuid: "",
+        creatorType: "",
         error: null,
         state: "mocked",
         createdAt: expandDates(new Date(0)),
@@ -258,6 +258,7 @@ export namespace plugin {
       }
     }
 
+    validateMustacheVariables(string, data);
     return Mustache.render(string, data);
   }
 
@@ -295,6 +296,8 @@ export namespace plugin {
       return string;
     }
     const data = await getProfileData(profile);
+
+    validateMustacheVariables(string, data);
     return Mustache.render(string, data);
   }
 
@@ -316,6 +319,7 @@ export namespace plugin {
       data[rule.key] = `{{ ${rule.guid} }}`;
     }
 
+    validateMustacheVariables(string, data);
     return Mustache.render(string, data);
   }
 
@@ -337,6 +341,19 @@ export namespace plugin {
       data[rule.guid] = `{{ ${rule.key} }}`;
     }
 
+    validateMustacheVariables(string, data);
     return Mustache.render(string, data);
   }
+}
+
+function validateMustacheVariables(string, data) {
+  Mustache.parse(string)
+    .filter((chunk) => chunk[0] === "name")
+    .map((chunk) => chunk[1])
+    .map((key) => {
+      const value = key.split(".").reduce((o, i) => o[i], data);
+      if (value === undefined) {
+        throw new Error(`missing mustache key "${key}"`);
+      }
+    });
 }
