@@ -282,7 +282,7 @@ export default function ({
                       <Badge variant="info">required</Badge>&nbsp;
                     </>
                   ) : null}
-                  <code>{opt.key}</code>: <small>{opt.description}</small>
+                  <code>{opt.key}</code>
                 </p>
 
                 {/* typeahead options */}
@@ -326,64 +326,80 @@ export default function ({
                           : undefined
                       }
                     />
+                    <Form.Text className="text-muted">
+                      {opt.description}
+                    </Form.Text>
                     <br />
                   </>
                 ) : null}
 
                 {/* list options */}
                 {opt.type === "list" ? (
-                  <Table bordered striped size="sm" variant="light">
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th>Key</th>
-                        {opt?.options[0]?.description ? (
-                          <th>Description</th>
-                        ) : null}
-                        {opt?.options[0]?.examples ? <th>Examples</th> : null}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {opt?.options?.map((col) => (
-                        <tr key={`source-${col.key}`}>
-                          <td>
-                            <Form.Check
-                              inline
-                              type="radio"
-                              name={opt.key}
-                              defaultChecked={
-                                profilePropertyRule.options[opt.key] === col.key
-                              }
-                              onClick={() => updateOption(opt.key, col.key)}
-                            />
-                          </td>
-                          <td>
-                            <strong>{col.key}</strong>
-                          </td>
-                          {col.description ? <td>{col.description}</td> : null}
-
-                          {col.examples ? (
-                            <td>{col.examples.slice(0, 3).join(", ")}</td>
+                  <>
+                    <Form.Text className="text-muted">
+                      {opt.description}
+                    </Form.Text>
+                    <Table bordered striped size="sm" variant="light">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th>Key</th>
+                          {opt?.options[0]?.description ? (
+                            <th>Description</th>
                           ) : null}
+                          {opt?.options[0]?.examples ? <th>Examples</th> : null}
                         </tr>
-                      ))}
-                    </tbody>
-                  </Table>
+                      </thead>
+                      <tbody>
+                        {opt?.options?.map((col) => (
+                          <tr key={`source-${col.key}`}>
+                            <td>
+                              <Form.Check
+                                inline
+                                type="radio"
+                                name={opt.key}
+                                defaultChecked={
+                                  profilePropertyRule.options[opt.key] ===
+                                  col.key
+                                }
+                                onClick={() => updateOption(opt.key, col.key)}
+                              />
+                            </td>
+                            <td>
+                              <strong>{col.key}</strong>
+                            </td>
+                            {col.description ? (
+                              <td>{col.description}</td>
+                            ) : null}
+
+                            {col.examples ? (
+                              <td>{col.examples.slice(0, 3).join(", ")}</td>
+                            ) : null}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </>
                 ) : null}
 
                 {/* textarea options */}
                 {opt.type === "text" ? (
-                  <Form.Group controlId="key">
-                    <Form.Control
-                      required
-                      type="text"
-                      value={profilePropertyRule.options[opt.key]}
-                      onChange={(e) => updateOption(opt.key, e.target.value)}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      Key is required
-                    </Form.Control.Feedback>
-                  </Form.Group>
+                  <>
+                    <Form.Group controlId="key">
+                      <Form.Control
+                        required
+                        type="text"
+                        value={profilePropertyRule.options[opt.key]}
+                        onChange={(e) => updateOption(opt.key, e.target.value)}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Key is required
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Text className="text-muted">
+                      {opt.description}
+                    </Form.Text>
+                  </>
                 ) : null}
 
                 {/* text options */}
@@ -409,6 +425,9 @@ export default function ({
                         Key is required
                       </Form.Control.Feedback>
                     </Form.Group>
+                    <Form.Text className="text-muted">
+                      {opt.description}
+                    </Form.Text>
                     <p>
                       Profile Property Variables:{" "}
                       <Badge variant="light">{`{{ now }}`}</Badge>

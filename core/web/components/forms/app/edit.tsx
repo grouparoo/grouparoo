@@ -178,90 +178,105 @@ export default function ({
                         <Badge variant="info">required</Badge>&nbsp;
                       </>
                     ) : null}
-                    <code>{opt.key}</code>: <small>{opt.description}</small>
+                    <code>{opt.key}</code>
                   </Form.Label>
                   {(() => {
                     if (optionOptions[opt.key]?.type === "typeahead") {
                       return (
-                        <Typeahead
-                          id="typeahead"
-                          labelKey="key"
-                          onChange={(selected) => {
-                            console.log(selected);
-                            updateOption(opt.key, selected[0]?.key);
-                          }}
-                          options={optionOptions[opt.key]?.options.map(
-                            (k, idx) => {
-                              return {
-                                key: k,
-                                descriptions:
-                                  optionOptions[k]?.descriptions[idx],
-                              };
+                        <>
+                          <Typeahead
+                            id="typeahead"
+                            labelKey="key"
+                            onChange={(selected) => {
+                              console.log(selected);
+                              updateOption(opt.key, selected[0]?.key);
+                            }}
+                            options={optionOptions[opt.key]?.options.map(
+                              (k, idx) => {
+                                return {
+                                  key: k,
+                                  descriptions:
+                                    optionOptions[k]?.descriptions[idx],
+                                };
+                              }
+                            )}
+                            placeholder={`Select ${opt.key}`}
+                            renderMenuItemChildren={(opt, props, idx) => {
+                              return [
+                                <span key={`opt-${idx}-key`}>
+                                  {opt.key}
+                                  <br />
+                                </span>,
+                                <small
+                                  key={`opt-${idx}-descriptions`}
+                                  className="text-small"
+                                >
+                                  <em>
+                                    Descriptions:{" "}
+                                    {opt.descriptions
+                                      ? opt.descriptions.join(", ")
+                                      : "None"}
+                                  </em>
+                                </small>,
+                              ];
+                            }}
+                            defaultSelected={
+                              app.options[opt.key]
+                                ? [app.options[opt.key]]
+                                : undefined
                             }
-                          )}
-                          placeholder={`Select ${opt.key}`}
-                          renderMenuItemChildren={(opt, props, idx) => {
-                            return [
-                              <span key={`opt-${idx}-key`}>
-                                {opt.key}
-                                <br />
-                              </span>,
-                              <small
-                                key={`opt-${idx}-descriptions`}
-                                className="text-small"
-                              >
-                                <em>
-                                  Descriptions:{" "}
-                                  {opt.descriptions
-                                    ? opt.descriptions.join(", ")
-                                    : "None"}
-                                </em>
-                              </small>,
-                            ];
-                          }}
-                          defaultSelected={
-                            app.options[opt.key]
-                              ? [app.options[opt.key]]
-                              : undefined
-                          }
-                        />
+                          />
+                          <Form.Text className="text-muted">
+                            {opt.description}
+                          </Form.Text>
+                        </>
                       );
                     } else if (optionOptions[opt.key]?.type === "list") {
                       return (
-                        <Form.Control
-                          as="select"
-                          required={opt.required}
-                          defaultValue={app.options[opt.key] || ""}
-                          onChange={(e) => {
-                            updateOption(e.target.id, e.target.value);
-                          }}
-                        >
-                          <option value={""} disabled>
-                            Choose an option
-                          </option>
-                          {optionOptions[opt.key].options.map((o, idx) => (
-                            <option key={`opt~${opt.key}-${o}`} value={o}>
-                              {o}{" "}
-                              {optionOptions[opt.key]?.descriptions &&
-                              optionOptions[opt.key]?.descriptions[idx]
-                                ? ` | ${
-                                    optionOptions[opt.key]?.descriptions[idx]
-                                  }`
-                                : null}
+                        <>
+                          <Form.Control
+                            as="select"
+                            required={opt.required}
+                            defaultValue={app.options[opt.key] || ""}
+                            onChange={(e) => {
+                              updateOption(e.target.id, e.target.value);
+                            }}
+                          >
+                            <option value={""} disabled>
+                              Choose an option
                             </option>
-                          ))}
-                        </Form.Control>
+                            {optionOptions[opt.key].options.map((o, idx) => (
+                              <option key={`opt~${opt.key}-${o}`} value={o}>
+                                {o}{" "}
+                                {optionOptions[opt.key]?.descriptions &&
+                                optionOptions[opt.key]?.descriptions[idx]
+                                  ? ` | ${
+                                      optionOptions[opt.key]?.descriptions[idx]
+                                    }`
+                                  : null}
+                              </option>
+                            ))}
+                          </Form.Control>
+                          <Form.Text className="text-muted">
+                            {opt.description}
+                          </Form.Text>
+                        </>
                       );
                     } else {
                       return (
-                        <Form.Control
-                          required={opt.required}
-                          type="text"
-                          defaultValue={app.options[opt.key]}
-                          onChange={(e) => {
-                            updateOption(e.target.id, e.target.value);
-                          }}
-                        />
+                        <>
+                          <Form.Control
+                            required={opt.required}
+                            type="text"
+                            defaultValue={app.options[opt.key]}
+                            onChange={(e) => {
+                              updateOption(e.target.id, e.target.value);
+                            }}
+                          />
+                          <Form.Text className="text-muted">
+                            {opt.description}
+                          </Form.Text>
+                        </>
                       );
                     }
                   })()}
