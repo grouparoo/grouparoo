@@ -11,6 +11,7 @@ export class EventsList extends AuthenticatedAction {
     this.inputs = {
       profileGuid: { required: false },
       type: { required: false },
+      associated: { required: false },
       data: { required: false },
       limit: { required: true, default: 1000, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
@@ -34,6 +35,7 @@ export class EventsList extends AuthenticatedAction {
     const events = await api.events.model.findAll({
       profileGuid: params.profileGuid,
       type: params.type,
+      associated: params.associated,
       data: Object.keys(data).length > 0 ? data : undefined,
       limit: params.limit,
       offset: params.offset,
@@ -43,6 +45,7 @@ export class EventsList extends AuthenticatedAction {
     const total = await api.events.model.count({
       profileGuid: params.profileGuid,
       type: params.type,
+      associated: params.associated,
       data: Object.keys(data).length > 0 ? data : undefined,
     });
 

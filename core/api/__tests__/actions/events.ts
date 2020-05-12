@@ -158,6 +158,34 @@ describe("actions/events", () => {
       expect(total).toBe(1);
     });
 
+    test("an administrator can list events (associated to a profile)", async () => {
+      connection.params = {
+        csrfToken,
+        associated: true,
+      };
+      const { error, events, total } = await specHelper.runAction(
+        "events:list",
+        connection
+      );
+      expect(error).toBeFalsy();
+      expect(events.length).toEqual(0);
+      expect(total).toBe(0);
+    });
+
+    test("an administrator can list events (not associated to a profile)", async () => {
+      connection.params = {
+        csrfToken,
+        associated: false,
+      };
+      const { error, events, total } = await specHelper.runAction(
+        "events:list",
+        connection
+      );
+      expect(error).toBeFalsy();
+      expect(events.length).toEqual(1);
+      expect(total).toBe(1);
+    });
+
     test("an administrator can autocomplete the types of events (no filter)", async () => {
       connection.params = {
         csrfToken,

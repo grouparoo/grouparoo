@@ -42,7 +42,6 @@ describe("tasks/event:associateProfile", () => {
         "event:associateProfile"
       );
       expect(foundTasks.length).toEqual(1);
-      expect(foundTasks[0].timestamp).toBeNull();
     });
 
     test("it will create a new profile from provided event data", async () => {
