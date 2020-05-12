@@ -59,5 +59,23 @@ describe("tasks/event:associateProfile", () => {
       expect(event.profileGuid).toBe(profile.guid);
       expect(event.profileAssociatedAt).toBeTruthy();
     });
+
+    test("enqueuing this task multiple times for the same event will be de-duplicated", async () => {
+      const event = await helper.factories.event({
+        anonymousId: "abc123",
+      });
+
+      let foundTasks = await specHelper.findEnqueuedTasks(
+        "event:associateProfile"
+      );
+      expect(foundTasks.length).toEqual(1);
+
+      await task.enqueue("event:associateProfile", { eventGuid: event.guid });
+      await task.enqueue("event:associateProfile", { eventGuid: event.guid });
+      await task.enqueue("event:associateProfile", { eventGuid: event.guid });
+
+      foundTasks = await specHelper.findEnqueuedTasks("event:associateProfile");
+      expect(foundTasks.length).toEqual(1);
+    });
   });
 });
