@@ -263,7 +263,6 @@ export class Event extends EventPrototype {
           attributes: [],
         },
       ],
-      logging: true,
     });
 
     return results[0] ? results[0].value : 0;
