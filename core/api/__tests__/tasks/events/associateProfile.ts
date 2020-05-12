@@ -42,7 +42,6 @@ describe("tasks/event:associateProfile", () => {
         "event:associateProfile"
       );
       expect(foundTasks.length).toEqual(1);
-      expect(foundTasks[0].timestamp).toBeNull();
     });
 
     test("it will create a new profile from provided event data", async () => {
@@ -59,6 +58,24 @@ describe("tasks/event:associateProfile", () => {
       expect(profile).toBeTruthy();
       expect(event.profileGuid).toBe(profile.guid);
       expect(event.profileAssociatedAt).toBeTruthy();
+    });
+
+    test("enqueuing this task multiple times for the same event will be de-duplicated", async () => {
+      const event = await helper.factories.event({
+        anonymousId: "abc123",
+      });
+
+      let foundTasks = await specHelper.findEnqueuedTasks(
+        "event:associateProfile"
+      );
+      expect(foundTasks.length).toEqual(1);
+
+      await task.enqueue("event:associateProfile", { eventGuid: event.guid });
+      await task.enqueue("event:associateProfile", { eventGuid: event.guid });
+      await task.enqueue("event:associateProfile", { eventGuid: event.guid });
+
+      foundTasks = await specHelper.findEnqueuedTasks("event:associateProfile");
+      expect(foundTasks.length).toEqual(1);
     });
   });
 });

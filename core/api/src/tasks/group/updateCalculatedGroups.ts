@@ -5,7 +5,7 @@ import { plugin } from "../../modules/plugin";
 import { Op } from "sequelize";
 import Moment from "moment";
 
-export class RunSchedule extends RetryableTask {
+export class GroupsUpdateCalculatedGroups extends RetryableTask {
   constructor() {
     super();
     this.name = "group:updateCalculatedGroups";

@@ -4,7 +4,7 @@ import { Import } from "../../models/Import";
 import { Profile } from "../../models/Profile";
 import { plugin } from "../../modules/plugin";
 
-export class DetermineRunState extends Task {
+export class RunInternalRun extends Task {
   constructor() {
     super();
     this.name = "run:internalRun";

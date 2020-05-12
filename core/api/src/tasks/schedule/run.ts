@@ -3,7 +3,7 @@ import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
 import { plugin } from "../../modules/plugin";
 
-export class RunSchedule extends Task {
+export class ScheduleRun extends Task {
   constructor() {
     super();
     this.name = "schedule:run";

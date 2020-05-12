@@ -3,7 +3,7 @@ import { RetryableTask } from "../../classes/retryableTask";
 import { Import } from "../../models/Import";
 import { Run } from "../../models/Run";
 
-export class AssociateProfileToImport extends RetryableTask {
+export class ImportAssociateProfile extends RetryableTask {
   constructor() {
     super();
     this.name = "import:associateProfile";

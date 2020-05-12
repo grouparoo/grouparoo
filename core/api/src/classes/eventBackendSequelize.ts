@@ -67,6 +67,7 @@ export class Event extends EventPrototype {
       ipAddress?: string;
       type?: string;
       data?: { [key: string]: any };
+      associated?: boolean;
       limit?: number;
       offset?: number;
       order?: Array<[string, string]>;
@@ -77,6 +78,7 @@ export class Event extends EventPrototype {
       ipAddress,
       type,
       data,
+      associated,
       limit,
       offset,
       order,
@@ -97,6 +99,12 @@ export class Event extends EventPrototype {
         includeWhere["key"] = i;
         includeWhere["value"] = data[i];
       }
+    }
+    if (associated === true) {
+      where["profileGuid"] = { [Op.ne]: null };
+    }
+    if (associated === false) {
+      where["profileGuid"] = { [Op.eq]: null };
     }
 
     const sequelizeEvents = await SequelizeEvent.findAll({
@@ -120,10 +128,11 @@ export class Event extends EventPrototype {
       profileGuid?: string;
       ipAddress?: string;
       type?: string;
+      associated?: boolean;
       data?: { [key: string]: any };
     } = {}
   ) {
-    const { profileGuid, ipAddress, type, data } = options;
+    const { profileGuid, ipAddress, type, associated, data } = options;
     const where = {};
     const includeWhere = {};
     if (profileGuid) {
@@ -141,7 +150,12 @@ export class Event extends EventPrototype {
         includeWhere["value"] = data[i];
       }
     }
-
+    if (associated === true) {
+      where["profileGuid"] = { [Op.ne]: null };
+    }
+    if (associated === false) {
+      where["profileGuid"] = { [Op.eq]: null };
+    }
     return SequelizeEvent.count({
       include: [
         {

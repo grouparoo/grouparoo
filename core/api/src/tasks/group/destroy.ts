@@ -3,7 +3,7 @@ import { Group } from "../../models/Group";
 import { Run } from "../../models/Run";
 import { plugin } from "../../modules/plugin";
 
-export class RunGroup extends Task {
+export class GroupDestroy extends Task {
   constructor() {
     super();
     this.name = "group:destroy";

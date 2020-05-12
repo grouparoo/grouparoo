@@ -32,6 +32,7 @@ export interface EventPrototype extends EventArgs {
     ipAddress?: string;
     type?: string;
     data?: { [key: string]: any };
+    associated?: boolean;
     limit?: number;
     offset?: number;
     order?: Array<[string, string]>;
@@ -40,6 +41,7 @@ export interface EventPrototype extends EventArgs {
     profileGuid?: string;
     ipAddress?: string;
     type?: string;
+    associated?: boolean;
     data?: { [key: string]: any };
   }) => Promise<number>;
   types: (options: {
