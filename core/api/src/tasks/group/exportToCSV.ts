@@ -3,7 +3,7 @@ import { Group } from "../../models/Group";
 import { plugin } from "../../modules/plugin";
 import { groupExportToCSV } from "../../modules/groupExport";
 
-export class RunGroup extends Task {
+export class GroupExportToCSV extends Task {
   constructor() {
     super();
     this.name = "group:exportToCSV";

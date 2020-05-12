@@ -1,7 +1,7 @@
 import { Task, task, log, config } from "actionhero";
 import { Run } from "../../models/Run";
 
-export class DetermineRunState extends Task {
+export class RunDetermineState extends Task {
   constructor() {
     super();
     this.name = "run:determineState";

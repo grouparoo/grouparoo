@@ -3,7 +3,7 @@ import { EventPrototype } from "../../classes/events";
 import { App } from "../../models/App";
 import { RetryableTask } from "../../classes/retryableTask";
 
-export class AssociateProfileToImport extends RetryableTask {
+export class EventAssociateProfile extends RetryableTask {
   constructor() {
     super();
     this.name = "event:associateProfile";
