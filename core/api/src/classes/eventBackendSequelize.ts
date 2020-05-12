@@ -197,6 +197,78 @@ export class Event extends EventPrototype {
     return events.map((event) => event.type);
   }
 
+  static async dataKeys(type: string) {
+    const results = await SequelizeEventData.findAll({
+      attributes: [
+        [api.sequelize.fn("DISTINCT", api.sequelize.col("key")), "key"],
+      ],
+      group: ["key"],
+      include: [
+        {
+          model: SequelizeEvent,
+          required: true,
+          where: { type },
+          attributes: [],
+        },
+      ],
+    });
+
+    return results.map((r) => r.key);
+  }
+
+  static async aggregateEventData(
+    options: {
+      aggregation?: "count" | "sum" | "min" | "max";
+      profileGuid?: string;
+      type?: string;
+      key?: string;
+    } = {}
+  ) {
+    const { aggregation, profileGuid, type, key } = options;
+    const where = { key };
+    const includeWhere = {};
+    if (!aggregation) {
+      throw new Error("aggregation is required");
+    }
+
+    if (type) {
+      includeWhere["type"] = type;
+    }
+
+    if (profileGuid) {
+      includeWhere["profileGuid"] = profileGuid;
+    }
+
+    if (type) {
+      includeWhere["type"] = type;
+    }
+
+    const results = await SequelizeEventData.findAll({
+      where,
+      attributes: [
+        [
+          api.sequelize.fn(
+            aggregation,
+            api.sequelize.cast(api.sequelize.col("value"), "float")
+          ),
+          "value",
+        ],
+      ],
+      group: ["value"],
+      include: [
+        {
+          model: SequelizeEvent,
+          required: true,
+          where: includeWhere,
+          attributes: [],
+        },
+      ],
+      logging: true,
+    });
+
+    return results[0] ? results[0].value : 0;
+  }
+
   static async destroyFor(
     options: {
       profileGuid?: string;

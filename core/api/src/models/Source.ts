@@ -204,6 +204,11 @@ export class Source extends LoggedModel<Source> {
   }
 
   async validateMapping() {
+    const { pluginConnection } = await this.getPlugin();
+    if (pluginConnection.skipSourceMapping) {
+      return true;
+    }
+
     const previewAvailable = await this.previewAvailable();
     if (!previewAvailable) {
       return true;

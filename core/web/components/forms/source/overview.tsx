@@ -267,7 +267,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       <Card border="info">
         <Card.Body>
           <h2>Profile Identification</h2>
-          {source.previewAvailable ? (
+          {source.previewAvailable && !source.connection.skipSourceMapping ? (
             Object.keys(source.mapping).length === 1 ? (
               <Row>
                 <Col>
@@ -282,6 +282,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             ) : (
               <Alert variant="warning">Mapping not set yet</Alert>
             )
+          ) : source.connection.skipSourceMapping ? (
+            <Alert variant="info">Automatic</Alert>
           ) : (
             <Alert variant="warning">
               Mapping not available for this connection type

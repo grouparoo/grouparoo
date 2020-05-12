@@ -57,7 +57,7 @@ export default function (props) {
         </Card>
       </Fragment>
 
-      {source.previewAvailable ? (
+      {source.previewAvailable && !source.connection.skipSourceMapping ? (
         <Fragment key="mapping">
           <SourceMapping {...props} />
         </Fragment>

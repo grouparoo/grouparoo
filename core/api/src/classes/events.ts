@@ -2,6 +2,7 @@ import { log } from "actionhero";
 import { App } from "../models/App";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
+import { Import } from "../models/Import";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
 import { Op } from "sequelize";
 import * as uuid from "uuid";
@@ -50,6 +51,13 @@ export interface EventPrototype extends EventArgs {
     offset?: number;
     order?: Array<[string, string]>;
   }) => Promise<string[]>;
+  dataKeys: (type) => Promise<string[]>;
+  aggregateEventData: (options: {
+    aggregation: "count" | "sum" | "min" | "max";
+    profileGuid?: string;
+    type?: string;
+    key: string;
+  }) => Promise<number>;
   destroyFor: (options: {
     profileGuid?: string;
     type?: string;
@@ -88,7 +96,9 @@ export abstract class EventPrototype {
 
     if (this.profileGuid) {
       // we are already identified
-      return this.getProfile();
+      const profile = await this.getProfile();
+      await this.updateProfile(profile);
+      return profile;
     } else if (this.userId) {
       // we have a userId (primaryIdentifyingProfilePropertyRule)
       let profile = await Profile.findOne({
@@ -129,6 +139,7 @@ export abstract class EventPrototype {
         await Profile.merge(profile, otherProfileWithAnonymousId);
       }
 
+      await this.updateProfile(profile);
       return profile;
     } else if (this.anonymousId) {
       // we have an anonymousId
@@ -138,6 +149,7 @@ export abstract class EventPrototype {
       this.profileGuid = profile.guid;
       this.profileAssociatedAt = new Date();
       await this.save();
+      await this.updateProfile(profile);
       return profile;
     } else {
       // we can't identify this event
@@ -145,6 +157,27 @@ export abstract class EventPrototype {
         "cannot associate a profile without profileGuid, userId, or anonymousId"
       );
     }
+  }
+
+  async updateProfile(profile: Profile) {
+    const oldProfileProperties = [];
+    const properties = await profile.properties();
+    for (const key in properties) {
+      oldProfileProperties[key] = properties[key].value;
+    }
+
+    const oldGroupGuids = (await profile.$get("groups")).map((g) => g.guid);
+
+    return Import.create({
+      rawData: {},
+      data: {},
+      creatorType: "event",
+      creatorGuid: this.guid,
+      profileGuid: profile.guid,
+      profileAssociatedAt: new Date(),
+      oldProfileProperties,
+      oldGroupGuids,
+    });
   }
 
   async getProfile() {

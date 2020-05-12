@@ -69,7 +69,11 @@ export default function ({
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    const state = source.previewAvailable ? undefined : "ready";
+    const state = source.connection.skipSourceMapping
+      ? "ready"
+      : source.previewAvailable
+      ? undefined
+      : "ready";
 
     const response = await execApi(
       "put",
@@ -102,6 +106,7 @@ export default function ({
         `/api/${apiVersion}/source/${guid}`
       );
       if (response) {
+        successHandler.set({ message: "source deleted" });
         Router.push("/sources");
       }
     }

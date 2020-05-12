@@ -70,6 +70,7 @@ export interface PluginConnection {
   name: string;
   description: string;
   direction: "import" | "export";
+  skipSourceMapping: boolean;
   app: string;
   options: ConnectionOption[];
   profilePropertyRuleOptions?: PluginConnectionProfilePropertyRuleOption[];
