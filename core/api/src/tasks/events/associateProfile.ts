@@ -26,6 +26,6 @@ export class AssociateProfileToImport extends RetryableTask {
     }
 
     const appOptions = await app.getOptions();
-    return event.associate(appOptions.identifyingProfilePropertyRuleGuid);
+    await event.associate(appOptions.identifyingProfilePropertyRuleGuid);
   }
 }
