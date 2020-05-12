@@ -16,7 +16,9 @@ module.exports = {
   env,
 
   webpack: (config, options) => {
-    overwriteNextBabelLoaderToIncludePluginNodeModules(config);
+    if (!env.GROUPAROO_MONOREPO_APP) {
+      overwriteNextBabelLoaderToIncludePluginNodeModules(config);
+    }
 
     // when grouparoo is deployed, and we want to run in dev mode, we need to opt-into babel within node modules
     // related to overwriteNextBabelLoaderToIncludePluginNodeModules
