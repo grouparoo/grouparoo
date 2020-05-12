@@ -6,6 +6,12 @@ const nodeModulesPath = runningCoreDirectly()
   ? path.resolve(__dirname, "..", "node_modules")
   : path.resolve(__dirname, "..", "..", "..", "..", "node_modules");
 
+const { plugins } = getPluginManifest();
+const pluginNamesWithinNodeModules = [{ name: "@grouparoo/core" }]
+  .concat(plugins)
+  .filter((p) => p?.grouparoo?.webComponents)
+  .map((p) => path.join("node_modules", p.name));
+
 module.exports = {
   env,
 
