@@ -10,7 +10,7 @@ references:
       ignore:
         - gh-pages
   cache-options: &cache-options
-    key: package-cache-{{ checksum combined_package_lock }}
+    key: package-cache-{{ checksum "combined_package_lock" }}
 #
 # Define Jobs to run
 jobs:
