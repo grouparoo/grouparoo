@@ -28,7 +28,8 @@
   },
   "dependencies": {
     "react-bootstrap": "^1.0.0",
-    "react-hook-form": "^5.5.2"
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
