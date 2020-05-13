@@ -4,8 +4,8 @@
     steps:
       - checkout
       - run:
-        name: generate combined_package_lock
-        command: ./bin/buildCombinedLockfile
+          name: generate combined_package_lock
+          command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - add_ssh_keys:
