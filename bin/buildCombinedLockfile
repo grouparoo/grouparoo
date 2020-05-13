@@ -7,7 +7,7 @@ set -e
 
 PROJECT_ROOT=$(cd $(dirname $0)/.. && pwd)
 FILES=`find $PROJECT_ROOT -name package-lock.json | grep -v node_modules`
-OUTPUT="$PROJECT_ROOT/combined-package-lock"
+OUTPUT="$PROJECT_ROOT/combined_package_lock"
 
 # printf "$FILES"
 

@@ -10,7 +10,7 @@ references:
       ignore:
         - gh-pages
   cache-options: &cache-options
-    key: package-cache-{{ checksum combined-package-lock }}
+    key: package-cache-{{ checksum combined_package_lock }}
 #
 # Define Jobs to run
 jobs:
@@ -20,7 +20,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: generate combined-package-lock
+          name: generate combined_package_lock
           command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
@@ -47,7 +47,7 @@ jobs:
             - plugins/@grouparoo/postgres/node_modules
             - plugins/@grouparoo/sailthru/node_modules
             - tools/merger/node_modules
-            - combined-package-lock
+            - combined_package_lock
             - core/web/.next
             - core/api/dist
   license-checker:
