@@ -3,7 +3,7 @@ import { plugin } from "@grouparoo/core";
 import { FileTransportLocal } from "../classes/local";
 const packageJSON = require("./../../package.json");
 
-export class EmailAuth extends Initializer {
+export class FileTransportLocalInitializer extends Initializer {
   constructor() {
     super();
     this.name = packageJSON.name;
