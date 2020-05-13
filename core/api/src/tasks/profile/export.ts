@@ -20,7 +20,11 @@ export class ProfileExport extends RetryableTask {
   }
 
   async run(params) {
-    const profile = await Profile.findByGuid(params.guid);
+    const profile = await Profile.findOne({ where: { guid: params.guid } });
+    // the profile may have been deleted or merged by the time this task ran
+    if (!profile) {
+      return;
+    }
 
     const imports = await Import.findAll({
       where: {

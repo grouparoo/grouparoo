@@ -363,6 +363,15 @@ export class Source extends LoggedModel<Source> {
     const sourceOptions = await this.getOptions();
     const sourceMapping = await this.getMapping();
 
+    // we may not have the profile property needed to make the mapping (ie: userId is not set on this anonymous profile)
+    if (Object.values(sourceMapping).length > 0) {
+      const profilePropertyRuleMappingKey = Object.values(sourceMapping)[0];
+      const profileProperties = await profile.properties();
+      if (!profileProperties[profilePropertyRuleMappingKey]) {
+        return;
+      }
+    }
+
     return method({
       app,
       appOptions,

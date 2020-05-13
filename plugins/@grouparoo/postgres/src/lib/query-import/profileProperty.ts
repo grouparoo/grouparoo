@@ -11,10 +11,16 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   profilePropertyRule,
   profilePropertyRuleOptions,
 }) => {
-  const parameterizedQuery = await profilePropertyRule.parameterizedQueryFromProfile(
-    profilePropertyRuleOptions.query,
-    profile
-  );
+  let parameterizedQuery = "";
+  try {
+    parameterizedQuery = await profilePropertyRule.parameterizedQueryFromProfile(
+      profilePropertyRuleOptions.query,
+      profile
+    );
+  } catch (error) {
+    return undefined;
+  }
+
   validateQuery(parameterizedQuery);
 
   let response: ProfilePropertyPluginMethodResponse;

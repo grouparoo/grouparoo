@@ -87,10 +87,16 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     filteredQuery += ` AND ${key} ${sqlOp} '${match}'`;
   }
 
-  const parameterizedQuery = await profilePropertyRule.parameterizedQueryFromProfile(
-    filteredQuery,
-    profile
-  );
+  let parameterizedQuery = "";
+  try {
+    parameterizedQuery = await profilePropertyRule.parameterizedQueryFromProfile(
+      profilePropertyRuleOptions.query,
+      profile
+    );
+  } catch (error) {
+    return undefined;
+  }
+
   validateQuery(parameterizedQuery);
 
   let response: ProfilePropertyPluginMethodResponse;

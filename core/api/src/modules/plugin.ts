@@ -352,7 +352,7 @@ function validateMustacheVariables(string, data) {
     .map((chunk) => chunk[1])
     .map((key) => {
       const value = key.split(".").reduce((o, i) => o[i], data);
-      if (value === undefined) {
+      if (value === undefined || value === null) {
         throw new Error(`missing mustache key "${key}"`);
       }
     });

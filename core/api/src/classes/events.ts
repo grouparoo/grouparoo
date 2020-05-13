@@ -1,4 +1,4 @@
-import { log } from "actionhero";
+import { log, task } from "actionhero";
 import { App } from "../models/App";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
@@ -160,24 +160,7 @@ export abstract class EventPrototype {
   }
 
   async updateProfile(profile: Profile) {
-    const oldProfileProperties = [];
-    const properties = await profile.properties();
-    for (const key in properties) {
-      oldProfileProperties[key] = properties[key].value;
-    }
-
-    const oldGroupGuids = (await profile.$get("groups")).map((g) => g.guid);
-
-    return Import.create({
-      rawData: {},
-      data: {},
-      creatorType: "event",
-      creatorGuid: this.guid,
-      profileGuid: profile.guid,
-      profileAssociatedAt: new Date(),
-      oldProfileProperties,
-      oldGroupGuids,
-    });
+    await task.enqueue("profile:importAndUpdate", { guid: profile.guid });
   }
 
   async getProfile() {

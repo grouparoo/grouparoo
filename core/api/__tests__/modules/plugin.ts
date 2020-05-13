@@ -134,9 +134,13 @@ describe("modules/plugin", () => {
 
       test("it throws an error if a template variable is missing", async () => {
         const profile = await helper.factories.profile();
+        await profile.addOrUpdateProperties({ userId: null });
         await expect(
-          plugin.replaceTemplateProfileVariables(`hello {{world}}`, profile)
-        ).rejects.toThrow('missing mustache key "world"');
+          plugin.replaceTemplateProfileVariables(
+            `select email where id = {{userId}}`,
+            profile
+          )
+        ).rejects.toThrow('missing mustache key "userId"');
       });
     });
 
