@@ -47,7 +47,6 @@ jobs:
             - plugins/@grouparoo/postgres/node_modules
             - plugins/@grouparoo/sailthru/node_modules
             - tools/merger/node_modules
-            - combined_package_lock
             - core/web/.next
             - core/api/dist
   license-checker:
