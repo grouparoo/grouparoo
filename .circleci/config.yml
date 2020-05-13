@@ -10,7 +10,7 @@ references:
       ignore:
         - gh-pages
   cache-options: &cache-options
-    key: package-cache-{{ .Branch }}-{{ .Revision }}
+    key: package-cache-{{ checksum combined-package-lock }}
 #
 # Define Jobs to run
 jobs:
@@ -19,6 +19,9 @@ jobs:
       - image: circleci/node:12
     steps:
       - checkout
+      - run:
+          name: generate combined-package-lock
+          command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - run:
@@ -44,6 +47,7 @@ jobs:
             - plugins/@grouparoo/postgres/node_modules
             - plugins/@grouparoo/sailthru/node_modules
             - tools/merger/node_modules
+            - combined-package-lock
             - core/web/.next
             - core/api/dist
   license-checker:

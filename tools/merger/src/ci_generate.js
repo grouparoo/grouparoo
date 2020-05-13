@@ -168,6 +168,8 @@ class Generator {
     // these get passed through
     view[".Branch"] = "{{ .Branch }}";
     view[".Revision"] = "{{ .Revision }}";
+    view["checksum combined-package-lock"] =
+      "{{ checksum combined-package-lock }}";
 
     const methods = ["node_module_list", "jobs", "workflows", "job_name_list"];
     for (const method of methods) {
