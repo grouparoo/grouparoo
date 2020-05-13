@@ -27,3 +27,4 @@ web/out
 *.tgz
 tmp
 lerna-debug.log
+combined_package_lock

@@ -2,7 +2,7 @@ import { SimpleAppOptions } from "@grouparoo/core";
 import dotenv from "dotenv";
 import path from "path";
 import fs from "fs-extra";
-import { SailthruUtil } from "../../../../../node_modules/sailthru-client/lib/sailthru_util";
+import { SailthruUtil } from "sailthru-client/lib/sailthru_util";
 
 const dirPath = path.resolve(path.join(__dirname, ".."));
 const nockPath = path.join(dirPath, ".env.example");

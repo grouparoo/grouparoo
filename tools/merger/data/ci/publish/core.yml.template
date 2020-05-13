@@ -3,6 +3,9 @@
       - image: circleci/node:12
     steps:
       - checkout
+      - run:
+          name: generate combined_package_lock
+          command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - add_ssh_keys:
@@ -10,5 +13,5 @@
             - 49:46:31:67:74:97:c4:66:44:79:89:67:29:41:89:96
       - run: git config --global user.email "hello@grouparoo.com"
       - run: git config --global user.name "Grouparoo Bot"
-      - run: SKIP_APP_BUILD=true ./bin/build
+      - run: npm run prepare
       - run: ./bin/publish

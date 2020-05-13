@@ -4,6 +4,9 @@
 {{{custom_docker}}}
     steps:
       - checkout
+      - run:
+          name: generate combined_package_lock
+          command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
 {{{custom_steps}}}

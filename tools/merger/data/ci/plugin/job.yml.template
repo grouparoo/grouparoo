@@ -8,8 +8,11 @@
 {{{custom_docker}}}
     steps:
       - checkout
+      - run:
+          name: generate combined_package_lock
+          command: ./bin/buildCombinedLockfile
       - restore_cache:
-          <<: *cache-options  
+          <<: *cache-options
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -19,7 +22,7 @@
       - run:
           name: create test databases
           command: cd core/api && ./bin/create_test_databases
-{{{custom_steps}}}          
+{{{custom_steps}}}
       - run:
           name: test
           command: cd {{{relative_path}}} && npm run test
