@@ -14,6 +14,7 @@ import { Source } from "./Source";
 import { ProfileProperty } from "./ProfileProperty";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Import } from "./Import";
+import { Export } from "./Export";
 import { Destination } from "./Destination";
 import { EventPrototype } from "./../classes/events";
 import { waitForLock } from "../modules/locks";
@@ -42,6 +43,14 @@ export class Profile extends LoggedModel<Profile> {
   @HasMany(() => Import)
   imports: Import[];
 
+  @HasMany(() => Export)
+  exports: Export[];
+
+  @AfterDestroy
+  static async removeFromDestinations(instance: Profile) {
+    await instance.export(false, []);
+  }
+
   @AfterDestroy
   static async destroyProfileProperties(instance: Profile) {
     await ProfileProperty.destroy({
@@ -59,6 +68,23 @@ export class Profile extends LoggedModel<Profile> {
   @AfterDestroy
   static async destroyEvents(instance: Profile) {
     await api.events.model.destroyFor({ profileGuid: instance.guid });
+  }
+
+  @AfterDestroy
+  static async destroyImports(instance: Profile) {
+    await Import.destroy({
+      where: { profileGuid: instance.guid },
+    });
+  }
+
+  @AfterDestroy
+  static async destroyExports(instance: Profile) {
+    let _exports = await instance.$get("exports");
+    while (_exports.length > 0) {
+      // need to loop 1-by-1 to afterDestroy hooks delete related importExport records
+      await Promise.all(_exports.map((_export) => _export.destroy()));
+      _exports = await instance.$get("exports");
+    }
   }
 
   async apiData() {
@@ -253,11 +279,11 @@ export class Profile extends LoggedModel<Profile> {
     return profileEvents;
   }
 
-  async export(force = false) {
+  async export(force = false, groupsOverride?: Group[]) {
     let oldSimpleProperties = {};
     let oldGroups = [];
 
-    const groups = await this.$get("groups");
+    const groups = groupsOverride ? groupsOverride : await this.$get("groups");
 
     const destinations = await Destination.destinationsForGroups(groups);
     const properties = await this.properties();
