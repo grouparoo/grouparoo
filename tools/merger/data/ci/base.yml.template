@@ -34,7 +34,6 @@ jobs:
           paths:
 {{{node_module_list}}}
 {{{custom_cache}}}
-            - combined_package_lock
             - core/web/.next
             - core/api/dist
 
