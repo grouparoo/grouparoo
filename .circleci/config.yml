@@ -55,6 +55,9 @@ jobs:
       - image: circleci/node:12
     steps:
       - checkout
+      - run:
+        name: generate combined_package_lock
+        command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - run:
@@ -65,6 +68,9 @@ jobs:
       - image: circleci/node:12
     steps:
       - checkout
+      - run:
+        name: generate combined_package_lock
+        command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - run:
@@ -79,6 +85,9 @@ jobs:
           POSTGRES_PASSWORD: password
     steps:
       - checkout
+      - run:
+        name: generate combined_package_lock
+        command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - run:
@@ -103,6 +112,9 @@ jobs:
       - image: selenium/standalone-chrome:latest
     steps:
       - checkout
+      - run:
+        name: generate combined_package_lock
+        command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - run:
@@ -128,6 +140,9 @@ jobs:
           POSTGRES_PASSWORD: password
     steps:
       - checkout
+      - run:
+        name: generate combined_package_lock
+        command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - run:
@@ -151,6 +166,9 @@ jobs:
           POSTGRES_PASSWORD: password
     steps:
       - checkout
+      - run:
+        name: generate combined_package_lock
+        command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - run:
@@ -174,6 +192,9 @@ jobs:
           POSTGRES_PASSWORD: password
     steps:
       - checkout
+      - run:
+        name: generate combined_package_lock
+        command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - run:
@@ -197,6 +218,9 @@ jobs:
           POSTGRES_PASSWORD: password
     steps:
       - checkout
+      - run:
+        name: generate combined_package_lock
+        command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - run:
@@ -220,6 +244,9 @@ jobs:
           POSTGRES_PASSWORD: password
     steps:
       - checkout
+      - run:
+        name: generate combined_package_lock
+        command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - run:
@@ -243,6 +270,9 @@ jobs:
           POSTGRES_PASSWORD: password
     steps:
       - checkout
+      - run:
+        name: generate combined_package_lock
+        command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - run:
@@ -266,6 +296,9 @@ jobs:
           POSTGRES_PASSWORD: password
     steps:
       - checkout
+      - run:
+        name: generate combined_package_lock
+        command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - run:
@@ -289,6 +322,9 @@ jobs:
           POSTGRES_PASSWORD: password
     steps:
       - checkout
+      - run:
+        name: generate combined_package_lock
+        command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - run:
@@ -313,6 +349,9 @@ jobs:
       - image: circleci/mysql:5
     steps:
       - checkout
+      - run:
+        name: generate combined_package_lock
+        command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - run:
@@ -342,6 +381,9 @@ jobs:
           POSTGRES_PASSWORD: password
     steps:
       - checkout
+      - run:
+        name: generate combined_package_lock
+        command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - run:
@@ -365,6 +407,9 @@ jobs:
           POSTGRES_PASSWORD: password
     steps:
       - checkout
+      - run:
+        name: generate combined_package_lock
+        command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - run:
@@ -388,6 +433,9 @@ jobs:
           POSTGRES_PASSWORD: password
     steps:
       - checkout
+      - run:
+        name: generate combined_package_lock
+        command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - run:
@@ -414,6 +462,9 @@ jobs:
       - image: circleci/node:12
     steps:
       - checkout
+      - run:
+        name: generate combined_package_lock
+        command: ./bin/buildCombinedLockfile
       - restore_cache:
           <<: *cache-options
       - add_ssh_keys:
