@@ -39,6 +39,7 @@
     "@types/mysql": "^2.15.10",
     "@types/node": "^13.13.1",
     "actionhero": "^22.0.9",
+    "csv-parse": "^4.8.9",
     "jest": "^25.4.0",
     "prettier": "^2.0.5",
     "ts-jest": "^25.4.0",
