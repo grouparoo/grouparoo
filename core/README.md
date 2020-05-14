@@ -52,7 +52,7 @@ Learn more at [www.grouparoo.com](https://www.grouparoo.com)
 - [👩‍⚖️ The Grouparoo License](https://github.com/grouparoo/grouparoo/blob/master/LICENSE.txt)
 - [🙏 Attribution](https://github.com/grouparoo/grouparoo/blob/master/documents/legal/attribution.md)
 
-# Quickstart
+# Getting Started
 
 1. Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/) project, and we use NPM to manage our dependencies. Grouparoo also required the Postgres and Redis databases. On OSX, these can be installed bia [Homebrew](https://brew.sh/).
 
