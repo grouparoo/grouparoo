@@ -1,5 +1,6 @@
-import PluginManifest from "./../tmp/pluginManifest.json";
-import PluginLoader from "./../tmp/pluginLoader";
+import PluginManifest from "../tmp/pluginManifest.json";
+import dynamic from "next/dynamic";
+import Loader from "./../components/loader";
 
 export function usePlugins(key: string) {
   const pluginComponents = [];
@@ -26,7 +27,16 @@ export function usePlugins(key: string) {
               key: lastWordFromCamelCase(file),
             });
 
-            pluginComponents.push(PluginLoader(pluginName, file));
+            const LoaderFunction = (props) => {
+              const Plugin = dynamic(
+                () => import(`../tmp/plugin/${key}/${pluginName}/${file}`),
+                { loading: () => <Loader /> }
+              );
+
+              return <Plugin {...props} />;
+            };
+
+            pluginComponents.push(LoaderFunction);
           });
         }
       }
