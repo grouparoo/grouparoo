@@ -18,7 +18,7 @@ fs.writeFileSync(
 // We do not want to use wildcard strings in the import statement to save webpack from scanning all of our directories
 pluginManifest.plugins.forEach((plugin) => {
   const pluginName = plugin.name;
-  if (plugin?.grouparoo?.webComponents) {
+  if (plugin && plugin.grouparoo && plugin.grouparoo.webComponents) {
     for (const k in plugin.grouparoo.webComponents) {
       plugin.grouparoo.webComponents[k].forEach((file) => {
         fs.mkdirpSync(path.join(__dirname, "tmp", "plugin", k, pluginName));
