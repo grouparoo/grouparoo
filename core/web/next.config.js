@@ -35,7 +35,7 @@ module.exports = {
 };
 
 /**
- * This method exits to allow next.js/babel to tranaspile files within node_modules... which is how Grouparoo is deployed!
+ * This method exits to allow next.js/babel to transpile files within node_modules... which is how Grouparoo is deployed!
  */
 const overwriteNextBabelLoaderToIncludePluginNodeModules = (config) => {
   const allowedModuleNames = ["node_modules/@grouparoo/core"];
