@@ -1,20 +1,27 @@
 const path = require("path");
 const env = require("./env");
+const { runningCoreDirectly } = require("../api/src/utils/pluginDetails");
+
+const nodeModulesPath = runningCoreDirectly()
+  ? path.resolve(__dirname, "..", "node_modules")
+  : path.resolve(__dirname, "..", "..", "..", "..", "node_modules");
 
 module.exports = {
   env,
 
   webpack: (config, options) => {
-    config.resolve.alias["react"] = path.resolve(
-      __dirname,
-      "..",
-      "node_modules",
-      "react"
-    );
+    overwriteNextBabelLoaderToIncludePluginNodeModules(config);
+
+    // when grouparoo is deployed, and we want to run in dev mode, we need to opt-into babel within node modules
+    // related to overwriteNextBabelLoaderToIncludePluginNodeModules
+    config.module.rules.push({
+      test: /node_modules\/@grouparoo\/core\/web\/.*.ts$|node_modules\/@grouparoo\/core\/web\/.*.tsx$/,
+      use: [options.defaultLoaders.babel],
+    });
+
+    config.resolve.alias["react"] = path.resolve(nodeModulesPath, "react");
     config.resolve.alias["react-dom"] = path.resolve(
-      __dirname,
-      "..",
-      "node_modules",
+      nodeModulesPath,
       "react-dom"
     );
 
@@ -25,4 +32,34 @@ module.exports = {
 
     return config;
   },
+};
+
+/**
+ * This method exits to allow next.js/babel to transpile files within node_modules... which is how Grouparoo is deployed!
+ */
+const overwriteNextBabelLoaderToIncludePluginNodeModules = (config) => {
+  const allowedModuleNames = ["node_modules/@grouparoo/core"];
+  const NextBabelLoader = config.module.rules.filter((r) => {
+    if (r.use && r.use.loader === "next-babel-loader") {
+      return true;
+    } else {
+      return false;
+    }
+  })[0];
+
+  if (!NextBabelLoader) {
+    return;
+  }
+
+  const originalExclude = NextBabelLoader.exclude;
+
+  NextBabelLoader.exclude = (moduleName, ...args) => {
+    for (const i in allowedModuleNames) {
+      if (moduleName.indexOf(allowedModuleNames[i]) >= 0) {
+        return false;
+      }
+    }
+
+    return originalExclude(moduleName, ...args);
+  };
 };
