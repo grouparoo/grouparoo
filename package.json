@@ -31,7 +31,7 @@
     "clean": "lerna clean",
     "lint": "lerna run lint",
     "test": "lerna run test",
-    "nuke": "rm -rf node_modules && rm -rf core/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/api/dist && rm -rf plugins/*/*/dist",
+    "nuke": "rm -rf node_modules && rm -rf core/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/api/dist && rm -rf plugins/*/*/dist && rm -rf core/web/tmp",
     "update": "npm-check-updates -u && lerna exec -- npm-check-updates -u && npm run nuke && npm install"
   }
 }

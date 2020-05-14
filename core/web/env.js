@@ -8,6 +8,7 @@ const {
 const pluginManifest = getPluginManifest();
 
 // write the plugins manifest to a file for the web to consume
+fs.mkdirpSync(path.join(__dirname, "tmp"));
 fs.writeFileSync(
   path.join(__dirname, "tmp", "pluginManifest.json"),
   JSON.stringify(pluginManifest, null, 2)
@@ -21,14 +22,14 @@ pluginManifest.plugins.forEach((plugin) => {
   if (plugin && plugin.grouparoo && plugin.grouparoo.webComponents) {
     for (const k in plugin.grouparoo.webComponents) {
       plugin.grouparoo.webComponents[k].forEach((file) => {
+        const pluginFile =
+          grouparooMonorepoApp || runningCoreDirectly()
+            ? `../../../../../../../../plugins/${pluginName}/dist/components/${file}.plugin.js`
+            : `../../../../../../../../../${pluginName}/dist/components/${file}.plugin.js`;
         fs.mkdirpSync(path.join(__dirname, "tmp", "plugin", k, pluginName));
         fs.writeFileSync(
           path.join(__dirname, "tmp", "plugin", k, pluginName, `${file}.tsx`),
-          `export { default } from ${
-            grouparooMonorepoApp || runningCoreDirectly()
-              ? `"../../../../../../../../plugins/${pluginName}/dist/components/${file}.plugin.js"`
-              : `"../../../../../../../../../${pluginName}/dist/components/${file}.plugin.js"`
-          }
+          `export { default } from "${pluginFile}"
 console.info("[ Grouparoo Plugin ] '${file}' from ${pluginName}");
 `
         );
