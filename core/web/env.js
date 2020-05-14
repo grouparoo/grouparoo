@@ -7,7 +7,8 @@ const {
 } = require("../api/src/utils/pluginDetails");
 const pluginManifest = getPluginManifest();
 
-// prepare the paths we'll be using
+// prepare the paths we'll be using and start clean
+fs.rmdirSync(path.join(__dirname, "tmp"), { recursive: true });
 // the top-level folder needs to exist for webpack to scan, even if there are no plugins
 fs.mkdirpSync(path.join(__dirname, "tmp", "plugin"));
 
