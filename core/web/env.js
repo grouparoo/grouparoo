@@ -7,8 +7,11 @@ const {
 } = require("../api/src/utils/pluginDetails");
 const pluginManifest = getPluginManifest();
 
+// prepare the paths we'll be using
+// the top-level folder needs to exist for webpack to scan, even if there are no plugins
+fs.mkdirpSync(path.join(__dirname, "tmp", "plugin"));
+
 // write the plugins manifest to a file for the web to consume
-fs.mkdirpSync(path.join(__dirname, "tmp"));
 fs.writeFileSync(
   path.join(__dirname, "tmp", "pluginManifest.json"),
   JSON.stringify(pluginManifest, null, 2)
