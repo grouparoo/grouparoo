@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-1. Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/) project, and we use NPM to manage our dependencies.
+1. Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/) project, and we use NPM to manage our dependencies.  Grouparoo also required the Postgres and Redis databases. On OSX, these can be installed bia [Homebrew](https://brew.sh/).
 
 ```json:readme_deploy
 {
