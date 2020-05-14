@@ -6,7 +6,7 @@ cd ..
 if [ -f "../node_modules/.bin/ts-node-dev" ]; then
   EXECUTABLE="../node_modules/.bin/ts-node-dev"
 else
-  EXECUTABLE="ts-node-dev"
+  EXECUTABLE="../../../../node_modules/.bin/ts-node-dev"
 fi
 
 export NEXT_TELEMETRY_DISABLED=true
