@@ -1,3 +1,4 @@
+import React from "react"; // needed because this is also used by a plugin
 import { useState } from "react";
 import Router from "next/router";
 import { Form, Button } from "react-bootstrap";

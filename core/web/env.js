@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("fs-extra");
 const path = require("path");
 const {
   getPluginManifest,
@@ -13,20 +13,29 @@ fs.writeFileSync(
   JSON.stringify(pluginManifest, null, 2)
 );
 
-// write the require path loader for the webpack plugin loader
-const loader = `import dynamic from "next/dynamic";
-
-export default function LoadPlugin (pluginName: string, file: string) {
-  return dynamic(() =>
-    import(\`${
-      grouparooMonorepoApp || runningCoreDirectly()
-        ? "../../../plugins/${pluginName}/src/components/${file}.plugin"
-        : "../../../../${pluginName}/src/components/${file}.plugin"
-    }\`)
-  )
-};
-`;
-fs.writeFileSync(path.join(__dirname, "tmp", "pluginLoader.ts"), loader);
+// For every plugin provided, we need to make an file within the core project that has a direct import for it.
+// The plugin components are already JS transpiled, so we do not need to transpile them (babel), only load them (webpack).
+// We do not want to use wildcard strings in the import statement to save webpack from scanning all of our directories
+pluginManifest.plugins.forEach((plugin) => {
+  const pluginName = plugin.name;
+  if (plugin?.grouparoo?.webComponents) {
+    for (const k in plugin.grouparoo.webComponents) {
+      plugin.grouparoo.webComponents[k].forEach((file) => {
+        fs.mkdirpSync(path.join(__dirname, "tmp", "plugin", k, pluginName));
+        fs.writeFileSync(
+          path.join(__dirname, "tmp", "plugin", k, pluginName, `${file}.tsx`),
+          `export { default } from ${
+            grouparooMonorepoApp || runningCoreDirectly()
+              ? `"../../../../../../../../plugins/${pluginName}/dist/components/${file}.plugin.js"`
+              : `"../../../../../../../../../${pluginName}/dist/components/${file}.plugin.js"`
+          }
+console.info("[ Grouparoo Plugin ] '${file}' from ${pluginName}");
+`
+        );
+      });
+    }
+  }
+});
 
 // build the web ENVIRONMENT object
 const _exports = {
