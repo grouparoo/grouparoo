@@ -4,7 +4,7 @@
 
 Take control of your data and your destiny with the open source customer data platform that puts marketers in charge.
 
-![Grouparoo Data Bowtie](https://github.com/grouparoo/grouparoo/blob/master/documents/images/grouparoo-bowtie.png)
+![Grouparoo Data Bowtie](https://raw.githubusercontent.com/grouparoo/grouparoo/master/documents/images/grouparoo-bowtie.png)
 
 Learn more at [www.grouparoo.com](https://www.grouparoo.com)
 
