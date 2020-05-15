@@ -8,7 +8,7 @@ Grouparoo relies on the contributions of [many people](https://github.com/groupa
 
 By contributing to Grouparoo and its related projects, you agree to abide by the [Grouparoo Code of Conduct](https://github.com/grouparoo/grouparoo/blob/master/CODE_OF_CONDUCT.md). Please read this document. We as contributors and maintainers pledge to making participation in our project and our community a harassment-free experience for everyone.
 
-Before you begin your contribution, please join the Grouparoo Slack team (TODO), which is available to join for free. There are community members who are happy help you, and you may want to team up with another community member if this is your first contribution.
+Before you begin your contribution, please join the [Grouparoo Community Discourse server](https://community.grouparoo.com), which is available to join for free. There are community members who are happy help you, and you may want to team up with another community member if this is your first contribution.
 
 ## Bugs and Issues
 
@@ -24,7 +24,7 @@ All changes to Grouparoo should be contributed via [Pull Requests](https://githu
 
 ### Contributions
 
-Before you start, please join us on slack (TODO) to discuss your plans for the new feature with us. As we don't yet publicly share our roadmap, we want to be sure that you won't be duplicating work, and that we will be able to merge in your work. Failing that, members of Grouparoo Inc will endeavor to quickly comment on an open Issue or Pull Request regarding it's mergeability.
+Before you start, please join us on the [Grouparoo Community Discourse server](https://community.grouparoo.com) to discuss your plans for the new feature with us. As we don't yet publicly share our roadmap, we want to be sure that you won't be duplicating work, and that we will be able to merge in your work. Failing that, members of Grouparoo Inc will endeavor to quickly comment on an open Issue or Pull Request regarding it's mergeability.
 
 At this time, Grouparoo Inc. is focused on expanding and enhancing our core features, in addition to developing our paid plugins. With that in mind, there are some areas of the codebase that may not be stable enough to accept Pull Requests, or areas of the product that are undergoing significant changes. There are also categories of work which fall outside the scope of of the core product which should be moved to a plugin. Similarly, Pull Requests that drastically change the functionality of an existing section of the product are unlikely to be merged, as they likely conflict with our roadmap.
 
