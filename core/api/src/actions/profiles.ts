@@ -16,7 +16,7 @@ export class ProfilesList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "profile", mode: "read" };
     this.inputs = {
-      guid: { required: false },
+      groupGuid: { required: false },
       searchKey: { required: false },
       searchValue: { required: false },
       limit: { required: true, default: 1000 },
@@ -46,11 +46,18 @@ export class ProfilesList extends AuthenticatedAction {
       }
 
       where.profilePropertyRuleGuid = rule.guid;
-      where.rawValue = { [Op.iLike]: `${params.searchValue}` };
+      if (
+        params.searchValue.toLowerCase() === "null" ||
+        params.searchValue === ""
+      ) {
+        where.rawValue = { [Op.eq]: null };
+      } else {
+        where.rawValue = { [Op.iLike]: `${params.searchValue}` };
+      }
     }
 
-    if (params.guid) {
-      const group = await Group.findByGuid(params.guid);
+    if (params.groupGuid) {
+      const group = await Group.findByGuid(params.groupGuid);
       const groupMembers: Array<GroupMember> = await group.$get(
         "groupMembers",
         {
@@ -87,15 +94,17 @@ export class ProfilesList extends AuthenticatedAction {
         })
       );
     } else {
+      const requiredJoin = Object.keys(where).length > 0 ? true : false;
+
       profiles = await Profile.findAll({
         offset: params.offset,
         limit: params.limit,
-        include: [{ model: ProfileProperty, where }],
+        include: [{ model: ProfileProperty, where, required: requiredJoin }],
       });
 
       total = await Profile.count({
         distinct: true,
-        include: [{ model: ProfileProperty, where }],
+        include: [{ model: ProfileProperty, where, required: requiredJoin }],
       });
 
       response.total = total;
@@ -179,6 +188,7 @@ export class ProfileCreate extends AuthenticatedAction {
     const profile = new Profile(params);
     await profile.save();
     await profile.addOrUpdateProperties(params.properties);
+    await profile.buildNullProperties();
     response.profile = await profile.apiData();
   }
 }
