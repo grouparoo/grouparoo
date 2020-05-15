@@ -13,18 +13,22 @@ jobs:
         with:
           repository: grouparoo/internal
           token: ${{ secrets.GH_ACCESS_TOKEN }}
-          path: internal
+          path: ../internal
       - name: Bump the bumpfile
         run: rm -rf .repo-bump && date > .repo-bump
+        working-directory: ../internal
       - name: NPM install
         run: npm install
+        working-directory: ../internal
       - name: Commit files
         run: |
           git config --local user.email "hello@grouparoo.com"
           git config --local user.name "Grouparoo Bot"
           git commit -m "grouparoo/grouparoo changed - Bump!" -a
+        working-directory: ../internal
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           repository: grouparoo/internal
           github_token: ${{ secrets.GH_ACCESS_TOKEN }}
+        working-directory: ../internal
