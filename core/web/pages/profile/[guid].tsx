@@ -49,9 +49,9 @@ export default function (props) {
   if (uniqueProperties.length > 0) {
     const emails = uniqueProperties.filter((prp) => prp.type === "email");
     if (emails[0]) {
-      name = emails[0].value;
+      name = emails[0].value || "Anonymous Profile";
     } else {
-      name = uniqueProperties[0].value;
+      name = uniqueProperties[0].value || "Anonymous Profile";
     }
   }
 
