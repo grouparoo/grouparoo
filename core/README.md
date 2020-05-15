@@ -42,7 +42,9 @@ Learn more at [www.grouparoo.com](https://www.grouparoo.com)
 - [📚 Publishing](https://github.com/grouparoo/grouparoo/blob/master/documents/development/publishing.md)
 - [👻 Security](https://github.com/grouparoo/grouparoo/blob/master/.github/SECURITY.md)
 
-### Community Guidelines
+### Community
+
+Looking for help or to connect with other Grouparoo users? **[👩‍💻👨‍💻Join the Grouparoo Community ➡️](https://community.grouparoo.com)**
 
 - [👨‍👩‍👧‍👦 Code of Conduct](https://github.com/grouparoo/grouparoo/blob/master/CODE_OF_CONDUCT.md)
 - [👷‍♀️ Contributing Guide](https://github.com/grouparoo/grouparoo/blob/master/.github/CONTRIBUTING.md)
