@@ -31,4 +31,4 @@ jobs:
         with:
           repository: grouparoo/internal
           github_token: ${{ secrets.GH_ACCESS_TOKEN }}
-        working-directory: ../internal
+          directory: ../internal
