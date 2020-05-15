@@ -1,4 +1,4 @@
-name: bump-internal-repo
+name: bump-internal-repo-and-install
 
 on:
   push:
@@ -15,6 +15,8 @@ jobs:
           token: ${{ secrets.GH_ACCESS_TOKEN }}
       - name: Bump the bumpfile
         run: rm -rf .repo-bump && date > .repo-bump
+      - name: NPM install
+        run: npm install
       - name: Commit files
         run: |
           git config --local user.email "hello@grouparoo.com"
