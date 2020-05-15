@@ -52,8 +52,13 @@ export interface EventPrototype extends EventArgs {
     order?: Array<[string, string]>;
   }) => Promise<string[]>;
   dataKeys: (type) => Promise<string[]>;
+  countEventData: (options: {
+    profileGuid?: string;
+    type?: string;
+    key: string;
+  }) => Promise<number>;
   aggregateEventData: (options: {
-    aggregation: "count" | "sum" | "min" | "max";
+    aggregation: "sum" | "min" | "max";
     profileGuid?: string;
     type?: string;
     key: string;

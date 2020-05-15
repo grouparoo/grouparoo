@@ -229,10 +229,9 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
     /^\[data\]-/,
     ""
   );
+  const aggregationMethod = profilePropertyRuleOptions["aggregation method"];
 
-  if (
-    profilePropertyRuleOptions["aggregation method"] === "exact-most-recent"
-  ) {
+  if (aggregationMethod === "exact-most-recent") {
     event = (
       await api.events.model.findAll({
         profileGuid: profile.guid,
@@ -241,9 +240,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
         limit: 1,
       })
     )[0];
-  } else if (
-    profilePropertyRuleOptions["aggregation method"] === "exact-least-recent"
-  ) {
+  } else if (aggregationMethod === "exact-least-recent") {
     event = (
       await api.events.model.findAll({
         profileGuid: profile.guid,
@@ -259,12 +256,20 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
       );
     }
 
-    return api.events.model.aggregateEventData({
-      profileGuid: profile.guid,
-      type: sourceOptions["type"],
-      aggregation: profilePropertyRuleOptions["aggregation method"],
-      key: dataKey,
-    });
+    if (aggregationMethod === "count") {
+      return api.events.model.countEventData({
+        profileGuid: profile.guid,
+        type: sourceOptions["type"],
+        key: dataKey,
+      });
+    } else {
+      return api.events.model.aggregateEventData({
+        profileGuid: profile.guid,
+        type: sourceOptions["type"],
+        aggregation: aggregationMethod,
+        key: dataKey,
+      });
+    }
   }
 
   if (!event) {

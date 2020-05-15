@@ -216,9 +216,43 @@ export class Event extends EventPrototype {
     return results.map((r) => r.key);
   }
 
+  static async countEventData(
+    options: {
+      profileGuid?: string;
+      type?: string;
+      key?: string;
+    } = {}
+  ) {
+    const { profileGuid, type, key } = options;
+    const where = { key };
+    const includeWhere = {};
+
+    if (type) {
+      includeWhere["type"] = type;
+    }
+
+    if (profileGuid) {
+      includeWhere["profileGuid"] = profileGuid;
+    }
+
+    const count = await SequelizeEventData.count({
+      where,
+      include: [
+        {
+          model: SequelizeEvent,
+          required: true,
+          where: includeWhere,
+          attributes: [],
+        },
+      ],
+    });
+
+    return count;
+  }
+
   static async aggregateEventData(
     options: {
-      aggregation?: "count" | "sum" | "min" | "max";
+      aggregation?: "sum" | "min" | "max";
       profileGuid?: string;
       type?: string;
       key?: string;
@@ -237,10 +271,6 @@ export class Event extends EventPrototype {
 
     if (profileGuid) {
       includeWhere["profileGuid"] = profileGuid;
-    }
-
-    if (type) {
-      includeWhere["type"] = type;
     }
 
     const results = await SequelizeEventData.findAll({
