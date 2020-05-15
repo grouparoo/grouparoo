@@ -6,19 +6,11 @@ const nodeModulesPath = runningCoreDirectly()
   ? path.resolve(__dirname, "..", "node_modules")
   : path.resolve(__dirname, "..", "..", "..", "..", "node_modules");
 
-const { plugins } = getPluginManifest();
-const pluginNamesWithinNodeModules = [{ name: "@grouparoo/core" }]
-  .concat(plugins)
-  .filter((p) => p?.grouparoo?.webComponents)
-  .map((p) => path.join("node_modules", p.name));
-
 module.exports = {
   env,
 
   webpack: (config, options) => {
-    if (!env.GROUPAROO_MONOREPO_APP) {
-      overwriteNextBabelLoaderToIncludePluginNodeModules(config);
-    }
+    overwriteNextBabelLoaderToIncludePluginNodeModules(config);
 
     // when grouparoo is deployed, and we want to run in dev mode, we need to opt-into babel within node modules
     // related to overwriteNextBabelLoaderToIncludePluginNodeModules
