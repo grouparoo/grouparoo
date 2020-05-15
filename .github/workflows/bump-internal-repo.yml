@@ -13,10 +13,9 @@ jobs:
         with:
           repository: grouparoo/internal
           token: ${{ secrets.GH_ACCESS_TOKEN }}
+          path: internal
       - name: Bump the bumpfile
         run: rm -rf .repo-bump && date > .repo-bump
-      - name: remove this cloned repo
-        run: rm -rf ../grouparoo
       - name: NPM install
         run: npm install
       - name: Commit files
