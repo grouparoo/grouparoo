@@ -96,7 +96,12 @@ class MockSession {
       return;
     }
 
-    await this.track(step);
+    try {
+      await this.track(step);
+    } catch (error) {
+      console.error(error);
+      process.exit(1);
+    }
 
     this.currentStep++;
     if (this.currentStep >= funnel.length) {
