@@ -218,7 +218,14 @@ export class Profile extends LoggedModel<Profile> {
     return hash;
   }
 
-  async import(toSave = true) {
+  async import(toSave = true, toLock = true) {
+    let releaseLock: Function;
+
+    if (toLock) {
+      const lockObject = await waitForLock(`profile:${this.guid}`);
+      releaseLock = lockObject.releaseLock;
+    }
+
     let hash = {};
     const sources = await Source.findAll({ where: { state: "ready" } });
     for (const i in sources) {
@@ -228,8 +235,14 @@ export class Profile extends LoggedModel<Profile> {
     if (toSave) {
       await this.addOrUpdateProperties(hash);
       await this.buildNullProperties();
-      return this.save();
+      await this.save();
     }
+
+    if (toLock) {
+      releaseLock();
+    }
+
+    return this;
   }
 
   async buildNullProperties() {
@@ -443,6 +456,13 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   static async merge(profile: Profile, otherProfile: Profile) {
+    const { releaseLock: releaseLockForProfile } = await waitForLock(
+      `profile:${profile.guid}`
+    );
+    const { releaseLock: releaseLockForOtherProfile } = await waitForLock(
+      `profile:${otherProfile.guid}`
+    );
+
     // transfer events
     let eventsCount = 1;
     while (eventsCount > 0) {
@@ -476,7 +496,13 @@ export class Profile extends LoggedModel<Profile> {
 
     // re-import and update groups
     delete profile.profileProperties; // remove any cached values from the instance
-    await profile.import();
+    await profile.import(true, false);
     await profile.updateGroupMembership();
+
+    // release locks
+    await releaseLockForProfile();
+    await releaseLockForOtherProfile();
+
+    return profile;
   }
 }
