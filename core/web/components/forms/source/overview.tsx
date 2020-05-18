@@ -219,7 +219,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                       <strong>Next Run</strong>
                       <br />
                       {run?.updatedAt &&
-                      Date.parse(run.updatedAt) +
+                      new Date(run.updatedAt).getTime() +
                         source.schedule.recurringFrequency >
                         new Date().getTime() &&
                       recurringFrequencyMinutes > 0 ? (
@@ -238,7 +238,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                       ) : null}
 
                       {(run?.updatedAt &&
-                        Date.parse(run.updatedAt) +
+                        new Date(run.updatedAt).getTime() +
                           source.schedule.recurringFrequency <=
                           new Date().getTime() &&
                         recurringFrequencyMinutes) ||
