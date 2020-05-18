@@ -21,7 +21,6 @@ import {
 import * as uuid from "uuid";
 import { Schedule } from "./Schedule";
 import { Import } from "./Import";
-import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Group } from "./Group";
 import { StateMachine } from "./../modules/stateMachine";
 
