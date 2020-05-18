@@ -207,6 +207,7 @@ describe("integration/happyPath", () => {
         firstName: "Luigi",
         lastName: "Mario",
         ltv: 100.12,
+        userId: null,
       });
       profileGuid = profile.guid;
     });

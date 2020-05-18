@@ -314,6 +314,8 @@ describe("actions/profilePropertyRules", () => {
 
     test("an administrator can see a profile preview of a profile property rule", async () => {
       const _profile = await helper.factories.profile();
+      await _profile.addOrUpdateProperties({ userId: 1001 });
+
       const originalProperties = _profile.properties();
       expect(originalProperties["email"]).toBeFalsy();
 

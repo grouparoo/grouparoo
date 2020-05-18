@@ -433,6 +433,7 @@ describe("models/source", () => {
       await source.update({ state: "ready" });
 
       profile = await helper.factories.profile();
+      await profile.addOrUpdateProperties({ userId: 1000 });
 
       lnameRule = await ProfilePropertyRule.create({
         key: "__fname",
