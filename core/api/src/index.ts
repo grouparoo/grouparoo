@@ -8,6 +8,7 @@ export { ApiKey } from "./models/ApiKey";
 export { Destination } from "./models/Destination";
 export { DestinationGroup } from "./models/DestinationGroup";
 export { DestinationGroupMembership } from "./models/DestinationGroupMembership";
+export { Export } from "./models/Export";
 export { File } from "./models/File";
 export { Group } from "./models/Group";
 export { GroupMember } from "./models/GroupMember";
@@ -27,3 +28,9 @@ export { Setting } from "./models/Setting";
 export { Source } from "./models/Source";
 export { Team } from "./models/Team";
 export { TeamMember } from "./models/TeamMember";
+export {
+  EventArgs,
+  EventDataArgs,
+  EventPrototype,
+  EventDataPrototype,
+} from "./classes/events";
