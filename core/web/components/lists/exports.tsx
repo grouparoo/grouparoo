@@ -85,10 +85,8 @@ export default function ({ apiVersion, errorHandler, query }) {
     }
   }
 
-  function formatCreatedAt(timeString) {
-    // 2019-12-07T00:03:23.417Z
-    const date = timeString.split("T")[0];
-    const time = timeString.split("T")[1].split(".")[0];
+  function formatCreatedAt(timestamp) {
+    const [date, time] = new Date(timestamp).toLocaleString().split(",");
     return `${date} ${time}`;
   }
 

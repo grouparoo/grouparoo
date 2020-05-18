@@ -20,7 +20,12 @@ import { SourceAPIData, RunAPIData } from "../../../utils/apiData";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
-  const [source, setSource] = useState<SourceAPIData>({});
+  const [source, setSource] = useState<SourceAPIData>({
+    connection: {},
+    app: {},
+    options: {},
+    profilePropertyRules: [],
+  });
   const [run, setRun] = useState<RunAPIData>({});
   const { guid } = query;
 
@@ -114,7 +119,9 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                         <strong>
                           {rule.key ||
                             `${rule.state} created on ${
-                              rule.createdAt.split("T")[0]
+                              new Date(rule.createdAt)
+                                .toLocaleString()
+                                .split(",")[0]
                             }`}
                         </strong>
                       </a>

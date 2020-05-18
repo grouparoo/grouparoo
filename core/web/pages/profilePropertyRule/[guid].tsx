@@ -15,7 +15,7 @@ import { ProfilePropertyRuleAPIData } from "../../utils/apiData";
 export default function (props) {
   const [profilePropertyRule, setProfilePropertyRule] = useState<
     ProfilePropertyRuleAPIData
-  >({});
+  >({ source: { app: {} } });
   const { execApi } = useApi(props.errorHandler);
   const [plugins, pluginMetadata] = usePlugins("profilePropertyRules/tabs");
   const profilesListProps = Object.assign({}, props);

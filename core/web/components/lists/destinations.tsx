@@ -104,7 +104,9 @@ export default function ({
                       <strong>
                         {destination.name ||
                           `${destination.state} created on ${
-                            destination.createdAt.split("T")[0]
+                            new Date(destination.createdAt)
+                              .toLocaleString()
+                              .split(",")[0]
                           }`}
                       </strong>
                     </a>

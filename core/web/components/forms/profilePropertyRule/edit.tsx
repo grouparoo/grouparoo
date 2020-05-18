@@ -39,7 +39,7 @@ export default function ({
   >([]);
   const [profilePropertyRule, setProfilePropertyRule] = useState<
     ProfilePropertyRuleAPIData
-  >({});
+  >({ source: { app: {} }, filters: [], guid: "" });
   const [localFilters, setLocalFilters] = useState([]);
 
   const { guid } = query;

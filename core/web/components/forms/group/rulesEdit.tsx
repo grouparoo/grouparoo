@@ -17,7 +17,7 @@ export default function RulesBuilder({
   query,
 }) {
   const { execApi } = useApi(errorHandler);
-  const [group, setGroup] = useState<GroupAPIData>({});
+  const [group, setGroup] = useState<GroupAPIData>({ rules: [] });
   const [loading, setLoading] = useState(false);
   const [localRules, setLocalRules] = useState([]);
   const [profilePropertyRules, setProfilePropertyRules] = useState<

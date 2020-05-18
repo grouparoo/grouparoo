@@ -21,7 +21,7 @@ export default function ({
   const [optionOptions, setOptionOptions] = useState([]);
   const [testResult, setTestResult] = useState({ result: null, error: null });
   const [ranTest, setRanTest] = useState(false);
-  const [app, setApp] = useState<AppAPIData>({});
+  const [app, setApp] = useState<AppAPIData>({ name: "" });
   const { guid } = query;
 
   useEffect(() => {

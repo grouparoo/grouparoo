@@ -15,7 +15,12 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const [guid, setGuid] = useState("");
   const [pluginOptions, setPluginOptions] = useState([]);
   const [run, setRun] = useState<RunAPIData>({});
-  const [schedule, setSchedule] = useState<ScheduleAPIData>({});
+  const [schedule, setSchedule] = useState<ScheduleAPIData>({
+    source: {},
+    recurring: false,
+    recurringFrequency: 0,
+    recurringFrequencyMinutes: 0,
+  });
 
   const { guid: sourceGuid } = query;
 

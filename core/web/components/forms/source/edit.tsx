@@ -18,7 +18,11 @@ export default function ({
   const { execApi } = useApi(errorHandler);
   const [connectionOptions, setConnectionOptions] = useState([]);
   const [preview, setPreview] = useState([]);
-  const [source, setSource] = useState<SourceAPIData>({});
+  const [source, setSource] = useState<SourceAPIData>({
+    app: {},
+    options: {},
+    connection: { options: [] },
+  });
   const { guid } = query;
 
   useEffect(() => {

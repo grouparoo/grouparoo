@@ -18,7 +18,12 @@ export default function ({
 }) {
   const { execApi } = useApi(errorHandler);
   const [connectionOptions, setConnectionOptions] = useState([]);
-  const [destination, setDestination] = useState<DestinationAPIData>({});
+  const [destination, setDestination] = useState<DestinationAPIData>({
+    // @ts-ignore
+    app: {},
+    // @ts-ignore
+    connection: { options: [] },
+  });
   const { guid } = query;
 
   useEffect(() => {

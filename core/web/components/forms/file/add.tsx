@@ -44,7 +44,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
           <Form.Control as="select" name="type" ref={register}>
             <option disabled>choose a type</option>
             {types.map((type) => (
-              <option>{type}</option>
+              <option key={`file-type-${type}`}>{type}</option>
             ))}
           </Form.Control>
         </Form.Group>

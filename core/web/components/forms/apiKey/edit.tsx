@@ -9,7 +9,7 @@ import { ApiKeyAPIData } from "../../../utils/apiData";
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [apiKey, setApiKey] = useState<ApiKeyAPIData>({});
+  const [apiKey, setApiKey] = useState<ApiKeyAPIData>({ name: "", apiKey: "" });
   const { guid } = query;
 
   useEffect(() => {
