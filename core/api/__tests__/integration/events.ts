@@ -2,6 +2,8 @@ import { helper } from "../utils/specHelper";
 import { specHelper } from "actionhero";
 import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
 import { Profile } from "../../src/models/Profile";
+import { Option } from "../../src/models/Option";
+import profilePropertyRules from "../factories/profilePropertyRules";
 
 let actionhero, api;
 
@@ -9,6 +11,8 @@ describe("integration/events", () => {
   let connection;
   let csrfToken;
   let appGuid;
+  let sourceGuid;
+  let profilePropertyGuid;
   let userIdRule;
   let apiKey;
   let eventGuid;
@@ -237,5 +241,307 @@ describe("integration/events", () => {
 
     const profileEvents = await profile.events();
     expect(profileEvents.length).toBe(6);
+  });
+
+  describe("source", () => {
+    test("a source for an event can be created into draft mode", async () => {
+      connection.params = {
+        csrfToken,
+        appGuid,
+        name: "pageview-events",
+        type: "events-table-import",
+      };
+      const { source, error } = await specHelper.runAction(
+        "source:create",
+        connection
+      );
+
+      expect(error).toBeFalsy();
+      expect(source.guid).toBeTruthy();
+      expect(source.state).toBe("draft");
+
+      sourceGuid = source.guid;
+    });
+
+    test("an administrator can enumerate the source connection options", async () => {
+      connection.params = {
+        csrfToken,
+        guid: sourceGuid,
+      };
+      const { error, options } = await specHelper.runAction(
+        "source:connectionOptions",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(options).toEqual({
+        type: { options: ["mobile-sceneview", "pageview"], type: "list" },
+      });
+    });
+
+    test("a source with no options will see an empty preview", async () => {
+      const options = await Option.findAll({
+        where: { ownerGuid: sourceGuid },
+      });
+      await Promise.all(options.map((o) => o.destroy()));
+
+      connection.params = {
+        csrfToken,
+        guid: sourceGuid,
+      };
+      const { error, preview } = await specHelper.runAction(
+        "source:preview",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(preview).toEqual([]);
+    });
+
+    test("a source can provide options to a preview", async () => {
+      connection.params = {
+        csrfToken,
+        guid: sourceGuid,
+        options: { type: "pageview" },
+      };
+      const { error, preview } = await specHelper.runAction(
+        "source:preview",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(preview.length).toEqual(4);
+      expect(preview[0].type).toEqual("pageview");
+    });
+
+    test("a source can have options set", async () => {
+      connection.params = {
+        csrfToken,
+        guid: sourceGuid,
+        options: { type: "pageview" },
+      };
+      const { error, source } = await specHelper.runAction(
+        "source:edit",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(source.options).toEqual({ type: "pageview" });
+    });
+
+    test("a source with options set will return a preview", async () => {
+      connection.params = {
+        csrfToken,
+        guid: sourceGuid,
+      };
+      const { error, preview } = await specHelper.runAction(
+        "source:preview",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(preview.length).toEqual(4);
+      expect(preview[0].type).toEqual("pageview");
+    });
+
+    test("a source can be made active", async () => {
+      connection.params = {
+        csrfToken,
+        guid: sourceGuid,
+        state: "ready",
+      };
+      const { error, source } = await specHelper.runAction(
+        "source:edit",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(source.state).toBe("ready");
+    });
+
+    test("an administrator can view a source", async () => {
+      connection.params = {
+        csrfToken,
+        guid: sourceGuid,
+      };
+      const { error, source } = await specHelper.runAction(
+        "source:view",
+        connection
+      );
+
+      expect(error).toBeUndefined();
+      expect(source.guid).toBeTruthy();
+      expect(source.app.name).toBe("events");
+    });
+
+    describe("profilePropertyRules", () => {
+      test("an administrator can create a new profilePropertyRule", async () => {
+        connection.params = {
+          csrfToken,
+          sourceGuid,
+          key: "count-pageview",
+          type: "integer",
+          unique: "false",
+        };
+
+        const {
+          error,
+          profilePropertyRule,
+          pluginOptions,
+        } = await specHelper.runAction(
+          "profilePropertyRule:create",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(profilePropertyRule.guid).toBeTruthy();
+        expect(profilePropertyRule.key).toBe("count-pageview");
+        expect(profilePropertyRule.unique).toBe(false);
+        expect(profilePropertyRule.state).toBe("draft");
+        expect(profilePropertyRule.source.guid).toBe(sourceGuid);
+        expect(pluginOptions[0].key).toBe("column");
+        expect(pluginOptions[0].options.map((opt) => opt.key)).toEqual([
+          "ipAddress",
+          "type",
+          "userId",
+          "occurredAt",
+          "[data]-path",
+        ]);
+        expect(pluginOptions[1].key).toBe("aggregation method");
+        expect(pluginOptions[1].options.map((opt) => opt.key)).toEqual([
+          "exact-most-recent",
+          "exact-least-recent",
+          "average",
+          "count",
+          "sum",
+          "min",
+          "max",
+        ]);
+
+        profilePropertyGuid = profilePropertyRule.guid;
+      });
+
+      test("an administrator can view the filter options for a profile property rule", async () => {
+        connection.params = {
+          csrfToken,
+          guid: profilePropertyGuid,
+        };
+        const { error, options } = await specHelper.runAction(
+          "profilePropertyRule:filterOptions",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(options).toEqual([
+          {
+            key: "ipAddress",
+            ops: ["equals", "does not equal", "contains", "does not contain"],
+            canHaveRelativeMatch: false,
+          },
+          {
+            key: "type",
+            ops: ["equals", "does not equal", "contains", "does not contain"],
+            canHaveRelativeMatch: false,
+          },
+          {
+            key: "userId",
+            ops: ["equals", "does not equal"],
+            canHaveRelativeMatch: false,
+          },
+          {
+            key: "occurredAt",
+            ops: ["equals", "does not equal", "greater than", "less than"],
+            canHaveRelativeMatch: false,
+          },
+          {
+            key: "[data]-path",
+            ops: ["equals", "does not equal", "contains", "does not contain"],
+            canHaveRelativeMatch: false,
+          },
+        ]);
+      });
+
+      test("an administrator can set the filters for a profile property rule", async () => {
+        connection.params = {
+          csrfToken,
+          guid: profilePropertyGuid,
+          filters: [{ key: "[data]-path", op: "does not equal", match: "/" }],
+        };
+        const { error, profilePropertyRule } = await specHelper.runAction(
+          "profilePropertyRule:edit",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(profilePropertyRule.filters).toEqual([
+          {
+            key: "[data]-path",
+            match: "/",
+            op: "does not equal",
+            relativeMatchDirection: null,
+            relativeMatchNumber: null,
+            relativeMatchUnit: null,
+          },
+        ]);
+      });
+
+      test("the rule cannot be made ready without an aggregation method", async () => {
+        connection.params = {
+          csrfToken,
+          guid: profilePropertyGuid,
+          options: { column: "[data]-path" },
+          state: "ready",
+        };
+        const { error, profilePropertyRule } = await specHelper.runAction(
+          "profilePropertyRule:edit",
+          connection
+        );
+        expect(error.message).toMatch(/aggregation method is required/);
+      });
+
+      test("an administrator can make a rule ready", async () => {
+        connection.params = {
+          csrfToken,
+          guid: profilePropertyGuid,
+          options: { column: "[data]-path", "aggregation method": "count" },
+          state: "ready",
+        };
+        const { error, profilePropertyRule } = await specHelper.runAction(
+          "profilePropertyRule:edit",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(profilePropertyRule.state).toBe("ready");
+      });
+
+      test("an administrator can test a profile property rule", async () => {
+        connection.params = {
+          csrfToken,
+          guid: profilePropertyGuid,
+        };
+        const { error, test } = await specHelper.runAction(
+          "profilePropertyRule:test",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(test).toBeTruthy();
+      });
+
+      describe("with profile", () => {
+        let profile: Profile;
+
+        beforeAll(async () => {
+          const profiles = await Profile.findAll();
+          expect(profiles.length).toBe(1);
+          profile = profiles[0];
+        });
+
+        test("profile properties will be imported", async () => {
+          let properties = await profile.properties();
+          expect(properties["count-pageview"]).toBeFalsy();
+
+          await profile.import();
+          properties = await profile.properties();
+          expect(properties["count-pageview"].guid).toBe(profilePropertyGuid);
+          // expect(properties["count-pageview"].value).toBe(3);
+          expect(properties["count-pageview"].value).toBe(4);
+        });
+      });
+    });
   });
 });
