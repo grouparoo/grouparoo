@@ -120,18 +120,15 @@ export class Profile extends LoggedModel<Profile> {
       where: { profileGuid: this.guid, profilePropertyRuleGuid: rule.guid },
     });
 
-    if (property) {
-      await property.setValue(value);
-      await property.save();
-    } else {
+    if (!property) {
       property = new ProfileProperty({
         profileGuid: this.guid,
         profilePropertyRuleGuid: rule.guid,
       });
-      await property.setValue(value);
-      await property.save();
     }
 
+    await property.setValue(value);
+    await property.save();
     return this;
   }
 
@@ -236,6 +233,9 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   async buildNullProperties() {
+    // TODO: this is brittle... perhaps we need a lock on the profile for all edits?
+
+    const transaction = await api.sequelize.transaction();
     const properties = await this.properties();
     const rules = await ProfilePropertyRule.cached();
     let newPropertiesCount = 0;
@@ -244,11 +244,22 @@ export class Profile extends LoggedModel<Profile> {
         await ProfileProperty.create({
           profileGuid: this.guid,
           profilePropertyRuleGuid: rules[key].guid,
+          transaction,
         });
         newPropertiesCount++;
       }
     }
 
+    try {
+      await transaction.commit();
+    } catch (error) {
+      if (error.message.match(/SequelizeUniqueConstraintError/)) {
+        // another worker already built the null properties for this profile
+        return 0;
+      } else {
+        throw error;
+      }
+    }
     return newPropertiesCount;
   }
 

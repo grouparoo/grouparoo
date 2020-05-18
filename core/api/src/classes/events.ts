@@ -101,9 +101,19 @@ export abstract class EventPrototype {
 
     if (this.profileGuid) {
       // we are already identified
-      const profile = await this.getProfile();
-      await this.updateProfile(profile);
-      return profile;
+      try {
+        const profile = await this.getProfile();
+        await this.updateProfile(profile);
+        return profile;
+      } catch (error) {
+        // the event may have been moved to another profile
+        const updatedEvent = await this.reload();
+        if (updatedEvent.profileGuid !== this.profileGuid) {
+          return updatedEvent.associate(updatedEvent.profileGuid);
+        } else {
+          throw error;
+        }
+      }
     } else if (this.userId) {
       // we have a userId (primaryIdentifyingProfilePropertyRule)
       let profile = await Profile.findOne({
