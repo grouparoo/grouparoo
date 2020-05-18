@@ -58,7 +58,7 @@ export interface EventPrototype extends EventArgs {
     key: string;
   }) => Promise<number>;
   aggregateEventData: (options: {
-    aggregation: "sum" | "min" | "max";
+    aggregation: "average" | "sum" | "min" | "max";
     profileGuid?: string;
     type?: string;
     key: string;

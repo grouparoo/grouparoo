@@ -252,13 +252,13 @@ export class Event extends EventPrototype {
 
   static async aggregateEventData(
     options: {
-      aggregation?: "sum" | "min" | "max";
+      aggregation?: "average" | "sum" | "min" | "max";
       profileGuid?: string;
       type?: string;
       key?: string;
     } = {}
   ) {
-    const { aggregation, profileGuid, type, key } = options;
+    let { aggregation, profileGuid, type, key } = options;
     const where = { key };
     const includeWhere = {};
     if (!aggregation) {
@@ -278,7 +278,7 @@ export class Event extends EventPrototype {
       attributes: [
         [
           api.sequelize.fn(
-            aggregation,
+            aggregation === "average" ? "avg" : aggregation,
             api.sequelize.cast(api.sequelize.col("value"), "float")
           ),
           "value",

@@ -12,7 +12,7 @@ describe("integration/events", () => {
   let csrfToken;
   let appGuid;
   let sourceGuid;
-  let profilePropertyGuid;
+  let profilePropertyRuleGuid;
   let userIdRule;
   let apiKey;
   let eventGuid;
@@ -118,7 +118,7 @@ describe("integration/events", () => {
       apiKey,
       type: "pageview",
       anonymousId: "abc123",
-      data: { path: "/" },
+      data: { path: "/", loadTime: 100 },
     });
 
     expect(error).toBeFalsy();
@@ -127,7 +127,7 @@ describe("integration/events", () => {
     expect(event.ipAddress).toBeTruthy();
     expect(event.profileGuid).toBeFalsy();
     expect(event.anonymousId).toBe("abc123");
-    expect(event.data).toEqual({ path: "/" });
+    expect(event.data).toEqual({ path: "/", loadTime: 100 });
 
     const foundTasks = await specHelper.findEnqueuedTasks(
       "event:associateProfile"
@@ -156,7 +156,7 @@ describe("integration/events", () => {
       apiKey,
       type: "pageview",
       anonymousId: "abc123",
-      data: { path: "/about" },
+      data: { path: "/about", loadTime: 100 },
     });
     await specHelper.runTask("event:associateProfile", {
       eventGuid: event.guid,
@@ -175,7 +175,7 @@ describe("integration/events", () => {
       type: "pageview",
       anonymousId: "abc123",
       userId: 100,
-      data: { path: "/web-sign-in" },
+      data: { path: "/web-sign-in", loadTime: 100 },
     });
     await specHelper.runTask("event:associateProfile", {
       eventGuid: event.guid,
@@ -196,7 +196,7 @@ describe("integration/events", () => {
       type: "pageview",
       anonymousId: "def456",
       userId: 100,
-      data: { path: "/mobile-sign-in" },
+      data: { path: "/mobile-sign-in", loadTime: 100 },
     });
     await specHelper.runTask("event:associateProfile", {
       eventGuid: event.guid,
@@ -216,7 +216,7 @@ describe("integration/events", () => {
       apiKey,
       type: "mobile-sceneview",
       anonymousId: "zzz999",
-      data: { path: "/" },
+      data: { path: "/", loadTime: 100 },
     });
     await specHelper.runTask("event:associateProfile", {
       eventGuid: event1.guid,
@@ -230,7 +230,7 @@ describe("integration/events", () => {
       type: "mobile-sceneview",
       anonymousId: "zzz999",
       userId: 100,
-      data: { path: "/sign-in" },
+      data: { path: "/sign-in", loadTime: 100 },
     });
     await specHelper.runTask("event:associateProfile", {
       eventGuid: event2.guid,
@@ -373,7 +373,7 @@ describe("integration/events", () => {
         connection.params = {
           csrfToken,
           sourceGuid,
-          key: "count-pageview",
+          key: "test-rule",
           type: "integer",
           unique: "false",
         };
@@ -389,7 +389,7 @@ describe("integration/events", () => {
 
         expect(error).toBeUndefined();
         expect(profilePropertyRule.guid).toBeTruthy();
-        expect(profilePropertyRule.key).toBe("count-pageview");
+        expect(profilePropertyRule.key).toBe("test-rule");
         expect(profilePropertyRule.unique).toBe(false);
         expect(profilePropertyRule.state).toBe("draft");
         expect(profilePropertyRule.source.guid).toBe(sourceGuid);
@@ -399,6 +399,7 @@ describe("integration/events", () => {
           "type",
           "userId",
           "occurredAt",
+          "[data]-loadTime",
           "[data]-path",
         ]);
         expect(pluginOptions[1].key).toBe("aggregation method");
@@ -412,13 +413,13 @@ describe("integration/events", () => {
           "max",
         ]);
 
-        profilePropertyGuid = profilePropertyRule.guid;
+        profilePropertyRuleGuid = profilePropertyRule.guid;
       });
 
       test("an administrator can view the filter options for a profile property rule", async () => {
         connection.params = {
           csrfToken,
-          guid: profilePropertyGuid,
+          guid: profilePropertyRuleGuid,
         };
         const { error, options } = await specHelper.runAction(
           "profilePropertyRule:filterOptions",
@@ -448,6 +449,11 @@ describe("integration/events", () => {
             canHaveRelativeMatch: false,
           },
           {
+            key: "[data]-loadTime",
+            ops: ["equals", "does not equal", "contains", "does not contain"],
+            canHaveRelativeMatch: false,
+          },
+          {
             key: "[data]-path",
             ops: ["equals", "does not equal", "contains", "does not contain"],
             canHaveRelativeMatch: false,
@@ -458,7 +464,7 @@ describe("integration/events", () => {
       test("an administrator can set the filters for a profile property rule", async () => {
         connection.params = {
           csrfToken,
-          guid: profilePropertyGuid,
+          guid: profilePropertyRuleGuid,
           filters: [{ key: "[data]-path", op: "does not equal", match: "/" }],
         };
         const { error, profilePropertyRule } = await specHelper.runAction(
@@ -482,7 +488,7 @@ describe("integration/events", () => {
       test("the rule cannot be made ready without an aggregation method", async () => {
         connection.params = {
           csrfToken,
-          guid: profilePropertyGuid,
+          guid: profilePropertyRuleGuid,
           options: { column: "[data]-path" },
           state: "ready",
         };
@@ -496,7 +502,7 @@ describe("integration/events", () => {
       test("an administrator can make a rule ready", async () => {
         connection.params = {
           csrfToken,
-          guid: profilePropertyGuid,
+          guid: profilePropertyRuleGuid,
           options: { column: "[data]-path", "aggregation method": "count" },
           state: "ready",
         };
@@ -511,7 +517,7 @@ describe("integration/events", () => {
       test("an administrator can test a profile property rule", async () => {
         connection.params = {
           csrfToken,
-          guid: profilePropertyGuid,
+          guid: profilePropertyRuleGuid,
         };
         const { error, test } = await specHelper.runAction(
           "profilePropertyRule:test",
@@ -533,13 +539,98 @@ describe("integration/events", () => {
 
         test("profile properties will be imported", async () => {
           let properties = await profile.properties();
-          expect(properties["count-pageview"]).toBeFalsy();
+          expect(properties["test-rule"]).toBeFalsy();
 
           await profile.import();
           properties = await profile.properties();
-          expect(properties["count-pageview"].guid).toBe(profilePropertyGuid);
-          // expect(properties["count-pageview"].value).toBe(3);
-          expect(properties["count-pageview"].value).toBe(4);
+          expect(properties["test-rule"].guid).toBe(profilePropertyRuleGuid);
+          // expect(properties["test-rule"].value).toBe(3);
+          expect(properties["test-rule"].value).toBe(4);
+        });
+      });
+
+      describe("aggregations", () => {
+        let rule: ProfilePropertyRule;
+        beforeAll(async () => {
+          rule = await ProfilePropertyRule.findByGuid(profilePropertyRuleGuid);
+          await rule.setFilters([]);
+        });
+
+        test("exact-most-recent", async () => {
+          await rule.update({ type: "string" });
+          await rule.setOptions({
+            column: "[data]-path",
+            "aggregation method": "exact-most-recent",
+          });
+          await profile.import();
+          const properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe("/mobile-sign-in");
+        });
+
+        test("exact-least-recent", async () => {
+          await rule.update({ type: "string" });
+          await rule.setOptions({
+            column: "[data]-path",
+            "aggregation method": "exact-least-recent",
+          });
+          await profile.import();
+          const properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe("/");
+        });
+
+        test("average", async () => {
+          await rule.update({ type: "float" });
+          await rule.setOptions({
+            column: "[data]-loadTime",
+            "aggregation method": "average",
+          });
+          await profile.import();
+          const properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe(100);
+        });
+
+        test("count", async () => {
+          await rule.update({ type: "integer" });
+          await rule.setOptions({
+            column: "[data]-path",
+            "aggregation method": "count",
+          });
+          await profile.import();
+          const properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe(4);
+        });
+
+        test("sum", async () => {
+          await rule.update({ type: "integer" });
+          await rule.setOptions({
+            column: "[data]-loadTime",
+            "aggregation method": "sum",
+          });
+          await profile.import();
+          const properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe(400);
+        });
+
+        test("min", async () => {
+          await rule.update({ type: "integer" });
+          await rule.setOptions({
+            column: "[data]-loadTime",
+            "aggregation method": "min",
+          });
+          await profile.import();
+          const properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe(100);
+        });
+
+        test("max", async () => {
+          await rule.update({ type: "integer" });
+          await rule.setOptions({
+            column: "[data]-loadTime",
+            "aggregation method": "max",
+          });
+          await profile.import();
+          const properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe(100);
         });
       });
     });
