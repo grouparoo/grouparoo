@@ -349,9 +349,9 @@ export class Run extends Model<Run> {
       error: this.error,
       highWaterMark: this.highWaterMark,
       filter: this.filter,
-      completedAt: this.completedAt ? this.completedAt.toString() : null,
-      createdAt: this.createdAt ? this.createdAt.toString() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.toString() : null,
+      completedAt: this.completedAt ? this.completedAt.getTime() : null,
+      createdAt: this.createdAt ? this.createdAt.getTime() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
     };
   }
 

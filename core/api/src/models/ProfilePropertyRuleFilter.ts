@@ -79,8 +79,8 @@ export class ProfilePropertyRuleFilter extends Model<
       relativeMatchNumber: this.relativeMatchNumber,
       relativeMatchUnit: this.relativeMatchUnit,
       relativeMatchDirection: this.relativeMatchDirection,
-      createdAt: this.createdAt ? this.createdAt.toString() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.toString() : null,
+      createdAt: this.createdAt ? this.createdAt.getTime() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
     };
   }
 }

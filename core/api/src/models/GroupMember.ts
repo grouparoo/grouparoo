@@ -91,9 +91,9 @@ export class GroupMember extends Model<GroupMember> {
     return {
       profileGuid: this.profileGuid,
       groupGuid: this.groupGuid,
-      createdAt: this.createdAt ? this.createdAt.toString() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.toString() : null,
-      removedAt: this.removedAt ? this.removedAt.toString() : null,
+      createdAt: this.createdAt ? this.createdAt.getTime() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      removedAt: this.removedAt ? this.removedAt.getTime() : null,
     };
   }
 

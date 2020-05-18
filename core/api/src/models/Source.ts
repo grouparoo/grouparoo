@@ -306,8 +306,8 @@ export class Source extends LoggedModel<Source> {
       profilePropertyRules: profilePropertyRules
         ? await Promise.all(profilePropertyRules.map((prp) => prp.apiData()))
         : [],
-      createdAt: this.createdAt ? this.createdAt.toString() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.toString() : null,
+      createdAt: this.createdAt ? this.createdAt.getTime() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
     };
   }
 
