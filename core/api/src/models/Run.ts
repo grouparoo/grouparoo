@@ -351,8 +351,8 @@ export class Run extends Model<Run> {
       highWaterMark: this.highWaterMark,
       filter: this.filter,
       completedAt: this.completedAt ? this.completedAt.toString() : null,
-      createdAt: this.createdAt.toString(),
-      updatedAt: this.updatedAt.toString(),
+      createdAt: this.createdAt ? this.createdAt.toString() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.toString() : null,
     };
   }
 

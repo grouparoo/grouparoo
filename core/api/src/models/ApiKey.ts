@@ -87,7 +87,8 @@ export class ApiKey extends LoggedModel<ApiKey> {
       permissionAllRead: this.permissionAllRead,
       permissionAllWrite: this.permissionAllWrite,
       permissions: await Promise.all(permissions.map((prm) => prm.apiData())),
-      createdAt: this.createdAt.toString(),
+      createdAt: this.createdAt ? this.createdAt.toString() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.toString() : null,
     };
   }
 

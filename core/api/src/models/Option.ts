@@ -49,8 +49,8 @@ export class Option extends LoggedModel<Option> {
       ownerType: this.ownerType,
       key: this.key,
       value: this.value,
-      createdAt: this.createdAt.toString(),
-      updatedAt: this.updatedAt.toString(),
+      createdAt: this.createdAt ? this.createdAt.toString() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.toString() : null,
     };
   }
 
