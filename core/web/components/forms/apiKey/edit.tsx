@@ -4,17 +4,12 @@ import { Form, Button } from "react-bootstrap";
 import PermissionsList from "../../lists/permissions";
 import Router from "next/router";
 
+import { ApiKeyAPIData } from "../../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [apiKey, setApiKey] = useState({
-    guid: "",
-    name: "",
-    apiKey: "",
-    permissions: [],
-    permissionAllRead: false,
-    permissionAllWrite: false,
-  });
+  const [apiKey, setApiKey] = useState<ApiKeyAPIData>({});
   const { guid } = query;
 
   useEffect(() => {

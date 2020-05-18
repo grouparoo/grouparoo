@@ -7,6 +7,8 @@ import AppIcon from "./../../appIcon";
 import StateBadge from "./../../stateBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
 
+import { DestinationAPIData } from "../../../utils/apiData";
+
 export default function ({
   apiVersion,
   errorHandler,
@@ -16,17 +18,7 @@ export default function ({
 }) {
   const { execApi } = useApi(errorHandler);
   const [connectionOptions, setConnectionOptions] = useState([]);
-  const [destination, setDestination] = useState({
-    guid: "",
-    name: "",
-    type: "",
-    state: "",
-    appGuid: "",
-    options: {},
-    app: { name: "", guid: "", icon: "" },
-    connection: { name: "", description: "", options: [] },
-    destinationGroups: [],
-  });
+  const [destination, setDestination] = useState<DestinationAPIData>({});
   const { guid } = query;
 
   useEffect(() => {

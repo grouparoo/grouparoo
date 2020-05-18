@@ -6,19 +6,14 @@ import Loader from "../../loader";
 import Router from "next/router";
 import ProfileImageFromEmail from "../../visualizations/profileImageFromEmail";
 
+import { TeamAPIData, TeamMemberAPIData } from "../../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
-  const [teams, setTeams] = useState([]);
-  const [teamMember, setTeamMember] = useState({
-    guid: "",
-    teamGuid: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-  });
+  const [teams, setTeams] = useState<TeamAPIData[]>([]);
+  const [teamMember, setTeamMember] = useState<TeamMemberAPIData>({});
   const { guid } = query;
 
   useEffect(() => {

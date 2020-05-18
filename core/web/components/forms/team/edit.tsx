@@ -4,6 +4,8 @@ import { Form, Button } from "react-bootstrap";
 import PermissionsList from "../../lists/permissions";
 import Router from "next/router";
 
+import { TeamAPIData } from "../../../utils/apiData";
+
 export default function ({
   apiVersion,
   errorHandler,
@@ -13,14 +15,7 @@ export default function ({
 }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [team, setTeam] = useState({
-    guid: "",
-    name: "",
-    locked: null,
-    permissions: [],
-    permissionAllRead: false,
-    permissionAllWrite: false,
-  });
+  const [team, setTeam] = useState<TeamAPIData>({});
   const { guid } = query;
 
   useEffect(() => {

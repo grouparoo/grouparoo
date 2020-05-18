@@ -4,29 +4,12 @@ import { Row, Col, Table, Badge, Alert } from "react-bootstrap";
 import Link from "next/link";
 import Moment from "react-moment";
 
+import { ExportAPIData } from "../../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [_export, setExport] = useState({
-    createdAt: null,
-    updatedAt: null,
-    creatorType: "",
-    creatorGuid: "",
-    profileGuid: "",
-    destination: {
-      guid: "",
-      name: "",
-    },
-    oldProfileProperties: {},
-    newProfileProperties: {},
-    oldGroups: [],
-    newGroups: [],
-    errorMessage: "",
-    toDelete: false,
-    mostRecent: false,
-    startedAt: "",
-    completedAt: "",
-  });
+  const [_export, setExport] = useState<ExportAPIData>();
   const [groups, setGroups] = useState([{ name: "", guid: "" }]);
 
   const { guid } = query;
