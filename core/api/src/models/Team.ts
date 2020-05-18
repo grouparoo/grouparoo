@@ -125,8 +125,8 @@ export class Team extends LoggedModel<Team> {
       locked: this.locked,
       permissionAllRead: this.permissionAllRead,
       permissionAllWrite: this.permissionAllWrite,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
+      createdAt: this.createdAt.toString(),
+      updatedAt: this.updatedAt.toString(),
       permissions: await Promise.all(permissions.map((prm) => prm.apiData())),
       membersCount,
     };

@@ -68,8 +68,8 @@ export class Profile extends LoggedModel<Profile> {
       guid: this.guid,
       anonymousId: this.anonymousId,
       properties,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
+      createdAt: this.createdAt.toString(),
+      updatedAt: this.updatedAt.toString(),
     };
   }
 

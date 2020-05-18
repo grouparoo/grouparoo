@@ -54,7 +54,7 @@ export class File extends LoggedModel<File> {
       extension: this.extension,
       mime: this.mime,
       sizeBytes: this.sizeBytes,
-      createdAt: this.createdAt,
+      createdAt: this.createdAt.toString(),
     };
   }
 

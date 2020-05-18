@@ -44,7 +44,7 @@ export class DestinationGroupMembership extends LoggedModel<
       destinationGuid: this.destinationGuid,
       groupGuid: this.groupGuid,
       remoteKey: this.remoteKey,
-      createdAt: this.createdAt,
+      createdAt: this.createdAt.toString(),
     };
   }
 

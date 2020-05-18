@@ -56,7 +56,7 @@ export class DestinationGroup extends LoggedModel<DestinationGroup> {
     return {
       destinationGuid: this.destinationGuid,
       groupGuid: this.groupGuid,
-      createdAt: this.createdAt,
+      createdAt: this.createdAt.toString(),
     };
   }
 

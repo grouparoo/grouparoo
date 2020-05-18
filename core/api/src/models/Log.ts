@@ -90,7 +90,7 @@ export class Log extends Model<Log> {
       who: this.who,
       data: this.data,
       message: this.message,
-      createdAt: this.createdAt,
+      createdAt: this.createdAt.toString(),
     };
   }
 

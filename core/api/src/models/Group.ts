@@ -337,10 +337,10 @@ export class Group extends LoggedModel<Group> {
       matchType: this.matchType,
       state: this.state,
       profilesCount,
-      calculatedAt: this.calculatedAt,
+      calculatedAt: this.calculatedAt.toString(),
       nextCalculatedAt,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
+      createdAt: this.createdAt.toString(),
+      updatedAt: this.updatedAt.toString(),
     };
   }
 

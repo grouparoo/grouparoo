@@ -91,8 +91,8 @@ export class GroupMember extends Model<GroupMember> {
     return {
       profileGuid: this.profileGuid,
       groupGuid: this.groupGuid,
-      createdAt: this.createdAt,
-      removedAt: this.removedAt,
+      createdAt: this.createdAt.toString(),
+      removedAt: this.removedAt.toString(),
     };
   }
 

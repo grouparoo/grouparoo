@@ -286,8 +286,8 @@ export class Schedule extends LoggedModel<Schedule> {
       recurring: this.recurring,
       options,
       recurringFrequency: this.recurringFrequency,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
+      createdAt: this.createdAt.toString(),
+      updatedAt: this.updatedAt.toString(),
     };
   }
 

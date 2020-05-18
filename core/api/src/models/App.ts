@@ -204,8 +204,8 @@ export class App extends LoggedModel<App> {
       type: this.type,
       state: this.state,
       options,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
+      createdAt: this.createdAt.toString(),
+      updatedAt: this.updatedAt.toString(),
     };
   }
 
