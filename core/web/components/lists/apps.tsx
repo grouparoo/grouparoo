@@ -9,9 +9,11 @@ import LoadingTable from "../loadingTable";
 import AppIcon from "../appIcon";
 import StateBadge from "../stateBadge";
 
+import { AppAPIData } from "../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, query }) {
   const { execApi } = useApi(errorHandler);
-  const [apps, setApps] = useState([]);
+  const [apps, setApps] = useState<AppAPIData[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
 

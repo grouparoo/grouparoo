@@ -9,12 +9,14 @@ import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
+import { EventAPIData } from "../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const [total, setTotal] = useState(0);
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<EventAPIData[]>([]);
   const [autocompleteResults, setAutoCompleteResults] = useState([]);
 
   // pagination

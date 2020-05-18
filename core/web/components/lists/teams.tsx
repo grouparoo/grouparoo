@@ -4,9 +4,11 @@ import Link from "next/link";
 import { Form } from "react-bootstrap";
 import LoadingTable from "../loadingTable";
 
+import { TeamAPIData } from "../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, teamHandler }) {
   const { execApi } = useApi(errorHandler);
-  const [teams, setTeams] = useState([]);
+  const [teams, setTeams] = useState<TeamAPIData[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

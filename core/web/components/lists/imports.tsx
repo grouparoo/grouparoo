@@ -8,11 +8,13 @@ import LoadingTable from "../loadingTable";
 import { Alert, Badge } from "react-bootstrap";
 import Moment from "react-moment";
 
+import { ImportAPIData, GroupAPIData } from "../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [imports, setImports] = useState([]);
-  const [groups, setGroups] = useState([]);
+  const [imports, setImports] = useState<ImportAPIData[]>([]);
+  const [groups, setGroups] = useState<GroupAPIData[]>([]);
   const [total, setTotal] = useState(0);
 
   // pagination

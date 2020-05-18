@@ -9,13 +9,15 @@ import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import { ResponsiveLine } from "@nivo/line";
 
+import { RunAPIData } from "../../utils/apiData";
+
 const NodeMoment = require("moment");
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
-  const [runs, setRuns] = useState([]);
+  const [runs, setRuns] = useState<RunAPIData[]>([]);
   const [stateFilter, setStateFilter] = useState(query.state || "");
   const [errorFilter, setErrorFilter] = useState(query.error || "");
   const { guid } = query;

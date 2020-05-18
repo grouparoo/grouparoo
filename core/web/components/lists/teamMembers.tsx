@@ -6,6 +6,8 @@ import Moment from "react-moment";
 import LoadingTable from "../loadingTable";
 import ProfileImageFromEmail from "../visualizations/profileImageFromEmail";
 
+import { TeamMemberAPIData } from "../../utils/apiData";
+
 export default function ({
   apiVersion,
   errorHandler,
@@ -16,7 +18,7 @@ export default function ({
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [teams, setTeams] = useState({});
-  const [teamMembers, setTeamMembers] = useState([]);
+  const [teamMembers, setTeamMembers] = useState<TeamMemberAPIData[]>([]);
   const { guid } = query;
 
   useEffect(() => {

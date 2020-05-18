@@ -9,13 +9,20 @@ import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
+import {
+  ProfileAPIData,
+  ProfilePropertyRuleAPIData,
+} from "../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, hideSearch, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const [total, setTotal] = useState(0);
-  const [profiles, setProfiles] = useState([]);
-  const [profilePropertyRules, setProfilePropertyRules] = useState([]);
+  const [profiles, setProfiles] = useState<ProfileAPIData[]>([]);
+  const [profilePropertyRules, setProfilePropertyRules] = useState<
+    ProfilePropertyRuleAPIData[]
+  >([]);
   const [autocompleteResults, setAutoCompleteResults] = useState([]);
 
   // pagination

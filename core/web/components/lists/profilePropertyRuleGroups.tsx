@@ -3,10 +3,12 @@ import { useApi } from "../../hooks/useApi";
 import Link from "next/link";
 import LoadingTable from "../loadingTable";
 
+import { GroupAPIData } from "../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [groups, setGroups] = useState([]);
+  const [groups, setGroups] = useState<GroupAPIData[]>([]);
   const { guid } = query;
 
   useEffect(() => {

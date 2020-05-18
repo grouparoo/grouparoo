@@ -6,12 +6,13 @@ import Link from "next/link";
 import Moment from "react-moment";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
-import stateBadge from "../stateBadge";
 import StateBadge from "../stateBadge";
+
+import { GroupAPIData } from "../../utils/apiData";
 
 export default function ({ apiVersion, errorHandler, query }) {
   const { execApi } = useApi(errorHandler);
-  const [groups, setGroups] = useState([]);
+  const [groups, setGroups] = useState<GroupAPIData[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
 
