@@ -350,8 +350,8 @@ export class Run extends Model<Run> {
       error: this.error,
       highWaterMark: this.highWaterMark,
       filter: this.filter,
+      completedAt: this.completedAt ? this.completedAt.toString() : null,
       createdAt: this.createdAt.toString(),
-      completedAt: this.completedAt.toString(),
       updatedAt: this.updatedAt.toString(),
     };
   }
