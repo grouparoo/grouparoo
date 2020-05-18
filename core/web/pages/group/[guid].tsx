@@ -10,8 +10,10 @@ import RunsList from "../../components/lists/runs";
 import LogsList from "./../../components/lists/logs";
 import GroupDestinationsList from "../../components/lists/groupDestinations";
 
+import { GroupAPIData } from "../../utils/apiData";
+
 export default function (props) {
-  const [group, setGroup] = useState({ name: "" });
+  const [group, setGroup] = useState<GroupAPIData>({});
   const [plugins, pluginMetadata] = usePlugins("group/tabs");
   const { execApi } = useApi(props.errorHandler);
 

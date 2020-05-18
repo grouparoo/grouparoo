@@ -7,8 +7,10 @@ import { Button } from "react-bootstrap";
 import Router from "next/router";
 import { useApi } from "./../../../hooks/useApi";
 
+import { TeamAPIData } from "../../../utils/apiData";
+
 export default function (props) {
-  const [team, setTeam] = useState({ name: "" });
+  const [team, setTeam] = useState<TeamAPIData>({});
   const { execApi } = useApi(props.errorHandler);
 
   useEffect(() => {

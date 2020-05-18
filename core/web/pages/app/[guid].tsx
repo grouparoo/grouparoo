@@ -4,8 +4,10 @@ import { Card } from "react-bootstrap";
 import AppEditForm from "../../components/forms/app/edit";
 import { useApi } from "../../hooks/useApi";
 
+import { AppAPIData } from "../../utils/apiData";
+
 export default function (props) {
-  const [app, setApp] = useState({ name: "" });
+  const [app, setApp] = useState<AppAPIData>({});
   const { execApi } = useApi(props.errorHandler);
 
   useEffect(() => {

@@ -9,9 +9,11 @@ import ImportsList from "../../components/lists/imports";
 import ExportsList from "../../components/lists/exports";
 import { useApi } from "../../hooks/useApi";
 
+import { ProfileAPIData } from "../../utils/apiData";
+
 export default function (props) {
   const { execApi } = useApi(props.errorHandler);
-  const [profile, setProfile] = useState({ guid: "", properties: {} });
+  const [profile, setProfile] = useState<ProfileAPIData>({});
 
   useEffect(() => {
     load();
@@ -37,7 +39,7 @@ export default function (props) {
   const propertiesArray = [];
   for (const k in profile.properties) {
     const hash = profile.properties[k];
-    hash.key = k;
+    hash["key"] = k;
     propertiesArray.push(hash);
   }
 

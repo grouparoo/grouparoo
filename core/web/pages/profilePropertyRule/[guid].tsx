@@ -10,12 +10,12 @@ import RunsList from "../../components/lists/runs";
 import Loader from "../../components/loader";
 import Link from "next/link";
 
+import { ProfilePropertyRuleAPIData } from "../../utils/apiData";
+
 export default function (props) {
-  const [profilePropertyRule, setProfilePropertyRule] = useState({
-    key: "",
-    state: "draft",
-    source: { name: "", guid: "" },
-  });
+  const [profilePropertyRule, setProfilePropertyRule] = useState<
+    ProfilePropertyRuleAPIData
+  >({});
   const { execApi } = useApi(props.errorHandler);
   const [plugins, pluginMetadata] = usePlugins("profilePropertyRules/tabs");
   const profilesListProps = Object.assign({}, props);
