@@ -177,11 +177,17 @@ export class Import extends Model<Import> {
       rawData,
 
       // lifecycle timestamps
-      createdAt: this.createdAt,
-      profileAssociatedAt: this.profileAssociatedAt,
-      profileUpdatedAt: this.profileUpdatedAt,
-      groupsUpdatedAt: this.groupsUpdatedAt,
-      exportedAt: this.exportedAt,
+      createdAt: this.createdAt.toString(),
+      profileAssociatedAt: this.profileAssociatedAt
+        ? this.profileAssociatedAt.toString()
+        : null,
+      profileUpdatedAt: this.profileUpdatedAt
+        ? this.profileUpdatedAt.toString()
+        : null,
+      groupsUpdatedAt: this.groupsUpdatedAt
+        ? this.groupsUpdatedAt.toString()
+        : null,
+      exportedAt: this.exportedAt ? this.exportedAt.toString() : null,
 
       // data before and after
       oldProfileProperties: this.oldProfileProperties,

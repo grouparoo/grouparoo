@@ -5,23 +5,12 @@ import Moment from "react-moment";
 import Link from "next/link";
 import { ResponsiveLine } from "@nivo/line";
 
+import { RunAPIData } from "../../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [run, setRun] = useState({
-    createdAt: null,
-    updatedAt: null,
-    completedAt: null,
-    creatorGuid: null,
-    state: null,
-    importsCreated: null,
-    profilesCreated: null,
-    profilesImported: null,
-    profilesExported: null,
-    filter: {},
-    highWaterMark: "",
-    error: "",
-  });
+  const [run, setRun] = useState<RunAPIData>({});
   const [chartData, setChartData] = useState([]);
 
   const { guid } = query;

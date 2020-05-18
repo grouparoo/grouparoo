@@ -9,10 +9,12 @@ import Moment from "react-moment";
 import AppIcon from "../appIcon";
 import StateBadge from "../stateBadge";
 
+import { SourceAPIData } from "../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, sourceHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [sources, setSources] = useState([]);
+  const [sources, setSources] = useState<SourceAPIData[]>([]);
   const [total, setTotal] = useState(0);
 
   // pagination

@@ -5,6 +5,8 @@ import Router from "next/router";
 import ProfileImageFromEmail from "../../visualizations/profileImageFromEmail";
 import Moment from "react-moment";
 
+import { ProfileAPIData } from "../../../utils/apiData";
+
 export default function ({
   apiVersion,
   errorHandler,
@@ -14,11 +16,7 @@ export default function ({
 }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [profile, setProfile] = useState({
-    createdAt: null,
-    updatedAt: null,
-    properties: {},
-  });
+  const [profile, setProfile] = useState<ProfileAPIData>({});
   const [profilePropertyRules, setProfilePropertyRules] = useState([]);
 
   const { guid } = query;

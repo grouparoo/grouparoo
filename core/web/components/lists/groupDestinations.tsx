@@ -5,10 +5,12 @@ import Moment from "react-moment";
 import LoadingTable from "../loadingTable";
 import AppIcon from "./../appIcon";
 
+import { DestinationAPIData } from "../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [destinations, setDestinations] = useState([]);
+  const [destinations, setDestinations] = useState<DestinationAPIData[]>([]);
   const { guid } = query;
 
   // pagination

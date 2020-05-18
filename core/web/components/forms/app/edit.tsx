@@ -6,6 +6,8 @@ import AppIcon from "../../appIcon";
 import StateBadge from "../../stateBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
 
+import { AppAPIData } from "../../../utils/apiData";
+
 export default function ({
   apiVersion,
   errorHandler,
@@ -19,14 +21,7 @@ export default function ({
   const [optionOptions, setOptionOptions] = useState([]);
   const [testResult, setTestResult] = useState({ result: null, error: null });
   const [ranTest, setRanTest] = useState(false);
-  const [app, setApp] = useState({
-    icon: "",
-    guid: "",
-    name: "",
-    type: "",
-    state: "",
-    options: {},
-  });
+  const [app, setApp] = useState<AppAPIData>({});
   const { guid } = query;
 
   useEffect(() => {

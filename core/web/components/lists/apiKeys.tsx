@@ -4,9 +4,11 @@ import Link from "next/link";
 import LoadingTable from "../loadingTable";
 import Moment from "react-moment";
 
+import { ApiKeyAPIData } from "../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler }) {
   const { execApi } = useApi(errorHandler);
-  const [apiKeys, setApiKeys] = useState([]);
+  const [apiKeys, setApiKeys] = useState<ApiKeyAPIData[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

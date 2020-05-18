@@ -7,42 +7,15 @@ import Link from "next/link";
 import AppIcon from "../../appIcon";
 import StateBadge from "../../stateBadge";
 
+import { ScheduleAPIData, RunAPIData } from "../../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [guid, setGuid] = useState("");
   const [pluginOptions, setPluginOptions] = useState([]);
-  const [run, setRun] = useState({
-    guid: "",
-    state: "",
-    createdAt: "",
-    updatedAt: "",
-    completedAt: "",
-    importsCreated: 0,
-    profilesCreated: 0,
-    profilesImported: 0,
-    profilesExported: 0,
-  });
-  const [schedule, setSchedule] = useState({
-    guid: "",
-    name: "",
-    state: "",
-    direction: "",
-    source: {
-      guid: "",
-      name: "",
-      type: "string",
-      app: {
-        guid: "",
-        type: "",
-        icon: "",
-      },
-    },
-    recurring: false,
-    options: {},
-    recurringFrequency: 0,
-    recurringFrequencyMinutes: 0,
-  });
+  const [run, setRun] = useState<RunAPIData>({});
+  const [schedule, setSchedule] = useState<ScheduleAPIData>({});
 
   const { guid: sourceGuid } = query;
 

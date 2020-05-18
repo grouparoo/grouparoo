@@ -5,6 +5,8 @@ import { Form, Button } from "react-bootstrap";
 import Loader from "../../loader";
 import Router from "next/router";
 
+import { TeamAPIData } from "../../../utils/apiData";
+
 export default function ({
   apiVersion,
   errorHandler,
@@ -15,7 +17,7 @@ export default function ({
   const { execApi } = useApi(errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
-  const [teams, setTeams] = useState([]);
+  const [teams, setTeams] = useState<TeamAPIData[]>([]);
   const { guid } = query;
 
   useEffect(() => {

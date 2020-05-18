@@ -7,10 +7,12 @@ import { ButtonGroup, Button } from "react-bootstrap";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 
+import { LogAPIData } from "../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, query, ownerType }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [logs, setLogs] = useState([]);
+  const [logs, setLogs] = useState<LogAPIData[]>([]);
   const [total, setTotal] = useState(0);
 
   // pagination

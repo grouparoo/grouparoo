@@ -5,6 +5,11 @@ import StateBadge from "../../stateBadge";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import Loader from "../../loader";
 
+import {
+  GroupAPIData,
+  ProfilePropertyRuleAPIData,
+} from "../../../utils/apiData";
+
 export default function RulesBuilder({
   errorHandler,
   successHandler,
@@ -12,18 +17,12 @@ export default function RulesBuilder({
   query,
 }) {
   const { execApi } = useApi(errorHandler);
-  const [group, setGroup] = useState({
-    guid: "",
-    name: "",
-    type: "",
-    state: "",
-    calculatedAt: "",
-    matchType: "",
-    rules: [],
-  });
+  const [group, setGroup] = useState<GroupAPIData>({});
   const [loading, setLoading] = useState(false);
   const [localRules, setLocalRules] = useState([]);
-  const [profilePropertyRules, setProfilePropertyRules] = useState([]);
+  const [profilePropertyRules, setProfilePropertyRules] = useState<
+    ProfilePropertyRuleAPIData[]
+  >([]);
   const [ruleLimit, setRuleLimit] = useState(0);
   const [ops, setOps] = useState({ _dictionary: {} });
   const [countPotentialMembers, setCountPotentialMembers] = useState(0);

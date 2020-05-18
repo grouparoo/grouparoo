@@ -3,6 +3,11 @@ import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Badge, Button, Table } from "react-bootstrap";
 import ProfilePreview from "./profilePreview";
 
+import {
+  ProfilePropertyRuleAPIData,
+  DestinationAPIData,
+} from "../../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [groups, setGroups] = useState([]);
@@ -24,15 +29,10 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       },
     },
   });
-  const [profilePropertyRules, setProfilePropertyRules] = useState([]);
-  const [destination, setDestination] = useState({
-    guid: "",
-    name: "",
-    trackAllGroups: false,
-    destinationGroups: [],
-    destinationGroupMemberships: [],
-    mapping: {},
-  });
+  const [profilePropertyRules, setProfilePropertyRules] = useState<
+    ProfilePropertyRuleAPIData[]
+  >([]);
+  const [destination, setDestination] = useState<DestinationAPIData>();
   const [
     unlockedProfilePropertyRules,
     setUnlockedProfilePropertyRules,

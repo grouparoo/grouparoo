@@ -3,6 +3,8 @@ import { useApi } from "../../hooks/useApi";
 import Link from "next/link";
 import { Row, Col, Button, Form, ListGroup } from "react-bootstrap";
 
+import { GroupAPIData } from "../../utils/apiData";
+
 export default function ({
   apiVersion,
   errorHandler,
@@ -12,8 +14,8 @@ export default function ({
 }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [groups, setGroups] = useState([]);
-  const [allGroups, setAllGroups] = useState([]);
+  const [groups, setGroups] = useState<GroupAPIData[]>([]);
+  const [allGroups, setAllGroups] = useState<GroupAPIData[]>([]);
   const { guid } = query;
 
   useEffect(() => {

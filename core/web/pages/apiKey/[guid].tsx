@@ -4,8 +4,10 @@ import { Card } from "react-bootstrap";
 import ApiKeyEditForm from "../../components/forms/apiKey/edit";
 import { useApi } from "./../../hooks/useApi";
 
+import { ApiKeyAPIData } from "../../utils/apiData";
+
 export default function (props) {
-  const [apiKey, setApiKey] = useState({ name: "", guid: "" });
+  const [apiKey, setApiKey] = useState<ApiKeyAPIData>({});
   const { execApi } = useApi(props.errorHandler);
 
   useEffect(() => {

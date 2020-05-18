@@ -4,6 +4,8 @@ import Moment from "react-moment";
 import { Button, Form } from "react-bootstrap";
 import LoadingTable from "../loadingTable";
 
+import { ProfilePropertyRuleAPIData } from "../../utils/apiData";
+
 export default function ({
   apiVersion,
   errorHandler,
@@ -15,7 +17,9 @@ export default function ({
   const [loading, setLoading] = useState(false);
   const [properties, setProperties] = useState({});
   const [apps, setApps] = useState([]);
-  const [profilePropertyRules, setProfilePropertyRules] = useState([]);
+  const [profilePropertyRules, setProfilePropertyRules] = useState<
+    ProfilePropertyRuleAPIData[]
+  >([]);
   const { guid } = query;
 
   useEffect(() => {

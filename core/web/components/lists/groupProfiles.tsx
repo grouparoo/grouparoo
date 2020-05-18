@@ -9,11 +9,13 @@ import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import StateBadge from "../stateBadge";
 
+import { ProfileAPIData, GroupAPIData } from "../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [profiles, setProfiles] = useState([]);
-  const [group, setGroup] = useState({
+  const [profiles, setProfiles] = useState<ProfileAPIData[]>([]);
+  const [group, setGroup] = useState<GroupAPIData>({
     profilesCount: 0,
     type: "manual",
     state: "",
@@ -227,7 +229,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                   </Link>
                 </td>
                 <td>
-                  <Moment fromNow>{profile.joinedAt}</Moment>
+                  <Moment fromNow>{profile["joinedAt"]}</Moment>
                 </td>
                 <td>
                   {group.type === "manual" ? (

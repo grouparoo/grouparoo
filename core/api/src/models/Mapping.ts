@@ -57,8 +57,8 @@ export class Mapping extends LoggedModel<Mapping> {
       ownerType: this.ownerType,
       profilePropertyRuleGuid: this.profilePropertyRuleGuid,
       remoteKey: this.remoteKey,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
+      createdAt: this.createdAt ? this.createdAt.toString() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.toString() : null,
     };
   }
 

@@ -554,8 +554,8 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       unique: this.unique,
       options,
       filters,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
+      createdAt: this.createdAt ? this.createdAt.toString() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.toString() : null,
     };
   }
 

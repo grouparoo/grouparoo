@@ -4,8 +4,10 @@ import { Card } from "react-bootstrap";
 import RunEdit from "../../components/forms/run/edit";
 import { useApi } from "./../../hooks/useApi";
 
+import { RunAPIData } from "../../utils/apiData";
+
 export default function (props) {
-  const [run, setRun] = useState({ guid: "" });
+  const [run, setRun] = useState<RunAPIData>({});
   const { execApi } = useApi(props.errorHandler);
 
   useEffect(() => {

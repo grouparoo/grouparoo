@@ -36,6 +36,7 @@ import {
   PROFILE_PROPERTY_RULE_OPS,
 } from "./ProfilePropertyRule";
 import { StateMachine } from "./../modules/stateMachine";
+import { runInThisContext } from "vm";
 
 const numbers = [1, 2, 3, 4, 5].reverse();
 export const GROUP_RULE_LIMIT = numbers.length;
@@ -337,10 +338,12 @@ export class Group extends LoggedModel<Group> {
       matchType: this.matchType,
       state: this.state,
       profilesCount,
-      calculatedAt: this.calculatedAt,
-      nextCalculatedAt,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
+      calculatedAt: this.calculatedAt ? this.calculatedAt.toString() : null,
+      nextCalculatedAt: this.nextCalculatedAt
+        ? this.nextCalculatedAt.toString()
+        : null,
+      createdAt: this.createdAt ? this.createdAt.toString() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.toString() : null,
     };
   }
 

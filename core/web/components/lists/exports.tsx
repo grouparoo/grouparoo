@@ -8,12 +8,18 @@ import Pagination from "../pagination";
 import Moment from "react-moment";
 import LoadingTable from "../loadingTable";
 
+import {
+  ExportAPIData,
+  GroupAPIData,
+  DestinationAPIData,
+} from "../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [_exports, setExports] = useState([]);
-  const [groups, setGroups] = useState([]);
-  const [destinations, setDestinations] = useState([]);
+  const [_exports, setExports] = useState<ExportAPIData[]>([]);
+  const [groups, setGroups] = useState<GroupAPIData[]>([]);
+  const [destinations, setDestinations] = useState<DestinationAPIData[]>([]);
   const [total, setTotal] = useState(0);
   const [selectedDestinationGuid, setSelectedDestinationGuid] = useState(
     query.selectedDestinationGuid || ""

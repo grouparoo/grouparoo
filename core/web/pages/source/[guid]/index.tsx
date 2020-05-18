@@ -8,16 +8,13 @@ import SourceMapping from "../../../components/forms/source/mapping";
 import ScheduleEditForm from "../../../components/forms/schedule/edit";
 import RunsList from "../../../components/lists/runs";
 
+import { SourceAPIData } from "../../../utils/apiData";
+
 export default function (props) {
   const { query, errorHandler, apiVersion } = props;
   const { guid } = query;
   const { execApi } = useApi(errorHandler);
-  const [source, setSource] = useState({
-    name: "",
-    state: "draft",
-    previewAvailable: false,
-    schedule: { guid: "" },
-  });
+  const [source, setSource] = useState<SourceAPIData>({});
 
   useEffect(() => {
     load();

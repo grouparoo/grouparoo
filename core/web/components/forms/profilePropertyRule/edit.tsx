@@ -8,6 +8,8 @@ import StateBadge from "../../stateBadge";
 import ProfilePreview from "./profilePreview";
 import { Typeahead } from "react-bootstrap-typeahead";
 
+import { ProfilePropertyRuleAPIData } from "../../../utils/apiData";
+
 export default function ({
   apiVersion,
   errorHandler,
@@ -32,23 +34,12 @@ export default function ({
   const [types, setTypes] = useState([]);
   const [pluginOptions, setPluginOptions] = useState(defaultPluginOptions);
   const [filterOptions, setFilterOptions] = useState([]);
-  const [profilePropertyRules, setProfilePropertyRules] = useState([]);
-  const [profilePropertyRule, setProfilePropertyRule] = useState({
-    key: "",
-    guid: "",
-    type: "",
-    unique: false,
-    state: "",
-    sourceGuid: "",
-    options: {},
-    filters: [],
-    source: {
-      name: "",
-      guid: "",
-      type: "",
-      app: { name: "", guid: "", icon: "" },
-    },
-  });
+  const [profilePropertyRules, setProfilePropertyRules] = useState<
+    ProfilePropertyRuleAPIData[]
+  >([]);
+  const [profilePropertyRule, setProfilePropertyRule] = useState<
+    ProfilePropertyRuleAPIData
+  >({});
   const [localFilters, setLocalFilters] = useState([]);
 
   const { guid } = query;

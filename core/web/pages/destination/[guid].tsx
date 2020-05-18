@@ -6,8 +6,10 @@ import DestinationData from "../../components/forms/destination/data";
 import ExportsList from "../../components/lists/exports";
 import { useApi } from "./../../hooks/useApi";
 
+import { DestinationAPIData } from "../../utils/apiData";
+
 export default function (props) {
-  const [destination, setDestination] = useState({ name: "", state: "draft" });
+  const [destination, setDestination] = useState<DestinationAPIData>({});
   const { execApi } = useApi(props.errorHandler);
 
   useEffect(() => {

@@ -7,6 +7,8 @@ import Moment from "react-moment";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 
+import { FileAPIData } from "../../utils/apiData";
+
 export default function ({
   apiVersion,
   errorHandler,
@@ -17,7 +19,7 @@ export default function ({
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState<FileAPIData[]>([]);
 
   // pagination
   const limit = 100;

@@ -16,38 +16,12 @@ import Moment from "react-moment";
 import ScheduleAddButton from "./../schedule/add";
 import ProfilePropertyRuleAddButton from "./../profilePropertyRule/add";
 
+import { SourceAPIData, RunAPIData } from "../../../utils/apiData";
+
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
-  const [source, setSource] = useState({
-    name: "",
-    type: "",
-    state: "",
-    mapping: {},
-    options: {},
-    scheduleAvailable: false,
-    previewAvailable: false,
-    schedule: {
-      name: "",
-      guid: "",
-      recurring: false,
-      state: "ready",
-      recurringFrequency: 0,
-    },
-    connection: { name: "", description: "" },
-    app: { icon: "", name: "", guid: "" },
-    profilePropertyRules: [],
-  });
-  const [run, setRun] = useState({
-    guid: "",
-    state: "",
-    createdAt: "",
-    updatedAt: "",
-    completedAt: "",
-    importsCreated: 0,
-    profilesCreated: 0,
-    profilesImported: 0,
-    profilesExported: 0,
-  });
+  const [source, setSource] = useState<SourceAPIData>({});
+  const [run, setRun] = useState<RunAPIData>({});
   const { guid } = query;
 
   useEffect(() => {

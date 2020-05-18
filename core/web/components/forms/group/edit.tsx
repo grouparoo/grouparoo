@@ -6,6 +6,8 @@ import StateBadge from "../../stateBadge";
 import Moment from "react-moment";
 import Router from "next/router";
 
+import { GroupAPIData } from "../../../utils/apiData";
+
 export default function ({
   apiVersion,
   errorHandler,
@@ -16,15 +18,7 @@ export default function ({
   const { execApi } = useApi(errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
-  const [group, setGroup] = useState({
-    name: "",
-    type: "",
-    state: "",
-    calculatedAt: "",
-    nextCalculatedAt: "",
-    matchType: "",
-    rules: [],
-  });
+  const [group, setGroup] = useState<GroupAPIData>({});
 
   const { guid } = query;
 
