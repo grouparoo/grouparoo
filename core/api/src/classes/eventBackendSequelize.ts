@@ -7,6 +7,7 @@ import {
 import { Op } from "sequelize";
 import { SequelizeEvent } from "./eventBackendSequelize/SequelizeEvent";
 import { SequelizeEventData } from "./eventBackendSequelize/SequelizeEventData";
+import { ProfilePropertyRuleFiltersWithKey } from "../models/ProfilePropertyRule";
 
 export class Event extends EventPrototype {
   /**
@@ -71,6 +72,7 @@ export class Event extends EventPrototype {
       limit?: number;
       offset?: number;
       order?: Array<[string, string]>;
+      profilePropertyRuleFilters?: ProfilePropertyRuleFiltersWithKey[];
     } = {}
   ) {
     const {
@@ -82,6 +84,7 @@ export class Event extends EventPrototype {
       limit,
       offset,
       order,
+      profilePropertyRuleFilters,
     } = options;
     const where = {};
     const includeWhere = {};
@@ -105,6 +108,14 @@ export class Event extends EventPrototype {
     }
     if (associated === false) {
       where["profileGuid"] = { [Op.eq]: null };
+    }
+
+    if (profilePropertyRuleFilters) {
+      applyProfilePropertyRuleFilters(
+        where,
+        includeWhere,
+        profilePropertyRuleFilters
+      );
     }
 
     const sequelizeEvents = await SequelizeEvent.findAll({
@@ -156,6 +167,7 @@ export class Event extends EventPrototype {
     if (associated === false) {
       where["profileGuid"] = { [Op.eq]: null };
     }
+
     return SequelizeEvent.count({
       distinct: true,
       include: [
@@ -221,9 +233,10 @@ export class Event extends EventPrototype {
       profileGuid?: string;
       type?: string;
       key?: string;
+      profilePropertyRuleFilters?: ProfilePropertyRuleFiltersWithKey[];
     } = {}
   ) {
-    const { profileGuid, type, key } = options;
+    const { profileGuid, type, key, profilePropertyRuleFilters } = options;
     const where = { key };
     const includeWhere = {};
 
@@ -233,6 +246,14 @@ export class Event extends EventPrototype {
 
     if (profileGuid) {
       includeWhere["profileGuid"] = profileGuid;
+    }
+
+    if (profilePropertyRuleFilters) {
+      applyProfilePropertyRuleFilters(
+        includeWhere,
+        where,
+        profilePropertyRuleFilters
+      );
     }
 
     const count = await SequelizeEventData.count({
@@ -256,9 +277,16 @@ export class Event extends EventPrototype {
       profileGuid?: string;
       type?: string;
       key?: string;
+      profilePropertyRuleFilters?: ProfilePropertyRuleFiltersWithKey[];
     } = {}
   ) {
-    let { aggregation, profileGuid, type, key } = options;
+    let {
+      aggregation,
+      profileGuid,
+      type,
+      key,
+      profilePropertyRuleFilters,
+    } = options;
     const where = { key };
     const includeWhere = {};
     if (!aggregation) {
@@ -271,6 +299,14 @@ export class Event extends EventPrototype {
 
     if (profileGuid) {
       includeWhere["profileGuid"] = profileGuid;
+    }
+
+    if (profilePropertyRuleFilters) {
+      applyProfilePropertyRuleFilters(
+        includeWhere,
+        where,
+        profilePropertyRuleFilters
+      );
     }
 
     const results = await SequelizeEventData.findAll({
@@ -358,4 +394,54 @@ export class EventBackend extends EventBackendPrototype {
   }
 
   async stop() {}
+}
+
+function applyProfilePropertyRuleFilters(
+  eventWhere: { [key: string]: any },
+  eventDataWhere: { [key: string]: any },
+  profilePropertyRuleFilters: ProfilePropertyRuleFiltersWithKey[]
+) {
+  for (const i in profilePropertyRuleFilters) {
+    const filter = profilePropertyRuleFilters[i];
+    let key = filter.key;
+    if (key.match(/^\[data\]-/)) {
+      key = key.replace(/^\[data\]-/, "");
+    }
+
+    let match = filter.match;
+    let opSymbol: any; // symbol...
+    switch (filter.op) {
+      case "equals":
+        opSymbol = Op["eq"];
+        break;
+      case "does not equal":
+        opSymbol = Op["ne"];
+        break;
+      case "contains":
+        opSymbol = Op["iLike"];
+        match = `%${match.toString().toLowerCase()}%`;
+        key = `LOWER("${key}")`;
+        break;
+      case "does not contain":
+        opSymbol = Op["notILike"];
+        match = `%${match.toString().toLowerCase()}%`;
+        key = `LOWER("${key}")`;
+        break;
+      case "greater than":
+        opSymbol = Op["gt"];
+        break;
+      case "less than":
+        opSymbol = Op["lt"];
+        break;
+    }
+
+    const localWhere = {};
+    if (filter.key.match(/^\[data\]-/)) {
+      localWhere[opSymbol] = match;
+      eventDataWhere["value"] = localWhere;
+    } else {
+      localWhere[opSymbol] = match;
+      eventWhere[key] = localWhere;
+    }
+  }
 }

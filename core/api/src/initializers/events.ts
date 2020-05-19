@@ -131,6 +131,18 @@ const eventSourcePreview: SourcePreviewMethod = async ({ sourceOptions }) => {
     type: sourceOptions.type,
     limit,
   });
+
+  // attempt to typecast to numbers
+  // TODO: This is not a good way to guess types... what about dates and booleans?
+  for (const i in events) {
+    for (const k in events[i]["data"]) {
+      const float = parseFloat(events[i]["data"][k]);
+      if (!isNaN(float)) {
+        events[i]["data"][k] = float;
+      }
+    }
+  }
+
   return events;
 };
 
@@ -237,6 +249,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
         profileGuid: profile.guid,
         type: sourceOptions["type"],
         order: [["occurredAt", "desc"]],
+        profilePropertyRuleFilters,
         limit: 1,
       })
     )[0];
@@ -246,6 +259,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
         profileGuid: profile.guid,
         type: sourceOptions["type"],
         order: [["occurredAt", "asc"]],
+        profilePropertyRuleFilters,
         limit: 1,
       })
     )[0];
@@ -260,6 +274,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
       return api.events.model.countEventData({
         profileGuid: profile.guid,
         type: sourceOptions["type"],
+        profilePropertyRuleFilters,
         key: dataKey,
       });
     } else {
@@ -267,6 +282,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
         profileGuid: profile.guid,
         type: sourceOptions["type"],
         aggregation: aggregationMethod,
+        profilePropertyRuleFilters,
         key: dataKey,
       });
     }

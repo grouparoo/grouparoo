@@ -2,8 +2,10 @@ import { log, task } from "actionhero";
 import { App } from "../models/App";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
-import { Import } from "../models/Import";
-import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
+import {
+  ProfilePropertyRule,
+  ProfilePropertyRuleFiltersWithKey,
+} from "../models/ProfilePropertyRule";
 import { Op } from "sequelize";
 import * as uuid from "uuid";
 
@@ -37,6 +39,7 @@ export interface EventPrototype extends EventArgs {
     limit?: number;
     offset?: number;
     order?: Array<[string, string]>;
+    profilePropertyRuleFilters?: ProfilePropertyRuleFiltersWithKey[];
   }) => Promise<EventPrototype[]>;
   count: (options: {
     profileGuid?: string;
@@ -56,12 +59,14 @@ export interface EventPrototype extends EventArgs {
     profileGuid?: string;
     type?: string;
     key: string;
+    profilePropertyRuleFilters?: ProfilePropertyRuleFiltersWithKey[];
   }) => Promise<number>;
   aggregateEventData: (options: {
     aggregation: "average" | "sum" | "min" | "max";
     profileGuid?: string;
     type?: string;
     key: string;
+    profilePropertyRuleFilters?: ProfilePropertyRuleFiltersWithKey[];
   }) => Promise<number>;
   destroyFor: (options: {
     profileGuid?: string;

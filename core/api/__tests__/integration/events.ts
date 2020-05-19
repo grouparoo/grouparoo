@@ -450,7 +450,7 @@ describe("integration/events", () => {
           },
           {
             key: "[data]-loadTime",
-            ops: ["equals", "does not equal", "contains", "does not contain"],
+            ops: ["equals", "does not equal", "greater than", "less than"],
             canHaveRelativeMatch: false,
           },
           {
@@ -530,6 +530,12 @@ describe("integration/events", () => {
 
       describe("with profile", () => {
         let profile: Profile;
+        let rule: ProfilePropertyRule;
+
+        beforeAll(async () => {
+          rule = await ProfilePropertyRule.findByGuid(profilePropertyRuleGuid);
+          await rule.setFilters([]);
+        });
 
         beforeAll(async () => {
           const profiles = await Profile.findAll();
@@ -537,15 +543,27 @@ describe("integration/events", () => {
           profile = profiles[0];
         });
 
-        test("profile properties will be imported", async () => {
-          let properties = await profile.properties();
-          expect(properties["test-rule"]).toBeFalsy();
+        test("profile properties will be imported (without filter)", async () => {
+          await rule.setFilters([]);
+          await profile.import();
+          const properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe(4);
+        });
 
+        test("profile properties will be imported (with filter)", async () => {
+          await rule.setFilters([
+            { key: "[data]-path", op: "does not equal", match: "/" },
+          ]);
+          await profile.import();
+          let properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe(3);
+
+          await rule.setFilters([
+            { key: "[data]-path", op: "does not contain", match: "/" },
+          ]);
           await profile.import();
           properties = await profile.properties();
-          expect(properties["test-rule"].guid).toBe(profilePropertyRuleGuid);
-          // expect(properties["test-rule"].value).toBe(3);
-          expect(properties["test-rule"].value).toBe(4);
+          expect(properties["test-rule"].value).toBe(0);
         });
       });
 
