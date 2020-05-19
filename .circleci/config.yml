@@ -57,8 +57,8 @@ jobs:
             - plugins/@grouparoo/newrelic/dist
             - plugins/@grouparoo/postgres/dist
             - plugins/@grouparoo/sailthru/dist
-            - core/web/.next
             - core/api/dist
+            - core/web/.next
   license-checker:
     docker:
       - image: circleci/node:12

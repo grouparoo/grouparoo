@@ -10,6 +10,10 @@ module.exports.cmd = async function (vargs) {
   await instance.generate();
 };
 
+const internalPackages = allPluginPaths(glob).filter((p) =>
+  p.match(/@grouparoo-inc/)
+);
+
 function readTemplate(name, type, sub) {
   const dirPath = path.resolve(path.join(__dirname, "..", "data", "ci"));
   const fileName = `${name}.yml.template`;
@@ -149,6 +153,18 @@ class Generator {
       .join("\n");
   }
 
+  core_cache() {
+    const prefix = " ".repeat(12) + "- ";
+
+    if (internalPackages.length > 0) {
+      return [];
+    }
+
+    return ["core/api/dist", "core/web/.next"]
+      .map((p) => `${prefix}${p}`)
+      .join("\n");
+  }
+
   renderJob(job, name) {
     const template = readTemplate(name, job.type);
     return Mustache.render(template, job);
@@ -187,6 +203,7 @@ class Generator {
       "jobs",
       "workflows",
       "job_name_list",
+      "core_cache",
     ];
     for (const method of methods) {
       view[method] = this[method].bind(this);
@@ -201,9 +218,6 @@ class Generator {
       };
     }
 
-    const internalPackages = allPluginPaths(glob).filter((p) =>
-      p.match(/@grouparoo-inc/)
-    );
     if (internalPackages.length === 0) {
       view.publish = readTemplate("core", "publish");
     } else {
