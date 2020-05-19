@@ -2,9 +2,9 @@ name: Grouparoo CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   test:
@@ -16,12 +16,12 @@ jobs:
     services:
       redis:
         image: redis
-      
+
       postgres:
         image: postgres
-      
+
       mysql:
-        image: mysql@5
+        image: mysql:5.7
 
       selenium:
         image: selenium/standalone-chrome
