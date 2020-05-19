@@ -89,7 +89,11 @@ export default function ({ apiVersion, errorHandler, query }) {
                     <a>
                       <strong>
                         {app.name ||
-                          `${app.state} created ${app.createdAt.split("T")[0]}`}
+                          `${app.state} created ${
+                            new Date(app.createdAt)
+                              .toLocaleString()
+                              .split(",")[0]
+                          }`}
                       </strong>
                     </a>
                   </Link>

@@ -1,8 +1,11 @@
-import { log } from "actionhero";
+import { log, task } from "actionhero";
 import { App } from "../models/App";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
-import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
+import {
+  ProfilePropertyRule,
+  ProfilePropertyRuleFiltersWithKey,
+} from "../models/ProfilePropertyRule";
 import { Op } from "sequelize";
 import * as uuid from "uuid";
 
@@ -36,6 +39,7 @@ export interface EventPrototype extends EventArgs {
     limit?: number;
     offset?: number;
     order?: Array<[string, string]>;
+    profilePropertyRuleFilters?: ProfilePropertyRuleFiltersWithKey[];
   }) => Promise<EventPrototype[]>;
   count: (options: {
     profileGuid?: string;
@@ -50,6 +54,20 @@ export interface EventPrototype extends EventArgs {
     offset?: number;
     order?: Array<[string, string]>;
   }) => Promise<string[]>;
+  dataKeys: (type) => Promise<string[]>;
+  countEventData: (options: {
+    profileGuid?: string;
+    type?: string;
+    key: string;
+    profilePropertyRuleFilters?: ProfilePropertyRuleFiltersWithKey[];
+  }) => Promise<number>;
+  aggregateEventData: (options: {
+    aggregation: "average" | "sum" | "min" | "max";
+    profileGuid?: string;
+    type?: string;
+    key: string;
+    profilePropertyRuleFilters?: ProfilePropertyRuleFiltersWithKey[];
+  }) => Promise<number>;
   destroyFor: (options: {
     profileGuid?: string;
     type?: string;
@@ -88,7 +106,19 @@ export abstract class EventPrototype {
 
     if (this.profileGuid) {
       // we are already identified
-      return this.getProfile();
+      try {
+        const profile = await this.getProfile();
+        await this.updateProfile(profile);
+        return profile;
+      } catch (error) {
+        // the event may have been moved to another profile
+        const updatedEvent = await this.reload();
+        if (updatedEvent.profileGuid !== this.profileGuid) {
+          return updatedEvent.associate(updatedEvent.profileGuid);
+        } else {
+          throw error;
+        }
+      }
     } else if (this.userId) {
       // we have a userId (primaryIdentifyingProfilePropertyRule)
       let profile = await Profile.findOne({
@@ -129,6 +159,7 @@ export abstract class EventPrototype {
         await Profile.merge(profile, otherProfileWithAnonymousId);
       }
 
+      await this.updateProfile(profile);
       return profile;
     } else if (this.anonymousId) {
       // we have an anonymousId
@@ -138,6 +169,7 @@ export abstract class EventPrototype {
       this.profileGuid = profile.guid;
       this.profileAssociatedAt = new Date();
       await this.save();
+      await this.updateProfile(profile);
       return profile;
     } else {
       // we can't identify this event
@@ -145,6 +177,10 @@ export abstract class EventPrototype {
         "cannot associate a profile without profileGuid, userId, or anonymousId"
       );
     }
+  }
+
+  async updateProfile(profile: Profile) {
+    await task.enqueue("profile:importAndUpdate", { guid: profile.guid });
   }
 
   async getProfile() {

@@ -18,7 +18,11 @@ export default function ({
   const { execApi } = useApi(errorHandler);
   const [connectionOptions, setConnectionOptions] = useState([]);
   const [preview, setPreview] = useState([]);
-  const [source, setSource] = useState<SourceAPIData>({});
+  const [source, setSource] = useState<SourceAPIData>({
+    app: {},
+    options: {},
+    connection: { options: [] },
+  });
   const { guid } = query;
 
   useEffect(() => {
@@ -69,7 +73,11 @@ export default function ({
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    const state = source.previewAvailable ? undefined : "ready";
+    const state = source.connection.skipSourceMapping
+      ? "ready"
+      : source.previewAvailable
+      ? undefined
+      : "ready";
 
     const response = await execApi(
       "put",
@@ -102,6 +110,7 @@ export default function ({
         `/api/${apiVersion}/source/${guid}`
       );
       if (response) {
+        successHandler.set({ message: "source deleted" });
         Router.push("/sources");
       }
     }
@@ -183,93 +192,108 @@ export default function ({
                   {(() => {
                     if (connectionOptions[opt.key]?.type === "typeahead") {
                       return (
-                        <Typeahead
-                          id="typeahead"
-                          labelKey="key"
-                          onChange={(selected) => {
-                            console.log(selected);
-                            updateOption(opt.key, selected[0]?.key);
-                          }}
-                          options={connectionOptions[opt.key]?.options.map(
-                            (k, idx) => {
-                              return {
-                                key: k,
-                                descriptions:
-                                  connectionOptions[k]?.descriptions[idx],
-                              };
+                        <>
+                          <Typeahead
+                            id="typeahead"
+                            labelKey="key"
+                            onChange={(selected) => {
+                              updateOption(opt.key, selected[0]?.key);
+                            }}
+                            options={connectionOptions[opt.key]?.options.map(
+                              (k, idx) => {
+                                return {
+                                  key: k,
+                                  descriptions:
+                                    connectionOptions[k]?.descriptions[idx],
+                                };
+                              }
+                            )}
+                            placeholder={`Select ${opt.key}`}
+                            renderMenuItemChildren={(opt, props, idx) => {
+                              return [
+                                <span key={`opt-${idx}-key`}>
+                                  {opt.key}
+                                  <br />
+                                </span>,
+                                <small
+                                  key={`opt-${idx}-descriptions`}
+                                  className="text-small"
+                                >
+                                  <em>
+                                    Descriptions:{" "}
+                                    {opt.descriptions
+                                      ? opt.descriptions.join(", ")
+                                      : "None"}
+                                  </em>
+                                </small>,
+                              ];
+                            }}
+                            defaultSelected={
+                              source.options[opt.key]
+                                ? [source.options[opt.key]]
+                                : undefined
                             }
-                          )}
-                          placeholder={`Select ${opt.key}`}
-                          renderMenuItemChildren={(opt, props, idx) => {
-                            return [
-                              <span key={`opt-${idx}-key`}>
-                                {opt.key}
-                                <br />
-                              </span>,
-                              <small
-                                key={`opt-${idx}-descriptions`}
-                                className="text-small"
-                              >
-                                <em>
-                                  Descriptions:{" "}
-                                  {opt.descriptions
-                                    ? opt.descriptions.join(", ")
-                                    : "None"}
-                                </em>
-                              </small>,
-                            ];
-                          }}
-                          defaultSelected={
-                            source.options[opt.key]
-                              ? [source.options[opt.key]]
-                              : undefined
-                          }
-                        />
+                          />
+                          <Form.Text className="text-muted">
+                            {opt.description}
+                          </Form.Text>
+                        </>
                       );
                     } else if (connectionOptions[opt.key]?.type === "list") {
                       return (
-                        <Form.Control
-                          as="select"
-                          required={opt.required}
-                          defaultValue={source.options[opt.key] || ""}
-                          onChange={(e) =>
-                            updateOption(
-                              e.target.id.replace("_opt~", ""),
-                              e.target.value
-                            )
-                          }
-                        >
-                          <option value={""} disabled>
-                            Choose an option
-                          </option>
-                          {connectionOptions[opt.key].options.map((o, idx) => (
-                            <option key={`opt~${opt.key}-${o}`} value={o}>
-                              {o}{" "}
-                              {connectionOptions[opt.key]?.descriptions &&
-                              connectionOptions[opt.key]?.descriptions[idx]
-                                ? ` | ${
-                                    connectionOptions[opt.key]?.descriptions[
-                                      idx
-                                    ]
-                                  }`
-                                : null}
+                        <>
+                          <Form.Control
+                            as="select"
+                            required={opt.required}
+                            defaultValue={source.options[opt.key] || ""}
+                            onChange={(e) =>
+                              updateOption(
+                                e.target.id.replace("_opt~", ""),
+                                e.target.value
+                              )
+                            }
+                          >
+                            <option value={""} disabled>
+                              Choose an option
                             </option>
-                          ))}
-                        </Form.Control>
+                            {connectionOptions[opt.key].options.map(
+                              (o, idx) => (
+                                <option key={`opt~${opt.key}-${o}`} value={o}>
+                                  {o}{" "}
+                                  {connectionOptions[opt.key]?.descriptions &&
+                                  connectionOptions[opt.key]?.descriptions[idx]
+                                    ? ` | ${
+                                        connectionOptions[opt.key]
+                                          ?.descriptions[idx]
+                                      }`
+                                    : null}
+                                </option>
+                              )
+                            )}
+                          </Form.Control>
+                          <Form.Text className="text-muted">
+                            {opt.description}
+                          </Form.Text>
+                        </>
                       );
                     } else {
                       return (
-                        <Form.Control
-                          required={opt.required}
-                          type="text"
-                          defaultValue={source.options[opt.key]}
-                          onChange={(e) =>
-                            updateOption(
-                              e.target.id.replace("_opt~", ""),
-                              e.target.value
-                            )
-                          }
-                        />
+                        <>
+                          <Form.Control
+                            required={opt.required}
+                            type="text"
+                            defaultValue={source.options[opt.key]}
+                            onChange={(e) =>
+                              updateOption(
+                                e.target.id.replace("_opt~", ""),
+                                e.target.value
+                              )
+                            }
+                          />
+                          <Form.Text className="text-muted">
+                            {opt.description}
+                          </Form.Text>
+                        </>
                       );
                     }
                   })()}
@@ -296,7 +320,9 @@ export default function ({
                   {preview.map((row, i) => (
                     <tr key={`row-${i}`}>
                       {previewColumns.map((col, j) => (
-                        <td key={`table-${i}-${j}`}>{row[col]}</td>
+                        <td key={`table-${i}-${j}`}>
+                          {row[col] ? JSON.stringify(row[col]) : null}
+                        </td>
                       ))}
                     </tr>
                   ))}

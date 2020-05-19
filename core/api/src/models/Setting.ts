@@ -33,8 +33,8 @@ export class Setting extends LoggedModel<Setting> {
       value: this.value,
       defaultValue: this.defaultValue,
       description: this.description,
-      createdAt: this.createdAt ? this.createdAt.toString() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.toString() : null,
+      createdAt: this.createdAt ? this.createdAt.getTime() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
     };
   }
 

@@ -2,6 +2,8 @@ import { helper } from "../utils/specHelper";
 import { specHelper } from "actionhero";
 import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
 import { Profile } from "../../src/models/Profile";
+import { Option } from "../../src/models/Option";
+import profilePropertyRules from "../factories/profilePropertyRules";
 
 let actionhero, api;
 
@@ -9,6 +11,8 @@ describe("integration/events", () => {
   let connection;
   let csrfToken;
   let appGuid;
+  let sourceGuid;
+  let profilePropertyRuleGuid;
   let userIdRule;
   let apiKey;
   let eventGuid;
@@ -114,7 +118,7 @@ describe("integration/events", () => {
       apiKey,
       type: "pageview",
       anonymousId: "abc123",
-      data: { path: "/" },
+      data: { path: "/", loadTime: 100 },
     });
 
     expect(error).toBeFalsy();
@@ -123,7 +127,7 @@ describe("integration/events", () => {
     expect(event.ipAddress).toBeTruthy();
     expect(event.profileGuid).toBeFalsy();
     expect(event.anonymousId).toBe("abc123");
-    expect(event.data).toEqual({ path: "/" });
+    expect(event.data).toEqual({ path: "/", loadTime: 100 });
 
     const foundTasks = await specHelper.findEnqueuedTasks(
       "event:associateProfile"
@@ -152,7 +156,7 @@ describe("integration/events", () => {
       apiKey,
       type: "pageview",
       anonymousId: "abc123",
-      data: { path: "/about" },
+      data: { path: "/about", loadTime: 100 },
     });
     await specHelper.runTask("event:associateProfile", {
       eventGuid: event.guid,
@@ -171,7 +175,7 @@ describe("integration/events", () => {
       type: "pageview",
       anonymousId: "abc123",
       userId: 100,
-      data: { path: "/web-sign-in" },
+      data: { path: "/web-sign-in", loadTime: 100 },
     });
     await specHelper.runTask("event:associateProfile", {
       eventGuid: event.guid,
@@ -192,7 +196,7 @@ describe("integration/events", () => {
       type: "pageview",
       anonymousId: "def456",
       userId: 100,
-      data: { path: "/mobile-sign-in" },
+      data: { path: "/mobile-sign-in", loadTime: 100 },
     });
     await specHelper.runTask("event:associateProfile", {
       eventGuid: event.guid,
@@ -212,7 +216,7 @@ describe("integration/events", () => {
       apiKey,
       type: "mobile-sceneview",
       anonymousId: "zzz999",
-      data: { path: "/" },
+      data: { path: "/", loadTime: 100 },
     });
     await specHelper.runTask("event:associateProfile", {
       eventGuid: event1.guid,
@@ -226,7 +230,7 @@ describe("integration/events", () => {
       type: "mobile-sceneview",
       anonymousId: "zzz999",
       userId: 100,
-      data: { path: "/sign-in" },
+      data: { path: "/sign-in", loadTime: 100 },
     });
     await specHelper.runTask("event:associateProfile", {
       eventGuid: event2.guid,
@@ -237,5 +241,416 @@ describe("integration/events", () => {
 
     const profileEvents = await profile.events();
     expect(profileEvents.length).toBe(6);
+  });
+
+  describe("source", () => {
+    test("a source for an event can be created into draft mode", async () => {
+      connection.params = {
+        csrfToken,
+        appGuid,
+        name: "pageview-events",
+        type: "events-table-import",
+      };
+      const { source, error } = await specHelper.runAction(
+        "source:create",
+        connection
+      );
+
+      expect(error).toBeFalsy();
+      expect(source.guid).toBeTruthy();
+      expect(source.state).toBe("draft");
+
+      sourceGuid = source.guid;
+    });
+
+    test("an administrator can enumerate the source connection options", async () => {
+      connection.params = {
+        csrfToken,
+        guid: sourceGuid,
+      };
+      const { error, options } = await specHelper.runAction(
+        "source:connectionOptions",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(options).toEqual({
+        type: { options: ["mobile-sceneview", "pageview"], type: "list" },
+      });
+    });
+
+    test("a source with no options will see an empty preview", async () => {
+      const options = await Option.findAll({
+        where: { ownerGuid: sourceGuid },
+      });
+      await Promise.all(options.map((o) => o.destroy()));
+
+      connection.params = {
+        csrfToken,
+        guid: sourceGuid,
+      };
+      const { error, preview } = await specHelper.runAction(
+        "source:preview",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(preview).toEqual([]);
+    });
+
+    test("a source can provide options to a preview", async () => {
+      connection.params = {
+        csrfToken,
+        guid: sourceGuid,
+        options: { type: "pageview" },
+      };
+      const { error, preview } = await specHelper.runAction(
+        "source:preview",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(preview.length).toEqual(4);
+      expect(preview[0].type).toEqual("pageview");
+    });
+
+    test("a source can have options set", async () => {
+      connection.params = {
+        csrfToken,
+        guid: sourceGuid,
+        options: { type: "pageview" },
+      };
+      const { error, source } = await specHelper.runAction(
+        "source:edit",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(source.options).toEqual({ type: "pageview" });
+    });
+
+    test("a source with options set will return a preview", async () => {
+      connection.params = {
+        csrfToken,
+        guid: sourceGuid,
+      };
+      const { error, preview } = await specHelper.runAction(
+        "source:preview",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(preview.length).toEqual(4);
+      expect(preview[0].type).toEqual("pageview");
+    });
+
+    test("a source can be made active", async () => {
+      connection.params = {
+        csrfToken,
+        guid: sourceGuid,
+        state: "ready",
+      };
+      const { error, source } = await specHelper.runAction(
+        "source:edit",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(source.state).toBe("ready");
+    });
+
+    test("an administrator can view a source", async () => {
+      connection.params = {
+        csrfToken,
+        guid: sourceGuid,
+      };
+      const { error, source } = await specHelper.runAction(
+        "source:view",
+        connection
+      );
+
+      expect(error).toBeUndefined();
+      expect(source.guid).toBeTruthy();
+      expect(source.app.name).toBe("events");
+    });
+
+    describe("profilePropertyRules", () => {
+      test("an administrator can create a new profilePropertyRule", async () => {
+        connection.params = {
+          csrfToken,
+          sourceGuid,
+          key: "test-rule",
+          type: "integer",
+          unique: "false",
+        };
+
+        const {
+          error,
+          profilePropertyRule,
+          pluginOptions,
+        } = await specHelper.runAction(
+          "profilePropertyRule:create",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(profilePropertyRule.guid).toBeTruthy();
+        expect(profilePropertyRule.key).toBe("test-rule");
+        expect(profilePropertyRule.unique).toBe(false);
+        expect(profilePropertyRule.state).toBe("draft");
+        expect(profilePropertyRule.source.guid).toBe(sourceGuid);
+        expect(pluginOptions[0].key).toBe("column");
+        expect(pluginOptions[0].options.map((opt) => opt.key)).toEqual([
+          "ipAddress",
+          "type",
+          "userId",
+          "occurredAt",
+          "[data]-loadTime",
+          "[data]-path",
+        ]);
+        expect(pluginOptions[1].key).toBe("aggregation method");
+        expect(pluginOptions[1].options.map((opt) => opt.key)).toEqual([
+          "exact-most-recent",
+          "exact-least-recent",
+          "average",
+          "count",
+          "sum",
+          "min",
+          "max",
+        ]);
+
+        profilePropertyRuleGuid = profilePropertyRule.guid;
+      });
+
+      test("an administrator can view the filter options for a profile property rule", async () => {
+        connection.params = {
+          csrfToken,
+          guid: profilePropertyRuleGuid,
+        };
+        const { error, options } = await specHelper.runAction(
+          "profilePropertyRule:filterOptions",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(options).toEqual([
+          {
+            key: "ipAddress",
+            ops: ["equals", "does not equal", "contains", "does not contain"],
+            canHaveRelativeMatch: false,
+          },
+          {
+            key: "type",
+            ops: ["equals", "does not equal", "contains", "does not contain"],
+            canHaveRelativeMatch: false,
+          },
+          {
+            key: "userId",
+            ops: ["equals", "does not equal"],
+            canHaveRelativeMatch: false,
+          },
+          {
+            key: "occurredAt",
+            ops: ["equals", "does not equal", "greater than", "less than"],
+            canHaveRelativeMatch: false,
+          },
+          {
+            key: "[data]-loadTime",
+            ops: ["equals", "does not equal", "greater than", "less than"],
+            canHaveRelativeMatch: false,
+          },
+          {
+            key: "[data]-path",
+            ops: ["equals", "does not equal", "contains", "does not contain"],
+            canHaveRelativeMatch: false,
+          },
+        ]);
+      });
+
+      test("an administrator can set the filters for a profile property rule", async () => {
+        connection.params = {
+          csrfToken,
+          guid: profilePropertyRuleGuid,
+          filters: [{ key: "[data]-path", op: "does not equal", match: "/" }],
+        };
+        const { error, profilePropertyRule } = await specHelper.runAction(
+          "profilePropertyRule:edit",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(profilePropertyRule.filters).toEqual([
+          {
+            key: "[data]-path",
+            match: "/",
+            op: "does not equal",
+            relativeMatchDirection: null,
+            relativeMatchNumber: null,
+            relativeMatchUnit: null,
+          },
+        ]);
+      });
+
+      test("the rule cannot be made ready without an aggregation method", async () => {
+        connection.params = {
+          csrfToken,
+          guid: profilePropertyRuleGuid,
+          options: { column: "[data]-path" },
+          state: "ready",
+        };
+        const { error, profilePropertyRule } = await specHelper.runAction(
+          "profilePropertyRule:edit",
+          connection
+        );
+        expect(error.message).toMatch(/aggregation method is required/);
+      });
+
+      test("an administrator can make a rule ready", async () => {
+        connection.params = {
+          csrfToken,
+          guid: profilePropertyRuleGuid,
+          options: { column: "[data]-path", "aggregation method": "count" },
+          state: "ready",
+        };
+        const { error, profilePropertyRule } = await specHelper.runAction(
+          "profilePropertyRule:edit",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(profilePropertyRule.state).toBe("ready");
+      });
+
+      test("an administrator can test a profile property rule", async () => {
+        connection.params = {
+          csrfToken,
+          guid: profilePropertyRuleGuid,
+        };
+        const { error, test } = await specHelper.runAction(
+          "profilePropertyRule:test",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(test).toBeTruthy();
+      });
+
+      describe("with profile", () => {
+        let profile: Profile;
+        let rule: ProfilePropertyRule;
+
+        beforeAll(async () => {
+          rule = await ProfilePropertyRule.findByGuid(profilePropertyRuleGuid);
+          await rule.setFilters([]);
+        });
+
+        beforeAll(async () => {
+          const profiles = await Profile.findAll();
+          expect(profiles.length).toBe(1);
+          profile = profiles[0];
+        });
+
+        test("profile properties will be imported (without filter)", async () => {
+          await rule.setFilters([]);
+          await profile.import();
+          const properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe(4);
+        });
+
+        test("profile properties will be imported (with filter)", async () => {
+          await rule.setFilters([
+            { key: "[data]-path", op: "does not equal", match: "/" },
+          ]);
+          await profile.import();
+          let properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe(3);
+
+          await rule.setFilters([
+            { key: "[data]-path", op: "does not contain", match: "/" },
+          ]);
+          await profile.import();
+          properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe(0);
+        });
+      });
+
+      describe("aggregations", () => {
+        let rule: ProfilePropertyRule;
+        beforeAll(async () => {
+          rule = await ProfilePropertyRule.findByGuid(profilePropertyRuleGuid);
+          await rule.setFilters([]);
+        });
+
+        test("exact-most-recent", async () => {
+          await rule.update({ type: "string" });
+          await rule.setOptions({
+            column: "[data]-path",
+            "aggregation method": "exact-most-recent",
+          });
+          await profile.import();
+          const properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe("/mobile-sign-in");
+        });
+
+        test("exact-least-recent", async () => {
+          await rule.update({ type: "string" });
+          await rule.setOptions({
+            column: "[data]-path",
+            "aggregation method": "exact-least-recent",
+          });
+          await profile.import();
+          const properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe("/");
+        });
+
+        test("average", async () => {
+          await rule.update({ type: "float" });
+          await rule.setOptions({
+            column: "[data]-loadTime",
+            "aggregation method": "average",
+          });
+          await profile.import();
+          const properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe(100);
+        });
+
+        test("count", async () => {
+          await rule.update({ type: "integer" });
+          await rule.setOptions({
+            column: "[data]-path",
+            "aggregation method": "count",
+          });
+          await profile.import();
+          const properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe(4);
+        });
+
+        test("sum", async () => {
+          await rule.update({ type: "integer" });
+          await rule.setOptions({
+            column: "[data]-loadTime",
+            "aggregation method": "sum",
+          });
+          await profile.import();
+          const properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe(400);
+        });
+
+        test("min", async () => {
+          await rule.update({ type: "integer" });
+          await rule.setOptions({
+            column: "[data]-loadTime",
+            "aggregation method": "min",
+          });
+          await profile.import();
+          const properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe(100);
+        });
+
+        test("max", async () => {
+          await rule.update({ type: "integer" });
+          await rule.setOptions({
+            column: "[data]-loadTime",
+            "aggregation method": "max",
+          });
+          await profile.import();
+          const properties = await profile.properties();
+          expect(properties["test-rule"].value).toBe(100);
+        });
+      });
+    });
   });
 });

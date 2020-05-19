@@ -204,6 +204,11 @@ export class Source extends LoggedModel<Source> {
   }
 
   async validateMapping() {
+    const { pluginConnection } = await this.getPlugin();
+    if (pluginConnection.skipSourceMapping) {
+      return true;
+    }
+
     const previewAvailable = await this.previewAvailable();
     if (!previewAvailable) {
       return true;
@@ -301,8 +306,8 @@ export class Source extends LoggedModel<Source> {
       profilePropertyRules: profilePropertyRules
         ? await Promise.all(profilePropertyRules.map((prp) => prp.apiData()))
         : [],
-      createdAt: this.createdAt ? this.createdAt.toString() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.toString() : null,
+      createdAt: this.createdAt ? this.createdAt.getTime() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
     };
   }
 
@@ -357,6 +362,15 @@ export class Source extends LoggedModel<Source> {
     const appOptions = await app.getOptions();
     const sourceOptions = await this.getOptions();
     const sourceMapping = await this.getMapping();
+
+    // we may not have the profile property needed to make the mapping (ie: userId is not set on this anonymous profile)
+    if (Object.values(sourceMapping).length > 0) {
+      const profilePropertyRuleMappingKey = Object.values(sourceMapping)[0];
+      const profileProperties = await profile.properties();
+      if (!profileProperties[profilePropertyRuleMappingKey]) {
+        return;
+      }
+    }
 
     return method({
       app,

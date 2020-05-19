@@ -201,6 +201,11 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
       );
     }
 
+    // null values are always "unique", even for unique profile properties
+    if (this.rawValue === null || this.rawValue === undefined) {
+      return;
+    }
+
     if (rule.unique) {
       const count = await ProfileProperty.count({
         where: {

@@ -55,8 +55,8 @@ export class ExportImport extends Model<ExportImport> {
     return {
       exportGuid: this.exportGuid,
       importGuid: this.importGuid,
-      createdAt: this.createdAt ? this.createdAt.toString() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.toString() : null,
+      createdAt: this.createdAt ? this.createdAt.getTime() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
     };
   }
 

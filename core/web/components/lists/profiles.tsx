@@ -171,7 +171,8 @@ export default function ({ apiVersion, errorHandler, hideSearch, query }) {
               <Col md={7}>
                 <>
                   <Form.Label>
-                    Search Term (use <code>%</code> for wildcards)
+                    Search Term (use <code>%</code> for wildcards and{" "}
+                    <code>null</code> for empty values)
                   </Form.Label>
                   <AsyncTypeahead
                     key={`typeahead-search-${searchKey}`}
@@ -260,7 +261,7 @@ export default function ({ apiVersion, errorHandler, hideSearch, query }) {
                         <div key={`key-${profile.guid}-${searchKey}`}>
                           <span className="text-muted">{searchKey}: </span>
                           {profile.properties[searchKey]
-                            ? profile.properties[searchKey].value.toString()
+                            ? profile.properties[searchKey]?.value?.toString()
                             : null}
                           <br />
                         </div>

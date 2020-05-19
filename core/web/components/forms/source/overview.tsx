@@ -20,7 +20,12 @@ import { SourceAPIData, RunAPIData } from "../../../utils/apiData";
 
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
-  const [source, setSource] = useState<SourceAPIData>({});
+  const [source, setSource] = useState<SourceAPIData>({
+    connection: {},
+    app: {},
+    options: {},
+    profilePropertyRules: [],
+  });
   const [run, setRun] = useState<RunAPIData>({});
   const { guid } = query;
 
@@ -114,7 +119,9 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                         <strong>
                           {rule.key ||
                             `${rule.state} created on ${
-                              rule.createdAt.split("T")[0]
+                              new Date(rule.createdAt)
+                                .toLocaleString()
+                                .split(",")[0]
                             }`}
                         </strong>
                       </a>
@@ -212,7 +219,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                       <strong>Next Run</strong>
                       <br />
                       {run?.updatedAt &&
-                      Date.parse(run.updatedAt) +
+                      new Date(run.updatedAt).getTime() +
                         source.schedule.recurringFrequency >
                         new Date().getTime() &&
                       recurringFrequencyMinutes > 0 ? (
@@ -231,7 +238,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                       ) : null}
 
                       {(run?.updatedAt &&
-                        Date.parse(run.updatedAt) +
+                        new Date(run.updatedAt).getTime() +
                           source.schedule.recurringFrequency <=
                           new Date().getTime() &&
                         recurringFrequencyMinutes) ||
@@ -267,7 +274,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       <Card border="info">
         <Card.Body>
           <h2>Profile Identification</h2>
-          {source.previewAvailable ? (
+          {source.previewAvailable && !source.connection.skipSourceMapping ? (
             Object.keys(source.mapping).length === 1 ? (
               <Row>
                 <Col>
@@ -282,6 +289,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             ) : (
               <Alert variant="warning">Mapping not set yet</Alert>
             )
+          ) : source.connection.skipSourceMapping ? (
+            <Alert variant="info">Automatic</Alert>
           ) : (
             <Alert variant="warning">
               Mapping not available for this connection type

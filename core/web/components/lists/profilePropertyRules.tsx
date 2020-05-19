@@ -122,7 +122,9 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                             <strong>
                               {rule.key ||
                                 `${rule.state} created on ${
-                                  rule.createdAt.split("T")[0]
+                                  new Date(rule.createdAt)
+                                    .toLocaleString()
+                                    .split(",")[0]
                                 }`}
                             </strong>
                           </a>

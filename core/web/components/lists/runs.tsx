@@ -305,7 +305,10 @@ function RunDurationChart({ runs }) {
       }
       const start = NodeMoment(run.createdAt).format("YYYY-MM-DDTHH:mm:ss");
       const durationMinutes =
-        (Date.parse(run.completedAt) - Date.parse(run.createdAt)) / 1000 / 60;
+        (new Date(run.completedAt).getTime() -
+          new Date(run.createdAt).getTime()) /
+        1000 /
+        60;
       typeTotals[type].push({ x: start, y: durationMinutes });
     }
   });

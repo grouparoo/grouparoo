@@ -14,6 +14,7 @@ import { Source } from "./Source";
 import { ProfileProperty } from "./ProfileProperty";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Import } from "./Import";
+import { Export } from "./Export";
 import { Destination } from "./Destination";
 import { EventPrototype } from "./../classes/events";
 import { waitForLock } from "../modules/locks";
@@ -42,6 +43,14 @@ export class Profile extends LoggedModel<Profile> {
   @HasMany(() => Import)
   imports: Import[];
 
+  @HasMany(() => Export)
+  exports: Export[];
+
+  @AfterDestroy
+  static async removeFromDestinations(instance: Profile) {
+    await instance.export(false, []);
+  }
+
   @AfterDestroy
   static async destroyProfileProperties(instance: Profile) {
     await ProfileProperty.destroy({
@@ -61,6 +70,23 @@ export class Profile extends LoggedModel<Profile> {
     await api.events.model.destroyFor({ profileGuid: instance.guid });
   }
 
+  @AfterDestroy
+  static async destroyImports(instance: Profile) {
+    await Import.destroy({
+      where: { profileGuid: instance.guid },
+    });
+  }
+
+  @AfterDestroy
+  static async destroyExports(instance: Profile) {
+    let _exports = await instance.$get("exports");
+    while (_exports.length > 0) {
+      // need to loop 1-by-1 to afterDestroy hooks delete related importExport records
+      await Promise.all(_exports.map((_export) => _export.destroy()));
+      _exports = await instance.$get("exports");
+    }
+  }
+
   async apiData() {
     const properties = await this.properties();
 
@@ -68,8 +94,8 @@ export class Profile extends LoggedModel<Profile> {
       guid: this.guid,
       anonymousId: this.anonymousId,
       properties,
-      createdAt: this.createdAt ? this.createdAt.toString() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.toString() : null,
+      createdAt: this.createdAt ? this.createdAt.getTime() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
     };
   }
 
@@ -94,18 +120,15 @@ export class Profile extends LoggedModel<Profile> {
       where: { profileGuid: this.guid, profilePropertyRuleGuid: rule.guid },
     });
 
-    if (property) {
-      await property.setValue(value);
-      await property.save();
-    } else {
+    if (!property) {
       property = new ProfileProperty({
         profileGuid: this.guid,
         profilePropertyRuleGuid: rule.guid,
       });
-      await property.setValue(value);
-      await property.save();
     }
 
+    await property.setValue(value);
+    await property.save();
     return this;
   }
 
@@ -195,7 +218,14 @@ export class Profile extends LoggedModel<Profile> {
     return hash;
   }
 
-  async import(toSave = true) {
+  async import(toSave = true, toLock = true) {
+    let releaseLock: Function;
+
+    if (toLock) {
+      const lockObject = await waitForLock(`profile:${this.guid}`);
+      releaseLock = lockObject.releaseLock;
+    }
+
     let hash = {};
     const sources = await Source.findAll({ where: { state: "ready" } });
     for (const i in sources) {
@@ -205,8 +235,14 @@ export class Profile extends LoggedModel<Profile> {
     if (toSave) {
       await this.addOrUpdateProperties(hash);
       await this.buildNullProperties();
-      return this.save();
+      await this.save();
     }
+
+    if (toLock) {
+      releaseLock();
+    }
+
+    return this;
   }
 
   async buildNullProperties() {
@@ -253,11 +289,11 @@ export class Profile extends LoggedModel<Profile> {
     return profileEvents;
   }
 
-  async export(force = false) {
+  async export(force = false, groupsOverride?: Group[]) {
     let oldSimpleProperties = {};
     let oldGroups = [];
 
-    const groups = await this.$get("groups");
+    const groups = groupsOverride ? groupsOverride : await this.$get("groups");
 
     const destinations = await Destination.destinationsForGroups(groups);
     const properties = await this.properties();
@@ -406,6 +442,13 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   static async merge(profile: Profile, otherProfile: Profile) {
+    const { releaseLock: releaseLockForProfile } = await waitForLock(
+      `profile:${profile.guid}`
+    );
+    const { releaseLock: releaseLockForOtherProfile } = await waitForLock(
+      `profile:${otherProfile.guid}`
+    );
+
     // transfer events
     let eventsCount = 1;
     while (eventsCount > 0) {
@@ -439,7 +482,13 @@ export class Profile extends LoggedModel<Profile> {
 
     // re-import and update groups
     delete profile.profileProperties; // remove any cached values from the instance
-    await profile.import();
+    await profile.import(true, false);
     await profile.updateGroupMembership();
+
+    // release locks
+    await releaseLockForProfile();
+    await releaseLockForOtherProfile();
+
+    return profile;
   }
 }

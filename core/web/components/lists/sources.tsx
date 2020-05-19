@@ -96,7 +96,9 @@ export default function ({ apiVersion, errorHandler, sourceHandler, query }) {
                       <strong>
                         {source.name ||
                           `${source.state} created on ${
-                            source.createdAt.split("T")[0]
+                            new Date(source.createdAt)
+                              .toLocaleString()
+                              .split(",")[0]
                           }`}
                       </strong>
                     </a>

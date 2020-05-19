@@ -550,6 +550,8 @@ describe("models/profilePropertyRule", () => {
       expect(queryCounter).toBe(0);
 
       const profile = await helper.factories.profile();
+      await profile.addOrUpdateProperties({ userId: 1000 });
+
       const rule = await ProfilePropertyRule.create({
         key: "test",
         type: "string",
@@ -576,10 +578,13 @@ describe("models/profilePropertyRule", () => {
       // no change
       expect(queryCounter).toBeGreaterThan(2);
       await rule.destroy();
+      await profile.destroy();
     });
 
     test("options cannot be saved if they fail testing import against a profile", async () => {
       const profile = await helper.factories.profile();
+      await profile.addOrUpdateProperties({ userId: 1000 });
+
       const rule = await ProfilePropertyRule.create({
         key: "test",
         type: "string",
@@ -592,10 +597,13 @@ describe("models/profilePropertyRule", () => {
 
       expect(await rule.getOptions()).toEqual({});
       await rule.destroy();
+      await profile.destroy();
     });
 
     test("the profile property rule can be tested against the existing options or potential new options", async () => {
       const profile = await helper.factories.profile();
+      await profile.addOrUpdateProperties({ userId: 1000 });
+
       const rule = await ProfilePropertyRule.create({
         key: "test",
         type: "string",

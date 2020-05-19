@@ -32,7 +32,11 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const [profilePropertyRules, setProfilePropertyRules] = useState<
     ProfilePropertyRuleAPIData[]
   >([]);
-  const [destination, setDestination] = useState<DestinationAPIData>();
+  const [destination, setDestination] = useState<DestinationAPIData>({
+    mapping: [],
+    destinationGroupMemberships: [],
+    destinationGroups: [],
+  });
   const [
     unlockedProfilePropertyRules,
     setUnlockedProfilePropertyRules,

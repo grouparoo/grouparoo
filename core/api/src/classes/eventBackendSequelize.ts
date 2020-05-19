@@ -7,6 +7,7 @@ import {
 import { Op } from "sequelize";
 import { SequelizeEvent } from "./eventBackendSequelize/SequelizeEvent";
 import { SequelizeEventData } from "./eventBackendSequelize/SequelizeEventData";
+import { ProfilePropertyRuleFiltersWithKey } from "../models/ProfilePropertyRule";
 
 export class Event extends EventPrototype {
   /**
@@ -71,6 +72,7 @@ export class Event extends EventPrototype {
       limit?: number;
       offset?: number;
       order?: Array<[string, string]>;
+      profilePropertyRuleFilters?: ProfilePropertyRuleFiltersWithKey[];
     } = {}
   ) {
     const {
@@ -82,6 +84,7 @@ export class Event extends EventPrototype {
       limit,
       offset,
       order,
+      profilePropertyRuleFilters,
     } = options;
     const where = {};
     const includeWhere = {};
@@ -105,6 +108,14 @@ export class Event extends EventPrototype {
     }
     if (associated === false) {
       where["profileGuid"] = { [Op.eq]: null };
+    }
+
+    if (profilePropertyRuleFilters) {
+      applyProfilePropertyRuleFilters(
+        where,
+        includeWhere,
+        profilePropertyRuleFilters
+      );
     }
 
     const sequelizeEvents = await SequelizeEvent.findAll({
@@ -156,7 +167,9 @@ export class Event extends EventPrototype {
     if (associated === false) {
       where["profileGuid"] = { [Op.eq]: null };
     }
+
     return SequelizeEvent.count({
+      distinct: true,
       include: [
         {
           model: SequelizeEventData,
@@ -194,6 +207,131 @@ export class Event extends EventPrototype {
     });
 
     return events.map((event) => event.type);
+  }
+
+  static async dataKeys(type: string) {
+    const results = await SequelizeEventData.findAll({
+      attributes: [
+        [api.sequelize.fn("DISTINCT", api.sequelize.col("key")), "key"],
+      ],
+      group: ["key"],
+      include: [
+        {
+          model: SequelizeEvent,
+          required: true,
+          where: { type },
+          attributes: [],
+        },
+      ],
+    });
+
+    return results.map((r) => r.key);
+  }
+
+  static async countEventData(
+    options: {
+      profileGuid?: string;
+      type?: string;
+      key?: string;
+      profilePropertyRuleFilters?: ProfilePropertyRuleFiltersWithKey[];
+    } = {}
+  ) {
+    const { profileGuid, type, key, profilePropertyRuleFilters } = options;
+    const where = { key };
+    const includeWhere = {};
+
+    if (type) {
+      includeWhere["type"] = type;
+    }
+
+    if (profileGuid) {
+      includeWhere["profileGuid"] = profileGuid;
+    }
+
+    if (profilePropertyRuleFilters) {
+      applyProfilePropertyRuleFilters(
+        includeWhere,
+        where,
+        profilePropertyRuleFilters
+      );
+    }
+
+    const count = await SequelizeEventData.count({
+      where,
+      include: [
+        {
+          model: SequelizeEvent,
+          required: true,
+          where: includeWhere,
+          attributes: [],
+        },
+      ],
+    });
+
+    return count;
+  }
+
+  static async aggregateEventData(
+    options: {
+      aggregation?: "average" | "sum" | "min" | "max";
+      profileGuid?: string;
+      type?: string;
+      key?: string;
+      profilePropertyRuleFilters?: ProfilePropertyRuleFiltersWithKey[];
+    } = {}
+  ) {
+    let {
+      aggregation,
+      profileGuid,
+      type,
+      key,
+      profilePropertyRuleFilters,
+    } = options;
+    const where = { key };
+    const includeWhere = {};
+    if (!aggregation) {
+      throw new Error("aggregation is required");
+    }
+
+    if (type) {
+      includeWhere["type"] = type;
+    }
+
+    if (profileGuid) {
+      includeWhere["profileGuid"] = profileGuid;
+    }
+
+    if (profilePropertyRuleFilters) {
+      applyProfilePropertyRuleFilters(
+        includeWhere,
+        where,
+        profilePropertyRuleFilters
+      );
+    }
+
+    const results = await SequelizeEventData.findAll({
+      where,
+      attributes: [
+        [
+          api.sequelize.fn(
+            aggregation === "average" ? "avg" : aggregation,
+            api.sequelize.cast(api.sequelize.col("value"), "float")
+          ),
+          "value",
+        ],
+      ],
+      group: ["value"],
+      include: [
+        {
+          model: SequelizeEvent,
+          required: true,
+          where: includeWhere,
+          attributes: [],
+        },
+      ],
+    });
+
+    return results[0] ? results[0].value : 0;
   }
 
   static async destroyFor(
@@ -256,4 +394,54 @@ export class EventBackend extends EventBackendPrototype {
   }
 
   async stop() {}
+}
+
+function applyProfilePropertyRuleFilters(
+  eventWhere: { [key: string]: any },
+  eventDataWhere: { [key: string]: any },
+  profilePropertyRuleFilters: ProfilePropertyRuleFiltersWithKey[]
+) {
+  for (const i in profilePropertyRuleFilters) {
+    const filter = profilePropertyRuleFilters[i];
+    let key = filter.key;
+    if (key.match(/^\[data\]-/)) {
+      key = key.replace(/^\[data\]-/, "");
+    }
+
+    let match = filter.match;
+    let opSymbol: any; // symbol...
+    switch (filter.op) {
+      case "equals":
+        opSymbol = Op["eq"];
+        break;
+      case "does not equal":
+        opSymbol = Op["ne"];
+        break;
+      case "contains":
+        opSymbol = Op["iLike"];
+        match = `%${match.toString().toLowerCase()}%`;
+        key = `LOWER("${key}")`;
+        break;
+      case "does not contain":
+        opSymbol = Op["notILike"];
+        match = `%${match.toString().toLowerCase()}%`;
+        key = `LOWER("${key}")`;
+        break;
+      case "greater than":
+        opSymbol = Op["gt"];
+        break;
+      case "less than":
+        opSymbol = Op["lt"];
+        break;
+    }
+
+    const localWhere = {};
+    if (filter.key.match(/^\[data\]-/)) {
+      localWhere[opSymbol] = match;
+      eventDataWhere["value"] = localWhere;
+    } else {
+      localWhere[opSymbol] = match;
+      eventWhere[key] = localWhere;
+    }
+  }
 }

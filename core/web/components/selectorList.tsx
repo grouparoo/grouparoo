@@ -43,7 +43,7 @@ export default function SelectorList({
               ? "button-color-selected"
               : "button-color";
         } else if (item?.plugin) {
-          // these items are apps theselves
+          // these items are apps themselves
           src = item.plugin.icon;
           title = humanizePluginName(item.name);
           className =
@@ -55,17 +55,17 @@ export default function SelectorList({
         }
 
         return (
-          <div onClick={() => onClick(item)} key={`card-${idx}`}>
-            <Selector
-              src={src}
-              title={title}
-              subheading={subheading}
-              description={description}
-              size={120}
-              className={className}
-              iconClassName="card-img"
-            />
-          </div>
+          <Selector
+            src={src}
+            title={title}
+            subheading={subheading}
+            description={description}
+            size={120}
+            className={className}
+            iconClassName="card-img"
+            onClick={() => onClick(item)}
+            key={`card-${idx}`}
+          />
         );
       })}
 

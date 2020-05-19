@@ -15,7 +15,12 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const [guid, setGuid] = useState("");
   const [pluginOptions, setPluginOptions] = useState([]);
   const [run, setRun] = useState<RunAPIData>({});
-  const [schedule, setSchedule] = useState<ScheduleAPIData>({});
+  const [schedule, setSchedule] = useState<ScheduleAPIData>({
+    source: {},
+    recurring: false,
+    recurringFrequency: 0,
+    recurringFrequencyMinutes: 0,
+  });
 
   const { guid: sourceGuid } = query;
 
@@ -198,7 +203,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                       <strong>Next Run</strong>
                       <br />
                       {run?.updatedAt &&
-                      Date.parse(run.updatedAt) + schedule.recurringFrequency >
+                      new Date(run.updatedAt).getTime() +
+                        schedule.recurringFrequency >
                         new Date().getTime() &&
                       schedule.recurringFrequencyMinutes > 0 ? (
                         <>
@@ -216,7 +222,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                       ) : null}
 
                       {(run?.updatedAt &&
-                        Date.parse(run.updatedAt) +
+                        new Date(run.updatedAt).getTime() +
                           schedule.recurringFrequency <=
                           new Date().getTime() &&
                         schedule.recurringFrequencyMinutes) ||

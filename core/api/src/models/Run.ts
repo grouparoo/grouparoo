@@ -21,7 +21,6 @@ import {
 import * as uuid from "uuid";
 import { Schedule } from "./Schedule";
 import { Import } from "./Import";
-import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Group } from "./Group";
 import { StateMachine } from "./../modules/stateMachine";
 
@@ -350,9 +349,9 @@ export class Run extends Model<Run> {
       error: this.error,
       highWaterMark: this.highWaterMark,
       filter: this.filter,
-      completedAt: this.completedAt ? this.completedAt.toString() : null,
-      createdAt: this.createdAt ? this.createdAt.toString() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.toString() : null,
+      completedAt: this.completedAt ? this.completedAt.getTime() : null,
+      createdAt: this.createdAt ? this.createdAt.getTime() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
     };
   }
 

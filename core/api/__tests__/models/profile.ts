@@ -633,9 +633,11 @@ describe("models/profile", () => {
 
     test("it can pull profile properties in from all connected apps", async () => {
       const profile = await Profile.create();
+      await profile.addOrUpdateProperties({ userId: 1001 });
       await profile.addOrUpdateProperties({ email: "peach@example.com" });
       let properties = await profile.properties();
       expect(simpleProfileValues(properties)).toEqual({
+        userId: 1001,
         email: "peach@example.com",
       });
 
@@ -643,7 +645,7 @@ describe("models/profile", () => {
 
       properties = await profile.properties();
       expect(simpleProfileValues(properties)).toEqual({
-        userId: null,
+        userId: 1001,
         email: "peach@example.com",
         color: "pink",
       });
@@ -651,14 +653,15 @@ describe("models/profile", () => {
 
     test("after importing, all missing profile property rules will have created a null profile property", async () => {
       const profile = await Profile.create();
+      await profile.addOrUpdateProperties({ userId: 1002 });
       let properties = await profile.properties();
-      expect(Object.keys(properties)).toEqual([]);
+      expect(Object.keys(properties)).toEqual(["userId"]);
 
       await profile.import();
 
       properties = await profile.properties();
       expect(simpleProfileValues(properties)).toEqual({
-        userId: null,
+        userId: 1002,
         email: null,
         color: "pink",
       });

@@ -18,19 +18,17 @@ export default function ({ apiVersion, errorHandler, query }) {
   const [total, setTotal] = useState(0);
   const [events, setEvents] = useState<EventAPIData[]>([]);
   const [autocompleteResults, setAutoCompleteResults] = useState([]);
+  const profileGuid = query.guid;
 
   // pagination
   const limit = 100;
   const [offset, setOffset] = useState(query.offset || 0);
   const [type, setType] = useState(query.type || "");
-  const [tab, setTab] = useState(
-    query.tab ? (query.tab === "edit" ? "profiles" : query.tab) : ""
-  );
   useHistoryPagination(offset, "offset", setOffset);
 
   useEffect(() => {
     load();
-  }, [offset, limit]);
+  }, [profileGuid, offset, limit]);
 
   useEffect(() => {
     autocompleteProfilePropertySearch();
@@ -44,6 +42,7 @@ export default function ({ apiVersion, errorHandler, query }) {
     setTotal(0);
     setLoading(true);
     const response = await execApi("get", `/api/${apiVersion}/events`, {
+      profileGuid,
       type,
       limit,
       offset,
@@ -62,8 +61,8 @@ export default function ({ apiVersion, errorHandler, query }) {
 
   function updateURLParams() {
     let url = `${window.location.pathname}?`;
-    if (tab && tab !== "") {
-      url += `tab=${tab}&`;
+    if (window.location.pathname.indexOf("/profile/") >= 0) {
+      url += "tab=events&";
     }
     if (offset && offset !== 0) {
       url += `offset=${offset}&`;

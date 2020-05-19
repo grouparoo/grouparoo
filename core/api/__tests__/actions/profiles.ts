@@ -75,6 +75,9 @@ describe("actions/profiles", () => {
         email: "luigi@example.com",
         firstName: "Luigi",
         lastName: "Mario",
+        isVIP: null,
+        lastLoginAt: null,
+        ltv: null,
       });
       guid = profile.guid;
     });
@@ -280,7 +283,7 @@ describe("actions/profiles", () => {
       test("the profiles in the group can be listed, and then include when the profile joined the group", async () => {
         connection.params = {
           csrfToken,
-          guid: group.guid,
+          groupGuid: group.guid,
         };
         const { error, profiles, total } = await specHelper.runAction(
           "profiles:list",
@@ -427,7 +430,7 @@ describe("actions/profiles", () => {
       test("returns all profiles and counts when there is no search (group), returning all properties", async () => {
         connection.params = {
           csrfToken,
-          guid: group.guid,
+          groupGuid: group.guid,
         };
         const { error, profiles, total } = await specHelper.runAction(
           "profiles:list",
@@ -491,7 +494,7 @@ describe("actions/profiles", () => {
       test("returns exact matches when there is a search (group), returning searched property", async () => {
         connection.params = {
           csrfToken,
-          guid: group.guid,
+          groupGuid: group.guid,
           searchKey: "email",
           searchValue: "peach@mushroom-kingdom.gov",
         };
@@ -515,7 +518,7 @@ describe("actions/profiles", () => {
       test("returns case-insensitive matches when there is a search (group), returning searched property", async () => {
         connection.params = {
           csrfToken,
-          guid: group.guid,
+          groupGuid: group.guid,
           searchKey: "email",
           searchValue: "PEACH@MUSHroom-kingdom.gov",
         };
@@ -569,14 +572,14 @@ describe("actions/profiles", () => {
       test("returns fuzzy matching profiles and counts when there is no search (group), returning searched property", async () => {
         connection.params = {
           csrfToken,
-          guid: group.guid,
+          groupGuid: group.guid,
           searchKey: "email",
           searchValue: "%@mushroom-kingdom.gov",
         };
         const { error, profiles, total } = await specHelper.runAction(
           "profiles:list",
           connection
-        ); //eslint-disable-line
+        );
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(1);
         expect(simpleProfileValues(profiles[0].properties).email).toBe(
@@ -588,6 +591,66 @@ describe("actions/profiles", () => {
 
         // TODO: we need to do a double join to check group member's profile properties.  The profiles returned are good, but not the total counts
         // expect(total).toBe(1)
+      });
+
+      test("without a search, profiles without properties are returned", async () => {
+        const profile = await helper.factories.profile();
+
+        connection.params = { csrfToken };
+        const { error, profiles, total } = await specHelper.runAction(
+          "profiles:list",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(profiles.length).toBe(5);
+        expect(total).toBe(5);
+
+        await profile.destroy();
+      });
+
+      test("returns matching profiles when null is the searchValue", async () => {
+        connection.params = {
+          csrfToken,
+          searchKey: "ltv",
+          searchValue: "null",
+        };
+        const { error, profiles, total } = await specHelper.runAction(
+          "profiles:list",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(profiles.length).toBe(4);
+        expect(total).toBe(4);
+      });
+
+      test("returns all matching profiles when * is the searchValue (results)", async () => {
+        connection.params = {
+          csrfToken,
+          searchKey: "email",
+          searchValue: "*",
+        };
+        const { error, profiles, total } = await specHelper.runAction(
+          "profiles:list",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(profiles.length).toBe(0);
+        expect(total).toBe(0);
+      });
+
+      test("returns all matching profiles when * is the searchValue (no results)", async () => {
+        connection.params = {
+          csrfToken,
+          searchKey: "ltv",
+          searchValue: "*",
+        };
+        const { error, profiles, total } = await specHelper.runAction(
+          "profiles:list",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(profiles.length).toBe(0);
+        expect(total).toBe(0);
       });
     });
   });

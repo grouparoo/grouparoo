@@ -15,7 +15,7 @@ export default function ({
 }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [team, setTeam] = useState<TeamAPIData>({});
+  const [team, setTeam] = useState<TeamAPIData>({ name: "" });
   const { guid } = query;
 
   useEffect(() => {

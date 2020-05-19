@@ -8,6 +8,7 @@ export default function Selector({
   subheading = "",
   description = "",
   className = "",
+  onClick = () => {},
 }: {
   src: string;
   title: string;
@@ -16,32 +17,34 @@ export default function Selector({
   iconClassName?: string;
   subheading?: string;
   description?: string;
+  onClick?: any;
 }) {
   return (
     <div
       style={{
-        width: "200px",
-        borderRadius: "4px",
+        width: 200,
+        borderRadius: 4,
         borderColor: "gray",
         color: "white",
-        margin: "15px",
-        paddingTop: "20px",
-        paddingBottom: "20px",
-        paddingRight: "5px",
-        paddingLeft: "5px",
+        margin: 15,
+        paddingTop: 20,
+        paddingBottom: 20,
+        paddingRight: 5,
+        paddingLeft: 5,
         cursor: "pointer",
       }}
       className={className}
+      onClick={onClick}
     >
       <div className="d-flex flex-column">
         <div
           className="align-self-center"
           style={{
             backgroundColor: "white",
-            width: "140px",
-            height: "140px",
-            borderRadius: "4px",
-            paddingTop: "5px",
+            width: 140,
+            height: 140,
+            borderRadius: 4,
+            paddingTop: 5,
             textAlign: "center",
             wordWrap: "break-word",
           }}

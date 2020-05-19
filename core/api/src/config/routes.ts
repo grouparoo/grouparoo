@@ -24,7 +24,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/groups", action: "groups:list" },
         { path: "/v:apiVersion/groups/ruleOptions",action: "groups:ruleOptions" },
         { path: "/v:apiVersion/group/:guid", action: "group:view" },
-        { path: "/v:apiVersion/group/:guid/profiles", action: "profiles:list" },
+        { path: "/v:apiVersion/group/:groupGuid/profiles", action: "profiles:list" },
         { path: "/v:apiVersion/group/:guid/destinations", action: "group:listDestinations" },
         { path: "/v:apiVersion/group/:guid/countComponentMembers", action: "group:countComponentMembers" },
         { path: "/v:apiVersion/group/:guid/countPotentialMembers", action: "group:countPotentialMembers" },
