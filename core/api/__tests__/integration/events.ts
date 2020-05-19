@@ -428,8 +428,8 @@ describe("integration/events", () => {
         ]);
         expect(pluginOptions[1].key).toBe("aggregation method");
         expect(pluginOptions[1].options.map((opt) => opt.key)).toEqual([
-          "exact-most-recent",
-          "exact-least-recent",
+          "most recent value",
+          "least recent value",
           "average",
           "count",
           "sum",
@@ -598,22 +598,22 @@ describe("integration/events", () => {
           await rule.setFilters([]);
         });
 
-        test("exact-most-recent", async () => {
+        test("most recent value", async () => {
           await rule.update({ type: "string" });
           await rule.setOptions({
             column: "[data]-path",
-            "aggregation method": "exact-most-recent",
+            "aggregation method": "most recent value",
           });
           await profile.import();
           const properties = await profile.properties();
           expect(properties["test-rule"].value).toBe("/mobile-sign-in");
         });
 
-        test("exact-least-recent", async () => {
+        test("least recent value", async () => {
           await rule.update({ type: "string" });
           await rule.setOptions({
             column: "[data]-path",
-            "aggregation method": "exact-least-recent",
+            "aggregation method": "least recent value",
           });
           await profile.import();
           const properties = await profile.properties();
