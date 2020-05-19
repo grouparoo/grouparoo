@@ -9,7 +9,12 @@ import { ImportAPIData } from "../../../utils/apiData";
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [_import, setImport] = useState<ImportAPIData>({});
+  const [_import, setImport] = useState<ImportAPIData>({
+    oldProfileProperties: {},
+    newProfileProperties: {},
+    oldGroupGuids: [],
+    newGroupGuids: [],
+  });
   const [groups, setGroups] = useState([{ name: "", guid: "" }]);
 
   const { guid } = query;

@@ -9,7 +9,14 @@ import { ExportAPIData } from "../../../utils/apiData";
 export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [_export, setExport] = useState<ExportAPIData>();
+  const [_export, setExport] = useState<ExportAPIData>({
+    oldProfileProperties: {},
+    newProfileProperties: {},
+    oldGroups: [],
+    newGroups: [],
+    // @ts-ignore
+    destination: {},
+  });
   const [groups, setGroups] = useState([{ name: "", guid: "" }]);
 
   const { guid } = query;
