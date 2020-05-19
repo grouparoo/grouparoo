@@ -243,6 +243,30 @@ describe("integration/events", () => {
     expect(profileEvents.length).toBe(6);
   });
 
+  test("an event can be viewed", async () => {
+    connection.params = {
+      csrfToken,
+      guid: eventGuid,
+    };
+    const { event, error } = await specHelper.runAction(
+      "event:view",
+      connection
+    );
+    expect(error).toBeFalsy();
+
+    expect(event.guid).toBe(eventGuid);
+    expect(event.data).toEqual({
+      loadTime: "100",
+      path: "/",
+    });
+
+    // timestamps should be numbers
+    expect(event.createdAt).toBeGreaterThan(0);
+    expect(event.updatedAt).toBeGreaterThan(0);
+    expect(event.occurredAt).toBeGreaterThan(0);
+    expect(event.profileAssociatedAt).toBeGreaterThan(0);
+  });
+
   describe("source", () => {
     test("a source for an event can be created into draft mode", async () => {
       connection.params = {

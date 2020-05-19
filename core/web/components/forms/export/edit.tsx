@@ -62,8 +62,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
         >
           <a>{_export.destination.name}</a>
         </Link>
-      </p>
-      <p>
+        <br />
         Profile:{" "}
         <Link href="/profile/[guid]" as={`/profile/${_export.profileGuid}`}>
           <a>{_export.profileGuid}</a>
@@ -74,44 +73,10 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
           <p>{_export.errorMessage}</p>
         </Alert>
       ) : null}
+
       <hr />
+
       <Row>
-        <Col>
-          <h2>Timeline</h2>
-          <p>
-            Total duration:{" "}
-            <strong>
-              <Moment duration={_export.startedAt} date={_export.completedAt} />
-            </strong>
-          </p>
-          <Table size="sm">
-            <thead>
-              <tr>
-                <th>Stage</th>
-                <th>Time</th>
-                <th>Delta</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Started</td>
-                <td>{_export.startedAt}</td>
-                <td>⇣</td>
-              </tr>
-              <tr>
-                <td>Completed</td>
-                <td>{_export.completedAt}</td>
-                <td>
-                  ⇣
-                  <Moment
-                    duration={_export.startedAt}
-                    date={_export.completedAt}
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </Col>
         <Col>
           <h2>Data</h2>
 
@@ -190,6 +155,45 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
               </ul>
             </Col>
           </Row>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
+          <h2>Timeline</h2>
+          <p>
+            Total duration:{" "}
+            <strong>
+              <Moment duration={_export.startedAt} date={_export.completedAt} />
+            </strong>
+          </p>
+          <Table size="sm">
+            <thead>
+              <tr>
+                <th>Stage</th>
+                <th>Time</th>
+                <th>Delta</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Started</td>
+                <td>{new Date(_export.startedAt).toLocaleString()}</td>
+                <td>⇣</td>
+              </tr>
+              <tr>
+                <td>Completed</td>
+                <td>{new Date(_export.completedAt).toLocaleString()}</td>
+                <td>
+                  ⇣
+                  <Moment
+                    duration={_export.startedAt}
+                    date={_export.completedAt}
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </Table>
         </Col>
       </Row>
     </>

@@ -72,8 +72,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             {_import.creatorGuid}
           </a>
         </Link>
-      </p>
-      <p>
+        <br />
         Profile:{" "}
         <Link href="/profile/[guid]" as={`/profile/${_import.profileGuid}`}>
           <a>{_import.profileGuid}</a>
@@ -92,76 +91,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
         </Alert>
       ) : null}
       <hr />
+
       <Row>
-        <Col>
-          <h2>Timeline</h2>
-          <p>
-            Total duration:{" "}
-            <strong>
-              <Moment duration={_import.createdAt} date={_import.exportedAt} />
-            </strong>
-          </p>
-          <Table size="sm">
-            <thead>
-              <tr>
-                <th>Stage</th>
-                <th>Time</th>
-                <th>Delta</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Created</td>
-                <td>{_import.createdAt}</td>
-                <td>⇣</td>
-              </tr>
-              <tr>
-                <td>Associated</td>
-                <td>{_import.profileAssociatedAt}</td>
-                <td>
-                  ⇣
-                  <Moment
-                    duration={_import.profileAssociatedAt}
-                    date={_import.createdAt}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>Profile Updated</td>
-                <td>{_import.profileUpdatedAt}</td>
-                <td>
-                  ⇣
-                  <Moment
-                    duration={_import.profileAssociatedAt}
-                    date={_import.profileUpdatedAt}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>Groups Updated</td>
-                <td>{_import.groupsUpdatedAt}</td>
-                <td>
-                  ⇣
-                  <Moment
-                    duration={_import.groupsUpdatedAt}
-                    date={_import.profileUpdatedAt}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>Exported</td>
-                <td>{_import.exportedAt}</td>
-                <td>
-                  ⇣
-                  <Moment
-                    duration={_import.groupsUpdatedAt}
-                    date={_import.exportedAt}
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </Col>
         <Col>
           <h2>Data</h2>
 
@@ -255,6 +186,80 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
               </pre>
             </Col>
           </Row>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
+          <h2>Timeline</h2>
+          <p>
+            Total duration:{" "}
+            <strong>
+              <Moment duration={_import.createdAt} date={_import.exportedAt} />
+            </strong>
+          </p>
+          <Table size="sm">
+            <thead>
+              <tr>
+                <th>Stage</th>
+                <th>Time</th>
+                <th>Delta</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Created</td>
+                <td>{new Date(_import.createdAt).toLocaleString()}</td>
+                <td>⇣</td>
+              </tr>
+              <tr>
+                <td>Associated</td>
+                <td>
+                  {new Date(_import.profileAssociatedAt).toLocaleString()}
+                </td>
+                <td>
+                  ⇣
+                  <Moment
+                    duration={_import.profileAssociatedAt || 0}
+                    date={_import.createdAt}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>Profile Updated</td>
+                <td>{new Date(_import.profileUpdatedAt).toLocaleString()}</td>
+                <td>
+                  ⇣
+                  <Moment
+                    duration={_import.profileAssociatedAt || 0}
+                    date={_import.profileUpdatedAt}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>Groups Updated</td>
+                <td>{new Date(_import.groupsUpdatedAt).toLocaleString()}</td>
+                <td>
+                  ⇣
+                  <Moment
+                    duration={_import.groupsUpdatedAt}
+                    date={_import.profileUpdatedAt}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>Exported</td>
+                <td>{new Date(_import.exportedAt).toLocaleString()}</td>
+                <td>
+                  ⇣
+                  <Moment
+                    duration={_import.groupsUpdatedAt}
+                    date={_import.exportedAt}
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </Table>
         </Col>
       </Row>
     </>
