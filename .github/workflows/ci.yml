@@ -19,6 +19,8 @@ jobs:
 
       postgres:
         image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
 
       mysql:
         image: mysql:5.7
@@ -39,6 +41,7 @@ jobs:
       - run: node --version
       - run: npm --version
       - run: echo "unsafe-perm = true" > .npmrc
+      - run: cd core/api && ./bin/create_test_databases
       - name: Cache node modules
         uses: actions/cache@master
         with:
@@ -48,11 +51,10 @@ jobs:
             */*/node_modules
           key: ${{ runner.os }}--${{ hashFiles('package-lock.json') }}-${{ hashFiles('**/package-lock.json') }}
       - run: npm install
-      - run: apt install -y postgresql-client
-      - run: cd core/api && ./bin/create_test_databases
       - run: npm test
         env:
           DB_HOST: postgres
+          DB_PASS: password
           MYSQL_HOST: mysql
           REDIS_HOST: redis
           SELENIUM_TEST_HOST: main
