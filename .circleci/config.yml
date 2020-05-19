@@ -89,8 +89,11 @@ jobs:
           name: create test databases
           command: cd core/api && ./bin/create_test_databases
       - run:
-          name: test
-          command: cd core && ./../node_modules/.bin/jest --ci --maxWorkers 4
+          name: test-api
+          command: cd core/api && ./../node_modules/.bin/jest --ci --maxWorkers 4
+      - run:
+          name: test-web
+          command: cd core/web && ./../node_modules/.bin/jest --ci --maxWorkers 4
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-plugins:
