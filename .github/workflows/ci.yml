@@ -48,6 +48,7 @@ jobs:
             */*/node_modules
           key: ${{ runner.os }}--${{ hashFiles('package-lock.json') }}-${{ hashFiles('**/package-lock.json') }}
       - run: npm install
+      - run: cd core/api && ./bin/create_test_databases
       - run: npm test
         env:
           DB_HOST: postgres
