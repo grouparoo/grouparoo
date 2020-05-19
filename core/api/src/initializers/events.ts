@@ -143,7 +143,17 @@ const eventSourcePreview: SourcePreviewMethod = async ({ sourceOptions }) => {
     }
   }
 
-  return events;
+  return events.map((e) => {
+    // we only want to show users some of the properties in the preview
+    return {
+      profileGuid: e.profileGuid,
+      type: e.type,
+      userId: e.type,
+      ipAddress: e.ipAddress,
+      occurredAt: e.occurredAt,
+      data: e.data,
+    };
+  });
 };
 
 const eventProfilePropertyRuleOptionOptions = async (args) => {
