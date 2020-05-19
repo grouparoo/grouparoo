@@ -261,6 +261,12 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
                 source={source}
               />
             )
+          ) : source.connection.name === "events-table-import" ? (
+            <Alert variant="info">
+              A schedule is not needed when using Grouparoo events as a source.
+              Events are automatically processed and linked to profiles as they
+              come in.
+            </Alert>
           ) : (
             <Alert variant="warning">
               Schedule not available for this connection type
