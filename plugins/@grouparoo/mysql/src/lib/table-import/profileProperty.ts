@@ -90,7 +90,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   let parameterizedQuery = "";
   try {
     parameterizedQuery = await profilePropertyRule.parameterizedQueryFromProfile(
-      profilePropertyRuleOptions.query,
+      filteredQuery,
       profile
     );
   } catch (error) {
