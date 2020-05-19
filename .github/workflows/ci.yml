@@ -1,0 +1,56 @@
+name: Grouparoo CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: node
+      options: --network-alias main
+
+    services:
+      redis:
+        image: redis
+      
+      postgres:
+        image: postgres
+      
+      mysql:
+        image: mysql@5
+
+      selenium:
+        image: selenium/standalone-chrome
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: node --version
+      - run: npm --version
+      - name: Cache node modules
+        uses: actions/cache@master
+        with:
+          path: |
+            node_modules
+            */node_modules
+            */*/node_modules
+          key: ${{ runner.os }}--${{ hashFiles('package-lock.json') }}-${{ hashFiles('**/package-lock.json') }}
+      - run: npm ci
+      - run: npm test
+        env:
+          DB_HOST: postgres
+          MYSQL_HOST: mysql
+          REDIS_HOST: redis
+          SELENIUM_TEST_HOST: main
+          SELENIUM_REMOTE_URL: http://selenium:4444/wd/hub
