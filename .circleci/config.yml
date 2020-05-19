@@ -172,7 +172,7 @@ workflows:
           filters:
             <<: *ignored-branches
           requires:
-            - test-core
+            - build
       - complete:
           filters:
             <<: *ignored-branches
@@ -214,7 +214,7 @@ workflows:
           filters:
             <<: *ignored-branches
           requires:
-            - test-core
+            - build
       - complete:
           filters:
             <<: *ignored-branches
