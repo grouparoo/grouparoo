@@ -1,5 +1,40 @@
 import { api } from "actionhero";
 import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { EventPrototype } from "../classes/events";
+
+function EventAPIData(event: EventPrototype) {
+  const apiEvent = Object.assign(
+    {},
+    {
+      guid: event.guid,
+      producerGuid: event.producerGuid,
+      profileGuid: event.profileGuid,
+      ipAddress: event.ipAddress,
+      type: event.type,
+      userId: event.userId,
+      anonymousId: event.anonymousId,
+      data: event.data,
+    },
+    {
+      createdAt: 0,
+      updatedAt: 0,
+      occurredAt: 0,
+      profileAssociatedAt: 0,
+    }
+  );
+
+  ["createdAt", "updatedAt", "occurredAt", "profileAssociatedAt"].forEach(
+    (k) => {
+      if (event[k] instanceof Date) {
+        apiEvent[k] = event[k].getTime();
+      } else {
+        apiEvent[k] = event[k];
+      }
+    }
+  );
+
+  return apiEvent;
+}
 
 export class EventsList extends AuthenticatedAction {
   constructor() {
@@ -49,7 +84,7 @@ export class EventsList extends AuthenticatedAction {
       data: Object.keys(data).length > 0 ? data : undefined,
     });
 
-    response.events = events;
+    response.events = events.map((e) => EventAPIData(e));
     response.total = total;
   }
 }
@@ -105,7 +140,7 @@ export class EventCreate extends AuthenticatedAction {
 
     await event.save();
 
-    response.event = event;
+    response.event = EventAPIData(event);
   }
 }
 
@@ -143,7 +178,7 @@ export class EventView extends AuthenticatedAction {
 
   async run({ params, response }) {
     const event = await api.events.model.findByGuid(params.guid);
-    response.event = event;
+    response.event = EventAPIData(event);
   }
 }
 

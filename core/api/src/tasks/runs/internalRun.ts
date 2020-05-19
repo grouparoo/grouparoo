@@ -45,6 +45,7 @@ export class RunInternalRun extends Task {
       const _import = await Import.create(
         {
           profileGuid: profile.guid,
+          profileAssociatedAt: new Date(),
           rawData: {},
           data: {},
           creatorType: "run",

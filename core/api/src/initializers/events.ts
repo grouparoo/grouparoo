@@ -143,7 +143,17 @@ const eventSourcePreview: SourcePreviewMethod = async ({ sourceOptions }) => {
     }
   }
 
-  return events;
+  return events.map((e) => {
+    // we only want to show users some of the properties in the preview
+    return {
+      profileGuid: e.profileGuid,
+      type: e.type,
+      userId: e.userId,
+      ipAddress: e.ipAddress,
+      occurredAt: e.occurredAt,
+      data: e.data,
+    };
+  });
 };
 
 const eventProfilePropertyRuleOptionOptions = async (args) => {
@@ -174,7 +184,7 @@ const eventProfilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOption
     key: "column",
     required: true,
     description: "where the data comes from",
-    type: "list",
+    type: "typeahead",
     options: eventProfilePropertyRuleOptionOptions,
   },
   {
@@ -185,11 +195,11 @@ const eventProfilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOption
     options: async () => {
       return [
         {
-          key: "exact-most-recent",
+          key: "most recent value",
           description: "use the value of the newest event",
         },
         {
-          key: "exact-least-recent",
+          key: "least recent value",
           description: "use the value of the oldest event",
         },
         { key: "average", description: "take the average" },
@@ -243,7 +253,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
   );
   const aggregationMethod = profilePropertyRuleOptions["aggregation method"];
 
-  if (aggregationMethod === "exact-most-recent") {
+  if (aggregationMethod === "most recent value") {
     event = (
       await api.events.model.findAll({
         profileGuid: profile.guid,
@@ -253,7 +263,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
         limit: 1,
       })
     )[0];
-  } else if (aggregationMethod === "exact-least-recent") {
+  } else if (aggregationMethod === "least recent value") {
     event = (
       await api.events.model.findAll({
         profileGuid: profile.guid,

@@ -243,6 +243,30 @@ describe("integration/events", () => {
     expect(profileEvents.length).toBe(6);
   });
 
+  test("an event can be viewed", async () => {
+    connection.params = {
+      csrfToken,
+      guid: eventGuid,
+    };
+    const { event, error } = await specHelper.runAction(
+      "event:view",
+      connection
+    );
+    expect(error).toBeFalsy();
+
+    expect(event.guid).toBe(eventGuid);
+    expect(event.data).toEqual({
+      loadTime: "100",
+      path: "/",
+    });
+
+    // timestamps should be numbers
+    expect(event.createdAt).toBeGreaterThan(0);
+    expect(event.updatedAt).toBeGreaterThan(0);
+    expect(event.occurredAt).toBeGreaterThan(0);
+    expect(event.profileAssociatedAt).toBeGreaterThan(0);
+  });
+
   describe("source", () => {
     test("a source for an event can be created into draft mode", async () => {
       connection.params = {
@@ -404,8 +428,8 @@ describe("integration/events", () => {
         ]);
         expect(pluginOptions[1].key).toBe("aggregation method");
         expect(pluginOptions[1].options.map((opt) => opt.key)).toEqual([
-          "exact-most-recent",
-          "exact-least-recent",
+          "most recent value",
+          "least recent value",
           "average",
           "count",
           "sum",
@@ -574,22 +598,22 @@ describe("integration/events", () => {
           await rule.setFilters([]);
         });
 
-        test("exact-most-recent", async () => {
+        test("most recent value", async () => {
           await rule.update({ type: "string" });
           await rule.setOptions({
             column: "[data]-path",
-            "aggregation method": "exact-most-recent",
+            "aggregation method": "most recent value",
           });
           await profile.import();
           const properties = await profile.properties();
           expect(properties["test-rule"].value).toBe("/mobile-sign-in");
         });
 
-        test("exact-least-recent", async () => {
+        test("least recent value", async () => {
           await rule.update({ type: "string" });
           await rule.setOptions({
             column: "[data]-path",
-            "aggregation method": "exact-least-recent",
+            "aggregation method": "least recent value",
           });
           await profile.import();
           const properties = await profile.properties();

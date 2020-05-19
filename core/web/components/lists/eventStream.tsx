@@ -188,7 +188,15 @@ export default function ({ apiVersion, errorHandler, query }) {
                 </td>
                 <td>{event.userId ? event.userId : "none"}</td>
                 <td>
-                  <code>{JSON.stringify(event.data)}</code>
+                  <ul>
+                    {Object.keys(event.data)
+                      .sort()
+                      .map((k) => (
+                        <li key={`event-${event.guid}-data-${k}`}>
+                          <strong>{k}</strong>: {event.data[k]}
+                        </li>
+                      ))}
+                  </ul>
                 </td>
                 <td>
                   <Moment fromNow>{event.occurredAt}</Moment>
