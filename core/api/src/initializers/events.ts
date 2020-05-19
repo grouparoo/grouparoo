@@ -174,7 +174,7 @@ const eventProfilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOption
     key: "column",
     required: true,
     description: "where the data comes from",
-    type: "list",
+    type: "typeahead",
     options: eventProfilePropertyRuleOptionOptions,
   },
   {
