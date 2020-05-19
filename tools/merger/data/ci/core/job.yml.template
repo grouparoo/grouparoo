@@ -5,6 +5,7 @@
       - image: circleci/postgres:9
         environment:
           POSTGRES_PASSWORD: password
+      - image: selenium/standalone-chrome:latest
 {{{custom_docker}}}
     steps:
       - checkout
@@ -21,6 +22,11 @@
           command: cd core/api && ./bin/create_test_databases
 {{{custom_steps}}}
       - run:
-          name: test
-          command: cd {{{relative_path}}} && ./../node_modules/.bin/jest --ci --maxWorkers 4
+          name: test-api
+          command: cd {{{relative_path}}}/api && ./../node_modules/.bin/jest --ci --maxWorkers 4
+      - run:
+          name: test-web
+          command: cd {{{relative_path}}}/web && ./../node_modules/.bin/jest --ci --maxWorkers 4
+          environment:
+            SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
 {{{custom_test}}}

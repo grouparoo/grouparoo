@@ -30,7 +30,7 @@
     "version-stable": "lerna version patch --force-publish --yes",
     "clean": "lerna clean",
     "lint": "lerna run lint",
-    "test": "lerna run test --stream",
+    "test": "lerna run test --stream --concurrency 1",
     "nuke": "rm -rf node_modules && rm -rf core/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/api/dist && rm -rf plugins/*/*/dist && rm -rf core/web/tmp",
     "update": "npm-check-updates -u && lerna exec -- npm-check-updates -u && npm run nuke && npm install"
   }

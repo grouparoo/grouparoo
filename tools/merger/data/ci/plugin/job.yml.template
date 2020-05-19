@@ -5,6 +5,7 @@
       - image: circleci/postgres:9
         environment:
           POSTGRES_PASSWORD: password
+      - image: circleci/mysql:5
 {{{custom_docker}}}
     steps:
       - checkout
@@ -19,8 +20,14 @@
       - run:
           name: create test databases
           command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: install mysql client
+          command: sudo apt install -y mysql-client
+      - run:
+          name: create mysql databases
+          command: mysql -e "create database grouparoo_test" -u root -h 127.0.0.1
 {{{custom_steps}}}
       - run:
           name: test
-          command: cd {{{relative_path}}} && npm run test
+          command: ./node_modules/.bin/lerna exec ./node_modules/.bin/jest --stream --concurrency 1 --ignore "@grouparoo/core" --ignore "@grouparoo/app*" -- --ci --passWithNoTests
 {{custom_test}}

@@ -48,7 +48,7 @@ class Generator {
 
   compile() {
     this.addCommands();
-    this.addCores();
+    this.addCore();
     this.addPlugins();
 
     this.bindJobMethods();
@@ -67,17 +67,13 @@ class Generator {
     this.addCommand("linter", "npm run lint");
   }
 
-  addCore(name) {
+  addCore() {
     this.jobList.push({
       type: "core",
-      job_name: `test-core-${name}`,
-      relative_path: `core/${name}`,
-      name,
+      job_name: `test-core`,
+      relative_path: `core`,
+      name: "core",
     });
-  }
-  addCores(name) {
-    this.addCore("api");
-    this.addCore("web");
   }
 
   getPlugin(fullPath) {
@@ -90,16 +86,22 @@ class Generator {
       relative_path,
     };
   }
-  addPlugins(name) {
+  addPlugins() {
     const pluginPaths = allPluginPaths(glob);
     let plugins = [];
     for (const fullPath of pluginPaths) {
       plugins.push(this.getPlugin(fullPath));
     }
     plugins.sort((a, b) => a.name.localeCompare(b.name));
-    for (const plugin of plugins) {
-      this.jobList.push(plugin);
-    }
+    // for (const plugin of plugins) {
+    //   this.jobList.push(plugin);
+    // }
+    this.jobList.push({
+      type: "plugin",
+      job_name: `test-plugins`,
+      relative_path: "",
+      name: "plugins",
+    });
   }
 
   bindJobMethod(job) {
@@ -121,7 +123,6 @@ class Generator {
   }
 
   node_module_list() {
-    const indent = 12;
     const packagePaths = allPackagePaths(glob);
     const relativePaths = [];
     for (const packagePath of packagePaths) {
@@ -133,6 +134,17 @@ class Generator {
     const prefix = " ".repeat(12) + "- ";
     return relativePaths
       .map((p) => `${prefix}${p}`)
+      .sort()
+      .join("\n");
+  }
+
+  dist_list() {
+    const pluginPaths = allPluginPaths(glob).map((p) =>
+      path.relative(this.rootPath, p)
+    );
+    const prefix = " ".repeat(12) + "- ";
+    return pluginPaths
+      .map((p) => `${prefix}${p}/dist`)
       .sort()
       .join("\n");
   }
@@ -169,7 +181,13 @@ class Generator {
     view[".Branch"] = "{{ .Branch }}";
     view[".Revision"] = "{{ .Revision }}";
 
-    const methods = ["node_module_list", "jobs", "workflows", "job_name_list"];
+    const methods = [
+      "node_module_list",
+      "dist_list",
+      "jobs",
+      "workflows",
+      "job_name_list",
+    ];
     for (const method of methods) {
       view[method] = this[method].bind(this);
     }

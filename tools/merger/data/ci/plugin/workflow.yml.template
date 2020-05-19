@@ -2,4 +2,4 @@
           filters:
             <<: *ignored-branches
           requires:
-{{{core_job_name_list}}}
+            - build
