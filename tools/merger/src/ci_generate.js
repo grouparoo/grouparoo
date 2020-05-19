@@ -123,7 +123,6 @@ class Generator {
   }
 
   node_module_list() {
-    const indent = 12;
     const packagePaths = allPackagePaths(glob);
     const relativePaths = [];
     for (const packagePath of packagePaths) {
@@ -135,6 +134,17 @@ class Generator {
     const prefix = " ".repeat(12) + "- ";
     return relativePaths
       .map((p) => `${prefix}${p}`)
+      .sort()
+      .join("\n");
+  }
+
+  dist_list() {
+    const pluginPaths = allPluginPaths(glob).map((p) =>
+      path.relative(this.rootPath, p)
+    );
+    const prefix = " ".repeat(12) + "- ";
+    return pluginPaths
+      .map((p) => `${prefix}${p}/dist`)
       .sort()
       .join("\n");
   }
@@ -171,7 +181,13 @@ class Generator {
     view[".Branch"] = "{{ .Branch }}";
     view[".Revision"] = "{{ .Revision }}";
 
-    const methods = ["node_module_list", "jobs", "workflows", "job_name_list"];
+    const methods = [
+      "node_module_list",
+      "dist_list",
+      "jobs",
+      "workflows",
+      "job_name_list",
+    ];
     for (const method of methods) {
       view[method] = this[method].bind(this);
     }

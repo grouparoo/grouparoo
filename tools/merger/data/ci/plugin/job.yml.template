@@ -29,5 +29,5 @@
 {{{custom_steps}}}
       - run:
           name: test
-          command: ./node_modules/.bin/lerna run test --stream --concurrency 1 --ignore "@grouparoo/core"
+          command: ./node_modules/.bin/lerna exec ./node_modules/.bin/jest --stream --concurrency 1 --ignore "@grouparoo/core" --ignore "@grouparoo/app*" -- --ci --passWithNoTests
 {{custom_test}}

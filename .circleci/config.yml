@@ -45,6 +45,18 @@ jobs:
             - plugins/@grouparoo/postgres/node_modules
             - plugins/@grouparoo/sailthru/node_modules
             - tools/merger/node_modules
+            - plugins/@grouparoo/bigquery/dist
+            - plugins/@grouparoo/csv/dist
+            - plugins/@grouparoo/email-authentication/dist
+            - plugins/@grouparoo/files-local/dist
+            - plugins/@grouparoo/files-s3/dist
+            - plugins/@grouparoo/google-sheets/dist
+            - plugins/@grouparoo/logger/dist
+            - plugins/@grouparoo/mailchimp/dist
+            - plugins/@grouparoo/mysql/dist
+            - plugins/@grouparoo/newrelic/dist
+            - plugins/@grouparoo/postgres/dist
+            - plugins/@grouparoo/sailthru/dist
             - core/web/.next
             - core/api/dist
   license-checker:
@@ -125,7 +137,7 @@ jobs:
           command: mysql -e "create database grouparoo_test" -u root -h 127.0.0.1
       - run:
           name: test
-          command: ./node_modules/.bin/lerna run test --stream --concurrency 1 --ignore "@grouparoo/core"
+          command: ./node_modules/.bin/lerna exec ./node_modules/.bin/jest --stream --concurrency 1 --ignore "@grouparoo/core" --ignore "@grouparoo/app*" -- --ci --passWithNoTests
   complete:
     docker:
       - image: circleci/node:12
