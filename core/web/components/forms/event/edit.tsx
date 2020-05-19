@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Table } from "react-bootstrap";
+import { Row, Col, Table, Badge } from "react-bootstrap";
 import Link from "next/link";
 import Moment from "react-moment";
 
@@ -30,6 +30,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     <>
       <h1>{guid}</h1>
       <p>
+        Type: <Badge variant="secondary">{event.type}</Badge>
+        <br />
         Producer:{" "}
         <Link
           href=""
@@ -127,9 +129,6 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
           <h2>Properties</h2>
 
           <ul>
-            <li>
-              <strong>Type</strong>: {event.type}
-            </li>
             <li>
               <strong>User Id</strong>: {event.userId}
             </li>
