@@ -148,7 +148,7 @@ const eventSourcePreview: SourcePreviewMethod = async ({ sourceOptions }) => {
     return {
       profileGuid: e.profileGuid,
       type: e.type,
-      userId: e.type,
+      userId: e.userId,
       ipAddress: e.ipAddress,
       occurredAt: e.occurredAt,
       data: e.data,
