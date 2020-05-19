@@ -38,7 +38,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: node --version
       - run: npm --version
-      - run: sudo chown -R `whoami` .
+      - run: chown -R `whoami` .
       - name: Cache node modules
         uses: actions/cache@master
         with:
