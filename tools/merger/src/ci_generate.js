@@ -132,7 +132,14 @@ class Generator {
     for (const packagePath of packagePaths) {
       const fullPath = path.join(packagePath, "node_modules");
       const relativePath = path.relative(this.rootPath, fullPath);
-      relativePaths.push(relativePath);
+
+      if (internalPackages.length > 0) {
+        if (relativePath.indexOf(`plugins/@grouparoo/`) < 0) {
+          relativePaths.push(relativePath);
+        }
+      } else {
+        relativePaths.push(relativePath);
+      }
     }
 
     const prefix = " ".repeat(12) + "- ";
@@ -143,9 +150,20 @@ class Generator {
   }
 
   dist_list() {
-    const pluginPaths = allPluginPaths(glob).map((p) =>
-      path.relative(this.rootPath, p)
-    );
+    function filterPlugins(p) {
+      if (internalPackages.length > 0) {
+        if (p.indexOf(`plugins/@grouparoo/`) < 0) {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    }
+
+    const pluginPaths = allPluginPaths(glob)
+      .map((p) => path.relative(this.rootPath, p))
+      .filter(filterPlugins);
+
     const prefix = " ".repeat(12) + "- ";
     return pluginPaths
       .map((p) => `${prefix}${p}/dist`)
