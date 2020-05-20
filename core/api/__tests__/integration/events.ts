@@ -463,7 +463,7 @@ describe("integration/events", () => {
           },
           {
             key: "userId",
-            ops: ["equals", "does not equal"],
+            ops: ["equals", "does not equal", "contains", "does not contain"],
             canHaveRelativeMatch: false,
           },
           {

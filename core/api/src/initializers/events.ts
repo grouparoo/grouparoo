@@ -195,7 +195,9 @@ const eventSourceFilters: SourceFilterMethod = async (args) => {
   const optionsWithExamples = await eventProfilePropertyRuleOptionOptions(args);
   for (const i in optionsWithExamples) {
     const ops = ["equals", "does not equal"];
-    const example = optionsWithExamples[i].examples[0];
+    const example = optionsWithExamples[i].examples.filter(
+      (e) => e !== null
+    )[0];
 
     if (typeof example === "string") {
       ops.push("contains");
