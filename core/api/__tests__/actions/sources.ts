@@ -107,7 +107,6 @@ describe("actions/sources", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(connectionApps.length).toBe(2); // this app + the event app
       expect(
         connectionApps.filter((ca) => ca.app.type !== "events")[0].app.guid
       ).toBe(app.guid);
