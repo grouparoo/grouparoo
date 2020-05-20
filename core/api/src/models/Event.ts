@@ -254,7 +254,7 @@ export class Event extends Model<Event> {
       where,
       limit: limit ? limit : null,
       offset: offset ? offset : null,
-      order: order ? order : null,
+      order: order ? order : [["type", "asc"]],
     });
 
     return events.map((e) => e.type);
@@ -276,7 +276,7 @@ export class Event extends Model<Event> {
       ],
     });
 
-    return results.map((r) => r.key);
+    return results.map((r) => r.key).sort();
   }
 
   static async applyProfilePropertyRuleFilters(
