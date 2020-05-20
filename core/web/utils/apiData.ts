@@ -22,7 +22,7 @@ import {
   Source,
   Team,
   TeamMember,
-  EventArgs,
+  Event,
 } from "../../";
 
 export type ApiKeyAPIData = Partial<AsyncReturnType<ApiKey["apiData"]>>;
@@ -38,6 +38,7 @@ export type DestinationGroupMembershipAPIData = Partial<
 >;
 export type FileAPIData = Partial<AsyncReturnType<File["apiData"]>>;
 export type ExportAPIData = Partial<AsyncReturnType<Export["apiData"]>>;
+export type EventAPIData = Partial<AsyncReturnType<Event["apiData"]>>;
 export type GroupAPIData = Partial<AsyncReturnType<Group["apiData"]>>;
 export type GroupMemberAPIData = Partial<
   AsyncReturnType<GroupMember["apiData"]>
@@ -58,4 +59,3 @@ export type ScheduleAPIData = Partial<AsyncReturnType<Schedule["apiData"]>>;
 export type SourceAPIData = Partial<AsyncReturnType<Source["apiData"]>>;
 export type TeamAPIData = Partial<AsyncReturnType<Team["apiData"]>>;
 export type TeamMemberAPIData = Partial<AsyncReturnType<TeamMember["apiData"]>>;
-export type EventAPIData = Partial<EventArgs>;
