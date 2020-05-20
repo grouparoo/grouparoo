@@ -5,9 +5,9 @@ import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
 import { Group } from "./../../src/models/Group";
 import { GroupMember } from "./../../src/models/GroupMember";
 import { App } from "./../../src/models/App";
+import { Event } from "./../../src/models/Event";
 import { Source } from "./../../src/models/Source";
 import { plugin } from "./../../src/modules/plugin";
-import { api } from "actionhero";
 
 let actionhero;
 
@@ -700,7 +700,7 @@ describe("models/profile", () => {
     });
 
     test("a profile can get events (all)", async () => {
-      const events = await profile.events();
+      const events = await profile.getEvents();
       expect(events.length).toBe(3);
       expect(events.map((e) => e.type)).toEqual([
         "pageview",
@@ -710,20 +710,14 @@ describe("models/profile", () => {
     });
 
     test("a profile can get events (type)", async () => {
-      const events = await profile.events({ type: "purchase" });
+      const events = await profile.getEvents({ type: "purchase" });
       expect(events.length).toBe(1);
       expect(events.map((e) => e.type)).toEqual(["purchase"]);
     });
 
-    test("a profile can get events (custom data)", async () => {
-      const events = await profile.events({ data: { page: "/about" } });
-      expect(events.length).toBe(1);
-      expect(events.map((e) => e.type)).toEqual(["pageview"]);
-    });
-
     test("when a profile is deleted, it will delete the events", async () => {
       await profile.destroy();
-      const events = await api.events.model.count();
+      const events = await Event.count();
       expect(events).toBe(0);
     });
   });
@@ -774,8 +768,8 @@ describe("models/profile", () => {
     test("the profiles both have properties and events", async () => {
       const propertiesA = await profileA.properties();
       const propertiesB = await profileB.properties();
-      const eventsA = await profileA.events();
-      const eventsB = await profileB.events();
+      const eventsA = await profileA.getEvents();
+      const eventsB = await profileB.getEvents();
       expect(Object.keys(propertiesA).length).toBe(3);
       expect(Object.keys(propertiesB).length).toBe(3);
       expect(eventsA.length).toBe(3);
@@ -792,8 +786,8 @@ describe("models/profile", () => {
 
       const propertiesA = await profileA.properties();
       const propertiesB = await profileB.properties();
-      const eventsA = await profileA.events();
-      const eventsB = await profileB.events();
+      const eventsA = await profileA.getEvents();
+      const eventsB = await profileB.getEvents();
       expect(Object.keys(propertiesA).length).toBe(3);
       expect(Object.keys(propertiesB).length).toBe(0);
       expect(eventsA.length).toBe(5);

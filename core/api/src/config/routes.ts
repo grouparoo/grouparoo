@@ -124,7 +124,6 @@ export const DEFAULT = {
         { path: "/v:apiVersion/profilePropertyRule/:guid", action: "profilePropertyRule:destroy" },
         { path: "/v:apiVersion/app/:guid", action: "app:destroy" },
         { path: "/v:apiVersion/event/:guid", action: "event:destroy" },
-        { path: "/v:apiVersion/events", action: "events:destroy" },
         { path: "/v:apiVersion/source/:guid", action: "source:destroy" },
         { path: "/v:apiVersion/schedule/:guid", action: "schedule:destroy" },
         { path: "/v:apiVersion/destination/:guid", action: "destination:destroy" },

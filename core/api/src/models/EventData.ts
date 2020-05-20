@@ -7,11 +7,17 @@ import {
   UpdatedAt,
   AllowNull,
   BelongsTo,
+  BeforeCreate,
 } from "sequelize-typescript";
-import { SequelizeEvent } from "./SequelizeEvent";
+import { Event } from "./Event";
+import * as uuid from "uuid";
 
 @Table({ tableName: "eventData", paranoid: false })
-export class SequelizeEventData extends Model<SequelizeEventData> {
+export class EventData extends Model<EventData> {
+  guidPrefix() {
+    return "evd";
+  }
+
   @Column({ primaryKey: true })
   guid: string;
 
@@ -34,6 +40,13 @@ export class SequelizeEventData extends Model<SequelizeEventData> {
   @UpdatedAt
   updatedAt: Date;
 
-  @BelongsTo(() => SequelizeEvent, "eventGuid")
-  sequelizeEvent: SequelizeEvent;
+  @BelongsTo(() => Event, "eventGuid")
+  event: Event;
+
+  @BeforeCreate
+  static generateGuid(instance: Event) {
+    if (!instance.guid) {
+      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+    }
+  }
 }

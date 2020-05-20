@@ -5,7 +5,7 @@ import {
   BelongsToMany,
   AfterDestroy,
 } from "sequelize-typescript";
-import { log, api } from "actionhero";
+import { log, api, task } from "actionhero";
 import { LoggedModel } from "../classes/loggedModel";
 import { GroupMember } from "./GroupMember";
 import { Group } from "./Group";
@@ -16,7 +16,7 @@ import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Import } from "./Import";
 import { Export } from "./Export";
 import { Destination } from "./Destination";
-import { EventPrototype } from "./../classes/events";
+import { Event } from "./Event";
 import { waitForLock } from "../modules/locks";
 
 @Table({ tableName: "profiles", paranoid: false })
@@ -46,6 +46,9 @@ export class Profile extends LoggedModel<Profile> {
   @HasMany(() => Export)
   exports: Export[];
 
+  @HasMany(() => Event, "profileGuid")
+  events: Event[];
+
   @AfterDestroy
   static async removeFromDestinations(instance: Profile) {
     await instance.export(false, []);
@@ -67,7 +70,9 @@ export class Profile extends LoggedModel<Profile> {
 
   @AfterDestroy
   static async destroyEvents(instance: Profile) {
-    await api.events.model.destroyFor({ profileGuid: instance.guid });
+    await task.enqueue("profile:destroyEvents", {
+      profileGuid: instance.guid,
+    });
   }
 
   @AfterDestroy
@@ -275,17 +280,23 @@ export class Profile extends LoggedModel<Profile> {
     return results;
   }
 
-  async events(
+  async getEvents(
     options: {
       type?: string;
-      data?: { [key: string]: any };
       limit?: number;
       offset?: number;
       order?: Array<[string, string]>;
     } = {}
   ) {
     options["profileGuid"] = this.guid;
-    const profileEvents: EventPrototype[] = api.events.model.findAll(options);
+    const profileEvents = this.$get("events", {
+      where: {
+        type: options.type,
+      },
+      limit: options.limit || 1000,
+      offset: options.offset || 0,
+      order: options.order || [["ocurredAt", "desc"]],
+    });
     return profileEvents;
   }
 
@@ -452,7 +463,7 @@ export class Profile extends LoggedModel<Profile> {
     // transfer events
     let eventsCount = 1;
     while (eventsCount > 0) {
-      const events = await otherProfile.events({ limit: 100 });
+      const events = await otherProfile.getEvents({ limit: 100 });
       eventsCount = events.length;
       await Promise.all(
         events.map((event) => {

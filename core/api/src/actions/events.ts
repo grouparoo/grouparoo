@@ -1,40 +1,7 @@
-import { api } from "actionhero";
 import { AuthenticatedAction } from "../classes/authenticatedAction";
-import { EventPrototype } from "../classes/events";
-
-function EventAPIData(event: EventPrototype) {
-  const apiEvent = Object.assign(
-    {},
-    {
-      guid: event.guid,
-      producerGuid: event.producerGuid,
-      profileGuid: event.profileGuid,
-      ipAddress: event.ipAddress,
-      type: event.type,
-      userId: event.userId,
-      anonymousId: event.anonymousId,
-      data: event.data,
-    },
-    {
-      createdAt: 0,
-      updatedAt: 0,
-      occurredAt: 0,
-      profileAssociatedAt: 0,
-    }
-  );
-
-  ["createdAt", "updatedAt", "occurredAt", "profileAssociatedAt"].forEach(
-    (k) => {
-      if (event[k] instanceof Date) {
-        apiEvent[k] = event[k].getTime();
-      } else {
-        apiEvent[k] = event[k];
-      }
-    }
-  );
-
-  return apiEvent;
-}
+import { Event } from "../models/Event";
+import { EventData } from "../models/EventData";
+import { Op } from "sequelize";
 
 export class EventsList extends AuthenticatedAction {
   constructor() {
@@ -58,6 +25,21 @@ export class EventsList extends AuthenticatedAction {
   }
 
   async run({ params, response }) {
+    const where = {};
+    const includeWhere = {};
+
+    if (params.type) {
+      where["type"] = params.type;
+    }
+
+    if (params.profileGuid) {
+      where["profileGuid"] = params.profileGuid;
+    } else if (params.associated === false) {
+      where["profileGuid"] = null;
+    } else if (params.associated === true) {
+      where["profileGuid"] = { [Op.ne]: null };
+    }
+
     let data = {};
     if (params.data) {
       try {
@@ -65,26 +47,38 @@ export class EventsList extends AuthenticatedAction {
       } catch (error) {
         data = params.data;
       }
+      for (const i in data) {
+        includeWhere["key"] = i;
+        includeWhere["value"] = data[i];
+      }
     }
 
-    const events = await api.events.model.findAll({
-      profileGuid: params.profileGuid,
-      type: params.type,
-      associated: params.associated,
-      data: Object.keys(data).length > 0 ? data : undefined,
+    const events = await Event.findAll({
+      where,
+      include: [
+        {
+          model: EventData,
+          where: includeWhere,
+          required: params.data ? true : false,
+        },
+      ],
       limit: params.limit,
       offset: params.offset,
       order: params.order,
     });
 
-    const total = await api.events.model.count({
-      profileGuid: params.profileGuid,
-      type: params.type,
-      associated: params.associated,
-      data: Object.keys(data).length > 0 ? data : undefined,
+    const total = await Event.count({
+      where,
+      include: [
+        {
+          model: EventData,
+          where: includeWhere,
+          required: params.data ? true : false,
+        },
+      ],
     });
 
-    response.events = events.map((e) => EventAPIData(e));
+    response.events = await Promise.all(events.map((e) => e.apiData()));
     response.total = total;
   }
 }
@@ -128,19 +122,20 @@ export class EventCreate extends AuthenticatedAction {
       ? session.teamMember.guid
       : session.apiKey.guid;
 
-    const event = new api.events.model({
+    const event = await Event.create({
       producerGuid: producerGuid,
       type: params.type,
       userId: params.userId,
       anonymousId: params.anonymousId,
       ipAddress: connection.remoteIP,
       occurredAt,
-      data,
     });
 
-    await event.save();
+    if (params.data) {
+      await event.setData(params.data);
+    }
 
-    response.event = EventAPIData(event);
+    response.event = await event.apiData();
   }
 }
 
@@ -160,7 +155,17 @@ export class EventAutocompleteType extends AuthenticatedAction {
   }
 
   async run({ params, response }) {
-    response.types = await api.events.model.types(params);
+    const where = {};
+    if (params.match) {
+      where["type"] = { [Op.iLike]: `%${params.match}%` };
+    }
+
+    response.types = await Event.getTypes(
+      where,
+      params.limit,
+      params.offset,
+      params.order
+    );
   }
 }
 
@@ -177,8 +182,8 @@ export class EventView extends AuthenticatedAction {
   }
 
   async run({ params, response }) {
-    const event = await api.events.model.findByGuid(params.guid);
-    response.event = EventAPIData(event);
+    const event = await Event.findByGuid(params.guid);
+    response.event = await event.apiData();
   }
 }
 
@@ -196,33 +201,8 @@ export class EventDestroy extends AuthenticatedAction {
 
   async run({ params, response }) {
     response.success = false;
-    const event = await api.events.model.findByGuid(params.guid);
+    const event = await Event.findByGuid(params.guid);
     await event.destroy();
-    response.success = true;
-  }
-}
-
-export class EventsDestroy extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "events:destroy";
-    this.description = "destroy an event";
-    this.outputExample = {};
-    this.permission = { topic: "event", mode: "write" };
-    this.inputs = {
-      profileGuid: { required: false },
-      type: { required: false },
-      before: { required: false },
-    };
-  }
-
-  async run({ params, response }) {
-    response.success = false;
-    const where = { profileGuid: params.profileGuid, type: params.type };
-    if (params.before) {
-      where["before"] = new Date(params.before);
-    }
-    response.count = await api.events.model.destroyFor(where);
     response.success = true;
   }
 }
