@@ -71,7 +71,7 @@ export class Profile extends LoggedModel<Profile> {
   @AfterDestroy
   static async destroyEvents(instance: Profile) {
     await task.enqueue("profile:destroyEvents", {
-      profileGuid: instance.guid,
+      guid: instance.guid,
     });
   }
 
@@ -280,26 +280,6 @@ export class Profile extends LoggedModel<Profile> {
     return results;
   }
 
-  async getEvents(
-    options: {
-      type?: string;
-      limit?: number;
-      offset?: number;
-      order?: Array<[string, string]>;
-    } = {}
-  ) {
-    options["profileGuid"] = this.guid;
-    const profileEvents = this.$get("events", {
-      where: {
-        type: options.type,
-      },
-      limit: options.limit || 1000,
-      offset: options.offset || 0,
-      order: options.order || [["ocurredAt", "desc"]],
-    });
-    return profileEvents;
-  }
-
   async export(force = false, groupsOverride?: Group[]) {
     let oldSimpleProperties = {};
     let oldGroups = [];
@@ -463,7 +443,7 @@ export class Profile extends LoggedModel<Profile> {
     // transfer events
     let eventsCount = 1;
     while (eventsCount > 0) {
-      const events = await otherProfile.getEvents({ limit: 100 });
+      const events = await otherProfile.$get("events", { limit: 1000 });
       eventsCount = events.length;
       await Promise.all(
         events.map((event) => {

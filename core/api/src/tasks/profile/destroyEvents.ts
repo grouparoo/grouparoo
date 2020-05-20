@@ -1,4 +1,4 @@
-import { api, Task, task, log } from "actionhero";
+import { Task } from "actionhero";
 import { Event } from "../../models/Event";
 
 export class ProfileDestroyEvents extends Task {
@@ -9,19 +9,19 @@ export class ProfileDestroyEvents extends Task {
     this.frequency = 0;
     this.queue = "events";
     this.inputs = {
-      profileGuid: { required: true },
+      guid: { required: true },
     };
   }
 
   async run(params) {
-    const { profileGuid } = params;
+    const { guid } = params;
     const limit = 1000;
     let offset = 0;
     let events: Event[] = [];
 
     while (events.length > 0 || offset === 0) {
       events = await Event.findAll({
-        where: { profileGuid },
+        where: { profileGuid: guid },
         limit,
         offset,
       });
