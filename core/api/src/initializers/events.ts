@@ -108,17 +108,6 @@ const eventSourcePreview: SourcePreviewMethod = async ({ sourceOptions }) => {
     limit,
   });
 
-  // attempt to typecast to numbers
-  // TODO: This is not a good way to guess types... what about dates and booleans?
-  for (const i in events) {
-    for (const k in events[i]["data"]) {
-      const float = parseFloat(events[i]["data"][k]);
-      if (!isNaN(float)) {
-        events[i]["data"][k] = float;
-      }
-    }
-  }
-
   // we only want to show users some of the properties in the preview
   const eventPreviews = [];
   for (const i in events) {
@@ -131,6 +120,17 @@ const eventSourcePreview: SourcePreviewMethod = async ({ sourceOptions }) => {
       occurredAt: e.occurredAt,
       data: await e.getData(),
     });
+  }
+
+  // attempt to typecast to numbers
+  // TODO: This is not a good way to guess types... what about dates and booleans?
+  for (const i in eventPreviews) {
+    for (const k in eventPreviews[i]["data"]) {
+      const float = parseFloat(eventPreviews[i]["data"][k]);
+      if (!isNaN(float)) {
+        eventPreviews[i]["data"][k] = float;
+      }
+    }
   }
 
   return eventPreviews;

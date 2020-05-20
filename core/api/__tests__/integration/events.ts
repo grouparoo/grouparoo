@@ -3,7 +3,6 @@ import { specHelper } from "actionhero";
 import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
 import { Profile } from "../../src/models/Profile";
 import { Option } from "../../src/models/Option";
-import profilePropertyRules from "../factories/profilePropertyRules";
 
 let actionhero, api;
 
@@ -16,7 +15,7 @@ describe("integration/events", () => {
   let userIdRule;
   let apiKey;
   let eventGuid;
-  let profile;
+  let profile: Profile;
 
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
@@ -127,7 +126,7 @@ describe("integration/events", () => {
     expect(event.ipAddress).toBeTruthy();
     expect(event.profileGuid).toBeFalsy();
     expect(event.anonymousId).toBe("abc123");
-    expect(event.data).toEqual({ path: "/", loadTime: 100 });
+    expect(event.data).toEqual({ path: "/", loadTime: "100" });
 
     const foundTasks = await specHelper.findEnqueuedTasks(
       "event:associateProfile"
@@ -165,7 +164,7 @@ describe("integration/events", () => {
     const profiles = await Profile.findAll();
     expect(profiles.length).toBe(1);
 
-    const profileEvents = await profile.events();
+    const profileEvents = await profile.$get("events");
     expect(profileEvents.length).toBe(2);
   });
 
@@ -186,7 +185,7 @@ describe("integration/events", () => {
     const properties = await profile.properties();
     expect(properties["userId"].value).toBe(100);
 
-    const profileEvents = await profile.events();
+    const profileEvents = await profile.$get("events");
     expect(profileEvents.length).toBe(3);
   });
 
@@ -207,7 +206,7 @@ describe("integration/events", () => {
     const properties = await profile.properties();
     expect(properties["userId"].value).toBe(100);
 
-    const profileEvents = await profile.events();
+    const profileEvents = await profile.$get("events");
     expect(profileEvents.length).toBe(4);
   });
 
@@ -239,7 +238,7 @@ describe("integration/events", () => {
     profiles = await Profile.findAll();
     expect(profiles.length).toBe(1);
 
-    const profileEvents = await profile.events();
+    const profileEvents = await profile.$get("events");
     expect(profileEvents.length).toBe(6);
   });
 
