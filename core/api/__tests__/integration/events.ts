@@ -195,7 +195,7 @@ describe("integration/events", () => {
       type: "pageview",
       anonymousId: "def456",
       userId: 100,
-      data: { path: "/mobile-sign-in", loadTime: 100 },
+      data: { path: "/mobile-sign-in", loadTime: 200 },
     });
     await specHelper.runTask("event:associateProfile", {
       eventGuid: event.guid,
@@ -215,7 +215,7 @@ describe("integration/events", () => {
       apiKey,
       type: "mobile-sceneview",
       anonymousId: "zzz999",
-      data: { path: "/", loadTime: 100 },
+      data: { path: "/", loadTime: 200 },
     });
     await specHelper.runTask("event:associateProfile", {
       eventGuid: event1.guid,
@@ -429,7 +429,7 @@ describe("integration/events", () => {
         expect(pluginOptions[1].options.map((opt) => opt.key)).toEqual([
           "most recent value",
           "least recent value",
-          "average",
+          "avg",
           "count",
           "sum",
           "min",
@@ -619,15 +619,15 @@ describe("integration/events", () => {
           expect(properties["test-rule"].value).toBe("/");
         });
 
-        test("average", async () => {
+        test("avg", async () => {
           await rule.update({ type: "float" });
           await rule.setOptions({
             column: "[data]-loadTime",
-            "aggregation method": "average",
+            "aggregation method": "avg",
           });
           await profile.import();
           const properties = await profile.properties();
-          expect(properties["test-rule"].value).toBe(100);
+          expect(properties["test-rule"].value).toBe(125);
         });
 
         test("count", async () => {
@@ -649,7 +649,7 @@ describe("integration/events", () => {
           });
           await profile.import();
           const properties = await profile.properties();
-          expect(properties["test-rule"].value).toBe(400);
+          expect(properties["test-rule"].value).toBe(500);
         });
 
         test("min", async () => {
@@ -671,7 +671,7 @@ describe("integration/events", () => {
           });
           await profile.import();
           const properties = await profile.properties();
-          expect(properties["test-rule"].value).toBe(100);
+          expect(properties["test-rule"].value).toBe(200);
         });
       });
     });

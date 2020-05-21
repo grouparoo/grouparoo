@@ -180,7 +180,7 @@ const eventProfilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOption
           key: "least recent value",
           description: "use the value of the oldest event",
         },
-        { key: "average", description: "take the average" },
+        { key: "avg", description: "take the average" },
         { key: "count", description: "count the occurrences" },
         { key: "sum", description: "add it up" },
         { key: "min", description: "find the smallest value" },
@@ -299,13 +299,13 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
         attributes: [
           [
             api.sequelize.fn(
-              aggregationMethod === "average" ? "avg" : aggregationMethod,
+              aggregationMethod,
               api.sequelize.cast(api.sequelize.col("value"), "float")
             ),
             "value",
           ],
         ],
-        group: ["value"],
+        group: ["key"],
         include: [
           {
             model: Event,
