@@ -460,8 +460,10 @@ export class Profile extends LoggedModel<Profile> {
     for (const key in otherProperties) {
       if (
         !properties[key] ||
-        otherProperties[key].updatedAt.getTime() >
-          properties[key].updatedAt.getTime()
+        (otherProperties[key]?.updatedAt?.getTime() >
+          properties[key]?.updatedAt?.getTime() &&
+          otherProperties[key]?.value !== null &&
+          otherProperties[key]?.value !== undefined)
       ) {
         newProperties[key] = otherProperties[key].value;
       }
