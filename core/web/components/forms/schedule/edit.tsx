@@ -70,11 +70,17 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function edit(event) {
     event.preventDefault();
+
+    const _schedule = Object.assign({}, schedule, { state: "ready" });
+    if (schedule.state === "ready") {
+      delete _schedule.options; // they are immutable and cannot be changed once set; server will return an error
+    }
+
     setLoading(true);
     const response = await execApi(
       "put",
       `/api/${apiVersion}/schedule/${guid}`,
-      Object.assign({}, schedule, { state: "ready" })
+      _schedule
     );
     setLoading(false);
     if (response?.schedule) {
