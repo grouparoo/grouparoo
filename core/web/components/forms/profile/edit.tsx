@@ -107,8 +107,7 @@ export default function ({
           <Moment fromNow>{profile.updatedAt}</Moment>
           <br />
           <span className="text-muted">
-            Anonymous ID:
-            {profile.anonymousId || "None"}{" "}
+            Anonymous ID: {profile.anonymousId || "None"}
           </span>
           <br />
           <br />
