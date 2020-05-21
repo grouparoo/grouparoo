@@ -107,9 +107,13 @@ describe("actions/sources", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(connectionApps.length).toBe(1);
-      expect(connectionApps[0].app.guid).toBe(app.guid);
-      expect(connectionApps[0].connection.app).toBe("test-plugin-app");
+      expect(
+        connectionApps.filter((ca) => ca.app.type !== "events")[0].app.guid
+      ).toBe(app.guid);
+      expect(
+        connectionApps.filter((ca) => ca.app.type !== "events")[0].connection
+          .app
+      ).toBe("test-plugin-app");
     });
 
     test("an administrator can enumerate the source connection options", async () => {

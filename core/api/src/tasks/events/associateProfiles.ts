@@ -1,5 +1,5 @@
 import { api, Task, task, log } from "actionhero";
-import { EventPrototype } from "../../classes/events";
+import { Event } from "../../models/Event";
 
 export class EventsAssociateProfiles extends Task {
   constructor() {
@@ -15,11 +15,11 @@ export class EventsAssociateProfiles extends Task {
   async run(params) {
     const limit = 1000;
     let offset = 0;
-    let events: EventPrototype[] = [];
+    let events: Event[] = [];
 
     while (events.length > 0 || offset === 0) {
-      events = await api.events.model.findAll({
-        associated: false,
+      events = await Event.findAll({
+        where: { profileGuid: null },
         limit,
         offset,
       });

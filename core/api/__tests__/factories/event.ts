@@ -1,6 +1,6 @@
 import faker from "faker";
 import * as UUID from "uuid";
-import { api } from "actionhero";
+import { Event } from "./../../src/models/Event";
 
 const data = async (props = {}) => {
   const defaultProps = {
@@ -20,8 +20,10 @@ const data = async (props = {}) => {
 
 export default async (props = {}) => {
   const mergedProps = await data(props);
-  const instance = new api.events.model(mergedProps);
+  const instance = new Event(mergedProps);
 
   await instance.save();
+  await instance.setData(mergedProps.data);
+
   return instance;
 };

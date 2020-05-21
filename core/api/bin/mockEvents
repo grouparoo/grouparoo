@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const { Process, log, api, config } = require("actionhero");
-const { ApiKey, Profile } = require("../dist");
+const { Process, log, api } = require("actionhero");
+const { ApiKey, App, Profile, ProfilePropertyRule } = require("../dist");
 const optimist = require("optimist");
 const fetch = require("isomorphic-fetch");
 const uuid = require("uuid");
@@ -33,12 +33,14 @@ const products = [
 const sleep = 100;
 const parallelSessions = 1;
 
+let identifyingProfilePropertyRuleKey = null;
+
 async function main() {
   const app = new Process();
   await app.initialize();
 
   if (!optimist.argv["apiKey"]) {
-    throw new Error(`argument apiKey is required`);
+    throw new Error(`argument apiKey is required (--apiKey=abc123)`);
   }
   const { apiKey } = await ApiKey.findOne({
     where: { apiKey: optimist.argv["apiKey"] },
@@ -51,6 +53,20 @@ async function main() {
     throw new Error(`argument url is required (--url="http://localhost:3000")`);
   }
   const baseUrl = `${optimist.argv["url"]}/api/v1/track`;
+
+  const eventApp = await App.findOne({ where: { type: "events" } });
+  if (!eventApp.state === "ready") {
+    throw new Error("your event app is not ready");
+  }
+  const appOptions = await eventApp.getOptions();
+  const identifyingProfilePropertyRule = await ProfilePropertyRule.findOne({
+    where: { guid: appOptions.identifyingProfilePropertyRuleGuid },
+  });
+  identifyingProfilePropertyRuleKey = identifyingProfilePropertyRule.key;
+  log(
+    `${identifyingProfilePropertyRuleKey} is the identifying profile property rule key`,
+    "alert"
+  );
 
   const sessions = [];
   for (let i = 0; i < parallelSessions; i++) {
@@ -122,14 +138,16 @@ class MockSession {
       this.identified = true;
     }
     if (this.identified) {
-      params.userId = this.profileProperties["userId"].value;
+      params.userId = this.profileProperties[
+        identifyingProfilePropertyRuleKey
+      ].value;
     }
 
     let relatedEventParams = {
       apiKey: this.apiKey,
       anonymousId: this.anonymousId,
       occurredAt: new Date().getTime(),
-      userId: this.profileProperties["userId"].value,
+      userId: this.profileProperties[identifyingProfilePropertyRuleKey].value,
     };
 
     if (step.type === "pageview" && step.data.page === "/product") {
@@ -162,7 +180,11 @@ class MockSession {
       },
       body: JSON.stringify(params),
     });
-    this.log(this.baseUrl + " " + JSON.stringify(params));
+    this.log(
+      this.baseUrl +
+        " " +
+        JSON.stringify(Object.assign({}, params, { apiKey: undefined }))
+    );
 
     if (relatedEventParams.type) {
       const relatedEventResponse = await fetch(this.baseUrl, {
@@ -186,11 +208,11 @@ class MockSession {
     });
     this.anonymousId = `?-${uuid.v4()}`;
     this.profileProperties = await this.currentUser.properties();
-    if (!this.profileProperties["userId"]) {
+    if (!this.profileProperties[identifyingProfilePropertyRuleKey]) {
       return this.empty();
     }
     this.log(
-      `using profile ${this.currentUser.guid} (${this.profileProperties["userId"].value})`
+      `using profile ${this.currentUser.guid} (${this.profileProperties[identifyingProfilePropertyRuleKey].value})`
     );
   }
 
@@ -212,5 +234,10 @@ class MockSession {
 }
 
 (async function () {
-  await main();
+  try {
+    await main();
+  } catch (error) {
+    log(error, "error");
+    process.exit(1);
+  }
 })();

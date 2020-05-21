@@ -1,7 +1,9 @@
-import { api, Initializer, task } from "actionhero";
+import { api, Initializer, log } from "actionhero";
 import { ProfilePropertyRule } from "../index";
 import { plugin } from "../modules/plugin";
-import { addEventsApp, EventPrototype } from "../classes/events";
+import { App } from "../models/App";
+import { Event } from "../models/Event";
+import { EventData } from "../models/EventData";
 import {
   SourceOptionsMethod,
   SourcePreviewMethod,
@@ -18,11 +20,6 @@ export class Events extends Initializer {
   }
 
   async initialize() {
-    api.events = {
-      backend: undefined,
-      model: undefined,
-    };
-
     // add the plugin
     plugin.registerPlugin({
       name: "@grouparoo/core/events",
@@ -41,7 +38,7 @@ export class Events extends Initializer {
           addible: false,
           methods: {
             test: async () => {
-              return api.events.model.count();
+              return (await Event.count()) >= 0;
             },
             appOptions: async () => {
               const uniqueRules = await ProfilePropertyRule.findAll({
@@ -86,31 +83,7 @@ export class Events extends Initializer {
   }
 
   async start() {
-    // default to sequelizeEvents if no event backend was loaded by a plugin
-    if (!api.events.backend) {
-      const {
-        Event,
-        EventBackend,
-      } = require("../classes/eventBackendSequelize");
-
-      api.events.backend = new EventBackend();
-      api.events.model = Event;
-    }
-
-    // wrap event#save to include enqueuing the processing task
-    const eventSaveMethod = api.events.model.prototype.save;
-    api.events.model.prototype.save = async function (...args) {
-      await eventSaveMethod.apply(this, args);
-      await task.enqueue("event:associateProfile", { eventGuid: this.guid });
-      return this;
-    };
-
-    await api.events.backend?.start();
     await addEventsApp();
-  }
-
-  async stop() {
-    await api.events.backend?.stop();
   }
 }
 
@@ -118,7 +91,7 @@ const eventSourceOptions: SourceOptionsMethod = async () => {
   const sourceOptions = {
     type: { type: "list", options: [] },
   };
-  const types: string[] = await api.events.model.types({ limit: null });
+  const types = await Event.getTypes();
   types.map((type) => {
     sourceOptions.type.options.push(type);
   });
@@ -127,33 +100,40 @@ const eventSourceOptions: SourceOptionsMethod = async () => {
 
 const eventSourcePreview: SourcePreviewMethod = async ({ sourceOptions }) => {
   const limit = 25;
-  const events: EventPrototype[] = await api.events.model.findAll({
-    type: sourceOptions.type,
+  const events = await Event.findAll({
+    where: {
+      type: sourceOptions.type,
+    },
+    include: [EventData],
     limit,
   });
 
-  // attempt to typecast to numbers
-  // TODO: This is not a good way to guess types... what about dates and booleans?
+  // we only want to show users some of the properties in the preview
+  const eventPreviews = [];
   for (const i in events) {
-    for (const k in events[i]["data"]) {
-      const float = parseFloat(events[i]["data"][k]);
-      if (!isNaN(float)) {
-        events[i]["data"][k] = float;
-      }
-    }
-  }
-
-  return events.map((e) => {
-    // we only want to show users some of the properties in the preview
-    return {
+    const e = events[i];
+    eventPreviews.push({
       profileGuid: e.profileGuid,
       type: e.type,
       userId: e.userId,
       ipAddress: e.ipAddress,
       occurredAt: e.occurredAt,
-      data: e.data,
-    };
-  });
+      data: await e.getData(),
+    });
+  }
+
+  // attempt to typecast to numbers
+  // TODO: This is not a good way to guess types... what about dates and booleans?
+  for (const i in eventPreviews) {
+    for (const k in eventPreviews[i]["data"]) {
+      const float = parseFloat(eventPreviews[i]["data"][k]);
+      if (!isNaN(float)) {
+        eventPreviews[i]["data"][k] = float;
+      }
+    }
+  }
+
+  return eventPreviews;
 };
 
 const eventProfilePropertyRuleOptionOptions = async (args) => {
@@ -166,9 +146,7 @@ const eventProfilePropertyRuleOptionOptions = async (args) => {
     };
   });
 
-  const dataKeys: string[] = await api.events.model.dataKeys(
-    args.sourceOptions.type
-  );
+  const dataKeys = await Event.dataKeys(args.sourceOptions.type);
   dataKeys.map((dataKey) => {
     result.push({
       key: `[data]-${dataKey}`,
@@ -217,7 +195,9 @@ const eventSourceFilters: SourceFilterMethod = async (args) => {
   const optionsWithExamples = await eventProfilePropertyRuleOptionOptions(args);
   for (const i in optionsWithExamples) {
     const ops = ["equals", "does not equal"];
-    const example = optionsWithExamples[i].examples[0];
+    const example = optionsWithExamples[i].examples.filter(
+      (e) => e !== null
+    )[0];
 
     if (typeof example === "string") {
       ops.push("contains");
@@ -246,7 +226,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
   profilePropertyRuleOptions,
   profilePropertyRuleFilters,
 }) => {
-  let event: EventPrototype;
+  let event: Event;
   const dataKey = profilePropertyRuleOptions["column"].replace(
     /^\[data\]-/,
     ""
@@ -254,22 +234,32 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
   const aggregationMethod = profilePropertyRuleOptions["aggregation method"];
 
   if (aggregationMethod === "most recent value") {
+    const where = { profileGuid: profile.guid, type: sourceOptions["type"] };
+    const includeWhere = {};
+    Event.applyProfilePropertyRuleFilters(
+      where,
+      includeWhere,
+      profilePropertyRuleFilters
+    );
     event = (
-      await api.events.model.findAll({
-        profileGuid: profile.guid,
-        type: sourceOptions["type"],
+      await Event.findAll({
+        where,
         order: [["occurredAt", "desc"]],
-        profilePropertyRuleFilters,
         limit: 1,
       })
     )[0];
   } else if (aggregationMethod === "least recent value") {
+    const where = { profileGuid: profile.guid, type: sourceOptions["type"] };
+    const includeWhere = {};
+    Event.applyProfilePropertyRuleFilters(
+      where,
+      includeWhere,
+      profilePropertyRuleFilters
+    );
     event = (
-      await api.events.model.findAll({
-        profileGuid: profile.guid,
-        type: sourceOptions["type"],
+      await Event.findAll({
+        where,
         order: [["occurredAt", "asc"]],
-        profilePropertyRuleFilters,
         limit: 1,
       })
     )[0];
@@ -280,21 +270,53 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
       );
     }
 
+    const where = { key: dataKey };
+    const includeWhere = {
+      profileGuid: profile.guid,
+      type: sourceOptions["type"],
+    };
+    Event.applyProfilePropertyRuleFilters(
+      includeWhere,
+      where,
+      profilePropertyRuleFilters
+    );
+
     if (aggregationMethod === "count") {
-      return api.events.model.countEventData({
-        profileGuid: profile.guid,
-        type: sourceOptions["type"],
-        profilePropertyRuleFilters,
-        key: dataKey,
+      return EventData.count({
+        where,
+        include: [
+          {
+            model: Event,
+            required: true,
+            where: includeWhere,
+            attributes: [],
+          },
+        ],
       });
     } else {
-      return api.events.model.aggregateEventData({
-        profileGuid: profile.guid,
-        type: sourceOptions["type"],
-        aggregation: aggregationMethod,
-        profilePropertyRuleFilters,
-        key: dataKey,
+      const results = await EventData.findAll({
+        where,
+        attributes: [
+          [
+            api.sequelize.fn(
+              aggregationMethod === "average" ? "avg" : aggregationMethod,
+              api.sequelize.cast(api.sequelize.col("value"), "float")
+            ),
+            "value",
+          ],
+        ],
+        group: ["value"],
+        include: [
+          {
+            model: Event,
+            required: true,
+            where: includeWhere,
+            attributes: [],
+          },
+        ],
       });
+
+      return results[0] ? results[0].value : 0;
     }
   }
 
@@ -302,9 +324,29 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
     return null;
   } else {
     if (profilePropertyRuleOptions["column"].match(/^\[data\]-/)) {
-      return event.data[dataKey];
+      const data = await event.getData();
+      return data[dataKey];
     } else {
       return event[profilePropertyRuleOptions["column"]];
     }
   }
 };
+
+async function addEventsApp() {
+  let eventsApp = await App.scope(null).findOne({
+    where: {
+      type: "events",
+    },
+  });
+  if (!eventsApp) {
+    eventsApp = App.build({
+      type: "events",
+      name: "events",
+      state: "draft",
+    });
+    App.generateGuid(eventsApp);
+    // @ts-ignore
+    await eventsApp.save({ hooks: false });
+    log(`created events app (${eventsApp.guid})`);
+  }
+}

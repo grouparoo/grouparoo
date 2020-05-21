@@ -2,19 +2,9 @@
 
 The Grouparoo Event System is modeled to be compatible with a number of existing event & analytic systems.
 
-## Backends
-
-The Grouparoo Event System can use one of the many `EventBackends` that implement the API (TODO). Grouparoo by default ships with `SequelizeEventBackend`, which will reuse the existing connection to your Grouparoo Database in Postgres, Mysql or similar connection.
-
-The backend is responsible for:
-
-- connecting to the data source
-- managing the creation of it’s own tables
-- implementing new classes which extend from `EventPrototype` and `EventBackendPrototype` and implementing the required methods, ie `save` and `static findByGuid`. See `core/api/classes/events` to learn more.
-
 ## Schema
 
-The 3 models used for the Grouparoo Event System are: `events`, `eventData` and `apiKeys`. While the specific implementation of the schema used by each backend may differ, a prototypical table structure is modeled below.
+The 3 models used for the Grouparoo Event System are: `events`, `eventData` and `apiKeys`.
 
 ### `events` table
 
@@ -42,7 +32,7 @@ This is a “has-many” data table logging the data properties of each event. E
 
 ### `apiKeys` table
 
-The `apiKeys` table is stored within Grouparoo’s database, regardless of the `EventBackend` in use. Event’s must be created with an an `apiKey` which is authorized to create events.
+The `apiKeys` table is stored within Grouparoo’s database. Events must be created with an an `apiKey` which is authorized to create events.
 
 ## Workflow
 

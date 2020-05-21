@@ -1,5 +1,5 @@
 import { api } from "actionhero";
-import { EventPrototype } from "../../classes/events";
+import { Event } from "../../models/Event";
 import { App } from "../../models/App";
 import { RetryableTask } from "../../classes/retryableTask";
 
@@ -17,7 +17,7 @@ export class EventAssociateProfile extends RetryableTask {
 
   async run(params) {
     const { eventGuid } = params;
-    const event: EventPrototype = await api.events.model.findByGuid(eventGuid);
+    const event = await Event.findByGuid(eventGuid);
 
     const app = await App.findOne({ where: { type: "events" } });
     // the app might not be in the ready state

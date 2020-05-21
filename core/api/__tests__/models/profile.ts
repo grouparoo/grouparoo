@@ -7,9 +7,9 @@ import { GroupMember } from "./../../src/models/GroupMember";
 import { App } from "./../../src/models/App";
 import { Source } from "./../../src/models/Source";
 import { plugin } from "./../../src/modules/plugin";
-import { api } from "actionhero";
+import { specHelper } from "actionhero";
 
-let actionhero;
+let actionhero, api;
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -24,6 +24,7 @@ describe("models/profile", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
+    api = env.api;
   }, 1000 * 30);
 
   afterAll(async () => {
@@ -700,7 +701,9 @@ describe("models/profile", () => {
     });
 
     test("a profile can get events (all)", async () => {
-      const events = await profile.events();
+      const events = await profile.$get("events", {
+        order: [["occurredAt", "asc"]],
+      });
       expect(events.length).toBe(3);
       expect(events.map((e) => e.type)).toEqual([
         "pageview",
@@ -710,21 +713,22 @@ describe("models/profile", () => {
     });
 
     test("a profile can get events (type)", async () => {
-      const events = await profile.events({ type: "purchase" });
+      const events = await profile.$get("events", {
+        where: { type: "purchase" },
+      });
       expect(events.length).toBe(1);
       expect(events.map((e) => e.type)).toEqual(["purchase"]);
     });
 
-    test("a profile can get events (custom data)", async () => {
-      const events = await profile.events({ data: { page: "/about" } });
-      expect(events.length).toBe(1);
-      expect(events.map((e) => e.type)).toEqual(["pageview"]);
-    });
+    test("when a profile is deleted, it will enqueue a task to delete events", async () => {
+      await api.resque.queue.connection.redis.flushdb();
 
-    test("when a profile is deleted, it will delete the events", async () => {
       await profile.destroy();
-      const events = await api.events.model.count();
-      expect(events).toBe(0);
+      const foundTasks = await specHelper.findEnqueuedTasks(
+        "profile:destroyEvents"
+      );
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0].guid).toBe(profile.guid);
     });
   });
 
@@ -774,8 +778,8 @@ describe("models/profile", () => {
     test("the profiles both have properties and events", async () => {
       const propertiesA = await profileA.properties();
       const propertiesB = await profileB.properties();
-      const eventsA = await profileA.events();
-      const eventsB = await profileB.events();
+      const eventsA = await profileA.$get("events");
+      const eventsB = await profileB.$get("events");
       expect(Object.keys(propertiesA).length).toBe(3);
       expect(Object.keys(propertiesB).length).toBe(3);
       expect(eventsA.length).toBe(3);
@@ -792,8 +796,8 @@ describe("models/profile", () => {
 
       const propertiesA = await profileA.properties();
       const propertiesB = await profileB.properties();
-      const eventsA = await profileA.events();
-      const eventsB = await profileB.events();
+      const eventsA = await profileA.$get("events");
+      const eventsB = await profileB.$get("events");
       expect(Object.keys(propertiesA).length).toBe(3);
       expect(Object.keys(propertiesB).length).toBe(0);
       expect(eventsA.length).toBe(5);

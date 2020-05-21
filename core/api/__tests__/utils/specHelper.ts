@@ -25,6 +25,8 @@ import { Option } from "../../src/models/Option";
 import { Import } from "../../src/models/Import";
 import { File } from "../../src/models/File";
 import { Export } from "../../src/models/Export";
+import { Event } from "../../src/models/Event";
+import { EventData } from "../../src/models/EventData";
 import { ExportImport } from "../../src/models/ExportImport";
 import { Group } from "../../src/models/Group";
 import { GroupMember } from "../../src/models/GroupMember";
@@ -40,8 +42,8 @@ import { Mapping } from "../../src/models/Mapping";
 import { Team } from "../../src/models/Team";
 import { TeamMember } from "../../src/models/TeamMember";
 
+import { Op } from "sequelize";
 import { plugin } from "../../src/index";
-import { addEventsApp } from "../../src/classes/events";
 
 const { api, cache, Process } = require("actionhero");
 
@@ -63,6 +65,8 @@ const models = [
   GroupMember,
   GroupRule,
   Export,
+  Event,
+  EventData,
   ExportImport,
   Log,
   Permission,
@@ -104,12 +108,18 @@ export namespace helper {
 
   export async function truncate() {
     await Promise.all(
-      models.map(
-        async (model) => await model.destroy({ truncate: true, force: true })
-      )
+      models.map(async (model) => {
+        if (model === App) {
+          return model.scope(null).destroy({
+            where: {
+              type: { [Op.ne]: "events" },
+            },
+          });
+        } else {
+          return model.destroy({ truncate: true, force: true });
+        }
+      })
     );
-
-    await await api.events.model.destroyFor();
 
     await cache.destroy("profilePropertyRules:all");
     await api.resque.queue.connection.redis.flushdb();
@@ -144,7 +154,6 @@ export namespace helper {
     }
 
     enableTestPlugin();
-    addEventsApp();
 
     return {
       actionhero,

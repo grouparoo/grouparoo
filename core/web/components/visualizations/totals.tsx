@@ -143,6 +143,13 @@ export default function ({ apiVersion, errorHandler }) {
           <SparkCard
             apiVersion={apiVersion}
             errorHandler={errorHandler}
+            href="events"
+            model="Event"
+            title="Events"
+          />
+          <SparkCard
+            apiVersion={apiVersion}
+            errorHandler={errorHandler}
             href="runs"
             model="Run"
             title="Runs"

@@ -70,11 +70,13 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function edit(event) {
     event.preventDefault();
+    setLoading(true);
     const response = await execApi(
       "put",
       `/api/${apiVersion}/schedule/${guid}`,
       Object.assign({}, schedule, { state: "ready" })
     );
+    setLoading(false);
     if (response?.schedule) {
       successHandler.set({ message: "Schedule Updated" });
       response.schedule.recurringFrequencyMinutes =
