@@ -122,10 +122,19 @@ export class ScheduleEdit extends AuthenticatedAction {
 
   async run({ params, response }) {
     const schedule = await Schedule.findByGuid(params.guid);
+    // these timing options are validated separately, and should be set first
+    if (params.recurringFrequency || params.recurring) {
+      await schedule.update({
+        recurringFrequency: params.recurringFrequency,
+        recurring: params.recurring,
+      });
+    }
+
     if (params.options) {
       await schedule.setOptions(params.options);
     }
-    await schedule.update(params);
+
+    await schedule.update({ state: params.state, name: params.name });
     response.schedule = await schedule.apiData();
     response.pluginOptions = await schedule.pluginOptions();
   }
