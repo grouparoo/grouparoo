@@ -625,11 +625,9 @@ describe("models/profile", () => {
     });
 
     afterAll(async () => {
-      await app.destroy();
-      await source.setMapping({});
       await ProfilePropertyRule.destroy({ truncate: true });
-      await source.destroy();
-      await colorRule.destroy();
+      await Source.destroy({ truncate: true });
+      await App.destroy({ truncate: true });
     });
 
     test("it can pull profile properties in from all connected apps", async () => {
@@ -738,6 +736,7 @@ describe("models/profile", () => {
 
     beforeAll(async () => {
       await Profile.destroy({ truncate: true });
+      await helper.factories.profilePropertyRules();
 
       profileA = await helper.factories.profile();
       await profileA.import();
@@ -775,20 +774,59 @@ describe("models/profile", () => {
       helper.disableTestPluginImport();
     });
 
+    afterAll(async () => {
+      await ProfilePropertyRule.destroy({ truncate: true });
+      await Source.destroy({ truncate: true });
+      await App.destroy({ truncate: true });
+    });
+
     test("the profiles both have properties and events", async () => {
       const propertiesA = await profileA.properties();
       const propertiesB = await profileB.properties();
       const eventsA = await profileA.$get("events");
       const eventsB = await profileB.$get("events");
-      expect(Object.keys(propertiesA).length).toBe(3);
-      expect(Object.keys(propertiesB).length).toBe(3);
+      expect(Object.keys(propertiesA).length).toBe(7);
+      expect(Object.keys(propertiesB).length).toBe(7);
       expect(eventsA.length).toBe(3);
       expect(eventsB.length).toBe(2);
     });
 
-    test("profile A has newer email, profile B has newer userId", async () => {
+    test("profile A has newer email, profile B has newer userId, profile B has a newer ltv but it is null", async () => {
       await profileA.addOrUpdateProperties({ email: "new-email@example.com" });
+      await profileA.addOrUpdateProperties({ ltv: 123.45 });
+
       await profileB.addOrUpdateProperties({ userId: 100 });
+      await profileB.addOrUpdateProperties({ firstName: "fname" });
+
+      // bump the updatedAt time for the email profile property, even though they remain null
+      await helper.sleep(1001);
+      const emailRule = await ProfilePropertyRule.findOne({
+        where: { key: "email" },
+      });
+      const profileBEmailProperty = await ProfileProperty.findOne({
+        where: {
+          profileGuid: profileB.guid,
+          profilePropertyRuleGuid: emailRule.guid,
+        },
+      });
+      profileBEmailProperty.changed("updatedAt", true);
+      await profileBEmailProperty.save();
+
+      const propertiesA = await profileA.properties();
+      expect(propertiesA.email.value).toBe("new-email@example.com");
+      expect(propertiesA.userId.value).toBe(null);
+      expect(propertiesA.firstName.value).toBe(null);
+      expect(propertiesA.ltv.value).toBe(123.45);
+
+      const propertiesB = await profileB.properties();
+      expect(propertiesB.email.value).toBe(null);
+      expect(propertiesB.userId.value).toBe(100);
+      expect(propertiesB.firstName.value).toBe("fname");
+      expect(propertiesB.ltv.value).toBe(null);
+
+      expect(propertiesB.email.updatedAt.getTime()).toBeGreaterThan(
+        propertiesA.email.updatedAt.getTime()
+      );
     });
 
     test("merging profiles moved the events & properties", async () => {
@@ -798,16 +836,18 @@ describe("models/profile", () => {
       const propertiesB = await profileB.properties();
       const eventsA = await profileA.$get("events");
       const eventsB = await profileB.$get("events");
-      expect(Object.keys(propertiesA).length).toBe(3);
+      expect(Object.keys(propertiesA).length).toBe(7);
       expect(Object.keys(propertiesB).length).toBe(0);
       expect(eventsA.length).toBe(5);
       expect(eventsB.length).toBe(0);
     });
 
-    test("the merged profile kept the newer properties", async () => {
+    test("the merged profile kept the newer non-null properties", async () => {
       const properties = await profileA.properties();
       expect(properties.email.value).toBe("new-email@example.com");
       expect(properties.userId.value).toBe(100);
+      expect(properties.firstName.value).toBe("fname");
+      expect(properties.ltv.value).toBe(123.45);
     });
 
     test("after merging the other profile is deleted", async () => {
