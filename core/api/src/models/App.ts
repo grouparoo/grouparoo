@@ -126,7 +126,7 @@ export class App extends LoggedModel<App> {
   static async checkAddibleDestroy(instance: App) {
     const { pluginApp } = await instance.getPlugin();
     if (pluginApp && pluginApp.addible === false) {
-      throw new Error(`cannot delete a ${instance.type} app`);
+      throw new Error(`this app cannot be deleted`);
     }
   }
 
