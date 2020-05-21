@@ -65,11 +65,24 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   function updatePermission(topic, read, write) {
     const _apiKey = Object.assign({}, apiKey);
+    _apiKey.permissionAllRead = null;
+    _apiKey.permissionAllWrite = null;
     for (const i in _apiKey.permissions) {
       if (_apiKey.permissions[i].topic === topic) {
         _apiKey.permissions[i].read = read;
         _apiKey.permissions[i].write = write;
       }
+    }
+    setApiKey(_apiKey);
+  }
+
+  function updatePermissionAll(read, write) {
+    const _apiKey = Object.assign({}, apiKey);
+    _apiKey.permissionAllRead = read;
+    _apiKey.permissionAllWrite = write;
+    for (const i in _apiKey.permissions) {
+      _apiKey.permissions[i].read = read;
+      _apiKey.permissions[i].write = write;
     }
     setApiKey(_apiKey);
   }
@@ -111,12 +124,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
           permissionAllRead={apiKey.permissionAllRead}
           permissionAllWrite={apiKey.permissionAllWrite}
           updatePermission={updatePermission}
-          updatePermissionAll={(read, write) => {
-            const _apiKey = Object.assign({}, apiKey);
-            _apiKey.permissionAllRead = read;
-            _apiKey.permissionAllWrite = write;
-            setApiKey(_apiKey);
-          }}
+          updatePermissionAll={updatePermissionAll}
         />
 
         <Button variant="primary" type="submit">
