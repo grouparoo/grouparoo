@@ -91,8 +91,7 @@ describe("actions/destinations", () => {
       );
       expect(error).toBeUndefined();
       expect(connectionApps.length).toBe(2); // this one + the app created for the profile property rules
-      expect(connectionApps[1].app.guid).toBe(app.guid);
-      expect(connectionApps[1].connection.name).toBe("test-plugin-export");
+      expect(connectionApps[0].connection.name).toBe("test-plugin-export");
     });
 
     test("an administrator can list all the destinations", async () => {
