@@ -70,11 +70,24 @@ export default function ({
 
   function updatePermission(topic, read, write) {
     const _team = Object.assign({}, team);
+    _team.permissionAllRead = null;
+    _team.permissionAllWrite = null;
     for (const i in _team.permissions) {
       if (_team.permissions[i].topic === topic) {
         _team.permissions[i].read = read;
         _team.permissions[i].write = write;
       }
+    }
+    setTeam(_team);
+  }
+
+  function updatePermissionAll(read, write) {
+    const _team = Object.assign({}, team);
+    _team.permissionAllRead = read;
+    _team.permissionAllWrite = write;
+    for (const i in _team.permissions) {
+      _team.permissions[i].read = read;
+      _team.permissions[i].write = write;
     }
     setTeam(_team);
   }
@@ -110,12 +123,7 @@ export default function ({
           permissionAllRead={team.permissionAllRead}
           permissionAllWrite={team.permissionAllWrite}
           updatePermission={updatePermission}
-          updatePermissionAll={(read, write) => {
-            const _team = Object.assign({}, team);
-            _team.permissionAllRead = read;
-            _team.permissionAllWrite = write;
-            setTeam(_team);
-          }}
+          updatePermissionAll={updatePermissionAll}
         />
 
         <Button variant="primary" type="submit">
