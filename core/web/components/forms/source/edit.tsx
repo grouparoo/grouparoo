@@ -321,11 +321,13 @@ export default function ({
                     <tr key={`row-${i}`}>
                       {previewColumns.map((col, j) => (
                         <td key={`table-${i}-${j}`}>
-                          {row[col]
-                            ? typeof row[col] === "object"
-                              ? JSON.stringify(row[col])
-                              : row[col]
-                            : null}
+                          {row[col] ? (
+                            typeof row[col] === "object" ? (
+                              <code>{JSON.stringify(row[col])}</code>
+                            ) : (
+                              row[col]
+                            )
+                          ) : null}
                         </td>
                       ))}
                     </tr>
