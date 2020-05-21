@@ -252,7 +252,7 @@ describe("models/app", () => {
 
     test("the events app cannot be deleted", async () => {
       await expect(eventApp.destroy()).rejects.toThrow(
-        /cannot delete a events app/
+        /this app cannot be deleted/
       );
     });
 
