@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Form, Button, Badge, Table } from "react-bootstrap";
+import { Row, Col, Form, Button, Badge } from "react-bootstrap";
 import Router from "next/router";
 import Link from "next/link";
 import AppIcon from "./../../appIcon";

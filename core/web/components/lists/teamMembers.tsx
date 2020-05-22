@@ -89,7 +89,10 @@ export default function ({
             return (
               <tr key={`teamMember-${teamMember.guid}`}>
                 <td style={{ maxWidth: 36 }}>
-                  <ProfileImageFromEmail email={teamMember.email} />
+                  <ProfileImageFromEmail
+                    loading={loading}
+                    email={teamMember.email}
+                  />
                 </td>
                 <td>
                   <Link

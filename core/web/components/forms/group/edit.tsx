@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { useForm } from "react-hook-form";
-import { Row, Col, Form, Button, Table, Badge } from "react-bootstrap";
+import { Row, Col, Form, Button } from "react-bootstrap";
 import StateBadge from "../../stateBadge";
 import Moment from "react-moment";
 import Router from "next/router";
@@ -16,9 +15,12 @@ export default function ({
   query,
 }) {
   const { execApi } = useApi(errorHandler);
-  const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
-  const [group, setGroup] = useState<GroupAPIData>({});
+  const [group, setGroup] = useState<GroupAPIData>({
+    name: "",
+    type: "",
+    matchType: "all",
+  });
 
   const { guid } = query;
 
@@ -35,12 +37,13 @@ export default function ({
     }
   }
 
-  async function onSubmit(data) {
+  async function submit(event) {
+    event.preventDefault();
     setLoading(true);
     const response = await execApi(
       "put",
       `/api/${apiVersion}/group/${guid}`,
-      data
+      group
     );
     setLoading(false);
     if (response?.group) {
@@ -65,8 +68,10 @@ export default function ({
     }
   }
 
-  if (group.type === "") {
-    return null;
+  function update(event) {
+    const _group = Object.assign({}, group);
+    _group[event.target.id] = event.target.value;
+    setGroup(_group);
   }
 
   return (
@@ -76,48 +81,50 @@ export default function ({
       <br />
       <Row>
         <Col md={group.type === "calculated" ? 8 : 12}>
-          <Form id="form" onSubmit={handleSubmit(onSubmit)}>
-            <Form.Group>
+          <Form id="form" onSubmit={submit}>
+            <Form.Group controlId="name">
               <Form.Label>Name</Form.Label>
               <Form.Control
                 required
                 type="text"
-                name="name"
                 placeholder="Group Name"
-                defaultValue={group.name}
-                ref={register}
+                value={group.name}
+                onChange={update}
               />
               <Form.Control.Feedback type="invalid">
                 Name is required
               </Form.Control.Feedback>
             </Form.Group>
-            <Form.Group>
+
+            <Form.Group controlId="type">
               <Form.Label>Group Type</Form.Label>
               <Form.Control
                 as="select"
                 name="type"
-                defaultValue={group.type}
-                ref={register}
+                value={group.type}
+                onChange={update}
               >
                 <option>manual</option>
                 <option>calculated</option>
               </Form.Control>
             </Form.Group>
-            <Form.Group>
+
+            <Form.Group controlId="matchType">
               <Form.Label>Match Type</Form.Label>
               <Form.Control
-                name="matchType"
                 as="select"
-                defaultValue={group.matchType}
-                ref={register}
+                value={group.matchType}
+                onChange={update}
               >
                 <option>any</option>
                 <option>all</option>
               </Form.Control>
             </Form.Group>
+
             <Button variant="primary" type="submit" active={!loading}>
               Update
             </Button>
+
             <br />
             <br />
             <Button
