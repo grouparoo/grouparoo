@@ -1,36 +1,40 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Button, Table, Row, Col } from "react-bootstrap";
+import Pagination from "../../pagination";
 import Router from "next/router";
-import Link from "next/link";
 
 export default function ({ apiVersion, errorHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [queue, setQueue] = useState(query.queue || "");
-  const [page, setPage] = useState(query.page || 0);
   const [jobs, setJobs] = useState([]);
-  const [queueLength, setQueueLength] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const perPage = 1000;
+  // pagination
+  const limit = 100;
+  const [offset, setOffset] = useState(query.offset || 0);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     load();
-  }, []);
+  }, [offset, limit]);
 
   async function load() {
     if (queue === "") {
       return;
     }
 
+    updateURLParams();
+    setLoading(true);
     const response = await execApi("get", `/api/${apiVersion}/resque/queued`, {
       queue: queue,
-      start: page * perPage,
-      stop: page * perPage + (perPage - 1),
+      limit,
+      offset,
     });
+    setLoading(false);
 
     setJobs(response.jobs);
-    setQueueLength(response.queueLength);
+    setTotal(response.queueLength);
   }
 
   async function delQueue() {
@@ -38,6 +42,16 @@ export default function ({ apiVersion, errorHandler, query }) {
       await execApi("post", `/api/${apiVersion}/resque/delQueue`, { queue });
       Router.push("/resque");
     }
+  }
+
+  function updateURLParams() {
+    let url = `${window.location.pathname}?`;
+    url += `tab=queue&`;
+    url += `queue=${queue}&`;
+    if (offset && offset !== 0) {
+      url += `offset=${offset}&`;
+    }
+    Router.push(Router.route, url, { shallow: true });
   }
 
   if (queue === "") {
@@ -51,7 +65,7 @@ export default function ({ apiVersion, errorHandler, query }) {
   return (
     <>
       <h1>
-        {queue} ({queueLength})
+        {queue} ({total})
       </h1>
 
       <p>
@@ -68,6 +82,13 @@ export default function ({ apiVersion, errorHandler, query }) {
 
       <Row>
         <Col md="12">
+          <Pagination
+            total={total}
+            limit={limit}
+            offset={offset}
+            onPress={setOffset}
+          />
+
           <Table id="jobTable" striped bordered hover size="sm">
             <thead>
               <tr>
@@ -80,7 +101,7 @@ export default function ({ apiVersion, errorHandler, query }) {
               {jobs.map((job, idx) => {
                 return (
                   <tr key={JSON.stringify(job)}>
-                    <td>{idx + 1}</td>
+                    <td>{offset + idx + 1}</td>
                     <td>{job.class}</td>
                     <td>
                       <ul>
@@ -98,6 +119,13 @@ export default function ({ apiVersion, errorHandler, query }) {
               })}
             </tbody>
           </Table>
+
+          <Pagination
+            total={total}
+            limit={limit}
+            offset={offset}
+            onPress={setOffset}
+          />
         </Col>
       </Row>
     </>

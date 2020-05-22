@@ -94,22 +94,26 @@ exports.ResqueQueued = class ResqueQueued extends ResqueAction {
       queue: {
         required: true,
       },
-      start: {
+      offset: {
         required: true,
         formatter: parseInt,
         default: 0,
       },
-      stop: {
+      limit: {
         required: true,
         formatter: parseInt,
-        default: 99,
+        default: 100,
       },
     };
   }
 
   async run({ params, response }) {
     response.queueLength = await api.resque.queue.length(params.queue);
-    response.jobs = await task.queued(params.queue, params.start, params.stop);
+    response.jobs = await task.queued(
+      params.queue,
+      params.offset,
+      params.offset + params.limit - 1
+    );
   }
 };
 
@@ -134,21 +138,25 @@ exports.ResqueResqueFailed = class ResqueResqueFailed extends ResqueAction {
     this.name = "resque:resqueFailed";
     this.description = "I return failed jobs";
     this.inputs = {
-      start: {
+      offset: {
         required: true,
         formatter: parseInt,
         default: 0,
       },
-      stop: {
+      limit: {
         required: true,
         formatter: parseInt,
-        default: 99,
+        default: 100,
       },
     };
   }
 
   async run({ response, params }) {
-    response.failed = await task.failed(params.start, params.stop);
+    response.failed = await task.failed(
+      params.offset,
+      params.offset + params.limit - 1
+    );
+    response.total = await task.failedCount();
   }
 };
 
@@ -266,15 +274,15 @@ exports.ResqueDelayedJobs = class ResqueDelayedJobs extends ResqueAction {
     this.name = "resque:delayedjobs";
     this.description = "I return paginated lists of delayedjobs";
     this.inputs = {
-      start: {
+      offset: {
         required: true,
         formatter: parseInt,
         default: 0,
       },
-      stop: {
+      limit: {
         required: true,
         formatter: parseInt,
-        default: 99,
+        default: 100,
       },
     };
   }
@@ -289,10 +297,10 @@ exports.ResqueDelayedJobs = class ResqueDelayedJobs extends ResqueAction {
       return;
     }
 
-    response.timestampsCount = allTimestamps.length;
+    response.total = allTimestamps.length;
 
     for (let i = 0; i < allTimestamps.length; i++) {
-      if (i >= params.start && i <= params.stop) {
+      if (i >= params.offset && i <= params.offset + params.limit - 1) {
         timestamps.push(allTimestamps[i]);
       }
     }

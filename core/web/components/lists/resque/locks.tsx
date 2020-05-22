@@ -1,17 +1,25 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Table, Row, Col, Button } from "react-bootstrap";
+import Pagination from "../../pagination";
+import Router from "next/router";
 
-export default function ({ apiVersion, errorHandler, successHandler }) {
+export default function ({ apiVersion, errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [locks, setLocks] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // pagination
+  const limit = 100;
+  const [offset, setOffset] = useState(query.offset || 0);
+  const [total, setTotal] = useState(0);
+
   useEffect(() => {
     load();
-  }, []);
+  }, [offset, limit]);
 
   async function load() {
+    updateURLParams();
     setLoading(true);
     const response = await execApi("get", `/api/${apiVersion}/resque/locks`);
     const _locks = [];
@@ -35,12 +43,28 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
     }
   }
 
+  function updateURLParams() {
+    let url = `${window.location.pathname}?`;
+    url += `tab=locks&`;
+    if (offset && offset !== 0) {
+      url += `offset=${offset}&`;
+    }
+    Router.push(Router.route, url, { shallow: true });
+  }
+
   return (
     <>
       <h1>Locks ({locks.length})</h1>
 
       <Row>
         <Col md={12}>
+          <Pagination
+            total={total}
+            limit={limit}
+            offset={offset}
+            onPress={setOffset}
+          />
+
           <Table striped bordered hover size="sm">
             <thead>
               <tr>
@@ -54,7 +78,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
               {locks.map((l, idx) => {
                 return (
                   <tr key={`${idx}-${l.at.getTime()}`}>
-                    <td>{idx + 1}</td>
+                    <td>{idx + offset + 1}</td>
                     <td>{l.lock}</td>
                     <td>{l.at.toString()}</td>
                     <td>
@@ -73,6 +97,13 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
               })}
             </tbody>
           </Table>
+
+          <Pagination
+            total={total}
+            limit={limit}
+            offset={offset}
+            onPress={setOffset}
+          />
         </Col>
       </Row>
     </>
