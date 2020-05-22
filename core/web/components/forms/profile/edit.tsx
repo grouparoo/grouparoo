@@ -97,7 +97,7 @@ export default function ({
     <>
       <Row>
         <Col md={2}>
-          <ProfileImageFromEmail email={email} />
+          <ProfileImageFromEmail loading={loading} email={email} />
         </Col>
         <Col md={10}>
           <span className="text-muted">Created At: </span>
