@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { ButtonToolbar, Button, Table, Modal, Row, Col } from "react-bootstrap";
+import Pagination from "../../pagination";
+import Router from "next/router";
 
 export default function ({ apiVersion, errorHandler, query, successHandler }) {
   const { execApi } = useApi(errorHandler);
@@ -15,21 +17,25 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
   });
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [page, setPage] = useState(query.page || 0);
 
-  const perPage = 1000;
+  // pagination
+  const limit = 100;
+  const [offset, setOffset] = useState(query.offset || 0);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     load();
-  }, []);
+  }, [offset, limit]);
 
   async function load() {
+    updateURLParams();
     const response = await execApi("get", "/api/1/resque/resqueFailed", {
-      start: page * perPage,
-      stop: page * perPage + (perPage - 1),
+      offset,
+      limit,
     });
 
     setFailed(response.failed);
+    setTotal(response.total);
   }
 
   async function removeFailedJob(index) {
@@ -62,6 +68,15 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
     }
   }
 
+  function updateURLParams() {
+    let url = `${window.location.pathname}?`;
+    url += `tab=failed&`;
+    if (offset && offset !== 0) {
+      url += `offset=${offset}&`;
+    }
+    Router.push(Router.route, url, { shallow: true });
+  }
+
   function renderFailureStack(index) {
     const _focusedException = failed[index];
     _focusedException.renderedStack = "";
@@ -78,7 +93,7 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
 
   return (
     <>
-      <h1>Failed Jobs ({failed.length})</h1>
+      <h1>Failed Jobs ({total})</h1>
 
       <Row>
         <Col md={12}>
@@ -110,6 +125,13 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
 
       <Row>
         <Col md={12}>
+          <Pagination
+            total={total}
+            limit={limit}
+            offset={offset}
+            onPress={setOffset}
+          />
+
           <Table id="failureTable" striped bordered hover size="sm">
             <thead>
               <tr>
@@ -128,7 +150,7 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
               {failed.map((f, idx) => {
                 return (
                   <tr key={`failure-${idx}`}>
-                    <td>{idx + 1}</td>
+                    <td>{offset + idx + 1}</td>
                     <td>{f.failed_at}</td>
                     <td>
                       <a onClick={() => renderFailureStack(idx)}>➕</a>
@@ -155,7 +177,7 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
                     </td>
                     <td>
                       <Button
-                        onClick={() => retryFailedJob(idx)}
+                        onClick={() => retryFailedJob(offset + idx)}
                         variant="warning"
                         size="sm"
                       >
@@ -164,7 +186,7 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
                     </td>
                     <td>
                       <Button
-                        onClick={() => removeFailedJob(idx)}
+                        onClick={() => removeFailedJob(offset + idx)}
                         variant="danger"
                         size="sm"
                       >
@@ -176,6 +198,12 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
               })}
             </tbody>
           </Table>
+          <Pagination
+            total={total}
+            limit={limit}
+            offset={offset}
+            onPress={setOffset}
+          />
         </Col>
       </Row>
 

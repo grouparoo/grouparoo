@@ -1,27 +1,32 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Button, Table, Row, Col } from "react-bootstrap";
+import Pagination from "../../pagination";
+import Router from "next/router";
 
 export default function ({ apiVersion, errorHandler, query, successHandler }) {
   const { execApi } = useApi(errorHandler);
   const [timestamps, setTimestamps] = useState([]);
   const [delayedJobs, setDelayedJobs] = useState({});
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(query.page || 0);
 
-  const perPage = 1000;
+  // pagination
+  const limit = 100;
+  const [offset, setOffset] = useState(query.offset || 0);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     load();
-  }, []);
+  }, [offset, limit]);
 
   async function load() {
+    updateURLParams();
     const response = await execApi(
       "get",
       "/api/1/resque/delayedjobs",
       {
-        start: page * perPage,
-        stop: page * perPage + (perPage - 1),
+        limit,
+        offset,
       },
       null,
       null,
@@ -37,6 +42,7 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
           key: t,
         });
       });
+      setTotal(response.total);
     }
 
     setDelayedJobs(response.delayedjobs);
@@ -63,12 +69,28 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
     await load();
   }
 
+  function updateURLParams() {
+    let url = `${window.location.pathname}?`;
+    url += `tab=delayed&`;
+    if (offset && offset !== 0) {
+      url += `offset=${offset}&`;
+    }
+    Router.push(Router.route, url, { shallow: true });
+  }
+
   return (
     <>
-      <h1>Delayed Jobs</h1>
+      <h1>Delayed Jobs ({total} unique timestamps)</h1>
 
       <Row>
         <Col md={12}>
+          <Pagination
+            total={total}
+            limit={limit}
+            offset={offset}
+            onPress={setOffset}
+          />
+
           {timestamps.map((t, tidx) => {
             return (
               <div key={t.date.getTime()} className="panel panel-primary">
@@ -142,6 +164,13 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
               </div>
             );
           })}
+
+          <Pagination
+            total={total}
+            limit={limit}
+            offset={offset}
+            onPress={setOffset}
+          />
         </Col>
       </Row>
     </>
