@@ -9,7 +9,7 @@ import LoadingTable from "../loadingTable";
 import StateBadge from "../stateBadge";
 import ProfilePropertyRuleAddButton from "./../forms/profilePropertyRule/add";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({ errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [examples, setExamples] = useState({});
@@ -29,14 +29,10 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function loadProfilePropertyRules() {
     setLoading(true);
-    const response = await execApi(
-      "get",
-      `/api/${apiVersion}/profilePropertyRules`,
-      {
-        limit: limit * (total === 0 ? 1 : total),
-        offset: 0,
-      }
-    );
+    const response = await execApi("get", `/profilePropertyRules`, {
+      limit: limit * (total === 0 ? 1 : total),
+      offset: 0,
+    });
     setLoading(false);
     if (response?.profilePropertyRules) {
       setExamples(response.examples);
@@ -45,7 +41,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function loadSources() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/sources`, {
+    const response = await execApi("get", `/sources`, {
       limit,
       offset,
       state: "ready",
@@ -92,7 +88,6 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
             <strong>App</strong>: {source.app.name} ({source.app.type})
             <p style={{ marginTop: 10 }}>
               <ProfilePropertyRuleAddButton
-                apiVersion={apiVersion}
                 errorHandler={errorHandler}
                 successHandler={successHandler}
                 source={source}

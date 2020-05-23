@@ -8,7 +8,6 @@ import Router from "next/router";
 import { TeamAPIData } from "../../../utils/apiData";
 
 export default function ({
-  apiVersion,
   errorHandler,
   query,
   successHandler,
@@ -26,7 +25,7 @@ export default function ({
 
   async function loadTeams() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/teams`);
+    const response = await execApi("get", `/teams`);
     setLoading(false);
     if (response?.teams) {
       setTeams(response.teams);
@@ -35,11 +34,7 @@ export default function ({
 
   async function onSubmit(data) {
     setLoading(true);
-    const response = await execApi(
-      "post",
-      `/api/${apiVersion}/team/member`,
-      data
-    );
+    const response = await execApi("post", `/team/member`, data);
     setLoading(false);
     if (response?.teamMember) {
       successHandler.set({ message: "Team Member Created" });

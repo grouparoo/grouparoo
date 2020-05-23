@@ -11,7 +11,7 @@ import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
 import { EventAPIData } from "../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, query }) {
+export default function ({ errorHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -41,7 +41,7 @@ export default function ({ apiVersion, errorHandler, query }) {
 
     setTotal(0);
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/events`, {
+    const response = await execApi("get", `/events`, {
       profileGuid,
       type,
       limit,
@@ -78,13 +78,9 @@ export default function ({ apiVersion, errorHandler, query }) {
 
   async function autocompleteProfilePropertySearch(match?) {
     setSearchLoading(true);
-    const response = await execApi(
-      "get",
-      `/api/${apiVersion}/events/autocompleteType`,
-      {
-        match,
-      }
-    );
+    const response = await execApi("get", `/events/autocompleteType`, {
+      match,
+    });
     if (response.types) {
       setAutoCompleteResults(response.types);
     }

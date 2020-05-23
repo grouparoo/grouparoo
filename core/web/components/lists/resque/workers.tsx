@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Table, Button, Row, Col } from "react-bootstrap";
 
-export default function ({ apiVersion, errorHandler, successHandler }) {
+export default function ({ errorHandler, successHandler }) {
   const { execApi } = useApi(errorHandler);
   const [workers, setWorkers] = useState({});
   const [workerQueues, setWorkerQueues] = useState([]);
@@ -16,7 +16,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
     setLoading(true);
     const { resqueDetails } = await execApi(
       "get",
-      `/api/${apiVersion}/resque/resqueDetails`,
+      `/resque/resqueDetails`,
       {},
       null,
       null,
@@ -24,7 +24,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
     );
     const { workerQueues: _workerQueues } = await execApi(
       "get",
-      `/api/${apiVersion}/resque/loadWorkerQueues`,
+      `/resque/loadWorkerQueues`,
       {},
       null,
       null,
@@ -84,7 +84,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
 
   async function forceCleanWorker(workerName) {
     if (window.confirm("Are you sure?")) {
-      await execApi("post", `/api/${apiVersion}/resque/forceCleanWorker`, {
+      await execApi("post", `/resque/forceCleanWorker`, {
         workerName: workerName,
       });
       successHandler.set({ message: "worker removed" });

@@ -3,12 +3,7 @@ import { useApi } from "../../hooks/useApi";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import ProfileImageFromEmail from "../visualizations/profileImageFromEmail";
 
-export default function ({
-  apiVersion,
-  errorHandler,
-  successHandler,
-  sessionHandler,
-}) {
+export default function ({ errorHandler, successHandler, sessionHandler }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [teamMember, setTeamMember] = useState({
@@ -24,7 +19,7 @@ export default function ({
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/account`);
+    const response = await execApi("get", `/account`);
     setLoading(false);
     if (response?.teamMember) {
       setTeamMember(response.teamMember);
@@ -34,11 +29,7 @@ export default function ({
   async function submit(event) {
     event.preventDefault();
     setLoading(true);
-    const response = await execApi(
-      "put",
-      `/api/${apiVersion}/account`,
-      teamMember
-    );
+    const response = await execApi("put", `/account`, teamMember);
     setLoading(false);
     if (response?.teamMember) {
       successHandler.set({ message: "Account updated" });

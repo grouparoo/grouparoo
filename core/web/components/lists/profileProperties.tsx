@@ -7,7 +7,6 @@ import LoadingTable from "../loadingTable";
 import { ProfilePropertyRuleAPIData } from "../../utils/apiData";
 
 export default function ({
-  apiVersion,
   errorHandler,
   successHandler,
   profileHandler,
@@ -40,7 +39,7 @@ export default function ({
 
   async function loadProfile() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/profile/${guid}`);
+    const response = await execApi("get", `/profile/${guid}`);
     setLoading(false);
     if (response?.profile?.properties) {
       setProperties(response.profile.properties);
@@ -49,10 +48,7 @@ export default function ({
 
   async function loadProfilePropertyRules() {
     setLoading(true);
-    const response = await execApi(
-      "get",
-      `/api/${apiVersion}/profilePropertyRules`
-    );
+    const response = await execApi("get", `/profilePropertyRules`);
     setLoading(false);
     if (response?.profilePropertyRules) {
       setProfilePropertyRules(response.profilePropertyRules);
@@ -61,7 +57,7 @@ export default function ({
 
   async function loadApps() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/apps`);
+    const response = await execApi("get", `/apps`);
     setLoading(false);
     if (response?.apps) {
       setApps(response.apps);
@@ -72,11 +68,9 @@ export default function ({
     const hash = {};
     hash[key] = properties[key].value;
     setLoading(true);
-    const response = await execApi(
-      "put",
-      `/api/${apiVersion}/profile/${guid}`,
-      { properties: hash }
-    );
+    const response = await execApi("put", `/profile/${guid}`, {
+      properties: hash,
+    });
     setLoading(false);
     if (response?.profile?.properties) {
       successHandler.set({ message: `property ${key} updated` });

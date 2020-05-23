@@ -7,7 +7,7 @@ const refreshInterval = 1000 * 2;
 const maxSampleLength = 20;
 const samples = [];
 
-export default function ({ apiVersion, errorHandler, query, successHandler }) {
+export default function ({ errorHandler, query, successHandler }) {
   const { execApi } = useApi(errorHandler);
   const [queues, setQueues] = useState({});
   const [workers, setWorkers] = useState({});
@@ -32,7 +32,7 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
 
     let response = await execApi(
       "get",
-      `/api/${apiVersion}/resque/resqueDetails`,
+      `/resque/resqueDetails`,
       {},
       null,
       null,
@@ -44,7 +44,7 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
 
     response = await execApi(
       "get",
-      `/api/${apiVersion}/resque/resqueFailedCount`,
+      `/resque/resqueFailedCount`,
       {},
       null,
       null,

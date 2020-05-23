@@ -5,7 +5,7 @@ import LoadingTable from "../loadingTable";
 
 import { GroupAPIData } from "../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, query }) {
+export default function ({ errorHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [groups, setGroups] = useState<GroupAPIData[]>([]);
@@ -19,7 +19,7 @@ export default function ({ apiVersion, errorHandler, query }) {
     setLoading(true);
     const response = await execApi(
       "get",
-      `/api/${apiVersion}/profilePropertyRule/${guid}/groups`
+      `/profilePropertyRule/${guid}/groups`
     );
     setLoading(false);
     if (response?.groups) {

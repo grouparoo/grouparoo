@@ -4,7 +4,7 @@ import { Form, Button } from "react-bootstrap";
 import Router from "next/router";
 import SelectorList from "../../selectorList";
 
-export default function ({ apiVersion, errorHandler }) {
+export default function ({ errorHandler }) {
   const [app, setApp] = useState({ type: "" });
   const [loading, setLoading] = useState(false);
   const [appTypes, setAppTypes] = useState([]);
@@ -16,7 +16,7 @@ export default function ({ apiVersion, errorHandler }) {
 
   async function loadOptions() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/appOptions`);
+    const response = await execApi("get", `/appOptions`);
     setLoading(false);
     if (response?.types) {
       setAppTypes(response.types.filter((app) => app.addible !== false));
@@ -26,7 +26,7 @@ export default function ({ apiVersion, errorHandler }) {
   async function create(event) {
     event.preventDefault();
     setLoading(true);
-    const response = await execApi("post", `/api/${apiVersion}/app`, app);
+    const response = await execApi("post", `/app`, app);
     setLoading(false);
     if (response?.app) {
       return Router.push("/app/[guid]", `/app/${response.app.guid}`);

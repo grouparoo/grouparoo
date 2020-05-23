@@ -5,7 +5,7 @@ import { Row, Col, Jumbotron, CardGroup, Card } from "react-bootstrap";
 import { useApi } from "../../hooks/useApi";
 import Loader from "../loader";
 
-function SparkCard({ errorHandler, apiVersion, model, title, href = null }) {
+function SparkCard({ errorHandler, model, title, href = null }) {
   const [total, setTotal] = useState(null);
   const [rolling, setRolling] = useState([]);
   const { execApi } = useApi(errorHandler);
@@ -15,7 +15,7 @@ function SparkCard({ errorHandler, apiVersion, model, title, href = null }) {
   }, []);
 
   async function load() {
-    const response = await execApi("get", `/api/${apiVersion}/totals`, {
+    const response = await execApi("get", `/totals`, {
       model,
     });
 
@@ -55,7 +55,7 @@ function SparkCard({ errorHandler, apiVersion, model, title, href = null }) {
   );
 }
 
-function BigNumber({ errorHandler, apiVersion, model, title, href = null }) {
+function BigNumber({ errorHandler, model, title, href = null }) {
   const [total, setTotal] = useState(null);
   const { execApi } = useApi(errorHandler);
 
@@ -64,7 +64,7 @@ function BigNumber({ errorHandler, apiVersion, model, title, href = null }) {
   }, []);
 
   async function load() {
-    const response = await execApi("get", `/api/${apiVersion}/totals`, {
+    const response = await execApi("get", `/totals`, {
       model,
     });
 
@@ -91,7 +91,7 @@ function BigNumber({ errorHandler, apiVersion, model, title, href = null }) {
   );
 }
 
-export default function ({ apiVersion, errorHandler }) {
+export default function ({ errorHandler }) {
   return (
     <>
       <Jumbotron>
@@ -100,7 +100,6 @@ export default function ({ apiVersion, errorHandler }) {
         <Row>
           <Col>
             <BigNumber
-              apiVersion={apiVersion}
               errorHandler={errorHandler}
               href="profiles"
               model="Profile"
@@ -109,7 +108,6 @@ export default function ({ apiVersion, errorHandler }) {
           </Col>
           <Col>
             <BigNumber
-              apiVersion={apiVersion}
               errorHandler={errorHandler}
               href="groups"
               model="Group"
@@ -121,7 +119,6 @@ export default function ({ apiVersion, errorHandler }) {
         <Row>
           <Col>
             <BigNumber
-              apiVersion={apiVersion}
               errorHandler={errorHandler}
               model="ProfileProperty"
               title="Profile Properties"
@@ -129,7 +126,6 @@ export default function ({ apiVersion, errorHandler }) {
           </Col>
           <Col>
             <BigNumber
-              apiVersion={apiVersion}
               errorHandler={errorHandler}
               model="GroupMember"
               title="Group Members"
@@ -141,35 +137,30 @@ export default function ({ apiVersion, errorHandler }) {
         <h3>System</h3>
         <CardGroup>
           <SparkCard
-            apiVersion={apiVersion}
             errorHandler={errorHandler}
             href="events"
             model="Event"
             title="Events"
           />
           <SparkCard
-            apiVersion={apiVersion}
             errorHandler={errorHandler}
             href="runs"
             model="Run"
             title="Runs"
           />
           <SparkCard
-            apiVersion={apiVersion}
             errorHandler={errorHandler}
             href="imports"
             model="Import"
             title="Imports"
           />
           <SparkCard
-            apiVersion={apiVersion}
             errorHandler={errorHandler}
             href="exports"
             model="Export"
             title="Exports"
           />
           <SparkCard
-            apiVersion={apiVersion}
             errorHandler={errorHandler}
             href="logs"
             model="Log"

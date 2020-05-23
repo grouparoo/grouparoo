@@ -26,10 +26,7 @@ export default function (props) {
   }, []);
 
   async function load() {
-    const response = await execApi(
-      "get",
-      `/api/${props.apiVersion}/team/${props.query.guid}`
-    );
+    const response = await execApi("get", `/team/${props.query.guid}`);
     if (response?.team) {
       setTeam(response.team);
     }
@@ -38,7 +35,6 @@ export default function (props) {
     <TabbedContainer
       name={team.name}
       errorHandler={props.errorHandler}
-      apiVersion={props.apiVersion}
       type="team"
       defaultTab="edit"
       query={props.query}

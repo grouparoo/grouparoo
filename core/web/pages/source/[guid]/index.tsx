@@ -11,7 +11,7 @@ import RunsList from "../../../components/lists/runs";
 import { SourceAPIData } from "../../../utils/apiData";
 
 export default function (props) {
-  const { query, errorHandler, apiVersion } = props;
+  const { query, errorHandler } = props;
   const { guid } = query;
   const { execApi } = useApi(errorHandler);
   const [source, setSource] = useState<SourceAPIData>({});
@@ -29,7 +29,7 @@ export default function (props) {
   }, []);
 
   async function load() {
-    const response = await execApi("get", `/api/${apiVersion}/source/${guid}`);
+    const response = await execApi("get", `/source/${guid}`);
     setSource(response.source);
   }
 
@@ -40,7 +40,6 @@ export default function (props) {
     <TabbedContainer
       name={source.name}
       errorHandler={props.errorHandler}
-      apiVersion={props.apiVersion}
       type="source"
       defaultTab="overview"
       query={props.query}

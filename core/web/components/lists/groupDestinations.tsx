@@ -7,7 +7,7 @@ import AppIcon from "./../appIcon";
 
 import { DestinationAPIData } from "../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({ errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [destinations, setDestinations] = useState<DestinationAPIData[]>([]);
@@ -23,10 +23,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function load() {
     setLoading(true);
-    const response = await execApi(
-      "get",
-      `/api/${apiVersion}/group/${guid}/destinations`
-    );
+    const response = await execApi("get", `/group/${guid}/destinations`);
     setLoading(false);
     if (response?.destinations) {
       setDestinations(response.destinations);

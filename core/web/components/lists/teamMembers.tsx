@@ -9,7 +9,6 @@ import ProfileImageFromEmail from "../visualizations/profileImageFromEmail";
 import { TeamMemberAPIData } from "../../utils/apiData";
 
 export default function ({
-  apiVersion,
   errorHandler,
   successHandler,
   teamMemberHandler,
@@ -34,7 +33,7 @@ export default function ({
   async function load() {
     setLoading(true);
 
-    const teamsResponse = await execApi("get", `/api/${apiVersion}/teams`);
+    const teamsResponse = await execApi("get", `/teams`);
     if (teamsResponse?.teams) {
       const teamsByHash = {};
       teamsResponse.teams.forEach((t) => {
@@ -45,9 +44,7 @@ export default function ({
 
     const teamMembersResponse = await execApi(
       "get",
-      guid
-        ? `/api/${apiVersion}/team/${guid}/members`
-        : `/api/${apiVersion}/teamMembers`
+      guid ? `/team/${guid}/members` : `/teamMembers`
     );
     if (teamMembersResponse?.teamMembers) {
       setTeamMembers(teamMembersResponse.teamMembers);
@@ -60,7 +57,7 @@ export default function ({
     if (window.confirm("are you sure?")) {
       const response = await execApi(
         "delete",
-        `/api/${apiVersion}/team/member/${teamMember.guid}`
+        `/team/member/${teamMember.guid}`
       );
       if (response) {
         successHandler.set({ message: "Team Member Deleted" });

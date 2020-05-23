@@ -9,13 +9,7 @@ import LoadingTable from "../loadingTable";
 
 import { FileAPIData } from "../../utils/apiData";
 
-export default function ({
-  apiVersion,
-  errorHandler,
-  successHandler,
-  fileHandler,
-  query,
-}) {
+export default function ({ errorHandler, successHandler, fileHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
@@ -38,7 +32,7 @@ export default function ({
   async function load() {
     updateURLParams();
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/files`, {
+    const response = await execApi("get", `/files`, {
       limit,
       offset,
     });
@@ -52,17 +46,14 @@ export default function ({
   async function download(file) {
     console.info("downloading file", file);
     const csrfToken = await window.localStorage.getItem("session:csrfToken");
-    const url = `/api/${apiVersion}/file/${file.guid}?csrfToken=${csrfToken}`;
+    const url = `/file/${file.guid}?csrfToken=${csrfToken}`;
     window.open(url, "_new");
   }
 
   async function destroy(file) {
     if (confirm("are you sure?")) {
       setLoading(true);
-      const response = await execApi(
-        "delete",
-        `/api/${apiVersion}/file/${file.guid}`
-      );
+      const response = await execApi("delete", `/file/${file.guid}`);
       setLoading(false);
       if (response?.success) {
         successHandler.set({ message: "File Delete" });

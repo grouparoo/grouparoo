@@ -5,7 +5,7 @@ import SelectorList from "../../selectorList";
 import Link from "next/link";
 import Router from "next/router";
 
-export default function ({ apiVersion, errorHandler, successHandler }) {
+export default function ({ errorHandler, successHandler }) {
   const { execApi } = useApi(errorHandler);
   const [connectionApps, setConnectionApps] = useState([]);
   const [source, setSource] = useState({
@@ -18,10 +18,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
   }, []);
 
   async function loadApps() {
-    const connectionsResponse = await execApi(
-      "get",
-      `/api/${apiVersion}/sources/connectionApps`
-    );
+    const connectionsResponse = await execApi("get", `/sources/connectionApps`);
     if (connectionsResponse?.connectionApps) {
       setConnectionApps(connectionsResponse.connectionApps);
     }
@@ -29,7 +26,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
 
   const create = async (event) => {
     event.preventDefault();
-    const response = await execApi("post", `/api/${apiVersion}/source`, source);
+    const response = await execApi("post", `/source`, source);
     if (response?.source) {
       successHandler.set({ message: "Source Created" });
       Router.push({

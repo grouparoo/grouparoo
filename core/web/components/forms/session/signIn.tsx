@@ -5,7 +5,6 @@ import { Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 
 export default function ({
-  apiVersion,
   errorHandler,
   successHandler,
   sessionHandler,
@@ -19,7 +18,7 @@ export default function ({
 
   const onSubmit = async (data) => {
     setLoading(true);
-    const response = await execApi("post", `/api/${apiVersion}/session`, data);
+    const response = await execApi("post", `/session`, data);
     setLoading(false);
     if (response?.teamMember) {
       successHandler.set({ message: "Session created" });

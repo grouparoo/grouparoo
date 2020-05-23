@@ -8,13 +8,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 
 import { AppAPIData } from "../../../utils/apiData";
 
-export default function ({
-  apiVersion,
-  errorHandler,
-  successHandler,
-  appHandler,
-  query,
-}) {
+export default function ({ errorHandler, successHandler, appHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [types, setTypes] = useState([]);
@@ -31,20 +25,17 @@ export default function ({
   async function load() {
     setLoading(true);
 
-    const appResponse = await execApi("get", `/api/${apiVersion}/app/${guid}`);
+    const appResponse = await execApi("get", `/app/${guid}`);
     if (appResponse?.app) {
       setApp(appResponse.app);
     }
 
-    const typesResponse = await execApi("get", `/api/${apiVersion}/appOptions`);
+    const typesResponse = await execApi("get", `/appOptions`);
     if (typesResponse?.types) {
       setTypes(typesResponse.types);
     }
 
-    const optionsResponse = await execApi(
-      "get",
-      `/api/${apiVersion}/app/${guid}/optionOptions`
-    );
+    const optionsResponse = await execApi("get", `/app/${guid}/optionOptions`);
     if (optionsResponse?.options) {
       setOptionOptions(optionsResponse.options);
     }
@@ -58,7 +49,7 @@ export default function ({
     setLoading(true);
     const response = await execApi(
       "put",
-      `/api/${apiVersion}/app/${guid}`,
+      `/app/${guid}`,
       Object.assign({}, app, { state })
     );
     setLoading(false);
@@ -74,10 +65,7 @@ export default function ({
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
-      const response = await execApi(
-        "delete",
-        `/api/${apiVersion}/app/${guid}`
-      );
+      const response = await execApi("delete", `/app/${guid}`);
       if (response?.success) {
         successHandler.set({ message: "App Deleted" });
         Router.push("/apps");
@@ -86,11 +74,9 @@ export default function ({
   }
 
   async function test() {
-    const response = await execApi(
-      "put",
-      `/api/${apiVersion}/app/${guid}/test`,
-      { options: app.options }
-    );
+    const response = await execApi("put", `/app/${guid}/test`, {
+      options: app.options,
+    });
     if (response) {
       setRanTest(true);
       setTestResult(response.test);

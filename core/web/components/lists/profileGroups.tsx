@@ -6,7 +6,6 @@ import { Row, Col, Button, Form, ListGroup } from "react-bootstrap";
 import { GroupAPIData } from "../../utils/apiData";
 
 export default function ({
-  apiVersion,
   errorHandler,
   profileHandler,
   successHandler,
@@ -30,15 +29,12 @@ export default function ({
   async function load() {
     setLoading(true);
 
-    const profileResponse = await execApi(
-      "get",
-      `/api/${apiVersion}/profile/${guid}`
-    );
+    const profileResponse = await execApi("get", `/profile/${guid}`);
     if (profileResponse?.groups) {
       setGroups(profileResponse.groups);
     }
 
-    const groupsResponse = await execApi("get", `/api/${apiVersion}/groups`);
+    const groupsResponse = await execApi("get", `/groups`);
     if (groupsResponse?.groups) {
       setAllGroups(groupsResponse.groups);
     }
@@ -47,13 +43,9 @@ export default function ({
   }
 
   async function handleRemove(group) {
-    const response = await execApi(
-      "put",
-      `/api/${apiVersion}/group/${group.guid}/remove`,
-      {
-        profileGuid: guid,
-      }
-    );
+    const response = await execApi("put", `/group/${group.guid}/remove`, {
+      profileGuid: guid,
+    });
     if (response) {
       successHandler.set({
         message: `Profile Removed from Group ${group.name}`,
@@ -68,13 +60,9 @@ export default function ({
     event.preventDefault();
     const groupGuid = form.elements[0].value;
 
-    const response = await execApi(
-      "put",
-      `/api/${apiVersion}/group/${groupGuid}/add`,
-      {
-        profileGuid: guid,
-      }
-    );
+    const response = await execApi("put", `/group/${groupGuid}/add`, {
+      profileGuid: guid,
+    });
     if (response) {
       successHandler.set({
         message: `Profile added to Group!`,

@@ -9,7 +9,7 @@ import LoadingTable from "../loadingTable";
 
 import { LogAPIData } from "../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, query, ownerType }) {
+export default function ({ errorHandler, query, ownerType }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState<LogAPIData[]>([]);
@@ -49,7 +49,7 @@ export default function ({ apiVersion, errorHandler, query, ownerType }) {
   async function load() {
     updateURLParams();
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/logs`, {
+    const response = await execApi("get", `/logs`, {
       limit,
       offset,
       topic,

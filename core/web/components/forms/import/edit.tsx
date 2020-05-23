@@ -6,7 +6,7 @@ import Moment from "react-moment";
 
 import { ImportAPIData } from "../../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({ errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [_import, setImport] = useState<ImportAPIData>({
@@ -26,7 +26,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/import/${guid}`);
+    const response = await execApi("get", `/import/${guid}`);
     setLoading(false);
     if (response?.import) {
       setImport(response.import);
@@ -35,7 +35,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function loadGroups() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/groups`);
+    const response = await execApi("get", `/groups`);
     setLoading(false);
     if (response?.groups) {
       setGroups(response.groups);

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import Router from "next/router";
 import { Form, Button } from "react-bootstrap";
 
-export default function ({ apiVersion, errorHandler, successHandler }) {
+export default function ({ errorHandler, successHandler }) {
   const { execApi } = useApi(errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
@@ -14,7 +14,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
     const state = data.type === "manual" ? "ready" : "draft";
     const response = await execApi(
       "post",
-      `/api/${apiVersion}/group`,
+      `/group`,
       Object.assign({}, data, { state })
     );
     setLoading(false);

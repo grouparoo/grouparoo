@@ -13,7 +13,7 @@ import { RunAPIData } from "../../utils/apiData";
 
 const NodeMoment = require("moment");
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({ errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
@@ -48,7 +48,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
     updateURLParams();
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/runs`, params);
+    const response = await execApi("get", `/runs`, params);
     setLoading(false);
     if (response?.runs) {
       setRuns(response.runs);
@@ -59,14 +59,8 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   async function enqueueScheduleRun() {
     setLoading(true);
     try {
-      const { source } = await execApi(
-        "get",
-        `/api/${apiVersion}/source/${guid}`
-      );
-      await execApi(
-        "post",
-        `/api/${apiVersion}/schedule/${source.schedule.guid}/run`
-      );
+      const { source } = await execApi("get", `/source/${guid}`);
+      await execApi("post", `/schedule/${source.schedule.guid}/run`);
       await load();
       successHandler.set({ message: "run enqueued" });
     } finally {

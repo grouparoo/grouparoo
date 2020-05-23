@@ -57,7 +57,7 @@ export const DEFAULT = {
         bootAttempts: 1,
         // Settings for determining the id of an http(s) request (browser-fingerprint)
         fingerprintOptions: {
-          cookieKey: "sessionId",
+          cookieKey: "grouparooSessionId",
           toSetCookie: true,
           onlyStaticElements: false,
           settings: {

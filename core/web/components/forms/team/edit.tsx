@@ -6,13 +6,7 @@ import Router from "next/router";
 
 import { TeamAPIData } from "../../../utils/apiData";
 
-export default function ({
-  apiVersion,
-  errorHandler,
-  successHandler,
-  teamHandler,
-  query,
-}) {
+export default function ({ errorHandler, successHandler, teamHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [team, setTeam] = useState<TeamAPIData>({ name: "" });
@@ -24,7 +18,7 @@ export default function ({
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/team/${guid}`);
+    const response = await execApi("get", `/team/${guid}`);
     setLoading(false);
     if (response?.team) {
       setTeam(response.team);
@@ -42,11 +36,7 @@ export default function ({
     }
 
     setLoading(true);
-    const response = await execApi(
-      "put",
-      `/api/${apiVersion}/team/${guid}`,
-      _team
-    );
+    const response = await execApi("put", `/team/${guid}`, _team);
     setLoading(false);
     if (response?.team) {
       successHandler.set({ message: "Team updated" });
@@ -57,10 +47,7 @@ export default function ({
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
-      const response = await execApi(
-        "delete",
-        `/api/${apiVersion}/team/${guid}`
-      );
+      const response = await execApi("delete", `/team/${guid}`);
       if (response) {
         successHandler.set({ message: "Team deleted" });
         Router.push("/teams");

@@ -6,7 +6,7 @@ import Router from "next/router";
 
 import { ApiKeyAPIData } from "../../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({ errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [apiKey, setApiKey] = useState<ApiKeyAPIData>({ name: "", apiKey: "" });
@@ -18,7 +18,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/apiKey/${guid}`);
+    const response = await execApi("get", `/apiKey/${guid}`);
     setLoading(false);
     if (response?.apiKey) {
       setApiKey(response.apiKey);
@@ -38,11 +38,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     }
 
     setLoading(true);
-    const response = await execApi(
-      "put",
-      `/api/${apiVersion}/apiKey/${guid}`,
-      _apiKey
-    );
+    const response = await execApi("put", `/apiKey/${guid}`, _apiKey);
     setLoading(false);
     if (response?.apiKey) {
       successHandler.set({ message: "API Key updated" });
@@ -52,10 +48,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
-      const response = await execApi(
-        "delete",
-        `/api/${apiVersion}/apiKey/${guid}`
-      );
+      const response = await execApi("delete", `/apiKey/${guid}`);
       if (response) {
         successHandler.set({ message: "API Key deleted" });
         Router.push("/apiKeys");

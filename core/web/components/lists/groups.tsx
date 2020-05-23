@@ -10,7 +10,7 @@ import StateBadge from "../stateBadge";
 
 import { GroupAPIData } from "../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, query }) {
+export default function ({ errorHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [groups, setGroups] = useState<GroupAPIData[]>([]);
   const [total, setTotal] = useState(0);
@@ -28,7 +28,7 @@ export default function ({ apiVersion, errorHandler, query }) {
   async function load() {
     updateURLParams();
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/groups`, {
+    const response = await execApi("get", `/groups`, {
       limit,
       offset,
     });

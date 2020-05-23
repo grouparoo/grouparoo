@@ -6,7 +6,7 @@ import Moment from "react-moment";
 
 import { ApiKeyAPIData } from "../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler }) {
+export default function ({ errorHandler }) {
   const { execApi } = useApi(errorHandler);
   const [apiKeys, setApiKeys] = useState<ApiKeyAPIData[]>([]);
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,7 @@ export default function ({ apiVersion, errorHandler }) {
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/apiKeys`);
+    const response = await execApi("get", `/apiKeys`);
     if (response?.apiKeys) {
       setApiKeys(response.apiKeys);
     }

@@ -25,10 +25,7 @@ export default function (props) {
   }, []);
 
   async function load() {
-    const response = await execApi(
-      "get",
-      `/api/${props.apiVersion}/destination/${props.query.guid}`
-    );
+    const response = await execApi("get", `/destination/${props.query.guid}`);
     if (response?.destination) {
       setDestination(response.destination);
     }
@@ -38,7 +35,6 @@ export default function (props) {
     <TabbedContainer
       name={destination.name}
       errorHandler={props.errorHandler}
-      apiVersion={props.apiVersion}
       type="destination"
       defaultTab={destination.state === "draft" ? "edit" : "data"}
       query={props.query}

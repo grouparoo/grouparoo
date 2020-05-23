@@ -37,7 +37,7 @@ export default function (props) {
   async function load() {
     const response = await execApi(
       "get",
-      `/api/${props.apiVersion}/profilePropertyRule/${props.query.guid}`
+      `/profilePropertyRule/${props.query.guid}`
     );
     if (response?.profilePropertyRule) {
       setProfilePropertyRule(response.profilePropertyRule);
@@ -102,7 +102,6 @@ export default function (props) {
 
       <TabbedContainer
         errorHandler={props.errorHandler}
-        apiVersion={props.apiVersion}
         type="profilePropertyRule"
         defaultTab="edit"
         name={profilePropertyRule.key}

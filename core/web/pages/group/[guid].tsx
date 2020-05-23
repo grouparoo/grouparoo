@@ -30,10 +30,7 @@ export default function (props) {
   }, []);
 
   async function load() {
-    const response = await execApi(
-      "get",
-      `/api/${props.apiVersion}/group/${props.query.guid}`
-    );
+    const response = await execApi("get", `/group/${props.query.guid}`);
     if (response?.group) {
       setGroup(response.group);
     }
@@ -93,7 +90,6 @@ export default function (props) {
     <TabbedContainer
       name={group.name}
       errorHandler={props.errorHandler}
-      apiVersion={props.apiVersion}
       type="group"
       defaultTab="rules"
       query={props.query}

@@ -15,10 +15,7 @@ export default function (props) {
   }, []);
 
   async function load() {
-    const response = await execApi(
-      "get",
-      `/api/${props.apiVersion}/event/${props.query.guid}`
-    );
+    const response = await execApi("get", `/event/${props.query.guid}`);
     if (response?.event) {
       setEvent(response.event);
     }
@@ -28,7 +25,6 @@ export default function (props) {
     <TabbedContainer
       name={event.guid}
       errorHandler={props.errorHandler}
-      apiVersion={props.apiVersion}
       type="event"
       defaultTab="edit"
       query={props.query}

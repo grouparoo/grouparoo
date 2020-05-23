@@ -11,7 +11,6 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import { ProfilePropertyRuleAPIData } from "../../../utils/apiData";
 
 export default function ({
-  apiVersion,
   errorHandler,
   successHandler,
   profilePropertyRulesHandler,
@@ -57,10 +56,7 @@ export default function ({
 
   async function load() {
     setLoading(true);
-    const response = await execApi(
-      "get",
-      `/api/${apiVersion}/profilePropertyRule/${guid}`
-    );
+    const response = await execApi("get", `/profilePropertyRule/${guid}`);
     setLoading(false);
     if (response?.profilePropertyRule) {
       setProfilePropertyRule(response.profilePropertyRule);
@@ -71,11 +67,9 @@ export default function ({
 
   async function loadProfilePropertyRules() {
     setLoading(true);
-    const response = await execApi(
-      "get",
-      `/api/${apiVersion}/profilePropertyRules`,
-      { state: "ready" }
-    );
+    const response = await execApi("get", `/profilePropertyRules`, {
+      state: "ready",
+    });
     setLoading(false);
     if (response?.profilePropertyRules) {
       setProfilePropertyRules(response.profilePropertyRules);
@@ -84,10 +78,7 @@ export default function ({
 
   async function loadOptions() {
     setLoading(true);
-    const response = await execApi(
-      "get",
-      `/api/${apiVersion}/profilePropertyRuleOptions`
-    );
+    const response = await execApi("get", `/profilePropertyRuleOptions`);
     setLoading(false);
     if (response?.types) {
       setTypes(response.types);
@@ -98,7 +89,7 @@ export default function ({
     setLoading(true);
     const response = await execApi(
       "get",
-      `/api/${apiVersion}/profilePropertyRule/${guid}/filterOptions`
+      `/profilePropertyRule/${guid}/filterOptions`
     );
     setLoading(false);
     if (response?.options) {
@@ -116,7 +107,7 @@ export default function ({
       setLoading(true);
       const response = await execApi(
         "put",
-        `/api/${apiVersion}/profilePropertyRule/${guid}`,
+        `/profilePropertyRule/${guid}`,
         Object.assign({}, profilePropertyRule, {
           filters: localFilters,
           state: "ready",
@@ -145,10 +136,7 @@ export default function ({
       )
     ) {
       setLoading(true);
-      const response = await execApi(
-        "delete",
-        `/api/${apiVersion}/profilePropertyRule/${guid}`
-      );
+      const response = await execApi("delete", `/profilePropertyRule/${guid}`);
       setLoading(false);
       if (response) {
         Router.push("/profilePropertyRules");
@@ -631,7 +619,6 @@ export default function ({
           </Col>
           <Col md={3}>
             <ProfilePreview
-              apiVersion={apiVersion}
               errorHandler={errorHandler}
               profilePropertyRule={profilePropertyRule}
             />

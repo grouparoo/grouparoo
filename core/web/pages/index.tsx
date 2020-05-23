@@ -4,7 +4,7 @@ import Head from "next/head";
 import { Row, Col, Jumbotron, Image, Button } from "react-bootstrap";
 import { useApi } from "../hooks/useApi";
 
-export default function ({ apiVersion, errorHandler }) {
+export default function ({ errorHandler }) {
   const { execApi } = useApi(errorHandler);
   const [CTALink, setCTALink] = useState("/session/sign-in");
   const [CTAMessage, setCTAMessage] = useState("Sign In");
@@ -14,10 +14,7 @@ export default function ({ apiVersion, errorHandler }) {
   }, []);
 
   async function load() {
-    const { navigation, navigationMode } = await execApi(
-      "get",
-      `/api/${apiVersion}/navigation`
-    );
+    const { navigation, navigationMode } = await execApi("get", `/navigation`);
     if (navigationMode === "authenticated") {
       setCTAMessage("View Dashboard");
       setCTALink("/dashboard");

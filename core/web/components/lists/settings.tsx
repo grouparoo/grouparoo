@@ -46,7 +46,7 @@ function SettingRow({ setting, updateSetting, loading }) {
   );
 }
 
-export default function ({ apiVersion, errorHandler, successHandler }) {
+export default function ({ errorHandler, successHandler }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [settings, setSettings] = useState([]);
@@ -57,7 +57,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/settings`);
+    const response = await execApi("get", `/settings`);
     setLoading(false);
     if (response?.settings) {
       setSettings(response.settings);
@@ -66,11 +66,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
 
   async function updateSetting(setting) {
     setLoading(true);
-    const response = await execApi(
-      "put",
-      `/api/${apiVersion}/setting/${setting.guid}`,
-      setting
-    );
+    const response = await execApi("put", `/setting/${setting.guid}`, setting);
     setLoading(false);
     if (response?.setting) {
       successHandler.set({ message: "Setting Updated" });

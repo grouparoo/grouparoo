@@ -8,7 +8,6 @@ import Router from "next/router";
 import { GroupAPIData } from "../../../utils/apiData";
 
 export default function ({
-  apiVersion,
   errorHandler,
   successHandler,
   groupHandler,
@@ -30,7 +29,7 @@ export default function ({
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/group/${guid}`);
+    const response = await execApi("get", `/group/${guid}`);
     setLoading(false);
     if (response?.group) {
       setGroup(response.group);
@@ -40,11 +39,7 @@ export default function ({
   async function submit(event) {
     event.preventDefault();
     setLoading(true);
-    const response = await execApi(
-      "put",
-      `/api/${apiVersion}/group/${guid}`,
-      group
-    );
+    const response = await execApi("put", `/group/${guid}`, group);
     setLoading(false);
     if (response?.group) {
       successHandler.set({ message: "Group Updated" });
@@ -56,10 +51,7 @@ export default function ({
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response = await execApi(
-        "delete",
-        `/api/${apiVersion}/group/${guid}`
-      );
+      const response = await execApi("delete", `/group/${guid}`);
       setLoading(false);
       if (response?.success) {
         successHandler.set({ message: "Group Deleted" });

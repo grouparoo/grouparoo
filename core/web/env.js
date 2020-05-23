@@ -45,6 +45,8 @@ console.info("[ Grouparoo Plugin ] '${file}' from ${pluginName}");
 // build the web ENVIRONMENT object
 const _exports = {
   API_VERSION: `v${process.env.API_VERSION || 1}`,
+  WEB_URL: process.env.WEB_URL,
+  SERVER_TOKEN: process.env.SERVER_TOKEN,
   GROUPAROO_MONOREPO_APP: grouparooMonorepoApp,
 };
 

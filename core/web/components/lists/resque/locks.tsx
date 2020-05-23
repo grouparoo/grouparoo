@@ -4,7 +4,7 @@ import { Table, Row, Col, Button } from "react-bootstrap";
 import Pagination from "../../pagination";
 import Router from "next/router";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({ errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [locks, setLocks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -21,7 +21,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   async function load() {
     updateURLParams();
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/resque/locks`);
+    const response = await execApi("get", `/resque/locks`);
     const _locks = [];
     Object.keys(response.locks).forEach(function (l) {
       _locks.push({
@@ -35,7 +35,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function delLock(lock) {
     if (window.confirm("Are you sure?")) {
-      await execApi("post", `/api/${apiVersion}/resque/delLock`, {
+      await execApi("post", `/resque/delLock`, {
         lock: lock,
       });
       successHandler.set({ message: "lock deleted" });

@@ -18,7 +18,7 @@ import ProfilePropertyRuleAddButton from "./../profilePropertyRule/add";
 
 import { SourceAPIData, RunAPIData } from "../../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({ errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [source, setSource] = useState<SourceAPIData>({
     connection: {},
@@ -34,7 +34,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   }, []);
 
   async function load() {
-    const response = await execApi("get", `/api/${apiVersion}/source/${guid}`);
+    const response = await execApi("get", `/source/${guid}`);
     if (response?.source) {
       setSource(response.source);
 
@@ -45,7 +45,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   }
 
   async function loadRun(scheduleGuid = source.schedule.guid) {
-    const response = await execApi("get", `/api/${apiVersion}/runs`, {
+    const response = await execApi("get", `/runs`, {
       guid: scheduleGuid,
       limit: 1,
     });
@@ -140,7 +140,6 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
           </Table>
 
           <ProfilePropertyRuleAddButton
-            apiVersion={apiVersion}
             errorHandler={errorHandler}
             successHandler={successHandler}
             source={source}
@@ -255,7 +254,6 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
               </Row>
             ) : (
               <ScheduleAddButton
-                apiVersion={apiVersion}
                 errorHandler={errorHandler}
                 successHandler={successHandler}
                 source={source}

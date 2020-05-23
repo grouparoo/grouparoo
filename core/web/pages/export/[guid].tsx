@@ -15,10 +15,7 @@ export default function (props) {
   }, []);
 
   async function load() {
-    const response = await execApi(
-      "get",
-      `/api/${props.apiVersion}/export/${props.query.guid}`
-    );
+    const response = await execApi("get", `/export/${props.query.guid}`);
     if (response?.export) {
       setImport(response.export);
     }
@@ -28,7 +25,6 @@ export default function (props) {
     <TabbedContainer
       name={_import.guid}
       errorHandler={props.errorHandler}
-      apiVersion={props.apiVersion}
       type="export"
       defaultTab="edit"
       query={props.query}

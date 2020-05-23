@@ -28,10 +28,7 @@ export default function (props) {
   }, []);
 
   async function load() {
-    const response = await execApi(
-      "get",
-      `/api/${props.apiVersion}/profile/${props.query.guid}`
-    );
+    const response = await execApi("get", `/profile/${props.query.guid}`);
     if (response?.profile) {
       setProfile(response.profile);
     }
@@ -58,7 +55,6 @@ export default function (props) {
   return (
     <TabbedContainer
       errorHandler={props.errorHandler}
-      apiVersion={props.apiVersion}
       type="profile"
       defaultTab="edit"
       query={props.query}

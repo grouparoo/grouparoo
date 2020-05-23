@@ -4,7 +4,7 @@ import { ButtonToolbar, Button, Table, Modal, Row, Col } from "react-bootstrap";
 import Pagination from "../../pagination";
 import Router from "next/router";
 
-export default function ({ apiVersion, errorHandler, query, successHandler }) {
+export default function ({ errorHandler, query, successHandler }) {
   const { execApi } = useApi(errorHandler);
   const [failed, setFailed] = useState([]);
   const [focusedException, setFocusedException] = useState({
@@ -29,7 +29,7 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
 
   async function load() {
     updateURLParams();
-    const response = await execApi("get", "/api/1/resque/resqueFailed", {
+    const response = await execApi("get", "/resque/resqueFailed", {
       offset,
       limit,
     });
@@ -39,13 +39,13 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
   }
 
   async function removeFailedJob(index) {
-    await execApi("post", "/api/1/resque/removeFailed", { id: index });
+    await execApi("post", "/resque/removeFailed", { id: index });
     successHandler.set({ message: "removed" });
     await load();
   }
 
   async function retryFailedJob(index) {
-    await execApi("post", "/api/1/resque/retryAndRemoveFailed", {
+    await execApi("post", "/resque/retryAndRemoveFailed", {
       id: index,
     });
     successHandler.set({ message: "retried" });
@@ -54,7 +54,7 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
 
   async function removeAllFailedJobs() {
     if (window.confirm("Are you sure?")) {
-      await execApi("post", "/api/1/resque/removeAllFailed");
+      await execApi("post", "/resque/removeAllFailed");
       successHandler.set({ message: "removed all" });
       await load();
     }
@@ -62,7 +62,7 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
 
   async function retryAllFailedJobs() {
     if (window.confirm("Are you sure?")) {
-      await execApi("post", "/api/1/resque/retryAndRemoveAllFailed");
+      await execApi("post", "/resque/retryAndRemoveAllFailed");
       successHandler.set({ message: "retried all" });
       await load();
     }

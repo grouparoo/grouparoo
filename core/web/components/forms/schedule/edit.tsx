@@ -9,7 +9,7 @@ import StateBadge from "../../stateBadge";
 
 import { ScheduleAPIData, RunAPIData } from "../../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({ errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [guid, setGuid] = useState("");
@@ -31,10 +31,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   async function loadSource() {
     setLoading(true);
 
-    const sourceResponse = await execApi(
-      "get",
-      `/api/${apiVersion}/source/${sourceGuid}`
-    );
+    const sourceResponse = await execApi("get", `/source/${sourceGuid}`);
     setLoading(false);
 
     if (sourceResponse?.source?.schedule?.guid) {
@@ -46,10 +43,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   async function load(_guid = guid) {
     setLoading(true);
 
-    const scheduleResponse = await execApi(
-      "get",
-      `/api/${apiVersion}/schedule/${_guid}`
-    );
+    const scheduleResponse = await execApi("get", `/schedule/${_guid}`);
     if (scheduleResponse?.schedule) {
       scheduleResponse.schedule.recurringFrequencyMinutes =
         scheduleResponse.schedule.recurringFrequency / (60 * 1000);
@@ -57,7 +51,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       setPluginOptions(scheduleResponse.pluginOptions);
     }
 
-    const runsResponse = await execApi("get", `/api/${apiVersion}/runs`, {
+    const runsResponse = await execApi("get", `/runs`, {
       guid: _guid,
       limit: 1,
     });
@@ -77,11 +71,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     }
 
     setLoading(true);
-    const response = await execApi(
-      "put",
-      `/api/${apiVersion}/schedule/${guid}`,
-      _schedule
-    );
+    const response = await execApi("put", `/schedule/${guid}`, _schedule);
     setLoading(false);
     if (response?.schedule) {
       successHandler.set({ message: "Schedule Updated" });
@@ -96,10 +86,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
-      const response = await execApi(
-        "delete",
-        `/api/${apiVersion}/schedule/${guid}`
-      );
+      const response = await execApi("delete", `/schedule/${guid}`);
       if (response) {
         Router.push({
           pathname: `/source/${sourceGuid}`,

@@ -8,7 +8,6 @@ import Moment from "react-moment";
 import { ProfileAPIData } from "../../../utils/apiData";
 
 export default function ({
-  apiVersion,
   errorHandler,
   successHandler,
   profileHandler,
@@ -34,7 +33,7 @@ export default function ({
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/profile/${guid}`);
+    const response = await execApi("get", `/profile/${guid}`);
     setLoading(false);
     if (response?.profile) {
       setProfile(response.profile);
@@ -43,10 +42,7 @@ export default function ({
 
   async function loadProfilePropertyRules() {
     setLoading(true);
-    const response = await execApi(
-      "get",
-      `/api/${apiVersion}/profilePropertyRules`
-    );
+    const response = await execApi("get", `/profilePropertyRules`);
     setLoading(false);
     if (response?.profilePropertyRules) {
       setProfilePropertyRules(response.profilePropertyRules);
@@ -56,10 +52,7 @@ export default function ({
   async function importAndUpdate() {
     setLoading(true);
     successHandler.set({ message: "enqueued for import..." });
-    const response = await execApi(
-      "post",
-      `/api/${apiVersion}/profile/${guid}/importAndUpdate`
-    );
+    const response = await execApi("post", `/profile/${guid}/importAndUpdate`);
     setLoading(false);
     if (response?.profile) {
       successHandler.set({ message: "Import Complete!" });
@@ -70,10 +63,7 @@ export default function ({
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response = await execApi(
-        "delete",
-        `/api/${apiVersion}/profile/${guid}`
-      );
+      const response = await execApi("delete", `/profile/${guid}`);
       setLoading(false);
       if (response) {
         Router.push("/profiles");

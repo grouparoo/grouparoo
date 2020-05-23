@@ -3,7 +3,7 @@ import { useState } from "react";
 import Router from "next/router";
 import { Button } from "react-bootstrap";
 
-export default function ({ apiVersion, errorHandler, successHandler, source }) {
+export default function ({ errorHandler, successHandler, source }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
 
@@ -11,7 +11,6 @@ export default function ({ apiVersion, errorHandler, successHandler, source }) {
     createSchedule({
       sourceGuid: source.guid,
       setLoading,
-      apiVersion,
       successHandler,
       execApi,
     });
@@ -32,7 +31,6 @@ export default function ({ apiVersion, errorHandler, successHandler, source }) {
 export async function createSchedule({
   sourceGuid,
   setLoading,
-  apiVersion,
   successHandler,
   execApi,
 }) {
@@ -42,7 +40,7 @@ export async function createSchedule({
   };
 
   setLoading(true);
-  const response = await execApi("post", `/api/${apiVersion}/schedule`, data);
+  const response = await execApi("post", `/schedule`, data);
 
   if (response?.schedule) {
     successHandler.set({ message: "Schedule Created" });

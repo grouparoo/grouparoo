@@ -8,7 +8,7 @@ import {
   DestinationAPIData,
 } from "../../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({ errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [groups, setGroups] = useState([]);
   const [trackedGroupGuid, setTrackedGroupGuid] = useState("_none");
@@ -54,7 +54,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   async function load() {
     const response = await execApi(
       "get",
-      `/api/${apiVersion}/destination/${guid}`,
+      `/destination/${guid}`,
       null,
       null,
       null,
@@ -75,18 +75,16 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   }
 
   async function loadGroups() {
-    const response = await execApi("get", `/api/${apiVersion}/groups`);
+    const response = await execApi("get", `/groups`);
     if (response?.groups) {
       setGroups(response.groups.filter((group) => group.state !== "draft"));
     }
   }
 
   async function loadProfilePropertyRules() {
-    const response = await execApi(
-      "get",
-      `/api/${apiVersion}/profilePropertyRules`,
-      { state: "ready" }
-    );
+    const response = await execApi("get", `/profilePropertyRules`, {
+      state: "ready",
+    });
     if (response?.profilePropertyRules) {
       setProfilePropertyRules(response.profilePropertyRules);
     }
@@ -95,7 +93,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   async function loadMappingOptions() {
     const response = await execApi(
       "get",
-      `/api/${apiVersion}/destination/${guid}/mappingOptions`
+      `/destination/${guid}/mappingOptions`
     );
     if (response?.options) {
       setMappingOptions(response.options);
@@ -106,11 +104,11 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     event.preventDefault();
 
     if (trackedGroupGuid.match(/^grp_/)) {
-      await execApi("post", `/api/${apiVersion}/destination/${guid}/track`, {
+      await execApi("post", `/destination/${guid}/track`, {
         groupGuid: trackedGroupGuid,
       });
     } else if (trackedGroupGuid === "_none") {
-      await execApi("post", `/api/${apiVersion}/destination/${guid}/untrack`);
+      await execApi("post", `/destination/${guid}/untrack`);
     }
 
     // handle destination group membership & mapping
@@ -125,7 +123,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       (dgm) =>
         (destinationGroupMembershipsObject[dgm.groupGuid] = dgm.remoteKey)
     );
-    await execApi("put", `/api/${apiVersion}/destination/${guid}`, {
+    await execApi("put", `/destination/${guid}`, {
       mapping: filteredMapping,
       destinationGroupMemberships: destinationGroupMembershipsObject,
       trackAllGroups: trackedGroupGuid === "_all" ? true : false,
@@ -690,7 +688,6 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
         </Col>
         <Col md={3}>
           <ProfilePreview
-            apiVersion={apiVersion}
             errorHandler={errorHandler}
             mappingOptions={mappingOptions}
             destination={destination}

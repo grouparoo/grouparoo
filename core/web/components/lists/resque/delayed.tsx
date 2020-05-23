@@ -4,7 +4,7 @@ import { Button, Table, Row, Col } from "react-bootstrap";
 import Pagination from "../../pagination";
 import Router from "next/router";
 
-export default function ({ apiVersion, errorHandler, query, successHandler }) {
+export default function ({ errorHandler, query, successHandler }) {
   const { execApi } = useApi(errorHandler);
   const [timestamps, setTimestamps] = useState([]);
   const [delayedJobs, setDelayedJobs] = useState({});
@@ -23,7 +23,7 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
     updateURLParams();
     const response = await execApi(
       "get",
-      "/api/1/resque/delayedjobs",
+      "/resque/delayedjobs",
       {
         limit,
         offset,
@@ -51,7 +51,7 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
 
   async function delDelayed(timestamp, count) {
     if (window.confirm("Are you sure?")) {
-      await execApi("post", "/api/1/resque/delDelayed", {
+      await execApi("post", "/resque/delDelayed", {
         timestamp: timestamp,
         count: count,
       });
@@ -61,7 +61,7 @@ export default function ({ apiVersion, errorHandler, query, successHandler }) {
   }
 
   async function runDelayed(timestamp, count) {
-    await execApi("post", "/api/1/resque/runDelayed", {
+    await execApi("post", "/resque/runDelayed", {
       timestamp: timestamp,
       count: count,
     });

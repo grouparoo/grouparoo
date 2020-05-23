@@ -3,7 +3,7 @@ import { useApi } from "../../../hooks/useApi";
 import { Button } from "react-bootstrap";
 import Router from "next/router";
 
-export default function ({ apiVersion, errorHandler, successHandler, source }) {
+export default function ({ errorHandler, successHandler, source }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
 
@@ -15,11 +15,7 @@ export default function ({ apiVersion, errorHandler, successHandler, source }) {
     };
 
     setLoading(true);
-    const response = await execApi(
-      "post",
-      `/api/${apiVersion}/profilePropertyRule`,
-      data
-    );
+    const response = await execApi("post", `/profilePropertyRule`, data);
     setLoading(false);
 
     if (response?.profilePropertyRule) {

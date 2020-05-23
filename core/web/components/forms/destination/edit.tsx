@@ -10,7 +10,6 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import { DestinationAPIData } from "../../../utils/apiData";
 
 export default function ({
-  apiVersion,
   errorHandler,
   successHandler,
   destinationHandler,
@@ -33,16 +32,13 @@ export default function ({
   async function load() {
     const connectionOptionsResponse = await execApi(
       "get",
-      `/api/${apiVersion}/destination/${guid}/connectionOptions`
+      `/destination/${guid}/connectionOptions`
     );
     if (connectionOptionsResponse?.options) {
       setConnectionOptions(connectionOptionsResponse.options);
     }
 
-    const destinationResponse = await execApi(
-      "get",
-      `/api/${apiVersion}/destination/${guid}`
-    );
+    const destinationResponse = await execApi("get", `/destination/${guid}`);
     if (destinationResponse?.destination) {
       setDestination(destinationResponse.destination);
     }
@@ -56,7 +52,7 @@ export default function ({
 
     const response = await execApi(
       "put",
-      `/api/${apiVersion}/destination/${guid}`,
+      `/destination/${guid}`,
       Object.assign({}, destination, { state: "ready" })
     );
     if (response?.destination) {
@@ -83,10 +79,7 @@ export default function ({
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
-      const response = await execApi(
-        "delete",
-        `/api/${apiVersion}/destination/${guid}`
-      );
+      const response = await execApi("delete", `/destination/${guid}`);
       if (response) {
         Router.push("/destinations");
       }

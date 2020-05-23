@@ -11,7 +11,7 @@ import StateBadge from "../stateBadge";
 
 import { ProfileAPIData, GroupAPIData } from "../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({ errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [profiles, setProfiles] = useState<ProfileAPIData[]>([]);
@@ -42,7 +42,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function loadGroup() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/group/${guid}`);
+    const response = await execApi("get", `/group/${guid}`);
     setLoading(false);
     if (response?.group) {
       setGroup(response.group);
@@ -51,11 +51,10 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function loadProfiles() {
     setLoading(true);
-    const response = await execApi(
-      "get",
-      `/api/${apiVersion}/group/${guid}/profiles`,
-      { limit, offset }
-    );
+    const response = await execApi("get", `/group/${guid}/profiles`, {
+      limit,
+      offset,
+    });
     setLoading(false);
     if (response?.total) {
       setTotal(response.total);
@@ -65,10 +64,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function loadProfilePropertyRules() {
     setLoading(true);
-    const response = await execApi(
-      "get",
-      `/api/${apiVersion}/profilePropertyRules`
-    );
+    const response = await execApi("get", `/profilePropertyRules`);
     setLoading(false);
     if (response?.profilePropertyRules) {
       setProfilePropertyRules(response.profilePropertyRules);
@@ -77,11 +73,9 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function handleDelete(profile) {
     setLoading(true);
-    const response = await execApi(
-      "put",
-      `/api/${apiVersion}/group/${guid}/remove`,
-      { profileGuid: profile.guid }
-    );
+    const response = await execApi("put", `/group/${guid}/remove`, {
+      profileGuid: profile.guid,
+    });
     setLoading(false);
     if (response) {
       successHandler.set({ message: "Profile Removed" });
@@ -92,11 +86,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function handleExport(type = "csv") {
     setLoading(true);
-    const response = await execApi(
-      "put",
-      `/api/${apiVersion}/group/${guid}/export`,
-      { type }
-    );
+    const response = await execApi("put", `/group/${guid}/export`, { type });
     setLoading(false);
     if (response?.success) {
       successHandler.set({
@@ -109,10 +99,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   async function run() {
     if (window.confirm("are you sure? this could take a while")) {
       setLoading(true);
-      const response = await execApi(
-        "put",
-        `/api/${apiVersion}/group/${guid}/run`
-      );
+      const response = await execApi("put", `/group/${guid}/run`);
       setLoading(false);
       if (response?.success) {
         successHandler.set({ message: "Update Run Enqueued" });
@@ -123,10 +110,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   async function updateMembers() {
     if (window.confirm("are you sure? this could take a while")) {
       setLoading(true);
-      const response = await execApi(
-        "put",
-        `/api/${apiVersion}/group/${guid}/updateMembers`
-      );
+      const response = await execApi("put", `/group/${guid}/updateMembers`);
       setLoading(false);
       if (response?.success) {
         successHandler.set({ message: "UpdateMembers Run Enqueued" });

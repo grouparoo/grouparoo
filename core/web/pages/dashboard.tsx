@@ -14,7 +14,7 @@ export default function (props) {
   }, []);
 
   async function load() {
-    const response = await execApi("get", `/api/${props.apiVersion}/apps/`);
+    const response = await execApi("get", `/apps/`);
     if (response?.apps) {
       setAppsCount(response?.total);
     }

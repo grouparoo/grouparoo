@@ -7,7 +7,7 @@ import ProfileImageFromEmail from "../../visualizations/profileImageFromEmail";
 
 import { TeamAPIData, TeamMemberAPIData } from "../../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({ errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [teams, setTeams] = useState<TeamAPIData[]>([]);
@@ -28,15 +28,12 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   async function load() {
     setLoading(true);
 
-    const teamsResponse = await execApi("get", `/api/${apiVersion}/teams`);
+    const teamsResponse = await execApi("get", `/teams`);
     if (teamsResponse?.teams) {
       setTeams(teamsResponse.teams);
     }
 
-    const teamMemberResponse = await execApi(
-      "get",
-      `/api/${apiVersion}/team/member/${guid}`
-    );
+    const teamMemberResponse = await execApi("get", `/team/member/${guid}`);
     if (teamMemberResponse?.teamMember) {
       setTeamMember(teamMemberResponse.teamMember);
     }
@@ -47,11 +44,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   async function submit(event) {
     event.preventDefault();
     setLoading(true);
-    const response = await execApi(
-      "put",
-      `/api/${apiVersion}/team/member/${guid}`,
-      teamMember
-    );
+    const response = await execApi("put", `/team/member/${guid}`, teamMember);
     if (response?.teamMember) {
       successHandler.set({ message: "Team Member updated" });
       setTeamMember(response.teamMember);
@@ -61,10 +54,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
-      const response = await execApi(
-        "delete",
-        `/api/${apiVersion}/team/member/${guid}`
-      );
+      const response = await execApi("delete", `/team/member/${guid}`);
       if (response) {
         Router.push("/teams");
       }

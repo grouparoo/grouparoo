@@ -14,7 +14,7 @@ import {
   DestinationAPIData,
 } from "../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, query }) {
+export default function ({ errorHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [_exports, setExports] = useState<ExportAPIData[]>([]);
@@ -39,20 +39,17 @@ export default function ({ apiVersion, errorHandler, query }) {
   async function load() {
     updateURLParams();
     setLoading(true);
-    const groupsResponse = await execApi("get", `/api/${apiVersion}/groups`);
+    const groupsResponse = await execApi("get", `/groups`);
     if (groupsResponse?.groups) {
       setGroups(groupsResponse.groups);
     }
 
-    const destinationsResponse = await execApi(
-      "get",
-      `/api/${apiVersion}/destinations`
-    );
+    const destinationsResponse = await execApi("get", `/destinations`);
     if (destinationsResponse?.destinations) {
       setDestinations(destinationsResponse.destinations);
     }
 
-    const response = await execApi("get", `/api/${apiVersion}/exports`, {
+    const response = await execApi("get", `/exports`, {
       limit,
       offset,
       profileGuid,

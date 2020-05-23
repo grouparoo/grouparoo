@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { Form, Button } from "react-bootstrap";
 import Router from "next/router";
 
-export default function ({ apiVersion, errorHandler, successHandler }) {
+export default function ({ errorHandler, successHandler }) {
   const { execApi } = useApi(errorHandler);
   const { handleSubmit, register } = useForm();
   const [types, setTypes] = useState([]);
@@ -16,7 +16,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/files/options`);
+    const response = await execApi("get", `/files/options`);
     setLoading(false);
     if (response?.options) {
       setTypes(response.options.types);
@@ -25,7 +25,7 @@ export default function ({ apiVersion, errorHandler, successHandler }) {
 
   async function onSubmit(data) {
     setLoading(true);
-    const response = await execApi("post", `/api/${apiVersion}/file`, {
+    const response = await execApi("post", `/file`, {
       type: data.type,
       file: data.file[0],
     });

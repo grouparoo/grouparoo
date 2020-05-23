@@ -6,7 +6,7 @@ import Moment from "react-moment";
 
 import { ExportAPIData } from "../../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({ errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [_export, setExport] = useState<ExportAPIData>({
@@ -28,7 +28,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/export/${guid}`);
+    const response = await execApi("get", `/export/${guid}`);
     setLoading(false);
     if (response?.export) {
       setExport(response.export);
@@ -37,7 +37,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function loadGroups() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/groups`);
+    const response = await execApi("get", `/groups`);
     setLoading(false);
     if (response?.groups) {
       setGroups(response.groups);

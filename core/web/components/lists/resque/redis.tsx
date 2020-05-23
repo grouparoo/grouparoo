@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Table, Row, Col } from "react-bootstrap";
 
-export default function ({ apiVersion, errorHandler }) {
+export default function ({ errorHandler }) {
   const { execApi } = useApi(errorHandler);
   const [redisInfo, setRedisInfo] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -13,10 +13,7 @@ export default function ({ apiVersion, errorHandler }) {
 
   async function load() {
     setLoading(true);
-    const response = await execApi(
-      "get",
-      `/api/${apiVersion}/resque/redisInfo`
-    );
+    const response = await execApi("get", `/resque/redisInfo`);
     setLoading(false);
     if (response?.redisInfo) {
       setRedisInfo(response.redisInfo);

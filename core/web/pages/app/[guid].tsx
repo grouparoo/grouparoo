@@ -23,10 +23,7 @@ export default function (props) {
   }, []);
 
   async function load() {
-    const response = await execApi(
-      "get",
-      `/api/${props.apiVersion}/app/${props.query.guid}`
-    );
+    const response = await execApi("get", `/app/${props.query.guid}`);
     if (response?.app) {
       setApp(response.app);
     }
@@ -36,7 +33,6 @@ export default function (props) {
     <TabbedContainer
       name={app.name}
       errorHandler={props.errorHandler}
-      apiVersion={props.apiVersion}
       type="app"
       defaultTab="edit"
       query={props.query}

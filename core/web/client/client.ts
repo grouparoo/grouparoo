@@ -82,7 +82,7 @@ export class Client {
   }
 
   csrfToken() {
-    if (window?.localStorage) {
+    if (globalThis?.localStorage) {
       return window.localStorage.getItem("session:csrfToken");
     }
   }
@@ -91,8 +91,19 @@ export class Client {
     verb = "get",
     path,
     data: AxiosRequestConfig["data"] = {},
-    useCache = true
+    useCache = true,
+    cookieString?
   ) {
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    };
+
+    if (cookieString) {
+      headers["X-GROUPAROO-SERVER_TOKEN"] = process.env.SERVER_TOKEN;
+      headers["cookie"] = cookieString;
+    }
+
     const options: AxiosRequestConfig = {
       params: null,
       data: null,
@@ -101,10 +112,7 @@ export class Client {
       //@ts-ignore
       agent: `grouparoo-web-${PackageJSON.version}`,
       method: verb.toLowerCase() as Method,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+      headers,
     };
 
     data.csrfToken = this.csrfToken();

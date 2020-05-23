@@ -1,19 +1,13 @@
 import { Component } from "react";
 
-interface Props {
-  apiVersion: string;
-}
-
-export default class Swagger extends Component<Props> {
+export default class Swagger extends Component {
   componentDidMount() {
     // we need to wait for didMount as swagger won't render with SSR
     const SwaggerUi = require("swagger-ui");
 
-    const { apiVersion } = this.props;
-
     const swagger = SwaggerUi({
       dom_id: "#swaggerContainer",
-      url: `/api/${apiVersion}/swagger`,
+      url: `/swagger`,
       presets: [SwaggerUi.presets.apis],
       deepLinking: true,
       docExpansion: "none",

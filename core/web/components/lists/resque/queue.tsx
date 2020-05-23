@@ -4,7 +4,7 @@ import { Button, Table, Row, Col } from "react-bootstrap";
 import Pagination from "../../pagination";
 import Router from "next/router";
 
-export default function ({ apiVersion, errorHandler, query }) {
+export default function ({ errorHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [queue, setQueue] = useState(query.queue || "");
   const [jobs, setJobs] = useState([]);
@@ -26,7 +26,7 @@ export default function ({ apiVersion, errorHandler, query }) {
 
     updateURLParams();
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/resque/queued`, {
+    const response = await execApi("get", `/resque/queued`, {
       queue: queue,
       limit,
       offset,
@@ -39,7 +39,7 @@ export default function ({ apiVersion, errorHandler, query }) {
 
   async function delQueue() {
     if (window.confirm("Are you sure?")) {
-      await execApi("post", `/api/${apiVersion}/resque/delQueue`, { queue });
+      await execApi("post", `/resque/delQueue`, { queue });
       Router.push("/resque");
     }
   }

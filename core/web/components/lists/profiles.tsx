@@ -14,7 +14,7 @@ import {
   ProfilePropertyRuleAPIData,
 } from "../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, hideSearch, query }) {
+export default function ({ errorHandler, hideSearch, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -50,7 +50,7 @@ export default function ({ apiVersion, errorHandler, hideSearch, query }) {
 
     setTotal(0);
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/profiles`, {
+    const response = await execApi("get", `/profiles`, {
       searchKey,
       searchValue,
       limit,
@@ -70,11 +70,9 @@ export default function ({ apiVersion, errorHandler, hideSearch, query }) {
 
   async function loadProfileProperties() {
     setLoading(true);
-    const response = await execApi(
-      "get",
-      `/api/${apiVersion}/profilePropertyRules`,
-      { state: "ready" }
-    );
+    const response = await execApi("get", `/profilePropertyRules`, {
+      state: "ready",
+    });
     setLoading(false);
     if (response?.profilePropertyRules) {
       setProfilePropertyRules(
@@ -131,7 +129,7 @@ export default function ({ apiVersion, errorHandler, hideSearch, query }) {
     setSearchLoading(true);
     const response = await execApi(
       "get",
-      `/api/${apiVersion}/profiles/autocompleteProfileProperty`,
+      `/profiles/autocompleteProfileProperty`,
       { profilePropertyRuleGuid, match }
     );
     if (response.profileProperties) {

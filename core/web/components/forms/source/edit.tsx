@@ -9,7 +9,6 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import { SourceAPIData } from "../../../utils/apiData";
 
 export default function ({
-  apiVersion,
   errorHandler,
   successHandler,
   sourceHandler,
@@ -32,16 +31,13 @@ export default function ({
   async function load() {
     const connectionOptionsResponse = await execApi(
       "get",
-      `/api/${apiVersion}/source/${guid}/connectionOptions`
+      `/source/${guid}/connectionOptions`
     );
     if (connectionOptionsResponse?.options) {
       setConnectionOptions(connectionOptionsResponse.options);
     }
 
-    const sourceResponse = await execApi(
-      "get",
-      `/api/${apiVersion}/source/${guid}`
-    );
+    const sourceResponse = await execApi("get", `/source/${guid}`);
     if (sourceResponse?.source) {
       setSource(sourceResponse.source);
     }
@@ -58,7 +54,7 @@ export default function ({
 
     const response = await execApi(
       "get",
-      `/api/${apiVersion}/source/${guid}/preview`,
+      `/source/${guid}/preview`,
       {
         options: Object.keys(source.options).length > 0 ? source.options : null,
       },
@@ -81,7 +77,7 @@ export default function ({
 
     const response = await execApi(
       "put",
-      `/api/${apiVersion}/source/${guid}`,
+      `/source/${guid}`,
       Object.assign({}, source, { state })
     );
     if (response?.source) {
@@ -105,10 +101,7 @@ export default function ({
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
-      const response = await execApi(
-        "delete",
-        `/api/${apiVersion}/source/${guid}`
-      );
+      const response = await execApi("delete", `/source/${guid}`);
       if (response) {
         successHandler.set({ message: "source deleted" });
         Router.push("/sources");

@@ -11,7 +11,7 @@ import StateBadge from "../stateBadge";
 
 import { AppAPIData } from "../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, query }) {
+export default function ({ errorHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [apps, setApps] = useState<AppAPIData[]>([]);
   const [total, setTotal] = useState(0);
@@ -29,7 +29,7 @@ export default function ({ apiVersion, errorHandler, query }) {
   async function load() {
     updateURLParams();
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/apps`, {
+    const response = await execApi("get", `/apps`, {
       limit,
       offset,
     });

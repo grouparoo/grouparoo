@@ -4,7 +4,7 @@ import { Row, Col, Table, Form, Button } from "react-bootstrap";
 import { createSchedule } from "../schedule/add";
 import Router from "next/router";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({ errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [preview, setPreview] = useState([]);
   const [profilePropertyRules, setProfilePropertyRules] = useState([]);
@@ -35,10 +35,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   }, []);
 
   async function load() {
-    const sourceResponse = await execApi(
-      "get",
-      `/api/${apiVersion}/source/${guid}`
-    );
+    const sourceResponse = await execApi("get", `/source/${guid}`);
     if (sourceResponse?.source) {
       setSource(sourceResponse.source);
       if (Object.keys(sourceResponse.source.mapping).length > 0) {
@@ -54,19 +51,14 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
       return;
     }
 
-    const previewResponse = await execApi(
-      "get",
-      `/api/${apiVersion}/source/${guid}/preview`
-    );
+    const previewResponse = await execApi("get", `/source/${guid}/preview`);
     if (previewResponse?.preview) {
       setPreview(previewResponse.preview);
     }
 
-    const prrResponse = await execApi(
-      "get",
-      `/api/${apiVersion}/profilePropertyRules`,
-      { unique: true }
-    );
+    const prrResponse = await execApi("get", `/profilePropertyRules`, {
+      unique: true,
+    });
     if (prrResponse?.profilePropertyRules) {
       setProfilePropertyRules(prrResponse.profilePropertyRules);
       setProfilePropertyRuleExamples(prrResponse.examples);
@@ -74,10 +66,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   }
 
   async function loadOptions() {
-    const response = await execApi(
-      "get",
-      `/api/${apiVersion}/profilePropertyRuleOptions`
-    );
+    const response = await execApi("get", `/profilePropertyRuleOptions`);
     if (response?.types) {
       setTypes(response.types);
     }
@@ -91,17 +80,15 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     if (confirm("are you sure?")) {
       const response = await execApi(
         "post",
-        `/api/${apiVersion}/source/${guid}/bootstrapUniqueProfilePropertyRule`,
+        `/source/${guid}/bootstrapUniqueProfilePropertyRule`,
         Object.assign(newProfilePropertyRule, { mappedColumn: newMappingKey })
       );
       if (response?.profilePropertyRule) {
         successHandler.set({ message: "Profile Property Rule created" });
 
-        const prrResponse = await execApi(
-          "get",
-          `/api/${apiVersion}/profilePropertyRules`,
-          { unique: true }
-        );
+        const prrResponse = await execApi("get", `/profilePropertyRules`, {
+          unique: true,
+        });
         if (prrResponse?.profilePropertyRules) {
           setProfilePropertyRules(prrResponse.profilePropertyRules);
           setProfilePropertyRuleExamples(prrResponse.examples);
@@ -117,7 +104,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
   };
 
   const countSchedules = async () => {
-    const { total } = await execApi("get", `/api/${apiVersion}/schedules`);
+    const { total } = await execApi("get", `/schedules`);
     setScheduleCount(total);
   };
 
@@ -128,7 +115,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
     source.mapping[newMappingKey] = newMappingValue;
     const response = await execApi(
       "put",
-      `/api/${apiVersion}/source/${guid}`,
+      `/source/${guid}`,
       Object.assign({}, source, { state: "ready" })
     );
     if (response?.source) {
@@ -140,7 +127,6 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
         createSchedule({
           sourceGuid: response.source.guid,
           setLoading: () => {},
-          apiVersion,
           successHandler,
           execApi,
         });

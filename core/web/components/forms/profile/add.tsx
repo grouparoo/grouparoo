@@ -2,11 +2,11 @@ import { useApi } from "../../../hooks/useApi";
 import Router from "next/router";
 import { Button } from "react-bootstrap";
 
-export default function ({ apiVersion, errorHandler }) {
+export default function ({ errorHandler }) {
   const { execApi } = useApi(errorHandler);
 
   async function create() {
-    const response = await execApi("post", `/api/${apiVersion}/profile`);
+    const response = await execApi("post", `/profile`);
     Router.push("/profile/[guid]", `/profile/${response.profile.guid}`);
   }
 

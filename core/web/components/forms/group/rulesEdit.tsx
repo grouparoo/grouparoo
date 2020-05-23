@@ -10,12 +10,7 @@ import {
   ProfilePropertyRuleAPIData,
 } from "../../../utils/apiData";
 
-export default function RulesBuilder({
-  errorHandler,
-  successHandler,
-  apiVersion,
-  query,
-}) {
+export default function RulesBuilder({ errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [group, setGroup] = useState<GroupAPIData>({ rules: [] });
   const [loading, setLoading] = useState(false);
@@ -49,7 +44,7 @@ export default function RulesBuilder({
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/group/${guid}`);
+    const response = await execApi("get", `/group/${guid}`);
     setLoading(false);
     if (response?.group) {
       // TODO: Why is this require to break the object chain to rules?
@@ -69,10 +64,7 @@ export default function RulesBuilder({
 
   async function loadRuleOptions() {
     setLoading(true);
-    const response = await execApi(
-      "get",
-      `/api/${apiVersion}/groups/ruleOptions`
-    );
+    const response = await execApi("get", `/groups/ruleOptions`);
     setLoading(false);
     if (response?.ruleLimit) {
       setRuleLimit(response.ruleLimit);
@@ -82,11 +74,9 @@ export default function RulesBuilder({
 
   async function loadProfilePropertyRules() {
     setLoading(true);
-    const response = await execApi(
-      "get",
-      `/api/${apiVersion}/profilePropertyRules`,
-      { state: "ready" }
-    );
+    const response = await execApi("get", `/profilePropertyRules`, {
+      state: "ready",
+    });
     setLoading(false);
     if (response?.profilePropertyRules) {
       setProfilePropertyRules(response.profilePropertyRules);
@@ -97,7 +87,7 @@ export default function RulesBuilder({
     setLoading(true);
     let response = await execApi(
       "get",
-      `/api/${apiVersion}/group/${guid}/countComponentMembers`,
+      `/group/${guid}/countComponentMembers`,
       { rules: localRules },
       null,
       null,
@@ -111,7 +101,7 @@ export default function RulesBuilder({
 
     response = await execApi(
       "get",
-      `/api/${apiVersion}/group/${guid}/countPotentialMembers`,
+      `/group/${guid}/countPotentialMembers`,
       { rules: localRules },
       null,
       null,
@@ -146,7 +136,7 @@ export default function RulesBuilder({
 
   async function updateRules() {
     setLoading(true);
-    const response = await execApi("put", `/api/${apiVersion}/group/${guid}`, {
+    const response = await execApi("put", `/group/${guid}`, {
       guid: group.guid,
       rules: localRules,
     });
@@ -166,7 +156,7 @@ export default function RulesBuilder({
     setLoading(true);
     const response = await execApi(
       "get",
-      `/api/${apiVersion}/profiles/autocompleteProfileProperty`,
+      `/profiles/autocompleteProfileProperty`,
       { profilePropertyRuleGuid, match }
     );
     if (response.profileProperties) {

@@ -11,7 +11,7 @@ import StateBadge from "../stateBadge";
 
 import { SourceAPIData } from "../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, sourceHandler, query }) {
+export default function ({ errorHandler, sourceHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [sources, setSources] = useState<SourceAPIData[]>([]);
@@ -35,7 +35,7 @@ export default function ({ apiVersion, errorHandler, sourceHandler, query }) {
   async function load() {
     updateURLParams();
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/sources`, {
+    const response = await execApi("get", `/sources`, {
       limit,
       offset,
     });

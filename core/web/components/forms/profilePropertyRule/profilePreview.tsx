@@ -4,11 +4,7 @@ import { Card, ListGroup } from "react-bootstrap";
 import Loader from "../../loader";
 import ProfileImageFromEmail from "../../visualizations/profileImageFromEmail";
 
-export default function ProfilePreview({
-  apiVersion,
-  errorHandler,
-  profilePropertyRule,
-}) {
+export default function ProfilePreview({ errorHandler, profilePropertyRule }) {
   const [profileGuid, setProfileGuid] = useState("");
   const [toHide, setToHide] = useState(true);
   const [profile, setProfile] = useState({ guid: "", properties: {} });
@@ -44,7 +40,7 @@ export default function ProfilePreview({
     timer = setTimeout(async () => {
       const response = await execApi(
         "get",
-        `/api/${apiVersion}/profilePropertyRule/${profilePropertyRule.guid}/profilePreview`,
+        `/profilePropertyRule/${profilePropertyRule.guid}/profilePreview`,
         {
           options: profilePropertyRule.options,
           filters: profilePropertyRule.filters,

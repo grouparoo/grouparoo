@@ -17,7 +17,6 @@ export default function ({
   query: { [key: string]: any }; // the query object - the guid of the item, like "pro_abc123"; the active tab from the url, set via "?tab=edit"
   defaultTab: string; // the starting tab when none is set in the URL
   errorHandler: ErrorHandler; //the error subscription object
-  apiVersion: string | number; // the version of the Grouparoo API we are using
   name: string; // the name to render in the breadcrumb
   children: any; // react children
 }) {

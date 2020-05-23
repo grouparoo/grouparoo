@@ -6,7 +6,7 @@ import Moment from "react-moment";
 
 import { EventAPIData } from "../../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, successHandler, query }) {
+export default function ({ errorHandler, successHandler, query }) {
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [event, setEvent] = useState<EventAPIData>({ data: {} });
@@ -19,7 +19,7 @@ export default function ({ apiVersion, errorHandler, successHandler, query }) {
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/event/${guid}`);
+    const response = await execApi("get", `/event/${guid}`);
     setLoading(false);
     if (response?.event) {
       setEvent(response.event);

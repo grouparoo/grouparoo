@@ -6,7 +6,7 @@ import LoadingTable from "../loadingTable";
 
 import { TeamAPIData } from "../../utils/apiData";
 
-export default function ({ apiVersion, errorHandler, teamHandler }) {
+export default function ({ errorHandler, teamHandler }) {
   const { execApi } = useApi(errorHandler);
   const [teams, setTeams] = useState<TeamAPIData[]>([]);
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ export default function ({ apiVersion, errorHandler, teamHandler }) {
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/api/${apiVersion}/teams`);
+    const response = await execApi("get", `/teams`);
     if (response?.teams) {
       setTeams(response.teams);
     }

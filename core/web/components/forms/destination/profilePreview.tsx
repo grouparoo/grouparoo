@@ -4,7 +4,6 @@ import { Card, ListGroup } from "react-bootstrap";
 import Loader from "../../loader";
 
 export default function ProfilePreview({
-  apiVersion,
   errorHandler,
   destination,
   groups,
@@ -69,7 +68,7 @@ export default function ProfilePreview({
 
       const response = await execApi(
         "get",
-        `/api/${apiVersion}/destination/${destination.guid}/profilePreview`,
+        `/destination/${destination.guid}/profilePreview`,
         {
           groupGuid,
           mapping: destination.mapping,
