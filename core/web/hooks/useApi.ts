@@ -1,15 +1,11 @@
-// import { useState } from "react";
 import { Client } from "../client/client";
 import { ErrorHandler } from "../utils/errorHandler";
 
 const client = new Client();
-const apiVersion = process.env.API_VERSION;
+export const apiVersion = process.env.API_VERSION;
 const webUrl = process.env.WEB_URL;
 
 export function useApi(errorHandler?: ErrorHandler, cookieString?: string) {
-  // const [response, setResponse] = useState(null);
-  // const [loading, setLoading] = useState(false);
-
   async function execApi(
     verb = "get",
     path: string,
@@ -22,8 +18,6 @@ export function useApi(errorHandler?: ErrorHandler, cookieString?: string) {
       data = {};
     }
 
-    // setLoading(true);
-
     let apiResponse;
     try {
       apiResponse = await client.action(
@@ -33,7 +27,6 @@ export function useApi(errorHandler?: ErrorHandler, cookieString?: string) {
         useCache,
         cookieString
       );
-      // setResponse(apiResponse);
 
       if (setter) {
         if (setterKey) {
@@ -42,7 +35,7 @@ export function useApi(errorHandler?: ErrorHandler, cookieString?: string) {
           setter(apiResponse);
         }
       }
-      // setLoading(false);
+
       return apiResponse;
     } catch (error) {
       if (errorHandler) {
@@ -53,6 +46,5 @@ export function useApi(errorHandler?: ErrorHandler, cookieString?: string) {
     }
   }
 
-  // return { loading, execApi, response };
   return { execApi };
 }

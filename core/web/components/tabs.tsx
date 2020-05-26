@@ -15,7 +15,7 @@ export default function GrouparooTabs({
   const parts = globalThis.location.href.split("/");
   const topic = parts[3];
   const guid = parts[4];
-  const verb = parts[5];
+  const verb = parts[5].split("?")[0];
 
   function capitalize(s: string) {
     return s.charAt(0).toUpperCase() + s.slice(1);
@@ -46,7 +46,7 @@ export default function GrouparooTabs({
         }}
       >
         {tabs.map((tab) => (
-          <Tab key={`_tab-edit`} eventKey={tab} title={capitalize(tab)} />
+          <Tab key={`_tab-${tab}`} eventKey={tab} title={capitalize(tab)} />
         ))}
       </Tabs>
 

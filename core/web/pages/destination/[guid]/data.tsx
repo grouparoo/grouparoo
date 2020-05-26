@@ -1,104 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Badge, Button, Table } from "react-bootstrap";
-import ProfilePreview from "./profilePreview";
+import ProfilePreview from "./../../../components/destination/profilePreview";
+import Head from "next/head";
+import DestinationTabs from "../../../components/tabs/destination";
 
 import {
   ProfilePropertyRuleAPIData,
   DestinationAPIData,
 } from "../../../utils/apiData";
 
-export default function ({ errorHandler, successHandler, query }) {
+export default function Page(props) {
+  const {
+    errorHandler,
+    successHandler,
+    query,
+    profilePropertyRules,
+    mappingOptions,
+    groups,
+  } = props;
   const { execApi } = useApi(errorHandler);
-  const [groups, setGroups] = useState([]);
   const [trackedGroupGuid, setTrackedGroupGuid] = useState("_none");
-  const [mappingOptions, setMappingOptions] = useState({
-    profilePropertyRules: {
-      required: [],
-      known: [],
-      allowOptionalFromProfilePropertyRules: false,
-    },
-    labels: {
-      profilePropertyRule: {
-        singular: "",
-        plural: "",
-      },
-      group: {
-        singular: "",
-        plural: "",
-      },
-    },
-  });
-  const [profilePropertyRules, setProfilePropertyRules] = useState<
-    ProfilePropertyRuleAPIData[]
-  >([]);
-  const [destination, setDestination] = useState<DestinationAPIData>({
-    mapping: [],
-    destinationGroupMemberships: [],
-    destinationGroups: [],
-  });
+  const [destination, setDestination] = useState<DestinationAPIData>(
+    props.destination
+  );
   const [
     unlockedProfilePropertyRules,
     setUnlockedProfilePropertyRules,
   ] = useState({});
   const [unlockedGroups, setUnlockedGroups] = useState([]);
   const { guid } = query;
-
-  useEffect(() => {
-    loadGroups();
-    loadMappingOptions();
-    loadProfilePropertyRules();
-    load();
-  }, []);
-
-  async function load() {
-    const response = await execApi(
-      "get",
-      `/destination/${guid}`,
-      null,
-      null,
-      null,
-      false
-    );
-    if (response?.destination) {
-      setDestination(response.destination);
-      setUnlockedProfilePropertyRules({});
-      setUnlockedGroups([]);
-      setTrackedGroupGuid(
-        response.destination.trackAllGroups
-          ? "_all"
-          : response.destination.destinationGroups[0]
-          ? response.destination.destinationGroups[0].guid
-          : "_none"
-      );
-    }
-  }
-
-  async function loadGroups() {
-    const response = await execApi("get", `/groups`);
-    if (response?.groups) {
-      setGroups(response.groups.filter((group) => group.state !== "draft"));
-    }
-  }
-
-  async function loadProfilePropertyRules() {
-    const response = await execApi("get", `/profilePropertyRules`, {
-      state: "ready",
-    });
-    if (response?.profilePropertyRules) {
-      setProfilePropertyRules(response.profilePropertyRules);
-    }
-  }
-
-  async function loadMappingOptions() {
-    const response = await execApi(
-      "get",
-      `/destination/${guid}/mappingOptions`
-    );
-    if (response?.options) {
-      setMappingOptions(response.options);
-    }
-  }
 
   const update = async (event) => {
     event.preventDefault();
@@ -130,7 +61,6 @@ export default function ({ errorHandler, successHandler, query }) {
     });
 
     successHandler.set({ message: "Destination Updated" });
-    await load();
   };
 
   const remainingProfilePropertyRulesForKnown = [];
@@ -284,6 +214,12 @@ export default function ({ errorHandler, successHandler, query }) {
 
   return (
     <>
+      <Head>
+        <title>Grouparoo: {destination.name}</title>
+      </Head>
+
+      <DestinationTabs name={destination.name} />
+
       <h1>Destination Data</h1>
       <Row>
         <Col>
@@ -699,3 +635,25 @@ export default function ({ errorHandler, successHandler, query }) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { guid } = ctx.query;
+  const { destination } = await execApi("get", `/destination/${guid}`);
+  const { groups } = await execApi("get", `/groups`);
+  const { profilePropertyRules } = await execApi(
+    "get",
+    `/profilePropertyRules`
+  );
+  const { options } = await execApi(
+    "get",
+    `/destination/${guid}/mappingOptions`
+  );
+
+  return {
+    destination,
+    profilePropertyRules,
+    mappingOptions: options,
+    groups: groups.filter((group) => group.state !== "draft"),
+  };
+};

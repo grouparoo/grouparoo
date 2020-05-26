@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "../../hooks/useApi";
 import { Card, ListGroup } from "react-bootstrap";
-import Loader from "../../loader";
+import Loader from "../loader";
 
 export default function ProfilePreview({
   errorHandler,

@@ -1,61 +1,41 @@
-import { Fragment, useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
-import { useHistoryPagination } from "../../hooks/useHistoryPagination";
+import { Fragment, useState } from "react";
+import { useApi } from "../../../hooks/useApi";
+import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
+import { useHistoryPagination } from "../../../hooks/useHistoryPagination";
 import Link from "next/link";
 import Router from "next/router";
-import { Badge, ButtonGroup, Button, Alert } from "react-bootstrap";
-import Pagination from "../pagination";
+import { Badge, Alert } from "react-bootstrap";
+import Pagination from "../../../components/pagination";
 import Moment from "react-moment";
-import LoadingTable from "../loadingTable";
+import LoadingTable from "../../../components/loadingTable";
+import Head from "next/head";
+import DestinationTabs from "../../../components/tabs/destination";
 
-import {
-  ExportAPIData,
-  GroupAPIData,
-  DestinationAPIData,
-} from "../../utils/apiData";
+import { ExportAPIData } from "../../../utils/apiData";
 
-export default function ({ errorHandler, query }) {
+export default function Page(params) {
+  const { errorHandler, query, destination, groups } = params;
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [_exports, setExports] = useState<ExportAPIData[]>([]);
-  const [groups, setGroups] = useState<GroupAPIData[]>([]);
-  const [destinations, setDestinations] = useState<DestinationAPIData[]>([]);
-  const [total, setTotal] = useState(0);
-  const [selectedDestinationGuid, setSelectedDestinationGuid] = useState(
-    query.selectedDestinationGuid || ""
-  );
+  const [_exports, setExports] = useState<ExportAPIData[]>(params._exports);
+  const [total, setTotal] = useState(params.total);
 
   // pagination
   const limit = 100;
   const [offset, setOffset] = useState(query.offset || 0);
-  const profileGuid = query?.guid?.match(/^pro_/) ? query.guid : null;
-  const destinationGuid = query?.guid?.match(/^dst_/) ? query.guid : null;
   useHistoryPagination(offset, "offset", setOffset);
 
-  useEffect(() => {
+  useSecondaryEffect(() => {
     load();
-  }, [offset, limit, profileGuid, selectedDestinationGuid]);
+  }, [offset, limit]);
 
   async function load() {
     updateURLParams();
     setLoading(true);
-    const groupsResponse = await execApi("get", `/groups`);
-    if (groupsResponse?.groups) {
-      setGroups(groupsResponse.groups);
-    }
-
-    const destinationsResponse = await execApi("get", `/destinations`);
-    if (destinationsResponse?.destinations) {
-      setDestinations(destinationsResponse.destinations);
-    }
-
     const response = await execApi("get", `/exports`, {
       limit,
       offset,
-      profileGuid,
-      destinationGuid: destinationGuid
-        ? destinationGuid
-        : selectedDestinationGuid,
+      destinationGuid: destination.guid,
     });
     setLoading(false);
     if (response?.exports) {
@@ -89,57 +69,23 @@ export default function ({ errorHandler, query }) {
 
   function updateURLParams() {
     let url = `${window.location.pathname}?`;
-    if (
-      window.location.pathname.indexOf("/profile/") >= 0 ||
-      window.location.pathname.indexOf("/destination/") >= 0
-    ) {
-      url += "tab=exports&";
-    }
-    if (selectedDestinationGuid && selectedDestinationGuid !== "") {
-      url += `selectedDestinationGuid=${selectedDestinationGuid}&`;
-    }
     if (offset && offset !== 0) {
       url += `offset=${offset}&`;
     }
-
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
     Router[routerMethod](Router.route, url, { shallow: true });
   }
 
-  const allButtonVariant = selectedDestinationGuid !== "" ? "info" : "success";
-
   return (
     <>
-      {destinationGuid ? null : (
-        <>
-          <ButtonGroup id="log-types">
-            <Button
-              size="sm"
-              variant={allButtonVariant}
-              onClick={() => setSelectedDestinationGuid("")}
-            >
-              All
-            </Button>
-            {destinations.map((d) => {
-              const variant =
-                d.guid === selectedDestinationGuid ? "success" : "info";
-              return (
-                <Button
-                  key={`destination-${d.guid}`}
-                  size="sm"
-                  variant={variant}
-                  onClick={() => setSelectedDestinationGuid(d.guid)}
-                >
-                  {d.name}
-                </Button>
-              );
-            })}
-          </ButtonGroup>
-          <br />
-          <br />
-        </>
-      )}
+      <Head>
+        <title>Grouparoo: {destination.name}</title>
+      </Head>
+
+      <DestinationTabs name={destination.name} />
+
+      <h1>Exports</h1>
 
       <p>{total} exports</p>
 
@@ -166,22 +112,25 @@ export default function ({ errorHandler, query }) {
                 <tr>
                   <td>
                     <span className="text-info">Guid</span>:{" "}
-                    <Link href="/export/[guid]" as={`/export/${_export.guid}`}>
+                    <Link
+                      href="/export/[guid]/edit"
+                      as={`/export/${_export.guid}/edit`}
+                    >
                       <a>{_export.guid}</a>
                     </Link>
                     <br />
                     Profile:{" "}
                     <Link
-                      href="/profile/[guid]"
-                      as={`/profile/${_export.profileGuid}`}
+                      href="/profile/[guid]/edit"
+                      as={`/profile/${_export.profileGuid}/edit`}
                     >
                       <a>{_export.profileGuid}</a>
                     </Link>
                     <br />
                     Destination:{" "}
                     <Link
-                      href="/destination/[guid]"
-                      as={`/destination/${_export.destination.guid}`}
+                      href="/destination/[guid]/edit"
+                      as={`/destination/${_export.destination.guid}/edit`}
                     >
                       <a>{_export.destination.name}</a>
                     </Link>
@@ -296,3 +245,17 @@ export default function ({ errorHandler, query }) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { guid, limit, offset } = ctx.query;
+  const { destination } = await execApi("get", `/destination/${guid}`);
+  const { groups } = await execApi("get", `/groups`);
+  const { exports: _exports, total } = await execApi("get", `/exports`, {
+    limit,
+    offset,
+    destinationGuid: guid,
+  });
+
+  return { destination, groups, _exports, total };
+};

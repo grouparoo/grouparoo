@@ -1,48 +1,29 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Button, Badge } from "react-bootstrap";
 import Router from "next/router";
 import Link from "next/link";
-import AppIcon from "./../../appIcon";
-import StateBadge from "./../../stateBadge";
+import Head from "next/head";
+import AppIcon from "./../../../components/appIcon";
+import StateBadge from "./../../../components/stateBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
+import DestinationTabs from "./../../../components/tabs/destination";
 
 import { DestinationAPIData } from "../../../utils/apiData";
 
-export default function ({
-  errorHandler,
-  successHandler,
-  destinationHandler,
-  query,
-}) {
+export default function Page(props) {
+  const {
+    errorHandler,
+    successHandler,
+    destinationHandler,
+    query,
+    connectionOptions,
+  } = props;
   const { execApi } = useApi(errorHandler);
-  const [connectionOptions, setConnectionOptions] = useState([]);
-  const [destination, setDestination] = useState<DestinationAPIData>({
-    // @ts-ignore
-    app: {},
-    // @ts-ignore
-    connection: { options: [] },
-  });
+  const [destination, setDestination] = useState<DestinationAPIData>(
+    props.destination
+  );
   const { guid } = query;
-
-  useEffect(() => {
-    load();
-  }, []);
-
-  async function load() {
-    const connectionOptionsResponse = await execApi(
-      "get",
-      `/destination/${guid}/connectionOptions`
-    );
-    if (connectionOptionsResponse?.options) {
-      setConnectionOptions(connectionOptionsResponse.options);
-    }
-
-    const destinationResponse = await execApi("get", `/destination/${guid}`);
-    if (destinationResponse?.destination) {
-      setDestination(destinationResponse.destination);
-    }
-  }
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -58,21 +39,12 @@ export default function ({
     if (response?.destination) {
       successHandler.set({ message: "Destination updated" });
       setDestination(response.destination);
-      destinationHandler.set();
-      if (response.destination.state === "draft") {
-        Router.push({
-          pathname: `/destination/${guid}`,
-          query: { tab: "mapping" },
-        });
-      }
+      destinationHandler.set(response.destination);
       if (
         response.destination.state === "ready" &&
         destination.state === "draft"
       ) {
-        Router.push({
-          pathname: `/destination/${destination.guid}`,
-          query: { tab: "data" },
-        });
+        Router.push(`/destination/${destination.guid}/data`);
       }
     }
   };
@@ -101,9 +73,25 @@ export default function ({
     setDestination(_destination);
   };
 
+  useEffect(() => {
+    props.destinationHandler.subscribe("destination-edit", (_destination) => {
+      setDestination(_destination);
+    });
+
+    return () => {
+      props.destinationHandler.unsubscribe("destination-edit");
+    };
+  }, []);
+
   return (
     <>
-      <h2>Edit Destination</h2>
+      <Head>
+        <title>Grouparoo: {destination.name}</title>
+      </Head>
+
+      <DestinationTabs name={destination.name} />
+
+      <h1>Edit Destination</h1>
 
       <Row>
         <Col md={1}>
@@ -296,3 +284,14 @@ export default function ({
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { guid } = ctx.query;
+  const { destination } = await execApi("get", `/destination/${guid}`);
+  const { options } = await execApi(
+    "get",
+    `/destination/${guid}/connectionOptions`
+  );
+  return { destination, connectionOptions: options };
+};
