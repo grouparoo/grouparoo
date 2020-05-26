@@ -1,12 +1,14 @@
-import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
+import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import PermissionsList from "../../lists/permissions";
+import Head from "next/head";
+import PermissionsList from "../../../components/lists/permissions";
 import Router from "next/router";
+import ApiKeyTabs from "../../../components/tabs/apiKey";
 
 import { ApiKeyAPIData } from "../../../utils/apiData";
 
-export default function (props) {
+export default function Page(props) {
   const { errorHandler, successHandler, query } = props;
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
@@ -70,6 +72,12 @@ export default function (props) {
 
   return (
     <>
+      <Head>
+        <title>Grouparoo: {apiKey.name}</title>
+      </Head>
+
+      <ApiKeyTabs name={apiKey.name} />
+
       <Form id="form" onSubmit={updateApiKey}>
         <Form.Group>
           <Form.Label>Name</Form.Label>
@@ -126,3 +134,10 @@ export default function (props) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { guid } = ctx.query;
+  const { apiKey } = await execApi("get", `/apiKey/${guid}`);
+  return { apiKey };
+};
