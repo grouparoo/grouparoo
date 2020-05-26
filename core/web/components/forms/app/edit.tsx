@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
+import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
 import { Row, Col, Form, Button, Badge, Alert } from "react-bootstrap";
 import Router from "next/router";
 import AppIcon from "../../appIcon";
@@ -8,17 +9,24 @@ import { Typeahead } from "react-bootstrap-typeahead";
 
 import { AppAPIData } from "../../../utils/apiData";
 
-export default function ({ errorHandler, successHandler, appHandler, query }) {
+export default function (props) {
+  const {
+    errorHandler,
+    successHandler,
+    appHandler,
+    query,
+    types,
+    optionOptions,
+  } = props;
   const { execApi } = useApi(errorHandler);
+
+  const [app, setApp] = useState<AppAPIData>(props.app);
   const [loading, setLoading] = useState(false);
-  const [types, setTypes] = useState([]);
-  const [optionOptions, setOptionOptions] = useState([]);
   const [testResult, setTestResult] = useState({ result: null, error: null });
   const [ranTest, setRanTest] = useState(false);
-  const [app, setApp] = useState<AppAPIData>({ name: "" });
   const { guid } = query;
 
-  useEffect(() => {
+  useSecondaryEffect(() => {
     load();
   }, []);
 
@@ -28,16 +36,6 @@ export default function ({ errorHandler, successHandler, appHandler, query }) {
     const appResponse = await execApi("get", `/app/${guid}`);
     if (appResponse?.app) {
       setApp(appResponse.app);
-    }
-
-    const typesResponse = await execApi("get", `/appOptions`);
-    if (typesResponse?.types) {
-      setTypes(typesResponse.types);
-    }
-
-    const optionsResponse = await execApi("get", `/app/${guid}/optionOptions`);
-    if (optionsResponse?.options) {
-      setOptionOptions(optionsResponse.options);
     }
 
     setLoading(false);
@@ -279,7 +277,9 @@ export default function ({ errorHandler, successHandler, appHandler, query }) {
             </Button>
           </Col>
           <Col>
-            {testResult.result !== null && testResult.result !== undefined ? (
+            {testResult.result !== null &&
+            testResult.result !== undefined &&
+            !testResult.error ? (
               <Alert variant="success">Test Passed</Alert>
             ) : ranTest ? (
               <Alert variant="warning">Test Failed</Alert>

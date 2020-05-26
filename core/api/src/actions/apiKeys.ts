@@ -8,14 +8,23 @@ export class ApiKeysList extends AuthenticatedAction {
     this.description = "list all the apiKeys";
     this.outputExample = {};
     this.permission = { topic: "apiKey", mode: "read" };
-    this.inputs = {};
+    this.inputs = {
+      limit: { required: true, default: 1000, formatter: parseInt },
+      offset: { required: true, default: 0, formatter: parseInt },
+    };
   }
 
-  async run({ response }) {
-    const apiKeys = await ApiKey.findAll();
+  async run({ response, params }) {
+    const apiKeys = await ApiKey.findAll({
+      limit: params.limit,
+      offset: params.offset,
+    });
+
     response.apiKeys = await Promise.all(
       apiKeys.map(async (apiKey) => apiKey.apiData())
     );
+
+    response.total = await ApiKey.count();
   }
 }
 

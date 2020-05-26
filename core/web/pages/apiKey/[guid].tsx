@@ -1,28 +1,13 @@
 import TabbedContainer from "../../components/layouts/tabbedContainer";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 import { Card } from "react-bootstrap";
 import ApiKeyEditForm from "../../components/forms/apiKey/edit";
 import { useApi } from "./../../hooks/useApi";
 
-import { ApiKeyAPIData } from "../../utils/apiData";
-
-export default function (props) {
-  const [apiKey, setApiKey] = useState<ApiKeyAPIData>({});
-  const { execApi } = useApi(props.errorHandler);
-
-  useEffect(() => {
-    load();
-  }, []);
-
-  async function load() {
-    const response = await execApi("get", `/apiKey/${props.query.guid}`);
-    if (response?.apiKey) {
-      setApiKey(response.apiKey);
-    }
-  }
+export default function Page(props) {
   return (
     <TabbedContainer
-      name={apiKey.name}
+      name={props.apiKey.name}
       errorHandler={props.errorHandler}
       type="apiKey"
       defaultTab="edit"
@@ -39,3 +24,10 @@ export default function (props) {
     </TabbedContainer>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { guid } = ctx.query;
+  const { apiKey } = await execApi("get", `/apiKey/${guid}`);
+  return { apiKey };
+};

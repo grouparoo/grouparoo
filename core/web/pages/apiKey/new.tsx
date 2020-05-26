@@ -1,7 +1,7 @@
 import Head from "next/head";
 import ApiKeyAdd from "../../components/forms/apiKey/add";
 
-export default function (props) {
+export default function Page(props) {
   return (
     <>
       <Head>

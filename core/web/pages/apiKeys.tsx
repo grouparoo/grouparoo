@@ -2,8 +2,9 @@ import Head from "next/head";
 import ApiKeysList from "../components/lists/apiKeys";
 import { Button } from "react-bootstrap";
 import Router from "next/router";
+import { useApi } from "../hooks/useApi";
 
-export default function (props) {
+export default function Page(props) {
   return (
     <>
       <Head>
@@ -24,3 +25,9 @@ export default function (props) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { apiKeys, total } = await execApi("get", `/apiKeys`);
+  return { apiKeys, total };
+};

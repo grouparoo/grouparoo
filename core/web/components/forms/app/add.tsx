@@ -1,27 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Form, Button } from "react-bootstrap";
 import Router from "next/router";
 import SelectorList from "../../selectorList";
 
-export default function ({ errorHandler }) {
+export default function ({ errorHandler, types }) {
+  const { execApi } = useApi(errorHandler);
   const [app, setApp] = useState({ type: "" });
   const [loading, setLoading] = useState(false);
-  const [appTypes, setAppTypes] = useState([]);
-  const { execApi } = useApi(errorHandler);
-
-  useEffect(() => {
-    loadOptions();
-  }, []);
-
-  async function loadOptions() {
-    setLoading(true);
-    const response = await execApi("get", `/appOptions`);
-    setLoading(false);
-    if (response?.types) {
-      setAppTypes(response.types.filter((app) => app.addible !== false));
-    }
-  }
 
   async function create(event) {
     event.preventDefault();
@@ -40,7 +26,7 @@ export default function ({ errorHandler }) {
   return (
     <>
       <Form id="form" onSubmit={create}>
-        <SelectorList onClick={updateApp} selectedItem={app} items={appTypes} />
+        <SelectorList onClick={updateApp} selectedItem={app} items={types} />
         <br />
         <Button variant="primary" type="submit" active={!loading}>
           Continue

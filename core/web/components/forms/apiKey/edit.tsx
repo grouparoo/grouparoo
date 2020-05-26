@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Form, Button } from "react-bootstrap";
 import PermissionsList from "../../lists/permissions";
@@ -6,24 +6,12 @@ import Router from "next/router";
 
 import { ApiKeyAPIData } from "../../../utils/apiData";
 
-export default function ({ errorHandler, successHandler, query }) {
+export default function (props) {
+  const { errorHandler, successHandler, query } = props;
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [apiKey, setApiKey] = useState<ApiKeyAPIData>({ name: "", apiKey: "" });
+  const [apiKey, setApiKey] = useState<ApiKeyAPIData>(props.apiKey);
   const { guid } = query;
-
-  useEffect(() => {
-    load();
-  }, []);
-
-  async function load() {
-    setLoading(true);
-    const response = await execApi("get", `/apiKey/${guid}`);
-    setLoading(false);
-    if (response?.apiKey) {
-      setApiKey(response.apiKey);
-    }
-  }
 
   const updateApiKey = async (event) => {
     event.preventDefault();

@@ -1,7 +1,8 @@
 import Head from "next/head";
+import { useApi } from "../../hooks/useApi";
 import AppAdd from "../../components/forms/app/add";
 
-export default function (props) {
+export default function Page(props) {
   return (
     <>
       <Head>
@@ -13,3 +14,9 @@ export default function (props) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { types } = await execApi("get", `/appOptions`);
+  return { types: types.filter((app) => app.addible !== false) };
+};

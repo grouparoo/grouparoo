@@ -6,28 +6,8 @@ import { useApi } from "../../hooks/useApi";
 
 import { AppAPIData } from "../../utils/apiData";
 
-export default function (props) {
-  const [app, setApp] = useState<AppAPIData>({});
-  const { execApi } = useApi(props.errorHandler);
-
-  useEffect(() => {
-    load();
-
-    props.appHandler.subscribe("tabs", () => {
-      load();
-    });
-
-    return () => {
-      props.appHandler.unsubscribe("tabs");
-    };
-  }, []);
-
-  async function load() {
-    const response = await execApi("get", `/app/${props.query.guid}`);
-    if (response?.app) {
-      setApp(response.app);
-    }
-  }
+export default function Page(props) {
+  const { app } = props;
 
   return (
     <TabbedContainer
@@ -47,3 +27,12 @@ export default function (props) {
     </TabbedContainer>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { guid } = ctx.query;
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { app } = await execApi("get", `/app/${guid}`);
+  const { types } = await execApi("get", `/appOptions`);
+  const { options } = await execApi("get", `/app/${guid}/optionOptions`);
+  return { app, types, optionOptions: options };
+};
