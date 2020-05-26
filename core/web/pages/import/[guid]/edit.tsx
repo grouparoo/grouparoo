@@ -1,46 +1,12 @@
-import { useState, useEffect } from "react";
+import ImportTabs from "../../../components/tabs/import";
+import Head from "next/head";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Badge, Alert } from "react-bootstrap";
 import Link from "next/link";
 import Moment from "react-moment";
 
-import { ImportAPIData } from "../../../utils/apiData";
-
-export default function ({ errorHandler, successHandler, query }) {
-  const { execApi } = useApi(errorHandler);
-  const [loading, setLoading] = useState(false);
-  const [_import, setImport] = useState<ImportAPIData>({
-    oldProfileProperties: {},
-    newProfileProperties: {},
-    oldGroupGuids: [],
-    newGroupGuids: [],
-  });
-  const [groups, setGroups] = useState([{ name: "", guid: "" }]);
-
-  const { guid } = query;
-
-  useEffect(() => {
-    load();
-    loadGroups();
-  }, []);
-
-  async function load() {
-    setLoading(true);
-    const response = await execApi("get", `/import/${guid}`);
-    setLoading(false);
-    if (response?.import) {
-      setImport(response.import);
-    }
-  }
-
-  async function loadGroups() {
-    setLoading(true);
-    const response = await execApi("get", `/groups`);
-    setLoading(false);
-    if (response?.groups) {
-      setGroups(response.groups);
-    }
-  }
+export default function Page(props) {
+  const { groups, _import } = props;
 
   function groupName(groupGuid) {
     const group = groups.filter((g) => g.guid === groupGuid)[0];
@@ -55,7 +21,13 @@ export default function ({ errorHandler, successHandler, query }) {
 
   return (
     <>
-      <h1>{guid}</h1>
+      <Head>
+        <title>Grouparoo: {_import.guid}</title>
+      </Head>
+
+      <ImportTabs name={_import.guid} />
+
+      <h1>{_import.guid}</h1>
       <p>
         Creator:{" "}
         <Link
@@ -265,3 +237,11 @@ export default function ({ errorHandler, successHandler, query }) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { guid } = ctx.query;
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { import: _import } = await execApi("get", `/import/${guid}`);
+  const { groups } = await execApi("get", `/groups`);
+  return { _import, groups };
+};
