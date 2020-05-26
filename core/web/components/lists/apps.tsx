@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
+import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import Router from "next/router";
 import Link from "next/link";
@@ -11,10 +12,11 @@ import StateBadge from "../stateBadge";
 
 import { AppAPIData } from "../../utils/apiData";
 
-export default function ({ errorHandler, query }) {
+export default function (props) {
+  const { errorHandler, query } = props;
   const { execApi } = useApi(errorHandler);
-  const [apps, setApps] = useState<AppAPIData[]>([]);
-  const [total, setTotal] = useState(0);
+  const [apps, setApps] = useState<AppAPIData[]>(props.apps);
+  const [total, setTotal] = useState(props.total);
   const [loading, setLoading] = useState(false);
 
   // pagination
@@ -22,7 +24,7 @@ export default function ({ errorHandler, query }) {
   const [offset, setOffset] = useState(query.offset || 0);
   useHistoryPagination(offset, "offset", setOffset);
 
-  useEffect(() => {
+  useSecondaryEffect(() => {
     load();
   }, [limit, offset]);
 
