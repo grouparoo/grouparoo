@@ -12,7 +12,7 @@ export class GroupsList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "group", mode: "read" };
     this.inputs = {
-      limit: { required: true, default: 1000, formatter: parseInt },
+      limit: { required: true, default: 100, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
       state: { required: false },
       order: {
