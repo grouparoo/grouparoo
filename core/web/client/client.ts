@@ -102,6 +102,7 @@ export class Client {
     if (cookieString) {
       headers["X-GROUPAROO-SERVER_TOKEN"] = process.env.SERVER_TOKEN;
       headers["cookie"] = cookieString;
+      useCache = false; // do not ever responses on the server
     }
 
     const options: AxiosRequestConfig = {
