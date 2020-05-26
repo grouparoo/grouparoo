@@ -33,23 +33,22 @@ function HighlightingNavLink({ href, text, icon }) {
   );
 }
 
-export default function Navigation({
-  navigationMode,
-  navigation,
-  teamMember,
-  sessionHandler,
-}) {
+export default function Navigation(props) {
+  const { navigationMode, navigation, sessionHandler } = props;
+  const [teamMember, setTeamMember] = useState(props.teamMember);
   const [height, setHeight] = useState(500);
   const subMenuGreeting = `Hello ${teamMember.firstName} »`;
   const logoLink = teamMember.guid ? "/dashboard" : "/";
 
-  // useEffect(() => {
-  //   sessionHandler.subscribe("navigation", () => window.location.reload());
+  useEffect(() => {
+    sessionHandler.subscribe("navigation", (_teamMember) =>
+      setTeamMember(_teamMember)
+    );
 
-  //   return () => {
-  //     sessionHandler.unsubscribe("navigation");
-  //   };
-  // }, []);
+    return () => {
+      sessionHandler.unsubscribe("navigation");
+    };
+  }, []);
 
   return (
     <div>
