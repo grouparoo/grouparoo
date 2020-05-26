@@ -25,7 +25,7 @@ Learn more at [www.grouparoo.com](https://www.grouparoo.com)
 ### For Grouparoo Users
 
 - [ 🎉 Getting Started with Grouparoo](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/getting-started.md)
-- [🦾 Deploying Grouparoo](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment)
+- 🦾 Deploying Grouparoo]
   - [Deploying with Heroku](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/heroku.md)
   - [Deploying with Docker](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/docker.md)
   - [Deploying with Kubernetes and AWS](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/aws-and-k8s.md)
@@ -54,9 +54,9 @@ Looking for help or to connect with other Grouparoo users? **[👩‍💻👨‍
 - [👩‍⚖️ The Grouparoo License](https://github.com/grouparoo/grouparoo/blob/master/LICENSE.txt)
 - [🙏 Attribution](https://github.com/grouparoo/grouparoo/blob/master/documents/legal/attribution.md)
 
-# Getting Started
+# Running a Grouparoo Application
 
-1. Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/) project, and we use NPM to manage our dependencies. Grouparoo also required the Postgres and Redis databases. On OSX, these can be installed via [Homebrew](https://brew.sh/).
+1. Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/) project, and we use NPM to manage our dependencies. Grouparoo required the **Postgres** and **Redis** databases. On OSX, these can be installed via [Homebrew](https://brew.sh/).
 
 ```json
 {
