@@ -1,8 +1,31 @@
 import Head from "next/head";
 import { useApi } from "../../hooks/useApi";
-import AppAdd from "../../components/forms/app/add";
+import { useState } from "react";
+import { Form, Button } from "react-bootstrap";
+import Router from "next/router";
+import SelectorList from "../../components/selectorList";
 
-export default function Page(props) {
+import { AppAPIData } from "../../utils/apiData";
+
+export default function Page({ errorHandler, types }) {
+  const { execApi } = useApi(errorHandler);
+  const [app, setApp] = useState<AppAPIData>({ type: "" });
+  const [loading, setLoading] = useState(false);
+
+  async function submit(event) {
+    event.preventDefault();
+    setLoading(true);
+    const response = await execApi("post", `/app`, app);
+    setLoading(false);
+    if (response?.app) {
+      return Router.push("/app/[guid]/edit", `/app/${response.app.guid}/edit`);
+    }
+  }
+
+  function updateApp(clickedOnButton) {
+    setApp({ type: clickedOnButton.name });
+  }
+
   return (
     <>
       <Head>
@@ -10,7 +33,14 @@ export default function Page(props) {
       </Head>
 
       <h1>Add App</h1>
-      <AppAdd {...props} />
+
+      <Form id="form" onSubmit={submit}>
+        <SelectorList onClick={updateApp} selectedItem={app} items={types} />
+        <br />
+        <Button variant="primary" type="submit" active={!loading}>
+          Continue
+        </Button>
+      </Form>
     </>
   );
 }

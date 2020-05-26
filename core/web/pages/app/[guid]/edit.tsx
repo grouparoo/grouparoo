@@ -1,15 +1,16 @@
+import Head from "next/head";
 import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
 import { Row, Col, Form, Button, Badge, Alert } from "react-bootstrap";
 import Router from "next/router";
-import AppIcon from "../../appIcon";
-import StateBadge from "../../stateBadge";
+import AppIcon from "../../../components/appIcon";
+import StateBadge from "../../../components/stateBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
+import AppTabs from "../../../components/tabs/app";
 
 import { AppAPIData } from "../../../utils/apiData";
 
-export default function (props) {
+export default function Page(props) {
   const {
     errorHandler,
     successHandler,
@@ -19,27 +20,11 @@ export default function (props) {
     optionOptions,
   } = props;
   const { execApi } = useApi(errorHandler);
-
   const [app, setApp] = useState<AppAPIData>(props.app);
   const [loading, setLoading] = useState(false);
   const [testResult, setTestResult] = useState({ result: null, error: null });
   const [ranTest, setRanTest] = useState(false);
   const { guid } = query;
-
-  useSecondaryEffect(() => {
-    load();
-  }, []);
-
-  async function load() {
-    setLoading(true);
-
-    const appResponse = await execApi("get", `/app/${guid}`);
-    if (appResponse?.app) {
-      setApp(appResponse.app);
-    }
-
-    setLoading(false);
-  }
 
   async function edit(event) {
     event.preventDefault();
@@ -56,8 +41,8 @@ export default function (props) {
       if (response.app.state === "ready" && app.state === "draft") {
         Router.push("/apps");
       }
-      await load();
-      appHandler.set();
+      setApp(response.app);
+      appHandler.set(response.app);
     }
   }
 
@@ -102,6 +87,12 @@ export default function (props) {
 
   return (
     <>
+      <Head>
+        <title>Grouparoo: {app.name}</title>
+      </Head>
+
+      <AppTabs name={app.name} />
+
       <p>
         <span className="text-muted">{app.guid}</span>
       </p>
@@ -303,3 +294,12 @@ export default function (props) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { guid } = ctx.query;
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { app } = await execApi("get", `/app/${guid}`);
+  const { types } = await execApi("get", `/appOptions`);
+  const { options } = await execApi("get", `/app/${guid}/optionOptions`);
+  return { app, types, optionOptions: options };
+};
