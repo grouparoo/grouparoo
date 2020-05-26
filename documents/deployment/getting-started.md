@@ -1,8 +1,8 @@
-# Deploying a Grouparoo Server
+# Running a Grouparoo Application
 
 ## Getting Started
 
-1. Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/) project, and we use NPM to manage our dependencies.  Grouparoo also required the Postgres and Redis databases. On OSX, these can be installed bia [Homebrew](https://brew.sh/).
+1. Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/) project, and we use NPM to manage our dependencies. Grouparoo **required** the **Postgres** and Redis databases. On OSX, these can be installed bia [Homebrew](https://brew.sh/).
 
 ```json:readme_deploy
 {
@@ -53,3 +53,9 @@ DATABASE_URL="postgresql://localhost:5432/grouparoo_development"
 
 3. Run `npm install` to install dependencies. This will also run `npm prepare` which will compile the typescript application and build the web page components.
 4. Run `npm start` to start the server and visit `http://localhost:3000` to get started. Follow the on-screen instructions to create your account and first team.
+
+## Deployment Topology
+
+Regardless of the method you deploy Grouparoo, the following topology will need to be created.
+
+![Grouparoo Data Bowtie](https://raw.githubusercontent.com/grouparoo/grouparoo/master/documents/images/grouparoo-deployment-topology.png)

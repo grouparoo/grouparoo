@@ -2,7 +2,7 @@
 
 First, 🎉THANK YOU🎉.
 
-Grouparoo relies on the contributions of [many people](https://github.com/grouparoo/grouparoo/graphs/contributors) just like you to create the best marketing enablement & automation tools. Thank you for taking the time to join this open source community, and create something we can all use!
+Grouparoo relies on the contributions of [many people](https://github.com/grouparoo/grouparoo/graphs/contributors) just like you to create the best marketing infrastructure & automation tools. Thank you for taking the time to join this open source community, and create something we can all use!
 
 ## The Grouparoo Community
 
