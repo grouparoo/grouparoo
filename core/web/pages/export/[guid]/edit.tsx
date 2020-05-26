@@ -1,70 +1,45 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Badge, Alert } from "react-bootstrap";
 import Link from "next/link";
+import Head from "next/head";
 import Moment from "react-moment";
+import ExportTabs from "../../../components/tabs/exportTabs";
 
 import { ExportAPIData } from "../../../utils/apiData";
 
-export default function ({ errorHandler, successHandler, query }) {
-  const { execApi } = useApi(errorHandler);
-  const [loading, setLoading] = useState(false);
-  const [_export, setExport] = useState<ExportAPIData>({
-    oldProfileProperties: {},
-    newProfileProperties: {},
-    oldGroups: [],
-    newGroups: [],
-    // @ts-ignore
-    destination: {},
-  });
-  const [groups, setGroups] = useState([{ name: "", guid: "" }]);
-
-  const { guid } = query;
-
-  useEffect(() => {
-    load();
-    loadGroups();
-  }, []);
-
-  async function load() {
-    setLoading(true);
-    const response = await execApi("get", `/export/${guid}`);
-    setLoading(false);
-    if (response?.export) {
-      setExport(response.export);
-    }
-  }
-
-  async function loadGroups() {
-    setLoading(true);
-    const response = await execApi("get", `/groups`);
-    setLoading(false);
-    if (response?.groups) {
-      setGroups(response.groups);
-    }
-  }
-
-  function groupName(groupName) {
+export default function Page({ _export, groups }) {
+  function getGroupGuid(groupName) {
     const group = groups.filter((g) => g.name === groupName)[0];
     if (group) {
-      return group.name;
+      return group.guid;
     }
   }
 
   return (
     <>
-      <h1>{guid}</h1>
+      <Head>
+        <title>Grouparoo: {_export.guid}</title>
+      </Head>
+
+      <ExportTabs name={_export.guid} />
+
+      <h1>{_export.guid}</h1>
+
       <p>
         Destination:{" "}
         <Link
-          href="/destination/[guid]"
-          as={`/destination/${_export.destination.guid}`}
+          href="/destination/[guid]/edit"
+          as={`/destination/${_export.destination.guid}/edit`}
         >
           <a>{_export.destination.name}</a>
         </Link>
         <br />
         Profile:{" "}
-        <Link href="/profile/[guid]" as={`/profile/${_export.profileGuid}`}>
+        <Link
+          href="/profile/[guid]/edit"
+          as={`/profile/${_export.profileGuid}/edit`}
+        >
           <a>{_export.profileGuid}</a>
         </Link>
       </p>
@@ -133,8 +108,11 @@ export default function ({ errorHandler, successHandler, query }) {
                             : "light"
                         }
                       >
-                        <Link href="/group/[guid]" as={`/group/${groupGuid}`}>
-                          <a>{groupName(groupGuid)}</a>
+                        <Link
+                          href="/group/[guid]/edit"
+                          as={`/group/${getGroupGuid(groupGuid)}/edit`}
+                        >
+                          <a>{groupGuid}</a>
                         </Link>
                       </Badge>
                     </li>
@@ -145,8 +123,11 @@ export default function ({ errorHandler, successHandler, query }) {
                   !_export.oldGroups.includes(groupGuid) ? (
                     <li key={`grp-${groupGuid}`}>
                       <Badge variant="success">
-                        <Link href="/group/[guid]" as={`/group/${groupGuid}`}>
-                          <a>{groupName(groupGuid)}</a>
+                        <Link
+                          href="/group/[guid]/edit"
+                          as={`/group/${getGroupGuid(groupGuid)}/edit`}
+                        >
+                          <a>{groupGuid}</a>
                         </Link>
                       </Badge>
                     </li>
@@ -199,3 +180,11 @@ export default function ({ errorHandler, successHandler, query }) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { guid } = ctx.query;
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { export: _export } = await execApi("get", `/export/${guid}`);
+  const { groups } = await execApi("get", `/groups`);
+  return { _export, groups };
+};

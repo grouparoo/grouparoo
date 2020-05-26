@@ -26,8 +26,8 @@ export default function Page({ event }: { event: EventAPIData }) {
           href=""
           as={
             event?.producerGuid?.indexOf("key") === 0
-              ? `/apiKey/${event.producerGuid}`
-              : `/teamMember/${event.producerGuid}`
+              ? `/apiKey/${event.producerGuid}/edit`
+              : `/teamMember/${event.producerGuid}/edit`
           }
           prefetch={false}
         >
@@ -35,7 +35,10 @@ export default function Page({ event }: { event: EventAPIData }) {
         </Link>
         <br />
         Profile:{" "}
-        <Link href="/profile/[guid]" as={`/profile/${event.profileGuid}`}>
+        <Link
+          href="/profile/[guid]/edit"
+          as={`/profile/${event.profileGuid}/edit`}
+        >
           <a>{event.profileGuid}</a>
         </Link>
       </p>
