@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Image, Accordion, Button } from "react-bootstrap";
 import Link from "next/link";
 import { isBrowser } from "../utils/isBrowser";
-// import { useApi } from "../hooks/useApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function HighlightingNavLink({ href, text, icon }) {
@@ -40,63 +39,17 @@ export default function Navigation({
   teamMember,
   sessionHandler,
 }) {
-  // const { execApi } = useApi(errorHandler);
   const [height, setHeight] = useState(500);
-  // const [navigationMode, setNavigationMode] = useState("unauthenticated");
-  // const [navigation, setNavigation] = useState({
-  //   navigationItems: [],
-  //   platformItems: [],
-  //   bottomMenuItems: [],
-  // });
-  // const [teamMember, setTeamMember] = useState({
-  //   firstName: "",
-  //   guid: null,
-  // });
+  const subMenuGreeting = `Hello ${teamMember.firstName} »`;
+  const logoLink = teamMember.guid ? "/dashboard" : "/";
 
   // useEffect(() => {
-  //   determineHeight();
-  //   // load();
+  //   sessionHandler.subscribe("navigation", () => window.location.reload());
 
-  //   sessionHandler.subscribe("navigation", load);
   //   return () => {
-  //     sessionHandler.unsubscribe("navigation", load);
+  //     sessionHandler.unsubscribe("navigation");
   //   };
   // }, []);
-
-  function determineHeight() {
-    // set the height after mount so there aren't errors with the local version not matching the server
-    const _height = isBrowser()
-      ? globalThis.innerHeight // Math.max(document.body.scrollHeight, window.innerHeight)
-      : this.state.height;
-    setHeight(_height);
-  }
-
-  // async function load() {
-  //   const response = await execApi("get", `/navigation`);
-
-  //   if (response?.navigationMode) {
-  //     setNavigationMode(response.navigationMode);
-  //     setNavigation(response.navigation);
-
-  //     if (
-  //       response.navigationMode !== "unauthenticated" &&
-  //       globalThis.location.pathname !== "/session/sign-out"
-  //     ) {
-  //       loadSession();
-  //     }
-  //   } else {
-  //     globalThis.location.href = "/session/sign-out";
-  //   }
-  // }
-
-  // async function loadSession() {
-  //   const response = await execApi("get", `/session`);
-  //   setTeamMember(response.teamMember);
-  // }
-
-  const subMenuGreeting = `Hello ${teamMember.firstName} »`;
-
-  const logoLink = teamMember.guid ? "/dashboard" : "/";
 
   return (
     <div>
