@@ -24,8 +24,8 @@ export default function FindObject({ query, errorHandler }) {
   if (!route) {
     errorHandler.set({ error: `Sorry, I don't know what a "${guid}" is :(` });
   } else {
-    const href = `${route}/[guid]`;
-    const as = `${route}/${guid}`;
+    const href = `${route}/[guid]/edit`;
+    const as = `${route}/${guid}/edit`;
     Router.push(href, as);
   }
 

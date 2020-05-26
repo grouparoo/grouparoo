@@ -1,24 +1,27 @@
-import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
-import { useHistoryPagination } from "../../hooks/useHistoryPagination";
+import Head from "next/head";
+import { useState } from "react";
+import { useApi } from "../../../hooks/useApi";
+import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
+import { useHistoryPagination } from "../../../hooks/useHistoryPagination";
 import Link from "next/link";
 import Router from "next/router";
 import { ButtonGroup, Button } from "react-bootstrap";
-import Pagination from "../pagination";
-import LoadingTable from "../loadingTable";
+import Pagination from "../../../components/pagination";
+import LoadingTable from "../../../components/loadingTable";
+import GroupTabs from "../../../components/tabs/group";
 
-import { LogAPIData } from "../../utils/apiData";
+import { LogAPIData } from "../../../utils/apiData";
 
-export default function ({ errorHandler, query, ownerType }) {
+export default function Page(props) {
+  const { errorHandler, query, group } = props;
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [logs, setLogs] = useState<LogAPIData[]>([]);
-  const [total, setTotal] = useState(0);
+  const [logs, setLogs] = useState<LogAPIData[]>(props.logs);
+  const [total, setTotal] = useState(props.total);
 
   // pagination
   const limit = 100;
   const [offset, setOffset] = useState(query.offset || 0);
-  const ownerGuid = query.guid;
   const [topic, setTopic] = useState(query.topic || null);
   useHistoryPagination(offset, "offset", setOffset);
 
@@ -35,16 +38,10 @@ export default function ({ errorHandler, query, ownerType }) {
     "schedule",
     "file",
   ];
-  if (ownerType === "profile") {
-    topics = ["groupMember", "profile", "profileProperty"];
-  }
-  if (ownerType === "group") {
-    topics = ["group", "groupMember", "profile"];
-  }
 
-  useEffect(() => {
+  useSecondaryEffect(() => {
     load();
-  }, [offset, limit, topic, ownerGuid]);
+  }, [offset, limit, topic]);
 
   async function load() {
     updateURLParams();
@@ -53,7 +50,7 @@ export default function ({ errorHandler, query, ownerType }) {
       limit,
       offset,
       topic,
-      ownerGuid,
+      ownerGuid: group.guid,
     });
     setLoading(false);
     if (response?.logs) {
@@ -93,12 +90,6 @@ export default function ({ errorHandler, query, ownerType }) {
 
   function updateURLParams() {
     let url = `${window.location.pathname}?`;
-    if (
-      window.location.pathname.indexOf("/profile/") >= 0 ||
-      window.location.pathname.indexOf("/group/") >= 0
-    ) {
-      url += "tab=logs&";
-    }
     if (offset && offset !== 0) {
       url += `offset=${offset}&`;
     }
@@ -113,6 +104,14 @@ export default function ({ errorHandler, query, ownerType }) {
 
   return (
     <>
+      <Head>
+        <title>Grouparoo: {group.name}</title>
+      </Head>
+
+      <GroupTabs name={group.name} />
+
+      <h1>Logs</h1>
+
       <ButtonGroup id="log-types">
         <Button
           size="sm"
@@ -198,6 +197,19 @@ export default function ({ errorHandler, query, ownerType }) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { limit, offset, topic, guid } = ctx.query;
+  const { group } = await execApi("get", `/group/${guid}`);
+  const { logs, total } = await execApi("get", `/logs`, {
+    limit,
+    offset,
+    topic,
+    ownerGuid: guid,
+  });
+  return { group, logs, total };
+};
 
 function formatCreatedAt(timestamp) {
   const [date, time] = new Date(timestamp).toLocaleString().split(",");

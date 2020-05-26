@@ -11,7 +11,7 @@ export class ListExports extends AuthenticatedAction {
     this.inputs = {
       profileGuid: { required: false },
       destinationGuid: { required: false },
-      limit: { required: true, default: 1000 },
+      limit: { required: true, default: 100 },
       offset: { required: true, default: 0 },
       order: {
         required: false,

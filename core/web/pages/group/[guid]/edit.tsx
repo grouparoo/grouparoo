@@ -1,57 +1,48 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
+import { usePlugins } from "../../../hooks/usePlugin";
 import { Row, Col, Form, Button } from "react-bootstrap";
-import StateBadge from "../../stateBadge";
+import StateBadge from "../../../components/stateBadge";
 import Moment from "react-moment";
 import Router from "next/router";
+import Head from "next/head";
+import GroupTabs from "../../../components/tabs/group";
 
 import { GroupAPIData } from "../../../utils/apiData";
 
-export default function ({
-  errorHandler,
-  successHandler,
-  groupHandler,
-  query,
-}) {
+export default function Page(props) {
+  const { errorHandler, successHandler, groupHandler } = props;
+  const [group, setGroup] = useState<GroupAPIData>(props.group);
+  // const [plugins, pluginMetadata] = usePlugins("group/tabs");
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [group, setGroup] = useState<GroupAPIData>({
-    name: "",
-    type: "",
-    matchType: "all",
-  });
-
-  const { guid } = query;
 
   useEffect(() => {
-    load();
-  }, []);
+    props.groupHandler.subscribe("group-edit", (_group) => {
+      setGroup(_group);
+    });
 
-  async function load() {
-    setLoading(true);
-    const response = await execApi("get", `/group/${guid}`);
-    setLoading(false);
-    if (response?.group) {
-      setGroup(response.group);
-    }
-  }
+    return () => {
+      props.groupHandler.unsubscribe("group-edit");
+    };
+  }, []);
 
   async function submit(event) {
     event.preventDefault();
     setLoading(true);
-    const response = await execApi("put", `/group/${guid}`, group);
+    const response = await execApi("put", `/group/${group.guid}`, group);
     setLoading(false);
     if (response?.group) {
       successHandler.set({ message: "Group Updated" });
       setGroup(response.group);
-      groupHandler.set();
+      groupHandler.set(response.group);
     }
   }
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response = await execApi("delete", `/group/${guid}`);
+      const response = await execApi("delete", `/group/${group.guid}`);
       setLoading(false);
       if (response?.success) {
         successHandler.set({ message: "Group Deleted" });
@@ -66,8 +57,24 @@ export default function ({
     setGroup(_group);
   }
 
+  // {
+  //   plugins.map((PluginComponent, idx) => {
+  //     Tabs.push(
+  //       <Fragment key={pluginMetadata[idx].key}>
+  //         <PluginComponent {...props} useApi={useApi} />
+  //       </Fragment>
+  //     );
+  //   });
+  // }
+
   return (
     <>
+      <Head>
+        <title>Grouparoo: {group.name}</title>
+      </Head>
+
+      <GroupTabs name={group.name} />
+
       <StateBadge state={group.state} />
       <br />
       <br />
@@ -94,6 +101,7 @@ export default function ({
                 as="select"
                 name="type"
                 value={group.type}
+                disabled
                 onChange={update}
               >
                 <option>manual</option>
@@ -155,3 +163,10 @@ export default function ({
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { guid } = ctx.query;
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { group } = await execApi("get", `/group/${guid}`);
+  return { group };
+};

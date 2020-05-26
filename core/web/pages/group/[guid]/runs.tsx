@@ -1,39 +1,40 @@
-import { Fragment, useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
-import { useHistoryPagination } from "../../hooks/useHistoryPagination";
+import { useApi } from "../../../hooks/useApi";
+import Head from "next/head";
+import GroupTabs from "../../../components/tabs/group";
+import { Fragment, useState } from "react";
+import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
+import { useHistoryPagination } from "../../../hooks/useHistoryPagination";
 import { Row, Col, ButtonGroup, Button, Alert } from "react-bootstrap";
 import Moment from "react-moment";
 import Router from "next/router";
 import Link from "next/link";
-import Pagination from "../pagination";
-import LoadingTable from "../loadingTable";
-import { ResponsiveLine } from "@nivo/line";
+import Pagination from "../../../components/pagination";
+import LoadingTable from "../../../components/loadingTable";
+import RunDurationChart from "../../../components/visualizations/runDurations";
 
-import { RunAPIData } from "../../utils/apiData";
+import { RunAPIData } from "../../../utils/apiData";
 
-const NodeMoment = require("moment");
-
-export default function ({ errorHandler, successHandler, query }) {
+export default function Page(props) {
+  const { errorHandler, successHandler, group, query } = props;
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [total, setTotal] = useState(0);
-  const [runs, setRuns] = useState<RunAPIData[]>([]);
+  const [total, setTotal] = useState(props.total);
+  const [runs, setRuns] = useState<RunAPIData[]>(props.runs);
   const [stateFilter, setStateFilter] = useState(query.state || "");
   const [errorFilter, setErrorFilter] = useState(query.error || "");
-  const { guid } = query;
 
   // pagination
   const limit = 100;
   const [offset, setOffset] = useState(query.offset || 0);
   useHistoryPagination(offset, "offset", setOffset);
 
-  useEffect(() => {
+  useSecondaryEffect(() => {
     load();
   }, [limit, offset, stateFilter, errorFilter]);
 
   async function load() {
     const params = {
-      guid,
+      guid: group.guid,
       limit,
       offset,
     };
@@ -56,23 +57,8 @@ export default function ({ errorHandler, successHandler, query }) {
     }
   }
 
-  async function enqueueScheduleRun() {
-    setLoading(true);
-    try {
-      const { source } = await execApi("get", `/source/${guid}`);
-      await execApi("post", `/schedule/${source.schedule.guid}/run`);
-      await load();
-      successHandler.set({ message: "run enqueued" });
-    } finally {
-      setLoading(false);
-    }
-  }
-
   function updateURLParams() {
     let url = `${window.location.pathname}?`;
-    if (guid) {
-      url += "tab=runs&";
-    }
     if (offset && offset !== 0) {
       url += `offset=${offset}&`;
     }
@@ -90,21 +76,11 @@ export default function ({ errorHandler, successHandler, query }) {
 
   return (
     <>
-      {guid && window.location.pathname.match("source") ? (
-        <>
-          <Button
-            size="sm"
-            variant="warning"
-            onClick={() => {
-              enqueueScheduleRun();
-            }}
-          >
-            Run Now
-          </Button>
-          <hr />
-          <br />
-        </>
-      ) : null}
+      <Head>
+        <title>Grouparoo: {group.name}</title>
+      </Head>
+
+      <GroupTabs name={group.name} />
 
       <Row>
         <Col>
@@ -180,7 +156,9 @@ export default function ({ errorHandler, successHandler, query }) {
         offset={offset}
         onPress={setOffset}
       />
+
       <RunDurationChart runs={runs} />
+
       <br />
       <br />
       <br />
@@ -277,6 +255,7 @@ export default function ({ errorHandler, successHandler, query }) {
           })}
         </tbody>
       </LoadingTable>
+
       <Pagination
         total={total}
         limit={limit}
@@ -287,102 +266,16 @@ export default function ({ errorHandler, successHandler, query }) {
   );
 }
 
-function RunDurationChart({ runs }) {
-  const chartData = [];
-  const typeTotals = {};
-
-  runs.map((run) => {
-    const type = run.creatorType;
-    if (run.completedAt) {
-      if (!typeTotals[type]) {
-        typeTotals[type] = [];
-      }
-      const start = NodeMoment(run.createdAt).format("YYYY-MM-DDTHH:mm:ss");
-      const durationMinutes =
-        (new Date(run.completedAt).getTime() -
-          new Date(run.createdAt).getTime()) /
-        1000 /
-        60;
-      typeTotals[type].push({ x: start, y: durationMinutes });
-    }
+Page.getInitialProps = async (ctx) => {
+  const { guid, limit, offset, state, error } = ctx.query;
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { group } = await execApi("get", `/group/${guid}`);
+  const { runs, total } = await execApi("get", `/runs`, {
+    guid,
+    limit,
+    offset,
+    state,
+    hasError: error,
   });
-
-  for (const type in typeTotals) {
-    chartData.push({
-      id: type,
-      data: typeTotals[type].sort((a, b) => {
-        return a.x - b.x;
-      }),
-    });
-  }
-
-  if (chartData.length === 0) {
-    return null;
-  }
-
-  return (
-    <Row>
-      <Col md={12} style={{ height: 450 }}>
-        <h3>Run Duration Times</h3>
-        <ResponsiveLine
-          data={chartData}
-          colors={{ scheme: "category10" }}
-          useMesh={true}
-          animate={false}
-          margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
-          curve={"monotoneX"}
-          lineWidth={10}
-          pointSize={15}
-          xScale={{
-            type: "time",
-            format: "%Y-%m-%dT%H:%M:%S",
-            precision: "second",
-          }}
-          xFormat="time:%Y-%m-%dT%H:%M:%S"
-          yScale={{
-            type: "linear",
-          }}
-          axisBottom={{
-            format: "%Y-%m-%d %H:%M",
-            tickValues: 5,
-          }}
-          axisLeft={{
-            orient: "left",
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: "minutes",
-            legendOffset: -40,
-            legendPosition: "middle",
-          }}
-          legends={[
-            {
-              anchor: "bottom-right",
-              direction: "column",
-              justify: false,
-              translateX: 100,
-              translateY: 0,
-              itemsSpacing: 0,
-              itemDirection: "left-to-right",
-              itemWidth: 80,
-              itemHeight: 20,
-              itemOpacity: 0.75,
-              symbolSize: 12,
-              symbolShape: "circle",
-              symbolBorderColor: "rgba(0, 0, 0, .5)",
-              effects: [
-                {
-                  on: "hover",
-                  style: {
-                    itemBackground: "rgba(0, 0, 0, .03)",
-                    itemOpacity: 1,
-                  },
-                },
-              ],
-            },
-          ]}
-        />
-      </Col>
-    </Row>
-  );
-}
+  return { group, runs, total };
+};

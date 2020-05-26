@@ -1,25 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
+import StateBadge from "../../../components/stateBadge";
+import Head from "next/head";
+import GroupTabs from "../../../components/tabs/group";
 import { Form, Button, Table, Badge } from "react-bootstrap";
-import StateBadge from "../../stateBadge";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
-import Loader from "../../loader";
 
-import {
-  GroupAPIData,
-  ProfilePropertyRuleAPIData,
-} from "../../../utils/apiData";
+import { GroupAPIData } from "../../../utils/apiData";
 
-export default function RulesBuilder({ errorHandler, successHandler, query }) {
+export default function Page(props) {
+  const {
+    errorHandler,
+    successHandler,
+    profilePropertyRules,
+    ruleLimit,
+    ops,
+  } = props;
+  const [group, setGroup] = useState<GroupAPIData>(props.group);
   const { execApi } = useApi(errorHandler);
-  const [group, setGroup] = useState<GroupAPIData>({ rules: [] });
   const [loading, setLoading] = useState(false);
   const [localRules, setLocalRules] = useState([]);
-  const [profilePropertyRules, setProfilePropertyRules] = useState<
-    ProfilePropertyRuleAPIData[]
-  >([]);
-  const [ruleLimit, setRuleLimit] = useState(0);
-  const [ops, setOps] = useState({ _dictionary: {} });
   const [countPotentialMembers, setCountPotentialMembers] = useState(0);
   const [componentCounts, setComponentCounts] = useState({});
   const [autocompleteResults, setAutoCompleteResults] = useState({});
@@ -27,14 +27,10 @@ export default function RulesBuilder({ errorHandler, successHandler, query }) {
 
   const typeaheadTypes = ["email", "string"];
 
-  const { guid } = query;
-
   useEffect(() => {
     async function loadAll() {
       const _group = await load();
       if (_group.type === "calculated") {
-        loadRuleOptions();
-        loadProfilePropertyRules();
         getCounts();
       }
     }
@@ -44,7 +40,7 @@ export default function RulesBuilder({ errorHandler, successHandler, query }) {
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/group/${guid}`);
+    const response = await execApi("get", `/group/${group.guid}`);
     setLoading(false);
     if (response?.group) {
       // TODO: Why is this require to break the object chain to rules?
@@ -62,32 +58,11 @@ export default function RulesBuilder({ errorHandler, successHandler, query }) {
     return response.group;
   }
 
-  async function loadRuleOptions() {
-    setLoading(true);
-    const response = await execApi("get", `/groups/ruleOptions`);
-    setLoading(false);
-    if (response?.ruleLimit) {
-      setRuleLimit(response.ruleLimit);
-      setOps(response.ops);
-    }
-  }
-
-  async function loadProfilePropertyRules() {
-    setLoading(true);
-    const response = await execApi("get", `/profilePropertyRules`, {
-      state: "ready",
-    });
-    setLoading(false);
-    if (response?.profilePropertyRules) {
-      setProfilePropertyRules(response.profilePropertyRules);
-    }
-  }
-
   async function getCounts(useCache = true) {
     setLoading(true);
     let response = await execApi(
       "get",
-      `/group/${guid}/countComponentMembers`,
+      `/group/${group.guid}/countComponentMembers`,
       { rules: localRules },
       null,
       null,
@@ -101,7 +76,7 @@ export default function RulesBuilder({ errorHandler, successHandler, query }) {
 
     response = await execApi(
       "get",
-      `/group/${guid}/countPotentialMembers`,
+      `/group/${group.guid}/countPotentialMembers`,
       { rules: localRules },
       null,
       null,
@@ -136,7 +111,7 @@ export default function RulesBuilder({ errorHandler, successHandler, query }) {
 
   async function updateRules() {
     setLoading(true);
-    const response = await execApi("put", `/group/${guid}`, {
+    const response = await execApi("put", `/group/${group.guid}`, {
       guid: group.guid,
       rules: localRules,
     });
@@ -167,10 +142,6 @@ export default function RulesBuilder({ errorHandler, successHandler, query }) {
     setLoading(false);
   }
 
-  if (group.type === "") {
-    return <Loader />;
-  }
-
   if (group.type === "manual") {
     return <p>Group is not calculated</p>;
   }
@@ -179,7 +150,13 @@ export default function RulesBuilder({ errorHandler, successHandler, query }) {
 
   return (
     <>
-      <h3>Group Rules for {group.name}</h3>
+      <Head>
+        <title>Grouparoo: {group.name}</title>
+      </Head>
+
+      <GroupTabs name={group.name} />
+
+      <h1>Group Rules for {group.name}</h1>
       <p>
         <StateBadge state={group.state} />
       </p>
@@ -397,6 +374,21 @@ export default function RulesBuilder({ errorHandler, successHandler, query }) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { guid } = ctx.query;
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { group } = await execApi("get", `/group/${guid}`);
+  const { profilePropertyRules } = await execApi(
+    "get",
+    `/profilePropertyRules`,
+    {
+      state: "ready",
+    }
+  );
+  const { ruleLimit, ops } = await execApi("get", `/groups/ruleOptions`);
+  return { group, profilePropertyRules, ruleLimit, ops };
+};
 
 function rulesAreEqual(a, b) {
   let matched = true;

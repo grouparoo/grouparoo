@@ -1,37 +1,56 @@
-import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
+import { useApi } from "../../../hooks/useApi";
+import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
+import { useHistoryPagination } from "../../../hooks/useHistoryPagination";
+import Head from "next/head";
+import GroupTabs from "../../../components/tabs/group";
+import { useState } from "react";
 import Link from "next/link";
 import Moment from "react-moment";
-import LoadingTable from "../loadingTable";
-import AppIcon from "./../appIcon";
+import LoadingTable from "../../../components/loadingTable";
+import AppIcon from "./../../../components/appIcon";
 
-import { DestinationAPIData } from "../../utils/apiData";
+import { DestinationAPIData } from "../../../utils/apiData";
 
-export default function ({ errorHandler, successHandler, query }) {
+export default function Page(props) {
+  const { errorHandler, successHandler, query, group } = props;
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [destinations, setDestinations] = useState<DestinationAPIData[]>([]);
-  const { guid } = query;
+  const [destinations, setDestinations] = useState<DestinationAPIData[]>(
+    props.destinations
+  );
 
   // pagination
-  const limit = 999;
+  const limit = 100;
   const [offset, setOffset] = useState(query.offset || 0);
+  const [total, setTotal] = useState(props.total);
+  useHistoryPagination(offset, "offset", setOffset);
 
-  useEffect(() => {
+  useSecondaryEffect(() => {
     load();
   }, [offset, limit]);
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/group/${guid}/destinations`);
+    const response = await execApi("get", `/group/${group.guid}/destinations`, {
+      limit,
+      offset,
+    });
     setLoading(false);
     if (response?.destinations) {
       setDestinations(response.destinations);
+      setTotal(response.total);
     }
   }
 
   return (
     <>
+      <Head>
+        <title>Grouparoo: {group.name}</title>
+      </Head>
+
+      <GroupTabs name={group.name} />
+
+      <h1>Group Destination</h1>
       <p>{destinations.length} destinations interested in this group</p>
 
       <LoadingTable loading={loading}>
@@ -74,3 +93,18 @@ export default function ({ errorHandler, successHandler, query }) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { guid, limit, offset } = ctx.query;
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { group } = await execApi("get", `/group/${guid}`);
+  const { destinations, total } = await execApi(
+    "get",
+    `/group/${group.guid}/destinations`,
+    {
+      limit,
+      offset,
+    }
+  );
+  return { group, destinations, total };
+};

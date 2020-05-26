@@ -1,57 +1,45 @@
-import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
-import { useHistoryPagination } from "../../hooks/useHistoryPagination";
+import { useApi } from "../../../hooks/useApi";
+import Head from "next/head";
+import { useState } from "react";
+import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
+import { useHistoryPagination } from "../../../hooks/useHistoryPagination";
 import Link from "next/link";
 import Router from "next/router";
 import { Button } from "react-bootstrap";
 import Moment from "react-moment";
-import Pagination from "../pagination";
-import LoadingTable from "../loadingTable";
-import StateBadge from "../stateBadge";
+import Pagination from "../../../components/pagination";
+import LoadingTable from "../../../components/loadingTable";
+import StateBadge from "../../../components/stateBadge";
+import GroupTabs from "../../../components/tabs/group";
 
-import { ProfileAPIData, GroupAPIData } from "../../utils/apiData";
+import { ProfileAPIData } from "../../../utils/apiData";
 
-export default function ({ errorHandler, successHandler, query }) {
+export default function Page(props) {
+  const {
+    errorHandler,
+    successHandler,
+    group,
+    profilePropertyRules,
+    query,
+  } = props;
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [profiles, setProfiles] = useState<ProfileAPIData[]>([]);
-  const [group, setGroup] = useState<GroupAPIData>({
-    profilesCount: 0,
-    type: "manual",
-    state: "",
-  });
-  const [profilePropertyRules, setProfilePropertyRules] = useState([]);
-  const { guid } = query;
+  const [profiles, setProfiles] = useState<ProfileAPIData[]>(props.profiles);
 
   // pagination
   const limit = 100;
   const [offset, setOffset] = useState(query.offset || 0);
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState(props.total);
   useHistoryPagination(offset, "offset", setOffset);
 
-  useEffect(() => {
-    async function loadAll() {
-      await loadGroup();
-      await loadProfiles();
-      await loadProfilePropertyRules();
-    }
-
-    loadAll();
-    updateURLParams();
+  useSecondaryEffect(() => {
+    loadProfiles();
   }, [offset, limit]);
 
-  async function loadGroup() {
-    setLoading(true);
-    const response = await execApi("get", `/group/${guid}`);
-    setLoading(false);
-    if (response?.group) {
-      setGroup(response.group);
-    }
-  }
-
   async function loadProfiles() {
+    updateURLParams();
     setLoading(true);
-    const response = await execApi("get", `/group/${guid}/profiles`, {
+    const response = await execApi("get", `/group/${group.guid}/profiles`, {
       limit,
       offset,
     });
@@ -62,31 +50,23 @@ export default function ({ errorHandler, successHandler, query }) {
     }
   }
 
-  async function loadProfilePropertyRules() {
-    setLoading(true);
-    const response = await execApi("get", `/profilePropertyRules`);
-    setLoading(false);
-    if (response?.profilePropertyRules) {
-      setProfilePropertyRules(response.profilePropertyRules);
-    }
-  }
-
   async function handleDelete(profile) {
     setLoading(true);
-    const response = await execApi("put", `/group/${guid}/remove`, {
+    const response = await execApi("put", `/group/${group.guid}/remove`, {
       profileGuid: profile.guid,
     });
     setLoading(false);
     if (response) {
       successHandler.set({ message: "Profile Removed" });
-      await loadGroup();
       await loadProfiles();
     }
   }
 
   async function handleExport(type = "csv") {
     setLoading(true);
-    const response = await execApi("put", `/group/${guid}/export`, { type });
+    const response = await execApi("put", `/group/${group.guid}/export`, {
+      type,
+    });
     setLoading(false);
     if (response?.success) {
       successHandler.set({
@@ -99,7 +79,7 @@ export default function ({ errorHandler, successHandler, query }) {
   async function run() {
     if (window.confirm("are you sure? this could take a while")) {
       setLoading(true);
-      const response = await execApi("put", `/group/${guid}/run`);
+      const response = await execApi("put", `/group/${group.guid}/run`);
       setLoading(false);
       if (response?.success) {
         successHandler.set({ message: "Update Run Enqueued" });
@@ -110,7 +90,10 @@ export default function ({ errorHandler, successHandler, query }) {
   async function updateMembers() {
     if (window.confirm("are you sure? this could take a while")) {
       setLoading(true);
-      const response = await execApi("put", `/group/${guid}/updateMembers`);
+      const response = await execApi(
+        "put",
+        `/group/${group.guid}/updateMembers`
+      );
       setLoading(false);
       if (response?.success) {
         successHandler.set({ message: "UpdateMembers Run Enqueued" });
@@ -120,7 +103,6 @@ export default function ({ errorHandler, successHandler, query }) {
 
   function updateURLParams() {
     let url = `${window.location.pathname}?`;
-    url += "tab=members&";
     if (offset && offset !== 0) {
       url += `offset=${offset}&`;
     }
@@ -139,6 +121,10 @@ export default function ({ errorHandler, successHandler, query }) {
 
   return (
     <>
+      <Head>
+        <title>Grouparoo: {group.name}</title>
+      </Head>
+      <GroupTabs name={group.name} />
       <p>
         <StateBadge state={group.state} />
       </p>
@@ -194,7 +180,10 @@ export default function ({ errorHandler, successHandler, query }) {
             return (
               <tr key={`profile-${profile.guid}`}>
                 <td>
-                  <Link href="/profile/[guid]" as={`/profile/${profile.guid}`}>
+                  <Link
+                    href="/profile/[guid]/edit"
+                    as={`/profile/${profile.guid}/edit`}
+                  >
                     <a>
                       {uniqueProfileProperties.map((key) => {
                         return (
@@ -242,3 +231,22 @@ export default function ({ errorHandler, successHandler, query }) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { guid, limit, offset } = ctx.query;
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { group } = await execApi("get", `/group/${guid}`);
+  const { profilePropertyRules } = await execApi(
+    "get",
+    `/profilePropertyRules`
+  );
+  const { profiles, total } = await execApi(
+    "get",
+    `/group/${group.guid}/profiles`,
+    {
+      limit,
+      offset,
+    }
+  );
+  return { group, profilePropertyRules, profiles, total };
+};
