@@ -1,34 +1,23 @@
-import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Badge } from "react-bootstrap";
 import Link from "next/link";
+import Head from "next/head";
 import Moment from "react-moment";
+import EventTabs from "../../../components/tabs/event";
 
 import { EventAPIData } from "../../../utils/apiData";
 
-export default function ({ errorHandler, successHandler, query }) {
-  const { execApi } = useApi(errorHandler);
-  const [loading, setLoading] = useState(false);
-  const [event, setEvent] = useState<EventAPIData>({ data: {} });
-
-  const { guid } = query;
-
-  useEffect(() => {
-    load();
-  }, []);
-
-  async function load() {
-    setLoading(true);
-    const response = await execApi("get", `/event/${guid}`);
-    setLoading(false);
-    if (response?.event) {
-      setEvent(response.event);
-    }
-  }
-
+export default function Page({ event }: { event: EventAPIData }) {
   return (
     <>
-      <h1>{guid}</h1>
+      <Head>
+        <title>Grouparoo: {event.guid}</title>
+      </Head>
+
+      <EventTabs name={event.guid} />
+
+      <h1>Event {event.guid}</h1>
+
       <p>
         Type: <Badge variant="secondary">{event.type}</Badge>
         <br />
@@ -144,3 +133,10 @@ export default function ({ errorHandler, successHandler, query }) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { guid } = ctx.query;
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { event } = await execApi("get", `/event/${guid}`);
+  return { event };
+};
