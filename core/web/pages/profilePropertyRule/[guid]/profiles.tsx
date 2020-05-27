@@ -65,7 +65,7 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: {profilePropertyRule.key}</title>
       </Head>
-      <ProfilePropertyRuleTabs name={profilePropertyRule.key} />
+      <ProfilePropertyRuleTabs profilePropertyRule={profilePropertyRule} />
 
       <p>{total} profiles have this property</p>
 

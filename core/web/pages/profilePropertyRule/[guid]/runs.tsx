@@ -79,7 +79,7 @@ export default function Page(props) {
         <title>Grouparoo: {profilePropertyRule.key}</title>
       </Head>
 
-      <ProfilePropertyRuleTabs name={profilePropertyRule.key} />
+      <ProfilePropertyRuleTabs profilePropertyRule={profilePropertyRule} />
 
       <Row>
         <Col>
@@ -187,10 +187,7 @@ export default function Page(props) {
                     <Moment fromNow>{run.createdAt}</Moment>
                   </td>
                   <td>
-                    <Link
-                      prefetch={false}
-                      href={`/${run.creatorType}/${run.creatorGuid}`}
-                    >
+                    <Link prefetch={false} href={`/object/${run.creatorGuid}`}>
                       <a>{run.creatorType}</a>
                     </Link>
                   </td>

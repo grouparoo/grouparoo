@@ -1,76 +1,29 @@
-import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
+import SourceTabs from "../../../components/tabs/source";
+import Head from "next/head";
+import { useState, useEffect } from "react";
 import { Row, Col, Table, Form, Button } from "react-bootstrap";
-import { createSchedule } from "../schedule/add";
+import { createSchedule } from "../../../components/schedule/add";
 import Router from "next/router";
 
-export default function ({ errorHandler, successHandler, query }) {
+export default function Page(props) {
+  const { errorHandler, successHandler, types, scheduleCount } = props;
   const { execApi } = useApi(errorHandler);
-  const [preview, setPreview] = useState([]);
-  const [profilePropertyRules, setProfilePropertyRules] = useState([]);
   const [newMappingKey, setNewMappingKey] = useState("");
   const [newMappingValue, setNewMappingValue] = useState("");
-  const [types, setTypes] = useState([]);
-  const [scheduleCount, setScheduleCount] = useState(0);
+  const [profilePropertyRules, setProfilePropertyRules] = useState(
+    props.profilePropertyRules
+  );
+  const [preview, setPreview] = useState(props.preview || []);
+  const [
+    profilePropertyRuleExamples,
+    setProfilePropertyRuleExamples,
+  ] = useState(props.profilePropertyRuleExamples);
   const [newProfilePropertyRule, setNewProfilePropertyRule] = useState({
     key: "",
     type: "",
   });
-  const [
-    profilePropertyRuleExamples,
-    setProfilePropertyRuleExamples,
-  ] = useState({});
-  const [source, setSource] = useState({
-    previewAvailable: false,
-    type: "",
-    mapping: {},
-    state: "draft",
-  });
-  const { guid } = query;
-
-  useEffect(() => {
-    load();
-    loadOptions();
-    countSchedules();
-  }, []);
-
-  async function load() {
-    const sourceResponse = await execApi("get", `/source/${guid}`);
-    if (sourceResponse?.source) {
-      setSource(sourceResponse.source);
-      if (Object.keys(sourceResponse.source.mapping).length > 0) {
-        const key = Object.keys(sourceResponse.source.mapping)[0];
-        setNewMappingKey(key || newMappingKey);
-        setNewMappingValue(
-          sourceResponse.source.mapping[key] || newMappingValue
-        );
-      }
-    }
-
-    if (sourceResponse.source.previewAvailable === false) {
-      return;
-    }
-
-    const previewResponse = await execApi("get", `/source/${guid}/preview`);
-    if (previewResponse?.preview) {
-      setPreview(previewResponse.preview);
-    }
-
-    const prrResponse = await execApi("get", `/profilePropertyRules`, {
-      unique: true,
-    });
-    if (prrResponse?.profilePropertyRules) {
-      setProfilePropertyRules(prrResponse.profilePropertyRules);
-      setProfilePropertyRuleExamples(prrResponse.examples);
-    }
-  }
-
-  async function loadOptions() {
-    const response = await execApi("get", `/profilePropertyRuleOptions`);
-    if (response?.types) {
-      setTypes(response.types);
-    }
-  }
+  const [source, setSource] = useState(props.source);
 
   const bootstrapUniqueProfilePropertyRule = async () => {
     if (newMappingKey === "") {
@@ -80,7 +33,7 @@ export default function ({ errorHandler, successHandler, query }) {
     if (confirm("are you sure?")) {
       const response = await execApi(
         "post",
-        `/source/${guid}/bootstrapUniqueProfilePropertyRule`,
+        `/source/${source.guid}/bootstrapUniqueProfilePropertyRule`,
         Object.assign(newProfilePropertyRule, { mappedColumn: newMappingKey })
       );
       if (response?.profilePropertyRule) {
@@ -103,11 +56,6 @@ export default function ({ errorHandler, successHandler, query }) {
     }
   };
 
-  const countSchedules = async () => {
-    const { total } = await execApi("get", `/schedules`);
-    setScheduleCount(total);
-  };
-
   const updateMapping = async (event) => {
     event.preventDefault();
 
@@ -115,7 +63,7 @@ export default function ({ errorHandler, successHandler, query }) {
     source.mapping[newMappingKey] = newMappingValue;
     const response = await execApi(
       "put",
-      `/source/${guid}`,
+      `/source/${source.guid}`,
       Object.assign({}, source, { state: "ready" })
     );
     if (response?.source) {
@@ -134,10 +82,7 @@ export default function ({ errorHandler, successHandler, query }) {
 
       // we just went 'ready'
       if (source.state !== response.source.state) {
-        Router.push({
-          pathname: `/source/${guid}`,
-          query: { tab: "overview" },
-        });
+        Router.push(`/source/${source.guid}/overview`);
       }
     }
   };
@@ -154,6 +99,7 @@ export default function ({ errorHandler, successHandler, query }) {
     return (
       <>
         <h2>Profile Identification</h2>
+        <SourceTabs name={source.name} />
         <p>Mapping not available for a {source.type} source</p>
       </>
     );
@@ -163,6 +109,7 @@ export default function ({ errorHandler, successHandler, query }) {
     return (
       <>
         <h2>Profile Identification</h2>
+        <SourceTabs name={source.name} />
         <p>Set the options first!</p>
       </>
     );
@@ -170,7 +117,13 @@ export default function ({ errorHandler, successHandler, query }) {
 
   return (
     <>
-      <h2>Profile Identification</h2>
+      <Head>
+        <title>Grouparoo: {source.name}</title>
+      </Head>
+
+      <SourceTabs name={source.name} />
+
+      <h1>Profile Identification</h1>
 
       <Form>
         <Row>
@@ -341,3 +294,31 @@ export default function ({ errorHandler, successHandler, query }) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { guid } = ctx.query;
+  const { execApi } = useApi(null, ctx);
+  const { source } = await execApi("get", `/source/${guid}`);
+
+  let preview;
+  if (source.previewAvailable) {
+    const previewResponse = await execApi("get", `/source/${guid}/preview`);
+    preview = previewResponse.preview;
+  }
+
+  const {
+    profilePropertyRules,
+    examples: profilePropertyRuleExamples,
+  } = await execApi("get", `/profilePropertyRules`);
+  const { types } = await execApi("get", `/profilePropertyRuleOptions`);
+  const { total: scheduleCount } = await execApi("get", `/schedules`);
+
+  return {
+    source,
+    preview,
+    profilePropertyRules,
+    profilePropertyRuleExamples,
+    types,
+    scheduleCount,
+  };
+};

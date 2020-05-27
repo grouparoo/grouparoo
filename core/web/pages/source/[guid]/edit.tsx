@@ -1,49 +1,30 @@
-import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
+import SourceTabs from "../../../components/tabs/source";
+import Head from "next/head";
+import { useState, useEffect } from "react";
 import { Row, Col, Form, Button, Badge, Table } from "react-bootstrap";
 import Router from "next/router";
-import AppIcon from "./../../appIcon";
-import StateBadge from "./../../stateBadge";
+import AppIcon from "./../../../components/appIcon";
+import StateBadge from "./../../../components/stateBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
-
 import { SourceAPIData } from "../../../utils/apiData";
 
-export default function ({
-  errorHandler,
-  successHandler,
-  sourceHandler,
-  query,
-}) {
+export default function Page(props) {
+  const {
+    errorHandler,
+    successHandler,
+    sourceHandler,
+    connectionOptions,
+    query,
+  } = props;
   const { execApi } = useApi(errorHandler);
-  const [connectionOptions, setConnectionOptions] = useState([]);
   const [preview, setPreview] = useState([]);
-  const [source, setSource] = useState<SourceAPIData>({
-    app: {},
-    options: {},
-    connection: { options: [] },
-  });
+  const [source, setSource] = useState<SourceAPIData>(props.source);
   const { guid } = query;
 
   useEffect(() => {
-    load();
+    loadPreview(source.previewAvailable);
   }, []);
-
-  async function load() {
-    const connectionOptionsResponse = await execApi(
-      "get",
-      `/source/${guid}/connectionOptions`
-    );
-    if (connectionOptionsResponse?.options) {
-      setConnectionOptions(connectionOptionsResponse.options);
-    }
-
-    const sourceResponse = await execApi("get", `/source/${guid}`);
-    if (sourceResponse?.source) {
-      setSource(sourceResponse.source);
-    }
-
-    await loadPreview(sourceResponse.source.previewAvailable);
-  }
 
   async function loadPreview(
     previewAvailable: boolean = source.previewAvailable
@@ -83,18 +64,12 @@ export default function ({
     if (response?.source) {
       successHandler.set({ message: "Source updated" });
       setSource(response.source);
-      sourceHandler.set();
+      sourceHandler.set(response.source);
       if (response.source.state !== "ready") {
-        Router.push({
-          pathname: `/source/${guid}`,
-          query: { tab: "mapping" },
-        });
+        Router.push(`/source/${guid}/mapping`);
       }
       if (response.source.state === "ready" && source.state === "draft") {
-        Router.push({
-          pathname: `/source/${guid}`,
-          query: { tab: "overview" },
-        });
+        Router.push(`/source/${guid}/overview`);
       }
     }
   };
@@ -135,6 +110,12 @@ export default function ({
 
   return (
     <>
+      <Head>
+        <title>Grouparoo: {source.name}</title>
+      </Head>
+
+      <SourceTabs name={source.name} />
+
       <h2>Edit this {source.app.name} Source</h2>
 
       <Row>
@@ -351,3 +332,15 @@ export default function ({
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { guid } = ctx.query;
+  const { execApi } = useApi(null, ctx);
+  const { source } = await execApi("get", `/source/${guid}`);
+  const { options: connectionOptions } = await execApi(
+    "get",
+    `/source/${guid}/connectionOptions`
+  );
+
+  return { source, connectionOptions };
+};

@@ -11,7 +11,7 @@ export default function Page({ profilePropertyRule, groups }) {
         <title>Grouparoo: {profilePropertyRule.key}</title>
       </Head>
 
-      <ProfilePropertyRuleTabs name={profilePropertyRule.key} />
+      <ProfilePropertyRuleTabs profilePropertyRule={profilePropertyRule} />
 
       <LoadingTable loading={false}>
         <thead>

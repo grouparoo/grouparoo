@@ -1,6 +1,6 @@
 import { useState, Fragment } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Button, Form, Table, Badge, Alert } from "react-bootstrap";
+import { Row, Col, Button, Form, Table, Badge } from "react-bootstrap";
 import Router from "next/router";
 import Link from "next/link";
 import Loader from "../../../components/loader";
@@ -133,16 +133,7 @@ export default function Page(props) {
         <title>Grouparoo: {profilePropertyRule.key}</title>
       </Head>
 
-      <ProfilePropertyRuleTabs name={profilePropertyRule.key} />
-
-      <Alert variant="info">
-        <Link
-          href="/source/[guid]"
-          as={`/source/${profilePropertyRule.source.guid}`}
-        >
-          <a>↞ Back to Source {profilePropertyRule.source.name}</a>
-        </Link>
-      </Alert>
+      <ProfilePropertyRuleTabs profilePropertyRule={profilePropertyRule} />
 
       <Form id="form" onSubmit={onSubmit}>
         <Row>

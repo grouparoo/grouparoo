@@ -1,19 +1,21 @@
-import { useApi } from "../hooks/useApi";
+import { useApi } from "../../../hooks/useApi";
 import Head from "next/head";
+import SourceTabs from "../../../components/tabs/source";
 import { Fragment, useState } from "react";
-import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
-import { useHistoryPagination } from "../hooks/useHistoryPagination";
+import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
+import { useHistoryPagination } from "../../../hooks/useHistoryPagination";
 import { Row, Col, ButtonGroup, Button, Alert } from "react-bootstrap";
 import Moment from "react-moment";
 import Router from "next/router";
 import Link from "next/link";
-import Pagination from "../components/pagination";
-import LoadingTable from "../components/loadingTable";
-import RunDurationChart from "../components/visualizations/runDurations";
-import { RunAPIData } from "../utils/apiData";
+import Pagination from "../../../components/pagination";
+import LoadingTable from "../../../components/loadingTable";
+import RunDurationChart from "../../../components/visualizations/runDurations";
+import { RunAPIData } from "../../../utils/apiData";
+import source from "../../../components/tabs/source";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, query } = props;
+  const { errorHandler, successHandler, source, query } = props;
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(props.total);
@@ -31,7 +33,11 @@ export default function Page(props) {
   }, [limit, offset, stateFilter, errorFilter]);
 
   async function load() {
-    const params = { limit, offset };
+    const params = {
+      guid: source.guid,
+      limit,
+      offset,
+    };
 
     if (stateFilter !== "") {
       params["state"] = stateFilter;
@@ -48,6 +54,17 @@ export default function Page(props) {
     if (response?.runs) {
       setRuns(response.runs);
       setTotal(response.total);
+    }
+  }
+
+  async function enqueueScheduleRun() {
+    setLoading(true);
+    try {
+      await execApi("post", `/schedule/${source.schedule.guid}/run`);
+      await load();
+      successHandler.set({ message: "run enqueued" });
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -71,8 +88,22 @@ export default function Page(props) {
   return (
     <>
       <Head>
-        <title>Grouparoo: Runs</title>
+        <title>Grouparoo: {source.name}</title>
       </Head>
+
+      <SourceTabs name={source.name} />
+
+      <Button
+        size="sm"
+        variant="warning"
+        onClick={() => {
+          enqueueScheduleRun();
+        }}
+      >
+        Run Now
+      </Button>
+      <hr />
+      <br />
 
       <Row>
         <Col>
@@ -256,13 +287,15 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { limit, offset, state, error } = ctx.query;
+  const { guid, limit, offset, state, error } = ctx.query;
   const { execApi } = useApi(null, ctx);
+  const { source } = await execApi("get", `/source/${guid}`);
   const { runs, total } = await execApi("get", `/runs`, {
+    guid: source?.schedule?.guid,
     limit,
     offset,
     state,
     hasError: error,
   });
-  return { runs, total };
+  return { source, runs, total };
 };

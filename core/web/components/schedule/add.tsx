@@ -1,4 +1,4 @@
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "../../hooks/useApi";
 import { useState } from "react";
 import Router from "next/router";
 import { Button } from "react-bootstrap";
@@ -44,10 +44,7 @@ export async function createSchedule({
 
   if (response?.schedule) {
     successHandler.set({ message: "Schedule Created" });
-    Router.push({
-      pathname: `/source/${sourceGuid}`,
-      query: { tab: "schedule" },
-    });
+    Router.push(`/source/${sourceGuid}/schedule`);
   } else {
     setLoading(false);
   }

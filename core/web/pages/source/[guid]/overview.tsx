@@ -9,57 +9,29 @@ import {
   Badge,
   Alert,
 } from "react-bootstrap";
-import AppIcon from "./../../appIcon";
-import StateBadge from "./../../stateBadge";
+import AppIcon from "./../../../components/appIcon";
+import StateBadge from "./../../../components/stateBadge";
 import Link from "next/link";
 import Moment from "react-moment";
-import ScheduleAddButton from "./../schedule/add";
-import ProfilePropertyRuleAddButton from "../../profilePropertyRule/add";
-
+import ScheduleAddButton from "../../../components/schedule/add";
+import ProfilePropertyRuleAddButton from "../../../components/profilePropertyRule/add";
+import SourceTabs from "../../../components/tabs/source";
+import Head from "next/head";
 import { SourceAPIData, RunAPIData } from "../../../utils/apiData";
 
-export default function ({ errorHandler, successHandler, query }) {
-  const { execApi } = useApi(errorHandler);
-  const [source, setSource] = useState<SourceAPIData>({
-    connection: {},
-    app: {},
-    options: {},
-    profilePropertyRules: [],
-  });
-  const [run, setRun] = useState<RunAPIData>({});
-  const { guid } = query;
-
-  useEffect(() => {
-    load();
-  }, []);
-
-  async function load() {
-    const response = await execApi("get", `/source/${guid}`);
-    if (response?.source) {
-      setSource(response.source);
-
-      if (response.source?.schedule?.guid) {
-        loadRun(response.source.schedule.guid);
-      }
-    }
-  }
-
-  async function loadRun(scheduleGuid = source.schedule.guid) {
-    const response = await execApi("get", `/runs`, {
-      guid: scheduleGuid,
-      limit: 1,
-    });
-    if (response?.runs) {
-      setRun(response.runs[0]);
-    }
-  }
-
+export default function Page({ errorHandler, successHandler, source, run }) {
   const recurringFrequencyMinutes = source?.schedule?.recurringFrequency
     ? Math.round(source.schedule.recurringFrequency / 1000 / 60)
     : null;
 
   return (
     <>
+      <Head>
+        <title>Grouparoo: {source.name}</title>
+      </Head>
+
+      <SourceTabs name={source.name} />
+
       <Jumbotron>
         <Row>
           <Col md={1}>
@@ -112,8 +84,8 @@ export default function ({ errorHandler, successHandler, query }) {
                 <tr key={`rule-${rule.guid}`}>
                   <td>
                     <Link
-                      href="/profilePropertyRule/[guid]"
-                      as={`/profilePropertyRule/${rule.guid}`}
+                      href="/profilePropertyRule/[guid]/edit"
+                      as={`/profilePropertyRule/${rule.guid}/edit`}
                     >
                       <a>
                         <strong>
@@ -308,3 +280,20 @@ export default function ({ errorHandler, successHandler, query }) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { guid } = ctx.query;
+  const { execApi } = useApi(null, ctx);
+  const { source } = await execApi("get", `/source/${guid}`);
+
+  let run;
+  if (source?.schedule?.guid) {
+    const { runs } = await execApi("get", `/runs`, {
+      guid: source.schedule.guid,
+      limit: 1,
+    });
+    run = runs[0];
+  }
+
+  return { source, run };
+};

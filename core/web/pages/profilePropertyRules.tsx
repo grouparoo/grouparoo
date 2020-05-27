@@ -88,7 +88,10 @@ export default function Page(props) {
         return (
           <div key={`src-${source.guid}`}>
             <h4>
-              <Link href="/source/[guid]" as={`/source/${source.guid}`}>
+              <Link
+                href="/source/[guid]/overview"
+                as={`/source/${source.guid}/overview`}
+              >
                 <a>{source.name}</a>
               </Link>
             </h4>

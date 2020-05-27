@@ -20,10 +20,9 @@ export default function ({ errorHandler, successHandler, source }) {
 
     if (response?.profilePropertyRule) {
       successHandler.set({ message: "Profile Property Rule Created" });
-      Router.push({
-        pathname: `/profilePropertyRule/${response.profilePropertyRule.guid}`,
-        query: { tab: "edit" },
-      });
+      Router.push(
+        `/profilePropertyRule/${response.profilePropertyRule.guid}/edit`
+      );
     }
   }
 
