@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "../../hooks/useApi";
 import { Row, Col } from "react-bootstrap";
-import Chart from "../../visualizations/resqueChart";
+import Chart from "../visualizations/resqueChart";
 
 const refreshInterval = 1000 * 2;
 const maxSampleLength = 20;

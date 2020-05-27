@@ -1,10 +1,14 @@
 import Head from "next/head";
-import TeamsList from "../components/lists/teams";
-import TeamMembersList from "../components/lists/teamMembers";
 import { Button } from "react-bootstrap";
 import Router from "next/router";
+import { useApi } from "../hooks/useApi";
+import Link from "next/link";
+import { Form } from "react-bootstrap";
+import LoadingTable from "../components/loadingTable";
+import Moment from "react-moment";
+import ProfileImageFromEmail from "../components/visualizations/profileImageFromEmail";
 
-export default function (props) {
+export default function Page({ teams, teamMembers }) {
   return (
     <>
       <Head>
@@ -12,7 +16,37 @@ export default function (props) {
       </Head>
 
       <h1>Teams</h1>
-      <TeamsList {...props} />
+
+      <LoadingTable loading={false}>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Members</th>
+            <th>Locked</th>
+          </tr>
+        </thead>
+        <tbody>
+          {teams.map((team) => {
+            return (
+              <tr key={`team-${team.guid}`}>
+                <td>
+                  <Link href="/team/[guid]/edit" as={`/team/${team.guid}/edit`}>
+                    <a>
+                      <strong>{team.name}</strong>
+                      {/* <br /><span className='text-muted'>{team.guid}</span> */}
+                    </a>
+                  </Link>
+                </td>
+                <td>{team.membersCount}</td>
+                <td>
+                  <Form.Check type="checkbox" disabled checked={team.locked} />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </LoadingTable>
+
       <Button
         size="sm"
         variant="warning"
@@ -25,8 +59,58 @@ export default function (props) {
       <br />
       <br />
       <br />
-      <h2>Team Members</h2>
-      <TeamMembersList {...props} />
+
+      <LoadingTable loading={false}>
+        <thead>
+          <tr>
+            <th>&nbsp;</th>
+            <th>Email</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Team</th>
+            <th>Last Login At</th>
+            <th>Created At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {teamMembers.map((teamMember) => {
+            return (
+              <tr key={`teamMember-${teamMember.guid}`}>
+                <td style={{ maxWidth: 36 }}>
+                  <ProfileImageFromEmail
+                    loading={false}
+                    email={teamMember.email}
+                  />
+                </td>
+                <td>
+                  <Link
+                    href="/teamMember/[guid]/edit"
+                    as={`/teamMember/${teamMember.guid}/edit`}
+                  >
+                    <a>{teamMember.email}</a>
+                  </Link>
+                </td>
+                <td>{teamMember.firstName}</td>
+                <td>{teamMember.lastName}</td>
+                <td>
+                  {teams.filter((t) => t.guid === teamMember.teamGuid)[0].name}
+                </td>
+                <td>
+                  {teamMember.lastLoginAt ? (
+                    <Moment fromNow>{teamMember.lastLoginAt}</Moment>
+                  ) : (
+                    "Never"
+                  )}
+                </td>
+                <td>
+                  <Moment fromNow>{teamMember.createdAt}</Moment>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </LoadingTable>
+
       <Button
         size="sm"
         variant="warning"
@@ -39,3 +123,10 @@ export default function (props) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { execApi } = useApi(null, ctx);
+  const { teams } = await execApi("get", `/teams`);
+  const { teamMembers } = await execApi("get", `/teamMembers`);
+  return { teams, teamMembers };
+};

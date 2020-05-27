@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "../../hooks/useApi";
 import { Button, Table, Row, Col } from "react-bootstrap";
-import Pagination from "../../pagination";
+import Pagination from "../pagination";
 import Router from "next/router";
 
 export default function ({ errorHandler, query, successHandler }) {

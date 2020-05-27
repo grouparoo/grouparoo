@@ -1,29 +1,16 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Form, Button } from "react-bootstrap";
-import PermissionsList from "../../lists/permissions";
+import PermissionsList from "../../../components/permissions";
 import Router from "next/router";
-
 import { TeamAPIData } from "../../../utils/apiData";
+import TeamTabs from "../../../components/tabs/team";
 
-export default function ({ errorHandler, successHandler, teamHandler, query }) {
+export default function Page(props) {
+  const { errorHandler, successHandler, teamHandler } = props;
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [team, setTeam] = useState<TeamAPIData>({ name: "" });
-  const { guid } = query;
-
-  useEffect(() => {
-    load();
-  }, []);
-
-  async function load() {
-    setLoading(true);
-    const response = await execApi("get", `/team/${guid}`);
-    setLoading(false);
-    if (response?.team) {
-      setTeam(response.team);
-    }
-  }
+  const [team, setTeam] = useState<TeamAPIData>(props.team);
 
   const updateTeam = async (event) => {
     event.preventDefault();
@@ -36,18 +23,18 @@ export default function ({ errorHandler, successHandler, teamHandler, query }) {
     }
 
     setLoading(true);
-    const response = await execApi("put", `/team/${guid}`, _team);
+    const response = await execApi("put", `/team/${team.guid}`, _team);
     setLoading(false);
     if (response?.team) {
       successHandler.set({ message: "Team updated" });
       setTeam(response.team);
-      teamHandler.set();
+      teamHandler.set(response.team);
     }
   };
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
-      const response = await execApi("delete", `/team/${guid}`);
+      const response = await execApi("delete", `/team/${team.guid}`);
       if (response) {
         successHandler.set({ message: "Team deleted" });
         Router.push("/teams");
@@ -81,9 +68,7 @@ export default function ({ errorHandler, successHandler, teamHandler, query }) {
 
   return (
     <>
-      <p>
-        <span className="text-muted">{team.guid}</span>
-      </p>
+      <TeamTabs name={team.name} />
 
       <Form id="form" onSubmit={updateTeam}>
         <Form.Group>
@@ -131,3 +116,10 @@ export default function ({ errorHandler, successHandler, teamHandler, query }) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { execApi } = useApi(null, ctx);
+  const { guid } = ctx.query;
+  const { team } = await execApi("get", `/team/${guid}`);
+  return { team };
+};

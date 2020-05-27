@@ -35,7 +35,7 @@ function HighlightingNavLink({ href, text, icon }) {
 
 export default function Navigation(props) {
   const { navigationMode, navigation, sessionHandler } = props;
-  const [teamMember, setTeamMember] = useState(props.teamMember);
+  const [teamMember, setTeamMember] = useState(props.currentTeamMember);
   const [height, setHeight] = useState(500);
   const subMenuGreeting = `Hello ${teamMember.firstName} »`;
   const logoLink = teamMember.guid ? "/dashboard" : "/";

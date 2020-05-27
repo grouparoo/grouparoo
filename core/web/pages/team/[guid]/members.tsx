@@ -1,57 +1,21 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
+import { useApi } from "../../../hooks/useApi";
 import { Button } from "react-bootstrap";
 import Link from "next/link";
+import Router from "next/router";
 import Moment from "react-moment";
-import LoadingTable from "../loadingTable";
-import ProfileImageFromEmail from "../visualizations/profileImageFromEmail";
+import LoadingTable from "../../../components/loadingTable";
+import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
+import { TeamMemberAPIData } from "../../../utils/apiData";
+import TeamTabs from "../../../components/tabs/team";
 
-import { TeamMemberAPIData } from "../../utils/apiData";
-
-export default function ({
-  errorHandler,
-  successHandler,
-  teamMemberHandler,
-  query,
-}) {
+export default function Page(props) {
+  const { errorHandler, successHandler, team, teams } = props;
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [teams, setTeams] = useState({});
-  const [teamMembers, setTeamMembers] = useState<TeamMemberAPIData[]>([]);
-  const { guid } = query;
-
-  useEffect(() => {
-    load();
-
-    teamMemberHandler.subscribe("team-members-list", load);
-
-    return () => {
-      teamMemberHandler.unsubscribe("team-members-list", load);
-    };
-  }, []);
-
-  async function load() {
-    setLoading(true);
-
-    const teamsResponse = await execApi("get", `/teams`);
-    if (teamsResponse?.teams) {
-      const teamsByHash = {};
-      teamsResponse.teams.forEach((t) => {
-        teamsByHash[t.guid] = t;
-      });
-      setTeams(teamsByHash);
-    }
-
-    const teamMembersResponse = await execApi(
-      "get",
-      guid ? `/team/${guid}/members` : `/teamMembers`
-    );
-    if (teamMembersResponse?.teamMembers) {
-      setTeamMembers(teamMembersResponse.teamMembers);
-    }
-
-    setLoading(false);
-  }
+  const [teamMembers, setTeamMembers] = useState<TeamMemberAPIData[]>(
+    props.teamMembers
+  );
 
   async function handleDelete(teamMember) {
     if (window.confirm("are you sure?")) {
@@ -61,13 +25,19 @@ export default function ({
       );
       if (response) {
         successHandler.set({ message: "Team Member Deleted" });
-        load();
+        const { teamMembers: _teamMembers } = await execApi(
+          "get",
+          `/team/${team.guid}/members`
+        );
+        setTeamMembers(_teamMembers);
       }
     }
   }
 
   return (
     <>
+      <TeamTabs name={team.name} />
+
       <LoadingTable loading={loading}>
         <thead>
           <tr>
@@ -75,7 +45,6 @@ export default function ({
             <th>Email</th>
             <th>First Name</th>
             <th>Last Name</th>
-            {guid ? null : <th>Team</th>}
             <th>Last Login At</th>
             <th>Created At</th>
             <th />
@@ -93,15 +62,14 @@ export default function ({
                 </td>
                 <td>
                   <Link
-                    href="/teamMember/[guid]"
-                    as={`/teamMember/${teamMember.guid}`}
+                    href="/teamMember/[guid]/edit"
+                    as={`/teamMember/${teamMember.guid}/edit`}
                   >
                     <a>{teamMember.email}</a>
                   </Link>
                 </td>
                 <td>{teamMember.firstName}</td>
                 <td>{teamMember.lastName}</td>
-                {guid ? null : <td>{teams[teamMember.teamGuid].name}</td>}
                 <td>
                   {teamMember.lastLoginAt ? (
                     <Moment fromNow>{teamMember.lastLoginAt}</Moment>
@@ -128,6 +96,24 @@ export default function ({
           })}
         </tbody>
       </LoadingTable>
+
+      <Button
+        size="sm"
+        variant="warning"
+        onClick={() => {
+          Router.push(`/team/${team.guid}/teamMember/new`);
+        }}
+      >
+        Add Team Member
+      </Button>
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { execApi } = useApi(null, ctx);
+  const { guid } = ctx.query;
+  const { team } = await execApi("get", `/team/${guid}`);
+  const { teamMembers } = await execApi("get", `/team/${guid}/members`);
+  return { team, teamMembers };
+};

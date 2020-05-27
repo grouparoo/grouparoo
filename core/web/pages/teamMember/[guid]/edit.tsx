@@ -1,50 +1,29 @@
-import { useState, useEffect } from "react";
+import Head from "next/head";
+import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import Router from "next/router";
 import Moment from "react-moment";
-import ProfileImageFromEmail from "../../visualizations/profileImageFromEmail";
+import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
+import { TeamMemberAPIData } from "../../../utils/apiData";
+import TeamMemberTabs from "../../../components/tabs/teamMember";
 
-import { TeamAPIData, TeamMemberAPIData } from "../../../utils/apiData";
-
-export default function ({ errorHandler, successHandler, query }) {
+export default function Page(props) {
+  const { errorHandler, successHandler, teams } = props;
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [teams, setTeams] = useState<TeamAPIData[]>([]);
-  const [teamMember, setTeamMember] = useState<TeamMemberAPIData>({
-    email: "",
-    firstName: "",
-    lastName: "",
-    teamGuid: "",
-    //@ts-ignore
-    password: "",
-  });
-  const { guid } = query;
-
-  useEffect(() => {
-    load();
-  }, []);
-
-  async function load() {
-    setLoading(true);
-
-    const teamsResponse = await execApi("get", `/teams`);
-    if (teamsResponse?.teams) {
-      setTeams(teamsResponse.teams);
-    }
-
-    const teamMemberResponse = await execApi("get", `/team/member/${guid}`);
-    if (teamMemberResponse?.teamMember) {
-      setTeamMember(teamMemberResponse.teamMember);
-    }
-
-    setLoading(false);
-  }
+  const [teamMember, setTeamMember] = useState<TeamMemberAPIData>(
+    props.teamMember
+  );
 
   async function submit(event) {
     event.preventDefault();
     setLoading(true);
-    const response = await execApi("put", `/team/member/${guid}`, teamMember);
+    const response = await execApi(
+      "put",
+      `/team/member/${teamMember.guid}`,
+      teamMember
+    );
     if (response?.teamMember) {
       successHandler.set({ message: "Team Member updated" });
       setTeamMember(response.teamMember);
@@ -54,8 +33,12 @@ export default function ({ errorHandler, successHandler, query }) {
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
-      const response = await execApi("delete", `/team/member/${guid}`);
+      const response = await execApi(
+        "delete",
+        `/team/member/${teamMember.guid}`
+      );
       if (response) {
+        successHandler.set({ message: "team member deleted" });
         Router.push("/teams");
       }
     }
@@ -66,9 +49,14 @@ export default function ({ errorHandler, successHandler, query }) {
     _teamMember[event.target.id] = event.target.value;
     setTeamMember(_teamMember);
   }
-
   return (
     <>
+      <Head>
+        <title>Grouparoo: Edit Team Member</title>
+      </Head>
+
+      <TeamMemberTabs name={teamMember.email} />
+
       <Row>
         <Col md={2}>
           <p>
@@ -168,3 +156,11 @@ export default function ({ errorHandler, successHandler, query }) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { execApi } = useApi(null, ctx);
+  const { guid } = ctx.query;
+  const { teams } = await execApi("get", `/teams`);
+  const { teamMember } = await execApi("get", `/team/member/${guid}`);
+  return { teams, teamMember };
+};

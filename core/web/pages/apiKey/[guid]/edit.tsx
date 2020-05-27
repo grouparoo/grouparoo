@@ -2,7 +2,7 @@ import { useApi } from "../../../hooks/useApi";
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import Head from "next/head";
-import PermissionsList from "../../../components/lists/permissions";
+import PermissionsList from "../../../components/permissions";
 import Router from "next/router";
 import ApiKeyTabs from "../../../components/tabs/apiKey";
 

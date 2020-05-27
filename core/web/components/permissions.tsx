@@ -1,4 +1,4 @@
-import Loader from "../loader";
+import Loader from "./loader";
 import { Table, Form, Button } from "react-bootstrap";
 
 interface Permission {

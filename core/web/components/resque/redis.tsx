@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "../../hooks/useApi";
 import { Table, Row, Col } from "react-bootstrap";
 
 export default function ({ errorHandler }) {

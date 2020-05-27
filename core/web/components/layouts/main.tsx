@@ -12,7 +12,7 @@ export default function ({
   successHandler,
   errorHandler,
   sessionHandler,
-  teamMember,
+  currentTeamMember,
   navigation,
   navigationMode,
 }) {
@@ -139,7 +139,7 @@ export default function ({
 
       <div id="container">
         <Navigation
-          teamMember={teamMember}
+          currentTeamMember={currentTeamMember}
           navigation={navigation}
           navigationMode={navigationMode}
           sessionHandler={sessionHandler}

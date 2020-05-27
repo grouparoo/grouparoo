@@ -51,7 +51,7 @@ export default function GrouparooWebApp(props) {
   }, [pathname, query]);
 
   const combinedProps = Object.assign({}, props.pageProps || {}, {
-    teamMember: props.teamMember,
+    currentTeamMember: props.currentTeamMember,
     navigation: props.navigation,
     navigationMode: props.navigationMode,
     successHandler,
@@ -82,16 +82,16 @@ export default function GrouparooWebApp(props) {
 GrouparooWebApp.getInitialProps = async (appContext) => {
   const { execApi } = useApi(null, appContext.ctx);
   const { navigationMode, navigation } = await execApi("get", `/navigation`);
-  let teamMember = {
+  let currentTeamMember = {
     firstName: "",
     guid: null,
   };
   if (navigationMode === "authenticated") {
-    teamMember = (await execApi("get", `/session`)).teamMember;
+    currentTeamMember = (await execApi("get", `/session`)).teamMember;
   }
 
   // render page-specific getInitialProps
   const appProps = await App.getInitialProps(appContext);
 
-  return { ...appProps, teamMember, navigationMode, navigation };
+  return { ...appProps, currentTeamMember, navigationMode, navigation };
 };
