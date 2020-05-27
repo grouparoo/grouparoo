@@ -80,7 +80,7 @@ export default function GrouparooWebApp(props) {
 }
 
 GrouparooWebApp.getInitialProps = async (appContext) => {
-  const { execApi } = useApi(null, appContext.ctx?.req?.headers?.cookie);
+  const { execApi } = useApi(null, appContext.ctx);
   const { navigationMode, navigation } = await execApi("get", `/navigation`);
   let teamMember = {
     firstName: "",
