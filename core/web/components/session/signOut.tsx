@@ -14,7 +14,7 @@ export default function ({ errorHandler, successHandler, sessionHandler }) {
     window.localStorage.clear();
     await execApi("delete", `/session`);
     successHandler.set({ message: "Signed Out" });
-    sessionHandler.set();
+    sessionHandler.set({ firstName: "" });
     Router.push("/");
   }
 

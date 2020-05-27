@@ -23,7 +23,7 @@ export default function ({
     if (response?.teamMember) {
       successHandler.set({ message: "Session created" });
       window.localStorage.setItem("session:csrfToken", response.csrfToken);
-      sessionHandler.set();
+      sessionHandler.set(response.teamMember);
 
       nextPage ? Router.push(nextPage) : Router.push("/dashboard");
     }
