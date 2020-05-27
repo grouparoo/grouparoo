@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { Card } from "react-bootstrap";
 import SettingsList from "../components/lists/settings";
-import ImportAndUpdateAllProfiles from "../components/forms/profiles/importAndUpdate";
+import ImportAndUpdateAllProfiles from "../components/profile/importAndUpdate";
 
 export default function (props) {
   return (

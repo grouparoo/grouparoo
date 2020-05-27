@@ -46,7 +46,7 @@ export default function Page({ errorHandler, types }) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { execApi } = useApi(null, ctx);
   const { types } = await execApi("get", `/appOptions`);
   return { types: types.filter((app) => app.addible !== false) };
 };

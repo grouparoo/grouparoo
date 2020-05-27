@@ -5,7 +5,7 @@ const client = new Client();
 export const apiVersion = process.env.API_VERSION;
 const webUrl = process.env.WEB_URL;
 
-export function useApi(errorHandler?: ErrorHandler, cookieString?: string) {
+export function useApi(errorHandler?: ErrorHandler, ctx?) {
   async function execApi(
     verb = "get",
     path: string,
@@ -25,7 +25,7 @@ export function useApi(errorHandler?: ErrorHandler, cookieString?: string) {
         `${webUrl}/api/${apiVersion}${path}`,
         data,
         useCache,
-        cookieString
+        ctx?.req?.headers?.cookie
       );
 
       if (setter) {

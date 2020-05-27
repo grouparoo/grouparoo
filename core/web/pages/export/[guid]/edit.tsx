@@ -183,7 +183,7 @@ export default function Page({ _export, groups }) {
 
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
-  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { execApi } = useApi(null, ctx);
   const { export: _export } = await execApi("get", `/export/${guid}`);
   const { groups } = await execApi("get", `/groups`);
   return { _export, groups };

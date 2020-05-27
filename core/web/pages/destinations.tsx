@@ -167,7 +167,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { execApi } = useApi(null, ctx);
   const { limit, offset } = ctx.query;
   const { destinations, total } = await execApi("get", `/destinations`, {
     limit,

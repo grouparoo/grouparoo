@@ -67,7 +67,7 @@ export default function Page({ errorHandler, successHandler, connectionApps }) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { execApi } = useApi(null, ctx);
   const { connectionApps } = await execApi(
     "get",
     `/destinations/connectionApps`

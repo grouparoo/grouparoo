@@ -59,7 +59,7 @@ export default function Page({ errorHandler, successHandler, types }) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { execApi } = useApi(null, ctx);
   const { options } = await execApi("get", `/files/options`);
   return { types: options.types };
 };

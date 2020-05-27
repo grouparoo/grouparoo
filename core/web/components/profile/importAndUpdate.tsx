@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "../../hooks/useApi";
 
 export default function ({ errorHandler, successHandler }) {
   const { execApi } = useApi(errorHandler);

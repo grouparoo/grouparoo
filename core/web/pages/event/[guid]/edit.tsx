@@ -139,7 +139,7 @@ export default function Page({ event }: { event: EventAPIData }) {
 
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
-  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
+  const { execApi } = useApi(null, ctx);
   const { event } = await execApi("get", `/event/${guid}`);
   return { event };
 };
