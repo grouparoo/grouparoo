@@ -7,7 +7,7 @@ export default class Swagger extends Component {
 
     const swagger = SwaggerUi({
       dom_id: "#swaggerContainer",
-      url: `/swagger`,
+      url: `/api/v1/swagger`,
       presets: [SwaggerUi.presets.apis],
       deepLinking: true,
       docExpansion: "none",
