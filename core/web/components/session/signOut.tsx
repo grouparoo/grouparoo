@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import Router from "next/router";
-import Loader from "../../loader";
-import { useApi } from "../../../hooks/useApi";
+import Loader from "../loader";
+import { useApi } from "../../hooks/useApi";
 
 export default function ({ errorHandler, successHandler, sessionHandler }) {
   const { execApi } = useApi(errorHandler);
