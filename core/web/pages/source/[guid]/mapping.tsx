@@ -99,7 +99,7 @@ export default function Page(props) {
     return (
       <>
         <h2>Profile Identification</h2>
-        <SourceTabs name={source.name} />
+        <SourceTabs source={source} />
         <p>Mapping not available for a {source.type} source</p>
       </>
     );
@@ -109,7 +109,7 @@ export default function Page(props) {
     return (
       <>
         <h2>Profile Identification</h2>
-        <SourceTabs name={source.name} />
+        <SourceTabs source={source} />
         <p>Set the options first!</p>
       </>
     );
@@ -121,7 +121,7 @@ export default function Page(props) {
         <title>Grouparoo: {source.name}</title>
       </Head>
 
-      <SourceTabs name={source.name} />
+      <SourceTabs source={source} />
 
       <h1>Profile Identification</h1>
 

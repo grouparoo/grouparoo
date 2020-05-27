@@ -1,6 +1,12 @@
 import Tabs from "../tabs";
+import { SourceAPIData } from "../../utils/apiData";
 
-export default function ({ name }: { name: string }) {
-  const tabs = ["overview", "edit", "mapping", "schedule", "runs"];
-  return <Tabs name={name} tabs={tabs} />;
+export default function ({ source }: { source: SourceAPIData }) {
+  const tabs = ["overview", "edit", "mapping"];
+  if (source.schedule) {
+    tabs.push("schedule");
+    tabs.push("runs");
+  }
+
+  return <Tabs name={source.name} tabs={tabs} />;
 }

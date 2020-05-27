@@ -78,7 +78,7 @@ export default function Page(props) {
         <title>Grouparoo: {source.name}</title>
       </Head>
 
-      <SourceTabs name={source.name} />
+      <SourceTabs source={source} />
 
       <p>
         <span className="text-muted">{schedule.guid}</span>

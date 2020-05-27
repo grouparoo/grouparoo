@@ -114,7 +114,7 @@ export default function Page(props) {
         <title>Grouparoo: {source.name}</title>
       </Head>
 
-      <SourceTabs name={source.name} />
+      <SourceTabs source={source} />
 
       <h2>Edit this {source.app.name} Source</h2>
 
