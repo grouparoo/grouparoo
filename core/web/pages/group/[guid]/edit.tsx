@@ -73,7 +73,7 @@ export default function Page(props) {
         <title>Grouparoo: {group.name}</title>
       </Head>
 
-      <GroupTabs name={group.name} />
+      <GroupTabs group={group} />
 
       <StateBadge state={group.state} />
       <br />

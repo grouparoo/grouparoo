@@ -14,7 +14,7 @@ export default function Page({ event }: { event: EventAPIData }) {
         <title>Grouparoo: {event.guid}</title>
       </Head>
 
-      <EventTabs name={event.guid} />
+      <EventTabs event={event} />
 
       <h1>Event {event.guid}</h1>
 

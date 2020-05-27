@@ -48,7 +48,7 @@ export default function Page(props) {
         <title>Grouparoo: {group.name}</title>
       </Head>
 
-      <GroupTabs name={group.name} />
+      <GroupTabs group={group} />
 
       <h1>Group Destination</h1>
       <p>{destinations.length} destinations interested in this group</p>

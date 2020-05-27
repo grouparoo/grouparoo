@@ -55,7 +55,7 @@ export default function Page(props) {
         <title>Grouparoo: Edit Team Member</title>
       </Head>
 
-      <TeamMemberTabs name={teamMember.email} />
+      <TeamMemberTabs teamMember={teamMember} />
 
       <Row>
         <Col md={2}>

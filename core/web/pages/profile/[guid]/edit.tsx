@@ -158,7 +158,7 @@ export default function Page(props) {
         <title>Grouparoo: {getProfileDisplayName(profile)}</title>
       </Head>
 
-      <ProfileTabs name={getProfileDisplayName(profile)} />
+      <ProfileTabs profile={profile} />
 
       <Row>
         <Col md={9}>
@@ -356,7 +356,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
   const { profile, groups } = await execApi("get", `/profile/${guid}`);
   const { profilePropertyRules } = await execApi(
     "get",

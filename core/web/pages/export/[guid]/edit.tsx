@@ -1,12 +1,9 @@
-import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Badge, Alert } from "react-bootstrap";
 import Link from "next/link";
 import Head from "next/head";
 import Moment from "react-moment";
-import ExportTabs from "../../../components/tabs/exportTabs";
-
-import { ExportAPIData } from "../../../utils/apiData";
+import ExportTabs from "../../../components/tabs/export";
 
 export default function Page({ _export, groups }) {
   function getGroupGuid(groupName) {
@@ -22,7 +19,7 @@ export default function Page({ _export, groups }) {
         <title>Grouparoo: {_export.guid}</title>
       </Head>
 
-      <ExportTabs name={_export.guid} />
+      <ExportTabs export={_export} />
 
       <h1>{_export.guid}</h1>
 

@@ -36,7 +36,7 @@ export default function Page(props) {
 
   return (
     <>
-      <TeamTabs name={team.name} />
+      <TeamTabs team={team} />
 
       <LoadingTable loading={loading}>
         <thead>

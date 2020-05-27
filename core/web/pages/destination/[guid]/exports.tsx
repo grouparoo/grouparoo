@@ -83,7 +83,7 @@ export default function Page(params) {
         <title>Grouparoo: {destination.name}</title>
       </Head>
 
-      <DestinationTabs name={destination.name} />
+      <DestinationTabs destination={destination} />
 
       <h1>Exports</h1>
 

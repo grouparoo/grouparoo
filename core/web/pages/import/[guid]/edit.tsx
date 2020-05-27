@@ -25,7 +25,7 @@ export default function Page(props) {
         <title>Grouparoo: {_import.guid}</title>
       </Head>
 
-      <ImportTabs name={_import.guid} />
+      <ImportTabs import={_import} />
 
       <h1>{_import.guid}</h1>
       <p>

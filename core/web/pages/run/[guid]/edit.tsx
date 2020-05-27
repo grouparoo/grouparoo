@@ -16,7 +16,7 @@ export default function Page({ run, quantizedTimeline }) {
         <title>Grouparoo: {run.guid}</title>
       </Head>
 
-      <RunTabs name={run.guid} />
+      <RunTabs run={run} />
 
       <Row>
         <Col>

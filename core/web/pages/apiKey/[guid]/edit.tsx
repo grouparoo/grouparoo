@@ -76,7 +76,7 @@ export default function Page(props) {
         <title>Grouparoo: {apiKey.name}</title>
       </Head>
 
-      <ApiKeyTabs name={apiKey.name} />
+      <ApiKeyTabs apiKey={apiKey} />
 
       <Form id="form" onSubmit={updateApiKey}>
         <Form.Group>

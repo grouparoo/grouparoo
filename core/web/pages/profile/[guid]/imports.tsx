@@ -77,7 +77,7 @@ export default function Page(props) {
         <title>Grouparoo: {getProfileDisplayName(profile)}</title>
       </Head>
 
-      <ProfileTabs name={getProfileDisplayName(profile)} />
+      <ProfileTabs profile={profile} />
 
       <h1>Imports</h1>
 

@@ -91,7 +91,7 @@ export default function Page(props) {
         <title>Grouparoo: {app.name}</title>
       </Head>
 
-      <AppTabs name={app.name} />
+      <AppTabs app={app} />
 
       <p>
         <span className="text-muted">{app.guid}</span>
