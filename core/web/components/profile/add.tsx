@@ -1,4 +1,4 @@
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "../../hooks/useApi";
 import Router from "next/router";
 import { Button } from "react-bootstrap";
 
@@ -7,7 +7,10 @@ export default function ({ errorHandler }) {
 
   async function create() {
     const response = await execApi("post", `/profile`);
-    Router.push("/profile/[guid]", `/profile/${response.profile.guid}`);
+    Router.push(
+      "/profile/[guid]/edit",
+      `/profile/${response.profile.guid}/edit`
+    );
   }
 
   return (

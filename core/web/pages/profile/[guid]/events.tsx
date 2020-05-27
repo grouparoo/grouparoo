@@ -1,20 +1,22 @@
 import { useState } from "react";
-import { useApi } from "../../hooks/useApi";
-import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import { useHistoryPagination } from "../../hooks/useHistoryPagination";
+import { useApi } from "../../../hooks/useApi";
+import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
+import { useHistoryPagination } from "../../../hooks/useHistoryPagination";
 import Link from "next/link";
 import Router from "next/router";
 import { Form, Col, Button } from "react-bootstrap";
 import Moment from "react-moment";
-import Pagination from "../../components/pagination";
-import LoadingTable from "../../components/loadingTable";
+import Pagination from "../../../components/pagination";
+import LoadingTable from "../../../components/loadingTable";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
+import ProfileTabs from "../../../components/tabs/profile";
+import getProfileDisplayName from "../../../components/profile/getProfileDisplayName";
 import Head from "next/head";
 
-import { EventAPIData } from "../../utils/apiData";
+import { EventAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
-  const { errorHandler, query } = props;
+  const { errorHandler, query, profile } = props;
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -23,7 +25,6 @@ export default function Page(props) {
   const [autocompleteResults, setAutoCompleteResults] = useState(
     props.autocompleteResults
   );
-  const profileGuid = query.guid;
 
   // pagination
   const limit = 100;
@@ -33,7 +34,7 @@ export default function Page(props) {
 
   useSecondaryEffect(() => {
     load();
-  }, [profileGuid, offset, limit]);
+  }, [profile.guid, offset, limit]);
 
   useSecondaryEffect(() => {
     autocompleteProfilePropertySearch();
@@ -47,7 +48,7 @@ export default function Page(props) {
     setTotal(0);
     setLoading(true);
     const response = await execApi("get", `/events`, {
-      profileGuid,
+      profileGuid: profile.guid,
       type,
       limit,
       offset,
@@ -92,10 +93,10 @@ export default function Page(props) {
   return (
     <>
       <Head>
-        <title>Grouparoo: Event Stream</title>
+        <title>Grouparoo: {getProfileDisplayName(profile)}</title>
       </Head>
 
-      <h1>Event Stream</h1>
+      <ProfileTabs name={getProfileDisplayName(profile)} />
 
       <Form id="search" onSubmit={load}>
         <Form.Group>
@@ -226,12 +227,14 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(null, ctx?.req?.headers?.cookie);
-  const { limit, offset, type } = ctx.query;
-  const { events, total, type } = await execApi("get", `/events`, {
+  const { limit, offset, guid, type } = ctx.query;
+  const { profile } = await execApi("get", `/profile/${guid}`);
+  const { events, total } = await execApi("get", `/events`, {
     limit,
     offset,
     type,
+    profileGuid: guid,
   });
   const { types } = await execApi("get", `/events/autocompleteType`, {});
-  return { events, total, autocompleteResults: types };
+  return { profile, events, total, autocompleteResults: types };
 };
