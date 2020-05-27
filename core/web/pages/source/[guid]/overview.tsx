@@ -30,7 +30,7 @@ export default function Page({ errorHandler, successHandler, source, run }) {
         <title>Grouparoo: {source.name}</title>
       </Head>
 
-      <SourceTabs source={source}  />
+      <SourceTabs source={source} />
 
       <Jumbotron>
         <Row>
