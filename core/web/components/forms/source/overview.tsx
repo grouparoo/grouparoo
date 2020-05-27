@@ -14,7 +14,7 @@ import StateBadge from "./../../stateBadge";
 import Link from "next/link";
 import Moment from "react-moment";
 import ScheduleAddButton from "./../schedule/add";
-import ProfilePropertyRuleAddButton from "./../profilePropertyRule/add";
+import ProfilePropertyRuleAddButton from "../../profilePropertyRule/add";
 
 import { SourceAPIData, RunAPIData } from "../../../utils/apiData";
 

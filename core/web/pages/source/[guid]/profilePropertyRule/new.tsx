@@ -1,5 +1,5 @@
 import Head from "next/head";
-import ProfilePropertyRuleAdd from "../../../../components/forms/profilePropertyRule/add";
+import ProfilePropertyRuleAdd from "../../../../components/profilePropertyRule/add";
 
 export default function (props) {
   return (

@@ -1,101 +1,40 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, Fragment } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Button, Form, Table, Badge } from "react-bootstrap";
+import { Row, Col, Button, Form, Table, Badge, Alert } from "react-bootstrap";
 import Router from "next/router";
-import Loader from "../../loader";
-import AppIcon from "../../appIcon";
-import StateBadge from "../../stateBadge";
-import ProfilePreview from "./profilePreview";
+import Link from "next/link";
+import Loader from "../../../components/loader";
+import AppIcon from "../../../components/appIcon";
+import StateBadge from "../../../components/stateBadge";
+import ProfilePreview from "../../../components/profilePropertyRule/profilePreview";
 import { Typeahead } from "react-bootstrap-typeahead";
+
+import Head from "next/head";
+import ProfilePropertyRuleTabs from "../../../components/tabs/profilePropertyRule";
 
 import { ProfilePropertyRuleAPIData } from "../../../utils/apiData";
 
-export default function ({
-  errorHandler,
-  successHandler,
-  profilePropertyRulesHandler,
-  query,
-}) {
-  const defaultPluginOptions: Array<{
-    key: string;
-    description: string;
-    required: boolean;
-    type: string;
-    options: Array<{
-      key: string;
-      description?: string;
-      examples?: Array<any>;
-    }>;
-  }> = [];
-
+export default function Page(props) {
+  const {
+    errorHandler,
+    successHandler,
+    profilePropertyRulesHandler,
+    query,
+    types,
+    filterOptions,
+    pluginOptions,
+    profilePropertyRules,
+  } = props;
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
-  const [types, setTypes] = useState([]);
-  const [pluginOptions, setPluginOptions] = useState(defaultPluginOptions);
-  const [filterOptions, setFilterOptions] = useState([]);
-  const [profilePropertyRules, setProfilePropertyRules] = useState<
-    ProfilePropertyRuleAPIData[]
-  >([]);
   const [profilePropertyRule, setProfilePropertyRule] = useState<
     ProfilePropertyRuleAPIData
-  >({ source: { app: {} }, filters: [], guid: "" });
-  const [localFilters, setLocalFilters] = useState([]);
+  >(props.profilePropertyRule);
+  const [localFilters, setLocalFilters] = useState(
+    props.profilePropertyRule.filters
+  );
 
   const { guid } = query;
-
-  useEffect(() => {
-    async function loadAll() {
-      await loadOptions();
-      await loadFilterOptions();
-      await load();
-      await loadProfilePropertyRules();
-    }
-
-    loadAll();
-  }, []);
-
-  async function load() {
-    setLoading(true);
-    const response = await execApi("get", `/profilePropertyRule/${guid}`);
-    setLoading(false);
-    if (response?.profilePropertyRule) {
-      setProfilePropertyRule(response.profilePropertyRule);
-      setPluginOptions(response.pluginOptions);
-      setLocalFilters(response.profilePropertyRule.filters);
-    }
-  }
-
-  async function loadProfilePropertyRules() {
-    setLoading(true);
-    const response = await execApi("get", `/profilePropertyRules`, {
-      state: "ready",
-    });
-    setLoading(false);
-    if (response?.profilePropertyRules) {
-      setProfilePropertyRules(response.profilePropertyRules);
-    }
-  }
-
-  async function loadOptions() {
-    setLoading(true);
-    const response = await execApi("get", `/profilePropertyRuleOptions`);
-    setLoading(false);
-    if (response?.types) {
-      setTypes(response.types);
-    }
-  }
-
-  async function loadFilterOptions() {
-    setLoading(true);
-    const response = await execApi(
-      "get",
-      `/profilePropertyRule/${guid}/filterOptions`
-    );
-    setLoading(false);
-    if (response?.options) {
-      setFilterOptions(response.options);
-    }
-  }
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -117,8 +56,7 @@ export default function ({
       if (response?.profilePropertyRule) {
         successHandler.set({ message: "Profile Property Rule Updated" });
         setProfilePropertyRule(response.profilePropertyRule);
-        setPluginOptions(response.pluginOptions);
-        profilePropertyRulesHandler.set();
+        profilePropertyRulesHandler.set(response.profilePropertyRule);
         if (
           response.profilePropertyRule.state === "ready" &&
           profilePropertyRule.state === "draft"
@@ -191,6 +129,21 @@ export default function ({
 
   return (
     <>
+      <Head>
+        <title>Grouparoo: {profilePropertyRule.key}</title>
+      </Head>
+
+      <ProfilePropertyRuleTabs name={profilePropertyRule.key} />
+
+      <Alert variant="info">
+        <Link
+          href="/source/[guid]"
+          as={`/source/${profilePropertyRule.source.guid}`}
+        >
+          <a>↞ Back to Source {profilePropertyRule.source.name}</a>
+        </Link>
+      </Alert>
+
       <Form id="form" onSubmit={onSubmit}>
         <Row>
           <Col md={1}>
@@ -628,6 +581,34 @@ export default function ({
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { guid } = ctx.query;
+  const { execApi } = useApi(null, ctx);
+  const { profilePropertyRule, pluginOptions } = await execApi(
+    "get",
+    `/profilePropertyRule/${guid}`
+  );
+  const { profilePropertyRules } = await execApi(
+    "get",
+    `/profilePropertyRules`,
+    {
+      state: "ready",
+    }
+  );
+  const { types } = await execApi("get", `/profilePropertyRuleOptions`);
+  const { options: filterOptions } = await execApi(
+    "get",
+    `/profilePropertyRule/${guid}/filterOptions`
+  );
+  return {
+    profilePropertyRule,
+    profilePropertyRules,
+    pluginOptions,
+    types,
+    filterOptions,
+  };
+};
 
 function rulesAreEqual(a, b) {
   let matched = true;

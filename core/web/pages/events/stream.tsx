@@ -227,7 +227,7 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(null, ctx);
   const { limit, offset, type } = ctx.query;
-  const { events, total, type } = await execApi("get", `/events`, {
+  const { events, total } = await execApi("get", `/events`, {
     limit,
     offset,
     type,

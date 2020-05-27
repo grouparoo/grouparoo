@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "../../hooks/useApi";
 import { Card, ListGroup } from "react-bootstrap";
-import Loader from "../../loader";
-import ProfileImageFromEmail from "../../visualizations/profileImageFromEmail";
+import Loader from "../loader";
+import ProfileImageFromEmail from "../visualizations/profileImageFromEmail";
 
 export default function ProfilePreview({ errorHandler, profilePropertyRule }) {
   const [profileGuid, setProfileGuid] = useState("");
