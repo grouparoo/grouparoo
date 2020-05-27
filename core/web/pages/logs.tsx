@@ -1,5 +1,5 @@
 import Head from "next/head";
-import LogsList from "../components/logs/list";
+import LogsList from "../components/log/list";
 
 export default function Page(props) {
   return (

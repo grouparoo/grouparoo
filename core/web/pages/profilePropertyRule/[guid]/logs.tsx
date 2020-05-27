@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useApi } from "../../../hooks/useApi";
-import LogsList from "../../../components/logs/list";
+import LogsList from "../../../components/log/list";
 import ProfilePropertyRuleTabs from "../../../components/tabs/profilePropertyRule";
 
 export default function Page(props) {

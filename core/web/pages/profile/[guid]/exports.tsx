@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useApi } from "../../../hooks/useApi";
-import ExportsList from "../../../components/exports/list";
+import ExportsList from "../../../components/export/list";
 import getProfileDisplayName from "../../../components/profile/getProfileDisplayName";
 import ProfileTabs from "../../../components/tabs/profile";
 

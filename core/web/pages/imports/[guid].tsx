@@ -1,5 +1,5 @@
 import Head from "next/head";
-import ImportList from "../../components/imports/list";
+import ImportList from "../../components/import/list";
 
 export default function Page(props) {
   const { query } = props;

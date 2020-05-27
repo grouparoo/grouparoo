@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useApi } from "../../../hooks/useApi";
-import ExportsList from "../../../components/exports/list";
+import ExportsList from "../../../components/export/list";
 import DestinationTabs from "../../../components/tabs/destination";
 
 export default function Page(props) {

@@ -5,9 +5,9 @@ import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import Link from "next/link";
 import Router from "next/router";
 import { Badge, Alert } from "react-bootstrap";
-import Pagination from "../../components/pagination";
+import Pagination from "../pagination";
 import Moment from "react-moment";
-import LoadingTable from "../../components/loadingTable";
+import LoadingTable from "../loadingTable";
 import { ExportAPIData } from "../../utils/apiData";
 
 export default function ExportsList(props) {
