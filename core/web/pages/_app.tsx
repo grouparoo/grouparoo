@@ -68,6 +68,7 @@ export default function GrouparooWebApp(props) {
     fileHandler,
     profilePropertyRulesHandler,
     query,
+    pathname,
   });
 
   return (

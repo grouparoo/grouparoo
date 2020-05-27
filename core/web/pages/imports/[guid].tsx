@@ -1,11 +1,13 @@
 import Head from "next/head";
-import ImportList from "../components/imports/list";
+import ImportList from "../../components/imports/list";
 
 export default function Page(props) {
+  const { query } = props;
+
   return (
     <>
       <Head>
-        <title>Grouparoo: Imports</title>
+        <title>Grouparoo: Imports for {query.creatorGuid}</title>
       </Head>
 
       <ImportList {...props} />

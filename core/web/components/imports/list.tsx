@@ -5,14 +5,14 @@ import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
 import Router from "next/router";
-import Pagination from "../../components/pagination";
-import LoadingTable from "../../components/loadingTable";
+import Pagination from "../pagination";
+import LoadingTable from "../loadingTable";
 import { Alert, Badge } from "react-bootstrap";
 import Moment from "react-moment";
 import { ImportAPIData } from "../../utils/apiData";
 
-export default function Page(props) {
-  const { query, errorHandler, groups } = props;
+export default function ImportList(props) {
+  const { pathname, query, errorHandler, groups } = props;
   const { execApi } = useApi(errorHandler);
   const [loading, setLoading] = useState(false);
   const [imports, setImports] = useState<ImportAPIData[]>(props.imports);
@@ -22,6 +22,16 @@ export default function Page(props) {
   const limit = 100;
   const [offset, setOffset] = useState(query.offset || 0);
   useHistoryPagination(offset, "offset", setOffset);
+
+  let profileGuid: string;
+  let creatorGuid: string;
+  if (query.guid) {
+    if (pathname.match("/profile/")) {
+      profileGuid = query.guid;
+    } else {
+      creatorGuid = query.guid;
+    }
+  }
 
   useSecondaryEffect(() => {
     load();
@@ -34,7 +44,8 @@ export default function Page(props) {
     const response = await execApi("get", `/imports`, {
       limit,
       offset,
-      creatorGuid: query.creatorGuid,
+      creatorGuid,
+      profileGuid,
     });
     setLoading(false);
     if (response?.imports) {
@@ -70,14 +81,11 @@ export default function Page(props) {
 
   return (
     <>
-      <Head>
-        <title>Grouparoo: Imports for {query.creatorGuid}</title>
-      </Head>
-
       <h1>Imports</h1>
 
       <p>
-        {total} imports {query.creatorGuid ? `for ${query.creatorGuid}` : null}
+        {total} imports {creatorGuid ? `for ${creatorGuid}` : null}{" "}
+        {profileGuid ? `for profile ${profileGuid}` : null}
       </p>
 
       <Pagination
@@ -265,14 +273,26 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+ImportList.hydrate = async (ctx) => {
   const { execApi } = useApi(null, ctx);
-  const { limit, offset, creatorGuid } = ctx.query;
+  const { guid, limit, offset } = ctx.query;
+
+  let profileGuid: string;
+  let creatorGuid: string;
+  if (guid) {
+    if (ctx.pathname.match("/profile/")) {
+      profileGuid = guid;
+    } else {
+      creatorGuid = guid;
+    }
+  }
   const { imports, total } = await execApi("get", `/imports`, {
     limit,
     offset,
     creatorGuid,
+    profileGuid,
   });
+
   const { groups } = await execApi("get", `/groups`);
   return { groups, imports, total };
 };
