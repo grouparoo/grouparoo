@@ -179,7 +179,7 @@ export default function Page(props) {
                 <tr>
                   <td>
                     Guid:{" "}
-                    <Link href="/run/[guid]" as={`/run/${run.guid}`}>
+                    <Link href="/run/[guid]/edit" as={`/run/${run.guid}/edit`}>
                       <a>{run.guid}</a>
                     </Link>
                   </td>

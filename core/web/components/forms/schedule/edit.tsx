@@ -182,7 +182,10 @@ export default function ({ errorHandler, successHandler, query }) {
                           </p>
                         ) : null}
                         <p>
-                          <Link href="/run/[guid]" as={`/run/${run.guid}`}>
+                          <Link
+                            href="/run/[guid]/edit"
+                            as={`/run/${run.guid}/edit`}
+                          >
                             <a>See More</a>
                           </Link>
                         </p>
