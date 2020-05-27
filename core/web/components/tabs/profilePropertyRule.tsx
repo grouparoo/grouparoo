@@ -8,7 +8,7 @@ export default function ({
 }: {
   profilePropertyRule: ProfilePropertyRuleAPIData;
 }) {
-  const tabs = ["edit", "profiles", "groups", "runs"];
+  const tabs = ["edit", "profiles", "groups", "runs", "logs"];
   return (
     <>
       <Alert variant="info">

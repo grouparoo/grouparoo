@@ -57,7 +57,7 @@ export default function Page({ profilePropertyRule, groups }) {
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
   const { execApi } = useApi(null, ctx);
-  const { profilePropertyRule, pluginOptions } = await execApi(
+  const { profilePropertyRule } = await execApi(
     "get",
     `/profilePropertyRule/${guid}`
   );

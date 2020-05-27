@@ -73,6 +73,8 @@ export default function RunsList(props) {
 
   return (
     <>
+      <h1>Runs</h1>
+
       <Row>
         <Col>
           <strong>{total} runs with these filters</strong>

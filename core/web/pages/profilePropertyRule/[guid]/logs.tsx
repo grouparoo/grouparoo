@@ -1,10 +1,10 @@
 import Head from "next/head";
 import { useApi } from "../../../hooks/useApi";
 import LogsList from "../../../components/logs/list";
-import ProfileTabs from "../../../components/tabs/profile";
+import ProfilePropertyRuleTabs from "../../../components/tabs/profilePropertyRule";
 
 export default function Page(props) {
-  const { profile } = props;
+  const { profilePropertyRule } = props;
 
   return (
     <>
@@ -12,7 +12,7 @@ export default function Page(props) {
         <title>Grouparoo: Logs</title>
       </Head>
 
-      <ProfileTabs profile={profile} />
+      <ProfilePropertyRuleTabs profilePropertyRule={profilePropertyRule} />
 
       <LogsList {...props} />
     </>
@@ -22,7 +22,10 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
   const { execApi } = useApi(null, ctx);
-  const { profile } = await execApi("get", `/profile/${guid}`);
+  const { profilePropertyRule } = await execApi(
+    "get",
+    `/profilePropertyRule/${guid}`
+  );
   const logListInitialProps = await LogsList.hydrate(ctx);
-  return { profile, ...logListInitialProps };
+  return { profilePropertyRule, ...logListInitialProps };
 };
