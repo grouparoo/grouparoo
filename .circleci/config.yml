@@ -44,6 +44,7 @@ jobs:
             - plugins/@grouparoo/newrelic/node_modules
             - plugins/@grouparoo/postgres/node_modules
             - plugins/@grouparoo/sailthru/node_modules
+            - plugins/@grouparoo/sample-ui-plugin/node_modules
             - tools/merger/node_modules
             - plugins/@grouparoo/bigquery/dist
             - plugins/@grouparoo/csv/dist
@@ -57,6 +58,7 @@ jobs:
             - plugins/@grouparoo/newrelic/dist
             - plugins/@grouparoo/postgres/dist
             - plugins/@grouparoo/sailthru/dist
+            - plugins/@grouparoo/sample-ui-plugin/dist
             - core/api/dist
             - core/web/.next
   license-checker:
