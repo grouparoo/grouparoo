@@ -7,10 +7,10 @@ An example project can be found at https://github.com/grouparoo/app-example
 ## Getting Started
 
 1. Create a new git repository
-   - Do not include an environment file, `.env`. Your environment variables will be manged by Docker
+   - Do not include an environment file, `.env`. Your environment variables will be managed by Docker
    - Include a `package.json` file which contains your dependencies and commands per the [main Grouparoo Readme](https://github.com/grouparoo/grouparoo/blob/master/README.md)
    - Include a `.dockerignore` file which excludes `node_modules` and any local config you might have (ie: `.env`)
-   - Include a `Dockerfile` which is similar the to the below. We are building a `Dockerfile` which can be used in multiple modes, as a background task worker or webserver, which are controlled by Environment Variables.
+   - Include a `Dockerfile` which is similar the to the below. We are building a `Dockerfile` which can be used in multiple modes, as a background task worker or web server, which are controlled by Environment Variables.
 
 ```bash
 FROM node:12
@@ -46,7 +46,7 @@ EXPOSE $PORT/tcp
 
 ## Docker Compose
 
-As an example of how to orchestrate a more complex deployment, the following example `docker-compose` file is provided. This will create our needed networks (frontend and backend), our needed storage servers (postgres and redis), 2 types of grouparoo instances (`web` and `backend`).
+As an example of how to orchestrate a more complex deployment, the following example `docker-compose` file is provided. This will create our needed networks (frontend and backend), our needed storage servers (Postgres and Redis), 2 types of grouparoo instances (`web` and `backend`).
 
 This example requires a `docker swarm` cluster (or local instance). You can create one on your local machine with `docker swarm init`.
 
@@ -116,7 +116,7 @@ Docker will regularly restart/rebuild your images. You may at times see "stuck" 
 
 All the Environment Variables have defaults, but you are expected to customize them. You likely will want to create multiple runtime clusters, some workers and some web servers. This way you can scale each runtime mode separately as needed.
 
-The example `docker-compose.yml` has no data persistance - DO NOT USE IN PRODUCTION!
+The example `docker-compose.yml` has no data persistence - DO NOT USE IN PRODUCTION!
 
 The example `docker-compose.yml` has no load balancing between `grouparoo-web` instances - DO NOT USE IN PRODUCTION!
 

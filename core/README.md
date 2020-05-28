@@ -25,7 +25,7 @@ Learn more at [www.grouparoo.com](https://www.grouparoo.com)
 ### For Grouparoo Users
 
 - [ 🎉 Getting Started with Grouparoo](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/getting-started.md)
-- 🦾 Deploying Grouparoo]
+- 🦾 Deploying Grouparoo
   - [Deploying with Heroku](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/heroku.md)
   - [Deploying with Docker](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/docker.md)
   - [Deploying with Kubernetes and AWS](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/aws-and-k8s.md)

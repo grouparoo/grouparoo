@@ -6,7 +6,7 @@ An example project can be found at https://github.com/grouparoo/app-example
 
 ## Getting Started
 
-We will be deploying a docker image for our Grouparoo application to AWS. We will Elastic Kubernetes Service (EKS) to manage our deployments. Our Grouparoo instances will be connecting to a Amazon Aurora database (postgres) and a Redis cluster managed by Amazon Elasticashe.
+We will be deploying a docker image for our Grouparoo application to AWS. We will Elastic Kubernetes Service (EKS) to manage our deployments. Our Grouparoo instances will be connecting to a Amazon Aurora database (Postgres) and a Redis cluster managed by Amazon Elasticashe.
 
 ## Creating the Application
 
@@ -17,7 +17,7 @@ We will be deploying a docker image for our Grouparoo application to AWS. We wil
    - Include a `.dockerignore` file which excludes `node_modules` and any local config you might have (ie: `.env`)
    - Include a `Dockerfile` which is similar the to the below. See the Docker readme for more information.
 
-Host this git repository on Github ot Bitbucket. We will use the image later in our Kubernetes cluster
+Host this git repository on Github or Bitbucket. We will use the image later in our Kubernetes cluster
 
 Configure Docker Hub to automatically build your docker image from your new repository's master branch. You can see https://github.com/grouparoo/app-example and https://hub.docker.com/r/grouparoo/app-example as an example. The Docker image `grouparoo/app-example#latest` is produced.
 
@@ -56,7 +56,7 @@ Recommended: deploy the Kubernetes Web UI as well. https://docs.aws.amazon.com/e
   - under 'additional options' create an initial database name
 
 When the database is created, note the endpoint, something like `grouparoo-db.cluster-c9ntdcugnmdl.us-east-1.rds.amazonaws.com`. This is the database hostname.
-The default postgres username is `postgres`
+The default Postgres username is `postgres`
 
 ## Creating Redis Cluster
 
