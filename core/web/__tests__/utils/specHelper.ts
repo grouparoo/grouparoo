@@ -1,6 +1,6 @@
 import path from "path";
 import { spawn } from "child_process";
-import http from "http";
+import fetch from "isomorphic-fetch";
 
 async function spawnPromise(
   command: string,
@@ -39,25 +39,6 @@ async function spawnPromise(
   });
 }
 
-async function httpGet(url: string) {
-  return new Promise((resolve, reject) => {
-    let data = "";
-    http
-      .get(url, (resp) => {
-        resp.on("data", (chunk) => {
-          data += chunk;
-        });
-
-        resp.on("end", () => {
-          return resolve(JSON.parse(data));
-        });
-      })
-      .on("error", (error) => {
-        return reject(error);
-      });
-  });
-}
-
 // set server overrides
 const port = 12345;
 const url = `http://localhost:${port}`;
@@ -85,7 +66,7 @@ export async function waitForAPI(count = 0) {
 
   const actionUrl = `${url}/api/1/status`;
   try {
-    const response = await httpGet(actionUrl);
+    const response = await fetch(actionUrl).then((r) => r.json());
     // console.log(`API up and running @ ${url}`);
   } catch (error) {
     // console.log(`cannot reach api: ${error}, sleeping and trying again...`);
