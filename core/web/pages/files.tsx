@@ -11,8 +11,10 @@ import LoadingTable from "../components/loadingTable";
 
 import { FileAPIData } from "../utils/apiData";
 
+const apiVersion = process.env.API_VERSION || "v1";
+
 export default function Page(props) {
-  const { errorHandler, successHandler, query, apiVersion } = props;
+  const { errorHandler, successHandler, query } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(props.total);
