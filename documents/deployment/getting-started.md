@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-1. Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/) project, and we use NPM to manage our dependencies. Grouparoo **required** the **Postgres** and Redis databases. On OSX, these can be installed bia [Homebrew](https://brew.sh/).
+1. Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/) project, and we use NPM to manage our dependencies. Grouparoo **requires** the **Postgres** and Redis databases. On OSX, these can be installed via [Homebrew](https://brew.sh/).
 
 ```json:readme_deploy
 {
@@ -37,7 +37,7 @@
 
 This makes an "app" for Grouparoo to run. There is an example in the [staging-public](https://github.com/grouparoo/grouparoo/tree/master/apps/staging-public) directory.
 
-There are some environment variables needed by Grouparoo that need to be set by your host/docker image. In development, we can also lod these variables from a `.env` file that lives alongside your `package.json`.
+There are some environment variables needed by Grouparoo that need to be set by your host/docker image. In development, we can also load these variables from a `.env` file that lives alongside your `package.json`.
 
 2. Create a copy of our [example](https://github.com/grouparoo/grouparoo/blob/master/apps/staging-public/.env.example) `.env` file to manage your environment variables locally. You can modify the options as needed. Make this as a peer to your `package.json` file. Note: the `.env` file only works when running in `NODE_ENV=development`. On your server, you should set up these same environment variables. At minimum, you will need to set the following variables:
 
@@ -59,3 +59,9 @@ DATABASE_URL="postgresql://localhost:5432/grouparoo_development"
 Regardless of the method you deploy Grouparoo, the following topology will need to be created.
 
 ![Grouparoo Data Bowtie](https://raw.githubusercontent.com/grouparoo/grouparoo/master/documents/images/grouparoo-deployment-topology.png)
+
+Deployment instructions based on your setup:
+
+- [Deploying with Heroku](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/heroku.md)
+- [Deploying with Docker](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/docker.md)
+- [Deploying with Kubernetes and AWS](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/aws-and-k8s.md)
