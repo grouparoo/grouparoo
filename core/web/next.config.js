@@ -1,12 +1,44 @@
 const path = require("path");
-const { runningCoreDirectly } = require("../api/src/utils/pluginDetails");
+const fs = require("fs");
+const {
+  getPluginManifest,
+  runningCoreDirectly,
+  getParentPath,
+} = require("../api/src/utils/pluginDetails");
 require("./plugins"); // prepare plugins
 
 const nodeModulesPath = runningCoreDirectly()
   ? path.resolve(__dirname, "..", "node_modules")
   : path.resolve(__dirname, "..", "..", "..", "..", "node_modules");
 
+// pass plugin env/web to the build for
+const env = {};
+const pluginManifest = getPluginManifest();
+
+const envFile = path.resolve(path.join(getParentPath(), ".env"));
+if (fs.existsSync(envFile)) {
+  require("dotenv").config({ path: envFile });
+  console.log(`modified your next.js environment with ${envFile}`);
+}
+
+pluginManifest.plugins.forEach((plugin) => {
+  if (plugin.grouparoo && plugin.grouparoo.env && plugin.grouparoo.env.web) {
+    plugin.grouparoo.env.web.forEach((e) => {
+      env[e] = process.env[e];
+
+      // NODE_ENV is "production" when `next build` is running, in any environment
+      if (env[e] === undefined && process.env.NODE_ENV === "production") {
+        throw new Error(
+          `process.env.${e} is undefined, and is required at build time`
+        );
+      }
+    });
+  }
+});
+
 module.exports = {
+  env,
+
   webpack: (config, options) => {
     overwriteNextBabelLoaderToIncludePluginNodeModules(config);
 

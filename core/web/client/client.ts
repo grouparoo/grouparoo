@@ -66,10 +66,10 @@ export class Client {
   serverToken: string;
   cache: ClientCache;
 
-  constructor(apiVersion: string, webUrl: string, serverToken: string) {
-    this.apiVersion = apiVersion;
-    this.webUrl = webUrl;
-    this.serverToken = serverToken;
+  constructor() {
+    this.apiVersion = process.env.API_VERSION || "v1";
+    this.webUrl = process.env.WEB_URL || "";
+    this.serverToken = process.env.SERVER_TOKEN;
     this.cache = new ClientCache();
   }
 

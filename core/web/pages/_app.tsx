@@ -35,10 +35,6 @@ const scheduleHandler = new ScheduleHandler();
 const fileHandler = new FileHandler();
 const profilePropertyRulesHandler = new ProfilePropertyRulesHandler();
 
-const webUrl = process.env.WEB_URL || "";
-const apiVersion = process.env.API_VERSION || "v1";
-const serverToken = process.env.SERVER_TOKEN;
-
 // we use require here because this is just a contained setup file that doesn't need to return any components or UI elements
 require("../components/icons");
 
@@ -55,9 +51,6 @@ export default function GrouparooWebApp(props) {
   }, [pathname, query]);
 
   const combinedProps = Object.assign({}, props.pageProps || {}, {
-    apiVersion,
-    webUrl,
-    serverToken,
     currentTeamMember: props.currentTeamMember,
     navigation: props.navigation,
     navigationMode: props.navigationMode,
@@ -88,9 +81,7 @@ export default function GrouparooWebApp(props) {
 }
 
 GrouparooWebApp.getInitialProps = async (appContext) => {
-  const { execApi } = useApi(
-    Object.assign(appContext.ctx, { webUrl, apiVersion, serverToken })
-  );
+  const { execApi } = useApi(appContext.ctx);
   const { navigationMode, navigation } = await execApi("get", `/navigation`);
   let currentTeamMember = {
     firstName: "",
