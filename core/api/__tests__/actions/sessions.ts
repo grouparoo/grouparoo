@@ -1,10 +1,14 @@
 import { helper } from "./../utils/specHelper";
-import { specHelper } from "actionhero";
+import { specHelper, config } from "actionhero";
 import { Team } from "./../../src/models/Team";
 import { TeamMember } from "./../../src/models/TeamMember";
 import { Permission } from "../../src/models/Permission";
 import { ApiKey } from "../../src/models/ApiKey";
+import fetch from "isomorphic-fetch";
 let actionhero, api;
+
+// enable the web server
+process.env.WEB_SERVER = "true";
 
 describe("session", () => {
   beforeAll(async () => {
@@ -217,7 +221,7 @@ describe("session", () => {
         csrfToken = sessionResponse.csrfToken;
       });
 
-      test("without a csrfToken, actions are not authenticated", async () => {
+      test("without a csrfToken or grouparoo header, actions are not authenticated", async () => {
         let response = await specHelper.runAction("appReadAction", connection);
         expect(response.error.message).toBe("CSRF error");
         expect(response.error.code).toBe("AUTHENTICATION_ERROR");
@@ -277,6 +281,96 @@ describe("session", () => {
         response = await specHelper.runAction("systemReadAction", connection);
         expect(response.error.code).toBe("AUTHENTICATION_ERROR");
         expect(response.success).toBeFalsy();
+      });
+    });
+
+    describe("header, cookie, and csrf authentication", () => {
+      let url: string;
+      let csrfToken: string;
+      let cookie: string;
+
+      beforeAll(() => {
+        url = `http://localhost:${config.servers.web.port}`;
+      });
+
+      test("a user can log in with email and password to obtain a csrf token and a session cookie", async () => {
+        let response = await fetch(`${url}/api/v1/session`, {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: "toad@example.com",
+            password: "mushrooms",
+          }),
+        }).then((r) => {
+          const setCookie = r.headers.get("set-cookie");
+          cookie = setCookie.substr(0, setCookie.indexOf(";"));
+          return r.json();
+        });
+        expect(response.csrfToken).toBeTruthy();
+        expect(cookie).toMatch(/grouparooSessionId=/);
+        csrfToken = response.csrfToken;
+      });
+
+      test("actions can be authenticated with the CSRF token + cookie", async () => {
+        const response = await fetch(
+          `${url}/api/v1/account?csrfToken=${csrfToken}`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: { "Content-Type": "application/json", Cookie: cookie },
+          }
+        ).then((r) => r.json());
+        expect(response.teamMember.guid).toBeTruthy();
+      });
+
+      test("actions cannot be authenticated with the cookie without the CSRF token", async () => {
+        const response = await fetch(`${url}/api/v1/account`, {
+          method: "GET",
+          credentials: "include",
+          headers: { "Content-Type": "application/json", Cookie: cookie },
+        }).then((r) => r.json());
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.teamMember).toBeFalsy();
+      });
+
+      test("actions cannot be authenticated without the cookie and with the CSRF token", async () => {
+        const response = await fetch(
+          `${url}/api/v1/account?csrfToken=${csrfToken}`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+          }
+        ).then((r) => r.json());
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.teamMember).toBeFalsy();
+      });
+
+      test("actions cannot be authenticated with the x-grouparoo-server_token header and without the cookie", async () => {
+        const response = await fetch(`${url}/api/v1/account`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "X-GROUPAROO-SERVER_TOKEN": config.general.serverToken,
+          },
+        }).then((r) => r.json());
+        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.teamMember).toBeFalsy();
+      });
+
+      test("actions can be authenticated with the x-grouparoo-server_token header and the cookie", async () => {
+        const response = await fetch(`${url}/api/v1/account`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Cookie: cookie,
+            "X-GROUPAROO-SERVER_TOKEN": config.general.serverToken,
+          },
+        }).then((r) => r.json());
+        expect(response.teamMember.guid).toBeTruthy();
       });
     });
 
