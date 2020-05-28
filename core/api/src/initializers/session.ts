@@ -36,7 +36,7 @@ const authenticatedActionMiddleware: action.ActionMiddleware = {
         (data.params.csrfToken &&
           data.params.csrfToken !== sessionData.csrfToken) ||
         (!data.params.csrfToken &&
-          data.connection.rawConnection.req.headers[
+          data.connection.rawConnection?.req?.headers[
             "x-grouparoo-server_token"
           ] !== config.general.serverToken)
       ) {
@@ -110,7 +110,7 @@ const optionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
           (data.params.csrfToken &&
             data.params.csrfToken !== sessionData.csrfToken) ||
           (!data.params.csrfToken &&
-            data.connection.rawConnection.req.headers[
+            data.connection.rawConnection?.req?.headers[
               "x-grouparoo-server_token"
             ] !== config.general.serverToken)
         ) {
