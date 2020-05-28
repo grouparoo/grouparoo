@@ -7,6 +7,10 @@ export default function PluginPage(props) {
   const { group, query } = props;
   const [Plugin] = usePlugins("group/tabs", query.plugin);
 
+  if (!Plugin) {
+    return <p>plugin `{query.plugin}` not found</p>;
+  }
+
   return (
     <>
       <Head>

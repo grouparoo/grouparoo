@@ -7,6 +7,10 @@ export default function PluginPage(props) {
   const { profilePropertyRule, query } = props;
   const [Plugin] = usePlugins("profilePropertyRules/tabs", query.plugin);
 
+  if (!Plugin) {
+    return <p>plugin `{query.plugin}` not found</p>;
+  }
+
   return (
     <>
       <Head>
