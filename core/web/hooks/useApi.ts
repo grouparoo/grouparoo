@@ -1,12 +1,17 @@
-import { useState } from "react";
 import { Client } from "../client/client";
 import { ErrorHandler } from "../utils/errorHandler";
 
-const client = new Client();
-
-export function useApi(errorHandler: ErrorHandler) {
-  const [response, setResponse] = useState(null);
-  const [loading, setLoading] = useState(false);
+export function useApi(
+  ctx: {
+    webUrl: string;
+    apiVersion: string;
+    serverToken: string;
+    req?: { headers?: { cookie: string } };
+  },
+  errorHandler?: ErrorHandler
+) {
+  const { webUrl, apiVersion, serverToken } = ctx;
+  const client = new Client(apiVersion, webUrl, serverToken);
 
   async function execApi(
     verb = "get",
@@ -20,12 +25,15 @@ export function useApi(errorHandler: ErrorHandler) {
       data = {};
     }
 
-    setLoading(true);
-
     let apiResponse;
     try {
-      apiResponse = await client.action(verb, path, data, useCache);
-      setResponse(apiResponse);
+      apiResponse = await client.action(
+        verb,
+        path,
+        data,
+        useCache,
+        ctx?.req?.headers?.cookie
+      );
 
       if (setter) {
         if (setterKey) {
@@ -34,17 +42,16 @@ export function useApi(errorHandler: ErrorHandler) {
           setter(apiResponse);
         }
       }
+
+      return apiResponse;
     } catch (error) {
       if (errorHandler) {
         errorHandler.set({ error: error });
       } else {
-        console.error(error);
+        throw error;
       }
-    } finally {
-      setLoading(false);
-      return apiResponse;
     }
   }
 
-  return { loading, execApi, response };
+  return { execApi };
 }

@@ -61,10 +61,15 @@ export class ClientCache {
 }
 
 export class Client {
-  apiEndpoint: string;
+  apiVersion: string;
+  webUrl: string;
+  serverToken: string;
   cache: ClientCache;
 
-  constructor() {
+  constructor(apiVersion: string, webUrl: string, serverToken: string) {
+    this.apiVersion = apiVersion;
+    this.webUrl = webUrl;
+    this.serverToken = serverToken;
     this.cache = new ClientCache();
   }
 
@@ -82,7 +87,7 @@ export class Client {
   }
 
   csrfToken() {
-    if (window?.localStorage) {
+    if (globalThis?.localStorage) {
       return window.localStorage.getItem("session:csrfToken");
     }
   }
@@ -91,20 +96,29 @@ export class Client {
     verb = "get",
     path,
     data: AxiosRequestConfig["data"] = {},
-    useCache = true
+    useCache = true,
+    cookieString?
   ) {
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    };
+
+    if (cookieString) {
+      headers["X-GROUPAROO-SERVER_TOKEN"] = this.serverToken;
+      headers["cookie"] = cookieString;
+      useCache = false; // do not ever responses on the server
+    }
+
     const options: AxiosRequestConfig = {
       params: null,
       data: null,
-      url: "" + path,
+      url: `${this.webUrl}/api/${this.apiVersion}${path}`, // path comes with a leading "/"
       withCredentials: true,
       //@ts-ignore
       agent: `grouparoo-web-${PackageJSON.version}`,
       method: verb.toLowerCase() as Method,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+      headers,
     };
 
     data.csrfToken = this.csrfToken();

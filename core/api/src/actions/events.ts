@@ -15,7 +15,7 @@ export class EventsList extends AuthenticatedAction {
       type: { required: false },
       associated: { required: false },
       data: { required: false },
-      limit: { required: true, default: 1000, formatter: parseInt },
+      limit: { required: true, default: 100, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
       order: {
         required: false,

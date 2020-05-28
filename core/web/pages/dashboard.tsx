@@ -7,14 +7,15 @@ import Loader from "./../components/loader";
 
 export default function (props) {
   const [appsCount, setAppsCount] = useState(-1);
-  const { execApi } = useApi(props.errorHandler);
+  const { errorHandler } = props;
+  const { execApi } = useApi(props, errorHandler);
 
   useEffect(() => {
     load();
   }, []);
 
   async function load() {
-    const response = await execApi("get", `/api/${props.apiVersion}/apps/`);
+    const response = await execApi("get", `/apps/`);
     if (response?.apps) {
       setAppsCount(response?.total);
     }

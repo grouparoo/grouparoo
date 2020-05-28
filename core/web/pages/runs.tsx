@@ -1,15 +1,18 @@
 import Head from "next/head";
-import RunsList from "../components/lists/runs";
+import RunsList from "../components/runs/list";
 
-export default function (props) {
+export default function Page(props) {
   return (
     <>
       <Head>
         <title>Grouparoo: Runs</title>
       </Head>
 
-      <h1>Runs</h1>
       <RunsList {...props} />
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  return RunsList.hydrate(ctx);
+};

@@ -9,10 +9,12 @@ import Navigation from "../navigation";
 export default function ({
   display,
   children,
-  apiVersion,
   successHandler,
   errorHandler,
   sessionHandler,
+  currentTeamMember,
+  navigation,
+  navigationMode,
 }) {
   const [contentAreaLeftPadding, setContentAreaLeftPadding] = useState(265);
   const [alertWidth, setAlertWidth] = useState(500);
@@ -137,8 +139,9 @@ export default function ({
 
       <div id="container">
         <Navigation
-          apiVersion={apiVersion}
-          errorHandler={errorHandler}
+          currentTeamMember={currentTeamMember}
+          navigation={navigation}
+          navigationMode={navigationMode}
           sessionHandler={sessionHandler}
         />
         <div

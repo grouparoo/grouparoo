@@ -1,15 +1,18 @@
 import Head from "next/head";
-import ImportsList from "../components/lists/imports";
+import ImportList from "../components/import/list";
 
-export default function (props) {
+export default function Page(props) {
   return (
     <>
       <Head>
         <title>Grouparoo: Imports</title>
       </Head>
 
-      <h1>Imports</h1>
-      <ImportsList {...props} />
+      <ImportList {...props} />
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  return ImportList.hydrate(ctx);
+};

@@ -8,7 +8,7 @@ export const DEFAULT = {
       apiVersion: packageJSON.version,
       serverName: packageJSON.name,
       // A unique token to your application that servers will use to authenticate to each other
-      serverToken: "grouparoo-cluster",
+      serverToken: process.env.SERVER_TOKEN || "grouparoo-cluster",
       // the redis prefix for actionhero's cache objects
       cachePrefix: "grouparoo:cache:",
       // the redis prefix for actionhero's cache/lock objects

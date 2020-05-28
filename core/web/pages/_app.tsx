@@ -1,5 +1,7 @@
+import App from "next/app";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useApi } from "../hooks/useApi";
 
 import "../scss/grouparoo.scss";
 import Injection from "../components/componentInjection";
@@ -19,7 +21,6 @@ import { ScheduleHandler } from "../utils/scheduleHandler";
 import { FileHandler } from "../utils/fileHandler";
 import { ProfilePropertyRulesHandler } from "../utils/profilePropertyRulesHandler";
 
-const apiVersion = process.env.API_VERSION;
 const successHandler = new SuccessHandler();
 const errorHandler = new ErrorHandler();
 const sessionHandler = new SessionHandler();
@@ -34,10 +35,15 @@ const scheduleHandler = new ScheduleHandler();
 const fileHandler = new FileHandler();
 const profilePropertyRulesHandler = new ProfilePropertyRulesHandler();
 
+const webUrl = process.env.WEB_URL || "";
+const apiVersion = process.env.API_VERSION || "v1";
+const serverToken = process.env.SERVER_TOKEN;
+
 // we use require here because this is just a contained setup file that doesn't need to return any components or UI elements
 require("../components/icons");
 
-export default function GrouparooWeb({ Component }) {
+export default function GrouparooWebApp(props) {
+  const { Component } = props;
   const [routerReady, setRouterReady] = useState(false);
   const router = useRouter();
   const { query, pathname } = router;
@@ -48,8 +54,13 @@ export default function GrouparooWeb({ Component }) {
     setRouterReady(true);
   }, [pathname, query]);
 
-  const props = {
+  const combinedProps = Object.assign({}, props.pageProps || {}, {
     apiVersion,
+    webUrl,
+    serverToken,
+    currentTeamMember: props.currentTeamMember,
+    navigation: props.navigation,
+    navigationMode: props.navigationMode,
     successHandler,
     errorHandler,
     sessionHandler,
@@ -64,13 +75,33 @@ export default function GrouparooWeb({ Component }) {
     fileHandler,
     profilePropertyRulesHandler,
     query,
-  };
+    pathname,
+  });
 
   return (
-    <Injection {...props}>
-      <Layout display={routerReady} {...props}>
-        <Component {...props} />
+    <Injection {...combinedProps}>
+      <Layout display={routerReady} {...combinedProps}>
+        <Component {...combinedProps} />
       </Layout>
     </Injection>
   );
 }
+
+GrouparooWebApp.getInitialProps = async (appContext) => {
+  const { execApi } = useApi(
+    Object.assign(appContext.ctx, { webUrl, apiVersion, serverToken })
+  );
+  const { navigationMode, navigation } = await execApi("get", `/navigation`);
+  let currentTeamMember = {
+    firstName: "",
+    guid: null,
+  };
+  if (navigationMode === "authenticated") {
+    currentTeamMember = (await execApi("get", `/session`)).teamMember;
+  }
+
+  // render page-specific getInitialProps
+  const appProps = await App.getInitialProps(appContext);
+
+  return { ...appProps, currentTeamMember, navigationMode, navigation };
+};

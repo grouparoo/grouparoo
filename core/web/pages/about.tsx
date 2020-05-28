@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-import Link from "next/link";
 import Head from "next/head";
 import { Table } from "react-bootstrap";
 import { useApi } from "../hooks/useApi";
@@ -15,24 +13,7 @@ function formatUrl(s) {
   );
 }
 
-export default function ({ apiVersion, errorHandler }) {
-  const year = new Date().getFullYear();
-  const [version, setVersion] = useState("...");
-  const [plugins, setPlugins] = useState([]);
-  const { execApi } = useApi(errorHandler);
-
-  useEffect(() => {
-    load();
-  }, []);
-
-  async function load() {
-    const statusResponse = await execApi("get", `/api/${apiVersion}/status`);
-    setVersion(`v${statusResponse.version}`);
-
-    const pluginsResponse = await execApi("get", `/api/${apiVersion}/plugins`);
-    setPlugins(pluginsResponse.plugins);
-  }
-
+export default function Page({ version, plugins }) {
   return (
     <>
       <Head>
@@ -78,3 +59,10 @@ export default function ({ apiVersion, errorHandler }) {
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  const { execApi } = useApi(ctx);
+  const { version } = await execApi("get", `/status`);
+  const { plugins } = await execApi("get", `/plugins`);
+  return { version, plugins };
+};

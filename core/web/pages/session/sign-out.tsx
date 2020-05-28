@@ -1,5 +1,5 @@
 import Head from "next/head";
-import SignOutForm from "../../components/forms/session/signOut";
+import SignOutForm from "../../components/session/signOut";
 
 export default function (props) {
   return (

@@ -1,6 +1,15 @@
 import path from "path";
 import { spawn } from "child_process";
-import http from "http";
+import fetch from "isomorphic-fetch";
+
+// set server overrides
+const port = 12345;
+const url = `http://localhost:${port}`;
+const apiProjectPath = path.join(__dirname, "..", "..", "..", "api");
+const jestId = process.env.JEST_WORKER_ID || "1";
+const serverToken = `serverToken-${process.env.JEST_WORKER_ID || 0}`;
+
+let apiProcess;
 
 async function spawnPromise(
   command: string,
@@ -39,33 +48,6 @@ async function spawnPromise(
   });
 }
 
-async function httpGet(url: string) {
-  return new Promise((resolve, reject) => {
-    let data = "";
-    http
-      .get(url, (resp) => {
-        resp.on("data", (chunk) => {
-          data += chunk;
-        });
-
-        resp.on("end", () => {
-          return resolve(JSON.parse(data));
-        });
-      })
-      .on("error", (error) => {
-        return reject(error);
-      });
-  });
-}
-
-// set server overrides
-const port = 12345;
-const url = `http://localhost:${port}`;
-const apiProjectPath = path.join(__dirname, "..", "..", "..", "api");
-const jestId = process.env.JEST_WORKER_ID || "1";
-
-let apiProcess;
-
 export async function sleep(timeMs = 1000) {
   return new Promise((resolve) => {
     setTimeout(resolve, timeMs);
@@ -85,7 +67,7 @@ export async function waitForAPI(count = 0) {
 
   const actionUrl = `${url}/api/1/status`;
   try {
-    const response = await httpGet(actionUrl);
+    await fetch(actionUrl).then((r) => r.json());
     // console.log(`API up and running @ ${url}`);
   } catch (error) {
     // console.log(`cannot reach api: ${error}, sleeping and trying again...`);
@@ -102,26 +84,27 @@ export async function prepareForIntegrationTest() {
   await spawnPromise("./bin/create_test_databases", [jestId], apiProjectPath);
 
   // start the api server
-  apiProcess = spawn("node", ["./dist/server.js"], {
-    cwd: apiProjectPath,
-    env: Object.assign(
-      {
-        ACTIONHERO_TEST_FILE_EXTENSION: "js", // ensure that the test server doesn't run typescript files
-        WEB_SERVER: true,
-        PORT: port,
-        WEB_URL: url,
-        JEST_WORKER_ID: undefined,
-      },
-      env
-    ),
+  const serverEnv = Object.assign(env, {
+    ACTIONHERO_TEST_FILE_EXTENSION: "js", // ensure that the test server doesn't run typescript files
+    WEB_SERVER: true,
+    PORT: port,
+    WEB_URL: url,
+    API_VERSION: 1,
+    JEST_WORKER_ID: jestId,
+    SERVER_TOKEN: serverToken,
   });
 
-  // apiProcess.stdout.on("data", data => {
-  //   console.log(data.toString());
-  // });
-  // apiProcess.stderr.on("data", data => {
-  //   console.log(data.toString());
-  // });
+  apiProcess = spawn("node", ["./dist/server.js"], {
+    cwd: apiProjectPath,
+    env: serverEnv,
+  });
+
+  apiProcess.stdout.on("data", (data) => {
+    console.log(data.toString());
+  });
+  apiProcess.stderr.on("data", (data) => {
+    console.log(data.toString());
+  });
 
   await waitForAPI();
 

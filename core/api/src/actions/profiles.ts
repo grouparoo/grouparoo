@@ -19,7 +19,7 @@ export class ProfilesList extends AuthenticatedAction {
       groupGuid: { required: false },
       searchKey: { required: false },
       searchValue: { required: false },
-      limit: { required: true, default: 1000 },
+      limit: { required: true, default: 100 },
       offset: { required: true, default: 0 },
       order: {
         required: false,

@@ -1,4 +1,4 @@
-import { api, action, Initializer, Connection } from "actionhero";
+import { api, config, action, Initializer, Connection } from "actionhero";
 import { Team, TeamMember, ApiKey } from "../index";
 import crypto from "crypto";
 
@@ -33,8 +33,12 @@ const authenticatedActionMiddleware: action.ActionMiddleware = {
       if (!sessionData) {
         throw new AuthenticationError("Please log in to continue");
       } else if (
-        !data.params.csrfToken ||
-        data.params.csrfToken !== sessionData.csrfToken
+        (data.params.csrfToken &&
+          data.params.csrfToken !== sessionData.csrfToken) ||
+        (!data.params.csrfToken &&
+          data.connection.rawConnection?.req?.headers[
+            "x-grouparoo-server_token"
+          ] !== config.general.serverToken)
       ) {
         throw new AuthenticationError("CSRF error");
       } else {
@@ -103,8 +107,12 @@ const optionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
       const sessionData = await api.session.load(data.connection);
       if (sessionData) {
         if (
-          !data.params.csrfToken ||
-          data.params.csrfToken !== sessionData.csrfToken
+          (data.params.csrfToken &&
+            data.params.csrfToken !== sessionData.csrfToken) ||
+          (!data.params.csrfToken &&
+            data.connection.rawConnection?.req?.headers[
+              "x-grouparoo-server_token"
+            ] !== config.general.serverToken)
         ) {
           throw new AuthenticationError("CSRF error");
         } else {

@@ -1,13 +1,13 @@
 import { Fragment } from "react";
-import ResqueOverview from "../components/lists/resque/overview";
-import ResqueDelayed from "../components/lists/resque/delayed";
-import ResqueFailed from "../components/lists/resque/failed";
-import ResqueLocks from "../components/lists/resque/locks";
-import ResqueQueue from "../components/lists/resque/queue";
-import ResqueRedis from "../components/lists/resque/redis";
-import ResqueWorkers from "../components/lists/resque/workers";
+import ResqueOverview from "../components/resque/overview";
+import ResqueDelayed from "../components/resque/delayed";
+import ResqueFailed from "../components/resque/failed";
+import ResqueLocks from "../components/resque/locks";
+import ResqueQueue from "../components/resque/queue";
+import ResqueRedis from "../components/resque/redis";
+import ResqueWorkers from "../components/resque/workers";
 
-export default function (props) {
+export default function Page(props) {
   return (
     <ResqueTabs defaultTab="overview" query={props.query}>
       <Fragment key="overview">

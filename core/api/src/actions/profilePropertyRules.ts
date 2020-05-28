@@ -15,7 +15,7 @@ export class ProfilePropertyRulesList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "profilePropertyRule", mode: "read" };
     this.inputs = {
-      limit: { required: true, default: 1000, formatter: parseInt },
+      limit: { required: true, default: 100, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
       unique: { required: false },
       state: { required: false },

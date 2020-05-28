@@ -2,18 +2,17 @@ import Loader from "../../components/loader";
 import Router from "next/router";
 
 const guidPrefixes = {
-  pro: "/profile",
-  grp: "/group",
-  rul: "/profilePropertyRule",
-  app: "/app",
-  sch: "/schedule",
-  run: "/run",
-  dst: "/destination",
-  evt: "/event",
-  tea: "/team",
-  tem: "/teamMember",
-  imp: "/import",
-  exp: "/export",
+  pro: "/profile/[guid]/edit",
+  grp: "/group/[guid]/members",
+  rul: "/profilePropertyRule/[guid]/edit",
+  app: "/app/[guid]/edit",
+  run: "/run/[guid]",
+  dst: "/destination/[guid]/edit",
+  tea: "/team/[guid]/edit",
+  tem: "/teamMember/[guid]/edit",
+  evt: "/event/[guid]/edit",
+  imp: "/import/[guid]/edit",
+  exp: "/export/[guid]/edit",
 };
 
 export default function FindObject({ query, errorHandler }) {
@@ -24,9 +23,8 @@ export default function FindObject({ query, errorHandler }) {
   if (!route) {
     errorHandler.set({ error: `Sorry, I don't know what a "${guid}" is :(` });
   } else {
-    const href = `${route}/[guid]`;
-    const as = `${route}/${guid}`;
-    Router.push(href, as);
+    const href = route.replace("[guid]", guid);
+    Router.push(href);
   }
 
   return (

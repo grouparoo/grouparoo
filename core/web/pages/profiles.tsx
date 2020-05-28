@@ -1,17 +1,18 @@
 import Head from "next/head";
-import ProfilesList from "../components/lists/profiles";
-import ProfilesAddForm from "../components/forms/profile/add";
+import ProfilesList from "../components/profile/list";
 
-export default function (props) {
+export default function Page(props) {
   return (
     <>
       <Head>
         <title>Grouparoo: Profiles</title>
       </Head>
 
-      <h1>Profiles</h1>
       <ProfilesList {...props} />
-      <ProfilesAddForm {...props} />
     </>
   );
 }
+
+Page.getInitialProps = async (ctx) => {
+  return ProfilesList.hydrate(ctx);
+};
