@@ -4,7 +4,7 @@ import mockAxios from "jest-mock-axios";
 import Page from "../../pages/index";
 import commonProps from "../utils/commonProps";
 
-describe("pages/about", () => {
+describe("pages/index", () => {
   let wrapper;
 
   beforeEach(() => {

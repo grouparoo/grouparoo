@@ -7,6 +7,7 @@ const port = 12345;
 const url = `http://localhost:${port}`;
 const apiProjectPath = path.join(__dirname, "..", "..", "..", "api");
 const jestId = process.env.JEST_WORKER_ID || "1";
+const serverToken = `serverToken-${process.env.JEST_WORKER_ID || 0}`;
 
 let apiProcess;
 
@@ -90,6 +91,7 @@ export async function prepareForIntegrationTest() {
     WEB_URL: url,
     API_VERSION: 1,
     JEST_WORKER_ID: jestId,
+    SERVER_TOKEN: serverToken,
   });
 
   apiProcess = spawn("node", ["./dist/server.js"], {

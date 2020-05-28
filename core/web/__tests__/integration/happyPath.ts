@@ -100,6 +100,7 @@ describe("integration", () => {
     "it can change account information and see it reflected in the sidebar",
     async () => {
       await browser.get(`${url}/account`);
+      await browser.findElement(by.id("firstName")).clear();
       await browser.findElement(by.id("firstName")).sendKeys("Super Mario");
 
       const button = await browser.findElement(by.className("btn-primary"));
