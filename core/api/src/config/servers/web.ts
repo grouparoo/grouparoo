@@ -11,7 +11,9 @@ export const DEFAULT = {
         serverOptions: {},
         // Should we redirect all traffic to the first host in this array if hte request header doesn't match?
         // i.e.: [ 'https://www.site.com' ]
-        allowedRequestHosts: process.env.WEB_URL ? [process.env.WEB_URL] : [],
+        allowedRequestHosts: process.env.ALLOWED_HOSTS
+          ? process.env.ALLOWED_HOSTS.split(",")
+          : [],
         // Port or Socket Path
         port: process.env.PORT || 8080,
         // Which IP to listen on (use '0.0.0.0' for all; '::' for all on ipv4 and ipv6)
