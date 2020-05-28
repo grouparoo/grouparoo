@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { usePlugins } from "../../../hooks/usePlugin";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import StateBadge from "../../../components/stateBadge";
 import Moment from "react-moment";
@@ -56,16 +55,6 @@ export default function Page(props) {
     _group[event.target.id] = event.target.value;
     setGroup(_group);
   }
-
-  // {
-  //   plugins.map((PluginComponent, idx) => {
-  //     Tabs.push(
-  //       <Fragment key={pluginMetadata[idx].key}>
-  //         <PluginComponent {...props} useApi={useApi} />
-  //       </Fragment>
-  //     );
-  //   });
-  // }
 
   return (
     <>

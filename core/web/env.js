@@ -34,7 +34,7 @@ pluginManifest.plugins.forEach((plugin) => {
         fs.writeFileSync(
           path.join(__dirname, "tmp", "plugin", k, pluginName, `${file}.tsx`),
           `export { default } from "${pluginFile}"
-console.info("[ Grouparoo Plugin ] '${file}' from ${pluginName}");
+console.info("[Grouparoo Plugin] '${file}' from ${pluginName}");
 `
         );
       });

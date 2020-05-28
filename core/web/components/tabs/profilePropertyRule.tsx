@@ -1,6 +1,7 @@
 import Tabs from "../tabs";
 import { Alert } from "react-bootstrap";
 import Link from "next/link";
+import { usePlugins } from "../../hooks/usePlugins";
 import { ProfilePropertyRuleAPIData } from "../../utils/apiData";
 
 export default function ({
@@ -8,7 +9,12 @@ export default function ({
 }: {
   profilePropertyRule: ProfilePropertyRuleAPIData;
 }) {
+  const [plugins, pluginMetadata] = usePlugins("profilePropertyRules/tabs");
   const tabs = ["edit", "profiles", "groups", "runs", "logs"];
+  pluginMetadata.forEach((p) => {
+    tabs.push(p.key);
+  });
+
   return (
     <>
       <Alert variant="info">

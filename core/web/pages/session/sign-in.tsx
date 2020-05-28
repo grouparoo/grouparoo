@@ -1,7 +1,7 @@
 import { Row, Col, Card } from "react-bootstrap";
 import Head from "next/head";
 import { useApi } from "./../../hooks/useApi";
-import { usePlugins } from "./../../hooks/usePlugin";
+import { usePlugins } from "../../hooks/usePlugins";
 import SignIn from "../../components/session/signIn";
 
 export default function (props) {

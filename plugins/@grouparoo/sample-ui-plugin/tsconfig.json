@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "allowJs": true,
+    "module": "commonjs",
+    "target": "es2018",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "jsx": "react"
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["./../node_modules"]
+}
