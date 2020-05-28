@@ -176,6 +176,8 @@ Running `npm test` from the top-level of this monorepo will run the `npm test` c
 
 Jest will automatically test the latest version of your typescript files, and you do not need to compile your code to test. However, the test suite should test the compile step as well. We usually run `npm run prepare` as a `pretest` NPM hook.
 
+A note on chromedriver for OSX Users: As Chrome updates, you may need to `brew cask reinstall chromedriver` to keep up to date as well. Every time you update chromedriver, you will need to re-authorize the application to run in system preferences, as it is unsigned.
+
 ## Deploying the Example Server
 
 On your servers:

@@ -3,7 +3,7 @@ import { ErrorHandler } from "../utils/errorHandler";
 
 const client = new Client();
 export const apiVersion = process.env.API_VERSION;
-const webUrl = process.env.WEB_URL;
+export const webUrl = process.env.WEB_URL;
 
 export function useApi(errorHandler?: ErrorHandler, ctx?) {
   async function execApi(
