@@ -137,7 +137,7 @@ export default function Page({ run, quantizedTimeline }) {
 
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { run, quantizedTimeline } = await execApi("get", `/run/${guid}`);
   return { run, quantizedTimeline };
 };

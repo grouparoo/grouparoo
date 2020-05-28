@@ -13,7 +13,7 @@ import { LogAPIData } from "../../utils/apiData";
 
 export default function LogsList(props) {
   const { errorHandler, query } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState<LogAPIData[]>(props.logs);
   const [total, setTotal] = useState(props.total);
@@ -192,7 +192,7 @@ export default function LogsList(props) {
 }
 
 LogsList.hydrate = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { guid, limit, offset, topic, ownerGuid } = ctx.query;
   const { logs, total } = await execApi("get", `/logs`, {
     ownerGuid: guid,

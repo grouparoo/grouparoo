@@ -6,8 +6,9 @@ import SelectorList from "../../components/selectorList";
 import Link from "next/link";
 import Router from "next/router";
 
-export default function Page({ errorHandler, successHandler, connectionApps }) {
-  const { execApi } = useApi(errorHandler);
+export default function Page(props) {
+  const { errorHandler, successHandler, connectionApps } = props;
+  const { execApi } = useApi(props, errorHandler);
   const [source, setSource] = useState({
     appGuid: "",
     type: "",
@@ -65,7 +66,7 @@ export default function Page({ errorHandler, successHandler, connectionApps }) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { connectionApps } = await execApi("get", `/sources/connectionApps`);
   return { connectionApps };
 };

@@ -7,8 +7,9 @@ import Moment from "react-moment";
 import LoadingTable from "../components/loadingTable";
 import ImportAndUpdateAllProfiles from "../components/profile/importAndUpdate";
 
-export default function Page({ errorHandler, successHandler, settings }) {
-  const { execApi } = useApi(errorHandler);
+export default function Page(props) {
+  const { errorHandler, successHandler, settings } = props;
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
   async function updateSetting(setting) {
@@ -80,7 +81,7 @@ export default function Page({ errorHandler, successHandler, settings }) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { settings } = await execApi("get", `/settings`);
   return { settings };
 };

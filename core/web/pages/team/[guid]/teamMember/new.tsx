@@ -13,7 +13,7 @@ export default function Page(props) {
     query,
     teams,
   } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
   const { guid } = query;
@@ -121,7 +121,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { teams } = await execApi("get", `/teams`);
   return { teams };
 };

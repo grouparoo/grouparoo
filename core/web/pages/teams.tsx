@@ -125,7 +125,7 @@ export default function Page({ teams, teamMembers }) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { teams } = await execApi("get", `/teams`);
   const { teamMembers } = await execApi("get", `/teamMembers`);
   return { teams, teamMembers };

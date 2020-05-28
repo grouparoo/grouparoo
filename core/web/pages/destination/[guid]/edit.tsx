@@ -19,7 +19,7 @@ export default function Page(props) {
     query,
     connectionOptions,
   } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [destination, setDestination] = useState<DestinationAPIData>(
     props.destination
   );
@@ -286,7 +286,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { guid } = ctx.query;
   const { destination } = await execApi("get", `/destination/${guid}`);
   const { options } = await execApi(

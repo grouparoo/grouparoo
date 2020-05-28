@@ -1,11 +1,18 @@
 import { Client } from "../client/client";
 import { ErrorHandler } from "../utils/errorHandler";
 
-const client = new Client();
-export const apiVersion = process.env.API_VERSION;
-export const webUrl = process.env.WEB_URL;
+export function useApi(
+  ctx: {
+    webUrl: string;
+    apiVersion: string;
+    serverToken: string;
+    req?: { headers?: { cookie: string } };
+  },
+  errorHandler?: ErrorHandler
+) {
+  const { webUrl, apiVersion, serverToken } = ctx;
+  const client = new Client(apiVersion, webUrl, serverToken);
 
-export function useApi(errorHandler?: ErrorHandler, ctx?) {
   async function execApi(
     verb = "get",
     path: string,
@@ -22,7 +29,7 @@ export function useApi(errorHandler?: ErrorHandler, ctx?) {
     try {
       apiResponse = await client.action(
         verb,
-        `${webUrl}/api/${apiVersion}${path}`,
+        path,
         data,
         useCache,
         ctx?.req?.headers?.cookie

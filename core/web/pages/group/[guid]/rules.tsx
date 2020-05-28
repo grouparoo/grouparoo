@@ -17,7 +17,7 @@ export default function Page(props) {
     ops,
   } = props;
   const [group, setGroup] = useState<GroupAPIData>(props.group);
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [localRules, setLocalRules] = useState([]);
   const [countPotentialMembers, setCountPotentialMembers] = useState(0);
@@ -377,7 +377,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { group } = await execApi("get", `/group/${guid}`);
   const { profilePropertyRules } = await execApi(
     "get",

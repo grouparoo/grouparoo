@@ -7,8 +7,9 @@ import SelectorList from "../../components/selectorList";
 
 import { AppAPIData } from "../../utils/apiData";
 
-export default function Page({ errorHandler, types }) {
-  const { execApi } = useApi(errorHandler);
+export default function Page(props) {
+  const { errorHandler, types } = props;
+  const { execApi } = useApi(props, errorHandler);
   const [app, setApp] = useState<AppAPIData>({ type: "" });
   const [loading, setLoading] = useState(false);
 
@@ -46,7 +47,7 @@ export default function Page({ errorHandler, types }) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { types } = await execApi("get", `/appOptions`);
   return { types: types.filter((app) => app.addible !== false) };
 };

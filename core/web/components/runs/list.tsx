@@ -13,7 +13,7 @@ import { RunAPIData } from "../../utils/apiData";
 
 export default function RunsList(props) {
   const { errorHandler, query } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(props.total);
   const [runs, setRuns] = useState<RunAPIData[]>(props.runs);
@@ -253,7 +253,7 @@ export default function RunsList(props) {
 
 RunsList.hydrate = async (ctx) => {
   const { guid, limit, offset, state, error } = ctx.query;
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { runs, total } = await execApi("get", `/runs`, {
     guid,
     limit,

@@ -15,7 +15,7 @@ import { Button } from "react-bootstrap";
 
 export default function Page(props) {
   const { errorHandler, query } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [sources, setSources] = useState<SourceAPIData[]>(props.sources);
   const [total, setTotal] = useState(props.total);
@@ -155,7 +155,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { limit, offset } = ctx.query;
   const { sources, total } = await execApi("get", `/sources`, {
     limit,

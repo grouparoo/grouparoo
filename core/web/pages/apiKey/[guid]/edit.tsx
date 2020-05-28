@@ -10,7 +10,7 @@ import { ApiKeyAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, successHandler, query } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [apiKey, setApiKey] = useState<ApiKeyAPIData>(props.apiKey);
   const { guid } = query;
@@ -136,7 +136,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { guid } = ctx.query;
   const { apiKey } = await execApi("get", `/apiKey/${guid}`);
   return { apiKey };

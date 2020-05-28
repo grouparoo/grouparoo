@@ -2,8 +2,8 @@ import { useApi } from "../../hooks/useApi";
 import Router from "next/router";
 import { Button } from "react-bootstrap";
 
-export default function ({ errorHandler }) {
-  const { execApi } = useApi(errorHandler);
+export default function (props) {
+  const { execApi } = useApi(props);
 
   async function create() {
     const response = await execApi("post", `/profile`);

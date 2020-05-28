@@ -2,7 +2,7 @@ import Head from "next/head";
 import { Button } from "react-bootstrap";
 import Router from "next/router";
 import { useState } from "react";
-import { useApi, apiVersion } from "../hooks/useApi";
+import { useApi } from "../hooks/useApi";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { useHistoryPagination } from "../hooks/useHistoryPagination";
 import Moment from "react-moment";
@@ -12,8 +12,8 @@ import LoadingTable from "../components/loadingTable";
 import { FileAPIData } from "../utils/apiData";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, query } = props;
-  const { execApi } = useApi(errorHandler);
+  const { errorHandler, successHandler, query, apiVersion } = props;
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(props.total);
   const [files, setFiles] = useState<FileAPIData[]>(props.files);
@@ -43,7 +43,7 @@ export default function Page(props) {
 
   async function download(file) {
     console.info("downloading file", file);
-    const csrfToken = await window.localStorage.getItem("session:csrfToken");
+    const csrfToken = window.localStorage.getItem("session:csrfToken");
     const url = `/api/${apiVersion}/file/${file.guid}?csrfToken=${csrfToken}`;
     window.open(url, "_new");
   }
@@ -171,7 +171,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { limit, offset } = ctx.query;
   const { files, total } = await execApi("get", `/files`, { limit, offset });
   return { files, total };

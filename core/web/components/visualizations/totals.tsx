@@ -5,10 +5,9 @@ import { Row, Col, Jumbotron, CardGroup, Card } from "react-bootstrap";
 import { useApi } from "../../hooks/useApi";
 import Loader from "../loader";
 
-function SparkCard({ errorHandler, model, title, href = null }) {
+function SparkCard({ execApi, model, title, href = null }) {
   const [total, setTotal] = useState(null);
   const [rolling, setRolling] = useState([]);
-  const { execApi } = useApi(errorHandler);
 
   useEffect(() => {
     load();
@@ -55,9 +54,8 @@ function SparkCard({ errorHandler, model, title, href = null }) {
   );
 }
 
-function BigNumber({ errorHandler, model, title, href = null }) {
+function BigNumber({ execApi, model, title, href = null }) {
   const [total, setTotal] = useState(null);
-  const { execApi } = useApi(errorHandler);
 
   useEffect(() => {
     load();
@@ -91,7 +89,10 @@ function BigNumber({ errorHandler, model, title, href = null }) {
   );
 }
 
-export default function ({ errorHandler }) {
+export default function (props) {
+  const { errorHandler } = props;
+  const { execApi } = useApi(props, errorHandler);
+
   return (
     <>
       <Jumbotron>
@@ -100,7 +101,7 @@ export default function ({ errorHandler }) {
         <Row>
           <Col>
             <BigNumber
-              errorHandler={errorHandler}
+              execApi={execApi}
               href="profiles"
               model="Profile"
               title="Profiles"
@@ -108,7 +109,7 @@ export default function ({ errorHandler }) {
           </Col>
           <Col>
             <BigNumber
-              errorHandler={errorHandler}
+              execApi={execApi}
               href="groups"
               model="Group"
               title="Groups"
@@ -119,14 +120,14 @@ export default function ({ errorHandler }) {
         <Row>
           <Col>
             <BigNumber
-              errorHandler={errorHandler}
+              execApi={execApi}
               model="ProfileProperty"
               title="Profile Properties"
             />
           </Col>
           <Col>
             <BigNumber
-              errorHandler={errorHandler}
+              execApi={execApi}
               model="GroupMember"
               title="Group Members"
             />
@@ -137,35 +138,25 @@ export default function ({ errorHandler }) {
         <h3>System</h3>
         <CardGroup>
           <SparkCard
-            errorHandler={errorHandler}
+            execApi={execApi}
             href="events"
             model="Event"
             title="Events"
           />
+          <SparkCard execApi={execApi} href="runs" model="Run" title="Runs" />
           <SparkCard
-            errorHandler={errorHandler}
-            href="runs"
-            model="Run"
-            title="Runs"
-          />
-          <SparkCard
-            errorHandler={errorHandler}
+            execApi={execApi}
             href="imports"
             model="Import"
             title="Imports"
           />
           <SparkCard
-            errorHandler={errorHandler}
+            execApi={execApi}
             href="exports"
             model="Export"
             title="Exports"
           />
-          <SparkCard
-            errorHandler={errorHandler}
-            href="logs"
-            model="Log"
-            title="Logs"
-          />
+          <SparkCard execApi={execApi} href="logs" model="Log" title="Logs" />
         </CardGroup>
       </Jumbotron>
     </>

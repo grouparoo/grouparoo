@@ -3,7 +3,7 @@ const path = require("path");
 const {
   getPluginManifest,
   grouparooMonorepoApp,
-  getParentPath,
+  // getParentPath,
   runningCoreDirectly,
 } = require("../api/src/utils/pluginDetails");
 const pluginManifest = getPluginManifest();
@@ -42,30 +42,3 @@ console.info("[Grouparoo Plugin] '${file}' from ${pluginName}");
     }
   }
 });
-
-// build the web ENVIRONMENT object
-// load env from .env in development
-const envFile = path.resolve(path.join(getParentPath(), ".env"));
-console.log(envFile);
-if (fs.existsSync(envFile)) {
-  require("dotenv").config({ path: envFile });
-  console.log(`modified your next.js build environment with ${envFile}`);
-}
-
-const _exports = {
-  API_VERSION: `v${process.env.API_VERSION || 1}`,
-  WEB_URL: process.env.WEB_URL,
-  SERVER_TOKEN: process.env.SERVER_TOKEN,
-  GROUPAROO_MONOREPO_APP: grouparooMonorepoApp,
-};
-
-// pass plugin env/web to the build
-pluginManifest.plugins.forEach((plugin) => {
-  if (plugin.grouparoo && plugin.grouparoo.env && plugin.grouparoo.env.web) {
-    plugin.grouparoo.env.web.forEach((e) => {
-      _exports[e] = process.env[e];
-    });
-  }
-});
-
-module.exports = _exports;

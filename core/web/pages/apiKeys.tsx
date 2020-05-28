@@ -14,7 +14,7 @@ import { ApiKeyAPIData } from "../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, query } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [apiKeys, setApiKeys] = useState<ApiKeyAPIData[]>(props.apiKeys);
   const [total, setTotal] = useState(props.total);
   const [loading, setLoading] = useState(false);
@@ -125,7 +125,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { limit, offset } = ctx.query;
   const { apiKeys, total } = await execApi("get", `/apiKeys`, {
     limit,

@@ -8,7 +8,7 @@ import Router from "next/router";
 
 export default function Page(props) {
   const { errorHandler, successHandler, types, scheduleCount } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [newMappingKey, setNewMappingKey] = useState("");
   const [newMappingValue, setNewMappingValue] = useState("");
   const [profilePropertyRules, setProfilePropertyRules] = useState(
@@ -297,7 +297,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { source } = await execApi("get", `/source/${guid}`);
 
   let preview;

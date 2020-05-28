@@ -5,8 +5,9 @@ import { useForm } from "react-hook-form";
 import { Form, Button } from "react-bootstrap";
 import Router from "next/router";
 
-export default function Page({ errorHandler, successHandler, types }) {
-  const { execApi } = useApi(errorHandler);
+export default function Page(props) {
+  const { errorHandler, successHandler, types } = props;
+  const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
 
@@ -59,7 +60,7 @@ export default function Page({ errorHandler, successHandler, types }) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { options } = await execApi("get", `/files/options`);
   return { types: options.types };
 };

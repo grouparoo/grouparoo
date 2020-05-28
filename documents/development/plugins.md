@@ -361,4 +361,4 @@ When creating a new react component to be used within the Grouparoo application,
 - `successHandler`: object, how to display success messages in the ui. `errorHandler.set({message: "yay!"})`,,
 - `...Handler`: object. There are many other "handler" helpers by which you can subscribe to state changes of the various top-level objects, like Session, App, etc.
 - `query`: object: The Next query object. You can determine the page you are on, etc
-- `useApi`: The hook to build the connection to use the Grouparoo API. Should be instantiated like so: `const { execApi } = useApi(errorHandler);`
+- `useApi`: The hook to build the connection to use the Grouparoo API. Should be instantiated like so: `const { execApi } = useApi(props, errorHandler);`

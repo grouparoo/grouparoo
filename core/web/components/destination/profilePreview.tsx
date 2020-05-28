@@ -3,13 +3,14 @@ import { useApi } from "../../hooks/useApi";
 import { Card, ListGroup } from "react-bootstrap";
 import Loader from "../loader";
 
-export default function ProfilePreview({
-  errorHandler,
-  destination,
-  groups,
-  trackedGroupGuid,
-  mappingOptions,
-}) {
+export default function ProfilePreview(props) {
+  const {
+    errorHandler,
+    destination,
+    groups,
+    trackedGroupGuid,
+    mappingOptions,
+  } = props;
   const [profileGuid, setProfileGuid] = useState("");
   const [toHide, setToHide] = useState(true);
   const [profile, setProfile] = useState({
@@ -19,7 +20,7 @@ export default function ProfilePreview({
   });
   const [sleeping, setSleeping] = useState(false);
   const [debounceCounter, setDebounceCounter] = useState(0);
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
 
   const sleep = debounceCounter === 0 ? 0 : 1000; // we only want to make one request every ~second, so wait for more input
 

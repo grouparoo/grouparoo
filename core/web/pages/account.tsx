@@ -6,7 +6,7 @@ import ProfileImageFromEmail from "../components/visualizations/profileImageFrom
 
 export default function Page(props) {
   const { errorHandler, successHandler, sessionHandler } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [teamMember, setTeamMember] = useState(props.teamMember);
 
@@ -94,7 +94,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { teamMember } = await execApi("get", `/account`);
   return { teamMember };
 };

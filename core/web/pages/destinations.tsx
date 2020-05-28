@@ -16,7 +16,7 @@ import { DestinationAPIData } from "../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, query } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [destinations, setDestinations] = useState<DestinationAPIData[]>(
     props.destinations
@@ -167,7 +167,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { limit, offset } = ctx.query;
   const { destinations, total } = await execApi("get", `/destinations`, {
     limit,

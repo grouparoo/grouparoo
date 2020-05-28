@@ -12,8 +12,7 @@ import { GroupAPIData } from "../../../utils/apiData";
 export default function Page(props) {
   const { errorHandler, successHandler, groupHandler } = props;
   const [group, setGroup] = useState<GroupAPIData>(props.group);
-  // const [plugins, pluginMetadata] = usePlugins("group/tabs");
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -155,7 +154,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { group } = await execApi("get", `/group/${guid}`);
   return { group };
 };

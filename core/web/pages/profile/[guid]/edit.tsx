@@ -22,7 +22,7 @@ export default function Page(props) {
     groups,
     apps,
   } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState<ProfileAPIData>(props.profile);
   const [properties, setProperties] = useState<ProfileAPIData["properties"]>(
@@ -356,7 +356,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { profile, groups } = await execApi("get", `/profile/${guid}`);
   const { profilePropertyRules } = await execApi(
     "get",

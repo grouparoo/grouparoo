@@ -7,7 +7,8 @@ import Loader from "./../components/loader";
 
 export default function (props) {
   const [appsCount, setAppsCount] = useState(-1);
-  const { execApi } = useApi(props.errorHandler);
+  const { errorHandler } = props;
+  const { execApi } = useApi(props, errorHandler);
 
   useEffect(() => {
     load();

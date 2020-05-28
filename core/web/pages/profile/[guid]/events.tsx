@@ -17,7 +17,7 @@ import { EventAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, query, profile } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const [events, setEvents] = useState<EventAPIData[]>(props.events);
@@ -226,7 +226,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { limit, offset, guid, type } = ctx.query;
   const { profile } = await execApi("get", `/profile/${guid}`);
   const { events, total } = await execApi("get", `/events`, {

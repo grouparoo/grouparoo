@@ -13,7 +13,7 @@ import { ScheduleAPIData, RunAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, successHandler, source, run, pluginOptions } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [schedule, setSchedule] = useState<ScheduleAPIData>(props.schedule);
 
@@ -321,7 +321,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { source } = await execApi("get", `/source/${guid}`);
   const { schedule, pluginOptions } = await execApi(
     "get",

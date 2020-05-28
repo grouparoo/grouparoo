@@ -61,10 +61,15 @@ export class ClientCache {
 }
 
 export class Client {
-  apiEndpoint: string;
+  apiVersion: string;
+  webUrl: string;
+  serverToken: string;
   cache: ClientCache;
 
-  constructor() {
+  constructor(apiVersion: string, webUrl: string, serverToken: string) {
+    this.apiVersion = apiVersion;
+    this.webUrl = webUrl;
+    this.serverToken = serverToken;
     this.cache = new ClientCache();
   }
 
@@ -100,7 +105,7 @@ export class Client {
     };
 
     if (cookieString) {
-      headers["X-GROUPAROO-SERVER_TOKEN"] = process.env.SERVER_TOKEN;
+      headers["X-GROUPAROO-SERVER_TOKEN"] = this.serverToken;
       headers["cookie"] = cookieString;
       useCache = false; // do not ever responses on the server
     }
@@ -108,7 +113,7 @@ export class Client {
     const options: AxiosRequestConfig = {
       params: null,
       data: null,
-      url: "" + path,
+      url: `${this.webUrl}/api/${this.apiVersion}${path}`, // path comes with a leading "/"
       withCredentials: true,
       //@ts-ignore
       agent: `grouparoo-web-${PackageJSON.version}`,

@@ -4,8 +4,9 @@ import { ButtonToolbar, Button, Table, Modal, Row, Col } from "react-bootstrap";
 import Pagination from "../pagination";
 import Router from "next/router";
 
-export default function ({ errorHandler, query, successHandler }) {
-  const { execApi } = useApi(errorHandler);
+export default function (props) {
+  const { errorHandler, query, successHandler } = props;
+  const { execApi } = useApi(props, errorHandler);
   const [failed, setFailed] = useState([]);
   const [focusedException, setFocusedException] = useState({
     exception: "",

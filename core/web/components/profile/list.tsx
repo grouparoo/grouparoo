@@ -13,7 +13,7 @@ import { ProfileAPIData } from "../../utils/apiData";
 
 export default function ProfilesList(props) {
   const { pathname, query, errorHandler, profilePropertyRules } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const [total, setTotal] = useState<number>(props.total);
@@ -277,7 +277,7 @@ export default function ProfilesList(props) {
 }
 
 ProfilesList.hydrate = async (ctx, searchKey?, searchValue?) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { guid, limit, offset } = ctx.query;
 
   let groupGuid: string;

@@ -19,7 +19,7 @@ export default function Page(props) {
     types,
     optionOptions,
   } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [app, setApp] = useState<AppAPIData>(props.app);
   const [loading, setLoading] = useState(false);
   const [testResult, setTestResult] = useState({ result: null, error: null });
@@ -297,7 +297,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { app } = await execApi("get", `/app/${guid}`);
   const { types } = await execApi("get", `/appOptions`);
   const { options } = await execApi("get", `/app/${guid}/optionOptions`);

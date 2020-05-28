@@ -8,7 +8,7 @@ import ProfilesList from "../../../components/profile/list";
 
 export default function Page(props) {
   const { errorHandler, successHandler, group } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
   async function handleExport(type = "csv") {
@@ -98,7 +98,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { group } = await execApi("get", `/group/${guid}`);
   const profileListInitialProps = await ProfilesList.hydrate(ctx);
 

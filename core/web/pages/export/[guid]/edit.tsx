@@ -180,7 +180,7 @@ export default function Page({ _export, groups }) {
 
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { export: _export } = await execApi("get", `/export/${guid}`);
   const { groups } = await execApi("get", `/groups`);
   return { _export, groups };

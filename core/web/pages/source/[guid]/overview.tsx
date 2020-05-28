@@ -283,7 +283,7 @@ export default function Page({ errorHandler, successHandler, source, run }) {
 
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { source } = await execApi("get", `/source/${guid}`);
 
   let run;

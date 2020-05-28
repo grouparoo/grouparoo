@@ -7,7 +7,7 @@ import { Button } from "react-bootstrap";
 
 export default function Page(props) {
   const { errorHandler, successHandler, source } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
   async function enqueueScheduleRun() {
@@ -48,7 +48,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { source } = await execApi("get", `/source/${guid}`);
   const runsListInitialProps = await RunsList.hydrate(ctx);
   return { source, ...runsListInitialProps };

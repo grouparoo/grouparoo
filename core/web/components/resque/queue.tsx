@@ -4,8 +4,9 @@ import { Button, Table, Row, Col } from "react-bootstrap";
 import Pagination from "../pagination";
 import Router from "next/router";
 
-export default function ({ errorHandler, query }) {
-  const { execApi } = useApi(errorHandler);
+export default function (props) {
+  const { errorHandler, query } = props;
+  const { execApi } = useApi(props, errorHandler);
   const [queue, setQueue] = useState(query.queue || "");
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(false);

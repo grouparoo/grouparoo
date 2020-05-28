@@ -11,7 +11,7 @@ import TeamTabs from "../../../components/tabs/team";
 
 export default function Page(props) {
   const { errorHandler, successHandler, team, teams } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [teamMembers, setTeamMembers] = useState<TeamMemberAPIData[]>(
     props.teamMembers
@@ -111,7 +111,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { guid } = ctx.query;
   const { team } = await execApi("get", `/team/${guid}`);
   const { teamMembers } = await execApi("get", `/team/${guid}/members`);

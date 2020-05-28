@@ -13,7 +13,7 @@ import ProfilePropertyRuleAddButton from "../components/profilePropertyRule/add"
 
 export default function Page(props) {
   const { errorHandler, successHandler, query } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [examples, setExamples] = useState(props.examples);
   const [sources, setSources] = useState(props.sources);
@@ -180,7 +180,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { limit, offset } = ctx.query;
   const { sources, total } = await execApi("get", `/sources`, {
     limit,

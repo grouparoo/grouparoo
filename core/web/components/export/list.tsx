@@ -12,7 +12,7 @@ import { ExportAPIData } from "../../utils/apiData";
 
 export default function ExportsList(props) {
   const { pathname, errorHandler, query, groups } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [_exports, setExports] = useState<ExportAPIData[]>(props._exports);
   const [total, setTotal] = useState(props.total);
@@ -249,7 +249,7 @@ export default function ExportsList(props) {
 }
 
 ExportsList.hydrate = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { guid, limit, offset } = ctx.query;
   const { groups } = await execApi("get", `/groups`);
 

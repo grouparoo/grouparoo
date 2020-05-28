@@ -1,8 +1,9 @@
 import { Button } from "react-bootstrap";
 import { useApi } from "../../hooks/useApi";
 
-export default function ({ errorHandler, successHandler }) {
-  const { execApi } = useApi(errorHandler);
+export default function (props) {
+  const { errorHandler, successHandler } = props;
+  const { execApi } = useApi(props, errorHandler);
 
   async function importAndUpdate() {
     if (window.confirm("Are you sure?")) {

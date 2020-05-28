@@ -26,7 +26,7 @@ export default function PluginPage(props) {
 
 PluginPage.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { profilePropertyRule } = await execApi(
     "get",
     `/profilePropertyRule/${guid}`

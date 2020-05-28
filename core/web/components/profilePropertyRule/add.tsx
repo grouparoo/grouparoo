@@ -3,8 +3,9 @@ import { useApi } from "../../hooks/useApi";
 import { Button } from "react-bootstrap";
 import Router from "next/router";
 
-export default function ({ errorHandler, successHandler, source }) {
-  const { execApi } = useApi(errorHandler);
+export default function (props) {
+  const { errorHandler, successHandler, source } = props;
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
   async function create() {

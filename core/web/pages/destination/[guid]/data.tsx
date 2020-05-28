@@ -19,7 +19,7 @@ export default function Page(props) {
     mappingOptions,
     groups,
   } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [trackedGroupGuid, setTrackedGroupGuid] = useState("_none");
   const [destination, setDestination] = useState<DestinationAPIData>(
     props.destination
@@ -624,7 +624,7 @@ export default function Page(props) {
         </Col>
         <Col md={3}>
           <ProfilePreview
-            errorHandler={errorHandler}
+            {...props}
             mappingOptions={mappingOptions}
             destination={destination}
             groups={groups}
@@ -637,7 +637,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { guid } = ctx.query;
   const { destination } = await execApi("get", `/destination/${guid}`);
   const { groups } = await execApi("get", `/groups`);

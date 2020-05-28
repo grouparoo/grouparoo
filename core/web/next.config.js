@@ -1,14 +1,12 @@
 const path = require("path");
-const env = require("./env");
 const { runningCoreDirectly } = require("../api/src/utils/pluginDetails");
+require("./plugins"); // prepare plugins
 
 const nodeModulesPath = runningCoreDirectly()
   ? path.resolve(__dirname, "..", "node_modules")
   : path.resolve(__dirname, "..", "..", "..", "..", "node_modules");
 
 module.exports = {
-  env,
-
   webpack: (config, options) => {
     overwriteNextBabelLoaderToIncludePluginNodeModules(config);
 

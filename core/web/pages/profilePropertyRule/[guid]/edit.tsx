@@ -24,7 +24,7 @@ export default function Page(props) {
     pluginOptions,
     profilePropertyRules,
   } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [profilePropertyRule, setProfilePropertyRule] = useState<
     ProfilePropertyRuleAPIData
@@ -562,7 +562,7 @@ export default function Page(props) {
           </Col>
           <Col md={3}>
             <ProfilePreview
-              errorHandler={errorHandler}
+              {...props}
               profilePropertyRule={profilePropertyRule}
             />
           </Col>
@@ -574,7 +574,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { profilePropertyRule, pluginOptions } = await execApi(
     "get",
     `/profilePropertyRule/${guid}`

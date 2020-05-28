@@ -13,7 +13,7 @@ import { ImportAPIData } from "../../utils/apiData";
 
 export default function ImportList(props) {
   const { pathname, query, errorHandler, groups } = props;
-  const { execApi } = useApi(errorHandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [imports, setImports] = useState<ImportAPIData[]>(props.imports);
   const [total, setTotal] = useState(props.total);
@@ -274,7 +274,7 @@ export default function ImportList(props) {
 }
 
 ImportList.hydrate = async (ctx) => {
-  const { execApi } = useApi(null, ctx);
+  const { execApi } = useApi(ctx);
   const { guid, limit, offset } = ctx.query;
 
   let profileGuid: string;
