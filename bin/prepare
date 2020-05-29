@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+if [[ $NODE_ENV == "development" || -z $NODE_ENV ]]; then
+  npm run bootstrap-flat
+else
+  npm run bootstrap-hoist
+fi
