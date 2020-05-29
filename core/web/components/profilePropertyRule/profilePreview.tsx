@@ -117,7 +117,7 @@ export default function ProfilePreview(props) {
             <ProfileImageFromEmail email={email} width={100} />
             <br />
             <Card.Link
-              href={`/profile/${profile.guid}`}
+              href={`/profile/${profile.guid}/edit`}
               style={{ color: "white" }}
             >
               View Profile
