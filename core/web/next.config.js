@@ -2,14 +2,14 @@ const path = require("path");
 const fs = require("fs");
 const {
   getPluginManifest,
-  runningCoreDirectly,
   getParentPath,
 } = require("../api/src/utils/pluginDetails");
 require("./plugins"); // prepare plugins
 
-const nodeModulesPath = runningCoreDirectly()
-  ? path.resolve(__dirname, "..", "node_modules")
-  : path.resolve(__dirname, "..", "..", "..", "..", "node_modules");
+const nodeModulesPath = path.join(
+  path.dirname(require.resolve("react/package.json")),
+  ".."
+);
 
 // pass plugin env/web to the build for
 const env = {};

@@ -1,29 +1,12 @@
-import { join } from "path";
-import fs from "fs";
+import path from "path";
 import { getPluginManifest } from "../utils/pluginDetails";
 import InjectedPlugins from "./pluginInjection";
 
-let localNodeModulesPath: string;
-if (
-  fs.existsSync(
-    join(__dirname, "..", "..", "..", "node_modules", "ah-sequelize-plugin")
-  )
-) {
-  // things are installed under this project
-  localNodeModulesPath = join(__dirname, "..", "..", "..", "node_modules");
-} else {
-  // we are installed along-side this project
-  localNodeModulesPath = join(
-    __dirname,
-    "..",
-    "..",
-    "..",
-    "..",
-    "..",
-    "..",
-    "node_modules"
-  );
-}
+// let npm handle the path detection for us!
+const localNodeModulesPath = path.join(
+  path.dirname(require.resolve("react/package.json")),
+  ".."
+);
 
 const pluginManifest = getPluginManifest();
 const parentPlugins = {};
@@ -58,10 +41,10 @@ export const DEFAULT = {
     return Object.assign(
       {
         "ah-sequelize-plugin": {
-          path: join(localNodeModulesPath, "ah-sequelize-plugin"),
+          path: path.join(localNodeModulesPath, "ah-sequelize-plugin"),
         },
         "ah-next-plugin": {
-          path: join(localNodeModulesPath, "ah-next-plugin"),
+          path: path.join(localNodeModulesPath, "ah-next-plugin"),
         },
       },
       parentPlugins,
