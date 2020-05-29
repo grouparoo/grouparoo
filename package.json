@@ -23,8 +23,9 @@
     "prettier": "^2.0.5"
   },
   "scripts": {
-    "prepare": "npm run bootstrap",
-    "bootstrap": "lerna bootstrap --strict",
+    "prepare": "./bin/prepare",
+    "bootstrap-flat": "lerna bootstrap --strict",
+    "bootstrap-hoist": "lerna bootstrap --strict --hoist",
     "license-checker": "./tools/license-checker/check",
     "version-alpha": "lerna version prerelease --preid alpha --force-publish --yes",
     "version-stable": "lerna version patch --force-publish --yes",
@@ -32,7 +33,6 @@
     "lint": "lerna run lint",
     "test": "lerna run test --stream --concurrency 1",
     "nuke": "rm -rf node_modules && rm -rf core/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/api/dist && rm -rf plugins/*/*/dist && rm -rf core/web/tmp",
-    "update": "npm-check-updates -u && lerna exec -- npm-check-updates -u && npm run nuke && npm install",
-    "heroku-postbuild": "lerna bootstrap --hoist --strict --ignore-scripts"
+    "update": "npm-check-updates -u && lerna exec -- npm-check-updates -u && npm run nuke && npm install"
   }
 }

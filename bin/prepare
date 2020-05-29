@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+if [[ $NODE_ENV == "production" ]]; then
+  npm run bootstrap-hoist
+elif [[ $NODE_ENV == "staging" ]]; then
+  npm run bootstrap-hoist
+elif [[ $NODE_ENV == "test" ]]; then
+  npm run bootstrap-hoist
+elif [[ ! -z $CI ]]; then
+  npm run bootstrap-hoist
+else
+  npm run bootstrap-flat
+fi
