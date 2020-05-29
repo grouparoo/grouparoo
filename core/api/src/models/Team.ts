@@ -14,6 +14,7 @@ import {
 import { LoggedModel } from "../classes/loggedModel";
 import { TeamMember } from "./TeamMember";
 import { Permission } from "./Permission";
+import { AsyncReturnType } from "type-fest";
 
 @Table({ tableName: "teams", paranoid: false })
 export class Team extends LoggedModel<Team> {
@@ -118,6 +119,9 @@ export class Team extends LoggedModel<Team> {
     const permissions = await this.$get("permissions", {
       order: [["topic", "asc"]],
     });
+    const permissionsApiData: AsyncReturnType<
+      Permission["apiData"]
+    >[] = await Promise.all(permissions.map((prm) => prm.apiData()));
 
     return {
       guid: this.guid,
@@ -127,7 +131,7 @@ export class Team extends LoggedModel<Team> {
       permissionAllWrite: this.permissionAllWrite,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
-      permissions: await Promise.all(permissions.map((prm) => prm.apiData())),
+      permissions: permissionsApiData,
       membersCount,
     };
   }
