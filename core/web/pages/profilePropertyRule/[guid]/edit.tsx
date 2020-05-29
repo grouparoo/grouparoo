@@ -189,7 +189,7 @@ export default function Page(props) {
               <Form.Control
                 as="select"
                 disabled
-                value={profilePropertyRule.sourceGuid}
+                value={profilePropertyRule.source.guid}
               >
                 <option value={profilePropertyRule.source.guid}>
                   {profilePropertyRule.source.name}

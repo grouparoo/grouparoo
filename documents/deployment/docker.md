@@ -21,6 +21,7 @@ ENV NODE_ENV='production'
 ENV PORT=3000
 ENV WEB_URL=http://localhost:$PORT
 ENV WEB_SERVER=true
+ENV SERVER_TOKEN="change-me"
 ENV SCHEDULER=true
 ENV WORKERS=1
 ENV REDIS_URL="redis://localhost:6379/0"
