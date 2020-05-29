@@ -13,7 +13,7 @@
     "url": "git+https://github.com/grouparoo/grouparoo.git"
   },
   "devDependencies": {
-    "@types/jest": "^25.2.2",
+    "@types/jest": "^25.2.3",
     "glob": "^7.1.6",
     "lerna": "^3.20.2",
     "lerna-changelog": "^1.0.1",
@@ -33,6 +33,6 @@
     "test": "lerna run test --stream --concurrency 1",
     "nuke": "rm -rf node_modules && rm -rf core/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/api/dist && rm -rf plugins/*/*/dist && rm -rf core/web/tmp",
     "update": "npm-check-updates -u && lerna exec -- npm-check-updates -u && npm run nuke && npm install",
-    "heroku-postbuild": "lerna bootstrap --hoist --strict"
+    "heroku-postbuild": "lerna bootstrap --hoist --strict --ignore-scripts"
   }
 }
