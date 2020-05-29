@@ -103,6 +103,7 @@ SCHEDULER=true
 WORKERS=1
 REDIS_URL="redis://localhost:6379/0"
 DATABASE_URL="postgresql://localhost:5432/grouparoo_development"
+SERVER_TOKEN=a_random_token
 ```
 
 3. Run `npm install` to install dependencies. This will also run `npm prepare` which will compile the typescript application and build the web page components.
