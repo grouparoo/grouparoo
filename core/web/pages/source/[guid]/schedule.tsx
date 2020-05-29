@@ -16,6 +16,9 @@ export default function Page(props) {
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [schedule, setSchedule] = useState<ScheduleAPIData>(props.schedule);
+  const [recurringFrequencyMinutes, setRecurringFrequencyMinutes] = useState(
+    schedule.recurringFrequency / (60 * 1000)
+  );
 
   async function edit(event) {
     event.preventDefault();
@@ -34,8 +37,9 @@ export default function Page(props) {
     setLoading(false);
     if (response?.schedule) {
       successHandler.set({ message: "Schedule Updated" });
-      response.schedule.recurringFrequencyMinutes =
-        response.schedule.recurringFrequency / (60 * 1000);
+      setRecurringFrequencyMinutes(
+        response.schedule.recurringFrequency / (60 * 1000)
+      );
       setSchedule(response.schedule);
       if (response.schedule.state === "ready" && schedule.state === "draft") {
         Router.push(
@@ -61,8 +65,6 @@ export default function Page(props) {
       event.target.type === "checkbox"
         ? event.target.checked
         : event.target.value;
-    _schedule.recurringFrequency =
-      _schedule.recurringFrequencyMinutes * (60 * 1000);
     setSchedule(_schedule);
   };
 
@@ -116,8 +118,10 @@ export default function Page(props) {
                       type="number"
                       min={1}
                       placeholder="Recurring Frequency"
-                      value={schedule.recurringFrequencyMinutes.toString()}
-                      onChange={(e) => update(e)}
+                      value={recurringFrequencyMinutes.toString()}
+                      onChange={(e) =>
+                        setRecurringFrequencyMinutes(parseInt(e.target.value))
+                      }
                     />
                   </Form.Group>
                 </Col>
@@ -169,12 +173,12 @@ export default function Page(props) {
                       new Date(run.updatedAt).getTime() +
                         schedule.recurringFrequency >
                         new Date().getTime() &&
-                      schedule.recurringFrequencyMinutes > 0 ? (
+                      recurringFrequencyMinutes > 0 ? (
                         <>
                           in{" "}
                           <Moment
                             add={{
-                              minutes: schedule.recurringFrequencyMinutes,
+                              minutes: recurringFrequencyMinutes,
                             }}
                             toNow
                             ago
@@ -188,7 +192,7 @@ export default function Page(props) {
                         new Date(run.updatedAt).getTime() +
                           schedule.recurringFrequency <=
                           new Date().getTime() &&
-                        schedule.recurringFrequencyMinutes) ||
+                        recurringFrequencyMinutes) ||
                       !run ? (
                         schedule.recurring ? (
                           <strong>ASAP</strong>
@@ -327,8 +331,6 @@ Page.getInitialProps = async (ctx) => {
     "get",
     `/schedule/${source.schedule.guid}`
   );
-  schedule.recurringFrequencyMinutes =
-    schedule.recurringFrequency / (60 * 1000);
   const { runs } = await execApi("get", `/runs`, {
     guid: source.schedule.guid,
     limit: 1,
