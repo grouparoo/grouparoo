@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-1. Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/) project, and we use NPM to manage our dependencies. Grouparoo **requires** the **Postgres** and Redis databases. On OSX, these can be installed via [Homebrew](https://brew.sh/).
+1. Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/). Make sure you are running node version 12. We use NPM to manage our dependencies. Grouparoo **requires** the **Postgres** and Redis databases. On OSX, these can be installed via [Homebrew](https://brew.sh/).
 
 ```json:readme_deploy
 {
