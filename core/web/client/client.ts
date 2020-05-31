@@ -67,6 +67,10 @@ export class Client {
   cache: ClientCache;
 
   constructor() {
+    if (!process.env.SERVER_TOKEN) {
+      throw new Error("SERVER_TOKEN environment variable missing");
+    }
+
     this.apiVersion = process.env.API_VERSION || "v1";
     this.webUrl = process.env.WEB_URL || "";
     this.serverToken = process.env.SERVER_TOKEN;
