@@ -2,7 +2,8 @@
 
 ## Getting Started
 
-1. Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/). Make sure you are running node version 12. We use NPM to manage our dependencies. Grouparoo **requires** the **Postgres** and Redis databases. On OSX, these can be installed via [Homebrew](https://brew.sh/).
+### Step 1: Create your `package.json` file
+Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/). Make sure you are running node version 12. We use NPM to manage our dependencies. Grouparoo **requires** the **Postgres** and Redis databases. On OSX, these can be installed via [Homebrew](https://brew.sh/).
 
 ```json:readme_deploy
 {
@@ -39,7 +40,8 @@ This makes an "app" for Grouparoo to run. There is an example in the [staging-pu
 
 There are some environment variables needed by Grouparoo that need to be set by your host/docker image. In development, we can also load these variables from a `.env` file that lives alongside your `package.json`.
 
-2. Create a copy of our [example](https://github.com/grouparoo/grouparoo/blob/master/apps/staging-public/.env.example) `.env` file to manage your environment variables locally. You can modify the options as needed. Make this as a peer to your `package.json` file. Note: the `.env` file only works when running in `NODE_ENV=development`. On your server, you should set up these same environment variables. At minimum, you will need to set the following variables:
+### Step 2: Create your `.env` file
+Create a copy of our [example](https://github.com/grouparoo/grouparoo/blob/master/apps/staging-public/.env.example) `.env` file to manage your environment variables locally. You can modify the options as needed. Make this as a peer to your `package.json` file. Note: the `.env` file only works when running in `NODE_ENV=development`. On your server, you should set up these same environment variables. At minimum, you will need to set the following variables:
 
 ```shell
 PORT=3000
@@ -52,8 +54,11 @@ DATABASE_URL="postgresql://localhost:5432/grouparoo_development"
 SERVER_TOKEN=a_random_token
 ```
 
-3. Run `npm install` to install dependencies. This will also run `npm prepare` which will compile the typescript application and build the web page components.
-4. Run `npm start` to start the server and visit `http://localhost:3000` to get started. Follow the on-screen instructions to create your account and first team.
+### Step 3: Install Dependencies
+Run `npm install` to install dependencies. This will also run `npm prepare` which will compile the typescript application and build the web page components.
+
+### Step 4: Start the Server
+Run `npm start` to start the server and visit `http://localhost:3000` to get started. Follow the on-screen instructions to create your account and first team.
 
 ## Deployment Topology
 
