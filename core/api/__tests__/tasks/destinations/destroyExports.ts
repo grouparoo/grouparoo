@@ -1,15 +1,14 @@
 import { helper } from "../../utils/specHelper";
-import { task, specHelper } from "actionhero";
+import { api, task, specHelper } from "actionhero";
 import { Export } from "./../../../src/models/Export";
 import { ExportImport } from "./../../../src/models/ExportImport";
 
-let actionhero, api;
+let actionhero;
 
 describe("tasks/destination:destroyExports", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
     await api.resque.queue.connection.redis.flushdb();
     await helper.factories.profilePropertyRules();
   }, 1000 * 30);

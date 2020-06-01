@@ -1,14 +1,13 @@
+import { api } from "actionhero";
 import { helper } from "./../utils/specHelper";
 import { waitForLock } from "./../../src/modules/locks";
 
 let actionhero;
-let api;
 
 describe("modules/locks", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
   }, 1000 * 30);
 
   afterAll(async () => {

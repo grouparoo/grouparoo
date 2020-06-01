@@ -1,10 +1,10 @@
 import { helper } from "../utils/specHelper";
-import { specHelper } from "actionhero";
+import { api, specHelper } from "actionhero";
 import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
 import { Profile } from "../../src/models/Profile";
 import { Option } from "../../src/models/Option";
 
-let actionhero, api;
+let actionhero;
 
 describe("integration/events", () => {
   let connection;
@@ -20,7 +20,6 @@ describe("integration/events", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
     await api.resque.queue.connection.redis.flushdb();
     await helper.factories.profilePropertyRules();
   }, 1000 * 30);

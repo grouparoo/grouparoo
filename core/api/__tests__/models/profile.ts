@@ -7,9 +7,9 @@ import { GroupMember } from "./../../src/models/GroupMember";
 import { App } from "./../../src/models/App";
 import { Source } from "./../../src/models/Source";
 import { plugin } from "./../../src/modules/plugin";
-import { specHelper } from "actionhero";
+import { api, specHelper } from "actionhero";
 
-let actionhero, api;
+let actionhero;
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -24,7 +24,6 @@ describe("models/profile", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
   }, 1000 * 30);
 
   afterAll(async () => {

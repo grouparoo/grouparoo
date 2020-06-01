@@ -1,15 +1,14 @@
 import { helper } from "../../utils/specHelper";
-import { specHelper } from "actionhero";
+import { api, specHelper } from "actionhero";
 import { plugin } from "./../../../src/modules/plugin";
 
-let actionhero, api;
+let actionhero;
 let group;
 
 describe("tasks/group:updateCalculatedGroups", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
   }, 1000 * 30);
 
   beforeEach(async () => {

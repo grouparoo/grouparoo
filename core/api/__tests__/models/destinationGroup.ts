@@ -1,16 +1,14 @@
 import { helper } from "../utils/specHelper";
-import { specHelper } from "actionhero";
+import { api, specHelper } from "actionhero";
 import { DestinationGroup } from "../../src/models/DestinationGroup";
 import { Destination } from "../../src/models/Destination";
 import { Group } from "../../src/models/Group";
 let actionhero;
-let api;
 
 describe("models/destinationGroup", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
   }, 1000 * 30);
 
   afterAll(async () => {

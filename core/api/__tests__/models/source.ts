@@ -1,3 +1,4 @@
+import { api } from "actionhero";
 import { helper } from "./../utils/specHelper";
 import { Source } from "./../../src/models/Source";
 import { App } from "./../../src/models/App";
@@ -7,14 +8,13 @@ import { Profile } from "./../../src/models/Profile";
 import { Schedule } from "./../../src/models/Schedule";
 import { Option } from "./../../src/models/Option";
 
-let actionhero, api;
+let actionhero;
 let app: App;
 
 describe("models/source", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
   }, 1000 * 30);
 
   afterAll(async () => {

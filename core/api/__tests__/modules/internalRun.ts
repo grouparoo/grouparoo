@@ -1,15 +1,14 @@
 import { helper } from "../utils/specHelper";
-import { task, specHelper } from "actionhero";
+import { api, specHelper } from "actionhero";
 import { internalRun } from "./../../src/modules/internalRun";
 import { Run } from "../../src/models/Run";
 
-let actionhero, api;
+let actionhero;
 
 describe("modules/internalRun", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
     await helper.factories.profilePropertyRules();
     await api.resque.queue.connection.redis.flushdb();
     await Run.destroy({ truncate: true });

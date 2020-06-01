@@ -1,4 +1,4 @@
-import { specHelper } from "actionhero";
+import { api, specHelper } from "actionhero";
 import { helper } from "./../utils/specHelper";
 import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
 import { Log } from "./../../src/models/Log";
@@ -9,13 +9,11 @@ import { plugin } from "./../../src/modules/plugin";
 import { ProfilePropertyRuleFilter } from "../../src/models/ProfilePropertyRuleFilter";
 
 let actionhero;
-let api;
 
 describe("models/profilePropertyRule", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
     await helper.factories.profilePropertyRules();
   }, 1000 * 30);
 

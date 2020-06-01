@@ -1,11 +1,11 @@
 import { helper } from "./../utils/specHelper";
-import { specHelper, config } from "actionhero";
+import { specHelper, api, config } from "actionhero";
 import { Team } from "./../../src/models/Team";
 import { TeamMember } from "./../../src/models/TeamMember";
 import { Permission } from "../../src/models/Permission";
 import { ApiKey } from "../../src/models/ApiKey";
 import fetch from "isomorphic-fetch";
-let actionhero, api;
+let actionhero;
 
 // enable the web server
 process.env.WEB_SERVER = "true";
@@ -14,7 +14,6 @@ describe("session", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
   }, 1000 * 30);
 
   afterAll(async () => {
@@ -137,8 +136,9 @@ describe("session", () => {
           version: 1,
           outputExample: {},
           middleware: ["authenticated-action"],
+          //@ts-ignore
           permission: { topic: "app", mode: "read" },
-          run: (data) => {
+          run: async (data) => {
             data.response.success = true;
           },
         },
@@ -151,8 +151,9 @@ describe("session", () => {
           version: 1,
           outputExample: {},
           middleware: ["authenticated-action"],
+          //@ts-ignore
           permission: { topic: "app", mode: "write" },
-          run: (data) => {
+          run: async (data) => {
             data.response.success = true;
           },
         },
@@ -165,8 +166,9 @@ describe("session", () => {
           version: 1,
           outputExample: {},
           middleware: ["authenticated-action"],
+          //@ts-ignore
           permission: { topic: "system", mode: "read" },
-          run: (data) => {
+          run: async (data) => {
             data.response.success = true;
           },
         },

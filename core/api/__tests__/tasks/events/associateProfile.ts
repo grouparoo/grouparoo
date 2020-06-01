@@ -1,16 +1,15 @@
 import { helper } from "../../utils/specHelper";
-import { task, specHelper } from "actionhero";
+import { api, task, specHelper } from "actionhero";
 import { Profile } from "../../../src/models/Profile";
 import { App } from "../../../src/models/App";
 import { ProfilePropertyRule } from "../../../src/models/ProfilePropertyRule";
 
-let actionhero, api;
+let actionhero;
 
 describe("tasks/event:associateProfile", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
     await helper.factories.profilePropertyRules();
   }, 1000 * 30);
 

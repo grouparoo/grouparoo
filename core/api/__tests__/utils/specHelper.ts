@@ -147,7 +147,7 @@ export namespace helper {
     }
   ) {
     const actionhero = new Process();
-    const api = await actionhero.start();
+    await actionhero.start();
 
     if (options.truncate) {
       await this.truncate();
@@ -155,10 +155,7 @@ export namespace helper {
 
     enableTestPlugin();
 
-    return {
-      actionhero,
-      api,
-    };
+    return { actionhero };
   }
 
   export function enableTestPlugin() {

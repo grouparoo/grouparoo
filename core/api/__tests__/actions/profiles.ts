@@ -5,7 +5,7 @@ import { Group } from "./../../src/models/Group";
 import { Team } from "./../../src/models/Team";
 import { TeamMember } from "./../../src/models/TeamMember";
 import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
-let actionhero, api;
+let actionhero;
 let guid;
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
@@ -21,7 +21,6 @@ describe("actions/profiles", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
   }, 1000 * 30);
 
   afterAll(async () => {

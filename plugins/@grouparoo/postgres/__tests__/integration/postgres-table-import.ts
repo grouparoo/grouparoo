@@ -14,7 +14,7 @@ import fs from "fs";
 import path from "path";
 import parse from "csv-parse/lib/sync";
 import { helper } from "@grouparoo/core/test";
-import { specHelper, config } from "actionhero";
+import { api, specHelper, config } from "actionhero";
 import {
   Profile,
   ProfilePropertyRule,
@@ -22,7 +22,7 @@ import {
   Run,
 } from "@grouparoo/core";
 
-let api, actionhero;
+let actionhero;
 
 const sourceTableName = `users_${process.env.JEST_WORKER_ID || 1}`;
 const createSourceTableSQL = `
@@ -69,7 +69,6 @@ describe("integration/runs/postgres", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
     await api.resque.queue.connection.redis.flushdb();
   }, 1000 * 30);
 
