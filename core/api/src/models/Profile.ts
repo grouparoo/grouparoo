@@ -473,6 +473,11 @@ export class Profile extends LoggedModel<Profile> {
     await otherProfile.destroy();
     await profile.addOrUpdateProperties(newProperties);
 
+    // transfer anonymousId
+    if (!profile.anonymousId && otherProfile.anonymousId) {
+      await profile.update({ anonymousId: otherProfile.anonymousId });
+    }
+
     // re-import and update groups
     delete profile.profileProperties; // remove any cached values from the instance
     await profile.import(true, false);
