@@ -41,7 +41,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@fortawesome/react-fontawesome": "^0.1.9",
-    "@nivo/line": "^0.61.1",
+    "@nivo/line": "^0.62.0",
     "actionhero": "^22.1.1",
     "ah-next-plugin": "^0.2.1",
     "ah-sequelize-plugin": "^2.1.2",
