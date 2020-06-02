@@ -11,17 +11,6 @@ class AuthenticationError extends Error {
   }
 }
 
-const randomBytesAsync = function (bytes = 64) {
-  return new Promise((resolve, reject) => {
-    crypto.randomBytes(bytes, (error, buf) => {
-      if (error) {
-        return reject(error);
-      }
-      return resolve(buf.toString("hex"));
-    });
-  });
-};
-
 const authenticatedActionMiddleware: action.ActionMiddleware = {
   name: "authenticated-action",
   global: false,
@@ -167,6 +156,28 @@ const optionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
   },
 };
 
+interface SessionData {
+  guid: string;
+  csrfToken: string;
+  createdAt: number;
+}
+
+declare module "actionhero" {
+  interface Api {
+    session: {
+      prefix: string;
+      ttl: number;
+      key: (connection: Connection) => string;
+      load: (connection: Connection) => Promise<SessionData>;
+      destroy: (connection: Connection) => Promise<void>;
+      create: (
+        connection: Connection,
+        teamMember: TeamMember
+      ) => Promise<SessionData>;
+    };
+  }
+}
+
 export class Session extends Initializer {
   constructor() {
     super();
@@ -184,7 +195,7 @@ export class Session extends Initializer {
         return `${api.session.prefix}:${connection.fingerprint}`;
       },
 
-      load: async (connection) => {
+      load: async (connection: Connection) => {
         const key = api.session.key(connection);
         const data = await redis.get(key);
         if (!data) {
@@ -225,3 +236,14 @@ export class Session extends Initializer {
     api.params.globalSafeParams.push("apiKey");
   }
 }
+
+const randomBytesAsync = function (bytes = 64): Promise<string> {
+  return new Promise((resolve, reject) => {
+    crypto.randomBytes(bytes, (error, buf) => {
+      if (error) {
+        return reject(error);
+      }
+      return resolve(buf.toString("hex"));
+    });
+  });
+};

@@ -1,5 +1,14 @@
-import { Initializer, api, env } from "actionhero";
+import { Initializer, api } from "actionhero";
+import { GrouparooPlugin } from "../classes/plugin";
 import { plugin } from "../modules/plugin";
+
+declare module "actionhero" {
+  interface Api {
+    plugins: {
+      plugins: Array<GrouparooPlugin>;
+    };
+  }
+}
 
 export class Plugins extends Initializer {
   constructor() {
@@ -11,7 +20,6 @@ export class Plugins extends Initializer {
   async initialize() {
     api.plugins = {
       plugins: [],
-      settings: {},
     };
 
     // --- Add the core plugin --- //
