@@ -42,3 +42,9 @@ console.info("[Grouparoo Plugin] '${file}' from ${pluginName}");
     }
   }
 });
+
+// write if we are running core directly to a file
+fs.writeFileSync(
+  path.join(__dirname, "tmp", "runningCoreDirectly.ts"),
+  `export const runningCoreDirectly = ${runningCoreDirectly()};`
+);
