@@ -5,7 +5,7 @@
 This guide will help you run the Grouparoo application on your local machine. Grouparoo is a node.js application written in Typescript.  Grouparoo relies on a Postgres database and Redis cache. Gropuaroo is distributed though NPM. 
 
 ### Step 1: Create your `package.json` file
-Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/). Make sure you are running node version 12. We use NPM to manage our dependencies. Grouparoo **requires** the **Postgres** and Redis databases. On OSX, these can be installed via [Homebrew](https://brew.sh/).
+Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/). Make sure you are running node version 12 or higher. We use NPM to manage our dependencies. Grouparoo **requires** the **Postgres** and Redis databases. On OSX, these can be installed via [Homebrew](https://brew.sh/).
 
 ```json:readme_deploy
 {
