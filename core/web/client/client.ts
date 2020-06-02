@@ -67,7 +67,7 @@ export class Client {
   cache: ClientCache;
 
   constructor() {
-    if (!process.env.SERVER_TOKEN) {
+    if (!isBrowser() && !process.env.SERVER_TOKEN) {
       throw new Error("SERVER_TOKEN environment variable missing");
     }
 
