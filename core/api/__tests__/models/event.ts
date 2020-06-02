@@ -50,6 +50,8 @@ describe("models/event", () => {
       profileA = await helper.factories.profile();
       profileB = await helper.factories.profile();
 
+      await profileA.update({ anonymousId: "a" });
+      await profileB.update({ anonymousId: "b" });
       await profileA.addOrUpdateProperties({ userId: 1 });
       await profileB.addOrUpdateProperties({ userId: 2 });
     });
@@ -67,6 +69,7 @@ describe("models/event", () => {
         identifyingProfilePropertyRuleGuid
       );
       expect(response.guid).toBe(profileA.guid);
+      expect(await Profile.count()).toBe(2);
     });
 
     describe("with userId", () => {
@@ -78,8 +81,7 @@ describe("models/event", () => {
           identifyingProfilePropertyRuleGuid
         );
 
-        const profilesCount = await Profile.count();
-        expect(profilesCount).toBe(3);
+        expect(await Profile.count()).toBe(3);
       });
 
       test("with merge", async () => {
@@ -90,8 +92,11 @@ describe("models/event", () => {
           identifyingProfilePropertyRuleGuid
         );
         expect(response.guid).toBe(profileA.guid);
+
+        expect(await Profile.count()).toBe(2);
       });
     });
+
     describe("with anonymousId", () => {
       test("new", async () => {
         const event = await helper.factories.event();
@@ -100,8 +105,25 @@ describe("models/event", () => {
         const response = await event.associate(
           identifyingProfilePropertyRuleGuid
         );
-        const profilesCount = await Profile.count();
-        expect(profilesCount).toBe(3);
+
+        expect(await Profile.count()).toBe(3);
+      });
+
+      test("with old events", async () => {
+        const event = await helper.factories.event();
+        await event.update({ anonymousId: "z" });
+
+        const otherEvent = await helper.factories.event();
+        await otherEvent.update({
+          anonymousId: "z",
+          profileGuid: profileA.guid,
+        });
+
+        const response = await event.associate(
+          identifyingProfilePropertyRuleGuid
+        );
+        expect(response.guid).toBe(profileA.guid);
+        expect(await Profile.count()).toBe(2);
       });
 
       test("with merge", async () => {
@@ -114,8 +136,7 @@ describe("models/event", () => {
         await event.associate(identifyingProfilePropertyRuleGuid);
         await otherEvent.associate(identifyingProfilePropertyRuleGuid);
 
-        const profilesCount = await Profile.count();
-        expect(profilesCount).toBe(2);
+        expect(await Profile.count()).toBe(2);
       });
     });
   });
