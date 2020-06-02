@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import {
   Jumbotron,
@@ -17,7 +16,6 @@ import ScheduleAddButton from "../../../components/schedule/add";
 import ProfilePropertyRuleAddButton from "../../../components/profilePropertyRule/add";
 import SourceTabs from "../../../components/tabs/source";
 import Head from "next/head";
-import { SourceAPIData, RunAPIData } from "../../../utils/apiData";
 
 export default function Page({ errorHandler, successHandler, source, run }) {
   const recurringFrequencyMinutes = source?.schedule?.recurringFrequency
