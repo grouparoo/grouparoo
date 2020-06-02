@@ -1,57 +1,56 @@
 import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import mockAxios from "jest-mock-axios";
 import Page from "../../pages/index";
 import commonProps from "../utils/commonProps";
 
 describe("pages/index", () => {
   let wrapper;
 
-  beforeEach(() => {
-    wrapper = mount(<Page {...commonProps} />);
+  test("it shows the Create Team CTA when signed out with teams", async () => {
+    wrapper = mount(
+      <Page
+        {...commonProps}
+        navigationMode="unauthenticated"
+        navigation={{
+          bottomMenuItems: [
+            { title: "create first team", href: "/team/initialize" },
+          ],
+        }}
+      />
+    );
+
+    const html = wrapper.html();
+    expect(html).toContain("Create Team");
+    expect(html).not.toContain("Sign In");
+    expect(html).not.toContain("View Dashboard");
   });
 
-  afterEach(() => {
-    wrapper.unmount();
-    mockAxios.reset();
+  test("it shows the Sign In CTA when signed out with existing teams", async () => {
+    wrapper = mount(
+      <Page
+        {...commonProps}
+        navigationMode="unauthenticated"
+        navigation={{ bottomMenuItems: [] }}
+      />
+    );
+
+    const html = wrapper.html();
+    expect(html).not.toContain("Create Team");
+    expect(html).toContain("Sign In");
+    expect(html).not.toContain("View Dashboard");
   });
 
-  test("assumes the proper CTA is to Sign In by default", () => {
-    expect(wrapper.html()).toContain("Sign In");
-  });
+  test("it shows the View Dashboard CTA when signed in", async () => {
+    wrapper = mount(
+      <Page
+        {...commonProps}
+        navigationMode="authenticated"
+        navigation={{ bottomMenuItems: [] }}
+      />
+    );
 
-  test("it changed the CTA to View Dashboard if you are signed in", async () => {
-    const request = mockAxios.lastReqGet();
-    expect(request.url).toMatch("/api/v1/navigation");
-
-    await act(async () => {
-      await request.promise.resolve({
-        data: { navigationMode: "authenticated" },
-      });
-    });
-
-    expect(wrapper.html()).not.toContain("Sign In");
-    expect(wrapper.html()).toContain("View Dashboard");
-  });
-
-  test("it changes the CTA to Create Team if there are no teams", async () => {
-    const request = mockAxios.lastReqGet();
-    expect(request.url).toMatch("/api/v1/navigation");
-
-    await act(async () => {
-      await request.promise.resolve({
-        data: {
-          navigationMode: "unauthenticated",
-          navigation: {
-            bottomMenuItems: [
-              { title: "create first team", href: "/team/initialize" },
-            ],
-          },
-        },
-      });
-    });
-
-    expect(wrapper.html()).not.toContain("Sign In");
-    expect(wrapper.html()).toContain("Create Team");
+    const html = wrapper.html();
+    expect(html).not.toContain("Create Team");
+    expect(html).not.toContain("Sign In");
+    expect(html).toContain("View Dashboard");
   });
 });
