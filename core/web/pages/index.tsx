@@ -1,31 +1,22 @@
-import { useState, useEffect } from "react";
 import Router from "next/router";
 import Head from "next/head";
 import { Row, Col, Jumbotron, Image, Button } from "react-bootstrap";
-import { useApi } from "../hooks/useApi";
 
-export default function (props) {
-  const { errorHandler } = props;
-  const { execApi } = useApi(props, errorHandler);
-  const [CTALink, setCTALink] = useState("/session/sign-in");
-  const [CTAMessage, setCTAMessage] = useState("Sign In");
+export default function Page(props) {
+  const { navigationMode, navigation } = props;
 
-  useEffect(() => {
-    load();
-  }, []);
+  let CTALink = "/session/sign-in";
+  let CTAMessage = "Sign In";
 
-  async function load() {
-    const { navigation, navigationMode } = await execApi("get", `/navigation`);
-    if (navigationMode === "authenticated") {
-      setCTAMessage("View Dashboard");
-      setCTALink("/dashboard");
-    } else if (
-      navigation.bottomMenuItems[0] &&
-      navigation.bottomMenuItems[0].href === "/team/initialize"
-    ) {
-      setCTAMessage("Create Team");
-      setCTALink("/team/initialize");
-    }
+  if (navigationMode === "authenticated") {
+    CTAMessage = "View Dashboard";
+    CTALink = "/dashboard";
+  } else if (
+    navigation.bottomMenuItems[0] &&
+    navigation.bottomMenuItems[0].href === "/team/initialize"
+  ) {
+    CTAMessage = "Create Team";
+    CTALink = "/team/initialize";
   }
 
   return (

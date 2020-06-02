@@ -55,7 +55,7 @@ SCHEDULER=true
 WORKERS=1
 REDIS_URL="redis://localhost:6379/0"
 DATABASE_URL="postgresql://localhost:5432/grouparoo_development"
-SERVER_TOKEN=a_random_token
+SERVER_TOKEN=a_random_string
 ```
 
 ### Step 3: Install Dependencies
@@ -63,6 +63,8 @@ Run `npm install` to install dependencies. This will also run `npm prepare` whic
 
 ### Step 4: Start the Server
 Run `npm start` to start the server and visit `http://localhost:3000` to get started. Follow the on-screen instructions to create your account and first team.
+
+A note on `SERVER_TOKEN` - this should be a random string that will be used to identify Grouparoo servers to each-other in the same cluster. It will not be used to authenticate users, but rather authorize servers to make requests against each other. SERVER_TOKEN is not a replacement for setting unique, per-application database credentials and isolated runtime environments.
 
 ## Deployment Topology
 
