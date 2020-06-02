@@ -1,14 +1,13 @@
 import { helper } from "../../utils/specHelper";
-import { task, specHelper } from "actionhero";
+import { api, task, specHelper } from "actionhero";
 import { Event } from "./../../../src/models/Event";
 
-let actionhero, api;
+let actionhero;
 
 describe("tasks/profile:destroyEvents", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
     await api.resque.queue.connection.redis.flushdb();
   }, 1000 * 30);
 

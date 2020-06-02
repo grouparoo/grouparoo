@@ -1,7 +1,6 @@
 import { helper } from "./../utils/specHelper";
 import { specHelper } from "actionhero";
 import { Group } from "./../../src/models/Group";
-import { Run } from "./../../src/models/Run";
 import { Profile } from "./../../src/models/Profile";
 import { Team } from "./../../src/models/Team";
 import { TeamMember } from "./../../src/models/TeamMember";

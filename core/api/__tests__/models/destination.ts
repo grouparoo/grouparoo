@@ -1,5 +1,5 @@
 import { helper } from "../utils/specHelper";
-import { specHelper } from "actionhero";
+import { api, specHelper } from "actionhero";
 import { App } from "../../src/models/App";
 import { Log } from "../../src/models/Log";
 import { Destination } from "../../src/models/Destination";
@@ -11,13 +11,11 @@ import { DestinationGroupMembership } from "../../src/models/DestinationGroupMem
 import { plugin } from "../../src/modules/plugin";
 import { DestinationGroup } from "../../src/models/DestinationGroup";
 let actionhero;
-let api;
 
 describe("models/destination", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
   }, 1000 * 30);
 
   afterAll(async () => {

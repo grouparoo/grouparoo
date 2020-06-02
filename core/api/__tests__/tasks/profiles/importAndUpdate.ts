@@ -1,17 +1,16 @@
 import { helper } from "../../utils/specHelper";
-import { task, specHelper } from "actionhero";
+import { api, task, specHelper } from "actionhero";
 import { Profile } from "./../../../src/models/Profile";
 import { Import } from "./../../../src/models/Import";
 import { Run } from "./../../../src/models/Run";
 import { Group } from "./../../../src/models/Group";
 
-let actionhero, api;
+let actionhero;
 
 describe("tasks/profile:importAndUpdate", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
     await api.resque.queue.connection.redis.flushdb();
   }, 1000 * 30);
 

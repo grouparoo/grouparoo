@@ -1,11 +1,11 @@
 import { helper } from "../../utils/specHelper";
-import { specHelper } from "actionhero";
+import { api, specHelper } from "actionhero";
 import { Import } from "./../../../src/models/Import";
 import { Run } from "./../../../src/models/Run";
 import { Profile } from "./../../../src/models/Profile";
 import { ProfilePropertyRule } from "./../../../src/models/ProfilePropertyRule";
 
-let actionhero, api;
+let actionhero;
 let profile: Profile;
 let run: Run;
 
@@ -13,7 +13,6 @@ describe("integration/runs/internalRun", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
     await api.resque.queue.connection.redis.flushdb();
   }, 1000 * 30);
 

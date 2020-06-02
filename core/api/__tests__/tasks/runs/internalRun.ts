@@ -1,17 +1,16 @@
 import { helper } from "../../utils/specHelper";
-import { specHelper, task } from "actionhero";
+import { api, task, specHelper } from "actionhero";
 import { internalRun } from "../../../src/modules/internalRun";
 import { Import } from "../../../src/models/Import";
 import { ProfilePropertyRule } from "../../../src/models/ProfilePropertyRule";
 
-let actionhero, api;
+let actionhero;
 let profile;
 
 describe("tasks/run:internalRun", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
     await helper.factories.profilePropertyRules();
   }, 1000 * 30);
 

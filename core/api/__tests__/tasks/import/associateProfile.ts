@@ -1,14 +1,13 @@
 import { helper } from "../../utils/specHelper";
-import { task, specHelper } from "actionhero";
+import { api, task, specHelper } from "actionhero";
 import { Profile } from "../../../src/models/Profile";
 
-let actionhero, api;
+let actionhero;
 
 describe("tasks/import:associateProfile", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
     await api.resque.queue.connection.redis.flushdb();
     await helper.factories.profilePropertyRules();
   }, 1000 * 30);

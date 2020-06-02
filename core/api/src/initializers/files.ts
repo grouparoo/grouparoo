@@ -1,5 +1,18 @@
 import { api, Initializer } from "actionhero";
 import { File } from "../index";
+import { FileTransport } from "../classes/fileTransport";
+
+declare module "actionhero" {
+  export interface Api {
+    files: {
+      types: string[];
+      transport: FileTransport;
+      downloadToServer: FileTransport["downloadToServer"];
+      set: FileTransport["set"];
+      destroy: FileTransport["destroy"];
+    };
+  }
+}
 
 export class Files extends Initializer {
   constructor() {

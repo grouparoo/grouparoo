@@ -1,3 +1,4 @@
+import { api } from "actionhero";
 import { helper } from "../utils/specHelper";
 import { App } from "../../src/models/App";
 import { Log } from "../../src/models/Log";
@@ -6,13 +7,12 @@ import { Source } from "../../src/models/Source";
 import { Option } from "../../src/models/Option";
 import { Run } from "../../src/models/Run";
 import { plugin } from "../../src/modules/plugin";
-let actionhero, api;
+let actionhero;
 
 describe("models/schedule", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
   }, 1000 * 30);
 
   afterAll(async () => {

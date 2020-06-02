@@ -14,7 +14,7 @@ import fs from "fs";
 import path from "path";
 import parse from "csv-parse/lib/sync";
 import { helper } from "@grouparoo/core/test";
-import { specHelper } from "actionhero";
+import { api, specHelper } from "actionhero";
 import {
   Profile,
   ProfilePropertyRule,
@@ -23,7 +23,7 @@ import {
 } from "@grouparoo/core";
 import { connect } from "../../src/lib/connect";
 
-let api, actionhero;
+let actionhero;
 
 const MYSQL_OPTIONS = {
   user: "root",
@@ -80,7 +80,6 @@ describe("integration/runs/mysql", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
     await api.resque.queue.connection.redis.flushdb();
   }, 1000 * 30);
 

@@ -13,7 +13,7 @@ process.chdir(`${__dirname}/../../../../../core/api`);
 import fs from "fs-extra";
 import path from "path";
 import { helper } from "@grouparoo/core/test";
-import { specHelper } from "actionhero";
+import { api, specHelper } from "actionhero";
 import {
   Profile,
   ProfileProperty,
@@ -42,13 +42,11 @@ const nockFile = path.resolve(
 require("./../fixtures/nock");
 
 let actionhero;
-let api;
 
 describe("integration/runs/google-sheets", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
     await api.resque.queue.connection.redis.flushdb();
   }, 1000 * 30);
 

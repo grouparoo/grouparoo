@@ -3,15 +3,14 @@ import { Log } from "../../src/models/Log";
 import { Import } from "../../src/models/Import";
 import { Export } from "../../src/models/Export";
 import { plugin } from "../../src/modules/plugin";
-import { task, specHelper } from "actionhero";
+import { api, task, specHelper } from "actionhero";
 
-let actionhero, api;
+let actionhero;
 
 describe("tasks/sweeper", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
     await api.resque.queue.connection.redis.flushdb();
   }, 1000 * 30);
 

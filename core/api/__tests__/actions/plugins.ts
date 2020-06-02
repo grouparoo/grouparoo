@@ -1,5 +1,5 @@
 import { helper } from "./../utils/specHelper";
-import { config, specHelper } from "actionhero";
+import { specHelper } from "actionhero";
 let actionhero;
 
 describe("actions/plugins", () => {

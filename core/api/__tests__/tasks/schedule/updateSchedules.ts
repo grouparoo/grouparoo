@@ -1,15 +1,14 @@
 import { helper } from "../../utils/specHelper";
-import { task, specHelper } from "actionhero";
+import { api, task, specHelper } from "actionhero";
 import { Schedule } from "./../../../src/models/Schedule";
 import { Run } from "./../../../src/models/Run";
 
-let actionhero, api;
+let actionhero;
 
 describe("tasks/schedule:updateSchedules", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
   }, 1000 * 30);
 
   beforeEach(async () => {

@@ -11,7 +11,7 @@ process.chdir(`${__dirname}/../../../../../core/api`);
 
 // import statements are still relative to the file, regardless of cwd
 import { helper } from "@grouparoo/core/test";
-import { specHelper } from "actionhero";
+import { api, specHelper } from "actionhero";
 import { Profile, App, Destination, Group } from "@grouparoo/core";
 import { generateMailchimpId } from "./../../src/lib/generateMailchimpId";
 import { connect } from "./../../src/lib/connect";
@@ -29,7 +29,7 @@ const MAILCHIMP_API_KEY =
   process.env.MAILCHIMP_API_KEY || "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-us4"; // mailchimp client does local validation on API key
 const MAILCHIMP_LIST_ID = process.env.MAILCHIMP_LIST_ID || "a42c031026";
 
-let api, actionhero;
+let actionhero;
 
 describe("integration/runs/mailchimp", () => {
   let client;
@@ -43,7 +43,6 @@ describe("integration/runs/mailchimp", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
     await api.resque.queue.connection.redis.flushdb();
   }, 1000 * 30);
 

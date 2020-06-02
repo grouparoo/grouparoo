@@ -1,3 +1,4 @@
+import { api } from "actionhero";
 import { helper } from "./../utils/specHelper";
 import { groupExportToCSV } from "./../../src/modules/groupExport";
 import { Profile } from "./../../src/models/Profile";
@@ -6,13 +7,11 @@ import parse from "csv-parse/lib/sync";
 import fs from "fs";
 
 let actionhero;
-let api;
 
 describe("modules/groupExport", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    api = env.api;
   }, 1000 * 30);
 
   afterAll(async () => {
