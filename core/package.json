@@ -44,7 +44,7 @@
     "@nivo/line": "^0.61.1",
     "actionhero": "^22.1.1",
     "ah-next-plugin": "^0.2.1",
-    "ah-sequelize-plugin": "^2.1.0",
+    "ah-sequelize-plugin": "^2.1.1",
     "axios": "^0.19.2",
     "bcrypt": "^4.0.1",
     "bootstrap": "^4.4.1",
