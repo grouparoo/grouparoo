@@ -163,7 +163,7 @@ interface SessionData {
 }
 
 declare module "actionhero" {
-  interface Api {
+  export interface Api {
     session: {
       prefix: string;
       ttl: number;

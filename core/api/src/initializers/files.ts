@@ -3,7 +3,7 @@ import { File } from "../index";
 import { FileTransport } from "../classes/fileTransport";
 
 declare module "actionhero" {
-  interface Api {
+  export interface Api {
     files: {
       types: string[];
       transport: FileTransport;

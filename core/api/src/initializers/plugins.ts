@@ -3,7 +3,7 @@ import { GrouparooPlugin } from "../classes/plugin";
 import { plugin } from "../modules/plugin";
 
 declare module "actionhero" {
-  interface Api {
+  export interface Api {
     plugins: {
       plugins: Array<GrouparooPlugin>;
     };
