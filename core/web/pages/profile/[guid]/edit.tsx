@@ -173,10 +173,6 @@ export default function Page(props) {
               <span className="text-muted">Updated At: </span>
               <Moment fromNow>{profile.updatedAt}</Moment>
               <br />
-              <span className="text-muted">
-                Anonymous ID: {profile.anonymousId || "None"}
-              </span>
-              <br />
               <br />
               {uniqueProfileProperties.map((key) => {
                 return (

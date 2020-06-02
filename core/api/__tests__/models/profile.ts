@@ -742,6 +742,8 @@ describe("models/profile", () => {
       profileB = await helper.factories.profile();
       await profileB.import();
 
+      await profileB.update({ anonymousId: "abc123" });
+
       await helper.factories.event({
         profileGuid: profileA.guid,
         type: "pageview",
@@ -788,6 +790,11 @@ describe("models/profile", () => {
       expect(Object.keys(propertiesB).length).toBe(7);
       expect(eventsA.length).toBe(3);
       expect(eventsB.length).toBe(2);
+    });
+
+    test("only profile B has an anonymousId", async () => {
+      expect(profileA.anonymousId).toBeNull();
+      expect(profileB.anonymousId).toEqual("abc123");
     });
 
     test("profile A has newer email, profile B has newer userId, profile B has a newer ltv but it is null", async () => {
@@ -847,6 +854,11 @@ describe("models/profile", () => {
       expect(properties.userId.value).toBe(100);
       expect(properties.firstName.value).toBe("fname");
       expect(properties.ltv.value).toBe(123.45);
+    });
+
+    test("merging profiles moved the anonymousId", async () => {
+      await profileA.reload();
+      expect(profileA.anonymousId).toEqual("abc123");
     });
 
     test("after merging the other profile is deleted", async () => {

@@ -50,7 +50,7 @@ describe("actions/events", () => {
         apiKey: "apiKey",
         type: "pageview",
         anonymousId: "abc123",
-        data: { path: "/" },
+        data: { path: "/", time: 1 },
       });
       expect(error.code).toBe("AUTHENTICATION_ERROR");
     });
@@ -60,7 +60,7 @@ describe("actions/events", () => {
         apiKey,
         type: "pageview",
         anonymousId: "abc123",
-        data: { path: "/" },
+        data: { path: "/", time: 1 },
       });
 
       expect(error).toBeFalsy();
@@ -69,7 +69,7 @@ describe("actions/events", () => {
       expect(event.anonymousId).toBe("abc123");
       expect(event.ipAddress).toBeTruthy();
       expect(event.profileGuid).toBeFalsy();
-      expect(event.data).toEqual({ path: "/" });
+      expect(event.data).toEqual({ path: "/", time: "1" });
 
       guid = event.guid;
 
@@ -95,7 +95,7 @@ describe("actions/events", () => {
       expect(event.type).toBe("pageview");
       expect(event.ipAddress).toBeTruthy();
       expect(event.profileGuid).toBeFalsy();
-      expect(event.data).toEqual({ path: "/" });
+      expect(event.data).toEqual({ path: "/", time: "1" });
     });
 
     test("an administrator can list events (no filter)", async () => {
@@ -110,7 +110,7 @@ describe("actions/events", () => {
       expect(events.length).toEqual(1);
       expect(events[0].guid).toEqual(guid);
       expect(events[0].type).toEqual("pageview");
-      expect(events[0].data).toEqual({ path: "/" });
+      expect(events[0].data).toEqual({ path: "/", time: "1" });
       expect(total).toBe(1);
     });
 

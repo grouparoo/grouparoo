@@ -195,9 +195,34 @@ export class Event extends Model<Event> {
       return profile;
     } else if (this.anonymousId) {
       // we have an anonymousId
-      const [profile] = await Profile.findOrCreate({
+
+      // can we find the profile by anonymousId?
+      let profile = await Profile.findOne({
         where: { anonymousId: this.anonymousId },
       });
+
+      // can we find the profile from other events with the same anonymousId?
+      if (!profile) {
+        const event = await Event.findOne({
+          where: {
+            anonymousId: this.anonymousId,
+            profileGuid: { [Op.ne]: null },
+          },
+        });
+        if (event) {
+          profile = await Profile.findOne({
+            where: { guid: event.profileGuid },
+          });
+        }
+      }
+
+      // if we still don't have a profile, make a new one
+      if (!profile) {
+        [profile] = await Profile.findOrCreate({
+          where: { anonymousId: this.anonymousId },
+        });
+      }
+
       this.profileGuid = profile.guid;
       this.profileAssociatedAt = new Date();
       await this.save();

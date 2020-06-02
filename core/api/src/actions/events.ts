@@ -68,6 +68,7 @@ export class EventsList extends AuthenticatedAction {
     });
 
     const total = await Event.count({
+      distinct: true,
       where,
       include: [
         {
