@@ -1,8 +1,10 @@
-# Running a Grouparoo Application
+# Running Grouparoo
 
 ## Getting Started
 
-This guide will help you run the Grouparoo application on your local machine. Grouparoo is a node.js application written in Typescript.  Grouparoo relies on a Postgres database and Redis cache. Gropuaroo is distributed though NPM. 
+This guide will help you run the Grouparoo application on your local machine. At the end of this guide there are links to instructions on how to run Grouparoo on various production-ready platforms. 
+
+Grouparoo is a node.js application written in Typescript.  Grouparoo relies on a Postgres database and Redis cache. Gropuaroo is distributed though NPM. 
 
 ### Step 1: Create your `package.json` file
 Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/). Make sure you are running node version 12 or higher. We use NPM to manage our dependencies. Grouparoo **requires** the **Postgres** and Redis databases. On OSX, these can be installed via [Homebrew](https://brew.sh/).
@@ -57,7 +59,7 @@ SERVER_TOKEN=a_random_token
 ```
 
 ### Step 3: Install Dependencies
-Run `npm install` to install dependencies. This will also run `npm prepare` which will compile the typescript application and build the web page components.
+Run `npm install` to install dependencies. This will also run `npm prepare` which will compile the typescript application and build the web components.
 
 ### Step 4: Start the Server
 Run `npm start` to start the server and visit `http://localhost:3000` to get started. Follow the on-screen instructions to create your account and first team.
@@ -66,11 +68,11 @@ Run `npm start` to start the server and visit `http://localhost:3000` to get sta
 
 Regardless of the method you deploy Grouparoo, the following topology will need to be created.
 
-![Grouparoo Data Bowtie](https://raw.githubusercontent.com/grouparoo/grouparoo/master/documents/images/grouparoo-deployment-topology.png)
+![Grouparoo Topology](https://raw.githubusercontent.com/grouparoo/grouparoo/master/documents/images/grouparoo-deployment-topology.png)
 
 ## Deploying to Production Environments
 
-Now that you've tried Grouparoo locally, it's time to deploy it!
+Now that you've tried Grouparoo locally, it's time to deploy it!  An example application which can be coppied and deployed via Docker or Heroku is availalbe at [grouparoo/app-example](https://github.com/grouparoo/app-example)
 
 - [Deploying with Heroku](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/heroku.md)
 - [Deploying with Docker](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/docker.md)
