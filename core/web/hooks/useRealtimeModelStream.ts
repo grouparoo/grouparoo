@@ -13,7 +13,6 @@ export const useRealtimeModelStream = (
     connect();
 
     return () => {
-      console.log("UNMOUNT");
       setEnabled(false);
       disconnect();
     };
