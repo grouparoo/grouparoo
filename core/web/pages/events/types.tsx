@@ -1,5 +1,5 @@
 import Head from "next/head";
-import EventsList from "../../components/events/list";
+import EventTypesList from "../../components/events/types";
 import { Alert } from "react-bootstrap";
 import Link from "next/link";
 
@@ -7,7 +7,7 @@ export default function Page(props) {
   return (
     <>
       <Head>
-        <title>Grouparoo: Event Stream</title>
+        <title>Grouparoo: Event Types</title>
       </Head>
 
       <Alert variant="info">
@@ -16,13 +16,13 @@ export default function Page(props) {
         </Link>
       </Alert>
 
-      <h1>Event Stream</h1>
+      <h1>Event Types</h1>
 
-      <EventsList {...props} />
+      <EventTypesList {...props} />
     </>
   );
 }
 
 Page.getInitialProps = async (ctx) => {
-  return EventsList.hydrate(ctx);
+  return EventTypesList.hydrate(ctx);
 };

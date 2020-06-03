@@ -80,7 +80,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         {
           type: "link",
           title: "Events",
-          href: "/events/stream",
+          href: "/events/overview",
           icon: "stream",
         },
         {

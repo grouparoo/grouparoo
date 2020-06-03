@@ -19,6 +19,12 @@ fs.writeFileSync(
   JSON.stringify(pluginManifest, null, 2)
 );
 
+// write if we are running core directly to a file
+fs.writeFileSync(
+  path.join(__dirname, "tmp", "runningCoreDirectly.ts"),
+  `export const runningCoreDirectly = ${runningCoreDirectly()};`
+);
+
 // For every plugin provided, we need to make an file within the core project that has a direct import for it.
 // The plugin components are already JS transpiled, so we do not need to transpile them (babel), only load them (webpack).
 // We do not want to use wildcard strings in the import statement to save webpack from scanning all of our directories

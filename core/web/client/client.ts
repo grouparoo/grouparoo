@@ -2,6 +2,7 @@ import Axios, { AxiosRequestConfig, Method } from "axios";
 import Router from "next/router";
 import { isBrowser } from "../utils/isBrowser";
 import PackageJSON from "../../package.json";
+import { runningCoreDirectly } from "../tmp/runningCoreDirectly";
 
 interface ClientCacheObject {
   locked: boolean;
@@ -67,7 +68,7 @@ export class Client {
   cache: ClientCache;
 
   constructor() {
-    if (!isBrowser() && !process.env.SERVER_TOKEN) {
+    if (!isBrowser() && !runningCoreDirectly && !process.env.SERVER_TOKEN) {
       throw new Error("SERVER_TOKEN environment variable missing");
     }
 
