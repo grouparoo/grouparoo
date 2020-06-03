@@ -39,6 +39,11 @@ export const useRealtimeModelStream = (
     client.on("reconnecting", function () {
       console.log("[websocket] reconnecting");
     });
+    client.on("message", function (message) {
+      if (message.error) {
+        console.error("[websocket] - error", message);
+      }
+    });
     client.on("alert", function (message) {
       alert("[websocket] " + JSON.stringify(message));
     });
