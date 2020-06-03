@@ -211,6 +211,46 @@ describe("actions/events", () => {
       expect(types).toEqual([]);
     });
 
+    test("an administrator can list the types of events with statistics", async () => {
+      connection.params = {
+        csrfToken,
+      };
+      const { error, types } = await specHelper.runAction(
+        "events:types",
+        connection
+      );
+      expect(error).toBeFalsy();
+      expect(types.length).toBe(1);
+      expect(types[0].count).toBe(1);
+      expect(types[0].example.data).toEqual({ path: "/", time: "1" });
+      expect(types[0].example.type).toEqual("pageview");
+      expect(types[0].type).toEqual("pageview");
+      expect(types[0].min).toBeGreaterThan(0);
+      expect(types[0].max).toBeGreaterThan(0);
+    });
+
+    test("an administrator can get event counts by hour for charting", async () => {
+      await helper.factories.event({ type: "pageview" });
+      await helper.factories.event({ type: "identify" });
+      await helper.factories.event({ type: "add-to-cart" });
+
+      connection.params = {
+        csrfToken,
+      };
+      const { error, counts } = await specHelper.runAction(
+        "events:counts",
+        connection
+      );
+      expect(error).toBeFalsy();
+
+      expect(counts.filter((c) => c.type === "pageview")).toHaveLength(1);
+      expect(counts.filter((c) => c.type === "pageview")[0].count).toBe(2);
+      expect(counts.filter((c) => c.type === "identify")).toHaveLength(1);
+      expect(counts.filter((c) => c.type === "identify")[0].count).toBe(1);
+      expect(counts.filter((c) => c.type === "add-to-cart")).toHaveLength(1);
+      expect(counts.filter((c) => c.type === "add-to-cart")[0].count).toBe(1);
+    });
+
     test("an administrator can destroy an event", async () => {
       connection.params = {
         csrfToken,
