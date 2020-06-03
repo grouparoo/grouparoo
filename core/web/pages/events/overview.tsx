@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { Alert, Button } from "react-bootstrap";
-import EventsTotals from "../../components/visualizations/eventTotals";
+import EventsTotals from "../../components/visualizations/eventsTotals";
 import EventsList from "../../components/events/list";
 import EventsTypesList from "../../components/events/types";
 
