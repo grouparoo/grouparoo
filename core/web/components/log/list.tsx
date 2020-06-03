@@ -1,11 +1,11 @@
-import Head from "next/head";
 import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useHistoryPagination } from "../../hooks/useHistoryPagination";
+import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
 import Link from "next/link";
 import Router from "next/router";
-import { ButtonGroup, Button } from "react-bootstrap";
+import { ButtonGroup, Button, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 
@@ -17,6 +17,10 @@ export default function LogsList(props) {
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState<LogAPIData[]>(props.logs);
   const [total, setTotal] = useState(props.total);
+
+  // websocket
+  useRealtimeModelStream("log", handleMessage);
+  const [newLogs, setNewLogs] = useState<number>(0);
 
   // pagination
   const limit = 100;
@@ -47,6 +51,7 @@ export default function LogsList(props) {
   async function load() {
     updateURLParams();
     setLoading(true);
+    setNewLogs(0);
     const response = await execApi("get", `/logs`, {
       limit,
       offset,
@@ -103,6 +108,14 @@ export default function LogsList(props) {
     Router[routerMethod](Router.route, url, { shallow: true });
   }
 
+  function handleMessage({ model }) {
+    if ((topic && model.topic === topic) || !topic) {
+      if ((query.guid && model.ownerGuid === query.guid) || !query.guid) {
+        setNewLogs((newLogs) => newLogs + 1);
+      }
+    }
+  }
+
   return (
     <>
       <h1>Logs</h1>
@@ -143,6 +156,15 @@ export default function LogsList(props) {
         offset={offset}
         onPress={setOffset}
       />
+
+      {newLogs > 0 ? (
+        <Alert variant="secondary">
+          {newLogs} new logs.{" "}
+          <Button size="sm" onClick={load}>
+            Load
+          </Button>
+        </Alert>
+      ) : null}
 
       <LoadingTable loading={loading}>
         <thead>

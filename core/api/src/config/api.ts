@@ -61,8 +61,10 @@ export const DEFAULT = {
       },
 
       startingChatRooms: {
-        "model:log": { authorized: true },
-        "model:event": { authorized: true },
+        "model:log": {},
+        "model:event": {},
+        "model:profile": {},
+        "model:group": {},
       },
     };
   },

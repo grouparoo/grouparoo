@@ -23,6 +23,8 @@ export default function EventsList(props) {
   const [autocompleteResults, setAutoCompleteResults] = useState(
     props.autocompleteResults
   );
+
+  // websocket
   useRealtimeModelStream("event", handleMessage);
   const [newEvents, setNewEvents] = useState<number>(0);
 
