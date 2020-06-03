@@ -18,6 +18,8 @@ pids
 dist
 core/api/files
 core/api/report.*.json
+core/web/public/javascript/ActionheroWebsocketClient.js
+core/web/public/javascript/ActionheroWebsocketClient.min.js
 
 # Web
 .next

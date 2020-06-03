@@ -4,7 +4,8 @@ export const DEFAULT = {
   servers: {
     web: (config) => {
       return {
-        enabled: process.env.WEB_SERVER === "true",
+        enabled:
+          process.env.WEB_SERVER === "true" || process.env.NODE_ENV === "test",
         // HTTP or HTTPS?  This setting is to enable SSL termination directly in the actionhero app, not set redirection host headers
         secure: false,
         // Passed to https.createServer if secure=true. Should contain SSL certificates
