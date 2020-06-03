@@ -1,6 +1,8 @@
 import { Op } from "sequelize";
 import { api } from "actionhero";
 import { Profile } from "./Profile";
+import { Source } from "./Source";
+import { App } from "./App";
 
 import {
   Model,
@@ -231,8 +233,8 @@ export class Run extends Model<Run> {
       return nextFilter;
     }
 
-    const source = await schedule.$get("source");
-    const app = await source.$get("app");
+    const source = await Source.findByGuid(schedule.sourceGuid);
+    const app = await App.findByGuid(source.appGuid);
     const { pluginConnection } = await source.getPlugin();
     if (!pluginConnection || !pluginConnection?.methods.nextFilter) {
       return nextFilter;

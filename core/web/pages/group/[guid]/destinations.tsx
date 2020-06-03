@@ -71,14 +71,17 @@ export default function Page(props) {
                 </td>
                 <td>
                   <Link
-                    href="/destination/[guid]"
-                    as={`/destination/${destination.guid}`}
+                    href="/destination/[guid]/edit"
+                    as={`/destination/${destination.guid}/edit`}
                   >
                     <a>{destination.name}</a>
                   </Link>
                 </td>
                 <td>
-                  <Link href="/app/[guid]" as={`/app/${destination.app.guid}`}>
+                  <Link
+                    href="/app/[guid]/edit"
+                    as={`/app/${destination.app.guid}/edit`}
+                  >
                     <a>{destination.app.name}</a>
                   </Link>
                 </td>
