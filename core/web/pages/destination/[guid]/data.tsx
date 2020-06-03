@@ -312,7 +312,7 @@ export default function Page(props) {
                                     ))}
                                 </Form.Control>
                               </td>
-                              <td style={{ textAlign: "center" }}>---></td>
+                              <td style={{ textAlign: "center" }}>→</td>
                               <td>
                                 <Badge variant="secondary">{key}</Badge>{" "}
                                 <span className="text-muted">({type})</span>
