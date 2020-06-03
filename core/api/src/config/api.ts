@@ -60,10 +60,9 @@ export const DEFAULT = {
         dist: path.join(process.cwd(), "dist"),
       },
 
-      // hash containing chat rooms you wish to be created at server boot
       startingChatRooms: {
-        // format is {roomName: {authKey, authValue}}
-        // 'secureRoom': {authorized: true},
+        "model:log": { authorized: true },
+        "model:event": { authorized: true },
       },
     };
   },

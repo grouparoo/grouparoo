@@ -11,7 +11,7 @@ import {
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { Log } from "../models/Log";
-import { config } from "actionhero";
+import { config, chatRoom } from "actionhero";
 
 function modelName(instance): string {
   let name = instance.constructor.name;
@@ -49,6 +49,14 @@ export abstract class LoggedModel<T> extends Model<T> {
       ownerGuid: instance.guid,
       data: await instance.filteredDataForLogging(),
       message: await instance.logMessage("create"),
+    });
+  }
+
+  @AfterCreate
+  static async broadcast(instance) {
+    await chatRoom.broadcast({}, `model:${modelName(instance)}`, {
+      model: await instance.apiData(),
+      verb: "create",
     });
   }
 

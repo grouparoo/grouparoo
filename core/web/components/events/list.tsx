@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useHistoryPagination } from "../../hooks/useHistoryPagination";
+import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
 import Link from "next/link";
 import Router from "next/router";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import Moment from "react-moment";
 import Pagination from "../../components/pagination";
 import LoadingTable from "../../components/loadingTable";
@@ -22,6 +23,9 @@ export default function EventsList(props) {
   const [autocompleteResults, setAutoCompleteResults] = useState(
     props.autocompleteResults
   );
+  useRealtimeModelStream("event", handleMessage);
+  const [newEvents, setNewEvents] = useState<number>(0);
+
   const profileGuid = query.guid;
 
   // pagination
@@ -44,6 +48,7 @@ export default function EventsList(props) {
     }
 
     setTotal(0);
+    setNewEvents(0);
     setLoading(true);
     const response = await execApi("get", `/events`, {
       profileGuid,
@@ -86,6 +91,14 @@ export default function EventsList(props) {
       setAutoCompleteResults(response.types);
     }
     setSearchLoading(false);
+  }
+
+  function handleMessage({ model }) {
+    if ((type && model.type === type) || type === "") {
+      if ((profileGuid && model.profileGuid === profileGuid) || !profileGuid) {
+        setNewEvents((newEvents) => newEvents + 1);
+      }
+    }
   }
 
   return (
@@ -133,12 +146,23 @@ export default function EventsList(props) {
       )}
 
       {hidePagination ? null : (
-        <Pagination
-          total={total}
-          limit={limit}
-          offset={offset}
-          onPress={setOffset}
-        />
+        <>
+          <Pagination
+            total={total}
+            limit={limit}
+            offset={offset}
+            onPress={setOffset}
+          />
+
+          {newEvents > 0 ? (
+            <Alert variant="secondary">
+              {newEvents} new events.{" "}
+              <Button size="sm" onClick={load}>
+                Load
+              </Button>
+            </Alert>
+          ) : null}
+        </>
       )}
 
       <br />

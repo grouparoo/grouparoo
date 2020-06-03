@@ -7,11 +7,13 @@ import {
   UpdatedAt,
   ForeignKey,
   BeforeCreate,
+  AfterCreate,
 } from "sequelize-typescript";
 import { DataTypes } from "sequelize";
 import * as uuid from "uuid";
 import Moment from "moment";
 import { Op } from "sequelize";
+import { chatRoom } from "actionhero";
 
 @Table({ tableName: "logs", paranoid: false })
 export class Log extends Model<Log> {
@@ -79,6 +81,14 @@ export class Log extends Model<Log> {
         instance.ownerGuid = instance.data.profileGuid;
       }
     }
+  }
+
+  @AfterCreate
+  static async broadcast(instance: Log) {
+    await chatRoom.broadcast({}, `model:log`, {
+      model: await instance.apiData(),
+      verb: "create",
+    });
   }
 
   async apiData() {

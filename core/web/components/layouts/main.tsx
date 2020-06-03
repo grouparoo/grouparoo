@@ -135,6 +135,8 @@ export default function ({
           name="msapplication-square310x310logo"
           content="/favicon/mstile-310x310.png"
         />
+
+        <script src="/javascript/ActionheroWebsocketClient.min.js" />
       </Head>
 
       <div id="container">
