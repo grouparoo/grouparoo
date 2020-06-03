@@ -301,7 +301,7 @@ export class Schedule extends LoggedModel<Schedule> {
 
   async run(run: Run, limit: number, highWaterMark: string | number) {
     const source = await this.$get("source");
-    const app = await source.$get("app");
+    const app = await App.findByGuid(source.appGuid);
     const { pluginConnection } = await source.getPlugin();
     const method = pluginConnection.methods.profiles;
 

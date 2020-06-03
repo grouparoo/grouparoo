@@ -416,7 +416,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
         examples?: Array<any>;
       }>;
     }> = [];
-    const app = await source.$get("app");
+    const app = await App.findByGuid(source.appGuid);
     const appOptions = await app.getOptions();
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();
@@ -502,7 +502,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     const source = await this.$get("source");
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();
-    const app = await source.$get("app");
+    const app = await App.findByGuid(source.appGuid);
     const appOptions = await app.getOptions();
 
     const method = pluginConnection.methods.sourceFilters;
