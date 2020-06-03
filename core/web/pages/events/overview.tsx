@@ -1,10 +1,10 @@
 import Head from "next/head";
 import { useState } from "react";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import { Row, Col, Alert, Button } from "react-bootstrap";
+import { Row, Col, Alert, Button, Accordion } from "react-bootstrap";
 import { useApi } from "../../hooks/useApi";
 import Router from "next/router";
-import { DefinedRange } from "react-date-range";
+import { DateRangePicker } from "react-date-range";
 import Loader from "../../components/loader";
 import { ResponsiveLine } from "@nivo/line";
 import EventsList from "../../components/events/list";
@@ -14,15 +14,16 @@ const NodeMoment = require("moment");
 export default function Page(props) {
   const { errorHandler, query } = props;
   const [loading, setLoading] = useState(false);
-  const [total, setTotal] = useState(props.total);
+  const [showAccordion, setShowAccordion] = useState(false);
+  const [total, setTotal] = useState<number>(props.total);
   const [counts, setCounts] = useState(props.counts);
   const { execApi } = useApi(props, errorHandler);
-  const [startDate, setStartDate] = useState(
+  const [startDate, setStartDate] = useState<Date>(
     query.startTime
       ? new Date(parseInt(query.startTime))
       : NodeMoment().subtract(1, "month").toDate()
   );
-  const [endDate, setEndDate] = useState(
+  const [endDate, setEndDate] = useState<Date>(
     query.endTime
       ? new Date(parseInt(query.endTime))
       : NodeMoment().add(1, "day").toDate()
@@ -78,28 +79,58 @@ export default function Page(props) {
 
       <h2>Overview</h2>
 
-      <p>{total} events in this range</p>
+      <Accordion>
+        <Row>
+          <Col>
+            <p>
+              Showing {total} events from{" "}
+              {/* <Button
+                variant="outline-secondary"
+                size="sm"
+                onClick={() => setShowAccordion(true)}
+              >
+                {startDate.toLocaleDateString()} to{" "}
+                {endDate.toLocaleDateString()}
+              </Button> */}
+              <Accordion.Toggle
+                as={Button}
+                variant="outline-secondary"
+                size="sm"
+                eventKey="date-range"
+              >
+                {startDate.toLocaleDateString()} to{" "}
+                {endDate.toLocaleDateString()}
+              </Accordion.Toggle>
+            </p>
+          </Col>
+        </Row>
+
+        <Accordion.Collapse eventKey="date-range">
+          <Row>
+            <Col>
+              <DateRangePicker
+                onChange={({ selection }) => {
+                  setStartDate(selection.startDate);
+                  setEndDate(selection.endDate);
+                }}
+                showSelectionPreview={true}
+                moveRangeOnFirstSelection={false}
+                months={2}
+                ranges={[
+                  {
+                    startDate,
+                    endDate,
+                    key: "selection",
+                  },
+                ]}
+                direction="horizontal"
+              />
+            </Col>
+          </Row>
+        </Accordion.Collapse>
+      </Accordion>
 
       <Row>
-        <Col md={2}>
-          <DefinedRange
-            onChange={({ selection }) => {
-              setStartDate(selection.startDate);
-              setEndDate(selection.endDate);
-            }}
-            showSelectionPreview={true}
-            moveRangeOnFirstSelection={false}
-            months={1}
-            ranges={[
-              {
-                startDate,
-                endDate,
-                key: "selection",
-              },
-            ]}
-            direction="horizontal"
-          />
-        </Col>
         <Col style={{ height: 450 }}>
           {loading ? (
             <Loader />
@@ -143,10 +174,10 @@ Page.getInitialProps = async (ctx) => {
   });
 
   return {
-    counts,
-    total,
     ...eventsStreamInitialProps,
     ...eventsTypesInitialProps,
+    counts,
+    total,
   };
 };
 

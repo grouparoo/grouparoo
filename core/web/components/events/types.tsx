@@ -64,12 +64,14 @@ export default function EventsList(props) {
     <>
       {hidePagination ? null : <p>{total} unique event types</p>}
 
-      <Pagination
-        total={total}
-        limit={limit}
-        offset={offset}
-        onPress={setOffset}
-      />
+      {hidePagination ? null : (
+        <Pagination
+          total={total}
+          limit={limit}
+          offset={offset}
+          onPress={setOffset}
+        />
+      )}
 
       <br />
 
