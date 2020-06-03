@@ -155,7 +155,10 @@ export default function Page(props) {
 
       <Alert variant="info">
         Looking for deeper event insights? Contact{" "}
-        <a href="mailto:sales@grouparoo.com">Grouparoo Sales.</a>
+        <a target="_new" href="https://www.grouparoo.com/meet">
+          Grouparoo Sales
+        </a>
+        .
       </Alert>
     </>
   );
