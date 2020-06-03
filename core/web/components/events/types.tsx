@@ -62,7 +62,7 @@ export default function EventsList(props) {
 
   return (
     <>
-      <p>{total} unique event types</p>
+      {hidePagination ? null : <p>{total} unique event types</p>}
 
       <Pagination
         total={total}
@@ -97,10 +97,10 @@ export default function EventsList(props) {
                 <code>{JSON.stringify(type.example.data, null, 2)}</code>
               </td>
               <td>
-                <Moment fromNow>{type.min}</Moment>
+                <Moment fromNow>{type.max}</Moment>
               </td>
               <td>
-                <Moment fromNow>{type.max}</Moment>
+                <Moment fromNow>{type.min}</Moment>
               </td>
               <td>{type.count}</td>
             </tr>

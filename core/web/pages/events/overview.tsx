@@ -109,13 +109,13 @@ export default function Page(props) {
         </Col>
       </Row>
 
-      <h2>Stream</h2>
-      <Button href="/events/stream">See All Types</Button>
+      <h2>Types</h2>
+      <Button href="/events/types">See All Types</Button>
       <br />
       <EventsTypesList {...props} hidePagination limit={25} />
 
-      <h2>Types</h2>
-      <Button href="/events/types">See Full Stream</Button>
+      <h2>Stream</h2>
+      <Button href="/events/stream">See Full Stream</Button>
       <br />
       <EventsList {...props} hideSearch hidePagination limit={25} />
 
