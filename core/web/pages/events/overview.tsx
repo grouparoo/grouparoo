@@ -1,74 +1,10 @@
 import Head from "next/head";
-import { useState } from "react";
-import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import { Row, Col, Alert, Button, Accordion } from "react-bootstrap";
-import { useApi } from "../../hooks/useApi";
-import Router from "next/router";
-import { DateRangePicker } from "react-date-range";
-import Loader from "../../components/loader";
-import { ResponsiveLine } from "@nivo/line";
+import { Alert, Button } from "react-bootstrap";
+import EventsTotals from "../../components/visualizations/eventTotals";
 import EventsList from "../../components/events/list";
 import EventsTypesList from "../../components/events/types";
-const NodeMoment = require("moment");
 
 export default function Page(props) {
-  const { errorHandler, query } = props;
-  const [loading, setLoading] = useState(false);
-  const [showAccordion, setShowAccordion] = useState(false);
-  const [total, setTotal] = useState<number>(props.total);
-  const [counts, setCounts] = useState(props.counts);
-  const { execApi } = useApi(props, errorHandler);
-  const [startDate, setStartDate] = useState<Date>(
-    query.startTime
-      ? new Date(parseInt(query.startTime))
-      : NodeMoment().subtract(1, "month").toDate()
-  );
-  const [endDate, setEndDate] = useState<Date>(
-    query.endTime
-      ? new Date(parseInt(query.endTime))
-      : NodeMoment().add(1, "day").toDate()
-  );
-
-  const chartData = {};
-  counts.map((c) => {
-    if (!chartData[c.type]) {
-      chartData[c.type] = { id: c.type, data: [] };
-    }
-    chartData[c.type].data.push({
-      x: NodeMoment(c.time).format("YYYY-MM-DDTHH:mm:ss"),
-      y: c.count,
-    });
-  });
-
-  useSecondaryEffect(() => {
-    load();
-  }, [startDate, endDate]);
-
-  async function load() {
-    setLoading(true);
-    const response = await execApi("get", `/events/counts`, {
-      startTime: startDate.getTime(),
-      endTime: endDate.getTime(),
-    });
-    setLoading(false);
-    if (response?.counts) {
-      setCounts(response.counts);
-      setTotal(response.total);
-    }
-
-    updateURLParams();
-  }
-
-  function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    url += `startTime=${startDate.getTime()}&`;
-    url += `endTime=${endDate.getTime()}&`;
-
-    const routerMethod =
-      url === `${window.location.pathname}?` ? "replace" : "push";
-    Router[routerMethod](Router.route, url, { shallow: true });
-  }
-
   return (
     <>
       <Head>
@@ -78,67 +14,7 @@ export default function Page(props) {
       <h1>Events</h1>
 
       <h2>Overview</h2>
-
-      <Accordion>
-        <Row>
-          <Col>
-            <p>
-              Showing {total} events from{" "}
-              {/* <Button
-                variant="outline-secondary"
-                size="sm"
-                onClick={() => setShowAccordion(true)}
-              >
-                {startDate.toLocaleDateString()} to{" "}
-                {endDate.toLocaleDateString()}
-              </Button> */}
-              <Accordion.Toggle
-                as={Button}
-                variant="outline-secondary"
-                size="sm"
-                eventKey="date-range"
-              >
-                {startDate.toLocaleDateString()} to{" "}
-                {endDate.toLocaleDateString()}
-              </Accordion.Toggle>
-            </p>
-          </Col>
-        </Row>
-
-        <Accordion.Collapse eventKey="date-range">
-          <Row>
-            <Col>
-              <DateRangePicker
-                onChange={({ selection }) => {
-                  setStartDate(selection.startDate);
-                  setEndDate(selection.endDate);
-                }}
-                showSelectionPreview={true}
-                moveRangeOnFirstSelection={false}
-                months={2}
-                ranges={[
-                  {
-                    startDate,
-                    endDate,
-                    key: "selection",
-                  },
-                ]}
-                direction="horizontal"
-              />
-            </Col>
-          </Row>
-        </Accordion.Collapse>
-      </Accordion>
-
-      <Row>
-        <Col style={{ height: 450 }}>
-          {loading ? (
-            <Loader />
-          ) : (
-            <EventsBar data={Object.keys(chartData).map((k) => chartData[k])} />
-          )}
-        </Col>
-      </Row>
+      <EventsTotals {...props} />
 
       <h2>Types</h2>
       <Button href="/events/types">See All Types</Button>
@@ -165,12 +41,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
-  const { startTime, endTime } = ctx.query;
-  const { counts, total } = await execApi("get", `/events/counts`, {
-    startTime,
-    endTime,
-  });
+  const eventTotalsInitialProps = await EventsTotals.hydrate(ctx);
   const eventsStreamInitialProps = await EventsList.hydrate(ctx, { limit: 25 });
   const eventsTypesInitialProps = await EventsTypesList.hydrate(ctx, {
     limit: 25,
@@ -179,74 +50,6 @@ Page.getInitialProps = async (ctx) => {
   return {
     ...eventsStreamInitialProps,
     ...eventsTypesInitialProps,
-    counts,
-    total,
+    ...eventTotalsInitialProps,
   };
 };
-
-function EventsBar({ data }) {
-  if (data.length === 0) {
-    return <p>no data</p>;
-  }
-
-  return (
-    <ResponsiveLine
-      data={data}
-      colors={{ scheme: "category10" }}
-      useMesh={true}
-      animate={false}
-      margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
-      curve={"monotoneX"}
-      lineWidth={3}
-      pointSize={6}
-      xScale={{
-        type: "time",
-        format: "%Y-%m-%dT%H:%M:%S",
-        precision: "second",
-      }}
-      xFormat="time:%Y-%m-%dT%H:%M:%S"
-      yScale={{
-        type: "linear",
-      }}
-      axisBottom={{
-        format: "%Y-%m-%d %H:%M",
-        tickValues: 5,
-      }}
-      axisLeft={{
-        orient: "left",
-        tickSize: 5,
-        tickPadding: 5,
-        tickRotation: 0,
-        legend: "events",
-        legendOffset: -40,
-        legendPosition: "middle",
-      }}
-      legends={[
-        {
-          anchor: "bottom-right",
-          direction: "column",
-          justify: false,
-          translateX: 100,
-          translateY: 0,
-          itemsSpacing: 0,
-          itemDirection: "left-to-right",
-          itemWidth: 80,
-          itemHeight: 20,
-          itemOpacity: 0.75,
-          symbolSize: 12,
-          symbolShape: "circle",
-          symbolBorderColor: "rgba(0, 0, 0, .5)",
-          effects: [
-            {
-              on: "hover",
-              style: {
-                itemBackground: "rgba(0, 0, 0, .03)",
-                itemOpacity: 1,
-              },
-            },
-          ],
-        },
-      ]}
-    />
-  );
-}
