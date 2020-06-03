@@ -15,6 +15,8 @@ export default function Page(props) {
 
       <ProfileTabs profile={profile} />
 
+      <h1>Events</h1>
+
       <EventsList {...props} />
     </>
   );

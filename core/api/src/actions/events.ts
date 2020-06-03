@@ -1,7 +1,9 @@
 import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { api } from "actionhero";
 import { Event } from "../models/Event";
 import { EventData } from "../models/EventData";
 import { Op } from "sequelize";
+import Moment from "moment";
 
 export class EventsList extends AuthenticatedAction {
   constructor() {
@@ -81,6 +83,130 @@ export class EventsList extends AuthenticatedAction {
 
     response.events = await Promise.all(events.map((e) => e.apiData()));
     response.total = total;
+  }
+}
+
+export class EventsCounts extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "events:counts";
+    this.description =
+      "count the occurrences of events by type, per hour, in a range";
+    this.outputExample = {};
+    this.permission = { topic: "event", mode: "read" };
+    this.inputs = {
+      type: { required: false },
+      dateTrunc: { required: true, default: "day" },
+      startTime: {
+        required: true,
+        default: Moment().subtract(1, "month").toDate().getTime(),
+        formatter: parseInt,
+      },
+      endTime: {
+        required: true,
+        default: Moment().add(1, "day").toDate().getTime(),
+        formatter: parseInt,
+      },
+      limit: { required: true, default: 100 },
+    };
+  }
+
+  async run({ params, response }) {
+    const where = {
+      occurredAt: {
+        [Op.gte]: params.startTime,
+        [Op.lt]: params.endTime,
+      },
+    };
+
+    if (params.type) {
+      where["type"] = params.type;
+    }
+
+    const counts = await Event.findAll({
+      attributes: [
+        "type",
+        [
+          api.sequelize.fn(
+            "date_trunc",
+            params.dateTrunc,
+            api.sequelize.col("occurredAt")
+          ),
+          "time",
+        ],
+        [api.sequelize.fn("COUNT", "guid"), "count"],
+      ],
+      where,
+      group: ["type", api.sequelize.literal("time")],
+      order: [
+        [api.sequelize.literal("time"), "asc"],
+        ["type", "desc"],
+      ],
+      limit: params.limit,
+    });
+
+    const formattedCounts = counts.map((c) => {
+      return {
+        type: c.getDataValue("type"),
+        // @ts-ignore
+        time: c.getDataValue("time").getTime(),
+        // @ts-ignore
+        count: c.getDataValue("count"),
+      };
+    });
+
+    response.counts = formattedCounts;
+    response.total = await Event.count({ where });
+  }
+}
+
+export class EventsTypes extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "events:types";
+    this.description = "return all the event types and basic stats";
+    this.outputExample = {};
+    this.permission = { topic: "event", mode: "read" };
+    this.inputs = {
+      limit: { required: true, default: 100 },
+      offset: { required: true, default: 0 },
+    };
+  }
+
+  async run({ params, response }) {
+    const types = await Event.findAll({
+      attributes: [
+        "type",
+        [api.sequelize.fn("COUNT", "guid"), "count"],
+        [api.sequelize.fn("MIN", api.sequelize.col("occurredAt")), "min"],
+        [api.sequelize.fn("MAX", api.sequelize.col("occurredAt")), "max"],
+      ],
+      limit: params.limit,
+      offset: params.offset,
+      group: ["type"],
+      order: [["count", "desc"]],
+    });
+
+    response.types = [];
+    for (const i in types) {
+      const t = types[i];
+      const example = await Event.findOne({ where: { type: t.type } });
+      response.types.push({
+        type: t.type,
+        // @ts-ignore
+        count: t.getDataValue("count"),
+        // @ts-ignore
+        min: t.getDataValue("min").getTime(),
+        // @ts-ignore
+        max: t.getDataValue("max").getTime(),
+        example: await example.apiData(),
+      });
+    }
+
+    response.total = await Event.count({
+      col: "type",
+      distinct: true,
+    });
   }
 }
 

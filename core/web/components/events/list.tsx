@@ -13,7 +13,7 @@ import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { EventAPIData } from "../../utils/apiData";
 
 export default function EventsList(props) {
-  const { errorHandler, query } = props;
+  const { errorHandler, query, hideSearch, hidePagination } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -90,50 +90,56 @@ export default function EventsList(props) {
 
   return (
     <>
-      <h1>Event Stream</h1>
+      {hideSearch ? null : (
+        <Form id="search" onSubmit={load}>
+          <Form.Group>
+            <Form.Label>Event Type</Form.Label>
+            <AsyncTypeahead
+              key={`typeahead-search-${type}`}
+              id={`typeahead-search-${type}`}
+              minLength={0}
+              isLoading={searchLoading}
+              allowNew={true}
+              onChange={(selected) => {
+                if (!selected[0]) {
+                  return setType("");
+                }
+                setType(
+                  selected[0].label
+                    ? selected[0].label // when a new custom option is set
+                    : selected[0] // when a list option is chosen);
+                );
+              }}
+              options={autocompleteResults}
+              onSearch={autocompleteProfilePropertySearch}
+              defaultSelected={type ? [type] : undefined}
+            />
+          </Form.Group>
 
-      <Form id="search" onSubmit={load}>
-        <Form.Group>
-          <Form.Label>Event Type</Form.Label>
-          <AsyncTypeahead
-            key={`typeahead-search-${type}`}
-            id={`typeahead-search-${type}`}
-            minLength={0}
-            isLoading={searchLoading}
-            allowNew={true}
-            onChange={(selected) => {
-              if (!selected[0]) {
-                return setType("");
-              }
-              setType(
-                selected[0].label
-                  ? selected[0].label // when a new custom option is set
-                  : selected[0] // when a list option is chosen);
-              );
-            }}
-            options={autocompleteResults}
-            onSearch={autocompleteProfilePropertySearch}
-            defaultSelected={type ? [type] : undefined}
-          />
-        </Form.Group>
+          <Button size="sm" type="submit">
+            Search
+          </Button>
+        </Form>
+      )}
 
-        <Button size="sm" type="submit">
-          Search
-        </Button>
-      </Form>
+      {hideSearch ? null : (
+        <>
+          <br />
+          <br />
+          <p>
+            <strong>{total} matching events</strong>
+          </p>
+        </>
+      )}
 
-      <br />
-      <br />
-      <p>
-        <strong>{total} matching events</strong>
-      </p>
-
-      <Pagination
-        total={total}
-        limit={limit}
-        offset={offset}
-        onPress={setOffset}
-      />
+      {hidePagination ? null : (
+        <Pagination
+          total={total}
+          limit={limit}
+          offset={offset}
+          onPress={setOffset}
+        />
+      )}
 
       <br />
 
@@ -212,21 +218,23 @@ export default function EventsList(props) {
         </tbody>
       </LoadingTable>
 
-      <Pagination
-        total={total}
-        limit={limit}
-        offset={offset}
-        onPress={setOffset}
-      />
+      {hidePagination ? null : (
+        <Pagination
+          total={total}
+          limit={limit}
+          offset={offset}
+          onPress={setOffset}
+        />
+      )}
     </>
   );
 }
 
-EventsList.hydrate = async (ctx) => {
+EventsList.hydrate = async (ctx, queryOverrides = {}) => {
   const { execApi } = useApi(ctx);
   const { limit, offset, type, guid: profileGuid } = ctx.query;
   const { events, total } = await execApi("get", `/events`, {
-    limit,
+    limit: queryOverrides["limit"] ? queryOverrides["limit"] : limit,
     offset,
     type,
     profileGuid,
