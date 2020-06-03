@@ -1,6 +1,7 @@
 import { helper } from "./../utils/specHelper";
 import { Profile } from "./../../src/models/Profile";
 import { Event } from "./../../src/models/Event";
+import { Log } from "./../../src/models/Log";
 import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
 
 let actionhero;
@@ -30,6 +31,16 @@ describe("models/event", () => {
     expect(event.createdAt).toBeTruthy();
     expect(event.updatedAt).toBeTruthy();
     expect(event.occurredAt).toBeTruthy();
+  });
+
+  test("creating an event creates a log entry", async () => {
+    const latestLog = await Log.findOne({
+      where: { verb: "create", topic: "event" },
+      order: [["createdAt", "desc"]],
+      limit: 1,
+    });
+
+    expect(latestLog).toBeTruthy();
   });
 
   test("data can be stored and retrieved", async () => {

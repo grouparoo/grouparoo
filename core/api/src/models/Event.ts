@@ -1,6 +1,5 @@
 import {
   Table,
-  Model,
   Column,
   Index,
   CreatedAt,
@@ -12,6 +11,7 @@ import {
   AfterCreate,
   AfterDestroy,
 } from "sequelize-typescript";
+import { LoggedModel } from "../classes/loggedModel";
 import { Op } from "sequelize";
 import { EventData } from "./EventData";
 import { Profile } from "./Profile";
@@ -24,13 +24,10 @@ import * as uuid from "uuid";
 import { api, task } from "actionhero";
 
 @Table({ tableName: "events", paranoid: false })
-export class Event extends Model<Event> {
+export class Event extends LoggedModel<Event> {
   guidPrefix() {
     return "evt";
   }
-
-  @Column({ primaryKey: true })
-  guid: string;
 
   @AllowNull(false)
   @Column
@@ -58,12 +55,6 @@ export class Event extends Model<Event> {
   @AllowNull(true)
   @Column
   anonymousId: string;
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
 
   @AllowNull(true)
   @Column

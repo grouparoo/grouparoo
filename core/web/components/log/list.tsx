@@ -25,17 +25,19 @@ export default function LogsList(props) {
   useHistoryPagination(offset, "offset", setOffset);
 
   let topics = [
+    "app",
+    "destination",
+    "event",
+    "file",
     "group",
     "groupMember",
     "profile",
     "profileProperty",
     "profilePropertyRule",
+    "schedule",
     "setting",
     "team",
     "teamMember",
-    "app",
-    "schedule",
-    "file",
   ];
 
   useSecondaryEffect(() => {
