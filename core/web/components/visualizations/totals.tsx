@@ -5,13 +5,25 @@ import { Row, Col, Jumbotron, CardGroup, Card } from "react-bootstrap";
 import { useApi } from "../../hooks/useApi";
 import Loader from "../loader";
 
+const TIMEOUT = 30 * 1000;
+
 function SparkCard({ execApi, model, title, href = null }) {
   const [total, setTotal] = useState(null);
   const [rolling, setRolling] = useState([]);
+  let timer;
 
   useEffect(() => {
-    load();
+    startTimer();
+
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
+
+  function startTimer() {
+    load();
+    timer = setInterval(load, TIMEOUT);
+  }
 
   async function load() {
     const response = await execApi("get", `/totals`, {
@@ -56,10 +68,20 @@ function SparkCard({ execApi, model, title, href = null }) {
 
 function BigNumber({ execApi, model, title, href = null }) {
   const [total, setTotal] = useState(null);
+  let timer;
 
   useEffect(() => {
-    load();
+    startTimer();
+
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
+
+  function startTimer() {
+    load();
+    timer = setInterval(load, TIMEOUT);
+  }
 
   async function load() {
     const response = await execApi("get", `/totals`, {
