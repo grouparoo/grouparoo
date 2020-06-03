@@ -107,7 +107,7 @@ jobs:
           command: cd core/api && ./../node_modules/.bin/jest --ci --maxWorkers 4
       - run:
           name: test-web
-          command: cd core/web && ./../node_modules/.bin/jest --ci --maxWorkers 4
+          command: cd core/web && ./../node_modules/.bin/jest --ci --runInBand
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-plugins:
