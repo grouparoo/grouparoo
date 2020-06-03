@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Sparklines, SparklinesLine } from "react-sparklines";
-import { Row, Col, Jumbotron, CardGroup, Card } from "react-bootstrap";
+import { Row, Col, CardGroup, Card } from "react-bootstrap";
 import { useApi } from "../../hooks/useApi";
 import Loader from "../loader";
 
@@ -117,70 +117,66 @@ export default function (props) {
 
   return (
     <>
-      <Jumbotron>
-        <h3>Totals</h3>
-
-        <Row>
-          <Col>
-            <BigNumber
-              execApi={execApi}
-              href="profiles"
-              model="Profile"
-              title="Profiles"
-            />
-          </Col>
-          <Col>
-            <BigNumber
-              execApi={execApi}
-              href="groups"
-              model="Group"
-              title="Groups"
-            />
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
-            <BigNumber
-              execApi={execApi}
-              model="ProfileProperty"
-              title="Profile Properties"
-            />
-          </Col>
-          <Col>
-            <BigNumber
-              execApi={execApi}
-              model="GroupMember"
-              title="Group Members"
-            />
-          </Col>
-        </Row>
-
-        <br />
-        <h3>System</h3>
-        <CardGroup>
-          <SparkCard
+      <Row>
+        <Col>
+          <BigNumber
             execApi={execApi}
-            href="events"
-            model="Event"
-            title="Events"
+            href="profiles"
+            model="Profile"
+            title="Profiles"
           />
-          <SparkCard execApi={execApi} href="runs" model="Run" title="Runs" />
-          <SparkCard
+        </Col>
+        <Col>
+          <BigNumber
             execApi={execApi}
-            href="imports"
-            model="Import"
-            title="Imports"
+            href="groups"
+            model="Group"
+            title="Groups"
           />
-          <SparkCard
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
+          <BigNumber
             execApi={execApi}
-            href="exports"
-            model="Export"
-            title="Exports"
+            model="ProfileProperty"
+            title="Profile Properties"
           />
-          <SparkCard execApi={execApi} href="logs" model="Log" title="Logs" />
-        </CardGroup>
-      </Jumbotron>
+        </Col>
+        <Col>
+          <BigNumber
+            execApi={execApi}
+            model="GroupMember"
+            title="Group Members"
+          />
+        </Col>
+      </Row>
+
+      <br />
+      <h3>System</h3>
+      <CardGroup>
+        <SparkCard
+          execApi={execApi}
+          href="events"
+          model="Event"
+          title="Events"
+        />
+        <SparkCard execApi={execApi} href="runs" model="Run" title="Runs" />
+        <SparkCard
+          execApi={execApi}
+          href="imports"
+          model="Import"
+          title="Imports"
+        />
+        <SparkCard
+          execApi={execApi}
+          href="exports"
+          model="Export"
+          title="Exports"
+        />
+        <SparkCard execApi={execApi} href="logs" model="Log" title="Logs" />
+      </CardGroup>
     </>
   );
 }

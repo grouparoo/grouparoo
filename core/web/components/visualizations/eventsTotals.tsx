@@ -25,6 +25,8 @@ export default function EventsTotals(props) {
       : NodeMoment().add(1, "day").toDate()
   );
 
+  const { hideDateRange } = query;
+
   const chartData = {};
   counts.map((c) => {
     if (!chartData[c.type]) {
@@ -67,48 +69,50 @@ export default function EventsTotals(props) {
 
   return (
     <>
-      <Accordion>
-        <Row>
-          <Col>
-            <p>
-              Showing {total} events from{" "}
-              <Accordion.Toggle
-                as={Button}
-                variant="outline-secondary"
-                size="sm"
-                eventKey="date-range"
-              >
-                {startDate.toLocaleDateString()} to{" "}
-                {endDate.toLocaleDateString()}
-              </Accordion.Toggle>
-            </p>
-          </Col>
-        </Row>
-
-        <Accordion.Collapse eventKey="date-range">
+      {hideDateRange ? null : (
+        <Accordion>
           <Row>
             <Col>
-              <DateRangePicker
-                onChange={({ selection }) => {
-                  setStartDate(selection.startDate);
-                  setEndDate(selection.endDate);
-                }}
-                showSelectionPreview={true}
-                moveRangeOnFirstSelection={false}
-                months={2}
-                ranges={[
-                  {
-                    startDate,
-                    endDate,
-                    key: "selection",
-                  },
-                ]}
-                direction="horizontal"
-              />
+              <p>
+                Showing {total} events from{" "}
+                <Accordion.Toggle
+                  as={Button}
+                  variant="outline-secondary"
+                  size="sm"
+                  eventKey="date-range"
+                >
+                  {startDate.toLocaleDateString()} to{" "}
+                  {endDate.toLocaleDateString()}
+                </Accordion.Toggle>
+              </p>
             </Col>
           </Row>
-        </Accordion.Collapse>
-      </Accordion>
+
+          <Accordion.Collapse eventKey="date-range">
+            <Row>
+              <Col>
+                <DateRangePicker
+                  onChange={({ selection }) => {
+                    setStartDate(selection.startDate);
+                    setEndDate(selection.endDate);
+                  }}
+                  showSelectionPreview={true}
+                  moveRangeOnFirstSelection={false}
+                  months={2}
+                  ranges={[
+                    {
+                      startDate,
+                      endDate,
+                      key: "selection",
+                    },
+                  ]}
+                  direction="horizontal"
+                />
+              </Col>
+            </Row>
+          </Accordion.Collapse>
+        </Accordion>
+      )}
 
       <Row>
         <Col style={{ height: 450 }}>
