@@ -1,4 +1,4 @@
-import { Row, Col, Button, Accordion } from "react-bootstrap";
+import { Row, Col, Button, Accordion, Form } from "react-bootstrap";
 import { DateRangePicker } from "react-date-range";
 import { useState } from "react";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
@@ -8,12 +8,15 @@ import { ResponsiveLine } from "@nivo/line";
 import { useApi } from "../../hooks/useApi";
 const NodeMoment = require("moment");
 
+const limit = 1000; // we want to allow for many more data points here...
+
 export default function EventsTotals(props) {
   const { errorHandler, query } = props;
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState<number>(props.total);
   const [counts, setCounts] = useState(props.counts);
   const { execApi } = useApi(props, errorHandler);
+  const [dateTrunc, setDateTrunc] = useState(query.dateTrunc);
   const [startDate, setStartDate] = useState<Date>(
     query.startTime
       ? new Date(parseInt(query.startTime))
@@ -38,15 +41,19 @@ export default function EventsTotals(props) {
     });
   });
 
+  const dateTruncOptions = ["month", "day", "hour", "minute"];
+
   useSecondaryEffect(() => {
     load();
-  }, [startDate, endDate]);
+  }, [startDate, endDate, dateTrunc]);
 
   async function load() {
     setLoading(true);
     const response = await execApi("get", `/events/counts`, {
       startTime: startDate.getTime(),
       endTime: endDate.getTime(),
+      dateTrunc,
+      limit,
     });
     setLoading(false);
     if (response?.counts) {
@@ -61,6 +68,7 @@ export default function EventsTotals(props) {
     let url = `${window.location.pathname}?`;
     url += `startTime=${startDate.getTime()}&`;
     url += `endTime=${endDate.getTime()}&`;
+    url += `dateTrunc=${dateTrunc}&`;
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
@@ -73,18 +81,34 @@ export default function EventsTotals(props) {
         <Accordion>
           <Row>
             <Col>
-              <p>
-                Showing {total} events from{" "}
-                <Accordion.Toggle
-                  as={Button}
-                  variant="outline-secondary"
-                  size="sm"
-                  eventKey="date-range"
-                >
-                  {startDate.toLocaleDateString()} to{" "}
-                  {endDate.toLocaleDateString()}
-                </Accordion.Toggle>
-              </p>
+              {" "}
+              <Form inline>
+                <p>
+                  Showing {total} events from{" "}
+                  <Accordion.Toggle
+                    as={Button}
+                    variant="outline-secondary"
+                    size="sm"
+                    eventKey="date-range"
+                  >
+                    {startDate.toLocaleDateString()} to{" "}
+                    {endDate.toLocaleDateString()}
+                  </Accordion.Toggle>{" "}
+                  by{" "}
+                  <Form.Control
+                    as="select"
+                    size="sm"
+                    value={dateTrunc}
+                    onChange={(e) => {
+                      setDateTrunc(e.target.value);
+                    }}
+                  >
+                    {dateTruncOptions.map((opt) => (
+                      <option>{opt}</option>
+                    ))}
+                  </Form.Control>
+                </p>
+              </Form>
             </Col>
           </Row>
 
@@ -129,10 +153,12 @@ export default function EventsTotals(props) {
 
 EventsTotals.hydrate = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { startTime, endTime } = ctx.query;
+  const { startTime, endTime, dateTrunc } = ctx.query;
   const { counts, total } = await execApi("get", `/events/counts`, {
     startTime,
     endTime,
+    dateTrunc,
+    limit,
   });
 
   return { counts, total };
