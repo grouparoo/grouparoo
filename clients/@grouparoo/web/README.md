@@ -26,7 +26,7 @@ const client = new GrouparooWebClient({
     <script
       type="application/javascript"
       href="https://grouparoo.my-company.com/public/javascript/grouparooWebCleint.js"
-    />
+    ></script>
   </head>
 
   <script>
