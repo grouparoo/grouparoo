@@ -136,7 +136,7 @@ export default function ({
           content="/favicon/mstile-310x310.png"
         />
 
-        <script src="/javascript/ActionheroWebsocketClient.min.js" />
+        <script src="/public/javascript/ActionheroWebsocketClient.min.js" />
       </Head>
 
       <div id="container">
