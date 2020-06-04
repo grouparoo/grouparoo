@@ -75,7 +75,7 @@ client.identify(123, { firstName: "Mario", lastName: "Mario" });
 client.track("sign-in", { page: "/sign-in" });
 ```
 
-From this point onward, all events tracked will be linked to user #123. Grouparoo will also associate all previous events from this session (with the same `anonymousId`) to user #123.
+From this point onward, all events tracked will be linked to user `#123`. Grouparoo will also associate all previous events from this session (with the same `anonymousId`) to user `#123`.
 
 The second argument to `identify`, `data`, will _not_ override profile data that Grouparoo has obtained from your Sources. However, it may be useful to record related identifying information about the profile at the time of `identify`. This information will be stored as data on the Event, and able to be later utilized within Grouparoo.
 
