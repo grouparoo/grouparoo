@@ -1,11 +1,12 @@
 import { useApi } from "./../hooks/useApi";
 import { useEffect, useState } from "react";
+import { Jumbotron, Row, Col } from "react-bootstrap";
 import Head from "next/head";
 import TotalsList from "../components/visualizations/totals";
 import Welcome from "../components/visualizations/welcome";
 import Loader from "./../components/loader";
 
-export default function (props) {
+export default function Page(props) {
   const [appsCount, setAppsCount] = useState(-1);
   const { errorHandler } = props;
   const { execApi } = useApi(props, errorHandler);
@@ -35,7 +36,11 @@ export default function (props) {
       <>
         <HeaderTitle title="Dashboard" />
         <h1>Dashboard</h1>
-        <TotalsList {...props} />
+
+        <Jumbotron>
+          <h2>Totals</h2>
+          <TotalsList {...props} />
+        </Jumbotron>
       </>
     );
   }

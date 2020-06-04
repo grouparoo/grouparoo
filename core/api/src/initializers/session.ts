@@ -1,4 +1,11 @@
-import { api, config, action, Initializer, Connection } from "actionhero";
+import {
+  api,
+  config,
+  action,
+  Initializer,
+  Connection,
+  chatRoom,
+} from "actionhero";
 import { Team, TeamMember, ApiKey } from "../index";
 import crypto from "crypto";
 
@@ -156,6 +163,39 @@ const optionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
   },
 };
 
+const modelChatRoomMiddleware: chatRoom.ChatMiddleware = {
+  name: "model chat room middleware",
+  join: async (connection: Connection, room: string) => {
+    if (!room.match(/^model:/)) {
+      return;
+    }
+
+    const topic = room.split(":")[1];
+    const mode = "read";
+    const sessionData = await api.session.load(connection);
+    if (!sessionData) {
+      throw new AuthenticationError("Please log in to continue");
+    } else {
+      const teamMember = await TeamMember.findOne({
+        where: { guid: sessionData.guid },
+        include: [Team],
+      });
+
+      if (!teamMember) {
+        throw new AuthenticationError("Team member not found");
+      }
+
+      const team = await teamMember.$get("team");
+      const authorized = await team.authorizeAction(topic, "read");
+      if (!authorized) {
+        throw new AuthenticationError(
+          `not authorized for mode "${mode}" on topic "${topic}"`
+        );
+      }
+    }
+  },
+};
+
 interface SessionData {
   guid: string;
   csrfToken: string;
@@ -231,6 +271,7 @@ export class Session extends Initializer {
   async start() {
     action.addMiddleware(authenticatedActionMiddleware);
     action.addMiddleware(optionallyAuthenticatedActionMiddleware);
+    chatRoom.addMiddleware(modelChatRoomMiddleware);
 
     api.params.globalSafeParams.push("csrfToken");
     api.params.globalSafeParams.push("apiKey");
