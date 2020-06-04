@@ -87,7 +87,7 @@ export default function EventsTotals(props) {
                   Showing {total} events from{" "}
                   <Accordion.Toggle
                     as={Button}
-                    variant="outline-secondary"
+                    variant="outline-dark"
                     size="sm"
                     eventKey="date-range"
                   >
