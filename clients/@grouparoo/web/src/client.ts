@@ -168,6 +168,10 @@ export class GrouparooWebClient {
       this.cookie = "grouparoo-anonymous-id";
     }
 
+    if (!this.cookieTTL) {
+      this.cookieTTL = 1000 * 60 * 60 * 24 * 90; // 90 days
+    }
+
     if (!this.logging) {
       this.logging = false;
     }
