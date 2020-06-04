@@ -95,7 +95,6 @@ export class GrouparooWebClient {
 
   /**
    * Track a 'page' event, along with related metadata.
-   * Will also determine if this is a new session and firer the "new_session" event.
    */
   page(category: string, title: string, data: GrouparooEventData) {
     this.track(
@@ -112,8 +111,6 @@ export class GrouparooWebClient {
         data
       )
     );
-
-    // TODO store and check for `new_session`
   }
 
   /**

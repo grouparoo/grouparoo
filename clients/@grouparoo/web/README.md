@@ -38,17 +38,16 @@ const client = new GrouparooWebClient({
 </html>
 ```
 
-To initialize a client, you'll need to provide:
+To initialize a client (per the above examples), you'll need to provide:
 
 - **host** (required): The publicly-available URL of your Grouparoo server/cluster.
 - **apiKey** (required): An API Key that you have generated in your Grouparoo server, with `write` access to the `events` topic.
 - **path** (optional): The route to post events too. Default: `/api/v1/track`
-- **anonymousId** (optional): An ID you would like to use for the `anonymousId` for this client. By default, we will generate a unique UUID for this browser and store it in a cookie for future use.
+- **anonymousId** (optional): An ID you would like to use for the `anonymousId` for this client. By default, we will generate a unique UUID for this browser and store it in a cookie for future use. However, if your application already has the notion of a unique ID for every visitor, you can apply it here.
 - **errorHandlers** (optional): An array of functions to pass errors too. This is helpful if you want to display tracking errors to the user, or log them with a tool like New Relic.
 - **logging** (optional): Should tracking events be logged to browser console? Default: `false`
 - **cookie** (optional): What is the name of the cookie to store the `anonymousId`? Default: `grouparoo-anonymous-id`
-- **cookieTTL** (optional): How long should the tracking cookie exist for? Default: 90 days.
-  - This setting will effect your session duration for `new_session` events triggered the `page` higher-order event.
+- **cookieTTL** (optional): How long should the tracking cookie exist for? Set in ms. Default: `(1000 * 60 * 60 * 24 * 90)`, i.e: 90 days.
 
 ## Creating Events
 
@@ -95,9 +94,7 @@ This library also comes with a few higher-order events geared towards making it 
 
 **Page**
 
-The `page` method will create a track event pre-filled with some useful data about the page. The `page` event will also create a `new_session` event for the first time that an `anonymousId` has viewed any page.
-
-The `page` method will also append all query string variables. This will ensure that data about your email, social media, and ad campaigns is properly associated to the right visitors.
+The `page` method will create a track event pre-filled with some useful data about the page. The `page` method will also append all query string variables. This will ensure that data about your email, social media, and ad campaigns is properly associated to the right visitors.
 
 ```ts
 // track a page
@@ -111,11 +108,9 @@ client.track("page", {
   url: window.location.href,
   path: window.location.pathname,
   referrer: window.document.referrer,
-  // ...and data from the URL Query String
-  UTM_SOURCE: "adwords",
-  UTM_MEDIUM: "cpc",
-  UTM_CAMPAIGN: "fall-campaign-mushroom-keywords",
+  // ...and data from the URL Query String if present
+  utm_source: "adwords",
+  utm_medium: "cpc",
+  utm_campaign: "fall-campaign-mushroom-keywords",
 });
-
-client.track("new_session");
 ```
