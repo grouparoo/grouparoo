@@ -44,10 +44,10 @@ Learn more at [www.grouparoo.com](https://www.grouparoo.com)
 
 ### Community
 
-Looking for help or to connect with other Grouparoo users? **[👩‍💻👨‍💻Join the Grouparoo Community ➡️](https://community.grouparoo.com)**
+Looking for help or to connect with other Grouparoo users? **[👩‍💻👨‍💻Learn more at www.grouparoo.com/community ➡️](https://www.grouparoo.com/community)**
 
+- [👷‍♀️ Contributing Guide](https://www.grouparoo.com/community)
 - [👨‍👩‍👧‍👦 Code of Conduct](https://github.com/grouparoo/grouparoo/blob/master/CODE_OF_CONDUCT.md)
-- [👷‍♀️ Contributing Guide](https://github.com/grouparoo/grouparoo/blob/master/.github/CONTRIBUTING.md)
 
 ### Other Documents
 
