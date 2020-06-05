@@ -42,12 +42,17 @@ To initialize a client (per the above examples), you'll need to provide:
 
 - **host** (required): The publicly-available URL of your Grouparoo server/cluster.
 - **apiKey** (required): An API Key that you have generated in your Grouparoo server, with `write` access to the `events` topic.
+- **userId** (optional): A unique and permanent Id for this logged-in use (if this user is signed in). Otherwise, you can use the `identify` method later.
 - **path** (optional): The route to post events too. Default: `/api/v1/track`
-- **anonymousId** (optional): An ID you would like to use for the `anonymousId` for this client. By default, we will generate a unique UUID for this browser and store it in a cookie for future use. However, if your application already has the notion of a unique ID for every visitor, you can apply it here.
 - **errorHandlers** (optional): An array of functions to pass errors too. This is helpful if you want to display tracking errors to the user, or log them with a tool like New Relic.
 - **logging** (optional): Should tracking events be logged to browser console? Default: `false`
-- **cookie** (optional): What is the name of the cookie to store the `anonymousId`? Default: `grouparoo-anonymous-id`
-- **cookieTTL** (optional): How long should the tracking cookie exist for? Set in ms. Default: `(1000 * 60 * 60 * 24 * 90)`, i.e: 90 days.
+- **userIdCookie** (optional): What is the name of the cookie to store the `userId`? Default: `grouparoo-user-id`
+- **anonymousId** (optional): A unique ID you would like to use for the `anonymousId` for this client. By default, we will generate a unique UUID for this browser and store it in a cookie for future use. However, if your application already has the notion of a unique ID for every visitor, you can apply it here.
+- **anonymousIdCookie** (optional): What is the name of the cookie to store the `anonymousId`? Default: `grouparoo-anonymous-id`
+- **anonymousIdCookieTTL** (optional): How long should the tracking cookie exist for? Set in ms. Default: `(1000 * 60 * 60 * 24 * 90)`, i.e: 90 days.
+- **sessionId** (optional): A unique ID you would like to use to identify the session for this client. By default, we will generate a unique UUID for this session and store it in a cookie for future use. However, if your application already has the notion of a unique session ID for every visitor, you can apply it here.
+- **sessionIdCookie** (optional): What is the name of the cookie to store the `sessionId`? Default: `grouparoo-session-id`
+- **sessionIdCookieTTL** (optional): How long should the session cookie exist for? Set in ms. Default: `(1000 * 60 * 60)`, i.e: 1 hour.
 
 ## Creating Events
 
@@ -61,7 +66,7 @@ To create an event, call the `track` method on the client with a `type` and any 
 client.track("button-click", { page: "/home", button: "learn-more" });
 ```
 
-This will send the event, time, and associated user information (`anonymousId` and `userId` if set) to your Grouparoo server.
+This will send the event, time, and associated user information (`anonymousId` and `userId` if set) to your Grouparoo server. We will also always include the values for `anonymousId` and `sessionId` with every `track` call.
 
 **Identify**
 

@@ -6,11 +6,16 @@ export interface GrouparooClientArgs {
   apiKey: string;
   host: string;
   path: string;
-  anonymousId: string | number;
   errorHandlers: Function[];
   logging: boolean;
-  cookie: string;
-  cookieTTL: number;
+  userId: string | number;
+  userIdCookie: string;
+  anonymousId: string | number;
+  anonymousIdCookie: string;
+  anonymousIdCookieTTL: number;
+  sessionId: string | number;
+  sessionIdCookie: string;
+  sessionIdCookieTTL: number;
 }
 
 export interface GrouparooEventData {
@@ -22,6 +27,7 @@ export interface Event {
   type: string;
   anonymousId: string | number;
   userId: string | number;
+  sessionId: string | number;
   data: GrouparooEventData;
 }
 
@@ -29,12 +35,16 @@ export class GrouparooWebClient {
   apiKey: string;
   host: string;
   path: string;
-  anonymousId: string | number;
-  userId: string | number;
   errorHandlers: Function[];
+  userId: string | number;
+  userIdCookie: string;
+  anonymousId: string | number;
+  anonymousIdCookie: string;
+  anonymousIdCookieTTL: number;
+  sessionId: string | number;
+  sessionIdCookie: string;
+  sessionIdCookieTTL: number;
   logging: boolean;
-  cookie: string;
-  cookieTTL: number;
   queue: Event[];
   processing: boolean;
   eventsCounts: { [name: string]: number };
@@ -46,20 +56,27 @@ export class GrouparooWebClient {
 
     this.validateAndApplyDefaults();
     this.generateAnonymousId();
+    this.generateSessionId();
+
+    if (this.userId) {
+      Cookie.set(this.userIdCookie, this.userId);
+    } else {
+      this.userId = Cookie.get(this.userIdCookie);
+    }
   }
 
   /** Track an event with optional data */
-  track(
-    type: string,
-    data: GrouparooEventData,
-    anonymousId = this.anonymousId,
-    ocurredAt = new Date()
-  ) {
+  track(type: string, data: GrouparooEventData, ocurredAt = new Date()) {
+    // bump the TTLs or generate new ones as needed
+    this.generateSessionId();
+    this.generateAnonymousId();
+
     const event: Event = {
       type,
       data,
-      anonymousId,
       userId: this.userId,
+      anonymousId: this.anonymousId,
+      sessionId: this.sessionId,
       ocurredAt,
     };
 
@@ -74,6 +91,7 @@ export class GrouparooWebClient {
    */
   identify(userId: string | number, data: GrouparooEventData) {
     this.userId = userId;
+    Cookie.set(this.userIdCookie, this.userId);
     return this.track("identify", data);
   }
 
@@ -83,7 +101,11 @@ export class GrouparooWebClient {
   reset(newAnonymousId: string | number) {
     delete this.userId;
     delete this.anonymousId;
-    Cookie.clear(this.cookie);
+    delete this.sessionId;
+    Cookie.clear(this.anonymousIdCookie);
+    Cookie.clear(this.sessionIdCookie);
+    Cookie.clear(this.userIdCookie);
+
     this.eventsCounts = {};
 
     if (newAnonymousId) {
@@ -91,6 +113,7 @@ export class GrouparooWebClient {
     }
 
     this.generateAnonymousId();
+    this.generateSessionId();
   }
 
   /**
@@ -161,12 +184,22 @@ export class GrouparooWebClient {
       this.path = "/api/v1/track";
     }
 
-    if (!this.cookie) {
-      this.cookie = "grouparoo-anonymous-id";
+    if (!this.userIdCookie) {
+      this.userIdCookie = "grouparoo-user-id";
     }
 
-    if (!this.cookieTTL) {
-      this.cookieTTL = 1000 * 60 * 60 * 24 * 90; // 90 days
+    if (!this.anonymousIdCookie) {
+      this.anonymousIdCookie = "grouparoo-anonymous-id";
+    }
+    if (!this.anonymousIdCookieTTL) {
+      this.anonymousIdCookieTTL = 1000 * 60 * 60 * 24 * 90; // 90 days
+    }
+
+    if (!this.sessionIdCookie) {
+      this.sessionIdCookie = "grouparoo-session-id";
+    }
+    if (!this.sessionIdCookieTTL) {
+      this.sessionIdCookieTTL = 1000 * 60 * 60; // 1 hour
     }
 
     if (!this.logging) {
@@ -190,14 +223,37 @@ export class GrouparooWebClient {
 
     if (this.anonymousId) {
       anonymousId = this.anonymousId.toString();
-    } else if (Cookie.get(this.cookie)) {
-      anonymousId = Cookie.get(this.cookie);
+    } else if (Cookie.get(this.anonymousIdCookie)) {
+      anonymousId = Cookie.get(this.anonymousIdCookie);
     } else {
-      anonymousId = UUID.v4();
+      anonymousId = `aid-${UUID.v4()}`;
     }
 
-    Cookie.set(this.cookie, anonymousId, this.cookieTTL);
+    this.anonymousId = anonymousId;
+    Cookie.set(
+      this.anonymousIdCookie,
+      this.anonymousId,
+      this.anonymousIdCookieTTL
+    );
+
     return anonymousId;
+  }
+
+  private generateSessionId() {
+    let sessionId: string;
+
+    if (this.sessionId) {
+      sessionId = this.sessionId.toString();
+    } else if (Cookie.get(this.sessionIdCookie)) {
+      sessionId = Cookie.get(this.sessionIdCookie);
+    } else {
+      sessionId = `sid-${UUID.v4()}`;
+    }
+
+    this.sessionId = sessionId;
+    Cookie.set(this.sessionIdCookie, this.sessionId, this.sessionIdCookieTTL);
+
+    return sessionId;
   }
 
   log(...messages) {
