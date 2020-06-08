@@ -4,7 +4,8 @@ import Link from "next/link";
 import LoadingTable from "../../../components/loadingTable";
 import ProfilePropertyRuleTabs from "../../../components/tabs/profilePropertyRule";
 
-export default function Page({ profilePropertyRule, groups }) {
+export default function Page({ profilePropertyRule, groups, ops }) {
+  console.log(ops);
   return (
     <>
       <Head>
@@ -32,18 +33,16 @@ export default function Page({ profilePropertyRule, groups }) {
                   >
                     <a>{group.name}</a>
                   </Link>
-                  <br />
-                  {group.guid}
                 </td>
                 <td>{group.profilesCount}</td>
                 <td>
-                  <ul>
-                    {group.rules.map((rule, idx) => (
-                      <li key={`rule-${idx}`}>
-                        {rule.key}: {rule.op} {rule.match}
-                      </li>
-                    ))}
-                  </ul>
+                  {group.rules.map((rule, idx) => (
+                    <span key={`rule-${idx}`}>
+                      <strong>{rule.key}</strong> {ops._dictionary[rule.op]}:{" "}
+                      <code>{rule.match}</code>
+                      <br />
+                    </span>
+                  ))}
                 </td>
               </tr>
             );
@@ -65,6 +64,7 @@ Page.getInitialProps = async (ctx) => {
     "get",
     `/profilePropertyRule/${guid}/groups`
   );
+  const { ops } = await execApi("get", `/groups/ruleOptions`);
 
-  return { profilePropertyRule, groups };
+  return { profilePropertyRule, groups, ops };
 };

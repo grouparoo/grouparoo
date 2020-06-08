@@ -54,7 +54,7 @@ export default function Page(props) {
           {teamMembers.map((teamMember) => {
             return (
               <tr key={`teamMember-${teamMember.guid}`}>
-                <td style={{ maxWidth: 36 }}>
+                <td style={{ maxWidth: 50 }}>
                   <ProfileImageFromEmail
                     loading={loading}
                     email={teamMember.email}
@@ -98,8 +98,7 @@ export default function Page(props) {
       </LoadingTable>
 
       <Button
-        size="sm"
-        variant="warning"
+        variant="primary"
         onClick={() => {
           Router.push(`/team/${team.guid}/teamMember/new`);
         }}

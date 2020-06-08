@@ -84,28 +84,28 @@ export default function RunsList(props) {
           <ButtonGroup>
             <Button
               size="sm"
-              variant={stateFilter === "" ? "success" : "info"}
+              variant={stateFilter === "" ? "secondary" : "info"}
               onClick={() => setStateFilter("")}
             >
               All
             </Button>
             <Button
               size="sm"
-              variant={stateFilter === "running" ? "success" : "info"}
+              variant={stateFilter === "running" ? "secondary" : "info"}
               onClick={() => setStateFilter("running")}
             >
               Running
             </Button>
             <Button
               size="sm"
-              variant={stateFilter === "complete" ? "success" : "info"}
+              variant={stateFilter === "complete" ? "secondary" : "info"}
               onClick={() => setStateFilter("complete")}
             >
               Complete
             </Button>
             <Button
               size="sm"
-              variant={stateFilter === "stopped" ? "success" : "info"}
+              variant={stateFilter === "stopped" ? "secondary" : "info"}
               onClick={() => setStateFilter("stopped")}
             >
               Stopped
@@ -117,21 +117,21 @@ export default function RunsList(props) {
           <ButtonGroup>
             <Button
               size="sm"
-              variant={errorFilter === "" ? "success" : "info"}
+              variant={errorFilter === "" ? "secondary" : "info"}
               onClick={() => setErrorFilter("")}
             >
               All
             </Button>
             <Button
               size="sm"
-              variant={errorFilter === "true" ? "success" : "info"}
+              variant={errorFilter === "true" ? "secondary" : "info"}
               onClick={() => setErrorFilter("true")}
             >
               True
             </Button>
             <Button
               size="sm"
-              variant={errorFilter === "false" ? "success" : "info"}
+              variant={errorFilter === "false" ? "secondary" : "info"}
               onClick={() => setErrorFilter("false")}
             >
               False
@@ -160,6 +160,7 @@ export default function RunsList(props) {
             <th>Completed At</th>
             <th>State</th>
             <th>Filter</th>
+            <th>Stats</th>
           </tr>
         </thead>
         <tbody>
@@ -198,34 +199,34 @@ export default function RunsList(props) {
                   </td>
                   <td>{run.state}</td>
                   <td>
-                    <code>{JSON.stringify(run.filter)}</code>
+                    {/* <code>{JSON.stringify(run.filter)}</code> */}
+                    {run.filter ? (
+                      <>
+                        <strong>{Object.keys(run.filter)[0]}</strong>: <br />
+                        {Object.values(run.filter)[0]}
+                      </>
+                    ) : null}
                   </td>
-                </tr>
-
-                <tr>
-                  <td colSpan={7} style={{ border: 0 }}>
-                    <Alert variant="secondary">
-                      <Row>
-                        <Col>
-                          <Link
-                            href="/imports/[creatorGuid]"
-                            as={`/imports/${run.guid}`}
-                          >
-                            <a>Imports Created: {run.importsCreated}</a>
-                          </Link>
-                        </Col>
-                        <Col>Profiles Created: {run.profilesCreated}</Col>
-                        <Col>Profiles Imported: {run.profilesImported}</Col>
-                        <Col>Profiles Exported: {run.profilesExported}</Col>
-                      </Row>
-                    </Alert>
+                  <td>
+                    <Link
+                      href="/imports/[creatorGuid]"
+                      as={`/imports/${run.guid}`}
+                    >
+                      <a>Imports Created: {run.importsCreated}</a>
+                    </Link>
+                    <br />
+                    Profiles Created: {run.profilesCreated}
+                    <br />
+                    Profiles Imported: {run.profilesImported}
+                    <br />
+                    Profiles Exported: {run.profilesExported}
                   </td>
                 </tr>
 
                 {run.error ? (
                   <tr>
                     <td colSpan={7} style={{ border: 0 }}>
-                      <Alert variant="warning">
+                      <Alert variant="danger">
                         {run.error.split("\n").map((err, errIdx) => (
                           <Fragment key={`err-${run.guid}-${errIdx}`}>
                             {err}

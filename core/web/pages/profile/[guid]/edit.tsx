@@ -192,7 +192,10 @@ export default function Page(props) {
               >
                 Import and Export
               </Button>
-              <hr />
+
+              <br />
+              <br />
+
               <Button
                 variant="danger"
                 size="sm"
@@ -263,9 +266,8 @@ export default function Page(props) {
                 </Form.Group>
               </Col>
               <Col md={3}>
-                <br />
-                <br />
-                <Button variant="primary" size="sm" type="submit">
+                <div style={{ paddingTop: 34 }} />
+                <Button variant="outline-primary" size="sm" type="submit">
                   Add
                 </Button>
               </Col>
@@ -285,6 +287,7 @@ export default function Page(props) {
               <tr>
                 <th>Key</th>
                 <th>Value</th>
+                <th>Type</th>
                 <th>Created</th>
                 <th>Updated</th>
               </tr>
@@ -295,8 +298,6 @@ export default function Page(props) {
                   <tr key={`property-${key}`}>
                     <td>
                       <span style={{ fontWeight: "bold" }}>{key}</span>
-                      <br />
-                      <em>{properties[key].type}</em>
                     </td>
                     <td>
                       {manualProperties.indexOf(key) >= 0 ? (
@@ -333,6 +334,7 @@ export default function Page(props) {
                         </span>
                       )}
                     </td>
+                    <td>{properties[key].type}</td>
                     <td>
                       <Moment fromNow>{properties[key].createdAt}</Moment>
                     </td>

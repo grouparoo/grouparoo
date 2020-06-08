@@ -85,7 +85,7 @@ export default function LogsList(props) {
 
     if (ownerGuid) {
       return [
-        <Link href={`/${topic}/${ownerGuid}`} as={undefined} prefetch={false}>
+        <Link href={`/object/${ownerGuid}`} prefetch={false}>
           <a>{`${topic}`}</a>
         </Link>,
       ];
@@ -123,13 +123,13 @@ export default function LogsList(props) {
       <ButtonGroup id="log-types">
         <Button
           size="sm"
-          variant={topic ? "info" : "success"}
+          variant={topic ? "info" : "secondary"}
           onClick={() => setTopic(null)}
         >
           All
         </Button>
         {topics.map((t) => {
-          const variant = t === topic ? "success" : "info";
+          const variant = t === topic ? "secondary" : "info";
           return (
             <Button
               key={`topic-${t}`}

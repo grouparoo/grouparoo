@@ -95,7 +95,7 @@ export default function Page(props) {
           <Col>
             <h2>
               Schedule for source{" "}
-              <Badge variant="secondary">{schedule.source.name}</Badge>
+              <Badge variant="info">{schedule.source.name}</Badge>
             </h2>
             <StateBadge state={schedule.state} />
             <br />
@@ -206,6 +206,7 @@ export default function Page(props) {
               </Row>
             ) : null}
             <>
+              <hr />
               <p>
                 <strong>Options for a {schedule.source.type} Schedule</strong>
               </p>
@@ -222,7 +223,7 @@ export default function Page(props) {
 
                   {/* list options */}
                   {opt.type === "list" ? (
-                    <Table size="sm" variant="dark">
+                    <Table size="sm" variant="light">
                       <thead>
                         <tr>
                           <th></th>

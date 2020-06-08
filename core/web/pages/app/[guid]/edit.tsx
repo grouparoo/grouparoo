@@ -263,7 +263,7 @@ export default function Page(props) {
 
         <Row>
           <Col md={3}>
-            <Button variant="secondary" onClick={test}>
+            <Button variant="outline-secondary" size="sm" onClick={test}>
               Test Connection
             </Button>
           </Col>
@@ -280,12 +280,15 @@ export default function Page(props) {
             ) : null}
           </Col>
         </Row>
+
         <hr />
+
         <Button variant="primary" type="submit">
           Update
         </Button>
 
-        <hr />
+        <br />
+        <br />
 
         <Button variant="danger" size="sm" onClick={handleDelete}>
           Delete

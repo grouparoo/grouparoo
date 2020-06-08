@@ -49,34 +49,28 @@ export default function Page({ run, quantizedTimeline }) {
 
           <Row>
             <Col>
-              <Alert variant="secondary">
-                <Row>
-                  <Col>
-                    <Link
-                      href="/imports/[creatorGuid]"
-                      as={`/imports/${run.guid}`}
-                    >
-                      <a>Imports Created: {run.importsCreated}</a>
-                    </Link>
-                  </Col>
-                  <Col>Profiles Created: {run.profilesCreated}</Col>
-                  <Col>Profiles Imported: {run.profilesImported}</Col>
-                  <Col>Profiles Exported: {run.profilesExported}</Col>
-                </Row>
-              </Alert>
+              <Link href="/imports/[creatorGuid]" as={`/imports/${run.guid}`}>
+                <a>Imports Created: {run.importsCreated}</a>
+              </Link>
+              <br />
+              Profiles Created: {run.profilesCreated}
+              <br />
+              Profiles Imported: {run.profilesImported}
+              <br />
+              Profiles Exported: {run.profilesExported}
             </Col>
           </Row>
 
-          <Row>
-            <Col>
-              <strong>Error</strong>
-              {run.error ? (
-                <Alert variant="warning">{run.error}</Alert>
-              ) : (
-                <p>no error</p>
-              )}
-            </Col>
-          </Row>
+          <br />
+
+          {run.error ? (
+            <Row>
+              <Col>
+                <strong>Error</strong>
+                <Alert variant="danger">{run.error}</Alert>
+              </Col>
+            </Row>
+          ) : null}
 
           <h2>Timeline</h2>
           <div style={{ height: 500 }}>

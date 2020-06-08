@@ -119,16 +119,20 @@ export class Swagger extends Action {
         title: parentPackageJSON.name,
         license: { name: parentPackageJSON.license },
       },
-      host:
+      host: (
         config.servers.web.allowedRequestHosts[0] ||
-        `localhost:${config.servers.web.port}`,
+        `localhost:${config.servers.web.port}`
+      )
+        .replace("http://", "")
+        .replace("https://", ""),
       basePath: `/v${API_VERSION}`,
       // tags: tags.map((tag) => {
       //   return { name: tag, description: `topic: ${tag}` };
       // }),
-      schemes: config.servers.web.allowedRequestHosts[0]
-        ? ["https", "http"]
-        : ["http"],
+      schemes:
+        config.servers.web.allowedRequestHosts[0]?.indexOf("https") === 0
+          ? ["https", "http"]
+          : ["http"],
       paths: swaggerPaths,
 
       securityDefinitions: {

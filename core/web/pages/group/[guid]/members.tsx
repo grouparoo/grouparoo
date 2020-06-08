@@ -61,7 +61,7 @@ export default function Page(props) {
       </p>
       <Button
         disabled={group.state !== "ready"}
-        variant="info"
+        variant="outline-secondary"
         size="sm"
         onClick={() => {
           handleExport("csv");
@@ -71,7 +71,7 @@ export default function Page(props) {
       </Button>
       &nbsp;
       <Button
-        variant="secondary"
+        variant="outline-secondary"
         size="sm"
         onClick={() => {
           run();
@@ -81,7 +81,7 @@ export default function Page(props) {
       </Button>
       &nbsp;
       <Button
-        variant="secondary"
+        variant="outline-secondary"
         size="sm"
         onClick={() => {
           updateMembers();

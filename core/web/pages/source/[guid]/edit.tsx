@@ -143,6 +143,7 @@ export default function Page(props) {
             </Form.Group>
 
             <hr />
+            <p>Options for a {source.type} source:</p>
 
             {Object.keys(source.connection.options).length === 0 ? (
               <p>No options for this type of source</p>
@@ -276,7 +277,9 @@ export default function Page(props) {
                 </Form.Group>
               );
             })}
-            <br />
+
+            <hr />
+
             <h3>Example Data</h3>
 
             {previewColumns.length === 0 ? <p>No preview</p> : null}
@@ -311,12 +314,12 @@ export default function Page(props) {
             </div>
 
             <br />
-            <br />
 
             <Button variant="primary" type="submit">
               Update
             </Button>
-            <hr />
+            <br />
+            <br />
             <Button
               variant="danger"
               size="sm"

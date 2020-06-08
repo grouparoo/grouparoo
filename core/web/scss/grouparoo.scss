@@ -72,9 +72,19 @@ footer a {
   color: $light;
 }
 
-// -- HR --
+// -- hr --
 hr {
   border: 1px solid $grouparoo-light-blue;
+}
+
+// selector list
+
+.selector-list {
+  background-color: $grouparoo-violet;
+}
+
+.selector-list-selected {
+  background-color: $grouparoo-green;
 }
 
 // -- External Components --
@@ -92,54 +102,3 @@ hr {
   background-color: $grouparoo-background-blue;
   border-bottom: $grouparoo-background-blue;
 }
-
-// Theme Overrides
-// a {
-//   color: black;
-// }
-
-// a:hover {
-//   color: black;
-// }
-
-// .list-group-item {
-//   border-width: 1px;
-//   border-color: gray;
-//   color: gray;
-// }
-
-// .btn {
-//   border-radius: 4px;
-// }
-
-// .btn-group .btn {
-//   border-radius: 0px;
-// }
-
-// #navigation a:hover {
-//   text-decoration: none;
-// }
-
-// New Classes
-
-// .border-between-columns > [class*="col"]:before {
-//   background: lightgray;
-//   bottom: 0;
-//   content: " ";
-//   left: 0;
-//   position: absolute;
-//   width: 1px;
-//   top: 0;
-// }
-
-// .border-between-columns > [class*="col"]:first-child:before {
-//   display: none;
-// }
-
-// .button-color {
-//   background-color: #242436;
-// }
-
-// .button-color-selected {
-//   background-color: green;
-// }

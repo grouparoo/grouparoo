@@ -232,18 +232,21 @@ export default function ProfilesList(props) {
 
                           return (
                             <div key={`key-${profile.guid}-${key}`}>
-                              <span className="text-muted">{key}: </span>
-                              {String(profile.properties[key].value)}
+                              <span className="text-muted">
+                                {key}: {String(profile.properties[key].value)}
+                              </span>
                               <br />
                             </div>
                           );
                         })
                       ) : (
                         <div key={`key-${profile.guid}-${searchKey}`}>
-                          <span className="text-muted">{searchKey}: </span>
-                          {profile.properties[searchKey]
-                            ? profile.properties[searchKey]?.value?.toString()
-                            : null}
+                          <span className="text-muted">
+                            {searchKey}:{" "}
+                            {profile.properties[searchKey]
+                              ? profile.properties[searchKey]?.value?.toString()
+                              : null}
+                          </span>
                           <br />
                         </div>
                       )}

@@ -133,8 +133,7 @@ export default function Page(props) {
       <br />
 
       <Button
-        size="sm"
-        variant="warning"
+        variant="primary"
         onClick={() => {
           Router.push("/app/new");
         }}

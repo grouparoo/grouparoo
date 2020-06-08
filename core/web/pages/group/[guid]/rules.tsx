@@ -338,13 +338,13 @@ export default function Page(props) {
             <Badge variant="warning">Unsaved Rule Changes</Badge>
           </p>
         ) : null}
-        <Button size="sm" variant="info" onClick={addRule}>
+        <Button size="sm" variant="outline-primary" onClick={addRule}>
           Add Rule
         </Button>
         &nbsp;
         <Button
-          active={!loading}
-          variant="info"
+          disabled={loading}
+          variant="outline-dark"
           size="sm"
           onClick={async () => {
             await getCounts(false);
@@ -362,7 +362,7 @@ export default function Page(props) {
         </p>
         <Button
           active={!loading}
-          variant="success"
+          variant="primary"
           onClick={async () => {
             await updateRules();
             await getCounts();

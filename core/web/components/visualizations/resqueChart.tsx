@@ -52,8 +52,8 @@ function Chart({ data, queueNames }) {
       margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
       colors={{ datum: "color" }}
       curve={"monotoneX"}
-      lineWidth={10}
-      pointSize={15}
+      lineWidth={3}
+      pointSize={5}
       xScale={{
         type: "time",
         format: "native",

@@ -263,12 +263,12 @@ export default function Page(props) {
             })}
 
             <br />
-            <br />
 
             <Button variant="primary" type="submit">
               Update
             </Button>
-            <hr />
+            <br />
+            <br />
             <Button
               variant="danger"
               size="sm"

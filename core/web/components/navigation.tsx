@@ -23,7 +23,20 @@ function HighlightingNavLink({ href, text, icon }) {
             color: "white",
           }}
         >
-          {icon ? <FontAwesomeIcon icon={icon} size="xs" /> : null} &nbsp;
+          {icon ? <FontAwesomeIcon icon={icon} size="xs" /> : null}{" "}
+        </a>
+      </Link>
+      &nbsp;
+      <Link href={href}>
+        <a
+          role="tab"
+          aria-selected={active}
+          style={{
+            fontSize: 18,
+            paddingLeft: 0,
+            color: "white",
+          }}
+        >
           {text}
         </a>
       </Link>

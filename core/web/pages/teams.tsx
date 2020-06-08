@@ -48,8 +48,7 @@ export default function Page({ teams, teamMembers }) {
       </LoadingTable>
 
       <Button
-        size="sm"
-        variant="warning"
+        variant="primary"
         onClick={() => {
           Router.push("/team/new");
         }}
@@ -59,6 +58,7 @@ export default function Page({ teams, teamMembers }) {
       <br />
       <br />
       <br />
+      <h2>Team Members</h2>
 
       <LoadingTable loading={false}>
         <thead>
@@ -112,8 +112,7 @@ export default function Page({ teams, teamMembers }) {
       </LoadingTable>
 
       <Button
-        size="sm"
-        variant="warning"
+        variant="primary"
         onClick={() => {
           Router.push("/teamMember/new");
         }}

@@ -1,13 +1,5 @@
 import { useApi } from "../../../hooks/useApi";
-import {
-  Jumbotron,
-  Row,
-  Col,
-  Table,
-  Card,
-  Badge,
-  Alert,
-} from "react-bootstrap";
+import { Row, Col, Table, Card, Badge, Alert } from "react-bootstrap";
 import AppIcon from "./../../../components/appIcon";
 import StateBadge from "./../../../components/stateBadge";
 import Link from "next/link";
@@ -30,42 +22,38 @@ export default function Page({ errorHandler, successHandler, source, run }) {
 
       <SourceTabs source={source} />
 
-      <Jumbotron>
-        <Row>
-          <Col md={1}>
-            <AppIcon src={source.app.icon} fluid size={100} />
-          </Col>
-          <Col>
-            <h1>{source.name}</h1>
-            <StateBadge state={source.state} />
+      <Row>
+        <Col md={1}>
+          <AppIcon src={source.app.icon} fluid size={100} />
+        </Col>
+        <Col>
+          <h1>{source.name}</h1>
+          <StateBadge state={source.state} />
+          <br />
+          <br />
+          <p>
+            <strong>App</strong>:{" "}
+            <Link href="/app/[guid]" as={`/app/${source.app.guid}`}>
+              <a>{source.app.name}</a>
+            </Link>
             <br />
+            <strong>Connection</strong>: {source.connection.name}:{" "}
+            {source.connection.description}
+          </p>
+
+          <p>
+            <strong>Options</strong>
             <br />
-            <p>
-              <strong>App</strong>:{" "}
-              <Link href="/app/[guid]" as={`/app/${source.app.guid}`}>
-                <a>{source.app.name}</a>
-              </Link>
-              <br />
-              <strong>Connection</strong>: {source.connection.name}:{" "}
-              {source.connection.description}
-            </p>
+            {Object.keys(source.options).map((k) => (
+              <span key={`opt-${k}`}>
+                <strong>{k}</strong>: {source.options[k]}
+                <br />
+              </span>
+            ))}
+          </p>
 
-            <p>
-              <strong>Options</strong>
-              <br />
-              {Object.keys(source.options).map((k) => (
-                <span key={`opt-${k}`}>
-                  <strong>{k}</strong>: {source.options[k]}
-                  <br />
-                </span>
-              ))}
-            </p>
-          </Col>
-        </Row>
-      </Jumbotron>
+          <hr />
 
-      <Card border="info">
-        <Card.Body>
           <h2>Profile Property Rules</h2>
 
           <Table>
@@ -114,13 +102,9 @@ export default function Page({ errorHandler, successHandler, source, run }) {
             successHandler={successHandler}
             source={source}
           />
-        </Card.Body>
-      </Card>
 
-      <br />
+          <hr />
 
-      <Card border="info">
-        <Card.Body>
           <h2>Schedule</h2>
           <br />
           {source.scheduleAvailable ? (
@@ -243,13 +227,9 @@ export default function Page({ errorHandler, successHandler, source, run }) {
               Schedule not available for this connection type
             </Alert>
           )}
-        </Card.Body>
-      </Card>
 
-      <br />
+          <hr />
 
-      <Card border="info">
-        <Card.Body>
           <h2>Profile Identification</h2>
           {source.previewAvailable && !source.connection.skipSourceMapping ? (
             Object.keys(source.mapping).length === 1 ? (
@@ -273,8 +253,8 @@ export default function Page({ errorHandler, successHandler, source, run }) {
               Mapping not available for this connection type
             </Alert>
           )}
-        </Card.Body>
-      </Card>
+        </Col>
+      </Row>
     </>
   );
 }

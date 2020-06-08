@@ -230,7 +230,9 @@ export default function Page(props) {
             {newMappingValue === "" ? (
               <>
                 <hr />
-                <p>Create a new Unique Profile Property Rule</p>
+                <p>
+                  <strong>Create a new Unique Profile Property Rule</strong>
+                </p>
                 <p>
                   This profile property should be unique, meaning only one
                   profile in your entire customer base will have this value.
@@ -281,7 +283,7 @@ export default function Page(props) {
                 </Form.Group>
                 <Button
                   size="sm"
-                  variant="warning"
+                  variant="outline-warning"
                   onClick={bootstrapUniqueProfilePropertyRule}
                 >
                   Create Profile Property Rule

@@ -111,15 +111,13 @@ export default function ImportList(props) {
               <Fragment key={`import-${_import.guid}`}>
                 <tr>
                   <td>
-                    <span className="text-info">
-                      Guid:
-                      <Link
-                        href="/import/[guid]/edit"
-                        as={`/import/${_import.guid}/edit`}
-                      >
-                        <a> {_import.guid}</a>
-                      </Link>
-                    </span>
+                    Guid:
+                    <Link
+                      href="/import/[guid]/edit"
+                      as={`/import/${_import.guid}/edit`}
+                    >
+                      <a> {_import.guid}</a>
+                    </Link>
                     <br /> Profile:{" "}
                     {_import.profileGuid ? (
                       <Link

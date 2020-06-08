@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Button } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 import Router from "next/router";
 import { useState } from "react";
 import { useApi } from "../hooks/useApi";
@@ -24,6 +24,7 @@ export default function Page(props) {
   const limit = 100;
   const [offset, setOffset] = useState(query.offset || 0);
   useHistoryPagination(offset, "offset", setOffset);
+  const csrfToken = globalThis?.localStorage?.getItem("session:csrfToken");
 
   useSecondaryEffect(() => {
     load();
@@ -45,7 +46,6 @@ export default function Page(props) {
 
   async function download(file) {
     console.info("downloading file", file);
-    const csrfToken = window.localStorage.getItem("session:csrfToken");
     const url = `/api/${apiVersion}/file/${file.guid}?csrfToken=${csrfToken}`;
     window.open(url, "_new");
   }
@@ -91,6 +91,7 @@ export default function Page(props) {
       <LoadingTable loading={loading}>
         <thead>
           <tr>
+            <th>&nbsp;</th>
             <th>Name</th>
             <th>Type</th>
             {/* <th>Bucket</th> */}
@@ -110,6 +111,19 @@ export default function Page(props) {
             return (
               <tr key={`file-${file.guid}`}>
                 <td>
+                  {file.type === "image" ? (
+                    <Image
+                      thumbnail
+                      style={{ maxWidth: 100, maxHeight: 100 }}
+                      src={`/api/${apiVersion}/file/${file.guid}?csrfToken=${csrfToken}`}
+                    />
+                  ) : (
+                    <p>
+                      <em>no preview</em>
+                    </p>
+                  )}
+                </td>
+                <td>
                   <strong>{fileName}</strong>
                   <br />
                   {file.path}
@@ -127,7 +141,7 @@ export default function Page(props) {
                 <td>
                   <Button
                     size="sm"
-                    variant="success"
+                    variant="outline-success"
                     onClick={() => {
                       download(file);
                     }}
@@ -160,8 +174,7 @@ export default function Page(props) {
       />
 
       <Button
-        size="sm"
-        variant="warning"
+        variant="primary"
         onClick={() => {
           Router.push("/file/new");
         }}
