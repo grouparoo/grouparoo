@@ -114,7 +114,7 @@ export default function ProfilePreview(props) {
   }
 
   return (
-    <Card bg="info">
+    <Card bg="light">
       <Card.Body style={{ textAlign: "center", color: "white" }}>
         <Card.Title>Example Profile</Card.Title>
         {sleeping ? (
@@ -144,7 +144,7 @@ export default function ProfilePreview(props) {
 
           <ListGroup variant="flush">
             {Object.keys(profile.properties).map((k) => (
-              <ListGroup.Item key={`profile-prop-${k}`} variant="info">
+              <ListGroup.Item key={`profile-prop-${k}`} variant="light">
                 <strong>{k}</strong>: {profile.properties[k]?.value?.toString()}
               </ListGroup.Item>
             ))}
@@ -156,7 +156,7 @@ export default function ProfilePreview(props) {
 
           <ListGroup variant="flush">
             {profile.groupNames.map((groupName) => (
-              <ListGroup.Item key={`profile-prop-${groupName}`} variant="info">
+              <ListGroup.Item key={`profile-prop-${groupName}`} variant="light">
                 <strong>{groupName}</strong>
               </ListGroup.Item>
             ))}

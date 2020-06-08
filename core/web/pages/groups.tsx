@@ -130,8 +130,7 @@ export default function Page(props) {
       />
 
       <Button
-        size="sm"
-        variant="warning"
+        variant="primary"
         onClick={() => {
           Router.push("/group/new");
         }}
