@@ -18,7 +18,6 @@ export default function Page(props) {
     event.preventDefault();
     const response = await execApi("post", `/destination`, destination);
     if (response?.destination) {
-      successHandler.set({ message: "Destination Created" });
       Router.push({
         pathname: `/destination/${response.destination.guid}`,
         query: { tab: "edit" },

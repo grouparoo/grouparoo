@@ -71,7 +71,6 @@ export default function Page(props) {
     });
     setNewRuleLoading(false);
     if (response?.profilePropertyRule?.guid) {
-      successHandler.set({ message: "Profile Property Rule Created" });
       Router.push(
         `/profilePropertyRule/${response.profilePropertyRule.guid}/edit`
       );

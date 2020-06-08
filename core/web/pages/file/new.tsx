@@ -19,7 +19,6 @@ export default function Page(props) {
     });
     setLoading(false);
     if (response?.file) {
-      successHandler.set({ message: "File Created" });
       Router.push("/files");
     }
   }

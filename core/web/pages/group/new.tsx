@@ -21,7 +21,6 @@ export default function (props) {
     );
     setLoading(false);
     if (response?.group) {
-      successHandler.set({ message: "Group Created" });
       Router.push("/group/[guid]/edit", `/group/${response.group.guid}/edit`);
     }
   }

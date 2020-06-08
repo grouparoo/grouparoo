@@ -23,7 +23,6 @@ export default function Page(props) {
     const response = await execApi("post", `/team/member`, data);
     setLoading(false);
     if (response?.teamMember) {
-      successHandler.set({ message: "Team Member Created" });
       teamMemberHandler.set(response.teamMember);
       Router.push(`/team/${response.teamMember.teamGuid}/members`);
     }

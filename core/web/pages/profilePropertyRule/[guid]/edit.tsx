@@ -54,7 +54,6 @@ export default function Page(props) {
       );
       setLoading(false);
       if (response?.profilePropertyRule) {
-        successHandler.set({ message: "Profile Property Rule Updated" });
         setProfilePropertyRule(response.profilePropertyRule);
         profilePropertyRulesHandler.set(response.profilePropertyRule);
         if (
@@ -62,6 +61,8 @@ export default function Page(props) {
           profilePropertyRule.state === "draft"
         ) {
           Router.push(`/profilePropertyRules`);
+        } else {
+          successHandler.set({ message: "Profile Property Rule Updated" });
         }
       }
     }

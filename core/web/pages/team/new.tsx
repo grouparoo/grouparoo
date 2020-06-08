@@ -16,7 +16,6 @@ export default function (props) {
     const response = await execApi("post", `/team`, data);
     setLoading(false);
     if (response?.team) {
-      successHandler.set({ message: "Team Created" });
       Router.push("/team/[guid]/edit", `/team/${response.team.guid}/edit`);
     }
   }

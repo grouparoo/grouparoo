@@ -16,7 +16,6 @@ export default function (props) {
     const response = await execApi("post", `/session`, data);
     setLoading(false);
     if (response?.teamMember) {
-      successHandler.set({ message: "Session created" });
       window.localStorage.setItem("session:csrfToken", response.csrfToken);
       sessionHandler.set(response.teamMember);
 

@@ -67,7 +67,6 @@ export default function Page(props) {
       Object.assign({}, source, { state: "ready" })
     );
     if (response?.source) {
-      successHandler.set({ message: "Source updated" });
       setSource(response.source);
 
       // this source can have a schedule, and we have no schedules yet
@@ -83,6 +82,8 @@ export default function Page(props) {
       // we just went 'ready'
       if (source.state !== response.source.state) {
         Router.push(`/source/${source.guid}/overview`);
+      } else {
+        successHandler.set({ message: "Source updated" });
       }
     }
   };

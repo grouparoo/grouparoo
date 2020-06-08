@@ -62,14 +62,17 @@ export default function Page(props) {
       Object.assign({}, source, { state })
     );
     if (response?.source) {
-      successHandler.set({ message: "Source updated" });
       setSource(response.source);
       sourceHandler.set(response.source);
       if (response.source.state !== "ready") {
         Router.push(`/source/${guid}/mapping`);
-      }
-      if (response.source.state === "ready" && source.state === "draft") {
+      } else if (
+        response.source.state === "ready" &&
+        source.state === "draft"
+      ) {
         Router.push(`/source/${guid}/overview`);
+      } else {
+        successHandler.set({ message: "Source updated" });
       }
     }
   };
