@@ -30,13 +30,7 @@ export default function Page(props) {
       <h1>{_import.guid}</h1>
       <p>
         Creator:{" "}
-        <Link
-          href=""
-          as={`/${
-            _import.creatorType === "run" ? "imports" : _import.creatorType
-          }/${_import.creatorGuid}`}
-          prefetch={false}
-        >
+        <Link href={`/object/${_import.creatorGuid}`} prefetch={false}>
           <a>
             {_import.creatorType === "group"
               ? `"${groupName(_import.creatorGuid)}"`
@@ -46,7 +40,10 @@ export default function Page(props) {
         </Link>
         <br />
         Profile:{" "}
-        <Link href="/profile/[guid]" as={`/profile/${_import.profileGuid}`}>
+        <Link
+          href="/profile/[guid]/edit"
+          as={`/profile/${_import.profileGuid}/edit`}
+        >
           <a>{_import.profileGuid}</a>
         </Link>
       </p>
@@ -79,18 +76,13 @@ export default function Page(props) {
                       {_import.oldProfileProperties[k] !==
                       _import.newProfileProperties[k] ? (
                         <>
-                          <Badge variant="danger">
-                            {_import.oldProfileProperties[k]?.toString()}
-                          </Badge>
-                          |
-                          <Badge variant="success">
-                            {_import.newProfileProperties[k]?.toString()}
-                          </Badge>
+                          <Badge variant="danger">-</Badge>{" "}
+                          {_import.oldProfileProperties[k]?.toString()}|
+                          <Badge variant="success">+</Badge>{" "}
+                          {_import.newProfileProperties[k]?.toString()}
                         </>
                       ) : (
-                        <Badge variant="light">
-                          {_import.oldProfileProperties[k]?.toString()}
-                        </Badge>
+                        _import.oldProfileProperties[k]?.toString()
                       )}
                     </li>
                   );
@@ -99,10 +91,8 @@ export default function Page(props) {
                 {Object.keys(_import.newProfileProperties).map((k) =>
                   _import.oldProfileProperties[k] === undefined ? (
                     <li key={`old-${k}`}>
-                      {k}:{" "}
-                      <Badge variant="success">
-                        {_import.newProfileProperties[k]?.toString()}
-                      </Badge>
+                      {k}: <Badge variant="success">+</Badge>{" "}
+                      {_import.newProfileProperties[k]?.toString()}
                     </li>
                   ) : null
                 )}
@@ -114,17 +104,15 @@ export default function Page(props) {
                 {_import.oldGroupGuids.map((groupGuid) => {
                   return (
                     <li key={`grp-${groupGuid}`}>
-                      <Badge
-                        variant={
-                          !_import.newGroupGuids.includes(groupGuid)
-                            ? "danger"
-                            : "light"
-                        }
+                      {!_import.newGroupGuids.includes(groupGuid) ? (
+                        <Badge variant="danger">-</Badge>
+                      ) : null}{" "}
+                      <Link
+                        href="/group/[guid]/edit"
+                        as={`/group/${groupGuid}/edit`}
                       >
-                        <Link href="/group/[guid]" as={`/group/${groupGuid}`}>
-                          <a>{groupName(groupGuid)}</a>
-                        </Link>
-                      </Badge>
+                        <a>{groupName(groupGuid)}</a>
+                      </Link>
                     </li>
                   );
                 })}
@@ -132,11 +120,13 @@ export default function Page(props) {
                 {_import.newGroupGuids.map((groupGuid) =>
                   !_import.oldGroupGuids.includes(groupGuid) ? (
                     <li key={`grp-${groupGuid}`}>
-                      <Badge variant="success">
-                        <Link href="/group/[guid]" as={`/group/${groupGuid}`}>
-                          <a>{groupName(groupGuid)}</a>
-                        </Link>
-                      </Badge>
+                      <Badge variant="success">+</Badge>{" "}
+                      <Link
+                        href="/group/[guid]/edit"
+                        as={`/group/${groupGuid}/edit`}
+                      >
+                        <a>{groupName(groupGuid)}</a>
+                      </Link>
                     </li>
                   ) : null
                 )}

@@ -61,7 +61,7 @@ export default function ExportsList(props) {
 
     if (group) {
       return (
-        <Link href="/group/[guid]" as={`/group/${group.guid}`}>
+        <Link href="/group/[guid]/edit" as={`/group/${group.guid}/edit`}>
           <a>{groupName}</a>
         </Link>
       );
