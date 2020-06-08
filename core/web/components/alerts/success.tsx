@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Row, Col, Alert } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 
 export default function ({ successHandler }) {
-  const [message, setMessage] = useState(null);
+  const [message, setMessage] = useState("");
   const [secondsToShow] = useState(1000 * 4);
   const [show, setShow] = useState(false);
   let timer: NodeJS.Timeout;
@@ -27,17 +27,18 @@ export default function ({ successHandler }) {
   }
 
   return (
-    <Row>
-      <Col>
-        <Alert
-          show={show}
-          onClose={() => setShow(false)}
-          dismissible
-          variant="success"
-        >
-          {message}
-        </Alert>
-      </Col>
-    </Row>
+    <Alert
+      style={{
+        paddingTop: 20,
+        paddingBottom: 20,
+        fontSize: 18,
+        textAlign: "center",
+      }}
+      show={show}
+      onClose={() => setShow(false)}
+      variant="success"
+    >
+      {message}
+    </Alert>
   );
 }

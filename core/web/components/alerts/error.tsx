@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Row, Col, Alert } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 
 export default function ({ errorHandler }) {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -27,17 +27,18 @@ export default function ({ errorHandler }) {
   }
 
   return (
-    <Row>
-      <Col>
-        <Alert
-          show={show}
-          onClose={() => setShow(false)}
-          dismissible
-          variant="danger"
-        >
-          {errorMessage}
-        </Alert>
-      </Col>
-    </Row>
+    <Alert
+      style={{
+        paddingTop: 20,
+        paddingBottom: 20,
+        fontSize: 18,
+        textAlign: "center",
+      }}
+      show={show}
+      onClose={() => setShow(false)}
+      variant="danger"
+    >
+      {errorMessage}
+    </Alert>
   );
 }
