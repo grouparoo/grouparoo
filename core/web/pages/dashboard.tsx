@@ -1,6 +1,5 @@
 import { useApi } from "./../hooks/useApi";
 import { useEffect, useState } from "react";
-import { Jumbotron, Row, Col } from "react-bootstrap";
 import Head from "next/head";
 import TotalsList from "../components/visualizations/totals";
 import Welcome from "../components/visualizations/welcome";
@@ -37,10 +36,8 @@ export default function Page(props) {
         <HeaderTitle title="Dashboard" />
         <h1>Dashboard</h1>
 
-        <Jumbotron>
-          <h2>Totals</h2>
-          <TotalsList {...props} />
-        </Jumbotron>
+        <h2>Totals</h2>
+        <TotalsList {...props} />
       </>
     );
   }
