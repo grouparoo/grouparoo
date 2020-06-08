@@ -35,6 +35,7 @@
     "lint": "npm run lint-api && npm run lint-web",
     "lint-api": "cd api && prettier --check src __tests__",
     "lint-web": "cd web && prettier --check pages components classes client utils hooks __tests__",
+    "docs": "cd api && typedoc --out docs --theme default --mode file --exclude \"src/actions/**/*.ts\" --exclude \"src/tasks/**/*.ts\"",
     "import": "./api/bin/import"
   },
   "dependencies": {
@@ -103,7 +104,8 @@
     "prettier": "^2.0.5",
     "prop-types": "^15.7.2",
     "sequelize-cli": "^5.5.1",
-    "ts-jest": "^25.4.0"
+    "ts-jest": "^25.4.0",
+    "typedoc": "^0.17.7"
   },
   "gitHead": "d180097c68e2e0db22918e7d51c0e84abd9202c0"
 }
