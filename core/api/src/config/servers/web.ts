@@ -14,8 +14,6 @@ export const DEFAULT = {
         // i.e.: [ 'https://www.site.com' ]
         allowedRequestHosts: process.env.ALLOWED_HOSTS
           ? process.env.ALLOWED_HOSTS.split(",")
-          : process.env.WEB_URL
-          ? [process.env.WEB_URL]
           : [],
         // Port or Socket Path
         port: process.env.PORT || 8080,
