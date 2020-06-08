@@ -88,6 +88,7 @@ Grouparoo needs to connect to a few services to run. When developing locally (`N
 
 - `PORT` is the port the application will run on. When developing, set this to something static like `3000`. Many PaaS providers (like Heroku) will provide you a port dynamically at runtime via this environment variable.
 - `WEB_URL` is the URL to access the Grouparoo web application, ie "http://localhost:3000" when developing. This is used to set access headers among other things.
+- `SERVER_TOKEN` is a random string that will be used to identify Grouparoo servers to each-other in the same cluster. It will not be used to authenticate users, but rather authorize servers to make requests against each other. SERVER_TOKEN is not a replacement for setting unique, per-application database credentials and isolated runtime environments.
 
 The following options configure if Actionhero should enable the server and workers for this instance of Grouparoo. When deploying, you will likely want some "api" servers and some "worker" servers, which can all be configured with these environment variables. You can also customize how these are used in `/src/config`
 
