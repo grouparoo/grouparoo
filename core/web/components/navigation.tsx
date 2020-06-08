@@ -110,6 +110,7 @@ export default function Navigation(props) {
                         style={{
                           fontSize: 18,
                           paddingLeft: 0,
+                          fontWeight: 300,
                           color: "white",
                         }}
                       >
@@ -171,6 +172,7 @@ export default function Navigation(props) {
                     width: "100%",
                     textAlign: "left",
                     textTransform: "none",
+                    fontWeight: 300,
                   }}
                 >
                   {subMenuGreeting}
