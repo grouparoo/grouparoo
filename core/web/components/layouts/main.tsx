@@ -156,7 +156,15 @@ export default function ({
         >
           <br />
           <div>
-            <div style={{ position: "fixed", zIndex: 999, width: alertWidth }}>
+            <div
+              style={{
+                position: "fixed",
+                zIndex: 999,
+                width: alertWidth,
+                left: contentAreaLeftPadding,
+                bottom: 0,
+              }}
+            >
               <SuccessAlert successHandler={successHandler} />
               <ErrorAlert errorHandler={errorHandler} />
             </div>
