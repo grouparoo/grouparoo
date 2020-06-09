@@ -83,10 +83,6 @@ export default function Page(props) {
 
       <SourceTabs source={source} />
 
-      <p>
-        <span className="text-muted">{schedule.guid}</span>
-      </p>
-
       <Form id="form" onSubmit={edit} noValidate>
         <Row>
           <Col md={1}>
@@ -224,7 +220,7 @@ export default function Page(props) {
 
                   {/* list options */}
                   {opt.type === "list" ? (
-                    <Table size="sm" variant="light">
+                    <Table striped bordered size="sm">
                       <thead>
                         <tr>
                           <th></th>
@@ -310,16 +306,21 @@ export default function Page(props) {
                 </div>
               ))}
             </>
+
+            <hr />
+
+            <Button variant="primary" type="submit" disabled={loading}>
+              Update
+            </Button>
+
+            <br />
+            <br />
+
+            <Button variant="danger" size="sm" onClick={handleDelete}>
+              Delete
+            </Button>
           </Col>
         </Row>
-
-        <Button variant="primary" type="submit" disabled={loading}>
-          Update
-        </Button>
-        <hr />
-        <Button variant="danger" size="sm" onClick={handleDelete}>
-          Delete
-        </Button>
       </Form>
     </>
   );

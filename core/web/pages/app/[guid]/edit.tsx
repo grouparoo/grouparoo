@@ -104,6 +104,7 @@ export default function Page(props) {
             <br />
             <AppIcon src={app.icon} fluid size={100} />
           </Col>
+
           <Col>
             <Form.Group controlId="name">
               <Form.Label>Name</Form.Label>
@@ -136,164 +137,171 @@ export default function Page(props) {
             <p>
               <StateBadge state={app.state} />
             </p>
-          </Col>
-        </Row>
-        {typeOptions.length > 0 ? (
-          <>
-            <hr />
-            <strong>Options for a {app.type} app</strong>
-            <br />
-            <br />
 
-            {typeOptions.map((opt) => {
-              return (
-                <Form.Group key={`opt-${opt.key}`} controlId={opt.key}>
-                  <Form.Label>
-                    {opt.required ? (
-                      <>
-                        <Badge variant="info">required</Badge>&nbsp;
-                      </>
-                    ) : null}
-                    <code>{opt.key}</code>
-                  </Form.Label>
-                  {(() => {
-                    if (optionOptions[opt.key]?.type === "typeahead") {
-                      return (
-                        <>
-                          <Typeahead
-                            id="typeahead"
-                            labelKey="key"
-                            onChange={(selected) => {
-                              console.log(selected);
-                              updateOption(opt.key, selected[0]?.key);
-                            }}
-                            options={optionOptions[opt.key]?.options.map(
-                              (k, idx) => {
-                                return {
-                                  key: k,
-                                  descriptions:
-                                    optionOptions[k]?.descriptions[idx],
-                                };
-                              }
-                            )}
-                            placeholder={`Select ${opt.key}`}
-                            renderMenuItemChildren={(opt, props, idx) => {
-                              return [
-                                <span key={`opt-${idx}-key`}>
-                                  {opt.key}
-                                  <br />
-                                </span>,
-                                <small
-                                  key={`opt-${idx}-descriptions`}
-                                  className="text-small"
-                                >
-                                  <em>
-                                    Descriptions:{" "}
-                                    {opt.descriptions
-                                      ? opt.descriptions.join(", ")
-                                      : "None"}
-                                  </em>
-                                </small>,
-                              ];
-                            }}
-                            defaultSelected={
-                              app.options[opt.key]
-                                ? [app.options[opt.key]]
-                                : undefined
-                            }
-                          />
-                          <Form.Text className="text-muted">
-                            {opt.description}
-                          </Form.Text>
-                        </>
-                      );
-                    } else if (optionOptions[opt.key]?.type === "list") {
-                      return (
-                        <>
-                          <Form.Control
-                            as="select"
-                            required={opt.required}
-                            defaultValue={app.options[opt.key] || ""}
-                            onChange={(e) => {
-                              updateOption(e.target.id, e.target.value);
-                            }}
-                          >
-                            <option value={""} disabled>
-                              Choose an option
-                            </option>
-                            {optionOptions[opt.key].options.map((o, idx) => (
-                              <option key={`opt~${opt.key}-${o}`} value={o}>
-                                {o}{" "}
-                                {optionOptions[opt.key]?.descriptions &&
-                                optionOptions[opt.key]?.descriptions[idx]
-                                  ? ` | ${
+            {typeOptions.length > 0 ? (
+              <>
+                <hr />
+                <strong>Options for a {app.type} app</strong>
+                <br />
+                <br />
+
+                {typeOptions.map((opt) => {
+                  return (
+                    <Form.Group key={`opt-${opt.key}`} controlId={opt.key}>
+                      <Form.Label>
+                        {opt.required ? (
+                          <>
+                            <Badge variant="info">required</Badge>&nbsp;
+                          </>
+                        ) : null}
+                        <code>{opt.key}</code>
+                      </Form.Label>
+                      {(() => {
+                        if (optionOptions[opt.key]?.type === "typeahead") {
+                          return (
+                            <>
+                              <Typeahead
+                                id="typeahead"
+                                labelKey="key"
+                                onChange={(selected) => {
+                                  console.log(selected);
+                                  updateOption(opt.key, selected[0]?.key);
+                                }}
+                                options={optionOptions[opt.key]?.options.map(
+                                  (k, idx) => {
+                                    return {
+                                      key: k,
+                                      descriptions:
+                                        optionOptions[k]?.descriptions[idx],
+                                    };
+                                  }
+                                )}
+                                placeholder={`Select ${opt.key}`}
+                                renderMenuItemChildren={(opt, props, idx) => {
+                                  return [
+                                    <span key={`opt-${idx}-key`}>
+                                      {opt.key}
+                                      <br />
+                                    </span>,
+                                    <small
+                                      key={`opt-${idx}-descriptions`}
+                                      className="text-small"
+                                    >
+                                      <em>
+                                        Descriptions:{" "}
+                                        {opt.descriptions
+                                          ? opt.descriptions.join(", ")
+                                          : "None"}
+                                      </em>
+                                    </small>,
+                                  ];
+                                }}
+                                defaultSelected={
+                                  app.options[opt.key]
+                                    ? [app.options[opt.key]]
+                                    : undefined
+                                }
+                              />
+                              <Form.Text className="text-muted">
+                                {opt.description}
+                              </Form.Text>
+                            </>
+                          );
+                        } else if (optionOptions[opt.key]?.type === "list") {
+                          return (
+                            <>
+                              <Form.Control
+                                as="select"
+                                required={opt.required}
+                                defaultValue={app.options[opt.key] || ""}
+                                onChange={(e) => {
+                                  updateOption(e.target.id, e.target.value);
+                                }}
+                              >
+                                <option value={""} disabled>
+                                  Choose an option
+                                </option>
+                                {optionOptions[opt.key].options.map(
+                                  (o, idx) => (
+                                    <option
+                                      key={`opt~${opt.key}-${o}`}
+                                      value={o}
+                                    >
+                                      {o}{" "}
+                                      {optionOptions[opt.key]?.descriptions &&
                                       optionOptions[opt.key]?.descriptions[idx]
-                                    }`
-                                  : null}
-                              </option>
-                            ))}
-                          </Form.Control>
-                          <Form.Text className="text-muted">
-                            {opt.description}
-                          </Form.Text>
-                        </>
-                      );
-                    } else {
-                      return (
-                        <>
-                          <Form.Control
-                            required={opt.required}
-                            type="text"
-                            defaultValue={app.options[opt.key]}
-                            onChange={(e) => {
-                              updateOption(e.target.id, e.target.value);
-                            }}
-                          />
-                          <Form.Text className="text-muted">
-                            {opt.description}
-                          </Form.Text>
-                        </>
-                      );
-                    }
-                  })()}
-                </Form.Group>
-              );
-            })}
-          </>
-        ) : null}
+                                        ? ` | ${
+                                            optionOptions[opt.key]
+                                              ?.descriptions[idx]
+                                          }`
+                                        : null}
+                                    </option>
+                                  )
+                                )}
+                              </Form.Control>
+                              <Form.Text className="text-muted">
+                                {opt.description}
+                              </Form.Text>
+                            </>
+                          );
+                        } else {
+                          return (
+                            <>
+                              <Form.Control
+                                required={opt.required}
+                                type="text"
+                                defaultValue={app.options[opt.key]}
+                                onChange={(e) => {
+                                  updateOption(e.target.id, e.target.value);
+                                }}
+                              />
+                              <Form.Text className="text-muted">
+                                {opt.description}
+                              </Form.Text>
+                            </>
+                          );
+                        }
+                      })()}
+                    </Form.Group>
+                  );
+                })}
+              </>
+            ) : null}
 
-        <Row>
-          <Col md={3}>
-            <Button variant="outline-secondary" size="sm" onClick={test}>
-              Test Connection
+            <Row>
+              <Col md={3}>
+                <Button variant="outline-secondary" size="sm" onClick={test}>
+                  Test Connection
+                </Button>
+              </Col>
+              <Col>
+                {testResult.result !== null &&
+                testResult.result !== undefined &&
+                !testResult.error ? (
+                  <Alert variant="success">Test Passed</Alert>
+                ) : ranTest ? (
+                  <Alert variant="warning">Test Failed</Alert>
+                ) : null}
+                {testResult.error ? (
+                  <Alert variant="danger">{testResult.error}</Alert>
+                ) : null}
+              </Col>
+            </Row>
+
+            <hr />
+
+            <Button variant="primary" type="submit">
+              Update
+            </Button>
+
+            <br />
+            <br />
+
+            <Button variant="danger" size="sm" onClick={handleDelete}>
+              Delete
             </Button>
           </Col>
-          <Col>
-            {testResult.result !== null &&
-            testResult.result !== undefined &&
-            !testResult.error ? (
-              <Alert variant="success">Test Passed</Alert>
-            ) : ranTest ? (
-              <Alert variant="warning">Test Failed</Alert>
-            ) : null}
-            {testResult.error ? (
-              <Alert variant="danger">{testResult.error}</Alert>
-            ) : null}
-          </Col>
         </Row>
-
-        <hr />
-
-        <Button variant="primary" type="submit">
-          Update
-        </Button>
-
-        <br />
-        <br />
-
-        <Button variant="danger" size="sm" onClick={handleDelete}>
-          Delete
-        </Button>
       </Form>
     </>
   );

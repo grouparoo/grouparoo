@@ -29,8 +29,8 @@ export default function Selector({
         margin: 15,
         paddingTop: 20,
         paddingBottom: 20,
-        paddingRight: 5,
-        paddingLeft: 5,
+        paddingRight: 10,
+        paddingLeft: 10,
         cursor: "pointer",
       }}
       className={className}

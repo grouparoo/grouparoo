@@ -139,9 +139,7 @@ export default function Page(props) {
                   </Link>
                 </td>
                 <td>{rule.type}</td>
-                <td>
-                  <input readOnly type="checkbox" checked={rule.unique} />
-                </td>
+                <td>{rule.unique ? "✅" : null}</td>
                 <td>
                   <Link
                     href="/source/[guid]/overview"

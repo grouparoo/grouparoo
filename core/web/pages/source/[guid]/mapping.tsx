@@ -284,7 +284,7 @@ export default function Page(props) {
                 </Form.Group>
                 <Button
                   size="sm"
-                  variant="outline-warning"
+                  variant="outline-primary"
                   onClick={bootstrapUniqueProfilePropertyRule}
                 >
                   Create Profile Property Rule
