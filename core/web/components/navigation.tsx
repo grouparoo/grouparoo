@@ -132,9 +132,8 @@ export default function Navigation(props) {
                         ) : null}{" "}
                         &nbsp;
                         {nav.title}
-                        <br />
-                        <br />
                       </span>
+                      <div style={{ padding: 6 }} />
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey="0">
                       <div>
