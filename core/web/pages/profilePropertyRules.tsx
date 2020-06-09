@@ -194,7 +194,9 @@ export default function Page(props) {
             }}
           >
             {sources.map((source) => (
-              <option value={source.guid}>{source.name}</option>
+              <option key={`opt-source-${source.guid}`} value={source.guid}>
+                {source.name}
+              </option>
             ))}
           </Form.Control>{" "}
           <Button

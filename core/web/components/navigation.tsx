@@ -4,7 +4,21 @@ import Link from "next/link";
 import { isBrowser } from "../utils/isBrowser";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function HighlightingNavLink({ href, text, icon }) {
+const navLiStyle = { marginTop: 20, marginBottom: 20 };
+
+const navIconStyle = {
+  fontSize: 18,
+  fontWeight: 300,
+  paddingLeft: 0,
+  marginLeft: 0,
+  marginRight: 10,
+  color: "white",
+  textDecoration: "none",
+};
+
+const iconConstrainedStyle = { width: 20 };
+
+function HighlightingNavLink({ href, text, icon, idx }) {
   const [active, setActive] = useState(false);
   useEffect(() => {
     const active = globalThis?.location?.pathname === href;
@@ -12,21 +26,18 @@ function HighlightingNavLink({ href, text, icon }) {
   }, [globalThis?.location?.href]);
 
   return (
-    <>
+    <li style={navLiStyle} key={idx}>
       <Link href={href}>
-        <a
-          role="tab"
-          aria-selected={active}
-          style={{
-            fontSize: 18,
-            paddingLeft: 0,
-            color: "white",
-          }}
-        >
-          {icon ? <FontAwesomeIcon icon={icon} size="xs" /> : null}{" "}
+        <a role="tab" aria-selected={active} style={navIconStyle}>
+          {icon ? (
+            <FontAwesomeIcon
+              style={iconConstrainedStyle}
+              icon={icon}
+              size="xs"
+            />
+          ) : null}{" "}
         </a>
-      </Link>
-      &nbsp;
+      </Link>{" "}
       <Link href={href}>
         <a
           role="tab"
@@ -40,9 +51,7 @@ function HighlightingNavLink({ href, text, icon }) {
           {text}
         </a>
       </Link>
-      <br />
-      <br />
-    </>
+    </li>
   );
 }
 
@@ -78,7 +87,7 @@ export default function Navigation(props) {
             minHeight: height,
             paddingLeft: 20,
             paddingRight: 20,
-            overflowY: "scroll",
+            overflowY: "auto",
             height: "100%",
           }}
         >
@@ -89,78 +98,92 @@ export default function Navigation(props) {
                   style={{
                     maxHeight: 50,
                     marginTop: 30,
-                    marginBottom: 40,
+                    marginBottom: 20,
                   }}
                   src="/images/logo/logo.svg"
                 />
               </a>
             </Link>
 
-            <br />
-
-            {navigation.navigationItems.map((nav, idx) => {
-              if (nav.type === "link") {
-                return (
-                  <HighlightingNavLink
-                    key={nav.href}
-                    href={nav.href}
-                    text={nav.title}
-                    icon={nav.icon}
-                  />
-                );
-              } else if (nav.type === "divider") {
-                return <br key={idx} />;
-              } else if (nav.type === "subNavMenu") {
-                return (
-                  <Accordion key={idx}>
-                    <Accordion.Toggle
-                      as={Button}
-                      style={{ padding: 0 }}
-                      variant="link"
-                      eventKey="0"
-                    >
-                      <span
-                        style={{
-                          fontSize: 18,
-                          paddingLeft: 0,
-                          fontWeight: 300,
-                          color: "white",
-                        }}
-                      >
-                        {nav.icon ? (
-                          <FontAwesomeIcon icon={nav.icon} size="xs" />
-                        ) : null}{" "}
-                        &nbsp;
-                        {nav.title}
-                      </span>
-                      <div style={{ padding: 6 }} />
-                    </Accordion.Toggle>
-                    <Accordion.Collapse eventKey="0">
-                      <div>
-                        {navigation.platformItems.map((nav, platformIdx) => {
-                          if (nav.type === "link") {
-                            return (
-                              <p
-                                style={{ paddingLeft: 10 }}
-                                key={`platform-dropdown-${platformIdx}`}
-                              >
-                                <Link href={nav.href}>
-                                  <a style={{ color: "white" }}>{nav.title}</a>
-                                </Link>
-                              </p>
-                            );
-                          } else if (nav.type === "divider") {
-                            return (
-                              <hr key={`platform-dropdown-${platformIdx}`} />
-                            );
-                          }
-                        })}
-                      </div>
-                    </Accordion.Collapse>
-                  </Accordion>
-                );
-              }
-            })}
+            <ul style={{ padding: 0, margin: 0 }}>
+              {navigation.navigationItems.map((nav, idx) => {
+                if (nav.type === "link") {
+                  return (
+                    <HighlightingNavLink
+                      key={nav.href}
+                      href={nav.href}
+                      text={nav.title}
+                      icon={nav.icon}
+                      idx={idx}
+                    />
+                  );
+                } else if (nav.type === "divider") {
+                  return <li key={idx} style={navLiStyle} />;
+                } else if (nav.type === "subNavMenu") {
+                  return (
+                    <li style={navLiStyle} key={idx}>
+                      <Accordion>
+                        <Accordion.Toggle
+                          as={Button}
+                          style={{ padding: 0 }}
+                          variant="link"
+                          eventKey="0"
+                        >
+                          <span style={navIconStyle}>
+                            {nav.icon ? (
+                              <FontAwesomeIcon
+                                style={iconConstrainedStyle}
+                                icon={nav.icon}
+                                size="xs"
+                              />
+                            ) : null}{" "}
+                          </span>
+                          <span
+                            style={{
+                              fontSize: 18,
+                              fontWeight: 300,
+                              paddingLeft: 0,
+                              color: "white",
+                            }}
+                          >
+                            {nav.title}
+                          </span>
+                          <div style={{ padding: 6 }} />
+                        </Accordion.Toggle>
+                        <Accordion.Collapse eventKey="0">
+                          <div>
+                            {navigation.platformItems.map(
+                              (nav, platformIdx) => {
+                                if (nav.type === "link") {
+                                  return (
+                                    <p
+                                      style={{ paddingLeft: 35 }}
+                                      key={`platform-dropdown-${platformIdx}`}
+                                    >
+                                      <Link href={nav.href}>
+                                        <a style={{ color: "white" }}>
+                                          {nav.title}
+                                        </a>
+                                      </Link>
+                                    </p>
+                                  );
+                                } else if (nav.type === "divider") {
+                                  return (
+                                    <hr
+                                      key={`platform-dropdown-${platformIdx}`}
+                                    />
+                                  );
+                                }
+                              }
+                            )}
+                          </div>
+                        </Accordion.Collapse>
+                      </Accordion>
+                    </li>
+                  );
+                }
+              })}
+            </ul>
           </div>
 
           <div
