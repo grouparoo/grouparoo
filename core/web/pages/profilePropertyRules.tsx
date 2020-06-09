@@ -19,7 +19,7 @@ export default function Page(props) {
   const [examples, setExamples] = useState(props.examples);
   const [sources, setSources] = useState(props.sources);
   const [newRuleSourceGuid, setNewRuleSourceGuid] = useState(
-    props.sources[0].guid
+    props.sources[0]?.guid || ""
   );
   const [profilePropertyRules, setProfilePropertyRules] = useState(
     props.profilePropertyRules
@@ -182,33 +182,35 @@ export default function Page(props) {
 
       <hr />
 
-      <Form inline onSubmit={createNewProfilePropertyRule}>
-        <p>
-          Add new Profile Property Rule for source{" "}
-          <Form.Control
-            as="select"
-            size="sm"
-            value={newRuleSourceGuid}
-            onChange={(e) => {
-              setNewRuleSourceGuid(e.target.value);
-            }}
-          >
-            {sources.map((source) => (
-              <option key={`opt-source-${source.guid}`} value={source.guid}>
-                {source.name}
-              </option>
-            ))}
-          </Form.Control>{" "}
-          <Button
-            type="submit"
-            size="sm"
-            disabled={newRuleLoading}
-            variant="primary"
-          >
-            Create
-          </Button>
-        </p>
-      </Form>
+      {sources.length > 0 ? (
+        <Form inline onSubmit={createNewProfilePropertyRule}>
+          <p>
+            Add new Profile Property Rule for source{" "}
+            <Form.Control
+              as="select"
+              size="sm"
+              value={newRuleSourceGuid}
+              onChange={(e) => {
+                setNewRuleSourceGuid(e.target.value);
+              }}
+            >
+              {sources.map((source) => (
+                <option key={`opt-source-${source.guid}`} value={source.guid}>
+                  {source.name}
+                </option>
+              ))}
+            </Form.Control>{" "}
+            <Button
+              type="submit"
+              size="sm"
+              disabled={newRuleLoading}
+              variant="primary"
+            >
+              Create
+            </Button>
+          </p>
+        </Form>
+      ) : null}
     </>
   );
 }
