@@ -1,7 +1,7 @@
 import { useApi } from "../../../hooks/useApi";
 import SourceTabs from "../../../components/tabs/source";
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Moment from "react-moment";
 import { Alert, Row, Col, Form, Button, Badge, Table } from "react-bootstrap";
 import Router from "next/router";
@@ -9,7 +9,7 @@ import Link from "next/link";
 import AppIcon from "../../../components/appIcon";
 import StateBadge from "../../../components/stateBadge";
 
-import { ScheduleAPIData, RunAPIData } from "../../../utils/apiData";
+import { ScheduleAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, successHandler, source, run, pluginOptions } = props;
@@ -26,6 +26,9 @@ export default function Page(props) {
     const _schedule = Object.assign({}, schedule, { state: "ready" });
     if (schedule.state === "ready") {
       delete _schedule.options; // they are immutable and cannot be changed once set; server will return an error
+    }
+    if (recurringFrequencyMinutes) {
+      schedule.recurringFrequency = recurringFrequencyMinutes * (60 * 1000);
     }
 
     setLoading(true);

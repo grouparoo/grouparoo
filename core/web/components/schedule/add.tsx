@@ -20,7 +20,7 @@ export default function (props) {
   return (
     <Button
       size="sm"
-      variant="warning"
+      variant="outline-primary"
       disabled={loading || source.state === "draft"}
       onClick={create}
     >
