@@ -34,4 +34,4 @@ echo 'docs.grouparoo.com' >> gh-pages/CNAME
 ## make the commmit
 cd gh-pages
 git add -A
-git -c user.name="$GIT_USER_NAME" -c user.email="$GIT_USER_EMAIL" commit --allow-empty -m "deploy docs site @ $(date)"
+git -c user.name="$GIT_USER_NAME" -c user.email="$GIT_USER_EMAIL" commit --allow-empty -m "deploy docs site @ $(date) [ci skip]"
