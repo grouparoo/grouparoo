@@ -1,15 +1,29 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, ProgressBar } from "react-bootstrap";
 import Router from "next/router";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, types } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { errorHandler, uploadHandler, types } = props;
+  const { execApi } = useApi(props, errorHandler, uploadHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
+  const [uploadPercentage, setUploadPercentage] = useState(0);
+
+  useEffect(() => {
+    uploadHandler.subscribe(
+      "fileAdd",
+      ({ uploadPercentage: _uploadPercentage }) => {
+        setUploadPercentage(_uploadPercentage);
+      }
+    );
+
+    return () => {
+      uploadHandler.unsubscribe("fileAdd");
+    };
+  }, []);
 
   async function onSubmit(data) {
     setLoading(true);
@@ -49,6 +63,21 @@ export default function Page(props) {
             Type is required
           </Form.Control.Feedback>
         </Form.Group>
+
+        <br />
+
+        {uploadPercentage > 0 ? (
+          <>
+            <p>Uploading...</p>
+            <ProgressBar
+              striped
+              variant="info"
+              animated
+              now={uploadPercentage * 100}
+            />
+            <br />
+          </>
+        ) : null}
 
         <Button variant="primary" type="submit" disabled={loading}>
           Submit

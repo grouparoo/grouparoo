@@ -102,7 +102,8 @@ export class Client {
     path,
     data: AxiosRequestConfig["data"] = {},
     useCache = true,
-    cookieString?
+    cookieString?,
+    uploadHandler?
   ) {
     const headers = {
       Accept: "application/json",
@@ -124,6 +125,12 @@ export class Client {
       agent: `grouparoo-web-${PackageJSON.version}`,
       method: verb.toLowerCase() as Method,
       headers,
+      onUploadProgress: (progressEvent) => {
+        const uploadPercentage = Math.round(
+          (progressEvent.loaded / progressEvent.total) * 100
+        );
+        return uploadHandler ? uploadHandler.set({ uploadPercentage }) : null;
+      },
     };
 
     data.csrfToken = this.csrfToken();

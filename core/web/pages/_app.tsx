@@ -9,6 +9,7 @@ import Layout from "../components/layouts/main";
 
 import { ErrorHandler } from "../utils/errorHandler";
 import { SuccessHandler } from "../utils/successHandler";
+import { UploadHandler } from "../utils/uploadHandler";
 import { SessionHandler } from "../utils/sessionHandler";
 import { TeamHandler } from "../utils/teamHandler";
 import { TeamMemberHandler } from "../utils/teamMembersHandler";
@@ -23,6 +24,7 @@ import { ProfilePropertyRulesHandler } from "../utils/profilePropertyRulesHandle
 
 const successHandler = new SuccessHandler();
 const errorHandler = new ErrorHandler();
+const uploadHandler = new UploadHandler();
 const sessionHandler = new SessionHandler();
 const teamHandler = new TeamHandler();
 const teamMemberHandler = new TeamMemberHandler();
@@ -56,6 +58,7 @@ export default function GrouparooWebApp(props) {
     navigationMode: props.navigationMode,
     successHandler,
     errorHandler,
+    uploadHandler,
     sessionHandler,
     teamHandler,
     teamMemberHandler,
