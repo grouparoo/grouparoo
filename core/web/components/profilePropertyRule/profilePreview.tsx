@@ -104,7 +104,7 @@ export default function ProfilePreview(props) {
   }
 
   return (
-    <Card bg="info">
+    <Card bg="light">
       <Card.Body style={{ textAlign: "center", color: "white" }}>
         <Card.Title>Example Profile</Card.Title>
         {sleeping ? (
@@ -130,15 +130,13 @@ export default function ProfilePreview(props) {
 
       {sleeping ? null : (
         <ListGroup variant="flush">
-          <ListGroup.Item
-            variant={errorMessage !== "" ? "danger" : "secondary"}
-          >
+          <ListGroup.Item variant={errorMessage !== "" ? "danger" : "success"}>
             <strong>{profilePropertyRule.key}</strong>:{" "}
             {errorMessage !== "" ? errorMessage : thisProfilePropertyRuleValue}
           </ListGroup.Item>
 
           {Object.keys(otherProfilePropertyRules).map((k) => (
-            <ListGroup.Item key={`profile-preview-row-${k}`} variant="info">
+            <ListGroup.Item key={`profile-preview-row-${k}`} variant="light">
               <strong>{k}</strong>:{" "}
               {otherProfilePropertyRules[k]?.value?.toString()}
             </ListGroup.Item>

@@ -44,7 +44,6 @@ export async function createSchedule({
   const response = await execApi("post", `/schedule`, data);
 
   if (response?.schedule) {
-    successHandler.set({ message: "Schedule Created" });
     Router.push(`/source/${sourceGuid}/schedule`);
   } else {
     setLoading(false);

@@ -63,18 +63,13 @@ export default function Page({ _export, groups }) {
                       {_export.oldProfileProperties[k] !==
                       _export.newProfileProperties[k] ? (
                         <>
-                          <Badge variant="danger">
-                            {_export.oldProfileProperties[k]?.toString()}
-                          </Badge>
-                          |
-                          <Badge variant="success">
-                            {_export.newProfileProperties[k]?.toString()}
-                          </Badge>
+                          <Badge variant="danger">-</Badge>{" "}
+                          {_export.oldProfileProperties[k]?.toString()}|
+                          <Badge variant="success">+</Badge>{" "}
+                          {_export.newProfileProperties[k]?.toString()}
                         </>
                       ) : (
-                        <Badge variant="light">
-                          {_export.oldProfileProperties[k]?.toString()}
-                        </Badge>
+                        _export.oldProfileProperties[k]?.toString()
                       )}
                     </li>
                   );
@@ -83,10 +78,8 @@ export default function Page({ _export, groups }) {
                 {Object.keys(_export.newProfileProperties).map((k) =>
                   _export.oldProfileProperties[k] === undefined ? (
                     <li key={`old-${k}`}>
-                      {k}:{" "}
-                      <Badge variant="success">
-                        {_export.newProfileProperties[k]?.toString()}
-                      </Badge>
+                      {k}: <Badge variant="success">+</Badge>{" "}
+                      {_export.newProfileProperties[k]?.toString()}
                     </li>
                   ) : null
                 )}
@@ -98,20 +91,15 @@ export default function Page({ _export, groups }) {
                 {_export.oldGroups.map((groupGuid) => {
                   return (
                     <li key={`grp-${groupGuid}`}>
-                      <Badge
-                        variant={
-                          !_export.newGroups.includes(groupGuid)
-                            ? "danger"
-                            : "light"
-                        }
+                      {!_export.newGroups.includes(groupGuid) ? (
+                        <Badge variant="danger">-</Badge>
+                      ) : null}{" "}
+                      <Link
+                        href="/group/[guid]/edit"
+                        as={`/group/${getGroupGuid(groupGuid)}/edit`}
                       >
-                        <Link
-                          href="/group/[guid]/edit"
-                          as={`/group/${getGroupGuid(groupGuid)}/edit`}
-                        >
-                          <a>{groupGuid}</a>
-                        </Link>
-                      </Badge>
+                        <a>{groupGuid}</a>
+                      </Link>
                     </li>
                   );
                 })}
@@ -119,14 +107,13 @@ export default function Page({ _export, groups }) {
                 {_export.newGroups.map((groupGuid) =>
                   !_export.oldGroups.includes(groupGuid) ? (
                     <li key={`grp-${groupGuid}`}>
-                      <Badge variant="success">
-                        <Link
-                          href="/group/[guid]/edit"
-                          as={`/group/${getGroupGuid(groupGuid)}/edit`}
-                        >
-                          <a>{groupGuid}</a>
-                        </Link>
-                      </Badge>
+                      <Badge variant="success">+</Badge>{" "}
+                      <Link
+                        href="/group/[guid]/edit"
+                        as={`/group/${getGroupGuid(groupGuid)}/edit`}
+                      >
+                        <a>{groupGuid}</a>
+                      </Link>
                     </li>
                   ) : null
                 )}

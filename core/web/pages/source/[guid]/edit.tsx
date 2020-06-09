@@ -62,14 +62,17 @@ export default function Page(props) {
       Object.assign({}, source, { state })
     );
     if (response?.source) {
-      successHandler.set({ message: "Source updated" });
       setSource(response.source);
       sourceHandler.set(response.source);
       if (response.source.state !== "ready") {
         Router.push(`/source/${guid}/mapping`);
-      }
-      if (response.source.state === "ready" && source.state === "draft") {
+      } else if (
+        response.source.state === "ready" &&
+        source.state === "draft"
+      ) {
         Router.push(`/source/${guid}/overview`);
+      } else {
+        successHandler.set({ message: "Source updated" });
       }
     }
   };
@@ -143,6 +146,7 @@ export default function Page(props) {
             </Form.Group>
 
             <hr />
+            <p>Options for a {source.type} source:</p>
 
             {Object.keys(source.connection.options).length === 0 ? (
               <p>No options for this type of source</p>
@@ -276,7 +280,9 @@ export default function Page(props) {
                 </Form.Group>
               );
             })}
-            <br />
+
+            <hr />
+
             <h3>Example Data</h3>
 
             {previewColumns.length === 0 ? <p>No preview</p> : null}
@@ -311,12 +317,12 @@ export default function Page(props) {
             </div>
 
             <br />
-            <br />
 
             <Button variant="primary" type="submit">
               Update
             </Button>
-            <hr />
+            <br />
+            <br />
             <Button
               variant="danger"
               size="sm"

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Row, Col } from "react-bootstrap";
 import Head from "next/head";
 import { isBrowser } from "../../utils/isBrowser";
 import Loader from "../loader";
@@ -162,11 +163,17 @@ export default function ({
                 zIndex: 999,
                 width: alertWidth,
                 left: contentAreaLeftPadding,
-                bottom: 0,
+                bottom: 5,
               }}
             >
-              <SuccessAlert successHandler={successHandler} />
-              <ErrorAlert errorHandler={errorHandler} />
+              <Row>
+                <Col />
+                <Col md={5}>
+                  <SuccessAlert successHandler={successHandler} />
+                  <ErrorAlert errorHandler={errorHandler} />
+                </Col>
+                <Col />
+              </Row>
             </div>
           </div>
           {display ? children : <Loader />}

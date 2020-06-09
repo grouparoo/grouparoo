@@ -40,16 +40,16 @@ export default function SelectorList({
           className =
             item.app.guid === selectedItem.appGuid &&
             item.connection.name === selectedItem.type
-              ? "button-color-selected"
-              : "button-color";
+              ? "selector-list-selected"
+              : "selector-list";
         } else if (item?.plugin) {
           // these items are apps themselves
           src = item.plugin.icon;
           title = humanizePluginName(item.name);
           className =
             item.name === selectedItem.type
-              ? "button-color-selected"
-              : "button-color";
+              ? "selector-list-selected"
+              : "selector-list";
         } else {
           throw new Error("I do not know what that is");
         }

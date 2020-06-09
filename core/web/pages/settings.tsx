@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useState } from "react";
 import { useApi } from "../hooks/useApi";
 import { useForm } from "react-hook-form";
-import { Button, Form, Card } from "react-bootstrap";
+import { Row, Col, Button, Form, Card } from "react-bootstrap";
 import Moment from "react-moment";
 import LoadingTable from "../components/loadingTable";
 import ImportAndUpdateAllProfiles from "../components/profile/importAndUpdate";
@@ -98,28 +98,39 @@ function SettingRow({ setting, updateSetting, loading }) {
     <tr>
       <td>
         <strong>{setting.key}</strong>
-        <br />
-        <br />
-        default: {setting.defaultValue}
       </td>
       <td>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <Form.Group>
-            <Form.Control
-              required
-              type="text"
-              name="value"
-              ref={register}
-              defaultValue={setting.value}
-            />
-          </Form.Group>
-
-          <Button active={!loading} type="submit" variant="secondary">
-            Update
-          </Button>
+          <Row>
+            <Col>
+              <Form.Group>
+                <Form.Control
+                  required
+                  type="text"
+                  name="value"
+                  ref={register}
+                  defaultValue={setting.value}
+                />
+              </Form.Group>
+            </Col>
+            <Col>
+              <Button
+                style={{ marginTop: 5 }}
+                disabled={loading}
+                size="sm"
+                type="submit"
+                variant="outline-secondary"
+              >
+                Update
+              </Button>
+            </Col>
+          </Row>
         </Form>
       </td>
-      <td>{setting.description}</td>
+      <td>
+        {setting.description} <br />
+        <em>Default: {setting.defaultValue}</em>
+      </td>
       <td>
         <Moment fromNow>{setting.updatedAt}</Moment>
       </td>

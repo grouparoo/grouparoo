@@ -2,6 +2,7 @@ import { useState, Fragment } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Button, Form, Table, Badge } from "react-bootstrap";
 import Router from "next/router";
+import Link from "next/link";
 import Loader from "../../../components/loader";
 import AppIcon from "../../../components/appIcon";
 import StateBadge from "../../../components/stateBadge";
@@ -53,7 +54,6 @@ export default function Page(props) {
       );
       setLoading(false);
       if (response?.profilePropertyRule) {
-        successHandler.set({ message: "Profile Property Rule Updated" });
         setProfilePropertyRule(response.profilePropertyRule);
         profilePropertyRulesHandler.set(response.profilePropertyRule);
         if (
@@ -61,6 +61,8 @@ export default function Page(props) {
           profilePropertyRule.state === "draft"
         ) {
           Router.push(`/profilePropertyRules`);
+        } else {
+          successHandler.set({ message: "Profile Property Rule Updated" });
         }
       }
     }
@@ -145,11 +147,22 @@ export default function Page(props) {
             />
           </Col>
           <Col md={8}>
+            <strong>State</strong>:{" "}
             <StateBadge state={profilePropertyRule.state} />
             <br />
-            <br />
-
             <Form.Group controlId="key">
+              <p>
+                <strong>Source</strong>:{" "}
+                <Link
+                  href="/source/[guid]/overview"
+                  as={`/source/${profilePropertyRule.source.guid}/overview`}
+                >
+                  <a>{profilePropertyRule.source.name}</a>
+                </Link>
+              </p>
+
+              <hr />
+
               <Form.Label>Key</Form.Label>
               <Form.Control
                 required
@@ -161,7 +174,6 @@ export default function Page(props) {
                 Key is required
               </Form.Control.Feedback>
             </Form.Group>
-
             <Form.Group controlId="type">
               <Form.Label>Profile Property Type</Form.Label>
               <Form.Control
@@ -174,7 +186,6 @@ export default function Page(props) {
                 ))}
               </Form.Control>
             </Form.Group>
-
             <Form.Group controlId="unique">
               <Form.Check
                 type="checkbox"
@@ -183,7 +194,6 @@ export default function Page(props) {
                 onChange={(e) => update(e)}
               />
             </Form.Group>
-
             <Form.Group controlId="sourceGuid">
               <Form.Label>Profile Property Rule Source</Form.Label>
               <Form.Control
@@ -196,9 +206,7 @@ export default function Page(props) {
                 </option>
               </Form.Control>
             </Form.Group>
-
             <hr />
-
             <p>
               <strong>
                 Options for a {profilePropertyRule.source.type} Profile Property
@@ -390,7 +398,6 @@ export default function Page(props) {
                 ) : null}
               </div>
             ))}
-
             {filterOptions.length > 0 ? (
               <>
                 <hr />
@@ -543,13 +550,12 @@ export default function Page(props) {
                 </Button>
               </>
             ) : null}
-
             <hr />
             <Button variant="primary" type="submit" active={!loading}>
               Update
             </Button>
-
-            <hr />
+            <br />
+            <br />
             <Button
               variant="danger"
               size="sm"

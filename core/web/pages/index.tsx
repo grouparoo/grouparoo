@@ -1,6 +1,6 @@
 import Router from "next/router";
 import Head from "next/head";
-import { Row, Col, Jumbotron, Image, Button } from "react-bootstrap";
+import { Row, Col, Image, Button } from "react-bootstrap";
 
 export default function Page(props) {
   const { navigationMode, navigation } = props;
@@ -25,27 +25,34 @@ export default function Page(props) {
         <title>Grouparoo</title>
       </Head>
 
-      <Jumbotron>
-        <Row>
-          <Col style={{ textAlign: "center" }}>
-            <Image style={{ maxHeight: 200 }} src="/images/logo/logo.svg" />
-            <br />
-            <br />
-            <h1>Grouparoo</h1>
-            <p>Achieve Marketing Autonomy</p>
-          </Col>
-        </Row>
-      </Jumbotron>
-
-      <div style={{ textAlign: "center" }}>
-        <Button
-          variant="success"
-          onClick={() => {
-            Router.push(CTALink);
-          }}
+      <div style={{ width: "100%", height: "100%" }}>
+        <div
+          style={{ margin: 0, position: "absolute", top: "30%", left: "50%" }}
         >
-          {CTAMessage}
-        </Button>
+          <Row>
+            <Col style={{ textAlign: "center" }}>
+              <Image style={{ maxHeight: 200 }} src="/images/logo/logo.svg" />
+              <br />
+              <br />
+              <h1>Grouparoo</h1>
+              <p>Achieve Marketing Autonomy</p>
+            </Col>
+          </Row>
+
+          <br />
+          <br />
+
+          <div style={{ textAlign: "center" }}>
+            <Button
+              variant="success"
+              onClick={() => {
+                Router.push(CTALink);
+              }}
+            >
+              {CTAMessage}
+            </Button>
+          </div>
+        </div>
       </div>
     </>
   );

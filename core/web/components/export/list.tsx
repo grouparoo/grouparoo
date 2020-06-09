@@ -61,7 +61,7 @@ export default function ExportsList(props) {
 
     if (group) {
       return (
-        <Link href="/group/[guid]" as={`/group/${group.guid}`}>
+        <Link href="/group/[guid]/edit" as={`/group/${group.guid}/edit`}>
           <a>{groupName}</a>
         </Link>
       );
@@ -113,7 +113,7 @@ export default function ExportsList(props) {
               <Fragment key={`export-${_export.guid}`}>
                 <tr>
                   <td>
-                    <span className="text-info">Guid</span>:{" "}
+                    <span>Guid</span>:{" "}
                     <Link
                       href="/export/[guid]/edit"
                       as={`/export/${_export.guid}/edit`}
@@ -167,18 +167,13 @@ export default function ExportsList(props) {
                             {_export.oldProfileProperties[k] !==
                             _export.newProfileProperties[k] ? (
                               <>
-                                <Badge variant="danger">
-                                  {_export.oldProfileProperties[k]?.toString()}
-                                </Badge>
-                                |
-                                <Badge variant="success">
-                                  {_export.newProfileProperties[k]?.toString()}
-                                </Badge>
+                                <Badge variant="danger">-</Badge>&nbsp;
+                                {_export.oldProfileProperties[k]?.toString()}|
+                                <Badge variant="success">+</Badge>&nbsp;
+                                {_export.newProfileProperties[k]?.toString()}
                               </>
                             ) : (
-                              <Badge variant="light">
-                                {_export.oldProfileProperties[k]?.toString()}
-                              </Badge>
+                              <>{_export.oldProfileProperties[k]?.toString()}</>
                             )}
                           </li>
                         );
@@ -187,10 +182,8 @@ export default function ExportsList(props) {
                       {Object.keys(_export.newProfileProperties).map((k) =>
                         _export.oldProfileProperties[k] === undefined ? (
                           <li key={`${_export.guid}-prp-${k}`}>
-                            {k}:{" "}
-                            <Badge variant="success">
-                              {_export.newProfileProperties[k]?.toString()}
-                            </Badge>
+                            {k}: <Badge variant="success">+</Badge>&nbsp;
+                            {_export.newProfileProperties[k]?.toString()}
                           </li>
                         ) : null
                       )}
@@ -201,15 +194,13 @@ export default function ExportsList(props) {
                       {_export.oldGroups.map((g) => {
                         return (
                           <li key={`${_export.guid}-grp-${g}`}>
-                            <Badge
-                              variant={
-                                !_export.newGroups.includes(g)
-                                  ? "danger"
-                                  : "light"
-                              }
-                            >
-                              {groupLink(g)}
-                            </Badge>
+                            {!_export.newGroups.includes(g) ? (
+                              <Badge variant={"danger"}>
+                                {!_export.newGroups.includes(g) ? "-" : "+"}
+                              </Badge>
+                            ) : null}
+                            &nbsp;
+                            {groupLink(g)}
                           </li>
                         );
                       })}
@@ -217,7 +208,8 @@ export default function ExportsList(props) {
                       {_export.newGroups.map((g) =>
                         !_export.oldGroups.includes(g) ? (
                           <li key={`${_export.guid}-grp-${g}`}>
-                            <Badge variant="success">{groupLink(g)}</Badge>
+                            <Badge variant="success">+</Badge>&nbsp;
+                            {groupLink(g)}
                           </li>
                         ) : null
                       )}

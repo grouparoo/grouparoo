@@ -187,25 +187,24 @@ export default function EventsList(props) {
                   <strong>{event.type}</strong>
                 </td>
                 <td>
+                  Guid:{" "}
                   <Link
                     href="/event/[guid]/edit"
                     as={`/event/${event.guid}/edit`}
                   >
-                    <a>
-                      Guid: <span className="text-muted">{event.guid}</span>
-                    </a>
+                    <a>{event.guid}</a>
                   </Link>
                   <br />
                   {event.profileGuid ? (
-                    <Link
-                      href="/profile/[guid]/edit"
-                      as={`/profile/${event.profileGuid}/edit`}
-                    >
-                      <a>
-                        Profile:{" "}
-                        <span className="text-muted">{event.profileGuid}</span>
-                      </a>
-                    </Link>
+                    <>
+                      Profile:{" "}
+                      <Link
+                        href="/profile/[guid]/edit"
+                        as={`/profile/${event.profileGuid}/edit`}
+                      >
+                        <a>{event.profileGuid}</a>
+                      </Link>
+                    </>
                   ) : (
                     "not yet associated"
                   )}
@@ -213,14 +212,12 @@ export default function EventsList(props) {
                   Anonymous Id:{" "}
                   <span className="text-muted">{event.anonymousId}</span>
                   <br />
+                  Producer:{" "}
                   <Link
                     href="/apiKey/[guid]/edit"
                     as={`/apiKey/${event.producerGuid}/edit`}
                   >
-                    <a>
-                      Producer:{" "}
-                      <span className="text-muted">{event.producerGuid}</span>
-                    </a>
+                    <a>{event.producerGuid} </a>
                   </Link>
                 </td>
                 <td>{event.userId ? event.userId : "none"}</td>

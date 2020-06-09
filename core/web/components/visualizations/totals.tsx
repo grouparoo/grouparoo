@@ -126,29 +126,13 @@ export default function (props) {
             title="Profiles"
           />
         </Col>
+
         <Col>
           <BigNumber
             execApi={execApi}
             href="groups"
             model="Group"
             title="Groups"
-          />
-        </Col>
-      </Row>
-
-      <Row>
-        <Col>
-          <BigNumber
-            execApi={execApi}
-            model="ProfileProperty"
-            title="Profile Properties"
-          />
-        </Col>
-        <Col>
-          <BigNumber
-            execApi={execApi}
-            model="GroupMember"
-            title="Group Members"
           />
         </Col>
       </Row>

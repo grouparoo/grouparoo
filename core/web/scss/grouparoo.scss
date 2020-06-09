@@ -1,59 +1,104 @@
-@import "~bootswatch/dist/pulse/variables";
+// -- Colors --
+
+// Grouparoo Colors
+
+$grouparoo-light-gray: #adb5bd;
+$grouparoo-dark-gray: #242436;
+$grouparoo-yellow: #ff7518;
+$grouparoo-light-yellow: #fff8f1;
+$grouparoo-red: #ff0039;
+$grouparoo-blue: #29abe2;
+$grouparoo-light-blue: #b3e8ff;
+$grouparoo-blue-gray: #9b9db1;
+$grouparoo-violet: #9954bb;
+$grouparoo-light-violet: #d3d3ff;
+$grouparoo-background-blue: #f6fafb;
+$grouparoo-green: #3fb618;
+
+// Bootstrap Colors
+
+$primary: $grouparoo-blue;
+$secondary: $grouparoo-dark-gray;
+$success: $grouparoo-green;
+$info: $grouparoo-light-violet;
+$warning: $grouparoo-yellow;
+$danger: $grouparoo-red;
+$light: $grouparoo-light-gray;
+$dark: $grouparoo-dark-gray;
+
 @import "~bootstrap/scss/bootstrap";
-@import "~bootswatch/dist/pulse/bootswatch";
+
+// -- Fonts --
+// prettier-ignore
+@import url(https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap);
+$font-stack: Roboto, sans-serif;
+
+// Page Defaults
+
+body {
+  background-color: $grouparoo-background-blue;
+  font-family: $font-stack;
+  font-weight: 300;
+  font-size: 14px;
+  color: $grouparoo-dark-gray;
+}
+
+// -- Typography --
+
+.text-big-muted {
+  @extend .text-muted;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 28px;
+}
+
+header {
+  font-weight: 400;
+}
+
+table a {
+  font-weight: 500;
+}
+
+// -- Footer --
+footer {
+  color: $light;
+  background-color: $grouparoo-dark-gray;
+  font-size: 14px;
+}
+
+footer a {
+  text-decoration: none;
+  color: $light;
+}
+
+// -- hr --
+hr {
+  border: 1px solid $grouparoo-light-blue;
+}
+
+// selector list
+
+.selector-list {
+  background-color: $grouparoo-dark-gray;
+}
+
+.selector-list-selected {
+  background-color: $grouparoo-violet;
+}
+
+// -- External Components --
+
 @import "~@fortawesome/fontawesome-svg-core/styles.css";
 @import "~react-bootstrap-typeahead/css/Typeahead.css";
 @import "~swagger-ui/dist/swagger-ui.css";
 @import "~react-date-range/dist/styles.css";
 @import "~react-date-range/dist/theme/default.css";
 
-// Theme Overrides
-a {
-  color: black;
-}
+// -- Theme Overrides
 
-a:hover {
-  color: black;
-}
-
-.list-group-item {
-  border-width: 1px;
-  border-color: gray;
-  color: gray;
-}
-
-.btn {
-  border-radius: 4px;
-}
-
-.btn-group .btn {
-  border-radius: 0px;
-}
-
-#navigation a:hover {
-  text-decoration: none;
-}
-
-// New Classes
-
-.border-between-columns > [class*="col"]:before {
-  background: lightgray;
-  bottom: 0;
-  content: " ";
-  left: 0;
-  position: absolute;
-  width: 1px;
-  top: 0;
-}
-
-.border-between-columns > [class*="col"]:first-child:before {
-  display: none;
-}
-
-.button-color {
-  background-color: #242436;
-}
-
-.button-color-selected {
-  background-color: green;
+.nav-item.nav-link.active {
+  font-weight: 500;
+  background-color: $grouparoo-background-blue;
+  border-bottom: $grouparoo-background-blue;
 }

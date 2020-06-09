@@ -70,7 +70,7 @@ export default function ImportList(props) {
 
     if (group) {
       return (
-        <Link href="/group/[guid]" as={`/group/${group.guid}`}>
+        <Link href="/group/[guid]/edit" as={`/group/${group.guid}/edit`}>
           <a>{group.name}</a>
         </Link>
       );
@@ -111,15 +111,13 @@ export default function ImportList(props) {
               <Fragment key={`import-${_import.guid}`}>
                 <tr>
                   <td>
-                    <span className="text-info">
-                      Guid:
-                      <Link
-                        href="/import/[guid]/edit"
-                        as={`/import/${_import.guid}/edit`}
-                      >
-                        <a> {_import.guid}</a>
-                      </Link>
-                    </span>
+                    Guid:
+                    <Link
+                      href="/import/[guid]/edit"
+                      as={`/import/${_import.guid}/edit`}
+                    >
+                      <a> {_import.guid}</a>
+                    </Link>
                     <br /> Profile:{" "}
                     {_import.profileGuid ? (
                       <Link
@@ -135,8 +133,8 @@ export default function ImportList(props) {
                     Creator:{" "}
                     {_import.creatorType === "run" ? (
                       <Link
-                        href="/run/[creatorGuid]"
-                        as={`/run/${_import.creatorGuid}`}
+                        href="/run/[creatorGuid]/edit"
+                        as={`/run/${_import.creatorGuid}/edit`}
                       >
                         <a>{_import.creatorGuid}</a>
                       </Link>
@@ -180,18 +178,13 @@ export default function ImportList(props) {
                             {_import.oldProfileProperties[k] !==
                             _import.newProfileProperties[k] ? (
                               <>
-                                <Badge variant="danger">
-                                  {_import.oldProfileProperties[k]?.toString()}
-                                </Badge>
-                                |
-                                <Badge variant="success">
-                                  {_import.newProfileProperties[k]?.toString()}
-                                </Badge>
+                                <Badge variant="danger">-</Badge>&nbsp;
+                                {_import.oldProfileProperties[k]?.toString()}|
+                                <Badge variant="success">+</Badge>&nbsp;
+                                {_import.newProfileProperties[k]?.toString()}
                               </>
                             ) : (
-                              <Badge variant="light">
-                                {_import.oldProfileProperties[k]?.toString()}
-                              </Badge>
+                              _import.oldProfileProperties[k]?.toString()
                             )}
                           </li>
                         );
@@ -200,10 +193,8 @@ export default function ImportList(props) {
                       {Object.keys(_import.newProfileProperties).map((k) =>
                         _import.oldProfileProperties[k] === undefined ? (
                           <li key={`${_import.guid}-prp-${k}`}>
-                            {k}:{" "}
-                            <Badge variant="success">
-                              {_import.newProfileProperties[k]?.toString()}
-                            </Badge>
+                            {k}: <Badge variant="success">+</Badge>&nbsp;
+                            {_import.newProfileProperties[k]?.toString()}
                           </li>
                         ) : null
                       )}
@@ -214,15 +205,10 @@ export default function ImportList(props) {
                       {_import.oldGroupGuids.map((g) => {
                         return (
                           <li key={`${_import.guid}-grp-${g}`}>
-                            <Badge
-                              variant={
-                                !_import.newGroupGuids.includes(g)
-                                  ? "danger"
-                                  : "light"
-                              }
-                            >
-                              {groupLink(g)}
-                            </Badge>
+                            {!_import.newGroupGuids.includes(g) ? (
+                              <Badge variant="danger">-</Badge>
+                            ) : null}{" "}
+                            {groupLink(g)}
                           </li>
                         );
                       })}
@@ -230,7 +216,8 @@ export default function ImportList(props) {
                       {_import.newGroupGuids.map((g) =>
                         !_import.oldGroupGuids.includes(g) ? (
                           <li key={`${_import.guid}-grp-${g}`}>
-                            <Badge variant="success">{groupLink(g)}</Badge>
+                            <Badge variant="success">+</Badge>&nbsp;
+                            {groupLink(g)}
                           </li>
                         ) : null
                       )}

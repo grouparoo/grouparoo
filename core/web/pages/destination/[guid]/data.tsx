@@ -226,10 +226,10 @@ export default function Page(props) {
           <Form id="form" onSubmit={update}>
             <Row>
               <Col>
-                <h2>
+                <h5>
                   Who should be sent to{" "}
                   <span className="text-primary">{destination.name}</span>?
-                </h2>
+                </h5>
                 <Form.Control
                   as="select"
                   required={true}
@@ -260,10 +260,10 @@ export default function Page(props) {
 
             <Row>
               <Col>
-                <h2>
+                <h5>
                   What data do you want in{" "}
                   <span className="text-primary">{destination.name}</span>?
-                </h2>
+                </h5>
 
                 <br />
 
@@ -271,10 +271,10 @@ export default function Page(props) {
 
                 {mappingOptions.profilePropertyRules.required.length > 0 ? (
                   <>
-                    <h3>
+                    <h6>
                       Required{" "}
                       {mappingOptions.labels.profilePropertyRule.plural}
-                    </h3>
+                    </h6>
                     <Table size="sm">
                       <thead>
                         <tr>
@@ -314,7 +314,7 @@ export default function Page(props) {
                               </td>
                               <td style={{ textAlign: "center" }}>→</td>
                               <td>
-                                <Badge variant="secondary">{key}</Badge>{" "}
+                                <Badge variant="info">{key}</Badge>{" "}
                                 <span className="text-muted">({type})</span>
                               </td>
                             </tr>
@@ -330,9 +330,9 @@ export default function Page(props) {
 
                 {mappingOptions.profilePropertyRules.known.length > 0 ? (
                   <>
-                    <h3>
+                    <h6>
                       Known {mappingOptions.labels.profilePropertyRule.plural}
-                    </h3>
+                    </h6>
                     <Table size="sm">
                       <thead>
                         <tr>
@@ -371,7 +371,7 @@ export default function Page(props) {
                               </td>
                               <td style={{ textAlign: "center" }}>→</td>
                               <td>
-                                <Badge variant="secondary">{key}</Badge>{" "}
+                                <Badge variant="info">{key}</Badge>{" "}
                                 <span className="text-muted">({type})</span>
                               </td>
                             </tr>
@@ -388,10 +388,10 @@ export default function Page(props) {
                 {mappingOptions.profilePropertyRules
                   .allowOptionalFromProfilePropertyRules ? (
                   <>
-                    <h3>
+                    <h6>
                       Optional{" "}
                       {mappingOptions.labels.profilePropertyRule.plural}
-                    </h3>
+                    </h6>
                     <Table size="sm">
                       <thead>
                         <tr>
@@ -489,7 +489,7 @@ export default function Page(props) {
                     </Table>
                     <Button
                       size="sm"
-                      variant="primary"
+                      variant="outline-primary"
                       disabled={profilePropertyRules.length === 0}
                       onClick={() => {
                         updateMapping("new mapping", "");
@@ -504,7 +504,7 @@ export default function Page(props) {
 
                 <br />
 
-                <h3>{mappingOptions.labels.group.plural}</h3>
+                <h6>{mappingOptions.labels.group.plural}</h6>
 
                 <Table size="sm">
                   <thead>
@@ -595,7 +595,7 @@ export default function Page(props) {
                 </Table>
                 <Button
                   size="sm"
-                  variant="primary"
+                  variant="outline-primary"
                   disabled={
                     groupsAvailalbeForDestinationGroupMemberships.length === 0
                   }
@@ -615,7 +615,7 @@ export default function Page(props) {
               <Col>
                 <br />
                 <hr />
-                <Button type="submit" variant="warning">
+                <Button type="submit" variant="primary">
                   Save Destination Data
                 </Button>
               </Col>

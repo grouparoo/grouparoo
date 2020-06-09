@@ -23,7 +23,20 @@ function HighlightingNavLink({ href, text, icon }) {
             color: "white",
           }}
         >
-          {icon ? <FontAwesomeIcon icon={icon} size="xs" /> : null} &nbsp;
+          {icon ? <FontAwesomeIcon icon={icon} size="xs" /> : null}{" "}
+        </a>
+      </Link>
+      &nbsp;
+      <Link href={href}>
+        <a
+          role="tab"
+          aria-selected={active}
+          style={{
+            fontSize: 18,
+            paddingLeft: 0,
+            color: "white",
+          }}
+        >
           {text}
         </a>
       </Link>
@@ -110,6 +123,7 @@ export default function Navigation(props) {
                         style={{
                           fontSize: 18,
                           paddingLeft: 0,
+                          fontWeight: 300,
                           color: "white",
                         }}
                       >
@@ -118,9 +132,8 @@ export default function Navigation(props) {
                         ) : null}{" "}
                         &nbsp;
                         {nav.title}
-                        <br />
-                        <br />
                       </span>
+                      <div style={{ padding: 6 }} />
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey="0">
                       <div>
@@ -171,6 +184,7 @@ export default function Navigation(props) {
                     width: "100%",
                     textAlign: "left",
                     textTransform: "none",
+                    fontWeight: 300,
                   }}
                 >
                   {subMenuGreeting}

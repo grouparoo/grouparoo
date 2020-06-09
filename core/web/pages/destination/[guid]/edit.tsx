@@ -37,7 +37,6 @@ export default function Page(props) {
       Object.assign({}, destination, { state: "ready" })
     );
     if (response?.destination) {
-      successHandler.set({ message: "Destination updated" });
       setDestination(response.destination);
       destinationHandler.set(response.destination);
       if (
@@ -45,6 +44,8 @@ export default function Page(props) {
         destination.state === "draft"
       ) {
         Router.push(`/destination/${destination.guid}/data`);
+      } else {
+        successHandler.set({ message: "Destination updated" });
       }
     }
   };
@@ -263,12 +264,12 @@ export default function Page(props) {
             })}
 
             <br />
-            <br />
 
             <Button variant="primary" type="submit">
               Update
             </Button>
-            <hr />
+            <br />
+            <br />
             <Button
               variant="danger"
               size="sm"

@@ -15,8 +15,14 @@ export default function (props) {
   }
 
   return (
-    <Button onClick={importAndUpdate} variant="secondary">
-      Import and Update all Profiles
-    </Button>
+    <>
+      <p>
+        (Re)import all profiles for all properties that can be determined from a
+        source.
+      </p>
+      <Button onClick={importAndUpdate} size="sm" variant="outline-secondary">
+        Import and Update all Profiles
+      </Button>
+    </>
   );
 }

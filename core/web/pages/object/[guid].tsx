@@ -6,7 +6,7 @@ const guidPrefixes = {
   grp: "/group/[guid]/members",
   rul: "/profilePropertyRule/[guid]/edit",
   app: "/app/[guid]/edit",
-  run: "/run/[guid]",
+  run: "/run/[guid]/edit",
   dst: "/destination/[guid]/edit",
   tea: "/team/[guid]/edit",
   tem: "/teamMember/[guid]/edit",

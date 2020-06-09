@@ -20,7 +20,6 @@ export default function (props) {
     setLoading(false);
 
     if (response?.profilePropertyRule) {
-      successHandler.set({ message: "Profile Property Rule Created" });
       Router.push(
         `/profilePropertyRule/${response.profilePropertyRule.guid}/edit`
       );
@@ -30,7 +29,7 @@ export default function (props) {
   return (
     <Button
       size="sm"
-      variant="warning"
+      variant="outline-primary"
       disabled={loading || source.state === "draft"}
       onClick={create}
     >

@@ -16,7 +16,6 @@ export default function Page(props) {
     const response = await execApi("post", `/apiKey`, data);
     setLoading(false);
     if (response?.apiKey) {
-      successHandler.set({ message: "API Key Created" });
       Router.push(
         "/apiKey/[guid]/edit",
         `/apiKey/${response.apiKey.guid}/edit`

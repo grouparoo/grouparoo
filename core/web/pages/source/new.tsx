@@ -18,7 +18,6 @@ export default function Page(props) {
     event.preventDefault();
     const response = await execApi("post", `/source`, source);
     if (response?.source) {
-      successHandler.set({ message: "Source Created" });
       Router.push(`/source/${response.source.guid}/edit`);
     }
   };

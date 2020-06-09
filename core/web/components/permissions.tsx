@@ -40,7 +40,7 @@ export default function PermissionsList({
                 permissionAllRead ? (
                   <Button
                     size="sm"
-                    variant="success"
+                    variant="outline-success"
                     onClick={() =>
                       updatePermissionAll(
                         !permissionAllRead,
@@ -53,7 +53,7 @@ export default function PermissionsList({
                 ) : (
                   <Button
                     size="sm"
-                    variant="danger"
+                    variant="outline-danger"
                     onClick={() =>
                       updatePermissionAll(
                         !permissionAllRead,
@@ -67,10 +67,10 @@ export default function PermissionsList({
               ) : (
                 <Button
                   size="sm"
-                  variant="secondary"
+                  variant="outline-secondary"
                   onClick={() => updatePermissionAll(false, false)}
                 >
-                  Individual permission per Topic
+                  Permission Set per Topic
                 </Button>
               )}
             </td>
@@ -79,7 +79,7 @@ export default function PermissionsList({
                 permissionAllWrite ? (
                   <Button
                     size="sm"
-                    variant="success"
+                    variant="outline-success"
                     onClick={() =>
                       updatePermissionAll(
                         permissionAllRead,
@@ -92,7 +92,7 @@ export default function PermissionsList({
                 ) : (
                   <Button
                     size="sm"
-                    variant="danger"
+                    variant="outline-danger"
                     onClick={() =>
                       updatePermissionAll(
                         permissionAllRead,
@@ -106,10 +106,10 @@ export default function PermissionsList({
               ) : (
                 <Button
                   size="sm"
-                  variant="secondary"
+                  variant="outline-secondary"
                   onClick={() => updatePermissionAll(false, false)}
                 >
-                  Individual permission per Topic
+                  Permission Set per Topic
                 </Button>
               )}
             </td>

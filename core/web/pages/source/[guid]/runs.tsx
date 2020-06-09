@@ -30,7 +30,7 @@ export default function Page(props) {
 
       <Button
         size="sm"
-        variant="warning"
+        variant="outline-primary"
         disabled={loading}
         onClick={() => {
           enqueueScheduleRun();
@@ -38,7 +38,7 @@ export default function Page(props) {
       >
         Run Now
       </Button>
-      <hr />
+      <br />
       <br />
 
       <RunsList {...props} />

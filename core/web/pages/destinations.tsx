@@ -155,7 +155,7 @@ export default function Page(props) {
 
       <br />
       <Button
-        variant="warning"
+        variant="primary"
         onClick={() => {
           Router.push("/destination/new");
         }}

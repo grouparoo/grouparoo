@@ -96,7 +96,6 @@ export default function Page(props) {
             Name is required
           </Form.Control.Feedback>
         </Form.Group>
-
         <Form.Group>
           <Form.Label>API Key</Form.Label>
           <Form.Control
@@ -106,7 +105,6 @@ export default function Page(props) {
             value={apiKey.apiKey}
           />
         </Form.Group>
-
         <h3>Permissions</h3>
         <PermissionsList
           permissions={apiKey.permissions}
@@ -116,10 +114,15 @@ export default function Page(props) {
           updatePermissionAll={updatePermissionAll}
         />
 
+        <hr />
+
         <Button variant="primary" type="submit">
           Update
         </Button>
-        <hr />
+
+        <br />
+        <br />
+
         <Button
           disabled={loading}
           variant="danger"

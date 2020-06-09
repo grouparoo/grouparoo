@@ -5,18 +5,25 @@ import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { useHistoryPagination } from "../hooks/useHistoryPagination";
 import Router from "next/router";
 import Link from "next/link";
+import { Button, Form } from "react-bootstrap";
 import Moment from "react-moment";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import StateBadge from "../components/stateBadge";
-import ProfilePropertyRuleAddButton from "../components/profilePropertyRule/add";
 
 export default function Page(props) {
   const { errorHandler, successHandler, query } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
+  const [newRuleLoading, setNewRuleLoading] = useState(false);
   const [examples, setExamples] = useState(props.examples);
   const [sources, setSources] = useState(props.sources);
+  const [newRuleSourceGuid, setNewRuleSourceGuid] = useState(
+    props.sources[0].guid
+  );
+  const [profilePropertyRules, setProfilePropertyRules] = useState(
+    props.profilePropertyRules
+  );
 
   // pagination
   const limit = 100;
@@ -44,15 +51,29 @@ export default function Page(props) {
 
   async function loadSources() {
     setLoading(true);
-    const response = await execApi("get", `/sources`, {
+    const response = await execApi("get", `/profilePropertyRules`, {
       limit,
       offset,
-      state: "ready",
     });
     setLoading(false);
-    if (response?.sources) {
-      setSources(response.sources);
+    if (response?.profilePropertyRules) {
+      setProfilePropertyRules(response.profilePropertyRules);
       setTotal(response.total);
+    }
+  }
+
+  async function createNewProfilePropertyRule(event) {
+    event.preventDefault();
+    setNewRuleLoading(true);
+    const response = await execApi("post", `/profilePropertyRule`, {
+      sourceGuid: newRuleSourceGuid,
+      type: "string",
+    });
+    setNewRuleLoading(false);
+    if (response?.profilePropertyRule?.guid) {
+      Router.push(
+        `/profilePropertyRule/${response.profilePropertyRule.guid}/edit`
+      );
     }
   }
 
@@ -84,90 +105,73 @@ export default function Page(props) {
         onPress={setOffset}
       />
 
-      {sources.map((source) => {
-        return (
-          <div key={`src-${source.guid}`}>
-            <h4>
-              <Link
-                href="/source/[guid]/overview"
-                as={`/source/${source.guid}/overview`}
-              >
-                <a>{source.name}</a>
-              </Link>
-            </h4>
-            <strong>Type</strong>: {source.type}
-            <br />
-            <strong>App</strong>: {source.app.name} ({source.app.type})
-            <p style={{ marginTop: 10 }}>
-              <ProfilePropertyRuleAddButton
-                errorHandler={errorHandler}
-                successHandler={successHandler}
-                source={source}
-              />
-            </p>
-            <LoadingTable loading={loading}>
-              <thead>
-                <tr>
-                  <th>Key</th>
-                  <th>Type</th>
-                  <th>Unique</th>
-                  <th>State</th>
-                  <th>Updated At</th>
-                  <th>Example Values</th>
-                </tr>
-              </thead>
-              <tbody>
-                {source.profilePropertyRules.map((rule) => {
-                  return (
-                    <tr key={`profilePropertyRule-${rule.guid}`}>
-                      <td>
-                        <Link
-                          href="/profilePropertyRule/[guid]/edit"
-                          as={`/profilePropertyRule/${rule.guid}/edit`}
-                        >
-                          <a>
-                            <strong>
-                              {rule.key ||
-                                `${rule.state} created on ${
-                                  new Date(rule.createdAt)
-                                    .toLocaleString()
-                                    .split(",")[0]
-                                }`}
-                            </strong>
-                          </a>
-                        </Link>
-                      </td>
-                      <td>{rule.type}</td>
-                      <td>
-                        <input readOnly type="checkbox" checked={rule.unique} />
-                      </td>
-                      <td>
-                        <StateBadge state={rule.state} />
-                      </td>
-                      <td>
-                        <Moment fromNow>{rule.updatedAt}</Moment>
-                      </td>
-                      <td>
-                        <em>
-                          {examples[rule.guid]
-                            ? examples[rule.guid].slice(0, 3).map((ex, idx) => (
-                                <Fragment key={`${rule.guid}-${idx}`}>
-                                  {ex}
-                                  <br />
-                                </Fragment>
-                              ))
-                            : null}
-                        </em>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </LoadingTable>
-            <br />
-          </div>
-        );
-      })}
+      <LoadingTable loading={loading}>
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Type</th>
+            <th>Unique</th>
+            <th>Source</th>
+            <th>State</th>
+            <th>Example Values</th>
+            <th>Updated At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {profilePropertyRules.map((rule) => {
+            return (
+              <tr key={`profilePropertyRule-${rule.guid}`}>
+                <td>
+                  <Link
+                    href="/profilePropertyRule/[guid]/edit"
+                    as={`/profilePropertyRule/${rule.guid}/edit`}
+                  >
+                    <a>
+                      <strong>
+                        {rule.key ||
+                          `${rule.state} created on ${
+                            new Date(rule.createdAt)
+                              .toLocaleString()
+                              .split(",")[0]
+                          }`}
+                      </strong>
+                    </a>
+                  </Link>
+                </td>
+                <td>{rule.type}</td>
+                <td>{rule.unique ? "✅" : null}</td>
+                <td>
+                  <Link
+                    href="/source/[guid]/overview"
+                    as={`/source/${rule.source.guid}/overview`}
+                  >
+                    <a>{rule.source.name}</a>
+                  </Link>
+                </td>
+                <td>
+                  <StateBadge state={rule.state} />
+                </td>
+                <td>
+                  <em>
+                    {examples[rule.guid]
+                      ? examples[rule.guid].slice(0, 3).map((ex, idx) => (
+                          <Fragment key={`${rule.guid}-${idx}`}>
+                            {ex}
+                            <br />
+                          </Fragment>
+                        ))
+                      : null}
+                  </em>
+                </td>
+                <td>
+                  <Moment fromNow>{rule.updatedAt}</Moment>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </LoadingTable>
+      <br />
 
       <Pagination
         total={total}
@@ -175,6 +179,34 @@ export default function Page(props) {
         offset={offset}
         onPress={setOffset}
       />
+
+      <hr />
+
+      <Form inline onSubmit={createNewProfilePropertyRule}>
+        <p>
+          Add new Profile Property Rule for source{" "}
+          <Form.Control
+            as="select"
+            size="sm"
+            value={newRuleSourceGuid}
+            onChange={(e) => {
+              setNewRuleSourceGuid(e.target.value);
+            }}
+          >
+            {sources.map((source) => (
+              <option value={source.guid}>{source.name}</option>
+            ))}
+          </Form.Control>{" "}
+          <Button
+            type="submit"
+            size="sm"
+            disabled={newRuleLoading}
+            variant="primary"
+          >
+            Create
+          </Button>
+        </p>
+      </Form>
     </>
   );
 }
@@ -182,14 +214,14 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
   const { limit, offset } = ctx.query;
-  const { sources, total } = await execApi("get", `/sources`, {
-    limit,
-    offset,
-    state: "ready",
-  });
-  const { examples } = await execApi("get", `/profilePropertyRules`, {
-    limit: 100 * (total === 0 ? 1 : total),
-    offset: 0,
-  });
-  return { sources, total, examples };
+  const { profilePropertyRules, total, examples } = await execApi(
+    "get",
+    `/profilePropertyRules`,
+    {
+      limit,
+      offset,
+    }
+  );
+  const { sources } = await execApi("get", "/sources");
+  return { profilePropertyRules, total, examples, sources };
 };

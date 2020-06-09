@@ -98,10 +98,13 @@ export default function Page(props) {
           updatePermissionAll={updatePermissionAll}
         />
 
+        <hr />
+
         <Button variant="primary" type="submit">
           Update
         </Button>
-        <hr />
+        <br />
+        <br />
         <Button
           disabled={loading || team.locked}
           variant="danger"

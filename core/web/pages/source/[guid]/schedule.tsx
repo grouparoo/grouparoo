@@ -36,7 +36,6 @@ export default function Page(props) {
     );
     setLoading(false);
     if (response?.schedule) {
-      successHandler.set({ message: "Schedule Updated" });
       setRecurringFrequencyMinutes(
         response.schedule.recurringFrequency / (60 * 1000)
       );
@@ -46,6 +45,8 @@ export default function Page(props) {
           "/source/[guid]/overview",
           `/source/${schedule.source.guid}/overview`
         );
+      } else {
+        successHandler.set({ message: "Schedule Updated" });
       }
     }
   }
@@ -82,10 +83,6 @@ export default function Page(props) {
 
       <SourceTabs source={source} />
 
-      <p>
-        <span className="text-muted">{schedule.guid}</span>
-      </p>
-
       <Form id="form" onSubmit={edit} noValidate>
         <Row>
           <Col md={1}>
@@ -95,7 +92,7 @@ export default function Page(props) {
           <Col>
             <h2>
               Schedule for source{" "}
-              <Badge variant="secondary">{schedule.source.name}</Badge>
+              <Badge variant="info">{schedule.source.name}</Badge>
             </h2>
             <StateBadge state={schedule.state} />
             <br />
@@ -206,6 +203,7 @@ export default function Page(props) {
               </Row>
             ) : null}
             <>
+              <hr />
               <p>
                 <strong>Options for a {schedule.source.type} Schedule</strong>
               </p>
@@ -222,7 +220,7 @@ export default function Page(props) {
 
                   {/* list options */}
                   {opt.type === "list" ? (
-                    <Table size="sm" variant="dark">
+                    <Table striped bordered size="sm">
                       <thead>
                         <tr>
                           <th></th>
@@ -308,16 +306,21 @@ export default function Page(props) {
                 </div>
               ))}
             </>
+
+            <hr />
+
+            <Button variant="primary" type="submit" disabled={loading}>
+              Update
+            </Button>
+
+            <br />
+            <br />
+
+            <Button variant="danger" size="sm" onClick={handleDelete}>
+              Delete
+            </Button>
           </Col>
         </Row>
-
-        <Button variant="primary" type="submit" disabled={loading}>
-          Update
-        </Button>
-        <hr />
-        <Button variant="danger" size="sm" onClick={handleDelete}>
-          Delete
-        </Button>
       </Form>
     </>
   );
