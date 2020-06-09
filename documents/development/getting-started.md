@@ -80,6 +80,8 @@ Grouparoo is written in [Typescript](https://www.typescriptlang.org/), which mea
 
 If you are developing a plugin, you will need to `npm run prepare` it before seeing your changes. In many cases, the `prepare` step only calls out to `tsc`, and in these cases, you may be able to `tsc --watch` to automatically source changes and rebuild your plugin.
 
+Grouparoo self-documents its Typescript interface to [docs.grouparoo.com](https://docs.grouparoo.com) via [Typedoc](https://typedoc.org/). The docs from the `master` branch are automatically published to this site. If you want to read the docs for an older version of Grouparoo or a different branch, you can generate the docs locally by running `cd core && npm run docs` in this repository.
+
 ## Environment Variables and API Keys
 
 Grouparoo needs to connect to a few services to run. When developing locally (`NODE_ENV=development` or not set), we will load in any variables you have defined in a `.env` file in your "app" directory. Otherwise, these variables are to be set by your runtime environment/host.

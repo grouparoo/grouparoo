@@ -39,6 +39,7 @@ Learn more at [www.grouparoo.com](https://www.grouparoo.com)
 - [🌊 Data Flow](https://github.com/grouparoo/grouparoo/blob/master/documents/development/dataflow.md)
 - [🏹 Events](https://github.com/grouparoo/grouparoo/blob/master/documents/development/events.md)
 - [🤝 Plugins](https://github.com/grouparoo/grouparoo/blob/master/documents/development/plugins.md)
+- [📑 Typescript Docs](https://docs.grouparoo.com)
 - [📚 Publishing](https://github.com/grouparoo/grouparoo/blob/master/documents/development/publishing.md)
 - [👻 Security](https://github.com/grouparoo/grouparoo/blob/master/.github/SECURITY.md)
 
