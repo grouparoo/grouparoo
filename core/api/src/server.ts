@@ -33,9 +33,13 @@ for (const i in pluginManifest.plugins) {
   }
 }
 
-import { Process } from "actionhero";
+import { Process, log } from "actionhero";
 
 async function main() {
+  log(
+    `Starting Grouparoo v${process.env.npm_package_dependencies__grouparoo_core} on node.js v${process.env.npm_config_node_version}`,
+    "notice"
+  );
   const app = new Process();
 
   app.registerProcessSignals((exitCode) => {
