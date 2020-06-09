@@ -139,7 +139,7 @@ jobs:
           command: mysql -e "create database grouparoo_test" -u root -h 127.0.0.1
       - run:
           name: test
-          command: ./node_modules/.bin/lerna exec ./node_modules/.bin/jest --stream --concurrency 1 --ignore "@grouparoo/core" --ignore "*/app-*" -- --ci --passWithNoTests
+          command: ./node_modules/.bin/lerna exec jest --stream --concurrency 1 --ignore "@grouparoo/core" --ignore "*/app-*" -- --ci --passWithNoTests --maxWorkers 2
   complete:
     docker:
       - image: circleci/node:12
