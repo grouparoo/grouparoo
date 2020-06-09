@@ -235,11 +235,13 @@ describe("actions/profilePropertyRules", () => {
       expect(error).toBeUndefined();
       expect(profilePropertyRules.length).toBe(2); // this + userId
       expect(profilePropertyRules[1].source.guid).toBe(source.guid);
-      expect(profilePropertyRules[1].type).toBe("string");
+      expect(profilePropertyRules[1].type).toBe("integer");
       expect(profilePropertyRules[1].unique).toBe(true);
+      expect(profilePropertyRules[0].type).toBe("string");
+      expect(profilePropertyRules[0].unique).toBe(true);
       expect(total).toBe(2);
 
-      expect(examples[profilePropertyRules[1].guid]).toEqual([
+      expect(examples[profilePropertyRules[0].guid]).toEqual([
         "person@example.com",
       ]);
 
