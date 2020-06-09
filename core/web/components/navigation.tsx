@@ -78,7 +78,7 @@ export default function Navigation(props) {
             minHeight: height,
             paddingLeft: 20,
             paddingRight: 20,
-            overflowY: "scroll",
+            overflowY: "auto",
             height: "100%",
           }}
         >
