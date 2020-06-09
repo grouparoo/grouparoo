@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -ex
+
+cd "$(dirname "$0")"
+cd ..
+
+## git config
+GIT_USER_NAME='Grouparoo Bot'
+GIT_USER_EMAIL='hello@grouparoo.com'
+
+## Configure a new direcotry to hold the site
+rm -rf gh-pages
+mkdir gh-pages
+cd gh-pages
+git init
+if git rev-parse --verify origin/gh-pages > /dev/null 2>&1
+then
+    git checkout gh-pages
+    git rm -rf .
+else
+    git checkout --orphan gh-pages
+fi
+cd ..
+
+## build master's docs
+rm -rf docs
+mkdir docs
+npm run docs
+cp -a docs/. gh-pages/
+touch gh-pages/.nojekyll
+echo 'docs.grouparoo.com' >> gh-pages/CNAME
+
+## make the commmit
+cd gh-pages
+git add -A
+git -c user.name="$GIT_USER_NAME" -c user.email="$GIT_USER_EMAIL" commit --allow-empty -m "deploy docs site @ $(date)"

@@ -20,6 +20,8 @@ core/api/files
 core/api/report.*.json
 core/web/public/javascript/ActionheroWebsocketClient.js
 core/web/public/javascript/ActionheroWebsocketClient.min.js
+core/api/docs
+core/api/gh-pages
 
 # Web
 .next
