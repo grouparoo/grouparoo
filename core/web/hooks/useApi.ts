@@ -1,5 +1,6 @@
 import { Client } from "../client/client";
 import { ErrorHandler } from "../utils/errorHandler";
+import { UploadHandler } from "../utils/uploadHandler";
 
 const client = new Client();
 
@@ -7,7 +8,8 @@ export function useApi(
   ctx: {
     req?: { headers?: { cookie: string } };
   },
-  errorHandler?: ErrorHandler
+  errorHandler?: ErrorHandler,
+  uploadHandler?: UploadHandler
 ) {
   async function execApi(
     verb = "get",
@@ -28,7 +30,8 @@ export function useApi(
         path,
         data,
         useCache,
-        ctx?.req?.headers?.cookie
+        ctx?.req?.headers?.cookie,
+        uploadHandler
       );
 
       if (setter) {
