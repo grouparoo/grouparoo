@@ -48,7 +48,6 @@
     "axios": "^0.19.2",
     "bcrypt": "^4.0.1",
     "bootstrap": "^4.4.1",
-    "bootswatch": "^4.4.1",
     "csv-stringify": "^5.4.1",
     "date-fns": "^2.14.0",
     "dotenv": "^8.2.0",
