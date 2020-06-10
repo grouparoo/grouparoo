@@ -1,0 +1,149 @@
+name: Test
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: node
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: npm ci
+      - name: save cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */node_modules
+            */*/node_modules
+            dist
+            */dist
+            */*/dist
+          key: ${{ runner.os }}-cache-${{ hashFiles('**/package-lock.json') }}
+
+  license-checker:
+    runs-on: ubuntu-latest
+    needs: build
+    container:
+      image: node
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: download cache
+        uses: actions/cache@v2
+        with:
+          key: ${{ runner.os }}-cache-${{ hashFiles('**/package-lock.json') }}
+      - run: npm run license-checker
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: build
+    container:
+      image: node
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: download cache
+        uses: actions/cache@v2
+        with:
+          key: ${{ runner.os }}-cache-${{ hashFiles('**/package-lock.json') }}
+      - run: npm run lint
+
+  test-core-api:
+    runs-on: ubuntu-latest
+    needs: build
+    container:
+      image: node
+      options: --network-alias main
+
+    services:
+      postgres:
+        image: postgres
+        ports:
+          - 5432/tcp
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+
+      redis:
+        image: redis
+        ports:
+          - 6379/tcp
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: download cache
+        uses: actions/cache@v2
+        with:
+          key: ${{ runner.os }}-cache-${{ hashFiles('**/package-lock.json') }}
+      - run: cd core && npm run test-api
+          env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres
+          REDIS_URL: redis://localhost:${{ job.services.redis.ports[6379] }}/0
+          maxMemoryAlloted: 1000
+
+  test-core-web:
+    runs-on: ubuntu-latest
+    needs: build
+    container:
+      image: node
+      options: --network-alias main
+
+    services:
+      postgres:
+        image: postgres
+        ports:
+          - 5432/tcp
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+
+      redis:
+        image: redis
+        ports:
+          - 6379/tcp
+
+      selenium:
+        image: selenium/standalone-chrome
+        ports:
+          - 4444/tcp
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: download cache
+        uses: actions/cache@v2
+        with:
+          key: ${{ runner.os }}-cache-${{ hashFiles('**/package-lock.json') }}
+      - run: cd core && npm run test-web
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres
+          REDIS_URL: redis://localhost:${{ job.services.redis.ports[6379] }}/0
+          SELENIUM_TEST_HOST: main
+          SELENIUM_REMOTE_URL: http://selenium:4444/wd/hub
+          maxMemoryAlloted: 1000
+
+  complete:
+    runs-on: ubuntu-latest
+    needs: [test, lint, test-core-web]
+    steps:
+      - run: echo "Done!"
