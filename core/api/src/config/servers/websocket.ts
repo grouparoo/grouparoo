@@ -4,7 +4,8 @@ export const DEFAULT = {
   servers: {
     websocket: (config) => {
       return {
-        enabled: true,
+        enabled:
+          process.env.WEB_SERVER === "true" || process.env.NODE_ENV === "test",
         // you can pass a FQDN (string) here or 'window.location.origin'
         clientUrl:
           process.env.NODE_ENV === "test"
