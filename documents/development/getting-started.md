@@ -58,6 +58,7 @@ GRANT ALL PRIVILEGES ON DATABASE grouparoo_development TO postgres;
 # Run the staging "app" example project
 cd apps/staging-public
 cp .env.example .env
+# optional: (npm install && ../../node_modules/.bin/lerna link) # we do not automatically build/prepare all the example apps.  If you are having trouble, try this step
 npm run prepare
 npm run dev
 ```
