@@ -9,8 +9,14 @@ references:
     branches:
       ignore:
         - gh-pages
-  cache-options: &cache-options
-    key: package-cache-{{ .Branch }}-{{ .Revision }}
+  node-module-cache-options: &node-module-cache-options
+    key: node-module-package-cache-{{ .Branch }}-{{ .Revision }}
+  dist-cache-options: &dist-cache-options
+    key: dist-package-cache-{{ .Branch }}-{{ .Revision }}
+  custom-cache-options: &custom-cache-options
+    key: custom-package-cache-{{ .Branch }}-{{ .Revision }}
+  core-cache-options: &core-cache-options
+    key: core-package-cache-{{ .Branch }}-{{ .Revision }}
 #
 # Define Jobs to run
 jobs:
@@ -19,14 +25,12 @@ jobs:
       - image: circleci/node:12
     steps:
       - checkout
-      - restore_cache:
-          <<: *cache-options
       - run: sudo apt-get install -y rsync
       - run:
           name: npm-install
           command: npm install
       - save_cache:
-          <<: *cache-options
+          <<: *node-module-cache-options
           paths:
             - apps/local-public/node_modules
             - apps/staging-public/node_modules
@@ -47,6 +51,9 @@ jobs:
             - plugins/@grouparoo/sailthru/node_modules
             - plugins/@grouparoo/sample-ui-plugin/node_modules
             - tools/merger/node_modules
+      - save_cache:
+          <<: *dist-cache-options
+          paths:
             - clients/@grouparoo/web/dist
             - plugins/@grouparoo/bigquery/dist
             - plugins/@grouparoo/csv/dist
@@ -61,6 +68,12 @@ jobs:
             - plugins/@grouparoo/postgres/dist
             - plugins/@grouparoo/sailthru/dist
             - plugins/@grouparoo/sample-ui-plugin/dist
+      - save_cache:
+          <<: *custom-cache-options
+          paths:
+      - save_cache:
+          <<: *core-cache-options
+          paths:
             - core/api/dist
             - core/web/.next
   license-checker:
@@ -69,7 +82,13 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *cache-options
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *custom-cache-options
+      - restore_cache:
+          <<: *core-cache-options
       - run:
           name: license-checker
           command: ./tools/license-checker/check
@@ -79,7 +98,13 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *cache-options
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *custom-cache-options
+      - restore_cache:
+          <<: *core-cache-options
       - run:
           name: linter
           command: npm run lint
@@ -94,7 +119,13 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *cache-options
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *custom-cache-options
+      - restore_cache:
+          <<: *core-cache-options
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -123,7 +154,13 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *cache-options
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *custom-cache-options
+      - restore_cache:
+          <<: *core-cache-options
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -155,7 +192,13 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *cache-options
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *custom-cache-options
+      - restore_cache:
+          <<: *core-cache-options
       - add_ssh_keys:
           fingerprints:
             - 49:46:31:67:74:97:c4:66:44:79:89:67:29:41:89:96
