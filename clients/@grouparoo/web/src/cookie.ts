@@ -12,21 +12,29 @@ export namespace Cookie {
       date.setTime(date.getTime() + ttl);
       expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    window.document.cookie =
+      name + "=" + (value.toString() || "") + expires + "; path=/";
   }
 
   export function get(name: string) {
     const nameEQ = name + "=";
-    const ca = document.cookie.split(";");
+    const ca = window.document.cookie.split(";");
     for (var i = 0; i < ca.length; i++) {
       let c = ca[i];
       while (c.charAt(0) == " ") c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      if (c.indexOf(nameEQ) == 0) {
+        const value = c.substring(nameEQ.length, c.length);
+        if (!value || value === "") {
+          return null;
+        } else {
+          return value;
+        }
+      }
     }
     return null;
   }
 
   export function clear(name: string) {
-    document.cookie = name + "=; Max-Age=-99999999;";
+    window.document.cookie = name + "=; Max-Age=-99999999;";
   }
 }

@@ -3,19 +3,19 @@ import { Cookie } from "./cookie";
 import { queryParams } from "./queryParams";
 
 export interface GrouparooClientArgs {
-  apiKey: string;
-  host: string;
-  path: string;
-  errorHandlers: Function[];
-  logging: boolean;
-  userId: string | number;
-  userIdCookie: string;
-  anonymousId: string | number;
-  anonymousIdCookie: string;
-  anonymousIdCookieTTL: number;
-  sessionId: string | number;
-  sessionIdCookie: string;
-  sessionIdCookieTTL: number;
+  apiKey?: string;
+  host?: string;
+  path?: string;
+  errorHandlers?: Function[];
+  logging?: boolean;
+  userId?: string | number;
+  userIdCookie?: string;
+  anonymousId?: string | number;
+  anonymousIdCookie?: string;
+  anonymousIdCookieTTL?: number;
+  sessionId?: string | number;
+  sessionIdCookie?: string;
+  sessionIdCookieTTL?: number;
 }
 
 export interface GrouparooEventData {
@@ -23,7 +23,7 @@ export interface GrouparooEventData {
 }
 
 export interface Event {
-  ocurredAt: Date;
+  ocurredAt: number;
   type: string;
   anonymousId: string | number;
   userId: string | number;
@@ -48,12 +48,17 @@ export class GrouparooWebClient {
   queue: Event[];
   processing: boolean;
   eventsCounts: { [name: string]: number };
+  retryTimer: NodeJS.Timeout;
 
   constructor(args: GrouparooClientArgs) {
+    if (!args) {
+      throw new Error("no arguments provided");
+    }
+
     for (const i in args) {
       this[i] = args[i];
     }
-
+    this.queue = [];
     this.validateAndApplyDefaults();
     this.generateAnonymousId();
     this.generateSessionId();
@@ -65,43 +70,13 @@ export class GrouparooWebClient {
     }
   }
 
-  /** Track an event with optional data */
-  track(type: string, data: GrouparooEventData, ocurredAt = new Date()) {
-    // bump the TTLs or generate new ones as needed
-    this.generateSessionId();
-    this.generateAnonymousId();
-
-    const event: Event = {
-      type,
-      data,
-      userId: this.userId,
-      anonymousId: this.anonymousId,
-      sessionId: this.sessionId,
-      ocurredAt,
-    };
-
-    this.eventsCounts[type]++;
-    this.log("event", event);
-    this.queue.push(event);
-    return this.processQueue();
-  }
-
-  /**
-   * Identify this user
-   */
-  identify(userId: string | number, data: GrouparooEventData) {
-    this.userId = userId;
-    Cookie.set(this.userIdCookie, this.userId);
-    return this.track("identify", data);
-  }
-
   /**
    * Remove all identifying information about this session and start over with a new anonymousId
    */
-  reset(newAnonymousId: string | number) {
-    delete this.userId;
-    delete this.anonymousId;
-    delete this.sessionId;
+  reset(newAnonymousId?: string | number) {
+    this.userId = null;
+    this.anonymousId = null;
+    this.sessionId = null;
     Cookie.clear(this.anonymousIdCookie);
     Cookie.clear(this.sessionIdCookie);
     Cookie.clear(this.userIdCookie);
@@ -114,20 +89,55 @@ export class GrouparooWebClient {
 
     this.generateAnonymousId();
     this.generateSessionId();
+    this.queue = [];
+  }
+
+  /** Track an event with optional data */
+  async track(
+    type: string,
+    data: GrouparooEventData = {},
+    ocurredAt = new Date()
+  ) {
+    // bump the TTLs or generate new ones as needed
+    this.generateSessionId();
+    this.generateAnonymousId();
+
+    const event: Event = {
+      type,
+      data,
+      userId: this.userId,
+      anonymousId: this.anonymousId,
+      sessionId: this.sessionId,
+      ocurredAt: ocurredAt.getTime(),
+    };
+
+    this.eventsCounts[type]++;
+    this.log("event", event);
+    this.queue.push(event);
+    return this.processQueue();
+  }
+
+  /**
+   * Identify this user
+   */
+  async identify(userId: string | number, data?: GrouparooEventData) {
+    this.userId = userId;
+    Cookie.set(this.userIdCookie, this.userId);
+    return this.track("identify", data);
   }
 
   /**
    * Track a 'page' event, along with related metadata.
    */
-  page(category: string, title: string, data: GrouparooEventData) {
-    this.track(
+  async page(category: string, title?: string, data?: GrouparooEventData) {
+    return this.track(
       "page",
       Object.assign(
         {
           category,
           title: title || window.document.title,
-          url: window.location.href,
-          path: window.location.pathname,
+          href: window.location.href,
+          pathname: window.location.pathname,
           referrer: window.document.referrer,
         },
         queryParams(),
@@ -152,23 +162,38 @@ export class GrouparooWebClient {
       return;
     }
 
-    await this.sendEvent(event);
-
+    const error = await this.sendEvent(event);
     this.processing = false;
-    return this.processQueue();
+
+    if (!error) {
+      return this.processQueue();
+    }
   }
 
   private async sendEvent(event: Event) {
     const url = `${this.host}${this.path}`;
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(event),
-    })
-      .then((res) => res.json())
-      .catch((error) => this.reportError(error));
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(event),
+      }).then((res) => res.json());
+      this.log(url, event, response);
+    } catch (error) {
+      this.reportError(error);
+      this.retryFailedFetch(event);
+      return error;
+    }
+  }
 
-    this.log(url, event, response);
+  private async retryFailedFetch(event) {
+    this.queue.push(event);
+    clearTimeout(this.retryTimer);
+
+    // TODO: exponential retry
+    this.retryTimer = setTimeout(() => {
+      this.processQueue();
+    }, 3000);
   }
 
   private validateAndApplyDefaults() {
