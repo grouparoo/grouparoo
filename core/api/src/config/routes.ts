@@ -67,6 +67,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/destination/:guid/profilePreview", action: "destination:profilePreview" },
         { path: "/v:apiVersion/files", action: "files:list" },
         { path: "/v:apiVersion/files/options", action: "files:options" },
+        { path: "/v:apiVersion/file/:guid/details", action: "file:details" },
         { path: "/v:apiVersion/file/:guid", action: "file:view" }
       ],
 

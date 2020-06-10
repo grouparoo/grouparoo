@@ -122,6 +122,21 @@ describe("actions/files", () => {
       expect(files[0].path).toBe("image/logo.svg");
     });
 
+    test("a reader can get the details for a file", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+      };
+      const { error, file } = await specHelper.runAction(
+        "file:details",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(file.path).toBe("image/logo.svg");
+      expect(file.extension).toBe(".svg");
+      expect(file.mime).toBe("image/svg+xml");
+    });
+
     // TODO: a better hack
     // test('a reader can view an uploaded file', async () => {
     //   let stream = ''
