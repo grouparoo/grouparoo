@@ -15,8 +15,6 @@ references:
     key: node-module-package-cache-{{ .Branch }}-{{ .Revision }}
   dist-cache-options: &dist-cache-options
     key: dist-package-cache-{{ .Branch }}-{{ .Revision }}
-  custom-cache-options: &custom-cache-options
-    key: custom-package-cache-{{ .Branch }}-{{ .Revision }}
   core-cache-options: &core-cache-options
     key: core-package-cache-{{ .Branch }}-{{ .Revision }}
 #
@@ -39,10 +37,6 @@ jobs:
           <<: *dist-cache-options
           paths:
 {{{dist_list}}}
-      - save_cache:
-          <<: *custom-cache-options
-          paths:
-{{{custom_cache}}}
       - save_cache:
           <<: *core-cache-options
           paths:

@@ -14,8 +14,6 @@
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
-          <<: *custom-cache-options
-      - restore_cache:
           <<: *core-cache-options
       - run:
           name: install postgresql client

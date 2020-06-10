@@ -13,8 +13,6 @@ references:
     key: node-module-package-cache-{{ .Branch }}-{{ .Revision }}
   dist-cache-options: &dist-cache-options
     key: dist-package-cache-{{ .Branch }}-{{ .Revision }}
-  custom-cache-options: &custom-cache-options
-    key: custom-package-cache-{{ .Branch }}-{{ .Revision }}
   core-cache-options: &core-cache-options
     key: core-package-cache-{{ .Branch }}-{{ .Revision }}
 #
@@ -69,9 +67,6 @@ jobs:
             - plugins/@grouparoo/sailthru/dist
             - plugins/@grouparoo/sample-ui-plugin/dist
       - save_cache:
-          <<: *custom-cache-options
-          paths:
-      - save_cache:
           <<: *core-cache-options
           paths:
             - core/api/dist
@@ -86,8 +81,6 @@ jobs:
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
-          <<: *custom-cache-options
-      - restore_cache:
           <<: *core-cache-options
       - run:
           name: license-checker
@@ -101,8 +94,6 @@ jobs:
           <<: *node-module-cache-options
       - restore_cache:
           <<: *dist-cache-options
-      - restore_cache:
-          <<: *custom-cache-options
       - restore_cache:
           <<: *core-cache-options
       - run:
@@ -122,8 +113,6 @@ jobs:
           <<: *node-module-cache-options
       - restore_cache:
           <<: *dist-cache-options
-      - restore_cache:
-          <<: *custom-cache-options
       - restore_cache:
           <<: *core-cache-options
       - run:
@@ -157,8 +146,6 @@ jobs:
           <<: *node-module-cache-options
       - restore_cache:
           <<: *dist-cache-options
-      - restore_cache:
-          <<: *custom-cache-options
       - restore_cache:
           <<: *core-cache-options
       - run:
@@ -195,8 +182,6 @@ jobs:
           <<: *node-module-cache-options
       - restore_cache:
           <<: *dist-cache-options
-      - restore_cache:
-          <<: *custom-cache-options
       - restore_cache:
           <<: *core-cache-options
       - add_ssh_keys:

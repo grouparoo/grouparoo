@@ -8,8 +8,6 @@
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
-          <<: *custom-cache-options
-      - restore_cache:
           <<: *core-cache-options
       - add_ssh_keys:
           fingerprints:
