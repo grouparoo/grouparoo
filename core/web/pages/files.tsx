@@ -160,7 +160,7 @@ export default function Page(props) {
                 <td>
                   <Button
                     size="sm"
-                    variant="danger"
+                    variant="outline-danger"
                     onClick={() => {
                       destroy(file);
                     }}
