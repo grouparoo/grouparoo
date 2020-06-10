@@ -18,7 +18,6 @@ export default function LogsList(props) {
   }, [latestTimestamp]);
 
   function handleMessage({ model }) {
-    console.log(model);
     setLogs((logs) => {
       logs.push(model);
       while (logs.length > limit) logs.shift();

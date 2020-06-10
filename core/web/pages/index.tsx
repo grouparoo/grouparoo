@@ -27,7 +27,7 @@ export default function Page(props) {
 
       <div style={{ width: "100%", height: "100%" }}>
         <div
-          style={{ margin: 0, position: "absolute", top: "30%", left: "50%" }}
+          style={{ margin: 0, position: "absolute", top: "20%", left: "50%" }}
         >
           <Row>
             <Col style={{ textAlign: "center" }}>
@@ -36,22 +36,21 @@ export default function Page(props) {
               <br />
               <h1>Grouparoo</h1>
               <p>Achieve Marketing Autonomy</p>
+              <br />
+              <br />
+
+              <div style={{ textAlign: "center" }}>
+                <Button
+                  variant="success"
+                  onClick={() => {
+                    Router.push(CTALink);
+                  }}
+                >
+                  {CTAMessage}
+                </Button>
+              </div>
             </Col>
           </Row>
-
-          <br />
-          <br />
-
-          <div style={{ textAlign: "center" }}>
-            <Button
-              variant="success"
-              onClick={() => {
-                Router.push(CTALink);
-              }}
-            >
-              {CTAMessage}
-            </Button>
-          </div>
         </div>
       </div>
     </>

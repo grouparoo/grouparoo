@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { Button, Image } from "react-bootstrap";
 import Router from "next/router";
+import Link from "next/link";
 import { useState } from "react";
 import { useApi } from "../hooks/useApi";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
@@ -56,7 +57,7 @@ export default function Page(props) {
       const response = await execApi("delete", `/file/${file.guid}`);
       setLoading(false);
       if (response?.success) {
-        successHandler.set({ message: "File Delete" });
+        successHandler.set({ message: "File Deleted" });
         await load();
       }
     }
@@ -124,7 +125,14 @@ export default function Page(props) {
                   )}
                 </td>
                 <td>
-                  <strong>{fileName}</strong>
+                  <strong>
+                    <Link
+                      href="/file/[guid]/edit"
+                      as={`/file/${file.guid}/edit`}
+                    >
+                      <a>{fileName}</a>
+                    </Link>
+                  </strong>
                   <br />
                   {file.path}
                 </td>
@@ -141,7 +149,7 @@ export default function Page(props) {
                 <td>
                   <Button
                     size="sm"
-                    variant="outline-success"
+                    variant="outline-primary"
                     onClick={() => {
                       download(file);
                     }}
@@ -152,7 +160,7 @@ export default function Page(props) {
                 <td>
                   <Button
                     size="sm"
-                    variant="danger"
+                    variant="outline-danger"
                     onClick={() => {
                       destroy(file);
                     }}

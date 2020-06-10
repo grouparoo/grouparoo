@@ -2,17 +2,21 @@ import Loader from "../../components/loader";
 import Router from "next/router";
 
 const guidPrefixes = {
-  pro: "/profile/[guid]/edit",
-  grp: "/group/[guid]/members",
-  rul: "/profilePropertyRule/[guid]/edit",
+  api: "/apiKey/[guid]/edit",
   app: "/app/[guid]/edit",
-  run: "/run/[guid]/edit",
   dst: "/destination/[guid]/edit",
+  evt: "/event/[guid]/edit",
+  exp: "/export/[guid]/edit",
+  fil: "/file/[guid]/edit",
+  grp: "/group/[guid]/members",
+  imp: "/import/[guid]/edit",
+  pro: "/profile/[guid]/edit",
+  rul: "/profilePropertyRule/[guid]/edit",
+  run: "/run/[guid]/edit",
+  // sch: "/schedule/[guid]/edit",
+  src: "/source/[guid]/overview",
   tea: "/team/[guid]/edit",
   tem: "/teamMember/[guid]/edit",
-  evt: "/event/[guid]/edit",
-  imp: "/import/[guid]/edit",
-  exp: "/export/[guid]/edit",
 };
 
 export default function FindObject({ query, errorHandler }) {

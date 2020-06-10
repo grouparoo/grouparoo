@@ -84,6 +84,24 @@ export class FileCreate extends AuthenticatedAction {
   }
 }
 
+export class FileDetails extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "file:details";
+    this.description = "view the details of a file";
+    this.outputExample = {};
+    this.permission = { topic: "file", mode: "read" };
+    this.inputs = {
+      guid: { required: true },
+    };
+  }
+
+  async run({ params, response }) {
+    const file = await File.findByGuid(params.guid);
+    response.file = await file.apiData();
+  }
+}
+
 export class FileView extends AuthenticatedAction {
   constructor() {
     super();
