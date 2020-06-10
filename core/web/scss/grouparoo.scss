@@ -90,6 +90,22 @@ hr {
   background-color: $grouparoo-violet;
 }
 
+// bordered columns
+
+.border-between-columns > [class*="col"]:before {
+  background: $grouparoo-light-gray;
+  bottom: 0;
+  content: " ";
+  left: 0;
+  position: absolute;
+  width: 1px;
+  top: 0;
+}
+
+.border-between-columns > [class*="col"]:first-child:before {
+  display: none;
+}
+
 // -- External Components --
 
 @import "~@fortawesome/fontawesome-svg-core/styles.css";
