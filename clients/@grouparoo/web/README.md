@@ -25,7 +25,7 @@ const client = new GrouparooWebClient({
   <head>
     <script
       type="application/javascript"
-      href="https://grouparoo.my-company.com/public/javascript/grouparooWebCleint.js"
+      src="https://grouparoo.my-company.com/public/javascript/grouparooWebClient.js"
     ></script>
   </head>
 
@@ -53,6 +53,8 @@ To initialize a client (per the above examples), you'll need to provide:
 - **sessionId** (optional): A unique ID you would like to use to identify the session for this client. By default, we will generate a unique UUID for this session and store it in a cookie for future use. However, if your application already has the notion of a unique session ID for every visitor, you can apply it here.
 - **sessionIdCookie** (optional): What is the name of the cookie to store the `sessionId`? Default: `grouparoo-session-id`
 - **sessionIdCookieTTL** (optional): How long should the session cookie exist for? Set in ms. Default: `(1000 * 60 * 60)`, i.e: 1 hour.
+- **retrySleep** (optional): How long to sleep, in ms, between http errors before trying to send again. Default: `(1000 * 3)`, i.e.: 3 seconds.
+- **maxErrorCount** (optional): We will stop trying to send events after seeing this many HTTP errors. Default: 10.
 
 ## Creating Events
 

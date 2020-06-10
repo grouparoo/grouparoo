@@ -23,6 +23,7 @@ export interface GrouparooEventData {
 }
 
 export interface Event {
+  apiKey: string;
   ocurredAt: number;
   type: string;
   anonymousId: string | number;
@@ -48,6 +49,9 @@ export class GrouparooWebClient {
   queue: Event[];
   processing: boolean;
   eventsCounts: { [name: string]: number };
+  retrySleep: number;
+  maxErrorCount: number;
+  errorCount: 0;
   retryTimer: NodeJS.Timeout;
 
   constructor(args: GrouparooClientArgs) {
@@ -59,9 +63,11 @@ export class GrouparooWebClient {
       this[i] = args[i];
     }
     this.queue = [];
+    this.errorCount = 0;
     this.validateAndApplyDefaults();
     this.generateAnonymousId();
     this.generateSessionId();
+    this.errorCount = 0;
 
     if (this.userId) {
       Cookie.set(this.userIdCookie, this.userId);
@@ -87,9 +93,10 @@ export class GrouparooWebClient {
       this.anonymousId = newAnonymousId;
     }
 
-    this.generateAnonymousId();
-    this.generateSessionId();
+    this.generateAnonymousId(false);
+    this.generateSessionId(false);
     this.queue = [];
+    this.errorCount = 0;
   }
 
   /** Track an event with optional data */
@@ -103,6 +110,7 @@ export class GrouparooWebClient {
     this.generateAnonymousId();
 
     const event: Event = {
+      apiKey: this.apiKey,
       type,
       data,
       userId: this.userId,
@@ -112,7 +120,6 @@ export class GrouparooWebClient {
     };
 
     this.eventsCounts[type]++;
-    this.log("event", event);
     this.queue.push(event);
     return this.processQueue();
   }
@@ -173,12 +180,18 @@ export class GrouparooWebClient {
   private async sendEvent(event: Event) {
     const url = `${this.host}${this.path}`;
     try {
-      const response = await fetch(url, {
+      let response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(event),
-      }).then((res) => res.json());
-      this.log(url, event, response);
+      });
+      const responsePayload = await response.json();
+      if (!response.ok) {
+        throw responsePayload.error.message
+          ? responsePayload.error.message
+          : responsePayload.error;
+      }
+      this.log(JSON.stringify(event), url, `: ${response.status}`);
     } catch (error) {
       this.reportError(error);
       this.retryFailedFetch(event);
@@ -187,13 +200,20 @@ export class GrouparooWebClient {
   }
 
   private async retryFailedFetch(event) {
+    this.errorCount++;
+
+    if (this.errorCount >= this.maxErrorCount) {
+      return console.error(
+        `[grouparoo] MaxErrorCount (${this.maxErrorCount}) reached.  Not retrying.`
+      );
+    }
+
     this.queue.push(event);
     clearTimeout(this.retryTimer);
 
-    // TODO: exponential retry
     this.retryTimer = setTimeout(() => {
       this.processQueue();
-    }, 3000);
+    }, this.retrySleep);
   }
 
   private validateAndApplyDefaults() {
@@ -235,6 +255,14 @@ export class GrouparooWebClient {
       this.errorHandlers = [this.logError];
     }
 
+    if (!this.retrySleep) {
+      this.retrySleep = 3000;
+    }
+
+    if (!this.maxErrorCount) {
+      this.maxErrorCount = 10;
+    }
+
     this.processing = false;
     this.eventsCounts = {};
   }
@@ -243,12 +271,12 @@ export class GrouparooWebClient {
   Grouparoo does not rely on any browser fingerprinting technique, just a unique cookie to store a random anonymousId.
   The cookie will be tied to /this/ domain.
   */
-  private generateAnonymousId() {
+  private generateAnonymousId(useCookie = true) {
     let anonymousId: string;
 
     if (this.anonymousId) {
       anonymousId = this.anonymousId.toString();
-    } else if (Cookie.get(this.anonymousIdCookie)) {
+    } else if (useCookie && Cookie.get(this.anonymousIdCookie)) {
       anonymousId = Cookie.get(this.anonymousIdCookie);
     } else {
       anonymousId = `aid-${UUID.v4()}`;
@@ -264,12 +292,12 @@ export class GrouparooWebClient {
     return anonymousId;
   }
 
-  private generateSessionId() {
+  private generateSessionId(useCookie = true) {
     let sessionId: string;
 
     if (this.sessionId) {
       sessionId = this.sessionId.toString();
-    } else if (Cookie.get(this.sessionIdCookie)) {
+    } else if (useCookie && Cookie.get(this.sessionIdCookie)) {
       sessionId = Cookie.get(this.sessionIdCookie);
     } else {
       sessionId = `sid-${UUID.v4()}`;

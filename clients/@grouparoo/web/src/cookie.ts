@@ -35,6 +35,7 @@ export namespace Cookie {
   }
 
   export function clear(name: string) {
-    window.document.cookie = name + "=; Max-Age=-99999999;";
+    window.document.cookie =
+      name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
   }
 }

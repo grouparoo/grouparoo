@@ -1,1 +1,1 @@
-export { GrouparooWebClient } from "./client";
+module.exports = require("./client").GrouparooWebClient;

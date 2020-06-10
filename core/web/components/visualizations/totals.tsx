@@ -142,7 +142,7 @@ export default function (props) {
       <CardGroup>
         <SparkCard
           execApi={execApi}
-          href="events"
+          href="events/overview"
           model="Event"
           title="Events"
         />
