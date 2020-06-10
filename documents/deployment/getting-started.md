@@ -74,7 +74,7 @@ Regardless of the method you deploy Grouparoo, the following topology will need 
 
 ## Deploying to Production Environments
 
-Now that you've tried Grouparoo locally, it's time to deploy it!  An example application which can be coppied and deployed via Docker or Heroku is availalbe at [grouparoo/app-example](https://github.com/grouparoo/app-example)
+Now that you've tried Grouparoo locally, it's time to deploy it!  An example application which can be coppied and deployed via Docker or Heroku is available at [grouparoo/app-example](https://github.com/grouparoo/app-example)
 
 - [Deploying with Heroku](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/heroku.md)
 - [Deploying with Docker](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/docker.md)
