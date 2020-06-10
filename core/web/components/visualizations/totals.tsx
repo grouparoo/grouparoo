@@ -117,6 +117,8 @@ export default function (props) {
 
   return (
     <>
+      <h2>Totals</h2>
+
       <Row>
         <Col>
           <BigNumber

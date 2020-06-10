@@ -121,7 +121,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         platformItems.push({
           type: "link",
           title: "Logs",
-          href: "/logs",
+          href: "/logs/list",
         });
 
         platformItems.push({

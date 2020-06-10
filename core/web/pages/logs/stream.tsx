@@ -1,5 +1,6 @@
 import Head from "next/head";
-import LogsList from "../components/log/list";
+import LogsStream from "../../components/log/stream";
+import LogsTabs from "../../components/tabs/logs";
 
 export default function Page(props) {
   return (
@@ -8,11 +9,12 @@ export default function Page(props) {
         <title>Grouparoo: Logs</title>
       </Head>
 
-      <LogsList {...props} />
+      <LogsTabs active="stream" />
+      <LogsStream {...props} />
     </>
   );
 }
 
 Page.getInitialProps = async (ctx) => {
-  return LogsList.hydrate(ctx);
+  return LogsStream.hydrate(ctx);
 };

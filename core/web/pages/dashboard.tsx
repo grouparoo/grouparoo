@@ -36,7 +36,6 @@ export default function Page(props) {
         <HeaderTitle title="Dashboard" />
         <h1>Dashboard</h1>
 
-        <h2>Totals</h2>
         <TotalsList {...props} />
       </>
     );
