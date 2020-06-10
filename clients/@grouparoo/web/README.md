@@ -12,6 +12,7 @@ For use in environments that will be compiled, ie: React or Webpack.
 
 ```ts
 import { GrouparooWebClient } from "@grouparoo/client-web";
+
 const client = new GrouparooWebClient({
   host: "https://grouparoo.my-company.com",
   apiKey: "abc123zzz",
@@ -121,3 +122,7 @@ client.track("page", {
   utm_campaign: "fall-campaign-mushroom-keywords",
 });
 ```
+
+### Notes on building this package
+
+We build both a `dist/grouparooWebClient.js`, which is to be used in the browser, and `dist/index.js` which is to be consumed by other node or webpack projects which will then be transpiled. The code within both libraries is exactly the same, except for the method of bundling and exporting the `Client` class.

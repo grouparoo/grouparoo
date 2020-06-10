@@ -1,4 +1,4 @@
-import { UUID } from "./uuid";
+import { uuid } from "./uuid";
 import { Cookie } from "./cookie";
 import { queryParams } from "./queryParams";
 
@@ -279,7 +279,7 @@ export class GrouparooWebClient {
     } else if (useCookie && Cookie.get(this.anonymousIdCookie)) {
       anonymousId = Cookie.get(this.anonymousIdCookie);
     } else {
-      anonymousId = `aid-${UUID.v4()}`;
+      anonymousId = `aid-${uuid.v4()}`;
     }
 
     this.anonymousId = anonymousId;
@@ -300,7 +300,7 @@ export class GrouparooWebClient {
     } else if (useCookie && Cookie.get(this.sessionIdCookie)) {
       sessionId = Cookie.get(this.sessionIdCookie);
     } else {
-      sessionId = `sid-${UUID.v4()}`;
+      sessionId = `sid-${uuid.v4()}`;
     }
 
     this.sessionId = sessionId;

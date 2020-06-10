@@ -76,9 +76,10 @@
     const clickCountSpan = document.getElementById("click-count");
     const signOutButton = document.getElementById("sign-out-button");
 
-    // build the client
     const queryParams = new URLSearchParams(window.location.search);
     const apiKey = queryParams.get("apiKey");
+
+    // build the client
     const client = new GrouparooWebClient({
       host: window.location.origin,
       apiKey: apiKey,

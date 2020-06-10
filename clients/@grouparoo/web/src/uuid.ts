@@ -1,6 +1,6 @@
 // from https://stackoverflow.com/questions/105034/how-to-create-guid-uuid
 
-export namespace UUID {
+export namespace uuid {
   export function v4() {
     if (globalThis.crypto) {
       return v4_es6();

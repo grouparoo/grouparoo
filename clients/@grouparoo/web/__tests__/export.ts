@@ -1,9 +1,9 @@
-import * as _Export from "../dist/index";
-// require("../dist/index");
+import GrouparooWebClient from "..";
 
 describe("export", () => {
   it("the module exports the class directly", () => {
-    // @ts-ignore
-    expect(() => GrouparooWebClient()).toThrow(/no arguments provided/);
+    expect(() => {
+      new GrouparooWebClient({});
+    }).toThrow(/apiKey is a required argument/);
   });
 });
