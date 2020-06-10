@@ -19,7 +19,7 @@ export class Files extends Initializer {
       "@grouparoo",
       "client-web",
       "dist",
-      "index.js"
+      "grouparooWebClient.js"
     );
 
     const destination = path.join(
