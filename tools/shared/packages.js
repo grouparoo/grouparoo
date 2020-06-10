@@ -5,7 +5,8 @@ const rootPath = path.resolve(path.join(__dirname, "..", ".."));
 
 function allPluginFiles(glob) {
   const packageFiles = [].concat(
-    glob.sync(path.join(rootPath, "plugins", "*", "*", "package.json"))
+    glob.sync(path.join(rootPath, "plugins", "*", "*", "package.json")),
+    glob.sync(path.join(rootPath, "clients", "*", "*", "package.json"))
   );
   return packageFiles;
 }

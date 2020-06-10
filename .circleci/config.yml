@@ -30,6 +30,7 @@ jobs:
           paths:
             - apps/local-public/node_modules
             - apps/staging-public/node_modules
+            - clients/@grouparoo/web/node_modules
             - core/node_modules
             - node_modules
             - plugins/@grouparoo/bigquery/node_modules
@@ -46,6 +47,7 @@ jobs:
             - plugins/@grouparoo/sailthru/node_modules
             - plugins/@grouparoo/sample-ui-plugin/node_modules
             - tools/merger/node_modules
+            - clients/@grouparoo/web/dist
             - plugins/@grouparoo/bigquery/dist
             - plugins/@grouparoo/csv/dist
             - plugins/@grouparoo/email-authentication/dist
