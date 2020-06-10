@@ -8,15 +8,15 @@ const guidPrefixes = {
   evt: "/event/[guid]/edit",
   exp: "/export/[guid]/edit",
   fil: "/file/[guid]/edit",
-
-  pro: "/profile/[guid]/edit",
   grp: "/group/[guid]/members",
+  imp: "/import/[guid]/edit",
+  pro: "/profile/[guid]/edit",
   rul: "/profilePropertyRule/[guid]/edit",
-
   run: "/run/[guid]/edit",
+  // sch: "/schedule/[guid]/edit",
+  src: "/source/[guid]/overview",
   tea: "/team/[guid]/edit",
   tem: "/teamMember/[guid]/edit",
-  imp: "/import/[guid]/edit",
 };
 
 export default function FindObject({ query, errorHandler }) {
