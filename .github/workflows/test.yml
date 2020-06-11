@@ -119,6 +119,8 @@ jobs:
             */dist
             */*/dist
           key: ${{ runner.os }}-cache-${{ github.sha }}
+      - run: sudo apt install -y postgresql-client
+      - run: cd core/api && ./bin/create_test_databases
       - run: cd core && npm run test-api
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres
@@ -169,6 +171,8 @@ jobs:
             */dist
             */*/dist
           key: ${{ runner.os }}-cache-${{ github.sha }}
+      - run: sudo apt install -y postgresql-client
+      - run: cd core/api && ./bin/create_test_databases
       - run: cd core && npm run test-web
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres
