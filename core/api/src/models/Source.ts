@@ -20,7 +20,7 @@ import { LoggedModel } from "../classes/loggedModel";
 import { Schedule } from "./Schedule";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Option } from "./Option";
-import { App } from "./App";
+import { App, AppOption } from "./App";
 import { Run } from "./Run";
 import { Profile } from "./Profile";
 import { Mapping } from "./Mapping";
@@ -338,7 +338,15 @@ export class Source extends LoggedModel<Source> {
     profile: Profile,
     profilePropertyRule: ProfilePropertyRule,
     profilePropertyRuleOptionsOverride?: OptionHelper.SimpleOptions,
-    profilePropertyRuleFiltersOverride?: ProfilePropertyRuleFiltersWithKey[]
+    profilePropertyRuleFiltersOverride?: ProfilePropertyRuleFiltersWithKey[],
+    preloadedArgs: {
+      app?: App;
+      connection?: any;
+      appOptions?: OptionHelper.SimpleOptions;
+      sourceOptions?: OptionHelper.SimpleOptions;
+      sourceMapping?: MappingHelper.Mappings;
+      profileProperties?: {};
+    } = {}
   ) {
     if (
       profilePropertyRule.state !== "ready" &&
@@ -365,16 +373,19 @@ export class Source extends LoggedModel<Source> {
       return;
     }
 
-    const app = await this.$get("app");
-    const connection = await app.getConnection();
-    const appOptions = await app.getOptions();
-    const sourceOptions = await this.getOptions();
-    const sourceMapping = await this.getMapping();
+    const app = preloadedArgs.app || (await this.$get("app"));
+    const connection = preloadedArgs.connection || (await app.getConnection());
+    const appOptions = preloadedArgs.appOptions || (await app.getOptions());
+    const sourceOptions =
+      preloadedArgs.sourceOptions || (await this.getOptions());
+    const sourceMapping =
+      preloadedArgs.sourceMapping || (await this.getMapping());
 
     // we may not have the profile property needed to make the mapping (ie: userId is not set on this anonymous profile)
     if (Object.values(sourceMapping).length > 0) {
       const profilePropertyRuleMappingKey = Object.values(sourceMapping)[0];
-      const profileProperties = await profile.properties();
+      const profileProperties =
+        preloadedArgs.profileProperties || (await profile.properties());
       if (!profileProperties[profilePropertyRuleMappingKey]) {
         return;
       }
@@ -404,9 +415,25 @@ export class Source extends LoggedModel<Source> {
       where: { state: "ready" },
     });
 
+    const app = await this.$get("app");
+    const preloadedArgs = {
+      app,
+      connection: await app.getConnection(),
+      appOptions: await app.getOptions(),
+      sourceOptions: await this.getOptions(),
+      sourceMapping: await this.getMapping(),
+      profileProperties: await profile.properties(),
+    };
+
     for (const i in rules) {
       const rule = rules[i];
-      const response = await this.importProfileProperty(profile, rule);
+      const response = await this.importProfileProperty(
+        profile,
+        rule,
+        null,
+        null,
+        preloadedArgs
+      );
       hash[rule.key] = response;
     }
 
