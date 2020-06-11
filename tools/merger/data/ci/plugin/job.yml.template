@@ -10,7 +10,11 @@
     steps:
       - checkout
       - restore_cache:
-          <<: *cache-options
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client

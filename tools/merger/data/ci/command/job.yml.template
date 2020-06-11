@@ -5,7 +5,11 @@
     steps:
       - checkout
       - restore_cache:
-          <<: *cache-options
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
 {{{custom_steps}}}
       - run:
           name: {{{name}}}

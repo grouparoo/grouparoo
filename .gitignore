@@ -11,21 +11,18 @@ newrelic_agent.log
 coverage
 
 # API
-api/public/javascript/ActionheroWebsocketClient.js
-api/public/javascript/ActionheroWebsocketClient.min.js
 log
 pids
 dist
 core/api/files
 core/api/report.*.json
-core/web/public/javascript/ActionheroWebsocketClient.js
-core/web/public/javascript/ActionheroWebsocketClient.min.js
 core/api/docs
 core/api/gh-pages
 
 # Web
 .next
 web/out
+core/web/public/javascript/*
 
 # Builds
 *.tgz

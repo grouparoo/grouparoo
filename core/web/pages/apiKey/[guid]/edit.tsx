@@ -105,6 +105,18 @@ export default function Page(props) {
             value={apiKey.apiKey}
           />
         </Form.Group>
+
+        <p>
+          Try this API Key in the browser{" "}
+          <a
+            href={`/examples/events.html?apiKey=${apiKey.apiKey}`}
+            target="_new"
+          >
+            here
+          </a>
+          .
+        </p>
+
         <h3>Permissions</h3>
         <PermissionsList
           permissions={apiKey.permissions}

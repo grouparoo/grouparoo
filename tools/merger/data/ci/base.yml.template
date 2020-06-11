@@ -11,8 +11,12 @@ references:
       ignore:
         - gh-pages
 
-  cache-options: &cache-options
-    key: package-cache-{{ .Branch }}-{{ .Revision }}
+  node-module-cache-options: &node-module-cache-options
+    key: node-module-package-cache-{{ .Branch }}-{{ .Revision }}
+  dist-cache-options: &dist-cache-options
+    key: dist-package-cache-{{ .Branch }}-{{ .Revision }}
+  core-cache-options: &core-cache-options
+    key: core-package-cache-{{ .Branch }}-{{ .Revision }}
 #
 # Define Jobs to run
 jobs:
@@ -21,18 +25,21 @@ jobs:
       - image: circleci/node:12
     steps:
       - checkout
-      - restore_cache:
-          <<: *cache-options
       - run: sudo apt-get install -y rsync
       - run:
           name: npm-install
           command: npm install
       - save_cache:
-          <<: *cache-options
+          <<: *node-module-cache-options
           paths:
 {{{node_module_list}}}
+      - save_cache:
+          <<: *dist-cache-options
+          paths:
 {{{dist_list}}}
-{{{custom_cache}}}
+      - save_cache:
+          <<: *core-cache-options
+          paths:
 {{{core_cache}}}
 
 
