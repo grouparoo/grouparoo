@@ -6,6 +6,9 @@ declare module "actionhero" {
   export interface Api {
     plugins: {
       plugins: Array<GrouparooPlugin>;
+      persistentConnections: {
+        [guid: string]: any;
+      };
     };
   }
 }
@@ -20,6 +23,7 @@ export class Plugins extends Initializer {
   async initialize() {
     api.plugins = {
       plugins: [],
+      persistentConnections: {},
     };
 
     // --- Add the core plugin --- //

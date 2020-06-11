@@ -44,6 +44,8 @@ export interface PluginApp {
   options: AppOption[];
   addible?: boolean;
   methods: {
+    connect?: ConnectPluginAppMethod;
+    disconnect?: DisconnectPluginAppMethod;
     test: TestPluginMethod;
     appOptions?: AppOptionsMethod;
   };
@@ -178,10 +180,31 @@ export interface ExportProfilePluginMethod {
 export interface ConnectionOption extends AppOption {}
 
 /**
- * Method is used to test the connection options for the app.  Returns either a boolean or throws an error to be displayed to the user
+ * Method is used to test the connection options for the app.  Returns either a boolean or throws an error to be displayed to the user.
+ * The test method will disconnect and connect before use, if those methods are present for this app type.
  */
 export interface TestPluginMethod {
   (argument: { app: App; appOptions: SimpleAppOptions }): Promise<boolean>;
+}
+
+/**
+ * This method is used to build a connection object for this App.  It will be shared with multiple sources & destinations related to this app on the same server.
+ * This is useful when your App has a kept-alive wire connection, like mySQL or Postgres, or you need an API token to reuse.
+ * The connection itself should be able to handle reconnection attempts, keep-alive, etc,
+ */
+export interface ConnectPluginAppMethod {
+  (argument: { app: App; appOptions: SimpleAppOptions }): Promise<any>;
+}
+
+/**
+ * Disconnect this app's persistent connection
+ */
+export interface DisconnectPluginAppMethod {
+  (argument: {
+    app: App;
+    appOptions: SimpleAppOptions;
+    connection: any;
+  }): Promise<void>;
 }
 
 /**
