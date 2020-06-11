@@ -19,7 +19,7 @@ export class Plugins extends Initializer {
     super();
     this.name = "plugins";
     this.loadPriority = 999;
-    this.stopPriority = 1;
+    this.stopPriority = 400;
   }
 
   async initialize() {
