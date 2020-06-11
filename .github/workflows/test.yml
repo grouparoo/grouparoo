@@ -124,8 +124,8 @@ jobs:
       - run: cd core/api && ./bin/create_test_databases
       - run: cd core && npm run test-api
         env:
-          DATABASE_URL: postgresql://postgres:postgres@postgres:${{ job.services.postgres.ports[5432] }}/postgres
-          REDIS_URL: redis://redis:${{ job.services.redis.ports[6379] }}/0
+          DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
+          REDIS_URL: redis://redis:6379/0
           maxMemoryAlloted: 1000
 
   test-core-web:
@@ -177,8 +177,8 @@ jobs:
       - run: cd core/api && ./bin/create_test_databases
       - run: cd core && npm run test-web
         env:
-          DATABASE_URL: postgresql://postgres:postgres@postgres:${{ job.services.postgres.ports[5432] }}/postgres
-          REDIS_URL: redis://redis:${{ job.services.redis.ports[6379] }}/0
+          DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
+          REDIS_URL: redis://redis:6379/0
           SELENIUM_TEST_HOST: main
           SELENIUM_REMOTE_URL: http://selenium:4444/wd/hub
           maxMemoryAlloted: 1000
