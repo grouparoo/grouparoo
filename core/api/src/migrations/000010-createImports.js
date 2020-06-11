@@ -101,6 +101,10 @@ module.exports = {
     await migration.addIndex(TABLE, ["profileGuid"], {
       fields: ["profileGuid"],
     });
+
+    await migration.addIndex(TABLE, ["profileUpdatedAt"], {
+      fields: ["profileUpdatedAt"],
+    });
   },
 
   down: async function (migration) {
