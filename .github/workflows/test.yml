@@ -31,7 +31,7 @@ jobs:
             */dist
             */*/dist
             */*/*/dist
-            /core/web/.next
+            core/web/.next
           key: ${{ runner.os }}-cache-${{ github.sha }}
 
   license-checker:
@@ -56,7 +56,7 @@ jobs:
             */dist
             */*/dist
             */*/*/dist
-            /core/web/.next
+            core/web/.next
           key: ${{ runner.os }}-cache-${{ github.sha }}
       - run: npm run license-checker
 
@@ -82,7 +82,7 @@ jobs:
             */dist
             */*/dist
             */*/*/dist
-            /core/web/.next
+            core/web/.next
           key: ${{ runner.os }}-cache-${{ github.sha }}
       - run: npm run lint
 
@@ -125,7 +125,7 @@ jobs:
             */dist
             */*/dist
             */*/*/dist
-            /core/web/.next
+            core/web/.next
           key: ${{ runner.os }}-cache-${{ github.sha }}
       - run: apt-get update
       - run: apt install -y postgresql-client
@@ -180,7 +180,7 @@ jobs:
             */dist
             */*/dist
             */*/*/dist
-            /core/web/.next
+            core/web/.next
           key: ${{ runner.os }}-cache-${{ github.sha }}
       - run: apt-get update
       - run: apt install -y postgresql-client
