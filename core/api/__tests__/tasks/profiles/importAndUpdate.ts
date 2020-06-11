@@ -69,6 +69,7 @@ describe("tasks/profile:importAndUpdate", () => {
 
       it("updates the run and imports", async () => {
         const runA = await helper.factories.run(null, { state: "running" });
+        await helper.sleep(1001);
         const runB = await helper.factories.run(null, { state: "running" });
 
         const importA = await helper.factories.import(runA, {
