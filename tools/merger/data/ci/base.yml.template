@@ -41,6 +41,7 @@ jobs:
           <<: *core-cache-options
           paths:
 {{{core_cache}}}
+{{{custom_cache}}}
 
 
 {{{jobs}}}
