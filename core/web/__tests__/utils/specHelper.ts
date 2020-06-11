@@ -3,8 +3,9 @@ import { spawn } from "child_process";
 import fetch from "isomorphic-fetch";
 
 // set server overrides
+const host = process.env.SELENIUM_TEST_HOST || "localhost";
 const port = 12345;
-const url = `http://localhost:${port}`;
+const url = `http://${host}:${port}`;
 const apiProjectPath = path.join(__dirname, "..", "..", "..", "api");
 const jestId = process.env.JEST_WORKER_ID || "1";
 const serverToken = `serverToken-${process.env.JEST_WORKER_ID || 0}`;
