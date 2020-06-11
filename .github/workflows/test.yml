@@ -144,6 +144,10 @@ jobs:
 
   complete:
     runs-on: ubuntu-latest
-    needs: [test, lint, test-core-web]
+    needs:
+      - license-checker
+      - lint
+      - test-core-web
+      - test-core-api
     steps:
       - run: echo "Done!"
