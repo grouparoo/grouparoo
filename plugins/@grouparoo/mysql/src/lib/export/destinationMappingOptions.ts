@@ -1,16 +1,14 @@
 import { DestinationMappingOptionsMethod } from "@grouparoo/core";
-import { connect } from "../connect";
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
+  connection,
   appOptions,
   destinationOptions,
 }) => {
-  const client = await connect(appOptions);
-  const rows = await client.asyncQuery(
+  const rows = await connection.asyncQuery(
     `SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND table_name = ?`,
     [appOptions.database, destinationOptions.table]
   );
-  await client.asyncEnd();
 
   const columns = [];
   for (const i in rows) {

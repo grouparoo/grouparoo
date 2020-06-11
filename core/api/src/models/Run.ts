@@ -235,6 +235,7 @@ export class Run extends Model<Run> {
 
     const source = await Source.findByGuid(schedule.sourceGuid);
     const app = await App.findByGuid(source.appGuid);
+    const connection = await app.getConnection();
     const { pluginConnection } = await source.getPlugin();
     if (!pluginConnection || !pluginConnection?.methods.nextFilter) {
       return nextFilter;
@@ -246,6 +247,7 @@ export class Run extends Model<Run> {
     const scheduleOptions = await schedule.getOptions();
 
     return pluginConnection.methods.nextFilter({
+      connection,
       app,
       appOptions,
       source,

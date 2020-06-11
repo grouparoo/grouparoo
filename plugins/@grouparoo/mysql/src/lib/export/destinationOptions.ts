@@ -1,7 +1,7 @@
-import { connect } from "../connect";
 import { DestinationOptionsMethod } from "@grouparoo/core";
 
 export const destinationOptions: DestinationOptionsMethod = async ({
+  connection,
   appOptions,
 }) => {
   const response = {
@@ -15,8 +15,7 @@ export const destinationOptions: DestinationOptionsMethod = async ({
   const tables = [];
   const columns = [];
 
-  const client = await connect(appOptions);
-  const rows = await client.asyncQuery(
+  const rows = await connection.asyncQuery(
     `SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = ?`,
     [appOptions.database]
   );
@@ -24,7 +23,7 @@ export const destinationOptions: DestinationOptionsMethod = async ({
   for (const i in rows) {
     const tableName: string = rows[i].table_name;
     tables.push(tableName);
-    const colRows = await client.asyncQuery(
+    const colRows = await connection.asyncQuery(
       `SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND table_name = ?`,
       [appOptions.database, tableName]
     );
@@ -34,8 +33,6 @@ export const destinationOptions: DestinationOptionsMethod = async ({
       }
     });
   }
-
-  await client.end();
 
   tables.sort();
   columns.sort();

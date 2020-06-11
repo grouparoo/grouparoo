@@ -134,6 +134,7 @@ export interface PluginConnectionProfilePropertyRuleOption {
   description: string;
   type: string;
   options: (argument: {
+    connection: any;
     app: App;
     appOptions: SimpleAppOptions;
     source: Source;
@@ -417,6 +418,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       }>;
     }> = [];
     const app = await App.findByGuid(source.appGuid);
+    const connection = await app.getConnection();
     const appOptions = await app.getOptions();
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();
@@ -424,6 +426,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     for (const i in pluginConnection.profilePropertyRuleOptions) {
       const opt = pluginConnection.profilePropertyRuleOptions[i];
       const options = await opt.options({
+        connection,
         app,
         appOptions,
         source,
@@ -503,10 +506,12 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();
     const app = await App.findByGuid(source.appGuid);
+    const connection = await app.getConnection();
     const appOptions = await app.getOptions();
 
     const method = pluginConnection.methods.sourceFilters;
     const options = await method({
+      connection,
       app,
       appOptions,
       source,

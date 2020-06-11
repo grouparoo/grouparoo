@@ -225,13 +225,18 @@ export class Source extends LoggedModel<Source> {
   async sourceConnectionOptions() {
     const { pluginConnection } = await this.getPlugin();
     const app = await this.$get("app");
+    const connection = await app.getConnection();
     const appOptions = await app.getOptions();
 
     if (!pluginConnection.methods.sourceOptions) {
       return {};
     }
 
-    return pluginConnection.methods.sourceOptions({ app, appOptions });
+    return pluginConnection.methods.sourceOptions({
+      connection,
+      app,
+      appOptions,
+    });
   }
 
   async sourcePreview(sourceOptions?: SimpleSourceOptions) {
@@ -248,6 +253,7 @@ export class Source extends LoggedModel<Source> {
 
     const { pluginConnection } = await this.getPlugin();
     const app = await this.$get("app");
+    const connection = await app.getConnection();
     const appOptions = await app.getOptions();
 
     if (!pluginConnection.methods.sourcePreview) {
@@ -255,6 +261,7 @@ export class Source extends LoggedModel<Source> {
     }
 
     return pluginConnection.methods.sourcePreview({
+      connection,
       app,
       appOptions,
       source: this,
@@ -359,6 +366,7 @@ export class Source extends LoggedModel<Source> {
     }
 
     const app = await this.$get("app");
+    const connection = await app.getConnection();
     const appOptions = await app.getOptions();
     const sourceOptions = await this.getOptions();
     const sourceMapping = await this.getMapping();
@@ -373,6 +381,7 @@ export class Source extends LoggedModel<Source> {
     }
 
     return method({
+      connection,
       app,
       appOptions,
       source: this,
@@ -446,11 +455,13 @@ export class Source extends LoggedModel<Source> {
           .uniqueProfilePropertyRuleBootstrapOptions === "function"
       ) {
         const app = await this.$get("app");
+        const connection = await app.getConnection();
         const appOptions = await app.getOptions();
         const options = await this.getOptions();
         const ruleOptions = await pluginConnection.methods.uniqueProfilePropertyRuleBootstrapOptions(
           {
             app,
+            connection,
             appOptions,
             source: this,
             sourceOptions: options,

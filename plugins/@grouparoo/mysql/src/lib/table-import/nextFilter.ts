@@ -1,7 +1,7 @@
-import { connect } from "../connect";
 import { plugin, NextFilterPluginMethod } from "@grouparoo/core";
 
 export const nextFilter: NextFilterPluginMethod = async ({
+  connection,
   appOptions,
   sourceOptions,
   scheduleOptions,
@@ -13,10 +13,10 @@ export const nextFilter: NextFilterPluginMethod = async ({
 
   const table = sourceOptions.table;
   const query = `SELECT MAX(??) as max FROM ??`;
-
-  const client = await connect(appOptions);
-  const rows = await client.asyncQuery(query, [scheduleOptions.column, table]);
-  await client.asyncEnd();
+  const rows = await connection.asyncQuery(query, [
+    scheduleOptions.column,
+    table,
+  ]);
 
   filter[scheduleOptions.column] = rows[0].max;
 

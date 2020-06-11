@@ -1,12 +1,12 @@
 import mysql from "mysql";
 import { promisify } from "util";
-import { SimpleAppOptions } from "@grouparoo/core";
+import { ConnectPluginAppMethod } from "@grouparoo/core";
 
-interface QueryResultObject {
+export interface QueryResultObject {
   [key: string]: any;
 }
 
-export async function connect(appOptions: SimpleAppOptions) {
+export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   const client = mysql.createConnection(appOptions);
   await promisify(client.connect).bind(client)();
 
@@ -37,4 +37,4 @@ export async function connect(appOptions: SimpleAppOptions) {
   const asyncEnd = promisify(client.end).bind(client);
 
   return Object.assign(client, { asyncQuery, asyncEnd });
-}
+};

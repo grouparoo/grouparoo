@@ -1,13 +1,12 @@
 import { DestinationMappingOptionsMethod } from "@grouparoo/core";
-import { connect } from "../connect";
 import format from "pg-format";
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
+  connection,
   appOptions,
   destinationOptions,
 }) => {
-  const client = await connect(appOptions);
-  const { rows } = await client.query(
+  const { rows } = await connection.query(
     format(
       `SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_catalog = %L AND table_schema = %L AND table_name = %L`,
       appOptions.database,
@@ -15,7 +14,6 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
       destinationOptions.table
     )
   );
-  await client.end();
 
   const columns = [];
   for (const i in rows) {

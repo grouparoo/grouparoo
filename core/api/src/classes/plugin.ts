@@ -98,6 +98,7 @@ export interface PluginConnection {
  */
 export interface ProfilesPluginMethod {
   (argument: {
+    connection: any;
     schedule: Schedule;
     app: App;
     appOptions: SimpleAppOptions;
@@ -122,6 +123,7 @@ export interface ProfilesPluginMethodResponse {
  */
 export interface ProfilePropertyPluginMethod {
   (argument: {
+    connection: any;
     app: App;
     appOptions: SimpleAppOptions;
     source: Source;
@@ -147,6 +149,7 @@ export type ProfilePropertyPluginMethodResponse =
  */
 export interface NextFilterPluginMethod {
   (argument: {
+    connection: any;
     app: App;
     appOptions: SimpleAppOptions;
     source: Source;
@@ -164,6 +167,7 @@ export interface NextFilterPluginMethod {
  */
 export interface ExportProfilePluginMethod {
   (argument: {
+    connection: any;
     app: App;
     appOptions: SimpleAppOptions;
     destination: Destination;
@@ -178,14 +182,6 @@ export interface ExportProfilePluginMethod {
 }
 
 export interface ConnectionOption extends AppOption {}
-
-/**
- * Method is used to test the connection options for the app.  Returns either a boolean or throws an error to be displayed to the user.
- * The test method will disconnect and connect before use, if those methods are present for this app type.
- */
-export interface TestPluginMethod {
-  (argument: { app: App; appOptions: SimpleAppOptions }): Promise<boolean>;
-}
 
 /**
  * This method is used to build a connection object for this App.  It will be shared with multiple sources & destinations related to this app on the same server.
@@ -208,13 +204,27 @@ export interface DisconnectPluginAppMethod {
 }
 
 /**
+ * Method is used to test the connection options for the app.  Returns either a boolean or throws an error to be displayed to the user.
+ * The test method will disconnect and connect before use, if those methods are present for this app type.
+ */
+export interface TestPluginMethod {
+  (argument: {
+    app: App;
+    appOptions: SimpleAppOptions;
+    connection: any;
+  }): Promise<boolean>;
+}
+
+/**
  * Method to return the options available to this source.
  * Returns a collection of data to display to the user.
  */
 export interface SourceOptionsMethod {
-  (argument: { app: App; appOptions: SimpleAppOptions }): Promise<
-    SourceOptionsMethodResponse
-  >;
+  (argument: {
+    connection: any;
+    app: App;
+    appOptions: SimpleAppOptions;
+  }): Promise<SourceOptionsMethodResponse>;
 }
 
 export interface SourceOptionsMethodResponse {
@@ -232,6 +242,7 @@ export interface SourceOptionsMethodResponse {
  */
 export interface SourcePreviewMethod {
   (argument: {
+    connection: any;
     app: App;
     appOptions: SimpleAppOptions;
     source: Source;
@@ -249,6 +260,7 @@ export interface SourcePreviewMethodResponseRow {
  */
 export interface SourceFilterMethod {
   (argument: {
+    connection: any;
     app: App;
     appOptions: SimpleAppOptions;
     source: Source;
@@ -270,6 +282,7 @@ export interface SourceFilterMethodResponseRow {
  */
 export interface UniqueProfilePropertyRuleBootstrapOptions {
   (argument: {
+    connection: any;
     app: App;
     appOptions: SimpleAppOptions;
     source: Source;
@@ -283,9 +296,11 @@ export interface UniqueProfilePropertyRuleBootstrapOptions {
  * Returns a collection of data to display to the user.
  */
 export interface DestinationOptionsMethod {
-  (argument: { app: App; appOptions: SimpleAppOptions }): Promise<
-    DestinationOptionsMethodResponse
-  >;
+  (argument: {
+    connection: any;
+    app: App;
+    appOptions: SimpleAppOptions;
+  }): Promise<DestinationOptionsMethodResponse>;
 }
 
 export interface DestinationOptionsMethodResponse {
@@ -301,6 +316,7 @@ export interface DestinationOptionsMethodResponse {
  */
 export interface DestinationMappingOptionsMethod {
   (argument: {
+    connection: any;
     app: App;
     appOptions: SimpleAppOptions;
     destination: Destination;

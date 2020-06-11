@@ -1,7 +1,7 @@
-import { connect } from "./../connect";
 import { ExportProfilePluginMethod } from "@grouparoo/core";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
+  connection,
   newProfileProperties,
   newGroups,
   toDelete,
@@ -11,7 +11,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   let success = false;
   let error;
 
-  const client = await connect(appOptions);
   const {
     table,
     primaryKey,
@@ -21,12 +20,10 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   } = await destination.parameterizedOptions();
 
   if (Object.keys(newProfileProperties).length === 0) {
-    await client.asyncEnd();
     return false;
   }
 
   if (!newProfileProperties[primaryKey]) {
-    await client.asyncEnd();
     throw new Error(
       `newProfileProperties[primaryKey] (${primaryKey}) is a required mapping`
     );
@@ -35,20 +32,20 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   try {
     // --- Profiles --- //
     if (toDelete) {
-      await client.asyncQuery(`DELETE FROM ?? WHERE ?? = ?`, [
+      await connection.asyncQuery(`DELETE FROM ?? WHERE ?? = ?`, [
         table,
         primaryKey,
         newProfileProperties[primaryKey],
       ]);
     } else if (newProfileProperties[primaryKey]) {
-      const existingRecords = await client.asyncQuery(
+      const existingRecords = await connection.asyncQuery(
         `SELECT * FROM ?? WHERE ?? = ?`,
         [table, primaryKey, newProfileProperties[primaryKey]]
       );
 
       if (existingRecords.length === 1) {
         // update
-        await client.asyncQuery(`UPDATE ?? SET ? WHERE ?? = ?`, [
+        await connection.asyncQuery(`UPDATE ?? SET ? WHERE ?? = ?`, [
           table,
           newProfileProperties,
           primaryKey,
@@ -66,7 +63,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
           const nullData = {};
           columnsToErase.forEach((k) => (nullData[k] = null));
 
-          await client.asyncQuery(`UPDATE ?? SET ? WHERE ?? = ?`, [
+          await connection.asyncQuery(`UPDATE ?? SET ? WHERE ?? = ?`, [
             table,
             nullData,
             primaryKey,
@@ -75,20 +72,20 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         }
       } else {
         // delete & insert
-        await client.asyncQuery(`DELETE FROM ?? WHERE ?? = ?`, [
+        await connection.asyncQuery(`DELETE FROM ?? WHERE ?? = ?`, [
           table,
           primaryKey,
           newProfileProperties[primaryKey],
         ]);
 
-        await client.asyncQuery(`INSERT INTO ?? SET ?`, [
+        await connection.asyncQuery(`INSERT INTO ?? SET ?`, [
           table,
           newProfileProperties,
         ]);
       }
     } else {
       // just insert
-      await client.asyncQuery(`INSERT INTO ?? SET ?`, [
+      await connection.asyncQuery(`INSERT INTO ?? SET ?`, [
         table,
         newProfileProperties,
       ]);
@@ -96,7 +93,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
     // --- Groups --- //
 
-    await client.asyncQuery(`DELETE FROM ?? WHERE ?? = ?`, [
+    await connection.asyncQuery(`DELETE FROM ?? WHERE ?? = ?`, [
       groupsTable,
       groupForeignKey,
       newProfileProperties[primaryKey],
@@ -107,7 +104,10 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         const data = {};
         data[groupForeignKey] = newProfileProperties[primaryKey];
         data[groupColumnName] = newGroups[i];
-        await client.asyncQuery(`INSERT INTO ?? SET ?`, [groupsTable, data]);
+        await connection.asyncQuery(`INSERT INTO ?? SET ?`, [
+          groupsTable,
+          data,
+        ]);
       }
     }
 
@@ -115,7 +115,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   } catch (e) {
     error = e;
   } finally {
-    await client.asyncEnd();
     if (error) {
       throw error;
     }

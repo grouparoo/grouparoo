@@ -1,9 +1,8 @@
 import format from "pg-format";
-import { connect } from "../connect";
 import { plugin, NextFilterPluginMethod } from "@grouparoo/core";
 
 export const nextFilter: NextFilterPluginMethod = async ({
-  appOptions,
+  connection,
   sourceOptions,
   scheduleOptions,
 }) => {
@@ -19,9 +18,7 @@ export const nextFilter: NextFilterPluginMethod = async ({
     table
   );
 
-  const client = await connect(appOptions);
-  const response = await client.query(query);
-  await client.end();
+  const response = await connection.query(query);
 
   filter[scheduleOptions.column] = response.rows[0].max;
 
