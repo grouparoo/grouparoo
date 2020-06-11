@@ -92,7 +92,7 @@ jobs:
         with:
           key: ${{ runner.os }}-cache-${{ hashFiles('**/package-lock.json') }}
       - run: cd core && npm run test-api
-          env:
+        env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres
           REDIS_URL: redis://localhost:${{ job.services.redis.ports[6379] }}/0
           maxMemoryAlloted: 1000
