@@ -23,6 +23,7 @@ let actionhero;
 const MYSQL_OPTIONS = {
   user: "root",
   database: "grouparoo_test",
+  host: process.env.MYSQL_HOST || "localhost",
 };
 
 const sourceTableName = `users_${process.env.JEST_WORKER_ID || 1}`;
