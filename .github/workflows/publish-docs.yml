@@ -15,6 +15,7 @@ jobs:
         with:
           node-version: 14.x
       - run: cd core && npm install --unsafe-perm
+      - run: cd core && npx lerna link
       - run: cd core/api && ./bin/publish-docs
       - name: Push changes
         uses: ad-m/github-push-action@master
