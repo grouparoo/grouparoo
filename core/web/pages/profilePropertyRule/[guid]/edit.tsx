@@ -60,7 +60,7 @@ export default function Page(props) {
           response.profilePropertyRule.state === "ready" &&
           profilePropertyRule.state === "draft"
         ) {
-          Router.push(`/profilePropertyRules`);
+          Router.back();
         } else {
           successHandler.set({ message: "Profile Property Rule Updated" });
         }
