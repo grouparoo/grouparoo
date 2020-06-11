@@ -30,6 +30,7 @@ jobs:
             dist
             */dist
             */*/dist
+            */*/*/dist
             /core/web/.next
           key: ${{ runner.os }}-cache-${{ github.sha }}
 
@@ -54,6 +55,7 @@ jobs:
             dist
             */dist
             */*/dist
+            */*/*/dist
             /core/web/.next
           key: ${{ runner.os }}-cache-${{ github.sha }}
       - run: npm run license-checker
@@ -79,6 +81,7 @@ jobs:
             dist
             */dist
             */*/dist
+            */*/*/dist
             /core/web/.next
           key: ${{ runner.os }}-cache-${{ github.sha }}
       - run: npm run lint
@@ -121,6 +124,7 @@ jobs:
             dist
             */dist
             */*/dist
+            */*/*/dist
             /core/web/.next
           key: ${{ runner.os }}-cache-${{ github.sha }}
       - run: apt-get update
@@ -175,6 +179,7 @@ jobs:
             dist
             */dist
             */*/dist
+            */*/*/dist
             /core/web/.next
           key: ${{ runner.os }}-cache-${{ github.sha }}
       - run: apt-get update
