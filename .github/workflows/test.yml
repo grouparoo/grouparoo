@@ -119,6 +119,7 @@ jobs:
             */dist
             */*/dist
           key: ${{ runner.os }}-cache-${{ github.sha }}
+      - run: apt-get update
       - run: apt install -y postgresql-client
       - run: cd core/api && ./bin/create_test_databases
       - run: cd core && npm run test-api
@@ -171,6 +172,7 @@ jobs:
             */dist
             */*/dist
           key: ${{ runner.os }}-cache-${{ github.sha }}
+      - run: apt-get update
       - run: apt install -y postgresql-client
       - run: cd core/api && ./bin/create_test_databases
       - run: cd core && npm run test-web
