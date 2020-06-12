@@ -214,6 +214,9 @@ jobs:
         image: mysql:5
         ports:
           - 3306/tcp
+        env:
+          MYSQL_DATABASE: grouparoo_test
+          MYSQL_ALLOW_EMPTY_PASSWORD: "true"
 
       redis:
         image: redis
@@ -242,8 +245,6 @@ jobs:
       - run: apt-get update
       - run: apt install -y postgresql-client
       - run: cd core/api && ./bin/create_test_databases
-      - run: apt install -y mysql-client
-      - run: mysql -e "create database grouparoo_test" -u root -h mysql -pmysql
       - run: ./node_modules/.bin/lerna exec jest --stream --concurrency 1 --ignore "@grouparoo/core" --ignore "*/app-*" -- --ci --passWithNoTests --maxWorkers 2
         env:
           DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
