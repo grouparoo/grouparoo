@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/client-web",
   "description": "The Grouparoo web client",
-  "version": "0.1.4-alpha.0",
+  "version": "0.1.4-alpha.1",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -27,8 +27,6 @@
     "pretest": "npm run lint && npm run prepare",
     "lint": "prettier --check src __tests__"
   },
-  "dependencies": {},
-  "peerDependencies": {},
   "devDependencies": {
     "@types/jest": "^25.2.3",
     "jest": "^25.4.0",
