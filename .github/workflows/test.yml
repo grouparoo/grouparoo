@@ -236,8 +236,8 @@ jobs:
       - run: sudo apt-get update
       - run: sudo apt install -y postgresql-client
       - run: cd core/api && ./bin/create_test_databases
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v2
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v2
       - run: ./node_modules/.bin/lerna exec jest --stream --concurrency 1 --ignore "@grouparoo/core" --ignore "*/app-*" -- --ci --passWithNoTests --maxWorkers 2
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
