@@ -5,7 +5,7 @@ N=$(($(getconf _NPROCESSORS_ONLN))) || 8
 if [ $1 ]; then
   echo "creating database grouparoo_test_$1"
   if [ -n "$CI" ]; then
-    `PGPASSWORD=postgres createdb "grouparoo_test_$1" --host postgres --user postgres`
+    `PGPASSWORD=postgres createdb "grouparoo_test_$1" --host localhost --user postgres`
   else
     `createdb "grouparoo_test_$1"`
   fi
@@ -13,7 +13,7 @@ else
   for ((i=1; i<=$N; i++)) {
     echo "creating database grouparoo_test_$i"
     if [ -n "$CI" ]; then
-      `PGPASSWORD=postgres createdb "grouparoo_test_$i" --host postgres --user postgres`
+      `PGPASSWORD=postgres createdb "grouparoo_test_$i" --host localhost --user postgres`
     else
       `createdb "grouparoo_test_$i"`
     fi
