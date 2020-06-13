@@ -1,4 +1,4 @@
-import { api, Initializer } from "actionhero";
+import { Initializer } from "actionhero";
 import fs from "fs";
 import path from "path";
 
@@ -22,14 +22,8 @@ export class Files extends Initializer {
 
     // copy the web client javascript from the plugin to the public directory
     const source = path.join(
-      __dirname,
+      require.resolve("@grouparoo/client-web"),
       "..",
-      "..",
-      "..",
-      "node_modules",
-      "@grouparoo",
-      "client-web",
-      "dist",
       "grouparooWebClient.js"
     );
 
