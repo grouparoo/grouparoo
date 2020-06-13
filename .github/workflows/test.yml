@@ -11,8 +11,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: node
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 12.x
@@ -38,8 +36,6 @@ jobs:
   license-checker:
     runs-on: ubuntu-latest
     needs: build
-    container:
-      image: node
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 12.x
@@ -65,8 +61,6 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     needs: build
-    container:
-      image: node
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 12.x
@@ -92,15 +86,12 @@ jobs:
   test-core-api:
     runs-on: ubuntu-latest
     needs: build
-    container:
-      image: node
-      options: --network-alias main
 
     services:
       postgres:
         image: postgres
         ports:
-          - 5432/tcp
+          - 5432/5432
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -109,7 +100,7 @@ jobs:
       redis:
         image: redis
         ports:
-          - 6379/tcp
+          - 6379/6379
 
     steps:
       - uses: actions/checkout@v2
@@ -136,8 +127,8 @@ jobs:
       - run: cd core/api && ./bin/create_test_databases
       - run: cd core && npm run test-api
         env:
-          DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
-          REDIS_URL: redis://redis:6379/0
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+          REDIS_URL: redis://localhost:6379/0
           maxMemoryAlloted: 1000
 
   test-core-web:
@@ -201,15 +192,12 @@ jobs:
   test-plugins:
     runs-on: ubuntu-latest
     needs: build
-    container:
-      image: node
-      options: --network-alias main
 
     services:
       postgres:
         image: postgres
         ports:
-          - 5432/tcp
+          - 5432/5432
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -218,7 +206,7 @@ jobs:
       mysql:
         image: mysql:5
         ports:
-          - 3306/tcp
+          - 3306/3306
         env:
           MYSQL_DATABASE: grouparoo_test
           MYSQL_ALLOW_EMPTY_PASSWORD: "true"
@@ -226,7 +214,7 @@ jobs:
       redis:
         image: redis
         ports:
-          - 6379/tcp
+          - 6379/6379
 
     steps:
       - uses: actions/checkout@v2
@@ -255,8 +243,8 @@ jobs:
         uses: mxschmitt/action-tmate@v2
       - run: ./node_modules/.bin/lerna exec jest --stream --concurrency 1 --ignore "@grouparoo/core" --ignore "*/app-*" -- --ci --passWithNoTests --maxWorkers 2
         env:
-          DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
-          REDIS_URL: redis://redis:6379/0
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+          REDIS_URL: redis://localhost:6379/0
           MYSQL_HOST: mysql
           maxMemoryAlloted: 1000
 
