@@ -182,7 +182,7 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
           REDIS_URL: redis://localhost:6379/0
-          SELENIUM_TEST_HOST: main
+          SELENIUM_TEST_HOST: localhost
           SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
           maxMemoryAlloted: 1000
 
