@@ -251,6 +251,7 @@ jobs:
   complete:
     runs-on: ubuntu-latest
     needs:
+      - build
       - license-checker
       - lint
       - test-core-web
