@@ -122,8 +122,8 @@ jobs:
             */*/*/dist
             core/web/.next
           key: ${{ runner.os }}-cache-${{ github.sha }}
-      - run: apt-get update
-      - run: apt install -y postgresql-client
+      - run: sudo apt-get update
+      - run: sudo apt install -y postgresql-client
       - run: cd core/api && ./bin/create_test_databases
       - run: cd core && npm run test-api
         env:
@@ -236,8 +236,8 @@ jobs:
             */*/*/dist
             core/web/.next
           key: ${{ runner.os }}-cache-${{ github.sha }}
-      - run: apt-get update
-      - run: apt install -y postgresql-client
+      - run: sudo apt-get update
+      - run: sudo apt install -y postgresql-client
       - run: cd core/api && ./bin/create_test_databases
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v2
