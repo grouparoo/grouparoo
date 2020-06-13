@@ -91,7 +91,7 @@ jobs:
       postgres:
         image: postgres
         ports:
-          - 5432/5432
+          - 5432:5432
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -100,7 +100,7 @@ jobs:
       redis:
         image: redis
         ports:
-          - 6379/6379
+          - 6379:6379
 
     steps:
       - uses: actions/checkout@v2
@@ -197,7 +197,7 @@ jobs:
       postgres:
         image: postgres
         ports:
-          - 5432/5432
+          - 5432:5432
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -206,7 +206,7 @@ jobs:
       mysql:
         image: mysql:5
         ports:
-          - 3306/3306
+          - 3306:3306
         env:
           MYSQL_DATABASE: grouparoo_test
           MYSQL_ALLOW_EMPTY_PASSWORD: "true"
@@ -214,7 +214,7 @@ jobs:
       redis:
         image: redis
         ports:
-          - 6379/6379
+          - 6379:6379
 
     steps:
       - uses: actions/checkout@v2
