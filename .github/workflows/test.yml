@@ -265,5 +265,6 @@ jobs:
       - lint
       - test-core-web
       - test-core-api
+      - test-plugins
     steps:
       - run: echo "Done!"
