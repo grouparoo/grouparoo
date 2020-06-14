@@ -242,6 +242,7 @@ jobs:
       #   uses: mxschmitt/action-tmate@v2
       - run: ./node_modules/.bin/lerna exec jest --stream --concurrency 1 --ignore "@grouparoo/core" --ignore "*/app-*" -- --ci --passWithNoTests --maxWorkers 2
         env:
+          TEST_LOG_LEVEL: info
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
           REDIS_URL: redis://localhost:6379/0
           MYSQL_HOST: mysql
