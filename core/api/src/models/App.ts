@@ -230,13 +230,27 @@ export class App extends LoggedModel<App> {
     }
 
     try {
-      const connection = await this.connect(options);
+      let connection;
+      if (pluginApp.methods.connect) {
+        connection = await pluginApp.methods.connect({
+          app: this,
+          appOptions: options,
+        });
+      }
+
       result = await pluginApp.methods.test({
         app: this,
         appOptions: options,
         connection,
       });
-      await this.disconnect();
+
+      if (pluginApp.methods.disconnect) {
+        await pluginApp.methods.disconnect({
+          connection,
+          app: this,
+          appOptions: options,
+        });
+      }
     } catch (err) {
       error = err;
       result = false;
