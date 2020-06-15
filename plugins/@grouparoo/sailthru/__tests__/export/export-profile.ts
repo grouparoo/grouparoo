@@ -59,6 +59,7 @@ describe("sailthru/exportProfile", () => {
 
   test("can create profile on Sailthru", async () => {
     await exportProfile({
+      connection: client,
       appOptions,
       oldProfileProperties: {},
       newProfileProperties: { email: email },
@@ -77,6 +78,7 @@ describe("sailthru/exportProfile", () => {
 
   test("can add user variables", async () => {
     await exportProfile({
+      connection: client,
       appOptions,
       oldProfileProperties: { email: email },
       newProfileProperties: { email: email, first_name: "Evan" },
@@ -96,6 +98,7 @@ describe("sailthru/exportProfile", () => {
 
   test("can change user variables", async () => {
     await exportProfile({
+      connection: client,
       appOptions,
       oldProfileProperties: { email: email, first_name: "Evan" },
       newProfileProperties: { email: email, first_name: "Brian" },
@@ -115,6 +118,7 @@ describe("sailthru/exportProfile", () => {
 
   test("can clear user variables", async () => {
     await exportProfile({
+      connection: client,
       appOptions,
       oldProfileProperties: { first_name: "Brian" },
       newProfileProperties: { email: email },
@@ -134,6 +138,7 @@ describe("sailthru/exportProfile", () => {
 
   test("can add to a list", async () => {
     await exportProfile({
+      connection: client,
       appOptions,
       oldProfileProperties: { email: email, first_name: null },
       newProfileProperties: { email: email, first_name: "Brian" },
@@ -155,6 +160,7 @@ describe("sailthru/exportProfile", () => {
 
   test("can remove from a list", async () => {
     await exportProfile({
+      connection: client,
       appOptions,
       oldProfileProperties: { email: email, first_name: "Brian" },
       newProfileProperties: { email: email, first_name: "Brian" },
@@ -176,6 +182,7 @@ describe("sailthru/exportProfile", () => {
 
   test("can delete a user", async () => {
     await exportProfile({
+      connection: client,
       appOptions,
       oldProfileProperties: { email: email, first_name: "Brian" },
       newProfileProperties: { email: email, first_name: "Brian" },
