@@ -16,10 +16,21 @@ describe("tasks/schedule:run", () => {
 
   describe("schedule:run", () => {
     test("can be enqueued", async () => {
-      await task.enqueue("schedule:run", { scheduleGuid: "abc123" });
+      await task.enqueue("schedule:run", {
+        scheduleGuid: "abc123",
+        runGuid: "abc123",
+      });
       const found = await specHelper.findEnqueuedTasks("schedule:run");
       expect(found.length).toEqual(1);
       expect(found[0].timestamp).toBeNull();
+    });
+
+    test("throws without a runGuid", async () => {
+      await expect(
+        task.enqueue("schedule:run", {
+          runGuid: "abc123",
+        })
+      ).rejects.toThrow(/scheduleGuid is a required input/);
     });
   });
 });

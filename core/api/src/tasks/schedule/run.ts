@@ -12,7 +12,7 @@ export class ScheduleRun extends Task {
     this.queue = "schedules";
     this.inputs = {
       scheduleGuid: { required: true },
-      runGuid: { required: false },
+      runGuid: { required: true },
       limit: { required: false },
       highWaterMark: { required: false },
     };
@@ -31,21 +31,7 @@ export class ScheduleRun extends Task {
       throw new Error(`schedule ${params.scheduleGuid} is not ready`);
     }
 
-    let run: Run;
-    if (params.runGuid) {
-      run = await Run.findByGuid(params.runGuid);
-    } else {
-      run = await Run.create({
-        creatorGuid: schedule.guid,
-        creatorType: "schedule",
-        state: "running",
-      });
-
-      log(
-        `[ run ] starting run ${run.guid} for schedule ${schedule.guid}, ${schedule.name}`,
-        "notice"
-      );
-    }
+    const run = await Run.findByGuid(params.runGuid);
 
     const { importsCount, nextHighWaterMark } = await schedule.run(
       run,

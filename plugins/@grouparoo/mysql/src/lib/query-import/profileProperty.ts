@@ -1,4 +1,3 @@
-import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
 import {
   ProfilePropertyPluginMethod,
@@ -6,6 +5,7 @@ import {
 } from "@grouparoo/core";
 
 export const profileProperty: ProfilePropertyPluginMethod = async ({
+  connection,
   profile,
   appOptions,
   profilePropertyRule,
@@ -24,9 +24,10 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   validateQuery(parameterizedQuery);
 
   let response: ProfilePropertyPluginMethodResponse;
-  const client = await connect(appOptions);
   try {
-    const rows = await client.asyncQuery(parameterizedQuery);
+    const rows: Array<{ [k: string]: any }> = await connection.asyncQuery(
+      parameterizedQuery
+    );
     if (rows && rows.length > 0) {
       const row = rows[0];
       response = Object.values(row)[0];
@@ -35,8 +36,6 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     throw new Error(
       `Error with MySQL SQL Statement: Query - \`${parameterizedQuery}\`, Error - ${error}`
     );
-  } finally {
-    await client.asyncEnd();
   }
 
   return response;

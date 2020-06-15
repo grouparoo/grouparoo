@@ -1,8 +1,8 @@
 import format from "pg-format";
-import { connect } from "../connect";
 import { DestinationOptionsMethod } from "@grouparoo/core";
 
 export const destinationOptions: DestinationOptionsMethod = async ({
+  connection,
   appOptions,
 }) => {
   const response = {
@@ -16,8 +16,7 @@ export const destinationOptions: DestinationOptionsMethod = async ({
   const tables = [];
   const columns = [];
 
-  const client = await connect(appOptions);
-  const { rows } = await client.query(
+  const { rows } = await connection.query(
     format(
       `SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_catalog = %L AND table_schema = %L`,
       appOptions.database,
@@ -28,7 +27,7 @@ export const destinationOptions: DestinationOptionsMethod = async ({
   for (const i in rows) {
     const tableName: string = rows[i].table_name;
     tables.push(tableName);
-    const { rows: colRows } = await client.query(
+    const { rows: colRows } = await connection.query(
       format(
         `SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_catalog = %L AND table_schema = %L AND table_name = %L`,
         appOptions.database,
@@ -42,8 +41,6 @@ export const destinationOptions: DestinationOptionsMethod = async ({
       }
     });
   }
-
-  await client.end();
 
   tables.sort();
   columns.sort();

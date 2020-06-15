@@ -1,10 +1,9 @@
-import { connect } from "../connect";
 import { ExportProfilePluginMethod } from "@grouparoo/core";
 import { validateQuery } from "../validateQuery";
 import format from "pg-format";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
-  appOptions,
+  connection,
   destination,
   newProfileProperties,
   newGroups,
@@ -13,7 +12,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   let success = false;
   let error: Error;
 
-  const client = await connect(appOptions);
   const {
     table,
     primaryKey,
@@ -23,12 +21,10 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   } = await destination.parameterizedOptions();
 
   if (Object.keys(newProfileProperties).length === 0) {
-    await client.end();
     return false;
   }
 
   if (!newProfileProperties[primaryKey]) {
-    await client.end();
     throw new Error(
       `newProfileProperties[primaryKey] (${primaryKey}) is a required mapping`
     );
@@ -38,7 +34,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     // --- Profiles --- //
     if (toDelete) {
       // delete
-      await client.query(
+      await connection.query(
         validateQuery(
           format(
             `DELETE FROM %I WHERE %I = %L`,
@@ -49,7 +45,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         )
       );
     } else if (newProfileProperties[primaryKey]) {
-      const existingRecords = await client.query(
+      const existingRecords = await connection.query(
         validateQuery(
           format(
             `SELECT * FROM %I WHERE %I = %L`,
@@ -76,7 +72,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         updateVariables.push(primaryKey);
         updateVariables.push(newProfileProperties[primaryKey]);
         updateStatement = format(updateStatement, ...updateVariables);
-        await client.query(validateQuery(updateStatement));
+        await connection.query(validateQuery(updateStatement));
 
         // erase old columns
         const columnsToErase = Object.keys(existingRecords.rows[0]).filter(
@@ -100,11 +96,11 @@ export const exportProfile: ExportProfilePluginMethod = async ({
           eraseVariables.push(primaryKey);
           eraseVariables.push(newProfileProperties[primaryKey]);
           eraseStatement = format(eraseStatement, ...eraseVariables);
-          await client.query(validateQuery(eraseStatement));
+          await connection.query(validateQuery(eraseStatement));
         }
       } else {
         // delete
-        await client.query(
+        await connection.query(
           validateQuery(
             format(
               `DELETE FROM %I WHERE %I = %L`,
@@ -116,7 +112,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         );
 
         // insert
-        await client.query(
+        await connection.query(
           validateQuery(
             format(
               `INSERT INTO %I (%I) VALUES (%L)`,
@@ -129,7 +125,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       }
     } else {
       // just insert
-      await client.query(
+      await connection.query(
         validateQuery(
           format(
             `INSERT INTO %I (%I) VALUES (%L)`,
@@ -144,7 +140,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     // --- Groups --- //
 
     // delete existing groups
-    await client.query(
+    await connection.query(
       validateQuery(
         format(
           `DELETE FROM %I WHERE %I = %L`,
@@ -161,7 +157,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         const data = {};
         data[groupForeignKey] = newProfileProperties[primaryKey];
         data[groupColumnName] = newGroups[i];
-        await client.query(
+        await connection.query(
           validateQuery(
             format(
               `INSERT INTO %I (%I) VALUES (%L)`,
@@ -178,7 +174,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   } catch (e) {
     error = e;
   } finally {
-    await client.end();
     if (error) {
       throw error;
     }

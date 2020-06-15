@@ -48,6 +48,10 @@ module.exports = {
       fields: ["key"],
       unique: true,
     });
+
+    await migration.addIndex(TABLE, ["state"], {
+      fields: ["state"],
+    });
   },
 
   down: async function (migration) {

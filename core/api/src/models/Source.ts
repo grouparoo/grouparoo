@@ -20,7 +20,7 @@ import { LoggedModel } from "../classes/loggedModel";
 import { Schedule } from "./Schedule";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Option } from "./Option";
-import { App } from "./App";
+import { App, AppOption } from "./App";
 import { Run } from "./Run";
 import { Profile } from "./Profile";
 import { Mapping } from "./Mapping";
@@ -225,13 +225,18 @@ export class Source extends LoggedModel<Source> {
   async sourceConnectionOptions() {
     const { pluginConnection } = await this.getPlugin();
     const app = await this.$get("app");
+    const connection = await app.getConnection();
     const appOptions = await app.getOptions();
 
     if (!pluginConnection.methods.sourceOptions) {
       return {};
     }
 
-    return pluginConnection.methods.sourceOptions({ app, appOptions });
+    return pluginConnection.methods.sourceOptions({
+      connection,
+      app,
+      appOptions,
+    });
   }
 
   async sourcePreview(sourceOptions?: SimpleSourceOptions) {
@@ -248,6 +253,7 @@ export class Source extends LoggedModel<Source> {
 
     const { pluginConnection } = await this.getPlugin();
     const app = await this.$get("app");
+    const connection = await app.getConnection();
     const appOptions = await app.getOptions();
 
     if (!pluginConnection.methods.sourcePreview) {
@@ -255,6 +261,7 @@ export class Source extends LoggedModel<Source> {
     }
 
     return pluginConnection.methods.sourcePreview({
+      connection,
       app,
       appOptions,
       source: this,
@@ -331,7 +338,15 @@ export class Source extends LoggedModel<Source> {
     profile: Profile,
     profilePropertyRule: ProfilePropertyRule,
     profilePropertyRuleOptionsOverride?: OptionHelper.SimpleOptions,
-    profilePropertyRuleFiltersOverride?: ProfilePropertyRuleFiltersWithKey[]
+    profilePropertyRuleFiltersOverride?: ProfilePropertyRuleFiltersWithKey[],
+    preloadedArgs: {
+      app?: App;
+      connection?: any;
+      appOptions?: OptionHelper.SimpleOptions;
+      sourceOptions?: OptionHelper.SimpleOptions;
+      sourceMapping?: MappingHelper.Mappings;
+      profileProperties?: {};
+    } = {}
   ) {
     if (
       profilePropertyRule.state !== "ready" &&
@@ -342,7 +357,8 @@ export class Source extends LoggedModel<Source> {
 
     await profilePropertyRule.validateOptions(
       profilePropertyRuleOptionsOverride,
-      false
+      false,
+      true
     );
 
     const { pluginConnection } = await this.getPlugin();
@@ -358,21 +374,26 @@ export class Source extends LoggedModel<Source> {
       return;
     }
 
-    const app = await this.$get("app");
-    const appOptions = await app.getOptions();
-    const sourceOptions = await this.getOptions();
-    const sourceMapping = await this.getMapping();
+    const app = preloadedArgs.app || (await this.$get("app"));
+    const connection = preloadedArgs.connection || (await app.getConnection());
+    const appOptions = preloadedArgs.appOptions || (await app.getOptions());
+    const sourceOptions =
+      preloadedArgs.sourceOptions || (await this.getOptions());
+    const sourceMapping =
+      preloadedArgs.sourceMapping || (await this.getMapping());
 
     // we may not have the profile property needed to make the mapping (ie: userId is not set on this anonymous profile)
     if (Object.values(sourceMapping).length > 0) {
       const profilePropertyRuleMappingKey = Object.values(sourceMapping)[0];
-      const profileProperties = await profile.properties();
+      const profileProperties =
+        preloadedArgs.profileProperties || (await profile.properties());
       if (!profileProperties[profilePropertyRuleMappingKey]) {
         return;
       }
     }
 
     return method({
+      connection,
       app,
       appOptions,
       source: this,
@@ -395,11 +416,33 @@ export class Source extends LoggedModel<Source> {
       where: { state: "ready" },
     });
 
-    for (const i in rules) {
-      const rule = rules[i];
-      const response = await this.importProfileProperty(profile, rule);
-      hash[rule.key] = response;
-    }
+    const profileProperties = await profile.properties();
+    const app = await this.$get("app");
+    const appOptions = await app.getOptions();
+    const connection = await app.getConnection();
+    const sourceOptions = await this.getOptions();
+    const sourceMapping = await this.getMapping();
+
+    const preloadedArgs = {
+      app,
+      connection,
+      appOptions,
+      sourceOptions,
+      sourceMapping,
+      profileProperties,
+    };
+
+    await Promise.all(
+      rules.map((rule) =>
+        this.importProfileProperty(
+          profile,
+          rule,
+          null,
+          null,
+          preloadedArgs
+        ).then((response) => (hash[rule.key] = response))
+      )
+    );
 
     // remove null and undefined as we cannot set that value
     const hashKeys = Object.keys(hash);
@@ -446,11 +489,13 @@ export class Source extends LoggedModel<Source> {
           .uniqueProfilePropertyRuleBootstrapOptions === "function"
       ) {
         const app = await this.$get("app");
+        const connection = await app.getConnection();
         const appOptions = await app.getOptions();
         const options = await this.getOptions();
         const ruleOptions = await pluginConnection.methods.uniqueProfilePropertyRuleBootstrapOptions(
           {
             app,
+            connection,
             appOptions,
             source: this,
             sourceOptions: options,

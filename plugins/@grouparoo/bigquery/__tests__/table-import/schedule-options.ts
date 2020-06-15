@@ -12,6 +12,7 @@ process.chdir(`${__dirname}/../../../../../core/api`);
 import path from "path";
 
 import { scheduleOptions } from "../../src/lib/table-import/scheduleOptions";
+import { connect } from "../../src/lib/connect";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
@@ -38,8 +39,10 @@ const sourceOptions = { table: "purchases" };
 async function getColumns() {
   const columnOption = scheduleOptions[0];
   const optionMethod = columnOption.options;
+  const connection = await connect({ appOptions, app: null });
 
   const response = await optionMethod({
+    connection,
     appOptions,
     sourceOptions,
     app: null,

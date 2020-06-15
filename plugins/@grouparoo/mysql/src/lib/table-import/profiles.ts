@@ -1,9 +1,8 @@
-import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
 import { plugin, ProfilesPluginMethod } from "@grouparoo/core";
 
 export const profiles: ProfilesPluginMethod = async ({
-  appOptions,
+  connection,
   sourceMapping,
   run,
   source,
@@ -26,15 +25,11 @@ export const profiles: ProfilesPluginMethod = async ({
 
   validateQuery(query);
 
-  const client = await connect(appOptions);
-
-  const rows = await client.asyncQuery(query, [table, limit, offset]);
+  const rows = await connection.asyncQuery(query, [table, limit, offset]);
   for (const i in rows) {
     await plugin.createImport(sourceMapping, run, rows[i]);
     importsCount++;
   }
-
-  await client.asyncEnd();
 
   const nextHighWaterMark = offset + limit;
   return { importsCount, nextHighWaterMark };

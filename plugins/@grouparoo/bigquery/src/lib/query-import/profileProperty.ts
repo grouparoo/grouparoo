@@ -1,4 +1,3 @@
-import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
 import {
   ProfilePropertyPluginMethod,
@@ -7,8 +6,8 @@ import {
 } from "@grouparoo/core";
 
 export const profileProperty: ProfilePropertyPluginMethod = async ({
+  connection,
   profile,
-  appOptions,
   profilePropertyRuleOptions,
 }) => {
   const parameterizedQuery = await plugin.replaceTemplateProfileVariables(
@@ -18,14 +17,13 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   validateQuery(parameterizedQuery);
 
   let response: ProfilePropertyPluginMethodResponse;
-  const bigqueryClient = await connect(appOptions);
   try {
     const options = {
       query: parameterizedQuery,
     };
 
     // Run the query
-    const [rows] = await bigqueryClient.query(options);
+    const [rows] = await connection.query(options);
 
     // Get the results
     if (rows && rows.length > 0) {

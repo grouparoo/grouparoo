@@ -1,11 +1,15 @@
 import { Initializer, api } from "actionhero";
 import { GrouparooPlugin } from "../classes/plugin";
 import { plugin } from "../modules/plugin";
+import { App } from "../models/App";
 
 declare module "actionhero" {
   export interface Api {
     plugins: {
       plugins: Array<GrouparooPlugin>;
+      persistentConnections: {
+        [guid: string]: any;
+      };
     };
   }
 }
@@ -15,11 +19,13 @@ export class Plugins extends Initializer {
     super();
     this.name = "plugins";
     this.loadPriority = 999;
+    this.stopPriority = 299;
   }
 
   async initialize() {
     api.plugins = {
       plugins: [],
+      persistentConnections: {},
     };
 
     // --- Add the core plugin --- //
@@ -48,5 +54,12 @@ export class Plugins extends Initializer {
         },
       ],
     });
+  }
+
+  async stop() {
+    for (const guid in api.plugins.persistentConnections) {
+      const app = await App.findByGuid(guid);
+      await app.disconnect();
+    }
   }
 }

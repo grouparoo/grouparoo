@@ -6,7 +6,7 @@ import SourceTabs from "../../../components/tabs/source";
 import { Button } from "react-bootstrap";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, source } = props;
+  const { errorHandler, successHandler, runsHandler, source } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
@@ -15,6 +15,7 @@ export default function Page(props) {
     try {
       await execApi("post", `/schedule/${source.schedule.guid}/run`);
       successHandler.set({ message: "run enqueued" });
+      runsHandler.set({});
     } finally {
       setLoading(false);
     }

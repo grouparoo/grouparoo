@@ -1,11 +1,10 @@
 import format from "pg-format";
-import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
 import { plugin, ProfilesPluginMethod } from "@grouparoo/core";
 
 export const profiles: ProfilesPluginMethod = async ({
+  connection,
   run,
-  appOptions,
   sourceMapping,
   source,
   limit,
@@ -35,15 +34,11 @@ export const profiles: ProfilesPluginMethod = async ({
         format(`SELECT * FROM %I LIMIT %L OFFSET %L`, table, limit, offset)
       );
 
-  const client = await connect(appOptions);
-
-  const response = await client.query(query);
+  const response = await connection.query(query);
   for (const i in response.rows) {
     await plugin.createImport(sourceMapping, run, response.rows[i]);
     importsCount++;
   }
-
-  await client.end();
 
   const nextHighWaterMark = offset + limit;
   return { importsCount, nextHighWaterMark };

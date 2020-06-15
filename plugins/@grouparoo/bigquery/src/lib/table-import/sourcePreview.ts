@@ -1,11 +1,9 @@
-import { connect } from "../connect";
 import { getSampleRows } from "../util";
 import { SourcePreviewMethod } from "@grouparoo/core";
 
 export const sourcePreview: SourcePreviewMethod = async ({
-  appOptions,
+  connection,
   sourceOptions,
 }) => {
-  const client = await connect(appOptions);
-  return await getSampleRows(client, sourceOptions.table);
+  return await getSampleRows(connection, sourceOptions.table);
 };

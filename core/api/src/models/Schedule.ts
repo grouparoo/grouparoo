@@ -35,6 +35,7 @@ export interface PluginConnectionScheduleOption {
   description: string;
   type: string;
   options: (argument: {
+    connection: any;
     app: App;
     appOptions: SimpleAppOptions;
     source: Source;
@@ -248,6 +249,7 @@ export class Schedule extends LoggedModel<Schedule> {
     }
 
     const app = await source.$get("app");
+    const connection = await app.getConnection();
     const appOptions = await app.getOptions();
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();
@@ -255,6 +257,7 @@ export class Schedule extends LoggedModel<Schedule> {
     for (const i in pluginConnection.scheduleOptions) {
       const opt = pluginConnection.scheduleOptions[i];
       const options = await opt.options({
+        connection,
         app,
         appOptions,
         source,
@@ -292,9 +295,20 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   async enqueueRun() {
+    const run = await Run.create({
+      creatorGuid: this.guid,
+      creatorType: "schedule",
+      state: "running",
+    });
+
+    log(
+      `[ run ] starting run ${run.guid} for schedule ${this.guid}, ${this.name}`,
+      "notice"
+    );
+
     await task.enqueue(
       "schedule:run",
-      { scheduleGuid: this.guid },
+      { scheduleGuid: this.guid, runGuid: run.guid },
       "schedules"
     );
   }
@@ -313,6 +327,7 @@ export class Schedule extends LoggedModel<Schedule> {
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();
     await app.validateOptions(appOptions);
+    const connection = await app.getConnection();
     await source.validateOptions(sourceOptions);
 
     let filter = {};
@@ -327,6 +342,7 @@ export class Schedule extends LoggedModel<Schedule> {
     try {
       const response = await method({
         schedule: this,
+        connection,
         app,
         appOptions,
         source,

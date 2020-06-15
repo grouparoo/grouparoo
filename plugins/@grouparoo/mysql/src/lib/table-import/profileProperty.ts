@@ -1,4 +1,3 @@
-import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
 import {
   ProfilePropertyPluginMethod,
@@ -7,7 +6,7 @@ import {
 
 export const profileProperty: ProfilePropertyPluginMethod = async ({
   profile,
-  appOptions,
+  connection,
   sourceOptions,
   sourceMapping,
   profilePropertyRule,
@@ -100,9 +99,8 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   validateQuery(parameterizedQuery);
 
   let response: ProfilePropertyPluginMethodResponse;
-  const client = await connect(appOptions);
   try {
-    const rows = await client.asyncQuery(parameterizedQuery);
+    const rows = await connection.asyncQuery(parameterizedQuery);
     if (rows && rows.length > 0) {
       response = rows[0].__result;
     }
@@ -110,8 +108,6 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     throw new Error(
       `Error with MySQL SQL Statement: Query - \`${parameterizedQuery}\`, Error - ${error}`
     );
-  } finally {
-    await client.asyncEnd();
   }
 
   return response;

@@ -450,18 +450,24 @@ export class Destination extends LoggedModel<Destination> {
   async destinationConnectionOptions() {
     const { pluginConnection } = await this.getPlugin();
     const app = await this.$get("app");
+    const connection = await app.getConnection();
     const appOptions = await app.getOptions();
 
     if (!pluginConnection.methods.destinationOptions) {
       throw new Error(`cannot return destination options for ${this.type}`);
     }
 
-    return pluginConnection.methods.destinationOptions({ app, appOptions });
+    return pluginConnection.methods.destinationOptions({
+      connection,
+      app,
+      appOptions,
+    });
   }
 
   async destinationMappingOptions() {
     const { pluginConnection } = await this.getPlugin();
     const app = await this.$get("app");
+    const connection = await app.getConnection();
     const appOptions = await app.getOptions();
     const destinationOptions = await this.getOptions();
 
@@ -472,6 +478,7 @@ export class Destination extends LoggedModel<Destination> {
     }
 
     return pluginConnection.methods.destinationMappingOptions({
+      connection,
       app,
       appOptions,
       destination: this,
@@ -539,6 +546,7 @@ export class Destination extends LoggedModel<Destination> {
   ) {
     const options = await this.getOptions();
     const app = await this.$get("app");
+    const connection = await app.getConnection();
     let method: ExportProfilePluginMethod;
     const { pluginConnection } = await this.getPlugin();
     method = pluginConnection.methods.exportProfile;
@@ -611,6 +619,7 @@ export class Destination extends LoggedModel<Destination> {
       await _export.associateImports(imports);
 
       const success = await method({
+        connection,
         app,
         appOptions,
         destination: this,

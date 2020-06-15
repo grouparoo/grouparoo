@@ -1,8 +1,8 @@
 import { Client } from "pg";
-import { SimpleAppOptions } from "@grouparoo/core";
+import { ConnectPluginAppMethod } from "@grouparoo/core";
 
-export async function connect(options: SimpleAppOptions) {
-  const client = new Client(options);
+export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
+  const client = new Client(appOptions);
   await client.connect();
   return client;
-}
+};

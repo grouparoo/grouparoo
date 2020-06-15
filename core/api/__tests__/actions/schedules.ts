@@ -94,6 +94,7 @@ describe("actions/schedules", () => {
         expect(error).toBeUndefined();
         expect(schedule.guid).toBeTruthy();
         expect(schedule.name).toBe("new schedule name");
+        expect(schedule.state).toBe("draft");
       });
 
       test("an administrator can view a schedule", async () => {
@@ -116,6 +117,21 @@ describe("actions/schedules", () => {
         expect(schedule.source.app.type).toBe("test-plugin-app");
 
         expect(pluginOptions[0].key).toBe("maxColumn");
+      });
+
+      test("an schedule can be made ready", async () => {
+        connection.params = {
+          csrfToken,
+          guid,
+          options: { maxColumn: "createdAt" },
+          state: "ready",
+        };
+        const { error, schedule } = await specHelper.runAction(
+          "schedule:edit",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(schedule.state).toBe("ready");
       });
 
       test("an administrator can request a schedule run and enqueue a runConnection task", async () => {

@@ -13,6 +13,7 @@ import {
   HasMany,
   DefaultScope,
 } from "sequelize-typescript";
+import { api } from "actionhero";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Source } from "./Source";
@@ -20,6 +21,7 @@ import { Option } from "./Option";
 import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { Destination } from "./Destination";
+import { plugin } from "../modules/plugin";
 
 export interface AppOption {
   key: string;
@@ -139,30 +141,6 @@ export class App extends LoggedModel<App> {
     });
   }
 
-  async test(options?: SimpleAppOptions) {
-    let result = false;
-    let error;
-
-    const { pluginApp } = await this.getPlugin();
-    if (!pluginApp) {
-      throw new Error(`cannot find a pluginApp type of ${this.type}`);
-    }
-
-    if (!options) {
-      options = await this.getOptions();
-    }
-
-    try {
-      result = await pluginApp.methods.test({ app: this, appOptions: options });
-    } catch (err) {
-      error = err;
-      result = false;
-      log(`[ app ] testing app threw error: ${error}`);
-    }
-
-    return { result, error };
-  }
-
   async appOptions() {
     const { pluginApp } = await this.getPlugin();
 
@@ -191,6 +169,95 @@ export class App extends LoggedModel<App> {
 
   async getPlugin() {
     return OptionHelper.getPlugin(this);
+  }
+
+  async setConnection(connection) {
+    api.plugins.persistentConnections[this.guid] = connection;
+  }
+
+  async getConnection() {
+    const connection = api.plugins.persistentConnections[this.guid];
+    if (!connection) return this.connect();
+    return connection;
+  }
+
+  async connect(options?: SimpleAppOptions) {
+    const appOptions = await this.getOptions();
+    const { pluginApp } = await this.getPlugin();
+    const connection = api.plugins.persistentConnections[this.guid];
+    if (connection) {
+      await this.disconnect();
+    }
+    if (pluginApp.methods.connect) {
+      log(`connecting to app ${this.name} - ${pluginApp.name} (${this.guid})`);
+      const connection = await pluginApp.methods.connect({
+        app: this,
+        appOptions: options ? options : appOptions,
+      });
+      this.setConnection(connection);
+      return connection;
+    }
+  }
+
+  async disconnect() {
+    const appOptions = await this.getOptions();
+    const { pluginApp } = await this.getPlugin();
+    const connection = api.plugins.persistentConnections[this.guid];
+    if (pluginApp.methods.disconnect && connection) {
+      log(
+        `disconnecting from app ${this.name} - ${pluginApp.name} (${this.guid})`
+      );
+      await pluginApp.methods.disconnect({
+        app: this,
+        appOptions,
+        connection,
+      });
+      this.setConnection(undefined);
+    }
+  }
+
+  async test(options?: SimpleAppOptions) {
+    let result = false;
+    let error;
+
+    const { pluginApp } = await this.getPlugin();
+    if (!pluginApp) {
+      throw new Error(`cannot find a pluginApp type of ${this.type}`);
+    }
+
+    if (!options) {
+      options = await this.getOptions();
+    }
+
+    try {
+      let connection;
+      if (pluginApp.methods.connect) {
+        connection = await pluginApp.methods.connect({
+          app: this,
+          appOptions: options,
+        });
+      }
+
+      result = await pluginApp.methods.test({
+        app: this,
+        appOptions: options,
+        connection,
+      });
+
+      if (pluginApp.methods.disconnect) {
+        await pluginApp.methods.disconnect({
+          connection,
+          app: this,
+          appOptions: options,
+        });
+      }
+    } catch (err) {
+      error = err;
+      result = false;
+      log(`[ app ] testing app threw error: ${error}`);
+    }
+
+    return { result, error };
   }
 
   async apiData() {

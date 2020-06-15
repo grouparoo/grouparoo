@@ -7,12 +7,13 @@ export const profilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOpti
     required: true,
     description: "where the data comes from",
     type: "typeahead",
-    options: async ({ app, appOptions, source, sourceOptions }) => {
+    options: async ({ app, appOptions, source, sourceOptions, connection }) => {
       const rows = await sourcePreview({
         app,
         appOptions,
         source,
         sourceOptions,
+        connection,
       });
       const columns = Object.keys(rows[0]);
       return columns.map((col) => {

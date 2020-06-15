@@ -52,6 +52,10 @@ module.exports = {
     await migration.addIndex(TABLE, ["appGuid"], {
       fields: ["appGuid"],
     });
+
+    await migration.addIndex(TABLE, ["state"], {
+      fields: ["state"],
+    });
   },
 
   down: async function (migration) {

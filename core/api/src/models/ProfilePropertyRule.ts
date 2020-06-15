@@ -134,6 +134,7 @@ export interface PluginConnectionProfilePropertyRuleOption {
   description: string;
   type: string;
   options: (argument: {
+    connection: any;
     app: App;
     appOptions: SimpleAppOptions;
     source: Source;
@@ -360,13 +361,28 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   async validateOptions(
     options?: SimpleProfilePropertyRuleOptions,
-    allowEmpty = false
+    allowEmpty = false,
+    useCache = false
   ) {
+    // this method is called on every profile property rule, for every profile, before an import
+    // caching that we are already valid can speed this up
+    const cacheKey = `cache:profilePropertyRule:${this.guid}`;
+    const client = api.redis.clients.client;
+    if (useCache) {
+      const previouslyValidated = await client.get(cacheKey);
+      if (previouslyValidated === "true") return;
+    }
+
     if (!options) {
       options = await this.getOptions();
     }
 
-    return OptionHelper.validateOptions(this, options, allowEmpty);
+    const response = OptionHelper.validateOptions(this, options, allowEmpty);
+    if (CACHE_TTL > 0) {
+      await client.set(cacheKey, "true");
+      await client.expire(cacheKey, CACHE_TTL / 1000);
+    }
+    return response;
   }
 
   async getPlugin() {
@@ -417,6 +433,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       }>;
     }> = [];
     const app = await App.findByGuid(source.appGuid);
+    const connection = await app.getConnection();
     const appOptions = await app.getOptions();
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();
@@ -424,6 +441,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     for (const i in pluginConnection.profilePropertyRuleOptions) {
       const opt = pluginConnection.profilePropertyRuleOptions[i];
       const options = await opt.options({
+        connection,
         app,
         appOptions,
         source,
@@ -503,10 +521,12 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();
     const app = await App.findByGuid(source.appGuid);
+    const connection = await app.getConnection();
     const appOptions = await app.getOptions();
 
     const method = pluginConnection.methods.sourceFilters;
     const options = await method({
+      connection,
       app,
       appOptions,
       source,

@@ -127,8 +127,7 @@ describe("tasks/profile:importAndUpdate", () => {
         expect(runs.length).toBe(2);
         await runA.reload();
         await runB.reload();
-        expect(runA.profilesCreated).toBe(1);
-        expect(runB.profilesCreated).toBe(0);
+        expect(runA.profilesCreated + runB.profilesCreated).toBe(1);
         expect(runA.profilesImported).toBe(1);
         expect(runB.profilesImported).toBe(1);
         expect(runA.profilesExported).toBe(0);

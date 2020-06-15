@@ -2,7 +2,7 @@ import { BigQuery } from "@google-cloud/bigquery";
 import { validateQuery } from "./validateQuery";
 
 export async function getColumns(
-  client,
+  connection,
   tableName: string
 ): Promise<{ [colName: string]: any }> {
   const query = `SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName`;
@@ -14,7 +14,7 @@ export async function getColumns(
   };
 
   // Run the query
-  const [rows] = await client.query(options);
+  const [rows] = await connection.query(options);
   const response = {};
   for (const row of rows) {
     response[row.column_name] = row;
@@ -139,7 +139,7 @@ export function castValue(value) {
 }
 
 export async function getSampleRows(
-  client,
+  connection,
   tableName,
   columns?
 ): Promise<Array<{ [colName: string]: any }>> {
@@ -148,7 +148,7 @@ export async function getSampleRows(
   validateQuery(query);
 
   const options = { query };
-  const [rows] = await client.query(options);
+  const [rows] = await connection.query(options);
 
   const response = [];
   if (rows.length > 0) {
@@ -156,7 +156,7 @@ export async function getSampleRows(
   } else {
     // use columns for preview
     if (!columns) {
-      columns = await getColumns(client, tableName);
+      columns = await getColumns(connection, tableName);
       const sample = {};
       Object.keys(columns).forEach((colName) => {
         sample[colName] = castValue(null);

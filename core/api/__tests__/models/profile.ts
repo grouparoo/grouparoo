@@ -236,7 +236,7 @@ describe("models/profile", () => {
       let source: Source;
 
       beforeAll(async () => {
-        const source = await helper.factories.source();
+        source = await helper.factories.source();
         await source.setOptions({ table: "test table" });
         await source.bootstrapUniqueProfilePropertyRule(
           "userId",
@@ -287,6 +287,7 @@ describe("models/profile", () => {
       });
 
       afterAll(async () => {
+        await source.setMapping({});
         await ProfilePropertyRule.destroy({ truncate: true });
         await source.destroy();
       });
@@ -665,8 +666,6 @@ describe("models/profile", () => {
       });
     });
   });
-
-  describe("#updateGroupMembership", () => {});
 
   describe("events", () => {
     let profile: Profile;

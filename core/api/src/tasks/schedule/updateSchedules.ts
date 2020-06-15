@@ -1,4 +1,4 @@
-import { Task, task } from "actionhero";
+import { Task, task, log } from "actionhero";
 import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
 
@@ -50,7 +50,21 @@ export class UpdateSchedules extends Task {
       }
 
       if (!lastCompleteRun || delta > schedule.recurringFrequency) {
-        await task.enqueue("schedule:run", { scheduleGuid: schedule.guid });
+        const run = await Run.create({
+          creatorGuid: schedule.guid,
+          creatorType: "schedule",
+          state: "running",
+        });
+
+        await task.enqueue("schedule:run", {
+          scheduleGuid: schedule.guid,
+          runGuid: run.guid,
+        });
+
+        log(
+          `[ run ] starting run ${run.guid} for schedule ${schedule.guid}, ${schedule.name}`,
+          "notice"
+        );
       }
     }
   }

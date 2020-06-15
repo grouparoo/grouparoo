@@ -1,10 +1,7 @@
-import { connect } from "./connect";
 import { TestPluginMethod } from "@grouparoo/core";
 
-export const test: TestPluginMethod = async ({ appOptions }) => {
-  const client = await connect(appOptions);
-  const rows = await client.asyncQuery("SELECT 'grouparoo' as message");
-  await client.asyncEnd();
+export const test: TestPluginMethod = async ({ connection }) => {
+  const rows = await connection.asyncQuery("SELECT 'grouparoo' as message");
   const isValid = rows[0].message === "grouparoo";
   return isValid;
 };

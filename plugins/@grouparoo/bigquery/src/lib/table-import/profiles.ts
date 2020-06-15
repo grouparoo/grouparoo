@@ -1,12 +1,11 @@
-import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
 import { plugin, ProfilesPluginMethod } from "@grouparoo/core";
 import { getColumns, makeWhereClause, castRow } from "../util";
 
 export const profiles: ProfilesPluginMethod = async ({
+  connection,
   schedule,
   run,
-  appOptions,
   sourceMapping,
   source,
   limit,
@@ -23,8 +22,7 @@ export const profiles: ProfilesPluginMethod = async ({
   const filterCol = hasFilter ? Object.keys(filter)[0] : null;
   const filterVal = hasFilter ? Object.values(filter)[0] : null;
 
-  const client = await connect(appOptions);
-  const columns = await getColumns(client, table);
+  const columns = await getColumns(connection, table);
 
   const params = [];
   const types = [];
@@ -47,7 +45,7 @@ export const profiles: ProfilesPluginMethod = async ({
   validateQuery(query);
 
   const options = { query, params, types };
-  const [rows] = await client.query(options);
+  const [rows] = await connection.query(options);
   for (const row of rows) {
     const result = castRow(row);
     await plugin.createImport(sourceMapping, run, result);
