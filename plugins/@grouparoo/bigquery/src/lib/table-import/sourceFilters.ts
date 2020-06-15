@@ -1,14 +1,13 @@
 import { SourceFilterMethod } from "@grouparoo/core";
-import { connect } from "../connect";
 import { getColumns, supportedEquality } from "../util";
 
 export const sourceFilters: SourceFilterMethod = async ({
+  connection,
   sourceOptions,
   appOptions,
 }) => {
   const { table } = sourceOptions;
-  const client = await connect(appOptions);
-  const columns = await getColumns(client, table);
+  const columns = await getColumns(connection, table);
 
   const options = [];
 

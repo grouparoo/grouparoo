@@ -12,6 +12,7 @@ process.chdir(`${__dirname}/../../../../../core/api`);
 import path from "path";
 
 import { profiles } from "../../src/lib/table-import/profiles";
+import { connect } from "../../src/lib/connect";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
@@ -46,7 +47,9 @@ async function runIt({ filter, highWaterMark, limit }) {
     imports.push(row);
     return null;
   });
+  const connection = await connect({ appOptions, app: null });
   const { nextHighWaterMark, importsCount } = await profiles({
+    connection,
     run,
     appOptions,
     sourceMapping,

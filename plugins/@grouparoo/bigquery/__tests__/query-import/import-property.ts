@@ -12,6 +12,7 @@ process.chdir(`${__dirname}/../../../../../core/api`);
 import path from "path";
 
 import { profileProperty } from "../../src/lib/query-import/profileProperty";
+import { connect } from "../../src/lib/connect";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
@@ -39,7 +40,10 @@ let actionhero;
 
 async function getPropertyValue(query: string) {
   const profilePropertyRuleOptions = { query };
+  const connection = await connect({ appOptions, app: null });
+
   return profileProperty({
+    connection,
     appOptions,
     profile,
     profilePropertyRuleOptions,

@@ -12,6 +12,7 @@ process.chdir(`${__dirname}/../../../../../core/api`);
 import path from "path";
 
 import { profileProperty } from "../../src/lib/table-import/profileProperty";
+import { connect } from "../../src/lib/connect";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
@@ -53,8 +54,10 @@ async function getPropertyValue(
   }
 
   const profilePropertyRuleFilters = useProfilePropertyRuleFilters || [];
+  const connection = await connect({ appOptions, app: null });
 
   return profileProperty({
+    connection,
     appOptions,
     profile: useProfile,
     sourceOptions,

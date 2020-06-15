@@ -12,6 +12,7 @@ process.chdir(`${__dirname}/../../../../../core/api`);
 import path from "path";
 
 import { sourceFilters } from "../../src/lib/table-import/sourceFilters";
+import { connect } from "../../src/lib/connect";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "@grouparoo/core/api/__tests__/utils/specHelper";
@@ -36,7 +37,9 @@ const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 const sourceOptions = { table: "purchases" };
 
 async function getFilters() {
+  const connection = await connect({ appOptions, app: null });
   const response = await sourceFilters({
+    connection,
     appOptions,
     sourceOptions,
     app: null,

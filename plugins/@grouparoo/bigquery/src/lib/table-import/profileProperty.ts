@@ -1,4 +1,3 @@
-import { connect } from "../connect";
 import { validateQuery } from "../validateQuery";
 import { getColumns, makeWhereClause, castValue } from "../util";
 
@@ -8,8 +7,8 @@ import {
 } from "@grouparoo/core";
 
 export const profileProperty: ProfilePropertyPluginMethod = async ({
+  connection,
   profile,
-  appOptions,
   sourceOptions,
   sourceMapping,
   profilePropertyRuleOptions,
@@ -30,8 +29,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     return;
   }
 
-  const client = await connect(appOptions);
-  const columns = await getColumns(client, table);
+  const columns = await getColumns(connection, table);
   const profileData = await profile.properties();
 
   if (!profileData.hasOwnProperty(profilePropertyMatch)) {
@@ -124,7 +122,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
 
   let response: ProfilePropertyPluginMethodResponse;
   try {
-    const [rows] = await client.query(options);
+    const [rows] = await connection.query(options);
     if (rows && rows.length > 0) {
       const row: { [key: string]: any } = rows[0];
       response = castValue(row.__result);
