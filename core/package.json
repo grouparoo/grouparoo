@@ -48,7 +48,7 @@
     "ah-next-plugin": "^0.2.1",
     "ah-sequelize-plugin": "^2.1.2",
     "axios": "^0.19.2",
-    "bcrypt": "^4.0.1",
+    "bcrypt": "^5.0.0",
     "bootstrap": "^4.4.1",
     "csv-stringify": "^5.4.1",
     "date-fns": "^2.14.0",
