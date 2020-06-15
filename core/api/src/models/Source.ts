@@ -415,14 +415,20 @@ export class Source extends LoggedModel<Source> {
       where: { state: "ready" },
     });
 
+    const profileProperties = await profile.properties();
     const app = await this.$get("app");
+    const appOptions = await app.getOptions();
+    const connection = await app.getConnection();
+    const sourceOptions = await this.getOptions();
+    const sourceMapping = await this.getMapping();
+
     const preloadedArgs = {
       app,
-      connection: await app.getConnection(),
-      appOptions: await app.getOptions(),
-      sourceOptions: await this.getOptions(),
-      sourceMapping: await this.getMapping(),
-      profileProperties: await profile.properties(),
+      connection,
+      appOptions,
+      sourceOptions,
+      sourceMapping,
+      profileProperties,
     };
 
     for (const i in rules) {
