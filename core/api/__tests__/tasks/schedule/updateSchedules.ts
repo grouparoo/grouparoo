@@ -13,6 +13,7 @@ describe("tasks/schedule:updateSchedules", () => {
 
   beforeEach(async () => {
     await api.resque.queue.connection.redis.flushdb();
+    await Run.destroy({ truncate: true });
   });
 
   afterAll(async () => {
