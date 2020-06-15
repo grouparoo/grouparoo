@@ -15,6 +15,7 @@ import { TeamHandler } from "../utils/teamHandler";
 import { TeamMemberHandler } from "../utils/teamMembersHandler";
 import { AppHandler } from "../utils/appHandler";
 import { GroupHandler } from "../utils/groupHandler";
+import { RunsHandler } from "../utils/runsHandler";
 import { SourceHandler } from "../utils/sourceHandler";
 import { DestinationHandler } from "../utils/destinationHandler";
 import { ProfileHandler } from "../utils/profileHandler";
@@ -30,6 +31,7 @@ const teamHandler = new TeamHandler();
 const teamMemberHandler = new TeamMemberHandler();
 const appHandler = new AppHandler();
 const groupHandler = new GroupHandler();
+const runsHandler = new RunsHandler();
 const sourceHandler = new SourceHandler();
 const destinationHandler = new DestinationHandler();
 const profileHandler = new ProfileHandler();
@@ -64,6 +66,7 @@ export default function GrouparooWebApp(props) {
     teamMemberHandler,
     appHandler,
     groupHandler,
+    runsHandler,
     sourceHandler,
     destinationHandler,
     profileHandler,

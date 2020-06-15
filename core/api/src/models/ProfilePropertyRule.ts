@@ -378,8 +378,10 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     }
 
     const response = OptionHelper.validateOptions(this, options, allowEmpty);
-    client.set(cacheKey, "true"); // do not await
-    client.expire(cacheKey, CACHE_TTL / 1000);
+    if (CACHE_TTL > 0) {
+      await client.set(cacheKey, "true");
+      await client.expire(cacheKey, CACHE_TTL / 1000);
+    }
     return response;
   }
 

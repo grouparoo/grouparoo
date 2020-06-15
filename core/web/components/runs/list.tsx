@@ -1,5 +1,5 @@
 import { useApi } from "../../hooks/useApi";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import { Row, Col, ButtonGroup, Button, Alert } from "react-bootstrap";
@@ -12,7 +12,7 @@ import RunDurationChart from "../visualizations/runDurations";
 import { RunAPIData } from "../../utils/apiData";
 
 export default function RunsList(props) {
-  const { errorHandler, query } = props;
+  const { errorHandler, runsHandler, query } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(props.total);
@@ -28,6 +28,13 @@ export default function RunsList(props) {
   useSecondaryEffect(() => {
     load();
   }, [limit, offset, stateFilter, errorFilter]);
+
+  useEffect(() => {
+    runsHandler.subscribe("runs-list", load);
+    return () => {
+      runsHandler.unsubscribe("runs-list");
+    };
+  }, []);
 
   async function load() {
     const params = { limit, offset };

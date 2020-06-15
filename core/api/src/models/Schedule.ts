@@ -295,9 +295,20 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   async enqueueRun() {
+    const run = await Run.create({
+      creatorGuid: this.guid,
+      creatorType: "schedule",
+      state: "running",
+    });
+
+    log(
+      `[ run ] starting run ${run.guid} for schedule ${this.guid}, ${this.name}`,
+      "notice"
+    );
+
     await task.enqueue(
       "schedule:run",
-      { scheduleGuid: this.guid },
+      { scheduleGuid: this.guid, runGuid: run.guid },
       "schedules"
     );
   }
