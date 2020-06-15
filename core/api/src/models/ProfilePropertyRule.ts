@@ -361,13 +361,26 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   async validateOptions(
     options?: SimpleProfilePropertyRuleOptions,
-    allowEmpty = false
+    allowEmpty = false,
+    useCache = false
   ) {
+    // this method is called on every profile property rule, for every profile, before an import
+    // caching that we are already valid can speed this up
+    const cacheKey = `cache:profilePropertyRule:${this.guid}`;
+    const client = api.redis.clients.client;
+    if (useCache) {
+      const previouslyValidated = await client.get(cacheKey);
+      if (previouslyValidated === "true") return;
+    }
+
     if (!options) {
       options = await this.getOptions();
     }
 
-    return OptionHelper.validateOptions(this, options, allowEmpty);
+    const response = OptionHelper.validateOptions(this, options, allowEmpty);
+    client.set(cacheKey, "true"); // do not await
+    client.expire(cacheKey, CACHE_TTL / 1000);
+    return response;
   }
 
   async getPlugin() {

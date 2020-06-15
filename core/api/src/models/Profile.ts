@@ -233,9 +233,11 @@ export class Profile extends LoggedModel<Profile> {
 
     let hash = {};
     const sources = await Source.findAll({ where: { state: "ready" } });
-    for (const i in sources) {
-      hash = Object.assign(hash, await sources[i].import(this));
-    }
+    await Promise.all(
+      sources.map((source) =>
+        source.import(this).then((data) => (hash = Object.assign(hash, data)))
+      )
+    );
 
     if (toSave) {
       await this.addOrUpdateProperties(hash);

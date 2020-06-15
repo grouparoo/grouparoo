@@ -357,7 +357,8 @@ export class Source extends LoggedModel<Source> {
 
     await profilePropertyRule.validateOptions(
       profilePropertyRuleOptionsOverride,
-      false
+      false,
+      true
     );
 
     const { pluginConnection } = await this.getPlugin();
@@ -431,17 +432,17 @@ export class Source extends LoggedModel<Source> {
       profileProperties,
     };
 
-    for (const i in rules) {
-      const rule = rules[i];
-      const response = await this.importProfileProperty(
-        profile,
-        rule,
-        null,
-        null,
-        preloadedArgs
-      );
-      hash[rule.key] = response;
-    }
+    await Promise.all(
+      rules.map((rule) =>
+        this.importProfileProperty(
+          profile,
+          rule,
+          null,
+          null,
+          preloadedArgs
+        ).then((response) => (hash[rule.key] = response))
+      )
+    );
 
     // remove null and undefined as we cannot set that value
     const hashKeys = Object.keys(hash);
