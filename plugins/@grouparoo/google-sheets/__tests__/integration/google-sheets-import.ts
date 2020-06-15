@@ -262,7 +262,13 @@ describe("integration/runs/google-sheets", () => {
         expect(found[0].args[0].scheduleGuid).toBe(schedule.guid);
 
         // run the schedule
+        const run = await Run.create({
+          creatorGuid: schedule.guid,
+          creatorType: "schedule",
+          state: "running",
+        });
         await specHelper.runTask("schedule:run", {
+          runGuid: run.guid,
           scheduleGuid: schedule.guid,
         });
 
@@ -326,11 +332,7 @@ describe("integration/runs/google-sheets", () => {
         const profilesCount = await Profile.count();
         expect(profilesCount).toBe(10);
 
-        const run = await Run.findOne({
-          where: { creatorGuid: schedule.guid },
-          order: [["createdAt", "desc"]],
-          limit: 1,
-        });
+        await run.reload();
         expect(run.state).toBe("complete");
         expect(run.importsCreated).toBe(10);
         expect(run.profilesCreated).toBe(10);
@@ -373,7 +375,13 @@ describe("integration/runs/google-sheets", () => {
         expect(found[1].args[0].scheduleGuid).toBe(schedule.guid);
 
         // run the schedule
+        const run = await Run.create({
+          creatorGuid: schedule.guid,
+          creatorType: "schedule",
+          state: "running",
+        });
         await specHelper.runTask("schedule:run", {
+          runGuid: run.guid,
           scheduleGuid: schedule.guid,
         });
 
@@ -439,11 +447,7 @@ describe("integration/runs/google-sheets", () => {
         const profilesCount = await Profile.count();
         expect(profilesCount).toBe(10);
 
-        const run = await Run.findOne({
-          where: { creatorGuid: schedule.guid },
-          order: [["createdAt", "desc"]],
-          limit: 1,
-        });
+        await run.reload();
         expect(run.state).toBe("complete");
         expect(run.importsCreated).toBe(10);
         expect(run.profilesCreated).toBe(0);
