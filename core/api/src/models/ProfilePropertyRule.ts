@@ -71,13 +71,26 @@ const _string_ops = [
   "endsWith",
   "substring",
 ];
+const _date_ops = [
+  "exists",
+  "notExists",
+  "gt",
+  "gte",
+  "lt",
+  "lte",
+  "relative_gt_days_ago",
+  "relative_lt_days_ago",
+  "relative_gt_days_ahead",
+  "relative_lt_days_ahead",
+];
+
 export const PROFILE_PROPERTY_RULE_OPS = {
   string: _string_ops,
   email: _string_ops,
   integer: _number_ops,
   float: _number_ops,
   boolean: _boolean_ops,
-  date: _number_ops,
+  date: _date_ops,
   _dictionary: {
     exists: "any value exists",
     notExists: "no value exists",
@@ -94,10 +107,34 @@ export const PROFILE_PROPERTY_RULE_OPS = {
     startsWith: "starts with",
     endsWith: "ends with",
     substring: "has the string",
+    relative_gt_days_ago: "greater than days ago",
+    relative_lt_days_ago: "less than days ago",
+    relative_gt_days_ahead: "greater than days ahead",
+    relative_lt_days_ahead: "less than days ahead",
   },
   _convenientRules: {
     exists: { op: "ne", match: "null" },
     notExists: { op: "eq", match: "null" },
+    relative_gt_days_ago: {
+      relativeMatchDirection: "subtract",
+      relativeMatchUnit: "days",
+      op: "gt",
+    },
+    relative_lt_days_ago: {
+      relativeMatchDirection: "subtract",
+      relativeMatchUnit: "days",
+      op: "lt",
+    },
+    relative_gt_days_ahead: {
+      relativeMatchDirection: "add",
+      relativeMatchUnit: "days",
+      op: "lt",
+    },
+    relative_lt_days_ahead: {
+      relativeMatchDirection: "add",
+      relativeMatchUnit: "days",
+      op: "gt",
+    },
   },
 };
 

@@ -3,6 +3,7 @@ import { useApi } from "../../../hooks/useApi";
 import StateBadge from "../../../components/stateBadge";
 import Head from "next/head";
 import GroupTabs from "../../../components/tabs/group";
+import DatePicker from "../../../components/datePicker";
 import { Form, Button, Table, Badge } from "react-bootstrap";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
@@ -296,15 +297,39 @@ export default function Page(props) {
                           rule.match ? [rule.match.toString()] : undefined
                         }
                       />
+                    ) : type === "date" && !rule.op.match(/relative_/) ? (
+                      <DatePicker
+                        selected={
+                          rule.match && rule.match !== "null"
+                            ? new Date(parseInt(rule.match))
+                            : new Date()
+                        }
+                        onChange={(d: Date) => {
+                          const _rules = [...localRules];
+                          rule.match = d.getTime();
+                          _rules[idx] = rule;
+                          setLocalRules(_rules);
+                        }}
+                      />
                     ) : (
                       <Form.Group controlId={`${rule.key}-match-${idx}`}>
                         <Form.Control
                           required
                           type="text"
-                          value={rule.match.toString()}
+                          value={
+                            rule.relativeMatchDirection
+                              ? rule.relativeMatchNumber?.toString()
+                              : rule.match?.toString()
+                          }
                           onChange={(e: any) => {
                             const _rules = [...localRules];
-                            rule.match = e.target.value;
+                            if (rule.relativeMatchDirection) {
+                              rule.relativeMatchNumber = e.target.value;
+                              delete rule.match;
+                            } else {
+                              rule.match = e.target.value;
+                              delete rule.relativeMatchNumber;
+                            }
                             _rules[idx] = rule;
                             setLocalRules(_rules);
                           }}

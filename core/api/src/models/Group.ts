@@ -359,8 +359,15 @@ export class Group extends LoggedModel<Group> {
     for (const i in rules) {
       for (const k in convenientRules) {
         if (
-          convenientRules[k].op === rules[i].op &&
-          convenientRules[k].match === rules[i].match
+          (convenientRules[k].op === rules[i].op &&
+            convenientRules[k].match === rules[i].match &&
+            !rules[i].relativeMatchNumber) ||
+          (convenientRules[k].op === rules[i].op &&
+            convenientRules[k].relativeMatchUnit ===
+              rules[i].relativeMatchUnit &&
+            convenientRules[k].relativeMatchDirection ===
+              rules[i].relativeMatchDirection &&
+            !rules[i].match)
         ) {
           rules[i] = Object.assign(rules[i], { op: k });
         }
