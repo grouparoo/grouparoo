@@ -1,8 +1,6 @@
-const TABLE = "destinationGroupMemberships";
-
 module.exports = {
   up: async function (migration, DataTypes) {
-    await migration.createTable(TABLE, {
+    await migration.createTable("options", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -18,34 +16,38 @@ module.exports = {
         allowNull: false,
       },
 
-      destinationGuid: {
+      ownerGuid: {
         type: DataTypes.STRING(40),
         allowNull: false,
       },
 
-      groupGuid: {
-        type: DataTypes.STRING(40),
-        allowNull: false,
-      },
-
-      remoteKey: {
+      ownerType: {
         type: DataTypes.STRING(191),
         allowNull: false,
       },
+
+      key: {
+        type: DataTypes.STRING(191),
+        allowNull: false,
+      },
+
+      value: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
     });
 
-    await migration.addIndex(TABLE, ["destinationGuid", "groupGuid"], {
+    await migration.addIndex("options", ["ownerGuid", "key"], {
       unique: true,
-      fields: ["destinationGuid", "groupGuid"],
+      fields: ["ownerGuid", "key"],
     });
 
-    await migration.addIndex(TABLE, ["destinationGuid", "remoteKey"], {
-      unique: true,
-      fields: ["destinationGuid", "remoteKey"],
+    await migration.addIndex("options", ["ownerGuid"], {
+      fields: ["ownerGuid"],
     });
   },
 
   down: async function (migration) {
-    await migration.dropTable(TABLE);
+    await migration.dropTable("options");
   },
 };

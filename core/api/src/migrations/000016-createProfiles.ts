@@ -1,8 +1,6 @@
-const TABLE = "profiles";
-
 module.exports = {
   up: async function (migration, DataTypes) {
-    await migration.createTable(TABLE, {
+    await migration.createTable("profiles", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -21,6 +19,6 @@ module.exports = {
   },
 
   down: async function (migration) {
-    await migration.dropTable(TABLE);
+    await migration.dropTable("profiles");
   },
 };

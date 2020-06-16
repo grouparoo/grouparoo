@@ -1,8 +1,6 @@
-const TABLE = "mappings";
-
 module.exports = {
   up: async function (migration, DataTypes) {
-    await migration.createTable(TABLE, {
+    await migration.createTable("destinations", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -18,43 +16,47 @@ module.exports = {
         allowNull: false,
       },
 
-      ownerGuid: {
+      appGuid: {
         type: DataTypes.STRING(40),
         allowNull: false,
       },
 
-      ownerType: {
+      name: {
         type: DataTypes.STRING(191),
         allowNull: false,
       },
 
-      profilePropertyRuleGuid: {
-        type: DataTypes.STRING(40),
-        allowNull: false,
-      },
-
-      remoteKey: {
+      type: {
         type: DataTypes.STRING(191),
         allowNull: false,
       },
+
+      state: {
+        type: DataTypes.STRING(191),
+        allowNull: false,
+      },
+
+      trackAllGroups: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
     });
 
-    await migration.addIndex(TABLE, ["ownerGuid", "profilePropertyRuleGuid"], {
+    await migration.addIndex("destinations", ["name"], {
       unique: true,
-      fields: ["ownerGuid", "profilePropertyRuleGuid"],
+      fields: ["name"],
     });
 
-    await migration.addIndex(TABLE, ["ownerGuid", "remoteKey"], {
-      unique: true,
-      fields: ["ownerGuid", "remoteKey"],
+    await migration.addIndex("destinations", ["appGuid"], {
+      fields: ["appGuid"],
     });
 
-    await migration.addIndex(TABLE, ["ownerGuid"], {
-      fields: ["ownerGuid"],
+    await migration.addIndex("destinations", ["state"], {
+      fields: ["state"],
     });
   },
 
   down: async function (migration) {
-    await migration.dropTable(TABLE);
+    await migration.dropTable("destinations");
   },
 };

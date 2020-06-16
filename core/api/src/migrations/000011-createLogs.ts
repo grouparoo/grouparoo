@@ -1,8 +1,6 @@
-const TABLE = "options";
-
 module.exports = {
   up: async function (migration, DataTypes) {
-    await migration.createTable(TABLE, {
+    await migration.createTable("logs", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -23,33 +21,46 @@ module.exports = {
         allowNull: false,
       },
 
-      ownerType: {
+      topic: {
         type: DataTypes.STRING(191),
         allowNull: false,
       },
 
-      key: {
+      verb: {
         type: DataTypes.STRING(191),
         allowNull: false,
       },
 
-      value: {
+      who: {
+        type: DataTypes.STRING(191),
+        allowNull: true,
+      },
+
+      message: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+
+      data: {
         type: DataTypes.TEXT,
         allowNull: false,
       },
     });
 
-    await migration.addIndex(TABLE, ["ownerGuid", "key"], {
-      unique: true,
-      fields: ["ownerGuid", "key"],
+    await migration.addIndex("logs", ["topic"], {
+      fields: ["topic"],
     });
 
-    await migration.addIndex(TABLE, ["ownerGuid"], {
+    await migration.addIndex("logs", ["ownerGuid"], {
       fields: ["ownerGuid"],
+    });
+
+    await migration.addIndex("logs", ["createdAt"], {
+      fields: ["createdAt"],
     });
   },
 
   down: async function (migration) {
-    await migration.dropTable(TABLE);
+    await migration.dropTable("logs");
   },
 };

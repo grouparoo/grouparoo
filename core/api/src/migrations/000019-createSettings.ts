@@ -1,8 +1,6 @@
-const TABLE = "sources";
-
 module.exports = {
   up: async function (migration, DataTypes) {
-    await migration.createTable(TABLE, {
+    await migration.createTable("settings", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -18,42 +16,43 @@ module.exports = {
         allowNull: false,
       },
 
-      appGuid: {
-        type: DataTypes.STRING(40),
-        allowNull: false,
-      },
-
-      type: {
+      pluginName: {
         type: DataTypes.STRING(191),
         allowNull: false,
       },
 
-      name: {
+      key: {
         type: DataTypes.STRING(191),
         allowNull: false,
       },
 
-      state: {
+      value: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+
+      defaultValue: {
         type: DataTypes.STRING(191),
         allowNull: false,
+      },
+
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: true,
       },
     });
 
-    await migration.addIndex(TABLE, ["name"], {
+    await migration.addIndex("settings", ["pluginName", "key"], {
       unique: true,
-      fields: ["name"],
+      fields: ["pluginName", "key"],
     });
 
-    await migration.addIndex(TABLE, ["appGuid"], {
-      fields: ["appGuid"],
-    });
-
-    await migration.addIndex(TABLE, ["state"], {
-      fields: ["state"],
+    await migration.addIndex("settings", ["pluginName"], {
+      fields: ["pluginName"],
     });
   },
 
   down: async function (migration) {
-    await migration.dropTable(TABLE);
+    await migration.dropTable("settings");
   },
 };
