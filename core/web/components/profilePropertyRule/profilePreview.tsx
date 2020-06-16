@@ -26,6 +26,7 @@ export default function ProfilePreview(props) {
     };
   }, [
     profilePropertyRule.guid,
+    profilePropertyRule.type,
     JSON.stringify(profilePropertyRule.options),
     JSON.stringify(profilePropertyRule.filters),
   ]);
@@ -97,7 +98,7 @@ export default function ProfilePreview(props) {
   const otherProfilePropertyRules = {};
   for (const i in profile.properties) {
     if (profile.properties[i].guid === profilePropertyRule.guid) {
-      if (profile.properties[i].type === "date") {
+      if (profilePropertyRule.type === "date") {
         thisProfilePropertyRuleValue = new Date(
           profile.properties[i]?.value
         ).toLocaleString();
