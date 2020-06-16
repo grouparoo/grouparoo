@@ -78,7 +78,7 @@ export default function Page(props) {
       const response = await execApi("delete", `/profilePropertyRule/${guid}`);
       setLoading(false);
       if (response) {
-        Router.push("/profilePropertyRules");
+        Router.back();
       }
     }
   }
