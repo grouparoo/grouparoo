@@ -59,6 +59,8 @@ export default function Page(props) {
     if (response?.profile) {
       successHandler.set({ message: "Import Complete!" });
       profileHandler.set(response.profile);
+      setProfile(response.profile);
+      setProperties(response.profile.properties);
     }
   }
 
