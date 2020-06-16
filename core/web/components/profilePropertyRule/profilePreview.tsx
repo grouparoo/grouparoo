@@ -145,7 +145,9 @@ export default function ProfilePreview(props) {
           {Object.keys(otherProfilePropertyRules).map((k) => (
             <ListGroup.Item key={`profile-preview-row-${k}`} variant="light">
               <strong>{k}</strong>:{" "}
-              {otherProfilePropertyRules[k]?.value?.toString()}
+              {otherProfilePropertyRules[k]?.type === "date"
+                ? new Date(otherProfilePropertyRules[k]?.value).toLocaleString()
+                : otherProfilePropertyRules[k]?.value?.toString()}
             </ListGroup.Item>
           ))}
         </ListGroup>
