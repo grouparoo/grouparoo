@@ -101,6 +101,8 @@ export const PROFILE_PROPERTY_RULE_OPS = {
   },
 };
 
+const TYPES = ["float", "integer", "date", "string", "boolean", "email"];
+
 const CACHE_TTL = env === "test" ? -1 : 1000 * 30;
 
 interface ProfilePropertyRulesCache {
@@ -181,9 +183,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   @AllowNull(false)
   @Default("string")
-  @Column(
-    DataType.ENUM("float", "integer", "date", "string", "boolean", "email")
-  )
+  @Column(DataType.ENUM(...TYPES))
   type: string;
 
   @AllowNull(false)
@@ -233,6 +233,13 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @BeforeSave
   static async updateState(instance: ProfilePropertyRule) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
+
+  @BeforeSave
+  static async ensureType(instance: ProfilePropertyRule) {
+    if (!TYPES.includes(instance.type)) {
+      throw new Error(`${instance.type} is not an allowed type`);
+    }
   }
 
   @BeforeCreate
