@@ -36,7 +36,6 @@ import {
   PROFILE_PROPERTY_RULE_OPS,
 } from "./ProfilePropertyRule";
 import { StateMachine } from "./../modules/stateMachine";
-import { runInThisContext } from "vm";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [...Array(GROUP_RULE_LIMIT).keys()].map((n) => n + 1).reverse();

@@ -145,7 +145,10 @@ export default function ProfilePreview(props) {
           <ListGroup variant="flush">
             {Object.keys(profile.properties).map((k) => (
               <ListGroup.Item key={`profile-prop-${k}`} variant="light">
-                <strong>{k}</strong>: {profile.properties[k]?.value?.toString()}
+                <strong>{k}</strong>:{" "}
+                {profile.properties[k]?.type === "date"
+                  ? new Date(profile.properties[k]?.value).toLocaleString()
+                  : profile.properties[k]?.value?.toString()}
               </ListGroup.Item>
             ))}
           </ListGroup>

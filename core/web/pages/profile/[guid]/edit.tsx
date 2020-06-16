@@ -331,7 +331,10 @@ export default function Page(props) {
                       ) : (
                         <span>
                           <strong>
-                            {renderProperty(properties[key].value)}
+                            {renderProperty(
+                              properties[key].value,
+                              properties[key].type
+                            )}
                           </strong>
                         </span>
                       )}
@@ -367,9 +370,11 @@ Page.getInitialProps = async (ctx) => {
   return { profile, profilePropertyRules, groups, allGroups, apps };
 };
 
-function renderProperty(value) {
+function renderProperty(value, type) {
   if (value === true || value === false) {
     return <input type="checkbox" value={value} checked={value} readOnly />;
+  } else if (type === "date") {
+    return new Date(value).toLocaleString();
   } else {
     return value;
   }
