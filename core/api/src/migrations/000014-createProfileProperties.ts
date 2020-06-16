@@ -1,8 +1,6 @@
-const TABLE = "groupMembers";
-
 module.exports = {
   up: async function (migration, DataTypes) {
-    await migration.createTable(TABLE, {
+    await migration.createTable("profileProperties", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -23,32 +21,32 @@ module.exports = {
         allowNull: false,
       },
 
-      groupGuid: {
+      rawValue: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+
+      profilePropertyRuleGuid: {
         type: DataTypes.STRING(40),
         allowNull: false,
       },
-
-      removedAt: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
     });
 
-    await migration.addIndex(TABLE, ["profileGuid", "groupGuid"], {
-      unique: true,
-      fields: ["profileGuid", "groupGuid"],
-    });
+    await migration.addIndex(
+      "profileProperties",
+      ["profileGuid", "profilePropertyRuleGuid"],
+      {
+        unique: true,
+        fields: ["profileGuid", "profilePropertyRuleGuid"],
+      }
+    );
 
-    await migration.addIndex(TABLE, ["profileGuid"], {
+    await migration.addIndex("profileProperties", ["profileGuid"], {
       fields: ["profileGuid"],
-    });
-
-    await migration.addIndex(TABLE, ["groupGuid"], {
-      fields: ["groupGuid"],
     });
   },
 
   down: async function (migration) {
-    await migration.dropTable(TABLE);
+    await migration.dropTable("profileProperties");
   },
 };

@@ -1,8 +1,6 @@
-const TABLE = "groupRules";
-
 module.exports = {
   up: async function (migration, DataTypes) {
-    await migration.createTable(TABLE, {
+    await migration.createTable("profilePropertyRuleFilters", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -18,13 +16,13 @@ module.exports = {
         allowNull: false,
       },
 
-      groupGuid: {
+      profilePropertyRuleGuid: {
         type: DataTypes.STRING(40),
         allowNull: false,
       },
 
-      profilePropertyRuleGuid: {
-        type: DataTypes.STRING(40),
+      key: {
+        type: DataTypes.STRING(191),
         allowNull: false,
       },
 
@@ -59,12 +57,16 @@ module.exports = {
       },
     });
 
-    await migration.addIndex(TABLE, ["groupGuid"], {
-      fields: ["groupGuid"],
-    });
+    await migration.addIndex(
+      "profilePropertyRuleFilters",
+      ["profilePropertyRuleGuid"],
+      {
+        fields: ["profilePropertyRuleGuid"],
+      }
+    );
   },
 
   down: async function (migration) {
-    await migration.dropTable(TABLE);
+    await migration.dropTable("profilePropertyRuleFilters");
   },
 };

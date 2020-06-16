@@ -1,8 +1,6 @@
-const TABLE = "teamMembers";
-
 module.exports = {
   up: async function (migration, DataTypes) {
-    await migration.createTable(TABLE, {
+    await migration.createTable("schedules", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -18,48 +16,47 @@ module.exports = {
         allowNull: false,
       },
 
-      teamGuid: {
+      sourceGuid: {
         type: DataTypes.STRING(40),
         allowNull: false,
       },
 
-      firstName: {
-        type: DataTypes.TEXT,
+      name: {
+        type: DataTypes.STRING(191),
         allowNull: false,
       },
 
-      lastName: {
-        type: DataTypes.TEXT,
+      state: {
+        type: DataTypes.STRING(191),
         allowNull: false,
       },
 
-      email: {
-        type: DataTypes.TEXT,
+      recurring: {
+        type: DataTypes.BOOLEAN,
         allowNull: false,
       },
 
-      passwordHash: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
-
-      lastLoginAt: {
-        type: DataTypes.DATE,
+      recurringFrequency: {
+        type: DataTypes.BIGINT,
         allowNull: true,
       },
     });
 
-    await migration.addIndex(TABLE, ["email"], {
+    await migration.addIndex("schedules", ["name"], {
       unique: true,
-      fields: ["email"],
+      fields: ["name"],
     });
 
-    await migration.addIndex(TABLE, ["teamGuid"], {
-      fields: ["teamGuid"],
+    await migration.addIndex("schedules", ["sourceGuid"], {
+      fields: ["sourceGuid"],
+    });
+
+    await migration.addIndex("schedules", ["state"], {
+      fields: ["state"],
     });
   },
 
   down: async function (migration) {
-    await migration.dropTable(TABLE);
+    await migration.dropTable("schedules");
   },
 };

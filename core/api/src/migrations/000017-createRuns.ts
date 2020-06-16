@@ -1,8 +1,6 @@
-const TABLE = "runs";
-
 module.exports = {
   up: async function (migration, DataTypes) {
-    await migration.createTable(TABLE, {
+    await migration.createTable("runs", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -74,16 +72,16 @@ module.exports = {
       },
     });
 
-    await migration.addIndex(TABLE, ["creatorGuid"], {
+    await migration.addIndex("runs", ["creatorGuid"], {
       fields: ["creatorGuid"],
     });
 
-    await migration.addIndex(TABLE, ["state"], {
+    await migration.addIndex("runs", ["state"], {
       fields: ["state"],
     });
   },
 
   down: async function (migration) {
-    await migration.dropTable(TABLE);
+    await migration.dropTable("runs");
   },
 };

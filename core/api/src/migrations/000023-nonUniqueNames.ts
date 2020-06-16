@@ -1,14 +1,14 @@
-const TABLES = [
-  "apps",
-  "sources",
-  "groups",
-  "destinations",
-  "profilePropertyRules",
-  "schedules",
-];
-
 module.exports = {
   up: async function (migration, DataTypes) {
+    const TABLES = [
+      "apps",
+      "sources",
+      "groups",
+      "destinations",
+      "profilePropertyRules",
+      "schedules",
+    ];
+
     for (const i in TABLES) {
       const table = TABLES[i];
       const columns = table === "profilePropertyRules" ? ["key"] : ["name"];
@@ -20,6 +20,15 @@ module.exports = {
   },
 
   down: async function (migration) {
+    const TABLES = [
+      "apps",
+      "sources",
+      "groups",
+      "destinations",
+      "profilePropertyRules",
+      "schedules",
+    ];
+
     for (const i in TABLES) {
       const table = TABLES[i];
       const columns = table === "profilePropertyRules" ? ["key"] : ["name"];

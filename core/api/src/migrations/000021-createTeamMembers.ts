@@ -1,8 +1,6 @@
-const TABLE = "logs";
-
 module.exports = {
   up: async function (migration, DataTypes) {
-    await migration.createTable(TABLE, {
+    await migration.createTable("teamMembers", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -18,51 +16,48 @@ module.exports = {
         allowNull: false,
       },
 
-      ownerGuid: {
+      teamGuid: {
         type: DataTypes.STRING(40),
         allowNull: false,
       },
 
-      topic: {
-        type: DataTypes.STRING(191),
+      firstName: {
+        type: DataTypes.TEXT,
         allowNull: false,
       },
 
-      verb: {
-        type: DataTypes.STRING(191),
+      lastName: {
+        type: DataTypes.TEXT,
         allowNull: false,
       },
 
-      who: {
-        type: DataTypes.STRING(191),
+      email: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+
+      passwordHash: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
 
-      message: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
-
-      data: {
-        type: DataTypes.TEXT,
-        allowNull: false,
+      lastLoginAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
       },
     });
 
-    await migration.addIndex(TABLE, ["topic"], {
-      fields: ["topic"],
+    await migration.addIndex("teamMembers", ["email"], {
+      unique: true,
+      fields: ["email"],
     });
 
-    await migration.addIndex(TABLE, ["ownerGuid"], {
-      fields: ["ownerGuid"],
-    });
-
-    await migration.addIndex(TABLE, ["createdAt"], {
-      fields: ["createdAt"],
+    await migration.addIndex("teamMembers", ["teamGuid"], {
+      fields: ["teamGuid"],
     });
   },
 
   down: async function (migration) {
-    await migration.dropTable(TABLE);
+    await migration.dropTable("teamMembers");
   },
 };

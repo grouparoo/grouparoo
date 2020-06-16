@@ -1,8 +1,6 @@
-const TABLE = "settings";
-
 module.exports = {
   up: async function (migration, DataTypes) {
-    await migration.createTable(TABLE, {
+    await migration.createTable("profilePropertyRules", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -18,43 +16,43 @@ module.exports = {
         allowNull: false,
       },
 
-      pluginName: {
-        type: DataTypes.STRING(191),
-        allowNull: false,
-      },
-
       key: {
         type: DataTypes.STRING(191),
         allowNull: false,
       },
 
-      value: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
-
-      defaultValue: {
+      type: {
         type: DataTypes.STRING(191),
         allowNull: false,
       },
 
-      description: {
-        type: DataTypes.TEXT,
-        allowNull: true,
+      unique: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
+
+      sourceGuid: {
+        type: DataTypes.STRING(40),
+        allowNull: false,
+      },
+
+      state: {
+        type: DataTypes.STRING(191),
+        allowNull: false,
       },
     });
 
-    await migration.addIndex(TABLE, ["pluginName", "key"], {
+    await migration.addIndex("profilePropertyRules", ["key"], {
+      fields: ["key"],
       unique: true,
-      fields: ["pluginName", "key"],
     });
 
-    await migration.addIndex(TABLE, ["pluginName"], {
-      fields: ["pluginName"],
+    await migration.addIndex("profilePropertyRules", ["state"], {
+      fields: ["state"],
     });
   },
 
   down: async function (migration) {
-    await migration.dropTable(TABLE);
+    await migration.dropTable("profilePropertyRules");
   },
 };

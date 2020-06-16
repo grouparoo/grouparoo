@@ -1,8 +1,6 @@
-const TABLE = "profilePropertyRules";
-
 module.exports = {
   up: async function (migration, DataTypes) {
-    await migration.createTable(TABLE, {
+    await migration.createTable("groups", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -18,7 +16,7 @@ module.exports = {
         allowNull: false,
       },
 
-      key: {
+      name: {
         type: DataTypes.STRING(191),
         allowNull: false,
       },
@@ -28,33 +26,33 @@ module.exports = {
         allowNull: false,
       },
 
-      unique: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-      },
-
-      sourceGuid: {
-        type: DataTypes.STRING(40),
-        allowNull: false,
-      },
-
       state: {
         type: DataTypes.STRING(191),
         allowNull: false,
       },
+
+      matchType: {
+        type: DataTypes.STRING(191),
+        allowNull: false,
+      },
+
+      calculatedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
     });
 
-    await migration.addIndex(TABLE, ["key"], {
-      fields: ["key"],
+    await migration.addIndex("groups", ["name"], {
       unique: true,
+      fields: ["name"],
     });
 
-    await migration.addIndex(TABLE, ["state"], {
+    await migration.addIndex("groups", ["state"], {
       fields: ["state"],
     });
   },
 
   down: async function (migration) {
-    await migration.dropTable(TABLE);
+    await migration.dropTable("groups");
   },
 };
