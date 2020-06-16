@@ -41,6 +41,7 @@ export default function Page(props) {
 
         const prrResponse = await execApi("get", `/profilePropertyRules`, {
           unique: true,
+          state: "ready",
         });
         if (prrResponse?.profilePropertyRules) {
           setProfilePropertyRules(prrResponse.profilePropertyRules);
@@ -312,7 +313,10 @@ Page.getInitialProps = async (ctx) => {
   const {
     profilePropertyRules,
     examples: profilePropertyRuleExamples,
-  } = await execApi("get", `/profilePropertyRules`);
+  } = await execApi("get", `/profilePropertyRules`, {
+    state: "ready",
+    unique: true,
+  });
   const { types } = await execApi("get", `/profilePropertyRuleOptions`);
   const { total: scheduleCount } = await execApi("get", `/schedules`);
 
