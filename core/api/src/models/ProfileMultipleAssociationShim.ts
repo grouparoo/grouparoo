@@ -27,6 +27,26 @@ export class ProfileMultipleAssociationShim extends Model {
     as: "ProfileProperties_5",
     foreignKey: "profileGuid",
   })
+  @HasMany(() => ProfileProperty, {
+    as: "ProfileProperties_6",
+    foreignKey: "profileGuid",
+  })
+  @HasMany(() => ProfileProperty, {
+    as: "ProfileProperties_7",
+    foreignKey: "profileGuid",
+  })
+  @HasMany(() => ProfileProperty, {
+    as: "ProfileProperties_8",
+    foreignKey: "profileGuid",
+  })
+  @HasMany(() => ProfileProperty, {
+    as: "ProfileProperties_9",
+    foreignKey: "profileGuid",
+  })
+  @HasMany(() => ProfileProperty, {
+    as: "ProfileProperties_10",
+    foreignKey: "profileGuid",
+  })
   @HasMany(() => ProfileProperty, { foreignKey: "profileGuid" })
   profileProperties: ProfileProperty[];
 }

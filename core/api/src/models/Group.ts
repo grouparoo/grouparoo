@@ -38,8 +38,8 @@ import {
 import { StateMachine } from "./../modules/stateMachine";
 import { runInThisContext } from "vm";
 
-const numbers = [1, 2, 3, 4, 5].reverse();
-export const GROUP_RULE_LIMIT = numbers.length;
+export const GROUP_RULE_LIMIT = 10;
+const numbers = [...Array(GROUP_RULE_LIMIT).keys()].map((n) => n + 1).reverse();
 
 export interface GroupRuleWithKey {
   key: string;
