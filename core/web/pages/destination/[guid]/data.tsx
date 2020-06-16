@@ -20,7 +20,9 @@ export default function Page(props) {
     groups,
   } = props;
   const { execApi } = useApi(props, errorHandler);
-  const [trackedGroupGuid, setTrackedGroupGuid] = useState("_none");
+  const [trackedGroupGuid, setTrackedGroupGuid] = useState(
+    props.trackedGroupGuid || "_none"
+  );
   const [destination, setDestination] = useState<DestinationAPIData>(
     props.destination
   );
@@ -654,6 +656,9 @@ Page.getInitialProps = async (ctx) => {
     destination,
     profilePropertyRules,
     mappingOptions: options,
+    trackedGroupGuid: destination.trackAllGroups
+      ? "_all"
+      : destination.destinationGroups[0]?.guid,
     groups: groups.filter((group) => group.state !== "draft"),
   };
 };

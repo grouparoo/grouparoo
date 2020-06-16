@@ -21,7 +21,11 @@ export default function (props) {
     );
     setLoading(false);
     if (response?.group) {
-      Router.push("/group/[guid]/edit", `/group/${response.group.guid}/edit`);
+      const path = response.group.type === "calculated" ? "rules" : "edit";
+      Router.push(
+        `/group/[guid]/${path}`,
+        `/group/${response.group.guid}/${path}`
+      );
     }
   }
 

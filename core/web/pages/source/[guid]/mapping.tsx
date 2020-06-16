@@ -1,7 +1,7 @@
 import { useApi } from "../../../hooks/useApi";
 import SourceTabs from "../../../components/tabs/source";
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Row, Col, Table, Form, Button } from "react-bootstrap";
 import { createSchedule } from "../../../components/schedule/add";
 import Router from "next/router";
@@ -41,6 +41,7 @@ export default function Page(props) {
 
         const prrResponse = await execApi("get", `/profilePropertyRules`, {
           unique: true,
+          state: "ready",
         });
         if (prrResponse?.profilePropertyRules) {
           setProfilePropertyRules(prrResponse.profilePropertyRules);
@@ -71,7 +72,7 @@ export default function Page(props) {
 
       // this source can have a schedule, and we have no schedules yet
       if (scheduleCount === 0 && response.source.scheduleAvailable) {
-        createSchedule({
+        await createSchedule({
           sourceGuid: response.source.guid,
           setLoading: () => {},
           successHandler,
@@ -312,7 +313,10 @@ Page.getInitialProps = async (ctx) => {
   const {
     profilePropertyRules,
     examples: profilePropertyRuleExamples,
-  } = await execApi("get", `/profilePropertyRules`);
+  } = await execApi("get", `/profilePropertyRules`, {
+    state: "ready",
+    unique: true,
+  });
   const { types } = await execApi("get", `/profilePropertyRuleOptions`);
   const { total: scheduleCount } = await execApi("get", `/schedules`);
 

@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Button, Form, Table, Badge } from "react-bootstrap";
 import Router from "next/router";
@@ -35,6 +35,10 @@ export default function Page(props) {
   );
 
   const { guid } = query;
+
+  useEffect(() => {
+    newRuleDefaults();
+  }, []);
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -78,8 +82,22 @@ export default function Page(props) {
       const response = await execApi("delete", `/profilePropertyRule/${guid}`);
       setLoading(false);
       if (response) {
-        Router.push("/profilePropertyRules");
+        Router.back();
       }
+    }
+  }
+
+  function newRuleDefaults() {
+    if (
+      profilePropertyRule.state === "draft" &&
+      profilePropertyRule.key === ""
+    ) {
+      const _profilePropertyRule = Object.assign({}, profilePropertyRule);
+
+      // make the user explicitly choose a type
+      _profilePropertyRule.type = "";
+
+      setProfilePropertyRule(_profilePropertyRule);
     }
   }
 
@@ -181,6 +199,9 @@ export default function Page(props) {
                 value={profilePropertyRule.type}
                 onChange={(e) => update(e)}
               >
+                <option value="" disabled>
+                  Choose a Type
+                </option>
                 {types.map((type) => (
                   <option key={`type-${type}`}>{type}</option>
                 ))}

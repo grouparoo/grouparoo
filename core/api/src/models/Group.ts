@@ -310,7 +310,7 @@ export class Group extends LoggedModel<Group> {
         );
       }
 
-      if (this.state !== "deleted") {
+      if (this.state !== "deleted" && rules.length > 0) {
         this.state = "initializing";
         this.changed("updatedAt", true);
         await this.save({ transaction });

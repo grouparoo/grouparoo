@@ -64,7 +64,7 @@ describe("models/profilePropertyRule", () => {
     await source.destroy();
   });
 
-  describe("key", () => {
+  describe("keys and types", () => {
     let source: Source;
 
     beforeAll(async () => {
@@ -109,6 +109,18 @@ describe("models/profilePropertyRule", () => {
 
       await ruleOne.destroy();
       await ruleTwo.destroy();
+    });
+
+    test("types must be of a known type", async () => {
+      const rule = await ProfilePropertyRule.create({
+        sourceGuid: source.guid,
+      });
+
+      await expect(rule.update({ type: "something" })).rejects.toThrow(
+        /something is not an allowed type/
+      );
+
+      await rule.destroy();
     });
   });
 
