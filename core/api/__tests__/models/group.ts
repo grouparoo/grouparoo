@@ -677,15 +677,20 @@ describe("models/group", () => {
       await secondRun.destroy();
     });
 
-    test("calculating a group with more than 5 rules produces an error", async () => {
+    test("calculating a group with more than 10 rules produces an error", async () => {
       group.matchType = "all";
       await group.setRules([
         { key: "userId", match: "Mario", op: "eq" },
         { key: "lastName", match: "Mario", op: "eq" },
         { key: "firstName", match: "Mario", op: "eq" },
         { key: "email", match: "Mario", op: "eq" },
-        { key: "ltv", match: "Mario", op: "eq" },
         { key: "isVIP", match: "Mario", op: "eq" },
+        { key: "ltv", match: "0", op: "eq" },
+        { key: "ltv", match: "1", op: "eq" },
+        { key: "ltv", match: "2", op: "eq" },
+        { key: "ltv", match: "3", op: "eq" },
+        { key: "ltv", match: "4", op: "eq" },
+        { key: "ltv", match: "5", op: "eq" },
       ]);
 
       try {

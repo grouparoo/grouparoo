@@ -234,7 +234,7 @@ describe("actions/groups", () => {
           connection
         );
         expect(error).toBeUndefined();
-        expect(ruleLimit).toBe(5);
+        expect(ruleLimit).toBe(10);
         expect(Object.keys(ops).sort()).toEqual([
           "_convenientRules",
           "_dictionary",
