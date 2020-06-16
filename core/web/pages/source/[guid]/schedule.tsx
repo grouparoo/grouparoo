@@ -28,7 +28,7 @@ export default function Page(props) {
       delete _schedule.options; // they are immutable and cannot be changed once set; server will return an error
     }
     if (recurringFrequencyMinutes) {
-      schedule.recurringFrequency = recurringFrequencyMinutes * (60 * 1000);
+      _schedule.recurringFrequency = recurringFrequencyMinutes * (60 * 1000);
     }
 
     setLoading(true);
