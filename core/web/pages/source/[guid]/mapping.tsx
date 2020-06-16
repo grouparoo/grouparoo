@@ -1,7 +1,7 @@
 import { useApi } from "../../../hooks/useApi";
 import SourceTabs from "../../../components/tabs/source";
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Row, Col, Table, Form, Button } from "react-bootstrap";
 import { createSchedule } from "../../../components/schedule/add";
 import Router from "next/router";
@@ -72,7 +72,7 @@ export default function Page(props) {
 
       // this source can have a schedule, and we have no schedules yet
       if (scheduleCount === 0 && response.source.scheduleAvailable) {
-        createSchedule({
+        await createSchedule({
           sourceGuid: response.source.guid,
           setLoading: () => {},
           successHandler,
