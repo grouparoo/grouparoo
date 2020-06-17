@@ -3,8 +3,20 @@ import Head from "next/head";
 import Link from "next/link";
 import LoadingTable from "../../../components/loadingTable";
 import ProfilePropertyRuleTabs from "../../../components/tabs/profilePropertyRule";
+import {
+  ProfilePropertyRuleAPIData,
+  GroupAPIData,
+} from "../../../utils/apiData";
 
-export default function Page({ profilePropertyRule, groups, ops }) {
+export default function Page({
+  profilePropertyRule,
+  groups,
+  ops,
+}: {
+  profilePropertyRule: ProfilePropertyRuleAPIData;
+  groups: GroupAPIData[];
+  ops: any;
+}) {
   return (
     <>
       <Head>
@@ -47,7 +59,11 @@ export default function Page({ profilePropertyRule, groups, ops }) {
                   {group.rules.map((rule, idx) => (
                     <span key={`rule-${idx}`}>
                       <strong>{rule.key}</strong> {ops._dictionary[rule.op]}:{" "}
-                      <code>{rule.match}</code>
+                      <code>
+                        {rule.match
+                          ? rule.match
+                          : `${rule.relativeMatchNumber} ${rule.relativeMatchUnit} ${rule.relativeMatchDirection}`}
+                      </code>
                       <br />
                     </span>
                   ))}
