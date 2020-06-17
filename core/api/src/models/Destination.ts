@@ -447,7 +447,9 @@ export class Destination extends LoggedModel<Destination> {
     return parameterizedOptions;
   }
 
-  async destinationConnectionOptions() {
+  async destinationConnectionOptions(
+    destinationOptions: SimpleDestinationOptions = {}
+  ) {
     const { pluginConnection } = await this.getPlugin();
     const app = await this.$get("app");
     const connection = await app.getConnection();
@@ -461,6 +463,7 @@ export class Destination extends LoggedModel<Destination> {
       connection,
       app,
       appOptions,
+      destinationOptions,
     });
   }
 

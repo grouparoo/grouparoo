@@ -213,12 +213,19 @@ export class sourceConnectionOptions extends AuthenticatedAction {
     this.permission = { topic: "source", mode: "read" };
     this.inputs = {
       guid: { required: true },
+      options: { required: false },
     };
   }
 
   async run({ params, response }) {
     const source = await Source.findByGuid(params.guid);
-    response.options = await source.sourceConnectionOptions();
+
+    const options =
+      typeof params.options === "string"
+        ? JSON.parse(params.options)
+        : params.options;
+
+    response.options = await source.sourceConnectionOptions(options);
   }
 }
 
