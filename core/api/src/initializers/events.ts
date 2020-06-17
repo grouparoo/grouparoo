@@ -227,6 +227,9 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
   profilePropertyRuleFilters,
 }) => {
   let event: Event;
+  if (!profilePropertyRuleOptions["column"]) return;
+  if (!profilePropertyRuleOptions["aggregation method"]) return;
+
   const dataKey = profilePropertyRuleOptions["column"].replace(
     /^\[data\]-/,
     ""

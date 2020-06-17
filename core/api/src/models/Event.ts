@@ -338,6 +338,9 @@ export class Event extends LoggedModel<Event> {
       if (filter.key.match(/^\[data\]-/)) {
         localWhere[opSymbol] = match;
         eventDataWhere["value"] = localWhere;
+      } else if (key === "occurredAt") {
+        localWhere[opSymbol] = new Date(parseInt(match.toString()));
+        eventWhere[key] = localWhere;
       } else {
         localWhere[opSymbol] = match;
         eventWhere[key] = localWhere;
