@@ -164,7 +164,11 @@ export default function Page(props) {
         <br />
         <StateBadge state={group.state} />
       </p>
-      <p>Define the profile properties that you want to segment by:</p>
+      <p>
+        Define the profile properties that you want to segment by. Profiles in
+        this Group will match <Badge variant="success">{group.matchType}</Badge>{" "}
+        of these rules.
+      </p>
       <Form inline>
         <Table bordered size="sm">
           <thead>
