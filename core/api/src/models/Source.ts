@@ -222,7 +222,7 @@ export class Source extends LoggedModel<Source> {
     }
   }
 
-  async sourceConnectionOptions() {
+  async sourceConnectionOptions(sourceOptions: SimpleSourceOptions = {}) {
     const { pluginConnection } = await this.getPlugin();
     const app = await this.$get("app");
     const connection = await app.getConnection();
@@ -236,6 +236,7 @@ export class Source extends LoggedModel<Source> {
       connection,
       app,
       appOptions,
+      sourceOptions,
     });
   }
 

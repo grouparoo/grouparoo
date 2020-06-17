@@ -222,8 +222,11 @@ export namespace helper {
             },
           ],
           methods: {
-            sourceOptions: async () => {
-              return { table: { type: "list", options: ["users"] } };
+            sourceOptions: async ({ sourceOptions }) => {
+              const response = { table: { type: "list", options: ["users"] } };
+              if (sourceOptions.options)
+                response["receivedOptions"] = sourceOptions.options;
+              return response;
             },
             sourcePreview: async () => {
               return [
@@ -275,8 +278,13 @@ export namespace helper {
             exportProfile: async () => {
               return true;
             },
-            destinationOptions: async () => {
-              return { table: { type: "list", options: ["users_out"] } };
+            destinationOptions: async ({ destinationOptions }) => {
+              const response = {
+                table: { type: "list", options: ["users_out"] },
+              };
+              if (destinationOptions.options)
+                response["receivedOptions"] = destinationOptions.options;
+              return response;
             },
             destinationMappingOptions: async () => {
               return {

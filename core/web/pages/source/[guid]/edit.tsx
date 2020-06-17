@@ -10,16 +10,13 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import { SourceAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
-  const {
-    errorHandler,
-    successHandler,
-    sourceHandler,
-    connectionOptions,
-    query,
-  } = props;
+  const { errorHandler, successHandler, sourceHandler, query } = props;
   const { execApi } = useApi(props, errorHandler);
   const [preview, setPreview] = useState([]);
   const [source, setSource] = useState<SourceAPIData>(props.source);
+  const [connectionOptions, setConnectionOptions] = useState(
+    props.connectionOptions
+  );
   const { guid } = query;
 
   useEffect(() => {
@@ -76,6 +73,18 @@ export default function Page(props) {
       }
     }
   };
+
+  async function refreshOptions() {
+    const response = await execApi(
+      "get",
+      `/source/${guid}/connectionOptions`,
+      source,
+      null,
+      null,
+      false
+    );
+    if (response?.options) setConnectionOptions(response.options);
+  }
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
@@ -197,12 +206,12 @@ export default function Page(props) {
                                   key={`opt-${idx}-descriptions`}
                                   className="text-small"
                                 >
-                                  <em>
-                                    Descriptions:{" "}
-                                    {opt.descriptions
-                                      ? opt.descriptions.join(", ")
-                                      : "None"}
-                                  </em>
+                                  {opt.descriptions ? (
+                                    <em>
+                                      Descriptions:{" "}
+                                      {opt.descriptions.join(", ")}
+                                    </em>
+                                  ) : null}
                                 </small>,
                               ];
                             }}
@@ -252,6 +261,17 @@ export default function Page(props) {
                           <Form.Text className="text-muted">
                             {opt.description}
                           </Form.Text>
+                        </>
+                      );
+                    } else if (connectionOptions[opt.key]?.type === "pending") {
+                      return (
+                        <>
+                          <Form.Control
+                            size="sm"
+                            disabled
+                            type="text"
+                            value="pending another selection"
+                          ></Form.Control>
                         </>
                       );
                     } else {
@@ -345,7 +365,8 @@ Page.getInitialProps = async (ctx) => {
   const { source } = await execApi("get", `/source/${guid}`);
   const { options: connectionOptions } = await execApi(
     "get",
-    `/source/${guid}/connectionOptions`
+    `/source/${guid}/connectionOptions`,
+    { options: source.options }
   );
 
   return { source, connectionOptions };

@@ -12,16 +12,13 @@ import DestinationTabs from "./../../../components/tabs/destination";
 import { DestinationAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
-  const {
-    errorHandler,
-    successHandler,
-    destinationHandler,
-    query,
-    connectionOptions,
-  } = props;
+  const { errorHandler, successHandler, destinationHandler, query } = props;
   const { execApi } = useApi(props, errorHandler);
   const [destination, setDestination] = useState<DestinationAPIData>(
     props.destination
+  );
+  const [connectionOptions, setConnectionOptions] = useState(
+    props.connectionOptions
   );
   const { guid } = query;
 
@@ -50,6 +47,18 @@ export default function Page(props) {
     }
   };
 
+  async function refreshOptions() {
+    const response = await execApi(
+      "get",
+      `/destination/${guid}/connectionOptions`,
+      destination,
+      null,
+      null,
+      false
+    );
+    if (response?.options) setConnectionOptions(response.options);
+  }
+
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       const response = await execApi("delete", `/destination/${guid}`);
@@ -66,12 +75,14 @@ export default function Page(props) {
         ? event.target.checked
         : event.target.value;
     setDestination(_destination);
+    setTimeout(refreshOptions, 100);
   };
 
   const updateOption = async (optKey, optValue) => {
     const _destination = Object.assign({}, destination);
     _destination.options[optKey] = optValue;
     setDestination(_destination);
+    setTimeout(refreshOptions, 100);
   };
 
   useEffect(() => {
@@ -180,12 +191,12 @@ export default function Page(props) {
                                   key={`opt-${idx}-descriptions`}
                                   className="text-small"
                                 >
-                                  <em>
-                                    Descriptions:{" "}
-                                    {opt.descriptions
-                                      ? opt.descriptions.join(", ")
-                                      : "None"}
-                                  </em>
+                                  {opt.descriptions ? (
+                                    <em>
+                                      Descriptions:{" "}
+                                      {opt.descriptions.join(", ")}
+                                    </em>
+                                  ) : null}
                                 </small>,
                               ];
                             }}
@@ -235,6 +246,17 @@ export default function Page(props) {
                           <Form.Text className="text-muted">
                             {opt.description}
                           </Form.Text>
+                        </>
+                      );
+                    } else if (connectionOptions[opt.key]?.type === "pending") {
+                      return (
+                        <>
+                          <Form.Control
+                            size="sm"
+                            disabled
+                            type="text"
+                            value="pending another selection"
+                          ></Form.Control>
                         </>
                       );
                     } else {
@@ -291,7 +313,8 @@ Page.getInitialProps = async (ctx) => {
   const { destination } = await execApi("get", `/destination/${guid}`);
   const { options } = await execApi(
     "get",
-    `/destination/${guid}/connectionOptions`
+    `/destination/${guid}/connectionOptions`,
+    { options: destination.options }
   );
   return { destination, connectionOptions: options };
 };

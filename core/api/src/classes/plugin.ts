@@ -224,6 +224,7 @@ export interface SourceOptionsMethod {
     connection: any;
     app: App;
     appOptions: SimpleAppOptions;
+    sourceOptions: SimpleSourceOptions;
   }): Promise<SourceOptionsMethodResponse>;
 }
 
@@ -300,6 +301,7 @@ export interface DestinationOptionsMethod {
     connection: any;
     app: App;
     appOptions: SimpleAppOptions;
+    destinationOptions: SimpleDestinationOptions;
   }): Promise<DestinationOptionsMethodResponse>;
 }
 
