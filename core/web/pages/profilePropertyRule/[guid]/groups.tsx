@@ -26,12 +26,21 @@ export default function Page({ profilePropertyRule, groups, ops }) {
             return (
               <tr key={`group-${group.guid}`}>
                 <td>
-                  <Link
-                    href="/group/[guid]/edit"
-                    as={`/group/${group.guid}/edit`}
-                  >
-                    <a>{group.name}</a>
-                  </Link>
+                  {group.type === "calculated" ? (
+                    <Link
+                      href="/group/[guid]/rules"
+                      as={`/group/${group.guid}/rules`}
+                    >
+                      <a>{group.name}</a>
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/group/[guid]/edit"
+                      as={`/group/${group.guid}/edit`}
+                    >
+                      <a>{group.name}</a>
+                    </Link>
+                  )}
                 </td>
                 <td>{group.profilesCount}</td>
                 <td>
