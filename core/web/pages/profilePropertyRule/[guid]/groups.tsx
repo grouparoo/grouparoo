@@ -5,7 +5,6 @@ import LoadingTable from "../../../components/loadingTable";
 import ProfilePropertyRuleTabs from "../../../components/tabs/profilePropertyRule";
 
 export default function Page({ profilePropertyRule, groups, ops }) {
-  console.log(ops);
   return (
     <>
       <Head>
