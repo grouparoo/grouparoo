@@ -263,6 +263,17 @@ export default function Page(props) {
                           </Form.Text>
                         </>
                       );
+                    } else if (connectionOptions[opt.key]?.type === "pending") {
+                      return (
+                        <>
+                          <Form.Control
+                            size="sm"
+                            disabled
+                            type="text"
+                            value="pending another selection"
+                          ></Form.Control>
+                        </>
+                      );
                     } else {
                       return (
                         <>
