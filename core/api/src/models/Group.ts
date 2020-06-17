@@ -593,6 +593,34 @@ export class Group extends LoggedModel<Group> {
     return groupMembersCount;
   }
 
+  async removePreviousRunGroupMembers(run: Run, limit = 100) {
+    let groupMembersCount = 0;
+
+    const groupMembersToRemove = await GroupMember.findAll({
+      attributes: ["guid", "profileGuid"],
+      where: {
+        groupGuid: this.guid,
+        removedAt: { [Op.lt]: run.createdAt },
+      },
+      limit,
+    });
+
+    for (const i in groupMembersToRemove) {
+      const member = groupMembersToRemove[i];
+      member.removedAt = new Date();
+      await member.save();
+      const _import = await this._buildProfileImport(
+        member.profileGuid,
+        "run",
+        run.guid
+      );
+      await _import.save();
+      groupMembersCount++;
+    }
+
+    return groupMembersCount;
+  }
+
   async updateProfileMembership(profile: Profile) {
     const existingMembership = await GroupMember.findOne({
       where: {
