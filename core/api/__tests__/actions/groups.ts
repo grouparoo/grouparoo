@@ -238,6 +238,7 @@ describe("actions/groups", () => {
         expect(Object.keys(ops).sort()).toEqual([
           "_convenientRules",
           "_dictionary",
+          "_relativeMatchUnits",
           "boolean",
           "date",
           "email",
@@ -245,6 +246,8 @@ describe("actions/groups", () => {
           "integer",
           "string",
         ]);
+
+        expect(ops._relativeMatchUnits).toEqual(["days", "months", "years"]);
       });
 
       test("group#countComponentMembers", async () => {

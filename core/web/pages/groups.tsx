@@ -88,15 +88,21 @@ export default function Page(props) {
             return (
               <tr key={`group-${group.guid}`}>
                 <td>
-                  <Link
-                    href="/group/[guid]/edit"
-                    as={`/group/${group.guid}/edit`}
-                  >
-                    <a>
-                      <strong>{group.name}</strong>
-                      {/* <br /><span className='text-muted'>{group.guid}</span> */}
-                    </a>
-                  </Link>
+                  {group.type === "calculated" ? (
+                    <Link
+                      href="/group/[guid]/rules"
+                      as={`/group/${group.guid}/rules`}
+                    >
+                      <a>{group.name}</a>
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/group/[guid]/edit"
+                      as={`/group/${group.guid}/edit`}
+                    >
+                      <a>{group.name}</a>
+                    </Link>
+                  )}
                 </td>
                 <td>{group.type}</td>
                 <td>{group.profilesCount}</td>

@@ -42,13 +42,13 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     case "exact":
       break;
     case "average":
-      aggSelect = `AVG(${aggSelect})`;
+      aggSelect = `COALESCE(AVG(${aggSelect}), 0)`;
       break;
     case "count":
       aggSelect = `COUNT(${aggSelect})`;
       break;
     case "sum":
-      aggSelect = `SUM(${aggSelect})`;
+      aggSelect = `COALESCE(SUM(${aggSelect}), 0)`;
       break;
     case "min":
       aggSelect = `MIN(${aggSelect})`;

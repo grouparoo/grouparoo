@@ -158,7 +158,6 @@ export default function Page(props) {
                             id="typeahead"
                             labelKey="key"
                             onChange={(selected) => {
-                              console.log(selected);
                               updateOption(opt.key, selected[0]?.key);
                             }}
                             options={connectionOptions[opt.key]?.options.map(

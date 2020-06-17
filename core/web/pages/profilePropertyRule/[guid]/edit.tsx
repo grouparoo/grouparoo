@@ -8,6 +8,7 @@ import AppIcon from "../../../components/appIcon";
 import StateBadge from "../../../components/stateBadge";
 import ProfilePreview from "../../../components/profilePropertyRule/profilePreview";
 import { Typeahead } from "react-bootstrap-typeahead";
+import DatePicker from "../../../components/datePicker";
 
 import Head from "next/head";
 import ProfilePropertyRuleTabs from "../../../components/tabs/profilePropertyRule";
@@ -527,21 +528,38 @@ export default function Page(props) {
                           </td>
 
                           <td>
-                            <Form.Group
-                              controlId={`${localFilter.key}-match-${idx}`}
-                            >
-                              <Form.Control
-                                required
-                                type="text"
-                                value={localFilter.match.toString()}
-                                onChange={(e: any) => {
+                            {localFilter.key === "occurredAt" ? (
+                              <DatePicker
+                                selected={
+                                  localFilter.match &&
+                                  localFilter.match !== "null"
+                                    ? new Date(parseInt(localFilter.match))
+                                    : new Date()
+                                }
+                                onChange={(d: Date) => {
                                   const _localFilter = [...localFilters];
-                                  localFilter.match = e.target.value;
+                                  localFilter.match = d.getTime().toString();
                                   _localFilter[idx] = localFilter;
                                   setLocalFilters(_localFilter);
                                 }}
                               />
-                            </Form.Group>
+                            ) : (
+                              <Form.Group
+                                controlId={`${localFilter.key}-match-${idx}`}
+                              >
+                                <Form.Control
+                                  required
+                                  type="text"
+                                  value={localFilter.match.toString()}
+                                  onChange={(e: any) => {
+                                    const _localFilter = [...localFilters];
+                                    localFilter.match = e.target.value;
+                                    _localFilter[idx] = localFilter;
+                                    setLocalFilters(_localFilter);
+                                  }}
+                                />
+                              </Form.Group>
+                            )}
                           </td>
 
                           <td>

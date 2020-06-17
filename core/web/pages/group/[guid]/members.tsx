@@ -36,20 +36,6 @@ export default function Page(props) {
     }
   }
 
-  async function updateMembers() {
-    if (window.confirm("are you sure? this could take a while")) {
-      setLoading(true);
-      const response = await execApi(
-        "put",
-        `/group/${group.guid}/updateMembers`
-      );
-      setLoading(false);
-      if (response?.success) {
-        successHandler.set({ message: "UpdateMembers Run Enqueued" });
-      }
-    }
-  }
-
   return (
     <>
       <Head>
@@ -78,16 +64,6 @@ export default function Page(props) {
         }}
       >
         Recalculate Members
-      </Button>
-      &nbsp;
-      <Button
-        variant="outline-secondary"
-        size="sm"
-        onClick={() => {
-          updateMembers();
-        }}
-      >
-        Import and Export Group Members
       </Button>
       <br />
       <br />

@@ -29,6 +29,7 @@ export class RunGroup extends Task {
     //    > Create imports for new profiles
     // 3. After the loop is done, loop thought those GroupMembers who have not had their updatedAt touched.  (group#runRemoveGroupMembers)
     //    > Create imports for those profiles whose last update is older than the run's start time to remove them
+    // 4. Delete any group members still hanging around from a pervious run that this run may have canceled
 
     const force = params.force || false;
     const destinationGuid = params.destinationGuid;
@@ -61,9 +62,9 @@ export class RunGroup extends Task {
       );
     }
 
-    let importCount = 0;
+    let memberCount = 0;
     if (method === "runAddGroupMembers") {
-      importCount = await group.runAddGroupMembers(
+      memberCount = await group.runAddGroupMembers(
         run,
         limit,
         offset,
@@ -71,18 +72,20 @@ export class RunGroup extends Task {
         destinationGuid
       );
     } else if (method === "runRemoveGroupMembers") {
-      importCount = await group.runRemoveGroupMembers(
+      memberCount = await group.runRemoveGroupMembers(
         run,
         limit,
         offset,
         force,
         destinationGuid
       );
+    } else if (method === "removePreviousRunGroupMembers") {
+      memberCount = await group.removePreviousRunGroupMembers(run, limit);
     } else {
       throw new Error(`${method} is not now a known method`);
     }
 
-    if (importCount === 0 && method === "runAddGroupMembers") {
+    if (memberCount === 0 && method === "runAddGroupMembers") {
       await task.enqueueIn(config.tasks.timeout + 1, "group:run", {
         runGuid: run.guid,
         groupGuid: group.guid,
@@ -91,7 +94,16 @@ export class RunGroup extends Task {
         limit,
         force,
       });
-    } else if (importCount > 0) {
+    } else if (memberCount === 0 && method === "runRemoveGroupMembers") {
+      await task.enqueueIn(config.tasks.timeout + 1, "group:run", {
+        runGuid: run.guid,
+        groupGuid: group.guid,
+        method: "removePreviousRunGroupMembers",
+        offset: 0,
+        limit,
+        force,
+      });
+    } else if (memberCount > 0) {
       await task.enqueueIn(config.tasks.timeout + 1, "group:run", {
         runGuid: run.guid,
         groupGuid: group.guid,

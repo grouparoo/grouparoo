@@ -36,7 +36,6 @@ import {
   PROFILE_PROPERTY_RULE_OPS,
 } from "./ProfilePropertyRule";
 import { StateMachine } from "./../modules/stateMachine";
-import { runInThisContext } from "vm";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [...Array(GROUP_RULE_LIMIT).keys()].map((n) => n + 1).reverse();
@@ -351,7 +350,12 @@ export class Group extends LoggedModel<Group> {
       if (convenientRules[rules[i].op]) {
         rules[i] = Object.assign(rules[i], convenientRules[rules[i].op]);
       }
+
+      if (rules[i].relativeMatchNumber && rules[i].op.match(/^relative_/)) {
+        rules[i].op = rules[i].op.replace(/^relative_/, "");
+      }
     }
+
     return rules;
   }
 
@@ -361,9 +365,14 @@ export class Group extends LoggedModel<Group> {
       for (const k in convenientRules) {
         if (
           convenientRules[k].op === rules[i].op &&
-          convenientRules[k].match === rules[i].match
+          convenientRules[k].match === rules[i].match &&
+          !rules[i].relativeMatchNumber
         ) {
           rules[i] = Object.assign(rules[i], { op: k });
+        }
+
+        if (rules[i].relativeMatchNumber && !rules[i].op.match(/^relative_/)) {
+          rules[i].op = `relative_${rules[i].op}`;
         }
       }
     }
@@ -584,6 +593,34 @@ export class Group extends LoggedModel<Group> {
     return groupMembersCount;
   }
 
+  async removePreviousRunGroupMembers(run: Run, limit = 100) {
+    let groupMembersCount = 0;
+
+    const groupMembersToRemove = await GroupMember.findAll({
+      attributes: ["guid", "profileGuid"],
+      where: {
+        groupGuid: this.guid,
+        removedAt: { [Op.lte]: run.createdAt },
+      },
+      limit,
+    });
+
+    for (const i in groupMembersToRemove) {
+      const member = groupMembersToRemove[i];
+      member.removedAt = new Date();
+      await member.save();
+      const _import = await this._buildProfileImport(
+        member.profileGuid,
+        "run",
+        run.guid
+      );
+      await _import.save();
+      groupMembersCount++;
+    }
+
+    return groupMembersCount;
+  }
+
   async updateProfileMembership(profile: Profile) {
     const existingMembership = await GroupMember.findOne({
       where: {
@@ -629,7 +666,7 @@ export class Group extends LoggedModel<Group> {
           include,
         });
 
-        const belongs = matchedProfiles.length === 1 ? true : false;
+        const belongs = matchedProfiles.length === 1;
 
         if (belongs && !existingMembership) {
           await GroupMember.create({

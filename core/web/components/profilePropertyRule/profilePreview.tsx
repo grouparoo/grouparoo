@@ -26,6 +26,7 @@ export default function ProfilePreview(props) {
     };
   }, [
     profilePropertyRule.guid,
+    profilePropertyRule.type,
     JSON.stringify(profilePropertyRule.options),
     JSON.stringify(profilePropertyRule.filters),
   ]);
@@ -97,7 +98,13 @@ export default function ProfilePreview(props) {
   const otherProfilePropertyRules = {};
   for (const i in profile.properties) {
     if (profile.properties[i].guid === profilePropertyRule.guid) {
-      thisProfilePropertyRuleValue = profile.properties[i]?.value?.toString();
+      if (profilePropertyRule.type === "date") {
+        thisProfilePropertyRuleValue = profile.properties[i].value
+          ? new Date(profile.properties[i].value).toLocaleString()
+          : null;
+      } else {
+        thisProfilePropertyRuleValue = profile.properties[i]?.value?.toString();
+      }
     } else {
       otherProfilePropertyRules[i] = profile.properties[i];
     }
@@ -138,7 +145,9 @@ export default function ProfilePreview(props) {
           {Object.keys(otherProfilePropertyRules).map((k) => (
             <ListGroup.Item key={`profile-preview-row-${k}`} variant="light">
               <strong>{k}</strong>:{" "}
-              {otherProfilePropertyRules[k]?.value?.toString()}
+              {otherProfilePropertyRules[k]?.type === "date"
+                ? new Date(otherProfilePropertyRules[k]?.value).toLocaleString()
+                : otherProfilePropertyRules[k]?.value?.toString()}
             </ListGroup.Item>
           ))}
         </ListGroup>

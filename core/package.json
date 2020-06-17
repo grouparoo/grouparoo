@@ -68,6 +68,7 @@
     "react-bootstrap": "^1.0.0",
     "react-bootstrap-typeahead": "^4.2.2",
     "react-date-range": "^1.0.3",
+    "react-datepicker": "^3.0.0",
     "react-dom": "^16.13.1",
     "react-hook-form": "^5.5.2",
     "react-markdown": "^4.3.1",

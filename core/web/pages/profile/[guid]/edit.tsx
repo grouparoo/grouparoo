@@ -10,7 +10,7 @@ import Moment from "react-moment";
 import LoadingTable from "../../../components/loadingTable";
 import getProfileDisplayName from "../../../components/profile/getProfileDisplayName";
 
-import { ProfileAPIData } from "../../../utils/apiData";
+import { ProfileAPIData, GroupAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
   const {
@@ -19,12 +19,12 @@ export default function Page(props) {
     profilePropertyRules,
     profileHandler,
     allGroups,
-    groups,
     apps,
   } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState<ProfileAPIData>(props.profile);
+  const [groups, setGroups] = useState<[GroupAPIData]>(props.groups);
   const [properties, setProperties] = useState<ProfileAPIData["properties"]>(
     props.profile.properties
   );
@@ -44,7 +44,10 @@ export default function Page(props) {
     const response = await execApi("get", `/profile/${profile.guid}`);
     setLoading(false);
     if (response?.profile) {
+      profileHandler.set(response.profile);
       setProfile(response.profile);
+      setProperties(response.profile.properties);
+      setGroups(response.groups);
     }
   }
 
@@ -58,7 +61,7 @@ export default function Page(props) {
     setLoading(false);
     if (response?.profile) {
       successHandler.set({ message: "Import Complete!" });
-      profileHandler.set(response.profile);
+      load();
     }
   }
 
@@ -82,7 +85,6 @@ export default function Page(props) {
         message: `Profile Removed from Group ${group.name}`,
       });
       load();
-      profileHandler.set();
     }
   }
 
@@ -99,7 +101,6 @@ export default function Page(props) {
         message: `Profile added to Group!`,
       });
       load();
-      profileHandler.set();
     }
   }
 
@@ -113,8 +114,7 @@ export default function Page(props) {
     setLoading(false);
     if (response?.profile?.properties) {
       successHandler.set({ message: `property ${key} updated` });
-      setProperties(response.profile.properties);
-      profileHandler.set();
+      load();
     }
   }
 
@@ -329,7 +329,10 @@ export default function Page(props) {
                       ) : (
                         <span>
                           <strong>
-                            {renderProperty(properties[key].value)}
+                            {renderProperty(
+                              properties[key].value,
+                              properties[key].type
+                            )}
                           </strong>
                         </span>
                       )}
@@ -365,9 +368,11 @@ Page.getInitialProps = async (ctx) => {
   return { profile, profilePropertyRules, groups, allGroups, apps };
 };
 
-function renderProperty(value) {
+function renderProperty(value, type) {
   if (value === true || value === false) {
     return <input type="checkbox" value={value} checked={value} readOnly />;
+  } else if (type === "date") {
+    return value ? new Date(value).toLocaleString() : value;
   } else {
     return value;
   }

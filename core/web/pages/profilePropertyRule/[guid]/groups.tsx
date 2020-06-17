@@ -3,9 +3,20 @@ import Head from "next/head";
 import Link from "next/link";
 import LoadingTable from "../../../components/loadingTable";
 import ProfilePropertyRuleTabs from "../../../components/tabs/profilePropertyRule";
+import {
+  ProfilePropertyRuleAPIData,
+  GroupAPIData,
+} from "../../../utils/apiData";
 
-export default function Page({ profilePropertyRule, groups, ops }) {
-  console.log(ops);
+export default function Page({
+  profilePropertyRule,
+  groups,
+  ops,
+}: {
+  profilePropertyRule: ProfilePropertyRuleAPIData;
+  groups: GroupAPIData[];
+  ops: any;
+}) {
   return (
     <>
       <Head>
@@ -27,19 +38,32 @@ export default function Page({ profilePropertyRule, groups, ops }) {
             return (
               <tr key={`group-${group.guid}`}>
                 <td>
-                  <Link
-                    href="/group/[guid]/edit"
-                    as={`/group/${group.guid}/edit`}
-                  >
-                    <a>{group.name}</a>
-                  </Link>
+                  {group.type === "calculated" ? (
+                    <Link
+                      href="/group/[guid]/rules"
+                      as={`/group/${group.guid}/rules`}
+                    >
+                      <a>{group.name}</a>
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/group/[guid]/edit"
+                      as={`/group/${group.guid}/edit`}
+                    >
+                      <a>{group.name}</a>
+                    </Link>
+                  )}
                 </td>
                 <td>{group.profilesCount}</td>
                 <td>
                   {group.rules.map((rule, idx) => (
                     <span key={`rule-${idx}`}>
                       <strong>{rule.key}</strong> {ops._dictionary[rule.op]}:{" "}
-                      <code>{rule.match}</code>
+                      <code>
+                        {rule.match
+                          ? rule.match
+                          : `${rule.relativeMatchNumber} ${rule.relativeMatchUnit} ${rule.relativeMatchDirection}`}
+                      </code>
                       <br />
                     </span>
                   ))}
