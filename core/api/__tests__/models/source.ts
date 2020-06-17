@@ -329,6 +329,16 @@ describe("models/source", () => {
       });
     });
 
+    test("partial options will be passed to sourceConnectionOptions", async () => {
+      const connectionOptions = await source.sourceConnectionOptions({
+        options: true,
+      });
+      expect(connectionOptions).toEqual({
+        table: { options: ["users"], type: "list" },
+        receivedOptions: true,
+      });
+    });
+
     test("a plugin with a profiles method can have a schedule", async () => {
       const scheduleAvailable = await source.scheduleAvailable();
       expect(scheduleAvailable).toBe(true);

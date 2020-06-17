@@ -212,9 +212,19 @@ describe("models/destination", () => {
     });
 
     test("a destination can get options from a connection", async () => {
-      const options = await destination.destinationConnectionOptions();
-      expect(options).toEqual({
+      const connectionOptions = await destination.destinationConnectionOptions();
+      expect(connectionOptions).toEqual({
         table: { type: "list", options: ["users_out"] },
+      });
+    });
+
+    test("partial options will be passed to destinationConnectionOptions", async () => {
+      const connectionOptions = await destination.destinationConnectionOptions({
+        options: true,
+      });
+      expect(connectionOptions).toEqual({
+        table: { type: "list", options: ["users_out"] },
+        receivedOptions: true,
       });
     });
 

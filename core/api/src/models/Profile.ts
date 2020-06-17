@@ -213,7 +213,7 @@ export class Profile extends LoggedModel<Profile> {
             )
         ) {
           // it's ok, we are in the middle of creating or destroying a profile property
-          log(error, "alert");
+          log(error, "info");
         } else {
           throw error;
         }
