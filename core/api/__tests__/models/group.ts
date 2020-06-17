@@ -433,6 +433,14 @@ describe("models/group", () => {
       expect(foundTasks[1].args[0].method).toBe("runRemoveGroupMembers");
       await specHelper.runTask("group:run", foundTasks[1].args[0]); // second run to check subtractions
 
+      foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      expect(foundTasks.length).toBe(3);
+      expect(foundTasks[2].args[0].groupGuid).toBe(group.guid);
+      expect(foundTasks[2].args[0].method).toBe(
+        "removePreviousRunGroupMembers"
+      );
+      await specHelper.runTask("group:run", foundTasks[2].args[0]); // third run to check old group members
+
       await group.reload();
       expect(group.state).toBe("ready");
     });

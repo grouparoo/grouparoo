@@ -600,7 +600,7 @@ export class Group extends LoggedModel<Group> {
       attributes: ["guid", "profileGuid"],
       where: {
         groupGuid: this.guid,
-        removedAt: { [Op.lt]: run.createdAt },
+        removedAt: { [Op.lte]: run.createdAt },
       },
       limit,
     });
