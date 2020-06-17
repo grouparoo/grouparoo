@@ -638,7 +638,7 @@ export class Group extends LoggedModel<Group> {
           include,
         });
 
-        const belongs = matchedProfiles.length === 1 ? true : false;
+        const belongs = matchedProfiles.length === 1;
 
         if (belongs && !existingMembership) {
           await GroupMember.create({
