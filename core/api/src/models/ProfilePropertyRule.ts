@@ -78,10 +78,8 @@ const _date_ops = [
   "gte",
   "lt",
   "lte",
-  "relative_gt_days_ago",
-  "relative_lt_days_ago",
-  "relative_gt_days_ahead",
-  "relative_lt_days_ahead",
+  "relative_gt",
+  "relative_lt",
 ];
 
 export const PROFILE_PROPERTY_RULE_OPS = {
@@ -107,34 +105,13 @@ export const PROFILE_PROPERTY_RULE_OPS = {
     startsWith: "starts with",
     endsWith: "ends with",
     substring: "has the string",
-    relative_gt_days_ago: "is greater than days ago",
-    relative_lt_days_ago: "is less than days ago",
-    relative_gt_days_ahead: "is greater than days ahead",
-    relative_lt_days_ahead: "is less than days ahead",
+    relative_gt: "is relatively greater than",
+    relative_lt: "is relatively less than",
   },
+  _relativeMatchUnits: ["days", "months", "years"],
   _convenientRules: {
     exists: { op: "ne", match: "null" },
     notExists: { op: "eq", match: "null" },
-    relative_gt_days_ago: {
-      relativeMatchDirection: "subtract",
-      relativeMatchUnit: "days",
-      op: "gt",
-    },
-    relative_lt_days_ago: {
-      relativeMatchDirection: "subtract",
-      relativeMatchUnit: "days",
-      op: "lt",
-    },
-    relative_gt_days_ahead: {
-      relativeMatchDirection: "add",
-      relativeMatchUnit: "days",
-      op: "lt",
-    },
-    relative_lt_days_ahead: {
-      relativeMatchDirection: "add",
-      relativeMatchUnit: "days",
-      op: "gt",
-    },
   },
 };
 

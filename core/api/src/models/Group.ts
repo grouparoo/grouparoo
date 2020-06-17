@@ -350,7 +350,12 @@ export class Group extends LoggedModel<Group> {
       if (convenientRules[rules[i].op]) {
         rules[i] = Object.assign(rules[i], convenientRules[rules[i].op]);
       }
+
+      if (rules[i].relativeMatchNumber && rules[i].op.match(/^relative_/)) {
+        rules[i].op = rules[i].op.replace(/^relative_/, "");
+      }
     }
+
     return rules;
   }
 
@@ -359,17 +364,15 @@ export class Group extends LoggedModel<Group> {
     for (const i in rules) {
       for (const k in convenientRules) {
         if (
-          (convenientRules[k].op === rules[i].op &&
-            convenientRules[k].match === rules[i].match &&
-            !rules[i].relativeMatchNumber) ||
-          (convenientRules[k].op === rules[i].op &&
-            convenientRules[k].relativeMatchUnit ===
-              rules[i].relativeMatchUnit &&
-            convenientRules[k].relativeMatchDirection ===
-              rules[i].relativeMatchDirection &&
-            !rules[i].match)
+          convenientRules[k].op === rules[i].op &&
+          convenientRules[k].match === rules[i].match &&
+          !rules[i].relativeMatchNumber
         ) {
           rules[i] = Object.assign(rules[i], { op: k });
+        }
+
+        if (rules[i].relativeMatchNumber && !rules[i].op.match(/^relative_/)) {
+          rules[i].op = `relative_${rules[i].op}`;
         }
       }
     }
