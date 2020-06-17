@@ -154,16 +154,18 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: {group.name}</title>
       </Head>
-
       <GroupTabs group={group} />
-
       <h1>Group Rules for {group.name}</h1>
       <p>
+        Total Profiles in this group: &nbsp;
+        <Badge style={{ fontSize: 16 }} variant="info">
+          {countPotentialMembers}
+        </Badge>
+        <br />
         <StateBadge state={group.state} />
       </p>
       <p>Define the profile properties that you want to segment by:</p>
-
-      <Form>
+      <Form inline>
         <Table bordered size="sm">
           <thead>
             <tr>
@@ -173,9 +175,6 @@ export default function Page(props) {
               </td>
               <td>
                 <strong>Operation</strong>
-              </td>
-              <td>
-                <strong>Value</strong>
               </td>
               <td>
                 <strong># of Profiles</strong>
@@ -257,16 +256,83 @@ export default function Page(props) {
                                 value={op}
                                 key={`ruleKeyOpt-${rule.key}-${idx}-${op}`}
                               >
-                                {ops._dictionary[op]} ({op})
+                                {/* {ops._dictionary[op]} ({op}) */}
+                                {ops._dictionary[op]}
                               </option>
                             ))
                           : null}
                       </Form.Control>
-                    </Form.Group>
-                  </td>
+                      <span>&nbsp;</span>
 
-                  <td>
-                    {rule.op === "exists" || rule.op === "notExists" ? (
+                      {/* exists or not exists */}
+                      {["exists", "notExists"].includes(rule.op) ? <></> : null}
+
+                      {/* absolute dates */}
+                      {!["exists", "notExists"].includes(rule.op) &&
+                      type === "date" &&
+                      !rule.op.match(/relative_/) ? (
+                        <>
+                          <DatePicker
+                            selected={
+                              rule.match && rule.match !== "null"
+                                ? new Date(parseInt(rule.match))
+                                : new Date()
+                            }
+                            onChange={(d: Date) => {
+                              const _rules = [...localRules];
+                              rule.match = d.getTime();
+                              _rules[idx] = rule;
+                              setLocalRules(_rules);
+                            }}
+                          />
+                        </>
+                      ) : null}
+
+                      {/* relative dates */}
+                      {!["exists", "notExists"].includes(rule.op) &&
+                      type === "date" &&
+                      rule.op.match(/relative_/) ? (
+                        <></>
+                      ) : null}
+
+                      {/* normal matchers */}
+                      {!["exists", "notExists"].includes(rule.op) &&
+                      type !== "date" ? (
+                        <>
+                          <AsyncTypeahead
+                            key={`typeahead-${rule.key}`}
+                            id={`typeahead-${rule.key}`}
+                            className="form-inline"
+                            style={{ width: 250 }}
+                            minLength={0}
+                            labelKey="key"
+                            isLoading={loading}
+                            allowNew={true}
+                            onChange={(selected) => {
+                              if (!selected[0]) {
+                                return;
+                              }
+
+                              const _rules = [...localRules];
+                              rule.match = selected[0].key
+                                ? selected[0].key // when a new custom option is set
+                                : selected[0]; // when a list option is chosen
+                              _rules[idx] = rule;
+                              setLocalRules(_rules);
+                            }}
+                            options={autocompleteResults[rule.key] || []}
+                            onSearch={(_match) => {
+                              autocompleteProfilePropertySearch(rule, _match);
+                            }}
+                            placeholder={`match (% is wildcard)`}
+                            defaultSelected={
+                              rule.match ? [rule.match.toString()] : undefined
+                            }
+                          />
+                        </>
+                      ) : null}
+                    </Form.Group>
+                    {/* {rule.op === "exists" || rule.op === "notExists" ? (
                       "N/A"
                     ) : typeaheadTypes.includes(type) ? (
                       <AsyncTypeahead
@@ -335,7 +401,7 @@ export default function Page(props) {
                           }}
                         />
                       </Form.Group>
-                    )}
+                    )} */}
                   </td>
 
                   <td>
@@ -358,44 +424,38 @@ export default function Page(props) {
             })}
           </tbody>
         </Table>
-        {localRules.length < group.rules.length || rowChanges ? (
-          <p>
-            <Badge variant="warning">Unsaved Rule Changes</Badge>
-          </p>
-        ) : null}
-        <Button size="sm" variant="outline-primary" onClick={addRule}>
-          Add Rule
-        </Button>
-        &nbsp;
-        <Button
-          disabled={loading}
-          variant="outline-dark"
-          size="sm"
-          onClick={async () => {
-            await getCounts(false);
-          }}
-        >
-          Count Potential Group Members
-        </Button>
-        <br />
-        <br />
-        <p>
-          Total Profiles in this group: &nbsp;
-          <Badge style={{ fontSize: 16 }} variant="info">
-            {countPotentialMembers}
-          </Badge>{" "}
-        </p>
-        <Button
-          active={!loading}
-          variant="primary"
-          onClick={async () => {
-            await updateRules();
-            await getCounts();
-          }}
-        >
-          Save Rules
-        </Button>
       </Form>
+      {localRules.length < group.rules.length || rowChanges ? (
+        <p>
+          <Badge variant="warning">Unsaved Rule Changes</Badge>
+        </p>
+      ) : null}
+      <Button size="sm" variant="outline-primary" onClick={addRule}>
+        Add Rule
+      </Button>
+      &nbsp;
+      <Button
+        disabled={loading}
+        variant="outline-dark"
+        size="sm"
+        onClick={async () => {
+          await getCounts(false);
+        }}
+      >
+        Count Potential Group Members
+      </Button>
+      <br />
+      <br />
+      <Button
+        active={!loading}
+        variant="primary"
+        onClick={async () => {
+          await updateRules();
+          await getCounts();
+        }}
+      >
+        Save Rules
+      </Button>
     </>
   );
 }
