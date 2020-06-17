@@ -374,7 +374,7 @@ function renderProperty(value, type) {
   if (value === true || value === false) {
     return <input type="checkbox" value={value} checked={value} readOnly />;
   } else if (type === "date") {
-    return new Date(value).toLocaleString();
+    return value ? new Date(value).toLocaleString() : value;
   } else {
     return value;
   }
