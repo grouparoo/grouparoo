@@ -509,6 +509,7 @@ export class Group extends LoggedModel<Group> {
         rules,
         this.matchType
       );
+
       profiles = await ProfileMultipleAssociationShim.findAll({
         attributes: ["guid"],
         where,
@@ -540,10 +541,12 @@ export class Group extends LoggedModel<Group> {
         await run.increment(["importsCreated"], { transaction });
         await _import.save({ transaction });
         await transaction.commit();
-      } else {
-        groupMember.set("updatedAt", new Date());
+      }
+
+      if (groupMember) {
         groupMember.removedAt = null;
-        await groupMember.changed("updatedAt", true);
+        groupMember.set("updatedAt", new Date());
+        groupMember.changed("updatedAt", true);
         await groupMember.save();
       }
 
