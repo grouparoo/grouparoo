@@ -109,8 +109,6 @@ describe("tasks/group:destroy", () => {
 
       foundTasks = await specHelper.findEnqueuedTasks("group:destroy");
       expect(foundTasks.length).toBe(0);
-      foundTasks = await specHelper.findEnqueuedTasks("run:determineState"); // run state
-      expect(foundTasks.length).toBe(1);
     });
 
     it("will remove all members in a calculated group and then delete the group", async () => {
@@ -166,8 +164,6 @@ describe("tasks/group:destroy", () => {
 
       foundTasks = await specHelper.findEnqueuedTasks("group:destroy");
       expect(foundTasks.length).toBe(0);
-      foundTasks = await specHelper.findEnqueuedTasks("run:determineState"); // run state
-      expect(foundTasks.length).toBe(1);
     });
   });
 });
