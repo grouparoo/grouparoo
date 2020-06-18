@@ -32,17 +32,15 @@ export class GroupDestroy extends Task {
     let run: Run;
     if (params.runGuid) {
       run = await Run.findByGuid(params.runGuid);
+      if (run.state === "stopped") return;
     } else {
+      await group.stopPreviousRuns();
       run = await Run.create({
         creatorGuid: group.guid,
         creatorType: "group",
         state: "running",
       });
       await group.update({ state: "deleted" });
-
-      if (group.type === "calculated") {
-        await group.setRules([]);
-      }
 
       log(
         `[ run ] starting run ${run.guid} for group ${group.guid}, ${group.name}`,
@@ -51,9 +49,13 @@ export class GroupDestroy extends Task {
     }
 
     const importsCounts = await group.runRemoveGroupMembers(run, limit, offset);
+    const previousRunMembers = await group.removePreviousRunGroupMembers(
+      run,
+      limit
+    );
     const remainingMembers = await group.$count("groupMembers");
 
-    if (importsCounts > 0 || remainingMembers > 0) {
+    if (importsCounts > 0 || previousRunMembers > 0 || remainingMembers > 0) {
       await task.enqueueIn(config.tasks.timeout + 1, "group:destroy", {
         runGuid: run.guid,
         groupGuid: group.guid,
@@ -62,9 +64,11 @@ export class GroupDestroy extends Task {
       });
     } else {
       await group.destroy();
-      await task.enqueueIn(config.tasks.timeout + 1, "run:determineState", {
-        runGuid: run.guid,
-      });
+
+      // runs for this group will be deleted, so we don't need to check the state
+      // await task.enqueueIn(config.tasks.timeout + 1, "run:determineState", {
+      //   runGuid: run.guid,
+      // });
     }
   }
 }
