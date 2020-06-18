@@ -188,6 +188,9 @@ jobs:
           # SELENIUM_TEST_HOST: $HOST_IP_ADDRESS
           SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
           maxMemoryAlloted: 1000
+      # - name: Setup tmate session
+      #   if: ${{ failure() }}
+      #   uses: mxschmitt/action-tmate@v2
 
   test-plugins:
     runs-on: ubuntu-latest
@@ -239,16 +242,16 @@ jobs:
       - run: sudo apt-get update
       - run: sudo apt install -y postgresql-client
       - run: cd core/api && ./bin/create_test_databases
-      - run: ./node_modules/.bin/lerna exec jest --stream --concurrency 1 --ignore "@grouparoo/core" --ignore "*/app-*" -- --ci --passWithNoTests --maxWorkers 2
+      - run: ./node_modules/.bin/lerna exec jest --stream --concurrency 1 --ignore "@grouparoo/core" --ignore "*/app-*" -- --ci --passWithNoTests
         env:
           TEST_LOG_LEVEL: info
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
           REDIS_URL: redis://localhost:6379/0
           MYSQL_HOST: mysql
           maxMemoryAlloted: 1000
-      - name: Setup tmate session
-        if: ${{ failure() }}
-        uses: mxschmitt/action-tmate@v2
+      # - name: Setup tmate session
+      #   if: ${{ failure() }}
+      #   uses: mxschmitt/action-tmate@v2
 
   complete:
     runs-on: ubuntu-latest
