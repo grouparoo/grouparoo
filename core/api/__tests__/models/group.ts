@@ -184,16 +184,45 @@ describe("models/group", () => {
         await group.destroy(); // does not throw
       });
 
-      test("adding a group when a destination is tracking all groups will create a destinationGroup", async () => {
+      test("adding a manual group when a destination is tracking all groups will create not destinationGroup until the group is ready", async () => {
         const destination = await helper.factories.destination();
         await destination.update({ trackAllGroups: true });
 
         const group = await Group.create({
           name: "tracked group",
           type: "manual",
+          state: "draft",
         });
 
-        const destinationGroupCount = await group.$count("destinationGroups");
+        let destinationGroupCount = await group.$count("destinationGroups");
+        expect(destinationGroupCount).toBe(0);
+
+        await group.update({ state: "ready" });
+
+        destinationGroupCount = await group.$count("destinationGroups");
+        expect(destinationGroupCount).toBe(1);
+
+        await group.destroy();
+        await destination.update({ trackAllGroups: false });
+        await destination.destroy();
+      });
+
+      test("adding a calculated group when a destination is tracking all groups will create not destinationGroup until the group is ready", async () => {
+        const destination = await helper.factories.destination();
+        await destination.update({ trackAllGroups: true });
+
+        const group = await Group.create({
+          name: "tracked group",
+          type: "calculated",
+          state: "draft",
+        });
+
+        let destinationGroupCount = await group.$count("destinationGroups");
+        expect(destinationGroupCount).toBe(0);
+
+        await group.update({ state: "ready" });
+
+        destinationGroupCount = await group.$count("destinationGroups");
         expect(destinationGroupCount).toBe(1);
 
         await group.destroy();

@@ -8,7 +8,7 @@ import {
   Default,
   BelongsToMany,
   BeforeSave,
-  AfterCreate,
+  AfterSave,
   BeforeDestroy,
   AfterDestroy,
   Is,
@@ -152,8 +152,10 @@ export class Group extends LoggedModel<Group> {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
-  @AfterCreate
+  @AfterSave
   static async linkToDestinationsTrackingAllGroups(instance: Group) {
+    if (["draft", "deleted"].includes(instance.state)) return;
+
     const destinations = await Destination.findAll({
       where: { trackAllGroups: true },
     });
