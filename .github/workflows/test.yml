@@ -246,6 +246,9 @@ jobs:
           REDIS_URL: redis://localhost:6379/0
           MYSQL_HOST: mysql
           maxMemoryAlloted: 1000
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v2
 
   complete:
     runs-on: ubuntu-latest
