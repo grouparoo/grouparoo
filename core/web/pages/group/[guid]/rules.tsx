@@ -392,7 +392,7 @@ export default function Page(props) {
                               setLocalRules(_rules);
                             }}
                             options={
-                              autocompleteResults[rule.key].map((v) =>
+                              autocompleteResults[rule.key]?.map((v) =>
                                 v.toString()
                               ) || []
                             }
