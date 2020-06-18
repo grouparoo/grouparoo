@@ -391,7 +391,11 @@ export default function Page(props) {
                               _rules[idx] = rule;
                               setLocalRules(_rules);
                             }}
-                            options={autocompleteResults[rule.key] || []}
+                            options={
+                              autocompleteResults[rule.key]?.map((v) =>
+                                v.toString()
+                              ) || []
+                            }
                             onSearch={(_match) => {
                               autocompleteProfilePropertySearch(rule, _match);
                             }}
