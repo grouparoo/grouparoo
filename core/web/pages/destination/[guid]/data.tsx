@@ -207,12 +207,22 @@ export default function Page(props) {
     setUnlockedGroups(_unlockedGroups);
   }
 
-  const groupsAvailalbeForDestinationGroupMemberships = groups.filter(
-    (group) =>
-      !destination.destinationGroupMemberships
-        .map((dgm) => dgm.groupGuid)
-        .includes(group.guid)
-  );
+  const groupsAvailalbeForDestinationGroupMemberships = groups
+    .filter(
+      (group) =>
+        !destination.destinationGroupMemberships
+          .map((dgm) => dgm.groupGuid)
+          .includes(group.guid)
+    )
+    .sort((a, b) => {
+      if (a.name > b.name) return 1;
+      if (a.name < b.name) return -1;
+      return 0;
+    })
+    .sort((a, b) => {
+      if (a.guid === trackedGroupGuid) return -1;
+      return 1;
+    });
 
   return (
     <>
