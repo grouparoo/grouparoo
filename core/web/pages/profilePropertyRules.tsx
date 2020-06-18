@@ -156,7 +156,9 @@ export default function Page(props) {
                     {examples[rule.guid]
                       ? examples[rule.guid].slice(0, 3).map((ex, idx) => (
                           <Fragment key={`${rule.guid}-${idx}`}>
-                            {ex}
+                            {rule.type === "date"
+                              ? new Date(parseInt(ex)).toLocaleString()
+                              : ex}
                             <br />
                           </Fragment>
                         ))
