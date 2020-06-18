@@ -33,16 +33,13 @@ export class GroupDestroy extends Task {
     if (params.runGuid) {
       run = await Run.findByGuid(params.runGuid);
     } else {
+      await group.stopPreviousRuns();
       run = await Run.create({
         creatorGuid: group.guid,
         creatorType: "group",
         state: "running",
       });
       await group.update({ state: "deleted" });
-
-      if (group.type === "calculated") {
-        await group.setRules([]);
-      }
 
       log(
         `[ run ] starting run ${run.guid} for group ${group.guid}, ${group.name}`,

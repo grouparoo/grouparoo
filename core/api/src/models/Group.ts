@@ -247,6 +247,10 @@ export class Group extends LoggedModel<Group> {
   }
 
   async getRules() {
+    // We won't be deleting the model for GroupRule until the group is really deleted (to validate other models)
+    // But we want to be sure that all membership matching will fail
+    if (this.state === "deleted") return [];
+
     const rulesWithKey: GroupRuleWithKey[] = [];
     const rules = await this.$get("groupRules", {
       order: [["position", "asc"]],
