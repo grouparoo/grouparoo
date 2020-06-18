@@ -242,7 +242,7 @@ jobs:
       - run: sudo apt-get update
       - run: sudo apt install -y postgresql-client
       - run: cd core/api && ./bin/create_test_databases
-      - run: ./node_modules/.bin/lerna exec jest --stream --concurrency 1 --ignore "@grouparoo/core" --ignore "*/app-*" -- --ci --passWithNoTests
+      - run: ./node_modules/.bin/lerna exec jest --stream --concurrency 1 --ignore "@grouparoo/core" --ignore "*/app-*" -- --ci --passWithNoTests --runInBand
         env:
           TEST_LOG_LEVEL: info
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
