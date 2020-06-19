@@ -31,7 +31,31 @@ export const profilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOpti
         { key: "sum", description: "add it up" },
         { key: "min", description: "find the smallest value" },
         { key: "max", description: "find the largest value" },
+        {
+          key: "most recent value",
+          description: "use the value of the newest record",
+        },
+        {
+          key: "least recent value",
+          description: "use the value of the oldest record",
+        },
       ];
+    },
+  },
+  {
+    key: "sort column",
+    required: false,
+    description: "which column to sort by for most and least recent properties",
+    type: "typeahead",
+    options: async ({ connection, sourceOptions }) => {
+      const rows = await getSampleRows(connection, sourceOptions.table);
+      const columns = Object.keys(rows[0]);
+      return columns.map((col) => {
+        return {
+          key: col,
+          examples: rows.map((row) => row[col]),
+        };
+      });
     },
   },
 ];
