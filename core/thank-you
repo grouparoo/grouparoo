@@ -2,7 +2,7 @@
 
 set -e
 
-BLUE='\033[0;34m'
+BLUE='\033[0;36m'
 UNDERLINE='\033[0;4m'
 RESET='\033[0m'
 
