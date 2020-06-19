@@ -17,6 +17,7 @@ import { ProfilePropertyRuleAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
   const {
+    previousPath,
     errorHandler,
     successHandler,
     profilePropertyRulesHandler,
@@ -65,7 +66,7 @@ export default function Page(props) {
           response.profilePropertyRule.state === "ready" &&
           profilePropertyRule.state === "draft"
         ) {
-          Router.back();
+          Router.push(previousPath);
         } else {
           successHandler.set({ message: "Profile Property Rule Updated" });
         }
@@ -83,7 +84,7 @@ export default function Page(props) {
       const response = await execApi("delete", `/profilePropertyRule/${guid}`);
       setLoading(false);
       if (response) {
-        Router.back();
+        Router.push(previousPath);
       }
     }
   }

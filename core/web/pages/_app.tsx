@@ -1,6 +1,6 @@
 import App from "next/app";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { useApi } from "../hooks/useApi";
 
 import "../scss/grouparoo.scss";
@@ -45,6 +45,7 @@ require("../components/icons");
 export default function GrouparooWebApp(props) {
   const { Component } = props;
   const [routerReady, setRouterReady] = useState(false);
+  const [previousPath, setPreviousPath] = useState("");
   const router = useRouter();
   const { query, pathname } = router;
 
@@ -52,12 +53,26 @@ export default function GrouparooWebApp(props) {
   // See https://github.com/zeit/next.js/issues/8259
   useEffect(() => {
     setRouterReady(true);
+    if (previousPath === "")
+      setPreviousPath(
+        window?.document?.referrer.replace(window?.location?.origin, "")
+      );
+
+    Router.events.on("routeChangeStart", (newRoute) => {
+      if (window?.location?.pathname !== newRoute)
+        setPreviousPath(window?.location?.pathname);
+    });
+
+    return () => {
+      Router.events.off("routeChangeStart", setPreviousPath);
+    };
   }, [pathname, query]);
 
   const combinedProps = Object.assign({}, props.pageProps || {}, {
     currentTeamMember: props.currentTeamMember,
     navigation: props.navigation,
     navigationMode: props.navigationMode,
+    previousPath,
     successHandler,
     errorHandler,
     uploadHandler,
