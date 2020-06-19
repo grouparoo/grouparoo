@@ -2,6 +2,7 @@ import { Action } from "actionhero";
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
+import { GrouparooSubscription } from "../modules/grouparooSubscription";
 
 export class TeamInitialize extends Action {
   constructor() {
@@ -14,6 +15,7 @@ export class TeamInitialize extends Action {
       lastName: { required: true },
       password: { required: true },
       email: { required: true },
+      subscribe: { required: false, default: true },
     };
   }
 
@@ -45,6 +47,10 @@ export class TeamInitialize extends Action {
 
     response.team = await team.apiData();
     response.teamMember = await teamMember.apiData();
+
+    if (params.subscribe) {
+      await GrouparooSubscription(teamMember);
+    }
   }
 }
 

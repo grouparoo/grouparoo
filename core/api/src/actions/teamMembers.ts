@@ -1,6 +1,7 @@
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
+import { GrouparooSubscription } from "../modules/grouparooSubscription";
 
 export class TeamMembersList extends AuthenticatedAction {
   constructor() {
@@ -41,6 +42,7 @@ export class TeamMemberCreate extends AuthenticatedAction {
       lastName: { required: true },
       password: { required: true },
       email: { required: true },
+      subscribe: { required: false, default: true },
     };
   }
 
@@ -52,9 +54,14 @@ export class TeamMemberCreate extends AuthenticatedAction {
       email: params.email,
       teamGuid: team.guid,
     });
+
     await teamMember.save();
     await teamMember.updatePassword(params.password);
     response.teamMember = await teamMember.apiData();
+
+    if (params.subscribe) {
+      await GrouparooSubscription(teamMember);
+    }
   }
 }
 

@@ -111,6 +111,18 @@ export default function Page(props) {
           </Form.Control.Feedback>
         </Form.Group>
 
+        <Form.Group>
+          <Form.Check
+            type="checkbox"
+            name="subscribe"
+            label={`Subscribe to Grouparoo Newsletter`}
+            defaultChecked
+            ref={register}
+          />
+        </Form.Group>
+
+        <br />
+
         <Button variant="primary" type="submit" active={!loading}>
           Submit
         </Button>
