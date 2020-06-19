@@ -23,7 +23,7 @@
   "main": "api/dist/index",
   "types": "api/dist/index",
   "scripts": {
-    "prepare": "npm run build-api && npm run build-web",
+    "prepare": "npm run build-api && npm run build-web && npm run thank-you",
     "build-api": "cd api && rm -rf dist && tsc --declaration",
     "build-web": "cd web && NEXT_TELEMETRY_DISABLED=true next build",
     "start": "./api/bin/start",
@@ -36,7 +36,8 @@
     "lint-api": "cd api && prettier --check src __tests__",
     "lint-web": "cd web && prettier --check pages components classes client utils hooks __tests__",
     "docs": "cd api && typedoc --out docs --theme default --mode file --exclude \"src/actions/**/*.ts\" --exclude \"src/tasks/**/*.ts\"",
-    "import": "./api/bin/import"
+    "import": "./api/bin/import",
+    "thank-you": "./thank-you"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
