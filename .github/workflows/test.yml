@@ -247,7 +247,6 @@ jobs:
           TEST_LOG_LEVEL: info
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
           REDIS_URL: redis://localhost:6379/0
-          MYSQL_HOST: mysql
           maxMemoryAlloted: 1000
       # - name: Setup tmate session
       #   if: ${{ failure() }}
