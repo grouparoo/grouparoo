@@ -17,8 +17,9 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   const table = sourceOptions.table;
   const tableCol = Object.keys(sourceMapping)[0];
   const profilePropertyMatch = Object.values(sourceMapping)[0];
-  const aggregationMethod = profilePropertyRuleOptions["aggregation method"];
   const column = profilePropertyRuleOptions["column"];
+  const aggregationMethod = profilePropertyRuleOptions["aggregation method"];
+  const sortColumn = profilePropertyRuleOptions["sort column"];
 
   if (!aggregationMethod || !column) {
     return;
@@ -30,7 +31,10 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   }
 
   let aggSelect = `"${column}"`;
+  let orderBy = "";
   switch (aggregationMethod) {
+    case "exact":
+      break;
     case "average":
       aggSelect = `COALESCE(AVG(${aggSelect}), 0)`;
       break;
@@ -46,11 +50,20 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     case "max":
       aggSelect = `MAX(${aggSelect})`;
       break;
+    case "most recent value":
+      if (!sortColumn) throw new Error("Sort Column is needed");
+      orderBy = `"${sortColumn}" DESC`;
+      break;
+    case "least recent value":
+      if (!sortColumn) throw new Error("Sort Column is needed");
+      orderBy = `"${sortColumn}" ASC`;
+      break;
+    default:
+      throw new Error(`${aggregationMethod} is not a known aggregation method`);
   }
 
-  const baseQuery = `SELECT ${aggSelect} as __result FROM "${table}" WHERE "${tableCol}" = '{{ ${profilePropertyMatch} }}'`;
+  let query = `SELECT ${aggSelect} as __result FROM "${table}" WHERE "${tableCol}" = '{{ ${profilePropertyMatch} }}'`;
 
-  let filteredQuery = baseQuery;
   for (const i in profilePropertyRuleFilters) {
     let { key, op, match } = profilePropertyRuleFilters[i];
 
@@ -82,15 +95,20 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
         key = `"${key}"`;
         sqlOp = `<`;
         break;
+      default:
+        throw new Error(`${op} is not a known sql operation`);
     }
 
-    filteredQuery += ` AND ${key} ${sqlOp} '${match}'`;
+    query += ` AND ${key} ${sqlOp} '${match}'`;
   }
+
+  if (orderBy.length > 0) query += ` ORDER BY ${orderBy}`;
+  query += ` LIMIT 1`;
 
   let parameterizedQuery = "";
   try {
     parameterizedQuery = await profilePropertyRule.parameterizedQueryFromProfile(
-      filteredQuery,
+      query,
       profile
     );
   } catch (error) {

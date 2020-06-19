@@ -283,9 +283,10 @@ describe("integration/runs/mysql", () => {
     expect(profilePropertyRule.guid).toBeTruthy();
 
     // check the pluginOptions
-    expect(pluginOptions.length).toBe(2);
+    expect(pluginOptions.length).toBe(3);
     expect(pluginOptions[0].key).toBe("column");
     expect(pluginOptions[1].key).toBe("aggregation method");
+    expect(pluginOptions[2].key).toBe("sort column");
     expect(pluginOptions[0].required).toBe(true);
     expect(pluginOptions[0].options[0].key).toBe("id");
     expect(pluginOptions[1].options[0].key).toBe("exact");

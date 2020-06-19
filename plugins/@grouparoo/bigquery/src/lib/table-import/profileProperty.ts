@@ -17,8 +17,9 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   const table = sourceOptions.table;
   const tableCol = Object.keys(sourceMapping)[0];
   const profilePropertyMatch = Object.values(sourceMapping)[0];
-  const aggregationMethod = profilePropertyRuleOptions["aggregation method"];
   const column = profilePropertyRuleOptions["column"];
+  const aggregationMethod = profilePropertyRuleOptions["aggregation method"];
+  const sortColumn = profilePropertyRuleOptions["sort column"];
 
   if (!aggregationMethod || !column) {
     return;
@@ -38,6 +39,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   const columnValue = profileData[profilePropertyMatch].value;
 
   let aggSelect = `\`${column}\``;
+  let orderBy = "";
   switch (aggregationMethod) {
     case "exact":
       break;
@@ -56,8 +58,16 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     case "max":
       aggSelect = `MAX(${aggSelect})`;
       break;
+    case "most recent value":
+      if (!sortColumn) throw new Error("Sort Column is needed");
+      orderBy = `\`${sortColumn}\` DESC`;
+      break;
+    case "least recent value":
+      if (!sortColumn) throw new Error("Sort Column is needed");
+      orderBy = `\`${sortColumn}\` ASC`;
+      break;
     default:
-      throw `unknown aggregation method: ${aggregationMethod}`;
+      throw new Error(`${aggregationMethod} is not a known aggregation method`);
   }
 
   const params = [];
@@ -101,7 +111,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
         sqlOp = `<`;
         break;
       default:
-        throw `unknown filter: ${op}`;
+        throw new Error(`${op} is not a known sql operation`);
     }
 
     const filterClause = makeWhereClause(
@@ -115,6 +125,9 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     );
     query += ` AND ${filterClause}`;
   }
+
+  if (orderBy.length > 0) query += ` ORDER BY ${orderBy}`;
+  query += ` LIMIT 1`;
 
   validateQuery(query);
 
