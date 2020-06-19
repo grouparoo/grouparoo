@@ -10,8 +10,8 @@ const packageJSON = require(path.join(
   "package.json"
 ));
 
-const url = "https://www.grouparoo.com/api/v1/subscribers";
-const route = "/api/v1/session";
+const host = "https://staging-www.grouparoo.com";
+const route = "/api/v1/subscribers";
 const method = "POST";
 const source = `${packageJSON.name}`;
 const medium = "app";
@@ -23,7 +23,7 @@ const campaign = `v${packageJSON.version}`;
  */
 export async function GrouparooSubscription(teamMember: TeamMember) {
   try {
-    await fetch(`${url}${route}`, {
+    const response = await fetch(`${host}${route}`, {
       method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -34,8 +34,10 @@ export async function GrouparooSubscription(teamMember: TeamMember) {
         medium,
         campaign,
       }),
-    });
-    log(`Registered ${teamMember.email} from Grouparoo subscription`);
+    }).then((r) => r.json());
+
+    if (response.error) throw response.error;
+    log(`Registered ${teamMember.email} for Grouparoo subscription`);
   } catch (error) {
     log(`Error subscribing to Grouparoo Subscription: ${error}`, "error");
   }
