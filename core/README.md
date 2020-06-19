@@ -57,6 +57,8 @@ Looking for help or to connect with other Grouparoo users? **[👩‍💻👨‍
 
 # Running a Grouparoo Application
 
+> This is an abbreviated version of the Grouparoo Deployment Getting Started guide. [The full version can be found here](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/getting-started.md).
+
 1. Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/) project, and we use NPM to manage our dependencies. Grouparoo required the **Postgres** and **Redis** databases. On OSX, these can be installed via [Homebrew](https://brew.sh/).
 
 ```json
@@ -92,7 +94,7 @@ Looking for help or to connect with other Grouparoo users? **[👩‍💻👨‍
 
 This makes an "app" for Grouparoo to run. A full example can be found [here](https://github.com/grouparoo/app-example).
 
-2. There are some environment variables needed by Grouparoo that need to be set by your host/docker image. In development, we can also lod these variables from a `.env` file that lives alongside your `package.json`.  Create a copy of our [example](https://github.com/grouparoo/app-example/blob/master/.env.example) `.env` file to manage your environment variables locally. You can modify the options as needed. Make this as a peer to your `package.json` file. Note: the `.env` file only works when running in `NODE_ENV=development`. On your server, you should set up these same environment variables. At minimum, you will need to set the following variables:
+2. There are some environment variables needed by Grouparoo that need to be set by your host/docker image. In development, we can also lod these variables from a `.env` file that lives alongside your `package.json`. Create a copy of our [example](https://github.com/grouparoo/app-example/blob/master/.env.example) `.env` file to manage your environment variables locally. You can modify the options as needed. Make this as a peer to your `package.json` file. Note: the `.env` file only works when running in `NODE_ENV=development`. On your server, you should set up these same environment variables. At minimum, you will need to set the following variables:
 
 ```shell
 PORT=3000
@@ -102,12 +104,11 @@ SCHEDULER=true
 WORKERS=1
 REDIS_URL="redis://localhost:6379/0"
 DATABASE_URL="postgresql://localhost:5432/grouparoo_development"
-SERVER_TOKEN=a_random_string
+SERVER_TOKEN="a-random-string"
 ```
 
 3. Run `npm install` to install dependencies. This will also run `npm prepare` which will compile the typescript application and build the web page components.
-4. Run `npm start` to start the server and visit `http://localhost:3000` to get started. Follow the on-screen instructions to create your account and first team.
 
-A note on `SERVER_TOKEN` - this should be a random string that will be used to identify Grouparoo servers to each-other in the same cluster. It will not be used to authenticate users, but rather authorize servers to make requests against each other. SERVER_TOKEN is not a replacement for setting unique, per-application database credentials and isolated runtime environments.
+4. Run `npm start` to start the server and visit `http://localhost:3000` to get started. Follow the on-screen instructions to create your account and first team.
 
 🦘

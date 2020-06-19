@@ -2,12 +2,50 @@
 
 ## Getting Started
 
-This guide will help you run the Grouparoo application on your local machine. At the end of this guide there are links to instructions on how to run Grouparoo on various production-ready platforms. 
+This guide will help you run the Grouparoo application on your local machine. At the end of this guide there are links to instructions on how to run Grouparoo on various production-ready platforms.
 
-Grouparoo is a node.js application written in Typescript.  Grouparoo relies on a Postgres database and Redis cache. Gropuaroo is distributed though NPM. 
+Grouparoo is a [node.js](https://nodejs.org/) application written in [Typescript](https://www.typescriptlang.org/). Grouparoo relies on a [Postgres](https://www.postgresql.org) database and [Redis](https://redis.io) cache. Grouparoo is distributed though [NPM](https://www.npmjs.com).
 
-### Step 1: Create your `package.json` file
-Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/). Make sure you are running node version 12 or higher. We use NPM to manage our dependencies. Grouparoo **requires** the **Postgres** and Redis databases. On OSX, these can be installed via [Homebrew](https://brew.sh/).
+### Step 1: Install Runtime and Databases
+
+Grouparoo is a [node.js](https://nodejs.org/), and requires node.js version 12 or higher. You can download Node.js from their [website](https://nodejs.org/), or through the package manager for your operating system. The same is true for Postgres and Redis.
+
+We also need to create a database within Postgres for Grouparoo to use. Let's use one called `grouparoo_development`
+
+**On OSX**:
+
+```bash
+# Install Homebrew (https://brew.sh) if you don't have it
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+brew install node # Install Node.JS
+
+brew install redis # Install Redis
+brew services start redis # Start Redis
+
+brew install postgresql # Install Postgres
+brew services start postgresql # Start Postgres
+createdb grouparoo_development # Create a database for Grouparoo
+```
+
+**On Linux/Ubuntu**:
+
+```bash
+# Install NVM
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+nvm install v12 # install v12 of node.js
+nvm use v12 # use v12 of node.js
+
+sudo apt install redis-server # Install Redis
+
+sudo apt install postgresql postgresql-contrib # Install Postgres
+createdb grouparoo_development # Create a database for Grouparoo
+
+```
+
+### Step 2: Create your `package.json` file
+
+In a new directory, create a new project with a `package.json` file like the one below.
 
 ```json:readme_deploy
 {
@@ -40,14 +78,15 @@ Create a new project with a `package.json` file like the one below. Grouparoo is
 }
 ```
 
-This makes an "app" for Grouparoo to run. There is an example in the [staging-public](https://github.com/grouparoo/grouparoo/tree/master/apps/staging-public) directory.
+This makes an "app" for Grouparoo to run. There is an example in the [local-public](https://github.com/grouparoo/grouparoo/tree/master/apps/local-public) directory.
 
-There are some environment variables needed by Grouparoo that need to be set by your host/docker image. In development, we can also load these variables from a `.env` file that lives alongside your `package.json`.
+### Step 3: Create your `.env` file
 
-### Step 2: Create your `.env` file
-Create a copy of our [example](https://github.com/grouparoo/grouparoo/blob/master/apps/staging-public/.env.example) `.env` file to manage your environment variables locally. You can modify the options as needed. Make this as a peer to your `package.json` file. Note: the `.env` file only works when running in `NODE_ENV=development`. On your server, you should set up these same environment variables. At minimum, you will need to set the following variables:
+There are some environment variables needed by Grouparoo that need to be set by your host/docker image. These variables tell Grouparoo how to connect to your database, which URL to use, etc. In development, we can also load these variables from a `.env` file that lives alongside your `package.json`.
 
-```shell
+Create a copy of our [example](https://github.com/grouparoo/grouparoo/blob/master/apps/local-public/.env.example) `.env` file to manage your environment variables locally. You can modify the options as needed. Make this as a peer to your `package.json` file. Note: the `.env` file only works when running in `NODE_ENV=development`. On your server, you should set up these same environment variables. At minimum, you will need to set the following variables:
+
+```bash
 PORT=3000
 WEB_URL=http://localhost:3000
 WEB_SERVER=true
@@ -55,16 +94,22 @@ SCHEDULER=true
 WORKERS=1
 REDIS_URL="redis://localhost:6379/0"
 DATABASE_URL="postgresql://localhost:5432/grouparoo_development"
-SERVER_TOKEN=a_random_string
+SERVER_TOKEN="a-random-string"
 ```
 
-### Step 3: Install Dependencies
+> A note on `SERVER_TOKEN`: This should be a random string that will be used to identify Grouparoo servers to each-other in the same cluster. It will not be used to authenticate users, but rather authorize servers to make requests against each other. SERVER_TOKEN is not a replacement for setting unique, per-application database credentials and isolated runtime environments.
+
+`npm install` will not succeed without these environment variables being set.
+
+### Step 4: Install Dependencies
+
 Run `npm install` to install dependencies. This will also run `npm prepare` which will compile the typescript application and build the web components.
 
-### Step 4: Start the Server
+### Step 5: Start the Server
+
 Run `npm start` to start the server and visit `http://localhost:3000` to get started. Follow the on-screen instructions to create your account and first team.
 
-A note on `SERVER_TOKEN` - this should be a random string that will be used to identify Grouparoo servers to each-other in the same cluster. It will not be used to authenticate users, but rather authorize servers to make requests against each other. SERVER_TOKEN is not a replacement for setting unique, per-application database credentials and isolated runtime environments.
+Starting the Grouparoo application will also migrate your database and generally configure things as-needed.
 
 ## Deployment Topology
 
@@ -74,7 +119,7 @@ Regardless of the method you deploy Grouparoo, the following topology will need 
 
 ## Deploying to Production Environments
 
-Now that you've tried Grouparoo locally, it's time to deploy it!  An example application which can be coppied and deployed via Docker or Heroku is available at [grouparoo/app-example](https://github.com/grouparoo/app-example)
+Now that you've tried Grouparoo locally, it's time to deploy it! An example application which can be coppied and deployed via Docker or Heroku is available at [grouparoo/app-example](https://github.com/grouparoo/app-example)
 
 - [Deploying with Heroku](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/heroku.md)
 - [Deploying with Docker](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/docker.md)
