@@ -10,7 +10,7 @@ const packageJSON = require(path.join(
   "package.json"
 ));
 
-const host = "https://staging-www.grouparoo.com";
+const host = "https://www.grouparoo.com";
 const route = "/api/v1/subscribers";
 const method = "POST";
 const source = `${packageJSON.name}`;
