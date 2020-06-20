@@ -22,6 +22,8 @@ const campaign = `v${packageJSON.version}`;
  * We also want to allow for this method to fail, and not block anything else in the server.
  */
 export async function GrouparooSubscription(teamMember: TeamMember) {
+  if (process.env.NODE_ENV === "test") return;
+
   try {
     const response = await fetch(`${host}${route}`, {
       method,

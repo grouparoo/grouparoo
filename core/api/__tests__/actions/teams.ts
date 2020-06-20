@@ -3,6 +3,10 @@ import { specHelper } from "actionhero";
 import { Team } from "./../../src/models/Team";
 import { TeamMember } from "./../../src/models/TeamMember";
 import { Permission } from "./../../src/models/Permission";
+
+const GrouparooSubscriptionModule = require("../../src/modules/grouparooSubscription");
+GrouparooSubscriptionModule.GrouparooSubscription = jest.fn();
+
 let actionhero;
 let guid;
 
@@ -17,7 +21,7 @@ describe("actions/teams", () => {
   });
 
   describe("team:initialize", () => {
-    test("a new team can be initialized with the first team member", async () => {
+    test("a new team can be initialized with the first team member and the team member should be subscribed", async () => {
       const response = await specHelper.runAction("team:initialize", {
         firstName: "Mario",
         lastName: "Mario",
@@ -30,6 +34,14 @@ describe("actions/teams", () => {
       expect(response.team.locked).toBe(true);
       expect(response.team.membersCount).toBe(1);
       expect(response.team.permissions.length).toBeGreaterThan(1);
+
+      expect(
+        GrouparooSubscriptionModule.GrouparooSubscription
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          email: "mario@example.com",
+        })
+      );
     });
 
     test("you cannot initialize more than one team on the server", async () => {
