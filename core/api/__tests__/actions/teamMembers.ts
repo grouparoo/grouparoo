@@ -64,6 +64,8 @@ describe("actions/teamMembers", () => {
     });
 
     test("when a team member is created, they can subscribe to the grouparoo newsletter", async () => {
+      GrouparooSubscriptionModule.GrouparooSubscription.mockReset();
+
       connection.params = {
         csrfToken,
         guid,
@@ -85,6 +87,8 @@ describe("actions/teamMembers", () => {
         })
       );
 
+      GrouparooSubscriptionModule.GrouparooSubscription.mockReset();
+
       connection.params = {
         csrfToken,
         guid,
@@ -97,7 +101,7 @@ describe("actions/teamMembers", () => {
       await specHelper.runAction("teamMember:create", connection);
       expect(
         GrouparooSubscriptionModule.GrouparooSubscription
-      ).toHaveBeenCalledTimes(1); // no change
+      ).toHaveBeenCalledTimes(0);
     });
 
     test("an administrator can view a team member", async () => {
