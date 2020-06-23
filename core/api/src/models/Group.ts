@@ -363,12 +363,21 @@ export class Group extends LoggedModel<Group> {
 
   fromConvenientRules(rules: GroupRuleWithKey[]) {
     const convenientRules = ProfilePropertyRuleOps._convenientRules;
+
     for (const i in rules) {
       if (convenientRules[rules[i].operation.op]) {
-        rules[i] = Object.assign(
-          rules[i],
-          convenientRules[rules[i].operation.op]
-        );
+        const convenientRule = convenientRules[rules[i].operation.op];
+        if (convenientRule.operation.op)
+          rules[i].operation.op = convenientRule.operation.op;
+        if (convenientRule.relativeMatchDirection)
+          rules[i].relativeMatchDirection =
+            convenientRule.relativeMatchDirection;
+        if (convenientRule.match) rules[i].match = convenientRule.match;
+      } else if (
+        rules[i].relativeMatchNumber &&
+        rules[i].operation.op.match(/^relative_/)
+      ) {
+        rules[i].operation.op = rules[i].operation.op.replace(/^relative_/, "");
       }
     }
 
@@ -377,17 +386,31 @@ export class Group extends LoggedModel<Group> {
 
   toConvenientRules(rules: GroupRuleWithKey[]) {
     const convenientRules = ProfilePropertyRuleOps._convenientRules;
+
     for (const i in rules) {
       for (const k in convenientRules) {
         if (
-          convenientRules[k].op === rules[i].operation.op &&
-          convenientRules[k].match === rules[i].match &&
-          !rules[i].relativeMatchNumber
+          !rules[i].relativeMatchNumber &&
+          convenientRules[k].operation.op === rules[i].operation.op &&
+          convenientRules[k].match === rules[i].match
         ) {
           rules[i] = Object.assign(rules[i], { operation: { op: k } });
         }
       }
+
+      if (
+        rules[i].relativeMatchNumber &&
+        !rules[i].operation.op.match(/^relative_/)
+      ) {
+        rules[i].operation.op = `relative_${rules[i].operation.op}`;
+        rules[i].operation.description = ProfilePropertyRuleOps[
+          rules[i].type
+        ].filter(
+          (operation) => operation.op === rules[i].operation.op
+        )[0].description;
+      }
     }
+
     return rules;
   }
 
