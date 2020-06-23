@@ -74,7 +74,7 @@ describe("bigquery/table/profileProperty", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-  }, 1000 * 30);
+  }, 1000 * 60);
 
   afterAll(async () => {
     await helper.shutdown(actionhero);
