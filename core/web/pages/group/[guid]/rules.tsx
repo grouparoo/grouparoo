@@ -20,7 +20,7 @@ export default function Page(props) {
   const [group, setGroup] = useState<GroupAPIData>(props.group);
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [localRules, setLocalRules] = useState([]);
+  const [localRules, setLocalRules] = useState(props.group.rules);
   const [countPotentialMembers, setCountPotentialMembers] = useState(0);
   const [componentCounts, setComponentCounts] = useState({});
   const [autocompleteResults, setAutoCompleteResults] = useState({});
@@ -29,14 +29,14 @@ export default function Page(props) {
   const typeaheadTypes = ["email", "string"];
 
   useEffect(() => {
-    async function loadAll() {
-      const _group = await load();
-      if (_group.type === "calculated") {
-        getCounts();
-      }
-    }
+    getCounts();
 
-    loadAll();
+    // seed typeahead responses
+    const _autocompleteResults = Object.assign({}, autocompleteResults);
+    props.group.rules.map((rule) => {
+      _autocompleteResults[rule.key] = [rule.match];
+    });
+    setAutoCompleteResults(_autocompleteResults);
   }, []);
 
   async function load() {
