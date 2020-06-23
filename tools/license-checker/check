@@ -51,28 +51,32 @@ console.log(` - allowed licenses are: ${onlyAllow.join(", ")}`);
 console.log(` - excluded packages are: ${excludePackages.join(", ")}`);
 console.log("");
 
-for (const i in packageFiles) {
-  const packageFile = packageFiles[i];
-  const projectRoot = path.dirname(packageFile);
-  const options = {
-    start: projectRoot,
-    excludePackages: excludePackages.join(";"),
-    onlyAllow: onlyAllow.join(";"),
-  };
-  checker.init(options, (error, packages) => {
-    if (error) {
-      throw error;
-    } else {
-      console.log(
-        `✅ | checked ${packageFile}.  Found ${
-          Object.keys(packages).length
-        } packages. All OK!`
-      );
-    }
-  });
-}
+(async () => {
+  for (const i in packageFiles) {
+    const packageFile = packageFiles[i];
+    const projectRoot = path.dirname(packageFile);
+    const options = {
+      start: projectRoot,
+      excludePackages: excludePackages.join(";"),
+      onlyAllow: onlyAllow.join(";"),
+    };
 
-process.on("uncaughtException", (error) => {
+    await new Promise((resolve, reject) => {
+      checker.init(options, (error, packages) => {
+        if (error) {
+          return reject(error);
+        } else {
+          console.log(
+            `✅ | checked ${packageFile}.  Found ${
+              Object.keys(packages).length
+            } packages. All OK!`
+          );
+          return resolve();
+        }
+      });
+    });
+  }
+})().catch((error) => {
   console.error(`🚫 | ${error}`);
   process.exit(1);
 });
