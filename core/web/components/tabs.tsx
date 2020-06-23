@@ -31,7 +31,9 @@ export default function GrouparooTabs({
         <Breadcrumb.Item href={`/${pluralize(topic)}`}>
           {capitalize(pluralize(topic))}
         </Breadcrumb.Item>
-        <Breadcrumb.Item>{name !== "" ? name : "Draft"}</Breadcrumb.Item>
+        <Breadcrumb.Item>
+          {name !== "" ? name : `${capitalize(topic)} Draft`}
+        </Breadcrumb.Item>
         <Breadcrumb.Item>{capitalize(verb)}</Breadcrumb.Item>
       </Breadcrumb>
 
