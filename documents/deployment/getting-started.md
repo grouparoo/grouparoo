@@ -6,6 +6,14 @@ This guide will help you run the Grouparoo application on your local machine. At
 
 Grouparoo is a [node.js](https://nodejs.org/) application written in [TypeScript](https://www.typescriptlang.org/). Grouparoo relies on a [Postgres](https://www.postgresql.org) database and [Redis](https://redis.io) cache. Grouparoo is distributed though [NPM](https://www.npmjs.com).
 
+## Deploy to Heroku
+
+The simplest way to see Grouparoo in action is to deploy it to Heroku for free:
+
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/grouparoo/app-example)
+
+## Install Locally
+
 ### Step 1: Install Runtime and Databases
 
 Grouparoo is a [node.js](https://nodejs.org/) application and requires Node.js version 12 or higher. You can download Node.js from their [website](https://nodejs.org/) or through the package manager for your operating system. The same is true for Postgres and Redis.
@@ -108,15 +116,13 @@ Run `npm start` to start the server and visit `http://localhost:3000` to get sta
 
 Starting the Grouparoo application will also migrate your database and generally configure things as-needed.
 
-## Deployment Topology
-
-Regardless of the method you deploy Grouparoo, the following topology will need to be created.
-
-![Grouparoo Topology](https://raw.githubusercontent.com/grouparoo/grouparoo/master/documents/images/grouparoo-deployment-topology.png)
-
 ## Deploying to Production Environments
 
-Now that you've tried Grouparoo locally, it's time to deploy it! An example application which can be coppied and deployed via Docker or Heroku is available at [grouparoo/app-example](https://github.com/grouparoo/app-example).
+Now that you've tried Grouparoo locally, it's time to deploy it! An example application which can be copied and deployed via Docker or Heroku is available at [grouparoo/app-example](https://github.com/grouparoo/app-example).
+
+First, learn more about [Grouparoo's Deployment Topology](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/topology.md).
+
+Then find the deployment Guide for your environment:
 
 - [Deploying with Heroku](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/heroku.md)
 - [Deploying with Docker](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/docker.md)

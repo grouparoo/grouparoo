@@ -24,8 +24,11 @@ Learn more at [www.grouparoo.com](https://www.grouparoo.com)
 
 ### For Grouparoo Users
 
+If you are new to Grouparoo, or you want to deploy Grouparoo to your servers, start here!
+
 - [ 🎉 Getting Started with Grouparoo](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/getting-started.md)
 - 🦾 Deploying Grouparoo
+  - [Deployment Topology](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/topology.md)
   - [Deploying with Heroku](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/heroku.md)
   - [Deploying with Docker](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/docker.md)
   - [Deploying with Kubernetes and AWS](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/aws-and-k8s.md)
@@ -33,7 +36,9 @@ Learn more at [www.grouparoo.com](https://www.grouparoo.com)
 
 ### For Grouparoo Developers
 
-- [👩‍💻 Getting Started](https://github.com/grouparoo/grouparoo/blob/master/documents/development/getting-started.md)
+If you are interested in extending Grouparoo with your own plugins or contributing to the Open Source project, these documents are for you.
+
+- [👩‍💻 Getting Started as a Grouparoo Developer](https://github.com/grouparoo/grouparoo/blob/master/documents/development/getting-started.md)
 - [📊 Databases](https://github.com/grouparoo/grouparoo/blob/master/documents/development/databases.md)
 - [🛠 Tools](https://github.com/grouparoo/grouparoo/blob/master/documents/development/tools.md)
 - [🌊 Data Flow](https://github.com/grouparoo/grouparoo/blob/master/documents/development/dataflow.md)
@@ -58,6 +63,14 @@ Looking for help or to connect with other Grouparoo users? **[👩‍💻👨‍
 # Running a Grouparoo Application
 
 > This is an abbreviated version of the Grouparoo Deployment Getting Started guide. [The full version can be found here](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/getting-started.md).
+
+## Deploy to Heroku
+
+The simplest way to see Grouparoo in action is to deploy it to Heroku for free:
+
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/grouparoo/app-example)
+
+## Run Locally
 
 1. Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/) project, and we use NPM to manage our dependencies. Grouparoo required the **Postgres** and **Redis** databases. On OSX, these can be installed via [Homebrew](https://brew.sh/).
 
