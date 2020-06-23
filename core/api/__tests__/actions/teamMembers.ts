@@ -2,6 +2,9 @@ import { helper } from "./../utils/specHelper";
 import { specHelper } from "actionhero";
 import { TeamMember } from "./../../src/models/TeamMember";
 
+const GrouparooSubscriptionModule = require("../../src/modules/grouparooSubscription");
+GrouparooSubscriptionModule.GrouparooSubscription = jest.fn();
+
 let actionhero;
 let guid;
 let teamMemberGuid;
@@ -60,6 +63,47 @@ describe("actions/teamMembers", () => {
       teamMemberGuid = teamMember.guid;
     });
 
+    test("when a team member is created, they can subscribe to the grouparoo newsletter", async () => {
+      GrouparooSubscriptionModule.GrouparooSubscription.mockReset();
+
+      connection.params = {
+        csrfToken,
+        guid,
+        firstName: "Toad",
+        lastName: "Toadstool",
+        email: "toad@example.com",
+        password: "mush00ms",
+        subscribe: true,
+      };
+      await specHelper.runAction("teamMember:create", connection);
+      expect(
+        GrouparooSubscriptionModule.GrouparooSubscription
+      ).toHaveBeenCalledTimes(1);
+      expect(
+        GrouparooSubscriptionModule.GrouparooSubscription
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          email: "toad@example.com",
+        })
+      );
+
+      GrouparooSubscriptionModule.GrouparooSubscription.mockReset();
+
+      connection.params = {
+        csrfToken,
+        guid,
+        firstName: "Yoshi",
+        lastName: "Yoshi",
+        email: "yoshi@example.com",
+        password: "apples",
+        subscribe: false,
+      };
+      await specHelper.runAction("teamMember:create", connection);
+      expect(
+        GrouparooSubscriptionModule.GrouparooSubscription
+      ).toHaveBeenCalledTimes(0);
+    });
+
     test("an administrator can view a team member", async () => {
       connection.params = {
         csrfToken,
@@ -86,7 +130,7 @@ describe("actions/teamMembers", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(teamMembers.length).toBe(2);
+      expect(teamMembers.length).toBe(4);
     });
 
     test("an administrator can list all members in Grouparoo", async () => {
@@ -98,7 +142,7 @@ describe("actions/teamMembers", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(teamMembers.length).toBe(2);
+      expect(teamMembers.length).toBe(4);
     });
 
     test("an administrator can edit a team member", async () => {
