@@ -13,5 +13,5 @@ export default function ({ source }: { source: SourceAPIData }) {
     tabs.push("runs");
   }
 
-  return <Tabs name={source.name} tabs={tabs} />;
+  return <Tabs name={source.name} draftType={source.type} tabs={tabs} />;
 }
