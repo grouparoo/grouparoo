@@ -15,7 +15,11 @@ export default function ({
 
   return (
     <>
-      <Tabs name={profilePropertyRule.key} tabs={tabs} />
+      <Tabs
+        name={profilePropertyRule.key}
+        draftType={profilePropertyRule.source.name}
+        tabs={tabs}
+      />
     </>
   );
 }
