@@ -75,8 +75,21 @@ function runningCoreDirectly() {
   return false;
 }
 
+function getCoreVersion() {
+  const corePkgJson = readPackageJson(
+    path.join(__dirname, "..", "..", "..", "package.json")
+  );
+  return corePkgJson.version;
+}
+
+function getNodeVersion() {
+  return process.version;
+}
+
 exports.grouparooMonorepoApp = grouparooMonorepoApp;
 exports.readPackageJson = readPackageJson;
 exports.getParentPath = getParentPath;
 exports.getPluginManifest = getPluginManifest;
 exports.runningCoreDirectly = runningCoreDirectly;
+exports.getCoreVersion = getCoreVersion;
+exports.getNodeVersion = getNodeVersion;

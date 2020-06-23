@@ -1,6 +1,11 @@
 import path from "path";
 import fs from "fs";
-import { getPluginManifest, getParentPath } from "./utils/pluginDetails";
+import {
+  getPluginManifest,
+  getParentPath,
+  getCoreVersion,
+  getNodeVersion,
+} from "./utils/pluginDetails";
 
 // have a shorter shutdown timeout
 if (!process.env.ACTIONHERO_SHUTDOWN_TIMEOUT) {
@@ -37,7 +42,7 @@ import { Process, log } from "actionhero";
 
 async function main() {
   log(
-    `Starting Grouparoo v${process.env.npm_package_dependencies__grouparoo_core} on node.js v${process.env.npm_config_node_version}`,
+    `Starting Grouparoo ${getCoreVersion()} on node.js ${getNodeVersion()}`,
     "notice"
   );
   const app = new Process();
