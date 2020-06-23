@@ -3,9 +3,11 @@ import Router from "next/router";
 
 export default function GrouparooTabs({
   name,
+  draftType,
   tabs,
 }: {
   name: string;
+  draftType?: string;
   tabs: string[];
 }) {
   if (!globalThis.location) {
@@ -18,7 +20,12 @@ export default function GrouparooTabs({
   const verb = parts[5].split("?")[0];
 
   function capitalize(s: string) {
-    return s.charAt(0).toUpperCase() + s.slice(1);
+    return s
+      .split(" ")
+      .map((word) => {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(" ");
   }
 
   function pluralize(s: string) {
@@ -31,7 +38,13 @@ export default function GrouparooTabs({
         <Breadcrumb.Item href={`/${pluralize(topic)}`}>
           {capitalize(pluralize(topic))}
         </Breadcrumb.Item>
-        <Breadcrumb.Item>{name !== "" ? name : "Draft"}</Breadcrumb.Item>
+        <Breadcrumb.Item>
+          {name !== ""
+            ? name
+            : draftType
+            ? `${capitalize(draftType)} Draft`
+            : "Draft"}
+        </Breadcrumb.Item>
         <Breadcrumb.Item>{capitalize(verb)}</Breadcrumb.Item>
       </Breadcrumb>
 
