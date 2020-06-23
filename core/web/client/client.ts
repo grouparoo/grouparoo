@@ -73,8 +73,7 @@ export class Client {
     }
 
     this.apiVersion = process.env.API_VERSION || "v1";
-    this.webUrl =
-      process.env.WEB_URL || `http://localhost:${process.env.PORT || 3000}`;
+    this.webUrl = process.env.WEB_SERVER || "";
     this.serverToken = process.env.SERVER_TOKEN;
     this.cache = new ClientCache();
   }
