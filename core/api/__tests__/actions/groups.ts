@@ -237,7 +237,6 @@ describe("actions/groups", () => {
         expect(ruleLimit).toBe(10);
         expect(Object.keys(ops).sort()).toEqual([
           "_convenientRules",
-          "_dictionary",
           "_relativeMatchUnits",
           "boolean",
           "date",

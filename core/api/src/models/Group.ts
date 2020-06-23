@@ -33,7 +33,7 @@ import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import {
   ProfilePropertyRule,
   profilePropertyRuleJSToSQLType,
-  PROFILE_PROPERTY_RULE_OPS,
+  ProfilePropertyRuleOps,
 } from "./ProfilePropertyRule";
 import { StateMachine } from "./../modules/stateMachine";
 
@@ -42,7 +42,8 @@ const numbers = [...Array(GROUP_RULE_LIMIT).keys()].map((n) => n + 1).reverse();
 
 export interface GroupRuleWithKey {
   key: string;
-  op: string;
+  type: string;
+  operation: { op: string; description: string };
   match?: string | number | boolean;
   relativeMatchNumber?: number;
   relativeMatchUnit?: string;
@@ -259,11 +260,17 @@ export class Group extends LoggedModel<Group> {
     });
 
     for (const i in rules) {
-      const rule = rules[i];
+      const rule: GroupRule = rules[i];
       const profilePropertyRule = await rule.$get("profilePropertyRule");
       rulesWithKey.push({
         key: profilePropertyRule.key,
-        op: rule.op,
+        type: profilePropertyRule.type,
+        operation: {
+          op: rule.op,
+          description: ProfilePropertyRuleOps[profilePropertyRule.type].filter(
+            (operation) => operation.op === rule.op
+          )[0].description,
+        },
         match: rule.match,
         relativeMatchNumber: rule.relativeMatchNumber,
         relativeMatchUnit: rule.relativeMatchUnit,
@@ -277,6 +284,10 @@ export class Group extends LoggedModel<Group> {
   async setRules(rules: GroupRuleWithKey[]) {
     if (this.type !== "calculated") {
       throw new Error("group type not calculated");
+    }
+
+    if (Object.keys(rules).length > GROUP_RULE_LIMIT) {
+      throw new Error("too many group rules");
     }
 
     const transaction = await api.sequelize.transaction();
@@ -305,7 +316,7 @@ export class Group extends LoggedModel<Group> {
             position: parseInt(i) + 1,
             groupGuid: this.guid,
             profilePropertyRuleGuid: profilePropertyRule.guid,
-            op: rule.op,
+            op: rule.operation.op,
             match: rule.match,
             relativeMatchNumber: rule.relativeMatchNumber,
             relativeMatchUnit: rule.relativeMatchUnit,
@@ -350,35 +361,30 @@ export class Group extends LoggedModel<Group> {
     };
   }
 
-  fromConvenientRules(rules) {
-    const convenientRules = PROFILE_PROPERTY_RULE_OPS._convenientRules;
+  fromConvenientRules(rules: GroupRuleWithKey[]) {
+    const convenientRules = ProfilePropertyRuleOps._convenientRules;
     for (const i in rules) {
-      if (convenientRules[rules[i].op]) {
-        rules[i] = Object.assign(rules[i], convenientRules[rules[i].op]);
-      }
-
-      if (rules[i].relativeMatchNumber && rules[i].op.match(/^relative_/)) {
-        rules[i].op = rules[i].op.replace(/^relative_/, "");
+      if (convenientRules[rules[i].operation.op]) {
+        rules[i] = Object.assign(
+          rules[i],
+          convenientRules[rules[i].operation.op]
+        );
       }
     }
 
     return rules;
   }
 
-  toConvenientRules(rules) {
-    const convenientRules = PROFILE_PROPERTY_RULE_OPS._convenientRules;
+  toConvenientRules(rules: GroupRuleWithKey[]) {
+    const convenientRules = ProfilePropertyRuleOps._convenientRules;
     for (const i in rules) {
       for (const k in convenientRules) {
         if (
-          convenientRules[k].op === rules[i].op &&
+          convenientRules[k].op === rules[i].operation.op &&
           convenientRules[k].match === rules[i].match &&
           !rules[i].relativeMatchNumber
         ) {
-          rules[i] = Object.assign(rules[i], { op: k });
-        }
-
-        if (rules[i].relativeMatchNumber && !rules[i].op.match(/^relative_/)) {
-          rules[i].op = `relative_${rules[i].op}`;
+          rules[i] = Object.assign(rules[i], { operation: { op: k } });
         }
       }
     }
@@ -758,10 +764,6 @@ export class Group extends LoggedModel<Group> {
     const wheres = [];
     const localNumbers = [].concat(numbers);
 
-    if (Object.keys(rules).length > GROUP_RULE_LIMIT) {
-      throw new Error("too many group rules");
-    }
-
     const profilePropertyRules = await ProfilePropertyRule.cached();
 
     for (const i in rules) {
@@ -770,7 +772,7 @@ export class Group extends LoggedModel<Group> {
       const alias = `ProfileProperties_${number}`;
       const {
         key,
-        op,
+        operation,
         match,
         relativeMatchNumber,
         relativeMatchDirection,
@@ -781,7 +783,7 @@ export class Group extends LoggedModel<Group> {
 
       if (match !== null && match !== undefined) {
         // rewrite null matches
-        rawValueMatch[Op[op]] =
+        rawValueMatch[Op[operation.op]] =
           match.toString().toLocaleLowerCase() === "null" ? null : match;
       } else if (relativeMatchNumber && !match) {
         const now = Moment();
@@ -791,7 +793,7 @@ export class Group extends LoggedModel<Group> {
         )
           .toDate()
           .getTime();
-        rawValueMatch[Op[op]] = timestamp;
+        rawValueMatch[Op[operation.op]] = timestamp;
       } else {
         throw new Error("either match or relativeMatch is required");
       }
