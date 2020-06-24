@@ -70,6 +70,16 @@ The simplest way to see Grouparoo in action is to deploy it to Heroku for free:
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/grouparoo/app-example)
 
+### Run locally with Docker
+
+Assuming you have Docker installed:
+
+```bash
+# in a new directory
+curl https://raw.githubusercontent.com/grouparoo/app-example/master/docker-compose.published.yml --output docker-compose.yml
+docker-compose up
+```
+
 ## Run Locally
 
 1. Create a new project with a `package.json` file like the one below. Grouparoo is a [node.js](https://nodejs.org/) project, and we use NPM to manage our dependencies. Grouparoo required the **Postgres** and **Redis** databases. On OSX, these can be installed via [Homebrew](https://brew.sh/).
