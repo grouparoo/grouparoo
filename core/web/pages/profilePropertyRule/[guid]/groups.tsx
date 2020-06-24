@@ -11,7 +11,6 @@ import {
 export default function Page({
   profilePropertyRule,
   groups,
-  ops,
 }: {
   profilePropertyRule: ProfilePropertyRuleAPIData;
   groups: GroupAPIData[];
@@ -58,7 +57,7 @@ export default function Page({
                 <td>
                   {group.rules.map((rule, idx) => (
                     <span key={`rule-${idx}`}>
-                      <strong>{rule.key}</strong> {ops._dictionary[rule.op]}:{" "}
+                      <strong>{rule.key}</strong> {rule.operation.description}:{" "}
                       <code>
                         {rule.match
                           ? rule.match
@@ -88,7 +87,6 @@ Page.getInitialProps = async (ctx) => {
     "get",
     `/profilePropertyRule/${guid}/groups`
   );
-  const { ops } = await execApi("get", `/groups/ruleOptions`);
 
-  return { profilePropertyRule, groups, ops };
+  return { profilePropertyRule, groups };
 };

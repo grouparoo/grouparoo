@@ -448,7 +448,9 @@ describe("models/group", () => {
     test("changing group rules changes the state to initializing and enquires a run, and then back to ready when complete", async () => {
       await api.resque.queue.connection.redis.flushdb();
 
-      await group.setRules([{ key: "firstName", match: "nobody", op: "eq" }]);
+      await group.setRules([
+        { key: "firstName", match: "nobody", operation: { op: "eq" } },
+      ]);
       expect(group.state).toBe("initializing");
 
       let foundTasks = await specHelper.findEnqueuedTasks("group:run");
@@ -477,7 +479,9 @@ describe("models/group", () => {
     test("changing the rules will stop previously running runs", async () => {
       await api.resque.queue.connection.redis.flushdb();
 
-      await group.setRules([{ key: "firstName", match: "nobody", op: "eq" }]);
+      await group.setRules([
+        { key: "firstName", match: "nobody", operation: { op: "eq" } },
+      ]);
       let foundTasks = await specHelper.findEnqueuedTasks("group:run");
       await specHelper.runTask("group:run", foundTasks[0].args[0]);
       const firstRun = await Run.findOne({
@@ -485,14 +489,18 @@ describe("models/group", () => {
       });
       expect(firstRun.state).toBe("running");
 
-      await group.setRules([{ key: "lastName", match: "nobody", op: "eq" }]);
+      await group.setRules([
+        { key: "lastName", match: "nobody", operation: { op: "eq" } },
+      ]);
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
       await firstRun.reload();
       expect(firstRun.state).toBe("stopped");
     });
 
     test("group#runAddGroupMembers will create an import for new members, and touch the updatedAt for existing members", async () => {
-      await group.setRules([{ key: "firstName", match: "Mario", op: "eq" }]);
+      await group.setRules([
+        { key: "firstName", match: "Mario", operation: { op: "eq" } },
+      ]);
       const groupMembersCount = await group.runAddGroupMembers(run);
       expect(groupMembersCount).toBe(1);
 
@@ -521,7 +529,9 @@ describe("models/group", () => {
     });
 
     test("group#runRemoveGroupMembers will create imports for profiles which should no longer be part of the group and mark removedAt on the group member", async () => {
-      await group.setRules([{ key: "lastName", match: "Mario", op: "eq" }]);
+      await group.setRules([
+        { key: "lastName", match: "Mario", operation: { op: "eq" } },
+      ]);
       const groupMembersCount = await group.runAddGroupMembers(run);
       expect(groupMembersCount).toBe(2);
 
@@ -534,7 +544,9 @@ describe("models/group", () => {
       expect(firstGroupMembers.length).toBe(2);
 
       // next run
-      await group.setRules([{ key: "firstName", match: "Mario", op: "eq" }]);
+      await group.setRules([
+        { key: "firstName", match: "Mario", operation: { op: "eq" } },
+      ]);
       const nextRun = await helper.factories.run();
       await group.runAddGroupMembers(nextRun);
       await group.runRemoveGroupMembers(nextRun);
@@ -562,14 +574,18 @@ describe("models/group", () => {
 
     test("runAddGroupMembers updates calculatedAt", async () => {
       expect(group.calculatedAt).toBeFalsy();
-      await group.setRules([{ key: "firstName", match: "Mario", op: "eq" }]);
+      await group.setRules([
+        { key: "firstName", match: "Mario", operation: { op: "eq" } },
+      ]);
       await group.runAddGroupMembers(run);
       expect(group.calculatedAt).toBeTruthy();
     });
 
     test("runRemoveGroupMembers updates calculatedAt", async () => {
       expect(group.calculatedAt).toBeFalsy();
-      await group.setRules([{ key: "firstName", match: "Mario", op: "eq" }]);
+      await group.setRules([
+        { key: "firstName", match: "Mario", operation: { op: "eq" } },
+      ]);
       await group.runRemoveGroupMembers(run);
       expect(group.calculatedAt).toBeTruthy();
     });
@@ -579,7 +595,9 @@ describe("models/group", () => {
       expect((await group.nextCalculatedAt()).getTime() / 1000).toBeCloseTo(
         new Date().getTime() / 1000
       );
-      await group.setRules([{ key: "firstName", match: "Mario", op: "eq" }]);
+      await group.setRules([
+        { key: "firstName", match: "Mario", operation: { op: "eq" } },
+      ]);
       await group.runAddGroupMembers(run);
       expect((await group.nextCalculatedAt()).getTime()).toBeGreaterThan(
         new Date().getTime()
@@ -649,7 +667,9 @@ describe("models/group", () => {
 
     test("group rules must have a related profileProperty Ryle", async () => {
       try {
-        await group.setRules([{ key: "a", match: "cool", op: "eq" }]);
+        await group.setRules([
+          { key: "a", match: "cool", operation: { op: "eq" } },
+        ]);
         throw new Error("should not get here");
       } catch (error) {
         expect(error.toString()).toMatch(/cannot find Profile Property Rule a/);
@@ -659,8 +679,8 @@ describe("models/group", () => {
     test("recalculating group membership will reuse existing groupMembers", async () => {
       await group.update({ matchType: "all" });
       await group.setRules([
-        { key: "lastName", match: "Mario", op: "eq" },
-        { key: "firstName", match: "Mario", op: "eq" },
+        { key: "lastName", match: "Mario", operation: { op: "eq" } },
+        { key: "firstName", match: "Mario", operation: { op: "eq" } },
       ]);
       await group.runAddGroupMembers(run);
       await mario.updateGroupMembership();
@@ -680,7 +700,9 @@ describe("models/group", () => {
       await Log.destroy({ truncate: true });
 
       await group.update({ matchType: "all" });
-      await group.setRules([{ key: "lastName", match: "Mario", op: "eq" }]);
+      await group.setRules([
+        { key: "lastName", match: "Mario", operation: { op: "eq" } },
+      ]);
       await mario.updateGroupMembership();
       await luigi.updateGroupMembership();
       let members = await group.$get("groupMembers");
@@ -692,8 +714,8 @@ describe("models/group", () => {
       expect(createCount).toBe(2);
 
       await group.setRules([
-        { key: "lastName", match: "Mario", op: "eq" },
-        { key: "firstName", match: "Mario", op: "eq" },
+        { key: "lastName", match: "Mario", operation: { op: "eq" } },
+        { key: "firstName", match: "Mario", operation: { op: "eq" } },
       ]);
       const secondRun = await helper.factories.run();
       await mario.updateGroupMembership();
@@ -716,26 +738,21 @@ describe("models/group", () => {
 
     test("calculating a group with more than 10 rules produces an error", async () => {
       group.matchType = "all";
-      await group.setRules([
-        { key: "userId", match: "Mario", op: "eq" },
-        { key: "lastName", match: "Mario", op: "eq" },
-        { key: "firstName", match: "Mario", op: "eq" },
-        { key: "email", match: "Mario", op: "eq" },
-        { key: "isVIP", match: "Mario", op: "eq" },
-        { key: "ltv", match: "0", op: "eq" },
-        { key: "ltv", match: "1", op: "eq" },
-        { key: "ltv", match: "2", op: "eq" },
-        { key: "ltv", match: "3", op: "eq" },
-        { key: "ltv", match: "4", op: "eq" },
-        { key: "ltv", match: "5", op: "eq" },
-      ]);
-
-      try {
-        await group.runAddGroupMembers(run);
-        throw new Error("should not get here");
-      } catch (error) {
-        expect(error.toString()).toMatch(/too many group rules/);
-      }
+      await expect(
+        group.setRules([
+          { key: "userId", match: "Mario", operation: { op: "eq" } },
+          { key: "lastName", match: "Mario", operation: { op: "eq" } },
+          { key: "firstName", match: "Mario", operation: { op: "eq" } },
+          { key: "email", match: "Mario", operation: { op: "eq" } },
+          { key: "isVIP", match: "Mario", operation: { op: "eq" } },
+          { key: "ltv", match: "0", operation: { op: "eq" } },
+          { key: "ltv", match: "1", operation: { op: "eq" } },
+          { key: "ltv", match: "2", operation: { op: "eq" } },
+          { key: "ltv", match: "3", operation: { op: "eq" } },
+          { key: "ltv", match: "4", operation: { op: "eq" } },
+          { key: "ltv", match: "5", operation: { op: "eq" } },
+        ])
+      ).rejects.toThrow(/too many group rules/);
     });
 
     describe("group rules", () => {
@@ -748,14 +765,16 @@ describe("models/group", () => {
       describe("strings", () => {
         test("exact matches", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "lastName", match: "Mario", op: "eq" }]);
+          await group.setRules([
+            { key: "lastName", match: "Mario", operation: { op: "eq" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(2);
         });
 
         test("partial matches", async () => {
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "lastName", match: "%toad%", op: "iLike" },
+            { key: "lastName", match: "%toad%", operation: { op: "iLike" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(2);
         });
@@ -763,8 +782,8 @@ describe("models/group", () => {
         test("multiple rules with same key", async () => {
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "lastName", match: "Mario", op: "eq" },
-            { key: "lastName", match: "%a%", op: "iLike" },
+            { key: "lastName", match: "Mario", operation: { op: "eq" } },
+            { key: "lastName", match: "%a%", operation: { op: "iLike" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(2);
         });
@@ -772,8 +791,8 @@ describe("models/group", () => {
         test("multiple matches (ALL)", async () => {
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "lastName", match: "%toad%", op: "iLike" },
-            { key: "firstName", match: "Peach", op: "eq" },
+            { key: "lastName", match: "%toad%", operation: { op: "iLike" } },
+            { key: "firstName", match: "Peach", operation: { op: "eq" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(1);
         });
@@ -781,33 +800,41 @@ describe("models/group", () => {
         test("multiple matches (ANY)", async () => {
           await group.update({ matchType: "any" });
           await group.setRules([
-            { key: "lastName", match: "%toad%", op: "iLike" },
-            { key: "firstName", match: "Peach", op: "eq" },
+            { key: "lastName", match: "%toad%", operation: { op: "iLike" } },
+            { key: "firstName", match: "Peach", operation: { op: "eq" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(2);
         });
 
         test("null match", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "lastName", match: "null", op: "eq" }]);
+          await group.setRules([
+            { key: "lastName", match: "null", operation: { op: "eq" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(0);
         });
 
         test("not null match", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "lastName", match: "null", op: "ne" }]);
+          await group.setRules([
+            { key: "lastName", match: "null", operation: { op: "ne" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("exists", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "lastName", op: "exists" }]);
+          await group.setRules([
+            { key: "lastName", operation: { op: "exists" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("notExists", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "lastName", op: "notExists" }]);
+          await group.setRules([
+            { key: "lastName", operation: { op: "notExists" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(0);
         });
       });
@@ -815,21 +842,25 @@ describe("models/group", () => {
       describe("integers", () => {
         test("exact matches", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "userId", match: 1, op: "eq" }]);
+          await group.setRules([
+            { key: "userId", match: 1, operation: { op: "eq" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(1);
         });
 
         test("comparison matches", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "userId", match: 1, op: "gt" }]);
+          await group.setRules([
+            { key: "userId", match: 1, operation: { op: "gt" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(3);
         });
 
         test("multiple rules with same key", async () => {
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "userId", match: 1, op: "gt" },
-            { key: "userId", match: 99, op: "lt" },
+            { key: "userId", match: 1, operation: { op: "gt" } },
+            { key: "userId", match: 99, operation: { op: "lt" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(3);
         });
@@ -837,8 +868,8 @@ describe("models/group", () => {
         test("multiple matches (ALL)", async () => {
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "userId", match: 1, op: "eq" },
-            { key: "lastName", match: "mario", op: "iLike" },
+            { key: "userId", match: 1, operation: { op: "eq" } },
+            { key: "lastName", match: "mario", operation: { op: "iLike" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(1);
         });
@@ -846,33 +877,41 @@ describe("models/group", () => {
         test("multiple matches (ANY)", async () => {
           await group.update({ matchType: "any" });
           await group.setRules([
-            { key: "userId", match: 1, op: "eq" },
-            { key: "lastName", match: "mario", op: "iLike" },
+            { key: "userId", match: 1, operation: { op: "eq" } },
+            { key: "lastName", match: "mario", operation: { op: "iLike" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(2);
         });
 
         test("null match", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "userId", match: "null", op: "eq" }]);
+          await group.setRules([
+            { key: "userId", match: "null", operation: { op: "eq" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(0);
         });
 
         test("not null match", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "userId", match: "null", op: "ne" }]);
+          await group.setRules([
+            { key: "userId", match: "null", operation: { op: "ne" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("exists", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "userId", op: "exists" }]);
+          await group.setRules([
+            { key: "userId", operation: { op: "exists" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("notExists", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "userId", op: "notExists" }]);
+          await group.setRules([
+            { key: "userId", operation: { op: "notExists" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(0);
         });
       });
@@ -880,21 +919,25 @@ describe("models/group", () => {
       describe("floats", () => {
         test("exact matches", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "ltv", match: 100, op: "eq" }]);
+          await group.setRules([
+            { key: "ltv", match: 100, operation: { op: "eq" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(1);
         });
 
         test("comparison matches", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "ltv", match: 1, op: "gte" }]);
+          await group.setRules([
+            { key: "ltv", match: 1, operation: { op: "gte" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(3);
         });
 
         test("multiple rules with same key", async () => {
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "ltv", match: 1, op: "gte" },
-            { key: "ltv", match: 9999, op: "lt" },
+            { key: "ltv", match: 1, operation: { op: "gte" } },
+            { key: "ltv", match: 9999, operation: { op: "lt" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(3);
         });
@@ -902,8 +945,8 @@ describe("models/group", () => {
         test("multiple matches (ALL)", async () => {
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "ltv", match: 1, op: "gte" },
-            { key: "lastName", match: "mario", op: "iLike" },
+            { key: "ltv", match: 1, operation: { op: "gte" } },
+            { key: "lastName", match: "mario", operation: { op: "iLike" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(2);
         });
@@ -911,33 +954,39 @@ describe("models/group", () => {
         test("multiple matches (ANY)", async () => {
           await group.update({ matchType: "any" });
           await group.setRules([
-            { key: "ltv", match: 1, op: "gte" },
-            { key: "lastName", match: "%toad%", op: "iLike" },
+            { key: "ltv", match: 1, operation: { op: "gte" } },
+            { key: "lastName", match: "%toad%", operation: { op: "iLike" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("null match", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "ltv", match: "null", op: "eq" }]);
+          await group.setRules([
+            { key: "ltv", match: "null", operation: { op: "eq" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(0);
         });
 
         test("not null match", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "ltv", match: "null", op: "ne" }]);
+          await group.setRules([
+            { key: "ltv", match: "null", operation: { op: "ne" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("exists", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "ltv", op: "exists" }]);
+          await group.setRules([{ key: "ltv", operation: { op: "exists" } }]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("notExists", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "ltv", op: "notExists" }]);
+          await group.setRules([
+            { key: "ltv", operation: { op: "notExists" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(0);
         });
       });
@@ -945,15 +994,17 @@ describe("models/group", () => {
       describe("booleans", () => {
         test("exact matches", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "isVIP", match: true, op: "eq" }]);
+          await group.setRules([
+            { key: "isVIP", match: true, operation: { op: "eq" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(2);
         });
 
         test("multiple rules with same key", async () => {
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "isVIP", match: true, op: "eq" },
-            { key: "isVIP", match: false, op: "ne" },
+            { key: "isVIP", match: true, operation: { op: "eq" } },
+            { key: "isVIP", match: false, operation: { op: "ne" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(2);
         });
@@ -961,8 +1012,8 @@ describe("models/group", () => {
         test("multiple matches (ALL)", async () => {
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "isVIP", match: true, op: "eq" },
-            { key: "lastName", match: "mario", op: "iLike" },
+            { key: "isVIP", match: true, operation: { op: "eq" } },
+            { key: "lastName", match: "mario", operation: { op: "iLike" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(1);
         });
@@ -970,33 +1021,39 @@ describe("models/group", () => {
         test("multiple matches (ANY)", async () => {
           await group.update({ matchType: "any" });
           await group.setRules([
-            { key: "isVIP", match: true, op: "eq" },
-            { key: "lastName", match: "mario", op: "iLike" },
+            { key: "isVIP", match: true, operation: { op: "eq" } },
+            { key: "lastName", match: "mario", operation: { op: "iLike" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(3);
         });
 
         test("null match", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "isVIP", match: "null", op: "eq" }]);
+          await group.setRules([
+            { key: "isVIP", match: "null", operation: { op: "eq" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(0);
         });
 
         test("not null match", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "isVIP", match: "null", op: "ne" }]);
+          await group.setRules([
+            { key: "isVIP", match: "null", operation: { op: "ne" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("exists", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "isVIP", op: "exists" }]);
+          await group.setRules([{ key: "isVIP", operation: { op: "exists" } }]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("notExists", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "isVIP", op: "notExists" }]);
+          await group.setRules([
+            { key: "isVIP", operation: { op: "notExists" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(0);
         });
       });
@@ -1005,7 +1062,11 @@ describe("models/group", () => {
         test("exact matches", async () => {
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "lastLoginAt", match: new Date(0).getTime(), op: "eq" },
+            {
+              key: "lastLoginAt",
+              match: new Date(0).getTime(),
+              operation: { op: "eq" },
+            },
           ]);
           expect(await group.countPotentialMembers()).toBe(2);
         });
@@ -1013,7 +1074,11 @@ describe("models/group", () => {
         test("comparison matches", async () => {
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "lastLoginAt", match: new Date(0).getTime(), op: "gt" },
+            {
+              key: "lastLoginAt",
+              match: new Date(0).getTime(),
+              operation: { op: "gt" },
+            },
           ]);
           expect(await group.countPotentialMembers()).toBe(2);
         });
@@ -1021,8 +1086,16 @@ describe("models/group", () => {
         test("multiple rules with same key", async () => {
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "lastLoginAt", match: new Date(0).getTime(), op: "gt" },
-            { key: "lastLoginAt", match: new Date().getTime(), op: "lte" },
+            {
+              key: "lastLoginAt",
+              match: new Date(0).getTime(),
+              operation: { op: "gt" },
+            },
+            {
+              key: "lastLoginAt",
+              match: new Date().getTime(),
+              operation: { op: "lte" },
+            },
           ]);
           expect(await group.countPotentialMembers()).toBe(2);
         });
@@ -1030,8 +1103,12 @@ describe("models/group", () => {
         test("multiple matches (ALL)", async () => {
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "lastLoginAt", match: new Date(0).getTime(), op: "gt" },
-            { key: "lastName", match: "mario", op: "iLike" },
+            {
+              key: "lastLoginAt",
+              match: new Date(0).getTime(),
+              operation: { op: "gt" },
+            },
+            { key: "lastName", match: "mario", operation: { op: "iLike" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(1);
         });
@@ -1039,8 +1116,12 @@ describe("models/group", () => {
         test("multiple matches (ANY)", async () => {
           await group.update({ matchType: "any" });
           await group.setRules([
-            { key: "lastLoginAt", match: new Date(0).getTime(), op: "gt" },
-            { key: "lastName", match: "mario", op: "iLike" },
+            {
+              key: "lastLoginAt",
+              match: new Date(0).getTime(),
+              operation: { op: "gt" },
+            },
+            { key: "lastName", match: "mario", operation: { op: "iLike" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(3);
         });
@@ -1048,7 +1129,7 @@ describe("models/group", () => {
         test("null match", async () => {
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "lastLoginAt", match: "null", op: "eq" },
+            { key: "lastLoginAt", match: "null", operation: { op: "eq" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(0);
         });
@@ -1056,20 +1137,24 @@ describe("models/group", () => {
         test("not null match", async () => {
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "lastLoginAt", match: "null", op: "ne" },
+            { key: "lastLoginAt", match: "null", operation: { op: "ne" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("exists", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "lastLoginAt", op: "exists" }]);
+          await group.setRules([
+            { key: "lastLoginAt", operation: { op: "exists" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("notExists", async () => {
           await group.update({ matchType: "all" });
-          await group.setRules([{ key: "lastLoginAt", op: "notExists" }]);
+          await group.setRules([
+            { key: "lastLoginAt", operation: { op: "notExists" } },
+          ]);
           expect(await group.countPotentialMembers()).toBe(0);
         });
       });
@@ -1083,7 +1168,7 @@ describe("models/group", () => {
               relativeMatchNumber: 2,
               relativeMatchUnit: "days",
               relativeMatchDirection: "subtract",
-              op: "gt",
+              operation: { op: "gt" },
             },
           ]);
           expect(await group.countPotentialMembers()).toBe(2);
@@ -1097,10 +1182,24 @@ describe("models/group", () => {
               relativeMatchNumber: 2,
               relativeMatchUnit: "days",
               relativeMatchDirection: "add",
-              op: "gt",
+              operation: { op: "gt" },
             },
           ]);
           expect(await group.countPotentialMembers()).toBe(0);
+        });
+
+        test("comparison matches (matches)", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            {
+              key: "lastLoginAt",
+              relativeMatchNumber: 2,
+              relativeMatchUnit: "days",
+              relativeMatchDirection: "subtract",
+              operation: { op: "gt" },
+            },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
         });
 
         test("multiple rules with same key", async () => {
@@ -1111,14 +1210,14 @@ describe("models/group", () => {
               relativeMatchNumber: 2,
               relativeMatchUnit: "days",
               relativeMatchDirection: "subtract",
-              op: "gt",
+              operation: { op: "gt" },
             },
             {
               key: "lastLoginAt",
-              relativeMatchNumber: 1,
+              relativeMatchNumber: 3,
               relativeMatchUnit: "days",
-              relativeMatchDirection: "add",
-              op: "lt",
+              relativeMatchDirection: "subtract",
+              operation: { op: "gt" },
             },
           ]);
           expect(await group.countPotentialMembers()).toBe(2);
@@ -1132,9 +1231,9 @@ describe("models/group", () => {
               relativeMatchNumber: 2,
               relativeMatchUnit: "days",
               relativeMatchDirection: "subtract",
-              op: "gt",
+              operation: { op: "gt" },
             },
-            { key: "lastName", match: "mario", op: "iLike" },
+            { key: "lastName", match: "mario", operation: { op: "iLike" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(1);
         });
@@ -1147,12 +1246,111 @@ describe("models/group", () => {
               relativeMatchNumber: 2,
               relativeMatchUnit: "days",
               relativeMatchDirection: "subtract",
-              op: "gt",
+              operation: { op: "gt" },
             },
-            { key: "lastName", match: "mario", op: "iLike" },
+            { key: "lastName", match: "mario", operation: { op: "iLike" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(3);
         });
+
+        test("relative date matchers in the future do not include the past", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            {
+              key: "lastLoginAt",
+              relativeMatchNumber: 2,
+              relativeMatchUnit: "days",
+              relativeMatchDirection: "add",
+              operation: { op: "lt" },
+            },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(0);
+        });
+
+        test("relative date matchers in the past do not include the future", async () => {
+          const now = new Date().getTime();
+          await luigi.addOrUpdateProperties({
+            lastLoginAt: new Date(now + 1000 * 5),
+          });
+
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            {
+              key: "lastLoginAt",
+              relativeMatchNumber: 2,
+              relativeMatchUnit: "days",
+              relativeMatchDirection: "add",
+              operation: { op: "lt" },
+            },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(1);
+        });
+      });
+    });
+
+    describe("convenientRules", () => {
+      test("exists", async () => {
+        const convenientRules = [{ key: "email", operation: { op: "exists" } }];
+        const rules = [
+          { key: "email", match: "null", operation: { op: "ne" } },
+        ];
+
+        expect(group.fromConvenientRules(convenientRules)).toEqual(rules);
+      });
+
+      test("notExists", async () => {
+        const convenientRules = [
+          { key: "email", operation: { op: "notExists" } },
+        ];
+        const rules = [
+          { key: "email", match: "null", operation: { op: "eq" } },
+        ];
+
+        expect(group.fromConvenientRules(convenientRules)).toEqual(rules);
+      });
+
+      test("relative_gt", async () => {
+        const convenientRules = [
+          {
+            key: "lastLoginAt",
+            operation: { op: "relative_gt" },
+            relativeMatchNumber: 1,
+            relativeMatchUnit: "days",
+          },
+        ];
+        const rules = [
+          {
+            key: "lastLoginAt",
+            operation: { op: "gt" },
+            relativeMatchDirection: "subtract",
+            relativeMatchNumber: 1,
+            relativeMatchUnit: "days",
+          },
+        ];
+
+        expect(group.fromConvenientRules(convenientRules)).toEqual(rules);
+      });
+
+      test("relative_lt", async () => {
+        const convenientRules = [
+          {
+            key: "lastLoginAt",
+            operation: { op: "relative_lt" },
+            relativeMatchNumber: 1,
+            relativeMatchUnit: "days",
+          },
+        ];
+        const rules = [
+          {
+            key: "lastLoginAt",
+            operation: { op: "lt" },
+            relativeMatchDirection: "add",
+            relativeMatchNumber: 1,
+            relativeMatchUnit: "days",
+          },
+        ];
+
+        expect(group.fromConvenientRules(convenientRules)).toEqual(rules);
       });
     });
 
@@ -1203,8 +1401,8 @@ describe("models/group", () => {
 
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "lastName", match: "Mario", op: "eq" },
-            { key: "firstName", match: "Mario", op: "eq" },
+            { key: "lastName", match: "Mario", operation: { op: "eq" } },
+            { key: "firstName", match: "Mario", operation: { op: "eq" } },
           ]);
 
           const belongs = await group.updateProfileMembership(mario);
@@ -1218,8 +1416,8 @@ describe("models/group", () => {
         test("it will leave a group member in the group", async () => {
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "lastName", match: "Mario", op: "eq" },
-            { key: "firstName", match: "Mario", op: "eq" },
+            { key: "lastName", match: "Mario", operation: { op: "eq" } },
+            { key: "firstName", match: "Mario", operation: { op: "eq" } },
           ]);
 
           const belongsA = await group.updateProfileMembership(mario);
@@ -1236,8 +1434,8 @@ describe("models/group", () => {
         test("it will remove a profile from the group", async () => {
           await group.update({ matchType: "all" });
           await group.setRules([
-            { key: "lastName", match: "Mario", op: "eq" },
-            { key: "firstName", match: "Mario", op: "eq" },
+            { key: "lastName", match: "Mario", operation: { op: "eq" } },
+            { key: "firstName", match: "Mario", operation: { op: "eq" } },
           ]);
 
           let belongs = await group.updateProfileMembership(mario);
@@ -1248,7 +1446,7 @@ describe("models/group", () => {
           expect(members[0].profileGuid).toBe(mario.guid);
 
           await group.setRules([
-            { key: "lastName", match: "Lakitu", op: "eq" },
+            { key: "lastName", match: "Lakitu", operation: { op: "eq" } },
           ]);
 
           belongs = await group.updateProfileMembership(mario);
@@ -1264,8 +1462,12 @@ describe("models/group", () => {
       test("it will count the profiles which would become members at the next run by default", async () => {
         await group.update({ matchType: "any" });
         await group.setRules([
-          { key: "lastLoginAt", match: new Date(0).getTime(), op: "gt" },
-          { key: "lastName", match: "mario", op: "iLike" },
+          {
+            key: "lastLoginAt",
+            match: new Date(0).getTime(),
+            operation: { op: "gt" },
+          },
+          { key: "lastName", match: "mario", operation: { op: "iLike" } },
         ]);
         const count = await group.countPotentialMembers();
         expect(count).toBe(3);
@@ -1275,8 +1477,12 @@ describe("models/group", () => {
         await group.update({ matchType: "all" });
         await group.setRules([]);
         const rules = [
-          { key: "lastLoginAt", match: new Date(100000).getTime(), op: "gte" },
-          { key: "lastName", match: "mario", op: "iLike" },
+          {
+            key: "lastLoginAt",
+            match: new Date(100000).getTime(),
+            operation: { op: "gte" },
+          },
+          { key: "lastName", match: "mario", operation: { op: "iLike" } },
         ];
         const count = await group.countPotentialMembers(rules);
         expect(count).toBe(1);
@@ -1292,17 +1498,17 @@ describe("models/group", () => {
           {
             key: "firstName",
             match: "%",
-            op: "iLike",
+            operation: { op: "iLike" },
           },
           {
             key: "lastLoginAt",
             match: new Date(100000).getTime(),
-            op: "gte",
+            operation: { op: "gte" },
           },
           {
             key: "lastName",
             match: "mario",
-            op: "iLike",
+            operation: { op: "iLike" },
           },
         ];
 

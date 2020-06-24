@@ -306,7 +306,7 @@ describe("integration/runs/postgres", () => {
       {
         key: "email",
         match: "%@%",
-        op: "iLike",
+        operation: { op: "iLike" },
       },
     ]);
   });

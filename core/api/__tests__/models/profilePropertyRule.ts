@@ -161,7 +161,7 @@ describe("models/profilePropertyRule", () => {
     await group.setRules([
       {
         key: rule.key,
-        op: "eq",
+        operation: { op: "eq" },
         match: "abc",
       },
     ]);
@@ -280,7 +280,9 @@ describe("models/profilePropertyRule", () => {
     await rule.update({ state: "ready" });
 
     const group = await helper.factories.group({ type: "calculated" });
-    await group.setRules([{ key: "thing", match: "%", op: "iLike" }]);
+    await group.setRules([
+      { key: "thing", match: "%", operation: { op: "iLike" } },
+    ]);
 
     await expect(rule.destroy()).rejects.toThrow(
       /cannot delete profile property rule "thing", group .* is based on it/

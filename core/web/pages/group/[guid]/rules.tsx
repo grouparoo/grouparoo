@@ -20,7 +20,7 @@ export default function Page(props) {
   const [group, setGroup] = useState<GroupAPIData>(props.group);
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [localRules, setLocalRules] = useState([]);
+  const [localRules, setLocalRules] = useState(props.group.rules);
   const [countPotentialMembers, setCountPotentialMembers] = useState(0);
   const [componentCounts, setComponentCounts] = useState({});
   const [autocompleteResults, setAutoCompleteResults] = useState({});
@@ -29,14 +29,14 @@ export default function Page(props) {
   const typeaheadTypes = ["email", "string"];
 
   useEffect(() => {
-    async function loadAll() {
-      const _group = await load();
-      if (_group.type === "calculated") {
-        getCounts();
-      }
-    }
+    getCounts();
 
-    loadAll();
+    // seed typeahead responses
+    const _autocompleteResults = Object.assign({}, autocompleteResults);
+    props.group.rules.map((rule) => {
+      _autocompleteResults[rule.key] = [rule.match];
+    });
+    setAutoCompleteResults(_autocompleteResults);
   }, []);
 
   async function load() {
@@ -97,8 +97,8 @@ export default function Page(props) {
 
     _rules.push({
       key: profilePropertyRules[0].key,
-      match: "",
-      op: "gt",
+      match: null,
+      operation: { op: "exists" },
     });
 
     setLocalRules(_rules);
@@ -247,23 +247,22 @@ export default function Page(props) {
                     <Form.Group controlId={`${rule.key}-op-${idx}`}>
                       <Form.Control
                         as="select"
-                        value={rule.op}
+                        value={rule.operation.op}
                         onChange={(e: any) => {
                           const _rules = [...localRules];
-                          rule.op = e.target.value;
+                          rule.operation.op = e.target.value;
                           _rules[idx] = rule;
                           setLocalRules(_rules);
                         }}
                       >
                         <option disabled>(operation)</option>
                         {ops[type]
-                          ? ops[type].map((op) => (
+                          ? ops[type].map((operation) => (
                               <option
-                                value={op}
-                                key={`ruleKeyOpt-${rule.key}-${idx}-${op}`}
+                                value={operation.op}
+                                key={`ruleKeyOpt-${rule.key}-${idx}-${operation.op}`}
                               >
-                                {/* {ops._dictionary[op]} ({op}) */}
-                                {ops._dictionary[op]}
+                                {operation.description}
                               </option>
                             ))
                           : null}
@@ -271,18 +270,20 @@ export default function Page(props) {
                       <span>&nbsp;</span>
 
                       {/* exists or not exists */}
-                      {["exists", "notExists"].includes(rule.op) ? <></> : null}
+                      {["exists", "notExists"].includes(rule.operation.op) ? (
+                        <></>
+                      ) : null}
 
                       {/* absolute dates */}
-                      {!["exists", "notExists"].includes(rule.op) &&
+                      {!["exists", "notExists"].includes(rule.operation.op) &&
                       type === "date" &&
-                      !rule.op.match(/relative_/) ? (
+                      !rule.operation.op.match(/relative_/) ? (
                         <>
                           <DatePicker
                             selected={
                               rule.match && rule.match !== "null"
                                 ? new Date(parseInt(rule.match))
-                                : new Date()
+                                : null
                             }
                             onChange={(d: Date) => {
                               const _rules = [...localRules];
@@ -295,9 +296,9 @@ export default function Page(props) {
                       ) : null}
 
                       {/* relative dates */}
-                      {!["exists", "notExists"].includes(rule.op) &&
+                      {!["exists", "notExists"].includes(rule.operation.op) &&
                       type === "date" &&
-                      rule.op.match(/relative_/) ? (
+                      rule.operation.op.match(/relative_/) ? (
                         <>
                           <Form.Label srOnly>Username</Form.Label>
 
@@ -338,38 +339,11 @@ export default function Page(props) {
                               </option>
                             ))}
                           </Form.Control>
-
-                          <span>&nbsp;</span>
-
-                          <Form.Control
-                            as="select"
-                            value={rule.relativeMatchDirection || ""}
-                            onChange={(e: any) => {
-                              const _rules = [...localRules];
-                              rule.relativeMatchDirection = e.target.value;
-                              _rules[idx] = rule;
-                              setLocalRules(_rules);
-                            }}
-                          >
-                            <option disabled value="">
-                              (direction)
-                            </option>
-                            <option value="add">
-                              {rule.op.match(/greater than/)
-                                ? "in the past"
-                                : "in the future"}{" "}
-                            </option>
-                            <option value="subtract">
-                              {rule.op.match(/greater than/)
-                                ? "in the future"
-                                : "in the past"}{" "}
-                            </option>
-                          </Form.Control>
                         </>
                       ) : null}
 
                       {/* normal matchers */}
-                      {!["exists", "notExists"].includes(rule.op) &&
+                      {!["exists", "notExists"].includes(rule.operation.op) &&
                       type !== "date" ? (
                         <div className="form-inline" style={{ minWidth: 250 }}>
                           <AsyncTypeahead

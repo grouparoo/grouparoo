@@ -535,7 +535,7 @@ describe("models/profile", () => {
 
         await group.update({ matchType: "all" });
         await group.setRules([
-          { key: "email", match: "%@example.com", op: "iLike" },
+          { key: "email", match: "%@example.com", operation: { op: "iLike" } },
         ]);
 
         const groupMemberships = await profile.updateGroupMembership();
