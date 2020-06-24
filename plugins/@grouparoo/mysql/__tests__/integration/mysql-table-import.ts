@@ -317,7 +317,7 @@ describe("integration/runs/mysql", () => {
       {
         key: "email",
         match: "%@%",
-        op: "iLike",
+        operation: { op: "iLike" },
       },
     ]);
   });

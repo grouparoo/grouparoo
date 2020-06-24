@@ -200,7 +200,9 @@ describe("integration/runs/mailchimp", () => {
       matchType: "all",
       type: "calculated",
     });
-    await group.setRules([{ key: "email", match: "%@%", op: "iLike" }]);
+    await group.setRules([
+      { key: "email", match: "%@%", operation: { op: "iLike" } },
+    ]);
     await group.update({ state: "ready" });
   });
 
