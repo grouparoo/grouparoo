@@ -739,6 +739,7 @@ export class Group extends LoggedModel<Group> {
     return ProfileMultipleAssociationShim.count({
       where,
       include,
+      logging: true,
     });
   }
 
@@ -813,7 +814,7 @@ export class Group extends LoggedModel<Group> {
         const timestamp = now[relativeMatchDirection](
           relativeMatchNumber,
           relativeMatchUnit
-        )
+        ) // i.e.: Moment().add(3, 'days')
           .toDate()
           .getTime();
         rawValueMatch[Op[operation.op]] = timestamp;
@@ -835,6 +836,24 @@ export class Group extends LoggedModel<Group> {
       );
 
       wheres.push(localWhereGroup);
+
+      // also upper/lower bound against 'now' in the relative date case (ie: if we want 'in the past month', that means a) greater than one month ago and B) less than now)
+      if (relativeMatchNumber && !match) {
+        const todayBoundWhereGroup = {};
+        const todayBoundMatch = {};
+        todayBoundMatch[
+          Op[operation.op === "gt" ? "lte" : "gte"]
+        ] = new Date().getTime();
+        todayBoundWhereGroup[Op.and] = api.sequelize.where(
+          api.sequelize.cast(
+            api.sequelize.col(`${alias}.rawValue`),
+            profilePropertyRuleJSToSQLType(profilePropertyRule.type)
+          ),
+          todayBoundMatch
+        );
+
+        wheres.push(todayBoundWhereGroup);
+      }
 
       include.push({
         // $_$ wrapping is an option with eager loading
