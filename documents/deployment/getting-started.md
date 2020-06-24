@@ -12,7 +12,7 @@ The simplest way to see Grouparoo in action is to deploy it to Heroku for free:
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/grouparoo/app-example)
 
-### Run locally with Docker
+## Run locally with Docker
 
 Assuming you have Docker installed:
 
