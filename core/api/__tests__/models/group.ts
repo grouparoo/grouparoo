@@ -1252,6 +1252,105 @@ describe("models/group", () => {
           ]);
           expect(await group.countPotentialMembers()).toBe(3);
         });
+
+        test("relative date matchers in the future do not include the past", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            {
+              key: "lastLoginAt",
+              relativeMatchNumber: 2,
+              relativeMatchUnit: "days",
+              relativeMatchDirection: "add",
+              operation: { op: "lt" },
+            },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(0);
+        });
+
+        test("relative date matchers in the past do not include the future", async () => {
+          const now = new Date().getTime();
+          await luigi.addOrUpdateProperties({
+            lastLoginAt: new Date(now + 1000 * 5),
+          });
+
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            {
+              key: "lastLoginAt",
+              relativeMatchNumber: 2,
+              relativeMatchUnit: "days",
+              relativeMatchDirection: "add",
+              operation: { op: "lt" },
+            },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(1);
+        });
+      });
+    });
+
+    describe("convenientRules", () => {
+      test("exists", async () => {
+        const convenientRules = [{ key: "email", operation: { op: "exists" } }];
+        const rules = [
+          { key: "email", match: "null", operation: { op: "ne" } },
+        ];
+
+        expect(group.fromConvenientRules(convenientRules)).toEqual(rules);
+      });
+
+      test("notExists", async () => {
+        const convenientRules = [
+          { key: "email", operation: { op: "notExists" } },
+        ];
+        const rules = [
+          { key: "email", match: "null", operation: { op: "eq" } },
+        ];
+
+        expect(group.fromConvenientRules(convenientRules)).toEqual(rules);
+      });
+
+      test("relative_gt", async () => {
+        const convenientRules = [
+          {
+            key: "lastLoginAt",
+            operation: { op: "relative_gt" },
+            relativeMatchNumber: 1,
+            relativeMatchUnit: "days",
+          },
+        ];
+        const rules = [
+          {
+            key: "lastLoginAt",
+            operation: { op: "gt" },
+            relativeMatchDirection: "subtract",
+            relativeMatchNumber: 1,
+            relativeMatchUnit: "days",
+          },
+        ];
+
+        expect(group.fromConvenientRules(convenientRules)).toEqual(rules);
+      });
+
+      test("relative_lt", async () => {
+        const convenientRules = [
+          {
+            key: "lastLoginAt",
+            operation: { op: "relative_lt" },
+            relativeMatchNumber: 1,
+            relativeMatchUnit: "days",
+          },
+        ];
+        const rules = [
+          {
+            key: "lastLoginAt",
+            operation: { op: "lt" },
+            relativeMatchDirection: "add",
+            relativeMatchNumber: 1,
+            relativeMatchUnit: "days",
+          },
+        ];
+
+        expect(group.fromConvenientRules(convenientRules)).toEqual(rules);
       });
     });
 
