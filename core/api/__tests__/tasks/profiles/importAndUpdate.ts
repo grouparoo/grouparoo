@@ -62,7 +62,9 @@ describe("tasks/profile:importAndUpdate", () => {
           type: "calculated",
           matchType: "all",
         });
-        await group.setRules([{ key: "lastName", match: "Mario", op: "eq" }]);
+        await group.setRules([
+          { key: "lastName", match: "Mario", operation: { op: "eq" } },
+        ]);
       });
 
       it("updates the run and imports", async () => {

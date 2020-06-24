@@ -42,8 +42,8 @@ const numbers = [...Array(GROUP_RULE_LIMIT).keys()].map((n) => n + 1).reverse();
 
 export interface GroupRuleWithKey {
   key: string;
-  type: string;
-  operation: { op: string; description: string };
+  type?: string;
+  operation: { op: string; description?: string };
   match?: string | number | boolean;
   relativeMatchNumber?: number;
   relativeMatchUnit?: string;
@@ -736,11 +736,7 @@ export class Group extends LoggedModel<Group> {
     );
 
     // we use ProfileMultipleAssociationShim as a shim model which has extra associations
-    return ProfileMultipleAssociationShim.count({
-      where,
-      include,
-      logging: true,
-    });
+    return ProfileMultipleAssociationShim.count({ where, include });
   }
 
   /**
@@ -827,15 +823,15 @@ export class Group extends LoggedModel<Group> {
         throw new Error(`cannot find type for ProfilePropertyRule ${key}`);
       }
 
-      localWhereGroup[Op.and] = api.sequelize.where(
-        api.sequelize.cast(
-          api.sequelize.col(`${alias}.rawValue`),
-          profilePropertyRuleJSToSQLType(profilePropertyRule.type)
+      localWhereGroup[Op.and] = [
+        api.sequelize.where(
+          api.sequelize.cast(
+            api.sequelize.col(`${alias}.rawValue`),
+            profilePropertyRuleJSToSQLType(profilePropertyRule.type)
+          ),
+          rawValueMatch
         ),
-        rawValueMatch
-      );
-
-      wheres.push(localWhereGroup);
+      ];
 
       // also upper/lower bound against 'now' in the relative date case (ie: if we want 'in the past month', that means a) greater than one month ago and B) less than now)
       if (relativeMatchNumber && !match) {
@@ -852,8 +848,10 @@ export class Group extends LoggedModel<Group> {
           todayBoundMatch
         );
 
-        wheres.push(todayBoundWhereGroup);
+        localWhereGroup[Op.and].push(todayBoundWhereGroup);
       }
+
+      wheres.push(localWhereGroup);
 
       include.push({
         // $_$ wrapping is an option with eager loading

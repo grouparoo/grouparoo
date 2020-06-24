@@ -122,7 +122,9 @@ describe("tasks/group:destroy", () => {
         state: "ready",
       });
 
-      await group.setRules([{ key: "lastName", match: "Mario", op: "eq" }]);
+      await group.setRules([
+        { key: "lastName", match: "Mario", operation: { op: "eq" } },
+      ]);
       await Promise.all(
         [mario, luigi].map(async (p) => p.updateGroupMembership())
       );

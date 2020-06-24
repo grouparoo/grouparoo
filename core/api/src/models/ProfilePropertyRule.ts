@@ -79,6 +79,8 @@ const _string_ops = [
 const _date_ops = [
   { op: "exists", description: "exists with any value" },
   { op: "notExists", description: "does not exist" },
+  { op: "eq", description: "is equal to" },
+  { op: "ne", description: "is not equal to" },
   { op: "gt", description: "is after" },
   { op: "lt", description: "is before" },
   { op: "gte", description: "is on or after" },

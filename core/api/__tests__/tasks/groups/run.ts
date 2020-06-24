@@ -83,7 +83,9 @@ describe("tasks/group:run", () => {
     it("can create imports for profiles which should be added", async () => {
       let foundTasks = [];
       let imports = [];
-      await group.setRules([{ key: "email", match: "%@%", op: "iLike" }]);
+      await group.setRules([
+        { key: "email", match: "%@%", operation: { op: "iLike" } },
+      ]);
 
       expect(group.state).toBe("initializing");
 
@@ -144,7 +146,7 @@ describe("tasks/group:run", () => {
         {
           key: "lastName",
           match: "Mario",
-          op: "eq",
+          operation: { op: "eq" },
         },
       ]);
 
@@ -215,7 +217,7 @@ describe("tasks/group:run", () => {
         {
           key: "lastName",
           match: "daisy",
-          op: "eq",
+          operation: { op: "eq" },
         },
       ]);
       const members = await group.$get("groupMembers");

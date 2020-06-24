@@ -246,7 +246,13 @@ describe("actions/groups", () => {
           "string",
         ]);
 
-        expect(ops._relativeMatchUnits).toEqual(["days", "months", "years"]);
+        expect(ops._relativeMatchUnits).toEqual([
+          "days",
+          "weeks",
+          "months",
+          "quarters",
+          "years",
+        ]);
       });
 
       test("group#countComponentMembers", async () => {
@@ -255,7 +261,7 @@ describe("actions/groups", () => {
           {
             key: "lastName",
             match: "Mario",
-            op: "iLike",
+            operation: { op: "iLike" },
           },
         ]);
 
@@ -274,7 +280,7 @@ describe("actions/groups", () => {
           {
             key: "firstName",
             match: "Mario",
-            op: "iLike",
+            operation: { op: "iLike" },
           },
         ];
         connection.params = { csrfToken, guid: group.guid, rules: newRules };
@@ -293,7 +299,7 @@ describe("actions/groups", () => {
           {
             key: "lastName",
             match: "Mario",
-            op: "iLike",
+            operation: { op: "iLike" },
           },
         ]);
 
@@ -311,7 +317,7 @@ describe("actions/groups", () => {
           {
             key: "firstName",
             match: "Mario",
-            op: "iLike",
+            operation: { op: "iLike" },
           },
         ];
         connection.params = { csrfToken, guid: group.guid, rules: newRules };

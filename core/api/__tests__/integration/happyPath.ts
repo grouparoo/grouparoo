@@ -297,7 +297,9 @@ describe("integration/happyPath", () => {
         csrfToken,
         name: "calculated group",
         type: "calculated",
-        rules: [{ key: "lastName", op: "iLike", match: "mario" }],
+        rules: [
+          { key: "lastName", operation: { op: "iLike" }, match: "mario" },
+        ],
         state: "ready",
       };
 
