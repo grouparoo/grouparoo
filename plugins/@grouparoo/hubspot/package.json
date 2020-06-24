@@ -1,0 +1,47 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "@grouparoo/hubspot",
+  "description": "The Grouparoo hubspot Plugin",
+  "version": "0.1.5-alpha.0",
+  "license": "MPL-2.0",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://www.grouparoo.com",
+  "bugs": {
+    "url": "https://github.com/grouparoo/grouparoo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grouparoo/grouparoo.git",
+    "directory": "plugins/@grouparoo/hubspot"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "scripts": {
+    "prepare": "rm -rf dist && tsc --declaration",
+    "test": "jest",
+    "pretest": "npm run lint && npm run prepare",
+    "lint": "prettier --check src "
+  },
+  "dependencies": {
+    "hubspot-api": "^2.15.3"
+  },
+  "peerDependencies": {
+    "@grouparoo/core": "^0.1.1",
+    "actionhero": "22.1.1"
+  },
+  "devDependencies": {
+    "@grouparoo/core": "^0.1.5-alpha.0",
+    "@types/jest": "^26.0.0",
+    "@types/node": "^14.0.5",
+    "actionhero": "^22.1.1",
+    "jest": "^25.4.0",
+    "nock": "^12.0.3",
+    "prettier": "^2.0.5",
+    "ts-jest": "^25.4.0",
+    "typescript": "^3.9.5"
+  }
+}
