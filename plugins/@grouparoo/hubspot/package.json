@@ -27,6 +27,7 @@
     "lint": "prettier --check src "
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "hubspot-api": "^2.15.3"
   },
   "peerDependencies": {
