@@ -21,9 +21,10 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
     profilePropertyRules: {
       required: [{ key: "email", type: "email" }],
       known: contactsProperties
-        // ignore internal hubspot properties
-        .filter((contactProperty) => !contactProperty.name.match(/^hs_/))
-        .filter((contactProperty) => !contactProperty.name.match(/^hubspot_/))
+        .filter((contactProperty) => contactProperty.name !== "email")
+        // ignore internal hubspot properties ?
+        // .filter((contactProperty) => !contactProperty.name.match(/^hs_/))
+        // .filter((contactProperty) => !contactProperty.name.match(/^hubspot_/))
         .sort((a, b) => {
           if (a.name > b.name) return 1;
           if (a.name < b.name) return -1;
