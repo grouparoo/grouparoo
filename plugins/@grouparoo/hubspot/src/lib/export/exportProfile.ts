@@ -4,7 +4,6 @@ import { addToList, removeFromList } from "./listMethods";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
-  destinationOptions,
   toDelete,
   newProfileProperties,
   oldProfileProperties,
@@ -37,8 +36,19 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       await client.contacts.deleteContact(contact.vid);
     }
   } else {
-    // create the contact
-    const payload = Object.assign({ email }, newProfileProperties);
+    // create the contact and set properties
+    const deletePropertiesPayload = {};
+
+    const newPropertyKeys = Object.keys(newProfileProperties);
+    Object.keys(oldProfileProperties)
+      .filter((k) => !newPropertyKeys.includes(k))
+      .forEach((k) => (deletePropertiesPayload[k] = ""));
+
+    const payload = Object.assign(
+      { email },
+      newProfileProperties,
+      deletePropertiesPayload
+    );
     await client.contacts.createOrUpdateContact(payload);
 
     // add to lists
