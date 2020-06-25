@@ -93,7 +93,7 @@ In a new directory, create a new project with a `package.json` file like the one
 }
 ```
 
-This makes an "app" for Grouparoo to run. There is an example in the [local-public](https://github.com/grouparoo/grouparoo/tree/master/apps/local-public) directory.
+This makes an "app" for Grouparoo to run. There is an example in the [app-example](https://github.com/grouparoo/app-example/blob/master/package.json) directory.
 
 ### Step 3: Create your `.env` file
 
