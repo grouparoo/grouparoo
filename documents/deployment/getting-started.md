@@ -99,7 +99,7 @@ This makes an "app" for Grouparoo to run. There is an example in the [app-exampl
 
 There are some environment variables needed by Grouparoo that need to be set by your host/docker image. These variables tell Grouparoo how to connect to your database, which URL to use, etc. In development, we can also load these variables from a `.env` file that lives alongside your `package.json`.
 
-Create a copy of our [example](https://github.com/grouparoo/grouparoo/blob/master/apps/local-public/.env.example) `.env` file to manage your environment variables locally. You can modify the options as needed. Make this as a peer to your `package.json` file. Note: the `.env` file only works when running in `NODE_ENV=development`. On your server, you should set up these same environment variables. At minimum, you will need to set the following variables:
+Create a copy of our [example](https://github.com/grouparoo/app-example/blob/master/.env.example) `.env` file to manage your environment variables locally. You can modify the options as needed. Make this as a peer to your `package.json` file. Note: the `.env` file only works when running in `NODE_ENV=development`. On your server, you should set up these same environment variables. At minimum, you will need to set the following variables:
 
 ```bash
 PORT=3000
