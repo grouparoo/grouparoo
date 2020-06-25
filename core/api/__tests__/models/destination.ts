@@ -879,6 +879,66 @@ describe("models/destination", () => {
       await destination.destroy();
     });
 
+    test("profile properties previously mapped but now removed will be included as oldProfileProperties in the export", async () => {
+      await app.setOptions({
+        test_key: "abc123",
+      });
+
+      const destination = await Destination.create({
+        name: "test plugin destination",
+        type: "export-from-test-template-app",
+        appGuid: app.guid,
+      });
+
+      await destination.setMapping({
+        uid: "userId",
+        customer_email: "email",
+      });
+
+      const groupA = await helper.factories.group();
+
+      await destination.trackGroup(groupA);
+
+      const profile = await helper.factories.profile();
+      const oldProfileProperties = { email: "oldEmail" };
+      const newProfileProperties = { email: "newEmail" };
+      const oldGroups = [];
+      const newGroups = [groupA];
+
+      // create a previous export
+      const _export = await Export.create({
+        profileGuid: profile.guid,
+        destinationGuid: destination.guid,
+        newProfileProperties: { gender: "Male" },
+        oldProfileProperties: {},
+        oldGroups: [],
+        newGroups: [],
+        mostRecent: true,
+      });
+
+      const _import = await helper.factories.import();
+
+      await destination.exportProfile(
+        profile,
+        [_import],
+        oldProfileProperties,
+        newProfileProperties,
+        oldGroups,
+        newGroups
+      );
+
+      expect(exportArgs.oldProfileProperties).toEqual({
+        customer_email: "oldEmail",
+        gender: "unknown",
+      });
+      expect(exportArgs.newProfileProperties).toEqual({
+        customer_email: "newEmail",
+      });
+
+      await destination.unTrackGroups();
+      await destination.destroy();
+    });
+
     test("if a profile is removed from all groups tracked by this destination, toDelete is true", async () => {
       await app.setOptions({
         test_key: "abc123",
