@@ -19870,6 +19870,62 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   ]);
 
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .post("/contacts/v1/contact/createOrUpdate/email/luigi@grouparoo.com/", {
+    properties: [
+      { property: "email", value: "luigi@grouparoo.com" },
+      { property: "lastname", value: "Mario" },
+      { property: "firstname", value: "Luigi" },
+    ],
+  })
+  .query({ hapikey: "xxxxxxxxxxxxxxxxx" })
+  .reply(200, { vid: 1101, isNew: false }, [
+    "Date",
+    "Thu, 25 Jun 2020 21:04:11 GMT",
+    "Content-Type",
+    "application/json;charset=utf-8",
+    "Content-Length",
+    "26",
+    "Connection",
+    "close",
+    "Set-Cookie",
+    "__cfduid=d92392c9a00f431c546377d4da0909b7e1593119050; expires=Sat, 25-Jul-20 21:04:10 GMT; path=/; domain=.hubapi.com; HttpOnly; SameSite=Lax",
+    "X-Trace",
+    "2B78DF35189A2C752273532FA57FD9339AEE0306E3000000000000000000",
+    "X-HubSpot-RateLimit-Daily",
+    "500000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "499668",
+    "X-HubSpot-RateLimit-Interval-Milliseconds",
+    "10000",
+    "X-HubSpot-RateLimit-Remaining",
+    "95",
+    "X-HubSpot-RateLimit-Max",
+    "100",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "9",
+    "Vary",
+    "Accept-Encoding",
+    "Access-Control-Allow-Credentials",
+    "false",
+    "Accept-Ranges",
+    "bytes",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "cf-request-id",
+    "038ee4a4c00000c9a9fe120200000001",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains; preload",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "5a91a3b46927c9a9-SEA",
+  ]);
+
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .get("/contacts/v1/lists/static")
   .query({ hapikey: "xxxxxxxxxxxxxxxxx", count: "999" })
   .reply(
