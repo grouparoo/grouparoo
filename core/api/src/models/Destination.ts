@@ -607,6 +607,32 @@ export class Destination extends LoggedModel<Destination> {
       }
     });
 
+    const mostRecentExport = await Export.findOne({
+      where: {
+        destinationGuid: this.guid,
+        profileGuid: profile.guid,
+        mostRecent: true,
+      },
+    });
+
+    if (mostRecentExport) {
+      const mostRecentMappedProfilePropertyKeys = Object.keys(
+        mostRecentExport.newProfileProperties
+      );
+      const currentMappedNewProfilePropertyKeys = Object.keys(
+        mappedNewProfileProperties
+      );
+      const currentMappedOldProfilePropertyKeys = Object.keys(
+        mappedNewProfileProperties
+      );
+
+      // since this export was previously mapped, we can assume the previous mapping still makes sense...
+      mostRecentMappedProfilePropertyKeys
+        .filter((k) => !currentMappedNewProfilePropertyKeys.includes(k))
+        .filter((k) => !currentMappedOldProfilePropertyKeys.includes(k))
+        .forEach((k) => (mappedOldProfileProperties[k] = "unknown"));
+    }
+
     const _export = await Export.create({
       destinationGuid: this.guid,
       profileGuid: profile.guid,

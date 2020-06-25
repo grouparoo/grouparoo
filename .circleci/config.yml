@@ -41,6 +41,7 @@ jobs:
             - plugins/@grouparoo/files-local/node_modules
             - plugins/@grouparoo/files-s3/node_modules
             - plugins/@grouparoo/google-sheets/node_modules
+            - plugins/@grouparoo/hubspot/node_modules
             - plugins/@grouparoo/logger/node_modules
             - plugins/@grouparoo/mailchimp/node_modules
             - plugins/@grouparoo/mysql/node_modules
@@ -59,6 +60,7 @@ jobs:
             - plugins/@grouparoo/files-local/dist
             - plugins/@grouparoo/files-s3/dist
             - plugins/@grouparoo/google-sheets/dist
+            - plugins/@grouparoo/hubspot/dist
             - plugins/@grouparoo/logger/dist
             - plugins/@grouparoo/mailchimp/dist
             - plugins/@grouparoo/mysql/dist

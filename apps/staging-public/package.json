@@ -21,6 +21,7 @@
     "@grouparoo/newrelic": "^0.1.5-alpha.0",
     "@grouparoo/postgres": "^0.1.5-alpha.0",
     "@grouparoo/sailthru": "^0.1.5-alpha.0",
+    "@grouparoo/hubspot": "^0.1.5-alpha.0",
     "@grouparoo/sample-ui-plugin": "^0.1.5-alpha.0"
   },
   "scripts": {
@@ -40,7 +41,8 @@
       "@grouparoo/email-authentication",
       "@grouparoo/newrelic",
       "@grouparoo/google-sheets",
-      "@grouparoo/sailthru"
+      "@grouparoo/sailthru",
+      "@grouparoo/hubspot"
     ],
     "includedFiles": [
       "assets"

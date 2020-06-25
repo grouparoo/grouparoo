@@ -1,14 +1,12 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Form, Badge, Button, Table } from "react-bootstrap";
+import { Row, Col, Form, Badge, Button, Table, Alert } from "react-bootstrap";
 import ProfilePreview from "./../../../components/destination/profilePreview";
 import Head from "next/head";
+import { Typeahead } from "react-bootstrap-typeahead";
 import DestinationTabs from "../../../components/tabs/destination";
 
-import {
-  ProfilePropertyRuleAPIData,
-  DestinationAPIData,
-} from "../../../utils/apiData";
+import { DestinationAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
   const {
@@ -26,6 +24,12 @@ export default function Page(props) {
   const [destination, setDestination] = useState<DestinationAPIData>(
     props.destination
   );
+  const [
+    displayedDestinationProperties,
+    setDisplayedDestinationProperties,
+  ] = useState<string[]>([]);
+  const displayedDestinationPropertiesAutocomleteRef = useRef(null);
+  const taggedGroupRef = useRef(null);
   const [
     unlockedProfilePropertyRules,
     setUnlockedProfilePropertyRules,
@@ -146,6 +150,18 @@ export default function Page(props) {
       newMapping[k] = _destination.mapping[k];
     });
     _destination.mapping = newMapping;
+
+    if (value === "") {
+      const _displayedDestinationProperties = [
+        ...displayedDestinationProperties,
+      ];
+
+      _displayedDestinationProperties.splice(
+        _displayedDestinationProperties.indexOf(oldKey),
+        1
+      );
+      setDisplayedDestinationProperties(_displayedDestinationProperties);
+    }
 
     setDestination(_destination);
   }
@@ -353,45 +369,105 @@ export default function Page(props) {
                           <th>
                             {mappingOptions.labels.profilePropertyRule.singular}
                           </th>
+                          <th />
                         </tr>
                       </thead>
                       <tbody>
                         {mappingOptions.profilePropertyRules.known.map(
-                          ({ key, type }, idx) => (
-                            <tr key={`known-mapping-${idx}`}>
-                              <td>
-                                <Form.Control
-                                  as="select"
-                                  required={false}
-                                  value={destination.mapping[key] || ""}
-                                  onChange={(e) =>
-                                    updateMapping(key, e.target["value"])
-                                  }
-                                >
-                                  <option value={""}>None</option>
-                                  <option disabled>---</option>
-                                  {remainingProfilePropertyRulesForKnown
-                                    .filter((rule) =>
-                                      type === "any" ? true : rule.type === type
-                                    )
-                                    .map((rule) => (
-                                      <option key={`opt-known-${rule.guid}`}>
-                                        {rule.key}
+                          ({ key, type }, idx) =>
+                            displayedDestinationProperties.includes(key) ||
+                            destination.mapping[key] ? (
+                              <tr key={`known-mapping-${idx}`}>
+                                <td>
+                                  <Form.Control
+                                    as="select"
+                                    required={false}
+                                    value={destination.mapping[key] || ""}
+                                    onChange={(e) =>
+                                      updateMapping(key, e.target["value"])
+                                    }
+                                  >
+                                    {!destination.mapping[key] ? (
+                                      <option disabled value={""}>
+                                        None
                                       </option>
-                                    ))}
-                                </Form.Control>
-                              </td>
-                              <td style={{ textAlign: "center" }}>→</td>
-                              <td>
-                                <Badge variant="info">{key}</Badge>{" "}
-                                <span className="text-muted">({type})</span>
-                              </td>
-                            </tr>
-                          )
+                                    ) : null}
+                                    {remainingProfilePropertyRulesForKnown
+                                      .filter((rule) =>
+                                        type === "any"
+                                          ? true
+                                          : rule.type === type
+                                      )
+                                      .map((rule) => (
+                                        <option key={`opt-known-${rule.guid}`}>
+                                          {rule.key}
+                                        </option>
+                                      ))}
+                                  </Form.Control>
+                                </td>
+                                <td style={{ textAlign: "center" }}>→</td>
+                                <td>
+                                  <Badge
+                                    variant={
+                                      destination.mapping[key]
+                                        ? "info"
+                                        : "warning"
+                                    }
+                                  >
+                                    {key}
+                                  </Badge>{" "}
+                                  <span className="text-muted">({type})</span>
+                                </td>
+                                <td>
+                                  <Button
+                                    size="sm"
+                                    variant="danger"
+                                    onClick={() => {
+                                      updateMapping(key, "", key);
+                                    }}
+                                  >
+                                    X
+                                  </Button>
+                                </td>
+                              </tr>
+                            ) : null
                         )}
                       </tbody>
-                    </Table>{" "}
-                    <br />
+                    </Table>
+
+                    <Alert variant="light">
+                      <Form.Group as={Row}>
+                        <Form.Label column sm={3}>
+                          <strong>Send Profile Property:</strong>
+                        </Form.Label>
+                        <Col>
+                          <Typeahead
+                            id="displayedDestinationProperties"
+                            ref={displayedDestinationPropertiesAutocomleteRef}
+                            placeholder={`Choose a ${mappingOptions.labels.profilePropertyRule.singular}...`}
+                            onChange={(selected) => {
+                              displayedDestinationPropertiesAutocomleteRef.current.clear();
+
+                              const _displayedDestinationProperties = [
+                                ...displayedDestinationProperties,
+                              ];
+                              _displayedDestinationProperties.push(selected[0]);
+                              setDisplayedDestinationProperties(
+                                _displayedDestinationProperties
+                              );
+                            }}
+                            options={mappingOptions.profilePropertyRules.known
+                              .filter(
+                                ({ key }) =>
+                                  !displayedDestinationProperties.includes(
+                                    key
+                                  ) && !destination.mapping[key]
+                              )
+                              .map(({ key }) => key)}
+                          />
+                        </Col>
+                      </Form.Group>
+                    </Alert>
                   </>
                 ) : null}
 
@@ -605,21 +681,39 @@ export default function Page(props) {
                     )}
                   </tbody>
                 </Table>
-                <Button
-                  size="sm"
-                  variant="outline-primary"
-                  disabled={
-                    groupsAvailalbeForDestinationGroupMemberships.length === 0
-                  }
-                  onClick={() => {
-                    updateDestinationGroupMembership(
-                      groupsAvailalbeForDestinationGroupMemberships[0].guid,
-                      groupsAvailalbeForDestinationGroupMemberships[0].name
-                    );
-                  }}
-                >
-                  Add new {mappingOptions.labels.group.singular}
-                </Button>
+
+                <Alert variant="light">
+                  <Form.Group as={Row}>
+                    <Form.Label column sm={3}>
+                      <strong>Send Group:</strong>
+                    </Form.Label>
+                    <Col>
+                      <Typeahead
+                        id="taggedGroup"
+                        ref={taggedGroupRef}
+                        disabled={
+                          groupsAvailalbeForDestinationGroupMemberships.length ===
+                          0
+                        }
+                        placeholder={`Choose a group...`}
+                        onChange={(selected) => {
+                          taggedGroupRef.current.clear();
+                          const chosenGroup = groupsAvailalbeForDestinationGroupMemberships.filter(
+                            (g) => g.name === selected[0]
+                          )[0];
+
+                          updateDestinationGroupMembership(
+                            chosenGroup.guid,
+                            chosenGroup.name
+                          );
+                        }}
+                        options={groupsAvailalbeForDestinationGroupMemberships.map(
+                          ({ name }) => name
+                        )}
+                      />
+                    </Col>
+                  </Form.Group>
+                </Alert>
               </Col>
             </Row>
 
