@@ -13,7 +13,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
   const columns: Array<{ key: string; type: string; important: boolean }> = [];
   for (const i in rows) {
     if (rows[i].column_name !== destinationOptions.primaryKey) {
-      columns.push({ key: rows[i].column_name, type: "any", important: false });
+      columns.push({ key: rows[i].column_name, type: "any", important: true });
     }
   }
 
