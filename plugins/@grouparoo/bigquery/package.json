@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/bigquery",
   "description": "The Grouparoo BigQuery Plugin",
-  "version": "0.1.5-alpha.0",
+  "version": "0.1.5-alpha.1",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -34,7 +34,7 @@
     "actionhero": "22.1.1"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.1.5-alpha.0",
+    "@grouparoo/core": "^0.1.5-alpha.1",
     "@types/jest": "^26.0.0",
     "@types/node": "^14.0.5",
     "actionhero": "^22.1.1",
