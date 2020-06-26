@@ -30,9 +30,7 @@ export class EventsList extends AuthenticatedAction {
     const where = {};
     const includeWhere = {};
 
-    if (params.type) {
-      where["type"] = params.type;
-    }
+    if (params.type) where["type"] = { [Op.iLike]: params.type };
 
     if (params.profileGuid) {
       where["profileGuid"] = params.profileGuid;
