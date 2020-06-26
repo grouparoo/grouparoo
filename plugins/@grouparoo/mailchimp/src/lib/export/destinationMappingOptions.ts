@@ -23,7 +23,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
     profilePropertyRules: {
       required: [{ key: "email_address", type: "email" }],
       known: merge_fields.map((mergeField) => {
-        return { key: mergeField.tag, type: "any" };
+        return { key: mergeField.tag, type: "any", important: true };
       }),
       allowOptionalFromProfilePropertyRules: false,
     },

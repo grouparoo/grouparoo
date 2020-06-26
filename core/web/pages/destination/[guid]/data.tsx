@@ -374,8 +374,9 @@ export default function Page(props) {
                       </thead>
                       <tbody>
                         {mappingOptions.profilePropertyRules.known.map(
-                          ({ key, type }, idx) =>
+                          ({ key, type, important }, idx) =>
                             displayedDestinationProperties.includes(key) ||
+                            important ||
                             destination.mapping[key] ? (
                               <tr key={`known-mapping-${idx}`}>
                                 <td>
@@ -409,9 +410,7 @@ export default function Page(props) {
                                 <td>
                                   <Badge
                                     variant={
-                                      destination.mapping[key]
-                                        ? "info"
-                                        : "warning"
+                                      destination.mapping[key] ? "info" : "dark"
                                     }
                                   >
                                     {key}
@@ -463,6 +462,7 @@ export default function Page(props) {
                                     key
                                   ) && !destination.mapping[key]
                               )
+                              .filter(({ important }) => important !== true)
                               .map(({ key }) => key)}
                           />
                         </Col>
