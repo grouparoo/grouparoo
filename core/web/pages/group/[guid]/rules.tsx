@@ -365,6 +365,15 @@ export default function Page(props) {
                               _rules[idx] = rule;
                               setLocalRules(_rules);
                             }}
+                            onBlur={(e) => {
+                              const value = e.target.value;
+                              if (value && value.length > 0) {
+                                const _rules = [...localRules];
+                                rule.match = value;
+                                _rules[idx] = rule;
+                                setLocalRules(_rules);
+                              }
+                            }}
                             options={
                               autocompleteResults[rule.key]?.map((v) =>
                                 v.toString()

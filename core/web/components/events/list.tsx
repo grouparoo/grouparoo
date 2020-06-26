@@ -108,7 +108,9 @@ export default function EventsList(props) {
       {hideSearch ? null : (
         <Form id="search" onSubmit={load}>
           <Form.Group>
-            <Form.Label>Event Type</Form.Label>
+            <Form.Label>
+              Event Type (use <code>%</code> for wildcards)
+            </Form.Label>
             <AsyncTypeahead
               key={`typeahead-search-${type}`}
               id={`typeahead-search-${type}`}
@@ -124,6 +126,10 @@ export default function EventsList(props) {
                     ? selected[0].label // when a new custom option is set
                     : selected[0] // when a list option is chosen);
                 );
+              }}
+              onBlur={(e) => {
+                const value = e.target.value;
+                if (value && value.length > 0) setType(value);
               }}
               options={autocompleteResults}
               onSearch={autocompleteProfilePropertySearch}
