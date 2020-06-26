@@ -170,6 +170,10 @@ export default function ProfilesList(props) {
                         : selected[0] // when a list option is chosen);
                     );
                   }}
+                  onBlur={(e) => {
+                    const value = e.target.value;
+                    if (value && value.length > 0) setSearchValue(value);
+                  }}
                   options={autocompleteResults}
                   onSearch={autocompleteProfilePropertySearch}
                   placeholder={`name@example.com`}
