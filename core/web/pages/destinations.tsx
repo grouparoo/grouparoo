@@ -118,8 +118,8 @@ export default function Page(props) {
                     "All Groups"
                   ) : destination.destinationGroups[0]?.name ? (
                     <Link
-                      href="/group/[guid]"
-                      as={`/group/${destination.destinationGroups[0].guid}`}
+                      href="/group/[guid]/edit"
+                      as={`/group/${destination.destinationGroups[0].guid}/edit`}
                     >
                       <a>{destination.destinationGroups[0].name}</a>
                     </Link>
@@ -128,7 +128,10 @@ export default function Page(props) {
                   )}
                 </td>
                 <td>
-                  <Link href="/app/[guid]" as={`/app/${destination.app.guid}`}>
+                  <Link
+                    href="/app/[guid]/edit"
+                    as={`/app/${destination.app.guid}/edit`}
+                  >
                     <a>
                       <strong>{destination.app.name}</strong>
                     </a>
