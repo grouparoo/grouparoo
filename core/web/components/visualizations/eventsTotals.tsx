@@ -16,7 +16,7 @@ export default function EventsTotals(props) {
   const [total, setTotal] = useState<number>(props.total);
   const [counts, setCounts] = useState(props.counts);
   const { execApi } = useApi(props, errorHandler);
-  const [dateTrunc, setDateTrunc] = useState(query.dateTrunc);
+  const [dateTrunc, setDateTrunc] = useState(query.dateTrunc || "day");
   const [startDate, setStartDate] = useState<Date>(
     query.startTime
       ? new Date(parseInt(query.startTime))
