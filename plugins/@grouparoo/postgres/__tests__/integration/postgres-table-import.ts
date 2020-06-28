@@ -332,9 +332,9 @@ describe("integration/runs/postgres", () => {
       profilePropertyRules: {
         required: [{ key: "id", type: "any" }],
         known: [
-          { key: "customer_email", type: "any" },
-          { key: "fname", type: "any" },
-          { key: "lname", type: "any" },
+          { key: "customer_email", type: "any", important: true },
+          { key: "fname", type: "any", important: true },
+          { key: "lname", type: "any", important: true },
         ],
         allowOptionalFromProfilePropertyRules: false,
       },
