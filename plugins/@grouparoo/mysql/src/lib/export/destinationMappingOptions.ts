@@ -10,10 +10,10 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
     [appOptions.database, destinationOptions.table]
   );
 
-  const columns = [];
+  const columns: Array<{ key: string; type: string; important: boolean }> = [];
   for (const i in rows) {
     if (rows[i].column_name !== destinationOptions.primaryKey) {
-      columns.push({ key: rows[i].column_name, type: "any" });
+      columns.push({ key: rows[i].column_name, type: "any", important: true });
     }
   }
 

@@ -14,7 +14,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
     },
     profilePropertyRules: {
       required: [{ key: "email", type: "email" }],
-      known: [{ key: "extid", type: "any" }],
+      known: [{ key: "extid", type: "any", important: true }],
       allowOptionalFromProfilePropertyRules: true,
     },
   };
