@@ -28,20 +28,20 @@
   },
   "dependencies": {
     "csv-parser": "^2.3.2",
-    "fs-extra": "^9.0.0"
+    "fs-extra": "^9.0.1"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
-    "actionhero": "22.1.1"
+    "actionhero": "23.0.0"
   },
   "devDependencies": {
     "@grouparoo/core": "^0.1.5-alpha.1",
-    "@types/jest": "^26.0.0",
-    "@types/node": "^14.0.5",
-    "actionhero": "^22.1.1",
-    "jest": "^25.4.0",
+    "@types/jest": "^26.0.3",
+    "@types/node": "^14.0.14",
+    "actionhero": "^23.0.0",
+    "jest": "^26.1.0",
     "prettier": "^2.0.5",
-    "ts-jest": "^25.4.0",
+    "ts-jest": "^26.1.1",
     "typescript": "^3.9.5"
   },
   "gitHead": "d180097c68e2e0db22918e7d51c0e84abd9202c0"
