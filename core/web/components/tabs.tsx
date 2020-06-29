@@ -1,4 +1,5 @@
 import { Tab, Tabs, Breadcrumb } from "react-bootstrap";
+import Link from "next/link";
 import Router from "next/router";
 
 export default function GrouparooTabs({
@@ -35,8 +36,10 @@ export default function GrouparooTabs({
   return (
     <>
       <Breadcrumb>
-        <Breadcrumb.Item href={`/${pluralize(topic)}`}>
-          {capitalize(pluralize(topic))}
+        <Breadcrumb.Item>
+          <Link href={`/${pluralize(topic)}`}>
+            <a>{capitalize(pluralize(topic))}</a>
+          </Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>
           {name !== ""
