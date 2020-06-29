@@ -33,7 +33,7 @@
     "@grouparoo/core": "^0.1.5-alpha.1",
     "@types/jest": "^26.0.3",
     "@types/node": "^14.0.5",
-    "@types/react": "^16.9.38",
+    "@types/react": "^16.9.41",
     "actionhero": "^23.0.0",
     "jest": "^25.4.0",
     "prettier": "^2.0.5",
