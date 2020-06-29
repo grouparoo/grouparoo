@@ -33,14 +33,14 @@
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
-    "actionhero": "22.1.1"
+    "actionhero": "23.0.0"
   },
   "devDependencies": {
     "@grouparoo/core": "^0.1.5-alpha.1",
-    "@types/jest": "^26.0.0",
+    "@types/jest": "^26.0.3",
     "@types/node": "^14.0.5",
     "@types/pg": "^7.14.3",
-    "actionhero": "^22.1.1",
+    "actionhero": "^23.0.0",
     "csv-parse": "^4.8.9",
     "jest": "^25.4.0",
     "prettier": "^2.0.5",
