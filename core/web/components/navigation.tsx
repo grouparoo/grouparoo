@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Image, Accordion, Button, Row, Col } from "react-bootstrap";
+import { Image, Accordion, Button } from "react-bootstrap";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
