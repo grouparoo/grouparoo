@@ -37,12 +37,12 @@
     "@grouparoo/core": "^0.1.5-alpha.1",
     "@types/jest": "^26.0.3",
     "@types/mysql": "^2.15.10",
-    "@types/node": "^14.0.5",
+    "@types/node": "^14.0.14",
     "actionhero": "^23.0.0",
-    "csv-parse": "^4.8.9",
-    "jest": "^25.4.0",
+    "csv-parse": "^4.10.1",
+    "jest": "^26.1.0",
     "prettier": "^2.0.5",
-    "ts-jest": "^25.4.0",
+    "ts-jest": "^26.1.1",
     "typescript": "^3.9.5"
   },
   "gitHead": "d180097c68e2e0db22918e7d51c0e84abd9202c0"
