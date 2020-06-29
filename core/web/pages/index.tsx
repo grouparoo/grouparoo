@@ -26,32 +26,32 @@ export default function Page(props) {
       </Head>
 
       <div style={{ width: "100%", height: "100%" }}>
-        <div
-          style={{ margin: 0, position: "absolute", top: "20%", left: "50%" }}
-        >
-          <Row>
-            <Col style={{ textAlign: "center" }}>
-              <Image style={{ maxHeight: 200 }} src="/images/logo/logo.svg" />
-              <br />
-              <br />
-              <h1>Grouparoo</h1>
-              <p>Achieve Marketing Autonomy</p>
-              <br />
-              <br />
+        <Row>
+          <Col style={{ textAlign: "center" }}>
+            <br />
+            <br />
+            <br />
+            <br />
+            <Image style={{ maxHeight: 200 }} src="/images/logo/logo.svg" />
+            <br />
+            <br />
+            <h1>Grouparoo</h1>
+            <p>Achieve Marketing Autonomy</p>
+            <br />
+            <br />
 
-              <div style={{ textAlign: "center" }}>
-                <Button
-                  variant="success"
-                  onClick={() => {
-                    Router.push(CTALink);
-                  }}
-                >
-                  {CTAMessage}
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        </div>
+            <div style={{ textAlign: "center" }}>
+              <Button
+                variant="success"
+                onClick={() => {
+                  Router.push(CTALink);
+                }}
+              >
+                {CTAMessage}
+              </Button>
+            </div>
+          </Col>
+        </Row>
       </div>
     </>
   );
