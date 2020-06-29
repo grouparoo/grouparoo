@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Image, Accordion, Button } from "react-bootstrap";
 import Link from "next/link";
+import Router from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const navLiStyle = { marginTop: 20, marginBottom: 20 };
@@ -17,43 +18,6 @@ const navIconStyle = {
 
 const iconConstrainedStyle = { width: 20 };
 
-function HighlightingNavLink({ href, text, icon, idx }) {
-  const [active, setActive] = useState(false);
-  useEffect(() => {
-    const active = globalThis?.location?.pathname === href;
-    setActive(active);
-  }, [globalThis?.location?.href]);
-
-  return (
-    <li style={navLiStyle} key={idx}>
-      <Link href={href}>
-        <a role="tab" aria-selected={active} style={navIconStyle}>
-          {icon ? (
-            <FontAwesomeIcon
-              style={iconConstrainedStyle}
-              icon={icon}
-              size="xs"
-            />
-          ) : null}{" "}
-        </a>
-      </Link>{" "}
-      <Link href={href}>
-        <a
-          role="tab"
-          aria-selected={active}
-          style={{
-            fontSize: 18,
-            paddingLeft: 0,
-            color: "white",
-          }}
-        >
-          {text}
-        </a>
-      </Link>
-    </li>
-  );
-}
-
 export default function Navigation(props) {
   const {
     navigationMode,
@@ -64,6 +28,8 @@ export default function Navigation(props) {
   } = props;
   const [teamMember, setTeamMember] = useState(props.currentTeamMember);
   const [hasBeenCollapsed, setHasBeenCollapsed] = useState(!navExpanded);
+  const [expandPlatformMenu, setExpandPlatformMenu] = useState(false);
+  const [expandAccountMenu, setExpandAccountMenu] = useState(false);
   const subMenuGreeting = `Hello ${teamMember.firstName} »`;
   const logoLink = teamMember.guid ? "/dashboard" : "/";
 
@@ -74,6 +40,19 @@ export default function Navigation(props) {
 
     return () => {
       sessionHandler.unsubscribe("navigation");
+    };
+  }, []);
+
+  useEffect(() => {
+    function handleRouteChange() {
+      setExpandPlatformMenu(false);
+      setExpandAccountMenu(false);
+    }
+
+    Router.events.on("routeChangeStart", handleRouteChange);
+
+    return () => {
+      Router.events.off("routeChangeStart", handleRouteChange);
     };
   }, []);
 
@@ -142,12 +121,13 @@ export default function Navigation(props) {
             } else if (nav.type === "subNavMenu") {
               return (
                 <li style={navLiStyle} key={idx}>
-                  <Accordion>
+                  <Accordion activeKey={expandPlatformMenu ? "1" : null}>
                     <Accordion.Toggle
                       as={Button}
                       style={{ padding: 0 }}
                       variant="link"
                       eventKey="0"
+                      onClick={() => setExpandPlatformMenu(!expandPlatformMenu)}
                     >
                       <span style={navIconStyle}>
                         {nav.icon ? (
@@ -170,7 +150,7 @@ export default function Navigation(props) {
                       </span>
                       <div style={{ padding: 6 }} />
                     </Accordion.Toggle>
-                    <Accordion.Collapse eventKey="0">
+                    <Accordion.Collapse eventKey="1">
                       <div>
                         {navigation.platformItems.map((nav, platformIdx) => {
                           if (nav.type === "link") {
@@ -210,8 +190,13 @@ export default function Navigation(props) {
           paddingLeft: 20,
         }}
       >
-        <Accordion>
-          <Accordion.Toggle as={Button} variant="link" eventKey="1">
+        <Accordion activeKey={expandAccountMenu ? "1" : null}>
+          <Accordion.Toggle
+            eventKey="0"
+            as={Button}
+            variant="link"
+            onClick={() => setExpandAccountMenu(!expandAccountMenu)}
+          >
             <span
               id="navigation-greeting"
               style={{
@@ -251,5 +236,42 @@ export default function Navigation(props) {
         </Accordion>
       </div>
     </div>
+  );
+}
+
+function HighlightingNavLink({ href, text, icon, idx }) {
+  const [active, setActive] = useState(false);
+  useEffect(() => {
+    const active = globalThis?.location?.pathname === href;
+    setActive(active);
+  }, [globalThis?.location?.href]);
+
+  return (
+    <li style={navLiStyle} key={idx}>
+      <Link href={href}>
+        <a role="tab" aria-selected={active} style={navIconStyle}>
+          {icon ? (
+            <FontAwesomeIcon
+              style={iconConstrainedStyle}
+              icon={icon}
+              size="xs"
+            />
+          ) : null}{" "}
+        </a>
+      </Link>{" "}
+      <Link href={href}>
+        <a
+          role="tab"
+          aria-selected={active}
+          style={{
+            fontSize: 18,
+            paddingLeft: 0,
+            color: "white",
+          }}
+        >
+          {text}
+        </a>
+      </Link>
+    </li>
   );
 }
