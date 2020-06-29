@@ -106,7 +106,7 @@
     "nock": "^12.0.3",
     "prettier": "^2.0.5",
     "prop-types": "^15.7.2",
-    "sequelize-cli": "^5.5.1",
+    "sequelize-cli": "^6.1.0",
     "ts-jest": "^25.4.0",
     "typedoc": "^0.17.7"
   },
