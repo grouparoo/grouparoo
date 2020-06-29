@@ -18,7 +18,7 @@ export default function (props) {
     if (response?.teamMember) {
       window.localStorage.setItem("session:csrfToken", response.csrfToken);
       sessionHandler.set(response.teamMember);
-
+      successHandler.set({ message: "Welcome Back!" });
       nextPage ? Router.push(nextPage) : Router.push("/dashboard");
     }
   };

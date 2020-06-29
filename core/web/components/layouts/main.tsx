@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Row, Col } from "react-bootstrap";
 import Head from "next/head";
+import { Row, Col } from "react-bootstrap";
 import { isBrowser } from "../../utils/isBrowser";
 import Loader from "../loader";
 import SuccessAlert from "../alerts/success";
@@ -27,6 +27,9 @@ export default function ({
   function setWidth() {
     if (isBrowser()) {
       if (window.innerWidth < 780) setNavExpanded(false);
+      setAlertWidth(
+        window.innerWidth - (navExpanded ? contentAreaLeftPadding : 15) - 15
+      );
     }
   }
 
@@ -170,20 +173,19 @@ export default function ({
             <div
               style={{
                 position: "fixed",
-                zIndex: 999,
+                zIndex: 9,
                 width: alertWidth,
-                left: navExpanded ? contentAreaLeftPadding : 15,
                 bottom: 5,
               }}
             >
-              <Row>
-                <Col />
-                <Col md={5}>
-                  <SuccessAlert successHandler={successHandler} />
-                  <ErrorAlert errorHandler={errorHandler} />
-                </Col>
-                <Col />
-              </Row>
+              <div>
+                <Row>
+                  <Col md={12}>
+                    <SuccessAlert successHandler={successHandler} />
+                    <ErrorAlert errorHandler={errorHandler} />
+                  </Col>
+                </Row>
+              </div>
             </div>
           </div>
           {display ? children : <Loader />}
