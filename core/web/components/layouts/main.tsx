@@ -149,11 +149,12 @@ export default function ({
             paddingLeft: 15,
             paddingTop: 5,
             cursor: "pointer",
-            fontSize: 20,
+            fontSize: 16,
+            color: "darkgray",
           }}
         >
           <a type="button" onClick={() => setNavExpanded(!navExpanded)}>
-            <FontAwesomeIcon icon="bars" size="xs" /> Menu
+            <FontAwesomeIcon icon="caret-square-right" size="xs" /> Menu
           </a>
         </div>
         <div

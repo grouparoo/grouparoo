@@ -108,7 +108,7 @@ export default function Navigation(props) {
           onClick={toggleNavExpanded}
         >
           <span className="navbar-toggler-icon" style={{ color: "lightgray" }}>
-            x
+            <FontAwesomeIcon icon="caret-square-left" size="xs" />
           </span>
         </button>
 
