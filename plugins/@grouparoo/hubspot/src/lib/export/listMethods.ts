@@ -1,5 +1,5 @@
 import { cache } from "actionhero";
-import Axios from "axios";
+import Axios, { AxiosError } from "axios";
 
 const cacheKey = "grouparoo:hubspot:lists";
 const cacheDuration = 1000 * 60; // 1 minute
@@ -21,14 +21,17 @@ export async function getLists(appOptions, force = false) {
     )
       throw error;
 
-    const { data } = await Axios({
-      method: "GET",
-      url,
-      headers: { "Content-Type": "application/json" },
-    });
-
-    await cache.save(cacheKey, data.lists, cacheDuration);
-    return data.lists;
+    try {
+      const { data } = await Axios({
+        method: "GET",
+        url,
+        headers: { "Content-Type": "application/json" },
+      });
+      await cache.save(cacheKey, data.lists, cacheDuration);
+      return data.lists;
+    } catch (error) {
+      throwBetterAxiosError(error);
+    }
   }
 }
 
@@ -40,16 +43,19 @@ export async function ensureGroupContactListExists(appOptions, groupName) {
     hubspotLists.filter((list) => list.name === groupName).length === 1;
   if (found) return;
 
-  await Axios({
-    method: "POST",
-    url,
-    headers: { "Content-Type": "application/json" },
-    data: {
-      name: groupName,
-    },
-  });
-
-  await getLists(appOptions, true);
+  try {
+    await Axios({
+      method: "POST",
+      url,
+      headers: { "Content-Type": "application/json" },
+      data: {
+        name: groupName,
+      },
+    });
+    await getLists(appOptions, true);
+  } catch (error) {
+    throwBetterAxiosError(error);
+  }
 }
 
 export async function addToList(appOptions, email, groupName) {
@@ -72,7 +78,7 @@ export async function addToList(appOptions, email, groupName) {
     if (error?.response?.data?.errorType === "LIST_EXISTS") {
       // ok
     } else {
-      throw error;
+      throwBetterAxiosError(error);
     }
   }
 }
@@ -84,12 +90,25 @@ export async function removeFromList(appOptions, email, groupName) {
 
   const url = `https://api.hubapi.com/contacts/v1/lists/${list.listId}/remove?hapikey=${appOptions.hapikey}`;
 
-  await Axios({
-    method: "POST",
-    url,
-    headers: { "Content-Type": "application/json" },
-    data: {
-      emails: [email],
-    },
-  });
+  try {
+    await Axios({
+      method: "POST",
+      url,
+      headers: { "Content-Type": "application/json" },
+      data: {
+        emails: [email],
+      },
+    });
+  } catch (error) {
+    throwBetterAxiosError(error);
+  }
+}
+
+function throwBetterAxiosError(error: AxiosError) {
+  if (error?.response?.data)
+    throw new Error(
+      `Hubspot API ERror: ${JSON.stringify(error?.response?.data)}`
+    );
+
+  throw error;
 }
