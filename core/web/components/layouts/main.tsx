@@ -6,6 +6,7 @@ import Loader from "../loader";
 import SuccessAlert from "../alerts/success";
 import ErrorAlert from "../alerts/error";
 import Navigation from "../navigation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function ({
   display,
@@ -17,25 +18,15 @@ export default function ({
   navigation,
   navigationMode,
 }) {
-  const [contentAreaLeftPadding, setContentAreaLeftPadding] = useState(265);
+  const [navExpanded, setNavExpanded] = useState(true);
   const [alertWidth, setAlertWidth] = useState(500);
+  const contentAreaLeftPadding = 265;
 
   useEffect(setWidth, []);
 
   function setWidth() {
     if (isBrowser()) {
-      let _contentAreaLeftPadding = contentAreaLeftPadding;
-      let _alertWidth = contentAreaLeftPadding;
-
-      if (window.innerWidth < 780) {
-        _contentAreaLeftPadding = 15;
-        _alertWidth = window.innerWidth - 30;
-      } else {
-        _alertWidth = window.innerWidth - _contentAreaLeftPadding - 15;
-      }
-
-      setContentAreaLeftPadding(_contentAreaLeftPadding);
-      setAlertWidth(_alertWidth);
+      if (window.innerWidth < 780) setNavExpanded(false);
     }
   }
 
@@ -45,6 +36,8 @@ export default function ({
         <title>Grouparoo</title>
 
         <meta name="application-name" content="Grouparoo" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
         <link
           rel="apple-touch-icon-precomposed"
           sizes="57x57"
@@ -146,10 +139,26 @@ export default function ({
           navigation={navigation}
           navigationMode={navigationMode}
           sessionHandler={sessionHandler}
+          navExpanded={navExpanded}
+          toggleNavExpanded={() => setNavExpanded(!navExpanded)}
         />
         <div
+          id="navigation-toggle"
           style={{
-            paddingLeft: contentAreaLeftPadding,
+            display: navExpanded ? "none" : "block",
+            paddingLeft: 15,
+            paddingTop: 5,
+            cursor: "pointer",
+            fontSize: 20,
+          }}
+        >
+          <a type="button" onClick={() => setNavExpanded(!navExpanded)}>
+            <FontAwesomeIcon icon="bars" size="xs" /> Menu
+          </a>
+        </div>
+        <div
+          style={{
+            paddingLeft: navExpanded ? contentAreaLeftPadding : 15,
             paddingRight: 15,
             paddingTop: 0,
             paddingBottom: 15,
@@ -162,7 +171,7 @@ export default function ({
                 position: "fixed",
                 zIndex: 999,
                 width: alertWidth,
-                left: contentAreaLeftPadding,
+                left: navExpanded ? contentAreaLeftPadding : 15,
                 bottom: 5,
               }}
             >
