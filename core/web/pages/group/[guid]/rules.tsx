@@ -300,8 +300,6 @@ export default function Page(props) {
                       type === "date" &&
                       rule.operation.op.match(/relative_/) ? (
                         <>
-                          <Form.Label srOnly>Username</Form.Label>
-
                           <Form.Control
                             type="number"
                             placeholder="(number)"
@@ -342,9 +340,28 @@ export default function Page(props) {
                         </>
                       ) : null}
 
-                      {/* normal matchers */}
+                      {/* normal matchers - numbers */}
                       {!["exists", "notExists"].includes(rule.operation.op) &&
-                      type !== "date" ? (
+                      type !== "date" &&
+                      ["integer", "float"].includes(type) ? (
+                        <div className="form-inline" style={{ minWidth: 250 }}>
+                          <Form.Control
+                            placeholder="(number)"
+                            value={rule.match?.toString() || ""}
+                            onChange={(e: any) => {
+                              const _rules = [...localRules];
+                              rule.match = e.target.value;
+                              _rules[idx] = rule;
+                              setLocalRules(_rules);
+                            }}
+                          />
+                        </div>
+                      ) : null}
+
+                      {/* normal matchers - strings */}
+                      {!["exists", "notExists"].includes(rule.operation.op) &&
+                      type !== "date" &&
+                      !["integer", "float"].includes(type) ? (
                         <div className="form-inline" style={{ minWidth: 250 }}>
                           <AsyncTypeahead
                             key={`typeahead-${rule.key}`}
