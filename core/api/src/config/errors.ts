@@ -9,24 +9,9 @@ export const DEFAULT = {
 
       serializers: {
         servers: {
-          web: (error) => {
-            return {
-              message: error.message ? error.message : String(error),
-              code: error.code,
-            };
-          },
-          websocket: (error) => {
-            return {
-              message: error.message ? error.message : String(error),
-              code: error.code,
-            };
-          },
-          specHelper: (error) => {
-            return {
-              message: error.message ? error.message : String(error),
-              code: error.code,
-            };
-          },
+          web: GrouparooErrorSerializer,
+          websocket: GrouparooErrorSerializer,
+          specHelper: GrouparooErrorSerializer,
         },
       },
 
@@ -162,3 +147,23 @@ export const DEFAULT = {
     };
   },
 };
+
+function GrouparooErrorSerializer(error) {
+  let message = "";
+  let code = error.code || undefined;
+  let fields = [];
+
+  if (error.errors) {
+    // a Sequelize Error https://sequelize.readthedocs.io/en/latest/api/errors
+    const selectedError = error.errors[0];
+    message = selectedError.message;
+    if (!code) code = selectedError.type;
+    if (error.fields) fields = error.fields;
+  } else if (error.message) {
+    message = error.message;
+  } else {
+    message = `${error}`;
+  }
+
+  return { message, code, fields };
+}
