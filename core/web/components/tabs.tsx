@@ -36,11 +36,11 @@ export default function GrouparooTabs({
   return (
     <>
       <Breadcrumb>
-        <Breadcrumb.Item>
+        <li className="breadcrumb-item">
           <Link href={`/${pluralize(topic)}`}>
             <a>{capitalize(pluralize(topic))}</a>
           </Link>
-        </Breadcrumb.Item>
+        </li>
         <Breadcrumb.Item>
           {name !== ""
             ? name
