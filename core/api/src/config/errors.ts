@@ -158,7 +158,10 @@ function GrouparooErrorSerializer(error) {
     const selectedError = error.errors[0];
     message = selectedError.message;
     if (!code) code = selectedError.type;
-    if (error.fields) fields = error.fields;
+    if (error.fields)
+      fields = Array.isArray(error.fields)
+        ? error.fields
+        : Object.keys(error.fields);
   } else if (error.message) {
     message = error.message;
   } else {
