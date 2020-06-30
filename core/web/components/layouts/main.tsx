@@ -23,12 +23,18 @@ export default function ({
   const contentAreaLeftPadding = 265;
 
   useEffect(setWidth, []);
+  useEffect(() => {
+    setAlertWidth(
+      window.innerWidth - (navExpanded ? contentAreaLeftPadding : 30) - 30
+    );
+  }, [navExpanded]);
 
   function setWidth() {
     if (isBrowser()) {
-      if (window.innerWidth < 780) setNavExpanded(false);
+      const small = window.innerWidth < 780;
+      if (small) setNavExpanded(false);
       setAlertWidth(
-        window.innerWidth - (navExpanded ? contentAreaLeftPadding : 15) - 15
+        window.innerWidth - (!small ? contentAreaLeftPadding : 30) - 30
       );
     }
   }
@@ -149,8 +155,8 @@ export default function ({
           id="navigation-toggle"
           style={{
             display: navExpanded ? "none" : "block",
-            paddingLeft: 15,
-            paddingTop: 5,
+            paddingLeft: 30,
+            paddingTop: 10,
             cursor: "pointer",
             fontSize: 16,
             color: "darkgray",
@@ -162,8 +168,8 @@ export default function ({
         </div>
         <div
           style={{
-            paddingLeft: navExpanded ? contentAreaLeftPadding : 15,
-            paddingRight: 15,
+            paddingLeft: navExpanded ? contentAreaLeftPadding : 30,
+            paddingRight: 30,
             paddingTop: 0,
             paddingBottom: 15,
           }}
