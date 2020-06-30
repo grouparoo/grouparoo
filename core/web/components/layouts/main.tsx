@@ -9,6 +9,7 @@ import Navigation from "../navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function ({
+  pathname,
   display,
   children,
   successHandler,
@@ -144,6 +145,7 @@ export default function ({
 
       <div id="container">
         <Navigation
+          pathname={pathname}
           currentTeamMember={currentTeamMember}
           navigation={navigation}
           navigationMode={navigationMode}

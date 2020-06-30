@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Image, Accordion, Button } from "react-bootstrap";
 import Link from "next/link";
-import Router from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const navLiStyle = { marginTop: 20, marginBottom: 20 };
@@ -20,6 +19,7 @@ const iconConstrainedStyle = { width: 20 };
 
 export default function Navigation(props) {
   const {
+    pathname,
     navigationMode,
     navigation,
     sessionHandler,
@@ -44,17 +44,38 @@ export default function Navigation(props) {
   }, []);
 
   useEffect(() => {
-    function handleRouteChange() {
-      setExpandPlatformMenu(false);
-      setExpandAccountMenu(false);
+    handleRouteChange();
+  }, [pathname]);
+
+  function handleRouteChange() {
+    let onPlatformPage = false;
+    let onAccountPage = false;
+
+    if (pathname !== "/") {
+      const firstPathPart = "/" + pathname.split("/")[1];
+
+      navigation.platformItems
+        .filter((i) => i.type === "link")
+        .map((i) => i.href)
+        .forEach((route) => {
+          if (route.indexOf(firstPathPart) === 0) {
+            onPlatformPage = true;
+          }
+        });
+
+      navigation.bottomMenuItems
+        .filter((i) => i.type === "link")
+        .map((i) => i.href)
+        .forEach((route) => {
+          if (route.indexOf(firstPathPart) === 0) {
+            onAccountPage = true;
+          }
+        });
     }
 
-    Router.events.on("routeChangeStart", handleRouteChange);
-
-    return () => {
-      Router.events.off("routeChangeStart", handleRouteChange);
-    };
-  }, []);
+    setExpandPlatformMenu(onPlatformPage);
+    setExpandAccountMenu(onAccountPage);
+  }
 
   if (!navExpanded && !hasBeenCollapsed) setHasBeenCollapsed(true);
 
