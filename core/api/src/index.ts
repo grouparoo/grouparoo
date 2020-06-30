@@ -30,3 +30,5 @@ export { Setting } from "./models/Setting";
 export { Source } from "./models/Source";
 export { Team } from "./models/Team";
 export { TeamMember } from "./models/TeamMember";
+
+export { waitForLock } from "./modules/locks";
