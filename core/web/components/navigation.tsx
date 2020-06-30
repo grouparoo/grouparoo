@@ -51,7 +51,7 @@ export default function Navigation(props) {
     let onPlatformPage = false;
     let onAccountPage = false;
 
-    if (pathname !== "/") {
+    if (pathname && pathname !== "/") {
       const firstPathPart = "/" + pathname.split("/")[1];
 
       navigation.platformItems

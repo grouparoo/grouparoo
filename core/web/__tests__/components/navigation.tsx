@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import mockAxios from "jest-mock-axios";
 import Component from "../../components/navigation";
+import "../../components/icons"; // this is needed to load the library
 import commonProps from "../utils/commonProps";
 
 describe("navigation", () => {
@@ -10,6 +11,7 @@ describe("navigation", () => {
     wrapper = mount(
       <Component
         {...commonProps}
+        pathname="/some/page"
         currentTeamMember={{
           firstName: "mario",
           guid: "abc123",
