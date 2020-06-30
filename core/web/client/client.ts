@@ -78,15 +78,23 @@ export class Client {
     this.cache = new ClientCache();
   }
 
-  checkForLoggedIn({ code }) {
-    if (isBrowser()) {
-      if (code === "AUTHENTICATION_ERROR") {
+  checkForLoggedIn({ code }, req?, res?) {
+    if (code === "AUTHENTICATION_ERROR") {
+      if (isBrowser()) {
         Router.push({
           pathname: "/session/sign-in",
           query: {
             nextPage: window.location.pathname,
           },
         });
+      } else {
+        if (req && res) {
+          const requestPath = req.url.match("^[^?]*")[0];
+          res.writeHead(301, {
+            Location: `/session/sign-in?nextPage=${requestPath}`,
+          });
+          res.end();
+        }
       }
     }
   }
@@ -102,17 +110,18 @@ export class Client {
     path,
     data: AxiosRequestConfig["data"] = {},
     useCache = true,
-    cookieString?,
-    uploadHandler?
+    uploadHandler?,
+    req?,
+    res?
   ) {
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json",
     };
 
-    if (cookieString) {
+    if (req?.headers?.cookie) {
       headers["X-GROUPAROO-SERVER_TOKEN"] = this.serverToken;
-      headers["cookie"] = cookieString;
+      headers["cookie"] = req?.headers?.cookie;
       useCache = false; // do not ever responses on the server
     }
 
@@ -190,7 +199,7 @@ export class Client {
       }
 
       if (error.response && error.response.data && error.response.data.error) {
-        this.checkForLoggedIn(error.response.data.error);
+        this.checkForLoggedIn(error.response.data.error, req, res);
 
         throw new Error(
           error.response.data.error.message
