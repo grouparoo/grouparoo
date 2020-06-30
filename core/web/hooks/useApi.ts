@@ -7,6 +7,7 @@ const client = new Client();
 export function useApi(
   ctx: {
     req?: { headers?: { cookie: string } };
+    res?: any;
   },
   errorHandler?: ErrorHandler,
   uploadHandler?: UploadHandler
@@ -30,8 +31,9 @@ export function useApi(
         path,
         data,
         useCache,
-        ctx?.req?.headers?.cookie,
-        uploadHandler
+        uploadHandler,
+        ctx?.req,
+        ctx?.res
       );
 
       if (setter) {

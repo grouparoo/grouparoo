@@ -113,6 +113,7 @@ describe("actions/apiKeys", () => {
       });
       expect(error).toEqual({
         code: "AUTHENTICATION_ERROR",
+        fields: [],
         message: 'not authorized for mode "read" on topic "apiKey"',
       });
     });
