@@ -41,7 +41,7 @@ export default function (props) {
   async function delQueue() {
     if (window.confirm("Are you sure?")) {
       await execApi("post", `/resque/delQueue`, { queue });
-      Router.push("/resque");
+      window.location.href = "/resque";
     }
   }
 
