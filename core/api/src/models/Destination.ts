@@ -276,8 +276,7 @@ export class Destination extends LoggedModel<Destination> {
   async exportGroupMembers() {
     const destinationGroups = await this.$get("destinationGroups");
     for (const i in destinationGroups) {
-      console.log("**** CREATE RUN");
-      const group = await destinationGroups[i].$get("group");
+      const group: Group = await destinationGroups[i].$get("group");
       await group.run(true, this.guid);
     }
   }
