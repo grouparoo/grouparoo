@@ -273,13 +273,10 @@ export class Destination extends LoggedModel<Destination> {
     return MappingHelper.setMapping(this, mappings);
   }
 
-  async afterSetMapping() {
-    return this.exportGroupMembers();
-  }
-
   async exportGroupMembers() {
     const destinationGroups = await this.$get("destinationGroups");
     for (const i in destinationGroups) {
+      console.log("**** CREATE RUN");
       const group = await destinationGroups[i].$get("group");
       await group.run(true, this.guid);
     }
@@ -340,7 +337,6 @@ export class Destination extends LoggedModel<Destination> {
     }
 
     await transaction.commit();
-    await this.exportGroupMembers();
     return this.getDestinationGroupMemberships();
   }
 
