@@ -11,20 +11,16 @@ export async function getLists(appOptions, force = false) {
   // https://legacydocs.hubspot.com/docs/methods/lists/get_static_lists
   const url = `https://api.hubapi.com/contacts/v1/lists/static?hapikey=${appOptions.hapikey}&count=999`;
 
-  const { releaseLock } = await waitForLock(lockKey);
-
   if (force) await cache.destroy(cacheKey);
 
   try {
     const cachedLists = await cache.load(cacheKey);
-    releaseLock();
     return cachedLists.value;
   } catch (error) {
     if (
       error.message.toString() !== "Object not found" &&
       error.message.toString() !== "Object expired"
     ) {
-      releaseLock();
       throw error;
     }
 
@@ -35,10 +31,8 @@ export async function getLists(appOptions, force = false) {
         headers: { "Content-Type": "application/json" },
       });
       await cache.save(cacheKey, data.lists, cacheDuration);
-      releaseLock();
       return data.lists;
     } catch (error) {
-      releaseLock();
       throwBetterAxiosError(error);
     }
   }
@@ -48,12 +42,17 @@ export async function ensureGroupContactListExists(
   appOptions,
   groupName
 ): Promise<string> {
+  const { releaseLock } = await waitForLock(lockKey);
+
   const hubspotLists = await getLists(appOptions);
 
   const matchingList = hubspotLists.filter(
     (list) => list.name === groupName
   )[0];
-  if (matchingList) return matchingList.listId;
+  if (matchingList) {
+    await releaseLock();
+    return matchingList.listId;
+  }
 
   try {
     const url = `https://api.hubapi.com/contacts/v1/lists?hapikey=${appOptions.hapikey}`;
@@ -67,8 +66,10 @@ export async function ensureGroupContactListExists(
       },
     });
     await getLists(appOptions, true);
+    await releaseLock();
     return ensureGroupContactListExists(appOptions, groupName);
   } catch (error) {
+    await releaseLock();
     throwBetterAxiosError(error);
   }
 }
@@ -96,11 +97,8 @@ export async function addToList(appOptions, email, groupName) {
 }
 
 export async function removeFromList(appOptions, email, groupName) {
-  const hubspotLists = await getLists(appOptions);
-  const list = hubspotLists.filter((list) => list.name === groupName)[0];
-  if (!list) return;
-
-  const url = `https://api.hubapi.com/contacts/v1/lists/${list.listId}/remove?hapikey=${appOptions.hapikey}`;
+  const listId = await ensureGroupContactListExists(appOptions, groupName);
+  const url = `https://api.hubapi.com/contacts/v1/lists/${listId}/remove?hapikey=${appOptions.hapikey}`;
 
   try {
     await Axios({
