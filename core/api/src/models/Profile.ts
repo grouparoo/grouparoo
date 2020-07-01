@@ -308,11 +308,13 @@ export class Profile extends LoggedModel<Profile> {
       destinations.map((destination) =>
         destination.exportProfile(
           this,
+          null,
           [],
           oldSimpleProperties,
           simpleProperties,
           oldGroups,
-          groups
+          groups,
+          true
         )
       )
     );

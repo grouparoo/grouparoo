@@ -25,6 +25,7 @@ import { Profile } from "./Profile";
 import { Group } from "./Group";
 import { Import } from "./Import";
 import { Export } from "./Export";
+import { Run } from "./Run";
 import { DestinationGroup } from "./DestinationGroup";
 import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import { ExportProfilePluginMethod } from "../classes/plugin";
@@ -541,15 +542,15 @@ export class Destination extends LoggedModel<Destination> {
 
   async exportProfile(
     profile: Profile,
+    runs: Run[],
     imports: Array<Import>,
     oldProfileProperties: { [key: string]: any },
     newProfileProperties: { [key: string]: any },
     oldGroups: Array<Group>,
-    newGroups: Array<Group>
+    newGroups: Array<Group>,
+    sync = false
   ) {
-    const options = await this.getOptions();
     const app = await this.$get("app");
-    const connection = await app.getConnection();
     let method: ExportProfilePluginMethod;
     const { pluginConnection } = await this.getPlugin();
     method = pluginConnection.methods.exportProfile;
@@ -636,7 +637,8 @@ export class Destination extends LoggedModel<Destination> {
     const _export = await Export.create({
       destinationGuid: this.guid,
       profileGuid: profile.guid,
-      startedAt: new Date(),
+      runGuids: runs ? runs.map((run) => run.guid) : [],
+      startedAt: sync ? new Date() : undefined,
       oldProfileProperties: mappedOldProfileProperties,
       newProfileProperties: mappedNewProfileProperties,
       oldGroups: oldGroupNames.sort(),
@@ -644,9 +646,32 @@ export class Destination extends LoggedModel<Destination> {
       toDelete,
     });
 
-    try {
-      await _export.associateImports(imports);
+    await _export.associateImports(imports);
 
+    if (sync) {
+      return this.sendExport(_export);
+    } else {
+      await task.enqueue("export:send", {
+        destinationGuid: this.guid,
+        exportGuid: _export.guid,
+      });
+    }
+  }
+
+  async sendExport(_export: Export) {
+    await _export.update({ startedAt: new Date() });
+
+    const options = await this.getOptions();
+    const app = await this.$get("app");
+    const appOptions = await app.getOptions();
+    const connection = await app.getConnection();
+    const profile = await _export.$get("profile");
+
+    let method: ExportProfilePluginMethod;
+    const { pluginConnection } = await this.getPlugin();
+    method = pluginConnection.methods.exportProfile;
+
+    try {
       const success = await method({
         connection,
         app,
@@ -654,16 +679,23 @@ export class Destination extends LoggedModel<Destination> {
         destination: this,
         destinationOptions: options,
         profile,
-        oldProfileProperties: mappedOldProfileProperties,
-        newProfileProperties: mappedNewProfileProperties,
-        oldGroups: oldGroupNames,
-        newGroups: newGroupNames,
-        toDelete,
+        oldProfileProperties: _export.oldProfileProperties,
+        newProfileProperties: _export.newProfileProperties,
+        oldGroups: _export.oldGroups,
+        newGroups: _export.newGroups,
+        toDelete: _export.toDelete,
       });
 
-      _export.completedAt = new Date();
-      await _export.save();
+      await _export.update({ completedAt: new Date() });
       await _export.markMostRecent();
+
+      if (_export.runGuids) {
+        for (const i in _export.runGuids) {
+          const run = await Run.findByGuid(_export.runGuids[i]);
+          await run.increment("profilesExported");
+        }
+      }
+
       return success;
     } catch (error) {
       _export.errorMessage = error.toString();
