@@ -21,7 +21,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   } = await destination.parameterizedOptions();
 
   if (Object.keys(newProfileProperties).length === 0) {
-    return false;
+    return { success: true };
   }
 
   if (!newProfileProperties[primaryKey]) {
@@ -178,6 +178,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       throw error;
     }
 
-    return success;
+    return { success: true };
   }
 };
