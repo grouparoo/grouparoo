@@ -1,4 +1,4 @@
-import { task, api } from "actionhero";
+import { task, api, log } from "actionhero";
 import {
   Table,
   Column,
@@ -670,6 +670,25 @@ export class Destination extends LoggedModel<Destination> {
     const { pluginConnection } = await this.getPlugin();
     method = pluginConnection.methods.exportProfile;
 
+    const open = await app.checkAndUpdateParallelism("incr");
+    if (!open) {
+      const message = `parallelism limit reached for ${app.type}, re-enqueuing export ${_export.guid}`;
+      if (sync) {
+        throw new Error(message);
+      } else {
+        log(message);
+        return task.enqueueIn(
+          1000 * 5,
+          "export:send",
+          {
+            destinationGuid: this.guid,
+            exportGuid: _export.guid,
+          },
+          `exports:${app.type}`
+        );
+      }
+    }
+
     try {
       const { success, retryDelay, error } = await method({
         connection,
@@ -711,10 +730,12 @@ export class Destination extends LoggedModel<Destination> {
         }
       }
 
+      await app.checkAndUpdateParallelism("decr");
       return { success, retryDelay, error };
     } catch (error) {
       _export.errorMessage = error.toString();
       await _export.save();
+      await app.checkAndUpdateParallelism("decr");
       error.message = `error exporting profile ${profile.guid} to destination ${this.guid}: ${error}`;
       throw error;
     }

@@ -40,5 +40,5 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     });
   });
 
-  return true;
+  return { success: true };
 };

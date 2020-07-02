@@ -2,6 +2,7 @@ import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
+import { parallelism } from "./../lib/parallelism";
 
 import { exportProfile } from "../lib/export/exportProfile";
 import { destinationOptions } from "../lib/export/destinationOptions";
@@ -29,7 +30,7 @@ export class Plugins extends Initializer {
               description: "your mailchimp api key",
             },
           ],
-          methods: { test },
+          methods: { test, parallelism },
         },
       ],
       connections: [

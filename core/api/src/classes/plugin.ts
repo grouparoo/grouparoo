@@ -48,6 +48,7 @@ export interface PluginApp {
     disconnect?: DisconnectPluginAppMethod;
     test: TestPluginMethod;
     appOptions?: AppOptionsMethod;
+    parallelism?: AppParallelismMethod;
   };
 }
 
@@ -181,6 +182,13 @@ export interface AppOptionsMethod {
       descriptions?: string[];
     };
   }>;
+}
+
+/**
+ * Method to return the number of parallel tasks that can be running for this job at a time
+ */
+export interface AppParallelismMethod {
+  (argument: { app: App; appOptions: SimpleAppOptions }): Promise<number>;
 }
 
 /**

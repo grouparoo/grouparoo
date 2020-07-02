@@ -15,7 +15,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   // if we received no mapped data... just exit
   if (Object.keys(newProfileProperties).length === 0) {
-    return;
+    return { success: true };
   }
 
   const { listId } = destinationOptions;
@@ -31,7 +31,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     response = await client.delete(
       `/lists/${listId}/members/${generateMailchimpId(email_address)}`
     );
-    return response.statusCode === 200;
+    return { success: response.statusCode === 200 };
   } else {
     let exists = false;
     let existingTagNames = [];
@@ -124,6 +124,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       { tags: tagPayload }
     );
 
-    return true;
+    return { success: true };
   }
 };
