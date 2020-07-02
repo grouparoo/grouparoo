@@ -646,10 +646,14 @@ export class Destination extends LoggedModel<Destination> {
     if (sync) {
       return this.sendExport(_export);
     } else {
-      await task.enqueue("export:send", {
-        destinationGuid: this.guid,
-        exportGuid: _export.guid,
-      });
+      await task.enqueue(
+        "export:send",
+        {
+          destinationGuid: this.guid,
+          exportGuid: _export.guid,
+        },
+        `exports:${app.type}`
+      );
     }
   }
 
