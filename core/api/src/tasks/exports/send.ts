@@ -16,8 +16,6 @@ export class ProfileExport extends RetryableTask {
   }
 
   async run(params) {
-    // TODO: Rate Limiting
-
     const destination = await Destination.findByGuid(params.destinationGuid);
     const _export = await Export.findByGuid(params.exportGuid);
 

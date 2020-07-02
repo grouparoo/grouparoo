@@ -644,7 +644,7 @@ export class Destination extends LoggedModel<Destination> {
     await _export.associateImports(imports);
 
     if (sync) {
-      return this.sendExport(_export);
+      return this.sendExport(_export, sync);
     } else {
       await task.enqueue(
         "export:send",
@@ -657,7 +657,7 @@ export class Destination extends LoggedModel<Destination> {
     }
   }
 
-  async sendExport(_export: Export) {
+  async sendExport(_export: Export, sync = false) {
     await _export.update({ startedAt: new Date() });
 
     const options = await this.getOptions();
@@ -671,7 +671,7 @@ export class Destination extends LoggedModel<Destination> {
     method = pluginConnection.methods.exportProfile;
 
     try {
-      const success = await method({
+      const { success, retryDelay, error } = await method({
         connection,
         app,
         appOptions,
@@ -685,6 +685,22 @@ export class Destination extends LoggedModel<Destination> {
         toDelete: _export.toDelete,
       });
 
+      if (!success && retryDelay && !sync) {
+        return task.enqueueIn(
+          retryDelay,
+          "export:send",
+          {
+            destinationGuid: this.guid,
+            exportGuid: _export.guid,
+          },
+          `exports:${app.type}`
+        );
+      }
+
+      if (!success && retryDelay && sync) {
+        throw error;
+      }
+
       await _export.update({ completedAt: new Date() });
       await _export.markMostRecent();
 
@@ -695,7 +711,7 @@ export class Destination extends LoggedModel<Destination> {
         }
       }
 
-      return success;
+      return { success, retryDelay, error };
     } catch (error) {
       _export.errorMessage = error.toString();
       await _export.save();

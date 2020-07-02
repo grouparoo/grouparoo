@@ -24,17 +24,13 @@ export async function getLists(appOptions, force = false) {
       throw error;
     }
 
-    try {
-      const { data } = await Axios({
-        method: "GET",
-        url,
-        headers: { "Content-Type": "application/json" },
-      });
-      await cache.save(cacheKey, data.lists, cacheDuration);
-      return data.lists;
-    } catch (error) {
-      throwBetterAxiosError(error);
-    }
+    const { data } = await Axios({
+      method: "GET",
+      url,
+      headers: { "Content-Type": "application/json" },
+    });
+    await cache.save(cacheKey, data.lists, cacheDuration);
+    return data.lists;
   }
 }
 
@@ -70,7 +66,7 @@ export async function ensureGroupContactListExists(
     return ensureGroupContactListExists(appOptions, groupName);
   } catch (error) {
     await releaseLock();
-    throwBetterAxiosError(error);
+    throw error;
   }
 }
 
@@ -91,7 +87,7 @@ export async function addToList(appOptions, email, groupName) {
     if (error?.response?.data?.errorType === "LIST_EXISTS") {
       // ok
     } else {
-      throwBetterAxiosError(error);
+      throw error;
     }
   }
 }
@@ -100,25 +96,12 @@ export async function removeFromList(appOptions, email, groupName) {
   const listId = await ensureGroupContactListExists(appOptions, groupName);
   const url = `https://api.hubapi.com/contacts/v1/lists/${listId}/remove?hapikey=${appOptions.hapikey}`;
 
-  try {
-    await Axios({
-      method: "POST",
-      url,
-      headers: { "Content-Type": "application/json" },
-      data: {
-        emails: [email],
-      },
-    });
-  } catch (error) {
-    throwBetterAxiosError(error);
-  }
-}
-
-function throwBetterAxiosError(error: AxiosError) {
-  if (error?.response?.data)
-    throw new Error(
-      `Hubspot API Error: ${JSON.stringify(error?.response?.data)}`
-    );
-
-  throw error;
+  await Axios({
+    method: "POST",
+    url,
+    headers: { "Content-Type": "application/json" },
+    data: {
+      emails: [email],
+    },
+  });
 }
