@@ -45,7 +45,7 @@
     "@fortawesome/react-fontawesome": "^0.1.11",
     "@grouparoo/client-web": "^0.1.5-alpha.2",
     "@nivo/line": "^0.62.0",
-    "actionhero": "^23.0.2",
+    "actionhero": "^23.0.4",
     "ah-next-plugin": "^0.2.1",
     "ah-sequelize-plugin": "^2.2.0",
     "axios": "^0.19.2",
