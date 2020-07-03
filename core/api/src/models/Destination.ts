@@ -641,6 +641,8 @@ export class Destination extends LoggedModel<Destination> {
       toDelete,
     });
 
+    await Promise.all(runs.map((run) => run.increment("exportsCreated")));
+
     await _export.associateImports(imports);
 
     if (sync) {

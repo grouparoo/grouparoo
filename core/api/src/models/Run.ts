@@ -25,6 +25,8 @@ import { Schedule } from "./Schedule";
 import { Import } from "./Import";
 import { Group } from "./Group";
 import { StateMachine } from "./../modules/stateMachine";
+import { Export } from "./Export";
+import { Destination } from "./Destination";
 
 export interface RunFilter {
   [key: string]: any;
@@ -90,6 +92,11 @@ export class Run extends Model<Run> {
   @Default(0)
   @Column
   profilesImported: number;
+
+  @AllowNull(false)
+  @Default(0)
+  @Column
+  exportsCreated: number;
 
   @AllowNull(false)
   @Default(0)
@@ -281,8 +288,9 @@ export class Run extends Model<Run> {
    * Return counts of the states of each import in N chunks over the lifetime of the run
    * Great for drawing charts!
    */
-  async quantizedTimeline(steps = 20) {
+  async quantizedTimeline(steps = 25) {
     const data = [];
+    const destinations = await Destination.findAll();
     const start = this.createdAt.getTime();
     const end = this.completedAt
       ? this.completedAt.getTime()
@@ -290,10 +298,12 @@ export class Run extends Model<Run> {
     const stepSize = Math.floor((end - start) / steps);
     const boundaries = [start - stepSize * 2];
     let i = 1;
+    let foundDestinationNames = [];
     while (i <= steps + 4) {
       const lastBoundary = boundaries[i - 1];
       const nextBoundary = lastBoundary + stepSize;
       boundaries.push(nextBoundary);
+
       const timeData = {
         lastBoundary,
         nextBoundary,
@@ -333,8 +343,42 @@ export class Run extends Model<Run> {
         },
       };
 
+      const _exportGroups = await Export.findAll({
+        attributes: [
+          [api.sequelize.fn("COUNT", "*"), "count"],
+          "destinationGuid",
+        ],
+        group: ["destinationGuid"],
+        where: {
+          startedAt: {
+            [Op.gte]: lastBoundary,
+            [Op.lt]: nextBoundary,
+          },
+          runGuids: { [Op.like]: `%${this.guid}%` }, // TODO: this is slow, de-normalize
+        },
+      });
+
+      _exportGroups.forEach((_exportGroup) => {
+        const destination = destinations.filter(
+          (destination) => destination.guid === _exportGroup.destinationGuid
+        )[0];
+        if (destination) {
+          if (!foundDestinationNames.includes(destination.name))
+            foundDestinationNames.push(destination.name);
+          // @ts-ignore
+          timeData.steps[destination.name] = _exportGroup.getDataValue("count");
+        }
+      });
+
       data.push(timeData);
       i++;
+    }
+
+    // add back points for destinations that were not found at this interval
+    for (const i in data) {
+      foundDestinationNames.forEach((destinationName) => {
+        if (!data[i].steps[destinationName]) data[i].steps[destinationName] = 0;
+      });
     }
 
     return data;
@@ -349,6 +393,7 @@ export class Run extends Model<Run> {
       importsCreated: this.importsCreated,
       profilesCreated: this.profilesCreated,
       profilesImported: this.profilesImported,
+      exportsCreated: this.exportsCreated,
       profilesExported: this.profilesExported,
       error: this.error,
       highWaterMark: this.highWaterMark,
