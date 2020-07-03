@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/hubspot",
   "description": "The Grouparoo hubspot Plugin",
-  "version": "0.1.5-alpha.1",
+  "version": "0.1.5-alpha.2",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -35,7 +35,7 @@
     "actionhero": "23.0.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.1.5-alpha.1",
+    "@grouparoo/core": "^0.1.5-alpha.2",
     "@types/jest": "^26.0.3",
     "@types/node": "^14.0.14",
     "actionhero": "^23.0.0",
