@@ -1,4 +1,4 @@
-import { task, api, log } from "actionhero";
+import { task, api, log, config } from "actionhero";
 import {
   Table,
   Column,
@@ -641,7 +641,8 @@ export class Destination extends LoggedModel<Destination> {
       toDelete,
     });
 
-    await Promise.all(runs.map((run) => run.increment("exportsCreated")));
+    if (runs)
+      await Promise.all(runs.map((run) => run.increment("exportsCreated")));
 
     await _export.associateImports(imports);
 
@@ -680,7 +681,7 @@ export class Destination extends LoggedModel<Destination> {
       } else {
         log(message);
         return task.enqueueIn(
-          1000 * 5,
+          config.tasks.timeout + 1,
           "export:send",
           {
             destinationGuid: this.guid,
@@ -737,6 +738,14 @@ export class Destination extends LoggedModel<Destination> {
     } catch (error) {
       _export.errorMessage = error.toString();
       await _export.save();
+
+      if (_export.runGuids) {
+        for (const i in _export.runGuids) {
+          const run = await Run.findByGuid(_export.runGuids[i]);
+          await run.increment("profilesExported");
+        }
+      }
+
       await app.checkAndUpdateParallelism("decr");
       error.message = `error exporting profile ${profile.guid} to destination ${this.guid}: ${error}`;
       throw error;
