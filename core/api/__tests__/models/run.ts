@@ -290,7 +290,7 @@ describe("models/run", () => {
       await run.update({ state: "complete", completedAt: new Date() });
 
       const quantizedTimeline = await run.quantizedTimeline();
-      expect(quantizedTimeline.length).toBe(20 + 4);
+      expect(quantizedTimeline.length).toBe(25 + 4);
       let associateTotal = 0;
       let updateTotal = 0;
       let groupsTotal = 0;

@@ -87,7 +87,7 @@ describe("tasks/profile:export", () => {
               options: [],
               methods: {
                 exportProfile: async () => {
-                  return true;
+                  return { success: true };
                 },
                 destinationMappingOptions: async () => {
                   return {
@@ -195,8 +195,16 @@ describe("tasks/profile:export", () => {
 
         await specHelper.runTask("profile:export", foundExportTasks[0].args[0]);
 
+        const foundSendTasks = await specHelper.findEnqueuedTasks(
+          "export:send"
+        );
+        expect(foundSendTasks.length).toBe(1);
+        await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
+
         await runA.reload();
         await runB.reload();
+        expect(runA.exportsCreated).toBe(1);
+        expect(runB.exportsCreated).toBe(1);
         expect(runA.profilesExported).toBe(1);
         expect(runB.profilesExported).toBe(1);
 
@@ -270,6 +278,12 @@ describe("tasks/profile:export", () => {
         expect(foundExportTasks.length).toEqual(1);
 
         await specHelper.runTask("profile:export", foundExportTasks[0].args[0]);
+
+        const foundSendTasks = await specHelper.findEnqueuedTasks(
+          "export:send"
+        );
+        expect(foundSendTasks.length).toBe(1);
+        await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
 
         const _exports = await Export.findAll();
         expect(_exports.length).toBe(1);

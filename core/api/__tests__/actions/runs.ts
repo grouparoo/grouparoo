@@ -112,6 +112,6 @@ describe("actions/runs", () => {
     );
     expect(error).toBeUndefined();
     expect(run.guid).toBe(runA.guid);
-    expect(quantizedTimeline.length).toBe(20 + 4);
+    expect(quantizedTimeline.length).toBe(25 + 4); // 25 for times, 4
   });
 });

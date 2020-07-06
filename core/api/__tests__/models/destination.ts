@@ -397,23 +397,6 @@ describe("models/destination", () => {
         expect(groups.length).toBe(0);
       });
 
-      test("if the destination mapping changes, a group#run task will be enqueued", async () => {
-        await api.resque.queue.connection.redis.flushdb();
-
-        await destination.trackGroup(group);
-        let foundTasks = await specHelper.findEnqueuedTasks("group:run");
-        expect(foundTasks.length).toBe(1);
-
-        await api.resque.queue.connection.redis.flushdb();
-        await destination.setMapping({
-          "primary-id": "userId",
-          local_first_name_: "firstName",
-        });
-
-        foundTasks = await specHelper.findEnqueuedTasks("group:run");
-        expect(foundTasks.length).toBe(1);
-      });
-
       test("profilePreview - without updates - with group", async () => {
         const profile = await helper.factories.profile();
         await profile.addOrUpdateProperties({
@@ -707,6 +690,10 @@ describe("models/destination", () => {
       };
     });
 
+    beforeEach(async () => {
+      await api.resque.queue.connection.redis.flushdb();
+    });
+
     beforeAll(async () => {
       plugin.registerPlugin({
         name: "test-plugin",
@@ -772,7 +759,7 @@ describe("models/destination", () => {
                   newGroups,
                   toDelete,
                 };
-                return true;
+                return { success: true };
               },
             },
           },
@@ -824,8 +811,9 @@ describe("models/destination", () => {
 
       const _import = await helper.factories.import();
 
-      const response = await destination.exportProfile(
+      await destination.exportProfile(
         profile,
+        [],
         [_import],
         oldProfileProperties,
         newProfileProperties,
@@ -833,7 +821,10 @@ describe("models/destination", () => {
         newGroups
       );
 
-      expect(response).toEqual(true);
+      const foundTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundTasks.length).toBe(1);
+      await specHelper.runTask("export:send", foundTasks[0].args[0]);
+
       expect(exportArgs.destination.guid).toEqual(destination.guid);
       expect(exportArgs.app.guid).toEqual(app.guid);
       expect(exportArgs.profile.guid).toEqual(profile.guid);
@@ -920,12 +911,17 @@ describe("models/destination", () => {
 
       await destination.exportProfile(
         profile,
+        [],
         [_import],
         oldProfileProperties,
         newProfileProperties,
         oldGroups,
         newGroups
       );
+
+      const foundTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundTasks.length).toBe(1);
+      await specHelper.runTask("export:send", foundTasks[0].args[0]);
 
       expect(exportArgs.oldProfileProperties).toEqual({
         customer_email: "oldEmail",
@@ -973,8 +969,9 @@ describe("models/destination", () => {
 
       const _import = await helper.factories.import();
 
-      const response = await destination.exportProfile(
+      await destination.exportProfile(
         profile,
+        [],
         [_import],
         oldProfileProperties,
         newProfileProperties,
@@ -982,7 +979,10 @@ describe("models/destination", () => {
         newGroups
       );
 
-      expect(response).toBe(true);
+      const foundTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundTasks.length).toBe(1);
+      await specHelper.runTask("export:send", foundTasks[0].args[0]);
+
       expect(exportArgs.profile.guid).toEqual(profile.guid);
       expect(exportArgs.oldGroups).toEqual(oldGroups.map((g) => g.name).sort());
       expect(exportArgs.newGroups).toEqual([]);

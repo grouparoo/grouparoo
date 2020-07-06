@@ -97,6 +97,10 @@ describe("integration/runs/internalRun", () => {
       expect(foundExportTasks.length).toEqual(1);
       await specHelper.runTask("profile:export", foundExportTasks[0].args[0]);
 
+      // run all export:send jobs
+      const foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundSendTasks.length).toBe(0);
+
       // check if the run is done
       const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
         "run:determineState"
@@ -112,7 +116,8 @@ describe("integration/runs/internalRun", () => {
       expect(run.importsCreated).toBe(1);
       expect(run.profilesCreated).toBe(0);
       expect(run.profilesImported).toBe(1);
-      expect(run.profilesExported).toBe(1);
+      expect(run.exportsCreated).toBe(0);
+      expect(run.profilesExported).toBe(0);
     });
   });
 });
