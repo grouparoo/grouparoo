@@ -25,6 +25,8 @@ export const DEFAULT = {
       enforceConnectionProperties: true,
       // disables the whitelisting of client params
       disableParamScrubbing: false,
+      // enable action response to logger
+      enableResponseLogging: false,
       // params you would like hidden from any logs
       filteredParams: ["password", "passwordHash", "csrfToken", "private_key"],
       // values that signify missing params
