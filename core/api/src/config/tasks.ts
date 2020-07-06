@@ -11,7 +11,7 @@ export const DEFAULT = {
 
         return [].concat(
           ["imports", "events", "profiles", "exports"],
-          api.plugins.plugins
+          api?.plugins?.plugins
             .filter((plugin) => plugin.apps?.length > 0)
             .map((plugin) => plugin.apps.map((app) => `exports:${app.name}`)),
           ["runs", "groups", "schedules", "destinations", "default"]
@@ -73,6 +73,17 @@ export const DEFAULT = {
 export const test = {
   tasks: (config) => {
     return {
+      queues: [
+        "imports",
+        "events",
+        "profiles",
+        "exports",
+        "runs",
+        "groups",
+        "schedules",
+        "destinations",
+        "default",
+      ],
       timeout: 100,
       checkTimeout: 50,
     };
