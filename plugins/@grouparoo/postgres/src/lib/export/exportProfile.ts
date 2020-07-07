@@ -160,7 +160,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         await connection.query(
           validateQuery(
             format(
-              `INSERT INTO %I (%I) VALUES (%L)`,
+              `INSERT INTO %I (%I) VALUES (%L) ON CONFLICT DO NOTHING`,
               groupsTable,
               Object.keys(data),
               Object.values(data)

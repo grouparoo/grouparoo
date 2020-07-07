@@ -104,7 +104,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         const data = {};
         data[groupForeignKey] = newProfileProperties[primaryKey];
         data[groupColumnName] = newGroups[i];
-        await connection.asyncQuery(`INSERT INTO ?? SET ?`, [
+        await connection.asyncQuery(`INSERT IGNORE INTO ?? SET ?`, [
           groupsTable,
           data,
         ]);

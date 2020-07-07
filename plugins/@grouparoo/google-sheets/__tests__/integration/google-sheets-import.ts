@@ -315,8 +315,6 @@ describe("integration/runs/google-sheets", () => {
           )
         );
 
-        await helper.sleep(1000);
-
         // check if the run is done
         const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
           "run:determineState"
@@ -337,7 +335,8 @@ describe("integration/runs/google-sheets", () => {
         expect(run.importsCreated).toBe(10);
         expect(run.profilesCreated).toBe(10);
         expect(run.profilesImported).toBe(10);
-        expect(run.profilesExported).toBe(10);
+        expect(run.exportsCreated).toBe(0);
+        expect(run.profilesExported).toBe(0);
       },
       1000 * 60
     );
@@ -430,8 +429,6 @@ describe("integration/runs/google-sheets", () => {
           )
         );
 
-        await helper.sleep(1000);
-
         // check if the run is done
         const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
           "run:determineState"
@@ -452,7 +449,8 @@ describe("integration/runs/google-sheets", () => {
         expect(run.importsCreated).toBe(10);
         expect(run.profilesCreated).toBe(0);
         expect(run.profilesImported).toBe(10);
-        expect(run.profilesExported).toBe(10);
+        expect(run.exportsCreated).toBe(0);
+        expect(run.profilesExported).toBe(0);
       },
       1000 * 60
     );
