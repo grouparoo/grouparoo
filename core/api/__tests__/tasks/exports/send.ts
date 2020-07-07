@@ -33,13 +33,13 @@ describe("tasks/export:send", () => {
       let destination: Destination, group: Group, profile: Profile, run: Run;
 
       beforeAll(async () => {
-        await api.resque.queue.connection.redis.flushdb();
-
         profile = await helper.factories.profile();
         await profile.addOrUpdateProperties({ email: "mario@example.com" });
 
         group = await helper.factories.group({ type: "manual" });
         await group.addProfile(profile);
+
+        await api.resque.queue.connection.redis.flushdb();
 
         destination = await helper.factories.destination();
         await destination.trackGroup(group);
