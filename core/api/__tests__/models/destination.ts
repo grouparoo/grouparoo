@@ -10,6 +10,7 @@ import { Option } from "../../src/models/Option";
 import { DestinationGroupMembership } from "../../src/models/DestinationGroupMembership";
 import { plugin } from "../../src/modules/plugin";
 import { DestinationGroup } from "../../src/models/DestinationGroup";
+import { Run } from "../../src";
 let actionhero;
 
 describe("models/destination", () => {
@@ -369,6 +370,13 @@ describe("models/destination", () => {
         expect(groups[0].guid).toBe(group.guid);
       });
 
+      test("tracking a group will not enqueue a run", async () => {
+        const runs = await Run.findAll({
+          where: { creatorGuid: destination.guid },
+        });
+        expect(runs.length).toBe(0);
+      });
+
       test("a group cannot be added twice", async () => {
         await destination.trackGroup(group);
         await destination.trackGroup(group);
@@ -675,6 +683,13 @@ describe("models/destination", () => {
       toDelete: null,
     };
 
+    let parallelismResponse = Infinity;
+    let exportProfileResponse = {
+      success: true,
+      error: undefined,
+      retryDelay: undefined,
+    };
+
     beforeEach(() => {
       exportArgs = {
         app: null,
@@ -704,6 +719,9 @@ describe("models/destination", () => {
             methods: {
               test: async () => {
                 return true;
+              },
+              parallelism: async () => {
+                return parallelismResponse;
               },
             },
           },
@@ -759,7 +777,7 @@ describe("models/destination", () => {
                   newGroups,
                   toDelete,
                 };
-                return { success: true };
+                return exportProfileResponse;
               },
             },
           },
@@ -979,9 +997,9 @@ describe("models/destination", () => {
         newGroups
       );
 
-      const foundTasks = await specHelper.findEnqueuedTasks("export:send");
-      expect(foundTasks.length).toBe(1);
-      await specHelper.runTask("export:send", foundTasks[0].args[0]);
+      const foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundSendTasks.length).toBe(1);
+      await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
 
       expect(exportArgs.profile.guid).toEqual(profile.guid);
       expect(exportArgs.oldGroups).toEqual(oldGroups.map((g) => g.name).sort());
@@ -989,6 +1007,157 @@ describe("models/destination", () => {
       expect(exportArgs.toDelete).toEqual(true);
 
       await destination.destroy();
+    });
+
+    test("exportProfile can return that it is rate limited and the export:send task will be re-enqueued", async () => {
+      parallelismResponse = 0;
+
+      const destination = await Destination.create({
+        name: "test plugin destination",
+        type: "export-from-test-template-app",
+        appGuid: app.guid,
+      });
+      const group = await helper.factories.group();
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[group.guid] = group.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      const profile = await helper.factories.profile();
+      await destination.exportProfile(profile, [], [], {}, {}, [], []);
+      const _export = await Export.findOne({
+        where: { destinationGuid: destination.guid },
+      });
+
+      let foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundSendTasks.length).toBe(1);
+
+      // the task should be re-enqueued with no error
+      await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
+      foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundSendTasks.length).toBe(1 + 1);
+      await _export.reload();
+      expect(_export.completedAt).toBeFalsy();
+
+      // when the parallelism is back to OK...
+      parallelismResponse = Infinity;
+
+      await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
+      foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundSendTasks.length).toBe(1 + 1);
+      await _export.reload();
+      expect(_export.completedAt).toBeTruthy();
+
+      await destination.destroy();
+    });
+
+    test("sending an export with sync and producing a parallelism error will throw", async () => {
+      parallelismResponse = 0;
+
+      const destination = await Destination.create({
+        name: "test plugin destination",
+        type: "export-from-test-template-app",
+        appGuid: app.guid,
+      });
+      const group = await helper.factories.group();
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[group.guid] = group.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      const profile = await helper.factories.profile();
+      await expect(
+        destination.exportProfile(profile, [], [], {}, {}, [], [], true)
+      ).rejects.toThrow(/parallelism limit reached for test-template-app/);
+
+      await destination.destroy();
+      parallelismResponse = Infinity;
+    });
+
+    test("the app can be rate-limited and the export:send task will be re-enqueued", async () => {
+      exportProfileResponse = {
+        success: false,
+        error: new Error("oh no!"),
+        retryDelay: 1000,
+      };
+
+      const destination = await Destination.create({
+        name: "test plugin destination",
+        type: "export-from-test-template-app",
+        appGuid: app.guid,
+      });
+      const group = await helper.factories.group();
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[group.guid] = group.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      const profile = await helper.factories.profile();
+      await destination.exportProfile(profile, [], [], {}, {}, [], []);
+      const _export = await Export.findOne({
+        where: { destinationGuid: destination.guid },
+      });
+
+      let foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundSendTasks.length).toBe(1);
+
+      // the task should be re-enqueued with no error
+      await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
+      foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundSendTasks.length).toBe(1 + 1);
+      expect(foundSendTasks[1].timestamp).toBeGreaterThan(new Date().getTime());
+      await _export.reload();
+      expect(_export.completedAt).toBeFalsy();
+
+      // when the response is back to success
+      exportProfileResponse = {
+        success: true,
+        error: undefined,
+        retryDelay: undefined,
+      };
+
+      await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
+      foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundSendTasks.length).toBe(1 + 1);
+      await _export.reload();
+      expect(_export.completedAt).toBeTruthy();
+
+      await destination.destroy();
+    });
+
+    test("sending an export with sync and producing a retry error will throw", async () => {
+      exportProfileResponse = {
+        success: false,
+        error: new Error("oh no!"),
+        retryDelay: 1000,
+      };
+
+      const destination = await Destination.create({
+        name: "test plugin destination",
+        type: "export-from-test-template-app",
+        appGuid: app.guid,
+      });
+      const group = await helper.factories.group();
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[group.guid] = group.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      const profile = await helper.factories.profile();
+      await expect(
+        destination.exportProfile(profile, [], [], {}, {}, [], [], true)
+      ).rejects.toThrow(/Error: oh no!/);
+
+      await destination.destroy();
+      exportProfileResponse = {
+        success: true,
+        error: undefined,
+        retryDelay: undefined,
+      };
     });
   });
 });

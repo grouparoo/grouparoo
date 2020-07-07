@@ -141,6 +141,13 @@ export class App extends LoggedModel<App> {
     });
   }
 
+  @AfterDestroy
+  static async removeParallelismKey(instance: App) {
+    const key = instance.parallelismKey();
+    const redis = api.redis.clients.client;
+    return redis.del(key);
+  }
+
   async appOptions() {
     const { pluginApp } = await this.getPlugin();
 
@@ -271,7 +278,7 @@ export class App extends LoggedModel<App> {
   }
 
   async checkAndUpdateParallelism(direction: "incr" | "decr") {
-    const key = `app:${this.guid}:ratelimit:parallel`;
+    const key = this.parallelismKey();
     const redis = api.redis.clients.client;
     const limit = await this.getParallelism();
     const count = await redis[direction](key);
@@ -281,6 +288,10 @@ export class App extends LoggedModel<App> {
       await redis.decr(key);
       return false;
     }
+  }
+
+  parallelismKey() {
+    return `app:${this.guid}:ratelimit:parallel`;
   }
 
   async apiData() {

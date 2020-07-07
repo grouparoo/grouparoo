@@ -158,6 +158,8 @@ export class Run extends Model<Run> {
   }
 
   async determineState() {
+    await this.reload();
+
     if (this.state === "complete" || this.state === "stopped") {
       return;
     }
@@ -173,7 +175,10 @@ export class Run extends Model<Run> {
       },
     });
 
-    if (completeImportsCount === totalImportsCount) {
+    if (
+      completeImportsCount === totalImportsCount &&
+      this.exportsCreated === this.profilesExported
+    ) {
       this.state = "complete";
       this.completedAt = new Date();
       await this.buildErrorMessage();

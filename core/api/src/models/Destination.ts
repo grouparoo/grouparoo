@@ -675,11 +675,11 @@ export class Destination extends LoggedModel<Destination> {
 
     const open = await app.checkAndUpdateParallelism("incr");
     if (!open) {
-      const message = `parallelism limit reached for ${app.type}, re-enqueuing export ${_export.guid}`;
+      const message = `parallelism limit reached for ${app.type}`;
       if (sync) {
         throw new Error(message);
       } else {
-        log(message);
+        log(message + ", re-enqueuing export ${_export.guid}");
         return task.enqueueIn(
           config.tasks.timeout + 1,
           "export:send",
