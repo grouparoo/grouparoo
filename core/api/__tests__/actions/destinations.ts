@@ -351,6 +351,20 @@ describe("actions/destinations", () => {
       });
     });
 
+    test("an administrator can export the members of a destination", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+      };
+      const { success, error } = await specHelper.runAction(
+        "destination:export",
+        connection
+      );
+
+      expect(error).toBeFalsy();
+      expect(success).toBeTruthy();
+    });
+
     test("an administrator can destroy a destination", async () => {
       connection.params = {
         csrfToken,

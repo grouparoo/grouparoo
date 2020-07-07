@@ -62,6 +62,16 @@ export class RunGroup extends Task {
       );
     }
 
+    // we still have exports from the previous batch that need to be processed
+    if (run.exportsCreated > 0 && run.exportsCreated > run.profilesExported) {
+      return task.enqueueIn(
+        config.tasks.timeout + 1,
+        this.name,
+        params,
+        this.queue
+      );
+    }
+
     let memberCount = 0;
     if (method === "runAddGroupMembers") {
       memberCount = await group.runAddGroupMembers(

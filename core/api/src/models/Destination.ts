@@ -1,4 +1,4 @@
-import { task, api } from "actionhero";
+import { task, api, log, config } from "actionhero";
 import {
   Table,
   Column,
@@ -25,6 +25,7 @@ import { Profile } from "./Profile";
 import { Group } from "./Group";
 import { Import } from "./Import";
 import { Export } from "./Export";
+import { Run } from "./Run";
 import { DestinationGroup } from "./DestinationGroup";
 import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import { ExportProfilePluginMethod } from "../classes/plugin";
@@ -272,14 +273,10 @@ export class Destination extends LoggedModel<Destination> {
     return MappingHelper.setMapping(this, mappings);
   }
 
-  async afterSetMapping() {
-    return this.exportGroupMembers();
-  }
-
   async exportGroupMembers() {
     const destinationGroups = await this.$get("destinationGroups");
     for (const i in destinationGroups) {
-      const group = await destinationGroups[i].$get("group");
+      const group: Group = await destinationGroups[i].$get("group");
       await group.run(true, this.guid);
     }
   }
@@ -339,7 +336,6 @@ export class Destination extends LoggedModel<Destination> {
     }
 
     await transaction.commit();
-    await this.exportGroupMembers();
     return this.getDestinationGroupMemberships();
   }
 
@@ -541,15 +537,15 @@ export class Destination extends LoggedModel<Destination> {
 
   async exportProfile(
     profile: Profile,
+    runs: Run[],
     imports: Array<Import>,
     oldProfileProperties: { [key: string]: any },
     newProfileProperties: { [key: string]: any },
     oldGroups: Array<Group>,
-    newGroups: Array<Group>
+    newGroups: Array<Group>,
+    sync = false
   ) {
-    const options = await this.getOptions();
     const app = await this.$get("app");
-    const connection = await app.getConnection();
     let method: ExportProfilePluginMethod;
     const { pluginConnection } = await this.getPlugin();
     method = pluginConnection.methods.exportProfile;
@@ -636,7 +632,8 @@ export class Destination extends LoggedModel<Destination> {
     const _export = await Export.create({
       destinationGuid: this.guid,
       profileGuid: profile.guid,
-      startedAt: new Date(),
+      runGuids: runs ? runs.map((run) => run.guid) : [],
+      startedAt: sync ? new Date() : undefined,
       oldProfileProperties: mappedOldProfileProperties,
       newProfileProperties: mappedNewProfileProperties,
       oldGroups: oldGroupNames.sort(),
@@ -644,30 +641,112 @@ export class Destination extends LoggedModel<Destination> {
       toDelete,
     });
 
-    try {
-      await _export.associateImports(imports);
+    if (runs)
+      await Promise.all(runs.map((run) => run.increment("exportsCreated")));
 
-      const success = await method({
+    await _export.associateImports(imports);
+
+    if (sync) {
+      return this.sendExport(_export, sync);
+    } else {
+      await task.enqueue(
+        "export:send",
+        {
+          destinationGuid: this.guid,
+          exportGuid: _export.guid,
+        },
+        `exports:${app.type}`
+      );
+    }
+  }
+
+  async sendExport(_export: Export, sync = false) {
+    await _export.update({ startedAt: new Date() });
+
+    const options = await this.getOptions();
+    const app = await this.$get("app");
+    const appOptions = await app.getOptions();
+    const connection = await app.getConnection();
+    const profile = await _export.$get("profile");
+
+    let method: ExportProfilePluginMethod;
+    const { pluginConnection } = await this.getPlugin();
+    method = pluginConnection.methods.exportProfile;
+
+    const open = await app.checkAndUpdateParallelism("incr");
+    if (!open) {
+      const message = `parallelism limit reached for ${app.type}`;
+      if (sync) {
+        throw new Error(message);
+      } else {
+        log(message + ", re-enqueuing export ${_export.guid}");
+        return task.enqueueIn(
+          config.tasks.timeout + 1,
+          "export:send",
+          {
+            destinationGuid: this.guid,
+            exportGuid: _export.guid,
+          },
+          `exports:${app.type}`
+        );
+      }
+    }
+
+    try {
+      const { success, retryDelay, error } = await method({
         connection,
         app,
         appOptions,
         destination: this,
         destinationOptions: options,
         profile,
-        oldProfileProperties: mappedOldProfileProperties,
-        newProfileProperties: mappedNewProfileProperties,
-        oldGroups: oldGroupNames,
-        newGroups: newGroupNames,
-        toDelete,
+        oldProfileProperties: _export.oldProfileProperties,
+        newProfileProperties: _export.newProfileProperties,
+        oldGroups: _export.oldGroups,
+        newGroups: _export.newGroups,
+        toDelete: _export.toDelete,
       });
 
-      _export.completedAt = new Date();
-      await _export.save();
+      if (!success && retryDelay && !sync) {
+        return task.enqueueIn(
+          retryDelay,
+          "export:send",
+          {
+            destinationGuid: this.guid,
+            exportGuid: _export.guid,
+          },
+          `exports:${app.type}`
+        );
+      }
+
+      if (!success && retryDelay && sync) {
+        throw error;
+      }
+
+      await _export.update({ completedAt: new Date() });
       await _export.markMostRecent();
-      return success;
+
+      if (_export.runGuids) {
+        for (const i in _export.runGuids) {
+          const run = await Run.findByGuid(_export.runGuids[i]);
+          await run.increment("profilesExported");
+        }
+      }
+
+      await app.checkAndUpdateParallelism("decr");
+      return { success, retryDelay, error };
     } catch (error) {
       _export.errorMessage = error.toString();
       await _export.save();
+
+      if (_export.runGuids) {
+        for (const i in _export.runGuids) {
+          const run = await Run.findByGuid(_export.runGuids[i]);
+          await run.increment("profilesExported");
+        }
+      }
+
+      await app.checkAndUpdateParallelism("decr");
       error.message = `error exporting profile ${profile.guid} to destination ${this.guid}: ${error}`;
       throw error;
     }

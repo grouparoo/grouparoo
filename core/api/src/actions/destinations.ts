@@ -309,6 +309,26 @@ export class DestinationView extends AuthenticatedAction {
   }
 }
 
+export class DestinationExport extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "destination:export";
+    this.description =
+      "export the members of the groups tracked by this destination";
+    this.permission = { topic: "destination", mode: "write" };
+    this.inputs = {
+      guid: { required: true },
+    };
+  }
+
+  async run({ params, response }) {
+    response.success = false;
+    const destination = await Destination.findByGuid(params.guid);
+    await destination.exportGroupMembers();
+    response.success = true;
+  }
+}
+
 export class DestinationProfilePreview extends AuthenticatedAction {
   constructor() {
     super();

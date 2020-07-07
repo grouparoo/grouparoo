@@ -51,7 +51,7 @@ export class ProfileExport extends RetryableTask {
     });
 
     try {
-      // take the old data from the oldest import
+      // take the old data from the oldest, un-exported import
       const oldProfileProperties = imports[0].oldProfileProperties;
       const oldGroupGuids = imports[0].oldGroupGuids;
 
@@ -90,23 +90,21 @@ export class ProfileExport extends RetryableTask {
         }
       }
 
-      await Promise.all(
-        destinations.map((destination) =>
-          destination.exportProfile(
-            profile,
-            imports,
-            oldProfileProperties,
-            newProfileProperties,
-            oldGroups,
-            newGroups
-          )
-        )
-      );
+      for (const i in destinations) {
+        await destinations[i].exportProfile(
+          profile,
+          runs,
+          imports,
+          oldProfileProperties,
+          newProfileProperties,
+          oldGroups,
+          newGroups
+        );
+      }
 
       await Promise.all(
         imports.map((e) => e.update({ exportedAt: new Date() }))
       );
-      await Promise.all(runs.map((r) => r.increment("profilesExported")));
     } catch (error) {
       await Promise.all(imports.map((e) => e.setError(error, this.name)));
       throw error;

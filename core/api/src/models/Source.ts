@@ -15,6 +15,7 @@ import {
   DataType,
   DefaultScope,
 } from "sequelize-typescript";
+import { log, utils } from "actionhero";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Schedule } from "./Schedule";
@@ -393,7 +394,12 @@ export class Source extends LoggedModel<Source> {
       }
     }
 
-    return method({
+    while ((await app.checkAndUpdateParallelism("incr")) === false) {
+      console.log(`parallelism limit reached for ${app.type}, sleeping...`);
+      utils.sleep(100);
+    }
+
+    const response = await method({
       connection,
       app,
       appOptions,
@@ -409,6 +415,10 @@ export class Source extends LoggedModel<Source> {
         : await profilePropertyRule.getFilters(),
       profile,
     });
+
+    await app.checkAndUpdateParallelism("decr");
+
+    return response;
   }
 
   async import(profile: Profile) {

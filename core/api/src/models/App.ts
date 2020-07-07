@@ -141,6 +141,13 @@ export class App extends LoggedModel<App> {
     });
   }
 
+  @AfterDestroy
+  static async removeParallelismKey(instance: App) {
+    const key = instance.parallelismKey();
+    const redis = api.redis.clients.client;
+    return redis.del(key);
+  }
+
   async appOptions() {
     const { pluginApp } = await this.getPlugin();
 
@@ -258,6 +265,33 @@ export class App extends LoggedModel<App> {
     }
 
     return { result, error };
+  }
+
+  async getParallelism(): Promise<number> {
+    const { pluginApp } = await this.getPlugin();
+    const method = pluginApp.methods.parallelism;
+
+    if (!method) return Infinity;
+
+    const appOptions = await this.getOptions();
+    return method({ app: this, appOptions });
+  }
+
+  async checkAndUpdateParallelism(direction: "incr" | "decr") {
+    const key = this.parallelismKey();
+    const redis = api.redis.clients.client;
+    const limit = await this.getParallelism();
+    const count = await redis[direction](key);
+    if (count <= limit || direction === "decr") {
+      return true;
+    } else {
+      await redis.decr(key);
+      return false;
+    }
+  }
+
+  parallelismKey() {
+    return `app:${this.guid}:ratelimit:parallel`;
   }
 
   async apiData() {

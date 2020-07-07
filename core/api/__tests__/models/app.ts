@@ -3,7 +3,7 @@ import { App } from "./../../src/models/App";
 import { Option } from "./../../src/models/Option";
 import { Log } from "./../../src/models/Log";
 import { plugin } from "./../../src/modules/plugin";
-import app from "../factories/app";
+import { api } from "actionhero";
 let actionhero;
 
 describe("models/app", () => {
@@ -268,6 +268,7 @@ describe("models/app", () => {
     let app: App;
     let testCounter = 0;
     let profilePropertyCount = 0;
+    let parallelism = Infinity;
 
     beforeAll(async () => {
       plugin.registerPlugin({
@@ -284,6 +285,9 @@ describe("models/app", () => {
               },
               appOptions: async () => {
                 return { fileGuid: { type: "list", options: ["a", "b"] } };
+              },
+              parallelism: async () => {
+                return parallelism;
               },
             },
           },
@@ -336,6 +340,39 @@ describe("models/app", () => {
       expect(error).toBeUndefined();
       expect(result).toBe(true);
       expect(testCounter).toBe(1);
+    });
+
+    test("apps can return their parallelism", async () => {
+      expect(await app.getParallelism()).toEqual(Infinity);
+    });
+
+    test("apps can checkAndUpdateParallelism and see when the limit would be exceeded", async () => {
+      parallelism = 3;
+
+      const A = await app.checkAndUpdateParallelism("incr");
+      const B = await app.checkAndUpdateParallelism("incr");
+      const C = await app.checkAndUpdateParallelism("incr");
+      const D = await app.checkAndUpdateParallelism("incr");
+
+      expect(A).toBe(true);
+      expect(B).toBe(true);
+      expect(C).toBe(true);
+      expect(D).toBe(false);
+
+      await app.checkAndUpdateParallelism("decr");
+      const E = await app.checkAndUpdateParallelism("incr");
+      expect(E).toBe(true);
+
+      parallelism = Infinity;
+    });
+
+    test("deleting an app removes the parallelism key", async () => {
+      const key = app.parallelismKey();
+      const redis = api.redis.clients.client;
+      expect(await redis.exists(key)).toBe(1);
+
+      await app.destroy();
+      expect(await redis.exists(key)).toBe(0);
     });
   });
 });

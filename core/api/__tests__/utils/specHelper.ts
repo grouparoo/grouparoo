@@ -276,7 +276,7 @@ export namespace helper {
           ],
           methods: {
             exportProfile: async () => {
-              return true;
+              return { success: true };
             },
             destinationOptions: async ({ destinationOptions }) => {
               const response = {

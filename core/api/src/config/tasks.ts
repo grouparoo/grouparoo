@@ -1,20 +1,22 @@
 export const DEFAULT = {
   tasks: (config) => {
     return {
+      _toExpand: false,
+
       // Should this node run a scheduler to promote delayed tasks?
       scheduler: process.env.SCHEDULER === "true",
       // what queues should the taskProcessors work?
-      queues: [
-        "imports",
-        "events",
-        "profiles",
-        "exports",
-        "runs",
-        "groups",
-        "schedules",
-        "destinations",
-        "default",
-      ],
+      queues: async () => {
+        const { api } = await import("actionhero"); // this needs to be async loaded as we are within the config system, to avoid circular dependencies
+
+        return [].concat(
+          ["imports", "events", "profiles", "exports"],
+          api?.plugins?.plugins
+            .filter((plugin) => plugin.apps?.length > 0)
+            .map((plugin) => plugin.apps.map((app) => `exports:${app.name}`)),
+          ["runs", "groups", "schedules", "destinations", "default"]
+        );
+      },
       // Logging levels of task workers
       workerLogging: {
         failure: "error", // task failure
@@ -71,6 +73,17 @@ export const DEFAULT = {
 export const test = {
   tasks: (config) => {
     return {
+      queues: [
+        "imports",
+        "events",
+        "profiles",
+        "exports",
+        "runs",
+        "groups",
+        "schedules",
+        "destinations",
+        "default",
+      ],
       timeout: 100,
       checkTimeout: 50,
     };

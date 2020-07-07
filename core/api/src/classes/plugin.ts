@@ -48,21 +48,8 @@ export interface PluginApp {
     disconnect?: DisconnectPluginAppMethod;
     test: TestPluginMethod;
     appOptions?: AppOptionsMethod;
+    parallelism?: AppParallelismMethod;
   };
-}
-
-/**
- * Method to return the options available to this app.
- * Returns a collection of data to display to the user.
- */
-export interface AppOptionsMethod {
-  (): Promise<{
-    [optionName: string]: {
-      type: string;
-      options?: string[];
-      descriptions?: string[];
-    };
-  }>;
 }
 
 /**
@@ -178,10 +165,31 @@ export interface ExportProfilePluginMethod {
     oldGroups: Array<string>;
     newGroups: Array<string>;
     toDelete: boolean;
-  }): Promise<boolean>;
+  }): Promise<{ success: boolean; retryDelay?: number; error?: any }>;
 }
 
 export interface ConnectionOption extends AppOption {}
+
+/**
+ * Method to return the options available to this app.
+ * Returns a collection of data to display to the user.
+ */
+export interface AppOptionsMethod {
+  (): Promise<{
+    [optionName: string]: {
+      type: string;
+      options?: string[];
+      descriptions?: string[];
+    };
+  }>;
+}
+
+/**
+ * Method to return the number of parallel tasks that can be running for this job at a time
+ */
+export interface AppParallelismMethod {
+  (argument: { app: App; appOptions: SimpleAppOptions }): Promise<number>;
+}
 
 /**
  * This method is used to build a connection object for this App.  It will be shared with multiple sources & destinations related to this app on the same server.

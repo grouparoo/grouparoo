@@ -57,6 +57,8 @@ export default function Page({ run, quantizedTimeline }) {
               <br />
               Profiles Imported: {run.profilesImported}
               <br />
+              Exports Created: {run.exportsCreated}
+              <br />
               Profiles Exported: {run.profilesExported}
             </Col>
           </Row>
@@ -137,34 +139,20 @@ Page.getInitialProps = async (ctx) => {
 };
 
 function buildChartData(quantizedTimeline) {
-  const associatePoints = [];
-  const updatePoints = [];
-  const groupPoints = [];
-  const exportPoints = [];
-  quantizedTimeline.forEach((chunk) => {
-    const x = new Date(chunk.lastBoundary);
-    associatePoints.push({ x, y: chunk.steps.associate });
-    updatePoints.push({ x, y: chunk.steps.update });
-    groupPoints.push({ x, y: chunk.steps.groups });
-    exportPoints.push({ x, y: chunk.steps.export });
+  const keys = Object.keys(quantizedTimeline[0].steps);
+  const points = {};
+  keys.forEach((k) => {
+    points[k] = [];
   });
 
-  return [
-    {
-      id: "associate",
-      data: associatePoints,
-    },
-    {
-      id: "update",
-      data: updatePoints,
-    },
-    {
-      id: "group",
-      data: groupPoints,
-    },
-    {
-      id: "export",
-      data: exportPoints,
-    },
-  ];
+  quantizedTimeline.forEach((chunk) => {
+    const x = new Date(chunk.lastBoundary);
+    keys.forEach((k) => {
+      points[k].push({ x, y: chunk.steps[k] });
+    });
+  });
+
+  return keys.map((k) => {
+    return { id: k, data: points[k] };
+  });
 }

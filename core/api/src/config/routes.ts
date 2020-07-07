@@ -91,6 +91,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/destination", action: "destination:create" },
         { path: "/v:apiVersion/destination/:guid/track", action: "destination:trackGroup" },
         { path: "/v:apiVersion/destination/:guid/unTrack", action: "destination:unTrackGroup" },
+        { path: "/v:apiVersion/destination/:guid/export", action: "destination:export" },
         { path: "/v:apiVersion/file", action: "file:create" },
         { path: "/v:apiVersion/import", action: "import:create" }
       ],

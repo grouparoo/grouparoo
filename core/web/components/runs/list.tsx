@@ -226,6 +226,8 @@ export default function RunsList(props) {
                     <br />
                     Profiles Imported: {run.profilesImported}
                     <br />
+                    Exports Created: {run.exportsCreated}
+                    <br />
                     Profiles Exported: {run.profilesExported}
                   </td>
                 </tr>

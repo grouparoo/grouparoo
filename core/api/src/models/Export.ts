@@ -61,6 +61,22 @@ export class Export extends Model<Export> {
   @Column
   profileGuid: string;
 
+  @AllowNull(true)
+  @ForeignKey(() => Run)
+  @Column(DataType.TEXT)
+  get runGuids(): string[] {
+    try {
+      //@ts-ignore
+      return JSON.parse(this.getDataValue("runGuids"));
+    } catch (e) {
+      return [];
+    }
+  }
+  set runGuids(value: string[]) {
+    //@ts-ignore
+    this.setDataValue("runGuids", JSON.stringify(value));
+  }
+
   @Column
   startedAt: Date;
 

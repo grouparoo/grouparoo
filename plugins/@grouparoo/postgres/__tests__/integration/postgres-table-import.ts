@@ -45,7 +45,8 @@ CREATE TABLE output_users (
     id integer PRIMARY KEY,
     customer_email text,
     fname text,
-    lname text
+    lname text,
+    UNIQUE(customer_email)
 )
 `;
 
@@ -53,7 +54,8 @@ const createGroupsDestinationTableSQL = `
 CREATE TABLE output_groups (
     id SERIAL PRIMARY KEY,
     "userId" integer NOT NULL,
-    "group" text NOT NULL
+    "group" text NOT NULL,
+    UNIQUE("userId", "group")
 )
 `;
 
@@ -458,7 +460,15 @@ describe("integration/runs/postgres", () => {
         )
       );
 
-      await helper.sleep(1000);
+      // run the export send tasks
+      const foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundSendTasks.length).toEqual(10);
+
+      await Promise.all(
+        foundSendTasks.map(
+          async (t) => await specHelper.runTask("export:send", t.args[0])
+        )
+      );
 
       // check if the run is done
       const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
@@ -479,6 +489,7 @@ describe("integration/runs/postgres", () => {
       expect(run.importsCreated).toBe(10);
       expect(run.profilesCreated).toBe(10);
       expect(run.profilesImported).toBe(10);
+      expect(run.exportsCreated).toBe(10);
       expect(run.profilesExported).toBe(10);
       expect(run.filter).toEqual({ id: 10 });
       expect(run.highWaterMark).toBe("200");
@@ -582,6 +593,17 @@ describe("integration/runs/postgres", () => {
         )
       );
 
+      // run the export send tasks
+      const foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
+      // 1 new export from last time
+      expect(foundSendTasks.length).toEqual(11);
+
+      await Promise.all(
+        foundSendTasks.map(
+          async (t) => await specHelper.runTask("export:send", t.args[0])
+        )
+      );
+
       // check if the run is done
       const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
         "run:determineState"
@@ -601,6 +623,7 @@ describe("integration/runs/postgres", () => {
       expect(run.importsCreated).toBe(1);
       expect(run.profilesCreated).toBe(0);
       expect(run.profilesImported).toBe(1);
+      expect(run.exportsCreated).toBe(1);
       expect(run.profilesExported).toBe(1);
       expect(run.filter).toEqual({ id: 10 });
       expect(run.highWaterMark).toBe("200");

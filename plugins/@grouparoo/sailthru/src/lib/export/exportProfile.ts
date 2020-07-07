@@ -30,7 +30,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       sid,
       1
     );
-    return;
+    return { success: true };
   }
 
   const payload: any = {
@@ -84,7 +84,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   await client.updateUser(payload);
 
-  return true;
+  return { success: true };
 };
 
 function formatVar(value) {
