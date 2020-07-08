@@ -10,11 +10,15 @@ if [[ -z "$GITHUB_AUTH" ]];then
   exit 0;
 fi
 
-if [[ -z "$NPM_TOKEN" ]];then
-  echo "No NPM_TOKEN, exiting.."
-  exit 0;
+if [ -f ~/.npmrc ]; then
+    echo "using local NPM user..."
 else
-  echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+    if [[ -z "$NPM_TOKEN" ]];then
+      echo "No NPM_TOKEN or ~/.npmrc, exiting.."
+      exit 0;
+    else
+      echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+    fi
 fi
 
 # Push new version & tags to git with lerna
