@@ -11,6 +11,12 @@ export class Plugins extends Initializer {
     // The core API configurable settings
     const coreSettings = [
       {
+        key: "cluster-name",
+        defaultValue: "My Grouparoo Cluster",
+        description:
+          "A way to identify this Grouparoo cluster.  Will be displayed in the web interface and sent with Telemetry.",
+      },
+      {
         key: "groups-calculation-delay-minutes",
         defaultValue: 60,
         description:
