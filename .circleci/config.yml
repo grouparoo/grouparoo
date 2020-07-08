@@ -230,8 +230,15 @@ workflows:
             - linter
             - test-core
             - test-plugins
+      - publish:
+          filters:
+            branches:
+              only:
+                - stable
+          requires:
+            - complete
   #
-  # Run the tests each week + publish
+  # Run the tests each week + publish pre-release from master branch
   test-grouparoo-nightly:
     triggers:
       - schedule:
@@ -277,6 +284,5 @@ workflows:
             branches:
               only:
                 - master
-                - stable
           requires:
             - complete
