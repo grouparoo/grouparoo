@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Image, Accordion, Button } from "react-bootstrap";
+import { Image, Accordion, Button, Badge } from "react-bootstrap";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -22,6 +22,7 @@ export default function Navigation(props) {
     pathname,
     navigationMode,
     navigation,
+    clusterName,
     sessionHandler,
     navExpanded,
     toggleNavExpanded,
@@ -124,6 +125,8 @@ export default function Navigation(props) {
             />
           </a>
         </Link>
+        <br />
+        <Badge variant="secondary">{clusterName}</Badge>
 
         <ul style={{ padding: 0, margin: 0 }}>
           {navigation.navigationItems.map((nav, idx) => {
