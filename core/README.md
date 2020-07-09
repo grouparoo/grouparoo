@@ -32,6 +32,7 @@ If you are new to Grouparoo, or you want to deploy Grouparoo to your servers, st
   - [Deploying with Heroku](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/heroku.md)
   - [Deploying with Docker](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/docker.md)
   - [Deploying with Kubernetes and AWS](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/aws-and-k8s.md)
+- [📞 Telemetry](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/telemetry.md)
 - [🩺 Support](https://github.com/grouparoo/grouparoo/blob/master/.github/SUPPORT.md)
 
 ### For Grouparoo Developers
