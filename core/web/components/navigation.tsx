@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Image, Accordion, Button, Badge } from "react-bootstrap";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import RunningRuns from "./runningRuns";
 
 const navLiStyle = { marginTop: 20, marginBottom: 20 };
 
@@ -128,7 +127,6 @@ export default function Navigation(props) {
         </Link>
         <br />
         <Badge variant="secondary">{clusterName}</Badge>
-        <RunningRuns {...props} />
 
         <ul style={{ padding: 0, margin: 0 }}>
           {navigation.navigationItems.map((nav, idx) => {
