@@ -36,7 +36,7 @@ export default function Page(props) {
 
       <h1>Settings</h1>
 
-      {pluginNames.map((pluginName) => {
+      {pluginNames.sort().map((pluginName) => {
         return (
           <div key={`plugin-${pluginName}`}>
             <h2>{pluginName}</h2>
@@ -51,16 +51,21 @@ export default function Page(props) {
                 </tr>
               </thead>
               <tbody>
-                {settings.map((setting) =>
-                  setting.pluginName === pluginName ? (
-                    <SettingRow
-                      key={`team-${setting.guid}`}
-                      setting={setting}
-                      loading={loading}
-                      updateSetting={updateSetting}
-                    />
-                  ) : null
-                )}
+                {settings
+                  .sort((a, b) => {
+                    if (a.key > b.key) return 1;
+                    if (a.key < b.key) return -1;
+                  })
+                  .map((setting) =>
+                    setting.pluginName === pluginName ? (
+                      <SettingRow
+                        key={`team-${setting.guid}`}
+                        setting={setting}
+                        loading={loading}
+                        updateSetting={updateSetting}
+                      />
+                    ) : null
+                  )}
               </tbody>
             </LoadingTable>
           </div>

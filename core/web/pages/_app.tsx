@@ -72,6 +72,7 @@ export default function GrouparooWebApp(props) {
     currentTeamMember: props.currentTeamMember,
     navigation: props.navigation,
     navigationMode: props.navigationMode,
+    clusterName: props.clusterName,
     previousPath,
     successHandler,
     errorHandler,
@@ -103,7 +104,10 @@ export default function GrouparooWebApp(props) {
 
 GrouparooWebApp.getInitialProps = async (appContext) => {
   const { execApi } = useApi(appContext.ctx);
-  const { navigationMode, navigation } = await execApi("get", `/navigation`);
+  const { navigationMode, navigation, clusterName } = await execApi(
+    "get",
+    `/navigation`
+  );
   let currentTeamMember = {
     firstName: "",
     guid: null,
@@ -115,5 +119,11 @@ GrouparooWebApp.getInitialProps = async (appContext) => {
   // render page-specific getInitialProps
   const appProps = await App.getInitialProps(appContext);
 
-  return { ...appProps, currentTeamMember, navigationMode, navigation };
+  return {
+    ...appProps,
+    currentTeamMember,
+    navigationMode,
+    navigation,
+    clusterName,
+  };
 };

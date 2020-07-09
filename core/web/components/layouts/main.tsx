@@ -17,6 +17,7 @@ export default function ({
   sessionHandler,
   currentTeamMember,
   navigation,
+  clusterName,
   navigationMode,
 }) {
   const [navExpanded, setNavExpanded] = useState(true);
@@ -148,6 +149,7 @@ export default function ({
           pathname={pathname}
           currentTeamMember={currentTeamMember}
           navigation={navigation}
+          clusterName={clusterName}
           navigationMode={navigationMode}
           sessionHandler={sessionHandler}
           navExpanded={navExpanded}

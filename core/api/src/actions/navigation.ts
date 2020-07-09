@@ -1,5 +1,6 @@
 import { OptionallyAuthenticatedAction } from "../classes/optionallyAuthenticatedAction";
 import { Team } from "../models/Team";
+import { Setting } from "../models/Setting";
 
 export class NavigationList extends OptionallyAuthenticatedAction {
   constructor() {
@@ -166,7 +167,12 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       });
     }
 
+    const clusterNameSetting = await Setting.findOne({
+      where: { pluginName: "core", key: "cluster-name" },
+    });
+
     response.navigationMode = navigationMode;
+    response.clusterName = clusterNameSetting.value;
     response.navigation = {
       navigationItems,
       platformItems,
