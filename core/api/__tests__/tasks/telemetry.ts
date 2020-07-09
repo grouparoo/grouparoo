@@ -36,15 +36,10 @@ describe("tasks/telemetry", () => {
     });
 
     test("the telemetry object can be built", async () => {
-      const {
-        customerName,
-        customerGuid,
-        customerLicense,
-        metrics,
-      } = await api.telemetry.build();
-      expect(customerName).toBe("My Grouparoo Cluster");
-      expect(customerGuid).toMatch(/^tcs_/);
-      expect(customerLicense).toBe("");
+      const { name, guid, license, metrics } = await api.telemetry.build();
+      expect(name).toBe("My Grouparoo Cluster");
+      expect(guid).toMatch(/^tcs_/);
+      expect(license).toBe("");
 
       expect(metrics[0]).toEqual(
         expect.objectContaining({

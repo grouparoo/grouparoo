@@ -48,9 +48,9 @@ declare module "actionhero" {
   export interface Api {
     telemetry: {
       build: () => Promise<{
-        customerGuid: string;
-        customerName: string;
-        customerLicense: string;
+        guid: string;
+        name: string;
+        license: string;
         metrics: TelemetryMetric[];
       }>;
     };
@@ -97,9 +97,9 @@ export class Plugins extends Initializer {
         pluginManifest.plugins.forEach((plugin) => {
           metrics.push({
             collection: "cluster",
-            topic: "plugin",
+            topic: plugin.name,
             aggregation: "exact",
-            key: plugin.name,
+            key: "version",
             value: plugin.version,
           });
         });
@@ -190,9 +190,9 @@ export class Plugins extends Initializer {
         });
 
         return {
-          customerName: clusterNameSetting.value,
-          customerGuid: clusterGuidSetting.value,
-          customerLicense: clusterLicenseSetting.value,
+          name: clusterNameSetting.value,
+          guid: clusterGuidSetting.value,
+          license: clusterLicenseSetting.value,
           metrics: mergedMetrics,
         };
       },
