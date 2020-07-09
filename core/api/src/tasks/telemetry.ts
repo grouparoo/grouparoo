@@ -1,7 +1,7 @@
 import { Task, api, config } from "actionhero";
 import fetch from "isomorphic-fetch";
 
-export class Sweeper extends Task {
+export class Telemetry extends Task {
   constructor() {
     super();
     this.name = "telemetry";
