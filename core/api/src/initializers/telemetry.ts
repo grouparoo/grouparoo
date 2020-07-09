@@ -155,10 +155,10 @@ export class Plugins extends Initializer {
         const destinations = await Destination.findAll();
         for (const i in destinations) {
           const destination = destinations[i];
-          const { pluginApp } = await destination.getPlugin();
+          const { plugin } = await destination.getPlugin();
           metrics.push({
             collection: "destinationTotals",
-            topic: pluginApp.name,
+            topic: plugin.name,
             aggregation: "count",
             // imports: 0, // TODO?
             exports: await Export.count({
