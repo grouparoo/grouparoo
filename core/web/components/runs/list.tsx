@@ -163,7 +163,7 @@ export default function RunsList(props) {
           <tr>
             <th>Guid</th>
             <th>Created At</th>
-            <th>Creator Type</th>
+            <th>Creator</th>
             <th>Completed At</th>
             <th>State</th>
             <th>Filter</th>
@@ -186,7 +186,9 @@ export default function RunsList(props) {
                   </td>
                   <td>
                     <Link prefetch={false} href={`/object/${run.creatorGuid}`}>
-                      <a>{run.creatorType}</a>
+                      <a>
+                        {run.creatorType}: {run.creatorName}
+                      </a>
                     </Link>
                   </td>
                   <td>

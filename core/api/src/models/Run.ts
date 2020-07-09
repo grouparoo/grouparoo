@@ -27,6 +27,9 @@ import { Group } from "./Group";
 import { StateMachine } from "./../modules/stateMachine";
 import { Export } from "./Export";
 import { Destination } from "./Destination";
+import { ProfileProperty } from "./ProfileProperty";
+import { ProfilePropertyRule } from "./ProfilePropertyRule";
+import { TeamMember } from "./TeamMember";
 
 export interface RunFilter {
   [key: string]: any;
@@ -393,6 +396,7 @@ export class Run extends Model<Run> {
     return {
       guid: this.guid,
       creatorGuid: this.creatorGuid,
+      creatorName: await this.getCreatorName(),
       creatorType: this.creatorType,
       state: this.state,
       importsCreated: this.importsCreated,
@@ -407,6 +411,33 @@ export class Run extends Model<Run> {
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
     };
+  }
+
+  async getCreatorName() {
+    let name = "unknown";
+
+    try {
+      if (this.creatorType === "group") {
+        const group = await Group.findByGuid(this.creatorGuid);
+        name = group.name;
+      } else if (this.creatorType === "profilePropertyRule") {
+        const profilePropertyRule = await ProfilePropertyRule.findByGuid(
+          this.creatorGuid
+        );
+        name = profilePropertyRule.key;
+      } else if (this.creatorType === "schedule") {
+        const schedule = await Schedule.findByGuid(this.creatorGuid);
+        const source = await schedule.$get("source");
+        name = source.name;
+      } else if (this.creatorType === "teamMember") {
+        const teamMember = await TeamMember.findByGuid(this.creatorGuid);
+        name = `${teamMember.firstName} ${teamMember.lastName}`;
+      }
+    } catch (error) {
+      // likely the creator has been deleted
+    }
+
+    return name;
   }
 
   // --- Class Methods --- //

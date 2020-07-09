@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Badge, Alert } from "react-bootstrap";
 import Moment from "react-moment";
@@ -24,7 +23,9 @@ export default function Page({ run, quantizedTimeline }) {
           <p>
             Creator:{" "}
             <Link href="/object/[guid]" as={`/object/${run.creatorGuid}`}>
-              <a>{run.creatorGuid}</a>
+              <a>
+                {run.creatorType}: {run.creatorName}
+              </a>
             </Link>
           </p>
           <p>
