@@ -47,7 +47,7 @@ describe("models/run", () => {
     firstRun = run;
   });
 
-  describe("creatorName", () => {
+  describe("with creators", () => {
     let run: Run;
     let source: Source;
     let profilePropertyRule: ProfilePropertyRule;
@@ -68,51 +68,116 @@ describe("models/run", () => {
       schedule = await helper.factories.schedule(source);
     });
 
-    test("unknown type name", async () => {
-      run = await Run.create({
-        state: "running",
-        creatorGuid: "xxx",
-        creatorType: "xxx",
+    describe("creatorName", () => {
+      test("unknown type name", async () => {
+        run = await Run.create({
+          state: "running",
+          creatorGuid: "xxx",
+          creatorType: "xxx",
+        });
+        expect(await run.getCreatorName()).toBe("unknown");
       });
-      expect(await run.getCreatorName()).toBe("unknown");
+
+      test("profilePropertyRule Name", async () => {
+        run = await Run.create({
+          state: "running",
+          creatorGuid: profilePropertyRule.guid,
+          creatorType: "profilePropertyRule",
+        });
+        expect(await run.getCreatorName()).toBe(profilePropertyRule.key);
+      });
+
+      test("group Name", async () => {
+        run = await Run.create({
+          state: "running",
+          creatorGuid: group.guid,
+          creatorType: "group",
+        });
+        expect(await run.getCreatorName()).toBe(group.name);
+      });
+
+      test("schedule Name", async () => {
+        run = await Run.create({
+          state: "running",
+          creatorGuid: schedule.guid,
+          creatorType: "schedule",
+        });
+        expect(await run.getCreatorName()).toBe(source.name);
+      });
+
+      test("teamMember Name", async () => {
+        run = await Run.create({
+          state: "running",
+          creatorGuid: teamMember.guid,
+          creatorType: "teamMember",
+        });
+        expect(await run.getCreatorName()).toBe(
+          `${teamMember.firstName} ${teamMember.lastName}`
+        );
+      });
     });
 
-    test("profilePropertyRule Name", async () => {
-      run = await Run.create({
-        state: "running",
-        creatorGuid: profilePropertyRule.guid,
-        creatorType: "profilePropertyRule",
+    describe("percentComplete", () => {
+      test("complete", async () => {
+        run = await Run.create({
+          state: "complete",
+          creatorGuid: group.guid,
+          creatorType: "group",
+        });
+        expect(await run.percentComplete()).toBe(100);
       });
-      expect(await run.getCreatorName()).toBe(profilePropertyRule.key);
-    });
 
-    test("group Name", async () => {
-      run = await Run.create({
-        state: "running",
-        creatorGuid: group.guid,
-        creatorType: "group",
+      test("stopped", async () => {
+        run = await Run.create({
+          state: "stopped",
+          creatorGuid: group.guid,
+          creatorType: "group",
+        });
+        expect(await run.percentComplete()).toBe(100);
       });
-      expect(await run.getCreatorName()).toBe(group.name);
-    });
 
-    test("schedule Name", async () => {
-      run = await Run.create({
-        state: "running",
-        creatorGuid: schedule.guid,
-        creatorType: "schedule",
+      test("running - schedule", async () => {
+        run = await Run.create({
+          state: "running",
+          creatorGuid: schedule.guid,
+          creatorType: "schedule",
+        });
+        expect(await run.percentComplete()).toBe(0);
       });
-      expect(await run.getCreatorName()).toBe(source.name);
-    });
 
-    test("teamMember Name", async () => {
-      run = await Run.create({
-        state: "running",
-        creatorGuid: teamMember.guid,
-        creatorType: "teamMember",
+      test("running - group - runAddGroupMembers", async () => {
+        run = await Run.create({
+          state: "running",
+          creatorGuid: group.guid,
+          creatorType: "group",
+          method: "runAddGroupMembers",
+        });
+        expect(await run.percentComplete()).toBe(0);
       });
-      expect(await run.getCreatorName()).toBe(
-        `${teamMember.firstName} ${teamMember.lastName}`
-      );
+
+      test("running - group - runRemoveGroupMembers", async () => {
+        run = await Run.create({
+          state: "running",
+          creatorGuid: group.guid,
+          creatorType: "group",
+          method: "runRemoveGroupMembers",
+        });
+        expect(await run.percentComplete()).toBe(45);
+      });
+
+      test("running - teamMember", async () => {
+        const profileA = await helper.factories.profile();
+        const profileB = await helper.factories.profile();
+        run = await Run.create({
+          state: "running",
+          creatorGuid: teamMember.guid,
+          creatorType: "teamMember",
+          profilesImported: 1,
+        });
+        expect(await run.percentComplete()).toBe(50);
+        await profileA.destroy();
+        await profileB.destroy();
+      });
     });
 
     afterEach(async () => {

@@ -206,12 +206,20 @@ export default function RunsList(props) {
                       </>
                     ) : null}
                   </td>
-                  <td>{run.state}</td>
+                  <td>
+                    {run.state} <br />
+                    {run.percentComplete}%
+                  </td>
                   <td>
                     {/* <code>{JSON.stringify(run.filter)}</code> */}
+                    <>
+                      limit: {run.limit} <br />
+                      offset: {run.offset}
+                    </>
                     {run.filter ? (
                       <>
-                        <strong>{Object.keys(run.filter)[0]}</strong>: <br />
+                        <br />
+                        {Object.keys(run.filter)[0]}:{" "}
                         {Object.values(run.filter)[0]}
                       </>
                     ) : null}

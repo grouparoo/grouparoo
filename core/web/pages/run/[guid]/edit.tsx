@@ -31,7 +31,7 @@ export default function Page({ run, quantizedTimeline }) {
           <p>
             State:{" "}
             <Badge variant={run.state === "complete" ? "success" : "warning"}>
-              {run.state}
+              {run.state} ({run.percentComplete}%)
             </Badge>
           </p>
           <p>
@@ -61,6 +61,11 @@ export default function Page({ run, quantizedTimeline }) {
               Exports Created: {run.exportsCreated}
               <br />
               Profiles Exported: {run.profilesExported}
+            </Col>
+            <Col>
+              Limit: {run.limit}
+              <br />
+              Offset: {run.offset}
             </Col>
           </Row>
 

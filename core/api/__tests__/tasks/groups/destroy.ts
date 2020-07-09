@@ -3,6 +3,7 @@ import { api, task, specHelper } from "actionhero";
 import { Group } from "./../../../src/models/Group";
 import { Import } from "./../../../src/models/Import";
 import { Profile } from "./../../../src/models/Profile";
+import { Run } from "./../../../src/models/Run";
 
 let actionhero;
 
@@ -102,6 +103,10 @@ describe("tasks/group:destroy", () => {
 
       foundTasks = await specHelper.findEnqueuedTasks("group:destroy");
       expect(foundTasks.length).toBe(1);
+      const run = await Run.findByGuid(foundTasks[0].args[0].runGuid);
+      expect(run.limit).toBe(100);
+      expect(run.offset).toBe(0);
+      expect(run.method).toBe("runRemoveGroupMembers");
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:destroy", foundTasks[0].args[0]); // remove the group and end the run
 

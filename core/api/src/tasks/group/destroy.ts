@@ -48,6 +48,8 @@ export class GroupDestroy extends Task {
       );
     }
 
+    await run.update({ limit, offset, method: "runRemoveGroupMembers" });
+
     const importsCounts = await group.runRemoveGroupMembers(run, limit, offset);
     const previousRunMembers = await group.removePreviousRunGroupMembers(
       run,
