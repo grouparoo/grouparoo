@@ -1,4 +1,3 @@
-// const fetch = require("isomorphic-fetch");
 import { Initializer, api } from "actionhero";
 import { plugin } from "../modules/plugin";
 import { Setting } from "../models/Setting";
