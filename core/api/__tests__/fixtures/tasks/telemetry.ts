@@ -1,0 +1,46 @@
+import nock from "nock";
+
+nock("https://telemetry.grouparoo.com:443", { encodedQueryParams: true })
+  .post("/api/v1/telemetry")
+  .reply(
+    200,
+    [],
+    [
+      "Date",
+      "Wed, 08 Jul 2020 23:19:39 GMT",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "Set-Cookie",
+      "__cfduid=da39af4981a8f27eb35a278d27fb6c9ac1594250379; expires=Fri, 07-Aug-20 23:19:39 GMT; path=/; domain=.grouparoo.com; HttpOnly; SameSite=Lax; Secure",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains",
+      "Access-Control-Allow-Headers",
+      "Content-Type",
+      "Access-Control-Allow-Methods",
+      "HEAD, GET, POST, PUT, PATCH, DELETE, OPTIONS, TRACE",
+      "Access-Control-Allow-Origin",
+      "https://telemetry.grouparoo.com",
+      "X-Powered-By",
+      "@grouparoo/telemetry",
+      "Set-Cookie",
+      "sessionID=49882281586f9064514b269ec9d5977ed7beb852;path=/;expires=Thu, 09 Jul 2020 00:19:39 GMT;",
+      "Via",
+      "1.1 vegur",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "cf-request-id",
+      "03d25357c20000c9a12f119200000001",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "5afd88060e69c9a1-SEA",
+      "Content-Encoding",
+      "gzip",
+    ]
+  );

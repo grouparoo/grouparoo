@@ -8,6 +8,7 @@ module.exports = {
   testPathIgnorePatterns: [
     "<rootDir>/__tests__/utils",
     "<rootDir>/__tests__/factories",
+    "<rootDir>/__tests__/fixtures",
     "<rootDir>/src/.*/*.ts",
     "<rootDir>/dist/.*/*.ts",
     "<rootDir>/dist/.*/*.js",
