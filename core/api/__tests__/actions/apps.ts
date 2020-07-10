@@ -70,6 +70,25 @@ describe("actions/apps", () => {
       expect(names).toContain("test-plugin-app");
     });
 
+    describe("options from environment variables", () => {
+      beforeAll(() => {
+        process.env.GROUPAROO_OPTION__APP__TEST_OPTION = "abc123";
+      });
+
+      test("options for a new app will include the names of options included in environment variables", async () => {
+        connection.params = { csrfToken };
+        const { environmentVariableOptions } = await specHelper.runAction(
+          "app:options",
+          connection
+        );
+        expect(environmentVariableOptions).toEqual(["TEST_OPTION"]);
+      });
+
+      afterAll(() => {
+        process.env.GROUPAROO_OPTION__APP__TEST_OPTION = undefined;
+      });
+    });
+
     test("an administrator can get the options for the app options", async () => {
       connection.params = {
         csrfToken,

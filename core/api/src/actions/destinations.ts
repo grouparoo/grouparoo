@@ -6,6 +6,7 @@ import { Profile } from "../models/Profile";
 import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
 import { GrouparooPlugin } from "../classes/plugin";
+import { OptionHelper } from "../modules/optionHelper";
 
 export class DestinationsList extends AuthenticatedAction {
   constructor() {
@@ -50,34 +51,6 @@ export class DestinationsList extends AuthenticatedAction {
   }
 }
 
-export class DestinationOptions extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destination:options";
-    this.description = "enumerate the options for creating a new destination";
-    this.outputExample = {};
-    this.permission = { topic: "destination", mode: "read" };
-    this.inputs = {};
-  }
-
-  async run({ response }) {
-    response.connections = [];
-    api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
-      if (plugin.connections) {
-        plugin.connections.forEach((connection) => {
-          response.connections.push({
-            name: connection.name,
-            direction: connection.direction,
-            description: connection.description,
-            app: connection.app,
-            options: connection.options,
-          });
-        });
-      }
-    });
-  }
-}
-
 export class DestinationConnectionApps extends AuthenticatedAction {
   constructor() {
     super();
@@ -116,6 +89,10 @@ export class DestinationConnectionApps extends AuthenticatedAction {
     }
 
     response.connectionApps = connectionApps;
+
+    response.environmentVariableOptions = OptionHelper.getEnvironmentVariableOptionsForTopic(
+      "destination"
+    );
   }
 }
 

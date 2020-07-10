@@ -12,7 +12,13 @@ import DestinationTabs from "./../../../components/tabs/destination";
 import { DestinationAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, destinationHandler, query } = props;
+  const {
+    errorHandler,
+    successHandler,
+    destinationHandler,
+    environmentVariableOptions,
+    query,
+  } = props;
   const { execApi } = useApi(props, errorHandler);
   const [destination, setDestination] = useState<DestinationAPIData>(
     props.destination
@@ -284,6 +290,22 @@ export default function Page(props) {
               );
             })}
 
+            {environmentVariableOptions.length > 0 ? (
+              <Row>
+                <Col>
+                  <p>
+                    Environment Variable Options for Destinations:{" "}
+                    {environmentVariableOptions.sort().map((envOpt) => (
+                      <Badge key={`envOpt-${envOpt}`} variant="info">
+                        {envOpt}
+                      </Badge>
+                    ))}
+                  </p>
+                  <br />
+                </Col>
+              </Row>
+            ) : null}
+
             <br />
 
             <Button variant="primary" type="submit">
@@ -316,5 +338,13 @@ Page.getInitialProps = async (ctx) => {
     `/destination/${guid}/connectionOptions`,
     { options: destination.options }
   );
-  return { destination, connectionOptions: options };
+  const { environmentVariableOptions } = await execApi(
+    "get",
+    "/destinations/connectionApps"
+  );
+  return {
+    destination,
+    connectionOptions: options,
+    environmentVariableOptions,
+  };
 };

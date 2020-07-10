@@ -23,9 +23,10 @@ export namespace OptionHelper {
   }
 
   export async function getOptions(
-    instance: Source | Destination | Schedule | ProfilePropertyRule | App
+    instance: Source | Destination | Schedule | ProfilePropertyRule | App,
+    sourceFromEnvironment = true
   ) {
-    const optionsObject: SimpleOptions = {};
+    let optionsObject: SimpleOptions = {};
     const options = await Option.findAll({
       where: { ownerGuid: instance.guid },
     });
@@ -33,6 +34,10 @@ export namespace OptionHelper {
     options.forEach((option) => {
       optionsObject[option.key] = option.value;
     });
+
+    if (sourceFromEnvironment) {
+      optionsObject = sourceEnvironmentVariableOptions(instance, optionsObject);
+    }
 
     return optionsObject;
   }
@@ -42,9 +47,9 @@ export namespace OptionHelper {
     options: SimpleOptions
   ) {
     await validateOptions(instance, options);
-
-    const oldOptions = await getOptions(instance);
+    const oldOptions = await getOptions(instance, false);
     let hasChanges = false;
+
     for (const i in oldOptions) {
       if (oldOptions[i] !== options[i]) {
         hasChanges = true;
@@ -56,9 +61,7 @@ export namespace OptionHelper {
       }
     }
 
-    if (!hasChanges) {
-      return;
-    }
+    if (!hasChanges) return;
 
     const transaction = await api.sequelize.transaction();
 
@@ -267,5 +270,54 @@ export namespace OptionHelper {
     }
 
     return type;
+  }
+
+  /**
+   * Return the list of possible environment variable options for this type,
+   * GROUPAROO_OPTION__APP__production-hubspot-api-key=abc123 returns production-hubspot-api-key
+   */
+  export function getEnvironmentVariableOptionsForTopic(topic: string) {
+    const regexp = new RegExp(
+      `^GROUPAROO_OPTION__${topic.toUpperCase()}__(.*)`
+    );
+    return Object.keys(process.env)
+      .filter((k) => k.match(regexp))
+      .map((k) => k.match(regexp)[1]);
+  }
+
+  /**
+   * Load the value of an environment variable option from the environment
+   */
+  export function getEnvironmentVariableOption(type: string, key: string) {
+    const fullKey = `GROUPAROO_OPTION__${type.toUpperCase()}__${key}`;
+    const value = process.env[fullKey];
+    if (!value)
+      throw new Error(
+        `cannot find environment variable for type=${type} and key=${key} (full key "${fullKey}")`
+      );
+
+    return value;
+  }
+
+  /**
+   * Replace all values in a bundle of SimpleOptions with those values loaded from the ENV
+   */
+  export function sourceEnvironmentVariableOptions(
+    instance: Source | Destination | Schedule | ProfilePropertyRule | App,
+    options: SimpleOptions
+  ) {
+    const envOptionKeys = getEnvironmentVariableOptionsForTopic(
+      modelName(instance)
+    );
+
+    for (const k in options) {
+      if (envOptionKeys.includes(options[k]))
+        options[k] = getEnvironmentVariableOption(
+          modelName(instance),
+          options[k]
+        );
+    }
+
+    return options;
   }
 }

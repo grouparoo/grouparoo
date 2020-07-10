@@ -158,8 +158,8 @@ export class App extends LoggedModel<App> {
     return pluginApp.methods.appOptions();
   }
 
-  async getOptions() {
-    return OptionHelper.getOptions(this);
+  async getOptions(sourceFromEnvironment = true) {
+    return OptionHelper.getOptions(this, sourceFromEnvironment);
   }
 
   async setOptions(options: SimpleAppOptions) {
@@ -234,6 +234,8 @@ export class App extends LoggedModel<App> {
 
     if (!options) {
       options = await this.getOptions();
+    } else {
+      options = OptionHelper.sourceEnvironmentVariableOptions(this, options);
     }
 
     try {
@@ -295,7 +297,7 @@ export class App extends LoggedModel<App> {
   }
 
   async apiData() {
-    const options = await this.getOptions();
+    const options = await this.getOptions(false);
     const icon = await this._getIcon();
 
     return {

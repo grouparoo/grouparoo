@@ -2,6 +2,7 @@ import { api } from "actionhero";
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { App } from "../models/App";
 import { GrouparooPlugin } from "../classes/plugin";
+import { OptionHelper } from "../modules/optionHelper";
 
 export class AppsList extends AuthenticatedAction {
   constructor() {
@@ -67,6 +68,10 @@ export class AppOptions extends AuthenticatedAction {
         });
       }
     });
+
+    response.environmentVariableOptions = OptionHelper.getEnvironmentVariableOptionsForTopic(
+      "app"
+    );
   }
 }
 

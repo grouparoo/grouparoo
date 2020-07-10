@@ -10,7 +10,13 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import { SourceAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, sourceHandler, query } = props;
+  const {
+    errorHandler,
+    successHandler,
+    sourceHandler,
+    environmentVariableOptions,
+    query,
+  } = props;
   const { execApi } = useApi(props, errorHandler);
   const [preview, setPreview] = useState([]);
   const [source, setSource] = useState<SourceAPIData>(props.source);
@@ -301,6 +307,22 @@ export default function Page(props) {
               );
             })}
 
+            {environmentVariableOptions.length > 0 ? (
+              <Row>
+                <Col>
+                  <p>
+                    Environment Variable Options for Sources:{" "}
+                    {environmentVariableOptions.sort().map((envOpt) => (
+                      <Badge key={`envOpt-${envOpt}`} variant="info">
+                        {envOpt}
+                      </Badge>
+                    ))}
+                  </p>
+                  <br />
+                </Col>
+              </Row>
+            ) : null}
+
             <hr />
 
             <h3>Example Data</h3>
@@ -363,11 +385,15 @@ Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
   const { execApi } = useApi(ctx);
   const { source } = await execApi("get", `/source/${guid}`);
+  const { environmentVariableOptions } = await execApi(
+    "get",
+    `/sources/connectionApps`
+  );
   const { options: connectionOptions } = await execApi(
     "get",
     `/source/${guid}/connectionOptions`,
     { options: source.options }
   );
 
-  return { source, connectionOptions };
+  return { source, connectionOptions, environmentVariableOptions };
 };

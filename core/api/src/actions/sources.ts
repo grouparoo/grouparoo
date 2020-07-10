@@ -3,6 +3,7 @@ import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { App } from "../models/App";
 import { Source } from "../models/Source";
 import { GrouparooPlugin } from "../classes/plugin";
+import { OptionHelper } from "../modules/optionHelper";
 
 export class SourcesList extends AuthenticatedAction {
   constructor() {
@@ -85,6 +86,10 @@ export class SourceConnectionApps extends AuthenticatedAction {
     }
 
     response.connectionApps = connectionApps;
+
+    response.environmentVariableOptions = OptionHelper.getEnvironmentVariableOptionsForTopic(
+      "source"
+    );
   }
 }
 

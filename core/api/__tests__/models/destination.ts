@@ -229,6 +229,35 @@ describe("models/destination", () => {
       });
     });
 
+    describe("options from environment variables", () => {
+      beforeAll(() => {
+        process.env.GROUPAROO_OPTION__DESTINATION__TEST_OPTION = "abc123";
+      });
+
+      test("options can be set from an environment variable but not stored in the database", async () => {
+        const destination = await Destination.create({
+          name: "incoming destination",
+          type: "test-plugin-export",
+          appGuid: app.guid,
+        });
+
+        await destination.setOptions({ table: "TEST_OPTION" });
+        const options = await destination.getOptions();
+        expect(options.table).toBe("abc123");
+
+        const option = await Option.findOne({
+          where: { ownerGuid: destination.guid, key: "table" },
+        });
+        expect(option.value).toBe("TEST_OPTION");
+
+        await destination.destroy();
+      });
+
+      afterAll(() => {
+        process.env.GROUPAROO_OPTION__DESTINATION__TEST_OPTION = undefined;
+      });
+    });
+
     describe("validations", () => {
       test("options must match the app options (extra options needed by connection)", async () => {
         destination = new Destination({

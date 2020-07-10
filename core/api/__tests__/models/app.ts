@@ -140,6 +140,46 @@ describe("models/app", () => {
     expect(latestLog).toBeTruthy();
   });
 
+  describe("options from environment variables", () => {
+    beforeAll(() => {
+      process.env.GROUPAROO_OPTION__APP__TEST_OPTION = "abc123";
+    });
+
+    test("options can be set from an environment variable but not stored in the database", async () => {
+      const app = await App.create({
+        name: "test app",
+        type: "test-plugin-app",
+      });
+
+      await app.setOptions({ fileGuid: "TEST_OPTION" });
+      const options = await app.getOptions();
+      expect(options.fileGuid).toBe("abc123");
+
+      const option = await Option.findOne({
+        where: { ownerGuid: app.guid, key: "fileGuid" },
+      });
+      expect(option.value).toBe("TEST_OPTION");
+
+      await app.destroy();
+    });
+
+    test("apps can be tested with environment variables", async () => {
+      const app = await App.create({
+        name: "test app",
+        type: "test-plugin-app",
+      });
+
+      const { result } = await app.test({ fileGuid: "TEST_OPTION" });
+      expect(result).toBe(true);
+
+      await app.destroy();
+    });
+
+    afterAll(() => {
+      process.env.GROUPAROO_OPTION__APP__TEST_OPTION = undefined;
+    });
+  });
+
   describe("validations", () => {
     test("apps must be of a type defined by a plugin", async () => {
       const app = new App({

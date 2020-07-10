@@ -94,6 +94,25 @@ describe("actions/destinations", () => {
       expect(connectionApps[0].connection.name).toBe("test-plugin-export");
     });
 
+    describe("options from environment variables", () => {
+      beforeAll(() => {
+        process.env.GROUPAROO_OPTION__DESTINATION__TEST_OPTION = "abc123";
+      });
+
+      test("options for a new destination will include the names of options included in environment variables", async () => {
+        connection.params = { csrfToken };
+        const { environmentVariableOptions } = await specHelper.runAction(
+          "destinations:connectionApps",
+          connection
+        );
+        expect(environmentVariableOptions).toEqual(["TEST_OPTION"]);
+      });
+
+      afterAll(() => {
+        process.env.GROUPAROO_OPTION__APP__TEST_OPTION = undefined;
+      });
+    });
+
     test("an administrator can list all the destinations", async () => {
       connection.params = {
         csrfToken,

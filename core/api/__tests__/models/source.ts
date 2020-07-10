@@ -269,6 +269,35 @@ describe("models/source", () => {
     });
   });
 
+  describe("options from environment variables", () => {
+    beforeAll(() => {
+      process.env.GROUPAROO_OPTION__SOURCE__TEST_OPTION = "abc123";
+    });
+
+    test("options can be set from an environment variable but not stored in the database", async () => {
+      const source = await Source.create({
+        type: "test-plugin-import",
+        name: "test source",
+        appGuid: app.guid,
+      });
+
+      await source.setOptions({ table: "TEST_OPTION" });
+      const options = await source.getOptions();
+      expect(options.table).toBe("abc123");
+
+      const option = await Option.findOne({
+        where: { ownerGuid: source.guid },
+      });
+      expect(option.value).toBe("TEST_OPTION");
+
+      await source.destroy();
+    });
+
+    afterAll(() => {
+      process.env.GROUPAROO_OPTION__SOURCE__TEST_OPTION = undefined;
+    });
+  });
+
   describe("sourcePreview", () => {
     let source: Source;
 

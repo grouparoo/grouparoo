@@ -60,7 +60,6 @@ export const DEFAULT = {
         { path: "/v:apiVersion/schedule/:guid", action: "schedule:view" },
         { path: "/v:apiVersion/destinations/connectionApps", action: "destinations:connectionApps" },
         { path: "/v:apiVersion/destinations", action: "destinations:list" },
-        { path: "/v:apiVersion/destinationOptions", action: "destination:options" },
         { path: "/v:apiVersion/destination/:guid", action: "destination:view" },
         { path: "/v:apiVersion/destination/:guid/connectionOptions", action: "destination:connectionOptions" },
         { path: "/v:apiVersion/destination/:guid/mappingOptions", action: "destination:mappingOptions" },

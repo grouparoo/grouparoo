@@ -116,6 +116,25 @@ describe("actions/sources", () => {
       ).toBe("test-plugin-app");
     });
 
+    describe("options from environment variables", () => {
+      beforeAll(() => {
+        process.env.GROUPAROO_OPTION__SOURCE__TEST_OPTION = "abc123";
+      });
+
+      test("options for a new source will include the names of options included in environment variables", async () => {
+        connection.params = { csrfToken };
+        const { environmentVariableOptions } = await specHelper.runAction(
+          "sources:connectionApps",
+          connection
+        );
+        expect(environmentVariableOptions).toEqual(["TEST_OPTION"]);
+      });
+
+      afterAll(() => {
+        process.env.GROUPAROO_OPTION__APP__TEST_OPTION = undefined;
+      });
+    });
+
     test("an administrator can enumerate the source connection options", async () => {
       connection.params = {
         csrfToken,

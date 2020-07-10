@@ -32,6 +32,7 @@ If you are new to Grouparoo, or you want to deploy Grouparoo to your servers, st
   - [Deploying with Heroku](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/heroku.md)
   - [Deploying with Docker](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/docker.md)
   - [Deploying with Kubernetes and AWS](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/aws-and-k8s.md)
+- [🔒 Security](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/security.md)
 - [📞 Telemetry](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/telemetry.md)
 - [🩺 Support](https://github.com/grouparoo/grouparoo/blob/master/.github/SUPPORT.md)
 
@@ -47,7 +48,7 @@ If you are interested in extending Grouparoo with your own plugins or contributi
 - [🤝 Plugins](https://github.com/grouparoo/grouparoo/blob/master/documents/development/plugins.md)
 - [📑 Typescript Docs](https://docs.grouparoo.com)
 - [📚 Publishing](https://github.com/grouparoo/grouparoo/blob/master/documents/development/publishing.md)
-- [👻 Security](https://github.com/grouparoo/grouparoo/blob/master/.github/SECURITY.md)
+- [👻 Security Disclosures](https://github.com/grouparoo/grouparoo/blob/master/.github/SECURITY.md)
 
 ### Community
 
