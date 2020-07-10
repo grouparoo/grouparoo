@@ -1,10 +1,6 @@
 import { Initializer, api } from "actionhero";
 import { plugin } from "../modules/plugin";
-import { Setting } from "../models/Setting";
 import * as UUID from "uuid";
-import os from "os";
-import PluginDetails from "./../utils/pluginDetails";
-const pluginManifest = PluginDetails.getPluginManifest();
 import {
   TelemetryMetric,
   TelemetryReporters,
