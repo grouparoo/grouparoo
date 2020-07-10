@@ -4,6 +4,7 @@ import { Group } from "./../../../src/models/Group";
 import { Import } from "./../../../src/models/Import";
 import { Profile } from "./../../../src/models/Profile";
 import { GroupMember } from "./../../../src/models/GroupMember";
+import { Run } from "../../../src/models/Run";
 
 let actionhero;
 
@@ -98,12 +99,20 @@ describe("tasks/group:run", () => {
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(1);
       expect(foundTasks[0].args[0].method).toBe("runAddGroupMembers");
+      const run = await Run.findByGuid(foundTasks[0].args[0].runGuid);
+      expect(run.limit).toBe(100);
+      expect(run.offset).toBe(0);
+      expect(run.method).toBe("runAddGroupMembers");
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:run", foundTasks[0].args[0]); // adding profiles (none found, enqueue remove)
 
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(1);
       expect(foundTasks[0].args[0].method).toBe("runRemoveGroupMembers");
+      await run.reload();
+      expect(run.limit).toBe(100);
+      expect(run.offset).toBe(100);
+      expect(run.method).toBe("runAddGroupMembers");
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:run", foundTasks[0].args[0]); // remove profiles, (none found, enqueue removePreviousRunGroupMembers)
 
@@ -112,6 +121,10 @@ describe("tasks/group:run", () => {
       expect(foundTasks[0].args[0].method).toBe(
         "removePreviousRunGroupMembers"
       );
+      await run.reload();
+      expect(run.limit).toBe(100);
+      expect(run.offset).toBe(0);
+      expect(run.method).toBe("runRemoveGroupMembers");
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:run", foundTasks[0].args[0]); // remove profiles, (none found, enqueue run state)
 

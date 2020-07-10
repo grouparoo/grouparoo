@@ -42,6 +42,8 @@ export class RunInternalRun extends Task {
       );
     }
 
+    await run.update({ limit, offset, method: "internalRun" });
+
     const profiles = await Profile.findAll({
       order: [["createdAt", "asc"]],
       limit,

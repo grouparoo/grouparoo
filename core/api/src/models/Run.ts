@@ -27,6 +27,8 @@ import { Group } from "./Group";
 import { StateMachine } from "./../modules/stateMachine";
 import { Export } from "./Export";
 import { Destination } from "./Destination";
+import { ProfilePropertyRule } from "./ProfilePropertyRule";
+import { TeamMember } from "./TeamMember";
 
 export interface RunFilter {
   [key: string]: any;
@@ -118,6 +120,17 @@ export class Run extends Model<Run> {
     // @ts-ignore
     this.setDataValue("filter", JSON.stringify(value));
   }
+
+  @Default(0)
+  @Column
+  limit: number;
+
+  @Default(0)
+  @Column
+  offset: number;
+
+  @Column
+  method: string;
 
   @BelongsTo(() => Schedule)
   schedule: Schedule;
@@ -393,8 +406,10 @@ export class Run extends Model<Run> {
     return {
       guid: this.guid,
       creatorGuid: this.creatorGuid,
+      creatorName: await this.getCreatorName(),
       creatorType: this.creatorType,
       state: this.state,
+      percentComplete: await this.percentComplete(),
       importsCreated: this.importsCreated,
       profilesCreated: this.profilesCreated,
       profilesImported: this.profilesImported,
@@ -403,10 +418,80 @@ export class Run extends Model<Run> {
       error: this.error,
       highWaterMark: this.highWaterMark,
       filter: this.filter,
+      limit: this.limit,
+      offset: this.offset,
+      method: this.method,
       completedAt: this.completedAt ? this.completedAt.getTime() : null,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
     };
+  }
+
+  async percentComplete() {
+    if (this.state === "complete") return 100;
+    if (this.state === "stopped") return 100;
+    if (this.creatorType === "group") {
+      let basePercent = 0;
+      const group = await Group.findByGuid(this.creatorGuid);
+      const groupMembersCount =
+        group.type === "calculated"
+          ? await group.countPotentialMembers()
+          : await group.$count("groupMembers");
+      switch (this.method) {
+        case "runAddGroupMembers":
+          basePercent = 0;
+          break;
+        case "runRemoveGroupMembers":
+          basePercent = 45;
+          break;
+        case "removePreviousRunGroupMembers":
+          basePercent = 90;
+          break;
+      }
+      return (
+        basePercent +
+        Math.round(
+          (100 * this.offset) /
+            (groupMembersCount > 0 ? groupMembersCount : 1) /
+            3
+        )
+      );
+    }
+    if (this.creatorType === "schedule") {
+      // there's no way to know because we are reading external data
+      return 0;
+    } else {
+      // for profilePropertyRules and for other types of internal run, we can assume we have to check every profile in the system
+      const totalProfiles = await Profile.count();
+      return Math.round((100 * this.profilesImported) / totalProfiles);
+    }
+  }
+
+  async getCreatorName() {
+    let name = "unknown";
+
+    try {
+      if (this.creatorType === "group") {
+        const group = await Group.findByGuid(this.creatorGuid);
+        name = group.name;
+      } else if (this.creatorType === "profilePropertyRule") {
+        const profilePropertyRule = await ProfilePropertyRule.findByGuid(
+          this.creatorGuid
+        );
+        name = profilePropertyRule.key;
+      } else if (this.creatorType === "schedule") {
+        const schedule = await Schedule.findByGuid(this.creatorGuid);
+        const source = await schedule.$get("source");
+        name = source.name;
+      } else if (this.creatorType === "teamMember") {
+        const teamMember = await TeamMember.findByGuid(this.creatorGuid);
+        name = `${teamMember.firstName} ${teamMember.lastName}`;
+      }
+    } catch (error) {
+      // likely the creator has been deleted
+    }
+
+    return name;
   }
 
   // --- Class Methods --- //

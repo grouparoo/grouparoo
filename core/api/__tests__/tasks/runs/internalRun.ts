@@ -3,6 +3,7 @@ import { api, task, specHelper } from "actionhero";
 import { internalRun } from "../../../src/modules/internalRun";
 import { Import } from "../../../src/models/Import";
 import { ProfilePropertyRule } from "../../../src/models/ProfilePropertyRule";
+import { Run } from "../../../src/models/Run";
 
 let actionhero;
 let profile;
@@ -32,8 +33,13 @@ describe("tasks/run:internalRun", () => {
 
       const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
       expect(foundTasks.length).toBe(1);
-
+      const run = await Run.findByGuid(foundTasks[0].args[0].runGuid);
       await specHelper.runTask("run:internalRun", foundTasks[0].args[0]);
+
+      await run.reload();
+      expect(run.limit).toBe(100);
+      expect(run.offset).toBe(0);
+      expect(run.method).toBe("internalRun");
 
       const imports = await Import.findAll();
       expect(imports.length).toBe(1);

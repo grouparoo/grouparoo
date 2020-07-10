@@ -163,7 +163,7 @@ export default function RunsList(props) {
           <tr>
             <th>Guid</th>
             <th>Created At</th>
-            <th>Creator Type</th>
+            <th>Creator</th>
             <th>Completed At</th>
             <th>State</th>
             <th>Filter</th>
@@ -186,7 +186,9 @@ export default function RunsList(props) {
                   </td>
                   <td>
                     <Link prefetch={false} href={`/object/${run.creatorGuid}`}>
-                      <a>{run.creatorType}</a>
+                      <a>
+                        {run.creatorType}: {run.creatorName}
+                      </a>
                     </Link>
                   </td>
                   <td>
@@ -204,12 +206,20 @@ export default function RunsList(props) {
                       </>
                     ) : null}
                   </td>
-                  <td>{run.state}</td>
+                  <td>
+                    {run.state} <br />
+                    {run.percentComplete}%
+                  </td>
                   <td>
                     {/* <code>{JSON.stringify(run.filter)}</code> */}
+                    <>
+                      limit: {run.limit} <br />
+                      offset: {run.offset}
+                    </>
                     {run.filter ? (
                       <>
-                        <strong>{Object.keys(run.filter)[0]}</strong>: <br />
+                        <br />
+                        {Object.keys(run.filter)[0]}:{" "}
                         {Object.values(run.filter)[0]}
                       </>
                     ) : null}

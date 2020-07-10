@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Badge, Alert } from "react-bootstrap";
 import Moment from "react-moment";
@@ -24,13 +23,15 @@ export default function Page({ run, quantizedTimeline }) {
           <p>
             Creator:{" "}
             <Link href="/object/[guid]" as={`/object/${run.creatorGuid}`}>
-              <a>{run.creatorGuid}</a>
+              <a>
+                {run.creatorType}: {run.creatorName}
+              </a>
             </Link>
           </p>
           <p>
             State:{" "}
             <Badge variant={run.state === "complete" ? "success" : "warning"}>
-              {run.state}
+              {run.state} ({run.percentComplete}%)
             </Badge>
           </p>
           <p>
@@ -60,6 +61,11 @@ export default function Page({ run, quantizedTimeline }) {
               Exports Created: {run.exportsCreated}
               <br />
               Profiles Exported: {run.profilesExported}
+            </Col>
+            <Col>
+              Limit: {run.limit}
+              <br />
+              Offset: {run.offset}
             </Col>
           </Row>
 

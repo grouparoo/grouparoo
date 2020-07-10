@@ -8,18 +8,8 @@ import ErrorAlert from "../alerts/error";
 import Navigation from "../navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function ({
-  pathname,
-  display,
-  children,
-  successHandler,
-  errorHandler,
-  sessionHandler,
-  currentTeamMember,
-  navigation,
-  clusterName,
-  navigationMode,
-}) {
+export default function (props) {
+  const { display, children, successHandler, errorHandler } = props;
   const [navExpanded, setNavExpanded] = useState(true);
   const [alertWidth, setAlertWidth] = useState(500);
   const contentAreaLeftPadding = 265;
@@ -146,12 +136,7 @@ export default function ({
 
       <div id="container">
         <Navigation
-          pathname={pathname}
-          currentTeamMember={currentTeamMember}
-          navigation={navigation}
-          clusterName={clusterName}
-          navigationMode={navigationMode}
-          sessionHandler={sessionHandler}
+          {...props}
           navExpanded={navExpanded}
           toggleNavExpanded={() => setNavExpanded(!navExpanded)}
         />

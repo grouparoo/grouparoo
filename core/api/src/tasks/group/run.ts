@@ -72,6 +72,8 @@ export class RunGroup extends Task {
       );
     }
 
+    await run.update({ limit, offset, method });
+
     let memberCount = 0;
     if (method === "runAddGroupMembers") {
       memberCount = await group.runAddGroupMembers(
