@@ -340,7 +340,7 @@ Page.getInitialProps = async (ctx) => {
   );
   const { environmentVariableOptions } = await execApi(
     "get",
-    "/destinationOptions"
+    "/destinations/connectionApps"
   );
   return {
     destination,
