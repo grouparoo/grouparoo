@@ -80,3 +80,9 @@ In the future, we plan to share relevant data with the community through public 
 ## How do I Opt-Out?
 
 You can disable Grouparoo's Telemetry collection by setting the `GROUPAROO_TELEMETRY_ENABLED` environment variable to `false` or `0`. The `telemetry` task will still run periodically in your cluster, but no data will be sent.
+
+## Third Party Telemetry
+
+Grouparoo relies on a number of other packages, some of which may include their own telemetry. The following list includes packages known to collect their own telemetry and links to documentation about it, including how to disable it.
+
+- **`next.js`**: The front-end framework in use by Grouparoo. Learn more at https://nextjs.org/telemetry

@@ -9,7 +9,6 @@ else
   EXECUTABLE="../../../../node_modules/.bin/ts-node-dev"
 fi
 
-export NEXT_TELEMETRY_DISABLED=true
 export NEXT_DEVELOPMENT_MODE=true
 
 # in develeopment mode, often there is an orphan next.js/webpack process hanging around if the process crashes.
