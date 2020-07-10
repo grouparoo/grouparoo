@@ -130,7 +130,7 @@ Starting the Grouparoo application will also migrate your database and generally
 
 Now that you've tried Grouparoo locally, it's time to deploy it! An example application which can be copied and deployed via Docker or Heroku is available at [grouparoo/app-example](https://github.com/grouparoo/app-example).
 
-First, learn more about [Grouparoo's Deployment Topology](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/topology.md).
+First, learn more about [Grouparoo's Deployment Topology](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/topology.md) and [how to secure your Grouparoo cluster](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/security.md).
 
 Then find the deployment Guide for your environment:
 
