@@ -6,6 +6,7 @@ import { Profile } from "../models/Profile";
 import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
 import { GrouparooPlugin } from "../classes/plugin";
+import { OptionHelper } from "../modules/optionHelper";
 
 export class DestinationsList extends AuthenticatedAction {
   constructor() {
@@ -75,6 +76,10 @@ export class DestinationOptions extends AuthenticatedAction {
         });
       }
     });
+
+    response.environmentVariableOptions = OptionHelper.getEnvironmentVariableOptionsForTopic(
+      "destination"
+    );
   }
 }
 

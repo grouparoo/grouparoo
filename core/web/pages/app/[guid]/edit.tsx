@@ -17,6 +17,7 @@ export default function Page(props) {
     appHandler,
     query,
     types,
+    environmentVariableOptions,
     optionOptions,
   } = props;
   const { execApi } = useApi(props, errorHandler);
@@ -267,6 +268,22 @@ export default function Page(props) {
               </>
             ) : null}
 
+            {environmentVariableOptions.length > 0 ? (
+              <Row>
+                <Col>
+                  <p>
+                    Environment Variable Options for Apps:{" "}
+                    {environmentVariableOptions.sort().map((envOpt) => (
+                      <Badge key={`envOpt-${envOpt}`} variant="info">
+                        {envOpt}
+                      </Badge>
+                    ))}
+                  </p>
+                  <br />
+                </Col>
+              </Row>
+            ) : null}
+
             <Row>
               <Col md={3}>
                 <Button variant="outline-secondary" size="sm" onClick={test}>
@@ -310,7 +327,10 @@ Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
   const { execApi } = useApi(ctx);
   const { app } = await execApi("get", `/app/${guid}`);
-  const { types } = await execApi("get", `/appOptions`);
+  const { types, environmentVariableOptions } = await execApi(
+    "get",
+    `/appOptions`
+  );
   const { options } = await execApi("get", `/app/${guid}/optionOptions`);
-  return { app, types, optionOptions: options };
+  return { app, types, environmentVariableOptions, optionOptions: options };
 };
