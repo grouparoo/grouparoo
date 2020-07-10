@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/core",
   "description": "The Grouparoo Core",
-  "version": "0.1.5",
+  "version": "0.1.6-alpha.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -43,7 +43,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.29",
     "@fortawesome/free-solid-svg-icons": "^5.13.1",
     "@fortawesome/react-fontawesome": "^0.1.11",
-    "@grouparoo/client-web": "^0.1.5",
+    "@grouparoo/client-web": "^0.1.6-alpha.0",
     "@nivo/line": "^0.62.0",
     "actionhero": "^23.0.4",
     "ah-next-plugin": "^0.2.1",
