@@ -1,17 +1,12 @@
+import fetch, { enableFetchMocks } from "jest-fetch-mock";
+enableFetchMocks();
+
 import { helper } from "../utils/specHelper";
 import { Log } from "../../src/models/Log";
 import { plugin } from "../../src/modules/plugin";
-import { api, task, specHelper, config } from "actionhero";
+import { api, specHelper, config } from "actionhero";
 
 let actionhero;
-
-// uncomment to use real HTTP requests
-// import nock from "nock";
-// nock.recorder.rec();
-
-// load the saved nock recordings
-// Note: This fixture has been made generic so it returns 200 regardless of the content sent
-require("./../fixtures/tasks/telemetry");
 
 describe("tasks/telemetry", () => {
   beforeAll(async () => {
@@ -19,6 +14,10 @@ describe("tasks/telemetry", () => {
     actionhero = env.actionhero;
     await api.resque.queue.connection.redis.flushdb();
   }, 1000 * 30);
+
+  beforeEach(() => {
+    fetch.resetMocks();
+  });
 
   afterAll(async () => {
     await helper.shutdown(actionhero);
@@ -66,18 +65,72 @@ describe("tasks/telemetry", () => {
       );
     });
 
-    test("the task can be run", async () => {
-      // does not throw
-      config.telemetry.enabled = true;
-      const ok = await specHelper.runTask("telemetry", {});
-      expect(ok).toBe(true);
-      config.telemetry.enabled = false;
+    describe("enabled telemetry", () => {
+      beforeAll(() => {
+        config.telemetry.enabled = true;
+      });
+
+      afterAll(() => {
+        config.telemetry.enabled = false;
+      });
+
+      test("the task can be run", async () => {
+        fetch.mockResponseOnce(JSON.stringify({ response: "FROM TEST" }));
+
+        // does not throw
+        const ok = await specHelper.runTask("telemetry", {});
+        expect(ok).toBe(true);
+
+        expect(fetch).toHaveBeenCalledTimes(1);
+      });
     });
 
     test("telemetry can be disabled", async () => {
       // disabled by default in NODE_ENV=test
       const response = await specHelper.runTask("telemetry", {});
       expect(response).toBeUndefined();
+      expect(fetch).not.toHaveBeenCalled();
+    });
+
+    describe("with errors", () => {
+      let originalImplementation: () => Promise<any>;
+
+      beforeAll(() => {
+        config.telemetry.enabled = true;
+        originalImplementation = api.telemetry.build;
+      });
+
+      afterAll(() => {
+        config.telemetry.enabled = false;
+        api.telemetry.build = originalImplementation;
+      });
+
+      test("we will try to send errors about telemetry to the telemetry server", async () => {
+        const mockTelemetry = jest.fn();
+        mockTelemetry.mockImplementation(() => {
+          throw new Error("OH NO");
+        });
+        api.telemetry.build = mockTelemetry;
+
+        await expect(specHelper.runTask("telemetry", {})).rejects.toThrow(
+          /OH NO/
+        );
+
+        expect(fetch).toHaveBeenCalledTimes(1);
+        const args = fetch.mock.calls[0];
+        expect(args[0]).toBe(
+          "https://telemetry.grouparoo.com/api/v1/telemetry"
+        );
+        const payload = JSON.parse(args[1].body.toString());
+        expect(payload.name).toBe("My Grouparoo Cluster");
+        expect(payload.metrics.length).toBe(1);
+        expect(payload.metrics[0].topic).toBe("error");
+        expect(payload.metrics[0].aggregation).toBe("exact");
+        expect(payload.metrics[0].value).toMatch("Error: OH NO");
+        expect(payload.metrics[0].value).toMatch(
+          "api/__tests__/tasks/telemetry.ts"
+        );
+      });
     });
   });
 });
