@@ -64,16 +64,24 @@ describe("tasks/telemetry", () => {
       );
     });
 
-    test("the task can be run", async () => {
-      config.telemetry.enabled = true;
-      fetch.mockResponseOnce(JSON.stringify({ response: "ok" }));
+    describe("enabled telemetry", () => {
+      beforeAll(() => {
+        config.telemetry.enabled = true;
+      });
 
-      // does not throw
-      const ok = await specHelper.runTask("telemetry", {});
-      expect(ok).toBe(true);
+      afterAll(() => {
+        config.telemetry.enabled = false;
+      });
 
-      expect(fetch).toHaveBeenCalledTimes(1);
-      config.telemetry.enabled = false;
+      test("the task can be run", async () => {
+        fetch.mockResponseOnce(JSON.stringify({ response: "ok" }));
+
+        // does not throw
+        const ok = await specHelper.runTask("telemetry", {});
+        expect(ok).toBe(true);
+
+        expect(fetch).toHaveBeenCalledTimes(1);
+      });
     });
 
     test("telemetry can be disabled", async () => {
