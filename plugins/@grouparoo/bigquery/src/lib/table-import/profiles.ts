@@ -4,23 +4,21 @@ import { getColumns, makeWhereClause, castRow } from "../util";
 
 export const profiles: ProfilesPluginMethod = async ({
   connection,
-  schedule,
   run,
   sourceMapping,
+  scheduleOptions,
   source,
   limit,
   highWaterMark,
-  filter,
+  sourceOffset,
 }) => {
   let importsCount = 0;
-  const offset = highWaterMark ? parseInt(highWaterMark.toString()) : 0;
-
-  const { column } = await schedule.getOptions();
   const { table } = await source.parameterizedOptions(run);
+  const sortColumn = scheduleOptions.column;
 
-  const hasFilter = Object.keys(filter).length === 1;
-  const filterCol = hasFilter ? Object.keys(filter)[0] : null;
-  const filterVal = hasFilter ? Object.values(filter)[0] : null;
+  const hasHighWaterMark = Object.keys(highWaterMark).length === 1;
+  const filterCol = hasHighWaterMark ? Object.keys(highWaterMark)[0] : null;
+  const filterVal = hasHighWaterMark ? Object.values(highWaterMark)[0] : null;
 
   const columns = await getColumns(connection, table);
 
@@ -40,8 +38,8 @@ export const profiles: ProfilesPluginMethod = async ({
       types
     );
   }
-  query += ` ORDER BY \`${column}\` ASC`;
-  query += ` LIMIT ${limit} OFFSET ${offset}`;
+  query += ` ORDER BY \`${sortColumn}\` ASC`;
+  query += ` LIMIT ${limit} OFFSET ${sourceOffset}`;
   validateQuery(query);
 
   const options = { query, params, types };
@@ -52,6 +50,49 @@ export const profiles: ProfilesPluginMethod = async ({
     importsCount++;
   }
 
-  const nextHighWaterMark = offset + limit;
-  return { importsCount, nextHighWaterMark };
+  const response = await connection.query(query);
+  for (const i in response.rows) {
+    await plugin.createImport(sourceMapping, run, response.rows[i]);
+    importsCount++;
+  }
+
+  let nextSourceOffset = 0;
+  let nextHighWaterMark = {};
+  const lastRow = response.rows[response.rows.length - 1];
+  if (
+    lastRow &&
+    highWaterMark[sortColumn] &&
+    formatHighWaterMark(lastRow[sortColumn]) !== highWaterMark[sortColumn]
+  ) {
+    nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
+  } else if (
+    lastRow &&
+    formatHighWaterMark(lastRow[sortColumn]) === highWaterMark[sortColumn]
+  ) {
+    nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
+    nextSourceOffset = parseInt(sourceOffset.toString()) + limit;
+  } else if (lastRow) {
+    nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
+    nextSourceOffset = parseInt(sourceOffset.toString()) + limit;
+  } else if (highWaterMark) {
+    nextHighWaterMark = highWaterMark;
+  }
+
+  return {
+    importsCount,
+    highWaterMark: nextHighWaterMark,
+    sourceOffset: nextSourceOffset,
+  };
 };
+
+function formatHighWaterMark(value: any) {
+  if (value instanceof Date) {
+    return (
+      value.toISOString().split("T")[0] +
+      " " +
+      value.toTimeString().split(" ")[0]
+    );
+  } else {
+    return value.toString();
+  }
+}

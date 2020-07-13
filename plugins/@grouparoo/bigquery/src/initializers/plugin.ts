@@ -12,7 +12,6 @@ import { uniqueProfilePropertyRuleBootstrapOptions as tableUniqueProfileProperty
 import { profiles as tableProfiles } from "../lib/table-import/profiles";
 import { profileProperty as tableProfileProperty } from "../lib/table-import/profileProperty";
 import { profilePropertyRuleOptions as tableProfilePropertyRuleOptions } from "../lib/table-import/profilePropertyRuleOptions";
-import { nextFilter as tableNextFilter } from "../lib/table-import/nextFilter";
 import { scheduleOptions as tableScheduleOptions } from "../lib/table-import/scheduleOptions";
 
 import { sourceOptions as querySourceOptions } from "../lib/query-import/sourceOptions";
@@ -87,7 +86,6 @@ export class Plugins extends Initializer {
             uniqueProfilePropertyRuleBootstrapOptions: tableUniqueProfilePropertyRuleBootstrapOptions,
             profiles: tableProfiles,
             profileProperty: tableProfileProperty,
-            nextFilter: tableNextFilter,
           },
         },
         {

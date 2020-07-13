@@ -30,8 +30,8 @@ import { Destination } from "./Destination";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { TeamMember } from "./TeamMember";
 
-export interface RunFilter {
-  [key: string]: any;
+export interface HighWaterMark {
+  [key: string]: string | number | Date;
 }
 
 // we have no checks, as those are managed by the lifecycle methods below (and tasks)
@@ -108,29 +108,30 @@ export class Run extends Model<Run> {
   @Column
   error: string;
 
-  @Column
-  highWaterMark: string;
-
   @Column(DataType.STRING)
-  get filter(): RunFilter {
+  get highWaterMark(): HighWaterMark {
     // @ts-ignore
-    return JSON.parse(this.getDataValue("filter"));
+    return JSON.parse(this.getDataValue("highWaterMark"));
   }
-  set filter(value: RunFilter) {
+  set highWaterMark(value: HighWaterMark) {
     // @ts-ignore
-    this.setDataValue("filter", JSON.stringify(value));
+    this.setDataValue("highWaterMark", JSON.stringify(value));
   }
+
+  // this is likely to always be a number, but in the case of a scrollId or other token, we'll store this as a string
+  @Column
+  sourceOffset: string;
 
   @Default(0)
   @Column
-  limit: number;
+  groupMemberLimit: number;
 
   @Default(0)
   @Column
-  offset: number;
+  groupMemberOffset: number;
 
   @Column
-  method: string;
+  groupMethod: string;
 
   @BelongsTo(() => Schedule)
   schedule: Schedule;
@@ -247,41 +248,6 @@ export class Run extends Model<Run> {
     });
 
     return previousRun;
-  }
-
-  async getNextFilter() {
-    let nextFilter: RunFilter = {};
-
-    const schedule = await this.$get("schedule");
-    if (!schedule) {
-      // the run might not have been started by a schedule
-      return nextFilter;
-    }
-
-    const source = await Source.findByGuid(schedule.sourceGuid);
-    const app = await App.findByGuid(source.appGuid);
-    const connection = await app.getConnection();
-    const { pluginConnection } = await source.getPlugin();
-    if (!pluginConnection || !pluginConnection?.methods.nextFilter) {
-      return nextFilter;
-    }
-
-    const appOptions = await app.getOptions();
-    const sourceOptions = await source.getOptions();
-    const sourceMapping = await source.getMapping();
-    const scheduleOptions = await schedule.getOptions();
-
-    return pluginConnection.methods.nextFilter({
-      connection,
-      app,
-      appOptions,
-      source,
-      sourceOptions,
-      sourceMapping,
-      schedule,
-      scheduleOptions,
-      run: this,
-    });
   }
 
   /**
@@ -417,10 +383,10 @@ export class Run extends Model<Run> {
       profilesExported: this.profilesExported,
       error: this.error,
       highWaterMark: this.highWaterMark,
-      filter: this.filter,
-      limit: this.limit,
-      offset: this.offset,
-      method: this.method,
+      sourceOffset: this.sourceOffset,
+      groupMemberLimit: this.groupMemberLimit,
+      groupMemberOffset: this.groupMemberOffset,
+      groupMethod: this.groupMethod,
       completedAt: this.completedAt ? this.completedAt.getTime() : null,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
@@ -437,7 +403,7 @@ export class Run extends Model<Run> {
         group.type === "calculated"
           ? await group.countPotentialMembers()
           : await group.$count("groupMembers");
-      switch (this.method) {
+      switch (this.groupMethod) {
         case "runAddGroupMembers":
           basePercent = 0;
           break;
@@ -451,7 +417,7 @@ export class Run extends Model<Run> {
       return (
         basePercent +
         Math.round(
-          (100 * this.offset) /
+          (100 * this.groupMemberOffset) /
             (groupMembersCount > 0 ? groupMembersCount : 1) /
             3
         )

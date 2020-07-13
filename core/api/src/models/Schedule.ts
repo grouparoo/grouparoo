@@ -20,8 +20,9 @@ import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Source, SimpleSourceOptions, SourceMapping } from "./Source";
 import { App, SimpleAppOptions } from "./App";
-import { Run } from "./Run";
+import { Run, HighWaterMark } from "./Run";
 import { Option } from "./Option";
+import { plugin } from "../modules/plugin";
 import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
 
@@ -313,7 +314,8 @@ export class Schedule extends LoggedModel<Schedule> {
     );
   }
 
-  async run(run: Run, limit: number, highWaterMark: string | number) {
+  async run(run: Run) {
+    const options = await this.getOptions();
     const source = await this.$get("source");
     const app = await App.findByGuid(source.appGuid);
     const { pluginConnection } = await source.getPlugin();
@@ -330,18 +332,34 @@ export class Schedule extends LoggedModel<Schedule> {
     const connection = await app.getConnection();
     await source.validateOptions(sourceOptions);
 
-    let filter = {};
-    const previousRun = await run.previousRun();
-    if (previousRun?.filter) {
-      filter = previousRun.filter;
+    const limit: number = parseInt(
+      (await plugin.readSetting("core", "runs-profile-batch-size")).value
+    );
+
+    let highWaterMark = {};
+    let sourceOffset: number | string = 0;
+
+    if (run.highWaterMark) {
+      highWaterMark = run.highWaterMark;
+    } else {
+      const previousRun = await run.previousRun();
+      if (previousRun?.highWaterMark) {
+        highWaterMark = previousRun.highWaterMark;
+      }
+    }
+
+    if (run.sourceOffset) {
+      sourceOffset = run.sourceOffset;
     }
 
     let importsCount = 0;
-    let nextHighWaterMark: string | number;
+    let nextHighWaterMark: HighWaterMark;
+    let nextSourceOffset: number | string;
 
     try {
       const response = await method({
         schedule: this,
+        scheduleOptions: options,
         connection,
         app,
         appOptions,
@@ -350,14 +368,17 @@ export class Schedule extends LoggedModel<Schedule> {
         sourceMapping,
         run,
         limit,
-        filter,
         highWaterMark,
+        sourceOffset,
       });
 
-      importsCount = response.importsCount;
-      nextHighWaterMark = response.nextHighWaterMark;
-      filter = await run.getNextFilter();
-      await run.update({ highWaterMark: nextHighWaterMark, filter });
+      importsCount = response.importsCount || 0;
+      nextHighWaterMark = response.highWaterMark || {};
+      nextSourceOffset = response.sourceOffset || 0;
+      await run.update({
+        highWaterMark: nextHighWaterMark,
+        sourceOffset: nextSourceOffset,
+      });
     } catch (error) {
       log(
         `failed run ${run.guid} for schedule ${this.guid}: ${error}`,
@@ -368,7 +389,11 @@ export class Schedule extends LoggedModel<Schedule> {
       await run.save();
     }
 
-    return { importsCount, nextHighWaterMark };
+    return {
+      importsCount,
+      highWaterMark: nextHighWaterMark,
+      sourceOffset: nextSourceOffset,
+    };
   }
 
   // --- Class Methods --- //

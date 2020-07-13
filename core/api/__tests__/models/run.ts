@@ -150,7 +150,7 @@ describe("models/run", () => {
           state: "running",
           creatorGuid: group.guid,
           creatorType: "group",
-          method: "runAddGroupMembers",
+          groupMethod: "runAddGroupMembers",
         });
         expect(await run.percentComplete()).toBe(0);
       });
@@ -160,7 +160,7 @@ describe("models/run", () => {
           state: "running",
           creatorGuid: group.guid,
           creatorType: "group",
-          method: "runRemoveGroupMembers",
+          groupMethod: "runRemoveGroupMembers",
         });
         expect(await run.percentComplete()).toBe(45);
       });

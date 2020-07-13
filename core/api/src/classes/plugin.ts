@@ -8,7 +8,7 @@ import {
   ProfilePropertyRuleFiltersWithKey,
 } from "../models/ProfilePropertyRule";
 import { Profile } from "../models/Profile";
-import { RunFilter } from "../models/Run";
+import { HighWaterMark } from "../models/Run";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
 import {
   Schedule,
@@ -71,7 +71,6 @@ export interface PluginConnection {
     uniqueProfilePropertyRuleBootstrapOptions?: UniqueProfilePropertyRuleBootstrapOptions;
     profiles?: ProfilesPluginMethod;
     profileProperty?: ProfilePropertyPluginMethod;
-    nextFilter?: NextFilterPluginMethod;
     destinationOptions?: DestinationOptionsMethod;
     destinationMappingOptions?: DestinationMappingOptionsMethod;
     exportProfile?: ExportProfilePluginMethod;
@@ -87,6 +86,7 @@ export interface ProfilesPluginMethod {
   (argument: {
     connection: any;
     schedule: Schedule;
+    scheduleOptions: SimpleScheduleOptions;
     app: App;
     appOptions: SimpleAppOptions;
     source: Source;
@@ -94,14 +94,15 @@ export interface ProfilesPluginMethod {
     sourceMapping: SourceMapping;
     run: Run;
     limit: number;
-    filter: RunFilter;
-    highWaterMark: string | number;
+    highWaterMark: HighWaterMark;
+    sourceOffset: number | string;
   }): Promise<ProfilesPluginMethodResponse>;
 }
 
 export interface ProfilesPluginMethodResponse {
   importsCount: number;
-  nextHighWaterMark: string | number;
+  highWaterMark: HighWaterMark;
+  sourceOffset: number | string;
 }
 
 /**
@@ -128,25 +129,6 @@ export type ProfilePropertyPluginMethodResponse =
   | number
   | boolean
   | Date;
-
-/**
- * Used by a Schedule to determine the maximum value/timestamp of a source that was imported by this run.
- * Will be used as the stating point for the next run.
- * Ie: `select MAX(updated_at) from users`
- */
-export interface NextFilterPluginMethod {
-  (argument: {
-    connection: any;
-    app: App;
-    appOptions: SimpleAppOptions;
-    source: Source;
-    sourceOptions: SimpleSourceOptions;
-    sourceMapping: SourceMapping;
-    schedule: Schedule;
-    scheduleOptions: SimpleScheduleOptions;
-    run: Run;
-  }): Promise<RunFilter>;
-}
 
 /**
  * Method to export a single profile to a destination
