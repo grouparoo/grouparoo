@@ -1,9 +1,10 @@
+import fetch, { enableFetchMocks } from "jest-fetch-mock";
+enableFetchMocks();
+
 import { helper } from "../utils/specHelper";
 import { Log } from "../../src/models/Log";
 import { plugin } from "../../src/modules/plugin";
 import { api, specHelper, config } from "actionhero";
-import fetch, { enableFetchMocks } from "jest-fetch-mock";
-enableFetchMocks();
 
 let actionhero;
 
@@ -74,7 +75,7 @@ describe("tasks/telemetry", () => {
       });
 
       test("the task can be run", async () => {
-        fetch.mockResponseOnce(JSON.stringify({ response: "ok" }));
+        fetch.mockResponseOnce(JSON.stringify({ response: "FROM TEST" }));
 
         // does not throw
         const ok = await specHelper.runTask("telemetry", {});

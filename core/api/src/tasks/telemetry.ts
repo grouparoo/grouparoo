@@ -1,5 +1,5 @@
 import { Task, api, config } from "actionhero";
-import fetch from "isomorphic-fetch";
+import "isomorphic-fetch";
 import { plugin } from "../modules/plugin";
 import path from "path";
 import os from "os";
