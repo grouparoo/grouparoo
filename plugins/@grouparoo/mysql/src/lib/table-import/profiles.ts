@@ -29,7 +29,7 @@ export const profiles: ProfilesPluginMethod = async ({
     table,
     sortColumn,
     limit,
-    sourceOffset,
+    parseInt(sourceOffset.toString()),
   ]);
   for (const i in rows) {
     await plugin.createImport(sourceMapping, run, rows[i]);
@@ -37,25 +37,23 @@ export const profiles: ProfilesPluginMethod = async ({
   }
 
   let nextSourceOffset = 0;
-  let nextHighWaterMark = {};
+  let nextHighWaterMark = highWaterMark;
   const lastRow = rows[rows.length - 1];
-  if (
-    lastRow &&
-    highWaterMark[sortColumn] &&
-    formatHighWaterMark(lastRow[sortColumn]) !== highWaterMark[sortColumn]
-  ) {
-    nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
-  } else if (
-    lastRow &&
-    formatHighWaterMark(lastRow[sortColumn]) === highWaterMark[sortColumn]
-  ) {
-    nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
-    nextSourceOffset = parseInt(sourceOffset.toString()) + limit;
-  } else if (lastRow) {
-    nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
-    nextSourceOffset = parseInt(sourceOffset.toString()) + limit;
-  } else if (highWaterMark) {
-    nextHighWaterMark = highWaterMark;
+
+  if (lastRow) {
+    if (
+      highWaterMark[sortColumn] &&
+      formatHighWaterMark(lastRow[sortColumn]) !== highWaterMark[sortColumn]
+    ) {
+      nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
+    } else if (
+      highWaterMark[sortColumn] &&
+      formatHighWaterMark(lastRow[sortColumn]) === highWaterMark[sortColumn]
+    ) {
+      nextSourceOffset = parseInt(sourceOffset.toString()) + limit;
+    } else {
+      nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
+    }
   }
 
   return {

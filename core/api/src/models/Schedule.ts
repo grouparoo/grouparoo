@@ -339,7 +339,7 @@ export class Schedule extends LoggedModel<Schedule> {
     let highWaterMark = {};
     let sourceOffset: number | string = 0;
 
-    if (run.highWaterMark) {
+    if (run.highWaterMark && Object.keys(run.highWaterMark).length > 0) {
       highWaterMark = run.highWaterMark;
     } else {
       const previousRun = await run.previousRun();
@@ -385,7 +385,7 @@ export class Schedule extends LoggedModel<Schedule> {
         "error",
         error
       );
-      run.error = `${error.message} - ${error.stack}`;
+      run.error = error.stack || error.toString();
       await run.save();
     }
 

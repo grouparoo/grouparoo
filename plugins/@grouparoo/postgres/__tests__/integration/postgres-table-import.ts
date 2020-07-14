@@ -418,15 +418,21 @@ describe("integration/runs/postgres", () => {
       });
 
       // run the schedule task again to enqueue the determineState task
-      const foundAgain = await specHelper.findEnqueuedTasks("schedule:run");
+      await helper.sleep();
+      let foundAgain = await specHelper.findEnqueuedTasks("schedule:run");
       expect(foundAgain.length).toEqual(2);
+      await specHelper.runTask("schedule:run", foundAgain[1].args[0]);
+
+      await helper.sleep();
+      foundAgain = await specHelper.findEnqueuedTasks("schedule:run");
+      expect(foundAgain.length).toEqual(3);
       await specHelper.runTask("schedule:run", foundAgain[1].args[0]);
 
       // run all enqueued associateProfile tasks
       const foundAssociateTasks = await specHelper.findEnqueuedTasks(
         "import:associateProfile"
       );
-      expect(foundAssociateTasks.length).toEqual(10);
+      expect(foundAssociateTasks.length).toEqual(11);
 
       await Promise.all(
         foundAssociateTasks.map(
@@ -486,13 +492,14 @@ describe("integration/runs/postgres", () => {
 
       await run.reload();
       expect(run.state).toBe("complete");
-      expect(run.importsCreated).toBe(10);
+      expect(run.importsCreated).toBe(11);
       expect(run.profilesCreated).toBe(10);
       expect(run.profilesImported).toBe(10);
       expect(run.exportsCreated).toBe(10);
       expect(run.profilesExported).toBe(10);
-      expect(run.filter).toEqual({ id: 10 });
-      expect(run.highWaterMark).toBe("200");
+      expect(run.highWaterMark).toEqual({ id: "10" });
+      expect(run.sourceOffset).toBe("0");
+      expect(run.error).toBeFalsy();
 
       // check the destination
       const userRows = await api.sequelize.query(
@@ -550,14 +557,14 @@ describe("integration/runs/postgres", () => {
 
       // run the schedule task again to enqueue the determineState task
       const foundAgain = await specHelper.findEnqueuedTasks("schedule:run");
-      expect(foundAgain.length).toEqual(4);
-      await specHelper.runTask("schedule:run", foundAgain[3].args[0]);
+      expect(foundAgain.length).toEqual(5);
+      await specHelper.runTask("schedule:run", foundAgain[4].args[0]);
 
       // run all enqueued associateProfile tasks
       const foundAssociateTasks = await specHelper.findEnqueuedTasks(
         "import:associateProfile"
       );
-      expect(foundAssociateTasks.length).toEqual(10 + 1);
+      expect(foundAssociateTasks.length).toEqual(11 + 1);
 
       await Promise.all(
         foundAssociateTasks.map(
@@ -625,8 +632,9 @@ describe("integration/runs/postgres", () => {
       expect(run.profilesImported).toBe(1);
       expect(run.exportsCreated).toBe(1);
       expect(run.profilesExported).toBe(1);
-      expect(run.filter).toEqual({ id: 10 });
-      expect(run.highWaterMark).toBe("200");
+      expect(run.highWaterMark).toEqual({ id: "10" });
+      expect(run.sourceOffset).toBe("0");
+      expect(run.error).toBeFalsy();
 
       // check the destination
       const userRows = await api.sequelize.query(

@@ -48,25 +48,25 @@ export const profiles: ProfilesPluginMethod = async ({
   }
 
   let nextSourceOffset = 0;
-  let nextHighWaterMark = {};
-  const lastRow = response.rows[response.rows.length - 1];
-  if (
-    lastRow &&
-    highWaterMark[sortColumn] &&
-    formatHighWaterMark(lastRow[sortColumn]) !== highWaterMark[sortColumn]
-  ) {
-    nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
-  } else if (
-    lastRow &&
-    formatHighWaterMark(lastRow[sortColumn]) === highWaterMark[sortColumn]
-  ) {
-    nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
-    nextSourceOffset = parseInt(sourceOffset.toString()) + limit;
-  } else if (lastRow) {
-    nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
-    nextSourceOffset = parseInt(sourceOffset.toString()) + limit;
-  } else if (highWaterMark) {
-    nextHighWaterMark = highWaterMark;
+  let nextHighWaterMark = highWaterMark;
+  const lastRow = response.rows
+    ? response.rows[response.rows.length - 1]
+    : null;
+
+  if (lastRow) {
+    if (
+      highWaterMark[sortColumn] &&
+      formatHighWaterMark(lastRow[sortColumn]) !== highWaterMark[sortColumn]
+    ) {
+      nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
+    } else if (
+      highWaterMark[sortColumn] &&
+      formatHighWaterMark(lastRow[sortColumn]) === highWaterMark[sortColumn]
+    ) {
+      nextSourceOffset = parseInt(sourceOffset.toString()) + limit;
+    } else {
+      nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
+    }
   }
 
   return {
