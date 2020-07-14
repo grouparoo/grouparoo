@@ -100,9 +100,9 @@ describe("tasks/group:run", () => {
       expect(foundTasks.length).toBe(1);
       expect(foundTasks[0].args[0].method).toBe("runAddGroupMembers");
       const run = await Run.findByGuid(foundTasks[0].args[0].runGuid);
-      expect(run.limit).toBe(100);
-      expect(run.offset).toBe(0);
-      expect(run.method).toBe("runAddGroupMembers");
+      expect(run.groupMemberLimit).toBe(100);
+      expect(run.groupMemberOffset).toBe(0);
+      expect(run.groupMethod).toBe("runAddGroupMembers");
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:run", foundTasks[0].args[0]); // adding profiles (none found, enqueue remove)
 
@@ -110,9 +110,9 @@ describe("tasks/group:run", () => {
       expect(foundTasks.length).toBe(1);
       expect(foundTasks[0].args[0].method).toBe("runRemoveGroupMembers");
       await run.reload();
-      expect(run.limit).toBe(100);
-      expect(run.offset).toBe(100);
-      expect(run.method).toBe("runAddGroupMembers");
+      expect(run.groupMemberLimit).toBe(100);
+      expect(run.groupMemberOffset).toBe(100);
+      expect(run.groupMethod).toBe("runAddGroupMembers");
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:run", foundTasks[0].args[0]); // remove profiles, (none found, enqueue removePreviousRunGroupMembers)
 
@@ -122,9 +122,9 @@ describe("tasks/group:run", () => {
         "removePreviousRunGroupMembers"
       );
       await run.reload();
-      expect(run.limit).toBe(100);
-      expect(run.offset).toBe(0);
-      expect(run.method).toBe("runRemoveGroupMembers");
+      expect(run.groupMemberLimit).toBe(100);
+      expect(run.groupMemberOffset).toBe(0);
+      expect(run.groupMethod).toBe("runRemoveGroupMembers");
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:run", foundTasks[0].args[0]); // remove profiles, (none found, enqueue run state)
 

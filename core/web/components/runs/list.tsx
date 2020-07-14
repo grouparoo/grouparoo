@@ -166,7 +166,7 @@ export default function RunsList(props) {
             <th>Creator</th>
             <th>Completed At</th>
             <th>State</th>
-            <th>Filter</th>
+            <th>Filters</th>
             <th>Stats</th>
           </tr>
         </thead>
@@ -213,14 +213,15 @@ export default function RunsList(props) {
                   <td>
                     {/* <code>{JSON.stringify(run.filter)}</code> */}
                     <>
-                      limit: {run.limit} <br />
-                      offset: {run.offset}
+                      groupMemberLimit: {run.groupMemberLimit} <br />
+                      groupMemberOffset: {run.groupMemberOffset} <br />
+                      sourceOffset: {run.sourceOffset}
                     </>
-                    {run.filter ? (
+                    {run.highWaterMark ? (
                       <>
                         <br />
-                        {Object.keys(run.filter)[0]}:{" "}
-                        {Object.values(run.filter)[0]}
+                        {Object.keys(run.highWaterMark)[0]}:{" "}
+                        {Object.values(run.highWaterMark)[0]}
                       </>
                     ) : null}
                   </td>

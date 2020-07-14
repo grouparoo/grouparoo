@@ -72,7 +72,11 @@ export class RunGroup extends Task {
       );
     }
 
-    await run.update({ limit, offset, method });
+    await run.update({
+      groupMemberLimit: limit,
+      groupMemberOffset: offset,
+      groupMethod: method,
+    });
 
     let memberCount = 0;
     if (method === "runAddGroupMembers") {

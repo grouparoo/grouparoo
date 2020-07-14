@@ -7,7 +7,7 @@ export const profiles: ProfilesPluginMethod = async ({
   source,
   sourceOptions,
   sourceMapping,
-  highWaterMark,
+  sourceOffset,
   limit,
 }) => {
   let combinedMapping = sourceMapping;
@@ -21,7 +21,7 @@ export const profiles: ProfilesPluginMethod = async ({
     }
   }
 
-  const offset = highWaterMark ? parseInt(highWaterMark.toString()) : 0;
+  const offset = sourceOffset ? parseInt(sourceOffset.toString()) : 0;
   let importsCount = 0;
   const sheet = new Spreadsheet(appOptions, sourceOptions.sheet_url);
   const rows = await sheet.read({ limit, offset });
@@ -31,6 +31,9 @@ export const profiles: ProfilesPluginMethod = async ({
     importsCount++;
   }
 
-  const nextHighWaterMark = limit + offset;
-  return { importsCount, nextHighWaterMark };
+  return {
+    importsCount,
+    highWaterMark: {},
+    sourceOffset: offset + importsCount,
+  };
 };

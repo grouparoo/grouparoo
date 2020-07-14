@@ -37,9 +37,9 @@ describe("tasks/run:internalRun", () => {
       await specHelper.runTask("run:internalRun", foundTasks[0].args[0]);
 
       await run.reload();
-      expect(run.limit).toBe(100);
-      expect(run.offset).toBe(0);
-      expect(run.method).toBe("internalRun");
+      expect(run.groupMemberLimit).toBe(100);
+      expect(run.groupMemberOffset).toBe(0);
+      expect(run.groupMethod).toBe("internalRun");
 
       const imports = await Import.findAll();
       expect(imports.length).toBe(1);

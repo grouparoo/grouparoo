@@ -63,9 +63,18 @@ export default function Page({ run, quantizedTimeline }) {
               Profiles Exported: {run.profilesExported}
             </Col>
             <Col>
-              Limit: {run.limit}
+              Group Member Limit: {run.groupMemberLimit}
               <br />
-              Offset: {run.offset}
+              Group Member Offset: {run.groupMemberOffset}
+              <br />
+              Source Offset: {run.sourceOffset}
+              {run.highWaterMark ? (
+                <>
+                  <br />
+                  {Object.keys(run.highWaterMark)[0]}:{" "}
+                  {Object.values(run.highWaterMark)[0]}
+                </>
+              ) : null}
             </Col>
           </Row>
 

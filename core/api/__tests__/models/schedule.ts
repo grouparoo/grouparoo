@@ -326,10 +326,11 @@ describe("models/schedule", () => {
             ],
             methods: {
               profiles: async () => {
-                return { nextHighWaterMark: "100", importsCount: 100 };
-              },
-              nextFilter: async () => {
-                return { highPoint: "abc" };
+                return {
+                  highWaterMark: { updated_at: 200 },
+                  sourceOffset: 100,
+                  importsCount: 100,
+                };
               },
             },
           },
@@ -391,7 +392,7 @@ describe("models/schedule", () => {
       await schedule.destroy();
     });
 
-    test("running a schedule will save the filter and highWaterMark on the run", async () => {
+    test("running a schedule will save the highWaterMark sourceOffset on the run", async () => {
       const schedule = await Schedule.create({
         name: "test plugin schedule",
         sourceGuid: source.guid,
@@ -405,10 +406,10 @@ describe("models/schedule", () => {
         state: "running",
       });
 
-      await schedule.run(run, 0, 0);
+      await schedule.run(run);
       await run.reload();
-      expect(run.highWaterMark).toBe("100");
-      expect(run.filter).toEqual({ highPoint: "abc" });
+      expect(run.highWaterMark).toEqual({ updated_at: 200 });
+      expect(run.sourceOffset).toBe("100");
 
       await schedule.destroy();
     });

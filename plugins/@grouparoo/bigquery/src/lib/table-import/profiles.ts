@@ -1,26 +1,26 @@
 import { validateQuery } from "../validateQuery";
+import { BigQueryTimestamp } from "@google-cloud/bigquery";
 import { plugin, ProfilesPluginMethod } from "@grouparoo/core";
 import { getColumns, makeWhereClause, castRow } from "../util";
 
 export const profiles: ProfilesPluginMethod = async ({
   connection,
-  schedule,
   run,
   sourceMapping,
+  scheduleOptions,
   source,
   limit,
   highWaterMark,
-  filter,
+  sourceOffset,
 }) => {
   let importsCount = 0;
-  const offset = highWaterMark ? parseInt(highWaterMark.toString()) : 0;
-
-  const { column } = await schedule.getOptions();
   const { table } = await source.parameterizedOptions(run);
+  const sortColumn = scheduleOptions.column;
+  const mappingColumn = Object.keys(sourceMapping)[0];
 
-  const hasFilter = Object.keys(filter).length === 1;
-  const filterCol = hasFilter ? Object.keys(filter)[0] : null;
-  const filterVal = hasFilter ? Object.values(filter)[0] : null;
+  const hasHighWaterMark = Object.keys(highWaterMark).length === 1;
+  const filterCol = hasHighWaterMark ? Object.keys(highWaterMark)[0] : null;
+  const filterVal = hasHighWaterMark ? Object.values(highWaterMark)[0] : null;
 
   const columns = await getColumns(connection, table);
 
@@ -40,8 +40,8 @@ export const profiles: ProfilesPluginMethod = async ({
       types
     );
   }
-  query += ` ORDER BY \`${column}\` ASC`;
-  query += ` LIMIT ${limit} OFFSET ${offset}`;
+  query += ` ORDER BY \`${sortColumn}\` ASC, \`${mappingColumn}\` ASC`;
+  query += ` LIMIT ${limit} OFFSET ${sourceOffset}`;
   validateQuery(query);
 
   const options = { query, params, types };
@@ -52,6 +52,48 @@ export const profiles: ProfilesPluginMethod = async ({
     importsCount++;
   }
 
-  const nextHighWaterMark = offset + limit;
-  return { importsCount, nextHighWaterMark };
+  let nextSourceOffset = 0;
+  let nextHighWaterMark = highWaterMark;
+  const lastRow = rows[rows.length - 1];
+
+  if (lastRow) {
+    if (
+      highWaterMark[sortColumn] &&
+      formatHighWaterMark(lastRow[sortColumn]) !== highWaterMark[sortColumn]
+    ) {
+      nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
+    } else if (
+      highWaterMark[sortColumn] &&
+      formatHighWaterMark(lastRow[sortColumn]) === highWaterMark[sortColumn]
+    ) {
+      nextSourceOffset = parseInt(sourceOffset.toString()) + limit;
+    } else {
+      nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
+    }
+  }
+
+  return {
+    importsCount,
+    highWaterMark: nextHighWaterMark,
+    sourceOffset: nextSourceOffset,
+  };
 };
+
+function formatHighWaterMark(value: any) {
+  if (value instanceof Date) {
+    return (
+      value.toISOString().split("T")[0] +
+      " " +
+      value.toTimeString().split(" ")[0]
+    );
+  } else if (value instanceof BigQueryTimestamp) {
+    const jsDate = new Date(value.value);
+    return (
+      jsDate.toISOString().split("T")[0] +
+      " " +
+      jsDate.toTimeString().split(" ")[0]
+    );
+  } else {
+    return value.toString();
+  }
+}

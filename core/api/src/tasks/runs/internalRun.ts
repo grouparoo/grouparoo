@@ -42,7 +42,11 @@ export class RunInternalRun extends Task {
       );
     }
 
-    await run.update({ limit, offset, method: "internalRun" });
+    await run.update({
+      groupMemberLimit: limit,
+      groupMemberOffset: offset,
+      groupMethod: "internalRun",
+    });
 
     const profiles = await Profile.findAll({
       order: [["createdAt", "asc"]],

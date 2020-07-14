@@ -340,8 +340,12 @@ describe("models/app", () => {
             direction: "import" as "import",
             options: [],
             methods: {
-              profiles: async ({ schedule, app, run, limit }) => {
-                return { importsCount: 0, nextHighWaterMark: "0" };
+              profiles: async () => {
+                return {
+                  importsCount: 0,
+                  highWaterMark: { col: "0" },
+                  sourceOffset: 0,
+                };
               },
               profileProperty: async ({
                 app,

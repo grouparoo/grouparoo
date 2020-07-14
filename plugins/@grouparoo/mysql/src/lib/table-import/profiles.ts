@@ -6,31 +6,73 @@ export const profiles: ProfilesPluginMethod = async ({
   sourceMapping,
   run,
   source,
+  scheduleOptions,
   highWaterMark,
-  filter,
+  sourceOffset,
   limit,
 }) => {
   let importsCount = 0;
-  const offset = highWaterMark ? parseInt(highWaterMark.toString()) : 0;
-
   const { table } = await source.parameterizedOptions(run);
-  const where =
-    Object.keys(filter).length === 1
-      ? `\`${Object.keys(filter)[0]}\` >= "${Object.values(filter)[0]}"`
-      : null;
+  const sortColumn = scheduleOptions.column;
+  const mappingColumn = Object.keys(sourceMapping)[0];
+
+  const where = highWaterMark[sortColumn]
+    ? `\`${sortColumn}\` >= "${highWaterMark[sortColumn]}"`
+    : null;
 
   const query = `SELECT * FROM ?? ${
     where ? ` WHERE ${where} ` : ""
-  } LIMIT ? OFFSET ?`;
+  } ORDER BY ?? ASC, ?? ASC LIMIT ? OFFSET ?`;
 
   validateQuery(query);
 
-  const rows = await connection.asyncQuery(query, [table, limit, offset]);
+  const rows = await connection.asyncQuery(query, [
+    table,
+    sortColumn,
+    mappingColumn,
+    limit,
+    parseInt(sourceOffset.toString()),
+  ]);
   for (const i in rows) {
     await plugin.createImport(sourceMapping, run, rows[i]);
     importsCount++;
   }
 
-  const nextHighWaterMark = offset + limit;
-  return { importsCount, nextHighWaterMark };
+  let nextSourceOffset = 0;
+  let nextHighWaterMark = highWaterMark;
+  const lastRow = rows[rows.length - 1];
+
+  if (lastRow) {
+    if (
+      highWaterMark[sortColumn] &&
+      formatHighWaterMark(lastRow[sortColumn]) !== highWaterMark[sortColumn]
+    ) {
+      nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
+    } else if (
+      highWaterMark[sortColumn] &&
+      formatHighWaterMark(lastRow[sortColumn]) === highWaterMark[sortColumn]
+    ) {
+      nextSourceOffset = parseInt(sourceOffset.toString()) + limit;
+    } else {
+      nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
+    }
+  }
+
+  return {
+    importsCount,
+    highWaterMark: nextHighWaterMark,
+    sourceOffset: nextSourceOffset,
+  };
 };
+
+function formatHighWaterMark(value: any) {
+  if (value instanceof Date) {
+    return (
+      value.toISOString().split("T")[0] +
+      " " +
+      value.toTimeString().split(" ")[0]
+    );
+  } else {
+    return value.toString();
+  }
+}
