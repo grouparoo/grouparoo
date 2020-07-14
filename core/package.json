@@ -46,7 +46,7 @@
     "@grouparoo/client-web": "^0.1.6-alpha.0",
     "@nivo/line": "^0.62.0",
     "actionhero": "^23.0.4",
-    "ah-next-plugin": "^0.2.1",
+    "ah-next-plugin": "^0.3.0",
     "ah-sequelize-plugin": "^2.2.1",
     "axios": "^0.19.2",
     "bcrypt": "^5.0.0",
