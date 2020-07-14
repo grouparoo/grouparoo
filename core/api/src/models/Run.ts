@@ -19,7 +19,9 @@ import {
   HasMany,
   AfterCreate,
   ForeignKey,
+  BeforeUpdate,
 } from "sequelize-typescript";
+import { chatRoom } from "actionhero";
 import * as uuid from "uuid";
 import { Schedule } from "./Schedule";
 import { Import } from "./Import";
@@ -169,6 +171,23 @@ export class Run extends Model<Run> {
   @AfterCreate
   static async testRun(instance: Run) {
     return instance.test();
+  }
+
+  @BeforeUpdate
+  static async broadcast(instance: Run) {
+    // we only need to broadcast at the end of each batch or on a state change, not as we increment values
+    if (
+      instance.changed("state") ||
+      instance.changed("groupMemberLimit") ||
+      instance.changed("groupMemberOffset") ||
+      instance.changed("highWaterMark") ||
+      instance.changed("sourceOffset")
+    ) {
+      await chatRoom.broadcast({}, `model:run`, {
+        model: await instance.apiData(),
+        verb: "update",
+      });
+    }
   }
 
   async determineState() {

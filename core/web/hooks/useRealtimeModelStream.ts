@@ -4,8 +4,8 @@ export const useRealtimeModelStream = (
   modelName: string,
   messageCallback: Function
 ) => {
-  // @ts-ignore
-  const [client] = useState(new ActionheroWebsocketClient());
+  if (!globalThis.ActionheroWebsocketClient) return null;
+  const [client] = useState(new globalThis.ActionheroWebsocketClient());
   const [room] = useState(`model:${modelName}`);
   const [enabled, setEnabled] = useState(true);
 

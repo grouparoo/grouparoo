@@ -120,6 +120,7 @@ export class Permission extends LoggedModel<Permission> {
       "profile",
       "profilePropertyRule",
       "resque",
+      "run",
       "system",
       "source",
       "team",

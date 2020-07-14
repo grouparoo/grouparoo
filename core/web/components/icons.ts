@@ -12,6 +12,7 @@ import {
   faFileExport,
   faTerminal,
   faStream,
+  faExchangeAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -24,5 +25,6 @@ library.add(
   faFileImport,
   faFileExport,
   faTerminal,
-  faStream
+  faStream,
+  faExchangeAlt
 );
