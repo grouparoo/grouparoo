@@ -249,7 +249,11 @@ export namespace helper {
               ];
             },
             profiles: async () => {
-              return { importsCount: 0, nextHighWaterMark: 0 };
+              return {
+                importsCount: 0,
+                highWaterMark: { col: 0 },
+                sourceOffset: 0,
+              };
             },
             profileProperty: async ({ profilePropertyRule, profile }) => {
               const data = {
