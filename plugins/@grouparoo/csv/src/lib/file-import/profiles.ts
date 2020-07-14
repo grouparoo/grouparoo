@@ -14,7 +14,7 @@ export const profiles: ProfilesPluginMethod = async ({
   sourceMapping,
   run,
   limit,
-  highWaterMark,
+  sourceOffset,
 }) => {
   let combinedMapping = sourceMapping;
   const profilePropertyRules = await source.$get("profilePropertyRules");
@@ -36,7 +36,7 @@ export const profiles: ProfilesPluginMethod = async ({
   //       Scanning the whole file each time seems silly.
   let importsCount = 0;
   let rowId = -1;
-  const offset = highWaterMark ? parseInt(highWaterMark.toString()) : 0;
+  const offset = sourceOffset ? parseInt(sourceOffset.toString()) : 0;
 
   await new Promise((resolve, reject) => {
     parser.once("readable", async () => {
@@ -65,5 +65,9 @@ export const profiles: ProfilesPluginMethod = async ({
   });
 
   const nextHighWaterMark = limit + offset;
-  return { importsCount, nextHighWaterMark };
+  return {
+    importsCount,
+    highWaterMark: {},
+    sourceOffset: offset + importsCount,
+  };
 };
