@@ -37,7 +37,7 @@ let run;
 let schedule;
 let sourceMapping;
 
-async function runIt({ filter, highWaterMark, limit }) {
+async function runIt({ highWaterMark, sourceOffset, limit }) {
   const imports = [];
   plugin.createImport = jest.fn(async function (
     mapping: { [remoteKey: string]: string },
@@ -48,7 +48,11 @@ async function runIt({ filter, highWaterMark, limit }) {
     return null;
   });
   const connection = await connect({ appOptions, app: null });
-  const { nextHighWaterMark, importsCount } = await profiles({
+  const {
+    highWaterMark: nextHighWaterMark,
+    importsCount,
+    sourceOffset: nextSourceOffset,
+  } = await profiles({
     connection,
     run,
     appOptions,
@@ -56,12 +60,18 @@ async function runIt({ filter, highWaterMark, limit }) {
     source,
     limit,
     highWaterMark,
-    filter,
+    sourceOffset,
     schedule,
+    scheduleOptions: await schedule.getOptions(),
     app: null,
     sourceOptions: null,
   });
-  return { imports, nextHighWaterMark, importsCount };
+  return {
+    imports,
+    highWaterMark: nextHighWaterMark,
+    importsCount,
+    sourceOffset: nextSourceOffset,
+  };
 }
 
 describe("bigquery/table/profiles", () => {
@@ -99,28 +109,28 @@ describe("bigquery/table/profiles", () => {
     run = await helper.factories.run(schedule, { state: "running" });
   });
 
-  test("imports all profiles when no filter", async () => {
+  test("imports all profiles when no highWaterMark", async () => {
     let limit = 100;
-    let highWaterMark = 0;
-    let filter = {};
+    let highWaterMark = {};
+    let sourceOffset = 0;
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
-      filter,
+      sourceOffset,
     });
     expect(importsCount).toBe(10);
     const importedIds = imports.map((r) => r.id);
     expect(importedIds).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   });
 
-  test("imports all profiles when there is a filter", async () => {
+  test("imports all profiles when there is a highWaterMark", async () => {
     let limit = 100;
-    let highWaterMark = 0;
-    let filter = { stamp: "2020-02-07T12:13:14.000Z" };
+    let highWaterMark = { stamp: "2020-02-07T12:13:14.000Z" };
+    let sourceOffset = 0;
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
-      filter,
+      sourceOffset,
     });
     expect(importsCount).toBe(4);
     const importedIds = imports.map((r) => r.id);
@@ -129,12 +139,12 @@ describe("bigquery/table/profiles", () => {
 
   test("handles getting no results", async () => {
     let limit = 100;
-    let highWaterMark = 0;
-    let filter = { stamp: "2020-02-11T12:13:14.000Z" }; // past the last one
+    let sourceOffset = 0;
+    let highWaterMark = { stamp: "2020-02-11T12:13:14.000Z" }; // past the last one
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
-      filter,
+      sourceOffset,
     });
     expect(importsCount).toBe(0);
     const importedIds = imports.map((r) => r.id);
@@ -145,40 +155,43 @@ describe("bigquery/table/profiles", () => {
     "imports a page at a time",
     async () => {
       let limit = 4;
-      let filter = {};
+      let highWaterMark = {};
       let importedIds;
 
       const page1 = await runIt({
         limit,
-        highWaterMark: 0,
-        filter,
+        sourceOffset: 0,
+        highWaterMark,
       });
       expect(page1.importsCount).toBe(4);
-      expect(page1.nextHighWaterMark).toBe(4);
+      expect(page1.sourceOffset).toBe(0);
+      expect(page1.highWaterMark).toEqual({ stamp: "2020-02-04 04:13:14" });
       importedIds = page1.imports.map((r) => r.id);
       expect(importedIds).toEqual([1, 2, 3, 4]);
 
       // do the next page
       const page2 = await runIt({
         limit,
-        highWaterMark: page1.nextHighWaterMark,
-        filter,
+        highWaterMark: page1.highWaterMark,
+        sourceOffset: page1.sourceOffset,
       });
       expect(page2.importsCount).toBe(4);
-      expect(page2.nextHighWaterMark).toBe(8);
+      expect(page2.sourceOffset).toBe(0);
+      expect(page1.highWaterMark).toEqual({ stamp: "2020-02-07 04:13:14" });
       importedIds = page2.imports.map((r) => r.id);
-      expect(importedIds).toEqual([5, 6, 7, 8]);
+      expect(importedIds).toEqual([4, 5, 6, 7]);
 
       // do the next page
       const page3 = await runIt({
         limit,
-        highWaterMark: page2.nextHighWaterMark,
-        filter,
+        highWaterMark: page2.highWaterMark,
+        sourceOffset: page2.sourceOffset,
       });
-      expect(page3.importsCount).toBe(2);
-      expect(page3.nextHighWaterMark).toBe(12);
+      expect(page3.importsCount).toBe(4);
+      expect(page3.sourceOffset).toBe(0);
+      expect(page1.highWaterMark).toEqual({ stamp: "2020-02-10 04:13:14" });
       importedIds = page3.imports.map((r) => r.id);
-      expect(importedIds).toEqual([9, 10]);
+      expect(importedIds).toEqual([7, 8, 9, 10]);
     },
     1000 * 60
   );

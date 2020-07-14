@@ -1,4 +1,5 @@
 import { validateQuery } from "../validateQuery";
+import { BigQueryTimestamp } from "@google-cloud/bigquery";
 import { plugin, ProfilesPluginMethod } from "@grouparoo/core";
 import { getColumns, makeWhereClause, castRow } from "../util";
 
@@ -50,32 +51,24 @@ export const profiles: ProfilesPluginMethod = async ({
     importsCount++;
   }
 
-  const response = await connection.query(query);
-  for (const i in response.rows) {
-    await plugin.createImport(sourceMapping, run, response.rows[i]);
-    importsCount++;
-  }
-
   let nextSourceOffset = 0;
-  let nextHighWaterMark = {};
-  const lastRow = response.rows[response.rows.length - 1];
-  if (
-    lastRow &&
-    highWaterMark[sortColumn] &&
-    formatHighWaterMark(lastRow[sortColumn]) !== highWaterMark[sortColumn]
-  ) {
-    nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
-  } else if (
-    lastRow &&
-    formatHighWaterMark(lastRow[sortColumn]) === highWaterMark[sortColumn]
-  ) {
-    nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
-    nextSourceOffset = parseInt(sourceOffset.toString()) + limit;
-  } else if (lastRow) {
-    nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
-    nextSourceOffset = parseInt(sourceOffset.toString()) + limit;
-  } else if (highWaterMark) {
-    nextHighWaterMark = highWaterMark;
+  let nextHighWaterMark = highWaterMark;
+  const lastRow = rows[rows.length - 1];
+
+  if (lastRow) {
+    if (
+      highWaterMark[sortColumn] &&
+      formatHighWaterMark(lastRow[sortColumn]) !== highWaterMark[sortColumn]
+    ) {
+      nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
+    } else if (
+      highWaterMark[sortColumn] &&
+      formatHighWaterMark(lastRow[sortColumn]) === highWaterMark[sortColumn]
+    ) {
+      nextSourceOffset = parseInt(sourceOffset.toString()) + limit;
+    } else {
+      nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
+    }
   }
 
   return {
@@ -91,6 +84,13 @@ function formatHighWaterMark(value: any) {
       value.toISOString().split("T")[0] +
       " " +
       value.toTimeString().split(" ")[0]
+    );
+  } else if (value instanceof BigQueryTimestamp) {
+    const jsDate = new Date(value.value);
+    return (
+      jsDate.toISOString().split("T")[0] +
+      " " +
+      jsDate.toTimeString().split(" ")[0]
     );
   } else {
     return value.toString();
