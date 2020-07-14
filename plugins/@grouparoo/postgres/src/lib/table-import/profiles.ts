@@ -15,6 +15,7 @@ export const profiles: ProfilesPluginMethod = async ({
   let importsCount = 0;
   const { table } = await source.parameterizedOptions(run);
   const sortColumn = scheduleOptions.column;
+  const mappingColumn = Object.keys(sourceMapping)[0];
 
   const where = highWaterMark[sortColumn]
     ? format("%I >= %L", sortColumn, highWaterMark[sortColumn])
@@ -23,19 +24,21 @@ export const profiles: ProfilesPluginMethod = async ({
   const query = where
     ? validateQuery(
         format(
-          `SELECT * FROM %I WHERE %s ORDER BY %I ASC LIMIT %L OFFSET %L`,
+          `SELECT * FROM %I WHERE %s ORDER BY %I ASC, %I ASC LIMIT %L OFFSET %L`,
           table,
           where,
           sortColumn,
+          mappingColumn,
           limit,
           sourceOffset
         )
       )
     : validateQuery(
         format(
-          `SELECT * FROM %I ORDER BY %I ASC LIMIT %L OFFSET %L`,
+          `SELECT * FROM %I ORDER BY %I ASC, %I ASC LIMIT %L OFFSET %L`,
           table,
           sortColumn,
+          mappingColumn,
           limit,
           sourceOffset
         )

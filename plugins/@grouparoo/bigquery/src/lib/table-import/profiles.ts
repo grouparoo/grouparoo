@@ -16,6 +16,7 @@ export const profiles: ProfilesPluginMethod = async ({
   let importsCount = 0;
   const { table } = await source.parameterizedOptions(run);
   const sortColumn = scheduleOptions.column;
+  const mappingColumn = Object.keys(sourceMapping)[0];
 
   const hasHighWaterMark = Object.keys(highWaterMark).length === 1;
   const filterCol = hasHighWaterMark ? Object.keys(highWaterMark)[0] : null;
@@ -39,7 +40,7 @@ export const profiles: ProfilesPluginMethod = async ({
       types
     );
   }
-  query += ` ORDER BY \`${sortColumn}\` ASC`;
+  query += ` ORDER BY \`${sortColumn}\` ASC, \`${mappingColumn}\` ASC`;
   query += ` LIMIT ${limit} OFFSET ${sourceOffset}`;
   validateQuery(query);
 
