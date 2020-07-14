@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Sparklines, SparklinesLine } from "react-sparklines";
-import { Row, Col, CardGroup, Card } from "react-bootstrap";
+import { Row, Col, CardGroup, Card, Table, ProgressBar } from "react-bootstrap";
 import { useApi } from "../../hooks/useApi";
+import { RunAPIData } from "../../utils/apiData";
+import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
 import Loader from "../loader";
 
-const TIMEOUT = 30 * 1000;
+const TIMEOUT = 15 * 1000;
 
 function SparkCard({ execApi, model, title, href = null }) {
   const [total, setTotal] = useState(null);
@@ -111,6 +113,53 @@ function BigNumber({ execApi, model, title, href = null }) {
   );
 }
 
+function RunningRuns({ execApi }) {
+  useRealtimeModelStream("run", load);
+  const [runs, setRuns] = useState<RunAPIData[]>([]);
+  useEffect(() => {
+    load();
+  }, []);
+
+  async function load() {
+    // let the navbar load the runs first
+    setTimeout(async () => {
+      const { runs } = await execApi("get", `/runs`, { state: "running" });
+      setRuns(runs);
+    }, 1001);
+  }
+
+  if (runs.length === 0) {
+    return <p>No active Runs</p>;
+  }
+
+  return (
+    <Table borderless size="sm">
+      <tbody>
+        {runs.map((run) => (
+          <tr key={`run-${run.guid}`}>
+            <td>
+              <Link href="/run/[guid]/edit" as={`/run/${run.guid}/edit`}>
+                <a>
+                  {run.creatorType}: {run.creatorName}
+                </a>
+              </Link>
+            </td>
+            <td>
+              <ProgressBar
+                variant="info"
+                style={{ minWidth: 300 }}
+                animated={run.percentComplete > 0 ? true : false}
+                now={run.percentComplete > 0 ? run.percentComplete : 100}
+                label={`${run.percentComplete}%`}
+              />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  );
+}
+
 export default function (props) {
   const { errorHandler } = props;
   const { execApi } = useApi(props, errorHandler);
@@ -163,6 +212,10 @@ export default function (props) {
         />
         <SparkCard execApi={execApi} href="logs" model="Log" title="Logs" />
       </CardGroup>
+
+      <br />
+      <h3>Active Runs</h3>
+      <RunningRuns execApi={execApi} />
     </>
   );
 }

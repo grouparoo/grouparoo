@@ -96,12 +96,17 @@ export class NavigationList extends OptionallyAuthenticatedAction {
           href: "/destinations",
           icon: "file-export",
         },
+        {
+          type: "link",
+          title: "Runs",
+          href: "/runs",
+          icon: "exchange-alt",
+        },
         { type: "subNavMenu", title: "Platform", icon: "terminal" },
       ];
 
       platformItems.push(
         { type: "link", title: "Apps", href: "/apps" },
-        { type: "link", title: "Runs", href: "/runs" },
         { type: "link", title: "Imports", href: "/imports" },
         { type: "link", title: "Exports", href: "/exports" }
       );

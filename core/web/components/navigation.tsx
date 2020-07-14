@@ -1,7 +1,10 @@
-import { useState, useEffect } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Image, Accordion, Button, Badge } from "react-bootstrap";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRealtimeModelStream } from "../hooks/useRealtimeModelStream";
+import { RunAPIData } from "../utils/apiData";
+import { useApi } from "../hooks/useApi";
 
 const navLiStyle = { marginTop: 20, marginBottom: 20 };
 
@@ -26,7 +29,9 @@ export default function Navigation(props) {
     sessionHandler,
     navExpanded,
     toggleNavExpanded,
+    errorHandler,
   } = props;
+  const { execApi } = useApi(props, errorHandler);
   const [teamMember, setTeamMember] = useState(props.currentTeamMember);
   const [hasBeenCollapsed, setHasBeenCollapsed] = useState(!navExpanded);
   const [expandPlatformMenu, setExpandPlatformMenu] = useState(false);
@@ -112,7 +117,6 @@ export default function Navigation(props) {
             <FontAwesomeIcon icon="caret-square-left" size="xs" />
           </span>
         </button>
-
         <Link href={logoLink}>
           <a>
             <Image
@@ -132,13 +136,24 @@ export default function Navigation(props) {
           {navigation.navigationItems.map((nav, idx) => {
             if (nav.type === "link") {
               return (
-                <HighlightingNavLink
-                  key={nav.href}
-                  href={nav.href}
-                  text={nav.title}
-                  icon={nav.icon}
-                  idx={idx}
-                />
+                <Fragment key={nav.href}>
+                  <HighlightingNavLink
+                    href={nav.href}
+                    text={
+                      <>
+                        {nav.title}
+                        {nav.title === "Runs" ? (
+                          <>
+                            {" "}
+                            <RunningRunsBadge execApi={execApi} />
+                          </>
+                        ) : null}
+                      </>
+                    }
+                    icon={nav.icon}
+                    idx={idx}
+                  />
+                </Fragment>
               );
             } else if (nav.type === "divider") {
               return <li key={idx} style={navLiStyle} />;
@@ -297,5 +312,38 @@ function HighlightingNavLink({ href, text, icon, idx }) {
         </a>
       </Link>
     </li>
+  );
+}
+
+function RunningRunsBadge({ execApi }) {
+  useRealtimeModelStream("run", load);
+  const [runs, setRuns] = useState<RunAPIData[]>([]);
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  async function load() {
+    const { runs } = await execApi(
+      "get",
+      `/runs`,
+      { state: "running" },
+      null,
+      null,
+      false
+    );
+    setRuns(runs);
+  }
+
+  if (runs.length === 0) {
+    return null;
+  }
+
+  return (
+    <span style={{ paddingLeft: 5 }}>
+      <Badge pill variant="info">
+        {runs.length}
+      </Badge>
+    </span>
   );
 }
