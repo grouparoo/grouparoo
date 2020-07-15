@@ -148,6 +148,11 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @Column(DataType.ENUM("draft", "ready"))
   state: string;
 
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  isArray: boolean;
+
   @BelongsTo(() => Source)
   source: Source;
 
@@ -325,6 +330,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       unique: this.unique,
       options,
       filters,
+      isArray: this.isArray,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
     };
