@@ -199,9 +199,8 @@ export namespace OptionHelper {
     const { pluginConnection } = await getPlugin(instance);
     const type = await getInstanceType(instance);
 
-    if (!pluginConnection) {
+    if (!pluginConnection)
       throw new Error(`cannot find a pluginConnection for type ${type}`);
-    }
 
     return pluginConnection.options.filter((o) => o.required).map((o) => o.key);
   }
@@ -210,9 +209,8 @@ export namespace OptionHelper {
     const { pluginConnection } = await getPlugin(instance);
     const type = await getInstanceType(instance);
 
-    if (!pluginConnection) {
+    if (!pluginConnection)
       throw new Error(`cannot find a pluginConnection for type ${type}`);
-    }
 
     if (!pluginConnection.scheduleOptions) {
       return [];
@@ -229,9 +227,8 @@ export namespace OptionHelper {
     const { pluginConnection } = await getPlugin(instance);
     const type = await getInstanceType(instance);
 
-    if (!pluginConnection) {
+    if (!pluginConnection)
       throw new Error(`cannot find a pluginConnection for type ${type}`);
-    }
 
     if (!pluginConnection.profilePropertyRuleOptions) {
       return [];
@@ -246,9 +243,7 @@ export namespace OptionHelper {
     const { pluginApp } = await getPlugin(instance);
     const type = await getInstanceType(instance);
 
-    if (!pluginApp) {
-      throw new Error(`cannot find a pluginApp for type ${type}`);
-    }
+    if (!pluginApp) throw new Error(`cannot find a pluginApp for type ${type}`);
 
     return pluginApp.options.filter((o) => o.required).map((o) => o.key);
   }

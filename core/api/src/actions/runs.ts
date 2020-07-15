@@ -38,21 +38,10 @@ export class ListRuns extends AuthenticatedAction {
     }
 
     const where = {};
-
-    if (guid) {
-      where["creatorGuid"] = guid;
-    }
-
-    if (params.state) {
-      where["state"] = params.state;
-    }
-
-    if (params.hasError === "true") {
-      where["error"] = { [Op.ne]: null };
-    }
-    if (params.hasError === "false") {
-      where["error"] = { [Op.eq]: null };
-    }
+    if (guid) where["creatorGuid"] = guid;
+    if (params.state) where["state"] = params.state;
+    if (params.hasError === "true") where["error"] = { [Op.ne]: null };
+    if (params.hasError === "false") where["error"] = { [Op.eq]: null };
 
     const search = {
       where,

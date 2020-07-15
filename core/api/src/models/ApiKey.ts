@@ -80,11 +80,11 @@ export class ApiKey extends LoggedModel<ApiKey> {
       const permission = await Permission.findOne({
         where: { ownerGuid: this.guid, guid: permissions[i].guid },
       });
-      if (!permission) {
+      if (!permission)
         throw new Error(
           `permission ${permissions[i].guid} not found for this apiKey`
         );
-      }
+
       if (!permission.locked) {
         permission.read =
           this.permissionAllRead !== null
@@ -132,9 +132,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 }

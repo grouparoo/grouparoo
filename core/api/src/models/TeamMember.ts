@@ -17,8 +17,6 @@ export class TeamMember extends LoggedModel<TeamMember> {
     return "tem";
   }
 
-  saltRounds = 10;
-
   @AllowNull(false)
   @Column
   @ForeignKey(() => Team)
@@ -71,17 +69,13 @@ export class TeamMember extends LoggedModel<TeamMember> {
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
   @BeforeSave
   static async ensureTeamExists(instance: TeamMember) {
     const team = await instance.$get("team");
-    if (!team) {
-      throw new Error("team not found");
-    }
+    if (!team) throw new Error("team not found");
   }
 }

@@ -43,9 +43,7 @@ const authenticatedActionMiddleware: action.ActionMiddleware = {
           include: [Team],
         });
 
-        if (!teamMember) {
-          throw new AuthenticationError("Team member not found");
-        }
+        if (!teamMember) throw new AuthenticationError("Team member not found");
 
         const team = await teamMember.$get("team");
         const authorized = await team.authorizeAction(
@@ -68,18 +66,16 @@ const authenticatedActionMiddleware: action.ActionMiddleware = {
       const apiKey = await ApiKey.findOne({
         where: { apiKey: data.params.apiKey },
       });
-      if (!apiKey) {
-        throw new AuthenticationError("apiKey not found");
-      }
+      if (!apiKey) throw new AuthenticationError("apiKey not found");
+
       const authorized = await apiKey.authorizeAction(
         data.actionTemplate.permission.topic,
         data.actionTemplate.permission.mode
       );
-      if (!authorized) {
+      if (!authorized)
         throw new AuthenticationError(
           `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
         );
-      }
 
       data.session.apiKey = apiKey;
     }
@@ -123,11 +119,11 @@ const optionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
               data.actionTemplate.permission.topic,
               data.actionTemplate.permission.mode
             );
-            if (!authorized) {
+            if (!authorized)
               throw new AuthenticationError(
                 `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
               );
-            }
+
             data.session.data = sessionData;
             data.session.teamMember = teamMember;
           }
@@ -140,18 +136,16 @@ const optionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
       const apiKey = await ApiKey.findOne({
         where: { apiKey: data.params.apiKey },
       });
-      if (!apiKey) {
-        throw new AuthenticationError("apiKey not found");
-      }
+      if (!apiKey) throw new AuthenticationError("apiKey not found");
+
       const authorized = await apiKey.authorizeAction(
         data.actionTemplate.permission.topic,
         data.actionTemplate.permission.mode
       );
-      if (!authorized) {
+      if (!authorized)
         throw new AuthenticationError(
           `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
         );
-      }
     }
 
     // choose which mode to authenticate with
@@ -181,17 +175,14 @@ const modelChatRoomMiddleware: chatRoom.ChatMiddleware = {
         include: [Team],
       });
 
-      if (!teamMember) {
-        throw new AuthenticationError("Team member not found");
-      }
+      if (!teamMember) throw new AuthenticationError("Team member not found");
 
       const team = await teamMember.$get("team");
       const authorized = await team.authorizeAction(topic, "read");
-      if (!authorized) {
+      if (!authorized)
         throw new AuthenticationError(
           `not authorized for mode "${mode}" on topic "${topic}"`
         );
-      }
     }
   },
 };

@@ -52,9 +52,8 @@ export namespace AppOps {
     let error;
 
     const { pluginApp } = await app.getPlugin();
-    if (!pluginApp) {
+    if (!pluginApp)
       throw new Error(`cannot find a pluginApp type of ${app.type}`);
-    }
 
     if (!options) {
       options = await app.getOptions();

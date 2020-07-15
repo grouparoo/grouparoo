@@ -37,14 +37,13 @@ export namespace ProfilePropertyRuleOps {
     const source = await profilePropertyRule.$get("source");
     const { pluginConnection } = await source.getPlugin();
 
-    if (!pluginConnection) {
+    if (!pluginConnection)
       throw new Error(`cannot find a pluginConnection for type ${source.type}`);
-    }
-    if (!pluginConnection.profilePropertyRuleOptions) {
+
+    if (!pluginConnection.profilePropertyRuleOptions)
       throw new Error(
         `cannot find profilePropertyRuleOptions for type ${source.type}`
       );
-    }
 
     const response: Array<{
       key: string;

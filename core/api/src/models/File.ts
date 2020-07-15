@@ -55,17 +55,14 @@ export class File extends LoggedModel<File> {
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
   @BeforeSave
   static async enureValidType(instance: File) {
     const validTypes: Array<string> = api.files.types;
-    if (!validTypes.includes(instance.type)) {
+    if (!validTypes.includes(instance.type))
       throw new Error(`${instance.type} is not a valid file type`);
-    }
   }
 }

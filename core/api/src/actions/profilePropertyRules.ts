@@ -31,14 +31,9 @@ export class ProfilePropertyRulesList extends AuthenticatedAction {
 
   async run({ params, response }) {
     const where = {};
-
-    if (params.state) {
-      where["state"] = params.state;
-    }
-
-    if (params?.unique?.toString().toLowerCase() === "true") {
+    if (params.state) where["state"] = params.state;
+    if (params?.unique?.toString().toLowerCase() === "true")
       where["unique"] = true;
-    }
 
     const profilePropertyRules = await ProfilePropertyRule.scope(null).findAll({
       limit: params.limit,
@@ -146,17 +141,9 @@ export class ProfilePropertyRuleCreate extends AuthenticatedAction {
       sourceGuid: params.sourceGuid,
     });
 
-    if (params.options) {
-      await profilePropertyRule.setOptions(params.options);
-    }
-
-    if (params.filters) {
-      await profilePropertyRule.setFilters(params.filters);
-    }
-
-    if (params.state) {
-      await profilePropertyRule.update({ state: params.state });
-    }
+    if (params.options) await profilePropertyRule.setOptions(params.options);
+    if (params.filters) await profilePropertyRule.setFilters(params.filters);
+    if (params.state) await profilePropertyRule.update({ state: params.state });
 
     response.profilePropertyRule = await profilePropertyRule.apiData();
     response.pluginOptions = await profilePropertyRule.pluginOptions();
@@ -187,13 +174,8 @@ export class ProfilePropertyRuleEdit extends AuthenticatedAction {
       params.guid
     );
 
-    if (params.options) {
-      await profilePropertyRule.setOptions(params.options);
-    }
-
-    if (params.filters) {
-      await profilePropertyRule.setFilters(params.filters);
-    }
+    if (params.options) await profilePropertyRule.setOptions(params.options);
+    if (params.filters) await profilePropertyRule.setFilters(params.filters);
 
     await profilePropertyRule.update(params);
 

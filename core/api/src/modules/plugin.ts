@@ -124,11 +124,11 @@ export namespace plugin {
    */
   export async function readSetting(pluginName: string, key: string) {
     const setting = await Setting.findOne({ where: { pluginName, key } });
-    if (!setting) {
+    if (!setting)
       throw new Error(
         `setting ${key} not registered for grouparoo plugin ${pluginName}`
       );
-    }
+
     return setting;
   }
 
@@ -185,9 +185,7 @@ export namespace plugin {
   export async function getLocalFilePath(fileGuid: string): Promise<string> {
     const file = await File.findOne({ where: { guid: fileGuid } });
 
-    if (!file) {
-      throw new Error(`cannot find a file with guid ${fileGuid}`);
-    }
+    if (!file) throw new Error(`cannot find a file with guid ${fileGuid}`);
 
     const { localPath } = await api.files.downloadToServer(file);
     return localPath;

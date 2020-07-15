@@ -24,9 +24,7 @@ export class ImportAssociateProfile extends RetryableTask {
 
       if (_import.creatorType === "run") {
         const run = await Run.findOne({ where: { guid: _import.creatorGuid } });
-        if (!run) {
-          throw new Error(`run ${_import.creatorGuid} not found`);
-        }
+        if (!run) throw new Error(`run ${_import.creatorGuid} not found`);
 
         if (isNew) {
           await run.increment(["profilesCreated"]);

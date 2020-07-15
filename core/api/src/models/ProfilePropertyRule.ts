@@ -334,9 +334,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
@@ -367,17 +365,14 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   @BeforeSave
   static async ensureType(instance: ProfilePropertyRule) {
-    if (!TYPES.includes(instance.type)) {
+    if (!TYPES.includes(instance.type))
       throw new Error(`${instance.type} is not an allowed type`);
-    }
   }
 
   @BeforeCreate
   static async ensureSourceReady(instance: ProfilePropertyRule) {
     const source = await Source.findByGuid(instance.sourceGuid);
-    if (source.state !== "ready") {
-      throw new Error("source is not ready");
-    }
+    if (source.state !== "ready") throw new Error("source is not ready");
   }
 
   @BeforeSave

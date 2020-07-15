@@ -25,9 +25,8 @@ export class TeamInitialize extends Action {
 
     const teamsCount = await Team.count();
 
-    if (teamsCount > 0) {
+    if (teamsCount > 0)
       throw new Error("an administration team already exists, please sign in");
-    }
 
     team = await Team.create({
       name: "Administrators",
@@ -114,12 +113,10 @@ export class TeamEdit extends AuthenticatedAction {
   async run({ params, response }) {
     const team = await Team.findByGuid(params.guid);
     const updateParams = Object.assign({}, params);
-    if (params.disabledPermissionAllRead) {
-      updateParams.permissionAllRead = null;
-    }
-    if (params.disabledPermissionAllWrite) {
+    if (params.disabledPermissionAllRead) updateParams.permissionAllRead = null;
+
+    if (params.disabledPermissionAllWrite)
       updateParams.permissionAllWrite = null;
-    }
 
     await team.update(updateParams);
 
@@ -154,9 +151,7 @@ export class TeamView extends AuthenticatedAction {
       include: [{ model: TeamMember }],
     });
 
-    if (!team) {
-      throw new Error("team not found");
-    }
+    if (!team) throw new Error("team not found");
 
     response.team = await team.apiData();
     response.teamMembers = await Promise.all(

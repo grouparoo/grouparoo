@@ -13,9 +13,8 @@ export namespace ScheduleOps {
     const { pluginConnection } = await source.getPlugin();
     const method = pluginConnection.methods.profiles;
 
-    if (!method) {
+    if (!method)
       throw new Error(`cannot find an import method for app type ${app.type}`);
-    }
 
     const appOptions = await app.getOptions();
     const sourceOptions = await source.getOptions();
@@ -107,12 +106,10 @@ export namespace ScheduleOps {
       }>;
     }> = [];
 
-    if (!pluginConnection) {
+    if (!pluginConnection)
       throw new Error(`cannot find a pluginConnection for type ${source.type}`);
-    }
-    if (!pluginConnection.scheduleOptions) {
-      return response;
-    }
+
+    if (!pluginConnection.scheduleOptions) return response;
 
     const app = await source.$get("app");
     const connection = await app.getConnection();

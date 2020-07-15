@@ -174,9 +174,8 @@ export class Destination extends LoggedModel<Destination> {
   }) {
     for (const groupGuid in newDestinationGroupMemberships) {
       const group = await Group.findByGuid(groupGuid);
-      if (group.state === "draft" || group.state === "deleted") {
+      if (group.state === "draft" || group.state === "deleted")
         throw new Error(`group ${group.name} is not ready`);
-      }
     }
 
     const transaction = await api.sequelize.transaction();
@@ -238,17 +237,16 @@ export class Destination extends LoggedModel<Destination> {
     // required
     for (const i in destinationMappingOptions.profilePropertyRules.required) {
       const opt = destinationMappingOptions.profilePropertyRules.required[i];
-      if (!mappings[opt.key]) {
+      if (!mappings[opt.key])
         throw new Error(`${opt.key} is a required destination mapping option`);
-      }
+
       const profilePropertyRule = cachedProfilePropertyRules[mappings[opt.key]];
       if (opt.type !== "any") {
         // existence checks will happen within the mapping helper
-        if (profilePropertyRule && profilePropertyRule.type !== opt.type) {
+        if (profilePropertyRule && profilePropertyRule.type !== opt.type)
           throw new Error(
             `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
           );
-        }
       }
     }
 
@@ -322,11 +320,10 @@ export class Destination extends LoggedModel<Destination> {
       (value) => -1 !== destinationGroupGuids.indexOf(value)
     );
 
-    if (intersectingGroupGuids.length === 0) {
+    if (intersectingGroupGuids.length === 0)
       throw new Error(
         `profile ${profile.guid} will not be exported by this destination`
       );
-    }
 
     return true;
   }
@@ -362,9 +359,7 @@ export class Destination extends LoggedModel<Destination> {
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
@@ -377,30 +372,25 @@ export class Destination extends LoggedModel<Destination> {
         state: { [Op.ne]: "draft" },
       },
     });
-    if (count > 0) {
-      throw new Error(`name "${instance.name}" is already in use`);
-    }
+    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
 
   @BeforeCreate
   static async ensureAppReady(instance: Destination) {
     const app = await App.findByGuid(instance.appGuid);
-    if (app.state !== "ready") {
-      throw new Error(`app ${app.guid} is not ready`);
-    }
+    if (app.state !== "ready") throw new Error(`app ${app.guid} is not ready`);
   }
 
   @BeforeCreate
   static async ensureExportProfilesMethod(instance: Destination) {
     const { pluginConnection } = await instance.getPlugin();
-    if (!pluginConnection) {
+    if (!pluginConnection)
       throw new Error(`a destination of type ${instance.type} cannot be found`);
-    }
-    if (!pluginConnection.methods.exportProfile) {
+
+    if (!pluginConnection.methods.exportProfile)
       throw new Error(
         `a destination of type ${instance.type} cannot be created as there is no exportProfile method`
       );
-    }
   }
 
   @BeforeSave
@@ -412,11 +402,10 @@ export class Destination extends LoggedModel<Destination> {
       },
     });
 
-    if (otherDestination) {
+    if (otherDestination)
       throw new Error(
         `destination "${otherDestination.name}" is already using this app`
       );
-    }
   }
 
   @BeforeSave
@@ -456,9 +445,8 @@ export class Destination extends LoggedModel<Destination> {
     instance: Destination
   ) {
     const destinationGroupsCount = await instance.$count("destinationGroups");
-    if (instance.trackAllGroups === true || destinationGroupsCount > 0) {
+    if (instance.trackAllGroups === true || destinationGroupsCount > 0)
       throw new Error("cannot delete a destination that is tracking a group");
-    }
   }
 
   @AfterDestroy

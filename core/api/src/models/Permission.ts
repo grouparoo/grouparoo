@@ -66,9 +66,7 @@ export class Permission extends LoggedModel<Permission> {
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
@@ -98,9 +96,8 @@ export class Permission extends LoggedModel<Permission> {
       where: { ownerGuid: ownerGuid, topic: topic },
     });
 
-    if (!permission) {
+    if (!permission)
       throw new Error(`cannot find permission set for ${ownerGuid} - ${topic}`);
-    }
 
     return permission[mode];
   }
@@ -132,8 +129,7 @@ export class Permission extends LoggedModel<Permission> {
       return;
     }
 
-    if (!Permission.topics().includes(topic)) {
+    if (!Permission.topics().includes(topic))
       throw new Error(`cannot determine permission topic for ${topic}`);
-    }
   }
 }

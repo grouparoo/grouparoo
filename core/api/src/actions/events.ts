@@ -117,9 +117,7 @@ export class EventsCounts extends AuthenticatedAction {
       },
     };
 
-    if (params.type) {
-      where["type"] = params.type;
-    }
+    if (params.type) where["type"] = params.type;
 
     const counts = await Event.findAll({
       attributes: [
@@ -225,9 +223,8 @@ export class EventCreate extends AuthenticatedAction {
   }
 
   async run({ session, connection, params, response }) {
-    if (!params.userId && !params.anonymousId) {
+    if (!params.userId && !params.anonymousId)
       throw new Error(`either anonymousId or userId is required`);
-    }
 
     let occurredAt = params.occurredAt;
     if (!occurredAt) {

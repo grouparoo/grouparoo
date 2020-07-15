@@ -266,9 +266,7 @@ export class Source extends LoggedModel<Source> {
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
@@ -281,27 +279,22 @@ export class Source extends LoggedModel<Source> {
         state: { [Op.ne]: "draft" },
       },
     });
-    if (count > 0) {
-      throw new Error(`name "${instance.name}" is already in use`);
-    }
+    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
 
   @BeforeCreate
   static async ensurePluginConnection(instance: Source) {
     const { plugin } = await instance.getPlugin();
-    if (!plugin) {
+    if (!plugin)
       throw new Error(
         `cannot find an import connection for a source of ${instance.type}`
       );
-    }
   }
 
   @BeforeCreate
   static async ensureAppReady(instance: Source) {
     const app = await App.findByGuid(instance.appGuid);
-    if (app.state !== "ready") {
-      throw new Error(`app ${app.guid} is not ready`);
-    }
+    if (app.state !== "ready") throw new Error(`app ${app.guid} is not ready`);
   }
 
   @BeforeSave
@@ -312,9 +305,8 @@ export class Source extends LoggedModel<Source> {
   @BeforeDestroy
   static async ensureNoSchedule(instance: Source) {
     const schedule = await instance.$get("schedule", { scope: null });
-    if (schedule) {
+    if (schedule)
       throw new Error("you cannot delete a source that has a schedule");
-    }
   }
 
   @BeforeDestroy
@@ -322,11 +314,10 @@ export class Source extends LoggedModel<Source> {
     const profilePropertyRules = await instance.$get("profilePropertyRules", {
       scope: null,
     });
-    if (profilePropertyRules.length > 0) {
+    if (profilePropertyRules.length > 0)
       throw new Error(
         "you cannot delete a source that has profile property rules"
       );
-    }
   }
 
   @AfterDestroy

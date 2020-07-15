@@ -17,9 +17,7 @@ export class TeamMembersList extends AuthenticatedAction {
 
   async run({ params, response }) {
     const where = {};
-    if (params.guid) {
-      where["teamGuid"] = params.guid;
-    }
+    if (params.guid) where["teamGuid"] = params.guid;
 
     const teamMembers = await TeamMember.findAll({ where });
 
@@ -82,9 +80,8 @@ export class TeamMemberView extends AuthenticatedAction {
       where: { guid: params.guid },
       include: [Team],
     });
-    if (!teamMember) {
-      throw new Error("team member not found");
-    }
+    if (!teamMember) throw new Error("team member not found");
+
     response.teamMember = await teamMember.apiData();
     response.team = await teamMember.team.apiData();
   }
@@ -112,9 +109,7 @@ export class TeamMemberEdit extends AuthenticatedAction {
 
     await teamMember.update(params);
 
-    if (params.password) {
-      await teamMember.updatePassword(params.password);
-    }
+    if (params.password) await teamMember.updatePassword(params.password);
 
     response.teamMember = await teamMember.apiData();
   }
@@ -135,9 +130,9 @@ export class TeamMemberDestroy extends AuthenticatedAction {
   async run({ params, response, session: { teamMember: myself } }) {
     response.success = false;
     const teamMember = await TeamMember.findByGuid(params.guid);
-    if (myself.guid === teamMember.guid) {
+    if (myself.guid === teamMember.guid)
       throw new Error("you cannot delete yourself");
-    }
+
     await teamMember.destroy();
     response.success = true;
   }

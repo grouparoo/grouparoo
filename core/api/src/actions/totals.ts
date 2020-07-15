@@ -64,9 +64,7 @@ export class TotalsAction extends AuthenticatedAction {
 
     const dates = generateDates();
     const model = modelClasses[params.model];
-    if (!model) {
-      throw new Error(`cannot return totals for ${params.model}`);
-    }
+    if (!model) throw new Error(`cannot return totals for ${params.model}`);
 
     response.total = await model.count();
 

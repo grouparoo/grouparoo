@@ -103,11 +103,10 @@ export class Schedule extends LoggedModel<Schedule> {
   async setOptions(options: SimpleScheduleOptions) {
     const existingOptions = await this.getOptions();
     for (const key in options) {
-      if (existingOptions[key]) {
+      if (existingOptions[key])
         throw new Error(
           `schedule already has option set for ${key}, cannot update`
         );
-      }
     }
 
     return OptionHelper.setOptions(this, options);
@@ -173,9 +172,7 @@ export class Schedule extends LoggedModel<Schedule> {
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
@@ -190,9 +187,8 @@ export class Schedule extends LoggedModel<Schedule> {
   static async ensureSourceMapping(instance: Schedule) {
     const source = await Source.findByGuid(instance.sourceGuid);
     const sourceMapping = await source.getMapping();
-    if (!sourceMapping || Object.keys(sourceMapping).length === 0) {
+    if (!sourceMapping || Object.keys(sourceMapping).length === 0)
       throw new Error("source has no mapping");
-    }
   }
 
   @BeforeUpdate
@@ -202,11 +198,10 @@ export class Schedule extends LoggedModel<Schedule> {
       if (
         !instance.recurringFrequency ||
         instance.recurringFrequency < 1000 * 60
-      ) {
+      )
         throw new Error(
           "recurring frequency is required to be one minute or greater"
         );
-      }
     }
   }
 
@@ -227,9 +222,7 @@ export class Schedule extends LoggedModel<Schedule> {
         state: { [Op.ne]: "draft" },
       },
     });
-    if (count > 0) {
-      throw new Error(`name "${instance.name}" is already in use`);
-    }
+    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
 
   @BeforeCreate
@@ -240,23 +233,19 @@ export class Schedule extends LoggedModel<Schedule> {
       },
     });
 
-    if (existingCount > 0) {
+    if (existingCount > 0)
       throw new Error(`source ${instance.sourceGuid} already has a schedule`);
-    }
   }
 
   @BeforeCreate
   static async ensureSourceCanUseSchedule(instance: Schedule) {
     const source = await Source.findByGuid(instance.sourceGuid);
 
-    if (source.state !== "ready") {
-      throw new Error("source is not ready");
-    }
+    if (source.state !== "ready") throw new Error("source is not ready");
 
     const scheduleAvailable = await source.scheduleAvailable();
-    if (!scheduleAvailable) {
+    if (!scheduleAvailable)
       throw new Error(`source ${instance.sourceGuid} cannot have a schedule`);
-    }
   }
 
   @BeforeSave

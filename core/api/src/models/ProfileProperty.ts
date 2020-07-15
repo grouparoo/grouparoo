@@ -171,11 +171,10 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   async validateValue() {
     const rule = await this.cachedProfilePropertyRule();
 
-    if (!rule) {
+    if (!rule)
       throw new Error(
         `(validation) profile property rule is not defined for key`
       );
-    }
 
     // null values are always "unique", even for unique profile properties
     if (this.rawValue === null || this.rawValue === undefined) {
@@ -191,11 +190,10 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
         },
       });
 
-      if (count > 0) {
+      if (count > 0)
         throw new Error(
           `another profile already has the value ${this.rawValue} for property ${rule.key}`
         );
-      }
     }
   }
 
@@ -203,9 +201,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 

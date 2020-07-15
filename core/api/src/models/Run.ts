@@ -291,9 +291,7 @@ export class Run extends Model<Run> {
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
@@ -321,9 +319,7 @@ export class Run extends Model<Run> {
       }
     }
 
-    if (!ready) {
-      throw new Error(`creator ${instance.creatorType} is not ready`);
-    }
+    if (!ready) throw new Error(`creator ${instance.creatorType} is not ready`);
   }
 
   @BeforeSave
