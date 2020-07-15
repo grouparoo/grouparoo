@@ -64,11 +64,11 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   }
 
   async setValue(value: any) {
-    this.rawValue = await this.buildRawValue(value);
+    this.rawValue = await this._buildRawValue(value);
     await this.validateValue();
   }
 
-  async buildRawValue(value: any) {
+  async _buildRawValue(value: any) {
     const rule = await this.cachedProfilePropertyRule();
 
     if (value === null || value === undefined || value === "") {

@@ -374,8 +374,6 @@ export class Group extends LoggedModel<Group> {
     await _import.save();
   }
 
-  validTypes = ["manual", "calculated"];
-
   async runAddGroupMembers(
     run: Run,
     limit = 1000,

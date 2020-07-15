@@ -145,14 +145,6 @@ export class Destination extends LoggedModel<Destination> {
     return MappingHelper.setMapping(this, mappings);
   }
 
-  async exportGroupMembers() {
-    const destinationGroups = await this.$get("destinationGroups");
-    for (const i in destinationGroups) {
-      const group: Group = await destinationGroups[i].$get("group");
-      await group.run(true, this.guid);
-    }
-  }
-
   async getOptions() {
     return OptionHelper.getOptions(this);
   }
@@ -223,39 +215,16 @@ export class Destination extends LoggedModel<Destination> {
     return OptionHelper.getPlugin(this);
   }
 
+  async exportGroupMembers() {
+    return DestinationOps.exportGroupMembers(this);
+  }
+
   async trackGroup(group: Group) {
-    if (this.trackAllGroups) {
-      throw new Error("destination is tracking all groups");
-    }
-
-    const existingDestinationGroups = await this.$get("destinationGroups");
-    if (
-      existingDestinationGroups.length === 1 &&
-      existingDestinationGroups[0].groupGuid === group.guid
-    ) {
-      // no change
-      return;
-    }
-
-    for (const i in existingDestinationGroups) {
-      await existingDestinationGroups[i].destroy();
-    }
-
-    return DestinationGroup.create({
-      groupGuid: group.guid,
-      destinationGuid: this.guid,
-    });
+    return DestinationOps.trackGroup(this, group);
   }
 
   async unTrackGroups() {
-    if (this.trackAllGroups) {
-      throw new Error("destination is tracking all groups");
-    }
-
-    const existingDestinationGroups = await this.$get("destinationGroups");
-    for (const i in existingDestinationGroups) {
-      await existingDestinationGroups[i].destroy();
-    }
+    return DestinationOps.unTrackGroups(this);
   }
 
   async validateMappings(mappings: { [groupGuid: string]: string }) {
@@ -318,43 +287,14 @@ export class Destination extends LoggedModel<Destination> {
   async destinationConnectionOptions(
     destinationOptions: SimpleDestinationOptions = {}
   ) {
-    const { pluginConnection } = await this.getPlugin();
-    const app = await this.$get("app");
-    const connection = await app.getConnection();
-    const appOptions = await app.getOptions();
-
-    if (!pluginConnection.methods.destinationOptions) {
-      throw new Error(`cannot return destination options for ${this.type}`);
-    }
-
-    return pluginConnection.methods.destinationOptions({
-      connection,
-      app,
-      appOptions,
-      destinationOptions,
-    });
+    return DestinationOps.destinationConnectionOptions(
+      this,
+      destinationOptions
+    );
   }
 
   async destinationMappingOptions() {
-    const { pluginConnection } = await this.getPlugin();
-    const app = await this.$get("app");
-    const connection = await app.getConnection();
-    const appOptions = await app.getOptions();
-    const destinationOptions = await this.getOptions();
-
-    if (!pluginConnection.methods.destinationMappingOptions) {
-      throw new Error(
-        `cannot return destination mapping options for ${this.type}`
-      );
-    }
-
-    return pluginConnection.methods.destinationMappingOptions({
-      connection,
-      app,
-      appOptions,
-      destination: this,
-      destinationOptions,
-    });
+    return DestinationOps.destinationMappingOptions(this);
   }
 
   async profilePreview(
@@ -364,27 +304,11 @@ export class Destination extends LoggedModel<Destination> {
       [groupGuid: string]: string;
     }
   ) {
-    const profileProperties = await profile.properties();
-    const mappingKeys = Object.keys(mapping);
-    const mappedProfileProperties = {};
-    mappingKeys.forEach((k) => {
-      mappedProfileProperties[k] = profileProperties[mapping[k]];
-    });
-
-    const groups = await profile.$get("groups");
-    const mappedGroupNames = groups
-      .filter((group) =>
-        Object.keys(destinationGroupMemberships).includes(group.guid)
-      )
-      .map((group) => destinationGroupMemberships[group.guid])
-      .sort();
-
-    const apiData = await profile.apiData();
-
-    return Object.assign(apiData, {
-      properties: mappedProfileProperties,
-      groupNames: mappedGroupNames,
-    });
+    return DestinationOps.profilePreview(
+      profile,
+      mapping,
+      destinationGroupMemberships
+    );
   }
 
   async checkProfileWillBeExported(profile: Profile) {

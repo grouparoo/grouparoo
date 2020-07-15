@@ -20,6 +20,7 @@
 - In order to keep models _smaller_, we make the distinction between the Model itself and ModelOps
   - Table/Column definitions, Class methods, Setters, Getters, and Validations belong on the Model
   - Methods that mutate the Model (or more than one Model), or interact with a Plugin, belong in a ModelOp
+  - It is appropriate for convenience to have a Model method call out to a ModelOp (ie: `Profile.import` => `ProfileOpt.import(profile)`)
 
 ## Other Notes
 

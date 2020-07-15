@@ -7,6 +7,7 @@ import { GroupMember } from "./../../src/models/GroupMember";
 import { App } from "./../../src/models/App";
 import { Source } from "./../../src/models/Source";
 import { plugin } from "./../../src/modules/plugin";
+import { ProfileOps } from "../../src/modules/ops/profile";
 import { api, specHelper } from "actionhero";
 
 let actionhero;
@@ -134,7 +135,7 @@ describe("models/profile", () => {
       const {
         profile,
         isNew,
-      } = await Profile.findOrCreateByUniqueProfileProperties({
+      } = await ProfileOps.findOrCreateByUniqueProfileProperties({
         email: "toad@example.com",
         color: "orange",
       });
@@ -147,7 +148,7 @@ describe("models/profile", () => {
       const {
         profile,
         isNew,
-      } = await Profile.findOrCreateByUniqueProfileProperties({
+      } = await ProfileOps.findOrCreateByUniqueProfileProperties({
         email: "luigi@example.com",
         color: "green",
       });
@@ -158,7 +159,7 @@ describe("models/profile", () => {
 
     test("it will throw an error if no unique profile properties are included", async () => {
       try {
-        await Profile.findOrCreateByUniqueProfileProperties({
+        await ProfileOps.findOrCreateByUniqueProfileProperties({
           color: "orange",
         });
         throw new Error("should not get here");
@@ -170,12 +171,12 @@ describe("models/profile", () => {
     });
 
     test("it will lock when creating new profiles so duplicate profiles are not created", async () => {
-      const responseA = await Profile.findOrCreateByUniqueProfileProperties({
+      const responseA = await ProfileOps.findOrCreateByUniqueProfileProperties({
         email: "bowser@example.com",
         color: "green",
       });
 
-      const responseB = await Profile.findOrCreateByUniqueProfileProperties({
+      const responseB = await ProfileOps.findOrCreateByUniqueProfileProperties({
         email: "bowser@example.com",
         house: "castle",
       });
@@ -186,12 +187,12 @@ describe("models/profile", () => {
     });
 
     test("it will merge overlapping unique profile properties and not store non-unique properties", async () => {
-      const responseA = await Profile.findOrCreateByUniqueProfileProperties({
+      const responseA = await ProfileOps.findOrCreateByUniqueProfileProperties({
         email: "koopa@example.com",
         userId: 99,
       });
 
-      const responseB = await Profile.findOrCreateByUniqueProfileProperties({
+      const responseB = await ProfileOps.findOrCreateByUniqueProfileProperties({
         userId: 99,
         house: "castle",
       });
@@ -835,7 +836,7 @@ describe("models/profile", () => {
     });
 
     test("merging profiles moved the events & properties", async () => {
-      await Profile.merge(profileA, profileB);
+      await ProfileOps.merge(profileA, profileB);
 
       const propertiesA = await profileA.properties();
       const propertiesB = await profileB.properties();

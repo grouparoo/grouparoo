@@ -1,13 +1,159 @@
-import { Destination } from "../../models/Destination";
+import {
+  Destination,
+  SimpleDestinationOptions,
+} from "../../models/Destination";
+import { DestinationGroup } from "../../models/DestinationGroup";
 import { Profile } from "../../models/Profile";
 import { Run } from "../../models/Run";
 import { Import } from "../../models/Import";
 import { Export } from "../../models/Export";
 import { Group } from "../../models/Group";
+import { MappingHelper } from "../mappingHelper";
 import { ExportProfilePluginMethod } from "../../classes/plugin";
 import { task, log, config } from "actionhero";
 
 export namespace DestinationOps {
+  /**
+   * Export all the Group Members of the Groups that this Destination is Tracking
+   */
+  export async function exportGroupMembers(destination: Destination) {
+    const destinationGroups = await destination.$get("destinationGroups");
+    for (const i in destinationGroups) {
+      const group: Group = await destinationGroups[i].$get("group");
+      await group.run(true, destination.guid);
+    }
+  }
+
+  /**
+   * Track a Group
+   */
+  export async function trackGroup(destination: Destination, group: Group) {
+    if (destination.trackAllGroups) {
+      throw new Error("destination is tracking all groups");
+    }
+
+    const existingDestinationGroups = await destination.$get(
+      "destinationGroups"
+    );
+    if (
+      existingDestinationGroups.length === 1 &&
+      existingDestinationGroups[0].groupGuid === group.guid
+    ) {
+      // no change
+      return;
+    }
+
+    for (const i in existingDestinationGroups) {
+      await existingDestinationGroups[i].destroy();
+    }
+
+    return DestinationGroup.create({
+      groupGuid: group.guid,
+      destinationGuid: destination.guid,
+    });
+  }
+
+  /**
+   * Un-track a Group
+   */
+  export async function unTrackGroups(destination: Destination) {
+    if (destination.trackAllGroups) {
+      throw new Error("destination is tracking all groups");
+    }
+
+    const existingDestinationGroups = await destination.$get(
+      "destinationGroups"
+    );
+    for (const i in existingDestinationGroups) {
+      await existingDestinationGroups[i].destroy();
+    }
+  }
+
+  /**
+   * Get a preview of a Profile for this Destination
+   * It is assumed that the profile provided is already in a Group tracked by this Destination
+   */
+  export async function profilePreview(
+    profile: Profile,
+    mapping: MappingHelper.Mappings,
+    destinationGroupMemberships: {
+      [groupGuid: string]: string;
+    }
+  ) {
+    const profileProperties = await profile.properties();
+    const mappingKeys = Object.keys(mapping);
+    const mappedProfileProperties = {};
+    mappingKeys.forEach((k) => {
+      mappedProfileProperties[k] = profileProperties[mapping[k]];
+    });
+
+    const groups = await profile.$get("groups");
+    const mappedGroupNames = groups
+      .filter((group) =>
+        Object.keys(destinationGroupMemberships).includes(group.guid)
+      )
+      .map((group) => destinationGroupMemberships[group.guid])
+      .sort();
+
+    const apiData = await profile.apiData();
+
+    return Object.assign(apiData, {
+      properties: mappedProfileProperties,
+      groupNames: mappedGroupNames,
+    });
+  }
+
+  /**
+   * Get the Destination Connection Options from the plugin
+   */
+  export async function destinationConnectionOptions(
+    destination: Destination,
+    destinationOptions: SimpleDestinationOptions = {}
+  ) {
+    const { pluginConnection } = await destination.getPlugin();
+    const app = await destination.$get("app");
+    const connection = await app.getConnection();
+    const appOptions = await app.getOptions();
+
+    if (!pluginConnection.methods.destinationOptions) {
+      throw new Error(
+        `cannot return destination options for ${destination.type}`
+      );
+    }
+
+    return pluginConnection.methods.destinationOptions({
+      connection,
+      app,
+      appOptions,
+      destinationOptions,
+    });
+  }
+
+  /**
+   * Get the Destination Mapping Options from the Plugin
+   */
+  export async function destinationMappingOptions(destination: Destination) {
+    const { pluginConnection } = await destination.getPlugin();
+    const app = await destination.$get("app");
+    const connection = await app.getConnection();
+    const appOptions = await app.getOptions();
+    const destinationOptions = await destination.getOptions();
+
+    if (!pluginConnection.methods.destinationMappingOptions) {
+      throw new Error(
+        `cannot return destination mapping options for ${destination.type}`
+      );
+    }
+
+    return pluginConnection.methods.destinationMappingOptions({
+      connection,
+      app,
+      appOptions,
+      destination,
+      destinationOptions,
+    });
+  }
+
   /**
    * Given a Destination and a Profile (and lots of related data), create all the exports that should be sent
    */

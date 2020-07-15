@@ -187,14 +187,4 @@ export class Profile extends LoggedModel<Profile> {
       _exports = await instance.$get("exports");
     }
   }
-
-  static async findOrCreateByUniqueProfileProperties(hash: {
-    [key: string]: any;
-  }) {
-    return ProfileOps.findOrCreateByUniqueProfileProperties(hash);
-  }
-
-  static async merge(profile: Profile, otherProfile: Profile) {
-    return ProfileOps.merge(profile, otherProfile);
-  }
 }
