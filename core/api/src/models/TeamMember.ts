@@ -8,8 +8,8 @@ import {
   ForeignKey,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
-import bcrypt from "bcrypt";
 import { Team } from "./Team";
+import { TeamMemberOps } from "../modules/ops/teamMember";
 
 @Table({ tableName: "teamMembers", paranoid: false })
 export class TeamMember extends LoggedModel<TeamMember> {
@@ -46,14 +46,6 @@ export class TeamMember extends LoggedModel<TeamMember> {
   @BelongsTo(() => Team)
   team: Team;
 
-  @BeforeSave
-  static async ensureTeamExists(instance: TeamMember) {
-    const team = await instance.$get("team");
-    if (!team) {
-      throw new Error("team not found");
-    }
-  }
-
   async apiData() {
     return {
       guid: this.guid,
@@ -68,17 +60,11 @@ export class TeamMember extends LoggedModel<TeamMember> {
   }
 
   async updatePassword(password: string, transaction = undefined) {
-    this.passwordHash = await bcrypt.hash(password, this.saltRounds);
-    await this.save({ transaction });
+    return TeamMemberOps.updatePassword(this, password, transaction);
   }
 
   async checkPassword(password: string) {
-    if (!this.passwordHash) {
-      throw new Error("password not set for this team member");
-    }
-
-    const match: boolean = await bcrypt.compare(password, this.passwordHash);
-    return match;
+    return TeamMemberOps.checkPassword(this, password);
   }
 
   // --- Class Methods --- //
@@ -89,5 +75,13 @@ export class TeamMember extends LoggedModel<TeamMember> {
       throw new Error(`cannot find ${this.name} ${guid}`);
     }
     return instance;
+  }
+
+  @BeforeSave
+  static async ensureTeamExists(instance: TeamMember) {
+    const team = await instance.$get("team");
+    if (!team) {
+      throw new Error("team not found");
+    }
   }
 }

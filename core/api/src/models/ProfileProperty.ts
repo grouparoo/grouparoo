@@ -3,6 +3,7 @@ import {
   Table,
   Column,
   AllowNull,
+  Default,
   ForeignKey,
   AfterSave,
   AfterDestroy,
@@ -36,31 +37,6 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
 
   @BelongsTo(() => ProfilePropertyRule)
   profilePropertyRule: ProfilePropertyRule;
-
-  @AfterSave
-  static async updateProfileAfterSave(instance: ProfileProperty) {
-    const changed = instance.changed();
-    if (!changed) {
-      return;
-    }
-
-    const profile = await instance.$get("profile");
-    if (profile && changed.indexOf("rawValue") >= 0) {
-      profile.updatedAt = new Date();
-      profile.changed("updatedAt", true);
-      await profile.save();
-    }
-  }
-
-  @AfterDestroy
-  static async updateProfileAfterDestroy(instance: ProfileProperty) {
-    const profile = await instance.$get("profile");
-    if (profile) {
-      profile.updatedAt = new Date();
-      profile.changed("updatedAt", true);
-      await profile.save();
-    }
-  }
 
   async apiData() {
     const rule = await this.cachedProfilePropertyRule();
@@ -231,5 +207,30 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
       throw new Error(`cannot find ${this.name} ${guid}`);
     }
     return instance;
+  }
+
+  @AfterSave
+  static async updateProfileAfterSave(instance: ProfileProperty) {
+    const changed = instance.changed();
+    if (!changed) {
+      return;
+    }
+
+    const profile = await instance.$get("profile");
+    if (profile && changed.indexOf("rawValue") >= 0) {
+      profile.updatedAt = new Date();
+      profile.changed("updatedAt", true);
+      await profile.save();
+    }
+  }
+
+  @AfterDestroy
+  static async updateProfileAfterDestroy(instance: ProfileProperty) {
+    const profile = await instance.$get("profile");
+    if (profile) {
+      profile.updatedAt = new Date();
+      profile.changed("updatedAt", true);
+      await profile.save();
+    }
   }
 }

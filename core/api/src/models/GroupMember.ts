@@ -25,13 +25,6 @@ export class GroupMember extends Model<GroupMember> {
   @Column({ primaryKey: true })
   guid: string;
 
-  @BeforeCreate
-  static generateGuid(instance) {
-    if (!instance.guid) {
-      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
-    }
-  }
-
   @CreatedAt
   createdAt: Date;
 
@@ -56,6 +49,33 @@ export class GroupMember extends Model<GroupMember> {
 
   @BelongsTo(() => Profile)
   profile: Profile;
+
+  async apiData() {
+    return {
+      profileGuid: this.profileGuid,
+      groupGuid: this.groupGuid,
+      createdAt: this.createdAt ? this.createdAt.getTime() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      removedAt: this.removedAt ? this.removedAt.getTime() : null,
+    };
+  }
+
+  // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
+  }
+
+  @BeforeCreate
+  static generateGuid(instance) {
+    if (!instance.guid) {
+      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+    }
+  }
 
   @AfterCreate
   static async logCreate(instance: GroupMember) {
@@ -85,25 +105,5 @@ export class GroupMember extends Model<GroupMember> {
         instance.groupGuid
       })`,
     });
-  }
-
-  async apiData() {
-    return {
-      profileGuid: this.profileGuid,
-      groupGuid: this.groupGuid,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
-      removedAt: this.removedAt ? this.removedAt.getTime() : null,
-    };
-  }
-
-  // --- Class Methods --- //
-
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
-    return instance;
   }
 }

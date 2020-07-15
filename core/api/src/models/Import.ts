@@ -21,6 +21,7 @@ import { ExportImport } from "./ExportImport";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
 import { Op } from "sequelize";
+import { ImportOps } from "../modules/ops/import";
 
 interface ImportData {
   [key: string]: any;
@@ -38,13 +39,6 @@ export class Import extends Model<Import> {
 
   @Column({ primaryKey: true })
   guid: string;
-
-  @BeforeCreate
-  static generateGuid(instance) {
-    if (!instance.guid) {
-      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
-    }
-  }
 
   @CreatedAt
   createdAt: Date;
@@ -201,20 +195,6 @@ export class Import extends Model<Import> {
     };
   }
 
-  async associateProfile() {
-    const {
-      profile,
-      isNew,
-      // will throw if there are no unique profile properties
-    } = await Profile.findOrCreateByUniqueProfileProperties(this.data);
-
-    this.profileGuid = profile.guid;
-    this.profileAssociatedAt = new Date();
-    await this.save();
-
-    return { profile, isNew };
-  }
-
   async setError(error: Error, step: string) {
     this.errorMessage = `Error on step ${step}: ${error.message}`;
     this.errorMetadata = JSON.stringify({
@@ -224,6 +204,27 @@ export class Import extends Model<Import> {
     });
 
     return this.save();
+  }
+
+  async associateProfile() {
+    return ImportOps.associateProfile(this);
+  }
+
+  // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
+  }
+
+  @BeforeCreate
+  static generateGuid(instance) {
+    if (!instance.guid) {
+      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+    }
   }
 
   @AfterDestroy
@@ -258,16 +259,6 @@ export class Import extends Model<Import> {
         }
       }
     }
-  }
-
-  // --- Class Methods --- //
-
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
-    return instance;
   }
 
   static async sweep(limit: number) {

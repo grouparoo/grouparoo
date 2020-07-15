@@ -49,33 +49,6 @@ export class ApiKey extends LoggedModel<ApiKey> {
     }
   }
 
-  @AfterSave
-  static async buildPermissions(instance: ApiKey) {
-    const topics = Permission.topics();
-    for (const i in topics) {
-      const topic = topics[i];
-      const [permission] = await Permission.findOrCreate({
-        where: {
-          topic,
-          ownerGuid: instance.guid,
-          ownerType: "apiKey",
-        },
-      });
-
-      if (instance.permissionAllRead !== null) {
-        await permission.update({ read: instance.permissionAllRead });
-      }
-      if (instance.permissionAllWrite !== null) {
-        await permission.update({ write: instance.permissionAllWrite });
-      }
-    }
-  }
-
-  @AfterDestroy
-  static async deletePermissions(instance: ApiKey) {
-    return Permission.destroy({ where: { ownerGuid: instance.guid } });
-  }
-
   async apiData() {
     const permissions = await this.$get("permissions", {
       order: [["topic", "asc"]],
@@ -129,6 +102,33 @@ export class ApiKey extends LoggedModel<ApiKey> {
   // --- Class Methods --- //
 
   // TODO: Cache these like Profile Property Rules for faster lookup
+
+  @AfterSave
+  static async buildPermissions(instance: ApiKey) {
+    const topics = Permission.topics();
+    for (const i in topics) {
+      const topic = topics[i];
+      const [permission] = await Permission.findOrCreate({
+        where: {
+          topic,
+          ownerGuid: instance.guid,
+          ownerType: "apiKey",
+        },
+      });
+
+      if (instance.permissionAllRead !== null) {
+        await permission.update({ read: instance.permissionAllRead });
+      }
+      if (instance.permissionAllWrite !== null) {
+        await permission.update({ write: instance.permissionAllWrite });
+      }
+    }
+  }
+
+  @AfterDestroy
+  static async deletePermissions(instance: ApiKey) {
+    return Permission.destroy({ where: { ownerGuid: instance.guid } });
+  }
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });

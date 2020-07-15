@@ -1,4 +1,3 @@
-import { log } from "actionhero";
 import {
   Table,
   Column,
@@ -21,7 +20,7 @@ import { Option } from "./Option";
 import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { Destination } from "./Destination";
-import { plugin } from "../modules/plugin";
+import { AppOps } from "../modules/ops/app";
 
 export interface AppOption {
   key: string;
@@ -65,6 +64,116 @@ export class App extends LoggedModel<App> {
 
   @HasMany(() => Source)
   sources: Array<Source>;
+
+  async appOptions() {
+    const { pluginApp } = await this.getPlugin();
+
+    if (!pluginApp?.methods?.appOptions) {
+      return {};
+    }
+
+    return pluginApp.methods.appOptions();
+  }
+
+  async getOptions(sourceFromEnvironment = true) {
+    return OptionHelper.getOptions(this, sourceFromEnvironment);
+  }
+
+  async setOptions(options: SimpleAppOptions) {
+    return OptionHelper.setOptions(this, options);
+  }
+
+  async validateOptions(options?: SimpleAppOptions) {
+    if (!options) {
+      options = await this.getOptions();
+    }
+
+    return OptionHelper.validateOptions(this, options);
+  }
+
+  async getPlugin() {
+    return OptionHelper.getPlugin(this);
+  }
+
+  async setConnection(connection) {
+    api.plugins.persistentConnections[this.guid] = connection;
+  }
+
+  async getConnection() {
+    const connection = api.plugins.persistentConnections[this.guid];
+    if (!connection) return this.connect();
+    return connection;
+  }
+
+  async connect(options?: SimpleAppOptions) {
+    return AppOps.connect(this, options);
+  }
+
+  async disconnect() {
+    return AppOps.disconnect(this);
+  }
+
+  async test(options?: SimpleAppOptions) {
+    return AppOps.test(this, options);
+  }
+
+  async getParallelism(): Promise<number> {
+    const { pluginApp } = await this.getPlugin();
+    const method = pluginApp.methods.parallelism;
+
+    if (!method) return Infinity;
+
+    const appOptions = await this.getOptions();
+    return method({ app: this, appOptions });
+  }
+
+  async checkAndUpdateParallelism(direction: "incr" | "decr") {
+    const key = this.parallelismKey();
+    const redis = api.redis.clients.client;
+    const limit = await this.getParallelism();
+    const count = await redis[direction](key);
+    if (count <= limit || direction === "decr") {
+      return true;
+    } else {
+      await redis.decr(key);
+      return false;
+    }
+  }
+
+  parallelismKey() {
+    return `app:${this.guid}:ratelimit:parallel`;
+  }
+
+  async apiData() {
+    const options = await this.getOptions(false);
+    const icon = await this._getIcon();
+
+    return {
+      guid: this.guid,
+      name: this.name,
+      icon,
+      type: this.type,
+      state: this.state,
+      options,
+      createdAt: this.createdAt ? this.createdAt.getTime() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+    };
+  }
+
+  async _getIcon() {
+    const { plugin } = await this.getPlugin();
+    return plugin?.icon;
+  }
+
+  // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
+  }
 
   @BeforeCreate
   static async checkAddibleCreate(instance: App) {
@@ -146,184 +255,5 @@ export class App extends LoggedModel<App> {
     const key = instance.parallelismKey();
     const redis = api.redis.clients.client;
     return redis.del(key);
-  }
-
-  async appOptions() {
-    const { pluginApp } = await this.getPlugin();
-
-    if (!pluginApp?.methods?.appOptions) {
-      return {};
-    }
-
-    return pluginApp.methods.appOptions();
-  }
-
-  async getOptions(sourceFromEnvironment = true) {
-    return OptionHelper.getOptions(this, sourceFromEnvironment);
-  }
-
-  async setOptions(options: SimpleAppOptions) {
-    return OptionHelper.setOptions(this, options);
-  }
-
-  async validateOptions(options?: SimpleAppOptions) {
-    if (!options) {
-      options = await this.getOptions();
-    }
-
-    return OptionHelper.validateOptions(this, options);
-  }
-
-  async getPlugin() {
-    return OptionHelper.getPlugin(this);
-  }
-
-  async setConnection(connection) {
-    api.plugins.persistentConnections[this.guid] = connection;
-  }
-
-  async getConnection() {
-    const connection = api.plugins.persistentConnections[this.guid];
-    if (!connection) return this.connect();
-    return connection;
-  }
-
-  async connect(options?: SimpleAppOptions) {
-    const appOptions = await this.getOptions();
-    const { pluginApp } = await this.getPlugin();
-    const connection = api.plugins.persistentConnections[this.guid];
-    if (connection) {
-      await this.disconnect();
-    }
-    if (pluginApp.methods.connect) {
-      log(`connecting to app ${this.name} - ${pluginApp.name} (${this.guid})`);
-      const connection = await pluginApp.methods.connect({
-        app: this,
-        appOptions: options ? options : appOptions,
-      });
-      this.setConnection(connection);
-      return connection;
-    }
-  }
-
-  async disconnect() {
-    const appOptions = await this.getOptions();
-    const { pluginApp } = await this.getPlugin();
-    const connection = api.plugins.persistentConnections[this.guid];
-    if (pluginApp.methods.disconnect && connection) {
-      log(
-        `disconnecting from app ${this.name} - ${pluginApp.name} (${this.guid})`
-      );
-      await pluginApp.methods.disconnect({
-        app: this,
-        appOptions,
-        connection,
-      });
-      this.setConnection(undefined);
-    }
-  }
-
-  async test(options?: SimpleAppOptions) {
-    let result = false;
-    let error;
-
-    const { pluginApp } = await this.getPlugin();
-    if (!pluginApp) {
-      throw new Error(`cannot find a pluginApp type of ${this.type}`);
-    }
-
-    if (!options) {
-      options = await this.getOptions();
-    } else {
-      options = OptionHelper.sourceEnvironmentVariableOptions(this, options);
-    }
-
-    try {
-      let connection;
-      if (pluginApp.methods.connect) {
-        connection = await pluginApp.methods.connect({
-          app: this,
-          appOptions: options,
-        });
-      }
-
-      result = await pluginApp.methods.test({
-        app: this,
-        appOptions: options,
-        connection,
-      });
-
-      if (pluginApp.methods.disconnect) {
-        await pluginApp.methods.disconnect({
-          connection,
-          app: this,
-          appOptions: options,
-        });
-      }
-    } catch (err) {
-      error = err;
-      result = false;
-      log(`[ app ] testing app threw error: ${error}`);
-    }
-
-    return { result, error };
-  }
-
-  async getParallelism(): Promise<number> {
-    const { pluginApp } = await this.getPlugin();
-    const method = pluginApp.methods.parallelism;
-
-    if (!method) return Infinity;
-
-    const appOptions = await this.getOptions();
-    return method({ app: this, appOptions });
-  }
-
-  async checkAndUpdateParallelism(direction: "incr" | "decr") {
-    const key = this.parallelismKey();
-    const redis = api.redis.clients.client;
-    const limit = await this.getParallelism();
-    const count = await redis[direction](key);
-    if (count <= limit || direction === "decr") {
-      return true;
-    } else {
-      await redis.decr(key);
-      return false;
-    }
-  }
-
-  parallelismKey() {
-    return `app:${this.guid}:ratelimit:parallel`;
-  }
-
-  async apiData() {
-    const options = await this.getOptions(false);
-    const icon = await this._getIcon();
-
-    return {
-      guid: this.guid,
-      name: this.name,
-      icon,
-      type: this.type,
-      state: this.state,
-      options,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
-    };
-  }
-
-  async _getIcon() {
-    const { plugin } = await this.getPlugin();
-    return plugin?.icon;
-  }
-
-  // --- Class Methods --- //
-
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
-    return instance;
   }
 }

@@ -22,13 +22,6 @@ export class ExportImport extends Model<ExportImport> {
   @Column({ primaryKey: true })
   guid: string;
 
-  @BeforeCreate
-  static generateGuid(instance) {
-    if (!instance.guid) {
-      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
-    }
-  }
-
   @CreatedAt
   createdAt: Date;
 
@@ -68,5 +61,12 @@ export class ExportImport extends Model<ExportImport> {
       throw new Error(`cannot find ${this.name} ${guid}`);
     }
     return instance;
+  }
+
+  @BeforeCreate
+  static generateGuid(instance) {
+    if (!instance.guid) {
+      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+    }
   }
 }

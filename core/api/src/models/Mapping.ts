@@ -1,8 +1,5 @@
 import {
   Table,
-  CreatedAt,
-  UpdatedAt,
-  BeforeCreate,
   Column,
   AllowNull,
   ForeignKey,
@@ -10,7 +7,6 @@ import {
   Length,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
-import * as uuid from "uuid";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Destination } from "./Destination";
 import { Source } from "./Source";

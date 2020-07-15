@@ -17,6 +17,9 @@
   - `Index.ts`
   - `SpecHelper.ts`
   - `modules/plugin.ts`
+- In order to keep models _smaller_, we make the distinction between the Model itself and ModelOps
+  - Table/Column definitions, Class methods, Setters, Getters, and Validations belong on the Model
+  - Methods that mutate the Model (or more than one Model), or interact with a Plugin, belong in a ModelOp
 
 ## Other Notes
 
