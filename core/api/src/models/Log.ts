@@ -65,6 +65,29 @@ export class Log extends Model<Log> {
   @UpdatedAt
   updatedAt: Date;
 
+  async apiData() {
+    return {
+      guid: this.guid,
+      ownerGuid: this.ownerGuid,
+      topic: this.topic,
+      verb: this.verb,
+      who: this.who,
+      data: this.data,
+      message: this.message,
+      createdAt: this.createdAt ? this.createdAt.getTime() : null,
+    };
+  }
+
+  // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
+  }
+
   @BeforeCreate
   static generateGuid(instance: Log) {
     if (!instance.guid) {
@@ -89,29 +112,6 @@ export class Log extends Model<Log> {
       model: await instance.apiData(),
       verb: "create",
     });
-  }
-
-  async apiData() {
-    return {
-      guid: this.guid,
-      ownerGuid: this.ownerGuid,
-      topic: this.topic,
-      verb: this.verb,
-      who: this.who,
-      data: this.data,
-      message: this.message,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-    };
-  }
-
-  // --- Class Methods --- //
-
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
-    return instance;
   }
 
   static async sweep() {

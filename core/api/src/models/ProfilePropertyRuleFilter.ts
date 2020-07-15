@@ -23,13 +23,6 @@ export class ProfilePropertyRuleFilter extends Model<
   @Column({ primaryKey: true })
   guid: string;
 
-  @BeforeCreate
-  static generateGuid(instance) {
-    if (!instance.guid) {
-      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
-    }
-  }
-
   @CreatedAt
   createdAt: Date;
 
@@ -82,5 +75,14 @@ export class ProfilePropertyRuleFilter extends Model<
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
     };
+  }
+
+  // --- Class Methods --- //
+
+  @BeforeCreate
+  static generateGuid(instance) {
+    if (!instance.guid) {
+      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+    }
   }
 }

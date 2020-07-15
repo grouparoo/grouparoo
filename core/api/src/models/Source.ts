@@ -15,13 +15,12 @@ import {
   DataType,
   DefaultScope,
 } from "sequelize-typescript";
-import { log, utils } from "actionhero";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Schedule } from "./Schedule";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Option } from "./Option";
-import { App, AppOption } from "./App";
+import { App } from "./App";
 import { Run } from "./Run";
 import { Profile } from "./Profile";
 import { Mapping } from "./Mapping";
@@ -30,6 +29,7 @@ import { OptionHelper } from "./../modules/optionHelper";
 import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { ProfilePropertyRuleFiltersWithKey } from "../classes/plugin";
+import { SourceOps } from "../modules/ops/source";
 
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}
@@ -85,81 +85,6 @@ export class Source extends LoggedModel<Source> {
 
   @HasMany(() => Option, "ownerGuid")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
-
-  @BeforeSave
-  static async ensureUniqueName(instance: Source) {
-    const count = await Source.count({
-      where: {
-        guid: { [Op.ne]: instance.guid },
-        name: instance.name,
-        state: { [Op.ne]: "draft" },
-      },
-    });
-    if (count > 0) {
-      throw new Error(`name "${instance.name}" is already in use`);
-    }
-  }
-
-  @BeforeCreate
-  static async ensurePluginConnection(instance: Source) {
-    const { plugin } = await instance.getPlugin();
-    if (!plugin) {
-      throw new Error(
-        `cannot find an import connection for a source of ${instance.type}`
-      );
-    }
-  }
-
-  @BeforeCreate
-  static async ensureAppReady(instance: Source) {
-    const app = await App.findByGuid(instance.appGuid);
-    if (app.state !== "ready") {
-      throw new Error(`app ${app.guid} is not ready`);
-    }
-  }
-
-  @BeforeSave
-  static async updateState(instance: App) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
-  }
-
-  @BeforeDestroy
-  static async ensureNoSchedule(instance: Source) {
-    const schedule = await instance.$get("schedule", { scope: null });
-    if (schedule) {
-      throw new Error("you cannot delete a source that has a schedule");
-    }
-  }
-
-  @BeforeDestroy
-  static async ensureNoProfilePropertyRules(instance: Source) {
-    const profilePropertyRules = await instance.$get("profilePropertyRules", {
-      scope: null,
-    });
-    if (profilePropertyRules.length > 0) {
-      throw new Error(
-        "you cannot delete a source that has profile property rules"
-      );
-    }
-  }
-
-  @AfterDestroy
-  static async destroyOptions(instance: Source) {
-    return Option.destroy({
-      where: {
-        ownerGuid: instance.guid,
-      },
-    });
-  }
-
-  @AfterDestroy
-  static async destroyMappings(instance: Source) {
-    return Mapping.destroy({
-      where: {
-        ownerGuid: instance.guid,
-      },
-    });
-  }
 
   async getOptions() {
     return OptionHelper.getOptions(this);
@@ -224,51 +149,11 @@ export class Source extends LoggedModel<Source> {
   }
 
   async sourceConnectionOptions(sourceOptions: SimpleSourceOptions = {}) {
-    const { pluginConnection } = await this.getPlugin();
-    const app = await this.$get("app");
-    const connection = await app.getConnection();
-    const appOptions = await app.getOptions();
-
-    if (!pluginConnection.methods.sourceOptions) {
-      return {};
-    }
-
-    return pluginConnection.methods.sourceOptions({
-      connection,
-      app,
-      appOptions,
-      sourceOptions,
-    });
+    return SourceOps.sourceConnectionOptions(this, sourceOptions);
   }
 
   async sourcePreview(sourceOptions?: SimpleSourceOptions) {
-    if (!sourceOptions) {
-      sourceOptions = await this.getOptions();
-    }
-
-    try {
-      // if the options aren't set yet, return an empty array of rows
-      await this.validateOptions(sourceOptions);
-    } catch {
-      return [];
-    }
-
-    const { pluginConnection } = await this.getPlugin();
-    const app = await this.$get("app");
-    const connection = await app.getConnection();
-    const appOptions = await app.getOptions();
-
-    if (!pluginConnection.methods.sourcePreview) {
-      throw new Error(`cannot return a source preview for ${this.type}`);
-    }
-
-    return pluginConnection.methods.sourcePreview({
-      connection,
-      app,
-      appOptions,
-      source: this,
-      sourceOptions,
-    });
+    return SourceOps.sourcePreview(this, sourceOptions);
   }
 
   async apiData(
@@ -350,180 +235,31 @@ export class Source extends LoggedModel<Source> {
       profileProperties?: {};
     } = {}
   ) {
-    if (
-      profilePropertyRule.state !== "ready" &&
-      !profilePropertyRuleOptionsOverride
-    ) {
-      return;
-    }
-
-    await profilePropertyRule.validateOptions(
-      profilePropertyRuleOptionsOverride,
-      false,
-      true
-    );
-
-    const { pluginConnection } = await this.getPlugin();
-    if (!pluginConnection) {
-      throw new Error(
-        `cannot find connection for source ${this.type} (${this.guid})`
-      );
-    }
-
-    const method = pluginConnection.methods.profileProperty;
-
-    if (!method) {
-      return;
-    }
-
-    const app = preloadedArgs.app || (await this.$get("app"));
-    const connection = preloadedArgs.connection || (await app.getConnection());
-    const appOptions = preloadedArgs.appOptions || (await app.getOptions());
-    const sourceOptions =
-      preloadedArgs.sourceOptions || (await this.getOptions());
-    const sourceMapping =
-      preloadedArgs.sourceMapping || (await this.getMapping());
-
-    // we may not have the profile property needed to make the mapping (ie: userId is not set on this anonymous profile)
-    if (Object.values(sourceMapping).length > 0) {
-      const profilePropertyRuleMappingKey = Object.values(sourceMapping)[0];
-      const profileProperties =
-        preloadedArgs.profileProperties || (await profile.properties());
-      if (!profileProperties[profilePropertyRuleMappingKey]) {
-        return;
-      }
-    }
-
-    while ((await app.checkAndUpdateParallelism("incr")) === false) {
-      console.log(`parallelism limit reached for ${app.type}, sleeping...`);
-      utils.sleep(100);
-    }
-
-    const response = await method({
-      connection,
-      app,
-      appOptions,
-      source: this,
-      sourceOptions,
-      sourceMapping,
-      profilePropertyRule,
-      profilePropertyRuleOptions: profilePropertyRuleOptionsOverride
-        ? profilePropertyRuleOptionsOverride
-        : await profilePropertyRule.getOptions(),
-      profilePropertyRuleFilters: profilePropertyRuleFiltersOverride
-        ? profilePropertyRuleFiltersOverride
-        : await profilePropertyRule.getFilters(),
+    return SourceOps.importProfileProperty(
+      this,
       profile,
-    });
-
-    await app.checkAndUpdateParallelism("decr");
-
-    return response;
+      profilePropertyRule,
+      profilePropertyRuleOptionsOverride,
+      profilePropertyRuleFiltersOverride,
+      preloadedArgs
+    );
   }
 
   async import(profile: Profile) {
-    const hash = {};
-    const rules = await this.$get("profilePropertyRules", {
-      where: { state: "ready" },
-    });
-
-    const profileProperties = await profile.properties();
-    const app = await this.$get("app");
-    const appOptions = await app.getOptions();
-    const connection = await app.getConnection();
-    const sourceOptions = await this.getOptions();
-    const sourceMapping = await this.getMapping();
-
-    const preloadedArgs = {
-      app,
-      connection,
-      appOptions,
-      sourceOptions,
-      sourceMapping,
-      profileProperties,
-    };
-
-    await Promise.all(
-      rules.map((rule) =>
-        this.importProfileProperty(
-          profile,
-          rule,
-          null,
-          null,
-          preloadedArgs
-        ).then((response) => (hash[rule.key] = response))
-      )
-    );
-
-    // remove null and undefined as we cannot set that value
-    const hashKeys = Object.keys(hash);
-    for (const i in hashKeys) {
-      const key = hashKeys[i];
-      if (hash[key] === null || hash[key] === undefined) {
-        delete hash[key];
-      }
-    }
-
-    return hash;
+    return SourceOps._import(this, profile);
   }
 
-  /**
-   * This method is used to bootstrap a new source which requires a profile property rule for a mapping, but the rule doesn't yet exist.
-   */
   async bootstrapUniqueProfilePropertyRule(
     key: string,
     type: string,
     mappedColumn: string
   ) {
-    const rule = ProfilePropertyRule.build({
+    return SourceOps.bootstrapUniqueProfilePropertyRule(
+      this,
       key,
       type,
-      state: "ready",
-      unique: true,
-      sourceGuid: this.guid,
-    });
-
-    try {
-      // manually run the hooks we want
-      ProfilePropertyRule.generateGuid(rule);
-      await ProfilePropertyRule.ensureUniqueKey(rule);
-
-      // @ts-ignore
-      // danger zone!
-      await rule.save({ hooks: false });
-      await ProfilePropertyRule.clearCacheAfterSave();
-
-      // build the default options
-      const { pluginConnection } = await this.getPlugin();
-      if (
-        typeof pluginConnection.methods
-          .uniqueProfilePropertyRuleBootstrapOptions === "function"
-      ) {
-        const app = await this.$get("app");
-        const connection = await app.getConnection();
-        const appOptions = await app.getOptions();
-        const options = await this.getOptions();
-        const ruleOptions = await pluginConnection.methods.uniqueProfilePropertyRuleBootstrapOptions(
-          {
-            app,
-            connection,
-            appOptions,
-            source: this,
-            sourceOptions: options,
-            mappedColumn,
-          }
-        );
-
-        await rule.setOptions(ruleOptions);
-      }
-
-      return rule;
-    } catch (error) {
-      if (rule) {
-        await rule.destroy();
-        throw error;
-      }
-    }
+      mappedColumn
+    );
   }
 
   // --- Class Methods --- //
@@ -534,5 +270,80 @@ export class Source extends LoggedModel<Source> {
       throw new Error(`cannot find ${this.name} ${guid}`);
     }
     return instance;
+  }
+
+  @BeforeSave
+  static async ensureUniqueName(instance: Source) {
+    const count = await Source.count({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        name: instance.name,
+        state: { [Op.ne]: "draft" },
+      },
+    });
+    if (count > 0) {
+      throw new Error(`name "${instance.name}" is already in use`);
+    }
+  }
+
+  @BeforeCreate
+  static async ensurePluginConnection(instance: Source) {
+    const { plugin } = await instance.getPlugin();
+    if (!plugin) {
+      throw new Error(
+        `cannot find an import connection for a source of ${instance.type}`
+      );
+    }
+  }
+
+  @BeforeCreate
+  static async ensureAppReady(instance: Source) {
+    const app = await App.findByGuid(instance.appGuid);
+    if (app.state !== "ready") {
+      throw new Error(`app ${app.guid} is not ready`);
+    }
+  }
+
+  @BeforeSave
+  static async updateState(instance: App) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
+
+  @BeforeDestroy
+  static async ensureNoSchedule(instance: Source) {
+    const schedule = await instance.$get("schedule", { scope: null });
+    if (schedule) {
+      throw new Error("you cannot delete a source that has a schedule");
+    }
+  }
+
+  @BeforeDestroy
+  static async ensureNoProfilePropertyRules(instance: Source) {
+    const profilePropertyRules = await instance.$get("profilePropertyRules", {
+      scope: null,
+    });
+    if (profilePropertyRules.length > 0) {
+      throw new Error(
+        "you cannot delete a source that has profile property rules"
+      );
+    }
+  }
+
+  @AfterDestroy
+  static async destroyOptions(instance: Source) {
+    return Option.destroy({
+      where: {
+        ownerGuid: instance.guid,
+      },
+    });
+  }
+
+  @AfterDestroy
+  static async destroyMappings(instance: Source) {
+    return Mapping.destroy({
+      where: {
+        ownerGuid: instance.guid,
+      },
+    });
   }
 }

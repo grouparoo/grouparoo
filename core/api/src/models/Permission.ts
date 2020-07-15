@@ -52,17 +52,6 @@ export class Permission extends LoggedModel<Permission> {
   @BelongsTo(() => ApiKey)
   apiKey: ApiKey;
 
-  @BeforeSave
-  static async checkLocked(instance: Permission) {
-    if (
-      instance.locked &&
-      instance["_previousDataValues"].locked &&
-      (instance.changed("read") || instance.changed("write"))
-    ) {
-      throw new Error("permission is locked");
-    }
-  }
-
   async apiData() {
     return {
       guid: this.guid,
@@ -81,6 +70,17 @@ export class Permission extends LoggedModel<Permission> {
       throw new Error(`cannot find ${this.name} ${guid}`);
     }
     return instance;
+  }
+
+  @BeforeSave
+  static async checkLocked(instance: Permission) {
+    if (
+      instance.locked &&
+      instance["_previousDataValues"].locked &&
+      (instance.changed("read") || instance.changed("write"))
+    ) {
+      throw new Error("permission is locked");
+    }
   }
 
   static async authorizeAction(

@@ -33,25 +33,6 @@ export class DestinationGroup extends LoggedModel<DestinationGroup> {
   @BelongsTo(() => Destination)
   destination: Destination;
 
-  @AfterCreate
-  static async updateGroupMembersOnCreate(instance: DestinationGroup) {
-    const group = await Group.findByGuid(instance.groupGuid);
-    await group.run(true, instance.destinationGuid);
-  }
-
-  @AfterDestroy
-  static async updateGroupMembersOnDestroy(instance: DestinationGroup) {
-    try {
-      const group = await Group.findByGuid(instance.groupGuid);
-      await group.run(true, instance.destinationGuid);
-    } catch (error) {
-      // we may be in the after-hook of the group being deleted
-      if (!error.toString().match(/cannot find Group/)) {
-        throw error;
-      }
-    }
-  }
-
   async apiData() {
     return {
       destinationGuid: this.destinationGuid,
@@ -69,5 +50,24 @@ export class DestinationGroup extends LoggedModel<DestinationGroup> {
       throw new Error(`cannot find ${this.name} ${guid}`);
     }
     return instance;
+  }
+
+  @AfterCreate
+  static async updateGroupMembersOnCreate(instance: DestinationGroup) {
+    const group = await Group.findByGuid(instance.groupGuid);
+    await group.run(true, instance.destinationGuid);
+  }
+
+  @AfterDestroy
+  static async updateGroupMembersOnDestroy(instance: DestinationGroup) {
+    try {
+      const group = await Group.findByGuid(instance.groupGuid);
+      await group.run(true, instance.destinationGuid);
+    } catch (error) {
+      // we may be in the after-hook of the group being deleted
+      if (!error.toString().match(/cannot find Group/)) {
+        throw error;
+      }
+    }
   }
 }

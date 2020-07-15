@@ -13,7 +13,6 @@ import {
   DataType,
   AfterDestroy,
   Default,
-  Scopes,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { Import } from "./Import";
@@ -37,13 +36,6 @@ export class Export extends Model<Export> {
 
   @Column({ primaryKey: true })
   guid: string;
-
-  @BeforeCreate
-  static generateGuid(instance) {
-    if (!instance.guid) {
-      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
-    }
-  }
 
   @CreatedAt
   createdAt: Date;
@@ -162,15 +154,6 @@ export class Export extends Model<Export> {
   @BelongsTo(() => Profile)
   profile: Profile;
 
-  @AfterDestroy
-  static async destroyExportImports(instance: Export) {
-    return ExportImport.destroy({
-      where: {
-        exportGuid: instance.guid,
-      },
-    });
-  }
-
   async associateImports(imports: Array<Import>) {
     for (const i in imports) {
       const _import = imports[i];
@@ -218,6 +201,32 @@ export class Export extends Model<Export> {
     };
   }
 
+  // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
+  }
+
+  @AfterDestroy
+  static async destroyExportImports(instance: Export) {
+    return ExportImport.destroy({
+      where: {
+        exportGuid: instance.guid,
+      },
+    });
+  }
+
+  @BeforeCreate
+  static generateGuid(instance) {
+    if (!instance.guid) {
+      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+    }
+  }
+
   static async sweep(limit: number) {
     const days = parseInt(
       (await plugin.readSetting("core", "sweeper-delete-old-exports-days"))
@@ -240,15 +249,5 @@ export class Export extends Model<Export> {
     }
 
     return { count: _exports.length, days };
-  }
-
-  // --- Class Methods --- //
-
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
-    return instance;
   }
 }

@@ -1,9 +1,6 @@
 import { Op } from "sequelize";
 import { api } from "actionhero";
 import { Profile } from "./Profile";
-import { Source } from "./Source";
-import { App } from "./App";
-
 import {
   Model,
   Table,
@@ -27,10 +24,9 @@ import { Schedule } from "./Schedule";
 import { Import } from "./Import";
 import { Group } from "./Group";
 import { StateMachine } from "./../modules/stateMachine";
-import { Export } from "./Export";
-import { Destination } from "./Destination";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { TeamMember } from "./TeamMember";
+import { RunOps } from "../modules/ops/runs";
 
 export interface HighWaterMark {
   [key: string]: string | number | Date;
@@ -53,13 +49,6 @@ export class Run extends Model<Run> {
 
   @Column({ primaryKey: true })
   guid: string;
-
-  @BeforeCreate
-  static generateGuid(instance) {
-    if (!instance.guid) {
-      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
-    }
-  }
 
   @CreatedAt
   createdAt: Date;
@@ -140,55 +129,6 @@ export class Run extends Model<Run> {
 
   @HasMany(() => Import, "creatorGuid")
   imports: Import[];
-
-  @BeforeCreate
-  static async ensureCreatorReady(instance: Run) {
-    let ready = true;
-    // profile property rules are ok to enqueue if they are in draft at the time.  Options update before state
-    if (instance.creatorType === "group") {
-      let creator = await Group.findByGuid(instance.creatorGuid);
-      if (creator.state === "draft") {
-        ready = false;
-      }
-    }
-    if (instance.creatorType === "schedule") {
-      let creator = await Schedule.findByGuid(instance.creatorGuid);
-      if (creator.state === "draft") {
-        ready = false;
-      }
-    }
-
-    if (!ready) {
-      throw new Error(`creator ${instance.creatorType} is not ready`);
-    }
-  }
-
-  @BeforeSave
-  static async updateState(instance: Run) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
-  }
-
-  @AfterCreate
-  static async testRun(instance: Run) {
-    return instance.test();
-  }
-
-  @BeforeUpdate
-  static async broadcast(instance: Run) {
-    // we only need to broadcast at the end of each batch or on a state change, not as we increment values
-    if (
-      instance.changed("state") ||
-      instance.changed("groupMemberLimit") ||
-      instance.changed("groupMemberOffset") ||
-      instance.changed("highWaterMark") ||
-      instance.changed("sourceOffset")
-    ) {
-      await chatRoom.broadcast({}, `model:run`, {
-        model: await instance.apiData(),
-        verb: "update",
-      });
-    }
-  }
 
   async determineState() {
     await this.reload();
@@ -287,104 +227,8 @@ export class Run extends Model<Run> {
     }
   }
 
-  /**
-   * Return counts of the states of each import in N chunks over the lifetime of the run
-   * Great for drawing charts!
-   */
   async quantizedTimeline(steps = 25) {
-    const data = [];
-    const destinations = await Destination.findAll();
-    const start = this.createdAt.getTime();
-    const end = this.completedAt
-      ? this.completedAt.getTime()
-      : new Date().getTime();
-    const stepSize = Math.floor((end - start) / steps);
-    const boundaries = [start - stepSize * 2];
-    let i = 1;
-    let foundDestinationNames = [];
-    while (i <= steps + 4) {
-      const lastBoundary = boundaries[i - 1];
-      const nextBoundary = lastBoundary + stepSize;
-      boundaries.push(nextBoundary);
-
-      const timeData = {
-        lastBoundary,
-        nextBoundary,
-        steps: {
-          associate: await this.$count("imports", {
-            where: {
-              profileAssociatedAt: {
-                [Op.gte]: lastBoundary,
-                [Op.lt]: nextBoundary,
-              },
-            },
-          }),
-          update: await this.$count("imports", {
-            where: {
-              profileUpdatedAt: {
-                [Op.gte]: lastBoundary,
-                [Op.lt]: nextBoundary,
-              },
-            },
-          }),
-          groups: await this.$count("imports", {
-            where: {
-              groupsUpdatedAt: {
-                [Op.gte]: lastBoundary,
-                [Op.lt]: nextBoundary,
-              },
-            },
-          }),
-          export: await this.$count("imports", {
-            where: {
-              exportedAt: {
-                [Op.gte]: lastBoundary,
-                [Op.lt]: nextBoundary,
-              },
-            },
-          }),
-        },
-      };
-
-      const _exportGroups = await Export.findAll({
-        attributes: [
-          [api.sequelize.fn("COUNT", "*"), "count"],
-          "destinationGuid",
-        ],
-        group: ["destinationGuid"],
-        where: {
-          startedAt: {
-            [Op.gte]: lastBoundary,
-            [Op.lt]: nextBoundary,
-          },
-          runGuids: { [Op.like]: `%${this.guid}%` }, // TODO: this is slow, de-normalize
-        },
-      });
-
-      _exportGroups.forEach((_exportGroup) => {
-        const destination = destinations.filter(
-          (destination) => destination.guid === _exportGroup.destinationGuid
-        )[0];
-        if (destination) {
-          if (!foundDestinationNames.includes(destination.name))
-            foundDestinationNames.push(destination.name);
-          // @ts-ignore
-          timeData.steps[destination.name] = _exportGroup.getDataValue("count");
-        }
-      });
-
-      data.push(timeData);
-      i++;
-    }
-
-    // add back points for destinations that were not found at this interval
-    for (const i in data) {
-      foundDestinationNames.forEach((destinationName) => {
-        if (!data[i].steps[destinationName]) data[i].steps[destinationName] = 0;
-      });
-    }
-
-    return data;
+    return RunOps.quantizedTimeline(this, steps);
   }
 
   async apiData() {
@@ -413,43 +257,7 @@ export class Run extends Model<Run> {
   }
 
   async percentComplete() {
-    if (this.state === "complete") return 100;
-    if (this.state === "stopped") return 100;
-    if (this.creatorType === "group") {
-      let basePercent = 0;
-      const group = await Group.findByGuid(this.creatorGuid);
-      const groupMembersCount =
-        group.type === "calculated"
-          ? await group.countPotentialMembers()
-          : await group.$count("groupMembers");
-      switch (this.groupMethod) {
-        case "runAddGroupMembers":
-          basePercent = 0;
-          break;
-        case "runRemoveGroupMembers":
-          basePercent = 45;
-          break;
-        case "removePreviousRunGroupMembers":
-          basePercent = 90;
-          break;
-      }
-      return (
-        basePercent +
-        Math.round(
-          (100 * this.groupMemberOffset) /
-            (groupMembersCount > 0 ? groupMembersCount : 1) /
-            3
-        )
-      );
-    }
-    if (this.creatorType === "schedule") {
-      // there's no way to know because we are reading external data
-      return 0;
-    } else {
-      // for profilePropertyRules and for other types of internal run, we can assume we have to check every profile in the system
-      const totalProfiles = await Profile.count();
-      return Math.round((100 * this.profilesImported) / totalProfiles);
-    }
+    return RunOps.percentComplete(this);
   }
 
   async getCreatorName() {
@@ -487,5 +295,61 @@ export class Run extends Model<Run> {
       throw new Error(`cannot find ${this.name} ${guid}`);
     }
     return instance;
+  }
+
+  @BeforeCreate
+  static generateGuid(instance) {
+    if (!instance.guid) {
+      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+    }
+  }
+
+  @BeforeCreate
+  static async ensureCreatorReady(instance: Run) {
+    let ready = true;
+    // profile property rules are ok to enqueue if they are in draft at the time.  Options update before state
+    if (instance.creatorType === "group") {
+      let creator = await Group.findByGuid(instance.creatorGuid);
+      if (creator.state === "draft") {
+        ready = false;
+      }
+    }
+    if (instance.creatorType === "schedule") {
+      let creator = await Schedule.findByGuid(instance.creatorGuid);
+      if (creator.state === "draft") {
+        ready = false;
+      }
+    }
+
+    if (!ready) {
+      throw new Error(`creator ${instance.creatorType} is not ready`);
+    }
+  }
+
+  @BeforeSave
+  static async updateState(instance: Run) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
+
+  @AfterCreate
+  static async testRun(instance: Run) {
+    return instance.test();
+  }
+
+  @BeforeUpdate
+  static async broadcast(instance: Run) {
+    // we only need to broadcast at the end of each batch or on a state change, not as we increment values
+    if (
+      instance.changed("state") ||
+      instance.changed("groupMemberLimit") ||
+      instance.changed("groupMemberOffset") ||
+      instance.changed("highWaterMark") ||
+      instance.changed("sourceOffset")
+    ) {
+      await chatRoom.broadcast({}, `model:run`, {
+        model: await instance.apiData(),
+        verb: "update",
+      });
+    }
   }
 }

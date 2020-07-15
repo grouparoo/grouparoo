@@ -36,14 +36,6 @@ export class File extends LoggedModel<File> {
   @Column
   sizeBytes: number;
 
-  @BeforeSave
-  static async enureValidType(instance: File) {
-    const validTypes: Array<string> = api.files.types;
-    if (!validTypes.includes(instance.type)) {
-      throw new Error(`${instance.type} is not a valid file type`);
-    }
-  }
-
   async apiData() {
     return {
       guid: this.guid,
@@ -67,5 +59,13 @@ export class File extends LoggedModel<File> {
       throw new Error(`cannot find ${this.name} ${guid}`);
     }
     return instance;
+  }
+
+  @BeforeSave
+  static async enureValidType(instance: File) {
+    const validTypes: Array<string> = api.files.types;
+    if (!validTypes.includes(instance.type)) {
+      throw new Error(`${instance.type} is not a valid file type`);
+    }
   }
 }

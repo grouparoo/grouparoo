@@ -80,7 +80,7 @@ describe("tasks/import:associateProfile", () => {
       );
       expect(errorMetadata.step).toBe("import:associateProfile");
       expect(errorMetadata.stack).toMatch(
-        /Function.findOrCreateByUniqueProfileProperties/
+        /findOrCreateByUniqueProfileProperties/
       );
     });
 

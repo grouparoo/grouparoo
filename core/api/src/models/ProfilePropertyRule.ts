@@ -17,7 +17,7 @@ import {
   DefaultScope,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
-import { env, api, task } from "actionhero";
+import { env, api } from "actionhero";
 import { plugin } from "../modules/plugin";
 import { LoggedModel } from "../classes/loggedModel";
 import { Profile } from "./Profile";
@@ -33,6 +33,7 @@ import { internalRun } from "../modules/internalRun";
 import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { Mapping } from "./Mapping";
+import { ProfilePropertyRuleOps } from "../modules/ops/profilePropertyRule";
 
 export function profilePropertyRuleJSToSQLType(jsType: string) {
   const map = {
@@ -46,70 +47,6 @@ export function profilePropertyRuleJSToSQLType(jsType: string) {
 
   return map[jsType];
 }
-
-const _boolean_ops = [
-  { op: "exists", description: "exists with any value" },
-  { op: "notExists", description: "does not exist" },
-  { op: "eq", description: "is equal to" },
-  { op: "ne", description: "is not equal to" },
-];
-const _number_ops = [
-  { op: "exists", description: "exists with any value" },
-  { op: "notExists", description: "does not exist" },
-  { op: "eq", description: "is equal to" },
-  { op: "ne", description: "is not equal to" },
-  { op: "gt", description: "is greater than" },
-  { op: "lt", description: "is less than" },
-  { op: "gte", description: "is greater than or equal to" },
-  { op: "lte", description: "is less than or equal to" },
-];
-const _string_ops = [
-  { op: "exists", description: "exists with any value" },
-  { op: "notExists", description: "does not exist" },
-  { op: "eq", description: "is equal to" },
-  { op: "ne", description: "is not equal to" },
-  { op: "like", description: "is like" },
-  { op: "iLike", description: "is like (case insensitive)" },
-  { op: "notLike", description: "is not like (case insensitive)" },
-  { op: "notILike", description: "is not like (case insensitive)" },
-  { op: "startsWith", description: "starts with" },
-  { op: "endsWith", description: "ends with" },
-  { op: "substring", description: "includes the string" },
-];
-const _date_ops = [
-  { op: "exists", description: "exists with any value" },
-  { op: "notExists", description: "does not exist" },
-  { op: "eq", description: "is equal to" },
-  { op: "ne", description: "is not equal to" },
-  { op: "gt", description: "is after" },
-  { op: "lt", description: "is before" },
-  { op: "gte", description: "is on or after" },
-  { op: "lte", description: "is on or before" },
-  { op: "relative_gt", description: "is in the past" },
-  { op: "relative_lt", description: "is in the future" },
-];
-
-export const ProfilePropertyRuleOps = {
-  string: _string_ops,
-  email: _string_ops,
-  integer: _number_ops,
-  float: _number_ops,
-  boolean: _boolean_ops,
-  date: _date_ops,
-  _relativeMatchUnits: ["days", "weeks", "months", "quarters", "years"],
-  _convenientRules: {
-    exists: { operation: { op: "ne" }, match: "null" },
-    notExists: { operation: { op: "eq" }, match: "null" },
-    relative_gt: {
-      operation: { op: "gt" },
-      relativeMatchDirection: "subtract",
-    },
-    relative_lt: {
-      operation: { op: "lt" },
-      relativeMatchDirection: "add",
-    },
-  },
-};
 
 const TYPES = ["float", "integer", "date", "string", "boolean", "email"];
 
@@ -219,6 +156,189 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   @HasMany(() => ProfilePropertyRuleFilter)
   profilePropertyRuleFilters: ProfilePropertyRuleFilter[];
+
+  async parameterizedQueryFromProfile(q: string, profile: Profile) {
+    return plugin.replaceTemplateProfileVariables(q, profile);
+  }
+
+  async test(options?: SimpleProfilePropertyRuleOptions) {
+    const profile = await Profile.findOne({ order: api.sequelize.random() });
+    if (profile) {
+      const source = await Source.findByGuid(this.sourceGuid);
+      return source.importProfileProperty(profile, this, options);
+    }
+  }
+
+  async getOptions() {
+    const options = await OptionHelper.getOptions(this);
+    for (const i in options) {
+      options[
+        i
+      ] = await plugin.replaceTemplateProfilePropertyGuidsWithProfilePropertyKeys(
+        options[i]
+      );
+    }
+
+    return options;
+  }
+
+  async setOptions(options: SimpleProfilePropertyRuleOptions) {
+    await this.test(options);
+
+    for (const i in options) {
+      options[
+        i
+      ] = await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyGuid(
+        options[i]
+      );
+    }
+
+    return OptionHelper.setOptions(this, options);
+  }
+
+  async afterSetOptions() {
+    await this.enqueueRuns();
+  }
+
+  async validateOptions(
+    options?: SimpleProfilePropertyRuleOptions,
+    allowEmpty = false,
+    useCache = false
+  ) {
+    // this method is called on every profile property rule, for every profile, before an import
+    // caching that we are already valid can speed this up
+    const cacheKey = `cache:profilePropertyRule:${this.guid}`;
+    const client = api.redis.clients.client;
+    if (useCache) {
+      const previouslyValidated = await client.get(cacheKey);
+      if (previouslyValidated === "true") return;
+    }
+
+    if (!options) {
+      options = await this.getOptions();
+    }
+
+    const response = OptionHelper.validateOptions(this, options, allowEmpty);
+    if (CACHE_TTL > 0) {
+      await client.set(cacheKey, "true");
+      await client.expire(cacheKey, CACHE_TTL / 1000);
+    }
+    return response;
+  }
+
+  async getPlugin() {
+    return OptionHelper.getPlugin(this);
+  }
+
+  async getFilters() {
+    const filtersWithCol: ProfilePropertyRuleFiltersWithKey[] = [];
+    const filters = await this.$get("profilePropertyRuleFilters", {
+      order: [["position", "asc"]],
+    });
+
+    for (const i in filters) {
+      const filter = filters[i];
+      filtersWithCol.push({
+        key: filter.key,
+        op: filter.op,
+        match: filter.match,
+        relativeMatchNumber: filter.relativeMatchNumber,
+        relativeMatchUnit: filter.relativeMatchUnit,
+        relativeMatchDirection: filter.relativeMatchDirection,
+      });
+    }
+
+    return filtersWithCol;
+  }
+
+  async setFilters(filters: ProfilePropertyRuleFiltersWithKey[]) {
+    await this.validateFilters(filters);
+
+    await ProfilePropertyRuleFilter.destroy({
+      where: {
+        profilePropertyRuleGuid: this.guid,
+      },
+    });
+
+    for (const i in filters) {
+      const filter = filters[i];
+
+      await ProfilePropertyRuleFilter.create({
+        position: parseInt(i) + 1,
+        profilePropertyRuleGuid: this.guid,
+        key: filter.key,
+        op: filter.op,
+        match: filter.match,
+        relativeMatchNumber: filter.relativeMatchNumber,
+        relativeMatchUnit: filter.relativeMatchUnit,
+        relativeMatchDirection: filter.relativeMatchDirection,
+      });
+    }
+
+    await this.enqueueRuns();
+  }
+
+  async enqueueRuns() {
+    return ProfilePropertyRuleOps.enqueueRuns(this);
+  }
+
+  async pluginOptions() {
+    return ProfilePropertyRuleOps.pluginOptions(this);
+  }
+
+  async pluginFilterOptions() {
+    return ProfilePropertyRuleOps.pluginFilterOptions(this);
+  }
+
+  async validateFilters(filters: ProfilePropertyRuleFiltersWithKey[]) {
+    if (!filters) {
+      filters = await this.getFilters();
+    }
+
+    const pluginFilterOptions = await this.pluginFilterOptions();
+
+    for (const i in filters) {
+      const filter = filters[i];
+      const relevantOption = pluginFilterOptions.filter(
+        (pfo) => pfo.key === filter.key
+      )[0];
+      if (!relevantOption) {
+        throw new Error(`${filter.key} is not filterable`);
+      }
+      if (!relevantOption.ops.includes(filter.op)) {
+        throw new Error(`"${filter.op}" cannot be applied to ${filter.key}`);
+      }
+    }
+  }
+
+  async apiData() {
+    const options = await this.getOptions();
+    const filters = await this.getFilters();
+    const source = await this.$get("source");
+
+    return {
+      guid: this.guid,
+      source: source ? await source.apiData(false, true, false) : undefined,
+      key: this.key,
+      type: this.type,
+      state: this.state,
+      unique: this.unique,
+      options,
+      filters,
+      createdAt: this.createdAt ? this.createdAt.getTime() : null,
+      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+    };
+  }
+
+  // --- Class Methods --- //
+
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) {
+      throw new Error(`cannot find ${this.name} ${guid}`);
+    }
+    return instance;
+  }
 
   @BeforeSave
   static async ensureUniqueKey(instance: ProfilePropertyRule) {
@@ -333,279 +453,6 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     });
   }
 
-  async parameterizedQueryFromProfile(q: string, profile: Profile) {
-    return plugin.replaceTemplateProfileVariables(q, profile);
-  }
-
-  async test(options?: SimpleProfilePropertyRuleOptions) {
-    const profile = await Profile.findOne({ order: api.sequelize.random() });
-    if (profile) {
-      const source = await Source.findByGuid(this.sourceGuid);
-      return source.importProfileProperty(profile, this, options);
-    }
-  }
-
-  async getOptions() {
-    const options = await OptionHelper.getOptions(this);
-    for (const i in options) {
-      options[
-        i
-      ] = await plugin.replaceTemplateProfilePropertyGuidsWithProfilePropertyKeys(
-        options[i]
-      );
-    }
-
-    return options;
-  }
-
-  async setOptions(options: SimpleProfilePropertyRuleOptions) {
-    await this.test(options);
-
-    for (const i in options) {
-      options[
-        i
-      ] = await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyGuid(
-        options[i]
-      );
-    }
-
-    return OptionHelper.setOptions(this, options);
-  }
-
-  async afterSetOptions() {
-    await this.enqueueRuns();
-  }
-
-  async validateOptions(
-    options?: SimpleProfilePropertyRuleOptions,
-    allowEmpty = false,
-    useCache = false
-  ) {
-    // this method is called on every profile property rule, for every profile, before an import
-    // caching that we are already valid can speed this up
-    const cacheKey = `cache:profilePropertyRule:${this.guid}`;
-    const client = api.redis.clients.client;
-    if (useCache) {
-      const previouslyValidated = await client.get(cacheKey);
-      if (previouslyValidated === "true") return;
-    }
-
-    if (!options) {
-      options = await this.getOptions();
-    }
-
-    const response = OptionHelper.validateOptions(this, options, allowEmpty);
-    if (CACHE_TTL > 0) {
-      await client.set(cacheKey, "true");
-      await client.expire(cacheKey, CACHE_TTL / 1000);
-    }
-    return response;
-  }
-
-  async getPlugin() {
-    return OptionHelper.getPlugin(this);
-  }
-
-  async enqueueRuns() {
-    await internalRun("profilePropertyRule", this.guid); // update *all* profiles
-
-    const groups = await Group.findAll({
-      include: [
-        {
-          model: GroupRule,
-          where: { profilePropertyRuleGuid: this.guid },
-        },
-      ],
-    });
-
-    for (const i in groups) {
-      const group = groups[i];
-      await group.update({ state: "initializing" });
-      await task.enqueue("group:run", { groupGuid: group.guid });
-    }
-  }
-
-  async pluginOptions() {
-    const source = await this.$get("source");
-    const { pluginConnection } = await source.getPlugin();
-
-    if (!pluginConnection) {
-      throw new Error(`cannot find a pluginConnection for type ${source.type}`);
-    }
-    if (!pluginConnection.profilePropertyRuleOptions) {
-      throw new Error(
-        `cannot find profilePropertyRuleOptions for type ${source.type}`
-      );
-    }
-
-    const response: Array<{
-      key: string;
-      description: string;
-      required: boolean;
-      type: string;
-      options: Array<{
-        key: string;
-        description?: string;
-        examples?: Array<any>;
-      }>;
-    }> = [];
-    const app = await App.findByGuid(source.appGuid);
-    const connection = await app.getConnection();
-    const appOptions = await app.getOptions();
-    const sourceOptions = await source.getOptions();
-    const sourceMapping = await source.getMapping();
-
-    for (const i in pluginConnection.profilePropertyRuleOptions) {
-      const opt = pluginConnection.profilePropertyRuleOptions[i];
-      const options = await opt.options({
-        connection,
-        app,
-        appOptions,
-        source,
-        sourceOptions,
-        sourceMapping,
-        profilePropertyRule: this,
-      });
-
-      response.push({
-        key: opt.key,
-        description: opt.description,
-        required: opt.required,
-        type: opt.type,
-        options,
-      });
-    }
-
-    return response;
-  }
-
-  async getFilters() {
-    const filtersWithCol: ProfilePropertyRuleFiltersWithKey[] = [];
-    const filters = await this.$get("profilePropertyRuleFilters", {
-      order: [["position", "asc"]],
-    });
-
-    for (const i in filters) {
-      const filter = filters[i];
-      filtersWithCol.push({
-        key: filter.key,
-        op: filter.op,
-        match: filter.match,
-        relativeMatchNumber: filter.relativeMatchNumber,
-        relativeMatchUnit: filter.relativeMatchUnit,
-        relativeMatchDirection: filter.relativeMatchDirection,
-      });
-    }
-
-    return filtersWithCol;
-  }
-
-  async setFilters(filters: ProfilePropertyRuleFiltersWithKey[]) {
-    await this.validateFilters(filters);
-
-    await ProfilePropertyRuleFilter.destroy({
-      where: {
-        profilePropertyRuleGuid: this.guid,
-      },
-    });
-
-    for (const i in filters) {
-      const filter = filters[i];
-
-      await ProfilePropertyRuleFilter.create({
-        position: parseInt(i) + 1,
-        profilePropertyRuleGuid: this.guid,
-        key: filter.key,
-        op: filter.op,
-        match: filter.match,
-        relativeMatchNumber: filter.relativeMatchNumber,
-        relativeMatchUnit: filter.relativeMatchUnit,
-        relativeMatchDirection: filter.relativeMatchDirection,
-      });
-    }
-
-    await this.enqueueRuns();
-  }
-
-  async pluginFilterOptions() {
-    const { pluginConnection } = await this.getPlugin();
-    if (!pluginConnection.methods.sourceFilters) {
-      return [];
-    }
-
-    const profilePropertyRuleOptions = await this.getOptions();
-    const source = await this.$get("source");
-    const sourceOptions = await source.getOptions();
-    const sourceMapping = await source.getMapping();
-    const app = await App.findByGuid(source.appGuid);
-    const connection = await app.getConnection();
-    const appOptions = await app.getOptions();
-
-    const method = pluginConnection.methods.sourceFilters;
-    const options = await method({
-      connection,
-      app,
-      appOptions,
-      source,
-      sourceOptions,
-      sourceMapping,
-      profilePropertyRule: this,
-      profilePropertyRuleOptions,
-    });
-
-    return options;
-  }
-
-  async validateFilters(filters: ProfilePropertyRuleFiltersWithKey[]) {
-    if (!filters) {
-      filters = await this.getFilters();
-    }
-
-    const pluginFilterOptions = await this.pluginFilterOptions();
-
-    for (const i in filters) {
-      const filter = filters[i];
-      const relevantOption = pluginFilterOptions.filter(
-        (pfo) => pfo.key === filter.key
-      )[0];
-      if (!relevantOption) {
-        throw new Error(`${filter.key} is not filterable`);
-      }
-      if (!relevantOption.ops.includes(filter.op)) {
-        throw new Error(`"${filter.op}" cannot be applied to ${filter.key}`);
-      }
-    }
-  }
-
-  async apiData() {
-    const options = await this.getOptions();
-    const filters = await this.getFilters();
-    const source = await this.$get("source");
-
-    return {
-      guid: this.guid,
-      source: source ? await source.apiData(false, true, false) : undefined,
-      key: this.key,
-      type: this.type,
-      state: this.state,
-      unique: this.unique,
-      options,
-      filters,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
-    };
-  }
-
-  // --- Class Methods --- //
-
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
-    return instance;
-  }
-
   static async clearCache() {
     CACHE = {
       createdAt: new Date().getTime() - CACHE_TTL - 1,
@@ -637,7 +484,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
       CACHE = {
         createdAt: now,
-        data: Object.assign(rulesHash, {}),
+        data: Object.assign({}, rulesHash),
       };
 
       return CACHE.data;
