@@ -198,8 +198,9 @@ export class App extends LoggedModel<App> {
   @BeforeSave
   static async validateType(instance: App) {
     const { pluginApp } = await instance.getPlugin();
-    if (!pluginApp)
+    if (!pluginApp) {
       throw new Error(`cannot find a pluginApp for type ${instance.type}`);
+    }
   }
 
   @BeforeSave
@@ -212,18 +213,20 @@ export class App extends LoggedModel<App> {
     const sources = await Source.scope(null).findAll({
       where: { appGuid: instance.guid },
     });
-    if (sources.length > 0)
+    if (sources.length > 0) {
       throw new Error(
         `cannot delete this app, source ${sources[0].guid} relies on it`
       );
+    }
 
     const destinations = await Destination.scope(null).findAll({
       where: { appGuid: instance.guid },
     });
-    if (destinations.length > 0)
+    if (destinations.length > 0) {
       throw new Error(
         `cannot delete this app, destination ${destinations[0].guid} relies on it`
       );
+    }
   }
 
   @BeforeDestroy

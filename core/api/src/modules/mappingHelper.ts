@@ -51,8 +51,9 @@ export namespace MappingHelper {
           where: { key },
         });
 
-        if (!profilePropertyRule)
+        if (!profilePropertyRule) {
           throw new Error(`cannot find profile property rule ${key}`);
+        }
 
         await Mapping.create(
           {

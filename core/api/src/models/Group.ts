@@ -91,8 +91,9 @@ export class Group extends LoggedModel<Group> {
 
   @AllowNull(false)
   @Is("ofValidType", (value) => {
-    if (value !== "manual" && value !== "calculated")
+    if (value !== "manual" && value !== "calculated") {
       throw new Error("type must be one of: manual, calculated");
+    }
   })
   @Column(DataType.ENUM("manual", "calculated"))
   type: string;
@@ -100,8 +101,9 @@ export class Group extends LoggedModel<Group> {
   @AllowNull(false)
   @Default("all")
   @Is("ofValidMatchType", (value) => {
-    if (value && value !== "all" && value !== "any")
+    if (value && value !== "all" && value !== "any") {
       throw new Error("matchType must be one of: all, any");
+    }
   })
   @Column(DataType.ENUM("all", "any"))
   matchType: "all" | "any";
@@ -173,11 +175,13 @@ export class Group extends LoggedModel<Group> {
   }
 
   async setRules(rules: GroupRuleWithKey[]) {
-    if (this.type !== "calculated")
+    if (this.type !== "calculated") {
       throw new Error("group type not calculated");
+    }
 
-    if (Object.keys(rules).length > GROUP_RULE_LIMIT)
+    if (Object.keys(rules).length > GROUP_RULE_LIMIT) {
       throw new Error("too many group rules");
+    }
 
     const transaction = await api.sequelize.transaction();
 
@@ -196,8 +200,9 @@ export class Group extends LoggedModel<Group> {
           where: { key },
         });
 
-        if (!profilePropertyRule)
+        if (!profilePropertyRule) {
           throw new Error(`cannot find Profile Property Rule ${key}`);
+        }
 
         await GroupRule.create(
           {
@@ -427,8 +432,9 @@ export class Group extends LoggedModel<Group> {
     rules?: GroupRuleWithKey[],
     matchType: "any" | "all" = this.matchType
   ) {
-    if (this.type !== "calculated")
+    if (this.type !== "calculated") {
       throw new Error("only calculated groups can be calculated");
+    }
 
     if (!rules) {
       rules = await this.getRules();
@@ -473,8 +479,9 @@ export class Group extends LoggedModel<Group> {
       }
 
       const profilePropertyRule = profilePropertyRules[key];
-      if (!profilePropertyRule)
+      if (!profilePropertyRule) {
         throw new Error(`cannot find type for ProfilePropertyRule ${key}`);
+      }
 
       localWhereGroup[Op.and] = [
         api.sequelize.where(
@@ -574,8 +581,9 @@ export class Group extends LoggedModel<Group> {
   @BeforeDestroy
   static async checkGroupMembers(instance: Group) {
     const count = await instance.$count("groupMembers");
-    if (count > 0)
+    if (count > 0) {
       throw new Error(`this group still has ${count} members, cannot delete`);
+    }
   }
 
   @BeforeDestroy
@@ -585,10 +593,11 @@ export class Group extends LoggedModel<Group> {
       include: [{ model: Destination, where: { trackAllGroups: false } }],
     });
 
-    if (count > 0)
+    if (count > 0) {
       throw new Error(
         `this group still in use by ${count} destinations, cannot delete`
       );
+    }
   }
 
   @BeforeDestroy

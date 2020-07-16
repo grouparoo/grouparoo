@@ -17,8 +17,9 @@ export class ScheduleRun extends Task {
 
   async run(params) {
     const schedule = await Schedule.findByGuid(params.scheduleGuid);
-    if (schedule.state !== "ready")
+    if (schedule.state !== "ready") {
       throw new Error(`schedule ${params.scheduleGuid} is not ready`);
+    }
 
     const run = await Run.findByGuid(params.runGuid);
 

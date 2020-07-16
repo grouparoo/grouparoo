@@ -25,8 +25,9 @@ export class TeamInitialize extends Action {
 
     const teamsCount = await Team.count();
 
-    if (teamsCount > 0)
+    if (teamsCount > 0) {
       throw new Error("an administration team already exists, please sign in");
+    }
 
     team = await Team.create({
       name: "Administrators",
@@ -115,8 +116,9 @@ export class TeamEdit extends AuthenticatedAction {
     const updateParams = Object.assign({}, params);
     if (params.disabledPermissionAllRead) updateParams.permissionAllRead = null;
 
-    if (params.disabledPermissionAllWrite)
+    if (params.disabledPermissionAllWrite) {
       updateParams.permissionAllWrite = null;
+    }
 
     await team.update(updateParams);
 

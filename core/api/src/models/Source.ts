@@ -285,10 +285,11 @@ export class Source extends LoggedModel<Source> {
   @BeforeCreate
   static async ensurePluginConnection(instance: Source) {
     const { plugin } = await instance.getPlugin();
-    if (!plugin)
+    if (!plugin) {
       throw new Error(
         `cannot find an import connection for a source of ${instance.type}`
       );
+    }
   }
 
   @BeforeCreate
@@ -305,8 +306,9 @@ export class Source extends LoggedModel<Source> {
   @BeforeDestroy
   static async ensureNoSchedule(instance: Source) {
     const schedule = await instance.$get("schedule", { scope: null });
-    if (schedule)
+    if (schedule) {
       throw new Error("you cannot delete a source that has a schedule");
+    }
   }
 
   @BeforeDestroy

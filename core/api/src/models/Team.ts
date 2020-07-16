@@ -78,10 +78,11 @@ export class Team extends LoggedModel<Team> {
       const permission = await Permission.findOne({
         where: { ownerGuid: this.guid, guid: permissions[i].guid },
       });
-      if (!permission)
+      if (!permission) {
         throw new Error(
           `permission ${permissions[i].guid} not found for this team`
         );
+      }
 
       if (!permission.locked) {
         permission.read =
@@ -112,8 +113,9 @@ export class Team extends LoggedModel<Team> {
       !instance.isNewRecord &&
       (instance.permissionAllRead !== null ||
         instance.permissionAllWrite !== null)
-    )
+    ) {
       throw new Error("locked teams cannot change permissions");
+    }
   }
 
   @AfterSave

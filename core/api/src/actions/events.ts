@@ -223,8 +223,9 @@ export class EventCreate extends AuthenticatedAction {
   }
 
   async run({ session, connection, params, response }) {
-    if (!params.userId && !params.anonymousId)
+    if (!params.userId && !params.anonymousId) {
       throw new Error(`either anonymousId or userId is required`);
+    }
 
     let occurredAt = params.occurredAt;
     if (!occurredAt) {

@@ -124,10 +124,11 @@ export namespace plugin {
    */
   export async function readSetting(pluginName: string, key: string) {
     const setting = await Setting.findOne({ where: { pluginName, key } });
-    if (!setting)
+    if (!setting) {
       throw new Error(
         `setting ${key} not registered for grouparoo plugin ${pluginName}`
       );
+    }
 
     return setting;
   }

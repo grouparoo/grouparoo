@@ -185,10 +185,11 @@ export class GroupRemoveProfile extends AuthenticatedAction {
   async run({ params, response }) {
     response.success = false;
     const group = await Group.findByGuid(params.guid);
-    if (group.type !== "manual")
+    if (group.type !== "manual") {
       throw new Error(
         "only manual groups can have membership manipulated by this action"
       );
+    }
 
     const profile = await Profile.findByGuid(params.profileGuid);
     await group.removeProfile(profile);

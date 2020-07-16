@@ -130,8 +130,9 @@ export class TeamMemberDestroy extends AuthenticatedAction {
   async run({ params, response, session: { teamMember: myself } }) {
     response.success = false;
     const teamMember = await TeamMember.findByGuid(params.guid);
-    if (myself.guid === teamMember.guid)
+    if (myself.guid === teamMember.guid) {
       throw new Error("you cannot delete yourself");
+    }
 
     await teamMember.destroy();
     response.success = true;

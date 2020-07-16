@@ -28,8 +28,9 @@ export namespace DestinationOps {
    * Track a Group
    */
   export async function trackGroup(destination: Destination, group: Group) {
-    if (destination.trackAllGroups)
+    if (destination.trackAllGroups) {
       throw new Error("destination is tracking all groups");
+    }
 
     const existingDestinationGroups = await destination.$get(
       "destinationGroups"
@@ -56,8 +57,9 @@ export namespace DestinationOps {
    * Un-track a Group
    */
   export async function unTrackGroups(destination: Destination) {
-    if (destination.trackAllGroups)
+    if (destination.trackAllGroups) {
       throw new Error("destination is tracking all groups");
+    }
 
     const existingDestinationGroups = await destination.$get(
       "destinationGroups"
@@ -113,10 +115,11 @@ export namespace DestinationOps {
     const connection = await app.getConnection();
     const appOptions = await app.getOptions();
 
-    if (!pluginConnection.methods.destinationOptions)
+    if (!pluginConnection.methods.destinationOptions) {
       throw new Error(
         `cannot return destination options for ${destination.type}`
       );
+    }
 
     return pluginConnection.methods.destinationOptions({
       connection,
@@ -170,8 +173,9 @@ export namespace DestinationOps {
     const { pluginConnection } = await destination.getPlugin();
     method = pluginConnection.methods.exportProfile;
 
-    if (!method)
+    if (!method) {
       throw new Error(`cannot find an export method for app type ${app.type}`);
+    }
 
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);

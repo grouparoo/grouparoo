@@ -62,7 +62,8 @@ export class File extends LoggedModel<File> {
   @BeforeSave
   static async enureValidType(instance: File) {
     const validTypes: Array<string> = api.files.types;
-    if (!validTypes.includes(instance.type))
+    if (!validTypes.includes(instance.type)) {
       throw new Error(`${instance.type} is not a valid file type`);
+    }
   }
 }

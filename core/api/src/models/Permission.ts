@@ -96,8 +96,9 @@ export class Permission extends LoggedModel<Permission> {
       where: { ownerGuid: ownerGuid, topic: topic },
     });
 
-    if (!permission)
+    if (!permission) {
       throw new Error(`cannot find permission set for ${ownerGuid} - ${topic}`);
+    }
 
     return permission[mode];
   }
@@ -129,7 +130,8 @@ export class Permission extends LoggedModel<Permission> {
       return;
     }
 
-    if (!Permission.topics().includes(topic))
+    if (!Permission.topics().includes(topic)) {
       throw new Error(`cannot determine permission topic for ${topic}`);
+    }
   }
 }

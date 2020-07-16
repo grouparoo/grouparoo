@@ -85,8 +85,9 @@ export class CreateImport extends AuthenticatedAction {
       }
     }
 
-    if (!foundUniqueProperty)
+    if (!foundUniqueProperty) {
       throw new Error("no unique profile property included");
+    }
 
     const _import = await Import.create({
       data: properties,

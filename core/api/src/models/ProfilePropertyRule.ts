@@ -365,8 +365,9 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   @BeforeSave
   static async ensureType(instance: ProfilePropertyRule) {
-    if (!TYPES.includes(instance.type))
+    if (!TYPES.includes(instance.type)) {
       throw new Error(`${instance.type} is not an allowed type`);
+    }
   }
 
   @BeforeCreate

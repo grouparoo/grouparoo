@@ -23,8 +23,9 @@ export namespace TeamMemberOps {
     teamMember: TeamMember,
     password: string
   ) {
-    if (!teamMember.passwordHash)
+    if (!teamMember.passwordHash) {
       throw new Error("password not set for this team member");
+    }
 
     const match: boolean = await bcrypt.compare(
       password,
