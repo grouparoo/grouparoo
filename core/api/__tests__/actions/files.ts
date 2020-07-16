@@ -86,7 +86,7 @@ describe("actions/files", () => {
         csrfToken,
         type: "image",
         // Note: This object emulates formidible's parsing response after an upload to the web server
-        file: { name: "logo.svg", path: "/tmp/logo.svg" },
+        _file: { name: "logo.svg", path: "/tmp/logo.svg" },
       };
       const { error, file } = await specHelper.runAction(
         "file:create",
