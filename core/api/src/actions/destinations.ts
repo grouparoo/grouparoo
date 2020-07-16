@@ -32,9 +32,7 @@ export class DestinationsList extends AuthenticatedAction {
   async run({ params, response }) {
     const where = {};
 
-    if (params.state) {
-      where["state"] = params.state;
-    }
+    if (params.state) where["state"] = params.state;
 
     const destinations = await Destination.scope(null).findAll({
       where,
@@ -122,24 +120,13 @@ export class DestinationCreate extends AuthenticatedAction {
       appGuid: params.appGuid,
       trackAllGroups: params.trackAllGroups,
     });
-
-    if (params.options) {
-      await destination.setOptions(params.options);
-    }
-
-    if (params.mapping) {
-      await destination.setMapping(params.mapping);
-    }
-
-    if (params.destinationGroupMemberships) {
+    if (params.options) await destination.setOptions(params.options);
+    if (params.mapping) await destination.setMapping(params.mapping);
+    if (params.destinationGroupMemberships)
       await destination.setDestinationGroupMemberships(
         params.destinationGroupMemberships
       );
-    }
-
-    if (params.state) {
-      await destination.update({ state: params.state });
-    }
+    if (params.state) await destination.update({ state: params.state });
 
     response.destination = await destination.apiData();
   }
@@ -165,15 +152,8 @@ export class DestinationEdit extends AuthenticatedAction {
 
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
-
-    if (params.options) {
-      await destination.setOptions(params.options);
-    }
-
-    if (params.mapping) {
-      await destination.setMapping(params.mapping);
-    }
-
+    if (params.options) await destination.setOptions(params.options);
+    if (params.mapping) await destination.setMapping(params.mapping);
     if (params.destinationGroupMemberships) {
       await destination.setDestinationGroupMemberships(
         params.destinationGroupMemberships

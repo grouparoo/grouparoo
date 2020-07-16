@@ -32,9 +32,7 @@ export class FilesList extends AuthenticatedAction {
       where: {},
     };
 
-    if (params.type) {
-      search.where = { type: params.type };
-    }
+    if (params.type) search.where = { type: params.type };
 
     const files = await File.findAll(search);
     response.files = await Promise.all(files.map(async (f) => f.apiData()));

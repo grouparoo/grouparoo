@@ -46,9 +46,7 @@ export class DestinationGroup extends LoggedModel<DestinationGroup> {
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
@@ -65,9 +63,7 @@ export class DestinationGroup extends LoggedModel<DestinationGroup> {
       await group.run(true, instance.destinationGuid);
     } catch (error) {
       // we may be in the after-hook of the group being deleted
-      if (!error.toString().match(/cannot find Group/)) {
-        throw error;
-      }
+      if (!error.toString().match(/cannot find Group/)) throw error;
     }
   }
 }

@@ -266,9 +266,7 @@ export class Source extends LoggedModel<Source> {
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
@@ -281,9 +279,7 @@ export class Source extends LoggedModel<Source> {
         state: { [Op.ne]: "draft" },
       },
     });
-    if (count > 0) {
-      throw new Error(`name "${instance.name}" is already in use`);
-    }
+    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
 
   @BeforeCreate
@@ -299,9 +295,7 @@ export class Source extends LoggedModel<Source> {
   @BeforeCreate
   static async ensureAppReady(instance: Source) {
     const app = await App.findByGuid(instance.appGuid);
-    if (app.state !== "ready") {
-      throw new Error(`app ${app.guid} is not ready`);
-    }
+    if (app.state !== "ready") throw new Error(`app ${app.guid} is not ready`);
   }
 
   @BeforeSave

@@ -24,10 +24,7 @@ export class SchedulesList extends AuthenticatedAction {
 
   async run({ params, response }) {
     const where = {};
-
-    if (params.state) {
-      where["state"] = params.state;
-    }
+    if (params.state) where["state"] = params.state;
 
     const schedules = await Schedule.scope(null).findAll({
       where,
@@ -89,13 +86,8 @@ export class ScheduleCreate extends AuthenticatedAction {
       recurringFrequency: params.recurringFrequency,
     });
 
-    if (params.options) {
-      await schedule.setOptions(params.options);
-    }
-
-    if (params.state) {
-      await schedule.update({ state: params.state });
-    }
+    if (params.options) await schedule.setOptions(params.options);
+    if (params.state) await schedule.update({ state: params.state });
 
     response.schedule = await schedule.apiData();
     response.pluginOptions = await schedule.pluginOptions();
@@ -130,9 +122,7 @@ export class ScheduleEdit extends AuthenticatedAction {
       });
     }
 
-    if (params.options) {
-      await schedule.setOptions(params.options);
-    }
+    if (params.options) await schedule.setOptions(params.options);
 
     await schedule.update({ state: params.state, name: params.name });
     response.schedule = await schedule.apiData();

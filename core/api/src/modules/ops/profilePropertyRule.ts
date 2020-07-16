@@ -40,6 +40,7 @@ export namespace ProfilePropertyRuleOps {
     if (!pluginConnection) {
       throw new Error(`cannot find a pluginConnection for type ${source.type}`);
     }
+
     if (!pluginConnection.profilePropertyRuleOptions) {
       throw new Error(
         `cannot find profilePropertyRuleOptions for type ${source.type}`

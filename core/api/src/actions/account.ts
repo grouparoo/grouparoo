@@ -11,9 +11,8 @@ export class AccountView extends AuthenticatedAction {
   }
 
   async run({ response, session: { teamMember } }) {
-    if (!teamMember) {
-      throw new Error("team member not found");
-    }
+    if (!teamMember) throw new Error("team member not found");
+
     response.teamMember = await teamMember.apiData();
     response.team = await teamMember.team.apiData();
   }

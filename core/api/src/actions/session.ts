@@ -19,14 +19,10 @@ export class sessionCreate extends Action {
     const teamMember = await TeamMember.findOne({
       where: { email: params.email },
     });
-    if (!teamMember) {
-      throw new Error("team member not found");
-    }
+    if (!teamMember) throw new Error("team member not found");
 
     const match = await teamMember.checkPassword(params.password);
-    if (!match) {
-      throw new Error("password does not match");
-    }
+    if (!match) throw new Error("password does not match");
 
     const sessionData = await api.session.create(connection, teamMember);
     response.teamMember = await teamMember.apiData();

@@ -23,14 +23,8 @@ export class ImportsList extends AuthenticatedAction {
 
   async run({ response, params }) {
     const where = {};
-
-    if (params.creatorGuid) {
-      where["creatorGuid"] = params.creatorGuid;
-    }
-
-    if (params.profileGuid) {
-      where["profileGuid"] = params.profileGuid;
-    }
+    if (params.creatorGuid) where["creatorGuid"] = params.creatorGuid;
+    if (params.profileGuid) where["profileGuid"] = params.profileGuid;
 
     const search = {
       where,
@@ -78,9 +72,7 @@ export class CreateImport extends AuthenticatedAction {
   async run({ response, params }) {
     let { properties } = params;
 
-    if (typeof properties === "string") {
-      properties = JSON.parse(properties);
-    }
+    if (typeof properties === "string") properties = JSON.parse(properties);
 
     const profilePropertyRules = await ProfilePropertyRule.cached();
     let foundUniqueProperty = false;

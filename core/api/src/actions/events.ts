@@ -117,9 +117,7 @@ export class EventsCounts extends AuthenticatedAction {
       },
     };
 
-    if (params.type) {
-      where["type"] = params.type;
-    }
+    if (params.type) where["type"] = params.type;
 
     const counts = await Event.findAll({
       attributes: [

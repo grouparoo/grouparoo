@@ -241,6 +241,7 @@ export class Destination extends LoggedModel<Destination> {
       if (!mappings[opt.key]) {
         throw new Error(`${opt.key} is a required destination mapping option`);
       }
+
       const profilePropertyRule = cachedProfilePropertyRules[mappings[opt.key]];
       if (opt.type !== "any") {
         // existence checks will happen within the mapping helper
@@ -362,9 +363,7 @@ export class Destination extends LoggedModel<Destination> {
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
@@ -377,17 +376,13 @@ export class Destination extends LoggedModel<Destination> {
         state: { [Op.ne]: "draft" },
       },
     });
-    if (count > 0) {
-      throw new Error(`name "${instance.name}" is already in use`);
-    }
+    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
 
   @BeforeCreate
   static async ensureAppReady(instance: Destination) {
     const app = await App.findByGuid(instance.appGuid);
-    if (app.state !== "ready") {
-      throw new Error(`app ${app.guid} is not ready`);
-    }
+    if (app.state !== "ready") throw new Error(`app ${app.guid} is not ready`);
   }
 
   @BeforeCreate
@@ -396,6 +391,7 @@ export class Destination extends LoggedModel<Destination> {
     if (!pluginConnection) {
       throw new Error(`a destination of type ${instance.type} cannot be found`);
     }
+
     if (!pluginConnection.methods.exportProfile) {
       throw new Error(
         `a destination of type ${instance.type} cannot be created as there is no exportProfile method`

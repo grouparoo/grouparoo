@@ -32,15 +32,9 @@ export class LogsList extends AuthenticatedAction {
       where: {},
     };
 
-    if (params.topic) {
-      search.where["topic"] = params.topic;
-    }
-    if (params.verb) {
-      search.where["verb"] = params.verb;
-    }
-    if (params.ownerGuid) {
-      search.where["ownerGuid"] = params.ownerGuid;
-    }
+    if (params.topic) search.where["topic"] = params.topic;
+    if (params.verb) search.where["verb"] = params.verb;
+    if (params.ownerGuid) search.where["ownerGuid"] = params.ownerGuid;
 
     const logs = await Log.findAll(search);
     response.logs = await Promise.all(logs.map((log) => log.apiData()));

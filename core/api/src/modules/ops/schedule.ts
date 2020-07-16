@@ -110,9 +110,8 @@ export namespace ScheduleOps {
     if (!pluginConnection) {
       throw new Error(`cannot find a pluginConnection for type ${source.type}`);
     }
-    if (!pluginConnection.scheduleOptions) {
-      return response;
-    }
+
+    if (!pluginConnection.scheduleOptions) return response;
 
     const app = await source.$get("app");
     const connection = await app.getConnection();

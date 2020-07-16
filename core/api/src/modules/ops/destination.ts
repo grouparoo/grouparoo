@@ -349,9 +349,7 @@ export namespace DestinationOps {
         );
       }
 
-      if (!success && retryDelay && sync) {
-        throw error;
-      }
+      if (!success && retryDelay && sync) throw error;
 
       await _export.update({ completedAt: new Date() });
       await _export.markMostRecent();

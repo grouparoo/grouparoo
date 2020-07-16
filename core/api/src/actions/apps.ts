@@ -28,9 +28,7 @@ export class AppsList extends AuthenticatedAction {
   async run({ params, response }) {
     const where = {};
 
-    if (params.state) {
-      where["state"] = params.state;
-    }
+    if (params.state) where["state"] = params.state;
 
     const apps = await App.scope(null).findAll({
       where,
@@ -115,13 +113,8 @@ export class AppCreate extends AuthenticatedAction {
       type: params.type,
     });
 
-    if (params.options) {
-      await app.setOptions(params.options);
-    }
-
-    if (params.state) {
-      await app.update({ state: params.state });
-    }
+    if (params.options) await app.setOptions(params.options);
+    if (params.state) await app.update({ state: params.state });
 
     response.app = await app.apiData();
   }
@@ -170,9 +163,8 @@ export class AppTest extends AuthenticatedAction {
   async run({ params, response }) {
     const app = await App.findByGuid(params.guid);
     let { result, error } = await app.test(params.options);
-    if (error) {
-      error = String(error);
-    }
+    if (error) error = String(error);
+
     response.test = { result, error };
     response.app = await app.apiData();
   }

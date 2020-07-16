@@ -175,9 +175,7 @@ exports.ResqueRemoveFailed = class ResqueRemoveFailed extends ResqueAction {
 
   async run({ params }) {
     const failed = await task.failed(params.id, params.id);
-    if (!failed) {
-      throw Error("failed job not found");
-    }
+    if (!failed) throw Error("failed job not found");
     await task.removeFailed(failed[0]);
   }
 };
@@ -215,9 +213,7 @@ exports.ResqueRetryAndRemoveFailed = class ResqueRetryAndRemoveFailed extends Re
 
   async run({ params }) {
     const failed = await task.failed(params.id, params.id);
-    if (!failed) {
-      throw new Error("failed job not found");
-    }
+    if (!failed) throw new Error("failed job not found");
     await task.retryAndRemoveFailed(failed[0]);
   }
 };

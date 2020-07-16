@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import { TeamMember } from "../../models/TeamMember";
 
+const SALT_ROUNDS = 10;
+
 export namespace TeamMemberOps {
   /**
    * Set a Team Member's Password
@@ -10,10 +12,7 @@ export namespace TeamMemberOps {
     password: string,
     transaction = undefined
   ) {
-    teamMember.passwordHash = await bcrypt.hash(
-      password,
-      teamMember.saltRounds
-    );
+    teamMember.passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
     await teamMember.save({ transaction });
   }
 

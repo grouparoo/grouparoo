@@ -28,9 +28,7 @@ export class GroupsList extends AuthenticatedAction {
   async run({ params, response }) {
     const where = {};
 
-    if (params.state) {
-      where["state"] = params.state;
-    }
+    if (params.state) where["state"] = params.state;
 
     const groups = await Group.scope(null).findAll({
       where,
@@ -117,9 +115,7 @@ export class GroupEdit extends AuthenticatedAction {
     const group = await Group.findByGuid(params.guid);
     await group.update(params);
 
-    if (params.rules) {
-      await group.setRules(params.rules);
-    }
+    if (params.rules) await group.setRules(params.rules);
 
     response.group = await group.apiData();
     response.group.rules = group.toConvenientRules(await group.getRules());
@@ -194,6 +190,7 @@ export class GroupRemoveProfile extends AuthenticatedAction {
         "only manual groups can have membership manipulated by this action"
       );
     }
+
     const profile = await Profile.findByGuid(params.profileGuid);
     await group.removeProfile(profile);
     response.success = true;

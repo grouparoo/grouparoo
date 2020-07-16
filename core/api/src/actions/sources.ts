@@ -28,10 +28,7 @@ export class SourcesList extends AuthenticatedAction {
 
   async run({ params, response }) {
     const where = {};
-
-    if (params.state) {
-      where["state"] = params.state;
-    }
+    if (params.state) where["state"] = params.state;
 
     const sources = await Source.scope(null).findAll({
       where,
@@ -116,16 +113,10 @@ export class SourceCreate extends AuthenticatedAction {
       name: params.name,
       type: params.type,
     });
-    if (params.options) {
-      await source.setOptions(params.options);
-    }
-    if (params.mapping) {
-      await source.setMapping(params.mapping);
-    }
 
-    if (params.state) {
-      await source.update({ state: params.state });
-    }
+    if (params.options) await source.setOptions(params.options);
+    if (params.mapping) await source.setMapping(params.mapping);
+    if (params.state) await source.update({ state: params.state });
 
     response.source = await source.apiData();
   }
@@ -169,12 +160,9 @@ export class SourceEdit extends AuthenticatedAction {
 
   async run({ params, response }) {
     const source = await Source.findByGuid(params.guid);
-    if (params.options) {
-      await source.setOptions(params.options);
-    }
-    if (params.mapping) {
-      await source.setMapping(params.mapping);
-    }
+    if (params.options) await source.setOptions(params.options);
+    if (params.mapping) await source.setMapping(params.mapping);
+
     await source.update(params);
     response.source = await source.apiData();
   }

@@ -361,9 +361,7 @@ export class Group extends LoggedModel<Group> {
       where: { groupGuid: this.guid, profileGuid: profile.guid },
     });
 
-    if (!membership) {
-      throw new Error("profile is not a member of this group");
-    }
+    if (!membership) throw new Error("profile is not a member of this group");
 
     const _import = await this.buildProfileImport(
       profile.guid,
@@ -541,9 +539,7 @@ export class Group extends LoggedModel<Group> {
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
@@ -556,9 +552,7 @@ export class Group extends LoggedModel<Group> {
         state: { [Op.ne]: "draft" },
       },
     });
-    if (count > 0) {
-      throw new Error(`name "${instance.name}" is already in use`);
-    }
+    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
 
   @BeforeSave
@@ -612,11 +606,10 @@ export class Group extends LoggedModel<Group> {
       where: { groupGuid: instance.guid },
     });
 
-    if (count > 0) {
+    if (count > 0)
       throw new Error(
         `this group still in use by ${count} destinations, cannot delete`
       );
-    }
   }
 
   @AfterDestroy

@@ -246,9 +246,7 @@ export namespace OptionHelper {
     const { pluginApp } = await getPlugin(instance);
     const type = await getInstanceType(instance);
 
-    if (!pluginApp) {
-      throw new Error(`cannot find a pluginApp for type ${type}`);
-    }
+    if (!pluginApp) throw new Error(`cannot find a pluginApp for type ${type}`);
 
     return pluginApp.options.filter((o) => o.required).map((o) => o.key);
   }

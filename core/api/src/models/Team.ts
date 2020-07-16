@@ -83,6 +83,7 @@ export class Team extends LoggedModel<Team> {
           `permission ${permissions[i].guid} not found for this team`
         );
       }
+
       if (!permission.locked) {
         permission.read =
           this.permissionAllRead !== null
@@ -101,9 +102,7 @@ export class Team extends LoggedModel<Team> {
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 

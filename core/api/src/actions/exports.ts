@@ -22,10 +22,7 @@ export class ListExports extends AuthenticatedAction {
 
   async run({ params, response }) {
     const where = {};
-
-    if (params.profileGuid) {
-      where["profileGuid"] = params.profileGuid;
-    }
+    if (params.profileGuid) where["profileGuid"] = params.profileGuid;
     if (params.destinationGuid) {
       where["destinationGuid"] = params.destinationGuid;
     }

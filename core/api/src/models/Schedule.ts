@@ -173,9 +173,7 @@ export class Schedule extends LoggedModel<Schedule> {
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) {
-      throw new Error(`cannot find ${this.name} ${guid}`);
-    }
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
@@ -227,9 +225,7 @@ export class Schedule extends LoggedModel<Schedule> {
         state: { [Op.ne]: "draft" },
       },
     });
-    if (count > 0) {
-      throw new Error(`name "${instance.name}" is already in use`);
-    }
+    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
 
   @BeforeCreate
@@ -249,9 +245,7 @@ export class Schedule extends LoggedModel<Schedule> {
   static async ensureSourceCanUseSchedule(instance: Schedule) {
     const source = await Source.findByGuid(instance.sourceGuid);
 
-    if (source.state !== "ready") {
-      throw new Error("source is not ready");
-    }
+    if (source.state !== "ready") throw new Error("source is not ready");
 
     const scheduleAvailable = await source.scheduleAvailable();
     if (!scheduleAvailable) {
