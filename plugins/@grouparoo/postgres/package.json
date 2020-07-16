@@ -27,25 +27,25 @@
     "lint": "prettier --check src __tests__"
   },
   "dependencies": {
-    "pg": "^8.2.1",
+    "pg": "^8.3.0",
     "pg-format": "^1.0.4",
     "pg-hstore": "^2.3.3"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
-    "actionhero": "23.0.4"
+    "actionhero": "23.0.5"
   },
   "devDependencies": {
     "@grouparoo/core": "^0.1.6-alpha.0",
-    "@types/jest": "^26.0.3",
-    "@types/node": "^14.0.14",
+    "@types/jest": "^26.0.4",
+    "@types/node": "^14.0.23",
     "@types/pg": "^7.14.3",
-    "actionhero": "^23.0.4",
-    "csv-parse": "^4.10.1",
+    "actionhero": "^23.0.5",
+    "csv-parse": "^4.11.1",
     "jest": "^26.1.0",
     "prettier": "^2.0.5",
-    "ts-jest": "^26.1.1",
-    "typescript": "^3.9.5"
+    "ts-jest": "^26.1.2",
+    "typescript": "^3.9.6"
   },
   "gitHead": "d180097c68e2e0db22918e7d51c0e84abd9202c0"
 }
