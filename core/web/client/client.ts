@@ -151,7 +151,7 @@ export class Client {
         }
       }
 
-      if (data.file) {
+      if (data.file || data._file) {
         delete options.headers;
         let dataForm = new FormData();
         for (const i in data) {

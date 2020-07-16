@@ -83,7 +83,7 @@ describe("integration/runs/csv", () => {
       session.params = {
         csrfToken,
         type: "csv",
-        file: { name: "profiles-10.csv", path: "/tmp/profiles-10.csv" },
+        _file: { name: "profiles-10.csv", path: "/tmp/profiles-10.csv" },
       };
       const fileResponse = await specHelper.runAction("file:create", session);
       expect(fileResponse.error).toBeUndefined();
