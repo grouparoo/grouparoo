@@ -154,10 +154,12 @@ export class DestinationEdit extends AuthenticatedAction {
     const destination = await Destination.findByGuid(params.guid);
     if (params.options) await destination.setOptions(params.options);
     if (params.mapping) await destination.setMapping(params.mapping);
-    if (params.destinationGroupMemberships)
+    if (params.destinationGroupMemberships) {
       await destination.setDestinationGroupMemberships(
         params.destinationGroupMemberships
       );
+    }
+
     await destination.update(params);
 
     response.destination = await destination.apiData();

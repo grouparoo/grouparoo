@@ -316,10 +316,11 @@ export class Source extends LoggedModel<Source> {
     const profilePropertyRules = await instance.$get("profilePropertyRules", {
       scope: null,
     });
-    if (profilePropertyRules.length > 0)
+    if (profilePropertyRules.length > 0) {
       throw new Error(
         "you cannot delete a source that has profile property rules"
       );
+    }
   }
 
   @AfterDestroy
