@@ -68,15 +68,15 @@ export class FileCreate extends AuthenticatedAction {
     this.permission = { topic: "file", mode: "write" };
     this.inputs = {
       type: { required: true },
-      file: { required: true },
+      _file: { required: true },
     };
   }
 
   async run({ response, params }) {
     const file = await api.files.set(
       params.type,
-      params.file.name,
-      params.file.path
+      params._file.name,
+      params._file.path
     );
     response.file = await file.apiData();
   }

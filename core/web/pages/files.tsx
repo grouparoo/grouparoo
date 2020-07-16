@@ -140,7 +140,7 @@ export default function Page(props) {
                 {/* <td>{file.bucket}</td> */}
                 <td>{file.extension}</td>
                 <td>
-                  {Math.round((100 * file.sizeBytes) / 1024 / 1024) / 100} mb
+                  {Math.round((100 * file.sizeBytes) / 1024 / 1024) / 100}mb
                 </td>
                 <td>{file.mime}</td>
                 <td>

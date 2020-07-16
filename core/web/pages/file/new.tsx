@@ -29,7 +29,7 @@ export default function Page(props) {
     setLoading(true);
     const response = await execApi("post", `/file`, {
       type: data.type,
-      file: data.file[0],
+      _file: data.file[0],
     });
     setLoading(false);
     if (response?.file) {
@@ -48,8 +48,16 @@ export default function Page(props) {
       <Form id="form" onSubmit={handleSubmit(onSubmit)}>
         <Form.Group>
           <Form.Label>File Type</Form.Label>
-          <Form.Control as="select" name="type" ref={register}>
-            <option disabled>choose a type</option>
+          <Form.Control
+            required
+            as="select"
+            name="type"
+            defaultValue=""
+            ref={register}
+          >
+            <option disabled value="">
+              Choose a file type
+            </option>
             {types.map((type) => (
               <option key={`file-type-${type}`}>{type}</option>
             ))}
