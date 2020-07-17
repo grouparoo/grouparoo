@@ -249,7 +249,15 @@ export namespace DestinationOps {
       mostRecentMappedProfilePropertyKeys
         .filter((k) => !currentMappedNewProfilePropertyKeys.includes(k))
         .filter((k) => !currentMappedOldProfilePropertyKeys.includes(k))
-        .forEach((k) => (mappedOldProfileProperties[k] = "unknown"));
+        .forEach((k) => (mappedOldProfileProperties[k] = ["unknown"]));
+    }
+
+    // Send only the properties form the array that should be sent to the Destination
+    for (const k in mappedOldProfileProperties) {
+      mappedOldProfileProperties[k] = mappedOldProfileProperties[k][0];
+    }
+    for (const k in mappedNewProfileProperties) {
+      mappedNewProfileProperties[k] = mappedNewProfileProperties[k][0];
     }
 
     const _export = await Export.create({
