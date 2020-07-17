@@ -30,7 +30,7 @@ When setting an Environment Variable to use with Grouparoo, you'll be using the 
 - Valid topics are "APP", "SOURCE", and "DESTINATION".
 - "name" is the name you want to appear in the Grouparoo interface.
 
-For example, if you wanted to provide an API Key for Hubspot to your Grouparoo Apps named `production-hubspot-api-key` to the value of `abc123`, you would set the environment variable `GROUPAROO_OPTION__APP__production-hubspot-api-key=abc123`. Grouparoo will then store the string "production-hubspot-api-key" in the database, rather than the value "abc123", and always source this value from the environment runtime.
+For example, if you wanted to provide an API Key for Hubspot to your Grouparoo Apps named `production_hubspot_api_key` to the value of `abc123`, you would set the environment variable `GROUPAROO_OPTION__APP__production_hubspot_api_key=abc123`. Grouparoo will then store the string "production_hubspot_api_key" in the database, rather than the value "abc123", and always source this value from the environment runtime.
 
 ![Grouparoo Environment App Options](https://raw.githubusercontent.com/grouparoo/grouparoo/master/documents/images/environment-app-options.png)
 
