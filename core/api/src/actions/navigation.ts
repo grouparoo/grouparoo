@@ -177,7 +177,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     });
 
     response.navigationMode = navigationMode;
-    response.clusterName = clusterNameSetting.value;
+    response.clusterName = clusterNameSetting?.value || "";
     response.navigation = {
       navigationItems,
       platformItems,
