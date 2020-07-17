@@ -90,7 +90,7 @@ export default function ProfilePreview(props) {
   let email;
   for (const key in profile.properties) {
     if (profile.properties[key].type === "email") {
-      email = profile.properties[key].value;
+      email = profile.properties[key].values[0];
     }
   }
 
@@ -99,11 +99,13 @@ export default function ProfilePreview(props) {
   for (const i in profile.properties) {
     if (profile.properties[i].guid === profilePropertyRule.guid) {
       if (profilePropertyRule.type === "date") {
-        thisProfilePropertyRuleValue = profile.properties[i].value
-          ? new Date(profile.properties[i].value).toLocaleString()
+        thisProfilePropertyRuleValue = profile.properties[i].values[0]
+          ? new Date(profile.properties[i].values[0]).toLocaleString()
           : null;
       } else {
-        thisProfilePropertyRuleValue = profile.properties[i]?.value?.toString();
+        thisProfilePropertyRuleValue = profile.properties[i].values
+          ? profile.properties[i]?.values.join(", ")
+          : "";
       }
     } else {
       otherProfilePropertyRules[i] = profile.properties[i];
@@ -138,16 +140,27 @@ export default function ProfilePreview(props) {
       {sleeping ? null : (
         <ListGroup variant="flush">
           <ListGroup.Item variant={errorMessage !== "" ? "danger" : "success"}>
-            <strong>{profilePropertyRule.key}</strong>:{" "}
-            {errorMessage !== "" ? errorMessage : thisProfilePropertyRuleValue}
+            <strong>
+              {profilePropertyRule.key === ""
+                ? "Draft Profile Property"
+                : profilePropertyRule.key}
+            </strong>
+            :{" "}
+            {errorMessage !== ""
+              ? errorMessage
+              : thisProfilePropertyRuleValue
+              ? thisProfilePropertyRuleValue
+              : "..."}
           </ListGroup.Item>
 
           {Object.keys(otherProfilePropertyRules).map((k) => (
             <ListGroup.Item key={`profile-preview-row-${k}`} variant="light">
               <strong>{k}</strong>:{" "}
               {otherProfilePropertyRules[k]?.type === "date"
-                ? new Date(otherProfilePropertyRules[k]?.value).toLocaleString()
-                : otherProfilePropertyRules[k]?.value?.toString()}
+                ? new Date(
+                    otherProfilePropertyRules[k]?.values[0]
+                  ).toLocaleString()
+                : otherProfilePropertyRules[k]?.values?.join(", ")}
             </ListGroup.Item>
           ))}
         </ListGroup>
