@@ -106,7 +106,7 @@ export default function Page(props) {
 
   async function handleUpdate(key) {
     const hash = {};
-    hash[key] = properties[key].value;
+    hash[key] = properties[key].values;
     setLoading(true);
     const response = await execApi("put", `/profile/${profile.guid}`, {
       properties: hash,
@@ -123,7 +123,7 @@ export default function Page(props) {
 
   const updateExistingProperty = async (event) => {
     const _properties = Object.assign({}, properties);
-    _properties[event.target.id].value = event.target.value;
+    _properties[event.target.id].values = [event.target.value];
     setProperties(_properties);
   };
 
@@ -141,14 +141,14 @@ export default function Page(props) {
   const groupMembershipGuids = groups.map((g) => g.guid);
 
   const uniqueProfileProperties = [];
-  let email;
+  let email: string;
   profilePropertyRules.forEach((rule) => {
     if (rule.unique) {
       uniqueProfileProperties.push(rule.key);
     }
 
     if (rule.type === "email" && profile.properties[rule.key]) {
-      email = profile.properties[rule.key].value;
+      email = profile.properties[rule.key].values.join(", ");
     }
   });
 
@@ -179,7 +179,7 @@ export default function Page(props) {
                   <h3 key={`profileHeader-${key}`}>
                     <span className="text-muted">{key}: </span>
                     {profile.properties[key]
-                      ? profile.properties[key].value
+                      ? profile.properties[key].values.join(", ")
                       : null}
                   </h3>
                 );
@@ -307,9 +307,9 @@ export default function Page(props) {
                               required
                               type="text"
                               value={
-                                properties[key].value === null
+                                properties[key].values.length > 0
                                   ? ""
-                                  : properties[key].value
+                                  : properties[key].values.join(", ")
                               }
                               onChange={(e) => updateExistingProperty(e)}
                             />
@@ -330,7 +330,7 @@ export default function Page(props) {
                         <span>
                           <strong>
                             {renderProperty(
-                              properties[key].value,
+                              properties[key].values,
                               properties[key].type
                             )}
                           </strong>
@@ -368,12 +368,16 @@ Page.getInitialProps = async (ctx) => {
   return { profile, profilePropertyRules, groups, allGroups, apps };
 };
 
-function renderProperty(value, type) {
-  if (value === true || value === false) {
-    return <input type="checkbox" value={value} checked={value} readOnly />;
-  } else if (type === "date") {
-    return value ? new Date(value).toLocaleString() : value;
-  } else {
-    return value;
-  }
+function renderProperty(values: Array<any>, type: string) {
+  return values
+    .map((value) => {
+      if (value === true || value === false) {
+        return <input type="checkbox" value={value} checked={value} readOnly />;
+      } else if (type === "date") {
+        return value ? new Date(value).toLocaleString() : value;
+      } else {
+        return value;
+      }
+    })
+    .join(", ");
 }

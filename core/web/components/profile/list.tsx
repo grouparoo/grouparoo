@@ -237,7 +237,10 @@ export default function ProfilesList(props) {
                           return (
                             <div key={`key-${profile.guid}-${key}`}>
                               <span className="text-muted">
-                                {key}: {String(profile.properties[key].value)}
+                                {key}:{" "}
+                                {String(
+                                  profile.properties[key].values.join(", ")
+                                )}
                               </span>
                               <br />
                             </div>
@@ -248,7 +251,9 @@ export default function ProfilesList(props) {
                           <span className="text-muted">
                             {searchKey}:{" "}
                             {profile.properties[searchKey]
-                              ? profile.properties[searchKey]?.value?.toString()
+                              ? profile.properties[searchKey]?.values?.join(
+                                  ", "
+                                )
                               : null}
                           </span>
                           <br />

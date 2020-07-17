@@ -120,7 +120,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   try {
     const rows = await connection.asyncQuery(parameterizedQuery);
     if (rows && rows.length > 0) {
-      response = rows[0].__result;
+      response = [rows[0].__result];
     }
   } catch (error) {
     throw new Error(

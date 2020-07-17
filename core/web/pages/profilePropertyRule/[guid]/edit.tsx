@@ -217,6 +217,14 @@ export default function Page(props) {
                 onChange={(e) => update(e)}
               />
             </Form.Group>
+            <Form.Group controlId="isArray">
+              <Form.Check
+                type="checkbox"
+                label="Is Array?"
+                checked={profilePropertyRule.isArray}
+                onChange={(e) => update(e)}
+              />
+            </Form.Group>
             <Form.Group controlId="sourceGuid">
               <Form.Label>Profile Property Rule Source</Form.Label>
               <Form.Control

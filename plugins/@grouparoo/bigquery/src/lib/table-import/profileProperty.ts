@@ -36,7 +36,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   if (!profileData.hasOwnProperty(profilePropertyMatch)) {
     throw `unknown profile property: ${profilePropertyMatch}`;
   }
-  const columnValue = profileData[profilePropertyMatch].value;
+  const columnValue = profileData[profilePropertyMatch].values[0];
 
   let aggSelect = `\`${column}\``;
   let orderBy = "";
@@ -138,7 +138,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     const [rows] = await connection.query(options);
     if (rows && rows.length > 0) {
       const row: { [key: string]: any } = rows[0];
-      response = castValue(row.__result);
+      response = [castValue(row.__result)];
     }
   } catch (error) {
     throw new Error(

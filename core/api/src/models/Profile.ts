@@ -63,11 +63,15 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps.properties(this);
   }
 
-  async addOrUpdateProperty(properties: { [key: string]: any }) {
+  async addOrUpdateProperty(properties: {
+    [key: string]: Array<string | number | boolean | Date>;
+  }) {
     return ProfileOps.addOrUpdateProperty(this, properties);
   }
 
-  async addOrUpdateProperties(properties: { [key: string]: any }) {
+  async addOrUpdateProperties(properties: {
+    [key: string]: Array<string | number | boolean | Date>;
+  }) {
     return ProfileOps.addOrUpdateProperties(this, properties);
   }
 

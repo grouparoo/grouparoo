@@ -160,7 +160,9 @@ export namespace plugin {
     const mappingKeys = Object.keys(mapping);
     const mappedProfileProperties = {};
     mappingKeys.forEach((k) => {
-      mappedProfileProperties[mapping[k]] = row[k];
+      mappedProfileProperties[mapping[k]] = Array.isArray(row[k])
+        ? row[k]
+        : [row[k]];
     });
 
     const transaction = await api.sequelize.transaction();
@@ -277,9 +279,11 @@ export namespace plugin {
 
     for (const key in properties) {
       data[key] =
-        properties[key].value instanceof Date
-          ? expandDates(properties[key].value)
-          : properties[key].value;
+        properties[key].values.length === 1
+          ? properties[key].values[0] instanceof Date
+            ? expandDates(properties[key].values[0] as Date)
+            : properties[key].values[0]
+          : properties[key].values.map((value) => value.toString()).join(", ");
     }
     return data;
   }
@@ -291,11 +295,9 @@ export namespace plugin {
     string: string,
     profile: Profile
   ): Promise<string> {
-    if (string.indexOf("{{") < 0) {
-      return string;
-    }
-    const data = await getProfileData(profile);
+    if (string.indexOf("{{") < 0) return string;
 
+    const data = await getProfileData(profile);
     validateMustacheVariables(string, data);
     return Mustache.render(string, data);
   }
@@ -307,9 +309,7 @@ export namespace plugin {
   export async function replaceTemplateProfilePropertyKeysWithProfilePropertyGuid(
     string: string
   ): Promise<string> {
-    if (string.indexOf("{{") < 0) {
-      return string;
-    }
+    if (string.indexOf("{{") < 0) return string;
 
     const profilePropertyRules = await ProfilePropertyRule.cached();
     const data = {};
@@ -329,9 +329,7 @@ export namespace plugin {
   export async function replaceTemplateProfilePropertyGuidsWithProfilePropertyKeys(
     string: string
   ): Promise<string> {
-    if (string.indexOf("{{") < 0) {
-      return string;
-    }
+    if (string.indexOf("{{") < 0) return string;
 
     const profilePropertyRules = await ProfilePropertyRule.cached();
     const data = {};

@@ -278,10 +278,10 @@ export class ProfilePropertyRuleProfilePreview extends AuthenticatedAction {
     const apiData = await profile.apiData();
     const source = await profilePropertyRule.$get("source");
 
-    let newProperty: string | number | boolean | Date;
+    let newPropertyValues: Array<string | number | boolean | Date>;
     let errorMessage: string;
     try {
-      newProperty = await source.importProfileProperty(
+      newPropertyValues = await source.importProfileProperty(
         profile,
         profilePropertyRule,
         parsedOptions,
@@ -293,7 +293,7 @@ export class ProfilePropertyRuleProfilePreview extends AuthenticatedAction {
 
     apiData.properties[profilePropertyRule.key] = {
       guid: profilePropertyRule.guid,
-      value: newProperty,
+      values: newPropertyValues,
       type: profilePropertyRule.type,
       unique: profilePropertyRule.unique,
       createdAt: new Date(),

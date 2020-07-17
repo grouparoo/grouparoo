@@ -4,6 +4,7 @@ import { Profile } from "../../models/Profile";
 import { Run } from "../../models/Run";
 import { GroupMember } from "../../models/GroupMember";
 import { Op } from "sequelize";
+import { ProfilePropertyType } from "../../modules/ops/profile";
 
 export class ProfileImportAndUpdate extends RetryableTask {
   constructor() {
@@ -18,10 +19,10 @@ export class ProfileImportAndUpdate extends RetryableTask {
     };
   }
 
-  simplifyProfileProperties(complexProperties) {
+  simplifyProfileProperties(complexProperties: ProfilePropertyType) {
     const simpleProperties = {};
     for (let key in complexProperties) {
-      simpleProperties[key] = complexProperties[key].value;
+      simpleProperties[key] = complexProperties[key].values;
     }
 
     return simpleProperties;

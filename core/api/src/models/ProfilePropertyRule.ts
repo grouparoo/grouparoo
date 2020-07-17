@@ -60,6 +60,7 @@ interface ProfilePropertyRulesCache {
       key: string;
       type: string;
       unique: boolean;
+      isArray: boolean;
       sourceGuid: string;
       appGuid: string;
     };
@@ -376,6 +377,13 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     }
   }
 
+  @BeforeSave
+  static async ensureNonArrayAndUnique(instance: ProfilePropertyRule) {
+    if (instance.isArray && instance.unique) {
+      throw new Error("unique profile properties cannot be arrays");
+    }
+  }
+
   @BeforeCreate
   static async ensureSourceReady(instance: ProfilePropertyRule) {
     const source = await Source.findByGuid(instance.sourceGuid);
@@ -479,6 +487,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
           key: rule.key,
           type: rule.type,
           unique: rule.unique,
+          isArray: rule.isArray,
           sourceGuid: rule.sourceGuid,
           source: rule.source.appGuid,
         };

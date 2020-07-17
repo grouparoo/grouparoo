@@ -28,7 +28,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
     // Get the results
     if (rows && rows.length > 0) {
       const row: { [key: string]: any } = rows[0];
-      response = Object.values(row)[0];
+      response = [Object.values(row)[0]];
     }
   } catch (error) {
     throw new Error(
