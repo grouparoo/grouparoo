@@ -525,8 +525,8 @@ describe("integration/runs/postgres", () => {
     ).profileGuid;
     const profile = await Profile.findOne({ where: { guid: profileGuid } });
     const properties = await profile.properties();
-    expect(properties.userId.value).toEqual(1);
-    expect(properties.email.value).toEqual("ejervois0@example.com");
+    expect(properties.userId.values).toEqual([1]);
+    expect(properties.email.values).toEqual(["ejervois0@example.com"]);
   });
 
   test(

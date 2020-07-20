@@ -191,13 +191,13 @@ describe("integration/runs/mysql", () => {
     let i = 1;
     while (i <= 10) {
       const profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ userId: i });
+      await profile.addOrUpdateProperties({ userId: [i] });
       await profile.import();
       await profile.reload();
 
       expect(profile.guid).toBeTruthy();
       const properties = await profile.properties();
-      expect(properties.email.value).toMatch(/.*@example.com/);
+      expect(properties.email.values[0]).toMatch(/.*@example.com/);
       i++;
     }
   });
