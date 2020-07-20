@@ -13,7 +13,7 @@ import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
 export async function groupExportToCSV(group: Group, limit = 1000) {
   // get the headers
   const numberedProfilePropertyRuleKeys = (await ProfilePropertyRule.findAll())
-    .map((rule) => `${rule.key}[0]`)
+    .map((rule) => rule.key)
     .sort();
   const columns = ["guid", "createdAt", "updatedAt"].concat(
     numberedProfilePropertyRuleKeys
@@ -36,10 +36,12 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
     const properties = await profile.properties();
     const simpleProperties = {};
     for (const key in properties) {
-      for (const idx in properties[key].values) {
-        simpleProperties[`${key}[${idx}]`] = properties[key].values[idx];
-      }
+      simpleProperties[key] =
+        properties[key].values.length > 1
+          ? properties[key].values.join(", ")
+          : properties[key].values[0];
     }
+
     const row = Object.assign(
       {
         guid: profile.guid,
@@ -48,6 +50,7 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
       },
       simpleProperties
     );
+
     return row;
   }
 
@@ -71,6 +74,7 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
     "-" +
     new Date().getTime();
   const filename = `${os.tmpdir()}/group-export-${cleanName}.csv`;
+  if (fs.existsSync(filename)) fs.unlinkSync(filename);
   const fileStream = fs.createWriteStream(filename);
   const csvStream = CsvStringify({
     header: true,
