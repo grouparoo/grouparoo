@@ -34,7 +34,7 @@ describe("tasks/export:send", () => {
 
       beforeAll(async () => {
         profile = await helper.factories.profile();
-        await profile.addOrUpdateProperties({ email: "mario@example.com" });
+        await profile.addOrUpdateProperties({ email: ["mario@example.com"] });
 
         group = await helper.factories.group({ type: "manual" });
         await group.addProfile(profile);

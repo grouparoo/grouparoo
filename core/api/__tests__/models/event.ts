@@ -63,8 +63,8 @@ describe("models/event", () => {
 
       await profileA.update({ anonymousId: "a" });
       await profileB.update({ anonymousId: "b" });
-      await profileA.addOrUpdateProperties({ userId: 1 });
-      await profileB.addOrUpdateProperties({ userId: 2 });
+      await profileA.addOrUpdateProperties({ userId: [1] });
+      await profileB.addOrUpdateProperties({ userId: [2] });
     });
 
     afterEach(async () => {

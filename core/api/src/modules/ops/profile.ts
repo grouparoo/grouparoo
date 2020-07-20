@@ -415,7 +415,12 @@ export namespace ProfileOps {
         !properties[key] ||
         (otherProperties[key]?.updatedAt?.getTime() >
           properties[key]?.updatedAt?.getTime() &&
-          otherProperties[key].values.length > 0)
+          otherProperties[key].values.length > 0 &&
+          !(
+            otherProperties[key].values.length === 1 &&
+            (otherProperties[key].values[0] === null ||
+              otherProperties[key].values[0] === undefined)
+          ))
       ) {
         newProperties[key] = otherProperties[key].values;
       }

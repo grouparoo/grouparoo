@@ -2,6 +2,7 @@ import os from "os";
 import fs from "fs";
 import CsvStringify from "csv-stringify";
 import { log } from "actionhero";
+import { Profile } from "../models/Profile";
 import { Group } from "../models/Group";
 import { Run } from "../models/Run";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
@@ -11,11 +12,11 @@ import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
  */
 export async function groupExportToCSV(group: Group, limit = 1000) {
   // get the headers
-  const profilePropertyRuleKeys = (await ProfilePropertyRule.findAll())
-    .map((rule) => rule.key)
+  const numberedProfilePropertyRuleKeys = (await ProfilePropertyRule.findAll())
+    .map((rule) => `${rule.key}[0]`)
     .sort();
   const columns = ["guid", "createdAt", "updatedAt"].concat(
-    profilePropertyRuleKeys
+    numberedProfilePropertyRuleKeys
   );
 
   // add the profiles
@@ -31,11 +32,13 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
     });
   }
 
-  async function buildCsvRowFromProperty(profile) {
+  async function buildCsvRowFromProperty(profile: Profile) {
     const properties = await profile.properties();
     const simpleProperties = {};
     for (const key in properties) {
-      simpleProperties[key] = properties[key].value;
+      for (const idx in properties[key].values) {
+        simpleProperties[`${key}[${idx}]`] = properties[key].values[idx];
+      }
     }
     const row = Object.assign(
       {

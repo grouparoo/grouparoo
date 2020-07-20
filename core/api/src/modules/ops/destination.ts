@@ -162,8 +162,8 @@ export namespace DestinationOps {
     profile: Profile,
     runs: Run[],
     imports: Array<Import>,
-    oldProfileProperties: { [key: string]: any },
-    newProfileProperties: { [key: string]: any },
+    oldProfileProperties: { [key: string]: any[] },
+    newProfileProperties: { [key: string]: any[] },
     oldGroups: Array<Group>,
     newGroups: Array<Group>,
     sync = false
@@ -254,10 +254,14 @@ export namespace DestinationOps {
 
     // Send only the properties form the array that should be sent to the Destination
     for (const k in mappedOldProfileProperties) {
-      mappedOldProfileProperties[k] = mappedOldProfileProperties[k][0];
+      if (mappedOldProfileProperties[k]) {
+        mappedOldProfileProperties[k] = mappedOldProfileProperties[k][0];
+      }
     }
     for (const k in mappedNewProfileProperties) {
-      mappedNewProfileProperties[k] = mappedNewProfileProperties[k][0];
+      if (mappedNewProfileProperties[k]) {
+        mappedNewProfileProperties[k] = mappedNewProfileProperties[k][0];
+      }
     }
 
     const _export = await Export.create({

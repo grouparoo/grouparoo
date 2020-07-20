@@ -221,7 +221,7 @@ describe("actions/profilePropertyRules", () => {
 
     test("an administrator can list all the profilePropertyRules with examples", async () => {
       const profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ email: "person@example.com" });
+      await profile.addOrUpdateProperties({ email: ["person@example.com"] });
 
       connection.params = {
         csrfToken,
@@ -316,7 +316,7 @@ describe("actions/profilePropertyRules", () => {
 
     test("an administrator can see a profile preview of a profile property rule", async () => {
       const _profile = await helper.factories.profile();
-      await _profile.addOrUpdateProperties({ userId: 1001 });
+      await _profile.addOrUpdateProperties({ userId: [1001] });
 
       const originalProperties = _profile.properties();
       expect(originalProperties["email"]).toBeFalsy();
@@ -331,7 +331,7 @@ describe("actions/profilePropertyRules", () => {
       );
       expect(error).toBeUndefined();
       expect(profile.guid).toBe(_profile.guid);
-      expect(profile.properties["email"].value).toBeTruthy();
+      expect(profile.properties["email"].values).toBeTruthy();
 
       await _profile.destroy();
     });

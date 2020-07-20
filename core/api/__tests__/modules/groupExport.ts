@@ -1,4 +1,3 @@
-import { api } from "actionhero";
 import { helper } from "./../utils/specHelper";
 import { groupExportToCSV } from "./../../src/modules/groupExport";
 import { Profile } from "./../../src/models/Profile";
@@ -37,43 +36,43 @@ describe("modules/groupExport", () => {
       toad = await Profile.create();
 
       await mario.addOrUpdateProperties({
-        userId: 1,
-        firstName: "Mario",
-        lastName: "Mario",
-        email: "mario@example.com",
-        ltv: 100.0,
-        isVIP: true,
-        lastLoginAt: new Date(0),
+        userId: [1],
+        firstName: ["Mario"],
+        lastName: ["Mario"],
+        email: ["mario@example.com"],
+        ltv: [100.0],
+        isVIP: [true],
+        lastLoginAt: [new Date(0)],
       });
 
       await luigi.addOrUpdateProperties({
-        userId: 2,
-        firstName: "Luigi",
-        lastName: "Mario",
-        email: "luigi@example.com",
-        ltv: 50.01,
-        isVIP: false,
-        lastLoginAt: new Date(),
+        userId: [2],
+        firstName: ["Luigi"],
+        lastName: ["Mario"],
+        email: ["luigi@example.com"],
+        ltv: [50.01],
+        isVIP: [false],
+        lastLoginAt: [new Date()],
       });
 
       await peach.addOrUpdateProperties({
-        userId: 3,
-        firstName: "Peach",
-        lastName: "Toadstool",
-        email: "peach@example.com",
-        ltv: 999.99,
-        isVIP: true,
-        lastLoginAt: new Date(0),
+        userId: [3],
+        firstName: ["Peach"],
+        lastName: ["Toadstool"],
+        email: ["peach@example.com"],
+        ltv: [999.99],
+        isVIP: [true],
+        lastLoginAt: [new Date(0)],
       });
 
       await toad.addOrUpdateProperties({
-        userId: 4,
-        firstName: "Toad",
-        lastName: "Toadstool",
-        email: "toad@example.com",
-        ltv: 0,
-        isVIP: false,
-        lastLoginAt: new Date(),
+        userId: [4],
+        firstName: ["Toad"],
+        lastName: ["Toadstool"],
+        email: ["toad@example.com"],
+        ltv: [0],
+        isVIP: [false],
+        lastLoginAt: [new Date()],
       });
     }, 10 * 1000);
 
@@ -102,45 +101,50 @@ describe("modules/groupExport", () => {
 
     test("the exported csv will contain profile data", async () => {
       const rows = parse(fs.readFileSync(filename), { columns: true });
+      let lastLoginAt: Date;
 
       // mario
       let properties = await mario.properties();
       expect(rows[0].guid).toBe(mario.guid);
       expect(parseInt(rows[0].createdAt)).toBeGreaterThan(0);
-      expect(rows[0].email).toBe(properties.email.value);
-      expect(parseFloat(rows[0].ltv)).toBe(properties.ltv.value);
-      expect(parseInt(rows[0].lastLoginAt)).toBe(
-        Math.round(properties.lastLoginAt.value.getTime() / 1000)
+      expect(rows[0]["email[0]"]).toBe(properties.email.values[0]);
+      expect(parseFloat(rows[0]["ltv[0]"])).toBe(properties.ltv.values[0]);
+      lastLoginAt = properties.lastLoginAt.values[0] as Date;
+      expect(parseInt(rows[0]["lastLoginAt[0]"])).toBe(
+        Math.round(lastLoginAt.getTime() / 1000)
       );
 
       // luigi
       properties = await luigi.properties();
       expect(rows[1].guid).toBe(luigi.guid);
       expect(parseInt(rows[1].createdAt)).toBeGreaterThan(0);
-      expect(rows[1].email).toBe(properties.email.value);
-      expect(parseFloat(rows[1].ltv)).toBe(properties.ltv.value);
-      expect(parseInt(rows[1].lastLoginAt)).toBe(
-        Math.round(properties.lastLoginAt.value.getTime() / 1000)
+      expect(rows[1]["email[0]"]).toBe(properties.email.values[0]);
+      expect(parseFloat(rows[1]["ltv[0]"])).toBe(properties.ltv.values[0]);
+      lastLoginAt = properties.lastLoginAt.values[0] as Date;
+      expect(parseInt(rows[1]["lastLoginAt[0]"])).toBe(
+        Math.round(lastLoginAt.getTime() / 1000)
       );
 
       // peach
       properties = await peach.properties();
       expect(rows[2].guid).toBe(peach.guid);
       expect(parseInt(rows[2].createdAt)).toBeGreaterThan(0);
-      expect(rows[2].email).toBe(properties.email.value);
-      expect(parseFloat(rows[2].ltv)).toBe(properties.ltv.value);
-      expect(parseInt(rows[2].lastLoginAt)).toBe(
-        Math.round(properties.lastLoginAt.value.getTime() / 1000)
+      expect(rows[2]["email[0]"]).toBe(properties.email.values[0]);
+      expect(parseFloat(rows[2]["ltv[0]"])).toBe(properties.ltv.values[0]);
+      lastLoginAt = properties.lastLoginAt.values[0] as Date;
+      expect(parseInt(rows[2]["lastLoginAt[0]"])).toBe(
+        Math.round(lastLoginAt.getTime() / 1000)
       );
 
       // toad
       properties = await toad.properties();
       expect(rows[3].guid).toBe(toad.guid);
       expect(parseInt(rows[3].createdAt)).toBeGreaterThan(0);
-      expect(rows[3].email).toBe(properties.email.value);
-      expect(parseFloat(rows[3].ltv)).toBe(properties.ltv.value);
-      expect(parseInt(rows[3].lastLoginAt)).toBe(
-        Math.round(properties.lastLoginAt.value.getTime() / 1000)
+      expect(rows[3]["email[0]"]).toBe(properties.email.values[0]);
+      expect(parseFloat(rows[3]["ltv[0]"])).toBe(properties.ltv.values[0]);
+      lastLoginAt = properties.lastLoginAt.values[0] as Date;
+      expect(parseInt(rows[3]["lastLoginAt[0]"])).toBe(
+        Math.round(lastLoginAt.getTime() / 1000)
       );
     });
   });

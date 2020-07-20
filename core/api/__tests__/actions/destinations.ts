@@ -231,8 +231,8 @@ describe("actions/destinations", () => {
       beforeAll(async () => {
         profile = await helper.factories.profile();
         await profile.addOrUpdateProperties({
-          userId: 1,
-          email: "yoshi@example.com",
+          userId: [1],
+          email: ["yoshi@example.com"],
         });
 
         group = await helper.factories.group();
@@ -297,10 +297,10 @@ describe("actions/destinations", () => {
           connection
         );
         expect(error).toBeUndefined();
-        expect(_profile.properties["primary-id"].value).toBe(1);
-        expect(_profile.properties["something-else"].value).toBe(
-          "yoshi@example.com"
-        );
+        expect(_profile.properties["primary-id"].values).toEqual([1]);
+        expect(_profile.properties["something-else"].values).toEqual([
+          "yoshi@example.com",
+        ]);
         expect(_profile.groupNames).toEqual(["remote-group-tag"]);
       });
 
@@ -315,10 +315,10 @@ describe("actions/destinations", () => {
           connection
         );
         expect(error).toBeUndefined();
-        expect(_profile.properties["primary-id"].value).toBe(1);
-        expect(_profile.properties["something-else"].value).toBe(
-          "yoshi@example.com"
-        );
+        expect(_profile.properties["primary-id"].values).toEqual([1]);
+        expect(_profile.properties["something-else"].values).toEqual([
+          "yoshi@example.com",
+        ]);
         expect(_profile.groupNames).toEqual(["remote-group-tag"]);
       });
 
@@ -341,8 +341,10 @@ describe("actions/destinations", () => {
           connection
         );
         expect(error).toBeUndefined();
-        expect(_profile.properties["primary-id"].value).toBe(1);
-        expect(_profile.properties["email"].value).toBe("yoshi@example.com");
+        expect(_profile.properties["primary-id"].values).toEqual([1]);
+        expect(_profile.properties["email"].values).toEqual([
+          "yoshi@example.com",
+        ]);
         expect(_profile.groupNames).toEqual(["another-group-tag"]);
       });
 

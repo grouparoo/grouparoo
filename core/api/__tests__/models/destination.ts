@@ -437,8 +437,8 @@ describe("models/destination", () => {
       test("profilePreview - without updates - with group", async () => {
         const profile = await helper.factories.profile();
         await profile.addOrUpdateProperties({
-          userId: 1,
-          email: "yoshi@example.com",
+          userId: [1],
+          email: ["yoshi@example.com"],
         });
         await group.addProfile(profile);
         await destination.trackGroup(group);
@@ -456,8 +456,10 @@ describe("models/destination", () => {
           mapping,
           destinationGroupMemberships
         );
-        expect(_profile.properties["primary-id"].value).toBe(1);
-        expect(_profile.properties["email"].value).toBe("yoshi@example.com");
+        expect(_profile.properties["primary-id"].values[0]).toBe(1);
+        expect(_profile.properties["email"].values[0]).toBe(
+          "yoshi@example.com"
+        );
         expect(_profile.groupNames).toEqual(["another-group-tag"]);
 
         await profile.destroy();
@@ -851,8 +853,8 @@ describe("models/destination", () => {
       );
 
       const profile = await helper.factories.profile();
-      const oldProfileProperties = { email: "oldEmail" };
-      const newProfileProperties = { email: "newEmail" };
+      const oldProfileProperties = { email: ["oldEmail"] };
+      const newProfileProperties = { email: ["newEmail"] };
       const oldGroups = [];
       const newGroups = [groupA, groupB];
 
@@ -938,8 +940,8 @@ describe("models/destination", () => {
       await destination.trackGroup(groupA);
 
       const profile = await helper.factories.profile();
-      const oldProfileProperties = { email: "oldEmail" };
-      const newProfileProperties = { email: "newEmail" };
+      const oldProfileProperties = { email: ["oldEmail"] };
+      const newProfileProperties = { email: ["newEmail"] };
       const oldGroups = [];
       const newGroups = [groupA];
 
@@ -1009,8 +1011,8 @@ describe("models/destination", () => {
       );
 
       const profile = await helper.factories.profile();
-      const oldProfileProperties = { email: "oldEmail" };
-      const newProfileProperties = { email: "newEmail" };
+      const oldProfileProperties = { email: ["oldEmail"] };
+      const newProfileProperties = { email: ["newEmail"] };
       const oldGroups = [groupA, groupB];
       const newGroups = [];
 

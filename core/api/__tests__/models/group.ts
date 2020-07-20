@@ -399,43 +399,43 @@ describe("models/group", () => {
       toad = await Profile.create();
 
       await mario.addOrUpdateProperties({
-        userId: 1,
-        firstName: "Mario",
-        lastName: "Mario",
-        email: "mario@example.com",
-        ltv: 100.0,
-        isVIP: true,
-        lastLoginAt: new Date(0),
+        userId: [1],
+        firstName: ["Mario"],
+        lastName: ["Mario"],
+        email: ["mario@example.com"],
+        ltv: [100.0],
+        isVIP: [true],
+        lastLoginAt: [new Date(0)],
       });
 
       await luigi.addOrUpdateProperties({
-        userId: 2,
-        firstName: "Luigi",
-        lastName: "Mario",
-        email: "luigi@example.com",
-        ltv: 50.01,
-        isVIP: false,
-        lastLoginAt: new Date(),
+        userId: [2],
+        firstName: ["Luigi"],
+        lastName: ["Mario"],
+        email: ["luigi@example.com"],
+        ltv: [50.01],
+        isVIP: [false],
+        lastLoginAt: [new Date()],
       });
 
       await peach.addOrUpdateProperties({
-        userId: 3,
-        firstName: "Peach",
-        lastName: "Toadstool",
-        email: "peach@example.com",
-        ltv: 999.99,
-        isVIP: true,
-        lastLoginAt: new Date(0),
+        userId: [3],
+        firstName: ["Peach"],
+        lastName: ["Toadstool"],
+        email: ["peach@example.com"],
+        ltv: [999.99],
+        isVIP: [true],
+        lastLoginAt: [new Date(0)],
       });
 
       await toad.addOrUpdateProperties({
-        userId: 4,
-        firstName: "Toad",
-        lastName: "Toadstool",
-        email: "toad@example.com",
-        ltv: 0,
-        isVIP: false,
-        lastLoginAt: new Date(),
+        userId: [4],
+        firstName: ["Toad"],
+        lastName: ["Toadstool"],
+        email: ["toad@example.com"],
+        ltv: [0],
+        isVIP: [false],
+        lastLoginAt: [new Date()],
       });
     });
 
@@ -1270,7 +1270,7 @@ describe("models/group", () => {
         test("relative date matchers in the past do not include the future", async () => {
           const now = new Date().getTime();
           await luigi.addOrUpdateProperties({
-            lastLoginAt: new Date(now + 1000 * 5),
+            lastLoginAt: [new Date(now + 1000 * 5)],
           });
 
           await group.update({ matchType: "all" });

@@ -16,7 +16,7 @@ function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
   const simpleProfileProperties = {};
   keys.forEach((key) => {
-    simpleProfileProperties[key] = complexProfileValues[key].value;
+    simpleProfileProperties[key] = complexProfileValues[key].values;
   });
   return simpleProfileProperties;
 }
@@ -114,8 +114,8 @@ describe("models/profile", () => {
 
       const profile = await Profile.create();
       await profile.addOrUpdateProperties({
-        email: "toad@example.com",
-        color: "orange",
+        email: ["toad@example.com"],
+        color: ["orange"],
       });
 
       toad = profile;
@@ -136,8 +136,8 @@ describe("models/profile", () => {
         profile,
         isNew,
       } = await ProfileOps.findOrCreateByUniqueProfileProperties({
-        email: "toad@example.com",
-        color: "orange",
+        email: ["toad@example.com"],
+        color: ["orange"],
       });
 
       expect(isNew).toBe(false);
@@ -149,8 +149,8 @@ describe("models/profile", () => {
         profile,
         isNew,
       } = await ProfileOps.findOrCreateByUniqueProfileProperties({
-        email: "luigi@example.com",
-        color: "green",
+        email: ["luigi@example.com"],
+        color: ["green"],
       });
 
       expect(isNew).toBe(true);
@@ -160,25 +160,25 @@ describe("models/profile", () => {
     test("it will throw an error if no unique profile properties are included", async () => {
       try {
         await ProfileOps.findOrCreateByUniqueProfileProperties({
-          color: "orange",
+          color: ["orange"],
         });
         throw new Error("should not get here");
       } catch (error) {
         expect(error.message).toBe(
-          'there are no unique profile properties provided in {"color":"orange"}'
+          'there are no unique profile properties provided in {"color":["orange"]}'
         );
       }
     });
 
     test("it will lock when creating new profiles so duplicate profiles are not created", async () => {
       const responseA = await ProfileOps.findOrCreateByUniqueProfileProperties({
-        email: "bowser@example.com",
-        color: "green",
+        email: ["bowser@example.com"],
+        color: ["green"],
       });
 
       const responseB = await ProfileOps.findOrCreateByUniqueProfileProperties({
-        email: "bowser@example.com",
-        house: "castle",
+        email: ["bowser@example.com"],
+        house: ["castle"],
       });
 
       expect(responseA.profile.guid).toEqual(responseB.profile.guid);
@@ -188,13 +188,13 @@ describe("models/profile", () => {
 
     test("it will merge overlapping unique profile properties and not store non-unique properties", async () => {
       const responseA = await ProfileOps.findOrCreateByUniqueProfileProperties({
-        email: "koopa@example.com",
-        userId: 99,
+        email: ["koopa@example.com"],
+        userId: [99],
       });
 
       const responseB = await ProfileOps.findOrCreateByUniqueProfileProperties({
-        userId: 99,
-        house: "castle",
+        userId: [99],
+        house: ["castle"],
       });
 
       expect(responseA.profile.guid).toEqual(responseB.profile.guid);
@@ -212,7 +212,7 @@ describe("models/profile", () => {
       const properties = await toad.properties();
       expect(properties.email.type).toBe("email");
       expect(properties.email.unique).toBe(true);
-      expect(properties.email.value).toBe("toad@example.com");
+      expect(properties.email.values[0]).toBe("toad@example.com");
       expect(properties.email.createdAt).toBeTruthy();
       expect(properties.email.updatedAt).toBeTruthy();
     });
@@ -228,7 +228,7 @@ describe("models/profile", () => {
       profile = new Profile();
       await profile.save();
       await expect(
-        profile.addOrUpdateProperty({ email: "luigi@example.com" })
+        profile.addOrUpdateProperty({ email: ["luigi@example.com"] })
       ).rejects.toThrow(/cannot find a profile property rule for key email/);
       await profile.destroy();
     });
@@ -294,28 +294,28 @@ describe("models/profile", () => {
       });
 
       test("it can add a new profile property when the schema is prepared", async () => {
-        await profile.addOrUpdateProperty({ email: "luigi@example.com" });
+        await profile.addOrUpdateProperty({ email: ["luigi@example.com"] });
         const properties = await profile.properties();
         expect(simpleProfileValues(properties)).toEqual({
-          email: "luigi@example.com",
+          email: ["luigi@example.com"],
         });
       });
 
       test("it can add properties in bulk with proper timestamps", async () => {
         await profile.addOrUpdateProperties({
-          firstName: "Luigi",
-          lastName: "Mario",
-          color: "green",
-          userId: 123,
+          firstName: ["Luigi"],
+          lastName: ["Mario"],
+          color: ["green"],
+          userId: [123],
         });
 
         const properties = await profile.properties();
         expect(simpleProfileValues(properties)).toEqual({
-          email: "luigi@example.com",
-          firstName: "Luigi",
-          lastName: "Mario",
-          color: "green",
-          userId: 123,
+          email: ["luigi@example.com"],
+          firstName: ["Luigi"],
+          lastName: ["Mario"],
+          color: ["green"],
+          userId: [123],
         });
 
         expect(profile.createdAt.getTime()).toBeLessThan(
@@ -327,19 +327,21 @@ describe("models/profile", () => {
       });
 
       test("it can update an existing property", async () => {
-        await profile.addOrUpdateProperty({ email: "luigi-again@example.com" });
+        await profile.addOrUpdateProperty({
+          email: ["luigi-again@example.com"],
+        });
         const properties = await profile.properties();
         expect(simpleProfileValues(properties)).toEqual({
-          email: "luigi-again@example.com",
-          firstName: "Luigi",
-          lastName: "Mario",
-          color: "green",
-          userId: 123,
+          email: ["luigi-again@example.com"],
+          firstName: ["Luigi"],
+          lastName: ["Mario"],
+          color: ["green"],
+          userId: [123],
         });
       });
 
       test("it will ignore the property _meta, as it is reserved", async () => {
-        await profile.addOrUpdateProperty({ _meta: "bla" });
+        await profile.addOrUpdateProperty({ _meta: ["bla"] });
         const properties = await profile.properties();
         expect(simpleProfileValues(properties)._meta).toBeFalsy();
       });
@@ -348,30 +350,30 @@ describe("models/profile", () => {
         await profile.removeProperty("email");
         const properties = await profile.properties();
         expect(simpleProfileValues(properties)).toEqual({
-          firstName: "Luigi",
-          lastName: "Mario",
-          color: "green",
-          userId: 123,
+          firstName: ["Luigi"],
+          lastName: ["Mario"],
+          color: ["green"],
+          userId: [123],
         });
       });
 
       test("no problems arise when re-adding a deleted property", async () => {
         let properties = await profile.properties();
         expect(properties.email).toBeUndefined();
-        await profile.addOrUpdateProperty({ email: "luigi@example.com" });
+        await profile.addOrUpdateProperty({ email: ["luigi@example.com"] });
         properties = await profile.properties();
-        expect(properties.email.value).toBe("luigi@example.com");
+        expect(properties.email.values).toEqual(["luigi@example.com"]);
       });
 
       test("it will not raise when trying to remove a non-existent property", async () => {
         await profile.removeProperty("funky");
         const properties = await profile.properties();
         expect(simpleProfileValues(properties)).toEqual({
-          email: "luigi@example.com",
-          firstName: "Luigi",
-          lastName: "Mario",
-          color: "green",
-          userId: 123,
+          email: ["luigi@example.com"],
+          firstName: ["Luigi"],
+          lastName: ["Mario"],
+          color: ["green"],
+          userId: [123],
         });
       });
 
@@ -381,7 +383,7 @@ describe("models/profile", () => {
         await profile.reload();
         const oldUpdatedAt = profile.updatedAt.getTime();
         await helper.sleep(1);
-        await profile.addOrUpdateProperty({ email: "luigi@example.com" });
+        await profile.addOrUpdateProperty({ email: ["luigi@example.com"] });
         await profile.reload();
         const newUpdatedAt = profile.updatedAt.getTime();
         expect(newUpdatedAt).toBeGreaterThan(oldUpdatedAt);
@@ -391,7 +393,9 @@ describe("models/profile", () => {
         await profile.reload();
         const oldUpdatedAt = profile.updatedAt.getTime();
         await helper.sleep(1);
-        await profile.addOrUpdateProperty({ email: "luigiAgain@example.com" });
+        await profile.addOrUpdateProperty({
+          email: ["luigiAgain@example.com"],
+        });
         await profile.reload();
         const newUpdatedAt = profile.updatedAt.getTime();
         expect(newUpdatedAt).toBeGreaterThan(oldUpdatedAt);
@@ -401,7 +405,9 @@ describe("models/profile", () => {
         await profile.reload();
         const oldUpdatedAt = profile.updatedAt.getTime();
         await helper.sleep(1);
-        await profile.addOrUpdateProperty({ email: "luigiAgain@example.com" });
+        await profile.addOrUpdateProperty({
+          email: ["luigiAgain@example.com"],
+        });
         await profile.reload();
         const newUpdatedAt = profile.updatedAt.getTime();
         expect(newUpdatedAt).toBe(oldUpdatedAt);
@@ -416,7 +422,7 @@ describe("models/profile", () => {
         const newUpdatedAt = profile.updatedAt.getTime();
         expect(newUpdatedAt).toBeGreaterThan(oldUpdatedAt);
 
-        await profile.addOrUpdateProperty({ email: "luigi@example.com" });
+        await profile.addOrUpdateProperty({ email: ["luigi@example.com"] });
       });
 
       test("deleting the profile also deletes the properties", async () => {
@@ -515,7 +521,7 @@ describe("models/profile", () => {
 
       profile = await Profile.create();
       await profile.addOrUpdateProperties({
-        email: "mario@example.com",
+        email: ["mario@example.com"],
       });
     });
 
@@ -579,7 +585,7 @@ describe("models/profile", () => {
             methods: {
               profileProperty: async ({ profilePropertyRule }) => {
                 if (profilePropertyRule.key === "color") {
-                  return "pink";
+                  return ["pink"];
                 }
               },
             },
@@ -633,27 +639,27 @@ describe("models/profile", () => {
 
     test("it can pull profile properties in from all connected apps", async () => {
       const profile = await Profile.create();
-      await profile.addOrUpdateProperties({ userId: 1001 });
-      await profile.addOrUpdateProperties({ email: "peach@example.com" });
+      await profile.addOrUpdateProperties({ userId: [1001] });
+      await profile.addOrUpdateProperties({ email: ["peach@example.com"] });
       let properties = await profile.properties();
       expect(simpleProfileValues(properties)).toEqual({
-        userId: 1001,
-        email: "peach@example.com",
+        userId: [1001],
+        email: ["peach@example.com"],
       });
 
       await profile.import();
 
       properties = await profile.properties();
       expect(simpleProfileValues(properties)).toEqual({
-        userId: 1001,
-        email: "peach@example.com",
-        color: "pink",
+        userId: [1001],
+        email: ["peach@example.com"],
+        color: ["pink"],
       });
     });
 
     test("after importing, all missing profile property rules will have created a null profile property", async () => {
       const profile = await Profile.create();
-      await profile.addOrUpdateProperties({ userId: 1002 });
+      await profile.addOrUpdateProperties({ userId: [1002] });
       let properties = await profile.properties();
       expect(Object.keys(properties)).toEqual(["userId"]);
 
@@ -661,9 +667,9 @@ describe("models/profile", () => {
 
       properties = await profile.properties();
       expect(simpleProfileValues(properties)).toEqual({
-        userId: 1002,
-        email: null,
-        color: "pink",
+        userId: [1002],
+        email: [null],
+        color: ["pink"],
       });
     });
   });
@@ -798,11 +804,13 @@ describe("models/profile", () => {
     });
 
     test("profile A has newer email, profile B has newer userId, profile B has a newer ltv but it is null", async () => {
-      await profileA.addOrUpdateProperties({ email: "new-email@example.com" });
-      await profileA.addOrUpdateProperties({ ltv: 123.45 });
+      await profileA.addOrUpdateProperties({
+        email: ["new-email@example.com"],
+      });
+      await profileA.addOrUpdateProperties({ ltv: [123.45] });
 
-      await profileB.addOrUpdateProperties({ userId: 100 });
-      await profileB.addOrUpdateProperties({ firstName: "fname" });
+      await profileB.addOrUpdateProperties({ userId: [100] });
+      await profileB.addOrUpdateProperties({ firstName: ["fname"] });
 
       // bump the updatedAt time for the email profile property, even though they remain null
       await helper.sleep(1001);
@@ -819,16 +827,16 @@ describe("models/profile", () => {
       await profileBEmailProperty.save();
 
       const propertiesA = await profileA.properties();
-      expect(propertiesA.email.value).toBe("new-email@example.com");
-      expect(propertiesA.userId.value).toBe(null);
-      expect(propertiesA.firstName.value).toBe(null);
-      expect(propertiesA.ltv.value).toBe(123.45);
+      expect(propertiesA.email.values[0]).toBe("new-email@example.com");
+      expect(propertiesA.userId.values[0]).toBe(null);
+      expect(propertiesA.firstName.values[0]).toBe(null);
+      expect(propertiesA.ltv.values[0]).toBe(123.45);
 
       const propertiesB = await profileB.properties();
-      expect(propertiesB.email.value).toBe(null);
-      expect(propertiesB.userId.value).toBe(100);
-      expect(propertiesB.firstName.value).toBe("fname");
-      expect(propertiesB.ltv.value).toBe(null);
+      expect(propertiesB.email.values[0]).toBe(null);
+      expect(propertiesB.userId.values[0]).toBe(100);
+      expect(propertiesB.firstName.values).toEqual(["fname"]);
+      expect(propertiesB.ltv.values[0]).toBe(null);
 
       expect(propertiesB.email.updatedAt.getTime()).toBeGreaterThan(
         propertiesA.email.updatedAt.getTime()
@@ -850,10 +858,10 @@ describe("models/profile", () => {
 
     test("the merged profile kept the newer non-null properties", async () => {
       const properties = await profileA.properties();
-      expect(properties.email.value).toBe("new-email@example.com");
-      expect(properties.userId.value).toBe(100);
-      expect(properties.firstName.value).toBe("fname");
-      expect(properties.ltv.value).toBe(123.45);
+      expect(properties.email.values).toEqual(["new-email@example.com"]);
+      expect(properties.userId.values).toEqual([100]);
+      expect(properties.firstName.values).toEqual(["fname"]);
+      expect(properties.ltv.values).toEqual([123.45]);
     });
 
     test("merging profiles moved the anonymousId", async () => {

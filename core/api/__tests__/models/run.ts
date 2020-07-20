@@ -502,7 +502,7 @@ describe("models/run", () => {
                 if (profilePropertyRuleOptions.column) {
                   throw new Error(profilePropertyRuleOptions.column);
                 } else {
-                  return "ok";
+                  return ["ok"];
                 }
               },
             },
@@ -535,7 +535,7 @@ describe("models/run", () => {
 
       // we need at least one profile to test against
       const profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ userId: 1000 });
+      await profile.addOrUpdateProperties({ userId: [1000] });
 
       await expect(
         Run.create({

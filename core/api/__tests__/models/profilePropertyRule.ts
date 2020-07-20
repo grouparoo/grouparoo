@@ -419,7 +419,7 @@ describe("models/profilePropertyRule", () => {
                   throw new Error(`throw`);
                 }
                 queryCounter++;
-                return q;
+                return [q];
               },
             },
           },
@@ -562,7 +562,7 @@ describe("models/profilePropertyRule", () => {
       expect(queryCounter).toBe(0);
 
       const profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ userId: 1000 });
+      await profile.addOrUpdateProperties({ userId: [1000] });
 
       const rule = await ProfilePropertyRule.create({
         key: "test",
@@ -595,7 +595,7 @@ describe("models/profilePropertyRule", () => {
 
     test("options cannot be saved if they fail testing import against a profile", async () => {
       const profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ userId: 1000 });
+      await profile.addOrUpdateProperties({ userId: [1000] });
 
       const rule = await ProfilePropertyRule.create({
         key: "test",
@@ -614,7 +614,7 @@ describe("models/profilePropertyRule", () => {
 
     test("the profile property rule can be tested against the existing options or potential new options", async () => {
       const profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ userId: 1000 });
+      await profile.addOrUpdateProperties({ userId: [1000] });
 
       const rule = await ProfilePropertyRule.create({
         key: "test",
@@ -624,15 +624,15 @@ describe("models/profilePropertyRule", () => {
       await rule.setOptions({ column: "~" });
       await rule.update({ state: "ready" });
 
-      await profile.addOrUpdateProperties({ test: true });
+      await profile.addOrUpdateProperties({ test: [true] });
 
       // against saved query
       const response = await rule.test();
-      expect(response).toMatch(`+ {"column":"~"}`);
+      expect(response[0]).toMatch(`+ {"column":"~"}`);
 
       // against new query
       const responseAgain = await rule.test({ column: "abc" });
-      expect(responseAgain).toMatch('+ {"column":"abc"}');
+      expect(responseAgain[0]).toMatch('+ {"column":"abc"}');
 
       await profile.destroy();
       await rule.destroy();
