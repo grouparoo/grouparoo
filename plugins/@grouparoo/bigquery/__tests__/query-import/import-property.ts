@@ -75,8 +75,8 @@ describe("bigquery/query/profileProperty", () => {
 
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({
-      userId: 1,
-      email: "ejervois0@example.com",
+      userId: [1],
+      email: ["ejervois0@example.com"],
     });
     expect(profile.guid).toBeTruthy();
   });
@@ -84,37 +84,37 @@ describe("bigquery/query/profileProperty", () => {
   test("can run a integer query to get a string", async () => {
     const sql = "SELECT first_name FROM test.profiles WHERE id = {{ userId }}";
     const value = await getPropertyValue(sql);
-    expect(value).toBe("Erie");
+    expect(value).toEqual(["Erie"]);
   });
 
   test("can run a integer query to get a float", async () => {
     const sql = "SELECT ltv FROM test.profiles WHERE id = {{ userId }}";
     const value = await getPropertyValue(sql);
-    expect(value).toBe(259.12);
+    expect(value).toEqual([259.12]);
   });
 
   test("can run a integer query to get a boolean", async () => {
     const sql = "SELECT ios_app FROM test.profiles WHERE id = {{ userId }}";
     const value = await getPropertyValue(sql);
-    expect(value).toBe(true);
+    expect(value).toEqual([true]);
   });
 
   test("can run a string query to get a string", async () => {
     const sql =
       "SELECT first_name FROM test.profiles WHERE email = '{{ email }}'";
     const value = await getPropertyValue(sql);
-    expect(value).toBe("Erie");
+    expect(value).toEqual(["Erie"]);
   });
 
   test("can run a string query to get a float", async () => {
     const sql = "SELECT ltv FROM test.profiles WHERE email = '{{ email }}'";
     const value = await getPropertyValue(sql);
-    expect(value).toBe(259.12);
+    expect(value).toEqual([259.12]);
   });
 
   test("can run a string query to get a boolean", async () => {
     const sql = "SELECT ios_app FROM test.profiles WHERE email = '{{ email }}'";
     const value = await getPropertyValue(sql);
-    expect(value).toBe(true);
+    expect(value).toEqual([true]);
   });
 });
