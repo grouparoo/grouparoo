@@ -122,6 +122,25 @@ describe("models/profilePropertyRule", () => {
 
       await rule.destroy();
     });
+
+    test("a profile property rule can be isArray", async () => {
+      const rule = await ProfilePropertyRule.create({
+        sourceGuid: source.guid,
+        isArray: true,
+      });
+
+      await rule.destroy();
+    });
+
+    test("a profile property rule cannot be isArray and unique", async () => {
+      await expect(
+        ProfilePropertyRule.create({
+          sourceGuid: source.guid,
+          isArray: true,
+          unique: true,
+        })
+      ).rejects.toThrow(/unique profile properties cannot be arrays/);
+    });
   });
 
   test("creating a profile property rule for a manual app did enqueue an internalRun", async () => {
@@ -213,6 +232,32 @@ describe("models/profilePropertyRule", () => {
 
     const rawOption = await Option.findOne({ where: { ownerGuid: rule.guid } });
     expect(rawOption.value).toBe(`{{ ${rule.guid} }}@example.com`);
+  });
+
+  test("an array profile property rule cannot be used as an option", async () => {
+    const source = await helper.factories.source();
+    await source.setOptions({ table: "test table" });
+    await source.setMapping({ id: "userId" });
+    await source.update({ state: "ready" });
+
+    const purchasesRule = await ProfilePropertyRule.create({
+      sourceGuid: source.guid,
+      key: "purchases",
+      type: "string",
+      isArray: true,
+    });
+    await purchasesRule.setOptions({ column: "purchases" });
+    await purchasesRule.update({ state: "ready" });
+
+    const rule = await ProfilePropertyRule.findOne({ where: { key: "email" } });
+    await expect(
+      rule.setOptions({
+        column: "{{purchases}}@example.com",
+      })
+    ).rejects.toThrow('missing mustache key "purchases"');
+
+    await purchasesRule.destroy();
+    await source.destroy();
   });
 
   test("a profile property rule cannot be created in the ready state with missing required options", async () => {

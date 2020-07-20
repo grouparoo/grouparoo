@@ -126,6 +126,7 @@ export class ProfilePropertyRuleCreate extends AuthenticatedAction {
       key: { required: false },
       type: { required: true },
       unique: { required: false },
+      isArray: { required: false },
       state: { required: false },
       sourceGuid: { required: false },
       options: { required: false },
@@ -138,6 +139,7 @@ export class ProfilePropertyRuleCreate extends AuthenticatedAction {
       key: params.key,
       type: params.type,
       unique: params.unique,
+      isArray: params.isArray,
       sourceGuid: params.sourceGuid,
     });
 
@@ -162,6 +164,7 @@ export class ProfilePropertyRuleEdit extends AuthenticatedAction {
       key: { required: false },
       type: { required: false },
       unique: { required: false },
+      isArray: { required: false },
       state: { required: false },
       sourceGuid: { required: false },
       options: { required: false },

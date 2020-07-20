@@ -405,6 +405,7 @@ export default function Page(props) {
                       <Badge variant="light">{`{{ createdAt }}`}</Badge>&nbsp;
                       <Badge variant="light">{`{{ updatedAt }}`}</Badge>&nbsp;
                       {profilePropertyRules
+                        .filter((rule) => rule.isArray === false)
                         .sort((a, b) => {
                           if (a.key > b.key) {
                             return 1;

@@ -436,6 +436,92 @@ describe("models/profile", () => {
         });
         expect(afterCount).toBe(0);
       });
+
+      describe("array properties", () => {
+        let purchasesRule: ProfilePropertyRule;
+
+        beforeAll(async () => {
+          const purchasesRule = await ProfilePropertyRule.create({
+            sourceGuid: source.guid,
+            key: "purchases",
+            type: "string",
+            isArray: true,
+          });
+          await purchasesRule.setOptions({ column: "purchases" });
+          await purchasesRule.update({ state: "ready" });
+        });
+
+        afterAll(async () => {
+          await purchasesRule.destroy();
+        });
+
+        test("multiple values can be set for array properties and the order is maintained", async () => {
+          await profile.addOrUpdateProperties({
+            email: ["luigi@example.com"],
+            firstName: ["Luigi"],
+            lastName: ["Mario"],
+            color: ["green"],
+            userId: [123],
+            purchases: ["star", "mushroom", "mushroom", "go kart"],
+          });
+          const properties = await profile.properties();
+          expect(simpleProfileValues(properties)).toEqual({
+            email: ["luigi@example.com"],
+            firstName: ["Luigi"],
+            lastName: ["Mario"],
+            color: ["green"],
+            userId: [123],
+            purchases: ["star", "mushroom", "mushroom", "go kart"],
+          });
+        });
+
+        test("when array properties are the same, they will not be updated", async () => {
+          await profile.addOrUpdateProperties({
+            email: ["luigi@example.com"],
+            purchases: ["star", "mushroom", "mushroom", "go kart"],
+          });
+          const firstProperties = await profile.properties();
+          const firstUpdate = firstProperties.purchases.updatedAt;
+
+          await profile.addOrUpdateProperties({
+            email: ["luigi@example.com"],
+            purchases: ["star", "mushroom", "mushroom", "go kart"],
+          });
+          const secondProperties = await profile.properties();
+          expect(secondProperties.purchases.updatedAt).toEqual(firstUpdate);
+        });
+
+        test("when any array property has changed, they will all be updated", async () => {
+          await profile.addOrUpdateProperties({
+            email: ["luigi@example.com"],
+            purchases: ["star", "mushroom", "mushroom", "go kart"],
+          });
+          const firstProperties = await profile.properties();
+          const firstUpdate = firstProperties.purchases.updatedAt;
+
+          await profile.addOrUpdateProperties({
+            email: ["luigi@example.com"],
+            purchases: ["go kart"],
+          });
+          const secondProperties = await profile.properties();
+          expect(
+            secondProperties.purchases.updatedAt.getTime()
+          ).toBeGreaterThan(firstUpdate.getTime());
+        });
+
+        test("other profile properties do not accept array values", async () => {
+          await expect(
+            profile.addOrUpdateProperties({
+              firstName: ["Luigi"],
+              lastName: ["Mario"],
+              color: ["green", "blue", "red"],
+              userId: [123],
+            })
+          ).rejects.toThrow(
+            /cannot set multiple profile properties for a non-array profile property rule/
+          );
+        });
+      });
     });
   });
 
@@ -743,6 +829,22 @@ describe("models/profile", () => {
       await Profile.destroy({ truncate: true });
       await helper.factories.profilePropertyRules();
 
+      // add a array property too
+      const source = await helper.factories.source();
+      await source.setOptions({ table: "test table" });
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
+
+      const purchasesRule = await ProfilePropertyRule.create({
+        sourceGuid: source.guid,
+        key: "purchases",
+        type: "string",
+        isArray: true,
+      });
+      await purchasesRule.setOptions({ column: "purchases" });
+      await purchasesRule.update({ state: "ready" });
+
+      // create the profiles and events
       profileA = await helper.factories.profile();
       await profileA.import();
       profileB = await helper.factories.profile();
@@ -792,8 +894,8 @@ describe("models/profile", () => {
       const propertiesB = await profileB.properties();
       const eventsA = await profileA.$get("events");
       const eventsB = await profileB.$get("events");
-      expect(Object.keys(propertiesA).length).toBe(7);
-      expect(Object.keys(propertiesB).length).toBe(7);
+      expect(Object.keys(propertiesA).length).toBe(8);
+      expect(Object.keys(propertiesB).length).toBe(8);
       expect(eventsA.length).toBe(3);
       expect(eventsB.length).toBe(2);
     });
@@ -843,6 +945,11 @@ describe("models/profile", () => {
       );
     });
 
+    test("profile A and B each have different purchases", async () => {
+      await profileA.addOrUpdateProperties({ purchases: ["hat"] });
+      await profileB.addOrUpdateProperties({ purchases: ["shoe"] });
+    });
+
     test("merging profiles moved the events & properties", async () => {
       await ProfileOps.merge(profileA, profileB);
 
@@ -850,7 +957,7 @@ describe("models/profile", () => {
       const propertiesB = await profileB.properties();
       const eventsA = await profileA.$get("events");
       const eventsB = await profileB.$get("events");
-      expect(Object.keys(propertiesA).length).toBe(7);
+      expect(Object.keys(propertiesA).length).toBe(8);
       expect(Object.keys(propertiesB).length).toBe(0);
       expect(eventsA.length).toBe(5);
       expect(eventsB.length).toBe(0);
@@ -862,6 +969,12 @@ describe("models/profile", () => {
       expect(properties.userId.values).toEqual([100]);
       expect(properties.firstName.values).toEqual(["fname"]);
       expect(properties.ltv.values).toEqual([123.45]);
+    });
+
+    test("the merged profiles should have only kept the array properties of the newest profile property", async () => {
+      // we can't be sure of the array-order for the combined profiles.  A re-import should be deterministic too
+      const propertiesA = await profileA.properties();
+      expect(propertiesA.purchases.values).toEqual(["shoe"]);
     });
 
     test("merging profiles moved the anonymousId", async () => {

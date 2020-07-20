@@ -312,6 +312,12 @@ export namespace plugin {
     if (string.indexOf("{{") < 0) return string;
 
     const profilePropertyRules = await ProfilePropertyRule.cached();
+    for (const i in profilePropertyRules) {
+      if (profilePropertyRules[i].isArray === true) {
+        delete profilePropertyRules[i];
+      }
+    }
+
     const data = {};
     for (const i in profilePropertyRules) {
       const rule = profilePropertyRules[i];
