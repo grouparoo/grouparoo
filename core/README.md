@@ -38,9 +38,9 @@ If you are new to Grouparoo, or you want to deploy Grouparoo to your servers, st
 
 ### Product Information
 
-You can find more details about the Grouparoo product here.
+You can find more details about how the Grouparoo product works here.
 
-- [🧠 Grouparoo Product Concepts](https://github.com/grouparoo/grouparoo/blob/master/core/documents/product/concepts.md)
+- [🧠 Grouparoo Product Concepts](https://github.com/grouparoo/grouparoo/blob/master/documents/product/concepts.md)
 
 ### For Grouparoo Developers
 

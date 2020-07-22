@@ -59,7 +59,7 @@ There are 2 types of groups: **Calculated** and **Manual**
 
 **Calculated Groups** are always kept up to date for you by Grouparoo. As new Profiles are created, or the Profile Properties of existing Profiles are changed, Group membership will automatically be adjusted.
 
-Manual Groups only change when you add or remove Profiles.
+**Manual Groups** only change when you add or remove Profiles.
 
 ## Destinations
 
