@@ -18,5 +18,6 @@ for p in $GROUPAROO_PIDS; do
   kill -9 $p
 done
 
-node --max-old-space-size=4096 "$EXECUTABLE" --notify=false --ignore='node_modules' --ignore='../dist' --ignore='core/web' --ignore-watch='../web' --ignore-watch='../clients' src/server.ts
+# If there are problems, add "--debug" as a flag
+node --max-old-space-size=4096 "$EXECUTABLE" --transpile-only --log-error --notify=false --ignore='node_modules' --ignore='../dist' --ignore='core/web' --ignore-watch='../web' --ignore-watch='../clients' src/server.ts
 

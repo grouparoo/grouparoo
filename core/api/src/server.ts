@@ -38,13 +38,14 @@ for (const i in pluginManifest.plugins) {
   }
 }
 
-import { Process, log } from "actionhero";
-
 async function main() {
+  const { Process, log } = await import("actionhero");
+
   log(
     `Starting Grouparoo ${getCoreVersion()} on node.js ${getNodeVersion()}`,
     "notice"
   );
+
   const app = new Process();
 
   app.registerProcessSignals((exitCode) => {
