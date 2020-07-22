@@ -46,7 +46,7 @@ Grouparoo.init({
   endpoint: "https://your-grouparoo-instance.company.com", // likely pre-set by the client library
 });
 
-Gropuaroo.track({
+Grouparoo.track({
   anonymousId: "person_1",
   occurredAt: new Date(), // likley a default in the Client Library
   type: "pageview",
@@ -65,7 +65,7 @@ Grouparoo will create a new `Profile` to track all the activity we can for “pe
 Eventually, after visiting a few more pages, the user will sign in, and we’ll know their `userId`
 
 ```js
-Gropuaroo.track({
+Grouparoo.track({
   anonymousId: "person_1",
   userId: 123,
   occurredAt: new Date(),
