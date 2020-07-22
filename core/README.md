@@ -36,6 +36,12 @@ If you are new to Grouparoo, or you want to deploy Grouparoo to your servers, st
 - [📞 Telemetry](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/telemetry.md)
 - [🩺 Support](https://github.com/grouparoo/grouparoo/blob/master/.github/SUPPORT.md)
 
+### Product Information
+
+You can find more details about how the Grouparoo product works here.
+
+- [🧠 Grouparoo Product Concepts](https://github.com/grouparoo/grouparoo/blob/master/documents/product/concepts.md)
+
 ### For Grouparoo Developers
 
 If you are interested in extending Grouparoo with your own plugins or contributing to the Open Source project, these documents are for you.
