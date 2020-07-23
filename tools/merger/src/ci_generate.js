@@ -68,6 +68,7 @@ class Generator {
   }
   addCommands() {
     this.addCommand("license-checker", "./tools/license-checker/check");
+    this.addCommand("spell-checker", "./tools/spell-checker/check");
     this.addCommand("linter", "npm run lint");
   }
 

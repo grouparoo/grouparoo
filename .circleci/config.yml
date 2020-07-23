@@ -87,6 +87,20 @@ jobs:
       - run:
           name: license-checker
           command: ./tools/license-checker/check
+  spell-checker:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: spell-checker
+          command: ./tools/spell-checker/check
   linter:
     docker:
       - image: circleci/node:12
@@ -207,6 +221,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - spell-checker:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - linter:
           filters:
             <<: *ignored-branches
@@ -227,6 +246,7 @@ workflows:
             <<: *ignored-branches
           requires:
             - license-checker
+            - spell-checker
             - linter
             - test-core
             - test-plugins
@@ -256,6 +276,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - spell-checker:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - linter:
           filters:
             <<: *ignored-branches
@@ -276,6 +301,7 @@ workflows:
             <<: *ignored-branches
           requires:
             - license-checker
+            - spell-checker
             - linter
             - test-core
             - test-plugins
