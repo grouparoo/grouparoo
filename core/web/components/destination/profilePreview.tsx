@@ -152,7 +152,7 @@ export default function ProfilePreview(props) {
                         profile.properties[k]?.values[0]
                       ).toLocaleString()
                     : null
-                  : profile.properties[k]?.values?.join(", ")}
+                  : profile.properties[k]?.values?.slice(0, 10).join(", ")}
               </ListGroup.Item>
             ))}
           </ListGroup>

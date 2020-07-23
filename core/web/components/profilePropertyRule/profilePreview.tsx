@@ -104,7 +104,7 @@ export default function ProfilePreview(props) {
           : null;
       } else {
         thisProfilePropertyRuleValue = profile.properties[i].values
-          ? profile.properties[i]?.values.join(", ")
+          ? profile.properties[i]?.values.slice(0, 10).join(", ")
           : "";
       }
     } else {
@@ -160,7 +160,7 @@ export default function ProfilePreview(props) {
                 ? new Date(
                     otherProfilePropertyRules[k]?.values[0]
                   ).toLocaleString()
-                : otherProfilePropertyRules[k]?.values?.join(", ")}
+                : otherProfilePropertyRules[k]?.values?.slice(0, 10).join(", ")}
             </ListGroup.Item>
           ))}
         </ListGroup>

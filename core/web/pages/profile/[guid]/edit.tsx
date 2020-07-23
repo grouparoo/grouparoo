@@ -9,6 +9,7 @@ import ProfileImageFromEmail from "../../../components/visualizations/profileIma
 import Moment from "react-moment";
 import LoadingTable from "../../../components/loadingTable";
 import getProfileDisplayName from "../../../components/profile/getProfileDisplayName";
+import ArrayProfilePropertyList from "../../../components/profile/arrayProfilePropertyList";
 
 import { ProfileAPIData, GroupAPIData } from "../../../utils/apiData";
 
@@ -329,10 +330,14 @@ export default function Page(props) {
                       ) : (
                         <span>
                           <strong>
-                            {renderProperty(
+                            {/* {renderProperty(
                               properties[key].values,
                               properties[key].type
-                            )}
+                            )} */}
+                            <ArrayProfilePropertyList
+                              type={properties[key].type}
+                              values={properties[key].values}
+                            />
                           </strong>
                         </span>
                       )}
