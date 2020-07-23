@@ -27,6 +27,7 @@
     "bootstrap-flat": "lerna bootstrap --strict",
     "bootstrap-hoist": "lerna bootstrap --strict --hoist",
     "license-checker": "./tools/license-checker/check",
+    "spell-checker": "./tools/spell-checker/check",
     "version-alpha": "lerna version prerelease --preid alpha --force-publish --yes",
     "version-stable": "lerna version patch --force-publish --yes",
     "clean": "lerna clean",
