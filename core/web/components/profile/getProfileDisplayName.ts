@@ -11,11 +11,13 @@ export default function getProfileDisplayName(profile: ProfileAPIData) {
   let name = profile.guid;
   const uniqueProperties = propertiesArray.filter((prp) => prp.unique);
   if (uniqueProperties.length > 0) {
-    const emails = uniqueProperties.filter((prp) => prp.type === "email");
-    if (emails[0]) {
-      name = emails[0].value || "Anonymous Profile";
+    const emailProperties = uniqueProperties.filter(
+      (prp) => prp.type === "email"
+    );
+    if (emailProperties) {
+      name = emailProperties[0].values[0] || "Anonymous Profile";
     } else {
-      name = uniqueProperties[0].value || "Anonymous Profile";
+      name = uniqueProperties[0].values[0] || "Anonymous Profile";
     }
   }
 
