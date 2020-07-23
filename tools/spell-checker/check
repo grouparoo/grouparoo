@@ -6,7 +6,7 @@ set -e
 cd "$(dirname "$0")"
 cd ../..
 
-BAD_WORDS=("gropuraoo" "blacklist" "whitelist" "slave")
+BAD_WORDS=("thing" "blacklist" "whitelist" "slave")
 MATCHES=""
 
 echo "🦘 Checking Grouparoo for bad words"
@@ -27,7 +27,7 @@ for word in "${BAD_WORDS[@]}"; do
     printf "🚫\n"
     echo "> instnces of $word found:"
     echo "---------------"
-    echo $MATCHES
+    echo "$MATCHES"
     echo "---------------"
     exit 1
   fi
