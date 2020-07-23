@@ -27,6 +27,8 @@ export default function ProfilePreview(props) {
   }, [
     profilePropertyRule.guid,
     profilePropertyRule.type,
+    profilePropertyRule.unique,
+    profilePropertyRule.isArray,
     JSON.stringify(profilePropertyRule.options),
     JSON.stringify(profilePropertyRule.filters),
   ]);
