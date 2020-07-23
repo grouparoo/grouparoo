@@ -16,7 +16,12 @@ import { connect } from "../../src/lib/connect";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
-import { SimpleAppOptions, Profile } from "@grouparoo/core";
+import {
+  plugin,
+  SimpleAppOptions,
+  Profile,
+  ProfilePropertyRule,
+} from "@grouparoo/core";
 
 const nockFile = path.join(
   __dirname,
@@ -55,6 +60,7 @@ async function getPropertyValue(
 
   const profilePropertyRuleFilters = useProfilePropertyRuleFilters || [];
   const connection = await connect({ appOptions, app: null });
+  const profilePropertyRule = await ProfilePropertyRule.findOne();
 
   return profileProperty({
     connection,
@@ -66,7 +72,7 @@ async function getPropertyValue(
     profilePropertyRuleFilters,
     source: null,
     app: null,
-    profilePropertyRule: null,
+    profilePropertyRule,
   });
 }
 
@@ -74,6 +80,7 @@ describe("bigquery/table/profileProperty", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
+    plugin.mountModels();
   }, 1000 * 60);
 
   afterAll(async () => {

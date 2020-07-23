@@ -16,7 +16,12 @@ import { connect } from "../../src/lib/connect";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
-import { Profile, SimpleAppOptions } from "@grouparoo/core";
+import {
+  plugin,
+  Profile,
+  SimpleAppOptions,
+  ProfilePropertyRule,
+} from "@grouparoo/core";
 
 const nockFile = path.join(
   __dirname,
@@ -41,6 +46,7 @@ let actionhero;
 async function getPropertyValue(query: string) {
   const profilePropertyRuleOptions = { query };
   const connection = await connect({ appOptions, app: null });
+  const profilePropertyRule = await ProfilePropertyRule.findOne();
 
   return profileProperty({
     connection,
@@ -51,18 +57,18 @@ async function getPropertyValue(query: string) {
     app: null,
     sourceOptions: null,
     sourceMapping: null,
-    profilePropertyRule: null,
+    profilePropertyRule,
     profilePropertyRuleFilters: null,
   });
 }
 
 describe("bigquery/query/profileProperty", () => {
   // models defined as the sequelize ones, not the types
-  //
 
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
+    plugin.mountModels();
   }, 1000 * 60);
 
   afterAll(async () => {

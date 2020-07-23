@@ -29,8 +29,11 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
       parameterizedQuery
     );
     if (rows && rows.length > 0) {
-      const row = rows[0];
-      response = [Object.values(row)[0]];
+      if (!profilePropertyRule.isArray) {
+        response = [Object.values(rows[0])[0]];
+      } else {
+        response = rows.map((row) => Object.values(row)[0]);
+      }
     }
   } catch (error) {
     throw new Error(

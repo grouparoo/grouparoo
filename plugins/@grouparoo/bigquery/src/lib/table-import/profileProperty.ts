@@ -11,6 +11,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   profile,
   sourceOptions,
   sourceMapping,
+  profilePropertyRule,
   profilePropertyRuleOptions,
   profilePropertyRuleFilters,
 }) => {
@@ -42,6 +43,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   let orderBy = "";
   switch (aggregationMethod) {
     case "exact":
+      if (sortColumn) orderBy = `"${sortColumn}" ASC`;
       break;
     case "average":
       aggSelect = `COALESCE(AVG(${aggSelect}), 0)`;
@@ -127,7 +129,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   }
 
   if (orderBy.length > 0) query += ` ORDER BY ${orderBy}`;
-  query += ` LIMIT 1`;
+  if (!profilePropertyRule.isArray) query += ` LIMIT 1`;
 
   validateQuery(query);
 
@@ -137,8 +139,11 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   try {
     const [rows] = await connection.query(options);
     if (rows && rows.length > 0) {
-      const row: { [key: string]: any } = rows[0];
-      response = [castValue(row.__result)];
+      if (!profilePropertyRule.isArray) {
+        response = [castValue(rows[0].__result)];
+      } else {
+        response = rows.map((row) => castValue(row.__result));
+      }
     }
   } catch (error) {
     throw new Error(
