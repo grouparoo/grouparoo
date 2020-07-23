@@ -290,7 +290,11 @@ export default function ProfilesList(props) {
   );
 }
 
-ProfilesList.hydrate = async (ctx) => {
+ProfilesList.hydrate = async (
+  ctx,
+  _searchKey?: string,
+  _searchValue?: string
+) => {
   const { execApi } = useApi(ctx);
   const { guid, limit, offset, searchKey, searchValue } = ctx.query;
 
@@ -303,8 +307,8 @@ ProfilesList.hydrate = async (ctx) => {
   const { profiles, total } = await execApi("get", `/profiles`, {
     limit,
     offset,
-    searchKey,
-    searchValue,
+    searchKey: searchKey || _searchKey,
+    searchValue: searchValue || _searchValue,
     groupGuid,
   });
   const { profilePropertyRules } = await execApi(
