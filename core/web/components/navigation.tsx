@@ -100,6 +100,7 @@ export default function Navigation(props) {
         paddingLeft: 20,
         paddingRight: 20,
         overflowY: "auto",
+        overflowX: "hidden",
         height: "100%",
       }}
     >
