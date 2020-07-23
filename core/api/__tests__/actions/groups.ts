@@ -215,15 +215,15 @@ describe("actions/groups", () => {
         luigi = await Profile.create();
 
         await mario.addOrUpdateProperties({
-          firstName: "Mario",
-          lastName: "Mario",
-          email: "mario@example.com",
+          firstName: ["Mario"],
+          lastName: ["Mario"],
+          email: ["mario@example.com"],
         });
 
         await luigi.addOrUpdateProperties({
-          firstName: "Luigi",
-          lastName: "Mario",
-          email: "luigi@example.com",
+          firstName: ["Luigi"],
+          lastName: ["Mario"],
+          email: ["luigi@example.com"],
         });
       });
 

@@ -107,9 +107,9 @@ describe("tasks/profile:importAndUpdate", () => {
         );
 
         const properties = await profiles[0].properties();
-        expect(properties.email.value).toBe("mario@example.com");
-        expect(properties.lastName.value).toBe("Mario");
-        expect(properties.firstName.value).toBe("Super");
+        expect(properties.email.values).toEqual(["mario@example.com"]);
+        expect(properties.lastName.values).toEqual(["Mario"]);
+        expect(properties.firstName.values).toEqual(["Super"]);
 
         const imports = await Import.findAll();
         expect(imports.length).toBe(2);
@@ -141,31 +141,31 @@ describe("tasks/profile:importAndUpdate", () => {
         await importB.reload();
 
         expect(importA.oldProfileProperties).toEqual({
-          email: "mario@example.com",
+          email: ["mario@example.com"],
         });
         expect(importA.newProfileProperties).toEqual({
-          email: "mario@example.com",
-          firstName: "Super",
-          lastName: "Mario",
-          isVIP: null,
-          lastLoginAt: null,
-          ltv: null,
-          userId: null,
+          email: ["mario@example.com"],
+          firstName: ["Super"],
+          lastName: ["Mario"],
+          isVIP: [null],
+          lastLoginAt: [null],
+          ltv: [null],
+          userId: [null],
         });
         expect(importA.oldGroupGuids).toEqual([]);
         expect(importA.newGroupGuids).toEqual([group.guid]);
 
         expect(importB.oldProfileProperties).toEqual({
-          email: "mario@example.com",
+          email: ["mario@example.com"],
         });
         expect(importB.newProfileProperties).toEqual({
-          email: "mario@example.com",
-          lastName: "Mario",
-          firstName: "Super",
-          isVIP: null,
-          lastLoginAt: null,
-          ltv: null,
-          userId: null,
+          email: ["mario@example.com"],
+          lastName: ["Mario"],
+          firstName: ["Super"],
+          isVIP: [null],
+          lastLoginAt: [null],
+          ltv: [null],
+          userId: [null],
         });
         expect(importB.oldGroupGuids).toEqual([]);
         expect(importB.newGroupGuids).toEqual([group.guid]);

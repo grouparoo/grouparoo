@@ -109,7 +109,7 @@ export default function ProfilePreview(props) {
   let email;
   for (const key in profile.properties) {
     if (profile.properties[key].type === "email") {
-      email = profile.properties[key].value;
+      email = profile.properties[key].values[0];
     }
   }
 
@@ -147,10 +147,12 @@ export default function ProfilePreview(props) {
               <ListGroup.Item key={`profile-prop-${k}`} variant="light">
                 <strong>{k}</strong>:{" "}
                 {profile.properties[k]?.type === "date"
-                  ? profile.properties[k].value
-                    ? new Date(profile.properties[k].value).toLocaleString()
+                  ? profile.properties[k]?.values[0]
+                    ? new Date(
+                        profile.properties[k]?.values[0]
+                      ).toLocaleString()
                     : null
-                  : profile.properties[k]?.value?.toString()}
+                  : profile.properties[k]?.values?.slice(0, 10).join(", ")}
               </ListGroup.Item>
             ))}
           </ListGroup>

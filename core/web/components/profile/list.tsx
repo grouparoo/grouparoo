@@ -10,6 +10,7 @@ import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { ProfileAPIData } from "../../utils/apiData";
+import ArrayProfilePropertyList from "../../components/profile/arrayProfilePropertyList";
 
 export default function ProfilesList(props) {
   const { pathname, query, errorHandler, profilePropertyRules } = props;
@@ -228,28 +229,34 @@ export default function ProfilesList(props) {
                     as={`/profile/${profile.guid}/edit`}
                   >
                     <a>
-                      {searchKey === "" ? (
-                        uniqueProfileProperties.map((key) => {
-                          if (!profile.properties[key]) {
-                            return null;
-                          }
+                      {uniqueProfileProperties.map((key) => {
+                        if (!profile.properties[key]) {
+                          return null;
+                        }
 
-                          return (
-                            <div key={`key-${profile.guid}-${key}`}>
-                              <span className="text-muted">
-                                {key}: {String(profile.properties[key].value)}
-                              </span>
-                              <br />
-                            </div>
-                          );
-                        })
-                      ) : (
+                        return (
+                          <div key={`key-${profile.guid}-${key}`}>
+                            <span className="text-muted">
+                              {key}:{" "}
+                              <ArrayProfilePropertyList
+                                type={profile.properties[key].type}
+                                values={profile.properties[key].values}
+                              />
+                            </span>
+                            <br />
+                          </div>
+                        );
+                      })}
+                      {searchKey === "" ? null : (
                         <div key={`key-${profile.guid}-${searchKey}`}>
                           <span className="text-muted">
                             {searchKey}:{" "}
-                            {profile.properties[searchKey]
-                              ? profile.properties[searchKey]?.value?.toString()
-                              : null}
+                            {profile.properties[searchKey] ? (
+                              <ArrayProfilePropertyList
+                                type={profile.properties[searchKey].type}
+                                values={profile.properties[searchKey].values}
+                              />
+                            ) : null}
                           </span>
                           <br />
                         </div>
@@ -283,9 +290,13 @@ export default function ProfilesList(props) {
   );
 }
 
-ProfilesList.hydrate = async (ctx, searchKey?, searchValue?) => {
+ProfilesList.hydrate = async (
+  ctx,
+  _searchKey?: string,
+  _searchValue?: string
+) => {
   const { execApi } = useApi(ctx);
-  const { guid, limit, offset } = ctx.query;
+  const { guid, limit, offset, searchKey, searchValue } = ctx.query;
 
   let groupGuid: string;
   if (guid) {
@@ -296,8 +307,8 @@ ProfilesList.hydrate = async (ctx, searchKey?, searchValue?) => {
   const { profiles, total } = await execApi("get", `/profiles`, {
     limit,
     offset,
-    searchKey,
-    searchValue,
+    searchKey: searchKey || _searchKey,
+    searchValue: searchValue || _searchValue,
     groupGuid,
   });
   const { profilePropertyRules } = await execApi(

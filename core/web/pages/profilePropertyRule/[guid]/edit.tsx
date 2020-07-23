@@ -217,6 +217,14 @@ export default function Page(props) {
                 onChange={(e) => update(e)}
               />
             </Form.Group>
+            <Form.Group controlId="isArray">
+              <Form.Check
+                type="checkbox"
+                label="Is Array?"
+                checked={profilePropertyRule.isArray}
+                onChange={(e) => update(e)}
+              />
+            </Form.Group>
             <Form.Group controlId="sourceGuid">
               <Form.Label>Profile Property Rule Source</Form.Label>
               <Form.Control
@@ -397,6 +405,7 @@ export default function Page(props) {
                       <Badge variant="light">{`{{ createdAt }}`}</Badge>&nbsp;
                       <Badge variant="light">{`{{ updatedAt }}`}</Badge>&nbsp;
                       {profilePropertyRules
+                        .filter((rule) => rule.isArray === false)
                         .sort((a, b) => {
                           if (a.key > b.key) {
                             return 1;

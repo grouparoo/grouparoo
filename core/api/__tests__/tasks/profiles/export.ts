@@ -56,7 +56,7 @@ describe("tasks/profile:export", () => {
         helper.disableTestPluginImport();
 
         profile = await helper.factories.profile();
-        await profile.addOrUpdateProperties({ email: "mario@example.com" });
+        await profile.addOrUpdateProperties({ email: ["mario@example.com"] });
 
         group = await helper.factories.group({
           name: "test group",

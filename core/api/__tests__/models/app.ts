@@ -353,7 +353,7 @@ describe("models/app", () => {
                 profile,
               }) => {
                 profilePropertyCount++;
-                return "test@example.com";
+                return ["test@example.com"];
               },
             },
           },

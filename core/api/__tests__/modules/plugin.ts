@@ -113,8 +113,8 @@ describe("modules/plugin", () => {
           createdAt: new Date(0),
         });
         await profile.addOrUpdateProperties({
-          userId: 5,
-          email: "luigi@example.com",
+          userId: [5],
+          email: ["luigi@example.com"],
         });
 
         const initialString =
@@ -182,7 +182,7 @@ describe("modules/plugin", () => {
         });
 
         expect(_import.guid).toBeTruthy();
-        expect(_import.data).toEqual({ firstName: "Peach" });
+        expect(_import.data).toEqual({ firstName: ["Peach"] });
         expect(_import.rawData).toEqual({
           first__name: "Peach",
           last__name: "Toadstool",

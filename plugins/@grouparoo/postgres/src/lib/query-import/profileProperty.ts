@@ -7,7 +7,6 @@ import {
 export const profileProperty: ProfilePropertyPluginMethod = async ({
   connection,
   profile,
-  appOptions,
   profilePropertyRule,
   profilePropertyRuleOptions,
 }) => {
@@ -27,8 +26,12 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   try {
     const { rows } = await connection.query(parameterizedQuery);
     if (rows && rows.length > 0) {
-      const row: { [key: string]: any } = rows[0];
-      response = Object.values(row)[0];
+      if (!profilePropertyRule.isArray) {
+        const row: { [key: string]: any } = rows[0];
+        response = [Object.values(row)[0]];
+      } else {
+        response = rows.map((row) => Object.values(row)[0]);
+      }
     }
   } catch (error) {
     throw new Error(

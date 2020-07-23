@@ -33,6 +33,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   let orderBy = "";
   switch (aggregationMethod) {
     case "exact":
+      if (sortColumn) orderBy = `"${sortColumn}" ASC`;
       break;
     case "average":
       aggSelect = `COALESCE(AVG(${aggSelect}), 0)`;
@@ -102,7 +103,7 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   }
 
   if (orderBy.length > 0) query += ` ORDER BY ${orderBy}`;
-  query += ` LIMIT 1`;
+  if (!profilePropertyRule.isArray) query += ` LIMIT 1`;
 
   let parameterizedQuery = "";
   try {
@@ -120,7 +121,11 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   try {
     const rows = await connection.asyncQuery(parameterizedQuery);
     if (rows && rows.length > 0) {
-      response = rows[0].__result;
+      if (!profilePropertyRule.isArray) {
+        response = [rows[0].__result];
+      } else {
+        response = rows.map((row) => row.__result);
+      }
     }
   } catch (error) {
     throw new Error(

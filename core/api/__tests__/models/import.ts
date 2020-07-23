@@ -30,7 +30,7 @@ describe("models/import", () => {
 
   test("the profile can be associated", async () => {
     const profile = await helper.factories.profile();
-    await profile.addOrUpdateProperties({ email: "mario@example.com" });
+    await profile.addOrUpdateProperties({ email: ["mario@example.com"] });
 
     const _import = await Import.create({
       data: { email: "mario@example.com" },

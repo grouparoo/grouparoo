@@ -107,6 +107,72 @@ describe("models/profileProperty", () => {
     expect(log.message).toBe('profileProperty "ltv" destroyed');
   });
 
+  describe("array properties", () => {
+    let purchasesRule: ProfilePropertyRule;
+
+    beforeAll(async () => {
+      purchasesRule = await ProfilePropertyRule.create({
+        sourceGuid: source.guid,
+        key: "purchases",
+        type: "string",
+        isArray: true,
+      });
+      await purchasesRule.setOptions({ column: "purchases" });
+      await purchasesRule.update({ state: "ready" });
+    });
+
+    afterAll(async () => {
+      await purchasesRule.destroy();
+    });
+
+    test("by default profile properties have a position of 0", async () => {
+      const property = await ProfileProperty.create({
+        profileGuid: profile.guid,
+        profilePropertyRuleGuid: purchasesRule.guid,
+        rawValue: "hat",
+      });
+      expect(property.position).toBe(0);
+      await property.destroy();
+    });
+
+    test("multiple values can be set with different positions", async () => {
+      const propertyA = await ProfileProperty.create({
+        profileGuid: profile.guid,
+        profilePropertyRuleGuid: purchasesRule.guid,
+        rawValue: "hat",
+        position: 1,
+      });
+      const propertyB = await ProfileProperty.create({
+        profileGuid: profile.guid,
+        profilePropertyRuleGuid: purchasesRule.guid,
+        rawValue: "shoe",
+        position: 0,
+      });
+      expect(propertyA.position).toBe(1);
+      expect(propertyB.position).toBe(0);
+      await propertyA.destroy();
+      await propertyB.destroy();
+    });
+
+    test("multiple values cannot re-use the same position", async () => {
+      const property = await ProfileProperty.create({
+        profileGuid: profile.guid,
+        profilePropertyRuleGuid: purchasesRule.guid,
+        rawValue: "hat",
+      });
+
+      await expect(
+        ProfileProperty.create({
+          profileGuid: profile.guid,
+          profilePropertyRuleGuid: purchasesRule.guid,
+          rawValue: "hat",
+        })
+      ).rejects.toThrow(/Validation error/);
+
+      await property.destroy();
+    });
+  });
+
   describe("type coercion", () => {
     test("strings", async () => {
       const profileProperty = new ProfileProperty({

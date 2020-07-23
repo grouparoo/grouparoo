@@ -13,7 +13,7 @@ function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
   const simpleProfileProperties = {};
   keys.forEach((key) => {
-    simpleProfileProperties[key] = complexProfileValues[key].value;
+    simpleProfileProperties[key] = complexProfileValues[key].values;
   });
   return simpleProfileProperties;
 }
@@ -203,11 +203,11 @@ describe("integration/happyPath", () => {
       expect(error).toBeUndefined();
       expect(profile.guid).toBeTruthy();
       expect(simpleProfileValues(profile.properties)).toEqual({
-        email: "luigi@example.com",
-        firstName: "Luigi",
-        lastName: "Mario",
-        ltv: 100.12,
-        userId: null,
+        email: ["luigi@example.com"],
+        firstName: ["Luigi"],
+        lastName: ["Mario"],
+        ltv: [100.12],
+        userId: [null],
       });
       profileGuid = profile.guid;
     });
@@ -283,9 +283,9 @@ describe("integration/happyPath", () => {
       );
       expect(listError).toBeUndefined();
       expect(profiles.length).toBe(1);
-      expect(simpleProfileValues(profiles[0].properties).email).toBe(
-        "luigi@example.com"
-      );
+      expect(simpleProfileValues(profiles[0].properties).email).toEqual([
+        "luigi@example.com",
+      ]);
     });
   });
 
@@ -358,9 +358,9 @@ describe("integration/happyPath", () => {
       );
       expect(listError).toBeUndefined();
       expect(profiles.length).toBe(1);
-      expect(simpleProfileValues(profiles[0].properties).email).toBe(
-        "luigi@example.com"
-      );
+      expect(simpleProfileValues(profiles[0].properties).email).toEqual([
+        "luigi@example.com",
+      ]);
     });
   });
 

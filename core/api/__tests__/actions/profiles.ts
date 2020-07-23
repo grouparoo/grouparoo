@@ -12,7 +12,7 @@ function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
   const simpleProfileProperties = {};
   keys.forEach((key) => {
-    simpleProfileProperties[key] = complexProfileValues[key].value;
+    simpleProfileProperties[key] = complexProfileValues[key].values;
   });
   return simpleProfileProperties;
 }
@@ -70,13 +70,13 @@ describe("actions/profiles", () => {
       expect(error).toBeUndefined();
       expect(profile.guid).toBeTruthy();
       expect(simpleProfileValues(profile.properties)).toEqual({
-        userId: 123,
-        email: "luigi@example.com",
-        firstName: "Luigi",
-        lastName: "Mario",
-        isVIP: null,
-        lastLoginAt: null,
-        ltv: null,
+        userId: [123],
+        email: ["luigi@example.com"],
+        firstName: ["Luigi"],
+        lastName: ["Mario"],
+        isVIP: [null],
+        lastLoginAt: [null],
+        ltv: [null],
       });
       guid = profile.guid;
     });
@@ -92,7 +92,7 @@ describe("actions/profiles", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(simpleProfileValues(profile.properties).userId).toBe(999);
+      expect(simpleProfileValues(profile.properties).userId).toEqual([999]);
     });
 
     test("a writer can add a new property to a profile", async () => {
@@ -110,13 +110,13 @@ describe("actions/profiles", () => {
       expect(error).toBeUndefined();
       expect(profile.guid).toBeTruthy();
       expect(simpleProfileValues(profile.properties)).toEqual({
-        userId: 999,
-        email: "luigi@example.com",
-        firstName: "Luigi",
-        lastName: "Mario",
-        ltv: 123.45,
-        isVIP: null,
-        lastLoginAt: null,
+        userId: [999],
+        email: ["luigi@example.com"],
+        firstName: ["Luigi"],
+        lastName: ["Mario"],
+        ltv: [123.45],
+        isVIP: [null],
+        lastLoginAt: [null],
       });
     });
 
@@ -133,13 +133,13 @@ describe("actions/profiles", () => {
       expect(error).toBeUndefined();
       expect(profile.guid).toBeTruthy();
       expect(simpleProfileValues(profile.properties)).toEqual({
-        userId: 999,
-        email: "luigi@example.com",
-        firstName: "Luigi",
-        lastName: "Mario",
-        isVIP: null,
-        ltv: null,
-        lastLoginAt: null,
+        userId: [999],
+        email: ["luigi@example.com"],
+        firstName: ["Luigi"],
+        lastName: ["Mario"],
+        isVIP: [null],
+        ltv: [null],
+        lastLoginAt: [null],
       });
     });
 
@@ -153,7 +153,7 @@ describe("actions/profiles", () => {
       );
       expect(error).toBeUndefined();
       expect(profiles.length).toBe(1);
-      expect(simpleProfileValues(profiles[0].properties).userId).toBe(999);
+      expect(simpleProfileValues(profiles[0].properties).userId).toEqual([999]);
       expect(total).toBe(1);
     });
 
@@ -407,22 +407,22 @@ describe("actions/profiles", () => {
         );
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(4);
-        expect(simpleProfileValues(profiles[0].properties).email).toBe(
-          "mario@example.com"
-        );
-        expect(simpleProfileValues(profiles[0].properties).userId).toBe(1);
-        expect(simpleProfileValues(profiles[1].properties).email).toBe(
-          "luigi@example.com"
-        );
-        expect(simpleProfileValues(profiles[1].properties).userId).toBe(2);
-        expect(simpleProfileValues(profiles[2].properties).email).toBe(
-          "toad@mushroom-kingdom.gov"
-        );
-        expect(simpleProfileValues(profiles[2].properties).userId).toBe(3);
-        expect(simpleProfileValues(profiles[3].properties).email).toBe(
-          "peach@mushroom-kingdom.gov"
-        );
-        expect(simpleProfileValues(profiles[3].properties).userId).toBe(4);
+        expect(simpleProfileValues(profiles[0].properties).email).toEqual([
+          "mario@example.com",
+        ]);
+        expect(simpleProfileValues(profiles[0].properties).userId).toEqual([1]);
+        expect(simpleProfileValues(profiles[1].properties).email).toEqual([
+          "luigi@example.com",
+        ]);
+        expect(simpleProfileValues(profiles[1].properties).userId).toEqual([2]);
+        expect(simpleProfileValues(profiles[2].properties).email).toEqual([
+          "toad@mushroom-kingdom.gov",
+        ]);
+        expect(simpleProfileValues(profiles[2].properties).userId).toEqual([3]);
+        expect(simpleProfileValues(profiles[3].properties).email).toEqual([
+          "peach@mushroom-kingdom.gov",
+        ]);
+        expect(simpleProfileValues(profiles[3].properties).userId).toEqual([4]);
         expect(total).toBe(4);
       });
 
@@ -437,14 +437,14 @@ describe("actions/profiles", () => {
         );
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(2);
-        expect(simpleProfileValues(profiles[0].properties).email).toBe(
-          "mario@example.com"
-        );
-        expect(simpleProfileValues(profiles[0].properties).userId).toBe(1);
-        expect(simpleProfileValues(profiles[1].properties).email).toBe(
-          "peach@mushroom-kingdom.gov"
-        );
-        expect(simpleProfileValues(profiles[1].properties).userId).toBe(4);
+        expect(simpleProfileValues(profiles[0].properties).email).toEqual([
+          "mario@example.com",
+        ]);
+        expect(simpleProfileValues(profiles[0].properties).userId).toEqual([1]);
+        expect(simpleProfileValues(profiles[1].properties).email).toEqual([
+          "peach@mushroom-kingdom.gov",
+        ]);
+        expect(simpleProfileValues(profiles[1].properties).userId).toEqual([4]);
         expect(total).toBe(2);
       });
 
@@ -460,9 +460,9 @@ describe("actions/profiles", () => {
         );
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(1);
-        expect(simpleProfileValues(profiles[0].properties).email).toBe(
-          "peach@mushroom-kingdom.gov"
-        );
+        expect(simpleProfileValues(profiles[0].properties).email).toEqual([
+          "peach@mushroom-kingdom.gov",
+        ]);
         expect(
           simpleProfileValues(profiles[0].properties).userId
         ).toBeUndefined();
@@ -481,9 +481,9 @@ describe("actions/profiles", () => {
         );
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(1);
-        expect(simpleProfileValues(profiles[0].properties).email).toBe(
-          "peach@mushroom-kingdom.gov"
-        );
+        expect(simpleProfileValues(profiles[0].properties).email).toEqual([
+          "peach@mushroom-kingdom.gov",
+        ]);
         expect(
           simpleProfileValues(profiles[0].properties).userId
         ).toBeUndefined();
@@ -503,9 +503,9 @@ describe("actions/profiles", () => {
         );
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(1);
-        expect(simpleProfileValues(profiles[0].properties).email).toBe(
-          "peach@mushroom-kingdom.gov"
-        );
+        expect(simpleProfileValues(profiles[0].properties).email).toEqual([
+          "peach@mushroom-kingdom.gov",
+        ]);
         expect(
           simpleProfileValues(profiles[0].properties).userId
         ).toBeUndefined();
@@ -527,9 +527,9 @@ describe("actions/profiles", () => {
         );
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(1);
-        expect(simpleProfileValues(profiles[0].properties).email).toBe(
-          "peach@mushroom-kingdom.gov"
-        );
+        expect(simpleProfileValues(profiles[0].properties).email).toEqual([
+          "peach@mushroom-kingdom.gov",
+        ]);
         expect(
           simpleProfileValues(profiles[0].properties).userId
         ).toBeUndefined();
@@ -581,9 +581,9 @@ describe("actions/profiles", () => {
         );
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(1);
-        expect(simpleProfileValues(profiles[0].properties).email).toBe(
-          "peach@mushroom-kingdom.gov"
-        );
+        expect(simpleProfileValues(profiles[0].properties).email).toEqual([
+          "peach@mushroom-kingdom.gov",
+        ]);
         expect(
           simpleProfileValues(profiles[0].properties).userId
         ).toBeUndefined();
@@ -663,8 +663,8 @@ describe("actions/profiles", () => {
       const profile = new Profile();
       await profile.save();
       await profile.addOrUpdateProperties({
-        firstName: "Toad",
-        email: "toad@example.com",
+        firstName: ["Toad"],
+        email: ["toad@example.com"],
       });
       guid = profile.guid;
 
@@ -740,8 +740,8 @@ describe("actions/profiles", () => {
       expect(error).toBeUndefined();
       expect(profile.guid).toBeTruthy();
       expect(simpleProfileValues(profile.properties)).toEqual({
-        firstName: "Toad",
-        email: "toad@example.com",
+        firstName: ["Toad"],
+        email: ["toad@example.com"],
       });
     });
 

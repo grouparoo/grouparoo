@@ -54,7 +54,7 @@ export namespace GroupOps {
     const oldProfileProperties = [];
     const properties = await profile.properties();
     for (const key in properties) {
-      oldProfileProperties[key] = properties[key].value;
+      oldProfileProperties[key] = properties[key].values;
     }
 
     const oldGroupGuids = (await profile.$get("groups")).map((g) => g.guid);

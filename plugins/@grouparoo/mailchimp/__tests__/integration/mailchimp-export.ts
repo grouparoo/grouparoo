@@ -67,10 +67,10 @@ describe("integration/runs/mailchimp", () => {
   beforeAll(async () => {
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({
-      email: "luigi@grouparoo.com",
-      firstName: "Luigi",
-      lastName: "Mario",
-      userId: 100,
+      email: ["luigi@grouparoo.com"],
+      firstName: ["Luigi"],
+      lastName: ["Mario"],
+      userId: [100],
     });
   });
 

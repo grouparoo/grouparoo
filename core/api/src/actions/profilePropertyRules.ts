@@ -126,6 +126,7 @@ export class ProfilePropertyRuleCreate extends AuthenticatedAction {
       key: { required: false },
       type: { required: true },
       unique: { required: false },
+      isArray: { required: false },
       state: { required: false },
       sourceGuid: { required: false },
       options: { required: false },
@@ -138,6 +139,7 @@ export class ProfilePropertyRuleCreate extends AuthenticatedAction {
       key: params.key,
       type: params.type,
       unique: params.unique,
+      isArray: params.isArray,
       sourceGuid: params.sourceGuid,
     });
 
@@ -162,6 +164,7 @@ export class ProfilePropertyRuleEdit extends AuthenticatedAction {
       key: { required: false },
       type: { required: false },
       unique: { required: false },
+      isArray: { required: false },
       state: { required: false },
       sourceGuid: { required: false },
       options: { required: false },
@@ -278,10 +281,10 @@ export class ProfilePropertyRuleProfilePreview extends AuthenticatedAction {
     const apiData = await profile.apiData();
     const source = await profilePropertyRule.$get("source");
 
-    let newProperty: string | number | boolean | Date;
+    let newPropertyValues: Array<string | number | boolean | Date>;
     let errorMessage: string;
     try {
-      newProperty = await source.importProfileProperty(
+      newPropertyValues = await source.importProfileProperty(
         profile,
         profilePropertyRule,
         parsedOptions,
@@ -293,7 +296,7 @@ export class ProfilePropertyRuleProfilePreview extends AuthenticatedAction {
 
     apiData.properties[profilePropertyRule.key] = {
       guid: profilePropertyRule.guid,
-      value: newProperty,
+      values: newPropertyValues,
       type: profilePropertyRule.type,
       unique: profilePropertyRule.unique,
       createdAt: new Date(),

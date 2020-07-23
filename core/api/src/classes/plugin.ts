@@ -124,11 +124,9 @@ export interface ProfilePropertyPluginMethod {
   }): Promise<ProfilePropertyPluginMethodResponse>;
 }
 
-export type ProfilePropertyPluginMethodResponse =
-  | string
-  | number
-  | boolean
-  | Date;
+export type ProfilePropertyPluginMethodResponse = Array<
+  string | number | boolean | Date
+>;
 
 /**
  * Method to export a single profile to a destination

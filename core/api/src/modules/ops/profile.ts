@@ -6,40 +6,52 @@ import { Group } from "../../models/Group";
 import { Destination } from "../../models/Destination";
 import { log } from "actionhero";
 import { waitForLock } from "../locks";
+export interface ProfilePropertyType {
+  [key: string]: {
+    guid: string;
+    values: Array<string | number | boolean | Date>;
+    type: string;
+    unique: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+}
 
 export namespace ProfileOps {
   /**
    * Get the Properties of this Profile
    */
-  export async function properties(
-    profile: Profile
-  ): Promise<{
-    [key: string]: {
-      guid: string;
-      value: any;
-      type: string;
-      unique: boolean;
-      createdAt: Date;
-      updatedAt: Date;
-    };
-  }> {
+  export async function properties(profile: Profile) {
     const profileProperties =
       profile.profileProperties ||
-      (await ProfileProperty.findAll({ where: { profileGuid: profile.guid } }));
+      (await ProfileProperty.findAll({
+        where: { profileGuid: profile.guid },
+        order: [["position", "ASC"]],
+      }));
 
-    const hash = {};
+    const hash: ProfilePropertyType = {};
     for (const i in profileProperties) {
       try {
         const rule = await profileProperties[i].cachedProfilePropertyRule();
         const key = rule.key;
-        hash[key] = {
-          guid: profileProperties[i].profilePropertyRuleGuid,
-          value: await profileProperties[i].getValue(),
-          type: rule.type,
-          unique: rule.unique,
-          createdAt: profileProperties[i].createdAt,
-          updatedAt: profileProperties[i].updatedAt,
-        };
+        if (!hash[key]) {
+          hash[key] = {
+            guid: profileProperties[i].profilePropertyRuleGuid,
+            values: [],
+            type: rule.type,
+            unique: rule.unique,
+            createdAt: profileProperties[i].createdAt,
+            updatedAt: profileProperties[i].updatedAt,
+          };
+        }
+
+        hash[key].values.push(await profileProperties[i].getValue());
+        if (hash[key].createdAt > profileProperties[i].createdAt) {
+          hash[key].createdAt = profileProperties[i].createdAt;
+        }
+        if (hash[key].updatedAt < profileProperties[i].updatedAt) {
+          hash[key].updatedAt = profileProperties[i].updatedAt;
+        }
       } catch (error) {
         if (
           error
@@ -64,10 +76,10 @@ export namespace ProfileOps {
    */
   export async function addOrUpdateProperty(
     profile: Profile,
-    hash: { [key: string]: any }
+    hash: { [key: string]: Array<string | number | boolean | Date> }
   ) {
     const key = Object.keys(hash)[0];
-    const value = hash[key];
+    const values = hash[key];
 
     // ignore reserved property key
     if (key === "_meta") {
@@ -82,19 +94,88 @@ export namespace ProfileOps {
     }
 
     // Note: Lifecycle hooks do not fire on upserts, so we need to manually check if the property exists or not
-    let property = await ProfileProperty.findOne({
-      where: { profileGuid: profile.guid, profilePropertyRuleGuid: rule.guid },
-    });
 
-    if (!property) {
-      property = new ProfileProperty({
-        profileGuid: profile.guid,
-        profilePropertyRuleGuid: rule.guid,
+    if (rule.isArray) {
+      let properties = await ProfileProperty.findAll({
+        where: {
+          profileGuid: profile.guid,
+          profilePropertyRuleGuid: rule.guid,
+        },
       });
+
+      const existingValues = await Promise.all(
+        properties.map((property) => property.getValue())
+      );
+
+      if (arraysAreEqual(existingValues, values)) {
+        return;
+      } else {
+        await Promise.all(properties.map((property) => property.destroy()));
+        let position = 0;
+        for (const i in values) {
+          const value = values[i];
+          const property = new ProfileProperty({
+            profileGuid: profile.guid,
+            profilePropertyRuleGuid: rule.guid,
+            position,
+          });
+          await property.setValue(value);
+          await property.save();
+          position++;
+        }
+      }
+    } else {
+      if (values.length > 1) {
+        throw new Error(
+          "cannot set multiple profile properties for a non-array profile property rule"
+        );
+      }
+      const value = values[0];
+
+      let property = await ProfileProperty.findOne({
+        where: {
+          profileGuid: profile.guid,
+          profilePropertyRuleGuid: rule.guid,
+        },
+      });
+
+      if (!property) {
+        property = new ProfileProperty({
+          profileGuid: profile.guid,
+          profilePropertyRuleGuid: rule.guid,
+        });
+      }
+
+      await property.setValue(value);
+      await property.save();
     }
 
-    await property.setValue(value);
-    await property.save();
+    return profile;
+  }
+
+  /**
+   * Add or Update a Property on this Profile
+   */
+  export async function addOrUpdateProperties(
+    profile: Profile,
+    properties: { [key: string]: Array<string | number | boolean | Date> | any }
+  ) {
+    await profile.save();
+
+    const keys = Object.keys(properties);
+    for (const i in keys) {
+      if (keys[i] === "guid") {
+        continue;
+      }
+
+      const h = {};
+      h[keys[i]] = Array.isArray(properties[keys[i]])
+        ? properties[keys[i]]
+        : [properties[keys[i]]];
+
+      await profile.addOrUpdateProperty(h);
+    }
+
     return profile;
   }
 
@@ -109,36 +190,13 @@ export namespace ProfileOps {
       return;
     }
 
-    const property = await ProfileProperty.findOne({
+    const properties = await ProfileProperty.findAll({
       where: { profileGuid: profile.guid, profilePropertyRuleGuid: rule.guid },
     });
 
-    if (property) {
-      await property.destroy();
+    for (const i in properties) {
+      await properties[i].destroy();
     }
-  }
-
-  /**
-   * Add or Update a Property on this Profile
-   */
-  export async function addOrUpdateProperties(
-    profile: Profile,
-    properties: { [key: string]: any }
-  ) {
-    await profile.save();
-
-    const keys = Object.keys(properties);
-    for (const i in keys) {
-      if (keys[i] === "guid") {
-        continue;
-      }
-
-      const h = {};
-      h[keys[i]] = properties[keys[i]];
-      await profile.addOrUpdateProperty(h);
-    }
-
-    return profile;
   }
 
   /**
@@ -210,7 +268,7 @@ export namespace ProfileOps {
     const properties = await profile.properties();
     const simpleProperties = {};
     for (const i in properties) {
-      simpleProperties[i] = properties[i].value;
+      simpleProperties[i] = properties[i].values;
     }
 
     if (!force) {
@@ -218,7 +276,7 @@ export namespace ProfileOps {
       oldGroups = groups;
 
       for (const i in oldProperties) {
-        oldSimpleProperties[i] = oldProperties[i].value;
+        oldSimpleProperties[i] = oldProperties[i].values;
       }
     }
 
@@ -243,7 +301,7 @@ export namespace ProfileOps {
    * Hash looks like {email: "person@example.com", id: 123}
    */
   export async function findOrCreateByUniqueProfileProperties(hash: {
-    [key: string]: any;
+    [key: string]: Array<string | number | boolean | Date>;
   }) {
     let profile: Profile;
     let isNew: boolean;
@@ -257,9 +315,7 @@ export namespace ProfileOps {
       }
 
       // and the case when we are sending a profile guid directly
-      if (hash["guid"]) {
-        uniquePropertiesHash["guid"] = hash["guid"];
-      }
+      if (hash["guid"]) uniquePropertiesHash["guid"] = hash["guid"];
     });
 
     if (Object.keys(uniquePropertiesHash).length === 0) {
@@ -359,10 +415,14 @@ export namespace ProfileOps {
         !properties[key] ||
         (otherProperties[key]?.updatedAt?.getTime() >
           properties[key]?.updatedAt?.getTime() &&
-          otherProperties[key]?.value !== null &&
-          otherProperties[key]?.value !== undefined)
+          otherProperties[key].values.length > 0 &&
+          !(
+            otherProperties[key].values.length === 1 &&
+            (otherProperties[key].values[0] === null ||
+              otherProperties[key].values[0] === undefined)
+          ))
       ) {
-        newProperties[key] = otherProperties[key].value;
+        newProperties[key] = otherProperties[key].values;
       }
     }
 
@@ -385,5 +445,11 @@ export namespace ProfileOps {
     await releaseLockForOtherProfile();
 
     return profile;
+  }
+
+  function arraysAreEqual(a: Array<any>, b: Array<any>) {
+    return (
+      a.length === b.length && a.every((value, index) => value === b[index])
+    );
   }
 }

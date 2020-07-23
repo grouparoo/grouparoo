@@ -32,6 +32,11 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   @Column
   rawValue: string;
 
+  @AllowNull(false)
+  @Default(0)
+  @Column
+  position: number;
+
   @BelongsTo(() => Profile)
   profile: Profile;
 
@@ -44,6 +49,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
     return {
       profileGuid: this.profileGuid,
       profilePropertyRule: this.profilePropertyRule,
+      position: this.position,
       key: rule.key,
       value: await this.getValue(),
     };

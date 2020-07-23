@@ -60,6 +60,7 @@ interface ProfilePropertyRulesCache {
       key: string;
       type: string;
       unique: boolean;
+      isArray: boolean;
       sourceGuid: string;
       appGuid: string;
     };
@@ -147,6 +148,11 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @Default("draft")
   @Column(DataType.ENUM("draft", "ready"))
   state: string;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  isArray: boolean;
 
   @BelongsTo(() => Source)
   source: Source;
@@ -325,6 +331,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       unique: this.unique,
       options,
       filters,
+      isArray: this.isArray,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
     };
@@ -367,6 +374,13 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   static async ensureType(instance: ProfilePropertyRule) {
     if (!TYPES.includes(instance.type)) {
       throw new Error(`${instance.type} is not an allowed type`);
+    }
+  }
+
+  @BeforeSave
+  static async ensureNonArrayAndUnique(instance: ProfilePropertyRule) {
+    if (instance.isArray && instance.unique) {
+      throw new Error("unique profile properties cannot be arrays");
     }
   }
 
@@ -473,6 +487,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
           key: rule.key,
           type: rule.type,
           unique: rule.unique,
+          isArray: rule.isArray,
           sourceGuid: rule.sourceGuid,
           source: rule.source.appGuid,
         };

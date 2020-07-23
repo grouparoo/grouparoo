@@ -182,7 +182,7 @@ describe("integration/events", () => {
     const profiles = await Profile.findAll();
     expect(profiles.length).toBe(1);
     const properties = await profile.properties();
-    expect(properties["userId"].value).toBe(100);
+    expect(properties["userId"].values).toEqual([100]);
 
     const profileEvents = await profile.$get("events");
     expect(profileEvents.length).toBe(3);
@@ -203,7 +203,7 @@ describe("integration/events", () => {
     const profiles = await Profile.findAll();
     expect(profiles.length).toBe(1);
     const properties = await profile.properties();
-    expect(properties["userId"].value).toBe(100);
+    expect(properties["userId"].values).toEqual([100]);
 
     const profileEvents = await profile.$get("events");
     expect(profileEvents.length).toBe(4);
@@ -569,7 +569,7 @@ describe("integration/events", () => {
           await rule.setFilters([]);
           await profile.import();
           const properties = await profile.properties();
-          expect(properties["test-rule"].value).toBe(4);
+          expect(properties["test-rule"].values).toEqual([4]);
         });
 
         test("profile properties will be imported (with filter)", async () => {
@@ -578,14 +578,14 @@ describe("integration/events", () => {
           ]);
           await profile.import();
           let properties = await profile.properties();
-          expect(properties["test-rule"].value).toBe(3);
+          expect(properties["test-rule"].values).toEqual([3]);
 
           await rule.setFilters([
             { key: "[data]-path", op: "does not contain", match: "/" },
           ]);
           await profile.import();
           properties = await profile.properties();
-          expect(properties["test-rule"].value).toBe(0);
+          expect(properties["test-rule"].values).toEqual([0]);
         });
       });
 
@@ -604,7 +604,7 @@ describe("integration/events", () => {
           });
           await profile.import();
           const properties = await profile.properties();
-          expect(properties["test-rule"].value).toBe("/mobile-sign-in");
+          expect(properties["test-rule"].values).toEqual(["/mobile-sign-in"]);
         });
 
         test("least recent value", async () => {
@@ -615,7 +615,7 @@ describe("integration/events", () => {
           });
           await profile.import();
           const properties = await profile.properties();
-          expect(properties["test-rule"].value).toBe("/");
+          expect(properties["test-rule"].values).toEqual(["/"]);
         });
 
         test("avg", async () => {
@@ -626,7 +626,7 @@ describe("integration/events", () => {
           });
           await profile.import();
           const properties = await profile.properties();
-          expect(properties["test-rule"].value).toBe(125);
+          expect(properties["test-rule"].values).toEqual([125]);
         });
 
         test("count", async () => {
@@ -637,7 +637,7 @@ describe("integration/events", () => {
           });
           await profile.import();
           const properties = await profile.properties();
-          expect(properties["test-rule"].value).toBe(4);
+          expect(properties["test-rule"].values).toEqual([4]);
         });
 
         test("sum", async () => {
@@ -648,7 +648,7 @@ describe("integration/events", () => {
           });
           await profile.import();
           const properties = await profile.properties();
-          expect(properties["test-rule"].value).toBe(500);
+          expect(properties["test-rule"].values).toEqual([500]);
         });
 
         test("min", async () => {
@@ -659,7 +659,7 @@ describe("integration/events", () => {
           });
           await profile.import();
           const properties = await profile.properties();
-          expect(properties["test-rule"].value).toBe(100);
+          expect(properties["test-rule"].values).toEqual([100]);
         });
 
         test("max", async () => {
@@ -670,7 +670,7 @@ describe("integration/events", () => {
           });
           await profile.import();
           const properties = await profile.properties();
-          expect(properties["test-rule"].value).toBe(200);
+          expect(properties["test-rule"].values).toEqual([200]);
         });
       });
     });

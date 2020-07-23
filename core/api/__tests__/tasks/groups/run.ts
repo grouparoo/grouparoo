@@ -47,31 +47,31 @@ describe("tasks/group:run", () => {
       toad = await Profile.create();
 
       await mario.addOrUpdateProperties({
-        userId: 1,
-        firstName: "Mario",
-        lastName: "Mario",
-        email: "mario@example.com",
+        userId: [1],
+        firstName: ["Mario"],
+        lastName: ["Mario"],
+        email: ["mario@example.com"],
       });
 
       await luigi.addOrUpdateProperties({
-        userId: 2,
-        firstName: "Luigi",
-        lastName: "Mario",
-        email: "luigi@example.com",
+        userId: [2],
+        firstName: ["Luigi"],
+        lastName: ["Mario"],
+        email: ["luigi@example.com"],
       });
 
       await peach.addOrUpdateProperties({
-        userId: 3,
-        firstName: "Peach",
-        lastName: "Toadstool",
-        email: "peach@example.com",
+        userId: [3],
+        firstName: ["Peach"],
+        lastName: ["Toadstool"],
+        email: ["peach@example.com"],
       });
 
       await toad.addOrUpdateProperties({
-        userId: 4,
-        firstName: "Toad",
-        lastName: "Toadstool",
-        email: "toad@example.com",
+        userId: [4],
+        firstName: ["Toad"],
+        lastName: ["Toadstool"],
+        email: ["toad@example.com"],
       });
     });
 

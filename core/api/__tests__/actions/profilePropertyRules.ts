@@ -67,6 +67,26 @@ describe("actions/profilePropertyRules", () => {
       ]);
     });
 
+    test("an administrator cannot make a new profilePropertyRule that is both unique and an array", async () => {
+      connection.params = {
+        csrfToken,
+        sourceGuid: source.guid,
+        key: "email",
+        type: "string",
+        unique: "true",
+        isArray: "true",
+      };
+
+      const { error } = await specHelper.runAction(
+        "profilePropertyRule:create",
+        connection
+      );
+
+      expect(error.message).toMatch(
+        /unique profile properties cannot be arrays/
+      );
+    });
+
     test("an administrator can create a new profilePropertyRule", async () => {
       connection.params = {
         csrfToken,
@@ -86,6 +106,7 @@ describe("actions/profilePropertyRules", () => {
       expect(profilePropertyRule.guid).toBeTruthy();
       expect(profilePropertyRule.key).toBe("email");
       expect(profilePropertyRule.unique).toBe(true);
+      expect(profilePropertyRule.isArray).toBe(false);
       expect(profilePropertyRule.state).toBe("draft");
       expect(profilePropertyRule.source.guid).toBe(source.guid);
       expect(pluginOptions[0].key).toBe("column");
@@ -106,6 +127,7 @@ describe("actions/profilePropertyRules", () => {
 
       expect(error).toBeUndefined();
       expect(profilePropertyRule.key).toBe("email");
+      expect(profilePropertyRule.isArray).toBe(false);
       expect(profilePropertyRule.unique).toBe(true);
       expect(profilePropertyRule.source.guid).toBe(source.guid);
       expect(pluginOptions[0].key).toBe("column");
@@ -221,7 +243,7 @@ describe("actions/profilePropertyRules", () => {
 
     test("an administrator can list all the profilePropertyRules with examples", async () => {
       const profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ email: "person@example.com" });
+      await profile.addOrUpdateProperties({ email: ["person@example.com"] });
 
       connection.params = {
         csrfToken,
@@ -316,7 +338,7 @@ describe("actions/profilePropertyRules", () => {
 
     test("an administrator can see a profile preview of a profile property rule", async () => {
       const _profile = await helper.factories.profile();
-      await _profile.addOrUpdateProperties({ userId: 1001 });
+      await _profile.addOrUpdateProperties({ userId: [1001] });
 
       const originalProperties = _profile.properties();
       expect(originalProperties["email"]).toBeFalsy();
@@ -331,7 +353,7 @@ describe("actions/profilePropertyRules", () => {
       );
       expect(error).toBeUndefined();
       expect(profile.guid).toBe(_profile.guid);
-      expect(profile.properties["email"].value).toBeTruthy();
+      expect(profile.properties["email"].values).toBeTruthy();
 
       await _profile.destroy();
     });

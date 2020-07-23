@@ -36,17 +36,17 @@ describe("tasks/group:destroy", () => {
       luigi = await Profile.create();
 
       await mario.addOrUpdateProperties({
-        userId: 1,
-        firstName: "Mario",
-        lastName: "Mario",
-        email: "mario@example.com",
+        userId: [1],
+        firstName: ["Mario"],
+        lastName: ["Mario"],
+        email: ["mario@example.com"],
       });
 
       await luigi.addOrUpdateProperties({
-        userId: 2,
-        firstName: "Luigi",
-        lastName: "Mario",
-        email: "luigi@example.com",
+        userId: [2],
+        firstName: ["Luigi"],
+        lastName: ["Mario"],
+        email: ["luigi@example.com"],
       });
     });
 

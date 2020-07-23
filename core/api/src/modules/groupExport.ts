@@ -2,6 +2,7 @@ import os from "os";
 import fs from "fs";
 import CsvStringify from "csv-stringify";
 import { log } from "actionhero";
+import { Profile } from "../models/Profile";
 import { Group } from "../models/Group";
 import { Run } from "../models/Run";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
@@ -11,11 +12,11 @@ import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
  */
 export async function groupExportToCSV(group: Group, limit = 1000) {
   // get the headers
-  const profilePropertyRuleKeys = (await ProfilePropertyRule.findAll())
+  const numberedProfilePropertyRuleKeys = (await ProfilePropertyRule.findAll())
     .map((rule) => rule.key)
     .sort();
   const columns = ["guid", "createdAt", "updatedAt"].concat(
-    profilePropertyRuleKeys
+    numberedProfilePropertyRuleKeys
   );
 
   // add the profiles
@@ -31,12 +32,16 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
     });
   }
 
-  async function buildCsvRowFromProperty(profile) {
+  async function buildCsvRowFromProperty(profile: Profile) {
     const properties = await profile.properties();
     const simpleProperties = {};
     for (const key in properties) {
-      simpleProperties[key] = properties[key].value;
+      simpleProperties[key] =
+        properties[key].values.length > 1
+          ? properties[key].values.join(", ")
+          : properties[key].values[0];
     }
+
     const row = Object.assign(
       {
         guid: profile.guid,
@@ -45,6 +50,7 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
       },
       simpleProperties
     );
+
     return row;
   }
 
@@ -68,6 +74,7 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
     "-" +
     new Date().getTime();
   const filename = `${os.tmpdir()}/group-export-${cleanName}.csv`;
+  if (fs.existsSync(filename)) fs.unlinkSync(filename);
   const fileStream = fs.createWriteStream(filename);
   const csvStream = CsvStringify({
     header: true,
