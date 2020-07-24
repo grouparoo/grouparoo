@@ -534,32 +534,25 @@ export class Group extends LoggedModel<Group> {
           api.sequelize.col(`rawValue`),
           profilePropertyRuleJSToSQLType(profilePropertyRule.type)
         );
+        const nullCheckedMatch =
+          match.toString().toLocaleLowerCase() === "null" ? null : match;
         switch (operation.op) {
           case "ne":
             reverseMatchWhere[Op.and].push(
-              api.sequelize.where(
-                castedValue,
-                match.toString().toLocaleLowerCase() === "null" ? null : match
-              )
+              api.sequelize.where(castedValue, nullCheckedMatch)
             );
             break;
           case "notLike":
             reverseMatchWhere[Op.and].push(
               api.sequelize.where(castedValue, {
-                [Op.like]:
-                  match.toString().toLocaleLowerCase() === "null"
-                    ? null
-                    : match,
+                [Op.like]: nullCheckedMatch,
               })
             );
             break;
           case "notILike":
             reverseMatchWhere[Op.and].push(
               api.sequelize.where(castedValue, {
-                [Op.iLike]:
-                  match.toString().toLocaleLowerCase() === "null"
-                    ? null
-                    : match,
+                [Op.iLike]: nullCheckedMatch,
               })
             );
             break;
