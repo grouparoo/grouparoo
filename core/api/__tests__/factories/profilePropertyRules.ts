@@ -10,6 +10,8 @@ export default async (
     lastLoginAt: "date",
     ltv: "float",
     isVIP: "boolean",
+    purchases: "string",
+    purchaseAmounts: "float",
   }
 ) => {
   const source = await SourceFactory();
@@ -26,11 +28,17 @@ export default async (
       unique = true;
     }
 
+    let isArray = false;
+    if (key === "purchases" || key === "purchaseAmounts") {
+      isArray = true;
+    }
+
     const ruleProps = {
       sourceGuid: source.guid,
       key,
       type,
       unique,
+      isArray,
     };
     const options = { column: key };
     await ProfilePropertyRuleFactory(source, ruleProps, options);

@@ -558,7 +558,6 @@ export class Group extends LoggedModel<Group> {
         const whereClause: string = api.sequelize.queryInterface.QueryGenerator.getWhereConditions(
           reverseMatchWhere
         );
-        console.log(whereClause);
 
         const affirmativeArrayMatch = api.sequelize.literal(
           `"ProfileMultipleAssociationShim"."guid" NOT IN (SELECT "profileGuid" FROM "profileProperties" WHERE ${whereClause})`

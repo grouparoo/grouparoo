@@ -77,6 +77,8 @@ describe("actions/profiles", () => {
         isVIP: [null],
         lastLoginAt: [null],
         ltv: [null],
+        purchaseAmounts: [null],
+        purchases: [null],
       });
       guid = profile.guid;
     });
@@ -117,6 +119,8 @@ describe("actions/profiles", () => {
         ltv: [123.45],
         isVIP: [null],
         lastLoginAt: [null],
+        purchaseAmounts: [null],
+        purchases: [null],
       });
     });
 
@@ -140,6 +144,8 @@ describe("actions/profiles", () => {
         isVIP: [null],
         ltv: [null],
         lastLoginAt: [null],
+        purchaseAmounts: [null],
+        purchases: [null],
       });
     });
 
@@ -322,11 +328,11 @@ describe("actions/profiles", () => {
     });
 
     describe("search", () => {
-      let mario;
-      let luigi;
-      let peach;
-      let toad;
-      let group;
+      let mario: Profile;
+      let luigi: Profile;
+      let peach: Profile;
+      let toad: Profile;
+      let group: Group;
 
       beforeAll(async () => {
         group = new Group({

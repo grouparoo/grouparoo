@@ -102,7 +102,6 @@ export class ProfilesList extends AuthenticatedAction {
         limit: params.limit,
         include: [{ model: ProfileProperty, where, required: requiredJoin }],
         order: params.order,
-        logging: true,
       });
 
       total = await Profile.count({

@@ -152,30 +152,6 @@ describe("modules/groupExport", () => {
     });
 
     describe("array properties", () => {
-      let source: Source;
-      let purchasesRule: ProfilePropertyRule;
-
-      beforeAll(async () => {
-        const source = await helper.factories.source();
-        await source.setOptions({ table: "test table" });
-        await source.setMapping({ id: "userId" });
-        await source.update({ state: "ready" });
-
-        const purchasesRule = await ProfilePropertyRule.create({
-          sourceGuid: source.guid,
-          key: "purchases",
-          type: "string",
-          isArray: true,
-        });
-        await purchasesRule.setOptions({ column: "purchases" });
-        await purchasesRule.update({ state: "ready" });
-      });
-
-      afterAll(async () => {
-        await purchasesRule.destroy();
-        await source.destroy();
-      });
-
       test("array properties are flattened into a comma-delimited list in a single CSV column", async () => {
         await mario.addOrUpdateProperties({ purchases: ["hat", "shell"] });
         const properties = await mario.properties();
