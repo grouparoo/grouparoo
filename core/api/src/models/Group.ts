@@ -428,6 +428,9 @@ export class Group extends LoggedModel<Group> {
     return GroupOps.countComponentMembersFromRules(this, rules);
   }
 
+  /**
+   * Build the where-clause for the query to determine Group membership
+   */
   async _buildGroupMemberQueryParts(
     rules?: GroupRuleWithKey[],
     matchType: "any" | "all" = this.matchType
@@ -436,9 +439,7 @@ export class Group extends LoggedModel<Group> {
       throw new Error("only calculated groups can be calculated");
     }
 
-    if (!rules) {
-      rules = await this.getRules();
-    }
+    if (!rules) rules = await this.getRules();
 
     const include = [];
     const wheres = [];
