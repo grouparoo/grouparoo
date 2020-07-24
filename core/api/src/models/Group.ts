@@ -520,6 +520,52 @@ export class Group extends LoggedModel<Group> {
         localWhereGroup[Op.and].push(todayBoundWhereGroup);
       }
 
+      // in the case of Array property negation, we also need to do a sub-query to subtract the profiles which would match the affirmative match for this match
+      if (
+        match !== null &&
+        match !== undefined &&
+        profilePropertyRules[key].isArray &&
+        ["ne", "notLike", "notILike"].includes(operation.op)
+      ) {
+        let reverseMatchWhere = {
+          [Op.and]: [{ profilePropertyRuleGuid: profilePropertyRule.guid }],
+        };
+        const castedValue = api.sequelize.cast(
+          api.sequelize.col(`rawValue`),
+          profilePropertyRuleJSToSQLType(profilePropertyRule.type)
+        );
+        switch (operation.op) {
+          case "ne":
+            reverseMatchWhere[Op.and].push(
+              api.sequelize.where(castedValue, match)
+            );
+            break;
+          case "notLike":
+            reverseMatchWhere[Op.and].push(
+              api.sequelize.where(castedValue, {
+                [Op.like]: match,
+              })
+            );
+            break;
+          case "notILike":
+            reverseMatchWhere[Op.and].push(
+              api.sequelize.where(castedValue, {
+                [Op.iLike]: match,
+              })
+            );
+            break;
+        }
+        const whereClause: string = api.sequelize.queryInterface.QueryGenerator.getWhereConditions(
+          reverseMatchWhere
+        );
+        console.log(whereClause);
+
+        const affirmativeArrayMatch = api.sequelize.literal(
+          `"ProfileMultipleAssociationShim"."guid" NOT IN (SELECT "profileGuid" FROM "profileProperties" WHERE ${whereClause})`
+        );
+        localWhereGroup[Op.and].push(affirmativeArrayMatch);
+      }
+
       wheres.push(localWhereGroup);
 
       include.push({
