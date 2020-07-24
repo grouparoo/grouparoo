@@ -8,7 +8,7 @@ cd ../..
 
 BAD_WORDS=()
 # Typos
-BAD_WORDS+=("gropuaroo" "groparoo")
+BAD_WORDS+=("gropuaroo" "groparoo" "grop" "grope" "instnces")
 # Offensive CS Terms
 BAD_WORDS+=("blacklist" "whitelist" "slave")
 
@@ -30,7 +30,7 @@ for word in "${BAD_WORDS[@]}"; do
     printf " ✅\n"
   else
     printf "🚫\n"
-    echo "> instnces of $word found:"
+    echo "> instances of $word found:"
     echo "---------------"
     echo "$MATCHES"
     echo "---------------"
