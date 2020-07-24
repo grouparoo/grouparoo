@@ -460,12 +460,20 @@ export class Group extends LoggedModel<Group> {
         relativeMatchUnit,
       } = rule;
       const localWhereGroup = {};
-      const rawValueMatch = {};
+      let rawValueMatch = {};
 
       if (match !== null && match !== undefined) {
         // rewrite null matches
         rawValueMatch[Op[operation.op]] =
           match.toString().toLocaleLowerCase() === "null" ? null : match;
+
+        // in the case of Array property negation, we also want to consider those profiles with the property never set
+        if (
+          profilePropertyRules[key].isArray &&
+          ["ne", "notLike", "notILike"].includes(operation.op)
+        ) {
+          rawValueMatch = { [Op.or]: [rawValueMatch, { [Op.eq]: null }] };
+        }
       } else if (relativeMatchNumber && !match) {
         const now = Moment();
         const timestamp = now[relativeMatchDirection](
@@ -526,9 +534,8 @@ export class Group extends LoggedModel<Group> {
       });
     }
 
-    if (rules.length === 0) {
-      wheres.push({ guid: "" });
-    }
+    if (rules.length === 0) wheres.push({ guid: "" });
+
     const joinType = matchType === "all" ? Op.and : Op.or;
     const whereContainer = {};
     whereContainer[joinType] = wheres;
