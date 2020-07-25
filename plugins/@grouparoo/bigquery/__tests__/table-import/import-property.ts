@@ -60,7 +60,9 @@ async function getPropertyValue(
 
   const profilePropertyRuleFilters = useProfilePropertyRuleFilters || [];
   const connection = await connect({ appOptions, app: null });
-  const profilePropertyRule = await ProfilePropertyRule.findOne();
+  const profilePropertyRule = await ProfilePropertyRule.findOne({
+    where: { key: "email" },
+  });
 
   return profileProperty({
     connection,
