@@ -406,6 +406,8 @@ describe("models/group", () => {
         ltv: [100.0],
         isVIP: [true],
         lastLoginAt: [new Date(0)],
+        purchases: ["mushroom", "star"],
+        purchaseAmounts: [50, 50],
       });
 
       await luigi.addOrUpdateProperties({
@@ -416,6 +418,8 @@ describe("models/group", () => {
         ltv: [50.01],
         isVIP: [false],
         lastLoginAt: [new Date()],
+        purchases: ["mushroom"],
+        purchaseAmounts: [50.01],
       });
 
       await peach.addOrUpdateProperties({
@@ -426,6 +430,8 @@ describe("models/group", () => {
         ltv: [999.99],
         isVIP: [true],
         lastLoginAt: [new Date(0)],
+        purchases: ["parasol"],
+        purchaseAmounts: [999.99],
       });
 
       await toad.addOrUpdateProperties({
@@ -436,7 +442,14 @@ describe("models/group", () => {
         ltv: [0],
         isVIP: [false],
         lastLoginAt: [new Date()],
+        purchases: [],
+        purchaseAmounts: [],
       });
+
+      await mario.buildNullProperties();
+      await luigi.buildNullProperties();
+      await peach.buildNullProperties();
+      await toad.buildNullProperties();
     });
 
     test("an empty calculated group can be created", async () => {
@@ -837,6 +850,70 @@ describe("models/group", () => {
           ]);
           expect(await group.countPotentialMembers()).toBe(0);
         });
+
+        test("array property exists", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "purchases", operation: { op: "exists" } },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(3);
+        });
+
+        test("array property does not exists", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "purchases", operation: { op: "notExists" } },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(1);
+        });
+
+        test("array property equals", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "purchases", match: "mushroom", operation: { op: "eq" } },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("array property not equals", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "purchases", match: "mushroom", operation: { op: "ne" } },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("array property like", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "purchases", match: "mush%", operation: { op: "like" } },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("array property not like", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "purchases", match: "sta%", operation: { op: "notLike" } },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(3);
+        });
+
+        test("array property iLike", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "purchases", match: "MUSH%", operation: { op: "iLike" } },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("array property not iLike", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "purchases", match: "STA%", operation: { op: "notILike" } },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(3);
+        });
       });
 
       describe("integers", () => {
@@ -988,6 +1065,54 @@ describe("models/group", () => {
             { key: "ltv", operation: { op: "notExists" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(0);
+        });
+
+        test("array property exists", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "purchaseAmounts", operation: { op: "exists" } },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(3);
+        });
+
+        test("array property does not exists", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "purchaseAmounts", operation: { op: "notExists" } },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(1);
+        });
+
+        test("array property equals", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "purchaseAmounts", match: 50, operation: { op: "eq" } },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(1);
+        });
+
+        test("array property not equals", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "purchaseAmounts", match: 50, operation: { op: "ne" } },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(3);
+        });
+
+        test("array property comparisons gt", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "purchaseAmounts", match: 50, operation: { op: "gt" } },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
+
+        test("array property comparisons lte", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "purchaseAmounts", match: 50, operation: { op: "lte" } },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(1);
         });
       });
 

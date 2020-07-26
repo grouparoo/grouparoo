@@ -151,6 +151,8 @@ describe("tasks/profile:importAndUpdate", () => {
           lastLoginAt: [null],
           ltv: [null],
           userId: [null],
+          purchases: [null],
+          purchaseAmounts: [null],
         });
         expect(importA.oldGroupGuids).toEqual([]);
         expect(importA.newGroupGuids).toEqual([group.guid]);
@@ -166,6 +168,8 @@ describe("tasks/profile:importAndUpdate", () => {
           lastLoginAt: [null],
           ltv: [null],
           userId: [null],
+          purchases: [null],
+          purchaseAmounts: [null],
         });
         expect(importB.oldGroupGuids).toEqual([]);
         expect(importB.newGroupGuids).toEqual([group.guid]);

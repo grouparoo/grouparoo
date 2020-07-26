@@ -158,7 +158,11 @@ export namespace GroupOps {
     );
 
     // we use ProfileMultipleAssociationShim as a shim model which has extra associations
-    return ProfileMultipleAssociationShim.count({ where, include });
+    return ProfileMultipleAssociationShim.count({
+      distinct: true,
+      where,
+      include,
+    });
   }
 
   /**

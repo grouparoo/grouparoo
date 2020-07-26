@@ -23,7 +23,7 @@ export class ProfilesList extends AuthenticatedAction {
       offset: { required: true, default: 0 },
       order: {
         required: false,
-        default: [["createdAt", "desc"]],
+        default: [["createdAt", "asc"]],
       },
     };
   }
@@ -78,6 +78,7 @@ export class ProfilesList extends AuthenticatedAction {
           guid: { [Op.in]: groupMembers.map((mem) => mem.profileGuid) },
         },
         include,
+        order: params.order,
       });
 
       total = await group.profilesCount({
@@ -100,6 +101,7 @@ export class ProfilesList extends AuthenticatedAction {
         offset: params.offset,
         limit: params.limit,
         include: [{ model: ProfileProperty, where, required: requiredJoin }],
+        order: params.order,
       });
 
       total = await Profile.count({

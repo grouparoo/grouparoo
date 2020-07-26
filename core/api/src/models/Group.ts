@@ -428,6 +428,9 @@ export class Group extends LoggedModel<Group> {
     return GroupOps.countComponentMembersFromRules(this, rules);
   }
 
+  /**
+   * Build the where-clause for the query to determine Group membership
+   */
   async _buildGroupMemberQueryParts(
     rules?: GroupRuleWithKey[],
     matchType: "any" | "all" = this.matchType
@@ -436,9 +439,7 @@ export class Group extends LoggedModel<Group> {
       throw new Error("only calculated groups can be calculated");
     }
 
-    if (!rules) {
-      rules = await this.getRules();
-    }
+    if (!rules) rules = await this.getRules();
 
     const include = [];
     const wheres = [];
@@ -459,12 +460,20 @@ export class Group extends LoggedModel<Group> {
         relativeMatchUnit,
       } = rule;
       const localWhereGroup = {};
-      const rawValueMatch = {};
+      let rawValueMatch = {};
 
       if (match !== null && match !== undefined) {
         // rewrite null matches
         rawValueMatch[Op[operation.op]] =
           match.toString().toLocaleLowerCase() === "null" ? null : match;
+
+        // in the case of Array property negation, we also want to consider those profiles with the property never set
+        if (
+          profilePropertyRules[key].isArray &&
+          ["ne", "notLike", "notILike"].includes(operation.op)
+        ) {
+          rawValueMatch = { [Op.or]: [rawValueMatch, { [Op.eq]: null }] };
+        }
       } else if (relativeMatchNumber && !match) {
         const now = Moment();
         const timestamp = now[relativeMatchDirection](
@@ -511,6 +520,53 @@ export class Group extends LoggedModel<Group> {
         localWhereGroup[Op.and].push(todayBoundWhereGroup);
       }
 
+      // in the case of Array property negation, we also need to do a sub-query to subtract the profiles which would match the affirmative match for this match
+      if (
+        match !== null &&
+        match !== undefined &&
+        profilePropertyRules[key].isArray &&
+        ["ne", "notLike", "notILike"].includes(operation.op)
+      ) {
+        let reverseMatchWhere = {
+          [Op.and]: [{ profilePropertyRuleGuid: profilePropertyRule.guid }],
+        };
+        const castedValue = api.sequelize.cast(
+          api.sequelize.col(`rawValue`),
+          profilePropertyRuleJSToSQLType(profilePropertyRule.type)
+        );
+        const nullCheckedMatch =
+          match.toString().toLocaleLowerCase() === "null" ? null : match;
+        switch (operation.op) {
+          case "ne":
+            reverseMatchWhere[Op.and].push(
+              api.sequelize.where(castedValue, nullCheckedMatch)
+            );
+            break;
+          case "notLike":
+            reverseMatchWhere[Op.and].push(
+              api.sequelize.where(castedValue, {
+                [Op.like]: nullCheckedMatch,
+              })
+            );
+            break;
+          case "notILike":
+            reverseMatchWhere[Op.and].push(
+              api.sequelize.where(castedValue, {
+                [Op.iLike]: nullCheckedMatch,
+              })
+            );
+            break;
+        }
+        const whereClause: string = api.sequelize.queryInterface.QueryGenerator.getWhereConditions(
+          reverseMatchWhere
+        );
+
+        const affirmativeArrayMatch = api.sequelize.literal(
+          `"ProfileMultipleAssociationShim"."guid" NOT IN (SELECT "profileGuid" FROM "profileProperties" WHERE ${whereClause})`
+        );
+        localWhereGroup[Op.and].push(affirmativeArrayMatch);
+      }
+
       wheres.push(localWhereGroup);
 
       include.push({
@@ -525,9 +581,8 @@ export class Group extends LoggedModel<Group> {
       });
     }
 
-    if (rules.length === 0) {
-      wheres.push({ guid: "" });
-    }
+    if (rules.length === 0) wheres.push({ guid: "" });
+
     const joinType = matchType === "all" ? Op.and : Op.or;
     const whereContainer = {};
     whereContainer[joinType] = wheres;

@@ -240,23 +240,23 @@ describe("models/profilePropertyRule", () => {
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
 
-    const purchasesRule = await ProfilePropertyRule.create({
+    const cartsRule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
-      key: "purchases",
+      key: "carts",
       type: "string",
       isArray: true,
     });
-    await purchasesRule.setOptions({ column: "purchases" });
-    await purchasesRule.update({ state: "ready" });
+    await cartsRule.setOptions({ column: "carts" });
+    await cartsRule.update({ state: "ready" });
 
     const rule = await ProfilePropertyRule.findOne({ where: { key: "email" } });
     await expect(
       rule.setOptions({
-        column: "{{purchases}}@example.com",
+        column: "{{carts}}@example.com",
       })
-    ).rejects.toThrow('missing mustache key "purchases"');
+    ).rejects.toThrow('missing mustache key "carts"');
 
-    await purchasesRule.destroy();
+    await cartsRule.destroy();
     await source.destroy();
   });
 
@@ -373,6 +373,8 @@ describe("models/profilePropertyRule", () => {
         "lastLoginAt",
         "lastName",
         "ltv",
+        "purchaseAmounts",
+        "purchases",
         "userId",
       ]);
     });
@@ -388,6 +390,8 @@ describe("models/profilePropertyRule", () => {
         "lastLoginAt",
         "lastName",
         "ltv",
+        "purchaseAmounts",
+        "purchases",
         "userId",
       ]);
     });

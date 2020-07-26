@@ -829,21 +829,6 @@ describe("models/profile", () => {
       await Profile.destroy({ truncate: true });
       await helper.factories.profilePropertyRules();
 
-      // add a array property too
-      const source = await helper.factories.source();
-      await source.setOptions({ table: "test table" });
-      await source.setMapping({ id: "userId" });
-      await source.update({ state: "ready" });
-
-      const purchasesRule = await ProfilePropertyRule.create({
-        sourceGuid: source.guid,
-        key: "purchases",
-        type: "string",
-        isArray: true,
-      });
-      await purchasesRule.setOptions({ column: "purchases" });
-      await purchasesRule.update({ state: "ready" });
-
       // create the profiles and events
       profileA = await helper.factories.profile();
       await profileA.import();
@@ -894,8 +879,8 @@ describe("models/profile", () => {
       const propertiesB = await profileB.properties();
       const eventsA = await profileA.$get("events");
       const eventsB = await profileB.$get("events");
-      expect(Object.keys(propertiesA).length).toBe(8);
-      expect(Object.keys(propertiesB).length).toBe(8);
+      expect(Object.keys(propertiesA).length).toBe(9);
+      expect(Object.keys(propertiesB).length).toBe(9);
       expect(eventsA.length).toBe(3);
       expect(eventsB.length).toBe(2);
     });
@@ -957,7 +942,7 @@ describe("models/profile", () => {
       const propertiesB = await profileB.properties();
       const eventsA = await profileA.$get("events");
       const eventsB = await profileB.$get("events");
-      expect(Object.keys(propertiesA).length).toBe(8);
+      expect(Object.keys(propertiesA).length).toBe(9);
       expect(Object.keys(propertiesB).length).toBe(0);
       expect(eventsA.length).toBe(5);
       expect(eventsB.length).toBe(0);
