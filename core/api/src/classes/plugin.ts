@@ -16,15 +16,15 @@ import {
   PluginConnectionScheduleOption,
 } from "../models/Schedule";
 
-export {
+export type {
   SimpleProfilePropertyRuleOptions,
   PluginConnectionProfilePropertyRuleOption,
   ProfilePropertyRuleFiltersWithKey,
 } from "../models/ProfilePropertyRule";
-export { PluginConnectionScheduleOption } from "../models/Schedule";
-export { SimpleAppOptions } from "../models/App";
-export { SimpleSourceOptions } from "../models/Source";
-export { SimpleDestinationOptions } from "../models/Destination";
+export type { PluginConnectionScheduleOption } from "../models/Schedule";
+export type { SimpleAppOptions } from "../models/App";
+export type { SimpleSourceOptions } from "../models/Source";
+export type { SimpleDestinationOptions } from "../models/Destination";
 
 /**
  * The plugin class
