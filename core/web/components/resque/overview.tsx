@@ -7,7 +7,7 @@ const refreshInterval = 1000 * 2;
 const maxSampleLength = 20;
 const samples = [];
 
-export default function (props) {
+export default function ResqueOverview(props) {
   const { errorHandler, query, successHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const [queues, setQueues] = useState({});

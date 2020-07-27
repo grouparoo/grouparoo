@@ -3,7 +3,7 @@ import Router from "next/router";
 import Loader from "../loader";
 import { useApi } from "../../hooks/useApi";
 
-export default function (props) {
+export default function SignOutForm(props) {
   const { errorHandler, successHandler, sessionHandler } = props;
   const { execApi } = useApi(props, errorHandler);
 

@@ -1,7 +1,7 @@
 import Tabs from "../tabs";
 import { SourceAPIData } from "../../utils/apiData";
 
-export default function ({ source }: { source: SourceAPIData }) {
+export default function SourceTabs({ source }: { source: SourceAPIData }) {
   const tabs = ["overview", "edit"];
 
   if (source.app.type !== "events") {

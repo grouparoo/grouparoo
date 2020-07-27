@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function ({ active }) {
+export default function LogsTabs({ active }) {
   return (
     <>
       <nav className="nav nav-tabs" role="tablist">

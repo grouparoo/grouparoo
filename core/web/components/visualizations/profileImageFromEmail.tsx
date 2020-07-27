@@ -1,7 +1,7 @@
 import { Image } from "react-bootstrap";
 import md5 from "md5";
 
-export default function ({
+export default function ProfileImageFromEmail({
   loading = false,
   email,
   width = 400,

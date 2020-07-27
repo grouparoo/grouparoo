@@ -160,7 +160,7 @@ function RunningRuns({ execApi }) {
   );
 }
 
-export default function (props) {
+export default function Totals(props) {
   const { errorHandler } = props;
   const { execApi } = useApi(props, errorHandler);
 

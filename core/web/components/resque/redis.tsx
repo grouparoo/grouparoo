@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
 import { Table, Row, Col } from "react-bootstrap";
 
-export default function (props) {
+export default function ResqueRedis(props) {
   const { errorHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const [redisInfo, setRedisInfo] = useState([]);

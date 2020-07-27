@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
 import { Table, Button, Row, Col } from "react-bootstrap";
 
-export default function (props) {
+export default function ResqueWorkersList(props) {
   const { errorHandler, successHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const [workers, setWorkers] = useState({});

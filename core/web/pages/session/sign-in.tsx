@@ -4,7 +4,7 @@ import { useApi } from "./../../hooks/useApi";
 import { usePlugins } from "../../hooks/usePlugins";
 import SignIn from "../../components/session/signIn";
 
-export default function (props) {
+export default function SignInPage(props) {
   const [plugins] = usePlugins("session/sign-in");
 
   return (

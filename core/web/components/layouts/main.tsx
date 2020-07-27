@@ -8,7 +8,7 @@ import ErrorAlert from "../alerts/error";
 import Navigation from "../navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function (props) {
+export default function Main(props) {
   const { display, children, successHandler, errorHandler } = props;
   const [navExpanded, setNavExpanded] = useState(true);
   const [alertWidth, setAlertWidth] = useState(500);
