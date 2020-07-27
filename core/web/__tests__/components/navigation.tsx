@@ -8,6 +8,7 @@ describe("navigation", () => {
   let wrapper;
 
   // TODO: it seems that with next v9.5.0 you cannot test a component which uses <Link> outside of a page...
+  // https://github.com/vercel/next.js/issues/15543
 
   // beforeEach(() => {
   //   wrapper = mount(
