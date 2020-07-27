@@ -4,7 +4,7 @@ import { Table, Row, Col, Button } from "react-bootstrap";
 import Pagination from "../pagination";
 import Router from "next/router";
 
-export default function (props) {
+export default function ResqueLocksList(props) {
   const { errorHandler, successHandler, query } = props;
   const { execApi } = useApi(props);
   const [locks, setLocks] = useState([]);

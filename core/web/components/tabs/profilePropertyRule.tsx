@@ -2,7 +2,7 @@ import Tabs from "../tabs";
 import { usePlugins } from "../../hooks/usePlugins";
 import { ProfilePropertyRuleAPIData } from "../../utils/apiData";
 
-export default function ({
+export default function ProfilePropertyRuleTabs({
   profilePropertyRule,
 }: {
   profilePropertyRule: ProfilePropertyRuleAPIData;

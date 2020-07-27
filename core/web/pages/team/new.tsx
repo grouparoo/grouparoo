@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import Router from "next/router";
 import { Form, Button } from "react-bootstrap";
 
-export default function (props) {
+export default function NewTeamPage(props) {
   const { errorHandler, successHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Alert } from "react-bootstrap";
 
-export default function ({ errorHandler }) {
+export default function ErrorAlert({ errorHandler }) {
   const [errorMessage, setErrorMessage] = useState(null);
   const [secondsToShow] = useState(1000 * 4);
   const [show, setShow] = useState(false);

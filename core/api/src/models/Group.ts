@@ -37,7 +37,7 @@ import { StateMachine } from "./../modules/stateMachine";
 import { GroupOps } from "../modules/ops/group";
 
 export const GROUP_RULE_LIMIT = 10;
-const numbers = [...Array(GROUP_RULE_LIMIT).keys()].map((n) => n + 1).reverse();
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 export interface GroupRuleWithKey {
   key: string;

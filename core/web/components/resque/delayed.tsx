@@ -4,7 +4,7 @@ import { Button, Table, Row, Col } from "react-bootstrap";
 import Pagination from "../pagination";
 import Router from "next/router";
 
-export default function (props) {
+export default function ResqueDelayedList(props) {
   const { errorHandler, query, successHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const [timestamps, setTimestamps] = useState([]);

@@ -3,7 +3,7 @@ import { useState } from "react";
 import Router from "next/router";
 import { Button } from "react-bootstrap";
 
-export default function (props) {
+export default function AddScheduleForm(props) {
   const { errorHandler, successHandler, source } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

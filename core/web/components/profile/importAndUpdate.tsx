@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import { useApi } from "../../hooks/useApi";
 
-export default function (props) {
+export default function ImportAndUpdateProfile(props) {
   const { errorHandler, successHandler } = props;
   const { execApi } = useApi(props, errorHandler);
 

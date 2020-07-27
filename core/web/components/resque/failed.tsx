@@ -4,7 +4,7 @@ import { ButtonToolbar, Button, Table, Modal, Row, Col } from "react-bootstrap";
 import Pagination from "../pagination";
 import Router from "next/router";
 
-export default function (props) {
+export default function ResqueFailedList(props) {
   const { errorHandler, query, successHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const [failed, setFailed] = useState([]);

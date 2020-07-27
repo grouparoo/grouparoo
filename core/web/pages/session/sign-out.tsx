@@ -1,7 +1,7 @@
 import Head from "next/head";
 import SignOutForm from "../../components/session/signOut";
 
-export default function (props) {
+export default function SignOutPage(props) {
   return (
     <>
       <Head>
