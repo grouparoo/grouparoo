@@ -1,4 +1,5 @@
 import { Client } from "pg";
+import format from "pg-format";
 import { ConnectPluginAppMethod } from "@grouparoo/core";
 
 export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
@@ -6,7 +7,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   await client.connect();
 
   if (appOptions.schema) {
-    await client.query(`SET search_path TO '${appOptions.schema}';`);
+    await client.query(format(`SET search_path TO %L;`, appOptions.schema));
   }
 
   return client;
