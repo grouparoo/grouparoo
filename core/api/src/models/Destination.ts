@@ -153,6 +153,10 @@ export class Destination extends LoggedModel<Destination> {
     return OptionHelper.setOptions(this, options);
   }
 
+  async getExportArrayProperties() {
+    return DestinationOps.getExportArrayProperties(this);
+  }
+
   async getDestinationGroupMemberships(): Promise<
     SimpleDestinationGroupMembership[]
   > {

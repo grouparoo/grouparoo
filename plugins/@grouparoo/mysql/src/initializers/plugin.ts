@@ -5,6 +5,7 @@ import { test } from "./../lib/test";
 import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
 import { exportProfile } from "./../lib/export/exportProfile";
+import { exportArrayProperties } from "./../lib/export/exportArrayProperties";
 
 import { sourcePreview as tableSourcePreview } from "../lib/table-import/sourcePreview";
 import { sourceOptions as tableSourceOptions } from "../lib/table-import/sourceOptions";
@@ -129,6 +130,7 @@ export class Plugins extends Initializer {
             exportProfile,
             destinationOptions,
             destinationMappingOptions,
+            exportArrayProperties,
           },
         },
       ],

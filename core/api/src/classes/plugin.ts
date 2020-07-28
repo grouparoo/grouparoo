@@ -74,6 +74,7 @@ export interface PluginConnection {
     destinationOptions?: DestinationOptionsMethod;
     destinationMappingOptions?: DestinationMappingOptionsMethod;
     exportProfile?: ExportProfilePluginMethod;
+    exportArrayProperties?: ExportArrayPropertiesMethod;
   };
 }
 
@@ -331,3 +332,19 @@ export interface DestinationMappingOptionsMethodResponse {
     };
   };
 }
+
+/**
+ * Method to return the list of destination profile properties which can accept array values.
+ * '*' can be used as a wildcard to accept all properties as arrays
+ */
+export interface ExportArrayPropertiesMethod {
+  (argument: {
+    connection: any;
+    app: App;
+    appOptions: SimpleAppOptions;
+    destination: Destination;
+    destinationOptions: SimpleDestinationOptions;
+  }): Promise<ExportArrayPropertiesMethodResponse>;
+}
+
+export type ExportArrayPropertiesMethodResponse = Array<string>;
