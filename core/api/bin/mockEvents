@@ -179,12 +179,13 @@ class MockSession {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(params),
-    });
+    }).then((r) => r.json());
     this.log(
       this.baseUrl +
         " " +
         JSON.stringify(Object.assign({}, params, { apiKey: undefined }))
     );
+    if (response.error) throw response.error;
 
     if (relatedEventParams.type) {
       const relatedEventResponse = await fetch(this.baseUrl, {
@@ -193,7 +194,9 @@ class MockSession {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(relatedEventParams),
-      });
+      }).then((r) => r.json());
+      if (relatedEventResponse.error) throw relatedEventResponse.error;
+
       this.log(this.baseUrl + " " + JSON.stringify(relatedEventParams));
     }
   }
