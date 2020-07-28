@@ -1,0 +1,46 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "@grouparoo/app-example",
+  "description": "An example Grouparoo Deployment",
+  "version": "0.0.1",
+  "license": "MPL-2.0",
+  "private": true,
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "dependencies": {
+    "@grouparoo/core": "latest",
+    "@grouparoo/csv": "latest",
+    "@grouparoo/email-authentication": "latest",
+    "@grouparoo/google-sheets": "latest",
+    "@grouparoo/logger": "latest",
+    "@grouparoo/mailchimp": "latest",
+    "@grouparoo/hubspot": "latest",
+    "@grouparoo/sailthru": "latest",
+    "@grouparoo/mysql": "latest",
+    "@grouparoo/bigquery": "latest",
+    "@grouparoo/postgres": "latest"
+  },
+  "scripts": {
+    "prepare": "cd node_modules/@grouparoo/core && npm run prepare",
+    "start": "cd node_modules/@grouparoo/core && ./api/bin/start",
+    "dev": "cd node_modules/@grouparoo/core && ./api/bin/dev"
+  },
+  "grouparoo": {
+    "plugins": [
+      "@grouparoo/csv",
+      "@grouparoo/email-authentication",
+      "@grouparoo/google-sheets",
+      "@grouparoo/logger",
+      "@grouparoo/mailchimp",
+      "@grouparoo/hubspot",
+      "@grouparoo/sailthru",
+      "@grouparoo/mysql",
+      "@grouparoo/bigquery",
+      "@grouparoo/postgres"
+    ],
+    "includedFiles": [
+      "assets"
+    ]
+  }
+}

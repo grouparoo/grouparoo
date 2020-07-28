@@ -54,6 +54,7 @@ class Generator {
     this.addCommands();
     this.addCore();
     this.addPlugins();
+    this.addCLI();
 
     this.bindJobMethods();
   }
@@ -78,6 +79,15 @@ class Generator {
       job_name: `test-core`,
       relative_path: `core`,
       name: "core",
+    });
+  }
+
+  addCLI() {
+    this.jobList.push({
+      type: "cli",
+      job_name: `test-cli`,
+      relative_path: `cli`,
+      name: "cli",
     });
   }
 
@@ -164,12 +174,17 @@ class Generator {
     const pluginPaths = allPluginPaths(glob)
       .map((p) => path.relative(this.rootPath, p))
       .filter(filterPlugins);
+    const pluginDistDirs = pluginPaths;
+    const cliDistDir = ["cli"];
 
     const prefix = " ".repeat(12) + "- ";
-    return pluginPaths
+    const combinedDistDirs = []
+      .concat(pluginDistDirs, cliDistDir)
       .map((p) => `${prefix}${p}/dist`)
       .sort()
       .join("\n");
+
+    return combinedDistDirs;
   }
 
   core_cache() {

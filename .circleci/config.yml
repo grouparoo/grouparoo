@@ -32,6 +32,7 @@ jobs:
           paths:
             - apps/local-public/node_modules
             - apps/staging-public/node_modules
+            - cli/node_modules
             - clients/@grouparoo/web/node_modules
             - core/node_modules
             - node_modules
@@ -53,6 +54,7 @@ jobs:
       - save_cache:
           <<: *dist-cache-options
           paths:
+            - cli/dist
             - clients/@grouparoo/web/dist
             - plugins/@grouparoo/bigquery/dist
             - plugins/@grouparoo/csv/dist
@@ -181,7 +183,21 @@ jobs:
           command: mysql -e "create database grouparoo_test" -u root -h 127.0.0.1
       - run:
           name: test
-          command: ./node_modules/.bin/lerna exec jest --stream --concurrency 1 --ignore "@grouparoo/core" --ignore "*/app-*" -- --ci --passWithNoTests --runInBand
+          command: ./node_modules/.bin/lerna exec jest --stream --concurrency 1 --ignore "@grouparoo/core" --ignore "@grouparoo"  --ignore "*/app-*" -- --ci --passWithNoTests --runInBand
+  test-cli:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: test
+          command: cd cli && npm test
   complete:
     docker:
       - image: circleci/node:12
@@ -241,6 +257,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-cli:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - complete:
           filters:
             <<: *ignored-branches
@@ -250,6 +271,7 @@ workflows:
             - linter
             - test-core
             - test-plugins
+            - test-cli
       - publish:
           filters:
             branches:
@@ -296,6 +318,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-cli:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - complete:
           filters:
             <<: *ignored-branches
@@ -305,6 +332,7 @@ workflows:
             - linter
             - test-core
             - test-plugins
+            - test-cli
       - publish:
           filters:
             branches:
