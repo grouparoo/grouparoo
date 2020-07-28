@@ -7,12 +7,8 @@ export const sourceFilters: SourceFilterMethod = async (args) => {
 
   Object.keys(rows[0]).map((col) => {
     const ops = ["equals", "does not equal"];
-    const value =
-      rows[0][col] ||
-      rows[1][col] ||
-      rows[2][col] ||
-      rows[3][col] ||
-      rows[4][col];
+    const rowWithValue = rows.filter((row) => row[col] !== undefined)[0];
+    const value = rowWithValue ? rowWithValue[col] : undefined;
 
     if (typeof value === "string") {
       ops.push("contains");
