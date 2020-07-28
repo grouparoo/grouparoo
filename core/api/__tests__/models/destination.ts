@@ -784,6 +784,7 @@ describe("models/destination", () => {
                   },
                 };
               },
+              exportArrayProperties: async () => [],
               exportProfile: async ({
                 app,
                 appOptions,
