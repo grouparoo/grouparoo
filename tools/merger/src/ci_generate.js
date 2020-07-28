@@ -54,6 +54,7 @@ class Generator {
     this.addCommands();
     this.addCore();
     this.addPlugins();
+    this.addCLI();
 
     this.bindJobMethods();
   }
@@ -78,6 +79,15 @@ class Generator {
       job_name: `test-core`,
       relative_path: `core`,
       name: "core",
+    });
+  }
+
+  addCLI() {
+    this.jobList.push({
+      type: "cli",
+      job_name: `test-cli`,
+      relative_path: `cli`,
+      name: "cli",
     });
   }
 

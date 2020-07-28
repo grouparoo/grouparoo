@@ -2,8 +2,6 @@
 
 _The Grouparoo project generator_
 
----
-
 This package is released as `grouparoo` (no namespace) on NPM. It is used to generate new Grouparoo projects.
 
 ## Installation

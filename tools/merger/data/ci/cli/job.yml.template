@@ -1,0 +1,17 @@
+  {{{job_name}}}:
+    docker:
+      - image: circleci/node:12
+{{{custom_docker}}}
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+{{{custom_steps}}}
+      - run:
+          name: test
+          command: cd cli && npm test
+{{custom_test}}
