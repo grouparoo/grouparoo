@@ -32,6 +32,7 @@ jobs:
           paths:
             - apps/local-public/node_modules
             - apps/staging-public/node_modules
+            - cli/node_modules
             - clients/@grouparoo/web/node_modules
             - core/node_modules
             - node_modules
