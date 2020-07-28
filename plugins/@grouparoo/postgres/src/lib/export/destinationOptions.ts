@@ -11,7 +11,7 @@ export const destinationOptions: DestinationOptionsMethod = async ({
       format(
         `SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_catalog = %L AND table_schema = %L AND table_name = %L`,
         appOptions.database,
-        "public",
+        appOptions.schema || "public",
         tableName
       )
     );
@@ -33,7 +33,7 @@ export const destinationOptions: DestinationOptionsMethod = async ({
     format(
       `SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_catalog = %L AND table_schema = %L`,
       appOptions.database,
-      "public"
+      appOptions.schema || "public"
     )
   );
 

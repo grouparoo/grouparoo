@@ -10,7 +10,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
     format(
       `SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_catalog = %L AND table_schema = %L AND table_name = %L`,
       appOptions.database,
-      "public",
+      appOptions.schema || "public",
       destinationOptions.table
     )
   );

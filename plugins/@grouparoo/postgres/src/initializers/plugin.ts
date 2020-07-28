@@ -45,6 +45,11 @@ export class Plugins extends Initializer {
               required: true,
               description: "the postgres database",
             },
+            {
+              key: "schema",
+              required: false,
+              description: "the postgres schema (default: public)",
+            },
             { key: "user", required: false, description: "the postgres user" },
             {
               key: "password",
