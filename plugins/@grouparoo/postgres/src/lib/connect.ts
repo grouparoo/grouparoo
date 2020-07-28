@@ -2,7 +2,6 @@ import { Client } from "pg";
 import { ConnectPluginAppMethod } from "@grouparoo/core";
 
 export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
-  console.log({ appOptions });
   const client = new Client(appOptions);
   await client.connect();
 
