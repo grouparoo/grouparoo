@@ -426,6 +426,7 @@ describe("integration/events", () => {
         ]);
         expect(pluginOptions[1].key).toBe("aggregation method");
         expect(pluginOptions[1].options.map((opt) => opt.key)).toEqual([
+          "all values",
           "most recent value",
           "least recent value",
           "avg",
@@ -594,6 +595,23 @@ describe("integration/events", () => {
         beforeAll(async () => {
           rule = await ProfilePropertyRule.findByGuid(profilePropertyRuleGuid);
           await rule.setFilters([]);
+        });
+
+        test("all values", async () => {
+          await rule.update({ type: "string", isArray: true });
+          await rule.setOptions({
+            column: "[data]-path",
+            "aggregation method": "all values",
+          });
+          await profile.import();
+          const properties = await profile.properties();
+          expect(properties["test-rule"].values).toEqual([
+            "/",
+            "/about",
+            "/web-sign-in",
+            "/mobile-sign-in",
+          ]);
+          await rule.update({ type: "string", isArray: false });
         });
 
         test("most recent value", async () => {

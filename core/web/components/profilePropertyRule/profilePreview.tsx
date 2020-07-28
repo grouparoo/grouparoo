@@ -100,7 +100,7 @@ export default function ProfilePreview(props) {
   const otherProfilePropertyRules = {};
   for (const i in profile.properties) {
     if (profile.properties[i].guid === profilePropertyRule.guid) {
-      if (profilePropertyRule.type === "date") {
+      if (profilePropertyRule.type === "date" && profile.properties[i].values) {
         thisProfilePropertyRuleValue = profile.properties[i].values[0]
           ? new Date(profile.properties[i].values[0]).toLocaleString()
           : null;
