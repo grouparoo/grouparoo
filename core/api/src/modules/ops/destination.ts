@@ -280,8 +280,8 @@ export namespace DestinationOps {
     for (const k in mappedOldProfileProperties) {
       if (
         mappedOldProfileProperties[k] &&
-        (!exportArrayProperties.includes(k) ||
-          exportArrayProperties.includes("*"))
+        !exportArrayProperties.includes(k) &&
+        !exportArrayProperties.includes("*")
       ) {
         mappedOldProfileProperties[k] = mappedOldProfileProperties[k][0];
       }
@@ -289,8 +289,8 @@ export namespace DestinationOps {
     for (const k in mappedNewProfileProperties) {
       if (
         mappedNewProfileProperties[k] &&
-        (!exportArrayProperties.includes(k) ||
-          exportArrayProperties.includes("*"))
+        !exportArrayProperties.includes(k) &&
+        !exportArrayProperties.includes("*")
       ) {
         mappedNewProfileProperties[k] = mappedNewProfileProperties[k][0];
       }
