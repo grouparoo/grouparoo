@@ -89,6 +89,7 @@ describe("tasks/profile:export", () => {
                 exportProfile: async () => {
                   return { success: true };
                 },
+                exportArrayProperties: async () => [],
                 destinationMappingOptions: async () => {
                   return {
                     labels: {

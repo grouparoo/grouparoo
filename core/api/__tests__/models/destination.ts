@@ -713,7 +713,7 @@ describe("models/destination", () => {
       newGroups: null,
       toDelete: null,
     };
-
+    let exportArrayProperties = [];
     let parallelismResponse = Infinity;
     let exportProfileResponse = {
       success: true,
@@ -784,6 +784,7 @@ describe("models/destination", () => {
                   },
                 };
               },
+              exportArrayProperties: async () => exportArrayProperties,
               exportProfile: async ({
                 app,
                 appOptions,
@@ -1189,6 +1190,124 @@ describe("models/destination", () => {
         error: undefined,
         retryDelay: undefined,
       };
+    });
+
+    describe("array exports", () => {
+      afterAll(() => {
+        exportArrayProperties = [];
+      });
+
+      test("mappings cannot use array profile properties if they are not allowed by exportArrayProperties", async () => {
+        const destination = await Destination.create({
+          name: "test plugin destination",
+          type: "export-from-test-template-app",
+          appGuid: app.guid,
+        });
+
+        await expect(
+          destination.setMapping({ purchases: "purchases" })
+        ).rejects.toThrow(
+          /purchases is an array profile property that .* cannot support/
+        );
+
+        await destination.destroy();
+      });
+
+      test("exportArrayProperties can ask for an array profile property", async () => {
+        exportArrayProperties = ["purchases"];
+
+        const destination = await Destination.create({
+          name: "test plugin destination",
+          type: "export-from-test-template-app",
+          appGuid: app.guid,
+        });
+
+        await destination.setMapping({ purchases: "purchases" });
+
+        const group = await helper.factories.group();
+        const destinationGroupMemberships = {};
+        destinationGroupMemberships[group.guid] = group.name;
+        await destination.setDestinationGroupMemberships(
+          destinationGroupMemberships
+        );
+
+        const profile = await helper.factories.profile();
+        const oldProfileProperties = { purchases: ["hat", "mushroom"] };
+        const newProfileProperties = { purchases: ["hat", "mushroom", "star"] };
+        const oldGroups = [group];
+        const newGroups = [];
+
+        const _import = await helper.factories.import();
+
+        await destination.exportProfile(
+          profile,
+          [],
+          [_import],
+          oldProfileProperties,
+          newProfileProperties,
+          oldGroups,
+          newGroups
+        );
+
+        const _exports = await profile.$get("exports");
+        expect(_exports.length).toBe(1);
+        expect(_exports[0].oldProfileProperties).toEqual({
+          purchases: ["hat", "mushroom"],
+        });
+        expect(_exports[0].newProfileProperties).toEqual({
+          purchases: ["hat", "mushroom", "star"],
+        });
+
+        await destination.destroy();
+      });
+
+      test("exportArrayProperties can ask for all properties with *", async () => {
+        exportArrayProperties = ["*"];
+
+        const destination = await Destination.create({
+          name: "test plugin destination",
+          type: "export-from-test-template-app",
+          appGuid: app.guid,
+        });
+
+        await destination.setMapping({ purchases: "purchases" });
+
+        const group = await helper.factories.group();
+        const destinationGroupMemberships = {};
+        destinationGroupMemberships[group.guid] = group.name;
+        await destination.setDestinationGroupMemberships(
+          destinationGroupMemberships
+        );
+
+        const profile = await helper.factories.profile();
+        const oldProfileProperties = { purchases: ["hat", "mushroom"] };
+        const newProfileProperties = { purchases: ["hat", "mushroom", "star"] };
+        const oldGroups = [group];
+        const newGroups = [];
+
+        const _import = await helper.factories.import();
+
+        await destination.exportProfile(
+          profile,
+          [],
+          [_import],
+          oldProfileProperties,
+          newProfileProperties,
+          oldGroups,
+          newGroups
+        );
+
+        const _exports = await profile.$get("exports");
+        expect(_exports.length).toBe(1);
+        expect(_exports[0].oldProfileProperties).toEqual({
+          purchases: ["hat", "mushroom"],
+        });
+        expect(_exports[0].newProfileProperties).toEqual({
+          purchases: ["hat", "mushroom", "star"],
+        });
+
+        await destination.destroy();
+      });
     });
   });
 });

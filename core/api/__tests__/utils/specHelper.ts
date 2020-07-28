@@ -290,6 +290,7 @@ export namespace helper {
                 response["receivedOptions"] = destinationOptions.options;
               return response;
             },
+            exportArrayProperties: async () => [],
             destinationMappingOptions: async () => {
               return {
                 labels: {

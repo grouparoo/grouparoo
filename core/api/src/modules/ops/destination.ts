@@ -154,6 +154,28 @@ export namespace DestinationOps {
     });
   }
 
+  export async function getExportArrayProperties(destination: Destination) {
+    const { pluginConnection } = await destination.getPlugin();
+    const app = await destination.$get("app");
+    const connection = await app.getConnection();
+    const appOptions = await app.getOptions();
+    const destinationOptions = await destination.getOptions();
+
+    if (!pluginConnection.methods.exportArrayProperties) {
+      throw new Error(
+        `cannot determine export array properties for ${destination.type}`
+      );
+    }
+
+    return pluginConnection.methods.exportArrayProperties({
+      connection,
+      app,
+      appOptions,
+      destination,
+      destinationOptions,
+    });
+  }
+
   /**
    * Given a Destination and a Profile (and lots of related data), create all the exports that should be sent
    */
@@ -252,14 +274,24 @@ export namespace DestinationOps {
         .forEach((k) => (mappedOldProfileProperties[k] = ["unknown"]));
     }
 
-    // Send only the properties form the array that should be sent to the Destination
+    // Send only the properties form the array that should be sent to the Destination, otherwise send the first entry in the array of profile properties
+    const exportArrayProperties = await getExportArrayProperties(destination);
+
     for (const k in mappedOldProfileProperties) {
-      if (mappedOldProfileProperties[k]) {
+      if (
+        mappedOldProfileProperties[k] &&
+        !exportArrayProperties.includes(k) &&
+        !exportArrayProperties.includes("*")
+      ) {
         mappedOldProfileProperties[k] = mappedOldProfileProperties[k][0];
       }
     }
     for (const k in mappedNewProfileProperties) {
-      if (mappedNewProfileProperties[k]) {
+      if (
+        mappedNewProfileProperties[k] &&
+        !exportArrayProperties.includes(k) &&
+        !exportArrayProperties.includes("*")
+      ) {
         mappedNewProfileProperties[k] = mappedNewProfileProperties[k][0];
       }
     }

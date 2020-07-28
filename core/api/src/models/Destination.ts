@@ -153,6 +153,10 @@ export class Destination extends LoggedModel<Destination> {
     return OptionHelper.setOptions(this, options);
   }
 
+  async getExportArrayProperties() {
+    return DestinationOps.getExportArrayProperties(this);
+  }
+
   async getDestinationGroupMemberships(): Promise<
     SimpleDestinationGroupMembership[]
   > {
@@ -228,12 +232,26 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async validateMappings(mappings: { [groupGuid: string]: string }) {
-    if (Object.keys(mappings).length === 0) {
-      return;
-    }
+    if (Object.keys(mappings).length === 0) return;
 
     const destinationMappingOptions = await this.destinationMappingOptions();
     const cachedProfilePropertyRules = await ProfilePropertyRule.cached();
+    const exportArrayProperties = await this.getExportArrayProperties();
+
+    // check for array properties
+    Object.values(mappings).forEach((k) => {
+      const profilePropertyRule = cachedProfilePropertyRules[k];
+      if (
+        profilePropertyRule &&
+        profilePropertyRule.isArray &&
+        !exportArrayProperties.includes(k) &&
+        !exportArrayProperties.includes("*")
+      ) {
+        throw new Error(
+          `${k} is an array profile property that ${this.name} cannot support`
+        );
+      }
+    });
 
     // required
     for (const i in destinationMappingOptions.profilePropertyRules.required) {

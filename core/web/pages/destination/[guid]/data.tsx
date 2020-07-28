@@ -16,6 +16,7 @@ export default function Page(props) {
     profilePropertyRules,
     mappingOptions,
     groups,
+    exportArrayProperties,
   } = props;
   const { execApi } = useApi(props, errorHandler);
   const [trackedGroupGuid, setTrackedGroupGuid] = useState(
@@ -89,9 +90,10 @@ export default function Page(props) {
     }
   }
 
-  const remainingProfilePropertyRuleKeysForOptional = profilePropertyRules.map(
-    (rule) => rule.key
-  );
+  const remainingProfilePropertyRuleKeysForOptional = profilePropertyRules
+    .filter(filterRuleForArrayProperties)
+    .map((rule) => rule.key);
+
   mappingOptions.profilePropertyRules.required.map((opt) => {
     if (destination.mapping[opt.key]) {
       remainingProfilePropertyRuleKeysForOptional.splice(
@@ -245,6 +247,15 @@ export default function Page(props) {
       return 1;
     });
 
+  function filterRuleForArrayProperties(rule) {
+    return rule.isArray
+      ? exportArrayProperties.includes("*") ||
+        exportArrayProperties.includes(rule.key)
+        ? true
+        : false
+      : true;
+  }
+
   return (
     <>
       <Head>
@@ -338,6 +349,7 @@ export default function Page(props) {
                                     .filter((rule) =>
                                       type === "any" ? true : rule.type === type
                                     )
+                                    .filter((rule) => !rule.isArray)
                                     .map((rule) => (
                                       <option key={`opt-required-${rule.guid}`}>
                                         {rule.key}
@@ -404,6 +416,7 @@ export default function Page(props) {
                                           ? true
                                           : rule.type === type
                                       )
+                                      .filter(filterRuleForArrayProperties)
                                       .map((rule) => (
                                         <option key={`opt-known-${rule.guid}`}>
                                           {rule.key}
@@ -764,11 +777,16 @@ Page.getInitialProps = async (ctx) => {
     "get",
     `/destination/${guid}/mappingOptions`
   );
+  const { exportArrayProperties } = await execApi(
+    "get",
+    `/destination/${guid}/exportArrayProperties`
+  );
 
   return {
     destination,
     profilePropertyRules,
     mappingOptions: options,
+    exportArrayProperties,
     trackedGroupGuid: destination.trackAllGroups
       ? "_all"
       : destination.destinationGroups[0]?.guid,

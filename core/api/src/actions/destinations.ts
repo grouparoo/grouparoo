@@ -209,6 +209,25 @@ export class DestinationMappingOptions extends AuthenticatedAction {
   }
 }
 
+export class DestinationExportArrayProperties extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "destination:exportArrayProperties";
+    this.description =
+      "get the list of profile properties this destination can handle as arrays";
+    this.outputExample = {};
+    this.permission = { topic: "destination", mode: "read" };
+    this.inputs = {
+      guid: { required: true },
+    };
+  }
+
+  async run({ params, response }) {
+    const destination = await Destination.findByGuid(params.guid);
+    response.exportArrayProperties = await destination.getExportArrayProperties();
+  }
+}
+
 export class DestinationTrackGroup extends AuthenticatedAction {
   constructor() {
     super();

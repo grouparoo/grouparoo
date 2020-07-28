@@ -64,6 +64,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/destination/:guid/connectionOptions", action: "destination:connectionOptions" },
         { path: "/v:apiVersion/destination/:guid/mappingOptions", action: "destination:mappingOptions" },
         { path: "/v:apiVersion/destination/:guid/profilePreview", action: "destination:profilePreview" },
+        { path: "/v:apiVersion/destination/:guid/exportArrayProperties", action: "destination:exportArrayProperties" },
         { path: "/v:apiVersion/files", action: "files:list" },
         { path: "/v:apiVersion/files/options", action: "files:options" },
         { path: "/v:apiVersion/file/:guid/details", action: "file:details" },
