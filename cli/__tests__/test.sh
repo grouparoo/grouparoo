@@ -7,6 +7,12 @@ WORKDIR="/tmp/grouparoo-$TIME"
 
 echo " >>> testing with WORKDIR=$WORKDIR <<< "
 
+## to get around premission issues on CI
+## https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally
+mkdir -p ~/.npm-global
+export NPM_CONFIG_PREFIX=~/.npm-global
+export PATH="$HOME/.npm-global/bin:$PATH"
+
 ## use /this/ version of the "grouparoo" package with NPX
 npm link
 
