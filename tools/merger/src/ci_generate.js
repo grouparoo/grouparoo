@@ -174,12 +174,19 @@ class Generator {
     const pluginPaths = allPluginPaths(glob)
       .map((p) => path.relative(this.rootPath, p))
       .filter(filterPlugins);
+    const pluginDistDirs = pluginPaths;
+    const cliDistDir = ["cli"];
 
     const prefix = " ".repeat(12) + "- ";
-    return pluginPaths
+    const combinedDistDirs = []
+      .concat(pluginDistDirs, cliDistDir)
       .map((p) => `${prefix}${p}/dist`)
       .sort()
       .join("\n");
+
+    console.log(combinedDistDirs);
+
+    return combinedDistDirs;
   }
 
   core_cache() {

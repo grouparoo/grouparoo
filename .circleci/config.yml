@@ -54,6 +54,7 @@ jobs:
       - save_cache:
           <<: *dist-cache-options
           paths:
+            - cli/dist
             - clients/@grouparoo/web/dist
             - plugins/@grouparoo/bigquery/dist
             - plugins/@grouparoo/csv/dist
