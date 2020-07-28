@@ -184,8 +184,6 @@ class Generator {
       .sort()
       .join("\n");
 
-    console.log(combinedDistDirs);
-
     return combinedDistDirs;
   }
 
