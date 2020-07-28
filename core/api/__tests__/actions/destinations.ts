@@ -225,6 +225,34 @@ describe("actions/destinations", () => {
       );
     });
 
+    test("an administrator can see the exportArrayProperties for this destination", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+      };
+      const { error, exportArrayProperties } = await specHelper.runAction(
+        "destination:exportArrayProperties",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(exportArrayProperties).toEqual([]);
+    });
+
+    test("an administrator cannot set a mapping for an array profile property if it is not allowed by the exportArrayProperties", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+        mapping: { "primary-id": "userId", purchases: "purchases" },
+      };
+      const { error } = await specHelper.runAction(
+        "destination:edit",
+        connection
+      );
+      expect(error.message).toMatch(
+        /purchases is an array profile property that .* cannot support/
+      );
+    });
+
     describe("with group", () => {
       let group: Group;
       let profile: Profile;

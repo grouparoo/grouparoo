@@ -1197,48 +1197,18 @@ describe("models/destination", () => {
         exportArrayProperties = [];
       });
 
-      test("exportArrayProperties can return single values for profile properties", async () => {
+      test("mappings cannot use array profile properties if they are not allowed by exportArrayProperties", async () => {
         const destination = await Destination.create({
           name: "test plugin destination",
           type: "export-from-test-template-app",
           appGuid: app.guid,
         });
 
-        await destination.setMapping({ purchases: "purchases" });
-
-        const group = await helper.factories.group();
-        const destinationGroupMemberships = {};
-        destinationGroupMemberships[group.guid] = group.name;
-        await destination.setDestinationGroupMemberships(
-          destinationGroupMemberships
+        await expect(
+          destination.setMapping({ purchases: "purchases" })
+        ).rejects.toThrow(
+          /purchases is an array profile property that .* cannot support/
         );
-
-        const profile = await helper.factories.profile();
-        const oldProfileProperties = { purchases: ["hat", "mushroom"] };
-        const newProfileProperties = { purchases: ["hat", "mushroom", "star"] };
-        const oldGroups = [group];
-        const newGroups = [];
-
-        const _import = await helper.factories.import();
-
-        await destination.exportProfile(
-          profile,
-          [],
-          [_import],
-          oldProfileProperties,
-          newProfileProperties,
-          oldGroups,
-          newGroups
-        );
-
-        const _exports = await profile.$get("exports");
-        expect(_exports.length).toBe(1);
-        expect(_exports[0].oldProfileProperties).toEqual({
-          purchases: "hat",
-        });
-        expect(_exports[0].newProfileProperties).toEqual({
-          purchases: "hat",
-        });
 
         await destination.destroy();
       });
