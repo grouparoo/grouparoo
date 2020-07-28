@@ -5,6 +5,7 @@ import { Source } from "../../models/Source";
 import { Group } from "../../models/Group";
 import { Destination } from "../../models/Destination";
 import { log } from "actionhero";
+import { Op } from "sequelize";
 import { waitForLock } from "../locks";
 export interface ProfilePropertyType {
   [key: string]: {
@@ -136,6 +137,7 @@ export namespace ProfileOps {
         where: {
           profileGuid: profile.guid,
           profilePropertyRuleGuid: rule.guid,
+          position: 0,
         },
       });
 
@@ -148,6 +150,13 @@ export namespace ProfileOps {
 
       await property.setValue(value);
       await property.save();
+      await ProfileProperty.destroy({
+        where: {
+          profileGuid: profile.guid,
+          profilePropertyRuleGuid: rule.guid,
+          position: { [Op.ne]: 0 },
+        },
+      });
     }
 
     return profile;

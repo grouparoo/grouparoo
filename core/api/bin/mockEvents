@@ -140,14 +140,15 @@ class MockSession {
     if (this.identified) {
       params.userId = this.profileProperties[
         identifyingProfilePropertyRuleKey
-      ].value;
+      ].values[0];
     }
 
     let relatedEventParams = {
       apiKey: this.apiKey,
       anonymousId: this.anonymousId,
       occurredAt: new Date().getTime(),
-      userId: this.profileProperties[identifyingProfilePropertyRuleKey].value,
+      userId: this.profileProperties[identifyingProfilePropertyRuleKey]
+        .values[0],
     };
 
     if (step.type === "pageview" && step.data.page === "/product") {
@@ -215,7 +216,7 @@ class MockSession {
       return this.empty();
     }
     this.log(
-      `using profile ${this.currentUser.guid} (${this.profileProperties[identifyingProfilePropertyRuleKey].value})`
+      `using profile ${this.currentUser.guid} (${this.profileProperties[identifyingProfilePropertyRuleKey].values[0]})`
     );
   }
 

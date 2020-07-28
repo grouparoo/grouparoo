@@ -173,6 +173,11 @@ const eventProfilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOption
     options: async () => {
       return [
         {
+          key: "all values",
+          description:
+            "collect all values from all events (use with an array profile property)",
+        },
+        {
           key: "most recent value",
           description: "use the value of the newest event",
         },
@@ -225,8 +230,9 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
   sourceOptions,
   profilePropertyRuleOptions,
   profilePropertyRuleFilters,
+  profilePropertyRule,
 }) => {
-  let event: Event;
+  let events: Event[];
   if (!profilePropertyRuleOptions["column"]) return;
   if (!profilePropertyRuleOptions["aggregation method"]) return;
 
@@ -236,7 +242,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
   );
   const aggregationMethod = profilePropertyRuleOptions["aggregation method"];
 
-  if (aggregationMethod === "most recent value") {
+  if (aggregationMethod === "all values") {
     const where = { profileGuid: profile.guid, type: sourceOptions["type"] };
     const includeWhere = {};
     Event.applyProfilePropertyRuleFilters(
@@ -244,13 +250,23 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
       includeWhere,
       profilePropertyRuleFilters
     );
-    event = (
-      await Event.findAll({
-        where,
-        order: [["occurredAt", "desc"]],
-        limit: 1,
-      })
-    )[0];
+    events = await Event.findAll({
+      where,
+      order: [["occurredAt", "asc"]],
+    });
+  } else if (aggregationMethod === "most recent value") {
+    const where = { profileGuid: profile.guid, type: sourceOptions["type"] };
+    const includeWhere = {};
+    Event.applyProfilePropertyRuleFilters(
+      where,
+      includeWhere,
+      profilePropertyRuleFilters
+    );
+    events = await Event.findAll({
+      where,
+      order: [["occurredAt", "desc"]],
+      limit: 1,
+    });
   } else if (aggregationMethod === "least recent value") {
     const where = { profileGuid: profile.guid, type: sourceOptions["type"] };
     const includeWhere = {};
@@ -259,13 +275,11 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
       includeWhere,
       profilePropertyRuleFilters
     );
-    event = (
-      await Event.findAll({
-        where,
-        order: [["occurredAt", "asc"]],
-        limit: 1,
-      })
-    )[0];
+    events = await Event.findAll({
+      where,
+      order: [["occurredAt", "asc"]],
+      limit: 1,
+    });
   } else {
     if (!profilePropertyRuleOptions["column"].match(/^\[data\]-/)) {
       throw new Error(
@@ -285,7 +299,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
     );
 
     if (aggregationMethod === "count") {
-      return EventData.count({
+      const count = await EventData.count({
         where,
         include: [
           {
@@ -296,6 +310,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
           },
         ],
       });
+      return [count];
     } else {
       const results = await EventData.findAll({
         where,
@@ -319,18 +334,29 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
         ],
       });
 
-      return results[0] ? results[0].value : 0;
+      return results[0] ? [results[0].value] : [0];
     }
   }
 
-  if (!event) {
+  if (!events) {
     return null;
   } else {
     if (profilePropertyRuleOptions["column"].match(/^\[data\]-/)) {
-      const data = await event.getData();
-      return data[dataKey];
+      const eventData = await Promise.all(events.map((e) => e.getData()));
+      return eventData
+        .map((eventData) => eventData[dataKey])
+        .map((value) => {
+          try {
+            const parsed = JSON.parse(value);
+            if (Array.isArray(parsed)) return parsed;
+            return value;
+          } catch (e) {
+            return value;
+          }
+        })
+        .flat();
     } else {
-      return event[profilePropertyRuleOptions["column"]];
+      return events.map((event) => event[profilePropertyRuleOptions["column"]]);
     }
   }
 };
