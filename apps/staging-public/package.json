@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@grouparoo/bigquery": "^0.1.8",
-    "@grouparoo/core": "^0.1.8",
+    "@grouparoo/core": "0.1.8",
     "@grouparoo/csv": "^0.1.8",
     "@grouparoo/email-authentication": "^0.1.8",
     "@grouparoo/files-s3": "^0.1.8",
