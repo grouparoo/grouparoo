@@ -10,7 +10,7 @@ const navLiStyle = { marginTop: 20, marginBottom: 20 };
 
 const navIconStyle = {
   fontSize: 18,
-  fontWeight: "300",
+  fontWeight: 300,
   paddingLeft: 0,
   marginLeft: 0,
   marginRight: 10,
@@ -181,7 +181,7 @@ export default function Navigation(props) {
                       <span
                         style={{
                           fontSize: 18,
-                          fontWeight: "300",
+                          fontWeight: 300,
                           paddingLeft: 0,
                           color: "white",
                         }}
@@ -246,7 +246,7 @@ export default function Navigation(props) {
                 width: "100%",
                 textAlign: "left",
                 textTransform: "none",
-                fontWeight: "300",
+                fontWeight: 300,
               }}
             >
               {subMenuGreeting}
