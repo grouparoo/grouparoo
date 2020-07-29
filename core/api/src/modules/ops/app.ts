@@ -48,7 +48,8 @@ export namespace AppOps {
    * Test an App's Connection
    */
   export async function test(app: App, options?: SimpleAppOptions) {
-    let result = false;
+    let success = false;
+    let message: string;
     let error;
 
     const { pluginApp } = await app.getPlugin();
@@ -71,11 +72,13 @@ export namespace AppOps {
         });
       }
 
-      result = await pluginApp.methods.test({
+      const result = await pluginApp.methods.test({
         app,
         appOptions: options,
         connection,
       });
+      message = result.message;
+      success = result.success;
 
       if (pluginApp.methods.disconnect) {
         await pluginApp.methods.disconnect({
@@ -85,11 +88,14 @@ export namespace AppOps {
         });
       }
     } catch (err) {
-      error = err;
-      result = false;
-      log(`[ app ] testing app threw error: ${error}`);
+      error = err.message || err.toString();
+      success = false;
+      log(
+        `[ app ] testing app ${app.name || app.guid} threw error: ${error}`,
+        "notice"
+      );
     }
 
-    return { result, error };
+    return { success, message, error };
   }
 }

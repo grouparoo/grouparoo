@@ -7,6 +7,7 @@ import AppIcon from "../../../components/appIcon";
 import StateBadge from "../../../components/stateBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
 import AppTabs from "../../../components/tabs/app";
+import Loader from "../../../components/loader";
 
 import { AppAPIData } from "../../../utils/apiData";
 
@@ -23,7 +24,11 @@ export default function Page(props) {
   const { execApi } = useApi(props, errorHandler);
   const [app, setApp] = useState<AppAPIData>(props.app);
   const [loading, setLoading] = useState(false);
-  const [testResult, setTestResult] = useState({ result: null, error: null });
+  const [testResult, setTestResult] = useState<{
+    success: boolean;
+    error: string;
+    message: string;
+  }>({ success: null, error: null, message: null });
   const [ranTest, setRanTest] = useState(false);
   const { guid } = query;
 
@@ -59,9 +64,13 @@ export default function Page(props) {
   }
 
   async function test() {
+    setLoading(true);
+    setRanTest(false);
+    setTestResult({ success: null, message: null, error: null });
     const response = await execApi("put", `/app/${guid}/test`, {
       options: app.options,
     });
+    setLoading(false);
     if (response) {
       setRanTest(true);
       setTestResult(response.test);
@@ -285,22 +294,32 @@ export default function Page(props) {
             ) : null}
 
             <Row>
-              <Col md={3}>
-                <Button variant="outline-secondary" size="sm" onClick={test}>
+              <Col>
+                <Button
+                  variant="outline-secondary"
+                  size="sm"
+                  onClick={test}
+                  disabled={loading}
+                >
                   Test Connection
                 </Button>
               </Col>
+            </Row>
+            <br />
+            <Row>
               <Col>
-                {testResult.result !== null &&
-                testResult.result !== undefined &&
+                {testResult.success !== null &&
+                testResult.success !== undefined &&
                 !testResult.error ? (
-                  <Alert variant="success">Test Passed</Alert>
+                  <Alert variant="success">
+                    <strong>Test Passed</strong> {testResult.message}
+                  </Alert>
                 ) : ranTest ? (
-                  <Alert variant="warning">Test Failed</Alert>
+                  <Alert variant="warning">
+                    <strong>Test Failed</strong> {testResult.error}
+                  </Alert>
                 ) : null}
-                {testResult.error ? (
-                  <Alert variant="danger">{testResult.error}</Alert>
-                ) : null}
+                {loading ? <Loader /> : null}
               </Col>
             </Row>
 

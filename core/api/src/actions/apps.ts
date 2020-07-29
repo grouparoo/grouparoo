@@ -162,10 +162,10 @@ export class AppTest extends AuthenticatedAction {
 
   async run({ params, response }) {
     const app = await App.findByGuid(params.guid);
-    let { result, error } = await app.test(params.options);
+    let { success, message, error } = await app.test(params.options);
     if (error) error = String(error);
 
-    response.test = { result, error };
+    response.test = { success, message, error };
     response.app = await app.apiData();
   }
 }

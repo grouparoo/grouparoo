@@ -14,5 +14,8 @@ export const test: TestPluginMethod = async ({ appOptions }) => {
     fs.closeSync(fs.openSync(filePath, "w"));
   }
 
-  return true;
+  return {
+    success: true,
+    message: `Access to ${appOptions.filename} confirmed`,
+  };
 };

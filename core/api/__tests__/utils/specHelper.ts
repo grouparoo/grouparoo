@@ -174,7 +174,7 @@ export namespace helper {
           ],
           methods: {
             test: async () => {
-              return true;
+              return { success: true };
             },
             appOptions: async () => {
               return { fileGuid: { type: "list", options: ["a", "b"] } };

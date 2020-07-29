@@ -38,7 +38,7 @@ export class Events extends Initializer {
           addible: false,
           methods: {
             test: async () => {
-              return (await Event.count()) >= 0;
+              return { success: (await Event.count()) >= 0 };
             },
             appOptions: async () => {
               const uniqueRules = await ProfilePropertyRule.findAll({
