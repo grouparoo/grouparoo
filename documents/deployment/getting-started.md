@@ -6,13 +6,19 @@ This guide will help you run the Grouparoo application on your local machine. At
 
 Grouparoo is a [node.js](https://nodejs.org/) application written in [TypeScript](https://www.typescriptlang.org/). Grouparoo relies on a [Postgres](https://www.postgresql.org) database and [Redis](https://redis.io) cache. Grouparoo is distributed though [NPM](https://www.npmjs.com).
 
+This guide has 3 options for you to install Grouparoo:
+
+- Deploy to Heroku
+- Run locally with Docker & Docker Compose
+- Run Locally with Node.js
+
 ## Deploy to Heroku
 
 The simplest way to see Grouparoo in action is to deploy it to Heroku for free:
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/grouparoo/app-example)
 
-## Run locally with Docker
+## Run locally with Docker & Docker Compose
 
 Assuming you have Docker installed:
 
@@ -22,7 +28,7 @@ curl https://raw.githubusercontent.com/grouparoo/app-example/master/docker-compo
 docker-compose up
 ```
 
-## Install Locally
+## Run Locally with Node.js
 
 ### Step 1: Install Runtime and Databases
 
@@ -61,9 +67,18 @@ createdb grouparoo_development # Create a database for Grouparoo
 
 ```
 
-### Step 2: Create your `package.json` file
+### Step 2: Generate `package.json` and `.env`
 
-In a new directory, create a new project with a `package.json` file like the one below.
+In a new directory, run the following command to generate the files Grouparoo needs:
+
+```bash
+npx grouparoo generate
+npm start
+```
+
+This will create a `package.json` and `.env` files like these:
+
+**`package.json`**
 
 ```json:readme_deploy
 {
@@ -93,13 +108,9 @@ In a new directory, create a new project with a `package.json` file like the one
 }
 ```
 
-This makes an "app" for Grouparoo to run. There is an example in the [app-example](https://github.com/grouparoo/app-example/blob/master/package.json) directory.
+There are some environment variables needed by Grouparoo that need to be set by your host/docker image. These variables tell Grouparoo how to connect to your database, which URL to use, etc. In development, we can also load these variables from a `.env` file that lives alongside your `package.json`. At minimum, you will need to set the following variables:
 
-### Step 3: Create your `.env` file
-
-There are some environment variables needed by Grouparoo that need to be set by your host/docker image. These variables tell Grouparoo how to connect to your database, which URL to use, etc. In development, we can also load these variables from a `.env` file that lives alongside your `package.json`.
-
-Create a copy of our [example](https://github.com/grouparoo/app-example/blob/master/.env.example) `.env` file to manage your environment variables locally. You can modify the options as needed. Make this as a peer to your `package.json` file. Note: the `.env` file only works when running in `NODE_ENV=development`. On your server, you should set up these same environment variables. At minimum, you will need to set the following variables:
+**`.env`**
 
 ```bash
 PORT=3000
@@ -112,15 +123,19 @@ DATABASE_URL="postgresql://localhost:5432/grouparoo_development"
 SERVER_TOKEN="a-random-string"
 ```
 
+> Note: the `.env` file only works when running in `NODE_ENV=development`. On your server, you should set up these same environment variables.
+
 > A note on `SERVER_TOKEN`: This should be a random string that will be used to identify Grouparoo servers to each-other in the same cluster. It will not be used to authenticate users, but rather authorize servers to make requests against each other. SERVER_TOKEN is not a replacement for setting unique, per-application database credentials and isolated runtime environments.
 
 `npm install` will not succeed without these environment variables being set.
 
-### Step 4: Install Dependencies
+Only these 2 files are needed to make an "app" for Grouparoo to run. There is an example in the [app-example](https://github.com/grouparoo/app-example/blob/master/package.json) directory.
 
-Run `npm install` to install dependencies. This will also run `npm prepare` which will compile the typescript application and build the web components.
+### Step 3: Install Dependencies
 
-### Step 5: Start the Server
+Run `npm install` to install dependencies. This will also run `npm prepare` which will compile the typescript application and build the web components. `npx grouparoo generate` will do this automatically for you.
+
+### Step 4: Start the Server
 
 Run `npm start` to start the server and visit `http://localhost:3000` to get started. Follow the on-screen instructions to create your account and first team.
 
