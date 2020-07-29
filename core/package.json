@@ -83,7 +83,7 @@
     "swagger-ui": "3.30.2",
     "ts-node-dev": "1.0.0-pre.52",
     "type-fest": "0.16.0",
-    "typescript": "3.9.6",
+    "typescript": "3.9.7",
     "umzug": "2.3.0",
     "uuid": "8.3.0",
     "winston": "3.3.3",
