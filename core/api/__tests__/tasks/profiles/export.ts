@@ -73,7 +73,7 @@ describe("tasks/profile:export", () => {
               options: [],
               methods: {
                 test: async () => {
-                  return true;
+                  return { success: true };
                 },
               },
             },

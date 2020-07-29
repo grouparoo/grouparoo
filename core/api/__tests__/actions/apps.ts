@@ -114,7 +114,8 @@ describe("actions/apps", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(test.result).toBe(true);
+      expect(test.success).toBe(true);
+      expect(test.message).toBe("OK");
       expect(test.error).toBeFalsy();
     });
 
@@ -124,12 +125,13 @@ describe("actions/apps", () => {
         guid,
         options: { thing: "stuff" },
       };
-      const { error, test, app } = await specHelper.runAction(
+      const { error, test } = await specHelper.runAction(
         "app:test",
         connection
       );
       expect(error).toBeUndefined();
-      expect(test.result).toBe(true);
+      expect(test.success).toBe(true);
+      expect(test.message).toBe("OK");
       expect(test.error).toBeFalsy();
     });
 

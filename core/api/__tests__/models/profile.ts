@@ -656,7 +656,7 @@ describe("models/profile", () => {
             options: [],
             methods: {
               test: async () => {
-                return true;
+                return { success: true };
               },
             },
           },

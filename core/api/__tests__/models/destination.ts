@@ -658,7 +658,7 @@ describe("models/destination", () => {
             options: [],
             methods: {
               test: async () => {
-                return true;
+                return { success: true };
               },
             },
           },
@@ -749,7 +749,7 @@ describe("models/destination", () => {
             options: [{ key: "test_key", required: true }],
             methods: {
               test: async () => {
-                return true;
+                return { success: true };
               },
               parallelism: async () => {
                 return parallelismResponse;

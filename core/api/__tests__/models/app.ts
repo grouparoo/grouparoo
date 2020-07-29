@@ -169,8 +169,12 @@ describe("models/app", () => {
         type: "test-plugin-app",
       });
 
-      const { result } = await app.test({ fileGuid: "TEST_OPTION" });
-      expect(result).toBe(true);
+      const { success, error, message } = await app.test({
+        fileGuid: "TEST_OPTION",
+      });
+      expect(success).toBe(true);
+      expect(error).toBeUndefined();
+      expect(message).toBe("OK");
 
       await app.destroy();
     });
@@ -321,7 +325,7 @@ describe("models/app", () => {
             methods: {
               test: async () => {
                 testCounter++;
-                return true;
+                return { success: true };
               },
               appOptions: async () => {
                 return { fileGuid: { type: "list", options: ["a", "b"] } };
@@ -380,9 +384,9 @@ describe("models/app", () => {
     });
 
     test("it can run a plugin's test method", async () => {
-      const { error, result } = await app.test();
+      const { error, success } = await app.test();
       expect(error).toBeUndefined();
-      expect(result).toBe(true);
+      expect(success).toBe(true);
       expect(testCounter).toBe(1);
     });
 

@@ -474,7 +474,7 @@ describe("models/run", () => {
             options: [],
             methods: {
               test: async () => {
-                return true;
+                return { success: true };
               },
             },
           },
