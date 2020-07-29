@@ -27,24 +27,24 @@
     "lint": "prettier --check src __tests__"
   },
   "dependencies": {
-    "google-spreadsheet": "^3.0.11"
+    "google-spreadsheet": "3.0.11"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
     "actionhero": "23.0.5"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.1.8",
-    "@types/jest": "^26.0.5",
-    "@types/node": "^14.0.23",
-    "actionhero": "^23.0.5",
-    "dotenv": "^8.2.0",
-    "fs-extra": "^9.0.1",
-    "jest": "^26.1.0",
+    "@grouparoo/core": "0.1.8",
+    "@types/jest": "26.0.7",
+    "@types/node": "14.0.27",
+    "actionhero": "23.0.5",
+    "dotenv": "8.2.0",
+    "fs-extra": "9.0.1",
+    "jest": "26.1.0",
     "nock": "13.0.2",
-    "prettier": "^2.0.5",
-    "ts-jest": "^26.1.2",
-    "typescript": "^3.9.6"
+    "prettier": "2.0.5",
+    "ts-jest": "26.1.2",
+    "typescript": "3.9.7"
   },
   "gitHead": "d180097c68e2e0db22918e7d51c0e84abd9202c0"
 }

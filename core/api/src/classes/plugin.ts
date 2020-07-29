@@ -201,7 +201,7 @@ export interface TestPluginMethod {
     app: App;
     appOptions: SimpleAppOptions;
     connection: any;
-  }): Promise<boolean>;
+  }): Promise<{ success: boolean; message?: string }>;
 }
 
 /**

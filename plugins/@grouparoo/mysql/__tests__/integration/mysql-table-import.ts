@@ -221,7 +221,7 @@ describe("integration/runs/mysql", () => {
     };
     const { error, test } = await specHelper.runAction("app:test", session);
     expect(error).toBeUndefined();
-    expect(test.result).toBe(true);
+    expect(test.success).toBe(true);
     expect(test.error).toBeUndefined();
   });
 

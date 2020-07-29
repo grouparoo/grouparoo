@@ -298,7 +298,7 @@ describe("models/schedule", () => {
             options: [],
             methods: {
               test: async () => {
-                return true;
+                return { success: true };
               },
             },
           },

@@ -410,7 +410,7 @@ describe("models/profilePropertyRule", () => {
             options: [],
             methods: {
               test: async () => {
-                return true;
+                return { success: true };
               },
             },
           },

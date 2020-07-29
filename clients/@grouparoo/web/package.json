@@ -28,15 +28,15 @@
     "lint": "prettier --check src __tests__"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.5",
-    "jest": "^26.1.0",
-    "jest-fetch-mock": "^3.0.3",
-    "prettier": "^2.0.5",
-    "ts-jest": "^26.1.2",
-    "ts-loader": "^7.0.5",
-    "typescript": "^3.9.6",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11"
+    "@types/jest": "26.0.7",
+    "jest": "26.1.0",
+    "jest-fetch-mock": "3.0.3",
+    "prettier": "2.0.5",
+    "ts-jest": "26.1.2",
+    "ts-loader": "7.0.5",
+    "typescript": "3.9.7",
+    "webpack": "4.43.0",
+    "webpack-cli": "3.3.11"
   },
   "gitHead": "d180097c68e2e0db22918e7d51c0e84abd9202c0"
 }

@@ -39,7 +39,7 @@ export class Plugins extends Initializer {
           options: [],
           methods: {
             test: async () => {
-              return true;
+              return { success: true };
             },
           },
         },

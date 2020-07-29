@@ -158,7 +158,7 @@ describe("integration/runs/google-sheets", () => {
       const { error, test } = await specHelper.runAction("app:test", session);
       expect(error).toBeUndefined();
       expect(test.error).toBeUndefined();
-      expect(test.result).toBe(true);
+      expect(test.success).toBe(true);
     });
 
     test("we can see a preview of the sheet", async () => {
