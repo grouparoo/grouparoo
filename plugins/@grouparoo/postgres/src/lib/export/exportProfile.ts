@@ -157,16 +157,25 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         const data = {};
         data[groupForeignKey] = newProfileProperties[primaryKey];
         data[groupColumnName] = newGroups[i];
-        await connection.query(
-          validateQuery(
-            format(
-              `INSERT INTO %I (%I) VALUES (%L) ON CONFLICT DO NOTHING`,
-              groupsTable,
-              Object.keys(data),
-              Object.values(data)
-            )
-          )
+
+        // There may be 2 tasks writing to the user at the same time, so we need to be safer with our writes...
+        // Some flavors of postgres cannot handle the ON CONFLICT directive (cough *redshift*).
+        // ... Ideally: `INSERT INTO %I (%I) VALUES (%L) ON CONFLICT DO NOTHING`
+
+        const groupInsertQuery = format(
+          `INSERT INTO %I (%I) SELECT %L WHERE NOT EXISTS (SELECT %L FROM %I WHERE %I = %L AND %I = %L)`,
+          groupsTable,
+          Object.keys(data),
+          Object.values(data),
+          Object.keys(data)[0],
+          groupsTable,
+          groupForeignKey,
+          data[groupForeignKey],
+          groupColumnName,
+          data[groupColumnName]
         );
+
+        await connection.query(validateQuery(groupInsertQuery));
       }
     }
 
