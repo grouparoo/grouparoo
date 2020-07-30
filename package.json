@@ -24,7 +24,7 @@
   },
   "scripts": {
     "prepare": "./bin/prepare",
-    "bootstrap-flat": "lerna bootstrap --strict",
+    "bootstrap-flat": "lerna bootstrap",
     "bootstrap-hoist": "lerna bootstrap --strict --hoist",
     "license-checker": "./tools/license-checker/check",
     "spell-checker": "./tools/spell-checker/check",
