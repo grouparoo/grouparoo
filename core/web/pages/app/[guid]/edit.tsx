@@ -99,7 +99,7 @@ export default function Page(props) {
   return (
     <>
       <Head>
-        <title>Grouparoo: {app.name}</title>
+        <title>Grouparoo: {app.name || `Draft`}</title>
       </Head>
 
       <AppTabs app={app} />
