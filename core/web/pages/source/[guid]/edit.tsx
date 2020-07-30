@@ -8,6 +8,7 @@ import AppIcon from "./../../../components/appIcon";
 import StateBadge from "./../../../components/stateBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { SourceAPIData } from "../../../utils/apiData";
+import Loader from "../../../components/loader";
 
 export default function Page(props) {
   const {
@@ -19,6 +20,7 @@ export default function Page(props) {
   } = props;
   const { execApi } = useApi(props, errorHandler);
   const [preview, setPreview] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [source, setSource] = useState<SourceAPIData>(props.source);
   const [connectionOptions, setConnectionOptions] = useState(
     props.connectionOptions
@@ -36,6 +38,7 @@ export default function Page(props) {
       return;
     }
 
+    setLoading(true);
     const response = await execApi(
       "get",
       `/source/${guid}/preview`,
@@ -46,6 +49,7 @@ export default function Page(props) {
       null,
       false
     );
+    setLoading(false);
     if (response?.preview) {
       setPreview(response.preview);
     }
@@ -327,7 +331,8 @@ export default function Page(props) {
 
             <h3>Example Data</h3>
 
-            {previewColumns.length === 0 ? <p>No preview</p> : null}
+            {previewColumns.length === 0 && !loading ? <p>No preview</p> : null}
+            {previewColumns.length === 0 && loading ? <Loader /> : null}
 
             <div style={{ overflow: "auto" }}>
               <Table striped size="sm">
