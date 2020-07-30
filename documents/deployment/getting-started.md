@@ -24,7 +24,7 @@ Assuming you have Docker installed:
 
 ```bash
 # in a new directory
-curl https://raw.githubusercontent.com/grouparoo/app-example/master/docker-compose.published.yml --output docker-compose.yml
+curl -L https://www.grouparoo.com/docker-compose --output docker-compose.yml
 docker-compose up
 ```
 
