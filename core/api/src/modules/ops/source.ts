@@ -7,7 +7,7 @@ import { Profile } from "../../models/Profile";
 import { App } from "../../models/App";
 import { OptionHelper } from "../optionHelper";
 import { MappingHelper } from "../mappingHelper";
-import { utils } from "actionhero";
+import { log, utils } from "actionhero";
 
 export namespace SourceOps {
   /**
@@ -133,7 +133,7 @@ export namespace SourceOps {
     }
 
     while ((await app.checkAndUpdateParallelism("incr")) === false) {
-      console.log(`parallelism limit reached for ${app.type}, sleeping...`);
+      log(`parallelism limit reached for ${app.type}, sleeping...`);
       utils.sleep(100);
     }
 
