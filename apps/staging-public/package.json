@@ -21,6 +21,7 @@
     "@grouparoo/mysql": "^0.1.8",
     "@grouparoo/newrelic": "^0.1.8",
     "@grouparoo/postgres": "^0.1.8",
+    "@grouparoo/redshift": "^0.1.8",
     "@grouparoo/sailthru": "^0.1.8",
     "@grouparoo/sample-ui-plugin": "^0.1.8"
   },
@@ -31,18 +32,19 @@
   },
   "grouparoo": {
     "plugins": [
-      "@grouparoo/files-s3",
-      "@grouparoo/mysql",
-      "@grouparoo/postgres",
-      "@grouparoo/mailchimp",
-      "@grouparoo/logger",
       "@grouparoo/bigquery",
       "@grouparoo/csv",
       "@grouparoo/email-authentication",
-      "@grouparoo/newrelic",
+      "@grouparoo/files-s3",
       "@grouparoo/google-sheets",
-      "@grouparoo/sailthru",
-      "@grouparoo/hubspot"
+      "@grouparoo/hubspot",
+      "@grouparoo/logger",
+      "@grouparoo/mailchimp",
+      "@grouparoo/mysql",
+      "@grouparoo/newrelic",
+      "@grouparoo/postgres",
+      "@grouparoo/redshift",
+      "@grouparoo/sailthru"
     ],
     "includedFiles": [
       "assets"
