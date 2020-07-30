@@ -1,0 +1,45 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "@grouparoo/redshift",
+  "description": "The Grouparoo redshift Plugin",
+  "version": "0.1.8",
+  "license": "MPL-2.0",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://www.grouparoo.com",
+  "bugs": {
+    "url": "https://github.com/grouparoo/grouparoo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grouparoo/grouparoo.git",
+    "directory": "plugins/@grouparoo/redshift"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "scripts": {
+    "prepare": "rm -rf dist && tsc --declaration",
+    "test": "echo 'no tests'",
+    "pretest": "npm run lint && npm run prepare",
+    "lint": "prettier --check src"
+  },
+  "dependencies": {
+    "@grouparoo/postgres": "0.1.8"
+  },
+  "peerDependencies": {
+    "@grouparoo/core": "^0.1.1",
+    "actionhero": "23.0.5"
+  },
+  "devDependencies": {
+    "@grouparoo/core": "0.1.8",
+    "@types/jest": "26.0.7",
+    "@types/node": "14.0.27",
+    "@types/pg": "7.14.3",
+    "actionhero": "23.0.5",
+    "prettier": "2.0.5",
+    "typescript": "3.9.7"
+  }
+}
