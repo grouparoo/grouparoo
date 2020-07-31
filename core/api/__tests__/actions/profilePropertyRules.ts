@@ -119,17 +119,29 @@ describe("actions/profilePropertyRules", () => {
         csrfToken,
         guid,
       };
-      const {
-        error,
-        profilePropertyRule,
-        pluginOptions,
-      } = await specHelper.runAction("profilePropertyRule:view", connection);
+      const { error, profilePropertyRule } = await specHelper.runAction(
+        "profilePropertyRule:view",
+        connection
+      );
 
       expect(error).toBeUndefined();
       expect(profilePropertyRule.key).toBe("email");
       expect(profilePropertyRule.isArray).toBe(false);
       expect(profilePropertyRule.unique).toBe(true);
       expect(profilePropertyRule.source.guid).toBe(source.guid);
+    });
+
+    test("an administrator can view a profilePropertyRule's plugin options", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+      };
+      const { error, pluginOptions } = await specHelper.runAction(
+        "profilePropertyRule:pluginOptions",
+        connection
+      );
+
+      expect(error).toBeUndefined();
       expect(pluginOptions[0].key).toBe("column");
     });
 

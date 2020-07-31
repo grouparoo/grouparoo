@@ -95,9 +95,10 @@ export default function Navigation(props) {
     return () => {
       clearTimeout(resqueTimer);
     };
-  }, []);
+  }, [navigationMode]);
 
   async function load() {
+    if (navigationMode === "unauthenticated") return;
     const { failedCount } = await execApi("get", `/resque/resqueFailedCount`);
     setResqueFailedCount(failedCount);
     resqueTimer = setTimeout(() => {
@@ -209,6 +210,7 @@ export default function Navigation(props) {
                         {nav.title}{" "}
                         {!expandPlatformMenu ? (
                           <ResqueFailedCountBadge
+                            navigationMode={navigationMode}
                             resqueFailedCount={resqueFailedCount}
                           />
                         ) : null}
@@ -230,6 +232,7 @@ export default function Navigation(props) {
                                 {expandPlatformMenu &&
                                 nav.title === "Resque" ? (
                                   <ResqueFailedCountBadge
+                                    navigationMode={navigationMode}
                                     resqueFailedCount={resqueFailedCount}
                                   />
                                 ) : null}
@@ -380,9 +383,12 @@ function RunningRunsBadge({ execApi }) {
 
 function ResqueFailedCountBadge({
   resqueFailedCount,
+  navigationMode,
 }: {
   resqueFailedCount: number;
+  navigationMode: string;
 }) {
+  if (navigationMode === "unauthenticated") return null;
   if (resqueFailedCount === 0) return null;
 
   return (

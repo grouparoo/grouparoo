@@ -18,6 +18,7 @@ export default function Page(props) {
     destinationHandler,
     environmentVariableOptions,
     query,
+    hydrationError,
   } = props;
   const { execApi } = useApi(props, errorHandler);
   const [destination, setDestination] = useState<DestinationAPIData>(
@@ -27,6 +28,8 @@ export default function Page(props) {
     props.connectionOptions
   );
   const { guid } = query;
+
+  if (hydrationError) errorHandler.set({ error: hydrationError });
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -333,18 +336,29 @@ Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
   const { guid } = ctx.query;
   const { destination } = await execApi("get", `/destination/${guid}`);
-  const { options } = await execApi(
-    "get",
-    `/destination/${guid}/connectionOptions`,
-    { options: destination.options }
-  );
   const { environmentVariableOptions } = await execApi(
     "get",
     "/destinations/connectionApps"
   );
+
+  let options = {};
+  let hydrationError: Error;
+
+  try {
+    const connectionOptionsResponse = await execApi(
+      "get",
+      `/destination/${guid}/connectionOptions`,
+      { options: destination.options }
+    );
+    options = connectionOptionsResponse.options;
+  } catch (error) {
+    hydrationError = error.toString();
+  }
+
   return {
     destination,
     connectionOptions: options,
     environmentVariableOptions,
+    hydrationError,
   };
 };
