@@ -99,11 +99,16 @@ export default function Navigation(props) {
 
   async function load() {
     if (navigationMode === "unauthenticated") return;
-    const { failedCount } = await execApi("get", `/resque/resqueFailedCount`);
-    setResqueFailedCount(failedCount);
-    resqueTimer = setTimeout(() => {
-      load();
-    }, resqueSleep);
+
+    try {
+      const { failedCount } = await execApi("get", `/resque/resqueFailedCount`);
+      setResqueFailedCount(failedCount);
+      resqueTimer = setTimeout(() => {
+        load();
+      }, resqueSleep);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
