@@ -6,6 +6,8 @@ import {
   BelongsTo,
   BeforeSave,
   ForeignKey,
+  IsLowercase,
+  BeforeValidate,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { Team } from "./Team";
@@ -32,6 +34,7 @@ export class TeamMember extends LoggedModel<TeamMember> {
 
   @AllowNull(false)
   @IsEmail
+  @IsLowercase
   @Column
   email: string;
 
@@ -77,5 +80,10 @@ export class TeamMember extends LoggedModel<TeamMember> {
   static async ensureTeamExists(instance: TeamMember) {
     const team = await instance.$get("team");
     if (!team) throw new Error("team not found");
+  }
+
+  @BeforeValidate
+  static lowercaseEmail(instance: TeamMember) {
+    if (instance.email) instance.email = instance.email.toLocaleLowerCase();
   }
 }

@@ -44,6 +44,20 @@ describe("session", () => {
       expect(teamMember.guid).toBeTruthy();
     });
 
+    test("can log in with email not in lowercase", async () => {
+      const { success, teamMember, error } = await specHelper.runAction(
+        "session:create",
+        {
+          email: "PEACH@example.COM",
+          password: "P@ssw0rd!",
+        }
+      );
+
+      expect(error).toBeUndefined();
+      expect(success).toEqual(true);
+      expect(teamMember.guid).toBeTruthy();
+    });
+
     test("cannot log in with unknown user", async () => {
       const { success, teamMember, error } = await specHelper.runAction(
         "session:create",

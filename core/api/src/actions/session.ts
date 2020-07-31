@@ -17,7 +17,7 @@ export class sessionCreate extends Action {
   async run({ connection, response, params }) {
     response.success = false;
     const teamMember = await TeamMember.findOne({
-      where: { email: params.email },
+      where: { email: params.email.toLocaleLowerCase() },
     });
     if (!teamMember) throw new Error("team member not found");
 
