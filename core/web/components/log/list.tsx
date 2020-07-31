@@ -19,7 +19,7 @@ export default function LogsList(props) {
   const [total, setTotal] = useState(props.total);
 
   // websocket
-  useRealtimeModelStream("log", handleMessage);
+  useRealtimeModelStream("log", "list-list", handleMessage);
   const [newLogs, setNewLogs] = useState<number>(0);
 
   // pagination

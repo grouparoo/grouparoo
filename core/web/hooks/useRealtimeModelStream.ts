@@ -1,27 +1,37 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
+const socketKey = "ACTIONHERO_WEBSOCKET";
 
 export const useRealtimeModelStream = (
   modelName: string,
+  key: string,
   messageCallback: Function
 ) => {
+  let toConnect = false;
   if (!globalThis.ActionheroWebsocketClient) return null;
-  const [client] = useState(new globalThis.ActionheroWebsocketClient());
+  if (!globalThis[socketKey]) {
+    globalThis[socketKey] = new globalThis.ActionheroWebsocketClient();
+    globalThis[socketKey].messageCallbacks = {};
+    globalThis[socketKey].pendingRooms = [];
+    toConnect = true;
+  }
+
+  const client = globalThis[socketKey];
   const [room] = useState(`model:${modelName}`);
-  const [enabled, setEnabled] = useState(true);
 
   useEffect(() => {
-    connect();
+    if (toConnect) connect();
+
+    registerCallback();
+    joinRoom();
 
     return () => {
-      setEnabled(false);
-      disconnect();
+      delete client.messageCallbacks[room][key];
     };
   }, []);
 
   async function connect() {
-    if (client.state === "connected") {
-      return;
-    }
+    if (client.state === "connected") return;
 
     client.on("connected", function () {
       console.log("[websocket] connected");
@@ -56,19 +66,42 @@ export const useRealtimeModelStream = (
       sentAt,
       message,
     }) {
-      if (messageRoom === room && enabled) messageCallback(message);
+      handleMessage(context, from, messageRoom, sentAt, message);
     });
 
     client.connect(function (error, details) {
-      if (error) {
-        console.error(error);
-      } else {
-        client.roomAdd(room);
-      }
+      if (error) console.error(error);
     });
   }
 
+  function handleMessage(context, from, messageRoom, sentAt, message) {
+    if (client.pendingRooms) {
+      client.pendingRooms = client.pendingRooms.filter(
+        (r) => r !== messageRoom
+      );
+    }
+
+    for (const key in client.messageCallbacks[messageRoom]) {
+      const cb = client.messageCallbacks[messageRoom][key];
+      cb(message);
+    }
+  }
+
+  function registerCallback() {
+    if (!client.messageCallbacks[room]) client.messageCallbacks[room] = {};
+    client.messageCallbacks[room][key] = messageCallback;
+  }
+
+  function joinRoom() {
+    if (!client.rooms.includes(room) && !client.pendingRooms.includes(room)) {
+      client.pendingRooms.push(room);
+      client.roomAdd(room);
+    }
+    client.pendingRooms = Array.from(new Set(client.pendingRooms));
+  }
+
   async function disconnect() {
+    delete client.pendingRooms;
     client.disconnect();
   }
 };

@@ -10,7 +10,7 @@ export default function LogsList(props) {
   const [latestTimestamp, setLatestTimestamp] = useState(0);
 
   // websocket
-  useRealtimeModelStream("log", handleMessage);
+  useRealtimeModelStream("log", "log-stream", handleMessage);
 
   useEffect(() => {
     const listElement = document.getElementById("logs-stream");
@@ -23,6 +23,7 @@ export default function LogsList(props) {
       while (logs.length > limit) logs.shift();
       return logs;
     });
+
     setLatestTimestamp(new Date().getTime());
   }
 
@@ -45,7 +46,7 @@ export default function LogsList(props) {
             paddingLeft: 10,
           }}
         >
-          {logs.map((log) => (
+          {logs.map((log, idx) => (
             <li key={`log-${log.guid}`}>
               <span>[ {formatCreatedAt(log.createdAt)} ]</span>{" "}
               <strong>
