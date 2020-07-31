@@ -56,6 +56,26 @@ export class ListRuns extends AuthenticatedAction {
   }
 }
 
+export class RunEdit extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "run:edit";
+    this.description = "edit a run";
+    this.outputExample = {};
+    this.permission = { topic: "system", mode: "write" };
+    this.inputs = {
+      guid: { required: true },
+      state: { required: true },
+    };
+  }
+
+  async run({ params, response }) {
+    const run = await Run.findByGuid(params.guid);
+    await run.update({ state: params.state });
+    response.run = await run.apiData();
+  }
+}
+
 export class RunView extends AuthenticatedAction {
   constructor() {
     super();

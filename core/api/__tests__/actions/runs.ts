@@ -114,4 +114,22 @@ describe("actions/runs", () => {
     expect(run.guid).toBe(runA.guid);
     expect(quantizedTimeline.length).toBe(25 + 4); // 25 for times, 4
   });
+
+  test("a run can be edited", async () => {
+    const _run = await helper.factories.run(scheduleA, { state: "running" });
+    expect(_run.state).toBe("running");
+
+    connection.params = {
+      csrfToken,
+      guid: _run.guid,
+      state: "stopped",
+    };
+
+    const { error, run } = await specHelper.runAction("run:edit", connection);
+    expect(error).toBeUndefined();
+    expect(run.guid).toBe(_run.guid);
+    expect(run.state).toBe("stopped");
+
+    await _run.destroy();
+  });
 });
