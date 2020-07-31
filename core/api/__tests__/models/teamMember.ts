@@ -47,6 +47,18 @@ describe("models/teamMember", () => {
     await expect(teamMember.save()).rejects.toThrow(/Validation error/);
   });
 
+  test("emails will be stored in lowercase", async () => {
+    const teamMember = await TeamMember.create({
+      teamGuid: team.guid,
+      firstName: "Toad",
+      lastName: "Toadstool",
+      email: "TOAD@example.com",
+    });
+
+    expect(teamMember.email).toBe("toad@example.com");
+    teamMember.destroy();
+  });
+
   test("creating and updating a team member creates a log entry but does not include passwordHash", async () => {
     await Log.destroy({ truncate: true });
 
