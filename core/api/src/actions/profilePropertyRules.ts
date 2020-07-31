@@ -225,6 +225,26 @@ export class ProfilePropertyRuleView extends AuthenticatedAction {
     );
 
     response.profilePropertyRule = await profilePropertyRule.apiData();
+  }
+}
+
+export class ProfilePropertyRulePluginOptions extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "profilePropertyRule:pluginOptions";
+    this.description = "view the plugin options for a profile property rule";
+    this.outputExample = {};
+    this.permission = { topic: "profilePropertyRule", mode: "read" };
+    this.inputs = {
+      guid: { required: true },
+    };
+  }
+
+  async run({ params, response }) {
+    const profilePropertyRule = await ProfilePropertyRule.findByGuid(
+      params.guid
+    );
+
     response.pluginOptions = await profilePropertyRule.pluginOptions();
   }
 }
