@@ -2,9 +2,9 @@ import os from "os";
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { api, task } from "actionhero";
 
-// A helper class
+// Helper Classes for Permissions
 
-abstract class ResqueAction extends AuthenticatedAction {
+abstract class ResqueActionWrite extends AuthenticatedAction {
   constructor() {
     super();
     this.permission = { topic: "resque", mode: "write" };
@@ -13,7 +13,16 @@ abstract class ResqueAction extends AuthenticatedAction {
   }
 }
 
-exports.ResqueRedisInfo = class ResqueRedisInfo extends ResqueAction {
+abstract class ResqueActionRead extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.permission = { topic: "resque", mode: "read" };
+    this.logLevel = "debug";
+    this.toDocument = false;
+  }
+}
+
+export class ResqueRedisInfo extends ResqueActionRead {
   constructor() {
     super();
     this.name = "resque:redisInfo";
@@ -27,9 +36,9 @@ exports.ResqueRedisInfo = class ResqueRedisInfo extends ResqueAction {
       response.redisInfo = redisInfo.split(os.EOL);
     }
   }
-};
+}
 
-exports.ResqueResqueDetails = class ResqueResqueDetails extends ResqueAction {
+export class ResqueResqueDetails extends ResqueActionRead {
   constructor() {
     super();
     this.name = "resque:resqueDetails";
@@ -40,9 +49,9 @@ exports.ResqueResqueDetails = class ResqueResqueDetails extends ResqueAction {
   async run({ response }) {
     response.resqueDetails = await task.details();
   }
-};
+}
 
-exports.ResqueLoadWorkerQueues = class ResqueLoadWorkerQueues extends ResqueAction {
+export class ResqueLoadWorkerQueues extends ResqueActionRead {
   constructor() {
     super();
     this.name = "resque:loadWorkerQueues";
@@ -53,9 +62,9 @@ exports.ResqueLoadWorkerQueues = class ResqueLoadWorkerQueues extends ResqueActi
   async run({ response }) {
     response.workerQueues = await task.workers();
   }
-};
+}
 
-exports.ResqueForceCleanWorker = class ResqueForceCleanWorker extends ResqueAction {
+export class ResqueForceCleanWorker extends ResqueActionWrite {
   constructor() {
     super();
     this.name = "resque:forceCleanWorker";
@@ -70,9 +79,9 @@ exports.ResqueForceCleanWorker = class ResqueForceCleanWorker extends ResqueActi
       params.workerName
     );
   }
-};
+}
 
-exports.ResqueFailedCount = class ResqueFailedCount extends ResqueAction {
+export class ResqueFailedCount extends ResqueActionRead {
   constructor() {
     super();
     this.name = "resque:resqueFailedCount";
@@ -83,9 +92,9 @@ exports.ResqueFailedCount = class ResqueFailedCount extends ResqueAction {
   async run({ response }) {
     response.failedCount = await task.failedCount();
   }
-};
+}
 
-exports.ResqueQueued = class ResqueQueued extends ResqueAction {
+export class ResqueQueued extends ResqueActionRead {
   constructor() {
     super();
     this.name = "resque:queued";
@@ -115,9 +124,9 @@ exports.ResqueQueued = class ResqueQueued extends ResqueAction {
       params.offset + params.limit - 1
     );
   }
-};
+}
 
-exports.ResqueDelQueue = class ResqueDelQueue extends ResqueAction {
+export class ResqueDelQueue extends ResqueActionWrite {
   constructor() {
     super();
     this.name = "resque:delQueue";
@@ -130,9 +139,9 @@ exports.ResqueDelQueue = class ResqueDelQueue extends ResqueAction {
   async run({ response, params }) {
     response.deleted = await task.delQueue(params.queue);
   }
-};
+}
 
-exports.ResqueResqueFailed = class ResqueResqueFailed extends ResqueAction {
+export class ResqueResqueFailed extends ResqueActionRead {
   constructor() {
     super();
     this.name = "resque:resqueFailed";
@@ -158,9 +167,9 @@ exports.ResqueResqueFailed = class ResqueResqueFailed extends ResqueAction {
     );
     response.total = await task.failedCount();
   }
-};
+}
 
-exports.ResqueRemoveFailed = class ResqueRemoveFailed extends ResqueAction {
+export class ResqueRemoveFailed extends ResqueActionWrite {
   constructor() {
     super();
     this.name = "resque:removeFailed";
@@ -178,9 +187,9 @@ exports.ResqueRemoveFailed = class ResqueRemoveFailed extends ResqueAction {
     if (!failed) throw Error("failed job not found");
     await task.removeFailed(failed[0]);
   }
-};
+}
 
-exports.ResqueRemoveAllFailed = class ResqueRemoveAllFailed extends ResqueAction {
+export class ResqueRemoveAllFailed extends ResqueActionWrite {
   constructor() {
     super();
     this.name = "resque:removeAllFailed";
@@ -196,9 +205,9 @@ exports.ResqueRemoveAllFailed = class ResqueRemoveAllFailed extends ResqueAction
       return this.run();
     }
   }
-};
+}
 
-exports.ResqueRetryAndRemoveFailed = class ResqueRetryAndRemoveFailed extends ResqueAction {
+export class ResqueRetryAndRemoveFailed extends ResqueActionWrite {
   constructor() {
     super();
     this.name = "resque:retryAndRemoveFailed";
@@ -216,9 +225,9 @@ exports.ResqueRetryAndRemoveFailed = class ResqueRetryAndRemoveFailed extends Re
     if (!failed) throw new Error("failed job not found");
     await task.retryAndRemoveFailed(failed[0]);
   }
-};
+}
 
-exports.ResqueRetryAndRemoveAllFailed = class ResqueRetryAndRemoveAllFailed extends ResqueAction {
+export class ResqueRetryAndRemoveAllFailed extends ResqueActionWrite {
   constructor() {
     super();
     this.name = "resque:retryAndRemoveAllFailed";
@@ -234,9 +243,9 @@ exports.ResqueRetryAndRemoveAllFailed = class ResqueRetryAndRemoveAllFailed exte
       return this.run();
     }
   }
-};
+}
 
-exports.ResqueLocks = class ResqueLocks extends ResqueAction {
+export class ResqueLocks extends ResqueActionRead {
   constructor() {
     super();
     this.name = "resque:locks";
@@ -247,9 +256,9 @@ exports.ResqueLocks = class ResqueLocks extends ResqueAction {
   async run({ response }) {
     response.locks = await task.locks();
   }
-};
+}
 
-exports.ResqueDelLock = class ResqueDelLock extends ResqueAction {
+export class ResqueDelLock extends ResqueActionWrite {
   constructor() {
     super();
     this.name = "resque:delLock";
@@ -262,9 +271,9 @@ exports.ResqueDelLock = class ResqueDelLock extends ResqueAction {
   async run({ response, params }) {
     response.count = await task.delLock(params.lock);
   }
-};
+}
 
-exports.ResqueDelayedJobs = class ResqueDelayedJobs extends ResqueAction {
+export class ResqueDelayedJobs extends ResqueActionRead {
   constructor() {
     super();
     this.name = "resque:delayedjobs";
@@ -308,9 +317,9 @@ exports.ResqueDelayedJobs = class ResqueDelayedJobs extends ResqueAction {
 
     response.delayedjobs = delayedjobs;
   }
-};
+}
 
-exports.ResqueDelDelayed = class ResqueDelDelayed extends ResqueAction {
+export class ResqueDelDelayed extends ResqueActionWrite {
   constructor() {
     super();
     this.name = "resque:delDelayed";
@@ -340,9 +349,9 @@ exports.ResqueDelDelayed = class ResqueDelDelayed extends ResqueAction {
       job.args[0]
     );
   }
-};
+}
 
-exports.ResqueRunDelayed = class ResqueRunDelayed extends ResqueAction {
+export class ResqueRunDelayed extends ResqueActionWrite {
   constructor() {
     super();
     this.name = "resque:runDelayed";
@@ -369,4 +378,4 @@ exports.ResqueRunDelayed = class ResqueRunDelayed extends ResqueAction {
     await task.delDelayed(job.queue, job.class, job.args[0]);
     await task.enqueue(job.class, job.args[0], job.queue);
   }
-};
+}
