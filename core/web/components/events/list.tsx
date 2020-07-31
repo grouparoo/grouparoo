@@ -25,7 +25,7 @@ export default function EventsList(props) {
   );
 
   // websocket
-  useRealtimeModelStream("event", handleMessage);
+  useRealtimeModelStream("event", "events-list", handleMessage);
   const [newEvents, setNewEvents] = useState<number>(0);
 
   const profileGuid = query.guid;

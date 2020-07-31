@@ -114,18 +114,15 @@ function BigNumber({ execApi, model, title, href = null }) {
 }
 
 function RunningRuns({ execApi }) {
-  useRealtimeModelStream("run", load);
+  useRealtimeModelStream("run", "totals-runs-list", load);
   const [runs, setRuns] = useState<RunAPIData[]>([]);
   useEffect(() => {
     load();
   }, []);
 
   async function load() {
-    // let the navbar load the runs first
-    setTimeout(async () => {
-      const { runs } = await execApi("get", `/runs`, { state: "running" });
-      setRuns(runs);
-    }, 1001);
+    const { runs } = await execApi("get", `/runs`, { state: "running" });
+    setRuns(runs);
   }
 
   if (runs.length === 0) {

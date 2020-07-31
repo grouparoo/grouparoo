@@ -351,7 +351,7 @@ function HighlightingNavLink({ href, text, icon, idx }) {
 }
 
 function RunningRunsBadge({ execApi }) {
-  useRealtimeModelStream("run", load);
+  useRealtimeModelStream("run", "navigation-runs-badge", load);
   const [runs, setRuns] = useState<RunAPIData[]>([]);
 
   useEffect(() => {
