@@ -85,6 +85,27 @@ export default function Navigation(props) {
 
   if (!navExpanded && !hasBeenCollapsed) setHasBeenCollapsed(true);
 
+  // resque failure counts
+  const resqueSleep = 10 * 1000 + 1;
+  let resqueTimer: NodeJS.Timeout;
+  const [resqueFailedCount, setResqueFailedCount] = useState(0);
+
+  useEffect(() => {
+    load();
+    return () => {
+      clearTimeout(resqueTimer);
+    };
+  }, [navigationMode]);
+
+  async function load() {
+    if (navigationMode === "unauthenticated") return;
+    const { failedCount } = await execApi("get", `/resque/resqueFailedCount`);
+    setResqueFailedCount(failedCount);
+    resqueTimer = setTimeout(() => {
+      load();
+    }, resqueSleep);
+  }
+
   return (
     <div
       id="navigation"
@@ -186,7 +207,13 @@ export default function Navigation(props) {
                           color: "white",
                         }}
                       >
-                        {nav.title}
+                        {nav.title}{" "}
+                        {!expandPlatformMenu ? (
+                          <ResqueFailedCountBadge
+                            navigationMode={navigationMode}
+                            resqueFailedCount={resqueFailedCount}
+                          />
+                        ) : null}
                       </span>
                       <div style={{ padding: 6 }} />
                     </Accordion.Toggle>
@@ -202,6 +229,13 @@ export default function Navigation(props) {
                                 <Link href={nav.href}>
                                   <a style={{ color: "white" }}>{nav.title}</a>
                                 </Link>
+                                {expandPlatformMenu &&
+                                nav.title === "Resque" ? (
+                                  <ResqueFailedCountBadge
+                                    navigationMode={navigationMode}
+                                    resqueFailedCount={resqueFailedCount}
+                                  />
+                                ) : null}
                               </p>
                             );
                           } else if (nav.type === "divider") {
@@ -336,14 +370,31 @@ function RunningRunsBadge({ execApi }) {
     setRuns(runs);
   }
 
-  if (runs.length === 0) {
-    return null;
-  }
+  if (runs.length === 0) return null;
 
   return (
     <span style={{ paddingLeft: 5 }}>
       <Badge pill variant="info">
         {runs.length}
+      </Badge>
+    </span>
+  );
+}
+
+function ResqueFailedCountBadge({
+  resqueFailedCount,
+  navigationMode,
+}: {
+  resqueFailedCount: number;
+  navigationMode: string;
+}) {
+  if (navigationMode === "unauthenticated") return null;
+  if (resqueFailedCount === 0) return null;
+
+  return (
+    <span style={{ paddingLeft: 5 }}>
+      <Badge pill variant="warning">
+        {resqueFailedCount}
       </Badge>
     </span>
   );

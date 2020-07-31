@@ -26,6 +26,7 @@ export default function Page(props) {
     filterOptions,
     pluginOptions,
     profilePropertyRules,
+    hydrationError,
   } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
@@ -37,6 +38,8 @@ export default function Page(props) {
   );
 
   const { guid } = query;
+
+  if (hydrationError) errorHandler.set({ error: hydrationError });
 
   useEffect(() => {
     newRuleDefaults();
@@ -630,10 +633,7 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { profilePropertyRule, pluginOptions } = await execApi(
-    "get",
-    `/profilePropertyRule/${guid}`
-  );
+
   const { profilePropertyRules } = await execApi(
     "get",
     `/profilePropertyRules`,
@@ -642,16 +642,38 @@ Page.getInitialProps = async (ctx) => {
     }
   );
   const { types } = await execApi("get", `/profilePropertyRuleOptions`);
-  const { options: filterOptions } = await execApi(
-    "get",
-    `/profilePropertyRule/${guid}/filterOptions`
-  );
+
+  let profilePropertyRule = {};
+  let pluginOptions = [];
+  let filterOptions = {};
+  let hydrationError: Error;
+
+  try {
+    const getResponse = await execApi("get", `/profilePropertyRule/${guid}`);
+    profilePropertyRule = getResponse.profilePropertyRule;
+
+    const pluginOptionsResponse = await execApi(
+      "get",
+      `/profilePropertyRule/${guid}/pluginOptions`
+    );
+    pluginOptions = pluginOptionsResponse.pluginOptions;
+
+    const filterResponse = await execApi(
+      "get",
+      `/profilePropertyRule/${guid}/filterOptions`
+    );
+    filterOptions = filterResponse.options;
+  } catch (error) {
+    hydrationError = error.toString();
+  }
+
   return {
     profilePropertyRule,
     profilePropertyRules,
     pluginOptions,
     types,
     filterOptions,
+    hydrationError,
   };
 };
 

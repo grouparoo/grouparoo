@@ -7,7 +7,13 @@ import { createSchedule } from "../../../components/schedule/add";
 import Router from "next/router";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, types, scheduleCount } = props;
+  const {
+    errorHandler,
+    successHandler,
+    types,
+    scheduleCount,
+    hydrationError,
+  } = props;
   const { execApi } = useApi(props, errorHandler);
   const [newMappingKey, setNewMappingKey] = useState("");
   const [newMappingValue, setNewMappingValue] = useState("");
@@ -24,6 +30,8 @@ export default function Page(props) {
     type: "",
   });
   const [source, setSource] = useState(props.source);
+
+  if (hydrationError) errorHandler.set({ error: hydrationError });
 
   const bootstrapUniqueProfilePropertyRule = async () => {
     if (newMappingKey === "") {
@@ -304,12 +312,6 @@ Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
   const { source } = await execApi("get", `/source/${guid}`);
 
-  let preview;
-  if (source.previewAvailable) {
-    const previewResponse = await execApi("get", `/source/${guid}/preview`);
-    preview = previewResponse.preview;
-  }
-
   const {
     profilePropertyRules,
     examples: profilePropertyRuleExamples,
@@ -320,6 +322,18 @@ Page.getInitialProps = async (ctx) => {
   const { types } = await execApi("get", `/profilePropertyRuleOptions`);
   const { total: scheduleCount } = await execApi("get", `/schedules`);
 
+  let preview;
+  let hydrationError: Error;
+
+  try {
+    if (source.previewAvailable) {
+      const previewResponse = await execApi("get", `/source/${guid}/preview`);
+      preview = previewResponse.preview;
+    }
+  } catch (error) {
+    hydrationError = error.toString();
+  }
+
   return {
     source,
     preview,
@@ -327,5 +341,6 @@ Page.getInitialProps = async (ctx) => {
     profilePropertyRuleExamples,
     types,
     scheduleCount,
+    hydrationError,
   };
 };

@@ -17,6 +17,7 @@ export default function Page(props) {
     mappingOptions,
     groups,
     exportArrayProperties,
+    hydrationError,
   } = props;
   const { execApi } = useApi(props, errorHandler);
   const [trackedGroupGuid, setTrackedGroupGuid] = useState(
@@ -37,6 +38,8 @@ export default function Page(props) {
   ] = useState({});
   const [unlockedGroups, setUnlockedGroups] = useState([]);
   const { guid } = query;
+
+  if (hydrationError) errorHandler.set({ error: hydrationError });
 
   const update = async (event) => {
     event.preventDefault();
@@ -78,7 +81,7 @@ export default function Page(props) {
   const remainingProfilePropertyRulesForKnown = [];
   for (const i in profilePropertyRules) {
     let inUse = false;
-    for (const j in mappingOptions.profilePropertyRules.required) {
+    for (const j in mappingOptions?.profilePropertyRules?.required) {
       const opt = mappingOptions.profilePropertyRules.required[j];
       if (destination.mapping[opt.key] === profilePropertyRules[i].key) {
         inUse = true;
@@ -94,7 +97,7 @@ export default function Page(props) {
     .filter(filterRuleForArrayProperties)
     .map((rule) => rule.key);
 
-  mappingOptions.profilePropertyRules.required.map((opt) => {
+  mappingOptions?.profilePropertyRules?.required.map((opt) => {
     if (destination.mapping[opt.key]) {
       remainingProfilePropertyRuleKeysForOptional.splice(
         remainingProfilePropertyRuleKeysForOptional.indexOf(
@@ -104,7 +107,7 @@ export default function Page(props) {
       );
     }
   });
-  mappingOptions.profilePropertyRules.known.map((opt) => {
+  mappingOptions?.profilePropertyRules?.known.map((opt) => {
     if (destination.mapping[opt.key]) {
       remainingProfilePropertyRuleKeysForOptional.splice(
         remainingProfilePropertyRuleKeysForOptional.indexOf(
@@ -118,14 +121,14 @@ export default function Page(props) {
   const optionalMappingRemoteKeys = Object.keys(destination.mapping).filter(
     (key) => {
       if (
-        mappingOptions.profilePropertyRules.required
+        mappingOptions?.profilePropertyRules?.required
           .map((opt) => opt.key)
           .includes(key)
       ) {
         return false;
       }
       if (
-        mappingOptions.profilePropertyRules.known
+        mappingOptions?.profilePropertyRules?.known
           .map((opt) => opt.key)
           .includes(key)
       ) {
@@ -313,7 +316,7 @@ export default function Page(props) {
 
                 {/* Required Vars */}
 
-                {mappingOptions.profilePropertyRules.required.length > 0 ? (
+                {mappingOptions?.profilePropertyRules?.required.length > 0 ? (
                   <>
                     <h6>
                       Required{" "}
@@ -373,7 +376,7 @@ export default function Page(props) {
 
                 {/* Known Vars */}
 
-                {mappingOptions.profilePropertyRules.known.length > 0 ? (
+                {mappingOptions?.profilePropertyRules?.known.length > 0 ? (
                   <>
                     <h6>
                       Known {mappingOptions.labels.profilePropertyRule.plural}
@@ -491,8 +494,8 @@ export default function Page(props) {
 
                 {/* Optional Vars */}
 
-                {mappingOptions.profilePropertyRules
-                  .allowOptionalFromProfilePropertyRules ? (
+                {mappingOptions?.profilePropertyRules
+                  ?.allowOptionalFromProfilePropertyRules ? (
                   <>
                     <h6>
                       Optional{" "}
@@ -610,14 +613,14 @@ export default function Page(props) {
 
                 <br />
 
-                <h6>{mappingOptions.labels.group.plural}</h6>
+                <h6>{mappingOptions?.labels?.group.plural}</h6>
 
                 <Table size="sm">
                   <thead>
                     <tr>
                       <th>Grouparoo Group</th>
                       <th />
-                      <th>{mappingOptions.labels.group.singular}</th>
+                      <th>{mappingOptions?.labels?.group.singular}</th>
                       <th />
                       <th />
                     </tr>
@@ -667,7 +670,8 @@ export default function Page(props) {
                               }
                             />
                             <Form.Control.Feedback type="invalid">
-                              {mappingOptions.labels.group.singular} is required
+                              {mappingOptions?.labels?.group.singular} is
+                              required
                             </Form.Control.Feedback>
                           </td>
                           <td>
@@ -773,23 +777,36 @@ Page.getInitialProps = async (ctx) => {
     "get",
     `/profilePropertyRules`
   );
-  const { options } = await execApi(
-    "get",
-    `/destination/${guid}/mappingOptions`
-  );
-  const { exportArrayProperties } = await execApi(
-    "get",
-    `/destination/${guid}/exportArrayProperties`
-  );
+
+  let mappingOptions = {};
+  let exportArrayProperties = [];
+  let hydrationError: Error;
+
+  try {
+    const mappingOptionsResponse = await execApi(
+      "get",
+      `/destination/${guid}/mappingOptions`
+    );
+    mappingOptions = mappingOptionsResponse.options;
+
+    const exportArrayPropertiesResponse = await execApi(
+      "get",
+      `/destination/${guid}/exportArrayProperties`
+    );
+    exportArrayProperties = exportArrayPropertiesResponse.exportArrayProperties;
+  } catch (error) {
+    hydrationError = error.toString();
+  }
 
   return {
     destination,
     profilePropertyRules,
-    mappingOptions: options,
+    mappingOptions,
     exportArrayProperties,
     trackedGroupGuid: destination.trackAllGroups
       ? "_all"
       : destination.destinationGroups[0]?.guid,
     groups: groups.filter((group) => group.state !== "draft"),
+    hydrationError,
   };
 };
