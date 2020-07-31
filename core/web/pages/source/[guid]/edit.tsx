@@ -17,6 +17,7 @@ export default function Page(props) {
     sourceHandler,
     environmentVariableOptions,
     query,
+    hydrationError,
   } = props;
   const { execApi } = useApi(props, errorHandler);
   const [preview, setPreview] = useState([]);
@@ -26,6 +27,8 @@ export default function Page(props) {
     props.connectionOptions
   );
   const { guid } = query;
+
+  if (hydrationError) errorHandler.set({ error: hydrationError });
 
   useEffect(() => {
     loadPreview(source.previewAvailable);
@@ -394,11 +397,25 @@ Page.getInitialProps = async (ctx) => {
     "get",
     `/sources/connectionApps`
   );
-  const { options: connectionOptions } = await execApi(
-    "get",
-    `/source/${guid}/connectionOptions`,
-    { options: source.options }
-  );
 
-  return { source, connectionOptions, environmentVariableOptions };
+  let connectionOptions = {};
+  let hydrationError: Error;
+
+  try {
+    const connectionOptionsResponse = await execApi(
+      "get",
+      `/source/${guid}/connectionOptions`,
+      { options: source.options }
+    );
+    connectionOptions = connectionOptionsResponse.options;
+  } catch (error) {
+    hydrationError = error.toString();
+  }
+
+  return {
+    source,
+    connectionOptions,
+    environmentVariableOptions,
+    hydrationError,
+  };
 };
