@@ -38,18 +38,9 @@ export default function RunsList(props) {
 
   async function load() {
     const params = { limit, offset };
-
-    if (query.guid) {
-      params["guid"] = query.guid;
-    }
-
-    if (stateFilter !== "") {
-      params["state"] = stateFilter;
-    }
-
-    if (errorFilter !== "") {
-      params["hasError"] = errorFilter;
-    }
+    if (query.guid) params["guid"] = query.guid;
+    if (stateFilter !== "") params["state"] = stateFilter;
+    if (errorFilter !== "") params["hasError"] = errorFilter;
 
     updateURLParams();
     setLoading(true);
@@ -63,15 +54,9 @@ export default function RunsList(props) {
 
   function updateURLParams() {
     let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) {
-      url += `offset=${offset}&`;
-    }
-    if (stateFilter !== "") {
-      url += `state=${stateFilter}&`;
-    }
-    if (errorFilter != "") {
-      url += `error=${errorFilter}&`;
-    }
+    if (offset && offset !== 0) url += `offset=${offset}&`;
+    if (stateFilter !== "") url += `state=${stateFilter}&`;
+    if (errorFilter != "") url += `error=${errorFilter}&`;
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";

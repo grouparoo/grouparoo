@@ -72,9 +72,8 @@ export default function ResqueFailedList(props) {
   function updateURLParams() {
     let url = `${window.location.pathname}?`;
     url += `tab=failed&`;
-    if (offset && offset !== 0) {
-      url += `offset=${offset}&`;
-    }
+    if (offset && offset !== 0) url += `offset=${offset}&`;
+
     Router.push(Router.route, url, { shallow: true });
   }
 

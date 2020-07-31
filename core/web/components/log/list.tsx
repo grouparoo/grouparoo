@@ -96,12 +96,8 @@ export default function LogsList(props) {
 
   function updateURLParams() {
     let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) {
-      url += `offset=${offset}&`;
-    }
-    if (topic) {
-      url += `topic=${topic}&`;
-    }
+    if (offset && offset !== 0) url += `offset=${offset}&`;
+    if (topic) url += `topic=${topic}&`;
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
