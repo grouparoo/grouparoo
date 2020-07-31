@@ -78,6 +78,18 @@ export default function RunsList(props) {
     Router[routerMethod](Router.route, url, { shallow: true });
   }
 
+  function setFilter({
+    errorFilter,
+    stateFilter,
+  }: {
+    errorFilter?: string;
+    stateFilter?: string;
+  }) {
+    if (errorFilter !== undefined) setErrorFilter(errorFilter);
+    if (stateFilter !== undefined) setStateFilter(stateFilter);
+    setOffset(0);
+  }
+
   return (
     <>
       <h1>Runs</h1>
@@ -92,28 +104,28 @@ export default function RunsList(props) {
             <Button
               size="sm"
               variant={stateFilter === "" ? "secondary" : "info"}
-              onClick={() => setStateFilter("")}
+              onClick={() => setFilter({ stateFilter: "" })}
             >
               All
             </Button>
             <Button
               size="sm"
               variant={stateFilter === "running" ? "secondary" : "info"}
-              onClick={() => setStateFilter("running")}
+              onClick={() => setFilter({ stateFilter: "running" })}
             >
               Running
             </Button>
             <Button
               size="sm"
               variant={stateFilter === "complete" ? "secondary" : "info"}
-              onClick={() => setStateFilter("complete")}
+              onClick={() => setFilter({ stateFilter: "complete" })}
             >
               Complete
             </Button>
             <Button
               size="sm"
               variant={stateFilter === "stopped" ? "secondary" : "info"}
-              onClick={() => setStateFilter("stopped")}
+              onClick={() => setFilter({ stateFilter: "stopped" })}
             >
               Stopped
             </Button>
@@ -125,21 +137,21 @@ export default function RunsList(props) {
             <Button
               size="sm"
               variant={errorFilter === "" ? "secondary" : "info"}
-              onClick={() => setErrorFilter("")}
+              onClick={() => setFilter({ errorFilter: "" })}
             >
               All
             </Button>
             <Button
               size="sm"
               variant={errorFilter === "true" ? "secondary" : "info"}
-              onClick={() => setErrorFilter("true")}
+              onClick={() => setFilter({ errorFilter: "true" })}
             >
               True
             </Button>
             <Button
               size="sm"
               variant={errorFilter === "false" ? "secondary" : "info"}
-              onClick={() => setErrorFilter("false")}
+              onClick={() => setFilter({ errorFilter: "false" })}
             >
               False
             </Button>
