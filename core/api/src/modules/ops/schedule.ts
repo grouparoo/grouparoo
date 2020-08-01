@@ -141,4 +141,41 @@ export namespace ScheduleOps {
 
     return response;
   }
+
+  /**
+   * Determine the percentage complete for this run
+   */
+  export async function runPercentComplete(schedule: Schedule, run: Run) {
+    const source = await schedule.$get("source");
+
+    const { pluginConnection } = await source.getPlugin();
+    const method = pluginConnection.methods.sourceRunPercentComplete;
+    if (!method) return 0;
+
+    const app = await source.$get("app");
+    const appOptions = await app.getOptions();
+    const sourceOptions = await source.getOptions();
+    const sourceMapping = await source.getMapping();
+    const scheduleOptions = await schedule.getOptions();
+
+    // In this case, we want to us the highWaterMark from the previous run, not this run's, as it will be moving over the live of the run
+    let highWaterMark = {};
+    const previousRun = await run.previousRun();
+    if (previousRun?.highWaterMark) {
+      highWaterMark = previousRun.highWaterMark;
+    }
+
+    return method({
+      connection: await app.getConnection(),
+      app,
+      appOptions,
+      source,
+      sourceOptions,
+      sourceMapping,
+      schedule,
+      scheduleOptions,
+      highWaterMark,
+      run,
+    });
+  }
 }

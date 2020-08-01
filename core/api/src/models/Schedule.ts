@@ -129,6 +129,10 @@ export class Schedule extends LoggedModel<Schedule> {
     return ScheduleOps.pluginOptions(this);
   }
 
+  async runPercentComplete(run: Run) {
+    return ScheduleOps.runPercentComplete(this, run);
+  }
+
   async apiData() {
     const source = await this.$get("source");
     const options = await this.getOptions();

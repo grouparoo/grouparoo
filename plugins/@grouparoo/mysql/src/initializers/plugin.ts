@@ -15,6 +15,7 @@ import { profiles as tableProfiles } from "../lib/table-import/profiles";
 import { profileProperty as tableProfileProperty } from "../lib/table-import/profileProperty";
 import { profilePropertyRuleOptions as tableProfilePropertyRuleOptions } from "../lib/table-import/profilePropertyRuleOptions";
 import { scheduleOptions as tableScheduleOptions } from "../lib/table-import/scheduleOptions";
+import { sourceRunPercentComplete as tableSourceRunPercentComplete } from "../lib/table-import/sourceRunPercentComplete";
 
 import { sourceOptions as querySourceOptions } from "../lib/query-import/sourceOptions";
 import { profileProperty as queryProfileProperty } from "../lib/query-import/profileProperty";
@@ -78,6 +79,7 @@ export class Plugins extends Initializer {
             uniqueProfilePropertyRuleBootstrapOptions: tableUniqueProfilePropertyRuleBootstrapOptions,
             profiles: tableProfiles,
             profileProperty: tableProfileProperty,
+            sourceRunPercentComplete: tableSourceRunPercentComplete,
           },
         },
         {

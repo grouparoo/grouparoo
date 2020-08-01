@@ -7,6 +7,7 @@ import { sourcePreview } from "../lib/file-import/sourcePreview";
 import { profiles } from "../lib/file-import/profiles";
 import { profileProperty } from "../lib/file-import/profileProperty";
 import { profilePropertyRuleOptions } from "../lib/file-import/profilePropertyRuleOptions";
+import { sourceRunPercentComplete } from "../lib/file-import/sourceRunPercentComplete";
 
 const packageJSON = require("./../../package.json");
 
@@ -48,6 +49,7 @@ export class Plugins extends Initializer {
             sourcePreview,
             profiles,
             profileProperty,
+            sourceRunPercentComplete,
           },
         },
       ],
