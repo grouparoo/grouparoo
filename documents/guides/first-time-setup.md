@@ -29,11 +29,11 @@ Then you'll choose the kind of Source you'd like to create. The choices shown wi
 Once you've chosen the App, you will name your Source and identify the table with user data that you want to pull into Grouparoo.  
 ![New postgres source](https://raw.githubusercontent.com/grouparoo/grouparoo/master/documents/images/guides/new-source-postgres.png)
 
-After you've chosen the database table that contains your user data, you will need to indicate what makes your users unique. Often a unique identifier is a `user id`, `uid`, `guid`, or `email`.
+After you've chosen the database table that contains your user data, you will need to indicate what makes your users unique. Often a unique identifier is a `id`, `user id`, `guid`, or `email`.
 
-### Create your first Profile Property
+### Create your first Profile Property Rule
 
-You will also create your first Profile Property rule. A Profile Property rule is how you pull data from your Source and add it directly onto a Profile in Grouparoo. In this first case, you will map it directly to the unique identifier for your users.
+You will also create your first Profile Property Rule. A Profile Property Rule is how you pull data from your Source and add that onto all of your Profiles in Grouparoo. In this first case, you will map it directly to a unique identifier for your users.
 ![First Profile Property](https://raw.githubusercontent.com/grouparoo/grouparoo/master/documents/images/guides/new-source-bootstrap.png)
 
 ### Add a Schedule to your Source
@@ -43,12 +43,11 @@ A Schedule defines how often Grouparoo will check your Source for new data. When
 You can choose how often Grouparoo will check your Source for new data. You will also point Grouparoo to the column that indicates when a row in your users table has been updated, such as an `updated_at` timestamp column.  
 ![Schedule](https://raw.githubusercontent.com/grouparoo/grouparoo/master/documents/images/guides/new-source-schedule.png)
 
-Now your first Source is all set up! 🎉  
-Grouparoo is now regularly pulling in data from your Source.
+Now your first Source is all set up! 🎉 Grouparoo is now regularly pulling in data from your Source.
 
 ### Adding more Profile Properties
 
-You can have multiple Profile Properties defined from the same Source. You can create new Profile Properties from the Profile Properties list:  
+You can have multiple Profile Properties defined from the same Source. You can create new Profile Properties from the Profile Property Rules list:  
 ![New Profile Properties](https://raw.githubusercontent.com/grouparoo/grouparoo/master/documents/images/guides/new-profile-properties.png)
 
 You can also create new Profile Properties by going to a Source's detail page.  
