@@ -5,12 +5,12 @@
 ### Guides to Getting Started with Grouparoo
 
 - [Installing Grouparoo](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/getting-started.md)
-- Setting up Grouparoo the first time
-- Adding Apps
-- Adding Sources
-- Adding Destinations
-- Defining a Profile Property Rule
-- Creating Groups
+- [Setting up Grouparoo the first time](https://github.com/grouparoo/grouparoo/blob/master/documents/guides/first-time-setup.md)
+- [Adding Apps](https://github.com/grouparoo/grouparoo/blob/master/documents/guides/add-apps.md)
+- [Adding Sources](https://github.com/grouparoo/grouparoo/blob/master/documents/guides/create-sources.md)
+- [Adding Destinations](https://github.com/grouparoo/grouparoo/blob/master/documents/guides/create-destinations.md)
+- [Defining a Profile Property Rule](https://github.com/grouparoo/grouparoo/blob/master/documents/guides/create-profile-properties.md)
+- [Creating Groups](https://github.com/grouparoo/grouparoo/blob/master/documents/guides/create-groups.md)
 
 ### Getting Data into Grouparoo
 
