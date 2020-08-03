@@ -54,7 +54,7 @@ You can have multiple Profile Properties defined from the same Source. You can c
 You can also create new Profile Properties by going to a Source's detail page.  
 ![New Profile Properties Source Details](https://raw.githubusercontent.com/grouparoo/grouparoo/master/documents/images/guides/new-profile-properties-source-detail.png)
 
-#### Next steps
+# Next steps
 
 - Repeat the steps above to create more Sources and/or Profile Properties
-- [Create Groups](<(https://github.com/grouparoo/grouparoo/blob/master/documents/guides/creating-groups.md)>) of Profiles (cohorts or segments)
+- [Create Groups](https://github.com/grouparoo/grouparoo/blob/master/documents/guides/creating-groups.md) of Profiles (cohorts or segments)
