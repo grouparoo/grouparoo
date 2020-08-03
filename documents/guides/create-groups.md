@@ -1,14 +1,14 @@
 # Creating Groups
 
-Now that you've Profiles and Profile Properties, the next step is to create Groups. Groups are a segment or cohort of Profiles. You can have `Calculated` Groups and `Manual` Groups.
+Now that you've created Profiles and Profile Properties, the next step is to create Groups. Groups are a segment or cohort of Profiles. You can have `Calculated Groups` and `Manual Groups`.
 
 ## Calculated Groups
 
-`Calculated` Groups add and remove Profiles automatically based on rules or criteria that you define. Here are a few different examples of `Calculated` Groups and their rules:
+`Calculated Groups` add and remove Profiles automatically based on Group Rules that you define. Here are a few different examples of `Calculated Groups` and their rules:
 
 ### Example: Repeat Purchasers
 
-Rules:
+Group Rules:
 
 - Profiles who have purchased more than once
 - Profiles with an email
@@ -17,7 +17,7 @@ Rules:
 
 ### Example: High-Value & Abandoned Cart Recently
 
-Rules:
+Group Rules:
 
 - Profiles who have a Life-time Value (LTV) of over 30
 - Profiles who have recently added an item to their cart
@@ -27,7 +27,7 @@ Rules:
 
 ### Example: High-Value Xhosa Speakers
 
-Rules:
+Group Rules:
 
 - Profiles with a language set to `xhosa`
 - Profiles who have a Life-time Value (LTV) of over 50
@@ -36,7 +36,7 @@ Rules:
 
 ## Manual Groups
 
-While the power of Grouparoo lies in our `Calculated` Groups, `Manual` Groups are still valuable from time to time. `Manual Groups` are Groups of profiles where a Grouparoo user manually adds/remove Profiles from the group.
+While a great deal of the value of Grouparoo comes from our `Calculated Groups`, `Manual Groups` are still valuable in certain circumstances. `Manual Groups` are Groups of profiles where you manually add or remove Profiles from the Group.
 
 # Next Steps
 
