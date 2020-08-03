@@ -16,7 +16,7 @@ We recommend starting with the App that has the majority of your customer data s
 
 ![Add App Left Nav](https://raw.githubusercontent.com/grouparoo/grouparoo/master/documents/images/guides/add-app-postgres.png)
 
-## 2. Add a Source
+## 2. Create a Source
 
 Now that you've added an App, your first step is to create a [Source](https://github.com/grouparoo/grouparoo/blob/master/documents/product/concepts.md#sources). A Source is a definition for how you pull data from an App into Grouparoo.
 
@@ -57,4 +57,4 @@ You can also create new Profile Properties by going to a Source's detail page.
 # Next steps
 
 - Repeat the steps above to create more Sources and/or Profile Properties
-- [Create Groups](https://github.com/grouparoo/grouparoo/blob/master/documents/guides/creating-groups.md) of Profiles (cohorts or segments)
+- [Create Groups](https://github.com/grouparoo/grouparoo/blob/master/documents/guides/create-groups.md) of Profiles (cohorts or segments)
