@@ -1,13 +1,31 @@
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Badge, Alert } from "react-bootstrap";
+import { useState } from "react";
+import { Row, Col, Badge, Alert, Button } from "react-bootstrap";
 import Moment from "react-moment";
 import Link from "next/link";
 import { ResponsiveLine } from "@nivo/line";
 import RunTabs from "../../../components/tabs/run";
 import Head from "next/head";
+import { RunAPIData } from "../../../utils/apiData";
 
-export default function Page({ run, quantizedTimeline }) {
+export default function Page(props) {
+  const { quantizedTimeline, successHandler, errorHandler } = props;
+  const { execApi } = useApi(props, errorHandler);
+  const [run, setRun] = useState<RunAPIData>(props.run);
   const chartData = buildChartData(quantizedTimeline);
+  const [loading, setLoading] = useState(false);
+
+  async function stopRun() {
+    setLoading(true);
+    const response = await execApi("put", `/run/${run.guid}`, {
+      state: "stopped",
+    });
+    setLoading(false);
+    if (response?.run) {
+      successHandler.set({ message: "Run stopped" });
+      setRun(response.run);
+    }
+  }
 
   return (
     <>
@@ -33,6 +51,20 @@ export default function Page({ run, quantizedTimeline }) {
             <Badge variant={run.state === "complete" ? "success" : "warning"}>
               {run.state} ({run.percentComplete}%)
             </Badge>
+            {run.state === "running" ? (
+              <>
+                <br />
+                <br />
+                <Button
+                  variant="warning"
+                  size="sm"
+                  disabled={loading}
+                  onClick={stopRun}
+                >
+                  Stop run
+                </Button>
+              </>
+            ) : null}
           </p>
           <p>
             Completed{" "}

@@ -71,15 +71,10 @@ export default function ProfilesList(props) {
 
   function updateURLParams() {
     let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) {
-      url += `offset=${offset}&`;
-    }
-    if (searchKey && searchKey !== "") {
-      url += `searchKey=${searchKey}&`;
-    }
-    if (searchValue && searchValue !== "") {
+    if (offset && offset !== 0) url += `offset=${offset}&`;
+    if (searchKey && searchKey !== "") url += `searchKey=${searchKey}&`;
+    if (searchValue && searchValue !== "")
       url += `searchValue=${escape(searchValue)}&`;
-    }
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";

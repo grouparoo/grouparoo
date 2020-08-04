@@ -49,9 +49,8 @@ export default function ResqueQueue(props) {
     let url = `${window.location.pathname}?`;
     url += `tab=queue&`;
     url += `queue=${queue}&`;
-    if (offset && offset !== 0) {
-      url += `offset=${offset}&`;
-    }
+    if (offset && offset !== 0) url += `offset=${offset}&`;
+
     Router.push(Router.route, url, { shallow: true });
   }
 

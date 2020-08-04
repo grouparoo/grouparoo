@@ -3,8 +3,9 @@ import { Destination } from "../../models/Destination";
 import { Export } from "../../models/Export";
 import { Profile } from "../../models/Profile";
 import { Group } from "../../models/Group";
+import { Schedule } from "../../models/Schedule";
 import { Op } from "sequelize";
-import { api } from "actionhero";
+import { api, log } from "actionhero";
 
 export namespace RunOps {
   /**
@@ -110,9 +111,12 @@ export namespace RunOps {
   /**
    * Make a guess to what percent complete this Run is
    */
-  export async function percentComplete(run: Run) {
+  export async function determinePercentComplete(run: Run) {
+    await run.reload(); // the loaded instance's counts may have changed after it was loaded
+
     if (run.state === "complete") return 100;
     if (run.state === "stopped") return 100;
+
     if (run.creatorType === "group") {
       let basePercent = 0;
       const group = await Group.findByGuid(run.creatorGuid);
@@ -139,10 +143,17 @@ export namespace RunOps {
             3
         )
       );
-    }
-    if (run.creatorType === "schedule") {
-      // there's no way to know because we are reading external data
-      return 0;
+    } else if (run.creatorType === "schedule") {
+      const schedule = await Schedule.findByGuid(run.creatorGuid);
+      try {
+        return schedule.runPercentComplete(run);
+      } catch (error) {
+        log(
+          `Error calculating the percent complete for run ${run.guid} (${schedule.name}): ${error}`,
+          "error"
+        );
+        return 0;
+      }
     } else {
       // for profilePropertyRules and for other types of internal run, we can assume we have to check every profile in the system
       const totalProfiles = await Profile.count();

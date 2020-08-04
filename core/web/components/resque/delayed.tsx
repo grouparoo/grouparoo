@@ -73,9 +73,8 @@ export default function ResqueDelayedList(props) {
   function updateURLParams() {
     let url = `${window.location.pathname}?`;
     url += `tab=delayed&`;
-    if (offset && offset !== 0) {
-      url += `offset=${offset}&`;
-    }
+    if (offset && offset !== 0) url += `offset=${offset}&`;
+
     Router.push(Router.route, url, { shallow: true });
   }
 

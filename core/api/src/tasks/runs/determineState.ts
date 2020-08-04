@@ -21,6 +21,7 @@ export class RunDetermineState extends Task {
     const run = await Run.findByGuid(runGuid);
 
     await run.determineState();
+    await run.determinePercentComplete();
     await run.reload();
 
     if (run.state === "running") {

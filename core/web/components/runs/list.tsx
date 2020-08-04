@@ -38,18 +38,9 @@ export default function RunsList(props) {
 
   async function load() {
     const params = { limit, offset };
-
-    if (query.guid) {
-      params["guid"] = query.guid;
-    }
-
-    if (stateFilter !== "") {
-      params["state"] = stateFilter;
-    }
-
-    if (errorFilter !== "") {
-      params["hasError"] = errorFilter;
-    }
+    if (query.guid) params["guid"] = query.guid;
+    if (stateFilter !== "") params["state"] = stateFilter;
+    if (errorFilter !== "") params["hasError"] = errorFilter;
 
     updateURLParams();
     setLoading(true);
@@ -63,19 +54,25 @@ export default function RunsList(props) {
 
   function updateURLParams() {
     let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) {
-      url += `offset=${offset}&`;
-    }
-    if (stateFilter !== "") {
-      url += `state=${stateFilter}&`;
-    }
-    if (errorFilter != "") {
-      url += `error=${errorFilter}&`;
-    }
+    if (offset && offset !== 0) url += `offset=${offset}&`;
+    if (stateFilter !== "") url += `state=${stateFilter}&`;
+    if (errorFilter != "") url += `error=${errorFilter}&`;
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
     Router[routerMethod](Router.route, url, { shallow: true });
+  }
+
+  function setFilter({
+    errorFilter,
+    stateFilter,
+  }: {
+    errorFilter?: string;
+    stateFilter?: string;
+  }) {
+    if (errorFilter !== undefined) setErrorFilter(errorFilter);
+    if (stateFilter !== undefined) setStateFilter(stateFilter);
+    setOffset(0);
   }
 
   return (
@@ -92,28 +89,28 @@ export default function RunsList(props) {
             <Button
               size="sm"
               variant={stateFilter === "" ? "secondary" : "info"}
-              onClick={() => setStateFilter("")}
+              onClick={() => setFilter({ stateFilter: "" })}
             >
               All
             </Button>
             <Button
               size="sm"
               variant={stateFilter === "running" ? "secondary" : "info"}
-              onClick={() => setStateFilter("running")}
+              onClick={() => setFilter({ stateFilter: "running" })}
             >
               Running
             </Button>
             <Button
               size="sm"
               variant={stateFilter === "complete" ? "secondary" : "info"}
-              onClick={() => setStateFilter("complete")}
+              onClick={() => setFilter({ stateFilter: "complete" })}
             >
               Complete
             </Button>
             <Button
               size="sm"
               variant={stateFilter === "stopped" ? "secondary" : "info"}
-              onClick={() => setStateFilter("stopped")}
+              onClick={() => setFilter({ stateFilter: "stopped" })}
             >
               Stopped
             </Button>
@@ -125,21 +122,21 @@ export default function RunsList(props) {
             <Button
               size="sm"
               variant={errorFilter === "" ? "secondary" : "info"}
-              onClick={() => setErrorFilter("")}
+              onClick={() => setFilter({ errorFilter: "" })}
             >
               All
             </Button>
             <Button
               size="sm"
               variant={errorFilter === "true" ? "secondary" : "info"}
-              onClick={() => setErrorFilter("true")}
+              onClick={() => setFilter({ errorFilter: "true" })}
             >
               True
             </Button>
             <Button
               size="sm"
               variant={errorFilter === "false" ? "secondary" : "info"}
-              onClick={() => setErrorFilter("false")}
+              onClick={() => setFilter({ errorFilter: "false" })}
             >
               False
             </Button>

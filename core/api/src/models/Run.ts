@@ -18,7 +18,7 @@ import {
   ForeignKey,
   BeforeUpdate,
 } from "sequelize-typescript";
-import { chatRoom } from "actionhero";
+import { chatRoom, log } from "actionhero";
 import * as uuid from "uuid";
 import { Schedule } from "./Schedule";
 import { Import } from "./Import";
@@ -124,6 +124,10 @@ export class Run extends Model<Run> {
   @Column
   groupMethod: string;
 
+  @Default(0)
+  @Column
+  percentComplete: number;
+
   @BelongsTo(() => Schedule)
   schedule: Schedule;
 
@@ -156,6 +160,12 @@ export class Run extends Model<Run> {
       this.completedAt = new Date();
       await this.buildErrorMessage();
     }
+  }
+
+  async determinePercentComplete() {
+    this.percentComplete = await RunOps.determinePercentComplete(this);
+    await this.save();
+    log(`run ${this.guid} is ${this.percentComplete}% complete`);
   }
 
   async buildErrorMessage() {
@@ -238,7 +248,7 @@ export class Run extends Model<Run> {
       creatorName: await this.getCreatorName(),
       creatorType: this.creatorType,
       state: this.state,
-      percentComplete: await this.percentComplete(),
+      percentComplete: this.percentComplete,
       importsCreated: this.importsCreated,
       profilesCreated: this.profilesCreated,
       profilesImported: this.profilesImported,
@@ -254,10 +264,6 @@ export class Run extends Model<Run> {
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
     };
-  }
-
-  async percentComplete() {
-    return RunOps.percentComplete(this);
   }
 
   async getCreatorName() {
@@ -340,7 +346,8 @@ export class Run extends Model<Run> {
       instance.changed("groupMemberLimit") ||
       instance.changed("groupMemberOffset") ||
       instance.changed("highWaterMark") ||
-      instance.changed("sourceOffset")
+      instance.changed("sourceOffset") ||
+      instance.changed("percentComplete")
     ) {
       await chatRoom.broadcast({}, `model:run`, {
         model: await instance.apiData(),

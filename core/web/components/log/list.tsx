@@ -62,10 +62,6 @@ export default function LogsList(props) {
     if (response?.logs) {
       setLogs(response.logs);
       setTotal(response.total);
-
-      if (response.logs.length === 0 && offset > 0) {
-        setOffset(0);
-      }
     }
   }
 
@@ -96,12 +92,8 @@ export default function LogsList(props) {
 
   function updateURLParams() {
     let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) {
-      url += `offset=${offset}&`;
-    }
-    if (topic) {
-      url += `topic=${topic}&`;
-    }
+    if (offset && offset !== 0) url += `offset=${offset}&`;
+    if (topic) url += `topic=${topic}&`;
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
@@ -124,7 +116,10 @@ export default function LogsList(props) {
         <Button
           size="sm"
           variant={topic ? "info" : "secondary"}
-          onClick={() => setTopic(null)}
+          onClick={() => {
+            setTopic(null);
+            setOffset(0);
+          }}
         >
           All
         </Button>
@@ -135,7 +130,10 @@ export default function LogsList(props) {
               key={`topic-${t}`}
               size="sm"
               variant={variant}
-              onClick={() => setTopic(t)}
+              onClick={() => {
+                setTopic(t);
+                setOffset(0);
+              }}
             >
               {t}
             </Button>

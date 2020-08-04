@@ -101,6 +101,8 @@ export class RunGroup extends Task {
       throw new Error(`${method} is not now a known method`);
     }
 
+    await run.determinePercentComplete();
+
     if (memberCount === 0 && method === "runAddGroupMembers") {
       await task.enqueueIn(config.tasks.timeout + 1, "group:run", {
         runGuid: run.guid,

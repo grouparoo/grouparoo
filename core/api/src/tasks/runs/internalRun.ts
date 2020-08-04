@@ -74,6 +74,8 @@ export class RunInternalRun extends Task {
       await transaction.commit();
     }
 
+    await run.determinePercentComplete();
+
     if (profiles.length > 0) {
       await task.enqueueIn(config.tasks.timeout + 1, "run:internalRun", {
         runGuid: run.guid,

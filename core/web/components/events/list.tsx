@@ -72,12 +72,8 @@ export default function EventsList(props) {
 
   function updateURLParams() {
     let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) {
-      url += `offset=${offset}&`;
-    }
-    if (type && type !== "") {
-      url += `type=${escape(type)}&`;
-    }
+    if (offset && offset !== 0) url += `offset=${offset}&`;
+    if (type && type !== "") url += `type=${escape(type)}&`;
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";

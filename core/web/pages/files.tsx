@@ -65,9 +65,7 @@ export default function Page(props) {
 
   function updateURLParams() {
     let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) {
-      url += `offset=${offset}&`;
-    }
+    if (offset && offset !== 0) url += `offset=${offset}&`;
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";

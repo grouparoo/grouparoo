@@ -124,7 +124,8 @@ describe("models/run", () => {
           creatorGuid: group.guid,
           creatorType: "group",
         });
-        expect(await run.percentComplete()).toBe(100);
+        await run.determinePercentComplete();
+        expect(run.percentComplete).toBe(100);
       });
 
       test("stopped", async () => {
@@ -133,7 +134,8 @@ describe("models/run", () => {
           creatorGuid: group.guid,
           creatorType: "group",
         });
-        expect(await run.percentComplete()).toBe(100);
+        await run.determinePercentComplete();
+        expect(run.percentComplete).toBe(100);
       });
 
       test("running - schedule", async () => {
@@ -142,7 +144,8 @@ describe("models/run", () => {
           creatorGuid: schedule.guid,
           creatorType: "schedule",
         });
-        expect(await run.percentComplete()).toBe(0);
+        await run.determinePercentComplete();
+        expect(run.percentComplete).toBe(0);
       });
 
       test("running - group - runAddGroupMembers", async () => {
@@ -152,7 +155,8 @@ describe("models/run", () => {
           creatorType: "group",
           groupMethod: "runAddGroupMembers",
         });
-        expect(await run.percentComplete()).toBe(0);
+        await run.determinePercentComplete();
+        expect(run.percentComplete).toBe(0);
       });
 
       test("running - group - runRemoveGroupMembers", async () => {
@@ -162,7 +166,8 @@ describe("models/run", () => {
           creatorType: "group",
           groupMethod: "runRemoveGroupMembers",
         });
-        expect(await run.percentComplete()).toBe(45);
+        await run.determinePercentComplete();
+        expect(run.percentComplete).toBe(45);
       });
 
       test("running - teamMember", async () => {
@@ -174,7 +179,8 @@ describe("models/run", () => {
           creatorType: "teamMember",
           profilesImported: 1,
         });
-        expect(await run.percentComplete()).toBe(50);
+        await run.determinePercentComplete();
+        expect(run.percentComplete).toBe(50);
         await profileA.destroy();
         await profileB.destroy();
       });

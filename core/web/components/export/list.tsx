@@ -77,9 +77,8 @@ export default function ExportsList(props) {
 
   function updateURLParams() {
     let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) {
-      url += `offset=${offset}&`;
-    }
+    if (offset && offset !== 0) url += `offset=${offset}&`;
+
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
     Router[routerMethod](Router.route, url, { shallow: true });

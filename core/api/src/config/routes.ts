@@ -114,6 +114,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/app/:guid/test", action: "app:test" },
         { path: "/v:apiVersion/profilePropertyRule/:guid/test", action: "profilePropertyRule:test" },
         { path: "/v:apiVersion/app/:guid", action: "app:edit" },
+        { path: "/v:apiVersion/run/:guid", action: "run:edit" },
         { path: "/v:apiVersion/source/:guid", action: "source:edit" },
         { path: "/v:apiVersion/schedule/:guid", action: "schedule:edit" },
         { path: "/v:apiVersion/destination/:guid", action: "destination:edit" }

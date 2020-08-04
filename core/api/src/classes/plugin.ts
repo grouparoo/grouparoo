@@ -68,6 +68,7 @@ export interface PluginConnection {
     sourceOptions?: SourceOptionsMethod;
     sourcePreview?: SourcePreviewMethod;
     sourceFilters?: SourceFilterMethod;
+    sourceRunPercentComplete?: SourceRunPercentCompleteMethod;
     uniqueProfilePropertyRuleBootstrapOptions?: UniqueProfilePropertyRuleBootstrapOptions;
     profiles?: ProfilesPluginMethod;
     profileProperty?: ProfilePropertyPluginMethod;
@@ -265,6 +266,24 @@ export interface SourceFilterMethodResponseRow {
   key: string;
   ops: Array<string>;
   canHaveRelativeMatch: boolean;
+}
+
+/**
+ * Return a percentage (0-100) for the completion status of this run
+ */
+export interface SourceRunPercentCompleteMethod {
+  (argument: {
+    connection: any;
+    app: App;
+    appOptions: SimpleAppOptions;
+    source: Source;
+    sourceOptions: SimpleSourceOptions;
+    sourceMapping: SourceMapping;
+    schedule: Schedule;
+    scheduleOptions: SimpleScheduleOptions;
+    highWaterMark: HighWaterMark;
+    run: Run;
+  }): Promise<number>;
 }
 
 /**

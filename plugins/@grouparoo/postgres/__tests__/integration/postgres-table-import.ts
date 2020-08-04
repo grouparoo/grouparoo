@@ -476,6 +476,10 @@ describe("integration/runs/postgres", () => {
         )
       );
 
+      // check the run's completion percentage (before the run is complete)
+      await run.determinePercentComplete();
+      expect(run.percentComplete).toBe(100);
+
       // check if the run is done
       const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
         "run:determineState"
@@ -500,6 +504,7 @@ describe("integration/runs/postgres", () => {
       expect(run.highWaterMark).toEqual({ id: "10" });
       expect(run.sourceOffset).toBe("0");
       expect(run.error).toBeFalsy();
+      expect(run.percentComplete).toBe(100);
 
       // check the destination
       const userRows = await api.sequelize.query(
@@ -611,6 +616,10 @@ describe("integration/runs/postgres", () => {
         )
       );
 
+      // check the run's completion percentage (before the run is complete)
+      await run.determinePercentComplete();
+      expect(run.percentComplete).toBe(100);
+
       // check if the run is done
       const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
         "run:determineState"
@@ -635,6 +644,7 @@ describe("integration/runs/postgres", () => {
       expect(run.highWaterMark).toEqual({ id: "10" });
       expect(run.sourceOffset).toBe("0");
       expect(run.error).toBeFalsy();
+      expect(run.percentComplete).toBe(100);
 
       // check the destination
       const userRows = await api.sequelize.query(
