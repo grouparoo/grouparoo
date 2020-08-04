@@ -37,7 +37,7 @@
     "@grouparoo/core": "0.1.8",
     "@types/jest": "26.0.7",
     "@types/node": "14.0.27",
-    "@types/pg": "7.14.3",
+    "@types/pg": "7.14.4",
     "actionhero": "23.0.5",
     "prettier": "2.0.5",
     "typescript": "3.9.7"
