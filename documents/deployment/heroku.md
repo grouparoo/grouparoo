@@ -8,7 +8,7 @@ An example project can be found at https://github.com/grouparoo/app-example
 
 1. Create a new git repository
    - Do not include an environment file, `.env`. Your environment variables will be managed by Heroku
-   - Include a `package.json` file which contains your dependencies and commands per the [main Grouparoo Readme](https://github.com/grouparoo/grouparoo/blob/master/README.md)
+   - Include a `package.json` file which contains your dependencies and commands per the [main Grouparoo Readme](https://github.com/grouparoo/grouparoo#readme)
    - Include a `Procfile` which is similar the to the below. Heroku uses `Procfile`s to define the multiple processes which run for the same application. In the `Procfile` we use Environment variables to differentiate between our web and worker processes. we also skip using `npm` as our process runner, and call the grouparoo start command directly.
 
 ```bash
