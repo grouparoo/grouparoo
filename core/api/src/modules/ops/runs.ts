@@ -112,6 +112,8 @@ export namespace RunOps {
    * Make a guess to what percent complete this Run is
    */
   export async function determinePercentComplete(run: Run) {
+    await run.reload(); // the loaded instance's counts may have changed after it was loaded
+
     if (run.state === "complete") return 100;
     if (run.state === "stopped") return 100;
 

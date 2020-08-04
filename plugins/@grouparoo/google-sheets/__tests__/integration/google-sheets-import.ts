@@ -315,6 +315,10 @@ describe("integration/runs/google-sheets", () => {
           )
         );
 
+        // check the run's completion percentage (before the run is complete)
+        await run.determinePercentComplete();
+        expect(run.percentComplete).toBe(0); // we can't actually tell :(
+
         // check if the run is done
         const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
           "run:determineState"
@@ -337,6 +341,7 @@ describe("integration/runs/google-sheets", () => {
         expect(run.profilesImported).toBe(10);
         expect(run.exportsCreated).toBe(0);
         expect(run.profilesExported).toBe(0);
+        expect(run.percentComplete).toBe(100);
       },
       1000 * 60
     );
@@ -429,6 +434,10 @@ describe("integration/runs/google-sheets", () => {
           )
         );
 
+        // check the run's completion percentage (before the run is complete)
+        await run.determinePercentComplete();
+        expect(run.percentComplete).toBe(0);
+
         // check if the run is done
         const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
           "run:determineState"
@@ -451,6 +460,7 @@ describe("integration/runs/google-sheets", () => {
         expect(run.profilesImported).toBe(10);
         expect(run.exportsCreated).toBe(0);
         expect(run.profilesExported).toBe(0);
+        expect(run.percentComplete).toBe(100);
       },
       1000 * 60
     );

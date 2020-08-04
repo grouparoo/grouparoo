@@ -7,6 +7,7 @@ import { Source } from "../../src/models/Source";
 import { Option } from "../../src/models/Option";
 import { Run } from "../../src/models/Run";
 import { plugin } from "../../src/modules/plugin";
+import run from "../factories/run";
 let actionhero;
 
 describe("models/schedule", () => {
@@ -325,6 +326,9 @@ describe("models/schedule", () => {
               },
             ],
             methods: {
+              sourceRunPercentComplete: async () => {
+                return 33;
+              },
               profiles: async () => {
                 return {
                   highWaterMark: { updated_at: 200 },
@@ -410,6 +414,27 @@ describe("models/schedule", () => {
       await run.reload();
       expect(run.highWaterMark).toEqual({ updated_at: 200 });
       expect(run.sourceOffset).toBe("100");
+
+      await schedule.destroy();
+    });
+
+    test("the source can provide the percentComplete via sourceRunPercentComplete", async () => {
+      const schedule = await Schedule.create({
+        name: "test plugin schedule",
+        sourceGuid: source.guid,
+      });
+      await schedule.setOptions({ maxColumn: "col" });
+      await schedule.update({ state: "ready" });
+
+      const run = await Run.create({
+        creatorGuid: schedule.guid,
+        creatorType: "schedule",
+        state: "running",
+      });
+      expect(run.percentComplete).toBe(0);
+
+      await run.determinePercentComplete();
+      expect(run.percentComplete).toBe(33);
 
       await schedule.destroy();
     });
