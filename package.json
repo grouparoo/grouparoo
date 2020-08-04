@@ -13,7 +13,7 @@
     "url": "git+https://github.com/grouparoo/grouparoo.git"
   },
   "devDependencies": {
-    "@types/jest": "26.0.7",
+    "@types/jest": "26.0.8",
     "glob": "7.1.6",
     "lerna": "3.22.1",
     "lerna-changelog": "1.0.1",
