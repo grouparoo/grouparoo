@@ -27,7 +27,7 @@
     "lint": "prettier --check src __tests__"
   },
   "dependencies": {
-    "@google-cloud/bigquery": "4.7.0"
+    "@google-cloud/bigquery": "5.1.0"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
