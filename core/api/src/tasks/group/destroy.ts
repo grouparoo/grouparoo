@@ -61,6 +61,8 @@ export class GroupDestroy extends Task {
     );
     const remainingMembers = await group.$count("groupMembers");
 
+    await run.determinePercentComplete();
+
     if (importsCounts > 0 || previousRunMembers > 0 || remainingMembers > 0) {
       await task.enqueueIn(config.tasks.timeout + 1, "group:destroy", {
         runGuid: run.guid,

@@ -25,6 +25,8 @@ export class ScheduleRun extends Task {
 
     const { importsCount } = await schedule.run(run);
 
+    await run.determinePercentComplete();
+
     if (importsCount > 0) {
       await task.enqueueIn(config.tasks.timeout + 1, "schedule:run", params);
     } else {

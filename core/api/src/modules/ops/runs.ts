@@ -111,7 +111,7 @@ export namespace RunOps {
   /**
    * Make a guess to what percent complete this Run is
    */
-  export async function percentComplete(run: Run) {
+  export async function determinePercentComplete(run: Run) {
     if (run.state === "complete") return 100;
     if (run.state === "stopped") return 100;
 
