@@ -27,7 +27,7 @@
     "lint": "prettier --check src "
   },
   "dependencies": {
-    "mailchimp-api-v3": "1.13.1"
+    "mailchimp-api-v3": "1.14.0"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
