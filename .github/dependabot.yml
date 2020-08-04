@@ -6,6 +6,6 @@ updates:
       interval: "weekly"
 
   - package-ecosystem: "npm"
-    directory: "/plugins/@grouparoo/*"
+    directory: "/plugins/@grouparoo"
     schedule:
       interval: "weekly"
