@@ -8,8 +8,6 @@ const { allPackageFiles } = require("../shared/packages");
 
 const excludePackages = [
   // custom exclusions for newrelic
-  "newrelic@6.10.0",
-  "@newrelic/aws-sdk@1.1.2",
   "@newrelic/aws-sdk@1.1.3",
   "@newrelic/koa@3.0.0",
   "@newrelic/native-metrics@5.1.0",
