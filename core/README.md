@@ -20,16 +20,16 @@ Focus on building your core product, not integrating with 3rd-party tools. Learn
 
 # Documentation and Guides
 
-- 🦘**Ready to Try Grouparoo?**
+- 🦘 **Ready to Try Grouparoo?**
   - Grouparoo is Open Source, and easy to run on your laptop or in the cloud.
   - → View the [Deployment Docs](https://www.grouparoo.com/docs/deployment).
-- 📚**Want to learn more about how to configure and use Grouparoo?**
+- 📚 **Want to learn more about how to configure and use Grouparoo?**
   - Grouparoo is can be configured without needing to write any code. Learn how to connect to your Sources and Destinations to begin syncing your data.
   - → View the [User Guides](https://www.grouparoo.com/docs/guides).
-- ⚙️**Want to learn more about how Grouparoo works?**
+- ⚙️ **Want to learn more about how Grouparoo works?**
   - Grouparoo is Open Source, and we welcome community contributions. You can add your own plugins to connect to new Sources and Destinations.
   - → View the [Development Guide](https://www.grouparoo.com/docs/development).
-- **Want to collaborate with the Community to enhance Grouparoo?**
+- 👨‍👩‍👧‍👧 **Want to collaborate with the Community to enhance Grouparoo?**
   - Join other Grouparoo Community members to share best practices and tackle problems.
   - → View the [Community Guidelines](https://www.grouparoo.com/docs/community).
 
