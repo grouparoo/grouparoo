@@ -1,12 +1,10 @@
 # Grouparoo
 
-**Achieve Marketing Autonomy**
+**Sync, Segment, and Send your Product Data Everywhere**
 
-Take control of your data and your destiny with the open source customer data platform that puts marketers in charge.
+Focus on building your core product, not integrating with 3rd-party tools. Learn more at [www.grouparoo.com](https://www.grouparoo.com)
 
 ![Grouparoo Data Bowtie](https://raw.githubusercontent.com/grouparoo/grouparoo/master/documents/images/grouparoo-bowtie.png)
-
-Learn more at [www.grouparoo.com](https://www.grouparoo.com)
 
 <p align="center">
   <a aria-label="NPM version" href="https://www.npmjs.com/package/@grouparoo/core">
@@ -20,57 +18,24 @@ Learn more at [www.grouparoo.com](https://www.grouparoo.com)
   </a>
 </p>
 
-# Table of Contents
+# Documentation and Guides
 
-### For Grouparoo Users
-
-If you are new to Grouparoo, or you want to deploy Grouparoo to your servers, start here!
-
-- [ 🎉 Getting Started with Grouparoo](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/getting-started.md)
-- 🦾 Deploying Grouparoo
-  - [Deployment Topology](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/topology.md)
-  - [Deploying with Heroku](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/heroku.md)
-  - [Deploying with Docker](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/docker.md)
-  - [Deploying with Kubernetes and AWS](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/aws-and-k8s.md)
-- [🔒 Security](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/security.md)
-- [📞 Telemetry](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/telemetry.md)
-- [🩺 Support](https://github.com/grouparoo/grouparoo/blob/master/.github/SUPPORT.md)
-
-### Product Information
-
-You can find more details about how the Grouparoo product works here.
-
-- [🧠 Grouparoo Product Concepts](https://github.com/grouparoo/grouparoo/blob/master/documents/product/concepts.md)
-
-### For Grouparoo Developers
-
-If you are interested in extending Grouparoo with your own plugins or contributing to the Open Source project, these documents are for you.
-
-- [👩‍💻 Getting Started as a Grouparoo Developer](https://github.com/grouparoo/grouparoo/blob/master/documents/development/getting-started.md)
-- [📊 Databases](https://github.com/grouparoo/grouparoo/blob/master/documents/development/databases.md)
-- [🛠 Tools](https://github.com/grouparoo/grouparoo/blob/master/documents/development/tools.md)
-- [🌊 Data Flow](https://github.com/grouparoo/grouparoo/blob/master/documents/development/dataflow.md)
-- [🏹 Events](https://github.com/grouparoo/grouparoo/blob/master/documents/development/events.md)
-- [🤝 Plugins](https://github.com/grouparoo/grouparoo/blob/master/documents/development/plugins.md)
-- [📑 Typescript Docs](https://docs.grouparoo.com)
-- [📚 Publishing](https://github.com/grouparoo/grouparoo/blob/master/documents/development/publishing.md)
-- [👻 Security Disclosures](https://github.com/grouparoo/grouparoo/blob/master/.github/SECURITY.md)
-
-### Community
-
-Looking for help or to connect with other Grouparoo users? **[👩‍💻👨‍💻Learn more at www.grouparoo.com/community ➡️](https://www.grouparoo.com/community)**
-
-- [👷‍♀️ Contributing Guide](https://www.grouparoo.com/community)
-- [👨‍👩‍👧‍👦 Code of Conduct](https://github.com/grouparoo/grouparoo/blob/master/CODE_OF_CONDUCT.md)
-
-### Other Documents
-
-- [👩‍⚖️ The Grouparoo License](https://github.com/grouparoo/grouparoo/blob/master/LICENSE.txt)
-- [🙏 Attribution](https://github.com/grouparoo/grouparoo/blob/master/documents/legal/attribution.md)
+- 🦘**Ready to Try Grouparoo?**
+  - Grouparoo is Open Source, and easy to run on your laptop or in the cloud.
+  - → View the [Deployment Docs](https://www.grouparoo.com/docs/deployment).
+- 📚**Want to learn more about how to configure and use Grouparoo?**
+  - Grouparoo is can be configured without needing to write any code. Learn how to connect to your Sources and Destinations to begin syncing your data.
+  - → View the [User Guides](https://www.grouparoo.com/docs/gudies).
+- ⚙️**Want to learn more about how Grouparoo works?**
+  - Grouparoo is Open Source, and we welcome community contributions. You can add your own plugins to connect to new Sources and Destinations.
+  - → View the [Development Guide](https://www.grouparoo.com/docs/development).
+- **Want to collaborate with the Community to enhance Grouparoo?**
+  - Join other Grouparoo Community members to share best practices and tackle problems.
+  - → View the [Community Guidelines](https://www.grouparoo.com/docs/community).
 
 # Running a Grouparoo Application
 
-> This is an abbreviated version of the Grouparoo Deployment Getting Started guide. [The full version can be found here](https://github.com/grouparoo/grouparoo/blob/master/documents/deployment/getting-started.md).
+> This is an abbreviated version of the "Grouparoo Deployment Guide". [The full version can be found here](https://www.grouparoo.com/docs/deployment/getting-started).
 
 ## Deploy to Heroku
 
