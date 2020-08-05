@@ -25,7 +25,7 @@ Focus on building your core product, not integrating with 3rd-party tools. Learn
   - → View the [Deployment Docs](https://www.grouparoo.com/docs/deployment).
 - 📚**Want to learn more about how to configure and use Grouparoo?**
   - Grouparoo is can be configured without needing to write any code. Learn how to connect to your Sources and Destinations to begin syncing your data.
-  - → View the [User Guides](https://www.grouparoo.com/docs/gudies).
+  - → View the [User Guides](https://www.grouparoo.com/docs/guides).
 - ⚙️**Want to learn more about how Grouparoo works?**
   - Grouparoo is Open Source, and we welcome community contributions. You can add your own plugins to connect to new Sources and Destinations.
   - → View the [Development Guide](https://www.grouparoo.com/docs/development).
@@ -35,7 +35,7 @@ Focus on building your core product, not integrating with 3rd-party tools. Learn
 
 # Running a Grouparoo Application
 
-> This is an abbreviated version of the "Grouparoo Deployment Guide". [The full version can be found here](https://www.grouparoo.com/docs/deployment/getting-started).
+> This is an abbreviated version of the "Grouparoo Deployment Guide". [The full version can be found here](https://www.grouparoo.com/docs/deployment).
 
 ## Deploy to Heroku
 
