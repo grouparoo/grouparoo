@@ -207,7 +207,12 @@ export default function Totals(props) {
           model="Export"
           title="Exports"
         />
-        <SparkCard execApi={execApi} href="logs" model="Log" title="Logs" />
+        <SparkCard
+          execApi={execApi}
+          href="logs/list"
+          model="Log"
+          title="Logs"
+        />
       </CardGroup>
 
       <br />
