@@ -400,15 +400,6 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     return this.clearCache();
   }
 
-  @AfterCreate
-  static async buildManualProfileProperties(instance: ProfilePropertyRule) {
-    const source = await instance.$get("source");
-    const app = await source.$get("app");
-    if (app.type === "manual") {
-      await internalRun("profilePropertyRule", instance.guid);
-    }
-  }
-
   @BeforeDestroy
   static async ensureNotInUse(instance: ProfilePropertyRule) {
     const groupRule = await GroupRule.findOne({
