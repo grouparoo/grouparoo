@@ -134,7 +134,7 @@ export default function Page(props) {
     .map((app) => app.guid);
 
   profilePropertyRules.forEach((rule) => {
-    if (manualAppGuids.indexOf(rule.appGuid) >= 0) {
+    if (manualAppGuids.includes(rule.source.app.guid)) {
       manualProperties.push(rule.key);
     }
   });
@@ -301,14 +301,14 @@ export default function Page(props) {
                       <span style={{ fontWeight: "bold" }}>{key}</span>
                     </td>
                     <td>
-                      {manualProperties.indexOf(key) >= 0 ? (
+                      {manualProperties.includes(key) ? (
                         <Form>
                           <Form.Group controlId={key}>
                             <Form.Control
                               required
                               type="text"
                               value={
-                                properties[key].values.length > 0
+                                properties[key].values.length === 0
                                   ? ""
                                   : properties[key].values.join(", ")
                               }
@@ -330,10 +330,6 @@ export default function Page(props) {
                       ) : (
                         <span>
                           <strong>
-                            {/* {renderProperty(
-                              properties[key].values,
-                              properties[key].type
-                            )} */}
                             <ArrayProfilePropertyList
                               type={properties[key].type}
                               values={properties[key].values}

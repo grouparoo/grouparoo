@@ -13,7 +13,8 @@ export default function ArrayProfilePropertyList({
 
   const formattedValues = values.map((value) => {
     if (value === true || value === false) {
-      return <input type="checkbox" checked={value} readOnly />;
+      // return <input type="checkbox" checked={value} readOnly />;
+      return value.toString();
     } else if (type === "date") {
       return value ? new Date(value).toLocaleString() : value;
     } else {
@@ -21,8 +22,9 @@ export default function ArrayProfilePropertyList({
     }
   });
 
-  if (formattedValues.length <= 10)
+  if (formattedValues.length <= 10) {
     return <span>{formattedValues.join(", ")}</span>;
+  }
 
   const firstChunk = formattedValues.slice(0, 10);
   const lastChunk = formattedValues.slice(9);

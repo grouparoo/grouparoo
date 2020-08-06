@@ -143,33 +143,6 @@ describe("models/profilePropertyRule", () => {
     });
   });
 
-  test("creating a profile property rule for a manual app did enqueue an internalRun", async () => {
-    await api.resque.queue.connection.redis.flushdb();
-
-    const app = await helper.factories.app();
-    await app.update({ type: "manual" });
-    const source = await helper.factories.source(app);
-    await source.setOptions({ table: "some table" });
-    await source.setMapping({ id: "userId" });
-    await source.update({ state: "ready" });
-
-    const profilePropertyRule = await ProfilePropertyRule.create({
-      sourceGuid: source.guid,
-      key: "thing",
-      type: "string",
-      unique: false,
-    });
-
-    const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
-    expect(foundTasks.length).toBe(1);
-
-    await profilePropertyRule.destroy();
-    await specHelper.deleteEnqueuedTasks(
-      "run:internalRun",
-      foundTasks[0].args[0]
-    );
-  });
-
   test("updating a profile property rule with new options enqueued an internalRun and update groups relying on it", async () => {
     await api.resque.queue.connection.redis.flushdb();
     const rule = await ProfilePropertyRule.findOne({ where: { key: "email" } });
