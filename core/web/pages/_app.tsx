@@ -43,7 +43,7 @@ const profilePropertyRulesHandler = new ProfilePropertyRulesHandler();
 require("../components/icons");
 
 export default function GrouparooWebApp(props) {
-  const { Component } = props;
+  const { Component, pageProps, err } = props;
   const [routerReady, setRouterReady] = useState(false);
   const [previousPath, setPreviousPath] = useState("");
   const router = useRouter();
@@ -68,7 +68,7 @@ export default function GrouparooWebApp(props) {
     };
   }, [pathname, query]);
 
-  const combinedProps = Object.assign({}, props.pageProps || {}, {
+  const combinedProps = Object.assign({}, pageProps || {}, {
     currentTeamMember: props.currentTeamMember,
     navigation: props.navigation,
     navigationMode: props.navigationMode,
@@ -96,7 +96,7 @@ export default function GrouparooWebApp(props) {
   return (
     <Injection {...combinedProps}>
       <Layout display={routerReady} {...combinedProps}>
-        <Component {...combinedProps} />
+        <Component {...combinedProps} err={err} />
       </Layout>
     </Injection>
   );
