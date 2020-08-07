@@ -7,13 +7,16 @@
     "plugins/@grouparoo/*",
     "plugins/@grouparoo-inc/*"
   ],
-  "version": "0.1.8",
+  "version": "0.1.9-alpha.0",
   "command": {
     "bootstrap": {
       "ignore": "@grouparoo/app-local*"
     },
     "version": {
-      "allowBranch": ["master", "stable"],
+      "allowBranch": [
+        "master",
+        "stable"
+      ],
       "message": "chore(release): publish %s [ci skip]"
     }
   }
