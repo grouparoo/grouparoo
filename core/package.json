@@ -45,6 +45,7 @@
     "@fortawesome/react-fontawesome": "0.1.11",
     "@grouparoo/client-web": "^0.1.9-alpha.0",
     "@nivo/line": "0.62.0",
+    "@zeit/next-source-maps": "0.0.3",
     "actionhero": "23.0.5",
     "ah-next-plugin": "0.3.0",
     "ah-sequelize-plugin": "2.2.2",
