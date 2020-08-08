@@ -24,12 +24,14 @@ export default function ErrorPage({ err, statusCode }) {
 
   return (
     <>
+      <h1>An Error has Occurred</h1>
+
       <Alert variant="danger">
         <Alert.Heading>
           {err.message} {statusCode ? `, status code: ${statusCode}` : null}
         </Alert.Heading>
 
-        <strong>An error has occurred at:</strong>
+        <strong>Error Details:</strong>
 
         <pre
           style={{
