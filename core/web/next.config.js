@@ -6,6 +6,8 @@ const {
 } = require("../api/src/utils/pluginDetails");
 require("./plugins"); // prepare plugins
 
+const withSourceMaps = require("@zeit/next-source-maps");
+
 const nodeModulesPath = path.join(
   path.dirname(require.resolve("react/package.json")),
   ".."
@@ -36,7 +38,7 @@ pluginManifest.plugins.forEach((plugin) => {
   }
 });
 
-module.exports = {
+module.exports = withSourceMaps({
   env,
 
   webpack: (config, options) => {
@@ -62,7 +64,7 @@ module.exports = {
 
     return config;
   },
-};
+});
 
 /**
  * This method exits to allow next.js/babel to transpile files within node_modules... which is how Grouparoo is deployed!
