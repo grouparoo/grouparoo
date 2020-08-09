@@ -12,8 +12,8 @@ export default function Page(props) {
     CTAMessage = "View Dashboard";
     CTALink = "/dashboard";
   } else if (
-    navigation.bottomMenuItems[0] &&
-    navigation.bottomMenuItems[0].href === "/team/initialize"
+    navigation?.bottomMenuItems[0] &&
+    navigation?.bottomMenuItems[0].href === "/team/initialize"
   ) {
     CTAMessage = "Create Team";
     CTALink = "/team/initialize";
