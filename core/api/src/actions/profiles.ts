@@ -111,7 +111,10 @@ export class ProfilesList extends AuthenticatedAction {
 
       response.total = total;
       response.profiles = await Promise.all(
-        profiles.map(async (p) => p.apiData())
+        profiles.map(async (p) => {
+          const profile = await Profile.findByGuid(p.guid);
+          return profile.apiData();
+        })
       );
     }
   }

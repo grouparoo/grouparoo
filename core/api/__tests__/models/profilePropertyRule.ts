@@ -141,6 +141,17 @@ describe("models/profilePropertyRule", () => {
         })
       ).rejects.toThrow(/unique profile properties cannot be arrays/);
     });
+
+    test("only one profile property rule can be identifying", async () => {
+      // the bootstrapped rule is already identifying
+
+      await expect(
+        ProfilePropertyRule.create({
+          sourceGuid: source.guid,
+          identifying: true,
+        })
+      ).rejects.toThrow(/only one profile property rule can be identifying/);
+    });
   });
 
   test("updating a profile property rule with new options enqueued an internalRun and update groups relying on it", async () => {

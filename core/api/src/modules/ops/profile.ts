@@ -13,6 +13,8 @@ export interface ProfilePropertyType {
     values: Array<string | number | boolean | Date>;
     type: string;
     unique: boolean;
+    isArray: boolean;
+    identifying: boolean;
     createdAt: Date;
     updatedAt: Date;
   };
@@ -41,6 +43,8 @@ export namespace ProfileOps {
             values: [],
             type: rule.type,
             unique: rule.unique,
+            isArray: rule.isArray,
+            identifying: rule.identifying,
             createdAt: profileProperties[i].createdAt,
             updatedAt: profileProperties[i].updatedAt,
           };

@@ -425,6 +425,14 @@ describe("models/source", () => {
       await source.destroy();
     });
 
+    test("it can remove identifying from other profile property rules", async () => {
+      const rule = await ProfilePropertyRule.findOne({
+        where: { identifying: true },
+      });
+      rule.identifying = false;
+      await rule.save();
+    });
+
     test("bootstrapUniqueProfilePropertyRule will create a new profile property rule", async () => {
       const rule = await source.bootstrapUniqueProfilePropertyRule(
         "uniqueId",
@@ -434,6 +442,8 @@ describe("models/source", () => {
 
       expect(rule.key).toBe("uniqueId");
       expect(rule.type).toBe("integer");
+      expect(rule.isArray).toBe(false);
+      expect(rule.identifying).toBe(true);
       expect(rule.state).toBe("ready");
       expect(rule.unique).toBe(true);
 

@@ -11,6 +11,8 @@ import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import StateBadge from "../components/stateBadge";
 
+import { ProfilePropertyRuleAPIData } from "../utils/apiData";
+
 export default function Page(props) {
   const { errorHandler, successHandler, query } = props;
   const { execApi } = useApi(props, errorHandler);
@@ -21,9 +23,9 @@ export default function Page(props) {
   const [newRuleSourceGuid, setNewRuleSourceGuid] = useState(
     props.sources[0]?.guid || ""
   );
-  const [profilePropertyRules, setProfilePropertyRules] = useState(
-    props.profilePropertyRules
-  );
+  const [profilePropertyRules, setProfilePropertyRules] = useState<
+    ProfilePropertyRuleAPIData[]
+  >(props.profilePropertyRules);
 
   // pagination
   const limit = 100;
@@ -110,6 +112,7 @@ export default function Page(props) {
             <th>Type</th>
             <th>Unique</th>
             <th>Is Array</th>
+            <th>Identifying</th>
             <th>Source</th>
             <th>State</th>
             <th>Example Values</th>
@@ -140,6 +143,7 @@ export default function Page(props) {
                 <td>{rule.type}</td>
                 <td>{rule.unique ? "✅" : null}</td>
                 <td>{rule.isArray ? "✅" : null}</td>
+                <td>{rule.identifying ? "✅" : null}</td>
                 <td>
                   <Link
                     href="/source/[guid]/overview"

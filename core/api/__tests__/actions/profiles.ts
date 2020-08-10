@@ -469,9 +469,7 @@ describe("actions/profiles", () => {
         expect(simpleProfileValues(profiles[0].properties).email).toEqual([
           "peach@mushroom-kingdom.gov",
         ]);
-        expect(
-          simpleProfileValues(profiles[0].properties).userId
-        ).toBeUndefined();
+        expect(simpleProfileValues(profiles[0].properties).userId).toEqual([4]);
         expect(total).toBe(1);
       });
 
@@ -490,9 +488,7 @@ describe("actions/profiles", () => {
         expect(simpleProfileValues(profiles[0].properties).email).toEqual([
           "peach@mushroom-kingdom.gov",
         ]);
-        expect(
-          simpleProfileValues(profiles[0].properties).userId
-        ).toBeUndefined();
+        expect(simpleProfileValues(profiles[0].properties).userId).toEqual([4]);
         expect(total).toBe(1);
       });
 
