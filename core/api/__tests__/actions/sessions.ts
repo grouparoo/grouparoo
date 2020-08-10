@@ -206,6 +206,18 @@ describe("session", () => {
       let connection;
       let csrfToken: string;
 
+      async function signIn() {
+        connection.params = {
+          email: "toad@example.com",
+          password: "mushrooms",
+        };
+        const sessionResponse = await specHelper.runAction(
+          "session:create",
+          connection
+        );
+        csrfToken = sessionResponse.csrfToken;
+      }
+
       beforeAll(async () => {
         team = await helper.factories.team();
 
@@ -226,15 +238,8 @@ describe("session", () => {
         await toad.updatePassword("mushrooms");
 
         connection = await specHelper.buildConnection();
-        connection.params = {
-          email: "toad@example.com",
-          password: "mushrooms",
-        };
-        const sessionResponse = await specHelper.runAction(
-          "session:create",
-          connection
-        );
-        csrfToken = sessionResponse.csrfToken;
+
+        await signIn();
       });
 
       test("without a csrfToken or grouparoo header, actions are not authenticated", async () => {
@@ -244,17 +249,49 @@ describe("session", () => {
         expect(response.success).toBeFalsy();
       });
 
+      test("once a CSRF token error occurs, the session is destroyed", async () => {
+        await signIn();
+        let firstResponse = await specHelper.runAction(
+          "appReadAction",
+          Object.assign({}, connection, {
+            params: { csrfToken: "not-the-token" },
+          })
+        );
+        expect(firstResponse.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(firstResponse.error.message).toBe("CSRF error");
+        expect(firstResponse.success).toBeFalsy();
+
+        let secondResponse = await specHelper.runAction(
+          "appReadAction",
+          Object.assign({}, connection, { params: { csrfToken } })
+        );
+        expect(secondResponse.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(secondResponse.error.message).toBe("Please log in to continue");
+        expect(secondResponse.success).toBeFalsy();
+      });
+
       test("a member of an authenticated team cannot view any action", async () => {
-        connection.params = { csrfToken };
-        let response = await specHelper.runAction("appReadAction", connection);
+        await signIn();
+        let response = await specHelper.runAction(
+          "appReadAction",
+          Object.assign({}, connection, { params: { csrfToken } })
+        );
         expect(response.error.code).toBe("AUTHENTICATION_ERROR");
         expect(response.success).toBeFalsy();
 
-        response = await specHelper.runAction("appWriteAction", connection);
+        await signIn();
+        response = await specHelper.runAction(
+          "appWriteAction",
+          Object.assign({}, connection, { params: { csrfToken } })
+        );
         expect(response.error.code).toBe("AUTHENTICATION_ERROR");
         expect(response.success).toBeFalsy();
 
-        response = await specHelper.runAction("systemReadAction", connection);
+        await signIn();
+        response = await specHelper.runAction(
+          "systemReadAction",
+          Object.assign({}, connection, { params: { csrfToken } })
+        );
         expect(response.error.code).toBe("AUTHENTICATION_ERROR");
         expect(response.success).toBeFalsy();
       });
@@ -265,16 +302,27 @@ describe("session", () => {
         });
         await permission.update({ read: true, write: false });
 
-        connection.params = { csrfToken };
-        let response = await specHelper.runAction("appReadAction", connection);
+        await signIn();
+        let response = await specHelper.runAction(
+          "appReadAction",
+          Object.assign({}, connection, { params: { csrfToken } })
+        );
         expect(response.error).toBeFalsy();
         expect(response.success).toBe(true);
 
-        response = await specHelper.runAction("appWriteAction", connection);
+        await signIn();
+        response = await specHelper.runAction(
+          "appWriteAction",
+          Object.assign({}, connection, { params: { csrfToken } })
+        );
         expect(response.error.code).toBe("AUTHENTICATION_ERROR");
         expect(response.success).toBeFalsy();
 
-        response = await specHelper.runAction("systemReadAction", connection);
+        await signIn();
+        response = await specHelper.runAction(
+          "systemReadAction",
+          Object.assign({}, connection, { params: { csrfToken } })
+        );
         expect(response.error.code).toBe("AUTHENTICATION_ERROR");
         expect(response.success).toBeFalsy();
       });
@@ -285,16 +333,28 @@ describe("session", () => {
         });
         await permission.update({ read: false, write: true });
 
+        await signIn();
         connection.params = { csrfToken };
-        let response = await specHelper.runAction("appReadAction", connection);
+        let response = await specHelper.runAction(
+          "appReadAction",
+          Object.assign({}, connection, { params: { csrfToken } })
+        );
         expect(response.error.code).toBe("AUTHENTICATION_ERROR");
         expect(response.success).toBeFalsy();
 
-        response = await specHelper.runAction("appWriteAction", connection);
+        await signIn();
+        response = await specHelper.runAction(
+          "appWriteAction",
+          Object.assign({}, connection, { params: { csrfToken } })
+        );
         expect(response.error).toBeFalsy();
         expect(response.success).toBe(true);
 
-        response = await specHelper.runAction("systemReadAction", connection);
+        await signIn();
+        response = await specHelper.runAction(
+          "systemReadAction",
+          Object.assign({}, connection, { params: { csrfToken } })
+        );
         expect(response.error.code).toBe("AUTHENTICATION_ERROR");
         expect(response.success).toBeFalsy();
       });
@@ -309,7 +369,7 @@ describe("session", () => {
         url = `http://localhost:${config.servers.web.port}`;
       });
 
-      test("a user can log in with email and password to obtain a csrf token and a session cookie", async () => {
+      async function buildSessionAndCookie() {
         let response = await fetch(`${url}/api/v1/session`, {
           method: "POST",
           credentials: "include",
@@ -323,12 +383,17 @@ describe("session", () => {
           cookie = setCookie.substr(0, setCookie.indexOf(";"));
           return r.json();
         });
-        expect(response.csrfToken).toBeTruthy();
-        expect(cookie).toMatch(/grouparooSessionId=/);
         csrfToken = response.csrfToken;
+      }
+
+      test("a user can log in with email and password to obtain a csrf token and a session cookie", async () => {
+        await buildSessionAndCookie();
+        expect(cookie).toMatch(/grouparooSessionId=/);
+        expect(csrfToken).toBeTruthy();
       });
 
       test("actions can be authenticated with the CSRF token + cookie", async () => {
+        await buildSessionAndCookie();
         const response = await fetch(
           `${url}/api/v1/account?csrfToken=${csrfToken}`,
           {
@@ -341,6 +406,7 @@ describe("session", () => {
       });
 
       test("actions cannot be authenticated with the cookie without the CSRF token", async () => {
+        await buildSessionAndCookie();
         const response = await fetch(`${url}/api/v1/account`, {
           method: "GET",
           credentials: "include",
@@ -351,6 +417,7 @@ describe("session", () => {
       });
 
       test("actions cannot be authenticated without the cookie and with the CSRF token", async () => {
+        await buildSessionAndCookie();
         const response = await fetch(
           `${url}/api/v1/account?csrfToken=${csrfToken}`,
           {
@@ -364,6 +431,7 @@ describe("session", () => {
       });
 
       test("actions cannot be authenticated with the x-grouparoo-server_token header and without the cookie", async () => {
+        await buildSessionAndCookie();
         const response = await fetch(`${url}/api/v1/account`, {
           method: "GET",
           credentials: "include",

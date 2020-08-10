@@ -36,6 +36,7 @@ const authenticatedActionMiddleware: action.ActionMiddleware = {
             "x-grouparoo-server_token"
           ] !== config.general.serverToken)
       ) {
+        await api.session.destroy(data.connection);
         throw new AuthenticationError("CSRF error");
       } else {
         const teamMember = await TeamMember.findOne({
@@ -107,6 +108,7 @@ const optionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
               "x-grouparoo-server_token"
             ] !== config.general.serverToken)
         ) {
+          await api.session.destroy(data.connection);
           throw new AuthenticationError("CSRF error");
         } else {
           const teamMember = await TeamMember.findOne({
