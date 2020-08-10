@@ -249,8 +249,28 @@ describe("session", () => {
         expect(response.success).toBeFalsy();
       });
 
+      test("once a CSRF token error occurs, the session is destroyed", async () => {
+        await signIn();
+        let firstResponse = await specHelper.runAction(
+          "appReadAction",
+          Object.assign({}, connection, {
+            params: { csrfToken: "not-the-token" },
+          })
+        );
+        expect(firstResponse.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(firstResponse.error.message).toBe("CSRF error");
+        expect(firstResponse.success).toBeFalsy();
+
+        let secondResponse = await specHelper.runAction(
+          "appReadAction",
+          Object.assign({}, connection, { params: { csrfToken } })
+        );
+        expect(secondResponse.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(secondResponse.error.message).toBe("Please log in to continue");
+        expect(secondResponse.success).toBeFalsy();
+      });
+
       test("a member of an authenticated team cannot view any action", async () => {
-        connection.params = { csrfToken };
         await signIn();
         let response = await specHelper.runAction(
           "appReadAction",
