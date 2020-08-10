@@ -111,7 +111,7 @@
     "prop-types": "15.7.2",
     "sequelize-cli": "6.2.0",
     "ts-jest": "26.1.4",
-    "typedoc": "0.17.8"
+    "typedoc": "0.18.0"
   },
   "gitHead": "d180097c68e2e0db22918e7d51c0e84abd9202c0"
 }
