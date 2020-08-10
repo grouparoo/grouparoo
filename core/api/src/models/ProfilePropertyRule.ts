@@ -61,6 +61,7 @@ interface ProfilePropertyRulesCache {
       type: string;
       unique: boolean;
       isArray: boolean;
+      identifying: boolean;
       sourceGuid: string;
       appGuid: string;
     };
@@ -148,6 +149,11 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @Default("draft")
   @Column(DataType.ENUM("draft", "ready"))
   state: string;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  identifying: boolean;
 
   @AllowNull(false)
   @Default(false)
@@ -329,6 +335,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       type: this.type,
       state: this.state,
       unique: this.unique,
+      identifying: this.identifying,
       options,
       filters,
       isArray: this.isArray,
@@ -381,6 +388,19 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   static async ensureNonArrayAndUnique(instance: ProfilePropertyRule) {
     if (instance.isArray && instance.unique) {
       throw new Error("unique profile properties cannot be arrays");
+    }
+  }
+
+  @BeforeSave
+  static async ensureOneIdentifyingProperty(instance: ProfilePropertyRule) {
+    if (instance.identifying) {
+      const otherIdentifyingRulesCount = await ProfilePropertyRule.count({
+        where: { identifying: true, guid: { [Op.ne]: instance.guid } },
+      });
+
+      if (otherIdentifyingRulesCount > 0) {
+        throw new Error("only one profile property rule can be identifying");
+      }
     }
   }
 
@@ -479,6 +499,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
           type: rule.type,
           unique: rule.unique,
           isArray: rule.isArray,
+          identifying: rule.identifying,
           sourceGuid: rule.sourceGuid,
           source: rule.source.appGuid,
         };

@@ -81,13 +81,6 @@ export default function ProfilesList(props) {
     Router[routerMethod](Router.route, url, { shallow: true });
   }
 
-  const uniqueProfileProperties = [];
-  profilePropertyRules.forEach((rule) => {
-    if (rule.unique) {
-      uniqueProfileProperties.push(rule.key);
-    }
-  });
-
   async function autocompleteProfilePropertySearch(
     match,
     _searchKey = searchKey
@@ -113,6 +106,15 @@ export default function ProfilesList(props) {
     }
     setSearchLoading(false);
   }
+
+  const identifyingProfileProperty = profilePropertyRules.filter(
+    (rule) => rule.identifying
+  )[0];
+
+  const uniqueProfilePropertyKeys = profilePropertyRules
+    .filter((rule) => rule.guid !== identifyingProfileProperty.guid)
+    .filter((rule) => rule.unique)
+    .map((rule) => rule.key);
 
   return (
     <>
@@ -223,45 +225,52 @@ export default function ProfilesList(props) {
                     href="/profile/[guid]/edit"
                     as={`/profile/${profile.guid}/edit`}
                   >
-                    <a>
-                      {uniqueProfileProperties.map((key) => {
-                        if (!profile.properties[key]) {
-                          return null;
-                        }
-
-                        return (
-                          <div key={`key-${profile.guid}-${key}`}>
-                            <span className="text-muted">
-                              {key}:{" "}
-                              <ArrayProfilePropertyList
-                                type={profile.properties[key].type}
-                                values={profile.properties[key].values}
-                              />
-                            </span>
-                            <br />
-                          </div>
-                        );
-                      })}
-                      {searchKey === "" ? null : (
-                        <div key={`key-${profile.guid}-${searchKey}`}>
-                          <span className="text-muted">
-                            {searchKey}:{" "}
-                            {profile.properties[searchKey] ? (
-                              <ArrayProfilePropertyList
-                                type={profile.properties[searchKey].type}
-                                values={profile.properties[searchKey].values}
-                              />
-                            ) : null}
-                          </span>
+                    <a className="text-muted">
+                      {identifyingProfileProperty.key &&
+                      profile.properties[identifyingProfileProperty.key] ? (
+                        <>
+                          {identifyingProfileProperty.key}:{" "}
+                          {profile.properties[
+                            identifyingProfileProperty.key
+                          ].values.join(", ")}{" "}
                           <br />
-                        </div>
-                      )}
-
-                      <span className="text-muted">
-                        Grouparoo Guid: {profile.guid}
-                      </span>
+                        </>
+                      ) : null}
+                      <span>Grouparoo Guid: {profile.guid}</span>
                     </a>
                   </Link>
+                  {uniqueProfilePropertyKeys.map((key) => {
+                    if (!profile.properties[key]) {
+                      return null;
+                    }
+
+                    return (
+                      <div key={`key-${profile.guid}-${key}`}>
+                        <span className="text-muted">
+                          {key}:{" "}
+                          <ArrayProfilePropertyList
+                            type={profile.properties[key].type}
+                            values={profile.properties[key].values}
+                          />
+                        </span>
+                        <br />
+                      </div>
+                    );
+                  })}
+                  {searchKey === "" ? null : (
+                    <div key={`key-${profile.guid}-${searchKey}`}>
+                      <span className="text-muted">
+                        {searchKey}:{" "}
+                        {profile.properties[searchKey] ? (
+                          <ArrayProfilePropertyList
+                            type={profile.properties[searchKey].type}
+                            values={profile.properties[searchKey].values}
+                          />
+                        ) : null}
+                      </span>
+                      <br />
+                    </div>
+                  )}
                 </td>
                 <td>
                   <Moment fromNow>{profile.createdAt}</Moment>
