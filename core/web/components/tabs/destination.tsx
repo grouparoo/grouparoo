@@ -6,7 +6,7 @@ export default function DestinationTabs({
 }: {
   destination: DestinationAPIData;
 }) {
-  const tabs = ["edit", "data", "exports"];
+  const tabs = ["edit", "data", "runs", "exports"];
   return (
     <Tabs name={destination.name} draftType={destination.type} tabs={tabs} />
   );
