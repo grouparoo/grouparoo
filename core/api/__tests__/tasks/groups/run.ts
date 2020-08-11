@@ -288,5 +288,15 @@ describe("tasks/group:run", () => {
       expect((await group.$get("groupMembers")).length).toBe(0);
       await bowser.destroy();
     });
+
+    it("will set run.force if that option is provided to the task", async () => {
+      const group = await helper.factories.group();
+      await task.enqueue("group:run", { groupGuid: group.guid, force: true });
+      const foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      await specHelper.runTask("group:run", foundTasks[0].args[0]);
+      const run = await Run.findOne({ where: { creatorGuid: group.guid } });
+      expect(run.state).toBe("running");
+      expect(run.force).toBe(true);
+    });
   });
 });

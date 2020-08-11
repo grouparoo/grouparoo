@@ -12,16 +12,29 @@ import { MappingHelper } from "../mappingHelper";
 import { ExportProfilePluginMethod } from "../../classes/plugin";
 import { task, log, config } from "actionhero";
 import { ExportRun } from "../../models/ExportRun";
+import { deepStrictEqual } from "assert";
+
+function deepStrictEqualBoolean(a: any, b: any): boolean {
+  try {
+    deepStrictEqual(a, b);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
 
 export namespace DestinationOps {
   /**
    * Export all the Group Members of the Groups that this Destination is Tracking
    */
-  export async function exportGroupMembers(destination: Destination) {
+  export async function exportGroupMembers(
+    destination: Destination,
+    force = false
+  ) {
     const destinationGroups = await destination.$get("destinationGroups");
     for (const i in destinationGroups) {
       const group: Group = await destinationGroups[i].$get("group");
-      await group.run(true, destination.guid);
+      await group.run(force, destination.guid);
     }
   }
 
@@ -189,7 +202,8 @@ export namespace DestinationOps {
     newProfileProperties: { [key: string]: any[] },
     oldGroups: Array<Group>,
     newGroups: Array<Group>,
-    sync = false
+    sync = false,
+    force = false
   ) {
     const app = await destination.$get("app");
     let method: ExportProfilePluginMethod;
@@ -254,6 +268,7 @@ export namespace DestinationOps {
         destinationGuid: destination.guid,
         profileGuid: profile.guid,
         mostRecent: true,
+        errorMessage: null,
       },
     });
 
@@ -297,6 +312,21 @@ export namespace DestinationOps {
       }
     }
 
+    let hasChanges = true;
+    if (
+      !force &&
+      mostRecentExport &&
+      deepStrictEqualBoolean(
+        mappedOldProfileProperties,
+        mappedNewProfileProperties
+      ) &&
+      deepStrictEqualBoolean(oldGroupNames.sort(), newGroupNames.sort()) &&
+      !toDelete &&
+      (!mostRecentExport || !mostRecentExport.toDelete)
+    ) {
+      hasChanges = false;
+    }
+
     const _export = await Export.create({
       destinationGuid: destination.guid,
       profileGuid: profile.guid,
@@ -305,6 +335,7 @@ export namespace DestinationOps {
       newProfileProperties: mappedNewProfileProperties,
       oldGroups: oldGroupNames.sort(),
       newGroups: newGroupNames.sort(),
+      hasChanges,
       toDelete,
     });
 
@@ -349,6 +380,20 @@ export namespace DestinationOps {
     const connection = await app.getConnection();
     const profile = await _export.$get("profile");
 
+    const exportRuns = await ExportRun.findAll({
+      where: { exportGuid: _export.guid },
+    });
+
+    if (!_export.hasChanges) {
+      await _export.update({ completedAt: new Date() });
+      await _export.markMostRecent();
+      for (const i in exportRuns) {
+        const run = await Run.findByGuid(exportRuns[i].runGuid);
+        await run.increment("profilesExported");
+      }
+      return;
+    }
+
     let method: ExportProfilePluginMethod;
     const { pluginConnection } = await destination.getPlugin();
     method = pluginConnection.methods.exportProfile;
@@ -371,10 +416,6 @@ export namespace DestinationOps {
         );
       }
     }
-
-    const exportRuns = await ExportRun.findAll({
-      where: { exportGuid: _export.guid },
-    });
 
     try {
       const { success, retryDelay, error } = await method({

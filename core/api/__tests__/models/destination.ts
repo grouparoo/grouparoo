@@ -12,6 +12,7 @@ import { DestinationGroupMembership } from "../../src/models/DestinationGroupMem
 import { plugin } from "../../src/modules/plugin";
 import { DestinationGroup } from "../../src/models/DestinationGroup";
 import { Run } from "../../src";
+import { Op } from "sequelize";
 let actionhero;
 
 describe("models/destination", () => {
@@ -1039,6 +1040,138 @@ describe("models/destination", () => {
       expect(exportArgs.newGroups).toEqual([]);
       expect(exportArgs.toDelete).toEqual(true);
 
+      await destination.destroy();
+    });
+
+    test("if an export has the same data as the previous export, and force=false, it will not be sent to the destination", async () => {
+      const destination = await Destination.create({
+        name: "test plugin destination",
+        type: "export-from-test-template-app",
+        appGuid: app.guid,
+      });
+      const profile = await helper.factories.profile();
+      const group = await helper.factories.group();
+      await group.addProfile(profile);
+      await destination.trackGroup(group);
+
+      const oldExport = await Export.create({
+        destinationGuid: destination.guid,
+        profileGuid: profile.guid,
+        startedAt: new Date(),
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        oldGroups: [],
+        newGroups: [],
+        mostRecent: true,
+      });
+
+      await destination.exportProfile(
+        profile,
+        [],
+        [],
+        {},
+        {},
+        [group],
+        [group]
+      );
+      const newExport = await Export.findOne({
+        where: {
+          destinationGuid: destination.guid,
+          guid: { [Op.ne]: oldExport.guid },
+        },
+      });
+
+      expect(newExport.toDelete).toBe(false);
+      expect(newExport.hasChanges).toBe(false);
+
+      await destination.sendExport(newExport, true);
+      expect(exportArgs.profile).toBeNull(); // plugin#exportProfile not called
+
+      await destination.unTrackGroups();
+      await destination.destroy();
+    });
+
+    test("if an export has the same data as the previous export, and force=true, it will be sent to the destination", async () => {
+      const destination = await Destination.create({
+        name: "test plugin destination",
+        type: "export-from-test-template-app",
+        appGuid: app.guid,
+      });
+      const profile = await helper.factories.profile();
+      const group = await helper.factories.group();
+      await group.addProfile(profile);
+      await destination.trackGroup(group);
+
+      const oldExport = await Export.create({
+        destinationGuid: destination.guid,
+        profileGuid: profile.guid,
+        startedAt: new Date(),
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        oldGroups: [],
+        newGroups: [],
+        mostRecent: true,
+      });
+
+      await destination.exportProfile(
+        profile,
+        [],
+        [],
+        {},
+        {},
+        [group],
+        [group],
+        false,
+        true
+      );
+      const newExport = await Export.findOne({
+        where: {
+          destinationGuid: destination.guid,
+          guid: { [Op.ne]: oldExport.guid },
+        },
+      });
+
+      expect(newExport.toDelete).toBe(false);
+      expect(newExport.hasChanges).toBe(true);
+
+      await destination.sendExport(newExport, true);
+      expect(exportArgs.profile).not.toBeNull(); // plugin#exportProfile was called
+
+      await destination.unTrackGroups();
+      await destination.destroy();
+    });
+
+    test("if there is no previous export, it will be sent to the destination", async () => {
+      const destination = await Destination.create({
+        name: "test plugin destination",
+        type: "export-from-test-template-app",
+        appGuid: app.guid,
+      });
+      const profile = await helper.factories.profile();
+      const group = await helper.factories.group();
+      await group.addProfile(profile);
+      await destination.trackGroup(group);
+
+      await destination.exportProfile(
+        profile,
+        [],
+        [],
+        {},
+        {},
+        [group],
+        [group]
+      );
+      const newExport = await Export.findOne({
+        where: { destinationGuid: destination.guid },
+      });
+
+      expect(newExport.toDelete).toBe(false);
+      expect(newExport.hasChanges).toBe(true);
+
+      await destination.sendExport(newExport, true);
+      expect(exportArgs.profile).not.toBeNull(); // plugin#exportProfile was called
+
+      await destination.unTrackGroups();
       await destination.destroy();
     });
 

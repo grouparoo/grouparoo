@@ -142,6 +142,10 @@ export default function ExportsList(props) {
                     ) : (
                       "false"
                     )}
+                    <br />
+                    Most Recent? {_export.mostRecent.toString()}
+                    <br />
+                    Has Changes? {_export.hasChanges.toString()}
                   </td>
                   <td>
                     Start: {formatCreatedAt(_export.startedAt)}

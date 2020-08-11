@@ -55,7 +55,6 @@ describe("tasks/profile:importAndUpdate", () => {
         await helper.truncate();
         await helper.factories.profilePropertyRules();
         helper.disableTestPluginImport();
-        await api.resque.queue.connection.redis.flushdb();
 
         group = await helper.factories.group({
           name: "test group",
@@ -65,6 +64,10 @@ describe("tasks/profile:importAndUpdate", () => {
         await group.setRules([
           { key: "lastName", match: "Mario", operation: { op: "eq" } },
         ]);
+      });
+
+      beforeEach(async () => {
+        await api.resque.queue.connection.redis.flushdb();
       });
 
       it("updates the run and imports", async () => {
@@ -178,6 +181,44 @@ describe("tasks/profile:importAndUpdate", () => {
           "profile:export"
         );
         expect(foundExportTasks.length).toEqual(1);
+      });
+
+      test("if any of the runs were force=true, the profile:export task will also be force=true", async () => {
+        const run = await helper.factories.run(null, {
+          state: "running",
+          force: true,
+        });
+        const _import = await helper.factories.import(run, {
+          email: "mario@example.com",
+          lastName: "Mario",
+        });
+
+        const foundAssociateTasks = await specHelper.findEnqueuedTasks(
+          "import:associateProfile"
+        );
+        expect(foundAssociateTasks.length).toEqual(1);
+        await Promise.all(
+          foundAssociateTasks.map(
+            async (t) =>
+              await specHelper.runTask("import:associateProfile", t.args[0])
+          )
+        );
+
+        const foundImportAndUpdateTasks = await specHelper.findEnqueuedTasks(
+          "profile:importAndUpdate"
+        );
+        expect(foundImportAndUpdateTasks.length).toEqual(1);
+        await specHelper.runTask(
+          "profile:importAndUpdate",
+          foundImportAndUpdateTasks[0].args[0]
+        );
+
+        const foundExportTasks = await specHelper.findEnqueuedTasks(
+          "profile:export"
+        );
+        expect(foundExportTasks.length).toEqual(1);
+        expect(foundExportTasks[0].args[0].guid).toMatch(/^pro_/);
+        expect(foundExportTasks[0].args[0].force).toEqual(true);
       });
     });
 

@@ -159,9 +159,8 @@ export default function RunsList(props) {
         <thead>
           <tr>
             <th>Guid</th>
-            <th>Created At</th>
+            <th>Times</th>
             <th>Creator</th>
-            <th>Completed At</th>
             <th>State</th>
             <th>Filters</th>
             <th>Stats</th>
@@ -179,19 +178,11 @@ export default function RunsList(props) {
                     </Link>
                   </td>
                   <td>
-                    <Moment fromNow>{run.createdAt}</Moment>
-                  </td>
-                  <td>
-                    <Link prefetch={false} href={`/object/${run.creatorGuid}`}>
-                      <a>
-                        {run.creatorType}: {run.creatorName}
-                      </a>
-                    </Link>
-                  </td>
-                  <td>
+                    Created: <Moment fromNow>{run.createdAt}</Moment>
                     {run.completedAt ? (
                       <>
-                        <Moment fromNow>{run.completedAt}</Moment>
+                        <br />
+                        Completed: <Moment fromNow>{run.completedAt}</Moment>
                         <br />
                         <small>
                           Duration:{" "}
@@ -204,6 +195,13 @@ export default function RunsList(props) {
                     ) : null}
                   </td>
                   <td>
+                    <Link prefetch={false} href={`/object/${run.creatorGuid}`}>
+                      <a>
+                        {run.creatorType}: {run.creatorName}
+                      </a>
+                    </Link>
+                  </td>
+                  <td>
                     {run.state} <br />
                     {run.percentComplete}%
                   </td>
@@ -212,7 +210,8 @@ export default function RunsList(props) {
                     <>
                       groupMemberLimit: {run.groupMemberLimit} <br />
                       groupMemberOffset: {run.groupMemberOffset} <br />
-                      sourceOffset: {run.sourceOffset}
+                      sourceOffset: {run.sourceOffset} <br />
+                      force: {run.force.toString()}
                     </>
                     {run.highWaterMark ? (
                       <>

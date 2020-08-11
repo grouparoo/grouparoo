@@ -119,10 +119,17 @@ export class Export extends Model<Export> {
   }
 
   @Default(false)
+  @AllowNull(false)
   @Column
   toDelete: boolean;
 
   @Default(false)
+  @AllowNull(false)
+  @Column
+  hasChanges: boolean;
+
+  @Default(false)
+  @AllowNull(false)
   @Column
   mostRecent: boolean;
 
@@ -183,6 +190,7 @@ export class Export extends Model<Export> {
       oldGroups: this.oldGroups,
       newGroups: this.newGroups,
       toDelete: this.toDelete,
+      hasChanges: this.hasChanges,
       mostRecent: this.mostRecent,
       errorMessage: this.errorMessage,
     };

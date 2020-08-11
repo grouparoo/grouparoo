@@ -46,14 +46,13 @@ export class RunGroup extends Task {
     let run: Run;
     if (params.runGuid) {
       run = await Run.findByGuid(params.runGuid);
-      if (run.state === "stopped") {
-        return;
-      }
+      if (run.state === "stopped") return;
     } else {
       run = await Run.create({
         creatorGuid: group.guid,
         creatorType: "group",
         state: "running",
+        force,
       });
       await group.update({ state: "updating" });
       log(
@@ -111,6 +110,7 @@ export class RunGroup extends Task {
         offset: 0,
         limit,
         force,
+        destinationGuid,
       });
     } else if (memberCount === 0 && method === "runRemoveGroupMembers") {
       await task.enqueueIn(config.tasks.timeout + 1, "group:run", {
@@ -120,6 +120,7 @@ export class RunGroup extends Task {
         offset: 0,
         limit,
         force,
+        destinationGuid,
       });
     } else if (memberCount > 0) {
       await task.enqueueIn(config.tasks.timeout + 1, "group:run", {
@@ -129,6 +130,7 @@ export class RunGroup extends Task {
         offset: offset + limit,
         limit,
         force,
+        destinationGuid,
       });
     } else {
       await group.countComponentMembersFromRules(null);
@@ -137,5 +139,7 @@ export class RunGroup extends Task {
         runGuid: run.guid,
       });
     }
+
+    return memberCount;
   }
 }
