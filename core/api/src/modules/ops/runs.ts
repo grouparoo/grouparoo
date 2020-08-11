@@ -6,6 +6,7 @@ import { Group } from "../../models/Group";
 import { Schedule } from "../../models/Schedule";
 import { Op } from "sequelize";
 import { api, log } from "actionhero";
+import { ExportRun } from "../../models/ExportRun";
 
 export namespace RunOps {
   /**
@@ -68,6 +69,7 @@ export namespace RunOps {
       };
 
       const _exportGroups = await Export.findAll({
+        raw: true,
         attributes: [
           [api.sequelize.fn("COUNT", "*"), "count"],
           "destinationGuid",
@@ -78,8 +80,15 @@ export namespace RunOps {
             [Op.gte]: lastBoundary,
             [Op.lt]: nextBoundary,
           },
-          runGuids: { [Op.like]: `%${run.guid}%` }, // TODO: this is slow, de-normalize
         },
+        include: [
+          {
+            model: ExportRun,
+            where: { runGuid: run.guid },
+            required: true,
+            attributes: [],
+          },
+        ],
       });
 
       _exportGroups.forEach((_exportGroup) => {
@@ -87,10 +96,10 @@ export namespace RunOps {
           (destination) => destination.guid === _exportGroup.destinationGuid
         )[0];
         if (destination) {
-          if (!foundDestinationNames.includes(destination.name))
+          if (!foundDestinationNames.includes(destination.name)) {
             foundDestinationNames.push(destination.name);
-          // @ts-ignore
-          timeData.steps[destination.name] = _exportGroup.getDataValue("count");
+          }
+          timeData.steps[destination.name] = _exportGroup["count"];
         }
       });
 
