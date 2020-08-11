@@ -25,6 +25,7 @@ import { Profile } from "./Profile";
 import { Group } from "./Group";
 import { Import } from "./Import";
 import { Export } from "./Export";
+import { ExportRun } from "./ExportRun";
 import { Run } from "./Run";
 import { DestinationGroup } from "./DestinationGroup";
 import { DestinationGroupMembership } from "./DestinationGroupMembership";
@@ -316,6 +317,36 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.destinationMappingOptions(this);
   }
 
+  async getRuns(state?: string, limit = 100, offset = 0) {
+    const exportRuns = await ExportRun.findAll({
+      raw: true,
+      attributes: [
+        [api.sequelize.fn("DISTINCT", api.sequelize.col("runGuid")), "runGuid"],
+        [
+          api.sequelize.fn("MIN", api.sequelize.col("export.createdAt")),
+          "createdAt",
+        ],
+      ],
+      group: ["runGuid"],
+      include: [
+        {
+          model: Export,
+          where: { destinationGuid: this.guid },
+          required: true,
+          attributes: [],
+        },
+      ],
+      limit,
+      offset,
+      order: [[api.sequelize.col("createdAt"), "desc"]],
+    });
+
+    const where = { guid: { [Op.in]: exportRuns.map((er) => er.runGuid) } };
+    if (state) where["state"] = state;
+
+    return Run.scope(null).findAll({ where, order: [["createdAt", "desc"]] });
+  }
+
   async profilePreview(
     profile: Profile,
     mapping: MappingHelper.Mappings,
@@ -472,6 +503,36 @@ export class Destination extends LoggedModel<Destination> {
     const destinationGroupsCount = await instance.$count("destinationGroups");
     if (instance.trackAllGroups === true || destinationGroupsCount > 0) {
       throw new Error("cannot delete a destination that is tracking a group");
+    }
+  }
+
+  @BeforeDestroy
+  static async waitForRunningRuns(instance: Destination) {
+    const runningRuns = await instance.getRuns("running");
+    if (runningRuns.length > 0) {
+      throw new Error(
+        `cannot delete destination until all runs are complete (${runningRuns.length} running)`
+      );
+    }
+  }
+
+  @BeforeDestroy
+  static async waitUpdatingGroupsPreviouslySynced(instance: Destination) {
+    const recentRuns = await instance.getRuns(undefined, 1, 0);
+    const recentGroupGuids = [
+      ...new Set(
+        recentRuns
+          .filter((run) => run.creatorGuid.match(/^grp_/))
+          .map((run) => run.creatorGuid)
+      ),
+    ];
+    const updatingGroups = await Group.findAll({
+      where: { guid: { [Op.in]: recentGroupGuids }, state: "updating" },
+    });
+    if (updatingGroups.length > 0) {
+      throw new Error(
+        `cannot delete destination until previous exported groups are done updating (${updatingGroups[0].name})`
+      );
     }
   }
 

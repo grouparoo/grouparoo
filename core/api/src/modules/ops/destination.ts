@@ -11,6 +11,7 @@ import { Group } from "../../models/Group";
 import { MappingHelper } from "../mappingHelper";
 import { ExportProfilePluginMethod } from "../../classes/plugin";
 import { task, log, config } from "actionhero";
+import { ExportRun } from "../../models/ExportRun";
 
 export namespace DestinationOps {
   /**
@@ -299,7 +300,6 @@ export namespace DestinationOps {
     const _export = await Export.create({
       destinationGuid: destination.guid,
       profileGuid: profile.guid,
-      runGuids: runs ? runs.map((run) => run.guid) : [],
       startedAt: sync ? new Date() : undefined,
       oldProfileProperties: mappedOldProfileProperties,
       newProfileProperties: mappedNewProfileProperties,
@@ -308,8 +308,14 @@ export namespace DestinationOps {
       toDelete,
     });
 
-    if (runs)
+    if (runs) {
+      await Promise.all(
+        runs.map((run) =>
+          ExportRun.create({ exportGuid: _export.guid, runGuid: run.guid })
+        )
+      );
       await Promise.all(runs.map((run) => run.increment("exportsCreated")));
+    }
 
     await _export.associateImports(imports);
 
@@ -366,6 +372,10 @@ export namespace DestinationOps {
       }
     }
 
+    const exportRuns = await ExportRun.findAll({
+      where: { exportGuid: _export.guid },
+    });
+
     try {
       const { success, retryDelay, error } = await method({
         connection,
@@ -398,11 +408,9 @@ export namespace DestinationOps {
       await _export.update({ completedAt: new Date() });
       await _export.markMostRecent();
 
-      if (_export.runGuids) {
-        for (const i in _export.runGuids) {
-          const run = await Run.findByGuid(_export.runGuids[i]);
-          await run.increment("profilesExported");
-        }
+      for (const i in exportRuns) {
+        const run = await Run.findByGuid(exportRuns[i].runGuid);
+        await run.increment("profilesExported");
       }
 
       await app.checkAndUpdateParallelism("decr");
@@ -411,11 +419,9 @@ export namespace DestinationOps {
       _export.errorMessage = error.toString();
       await _export.save();
 
-      if (_export.runGuids) {
-        for (const i in _export.runGuids) {
-          const run = await Run.findByGuid(_export.runGuids[i]);
-          await run.increment("profilesExported");
-        }
+      for (const i in exportRuns) {
+        const run = await Run.findByGuid(exportRuns[i].runGuid);
+        await run.increment("profilesExported");
       }
 
       await app.checkAndUpdateParallelism("decr");

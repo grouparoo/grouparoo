@@ -48,7 +48,7 @@ export default function Page(props) {
       await execApi("post", `/destination/${guid}/track`, {
         groupGuid: trackedGroupGuid,
       });
-    } else if (trackedGroupGuid === "_none") {
+    } else if (trackedGroupGuid === "_none" && !destination.trackAllGroups) {
       await execApi("post", `/destination/${guid}/untrack`);
     }
 

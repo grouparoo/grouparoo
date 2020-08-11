@@ -2,6 +2,7 @@ import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Run } from "../models/Run";
 import { Op } from "sequelize";
 import { Schedule } from "../models/Schedule";
+import { Destination } from "../models/Destination";
 
 export class ListRuns extends AuthenticatedAction {
   constructor() {
@@ -37,22 +38,34 @@ export class ListRuns extends AuthenticatedAction {
       }
     }
 
-    const where = {};
-    if (guid) where["creatorGuid"] = guid;
-    if (params.state) where["state"] = params.state;
-    if (params.hasError === "true") where["error"] = { [Op.ne]: null };
-    if (params.hasError === "false") where["error"] = { [Op.eq]: null };
+    if (guid && guid.match(/^dst_/)) {
+      // special handling for destination runs, as they link through exports
+      const destination = await Destination.findByGuid(guid);
+      const runs = await destination.getRuns(
+        params.state,
+        params.limit,
+        params.offset
+      );
+      response.runs = await Promise.all(runs.map(async (run) => run.apiData()));
+      response.total = runs.length;
+    } else {
+      const where = {};
+      if (guid) where["creatorGuid"] = guid;
+      if (params.state) where["state"] = params.state;
+      if (params.hasError === "true") where["error"] = { [Op.ne]: null };
+      if (params.hasError === "false") where["error"] = { [Op.eq]: null };
 
-    const search = {
-      where,
-      limit: params.limit,
-      offset: params.offset,
-      order: params.order,
-    };
+      const search = {
+        where,
+        limit: params.limit,
+        offset: params.offset,
+        order: params.order,
+      };
 
-    const runs = await Run.scope(null).findAll(search);
-    response.runs = await Promise.all(runs.map(async (app) => app.apiData()));
-    response.total = await Run.scope(null).count({ where });
+      const runs = await Run.scope(null).findAll(search);
+      response.runs = await Promise.all(runs.map(async (run) => run.apiData()));
+      response.total = await Run.scope(null).count({ where });
+    }
   }
 }
 

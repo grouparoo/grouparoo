@@ -3,6 +3,7 @@ import { api, specHelper } from "actionhero";
 import { App } from "../../src/models/App";
 import { Log } from "../../src/models/Log";
 import { Destination } from "../../src/models/Destination";
+import { Profile } from "../../src/models/Profile";
 import { Group } from "../../src/models/Group";
 import { Export } from "../../src/models/Export";
 import { Mapping } from "../../src/models/Mapping";
@@ -1190,6 +1191,82 @@ describe("models/destination", () => {
         error: undefined,
         retryDelay: undefined,
       };
+    });
+
+    describe("deletion validations with running runs", () => {
+      let destination: Destination;
+      let group: Group;
+      let profile: Profile;
+
+      beforeAll(async () => {
+        destination = await Destination.create({
+          name: "test plugin destination",
+          type: "export-from-test-template-app",
+          appGuid: app.guid,
+        });
+
+        group = await helper.factories.group();
+
+        const destinationGroupMemberships = {};
+        destinationGroupMemberships[group.guid] = group.name;
+        await destination.setDestinationGroupMemberships(
+          destinationGroupMemberships
+        );
+
+        profile = await helper.factories.profile();
+        await group.addProfile(profile);
+      });
+
+      afterAll(async () => {
+        await destination.destroy();
+        await group.destroy();
+        await profile.destroy();
+      });
+
+      it("can find runs related to the destination though the groups being tracked", async () => {
+        const run = await Run.create({
+          creatorType: "group",
+          creatorGuid: group.guid,
+          state: "running",
+        });
+        await destination.exportProfile(profile, [run], [], {}, {}, [], []);
+
+        const foundRuns = await destination.getRuns();
+        expect(foundRuns.length).toBe(1);
+        expect(foundRuns[0].guid).toBe(run.guid);
+
+        await run.destroy();
+      });
+
+      test("a destination not tracking any group, but that has a running run, cannot be deleted", async () => {
+        const run = await Run.create({
+          creatorType: "group",
+          creatorGuid: group.guid,
+          state: "running", // this run is running
+        });
+        await destination.exportProfile(profile, [run], [], {}, {}, [], []);
+
+        await expect(destination.destroy()).rejects.toThrow(
+          /cannot delete destination until all runs are complete/
+        );
+
+        await run.destroy();
+      });
+
+      test("a destination not tracking any group, but the last group exported is updating, cannot be deleted", async () => {
+        const run = await Run.create({
+          creatorType: "group",
+          creatorGuid: group.guid,
+          state: "complete", // the run is complete, so we can reference it later
+        });
+        await destination.exportProfile(profile, [run], [], {}, {}, [], []);
+        await group.update({ state: "updating" });
+        await expect(destination.destroy()).rejects.toThrow(
+          /cannot delete destination until previous exported groups are done updating/
+        );
+
+        await run.destroy();
+      });
     });
 
     describe("array exports", () => {
