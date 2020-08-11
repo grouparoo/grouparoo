@@ -17,9 +17,9 @@ import {
 import * as uuid from "uuid";
 import { Import } from "./Import";
 import { ExportImport } from "./ExportImport";
+import { ExportRun } from "./ExportRun";
 import { Destination } from "./Destination";
 import { Profile } from "./Profile";
-import { Run } from "./Run";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
 import { Op } from "sequelize";
@@ -52,22 +52,6 @@ export class Export extends Model<Export> {
   @ForeignKey(() => Profile)
   @Column
   profileGuid: string;
-
-  @AllowNull(true)
-  @ForeignKey(() => Run)
-  @Column(DataType.TEXT)
-  get runGuids(): string[] {
-    try {
-      //@ts-ignore
-      return JSON.parse(this.getDataValue("runGuids"));
-    } catch (e) {
-      return [];
-    }
-  }
-  set runGuids(value: string[]) {
-    //@ts-ignore
-    this.setDataValue("runGuids", JSON.stringify(value));
-  }
 
   @Column
   startedAt: Date;
@@ -151,6 +135,9 @@ export class Export extends Model<Export> {
   @BelongsToMany(() => Import, () => ExportImport)
   imports: Import[];
 
+  @HasMany(() => ExportRun)
+  exportRuns: ExportRun[];
+
   @BelongsTo(() => Profile)
   profile: Profile;
 
@@ -212,9 +199,14 @@ export class Export extends Model<Export> {
   @AfterDestroy
   static async destroyExportImports(instance: Export) {
     return ExportImport.destroy({
-      where: {
-        exportGuid: instance.guid,
-      },
+      where: { exportGuid: instance.guid },
+    });
+  }
+
+  @AfterDestroy
+  static async destroyExportRuns(instance: Export) {
+    return ExportRun.destroy({
+      where: { exportGuid: instance.guid },
     });
   }
 
