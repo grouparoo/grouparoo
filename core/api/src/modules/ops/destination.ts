@@ -15,6 +15,7 @@ import {
   ExportedProfile,
   ExportProfilePluginMethod,
   ExportProfilesPluginMethod,
+  ErrorWithProfileGuid,
 } from "../../classes/plugin";
 import { task, log, config } from "actionhero";
 import { deepStrictEqual } from "assert";
@@ -553,9 +554,9 @@ export namespace DestinationOps {
         const error = new Error(
           `error exporting a batch of ${
             errors.length
-          } profiles to destination ${destination.guid}: ${errors
-            .map((e) => e.message)
-            .join(", ")}`
+          } profiles to destination ${destination.name} (${
+            destination.guid
+          }): ${errors.map((e) => e.message).join(", ")}`
         );
         error["errors"] = errors;
         throw error;
@@ -578,23 +579,23 @@ export namespace DestinationOps {
     } catch (error) {
       await app.checkAndUpdateParallelism("decr");
 
-      // error might have an array of errors which correspond to specific exports, or it may be generic
+      // error might have an array of errors which correspond to specific profiles, or it may be generic
       if (error.errors) {
-        const exportsWithErrors: string[] = error.errors.map(
-          (e) => e.exportGuid
+        const profileWithErrors: string[] = error.errors.map(
+          (e) => e.profileGuid
         );
 
         for (const i in _exports) {
           const _export = _exports[i];
 
-          if (!exportsWithErrors.includes(_export.guid)) {
+          if (!profileWithErrors.includes(_export.profileGuid)) {
             // this export was OK
             await _export.update({ completedAt: new Date() });
             await _export.markMostRecent();
           } else {
             for (const j in error.errors) {
-              const _error = error.errors[j];
-              if (_error.exportGuid === _export.guid) {
+              const _error: ErrorWithProfileGuid = error.errors[j];
+              if (_error.profileGuid === _export.profileGuid) {
                 // this export had the error
                 _export.errorMessage = error.toString();
                 await _export.save();

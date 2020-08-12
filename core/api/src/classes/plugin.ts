@@ -173,7 +173,15 @@ export interface ExportProfilesPluginMethod {
     destination: Destination;
     destinationOptions: SimpleDestinationOptions;
     exports: ExportedProfile[];
-  }): Promise<{ success: boolean; retryDelay?: number; errors?: Error[] }>;
+  }): Promise<{
+    success: boolean;
+    retryDelay?: number;
+    errors?: ErrorWithProfileGuid[];
+  }>;
+}
+
+export interface ErrorWithProfileGuid extends Error {
+  profileGuid: string;
 }
 
 export interface ConnectionOption extends AppOption {}
