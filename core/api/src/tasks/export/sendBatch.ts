@@ -2,8 +2,6 @@ import { RetryableTask } from "../../classes/retryableTask";
 import { Destination } from "../../models/Destination";
 import { Export } from "../../models/Export";
 import { Op } from "sequelize";
-import { task, config } from "actionhero";
-import { waitForLock } from "../../modules/locks";
 
 export class ProfileExport extends RetryableTask {
   constructor() {
