@@ -696,7 +696,7 @@ describe("models/destination", () => {
           appGuid: app.guid,
         })
       ).rejects.toThrow(
-        /cannot be created as there is no exportProfile method/
+        /cannot be created as there are no profile export methods/
       );
     });
   });

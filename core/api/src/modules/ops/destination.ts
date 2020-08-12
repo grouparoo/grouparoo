@@ -406,7 +406,7 @@ export namespace DestinationOps {
     const { pluginConnection } = await destination.getPlugin();
     method = pluginConnection.methods.exportProfile;
 
-    await checkSendExportParallelism(
+    const parallelismOk = await checkSendExportParallelism(
       app,
       destination,
       "export:send",
@@ -416,6 +416,7 @@ export namespace DestinationOps {
       },
       sync
     );
+    if (!parallelismOk) return;
 
     try {
       const { success, retryDelay, error } = await method({
@@ -495,7 +496,7 @@ export namespace DestinationOps {
     const appOptions = await app.getOptions();
     const connection = await app.getConnection();
 
-    await checkSendExportParallelism(
+    const parallelismOk = await checkSendExportParallelism(
       app,
       destination,
       "export:sendBatch",
@@ -505,6 +506,7 @@ export namespace DestinationOps {
       },
       sync
     );
+    if (!parallelismOk) return;
 
     for (const i in _exports) {
       const _export = _exports[i];
@@ -641,13 +643,16 @@ export namespace DestinationOps {
         throw new Error(message);
       } else {
         log(message + ", re-enqueuing export ${_export.guid}");
-        return task.enqueueIn(
+        await task.enqueueIn(
           config.tasks.timeout + 1,
           taskName,
           taskArgs,
           `exports:${app.type}`
         );
+        return false;
       }
+    } else {
+      return true;
     }
   }
 }
