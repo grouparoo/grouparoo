@@ -4,13 +4,15 @@ import * as path from "path";
 import { config, log } from "actionhero";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
-  profile,
   appOptions,
-  oldProfileProperties,
-  newProfileProperties,
-  oldGroups,
-  newGroups,
-  toDelete,
+  export: {
+    profile,
+    oldProfileProperties,
+    newProfileProperties,
+    oldGroups,
+    newGroups,
+    toDelete,
+  },
 }) => {
   const filePath = path.join(config.general.paths.log[0], appOptions.filename);
 

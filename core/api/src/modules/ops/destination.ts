@@ -424,12 +424,14 @@ export namespace DestinationOps {
         appOptions,
         destination,
         destinationOptions: options,
-        profile,
-        oldProfileProperties: _export.oldProfileProperties,
-        newProfileProperties: _export.newProfileProperties,
-        oldGroups: _export.oldGroups,
-        newGroups: _export.newGroups,
-        toDelete: _export.toDelete,
+        export: {
+          profile,
+          oldProfileProperties: _export.oldProfileProperties,
+          newProfileProperties: _export.newProfileProperties,
+          oldGroups: _export.oldGroups,
+          newGroups: _export.newGroups,
+          toDelete: _export.toDelete,
+        },
       });
 
       if (!success && retryDelay && !sync) {

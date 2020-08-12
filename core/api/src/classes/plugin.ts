@@ -75,6 +75,7 @@ export interface PluginConnection {
     destinationOptions?: DestinationOptionsMethod;
     destinationMappingOptions?: DestinationMappingOptionsMethod;
     exportProfile?: ExportProfilePluginMethod;
+    exportProfiles?: ExportProfilesPluginMethod;
     exportArrayProperties?: ExportArrayPropertiesMethod;
   };
 }
@@ -131,6 +132,19 @@ export type ProfilePropertyPluginMethodResponse = Array<
 >;
 
 /**
+ * The profile data that a Destination will receive.
+ * Comprised of data from the Profile and Export models.
+ */
+export interface ExportedProfile {
+  profile: Profile;
+  oldProfileProperties: { [key: string]: any };
+  newProfileProperties: { [key: string]: any };
+  oldGroups: Array<string>;
+  newGroups: Array<string>;
+  toDelete: boolean;
+}
+
+/**
  * Method to export a single profile to a destination
  * Should only return a boolean indicating success, or throw an error if something went wrong.
  */
@@ -141,12 +155,22 @@ export interface ExportProfilePluginMethod {
     appOptions: SimpleAppOptions;
     destination: Destination;
     destinationOptions: SimpleDestinationOptions;
-    profile: Profile;
-    oldProfileProperties: { [key: string]: any };
-    newProfileProperties: { [key: string]: any };
-    oldGroups: Array<string>;
-    newGroups: Array<string>;
-    toDelete: boolean;
+    export: ExportedProfile;
+  }): Promise<{ success: boolean; retryDelay?: number; error?: any }>;
+}
+
+/**
+ * Method to export many profiles to a destination
+ * Should only return a boolean indicating success, or throw an error if something went wrong.
+ */
+export interface ExportProfilesPluginMethod {
+  (argument: {
+    connection: any;
+    app: App;
+    appOptions: SimpleAppOptions;
+    destination: Destination;
+    destinationOptions: SimpleDestinationOptions;
+    exports: ExportedProfile[];
   }): Promise<{ success: boolean; retryDelay?: number; error?: any }>;
 }
 

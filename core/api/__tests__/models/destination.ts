@@ -792,12 +792,14 @@ describe("models/destination", () => {
                 appOptions,
                 destination,
                 destinationOptions,
-                profile,
-                oldProfileProperties,
-                newProfileProperties,
-                oldGroups,
-                newGroups,
-                toDelete,
+                export: {
+                  profile,
+                  oldProfileProperties,
+                  newProfileProperties,
+                  oldGroups,
+                  newGroups,
+                  toDelete,
+                },
               }) => {
                 exportArgs = {
                   app,
