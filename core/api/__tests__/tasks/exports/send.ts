@@ -5,6 +5,7 @@ import { Group } from "./../../../src/models/Group";
 import { Destination } from "./../../../src/models/Destination";
 import { Export } from "./../../../src/models/Export";
 import { Run } from "./../../../src/models/Run";
+import { Json } from "sequelize/types/lib/utils";
 
 let actionhero;
 
@@ -29,7 +30,7 @@ describe("tasks/export:send", () => {
       expect(found.length).toEqual(1);
     });
 
-    describe("withing an export workflow", () => {
+    describe("within an export workflow", () => {
       let destination: Destination, group: Group, profile: Profile, run: Run;
 
       beforeAll(async () => {
@@ -50,7 +51,7 @@ describe("tasks/export:send", () => {
         );
         await destination.update({ state: "ready" });
 
-        await destination.exportGroupMembers();
+        await destination.exportGroupMembers(true);
         const foundGroupRunTasks = await specHelper.findEnqueuedTasks(
           "group:run"
         );

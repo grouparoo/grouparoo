@@ -220,8 +220,8 @@ export class Destination extends LoggedModel<Destination> {
     return OptionHelper.getPlugin(this);
   }
 
-  async exportGroupMembers() {
-    return DestinationOps.exportGroupMembers(this);
+  async exportGroupMembers(force = false) {
+    return DestinationOps.exportGroupMembers(this, force);
   }
 
   async trackGroup(group: Group) {
@@ -389,7 +389,8 @@ export class Destination extends LoggedModel<Destination> {
     newProfileProperties: { [key: string]: any[] },
     oldGroups: Array<Group>,
     newGroups: Array<Group>,
-    sync = false
+    sync = false,
+    force = false
   ) {
     return DestinationOps.exportProfile(
       this,
@@ -400,7 +401,8 @@ export class Destination extends LoggedModel<Destination> {
       newProfileProperties,
       oldGroups,
       newGroups,
-      sync
+      sync,
+      force
     );
   }
 

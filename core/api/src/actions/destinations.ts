@@ -294,13 +294,14 @@ export class DestinationExport extends AuthenticatedAction {
     this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
       guid: { required: true },
+      force: { required: false, default: true },
     };
   }
 
   async run({ params, response }) {
     response.success = false;
     const destination = await Destination.findByGuid(params.guid);
-    await destination.exportGroupMembers();
+    await destination.exportGroupMembers(params.force);
     response.success = true;
   }
 }

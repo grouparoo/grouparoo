@@ -61,7 +61,7 @@ export default function Page(props) {
     );
     setLoading(false);
     if (response?.profile) {
-      successHandler.set({ message: "Import Complete!" });
+      successHandler.set({ message: "Import and Export Complete!" });
       load();
     }
   }

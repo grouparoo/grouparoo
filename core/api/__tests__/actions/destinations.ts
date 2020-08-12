@@ -398,20 +398,37 @@ describe("actions/destinations", () => {
         );
         expect(error).toBeUndefined();
       });
-    });
 
-    test("an administrator can export the members of a destination", async () => {
-      connection.params = {
-        csrfToken,
-        guid,
-      };
-      const { success, error } = await specHelper.runAction(
-        "destination:export",
-        connection
-      );
+      test("an administrator can export the members of a destination with a forced group run", async () => {
+        await specHelper.runAction("destination:trackGroup", connection);
 
-      expect(error).toBeFalsy();
-      expect(success).toBeTruthy();
+        connection.params = {
+          csrfToken,
+          guid,
+        };
+        const { success, error } = await specHelper.runAction(
+          "destination:export",
+          connection
+        );
+
+        expect(error).toBeFalsy();
+        expect(success).toBeTruthy();
+
+        const { destination } = await specHelper.runAction(
+          "destination:view",
+          connection
+        );
+
+        const foundTasks = await specHelper.findEnqueuedTasks("group:run");
+        expect(foundTasks.length).toBe(1);
+        expect(foundTasks[0].args[0]).toEqual({
+          destinationGuid: guid,
+          groupGuid: destination.destinationGroups[0].guid,
+          force: true,
+        });
+
+        await specHelper.runAction("destination:unTrackGroup", connection);
+      });
     });
 
     test("an administrator can destroy a destination", async () => {

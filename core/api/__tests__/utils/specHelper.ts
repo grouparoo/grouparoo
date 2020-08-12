@@ -28,6 +28,7 @@ import { Export } from "../../src/models/Export";
 import { Event } from "../../src/models/Event";
 import { EventData } from "../../src/models/EventData";
 import { ExportImport } from "../../src/models/ExportImport";
+import { ExportRun } from "../../src/models/ExportRun";
 import { Group } from "../../src/models/Group";
 import { GroupMember } from "../../src/models/GroupMember";
 import { GroupRule } from "../../src/models/GroupRule";
@@ -68,6 +69,7 @@ const models = [
   Event,
   EventData,
   ExportImport,
+  ExportRun,
   Log,
   Permission,
   Profile,

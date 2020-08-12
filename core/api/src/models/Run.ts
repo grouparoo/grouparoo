@@ -128,6 +128,11 @@ export class Run extends Model<Run> {
   @Column
   percentComplete: number;
 
+  @Default(false)
+  @AllowNull(false)
+  @Column
+  force: boolean;
+
   @BelongsTo(() => Schedule)
   schedule: Schedule;
 
@@ -260,6 +265,7 @@ export class Run extends Model<Run> {
       groupMemberLimit: this.groupMemberLimit,
       groupMemberOffset: this.groupMemberOffset,
       groupMethod: this.groupMethod,
+      force: this.force,
       completedAt: this.completedAt ? this.completedAt.getTime() : null,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,

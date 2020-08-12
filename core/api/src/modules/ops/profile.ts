@@ -303,7 +303,8 @@ export namespace ProfileOps {
           simpleProperties,
           oldGroups,
           groups,
-          true
+          true, // sync = true -> do the export in-line
+          true // force = true -> do the export even if it looks like the data hasn't changed
         )
       )
     );

@@ -100,13 +100,16 @@ export class ProfileImportAndUpdate extends RetryableTask {
         },
       });
 
+      let force = false;
       for (const i in runs) {
         const run = runs[i];
         await run.increment("profilesImported", {});
+        if (run.force) force = true;
       }
 
       await task.enqueue("profile:export", {
         guid: profile.guid,
+        force,
       });
     } catch (error) {
       await Promise.all(imports.map((e) => e.setError(error, this.name)));

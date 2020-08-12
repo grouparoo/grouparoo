@@ -288,5 +288,51 @@ describe("tasks/group:run", () => {
       expect((await group.$get("groupMembers")).length).toBe(0);
       await bowser.destroy();
     });
+
+    it("will pass destinationGuid to all run steps", async () => {
+      let foundTasks = [];
+      await task.enqueue("group:run", {
+        groupGuid: group.guid,
+        destinationGuid: "abc123",
+      });
+
+      foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0].destinationGuid).toBe("abc123");
+      await api.resque.queue.connection.redis.flushdb();
+      await specHelper.runTask("group:run", foundTasks[0].args[0]); // none found, enqueue remove
+
+      foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0].method).toBe("runRemoveGroupMembers");
+      expect(foundTasks[0].args[0].destinationGuid).toBe("abc123");
+      await api.resque.queue.connection.redis.flushdb();
+      await specHelper.runTask("group:run", foundTasks[0].args[0]); // none found, enqueue removePreviousRunGroupMembers
+
+      foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0].method).toBe(
+        "removePreviousRunGroupMembers"
+      );
+      expect(foundTasks[0].args[0].destinationGuid).toBe("abc123");
+      await api.resque.queue.connection.redis.flushdb();
+      await specHelper.runTask("group:run", foundTasks[0].args[0]); // found none, enqueue state
+
+      foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      expect(foundTasks.length).toBe(0);
+      foundTasks = await specHelper.findEnqueuedTasks("run:determineState"); // run state
+      expect(foundTasks[0].args[0].destinationGuid).toBeFalsy();
+      expect(foundTasks.length).toBe(1);
+    });
+
+    it("will set run.force if that option is provided to the task", async () => {
+      const group = await helper.factories.group();
+      await task.enqueue("group:run", { groupGuid: group.guid, force: true });
+      const foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      await specHelper.runTask("group:run", foundTasks[0].args[0]);
+      const run = await Run.findOne({ where: { creatorGuid: group.guid } });
+      expect(run.state).toBe("running");
+      expect(run.force).toBe(true);
+    });
   });
 });

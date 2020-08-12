@@ -16,6 +16,7 @@ export class ProfileExport extends RetryableTask {
     this.queue = "exports";
     this.inputs = {
       guid: { required: true },
+      force: { required: false },
     };
   }
 
@@ -98,7 +99,9 @@ export class ProfileExport extends RetryableTask {
           oldProfileProperties,
           newProfileProperties,
           oldGroups,
-          newGroups
+          newGroups,
+          false,
+          params.force ? params.force : undefined
         );
       }
 
