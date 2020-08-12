@@ -175,7 +175,6 @@ export namespace RunOps {
 
   /**
    * Process pending exports in the current batch.
-   * TODO: Configurable limit (perhaps in a setting).
    */
   export async function processBatchExports(run: Run, limit?: number) {
     let _exports: Export[] = [];
