@@ -77,6 +77,10 @@ export class GroupDestroy extends Task {
         limit,
       });
     } else {
+      log(
+        `[ run ] completed run ${run.guid} for group ${group.name} (${group.guid})`,
+        "notice"
+      );
       await group.destroy();
 
       // runs for this group will be deleted, so we don't need to check the state

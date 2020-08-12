@@ -32,7 +32,9 @@ export class RunDetermineState extends Task {
       const delta = run.completedAt.getTime() - run.createdAt.getTime();
 
       log(
-        `[ run ] completed run ${run.guid} for ${run.creatorType} ${run.creatorGuid}`,
+        `[ run ] completed run ${run.guid} for ${
+          run.creatorType
+        } ${run.getCreatorName()} (${run.creatorGuid})`,
         "notice",
         { attempts, delta }
       );
