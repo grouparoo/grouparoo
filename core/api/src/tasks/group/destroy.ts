@@ -43,7 +43,7 @@ export class GroupDestroy extends Task {
       await group.update({ state: "deleted" });
 
       log(
-        `[ run ] starting run ${run.guid} for group ${group.guid}, ${group.name}`,
+        `[ run ] starting run ${run.guid} for group ${group.name} (${group.guid})`,
         "notice"
       );
     }
@@ -61,7 +61,7 @@ export class GroupDestroy extends Task {
     );
     const remainingMembers = await group.$count("groupMembers");
 
-    await run.determinePercentComplete();
+    await run.afterBatch();
 
     if (importsCounts > 0 || previousRunMembers > 0 || remainingMembers > 0) {
       await task.enqueueIn(config.tasks.timeout + 1, "group:destroy", {

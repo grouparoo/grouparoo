@@ -156,12 +156,14 @@ export interface ExportProfilePluginMethod {
     destination: Destination;
     destinationOptions: SimpleDestinationOptions;
     export: ExportedProfile;
-  }): Promise<{ success: boolean; retryDelay?: number; error?: any }>;
+  }): Promise<{ success: boolean; retryDelay?: number; error?: Error }>;
 }
 
 /**
  * Method to export many profiles to a destination
  * Should only return a boolean indicating success, or throw an error if something went wrong.
+ * Errors is an Array of Error objects with an additional `exportGuid` property so we can link the error to the specific export that caused the error.
+ * If there's a general error with the batch, just throw a single error.
  */
 export interface ExportProfilesPluginMethod {
   (argument: {
@@ -171,7 +173,7 @@ export interface ExportProfilesPluginMethod {
     destination: Destination;
     destinationOptions: SimpleDestinationOptions;
     exports: ExportedProfile[];
-  }): Promise<{ success: boolean; retryDelay?: number; error?: any }>;
+  }): Promise<{ success: boolean; retryDelay?: number; errors?: Error[] }>;
 }
 
 export interface ConnectionOption extends AppOption {}

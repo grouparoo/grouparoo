@@ -1,7 +1,7 @@
 import { helper } from "../../utils/specHelper";
 import { api, task, specHelper } from "actionhero";
-import { Export } from "./../../../src/models/Export";
-import { ExportImport } from "./../../../src/models/ExportImport";
+import { Export } from "../../../src/models/Export";
+import { ExportImport } from "../../../src/models/ExportImport";
 
 let actionhero;
 

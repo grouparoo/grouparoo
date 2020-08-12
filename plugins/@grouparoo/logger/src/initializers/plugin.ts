@@ -3,7 +3,7 @@ import { plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { appOptions } from "./../lib/appOptions";
-import { exportProfile } from "./../lib/export/exportProfile";
+import { exportProfiles } from "./../lib/export/exportProfiles";
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
@@ -47,7 +47,7 @@ export class Plugins extends Initializer {
           app: "logger",
           options: [],
           methods: {
-            exportProfile,
+            exportProfiles,
             destinationOptions,
             destinationMappingOptions,
             exportArrayProperties,

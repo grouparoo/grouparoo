@@ -1,9 +1,9 @@
 import { helper } from "../../utils/specHelper";
 import { api, task, specHelper } from "actionhero";
-import { Group } from "./../../../src/models/Group";
-import { Import } from "./../../../src/models/Import";
-import { Profile } from "./../../../src/models/Profile";
-import { File } from "./../../../src/models/File";
+import { Group } from "../../../src/models/Group";
+import { Import } from "../../../src/models/Import";
+import { Profile } from "../../../src/models/Profile";
+import { File } from "../../../src/models/File";
 import fs from "fs";
 
 let actionhero;

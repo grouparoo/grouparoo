@@ -1,11 +1,10 @@
 import { helper } from "../../utils/specHelper";
 import { api, task, specHelper } from "actionhero";
-import { Profile } from "./../../../src/models/Profile";
-import { Group } from "./../../../src/models/Group";
-import { Destination } from "./../../../src/models/Destination";
-import { Export } from "./../../../src/models/Export";
-import { Run } from "./../../../src/models/Run";
-import { Json } from "sequelize/types/lib/utils";
+import { Profile } from "../../../src/models/Profile";
+import { Group } from "../../../src/models/Group";
+import { Destination } from "../../../src/models/Destination";
+import { Export } from "../../../src/models/Export";
+import { Run } from "../../../src/models/Run";
 
 let actionhero;
 

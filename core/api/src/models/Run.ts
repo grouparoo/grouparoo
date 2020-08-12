@@ -168,9 +168,18 @@ export class Run extends Model<Run> {
   }
 
   async determinePercentComplete() {
-    this.percentComplete = await RunOps.determinePercentComplete(this);
-    await this.save();
+    const percentComplete = await RunOps.determinePercentComplete(this);
+    await this.update({ percentComplete });
     log(`run ${this.guid} is ${this.percentComplete}% complete`);
+  }
+
+  async processBatchExports() {
+    return RunOps.processBatchExports(this);
+  }
+
+  async afterBatch() {
+    await this.processBatchExports();
+    await this.determinePercentComplete();
   }
 
   async buildErrorMessage() {

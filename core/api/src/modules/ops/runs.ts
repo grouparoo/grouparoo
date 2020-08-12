@@ -5,8 +5,9 @@ import { Profile } from "../../models/Profile";
 import { Group } from "../../models/Group";
 import { Schedule } from "../../models/Schedule";
 import { Op } from "sequelize";
-import { api, log } from "actionhero";
+import { api, log, task, utils, config } from "actionhero";
 import { ExportRun } from "../../models/ExportRun";
+import { plugin } from "../../modules/plugin";
 
 export namespace RunOps {
   /**
@@ -169,6 +170,64 @@ export namespace RunOps {
       return Math.round(
         (100 * run.profilesImported) / (totalProfiles > 0 ? totalProfiles : 1)
       );
+    }
+  }
+
+  /**
+   * Process pending exports in the current batch.
+   * TODO: Configurable limit (perhaps in a setting).
+   */
+  export async function processBatchExports(run: Run, limit?: number) {
+    let _exports: Export[] = [];
+    let loopCount = 0;
+
+    if (!limit) {
+      limit = parseInt(
+        (await plugin.readSetting("core", "export-profile-batch-size")).value
+      );
+    }
+
+    await utils.sleep(config.tasks.timeout + 1);
+    await run.reload();
+
+    // we are still importing profiles, don't try to export yet
+    if (run.importsCreated > run.profilesImported) return;
+
+    async function loadExports() {
+      _exports = await Export.findAll({
+        where: { completedAt: null, errorMessage: null },
+        include: [
+          {
+            model: ExportRun,
+            where: { runGuid: run.guid },
+            attributes: [],
+            required: true,
+          },
+        ],
+        order: [["createdAt", "desc"]],
+        limit,
+        offset: loopCount * limit,
+      });
+      loopCount++;
+    }
+
+    await loadExports();
+
+    while (_exports.length > 0) {
+      const destinationGuids = [
+        ...new Set(_exports.map((e) => e.destinationGuid)),
+      ];
+
+      for (const i in destinationGuids) {
+        await task.enqueue("export:sendBatch", {
+          destinationGuid: destinationGuids[i],
+          exportGuids: _exports
+            .filter((e) => e.destinationGuid === destinationGuids[i])
+            .map((e) => e.guid),
+        });
+      }
+
+      await loadExports();
     }
   }
 }

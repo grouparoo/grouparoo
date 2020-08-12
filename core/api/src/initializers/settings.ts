@@ -29,6 +29,12 @@ export class Plugins extends Initializer {
           "How many profiles or imports should a run enqueue in each batch before deferring to process those imports already enqueued?",
       },
       {
+        key: "export-profile-batch-size",
+        defaultValue: 100,
+        description:
+          "How many profiles should a run try to send at once to destinations which support batch exporting?",
+      },
+      {
         key: "sweeper-delete-old-logs-days",
         defaultValue: 31,
         description:

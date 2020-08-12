@@ -21,8 +21,7 @@ export class RunDetermineState extends Task {
     const run = await Run.findByGuid(runGuid);
 
     await run.determineState();
-    await run.determinePercentComplete();
-    await run.reload();
+    await run.afterBatch();
 
     if (run.state === "running") {
       await task.enqueueIn(config.tasks.timeout * 2, "run:determineState", {
