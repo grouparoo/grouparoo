@@ -99,7 +99,7 @@ export class RunGroup extends Task {
     await run.determinePercentComplete();
 
     if (memberCount === 0 && method === "runAddGroupMembers") {
-      await task.enqueueIn(config.tasks.timeout + 1, "group:run", {
+      await task.enqueueIn(config.tasks.timeout + 1, this.name, {
         runGuid: run.guid,
         groupGuid: group.guid,
         method: "runRemoveGroupMembers",
@@ -109,7 +109,7 @@ export class RunGroup extends Task {
         destinationGuid,
       });
     } else if (memberCount === 0 && method === "runRemoveGroupMembers") {
-      await task.enqueueIn(config.tasks.timeout + 1, "group:run", {
+      await task.enqueueIn(config.tasks.timeout + 1, this.name, {
         runGuid: run.guid,
         groupGuid: group.guid,
         method: "removePreviousRunGroupMembers",
@@ -119,7 +119,7 @@ export class RunGroup extends Task {
         destinationGuid,
       });
     } else if (memberCount > 0) {
-      await task.enqueueIn(config.tasks.timeout + 1, "group:run", {
+      await task.enqueueIn(config.tasks.timeout + 1, this.name, {
         runGuid: run.guid,
         groupGuid: group.guid,
         method,

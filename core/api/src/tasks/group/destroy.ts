@@ -48,6 +48,12 @@ export class GroupDestroy extends Task {
       );
     }
 
+    // we still have exports from the previous batch that need to be processed
+    if (run.exportsCreated > 0 && run.exportsCreated > run.profilesExported) {
+      await run.afterBatch();
+      return task.enqueueIn(config.tasks.timeout + 1, this.name, params);
+    }
+
     await run.update({
       groupMemberLimit: limit,
       groupMemberOffset: offset,
@@ -61,10 +67,10 @@ export class GroupDestroy extends Task {
     );
     const remainingMembers = await group.$count("groupMembers");
 
-    await run.afterBatch();
+    await run.determinePercentComplete();
 
     if (importsCounts > 0 || previousRunMembers > 0 || remainingMembers > 0) {
-      await task.enqueueIn(config.tasks.timeout + 1, "group:destroy", {
+      await task.enqueueIn(config.tasks.timeout + 1, this.name, {
         runGuid: run.guid,
         groupGuid: group.guid,
         offset: offset + limit,
