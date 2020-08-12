@@ -23,15 +23,6 @@ export class ProfileExport extends RetryableTask {
     const exportGuids: string[] = params.exportGuids;
     const destination = await Destination.findByGuid(params.destinationGuid);
 
-    /**
-     * We want to group both the search for exports and the batch send into one lock.
-     * This way, we won't re-find the same export if this job is re-enqueued by the run.
-     */
-    // const { releaseLock } = await waitForLock(
-    //   `destination:${destinationGuid}:sendBatch`
-    // );
-
-    // try {
     const _exports = await Export.findAll({
       where: {
         destinationGuid,
@@ -42,11 +33,5 @@ export class ProfileExport extends RetryableTask {
     });
 
     if (_exports.length > 0) await destination.sendExports(_exports);
-
-    //   await releaseLock();
-    // } catch (error) {
-    //   await releaseLock();
-    //   throw error;
-    // }
   }
 }
