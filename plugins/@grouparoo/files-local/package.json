@@ -31,13 +31,13 @@
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
-    "actionhero": "23.0.5"
+    "actionhero": "23.0.6"
   },
   "devDependencies": {
     "@grouparoo/core": "^0.1.9",
     "@types/jest": "26.0.8",
     "@types/node": "14.0.27",
-    "actionhero": "23.0.5",
+    "actionhero": "^23.0.6",
     "jest": "26.2.2",
     "prettier": "2.0.5",
     "ts-jest": "26.1.4",
