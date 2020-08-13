@@ -71,7 +71,12 @@ export default function Page(props) {
       await execApi("post", `/destination/${guid}/untrack`);
     }
 
-    successHandler.set({ message: "Destination Updated" });
+    // trigger a full export
+    await execApi("post", `/destination/${guid}/export`);
+
+    successHandler.set({
+      message: "Destination Updated and Profiles Exporting...",
+    });
   };
 
   const exportDestination = async () => {
