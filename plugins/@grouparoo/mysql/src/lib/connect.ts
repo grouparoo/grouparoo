@@ -20,7 +20,9 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
         replacementValues,
         (error: Error, rows: Array<QueryResultObject>) => {
           if (error) {
-            return reject(`error with mysql query: "${q.sql}" - ${error}`);
+            return reject(
+              new Error(`error with mysql query: "${q.sql}" - ${error}`)
+            );
           }
 
           const cleanedRows = [];
