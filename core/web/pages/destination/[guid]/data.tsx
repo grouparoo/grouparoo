@@ -439,15 +439,17 @@ export default function Page(props) {
                                   <span className="text-muted">({type})</span>
                                 </td>
                                 <td>
-                                  <Button
-                                    size="sm"
-                                    variant="danger"
-                                    onClick={() => {
-                                      updateMapping(key, "", key);
-                                    }}
-                                  >
-                                    X
-                                  </Button>
+                                  {destination.mapping[key] ? (
+                                    <Button
+                                      size="sm"
+                                      variant="danger"
+                                      onClick={() => {
+                                        updateMapping(key, "", key);
+                                      }}
+                                    >
+                                      X
+                                    </Button>
+                                  ) : null}
                                 </td>
                               </tr>
                             ) : null
