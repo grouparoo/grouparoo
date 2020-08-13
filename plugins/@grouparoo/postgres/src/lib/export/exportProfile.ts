@@ -6,6 +6,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   connection,
   destination,
   newProfileProperties,
+  oldProfileProperties,
   newGroups,
   toDelete,
 }) => {
@@ -77,8 +78,10 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         // erase old columns
         const columnsToErase = Object.keys(existingRecords.rows[0]).filter(
           (k) =>
-            newProfileProperties[k] === null ||
-            newProfileProperties[k] === undefined
+            (newProfileProperties[k] === null ||
+              newProfileProperties[k] === undefined) &&
+            oldProfileProperties[k] !== null &&
+            oldProfileProperties[k] !== undefined
         );
 
         if (columnsToErase.length > 0) {
