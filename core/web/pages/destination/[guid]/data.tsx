@@ -44,14 +44,6 @@ export default function Page(props) {
   const update = async (event) => {
     event.preventDefault();
 
-    if (trackedGroupGuid.match(/^grp_/)) {
-      await execApi("post", `/destination/${guid}/track`, {
-        groupGuid: trackedGroupGuid,
-      });
-    } else if (trackedGroupGuid === "_none" && !destination.trackAllGroups) {
-      await execApi("post", `/destination/${guid}/untrack`);
-    }
-
     // handle destination group membership & mapping
     const filteredMapping = {};
     for (const k in destination.mapping) {
@@ -69,6 +61,15 @@ export default function Page(props) {
       destinationGroupMemberships: destinationGroupMembershipsObject,
       trackAllGroups: trackedGroupGuid === "_all" ? true : false,
     });
+
+    // update group being tracked after the edit (as trackAllGroups may have changed)
+    if (trackedGroupGuid.match(/^grp_/)) {
+      await execApi("post", `/destination/${guid}/track`, {
+        groupGuid: trackedGroupGuid,
+      });
+    } else if (trackedGroupGuid === "_none" && !destination.trackAllGroups) {
+      await execApi("post", `/destination/${guid}/untrack`);
+    }
 
     successHandler.set({ message: "Destination Updated" });
   };
