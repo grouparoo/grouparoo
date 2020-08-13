@@ -808,7 +808,9 @@ Page.getInitialProps = async (ctx) => {
     trackedGroupGuid: destination.trackAllGroups
       ? "_all"
       : destination.destinationGroups[0]?.guid,
-    groups: groups.filter((group) => group.state !== "draft"),
+    groups: groups
+      .filter((group) => group.state !== "draft")
+      .filter((group) => group.state !== "deleted"),
     hydrationError,
   };
 };
