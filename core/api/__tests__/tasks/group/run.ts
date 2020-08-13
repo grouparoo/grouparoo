@@ -81,6 +81,20 @@ describe("tasks/group:run", () => {
       expect(found.length).toEqual(1);
     });
 
+    test("if the run has not yet exported all profiles, the task will be re-enqueued", async () => {
+      const run = await helper.factories.run(group, { state: "running" });
+      await run.update({ exportsCreated: 1 });
+
+      await specHelper.runTask("group:run", {
+        groupGuid: group.guid,
+        runGuid: run.guid,
+      });
+
+      const found = await specHelper.findEnqueuedTasks("group:run");
+      expect(found.length).toEqual(1);
+      expect(found[0].timestamp).toBeGreaterThan(0);
+    });
+
     it("can create imports for profiles which should be added", async () => {
       let foundTasks = [];
       let imports = [];

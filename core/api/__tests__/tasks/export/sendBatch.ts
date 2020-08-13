@@ -1,5 +1,6 @@
 import { helper } from "../../utils/specHelper";
 import { api, task, specHelper } from "actionhero";
+import { App } from "../../../src/models/App";
 import { Profile } from "../../../src/models/Profile";
 import { Group } from "../../../src/models/Group";
 import { Destination } from "../../../src/models/Destination";
@@ -8,7 +9,7 @@ import { Run } from "../../../src/models/Run";
 
 let actionhero;
 
-describe("tasks/export:send", () => {
+describe("tasks/export:sendBatch", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
@@ -20,11 +21,11 @@ describe("tasks/export:send", () => {
   });
 
   test("can be enqueued", async () => {
-    await task.enqueue("export:send", {
+    await task.enqueue("export:sendBatch", {
       destinationGuid: "abc123",
-      exportGuid: "abc123",
+      exportGuids: ["abc123"],
     });
-    const found = await specHelper.findEnqueuedTasks("export:send");
+    const found = await specHelper.findEnqueuedTasks("export:sendBatch");
     expect(found.length).toEqual(1);
   });
 
@@ -40,7 +41,9 @@ describe("tasks/export:send", () => {
 
       await api.resque.queue.connection.redis.flushdb();
 
-      destination = await helper.factories.destination();
+      destination = await helper.factories.destination(null, {
+        type: "test-plugin-export-batch",
+      });
       await destination.trackGroup(group);
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.guid] = group.name;
@@ -76,18 +79,25 @@ describe("tasks/export:send", () => {
       );
     });
 
-    test("export:send will be enqueued into a custom queue with the app type", async () => {
+    test("export:sendBatch will be enqueued after a batch from the run", async () => {
       const foundExportTasks = await specHelper.findEnqueuedTasks(
         "profile:export"
       );
       expect(foundExportTasks.length).toBe(1);
       await specHelper.runTask("profile:export", foundExportTasks[0].args[0]);
 
-      const foundExportSendTasks = await specHelper.findEnqueuedTasks(
-        "export:send"
+      let foundExportSendBatchTasks = await specHelper.findEnqueuedTasks(
+        "export:sendBatch"
       );
       expect(foundExportTasks.length).toBe(1);
-      expect(foundExportSendTasks[0].queue).toBe("exports:test-plugin-app");
+      expect(foundExportSendBatchTasks.length).toBe(0);
+
+      await run.afterBatch();
+
+      foundExportSendBatchTasks = await specHelper.findEnqueuedTasks(
+        "export:sendBatch"
+      );
+      expect(foundExportSendBatchTasks.length).toBe(1);
     });
 
     test("the run will track the export being created separately than the export being sent", async () => {
@@ -107,10 +117,13 @@ describe("tasks/export:send", () => {
     });
 
     test("the export can be sent", async () => {
-      const foundExportSendTasks = await specHelper.findEnqueuedTasks(
-        "export:send"
+      const foundExportSendBatchTasks = await specHelper.findEnqueuedTasks(
+        "export:sendBatch"
       );
-      await specHelper.runTask("export:send", foundExportSendTasks[0].args[0]);
+      await specHelper.runTask(
+        "export:sendBatch",
+        foundExportSendBatchTasks[0].args[0]
+      );
 
       const _exports = await Export.findAll({
         where: {

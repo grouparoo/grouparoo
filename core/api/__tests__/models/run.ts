@@ -9,6 +9,9 @@ import { Schedule } from "../../src/models/Schedule";
 import { Group } from "../../src/models/Group";
 import { Team } from "../../src/models/Team";
 import { TeamMember } from "../../src/models/TeamMember";
+import { Export, Profile, Destination } from "../../src";
+import { ExportRun } from "../../src/models/ExportRun";
+import { api, specHelper } from "actionhero";
 
 let actionhero;
 let schedule;
@@ -207,6 +210,109 @@ describe("models/run", () => {
       await group.destroy();
       await schedule.destroy();
       await source.destroy();
+    });
+  });
+
+  describe("processBatchExports", () => {
+    let run: Run, profile: Profile, destination: Destination;
+    let pendingExportA: Export,
+      pendingExportB: Export,
+      completeExport: Export,
+      errorExport: Export;
+
+    beforeAll(async () => {
+      run = await helper.factories.run(null, { state: "running" });
+      profile = await helper.factories.profile();
+      destination = await helper.factories.destination(null, {
+        type: "test-plugin-export-batch",
+      });
+
+      pendingExportA = await Export.create({
+        profileGuid: profile.guid,
+        destinationGuid: destination.guid,
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        newGroups: [],
+        oldGroups: [],
+      });
+
+      pendingExportB = await Export.create({
+        profileGuid: profile.guid,
+        destinationGuid: destination.guid,
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        newGroups: [],
+        oldGroups: [],
+      });
+
+      completeExport = await Export.create({
+        profileGuid: profile.guid,
+        destinationGuid: destination.guid,
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        completedAt: new Date(),
+      });
+
+      errorExport = await Export.create({
+        profileGuid: profile.guid,
+        destinationGuid: destination.guid,
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        errorMessage: "Oh No!",
+      });
+
+      await ExportRun.create({
+        runGuid: run.guid,
+        exportGuid: pendingExportA.guid,
+      });
+      await ExportRun.create({
+        runGuid: run.guid,
+        exportGuid: pendingExportB.guid,
+      });
+      await ExportRun.create({
+        runGuid: run.guid,
+        exportGuid: completeExport.guid,
+      });
+      await ExportRun.create({
+        runGuid: run.guid,
+        exportGuid: errorExport.guid,
+      });
+    });
+
+    beforeEach(async () => {
+      await api.resque.queue.connection.redis.flushdb();
+    });
+
+    test("exports not yet exported or with an error will be added to the batch", async () => {
+      await run.processBatchExports();
+
+      const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0].exportGuids).toContain(pendingExportA.guid);
+      expect(foundTasks[0].args[0].exportGuids).toContain(pendingExportB.guid);
+      expect(foundTasks[0].args[0].exportGuids).not.toContain(
+        completeExport.guid
+      );
+      expect(foundTasks[0].args[0].exportGuids).not.toContain(errorExport.guid);
+    });
+
+    test("batch size is variable", async () => {
+      await run.processBatchExports(1);
+
+      const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      expect(foundTasks.length).toBe(2);
+    });
+
+    test("will not create batchExports if the run is still importing", async () => {
+      await run.update({ importsCreated: 2, profilesImported: 1 });
+      await run.processBatchExports();
+
+      const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      expect(foundTasks.length).toBe(0);
     });
   });
 

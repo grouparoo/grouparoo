@@ -23,6 +23,24 @@ describe("tasks/run:internalRun", () => {
     await helper.shutdown(actionhero);
   });
 
+  test("if the run has not yet exported all profiles, the task will be re-enqueued", async () => {
+    const rule = await ProfilePropertyRule.findOne();
+    const run = await helper.factories.run(rule, {
+      creatorType: "test",
+      creatorGuid: "test",
+      state: "running",
+    });
+    await run.update({ exportsCreated: 1 });
+
+    await specHelper.runTask("run:internalRun", {
+      runGuid: run.guid,
+    });
+
+    const found = await specHelper.findEnqueuedTasks("run:internalRun");
+    expect(found.length).toEqual(1);
+    expect(found[0].timestamp).toBeGreaterThan(0);
+  });
+
   describe("run:internalRun", () => {
     beforeAll(async () => {
       profile = await helper.factories.profile();

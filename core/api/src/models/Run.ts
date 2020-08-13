@@ -173,8 +173,8 @@ export class Run extends Model<Run> {
     log(`run ${this.guid} is ${this.percentComplete}% complete`);
   }
 
-  async processBatchExports() {
-    return RunOps.processBatchExports(this);
+  async processBatchExports(limit?: number) {
+    return RunOps.processBatchExports(this, limit);
   }
 
   async afterBatch() {
