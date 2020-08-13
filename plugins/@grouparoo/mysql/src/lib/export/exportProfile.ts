@@ -3,9 +3,9 @@ import { ExportProfilePluginMethod } from "@grouparoo/core";
 export const exportProfile: ExportProfilePluginMethod = async ({
   connection,
   newProfileProperties,
+  oldProfileProperties,
   newGroups,
   toDelete,
-  appOptions,
   destination,
 }) => {
   let success = false;
@@ -55,8 +55,10 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         // erase old columns
         const columnsToErase = Object.keys(existingRecords[0]).filter(
           (k) =>
-            newProfileProperties[k] === null ||
-            newProfileProperties[k] === undefined
+            (newProfileProperties[k] === null ||
+              newProfileProperties[k] === undefined) &&
+            oldProfileProperties[k] !== null &&
+            oldProfileProperties[k] !== undefined
         );
 
         if (columnsToErase.length > 0) {
