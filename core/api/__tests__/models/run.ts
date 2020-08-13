@@ -167,7 +167,18 @@ describe("models/run", () => {
           groupMethod: "runRemoveGroupMembers",
         });
         await run.determinePercentComplete();
-        expect(run.percentComplete).toBe(45);
+        expect(run.percentComplete).toBe(50);
+      });
+
+      test("running - group - removePreviousRunGroupMembers", async () => {
+        run = await Run.create({
+          state: "running",
+          creatorGuid: group.guid,
+          creatorType: "group",
+          groupMethod: "removePreviousRunGroupMembers",
+        });
+        await run.determinePercentComplete();
+        expect(run.percentComplete).toBe(50);
       });
 
       test("running - teamMember", async () => {
