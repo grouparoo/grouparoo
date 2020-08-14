@@ -35,6 +35,12 @@ export class Plugins extends Initializer {
           "How many profiles should a run try to send at once to destinations which support batch exporting?",
       },
       {
+        key: "default-country-code",
+        defaultValue: "US",
+        description:
+          "The default country code Grouparoo will use to format phone numbers and display data",
+      },
+      {
         key: "sweeper-delete-old-logs-days",
         defaultValue: 31,
         description:
