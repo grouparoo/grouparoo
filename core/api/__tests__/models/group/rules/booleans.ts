@@ -6,7 +6,7 @@ describe("model/group", () => {
 
   beforeAll(async () => {
     const response = await SharedGroupTests.beforeAll();
-  });
+  }, 1000 * 30);
 
   afterAll(async () => {
     await SharedGroupTests.afterAll();

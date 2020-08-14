@@ -9,7 +9,7 @@ describe("model/group", () => {
   beforeAll(async () => {
     const response = await SharedGroupTests.beforeAll();
     luigi = response.luigi;
-  });
+  }, 1000 * 30);
 
   afterAll(async () => {
     await SharedGroupTests.afterAll();
