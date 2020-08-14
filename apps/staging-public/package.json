@@ -23,7 +23,8 @@
     "@grouparoo/postgres": "^0.1.10-alpha.0",
     "@grouparoo/redshift": "^0.1.10-alpha.0",
     "@grouparoo/sailthru": "^0.1.10-alpha.0",
-    "@grouparoo/sample-ui-plugin": "^0.1.10-alpha.0"
+    "@grouparoo/sample-ui-plugin": "^0.1.10-alpha.0",
+    "@grouparoo/zendesk": "^0.1.10-alpha.0"
   },
   "scripts": {
     "prepare": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public npm run prepare",
@@ -44,7 +45,8 @@
       "@grouparoo/newrelic",
       "@grouparoo/postgres",
       "@grouparoo/redshift",
-      "@grouparoo/sailthru"
+      "@grouparoo/sailthru",
+      "@grouparoo/zendesk"
     ],
     "includedFiles": [
       "assets"
