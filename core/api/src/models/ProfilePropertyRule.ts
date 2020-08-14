@@ -49,13 +49,13 @@ export function profilePropertyRuleJSToSQLType(jsType: string) {
 }
 
 const TYPES = [
+  "boolean",
+  "date",
+  "email",
   "float",
   "integer",
-  "date",
-  "string",
-  "boolean",
-  "email",
   "phoneNumber",
+  "string",
 ];
 
 const CACHE_TTL = env === "test" ? -1 : 1000 * 30;
