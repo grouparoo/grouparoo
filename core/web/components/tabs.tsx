@@ -20,19 +20,6 @@ export default function GrouparooTabs({
   const guid = parts[4];
   const verb = parts[5].split("?")[0];
 
-  function capitalize(s: string) {
-    return s
-      .split(" ")
-      .map((word) => {
-        return word.charAt(0).toUpperCase() + word.slice(1);
-      })
-      .join(" ");
-  }
-
-  function pluralize(s: string) {
-    return s + "s"; // TODO: is this good enough?
-  }
-
   return (
     <>
       <Breadcrumb>
@@ -69,4 +56,17 @@ export default function GrouparooTabs({
       <br />
     </>
   );
+}
+
+export function capitalize(s: string) {
+  return s
+    .split(" ")
+    .map((word) => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(" ");
+}
+
+export function pluralize(s: string) {
+  return s + "s"; // TODO: is this good enough?
 }
