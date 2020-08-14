@@ -109,10 +109,7 @@ export namespace SourceOps {
     }
 
     const method = pluginConnection.methods.profileProperty;
-
-    if (!method) {
-      return;
-    }
+    if (!method) return;
 
     const app = preloadedArgs.app || (await source.$get("app"));
     const connection = preloadedArgs.connection || (await app.getConnection());
@@ -137,26 +134,31 @@ export namespace SourceOps {
       utils.sleep(100);
     }
 
-    const response = await method({
-      connection,
-      app,
-      appOptions,
-      source,
-      sourceOptions,
-      sourceMapping,
-      profilePropertyRule,
-      profilePropertyRuleOptions: profilePropertyRuleOptionsOverride
-        ? profilePropertyRuleOptionsOverride
-        : await profilePropertyRule.getOptions(),
-      profilePropertyRuleFilters: profilePropertyRuleFiltersOverride
-        ? profilePropertyRuleFiltersOverride
-        : await profilePropertyRule.getFilters(),
-      profile,
-    });
+    try {
+      const response = await method({
+        connection,
+        app,
+        appOptions,
+        source,
+        sourceOptions,
+        sourceMapping,
+        profilePropertyRule,
+        profilePropertyRuleOptions: profilePropertyRuleOptionsOverride
+          ? profilePropertyRuleOptionsOverride
+          : await profilePropertyRule.getOptions(),
+        profilePropertyRuleFilters: profilePropertyRuleFiltersOverride
+          ? profilePropertyRuleFiltersOverride
+          : await profilePropertyRule.getFilters(),
+        profile,
+      });
 
-    await app.checkAndUpdateParallelism("decr");
+      await app.checkAndUpdateParallelism("decr");
 
-    return response;
+      return response;
+    } catch (error) {
+      await app.checkAndUpdateParallelism("decr");
+      throw error;
+    }
   }
 
   /**
