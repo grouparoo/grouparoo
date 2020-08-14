@@ -635,7 +635,6 @@ describe("models/run", () => {
     });
 
     test("creating a run will throw and become complete if there is an error with a profilePropertyRule", async () => {
-      const rule = await ProfilePropertyRule.findOne();
       const app = await App.create({
         name: "bad app",
         type: "test-error-app",
@@ -652,21 +651,29 @@ describe("models/run", () => {
       await source.update({ state: "ready" });
 
       // the app throws whatever the query is a new error (see above)
+      const rule = await ProfilePropertyRule.findOne({
+        where: { key: "email" },
+      });
       await rule.update({ sourceGuid: source.guid });
-      await rule.setOptions({ column: "abc" });
+      await rule.setOptions({ column: "something-broken" });
       await rule.update({ state: "ready" });
+      await rule.reload();
 
       // we need at least one profile to test against
       const profile = await helper.factories.profile();
       await profile.addOrUpdateProperties({ userId: [1000] });
 
+      // importing the profile should raise...
+      await expect(profile.import()).rejects.toThrow(/something-broken/);
+
+      // ... which means that no run should be able to be created
       await expect(
         Run.create({
           creatorGuid: "test",
           creatorType: "test",
           state: "running",
         })
-      ).rejects.toThrow(/abc/);
+      ).rejects.toThrow(/something-broken/);
     });
   });
 });

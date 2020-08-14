@@ -244,7 +244,7 @@ export class Run extends Model<Run> {
         await profile.import(false);
       } catch (error) {
         this.error = error.toString();
-        this.state = "complete";
+        this.state = "stopped";
         await this.save();
         throw error;
       }

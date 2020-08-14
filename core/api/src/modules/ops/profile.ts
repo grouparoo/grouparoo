@@ -239,27 +239,30 @@ export namespace ProfileOps {
       releaseLock = lockObject.releaseLock;
     }
 
-    let hash = {};
-    const sources = await Source.findAll({ where: { state: "ready" } });
-    await Promise.all(
-      sources.map((source) =>
-        source
-          .import(profile)
-          .then((data) => (hash = Object.assign(hash, data)))
-      )
-    );
+    try {
+      let hash = {};
+      const sources = await Source.findAll({ where: { state: "ready" } });
+      await Promise.all(
+        sources.map((source) =>
+          source
+            .import(profile)
+            .then((data) => (hash = Object.assign(hash, data)))
+        )
+      );
 
-    if (toSave) {
-      await profile.addOrUpdateProperties(hash);
-      await profile.buildNullProperties();
-      await profile.save();
+      if (toSave) {
+        await profile.addOrUpdateProperties(hash);
+        await profile.buildNullProperties();
+        await profile.save();
+      }
+
+      if (toLock) releaseLock();
+
+      return profile;
+    } catch (error) {
+      if (toLock) releaseLock();
+      throw error;
     }
-
-    if (toLock) {
-      releaseLock();
-    }
-
-    return profile;
   }
 
   /**
