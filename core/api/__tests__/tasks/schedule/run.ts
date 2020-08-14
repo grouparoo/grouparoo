@@ -2,7 +2,6 @@ import { helper } from "../../utils/specHelper";
 import { api, task, specHelper } from "actionhero";
 import { Source } from "../../../src/models/Source";
 import { Schedule } from "../../../src/models/Schedule";
-import { toUnicode } from "punycode";
 
 let actionhero;
 

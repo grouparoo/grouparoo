@@ -479,7 +479,7 @@ export namespace DestinationOps {
 
   /**
    * Send all pending exports previously created to the destination in a batch.
-   * Batch size is handled by the task exports:sendBatch.
+   * Batch size is handled by the task export:sendBatch.
    */
   export async function sendExports(
     destination: Destination,
@@ -511,16 +511,30 @@ export namespace DestinationOps {
 
     for (const i in _exports) {
       const _export = _exports[i];
-      const profile = await _export.$get("profile");
-      destinationExports.push({
-        profile,
-        oldProfileProperties: _export.oldProfileProperties,
-        newProfileProperties: _export.newProfileProperties,
-        oldGroups: _export.oldGroups,
-        newGroups: _export.newGroups,
-        toDelete: _export.toDelete,
-      });
       await _export.update({ startedAt: new Date() });
+
+      // do not include exports with hasChanges=false
+      if (!_export.hasChanges) {
+        await _export.update({ completedAt: new Date() });
+        await _export.markMostRecent();
+        const exportRuns = await ExportRun.findAll({
+          where: { exportGuid: _export.guid },
+        });
+        for (const i in exportRuns) {
+          const run = await Run.findByGuid(exportRuns[i].runGuid);
+          await run.increment("profilesExported");
+        }
+      } else {
+        const profile = await _export.$get("profile");
+        destinationExports.push({
+          profile,
+          oldProfileProperties: _export.oldProfileProperties,
+          newProfileProperties: _export.newProfileProperties,
+          oldGroups: _export.oldGroups,
+          newGroups: _export.newGroups,
+          toDelete: _export.toDelete,
+        });
+      }
     }
 
     try {
@@ -538,7 +552,7 @@ export namespace DestinationOps {
       if (!success && retryDelay && !sync) {
         return task.enqueueIn(
           retryDelay,
-          "exports:sendBatch",
+          "export:sendBatch",
           {
             destinationGuid: destination.guid,
             exportGuids: _exports.map((e) => e.guid),
@@ -547,20 +561,20 @@ export namespace DestinationOps {
         );
       }
 
+      const combinedError = new Error(
+        `error exporting a batch of ${
+          errors ? errors.length : ""
+        } profiles to destination ${destination.name} (${destination.guid}): ${
+          errors ? errors.map((e) => e.message).join(", ") : ""
+        }`
+      );
+      combinedError["errors"] = errors;
+
       if (!success && retryDelay && sync) {
-        throw new Error(errors.map((e) => e.message).join(", "));
+        throw combinedError;
       }
-      if (errors) {
-        const error = new Error(
-          `error exporting a batch of ${
-            errors.length
-          } profiles to destination ${destination.name} (${
-            destination.guid
-          }): ${errors.map((e) => e.message).join(", ")}`
-        );
-        error["errors"] = errors;
-        throw error;
-      }
+
+      if (errors) throw combinedError;
 
       for (const i in _exports) {
         const _export = _exports[i];
