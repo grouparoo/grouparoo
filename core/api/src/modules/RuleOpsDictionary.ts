@@ -50,6 +50,7 @@ export const ProfilePropertyRuleOpsDictionary = {
   float: _number_ops,
   boolean: _boolean_ops,
   date: _date_ops,
+  phoneNumber: _string_ops,
   _relativeMatchUnits: ["days", "weeks", "months", "quarters", "years"],
   _convenientRules: {
     exists: { operation: { op: "ne" }, match: "null" },

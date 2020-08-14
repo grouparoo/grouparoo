@@ -24,7 +24,6 @@ describe("model/group", () => {
   describe("rules", () => {
     describe("booleans", () => {
       test("exact matches", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "isVIP", match: true, operation: { op: "eq" } },
         ]);
@@ -32,7 +31,6 @@ describe("model/group", () => {
       });
 
       test("multiple rules with same key", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "isVIP", match: true, operation: { op: "eq" } },
           { key: "isVIP", match: false, operation: { op: "ne" } },
@@ -41,7 +39,6 @@ describe("model/group", () => {
       });
 
       test("multiple matches (ALL)", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "isVIP", match: true, operation: { op: "eq" } },
           { key: "lastName", match: "mario", operation: { op: "iLike" } },
@@ -59,7 +56,6 @@ describe("model/group", () => {
       });
 
       test("null match", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "isVIP", match: "null", operation: { op: "eq" } },
         ]);
@@ -67,7 +63,6 @@ describe("model/group", () => {
       });
 
       test("not null match", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "isVIP", match: "null", operation: { op: "ne" } },
         ]);
@@ -75,13 +70,11 @@ describe("model/group", () => {
       });
 
       test("exists", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([{ key: "isVIP", operation: { op: "exists" } }]);
         expect(await group.countPotentialMembers()).toBe(4);
       });
 
       test("notExists", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "isVIP", operation: { op: "notExists" } },
         ]);

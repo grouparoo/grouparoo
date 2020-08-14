@@ -58,12 +58,13 @@ describe("actions/profilePropertyRules", () => {
       );
       expect(error).toBeUndefined();
       expect(types).toEqual([
+        "boolean",
+        "date",
+        "email",
         "float",
         "integer",
-        "date",
+        "phoneNumber",
         "string",
-        "boolean",
-        "email",
       ]);
     });
 

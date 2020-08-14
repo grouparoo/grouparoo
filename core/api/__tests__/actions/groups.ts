@@ -243,6 +243,7 @@ describe("actions/groups", () => {
           "email",
           "float",
           "integer",
+          "phoneNumber",
           "string",
         ]);
 

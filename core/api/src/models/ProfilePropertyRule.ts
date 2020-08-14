@@ -29,7 +29,6 @@ import { Group } from "./Group";
 import { Run } from "./Run";
 import { GroupRule } from "./GroupRule";
 import { ProfilePropertyRuleFilter } from "./ProfilePropertyRuleFilter";
-import { internalRun } from "../modules/internalRun";
 import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { Mapping } from "./Mapping";
@@ -41,6 +40,7 @@ export function profilePropertyRuleJSToSQLType(jsType: string) {
     float: "float",
     string: "text",
     email: "text",
+    phoneNumber: "text",
     boolean: "boolean",
     date: "bigint", // we store things via timestamps in the DB
   };
@@ -48,7 +48,15 @@ export function profilePropertyRuleJSToSQLType(jsType: string) {
   return map[jsType];
 }
 
-const TYPES = ["float", "integer", "date", "string", "boolean", "email"];
+const TYPES = [
+  "boolean",
+  "date",
+  "email",
+  "float",
+  "integer",
+  "phoneNumber",
+  "string",
+];
 
 const CACHE_TTL = env === "test" ? -1 : 1000 * 30;
 

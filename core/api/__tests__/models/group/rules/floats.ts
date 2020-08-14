@@ -24,7 +24,6 @@ describe("model/group", () => {
   describe("rules", () => {
     describe("floats", () => {
       test("exact matches", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "ltv", match: 100, operation: { op: "eq" } },
         ]);
@@ -32,7 +31,6 @@ describe("model/group", () => {
       });
 
       test("comparison matches", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "ltv", match: 1, operation: { op: "gte" } },
         ]);
@@ -40,7 +38,6 @@ describe("model/group", () => {
       });
 
       test("multiple rules with same key", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "ltv", match: 1, operation: { op: "gte" } },
           { key: "ltv", match: 9999, operation: { op: "lt" } },
@@ -49,7 +46,6 @@ describe("model/group", () => {
       });
 
       test("multiple matches (ALL)", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "ltv", match: 1, operation: { op: "gte" } },
           { key: "lastName", match: "mario", operation: { op: "iLike" } },
@@ -67,7 +63,6 @@ describe("model/group", () => {
       });
 
       test("null match", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "ltv", match: "null", operation: { op: "eq" } },
         ]);
@@ -75,7 +70,6 @@ describe("model/group", () => {
       });
 
       test("not null match", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "ltv", match: "null", operation: { op: "ne" } },
         ]);
@@ -83,19 +77,16 @@ describe("model/group", () => {
       });
 
       test("exists", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([{ key: "ltv", operation: { op: "exists" } }]);
         expect(await group.countPotentialMembers()).toBe(4);
       });
 
       test("notExists", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([{ key: "ltv", operation: { op: "notExists" } }]);
         expect(await group.countPotentialMembers()).toBe(0);
       });
 
       test("array property exists", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "purchaseAmounts", operation: { op: "exists" } },
         ]);
@@ -103,7 +94,6 @@ describe("model/group", () => {
       });
 
       test("array property does not exists", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "purchaseAmounts", operation: { op: "notExists" } },
         ]);
@@ -111,7 +101,6 @@ describe("model/group", () => {
       });
 
       test("array property equals", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "purchaseAmounts", match: 50, operation: { op: "eq" } },
         ]);
@@ -119,7 +108,6 @@ describe("model/group", () => {
       });
 
       test("array property not equals", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "purchaseAmounts", match: 50, operation: { op: "ne" } },
         ]);
@@ -127,7 +115,6 @@ describe("model/group", () => {
       });
 
       test("array property comparisons gt", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "purchaseAmounts", match: 50, operation: { op: "gt" } },
         ]);
@@ -135,7 +122,6 @@ describe("model/group", () => {
       });
 
       test("array property comparisons lte", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "purchaseAmounts", match: 50, operation: { op: "lte" } },
         ]);

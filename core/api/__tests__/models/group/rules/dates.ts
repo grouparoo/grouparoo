@@ -27,7 +27,6 @@ describe("model/group", () => {
   describe("rules", () => {
     describe("absolute dates", () => {
       test("exact matches", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           {
             key: "lastLoginAt",
@@ -39,7 +38,6 @@ describe("model/group", () => {
       });
 
       test("comparison matches", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           {
             key: "lastLoginAt",
@@ -51,7 +49,6 @@ describe("model/group", () => {
       });
 
       test("multiple rules with same key", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           {
             key: "lastLoginAt",
@@ -68,7 +65,6 @@ describe("model/group", () => {
       });
 
       test("multiple matches (ALL)", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           {
             key: "lastLoginAt",
@@ -94,7 +90,6 @@ describe("model/group", () => {
       });
 
       test("null match", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "lastLoginAt", match: "null", operation: { op: "eq" } },
         ]);
@@ -102,7 +97,6 @@ describe("model/group", () => {
       });
 
       test("not null match", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "lastLoginAt", match: "null", operation: { op: "ne" } },
         ]);
@@ -110,7 +104,6 @@ describe("model/group", () => {
       });
 
       test("exists", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "lastLoginAt", operation: { op: "exists" } },
         ]);
@@ -118,7 +111,6 @@ describe("model/group", () => {
       });
 
       test("notExists", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "lastLoginAt", operation: { op: "notExists" } },
         ]);
@@ -128,7 +120,6 @@ describe("model/group", () => {
 
     describe("relative dates", () => {
       test("comparison matches (with matches)", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           {
             key: "lastLoginAt",
@@ -142,7 +133,6 @@ describe("model/group", () => {
       });
 
       test("comparison matches (no matches)", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           {
             key: "lastLoginAt",
@@ -156,7 +146,6 @@ describe("model/group", () => {
       });
 
       test("comparison matches (matches)", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           {
             key: "lastLoginAt",
@@ -170,7 +159,6 @@ describe("model/group", () => {
       });
 
       test("multiple rules with same key", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           {
             key: "lastLoginAt",
@@ -191,7 +179,6 @@ describe("model/group", () => {
       });
 
       test("multiple matches (ALL)", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           {
             key: "lastLoginAt",
@@ -221,7 +208,6 @@ describe("model/group", () => {
       });
 
       test("relative date matchers in the future do not include the past", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           {
             key: "lastLoginAt",
@@ -240,7 +226,6 @@ describe("model/group", () => {
           lastLoginAt: [new Date(now + 1000 * 5)],
         });
 
-        await group.update({ matchType: "all" });
         await group.setRules([
           {
             key: "lastLoginAt",
