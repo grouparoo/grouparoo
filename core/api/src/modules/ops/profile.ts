@@ -256,11 +256,11 @@ export namespace ProfileOps {
         await profile.save();
       }
 
-      if (toLock) releaseLock();
+      if (toLock) await releaseLock();
 
       return profile;
     } catch (error) {
-      if (toLock) releaseLock();
+      if (toLock) await releaseLock();
       throw error;
     }
   }
