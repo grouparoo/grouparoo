@@ -410,6 +410,10 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.sendExport(this, _export, sync);
   }
 
+  async sendExports(_exports: Export[], sync = false) {
+    return DestinationOps.sendExports(this, _exports, sync);
+  }
+
   // --- Class Methods --- //
 
   static async findByGuid(guid: string) {
@@ -443,9 +447,12 @@ export class Destination extends LoggedModel<Destination> {
       throw new Error(`a destination of type ${instance.type} cannot be found`);
     }
 
-    if (!pluginConnection.methods.exportProfile) {
+    if (
+      !pluginConnection.methods.exportProfile &&
+      !pluginConnection.methods.exportProfiles
+    ) {
       throw new Error(
-        `a destination of type ${instance.type} cannot be created as there is no exportProfile method`
+        `a destination of type ${instance.type} cannot be created as there are no profile export methods`
       );
     }
   }

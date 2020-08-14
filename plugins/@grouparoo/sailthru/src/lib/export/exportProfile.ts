@@ -7,11 +7,13 @@ import { log } from "actionhero";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
-  newProfileProperties,
-  oldProfileProperties,
-  newGroups,
-  oldGroups,
-  toDelete,
+  export: {
+    newProfileProperties,
+    oldProfileProperties,
+    newGroups,
+    oldGroups,
+    toDelete,
+  },
 }) => {
   const client = new Sailthru(appOptions);
   const email = newProfileProperties.email;

@@ -1,21 +1,26 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import { ExportProfilesPluginMethod } from "@grouparoo/core";
 import * as fs from "fs";
 import * as path from "path";
 import { config, log } from "actionhero";
 
-export const exportProfile: ExportProfilePluginMethod = async ({
-  profile,
+export const exportProfiles: ExportProfilesPluginMethod = async ({
   appOptions,
-  oldProfileProperties,
-  newProfileProperties,
-  oldGroups,
-  newGroups,
-  toDelete,
+  exports,
 }) => {
   const filePath = path.join(config.general.paths.log[0], appOptions.filename);
+  let lines = [];
 
-  const line =
-    JSON.stringify({
+  exports.map((_export) => {
+    const {
+      profile,
+      oldProfileProperties,
+      newProfileProperties,
+      oldGroups,
+      newGroups,
+      toDelete,
+    } = _export;
+
+    const line = JSON.stringify({
       time: new Date(),
       guid: profile.guid,
       oldProfileProperties,
@@ -23,16 +28,21 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       oldGroups,
       newGroups,
       toDelete,
-    }) + "\r\n";
+    });
+
+    lines.push(line);
+  });
 
   if (appOptions.stdout?.toString() === "true") {
     log(
-      `[ logger destination ] ${newProfileProperties["primary id"]} →  ${line}`
+      `exporting ${lines.length} profiles:\r\n` +
+        lines.map((line) => ` ----> ${line}`).join("\r\n"),
+      "notice"
     );
   }
 
   await new Promise((resolve, reject) => {
-    fs.appendFile(filePath, line, (error) => {
+    fs.appendFile(filePath, lines.join("\r\n"), (error) => {
       if (error) {
         return reject(error);
       }

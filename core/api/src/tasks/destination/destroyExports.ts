@@ -1,6 +1,4 @@
 import { Task, log, task } from "actionhero";
-import { Op } from "sequelize";
-import { Destination } from "../../models/Destination";
 import { Export } from "../../models/Export";
 
 export class DestinationDestroyExports extends Task {

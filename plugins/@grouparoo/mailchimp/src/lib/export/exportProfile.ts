@@ -5,10 +5,7 @@ import { generateMailchimpId } from "./../generateMailchimpId";
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
   destinationOptions,
-  toDelete,
-  newProfileProperties,
-  oldProfileProperties,
-  newGroups,
+  export: { toDelete, newProfileProperties, oldProfileProperties, newGroups },
 }) => {
   const client = await connect(appOptions);
   let response;

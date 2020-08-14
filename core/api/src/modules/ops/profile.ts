@@ -87,9 +87,7 @@ export namespace ProfileOps {
     const values = hash[key];
 
     // ignore reserved property key
-    if (key === "_meta") {
-      return;
-    }
+    if (key === "_meta") return;
 
     const profilePropertyRules = await ProfilePropertyRule.cached();
     const rule = profilePropertyRules[key];
@@ -177,9 +175,7 @@ export namespace ProfileOps {
 
     const keys = Object.keys(properties);
     for (const i in keys) {
-      if (keys[i] === "guid") {
-        continue;
-      }
+      if (keys[i] === "guid") continue;
 
       const h = {};
       h[keys[i]] = Array.isArray(properties[keys[i]])
@@ -239,27 +235,30 @@ export namespace ProfileOps {
       releaseLock = lockObject.releaseLock;
     }
 
-    let hash = {};
-    const sources = await Source.findAll({ where: { state: "ready" } });
-    await Promise.all(
-      sources.map((source) =>
-        source
-          .import(profile)
-          .then((data) => (hash = Object.assign(hash, data)))
-      )
-    );
+    try {
+      let hash = {};
+      const sources = await Source.findAll({ where: { state: "ready" } });
+      await Promise.all(
+        sources.map((source) =>
+          source
+            .import(profile)
+            .then((data) => (hash = Object.assign(hash, data)))
+        )
+      );
 
-    if (toSave) {
-      await profile.addOrUpdateProperties(hash);
-      await profile.buildNullProperties();
-      await profile.save();
+      if (toSave) {
+        await profile.addOrUpdateProperties(hash);
+        await profile.buildNullProperties();
+        await profile.save();
+      }
+
+      if (toLock) await releaseLock();
+
+      return profile;
+    } catch (error) {
+      if (toLock) await releaseLock();
+      throw error;
     }
-
-    if (toLock) {
-      releaseLock();
-    }
-
-    return profile;
   }
 
   /**

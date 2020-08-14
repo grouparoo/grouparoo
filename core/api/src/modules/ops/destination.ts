@@ -3,15 +3,21 @@ import {
   SimpleDestinationOptions,
 } from "../../models/Destination";
 import { DestinationGroup } from "../../models/DestinationGroup";
+import { App } from "../../models/App";
 import { Profile } from "../../models/Profile";
 import { Run } from "../../models/Run";
 import { Import } from "../../models/Import";
 import { Export } from "../../models/Export";
+import { ExportRun } from "../../models/ExportRun";
 import { Group } from "../../models/Group";
 import { MappingHelper } from "../mappingHelper";
-import { ExportProfilePluginMethod } from "../../classes/plugin";
+import {
+  ExportedProfile,
+  ExportProfilePluginMethod,
+  ExportProfilesPluginMethod,
+  ErrorWithProfileGuid,
+} from "../../classes/plugin";
 import { task, log, config } from "actionhero";
-import { ExportRun } from "../../models/ExportRun";
 import { deepStrictEqual } from "assert";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
@@ -206,13 +212,6 @@ export namespace DestinationOps {
     force = false
   ) {
     const app = await destination.$get("app");
-    let method: ExportProfilePluginMethod;
-    const { pluginConnection } = await destination.getPlugin();
-    method = pluginConnection.methods.exportProfile;
-
-    if (!method) {
-      throw new Error(`cannot find an export method for app type ${app.type}`);
-    }
 
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);
@@ -350,17 +349,27 @@ export namespace DestinationOps {
 
     await _export.associateImports(imports);
 
+    const { pluginConnection } = await destination.getPlugin();
+
     if (sync) {
-      return destination.sendExport(_export, sync);
+      if (pluginConnection.methods.exportProfiles) {
+        return destination.sendExports([_export], sync);
+      } else {
+        return destination.sendExport(_export, sync);
+      }
     } else {
-      await task.enqueue(
-        "export:send",
-        {
-          destinationGuid: destination.guid,
-          exportGuid: _export.guid,
-        },
-        `exports:${app.type}`
-      );
+      if (pluginConnection.methods.exportProfiles) {
+        // run#afterBatch will pick these up
+      } else {
+        return task.enqueue(
+          "export:send",
+          {
+            destinationGuid: destination.guid,
+            exportGuid: _export.guid,
+          },
+          `exports:${app.type}`
+        );
+      }
     }
   }
 
@@ -398,24 +407,17 @@ export namespace DestinationOps {
     const { pluginConnection } = await destination.getPlugin();
     method = pluginConnection.methods.exportProfile;
 
-    const open = await app.checkAndUpdateParallelism("incr");
-    if (!open) {
-      const message = `parallelism limit reached for ${app.type}`;
-      if (sync) {
-        throw new Error(message);
-      } else {
-        log(message + ", re-enqueuing export ${_export.guid}");
-        return task.enqueueIn(
-          config.tasks.timeout + 1,
-          "export:send",
-          {
-            destinationGuid: destination.guid,
-            exportGuid: _export.guid,
-          },
-          `exports:${app.type}`
-        );
-      }
-    }
+    const parallelismOk = await checkSendExportParallelism(
+      app,
+      destination,
+      "export:send",
+      {
+        destinationGuid: destination.guid,
+        exportGuid: _export.guid,
+      },
+      sync
+    );
+    if (!parallelismOk) return;
 
     try {
       const { success, retryDelay, error } = await method({
@@ -424,13 +426,17 @@ export namespace DestinationOps {
         appOptions,
         destination,
         destinationOptions: options,
-        profile,
-        oldProfileProperties: _export.oldProfileProperties,
-        newProfileProperties: _export.newProfileProperties,
-        oldGroups: _export.oldGroups,
-        newGroups: _export.newGroups,
-        toDelete: _export.toDelete,
+        export: {
+          profile,
+          oldProfileProperties: _export.oldProfileProperties,
+          newProfileProperties: _export.newProfileProperties,
+          oldGroups: _export.oldGroups,
+          newGroups: _export.newGroups,
+          toDelete: _export.toDelete,
+        },
       });
+
+      await app.checkAndUpdateParallelism("decr");
 
       if (!success && retryDelay && !sync) {
         return task.enqueueIn(
@@ -454,9 +460,10 @@ export namespace DestinationOps {
         await run.increment("profilesExported");
       }
 
-      await app.checkAndUpdateParallelism("decr");
       return { success, retryDelay, error };
     } catch (error) {
+      await app.checkAndUpdateParallelism("decr");
+
       _export.errorMessage = error.toString();
       await _export.save();
 
@@ -465,9 +472,202 @@ export namespace DestinationOps {
         await run.increment("profilesExported");
       }
 
-      await app.checkAndUpdateParallelism("decr");
       error.message = `error exporting profile ${profile.guid} to destination ${destination.guid}: ${error}`;
       throw error;
+    }
+  }
+
+  /**
+   * Send all pending exports previously created to the destination in a batch.
+   * Batch size is handled by the task export:sendBatch.
+   */
+  export async function sendExports(
+    destination: Destination,
+    _exports: Export[],
+    sync = false
+  ) {
+    const destinationExports: ExportedProfile[] = [];
+
+    let method: ExportProfilesPluginMethod;
+    const { pluginConnection } = await destination.getPlugin();
+    method = pluginConnection.methods.exportProfiles;
+
+    const options = await destination.getOptions();
+    const app = await destination.$get("app");
+    const appOptions = await app.getOptions();
+    const connection = await app.getConnection();
+
+    const parallelismOk = await checkSendExportParallelism(
+      app,
+      destination,
+      "export:sendBatch",
+      {
+        destinationGuid: destination.guid,
+        exportGuids: _exports.map((e) => e.guid),
+      },
+      sync
+    );
+    if (!parallelismOk) return;
+
+    for (const i in _exports) {
+      const _export = _exports[i];
+      await _export.update({ startedAt: new Date() });
+
+      // do not include exports with hasChanges=false
+      if (!_export.hasChanges) {
+        await _export.update({ completedAt: new Date() });
+        await _export.markMostRecent();
+        const exportRuns = await ExportRun.findAll({
+          where: { exportGuid: _export.guid },
+        });
+        for (const i in exportRuns) {
+          const run = await Run.findByGuid(exportRuns[i].runGuid);
+          await run.increment("profilesExported");
+        }
+      } else {
+        const profile = await _export.$get("profile");
+        destinationExports.push({
+          profile,
+          oldProfileProperties: _export.oldProfileProperties,
+          newProfileProperties: _export.newProfileProperties,
+          oldGroups: _export.oldGroups,
+          newGroups: _export.newGroups,
+          toDelete: _export.toDelete,
+        });
+      }
+    }
+
+    try {
+      const { success, retryDelay, errors } = await method({
+        connection,
+        app,
+        appOptions,
+        destination,
+        destinationOptions: options,
+        exports: destinationExports,
+      });
+
+      await app.checkAndUpdateParallelism("decr");
+
+      if (!success && retryDelay && !sync) {
+        return task.enqueueIn(
+          retryDelay,
+          "export:sendBatch",
+          {
+            destinationGuid: destination.guid,
+            exportGuids: _exports.map((e) => e.guid),
+          },
+          `exports:${app.type}`
+        );
+      }
+
+      const combinedError = new Error(
+        `error exporting a batch of ${
+          errors ? errors.length : ""
+        } profiles to destination ${destination.name} (${destination.guid}): ${
+          errors ? errors.map((e) => e.message).join(", ") : ""
+        }`
+      );
+      combinedError["errors"] = errors;
+
+      if (!success && retryDelay && sync) {
+        throw combinedError;
+      }
+
+      if (errors) throw combinedError;
+
+      for (const i in _exports) {
+        const _export = _exports[i];
+        await _export.update({ completedAt: new Date() });
+        await _export.markMostRecent();
+        const exportRuns = await ExportRun.findAll({
+          where: { exportGuid: _export.guid },
+        });
+        for (const j in exportRuns) {
+          const run = await Run.findByGuid(exportRuns[j].runGuid);
+          await run.increment("profilesExported");
+        }
+      }
+
+      return { success, retryDelay, errors };
+    } catch (error) {
+      await app.checkAndUpdateParallelism("decr");
+
+      // error might have an array of errors which correspond to specific profiles, or it may be generic
+      if (error.errors) {
+        const profileWithErrors: string[] = error.errors.map(
+          (e) => e.profileGuid
+        );
+
+        for (const i in _exports) {
+          const _export = _exports[i];
+
+          if (!profileWithErrors.includes(_export.profileGuid)) {
+            // this export was OK
+            await _export.update({ completedAt: new Date() });
+            await _export.markMostRecent();
+          } else {
+            for (const j in error.errors) {
+              const _error: ErrorWithProfileGuid = error.errors[j];
+              if (_error.profileGuid === _export.profileGuid) {
+                // this export had the error
+                _export.errorMessage = error.toString();
+                await _export.save();
+              }
+            }
+          }
+
+          const exportRuns = await ExportRun.findAll({
+            where: { exportGuid: _export.guid },
+          });
+          for (const j in exportRuns) {
+            const run = await Run.findByGuid(exportRuns[j].runGuid);
+            await run.increment("profilesExported");
+          }
+        }
+      } else {
+        for (const i in _exports) {
+          const _export = _exports[i];
+          _export.errorMessage = error.toString();
+          await _export.save();
+          const exportRuns = await ExportRun.findAll({
+            where: { exportGuid: _export.guid },
+          });
+          for (const j in exportRuns) {
+            const run = await Run.findByGuid(exportRuns[j].runGuid);
+            await run.increment("profilesExported");
+          }
+        }
+      }
+
+      throw error;
+    }
+  }
+
+  async function checkSendExportParallelism(
+    app: App,
+    destination: Destination,
+    taskName: string,
+    taskArgs: { [key: string]: any },
+    sync: boolean
+  ) {
+    const open = await app.checkAndUpdateParallelism("incr");
+    if (!open) {
+      const message = `parallelism limit reached for ${app.type}`;
+      if (sync) {
+        throw new Error(message);
+      } else {
+        log(message + ", re-enqueuing export ${_export.guid}");
+        await task.enqueueIn(
+          config.tasks.timeout + 1,
+          taskName,
+          taskArgs,
+          `exports:${app.type}`
+        );
+        return false;
+      }
+    } else {
+      return true;
     }
   }
 }

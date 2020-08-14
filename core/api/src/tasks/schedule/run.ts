@@ -23,12 +23,18 @@ export class ScheduleRun extends Task {
 
     const run = await Run.findByGuid(params.runGuid);
 
+    // we still have exports from the previous batch that need to be processed
+    if (run.exportsCreated > 0 && run.exportsCreated > run.profilesExported) {
+      await run.afterBatch();
+      return task.enqueueIn(config.tasks.timeout + 1, this.name, params);
+    }
+
     const { importsCount } = await schedule.run(run);
 
     await run.determinePercentComplete();
 
     if (importsCount > 0) {
-      await task.enqueueIn(config.tasks.timeout + 1, "schedule:run", params);
+      await task.enqueueIn(config.tasks.timeout + 1, this.name, params);
     } else {
       await task.enqueueIn(config.tasks.timeout + 1, "run:determineState", {
         runGuid: run.guid,

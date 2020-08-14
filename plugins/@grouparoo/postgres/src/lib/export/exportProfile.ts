@@ -5,10 +5,7 @@ import format from "pg-format";
 export const exportProfile: ExportProfilePluginMethod = async ({
   connection,
   destination,
-  newProfileProperties,
-  oldProfileProperties,
-  newGroups,
-  toDelete,
+  export: { newProfileProperties, oldProfileProperties, newGroups, toDelete },
 }) => {
   let success = false;
   let error: Error;

@@ -4,11 +4,13 @@ import { addToList, removeFromList } from "./listMethods";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
-  toDelete,
-  newProfileProperties,
-  oldProfileProperties,
-  newGroups,
-  oldGroups,
+  export: {
+    toDelete,
+    newProfileProperties,
+    oldProfileProperties,
+    newGroups,
+    oldGroups,
+  },
 }) => {
   // if we received no mapped data... just exit
   if (Object.keys(newProfileProperties).length === 0) {

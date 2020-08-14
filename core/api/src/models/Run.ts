@@ -168,9 +168,18 @@ export class Run extends Model<Run> {
   }
 
   async determinePercentComplete() {
-    this.percentComplete = await RunOps.determinePercentComplete(this);
-    await this.save();
+    const percentComplete = await RunOps.determinePercentComplete(this);
+    await this.update({ percentComplete });
     log(`run ${this.guid} is ${this.percentComplete}% complete`);
+  }
+
+  async processBatchExports(limit?: number) {
+    return RunOps.processBatchExports(this, limit);
+  }
+
+  async afterBatch() {
+    await this.processBatchExports();
+    await this.determinePercentComplete();
   }
 
   async buildErrorMessage() {
@@ -235,7 +244,7 @@ export class Run extends Model<Run> {
         await profile.import(false);
       } catch (error) {
         this.error = error.toString();
-        this.state = "complete";
+        this.state = "stopped";
         await this.save();
         throw error;
       }

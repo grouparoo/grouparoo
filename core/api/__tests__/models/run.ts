@@ -9,6 +9,9 @@ import { Schedule } from "../../src/models/Schedule";
 import { Group } from "../../src/models/Group";
 import { Team } from "../../src/models/Team";
 import { TeamMember } from "../../src/models/TeamMember";
+import { Export, Profile, Destination } from "../../src";
+import { ExportRun } from "../../src/models/ExportRun";
+import { api, specHelper } from "actionhero";
 
 let actionhero;
 let schedule;
@@ -167,7 +170,18 @@ describe("models/run", () => {
           groupMethod: "runRemoveGroupMembers",
         });
         await run.determinePercentComplete();
-        expect(run.percentComplete).toBe(45);
+        expect(run.percentComplete).toBe(50);
+      });
+
+      test("running - group - removePreviousRunGroupMembers", async () => {
+        run = await Run.create({
+          state: "running",
+          creatorGuid: group.guid,
+          creatorType: "group",
+          groupMethod: "removePreviousRunGroupMembers",
+        });
+        await run.determinePercentComplete();
+        expect(run.percentComplete).toBe(50);
       });
 
       test("running - teamMember", async () => {
@@ -196,6 +210,114 @@ describe("models/run", () => {
       await group.destroy();
       await schedule.destroy();
       await source.destroy();
+    });
+  });
+
+  describe("processBatchExports", () => {
+    let run: Run, profile: Profile, destination: Destination;
+    let pendingExportA: Export,
+      pendingExportB: Export,
+      completeExport: Export,
+      errorExport: Export;
+
+    beforeAll(async () => {
+      run = await helper.factories.run(null, { state: "running" });
+      profile = await helper.factories.profile();
+      destination = await helper.factories.destination(null, {
+        type: "test-plugin-export-batch",
+      });
+
+      pendingExportA = await Export.create({
+        profileGuid: profile.guid,
+        destinationGuid: destination.guid,
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        newGroups: [],
+        oldGroups: [],
+      });
+
+      pendingExportB = await Export.create({
+        profileGuid: profile.guid,
+        destinationGuid: destination.guid,
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        newGroups: [],
+        oldGroups: [],
+      });
+
+      completeExport = await Export.create({
+        profileGuid: profile.guid,
+        destinationGuid: destination.guid,
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        completedAt: new Date(),
+      });
+
+      errorExport = await Export.create({
+        profileGuid: profile.guid,
+        destinationGuid: destination.guid,
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        errorMessage: "Oh No!",
+      });
+
+      await ExportRun.create({
+        runGuid: run.guid,
+        exportGuid: pendingExportA.guid,
+      });
+      await ExportRun.create({
+        runGuid: run.guid,
+        exportGuid: pendingExportB.guid,
+      });
+      await ExportRun.create({
+        runGuid: run.guid,
+        exportGuid: completeExport.guid,
+      });
+      await ExportRun.create({
+        runGuid: run.guid,
+        exportGuid: errorExport.guid,
+      });
+    });
+
+    beforeEach(async () => {
+      await api.resque.queue.connection.redis.flushdb();
+    });
+
+    afterAll(async () => {
+      await profile.destroy();
+      await destination.destroy();
+    });
+
+    test("exports not yet exported or with an error will be added to the batch", async () => {
+      await run.processBatchExports();
+
+      const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0].exportGuids).toContain(pendingExportA.guid);
+      expect(foundTasks[0].args[0].exportGuids).toContain(pendingExportB.guid);
+      expect(foundTasks[0].args[0].exportGuids).not.toContain(
+        completeExport.guid
+      );
+      expect(foundTasks[0].args[0].exportGuids).not.toContain(errorExport.guid);
+    });
+
+    test("batch size is variable", async () => {
+      await run.processBatchExports(1);
+
+      const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      expect(foundTasks.length).toBe(2);
+    });
+
+    test("will not create batchExports if the run is still importing", async () => {
+      await run.update({ importsCreated: 2, profilesImported: 1 });
+      await run.processBatchExports();
+
+      const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      expect(foundTasks.length).toBe(0);
     });
   });
 
@@ -518,7 +640,6 @@ describe("models/run", () => {
     });
 
     test("creating a run will throw and become complete if there is an error with a profilePropertyRule", async () => {
-      const rule = await ProfilePropertyRule.findOne();
       const app = await App.create({
         name: "bad app",
         type: "test-error-app",
@@ -535,21 +656,28 @@ describe("models/run", () => {
       await source.update({ state: "ready" });
 
       // the app throws whatever the query is a new error (see above)
-      await rule.update({ sourceGuid: source.guid });
-      await rule.setOptions({ column: "abc" });
+      const rule = await helper.factories.profilePropertyRule(
+        source,
+        { key: "new_property" },
+        { column: "something-broken" }
+      );
       await rule.update({ state: "ready" });
 
       // we need at least one profile to test against
       const profile = await helper.factories.profile();
       await profile.addOrUpdateProperties({ userId: [1000] });
 
+      // importing the profile should raise...
+      await expect(profile.import()).rejects.toThrow(/something-broken/);
+
+      // ... which means that no run should be able to be created
       await expect(
         Run.create({
           creatorGuid: "test",
           creatorType: "test",
           state: "running",
         })
-      ).rejects.toThrow(/abc/);
+      ).rejects.toThrow(/something-broken/);
     });
   });
 });

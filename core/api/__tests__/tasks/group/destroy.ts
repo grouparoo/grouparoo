@@ -56,6 +56,27 @@ describe("tasks/group:destroy", () => {
       expect(found.length).toEqual(1);
     });
 
+    test("if the run has not yet exported all profiles, the task will be re-enqueued", async () => {
+      const group = await Group.create({
+        name: "test group",
+        type: "manual",
+        state: "ready",
+      });
+      const run = await helper.factories.run(group, { state: "running" });
+      await run.update({ exportsCreated: 1 });
+
+      await specHelper.runTask("group:destroy", {
+        groupGuid: group.guid,
+        runGuid: run.guid,
+      });
+
+      const found = await specHelper.findEnqueuedTasks("group:destroy");
+      expect(found.length).toEqual(1);
+      expect(found[0].timestamp).toBeGreaterThan(0);
+
+      await group.destroy();
+    });
+
     it("will remove all members in a manual group and then delete the group", async () => {
       let foundTasks = [];
       let _imports = [];

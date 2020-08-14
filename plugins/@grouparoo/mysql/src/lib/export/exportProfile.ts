@@ -2,11 +2,8 @@ import { ExportProfilePluginMethod } from "@grouparoo/core";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   connection,
-  newProfileProperties,
-  oldProfileProperties,
-  newGroups,
-  toDelete,
   destination,
+  export: { newProfileProperties, oldProfileProperties, newGroups, toDelete },
 }) => {
   let success = false;
   let error;

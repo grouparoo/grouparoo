@@ -314,6 +314,49 @@ export namespace helper {
             },
           },
         },
+        {
+          name: "test-plugin-export-batch",
+          direction: "export",
+          description: "export profiles to nowhere",
+          app: "test-plugin-app",
+          options: [
+            { key: "table", required: true },
+            { key: "where", required: false },
+          ],
+          methods: {
+            exportProfiles: async () => {
+              return { success: true };
+            },
+            destinationOptions: async ({ destinationOptions }) => {
+              const response = {
+                table: { type: "list", options: ["users_out"] },
+              };
+              if (destinationOptions.options)
+                response["receivedOptions"] = destinationOptions.options;
+              return response;
+            },
+            exportArrayProperties: async () => [],
+            destinationMappingOptions: async () => {
+              return {
+                labels: {
+                  group: {
+                    singular: "list",
+                    plural: "lists",
+                  },
+                  profilePropertyRule: {
+                    singular: "var",
+                    plural: "vars",
+                  },
+                },
+                profilePropertyRules: {
+                  required: [{ key: "primary-id", type: "integer" }],
+                  known: [{ key: "secondary-id", type: "any" }],
+                  allowOptionalFromProfilePropertyRules: true,
+                },
+              };
+            },
+          },
+        },
       ],
     });
   }

@@ -34,12 +34,8 @@ export class RunInternalRun extends Task {
 
     // we still have exports from the previous batch that need to be processed
     if (run.exportsCreated > 0 && run.exportsCreated > run.profilesExported) {
-      return task.enqueueIn(
-        config.tasks.timeout + 1,
-        this.name,
-        params,
-        this.queue
-      );
+      await run.afterBatch();
+      return task.enqueueIn(config.tasks.timeout + 1, this.name, params);
     }
 
     await run.update({
@@ -77,7 +73,7 @@ export class RunInternalRun extends Task {
     await run.determinePercentComplete();
 
     if (profiles.length > 0) {
-      await task.enqueueIn(config.tasks.timeout + 1, "run:internalRun", {
+      await task.enqueueIn(config.tasks.timeout + 1, this.name, {
         runGuid: run.guid,
         offset: offset + limit,
         limit,

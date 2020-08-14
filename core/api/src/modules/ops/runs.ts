@@ -5,8 +5,9 @@ import { Profile } from "../../models/Profile";
 import { Group } from "../../models/Group";
 import { Schedule } from "../../models/Schedule";
 import { Op } from "sequelize";
-import { api, log } from "actionhero";
+import { api, log, task, utils, config } from "actionhero";
 import { ExportRun } from "../../models/ExportRun";
+import { plugin } from "../../modules/plugin";
 
 export namespace RunOps {
   /**
@@ -127,30 +128,19 @@ export namespace RunOps {
     if (run.state === "stopped") return 100;
 
     if (run.creatorType === "group") {
-      let basePercent = 0;
       const group = await Group.findByGuid(run.creatorGuid);
       const groupMembersCount =
         group.type === "calculated"
           ? await group.countPotentialMembers()
           : await group.$count("groupMembers");
-      switch (run.groupMethod) {
-        case "runAddGroupMembers":
-          basePercent = 0;
-          break;
-        case "runRemoveGroupMembers":
-          basePercent = 45;
-          break;
-        case "removePreviousRunGroupMembers":
-          basePercent = 90;
-          break;
-      }
-      return (
-        basePercent +
-        Math.round(
-          (100 * run.groupMemberOffset) /
-            (groupMembersCount > 0 ? groupMembersCount : 1) /
-            3
-        )
+
+      // there are 3 phases to group runs, but only 2 really could have work, so we attribute 1/2 to each phase
+      return Math.round(
+        100 *
+          ((run.groupMethod.match(/remove/i)
+            ? 1 + run.groupMemberOffset * 2
+            : run.groupMemberOffset) /
+            (groupMembersCount > 0 ? groupMembersCount * 2 : 2))
       );
     } else if (run.creatorType === "schedule") {
       const schedule = await Schedule.findByGuid(run.creatorGuid);
@@ -167,8 +157,65 @@ export namespace RunOps {
       // for profilePropertyRules and for other types of internal run, we can assume we have to check every profile in the system
       const totalProfiles = await Profile.count();
       return Math.round(
-        (100 * run.profilesImported) / (totalProfiles > 0 ? totalProfiles : 1)
+        100 * (run.profilesImported / (totalProfiles > 0 ? totalProfiles : 1))
       );
+    }
+  }
+
+  /**
+   * Process pending exports in the current batch.
+   */
+  export async function processBatchExports(run: Run, limit?: number) {
+    let _exports: Export[] = [];
+    let loopCount = 0;
+
+    if (!limit) {
+      limit = parseInt(
+        (await plugin.readSetting("core", "export-profile-batch-size")).value
+      );
+    }
+
+    await utils.sleep(config.tasks.timeout + 1);
+    await run.reload();
+
+    // we are still importing profiles, don't try to export yet
+    if (run.importsCreated > run.profilesImported) return;
+
+    async function loadExports() {
+      _exports = await Export.findAll({
+        where: { completedAt: null, errorMessage: null },
+        include: [
+          {
+            model: ExportRun,
+            where: { runGuid: run.guid },
+            attributes: [],
+            required: true,
+          },
+        ],
+        order: [["createdAt", "desc"]],
+        limit,
+        offset: loopCount * limit,
+      });
+      loopCount++;
+    }
+
+    await loadExports();
+
+    while (_exports.length > 0) {
+      const destinationGuids = [
+        ...new Set(_exports.map((e) => e.destinationGuid)),
+      ];
+
+      for (const i in destinationGuids) {
+        await task.enqueue("export:sendBatch", {
+          destinationGuid: destinationGuids[i],
+          exportGuids: _exports
+            .filter((e) => e.destinationGuid === destinationGuids[i])
+            .map((e) => e.guid),
+        });
+      }
+
+      await loadExports();
     }
   }
 }
