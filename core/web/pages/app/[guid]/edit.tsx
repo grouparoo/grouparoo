@@ -309,6 +309,7 @@ export default function Page(props) {
             <Row>
               <Col>
                 {testResult.success !== null &&
+                testResult.success !== false &&
                 testResult.success !== undefined &&
                 !testResult.error ? (
                   <Alert variant="success">
