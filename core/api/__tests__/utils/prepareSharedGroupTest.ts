@@ -96,6 +96,8 @@ export namespace SharedGroupTests {
       rules: {},
     });
 
+    await group.update({ matchType: "all" });
+
     run = await helper.factories.run();
 
     return { group, run };

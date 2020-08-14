@@ -24,7 +24,6 @@ describe("model/group", () => {
   describe("rules", () => {
     describe("strings", () => {
       test("exact matches", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "lastName", match: "Mario", operation: { op: "eq" } },
         ]);
@@ -32,7 +31,6 @@ describe("model/group", () => {
       });
 
       test("partial matches", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "lastName", match: "%toad%", operation: { op: "iLike" } },
         ]);
@@ -40,7 +38,6 @@ describe("model/group", () => {
       });
 
       test("multiple rules with same key", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "lastName", match: "Mario", operation: { op: "eq" } },
           { key: "lastName", match: "%a%", operation: { op: "iLike" } },
@@ -49,7 +46,6 @@ describe("model/group", () => {
       });
 
       test("multiple matches (ALL)", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "lastName", match: "%toad%", operation: { op: "iLike" } },
           { key: "firstName", match: "Peach", operation: { op: "eq" } },
@@ -67,7 +63,6 @@ describe("model/group", () => {
       });
 
       test("null match", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "lastName", match: "null", operation: { op: "eq" } },
         ]);
@@ -75,7 +70,6 @@ describe("model/group", () => {
       });
 
       test("not null match", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "lastName", match: "null", operation: { op: "ne" } },
         ]);
@@ -83,7 +77,6 @@ describe("model/group", () => {
       });
 
       test("exists", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "lastName", operation: { op: "exists" } },
         ]);
@@ -91,7 +84,6 @@ describe("model/group", () => {
       });
 
       test("notExists", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "lastName", operation: { op: "notExists" } },
         ]);
@@ -99,7 +91,6 @@ describe("model/group", () => {
       });
 
       test("array property exists", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "purchases", operation: { op: "exists" } },
         ]);
@@ -107,7 +98,6 @@ describe("model/group", () => {
       });
 
       test("array property does not exists", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "purchases", operation: { op: "notExists" } },
         ]);
@@ -115,7 +105,6 @@ describe("model/group", () => {
       });
 
       test("array property equals", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "purchases", match: "mushroom", operation: { op: "eq" } },
         ]);
@@ -123,7 +112,6 @@ describe("model/group", () => {
       });
 
       test("array property not equals", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "purchases", match: "mushroom", operation: { op: "ne" } },
         ]);
@@ -131,7 +119,6 @@ describe("model/group", () => {
       });
 
       test("array property like", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "purchases", match: "mush%", operation: { op: "like" } },
         ]);
@@ -139,7 +126,6 @@ describe("model/group", () => {
       });
 
       test("array property not like", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "purchases", match: "sta%", operation: { op: "notLike" } },
         ]);
@@ -147,7 +133,6 @@ describe("model/group", () => {
       });
 
       test("array property iLike", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "purchases", match: "MUSH%", operation: { op: "iLike" } },
         ]);
@@ -155,7 +140,6 @@ describe("model/group", () => {
       });
 
       test("array property not iLike", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "purchases", match: "STA%", operation: { op: "notILike" } },
         ]);

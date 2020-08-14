@@ -24,7 +24,6 @@ describe("model/group", () => {
   describe("rules", () => {
     describe("integers", () => {
       test("exact matches", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "userId", match: 1, operation: { op: "eq" } },
         ]);
@@ -32,7 +31,6 @@ describe("model/group", () => {
       });
 
       test("comparison matches", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "userId", match: 1, operation: { op: "gt" } },
         ]);
@@ -40,7 +38,6 @@ describe("model/group", () => {
       });
 
       test("multiple rules with same key", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "userId", match: 1, operation: { op: "gt" } },
           { key: "userId", match: 99, operation: { op: "lt" } },
@@ -49,7 +46,6 @@ describe("model/group", () => {
       });
 
       test("multiple matches (ALL)", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "userId", match: 1, operation: { op: "eq" } },
           { key: "lastName", match: "mario", operation: { op: "iLike" } },
@@ -67,7 +63,6 @@ describe("model/group", () => {
       });
 
       test("null match", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "userId", match: "null", operation: { op: "eq" } },
         ]);
@@ -75,7 +70,6 @@ describe("model/group", () => {
       });
 
       test("not null match", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "userId", match: "null", operation: { op: "ne" } },
         ]);
@@ -83,13 +77,11 @@ describe("model/group", () => {
       });
 
       test("exists", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([{ key: "userId", operation: { op: "exists" } }]);
         expect(await group.countPotentialMembers()).toBe(4);
       });
 
       test("notExists", async () => {
-        await group.update({ matchType: "all" });
         await group.setRules([
           { key: "userId", operation: { op: "notExists" } },
         ]);
