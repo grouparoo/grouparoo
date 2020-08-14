@@ -87,9 +87,7 @@ export namespace ProfileOps {
     const values = hash[key];
 
     // ignore reserved property key
-    if (key === "_meta") {
-      return;
-    }
+    if (key === "_meta") return;
 
     const profilePropertyRules = await ProfilePropertyRule.cached();
     const rule = profilePropertyRules[key];
@@ -177,9 +175,7 @@ export namespace ProfileOps {
 
     const keys = Object.keys(properties);
     for (const i in keys) {
-      if (keys[i] === "guid") {
-        continue;
-      }
+      if (keys[i] === "guid") continue;
 
       const h = {};
       h[keys[i]] = Array.isArray(properties[keys[i]])

@@ -287,6 +287,11 @@ describe("models/run", () => {
       await api.resque.queue.connection.redis.flushdb();
     });
 
+    afterAll(async () => {
+      await profile.destroy();
+      await destination.destroy();
+    });
+
     test("exports not yet exported or with an error will be added to the batch", async () => {
       await run.processBatchExports();
 
@@ -651,13 +656,12 @@ describe("models/run", () => {
       await source.update({ state: "ready" });
 
       // the app throws whatever the query is a new error (see above)
-      const rule = await ProfilePropertyRule.findOne({
-        where: { key: "email" },
-      });
-      await rule.update({ sourceGuid: source.guid });
-      await rule.setOptions({ column: "something-broken" });
+      const rule = await helper.factories.profilePropertyRule(
+        source,
+        { key: "new_property" },
+        { column: "something-broken" }
+      );
       await rule.update({ state: "ready" });
-      await rule.reload();
 
       // we need at least one profile to test against
       const profile = await helper.factories.profile();
