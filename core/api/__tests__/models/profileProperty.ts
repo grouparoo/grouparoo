@@ -21,6 +21,7 @@ describe("models/profileProperty", () => {
   let profile: Profile;
   let firstNameRule: ProfilePropertyRule;
   let emailRule: ProfilePropertyRule;
+  let phoneNumberRule: ProfilePropertyRule;
   let userIdRule: ProfilePropertyRule;
   let lastLoginRule: ProfilePropertyRule;
   let ltvRule: ProfilePropertyRule;
@@ -55,6 +56,14 @@ describe("models/profileProperty", () => {
     });
     await emailRule.setOptions({ column: "email" });
     await emailRule.update({ state: "ready" });
+
+    phoneNumberRule = await ProfilePropertyRule.create({
+      sourceGuid: source.guid,
+      key: "phoneNumber",
+      type: "phoneNumber",
+    });
+    await phoneNumberRule.setOptions({ column: "phoneNumber" });
+    await phoneNumberRule.update({ state: "ready" });
 
     lastLoginRule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
@@ -202,6 +211,36 @@ describe("models/profileProperty", () => {
       await profileProperty.setValue("MARIO@example.com");
       const response = await profileProperty.getValue();
       expect(response).toBe("mario@example.com");
+    });
+
+    test("phone numbers", async () => {
+      const profileProperty = new ProfileProperty({
+        profileGuid: profile.guid,
+        profilePropertyRuleGuid: phoneNumberRule.guid,
+      });
+      await profileProperty.setValue("4128889999");
+      const response = await profileProperty.getValue();
+      expect(response).toBe("+1 412 888 9999");
+    });
+
+    test("phone numbers with another country code", async () => {
+      const profileProperty = new ProfileProperty({
+        profileGuid: profile.guid,
+        profilePropertyRuleGuid: phoneNumberRule.guid,
+      });
+      await profileProperty.setValue("+42 123 123 1231");
+      const response = await profileProperty.getValue();
+      expect(response).toBe("+421 2 312 312 31");
+    });
+
+    test("phone numbers which we cannot parse are left as they are provided", async () => {
+      const profileProperty = new ProfileProperty({
+        profileGuid: profile.guid,
+        profilePropertyRuleGuid: phoneNumberRule.guid,
+      });
+      await profileProperty.setValue("1-800-got-milk");
+      const response = await profileProperty.getValue();
+      expect(response).toBe("1-800-got-milk");
     });
 
     test("integers", async () => {

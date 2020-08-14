@@ -12,7 +12,7 @@ import {
 import { LoggedModel } from "../classes/loggedModel";
 import { Profile } from "./Profile";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
-import { parsePhoneNumberFromString, CountryCode } from "libphonenumber-js";
+import { parsePhoneNumberFromString, CountryCode } from "libphonenumber-js/max";
 import { plugin } from "../modules/plugin";
 
 @Table({ tableName: "profileProperties", paranoid: false })
@@ -212,7 +212,6 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   }
 
   async formatPhoneNumber(number: string) {
-    // TODO: Cache this
     const defaultCountryCode = (
       await plugin.readSetting("core", "default-country-code")
     ).value as CountryCode;
@@ -222,7 +221,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
       defaultCountryCode
     );
 
-    return formattedPhoneNumber
+    return formattedPhoneNumber && formattedPhoneNumber.isValid()
       ? formattedPhoneNumber.formatInternational()
       : number;
   }
