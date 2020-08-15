@@ -1,6 +1,5 @@
 import { DestinationMappingOptionsMethod } from "@grouparoo/core";
 import { connect } from "./../connect";
-import { loadAppOptions } from "../../../__tests__/utils/nockHelper";
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
   appOptions,
@@ -60,7 +59,7 @@ export const getBuiltInFields = (): Array<{
 }> => {
   return [
     { key: "external_id", type: "string", important: true },
-    { key: "name", type: "string" },
+    { key: "name", type: "string", important: true },
     { key: "notes", type: "string" },
     { key: "details", type: "string" },
     { key: "alias", type: "string" },
