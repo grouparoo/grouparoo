@@ -3,11 +3,13 @@ process.chdir(`${__dirname}/../../../../../core/api`);
 
 import path from "path";
 
-import { destinationMappingOptions } from "../../src/lib/export/destinationMappingOptions";
-//import connect from "../../src/lib/connect";
+import {
+  destinationMappingOptions,
+  getUserFields,
+} from "../../src/lib/export/destinationMappingOptions";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
-
+import { connect } from "../../src/lib/connect";
 const nockFile = path.join(
   __dirname,
   "../",
@@ -16,20 +18,56 @@ const nockFile = path.join(
 );
 
 // these comments to use nock
-//const newNock = false;
-//require("./../fixtures/destination-mapping-options");
+const newNock = false;
+require("./../fixtures/destination-mapping-options");
 // or these to make it true
-const newNock = true;
-helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 
-describe("sailthru/destinationMappingOptions", () => {
+describe("zendesk/destinationMappingOptions", () => {
   beforeAll(async () => {}, 1000 * 30);
 
   afterAll(async () => {}, 1000 * 30);
 
-  test("can test", async () => {
-    expect(1 + 1).toBe(2);
+  test("can fetch user fields", async () => {
+    const client = await connect(appOptions);
+    const fields = await getUserFields(client);
+    const text = fields.find((f) => f.key === "text_field");
+    expect(text.type).toBe("string");
+    expect(text.important).toBe(true);
+    const decimal = fields.find((f) => f.key === "decimal_field");
+    expect(decimal.type).toBe("float");
+    expect(decimal.important).toBe(true);
+  });
+
+  test("can load all destinationMappingOptions", async () => {
+    const options = await destinationMappingOptions({
+      appOptions,
+      app: null,
+      connection: null,
+      destination: null,
+      destinationOptions: null,
+    });
+    const { profilePropertyRules } = options;
+    const { required, known } = profilePropertyRules;
+
+    expect(required.length).toBe(1);
+    const email = required[0];
+    expect(email.key).toBe("email");
+    expect(email.type).toBe("email");
+
+    const text = known.find((f) => f.key === "text_field");
+    expect(text.type).toBe("string");
+    expect(text.important).toBe(true);
+
+    const external_id = known.find((f) => f.key === "external_id");
+    expect(external_id.type).toBe("string");
+    expect(external_id.important).toBe(true);
+
+    const name = known.find((f) => f.key === "name");
+    expect(name.type).toBe("string");
+    expect(name.important).toBeUndefined();
   });
 });
