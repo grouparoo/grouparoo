@@ -17,7 +17,6 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
-    console.log("hey initialize!");
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/zendesk/zendesk.svg",
@@ -61,7 +60,6 @@ export class Plugins extends Initializer {
         },
       ],
     });
-    console.log("hey initialize! DONE");
   }
 
   async start() {
