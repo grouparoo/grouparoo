@@ -29,7 +29,9 @@ export class RunDetermineState extends Task {
         attempts: attempts + 1,
       });
     } else {
-      const delta = run.completedAt.getTime() - run.createdAt.getTime();
+      const delta = run.completedAt
+        ? run.completedAt.getTime() - run.createdAt.getTime()
+        : 0;
 
       log(
         `[ run ] completed run ${run.guid} for ${

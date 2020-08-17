@@ -406,6 +406,11 @@ export namespace DestinationOps {
     let method: ExportProfilePluginMethod;
     const { pluginConnection } = await destination.getPlugin();
     method = pluginConnection.methods.exportProfile;
+    if (!method) {
+      throw new Error(
+        `destination ${destination.name} (${destination.guid}) has no exportProfile method`
+      );
+    }
 
     const parallelismOk = await checkSendExportParallelism(
       app,
@@ -491,6 +496,11 @@ export namespace DestinationOps {
     let method: ExportProfilesPluginMethod;
     const { pluginConnection } = await destination.getPlugin();
     method = pluginConnection.methods.exportProfiles;
+    if (!method) {
+      throw new Error(
+        `destination ${destination.name} (${destination.guid}) has no exportProfiles method`
+      );
+    }
 
     const options = await destination.getOptions();
     const app = await destination.$get("app");
