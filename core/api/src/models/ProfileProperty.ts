@@ -221,9 +221,11 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
       defaultCountryCode
     );
 
-    return formattedPhoneNumber && formattedPhoneNumber.isValid()
-      ? formattedPhoneNumber.formatInternational()
-      : number;
+    if (!formattedPhoneNumber || !formattedPhoneNumber.isValid()) {
+      throw new Error(`phone number "${number}" is not valid`);
+    }
+
+    return formattedPhoneNumber.formatInternational();
   }
 
   // --- Class Methods --- //
