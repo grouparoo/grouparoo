@@ -213,6 +213,16 @@ describe("models/profileProperty", () => {
       expect(response).toBe("mario@example.com");
     });
 
+    test("invalid emails throw an error", async () => {
+      const profileProperty = new ProfileProperty({
+        profileGuid: profile.guid,
+        profilePropertyRuleGuid: emailRule.guid,
+      });
+      await expect(
+        profileProperty.setValue("someone.com")
+      ).rejects.toThrowError(/email .* is not valid/);
+    });
+
     test("phone numbers", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
