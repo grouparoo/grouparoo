@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@types/jest": "26.0.8",
-    "jest": "26.2.2",
+    "jest": "26.4.0",
     "jest-fetch-mock": "3.0.3",
     "prettier": "2.0.5",
     "ts-jest": "26.1.4",
