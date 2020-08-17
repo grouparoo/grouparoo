@@ -35,7 +35,7 @@ describe("model/group", () => {
     await mario.addOrUpdateProperties({ phoneNumber: ["412 888 0001"] });
     await luigi.addOrUpdateProperties({ phoneNumber: ["412 888 0002"] });
     await peach.addOrUpdateProperties({
-      phoneNumber: ["412 888 0003", "555 001 0001"],
+      phoneNumber: ["412 888 0003", "415 644 0001"],
     });
     await toad.buildNullProperties();
   }, 1000 * 30);

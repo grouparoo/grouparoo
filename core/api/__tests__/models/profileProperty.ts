@@ -213,6 +213,16 @@ describe("models/profileProperty", () => {
       expect(response).toBe("mario@example.com");
     });
 
+    test("invalid emails throw an error", async () => {
+      const profileProperty = new ProfileProperty({
+        profileGuid: profile.guid,
+        profilePropertyRuleGuid: emailRule.guid,
+      });
+      await expect(
+        profileProperty.setValue("someone.com")
+      ).rejects.toThrowError(/email .* is not valid/);
+    });
+
     test("phone numbers", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
@@ -233,14 +243,14 @@ describe("models/profileProperty", () => {
       expect(response).toBe("+421 2 312 312 31");
     });
 
-    test("phone numbers which we cannot parse are left as they are provided", async () => {
+    test("phone numbers which we cannot parse throw an error", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
         profilePropertyRuleGuid: phoneNumberRule.guid,
       });
-      await profileProperty.setValue("1-800-got-milk");
-      const response = await profileProperty.getValue();
-      expect(response).toBe("1-800-got-milk");
+      await expect(profileProperty.setValue("1-800-got-milk")).rejects.toThrow(
+        /phone number .* is not valid/
+      );
     });
 
     test("integers", async () => {

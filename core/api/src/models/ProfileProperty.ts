@@ -14,6 +14,7 @@ import { Profile } from "./Profile";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { parsePhoneNumberFromString, CountryCode } from "libphonenumber-js/max";
 import { plugin } from "../modules/plugin";
+import isEmail from "validator/lib/isEmail";
 
 @Table({ tableName: "profileProperties", paranoid: false })
 export class ProfileProperty extends LoggedModel<ProfileProperty> {
@@ -97,7 +98,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
       case "string":
         return value.toString();
       case "email":
-        return value.toString().toLowerCase();
+        return this.formatEmail(value.toString());
       case "phoneNumber":
         return this.formatPhoneNumber(value.toString());
       case "boolean":
@@ -211,6 +212,14 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
     }
   }
 
+  async formatEmail(email: string) {
+    if (!isEmail(email)) {
+      throw new Error(`email "${email}" is not valid`);
+    }
+
+    return email.toLocaleLowerCase();
+  }
+
   async formatPhoneNumber(number: string) {
     const defaultCountryCode = (
       await plugin.readSetting("core", "default-country-code")
@@ -221,9 +230,11 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
       defaultCountryCode
     );
 
-    return formattedPhoneNumber && formattedPhoneNumber.isValid()
-      ? formattedPhoneNumber.formatInternational()
-      : number;
+    if (!formattedPhoneNumber || !formattedPhoneNumber.isValid()) {
+      throw new Error(`phone number "${number}" is not valid`);
+    }
+
+    return formattedPhoneNumber.formatInternational();
   }
 
   // --- Class Methods --- //
