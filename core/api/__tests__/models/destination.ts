@@ -981,6 +981,134 @@ describe("models/destination", () => {
       await destination.destroy();
     });
 
+    test("newly tagged groups will appear new in next export", async () => {
+      const destination = await Destination.create({
+        name: "test plugin destination",
+        type: "export-from-test-template-app",
+        appGuid: app.guid,
+      });
+
+      await destination.setMapping({
+        uid: "userId",
+        customer_email: "email",
+      });
+
+      const group = await helper.factories.group();
+      await destination.trackGroup(group);
+
+      const profile = await helper.factories.profile();
+      group.addProfile(profile);
+
+      const oldProfileProperties = {};
+      const newProfileProperties = {};
+      const oldGroups = [];
+      const newGroups = [group];
+
+      // create a previous export
+      const _export = await Export.create({
+        profileGuid: profile.guid,
+        destinationGuid: destination.guid,
+        newProfileProperties: {},
+        oldProfileProperties: {},
+        oldGroups: [],
+        newGroups: [],
+        mostRecent: true,
+      });
+
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[group.guid] = group.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      const _import = await helper.factories.import();
+
+      await destination.exportProfile(
+        profile,
+        [],
+        [_import],
+        oldProfileProperties,
+        newProfileProperties,
+        oldGroups,
+        newGroups
+      );
+
+      const foundTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundTasks.length).toBe(1);
+      await specHelper.runTask("export:send", foundTasks[0].args[0]);
+
+      expect(exportArgs.oldGroups).toEqual([]);
+      expect(exportArgs.newGroups).toEqual([group.name]);
+
+      await destination.unTrackGroups();
+      await destination.destroy();
+    });
+
+    test("newly un-tagged groups will be removed from the next export", async () => {
+      const destination = await Destination.create({
+        name: "test plugin destination",
+        type: "export-from-test-template-app",
+        appGuid: app.guid,
+      });
+
+      await destination.setMapping({
+        uid: "userId",
+        customer_email: "email",
+      });
+
+      const group = await helper.factories.group();
+      await destination.trackGroup(group);
+
+      const profile = await helper.factories.profile();
+      group.addProfile(profile);
+
+      const oldProfileProperties = {};
+      const newProfileProperties = {};
+      const oldGroups = [];
+      const newGroups = [group];
+
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[group.guid] = group.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      // create a previous export
+      const _export = await Export.create({
+        profileGuid: profile.guid,
+        destinationGuid: destination.guid,
+        newProfileProperties: {},
+        oldProfileProperties: {},
+        oldGroups: [group.name],
+        newGroups: [group.name],
+        mostRecent: true,
+      });
+
+      const _import = await helper.factories.import();
+
+      await destination.setDestinationGroupMemberships({});
+
+      await destination.exportProfile(
+        profile,
+        [],
+        [_import],
+        oldProfileProperties,
+        newProfileProperties,
+        oldGroups,
+        newGroups
+      );
+
+      const foundTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundTasks.length).toBe(1);
+      await specHelper.runTask("export:send", foundTasks[0].args[0]);
+
+      expect(exportArgs.oldGroups).toEqual([group.name]);
+      expect(exportArgs.newGroups).toEqual([]);
+
+      await destination.unTrackGroups();
+      await destination.destroy();
+    });
+
     test("if a profile is removed from all groups tracked by this destination, toDelete is true", async () => {
       const destination = await Destination.create({
         name: "test plugin destination",
