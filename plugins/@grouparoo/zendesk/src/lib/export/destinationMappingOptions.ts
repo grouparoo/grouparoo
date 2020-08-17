@@ -50,7 +50,7 @@ export const getRequiredFields = (): Array<{
   key: string;
   type: string;
 }> => {
-  return [{ key: "email", type: "email" }];
+  return [{ key: "external_id", type: "string" }];
 };
 export const getBuiltInFields = (): Array<{
   key: string;
@@ -58,7 +58,7 @@ export const getBuiltInFields = (): Array<{
   important?: boolean;
 }> => {
   return [
-    { key: "external_id", type: "string", important: true },
+    { key: "email", type: "email", important: true },
     { key: "name", type: "string", important: true },
     { key: "notes", type: "string" },
     { key: "details", type: "string" },

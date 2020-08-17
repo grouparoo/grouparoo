@@ -33,12 +33,13 @@ export class Plugins extends Initializer {
             {
               key: "username",
               required: true,
-              description: "your zendesk username",
+              description:
+                "your zendesk username, often the email address of an admin",
             },
             {
               key: "token",
               required: true,
-              description: "your zendesk api token",
+              description: "your zendesk api token for the admin user",
             },
           ],
           methods: { test },

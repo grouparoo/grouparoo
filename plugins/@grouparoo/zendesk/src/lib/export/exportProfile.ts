@@ -15,16 +15,19 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   oldGroups,
 }) => {
   const client = await connect(appOptions);
+  let external_id = newProfileProperties.external_id;
   let email = newProfileProperties.email;
 
-  console.log("exportProfile", newProfileProperties);
+  // console.log("exportProfile", newProfileProperties);
 
-  if (!email) {
-    throw new Error(`newProfileProperties[email] is a required mapping`);
+  if (!external_id) {
+    throw new Error(`newProfileProperties[external_id] is a required mapping`);
   }
 
   // zendesk does this itself
-  email = email.toLowerCase().trim();
+  if (email) {
+    email = email.toLowerCase().trim();
+  }
 
   const user = await findUser(
     client,
@@ -72,11 +75,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     }
   }
 
-  console.log("current user", user);
-  if (user) {
-    console.log("actual current user", await client.users.show(user.id));
-  }
-
   // tags need to be formatted
   const newTags = newGroups.map((groupName) => makeTagName(groupName));
   const oldTags = oldGroups.map((groupName) => makeTagName(groupName));
@@ -102,27 +100,27 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   if (payload.hasOwnProperty("name")) {
     // grouparoo is handling the name, default it
     if ((payload.name || "").trim().length === 0) {
-      payload.name = email;
+      payload.name = getDefaultName(payload);
     }
   } else {
     // grouparoo is not handling the name
     if (!user || (user.name || "").trim().length === 0) {
       // still needs one to be created
-      payload.name = email;
+      payload.name = getDefaultName(payload);
     }
   }
 
   let updated;
   if (user) {
-    console.log("user.update", payload);
+    // console.log("user.update", payload);
     updated = await client.users.update(user.id, { user: payload });
   } else {
-    console.log("user.createOrUpdate", payload);
+    // console.log("user.createOrUpdate", payload);
     updated = await client.users.createOrUpdate({ user: payload });
   }
 
-  if (updated.email !== email) {
-    console.log("updating email", `${updated.email} -> ${email}`);
+  if (email && updated.email !== email) {
+    // console.log("updating email", `${updated.email} -> ${email}`);
     // have to make this the primary
     // https://developer.zendesk.com/rest_api/docs/support/users#email-address
     await makeEmailPrimary(client, updated.id, email);
@@ -132,32 +130,10 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 };
 
 async function searchForUser(client, findBy: any) {
-  let email = findBy.email;
-  let response;
-  if (email) {
-    email = email.toLowerCase().trim();
-    // TODO: i want this to be const query = `email:${email}`;
-    // the doc says that should work but it doesn't seem to.
-    // response = await client.search.query(`type:user email:${email}`);
-    //should also work but there seems to be a caching problem
-    const query = `${email}`;
-    response = await client.users.search({ query });
-  } else {
-    // likely external_id
-    response = await client.users.search(findBy);
-  }
-
+  const response = await client.users.search(findBy);
   let found = null;
   for (const user of response) {
     if (user.active) {
-      if (email) {
-        // this verifies the email is as expected because the search is looser
-        const userEmail = user.email || "";
-        if (userEmail.toLowerCase().trim() !== email) {
-          console.log(`email somehow doesn't match: ${userEmail} <> ${email}`);
-          continue;
-        }
-      }
       if (!found) {
         // not deleted
         found = user;
@@ -175,19 +151,15 @@ export async function findUser(
   newProfileProperties,
   oldProfileProperties
 ) {
-  const external_id = newProfileProperties.external_id;
-  const newEmail = newProfileProperties.email;
-  const oldEmail = oldProfileProperties.email;
+  const newId = newProfileProperties.external_id;
+  const oldId = oldProfileProperties.external_id;
 
   let found = null;
-  if (!found && external_id) {
-    found = await searchForUser(client, { external_id });
+  if (!found && newId) {
+    found = await searchForUser(client, { external_id: newId });
   }
-  if (!found) {
-    found = await searchForUser(client, { email: newEmail });
-  }
-  if (!found && oldEmail && oldEmail !== newEmail) {
-    found = await searchForUser(client, { email: oldEmail });
+  if (!found && oldId && oldId !== newId) {
+    found = await searchForUser(client, { external_id: oldId });
   }
   return found;
 }
@@ -226,6 +198,18 @@ function formatVar(value, field) {
   // TODO: how to format date, etc
   return value;
 }
+
+function getDefaultName(payload) {
+  const priority = ["alias", "email", "external_id"];
+  for (const key of priority) {
+    const value = (payload[key] || "").toString().trim();
+    if (value.length > 0) {
+      return value;
+    }
+  }
+  return "Unknown";
+}
+
 function makeTagName(groupName) {
   // tags can't have spaces and have to be lowercase
   let tagName = groupName.toLowerCase();

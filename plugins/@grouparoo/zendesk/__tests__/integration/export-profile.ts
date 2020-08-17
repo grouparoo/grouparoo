@@ -6,52 +6,52 @@ import path from "path";
 import { exportProfile, findUser } from "../../src/lib/export/exportProfile";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
+import { helper } from "@grouparoo/core/api/__tests__/utils/specHelper";
 import { DeletedUsers } from "../../src/lib/delete_users";
-import { exception } from "console";
 
 let client: any;
 let userId = null;
+let newId = null;
 const external_id = "testuser123";
+const changedExternalId = "testuser987";
 const email = "brian@bleonard.com";
 
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 
 // these comments to use nock
-//const newNock = false;
-//require("./../fixtures/export-profile");
+const newNock = false;
+require("./../fixtures/export-profile");
 // or these to make it true
-const newNock = true;
-helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 
 async function getUser(): Promise<any> {
   const response = await client.users.show(userId);
-  console.log("getUser", response);
+  // console.log("getUser", response);
+  return response;
+}
+
+async function getNewUser(): Promise<any> {
+  const response = await client.users.show(newId);
+  // console.log("getNewUser", response);
   return response;
 }
 
 async function findId(): Promise<any> {
-  const user = await findUser(client, { external_id, email }, {});
+  const user = await findUser(client, { external_id }, {});
   if (!user) {
     return null;
   }
   return user.id;
 }
 
-async function reallyDeleteUser(id) {
-  await client.users.delete(id);
-  // await client.deleted_users.delete(id);
-}
-async function deleteTestUsers() {
-  const mails = [email, "newone@bleonard.com"];
-  for (const mail of mails) {
-    const user = await findUser(client, { email: mail }, {});
-    if (user) {
-      console.log("deleting", mail);
-      await reallyDeleteUser(user.id);
-    }
+async function deleteUser(id) {
+  const user = await findUser(client, { external_id: id }, {});
+  if (user) {
+    await client.users.delete(user.id);
+    // await client.deleted_users.delete(user.id);
   }
 }
 
@@ -60,15 +60,21 @@ describe("zendesk/exportProfile", () => {
     client = await connect(appOptions);
     client["deleted_users"] = new DeletedUsers(client.users.options);
 
-    const id = await findId();
-    if (id) {
-      await reallyDeleteUser(id);
-    }
-    //await deleteTestUsers();
+    await deleteUser(external_id);
+    await deleteUser(changedExternalId);
   }, 1000 * 30);
 
   afterAll(async () => {
-    // await deleteTestUsers();
+    try {
+      await deleteUser(external_id);
+    } catch (err) {
+      // no big deal
+    }
+    try {
+      await deleteUser(changedExternalId);
+    } catch (err) {
+      // no big deal
+    }
   }, 1000 * 30);
 
   test("can create profile on Zendesk", async () => {
@@ -325,16 +331,21 @@ describe("zendesk/exportProfile", () => {
     });
 
     const user = await getUser();
+    expect(user.external_id).toBe(external_id);
     expect(user.email).toBe("newone@bleonard.com");
     expect(user.tags.sort()).toEqual(["outside_grouparoo"]);
   });
 
-  test("it can add a user back with the old email address", async () => {
+  test("it can change the external id", async () => {
     await exportProfile({
       connection: client,
       appOptions,
-      oldProfileProperties: {},
+      oldProfileProperties: {
+        email: "NewOne@bleonard.com",
+        external_id,
+      },
       newProfileProperties: {
+        external_id: changedExternalId,
         email,
       },
       oldGroups: [],
@@ -346,40 +357,89 @@ describe("zendesk/exportProfile", () => {
       destinationOptions: null,
     });
 
-    const newUser = await findUser(client, { email }, {});
     const user = await getUser();
-    expect(newUser.id).toBeTruthy();
-    expect(newUser.id).not.toEqual(userId);
-    expect(newUser.email).toBe(email);
-    expect(user.email).toBe("newone@bleonard.com"); // still the same
+    expect(user.id).toBe(userId);
+    expect(user.external_id).toBe(changedExternalId);
+    expect(user.email).toBe(email);
   });
 
-  // test("can delete a user", async () => {
-  //   await exportProfile({
-  //     connection: client,
-  //     appOptions,
-  //     oldProfileProperties: { email: email, first_name: "Brian" },
-  //     newProfileProperties: { email: email, first_name: "Brian" },
-  //     oldGroups: ["Test Group 2", "Test Group 1"],
-  //     newGroups: [],
-  //     toDelete: true,
-  //     app: null,
-  //     profile: null,
-  //     destination: null,
-  //     destinationOptions: null,
-  //   });
+  test("it can make one with the original id and no email", async () => {
+    await exportProfile({
+      connection: client,
+      appOptions,
+      oldProfileProperties: {},
+      newProfileProperties: {
+        external_id,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+      app: null,
+      profile: null,
+      destination: null,
+      destinationOptions: null,
+    });
 
-  //   expect(await findSid()).toBeNull();
+    newId = await findId();
+    expect(newId).toBeTruthy();
+    expect(newId).not.toEqual(userId);
 
-  //   let message = "";
-  //   try {
-  //     await getUser();
-  //   } catch (err) {
-  //     message = err.errormsg;
-  //   }
-  //   expect(message).toMatch("User not found with sid");
-  // });
+    const newUser = await getNewUser();
+    expect(newUser.id).toBe(newId);
+    expect(newUser.external_id).toBe(external_id);
+    expect(newUser.email).toBe(null);
+    expect(newUser.name).toBe(external_id); // defaults to something
+
+    const user = await getUser();
+    expect(user.id).toBe(userId);
+    expect(user.external_id).toBe(changedExternalId);
+    expect(user.email).toBe(email);
+  });
+
+  test("it can add an email address to the new user", async () => {
+    await exportProfile({
+      connection: client,
+      appOptions,
+      oldProfileProperties: { external_id },
+      newProfileProperties: {
+        external_id,
+        email: "added@bleonard.com",
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+      app: null,
+      profile: null,
+      destination: null,
+      destinationOptions: null,
+    });
+
+    const newUser = await getNewUser();
+    expect(newUser.id).toBe(newId);
+    expect(newUser.email).toBe("added@bleonard.com");
+    expect(newUser.active).toBe(true);
+  });
+
+  test("can delete a user", async () => {
+    await exportProfile({
+      connection: client,
+      appOptions,
+      oldProfileProperties: { external_id },
+      newProfileProperties: { external_id },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+      app: null,
+      profile: null,
+      destination: null,
+      destinationOptions: null,
+    });
+
+    expect(await findId()).toBeNull();
+
+    const newUser = await getNewUser();
+    expect(newUser.id).toBe(newId);
+    expect(newUser.email).toBe(null);
+    expect(newUser.active).toBe(false);
+  });
 });
-
-// TODO
-// all of the above when not using external id
