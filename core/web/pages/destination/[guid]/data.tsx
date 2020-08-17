@@ -783,7 +783,8 @@ Page.getInitialProps = async (ctx) => {
   const { groups } = await execApi("get", `/groups`);
   const { profilePropertyRules } = await execApi(
     "get",
-    `/profilePropertyRules`
+    `/profilePropertyRules`,
+    { state: "ready" }
   );
 
   let mappingOptions = {};
