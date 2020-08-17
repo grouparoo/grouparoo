@@ -22,6 +22,8 @@ import { chatRoom, log } from "actionhero";
 import * as uuid from "uuid";
 import { Schedule } from "./Schedule";
 import { Import } from "./Import";
+import { Export } from "./Export";
+import { ExportRun } from "./ExportRun";
 import { Group } from "./Group";
 import { StateMachine } from "./../modules/stateMachine";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
@@ -139,6 +141,9 @@ export class Run extends Model<Run> {
   @HasMany(() => Import, "creatorGuid")
   imports: Import[];
 
+  @HasMany(() => ExportRun, "runGuid")
+  exportRuns: ExportRun[];
+
   async determineState() {
     await this.reload();
 
@@ -157,9 +162,37 @@ export class Run extends Model<Run> {
       },
     });
 
+    const totalExportsCount = await Export.count({
+      include: [
+        {
+          model: ExportRun,
+          where: { runGuid: this.guid },
+          attributes: [],
+          required: true,
+        },
+      ],
+    });
+
+    const completeExportsCount = await Export.count({
+      where: {
+        [Op.or]: {
+          completedAt: { [Op.not]: null },
+          errorMessage: { [Op.not]: null },
+        },
+      },
+      include: [
+        {
+          model: ExportRun,
+          where: { runGuid: this.guid },
+          attributes: [],
+          required: true,
+        },
+      ],
+    });
+
     if (
       completeImportsCount === totalImportsCount &&
-      this.exportsCreated === this.profilesExported
+      completeExportsCount === totalExportsCount
     ) {
       this.state = "complete";
       this.completedAt = new Date();

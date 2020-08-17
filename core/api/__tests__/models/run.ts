@@ -328,9 +328,12 @@ describe("models/run", () => {
 
   describe("determineState", () => {
     let run: Run;
+    let profile: Profile;
 
     beforeEach(async () => {
       Import.destroy({ truncate: true });
+
+      profile = await helper.factories.profile();
 
       run = await Run.create({
         creatorGuid: schedule.guid,
@@ -341,6 +344,7 @@ describe("models/run", () => {
 
     afterEach(async () => {
       await run.destroy();
+      await profile.destroy();
     });
 
     it("will keep the state running if there are incomplete imports", async () => {
@@ -352,6 +356,7 @@ describe("models/run", () => {
       await run.determineState();
       await run.reload();
       expect(run.state).toBe("running");
+      await run.update({ state: "stopped" });
     });
 
     it("will mark the run as complete if all the imports are complete", async () => {
@@ -405,6 +410,60 @@ describe("models/run", () => {
       await run.reload();
       expect(run.state).toBe("complete");
       expect(run.error).toBe("error class A (x2)\r\nerror class B (x1)");
+    });
+
+    it("will keep the state running if there are incomplete exports", async () => {
+      const _export = await helper.factories.export(profile);
+      const exportRun = await ExportRun.create({
+        runGuid: run.guid,
+        exportGuid: _export.guid,
+      });
+
+      await run.determineState();
+      await run.reload();
+      expect(run.state).toBe("running");
+      await run.update({ state: "stopped" });
+    });
+
+    it("will mark the run as complete if all the exports are complete", async () => {
+      const _export = await helper.factories.export(profile, null, {
+        completedAt: new Date(),
+      });
+      const exportRun = await ExportRun.create({
+        runGuid: run.guid,
+        exportGuid: _export.guid,
+      });
+
+      await run.determineState();
+      await run.reload();
+      expect(run.state).toBe("complete");
+    });
+
+    it("will mark the run complete if the imports and exports are really done even if the local counts are off", async () => {
+      run.update({
+        importsCreated: 100,
+        profilesCreated: 1,
+        exportsCreated: 100,
+        profilesExported: 1,
+      });
+
+      await Import.create({
+        creatorType: "run",
+        creatorGuid: run.guid,
+        errorMessage: "oh no!",
+      });
+
+      const _export = await helper.factories.export(profile, null, {
+        completedAt: new Date(),
+      });
+      const exportRun = await ExportRun.create({
+        runGuid: run.guid,
+        exportGuid: _export.guid,
+      });
+
+      await run.determineState();
+      await run.reload();
+      expect(run.state).toBe("complete");
     });
   });
 
