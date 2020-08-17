@@ -112,7 +112,11 @@ export default function ProfilesList(props) {
   )[0];
 
   const uniqueProfilePropertyKeys = profilePropertyRules
-    .filter((rule) => rule.guid !== identifyingProfileProperty.guid)
+    .filter((rule) =>
+      identifyingProfileProperty
+        ? rule.guid !== identifyingProfileProperty.guid
+        : rule
+    )
     .filter((rule) => rule.unique)
     .map((rule) => rule.key);
 
@@ -226,7 +230,7 @@ export default function ProfilesList(props) {
                     as={`/profile/${profile.guid}/edit`}
                   >
                     <a className="text-muted">
-                      {identifyingProfileProperty.key &&
+                      {identifyingProfileProperty?.key &&
                       profile.properties[identifyingProfileProperty.key] ? (
                         <>
                           {identifyingProfileProperty.key}:{" "}
