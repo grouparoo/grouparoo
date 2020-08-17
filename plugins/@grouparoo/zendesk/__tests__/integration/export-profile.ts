@@ -6,7 +6,7 @@ import path from "path";
 import { exportProfile, findUser } from "../../src/lib/export/exportProfile";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { helper } from "@grouparoo/core/api/__tests__/utils/specHelper";
+import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
 
 let client: any;
 let userId = null;
