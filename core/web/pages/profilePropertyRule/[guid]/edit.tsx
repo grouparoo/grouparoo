@@ -228,14 +228,6 @@ export default function Page(props) {
                 onChange={(e) => update(e)}
               />
             </Form.Group>
-            <Form.Group controlId="identifying">
-              <Form.Check
-                type="checkbox"
-                label="Identifying?"
-                checked={profilePropertyRule.identifying}
-                onChange={(e) => update(e)}
-              />
-            </Form.Group>
             <Form.Group controlId="sourceGuid">
               <Form.Label>Profile Property Rule Source</Form.Label>
               <Form.Control

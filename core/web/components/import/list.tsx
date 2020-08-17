@@ -73,7 +73,7 @@ export default function ImportList(props) {
         </Link>
       );
     } else {
-      return <span>{group.name}</span>;
+      return <span>{groupGuid} (deleted)</span>;
     }
   }
 
