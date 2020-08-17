@@ -112,7 +112,6 @@ export default function Page(props) {
             <th>Type</th>
             <th>Unique</th>
             <th>Is Array</th>
-            <th>Identifying</th>
             <th>Source</th>
             <th>State</th>
             <th>Example Values</th>
@@ -143,7 +142,6 @@ export default function Page(props) {
                 <td>{rule.type}</td>
                 <td>{rule.unique ? "✅" : null}</td>
                 <td>{rule.isArray ? "✅" : null}</td>
-                <td>{rule.identifying ? "✅" : null}</td>
                 <td>
                   <Link
                     href="/source/[guid]/overview"

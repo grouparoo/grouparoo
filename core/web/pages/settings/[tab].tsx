@@ -2,9 +2,10 @@ import Head from "next/head";
 import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
-import { Row, Col, Button, Form, Card, Tabs, Tab } from "react-bootstrap";
+import { Button, Form, Card, Tabs, Tab } from "react-bootstrap";
 import Moment from "react-moment";
-import ImportAndUpdateAllProfiles from "../../components/profile/importAndUpdate";
+import ImportAndUpdateAllProfiles from "../../components/settings/importAndUpdate";
+import IdentifyingProfilePropertyRule from "../../components/settings/identifyingProfilePropertyRule";
 import { capitalize } from "../../components/tabs";
 import { useRouter } from "next/router";
 
@@ -57,14 +58,17 @@ export default function Page(props) {
           <br />
           <h2>Cluster Operations</h2>
 
-          <Card border="warning">
-            <Card.Body>
-              <ImportAndUpdateAllProfiles
-                errorHandler={errorHandler}
-                successHandler={successHandler}
-              />
-            </Card.Body>
-          </Card>
+          <IdentifyingProfilePropertyRule
+            errorHandler={errorHandler}
+            successHandler={successHandler}
+          />
+
+          <br />
+
+          <ImportAndUpdateAllProfiles
+            errorHandler={errorHandler}
+            successHandler={successHandler}
+          />
         </Tab>
 
         {pluginNames.sort().map((pluginName) => (
