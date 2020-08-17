@@ -7,7 +7,6 @@ import { exportProfile, findUser } from "../../src/lib/export/exportProfile";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "@grouparoo/core/api/__tests__/utils/specHelper";
-import { DeletedUsers } from "../../src/lib/delete_users";
 
 let client: any;
 let userId = null;
@@ -51,14 +50,12 @@ async function deleteUser(id) {
   const user = await findUser(client, { external_id: id }, {});
   if (user) {
     await client.users.delete(user.id);
-    // await client.deleted_users.delete(user.id);
   }
 }
 
 describe("zendesk/exportProfile", () => {
   beforeAll(async () => {
     client = await connect(appOptions);
-    client["deleted_users"] = new DeletedUsers(client.users.options);
 
     await deleteUser(external_id);
     await deleteUser(changedExternalId);
@@ -443,3 +440,5 @@ describe("zendesk/exportProfile", () => {
     expect(newUser.active).toBe(false);
   });
 });
+
+// TODO: does it work to assign an external id to an email already in the system?
