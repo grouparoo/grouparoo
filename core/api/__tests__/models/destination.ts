@@ -981,7 +981,7 @@ describe("models/destination", () => {
       await destination.destroy();
     });
 
-    test("newly tracked groups will appear new in next export", async () => {
+    test("newly tagged groups will appear new in next export", async () => {
       const destination = await Destination.create({
         name: "test plugin destination",
         type: "export-from-test-template-app",
@@ -1044,7 +1044,7 @@ describe("models/destination", () => {
       await destination.destroy();
     });
 
-    test("newly un-tracked groups will be removed from the next export", async () => {
+    test("newly un-tagged groups will be removed from the next export", async () => {
       const destination = await Destination.create({
         name: "test plugin destination",
         type: "export-from-test-template-app",
