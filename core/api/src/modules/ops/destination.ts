@@ -287,6 +287,18 @@ export namespace DestinationOps {
         .filter((k) => !currentMappedNewProfilePropertyKeys.includes(k))
         .filter((k) => !currentMappedOldProfilePropertyKeys.includes(k))
         .forEach((k) => (mappedOldProfileProperties[k] = ["unknown"]));
+
+      // we also want to check for groups we previously sent but are no longer sending
+      // the profile may have not changed membership in the group, but the destination may have just started tracking it
+      mostRecentExport.newGroups
+        .filter((groupName) => !oldGroupNames.includes(groupName))
+        .forEach((groupName) => oldGroupNames.push(groupName));
+
+      newGroupNames
+        .filter((groupName) => !mostRecentExport.newGroups.includes(groupName))
+        .forEach((groupName) => {
+          oldGroupNames.splice(oldGroupNames.indexOf(groupName), 1);
+        });
     }
 
     // Send only the properties form the array that should be sent to the Destination, otherwise send the first entry in the array of profile properties
