@@ -40,7 +40,7 @@
     "actionhero": "^23.0.6",
     "dotenv": "8.2.0",
     "fs-extra": "9.0.1",
-    "jest": "26.2.2",
+    "jest": "26.4.0",
     "nock": "13.0.3",
     "prettier": "2.0.5",
     "ts-jest": "26.1.4",
