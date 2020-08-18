@@ -21,7 +21,9 @@ export default function IdentifyingProfilePropertyRule(props) {
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/profilePropertyRules`);
+    const response = await execApi("get", `/profilePropertyRules`, {
+      state: "ready",
+    });
     setLoading(false);
 
     if (response.profilePropertyRules) {
