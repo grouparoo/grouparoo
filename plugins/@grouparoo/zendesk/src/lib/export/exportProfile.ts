@@ -8,11 +8,13 @@ import {
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
-  toDelete,
-  newProfileProperties,
-  oldProfileProperties,
-  newGroups,
-  oldGroups,
+  export: {
+    toDelete,
+    newProfileProperties,
+    oldProfileProperties,
+    newGroups,
+    oldGroups,
+  },
 }) => {
   const client = await connect(appOptions);
   let external_id = newProfileProperties.external_id;
