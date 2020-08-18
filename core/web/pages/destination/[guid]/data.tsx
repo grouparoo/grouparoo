@@ -79,11 +79,6 @@ export default function Page(props) {
     });
   };
 
-  const exportDestination = async () => {
-    await execApi("post", `/destination/${guid}/export`);
-    successHandler.set({ message: "Profiles Exporting..." });
-  };
-
   const remainingProfilePropertyRulesForKnown = [];
   for (const i in profilePropertyRules) {
     let inUse = false;
@@ -753,10 +748,6 @@ export default function Page(props) {
                 <hr />
                 <Button type="submit" variant="primary">
                   Save Destination Data
-                </Button>
-                &nbsp;
-                <Button variant="outline-primary" onClick={exportDestination}>
-                  Export Profiles
                 </Button>
               </Col>
             </Row>
