@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+
+SOURCE_APP="grouparoo-staging-public"
+DESTINATION_APP="grouparoo-fork-`date +"%m-%d-%y"`"
+
+echo "Copying $SOURCE_APP to $DESTINATION_APP"
+echo "Ensure you have the Heroku CLI installed (brew install heroku)"
+echo "Ensure you are logged into the Heroku CLI tool (heroku login)"
+echo ""
+echo ""
+
+heroku plugins:install heroku-fork
+heroku fork --from $SOURCE_APP --to $DESTINATION_APP
+heroku ps:scale web=1 worker=1 -a $DESTINATION_APP
