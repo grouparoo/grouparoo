@@ -15,7 +15,7 @@ export default function Page(props) {
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [settings, setSettings] = useState(props.settings);
-  const [activeTab] = useState(tab || "clusterOperations");
+  const [activeTab] = useState(tab || "core");
 
   async function updateSetting(setting) {
     setLoading(true);
@@ -54,18 +54,25 @@ export default function Page(props) {
         activeKey={activeTab}
         onSelect={(k) => router.push(`/settings/${k}`)}
       >
-        <Tab eventKey="clusterOperations" title="Cluster Operations">
+        <Tab eventKey="actions" title="Actions">
           <br />
-          <h2>Cluster Operations</h2>
-
-          <IdentifyingProfilePropertyRule
-            errorHandler={errorHandler}
-            successHandler={successHandler}
-          />
+          <h2>Cluster Actions</h2>
 
           <br />
 
           <ImportAndUpdateAllProfiles
+            errorHandler={errorHandler}
+            successHandler={successHandler}
+          />
+        </Tab>
+
+        <Tab eventKey="interface" title="Interface">
+          <br />
+          <h2>User Interface</h2>
+
+          <br />
+
+          <IdentifyingProfilePropertyRule
             errorHandler={errorHandler}
             successHandler={successHandler}
           />
@@ -79,6 +86,8 @@ export default function Page(props) {
           >
             <br />
             <h2>{capitalize(pluginName)}</h2>
+
+            {/* Regular Settings organized by Plugin */}
             {settings
               .sort((a, b) => {
                 if (a.key > b.key) return 1;
@@ -116,11 +125,20 @@ function SettingCard({ setting, updateSetting, loading }) {
     updateSetting(setting);
   }
 
+  function capitalize(key: string) {
+    return key
+      .split("-")
+      .map((word) => {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(" ");
+  }
+
   return (
     <>
       <Card>
         <Card.Body>
-          <Card.Title>{setting.key}</Card.Title>
+          <Card.Title>{capitalize(setting.key)}</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">
             {setting.description}
           </Card.Subtitle>
