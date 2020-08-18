@@ -18,6 +18,8 @@ Focus on building your core product, not integrating with 3rd-party tools. Learn
   </a>
 </p>
 
+> This is the Grouparoo Monorepo, containing the source code for `@grouparoo/core` and many plugins.  If you are looking for an example about how to run or deploy Grouparoo, please visit https://github.com/grouparoo/app-example
+
 # Documentation and Guides
 
 - 🦘 **Ready to Try Grouparoo?**
