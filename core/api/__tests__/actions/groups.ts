@@ -245,6 +245,7 @@ describe("actions/groups", () => {
           "integer",
           "phoneNumber",
           "string",
+          "url",
         ]);
 
         expect(ops._relativeMatchUnits).toEqual([

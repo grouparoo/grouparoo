@@ -36,13 +36,14 @@ import { ProfilePropertyRuleOps } from "../modules/ops/profilePropertyRule";
 
 export function profilePropertyRuleJSToSQLType(jsType: string) {
   const map = {
-    integer: "bigint",
-    float: "float",
-    string: "text",
-    email: "text",
-    phoneNumber: "text",
     boolean: "boolean",
     date: "bigint", // we store things via timestamps in the DB
+    email: "text",
+    float: "float",
+    integer: "bigint",
+    phoneNumber: "text",
+    string: "text",
+    url: "text",
   };
 
   return map[jsType];
@@ -56,6 +57,7 @@ const TYPES = [
   "integer",
   "phoneNumber",
   "string",
+  "url",
 ];
 
 const CACHE_TTL = env === "test" ? -1 : 1000 * 30;

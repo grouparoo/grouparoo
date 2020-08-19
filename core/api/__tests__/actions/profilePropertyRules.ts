@@ -65,6 +65,7 @@ describe("actions/profilePropertyRules", () => {
         "integer",
         "phoneNumber",
         "string",
+        "url",
       ]);
     });
 

@@ -15,6 +15,7 @@ import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { parsePhoneNumberFromString, CountryCode } from "libphonenumber-js/max";
 import { plugin } from "../modules/plugin";
 import isEmail from "validator/lib/isEmail";
+import isURL from "validator/lib/isURL";
 
 @Table({ tableName: "profileProperties", paranoid: false })
 export class ProfileProperty extends LoggedModel<ProfileProperty> {
@@ -101,6 +102,8 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
         return this.formatEmail(value.toString());
       case "phoneNumber":
         return this.formatPhoneNumber(value.toString());
+      case "url":
+        return this.formatURL(value.toString());
       case "boolean":
         if (![true, false, 0, 1, "true", "false"].includes(value)) {
           throw new Error(
@@ -134,8 +137,10 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
       case "string":
         return this.rawValue;
       case "email":
-        return this.rawValue.toLowerCase();
+        return this.rawValue;
       case "phoneNumber":
+        return this.rawValue;
+      case "url":
         return this.rawValue;
       case "boolean":
         if ([true, 1, "true"].includes(this.rawValue)) {
@@ -210,6 +215,14 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
         );
       }
     }
+  }
+
+  async formatURL(url: string) {
+    if (!isURL(url)) {
+      throw new Error(`url "${url}" is not valid`);
+    }
+
+    return url.toLocaleLowerCase();
   }
 
   async formatEmail(email: string) {
