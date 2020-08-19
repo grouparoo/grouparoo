@@ -12,10 +12,7 @@ import {
 import { LoggedModel } from "../classes/loggedModel";
 import { Profile } from "./Profile";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
-import { parsePhoneNumberFromString, CountryCode } from "libphonenumber-js/max";
-import { plugin } from "../modules/plugin";
-import isEmail from "validator/lib/isEmail";
-import isURL from "validator/lib/isURL";
+import { ProfilePropertyOps } from "../modules/ops/profileProperty";
 
 @Table({ tableName: "profileProperties", paranoid: false })
 export class ProfileProperty extends LoggedModel<ProfileProperty> {
@@ -73,84 +70,15 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
     );
   }
 
-  async setValue(value: any) {
-    this.rawValue = await this._buildRawValue(value);
-    await this.validateValue();
-  }
-
-  async _buildRawValue(value: any) {
-    const rule = await this.cachedProfilePropertyRule();
-
-    if (value === null || value === undefined || value === "") {
-      return null;
-    }
-
-    switch (rule.type) {
-      case "float":
-        return value.toString();
-      case "integer":
-        return value.toString();
-      case "date":
-        if (value instanceof Date) {
-          return value.getTime().toString();
-        } else {
-          return new Date(value).getTime().toString();
-        }
-      case "string":
-        return value.toString();
-      case "email":
-        return this.formatEmail(value.toString());
-      case "phoneNumber":
-        return this.formatPhoneNumber(value.toString());
-      case "url":
-        return this.formatURL(value.toString());
-      case "boolean":
-        if (![true, false, 0, 1, "true", "false"].includes(value)) {
-          throw new Error(
-            `${value} is not a valid boolean value for ${rule.key}`
-          );
-        }
-        if ([true, 1, "true"].includes(value)) {
-          return "true";
-        } else {
-          return "false";
-        }
-      default:
-        throw new Error(`cannot coerce profileProperty type ${rule.type}`);
-    }
-  }
-
   async getValue() {
     const rule = await this.cachedProfilePropertyRule();
+    return ProfilePropertyOps.getValue(this.rawValue, rule.type);
+  }
 
-    if (this.rawValue === null || this.rawValue === undefined) {
-      return null;
-    }
-
-    switch (rule.type) {
-      case "float":
-        return parseFloat(this.rawValue);
-      case "integer":
-        return parseInt(this.rawValue);
-      case "date":
-        return new Date(parseInt(this.rawValue));
-      case "string":
-        return this.rawValue;
-      case "email":
-        return this.rawValue;
-      case "phoneNumber":
-        return this.rawValue;
-      case "url":
-        return this.rawValue;
-      case "boolean":
-        if ([true, 1, "true"].includes(this.rawValue)) {
-          return true;
-        } else {
-          return false;
-        }
-      default:
-        throw new Error(`cannot coerce profileProperty type ${rule.type}`);
-    }
+  async setValue(value: any) {
+    const rule = await this.cachedProfilePropertyRule();
+    this.rawValue = await ProfilePropertyOps.buildRawValue(value, rule.type);
+    await this.validateValue();
   }
 
   async logMessage(verb: "create" | "update" | "destroy") {
@@ -215,39 +143,6 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
         );
       }
     }
-  }
-
-  async formatURL(url: string) {
-    if (!isURL(url)) {
-      throw new Error(`url "${url}" is not valid`);
-    }
-
-    return url.toLocaleLowerCase();
-  }
-
-  async formatEmail(email: string) {
-    if (!isEmail(email)) {
-      throw new Error(`email "${email}" is not valid`);
-    }
-
-    return email.toLocaleLowerCase();
-  }
-
-  async formatPhoneNumber(number: string) {
-    const defaultCountryCode = (
-      await plugin.readSetting("core", "default-country-code")
-    ).value as CountryCode;
-
-    const formattedPhoneNumber = parsePhoneNumberFromString(
-      number,
-      defaultCountryCode
-    );
-
-    if (!formattedPhoneNumber || !formattedPhoneNumber.isValid()) {
-      throw new Error(`phone number "${number}" is not valid`);
-    }
-
-    return formattedPhoneNumber.formatInternational();
   }
 
   // --- Class Methods --- //
