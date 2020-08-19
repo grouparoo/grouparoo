@@ -5,7 +5,13 @@ import { generateMailchimpId } from "./../generateMailchimpId";
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
   destinationOptions,
-  export: { toDelete, newProfileProperties, oldProfileProperties, newGroups },
+  export: {
+    toDelete,
+    newProfileProperties,
+    oldProfileProperties,
+    newGroups,
+    oldGroups,
+  },
 }) => {
   const client = await connect(appOptions);
   let response;
@@ -60,6 +66,19 @@ export const exportProfile: ExportProfilePluginMethod = async ({
           : newProfileProperties[k];
     }
 
+    // delete old merge tags
+    for (const k in oldProfileProperties) {
+      // "" is how you delete something from mailchimp
+      if (newProfileProperties[k] === undefined) mergeFields[k] = "";
+    }
+
+    // mailchimp cannot handle boolean types directly
+    for (const k in mergeFields) {
+      if (typeof mergeFields[k] === "boolean") {
+        mergeFields[k] = mergeFields[k].toString();
+      }
+    }
+
     try {
       const getResponse = await client.get(
         `/lists/${listId}/members/${generateMailchimpId(email_address)}`
@@ -72,15 +91,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       existingTagNames = getResponse.tags.map((t) =>
         t.name.toLocaleLowerCase()
       );
-
-      // delete old merge tags
-      for (const k in getResponse.merge_fields) {
-        mergeFields[k] =
-          newProfileProperties[k] === null ||
-          newProfileProperties[k] === undefined
-            ? ""
-            : newProfileProperties[k];
-      }
     } catch (error) {}
 
     // update merge_variables
@@ -95,31 +105,47 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       ? `/lists/${listId}/members/${generateMailchimpId(email_address)}`
       : `/lists/${listId}/members`;
 
-    await client[method](route, payload);
+    try {
+      await client[method](route, payload);
 
-    const tagPayload = [];
+      const tagPayload = [];
 
-    // add new tags
-    const lowerCaseNewGroups = newGroups.map((g) => g.toLocaleLowerCase());
-    for (const i in lowerCaseNewGroups) {
-      const tag = lowerCaseNewGroups[i];
-      if (!existingTagNames.includes(tag)) {
-        tagPayload.push({ name: tag, status: "active" });
+      // add new tags
+      const lowerCaseNewGroups = newGroups.map((g) => g.toLocaleLowerCase());
+      const lowerCaseOldGroups = oldGroups.map((g) => g.toLocaleLowerCase());
+
+      for (const i in lowerCaseNewGroups) {
+        const tag = lowerCaseNewGroups[i];
+        if (!existingTagNames.includes(tag)) {
+          tagPayload.push({ name: tag, status: "active" });
+        }
       }
-    }
 
-    // remove old tags
-    for (const i in existingTagNames) {
-      const existingTag = existingTagNames[i];
-      if (!lowerCaseNewGroups.includes(existingTag)) {
-        tagPayload.push({ name: existingTag, status: "inactive" });
+      // remove old tags
+      for (const i in lowerCaseOldGroups) {
+        const tag = lowerCaseOldGroups[i];
+        if (
+          !lowerCaseNewGroups.includes(tag) &&
+          existingTagNames.includes(tag)
+        ) {
+          tagPayload.push({ name: tag, status: "inactive" });
+        }
       }
-    }
 
-    await client.post(
-      `/lists/${listId}/members/${generateMailchimpId(email_address)}/tags`,
-      { tags: tagPayload }
-    );
+      await client.post(
+        `/lists/${listId}/members/${generateMailchimpId(email_address)}/tags`,
+        { tags: tagPayload }
+      );
+    } catch (error) {
+      // sometimes there are multiple errors that mailchimp puts in error.errors (which are json objects)
+      if (error.errors) {
+        error.message = `${error.message} | ${error.errors
+          .map((e) => JSON.stringify(e))
+          .join(", ")}`;
+      }
+
+      throw error;
+    }
 
     return { success: true };
   }
