@@ -152,8 +152,13 @@ describe("integration/runs/mailchimp", () => {
     expect(error).toBeUndefined();
     expect(options).toEqual({
       listId: {
-        descriptions: ["Grouparoo", "Demo", "Staging"],
-        options: ["23d8e9cb6e", "6f890f62ee", "a42c031026"],
+        descriptions: [
+          "Demo (Evan)",
+          "Grouparoo",
+          "Demo (Andy)",
+          "Demo (Brian)",
+        ],
+        options: ["1b724bb934", "23d8e9cb6e", "6f890f62ee", "a42c031026"],
         type: "list",
       },
     });
@@ -181,8 +186,8 @@ describe("integration/runs/mailchimp", () => {
         required: [{ key: "email_address", type: "email" }],
         known: [
           { key: "ADDRESS", type: "any", important: true },
-          { key: "COOL", type: "any", important: true },
           { key: "FNAME", type: "any", important: true },
+          { key: "LANGUAGE", type: "any", important: true },
           { key: "LNAME", type: "any", important: true },
           { key: "LTV", type: "any", important: true },
           { key: "PHONE", type: "any", important: true },
@@ -249,7 +254,7 @@ describe("integration/runs/mailchimp", () => {
       PHONE: "",
       USERID: 100,
       LTV: "",
-      COOL: "",
+      LANGUAGE: "",
     });
     expect(response.tags.map((t) => t.name)).toEqual(["mailchimp people"]);
   });
