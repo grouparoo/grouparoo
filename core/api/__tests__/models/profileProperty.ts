@@ -21,6 +21,7 @@ describe("models/profileProperty", () => {
   let profile: Profile;
   let firstNameRule: ProfilePropertyRule;
   let emailRule: ProfilePropertyRule;
+  let urlRule: ProfilePropertyRule;
   let phoneNumberRule: ProfilePropertyRule;
   let userIdRule: ProfilePropertyRule;
   let lastLoginRule: ProfilePropertyRule;
@@ -56,6 +57,14 @@ describe("models/profileProperty", () => {
     });
     await emailRule.setOptions({ column: "email" });
     await emailRule.update({ state: "ready" });
+
+    urlRule = await ProfilePropertyRule.create({
+      sourceGuid: source.guid,
+      key: "url",
+      type: "url",
+    });
+    await urlRule.setOptions({ column: "url" });
+    await urlRule.update({ state: "ready" });
 
     phoneNumberRule = await ProfilePropertyRule.create({
       sourceGuid: source.guid,
@@ -221,6 +230,26 @@ describe("models/profileProperty", () => {
       await expect(
         profileProperty.setValue("someone.com")
       ).rejects.toThrowError(/email .* is not valid/);
+    });
+
+    test("urls", async () => {
+      const profileProperty = new ProfileProperty({
+        profileGuid: profile.guid,
+        profilePropertyRuleGuid: urlRule.guid,
+      });
+      await profileProperty.setValue("HTTPS://grouparoo.com/picture");
+      const response = await profileProperty.getValue();
+      expect(response).toBe("https://grouparoo.com/picture");
+    });
+
+    test("invalid urls throw an error", async () => {
+      const profileProperty = new ProfileProperty({
+        profileGuid: profile.guid,
+        profilePropertyRuleGuid: urlRule.guid,
+      });
+      await expect(profileProperty.setValue("not a url")).rejects.toThrowError(
+        /url .* is not valid/
+      );
     });
 
     test("phone numbers", async () => {

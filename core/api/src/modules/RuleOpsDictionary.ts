@@ -44,13 +44,16 @@ const _date_ops = [
 ];
 
 export const ProfilePropertyRuleOpsDictionary = {
-  string: _string_ops,
-  email: _string_ops,
-  integer: _number_ops,
-  float: _number_ops,
+  // types
   boolean: _boolean_ops,
   date: _date_ops,
+  email: _string_ops,
+  float: _number_ops,
+  integer: _number_ops,
   phoneNumber: _string_ops,
+  string: _string_ops,
+  url: _string_ops,
+  // utils
   _relativeMatchUnits: ["days", "weeks", "months", "quarters", "years"],
   _convenientRules: {
     exists: { operation: { op: "ne" }, match: "null" },
