@@ -27,9 +27,26 @@ describe("models/export", () => {
     profile = await helper.factories.profile();
   });
 
-  test("an export can be created", async () => {
-    const oldProfileProperties = { email: "oldEmail" };
-    const newProfileProperties = { email: "newEmail" };
+  test("an export can be created and saved with both single-value and array properties", async () => {
+    const oldProfileProperties = {
+      string: { type: "string", rawValue: "name" },
+      email: { type: "email", rawValue: "oldEmail" },
+      integer: { type: "integer", rawValue: "1" },
+      float: { type: "float", rawValue: "1.1" },
+      date: { type: "date", rawValue: "1" },
+      phoneNumber: { type: "phoneNumber", rawValue: "+1 412 897 0001" },
+    };
+    const newProfileProperties = {
+      string: { type: "string", rawValue: ["full", "name"] },
+      email: { type: "email", rawValue: ["oldEmail", "newEmail"] },
+      integer: { type: "integer", rawValue: ["1", "2"] },
+      float: { type: "float", rawValue: ["1.1", "2.2"] },
+      date: { type: "date", rawValue: ["1", "2"] },
+      phoneNumber: {
+        type: "phoneNumber",
+        rawValue: ["+1 412 897 0001", "+1 412 897 0002"],
+      },
+    };
     const oldGroups = [];
     const newGroups = ["cool-people"];
 
@@ -43,6 +60,28 @@ describe("models/export", () => {
       newGroups,
       mostRecent: true,
     });
+  });
+
+  test("an export can be deserialized returning Grouparoo types", async () => {
+    const _export = await Export.findOne();
+    expect(_export.oldProfileProperties).toEqual({
+      string: "name",
+      email: "oldEmail",
+      date: new Date(1),
+      float: 1.1,
+      integer: 1,
+      phoneNumber: "+1 412 897 0001",
+    });
+    expect(_export.newProfileProperties).toEqual({
+      string: ["full", "name"],
+      email: ["oldEmail", "newEmail"],
+      date: [new Date(1), new Date(2)],
+      float: [1.1, 2.2],
+      integer: [1, 2],
+      phoneNumber: ["+1 412 897 0001", "+1 412 897 0002"],
+    });
+    expect(_export.oldGroups).toEqual([]);
+    expect(_export.newGroups).toEqual(["cool-people"]);
   });
 
   test("imports can be associated to the export via ExportImports", async () => {
