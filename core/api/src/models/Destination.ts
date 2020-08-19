@@ -448,8 +448,8 @@ export class Destination extends LoggedModel<Destination> {
     }
 
     if (
-      !pluginConnection.methods.exportProfile &&
-      !pluginConnection.methods.exportProfiles
+      !pluginConnection?.methods.exportProfile &&
+      !pluginConnection?.methods.exportProfiles
     ) {
       throw new Error(
         `a destination of type ${instance.type} cannot be created as there are no profile export methods`

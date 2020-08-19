@@ -8,7 +8,7 @@ declare module "actionhero" {
     plugins: {
       plugins: Array<GrouparooPlugin>;
       validate: (plugin: GrouparooPlugin) => boolean;
-      register: (plugin: GrouparooPlugin) => void;
+      register: (plugin: GrouparooPlugin, validate: boolean) => void;
       persistentConnections: {
         [guid: string]: any;
       };
@@ -180,8 +180,8 @@ export class Plugins extends Initializer {
     return true;
   }
 
-  registerPlugin(plugin: GrouparooPlugin) {
-    api.plugins.validate(plugin);
+  registerPlugin(plugin: GrouparooPlugin, validate = true) {
+    if (validate) api.plugins.validate(plugin);
     api.plugins.plugins.push(plugin);
     log(`registered grouparoo plugin: ${plugin.name}`);
   }

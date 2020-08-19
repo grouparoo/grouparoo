@@ -77,8 +77,8 @@ export namespace plugin {
   /**
    * Register a Grouparoo Plugin
    */
-  export function registerPlugin(plugin: GrouparooPlugin) {
-    api.plugins.register(plugin);
+  export function registerPlugin(plugin: GrouparooPlugin, validate?: boolean) {
+    api.plugins.register(plugin, validate);
   }
 
   /**

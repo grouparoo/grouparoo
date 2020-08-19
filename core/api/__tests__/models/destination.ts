@@ -652,30 +652,33 @@ describe("models/destination", () => {
     };
 
     beforeAll(async () => {
-      plugin.registerPlugin({
-        name: "test-import-only-plugin",
-        apps: [
-          {
-            name: "test-template-app",
-            options: [],
-            methods: {
-              test: async () => {
-                return { success: true };
+      plugin.registerPlugin(
+        {
+          name: "test-import-only-plugin",
+          apps: [
+            {
+              name: "test-template-app",
+              options: [],
+              methods: {
+                test: async () => {
+                  return { success: true };
+                },
               },
             },
-          },
-        ],
-        connections: [
-          {
-            name: "import-from-test-template-app",
-            description: "a test app connection",
-            app: "test-template-app",
-            direction: "export",
-            options: [],
-            methods: {},
-          },
-        ],
-      });
+          ],
+          connections: [
+            {
+              name: "import-from-test-template-app",
+              description: "a test app connection",
+              app: "test-template-app",
+              direction: "export",
+              options: [],
+              methods: {},
+            },
+          ],
+        },
+        false // skip validation as we need an invalid plugin here
+      );
 
       app = await App.create({
         name: "test app with temp methods",
@@ -744,7 +747,7 @@ describe("models/destination", () => {
 
     beforeAll(async () => {
       plugin.registerPlugin({
-        name: "test-plugin",
+        name: "test-export-plugin",
         apps: [
           {
             name: "test-template-app",
@@ -761,7 +764,7 @@ describe("models/destination", () => {
         ],
         connections: [
           {
-            name: "export-from-test-template-app",
+            name: "export-from-test-app",
             description: "a test app connection",
             app: "test-template-app",
             direction: "export",
@@ -831,7 +834,7 @@ describe("models/destination", () => {
     test("the app exportProfiles method can be called by the destination and exports will be created and mappings followed", async () => {
       const destination = await Destination.create({
         name: "test plugin destination",
-        type: "export-from-test-template-app",
+        type: "export-from-test-app",
         appGuid: app.guid,
       });
 
@@ -923,7 +926,7 @@ describe("models/destination", () => {
     test("profile properties previously mapped but now removed will be included as oldProfileProperties in the export", async () => {
       const destination = await Destination.create({
         name: "test plugin destination",
-        type: "export-from-test-template-app",
+        type: "export-from-test-app",
         appGuid: app.guid,
       });
 
@@ -984,7 +987,7 @@ describe("models/destination", () => {
     test("newly tagged groups will appear new in next export", async () => {
       const destination = await Destination.create({
         name: "test plugin destination",
-        type: "export-from-test-template-app",
+        type: "export-from-test-app",
         appGuid: app.guid,
       });
 
@@ -1047,7 +1050,7 @@ describe("models/destination", () => {
     test("newly un-tagged groups will be removed from the next export", async () => {
       const destination = await Destination.create({
         name: "test plugin destination",
-        type: "export-from-test-template-app",
+        type: "export-from-test-app",
         appGuid: app.guid,
       });
 
@@ -1112,7 +1115,7 @@ describe("models/destination", () => {
     test("if a profile is removed from all groups tracked by this destination, toDelete is true", async () => {
       const destination = await Destination.create({
         name: "test plugin destination",
-        type: "export-from-test-template-app",
+        type: "export-from-test-app",
         appGuid: app.guid,
       });
 
@@ -1164,7 +1167,7 @@ describe("models/destination", () => {
     test("if an export has the same data as the previous export, and force=false, it will not be sent to the destination", async () => {
       const destination = await Destination.create({
         name: "test plugin destination",
-        type: "export-from-test-template-app",
+        type: "export-from-test-app",
         appGuid: app.guid,
       });
       const profile = await helper.factories.profile();
@@ -1215,7 +1218,7 @@ describe("models/destination", () => {
     test("if an export has the same data as the previous export, and force=true, it will be sent to the destination", async () => {
       const destination = await Destination.create({
         name: "test plugin destination",
-        type: "export-from-test-template-app",
+        type: "export-from-test-app",
         appGuid: app.guid,
       });
       const profile = await helper.factories.profile();
@@ -1268,7 +1271,7 @@ describe("models/destination", () => {
     test("if there is no previous export, it will be sent to the destination", async () => {
       const destination = await Destination.create({
         name: "test plugin destination",
-        type: "export-from-test-template-app",
+        type: "export-from-test-app",
         appGuid: app.guid,
       });
       const profile = await helper.factories.profile();
@@ -1304,7 +1307,7 @@ describe("models/destination", () => {
 
       const destination = await Destination.create({
         name: "test plugin destination",
-        type: "export-from-test-template-app",
+        type: "export-from-test-app",
         appGuid: app.guid,
       });
       const group = await helper.factories.group();
@@ -1347,7 +1350,7 @@ describe("models/destination", () => {
 
       const destination = await Destination.create({
         name: "test plugin destination",
-        type: "export-from-test-template-app",
+        type: "export-from-test-app",
         appGuid: app.guid,
       });
       const group = await helper.factories.group();
@@ -1375,7 +1378,7 @@ describe("models/destination", () => {
 
       const destination = await Destination.create({
         name: "test plugin destination",
-        type: "export-from-test-template-app",
+        type: "export-from-test-app",
         appGuid: app.guid,
       });
       const group = await helper.factories.group();
@@ -1427,7 +1430,7 @@ describe("models/destination", () => {
 
       const destination = await Destination.create({
         name: "test plugin destination",
-        type: "export-from-test-template-app",
+        type: "export-from-test-app",
         appGuid: app.guid,
       });
       const group = await helper.factories.group();
@@ -1458,7 +1461,7 @@ describe("models/destination", () => {
       beforeAll(async () => {
         destination = await Destination.create({
           name: "test plugin destination",
-          type: "export-from-test-template-app",
+          type: "export-from-test-app",
           appGuid: app.guid,
         });
 
@@ -1534,7 +1537,7 @@ describe("models/destination", () => {
       test("mappings cannot use array profile properties if they are not allowed by exportArrayProperties", async () => {
         const destination = await Destination.create({
           name: "test plugin destination",
-          type: "export-from-test-template-app",
+          type: "export-from-test-app",
           appGuid: app.guid,
         });
 
@@ -1552,7 +1555,7 @@ describe("models/destination", () => {
 
         const destination = await Destination.create({
           name: "test plugin destination",
-          type: "export-from-test-template-app",
+          type: "export-from-test-app",
           appGuid: app.guid,
         });
 
@@ -1600,7 +1603,7 @@ describe("models/destination", () => {
 
         const destination = await Destination.create({
           name: "test plugin destination",
-          type: "export-from-test-template-app",
+          type: "export-from-test-app",
           appGuid: app.guid,
         });
 
