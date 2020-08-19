@@ -3,6 +3,7 @@ import { plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { connect } from "./../lib/connect";
+import { disconnect } from "./../lib/disconnect";
 
 import { exportProfile } from "../lib/export/exportProfile";
 import { destinationOptions } from "../lib/export/destinationOptions";
@@ -31,7 +32,7 @@ export class Plugins extends Initializer {
               description: "your hubspot hapikey (api) key",
             },
           ],
-          methods: { connect, test },
+          methods: { connect, disconnect, test },
         },
       ],
       connections: [
