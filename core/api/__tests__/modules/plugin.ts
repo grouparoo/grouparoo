@@ -21,6 +21,101 @@ describe("modules/plugin", () => {
     await helper.factories.profilePropertyRules();
   });
 
+  describe("registerPlugin", () => {
+    test("plugins without problems can be registered", () => {
+      plugin.registerPlugin({
+        name: "@grouparoo/sample-plugin",
+        icon: "/path/to/icon.png",
+        apps: [
+          {
+            name: "sample-plugin-app",
+            options: [],
+            methods: {
+              test: async () => {
+                return { success: true, message: "OK" };
+              },
+              appOptions: async () => {
+                return { fileGuid: { type: "list", options: ["a", "b"] } };
+              },
+            },
+          },
+        ],
+        connections: [
+          {
+            name: "sample-plugin-import",
+            direction: "import",
+            description: "import or update profiles from an uploaded file",
+            app: "sample-plugin-app",
+            options: [],
+            profilePropertyRuleOptions: [],
+            scheduleOptions: [],
+            methods: {
+              sourceOptions: async ({ sourceOptions }) => {
+                const response = {
+                  table: { type: "list", options: ["users"] },
+                };
+                return response;
+              },
+              sourcePreview: async () => {
+                return [];
+              },
+              uniqueProfilePropertyRuleBootstrapOptions: async () => {
+                return {};
+              },
+              sourceFilters: async () => {
+                return [];
+              },
+              profiles: async () => {
+                return {
+                  importsCount: 0,
+                  highWaterMark: { col: 0 },
+                  sourceOffset: 0,
+                };
+              },
+              profileProperty: async ({ profilePropertyRule, profile }) => {
+                return ["value"];
+              },
+            },
+          },
+        ],
+      });
+    });
+
+    test("duplicate plugin names throw errors", () => {
+      expect(() =>
+        plugin.registerPlugin({
+          name: "@grouparoo/sample-plugin",
+          icon: "/path/to/icon.png",
+        })
+      ).toThrowError(
+        /a plugin named @grouparoo\/sample-plugin is already registered/
+      );
+    });
+
+    test("destination plugins need either exportProfile or exportProfiles methods", () => {
+      expect(() =>
+        plugin.registerPlugin({
+          name: "@grouparoo/sample-plugin/export",
+          icon: "/path/to/icon.png",
+          connections: [
+            {
+              name: "sample-plugin-export",
+              direction: "export",
+              description: "export stuff",
+              app: "sample-plugin-app",
+              options: [],
+              profilePropertyRuleOptions: [],
+              scheduleOptions: [],
+              methods: {},
+            },
+          ],
+        })
+      ).toThrow(
+        /export connections must provide either connection.methods.exportProfile or connection.methods.exportProfiles/
+      );
+    });
+  });
+
   describe("settings", () => {
     beforeAll(async () => {
       await Setting.destroy({
