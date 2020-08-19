@@ -53,10 +53,14 @@ describe("zendesk/destinationMappingOptions", () => {
     const { profilePropertyRules } = options;
     const { required, known } = profilePropertyRules;
 
-    expect(required.length).toBe(1);
-    const external_id = required[0];
+    expect(required.length).toBe(2);
+    const external_id = required.find((f) => f.key === "external_id");
     expect(external_id.key).toBe("external_id");
     expect(external_id.type).toBe("string");
+
+    const name = required.find((f) => f.key === "name");
+    expect(name.key).toBe("name");
+    expect(name.type).toBe("string");
 
     const text = known.find((f) => f.key === "text_field");
     expect(text.type).toBe("string");
@@ -65,10 +69,6 @@ describe("zendesk/destinationMappingOptions", () => {
     const email = known.find((f) => f.key === "email");
     expect(email.type).toBe("email");
     expect(email.important).toBe(true);
-
-    const name = known.find((f) => f.key === "name");
-    expect(name.type).toBe("string");
-    expect(name.important).toBe(true);
 
     const alias = known.find((f) => f.key === "alias");
     expect(alias.type).toBe("string");

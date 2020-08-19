@@ -6,6 +6,10 @@ import {
   getUserFields,
 } from "./destinationMappingOptions";
 
+// TODO: put rate limiting the config. what does that do?
+// TODO: cache response to types
+// TODO: dates
+
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
   export: {
@@ -156,7 +160,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   }
 };
 
-async function searchForUser(client, findBy: any) {
+export async function searchForUser(client, findBy: any) {
   const response = await client.users.search(findBy);
   let found = null;
   for (const user of response) {

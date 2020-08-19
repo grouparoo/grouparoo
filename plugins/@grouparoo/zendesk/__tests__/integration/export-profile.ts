@@ -3,7 +3,10 @@ process.chdir(`${__dirname}/../../../../../core/api`);
 
 import path from "path";
 
-import { exportProfile, findUser } from "../../src/lib/export/exportProfile";
+import {
+  exportProfile,
+  searchForUser,
+} from "../../src/lib/export/exportProfile";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
@@ -12,8 +15,12 @@ let client: any;
 let userId = null;
 let newId = null;
 const external_id = "testuser123";
-const changedExternalId = "testuser987";
+const migratedExternalId = "testuser456";
+const migratedName = "migratedusername";
+const migratedEmail = "migrateduser@bleonard.com";
+const newExternalId = "testuser789";
 const email = "brian@bleonard.com";
+const name = "Brian";
 
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 
@@ -21,57 +28,61 @@ const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 const newNock = false;
 require("./../fixtures/export-profile");
 // or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
+//const newNock = true;
+//helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 
 async function getUser(): Promise<any> {
   const response = await client.users.show(userId);
-  // console.log("getUser", response);
   return response;
 }
 
 async function getNewUser(): Promise<any> {
   const response = await client.users.show(newId);
-  // console.log("getNewUser", response);
   return response;
 }
 
 async function findId(): Promise<any> {
-  const user = await findUser(client, { external_id }, {});
+  const user = await searchForUser(client, { external_id });
   if (!user) {
     return null;
   }
   return user.id;
 }
 
-async function deleteUser(id) {
-  const user = await findUser(client, { external_id: id }, {});
-  if (user) {
-    await client.users.delete(user.id);
+async function deleteUsers(suppressErrors) {
+  const queries = [migratedName, migratedEmail];
+  for (const query of queries) {
+    const user = await searchForUser(client, { query });
+    if (user) {
+      await client.users.delete(user.id);
+    }
+  }
+
+  const users = [external_id, migratedExternalId, newExternalId];
+  for (const id of users) {
+    try {
+      const user = await searchForUser(client, { external_id: id });
+      if (user) {
+        await client.users.delete(user.id);
+      }
+    } catch (err) {
+      if (!suppressErrors) {
+        throw err;
+      }
+    }
   }
 }
 
 describe("zendesk/exportProfile", () => {
   beforeAll(async () => {
     client = await connect(appOptions);
-
-    await deleteUser(external_id);
-    await deleteUser(changedExternalId);
+    await deleteUsers(false);
   }, 1000 * 30);
 
   afterAll(async () => {
-    try {
-      await deleteUser(external_id);
-    } catch (err) {
-      // no big deal
-    }
-    try {
-      await deleteUser(changedExternalId);
-    } catch (err) {
-      // no big deal
-    }
+    await deleteUsers(true);
   }, 1000 * 30);
 
   test("can create profile on Zendesk", async () => {
@@ -86,7 +97,7 @@ describe("zendesk/exportProfile", () => {
       destinationOptions: null,
       export: {
         oldProfileProperties: {},
-        newProfileProperties: { email, external_id },
+        newProfileProperties: { email, external_id, name },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -109,11 +120,11 @@ describe("zendesk/exportProfile", () => {
       destination: null,
       destinationOptions: null,
       export: {
-        oldProfileProperties: { email, external_id },
+        oldProfileProperties: { email, external_id, name },
         newProfileProperties: {
           email,
           external_id,
-          name: "Brian",
+          name,
           alias: "BL",
           text_field: "testing here",
         },
@@ -126,7 +137,7 @@ describe("zendesk/exportProfile", () => {
 
     const user = await getUser();
     expect(user.id).toBe(userId);
-    expect(user.name).toBe("Brian");
+    expect(user.name).toBe(name);
     expect(user.alias).toBe("BL");
     expect(user.user_fields.text_field).toBe("testing here");
     expect(user.user_fields.checkbox_field).toBe(false); // default
@@ -143,7 +154,7 @@ describe("zendesk/exportProfile", () => {
         oldProfileProperties: {
           email,
           external_id,
-          name: "Brian",
+          name,
           alias: "BL",
           text_field: "testing here",
         },
@@ -189,6 +200,7 @@ describe("zendesk/exportProfile", () => {
         newProfileProperties: {
           email,
           external_id,
+          name: "",
         },
         oldGroups: [],
         newGroups: [],
@@ -351,6 +363,53 @@ describe("zendesk/exportProfile", () => {
     expect(user.tags.sort()).toEqual(["outside_grouparoo"]);
   });
 
+  test("it can migrate an email user to having a external_id", async () => {
+    // make a user
+    const created = await client.users.create({
+      user: {
+        verified: true,
+        name: migratedName,
+        alias: "MU",
+        email: migratedEmail,
+        user_fields: {
+          text_field: "my text",
+          checkbox_field: true,
+        },
+      },
+    });
+
+    // then sync a profile
+    await exportProfile({
+      appOptions,
+      connection: null,
+      app: null,
+      destination: null,
+      destinationOptions: null,
+      export: {
+        oldProfileProperties: {},
+        newProfileProperties: {
+          email: migratedEmail,
+          name: migratedName,
+          external_id: migratedExternalId,
+          text_field: "change",
+        },
+        oldGroups: [],
+        newGroups: ["something"],
+        toDelete: false,
+        profile: null,
+      },
+    });
+
+    const user = await client.users.show(created.id);
+    expect(user.external_id).toBe(migratedExternalId);
+    expect(user.email).toBe(migratedEmail);
+    expect(user.alias).toBe("MU");
+    expect(user.name).toBe(migratedName);
+    expect(user.user_fields.checkbox_field).toBe(true);
+    expect(user.user_fields.text_field).toBe("change");
+    expect(user.tags.sort()).toEqual(["something"]);
+  });
+
   test("it can change the external id", async () => {
     await exportProfile({
       appOptions,
@@ -364,7 +423,7 @@ describe("zendesk/exportProfile", () => {
           external_id,
         },
         newProfileProperties: {
-          external_id: changedExternalId,
+          external_id: newExternalId,
           email,
         },
         oldGroups: [],
@@ -376,7 +435,7 @@ describe("zendesk/exportProfile", () => {
 
     const user = await getUser();
     expect(user.id).toBe(userId);
-    expect(user.external_id).toBe(changedExternalId);
+    expect(user.external_id).toBe(newExternalId);
     expect(user.email).toBe(email);
   });
 
@@ -411,7 +470,7 @@ describe("zendesk/exportProfile", () => {
 
     const user = await getUser();
     expect(user.id).toBe(userId);
-    expect(user.external_id).toBe(changedExternalId);
+    expect(user.external_id).toBe(newExternalId);
     expect(user.email).toBe(email);
   });
 
@@ -466,5 +525,3 @@ describe("zendesk/exportProfile", () => {
     expect(newUser.active).toBe(false);
   });
 });
-
-// TODO: does it work to assign an external id to an email already in the system?
