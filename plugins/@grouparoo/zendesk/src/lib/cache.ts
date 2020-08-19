@@ -14,14 +14,11 @@ export interface CacheOptionsMethod {
 }
 
 export const cache: CacheOptionsMethod = async (
-  { cacheKey, lockKey, cacheDuration, force },
+  { cacheKey, lockKey, cacheDuration = 1000, force },
   methodToGetValue
 ) => {
-  console.log("cache called", cacheKey);
-
   const hasRedis = !!api?.redis?.clients;
   if (!hasRedis && process.env.NODE_ENV === "test") {
-    console.log("cache: not hasRedis");
     return await methodToGetValue();
   }
 

@@ -6,8 +6,6 @@ import {
   getUserFields,
 } from "./destinationMappingOptions";
 
-// TODO: dates
-
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
   export: {
@@ -22,6 +20,8 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     const client = await connect(appOptions);
     let external_id = newProfileProperties.external_id;
     let email = newProfileProperties.email;
+
+    const dateValue = newProfileProperties.date_field;
 
     // console.log("exportProfile", newProfileProperties);
 
@@ -224,8 +224,11 @@ function formatVar(value, field) {
   if (!value) {
     return null;
   }
-  // TODO: how to format date, etc
-  return value;
+  if (value instanceof Date) {
+    return value.toISOString();
+  } else {
+    return value;
+  }
 }
 
 function getDefaultName(payload) {

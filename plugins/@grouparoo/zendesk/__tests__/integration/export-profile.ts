@@ -21,6 +21,7 @@ const migratedEmail = "migrateduser@bleonard.com";
 const newExternalId = "testuser789";
 const email = "brian@bleonard.com";
 const name = "Brian";
+const exampleDate = new Date(1597870204 * 1000);
 
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 
@@ -127,6 +128,7 @@ describe("zendesk/exportProfile", () => {
           name,
           alias: "BL",
           text_field: "testing here",
+          date_field: exampleDate,
         },
         oldGroups: [],
         newGroups: [],
@@ -139,6 +141,7 @@ describe("zendesk/exportProfile", () => {
     expect(user.id).toBe(userId);
     expect(user.name).toBe(name);
     expect(user.alias).toBe("BL");
+    expect(user.user_fields.date_field).toBe("2020-08-19T00:00:00+00:00");
     expect(user.user_fields.text_field).toBe("testing here");
     expect(user.user_fields.checkbox_field).toBe(false); // default
   });
@@ -157,6 +160,7 @@ describe("zendesk/exportProfile", () => {
           name,
           alias: "BL",
           text_field: "testing here",
+          date_field: exampleDate,
         },
         newProfileProperties: {
           email,
@@ -165,6 +169,7 @@ describe("zendesk/exportProfile", () => {
           alias: "BL",
           text_field: "testing here change",
           checkbox_field: true,
+          date_field: null,
         },
         oldGroups: [],
         newGroups: [],
@@ -177,6 +182,7 @@ describe("zendesk/exportProfile", () => {
     expect(user.id).toBe(userId);
     expect(user.name).toBe("Evan");
     expect(user.alias).toBe("BL");
+    expect(user.user_fields.date_field).toBe(null);
     expect(user.user_fields.text_field).toBe("testing here change");
     expect(user.user_fields.checkbox_field).toBe(true);
   });
