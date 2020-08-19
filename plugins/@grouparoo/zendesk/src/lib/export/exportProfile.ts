@@ -6,8 +6,6 @@ import {
   getUserFields,
 } from "./destinationMappingOptions";
 
-// TODO: put rate limiting the config. what does that do?
-// TODO: cache response to types
 // TODO: dates
 
 export const exportProfile: ExportProfilePluginMethod = async ({
