@@ -167,6 +167,7 @@ describe("zendesk/exportProfile", () => {
           external_id,
           name: "Evan",
           alias: "BL",
+          unknown_junk: "ok", // make sure it doesn't hurt anything
           text_field: "testing here change",
           checkbox_field: true,
           date_field: null,
@@ -185,6 +186,8 @@ describe("zendesk/exportProfile", () => {
     expect(user.user_fields.date_field).toBe(null);
     expect(user.user_fields.text_field).toBe("testing here change");
     expect(user.user_fields.checkbox_field).toBe(true);
+
+    expect(user.user_fields.unknown_junk).toBeUndefined();
   });
 
   test("can clear user variables", async () => {

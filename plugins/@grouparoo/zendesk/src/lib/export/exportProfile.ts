@@ -65,20 +65,17 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     const newKeys = Object.keys(newProfileProperties);
     const oldKeys = Object.keys(oldProfileProperties);
     const allKeys = oldKeys.concat(newKeys);
-    const fields = await getFields(client);
+    const rootFields = await getRootFields(client);
     for (const key of allKeys) {
       const value = newProfileProperties[key]; // includes clearing out removed ones
-      const field = fields[key];
-      if (!field) {
-        // TODO: need to handle these changing out from under?
-        throw `unknown zendesk field: ${key}`;
-      }
-      const formatted = formatVar(value, field);
-      if (field.custom) {
+      const root = rootFields[key];
+      const formatted = formatVar(value);
+      if (root) {
+        payload[key] = formatted;
+      } else {
+        // otherwise, it's a user_field
         payload.user_fields = payload.user_fields || {};
         payload.user_fields[key] = formatted;
-      } else {
-        payload[key] = formatted;
       }
     }
 
@@ -193,34 +190,21 @@ export async function findUser(
   return found;
 }
 
-async function getFields(client) {
+async function getRootFields(client) {
   const required = getRequiredFields();
   const builtIn = getBuiltInFields();
-  const custom = await getUserFields(client);
 
   const out = {};
   for (const field of required) {
-    out[field.key] = {
-      type: field.type,
-      custom: false,
-    };
+    out[field.key] = true;
   }
   for (const field of builtIn) {
-    out[field.key] = {
-      type: field.type,
-      custom: false,
-    };
-  }
-  for (const field of custom) {
-    out[field.key] = {
-      type: field.type,
-      custom: true,
-    };
+    out[field.key] = true;
   }
   return out;
 }
 
-function formatVar(value, field) {
+function formatVar(value) {
   if (!value) {
     return null;
   }
