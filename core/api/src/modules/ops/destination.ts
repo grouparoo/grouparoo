@@ -415,19 +415,6 @@ export namespace DestinationOps {
       } else {
         return destination.sendExport(_export, sync);
       }
-    } else {
-      if (pluginConnection.methods.exportProfiles) {
-        // run#afterBatch will pick these up
-      } else {
-        return task.enqueue(
-          "export:send",
-          {
-            destinationGuid: destination.guid,
-            exportGuid: _export.guid,
-          },
-          `exports:${app.type}`
-        );
-      }
     }
   }
 
@@ -439,8 +426,6 @@ export namespace DestinationOps {
     _export: Export,
     sync = false
   ) {
-    await _export.update({ startedAt: new Date() });
-
     const options = await destination.getOptions();
     const app = await destination.$get("app");
     const appOptions = await app.getOptions();
@@ -579,7 +564,6 @@ export namespace DestinationOps {
 
     for (const i in _exports) {
       const _export = _exports[i];
-      await _export.update({ startedAt: new Date() });
 
       // do not include exports with hasChanges=false
       if (!_export.hasChanges) {

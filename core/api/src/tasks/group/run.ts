@@ -61,12 +61,6 @@ export class RunGroup extends Task {
       );
     }
 
-    // we still have exports from the previous batch that need to be processed
-    if (run.exportsCreated > 0 && run.exportsCreated > run.profilesExported) {
-      await run.afterBatch();
-      return task.enqueueIn(config.tasks.timeout + 1, this.name, params);
-    }
-
     await run.update({
       groupMemberLimit: limit,
       groupMemberOffset: offset,
@@ -96,7 +90,7 @@ export class RunGroup extends Task {
       throw new Error(`${method} is not now a known method`);
     }
 
-    await run.determinePercentComplete();
+    await run.afterBatch();
 
     if (memberCount === 0 && method === "runAddGroupMembers") {
       await task.enqueueIn(config.tasks.timeout + 1, this.name, {
@@ -131,6 +125,11 @@ export class RunGroup extends Task {
     } else {
       await group.countComponentMembersFromRules(null);
       await group.update({ state: "ready" });
+      await run.update({
+        groupMemberLimit: 0,
+        groupMemberOffset: 0,
+        groupMethod: "exporting",
+      });
       await task.enqueueIn(config.tasks.timeout + 1, "run:determineState", {
         runGuid: run.guid,
       });

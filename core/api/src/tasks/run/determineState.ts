@@ -36,7 +36,7 @@ export class RunDetermineState extends Task {
       log(
         `[ run ] completed run ${run.guid} for ${
           run.creatorType
-        } ${run.getCreatorName()} (${run.creatorGuid})`,
+        } ${await run.getCreatorName()} (${run.creatorGuid})`,
         "notice",
         { attempts, delta }
       );

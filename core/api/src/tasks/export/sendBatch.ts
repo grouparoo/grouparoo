@@ -3,7 +3,7 @@ import { Destination } from "../../models/Destination";
 import { Export } from "../../models/Export";
 import { Op } from "sequelize";
 
-export class ProfileExport extends RetryableTask {
+export class ExportSendBatches extends RetryableTask {
   constructor() {
     super();
     this.name = "export:sendBatch";

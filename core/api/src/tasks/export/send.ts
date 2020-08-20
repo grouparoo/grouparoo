@@ -2,7 +2,7 @@ import { RetryableTask } from "../../classes/retryableTask";
 import { Destination } from "../../models/Destination";
 import { Export } from "../../models/Export";
 
-export class ProfileExport extends RetryableTask {
+export class ExportSend extends RetryableTask {
   constructor() {
     super();
     this.name = "export:send";
