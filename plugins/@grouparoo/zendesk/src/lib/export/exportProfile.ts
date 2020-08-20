@@ -23,8 +23,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
     const dateValue = newProfileProperties.date_field;
 
-    // console.log("exportProfile", newProfileProperties);
-
     if (!external_id) {
       throw new Error(
         `newProfileProperties[external_id] is a required mapping`
@@ -116,15 +114,12 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
     let updated;
     if (user) {
-      // console.log("user.update", payload);
       updated = await client.users.update(user.id, { user: payload });
     } else {
-      // console.log("user.createOrUpdate", payload);
       updated = await client.users.createOrUpdate({ user: payload });
     }
 
     if (email && updated.email !== email) {
-      // console.log("updating email", `${updated.email} -> ${email}`);
       // have to make this the primary
       // https://developer.zendesk.com/rest_api/docs/support/users#email-address
       await makeEmailPrimary(client, updated.id, email);
