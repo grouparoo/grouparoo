@@ -6,6 +6,7 @@ import path from "path";
 import { exportProfile } from "../../src/lib/export/exportProfile";
 import Sailthru from "../../src/lib/client";
 import { loadAppOptions, updater } from "../utils/nockHelper";
+import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
 
 let client: Sailthru;
 const email = "brian@bleonard.com";

@@ -51,6 +51,7 @@ jobs:
             - plugins/@grouparoo/redshift/node_modules
             - plugins/@grouparoo/sailthru/node_modules
             - plugins/@grouparoo/sample-ui-plugin/node_modules
+            - plugins/@grouparoo/zendesk/node_modules
             - tools/merger/node_modules
       - save_cache:
           <<: *dist-cache-options
@@ -72,6 +73,7 @@ jobs:
             - plugins/@grouparoo/redshift/dist
             - plugins/@grouparoo/sailthru/dist
             - plugins/@grouparoo/sample-ui-plugin/dist
+            - plugins/@grouparoo/zendesk/dist
       - save_cache:
           <<: *core-cache-options
           paths:
