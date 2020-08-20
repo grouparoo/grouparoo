@@ -142,7 +142,9 @@ export namespace RunOps {
       // there are 3 phases to group runs, but only 2 really could have work, so we attribute 1/2 to each phase
       return Math.round(
         100 *
-          ((run.groupMethod.match(/remove/i) ? 1 + offset * 2 : offset) /
+          ((run.groupMethod.match(/remove/i)
+            ? offset + groupMembersCount
+            : offset) /
             (groupMembersCount > 0 ? groupMembersCount * 2 : 2))
       );
     } else if (run.creatorType === "schedule") {
