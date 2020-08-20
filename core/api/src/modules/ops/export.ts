@@ -21,12 +21,20 @@ export namespace ExportOps {
     for (const key in serializedProperties) {
       const type = serializedProperties[key].type;
       const rawValue = serializedProperties[key].rawValue;
-      if (Array.isArray(rawValue)) {
-        response[key] = rawValue.map((rv) =>
-          ProfilePropertyOps.getValue(rv, type)
-        );
+
+      if (!type || !rawValue) {
+        // legacy formatting
+        response[key] = serializedProperties[key];
       } else {
-        response[key] = ProfilePropertyOps.getValue(rawValue, type);
+        // current formatting
+        const rawValue = serializedProperties[key].rawValue;
+        if (Array.isArray(rawValue)) {
+          response[key] = rawValue.map((rv) =>
+            ProfilePropertyOps.getValue(rv, type)
+          );
+        } else {
+          response[key] = ProfilePropertyOps.getValue(rawValue, type);
+        }
       }
     }
 

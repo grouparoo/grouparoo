@@ -84,6 +84,59 @@ describe("models/export", () => {
     expect(_export.newGroups).toEqual(["cool-people"]);
   });
 
+  test("exports with the old serialization will not throw but assume every property is a string", async () => {
+    const oldProfileProperties = {
+      string: "name",
+      email: "oldEmail",
+      integer: 1,
+      float: 1.1,
+      date: new Date(1).toISOString(),
+      phoneNumber: "+1 412 897 0001",
+    };
+    const newProfileProperties = {
+      string: ["full", "name"],
+      email: ["oldEmail", "newEmail"],
+      integer: [1, 2],
+      float: [1.1, 2.2],
+      date: [new Date(1).toISOString(), new Date(2).toISOString()],
+      phoneNumber: ["+1 412 897 0001", "+1 412 897 0002"],
+    };
+    const oldGroups = [];
+    const newGroups = ["cool-people"];
+
+    const oldExport = await Export.create({
+      destinationGuid: destination.guid,
+      profileGuid: profile.guid,
+      startedAt: new Date(),
+      oldProfileProperties,
+      newProfileProperties,
+      oldGroups,
+      newGroups,
+      mostRecent: true,
+    });
+
+    expect(oldExport.oldProfileProperties).toEqual({
+      string: "name",
+      email: "oldEmail",
+      date: "1970-01-01T00:00:00.001Z",
+      float: 1.1,
+      integer: 1,
+      phoneNumber: "+1 412 897 0001",
+    });
+    expect(oldExport.newProfileProperties).toEqual({
+      string: ["full", "name"],
+      email: ["oldEmail", "newEmail"],
+      date: ["1970-01-01T00:00:00.001Z", "1970-01-01T00:00:00.002Z"],
+      float: [1.1, 2.2],
+      integer: [1, 2],
+      phoneNumber: ["+1 412 897 0001", "+1 412 897 0002"],
+    });
+    expect(oldExport.oldGroups).toEqual([]);
+    expect(oldExport.newGroups).toEqual(["cool-people"]);
+
+    await oldExport.destroy();
+  });
+
   test("imports can be associated to the export via ExportImports", async () => {
     const importA = await helper.factories.import();
     const importB = await helper.factories.import();
