@@ -134,12 +134,15 @@ export namespace RunOps {
           ? await group.countPotentialMembers()
           : await group.$count("groupMembers");
 
+      const offset =
+        run.groupMemberOffset > groupMembersCount
+          ? groupMembersCount
+          : run.groupMemberOffset;
+
       // there are 3 phases to group runs, but only 2 really could have work, so we attribute 1/2 to each phase
       return Math.round(
         100 *
-          ((run.groupMethod.match(/remove/i)
-            ? 1 + run.groupMemberOffset * 2
-            : run.groupMemberOffset) /
+          ((run.groupMethod.match(/remove/i) ? 1 + offset * 2 : offset) /
             (groupMembersCount > 0 ? groupMembersCount * 2 : 2))
       );
     } else if (run.creatorType === "schedule") {
