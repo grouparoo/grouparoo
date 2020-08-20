@@ -23,9 +23,20 @@ import { Profile } from "./Profile";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
 import { Op } from "sequelize";
+import { ExportOps } from "../modules/ops/export";
 
-interface ExportProfileProperties {
-  [key: string]: any;
+/**
+ * The Profile Properties in their normal data types (string, boolean, date, etc)
+ */
+export interface ExportProfileProperties {
+  [key: string]: any | any[];
+}
+
+/**
+ * The Profile Properties as stringified rawValues + types
+ */
+export interface ExportProfilePropertiesWithType {
+  [key: string]: { type: string; rawValue: string | string[] };
 }
 
 @Table({ tableName: "exports", paranoid: false })
@@ -64,12 +75,10 @@ export class Export extends Model<Export> {
 
   @Column(DataType.TEXT)
   get oldProfileProperties(): ExportProfileProperties {
-    try {
+    return ExportOps.deserializeExportProfileProperties(
       //@ts-ignore
-      return JSON.parse(this.getDataValue("oldProfileProperties"));
-    } catch (e) {
-      return {};
-    }
+      this.getDataValue("oldProfileProperties")
+    );
   }
   set oldProfileProperties(value: ExportProfileProperties) {
     //@ts-ignore
@@ -78,12 +87,10 @@ export class Export extends Model<Export> {
 
   @Column(DataType.TEXT)
   get newProfileProperties(): ExportProfileProperties {
-    try {
+    return ExportOps.deserializeExportProfileProperties(
       //@ts-ignore
-      return JSON.parse(this.getDataValue("newProfileProperties"));
-    } catch (e) {
-      return {};
-    }
+      this.getDataValue("newProfileProperties")
+    );
   }
   set newProfileProperties(value: ExportProfileProperties) {
     //@ts-ignore

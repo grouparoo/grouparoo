@@ -27,9 +27,26 @@ describe("models/export", () => {
     profile = await helper.factories.profile();
   });
 
-  test("an export can be created", async () => {
-    const oldProfileProperties = { email: "oldEmail" };
-    const newProfileProperties = { email: "newEmail" };
+  test("an export can be created and saved with both single-value and array properties", async () => {
+    const oldProfileProperties = {
+      string: { type: "string", rawValue: "name" },
+      email: { type: "email", rawValue: "oldEmail" },
+      integer: { type: "integer", rawValue: "1" },
+      float: { type: "float", rawValue: "1.1" },
+      date: { type: "date", rawValue: "1" },
+      phoneNumber: { type: "phoneNumber", rawValue: "+1 412 897 0001" },
+    };
+    const newProfileProperties = {
+      string: { type: "string", rawValue: ["full", "name"] },
+      email: { type: "email", rawValue: ["oldEmail", "newEmail"] },
+      integer: { type: "integer", rawValue: ["1", "2"] },
+      float: { type: "float", rawValue: ["1.1", "2.2"] },
+      date: { type: "date", rawValue: ["1", "2"] },
+      phoneNumber: {
+        type: "phoneNumber",
+        rawValue: ["+1 412 897 0001", "+1 412 897 0002"],
+      },
+    };
     const oldGroups = [];
     const newGroups = ["cool-people"];
 
@@ -43,6 +60,81 @@ describe("models/export", () => {
       newGroups,
       mostRecent: true,
     });
+  });
+
+  test("an export can be deserialized returning Grouparoo types", async () => {
+    const _export = await Export.findOne();
+    expect(_export.oldProfileProperties).toEqual({
+      string: "name",
+      email: "oldEmail",
+      date: new Date(1),
+      float: 1.1,
+      integer: 1,
+      phoneNumber: "+1 412 897 0001",
+    });
+    expect(_export.newProfileProperties).toEqual({
+      string: ["full", "name"],
+      email: ["oldEmail", "newEmail"],
+      date: [new Date(1), new Date(2)],
+      float: [1.1, 2.2],
+      integer: [1, 2],
+      phoneNumber: ["+1 412 897 0001", "+1 412 897 0002"],
+    });
+    expect(_export.oldGroups).toEqual([]);
+    expect(_export.newGroups).toEqual(["cool-people"]);
+  });
+
+  test("exports with the old serialization will not throw but assume every property is a string", async () => {
+    const oldProfileProperties = {
+      string: "name",
+      email: "oldEmail",
+      integer: 1,
+      float: 1.1,
+      date: new Date(1).toISOString(),
+      phoneNumber: "+1 412 897 0001",
+    };
+    const newProfileProperties = {
+      string: ["full", "name"],
+      email: ["oldEmail", "newEmail"],
+      integer: [1, 2],
+      float: [1.1, 2.2],
+      date: [new Date(1).toISOString(), new Date(2).toISOString()],
+      phoneNumber: ["+1 412 897 0001", "+1 412 897 0002"],
+    };
+    const oldGroups = [];
+    const newGroups = ["cool-people"];
+
+    const oldExport = await Export.create({
+      destinationGuid: destination.guid,
+      profileGuid: profile.guid,
+      startedAt: new Date(),
+      oldProfileProperties,
+      newProfileProperties,
+      oldGroups,
+      newGroups,
+      mostRecent: true,
+    });
+
+    expect(oldExport.oldProfileProperties).toEqual({
+      string: "name",
+      email: "oldEmail",
+      date: "1970-01-01T00:00:00.001Z",
+      float: 1.1,
+      integer: 1,
+      phoneNumber: "+1 412 897 0001",
+    });
+    expect(oldExport.newProfileProperties).toEqual({
+      string: ["full", "name"],
+      email: ["oldEmail", "newEmail"],
+      date: ["1970-01-01T00:00:00.001Z", "1970-01-01T00:00:00.002Z"],
+      float: [1.1, 2.2],
+      integer: [1, 2],
+      phoneNumber: ["+1 412 897 0001", "+1 412 897 0002"],
+    });
+    expect(oldExport.oldGroups).toEqual([]);
+    expect(oldExport.newGroups).toEqual(["cool-people"]);
+
+    await oldExport.destroy();
   });
 
   test("imports can be associated to the export via ExportImports", async () => {

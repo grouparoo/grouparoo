@@ -7,9 +7,10 @@ import { App } from "../../models/App";
 import { Profile } from "../../models/Profile";
 import { Run } from "../../models/Run";
 import { Import } from "../../models/Import";
-import { Export } from "../../models/Export";
+import { Export, ExportProfilePropertiesWithType } from "../../models/Export";
 import { ExportRun } from "../../models/ExportRun";
 import { Group } from "../../models/Group";
+import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
 import { MappingHelper } from "../mappingHelper";
 import {
   ExportedProfile,
@@ -215,16 +216,29 @@ export namespace DestinationOps {
 
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);
+    const cachedProfileProperties = await ProfilePropertyRule.cached();
     const destinationGroupMemberships = await destination.getDestinationGroupMemberships();
 
     const mapping = await destination.getMapping();
-    const mappingKeys = Object.keys(mapping);
-    let mappedOldProfileProperties = {};
-    let mappedNewProfileProperties = {};
-    mappingKeys.forEach((k) => {
-      mappedOldProfileProperties[k] = oldProfileProperties[mapping[k]];
-      mappedNewProfileProperties[k] = newProfileProperties[mapping[k]];
-    });
+
+    let mappedOldProfileProperties: ExportProfilePropertiesWithType = {};
+    let mappedNewProfileProperties: ExportProfilePropertiesWithType = {};
+
+    for (const k in mapping) {
+      const rule = cachedProfileProperties[mapping[k]];
+      if (!rule) throw new Error(`cannot find rule for ${mapping[k]}`);
+      const type = rule.type;
+
+      mappedOldProfileProperties[k] = {
+        type,
+        rawValue: oldProfileProperties[mapping[k]],
+      };
+
+      mappedNewProfileProperties[k] = {
+        type,
+        rawValue: newProfileProperties[mapping[k]],
+      };
+    }
 
     const oldGroupNames = oldGroups
       .filter((group) =>
@@ -286,7 +300,13 @@ export namespace DestinationOps {
       mostRecentMappedProfilePropertyKeys
         .filter((k) => !currentMappedNewProfilePropertyKeys.includes(k))
         .filter((k) => !currentMappedOldProfilePropertyKeys.includes(k))
-        .forEach((k) => (mappedOldProfileProperties[k] = ["unknown"]));
+        .forEach(
+          (k) =>
+            (mappedOldProfileProperties[k] = {
+              type: "string",
+              rawValue: ["unknown"],
+            })
+        );
 
       // we also want to check for groups we previously sent but are no longer sending
       // the profile may have not changed membership in the group, but the destination may have just started tracking it
@@ -301,7 +321,7 @@ export namespace DestinationOps {
         });
     }
 
-    // Send only the properties form the array that should be sent to the Destination, otherwise send the first entry in the array of profile properties
+    // Send only the properties from the array that should be sent to the Destination, otherwise send the first entry in the array of profile properties
     const exportArrayProperties = await getExportArrayProperties(destination);
 
     for (const k in mappedOldProfileProperties) {
@@ -310,7 +330,10 @@ export namespace DestinationOps {
         !exportArrayProperties.includes(k) &&
         !exportArrayProperties.includes("*")
       ) {
-        mappedOldProfileProperties[k] = mappedOldProfileProperties[k][0];
+        mappedOldProfileProperties[k].rawValue
+          ? (mappedOldProfileProperties[k].rawValue =
+              mappedOldProfileProperties[k].rawValue[0])
+          : delete mappedOldProfileProperties[k];
       }
     }
     for (const k in mappedNewProfileProperties) {
@@ -319,7 +342,10 @@ export namespace DestinationOps {
         !exportArrayProperties.includes(k) &&
         !exportArrayProperties.includes("*")
       ) {
-        mappedNewProfileProperties[k] = mappedNewProfileProperties[k][0];
+        mappedNewProfileProperties[k].rawValue
+          ? (mappedNewProfileProperties[k].rawValue =
+              mappedNewProfileProperties[k].rawValue[0])
+          : delete mappedNewProfileProperties[k];
       }
     }
 
