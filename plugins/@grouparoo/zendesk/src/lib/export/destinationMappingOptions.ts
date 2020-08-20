@@ -63,7 +63,6 @@ export const getBuiltInFields = (): Array<{
 }> => {
   return [
     { key: "email", type: "email", important: true },
-    { key: "name", type: "string", important: true },
     { key: "notes", type: "string" },
     { key: "details", type: "string" },
     { key: "alias", type: "string" },
