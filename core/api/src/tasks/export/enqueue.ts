@@ -19,10 +19,13 @@ export class EnqueueExports extends RetryableTask {
       where: { state: "ready" },
     });
 
+    let totalEnqueued = 0;
+
     for (const i in destinations) {
       let enqueuedExportsCount = await ExportOps.processPendingExportsForDestination(
         destinations[i]
       );
+      totalEnqueued += enqueuedExportsCount;
 
       while (enqueuedExportsCount > 0) {
         log(
@@ -31,7 +34,10 @@ export class EnqueueExports extends RetryableTask {
         enqueuedExportsCount = await ExportOps.processPendingExportsForDestination(
           destinations[i]
         );
+        totalEnqueued += enqueuedExportsCount;
       }
+
+      return totalEnqueued;
     }
   }
 }
