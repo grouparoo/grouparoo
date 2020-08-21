@@ -137,6 +137,107 @@ describe("models/export", () => {
     await oldExport.destroy();
   });
 
+  test("export serialization is OK with null values with types", async () => {
+    const oldProfileProperties = {
+      string: { type: "string", rawValue: null },
+      email: { type: "email", rawValue: null },
+      integer: { type: "integer", rawValue: null },
+      float: { type: "float", rawValue: null },
+      date: { type: "date", rawValue: null },
+      phoneNumber: { type: "phoneNumber", rawValue: null },
+    };
+    const newProfileProperties = {
+      string: { type: "string", rawValue: [null, null] },
+      email: { type: "email", rawValue: [null, null] },
+      integer: { type: "integer", rawValue: [null, null] },
+      float: { type: "float", rawValue: [null, null] },
+      date: { type: "date", rawValue: [null, null] },
+      phoneNumber: {
+        type: "phoneNumber",
+        rawValue: [null, null],
+      },
+    };
+
+    const nullExport = await Export.create({
+      destinationGuid: destination.guid,
+      profileGuid: profile.guid,
+      startedAt: new Date(),
+      oldProfileProperties,
+      newProfileProperties,
+      oldGroups: [],
+      newGroups: [],
+      mostRecent: true,
+    });
+
+    expect(nullExport.oldProfileProperties).toEqual({
+      string: null,
+      email: null,
+      date: null,
+      float: null,
+      integer: null,
+      phoneNumber: null,
+    });
+    expect(nullExport.newProfileProperties).toEqual({
+      string: [null, null],
+      email: [null, null],
+      date: [null, null],
+      float: [null, null],
+      integer: [null, null],
+      phoneNumber: [null, null],
+    });
+
+    await nullExport.destroy();
+  });
+
+  test("export serialization is OK with null values without types", async () => {
+    const oldProfileProperties = {
+      string: null,
+      email: null,
+      integer: null,
+      float: null,
+      date: null,
+      phoneNumber: null,
+    };
+    const newProfileProperties = {
+      string: [null, null],
+      email: [null, null],
+      integer: [null, null],
+      float: [null, null],
+      date: [null, null],
+      phoneNumber: [null, null],
+    };
+
+    const oldNullExport = await Export.create({
+      destinationGuid: destination.guid,
+      profileGuid: profile.guid,
+      startedAt: new Date(),
+      oldProfileProperties,
+      newProfileProperties,
+      oldGroups: [],
+      newGroups: [],
+      mostRecent: true,
+    });
+
+    expect(oldNullExport.oldProfileProperties).toEqual({
+      string: null,
+      email: null,
+      date: null,
+      float: null,
+      integer: null,
+      phoneNumber: null,
+    });
+    expect(oldNullExport.newProfileProperties).toEqual({
+      string: [null, null],
+      email: [null, null],
+      date: [null, null],
+      float: [null, null],
+      integer: [null, null],
+      phoneNumber: [null, null],
+    });
+
+    await oldNullExport.destroy();
+  });
+
   test("imports can be associated to the export via ExportImports", async () => {
     const importA = await helper.factories.import();
     const importB = await helper.factories.import();
