@@ -1,7 +1,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Sparklines, SparklinesLine } from "react-sparklines";
-import { Row, Col, CardGroup, Card, Table, ProgressBar } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  CardGroup,
+  Card,
+  Table,
+  Badge,
+  ProgressBar,
+} from "react-bootstrap";
 import { useApi } from "../../hooks/useApi";
 import { RunAPIData } from "../../utils/apiData";
 import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
@@ -113,6 +121,62 @@ function BigNumber({ execApi, model, title, href = null }) {
   );
 }
 
+function PendingExports({ execApi }) {
+  const [destinations, setDestinations] = useState([]);
+  let timer;
+
+  useEffect(() => {
+    startTimer();
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  function startTimer() {
+    load();
+    timer = setInterval(load, TIMEOUT);
+  }
+
+  async function load() {
+    const response = await execApi("get", `/destinations`);
+    if (response) {
+      setDestinations(response.destinations);
+    }
+  }
+
+  return (
+    <Table borderless size="sm">
+      <tbody>
+        {destinations.map((destination) => {
+          const pendingExports =
+            destination.exportTotals.created + destination.exportTotals.started;
+
+          return (
+            <tr key={`destination-${destination.guid}`}>
+              <td>
+                <Link
+                  href="/destination/[guid]/edit"
+                  as={`/destination/${destination.guid}/edit`}
+                >
+                  <a>{destination.name}</a>
+                </Link>
+              </td>
+              <td>
+                {
+                  <Badge variant={pendingExports > 0 ? "warning" : "info"}>
+                    {pendingExports}
+                  </Badge>
+                }
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </Table>
+  );
+}
+
 function RunningRuns({ execApi }) {
   useRealtimeModelStream("run", "totals-runs-list", load);
   const [runs, setRuns] = useState<RunAPIData[]>([]);
@@ -216,8 +280,17 @@ export default function Totals(props) {
       </CardGroup>
 
       <br />
-      <h3>Active Runs</h3>
-      <RunningRuns execApi={execApi} />
+
+      <Row>
+        <Col>
+          <h3>Active Runs</h3>
+          <RunningRuns execApi={execApi} />
+        </Col>
+        <Col>
+          <h3>Pending Exports</h3>
+          <PendingExports execApi={execApi} />
+        </Col>
+      </Row>
     </>
   );
 }
