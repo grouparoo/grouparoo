@@ -1,6 +1,7 @@
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Export } from "../models/Export";
 import { Op } from "sequelize";
+import { ExportOps } from "../modules/ops/export";
 
 export class ListExports extends AuthenticatedAction {
   constructor() {
@@ -24,7 +25,9 @@ export class ListExports extends AuthenticatedAction {
 
   async run({ params, response }) {
     const where = {};
-    if (params.profileGuid) where["profileGuid"] = params.profileGuid;
+    if (params.profileGuid) {
+      where["profileGuid"] = params.profileGuid;
+    }
     if (params.destinationGuid) {
       where["destinationGuid"] = params.destinationGuid;
     }
@@ -62,6 +65,32 @@ export class ListExports extends AuthenticatedAction {
 
     response.exports = await Promise.all(_exports.map((exp) => exp.apiData()));
     response.total = await Export.count({ where });
+  }
+}
+
+export class ExportsTotals extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "exports:totals";
+    this.description = "count exports by state";
+    this.outputExample = {};
+    this.permission = { topic: "export", mode: "read" };
+    this.inputs = {
+      profileGuid: { required: false },
+      destinationGuid: { required: false },
+    };
+  }
+
+  async run({ params, response }) {
+    const where = {};
+    if (params.profileGuid) {
+      where["profileGuid"] = params.profileGuid;
+    }
+    if (params.destinationGuid) {
+      where["destinationGuid"] = params.destinationGuid;
+    }
+
+    response.totals = await ExportOps.totals(where);
   }
 }
 

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Button } from "react-bootstrap";
+import { Button, Badge } from "react-bootstrap";
 import Router from "next/router";
 import { useApi } from "../hooks/useApi";
 import { useState } from "react";
@@ -84,11 +84,16 @@ export default function Page(props) {
             <th>Group Tracked</th>
             <th>App</th>
             <th>State</th>
+            <th>Pending Exports</th>
             <th>Created At</th>
           </tr>
         </thead>
         <tbody>
           {destinations.map((destination) => {
+            const pendingExports =
+              destination.exportTotals.created +
+              destination.exportTotals.started;
+
             return (
               <tr key={`destination-${destination.guid}`}>
                 <td>
@@ -137,6 +142,11 @@ export default function Page(props) {
                 </td>
                 <td>
                   <StateBadge state={destination.state} />
+                </td>
+                <td>
+                  <Badge variant={pendingExports > 0 ? "warning" : "info"}>
+                    {pendingExports}
+                  </Badge>
                 </td>
                 <td>
                   <Moment fromNow>{destination.createdAt}</Moment>

@@ -214,6 +214,37 @@ describe("models/destination", () => {
       });
     });
 
+    test("destinations can retrieve related export totals", async () => {
+      destination = await Destination.create({
+        name: "bye destination",
+        type: "test-plugin-export",
+        appGuid: app.guid,
+      });
+
+      const profile = await helper.factories.profile();
+      const _export = await Export.create({
+        destinationGuid: destination.guid,
+        profileGuid: profile.guid,
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        oldGroups: [],
+        newGroups: [],
+      });
+
+      const totals = await destination.getExportTotals();
+      expect(totals).toEqual({
+        all: 1,
+        completed: 0,
+        created: 1,
+        error: 0,
+        started: 0,
+      });
+
+      await _export.destroy();
+      await destination.destroy();
+      await profile.destroy();
+    });
+
     test("a destination can get options from a connection", async () => {
       const connectionOptions = await destination.destinationConnectionOptions();
       expect(connectionOptions).toEqual({

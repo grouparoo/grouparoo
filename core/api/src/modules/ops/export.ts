@@ -7,8 +7,54 @@ import { plugin } from "../../modules/plugin";
 import { Export } from "../../models/Export";
 import { Destination } from "../../models/Destination";
 import { api, task } from "actionhero";
+import { Op } from "sequelize";
 
 export namespace ExportOps {
+  /** Count up the exports in each state, optionally filtered for a profile or destination */
+  export async function totals(
+    where: { profileGuid?: string; destinationGuid?: string } = {}
+  ) {
+    const totals = { all: 0, created: 0, started: 0, completed: 0, error: 0 };
+
+    totals.all = await Export.count({ where });
+
+    totals.created = await Export.count({
+      where: Object.assign({}, where, {
+        startedAt: { [Op.eq]: null },
+        [Op.and]: {
+          completedAt: { [Op.eq]: null },
+          errorMessage: { [Op.eq]: null },
+        },
+      }),
+    });
+
+    totals.started = await Export.count({
+      where: Object.assign({}, where, {
+        startedAt: { [Op.ne]: null },
+        [Op.and]: {
+          completedAt: { [Op.eq]: null },
+          errorMessage: { [Op.eq]: null },
+        },
+      }),
+    });
+
+    totals.completed = await Export.count({
+      where: Object.assign({}, where, {
+        startedAt: { [Op.ne]: null },
+        completedAt: { [Op.ne]: null },
+        errorMessage: { [Op.eq]: null },
+      }),
+    });
+
+    totals.error = await Export.count({
+      where: Object.assign({}, where, {
+        errorMessage: { [Op.ne]: null },
+      }),
+    });
+
+    return totals;
+  }
+
   /**
    * Given an export with stringified old/new profile properties, this method will re-'inflate' them, ie turning date strings back to date objects.
    * To be used in the getter, this method cannot be async.
