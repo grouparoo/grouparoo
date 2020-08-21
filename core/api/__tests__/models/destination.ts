@@ -857,8 +857,8 @@ describe("models/destination", () => {
       );
 
       const profile = await helper.factories.profile();
-      const oldProfileProperties = { email: ["oldEmail"] };
-      const newProfileProperties = { email: ["newEmail"] };
+      const oldProfileProperties = { email: ["oldmail@example.com"] };
+      const newProfileProperties = { email: ["newemail@example.com"] };
       const oldGroups = [];
       const newGroups = [groupA, groupB];
 
@@ -882,10 +882,10 @@ describe("models/destination", () => {
       expect(exportArgs.app.guid).toEqual(app.guid);
       expect(exportArgs.profile.guid).toEqual(profile.guid);
       expect(exportArgs.oldProfileProperties).toEqual({
-        customer_email: "oldEmail",
+        customer_email: "oldmail@example.com",
       });
       expect(exportArgs.newProfileProperties).toEqual({
-        customer_email: "newEmail",
+        customer_email: "newemail@example.com",
       });
       expect(exportArgs.oldGroups).toEqual([]);
       expect(exportArgs.newGroups).toEqual(
@@ -904,10 +904,10 @@ describe("models/destination", () => {
       ).toBeGreaterThan(0);
       expect(_exports[0].errorMessage).toBeFalsy();
       expect(_exports[0].oldProfileProperties).toEqual({
-        customer_email: "oldEmail",
+        customer_email: "oldmail@example.com",
       });
       expect(_exports[0].newProfileProperties).toEqual({
-        customer_email: "newEmail",
+        customer_email: "newemail@example.com",
       });
       expect(_exports[0].oldGroups).toEqual([]);
       expect(_exports[0].newGroups).toEqual(
@@ -940,8 +940,8 @@ describe("models/destination", () => {
       await destination.trackGroup(groupA);
 
       const profile = await helper.factories.profile();
-      const oldProfileProperties = { email: ["oldEmail"] };
-      const newProfileProperties = { email: ["newEmail"] };
+      const oldProfileProperties = { email: ["oldmail@example.com"] };
+      const newProfileProperties = { email: ["newemail@example.com"] };
       const oldGroups = [];
       const newGroups = [groupA];
 
@@ -973,11 +973,11 @@ describe("models/destination", () => {
       await specHelper.runTask("export:send", foundTasks[0].args[0]);
 
       expect(exportArgs.oldProfileProperties).toEqual({
-        customer_email: "oldEmail",
+        customer_email: "oldmail@example.com",
         gender: "unknown",
       });
       expect(exportArgs.newProfileProperties).toEqual({
-        customer_email: "newEmail",
+        customer_email: "newemail@example.com",
       });
 
       await destination.unTrackGroups();
@@ -1135,8 +1135,8 @@ describe("models/destination", () => {
       );
 
       const profile = await helper.factories.profile();
-      const oldProfileProperties = { email: ["oldEmail"] };
-      const newProfileProperties = { email: ["newEmail"] };
+      const oldProfileProperties = { email: ["oldmail@example.com"] };
+      const newProfileProperties = { email: ["newemail@example.com"] };
       const oldGroups = [groupA, groupB];
       const newGroups = [];
 
@@ -1779,8 +1779,8 @@ describe("models/destination", () => {
       );
 
       const profile = await helper.factories.profile();
-      const oldProfileProperties = { email: ["oldEmail"] };
-      const newProfileProperties = { email: ["newEmail"] };
+      const oldProfileProperties = { email: ["oldmail@example.com"] };
+      const newProfileProperties = { email: ["newemail@example.com"] };
       const oldGroups = [];
       const newGroups = [groupA, groupB];
 
@@ -1816,10 +1816,10 @@ describe("models/destination", () => {
       expect(exportArgs.exports.length).toEqual(1);
       expect(exportArgs.exports[0].profile.guid).toEqual(profile.guid);
       expect(exportArgs.exports[0].oldProfileProperties).toEqual({
-        customer_email: "oldEmail",
+        customer_email: "oldmail@example.com",
       });
       expect(exportArgs.exports[0].newProfileProperties).toEqual({
-        customer_email: "newEmail",
+        customer_email: "newemail@example.com",
       });
       expect(exportArgs.exports[0].oldGroups).toEqual([]);
       expect(exportArgs.exports[0].newGroups).toEqual(
@@ -1838,10 +1838,10 @@ describe("models/destination", () => {
       ).toBeGreaterThan(0);
       expect(_exports[0].errorMessage).toBeFalsy();
       expect(_exports[0].oldProfileProperties).toEqual({
-        customer_email: "oldEmail",
+        customer_email: "oldmail@example.com",
       });
       expect(_exports[0].newProfileProperties).toEqual({
-        customer_email: "newEmail",
+        customer_email: "newemail@example.com",
       });
       expect(_exports[0].oldGroups).toEqual([]);
       expect(_exports[0].newGroups).toEqual(
@@ -1874,8 +1874,8 @@ describe("models/destination", () => {
       await destination.trackGroup(groupA);
 
       const profile = await helper.factories.profile();
-      const oldProfileProperties = { email: ["oldEmail"] };
-      const newProfileProperties = { email: ["newEmail"] };
+      const oldProfileProperties = { email: ["oldmail@example.com"] };
+      const newProfileProperties = { email: ["newEmail@example.com"] };
       const oldGroups = [];
       const newGroups = [groupA];
 
@@ -1919,11 +1919,11 @@ describe("models/destination", () => {
 
       expect(exportArgs.exports.length).toBe(1);
       expect(exportArgs.exports[0].oldProfileProperties).toEqual({
-        customer_email: "oldEmail",
+        customer_email: "oldmail@example.com",
         gender: "unknown",
       });
       expect(exportArgs.exports[0].newProfileProperties).toEqual({
-        customer_email: "newEmail",
+        customer_email: "newemail@example.com",
       });
 
       await destination.unTrackGroups();
@@ -1953,8 +1953,8 @@ describe("models/destination", () => {
       );
 
       const profile = await helper.factories.profile();
-      const oldProfileProperties = { email: ["oldEmail"] };
-      const newProfileProperties = { email: ["newEmail"] };
+      const oldProfileProperties = { email: ["oldmail@example.com"] };
+      const newProfileProperties = { email: ["newemail@example.com"] };
       const oldGroups = [groupA, groupB];
       const newGroups = [];
 
