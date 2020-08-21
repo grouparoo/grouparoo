@@ -20,6 +20,7 @@ import {
 } from "../../classes/plugin";
 import { task, log, config } from "actionhero";
 import { deepStrictEqual } from "assert";
+import { ProfilePropertyOps } from "./profileProperty";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -231,12 +232,20 @@ export namespace DestinationOps {
 
       mappedOldProfileProperties[k] = {
         type,
-        rawValue: oldProfileProperties[mapping[k]],
+        rawValue: await Promise.all(
+          oldProfileProperties[mapping[k]].map((v) =>
+            ProfilePropertyOps.buildRawValue(v, type)
+          )
+        ),
       };
 
       mappedNewProfileProperties[k] = {
         type,
-        rawValue: newProfileProperties[mapping[k]],
+        rawValue: await Promise.all(
+          newProfileProperties[mapping[k]].map((v) =>
+            ProfilePropertyOps.buildRawValue(v, type)
+          )
+        ),
       };
     }
 
@@ -349,6 +358,7 @@ export namespace DestinationOps {
       }
     }
 
+    // determine if there are changes between this export and the previous one
     let hasChanges = true;
     if (
       !force &&

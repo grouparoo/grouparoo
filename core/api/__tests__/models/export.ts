@@ -238,6 +238,74 @@ describe("models/export", () => {
     await oldNullExport.destroy();
   });
 
+  test("when destinations build exports, profile properties are serialized back to strings", async () => {
+    const profile = await helper.factories.profile();
+    await profile.addOrUpdateProperties({
+      userId: [123],
+      email: ["person@example.com"],
+      lastLoginAt: [new Date(10)],
+      ltv: [100.99],
+      isVIP: [true],
+    });
+
+    const group = await helper.factories.group();
+    await group.addProfile(profile);
+
+    const destination = await helper.factories.destination();
+    await destination.trackGroup(group);
+    await destination.setMapping({
+      "primary-id": "userId",
+      email: "email",
+      lastLoginAt: "lastLoginAt",
+      ltv: "ltv",
+      isVIP: "isVIP",
+    });
+    await destination.update({ state: "ready" });
+
+    await profile.export();
+    const _export = await Export.findOne({
+      where: { profileGuid: profile.guid },
+    });
+
+    const rawProperties = JSON.parse(
+      _export["dataValues"].oldProfileProperties
+    );
+
+    expect(rawProperties["primary-id"]).toEqual({
+      type: "integer",
+      rawValue: "123",
+    });
+    expect(rawProperties.email).toEqual({
+      type: "email",
+      rawValue: "person@example.com",
+    });
+    expect(rawProperties.lastLoginAt).toEqual({
+      type: "date",
+      rawValue: "10",
+    });
+    expect(rawProperties.ltv).toEqual({
+      type: "float",
+      rawValue: "100.99",
+    });
+    expect(rawProperties.isVIP).toEqual({
+      type: "boolean",
+      rawValue: "true",
+    });
+
+    // the value types are returned to the model properties
+    expect(_export.newProfileProperties["primary-id"]).toEqual(123);
+    expect(_export.newProfileProperties.email).toEqual("person@example.com");
+    expect(_export.newProfileProperties.lastLoginAt).toEqual(new Date(10));
+    expect(_export.newProfileProperties.ltv).toEqual(100.99);
+    expect(_export.newProfileProperties.isVIP).toEqual(true);
+
+    // cleanup
+    await profile.destroy();
+    await destination.unTrackGroups();
+    await group.destroy();
+    await destination.destroy();
+  });
+
   test("imports can be associated to the export via ExportImports", async () => {
     const importA = await helper.factories.import();
     const importB = await helper.factories.import();
