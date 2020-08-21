@@ -61,6 +61,7 @@ export class GroupDestroy extends Task {
     );
     const remainingMembers = await group.$count("groupMembers");
 
+    await run.determineState();
     await run.afterBatch();
 
     if (importsCounts > 0 || previousRunMembers > 0 || remainingMembers > 0) {

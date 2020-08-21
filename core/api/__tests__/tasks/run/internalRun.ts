@@ -4,6 +4,8 @@ import { internalRun } from "../../../src/modules/internalRun";
 import { Import } from "../../../src/models/Import";
 import { ProfilePropertyRule } from "../../../src/models/ProfilePropertyRule";
 import { Run } from "../../../src/models/Run";
+import { Export } from "../../../src/models/Export";
+import { ExportRun } from "../../../src/models/ExportRun";
 
 let actionhero;
 let profile;
@@ -23,22 +25,40 @@ describe("tasks/run:internalRun", () => {
     await helper.shutdown(actionhero);
   });
 
-  test("if the run has not yet exported all profiles, the task will be re-enqueued", async () => {
+  test("the run can not be completed until all the exports are sent", async () => {
     const rule = await ProfilePropertyRule.findOne();
     const run = await helper.factories.run(rule, {
       creatorType: "test",
       creatorGuid: "test",
       state: "running",
     });
-    await run.update({ exportsCreated: 1 });
+
+    const _export = await Export.create({
+      destinationGuid: "dst_abc",
+      profileGuid: "pro_abc",
+      oldProfileProperties: {},
+      newProfileProperties: {},
+      oldGroups: [],
+      newGroups: [],
+    });
+    const exportRun = ExportRun.create({
+      runGuid: run.guid,
+      exportGuid: _export.guid,
+    });
 
     await specHelper.runTask("run:internalRun", {
       runGuid: run.guid,
     });
 
-    const found = await specHelper.findEnqueuedTasks("run:internalRun");
+    const found = await specHelper.findEnqueuedTasks("run:determineState");
     expect(found.length).toEqual(1);
-    expect(found[0].timestamp).toBeGreaterThan(0);
+
+    await specHelper.runTask("run:determineState", {
+      runGuid: run.guid,
+    });
+
+    await run.reload();
+    expect(run.state).toBe("running");
   });
 
   describe("run:internalRun", () => {

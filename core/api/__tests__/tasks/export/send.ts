@@ -82,11 +82,11 @@ describe("tasks/export:send", () => {
       );
       expect(foundExportTasks.length).toBe(1);
       await specHelper.runTask("profile:export", foundExportTasks[0].args[0]);
-
+      await specHelper.runTask("export:enqueue", {});
       const foundExportSendTasks = await specHelper.findEnqueuedTasks(
         "export:send"
       );
-      expect(foundExportTasks.length).toBe(1);
+      expect(foundExportSendTasks.length).toBe(1);
       expect(foundExportSendTasks[0].queue).toBe("exports:test-plugin-app");
     });
 

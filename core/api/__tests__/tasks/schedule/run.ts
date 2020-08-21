@@ -2,6 +2,8 @@ import { helper } from "../../utils/specHelper";
 import { api, task, specHelper } from "actionhero";
 import { Source } from "../../../src/models/Source";
 import { Schedule } from "../../../src/models/Schedule";
+import { Export } from "../../../src/models/Export";
+import { ExportRun } from "../../../src/models/ExportRun";
 
 let actionhero;
 
@@ -52,18 +54,41 @@ describe("tasks/schedule:run", () => {
       ).rejects.toThrow(/scheduleGuid is a required input/);
     });
 
-    test("if the run has not yet exported all profiles, the task will be re-enqueued", async () => {
-      const run = await helper.factories.run(schedule, { state: "running" });
-      await run.update({ exportsCreated: 1 });
+    test("the run can not be completed until all the exports are sent", async () => {
+      const schedule = await helper.factories.schedule();
+      const run = await helper.factories.run(schedule, {
+        creatorType: "schedule",
+        creatorGuid: schedule.guid,
+        state: "running",
+      });
+
+      const _export = await Export.create({
+        destinationGuid: "dst_abc",
+        profileGuid: "pro_abc",
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        oldGroups: [],
+        newGroups: [],
+      });
+      const exportRun = ExportRun.create({
+        runGuid: run.guid,
+        exportGuid: _export.guid,
+      });
 
       await specHelper.runTask("schedule:run", {
+        runGuid: run.guid,
         scheduleGuid: schedule.guid,
+      });
+
+      const found = await specHelper.findEnqueuedTasks("run:determineState");
+      expect(found.length).toEqual(1);
+
+      await specHelper.runTask("run:determineState", {
         runGuid: run.guid,
       });
 
-      const found = await specHelper.findEnqueuedTasks("schedule:run");
-      expect(found.length).toEqual(1);
-      expect(found[0].timestamp).toBeGreaterThan(0);
+      await run.reload();
+      expect(run.state).toBe("running");
     });
   });
 });

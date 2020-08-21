@@ -85,14 +85,13 @@ describe("tasks/export:sendBatch", () => {
       );
       expect(foundExportTasks.length).toBe(1);
       await specHelper.runTask("profile:export", foundExportTasks[0].args[0]);
-
       let foundExportSendBatchTasks = await specHelper.findEnqueuedTasks(
         "export:sendBatch"
       );
       expect(foundExportTasks.length).toBe(1);
       expect(foundExportSendBatchTasks.length).toBe(0);
 
-      await run.afterBatch();
+      await specHelper.runTask("export:enqueue", {});
 
       foundExportSendBatchTasks = await specHelper.findEnqueuedTasks(
         "export:sendBatch"
