@@ -210,7 +210,7 @@ function RunningRuns({ execApi }) {
                 variant="info"
                 style={{ minWidth: 300 }}
                 animated={run.percentComplete > 0 ? true : false}
-                now={run.percentComplete > 0 ? run.percentComplete : 100}
+                now={run.percentComplete}
                 label={`${run.percentComplete}%`}
               />
             </td>
