@@ -1,5 +1,6 @@
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Export } from "../models/Export";
+import { Op } from "sequelize";
 
 export class ListExports extends AuthenticatedAction {
   constructor() {
@@ -13,6 +14,7 @@ export class ListExports extends AuthenticatedAction {
       destinationGuid: { required: false },
       limit: { required: true, default: 100 },
       offset: { required: true, default: 0 },
+      state: { required: false },
       order: {
         required: false,
         default: [["createdAt", "desc"]],
@@ -25,6 +27,30 @@ export class ListExports extends AuthenticatedAction {
     if (params.profileGuid) where["profileGuid"] = params.profileGuid;
     if (params.destinationGuid) {
       where["destinationGuid"] = params.destinationGuid;
+    }
+
+    if (params.state) {
+      if (params.state === "created") {
+        where["startedAt"] = { [Op.eq]: null };
+        where[Op.and] = {
+          completedAt: { [Op.eq]: null },
+          errorMessage: { [Op.eq]: null },
+        };
+      } else if (params.state === "started") {
+        where["startedAt"] = { [Op.ne]: null };
+        where[Op.and] = {
+          completedAt: { [Op.eq]: null },
+          errorMessage: { [Op.eq]: null },
+        };
+      } else if (params.state === "completed") {
+        where["startedAt"] = { [Op.ne]: null };
+        where["completedAt"] = { [Op.ne]: null };
+        where["errorMessage"] = { [Op.eq]: null };
+      } else if (params.state === "error") {
+        where["errorMessage"] = { [Op.ne]: null };
+      } else {
+        throw new Error("invalid state");
+      }
     }
 
     const _exports = await Export.findAll({

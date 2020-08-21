@@ -4,7 +4,7 @@ import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import Link from "next/link";
 import Router from "next/router";
-import { Badge, Alert } from "react-bootstrap";
+import { Row, Col, ButtonGroup, Button, Badge, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
 import Moment from "react-moment";
 import LoadingTable from "../loadingTable";
@@ -20,6 +20,7 @@ export default function ExportsList(props) {
   // pagination
   const limit = 100;
   const [offset, setOffset] = useState(query.offset || 0);
+  const [state, setState] = useState(query.state || "");
   useHistoryPagination(offset, "offset", setOffset);
 
   let profileGuid: string;
@@ -34,7 +35,7 @@ export default function ExportsList(props) {
 
   useSecondaryEffect(() => {
     load();
-  }, [offset, limit]);
+  }, [offset, limit, state]);
 
   async function load() {
     updateURLParams();
@@ -42,6 +43,7 @@ export default function ExportsList(props) {
     const response = await execApi("get", `/exports`, {
       limit,
       offset,
+      state,
       profileGuid,
       destinationGuid,
     });
@@ -77,6 +79,7 @@ export default function ExportsList(props) {
 
   function updateURLParams() {
     let url = `${window.location.pathname}?`;
+    if (state) url += `state=${state}&`;
     if (offset && offset !== 0) url += `offset=${offset}&`;
 
     const routerMethod =
@@ -88,7 +91,54 @@ export default function ExportsList(props) {
     <>
       <h1>Exports</h1>
 
-      <p>{total} exports</p>
+      <Row>
+        <Col md={3}>
+          <strong>{total} exports with these filters</strong>
+        </Col>
+        <Col>
+          State:{" "}
+          <ButtonGroup>
+            <Button
+              size="sm"
+              variant={state === "" ? "secondary" : "info"}
+              onClick={() => setState("")}
+            >
+              All
+            </Button>
+            <Button
+              size="sm"
+              variant={state === "created" ? "secondary" : "info"}
+              onClick={() => setState("created")}
+            >
+              Created
+            </Button>
+            <Button
+              size="sm"
+              variant={state === "started" ? "secondary" : "info"}
+              onClick={() => setState("started")}
+            >
+              Started
+            </Button>
+            <Button
+              size="sm"
+              variant={state === "completed" ? "secondary" : "info"}
+              onClick={() => setState("completed")}
+            >
+              Completed
+            </Button>
+            <Button
+              size="sm"
+              variant={state === "error" ? "secondary" : "info"}
+              onClick={() => setState("error")}
+            >
+              Error
+            </Button>
+          </ButtonGroup>
+        </Col>
+      </Row>
+
+      <hr />
+      <br />
 
       <Pagination
         total={total}
@@ -245,7 +295,7 @@ export default function ExportsList(props) {
 
 ExportsList.hydrate = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { guid, limit, offset } = ctx.query;
+  const { guid, limit, offset, state } = ctx.query;
   const { groups } = await execApi("get", `/groups`);
 
   let profileGuid: string;
@@ -261,6 +311,7 @@ ExportsList.hydrate = async (ctx) => {
   const { exports: _exports, total } = await execApi("get", `/exports`, {
     limit,
     offset,
+    state,
     destinationGuid,
     profileGuid,
   });
