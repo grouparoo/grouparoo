@@ -167,8 +167,8 @@ export default function ExportsList(props) {
                         return (
                           <li key={`${_export.guid}-prp-${k}`}>
                             {k}:{" "}
-                            {_export.oldProfileProperties[k] !==
-                            _export.newProfileProperties[k] ? (
+                            {JSON.stringify(_export.oldProfileProperties[k]) !==
+                            JSON.stringify(_export.newProfileProperties[k]) ? (
                               <>
                                 <Badge variant="danger">-</Badge>&nbsp;
                                 {_export.oldProfileProperties[k]?.toString()}|
