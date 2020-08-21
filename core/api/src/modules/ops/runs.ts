@@ -147,7 +147,7 @@ export namespace RunOps {
       return Math.floor(
         100 *
           ((run.groupMethod.match(/remove/i)
-            ? offset + groupMembersCount
+            ? offset + groupMembersCount + 1
             : offset) /
             (groupMembersCount > 0 ? groupMembersCount * 2 : 2))
       );
