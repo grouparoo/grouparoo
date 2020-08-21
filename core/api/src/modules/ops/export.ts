@@ -19,15 +19,14 @@ export namespace ExportOps {
       : {};
 
     for (const key in serializedProperties) {
-      const type = serializedProperties[key].type;
-      const rawValue = serializedProperties[key].rawValue;
+      const type = serializedProperties[key]?.type;
+      const rawValue = serializedProperties[key]?.rawValue;
 
-      if (!type || !rawValue) {
+      if (!type) {
         // legacy formatting
         response[key] = serializedProperties[key];
       } else {
         // current formatting
-        const rawValue = serializedProperties[key].rawValue;
         if (Array.isArray(rawValue)) {
           response[key] = rawValue.map((rv) =>
             ProfilePropertyOps.getValue(rv, type)
