@@ -36,8 +36,8 @@ export class EnqueueExports extends RetryableTask {
         );
         totalEnqueued += enqueuedExportsCount;
       }
-
-      return totalEnqueued;
     }
+
+    return totalEnqueued;
   }
 }

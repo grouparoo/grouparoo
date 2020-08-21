@@ -737,6 +737,7 @@ describe("models/destination", () => {
 
   describe("with custom exportProfile plugin", () => {
     let app: App;
+    let destination: Destination;
     let exportArgs = {
       app: null,
       appOptions: null,
@@ -756,25 +757,6 @@ describe("models/destination", () => {
       error: undefined,
       retryDelay: undefined,
     };
-
-    beforeEach(() => {
-      exportArgs = {
-        app: null,
-        appOptions: null,
-        destination: null,
-        destinationOptions: null,
-        profile: null,
-        oldProfileProperties: null,
-        newProfileProperties: null,
-        oldGroups: null,
-        newGroups: null,
-        toDelete: null,
-      };
-    });
-
-    beforeEach(async () => {
-      await api.resque.queue.connection.redis.flushdb();
-    });
 
     beforeAll(async () => {
       plugin.registerPlugin({
@@ -862,13 +844,38 @@ describe("models/destination", () => {
       await app.update({ state: "ready" });
     });
 
-    test("the app exportProfiles method can be called by the destination and exports will be created and mappings followed", async () => {
-      const destination = await Destination.create({
+    beforeEach(async () => {
+      exportArgs = {
+        app: null,
+        appOptions: null,
+        destination: null,
+        destinationOptions: null,
+        profile: null,
+        oldProfileProperties: null,
+        newProfileProperties: null,
+        oldGroups: null,
+        newGroups: null,
+        toDelete: null,
+      };
+    });
+
+    beforeEach(async () => {
+      destination = await Destination.create({
         name: "test plugin destination",
         type: "export-from-test-app",
         appGuid: app.guid,
       });
+      await destination.update({ state: "ready" });
 
+      await api.resque.queue.connection.redis.flushdb();
+    });
+
+    afterEach(async () => {
+      await destination.unTrackGroups();
+      await destination.destroy();
+    });
+
+    test("the app exportProfiles method can be called by the destination and exports will be created and mappings followed", async () => {
       await destination.setMapping({
         uid: "userId",
         customer_email: "email",
@@ -879,8 +886,8 @@ describe("models/destination", () => {
 
       await destination.trackGroup(groupA);
 
-      const destinationGroupMemberships = {};
       // modify the membership name
+      const destinationGroupMemberships = {};
       destinationGroupMemberships[groupA.guid] = groupA.name + "+";
       destinationGroupMemberships[groupB.guid] = groupB.name + "+";
       await destination.setDestinationGroupMemberships(
@@ -905,6 +912,7 @@ describe("models/destination", () => {
         newGroups
       );
 
+      await specHelper.runTask("export:enqueue", {});
       const foundTasks = await specHelper.findEnqueuedTasks("export:send");
       expect(foundTasks.length).toBe(1);
       await specHelper.runTask("export:send", foundTasks[0].args[0]);
@@ -949,18 +957,9 @@ describe("models/destination", () => {
       const exportedImports = await _exports[0].$get("imports");
       expect(exportedImports.length).toBe(1);
       expect(exportedImports[0].guid).toBe(_import.guid);
-
-      await destination.unTrackGroups();
-      await destination.destroy();
     });
 
     test("profile properties previously mapped but now removed will be included as oldProfileProperties in the export", async () => {
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-app",
-        appGuid: app.guid,
-      });
-
       await destination.setMapping({
         uid: "userId",
         customer_email: "email",
@@ -999,9 +998,12 @@ describe("models/destination", () => {
         newGroups
       );
 
+      await specHelper.runTask("export:enqueue", {});
       const foundTasks = await specHelper.findEnqueuedTasks("export:send");
-      expect(foundTasks.length).toBe(1);
-      await specHelper.runTask("export:send", foundTasks[0].args[0]);
+      expect(foundTasks.length).toBe(2);
+      await Promise.all(
+        foundTasks.map((t) => specHelper.runTask("export:send", t.args[0]))
+      );
 
       expect(exportArgs.oldProfileProperties).toEqual({
         customer_email: "oldmail@example.com",
@@ -1010,18 +1012,9 @@ describe("models/destination", () => {
       expect(exportArgs.newProfileProperties).toEqual({
         customer_email: "newemail@example.com",
       });
-
-      await destination.unTrackGroups();
-      await destination.destroy();
     });
 
     test("newly tagged groups will appear new in next export", async () => {
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-app",
-        appGuid: app.guid,
-      });
-
       await destination.setMapping({
         uid: "userId",
         customer_email: "email",
@@ -1067,24 +1060,18 @@ describe("models/destination", () => {
         newGroups
       );
 
+      await specHelper.runTask("export:enqueue", {});
       const foundTasks = await specHelper.findEnqueuedTasks("export:send");
-      expect(foundTasks.length).toBe(1);
-      await specHelper.runTask("export:send", foundTasks[0].args[0]);
+      expect(foundTasks.length).toBe(2);
+      await Promise.all(
+        foundTasks.map((t) => specHelper.runTask("export:send", t.args[0]))
+      );
 
       expect(exportArgs.oldGroups).toEqual([]);
       expect(exportArgs.newGroups).toEqual([group.name]);
-
-      await destination.unTrackGroups();
-      await destination.destroy();
     });
 
     test("newly un-tagged groups will be removed from the next export", async () => {
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-app",
-        appGuid: app.guid,
-      });
-
       await destination.setMapping({
         uid: "userId",
         customer_email: "email",
@@ -1132,24 +1119,18 @@ describe("models/destination", () => {
         newGroups
       );
 
+      await specHelper.runTask("export:enqueue", {});
       const foundTasks = await specHelper.findEnqueuedTasks("export:send");
-      expect(foundTasks.length).toBe(1);
-      await specHelper.runTask("export:send", foundTasks[0].args[0]);
+      expect(foundTasks.length).toBe(2);
+      await Promise.all(
+        foundTasks.map((t) => specHelper.runTask("export:send", t.args[0]))
+      );
 
       expect(exportArgs.oldGroups).toEqual([group.name]);
       expect(exportArgs.newGroups).toEqual([]);
-
-      await destination.unTrackGroups();
-      await destination.destroy();
     });
 
     test("if a profile is removed from all groups tracked by this destination, toDelete is true", async () => {
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-app",
-        appGuid: app.guid,
-      });
-
       await destination.setMapping({
         uid: "userId",
         customer_email: "email",
@@ -1183,24 +1164,18 @@ describe("models/destination", () => {
         newGroups
       );
 
-      const foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
-      expect(foundSendTasks.length).toBe(1);
-      await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
+      await specHelper.runTask("export:enqueue", {});
+      const foundTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundTasks.length).toBe(1);
+      await specHelper.runTask("export:send", foundTasks[0].args[0]);
 
       expect(exportArgs.profile.guid).toEqual(profile.guid);
       expect(exportArgs.oldGroups).toEqual(oldGroups.map((g) => g.name).sort());
       expect(exportArgs.newGroups).toEqual([]);
       expect(exportArgs.toDelete).toEqual(true);
-
-      await destination.destroy();
     });
 
     test("if an export has the same data as the previous export, and force=false, it will not be sent to the destination", async () => {
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-app",
-        appGuid: app.guid,
-      });
       const profile = await helper.factories.profile();
       const group = await helper.factories.group();
       await group.addProfile(profile);
@@ -1241,17 +1216,9 @@ describe("models/destination", () => {
 
       await newExport.reload();
       expect(newExport.completedAt).toBeTruthy();
-
-      await destination.unTrackGroups();
-      await destination.destroy();
     });
 
     test("if an export has the same data as the previous export, and force=true, it will be sent to the destination", async () => {
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-app",
-        appGuid: app.guid,
-      });
       const profile = await helper.factories.profile();
       const group = await helper.factories.group();
       await group.addProfile(profile);
@@ -1294,17 +1261,9 @@ describe("models/destination", () => {
 
       await newExport.reload();
       expect(newExport.completedAt).toBeTruthy();
-
-      await destination.unTrackGroups();
-      await destination.destroy();
     });
 
     test("if there is no previous export, it will be sent to the destination", async () => {
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-app",
-        appGuid: app.guid,
-      });
       const profile = await helper.factories.profile();
       const group = await helper.factories.group();
       await group.addProfile(profile);
@@ -1328,19 +1287,11 @@ describe("models/destination", () => {
 
       await destination.sendExport(newExport, true);
       expect(exportArgs.profile).not.toBeNull(); // plugin#exportProfile was called
-
-      await destination.unTrackGroups();
-      await destination.destroy();
     });
 
     test("exportProfile can return that it is rate limited and the export:send task will be re-enqueued", async () => {
       parallelismResponse = 0;
 
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-app",
-        appGuid: app.guid,
-      });
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.guid] = group.name;
@@ -1353,6 +1304,8 @@ describe("models/destination", () => {
       const _export = await Export.findOne({
         where: { destinationGuid: destination.guid },
       });
+
+      await specHelper.runTask("export:enqueue", {});
 
       let foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
       expect(foundSendTasks.length).toBe(1);
@@ -1372,18 +1325,11 @@ describe("models/destination", () => {
       expect(foundSendTasks.length).toBe(1 + 1);
       await _export.reload();
       expect(_export.completedAt).toBeTruthy();
-
-      await destination.destroy();
     });
 
     test("sending an export with sync and producing a parallelism error will throw", async () => {
       parallelismResponse = 0;
 
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-app",
-        appGuid: app.guid,
-      });
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.guid] = group.name;
@@ -1396,7 +1342,6 @@ describe("models/destination", () => {
         destination.exportProfile(profile, [], [], {}, {}, [], [], true)
       ).rejects.toThrow(/parallelism limit reached for test-template-app/);
 
-      await destination.destroy();
       parallelismResponse = Infinity;
     });
 
@@ -1407,11 +1352,6 @@ describe("models/destination", () => {
         retryDelay: 1000,
       };
 
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-app",
-        appGuid: app.guid,
-      });
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.guid] = group.name;
@@ -1424,6 +1364,8 @@ describe("models/destination", () => {
       const _export = await Export.findOne({
         where: { destinationGuid: destination.guid },
       });
+
+      await specHelper.runTask("export:enqueue", {});
 
       let foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
       expect(foundSendTasks.length).toBe(1);
@@ -1448,8 +1390,6 @@ describe("models/destination", () => {
       expect(foundSendTasks.length).toBe(1 + 1);
       await _export.reload();
       expect(_export.completedAt).toBeTruthy();
-
-      await destination.destroy();
     });
 
     test("sending an export with sync and producing a retry error will throw", async () => {
@@ -1459,11 +1399,6 @@ describe("models/destination", () => {
         retryDelay: 1000,
       };
 
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-app",
-        appGuid: app.guid,
-      });
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.guid] = group.name;
@@ -1476,7 +1411,6 @@ describe("models/destination", () => {
         destination.exportProfile(profile, [], [], {}, {}, [], [], true)
       ).rejects.toThrow(/Error: oh no!/);
 
-      await destination.destroy();
       exportProfileResponse = {
         success: true,
         error: undefined,
@@ -1485,17 +1419,10 @@ describe("models/destination", () => {
     });
 
     describe("deletion validations with running runs", () => {
-      let destination: Destination;
       let group: Group;
       let profile: Profile;
 
       beforeAll(async () => {
-        destination = await Destination.create({
-          name: "test plugin destination",
-          type: "export-from-test-app",
-          appGuid: app.guid,
-        });
-
         group = await helper.factories.group();
 
         const destinationGroupMemberships = {};
@@ -1566,30 +1493,16 @@ describe("models/destination", () => {
       });
 
       test("mappings cannot use array profile properties if they are not allowed by exportArrayProperties", async () => {
-        const destination = await Destination.create({
-          name: "test plugin destination",
-          type: "export-from-test-app",
-          appGuid: app.guid,
-        });
-
         await expect(
           destination.setMapping({ purchases: "purchases" })
         ).rejects.toThrow(
           /purchases is an array profile property that .* cannot support/
         );
-
-        await destination.destroy();
       });
 
       test("exportArrayProperties can ask for an array profile property", async () => {
         exportArrayProperties = ["purchases"];
 
-        const destination = await Destination.create({
-          name: "test plugin destination",
-          type: "export-from-test-app",
-          appGuid: app.guid,
-        });
-
         await destination.setMapping({ purchases: "purchases" });
 
         const group = await helper.factories.group();
@@ -1625,19 +1538,11 @@ describe("models/destination", () => {
         expect(_exports[0].newProfileProperties).toEqual({
           purchases: ["hat", "mushroom", "star"],
         });
-
-        await destination.destroy();
       });
 
       test("exportArrayProperties can ask for all properties with *", async () => {
         exportArrayProperties = ["*"];
 
-        const destination = await Destination.create({
-          name: "test plugin destination",
-          type: "export-from-test-app",
-          appGuid: app.guid,
-        });
-
         await destination.setMapping({ purchases: "purchases" });
 
         const group = await helper.factories.group();
@@ -1673,14 +1578,13 @@ describe("models/destination", () => {
         expect(_exports[0].newProfileProperties).toEqual({
           purchases: ["hat", "mushroom", "star"],
         });
-
-        await destination.destroy();
       });
     });
   });
 
   describe("with custom exportProfiles plugin", () => {
     let app: App;
+    let destination: Destination;
     let exportArgs = {
       app: null,
       appOptions: null,
@@ -1704,10 +1608,6 @@ describe("models/destination", () => {
         destinationOptions: null,
         exports: [],
       };
-    });
-
-    beforeEach(async () => {
-      await api.resque.queue.connection.redis.flushdb();
     });
 
     beforeAll(async () => {
@@ -1784,13 +1684,23 @@ describe("models/destination", () => {
       await app.update({ state: "ready" });
     });
 
-    test("the app exportProfiles method can be called by the destination and exports will be created and mappings followed", async () => {
-      const destination = await Destination.create({
+    beforeEach(async () => {
+      destination = await Destination.create({
         name: "test plugin destination",
         type: "export-from-test-template-app",
         appGuid: app.guid,
       });
+      await destination.update({ state: "ready" });
 
+      await api.resque.queue.connection.redis.flushdb();
+    });
+
+    afterEach(async () => {
+      await destination.unTrackGroups();
+      await destination.destroy();
+    });
+
+    test("the app exportProfiles method can be called by the destination and exports will be created and mappings followed", async () => {
       await destination.setMapping({
         uid: "userId",
         customer_email: "email",
@@ -1836,7 +1746,7 @@ describe("models/destination", () => {
       foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
       expect(foundTasks.length).toBe(0);
 
-      await run.afterBatch();
+      await specHelper.runTask("export:enqueue", {});
 
       foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
       expect(foundTasks.length).toBe(1);
@@ -1883,18 +1793,9 @@ describe("models/destination", () => {
       const exportedImports = await _exports[0].$get("imports");
       expect(exportedImports.length).toBe(1);
       expect(exportedImports[0].guid).toBe(_import.guid);
-
-      await destination.unTrackGroups();
-      await destination.destroy();
     });
 
     test("profile properties previously mapped but now removed will be included as oldProfileProperties in the export", async () => {
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-template-app",
-        appGuid: app.guid,
-      });
-
       await destination.setMapping({
         uid: "userId",
         customer_email: "email",
@@ -1942,7 +1843,7 @@ describe("models/destination", () => {
       foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
       expect(foundTasks.length).toBe(0);
 
-      await run.afterBatch();
+      await specHelper.runTask("export:enqueue", {});
 
       foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
       expect(foundTasks.length).toBe(1);
@@ -1956,18 +1857,9 @@ describe("models/destination", () => {
       expect(exportArgs.exports[0].newProfileProperties).toEqual({
         customer_email: "newemail@example.com",
       });
-
-      await destination.unTrackGroups();
-      await destination.destroy();
     });
 
     test("if a profile is removed from all groups tracked by this destination, toDelete is true", async () => {
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-template-app",
-        appGuid: app.guid,
-      });
-
       await destination.setMapping({
         uid: "userId",
         customer_email: "email",
@@ -2010,7 +1902,7 @@ describe("models/destination", () => {
       foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
       expect(foundTasks.length).toBe(0);
 
-      await run.afterBatch();
+      await specHelper.runTask("export:enqueue", {});
 
       foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
       expect(foundTasks.length).toBe(1);
@@ -2025,17 +1917,9 @@ describe("models/destination", () => {
       expect(exportArgs.exports[0].toDelete).toEqual(true);
 
       await run.determineState();
-
-      await destination.unTrackGroups();
-      await destination.destroy();
     });
 
     test("if an export has the same data as the previous export, and force=false, it will not be sent to the destination", async () => {
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-template-app",
-        appGuid: app.guid,
-      });
       const profile = await helper.factories.profile();
       const group = await helper.factories.group();
       await group.addProfile(profile);
@@ -2073,7 +1957,7 @@ describe("models/destination", () => {
       expect(newExport.toDelete).toBe(false);
       expect(newExport.hasChanges).toBe(false);
 
-      await run.afterBatch();
+      await specHelper.runTask("export:enqueue", {});
 
       const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
       expect(foundTasks.length).toBe(1);
@@ -2083,17 +1967,9 @@ describe("models/destination", () => {
 
       await newExport.reload();
       expect(newExport.completedAt).toBeTruthy();
-
-      await destination.unTrackGroups();
-      await destination.destroy();
     });
 
     test("if an export has the same data as the previous export, and force=true, it will be sent to the destination", async () => {
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-template-app",
-        appGuid: app.guid,
-      });
       const profile = await helper.factories.profile();
       const group = await helper.factories.group();
       await group.addProfile(profile);
@@ -2133,7 +2009,7 @@ describe("models/destination", () => {
       expect(newExport.toDelete).toBe(false);
       expect(newExport.hasChanges).toBe(true);
 
-      await run.afterBatch();
+      await specHelper.runTask("export:enqueue", {});
 
       const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
       expect(foundTasks.length).toBe(1);
@@ -2143,17 +2019,9 @@ describe("models/destination", () => {
 
       await newExport.reload();
       expect(newExport.completedAt).toBeTruthy();
-
-      await destination.unTrackGroups();
-      await destination.destroy();
     });
 
     test("if there is no previous export, it will be sent to the destination", async () => {
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-template-app",
-        appGuid: app.guid,
-      });
       const profile = await helper.factories.profile();
       const group = await helper.factories.group();
       await group.addProfile(profile);
@@ -2177,26 +2045,18 @@ describe("models/destination", () => {
       expect(newExport.toDelete).toBe(false);
       expect(newExport.hasChanges).toBe(true);
 
-      await run.afterBatch();
+      await specHelper.runTask("export:enqueue", {});
 
       const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
       expect(foundTasks.length).toBe(1);
       await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
 
       expect(exportArgs.exports.length).toBe(1); // plugin#exportProfile was called
-
-      await destination.unTrackGroups();
-      await destination.destroy();
     });
 
     test("exportProfile can return that it is rate limited and the export:send task will be re-enqueued", async () => {
       parallelismResponse = 0;
 
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-template-app",
-        appGuid: app.guid,
-      });
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.guid] = group.name;
@@ -2211,7 +2071,7 @@ describe("models/destination", () => {
         where: { destinationGuid: destination.guid },
       });
 
-      await run.afterBatch();
+      await specHelper.runTask("export:enqueue", {});
 
       let foundSendBatchTasks = await specHelper.findEnqueuedTasks(
         "export:sendBatch"
@@ -2243,19 +2103,12 @@ describe("models/destination", () => {
       expect(foundSendBatchTasks.length).toBe(1 + 1);
       await _export.reload();
       expect(_export.completedAt).toBeTruthy();
-
       await run.determineState();
-      await destination.destroy();
     });
 
     test("sending an export with sync and producing a parallelism error will throw", async () => {
       parallelismResponse = 0;
 
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-template-app",
-        appGuid: app.guid,
-      });
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.guid] = group.name;
@@ -2270,7 +2123,6 @@ describe("models/destination", () => {
       ).rejects.toThrow(/parallelism limit reached for test-template-app/);
 
       await run.stop();
-      await destination.destroy();
       parallelismResponse = Infinity;
     });
 
@@ -2281,11 +2133,6 @@ describe("models/destination", () => {
         retryDelay: 1000,
       };
 
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-template-app",
-        appGuid: app.guid,
-      });
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.guid] = group.name;
@@ -2300,7 +2147,7 @@ describe("models/destination", () => {
         where: { destinationGuid: destination.guid },
       });
 
-      await run.afterBatch();
+      await specHelper.runTask("export:enqueue", {});
 
       let foundSendBatchTasks = await specHelper.findEnqueuedTasks(
         "export:sendBatch"
@@ -2341,15 +2188,9 @@ describe("models/destination", () => {
       expect(_export.completedAt).toBeTruthy();
 
       await run.determineState();
-      await destination.destroy();
     });
 
     test("sending an export with sync and producing a retry error will throw combined of all sub errors", async () => {
-      const destination = await Destination.create({
-        name: "test plugin destination",
-        type: "export-from-test-template-app",
-        appGuid: app.guid,
-      });
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.guid] = group.name;
@@ -2392,7 +2233,7 @@ describe("models/destination", () => {
       expect(combinedError["errors"].map((e) => e.message)).toEqual(["oh no!"]);
 
       await run.stop();
-      await destination.destroy();
+
       exportProfilesResponse = {
         success: true,
         errors: undefined,

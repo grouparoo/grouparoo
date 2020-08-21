@@ -124,30 +124,32 @@ RETURNING *
       mapToModel: true,
     });
 
-    if (pluginConnection.methods.exportProfiles) {
-      // the plugin has a batch exportProfiles method
-      await task.enqueue(
-        "export:sendBatch",
-        {
-          destinationGuid: destination.guid,
-          exportGuids: _exports.map((e) => e.guid),
-        },
-        `exports:${app.type}`
-      );
-    } else {
-      // the plugin has a per-profile exportProfile method
-      await Promise.all(
-        _exports.map((_export) =>
-          task.enqueue(
-            "export:send",
-            {
-              destinationGuid: destination.guid,
-              exportGuid: _export.guid,
-            },
-            `exports:${app.type}`
+    if (_exports.length > 0) {
+      if (pluginConnection.methods.exportProfiles) {
+        // the plugin has a batch exportProfiles method
+        await task.enqueue(
+          "export:sendBatch",
+          {
+            destinationGuid: destination.guid,
+            exportGuids: _exports.map((e) => e.guid),
+          },
+          `exports:${app.type}`
+        );
+      } else {
+        // the plugin has a per-profile exportProfile method
+        await Promise.all(
+          _exports.map((_export) =>
+            task.enqueue(
+              "export:send",
+              {
+                destinationGuid: destination.guid,
+                exportGuid: _export.guid,
+              },
+              `exports:${app.type}`
+            )
           )
-        )
-      );
+        );
+      }
     }
 
     return _exports.length;
