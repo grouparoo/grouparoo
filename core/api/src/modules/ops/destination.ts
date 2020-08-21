@@ -232,20 +232,30 @@ export namespace DestinationOps {
 
       mappedOldProfileProperties[k] = {
         type,
-        rawValue: await Promise.all(
-          oldProfileProperties[mapping[k]].map((v) =>
-            ProfilePropertyOps.buildRawValue(v, type)
-          )
-        ),
+        rawValue: Array.isArray(oldProfileProperties[mapping[k]])
+          ? await Promise.all(
+              oldProfileProperties[mapping[k]].map((v) =>
+                ProfilePropertyOps.buildRawValue(v, type)
+              )
+            )
+          : await ProfilePropertyOps.buildRawValue(
+              oldProfileProperties[mapping[k]],
+              type
+            ),
       };
 
       mappedNewProfileProperties[k] = {
         type,
-        rawValue: await Promise.all(
-          newProfileProperties[mapping[k]].map((v) =>
-            ProfilePropertyOps.buildRawValue(v, type)
-          )
-        ),
+        rawValue: Array.isArray(newProfileProperties[mapping[k]])
+          ? await Promise.all(
+              newProfileProperties[mapping[k]].map((v) =>
+                ProfilePropertyOps.buildRawValue(v, type)
+              )
+            )
+          : await ProfilePropertyOps.buildRawValue(
+              newProfileProperties[mapping[k]],
+              type
+            ),
       };
     }
 
