@@ -466,6 +466,9 @@ describe("integration/runs/postgres", () => {
         )
       );
 
+      // run the export:enqueue task
+      await specHelper.runTask("export:enqueue", {});
+
       // run the export send tasks
       const foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
       expect(foundSendTasks.length).toEqual(10);
@@ -604,6 +607,9 @@ describe("integration/runs/postgres", () => {
           async (t) => await specHelper.runTask("profile:export", t.args[0])
         )
       );
+
+      // run the export:enqueue task
+      await specHelper.runTask("export:enqueue", {});
 
       // run the export send tasks
       const foundSendTasks = await specHelper.findEnqueuedTasks("export:send");

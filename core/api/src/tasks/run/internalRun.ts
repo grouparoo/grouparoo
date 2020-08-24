@@ -28,15 +28,7 @@ export class RunInternalRun extends Task {
 
     const run = await Run.findByGuid(params.runGuid);
 
-    if (run.state === "stopped") {
-      return;
-    }
-
-    // we still have exports from the previous batch that need to be processed
-    if (run.exportsCreated > 0 && run.exportsCreated > run.profilesExported) {
-      await run.afterBatch();
-      return task.enqueueIn(config.tasks.timeout + 1, this.name, params);
-    }
+    if (run.state === "stopped") return;
 
     await run.update({
       groupMemberLimit: limit,
@@ -54,7 +46,7 @@ export class RunInternalRun extends Task {
       const profile = profiles[i];
       const transaction = await api.sequelize.transaction();
 
-      const _import = await Import.create(
+      await Import.create(
         {
           profileGuid: profile.guid,
           profileAssociatedAt: new Date(),
@@ -70,7 +62,7 @@ export class RunInternalRun extends Task {
       await transaction.commit();
     }
 
-    await run.determinePercentComplete();
+    await run.afterBatch();
 
     if (profiles.length > 0) {
       await task.enqueueIn(config.tasks.timeout + 1, this.name, {

@@ -134,12 +134,21 @@ export namespace RunOps {
           ? await group.countPotentialMembers()
           : await group.$count("groupMembers");
 
+      const offset =
+        run.groupMemberOffset > groupMembersCount
+          ? groupMembersCount
+          : run.groupMemberOffset;
+
+      if (run.groupMethod === "exporting") {
+        return Math.floor(50 + run.profilesExported / 2 / run.exportsCreated);
+      }
+
       // there are 3 phases to group runs, but only 2 really could have work, so we attribute 1/2 to each phase
-      return Math.round(
+      return Math.floor(
         100 *
           ((run.groupMethod.match(/remove/i)
-            ? 1 + run.groupMemberOffset * 2
-            : run.groupMemberOffset) /
+            ? offset + groupMembersCount + 1
+            : offset) /
             (groupMembersCount > 0 ? groupMembersCount * 2 : 2))
       );
     } else if (run.creatorType === "schedule") {
@@ -156,66 +165,9 @@ export namespace RunOps {
     } else {
       // for profilePropertyRules and for other types of internal run, we can assume we have to check every profile in the system
       const totalProfiles = await Profile.count();
-      return Math.round(
+      return Math.floor(
         100 * (run.profilesImported / (totalProfiles > 0 ? totalProfiles : 1))
       );
-    }
-  }
-
-  /**
-   * Process pending exports in the current batch.
-   */
-  export async function processBatchExports(run: Run, limit?: number) {
-    let _exports: Export[] = [];
-    let loopCount = 0;
-
-    if (!limit) {
-      limit = parseInt(
-        (await plugin.readSetting("core", "export-profile-batch-size")).value
-      );
-    }
-
-    await utils.sleep(config.tasks.timeout + 1);
-    await run.reload();
-
-    // we are still importing profiles, don't try to export yet
-    if (run.importsCreated > run.profilesImported) return;
-
-    async function loadExports() {
-      _exports = await Export.findAll({
-        where: { completedAt: null, errorMessage: null },
-        include: [
-          {
-            model: ExportRun,
-            where: { runGuid: run.guid },
-            attributes: [],
-            required: true,
-          },
-        ],
-        order: [["createdAt", "desc"]],
-        limit,
-        offset: loopCount * limit,
-      });
-      loopCount++;
-    }
-
-    await loadExports();
-
-    while (_exports.length > 0) {
-      const destinationGuids = [
-        ...new Set(_exports.map((e) => e.destinationGuid)),
-      ];
-
-      for (const i in destinationGuids) {
-        await task.enqueue("export:sendBatch", {
-          destinationGuid: destinationGuids[i],
-          exportGuids: _exports
-            .filter((e) => e.destinationGuid === destinationGuids[i])
-            .map((e) => e.guid),
-        });
-      }
-
-      await loadExports();
     }
   }
 }

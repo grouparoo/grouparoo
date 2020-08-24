@@ -197,6 +197,8 @@ export class Run extends Model<Run> {
       this.state = "complete";
       this.completedAt = new Date();
       await this.buildErrorMessage();
+    } else {
+      this.state = "running";
     }
   }
 
@@ -206,12 +208,7 @@ export class Run extends Model<Run> {
     log(`run ${this.guid} is ${this.percentComplete}% complete`);
   }
 
-  async processBatchExports(limit?: number) {
-    return RunOps.processBatchExports(this, limit);
-  }
-
   async afterBatch() {
-    await this.processBatchExports();
     await this.determinePercentComplete();
   }
 

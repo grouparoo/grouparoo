@@ -12,6 +12,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/imports", action: "imports:list" },
         { path: "/v:apiVersion/import/:guid", action: "import:view" },
         { path: "/v:apiVersion/exports", action: "exports:list" },
+        { path: "/v:apiVersion/exports/totals", action: "exports:totals" },
         { path: "/v:apiVersion/export/:guid", action: "export:view" },
         { path: "/v:apiVersion/navigation", action: "navigation:list" },
         { path: "/v:apiVersion/teams", action: "teams:list" },

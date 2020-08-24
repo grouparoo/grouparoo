@@ -195,7 +195,7 @@ describe("tasks/profile:export", () => {
         expect(foundExportTasks.length).toEqual(1);
 
         await specHelper.runTask("profile:export", foundExportTasks[0].args[0]);
-
+        await specHelper.runTask("export:enqueue", {});
         const foundSendTasks = await specHelper.findEnqueuedTasks(
           "export:send"
         );
@@ -279,7 +279,7 @@ describe("tasks/profile:export", () => {
         expect(foundExportTasks.length).toEqual(1);
 
         await specHelper.runTask("profile:export", foundExportTasks[0].args[0]);
-
+        await specHelper.runTask("export:enqueue", {});
         const foundSendTasks = await specHelper.findEnqueuedTasks(
           "export:send"
         );

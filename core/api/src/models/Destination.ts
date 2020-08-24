@@ -36,6 +36,7 @@ import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { DestinationOps } from "./../modules/ops/destination";
+import { ExportOps } from "../modules/ops/export";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -118,6 +119,8 @@ export class Destination extends LoggedModel<Destination> {
     const destinationGroupMemberships = await this.getDestinationGroupMemberships();
     const { pluginConnection } = await this.getPlugin();
 
+    const exportTotals = await this.getExportTotals();
+
     return {
       guid: this.guid,
       name: this.name,
@@ -134,7 +137,12 @@ export class Destination extends LoggedModel<Destination> {
       destinationGroupMemberships,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      exportTotals,
     };
+  }
+
+  async getExportTotals() {
+    return ExportOps.totals({ destinationGuid: this.guid });
   }
 
   async getMapping() {

@@ -1,5 +1,7 @@
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Export } from "../models/Export";
+import { Op } from "sequelize";
+import { ExportOps } from "../modules/ops/export";
 
 export class ListExports extends AuthenticatedAction {
   constructor() {
@@ -13,6 +15,7 @@ export class ListExports extends AuthenticatedAction {
       destinationGuid: { required: false },
       limit: { required: true, default: 100 },
       offset: { required: true, default: 0 },
+      state: { required: false },
       order: {
         required: false,
         default: [["createdAt", "desc"]],
@@ -22,9 +25,35 @@ export class ListExports extends AuthenticatedAction {
 
   async run({ params, response }) {
     const where = {};
-    if (params.profileGuid) where["profileGuid"] = params.profileGuid;
+    if (params.profileGuid) {
+      where["profileGuid"] = params.profileGuid;
+    }
     if (params.destinationGuid) {
       where["destinationGuid"] = params.destinationGuid;
+    }
+
+    if (params.state) {
+      if (params.state === "created") {
+        where["startedAt"] = { [Op.eq]: null };
+        where[Op.and] = {
+          completedAt: { [Op.eq]: null },
+          errorMessage: { [Op.eq]: null },
+        };
+      } else if (params.state === "started") {
+        where["startedAt"] = { [Op.ne]: null };
+        where[Op.and] = {
+          completedAt: { [Op.eq]: null },
+          errorMessage: { [Op.eq]: null },
+        };
+      } else if (params.state === "completed") {
+        where["startedAt"] = { [Op.ne]: null };
+        where["completedAt"] = { [Op.ne]: null };
+        where["errorMessage"] = { [Op.eq]: null };
+      } else if (params.state === "error") {
+        where["errorMessage"] = { [Op.ne]: null };
+      } else {
+        throw new Error("invalid state");
+      }
     }
 
     const _exports = await Export.findAll({
@@ -36,6 +65,32 @@ export class ListExports extends AuthenticatedAction {
 
     response.exports = await Promise.all(_exports.map((exp) => exp.apiData()));
     response.total = await Export.count({ where });
+  }
+}
+
+export class ExportsTotals extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "exports:totals";
+    this.description = "count exports by state";
+    this.outputExample = {};
+    this.permission = { topic: "export", mode: "read" };
+    this.inputs = {
+      profileGuid: { required: false },
+      destinationGuid: { required: false },
+    };
+  }
+
+  async run({ params, response }) {
+    const where = {};
+    if (params.profileGuid) {
+      where["profileGuid"] = params.profileGuid;
+    }
+    if (params.destinationGuid) {
+      where["destinationGuid"] = params.destinationGuid;
+    }
+
+    response.totals = await ExportOps.totals(where);
   }
 }
 
