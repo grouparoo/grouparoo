@@ -110,7 +110,6 @@
     "nock": "13.0.4",
     "prettier": "2.1.0",
     "prop-types": "15.7.2",
-    "sequelize-cli": "5.22.3",
     "ts-jest": "26.2.0",
     "typedoc": "0.18.0"
   },
