@@ -325,7 +325,7 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.destinationMappingOptions(this);
   }
 
-  async getRuns(state?: string, limit = 100, offset = 0) {
+  async getRuns(state?: string, limit = 100, offset = 0): Promise<Run[]> {
     const exportRuns = await ExportRun.findAll({
       raw: true,
       attributes: [
@@ -536,13 +536,13 @@ export class Destination extends LoggedModel<Destination> {
   @BeforeDestroy
   static async waitUpdatingGroupsPreviouslySynced(instance: Destination) {
     const recentRuns = await instance.getRuns(undefined, 1, 0);
-    const recentGroupGuids = [
-      ...new Set(
+    const recentGroupGuids = Array.from(
+      new Set(
         recentRuns
           .filter((run) => run.creatorGuid.match(/^grp_/))
           .map((run) => run.creatorGuid)
-      ),
-    ];
+      )
+    );
     const updatingGroups = await Group.findAll({
       where: { guid: { [Op.in]: recentGroupGuids }, state: "updating" },
     });
