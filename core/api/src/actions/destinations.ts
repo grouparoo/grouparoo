@@ -205,7 +205,7 @@ export class DestinationMappingOptions extends AuthenticatedAction {
 
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
-    response.options = await destination.destinationMappingOptions();
+    response.options = await destination.destinationMappingOptions(false); // never use cache when displaying to the user
     response.destinationTypeConversions = destinationTypeConversions;
   }
 }

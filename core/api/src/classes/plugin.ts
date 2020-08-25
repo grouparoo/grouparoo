@@ -368,7 +368,7 @@ export interface DestinationMappingOptionsMethod {
   }): Promise<DestinationMappingOptionsMethodResponse>;
 }
 
-export type DestinationMappingOptionsResponseType =
+export type DestinationMappingOptionsResponseTypes =
   | "any"
   | "boolean"
   | "date"
@@ -384,11 +384,11 @@ export interface DestinationMappingOptionsMethodResponse {
   profilePropertyRules: {
     required: Array<{
       key: string;
-      type: DestinationMappingOptionsResponseType;
+      type: DestinationMappingOptionsResponseTypes;
     }>;
     known: Array<{
       key: string;
-      type: DestinationMappingOptionsResponseType;
+      type: DestinationMappingOptionsResponseTypes;
       important?: boolean;
     }>;
     allowOptionalFromProfilePropertyRules: boolean;

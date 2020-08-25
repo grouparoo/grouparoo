@@ -1,4 +1,7 @@
-import { DestinationMappingOptionsMethod } from "@grouparoo/core";
+import {
+  DestinationMappingOptionsMethod,
+  DestinationMappingOptionsResponseTypes,
+} from "@grouparoo/core";
 import { connect } from "./../connect";
 
 type MailchimpMergeField = {
@@ -44,7 +47,9 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
   };
 };
 
-function toGrouparooDestinationType(mailchimpType: string) {
+function toGrouparooDestinationType(
+  mailchimpType: string
+): { type: DestinationMappingOptionsResponseTypes; important: boolean } {
   // currently unsupported: birthday, radio, drop down
 
   switch (mailchimpType) {

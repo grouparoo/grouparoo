@@ -17,7 +17,7 @@ import {
   ExportProfilePluginMethod,
   ExportProfilesPluginMethod,
   ErrorWithProfileGuid,
-  DestinationMappingOptionsResponseType,
+  DestinationMappingOptionsResponseTypes,
   DestinationMappingOptionsMethodResponse,
 } from "../../classes/plugin";
 import { task, log, config, cache } from "actionhero";
@@ -508,12 +508,12 @@ export namespace DestinationOps {
         destinationOptions: options,
         export: {
           profile,
-          oldProfileProperties: formatProfilePropertiesForDestination(
+          oldProfileProperties: await formatProfilePropertiesForDestination(
             _export,
             destination,
             "oldProfileProperties"
           ),
-          newProfileProperties: formatProfilePropertiesForDestination(
+          newProfileProperties: await formatProfilePropertiesForDestination(
             _export,
             destination,
             "newProfileProperties"
@@ -620,12 +620,12 @@ export namespace DestinationOps {
         const profile = await _export.$get("profile");
         destinationExports.push({
           profile,
-          oldProfileProperties: formatProfilePropertiesForDestination(
+          oldProfileProperties: await formatProfilePropertiesForDestination(
             _export,
             destination,
             "oldProfileProperties"
           ),
-          newProfileProperties: formatProfilePropertiesForDestination(
+          newProfileProperties: await formatProfilePropertiesForDestination(
             _export,
             destination,
             "newProfileProperties"
@@ -755,7 +755,7 @@ export namespace DestinationOps {
     for (const k in rawProperties) {
       const type: string = rawProperties[k].type;
       const value = _export[key][k];
-      let destinationType: DestinationMappingOptionsResponseType = "any";
+      let destinationType: DestinationMappingOptionsResponseTypes = "any";
 
       for (const j in destinationMappingOptions.profilePropertyRules.required) {
         const destinationProperty =
@@ -796,7 +796,7 @@ export namespace DestinationOps {
   export function formatOutgoingProfileProperties(
     value: any,
     grouparooType: string,
-    destinationType: DestinationMappingOptionsResponseType
+    destinationType: DestinationMappingOptionsResponseTypes
   ) {
     switch (true) {
       // ** ANY **
