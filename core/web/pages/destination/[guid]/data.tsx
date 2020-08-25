@@ -15,6 +15,7 @@ export default function Page(props) {
     query,
     profilePropertyRules,
     mappingOptions,
+    destinationTypeConversions,
     groups,
     exportArrayProperties,
     hydrationError,
@@ -416,9 +417,9 @@ export default function Page(props) {
                                     ) : null}
                                     {remainingProfilePropertyRulesForKnown
                                       .filter((rule) =>
-                                        type === "any"
-                                          ? true
-                                          : rule.type === type
+                                        destinationTypeConversions[
+                                          rule.type
+                                        ].includes(type)
                                       )
                                       .filter(filterRuleForArrayProperties)
                                       .map((rule) => (
@@ -779,6 +780,7 @@ Page.getInitialProps = async (ctx) => {
   );
 
   let mappingOptions = {};
+  let destinationTypeConversions = {};
   let exportArrayProperties = [];
   let hydrationError: Error;
 
@@ -788,6 +790,8 @@ Page.getInitialProps = async (ctx) => {
       `/destination/${guid}/mappingOptions`
     );
     mappingOptions = mappingOptionsResponse.options;
+    destinationTypeConversions =
+      mappingOptionsResponse.destinationTypeConversions;
 
     const exportArrayPropertiesResponse = await execApi(
       "get",
@@ -802,6 +806,7 @@ Page.getInitialProps = async (ctx) => {
     destination,
     profilePropertyRules,
     mappingOptions,
+    destinationTypeConversions,
     exportArrayProperties,
     trackedGroupGuid: destination.trackAllGroups
       ? "_all"

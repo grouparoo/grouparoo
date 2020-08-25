@@ -17,8 +17,10 @@ import {
   ExportProfilePluginMethod,
   ExportProfilesPluginMethod,
   ErrorWithProfileGuid,
+  DestinationMappingOptionsResponseType,
+  DestinationMappingOptionsMethodResponse,
 } from "../../classes/plugin";
-import { task, log, config } from "actionhero";
+import { task, log, config, cache } from "actionhero";
 import { deepStrictEqual } from "assert";
 import { ProfilePropertyOps } from "./profileProperty";
 
@@ -154,7 +156,31 @@ export namespace DestinationOps {
   /**
    * Get the Destination Mapping Options from the Plugin
    */
-  export async function destinationMappingOptions(destination: Destination) {
+  export async function destinationMappingOptions(
+    destination: Destination,
+    cached = true
+  ) {
+    const cacheKey = `destination:${destination.guid}:mappingOptions`;
+    const cacheDuration = 1000 * 60 * 60; // 1 hour
+
+    if (cached) {
+      try {
+        const {
+          value,
+        }: {
+          value: DestinationMappingOptionsMethodResponse;
+        } = await cache.load(cacheKey);
+        return value;
+      } catch (error) {
+        if (
+          error.message.toString() !== "Object not found" &&
+          error.message.toString() !== "Object expired"
+        ) {
+          throw error;
+        }
+      }
+    }
+
     const { pluginConnection } = await destination.getPlugin();
     const app = await destination.$get("app");
     const connection = await app.getConnection();
@@ -167,13 +193,19 @@ export namespace DestinationOps {
       );
     }
 
-    return pluginConnection.methods.destinationMappingOptions({
-      connection,
-      app,
-      appOptions,
-      destination,
-      destinationOptions,
-    });
+    const mappingOptions = await pluginConnection.methods.destinationMappingOptions(
+      {
+        connection,
+        app,
+        appOptions,
+        destination,
+        destinationOptions,
+      }
+    );
+
+    await cache.save(cacheKey, mappingOptions, cacheDuration);
+
+    return mappingOptions;
   }
 
   export async function getExportArrayProperties(destination: Destination) {
@@ -476,8 +508,16 @@ export namespace DestinationOps {
         destinationOptions: options,
         export: {
           profile,
-          oldProfileProperties: _export.oldProfileProperties,
-          newProfileProperties: _export.newProfileProperties,
+          oldProfileProperties: formatProfilePropertiesForDestination(
+            _export,
+            destination,
+            "oldProfileProperties"
+          ),
+          newProfileProperties: formatProfilePropertiesForDestination(
+            _export,
+            destination,
+            "newProfileProperties"
+          ),
           oldGroups: _export.oldGroups,
           newGroups: _export.newGroups,
           toDelete: _export.toDelete,
@@ -580,8 +620,16 @@ export namespace DestinationOps {
         const profile = await _export.$get("profile");
         destinationExports.push({
           profile,
-          oldProfileProperties: _export.oldProfileProperties,
-          newProfileProperties: _export.newProfileProperties,
+          oldProfileProperties: formatProfilePropertiesForDestination(
+            _export,
+            destination,
+            "oldProfileProperties"
+          ),
+          newProfileProperties: formatProfilePropertiesForDestination(
+            _export,
+            destination,
+            "newProfileProperties"
+          ),
           oldGroups: _export.oldGroups,
           newGroups: _export.newGroups,
           toDelete: _export.toDelete,
@@ -693,6 +741,137 @@ export namespace DestinationOps {
       }
 
       throw error;
+    }
+  }
+
+  async function formatProfilePropertiesForDestination(
+    _export: Export,
+    destination: Destination,
+    key: "oldProfileProperties" | "newProfileProperties"
+  ) {
+    const response = {};
+    const rawProperties = JSON.parse(_export["dataValues"][key]);
+    const destinationMappingOptions = await destination.destinationMappingOptions();
+    for (const k in rawProperties) {
+      const type: string = rawProperties[k].type;
+      const value = _export[key][k];
+      let destinationType: DestinationMappingOptionsResponseType = "any";
+
+      for (const j in destinationMappingOptions.profilePropertyRules.required) {
+        const destinationProperty =
+          destinationMappingOptions.profilePropertyRules.required[j];
+        if (destinationProperty.key === k) {
+          destinationType = destinationProperty.type;
+        }
+      }
+      for (const j in destinationMappingOptions.profilePropertyRules.known) {
+        const destinationProperty =
+          destinationMappingOptions.profilePropertyRules.known[j];
+        if (destinationProperty.key === k) {
+          destinationType = destinationProperty.type;
+        }
+      }
+
+      if (Array.isArray(value)) {
+        response[k] = value.map((v) =>
+          formatOutgoingProfileProperties(v, type, destinationType)
+        );
+      } else {
+        response[k] = formatOutgoingProfileProperties(
+          value,
+          type,
+          destinationType
+        );
+      }
+    }
+
+    return response;
+  }
+
+  /**
+   * Format Grouparoo's profile properties to the type the destination wants.
+   * In many cases, we can do conversions, ie: 'integer' or 'float' to 'number' or there are cast-able representations in other types, like 'integer' to 'string'.
+   * A detailed map can be found at https://docs.google.com/spreadsheets/d/1Fbkdsq_IR8deOYF4QpVq_XIdqpvAah3tJbVP2K5nCdc
+   */
+  export function formatOutgoingProfileProperties(
+    value: any,
+    grouparooType: string,
+    destinationType: DestinationMappingOptionsResponseType
+  ) {
+    switch (true) {
+      // ** ANY **
+      case destinationType === "any":
+        return value;
+
+      // ** FLOAT **
+      case grouparooType === "float" && destinationType === "float":
+        return value as number;
+      case grouparooType === "float" && destinationType === "integer":
+        return Math.round(value as number);
+      case grouparooType === "float" && destinationType === "string":
+        return (value as number).toString();
+      case grouparooType === "float" && destinationType === "number":
+        return value as number;
+
+      // ** INTEGER **
+      case grouparooType === "integer" && destinationType === "float":
+        return value as number;
+      case grouparooType === "integer" && destinationType === "integer":
+        return value as number;
+      case grouparooType === "integer" && destinationType === "string":
+        return (value as number).toString();
+      case grouparooType === "integer" && destinationType === "number":
+        return value as number;
+
+      // ** STRING **
+      case grouparooType === "string" && destinationType === "string":
+        return value as string;
+      case grouparooType === "string" && destinationType === "boolean":
+        return value.toString().toLowerCase() === "false" ? false : !!value;
+
+      // ** URL **
+      case grouparooType === "url" && destinationType === "string":
+        return value as string;
+      case grouparooType === "url" && destinationType === "url":
+        return value as string;
+
+      // ** EMAIL **
+      case grouparooType === "email" && destinationType === "string":
+        return value as string;
+      case grouparooType === "email" && destinationType === "email":
+        return value as string;
+
+      // ** PHONENUMBER **
+      case grouparooType === "phoneNumber" && destinationType === "string":
+        return value as string;
+      case grouparooType === "phoneNumber" && destinationType === "email":
+        return value as string;
+
+      // ** BOOLEAN **
+      case grouparooType === "boolean" && destinationType === "string":
+        return (value as boolean).toString();
+      case grouparooType === "boolean" && destinationType === "boolean":
+        return value as boolean;
+      case grouparooType === "boolean" && destinationType === "number":
+        return (value as boolean) === true ? 1 : 0;
+
+      // ** DATE **
+      case grouparooType === "date" && destinationType === "float":
+        return (value as Date).getTime();
+      case grouparooType === "date" && destinationType === "integer":
+        return (value as Date).getTime();
+      case grouparooType === "date" && destinationType === "string":
+        return (value as Date).toISOString();
+      case grouparooType === "date" && destinationType === "number":
+        return (value as Date).getTime();
+      case grouparooType === "date" && destinationType === "date":
+        return value as Date;
+
+      // Otherwise...
+      default:
+        throw new Error(
+          `cannot export grouparoo type ${grouparooType} to destination type ${destinationType}`
+        );
     }
   }
 

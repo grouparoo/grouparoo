@@ -46,6 +46,18 @@ export interface SimpleDestinationGroupMembership {
 }
 export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 
+// From Grouparoo Type to Destination Type
+export const destinationTypeConversions = {
+  float: ["any", "float", "integer", "string", "number"],
+  integer: ["any", "float", "integer", "string", "number"],
+  string: ["any", "string", "boolean"],
+  url: ["any", "string", "url"],
+  email: ["any", "string", "email"],
+  phoneNumber: ["any", "string", "phoneNumber"],
+  boolean: ["any", "string", "boolean", "number"],
+  date: ["any", "float", "integer", "string", "number", "date"],
+};
+
 const STATE_TRANSITIONS = [
   { from: "draft", to: "ready", checks: ["validateOptions"] },
 ];
@@ -240,10 +252,12 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.unTrackGroups(this);
   }
 
-  async validateMappings(mappings: { [groupGuid: string]: string }) {
+  async validateMappings(mappings: { [key: string]: string }) {
     if (Object.keys(mappings).length === 0) return;
 
-    const destinationMappingOptions = await this.destinationMappingOptions();
+    const destinationMappingOptions = await this.destinationMappingOptions(
+      false
+    );
     const cachedProfilePropertyRules = await ProfilePropertyRule.cached();
     const exportArrayProperties = await this.getExportArrayProperties();
 
@@ -270,13 +284,23 @@ export class Destination extends LoggedModel<Destination> {
       }
 
       const profilePropertyRule = cachedProfilePropertyRules[mappings[opt.key]];
-      if (opt.type !== "any") {
-        // existence checks will happen within the mapping helper
-        if (profilePropertyRule && profilePropertyRule.type !== opt.type) {
-          throw new Error(
-            `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
-          );
-        }
+      // if (opt.type !== "any") {
+      //   // existence checks will happen within the mapping helper
+      //   if (profilePropertyRule && profilePropertyRule.type !== opt.type) {
+      //     throw new Error(
+      //       `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
+      //     );
+      //   }
+      // }
+      if (
+        profilePropertyRule &&
+        !destinationTypeConversions[profilePropertyRule.type]?.includes(
+          opt.type
+        )
+      ) {
+        throw new Error(
+          `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
+        );
       }
     }
 
@@ -284,17 +308,27 @@ export class Destination extends LoggedModel<Destination> {
     for (const i in destinationMappingOptions.profilePropertyRules.known) {
       const opt = destinationMappingOptions.profilePropertyRules.known[i];
       const profilePropertyRule = cachedProfilePropertyRules[mappings[opt.key]];
-      if (opt.type !== "any") {
-        // existence checks will happen within the mapping helper
-        if (profilePropertyRule && profilePropertyRule.type !== opt.type) {
-          throw new Error(
-            `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
-          );
-        }
+      // if (opt.type !== "any") {
+      //   // existence checks will happen within the mapping helper
+      //   if (profilePropertyRule && profilePropertyRule.type !== opt.type) {
+      //     throw new Error(
+      //       `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
+      //     );
+      //   }
+      // }
+      if (
+        profilePropertyRule &&
+        !destinationTypeConversions[profilePropertyRule.type]?.includes(
+          opt.type
+        )
+      ) {
+        throw new Error(
+          `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
+        );
       }
     }
 
-    // optional rule can't be validated...
+    // optional rules can't be validated...
   }
 
   async parameterizedOptions(): Promise<SimpleDestinationOptions> {
@@ -321,8 +355,8 @@ export class Destination extends LoggedModel<Destination> {
     );
   }
 
-  async destinationMappingOptions() {
-    return DestinationOps.destinationMappingOptions(this);
+  async destinationMappingOptions(cached?: boolean) {
+    return DestinationOps.destinationMappingOptions(this, cached);
   }
 
   async getRuns(state?: string, limit = 100, offset = 0): Promise<Run[]> {
