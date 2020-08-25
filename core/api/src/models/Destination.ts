@@ -284,14 +284,6 @@ export class Destination extends LoggedModel<Destination> {
       }
 
       const profilePropertyRule = cachedProfilePropertyRules[mappings[opt.key]];
-      // if (opt.type !== "any") {
-      //   // existence checks will happen within the mapping helper
-      //   if (profilePropertyRule && profilePropertyRule.type !== opt.type) {
-      //     throw new Error(
-      //       `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
-      //     );
-      //   }
-      // }
       if (
         profilePropertyRule &&
         !destinationTypeConversions[profilePropertyRule.type]?.includes(
@@ -308,14 +300,6 @@ export class Destination extends LoggedModel<Destination> {
     for (const i in destinationMappingOptions.profilePropertyRules.known) {
       const opt = destinationMappingOptions.profilePropertyRules.known[i];
       const profilePropertyRule = cachedProfilePropertyRules[mappings[opt.key]];
-      // if (opt.type !== "any") {
-      //   // existence checks will happen within the mapping helper
-      //   if (profilePropertyRule && profilePropertyRule.type !== opt.type) {
-      //     throw new Error(
-      //       `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
-      //     );
-      //   }
-      // }
       if (
         profilePropertyRule &&
         !destinationTypeConversions[profilePropertyRule.type]?.includes(

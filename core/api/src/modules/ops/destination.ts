@@ -749,7 +749,7 @@ export namespace DestinationOps {
     destination: Destination,
     key: "oldProfileProperties" | "newProfileProperties"
   ) {
-    const response = {};
+    const response: { [key: string]: any } = {};
     const rawProperties = JSON.parse(_export["dataValues"][key]);
     const destinationMappingOptions = await destination.destinationMappingOptions();
     for (const k in rawProperties) {
