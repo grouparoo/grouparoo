@@ -37,13 +37,13 @@
   },
   "devDependencies": {
     "@grouparoo/core": "^0.1.10",
-    "@types/jest": "26.0.8",
-    "@types/node": "14.0.27",
-    "@types/react": "16.9.45",
-    "actionhero": "^23.0.6",
-    "jest": "26.4.0",
-    "prettier": "2.0.5",
-    "ts-jest": "26.1.4",
+    "@types/jest": "26.0.10",
+    "@types/node": "14.6.0",
+    "@types/react": "16.9.47",
+    "actionhero": "23.0.7",
+    "jest": "26.4.2",
+    "prettier": "2.1.0",
+    "ts-jest": "26.2.0",
     "typescript": "3.9.7"
   },
   "grouparoo": {

@@ -13,14 +13,14 @@
     "url": "git+https://github.com/grouparoo/grouparoo.git"
   },
   "devDependencies": {
-    "@types/jest": "26.0.8",
+    "@types/jest": "26.0.10",
     "glob": "7.1.6",
     "lerna": "3.22.1",
     "lerna-changelog": "1.0.1",
     "lerna-update-wizard": "0.17.8",
     "license-checker": "github:grouparoo/license-checker",
     "npm-check-updates": "latest",
-    "prettier": "2.0.5"
+    "prettier": "2.1.0"
   },
   "scripts": {
     "prepare": "./bin/prepare",

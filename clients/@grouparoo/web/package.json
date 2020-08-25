@@ -28,11 +28,11 @@
     "lint": "prettier --check src __tests__"
   },
   "devDependencies": {
-    "@types/jest": "26.0.8",
-    "jest": "26.4.0",
+    "@types/jest": "26.0.10",
+    "jest": "26.4.2",
     "jest-fetch-mock": "3.0.3",
-    "prettier": "2.0.5",
-    "ts-jest": "26.1.4",
+    "prettier": "2.1.0",
+    "ts-jest": "26.2.0",
     "ts-loader": "8.0.2",
     "typescript": "3.9.7",
     "webpack": "4.44.1",
