@@ -1,4 +1,4 @@
-import { task } from "actionhero";
+import { task, log } from "actionhero";
 import { Run } from "../models/Run";
 
 /**
@@ -23,6 +23,13 @@ export async function internalRun(creatorType: string, creatorGuid: string) {
     creatorGuid,
     state: "running",
   });
+
+  log(
+    `[ run ] starting run ${
+      run.guid
+    } for ${creatorType} ${creatorGuid}, ${await run.getCreatorName()}`,
+    "notice"
+  );
 
   await task.enqueue("run:internalRun", { runGuid: run.guid });
 
