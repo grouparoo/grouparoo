@@ -219,6 +219,7 @@ export class Session extends Initializer {
   constructor() {
     super();
     this.name = "session";
+    this.startPriority = 100;
   }
 
   async initialize() {
