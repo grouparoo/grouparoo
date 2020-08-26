@@ -1,4 +1,3 @@
-import faker from "faker";
 import { Export } from "./../../src/models/Export";
 import DestinationFactory from "./destination";
 import ProfileFactory from "./profile";

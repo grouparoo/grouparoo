@@ -3,7 +3,7 @@ import { App } from "./../../src/models/App";
 
 const data = async (props = {}) => {
   const defaultProps = {
-    name: `${faker.name.jobDescriptor()}-${Math.random()}`,
+    name: `app ${faker.name.jobDescriptor()} - ${Math.random()}`,
     type: "test-plugin-app",
     options: { fileGuid: faker.finance.bitcoinAddress() },
 
