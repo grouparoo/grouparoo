@@ -129,7 +129,7 @@ export default function Page({ _export, groups }) {
           <p>
             Total duration:{" "}
             <strong>
-              <Moment duration={_export.startedAt} date={_export.completedAt} />
+              <Moment duration={_export.createdAt} date={_export.completedAt} />
             </strong>
           </p>
           <Table size="sm">
@@ -142,19 +142,42 @@ export default function Page({ _export, groups }) {
             </thead>
             <tbody>
               <tr>
-                <td>Started</td>
-                <td>{new Date(_export.startedAt).toLocaleString()}</td>
+                <td>Created</td>
+                <td>{new Date(_export.createdAt).toLocaleString()}</td>
                 <td>⇣</td>
               </tr>
               <tr>
-                <td>Completed</td>
-                <td>{new Date(_export.completedAt).toLocaleString()}</td>
+                <td>Started</td>
+                <td>
+                  {_export.startedAt
+                    ? new Date(_export.startedAt).toLocaleString()
+                    : null}
+                </td>
                 <td>
                   ⇣
-                  <Moment
-                    duration={_export.startedAt}
-                    date={_export.completedAt}
-                  />
+                  {_export.startedAt ? (
+                    <Moment
+                      duration={_export.createdAt}
+                      date={_export.startedAt}
+                    />
+                  ) : null}
+                </td>
+              </tr>
+              <tr>
+                <td>Completed</td>
+                <td>
+                  {_export.completedAt
+                    ? new Date(_export.completedAt).toLocaleString()
+                    : null}
+                </td>
+                <td>
+                  ⇣
+                  {_export.completedAt ? (
+                    <Moment
+                      duration={_export.startedAt}
+                      date={_export.completedAt}
+                    />
+                  ) : null}
                 </td>
               </tr>
             </tbody>

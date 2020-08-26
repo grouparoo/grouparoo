@@ -190,6 +190,7 @@ export class Export extends Model<Export> {
       guid: this.guid,
       destination: destination ? await destination.apiData(false, false) : null,
       profileGuid: this.profileGuid,
+      createdAt: this.createdAt ? this.createdAt.getTime() : null,
       startedAt: this.startedAt ? this.startedAt.getTime() : null,
       completedAt: this.completedAt ? this.completedAt.getTime() : null,
       oldProfileProperties: this.oldProfileProperties,
