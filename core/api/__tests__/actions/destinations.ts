@@ -1,6 +1,9 @@
 import { helper } from "./../utils/specHelper";
 import { specHelper } from "actionhero";
-import { Destination } from "./../../src/models/Destination";
+import {
+  Destination,
+  destinationTypeConversions,
+} from "./../../src/models/Destination";
 import { Group } from "./../../src/models/Group";
 import { Profile } from "./../../src/models/Profile";
 
@@ -164,10 +167,11 @@ describe("actions/destinations", () => {
         csrfToken,
         guid,
       };
-      const { options, error } = await specHelper.runAction(
-        "destination:mappingOptions",
-        connection
-      );
+      const {
+        options,
+        destinationTypeConversions: _destinationTypeConversions,
+        error,
+      } = await specHelper.runAction("destination:mappingOptions", connection);
       expect(error).toBeFalsy();
       expect(options).toEqual({
         labels: {
@@ -186,6 +190,7 @@ describe("actions/destinations", () => {
           allowOptionalFromProfilePropertyRules: true,
         },
       });
+      expect(_destinationTypeConversions).toEqual(destinationTypeConversions);
     });
 
     test("an administrator can set the mapping with valid mappings", async () => {

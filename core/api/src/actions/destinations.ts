@@ -1,6 +1,6 @@
 import { api } from "actionhero";
 import { AuthenticatedAction } from "../classes/authenticatedAction";
-import { Destination } from "../models/Destination";
+import { Destination, destinationTypeConversions } from "../models/Destination";
 import { App } from "../models/App";
 import { Profile } from "../models/Profile";
 import { Group } from "../models/Group";
@@ -205,7 +205,8 @@ export class DestinationMappingOptions extends AuthenticatedAction {
 
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
-    response.options = await destination.destinationMappingOptions();
+    response.options = await destination.destinationMappingOptions(false); // never use cache when displaying to the user
+    response.destinationTypeConversions = destinationTypeConversions;
   }
 }
 

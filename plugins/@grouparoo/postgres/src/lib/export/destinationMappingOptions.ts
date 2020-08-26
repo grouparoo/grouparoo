@@ -1,4 +1,7 @@
-import { DestinationMappingOptionsMethod } from "@grouparoo/core";
+import {
+  DestinationMappingOptionsMethod,
+  DestinationMappingOptionsResponseTypes,
+} from "@grouparoo/core";
 import format from "pg-format";
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
@@ -15,7 +18,11 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
     )
   );
 
-  const columns: Array<{ key: string; type: string; important: boolean }> = [];
+  const columns: Array<{
+    key: string;
+    type: DestinationMappingOptionsResponseTypes;
+    important: boolean;
+  }> = [];
   for (const i in rows) {
     if (rows[i].column_name !== destinationOptions.primaryKey) {
       columns.push({ key: rows[i].column_name, type: "any", important: true });

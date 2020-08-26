@@ -9,7 +9,6 @@ import {
   BeforeSave,
   BeforeDestroy,
   AfterSave,
-  AfterCreate,
   AfterDestroy,
   ForeignKey,
   BelongsTo,
@@ -49,7 +48,7 @@ export function profilePropertyRuleJSToSQLType(jsType: string) {
   return map[jsType];
 }
 
-const TYPES = [
+export const ProfilePropertyRuleTypes = [
   "boolean",
   "date",
   "email",
@@ -142,7 +141,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   @AllowNull(false)
   @Default("string")
-  @Column(DataType.ENUM(...TYPES))
+  @Column(DataType.ENUM(...ProfilePropertyRuleTypes))
   type: string;
 
   @AllowNull(false)
@@ -389,7 +388,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   @BeforeSave
   static async ensureType(instance: ProfilePropertyRule) {
-    if (!TYPES.includes(instance.type)) {
+    if (!ProfilePropertyRuleTypes.includes(instance.type)) {
       throw new Error(`${instance.type} is not an allowed type`);
     }
   }
