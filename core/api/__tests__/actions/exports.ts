@@ -106,6 +106,7 @@ describe("actions/exports", () => {
 
       expect(error).toBeUndefined();
       expect(_export.guid).toBe(guid);
+      expect(_export.createdAt).toBeGreaterThan(0);
       expect(_export.destination.guid).toBe(destination.guid);
     });
 

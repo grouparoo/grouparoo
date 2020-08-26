@@ -72,7 +72,7 @@ export default function ExportsList(props) {
     }
   }
 
-  function formatCreatedAt(timestamp) {
+  function formatTimestamp(timestamp) {
     const [date, time] = new Date(timestamp).toLocaleString().split(",");
     return `${date} ${time}`;
   }
@@ -198,18 +198,28 @@ export default function ExportsList(props) {
                     Has Changes? {_export.hasChanges.toString()}
                   </td>
                   <td>
-                    Start: {formatCreatedAt(_export.startedAt)}
+                    Created:{" "}
+                    {_export.createdAt
+                      ? formatTimestamp(_export.createdAt)
+                      : null}
+                    <br />
+                    Start:{" "}
+                    {_export.startedAt
+                      ? formatTimestamp(_export.startedAt)
+                      : null}
                     <br />
                     End:{" "}
                     {_export.completedAt
-                      ? formatCreatedAt(_export.completedAt)
+                      ? formatTimestamp(_export.completedAt)
                       : null}
                     <br />
                     Duration:{" "}
-                    <Moment
-                      duration={_export.startedAt}
-                      date={_export.completedAt}
-                    />
+                    {_export.completedAt ? (
+                      <Moment
+                        duration={_export.createdAt}
+                        date={_export.completedAt}
+                      />
+                    ) : null}
                   </td>
                   <td>
                     <ul>
