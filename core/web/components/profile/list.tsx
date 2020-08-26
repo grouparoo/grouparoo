@@ -4,7 +4,7 @@ import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
 import Router from "next/router";
-import { Form, Col, Button } from "react-bootstrap";
+import { Form, Col, Button, Badge } from "react-bootstrap";
 import Moment from "react-moment";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
@@ -231,7 +231,8 @@ export default function ProfilesList(props) {
                   >
                     <a className="text-muted">
                       {identifyingProfileProperty?.key &&
-                      profile.properties[identifyingProfileProperty.key] ? (
+                      profile.properties[identifyingProfileProperty.key] &&
+                      searchKey !== identifyingProfileProperty.key ? (
                         <>
                           {identifyingProfileProperty.key}:{" "}
                           {profile.properties[
@@ -243,8 +244,26 @@ export default function ProfilesList(props) {
                       <span>Grouparoo Guid: {profile.guid}</span>
                     </a>
                   </Link>
+
+                  {searchKey === "" ? null : (
+                    <div key={`key-${profile.guid}-${searchKey}`}>
+                      <span className="text-muted">
+                        <strong>{searchKey}</strong>:{" "}
+                        {profile.properties[searchKey] ? (
+                          <Badge variant="info">
+                            <ArrayProfilePropertyList
+                              type={profile.properties[searchKey].type}
+                              values={profile.properties[searchKey].values}
+                            />
+                          </Badge>
+                        ) : null}
+                      </span>
+                      <br />
+                    </div>
+                  )}
+
                   {uniqueProfilePropertyKeys.map((key) => {
-                    if (!profile.properties[key]) {
+                    if (!profile.properties[key] || searchKey === key) {
                       return null;
                     }
 
@@ -261,20 +280,6 @@ export default function ProfilesList(props) {
                       </div>
                     );
                   })}
-                  {searchKey === "" ? null : (
-                    <div key={`key-${profile.guid}-${searchKey}`}>
-                      <span className="text-muted">
-                        {searchKey}:{" "}
-                        {profile.properties[searchKey] ? (
-                          <ArrayProfilePropertyList
-                            type={profile.properties[searchKey].type}
-                            values={profile.properties[searchKey].values}
-                          />
-                        ) : null}
-                      </span>
-                      <br />
-                    </div>
-                  )}
                 </td>
                 <td>
                   <Moment fromNow>{profile.createdAt}</Moment>
