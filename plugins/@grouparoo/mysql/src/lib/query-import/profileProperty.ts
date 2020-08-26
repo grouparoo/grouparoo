@@ -7,7 +7,6 @@ import {
 export const profileProperty: ProfilePropertyPluginMethod = async ({
   connection,
   profile,
-  appOptions,
   profilePropertyRule,
   profilePropertyRuleOptions,
 }) => {

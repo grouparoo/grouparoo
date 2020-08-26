@@ -20,13 +20,13 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   const aggregationMethod = profilePropertyRuleOptions["aggregation method"];
   const sortColumn = profilePropertyRuleOptions["sort column"];
 
-  if (!aggregationMethod || !column) {
-    return;
-  }
+  if (!aggregationMethod || !column) return;
 
+  // don't `select userId where userId = {userId}` if we don't know {userId}
   if (tableCol === column && aggregationMethod === "exact") {
-    // don't return userId where userId = userId
-    return;
+    const tableMappingCol: string = Object.values(sourceMapping)[0];
+    const properties = await profile.properties();
+    if (properties[tableMappingCol]?.values.length === 0) return;
   }
 
   let aggSelect = `\`${column}\``;
