@@ -22,10 +22,11 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
 
   if (!aggregationMethod || !column) return;
 
-  // don't `select userId where userId = userId` if we already know it
+  // don't `select userId where userId = {userId}` if we don't know {userId}
   if (tableCol === column && aggregationMethod === "exact") {
+    const tableMappingCol: string = Object.values(sourceMapping)[0];
     const properties = await profile.properties();
-    if (properties[profilePropertyRule.key]?.values.length > 0) return;
+    if (properties[tableMappingCol]?.values.length === 0) return;
   }
 
   let aggSelect = `"${column}"`;
