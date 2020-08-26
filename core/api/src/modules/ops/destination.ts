@@ -806,8 +806,6 @@ export namespace DestinationOps {
       // ** FLOAT **
       case grouparooType === "float" && destinationType === "float":
         return value as number;
-      case grouparooType === "float" && destinationType === "integer":
-        return Math.round(value as number);
       case grouparooType === "float" && destinationType === "string":
         return (value as number).toString();
       case grouparooType === "float" && destinationType === "number":
@@ -826,8 +824,6 @@ export namespace DestinationOps {
       // ** STRING **
       case grouparooType === "string" && destinationType === "string":
         return value as string;
-      case grouparooType === "string" && destinationType === "boolean":
-        return value.toString().toLowerCase() === "false" ? false : !!value;
 
       // ** URL **
       case grouparooType === "url" && destinationType === "string":

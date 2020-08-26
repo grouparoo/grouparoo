@@ -20,7 +20,7 @@ describe("models/destination", () => {
     await helper.shutdown(actionhero);
   });
 
-  describe("destination type conversions", () => {
+  describe("destination typecasting", () => {
     function testValues(
       input: any,
       output: any,
@@ -74,7 +74,7 @@ describe("models/destination", () => {
       const input = 3.14159;
       const mapping = [
         ["float", input],
-        ["integer", 3],
+        ["integer", null],
         ["string", input.toString()],
         ["email", null],
         ["phoneNumber", null],
@@ -130,7 +130,7 @@ describe("models/destination", () => {
         ["string", input],
         ["email", null],
         ["phoneNumber", null],
-        ["boolean", true],
+        ["boolean", null],
         ["url", null],
         ["number", null],
         ["date", null],
