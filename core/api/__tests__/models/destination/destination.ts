@@ -1,5 +1,5 @@
 import { helper } from "../../utils/specHelper";
-import { api, specHelper } from "actionhero";
+import { api, specHelper, cache } from "actionhero";
 import { App } from "../../../src/models/App";
 import { Log } from "../../../src/models/Log";
 import { Destination } from "../../../src/models/Destination";
@@ -340,6 +340,21 @@ describe("models/destination", () => {
           "primary-id": "userId",
           local_first_name: "firstName",
         });
+      });
+
+      test("mapping data is cached", async () => {
+        destination = await helper.factories.destination();
+        const cacheKey = `destination:${destination.guid}:mappingOptions`;
+        await expect(cache.load(cacheKey)).rejects.toThrow();
+
+        await destination.setMapping({
+          "primary-id": "userId",
+          local_first_name: "firstName",
+        });
+        await destination.getMapping();
+
+        const response = await cache.load(cacheKey);
+        expect(response.value).not.toBeFalsy();
       });
 
       test("it throws an error if the mapping does not include the key of a profilePropertyRyle", async () => {

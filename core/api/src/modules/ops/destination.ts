@@ -161,7 +161,7 @@ export namespace DestinationOps {
     cached = true
   ) {
     const cacheKey = `destination:${destination.guid}:mappingOptions`;
-    const cacheDuration = 1000 * 60 * 60; // 1 hour
+    const cacheDuration = 1000 * 60 * 10; // 10 minutes
 
     if (cached) {
       try {
