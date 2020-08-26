@@ -16,6 +16,7 @@ GROUPAROO_PIDS=`ps | grep ts-node-dev | grep grouparoo/core | cut -f1 -d' '`
 for p in $GROUPAROO_PIDS; do
   printf "stopping orphan process $p\r\n"
   kill -9 $p
+  sleep 1
 done
 
 # If there are problems, add "--debug" as a flag
