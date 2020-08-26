@@ -12,14 +12,19 @@ export class TeamMembersList extends AuthenticatedAction {
     this.permission = { topic: "team", mode: "read" };
     this.inputs = {
       guid: { required: false },
+      teamGuid: { required: false },
     };
   }
 
   async run({ params, response }) {
     const where = {};
     if (params.guid) where["teamGuid"] = params.guid;
+    if (params.teamGuid) where["teamGuid"] = params.teamGuid;
 
-    const teamMembers = await TeamMember.findAll({ where });
+    const teamMembers = await TeamMember.findAll({
+      where,
+      order: [["email", "asc"]],
+    });
 
     response.teamMembers = await Promise.all(
       teamMembers.map(async (tem) => tem.apiData())
@@ -35,7 +40,7 @@ export class TeamMemberCreate extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "team", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      teamGuid: { required: true },
       firstName: { required: true },
       lastName: { required: true },
       password: { required: true },
@@ -45,7 +50,8 @@ export class TeamMemberCreate extends AuthenticatedAction {
   }
 
   async run({ params, response }) {
-    const team = await Team.findByGuid(params.guid);
+    const team = await Team.findByGuid(params.teamGuid);
+
     const teamMember = new TeamMember({
       firstName: params.firstName,
       lastName: params.lastName,

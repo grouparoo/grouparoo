@@ -6,7 +6,7 @@ const GrouparooSubscriptionModule = require("../../src/modules/grouparooSubscrip
 GrouparooSubscriptionModule.GrouparooSubscription = jest.fn();
 
 let actionhero;
-let guid;
+let teamGuid;
 let teamMemberGuid;
 
 describe("actions/teamMembers", () => {
@@ -26,7 +26,7 @@ describe("actions/teamMembers", () => {
       password: "P@ssw0rd!",
       email: "mario@example.com",
     });
-    guid = team.guid;
+    teamGuid = team.guid;
   });
 
   describe("administrator signed in", () => {
@@ -46,7 +46,7 @@ describe("actions/teamMembers", () => {
     test("an administrator can create a new team member", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        teamGuid,
         firstName: "Luigi",
         lastName: "Mario",
         email: "luigi@example.com",
@@ -58,7 +58,7 @@ describe("actions/teamMembers", () => {
       );
       expect(error).toBeUndefined();
       expect(teamMember.guid).toBeTruthy();
-      expect(teamMember.teamGuid).toBe(guid);
+      expect(teamMember.teamGuid).toBe(teamGuid);
       expect(teamMember.email).toBe("luigi@example.com");
       teamMemberGuid = teamMember.guid;
     });
@@ -68,7 +68,7 @@ describe("actions/teamMembers", () => {
 
       connection.params = {
         csrfToken,
-        guid,
+        teamGuid,
         firstName: "Toad",
         lastName: "Toadstool",
         email: "toad@example.com",
@@ -91,7 +91,7 @@ describe("actions/teamMembers", () => {
 
       connection.params = {
         csrfToken,
-        guid,
+        teamGuid,
         firstName: "Yoshi",
         lastName: "Yoshi",
         email: "yoshi@example.com",
@@ -115,15 +115,15 @@ describe("actions/teamMembers", () => {
       );
       expect(error).toBeUndefined();
       expect(teamMember.guid).toBeTruthy();
-      expect(teamMember.teamGuid).toBe(guid);
+      expect(teamMember.teamGuid).toBe(teamGuid);
       expect(teamMember.email).toBe("luigi@example.com");
-      expect(team.guid).toBe(guid);
+      expect(team.guid).toBe(teamGuid);
     });
 
     test("an administrator can list all members in a team", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        teamGuid,
       };
       const { error, teamMembers } = await specHelper.runAction(
         "teamMembers:list",
