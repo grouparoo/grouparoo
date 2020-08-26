@@ -3,7 +3,7 @@ import { Team } from "./../../src/models/Team";
 
 const data = async (props = {}) => {
   const defaultProps = {
-    name: faker.name.jobDescriptor(),
+    name: `team ${faker.name.jobDescriptor()} - ${Math.random()}`,
     locked: false,
 
     createdAt: new Date(),

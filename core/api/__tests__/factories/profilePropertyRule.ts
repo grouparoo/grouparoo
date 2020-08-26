@@ -1,4 +1,3 @@
-import faker from "faker";
 import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
 import SourceFactory from "./source";
 

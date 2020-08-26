@@ -4,7 +4,7 @@ import SourceFactory from "./source";
 
 const data = async (props = {}) => {
   const defaultProps = {
-    name: `schedule ${faker.company.companyName()}-${Math.random()}`,
+    name: `schedule ${faker.company.companyName()} - ${Math.random()}`,
     options: { maxColumn: "updated_at" },
     mapping: {},
     recurring: false,
