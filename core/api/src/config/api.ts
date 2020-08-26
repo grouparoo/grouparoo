@@ -4,10 +4,6 @@ export const DEFAULT = {
   general: (config) => {
     const packageJSON = require("./../../../package.json");
 
-    if (!process.env.SERVER_TOKEN) {
-      throw new Error("SERVER_TOKEN environment variable missing");
-    }
-
     return {
       apiVersion: packageJSON.version,
       serverName: packageJSON.name,
