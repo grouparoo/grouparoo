@@ -844,7 +844,7 @@ export namespace DestinationOps {
       // ** PHONENUMBER **
       case grouparooType === "phoneNumber" && destinationType === "string":
         return value as string;
-      case grouparooType === "phoneNumber" && destinationType === "email":
+      case grouparooType === "phoneNumber" && destinationType === "phoneNumber":
         return value as string;
 
       // ** BOOLEAN **
