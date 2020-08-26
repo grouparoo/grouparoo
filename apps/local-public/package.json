@@ -22,7 +22,8 @@
   "scripts": {
     "prepare": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=local-public npm run prepare",
     "start": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=local-public ./api/bin/start",
-    "dev": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=local-public ./api/bin/dev"
+    "dev": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=local-public ./api/bin/dev",
+    "actionhero": "cd node_modules/@grouparoo/core/api && GROUPAROO_MONOREPO_APP=local-public ../node_modules/.bin/actionhero"
   },
   "grouparoo": {
     "plugins": [
