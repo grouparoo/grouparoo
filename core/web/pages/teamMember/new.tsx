@@ -16,14 +16,17 @@ export default function Page(props) {
   const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
-  const { guid } = query;
+  const { guid: teamGuid } = query;
 
   async function onSubmit(data) {
-    setLoading(true);
+    // if the option is disabled, the default value is not set
+    if (!data.teamGuid && teamGuid) data.teamGuid = teamGuid;
+
     const response = await execApi("post", `/team/member`, data);
     setLoading(false);
     if (response?.teamMember) {
       teamMemberHandler.set(response.teamMember);
+      successHandler.set({ message: "Team Member Created" });
       Router.push(`/team/${response.teamMember.teamGuid}/members`);
     }
   }
@@ -41,10 +44,12 @@ export default function Page(props) {
           <Form.Label>Team</Form.Label>
           <Form.Control
             as="select"
-            name="guid"
+            name="teamGuid"
             ref={register}
-            disabled={guid ? true : false}
-            defaultValue={guid ? guid : teams.length > 0 ? teams[0].guid : null}
+            defaultValue={
+              teamGuid ? teamGuid : teams.length > 0 ? teams[0].guid : null
+            }
+            disabled={teamGuid ? true : false}
           >
             {teams.map((team) => (
               <option key={`team-${team.guid}`} value={team.guid}>
