@@ -2,6 +2,7 @@ import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
+import { parallelism } from "./../lib/parallelism";
 
 import { exportProfile } from "../lib/export/exportProfile";
 import { destinationOptions } from "../lib/export/destinationOptions";
@@ -47,7 +48,7 @@ export class Plugins extends Initializer {
               description: "in LaunchPoint for an API user",
             },
           ],
-          methods: { test },
+          methods: { test, parallelism },
         },
       ],
       connections: [
