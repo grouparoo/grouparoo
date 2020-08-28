@@ -69,6 +69,33 @@ describe("models/destination", () => {
       });
     });
 
+    describe("null types", () => {
+      const types: DestinationMappingOptionsResponseTypes[] = [
+        "boolean",
+        "integer",
+        "float",
+        "string",
+        "date",
+        "email",
+        "phoneNumber",
+        "url",
+      ];
+
+      types.map((inputType) => {
+        types.map((outputType) => {
+          test(`exporting null type ${inputType} to ${outputType}`, () => {
+            expect(
+              DestinationOps.formatOutgoingProfileProperties(
+                null,
+                inputType,
+                outputType
+              )
+            ).toEqual(null);
+          });
+        });
+      });
+    });
+
     describe("float", () => {
       const grouparooType = "float";
       const input = 3.14159;

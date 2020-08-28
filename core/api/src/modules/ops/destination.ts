@@ -799,6 +799,10 @@ export namespace DestinationOps {
     destinationType: DestinationMappingOptionsResponseTypes
   ) {
     switch (true) {
+      // ** Null **
+      case value === null || value === undefined:
+        return value;
+
       // ** ANY **
       case destinationType === "any":
         return value;
