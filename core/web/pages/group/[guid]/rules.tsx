@@ -152,8 +152,8 @@ export default function Page(props) {
   }
 
   let rowChanges = false;
-  const profilePropertyRulesAndTopLevelGroupRules = topLevelGroupRules.concat(
-    profilePropertyRules
+  const profilePropertyRulesAndTopLevelGroupRules = profilePropertyRules.concat(
+    topLevelGroupRules
   );
 
   return (
@@ -248,12 +248,12 @@ export default function Page(props) {
                             <Fragment key={`ruleKeyOpt-${rule.key}-${idx}`}>
                               {idx === 0 ? (
                                 <option disabled>
-                                  --- profile columns ---
+                                  --- profile properties ---
                                 </option>
                               ) : null}
-                              {idx === topLevelGroupRules.length ? (
+                              {idx === profilePropertyRules.length ? (
                                 <option disabled>
-                                  --- profile properties ---
+                                  --- profile columns ---
                                 </option>
                               ) : null}
                               <option>{rule.key}</option>
