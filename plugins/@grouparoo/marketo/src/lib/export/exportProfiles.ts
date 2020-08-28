@@ -5,6 +5,7 @@ import {
   SimpleAppOptions,
 } from "@grouparoo/core";
 import { connect } from "../connect";
+import { getListId } from "./listMethods";
 
 export const exportProfiles: ExportProfilesPluginMethod = async ({
   appOptions,
@@ -105,8 +106,8 @@ export const exportBatch: ExportBatchMethod = async ({
 };
 
 async function updateGroups(client, exports: MarketoExport[]) {
-  const removal: { [groupName: string]: number[] } = {};
-  const addition: { [groupName: string]: number[] } = {};
+  const removal: { [groupName: string]: MarketoExport[] } = {};
+  const addition: { [groupName: string]: MarketoExport[] } = {};
   for (const exportedProfile of exports) {
     if (exportedProfile.error) {
       continue;
@@ -130,23 +131,86 @@ async function updateGroups(client, exports: MarketoExport[]) {
     const { oldGroups, newGroups } = exportedProfile;
     const removedLists = oldGroups.filter((k) => !newGroups.includes(k));
     const addedLists = newGroups;
+    console.log("oldGroups", oldGroups);
+    console.log("newGroups", newGroups);
+    console.log("removedLists", removedLists);
 
     for (const list of removedLists) {
       removal[list] = removal[list] || [];
-      removal[list].push(marketoId);
+      removal[list].push(exportedProfile);
     }
     for (const list of addedLists) {
       addition[list] = addition[list] || [];
-      addition[list].push(marketoId);
+      addition[list].push(exportedProfile);
     }
   }
 
-  // now we have the lists by name and th ids that should be added or removed
-  // TODO: look up list (with mutex) to get id
-  //await client.list.addLeadsToList(listId, addition);
-  //await client.list.removeLeadsFromList(listId, removal);
-  // also need to process the results to look for errors
-  // TODO: should we handle deleting lists. i don't think so.
+  for (const listName in addition) {
+    await updateList(client, ListAction.Add, listName, addition[listName]);
+  }
+  for (const listName in removal) {
+    await updateList(client, ListAction.Remove, listName, removal[listName]);
+  }
+}
+
+enum ListAction {
+  Add = "ADD",
+  Remove = "REMOVE",
+}
+async function updateList(
+  client,
+  action: ListAction,
+  listName: string,
+  users: MarketoExport[]
+) {
+  if (users.length === 0) {
+    return;
+  }
+  const id = await getListId(client, listName);
+  const idMap: { [marketoId: number]: MarketoExport } = {};
+  const marketoIds: any[] = [];
+  for (const user of users) {
+    idMap[user.marketoId] = user;
+    //marketoIds.push({ id: user.marketoId });
+    marketoIds.push(user.marketoId);
+  }
+  let response;
+  if (action === ListAction.Add) {
+    response = await client.list.addLeadsToList(id, marketoIds);
+  } else if (action === ListAction.Remove) {
+    // DELETE /rest/v1/lists/{listId}/leads.json?id=318603&id=318595&id=999999
+    const query = marketoIds.join("&id=");
+    const path = `/v1/lists/${id}/leads.json?id=${query}`;
+
+    //client.list.removeLeadsToList has issue
+    response = await client._connection.del(path, {
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+  if (!response.success) {
+    throw new Error(`Marketo list error: ${listName}`);
+  }
+  const results = response.result || [];
+  if (results.length === 0) {
+    throw new Error(`Marketo empty results: ${listName}`);
+  }
+  for (const result of results) {
+    const { id } = result;
+    console.log("list", listName, action, result);
+    if (result.reasons) {
+      if (action === ListAction.Remove && result.status === "skipped") {
+        // this is ok, not in the  list
+      } else {
+        const message = result.reasons.map((r) => r.message).join(", ");
+        const user = idMap[id];
+        if (!user) {
+          throw `Unknown user id in list: ${id}`;
+        }
+        user.error =
+          user.error || new Error(`could update list ${listName}: ${message}`);
+      }
+    }
+  }
 }
 
 async function updateByIds(client, exports: MarketoExport[]) {
