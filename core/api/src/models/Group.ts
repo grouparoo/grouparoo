@@ -42,6 +42,7 @@ const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 export interface GroupRuleWithKey {
   key: string;
   type?: string;
+  topLevel?: boolean;
   operation: { op: string; description?: string };
   match?: string | number | boolean;
   relativeMatchNumber?: number;
@@ -63,6 +64,11 @@ const STATE_TRANSITIONS = [
   { from: "updating", to: "ready", checks: [] },
   { from: "updating", to: "initializing", checks: [] },
   { from: "ready", to: "deleted", checks: [] },
+];
+
+export const TopLevelGroupRules = [
+  { key: "guid", column: "guid", type: "string" },
+  { key: "createdAt", column: "createdAt", type: "date" },
 ];
 
 @DefaultScope(() => ({
@@ -155,14 +161,20 @@ export class Group extends LoggedModel<Group> {
     for (const i in rules) {
       const rule: GroupRule = rules[i];
       const profilePropertyRule = await rule.$get("profilePropertyRule");
+      const type = profilePropertyRule
+        ? profilePropertyRule.type
+        : TopLevelGroupRules.filter(
+            (tlgr) => tlgr.key === rule.profileColumn
+          )[0].type;
       rulesWithKey.push({
-        key: profilePropertyRule.key,
-        type: profilePropertyRule.type,
+        key: profilePropertyRule ? profilePropertyRule.key : rule.profileColumn,
+        topLevel: profilePropertyRule ? false : true,
+        type: type,
         operation: {
           op: rule.op,
-          description: ProfilePropertyRuleOpsDictionary[
-            profilePropertyRule.type
-          ].filter((operation) => operation.op === rule.op)[0].description,
+          description: ProfilePropertyRuleOpsDictionary[type].filter(
+            (operation) => operation.op === rule.op
+          )[0].description,
         },
         match: rule.match,
         relativeMatchNumber: rule.relativeMatchNumber,
@@ -183,6 +195,8 @@ export class Group extends LoggedModel<Group> {
       throw new Error("too many group rules");
     }
 
+    const topLevelRuleKeys = TopLevelGroupRules.map((tlr) => tlr.key);
+
     const transaction = await api.sequelize.transaction();
 
     try {
@@ -200,7 +214,7 @@ export class Group extends LoggedModel<Group> {
           where: { key },
         });
 
-        if (!profilePropertyRule) {
+        if (!profilePropertyRule && !topLevelRuleKeys.includes(key)) {
           throw new Error(`cannot find Profile Property Rule ${key}`);
         }
 
@@ -208,7 +222,10 @@ export class Group extends LoggedModel<Group> {
           {
             position: parseInt(i) + 1,
             groupGuid: this.guid,
-            profilePropertyRuleGuid: profilePropertyRule.guid,
+            profilePropertyRuleGuid: profilePropertyRule
+              ? profilePropertyRule.guid
+              : null,
+            profileColumn: profilePropertyRule ? null : key,
             op: rule.operation.op,
             match: rule.match,
             relativeMatchNumber: rule.relativeMatchNumber,
@@ -454,6 +471,8 @@ export class Group extends LoggedModel<Group> {
       const {
         key,
         operation,
+        type,
+        topLevel,
         match,
         relativeMatchNumber,
         relativeMatchDirection,
@@ -462,6 +481,11 @@ export class Group extends LoggedModel<Group> {
       const localWhereGroup = {};
       let rawValueMatch = {};
 
+      const profilePropertyRule = profilePropertyRules[key];
+      if (!profilePropertyRule && !topLevel) {
+        throw new Error(`cannot find type for ProfilePropertyRule ${key}`);
+      }
+
       if (match !== null && match !== undefined) {
         // rewrite null matches
         rawValueMatch[Op[operation.op]] =
@@ -469,7 +493,8 @@ export class Group extends LoggedModel<Group> {
 
         // in the case of Array property negation, we also want to consider those profiles with the property never set
         if (
-          profilePropertyRules[key].isArray &&
+          !topLevel &&
+          profilePropertyRule.isArray &&
           ["ne", "notLike", "notILike"].includes(operation.op)
         ) {
           rawValueMatch = { [Op.or]: [rawValueMatch, { [Op.eq]: null }] };
@@ -487,23 +512,34 @@ export class Group extends LoggedModel<Group> {
         throw new Error("either match or relativeMatch is required");
       }
 
-      const profilePropertyRule = profilePropertyRules[key];
-      if (!profilePropertyRule) {
-        throw new Error(`cannot find type for ProfilePropertyRule ${key}`);
+      if (!topLevel) {
+        // when we are considering a profile property
+        localWhereGroup[Op.and] = [
+          api.sequelize.where(
+            api.sequelize.cast(
+              api.sequelize.col(`${alias}.rawValue`),
+              profilePropertyRuleJSToSQLType(profilePropertyRule.type)
+            ),
+            rawValueMatch
+          ),
+        ];
+      } else {
+        // when we are considering a column on the profiles table
+        const topLevelWhere = {};
+
+        if (rawValueMatch[Op[operation.op]] && type === "date") {
+          rawValueMatch[Op[operation.op]] = new Date(
+            parseInt(rawValueMatch[Op[operation.op]])
+          ).getTime();
+        }
+
+        topLevelWhere[key] = rawValueMatch;
+        localWhereGroup[Op.and] = [topLevelWhere];
       }
 
-      localWhereGroup[Op.and] = [
-        api.sequelize.where(
-          api.sequelize.cast(
-            api.sequelize.col(`${alias}.rawValue`),
-            profilePropertyRuleJSToSQLType(profilePropertyRule.type)
-          ),
-          rawValueMatch
-        ),
-      ];
-
       // also upper/lower bound against 'now' in the relative date case (ie: if we want 'in the past month', that means a) greater than one month ago and B) less than now)
-      if (relativeMatchNumber && !match) {
+      // this is not needed in the topLevel case as the timestamps cannot be in the future
+      if (relativeMatchNumber && !match && !topLevel) {
         const todayBoundWhereGroup = {};
         const todayBoundMatch = {};
         todayBoundMatch[
@@ -522,6 +558,7 @@ export class Group extends LoggedModel<Group> {
 
       // in the case of Array property negation, we also need to do a sub-query to subtract the profiles which would match the affirmative match for this match
       if (
+        !topLevel &&
         match !== null &&
         match !== undefined &&
         profilePropertyRules[key].isArray &&
@@ -569,16 +606,18 @@ export class Group extends LoggedModel<Group> {
 
       wheres.push(localWhereGroup);
 
-      include.push({
-        // $_$ wrapping is an option with eager loading
-        // https://sequelize.org/master/manual/models-usage.html#eager-loading
-        where: {
-          [`$${alias}.profilePropertyRuleGuid$`]: profilePropertyRule.guid,
-        },
-        attributes: [],
-        model: ProfileProperty,
-        as: alias,
-      });
+      if (!topLevel) {
+        include.push({
+          // $_$ wrapping is an option with eager loading
+          // https://sequelize.org/master/manual/models-usage.html#eager-loading
+          where: {
+            [`$${alias}.profilePropertyRuleGuid$`]: profilePropertyRule.guid,
+          },
+          attributes: [],
+          model: ProfileProperty,
+          as: alias,
+        });
+      }
     }
 
     if (rules.length === 0) wheres.push({ guid: "" });

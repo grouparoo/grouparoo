@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import StateBadge from "../../../components/stateBadge";
 import Head from "next/head";
@@ -16,6 +16,7 @@ export default function Page(props) {
     profilePropertyRules,
     ruleLimit,
     ops,
+    topLevelGroupRules,
   } = props;
   const [group, setGroup] = useState<GroupAPIData>(props.group);
   const { execApi } = useApi(props, errorHandler);
@@ -127,7 +128,10 @@ export default function Page(props) {
   async function autocompleteProfilePropertySearch(localRule, match) {
     const profilePropertyRuleGuid = profilePropertyRules.filter(
       (r) => r.key === localRule.key
-    )[0].guid;
+    )[0]?.guid;
+
+    // we are dealing with a topLevelGroupRule
+    if (!profilePropertyRuleGuid) return;
 
     setLoading(true);
     const response = await execApi(
@@ -148,6 +152,9 @@ export default function Page(props) {
   }
 
   let rowChanges = false;
+  const profilePropertyRulesAndTopLevelGroupRules = topLevelGroupRules.concat(
+    profilePropertyRules
+  );
 
   return (
     <>
@@ -173,24 +180,24 @@ export default function Page(props) {
         <Table bordered size="sm">
           <thead>
             <tr>
-              <td />
-              <td>
+              <th />
+              <th>
                 <strong>Profile Property</strong>
-              </td>
-              <td>
+              </th>
+              <th>
                 <strong>Operation</strong>
-              </td>
-              <td>
+              </th>
+              <th>
                 <strong># of Profiles</strong>
-              </td>
-              <td>&nbsp;</td>
+              </th>
+              <th>&nbsp;</th>
             </tr>
           </thead>
 
           <tbody>
             {localRules.map((rule, idx) => {
               let type: string;
-              profilePropertyRules.forEach((r) => {
+              profilePropertyRulesAndTopLevelGroupRules.forEach((r) => {
                 if (rule.key === r.key) {
                   type = r.type;
                 }
@@ -225,6 +232,9 @@ export default function Page(props) {
                         onChange={(e: any) => {
                           const _rules = [...localRules];
                           rule.key = e.target.value;
+                          rule.topLevel = topLevelGroupRules
+                            .map((tlgr) => tlgr.key)
+                            .includes(rule.key);
                           _rules[idx] = rule;
                           setLocalRules(_rules);
                           autocompleteProfilePropertySearch(
@@ -233,12 +243,23 @@ export default function Page(props) {
                           );
                         }}
                       >
-                        <option disabled>(profile property)</option>
-                        {profilePropertyRules.map((rule) => (
-                          <option key={`ruleKeyOpt-${rule.key}-${idx}`}>
-                            {rule.key}
-                          </option>
-                        ))}
+                        {profilePropertyRulesAndTopLevelGroupRules.map(
+                          (rule, idx) => (
+                            <Fragment key={`ruleKeyOpt-${rule.key}-${idx}`}>
+                              {idx === 0 ? (
+                                <option disabled>
+                                  --- profile columns ---
+                                </option>
+                              ) : null}
+                              {idx === topLevelGroupRules.length ? (
+                                <option disabled>
+                                  --- profile properties ---
+                                </option>
+                              ) : null}
+                              <option>{rule.key}</option>
+                            </Fragment>
+                          )
+                        )}
                       </Form.Control>
                     </Form.Group>
                   </td>
@@ -476,8 +497,11 @@ Page.getInitialProps = async (ctx) => {
       state: "ready",
     }
   );
-  const { ruleLimit, ops } = await execApi("get", `/groups/ruleOptions`);
-  return { group, profilePropertyRules, ruleLimit, ops };
+  const { ruleLimit, ops, topLevelGroupRules } = await execApi(
+    "get",
+    `/groups/ruleOptions`
+  );
+  return { group, profilePropertyRules, ruleLimit, ops, topLevelGroupRules };
 };
 
 function rulesAreEqual(a, b) {

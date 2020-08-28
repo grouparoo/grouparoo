@@ -123,6 +123,19 @@ describe("models/profilePropertyRule", () => {
       await rule.destroy();
     });
 
+    test("keys cannot be from the reserved list of keys", async () => {
+      const reservedKeys = ["guid", "createdAt", "updatedAt"];
+      for (const i in reservedKeys) {
+        const key = reservedKeys[i];
+        await expect(
+          ProfilePropertyRule.create({
+            sourceGuid: source.guid,
+            key,
+          })
+        ).rejects.toThrow(/is a reserved key and cannot be used/);
+      }
+    });
+
     test("a profile property rule can be isArray", async () => {
       const rule = await ProfilePropertyRule.create({
         sourceGuid: source.guid,
