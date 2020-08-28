@@ -131,9 +131,6 @@ async function updateGroups(client, exports: MarketoExport[]) {
     const { oldGroups, newGroups } = exportedProfile;
     const removedLists = oldGroups.filter((k) => !newGroups.includes(k));
     const addedLists = newGroups;
-    console.log("oldGroups", oldGroups);
-    console.log("newGroups", newGroups);
-    console.log("removedLists", removedLists);
 
     for (const list of removedLists) {
       removal[list] = removal[list] || [];
@@ -196,7 +193,6 @@ async function updateList(
   }
   for (const result of results) {
     const { id } = result;
-    console.log("list", listName, action, result);
     if (result.reasons) {
       if (action === ListAction.Remove && result.status === "skipped") {
         // this is ok, not in the  list

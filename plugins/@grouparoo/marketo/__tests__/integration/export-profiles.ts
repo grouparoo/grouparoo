@@ -23,11 +23,16 @@ let client: any;
 
 const email1 = "brian@bleonard.com";
 const guid1 = "pro1";
+const newEmail1 = "other@bleonard.com";
 let userId1 = null;
 
 const email2 = "brian2@bleonard.com";
 const guid2 = "pro2";
 let userId2 = null;
+
+const email3 = "brian3@bleonard.com";
+const guid3 = "pro3";
+let userId3 = null;
 
 const list1 = "(test) High Value";
 let listId1 = null;
@@ -41,6 +46,7 @@ async function findId(email) {
   if (results.length === 0) {
     return null;
   } else if (results.length > 1) {
+    console.log(`more than one email result! ${email}`, results);
     throw `more than one email result! ${email}`;
   }
   return results[0].id;
@@ -91,7 +97,7 @@ async function deleteLists(suppressErrors) {
   }
 }
 async function deleteUsers(suppressErrors) {
-  const emails = [email1, email2];
+  const emails = [email1, email2, email3, newEmail1];
   const marketoIds = [];
   for (const email of emails) {
     const id = await findId(email);
@@ -276,7 +282,7 @@ describe("marketo/exportProfiles", () => {
           profile: null,
         },
         {
-          profileGuid: guid1,
+          profileGuid: guid2,
           oldProfileProperties: { email: email2, firstName: "Andy" },
           newProfileProperties: { email: email2, firstName: "Sally" },
           oldGroups: [],
@@ -320,7 +326,7 @@ describe("marketo/exportProfiles", () => {
           profile: null,
         },
         {
-          profileGuid: guid1,
+          profileGuid: guid2,
           oldProfileProperties: { email: email2, firstName: "Andy" },
           newProfileProperties: { email: email2, firstName: "Sally" },
           oldGroups: [list2],
@@ -342,8 +348,113 @@ describe("marketo/exportProfiles", () => {
     expect(members.sort()).toEqual([]);
   });
 
-  // change email
-  // delete
+  test("it can change the email address", async () => {
+    const { success, errors } = await exportBatch({
+      appOptions,
+      exports: [
+        {
+          profileGuid: guid1,
+          oldProfileProperties: { email: email1, firstName: "Brian" },
+          newProfileProperties: {
+            email: newEmail1,
+            firstName: "Brian",
+            lastName: "Test",
+          },
+          oldGroups: [list1],
+          newGroups: [list1, list2],
+          toDelete: false,
+          profile: null,
+        },
+        {
+          profileGuid: guid2,
+          oldProfileProperties: { email: email2, firstName: "Andy" },
+          newProfileProperties: { email: email2, firstName: "Evan" },
+          oldGroups: [list1],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    expect(success).toBe(true);
+    expect(errors).toBeNull();
+
+    let user;
+    user = await getUser(userId1);
+    expect(user.email).toBe(newEmail1);
+    expect(user.firstName).toBe("Brian");
+    expect(user.lastName).toBe("Test");
+
+    expect(await findId(email1)).toBeNull(); // changed!
+
+    user = await getUser(userId2);
+    expect(user.email).toBe(email2);
+    expect(user.firstName).toBe("Evan");
+
+    let members;
+    members = await getListMemberIds(listId1);
+    expect(members.sort()).toEqual([userId1].sort());
+
+    members = await getListMemberIds(listId2);
+    expect(members.sort()).toEqual([userId1]);
+  });
+
+  test("can delete a user", async () => {
+    const { success, errors } = await exportBatch({
+      appOptions,
+      exports: [
+        {
+          profileGuid: guid1,
+          oldProfileProperties: {
+            email: newEmail1,
+            firstName: "Brian",
+            lastName: "Test",
+          },
+          newProfileProperties: {
+            email: email1,
+            firstName: "Brian",
+            lastName: "Test",
+          },
+          oldGroups: [list1, list2],
+          newGroups: [list1],
+          toDelete: false,
+          profile: null,
+        },
+        {
+          profileGuid: guid2,
+          oldProfileProperties: { email: email2, firstName: "Evan" },
+          newProfileProperties: { email: email2, firstName: "Evan" },
+          oldGroups: [],
+          newGroups: [list1], // but he's being deleted!
+          toDelete: true,
+          profile: null,
+        },
+      ],
+    });
+
+    expect(success).toBe(true);
+    expect(errors).toBeNull();
+
+    let user;
+    user = await getUser(userId1);
+    expect(user.email).toBe(email1);
+    expect(user.firstName).toBe("Brian");
+    expect(user.lastName).toBe("Test");
+
+    expect(await findId(newEmail1)).toBeNull(); // changed!
+
+    expect(await findId(email2)).toBeNull();
+    expect(await getUser(userId2)).toBeNull();
+
+    let members;
+    members = await getListMemberIds(listId1);
+    expect(members.sort()).toEqual([userId1].sort());
+
+    members = await getListMemberIds(listId2);
+    expect(members.sort()).toEqual([]);
+  });
+
   // all the different types
   // find a way to make some errors (bad data?) to check status messages
 });
