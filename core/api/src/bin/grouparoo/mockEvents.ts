@@ -1,10 +1,14 @@
-#!/usr/bin/env node
+import { log, CLI, config, api } from "actionhero";
+import { ApiKey } from "../../models/ApiKey";
+import { Permission } from "../../models/Permission";
+import { App } from "../../models/App";
+import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+import { Profile } from "../../models/Profile";
+import fetch from "isomorphic-fetch";
+import * as uuid from "uuid";
 
-const { Process, log, api } = require("actionhero");
-const { ApiKey, App, Profile, ProfilePropertyRule } = require("../dist");
-const optimist = require("optimist");
-const fetch = require("isomorphic-fetch");
-const uuid = require("uuid");
+const sleep = 100;
+const parallelSessions = 1;
 
 // prettier-ignore
 const funnel = [
@@ -30,62 +34,89 @@ const products = [
   { name: "star", price: 99 },
 ];
 
-const sleep = 100;
-const parallelSessions = 1;
-
-let identifyingProfilePropertyRuleKey = null;
-
-async function main() {
-  const app = new Process();
-  await app.initialize();
-
-  if (!optimist.argv["apiKey"]) {
-    throw new Error(`argument apiKey is required (--apiKey=abc123)`);
-  }
-  const { apiKey } = await ApiKey.findOne({
-    where: { apiKey: optimist.argv["apiKey"] },
-  });
-  if (!apiKey) {
-    throw new Error("apiKey not found (--apiKey=abc123)");
+export class Console extends CLI {
+  constructor() {
+    super();
+    this.name = "grouparoo mock events";
+    this.description =
+      "Create a slew of events mirroring an e-commerce application against your existing profiles";
   }
 
-  if (!optimist.argv["url"]) {
-    throw new Error(`argument url is required (--url="http://localhost:3000")`);
-  }
-  const baseUrl = `${optimist.argv["url"]}/api/v1/track`;
-
-  const eventApp = await App.findOne({ where: { type: "events" } });
-  if (!eventApp.state === "ready") {
-    throw new Error("your event app is not ready");
-  }
-  const appOptions = await eventApp.getOptions();
-  const identifyingProfilePropertyRule = await ProfilePropertyRule.findOne({
-    where: { guid: appOptions.identifyingProfilePropertyRuleGuid },
-  });
-  identifyingProfilePropertyRuleKey = identifyingProfilePropertyRule.key;
-  log(
-    `${identifyingProfilePropertyRuleKey} is the identifying profile property rule key`,
-    "alert"
-  );
-
-  const sessions = [];
-  for (let i = 0; i < parallelSessions; i++) {
-    sessions.push(new MockSession(i, baseUrl, apiKey));
+  async getIdentifyingProfilePropertyRuleKey() {
+    const eventApp = await App.findOne({ where: { type: "events" } });
+    if (!eventApp || eventApp.state !== "ready") {
+      throw new Error("your event app is not ready");
+    }
+    const appOptions = await eventApp.getOptions();
+    const identifyingProfilePropertyRule = await ProfilePropertyRule.findOne({
+      where: { guid: appOptions.identifyingProfilePropertyRuleGuid },
+    });
+    log(
+      `${identifyingProfilePropertyRule.key} is the identifying profile property rule key`
+    );
+    return identifyingProfilePropertyRule.key;
   }
 
-  async function tick() {
-    for (const i in sessions) {
-      await sessions[i].tick();
+  async getApiKey() {
+    const apiKey = await ApiKey.findOne({
+      include: [{ model: Permission, where: { topic: "event", write: true } }],
+    });
+    if (!apiKey) {
+      throw new Error(`cannot find an apiKey with write access to 'event'`);
+    }
+    log(`using apiKey ${apiKey.name} (${apiKey.apiKey})`);
+    return apiKey.apiKey;
+  }
+
+  async getBaseUrl() {
+    const baseUrl = `${
+      process.env.WEB_URL || `http://localhost:${config.servers.web.port}`
+    }/api/v1/track`;
+    log(`using url ${baseUrl}`);
+    return baseUrl;
+  }
+
+  async run() {
+    const identifyingProfilePropertyRuleKey = await this.getIdentifyingProfilePropertyRuleKey();
+    const apiKey = await this.getApiKey();
+    const baseUrl = await this.getBaseUrl();
+
+    const sessions = [];
+    for (let i = 0; i < parallelSessions; i++) {
+      sessions.push(
+        new MockSession(i, baseUrl, apiKey, identifyingProfilePropertyRuleKey)
+      );
     }
 
-    setTimeout(tick, sleep);
-  }
+    async function tick() {
+      for (const i in sessions) await sessions[i].tick();
+      setTimeout(tick, sleep);
+    }
 
-  await tick();
+    await tick();
+
+    return false;
+  }
 }
 
 class MockSession {
-  constructor(id, baseUrl, apiKey) {
+  id: number;
+  baseUrl: string;
+  apiKey: string;
+  anonymousId: string;
+  currentUser: Profile;
+  profileProperties: { [key: string]: any };
+  currentStep: number;
+  identified: boolean;
+  cart: Array<{ name: string; price: number }>;
+  identifyingProfilePropertyRuleKey: string;
+
+  constructor(
+    id: number,
+    baseUrl: string,
+    apiKey: string,
+    identifyingProfilePropertyRuleKey: string
+  ) {
     this.id = id;
     this.baseUrl = baseUrl;
     this.apiKey = apiKey;
@@ -95,6 +126,7 @@ class MockSession {
     this.currentStep = 0;
     this.identified = false;
     this.cart = [];
+    this.identifyingProfilePropertyRuleKey = identifyingProfilePropertyRuleKey;
   }
 
   log(message) {
@@ -132,6 +164,7 @@ class MockSession {
       occurredAt: new Date().getTime(),
       type: step.type,
       data: step.data || {},
+      userId: null,
     };
 
     if (step.type === "identify") {
@@ -139,7 +172,7 @@ class MockSession {
     }
     if (this.identified) {
       params.userId = this.profileProperties[
-        identifyingProfilePropertyRuleKey
+        this.identifyingProfilePropertyRuleKey
       ].values[0];
     }
 
@@ -147,8 +180,10 @@ class MockSession {
       apiKey: this.apiKey,
       anonymousId: this.anonymousId,
       occurredAt: new Date().getTime(),
-      userId: this.profileProperties[identifyingProfilePropertyRuleKey]
+      userId: this.profileProperties[this.identifyingProfilePropertyRuleKey]
         .values[0],
+      type: "",
+      data: {},
     };
 
     if (step.type === "pageview" && step.data.page === "/product") {
@@ -212,11 +247,13 @@ class MockSession {
     });
     this.anonymousId = `?-${uuid.v4()}`;
     this.profileProperties = await this.currentUser.properties();
-    if (!this.profileProperties[identifyingProfilePropertyRuleKey]) {
+    if (!this.profileProperties[this.identifyingProfilePropertyRuleKey]) {
       return this.empty();
     }
     this.log(
-      `using profile ${this.currentUser.guid} (${this.profileProperties[identifyingProfilePropertyRuleKey].values[0]})`
+      `using profile ${this.currentUser.guid} (${
+        this.profileProperties[this.identifyingProfilePropertyRuleKey].values[0]
+      })`
     );
   }
 
@@ -236,12 +273,3 @@ class MockSession {
     this.log(`session complete`);
   }
 }
-
-(async function () {
-  try {
-    await main();
-  } catch (error) {
-    log(error, "error");
-    process.exit(1);
-  }
-})();

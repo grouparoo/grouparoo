@@ -24,7 +24,8 @@
   "scripts": {
     "prepare": "cd node_modules/@grouparoo/core && npm run prepare",
     "start": "cd node_modules/@grouparoo/core && ./api/bin/start",
-    "dev": "cd node_modules/@grouparoo/core && ./api/bin/dev"
+    "dev": "cd node_modules/@grouparoo/core && ./api/bin/dev",
+    "actionhero": "cd node_modules/@grouparoo/core/api && ../../../.bin/actionhero"
   },
   "grouparoo": {
     "plugins": [
