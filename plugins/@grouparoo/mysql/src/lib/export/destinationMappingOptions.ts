@@ -1,4 +1,7 @@
-import { DestinationMappingOptionsMethod } from "@grouparoo/core";
+import {
+  DestinationMappingOptionsMethod,
+  DestinationMappingOptionsResponseTypes,
+} from "@grouparoo/core";
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
   connection,
@@ -10,7 +13,11 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
     [appOptions.database, destinationOptions.table]
   );
 
-  const columns: Array<{ key: string; type: string; important: boolean }> = [];
+  const columns: Array<{
+    key: string;
+    type: DestinationMappingOptionsResponseTypes;
+    important: boolean;
+  }> = [];
   for (const i in rows) {
     if (rows[i].column_name !== destinationOptions.primaryKey) {
       columns.push({ key: rows[i].column_name, type: "any", important: true });

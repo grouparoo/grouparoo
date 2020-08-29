@@ -3,7 +3,7 @@ import { Group } from "./../../src/models/Group";
 
 const data = async (props = {}) => {
   const defaultProps = {
-    name: faker.company.companyName(),
+    name: `group ${faker.company.companyName()} - ${Math.random()}`,
     type: "manual",
 
     createdAt: new Date(),

@@ -90,7 +90,7 @@ export class Client {
       } else {
         if (req && res) {
           const requestPath = req.url.match("^[^?]*")[0];
-          res.writeHead(301, {
+          res.writeHead(302, {
             Location: `/session/sign-in?nextPage=${requestPath}`,
           });
           res.end();

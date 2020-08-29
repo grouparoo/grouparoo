@@ -8,6 +8,7 @@ import {
   UpdatedAt,
   BeforeCreate,
   BelongsTo,
+  BeforeSave,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { Group } from "./Group";
@@ -33,10 +34,14 @@ export class GroupRule extends Model<GroupRule> {
   @Column
   groupGuid: string;
 
-  @AllowNull(false)
+  @AllowNull(true)
   @ForeignKey(() => ProfilePropertyRule)
   @Column
   profilePropertyRuleGuid: string;
+
+  @AllowNull(true)
+  @Column
+  profileColumn: string;
 
   @AllowNull(false)
   @Column
@@ -69,6 +74,7 @@ export class GroupRule extends Model<GroupRule> {
       guid: this.guid,
       groupGuid: this.groupGuid,
       profilePropertyRuleGuid: this.profilePropertyRuleGuid,
+      profileColumn: this.profileColumn,
       position: this.position,
       match: this.match,
       op: this.op,
@@ -92,6 +98,20 @@ export class GroupRule extends Model<GroupRule> {
   static generateGuid(instance) {
     if (!instance.guid) {
       instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+    }
+  }
+
+  @BeforeSave
+  static async ensureEitherProfilePropertyRuleOrProfileColumn(
+    instance: GroupRule
+  ) {
+    if (
+      (!instance.profilePropertyRuleGuid && !instance.profileColumn) ||
+      (instance.profilePropertyRuleGuid && instance.profileColumn)
+    ) {
+      throw new Error(
+        "either profilePropertyRuleGuid or profileColumn is required for a GroupRule"
+      );
     }
   }
 }

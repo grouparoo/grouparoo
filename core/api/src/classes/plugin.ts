@@ -368,10 +368,29 @@ export interface DestinationMappingOptionsMethod {
   }): Promise<DestinationMappingOptionsMethodResponse>;
 }
 
+export type DestinationMappingOptionsResponseTypes =
+  | "any"
+  | "boolean"
+  | "date"
+  | "email"
+  | "float"
+  | "integer"
+  | "number"
+  | "phoneNumber"
+  | "string"
+  | "url";
+
 export interface DestinationMappingOptionsMethodResponse {
   profilePropertyRules: {
-    required: Array<{ key: string; type: string }>;
-    known: Array<{ key: string; type: string; important?: boolean }>;
+    required: Array<{
+      key: string;
+      type: DestinationMappingOptionsResponseTypes;
+    }>;
+    known: Array<{
+      key: string;
+      type: DestinationMappingOptionsResponseTypes;
+      important?: boolean;
+    }>;
     allowOptionalFromProfilePropertyRules: boolean;
   };
   labels: {

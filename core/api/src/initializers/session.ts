@@ -219,6 +219,7 @@ export class Session extends Initializer {
   constructor() {
     super();
     this.name = "session";
+    this.startPriority = 100;
   }
 
   async initialize() {
@@ -266,6 +267,10 @@ export class Session extends Initializer {
   }
 
   async start() {
+    if (!config.general.serverToken || config.general.serverToken === "") {
+      throw new Error("SERVER_TOKEN environment variable missing");
+    }
+
     action.addMiddleware(authenticatedActionMiddleware);
     action.addMiddleware(optionallyAuthenticatedActionMiddleware);
     chatRoom.addMiddleware(modelChatRoomMiddleware);

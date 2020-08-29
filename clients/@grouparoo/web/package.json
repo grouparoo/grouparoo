@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/client-web",
   "description": "The Grouparoo web client",
-  "version": "0.1.11",
+  "version": "0.1.12-alpha.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -33,7 +33,7 @@
     "jest-fetch-mock": "3.0.3",
     "prettier": "2.1.0",
     "ts-jest": "26.2.0",
-    "ts-loader": "8.0.2",
+    "ts-loader": "8.0.3",
     "typescript": "3.9.7",
     "webpack": "4.44.1",
     "webpack-cli": "3.3.12"

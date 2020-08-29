@@ -4,15 +4,11 @@ export const DEFAULT = {
   general: (config) => {
     const packageJSON = require("./../../../package.json");
 
-    if (!process.env.SERVER_TOKEN) {
-      throw new Error("SERVER_TOKEN environment variable missing");
-    }
-
     return {
       apiVersion: packageJSON.version,
       serverName: packageJSON.name,
       // A unique token to your application that servers will use to authenticate to each other
-      serverToken: process.env.SERVER_TOKEN,
+      serverToken: process.env.SERVER_TOKEN ? process.env.SERVER_TOKEN : null,
       // the redis prefix for actionhero's cache objects
       cachePrefix: "grouparoo:cache:",
       // the redis prefix for actionhero's cache/lock objects

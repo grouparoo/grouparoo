@@ -2,35 +2,36 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/app-staging-public",
   "description": "The Grouparoo Staging Application",
-  "version": "0.1.11",
+  "version": "0.1.12-alpha.0",
   "license": "MPL-2.0",
   "private": true,
   "engines": {
     "node": ">=12.0.0"
   },
   "dependencies": {
-    "@grouparoo/bigquery": "^0.1.11",
-    "@grouparoo/core": "^0.1.11",
-    "@grouparoo/csv": "^0.1.11",
-    "@grouparoo/email-authentication": "^0.1.11",
-    "@grouparoo/files-s3": "^0.1.11",
-    "@grouparoo/google-sheets": "^0.1.11",
-    "@grouparoo/hubspot": "^0.1.11",
-    "@grouparoo/logger": "^0.1.11",
-    "@grouparoo/mailchimp": "^0.1.11",
-    "@grouparoo/marketo": "^0.1.11",
-    "@grouparoo/mysql": "^0.1.11",
-    "@grouparoo/newrelic": "^0.1.11",
-    "@grouparoo/postgres": "^0.1.11",
-    "@grouparoo/redshift": "^0.1.11",
-    "@grouparoo/sailthru": "^0.1.11",
-    "@grouparoo/sample-ui-plugin": "^0.1.11",
-    "@grouparoo/zendesk": "^0.1.11"
+    "@grouparoo/bigquery": "^0.1.12-alpha.0",
+    "@grouparoo/core": "^0.1.12-alpha.0",
+    "@grouparoo/csv": "^0.1.12-alpha.0",
+    "@grouparoo/email-authentication": "^0.1.12-alpha.0",
+    "@grouparoo/files-s3": "^0.1.12-alpha.0",
+    "@grouparoo/google-sheets": "^0.1.12-alpha.0",
+    "@grouparoo/hubspot": "^0.1.12-alpha.0",
+    "@grouparoo/logger": "^0.1.12-alpha.0",
+    "@grouparoo/mailchimp": "^0.1.12-alpha.0",
+    "@grouparoo/marketo": "^0.1.12-alpha.0",
+    "@grouparoo/mysql": "^0.1.12-alpha.0",
+    "@grouparoo/newrelic": "^0.1.12-alpha.0",
+    "@grouparoo/postgres": "^0.1.12-alpha.0",
+    "@grouparoo/redshift": "^0.1.12-alpha.0",
+    "@grouparoo/sailthru": "^0.1.12-alpha.0",
+    "@grouparoo/sample-ui-plugin": "^0.1.12-alpha.0",
+    "@grouparoo/zendesk": "^0.1.12-alpha.0"
   },
   "scripts": {
     "prepare": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public npm run prepare",
     "start": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./api/bin/start",
-    "dev": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./api/bin/dev"
+    "dev": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./api/bin/dev",
+    "actionhero": "cd node_modules/@grouparoo/core/api && GROUPAROO_MONOREPO_APP=staging-public ../node_modules/.bin/actionhero"
   },
   "grouparoo": {
     "plugins": [
