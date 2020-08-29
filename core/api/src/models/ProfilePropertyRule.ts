@@ -424,6 +424,16 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     await instance.test();
   }
 
+  @BeforeSave
+  static async validateReservedKeys(instance: ProfilePropertyRule) {
+    const reservedKeys = ["guid", "createdAt", "updatedAt"];
+    if (reservedKeys.includes(instance.key)) {
+      throw new Error(
+        `${instance.key} is a reserved key and cannot be used as a profile property rule`
+      );
+    }
+  }
+
   @AfterSave
   static async clearCacheAfterSave() {
     return this.clearCache();

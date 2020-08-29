@@ -1,6 +1,6 @@
 import { task, api } from "actionhero";
 import { AuthenticatedAction } from "../classes/authenticatedAction";
-import { Group, GROUP_RULE_LIMIT } from "../models/Group";
+import { Group, GROUP_RULE_LIMIT, TopLevelGroupRules } from "../models/Group";
 import { ProfilePropertyRuleOpsDictionary } from "../modules/RuleOpsDictionary";
 import { Profile } from "../models/Profile";
 
@@ -55,6 +55,7 @@ export class GroupsRuleOptions extends AuthenticatedAction {
   async run({ response }) {
     response.ruleLimit = GROUP_RULE_LIMIT;
     response.ops = ProfilePropertyRuleOpsDictionary;
+    response.topLevelGroupRules = TopLevelGroupRules;
   }
 }
 
