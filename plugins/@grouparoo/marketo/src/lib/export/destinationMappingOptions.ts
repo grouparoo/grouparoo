@@ -1,6 +1,8 @@
-import { DestinationMappingOptionsMethod } from "@grouparoo/core";
+import {
+  DestinationMappingOptionsMethod,
+  DestinationMappingOptionsResponseTypes,
+} from "@grouparoo/core";
 import { connect } from "./../connect";
-// import { cache } from "./../cache";
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
   appOptions,
@@ -50,26 +52,11 @@ const mapTypesFromMarketoToGrouparoo = (marketoType) => {
     percent: "integer", // 0 to 100 (should we more specific?)
   };
 
-  // decimal: "float",
-  // date: "date",
-  // checkbox: "boolean",
-  // regexp: "string",
-  // dropdown: "string",
   const grouparooType = map[marketoType];
   if (grouparooType === undefined) {
     throw `Unknown marketo type: ${marketoType}`;
   }
   return grouparooType;
-};
-
-export const getRequiredFields = (): Array<{
-  key: string;
-  type: string;
-}> => {
-  return [
-    { key: "external_id", type: "string" },
-    { key: "name", type: "string" },
-  ];
 };
 
 const importantFieldNames = ["firstName", "lastName"];
@@ -83,21 +70,14 @@ export const getFields = async (
 ): Promise<{
   required: Array<{
     key: string;
-    type: string;
+    type: DestinationMappingOptionsResponseTypes;
   }>;
   known: Array<{
     key: string;
-    type: string;
+    type: DestinationMappingOptionsResponseTypes;
     important?: boolean;
   }>;
 }> => {
-  // const cacheKey = "grouparoo:marketo:fieldslist";
-  // const cacheDuration = 1000 * 60; // 1 minute
-  // const lockKey = "grouparoo:marketo:fieldslistlock";
-  // const list = await cache({ cacheKey, lockKey, cacheDuration }, async () => {
-  //   return (await client.lead.describe()).result;
-  // });
-
   const required = [];
   let known = [];
   const list = (await client.lead.describe()).result;
