@@ -457,4 +457,5 @@ describe("marketo/exportProfiles", () => {
 
   // all the different types
   // find a way to make some errors (bad data?) to check status messages
+  // Warning: Promise.defer is deprecated and will be removed in a future version. Use new Promise instead.
 });
