@@ -7,28 +7,6 @@ import {
 import { connect } from "../connect";
 import { getListId } from "./listMethods";
 
-export const exportProfiles: ExportProfilesPluginMethod = async ({
-  appOptions,
-  exports,
-}) => {
-  // TODO: marketo can do batches of 300 at a time, it seems.
-  // developers.marketo.com/rest-api/marketo-integration-best-practices
-  // do we need to switch this even one more level up?
-  // i'm making a separate function to enable that loop
-  // the separate function also enabled testing (doesn't need profile model)
-
-  const exportsWithGuid: MarketoExport[] = [];
-  for (const exportedProfile of exports) {
-    const profileGuid = exportedProfile.profile.guid;
-    const marketo: MarketoExport = Object.assign(
-      { profileGuid },
-      exportedProfile
-    );
-    exportsWithGuid.push(marketo);
-  }
-  return exportBatch({ appOptions, exports: exportsWithGuid });
-};
-
 enum MarketoAction {
   Delete = "DELETE",
   EmailChange = "EMAILCHANGE",
@@ -55,10 +33,7 @@ export interface ExportBatchMethod {
 }
 declare type MarketoEmailMap = { [email: string]: MarketoExport };
 
-export const exportBatch: ExportBatchMethod = async ({
-  appOptions,
-  exports,
-}) => {
+export async function exportBatch({ appOptions, exports }) {
   if (exports.length === 0) {
     return { success: true };
   }
@@ -103,7 +78,7 @@ export const exportBatch: ExportBatchMethod = async ({
   }
 
   return { success, errors };
-};
+}
 
 async function updateGroups(client, exports: MarketoExport[]) {
   const removal: { [groupName: string]: MarketoExport[] } = {};
@@ -407,3 +382,25 @@ function sortExport(exportedProfile: MarketoExport, emailMap: MarketoEmailMap) {
 
   return exportedProfile;
 }
+
+export const exportProfiles: ExportProfilesPluginMethod = async ({
+  appOptions,
+  exports,
+}) => {
+  // TODO: marketo can do batches of 300 at a time, it seems.
+  // developers.marketo.com/rest-api/marketo-integration-best-practices
+  // do we need to switch this even one more level up?
+  // i'm making a separate function to enable that loop
+  // the separate function also enabled testing (doesn't need profile model)
+
+  const exportsWithGuid: MarketoExport[] = [];
+  for (const exportedProfile of exports) {
+    const profileGuid = exportedProfile.profile.guid;
+    const marketo: MarketoExport = Object.assign(
+      { profileGuid },
+      exportedProfile
+    );
+    exportsWithGuid.push(marketo);
+  }
+  return exportBatch({ appOptions, exports: exportsWithGuid });
+};
