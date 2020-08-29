@@ -45,6 +45,7 @@ jobs:
             - plugins/@grouparoo/hubspot/node_modules
             - plugins/@grouparoo/logger/node_modules
             - plugins/@grouparoo/mailchimp/node_modules
+            - plugins/@grouparoo/marketo/node_modules
             - plugins/@grouparoo/mysql/node_modules
             - plugins/@grouparoo/newrelic/node_modules
             - plugins/@grouparoo/postgres/node_modules
@@ -67,6 +68,7 @@ jobs:
             - plugins/@grouparoo/hubspot/dist
             - plugins/@grouparoo/logger/dist
             - plugins/@grouparoo/mailchimp/dist
+            - plugins/@grouparoo/marketo/dist
             - plugins/@grouparoo/mysql/dist
             - plugins/@grouparoo/newrelic/dist
             - plugins/@grouparoo/postgres/dist
