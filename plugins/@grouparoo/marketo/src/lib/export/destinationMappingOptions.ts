@@ -54,7 +54,7 @@ const mapTypesFromMarketoToGrouparoo = (marketoType) => {
 
   const grouparooType = map[marketoType];
   if (grouparooType === undefined) {
-    throw `Unknown marketo type: ${marketoType}`;
+    throw new Error(`Unknown marketo type: ${marketoType}`);
   }
   return grouparooType;
 };
@@ -96,7 +96,7 @@ export const getFields = async (
   }
 
   if (known.length < 1) {
-    throw "Marketo email field not found";
+    throw new Error("Marketo email field not found");
   }
 
   known = known.sort((a, b) => {
