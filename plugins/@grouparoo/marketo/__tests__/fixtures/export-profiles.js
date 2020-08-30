@@ -3,11 +3,11 @@ const nock = require('nock');
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/identity/oauth/token')
   .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1519,"scope":"my-user@grouparoo.com"}, [
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3140,"scope":"my-user@grouparoo.com"}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:08 GMT',
+  'Sun, 30 Aug 2020 07:00:53 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -22,56 +22,56 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian%40bleonard.com"})
-  .once().reply(200, {"requestId":"157fe#1743e0c507c","result":[{"id":1137,"firstName":"Sam","lastName":"Test","email":"brian@bleonard.com","updatedAt":"2020-08-30T06:26:52Z","createdAt":"2020-08-30T06:26:08Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"10a88#1743e2b384b","result":[],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:08 GMT',
+  'Sun, 30 Aug 2020 07:00:54 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '206',
+  '60',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"d2da#1743e0c5186","result":[{"id":1139,"firstName":"Maria","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T06:26:43Z","createdAt":"2020-08-30T06:26:41Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"327#1743e2b39b6","result":[],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:08 GMT',
+  'Sun, 30 Aug 2020 07:00:54 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '206',
+  '58',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian3%40bleonard.com"})
-  .once().reply(200, {"requestId":"12c12#1743e0c5290","result":[{"id":1140,"firstName":"Liz","lastName":null,"email":"brian3@bleonard.com","updatedAt":"2020-08-30T06:26:53Z","createdAt":"2020-08-30T06:26:53Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"12214#1743e2b3b01","result":[],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:09 GMT',
+  'Sun, 30 Aug 2020 07:00:54 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '205',
+  '60',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"other%40bleonard.com"})
-  .once().reply(200, {"requestId":"a7b6#1743e0c539c","result":[],"success":true}, [
+  .once().reply(200, {"requestId":"f382#1743e2b3d2d","result":[],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:09 GMT',
+  'Sun, 30 Aug 2020 07:00:55 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -80,42 +80,13 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/leads.json', {"input":[{"id":1137},{"id":1139},{"id":1140}]})
-  .query({"_method":"DELETE"})
-  .once().reply(200, {"requestId":"7669#1743e0c549f","result":[{"id":1137,"status":"deleted"},{"id":1139,"status":"deleted"},{"id":1140,"status":"deleted"}],"success":true}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:10 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Content-Length',
-  '151',
-  'Connection',
-  'close'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/asset/v1/staticList/byName.json')
   .query({"name":"%28test%29%20High%20Value"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"7d18#1743e0c5751","warnings":[],"result":[{"id":1077,"name":"(test) High Value","createdAt":"2020-08-30T06:26:17Z+0000","updatedAt":"2020-08-30T06:26:17Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab28.marketo.com/#ST1077A1","workspace":"Default"}]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"15bfb#1743e2b4045","warnings":["No assets found for the given search criteria."]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:10 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Transfer-Encoding',
-  'chunked',
-  'Connection',
-  'close'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/asset/v1/staticList/1077/delete.json')
-  .once().reply(200, {"success":true,"errors":[],"requestId":"15bb4#1743e0c5886","warnings":[],"result":[{"id":1077}]}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:10 GMT',
+  'Sun, 30 Aug 2020 07:00:56 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -126,25 +97,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/asset/v1/staticList/byName.json')
   .query({"name":"%28test%29%20Churned"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"d5b4#1743e0c5a5d","warnings":[],"result":[{"id":1078,"name":"(test) Churned","createdAt":"2020-08-30T06:26:25Z+0000","updatedAt":"2020-08-30T06:26:25Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-abq.marketo.com/#ST1078A1","workspace":"Default"}]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"4186#1743e2b41fd","warnings":["No assets found for the given search criteria."]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:11 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Transfer-Encoding',
-  'chunked',
-  'Connection',
-  'close'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/asset/v1/staticList/1078/delete.json')
-  .once().reply(200, {"success":true,"errors":[],"requestId":"a4fb#1743e0c5b6a","warnings":[],"result":[{"id":1078}]}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:11 GMT',
+  'Sun, 30 Aug 2020 07:00:56 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -155,26 +112,26 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian%40bleonard.com"})
-  .once().reply(200, {"requestId":"d612#1743e0c5d1d","result":[],"success":true}, [
+  .once().reply(200, {"requestId":"178ff#1743e2b4324","result":[],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:11 GMT',
+  'Sun, 30 Aug 2020 07:00:56 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '59',
+  '60',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/identity/oauth/token')
   .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1515,"scope":"my-user@grouparoo.com"}, [
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3136,"scope":"my-user@grouparoo.com"}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:12 GMT',
+  'Sun, 30 Aug 2020 07:00:57 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -189,11 +146,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian%40bleonard.com"})
-  .once().reply(200, {"requestId":"af9f#1743e0c5f56","result":[],"success":true}, [
+  .once().reply(200, {"requestId":"8ae2#1743e2b45f5","result":[],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:12 GMT',
+  'Sun, 30 Aug 2020 07:00:57 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -203,11 +160,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .post('/rest/v1/leads.json', {"lookupField":"email","action":"createOrUpdate","input":[{"email":"brian@bleonard.com","firstName":"Brian"}]})
-  .once().reply(200, {"requestId":"81f4#1743e0c6069","result":[{"id":1141,"status":"created"}],"success":true}, [
+  .once().reply(200, {"requestId":"b562#1743e2b46fe","result":[{"id":2149,"status":"created"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:13 GMT',
+  'Sun, 30 Aug 2020 07:00:58 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -218,41 +175,41 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian%40bleonard.com"})
-  .once().reply(200, {"requestId":"e15e#1743e0c6326","result":[{"id":1141,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T06:27:12Z","createdAt":"2020-08-30T06:27:13Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"3e0#1743e2b4c03","result":[{"id":2149,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T07:00:58Z","createdAt":"2020-08-30T07:00:58Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:13 GMT',
+  'Sun, 30 Aug 2020 07:00:59 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '205',
+  '204',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1141"})
-  .once().reply(200, {"requestId":"7570#1743e0c6459","result":[{"id":1141,"email":"brian@bleonard.com","firstName":"Brian","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2149"})
+  .once().reply(200, {"requestId":"12986#1743e2b4d2c","result":[{"id":2149,"email":"brian@bleonard.com","firstName":"Brian","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:13 GMT',
+  'Sun, 30 Aug 2020 07:00:59 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '300',
+  '301',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"f226#1743e0c657c","result":[],"success":true}, [
+  .once().reply(200, {"requestId":"d11a#1743e2b4f15","result":[],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:13 GMT',
+  'Sun, 30 Aug 2020 07:00:59 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -263,11 +220,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/identity/oauth/token')
   .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1513,"scope":"my-user@grouparoo.com"}, [
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3133,"scope":"my-user@grouparoo.com"}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:14 GMT',
+  'Sun, 30 Aug 2020 07:01:00 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -282,54 +239,54 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian%40bleonard.com%2Cbrian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"3df#1743e0c67b2","result":[{"id":1141,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T06:27:12Z","createdAt":"2020-08-30T06:27:13Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"15a57#1743e2b5324","result":[{"id":2149,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T07:00:58Z","createdAt":"2020-08-30T07:00:58Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:14 GMT',
+  'Sun, 30 Aug 2020 07:01:00 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '204',
+  '206',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian@bleonard.com","id":1141,"firstName":"John","lastName":"Smith"}]})
-  .once().reply(200, {"requestId":"15e66#1743e0c68f1","result":[{"id":1141,"status":"updated"}],"success":true}, [
+  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian@bleonard.com","id":2149,"firstName":"John","lastName":"Smith"}]})
+  .once().reply(200, {"requestId":"2011#1743e2b555a","result":[{"id":2149,"status":"updated"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:15 GMT',
+  'Sun, 30 Aug 2020 07:01:02 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '90',
+  '89',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .post('/rest/v1/leads.json', {"lookupField":"email","action":"createOrUpdate","input":[{"email":"brian2@bleonard.com","firstName":"Andy"}]})
-  .once().reply(200, {"requestId":"111c8#1743e0c6c76","result":[{"id":1142,"status":"created"}],"success":true}, [
+  .once().reply(200, {"requestId":"a4e3#1743e2b5d71","result":[{"id":2150,"status":"created"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:16 GMT',
+  'Sun, 30 Aug 2020 07:01:04 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '90',
+  '89',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1141"})
-  .once().reply(200, {"requestId":"13d00#1743e0c6fd2","result":[{"id":1141,"email":"brian@bleonard.com","firstName":"John","lastName":"Smith","textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2149"})
+  .once().reply(200, {"requestId":"15e6c#1743e2b613c","result":[{"id":2149,"email":"brian@bleonard.com","firstName":"John","lastName":"Smith","textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:16 GMT',
+  'Sun, 30 Aug 2020 07:01:04 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -340,11 +297,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"a56f#1743e0c70d7","result":[{"id":1142,"firstName":"Andy","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T06:27:15Z","createdAt":"2020-08-30T06:27:16Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"95e5#1743e2b631a","result":[{"id":2150,"firstName":"Andy","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T07:01:03Z","createdAt":"2020-08-30T07:01:04Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:16 GMT',
+  'Sun, 30 Aug 2020 07:01:04 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -354,75 +311,12 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1142"})
-  .once().reply(200, {"requestId":"1641e#1743e0c71f0","result":[{"id":1142,"email":"brian2@bleonard.com","firstName":"Andy","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2150"})
+  .once().reply(200, {"requestId":"afb8#1743e2b6439","result":[{"id":2150,"email":"brian2@bleonard.com","firstName":"Andy","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:17 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Content-Length',
-  '301',
-  'Connection',
-  'close'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .get('/identity/oauth/token')
-  .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1510,"scope":"my-user@grouparoo.com"}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:17 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Transfer-Encoding',
-  'chunked',
-  'Connection',
-  'close',
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .get('/rest/v1/leads.json')
-  .query({"filterType":"email","filterValues":"brian%40bleonard.com"})
-  .once().reply(200, {"requestId":"321a#1743e0c7409","result":[{"id":1141,"firstName":"John","lastName":"Smith","email":"brian@bleonard.com","updatedAt":"2020-08-30T06:27:14Z","createdAt":"2020-08-30T06:27:13Z"}],"success":true}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:17 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Content-Length',
-  '207',
-  'Connection',
-  'close'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian@bleonard.com","id":1141,"firstName":"Brian","lastName":null}]})
-  .once().reply(200, {"requestId":"b871#1743e0c750d","result":[{"id":1141,"status":"updated"}],"success":true}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:18 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Content-Length',
-  '89',
-  'Connection',
-  'close'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1141"})
-  .once().reply(200, {"requestId":"7cb2#1743e0c78cb","result":[{"id":1141,"email":"brian@bleonard.com","firstName":"Brian","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:18 GMT',
+  'Sun, 30 Aug 2020 07:01:05 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -431,28 +325,13 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .get('/rest/asset/v1/staticList/byName.json')
-  .query({"name":"%28test%29%20High%20Value"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"7fa1#1743e0c79d5","warnings":["No assets found for the given search criteria."]}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:19 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Transfer-Encoding',
-  'chunked',
-  'Connection',
-  'close'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/identity/oauth/token')
   .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1508,"scope":"my-user@grouparoo.com"}, [
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3128,"scope":"my-user@grouparoo.com"}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:19 GMT',
+  'Sun, 30 Aug 2020 07:01:05 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -467,11 +346,89 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian%40bleonard.com"})
-  .once().reply(200, {"requestId":"5208#1743e0c7beb","result":[{"id":1141,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T06:27:17Z","createdAt":"2020-08-30T06:27:13Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"6ea9#1743e2b6655","result":[{"id":2149,"firstName":"John","lastName":"Smith","email":"brian@bleonard.com","updatedAt":"2020-08-30T07:01:01Z","createdAt":"2020-08-30T07:00:58Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:19 GMT',
+  'Sun, 30 Aug 2020 07:01:05 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '207',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian@bleonard.com","id":2149,"firstName":"Brian","lastName":null}]})
+  .once().reply(200, {"requestId":"d168#1743e2b6766","result":[{"id":2149,"status":"updated"}],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:06 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '89',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/rest/v1/leads.json')
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2149"})
+  .once().reply(200, {"requestId":"15504#1743e2b6a45","result":[{"id":2149,"email":"brian@bleonard.com","firstName":"Brian","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:06 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '301',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/rest/asset/v1/staticList/byName.json')
+  .query({"name":"%28test%29%20High%20Value"})
+  .once().reply(200, {"success":true,"errors":[],"requestId":"10882#1743e2b6b4a","warnings":["No assets found for the given search criteria."]}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:07 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Transfer-Encoding',
+  'chunked',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/identity/oauth/token')
+  .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3126,"scope":"my-user@grouparoo.com"}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:07 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Transfer-Encoding',
+  'chunked',
+  'Connection',
+  'close',
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/rest/v1/leads.json')
+  .query({"filterType":"email","filterValues":"brian%40bleonard.com"})
+  .once().reply(200, {"requestId":"3795#1743e2b6da3","result":[{"id":2149,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T07:01:06Z","createdAt":"2020-08-30T07:00:58Z"}],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:07 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -480,12 +437,12 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian@bleonard.com","id":1141,"firstName":"Brian"}]})
-  .once().reply(200, {"requestId":"903d#1743e0c7d05","result":[{"id":1141,"status":"updated"}],"success":true}, [
+  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian@bleonard.com","id":2149,"firstName":"Brian"}]})
+  .once().reply(200, {"requestId":"736c#1743e2b7011","result":[{"id":2149,"status":"updated"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:20 GMT',
+  'Sun, 30 Aug 2020 07:01:08 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -496,11 +453,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/asset/v1/staticList/byName.json')
   .query({"name":"%28test%29%20High%20Value"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"59d1#1743e0c814e","warnings":["No assets found for the given search criteria."]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"a8f6#1743e2b73d9","warnings":["No assets found for the given search criteria."]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:21 GMT',
+  'Sun, 30 Aug 2020 07:01:09 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -511,11 +468,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/asset/v1/folder/byName.json')
   .query({"name":"Group%20Lists"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"d571#1743e0c8262","warnings":[],"result":[{"name":"Group Lists","description":null,"createdAt":"2020-08-14T20:43:13Z+0000","updatedAt":"2020-08-14T20:43:13Z+0000","url":null,"folderId":{"id":12,"type":"Folder"},"folderType":"List","parent":{"id":5,"type":"Folder"},"path":"/Lead Database/Default/Group Lists","isArchive":false,"isSystem":true,"accessZoneId":1,"workspace":"Default","id":12},{"name":"Group Lists","description":null,"createdAt":"2020-08-28T19:52:20Z+0000","updatedAt":"2020-08-28T19:52:20Z+0000","url":null,"folderId":{"id":68,"type":"Folder"},"folderType":"List","parent":{"id":67,"type":"Folder"},"path":"/Lead Database/Default/Group Lists/Test/Inner/Group Lists","isArchive":false,"isSystem":false,"accessZoneId":1,"workspace":"Default","id":68}]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"4a1f#1743e2b74ed","warnings":[],"result":[{"name":"Group Lists","description":null,"createdAt":"2020-08-14T20:43:13Z+0000","updatedAt":"2020-08-14T20:43:13Z+0000","url":null,"folderId":{"id":12,"type":"Folder"},"folderType":"List","parent":{"id":5,"type":"Folder"},"path":"/Lead Database/Default/Group Lists","isArchive":false,"isSystem":true,"accessZoneId":1,"workspace":"Default","id":12},{"name":"Group Lists","description":null,"createdAt":"2020-08-28T19:52:20Z+0000","updatedAt":"2020-08-28T19:52:20Z+0000","url":null,"folderId":{"id":68,"type":"Folder"},"folderType":"List","parent":{"id":67,"type":"Folder"},"path":"/Lead Database/Default/Group Lists/Test/Inner/Group Lists","isArchive":false,"isSystem":false,"accessZoneId":1,"workspace":"Default","id":68}]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:21 GMT',
+  'Sun, 30 Aug 2020 07:01:09 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -525,11 +482,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .post('/rest/asset/v1/staticLists.json', "name=(test)%20High%20Value&folder=%7B%22type%22%3A%22Folder%22%2C%22id%22%3A12%7D")
-  .once().reply(200, {"success":true,"errors":[],"requestId":"e572#1743e0c8396","warnings":[],"result":[{"id":1079,"name":"(test) High Value","createdAt":"2020-08-30T06:27:21Z+0000","updatedAt":"2020-08-30T06:27:21Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab15.marketo.com/#ST1079A1","workspace":"Default"}]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"c73d#1743e2b7608","warnings":[],"result":[{"id":1083,"name":"(test) High Value","createdAt":"2020-08-30T07:01:09Z+0000","updatedAt":"2020-08-30T07:01:09Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-abq.marketo.com/#ST1083A1","workspace":"Default"}]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:21 GMT',
+  'Sun, 30 Aug 2020 07:01:09 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -538,12 +495,12 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/lists/1079/leads.json', {"input":[{"id":1141}]})
-  .once().reply(200, {"requestId":"12ca0#1743e0c84ed","result":[{"id":1141,"status":"added"}],"success":true}, [
+  .post('/rest/v1/lists/1083/leads.json', {"input":[{"id":2149}]})
+  .once().reply(200, {"requestId":"12c6b#1743e2b77b2","result":[{"id":2149,"status":"added"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:22 GMT',
+  'Sun, 30 Aug 2020 07:01:10 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -554,11 +511,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/asset/v1/staticList/byName.json')
   .query({"name":"%28test%29%20High%20Value"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"177b9#1743e0c879b","warnings":[],"result":[{"id":1079,"name":"(test) High Value","createdAt":"2020-08-30T06:27:22Z+0000","updatedAt":"2020-08-30T06:27:22Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-abq.marketo.com/#ST1079A1","workspace":"Default"}]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"7f44#1743e2b7ab6","warnings":[],"result":[{"id":1083,"name":"(test) High Value","createdAt":"2020-08-30T07:01:10Z+0000","updatedAt":"2020-08-30T07:01:10Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-abq.marketo.com/#ST1083A1","workspace":"Default"}]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:22 GMT',
+  'Sun, 30 Aug 2020 07:01:10 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -567,12 +524,12 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/list/1079/leads.json', "listId=1079&_method=GET")
-  .once().reply(200, {"requestId":"651a#1743e0c88a9","result":[{"id":1141,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T06:27:17Z","createdAt":"2020-08-30T06:27:13Z"}],"success":true}, [
+  .post('/rest/v1/list/1083/leads.json', "listId=1083&_method=GET")
+  .once().reply(200, {"requestId":"952a#1743e2b7bce","result":[{"id":2149,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T07:01:06Z","createdAt":"2020-08-30T07:00:58Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:22 GMT',
+  'Sun, 30 Aug 2020 07:01:11 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -583,11 +540,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/asset/v1/staticList/byName.json')
   .query({"name":"%28test%29%20Churned"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"2dcb#1743e0c9399","warnings":["No assets found for the given search criteria."]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"760b#1743e2b8762","warnings":["No assets found for the given search criteria."]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:25 GMT',
+  'Sun, 30 Aug 2020 07:01:14 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -598,11 +555,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/identity/oauth/token')
   .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1501,"scope":"my-user@grouparoo.com"}, [
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3119,"scope":"my-user@grouparoo.com"}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:25 GMT',
+  'Sun, 30 Aug 2020 07:01:14 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -617,25 +574,25 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian%40bleonard.com%2Cbrian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"2a3e#1743e0c95a9","result":[{"id":1141,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T06:27:17Z","createdAt":"2020-08-30T06:27:13Z"},{"id":1142,"firstName":"Andy","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T06:27:15Z","createdAt":"2020-08-30T06:27:16Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"165a0#1743e2b8978","result":[{"id":2149,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T07:01:06Z","createdAt":"2020-08-30T07:00:58Z"},{"id":2150,"firstName":"Andy","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T07:01:03Z","createdAt":"2020-08-30T07:01:04Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:26 GMT',
+  'Sun, 30 Aug 2020 07:01:14 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '352',
+  '353',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian@bleonard.com","id":1141,"firstName":"Brian"},{"email":"brian2@bleonard.com","id":1142,"firstName":"Sally"}]})
-  .once().reply(200, {"requestId":"14c73#1743e0c96d2","result":[{"id":1141,"status":"updated"},{"id":1142,"status":"updated"}],"success":true}, [
+  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian@bleonard.com","id":2149,"firstName":"Brian"},{"email":"brian2@bleonard.com","id":2150,"firstName":"Sally"}]})
+  .once().reply(200, {"requestId":"10caa#1743e2b8ad6","result":[{"id":2149,"status":"updated"},{"id":2150,"status":"updated"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:27 GMT',
+  'Sun, 30 Aug 2020 07:01:17 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -646,11 +603,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/asset/v1/staticList/byName.json')
   .query({"name":"%28test%29%20High%20Value"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"6a46#1743e0c9b62","warnings":[],"result":[{"id":1079,"name":"(test) High Value","createdAt":"2020-08-30T06:27:22Z+0000","updatedAt":"2020-08-30T06:27:22Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab15.marketo.com/#ST1079A1","workspace":"Default"}]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"8faa#1743e2b940b","warnings":[],"result":[{"id":1083,"name":"(test) High Value","createdAt":"2020-08-30T07:01:10Z+0000","updatedAt":"2020-08-30T07:01:10Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab15.marketo.com/#ST1083A1","workspace":"Default"}]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:27 GMT',
+  'Sun, 30 Aug 2020 07:01:17 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -659,27 +616,27 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/lists/1079/leads.json', {"input":[{"id":1141},{"id":1142}]})
-  .once().reply(200, {"requestId":"28ec#1743e0c9c72","result":[{"id":1141,"status":"added"},{"id":1142,"status":"added"}],"success":true}, [
+  .post('/rest/v1/lists/1083/leads.json', {"input":[{"id":2149},{"id":2150}]})
+  .once().reply(200, {"requestId":"167af#1743e2b9523","result":[{"id":2149,"status":"added"},{"id":2150,"status":"added"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:28 GMT',
+  'Sun, 30 Aug 2020 07:01:18 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '116',
+  '117',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/asset/v1/staticList/byName.json')
   .query({"name":"%28test%29%20Churned"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"e512#1743e0c9dd6","warnings":["No assets found for the given search criteria."]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"3b40#1743e2b9798","warnings":["No assets found for the given search criteria."]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:28 GMT',
+  'Sun, 30 Aug 2020 07:01:18 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -690,11 +647,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/asset/v1/folder/byName.json')
   .query({"name":"Group%20Lists"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"f30f#1743e0c9f2c","warnings":[],"result":[{"name":"Group Lists","description":null,"createdAt":"2020-08-14T20:43:13Z+0000","updatedAt":"2020-08-14T20:43:13Z+0000","url":null,"folderId":{"id":12,"type":"Folder"},"folderType":"List","parent":{"id":5,"type":"Folder"},"path":"/Lead Database/Default/Group Lists","isArchive":false,"isSystem":true,"accessZoneId":1,"workspace":"Default","id":12},{"name":"Group Lists","description":null,"createdAt":"2020-08-28T19:52:20Z+0000","updatedAt":"2020-08-28T19:52:20Z+0000","url":null,"folderId":{"id":68,"type":"Folder"},"folderType":"List","parent":{"id":67,"type":"Folder"},"path":"/Lead Database/Default/Group Lists/Test/Inner/Group Lists","isArchive":false,"isSystem":false,"accessZoneId":1,"workspace":"Default","id":68}]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"920#1743e2b98b4","warnings":[],"result":[{"name":"Group Lists","description":null,"createdAt":"2020-08-14T20:43:13Z+0000","updatedAt":"2020-08-14T20:43:13Z+0000","url":null,"folderId":{"id":12,"type":"Folder"},"folderType":"List","parent":{"id":5,"type":"Folder"},"path":"/Lead Database/Default/Group Lists","isArchive":false,"isSystem":true,"accessZoneId":1,"workspace":"Default","id":12},{"name":"Group Lists","description":null,"createdAt":"2020-08-28T19:52:20Z+0000","updatedAt":"2020-08-28T19:52:20Z+0000","url":null,"folderId":{"id":68,"type":"Folder"},"folderType":"List","parent":{"id":67,"type":"Folder"},"path":"/Lead Database/Default/Group Lists/Test/Inner/Group Lists","isArchive":false,"isSystem":false,"accessZoneId":1,"workspace":"Default","id":68}]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:28 GMT',
+  'Sun, 30 Aug 2020 07:01:18 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -704,11 +661,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .post('/rest/asset/v1/staticLists.json', "name=(test)%20Churned&folder=%7B%22type%22%3A%22Folder%22%2C%22id%22%3A12%7D")
-  .once().reply(200, {"success":true,"errors":[],"requestId":"108d8#1743e0ca045","warnings":[],"result":[{"id":1080,"name":"(test) Churned","createdAt":"2020-08-30T06:27:28Z+0000","updatedAt":"2020-08-30T06:27:28Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-abq.marketo.com/#ST1080A1","workspace":"Default"}]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"154b5#1743e2b99cf","warnings":[],"result":[{"id":1084,"name":"(test) Churned","createdAt":"2020-08-30T07:01:18Z+0000","updatedAt":"2020-08-30T07:01:18Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab28.marketo.com/#ST1084A1","workspace":"Default"}]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:29 GMT',
+  'Sun, 30 Aug 2020 07:01:19 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -717,27 +674,27 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/lists/1080/leads.json', {"input":[{"id":1141}]})
-  .once().reply(200, {"requestId":"214#1743e0ca18c","result":[{"id":1141,"status":"added"}],"success":true}, [
+  .post('/rest/v1/lists/1084/leads.json', {"input":[{"id":2149}]})
+  .once().reply(200, {"requestId":"8494#1743e2b9b7e","result":[{"id":2149,"status":"added"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:29 GMT',
+  'Sun, 30 Aug 2020 07:01:19 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '86',
+  '87',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/asset/v1/staticList/byName.json')
   .query({"name":"%28test%29%20Churned"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"7e04#1743e0ca2de","warnings":[],"result":[{"id":1080,"name":"(test) Churned","createdAt":"2020-08-30T06:27:29Z+0000","updatedAt":"2020-08-30T06:27:29Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab15.marketo.com/#ST1080A1","workspace":"Default"}]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"b119#1743e2b9e6f","warnings":[],"result":[{"id":1084,"name":"(test) Churned","createdAt":"2020-08-30T07:01:19Z+0000","updatedAt":"2020-08-30T07:01:19Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab15.marketo.com/#ST1084A1","workspace":"Default"}]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:29 GMT',
+  'Sun, 30 Aug 2020 07:01:20 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -746,56 +703,56 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/list/1079/leads.json', "listId=1079&_method=GET")
-  .once().reply(200, {"requestId":"13a55#1743e0ca3f3","result":[{"id":1141,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T06:27:17Z","createdAt":"2020-08-30T06:27:13Z"},{"id":1142,"firstName":"Sally","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T06:27:26Z","createdAt":"2020-08-30T06:27:16Z"}],"success":true}, [
+  .post('/rest/v1/list/1083/leads.json', "listId=1083&_method=GET")
+  .once().reply(200, {"requestId":"3386#1743e2b9f80","result":[{"id":2149,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T07:01:06Z","createdAt":"2020-08-30T07:00:58Z"},{"id":2150,"firstName":"Sally","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T07:01:16Z","createdAt":"2020-08-30T07:01:04Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:29 GMT',
+  'Sun, 30 Aug 2020 07:01:20 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '354',
+  '353',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/list/1080/leads.json', "listId=1080&_method=GET")
-  .once().reply(200, {"requestId":"1366b#1743e0ca52a","result":[{"id":1141,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T06:27:17Z","createdAt":"2020-08-30T06:27:13Z"}],"success":true}, [
+  .post('/rest/v1/list/1084/leads.json', "listId=1084&_method=GET")
+  .once().reply(200, {"requestId":"315f#1743e2ba18b","result":[{"id":2149,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T07:01:06Z","createdAt":"2020-08-30T07:00:58Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:30 GMT',
+  'Sun, 30 Aug 2020 07:01:20 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '206',
+  '205',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1142"})
-  .once().reply(200, {"requestId":"122ab#1743e0ca67c","result":[{"id":1142,"email":"brian2@bleonard.com","firstName":"Sally","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2150"})
+  .once().reply(200, {"requestId":"b593#1743e2ba2d5","result":[{"id":2150,"email":"brian2@bleonard.com","firstName":"Sally","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:30 GMT',
+  'Sun, 30 Aug 2020 07:01:21 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '302',
+  '301',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/identity/oauth/token')
   .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1496,"scope":"my-user@grouparoo.com"}, [
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3112,"scope":"my-user@grouparoo.com"}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:30 GMT',
+  'Sun, 30 Aug 2020 07:01:21 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -810,40 +767,40 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian%40bleonard.com%2Cbrian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"4c1d#1743e0ca88a","result":[{"id":1141,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T06:27:17Z","createdAt":"2020-08-30T06:27:13Z"},{"id":1142,"firstName":"Sally","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T06:27:26Z","createdAt":"2020-08-30T06:27:16Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"16ea2#1743e2ba501","result":[{"id":2149,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T07:01:06Z","createdAt":"2020-08-30T07:00:58Z"},{"id":2150,"firstName":"Sally","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T07:01:16Z","createdAt":"2020-08-30T07:01:04Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:31 GMT',
+  'Sun, 30 Aug 2020 07:01:22 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '353',
+  '354',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian@bleonard.com","id":1141,"firstName":"Brian"},{"email":"brian2@bleonard.com","id":1142,"firstName":"Sally"}]})
-  .once().reply(200, {"requestId":"bf34#1743e0ca9a2","result":[{"id":1141,"status":"updated"},{"id":1142,"status":"updated"}],"success":true}, [
+  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian@bleonard.com","id":2149,"firstName":"Brian"},{"email":"brian2@bleonard.com","id":2150,"firstName":"Sally"}]})
+  .once().reply(200, {"requestId":"16bc5#1743e2ba747","result":[{"id":2149,"status":"updated"},{"id":2150,"status":"updated"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:31 GMT',
+  'Sun, 30 Aug 2020 07:01:23 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '120',
+  '121',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/asset/v1/staticList/byName.json')
   .query({"name":"%28test%29%20High%20Value"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"14050#1743e0cac81","warnings":[],"result":[{"id":1079,"name":"(test) High Value","createdAt":"2020-08-30T06:27:22Z+0000","updatedAt":"2020-08-30T06:27:22Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab28.marketo.com/#ST1079A1","workspace":"Default"}]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"bc35#1743e2baafb","warnings":[],"result":[{"id":1083,"name":"(test) High Value","createdAt":"2020-08-30T07:01:10Z+0000","updatedAt":"2020-08-30T07:01:10Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab15.marketo.com/#ST1083A1","workspace":"Default"}]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:32 GMT',
+  'Sun, 30 Aug 2020 07:01:23 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -852,27 +809,27 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/lists/1079/leads.json', {"input":[{"id":1141},{"id":1142}]})
-  .once().reply(200, {"requestId":"7fbb#1743e0cada9","result":[{"id":1141,"status":"added"},{"id":1142,"status":"added"}],"success":true}, [
+  .post('/rest/v1/lists/1083/leads.json', {"input":[{"id":2149},{"id":2150}]})
+  .once().reply(200, {"requestId":"1694e#1743e2bac0f","result":[{"id":2149,"status":"added"},{"id":2150,"status":"added"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:32 GMT',
+  'Sun, 30 Aug 2020 07:01:23 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '116',
+  '117',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/asset/v1/staticList/byName.json')
   .query({"name":"%28test%29%20Churned"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"4e45#1743e0caee6","warnings":[],"result":[{"id":1080,"name":"(test) Churned","createdAt":"2020-08-30T06:27:29Z+0000","updatedAt":"2020-08-30T06:27:29Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab28.marketo.com/#ST1080A1","workspace":"Default"}]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"1389#1743e2bae1f","warnings":[],"result":[{"id":1084,"name":"(test) Churned","createdAt":"2020-08-30T07:01:19Z+0000","updatedAt":"2020-08-30T07:01:19Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab15.marketo.com/#ST1084A1","workspace":"Default"}]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:32 GMT',
+  'Sun, 30 Aug 2020 07:01:24 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -881,41 +838,41 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .delete('/rest/v1/lists/1080/leads.json')
-  .query({"id":["1141","1142"]})
-  .once().reply(200, {"requestId":"11bd4#1743e0cb008","result":[{"id":1141,"status":"removed"},{"id":1142,"status":"skipped","reasons":[{"code":"1015","message":"Lead not in list"}]}],"success":true}, [
+  .delete('/rest/v1/lists/1084/leads.json')
+  .query({"id":["2149","2150"]})
+  .once().reply(200, {"requestId":"2aa3#1743e2baf41","result":[{"id":2149,"status":"removed"},{"id":2150,"status":"skipped","reasons":[{"code":"1015","message":"Lead not in list"}]}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:33 GMT',
+  'Sun, 30 Aug 2020 07:01:24 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '178',
+  '177',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/list/1079/leads.json', "listId=1079&_method=GET")
-  .once().reply(200, {"requestId":"b21e#1743e0cb177","result":[{"id":1141,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T06:27:17Z","createdAt":"2020-08-30T06:27:13Z"},{"id":1142,"firstName":"Sally","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T06:27:26Z","createdAt":"2020-08-30T06:27:16Z"}],"success":true}, [
+  .post('/rest/v1/list/1083/leads.json', "listId=1083&_method=GET")
+  .once().reply(200, {"requestId":"10104#1743e2bb0b7","result":[{"id":2149,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T07:01:06Z","createdAt":"2020-08-30T07:00:58Z"},{"id":2150,"firstName":"Sally","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T07:01:16Z","createdAt":"2020-08-30T07:01:04Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:33 GMT',
+  'Sun, 30 Aug 2020 07:01:24 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '353',
+  '354',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/list/1080/leads.json', "listId=1080&_method=GET")
-  .once().reply(200, {"requestId":"5037#1743e0cb2fb","result":[],"success":true}, [
+  .post('/rest/v1/list/1084/leads.json', "listId=1084&_method=GET")
+  .once().reply(200, {"requestId":"ad80#1743e2bb1de","result":[],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:33 GMT',
+  'Sun, 30 Aug 2020 07:01:25 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -926,11 +883,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/identity/oauth/token')
   .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1493,"scope":"my-user@grouparoo.com"}, [
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3108,"scope":"my-user@grouparoo.com"}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:34 GMT',
+  'Sun, 30 Aug 2020 07:01:25 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -945,25 +902,25 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"other%40bleonard.com%2Cbrian%40bleonard.com%2Cbrian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"176c7#1743e0cb53a","result":[{"id":1141,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T06:27:17Z","createdAt":"2020-08-30T06:27:13Z"},{"id":1142,"firstName":"Sally","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T06:27:26Z","createdAt":"2020-08-30T06:27:16Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"dace#1743e2bb3f9","result":[{"id":2149,"firstName":"Brian","lastName":null,"email":"brian@bleonard.com","updatedAt":"2020-08-30T07:01:06Z","createdAt":"2020-08-30T07:00:58Z"},{"id":2150,"firstName":"Sally","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T07:01:16Z","createdAt":"2020-08-30T07:01:04Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:34 GMT',
+  'Sun, 30 Aug 2020 07:01:25 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '354',
+  '353',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"other@bleonard.com","id":1141,"firstName":"Brian","lastName":"Test"},{"email":"brian2@bleonard.com","id":1142,"firstName":"Evan"}]})
-  .once().reply(200, {"requestId":"12496#1743e0cb678","result":[{"id":1141,"status":"updated"},{"id":1142,"status":"updated"}],"success":true}, [
+  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"other@bleonard.com","id":2149,"firstName":"Brian","lastName":"Test"},{"email":"brian2@bleonard.com","id":2150,"firstName":"Evan"}]})
+  .once().reply(200, {"requestId":"13e08#1743e2bb506","result":[{"id":2149,"status":"updated"},{"id":2150,"status":"updated"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:35 GMT',
+  'Sun, 30 Aug 2020 07:01:26 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -974,11 +931,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/asset/v1/staticList/byName.json')
   .query({"name":"%28test%29%20High%20Value"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"1260c#1743e0cb9cf","warnings":[],"result":[{"id":1079,"name":"(test) High Value","createdAt":"2020-08-30T06:27:22Z+0000","updatedAt":"2020-08-30T06:27:22Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab28.marketo.com/#ST1079A1","workspace":"Default"}]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"15fad#1743e2bb972","warnings":[],"result":[{"id":1083,"name":"(test) High Value","createdAt":"2020-08-30T07:01:10Z+0000","updatedAt":"2020-08-30T07:01:10Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab15.marketo.com/#ST1083A1","workspace":"Default"}]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:35 GMT',
+  'Sun, 30 Aug 2020 07:01:27 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -987,12 +944,12 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/lists/1079/leads.json', {"input":[{"id":1141}]})
-  .once().reply(200, {"requestId":"a068#1743e0cbaf8","result":[{"id":1141,"status":"added"}],"success":true}, [
+  .post('/rest/v1/lists/1083/leads.json', {"input":[{"id":2149}]})
+  .once().reply(200, {"requestId":"997f#1743e2bbaad","result":[{"id":2149,"status":"added"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:35 GMT',
+  'Sun, 30 Aug 2020 07:01:27 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1003,11 +960,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/asset/v1/staticList/byName.json')
   .query({"name":"%28test%29%20Churned"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"e21e#1743e0cbc3b","warnings":[],"result":[{"id":1080,"name":"(test) Churned","createdAt":"2020-08-30T06:27:29Z+0000","updatedAt":"2020-08-30T06:27:29Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab15.marketo.com/#ST1080A1","workspace":"Default"}]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"ad01#1743e2bbc2d","warnings":[],"result":[{"id":1084,"name":"(test) Churned","createdAt":"2020-08-30T07:01:19Z+0000","updatedAt":"2020-08-30T07:01:19Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab15.marketo.com/#ST1084A1","workspace":"Default"}]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:36 GMT',
+  'Sun, 30 Aug 2020 07:01:27 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -1016,27 +973,27 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/lists/1080/leads.json', {"input":[{"id":1141}]})
-  .once().reply(200, {"requestId":"665b#1743e0cbd47","result":[{"id":1141,"status":"added"}],"success":true}, [
+  .post('/rest/v1/lists/1084/leads.json', {"input":[{"id":2149}]})
+  .once().reply(200, {"requestId":"16340#1743e2bbd39","result":[{"id":2149,"status":"added"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:36 GMT',
+  'Sun, 30 Aug 2020 07:01:28 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '87',
+  '88',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/asset/v1/staticList/byName.json')
   .query({"name":"%28test%29%20High%20Value"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"4b56#1743e0cbeaa","warnings":[],"result":[{"id":1079,"name":"(test) High Value","createdAt":"2020-08-30T06:27:22Z+0000","updatedAt":"2020-08-30T06:27:22Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab15.marketo.com/#ST1079A1","workspace":"Default"}]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"15d50#1743e2bbf84","warnings":[],"result":[{"id":1083,"name":"(test) High Value","createdAt":"2020-08-30T07:01:10Z+0000","updatedAt":"2020-08-30T07:01:10Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab28.marketo.com/#ST1083A1","workspace":"Default"}]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:36 GMT',
+  'Sun, 30 Aug 2020 07:01:28 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -1045,86 +1002,86 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .delete('/rest/v1/lists/1079/leads.json')
-  .query({"id":"1142"})
-  .once().reply(200, {"requestId":"17473#1743e0cbfba","result":[{"id":1142,"status":"removed"}],"success":true}, [
+  .delete('/rest/v1/lists/1083/leads.json')
+  .query({"id":"2150"})
+  .once().reply(200, {"requestId":"7829#1743e2bc0b1","result":[{"id":2150,"status":"removed"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:37 GMT',
+  'Sun, 30 Aug 2020 07:01:28 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '90',
+  '89',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1141"})
-  .once().reply(200, {"requestId":"130c0#1743e0cc125","result":[{"id":1141,"email":"other@bleonard.com","firstName":"Brian","lastName":"Test","textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2149"})
+  .once().reply(200, {"requestId":"2560#1743e2bc1dc","result":[{"id":2149,"email":"other@bleonard.com","firstName":"Brian","lastName":"Test","textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:37 GMT',
+  'Sun, 30 Aug 2020 07:01:29 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '303',
+  '302',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian%40bleonard.com"})
-  .once().reply(200, {"requestId":"9eb7#1743e0cc278","result":[],"success":true}, [
+  .once().reply(200, {"requestId":"18417#1743e2bc30e","result":[],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:37 GMT',
+  'Sun, 30 Aug 2020 07:01:29 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '59',
+  '60',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1142"})
-  .once().reply(200, {"requestId":"39e9#1743e0cc398","result":[{"id":1142,"email":"brian2@bleonard.com","firstName":"Evan","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2150"})
+  .once().reply(200, {"requestId":"10d25#1743e2bc41b","result":[{"id":2150,"email":"brian2@bleonard.com","firstName":"Evan","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:38 GMT',
+  'Sun, 30 Aug 2020 07:01:29 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '300',
+  '301',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/list/1079/leads.json', "listId=1079&_method=GET")
-  .once().reply(200, {"requestId":"c1f2#1743e0cc499","result":[{"id":1141,"firstName":"Brian","lastName":"Test","email":"other@bleonard.com","updatedAt":"2020-08-30T06:27:34Z","createdAt":"2020-08-30T06:27:13Z"}],"success":true}, [
+  .post('/rest/v1/list/1083/leads.json', "listId=1083&_method=GET")
+  .once().reply(200, {"requestId":"11ae6#1743e2bc524","result":[{"id":2149,"firstName":"Brian","lastName":"Test","email":"other@bleonard.com","updatedAt":"2020-08-30T07:01:26Z","createdAt":"2020-08-30T07:00:58Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:38 GMT',
+  'Sun, 30 Aug 2020 07:01:30 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '207',
+  '208',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/list/1080/leads.json', "listId=1080&_method=GET")
-  .once().reply(200, {"requestId":"5bcd#1743e0cc5c1","result":[{"id":1141,"firstName":"Brian","lastName":"Test","email":"other@bleonard.com","updatedAt":"2020-08-30T06:27:34Z","createdAt":"2020-08-30T06:27:13Z"}],"success":true}, [
+  .post('/rest/v1/list/1084/leads.json', "listId=1084&_method=GET")
+  .once().reply(200, {"requestId":"d14e#1743e2bc667","result":[{"id":2149,"firstName":"Brian","lastName":"Test","email":"other@bleonard.com","updatedAt":"2020-08-30T07:01:26Z","createdAt":"2020-08-30T07:00:58Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:38 GMT',
+  'Sun, 30 Aug 2020 07:01:30 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1135,11 +1092,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/identity/oauth/token')
   .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1488,"scope":"my-user@grouparoo.com"}, [
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3103,"scope":"my-user@grouparoo.com"}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:38 GMT',
+  'Sun, 30 Aug 2020 07:01:30 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -1154,40 +1111,40 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian%40bleonard.com%2Cother%40bleonard.com%2Cbrian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"15130#1743e0cc83a","result":[{"id":1141,"firstName":"Brian","lastName":"Test","email":"other@bleonard.com","updatedAt":"2020-08-30T06:27:34Z","createdAt":"2020-08-30T06:27:13Z"},{"id":1142,"firstName":"Evan","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T06:27:34Z","createdAt":"2020-08-30T06:27:16Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"cef5#1743e2bc87d","result":[{"id":2149,"firstName":"Brian","lastName":"Test","email":"other@bleonard.com","updatedAt":"2020-08-30T07:01:26Z","createdAt":"2020-08-30T07:00:58Z"},{"id":2150,"firstName":"Evan","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T07:01:26Z","createdAt":"2020-08-30T07:01:04Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:39 GMT',
+  'Sun, 30 Aug 2020 07:01:30 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '355',
+  '354',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/leads.json', {"input":[{"id":1142}]})
+  .post('/rest/v1/leads.json', {"input":[{"id":2150}]})
   .query({"_method":"DELETE"})
-  .once().reply(200, {"requestId":"6b69#1743e0cc96f","result":[{"id":1142,"status":"deleted"}],"success":true}, [
+  .once().reply(200, {"requestId":"165b1#1743e2bc98e","result":[{"id":2150,"status":"deleted"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:39 GMT',
+  'Sun, 30 Aug 2020 07:01:31 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '89',
+  '90',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian@bleonard.com","id":1141,"firstName":"Brian","lastName":"Test"}]})
-  .once().reply(200, {"requestId":"15b99#1743e0ccaa1","result":[{"id":1141,"status":"updated"}],"success":true}, [
+  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian@bleonard.com","id":2149,"firstName":"Brian","lastName":"Test"}]})
+  .once().reply(200, {"requestId":"16619#1743e2bcc81","result":[{"id":2149,"status":"updated"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:40 GMT',
+  'Sun, 30 Aug 2020 07:01:32 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1198,11 +1155,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/asset/v1/staticList/byName.json')
   .query({"name":"%28test%29%20High%20Value"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"d567#1743e0cce55","warnings":[],"result":[{"id":1079,"name":"(test) High Value","createdAt":"2020-08-30T06:27:22Z+0000","updatedAt":"2020-08-30T06:27:22Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab15.marketo.com/#ST1079A1","workspace":"Default"}]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"5a4b#1743e2bd111","warnings":[],"result":[{"id":1083,"name":"(test) High Value","createdAt":"2020-08-30T07:01:10Z+0000","updatedAt":"2020-08-30T07:01:10Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-abq.marketo.com/#ST1083A1","workspace":"Default"}]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:40 GMT',
+  'Sun, 30 Aug 2020 07:01:33 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -1211,12 +1168,12 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/lists/1079/leads.json', {"input":[{"id":1141}]})
-  .once().reply(200, {"requestId":"117ec#1743e0ccf65","result":[{"id":1141,"status":"added"}],"success":true}, [
+  .post('/rest/v1/lists/1083/leads.json', {"input":[{"id":2149}]})
+  .once().reply(200, {"requestId":"13b81#1743e2bd217","result":[{"id":2149,"status":"added"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:41 GMT',
+  'Sun, 30 Aug 2020 07:01:33 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1227,11 +1184,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/asset/v1/staticList/byName.json')
   .query({"name":"%28test%29%20Churned"})
-  .once().reply(200, {"success":true,"errors":[],"requestId":"15f1b#1743e0cd0aa","warnings":[],"result":[{"id":1080,"name":"(test) Churned","createdAt":"2020-08-30T06:27:29Z+0000","updatedAt":"2020-08-30T06:27:29Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-abq.marketo.com/#ST1080A1","workspace":"Default"}]}, [
+  .once().reply(200, {"success":true,"errors":[],"requestId":"12a1c#1743e2bd33b","warnings":[],"result":[{"id":1084,"name":"(test) Churned","createdAt":"2020-08-30T07:01:19Z+0000","updatedAt":"2020-08-30T07:01:19Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab15.marketo.com/#ST1084A1","workspace":"Default"}]}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:41 GMT',
+  'Sun, 30 Aug 2020 07:01:33 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -1240,43 +1197,43 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .delete('/rest/v1/lists/1080/leads.json')
-  .query({"id":"1141"})
-  .once().reply(200, {"requestId":"12f08#1743e0cd1bf","result":[{"id":1141,"status":"removed"}],"success":true}, [
+  .delete('/rest/v1/lists/1084/leads.json')
+  .query({"id":"2149"})
+  .once().reply(200, {"requestId":"7ec3#1743e2bd454","result":[{"id":2149,"status":"removed"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:41 GMT',
+  'Sun, 30 Aug 2020 07:01:34 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '90',
+  '89',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1141"})
-  .once().reply(200, {"requestId":"106de#1743e0cd300","result":[{"id":1141,"email":"brian@bleonard.com","firstName":"Brian","lastName":"Test","textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2149"})
+  .once().reply(200, {"requestId":"17b5#1743e2bd705","result":[{"id":2149,"email":"brian@bleonard.com","firstName":"Brian","lastName":"Test","textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:41 GMT',
+  'Sun, 30 Aug 2020 07:01:34 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '303',
+  '302',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"other%40bleonard.com"})
-  .once().reply(200, {"requestId":"7d09#1743e0cd5ae","result":[],"success":true}, [
+  .once().reply(200, {"requestId":"221f#1743e2bd822","result":[],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:42 GMT',
+  'Sun, 30 Aug 2020 07:01:34 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1287,26 +1244,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"116b0#1743e0cd7f3","result":[],"success":true}, [
+  .once().reply(200, {"requestId":"ec27#1743e2bd92f","result":[],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:43 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Content-Length',
-  '60',
-  'Connection',
-  'close'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1142"})
-  .once().reply(200, {"requestId":"d05a#1743e0cda14","result":[],"success":true}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:43 GMT',
+  'Sun, 30 Aug 2020 07:01:35 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1315,41 +1257,56 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/list/1079/leads.json', "listId=1079&_method=GET")
-  .once().reply(200, {"requestId":"17852#1743e0cdc13","result":[{"id":1141,"firstName":"Brian","lastName":"Test","email":"brian@bleonard.com","updatedAt":"2020-08-30T06:27:39Z","createdAt":"2020-08-30T06:27:13Z"}],"success":true}, [
+  .get('/rest/v1/leads.json')
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2150"})
+  .once().reply(200, {"requestId":"7546#1743e2bda3e","result":[],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:44 GMT',
+  'Sun, 30 Aug 2020 07:01:35 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '208',
+  '59',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/list/1080/leads.json', "listId=1080&_method=GET")
-  .once().reply(200, {"requestId":"104f7#1743e0cde33","result":[],"success":true}, [
+  .post('/rest/v1/list/1083/leads.json', "listId=1083&_method=GET")
+  .once().reply(200, {"requestId":"3ca6#1743e2bdb66","result":[{"id":2149,"firstName":"Brian","lastName":"Test","email":"brian@bleonard.com","updatedAt":"2020-08-30T07:01:31Z","createdAt":"2020-08-30T07:00:58Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:44 GMT',
+  'Sun, 30 Aug 2020 07:01:35 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '60',
+  '207',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .post('/rest/v1/list/1084/leads.json', "listId=1084&_method=GET")
+  .once().reply(200, {"requestId":"f5fb#1743e2bdc8f","result":[],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:36 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '59',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/identity/oauth/token')
   .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1482,"scope":"my-user@grouparoo.com"}, [
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3097,"scope":"my-user@grouparoo.com"}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:45 GMT',
+  'Sun, 30 Aug 2020 07:01:36 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -1364,40 +1321,40 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"14d46#1743e0ce24b","result":[],"success":true}, [
+  .once().reply(200, {"requestId":"2d8b#1743e2bded7","result":[],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:45 GMT',
+  'Sun, 30 Aug 2020 07:01:36 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '60',
+  '59',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .post('/rest/v1/leads.json', {"lookupField":"email","action":"createOrUpdate","input":[{"email":"brian2@bleonard.com","firstName":"Evan","textarea_field":"text is here","boolean_field":true,"email_field":"field@grouparoo.com","integer_field":5,"float_field":5.4,"datetime_field":"2020-08-30T05:49:48.000Z","score_field":10,"percent_field":99}]})
-  .once().reply(200, {"requestId":"10ea5#1743e0ce3e0","result":[{"id":1143,"status":"created"}],"success":true}, [
+  .once().reply(200, {"requestId":"3df5#1743e2bdfe2","result":[{"id":2151,"status":"created"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:46 GMT',
+  'Sun, 30 Aug 2020 07:01:37 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '90',
+  '89',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"13b01#1743e0ce655","result":[{"id":1143,"firstName":"Evan","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T06:27:46Z","createdAt":"2020-08-30T06:27:46Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"11b6c#1743e2be270","result":[{"id":2151,"firstName":"Evan","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T07:01:37Z","createdAt":"2020-08-30T07:01:37Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:47 GMT',
+  'Sun, 30 Aug 2020 07:01:37 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1407,27 +1364,27 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1143"})
-  .once().reply(200, {"requestId":"1e66#1743e0ce801","result":[{"id":1143,"email":"brian2@bleonard.com","firstName":"Evan","lastName":null,"textarea_field":"text is here","boolean_field":true,"email_field":"field@grouparoo.com","integer_field":5,"float_field":5.4,"datetime_field":"2020-08-30T05:49:48Z","score_field":10,"percent_field":99}],"success":true}, [
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2151"})
+  .once().reply(200, {"requestId":"18021#1743e2be390","result":[{"id":2151,"email":"brian2@bleonard.com","firstName":"Evan","lastName":null,"textarea_field":"text is here","boolean_field":true,"email_field":"field@grouparoo.com","integer_field":5,"float_field":5.4,"datetime_field":"2020-08-30T05:49:48Z","score_field":10,"percent_field":99}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:47 GMT',
+  'Sun, 30 Aug 2020 07:01:38 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '338',
+  '339',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/identity/oauth/token')
   .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1479,"scope":"my-user@grouparoo.com"}, [
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3095,"scope":"my-user@grouparoo.com"}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:47 GMT',
+  'Sun, 30 Aug 2020 07:01:38 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -1442,25 +1399,25 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"2a11#1743e0cea32","result":[{"id":1143,"firstName":"Evan","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T06:27:46Z","createdAt":"2020-08-30T06:27:46Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"18137#1743e2be6c9","result":[{"id":2151,"firstName":"Evan","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T07:01:37Z","createdAt":"2020-08-30T07:01:37Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:47 GMT',
+  'Sun, 30 Aug 2020 07:01:38 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '205',
+  '206',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian2@bleonard.com","id":1143,"firstName":"Maria","textarea_field":null,"boolean_field":null,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}]})
-  .once().reply(200, {"requestId":"1382b#1743e0ceb64","result":[{"id":1143,"status":"updated"}],"success":true}, [
+  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian2@bleonard.com","id":2151,"firstName":"Maria","textarea_field":null,"boolean_field":null,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}]})
+  .once().reply(200, {"requestId":"1445b#1743e2be7cc","result":[{"id":2151,"status":"updated"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:48 GMT',
+  'Sun, 30 Aug 2020 07:01:39 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1470,27 +1427,27 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1143"})
-  .once().reply(200, {"requestId":"f5a1#1743e0cefe8","result":[{"id":1143,"email":"brian2@bleonard.com","firstName":"Maria","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2151"})
+  .once().reply(200, {"requestId":"145e4#1743e2beb08","result":[{"id":2151,"email":"brian2@bleonard.com","firstName":"Maria","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:49 GMT',
+  'Sun, 30 Aug 2020 07:01:39 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '301',
+  '302',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/identity/oauth/token')
   .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1477,"scope":"my-user@grouparoo.com"}, [
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3094,"scope":"my-user@grouparoo.com"}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:49 GMT',
+  'Sun, 30 Aug 2020 07:01:40 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -1505,25 +1462,25 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"5b7f#1743e0cf3fa","result":[{"id":1143,"firstName":"Maria","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T06:27:48Z","createdAt":"2020-08-30T06:27:46Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"15fbd#1743e2bed22","result":[{"id":2151,"firstName":"Maria","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T07:01:38Z","createdAt":"2020-08-30T07:01:37Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:50 GMT',
+  'Sun, 30 Aug 2020 07:01:40 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '206',
+  '207',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian2@bleonard.com","id":1143,"firstName":"Maria","boolean_field":"other"}]})
-  .once().reply(200, {"requestId":"392b#1743e0cf5e0","result":[{"status":"skipped","reasons":[{"code":"1003","message":"Invalid value for field 'boolean_field'"}]}],"success":true}, [
+  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian2@bleonard.com","id":2151,"firstName":"Maria","boolean_field":"other"}]})
+  .once().reply(200, {"requestId":"b1c2#1743e2bee36","result":[{"status":"skipped","reasons":[{"code":"1003","message":"Invalid value for field 'boolean_field'"}]}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:50 GMT',
+  'Sun, 30 Aug 2020 07:01:40 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1533,12 +1490,12 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1143"})
-  .once().reply(200, {"requestId":"ec5c#1743e0cf810","result":[{"id":1143,"email":"brian2@bleonard.com","firstName":"Maria","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2151"})
+  .once().reply(200, {"requestId":"4e80#1743e2befb8","result":[{"id":2151,"email":"brian2@bleonard.com","firstName":"Maria","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:51 GMT',
+  'Sun, 30 Aug 2020 07:01:40 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1549,11 +1506,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/identity/oauth/token')
   .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1475,"scope":"my-user@grouparoo.com"}, [
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3092,"scope":"my-user@grouparoo.com"}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:51 GMT',
+  'Sun, 30 Aug 2020 07:01:41 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -1568,25 +1525,25 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"b01c#1743e0cfa45","result":[{"id":1143,"firstName":"Maria","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T06:27:48Z","createdAt":"2020-08-30T06:27:46Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"16698#1743e2bf205","result":[{"id":2151,"firstName":"Maria","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T07:01:38Z","createdAt":"2020-08-30T07:01:37Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:52 GMT',
+  'Sun, 30 Aug 2020 07:01:41 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '206',
+  '207',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian2@bleonard.com","id":1143,"firstName":"Maria","email_field":"bademail"}]})
-  .once().reply(200, {"requestId":"174a6#1743e0cfb50","result":[{"status":"skipped","reasons":[{"code":"1003","message":"Invalid value for field 'email_field'"}]}],"success":true}, [
+  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian2@bleonard.com","id":2151,"firstName":"Maria","email_field":"bademail"}]})
+  .once().reply(200, {"requestId":"12c7a#1743e2bf326","result":[{"status":"skipped","reasons":[{"code":"1003","message":"Invalid value for field 'email_field'"}]}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:52 GMT',
+  'Sun, 30 Aug 2020 07:01:41 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1596,12 +1553,12 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1143"})
-  .once().reply(200, {"requestId":"14d2c#1743e0cfcbf","result":[{"id":1143,"email":"brian2@bleonard.com","firstName":"Maria","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2151"})
+  .once().reply(200, {"requestId":"1441a#1743e2bf49b","result":[{"id":2151,"email":"brian2@bleonard.com","firstName":"Maria","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:52 GMT',
+  'Sun, 30 Aug 2020 07:01:42 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1612,11 +1569,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/identity/oauth/token')
   .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1474,"scope":"my-user@grouparoo.com"}, [
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3091,"scope":"my-user@grouparoo.com"}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:52 GMT',
+  'Sun, 30 Aug 2020 07:01:42 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -1631,11 +1588,11 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"a09c#1743e0cfecb","result":[{"id":1143,"firstName":"Maria","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T06:27:48Z","createdAt":"2020-08-30T06:27:46Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"2ce2#1743e2bf6cc","result":[{"id":2151,"firstName":"Maria","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T07:01:38Z","createdAt":"2020-08-30T07:01:37Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:53 GMT',
+  'Sun, 30 Aug 2020 07:01:42 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1644,201 +1601,12 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian2@bleonard.com","id":1143,"firstName":"Maria","integer_field":14.1}]})
-  .once().reply(200, {"requestId":"15f9d#1743e0cffde","result":[{"status":"skipped","reasons":[{"code":"1003","message":"Invalid value for field 'integer_field'"}]}],"success":true}, [
+  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian2@bleonard.com","id":2151,"firstName":"Maria","integer_field":14.1}]})
+  .once().reply(200, {"requestId":"1d74#1743e2bf7e0","result":[{"status":"skipped","reasons":[{"code":"1003","message":"Invalid value for field 'integer_field'"}]}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:53 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Content-Length',
-  '160',
-  'Connection',
-  'close'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1143"})
-  .once().reply(200, {"requestId":"8d3c#1743e0d00f8","result":[{"id":1143,"email":"brian2@bleonard.com","firstName":"Maria","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:53 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Content-Length',
-  '301',
-  'Connection',
-  'close'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .get('/identity/oauth/token')
-  .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1473,"scope":"my-user@grouparoo.com"}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:53 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Transfer-Encoding',
-  'chunked',
-  'Connection',
-  'close',
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .get('/rest/v1/leads.json')
-  .query({"filterType":"email","filterValues":"brian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"69c#1743e0d0303","result":[{"id":1143,"firstName":"Maria","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T06:27:48Z","createdAt":"2020-08-30T06:27:46Z"}],"success":true}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:54 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Content-Length',
-  '205',
-  'Connection',
-  'close'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian2@bleonard.com","id":1143,"firstName":"Maria","float_field":"14c"}]})
-  .once().reply(200, {"requestId":"a495#1743e0d0416","result":[{"status":"skipped","reasons":[{"code":"1003","message":"Invalid value for field 'float_field'"}]}],"success":true}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:54 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Content-Length',
-  '157',
-  'Connection',
-  'close'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1143"})
-  .once().reply(200, {"requestId":"22a3#1743e0d052d","result":[{"id":1143,"email":"brian2@bleonard.com","firstName":"Maria","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:54 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Content-Length',
-  '301',
-  'Connection',
-  'close'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .get('/identity/oauth/token')
-  .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1472,"scope":"my-user@grouparoo.com"}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:55 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Transfer-Encoding',
-  'chunked',
-  'Connection',
-  'close',
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .get('/rest/v1/leads.json')
-  .query({"filterType":"email","filterValues":"brian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"bca2#1743e0d0737","result":[{"id":1143,"firstName":"Maria","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T06:27:48Z","createdAt":"2020-08-30T06:27:46Z"}],"success":true}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:55 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Content-Length',
-  '206',
-  'Connection',
-  'close'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian2@bleonard.com","id":1143,"firstName":"Maria","datetime_field":"yesterday"}]})
-  .once().reply(200, {"requestId":"13886#1743e0d084a","result":[{"status":"skipped","reasons":[{"code":"1003","message":"Invalid value for field 'datetime_field'"}]}],"success":true}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:55 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Content-Length',
-  '161',
-  'Connection',
-  'close'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1143"})
-  .once().reply(200, {"requestId":"14cff#1743e0d0970","result":[{"id":1143,"email":"brian2@bleonard.com","firstName":"Maria","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:55 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Content-Length',
-  '302',
-  'Connection',
-  'close'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .get('/identity/oauth/token')
-  .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1471,"scope":"my-user@grouparoo.com"}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:56 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Transfer-Encoding',
-  'chunked',
-  'Connection',
-  'close',
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .get('/rest/v1/leads.json')
-  .query({"filterType":"email","filterValues":"brian2%40bleonard.com"})
-  .once().reply(200, {"requestId":"1661#1743e0d0b7c","result":[{"id":1143,"firstName":"Maria","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T06:27:48Z","createdAt":"2020-08-30T06:27:46Z"}],"success":true}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:56 GMT',
-  'Content-Type',
-  'application/json;charset=UTF-8',
-  'Content-Length',
-  '206',
-  'Connection',
-  'close'
-]);
-nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian2@bleonard.com","id":1143,"firstName":"Maria","percent_field":"100%"}]})
-  .once().reply(200, {"requestId":"757f#1743e0d0ca0","result":[{"status":"skipped","reasons":[{"code":"1003","message":"Invalid value for field 'percent_field'"}]}],"success":true}, [
-  'Server',
-  'nginx',
-  'Date',
-  'Sun, 30 Aug 2020 06:27:56 GMT',
+  'Sun, 30 Aug 2020 07:01:43 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1848,12 +1616,201 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1143"})
-  .once().reply(200, {"requestId":"123ee#1743e0d0db4","result":[{"id":1143,"email":"brian2@bleonard.com","firstName":"Maria","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2151"})
+  .once().reply(200, {"requestId":"2724#1743e2bf9f1","result":[{"id":2151,"email":"brian2@bleonard.com","firstName":"Maria","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:57 GMT',
+  'Sun, 30 Aug 2020 07:01:43 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '301',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/identity/oauth/token')
+  .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3090,"scope":"my-user@grouparoo.com"}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:43 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Transfer-Encoding',
+  'chunked',
+  'Connection',
+  'close',
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/rest/v1/leads.json')
+  .query({"filterType":"email","filterValues":"brian2%40bleonard.com"})
+  .once().reply(200, {"requestId":"14d99#1743e2bfbf8","result":[{"id":2151,"firstName":"Maria","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T07:01:38Z","createdAt":"2020-08-30T07:01:37Z"}],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:44 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '207',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian2@bleonard.com","id":2151,"firstName":"Maria","float_field":"14c"}]})
+  .once().reply(200, {"requestId":"21f7#1743e2bfd42","result":[{"status":"skipped","reasons":[{"code":"1003","message":"Invalid value for field 'float_field'"}]}],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:44 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '157',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/rest/v1/leads.json')
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2151"})
+  .once().reply(200, {"requestId":"d768#1743e2bfe4f","result":[{"id":2151,"email":"brian2@bleonard.com","firstName":"Maria","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:44 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '301',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/identity/oauth/token')
+  .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3089,"scope":"my-user@grouparoo.com"}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:44 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Transfer-Encoding',
+  'chunked',
+  'Connection',
+  'close',
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/rest/v1/leads.json')
+  .query({"filterType":"email","filterValues":"brian2%40bleonard.com"})
+  .once().reply(200, {"requestId":"bbdd#1743e2c0628","result":[{"id":2151,"firstName":"Maria","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T07:01:38Z","createdAt":"2020-08-30T07:01:37Z"}],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:46 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '206',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian2@bleonard.com","id":2151,"firstName":"Maria","datetime_field":"yesterday"}]})
+  .once().reply(200, {"requestId":"93ee#1743e2c0778","result":[{"status":"skipped","reasons":[{"code":"1003","message":"Invalid value for field 'datetime_field'"}]}],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:47 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '160',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/rest/v1/leads.json')
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2151"})
+  .once().reply(200, {"requestId":"11a11#1743e2c0887","result":[{"id":2151,"email":"brian2@bleonard.com","firstName":"Maria","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:47 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '302',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/identity/oauth/token')
+  .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3086,"scope":"my-user@grouparoo.com"}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:47 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Transfer-Encoding',
+  'chunked',
+  'Connection',
+  'close',
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/rest/v1/leads.json')
+  .query({"filterType":"email","filterValues":"brian2%40bleonard.com"})
+  .once().reply(200, {"requestId":"1972#1743e2c0a95","result":[{"id":2151,"firstName":"Maria","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T07:01:38Z","createdAt":"2020-08-30T07:01:37Z"}],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:47 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '206',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian2@bleonard.com","id":2151,"firstName":"Maria","percent_field":"100%"}]})
+  .once().reply(200, {"requestId":"121db#1743e2c0c13","result":[{"status":"skipped","reasons":[{"code":"1003","message":"Invalid value for field 'percent_field'"}]}],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:48 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '160',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/rest/v1/leads.json')
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2151"})
+  .once().reply(200, {"requestId":"16a3a#1743e2c0d1e","result":[{"id":2151,"email":"brian2@bleonard.com","firstName":"Maria","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:48 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1864,26 +1821,26 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian3%40bleonard.com"})
-  .once().reply(200, {"requestId":"90c7#1743e0d0f19","result":[],"success":true}, [
+  .once().reply(200, {"requestId":"14a68#1743e2c0e31","result":[],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:57 GMT',
+  'Sun, 30 Aug 2020 07:01:48 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '59',
+  '60',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/identity/oauth/token')
   .query({"grant_type":"client_credentials","client_id":"98628d43-73e8-7a3d-9725-f1fd7be3755c","client_secret":"qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT"})
-  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":1470,"scope":"my-user@grouparoo.com"}, [
+  .once().reply(200, {"access_token":"my-access-token","token_type":"bearer","expires_in":3085,"scope":"my-user@grouparoo.com"}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:57 GMT',
+  'Sun, 30 Aug 2020 07:01:48 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Transfer-Encoding',
@@ -1898,39 +1855,39 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian%40bleonard.com%2Cbrian2%40bleonard.com%2Cbrian3%40bleonard.com"})
-  .once().reply(200, {"requestId":"10fb7#1743e0d1117","result":[{"id":1141,"firstName":"Brian","lastName":"Test","email":"brian@bleonard.com","updatedAt":"2020-08-30T06:27:39Z","createdAt":"2020-08-30T06:27:13Z"},{"id":1143,"firstName":"Maria","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T06:27:48Z","createdAt":"2020-08-30T06:27:46Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"faf2#1743e2c103f","result":[{"id":2149,"firstName":"Brian","lastName":"Test","email":"brian@bleonard.com","updatedAt":"2020-08-30T07:01:31Z","createdAt":"2020-08-30T07:00:58Z"},{"id":2151,"firstName":"Maria","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T07:01:38Z","createdAt":"2020-08-30T07:01:37Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:57 GMT',
+  'Sun, 30 Aug 2020 07:01:49 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '356',
+  '355',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
-  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian@bleonard.com","id":1141,"firstName":"Sam","lastName":"Test"},{"email":"brian2@bleonard.com","id":1143,"firstName":"William","email_field":"bademail"}]})
-  .once().reply(200, {"requestId":"70ce#1743e0d1221","result":[{"id":1141,"status":"updated"},{"status":"skipped","reasons":[{"code":"1003","message":"Invalid value for field 'email_field'"}]}],"success":true}, [
+  .post('/rest/v1/leads.json', {"lookupField":"id","action":"updateOnly","input":[{"email":"brian@bleonard.com","id":2149,"firstName":"Sam","lastName":"Test"},{"email":"brian2@bleonard.com","id":2151,"firstName":"William","email_field":"bademail"}]})
+  .once().reply(200, {"requestId":"1256e#1743e2c1151","result":[{"id":2149,"status":"updated"},{"status":"skipped","reasons":[{"code":"1003","message":"Invalid value for field 'email_field'"}]}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:58 GMT',
+  'Sun, 30 Aug 2020 07:01:50 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '188',
+  '189',
   'Connection',
   'close'
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .post('/rest/v1/leads.json', {"lookupField":"email","action":"createOrUpdate","input":[{"email":"brian3@bleonard.com","firstName":"Liz","email_field":"valid@grouparoo.com"}]})
-  .once().reply(200, {"requestId":"14f84#1743e0d156d","result":[{"id":1144,"status":"created"}],"success":true}, [
+  .once().reply(200, {"requestId":"11bea#1743e2c15eb","result":[{"id":2152,"status":"created"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:59 GMT',
+  'Sun, 30 Aug 2020 07:01:51 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1940,12 +1897,12 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1141"})
-  .once().reply(200, {"requestId":"1039a#1743e0d17e0","result":[{"id":1141,"email":"brian@bleonard.com","firstName":"Sam","lastName":"Test","textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2149"})
+  .once().reply(200, {"requestId":"16b7b#1743e2c1a05","result":[{"id":2149,"email":"brian@bleonard.com","firstName":"Sam","lastName":"Test","textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:59 GMT',
+  'Sun, 30 Aug 2020 07:01:51 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1955,12 +1912,12 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1143"})
-  .once().reply(200, {"requestId":"d3c2#1743e0d18f4","result":[{"id":1143,"email":"brian2@bleonard.com","firstName":"Maria","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2151"})
+  .once().reply(200, {"requestId":"94f7#1743e2c1b28","result":[{"id":2151,"email":"brian2@bleonard.com","firstName":"Maria","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":null,"integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:27:59 GMT',
+  'Sun, 30 Aug 2020 07:01:52 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1971,11 +1928,71 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
   .query({"filterType":"email","filterValues":"brian3%40bleonard.com"})
-  .once().reply(200, {"requestId":"12c3e#1743e0d1a04","result":[{"id":1144,"firstName":"Liz","lastName":null,"email":"brian3@bleonard.com","updatedAt":"2020-08-30T06:27:59Z","createdAt":"2020-08-30T06:27:59Z"}],"success":true}, [
+  .once().reply(200, {"requestId":"aea6#1743e2c1c31","result":[{"id":2152,"firstName":"Liz","lastName":null,"email":"brian3@bleonard.com","updatedAt":"2020-08-30T07:01:51Z","createdAt":"2020-08-30T07:01:51Z"}],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:28:00 GMT',
+  'Sun, 30 Aug 2020 07:01:52 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '204',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/rest/v1/leads.json')
+  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"2152"})
+  .once().reply(200, {"requestId":"935b#1743e2c1d7d","result":[{"id":2152,"email":"brian3@bleonard.com","firstName":"Liz","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":"valid@grouparoo.com","integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:52 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '316',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/rest/v1/leads.json')
+  .query({"filterType":"email","filterValues":"brian%40bleonard.com"})
+  .once().reply(200, {"requestId":"115da#1743e2c1e94","result":[{"id":2149,"firstName":"Sam","lastName":"Test","email":"brian@bleonard.com","updatedAt":"2020-08-30T07:01:49Z","createdAt":"2020-08-30T07:00:58Z"}],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:52 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '206',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/rest/v1/leads.json')
+  .query({"filterType":"email","filterValues":"brian2%40bleonard.com"})
+  .once().reply(200, {"requestId":"6d50#1743e2c1fc2","result":[{"id":2151,"firstName":"Maria","lastName":null,"email":"brian2@bleonard.com","updatedAt":"2020-08-30T07:01:38Z","createdAt":"2020-08-30T07:01:37Z"}],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:53 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '206',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/rest/v1/leads.json')
+  .query({"filterType":"email","filterValues":"brian3%40bleonard.com"})
+  .once().reply(200, {"requestId":"10109#1743e2c2115","result":[{"id":2152,"firstName":"Liz","lastName":null,"email":"brian3@bleonard.com","updatedAt":"2020-08-30T07:01:51Z","createdAt":"2020-08-30T07:01:51Z"}],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:53 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
@@ -1985,16 +2002,89 @@ nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
   .get('/rest/v1/leads.json')
-  .query({"fields":"email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field","filterType":"id","filterValues":"1144"})
-  .once().reply(200, {"requestId":"69b2#1743e0d1b20","result":[{"id":1144,"email":"brian3@bleonard.com","firstName":"Liz","lastName":null,"textarea_field":null,"boolean_field":false,"email_field":"valid@grouparoo.com","integer_field":null,"float_field":null,"datetime_field":null,"score_field":null,"percent_field":null}],"success":true}, [
+  .query({"filterType":"email","filterValues":"other%40bleonard.com"})
+  .once().reply(200, {"requestId":"161fe#1743e2c2216","result":[],"success":true}, [
   'Server',
   'nginx',
   'Date',
-  'Sun, 30 Aug 2020 06:28:00 GMT',
+  'Sun, 30 Aug 2020 07:01:53 GMT',
   'Content-Type',
   'application/json;charset=UTF-8',
   'Content-Length',
-  '316',
+  '60',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .post('/rest/v1/leads.json', {"input":[{"id":2149},{"id":2151},{"id":2152}]})
+  .query({"_method":"DELETE"})
+  .once().reply(200, {"requestId":"cd78#1743e2c2340","result":[{"id":2149,"status":"deleted"},{"id":2151,"status":"deleted"},{"id":2152,"status":"deleted"}],"success":true}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:54 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Content-Length',
+  '151',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/rest/asset/v1/staticList/byName.json')
+  .query({"name":"%28test%29%20High%20Value"})
+  .once().reply(200, {"success":true,"errors":[],"requestId":"932a#1743e2c2512","warnings":[],"result":[{"id":1083,"name":"(test) High Value","createdAt":"2020-08-30T07:01:10Z+0000","updatedAt":"2020-08-30T07:01:10Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab28.marketo.com/#ST1083A1","workspace":"Default"}]}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:54 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Transfer-Encoding',
+  'chunked',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .post('/rest/asset/v1/staticList/1083/delete.json')
+  .once().reply(200, {"success":true,"errors":[],"requestId":"d9da#1743e2c265e","warnings":[],"result":[{"id":1083}]}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:55 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Transfer-Encoding',
+  'chunked',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .get('/rest/asset/v1/staticList/byName.json')
+  .query({"name":"%28test%29%20Churned"})
+  .once().reply(200, {"success":true,"errors":[],"requestId":"2576#1743e2c27c9","warnings":[],"result":[{"id":1084,"name":"(test) Churned","createdAt":"2020-08-30T07:01:19Z+0000","updatedAt":"2020-08-30T07:01:19Z+0000","folder":{"id":12,"type":"Folder"},"computedUrl":"https://app-ab15.marketo.com/#ST1084A1","workspace":"Default"}]}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:55 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Transfer-Encoding',
+  'chunked',
+  'Connection',
+  'close'
+]);
+nock('https://123-abc-456.mktorest.com:443', {"encodedQueryParams":true})
+  .post('/rest/asset/v1/staticList/1084/delete.json')
+  .once().reply(200, {"success":true,"errors":[],"requestId":"ea6f#1743e2c28dc","warnings":[],"result":[{"id":1084}]}, [
+  'Server',
+  'nginx',
+  'Date',
+  'Sun, 30 Aug 2020 07:01:55 GMT',
+  'Content-Type',
+  'application/json;charset=UTF-8',
+  'Transfer-Encoding',
+  'chunked',
   'Connection',
   'close'
 ]);

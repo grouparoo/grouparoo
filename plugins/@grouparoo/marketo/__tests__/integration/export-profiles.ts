@@ -138,7 +138,7 @@ describe("marketo/exportProfiles", () => {
   }, 1000 * 30);
 
   afterAll(async () => {
-    // await cleanUp(true);
+    await cleanUp(true);
   }, 1000 * 30);
 
   test("can create profile on Marketo", async () => {
