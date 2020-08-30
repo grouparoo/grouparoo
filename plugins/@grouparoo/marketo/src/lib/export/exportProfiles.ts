@@ -175,7 +175,7 @@ async function updateList(
         const message = result.reasons.map((r) => r.message).join(", ");
         const user = idMap[id];
         if (!user) {
-          throw `Unknown user id in list: ${id}`;
+          throw new Error(`Unknown user id in list: ${id}`);
         }
         user.error =
           user.error || new Error(`could update list ${listName}: ${message}`);
@@ -242,10 +242,14 @@ async function updateUsers(client, users: MarketoExport[], options) {
     try {
       if (!result.id) {
         console.log("result does not have id", result);
-        throw `no id in result: ${JSON.stringify(result)}`;
+        throw new Error(
+          `Marketo profile error: ${user.profileGuid} ${JSON.stringify(result)}`
+        );
       }
       if (user.marketoId && user.marketoId !== result.id) {
-        throw `user id does not match updated one: ${user.marketoId} -> ${result.id}`;
+        throw new Error(
+          `user id does not match updated one: ${user.marketoId} -> ${result.id}`
+        );
       }
     } catch (error) {
       user.error = error;
@@ -321,7 +325,7 @@ async function deleteLeads(client, exports: MarketoExport[]) {
   const data = { input: marketoIds };
   const response = await client.lead._connection.postJson(path, data);
   if (!response.success) {
-    throw `Marketo delete error`;
+    throw new Error(`Marketo delete error`);
   }
 }
 
@@ -335,7 +339,7 @@ async function setMarketoIds(client, emailMap: MarketoEmailMap) {
   // That would have worked around that. I wonder why.
   const response = await client.lead.find(filterType, filterValues);
   if (!response.success) {
-    throw `Marketo email find error`;
+    throw new Error(`Marketo email find error`);
   }
   const results = response.result;
   for (const result of results) {

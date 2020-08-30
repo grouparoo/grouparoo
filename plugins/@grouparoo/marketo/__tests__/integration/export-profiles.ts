@@ -52,7 +52,23 @@ async function findId(email) {
   return results[0].id;
 }
 async function getUser(id) {
-  const response = await client.lead.find("id", [id]);
+  const fields = [
+    "email",
+    "firstName",
+    "lastName",
+    "id",
+    "textarea_field",
+    "boolean_field",
+    "email_field",
+    "integer_field",
+    "float_field",
+    "datetime_field",
+    "score_field",
+    "percent_field",
+  ];
+  const response = await client.lead.find("id", [id], {
+    fields: fields.join(","),
+  });
   const results = response.result;
   if (results.length === 0) {
     return null;
@@ -441,6 +457,7 @@ describe("marketo/exportProfiles", () => {
     expect(user.email).toBe(email1);
     expect(user.firstName).toBe("Brian");
     expect(user.lastName).toBe("Test");
+    expect(user.boolean_field).toBe(false); // checking default
 
     expect(await findId(newEmail1)).toBeNull(); // changed!
 
@@ -455,7 +472,422 @@ describe("marketo/exportProfiles", () => {
     expect(members.sort()).toEqual([]);
   });
 
-  // all the different types
-  // find a way to make some errors (bad data?) to check status messages
-  // Warning: Promise.defer is deprecated and will be removed in a future version. Use new Promise instead.
+  test("can add back a user and many types", async () => {
+    const { success, errors } = await exportBatch({
+      appOptions,
+      exports: [
+        {
+          profileGuid: guid2,
+          oldProfileProperties: {},
+          newProfileProperties: {
+            email: email2,
+            firstName: "Evan",
+            textarea_field: "text is here",
+            boolean_field: true,
+            email_field: "field@grouparoo.com",
+            integer_field: 5,
+            float_field: 5.4,
+            datetime_field: new Date(1598766588 * 1000),
+            score_field: 10,
+            percent_field: 99,
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    let user;
+    expect(success).toBe(true);
+    expect(errors).toBeNull();
+
+    userId2 = await findId(email2);
+    expect(userId2).toBeTruthy();
+
+    user = await getUser(userId2);
+    console.log("user1", user);
+    expect(user.email).toEqual(email2);
+    expect(user.firstName).toEqual("Evan");
+    expect(user.textarea_field).toEqual("text is here");
+    expect(user.boolean_field).toEqual(true);
+    expect(user.email_field).toEqual("field@grouparoo.com");
+    expect(user.integer_field).toEqual(5);
+    expect(user.float_field).toEqual(5.4);
+    expect(user.datetime_field).toEqual("2020-08-30T05:49:48Z");
+    expect(user.score_field).toEqual(10);
+    expect(user.percent_field).toEqual(99);
+  });
+
+  test("can set all those fields to null", async () => {
+    const { success, errors } = await exportBatch({
+      appOptions,
+      exports: [
+        {
+          profileGuid: guid2,
+          oldProfileProperties: {
+            email: email2,
+            firstName: "Evan",
+            textarea_field: "text is here",
+            boolean_field: true,
+            email_field: "field@grouparoo.com",
+            integer_field: 5,
+            float_field: 5.4,
+            datetime_field: new Date(1598766588 * 1000),
+            score_field: 10,
+            percent_field: 99,
+          },
+          newProfileProperties: { email: email2, firstName: "Maria" },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    let user;
+    expect(success).toBe(true);
+    expect(errors).toBeNull();
+
+    user = await getUser(userId2);
+    console.log("user2", user);
+    expect(user.email).toEqual(email2);
+    expect(user.firstName).toEqual("Maria");
+    expect(user.textarea_field).toEqual(null);
+    expect(user.boolean_field).toEqual(false);
+    expect(user.email_field).toEqual(null);
+    expect(user.integer_field).toEqual(null);
+    expect(user.float_field).toEqual(null);
+    expect(user.datetime_field).toEqual(null);
+    expect(user.score_field).toEqual(null);
+    expect(user.percent_field).toEqual(null);
+  });
+
+  test("can handle boolean error", async () => {
+    const { success, errors } = await exportBatch({
+      appOptions,
+      exports: [
+        {
+          profileGuid: guid2,
+          oldProfileProperties: { email: email2, firstName: "Maria" },
+          newProfileProperties: {
+            email: email2,
+            firstName: "Maria",
+            boolean_field: "other",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    let user;
+    expect(success).toBe(false);
+    expect(errors).not.toBeNull();
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid2);
+    expect(error.message).toContain("boolean");
+
+    user = await getUser(userId2);
+    expect(user.email).toEqual(email2);
+    expect(user.firstName).toEqual("Maria");
+    expect(user.textarea_field).toEqual(null);
+    expect(user.boolean_field).toEqual(false);
+    expect(user.email_field).toEqual(null);
+    expect(user.integer_field).toEqual(null);
+    expect(user.float_field).toEqual(null);
+    expect(user.datetime_field).toEqual(null);
+    expect(user.score_field).toEqual(null);
+    expect(user.percent_field).toEqual(null);
+  });
+
+  test("can handle email error", async () => {
+    const { success, errors } = await exportBatch({
+      appOptions,
+      exports: [
+        {
+          profileGuid: guid2,
+          oldProfileProperties: { email: email2, firstName: "Maria" },
+          newProfileProperties: {
+            email: email2,
+            firstName: "Maria",
+            email_field: "bademail",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    let user;
+    expect(success).toBe(false);
+    expect(errors).not.toBeNull();
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid2);
+    expect(error.message).toContain("email");
+
+    user = await getUser(userId2);
+    expect(user.email).toEqual(email2);
+    expect(user.firstName).toEqual("Maria");
+    expect(user.textarea_field).toEqual(null);
+    expect(user.boolean_field).toEqual(false);
+    expect(user.email_field).toEqual(null);
+    expect(user.integer_field).toEqual(null);
+    expect(user.float_field).toEqual(null);
+    expect(user.datetime_field).toEqual(null);
+    expect(user.score_field).toEqual(null);
+    expect(user.percent_field).toEqual(null);
+  });
+
+  test("can handle integer error", async () => {
+    const { success, errors } = await exportBatch({
+      appOptions,
+      exports: [
+        {
+          profileGuid: guid2,
+          oldProfileProperties: { email: email2, firstName: "Maria" },
+          newProfileProperties: {
+            email: email2,
+            firstName: "Maria",
+            integer_field: 14.1,
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    let user;
+    expect(success).toBe(false);
+    expect(errors).not.toBeNull();
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid2);
+    expect(error.message).toContain("integer");
+
+    user = await getUser(userId2);
+    expect(user.email).toEqual(email2);
+    expect(user.firstName).toEqual("Maria");
+    expect(user.textarea_field).toEqual(null);
+    expect(user.boolean_field).toEqual(false);
+    expect(user.email_field).toEqual(null);
+    expect(user.integer_field).toEqual(null);
+    expect(user.float_field).toEqual(null);
+    expect(user.datetime_field).toEqual(null);
+    expect(user.score_field).toEqual(null);
+    expect(user.percent_field).toEqual(null);
+  });
+
+  test("can handle float error", async () => {
+    const { success, errors } = await exportBatch({
+      appOptions,
+      exports: [
+        {
+          profileGuid: guid2,
+          oldProfileProperties: { email: email2, firstName: "Maria" },
+          newProfileProperties: {
+            email: email2,
+            firstName: "Maria",
+            float_field: "14c",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    let user;
+    expect(success).toBe(false);
+    expect(errors).not.toBeNull();
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid2);
+    expect(error.message).toContain("float");
+
+    user = await getUser(userId2);
+    expect(user.email).toEqual(email2);
+    expect(user.firstName).toEqual("Maria");
+    expect(user.textarea_field).toEqual(null);
+    expect(user.boolean_field).toEqual(false);
+    expect(user.email_field).toEqual(null);
+    expect(user.integer_field).toEqual(null);
+    expect(user.float_field).toEqual(null);
+    expect(user.datetime_field).toEqual(null);
+    expect(user.score_field).toEqual(null);
+    expect(user.percent_field).toEqual(null);
+  });
+
+  test("can handle datetime error", async () => {
+    const { success, errors } = await exportBatch({
+      appOptions,
+      exports: [
+        {
+          profileGuid: guid2,
+          oldProfileProperties: { email: email2, firstName: "Maria" },
+          newProfileProperties: {
+            email: email2,
+            firstName: "Maria",
+            datetime_field: "yesterday",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    let user;
+    expect(success).toBe(false);
+    expect(errors).not.toBeNull();
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid2);
+    expect(error.message).toContain("datetime");
+
+    user = await getUser(userId2);
+    expect(user.email).toEqual(email2);
+    expect(user.firstName).toEqual("Maria");
+    expect(user.textarea_field).toEqual(null);
+    expect(user.boolean_field).toEqual(false);
+    expect(user.email_field).toEqual(null);
+    expect(user.integer_field).toEqual(null);
+    expect(user.float_field).toEqual(null);
+    expect(user.datetime_field).toEqual(null);
+    expect(user.score_field).toEqual(null);
+    expect(user.percent_field).toEqual(null);
+  });
+
+  test("can handle percent error", async () => {
+    const { success, errors } = await exportBatch({
+      appOptions,
+      exports: [
+        {
+          profileGuid: guid2,
+          oldProfileProperties: { email: email2, firstName: "Maria" },
+          newProfileProperties: {
+            email: email2,
+            firstName: "Maria",
+            percent_field: "100%", // should be integer
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    let user;
+    expect(success).toBe(false);
+    expect(errors).not.toBeNull();
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid2);
+    expect(error.message).toContain("percent");
+
+    user = await getUser(userId2);
+    expect(user.email).toEqual(email2);
+    expect(user.firstName).toEqual("Maria");
+    expect(user.textarea_field).toEqual(null);
+    expect(user.boolean_field).toEqual(false);
+    expect(user.email_field).toEqual(null);
+    expect(user.integer_field).toEqual(null);
+    expect(user.float_field).toEqual(null);
+    expect(user.datetime_field).toEqual(null);
+    expect(user.score_field).toEqual(null);
+    expect(user.percent_field).toEqual(null);
+  });
+
+  test("can handle some of them working, but not others", async () => {
+    userId3 = await findId(email3);
+    expect(userId3).toBe(null);
+
+    const { success, errors } = await exportBatch({
+      appOptions,
+      exports: [
+        {
+          profileGuid: guid1,
+          oldProfileProperties: {
+            email: email1,
+            firstName: "Brian",
+            lastName: "Test",
+          },
+          newProfileProperties: {
+            email: email1,
+            firstName: "Sam",
+            lastName: "Test",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+        {
+          profileGuid: guid2,
+          oldProfileProperties: { email: email2, firstName: "Maria" },
+          newProfileProperties: {
+            email: email2,
+            firstName: "William",
+            email_field: "bademail",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+        {
+          profileGuid: guid3,
+          oldProfileProperties: {},
+          newProfileProperties: {
+            email: email3,
+            firstName: "Liz",
+            email_field: "valid@grouparoo.com",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    let user;
+    expect(success).toBe(false);
+    expect(errors).not.toBeNull();
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid2);
+    expect(error.message).toContain("email");
+
+    user = await getUser(userId1);
+    expect(user.email).toEqual(email1);
+    expect(user.firstName).toEqual("Sam"); // updated
+    expect(user.lastName).toEqual("Test");
+    expect(user.email_field).toEqual(null);
+
+    user = await getUser(userId2);
+    expect(user.email).toEqual(email2);
+    expect(user.firstName).toEqual("Maria"); // not updated
+    expect(user.email_field).toEqual(null);
+
+    userId3 = await findId(email3);
+    expect(userId3).toBeTruthy();
+    user = await getUser(userId3);
+    expect(user.email).toEqual(email3);
+    expect(user.firstName).toEqual("Liz"); // created
+    expect(user.email_field).toEqual("valid@grouparoo.com");
+  });
 });
