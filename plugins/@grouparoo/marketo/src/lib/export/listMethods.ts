@@ -46,6 +46,7 @@ async function createList(client, listName: string): Promise<number> {
 async function getRootFolderId(client): Promise<number> {
   // for when they get created, they can move the lists anywhere after that
   // TODO: we could consider making a subfolder called "Grouparoo"
+  // but we'd have to create that and that's more work. Let's see how it goes.
   const folderName = "Group Lists";
 
   const cacheKey = `grouparoo:marketo:folder-${folderName}`;

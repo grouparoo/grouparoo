@@ -232,8 +232,7 @@ async function updateUsers(client, users: MarketoExport[], options) {
     throw new Error("expected results and input lengths to be the same");
   }
   for (let i = 0; i < results.length; i++) {
-    // TODO: these might not be in the same order, but use the id (or email) to map
-    // probably also have to check the "status" and the "reason" (to make an error)
+    // I'm assuming these are in the same order. THat seems like the only option.
     const user = users[i];
     const result = results[i];
 
