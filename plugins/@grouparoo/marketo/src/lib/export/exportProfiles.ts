@@ -71,7 +71,6 @@ export async function exportBatch({ appOptions, exports }) {
       if (typeof error === "string") {
         error = new Error(error);
       }
-      console.log("error found", error);
       error.profileGuid = exportedProfile.profileGuid;
       errors.push(error);
     }
@@ -226,7 +225,6 @@ async function updateUsers(client, users: MarketoExport[], options) {
   if (!response.success) {
     throw new Error(`Marketo createOrUpdate error`);
   }
-  console.log("createOrUpdate response", response);
 
   // process response and update
   const results = response.result;
@@ -241,7 +239,6 @@ async function updateUsers(client, users: MarketoExport[], options) {
 
     try {
       if (!result.id) {
-        console.log("result does not have id", result);
         throw new Error(
           `Marketo profile error: ${user.profileGuid} ${JSON.stringify(result)}`
         );
@@ -314,7 +311,6 @@ async function deleteLeads(client, exports: MarketoExport[]) {
       marketoIds.push({ id });
     } else {
       // they aren't there anyway. let it go.
-      console.log("Marketo user not found to delete", exportedProfile);
     }
   }
 
@@ -349,7 +345,7 @@ async function setMarketoIds(client, emailMap: MarketoEmailMap) {
       found.marketoId = result.id;
       found.result = result;
     } else {
-      console.log("Marketo result found but didn't have email", result);
+      // Marketo result found but didn't have email. not sure what that means
     }
   }
 }

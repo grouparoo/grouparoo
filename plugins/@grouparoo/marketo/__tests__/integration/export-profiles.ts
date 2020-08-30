@@ -46,7 +46,6 @@ async function findId(email) {
   if (results.length === 0) {
     return null;
   } else if (results.length > 1) {
-    console.log(`more than one email result! ${email}`, results);
     throw `more than one email result! ${email}`;
   }
   return results[0].id;
@@ -507,7 +506,6 @@ describe("marketo/exportProfiles", () => {
     expect(userId2).toBeTruthy();
 
     user = await getUser(userId2);
-    console.log("user1", user);
     expect(user.email).toEqual(email2);
     expect(user.firstName).toEqual("Evan");
     expect(user.textarea_field).toEqual("text is here");
@@ -552,7 +550,6 @@ describe("marketo/exportProfiles", () => {
     expect(errors).toBeNull();
 
     user = await getUser(userId2);
-    console.log("user2", user);
     expect(user.email).toEqual(email2);
     expect(user.firstName).toEqual("Maria");
     expect(user.textarea_field).toEqual(null);
