@@ -50,7 +50,7 @@ async function getRootFolderId(client): Promise<number> {
 
   const cacheKey = `grouparoo:marketo:folder-${folderName}`;
   const cacheDuration = 1000 * 60 * 120; // 120 minutes
-  const lockKey = `grouparoo:marketo:folder-${folderName}-lock`;
+  const lockKey = null; // don't need to lock to just find something that's always there
   const folderId = await cache(
     { cacheKey, lockKey, cacheDuration },
     async () => {
