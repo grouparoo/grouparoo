@@ -117,14 +117,12 @@ export default function Page(props) {
                   </Link>
                 </td>
                 <td>
-                  {destination.trackAllGroups ? (
-                    "All Groups"
-                  ) : destination.destinationGroups[0]?.name ? (
+                  {destination.destinationGroup?.guid ? (
                     <Link
                       href="/group/[guid]/edit"
-                      as={`/group/${destination.destinationGroups[0].guid}/edit`}
+                      as={`/group/${destination.destinationGroup.guid}/edit`}
                     >
-                      <a>{destination.destinationGroups[0].name}</a>
+                      <a>{destination.destinationGroup.name}</a>
                     </Link>
                   ) : (
                     "None"

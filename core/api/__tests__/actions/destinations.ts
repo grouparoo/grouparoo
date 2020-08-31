@@ -292,8 +292,7 @@ describe("actions/destinations", () => {
           "destination:view",
           connection
         );
-        expect(destination.destinationGroups.length).toBe(1);
-        expect(destination.destinationGroups[0].guid).toBe(group.guid);
+        expect(destination.destinationGroup.guid).toBe(group.guid);
       });
 
       test("an administrator can set the destination group memberships", async () => {
@@ -390,12 +389,12 @@ describe("actions/destinations", () => {
           "destination:view",
           connection
         );
-        expect(destination.destinationGroups.length).toBe(1);
+        expect(destination.destinationGroup.guid).toBe(group.guid);
 
         connection.params = {
           csrfToken,
           guid,
-          groupGuid: destination.destinationGroups[0].guid,
+          groupGuid: destination.destinationGroup.guid,
         };
         const { error } = await specHelper.runAction(
           "destination:unTrackGroup",
@@ -428,7 +427,7 @@ describe("actions/destinations", () => {
         expect(foundTasks.length).toBe(1);
         expect(foundTasks[0].args[0]).toEqual({
           destinationGuid: guid,
-          groupGuid: destination.destinationGroups[0].guid,
+          groupGuid: destination.destinationGroup.guid,
           force: true,
         });
 

@@ -7,11 +7,9 @@ import {
   BelongsTo,
   HasMany,
   Length,
-  BelongsToMany,
   ForeignKey,
   BeforeCreate,
   BeforeSave,
-  AfterSave,
   AfterDestroy,
   DataType,
   DefaultScope,
@@ -27,7 +25,6 @@ import { Import } from "./Import";
 import { Export } from "./Export";
 import { ExportRun } from "./ExportRun";
 import { Run } from "./Run";
-import { DestinationGroup } from "./DestinationGroup";
 import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import { plugin } from "../modules/plugin";
 import { Op } from "sequelize";
@@ -91,21 +88,19 @@ export class Destination extends LoggedModel<Destination> {
   @Column(DataType.ENUM("draft", "ready"))
   state: string;
 
-  @Default(false)
+  @AllowNull(true)
   @Column
-  trackAllGroups: boolean;
+  @ForeignKey(() => Group)
+  groupGuid: string;
 
   @BelongsTo(() => App)
   app: App;
 
-  @HasMany(() => DestinationGroup)
-  destinationGroups: DestinationGroup[];
-
   @HasMany(() => DestinationGroupMembership)
   destinationGroupMemberships: DestinationGroupMembership[];
 
-  @BelongsToMany(() => Group, () => DestinationGroup)
-  groups: Group[];
+  @BelongsTo(() => Group)
+  group: Group;
 
   @HasMany(() => Mapping)
   mappings: Mapping[];
@@ -116,15 +111,11 @@ export class Destination extends LoggedModel<Destination> {
   @HasMany(() => Export)
   exports: Export[];
 
-  async apiData(includeApp = true, includeGroups = true) {
+  async apiData(includeApp = true, includeGroup = true) {
     let app: App;
-    let groups: Group[];
-    if (includeApp) {
-      app = await this.$get("app");
-    }
-    if (includeGroups) {
-      groups = await this.$get("groups");
-    }
+    let group: Group;
+    if (includeApp) app = await this.$get("app");
+    if (includeGroup) group = await this.$get("group");
 
     const mapping = await this.getMapping();
     const options = await this.getOptions();
@@ -139,13 +130,10 @@ export class Destination extends LoggedModel<Destination> {
       type: this.type,
       state: this.state,
       app: app ? await app.apiData() : null,
-      trackAllGroups: this.trackAllGroups,
       mapping,
       options,
       connection: pluginConnection,
-      destinationGroups: groups
-        ? await Promise.all(groups.map((grp) => grp.apiData()))
-        : null,
+      destinationGroup: group ? await group.apiData() : null,
       destinationGroupMemberships,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
@@ -248,8 +236,8 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.trackGroup(this, group);
   }
 
-  async unTrackGroups() {
-    return DestinationOps.unTrackGroups(this);
+  async unTrackGroup() {
+    return DestinationOps.unTrackGroup(this);
   }
 
   async validateMappings(mappings: { [key: string]: string }) {
@@ -391,14 +379,7 @@ export class Destination extends LoggedModel<Destination> {
     const profileGroupGuids = (
       await profile.$get("groups", { attributes: ["guid"] })
     ).map((group) => group.guid);
-    const destinationGroupGuids = (
-      await this.$get("groups", { attributes: ["guid"] })
-    ).map((group) => group.guid);
-    const intersectingGroupGuids = profileGroupGuids.filter(
-      (value) => -1 !== destinationGroupGuids.indexOf(value)
-    );
-
-    if (intersectingGroupGuids.length === 0) {
+    if (!profileGroupGuids.includes(this.groupGuid)) {
       throw new Error(
         `profile ${profile.guid} will not be exported by this destination`
       );
@@ -504,40 +485,15 @@ export class Destination extends LoggedModel<Destination> {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
-  @AfterSave
-  static async buildDestinationGroupsWhenTrackingAll(instance: Destination) {
-    if (instance.trackAllGroups === true) {
-      const groups = await Group.findAll();
-      for (const i in groups) {
-        await DestinationGroup.findOrCreate({
-          where: { groupGuid: groups[i].guid, destinationGuid: instance.guid },
-        });
-      }
-    }
-
-    if (!instance.changed()) {
-      return;
-    }
-
-    const changes = instance.changed() as Array<string>;
-    if (
-      instance.trackAllGroups === false &&
-      changes.includes("trackAllGroups")
-    ) {
-      const destinationGroups = await instance.$get("destinationGroups");
-      for (const i in destinationGroups) {
-        await destinationGroups[i].destroy();
-      }
-    }
-  }
-
   @BeforeDestroy
-  static async cannotDeleteDestinationWithTrackkedGroups(
-    instance: Destination
-  ) {
-    const destinationGroupsCount = await instance.$count("destinationGroups");
-    if (instance.trackAllGroups === true || destinationGroupsCount > 0) {
-      throw new Error("cannot delete a destination that is tracking a group");
+  static async cannotDeleteDestinationWithTrackedGroup(instance: Destination) {
+    if (instance.groupGuid) {
+      const group = await Group.findOne({
+        where: { guid: instance.groupGuid },
+      });
+      if (group) {
+        throw new Error("cannot delete a destination that is tracking a group");
+      }
     }
   }
 
@@ -593,13 +549,6 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @AfterDestroy
-  static async destroyDestinationGroups(instance: Destination) {
-    // need to go 1-by-1 for callbacks
-    const destinationGroups = await instance.$get("destinationGroups");
-    await Promise.all(destinationGroups.map((dsg) => dsg.destroy()));
-  }
-
-  @AfterDestroy
   static async destroyExports(instance: Destination) {
     await task.enqueue("destination:destroyExports", {
       destinationGuid: instance.guid,
@@ -614,20 +563,18 @@ export class Destination extends LoggedModel<Destination> {
     newGroups: Group[] = []
   ) {
     const combinedGroups = oldGroups.concat(newGroups);
+    const combinedGroupGuids = combinedGroups.map((g) => g.guid);
     const relevantDestinations: Array<Destination> = [];
 
     const destinations = await Destination.findAll({
-      include: [Group],
       where: { state: "ready" },
     });
+
     for (const i in destinations) {
       const destination = destinations[i];
-      const destinationGroupGuids = destination.groups.map((dsg) => dsg.guid);
-      for (const j in combinedGroups) {
-        if (destinationGroupGuids.includes(combinedGroups[j].guid)) {
-          relevantDestinations.push(destination);
-          break;
-        }
+      if (combinedGroupGuids.includes(destination.groupGuid)) {
+        relevantDestinations.push(destination);
+        break;
       }
     }
 

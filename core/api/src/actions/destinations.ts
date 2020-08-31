@@ -254,7 +254,7 @@ export class DestinationUnTrackGroup extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "destination:unTrackGroup";
-    this.description = "add a group to a destination";
+    this.description = "remove a group from a destination";
     this.outputExample = {};
     this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
@@ -264,7 +264,7 @@ export class DestinationUnTrackGroup extends AuthenticatedAction {
 
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
-    await destination.unTrackGroups();
+    await destination.unTrackGroup();
     response.destination = await destination.apiData();
   }
 }

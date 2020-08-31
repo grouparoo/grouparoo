@@ -5,7 +5,6 @@ import Mustache from "mustache";
 import { App } from "../models/App";
 import { ApiKey } from "../models/ApiKey";
 import { Destination } from "../models/Destination";
-import { DestinationGroup } from "../models/DestinationGroup";
 import { DestinationGroupMembership } from "../models/DestinationGroupMembership";
 import { File } from "../models/File";
 import { Export } from "../models/Export";
@@ -36,7 +35,6 @@ const models = [
   ApiKey,
   Source,
   Schedule,
-  DestinationGroup,
   Destination,
   DestinationGroupMembership,
   Option,

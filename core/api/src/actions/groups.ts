@@ -352,7 +352,7 @@ export class GroupDestroy extends AuthenticatedAction {
     response.success = false;
     const group = await Group.findByGuid(params.guid);
 
-    await Group.checkDestinationGroups(group);
+    await Group.checkDestinationTracking(group);
 
     await group.update({ state: "deleted" });
     await task.enqueue("group:destroy", { groupGuid: group.guid });

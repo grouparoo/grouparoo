@@ -6,7 +6,6 @@ export * from "./classes/fileTransport";
 export { App } from "./models/App";
 export { ApiKey } from "./models/ApiKey";
 export { Destination } from "./models/Destination";
-export { DestinationGroup } from "./models/DestinationGroup";
 export { DestinationGroupMembership } from "./models/DestinationGroupMembership";
 export { Event } from "./models/Event";
 export { EventData } from "./models/EventData";

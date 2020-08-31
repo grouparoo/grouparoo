@@ -485,7 +485,7 @@ describe("models/destination", () => {
       });
 
       afterEach(async () => {
-        await destination.unTrackGroups();
+        await destination.unTrackGroup();
       });
 
       test("profile properties will be converted to the type requested by the plugin", async () => {
