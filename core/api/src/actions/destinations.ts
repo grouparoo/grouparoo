@@ -106,7 +106,6 @@ export class DestinationCreate extends AuthenticatedAction {
       type: { required: true },
       state: { required: false },
       appGuid: { required: true },
-      trackAllGroups: { required: false },
       options: { required: false },
       mapping: { required: false, default: {} },
       destinationGroupMemberships: { required: false },
@@ -118,7 +117,6 @@ export class DestinationCreate extends AuthenticatedAction {
       name: params.name,
       type: params.type,
       appGuid: params.appGuid,
-      trackAllGroups: params.trackAllGroups,
     });
     if (params.options) await destination.setOptions(params.options);
     if (params.mapping) await destination.setMapping(params.mapping);
@@ -143,7 +141,6 @@ export class DestinationEdit extends AuthenticatedAction {
       guid: { required: true },
       name: { required: false },
       state: { required: false },
-      trackAllGroups: { required: false },
       options: { required: false },
       mapping: { required: false },
       destinationGroupMemberships: { required: false },
