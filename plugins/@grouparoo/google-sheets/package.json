@@ -27,7 +27,7 @@
     "lint": "prettier --check src __tests__"
   },
   "dependencies": {
-    "google-spreadsheet": "3.0.11"
+    "google-spreadsheet": "3.0.13"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
