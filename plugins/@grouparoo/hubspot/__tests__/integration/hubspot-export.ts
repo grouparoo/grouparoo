@@ -104,7 +104,6 @@ describe("integration/runs/hubspot", () => {
       name: "test destination",
       type: "hubspot-export",
       appGuid: app.guid,
-      trackAllGroups: true,
       mapping: {
         email: "email",
         firstname: "firstName",
@@ -189,6 +188,15 @@ describe("integration/runs/hubspot", () => {
       { key: "email", match: "%@%", operation: { op: "iLike" } },
     ]);
     await group.update({ state: "ready" });
+  });
+
+  test("track the test group with the destination", async () => {
+    session.params = {
+      csrfToken,
+      guid: destination.guid,
+      groupGuid: group.guid,
+    };
+    await specHelper.runAction("destination:trackGroup", session);
   });
 
   test(`the destination group membership can be set`, async () => {
