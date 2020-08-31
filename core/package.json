@@ -83,7 +83,7 @@
     "sequelize": "5.22.3",
     "sequelize-typescript": "1.1.0",
     "stacktrace-js": "^2.0.2",
-    "swagger-ui": "3.32.4",
+    "swagger-ui": "3.32.5",
     "ts-node-dev": "1.0.0-pre.56",
     "type-fest": "0.16.0",
     "typescript": "3.9.7",
