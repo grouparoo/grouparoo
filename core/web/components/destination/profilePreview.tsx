@@ -35,7 +35,7 @@ export default function ProfilePreview(props) {
   }, [
     destination.guid,
     trackedGroupGuid,
-    JSON.stringify(destination.destinationGroups),
+    JSON.stringify(destination.destinationGroup),
     JSON.stringify(destination.mapping),
     JSON.stringify(destination.destinationGroupMemberships),
   ]);
@@ -46,10 +46,7 @@ export default function ProfilePreview(props) {
   ) {
     setSleeping(true);
 
-    if (
-      !destination.destinationGroups[0]?.guid &&
-      trackedGroupGuid === "_none"
-    ) {
+    if (!destination.destinationGroup?.guid && trackedGroupGuid === "_none") {
       return;
     }
 
@@ -62,10 +59,7 @@ export default function ProfilePreview(props) {
           (destinationGroupMembershipsObject[dgm.groupGuid] = dgm.remoteKey)
       );
 
-      const groupGuid =
-        destination.trackAllGroups || trackedGroupGuid === "_all"
-          ? groups[0].guid
-          : destination.destinationGroups[0]?.guid || trackedGroupGuid;
+      const groupGuid = destination.destinationGroup?.guid || trackedGroupGuid;
 
       const response = await execApi(
         "get",

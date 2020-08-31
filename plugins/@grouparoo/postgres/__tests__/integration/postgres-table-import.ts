@@ -185,7 +185,6 @@ describe("integration/runs/postgres", () => {
       name: "test destination",
       type: "postgres-export",
       appGuid: app.guid,
-      trackAllGroups: true,
       options: {
         table: "output_users",
         primaryKey: "id",
@@ -311,6 +310,15 @@ describe("integration/runs/postgres", () => {
         operation: { op: "iLike" },
       },
     ]);
+  });
+
+  test("track the test group with the destination", async () => {
+    session.params = {
+      csrfToken,
+      guid: destination.guid,
+      groupGuid: group.guid,
+    };
+    await specHelper.runAction("destination:trackGroup", session);
   });
 
   test("we can read the postgres mapping options", async () => {

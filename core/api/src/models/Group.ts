@@ -26,7 +26,6 @@ import { Profile } from "./Profile";
 import { Setting } from "./Setting";
 import { ProfileProperty } from "./ProfileProperty";
 import { Destination } from "./Destination";
-import { DestinationGroup } from "./DestinationGroup";
 import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import {
   ProfilePropertyRule,
@@ -130,10 +129,7 @@ export class Group extends LoggedModel<Group> {
   @HasMany(() => GroupRule)
   groupRules: GroupRule[];
 
-  @HasMany(() => DestinationGroup)
-  destinationGroups: DestinationGroup[];
-
-  @BelongsToMany(() => Destination, () => DestinationGroup)
+  @HasMany(() => Destination)
   destinations: Destination[];
 
   @BelongsToMany(() => Profile, () => GroupMember)
@@ -654,24 +650,6 @@ export class Group extends LoggedModel<Group> {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
-  @AfterSave
-  static async linkToDestinationsTrackingAllGroups(instance: Group) {
-    if (["draft", "deleted"].includes(instance.state)) return;
-
-    const destinations = await Destination.findAll({
-      where: { trackAllGroups: true },
-    });
-
-    for (const i in destinations) {
-      await DestinationGroup.findOrCreate({
-        where: {
-          groupGuid: instance.guid,
-          destinationGuid: destinations[i].guid,
-        },
-      });
-    }
-  }
-
   @BeforeDestroy
   static async checkGroupMembers(instance: Group) {
     const count = await instance.$count("groupMembers");
@@ -681,12 +659,8 @@ export class Group extends LoggedModel<Group> {
   }
 
   @BeforeDestroy
-  static async checkDestinationGroups(instance: Group) {
-    const count = await DestinationGroup.count({
-      where: { groupGuid: instance.guid },
-      include: [{ model: Destination, where: { trackAllGroups: false } }],
-    });
-
+  static async checkDestinationTracking(instance: Group) {
+    const count = await instance.$count("destinations");
     if (count > 0) {
       throw new Error(
         `this group still in use by ${count} destinations, cannot delete`
@@ -707,11 +681,13 @@ export class Group extends LoggedModel<Group> {
   }
 
   @AfterDestroy
-  static async destroyDestinationGroup(instance: Group) {
-    // need to go 1-by-1 for callbacks
-    const destinationGroups = await instance.$get("destinationGroups");
-    for (const i in destinationGroups) {
-      await destinationGroups[i].destroy();
+  static async destroyDestinationGroupTracking(instance: Group) {
+    const destinations = await instance.$get("destinations", {
+      scope: null,
+    });
+
+    for (const i in destinations) {
+      await destinations[i].update({ groupGuid: null });
     }
   }
 

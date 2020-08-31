@@ -60,20 +60,16 @@ export default function Page(props) {
     await execApi("put", `/destination/${guid}`, {
       mapping: filteredMapping,
       destinationGroupMemberships: destinationGroupMembershipsObject,
-      trackAllGroups: trackedGroupGuid === "_all" ? true : false,
     });
 
-    // update group being tracked after the edit (as trackAllGroups may have changed)
+    // update group being tracked after the edit
     if (trackedGroupGuid.match(/^grp_/)) {
       await execApi("post", `/destination/${guid}/track`, {
         groupGuid: trackedGroupGuid,
       });
-    } else if (trackedGroupGuid === "_none" && !destination.trackAllGroups) {
+    } else if (trackedGroupGuid === "_none") {
       await execApi("post", `/destination/${guid}/untrack`);
     }
-
-    // trigger a full export
-    await execApi("post", `/destination/${guid}/export`);
 
     successHandler.set({
       message: "Destination Updated and Profiles Exporting...",
@@ -286,7 +282,6 @@ export default function Page(props) {
                   onChange={(e) => setTrackedGroupGuid(e.target["value"])}
                 >
                   <option value={"_none"}>No Group</option>
-                  <option value={"_all"}>All Groups</option>
                   <option disabled>---</option>
                   {groups
                     .sort((a, b) => {
@@ -808,9 +803,7 @@ Page.getInitialProps = async (ctx) => {
     mappingOptions,
     destinationTypeConversions,
     exportArrayProperties,
-    trackedGroupGuid: destination.trackAllGroups
-      ? "_all"
-      : destination.destinationGroups[0]?.guid,
+    trackedGroupGuid: destination.destinationGroup?.guid,
     groups: groups
       .filter((group) => group.state !== "draft")
       .filter((group) => group.state !== "deleted"),

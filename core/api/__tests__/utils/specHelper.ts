@@ -20,7 +20,6 @@ import { ApiKey } from "../../src/models/ApiKey";
 import { Source } from "../../src/models/Source";
 import { Schedule } from "../../src/models/Schedule";
 import { Destination } from "../../src/models/Destination";
-import { DestinationGroup } from "../../src/models/DestinationGroup";
 import { Option } from "../../src/models/Option";
 import { Import } from "../../src/models/Import";
 import { File } from "../../src/models/File";
@@ -58,7 +57,6 @@ const models = [
   Source,
   Schedule,
   Destination,
-  DestinationGroup,
   Option,
   Import,
   File,

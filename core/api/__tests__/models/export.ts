@@ -301,7 +301,7 @@ describe("models/export", () => {
 
     // cleanup
     await profile.destroy();
-    await destination.unTrackGroups();
+    await destination.unTrackGroup();
     await group.destroy();
     await destination.destroy();
   });

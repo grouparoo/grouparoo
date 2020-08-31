@@ -158,7 +158,7 @@ describe("models/group", () => {
           /this group still in use by 1 destinations, cannot delete/
         );
 
-        await destination.unTrackGroups();
+        await destination.unTrackGroup();
         await group.destroy(); // does not throw
       });
 
@@ -183,73 +183,6 @@ describe("models/group", () => {
         await destination.setDestinationGroupMemberships({});
 
         await group.destroy(); // does not throw
-      });
-
-      test("adding a manual group when a destination is tracking all groups will create not destinationGroup until the group is ready", async () => {
-        const destination = await helper.factories.destination();
-        await destination.update({ trackAllGroups: true });
-
-        const group = await Group.create({
-          name: "tracked group",
-          type: "manual",
-          state: "draft",
-        });
-
-        let destinationGroupCount = await group.$count("destinationGroups");
-        expect(destinationGroupCount).toBe(0);
-
-        await group.update({ state: "ready" });
-
-        destinationGroupCount = await group.$count("destinationGroups");
-        expect(destinationGroupCount).toBe(1);
-
-        await group.destroy();
-        await destination.update({ trackAllGroups: false });
-        await destination.destroy();
-      });
-
-      test("adding a calculated group when a destination is tracking all groups will create not destinationGroup until the group is ready", async () => {
-        const destination = await helper.factories.destination();
-        await destination.update({ trackAllGroups: true });
-
-        const group = await Group.create({
-          name: "tracked group",
-          type: "calculated",
-          state: "draft",
-        });
-
-        let destinationGroupCount = await group.$count("destinationGroups");
-        expect(destinationGroupCount).toBe(0);
-
-        await group.update({ state: "ready" });
-
-        destinationGroupCount = await group.$count("destinationGroups");
-        expect(destinationGroupCount).toBe(1);
-
-        await group.destroy();
-        await destination.update({ trackAllGroups: false });
-        await destination.destroy();
-      });
-
-      test("a group can be deleted if a destination tracking all groups is tracking it, and the destinationGroup will be removed", async () => {
-        const group = await Group.create({
-          name: "tracked group",
-          type: "manual",
-          state: "ready",
-        });
-
-        const destination = await helper.factories.destination();
-        await destination.update({ trackAllGroups: true });
-
-        let destinationGroupCount = await group.$count("destinationGroups");
-        expect(destinationGroupCount).toBe(1);
-
-        await group.destroy();
-        destinationGroupCount = await group.$count("destinationGroups");
-        expect(destinationGroupCount).toBe(0);
-
-        await destination.update({ trackAllGroups: false });
-        await destination.destroy();
       });
     });
   });

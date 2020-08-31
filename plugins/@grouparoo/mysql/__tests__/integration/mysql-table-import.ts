@@ -195,7 +195,6 @@ describe("integration/runs/mysql", () => {
       name: "test destination",
       type: "mysql-export",
       appGuid: app.guid,
-      trackAllGroups: true,
       options: {
         table: "output_users",
         primaryKey: "id",
@@ -211,6 +210,7 @@ describe("integration/runs/mysql", () => {
     expect(buildDestinationResponse.error).toBeUndefined();
     expect(buildDestinationResponse.destination.guid).toBeTruthy();
     expect(buildDestinationResponse.destination.name).toBe("test destination");
+
     destination = buildDestinationResponse.destination;
   });
 
@@ -321,6 +321,15 @@ describe("integration/runs/mysql", () => {
         operation: { op: "iLike" },
       },
     ]);
+  });
+
+  test("track the test group with the destination", async () => {
+    session.params = {
+      csrfToken,
+      guid: destination.guid,
+      groupGuid: group.guid,
+    };
+    await specHelper.runAction("destination:trackGroup", session);
   });
 
   test("we can read the mysql mapping options", async () => {

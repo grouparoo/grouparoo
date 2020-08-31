@@ -107,7 +107,6 @@ describe("integration/runs/mailchimp", () => {
       name: "test destination",
       type: "mailchimp-export",
       appGuid: app.guid,
-      trackAllGroups: true,
       options: {
         listId: MAILCHIMP_LIST_ID,
       },
@@ -209,6 +208,15 @@ describe("integration/runs/mailchimp", () => {
       { key: "email", match: "%@%", operation: { op: "iLike" } },
     ]);
     await group.update({ state: "ready" });
+  });
+
+  test("track the test group with the destination", async () => {
+    session.params = {
+      csrfToken,
+      guid: destination.guid,
+      groupGuid: group.guid,
+    };
+    await specHelper.runAction("destination:trackGroup", session);
   });
 
   test(`the destination group membership can be set`, async () => {

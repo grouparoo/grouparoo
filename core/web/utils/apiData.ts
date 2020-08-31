@@ -4,7 +4,6 @@ import {
   ApiKey,
   App,
   Destination,
-  DestinationGroup,
   DestinationGroupMembership,
   Export,
   File,
@@ -29,9 +28,6 @@ export type ApiKeyAPIData = Partial<AsyncReturnType<ApiKey["apiData"]>>;
 export type AppAPIData = Partial<AsyncReturnType<App["apiData"]>>;
 export type DestinationAPIData = Partial<
   AsyncReturnType<Destination["apiData"]>
->;
-export type DestinationGroupAPIData = Partial<
-  AsyncReturnType<DestinationGroup["apiData"]>
 >;
 export type DestinationGroupMembershipAPIData = Partial<
   AsyncReturnType<DestinationGroupMembership["apiData"]>

@@ -132,7 +132,7 @@ describe("models/destination", () => {
     });
 
     afterEach(async () => {
-      await destination.unTrackGroups();
+      await destination.unTrackGroup();
       await destination.destroy();
     });
 

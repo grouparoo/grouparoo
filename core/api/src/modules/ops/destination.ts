@@ -2,7 +2,6 @@ import {
   Destination,
   SimpleDestinationOptions,
 } from "../../models/Destination";
-import { DestinationGroup } from "../../models/DestinationGroup";
 import { App } from "../../models/App";
 import { Profile } from "../../models/Profile";
 import { Run } from "../../models/Run";
@@ -41,55 +40,36 @@ export namespace DestinationOps {
     destination: Destination,
     force = false
   ) {
-    const destinationGroups = await destination.$get("destinationGroups");
-    for (const i in destinationGroups) {
-      const group: Group = await destinationGroups[i].$get("group");
-      await group.run(force, destination.guid);
-    }
+    const group = await destination.$get("group");
+    await group.run(force, destination.guid);
   }
 
   /**
    * Track a Group
    */
   export async function trackGroup(destination: Destination, group: Group) {
-    if (destination.trackAllGroups) {
-      throw new Error("destination is tracking all groups");
-    }
+    const oldGroupGuid = destination.groupGuid;
+    await destination.update({ groupGuid: group.guid });
 
-    const existingDestinationGroups = await destination.$get(
-      "destinationGroups"
-    );
-    if (
-      existingDestinationGroups.length === 1 &&
-      existingDestinationGroups[0].groupGuid === group.guid
-    ) {
-      // no change
-      return;
+    if (oldGroupGuid !== group.guid) {
+      if (oldGroupGuid) {
+        const oldGroup = await Group.findByGuid(oldGroupGuid);
+        await oldGroup.run(true, destination.guid);
+      }
+      await group.run(true, destination.guid);
     }
-
-    for (const i in existingDestinationGroups) {
-      await existingDestinationGroups[i].destroy();
-    }
-
-    return DestinationGroup.create({
-      groupGuid: group.guid,
-      destinationGuid: destination.guid,
-    });
   }
 
   /**
    * Un-track a Group
    */
-  export async function unTrackGroups(destination: Destination) {
-    if (destination.trackAllGroups) {
-      throw new Error("destination is tracking all groups");
-    }
+  export async function unTrackGroup(destination: Destination) {
+    const oldGroupGuid = destination.groupGuid;
+    await destination.update({ groupGuid: null });
 
-    const existingDestinationGroups = await destination.$get(
-      "destinationGroups"
-    );
-    for (const i in existingDestinationGroups) {
-      await existingDestinationGroups[i].destroy();
+    if (oldGroupGuid) {
+      const oldGroup = await Group.findByGuid(oldGroupGuid);
+      await oldGroup.run(true, destination.guid);
     }
   }
 
@@ -317,15 +297,8 @@ export namespace DestinationOps {
       );
 
     const newGroupGuids = newGroups.map((g) => g.guid);
-    const destinationGroupGuids = (await destination.$get("groups")).map(
-      (g) => g.guid
-    );
     let toDelete = true;
-    newGroupGuids.forEach((newGroupGuid) => {
-      if (destinationGroupGuids.includes(newGroupGuid)) {
-        toDelete = false;
-      }
-    });
+    if (newGroupGuids.includes(destination.groupGuid)) toDelete = false;
 
     const mostRecentExport = await Export.findOne({
       where: {
