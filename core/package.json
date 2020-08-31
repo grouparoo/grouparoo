@@ -97,7 +97,7 @@
     "@types/faker": "4.1.12",
     "@types/jest": "26.0.10",
     "@types/node": "14.6.0",
-    "@types/react": "16.9.47",
+    "@types/react": "16.9.49",
     "@types/react-dom": "16.9.8",
     "@types/validator": "13.1.0",
     "csv-parse": "4.12.0",
