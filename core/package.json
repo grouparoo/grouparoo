@@ -55,7 +55,7 @@
     "csv-stringify": "5.5.1",
     "date-fns": "2.16.0",
     "dotenv": "8.2.0",
-    "faker": "5.0.0",
+    "faker": "5.1.0",
     "fs-extra": "9.0.1",
     "ioredis": "4.17.3",
     "isomorphic-fetch": "2.2.1",
