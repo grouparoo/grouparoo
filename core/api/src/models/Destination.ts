@@ -34,6 +34,7 @@ import { StateMachine } from "./../modules/stateMachine";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { DestinationOps } from "./../modules/ops/destination";
 import { ExportOps } from "../modules/ops/export";
+import { destinationTypeConversions } from "../modules/destinationTypeConversions";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -42,18 +43,6 @@ export interface SimpleDestinationGroupMembership {
   groupName: string;
 }
 export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
-
-// From Grouparoo Type to Destination Type
-export const destinationTypeConversions = {
-  float: ["any", "float", "integer", "string", "number"],
-  integer: ["any", "float", "integer", "string", "number"],
-  string: ["any", "string", "boolean"],
-  url: ["any", "string", "url"],
-  email: ["any", "string", "email"],
-  phoneNumber: ["any", "string", "phoneNumber"],
-  boolean: ["any", "string", "boolean", "number"],
-  date: ["any", "float", "integer", "string", "number", "date"],
-};
 
 const STATE_TRANSITIONS = [
   { from: "draft", to: "ready", checks: ["validateOptions"] },
@@ -277,12 +266,11 @@ export class Destination extends LoggedModel<Destination> {
       }
 
       const profilePropertyRule = cachedProfilePropertyRules[mappings[opt.key]];
-      if (
-        profilePropertyRule &&
-        !destinationTypeConversions[profilePropertyRule.type]?.includes(
-          opt.type
-        )
-      ) {
+      const validDestinationTypes = profilePropertyRule?.type
+        ? Object.keys(destinationTypeConversions[profilePropertyRule.type])
+        : [];
+
+      if (profilePropertyRule && !validDestinationTypes?.includes(opt.type)) {
         throw new Error(
           `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
         );
@@ -293,12 +281,11 @@ export class Destination extends LoggedModel<Destination> {
     for (const i in destinationMappingOptions.profilePropertyRules.known) {
       const opt = destinationMappingOptions.profilePropertyRules.known[i];
       const profilePropertyRule = cachedProfilePropertyRules[mappings[opt.key]];
-      if (
-        profilePropertyRule &&
-        !destinationTypeConversions[profilePropertyRule.type]?.includes(
-          opt.type
-        )
-      ) {
+      const validDestinationTypes = profilePropertyRule?.type
+        ? Object.keys(destinationTypeConversions[profilePropertyRule.type])
+        : [];
+
+      if (profilePropertyRule && !validDestinationTypes?.includes(opt.type)) {
         throw new Error(
           `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
         );
