@@ -79,12 +79,14 @@ export class Event extends LoggedModel<Event> {
 
     try {
       for (const key in data) {
-        const eventData = new EventData({
-          eventGuid: this.guid,
-          key,
-          value: data[key].toString(),
-        });
-        await eventData.save({ transaction });
+        await EventData.create(
+          {
+            eventGuid: this.guid,
+            key,
+            value: data[key].toString(),
+          },
+          { transaction }
+        );
       }
 
       await transaction.commit();
