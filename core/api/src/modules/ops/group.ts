@@ -211,39 +211,41 @@ export namespace GroupOps {
   ) {
     let groupMembersCount = 0;
     let profiles: ProfileMultipleAssociationShim[];
-
-    if (group.type === "manual") {
-      profiles = await group.$get("profiles", {
-        attributes: ["guid"],
-        limit,
-        offset,
-        order: [["createdAt", "asc"]],
-      });
-    } else {
-      const rules = await group.getRules();
-      if (Object.keys(rules).length === 0) {
-        return 0;
-      }
-
-      const { where, include } = await group._buildGroupMemberQueryParts(
-        rules,
-        group.matchType
-      );
-
-      profiles = await ProfileMultipleAssociationShim.findAll({
-        attributes: ["guid"],
-        where,
-        include,
-        limit,
-        offset,
-        order: [["createdAt", "asc"]],
-        subQuery: false,
-      });
-    }
-
     const transaction = await api.sequelize.transaction();
 
     try {
+      if (group.type === "manual") {
+        profiles = await group.$get("profiles", {
+          attributes: ["guid"],
+          limit,
+          offset,
+          order: [["createdAt", "asc"]],
+          transaction,
+        });
+      } else {
+        const rules = await group.getRules();
+        if (Object.keys(rules).length === 0) {
+          await transaction.commit();
+          return 0;
+        }
+
+        const { where, include } = await group._buildGroupMemberQueryParts(
+          rules,
+          group.matchType
+        );
+
+        profiles = await ProfileMultipleAssociationShim.findAll({
+          attributes: ["guid"],
+          where,
+          include,
+          limit,
+          offset,
+          order: [["createdAt", "asc"]],
+          subQuery: false,
+          transaction,
+        });
+      }
+
       for (const i in profiles) {
         const profile = profiles[i];
         const groupMember = await GroupMember.findOne({
@@ -251,6 +253,7 @@ export namespace GroupOps {
             profileGuid: profile.guid,
             groupGuid: group.guid,
           },
+          transaction,
         });
 
         if (!groupMember || force) {
@@ -300,20 +303,21 @@ export namespace GroupOps {
   ) {
     let groupMembersCount = 0;
 
-    // The offset and order can be ignored as we will keep running this query until the set of results becomes 0.
-    const groupMembersToRemove = await GroupMember.findAll({
-      attributes: ["guid", "profileGuid"],
-      where: {
-        groupGuid: group.guid,
-        updatedAt: { [Op.lt]: run.createdAt },
-        removedAt: null,
-      },
-      limit,
-    });
-
     const transaction = await api.sequelize.transaction();
 
     try {
+      // The offset and order can be ignored as we will keep running this query until the set of results becomes 0.
+      const groupMembersToRemove = await GroupMember.findAll({
+        attributes: ["guid", "profileGuid"],
+        where: {
+          groupGuid: group.guid,
+          updatedAt: { [Op.lt]: run.createdAt },
+          removedAt: null,
+        },
+        limit,
+        transaction,
+      });
+
       for (const i in groupMembersToRemove) {
         const member = groupMembersToRemove[i];
         member.removedAt = new Date();

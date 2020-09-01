@@ -30,21 +30,25 @@ export class RunInternalRun extends Task {
 
     if (run.state === "stopped") return;
 
-    await run.update({
-      groupMemberLimit: limit,
-      groupMemberOffset: offset,
-      groupMethod: "internalRun",
-    });
-
-    const profiles = await Profile.findAll({
-      order: [["createdAt", "asc"]],
-      limit,
-      offset,
-    });
-
     const transaction = await api.sequelize.transaction();
 
     try {
+      await run.update(
+        {
+          groupMemberLimit: limit,
+          groupMemberOffset: offset,
+          groupMethod: "internalRun",
+        },
+        { transaction }
+      );
+
+      const profiles = await Profile.findAll({
+        order: [["createdAt", "asc"]],
+        limit,
+        offset,
+        transaction,
+      });
+
       for (const i in profiles) {
         const profile = profiles[i];
 
@@ -64,23 +68,23 @@ export class RunInternalRun extends Task {
       }
 
       await transaction.commit();
+
+      await run.afterBatch();
+
+      if (profiles.length > 0) {
+        await task.enqueueIn(config.tasks.timeout + 1, this.name, {
+          runGuid: run.guid,
+          offset: offset + limit,
+          limit,
+        });
+      } else {
+        await task.enqueueIn(config.tasks.timeout + 1, "run:determineState", {
+          runGuid: run.guid,
+        });
+      }
     } catch (error) {
       await transaction.rollback();
       throw error;
-    }
-
-    await run.afterBatch();
-
-    if (profiles.length > 0) {
-      await task.enqueueIn(config.tasks.timeout + 1, this.name, {
-        runGuid: run.guid,
-        offset: offset + limit,
-        limit,
-      });
-    } else {
-      await task.enqueueIn(config.tasks.timeout + 1, "run:determineState", {
-        runGuid: run.guid,
-      });
     }
   }
 }

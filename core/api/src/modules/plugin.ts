@@ -161,6 +161,7 @@ export namespace plugin {
     });
 
     const transaction = await api.sequelize.transaction();
+
     try {
       const _import = await Import.create(
         {
