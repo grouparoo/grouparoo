@@ -161,20 +161,24 @@ export namespace plugin {
     });
 
     const transaction = await api.sequelize.transaction();
+    try {
+      const _import = await Import.create(
+        {
+          rawData: row,
+          data: mappedProfileProperties,
+          creatorType: "run",
+          creatorGuid: run.guid,
+        },
+        { transaction }
+      );
+      await run.increment(["importsCreated"], { transaction });
+      await transaction.commit();
 
-    const _import = await Import.create(
-      {
-        rawData: row,
-        data: mappedProfileProperties,
-        creatorType: "run",
-        creatorGuid: run.guid,
-      },
-      { transaction }
-    );
-    await run.increment(["importsCreated"], { transaction });
-    await transaction.commit();
-
-    return _import;
+      return _import;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
   }
 
   /**

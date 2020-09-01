@@ -194,26 +194,31 @@ export class Destination extends LoggedModel<Destination> {
 
     const transaction = await api.sequelize.transaction();
 
-    await DestinationGroupMembership.destroy({
-      where: {
-        destinationGuid: this.guid,
-      },
-      transaction,
-    });
-
-    for (const groupGuid in newDestinationGroupMemberships) {
-      await DestinationGroupMembership.create(
-        {
+    try {
+      await DestinationGroupMembership.destroy({
+        where: {
           destinationGuid: this.guid,
-          groupGuid,
-          remoteKey: newDestinationGroupMemberships[groupGuid],
         },
-        { transaction }
-      );
-    }
+        transaction,
+      });
 
-    await transaction.commit();
-    return this.getDestinationGroupMemberships();
+      for (const groupGuid in newDestinationGroupMemberships) {
+        await DestinationGroupMembership.create(
+          {
+            destinationGuid: this.guid,
+            groupGuid,
+            remoteKey: newDestinationGroupMemberships[groupGuid],
+          },
+          { transaction }
+        );
+      }
+
+      await transaction.commit();
+      return this.getDestinationGroupMemberships();
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
   }
 
   async validateOptions(options: SimpleDestinationOptions) {

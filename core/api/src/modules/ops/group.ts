@@ -6,6 +6,7 @@ import { ProfileMultipleAssociationShim } from "../../models/ProfileMultipleAsso
 import { Import } from "../../models/Import";
 import { Op } from "sequelize";
 import { api, task } from "actionhero";
+import { Sequelize } from "sequelize-typescript";
 
 export namespace GroupOps {
   /**
@@ -241,42 +242,49 @@ export namespace GroupOps {
       });
     }
 
-    for (const i in profiles) {
-      const profile = profiles[i];
-      const groupMember = await GroupMember.findOne({
-        where: {
-          profileGuid: profile.guid,
-          groupGuid: group.guid,
-        },
-      });
+    const transaction = await api.sequelize.transaction();
 
-      if (!groupMember || force) {
-        const transaction = await api.sequelize.transaction();
-        const _import = await group.buildProfileImport(
-          profile.guid,
-          "run",
-          run.guid,
-          destinationGuid
-        );
-        await run.increment(["importsCreated"], { transaction });
-        await _import.save({ transaction });
-        await transaction.commit();
+    try {
+      for (const i in profiles) {
+        const profile = profiles[i];
+        const groupMember = await GroupMember.findOne({
+          where: {
+            profileGuid: profile.guid,
+            groupGuid: group.guid,
+          },
+        });
+
+        if (!groupMember || force) {
+          const _import = await group.buildProfileImport(
+            profile.guid,
+            "run",
+            run.guid,
+            destinationGuid
+          );
+          await _import.save({ transaction });
+          await run.increment(["importsCreated"], { transaction });
+        }
+
+        if (groupMember) {
+          groupMember.removedAt = null;
+          groupMember.set("updatedAt", new Date());
+          groupMember.changed("updatedAt", true);
+          await groupMember.save({ transaction });
+        }
+
+        groupMembersCount++;
       }
 
-      if (groupMember) {
-        groupMember.removedAt = null;
-        groupMember.set("updatedAt", new Date());
-        groupMember.changed("updatedAt", true);
-        await groupMember.save();
-      }
+      group.calculatedAt = new Date();
+      await group.save({ transaction });
 
-      groupMembersCount++;
+      await transaction.commit();
+
+      return groupMembersCount;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
     }
-
-    group.calculatedAt = new Date();
-    await group.save();
-
-    return groupMembersCount;
   }
 
   /**
@@ -304,27 +312,35 @@ export namespace GroupOps {
       limit,
     });
 
-    for (const i in groupMembersToRemove) {
-      const member = groupMembersToRemove[i];
-      const transaction = await api.sequelize.transaction();
-      member.removedAt = new Date();
-      await member.save({ transaction });
-      const _import = await group.buildProfileImport(
-        member.profileGuid,
-        "run",
-        run.guid,
-        destinationGuid
-      );
-      await run.increment(["importsCreated"], { transaction });
-      await _import.save({ transaction });
+    const transaction = await api.sequelize.transaction();
+
+    try {
+      for (const i in groupMembersToRemove) {
+        const member = groupMembersToRemove[i];
+        member.removedAt = new Date();
+        await member.save({ transaction });
+        const _import = await group.buildProfileImport(
+          member.profileGuid,
+          "run",
+          run.guid,
+          destinationGuid
+        );
+        await run.increment(["importsCreated"], { transaction });
+        await _import.save({ transaction });
+
+        groupMembersCount++;
+      }
+
+      group.calculatedAt = new Date();
+      await group.save({ transaction });
+
       await transaction.commit();
-      groupMembersCount++;
+
+      return groupMembersCount;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
     }
-
-    group.calculatedAt = new Date();
-    await group.save();
-
-    return groupMembersCount;
   }
 
   /**

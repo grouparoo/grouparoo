@@ -42,24 +42,31 @@ export class RunInternalRun extends Task {
       offset,
     });
 
-    for (const i in profiles) {
-      const profile = profiles[i];
-      const transaction = await api.sequelize.transaction();
+    const transaction = await api.sequelize.transaction();
 
-      await Import.create(
-        {
-          profileGuid: profile.guid,
-          profileAssociatedAt: new Date(),
-          rawData: {},
-          data: {},
-          creatorType: "run",
-          creatorGuid: run.guid,
-        },
-        { transaction }
-      );
+    try {
+      for (const i in profiles) {
+        const profile = profiles[i];
 
-      await run.increment(["importsCreated"], { transaction });
+        await Import.create(
+          {
+            profileGuid: profile.guid,
+            profileAssociatedAt: new Date(),
+            rawData: {},
+            data: {},
+            creatorType: "run",
+            creatorGuid: run.guid,
+          },
+          { transaction }
+        );
+
+        await run.increment(["importsCreated"], { transaction });
+      }
+
       await transaction.commit();
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
     }
 
     await run.afterBatch();

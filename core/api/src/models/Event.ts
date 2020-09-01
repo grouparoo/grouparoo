@@ -77,16 +77,21 @@ export class Event extends LoggedModel<Event> {
   async setData(data: { [key: string]: any }) {
     const transaction = await api.sequelize.transaction();
 
-    for (const key in data) {
-      const eventData = new EventData({
-        eventGuid: this.guid,
-        key,
-        value: data[key].toString(),
-      });
-      await eventData.save({ transaction });
-    }
+    try {
+      for (const key in data) {
+        const eventData = new EventData({
+          eventGuid: this.guid,
+          key,
+          value: data[key].toString(),
+        });
+        await eventData.save({ transaction });
+      }
 
-    await transaction.commit();
+      await transaction.commit();
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
   }
 
   async associate(identifyingProfilePropertyRuleGuid: string) {

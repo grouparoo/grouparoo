@@ -235,7 +235,7 @@ export class Import extends Model<Import> {
   @AfterCreate
   static async enqueueTask(instance: Import) {
     const taskDelay = 3001;
-    // often imports are created in transactions. We need to allow time for them to commit
+
     if (!instance.profileGuid) {
       await task.enqueueIn(taskDelay, "import:associateProfile", {
         importGuid: instance.guid,
