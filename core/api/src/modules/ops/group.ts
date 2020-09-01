@@ -6,7 +6,6 @@ import { ProfileMultipleAssociationShim } from "../../models/ProfileMultipleAsso
 import { Import } from "../../models/Import";
 import { Op } from "sequelize";
 import { api, task } from "actionhero";
-import { Sequelize } from "sequelize-typescript";
 
 export namespace GroupOps {
   /**
