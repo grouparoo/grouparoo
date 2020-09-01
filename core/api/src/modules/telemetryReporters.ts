@@ -169,7 +169,6 @@ export namespace TelemetryReporters {
                 attributes: [],
               },
             ],
-            logging: true,
           }),
         });
       }
