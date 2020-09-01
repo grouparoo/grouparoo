@@ -27,7 +27,7 @@
     "lint": "prettier --check src __tests__"
   },
   "dependencies": {
-    "pg": "8.3.2",
+    "pg": "8.3.3",
     "pg-format": "1.0.4",
     "pg-hstore": "2.3.3"
   },
