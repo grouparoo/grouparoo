@@ -162,19 +162,24 @@ export namespace plugin {
 
     const transaction = await api.sequelize.transaction();
 
-    const _import = await Import.create(
-      {
-        rawData: row,
-        data: mappedProfileProperties,
-        creatorType: "run",
-        creatorGuid: run.guid,
-      },
-      { transaction }
-    );
-    await run.increment(["importsCreated"], { transaction });
-    await transaction.commit();
+    try {
+      const _import = await Import.create(
+        {
+          rawData: row,
+          data: mappedProfileProperties,
+          creatorType: "run",
+          creatorGuid: run.guid,
+        },
+        { transaction }
+      );
+      await run.increment(["importsCreated"], { transaction });
+      await transaction.commit();
 
-    return _import;
+      return _import;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
   }
 
   /**

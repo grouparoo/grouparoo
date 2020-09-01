@@ -76,23 +76,14 @@ export class GroupCreate extends AuthenticatedAction {
   }
 
   async run({ params, response }) {
-    const transaction = await api.sequelize.transaction();
+    const group = await Group.create(params);
 
-    try {
-      const group = await Group.create(params, { transaction });
-
-      if (params.rules) {
-        await group.setRules(params.rules);
-      }
-
-      await transaction.commit();
-
-      response.group = await group.apiData();
-      response.group.rules = await group.getRules();
-    } catch (error) {
-      transaction.rollback();
-      throw error;
+    if (params.rules) {
+      await group.setRules(params.rules);
     }
+
+    response.group = await group.apiData();
+    response.group.rules = await group.getRules();
   }
 }
 

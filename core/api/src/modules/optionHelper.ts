@@ -65,34 +65,39 @@ export namespace OptionHelper {
 
     const transaction = await api.sequelize.transaction();
 
-    await Option.destroy({
-      where: { ownerGuid: instance.guid },
-      transaction,
-    });
+    try {
+      await Option.destroy({
+        where: { ownerGuid: instance.guid },
+        transaction,
+      });
 
-    const keys = Object.keys(options);
-    for (const i in keys) {
-      const key = keys[i];
-      await Option.create(
-        {
-          ownerGuid: instance.guid,
-          ownerType: modelName(instance),
-          key,
-          value: options[key],
-        },
-        { transaction }
-      );
-    }
+      const keys = Object.keys(options);
+      for (const i in keys) {
+        const key = keys[i];
+        await Option.create(
+          {
+            ownerGuid: instance.guid,
+            ownerType: modelName(instance),
+            key,
+            value: options[key],
+          },
+          { transaction }
+        );
+      }
 
-    // @ts-ignore
-    instance.changed("updatedAt", true);
-    await instance.save({ transaction });
+      // @ts-ignore
+      instance.changed("updatedAt", true);
+      await instance.save({ transaction });
 
-    await transaction.commit();
+      await transaction.commit();
 
-    // if there's an afterSetMapping hook
-    if (typeof instance["afterSetOptions"] === "function") {
-      await instance["afterSetOptions"]();
+      // if there's an afterSetMapping hook
+      if (typeof instance["afterSetOptions"] === "function") {
+        await instance["afterSetOptions"]();
+      }
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
     }
   }
 
