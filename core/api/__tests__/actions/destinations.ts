@@ -1,9 +1,6 @@
 import { helper } from "./../utils/specHelper";
 import { specHelper } from "actionhero";
-import {
-  Destination,
-  destinationTypeConversions,
-} from "./../../src/models/Destination";
+import { Destination } from "./../../src/models/Destination";
 import { Group } from "./../../src/models/Group";
 import { Profile } from "./../../src/models/Profile";
 
@@ -190,7 +187,16 @@ describe("actions/destinations", () => {
           allowOptionalFromProfilePropertyRules: true,
         },
       });
-      expect(_destinationTypeConversions).toEqual(destinationTypeConversions);
+      expect(_destinationTypeConversions).toEqual({
+        boolean: ["any", "string", "boolean", "number"],
+        date: ["any", "float", "integer", "string", "date", "number"],
+        email: ["any", "string", "email"],
+        float: ["any", "float", "string", "number"],
+        integer: ["any", "float", "integer", "string", "number"],
+        phoneNumber: ["any", "string", "phoneNumber"],
+        string: ["any", "string"],
+        url: ["any", "string", "url"],
+      });
     });
 
     test("an administrator can set the mapping with valid mappings", async () => {

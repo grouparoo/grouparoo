@@ -1,12 +1,13 @@
 import { api } from "actionhero";
 import { AuthenticatedAction } from "../classes/authenticatedAction";
-import { Destination, destinationTypeConversions } from "../models/Destination";
+import { Destination } from "../models/Destination";
 import { App } from "../models/App";
 import { Profile } from "../models/Profile";
 import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
 import { GrouparooPlugin } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
+import { destinationTypeConversions } from "../modules/destinationTypeConversions";
 
 export class DestinationsList extends AuthenticatedAction {
   constructor() {
@@ -203,7 +204,15 @@ export class DestinationMappingOptions extends AuthenticatedAction {
   async run({ params, response }) {
     const destination = await Destination.findByGuid(params.guid);
     response.options = await destination.destinationMappingOptions(false); // never use cache when displaying to the user
-    response.destinationTypeConversions = destinationTypeConversions;
+
+    const _destinationTypeConversions: { [key: string]: Array<string> } = {};
+    for (const k in destinationTypeConversions) {
+      _destinationTypeConversions[k] = Object.keys(
+        destinationTypeConversions[k]
+      );
+    }
+
+    response.destinationTypeConversions = _destinationTypeConversions;
   }
 }
 

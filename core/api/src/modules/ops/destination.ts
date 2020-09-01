@@ -22,6 +22,7 @@ import {
 import { task, log, config, cache } from "actionhero";
 import { deepStrictEqual } from "assert";
 import { ProfilePropertyOps } from "./profileProperty";
+import { destinationTypeConversions } from "../destinationTypeConversions";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -763,88 +764,25 @@ export namespace DestinationOps {
 
   /**
    * Format Grouparoo's profile properties to the type the destination wants.
-   * In many cases, we can do conversions, ie: 'integer' or 'float' to 'number' or there are cast-able representations in other types, like 'integer' to 'string'.
-   * A detailed map can be found at https://docs.google.com/spreadsheets/d/1Fbkdsq_IR8deOYF4QpVq_XIdqpvAah3tJbVP2K5nCdc
    */
   export function formatOutgoingProfileProperties(
     value: any,
     grouparooType: string,
     destinationType: DestinationMappingOptionsResponseTypes
   ) {
-    switch (true) {
-      // ** Null **
-      case value === null || value === undefined:
-        return value;
+    if (value === null || value === undefined) return value;
 
-      // ** ANY **
-      case destinationType === "any":
-        return value;
+    const conversionBatch = destinationTypeConversions[grouparooType];
+    const converter: Function = conversionBatch
+      ? conversionBatch[destinationType]
+      : null;
 
-      // ** FLOAT **
-      case grouparooType === "float" && destinationType === "float":
-        return value as number;
-      case grouparooType === "float" && destinationType === "string":
-        return (value as number).toString();
-      case grouparooType === "float" && destinationType === "number":
-        return value as number;
-
-      // ** INTEGER **
-      case grouparooType === "integer" && destinationType === "float":
-        return value as number;
-      case grouparooType === "integer" && destinationType === "integer":
-        return value as number;
-      case grouparooType === "integer" && destinationType === "string":
-        return (value as number).toString();
-      case grouparooType === "integer" && destinationType === "number":
-        return value as number;
-
-      // ** STRING **
-      case grouparooType === "string" && destinationType === "string":
-        return value as string;
-
-      // ** URL **
-      case grouparooType === "url" && destinationType === "string":
-        return value as string;
-      case grouparooType === "url" && destinationType === "url":
-        return value as string;
-
-      // ** EMAIL **
-      case grouparooType === "email" && destinationType === "string":
-        return value as string;
-      case grouparooType === "email" && destinationType === "email":
-        return value as string;
-
-      // ** PHONENUMBER **
-      case grouparooType === "phoneNumber" && destinationType === "string":
-        return value as string;
-      case grouparooType === "phoneNumber" && destinationType === "phoneNumber":
-        return value as string;
-
-      // ** BOOLEAN **
-      case grouparooType === "boolean" && destinationType === "string":
-        return (value as boolean).toString();
-      case grouparooType === "boolean" && destinationType === "boolean":
-        return value as boolean;
-      case grouparooType === "boolean" && destinationType === "number":
-        return (value as boolean) === true ? 1 : 0;
-
-      // ** DATE **
-      case grouparooType === "date" && destinationType === "float":
-        return (value as Date).getTime();
-      case grouparooType === "date" && destinationType === "integer":
-        return (value as Date).getTime();
-      case grouparooType === "date" && destinationType === "string":
-        return (value as Date).toISOString();
-      case grouparooType === "date" && destinationType === "number":
-        return (value as Date).getTime();
-      case grouparooType === "date" && destinationType === "date":
-        return value as Date;
-
-      // Otherwise...
-      default:
-        throw new Error(
-          `cannot export grouparoo type ${grouparooType} to destination type ${destinationType}`
-        );
+    if (converter) {
+      return converter(value);
+    } else {
+      throw new Error(
+        `cannot export grouparoo type ${grouparooType} to destination type ${destinationType}`
+      );
     }
   }
 
