@@ -46,7 +46,7 @@
     "@grouparoo/client-web": "^0.1.12-alpha.0",
     "@nivo/line": "0.62.0",
     "@zeit/next-source-maps": "0.0.3",
-    "actionhero": "23.0.7",
+    "actionhero": "23.0.8",
     "ah-next-plugin": "0.3.0",
     "ah-sequelize-plugin": "2.2.2",
     "axios": "0.20.0",
