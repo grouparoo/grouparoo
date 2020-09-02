@@ -85,9 +85,7 @@ export class ProfileExport extends RetryableTask {
           const destination = await Destination.findOne({
             where: { guid: _import.data._meta.destinationGuid },
           });
-          if (destination) {
-            destinations.push(destination);
-          }
+          if (destination) destinations.push(destination);
         }
       }
 

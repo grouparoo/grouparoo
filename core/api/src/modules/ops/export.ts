@@ -102,7 +102,7 @@ export namespace ExportOps {
     const { pluginConnection } = await destination.getPlugin();
 
     // We use Export#startedAt to denote that this export needs to be worked.  We can update and claim them in one go.
-    // This does require a custom query.
+    // This requires a custom query.
     const query = `
 UPDATE "exports"
 SET "startedAt" = NOW()
