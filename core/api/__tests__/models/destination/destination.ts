@@ -471,12 +471,12 @@ describe("models/destination", () => {
 
       describe("destinationsForGroups", () => {
         it("determined relevant destinations for a profile", async () => {
-          await destination.trackGroup(group);
           const otherDestination = await helper.factories.destination();
           const profile = await helper.factories.profile();
           await group.addProfile(profile);
 
           // before the destinations are ready
+          await destination.trackGroup(group);
           let destinations = await Destination.destinationsForGroups(
             await profile.$get("groups")
           );
@@ -487,15 +487,20 @@ describe("models/destination", () => {
           await destination.update({ state: "ready" });
           await otherDestination.setOptions({ table: "some table" });
           await otherDestination.update({ state: "ready" });
+          await otherDestination.trackGroup(group);
 
           destinations = await Destination.destinationsForGroups(
             await profile.$get("groups")
           );
-          expect(destinations.length).toBe(1);
-          expect(destinations[0].guid).toBe(destination.guid);
+          expect(destinations.length).toBe(2);
+          expect(destinations.map((d) => d.guid).sort()).toEqual(
+            [destination.guid, otherDestination.guid].sort()
+          );
 
           await destination.unTrackGroup();
           await group.removeProfile(profile);
+          await otherDestination.unTrackGroup();
+          await otherDestination.destroy();
         });
 
         test("when the group being tracked is removed, the previous group should be exported one last time", async () => {

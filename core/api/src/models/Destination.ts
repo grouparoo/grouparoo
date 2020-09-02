@@ -554,21 +554,13 @@ export class Destination extends LoggedModel<Destination> {
     oldGroups: Group[] = [],
     newGroups: Group[] = []
   ) {
-    const combinedGroups = oldGroups.concat(newGroups);
-    const combinedGroupGuids = combinedGroups.map((g) => g.guid);
-    const relevantDestinations: Array<Destination> = [];
-
-    const destinations = await Destination.findAll({
-      where: { state: "ready" },
+    const combinedGroupGuids = [...oldGroups, ...newGroups].map((g) => g.guid);
+    const relevantDestinations = await Destination.scope(null).findAll({
+      where: {
+        state: "ready",
+        groupGuid: { [Op.in]: combinedGroupGuids },
+      },
     });
-
-    for (const i in destinations) {
-      const destination = destinations[i];
-      if (combinedGroupGuids.includes(destination.groupGuid)) {
-        relevantDestinations.push(destination);
-        break;
-      }
-    }
 
     return relevantDestinations;
   }

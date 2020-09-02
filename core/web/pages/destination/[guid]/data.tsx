@@ -63,12 +63,21 @@ export default function Page(props) {
     });
 
     // update group being tracked after the edit
-    if (trackedGroupGuid.match(/^grp_/)) {
+    if (
+      trackedGroupGuid !== props.trackedGroupGuid &&
+      trackedGroupGuid.match(/^grp_/)
+    ) {
       await execApi("post", `/destination/${guid}/track`, {
         groupGuid: trackedGroupGuid,
       });
-    } else if (trackedGroupGuid === "_none") {
+    } else if (
+      trackedGroupGuid !== props.trackedGroupGuid &&
+      trackedGroupGuid === "_none"
+    ) {
       await execApi("post", `/destination/${guid}/untrack`);
+    } else {
+      // trigger a full export
+      await execApi("post", `/destination/${guid}/export`);
     }
 
     successHandler.set({
