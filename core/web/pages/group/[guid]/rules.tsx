@@ -216,6 +216,10 @@ export default function Page(props) {
                           const _rules = [...localRules];
                           rule.key = e.target.value;
                           rule.operation.op = "exists"; // every type has an existence check
+                          rule.match = undefined;
+                          rule.relativeMatchNumber = undefined;
+                          rule.relativeMatchUnit = undefined;
+                          rule.relativeMatchDirection = undefined;
                           rule.topLevel = topLevelGroupRules
                             .map((tlgr) => tlgr.key)
                             .includes(rule.key);
