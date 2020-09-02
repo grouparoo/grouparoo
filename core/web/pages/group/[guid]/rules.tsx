@@ -21,7 +21,10 @@ export default function Page(props) {
   const [group, setGroup] = useState<GroupAPIData>(props.group);
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [localRules, setLocalRules] = useState(props.group.rules);
+  const [localRules, setLocalRules] = useState(
+    // TODO: Why is this require to break the object chain to rules?
+    JSON.parse(JSON.stringify(props.group.rules))
+  );
   const [countPotentialMembers, setCountPotentialMembers] = useState(0);
   const [componentCounts, setComponentCounts] = useState({});
   const [autocompleteResults, setAutoCompleteResults] = useState({});
@@ -39,26 +42,6 @@ export default function Page(props) {
     });
     setAutoCompleteResults(_autocompleteResults);
   }, []);
-
-  async function load() {
-    setLoading(true);
-    const response = await execApi("get", `/group/${group.guid}`);
-    setLoading(false);
-    if (response?.group) {
-      // TODO: Why is this require to break the object chain to rules?
-      setGroup(JSON.parse(JSON.stringify(response.group)));
-      setLocalRules(response.group.rules);
-
-      // seed typeahead responses
-      const _autocompleteResults = Object.assign({}, autocompleteResults);
-      response.group.rules.map((rule) => {
-        _autocompleteResults[rule.key] = [rule.match];
-      });
-      setAutoCompleteResults(_autocompleteResults);
-    }
-
-    return response.group;
-  }
 
   async function getCounts(useCache = true) {
     setLoading(true);
@@ -232,6 +215,11 @@ export default function Page(props) {
                         onChange={(e: any) => {
                           const _rules = [...localRules];
                           rule.key = e.target.value;
+                          rule.operation.op = "exists"; // every type has an existence check
+                          rule.match = undefined;
+                          rule.relativeMatchNumber = undefined;
+                          rule.relativeMatchUnit = undefined;
+                          rule.relativeMatchDirection = undefined;
                           rule.topLevel = topLevelGroupRules
                             .map((tlgr) => tlgr.key)
                             .includes(rule.key);
@@ -516,9 +504,7 @@ function rulesAreEqual(a, b) {
     "relativeMatchDirection",
   ];
 
-  if (!a || !b) {
-    return false;
-  }
+  if (!a || !b) return false;
 
   for (const i in keys) {
     const key = keys[i];
@@ -530,10 +516,7 @@ function rulesAreEqual(a, b) {
       continue;
     }
 
-    if (a[key] !== b[key]) {
-      matched = false;
-      break;
-    }
+    if (a[key] !== b[key]) matched = false;
   }
 
   return matched;
