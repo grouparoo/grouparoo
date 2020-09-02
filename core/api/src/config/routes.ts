@@ -3,7 +3,8 @@ export const DEFAULT = {
     // prettier-ignore
     return {
       get: [
-        { path: "/v:apiVersion/status", action: "status" },
+        { path: "/v:apiVersion/status/public", action: "status:public" },
+        { path: "/v:apiVersion/status/private", action: "status:private" },
         { path: "/v:apiVersion/swagger", action: "swagger" },
         { path: "/v:apiVersion/plugins", action: "plugins" },
         { path: "/v:apiVersion/session", action: "session:view" },

@@ -65,7 +65,7 @@ export async function waitForAPI(count = 0) {
     throw new Error("giving up on the API");
   }
 
-  const actionUrl = `${url}/api/1/status`;
+  const actionUrl = `${url}/api/1/status/public`;
   try {
     await fetch(actionUrl).then((r) => r.json());
     // console.log(`API up and running @ ${url}`);
