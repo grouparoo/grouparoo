@@ -1,5 +1,6 @@
-import { api, config, id, task, Action, actionheroVersion } from "actionhero";
+import { api, id, task, Action, actionheroVersion } from "actionhero";
 import path from "path";
+import { plugin } from "../modules/plugin";
 const packageJSON = require(path.join(
   __dirname,
   "..",
@@ -10,18 +11,27 @@ const packageJSON = require(path.join(
 
 // These values are probably good starting points, but you should expect to tweak them for your application
 const maxMemoryAlloted = process.env.maxMemoryAlloted || 500;
-const maxResqueQueueLength = process.env.maxResqueQueueLength || 1000;
 
-module.exports = class Status extends Action {
+export class PublicStatus extends Action {
   constructor() {
     super();
-    this.name = "status";
-    this.description = "I will return some basic information about the API";
-    this.outputExample = {
-      id: "192.168.2.11",
-      actionheroVersion: "9.4.1",
-      uptime: 10469,
-    };
+    this.name = "status:public";
+    this.description = "A basic status endpoint";
+    this.outputExample = {};
+  }
+
+  async run({ response }) {
+    response.status = "ok";
+  }
+}
+
+export class PrivateStatus extends Action {
+  constructor() {
+    super();
+    this.name = "status:private";
+    this.description =
+      "I will return detailed information about this API server and Resque";
+    this.outputExample = {};
   }
 
   async checkRam(data) {
@@ -32,7 +42,7 @@ module.exports = class Status extends Action {
       data.response.nodeStatus = data.connection.localize("Unhealthy");
       data.response.problems.push(
         data.connection.localize([
-          "Using more than {{maxMemoryAlloted}} MB of RAM/HEAP",
+          "Using more than {{maxMemoryAlloted}} MB of RAM",
           { maxMemoryAlloted: maxMemoryAlloted },
         ])
       );
@@ -47,12 +57,16 @@ module.exports = class Status extends Action {
     });
 
     data.response.resqueTotalQueueLength = length;
+    const maxResqueQueueLength: number =
+      parseInt(
+        (await plugin.readSetting("core", "runs-profile-batch-size")).value
+      ) * 10;
 
     if (length > maxResqueQueueLength) {
-      data.response.nodeStatus = data.connection.localize("Node Unhealthy");
+      data.response.nodeStatus = data.connection.localize("Unhealthy");
       data.response.problems.push(
         data.connection.localize([
-          "Resque Queues over {{maxResqueQueueLength}} jobs",
+          "Resque queue length over {{maxResqueQueueLength}} jobs",
           { maxResqueQueueLength: maxResqueQueueLength },
         ])
       );
@@ -61,7 +75,7 @@ module.exports = class Status extends Action {
 
   async run(data) {
     data.response.uptime = new Date().getTime() - api.bootTime;
-    data.response.nodeStatus = data.connection.localize("Node Healthy");
+    data.response.nodeStatus = data.connection.localize("Healthy");
     data.response.problems = [];
 
     data.response.id = id;
@@ -73,4 +87,4 @@ module.exports = class Status extends Action {
     await this.checkRam(data);
     await this.checkResqueQueues(data);
   }
-};
+}
