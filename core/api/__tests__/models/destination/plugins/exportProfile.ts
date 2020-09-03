@@ -802,7 +802,9 @@ describe("models/destination", () => {
 
         await destination.exportProfile(profile, [], [_import]);
 
-        const _exports = await profile.$get("exports");
+        const _exports = await profile.$get("exports", {
+          order: [["createdAt", "asc"]],
+        });
         expect(_exports.length).toBe(2);
         expect(_exports[1].oldProfileProperties).toEqual({
           purchases: ["hat", "mushroom"],
@@ -846,7 +848,9 @@ describe("models/destination", () => {
 
         await destination.exportProfile(profile, [], [_import]);
 
-        const _exports = await profile.$get("exports");
+        const _exports = await profile.$get("exports", {
+          order: [["createdAt", "asc"]],
+        });
         expect(_exports.length).toBe(2);
         expect(_exports[1].oldProfileProperties).toEqual({
           purchases: ["hat", "mushroom"],
