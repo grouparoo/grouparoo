@@ -644,7 +644,7 @@ export namespace DestinationOps {
         throw combinedError;
       }
 
-      if (errors) throw combinedError;
+      if (errors && errors.length > 0) throw combinedError;
 
       for (const i in _exports) {
         const _export = _exports[i];
