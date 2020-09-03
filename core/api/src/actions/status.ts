@@ -1,6 +1,8 @@
 import { api, id, task, Action, actionheroVersion } from "actionhero";
 import path from "path";
 import { plugin } from "../modules/plugin";
+import { Setting } from "../models/Setting";
+
 const packageJSON = require(path.join(
   __dirname,
   "..",
@@ -74,13 +76,18 @@ export class PrivateStatus extends Action {
   }
 
   async run(data) {
+    const clusterNameSetting = await Setting.findOne({
+      where: { pluginName: "core", key: "cluster-name" },
+    });
+
+    data.response.clusterName = clusterNameSetting.value;
     data.response.uptime = new Date().getTime() - api.bootTime;
     data.response.nodeStatus = data.connection.localize("Healthy");
     data.response.problems = [];
 
     data.response.id = id;
     data.response.actionheroVersion = actionheroVersion;
-    data.response.name = packageJSON.name;
+    data.response.packageName = packageJSON.name;
     data.response.description = packageJSON.description;
     data.response.version = packageJSON.version;
 
