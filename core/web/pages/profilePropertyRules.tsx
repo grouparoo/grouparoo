@@ -230,6 +230,6 @@ Page.getInitialProps = async (ctx) => {
       offset,
     }
   );
-  const { sources } = await execApi("get", "/sources");
+  const { sources } = await execApi("get", "/sources", { state: "ready" });
   return { profilePropertyRules, total, examples, sources };
 };
