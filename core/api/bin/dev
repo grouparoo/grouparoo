@@ -20,6 +20,6 @@ for p in $GROUPAROO_PIDS; do
   kill -9 $p
 done
 
-"$NODEMON" -e js,jsx,ts,tsx --delay 2 --signal SIGTERM --ignore dist --watch ./ --watch ../../plugins/**/*.js \
+"$NODEMON" -e js,jsx,ts,tsx --signal SIGTERM --ignore dist --watch ./ --watch ../../plugins/**/*.js \
 "$TS_NODE" --transpile-only --log-error src/server.ts || exit 0
 
