@@ -69,10 +69,10 @@ export const getBuiltInFields = (): Array<{
     { key: "notes", type: "string" },
     { key: "details", type: "string" },
     { key: "alias", type: "string" },
+    { key: "phone", type: "phoneNumber" },
   ];
 
   // Can do with types later
-  // phone: "phone",
   // locale: "locale"
   // time_zone: "timezone"
   // locale_id?
