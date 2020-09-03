@@ -44,10 +44,17 @@ describe("actions/status", () => {
     });
 
     test("can retrieve server metadata", async () => {
-      const { name, description, version } = await specHelper.runAction(
-        "status:private"
-      );
-      expect(name).toBe("@grouparoo/core");
+      const {
+        id,
+        packageName,
+        clusterName,
+        description,
+        version,
+      } = await specHelper.runAction("status:private");
+
+      expect(id).toBeTruthy();
+      expect(clusterName).toBe("My Grouparoo Cluster");
+      expect(packageName).toBe("@grouparoo/core");
       expect(description).toBe("The Grouparoo Core");
       expect(version).toBeTruthy();
     });
