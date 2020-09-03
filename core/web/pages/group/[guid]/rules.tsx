@@ -493,18 +493,16 @@ Page.getInitialProps = async (ctx) => {
 };
 
 function rulesAreEqual(a, b) {
-  let matched = true;
+  if (!a || !b) return false;
+  if (a.operation?.op !== b.operation?.op) return false;
 
   const keys = [
     "key",
-    "op",
     "match",
     "relativeMatchNumber",
     "relativeMatchUnit",
     "relativeMatchDirection",
   ];
-
-  if (!a || !b) return false;
 
   for (const i in keys) {
     const key = keys[i];
@@ -516,8 +514,8 @@ function rulesAreEqual(a, b) {
       continue;
     }
 
-    if (a[key] !== b[key]) matched = false;
+    if (a[key] !== b[key]) return false;
   }
 
-  return matched;
+  return true;
 }
