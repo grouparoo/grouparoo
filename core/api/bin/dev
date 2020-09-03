@@ -3,22 +3,23 @@
 cd "$(dirname "$0")"
 cd ..
 
-if [ -f "../node_modules/.bin/ts-node-dev" ]; then
-  EXECUTABLE="../node_modules/.bin/ts-node-dev"
+if [ -f "../node_modules/.bin/ts-node" ]; then
+  TS_NODE="../node_modules/.bin/ts-node"
+  NODEMON="../node_modules/.bin/nodemon"
 else
-  EXECUTABLE="../../../../node_modules/.bin/ts-node-dev"
+  TS_NODE="../../../../node_modules/.bin/ts-node"
+  NODEMON="../../../../node_modules/.bin/nodemon"
 fi
 
 export NEXT_DEVELOPMENT_MODE=true
 
 # in develeopment mode, often there is an orphan next.js/webpack process hanging around if the process crashes.
-GROUPAROO_PIDS=`ps | grep ts-node-dev | grep grouparoo/core | cut -f1 -d' '`
+GROUPAROO_PIDS=`ps | grep ts-node | grep grouparoo/core | cut -f1 -d' '`
 for p in $GROUPAROO_PIDS; do
   printf "stopping orphan process $p\r\n"
   kill -9 $p
-  sleep 1
 done
 
-# If there are problems, add "--debug" as a flag
-node --max-old-space-size=4096 "$EXECUTABLE" --transpile-only --log-error --notify=false --ignore='node_modules' --ignore='../dist' --ignore='core/web' --ignore-watch='../web' --ignore-watch='../clients' src/server.ts
+"$NODEMON" -e js,jsx,ts,tsx --delay 2 --signal SIGTERM --ignore dist --watch ./ --watch ../../plugins/**/*.js \
+"$TS_NODE" --transpile-only --log-error src/server.ts || exit 0
 
