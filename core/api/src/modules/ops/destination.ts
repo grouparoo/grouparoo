@@ -498,8 +498,6 @@ export namespace DestinationOps {
         },
       });
 
-      await app.checkAndUpdateParallelism("decr");
-
       if (!success && retryDelay && !synchronous) {
         return task.enqueueIn(
           retryDelay,
@@ -524,8 +522,6 @@ export namespace DestinationOps {
 
       return { success, retryDelay, error };
     } catch (error) {
-      await app.checkAndUpdateParallelism("decr");
-
       _export.errorMessage = error.toString();
       await _export.save();
 
@@ -536,6 +532,8 @@ export namespace DestinationOps {
 
       error.message = `error exporting profile ${profile.guid} to destination ${destination.guid}: ${error}`;
       throw error;
+    } finally {
+      await app.checkAndUpdateParallelism("decr");
     }
   }
 
@@ -576,42 +574,42 @@ export namespace DestinationOps {
     );
     if (!parallelismOk) return;
 
-    for (const i in _exports) {
-      const _export = _exports[i];
-
-      // do not include exports with hasChanges=false
-      if (!_export.hasChanges) {
-        await _export.update({ completedAt: new Date() });
-        await _export.markMostRecent();
-        const exportRuns = await ExportRun.findAll({
-          where: { exportGuid: _export.guid },
-        });
-        for (const i in exportRuns) {
-          const run = await Run.findByGuid(exportRuns[i].runGuid);
-          await run.increment("profilesExported");
-        }
-      } else {
-        const profile = await _export.$get("profile");
-        destinationExports.push({
-          profile,
-          oldProfileProperties: await formatProfilePropertiesForDestination(
-            _export,
-            destination,
-            "oldProfileProperties"
-          ),
-          newProfileProperties: await formatProfilePropertiesForDestination(
-            _export,
-            destination,
-            "newProfileProperties"
-          ),
-          oldGroups: _export.oldGroups,
-          newGroups: _export.newGroups,
-          toDelete: _export.toDelete,
-        });
-      }
-    }
-
     try {
+      for (const i in _exports) {
+        const _export = _exports[i];
+
+        // do not include exports with hasChanges=false
+        if (!_export.hasChanges) {
+          await _export.update({ completedAt: new Date() });
+          await _export.markMostRecent();
+          const exportRuns = await ExportRun.findAll({
+            where: { exportGuid: _export.guid },
+          });
+          for (const i in exportRuns) {
+            const run = await Run.findByGuid(exportRuns[i].runGuid);
+            await run.increment("profilesExported");
+          }
+        } else {
+          const profile = await _export.$get("profile");
+          destinationExports.push({
+            profile,
+            oldProfileProperties: await formatProfilePropertiesForDestination(
+              _export,
+              destination,
+              "oldProfileProperties"
+            ),
+            newProfileProperties: await formatProfilePropertiesForDestination(
+              _export,
+              destination,
+              "newProfileProperties"
+            ),
+            oldGroups: _export.oldGroups,
+            newGroups: _export.newGroups,
+            toDelete: _export.toDelete,
+          });
+        }
+      }
+
       const { success, retryDelay, errors } = await method({
         connection,
         app,
@@ -620,8 +618,6 @@ export namespace DestinationOps {
         destinationOptions: options,
         exports: destinationExports,
       });
-
-      await app.checkAndUpdateParallelism("decr");
 
       if (!success && retryDelay && !synchronous) {
         return task.enqueueIn(
@@ -665,8 +661,6 @@ export namespace DestinationOps {
 
       return { success, retryDelay, errors };
     } catch (error) {
-      await app.checkAndUpdateParallelism("decr");
-
       // error might have an array of errors which correspond to specific profiles, or it may be generic
       if (error.errors) {
         const profileWithErrors: string[] = error.errors.map(
@@ -715,6 +709,8 @@ export namespace DestinationOps {
       }
 
       throw error;
+    } finally {
+      await app.checkAndUpdateParallelism("decr");
     }
   }
 
