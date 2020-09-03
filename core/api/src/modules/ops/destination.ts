@@ -223,7 +223,7 @@ export namespace DestinationOps {
     newProfileProperties: { [key: string]: any[] },
     oldGroups: Array<Group>,
     newGroups: Array<Group>,
-    sync = false,
+    synchronous = false,
     force = false
   ) {
     const app = await destination.$get("app");
@@ -393,7 +393,7 @@ export namespace DestinationOps {
     const _export = await Export.create({
       destinationGuid: destination.guid,
       profileGuid: profile.guid,
-      startedAt: sync ? new Date() : undefined,
+      startedAt: synchronous ? new Date() : undefined,
       oldProfileProperties: mappedOldProfileProperties,
       newProfileProperties: mappedNewProfileProperties,
       oldGroups: oldGroupNames.sort(),
@@ -415,11 +415,11 @@ export namespace DestinationOps {
 
     const { pluginConnection } = await destination.getPlugin();
 
-    if (sync) {
+    if (synchronous) {
       if (pluginConnection.methods.exportProfiles) {
-        return destination.sendExports([_export], sync);
+        return destination.sendExports([_export], synchronous);
       } else {
-        return destination.sendExport(_export, sync);
+        return destination.sendExport(_export, synchronous);
       }
     }
   }
@@ -430,7 +430,7 @@ export namespace DestinationOps {
   export async function sendExport(
     destination: Destination,
     _export: Export,
-    sync = false
+    synchronous = false
   ) {
     const options = await destination.getOptions();
     const app = await destination.$get("app");
@@ -469,7 +469,7 @@ export namespace DestinationOps {
         destinationGuid: destination.guid,
         exportGuid: _export.guid,
       },
-      sync
+      synchronous
     );
     if (!parallelismOk) return;
 
@@ -498,9 +498,7 @@ export namespace DestinationOps {
         },
       });
 
-      await app.checkAndUpdateParallelism("decr");
-
-      if (!success && retryDelay && !sync) {
+      if (!success && retryDelay && !synchronous) {
         return task.enqueueIn(
           retryDelay,
           "export:send",
@@ -512,7 +510,7 @@ export namespace DestinationOps {
         );
       }
 
-      if (!success && retryDelay && sync) throw error;
+      if (!success && retryDelay && synchronous) throw error;
 
       await _export.update({ completedAt: new Date() });
       await _export.markMostRecent();
@@ -524,8 +522,6 @@ export namespace DestinationOps {
 
       return { success, retryDelay, error };
     } catch (error) {
-      await app.checkAndUpdateParallelism("decr");
-
       _export.errorMessage = error.toString();
       await _export.save();
 
@@ -536,6 +532,8 @@ export namespace DestinationOps {
 
       error.message = `error exporting profile ${profile.guid} to destination ${destination.guid}: ${error}`;
       throw error;
+    } finally {
+      await app.checkAndUpdateParallelism("decr");
     }
   }
 
@@ -546,7 +544,7 @@ export namespace DestinationOps {
   export async function sendExports(
     destination: Destination,
     _exports: Export[],
-    sync = false
+    synchronous = false
   ) {
     const destinationExports: ExportedProfile[] = [];
 
@@ -572,46 +570,46 @@ export namespace DestinationOps {
         destinationGuid: destination.guid,
         exportGuids: _exports.map((e) => e.guid),
       },
-      sync
+      synchronous
     );
     if (!parallelismOk) return;
 
-    for (const i in _exports) {
-      const _export = _exports[i];
-
-      // do not include exports with hasChanges=false
-      if (!_export.hasChanges) {
-        await _export.update({ completedAt: new Date() });
-        await _export.markMostRecent();
-        const exportRuns = await ExportRun.findAll({
-          where: { exportGuid: _export.guid },
-        });
-        for (const i in exportRuns) {
-          const run = await Run.findByGuid(exportRuns[i].runGuid);
-          await run.increment("profilesExported");
-        }
-      } else {
-        const profile = await _export.$get("profile");
-        destinationExports.push({
-          profile,
-          oldProfileProperties: await formatProfilePropertiesForDestination(
-            _export,
-            destination,
-            "oldProfileProperties"
-          ),
-          newProfileProperties: await formatProfilePropertiesForDestination(
-            _export,
-            destination,
-            "newProfileProperties"
-          ),
-          oldGroups: _export.oldGroups,
-          newGroups: _export.newGroups,
-          toDelete: _export.toDelete,
-        });
-      }
-    }
-
     try {
+      for (const i in _exports) {
+        const _export = _exports[i];
+
+        // do not include exports with hasChanges=false
+        if (!_export.hasChanges) {
+          await _export.update({ completedAt: new Date() });
+          await _export.markMostRecent();
+          const exportRuns = await ExportRun.findAll({
+            where: { exportGuid: _export.guid },
+          });
+          for (const i in exportRuns) {
+            const run = await Run.findByGuid(exportRuns[i].runGuid);
+            await run.increment("profilesExported");
+          }
+        } else {
+          const profile = await _export.$get("profile");
+          destinationExports.push({
+            profile,
+            oldProfileProperties: await formatProfilePropertiesForDestination(
+              _export,
+              destination,
+              "oldProfileProperties"
+            ),
+            newProfileProperties: await formatProfilePropertiesForDestination(
+              _export,
+              destination,
+              "newProfileProperties"
+            ),
+            oldGroups: _export.oldGroups,
+            newGroups: _export.newGroups,
+            toDelete: _export.toDelete,
+          });
+        }
+      }
+
       const { success, retryDelay, errors } = await method({
         connection,
         app,
@@ -621,9 +619,7 @@ export namespace DestinationOps {
         exports: destinationExports,
       });
 
-      await app.checkAndUpdateParallelism("decr");
-
-      if (!success && retryDelay && !sync) {
+      if (!success && retryDelay && !synchronous) {
         return task.enqueueIn(
           retryDelay,
           "export:sendBatch",
@@ -644,11 +640,11 @@ export namespace DestinationOps {
       );
       combinedError["errors"] = errors;
 
-      if (!success && retryDelay && sync) {
+      if (!success && retryDelay && synchronous) {
         throw combinedError;
       }
 
-      if (errors) throw combinedError;
+      if (errors && errors.length > 0) throw combinedError;
 
       for (const i in _exports) {
         const _export = _exports[i];
@@ -665,8 +661,6 @@ export namespace DestinationOps {
 
       return { success, retryDelay, errors };
     } catch (error) {
-      await app.checkAndUpdateParallelism("decr");
-
       // error might have an array of errors which correspond to specific profiles, or it may be generic
       if (error.errors) {
         const profileWithErrors: string[] = error.errors.map(
@@ -715,6 +709,8 @@ export namespace DestinationOps {
       }
 
       throw error;
+    } finally {
+      await app.checkAndUpdateParallelism("decr");
     }
   }
 
@@ -791,12 +787,12 @@ export namespace DestinationOps {
     destination: Destination,
     taskName: string,
     taskArgs: { [key: string]: any },
-    sync: boolean
+    synchronous: boolean
   ) {
     const open = await app.checkAndUpdateParallelism("incr");
     if (!open) {
       const message = `parallelism limit reached for ${app.type}`;
-      if (sync) {
+      if (synchronous) {
         throw new Error(message);
       } else {
         log(message + ", re-enqueuing export ${_export.guid}");

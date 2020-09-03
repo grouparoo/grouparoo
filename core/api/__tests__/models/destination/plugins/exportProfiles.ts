@@ -55,7 +55,7 @@ describe("models/destination", () => {
             options: [{ key: "test_key", required: true }],
             methods: {
               test: async () => {
-                return { success: true };
+                return { success: true, errors: [] };
               },
               parallelism: async () => {
                 return parallelismResponse;

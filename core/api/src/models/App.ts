@@ -132,9 +132,14 @@ export class App extends LoggedModel<App> {
     const redis = api.redis.clients.client;
     const limit = await this.getParallelism();
     const count = await redis[direction](key);
+    if (count < 0) {
+      // invalid. how did this happen? reset it
+      await redis.set(key, 0);
+    }
     if (count <= limit || direction === "decr") {
       return true;
     } else {
+      // move it back down because incremented
       await redis.decr(key);
       return false;
     }
