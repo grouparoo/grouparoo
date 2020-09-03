@@ -22,10 +22,9 @@ export class ProfileExport extends RetryableTask {
 
   async run(params) {
     const profile = await Profile.findOne({ where: { guid: params.guid } });
+
     // the profile may have been deleted or merged by the time this task ran
-    if (!profile) {
-      return;
-    }
+    if (!profile) return;
 
     const imports = await Import.findAll({
       where: {
@@ -37,9 +36,7 @@ export class ProfileExport extends RetryableTask {
       order: [["createdAt", "asc"]],
     });
 
-    if (imports.length === 0) {
-      return;
-    }
+    if (imports.length === 0) return;
 
     const runs = await Run.findAll({
       where: {
@@ -52,15 +49,8 @@ export class ProfileExport extends RetryableTask {
     });
 
     try {
-      // take the old data from the oldest, un-exported import
-      const oldProfileProperties = imports[0].oldProfileProperties;
       const oldGroupGuids = imports[0].oldGroupGuids;
-
-      // take the new data from the newest import
-      const newProfileProperties =
-        imports[imports.length - 1].newProfileProperties;
       const newGroupGuids = imports[imports.length - 1].newGroupGuids;
-
       const oldGroups = await Group.findAll({
         where: { guid: { [Op.in]: oldGroupGuids } },
       });
@@ -94,10 +84,6 @@ export class ProfileExport extends RetryableTask {
           profile,
           runs,
           imports,
-          oldProfileProperties,
-          newProfileProperties,
-          oldGroups,
-          newGroups,
           false,
           params.force ? params.force : undefined
         );

@@ -384,10 +384,6 @@ export class Destination extends LoggedModel<Destination> {
     profile: Profile,
     runs: Run[],
     imports: Array<Import>,
-    oldProfileProperties: { [key: string]: any[] },
-    newProfileProperties: { [key: string]: any[] },
-    oldGroups: Array<Group>,
-    newGroups: Array<Group>,
     sync = false,
     force = false
   ) {
@@ -396,10 +392,6 @@ export class Destination extends LoggedModel<Destination> {
       profile,
       runs,
       imports,
-      oldProfileProperties,
-      newProfileProperties,
-      oldGroups,
-      newGroups,
       sync,
       force
     );

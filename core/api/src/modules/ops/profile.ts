@@ -298,10 +298,6 @@ export namespace ProfileOps {
           profile,
           null,
           [],
-          oldSimpleProperties,
-          simpleProperties,
-          oldGroups,
-          groups,
           true, // sync = true -> do the export in-line
           true // force = true -> do the export even if it looks like the data hasn't changed
         )
