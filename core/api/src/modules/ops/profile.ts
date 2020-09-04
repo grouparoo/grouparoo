@@ -267,39 +267,23 @@ export namespace ProfileOps {
   export async function _export(
     profile: Profile,
     force = false,
-    groupsOverride?: Group[]
+    oldGroupsOverride: Group[] = []
   ) {
-    let oldSimpleProperties = {};
-    let oldGroups = [];
+    const groups = await profile.$get("groups");
 
-    const groups = groupsOverride
-      ? groupsOverride
-      : await profile.$get("groups");
-
-    const destinations = await Destination.destinationsForGroups(groups);
-    const properties = await profile.properties();
-    const simpleProperties = {};
-    for (const i in properties) {
-      simpleProperties[i] = properties[i].values;
-    }
-
-    if (!force) {
-      const oldProperties = await profile.properties();
-      oldGroups = groups;
-
-      for (const i in oldProperties) {
-        oldSimpleProperties[i] = oldProperties[i].values;
-      }
-    }
+    const destinations = await Destination.destinationsForGroups([
+      ...groups,
+      ...oldGroupsOverride,
+    ]);
 
     await Promise.all(
       destinations.map((destination) =>
         destination.exportProfile(
           profile,
-          null,
+          [],
           [],
           true, // sync = true -> do the export in-line
-          true // force = true -> do the export even if it looks like the data hasn't changed
+          force // force = true -> do the export even if it looks like the data hasn't changed
         )
       )
     );
