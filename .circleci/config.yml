@@ -38,6 +38,7 @@ jobs:
             - node_modules
             - plugins/@grouparoo/bigquery/node_modules
             - plugins/@grouparoo/csv/node_modules
+            - plugins/@grouparoo/demo/node_modules
             - plugins/@grouparoo/email-authentication/node_modules
             - plugins/@grouparoo/files-local/node_modules
             - plugins/@grouparoo/files-s3/node_modules
@@ -61,6 +62,7 @@ jobs:
             - clients/@grouparoo/web/dist
             - plugins/@grouparoo/bigquery/dist
             - plugins/@grouparoo/csv/dist
+            - plugins/@grouparoo/demo/dist
             - plugins/@grouparoo/email-authentication/dist
             - plugins/@grouparoo/files-local/dist
             - plugins/@grouparoo/files-s3/dist
