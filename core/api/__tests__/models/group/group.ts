@@ -145,7 +145,7 @@ describe("models/group", () => {
     });
 
     describe("with destinations", () => {
-      test("a group cannot be deleted if a destination is explicitly tracking it", async () => {
+      test("a group cannot be deleted if a destination is tracking it", async () => {
         const group = await Group.create({
           name: "tracked group",
           type: "manual",
@@ -162,7 +162,7 @@ describe("models/group", () => {
         await group.destroy(); // does not throw
       });
 
-      test("a group cannot be deleted if a destination membership is using it", async () => {
+      test("a group can be deleted even if a destination membership is using it", async () => {
         const group = await Group.create({
           name: "tracked group",
           type: "manual",
@@ -175,12 +175,6 @@ describe("models/group", () => {
         await destination.setDestinationGroupMemberships(
           destinationGroupMemberships
         );
-
-        await expect(group.destroy()).rejects.toThrow(
-          /this group still in use by 1 destinations, cannot delete/
-        );
-
-        await destination.setDestinationGroupMemberships({});
 
         await group.destroy(); // does not throw
       });
