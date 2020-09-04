@@ -7,7 +7,6 @@ import { Run } from "../../../src/models/Run";
 import { Import } from "../../../src/models/Import";
 import { GroupMember } from "../../../src/models/GroupMember";
 import { SharedGroupTests } from "../../utils/prepareSharedGroupTest";
-import { group } from "console";
 
 let actionhero;
 
