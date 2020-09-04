@@ -24,6 +24,7 @@ import { deepStrictEqual } from "assert";
 import { ProfilePropertyOps } from "./profileProperty";
 import { destinationTypeConversions } from "../destinationTypeConversions";
 import { GroupMember } from "../../models/GroupMember";
+import { Op } from "sequelize";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -384,10 +385,7 @@ export namespace DestinationOps {
     if (!_export.hasChanges) {
       await _export.update({ completedAt: new Date() });
       await _export.markMostRecent();
-      for (const i in exportRuns) {
-        const run = await Run.findByGuid(exportRuns[i].runGuid);
-        await run.increment("profilesExported");
-      }
+      await safelyIncrementExportRunRuns(exportRuns, "profilesExported");
       return;
     }
 
@@ -453,22 +451,13 @@ export namespace DestinationOps {
 
       await _export.update({ completedAt: new Date() });
       await _export.markMostRecent();
-
-      for (const i in exportRuns) {
-        const run = await Run.findByGuid(exportRuns[i].runGuid);
-        await run.increment("profilesExported");
-      }
+      await safelyIncrementExportRunRuns(exportRuns, "profilesExported");
 
       return { success, retryDelay, error };
     } catch (error) {
       _export.errorMessage = error.toString();
       await _export.save();
-
-      for (const i in exportRuns) {
-        const run = await Run.findByGuid(exportRuns[i].runGuid);
-        await run.increment("profilesExported");
-      }
-
+      await safelyIncrementExportRunRuns(exportRuns, "profilesExported");
       error.message = `error exporting profile ${profile.guid} to destination ${destination.guid}: ${error}`;
       throw error;
     } finally {
@@ -524,10 +513,7 @@ export namespace DestinationOps {
           const exportRuns = await ExportRun.findAll({
             where: { exportGuid: _export.guid },
           });
-          for (const i in exportRuns) {
-            const run = await Run.findByGuid(exportRuns[i].runGuid);
-            await run.increment("profilesExported");
-          }
+          await safelyIncrementExportRunRuns(exportRuns, "profilesExported");
         } else {
           const profile = await _export.$get("profile");
           destinationExports.push({
@@ -592,10 +578,7 @@ export namespace DestinationOps {
         const exportRuns = await ExportRun.findAll({
           where: { exportGuid: _export.guid },
         });
-        for (const j in exportRuns) {
-          const run = await Run.findByGuid(exportRuns[j].runGuid);
-          await run.increment("profilesExported");
-        }
+        await safelyIncrementExportRunRuns(exportRuns, "profilesExported");
       }
 
       return { success, retryDelay, errors };
@@ -627,10 +610,7 @@ export namespace DestinationOps {
           const exportRuns = await ExportRun.findAll({
             where: { exportGuid: _export.guid },
           });
-          for (const j in exportRuns) {
-            const run = await Run.findByGuid(exportRuns[j].runGuid);
-            await run.increment("profilesExported");
-          }
+          await safelyIncrementExportRunRuns(exportRuns, "profilesExported");
         }
       } else {
         for (const i in _exports) {
@@ -640,10 +620,7 @@ export namespace DestinationOps {
           const exportRuns = await ExportRun.findAll({
             where: { exportGuid: _export.guid },
           });
-          for (const j in exportRuns) {
-            const run = await Run.findByGuid(exportRuns[j].runGuid);
-            await run.increment("profilesExported");
-          }
+          await safelyIncrementExportRunRuns(exportRuns, "profilesExported");
         }
       }
 
@@ -719,6 +696,28 @@ export namespace DestinationOps {
       throw new Error(
         `cannot export grouparoo type ${grouparooType} to destination type ${destinationType}`
       );
+    }
+  }
+
+  /**
+   * It's possible the run that created this export has been removed (it was from a deleting group).
+   */
+  async function safelyIncrementExportRunRuns(
+    exportRuns: ExportRun[],
+    column: "profilesExported" | "exportsCreated"
+  ) {
+    const runs = await Run.findAll({
+      where: {
+        guid: { [Op.in]: exportRuns.map((exportRun) => exportRun.runGuid) },
+      },
+    });
+
+    for (const i in runs) {
+      const run = runs[i];
+      const by = exportRuns.filter(
+        (exportRun) => exportRun.runGuid === run.guid
+      ).length;
+      await run.increment(column, { by });
     }
   }
 
