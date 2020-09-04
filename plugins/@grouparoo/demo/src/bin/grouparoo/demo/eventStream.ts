@@ -39,7 +39,7 @@ const products = [
 export class Console extends CLI {
   constructor() {
     super();
-    this.name = "grouparoo demo events";
+    this.name = "grouparoo demo eventStream";
     this.description =
       "Create a slew of events mirroring an e-commerce application against your existing profiles";
   }

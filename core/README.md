@@ -74,7 +74,7 @@ Use the `staging-public` app to try things out.
 ```bash
 cd apps/staging-public
 # populate the system with some events
-npm run actionhero -- grouparoo demo events
+npm run actionhero -- grouparoo demo eventStream
 ```
 
 🦘
