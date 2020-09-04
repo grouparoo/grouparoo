@@ -13,7 +13,9 @@ export default function Page(props) {
   const exportDestination = async () => {
     if (confirm("Are you sure?")) {
       try {
-        await execApi("post", `/destination/${destination.guid}/export`);
+        await execApi("post", `/destination/${destination.guid}/export`, {
+          force: true,
+        });
         successHandler.set({ message: "Profiles Exporting..." });
         runsHandler.set({});
       } finally {
