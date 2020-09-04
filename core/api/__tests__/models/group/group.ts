@@ -7,6 +7,7 @@ import { Run } from "../../../src/models/Run";
 import { Import } from "../../../src/models/Import";
 import { GroupMember } from "../../../src/models/GroupMember";
 import { SharedGroupTests } from "../../utils/prepareSharedGroupTest";
+import { group } from "console";
 
 let actionhero;
 
@@ -153,6 +154,7 @@ describe("models/group", () => {
 
         const destination = await helper.factories.destination();
         await destination.trackGroup(group);
+        await destination.update({ state: "ready" });
 
         await expect(group.destroy()).rejects.toThrow(
           /this group still in use by 1 destinations, cannot delete/
@@ -177,6 +179,40 @@ describe("models/group", () => {
         );
 
         await group.destroy(); // does not throw
+      });
+
+      test("deleting a group that a destination had as a membership will enqueue a run for that destinations group", async () => {
+        const trackedGroup = await Group.create({
+          name: "tracked group",
+          type: "manual",
+          state: "ready",
+        });
+
+        const taggedGroup = await Group.create({
+          name: "taged group",
+          type: "manual",
+          state: "ready",
+        });
+
+        const destination = await helper.factories.destination();
+        await destination.trackGroup(trackedGroup);
+        const destinationGroupMemberships = {};
+        destinationGroupMemberships[taggedGroup.guid] = "remote-tagged-group";
+        await destination.setDestinationGroupMemberships(
+          destinationGroupMemberships
+        );
+        await destination.update({ state: "ready" });
+
+        await api.resque.queue.connection.redis.flushdb();
+        await taggedGroup.destroy(); // does not throw
+
+        const foundTasks = await specHelper.findEnqueuedTasks("group:run");
+        expect(foundTasks.length).toBe(1);
+        expect(foundTasks[0].args[0]).toEqual({
+          destinationGuid: destination.guid,
+          groupGuid: trackedGroup.guid,
+          force: true,
+        });
       });
     });
   });
