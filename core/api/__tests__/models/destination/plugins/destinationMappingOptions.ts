@@ -492,7 +492,7 @@ describe("models/destination", () => {
         // int -> number OK
         required = [{ key: "remote-id", type: "number" }];
         await destination.setMapping({ "remote-id": "userId", email: "email" });
-        await mario.export();
+        await mario.export(true);
         expect(oldProfileProperties).toEqual({});
         expect(newProfileProperties).toEqual({
           "remote-id": 1,
@@ -502,7 +502,7 @@ describe("models/destination", () => {
         // int -> string OK
         required = [{ key: "remote-id", type: "string" }];
         await destination.setMapping({ "remote-id": "userId", email: "email" });
-        await mario.export();
+        await mario.export(true);
         expect(oldProfileProperties).toEqual({
           "remote-id": "1",
           email: "mario@example.com",

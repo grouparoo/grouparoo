@@ -210,7 +210,7 @@ describe("models/group", () => {
         expect(foundTasks[0].args[0]).toEqual({
           destinationGuid: destination.guid,
           groupGuid: trackedGroup.guid,
-          force: true,
+          force: false,
         });
       });
     });
