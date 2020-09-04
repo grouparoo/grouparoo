@@ -43,7 +43,7 @@ export namespace DestinationOps {
     force = false
   ) {
     const group = await destination.$get("group");
-    await group.run(force, destination.guid);
+    if (group) await group.run(force, destination.guid);
   }
 
   /**
@@ -257,7 +257,7 @@ export namespace DestinationOps {
       },
     });
 
-    if (mostRecentExport) {
+    if (mostRecentExport && mostRecentExport.toDelete !== true) {
       mappedOldProfileProperties = JSON.parse(
         // @ts-ignore
         mostRecentExport.getDataValue("newProfileProperties")

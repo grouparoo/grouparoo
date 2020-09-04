@@ -240,12 +240,13 @@ export class ProfileEdit extends AuthenticatedAction {
 
   async run({ params, response }) {
     const profile = await Profile.findByGuid(params.guid);
+    const oldGroups = await profile.$get("groups");
     await profile.update(params);
     await profile.addOrUpdateProperties(params.properties);
     await profile.removeProperties(params.removedProperties);
     await profile.import();
     await profile.updateGroupMembership();
-    await profile.export();
+    await profile.export(false, oldGroups);
     response.profile = await profile.apiData();
   }
 }

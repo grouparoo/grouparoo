@@ -681,11 +681,17 @@ export class Group extends LoggedModel<Group> {
 
   @AfterDestroy
   static async destroyDestinationGroupMembership(instance: Group) {
-    return DestinationGroupMembership.destroy({
-      where: {
-        groupGuid: instance.guid,
-      },
-    });
+    const destinationGroupMemberships = await DestinationGroupMembership.findAll(
+      { where: { groupGuid: instance.guid } }
+    );
+
+    for (const i in destinationGroupMemberships) {
+      const destination = await destinationGroupMemberships[i].$get(
+        "destination"
+      );
+      await destinationGroupMemberships[i].destroy();
+      await destination.exportGroupMembers(false);
+    }
   }
 
   @AfterDestroy

@@ -117,8 +117,8 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps._import(this, toSave, toLock);
   }
 
-  async export(force = false, groupsOverride?: Group[]) {
-    return ProfileOps._export(this, force, groupsOverride);
+  async export(force = false, oldGroupsOverride?: Group[]) {
+    return ProfileOps._export(this, force, oldGroupsOverride);
   }
 
   async logMessage(verb: "create" | "update" | "destroy") {

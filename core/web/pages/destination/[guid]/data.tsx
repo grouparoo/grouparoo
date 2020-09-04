@@ -77,7 +77,7 @@ export default function Page(props) {
       await execApi("post", `/destination/${guid}/untrack`);
     } else {
       // trigger a full export
-      await execApi("post", `/destination/${guid}/export`);
+      await execApi("post", `/destination/${guid}/export`, { force: true });
     }
 
     successHandler.set({
