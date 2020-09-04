@@ -268,7 +268,7 @@ describe("models/export", () => {
     });
 
     const rawProperties = JSON.parse(
-      _export["dataValues"].oldProfileProperties
+      _export["dataValues"].newProfileProperties
     );
 
     expect(rawProperties["primary-id"]).toEqual({
@@ -365,7 +365,7 @@ describe("models/export", () => {
 
   test("runs can be associated by ExportRuns", async () => {
     const run = await helper.factories.run();
-    await destination.exportProfile(profile, [run], [], {}, {}, [], []);
+    await destination.exportProfile(profile, [run], []);
 
     const exportRuns = await ExportRun.findAll({
       where: { runGuid: run.guid },
@@ -397,15 +397,7 @@ describe("models/export", () => {
       mostRecent: true,
     });
 
-    await destination.exportProfile(
-      profile,
-      [run],
-      [],
-      {},
-      {},
-      [group],
-      [group]
-    );
+    await destination.exportProfile(profile, [run], []);
 
     const exportRuns = await ExportRun.findAll({
       where: { runGuid: run.guid },

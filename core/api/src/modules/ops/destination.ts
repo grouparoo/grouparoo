@@ -23,6 +23,7 @@ import { task, log, config, cache } from "actionhero";
 import { deepStrictEqual } from "assert";
 import { ProfilePropertyOps } from "./profileProperty";
 import { destinationTypeConversions } from "../destinationTypeConversions";
+import { GroupMember } from "../../models/GroupMember";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -219,88 +220,34 @@ export namespace DestinationOps {
     profile: Profile,
     runs: Run[],
     imports: Array<Import>,
-    oldProfileProperties: { [key: string]: any[] },
-    newProfileProperties: { [key: string]: any[] },
-    oldGroups: Array<Group>,
-    newGroups: Array<Group>,
     synchronous = false,
     force = false
   ) {
     const app = await destination.$get("app");
-
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);
     const cachedProfileProperties = await ProfilePropertyRule.cached();
     const destinationGroupMemberships = await destination.getDestinationGroupMemberships();
-
     const mapping = await destination.getMapping();
 
     let mappedOldProfileProperties: ExportProfilePropertiesWithType = {};
     let mappedNewProfileProperties: ExportProfilePropertiesWithType = {};
+    let oldGroupNames: string[] = [];
+    let newGroupNames: string[] = [];
+    let toDelete = false;
 
-    for (const k in mapping) {
-      const rule = cachedProfileProperties[mapping[k]];
-      if (!rule) throw new Error(`cannot find rule for ${mapping[k]}`);
-      const type = rule.type;
+    let newGroups = await Group.findAll({
+      include: [{ model: GroupMember, where: { profileGuid: profile.guid } }],
+    });
 
-      mappedOldProfileProperties[k] = {
-        type,
-        rawValue: Array.isArray(oldProfileProperties[mapping[k]])
-          ? await Promise.all(
-              oldProfileProperties[mapping[k]].map((v) =>
-                ProfilePropertyOps.buildRawValue(v, type)
-              )
-            )
-          : await ProfilePropertyOps.buildRawValue(
-              oldProfileProperties[mapping[k]],
-              type
-            ),
-      };
-
-      mappedNewProfileProperties[k] = {
-        type,
-        rawValue: Array.isArray(newProfileProperties[mapping[k]])
-          ? await Promise.all(
-              newProfileProperties[mapping[k]].map((v) =>
-                ProfilePropertyOps.buildRawValue(v, type)
-              )
-            )
-          : await ProfilePropertyOps.buildRawValue(
-              newProfileProperties[mapping[k]],
-              type
-            ),
-      };
+    if (!newGroups.map((g) => g.guid).includes(destination.groupGuid)) {
+      toDelete = true;
     }
 
-    const oldGroupNames = oldGroups
-      .filter((group) =>
-        destinationGroupMemberships
-          .map((dgm) => dgm.groupGuid)
-          .includes(group.guid)
-      )
-      .map(
-        (group) =>
-          destinationGroupMemberships.filter(
-            (dgm) => dgm.groupGuid === group.guid
-          )[0].remoteKey
-      );
-    const newGroupNames = newGroups
-      .filter((group) =>
-        destinationGroupMemberships
-          .map((dgm) => dgm.groupGuid)
-          .includes(group.guid)
-      )
-      .map(
-        (group) =>
-          destinationGroupMemberships.filter(
-            (dgm) => dgm.groupGuid === group.guid
-          )[0].remoteKey
-      );
+    let newProfileProperties = await profile.properties();
 
-    const newGroupGuids = newGroups.map((g) => g.guid);
-    let toDelete = true;
-    if (newGroupGuids.includes(destination.groupGuid)) toDelete = false;
-
+    // New and old properties and groups are in the context of this destination and what it has currently been sent
+    // If there is not a mostRecentExport, both old groups and old profile properties are an empty collection
     const mostRecentExport = await Export.findOne({
       where: {
         destinationGuid: destination.guid,
@@ -311,56 +258,32 @@ export namespace DestinationOps {
     });
 
     if (mostRecentExport) {
-      const mostRecentMappedProfilePropertyKeys = Object.keys(
-        mostRecentExport.newProfileProperties
+      mappedOldProfileProperties = JSON.parse(
+        // @ts-ignore
+        mostRecentExport.getDataValue("newProfileProperties")
       );
-      const currentMappedNewProfilePropertyKeys = Object.keys(
-        mappedNewProfileProperties
-      );
-      const currentMappedOldProfilePropertyKeys = Object.keys(
-        mappedNewProfileProperties
-      );
+      oldGroupNames = mostRecentExport.newGroups;
+    }
 
-      // since this export was previously mapped, we can assume the previous mapping still makes sense...
-      mostRecentMappedProfilePropertyKeys
-        .filter((k) => !currentMappedNewProfilePropertyKeys.includes(k))
-        .filter((k) => !currentMappedOldProfilePropertyKeys.includes(k))
-        .forEach(
-          (k) =>
-            (mappedOldProfileProperties[k] = {
-              type: "string",
-              rawValue: ["unknown"],
-            })
-        );
-
-      // we also want to check for groups we previously sent but are no longer sending
-      // the profile may have not changed membership in the group, but the destination may have just started tracking it
-      mostRecentExport.newGroups
-        .filter((groupName) => !oldGroupNames.includes(groupName))
-        .forEach((groupName) => oldGroupNames.push(groupName));
-
-      newGroupNames
-        .filter((groupName) => !mostRecentExport.newGroups.includes(groupName))
-        .forEach((groupName) => {
-          oldGroupNames.splice(oldGroupNames.indexOf(groupName), 1);
-        });
+    for (const k in mapping) {
+      const rule = cachedProfileProperties[mapping[k]];
+      if (!rule) throw new Error(`cannot find rule for ${mapping[k]}`);
+      const { type } = rule;
+      mappedNewProfileProperties[k] = {
+        type,
+        rawValue: newProfileProperties[mapping[k]]
+          ? await Promise.all(
+              newProfileProperties[mapping[k]].values.map((v) =>
+                ProfilePropertyOps.buildRawValue(v, type)
+              )
+            )
+          : null,
+      };
     }
 
     // Send only the properties from the array that should be sent to the Destination, otherwise send the first entry in the array of profile properties
     const exportArrayProperties = await getExportArrayProperties(destination);
 
-    for (const k in mappedOldProfileProperties) {
-      if (
-        mappedOldProfileProperties[k] &&
-        !exportArrayProperties.includes(k) &&
-        !exportArrayProperties.includes("*")
-      ) {
-        mappedOldProfileProperties[k].rawValue
-          ? (mappedOldProfileProperties[k].rawValue =
-              mappedOldProfileProperties[k].rawValue[0])
-          : delete mappedOldProfileProperties[k];
-      }
-    }
     for (const k in mappedNewProfileProperties) {
       if (
         mappedNewProfileProperties[k] &&
@@ -368,11 +291,27 @@ export namespace DestinationOps {
         !exportArrayProperties.includes("*")
       ) {
         mappedNewProfileProperties[k].rawValue
-          ? (mappedNewProfileProperties[k].rawValue =
-              mappedNewProfileProperties[k].rawValue[0])
+          ? (mappedNewProfileProperties[k].rawValue = Array.isArray(
+              mappedNewProfileProperties[k].rawValue
+            )
+              ? mappedNewProfileProperties[k].rawValue[0]
+              : mappedNewProfileProperties[k].rawValue)
           : delete mappedNewProfileProperties[k];
       }
     }
+
+    newGroupNames = newGroups
+      .filter((group) =>
+        destinationGroupMemberships
+          .map((dgm) => dgm.groupGuid)
+          .includes(group.guid)
+      )
+      .map(
+        (group) =>
+          destinationGroupMemberships.filter(
+            (dgm) => dgm.groupGuid === group.guid
+          )[0].remoteKey
+      );
 
     // determine if there are changes between this export and the previous one
     let hasChanges = true;
@@ -766,6 +705,7 @@ export namespace DestinationOps {
     grouparooType: string,
     destinationType: DestinationMappingOptionsResponseTypes
   ) {
+    if (!grouparooType) return null;
     if (value === null || value === undefined) return value;
 
     const conversionBatch = destinationTypeConversions[grouparooType];

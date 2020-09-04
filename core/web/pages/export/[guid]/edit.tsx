@@ -64,9 +64,15 @@ export default function Page({ _export, groups }) {
                       _export.newProfileProperties[k] ? (
                         <>
                           <Badge variant="danger">-</Badge>{" "}
-                          {_export.oldProfileProperties[k]?.toString()}|
-                          <Badge variant="success">+</Badge>{" "}
-                          {_export.newProfileProperties[k]?.toString()}
+                          {_export.oldProfileProperties[k]?.toString()}
+                          {_export.newProfileProperties[k] !== null &&
+                          _export.newProfileProperties[k] !== undefined ? (
+                            <>
+                              {" "}
+                              | <Badge variant="success">+</Badge>{" "}
+                              {_export.newProfileProperties[k]?.toString()}
+                            </>
+                          ) : null}
                         </>
                       ) : (
                         _export.oldProfileProperties[k]?.toString()

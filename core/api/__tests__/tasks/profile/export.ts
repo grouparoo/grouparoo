@@ -221,15 +221,13 @@ describe("tasks/profile:export", () => {
         expect(_export.destinationGuid).toBe(destination.guid);
         expect(_export.profileGuid).toBe(profile.guid);
         expect(_export.completedAt).toBeTruthy();
-        expect(_export.oldProfileProperties).toEqual({
-          email: "mario@example.com",
-        });
+        expect(_export.oldProfileProperties).toEqual({});
         expect(_export.newProfileProperties).toEqual({
           email: "mario@example.com",
           firstName: "Super",
           lastName: "Mario",
         });
-        expect(_export.oldGroups).toEqual(["test group"]);
+        expect(_export.oldGroups).toEqual([]);
         expect(_export.newGroups).toEqual(["test group"]);
 
         await importA.reload();
@@ -296,9 +294,7 @@ describe("tasks/profile:export", () => {
         expect(_export.destinationGuid).toBe(destination.guid);
         expect(_export.profileGuid).not.toBe(profile.guid);
         expect(_export.completedAt).toBeTruthy();
-        expect(_export.oldProfileProperties).toEqual({
-          email: "bowser@example.com",
-        });
+        expect(_export.oldProfileProperties).toEqual({});
         expect(_export.newProfileProperties).toEqual({
           email: "bowser@example.com",
           firstName: "Bowser",

@@ -231,9 +231,16 @@ export default function ExportsList(props) {
                             JSON.stringify(_export.newProfileProperties[k]) ? (
                               <>
                                 <Badge variant="danger">-</Badge>&nbsp;
-                                {_export.oldProfileProperties[k]?.toString()}|
-                                <Badge variant="success">+</Badge>&nbsp;
-                                {_export.newProfileProperties[k]?.toString()}
+                                {_export.oldProfileProperties[k]?.toString()}
+                                {_export.newProfileProperties[k] !== null &&
+                                _export.newProfileProperties[k] !==
+                                  undefined ? (
+                                  <>
+                                    {" "}
+                                    | <Badge variant="success">+</Badge>&nbsp;
+                                    {_export.newProfileProperties[k].toString()}
+                                  </>
+                                ) : null}
                               </>
                             ) : (
                               <>{_export.oldProfileProperties[k]?.toString()}</>
