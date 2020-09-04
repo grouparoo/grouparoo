@@ -1,5 +1,4 @@
 import mysql from "mysql";
-import { promisify } from "util";
 import { ConnectPluginAppMethod } from "@grouparoo/core";
 
 export interface QueryResultObject {
@@ -8,7 +7,6 @@ export interface QueryResultObject {
 
 export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   const client = mysql.createConnection(appOptions);
-  await promisify(client.connect).bind(client)();
 
   const asyncQuery = function (
     query: string,
@@ -46,6 +44,14 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
       }, 1000);
     });
   };
+
+  // connect
+  await new Promise((resolve, reject) => {
+    client.connect((error) => {
+      if (error) return reject(error);
+      return resolve();
+    });
+  });
 
   return Object.assign(client, { asyncQuery, asyncEnd });
 };
