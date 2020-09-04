@@ -668,18 +668,6 @@ export class Group extends LoggedModel<Group> {
     }
   }
 
-  @BeforeDestroy
-  static async checkDestinationGroupMembership(instance: Group) {
-    const count = await DestinationGroupMembership.count({
-      where: { groupGuid: instance.guid },
-    });
-
-    if (count > 0)
-      throw new Error(
-        `this group still in use by ${count} destinations, cannot delete`
-      );
-  }
-
   @AfterDestroy
   static async destroyDestinationGroupTracking(instance: Group) {
     const destinations = await instance.$get("destinations", {
