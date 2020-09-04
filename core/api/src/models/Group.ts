@@ -690,7 +690,7 @@ export class Group extends LoggedModel<Group> {
         "destination"
       );
       await destinationGroupMemberships[i].destroy();
-      await destination.exportGroupMembers(true);
+      await destination.exportGroupMembers(false);
     }
   }
 
