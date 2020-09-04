@@ -36,16 +36,5 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
     });
   };
 
-  const asyncEnd = async function () {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        client.end((error) => {
-          if (error) return reject(error);
-          return resolve();
-        });
-      }, 1000);
-    });
-  };
-
-  return Object.assign(client, { asyncQuery, asyncEnd });
+  return Object.assign(client, { asyncQuery });
 };
