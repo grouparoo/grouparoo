@@ -1,9 +1,11 @@
 import { log, CLI, config, api } from "actionhero";
-import { ApiKey } from "../../models/ApiKey";
-import { Permission } from "../../models/Permission";
-import { App } from "../../models/App";
-import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
-import { Profile } from "../../models/Profile";
+import {
+  ApiKey,
+  Permission,
+  App,
+  ProfilePropertyRule,
+  Profile,
+} from "@grouparoo/core";
 import fetch from "isomorphic-fetch";
 import * as uuid from "uuid";
 
@@ -37,7 +39,7 @@ const products = [
 export class Console extends CLI {
   constructor() {
     super();
-    this.name = "grouparoo mock events";
+    this.name = "grouparoo demo events";
     this.description =
       "Create a slew of events mirroring an e-commerce application against your existing profiles";
   }
