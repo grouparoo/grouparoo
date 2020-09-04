@@ -257,7 +257,7 @@ export namespace DestinationOps {
       },
     });
 
-    if (mostRecentExport) {
+    if (mostRecentExport && mostRecentExport.toDelete !== true) {
       mappedOldProfileProperties = JSON.parse(
         // @ts-ignore
         mostRecentExport.getDataValue("newProfileProperties")
