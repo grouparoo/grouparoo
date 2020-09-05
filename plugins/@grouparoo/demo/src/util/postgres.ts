@@ -21,14 +21,9 @@ export default class Postgres {
     execSync(level, command);
   }
 
-  makeClient() {
-    console.log("config", this.config);
-    return new Client(this.config);
-  }
-
   async disconnect() {
     if (this.client) {
-      this.client.end();
+      await this.client.end();
       this.client = null;
     }
   }
@@ -37,21 +32,12 @@ export default class Postgres {
       return this.client;
     }
 
-    const client = this.makeClient();
+    const client = new Client(this.config);
     await client.connect();
-    console.log(`making schema '${this.config.schema}'`);
     await client.query(`CREATE SCHEMA IF NOT EXISTS ${this.config.schema};`);
 
     this.client = client;
     return this.client;
-  }
-
-  async createDb() {
-    const dbName = this.makeClient().connectionParameters.database;
-    this.log(1, "create db:", dbName);
-    const command = `createdb "${dbName}"`;
-    await this.execSync(1, command);
-    await sleep(2500);
   }
 
   async query(level, ...args) {
