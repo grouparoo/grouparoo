@@ -1,7 +1,7 @@
 import Database from "./util/postgres";
 import { log } from "./util/shared";
 
-const SCHEMA_NAME = "demo";
+export const SCHEMA_NAME = "demo";
 
 const USERS = {
   id: "INT NOT NULL PRIMARY KEY",
@@ -25,10 +25,17 @@ const PURCHASES = {
 };
 
 export async function users() {
-  log(0, "Adding Sample Data: Users");
+  log(0, "Adding Sample Data: users");
   const db = new Database(SCHEMA_NAME);
   await db.connect();
   await db.createCsvTable("users", "id", USERS, true, true);
+  await db.disconnect();
+}
+
+export async function purchases() {
+  log(0, "Adding Sample Data: purchases");
+  const db = new Database(SCHEMA_NAME);
+  await db.connect();
   await db.createCsvTable("purchases", "user_id", PURCHASES, true, false);
   await db.disconnect();
 }

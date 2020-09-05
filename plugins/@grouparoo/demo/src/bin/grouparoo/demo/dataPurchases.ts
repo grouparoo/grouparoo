@@ -1,5 +1,5 @@
 import { CLI } from "actionhero";
-import { users } from "../../../sample_data";
+import { users, purchases } from "../../../sample_data";
 
 export class Console extends CLI {
   constructor() {
@@ -11,6 +11,7 @@ export class Console extends CLI {
 
   async run() {
     await users();
+    await purchases();
     return true;
   }
 }
