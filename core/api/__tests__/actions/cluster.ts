@@ -51,12 +51,7 @@ describe("actions/cluster", () => {
 
         expect(error).toBeFalsy();
         expect(success).toBe(true);
-        expect(counts).toEqual(
-          expect.objectContaining({
-            App: 1,
-            Source: 1,
-          })
-        );
+        expect(counts).toEqual(expect.objectContaining({ Source: 1 }));
       });
 
       test("only the event app remains, and it has been moved back to draft", async () => {
