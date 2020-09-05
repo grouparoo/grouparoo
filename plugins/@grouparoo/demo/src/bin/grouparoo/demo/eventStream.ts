@@ -41,7 +41,7 @@ export class Console extends CLI {
     super();
     this.name = "grouparoo demo eventStream";
     this.description =
-      "Create a slew of events mirroring an e-commerce application against your existing profiles";
+      "Makes a continuous stream of events mirroring an e-commerce application against your existing profiles";
   }
 
   async getIdentifyingProfilePropertyRuleKey() {
