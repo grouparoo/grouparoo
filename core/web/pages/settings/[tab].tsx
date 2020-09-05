@@ -6,6 +6,7 @@ import { Button, Form, Card, Tabs, Tab } from "react-bootstrap";
 import Moment from "react-moment";
 import ImportAndUpdateAllProfiles from "../../components/settings/importAndUpdate";
 import IdentifyingProfilePropertyRule from "../../components/settings/identifyingProfilePropertyRule";
+import ResetCluster from "../../components/settings/resetCluster";
 import { capitalize } from "../../components/tabs";
 import { useRouter } from "next/router";
 
@@ -55,24 +56,14 @@ export default function Page(props) {
         onSelect={(k) => router.push(`/settings/${k}`)}
       >
         <Tab eventKey="actions" title="Actions">
-          <br />
-          <h2>Cluster Actions</h2>
-
-          <br />
-
-          <ImportAndUpdateAllProfiles
+          <ActionsTab
             errorHandler={errorHandler}
             successHandler={successHandler}
           />
         </Tab>
 
         <Tab eventKey="interface" title="Interface">
-          <br />
-          <h2>User Interface</h2>
-
-          <br />
-
-          <IdentifyingProfilePropertyRule
+          <InterfaceTab
             errorHandler={errorHandler}
             successHandler={successHandler}
           />
@@ -178,6 +169,46 @@ function SettingCard({ setting, updateSetting, loading }) {
         </Card.Body>
       </Card>
       <br />
+    </>
+  );
+}
+
+function ActionsTab({ errorHandler, successHandler }) {
+  return (
+    <>
+      <br />
+
+      <h2>Cluster Actions</h2>
+
+      <br />
+
+      <ImportAndUpdateAllProfiles
+        errorHandler={errorHandler}
+        successHandler={successHandler}
+      />
+
+      <br />
+
+      <ResetCluster
+        errorHandler={errorHandler}
+        successHandler={successHandler}
+      />
+    </>
+  );
+}
+
+function InterfaceTab({ errorHandler, successHandler }) {
+  return (
+    <>
+      <br />
+      <h2>User Interface</h2>
+
+      <br />
+
+      <IdentifyingProfilePropertyRule
+        errorHandler={errorHandler}
+        successHandler={successHandler}
+      />
     </>
   );
 }

@@ -135,7 +135,8 @@ export const DEFAULT = {
         { path: "/v:apiVersion/source/:guid", action: "source:destroy" },
         { path: "/v:apiVersion/schedule/:guid", action: "schedule:destroy" },
         { path: "/v:apiVersion/destination/:guid", action: "destination:destroy" },
-        { path: "/v:apiVersion/file/:guid", action: "file:destroy" }
+        { path: "/v:apiVersion/file/:guid", action: "file:destroy" },
+        { path: "/v:apiVersion/cluster", action: "cluster:destroy" }
       ]
     };
   },
