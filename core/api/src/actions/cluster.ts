@@ -75,36 +75,35 @@ export class ClusterReset extends AuthenticatedAction {
     response.success = false;
     const counts = {};
 
-    await Promise.all(
-      models.map(async (model) => {
-        const modelName = model.name;
-        const count = await model.count();
+    for (const i in models) {
+      const model = models[i];
+      const modelName = model.name;
+      const count = await model.count();
 
-        if (model === App) {
-          await model
-            .scope(null)
-            .destroy({ where: { type: { [Op.ne]: "events" } } });
+      if (model === App) {
+        await model
+          .scope(null)
+          .destroy({ where: { type: { [Op.ne]: "events" } } });
 
-          const models = await model.findAll();
-          await Promise.all(
-            // @ts-ignore
-            models.map((m) => m.update({ state: "draft" }, { hooks: false }))
-          );
-        } else {
-          await model.destroy({ truncate: true, force: true });
-        }
+        const models = await model.findAll();
+        await Promise.all(
+          // @ts-ignore
+          models.map((m) => m.update({ state: "draft" }, { hooks: false }))
+        );
+      } else {
+        await model.destroy({ truncate: true, force: true });
+      }
 
-        counts[modelName] = count;
+      counts[modelName] = count;
 
-        await Log.create({
-          topic: "cluster",
-          verb: "reset",
-          message: `erased ${count} instances of ${modelName}`,
-          ownerGuid: teamMember.guid,
-          data: { count },
-        });
-      })
-    );
+      await Log.create({
+        topic: "cluster",
+        verb: "reset",
+        message: `erased ${count} instances of ${modelName}`,
+        ownerGuid: teamMember.guid,
+        data: { count },
+      });
+    }
 
     await Log.create({
       topic: "cluster",
