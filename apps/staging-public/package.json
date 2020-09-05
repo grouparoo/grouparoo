@@ -11,6 +11,7 @@
   "dependencies": {
     "@grouparoo/bigquery": "^0.1.12-alpha.1",
     "@grouparoo/core": "^0.1.12-alpha.1",
+    "@grouparoo/demo": "^0.1.12-alpha.1",
     "@grouparoo/csv": "^0.1.12-alpha.1",
     "@grouparoo/email-authentication": "^0.1.12-alpha.1",
     "@grouparoo/files-s3": "^0.1.12-alpha.1",
@@ -37,6 +38,7 @@
     "plugins": [
       "@grouparoo/bigquery",
       "@grouparoo/csv",
+      "@grouparoo/demo",
       "@grouparoo/email-authentication",
       "@grouparoo/files-s3",
       "@grouparoo/google-sheets",
