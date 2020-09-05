@@ -19,3 +19,13 @@ export async function sleep(time = 1000) {
     setTimeout(resolve, time);
   });
 }
+
+export function userCreatedAgoMilli(userId: number) {
+  // 1000 people in last 3 months, spaced out
+  const numberOfUsers = 1000;
+  const secondsBack = 60 * 60 * 24 * 30 * 3;
+  const secondsEach = secondsBack / 1000; // for each user
+  const ageNumber = numberOfUsers - parseInt(userId);
+  let creationAgo = secondsEach * ageNumber * 1000;
+  return creationAgo;
+}

@@ -1,5 +1,5 @@
 import { Client } from "pg";
-import { log, execSync, sleep } from "./shared";
+import { log, execSync, userCreatedAgoMilli } from "./shared";
 import { api } from "actionhero";
 import parse from "csv-parse/lib/sync";
 import fs from "fs";
@@ -90,12 +90,7 @@ export default class Postgres {
     const variables = typeKeys.map((key, index) => "$" + (index + 1));
     const insertQuery = `INSERT INTO ${sqlTable} (${columnNames}) VALUES (${variables})`;
     for (const row of rows) {
-      // 100 people in last 3 months, spaced out
-      const numberOfUsers = 1000;
-      const secondsBack = 60 * 60 * 24 * 30 * 3;
-      const secondsEach = secondsBack / 1000; // for each user
-      const ageNumber = numberOfUsers - parseInt(row[userId]);
-      let creationAgo = secondsEach * ageNumber * 1000;
+      let creationAgo = userCreatedAgoMilli(row[userId]);
       if (tableName !== "users") {
         creationAgo = Math.random() * creationAgo;
       }
