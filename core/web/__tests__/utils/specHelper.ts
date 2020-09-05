@@ -94,7 +94,7 @@ export async function prepareForIntegrationTest() {
     SERVER_TOKEN: serverToken,
   });
 
-  apiProcess = spawn("node", ["./dist/server.js"], {
+  apiProcess = spawn("node", ["./dist/grouparoo.js"], {
     cwd: apiProjectPath,
     env: serverEnv,
   });
