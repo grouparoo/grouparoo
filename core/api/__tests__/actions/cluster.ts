@@ -1,6 +1,7 @@
 import { helper } from "./../utils/specHelper";
 import { specHelper } from "actionhero";
 import { Log } from "../../src/models/Log";
+import { App } from "../../src/models/App";
 let actionhero;
 
 describe("actions/cluster", () => {
@@ -56,6 +57,24 @@ describe("actions/cluster", () => {
             Source: 1,
           })
         );
+      });
+
+      test("only the event app remains, and it has been moved back to draft", async () => {
+        const apps = await App.scope(null).findAll();
+        expect(apps.length).toBe(1);
+        expect(apps[0].type).toBe("events");
+        expect(apps[0].state).toBe("draft");
+      });
+
+      test("teams still remain and the user is still logged in", async () => {
+        connection.params = { csrfToken };
+        const { teamMember, error } = await specHelper.runAction(
+          "session:view",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(teamMember.guid).toBeTruthy();
       });
 
       test("log messages were created", async () => {
