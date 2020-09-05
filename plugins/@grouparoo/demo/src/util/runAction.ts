@@ -1,12 +1,64 @@
-import { Connection } from "./connection";
-import { Action } from "./action";
-import { config } from "./../modules/config";
-import { log } from "../modules/log";
-import { utils } from "../modules/utils";
-import * as dotProp from "dot-prop";
-import { EOL } from "os";
-import { api } from "../index";
+//import { Connection, Action, config, log, utils, api, action } from 'actionhero';
+//import * as dotProp from "dot-prop";
 
+import { ActionProcessor, Connection, api, action } from "actionhero";
+import { TeamMember } from "@grouparoo/core";
+
+interface RunOptions {
+  as?: TeamMember;
+}
+export async function runAction(
+  actionName: string,
+  input: { [key: string]: any } = {},
+  { as } = { as: null }
+): Promise<{ [key: string]: any }> {
+  const running = api.running;
+  api.running = true;
+  try {
+    setupMiddleware();
+
+    // console.log("running....", actionName, input);
+    const data = {
+      type: "demo",
+      rawConnection: {},
+      remotePort: 0,
+      remoteIP: "demo",
+      remoteAddress: "demo",
+      params: Object.assign({}, input, { action: actionName }),
+      session: { teamMember: as, data: {} },
+    };
+
+    const connection = new Connection(data);
+    const actionProcessor = new ActionProcessor(connection);
+    const processed = await actionProcessor.processAction();
+    // console.log("action processed....", processed);
+    const { response } = processed;
+    if (response.error) {
+      throw response.error;
+    }
+    return response;
+  } finally {
+    api.running = running;
+  }
+}
+
+function setupMiddleware() {
+  const keys = ["authenticated-action", "optionally-authenticated-action"];
+  for (const key of keys) {
+    if (!api.actions.middleware[key]) {
+      // whatever these set should just be passed in to the session
+      // (i.e. session.teamMember)
+      // this just prevents the crash
+      const noop: action.ActionMiddleware = {
+        name: key,
+        global: false,
+        priority: 1000,
+      };
+      action.addMiddleware(noop);
+    }
+  }
+}
+/*
 export class ActionProcessor {
   connection: Connection;
   action: string;
@@ -401,3 +453,4 @@ export class ActionProcessor {
     }
   }
 }
+*/

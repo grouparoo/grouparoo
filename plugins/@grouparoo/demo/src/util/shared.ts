@@ -20,7 +20,7 @@ export async function sleep(time = 1000) {
   });
 }
 
-export function userCreatedAgoMilli(userId: number) {
+export function userCreatedAgoMilli(userId: any) {
   // 1000 people in last 3 months, spaced out
   const numberOfUsers = 1000;
   const secondsBack = 60 * 60 * 24 * 30 * 3;
