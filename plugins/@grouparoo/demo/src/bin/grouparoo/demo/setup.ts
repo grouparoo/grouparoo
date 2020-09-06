@@ -1,5 +1,6 @@
 import { CLI } from "actionhero";
 import { teams } from "../../../teams";
+import { init } from "../../../util/shared";
 
 export class Console extends CLI {
   constructor() {
@@ -9,6 +10,7 @@ export class Console extends CLI {
   }
 
   async run() {
+    await init();
     await teams();
     return true;
   }

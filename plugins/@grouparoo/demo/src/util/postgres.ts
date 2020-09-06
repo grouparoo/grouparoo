@@ -7,10 +7,14 @@ import path from "path";
 
 export default class Postgres {
   client: Client;
-  config: any;
+  config: { [key: string]: any };
   constructor(schema) {
     this.config = Object.assign({}, api.sequelize.config, { schema });
     this.client = null;
+  }
+
+  getConfig(): { [key: string]: any } {
+    return this.config;
   }
 
   log(level: number, ...rest) {

@@ -17,7 +17,7 @@ export async function runAction(
   try {
     setupMiddleware();
 
-    // console.log("running....", actionName, input);
+    console.log("running....", actionName, input);
     const data = {
       type: "demo",
       rawConnection: {},

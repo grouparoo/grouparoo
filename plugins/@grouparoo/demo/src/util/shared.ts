@@ -1,4 +1,7 @@
 import sharedExecSync from "./exec";
+import { api } from "actionhero";
+import { runAction } from "./runAction";
+import { getAdmin } from "../teams";
 
 const LOG_LEVEL = 4;
 
@@ -28,4 +31,21 @@ export function userCreatedAgoMilli(userId: any) {
   const ageNumber = numberOfUsers - parseInt(userId);
   let creationAgo = secondsEach * ageNumber * 1000;
   return creationAgo;
+}
+
+interface InitOptions {
+  reset?: boolean;
+}
+let envInit = false;
+export async function init(options: InitOptions = {}) {
+  if (envInit) {
+    return;
+  }
+  envInit = true;
+  await api.resque.startQueue();
+
+  if (options.reset) {
+    await runAction("cluster:destroy", {}, { as: await getAdmin() });
+    await await api.resque.queue.connection.redis.flushdb();
+  }
 }
