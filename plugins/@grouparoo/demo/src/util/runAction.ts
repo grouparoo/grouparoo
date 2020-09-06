@@ -10,7 +10,7 @@ interface RunOptions {
 export async function runAction(
   actionName: string,
   input: { [key: string]: any } = {},
-  { as } = { as: null }
+  options: RunOptions = {}
 ): Promise<{ [key: string]: any }> {
   const running = api.running;
   api.running = true;
@@ -25,11 +25,12 @@ export async function runAction(
       remoteIP: "demo",
       remoteAddress: "demo",
       params: Object.assign({}, input, { action: actionName }),
-      session: { teamMember: as, data: {} },
     };
 
     const connection = new Connection(data);
     const actionProcessor = new ActionProcessor(connection);
+    actionProcessor.session = { teamMember: options.as, data: {} };
+
     const processed = await actionProcessor.processAction();
     // console.log("action processed....", processed);
     const { response } = processed;
