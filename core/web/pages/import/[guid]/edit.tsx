@@ -46,8 +46,6 @@ export default function Page(props) {
         >
           <a>{_import.profileGuid}</a>
         </Link>
-        <br />
-        Forced: {_import.force.toString()}
       </p>
       {_import.errorMessage ? (
         <Alert variant="warning">

@@ -139,8 +139,6 @@ export default function ImportList(props) {
                     ) : (
                       _import.creatorGuid
                     )}
-                    <br />
-                    Forced: {_import.force.toString()}
                   </td>
                   <td>
                     Created: <Moment fromNow>{_import.createdAt}</Moment>

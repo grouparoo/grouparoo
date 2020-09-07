@@ -48,11 +48,6 @@ export class Import extends Model<Import> {
   updatedAt: Date;
 
   @AllowNull(false)
-  @Default(false)
-  @Column
-  force: boolean;
-
-  @AllowNull(false)
   @Column
   creatorType: string;
 
@@ -173,7 +168,6 @@ export class Import extends Model<Import> {
       profileGuid: this.profileGuid,
 
       //data
-      force: this.force,
       data,
       rawData,
 
