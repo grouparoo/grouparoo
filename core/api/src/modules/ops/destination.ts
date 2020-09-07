@@ -340,6 +340,7 @@ export namespace DestinationOps {
       newGroups: newGroupNames.sort(),
       hasChanges,
       toDelete,
+      force,
     });
 
     if (runs) {

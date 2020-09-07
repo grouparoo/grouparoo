@@ -161,7 +161,7 @@ describe("models/destination", () => {
       await destination.destroy();
     });
 
-    test("the app exportProfiles method can be called by the destination and exports will be created and mappings followed", async () => {
+    test("the app exportProfile method can be called by the destination and exports will be created and mappings followed", async () => {
       await destination.setMapping({
         uid: "userId",
         customer_email: "email",
@@ -471,6 +471,7 @@ describe("models/destination", () => {
 
       expect(newExport.toDelete).toBe(false);
       expect(newExport.hasChanges).toBe(false);
+      expect(newExport.force).toBe(false);
 
       await destination.sendExport(newExport, true);
       expect(exportArgs.profile).toBeNull(); // plugin#exportProfile not called
@@ -514,6 +515,7 @@ describe("models/destination", () => {
 
       await newExport.reload();
       expect(newExport.completedAt).toBeTruthy();
+      expect(newExport.force).toBe(true);
 
       await profile.destroy();
     });
