@@ -44,10 +44,13 @@ export default class Postgres {
     return this.client;
   }
 
-  async query(level, ...args) {
-    this.log(level, ...args);
+  async query(level, one, two = null) {
+    this.log(level, one, two);
     const client = await this.connect();
-    return await client.query(...args);
+    if (two) {
+      return client.query(one, two);
+    }
+    return client.query(one);
   }
 
   async dropTable(tableName) {
