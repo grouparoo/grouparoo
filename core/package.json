@@ -53,7 +53,7 @@
     "bcrypt": "5.0.0",
     "bootstrap": "4.5.2",
     "csv-stringify": "5.5.1",
-    "date-fns": "2.16.0",
+    "date-fns": "2.16.1",
     "dotenv": "8.2.0",
     "faker": "5.1.0",
     "fs-extra": "9.0.1",
