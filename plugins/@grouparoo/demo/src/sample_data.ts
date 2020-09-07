@@ -1,7 +1,7 @@
 import Database from "./util/postgres";
 import { log, init } from "./util/shared";
 import { runAction } from "./util/runAction";
-import { App, Source, ProfilePropertyRule } from "@grouparoo/core";
+import { App, Source, ProfilePropertyRule, Schedule } from "@grouparoo/core";
 import { Op } from "sequelize";
 
 export const SCHEMA_NAME = "demo";
@@ -116,12 +116,40 @@ export async function users() {
   await createSource("users", "id");
   await createPropertyRules("users", USER_RULES);
   await makePropertyRuleIdentifying("users", "email");
+  await createAndRunSchedule("users", "updated_at");
 }
 
 export async function purchases() {
   await createCsvTable("purchases", "user_id", PURCHASES, true, false);
   await createSource("purchases", "user_id");
   await createPropertyRules("purchases", PURCHASE_RULES);
+}
+
+async function createAndRunSchedule(tableName: string, columnName: string) {
+  const source = await findSource(tableName);
+  const where = { sourceGuid: source.guid };
+  const found = await Schedule.findOne({ where });
+  const params = {
+    name: `${source.name} schedule`,
+    state: "ready",
+    recurring: true,
+    options: { column: columnName },
+    recurringFrequency: 5 * 60 * 1000, // five minutes
+    sourceGuid: source.guid,
+    guid: found?.guid,
+  };
+  if (found) {
+    await runAction("schedule:edit", params);
+  } else {
+    await runAction("schedule:create", params);
+  }
+
+  const made = await Schedule.findOne({ where });
+  if (!made) {
+    throw new Error(`Schedule not created (${tableName})`);
+  }
+
+  await runAction("schedule:run", { guid: made.guid });
 }
 
 async function createCsvTable(
