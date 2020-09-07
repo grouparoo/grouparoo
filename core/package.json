@@ -112,7 +112,7 @@
     "prettier": "2.1.1",
     "prop-types": "15.7.2",
     "ts-jest": "26.3.0",
-    "typedoc": "0.18.0"
+    "typedoc": "0.19.1"
   },
   "gitHead": "d180097c68e2e0db22918e7d51c0e84abd9202c0"
 }
