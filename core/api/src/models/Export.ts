@@ -64,6 +64,11 @@ export class Export extends Model<Export> {
   @Column
   profileGuid: string;
 
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  force: boolean;
+
   @Column
   startedAt: Date;
 
@@ -190,6 +195,7 @@ export class Export extends Model<Export> {
       guid: this.guid,
       destination: destination ? await destination.apiData(false, false) : null,
       profileGuid: this.profileGuid,
+      force: this.force,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       startedAt: this.startedAt ? this.startedAt.getTime() : null,
       completedAt: this.completedAt ? this.completedAt.getTime() : null,

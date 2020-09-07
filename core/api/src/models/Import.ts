@@ -2,6 +2,7 @@ import {
   Model,
   Table,
   Column,
+  Default,
   CreatedAt,
   UpdatedAt,
   BeforeCreate,
@@ -45,6 +46,11 @@ export class Import extends Model<Import> {
 
   @UpdatedAt
   updatedAt: Date;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  force: boolean;
 
   @AllowNull(false)
   @Column
@@ -167,6 +173,7 @@ export class Import extends Model<Import> {
       profileGuid: this.profileGuid,
 
       //data
+      force: this.force,
       data,
       rawData,
 

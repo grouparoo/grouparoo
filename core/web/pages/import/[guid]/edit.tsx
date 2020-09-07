@@ -46,6 +46,8 @@ export default function Page(props) {
         >
           <a>{_import.profileGuid}</a>
         </Link>
+        <br />
+        Forced: {_import.force.toString()}
       </p>
       {_import.errorMessage ? (
         <Alert variant="warning">
@@ -71,15 +73,21 @@ export default function Page(props) {
               <ul>
                 {Object.keys(_import.oldProfileProperties).map((k) => {
                   return (
-                    <li key={`old-${k}`}>
+                    <li key={`${_import.guid}-prp-${k}`}>
                       {k}:{" "}
-                      {_import.oldProfileProperties[k] !==
-                      _import.newProfileProperties[k] ? (
+                      {JSON.stringify(_import.oldProfileProperties[k]) !==
+                      JSON.stringify(_import.newProfileProperties[k]) ? (
                         <>
-                          <Badge variant="danger">-</Badge>{" "}
-                          {_import.oldProfileProperties[k]?.toString()}|
-                          <Badge variant="success">+</Badge>{" "}
-                          {_import.newProfileProperties[k]?.toString()}
+                          <Badge variant="danger">-</Badge>&nbsp;
+                          {_import.oldProfileProperties[k]?.toString()}
+                          {_import.newProfileProperties[k] !== null &&
+                          _import.newProfileProperties[k] !== undefined ? (
+                            <>
+                              {" "}
+                              | <Badge variant="success">+</Badge>&nbsp;
+                              {_import.newProfileProperties[k].toString()}
+                            </>
+                          ) : null}
                         </>
                       ) : (
                         _import.oldProfileProperties[k]?.toString()
