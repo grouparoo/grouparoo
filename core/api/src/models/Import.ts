@@ -2,7 +2,6 @@ import {
   Model,
   Table,
   Column,
-  Default,
   CreatedAt,
   UpdatedAt,
   BeforeCreate,
