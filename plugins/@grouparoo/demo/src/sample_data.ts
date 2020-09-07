@@ -5,6 +5,7 @@ import { App, Source, ProfilePropertyRule } from "@grouparoo/core";
 import { Op } from "sequelize";
 
 export const SCHEMA_NAME = "demo";
+export const USER_ID_PROPERTY_NAME = "userId";
 
 const USERS = {
   id: "INT NOT NULL PRIMARY KEY",
@@ -17,6 +18,50 @@ const USERS = {
   language: "VARCHAR(191)",
   deactivated: "BOOLEAN",
 };
+
+const USER_ID_PROPERTY_RULE = {
+  key: USER_ID_PROPERTY_NAME,
+  type: "integer",
+  unique: true,
+  identifying: true,
+  options: { column: "id", "aggregation method": "exact" },
+};
+
+const RULE_DEFAULT = {
+  isArray: false,
+  unique: false,
+  identifying: false,
+  filters: [],
+};
+
+const USER_RULES = [
+  {
+    key: "firstName",
+    type: "string",
+    options: { column: "first_name", "aggregation method": "exact" },
+  },
+  {
+    key: "lastName",
+    type: "string",
+    options: { column: "last_name", "aggregation method": "exact" },
+  },
+  {
+    key: "email",
+    type: "email",
+    options: { column: "email", "aggregation method": "exact" },
+    unique: true,
+  },
+  {
+    key: "language",
+    type: "string",
+    options: { column: "language", "aggregation method": "exact" },
+  },
+  {
+    key: "deactivated",
+    type: "boolean",
+    options: { column: "deactivated", "aggregation method": "exact" },
+  },
+];
 
 const PURCHASES = {
   id: "INT NOT NULL PRIMARY KEY",
@@ -32,6 +77,8 @@ interface SampleDataOptions {
 }
 export async function users(options: SampleDataOptions = {}) {
   await createCsvTable("users", "id", USERS, true, true, options);
+  await createPropertyRules("users", USER_RULES);
+  await makePropertyRuleIdentifying("users", "email");
 }
 
 export async function purchases(options: SampleDataOptions = {}) {
@@ -57,11 +104,6 @@ async function createCsvTable(
   }
 }
 
-async function createSource(tableName: string, userId: string) {
-  const app = await getApp();
-  return getSource(app, tableName, userId);
-}
-
 async function findTableSource(app, tableName) {
   const where = {
     state: { [Op.not]: null },
@@ -69,10 +111,8 @@ async function findTableSource(app, tableName) {
     type: "postgres-table-import",
   };
   const sources = await Source.findAll({ where });
-  console.log("sources", where, sources);
   for (const source of sources) {
     const options = await source.getOptions();
-    console.log("options", options);
     if (options.table === tableName) {
       return source;
     }
@@ -80,46 +120,106 @@ async function findTableSource(app, tableName) {
   return null;
 }
 
-async function ensureUserIdPropertyRule(source: Source, userId: string) {
+async function makePropertyRuleIdentifying(
+  tableName: string,
+  propertyKey: string
+) {
+  // remove current one
+  const current = await ProfilePropertyRule.findAll({
+    where: { identifying: true },
+  });
+  for (const propertyRule of current) {
+    const params = { identifying: false, guid: propertyRule.guid };
+    await runAction("profilePropertyRule:edit", params);
+  }
+
+  // set on new one
+  const source = await findSource(tableName);
+  const found = await findPropertyRule(source, propertyKey);
+  if (!found) {
+    throw new Error(`Identifying rule not found (${propertyKey})`);
+  }
+
+  const params = { identifying: false, guid: found.guid };
+  await runAction("profilePropertyRule:edit", params);
+}
+
+async function findPropertyRule(source: Source, propertyKey: string) {
   const where = {
     state: { [Op.not]: null },
     sourceGuid: source.guid,
-    key: "userId",
-    unique: true,
-    type: "integer",
+    key: propertyKey,
   };
+  return ProfilePropertyRule.findOne({ where });
+}
 
-  const found = await ProfilePropertyRule.findOne({ where });
+async function createPropertyRules(tableName: string, rules: any) {
+  const source = await findSource(tableName);
+  for (const rule of rules) {
+    await createPropertyRule(source, rule);
+  }
+}
+
+async function createPropertyRule(source: Source, rule: any) {
+  const found = await findPropertyRule(source, rule.key);
+
+  const params = Object.assign({}, RULE_DEFAULT, rule, {
+    state: "ready",
+    sourceGuid: source.guid,
+    guid: found?.guid,
+  });
   if (found) {
-    const params = {
-      key: where.key,
-      type: where.type,
-      unique: where.unique,
-      isArray: false,
-      identifying: true,
-      // state: "ready", doesn't find draft
-      guid: found.guid,
-      sourceGuid: where.sourceGuid,
-      options: { column: userId, "aggregation method": "exact" },
-      filters: [],
-    };
+    await runAction("profilePropertyRule:edit", params);
+  } else {
+    await runAction("profilePropertyRule:create", params);
+  }
+  const made = await findPropertyRule(source, rule.key);
+  if (!made) {
+    throw new Error(`rule not made: ${rule.key}`);
+  }
+  return made;
+}
+
+async function ensureUserIdPropertyRule(source: Source) {
+  const rule = USER_ID_PROPERTY_RULE;
+  const found = await findPropertyRule(source, rule.key);
+  if (found) {
+    const params = Object.assign({}, RULE_DEFAULT, rule, {
+      state: "ready",
+      sourceGuid: source.guid,
+      guid: found?.guid,
+    });
     await runAction("profilePropertyRule:edit", params);
   } else {
     // need to bootstrap it
     const params = {
-      guid: where.sourceGuid,
-      key: where.key,
-      type: where.type,
-      mappedColumn: userId,
+      guid: source.guid,
+      key: rule.key,
+      type: rule.type,
+      mappedColumn: rule.options.column,
     };
     await runAction("source:bootstrapUniqueProfilePropertyRule", params);
   }
 
-  const made = await ProfilePropertyRule.findOne({ where });
+  const made = await findPropertyRule(source, rule.key);
   if (!made) {
     throw new Error("unique userId not made app not created!");
   }
   return made;
+}
+
+async function findSource(tableName: string) {
+  const app = await getApp();
+  const found = await findTableSource(app, tableName);
+  if (!found) {
+    throw new Error(`Source not found (${tableName})`);
+  }
+  return found;
+}
+
+async function createSource(tableName: string, userId: string) {
+  const app = await getApp();
+  return getSource(app, tableName, userId);
 }
 
 async function getSource(app: App, tableName: string, userId: string) {
@@ -145,14 +245,14 @@ async function getSource(app: App, tableName: string, userId: string) {
     throw new Error(`Source not created (${tableName})!`);
   }
   if (tableName === "users") {
-    await ensureUserIdPropertyRule(made, userId);
+    await ensureUserIdPropertyRule(made);
   }
   const update = {
     guid: made.guid,
     state: "ready",
     mapping: {},
   };
-  update.mapping[userId] = "userId"; // "user_id" => "userId"
+  update.mapping[userId] = USER_ID_PROPERTY_NAME; // "user_id" => "userId"
   await runAction("source:edit", update);
 
   await made.reload();

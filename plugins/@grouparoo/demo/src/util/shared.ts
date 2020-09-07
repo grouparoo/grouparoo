@@ -3,7 +3,7 @@ import { api } from "actionhero";
 import { runAction } from "./runAction";
 import { getAdmin } from "../teams";
 
-const LOG_LEVEL = 4;
+const LOG_LEVEL = 1;
 
 export function log(level: number, ...toLog) {
   if (LOG_LEVEL >= level) {
