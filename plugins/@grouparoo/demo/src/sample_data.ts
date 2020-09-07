@@ -72,17 +72,56 @@ const PURCHASES = {
   state: "VARCHAR(191)",
 };
 
-interface SampleDataOptions {
-  source?: boolean;
-}
-export async function users(options: SampleDataOptions = {}) {
-  await createCsvTable("users", "id", USERS, true, true, options);
+const PURCHASE_FILTERS = [{ key: "state", op: "equals", match: "successful" }];
+const PURCHASE_RULES = [
+  {
+    key: "LTV",
+    type: "float",
+    options: { column: "price", "aggregation method": "sum" },
+    filters: PURCHASE_FILTERS,
+  },
+  {
+    key: "puchaseCount",
+    type: "integer",
+    options: {
+      column: "id",
+      "aggregation method": "count",
+    },
+    filters: PURCHASE_FILTERS,
+  },
+  {
+    key: "lastPurchaseCategory",
+    type: "string",
+    options: {
+      column: "category",
+      "aggregation method": "most recent value",
+      "sort column": "created_at",
+    },
+    filters: PURCHASE_FILTERS,
+  },
+  {
+    key: "lastPurchaseDate",
+    type: "date",
+    options: {
+      column: "created_at",
+      "aggregation method": "most recent value",
+      "sort column": "created_at",
+    },
+    filters: PURCHASE_FILTERS,
+  },
+];
+
+export async function users() {
+  await createCsvTable("users", "id", USERS, true, true);
+  await createSource("users", "id");
   await createPropertyRules("users", USER_RULES);
   await makePropertyRuleIdentifying("users", "email");
 }
 
-export async function purchases(options: SampleDataOptions = {}) {
-  await createCsvTable("purchases", "user_id", PURCHASES, true, false, options);
+export async function purchases() {
+  await createCsvTable("purchases", "user_id", PURCHASES, true, false);
+  await createSource("purchases", "user_id");
+  await createPropertyRules("purchases", PURCHASE_RULES);
 }
 
 async function createCsvTable(
@@ -90,18 +129,13 @@ async function createCsvTable(
   userId: string,
   types: any,
   createdAt: boolean,
-  updatedAt: boolean,
-  options: SampleDataOptions
+  updatedAt: boolean
 ) {
   log(0, `Adding Sample Data: ${tableName}`);
   const db = new Database(SCHEMA_NAME);
   await db.connect();
   await db.createCsvTable(tableName, userId, types, createdAt, updatedAt);
   await db.disconnect();
-
-  if (options.source) {
-    const source = await createSource(tableName, userId);
-  }
 }
 
 async function findTableSource(app, tableName) {

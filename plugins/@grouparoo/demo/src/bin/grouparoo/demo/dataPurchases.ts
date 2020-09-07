@@ -12,8 +12,8 @@ export class Console extends CLI {
 
   async run() {
     await init({ reset: true });
-    await users({ source: true });
-    // await purchases();
+    await users();
+    await purchases();
     return true;
   }
 }
