@@ -173,13 +173,20 @@ export default function ImportList(props) {
                         return (
                           <li key={`${_import.guid}-prp-${k}`}>
                             {k}:{" "}
-                            {_import.oldProfileProperties[k] !==
-                            _import.newProfileProperties[k] ? (
+                            {JSON.stringify(_import.oldProfileProperties[k]) !==
+                            JSON.stringify(_import.newProfileProperties[k]) ? (
                               <>
                                 <Badge variant="danger">-</Badge>&nbsp;
-                                {_import.oldProfileProperties[k]?.toString()}|
-                                <Badge variant="success">+</Badge>&nbsp;
-                                {_import.newProfileProperties[k]?.toString()}
+                                {_import.oldProfileProperties[k]?.toString()}
+                                {_import.newProfileProperties[k] !== null &&
+                                _import.newProfileProperties[k] !==
+                                  undefined ? (
+                                  <>
+                                    {" "}
+                                    | <Badge variant="success">+</Badge>&nbsp;
+                                    {_import.newProfileProperties[k].toString()}
+                                  </>
+                                ) : null}
                               </>
                             ) : (
                               _import.oldProfileProperties[k]?.toString()

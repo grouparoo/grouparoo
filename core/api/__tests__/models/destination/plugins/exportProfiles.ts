@@ -384,6 +384,7 @@ describe("models/destination", () => {
 
       expect(newExport.toDelete).toBe(false);
       expect(newExport.hasChanges).toBe(false);
+      expect(newExport.force).toBe(false);
 
       await specHelper.runTask("export:enqueue", {});
 
@@ -426,6 +427,7 @@ describe("models/destination", () => {
 
       expect(newExport.toDelete).toBe(false);
       expect(newExport.hasChanges).toBe(true);
+      expect(newExport.force).toBe(true);
 
       await specHelper.runTask("export:enqueue", {});
 

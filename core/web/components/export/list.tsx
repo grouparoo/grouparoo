@@ -196,6 +196,8 @@ export default function ExportsList(props) {
                     Most Recent? {_export.mostRecent.toString()}
                     <br />
                     Has Changes? {_export.hasChanges.toString()}
+                    <br />
+                    Forced: {_export.force.toString()}
                   </td>
                   <td>
                     Created:{" "}

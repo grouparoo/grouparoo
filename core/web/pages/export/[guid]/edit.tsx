@@ -39,6 +39,9 @@ export default function Page({ _export, groups }) {
         >
           <a>{_export.profileGuid}</a>
         </Link>
+        <br />
+        <br />
+        Forced: {_export.force.toString()}
       </p>
       {_export.errorMessage ? (
         <Alert variant="warning">
