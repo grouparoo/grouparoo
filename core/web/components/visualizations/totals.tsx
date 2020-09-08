@@ -145,6 +145,10 @@ function PendingExports({ execApi }) {
     }
   }
 
+  if (destinations.length === 0) {
+    return <p>No Destinations</p>;
+  }
+
   return (
     <Table borderless size="sm">
       <tbody>
