@@ -34,7 +34,7 @@ export namespace ProfilePropertyRuleOps {
   export async function pluginOptions(
     profilePropertyRule: ProfilePropertyRule
   ) {
-    const source = await profilePropertyRule.$get("source");
+    const source = await profilePropertyRule.$get("source", { scope: null });
     const { pluginConnection } = await source.getPlugin();
 
     if (!pluginConnection) {
@@ -100,7 +100,7 @@ export namespace ProfilePropertyRuleOps {
     }
 
     const profilePropertyRuleOptions = await profilePropertyRule.getOptions();
-    const source = await profilePropertyRule.$get("source");
+    const source = await profilePropertyRule.$get("source", { scope: null });
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();
     const app = await App.findByGuid(source.appGuid);
