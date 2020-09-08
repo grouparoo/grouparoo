@@ -87,7 +87,8 @@ export namespace OptionHelper {
 
       // @ts-ignore
       instance.changed("updatedAt", true);
-      await instance.save({ transaction });
+      // @ts-ignore
+      await instance.save({ transaction, hooks: false });
 
       await transaction.commit();
 
