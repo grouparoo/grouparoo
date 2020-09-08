@@ -8,6 +8,7 @@ import { App } from "../../models/App";
 import { OptionHelper } from "../optionHelper";
 import { MappingHelper } from "../mappingHelper";
 import { log, utils } from "actionhero";
+import { LoggedModel } from "../../classes/loggedModel";
 
 export namespace SourceOps {
   /**
@@ -233,8 +234,9 @@ export namespace SourceOps {
       await ProfilePropertyRule.ensureNonArrayAndUnique(rule);
       await ProfilePropertyRule.ensureOneIdentifyingProperty(rule);
 
-      // @ts-ignore
       // danger zone!
+      await LoggedModel.logCreate(rule);
+      // @ts-ignore
       await rule.save({ hooks: false });
       await ProfilePropertyRule.clearCacheAfterSave();
 

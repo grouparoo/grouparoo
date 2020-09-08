@@ -100,14 +100,10 @@ export abstract class LoggedModel<T> extends Model<T> {
     const apiData = await this.apiData();
 
     config.general.filteredParams.forEach((p) => {
-      if (apiData[p]) {
-        apiData[p] = "** filtered **";
-      }
+      if (apiData[p]) apiData[p] = "** filtered **";
     });
 
-    if (apiData.options) {
-      apiData.options = "** filtered **";
-    }
+    if (apiData.options) apiData.options = "** filtered **";
 
     return apiData;
   }

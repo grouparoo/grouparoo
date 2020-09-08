@@ -10,6 +10,7 @@ import { Destination } from "./../models/Destination";
 import { Schedule } from "./../models/Schedule";
 import { ProfilePropertyRule } from "./../models/ProfilePropertyRule";
 import { App } from "./../models/App";
+import { LoggedModel } from "../classes/loggedModel";
 
 function modelName(instance): string {
   let name = instance.constructor.name;
@@ -87,6 +88,7 @@ export namespace OptionHelper {
 
       // @ts-ignore
       instance.changed("updatedAt", true);
+      await LoggedModel.logUpdate(instance);
       // @ts-ignore
       await instance.save({ transaction, hooks: false });
 
