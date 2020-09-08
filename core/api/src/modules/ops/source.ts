@@ -259,7 +259,7 @@ export namespace SourceOps {
           }
         );
 
-        await rule.setOptions(ruleOptions);
+        await rule.setOptions(ruleOptions, false);
       }
 
       return rule;
