@@ -20,7 +20,8 @@ describe("models/setting", () => {
       "testPlugin",
       "key",
       "value",
-      "this is a test setting"
+      "this is a test setting",
+      "string"
     );
 
     expect(setting.guid.length).toBe(40);

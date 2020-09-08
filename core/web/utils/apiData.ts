@@ -17,6 +17,7 @@ import {
   ProfileProperty,
   ProfilePropertyRule,
   Run,
+  Setting,
   Schedule,
   Source,
   Team,
@@ -50,6 +51,7 @@ export type ProfilePropertyAPIData = Partial<
 export type ProfilePropertyRuleAPIData = Partial<
   AsyncReturnType<ProfilePropertyRule["apiData"]>
 >;
+export type SettingAPIData = Partial<AsyncReturnType<Setting["apiData"]>>;
 export type RunAPIData = Partial<AsyncReturnType<Run["apiData"]>>;
 export type ScheduleAPIData = Partial<AsyncReturnType<Schedule["apiData"]>>;
 export type SourceAPIData = Partial<AsyncReturnType<Source["apiData"]>>;

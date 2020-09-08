@@ -138,7 +138,8 @@ describe("modules/plugin", () => {
         "test-plugin",
         "sample-setting",
         "100",
-        "I am a test setting"
+        "I am a test setting",
+        "string"
       );
 
       let value = await plugin.readSetting("test-plugin", "sample-setting");

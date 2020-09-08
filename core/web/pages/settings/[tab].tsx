@@ -9,13 +9,14 @@ import IdentifyingProfilePropertyRule from "../../components/settings/identifyin
 import ResetCluster from "../../components/settings/resetCluster";
 import { capitalize } from "../../components/tabs";
 import { useRouter } from "next/router";
+import { SettingAPIData } from "../../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, successHandler, tab } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [settings, setSettings] = useState(props.settings);
+  const [settings, setSettings] = useState<SettingAPIData[]>(props.settings);
   const [activeTab, setActiveTab] = useState(tab || "core");
 
   useEffect(() => {
@@ -66,13 +67,6 @@ export default function Page(props) {
           />
         </Tab>
 
-        <Tab eventKey="interface" title="Interface">
-          <InterfaceTab
-            errorHandler={errorHandler}
-            successHandler={successHandler}
-          />
-        </Tab>
-
         {pluginNames.sort().map((pluginName) => (
           <Tab
             key={`plugin-${pluginName}`}
@@ -81,6 +75,14 @@ export default function Page(props) {
           >
             <br />
             <h2>{capitalize(pluginName)}</h2>
+
+            {/* Special Settings */}
+            {pluginName === "interface" ? (
+              <InterfaceTab
+                errorHandler={errorHandler}
+                successHandler={successHandler}
+              />
+            ) : null}
 
             {/* Regular Settings organized by Plugin */}
             {settings
@@ -112,7 +114,15 @@ Page.getInitialProps = async (ctx) => {
   return { settings, tab };
 };
 
-function SettingCard({ setting, updateSetting, loading }) {
+function SettingCard({
+  setting,
+  updateSetting,
+  loading,
+}: {
+  setting: SettingAPIData;
+  updateSetting: Function;
+  loading: boolean;
+}) {
   const { handleSubmit, register } = useForm();
 
   async function onSubmit(data) {
@@ -134,20 +144,43 @@ function SettingCard({ setting, updateSetting, loading }) {
       <Card>
         <Card.Body>
           <Card.Title>{capitalize(setting.key)}</Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">
-            {setting.description}
-          </Card.Subtitle>
+          {setting.type !== "boolean" ? (
+            <Card.Subtitle className="mb-2 text-muted">
+              {setting.description}
+            </Card.Subtitle>
+          ) : null}
 
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Form.Group>
-              <Form.Control
-                style={{ width: "100%" }}
-                required
-                type="text"
-                name="value"
-                ref={register}
-                defaultValue={setting.value}
-              />
+              {setting.type === "string" ? (
+                <Form.Control
+                  style={{ width: "100%" }}
+                  required
+                  type="text"
+                  name="value"
+                  ref={register}
+                  defaultValue={setting.value}
+                />
+              ) : null}
+              {setting.type === "number" ? (
+                <Form.Control
+                  style={{ width: "100%" }}
+                  required
+                  type="number"
+                  name="value"
+                  ref={register}
+                  defaultValue={setting.value}
+                />
+              ) : null}
+              {setting.type === "boolean" ? (
+                <Form.Check
+                  type="checkbox"
+                  name="value"
+                  label={setting.description}
+                  ref={register}
+                  defaultChecked={setting.value === "true"}
+                />
+              ) : null}
             </Form.Group>
 
             <Button
@@ -204,15 +237,11 @@ function ActionsTab({ errorHandler, successHandler }) {
 function InterfaceTab({ errorHandler, successHandler }) {
   return (
     <>
-      <br />
-      <h2>User Interface</h2>
-
-      <br />
-
       <IdentifyingProfilePropertyRule
         errorHandler={errorHandler}
         successHandler={successHandler}
       />
+      <br />
     </>
   );
 }
