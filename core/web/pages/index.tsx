@@ -28,21 +28,29 @@ export default function Page(props) {
       <div style={{ width: "100%", height: "100%" }}>
         <Row>
           <Col style={{ textAlign: "center" }}>
+            <Image
+              style={{ maxHeight: 50, margin: 40 }}
+              src="/images/logo/logo-and-wordmark-black-words.svg"
+            />
             <br />
-            <br />
-            <br />
-            <br />
-            <Image style={{ maxHeight: 200 }} src="/images/logo/logo.svg" />
-            <br />
-            <br />
-            <h1>Grouparoo</h1>
-            <p>Achieve Marketing Autonomy</p>
+            <h2>Sync, Segment, and Send your Product Data Everywhere</h2>
+            <p>
+              Grouparoo is open source data infrastructure to keep customer data
+              in-sync between your data warehouse and 3rd party tools.
+            </p>
+            <p>
+              Learn more at{" "}
+              <a target="_blank" href="https://www.grouparoo.com">
+                www.grouparoo.com
+              </a>
+            </p>
             <br />
             <br />
 
             <div style={{ textAlign: "center" }}>
               <Button
-                variant="success"
+                variant="primary"
+                size="lg"
                 onClick={() => {
                   Router.push(CTALink);
                 }}
