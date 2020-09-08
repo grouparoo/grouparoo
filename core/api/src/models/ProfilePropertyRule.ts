@@ -203,8 +203,8 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     return options;
   }
 
-  async setOptions(options: SimpleProfilePropertyRuleOptions) {
-    await this.test(options);
+  async setOptions(options: SimpleProfilePropertyRuleOptions, test = true) {
+    if (test) await this.test(options);
 
     for (const i in options) {
       options[
@@ -335,7 +335,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   async apiData() {
     const options = await this.getOptions();
     const filters = await this.getFilters();
-    const source = await this.$get("source");
+    const source = await this.$get("source", { scope: null });
 
     return {
       guid: this.guid,
@@ -413,7 +413,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     }
   }
 
-  @BeforeCreate
+  @BeforeSave
   static async ensureSourceReady(instance: ProfilePropertyRule) {
     const source = await Source.findByGuid(instance.sourceGuid);
     if (source.state !== "ready") throw new Error("source is not ready");
