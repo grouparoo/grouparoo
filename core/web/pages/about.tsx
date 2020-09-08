@@ -62,7 +62,7 @@ export default function Page({ version, plugins }) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { version } = await execApi("get", `/status`);
+  const { version } = await execApi("get", `/status/private`);
   const { plugins } = await execApi("get", `/plugins`);
   return { version, plugins };
 };
