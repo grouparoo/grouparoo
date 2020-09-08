@@ -8,6 +8,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/swagger", action: "swagger" },
         { path: "/v:apiVersion/plugins", action: "plugins" },
         { path: "/v:apiVersion/session", action: "session:view" },
+        { path: "/v:apiVersion/setupSteps", action: "setupSteps:list" },
         { path: "/v:apiVersion/totals", action: "totals" },
         { path: "/v:apiVersion/logs", action: "logs:list" },
         { path: "/v:apiVersion/imports", action: "imports:list" },
@@ -100,6 +101,7 @@ export const DEFAULT = {
       ],
 
       put: [
+        { path: "/v:apiVersion/setupStep/:guid", action: "setupStep:edit" },
         { path: "/v:apiVersion/team/:guid", action: "team:edit" },
         { path: "/v:apiVersion/team/member/:guid", action: "teamMember:edit" },
         { path: "/v:apiVersion/apiKey/:guid", action: "apiKey:edit" },
