@@ -103,8 +103,8 @@ export class Destination extends LoggedModel<Destination> {
   async apiData(includeApp = true, includeGroup = true) {
     let app: App;
     let group: Group;
-    if (includeApp) app = await this.$get("app");
-    if (includeGroup) group = await this.$get("group");
+    if (includeApp) app = await this.$get("app", { scope: null });
+    if (includeGroup) group = await this.$get("group", { scope: null });
 
     const mapping = await this.getMapping();
     const options = await this.getOptions();

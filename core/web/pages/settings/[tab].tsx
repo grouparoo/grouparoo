@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { Button, Form, Card, Tabs, Tab } from "react-bootstrap";
@@ -16,7 +16,11 @@ export default function Page(props) {
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [settings, setSettings] = useState(props.settings);
-  const [activeTab] = useState(tab || "core");
+  const [activeTab, setActiveTab] = useState(tab || "core");
+
+  useEffect(() => {
+    setActiveTab(tab);
+  }, [tab]);
 
   async function updateSetting(setting) {
     setLoading(true);

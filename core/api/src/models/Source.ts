@@ -166,12 +166,10 @@ export class Source extends LoggedModel<Source> {
     let profilePropertyRules: ProfilePropertyRule[];
 
     if (includeApp) {
-      app = await this.$get("app");
+      app = await this.$get("app", { scope: null });
     }
     if (includeSchedule) {
-      schedule = await this.$get("schedule", {
-        scope: null,
-      });
+      schedule = await this.$get("schedule", { scope: null });
     }
     if (includeProfilePropertyRules) {
       profilePropertyRules = await this.$get("profilePropertyRules", {
