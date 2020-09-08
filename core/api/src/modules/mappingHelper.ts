@@ -17,7 +17,7 @@ export namespace MappingHelper {
 
     for (const i in mappings) {
       const mapping = mappings[i];
-      const rule = await mapping.$get("profilePropertyRule");
+      const rule = await mapping.$get("profilePropertyRule", { scope: null });
       if (!rule) {
         throw new Error(
           `cannot find profile property rule or this source/destination not ready (remoteKey: ${mapping.remoteKey})`
