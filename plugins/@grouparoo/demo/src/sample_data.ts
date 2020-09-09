@@ -359,7 +359,8 @@ export async function getPurchases() {
   const db = new Database(SCHEMA_NAME);
   const tableName = "purchases";
   const sqlTable = `${db.config.schema}."${tableName}"`;
-  const sql = `SELECT * FROM ${sqlTable}`;
+  // TODO: remove LIMIT when it doesn't freeze up with SequelizeConnectionAcquireTimeoutError
+  const sql = `SELECT * FROM ${sqlTable} ORDER BY id DESC LIMIT 10`;
   const results = await db.query(3, sql);
   for (const row of results.rows) {
     out.push(row);
