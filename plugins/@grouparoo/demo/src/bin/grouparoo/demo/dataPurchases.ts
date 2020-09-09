@@ -1,4 +1,5 @@
 import { CLI } from "actionhero";
+import { teams } from "../../../teams";
 import { users, purchases } from "../../../sample_data";
 import { groups } from "../../../groups";
 import { init } from "../../../util/shared";
@@ -13,6 +14,7 @@ export class Console extends CLI {
 
   async run() {
     await init({ reset: true });
+    await teams();
     await users();
     await purchases();
     await groups();
