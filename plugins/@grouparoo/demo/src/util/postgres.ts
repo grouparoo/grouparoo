@@ -54,7 +54,7 @@ export default class Postgres {
   }
 
   async dropTable(tableName) {
-    const sqlTable = `${this.config.schema}.${tableName}`;
+    const sqlTable = `${this.config.schema}."${tableName}"`;
     this.query(1, `DROP TABLE IF EXISTS ${sqlTable}`);
   }
   async createCsvTable(
@@ -66,7 +66,7 @@ export default class Postgres {
   ) {
     await this.dropTable(tableName);
 
-    const sqlTable = `${this.config.schema}.${tableName}`;
+    const sqlTable = `${this.config.schema}."${tableName}"`;
     // read from data file
     const filePath = path.resolve(
       path.join(__dirname, "..", "..", "data", `${tableName}.csv`)
