@@ -278,7 +278,7 @@ export class ProfilePropertyRuleProfilePreview extends AuthenticatedAction {
     if (params.profileGuid) {
       profile = await Profile.findByGuid(params.profileGuid);
     } else {
-      profile = await Profile.findOne({ logging: true });
+      profile = await Profile.findOne({ order: [["guid", "asc"]] });
       if (!profile) {
         response.errorMessage = "no profiles found";
         return;
