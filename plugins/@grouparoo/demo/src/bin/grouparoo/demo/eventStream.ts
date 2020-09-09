@@ -244,9 +244,11 @@ class MockSession {
       return;
     }
 
+    // normally, don't use random(), but this is not a runtime operation, so it should be OK
     this.currentUser = await Profile.findOne({
       order: api.sequelize.random(),
     });
+
     this.anonymousId = `?-${uuid.v4()}`;
     this.profileProperties = await this.currentUser.properties();
     if (!this.profileProperties[this.identifyingProfilePropertyRuleKey]) {

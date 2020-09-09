@@ -268,7 +268,7 @@ export class Run extends Model<Run> {
    * This method tries to import a random profile to check if the ProfilePropertyRules are valid
    */
   async test() {
-    const profile = await Profile.findOne({ order: api.sequelize.random() });
+    const profile = await Profile.findOne({ order: [["guid", "asc"]] });
 
     if (profile) {
       try {

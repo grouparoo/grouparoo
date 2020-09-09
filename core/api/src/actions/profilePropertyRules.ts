@@ -54,7 +54,7 @@ export class ProfilePropertyRulesList extends AuthenticatedAction {
           profilePropertyRuleGuid: rule.guid,
           rawValue: { [Op.not]: null },
         },
-        order: api.sequelize.random(),
+        order: [["guid", "asc"]],
         limit: 5,
       });
       const exampleValues = examples.map((e) => e.rawValue);
@@ -278,7 +278,7 @@ export class ProfilePropertyRuleProfilePreview extends AuthenticatedAction {
     if (params.profileGuid) {
       profile = await Profile.findByGuid(params.profileGuid);
     } else {
-      profile = await Profile.findOne({ order: api.sequelize.random() });
+      profile = await Profile.findOne({ logging: true });
       if (!profile) {
         response.errorMessage = "no profiles found";
         return;
