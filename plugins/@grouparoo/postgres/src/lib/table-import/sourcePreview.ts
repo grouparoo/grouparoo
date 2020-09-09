@@ -16,7 +16,7 @@ export const sourcePreview: SourcePreviewMethod = async ({
   const { rows: countRows } = await connection.query(
     format(`SELECT COUNT(1) as __count FROM %I`, sourceOptions.table)
   );
-  const count = parseInt(countRows[0]["__count"]) - 1;
+  const count = parseInt(countRows[0]["__count"]);
   const limit = 10;
   let attempts = 0;
 

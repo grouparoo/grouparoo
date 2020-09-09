@@ -15,7 +15,7 @@ export const sourcePreview: SourcePreviewMethod = async ({
     `SELECT COUNT(1) as __count FROM ??`,
     [sourceOptions.table]
   );
-  const count = parseInt(countResult[0]["__count"]) - 1;
+  const count = parseInt(countResult[0]["__count"]);
   const offsets = getRandomNumbersInRange(count, 10);
 
   for (const i in offsets) {
@@ -34,7 +34,7 @@ function getRandomNumbersInRange(max: number, size: number) {
   let attempts = 0;
 
   while (array.length < size && attempts < size * 2) {
-    var attempt = Math.floor(Math.random() * max) + 1;
+    var attempt = Math.floor(Math.random() * max - 1) + 1;
     if (!array.includes(attempt)) array.push(attempt);
     attempts++;
   }
