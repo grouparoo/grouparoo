@@ -43,7 +43,11 @@ import { Team } from "../../src/models/Team";
 import { TeamMember } from "../../src/models/TeamMember";
 
 import { Op } from "sequelize";
-import { plugin } from "../../src/index";
+import {
+  plugin,
+  SourceOptionsMethodResponse,
+  DestinationOptionsMethodResponse,
+} from "../../src/index";
 
 const { api, cache, Process } = require("actionhero");
 
@@ -223,7 +227,9 @@ export namespace helper {
           ],
           methods: {
             sourceOptions: async ({ sourceOptions }) => {
-              const response = { table: { type: "list", options: ["users"] } };
+              const response: SourceOptionsMethodResponse = {
+                table: { type: "list", options: ["users"] },
+              };
               if (sourceOptions.options)
                 response["receivedOptions"] = sourceOptions.options;
               return response;
@@ -283,7 +289,7 @@ export namespace helper {
               return { success: true };
             },
             destinationOptions: async ({ destinationOptions }) => {
-              const response = {
+              const response: DestinationOptionsMethodResponse = {
                 table: { type: "list", options: ["users_out"] },
               };
               if (destinationOptions.options)
@@ -326,7 +332,7 @@ export namespace helper {
               return { success: true };
             },
             destinationOptions: async ({ destinationOptions }) => {
-              const response = {
+              const response: DestinationOptionsMethodResponse = {
                 table: { type: "list", options: ["users_out"] },
               };
               if (destinationOptions.options)
