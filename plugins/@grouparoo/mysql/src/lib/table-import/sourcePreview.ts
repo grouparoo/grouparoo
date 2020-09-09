@@ -7,7 +7,7 @@ export const sourcePreview: SourcePreviewMethod = async ({
   const response = [];
 
   // For large datasets, `order by RAND()` is actually very slow in MySQL
-  // To that end, we are going to pick numbers at random in JS and select just the rows we want, one at a time.
+  // To that end, we are going to pick numbers at random in JS and select just the rows we want, one at a time, as we cannot use functions in the OFFSET in MySQL.
   // We also cannot assume that our source has an incremental & unique primary key.
   // https://stackoverflow.com/questions/1244555/how-can-i-optimize-mysqls-order-by-rand-function
 
