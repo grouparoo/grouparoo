@@ -193,7 +193,7 @@ export interface ConnectionOption extends AppOption {}
 export interface AppOptionsMethod {
   (): Promise<{
     [optionName: string]: {
-      type: string;
+      type: PluginOptionTypes;
       options?: string[];
       descriptions?: string[];
     };
@@ -254,7 +254,7 @@ export interface SourceOptionsMethod {
 
 export interface SourceOptionsMethodResponse {
   [optionName: string]: {
-    type: string;
+    type: PluginOptionTypes;
     options?: string[];
     descriptions?: string[];
   };
@@ -349,7 +349,7 @@ export interface DestinationOptionsMethod {
 
 export interface DestinationOptionsMethodResponse {
   [optionName: string]: {
-    type: string;
+    type: PluginOptionTypes;
     options?: string[];
     descriptions?: string[];
   };
@@ -420,3 +420,5 @@ export interface ExportArrayPropertiesMethod {
 }
 
 export type ExportArrayPropertiesMethodResponse = Array<string>;
+
+export type PluginOptionTypes = "string" | "list" | "typeahead" | "pending";

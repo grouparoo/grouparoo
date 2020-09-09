@@ -1,8 +1,12 @@
 import path from "path";
-import { File, SourceOptionsMethod } from "@grouparoo/core";
+import {
+  File,
+  SourceOptionsMethod,
+  SourceOptionsMethodResponse,
+} from "@grouparoo/core";
 
 export const sourceOptions: SourceOptionsMethod = async () => {
-  const response = {
+  const response: SourceOptionsMethodResponse = {
     fileGuid: { type: "list", options: [], descriptions: [] },
   };
   const csvFiles = await File.findAll({ where: { type: ["csv", "CSV"] } });

@@ -1,11 +1,16 @@
 import format from "pg-format";
-import { SourceOptionsMethod } from "@grouparoo/core";
+import {
+  SourceOptionsMethod,
+  SourceOptionsMethodResponse,
+} from "@grouparoo/core";
 
 export const sourceOptions: SourceOptionsMethod = async ({
   appOptions,
   connection,
 }) => {
-  const response = { table: { type: "typeahead", options: [] } };
+  const response: SourceOptionsMethodResponse = {
+    table: { type: "typeahead", options: [] },
+  };
 
   const { rows } = await connection.query(
     format(

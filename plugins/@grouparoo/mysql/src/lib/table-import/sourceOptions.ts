@@ -1,10 +1,15 @@
-import { SourceOptionsMethod } from "@grouparoo/core";
+import {
+  SourceOptionsMethod,
+  SourceOptionsMethodResponse,
+} from "@grouparoo/core";
 
 export const sourceOptions: SourceOptionsMethod = async ({
   connection,
   appOptions,
 }) => {
-  const response = { table: { type: "typeahead", options: [] } };
+  const response: SourceOptionsMethodResponse = {
+    table: { type: "typeahead", options: [] },
+  };
 
   const tables = await connection.asyncQuery(
     `SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = ?`,

@@ -1,6 +1,7 @@
 import { api, Initializer, log } from "actionhero";
 import { ProfilePropertyRule } from "../index";
 import { plugin } from "../modules/plugin";
+import { SourceOptionsMethodResponse } from "../classes/plugin";
 import { App } from "../models/App";
 import { Event } from "../models/Event";
 import { EventData } from "../models/EventData";
@@ -88,7 +89,7 @@ export class Events extends Initializer {
 }
 
 const eventSourceOptions: SourceOptionsMethod = async () => {
-  const sourceOptions = {
+  const sourceOptions: SourceOptionsMethodResponse = {
     type: { type: "list", options: [] },
   };
   const types = await Event.getTypes();

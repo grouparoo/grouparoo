@@ -1,10 +1,13 @@
-import { DestinationOptionsMethod } from "@grouparoo/core";
+import {
+  DestinationOptionsMethod,
+  DestinationOptionsMethodResponse,
+} from "@grouparoo/core";
 import { connect } from "./../connect";
 
 export const destinationOptions: DestinationOptionsMethod = async ({
   appOptions,
 }) => {
-  const response = {
+  const response: DestinationOptionsMethodResponse = {
     listId: { type: "list", options: [], descriptions: [] },
   };
 
