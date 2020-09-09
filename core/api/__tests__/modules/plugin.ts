@@ -5,6 +5,7 @@ import { Run } from "./../../src/models/Run";
 import { Import } from "./../../src/models/Import";
 import { specHelper } from "actionhero";
 import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
+import { SourceOptionsMethodResponse } from "../../src";
 let actionhero;
 
 describe("modules/plugin", () => {
@@ -51,7 +52,7 @@ describe("modules/plugin", () => {
             scheduleOptions: [],
             methods: {
               sourceOptions: async ({ sourceOptions }) => {
-                const response = {
+                const response: SourceOptionsMethodResponse = {
                   table: { type: "list", options: ["users"] },
                 };
                 return response;
