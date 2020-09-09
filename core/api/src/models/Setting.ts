@@ -1,5 +1,13 @@
-import { Table, Column, AllowNull } from "sequelize-typescript";
+import {
+  Table,
+  Column,
+  AllowNull,
+  BeforeSave,
+  DataType,
+} from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
+
+export const settingTypes = ["string", "number", "boolean"] as const;
 
 @Table({ tableName: "settings", paranoid: false })
 export class Setting extends LoggedModel<Setting> {
@@ -22,6 +30,10 @@ export class Setting extends LoggedModel<Setting> {
   @Column
   defaultValue: string;
 
+  @AllowNull(false)
+  @Column(DataType.ENUM(...settingTypes))
+  type: typeof settingTypes[number];
+
   @Column
   description: string;
 
@@ -31,6 +43,7 @@ export class Setting extends LoggedModel<Setting> {
       pluginName: this.pluginName,
       key: this.key,
       value: this.value,
+      type: this.type,
       defaultValue: this.defaultValue,
       description: this.description,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
@@ -44,5 +57,12 @@ export class Setting extends LoggedModel<Setting> {
     const instance = await this.scope(null).findOne({ where: { guid } });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
+  }
+
+  @BeforeSave
+  static async validateType(instance: Setting) {
+    if (!settingTypes.includes(instance.type)) {
+      throw new Error(`${instance.type} is not a valid Setting type`);
+    }
   }
 }

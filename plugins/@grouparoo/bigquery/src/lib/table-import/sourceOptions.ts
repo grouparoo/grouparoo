@@ -1,7 +1,10 @@
-import { SourceOptionsMethod } from "@grouparoo/core";
+import {
+  SourceOptionsMethod,
+  SourceOptionsMethodResponse,
+} from "@grouparoo/core";
 
 export const sourceOptions: SourceOptionsMethod = async ({ connection }) => {
-  const response = {
+  const response: SourceOptionsMethodResponse = {
     table: { type: "list", options: [] },
   };
 

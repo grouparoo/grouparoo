@@ -80,6 +80,7 @@ interface ProfilePropertyRulesCache {
 export interface SimpleProfilePropertyRuleOptions
   extends OptionHelper.SimpleOptions {}
 
+const STATES = ["draft", "ready"] as const;
 const STATE_TRANSITIONS = [
   { from: "draft", to: "ready", checks: ["validateOptions"] },
 ];
@@ -156,8 +157,8 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   @AllowNull(false)
   @Default("draft")
-  @Column(DataType.ENUM("draft", "ready"))
-  state: string;
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
 
   @AllowNull(false)
   @Default(false)

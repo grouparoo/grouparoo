@@ -24,7 +24,7 @@ import { ProfilePropertyRuleFilter } from "../models/ProfilePropertyRuleFilter";
 import { ProfileMultipleAssociationShim } from "../models/ProfileMultipleAssociationShim";
 import { Run } from "../models/Run";
 import { Schedule } from "../models/Schedule";
-import { Setting } from "../models/Setting";
+import { Setting, settingTypes } from "../models/Setting";
 import { Source } from "../models/Source";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
@@ -86,7 +86,8 @@ export namespace plugin {
     pluginName: string,
     key: string,
     defaultValue: any,
-    description: string
+    description: string,
+    type: typeof settingTypes[number]
   ) {
     const setting = await Setting.findOne({ where: { pluginName, key } });
 
@@ -99,6 +100,7 @@ export namespace plugin {
         value: defaultValue,
         defaultValue,
         description,
+        type,
       });
 
       return setting;
@@ -109,6 +111,7 @@ export namespace plugin {
           key,
           defaultValue,
           description,
+          type,
         })}: ${error}`
       );
     }

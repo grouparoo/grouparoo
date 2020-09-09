@@ -1,6 +1,6 @@
 import { Initializer, api } from "actionhero";
 import { plugin } from "../modules/plugin";
-import * as UUID from "uuid";
+
 import {
   TelemetryMetric,
   TelemetryReporters,
@@ -64,21 +64,5 @@ export class Plugins extends Initializer {
         };
       },
     };
-  }
-
-  async start() {
-    await plugin.registerSetting(
-      "telemetry",
-      "customer-guid",
-      `tcs_${UUID.v4()}`,
-      "A unique, anonymous ID for this Grouparoo cluster."
-    );
-
-    await plugin.registerSetting(
-      "telemetry",
-      "customer-license",
-      "",
-      "Your Grouparoo License Key (for paid features)."
-    );
   }
 }

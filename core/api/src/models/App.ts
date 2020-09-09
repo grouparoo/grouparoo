@@ -31,6 +31,7 @@ export interface AppOption {
 
 export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}
 
+const STATES = ["draft", "ready"] as const;
 const STATE_TRANSITIONS = [
   { from: "draft", to: "ready", checks: ["validateOptions"] },
 ];
@@ -56,8 +57,8 @@ export class App extends LoggedModel<App> {
 
   @AllowNull(false)
   @Default("draft")
-  @Column(DataType.ENUM("draft", "ready"))
-  state: string;
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
 
   @HasMany(() => Option, "ownerGuid")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances

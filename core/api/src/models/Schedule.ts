@@ -53,6 +53,7 @@ export interface PluginConnectionScheduleOption {
 
 export interface SimpleScheduleOptions extends OptionHelper.SimpleOptions {}
 
+const STATES = ["draft", "ready"] as const;
 const STATE_TRANSITIONS = [
   { from: "draft", to: "ready", checks: ["validateOptions"] },
 ];
@@ -79,8 +80,8 @@ export class Schedule extends LoggedModel<Schedule> {
 
   @AllowNull(false)
   @Default("draft")
-  @Column(DataType.ENUM("draft", "ready"))
-  state: string;
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
 
   @AllowNull(false)
   @Default(false)

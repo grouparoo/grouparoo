@@ -35,19 +35,22 @@ describe("actions/settings", () => {
         "testPlugin",
         "enabled",
         false,
-        "Should we do that thing?"
+        "Should we do that thing?",
+        "string"
       );
       await plugin.registerSetting(
         "testPlugin",
         "number",
         10,
-        "How many of those things should we do?"
+        "How many of those things should we do?",
+        "number"
       );
       await plugin.registerSetting(
         "otherPlugin",
         "enabled",
         true,
-        "Should we do that thing?"
+        "Should we do that thing?",
+        "boolean"
       );
     });
 
@@ -71,15 +74,26 @@ describe("actions/settings", () => {
       );
       expect(error).toBeUndefined();
       expect(
-        settings.map((p) => {
-          return p.pluginName;
-        })
-      ).toEqual(["testPlugin", "testPlugin", "otherPlugin"]);
+        settings
+          .map((p) => {
+            return p.pluginName;
+          })
+          .sort()
+      ).toEqual(["otherPlugin", "testPlugin", "testPlugin"]);
       expect(
-        settings.map((p) => {
-          return p.key;
-        })
-      ).toEqual(["number", "enabled", "enabled"]);
+        settings
+          .map((p) => {
+            return p.type;
+          })
+          .sort()
+      ).toEqual(["boolean", "number", "string"]);
+      expect(
+        settings
+          .map((p) => {
+            return p.key;
+          })
+          .sort()
+      ).toEqual(["enabled", "enabled", "number"]);
       expect(
         settings.map((p) => {
           return p.value;

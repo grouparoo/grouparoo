@@ -1,5 +1,8 @@
 import format from "pg-format";
-import { DestinationOptionsMethod } from "@grouparoo/core";
+import {
+  DestinationOptionsMethod,
+  DestinationOptionsMethodResponse,
+} from "@grouparoo/core";
 
 export const destinationOptions: DestinationOptionsMethod = async ({
   connection,
@@ -19,7 +22,7 @@ export const destinationOptions: DestinationOptionsMethod = async ({
     return colRows.map((row) => row.column_name).sort();
   }
 
-  const response = {
+  const response: DestinationOptionsMethodResponse = {
     table: { type: "typeahead", options: [] },
     groupsTable: { type: "typeahead", options: [] },
     primaryKey: { type: "pending", options: [] },

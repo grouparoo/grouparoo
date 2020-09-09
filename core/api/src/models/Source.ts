@@ -34,6 +34,7 @@ import { SourceOps } from "../modules/ops/source";
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}
 
+const STATES = ["draft", "ready"] as const;
 const STATE_TRANSITIONS = [
   {
     from: "draft",
@@ -68,8 +69,8 @@ export class Source extends LoggedModel<Source> {
 
   @AllowNull(false)
   @Default("draft")
-  @Column(DataType.ENUM("draft", "ready"))
-  state: string;
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
 
   @BelongsTo(() => App)
   app: App;
