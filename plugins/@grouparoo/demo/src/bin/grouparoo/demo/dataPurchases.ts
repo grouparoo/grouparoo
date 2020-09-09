@@ -1,5 +1,6 @@
 import { CLI } from "actionhero";
 import { users, purchases } from "../../../sample_data";
+import { groups } from "../../../groups";
 import { init } from "../../../util/shared";
 
 export class Console extends CLI {
@@ -14,6 +15,7 @@ export class Console extends CLI {
     await init({ reset: true });
     await users();
     await purchases();
+    await groups();
     return true;
   }
 }
