@@ -62,7 +62,7 @@ export class UpdateSchedules extends Task {
         });
 
         log(
-          `[ run ] starting run ${run.guid} for schedule ${schedule.guid}, ${schedule.name}`,
+          `[ run ] starting run ${run.guid} for schedule ${schedule.name} (${schedule.guid})`,
           "notice"
         );
       }

@@ -159,7 +159,7 @@ export class Schedule extends LoggedModel<Schedule> {
     });
 
     log(
-      `[ run ] starting run ${run.guid} for schedule ${this.guid}, ${this.name}`,
+      `[ run ] starting run ${run.guid} for schedule ${this.name} (${this.guid})`,
       "notice"
     );
 

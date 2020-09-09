@@ -27,7 +27,7 @@ export async function internalRun(creatorType: string, creatorGuid: string) {
   log(
     `[ run ] starting run ${
       run.guid
-    } for ${creatorType} ${creatorGuid}, ${await run.getCreatorName()}`,
+    } for ${creatorType} ${await run.getCreatorName()} (${creatorGuid})`,
     "notice"
   );
 
