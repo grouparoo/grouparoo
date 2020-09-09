@@ -8,11 +8,13 @@ export async function teams() {
 const ADMIN_EMAIL = "demo@grouparoo.com";
 
 export async function getAdmin() {
-  const found = await TeamMember.findOne({ where: { email: ADMIN_EMAIL } });
+  const found = await TeamMember.scope(null).findOne({
+    where: { email: ADMIN_EMAIL },
+  });
   if (found) {
     return found;
   }
-  const team = await Team.findOne({
+  const team = await Team.scope(null).findOne({
     where: { locked: true, permissionAllRead: true, permissionAllWrite: true },
   });
 
@@ -34,7 +36,9 @@ export async function getAdmin() {
     await runAction("team:initialize", userProperties);
   }
 
-  const made = await TeamMember.findOne({ where: { email: ADMIN_EMAIL } });
+  const made = await TeamMember.scope(null).findOne({
+    where: { email: ADMIN_EMAIL },
+  });
   if (!made) {
     throw new Error("Admin user not created!");
   }

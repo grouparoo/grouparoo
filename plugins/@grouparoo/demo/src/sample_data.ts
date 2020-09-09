@@ -2,7 +2,6 @@ import Database from "./util/postgres";
 import { log, init } from "./util/shared";
 import { runAction } from "./util/runAction";
 import { App, Source, ProfilePropertyRule, Schedule } from "@grouparoo/core";
-import { Op } from "sequelize";
 
 export const SCHEMA_NAME = "demo";
 export const USER_ID_PROPERTY_NAME = "userId";
@@ -128,7 +127,7 @@ export async function purchases() {
 async function createAndRunSchedule(tableName: string, columnName: string) {
   const source = await findSource(tableName);
   const where = { sourceGuid: source.guid };
-  const found = await Schedule.findOne({ where });
+  const found = await Schedule.scope(null).findOne({ where });
   const params = {
     name: `${source.name} schedule`,
     state: "ready",
@@ -144,7 +143,7 @@ async function createAndRunSchedule(tableName: string, columnName: string) {
 
   await runAction("schedule:create", params);
 
-  const made = await Schedule.findOne({ where });
+  const made = await Schedule.scope(null).findOne({ where });
   if (!made) {
     throw new Error(`Schedule not created (${tableName})`);
   }
@@ -168,11 +167,10 @@ async function createCsvTable(
 
 async function findTableSource(app, tableName) {
   const where = {
-    state: { [Op.not]: null },
     appGuid: app.guid,
     type: "postgres-table-import",
   };
-  const sources = await Source.findAll({ where });
+  const sources = await Source.scope(null).findAll({ where });
   for (const source of sources) {
     const options = await source.getOptions();
     if (options.table === tableName) {
@@ -187,7 +185,7 @@ async function makePropertyRuleIdentifying(
   propertyKey: string
 ) {
   // remove current one
-  const current = await ProfilePropertyRule.findAll({
+  const current = await ProfilePropertyRule.scope(null).findAll({
     where: { identifying: true },
   });
   for (const propertyRule of current) {
@@ -208,11 +206,10 @@ async function makePropertyRuleIdentifying(
 
 async function findPropertyRule(source: Source, propertyKey: string) {
   const where = {
-    state: { [Op.not]: null },
     sourceGuid: source.guid,
     key: propertyKey,
   };
-  return ProfilePropertyRule.findOne({ where });
+  return ProfilePropertyRule.scope(null).findOne({ where });
 }
 
 async function createPropertyRules(tableName: string, rules: any) {
@@ -323,7 +320,6 @@ async function getSource(app: App, tableName: string, userId: string) {
 
 async function getApp() {
   const where = {
-    state: { [Op.not]: null },
     name: "Demo Database",
     type: "postgres",
   };
@@ -342,7 +338,7 @@ async function getApp() {
     options: appOptions,
   };
 
-  const found = await App.findOne({ where });
+  const found = await App.scope(null).findOne({ where });
   if (found) {
     // make sure it's up to date
     await runAction("app:edit", Object.assign(params, { guid: found.guid }));
@@ -351,7 +347,7 @@ async function getApp() {
     await runAction("app:create", params);
   }
 
-  const made = await App.findOne({ where });
+  const made = await App.scope(null).findOne({ where });
   if (!made) {
     throw new Error("Postgres app not created!");
   }

@@ -1,6 +1,5 @@
 import { runAction } from "./util/runAction";
 import { Group, ProfilePropertyRule } from "@grouparoo/core";
-import { Op } from "sequelize";
 import { log } from "./util/shared";
 
 const DEFINITION_DEFAULT = {
@@ -40,6 +39,7 @@ const GROUP_DEFINITIONS = [
     ],
   },
 ];
+
 export async function groups() {
   for (const definition of GROUP_DEFINITIONS) {
     await createGroup(definition);
@@ -73,7 +73,7 @@ async function createGroup(definition) {
 async function hasProperties(definition): Promise<boolean> {
   for (const rule of definition.rules) {
     const where = { key: rule.key, state: "ready" };
-    const found = await ProfilePropertyRule.findOne({ where });
+    const found = await ProfilePropertyRule.scope(null).findOne({ where });
     if (!found) {
       log(1, `${rule.key} not found for group: ${definition.name}`);
       return false;
@@ -84,8 +84,7 @@ async function hasProperties(definition): Promise<boolean> {
 
 async function findGroup(name: string) {
   const where = {
-    state: { [Op.not]: null },
     name: name,
   };
-  return Group.findOne({ where });
+  return Group.scope(null).findOne({ where });
 }
