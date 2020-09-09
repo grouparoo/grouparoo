@@ -58,7 +58,7 @@ export default function Page(props) {
 
       <Tabs
         activeKey={activeTab}
-        onSelect={(k) => router.push(`/settings/${k}`)}
+        onSelect={(k) => router.push("/settings/[tab]", `/settings/${k}`)}
       >
         <Tab eventKey="actions" title="Actions">
           <ActionsTab
