@@ -115,7 +115,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         platformItems.push({
           type: "link",
           title: "Settings",
-          href: "/settings/core",
+          href: "/settings",
         });
 
         platformItems.push({

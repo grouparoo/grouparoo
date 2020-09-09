@@ -64,6 +64,12 @@ module.exports = withSourceMaps({
 
     return config;
   },
+
+  async redirects() {
+    return [
+      { source: "/settings", destination: "/settings/core", statusCode: 307 },
+    ];
+  },
 });
 
 /**
