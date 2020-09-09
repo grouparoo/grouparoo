@@ -26,6 +26,7 @@ export { ProfilePropertyRuleFilter } from "./models/ProfilePropertyRuleFilter";
 export { Run } from "./models/Run";
 export { Schedule } from "./models/Schedule";
 export { Setting } from "./models/Setting";
+export { SetupStep } from "./models/SetupStep";
 export { Source } from "./models/Source";
 export { Team } from "./models/Team";
 export { TeamMember } from "./models/TeamMember";

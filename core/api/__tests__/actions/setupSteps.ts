@@ -1,5 +1,6 @@
 import { helper } from "./../utils/specHelper";
 import { specHelper } from "actionhero";
+import { SetupStep } from "../../src";
 let actionhero;
 
 describe("actions/setupSteps", () => {
@@ -34,6 +35,8 @@ describe("actions/setupSteps", () => {
         connection
       );
       csrfToken = sessionResponse.csrfToken;
+
+      await SetupStep.update({ skipped: false }, { where: { skipped: true } });
     });
 
     test("a reader can list setupSteps", async () => {
@@ -51,8 +54,8 @@ describe("actions/setupSteps", () => {
       expect(setupSteps[0].position).toBe(1);
       expect(setupSteps[0].key).toBe("create_a_team");
       expect(setupSteps[0].title).toBe("Create a Team");
-      expect(setupSteps[0].description).toMatch(/Create a team/);
-      expect(setupSteps[0].check).toBe(false);
+      expect(setupSteps[0].description).toMatch(/Create .* team/);
+      expect(setupSteps[0].href).toBe("/teams");
       expect(setupSteps[0].outcome).toBe(null);
       expect(setupSteps[0].skipped).toBe(false);
       expect(setupSteps[0].complete).toBe(false);
