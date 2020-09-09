@@ -1,5 +1,5 @@
 import { Client } from "pg";
-import { log, execSync, userCreatedAgoMilli } from "./shared";
+import { log, execSync, userCreatedAt } from "./shared";
 import { api } from "actionhero";
 import parse from "csv-parse/lib/sync";
 import fs from "fs";
@@ -97,14 +97,14 @@ export default class Postgres {
     const variables = typeKeys.map((key, index) => "$" + (index + 1));
     const insertQuery = `INSERT INTO ${sqlTable} (${columnNames}) VALUES (${variables})`;
     for (const row of rows) {
-      let creationAgo = userCreatedAgoMilli(row[userId]);
+      let generatedCreateAt = userCreatedAt(row[userId]);
+      const now = new Date().getTime();
+      let creationAgo = now - generatedCreateAt.getTime();
       if (tableName !== "users") {
         creationAgo = Math.random() * creationAgo;
       }
-      const now = new Date().getTime();
-      const creationMilli = now - creationAgo;
       if (createdAt) {
-        row.created_at = new Date(creationMilli);
+        row.created_at = new Date(generatedCreateAt);
       }
       if (updatedAt) {
         // sometime after that

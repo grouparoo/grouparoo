@@ -80,7 +80,7 @@ const PURCHASE_RULES = [
     filters: PURCHASE_FILTERS,
   },
   {
-    key: "puchaseCount",
+    key: "purchaseCount",
     type: "integer",
     options: {
       column: "id",
@@ -352,4 +352,30 @@ async function getApp() {
     throw new Error("Postgres app not created!");
   }
   return made;
+}
+
+export async function getPurchases() {
+  const out = [];
+  const db = new Database(SCHEMA_NAME);
+  const tableName = "purchases";
+  const sqlTable = `${db.config.schema}."${tableName}"`;
+  const sql = `SELECT * FROM ${sqlTable}`;
+  const results = await db.query(3, sql);
+  for (const row of results.rows) {
+    out.push(row);
+  }
+  return out;
+}
+
+export async function getPurchaseCategories() {
+  const out = [];
+  const db = new Database(SCHEMA_NAME);
+  const tableName = "purchases";
+  const sqlTable = `${db.config.schema}."${tableName}"`;
+  const sql = `SELECT category FROM ${sqlTable} WHERE category IS NOT NULL GROUP BY category`;
+  const results = await db.query(3, sql);
+  for (const row of results.rows) {
+    out.push(row.category);
+  }
+  return out;
 }

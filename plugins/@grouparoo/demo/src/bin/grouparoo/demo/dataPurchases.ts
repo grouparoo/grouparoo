@@ -2,6 +2,7 @@ import { CLI } from "actionhero";
 import { teams } from "../../../teams";
 import { users, purchases } from "../../../sample_data";
 import { groups } from "../../../groups";
+import { events } from "../../../events";
 import { init } from "../../../util/shared";
 
 export class Console extends CLI {
@@ -17,6 +18,7 @@ export class Console extends CLI {
     await teams();
     await users();
     await purchases();
+    await events();
     await groups();
     return true;
   }

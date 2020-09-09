@@ -22,14 +22,18 @@ export async function sleep(time = 1000) {
   });
 }
 
-export function userCreatedAgoMilli(userId: any) {
+const START_TIME = new Date();
+export function userCreatedAt(userId: any) {
   // 1000 people in last 3 months, spaced out
   const numberOfUsers = 1000;
   const secondsBack = 60 * 60 * 24 * 30 * 3;
   const secondsEach = secondsBack / 1000; // for each user
   const ageNumber = numberOfUsers - parseInt(userId);
-  let creationAgo = secondsEach * ageNumber * 1000;
-  return creationAgo;
+  const creationAgo = secondsEach * ageNumber * 1000;
+
+  // use that from something specific.
+  const epochMilli = START_TIME.getTime() - creationAgo;
+  return new Date(epochMilli);
 }
 
 interface InitOptions {

@@ -2,10 +2,11 @@
 //import * as dotProp from "dot-prop";
 
 import { ActionProcessor, Connection, api, action } from "actionhero";
-import { TeamMember } from "@grouparoo/core";
+import { TeamMember, ApiKey } from "@grouparoo/core";
 
 interface RunOptions {
   as?: TeamMember;
+  apiKey?: ApiKey;
 }
 export async function runAction(
   actionName: string,
@@ -29,7 +30,11 @@ export async function runAction(
 
     const connection = new Connection(data);
     const actionProcessor = new ActionProcessor(connection);
-    actionProcessor.session = { teamMember: options.as, data: {} };
+    actionProcessor.session = {
+      teamMember: options.as,
+      apiKey: options.apiKey,
+      data: {},
+    };
 
     const processed = await actionProcessor.processAction();
     // console.log("action processed....", processed);
