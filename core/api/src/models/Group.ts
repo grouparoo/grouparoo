@@ -49,6 +49,16 @@ export interface GroupRuleWithKey {
   relativeMatchDirection?: string;
 }
 
+const groupTypes = ["calculated", "manual"] as const;
+const matchTypes = ["any", "all"] as const;
+
+const STATES = [
+  "draft",
+  "ready",
+  "initializing",
+  "updating",
+  "deleted",
+] as const;
 // we have no checks, as those are managed by the lifecycle methods below (and tasks)
 const STATE_TRANSITIONS = [
   { from: "draft", to: "ready", checks: [] },
@@ -100,25 +110,23 @@ export class Group extends LoggedModel<Group> {
       throw new Error("type must be one of: manual, calculated");
     }
   })
-  @Column(DataType.ENUM("manual", "calculated"))
-  type: string;
+  @Column(DataType.ENUM(...groupTypes))
+  type: typeof groupTypes[number];
 
   @AllowNull(false)
   @Default("all")
   @Is("ofValidMatchType", (value) => {
-    if (value && value !== "all" && value !== "any") {
+    if (value && !matchTypes.includes(value)) {
       throw new Error("matchType must be one of: all, any");
     }
   })
-  @Column(DataType.ENUM("all", "any"))
-  matchType: "all" | "any";
+  @Column(DataType.ENUM(...matchTypes))
+  matchType: typeof matchTypes[number];
 
   @AllowNull(false)
   @Default("draft")
-  @Column(
-    DataType.ENUM("draft", "ready", "initializing", "updating", "deleted")
-  )
-  state: string;
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
 
   @Column
   calculatedAt: Date;
@@ -429,7 +437,7 @@ export class Group extends LoggedModel<Group> {
 
   async countPotentialMembers(
     rules?: GroupRuleWithKey[],
-    matchType: "any" | "all" = this.matchType
+    matchType: typeof matchTypes[number] = this.matchType
   ) {
     return GroupOps.countPotentialMembers(this, rules, matchType);
   }
@@ -446,7 +454,7 @@ export class Group extends LoggedModel<Group> {
    */
   async _buildGroupMemberQueryParts(
     rules?: GroupRuleWithKey[],
-    matchType: "any" | "all" = this.matchType
+    matchType: typeof matchTypes[number] = this.matchType
   ) {
     if (this.type !== "calculated") {
       throw new Error("only calculated groups can be calculated");

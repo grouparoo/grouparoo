@@ -44,6 +44,7 @@ export interface SimpleDestinationGroupMembership {
 }
 export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 
+const STATES = ["draft", "ready"] as const;
 const STATE_TRANSITIONS = [
   { from: "draft", to: "ready", checks: ["validateOptions"] },
 ];
@@ -74,8 +75,8 @@ export class Destination extends LoggedModel<Destination> {
 
   @AllowNull(false)
   @Default("draft")
-  @Column(DataType.ENUM("draft", "ready"))
-  state: string;
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
 
   @AllowNull(true)
   @Column
