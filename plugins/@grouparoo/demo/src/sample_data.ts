@@ -136,13 +136,13 @@ async function createAndRunSchedule(tableName: string, columnName: string) {
     options: { column: columnName },
     recurringFrequency: 5 * 60 * 1000, // five minutes
     sourceGuid: source.guid,
-    guid: found?.guid,
   };
+
   if (found) {
-    await runAction("schedule:edit", params);
-  } else {
-    await runAction("schedule:create", params);
+    await runAction("schedule:destroy", { guid: found.guid });
   }
+
+  await runAction("schedule:create", params);
 
   const made = await Schedule.findOne({ where });
   if (!made) {
