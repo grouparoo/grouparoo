@@ -26,6 +26,7 @@ import { ProfilePropertyRuleFilter } from "../models/ProfilePropertyRuleFilter";
 import { Run } from "../models/Run";
 import { Schedule } from "../models/Schedule";
 // import { Setting } from "../models/Setting";
+import { SetupStep } from "../models/SetupStep";
 import { Source } from "../models/Source";
 // import { Team } from "../models/Team";
 // import { TeamMember } from "../models/TeamMember";
@@ -104,6 +105,8 @@ export class ClusterReset extends AuthenticatedAction {
         data: { count },
       });
     }
+
+    await SetupStep.update({ complete: false }, { where: { complete: true } });
 
     await Log.create({
       topic: "cluster",

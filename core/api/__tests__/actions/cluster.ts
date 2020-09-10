@@ -2,6 +2,7 @@ import { helper } from "./../utils/specHelper";
 import { specHelper } from "actionhero";
 import { Log } from "../../src/models/Log";
 import { App } from "../../src/models/App";
+import { SetupStep } from "../../src";
 let actionhero;
 
 describe("actions/cluster", () => {
@@ -59,6 +60,13 @@ describe("actions/cluster", () => {
         expect(apps.length).toBe(1);
         expect(apps[0].type).toBe("events");
         expect(apps[0].state).toBe("draft");
+      });
+
+      test("all the SetupSteps will be set to incomplete", async () => {
+        const completeSetupSteps = await SetupStep.count({
+          where: { complete: true },
+        });
+        expect(completeSetupSteps).toBe(0);
       });
 
       test("teams still remain and the user is still logged in", async () => {
