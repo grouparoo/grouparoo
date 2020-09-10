@@ -34,10 +34,14 @@ export default function Page({
         Thanks for installing Grouparoo! There are few steps to get started
         importing your customer data:
       </p>
-      <p>
+
+      <div>
         Progress: {completeStepsCount} / {totalStepsCount} steps completed
+        <br />
         <ProgressBar label={`${percentComplete}%`} now={percentComplete} />
-      </p>
+      </div>
+
+      <br />
 
       <Row>
         <Col>
