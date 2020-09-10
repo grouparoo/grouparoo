@@ -12,9 +12,10 @@ export const sourcePreview: SourcePreviewMethod = async ({
   // https://stackoverflow.com/questions/1244555/how-can-i-optimize-mysqls-order-by-rand-function
   // ... But for now we will just show the first 10 rows of the table
 
-  await connection
-    .asyncQuery(`SELECT * FROM ?? LIMIT 10`, [sourceOptions.table])
-    .map((row) => response.push(row));
+  const rows = await connection.asyncQuery(`SELECT * FROM ?? LIMIT 10`, [
+    sourceOptions.table,
+  ]);
+  rows.map((row) => response.push(row));
 
   return response;
 };

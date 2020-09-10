@@ -235,7 +235,7 @@ describe("integration/runs/mysql", () => {
       session
     );
     expect(error).toBeUndefined();
-    expect(preview.length).toBeGreaterThan(1); // the number of rows is sort of random (per getRandomNumbersInRange)
+    expect(preview.length).toBe(10);
     expect(Object.keys(preview[0]).sort()).toEqual([
       "android_app",
       "email",
