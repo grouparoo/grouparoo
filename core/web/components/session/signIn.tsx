@@ -3,6 +3,7 @@ import { useState } from "react";
 import Router from "next/router";
 import { Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { SetupStepAPIData } from "../../utils/apiData";
 
 export default function SignInForm(props) {
   const { errorHandler, successHandler, sessionHandler, query, useApi } = props;
@@ -19,9 +20,29 @@ export default function SignInForm(props) {
       window.localStorage.setItem("session:csrfToken", response.csrfToken);
       sessionHandler.set(response.teamMember);
       successHandler.set({ message: "Welcome Back!" });
-      nextPage ? Router.push(nextPage) : Router.push("/dashboard");
+      if (nextPage) {
+        Router.push(nextPage);
+      } else {
+        const setupSteps = await getSetupSteps();
+        const isSetupComplete = setupSteps.every((step) => step.complete);
+        if (isSetupComplete) {
+          Router.push("/dashboard");
+        } else {
+          Router.push("/setup");
+        }
+      }
     }
   };
+
+  async function getSetupSteps() {
+    setLoading(true);
+    const { setupSteps }: { setupSteps: SetupStepAPIData[] } = await execApi(
+      "get",
+      `/setupSteps`
+    );
+    setLoading(false);
+    return setupSteps;
+  }
 
   return (
     <Form id="form" onSubmit={handleSubmit(onSubmit)}>
