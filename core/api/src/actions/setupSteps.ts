@@ -1,5 +1,6 @@
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { SetupStep } from "../models/SetupStep";
+import { Setting } from "../models/Setting";
 
 export class SetupStepsList extends AuthenticatedAction {
   constructor() {
@@ -20,6 +21,12 @@ export class SetupStepsList extends AuthenticatedAction {
       await setupSteps[i].performCheck();
       response.setupSteps.push(await setupSteps[i].apiData());
     }
+
+    const setting = await Setting.findOne({
+      where: { key: "display-startup-steps" },
+    });
+
+    response.toDisplay = setting.value === "true";
   }
 }
 

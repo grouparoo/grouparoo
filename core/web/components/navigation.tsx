@@ -426,14 +426,17 @@ function ResqueFailedCountBadge({
 
 function SetupStepsNavProgressBar({ execApi }) {
   const [steps, setSteps] = useState<SetupStepAPIData[]>([]);
+  const [shouldDisplay, setShouldDisplay] = useState(false);
+
   let timer: NodeJS.Timeout;
   const timeout = 1000 * 15;
 
   async function getSetupSteps() {
     clearTimeout(timer);
-    const { setupSteps } = await execApi("get", `/setupSteps`);
+    const { setupSteps, toDisplay } = await execApi("get", `/setupSteps`);
+    setShouldDisplay(toDisplay);
     setSteps(setupSteps);
-    timer = setTimeout(getSetupSteps, timeout);
+    if (toDisplay) timer = setTimeout(getSetupSteps, timeout);
   }
 
   useEffect(() => {
@@ -444,11 +447,14 @@ function SetupStepsNavProgressBar({ execApi }) {
   }, []);
 
   const activeStep = steps.find((step) => !step.complete);
+  const isOnBoardingComplete = steps.every((step) => step.complete);
   const totalStepsCount = steps.length;
   const completeStepsCount = steps.filter((step) => step.complete).length;
   const percentComplete = Math.round(
     (100 * completeStepsCount) / totalStepsCount
   );
+
+  if (!shouldDisplay) return null;
 
   return (
     <div
@@ -467,7 +473,7 @@ function SetupStepsNavProgressBar({ execApi }) {
         }}
       >
         <Link href="/setup">
-          <a>Get Started:</a>
+          <a>{isOnBoardingComplete ? "Setup Complete 🎉" : "Get Started:"}</a>
         </Link>
       </div>
       <div

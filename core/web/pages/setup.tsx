@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import { useApi } from "../hooks/useApi";
 import { SetupStepAPIData } from "../utils/apiData";
 import { Row, Col, ProgressBar } from "react-bootstrap";
@@ -46,9 +47,19 @@ export default function Page({
             <SetupStepCard
               key={`setupStep-${setupStep.key}`}
               setupStep={setupStep}
-              active={currentStep.position === setupStep.position}
+              active={currentStep?.position === setupStep.position}
             />
           ))}
+        </Col>
+      </Row>
+
+      <br />
+
+      <Row>
+        <Col style={{ textAlign: "center" }}>
+          <Link href="/settings/interface">
+            Hide this Setup Guide from everyone in your team
+          </Link>
         </Col>
       </Row>
     </>

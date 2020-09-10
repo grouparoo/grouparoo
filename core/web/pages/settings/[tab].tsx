@@ -37,7 +37,7 @@ export default function Page(props) {
       setSettings(_settings);
 
       successHandler.set({ message: "Setting Updated" });
-      if (setting.key === "cluster-name") window.location.reload();
+      window.location.reload(); // we want to hard-reload here because maybe the setting you just changed modifies the interface
     }
   }
 
