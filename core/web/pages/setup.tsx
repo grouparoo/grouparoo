@@ -14,7 +14,7 @@ export default function Page({
   const percentComplete = Math.round(
     (100 * completeStepsCount) / totalStepsCount
   );
-  const currentStep = setupSteps.filter((step) => !step.complete)[0];
+  const currentStep = setupSteps.find((step) => !step.complete);
 
   return (
     <>
@@ -31,7 +31,11 @@ export default function Page({
       <div>
         Progress: {completeStepsCount} / {totalStepsCount} steps completed
         <br />
-        <ProgressBar label={`${percentComplete}%`} now={percentComplete} />
+        <ProgressBar
+          data-test-id="setupPageProgressBar"
+          label={`${percentComplete}%`}
+          now={percentComplete}
+        />
       </div>
 
       <br />
