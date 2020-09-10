@@ -109,16 +109,19 @@ const PURCHASE_RULES: Array<RuleDefinition> = [
   },
 ];
 
-export async function users() {
-  await createCsvTable("users", "id", USERS, true, true);
+interface DataOptions {
+  scale?: number;
+}
+export async function users(options: DataOptions = {}) {
+  await createCsvTable("users", "id", USERS, true, true, options);
   await createSource("users", "id");
   await createPropertyRules("users", USER_RULES);
   await setEmailAsIdentifying("users");
   await createAndRunSchedule("users", "updated_at");
 }
 
-export async function purchases() {
-  await createCsvTable("purchases", "user_id", PURCHASES, true, false);
+export async function purchases(options: DataOptions = {}) {
+  await createCsvTable("purchases", "user_id", PURCHASES, true, false, options);
   await createSource("purchases", "user_id");
   await createPropertyRules("purchases", PURCHASE_RULES);
 }
@@ -155,12 +158,20 @@ async function createCsvTable(
   userId: string,
   types: any,
   createdAt: boolean,
-  updatedAt: boolean
+  updatedAt: boolean,
+  options: DataOptions = {}
 ) {
   log(0, `Adding Sample Data: ${tableName}`);
   const db = new Database(SCHEMA_NAME);
   await db.connect();
-  await db.createCsvTable(tableName, userId, types, createdAt, updatedAt);
+  await db.createCsvTable(
+    tableName,
+    userId,
+    types,
+    createdAt,
+    updatedAt,
+    options.scale
+  );
   await db.disconnect();
 }
 

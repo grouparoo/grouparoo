@@ -1,5 +1,5 @@
 import { Client } from "pg";
-import { log, execSync, userCreatedAt } from "./shared";
+import { log, execSync, userCreatedAt, numberOfUsers } from "./shared";
 import { api } from "actionhero";
 import parse from "csv-parse/lib/sync";
 import fs from "fs";
@@ -15,10 +15,6 @@ export default class Postgres {
 
   getConfig(): { [key: string]: any } {
     return this.config;
-  }
-
-  log(level: number, ...rest) {
-    log(level, "  ", ...rest);
   }
 
   async execSync(level, command) {
@@ -45,7 +41,7 @@ export default class Postgres {
   }
 
   async query(level, one, two = null) {
-    this.log(level, one, two);
+    log(level, one, two);
     const client = await this.connect();
     if (two) {
       return client.query(one, two);
@@ -53,20 +49,21 @@ export default class Postgres {
     return client.query(one);
   }
 
-  async dropTable(tableName) {
-    const sqlTable = `${this.config.schema}."${tableName}"`;
-    this.query(1, `DROP TABLE IF EXISTS ${sqlTable}`);
-  }
   async createCsvTable(
     tableName: string,
     userId: string,
     types: any,
     createdAt: boolean,
-    updatedAt: boolean
+    updatedAt: boolean,
+    scale: number = 0
   ) {
-    await this.dropTable(tableName);
-
     const sqlTable = `${this.config.schema}."${tableName}"`;
+    await this.query(1, `DROP TABLE IF EXISTS ${sqlTable}`);
+
+    if (scale < 1) {
+      scale = 1;
+    }
+    log(1, `Adding ${tableName}`);
     // read from data file
     const filePath = path.resolve(
       path.join(__dirname, "..", "..", "data", `${tableName}.csv`)
@@ -92,31 +89,60 @@ export default class Postgres {
     const createQuery = `CREATE TABLE ${sqlTable} (${columnTypes.join(", ")})`;
     await this.query(1, createQuery);
 
-    this.log(1, `Adding ${sqlTable}`);
-    const columnNames = typeKeys.join(", ");
-    const variables = typeKeys.map((key, index) => "$" + (index + 1));
-    const insertQuery = `INSERT INTO ${sqlTable} (${columnNames}) VALUES (${variables})`;
-    for (const row of rows) {
-      let generatedCreateAt = userCreatedAt(row[userId]);
-      const now = new Date().getTime();
-      let creationAgo = now - generatedCreateAt.getTime();
-      if (tableName !== "users") {
-        creationAgo = Math.random() * creationAgo;
-      }
-      if (createdAt) {
-        row.created_at = new Date(generatedCreateAt);
-      }
-      if (updatedAt) {
-        // sometime after that
-        const updatedAgo = creationAgo * Math.random();
-        const updatedMilli = now - updatedAgo;
-        row.updated_at = new Date(updatedMilli);
-      }
+    const db = this;
+    const fillTable = async function (page: number = 0) {
+      log(2, `   Page ${page}`);
+      const perPage = rows.length;
+      const columnNames = typeKeys.join(", ");
+      const variables = typeKeys.map((key, index) => "$" + (index + 1));
+      const insertQuery = `INSERT INTO ${sqlTable} (${columnNames}) VALUES (${variables})`;
+      for (const fileRow of rows) {
+        const row = Object.assign({}, fileRow);
+        row.id = parseInt(row.id);
+        if (row.id <= 0) {
+          throw new Error(`no id column on ${tableName}`);
+        }
+        row[userId] = parseInt(row[userId]);
+        if (row[userId] <= 0) {
+          throw new Error(`no ${userId} column on ${tableName}`);
+        }
 
-      const values: Array<any> = typeKeys.map((key) =>
-        getValue(row, key, types)
-      );
-      await this.query(2, insertQuery, values);
+        let generatedCreateAt = userCreatedAt(row[userId]);
+        const now = new Date().getTime();
+        let creationAgo = now - generatedCreateAt.getTime();
+        if (tableName !== "users") {
+          creationAgo = Math.random() * creationAgo;
+        }
+        if (createdAt) {
+          row.created_at = new Date(generatedCreateAt);
+        }
+        if (updatedAt) {
+          // sometime after that
+          const updatedAgo = creationAgo * Math.random();
+          const updatedMilli = now - updatedAgo;
+          row.updated_at = new Date(updatedMilli);
+        }
+
+        if (page > 1) {
+          row.id = perPage * page + row.id;
+          if (tableName !== "users") {
+            row[userId] = numberOfUsers * page + row[userId];
+          }
+          if (row.email) {
+            row.email = `${page}${row.email}`;
+          }
+        }
+
+        const values: Array<any> = typeKeys.map((key) =>
+          getValue(row, key, types)
+        );
+        console.log(values.join(", "));
+        await db.query(2, insertQuery, values);
+      }
+    };
+
+    for (let page = 1; page <= scale; page++) {
+      await fillTable(page);
     }
   }
 }
