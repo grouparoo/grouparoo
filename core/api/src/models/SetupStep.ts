@@ -38,6 +38,7 @@ export class SetupStep extends LoggedModel<SetupStep> {
     const title = this.getTitle(ssd);
     const description = this.getDescription(ssd);
     const href = this.getHref(ssd);
+    const cta = this.getCta(ssd);
     const outcome = await this.getOutcome(ssd);
 
     return {
@@ -47,6 +48,7 @@ export class SetupStep extends LoggedModel<SetupStep> {
       title,
       description,
       href,
+      cta,
       outcome,
       skipped: this.skipped,
       complete: this.complete,
@@ -68,6 +70,11 @@ export class SetupStep extends LoggedModel<SetupStep> {
   getHref(ssd?: SetupStepOps.setupStepDescription) {
     if (!ssd) ssd = this.getSetupStepDescription();
     return ssd.href;
+  }
+
+  getCta(ssd?: SetupStepOps.setupStepDescription) {
+    if (!ssd) ssd = this.getSetupStepDescription();
+    return ssd.cta;
   }
 
   async performCheck(ssd?: SetupStepOps.setupStepDescription) {

@@ -1,15 +1,8 @@
 import Head from "next/head";
 import { useApi } from "../hooks/useApi";
 import { SetupStepAPIData } from "../utils/apiData";
-import {
-  Row,
-  Col,
-  Card,
-  Button,
-  Accordion,
-  Badge,
-  ProgressBar,
-} from "react-bootstrap";
+import { Row, Col, ProgressBar } from "react-bootstrap";
+import SetupStepCard from "../components/setupSteps/setupStepCard";
 
 export default function Page({
   setupSteps,
@@ -63,51 +56,3 @@ Page.getInitialProps = async (ctx) => {
   const { setupSteps } = await execApi("get", `/setupSteps`);
   return { setupSteps };
 };
-
-function SetupStepCard({
-  setupStep: step,
-  active,
-}: {
-  setupStep: SetupStepAPIData;
-  active: boolean;
-}) {
-  return (
-    <>
-      <Accordion defaultActiveKey={step.complete ? null : "0"}>
-        <Card border={step.complete ? "success" : null}>
-          <Card.Header>
-            <Row>
-              <Col>
-                <strong>
-                  <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                    {step.position}: {step.title}
-                  </Accordion.Toggle>
-                </strong>
-              </Col>
-              <Col style={{ textAlign: "right" }}>
-                {step.complete ? <h5>✅</h5> : null}
-              </Col>
-            </Row>
-          </Card.Header>
-          <Accordion.Collapse eventKey="0">
-            <Card.Body>
-              <p>{step.description}</p>
-              {active ? (
-                <p>
-                  <Button href={step.href}>Let's Go</Button>
-                </p>
-              ) : null}
-              {step.outcome && step.complete ? (
-                <p>
-                  <Badge variant="primary">{step.outcome}</Badge>
-                </p>
-              ) : null}
-            </Card.Body>
-          </Accordion.Collapse>
-        </Card>
-      </Accordion>
-
-      <br />
-    </>
-  );
-}

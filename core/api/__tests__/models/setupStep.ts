@@ -79,4 +79,12 @@ describe("models/setupStep", () => {
     expect(await teamStep.getOutcome()).toBe(null);
     expect(await groupStep.getOutcome()).toBe("0 Group Memberships created");
   });
+
+  test("setupSteps can getCta", async () => {
+    const step = await SetupStep.findOne({
+      where: { key: "create_a_team" },
+    });
+
+    expect(step.getCta()).toBe("Create a Team");
+  });
 });

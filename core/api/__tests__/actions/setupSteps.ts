@@ -1,6 +1,6 @@
 import { helper } from "./../utils/specHelper";
 import { specHelper } from "actionhero";
-import { SetupStep } from "../../src";
+import { SetupStep, Team } from "../../src";
 let actionhero;
 
 describe("actions/setupSteps", () => {
@@ -37,6 +37,10 @@ describe("actions/setupSteps", () => {
       csrfToken = sessionResponse.csrfToken;
 
       await SetupStep.update({ skipped: false }, { where: { skipped: true } });
+      await SetupStep.update(
+        { complete: false },
+        { where: { complete: true } }
+      );
     });
 
     test("a reader can list setupSteps", async () => {
@@ -56,11 +60,25 @@ describe("actions/setupSteps", () => {
       expect(setupSteps[0].title).toBe("Create a Team");
       expect(setupSteps[0].description).toMatch(/Create .* team/);
       expect(setupSteps[0].href).toBe("/teams");
+      expect(setupSteps[0].cta).toBe("Create a Team");
       expect(setupSteps[0].outcome).toBe(null);
       expect(setupSteps[0].skipped).toBe(false);
       expect(setupSteps[0].complete).toBe(false);
 
       guid = setupSteps[0].guid;
+    });
+
+    test("setupSteps can be completed outside of the action and re-calculated when viewed", async () => {
+      await Team.create({ name: "new team" });
+
+      connection.params = { csrfToken };
+      const { setupSteps } = await specHelper.runAction(
+        "setupSteps:list",
+        connection
+      );
+      expect(setupSteps.length).toBe(8);
+      expect(setupSteps[0].key).toBe("create_a_team");
+      expect(setupSteps[0].complete).toBe(true);
     });
 
     test("a setupStep can be skipped", async () => {
