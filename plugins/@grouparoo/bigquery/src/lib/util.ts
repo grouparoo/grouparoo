@@ -144,7 +144,7 @@ export async function getSampleRows(
   columns?
 ): Promise<Array<{ [colName: string]: any }>> {
   const escapedTableName = tableName;
-  const query = `SELECT * FROM \`${escapedTableName}\` ORDER BY RAND() LIMIT 10`;
+  const query = `SELECT * FROM \`${escapedTableName}\` LIMIT 10`;
   validateQuery(query);
 
   const options = { query };
