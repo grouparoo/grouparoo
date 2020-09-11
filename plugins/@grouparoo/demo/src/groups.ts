@@ -2,13 +2,21 @@ import { runAction } from "./util/runAction";
 import { Group, ProfilePropertyRule } from "@grouparoo/core";
 import { log } from "./util/shared";
 
+export interface GroupDefinition {
+  name: string;
+  rules: any[];
+  type?: string;
+  matchType?: string;
+  state?: string;
+}
+
 const DEFINITION_DEFAULT = {
   type: "calculated",
   matchType: "all",
   state: "ready",
 };
 
-const GROUP_DEFINITIONS = [
+const GROUP_DEFINITIONS: GroupDefinition[] = [
   {
     name: "All Emails",
     rules: [{ key: "email", operation: { op: "exists" } }],
@@ -28,13 +36,45 @@ const GROUP_DEFINITIONS = [
       {
         key: "lastPurchaseDate",
         operation: { op: "relative_gt" },
-        relativeMatchNumber: "30",
+        relativeMatchNumber: "60",
         relativeMatchUnit: "days",
       },
       {
         key: "lastPurchaseCategory",
         match: "Automotive",
         operation: { op: "eq" },
+      },
+    ],
+  },
+  {
+    name: "Recent Automotive Visits",
+    rules: [
+      {
+        key: "lastPurchaseCategory",
+        match: "Automotive",
+        operation: { op: "eq" },
+      },
+      {
+        key: "recentVisitDate",
+        operation: { op: "relative_gt" },
+        relativeMatchNumber: "14",
+        relativeMatchUnit: "days",
+      },
+    ],
+  },
+  {
+    name: "Recent Automotive Shoppers",
+    rules: [
+      {
+        key: "categoriesViewed",
+        match: "Automotive",
+        operation: { op: "eq" },
+      },
+      {
+        key: "recentVisitDate",
+        operation: { op: "relative_gt" },
+        relativeMatchNumber: "14",
+        relativeMatchUnit: "days",
       },
     ],
   },
@@ -46,7 +86,7 @@ export async function groups() {
   }
 }
 
-async function createGroup(definition) {
+async function createGroup(definition: GroupDefinition) {
   if (!(await hasProperties(definition))) {
     return null;
   }
@@ -70,7 +110,7 @@ async function createGroup(definition) {
   return made;
 }
 
-async function hasProperties(definition): Promise<boolean> {
+async function hasProperties(definition: GroupDefinition): Promise<boolean> {
   for (const rule of definition.rules) {
     const where = { key: rule.key, state: "ready" };
     const found = await ProfilePropertyRule.scope(null).findOne({ where });

@@ -1,17 +1,103 @@
 import { runAction } from "./util/runAction";
-import { ApiKey, App, ProfilePropertyRule } from "@grouparoo/core";
+import { ApiKey, App, ProfilePropertyRule, Source } from "@grouparoo/core";
 import { getPurchaseCategories, getPurchases } from "./sample_data";
+import {
+  makePropertyRuleIdentifying,
+  createPropertyRule,
+  ensureBootstrapPropertyRule,
+  RuleDefinition,
+} from "./util/propertyRules";
 import * as uuid from "uuid";
 import { log, userCreatedAt } from "./util/shared";
 
+const PAGEVIEW_RULES: Array<RuleDefinition> = [
+  {
+    key: "pageviewCount",
+    type: "integer",
+    options: { "aggregation method": "count", column: "[data]-page" },
+  },
+  {
+    key: "categoriesViewed",
+    type: "string",
+    isArray: true,
+    options: { column: "[data]-category", "aggregation method": "all values" },
+    filters: [{ key: "[data]-page", op: "equals", match: "/product" }],
+  },
+  {
+    key: "recentVisitDate",
+    type: "date",
+    options: {
+      "aggregation method": "most recent value",
+      column: "occurredAt",
+    },
+  },
+];
+
 export async function events() {
-  await enableEventsApp();
+  const app = await enableEventsApp();
 
   const apiKey = await getApiKey();
   const categories = await getPurchaseCategories();
   const purchases = await getPurchases();
   await generateBrowseEvents(purchases.length * 1.25, apiKey, categories);
   await generatePurchaseEvents(purchases, apiKey);
+
+  await createSource(app, "pageview");
+  await createPropertyRules(app, "pageview", PAGEVIEW_RULES);
+}
+
+export async function createPropertyRules(
+  app: App,
+  eventType: string,
+  rules: Array<RuleDefinition>
+) {
+  const source = await findEventSource(app, eventType);
+  for (const rule of rules) {
+    await createPropertyRule(source, rule);
+  }
+}
+
+async function findEventSource(app, eventType) {
+  const where = {
+    appGuid: app.guid,
+    type: "events-table-import",
+  };
+  const sources = await Source.scope(null).findAll({ where });
+  for (const source of sources) {
+    const options = await source.getOptions();
+    if (options.type === eventType) {
+      return source;
+    }
+  }
+  return null;
+}
+
+async function createSource(app: App, eventType: string) {
+  const found = await findEventSource(app, eventType);
+
+  const params = {
+    appGuid: app.guid,
+    name: `${eventType} Events`,
+    type: "events-table-import",
+    state: "ready",
+    mapping: {},
+    options: {
+      type: eventType,
+    },
+    guid: found?.guid,
+  };
+
+  if (found) {
+    await runAction("source:edit", params);
+  } else {
+    await runAction("source:create", params);
+  }
+
+  const made = await findEventSource(app, eventType);
+  if (!made) {
+    throw new Error(`Event source not created (${eventType})!`);
+  }
+  return made;
 }
 
 async function generateBrowseEvents(count, apiKey, categories) {
@@ -72,6 +158,8 @@ async function enableEventsApp() {
   };
 
   await runAction("app:edit", params);
+
+  return found.reload();
 }
 
 async function findIdentifyingRuleGuid() {

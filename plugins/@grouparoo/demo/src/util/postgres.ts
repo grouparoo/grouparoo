@@ -112,12 +112,15 @@ export default class Postgres {
           throw new Error(`no ${userId} column on ${tableName}`);
         }
 
-        let generatedCreateAt = userCreatedAt(row[userId]);
         const now = new Date().getTime();
+        let generatedCreateAt = userCreatedAt(row[userId]);
         let creationAgo = now - generatedCreateAt.getTime();
         if (tableName !== "users") {
           creationAgo = Math.random() * creationAgo;
+          const updatedMilli = now - creationAgo;
+          generatedCreateAt = new Date(updatedMilli);
         }
+
         if (createdAt) {
           row.created_at = new Date(generatedCreateAt);
         }
