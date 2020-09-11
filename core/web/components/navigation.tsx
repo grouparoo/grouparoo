@@ -32,6 +32,7 @@ export default function Navigation(props) {
     navExpanded,
     toggleNavExpanded,
     errorHandler,
+    setupStepHandler,
   } = props;
   const { execApi } = useApi(props, errorHandler);
   const [teamMember, setTeamMember] = useState(props.currentTeamMember);
@@ -167,7 +168,10 @@ export default function Navigation(props) {
         </div>
 
         {navigationMode !== "unauthenticated" && (
-          <SetupStepsNavProgressBar execApi={execApi} />
+          <SetupStepsNavProgressBar
+            execApi={execApi}
+            setupStepHandler={setupStepHandler}
+          />
         )}
 
         <div

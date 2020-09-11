@@ -1,20 +1,35 @@
 import Head from "next/head";
 import { useApi } from "../hooks/useApi";
+import { useState } from "react";
 import { SetupStepAPIData } from "../utils/apiData";
 import { Row, Col, ProgressBar, Alert, Button } from "react-bootstrap";
 import SetupStepCard from "../components/setupSteps/setupStepCard";
 
-export default function Page({
-  setupSteps,
-}: {
-  setupSteps: SetupStepAPIData[];
-}) {
-  const completeStepsCount = setupSteps.filter((step) => step.complete).length;
+export default function Page(props) {
+  const { errorHandler, setupStepHandler } = props;
+  const { execApi } = useApi(props, errorHandler);
+  const [setupSteps, setSetupSteps] = useState<SetupStepAPIData[]>(
+    props.setupSteps
+  );
+
+  const completeStepsCount = setupSteps.filter(
+    (step) => step.complete || step.skipped
+  ).length;
   const totalStepsCount = setupSteps.length;
   const percentComplete = Math.round(
     (100 * completeStepsCount) / totalStepsCount
   );
-  const currentStep = setupSteps.find((step) => !step.complete);
+  const currentStep = setupSteps.find(
+    (step) => !step.complete && !step.skipped
+  );
+
+  async function reload() {
+    const response = await execApi("get", `/setupSteps`, {}, null, null, false);
+    if (response.setupSteps) {
+      setSetupSteps(response.setupSteps);
+      setupStepHandler.set(response.setupSteps);
+    }
+  }
 
   return (
     <>
@@ -59,7 +74,9 @@ export default function Page({
           {setupSteps.map((setupStep) => (
             <SetupStepCard
               key={`setupStep-${setupStep.key}`}
+              execApi={execApi}
               setupStep={setupStep}
+              reload={reload}
             />
           ))}
         </Col>

@@ -9,35 +9,37 @@ import Layout from "../components/layouts/main";
 
 import { ErrorHandler } from "../utils/errorHandler";
 import { SuccessHandler } from "../utils/successHandler";
-import { UploadHandler } from "../utils/uploadHandler";
+import { AppHandler } from "../utils/appHandler";
+import { DestinationHandler } from "../utils/destinationHandler";
+import { FileHandler } from "../utils/fileHandler";
+import { GroupHandler } from "../utils/groupHandler";
+import { ProfileHandler } from "../utils/profileHandler";
+import { ProfilePropertyRulesHandler } from "../utils/profilePropertyRulesHandler";
+import { RunsHandler } from "../utils/runsHandler";
+import { ScheduleHandler } from "../utils/scheduleHandler";
 import { SessionHandler } from "../utils/sessionHandler";
+import { SetupStepHandler } from "../utils/setupStepsHandler";
+import { SourceHandler } from "../utils/sourceHandler";
 import { TeamHandler } from "../utils/teamHandler";
 import { TeamMemberHandler } from "../utils/teamMembersHandler";
-import { AppHandler } from "../utils/appHandler";
-import { GroupHandler } from "../utils/groupHandler";
-import { RunsHandler } from "../utils/runsHandler";
-import { SourceHandler } from "../utils/sourceHandler";
-import { DestinationHandler } from "../utils/destinationHandler";
-import { ProfileHandler } from "../utils/profileHandler";
-import { ScheduleHandler } from "../utils/scheduleHandler";
-import { FileHandler } from "../utils/fileHandler";
-import { ProfilePropertyRulesHandler } from "../utils/profilePropertyRulesHandler";
+import { UploadHandler } from "../utils/uploadHandler";
 
 const successHandler = new SuccessHandler();
 const errorHandler = new ErrorHandler();
-const uploadHandler = new UploadHandler();
+const appHandler = new AppHandler();
+const destinationHandler = new DestinationHandler();
+const fileHandler = new FileHandler();
+const groupHandler = new GroupHandler();
+const profileHandler = new ProfileHandler();
+const profilePropertyRulesHandler = new ProfilePropertyRulesHandler();
+const runsHandler = new RunsHandler();
+const scheduleHandler = new ScheduleHandler();
 const sessionHandler = new SessionHandler();
+const setupStepHandler = new SetupStepHandler();
+const sourceHandler = new SourceHandler();
 const teamHandler = new TeamHandler();
 const teamMemberHandler = new TeamMemberHandler();
-const appHandler = new AppHandler();
-const groupHandler = new GroupHandler();
-const runsHandler = new RunsHandler();
-const sourceHandler = new SourceHandler();
-const destinationHandler = new DestinationHandler();
-const profileHandler = new ProfileHandler();
-const scheduleHandler = new ScheduleHandler();
-const fileHandler = new FileHandler();
-const profilePropertyRulesHandler = new ProfilePropertyRulesHandler();
+const uploadHandler = new UploadHandler();
 
 // we use require here because this is just a contained setup file that doesn't need to return any components or UI elements
 require("../components/icons");
@@ -76,21 +78,22 @@ export default function GrouparooWebApp(props) {
     previousPath,
     successHandler,
     errorHandler,
-    uploadHandler,
-    sessionHandler,
-    teamHandler,
-    teamMemberHandler,
-    appHandler,
-    groupHandler,
-    runsHandler,
-    sourceHandler,
-    destinationHandler,
-    profileHandler,
-    scheduleHandler,
-    fileHandler,
-    profilePropertyRulesHandler,
     query,
     pathname,
+    appHandler,
+    destinationHandler,
+    fileHandler,
+    groupHandler,
+    profileHandler,
+    profilePropertyRulesHandler,
+    runsHandler,
+    scheduleHandler,
+    sessionHandler,
+    setupStepHandler,
+    sourceHandler,
+    teamHandler,
+    teamMemberHandler,
+    uploadHandler,
   });
 
   return (

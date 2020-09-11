@@ -4,15 +4,23 @@ import { ProgressBar } from "react-bootstrap";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-export default function SetupStepsNavProgressBar({ execApi }) {
+export default function SetupStepsNavProgressBar({
+  execApi,
+  setupStepHandler,
+}) {
   const [steps, setSteps] = useState<SetupStepAPIData[]>([]);
   const [shouldDisplay, setShouldDisplay] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     router?.events?.on("routeChangeStart", getSetupSteps);
+    setupStepHandler.subscribe("setup-steps-nav-progress-bar", getSetupSteps);
     getSetupSteps();
     return () => {
+      setupStepHandler.unsubscribe(
+        "setup-steps-nav-progress-bar",
+        getSetupSteps
+      );
       router?.events?.off("routeChangeStart", getSetupSteps);
     };
   }, []);
@@ -23,10 +31,14 @@ export default function SetupStepsNavProgressBar({ execApi }) {
     setSteps(setupSteps);
   }
 
-  const activeStep = steps.find((step) => !step.complete);
-  const isOnBoardingComplete = steps.every((step) => step.complete);
+  const activeStep = steps.find((step) => !step.complete && !step.skipped);
+  const isOnBoardingComplete = steps.every(
+    (step) => step.complete || step.skipped
+  );
   const totalStepsCount = steps.length;
-  const completeStepsCount = steps.filter((step) => step.complete).length;
+  const completeStepsCount = steps.filter(
+    (step) => step.complete || step.skipped
+  ).length;
   const percentComplete = Math.round(
     (100 * completeStepsCount) / totalStepsCount
   );
