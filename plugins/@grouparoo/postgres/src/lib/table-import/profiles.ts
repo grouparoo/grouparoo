@@ -15,6 +15,7 @@ export const profiles: ProfilesPluginMethod = async ({
   let importsCount = 0;
   const { table } = await source.parameterizedOptions(run);
   const sortColumn = scheduleOptions.column;
+  const highwaterMarkColumnName = "__hmw";
   const mappingColumn = Object.keys(sourceMapping)[0];
 
   const where = highWaterMark[sortColumn]
@@ -24,7 +25,9 @@ export const profiles: ProfilesPluginMethod = async ({
   const query = where
     ? validateQuery(
         format(
-          `SELECT * FROM %I WHERE %s ORDER BY %I ASC, %I ASC LIMIT %L OFFSET %L`,
+          `SELECT *, %I::text AS %I FROM %I WHERE %s ORDER BY %I ASC, %I ASC LIMIT %L OFFSET %L`,
+          sortColumn,
+          highwaterMarkColumnName,
           table,
           where,
           sortColumn,
@@ -35,7 +38,9 @@ export const profiles: ProfilesPluginMethod = async ({
       )
     : validateQuery(
         format(
-          `SELECT * FROM %I ORDER BY %I ASC, %I ASC LIMIT %L OFFSET %L`,
+          `SELECT *, %I::text AS %I FROM %I ORDER BY %I ASC, %I ASC LIMIT %L OFFSET %L`,
+          sortColumn,
+          highwaterMarkColumnName,
           table,
           sortColumn,
           mappingColumn,
@@ -44,6 +49,7 @@ export const profiles: ProfilesPluginMethod = async ({
         )
       );
 
+  console.log({ query, highWaterMark, sourceOffset, limit });
   const response = await connection.query(query);
   for (const i in response.rows) {
     await plugin.createImport(sourceMapping, run, response.rows[i]);
@@ -57,19 +63,16 @@ export const profiles: ProfilesPluginMethod = async ({
     : null;
 
   if (lastRow) {
-    if (
-      highWaterMark[sortColumn] &&
-      formatHighWaterMark(lastRow[sortColumn]) !== highWaterMark[sortColumn]
-    ) {
-      nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
-    } else if (
-      highWaterMark[sortColumn] &&
-      formatHighWaterMark(lastRow[sortColumn]) === highWaterMark[sortColumn]
-    ) {
+    console.log({ lastRow });
+    const currentValue = highWaterMark[sortColumn];
+    const newValue = formatHighWaterMark(lastRow[highwaterMarkColumnName]);
+
+    if (currentValue && newValue === currentValue) {
       nextSourceOffset = parseInt(sourceOffset.toString()) + limit;
     } else {
-      nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
+      nextHighWaterMark[sortColumn] = newValue;
     }
+    console.log({ nextHighWaterMark });
   }
 
   return {
