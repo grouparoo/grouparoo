@@ -60,7 +60,6 @@ export default function Page({
             <SetupStepCard
               key={`setupStep-${setupStep.key}`}
               setupStep={setupStep}
-              active={currentStep?.position === setupStep.position}
             />
           ))}
         </Col>

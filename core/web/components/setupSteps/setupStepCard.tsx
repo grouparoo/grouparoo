@@ -3,10 +3,8 @@ import { Accordion, Card, Row, Col, Button, Badge } from "react-bootstrap";
 
 export default function SetupStepCard({
   setupStep: step,
-  active,
 }: {
   setupStep: SetupStepAPIData;
-  active: boolean;
 }) {
   return (
     <>
@@ -36,11 +34,11 @@ export default function SetupStepCard({
           <Accordion.Collapse eventKey="0">
             <Card.Body>
               <p>{step.description}</p>
-              {active ? (
-                <p>
-                  <Button href={step.href}>{step.cta}</Button>
-                </p>
-              ) : null}
+              <p>
+                <Button size="sm" href={step.href}>
+                  {step.cta}
+                </Button>
+              </p>
             </Card.Body>
           </Accordion.Collapse>
         </Card>
