@@ -2,28 +2,26 @@ import { useEffect, useState } from "react";
 import { SetupStepAPIData } from "../../utils/apiData";
 import { ProgressBar } from "react-bootstrap";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function SetupStepsNavProgressBar({ execApi }) {
   const [steps, setSteps] = useState<SetupStepAPIData[]>([]);
   const [shouldDisplay, setShouldDisplay] = useState(false);
+  const router = useRouter();
 
-  let timer: NodeJS.Timeout;
-  const timeout = 1000 * 15;
+  useEffect(() => {
+    router.events.on("routeChangeStart", getSetupSteps);
+    getSetupSteps();
+    return () => {
+      router.events.off("routeChangeStart", getSetupSteps);
+    };
+  }, []);
 
   async function getSetupSteps() {
-    clearTimeout(timer);
     const { setupSteps, toDisplay } = await execApi("get", `/setupSteps`);
     setShouldDisplay(toDisplay);
     setSteps(setupSteps);
-    if (toDisplay) timer = setTimeout(getSetupSteps, timeout);
   }
-
-  useEffect(() => {
-    getSetupSteps();
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
 
   const activeStep = steps.find((step) => !step.complete);
   const isOnBoardingComplete = steps.every((step) => step.complete);
