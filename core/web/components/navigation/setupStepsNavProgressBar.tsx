@@ -14,10 +14,10 @@ export default function SetupStepsNavProgressBar({
 
   useEffect(() => {
     router?.events?.on("routeChangeStart", getSetupSteps);
-    setupStepHandler.subscribe("setup-steps-nav-progress-bar", getSetupSteps);
+    setupStepHandler?.subscribe("setup-steps-nav-progress-bar", getSetupSteps);
     getSetupSteps();
     return () => {
-      setupStepHandler.unsubscribe(
+      setupStepHandler?.unsubscribe(
         "setup-steps-nav-progress-bar",
         getSetupSteps
       );
