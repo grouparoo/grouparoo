@@ -10,10 +10,10 @@ export default function SetupStepsNavProgressBar({ execApi }) {
   const router = useRouter();
 
   useEffect(() => {
-    router.events.on("routeChangeStart", getSetupSteps);
+    router?.events?.on("routeChangeStart", getSetupSteps);
     getSetupSteps();
     return () => {
-      router.events.off("routeChangeStart", getSetupSteps);
+      router?.events?.off("routeChangeStart", getSetupSteps);
     };
   }, []);
 
