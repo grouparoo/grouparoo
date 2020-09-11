@@ -96,7 +96,7 @@ export class Plugins extends Initializer {
         key: "display-startup-steps",
         defaultValue: "true",
         description:
-          "Should Grouparoo display the Setup Steps to all Team Members?",
+          "Should Grouparoo display the Setup Steps to all Team Members?  You can always visit /setup to see your setup steps.",
         type: "boolean",
       },
     ];

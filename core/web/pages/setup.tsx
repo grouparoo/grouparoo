@@ -1,8 +1,7 @@
 import Head from "next/head";
-import Link from "next/link";
 import { useApi } from "../hooks/useApi";
 import { SetupStepAPIData } from "../utils/apiData";
-import { Row, Col, ProgressBar } from "react-bootstrap";
+import { Row, Col, ProgressBar, Alert, Button } from "react-bootstrap";
 import SetupStepCard from "../components/setupSteps/setupStepCard";
 
 export default function Page({
@@ -24,10 +23,24 @@ export default function Page({
       </Head>
 
       <h1>Setup Grouparoo</h1>
-      <p>
-        Thanks for installing Grouparoo! There are few steps to get started
-        importing your customer data:
-      </p>
+      {currentStep ? (
+        <p>
+          Thanks for installing Grouparoo! There are few steps to get started
+          importing your customer data:
+        </p>
+      ) : (
+        <Alert variant="success">
+          You’ve finished the Setup Guide! 🎉 <br />
+          If you have additional questions, please read our{" "}
+          <a target="_blank" href="https://www.grouparoo.com/docs">
+            Docs
+          </a>{" "}
+          or ask our{" "}
+          <a target="_blank" href="https://www.grouparoo.com/docs/community">
+            Community
+          </a>
+        </Alert>
+      )}
 
       <div>
         Progress: {completeStepsCount} / {totalStepsCount} steps completed
@@ -57,9 +70,9 @@ export default function Page({
 
       <Row>
         <Col style={{ textAlign: "center" }}>
-          <Link href="/settings/interface">
+          <Button href="/settings/interface" size="sm">
             Hide this Setup Guide from everyone in your team
-          </Link>
+          </Button>
         </Col>
       </Row>
     </>

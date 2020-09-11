@@ -21,8 +21,15 @@ export default function SetupStepCard({
                   </Accordion.Toggle>
                 </strong>
               </Col>
+
               <Col style={{ textAlign: "right" }}>
-                {step.complete ? <h5>✅</h5> : null}
+                {step.outcome && step.complete ? (
+                  <Badge variant="primary">{step.outcome}</Badge>
+                ) : null}
+                &nbsp;&nbsp;&nbsp;
+                {step.complete ? (
+                  <span style={{ fontSize: 18 }}>✅</span>
+                ) : null}
               </Col>
             </Row>
           </Card.Header>
@@ -32,11 +39,6 @@ export default function SetupStepCard({
               {active ? (
                 <p>
                   <Button href={step.href}>{step.cta}</Button>
-                </p>
-              ) : null}
-              {step.outcome && step.complete ? (
-                <p>
-                  <Badge variant="primary">{step.outcome}</Badge>
                 </p>
               ) : null}
             </Card.Body>

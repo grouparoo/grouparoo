@@ -100,7 +100,7 @@ export namespace SetupStepOps {
       title: "Create a Schedule",
       description:
         "Create a Schedule to import data from your Source regularly.  You can have a Schedule for each Source.",
-      href: "/schedules",
+      href: "/sources",
       cta: "Add a Schedule",
       check: async () => {
         const count = await Schedule.count();
