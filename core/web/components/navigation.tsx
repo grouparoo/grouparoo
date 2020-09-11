@@ -1,14 +1,16 @@
 import { Fragment, useState, useEffect } from "react";
-import { Image, Accordion, Button, Badge, ProgressBar } from "react-bootstrap";
+import { Image, Accordion, Button, Badge } from "react-bootstrap";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRealtimeModelStream } from "../hooks/useRealtimeModelStream";
-import { RunAPIData, SetupStepAPIData } from "../utils/apiData";
 import { useApi } from "../hooks/useApi";
+import SetupStepsNavProgressBar from "./navigation/setupStepsNavProgressBar";
+import RunningRunsBadge from "./navigation/runningRunsBadge";
+import ResqueFailedCountBadge from "./navigation/resqueFailedBadgeCount";
+import HighlightingNavLink from "./navigation/highlightingNavLink";
 
-const navLiStyle = { marginTop: 20, marginBottom: 20 };
+export const navLiStyle = { marginTop: 20, marginBottom: 20 };
 
-const navIconStyle = {
+export const navIconStyle = {
   fontSize: 18,
   fontWeight: 300,
   paddingLeft: 0,
@@ -18,7 +20,7 @@ const navIconStyle = {
   textDecoration: "none",
 };
 
-const iconConstrainedStyle = { width: 20 };
+export const iconConstrainedStyle = { width: 20 };
 
 export default function Navigation(props) {
   const {
@@ -333,159 +335,6 @@ export default function Navigation(props) {
           </Accordion.Collapse>
         </Accordion>
       </div>
-    </div>
-  );
-}
-
-function HighlightingNavLink({ href, text, icon, idx }) {
-  const [active, setActive] = useState(false);
-  useEffect(() => {
-    const active = globalThis?.location?.pathname === href;
-    setActive(active);
-  }, [globalThis?.location?.href]);
-
-  return (
-    <li style={navLiStyle} key={idx}>
-      <Link href={href}>
-        <a role="tab" aria-selected={active} style={navIconStyle}>
-          {icon ? (
-            <FontAwesomeIcon
-              style={iconConstrainedStyle}
-              icon={icon}
-              size="xs"
-            />
-          ) : null}{" "}
-        </a>
-      </Link>{" "}
-      <Link href={href}>
-        <a
-          role="tab"
-          aria-selected={active}
-          style={{
-            fontSize: 18,
-            paddingLeft: 0,
-            color: "white",
-          }}
-        >
-          {text}
-        </a>
-      </Link>
-    </li>
-  );
-}
-
-function RunningRunsBadge({ execApi }) {
-  useRealtimeModelStream("run", "navigation-runs-badge", load);
-  const [runs, setRuns] = useState<RunAPIData[]>([]);
-
-  useEffect(() => {
-    load();
-  }, []);
-
-  async function load() {
-    const { runs } = await execApi(
-      "get",
-      `/runs`,
-      { state: "running" },
-      null,
-      null,
-      false
-    );
-    setRuns(runs);
-  }
-
-  if (runs.length === 0) return null;
-
-  return (
-    <span style={{ paddingLeft: 5 }}>
-      <Badge pill variant="info">
-        {runs.length}
-      </Badge>
-    </span>
-  );
-}
-
-function ResqueFailedCountBadge({
-  resqueFailedCount,
-  navigationMode,
-}: {
-  resqueFailedCount: number;
-  navigationMode: string;
-}) {
-  if (navigationMode === "unauthenticated") return null;
-  if (resqueFailedCount === 0) return null;
-
-  return (
-    <span style={{ paddingLeft: 5 }}>
-      <Badge pill variant="warning">
-        {resqueFailedCount}
-      </Badge>
-    </span>
-  );
-}
-
-function SetupStepsNavProgressBar({ execApi }) {
-  const [steps, setSteps] = useState<SetupStepAPIData[]>([]);
-  const [shouldDisplay, setShouldDisplay] = useState(false);
-
-  let timer: NodeJS.Timeout;
-  const timeout = 1000 * 15;
-
-  async function getSetupSteps() {
-    clearTimeout(timer);
-    const { setupSteps, toDisplay } = await execApi("get", `/setupSteps`);
-    setShouldDisplay(toDisplay);
-    setSteps(setupSteps);
-    if (toDisplay) timer = setTimeout(getSetupSteps, timeout);
-  }
-
-  useEffect(() => {
-    getSetupSteps();
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
-
-  const activeStep = steps.find((step) => !step.complete);
-  const isOnBoardingComplete = steps.every((step) => step.complete);
-  const totalStepsCount = steps.length;
-  const completeStepsCount = steps.filter((step) => step.complete).length;
-  const percentComplete = Math.round(
-    (100 * completeStepsCount) / totalStepsCount
-  );
-
-  if (!shouldDisplay) return null;
-
-  return (
-    <div
-      style={{
-        backgroundColor: "white",
-        width: "100%",
-        padding: 20,
-        marginTop: 10,
-      }}
-    >
-      <div
-        style={{
-          fontSize: 18,
-          paddingLeft: 0,
-          color: "var(--secondary)",
-        }}
-      >
-        <Link href="/setup">
-          <a>{isOnBoardingComplete ? "Setup Complete 🎉" : "Get Started:"}</a>
-        </Link>
-      </div>
-      <div
-        style={{
-          paddingLeft: 0,
-          paddingBottom: 10,
-          color: "var(--secondary)",
-        }}
-      >
-        {activeStep?.title}
-      </div>
-      <ProgressBar now={percentComplete} />
     </div>
   );
 }
