@@ -43,7 +43,7 @@ describe("models/setupStep", () => {
     ).rejects.toThrow();
   });
 
-  test("setupSteps can getCheck", async () => {
+  test("setupSteps can performCheck", async () => {
     await Team.create({ name: "test team" });
     await Team.create({ name: "other test team" });
 
@@ -54,8 +54,18 @@ describe("models/setupStep", () => {
       where: { key: "create_a_group" },
     });
 
-    expect(await teamStep.getCheck()).toBe(true);
-    expect(await groupStep.getCheck()).toBe(false);
+    expect(await teamStep.performCheck()).toBe(true);
+    expect(await groupStep.performCheck()).toBe(false);
+  });
+
+  test("complete checks will remain complete and not check again", async () => {
+    await Team.destroy({ truncate: true });
+
+    const teamStep = await SetupStep.findOne({
+      where: { key: "create_a_team" },
+    });
+
+    expect(await teamStep.performCheck()).toBe(true);
   });
 
   test("setupSteps can getOutcome", async () => {
@@ -68,5 +78,13 @@ describe("models/setupStep", () => {
 
     expect(await teamStep.getOutcome()).toBe(null);
     expect(await groupStep.getOutcome()).toBe("0 Group Memberships created");
+  });
+
+  test("setupSteps can getCta", async () => {
+    const step = await SetupStep.findOne({
+      where: { key: "create_a_team" },
+    });
+
+    expect(step.getCta()).toBe("Create a Team");
   });
 });

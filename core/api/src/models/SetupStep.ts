@@ -37,7 +37,8 @@ export class SetupStep extends LoggedModel<SetupStep> {
     const ssd = this.getSetupStepDescription();
     const title = this.getTitle(ssd);
     const description = this.getDescription(ssd);
-    const check = await this.getCheck(ssd);
+    const href = this.getHref(ssd);
+    const cta = this.getCta(ssd);
     const outcome = await this.getOutcome(ssd);
 
     return {
@@ -46,7 +47,8 @@ export class SetupStep extends LoggedModel<SetupStep> {
       key: this.key,
       title,
       description,
-      check,
+      href,
+      cta,
       outcome,
       skipped: this.skipped,
       complete: this.complete,
@@ -65,10 +67,27 @@ export class SetupStep extends LoggedModel<SetupStep> {
     return ssd.description;
   }
 
-  async getCheck(ssd?: SetupStepOps.setupStepDescription) {
+  getHref(ssd?: SetupStepOps.setupStepDescription) {
     if (!ssd) ssd = this.getSetupStepDescription();
-    if (ssd.check) return ssd.check();
-    return null;
+    return ssd.href;
+  }
+
+  getCta(ssd?: SetupStepOps.setupStepDescription) {
+    if (!ssd) ssd = this.getSetupStepDescription();
+    return ssd.cta;
+  }
+
+  async performCheck(ssd?: SetupStepOps.setupStepDescription) {
+    if (this.complete) return true;
+
+    if (!ssd) ssd = this.getSetupStepDescription();
+    if (ssd.check) {
+      const check = await ssd.check();
+      if (check) await this.update({ complete: true });
+      return check;
+    } else {
+      return null;
+    }
   }
 
   async getOutcome(ssd?: SetupStepOps.setupStepDescription) {

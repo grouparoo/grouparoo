@@ -1,5 +1,6 @@
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { SetupStep } from "../models/SetupStep";
+import { Setting } from "../models/Setting";
 
 export class SetupStepsList extends AuthenticatedAction {
   constructor() {
@@ -14,9 +15,18 @@ export class SetupStepsList extends AuthenticatedAction {
     const setupSteps = await SetupStep.findAll({
       order: [["position", "asc"]],
     });
-    response.setupSteps = await Promise.all(
-      setupSteps.map((step) => step.apiData())
-    );
+
+    response.setupSteps = [];
+    for (const i in setupSteps) {
+      await setupSteps[i].performCheck();
+      response.setupSteps.push(await setupSteps[i].apiData());
+    }
+
+    const setting = await Setting.findOne({
+      where: { key: "display-startup-steps" },
+    });
+
+    response.toDisplay = setting.value === "true";
   }
 }
 
@@ -40,6 +50,7 @@ export class SetupStepEdit extends AuthenticatedAction {
       await setupStep.update({ skipped: params.skipped });
     }
 
+    await setupStep.performCheck();
     response.setupStep = await setupStep.apiData();
   }
 }

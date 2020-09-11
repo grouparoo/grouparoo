@@ -17,6 +17,8 @@ export namespace SetupStepOps {
     key: string;
     title: string;
     description: string;
+    href: string;
+    cta: string;
     check?: () => Promise<boolean>;
     outcome?: () => Promise<string>;
   };
@@ -26,7 +28,10 @@ export namespace SetupStepOps {
       position: 1,
       key: "create_a_team",
       title: "Create a Team",
-      description: "Create a team so that your colleagues can use Grouparoo.",
+      description:
+        "Create another team so that your colleagues can use Grouparoo.",
+      href: "/teams",
+      cta: "Create a Team",
       check: async () => {
         const count = await Team.count();
         return count > 1;
@@ -37,6 +42,8 @@ export namespace SetupStepOps {
       key: "name_your_grouparoo_instance",
       title: "Name your Grouparoo Instance",
       description: "Give your Grouparoo cluster a name.",
+      href: "/settings/core",
+      cta: "Change your Grouparoo Cluster Name",
       check: async () => {
         const setting = await plugin.readSetting("core", "cluster-name");
         return setting.value !== setting.defaultValue;
@@ -48,6 +55,8 @@ export namespace SetupStepOps {
       title: "Add an App",
       description:
         "Add your first App to Grouparoo.  Apps are used to connect to your Databases and APIs.",
+      href: "/apps",
+      cta: "Add an App",
       check: async () => {
         const count = await App.count();
         return count > 0;
@@ -59,6 +68,8 @@ export namespace SetupStepOps {
       title: "Create a Source",
       description:
         "Add your first Source to Grouparoo.  Sources connect to Apps and are able to import data.",
+      href: "/sources",
+      cta: "Add a Source",
       check: async () => {
         const count = await Source.count();
         return count > 0;
@@ -70,6 +81,8 @@ export namespace SetupStepOps {
       title: "Create a Unique Profile Property",
       description:
         "Create your first unique Profile Property Rule.  Grouparoo needs at least one unique Profile Property Rule to identify your Profiles (email, userId, etc).  You can have more than one!",
+      href: "/profilePropertyRules",
+      cta: "Add a Profile Property",
       check: async () => {
         const count = await ProfilePropertyRule.count({
           where: { unique: true },
@@ -87,6 +100,8 @@ export namespace SetupStepOps {
       title: "Create a Schedule",
       description:
         "Create a Schedule to import data from your Source regularly.  You can have a Schedule for each Source.",
+      href: "/sources",
+      cta: "Add a Schedule",
       check: async () => {
         const count = await Schedule.count();
         return count > 0;
@@ -102,6 +117,8 @@ export namespace SetupStepOps {
       title: "Create a Group",
       description:
         "Create a Group based on the Properties of your Profiles.  Groups will be kept up-to-date with changes to your Profile's Properties.",
+      href: "/groups",
+      cta: "Add a Group",
       check: async () => {
         const count = await Group.count();
         return count > 0;
@@ -117,6 +134,8 @@ export namespace SetupStepOps {
       title: "Create a Destination",
       description:
         "Create a Destination to sync your Profiles and Group Memberships.  Grouparoo will automatically send all new information to the Destinations relevant to each Profile.",
+      href: "/destinations",
+      cta: "Add a Destination",
       check: async () => {
         const count = await Destination.count();
         return count > 0;
