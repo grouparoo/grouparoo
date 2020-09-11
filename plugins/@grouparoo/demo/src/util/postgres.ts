@@ -89,6 +89,11 @@ export default class Postgres {
     const createQuery = `CREATE TABLE ${sqlTable} (${columnTypes.join(", ")})`;
     await this.query(1, createQuery);
 
+    if (userId !== "id") {
+      const indexQuery = `CREATE INDEX "${tableName}_userId" ON ${sqlTable} ("${userId}");`;
+      await this.query(1, indexQuery);
+    }
+
     const db = this;
     const fillTable = async function (page: number = 0) {
       log(2, `   Page ${page}`);
