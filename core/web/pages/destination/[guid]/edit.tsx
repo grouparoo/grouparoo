@@ -49,7 +49,10 @@ export default function Page(props) {
         response.destination.state === "ready" &&
         destination.state === "draft"
       ) {
-        Router.push(`/destination/${destination.guid}/data`);
+        Router.push(
+          `/destination/[guid]/data`,
+          `/destination/${destination.guid}/data`
+        );
       } else {
         successHandler.set({ message: "Destination updated" });
       }

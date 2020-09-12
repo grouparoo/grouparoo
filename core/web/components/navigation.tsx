@@ -163,7 +163,11 @@ export default function Navigation(props) {
               </a>
             </Link>
             <br />
-            <Badge variant="secondary">{clusterName}</Badge>
+            <Link href="/settings/[tab]" as="/settings/core">
+              <a>
+                <Badge variant="secondary">{clusterName}</Badge>
+              </a>
+            </Link>
           </div>
         </div>
 

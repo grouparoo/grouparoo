@@ -90,7 +90,10 @@ export default function Page(props) {
 
       // we just went 'ready'
       if (source.state !== response.source.state) {
-        Router.push(`/source/${source.guid}/overview`);
+        Router.push(
+          `/source/[guid]/overview`,
+          `/source/${source.guid}/overview`
+        );
       } else {
         successHandler.set({ message: "Source updated" });
       }
