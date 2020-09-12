@@ -91,7 +91,7 @@ export namespace plugin {
   ) {
     const setting = await Setting.findOne({ where: { pluginName, key } });
 
-    if (setting) return setting;
+    if (setting) return setting.update({ defaultValue, description, type });
 
     try {
       const setting = await Setting.create({
