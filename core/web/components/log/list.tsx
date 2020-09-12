@@ -81,7 +81,11 @@ export default function LogsList(props) {
 
     if (ownerGuid) {
       return [
-        <Link href={`/object/${ownerGuid}`} prefetch={false}>
+        <Link
+          href="/object/[guid]"
+          as={`/object/${ownerGuid}`}
+          prefetch={false}
+        >
           <a>{`${topic}`}</a>
         </Link>,
       ];
@@ -184,7 +188,10 @@ export default function LogsList(props) {
                   {log.ownerGuid ? (
                     <>
                       <br />
-                      <Link href={`/object/${log.ownerGuid}`}>
+                      <Link
+                        href="/object/[guid]"
+                        as={`/object/${log.ownerGuid}`}
+                      >
                         <a className="text-muted">{log.ownerGuid}</a>
                       </Link>
                     </>

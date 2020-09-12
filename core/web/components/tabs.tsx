@@ -6,19 +6,21 @@ export default function GrouparooTabs({
   name,
   draftType,
   tabs,
+  defaultTab,
 }: {
   name: string;
   draftType?: string;
   tabs: string[];
+  defaultTab?: string;
 }) {
-  if (!globalThis.location) {
-    return null;
-  }
+  if (!globalThis.location) return null;
 
   const parts = globalThis.location.href.split("/");
   const topic = parts[3];
   const guid = parts[4];
   const verb = parts[5].split("?")[0];
+
+  if (!defaultTab) defaultTab = tabs[0];
 
   return (
     <>
@@ -28,13 +30,20 @@ export default function GrouparooTabs({
             <a>{capitalize(pluralize(topic))}</a>
           </Link>
         </li>
-        <Breadcrumb.Item>
-          {name !== ""
-            ? name
-            : draftType
-            ? `${capitalize(draftType)} Draft`
-            : "Draft"}
-        </Breadcrumb.Item>
+        <li className="breadcrumb-item">
+          <Link
+            href={`/${topic}/[guid]/${defaultTab}`}
+            as={`/${topic}/${guid}/${defaultTab}`}
+          >
+            <a>
+              {name !== ""
+                ? name
+                : draftType
+                ? `${capitalize(draftType)} Draft`
+                : "Draft"}
+            </a>
+          </Link>
+        </li>
         <Breadcrumb.Item>{capitalize(verb)}</Breadcrumb.Item>
       </Breadcrumb>
 
