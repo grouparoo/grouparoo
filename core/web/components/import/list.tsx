@@ -131,7 +131,7 @@ export default function ImportList(props) {
                     Creator:{" "}
                     {_import.creatorType === "run" ? (
                       <Link
-                        href="/run/[creatorGuid]/edit"
+                        href="/run/[guid]/edit"
                         as={`/run/${_import.creatorGuid}/edit`}
                       >
                         <a>{_import.creatorGuid}</a>

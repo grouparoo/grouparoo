@@ -35,7 +35,10 @@ export default function FindObject(props) {
   async function routeScheduleToSource() {
     const response = await load("schedule", guid);
     if (response?.schedule) {
-      Router.push(`/source/${response.schedule.source.guid}/schedule`);
+      Router.push(
+        `/source/[guid]/schedule`,
+        `/source/${response.schedule.source.guid}/schedule`
+      );
     }
   }
 
@@ -44,8 +47,8 @@ export default function FindObject(props) {
   } else if (prefix === "sch") {
     routeScheduleToSource();
   } else {
-    const href = route.replace("[guid]", guid);
-    Router.push(href);
+    const as = route.replace("[guid]", guid);
+    Router.push(route, as);
   }
 
   return (
