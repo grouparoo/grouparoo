@@ -70,6 +70,24 @@ describe("models/setting", () => {
     expect(latestLog).toBeTruthy();
   });
 
+  test("settings can be updated via subsequent calls to registerSetting", async () => {
+    await plugin.registerSetting(
+      "testPlugin",
+      "key",
+      "value2",
+      "this is a better description of the setting",
+      "string"
+    );
+
+    const setting = await plugin.readSetting("testPlugin", "key");
+    expect(setting.key).toBe("key");
+    expect(setting.value).toBe("new value"); // no change
+    expect(setting.defaultValue).toBe("value2");
+    expect(setting.description).toBe(
+      "this is a better description of the setting"
+    );
+  });
+
   test("deleting a setting creates a log entry", async () => {
     const setting = await Setting.findOne({
       where: {
