@@ -14,25 +14,29 @@ export const profiles: ProfilesPluginMethod = async ({
   let importsCount = 0;
   const { table } = await source.parameterizedOptions(run);
   const sortColumn = scheduleOptions.column;
+  const highWaterMarkColumnName = "__hmw";
   const mappingColumn = Object.keys(sourceMapping)[0];
 
   const where = highWaterMark[sortColumn]
     ? `\`${sortColumn}\` >= "${highWaterMark[sortColumn]}"`
     : null;
 
-  const query = `SELECT * FROM ?? ${
+  const query = `SELECT *, CAST(?? as CHAR) as ?? FROM ?? ${
     where ? ` WHERE ${where} ` : ""
   } ORDER BY ?? ASC, ?? ASC LIMIT ? OFFSET ?`;
 
   validateQuery(query);
 
   const rows = await connection.asyncQuery(query, [
+    sortColumn,
+    highWaterMarkColumnName,
     table,
     sortColumn,
     mappingColumn,
     limit,
     parseInt(sourceOffset.toString()),
   ]);
+
   for (const i in rows) {
     await plugin.createImport(sourceMapping, run, rows[i]);
     importsCount++;
@@ -43,18 +47,13 @@ export const profiles: ProfilesPluginMethod = async ({
   const lastRow = rows[rows.length - 1];
 
   if (lastRow) {
-    if (
-      highWaterMark[sortColumn] &&
-      formatHighWaterMark(lastRow[sortColumn]) !== highWaterMark[sortColumn]
-    ) {
-      nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
-    } else if (
-      highWaterMark[sortColumn] &&
-      formatHighWaterMark(lastRow[sortColumn]) === highWaterMark[sortColumn]
-    ) {
+    const currentValue = highWaterMark[sortColumn];
+    const newValue = lastRow[highWaterMarkColumnName];
+
+    if (currentValue && newValue === currentValue) {
       nextSourceOffset = parseInt(sourceOffset.toString()) + limit;
     } else {
-      nextHighWaterMark[sortColumn] = formatHighWaterMark(lastRow[sortColumn]);
+      nextHighWaterMark[sortColumn] = newValue;
     }
   }
 
@@ -64,15 +63,3 @@ export const profiles: ProfilesPluginMethod = async ({
     sourceOffset: nextSourceOffset,
   };
 };
-
-function formatHighWaterMark(value: any) {
-  if (value instanceof Date) {
-    return (
-      value.toISOString().split("T")[0] +
-      " " +
-      value.toTimeString().split(" ")[0]
-    );
-  } else {
-    return value.toString();
-  }
-}
