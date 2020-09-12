@@ -1,22 +1,42 @@
+import { useState } from "react";
 import { SetupStepAPIData } from "../../utils/apiData";
 import { Accordion, Card, Row, Col, Button, Badge } from "react-bootstrap";
 
 export default function SetupStepCard({
   setupStep: step,
-  active,
+  execApi,
+  reload,
 }: {
   setupStep: SetupStepAPIData;
-  active: boolean;
+  execApi: Function;
+  reload: Function;
 }) {
+  const [activeKey, setActiveKey] = useState(
+    step.skipped || step.complete ? null : "0"
+  );
+
+  async function skip() {
+    await execApi("put", `/setupStep/${step.guid}`, {
+      skipped: !step.skipped,
+    });
+    reload();
+    setActiveKey(step.skipped ? "0" : null);
+  }
+
   return (
     <>
-      <Accordion defaultActiveKey={step.complete ? null : "0"}>
+      <Accordion activeKey={activeKey}>
         <Card border={step.complete ? "success" : null}>
           <Card.Header>
             <Row>
               <Col>
                 <strong>
-                  <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                  <Accordion.Toggle
+                    as={Button}
+                    variant="link"
+                    eventKey="0"
+                    onClick={() => setActiveKey(activeKey ? null : "0")}
+                  >
                     {step.position}: {step.title}
                   </Accordion.Toggle>
                 </strong>
@@ -30,17 +50,43 @@ export default function SetupStepCard({
                 {step.complete ? (
                   <span style={{ fontSize: 18 }}>✅</span>
                 ) : null}
+                {step.skipped && !step.complete ? (
+                  <span style={{ fontSize: 18 }}>➖</span>
+                ) : null}
               </Col>
             </Row>
           </Card.Header>
           <Accordion.Collapse eventKey="0">
             <Card.Body>
               <p>{step.description}</p>
-              {active ? (
-                <p>
-                  <Button href={step.href}>{step.cta}</Button>
-                </p>
-              ) : null}
+              {step.complete ? null : (
+                <Row>
+                  <Col md={6}>
+                    <Button size="sm" href={step.href}>
+                      {step.cta}
+                    </Button>
+                  </Col>
+                  <Col md={6} style={{ textAlign: "right" }}>
+                    {step.skipped ? (
+                      <Button
+                        size="sm"
+                        variant="outline-dark"
+                        onClick={() => skip()}
+                      >
+                        un-skip
+                      </Button>
+                    ) : (
+                      <Button
+                        size="sm"
+                        variant="outline-dark"
+                        onClick={() => skip()}
+                      >
+                        skip
+                      </Button>
+                    )}
+                  </Col>
+                </Row>
+              )}
             </Card.Body>
           </Accordion.Collapse>
         </Card>

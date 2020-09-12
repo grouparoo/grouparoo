@@ -5,7 +5,7 @@ import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { useHistoryPagination } from "../hooks/useHistoryPagination";
 import Router from "next/router";
 import Link from "next/link";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Alert } from "react-bootstrap";
 import Moment from "react-moment";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
@@ -86,6 +86,21 @@ export default function Page(props) {
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
     Router[routerMethod](Router.route, url, { shallow: true });
+  }
+
+  if (sources.length === 0) {
+    return (
+      <>
+        <Alert variant="primary">
+          There are no Sources yet.
+          <br />
+          <br />
+          <Button size="sm" href="/sources">
+            Add Source
+          </Button>
+        </Alert>
+      </>
+    );
   }
 
   return (

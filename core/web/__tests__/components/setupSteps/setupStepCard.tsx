@@ -15,31 +15,15 @@ describe("<setupStepCard />", () => {
     outcome: "You did the thing!",
   };
 
-  describe("active", () => {
-    beforeAll(() => {
-      component = mount(<SetStepCard active={true} setupStep={setupStep} />);
-    });
-
-    afterAll(() => {
-      component.unmount();
-    });
-
-    it("renders a call to action", () => {
-      expect(component.html()).toContain("you should do the thing");
-    });
+  beforeAll(() => {
+    component = mount(<SetStepCard setupStep={setupStep} />);
   });
 
-  describe("inactive", () => {
-    beforeAll(() => {
-      component = mount(<SetStepCard active={false} setupStep={setupStep} />);
-    });
+  afterAll(() => {
+    component.unmount();
+  });
 
-    afterAll(() => {
-      component.unmount();
-    });
-
-    it("does not renders a call to action", () => {
-      expect(component.html()).not.toContain("you should do the thing");
-    });
+  it("renders a call to action", () => {
+    expect(component.html()).toContain("you should do the thing");
   });
 });
