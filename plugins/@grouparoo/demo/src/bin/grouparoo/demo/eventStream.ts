@@ -7,6 +7,7 @@ import {
   Profile,
 } from "@grouparoo/core";
 import fetch from "isomorphic-fetch";
+import { init } from "../../../util/shared";
 import * as uuid from "uuid";
 
 const sleep = 100;
@@ -41,7 +42,7 @@ export class Console extends CLI {
     super();
     this.name = "grouparoo demo eventStream";
     this.description =
-      "Create a slew of events mirroring an e-commerce application against your existing profiles";
+      "Makes a continuous stream of events mirroring an e-commerce application against your existing profiles";
   }
 
   async getIdentifyingProfilePropertyRuleKey() {
@@ -79,6 +80,8 @@ export class Console extends CLI {
   }
 
   async run() {
+    await init();
+
     const identifyingProfilePropertyRuleKey = await this.getIdentifyingProfilePropertyRuleKey();
     const apiKey = await this.getApiKey();
     const baseUrl = await this.getBaseUrl();
