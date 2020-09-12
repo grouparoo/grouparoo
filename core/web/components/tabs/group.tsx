@@ -14,5 +14,11 @@ export default function GroupTabs({ group }: { group: GroupAPIData }) {
     tabs.push(p.key);
   });
 
-  return <Tabs name={group.name} tabs={tabs} />;
+  return (
+    <Tabs
+      name={group.name}
+      tabs={tabs}
+      defaultTab={group.type === "calculated" ? "rules" : "edit"}
+    />
+  );
 }
