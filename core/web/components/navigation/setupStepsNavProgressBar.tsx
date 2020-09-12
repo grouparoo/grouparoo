@@ -15,7 +15,7 @@ export default function SetupStepsNavProgressBar({
   useEffect(() => {
     getSetupSteps();
     router?.events?.on("routeChangeStart", (url) => {
-      if (url !== "/" && url.match(/^\/session\//)) getSetupSteps();
+      if (url !== "/" && !url.match(/^\/session\//)) getSetupSteps();
     });
 
     setupStepHandler?.subscribe("setup-steps-nav-progress-bar", getSetupSteps);
