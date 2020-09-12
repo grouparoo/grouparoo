@@ -75,7 +75,7 @@ export default function Page(props) {
       setSource(response.source);
       sourceHandler.set(response.source);
       if (response.source.state !== "ready") {
-        Router.push(`/source/${guid}/mapping`);
+        Router.push(`/source/[guid]/mapping`, `/source/${guid}/mapping`);
       } else if (
         response.source.state === "ready" &&
         source.state === "draft"

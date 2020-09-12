@@ -18,9 +18,10 @@ export default function Page(props) {
     event.preventDefault();
     const response = await execApi("post", `/destination`, destination);
     if (response?.destination) {
-      Router.push({
-        pathname: `/destination/${response.destination.guid}/edit`,
-      });
+      Router.push(
+        "/destination/[guid]/edit",
+        `/destination/${response.destination.guid}/edit`
+      );
     }
   };
 
