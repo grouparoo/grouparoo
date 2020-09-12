@@ -54,6 +54,9 @@ export default function Page(props) {
           <a target="_blank" href="https://www.grouparoo.com/docs/community">
             Community
           </a>
+          <br />
+          <br />
+          <HideSetupButton />
         </Alert>
       )}
 
@@ -86,9 +89,7 @@ export default function Page(props) {
 
       <Row>
         <Col style={{ textAlign: "center" }}>
-          <Button href="/settings/interface" size="sm">
-            Hide this Setup Guide from everyone in your team
-          </Button>
+          <HideSetupButton />
         </Col>
       </Row>
     </>
@@ -100,3 +101,11 @@ Page.getInitialProps = async (ctx) => {
   const { setupSteps } = await execApi("get", `/setupSteps`);
   return { setupSteps };
 };
+
+function HideSetupButton() {
+  return (
+    <Button href="/settings/interface" size="sm">
+      Hide this Setup Guide from everyone in your team
+    </Button>
+  );
+}
