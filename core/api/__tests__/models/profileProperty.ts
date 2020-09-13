@@ -232,6 +232,18 @@ describe("models/profileProperty", () => {
       ).rejects.toThrowError(/email .* is not valid/);
     });
 
+    test("very long emails are valid", async () => {
+      const profileProperty = new ProfileProperty({
+        profileGuid: profile.guid,
+        profilePropertyRuleGuid: emailRule.guid,
+      });
+      const value =
+        "Deleted-user-id-19430-Team-5051deleted-user-id-19430-team-5051XXXXXX@example.com";
+      await profileProperty.setValue(value);
+      const response = await profileProperty.getValue();
+      expect(response).toBe(value);
+    });
+
     test("urls", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,

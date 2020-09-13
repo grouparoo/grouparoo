@@ -83,7 +83,15 @@ function formatURL(url: string) {
 }
 
 function formatEmail(email: string) {
-  if (!isEmail(email)) {
+  // The full set of validator options can be found at https://github.com/validatorjs/validator.js
+  const options = {
+    require_tld: false,
+    allow_display_name: true,
+    ignore_max_length: true,
+    allow_ip_domain: true,
+  };
+
+  if (!isEmail(email, options)) {
     throw new Error(`email "${email}" is not valid`);
   }
 
