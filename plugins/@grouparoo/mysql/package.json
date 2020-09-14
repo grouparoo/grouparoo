@@ -37,7 +37,7 @@
     "@grouparoo/core": "^0.1.13",
     "@types/jest": "26.0.13",
     "@types/mysql": "2.15.15",
-    "@types/node": "14.6.4",
+    "@types/node": "14.10.1",
     "actionhero": "23.0.10",
     "csv-parse": "4.12.0",
     "jest": "26.4.2",
