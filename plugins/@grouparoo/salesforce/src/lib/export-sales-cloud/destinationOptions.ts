@@ -3,6 +3,7 @@ import {
   DestinationOptionsMethodResponse,
 } from "@grouparoo/core";
 import { connect } from "../connect";
+import { describeObject } from "../objects";
 
 export const destinationOptions: DestinationOptionsMethod = async ({
   appOptions,
@@ -32,7 +33,8 @@ export const destinationOptions: DestinationOptionsMethod = async ({
 
 async function getProfileMatchNames(conn, objectName) {
   const out = [];
-  const response = await conn.sobject(objectName).describe();
+  const response = await describeObject(conn, objectName, true);
+
   for (const field of response.fields) {
     // TODO: might want field.createable and field.updateable checks here
     // basically do that if 'Id' doesn't work.
