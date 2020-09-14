@@ -4,10 +4,10 @@ import { plugin } from "@grouparoo/core";
 import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
 
-import { exportProfiles } from "../lib/export/exportProfiles";
-import { destinationOptions } from "../lib/export/destinationOptions";
-import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
-import { exportArrayProperties } from "../lib/export/exportArrayProperties";
+import { exportProfiles } from "../lib/export-sales-cloud/exportProfiles";
+import { destinationOptions } from "../lib/export-sales-cloud/destinationOptions";
+import { destinationMappingOptions } from "../lib/export-sales-cloud/destinationMappingOptions";
+import { exportArrayProperties } from "../lib/export-sales-cloud/exportArrayProperties";
 
 const packageJSON = require("./../../package.json");
 
@@ -47,11 +47,24 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "salesforce-export",
+          name: "salesforce-sales-cloud-export",
           direction: "export",
-          description: "export profiles to a salesforce account",
+          description: "Export profiles to a salesforce sales cloud account",
           app: "salesforce",
-          options: [],
+          options: [
+            {
+              key: "profileObject",
+              required: true,
+              description:
+                "What object in Salesforce maps to a Grouparoo profile?",
+            },
+            {
+              key: "profileFieldMatch",
+              required: true,
+              description:
+                "What field in the Object represents how to match Grouparoo profiles?",
+            },
+          ],
           methods: {
             exportProfiles,
             destinationOptions,
