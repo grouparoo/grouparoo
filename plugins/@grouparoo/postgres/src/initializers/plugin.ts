@@ -58,6 +58,27 @@ export class Plugins extends Initializer {
               required: false,
               description: "the postgres user's password",
             },
+            {
+              key: "ssl",
+              required: false,
+              description:
+                "require the use of a SSL connection (default: false).  If you need custom SSL certificates paste in their values below",
+            },
+            {
+              key: "ssl_cert",
+              required: false,
+              description: "the ssl certificate",
+            },
+            {
+              key: "ssl_key",
+              required: false,
+              description: "the ssl certificate's key",
+            },
+            {
+              key: "ssl_ca",
+              required: false,
+              description: "the ssl certificate authority",
+            },
           ],
           methods: { test, connect, disconnect },
         },
