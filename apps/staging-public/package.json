@@ -25,6 +25,7 @@
     "@grouparoo/postgres": "^0.1.15-alpha.3",
     "@grouparoo/redshift": "^0.1.15-alpha.3",
     "@grouparoo/sailthru": "^0.1.15-alpha.3",
+    "@grouparoo/salesforce": "^0.1.15-alpha.3",
     "@grouparoo/sample-ui-plugin": "^0.1.15-alpha.3",
     "@grouparoo/zendesk": "^0.1.15-alpha.3"
   },
@@ -51,6 +52,7 @@
       "@grouparoo/postgres",
       "@grouparoo/redshift",
       "@grouparoo/sailthru",
+      "@grouparoo/salesforce",
       "@grouparoo/zendesk"
     ],
     "includedFiles": [
