@@ -35,7 +35,8 @@ export default function Page(props) {
   if (connectionApps.length === 0) {
     return (
       <p>
-        Please create an{" "}
+        There are no Apps in the <code>ready</code> state which can be used to
+        create a Destination. Please create an{" "}
         <Link href="/apps">
           <a>App</a>
         </Link>{" "}
