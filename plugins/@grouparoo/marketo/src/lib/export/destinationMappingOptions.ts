@@ -3,6 +3,7 @@ import {
   DestinationMappingOptionsResponseTypes,
 } from "@grouparoo/core";
 import { connect } from "./../connect";
+import { log } from "actionhero";
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
   appOptions,
@@ -42,6 +43,7 @@ const mapTypesFromMarketoToGrouparoo = (marketoType) => {
     datetime: "date",
     score: "integer",
     // unhandled:
+    lead_function: null,
     reference: null,
     formula: null,
     // TODO:
@@ -54,7 +56,8 @@ const mapTypesFromMarketoToGrouparoo = (marketoType) => {
 
   const grouparooType = map[marketoType];
   if (grouparooType === undefined) {
-    throw new Error(`Unknown marketo type: ${marketoType}`);
+    log(`Unknown marketo type: ${marketoType}`);
+    return null;
   }
   return grouparooType;
 };
