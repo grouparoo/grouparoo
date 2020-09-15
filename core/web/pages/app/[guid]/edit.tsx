@@ -110,9 +110,18 @@ export default function Page(props) {
 
       <Form id="form" onSubmit={edit}>
         <Row>
-          <Col md={1}>
+          <Col md={1} style={{ textAlign: "center" }}>
             <br />
             <AppIcon src={app.icon} fluid size={100} />
+            <br />
+            <br />
+            {app.provides.source ? (
+              <Badge variant="primary">source</Badge>
+            ) : null}
+            <br />
+            {app.provides.destination ? (
+              <Badge variant="info">destination</Badge>
+            ) : null}
           </Col>
 
           <Col>

@@ -78,8 +78,7 @@ export class AppOptions extends AuthenticatedAction {
             addible: app.addible,
             options: app.options,
             plugin: { name: plugin.name, icon: plugin.icon },
-            source,
-            destination,
+            provides: { source, destination },
           });
         });
       }

@@ -52,13 +52,13 @@ export default function SelectorList({
               ? "selector-list-selected"
               : "selector-list";
 
-          if (item.source) {
+          if (item.provides.source) {
             badges.push({ message: "source", variant: "primary" });
           } else {
             badges.push({});
           }
 
-          if (item.destination) {
+          if (item.provides.destination) {
             badges.push({ message: "destination", variant: "info" });
           } else {
             badges.push({});

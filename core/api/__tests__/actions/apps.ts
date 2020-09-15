@@ -77,8 +77,8 @@ describe("actions/apps", () => {
         name: "@grouparoo/test-plugin",
         icon: "/path/to/icon.png",
       });
-      expect(pluginTestAppType.source).toBe(true);
-      expect(pluginTestAppType.destination).toBe(true);
+      expect(pluginTestAppType.provides.source).toBe(true);
+      expect(pluginTestAppType.provides.destination).toBe(true);
 
       const eventsAppType = types.find((t) => t.name === "events");
       expect(eventsAppType.options).toEqual([
@@ -91,8 +91,8 @@ describe("actions/apps", () => {
         name: "@grouparoo/core/events",
         icon: "/public/@grouparoo/events/events.png",
       });
-      expect(eventsAppType.source).toBe(true);
-      expect(eventsAppType.destination).toBe(false);
+      expect(eventsAppType.provides.source).toBe(true);
+      expect(eventsAppType.provides.destination).toBe(false);
     });
 
     describe("options from environment variables", () => {
