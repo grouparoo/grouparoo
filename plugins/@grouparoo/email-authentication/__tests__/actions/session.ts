@@ -1,17 +1,6 @@
 // We are just testing that the app boots with this plugin loaded
 
-// mock pluginInjection so that this plugin will be loaded (needs static path string)
-jest.mock(
-  `${__dirname}/../../../../../core/api/src/config/pluginInjection.ts`,
-  () => ({
-    "@grouparoo/csv": { path: `${__dirname}/../..` },
-  })
-);
-
-// ~ jump over to core for this test ~
-process.chdir(`${__dirname}/../../../../../core/api`);
-
-import { helper } from "@grouparoo/core/test";
+import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 
 let actionhero;

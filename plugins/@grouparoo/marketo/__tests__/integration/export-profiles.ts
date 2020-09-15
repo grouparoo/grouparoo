@@ -1,12 +1,12 @@
-// ~ jump over to core for this test ~
-process.chdir(`${__dirname}/../../../../../core/api`);
-
 import path from "path";
+process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
+  "@grouparoo/marketo": { path: path.join(__dirname, "..", "..") },
+});
 
+import { helper } from "@grouparoo/spec-helper";
 import { exportBatch } from "../../src/lib/export/exportProfiles";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
 
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profiles.js");
 

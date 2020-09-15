@@ -2,13 +2,11 @@ import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/bigquery": { path: path.join(__dirname, "..", "..") },
 });
-import { helper } from "@grouparoo/spec-helper";
 
+import { helper } from "@grouparoo/spec-helper";
 import { profileProperty } from "../../src/lib/table-import/profileProperty";
 import { connect } from "../../src/lib/connect";
-
 import { loadAppOptions, updater } from "../utils/nockHelper";
-
 import {
   plugin,
   SimpleAppOptions,

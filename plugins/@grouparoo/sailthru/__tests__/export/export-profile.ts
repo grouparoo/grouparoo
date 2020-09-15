@@ -1,12 +1,9 @@
-// ~ jump over to core for this test ~
-process.chdir(`${__dirname}/../../../../../core/api`);
-
 import path from "path";
-
+import "@grouparoo/spec-helper";
+import { helper } from "@grouparoo/spec-helper";
 import { exportProfile } from "../../src/lib/export/exportProfile";
 import Sailthru from "../../src/lib/client";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
 
 let client: Sailthru;
 const email = "brian@bleonard.com";
