@@ -18,12 +18,10 @@ export const destinationOptions: DestinationOptionsMethod = async ({
   const objectNames = await getProfileObjectNames(conn);
   out.profileObject.options = objectNames;
 
-  if (destinationOptions.profileObject) {
+  const objectName = destinationOptions.profileObject;
+  if (objectName && objectNames.includes(objectName)) {
     // look up its fields
-    const fields = await getProfileMatchNames(
-      conn,
-      destinationOptions.profileObject
-    );
+    const fields = await getProfileMatchNames(conn, objectName);
     out.profileFieldMatch.type = "list";
     out.profileFieldMatch.options = fields;
   }
@@ -42,7 +40,7 @@ async function getProfileMatchNames(conn, objectName) {
       out.push(field.name);
     }
   }
-  return out;
+  return out.sort();
 }
 
 async function getProfileObjectNames(conn) {
