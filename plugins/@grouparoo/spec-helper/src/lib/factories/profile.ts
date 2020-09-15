@@ -1,4 +1,4 @@
-import { Profile } from "@grouparoo/core";
+import { Profile } from "@grouparoo/core/api/src";
 
 const data = async (props = {}) => {
   const defaultProps = {

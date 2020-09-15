@@ -1,5 +1,4 @@
 import { helper } from "../src";
-import { specHelper } from "actionhero";
 import { Log } from "@grouparoo/core";
 let actionhero;
 

@@ -8,7 +8,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "dist/index",
+  "main": "src/index",
   "homepage": "https://www.grouparoo.com",
   "bugs": {
     "url": "https://github.com/grouparoo/grouparoo/issues"
@@ -22,7 +22,7 @@
     "node": ">=12.0.0"
   },
   "scripts": {
-    "prepare": "rm -rf dist && tsc --declaration",
+    "prepare": "echo 'nothing to build'",
     "test": "jest",
     "pretest": "npm run lint && npm run prepare",
     "lint": "prettier --check src "

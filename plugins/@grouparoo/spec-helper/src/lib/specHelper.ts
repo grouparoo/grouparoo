@@ -4,7 +4,7 @@
 import { getCoreRootPath } from "@grouparoo/core/api/src/utils/pluginDetails";
 const corePath = getCoreRootPath();
 process.chdir(corePath);
-process.env.ACTIONHERO_CONFIG = `${corePath}/dist/config`;
+process.env.ACTIONHERO_CONFIG = `${corePath}/src/config`;
 
 if (!process.env.JEST_WORKER_ID || process.env.JEST_WORKER_ID === "1") {
   process.stdout.write(
@@ -168,7 +168,13 @@ export namespace helper {
     const { Process } = await import("actionhero");
     const actionhero = new Process();
     await actionhero.start();
+
+    // prepare models that we are using from /src
     plugin.mountModels();
+    // prepare models that we are using from /dist
+    try {
+      require("@grouparoo/core").plugin.mountModels();
+    } catch (error) {}
 
     if (options.truncate) await this.truncate();
 

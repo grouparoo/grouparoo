@@ -1,5 +1,5 @@
 import faker from "faker";
-import { Schedule } from "@grouparoo/core";
+import { Schedule } from "@grouparoo/core/api/src";
 import SourceFactory from "./source";
 
 const data = async (props = {}) => {

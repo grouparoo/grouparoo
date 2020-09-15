@@ -1,4 +1,4 @@
-import { ProfilePropertyRule } from "@grouparoo/core";
+import { ProfilePropertyRule } from "@grouparoo/core/api/src";
 import SourceFactory from "./source";
 
 const data = async (props = {}) => {
