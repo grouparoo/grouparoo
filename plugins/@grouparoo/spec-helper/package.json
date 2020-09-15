@@ -38,7 +38,7 @@
     "actionhero": "23.0.10"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.1.13",
+    "@grouparoo/core": "0.1.14",
     "@types/faker": "5.1.0",
     "@types/jest": "26.0.13",
     "@types/node": "14.10.1",
