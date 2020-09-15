@@ -30,6 +30,7 @@ export default function SelectorList({
         let subheading: string;
         let description: string;
         let className: string;
+        let badges: { message?: string; variant?: string }[] = [];
 
         if (item?.app?.guid) {
           // these items are connectionApps, i.e.: ({connection: {}, app: {}})
@@ -50,6 +51,18 @@ export default function SelectorList({
             item.name === selectedItem.type
               ? "selector-list-selected"
               : "selector-list";
+
+          if (item.provides.source) {
+            badges.push({ message: "source", variant: "primary" });
+          } else {
+            badges.push({});
+          }
+
+          if (item.provides.destination) {
+            badges.push({ message: "destination", variant: "info" });
+          } else {
+            badges.push({});
+          }
         } else {
           throw new Error("I do not know what that is");
         }
@@ -63,6 +76,7 @@ export default function SelectorList({
             size={120}
             className={className}
             iconClassName="card-img"
+            badges={badges}
             onClick={() => onClick(item)}
             key={`card-${idx}`}
           />

@@ -122,6 +122,17 @@ describe("models/app", () => {
     await app.destroy();
   });
 
+  test("apps can determine if they will provide a source or destination", async () => {
+    const app = await App.create({
+      name: "test log app",
+      type: "test-plugin-app",
+    });
+
+    const provides = app.provides();
+    expect(provides).toEqual({ source: true, destination: true });
+    await app.destroy();
+  });
+
   test("deleting a app creates a log entry", async () => {
     const app = await App.create({
       name: "bye app",

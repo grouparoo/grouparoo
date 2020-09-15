@@ -153,6 +153,7 @@ export class App extends LoggedModel<App> {
   async apiData() {
     const options = await this.getOptions(false);
     const icon = await this._getIcon();
+    const provides = this.provides();
 
     return {
       guid: this.guid,
@@ -161,9 +162,33 @@ export class App extends LoggedModel<App> {
       type: this.type,
       state: this.state,
       options,
+      provides,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
     };
+  }
+
+  /**
+   * Determine if this App can provide Source or Destination Connections
+   */
+  provides() {
+    const source = api.plugins.plugins.find((p) =>
+      p?.connections?.find(
+        (c) => c.app === this.type && c.direction === "import"
+      )
+    )
+      ? true
+      : false;
+
+    const destination = api.plugins.plugins.find((p) =>
+      p?.connections?.find(
+        (c) => c.app === this.type && c.direction === "export"
+      )
+    )
+      ? true
+      : false;
+
+    return { source, destination };
   }
 
   async _getIcon() {

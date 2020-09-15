@@ -57,11 +57,28 @@ export class AppOptions extends AuthenticatedAction {
     api.plugins.plugins.map((plugin: GrouparooPlugin) => {
       if (plugin.apps) {
         plugin.apps.map((app) => {
+          const source = api.plugins.plugins.find((p) =>
+            p?.connections?.find(
+              (c) => c.app === app.name && c.direction === "import"
+            )
+          )
+            ? true
+            : false;
+
+          const destination = api.plugins.plugins.find((p) =>
+            p?.connections?.find(
+              (c) => c.app === app.name && c.direction === "export"
+            )
+          )
+            ? true
+            : false;
+
           response.types.push({
             name: app.name,
             addible: app.addible,
             options: app.options,
             plugin: { name: plugin.name, icon: plugin.icon },
+            provides: { source, destination },
           });
         });
       }
