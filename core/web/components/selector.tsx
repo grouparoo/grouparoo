@@ -1,4 +1,5 @@
 import AppIcon from "../components/appIcon";
+import { Row, Col, Badge } from "react-bootstrap";
 
 export default function Selector({
   src = "",
@@ -7,6 +8,7 @@ export default function Selector({
   iconClassName = "",
   subheading = "",
   description = "",
+  badges = [],
   className = "",
   onClick = () => {},
 }: {
@@ -17,6 +19,7 @@ export default function Selector({
   iconClassName?: string;
   subheading?: string;
   description?: string;
+  badges: { message?: string; variant?: string }[];
   onClick?: any;
 }) {
   return (
@@ -63,6 +66,23 @@ export default function Selector({
             <br />
             {description}
           </p>
+        ) : null}
+        {badges ? (
+          <Row>
+            {badges.map(({ message, variant }, idx) => (
+              <Col
+                key={`badge-${title}-${idx}`}
+                md={6}
+                style={{ textAlign: "center" }}
+              >
+                {message ? (
+                  <Badge pill variant={variant}>
+                    {message}
+                  </Badge>
+                ) : null}
+              </Col>
+            ))}
+          </Row>
         ) : null}
       </div>
     </div>

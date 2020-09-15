@@ -55,7 +55,7 @@ describe("actions/apps", () => {
       guid = app.guid;
     });
 
-    test("an administrator can get the options for a new app", async () => {
+    test("an administrator can get the options for a new app and how they can be used", async () => {
       connection.params = {
         csrfToken,
       };
@@ -68,6 +68,31 @@ describe("actions/apps", () => {
       const names = types.map((t) => t.name);
       expect(names).toContain("manual");
       expect(names).toContain("test-plugin-app");
+
+      const pluginTestAppType = types.find((t) => t.name === "test-plugin-app");
+      expect(pluginTestAppType.options).toEqual([
+        { key: "fileGuid", required: true },
+      ]);
+      expect(pluginTestAppType.plugin).toEqual({
+        name: "@grouparoo/test-plugin",
+        icon: "/path/to/icon.png",
+      });
+      expect(pluginTestAppType.source).toBe(true);
+      expect(pluginTestAppType.destination).toBe(true);
+
+      const eventsAppType = types.find((t) => t.name === "events");
+      expect(eventsAppType.options).toEqual([
+        expect.objectContaining({
+          key: "identifyingProfilePropertyRuleGuid",
+          required: true,
+        }),
+      ]);
+      expect(eventsAppType.plugin).toEqual({
+        name: "@grouparoo/core/events",
+        icon: "/public/@grouparoo/events/events.png",
+      });
+      expect(eventsAppType.source).toBe(true);
+      expect(eventsAppType.destination).toBe(false);
     });
 
     describe("options from environment variables", () => {
