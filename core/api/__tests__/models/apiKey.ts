@@ -1,4 +1,4 @@
-import { helper } from "./../utils/specHelper";
+import { helper } from "@grouparoo/spec-helper";
 import { ApiKey } from "./../../src/models/ApiKey";
 import { Log } from "./../../src/models/Log";
 import { Permission } from "./../../src/models/Permission";

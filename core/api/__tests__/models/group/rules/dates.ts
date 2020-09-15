@@ -1,6 +1,6 @@
+import { SharedGroupTests } from "../../../utils/prepareSharedGroupTest";
 import { Group } from "../../../../src/models/Group";
 import { Profile } from "../../../../src/models/Profile";
-import { SharedGroupTests } from "../../../utils/prepareSharedGroupTest";
 
 describe("model/group", () => {
   let group: Group;

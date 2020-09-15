@@ -1,7 +1,7 @@
 import fetch, { enableFetchMocks } from "jest-fetch-mock";
 enableFetchMocks();
 
-import { helper } from "../utils/specHelper";
+import { helper } from "@grouparoo/spec-helper";
 import { Log } from "../../src/models/Log";
 import { plugin } from "../../src/modules/plugin";
 import { api, specHelper, config } from "actionhero";

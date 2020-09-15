@@ -1,7 +1,7 @@
+import { SharedGroupTests } from "../../../utils/prepareSharedGroupTest";
 import { Group } from "../../../../src/models/Group";
 import { GroupRule } from "../../../../src/models/GroupRule";
 import { Profile } from "../../../../src/models/Profile";
-import { SharedGroupTests } from "../../../utils/prepareSharedGroupTest";
 
 describe("model/group", () => {
   let group: Group;

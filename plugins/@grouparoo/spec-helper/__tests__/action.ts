@@ -12,10 +12,8 @@ describe("actions/status", () => {
     await helper.shutdown(actionhero);
   });
 
-  describe("status:public", () => {
-    test("the public status action is OK", async () => {
-      const { status } = await specHelper.runAction("status:public");
-      expect(status).toBe("ok");
-    });
+  test("the public status action is OK", async () => {
+    const { status } = await specHelper.runAction("status:public");
+    expect(status).toBe("ok");
   });
 });

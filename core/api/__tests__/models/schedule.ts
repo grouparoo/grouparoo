@@ -1,5 +1,5 @@
+import { helper } from "@grouparoo/spec-helper";
 import { api } from "actionhero";
-import { helper } from "../utils/specHelper";
 import { App } from "../../src/models/App";
 import { Log } from "../../src/models/Log";
 import { Schedule } from "../../src/models/Schedule";

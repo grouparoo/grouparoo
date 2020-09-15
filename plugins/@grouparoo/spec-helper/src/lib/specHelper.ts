@@ -1,11 +1,18 @@
 // At import we need to change the working directory to core/api
 // Don't use the main export path as that will require Actionhero's config
 // We can rely on npm to find the right version of the package for us
-import { getCoreRootPath } from "@grouparoo/core/api/dist/utils/pluginDetails";
+import { getCoreRootPath } from "@grouparoo/core/api/src/utils/pluginDetails";
 const corePath = getCoreRootPath();
-console.log(`using @grouparoo/core from ${corePath}`);
 process.chdir(corePath);
 process.env.ACTIONHERO_CONFIG = `${corePath}/dist/config`;
+
+if (!process.env.JEST_WORKER_ID || process.env.JEST_WORKER_ID === "1") {
+  process.stdout.write(
+    `--- using @grouparoo/core from ${corePath} ---\r\n\r\n`
+  );
+}
+
+// normal pathway
 
 import LogFactory from "./factories/log";
 import GroupFactory from "./factories/group";
@@ -58,7 +65,7 @@ import {
   Mapping,
   Team,
   TeamMember,
-} from "@grouparoo/core";
+} from "@grouparoo/core/api/src"; // we explicitly require the src (typescript) files
 
 import { Op } from "sequelize";
 import fs from "fs";
@@ -157,18 +164,13 @@ export namespace helper {
     );
   }
 
-  export async function prepareForAPITest(
-    options = {
-      truncate: true,
-    }
-  ) {
+  export async function prepareForAPITest(options = { truncate: true }) {
     const { Process } = await import("actionhero");
     const actionhero = new Process();
     await actionhero.start();
+    plugin.mountModels();
 
-    if (options.truncate) {
-      await this.truncate();
-    }
+    if (options.truncate) await this.truncate();
 
     enableTestPlugin();
 

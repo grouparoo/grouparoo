@@ -1,4 +1,4 @@
-import { helper } from "./../utils/specHelper";
+import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
 import { Source } from "./../../src/models/Source";
