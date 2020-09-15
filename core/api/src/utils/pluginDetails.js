@@ -17,6 +17,10 @@ function getParentPath() {
     : path.join(__dirname, "..", "..", "..", "..", "..", "..");
 }
 
+function getCoreRootPath() {
+  return path.normalize(path.join(__dirname, "..", ".."));
+}
+
 function getPluginManifest() {
   const manifest = {
     parent: {
@@ -92,4 +96,5 @@ exports.getParentPath = getParentPath;
 exports.getPluginManifest = getPluginManifest;
 exports.runningCoreDirectly = runningCoreDirectly;
 exports.getCoreVersion = getCoreVersion;
+exports.getCoreRootPath = getCoreRootPath;
 exports.getNodeVersion = getNodeVersion;
