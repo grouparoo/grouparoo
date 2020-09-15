@@ -2,11 +2,14 @@
 // Don't use the main export path as that will require Actionhero's config
 // We can rely on npm to find the right version of the package for us
 import { getCoreRootPath } from "@grouparoo/core/api/src/utils/pluginDetails";
-const corePath = getCoreRootPath();
+const corePath: string = getCoreRootPath();
 process.chdir(corePath);
 process.env.ACTIONHERO_CONFIG = `${corePath}/src/config`;
 
-if (!process.env.JEST_WORKER_ID || process.env.JEST_WORKER_ID === "1") {
+if (
+  corePath.includes("node_modules") &&
+  (!process.env.JEST_WORKER_ID || process.env.JEST_WORKER_ID === "1")
+) {
   process.stdout.write(
     `--- using @grouparoo/core from ${corePath} ---\r\n\r\n`
   );
