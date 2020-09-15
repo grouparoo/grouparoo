@@ -7,7 +7,6 @@ import { Source } from "../../src/models/Source";
 import { Option } from "../../src/models/Option";
 import { Run } from "../../src/models/Run";
 import { plugin } from "../../src/modules/plugin";
-import run from "../factories/run";
 let actionhero;
 
 describe("models/schedule", () => {
