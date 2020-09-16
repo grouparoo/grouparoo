@@ -277,11 +277,8 @@ export namespace GroupOps {
         groupMembersCount++;
       }
 
-      group.calculatedAt = new Date();
-      await group.save({ transaction });
-
       await transaction.commit();
-
+      await group.update({ calculatedAt: new Date() });
       return groupMembersCount;
     } catch (error) {
       await transaction.rollback();
@@ -334,11 +331,8 @@ export namespace GroupOps {
         groupMembersCount++;
       }
 
-      group.calculatedAt = new Date();
-      await group.save({ transaction });
-
       await transaction.commit();
-
+      await group.update({ calculatedAt: new Date() });
       return groupMembersCount;
     } catch (error) {
       await transaction.rollback();
