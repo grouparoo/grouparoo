@@ -2,6 +2,29 @@
 
 Shared Utilities for testing Grouparoo and Grouparoo Plugins
 
+A typical test file's shape:
+
+```ts
+import { helper } from "@grouparoo/spec-helper";
+
+describe("test suite", () => {
+  let actionhero;
+
+  beforeAll(async () => {
+    const env = await helper.prepareForAPITest();
+    actionhero = env.actionhero;
+  }, 1000 * 30);
+
+  afterAll(async () => {
+    await helper.shutdown(actionhero);
+  });
+
+  test("it works", () => {
+    expect(1 + 1).toBe(2);
+  });
+});
+```
+
 ## Notes
 
 1. You _must_ require `@grouparoo/spec-helper` as the first import in your test files.
