@@ -12,6 +12,10 @@ function readPackageJson(path) {
 }
 
 function getParentPath() {
+  if (process.env.GROUPAROO_PARENT_PATH) {
+    return process.env.GROUPAROO_PARENT_PATH;
+  }
+
   return grouparooMonorepoApp
     ? path.join(__dirname, "..", "..", "..", "..", "apps", grouparooMonorepoApp)
     : path.join(__dirname, "..", "..", "..", "..", "..", "..");
