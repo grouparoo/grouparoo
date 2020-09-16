@@ -67,8 +67,15 @@ async function findId(value) {
   return results[0][idType];
 }
 async function getUser(id) {
-  const row = await client.sobject(objectType).retrieve(id);
-  return row;
+  try {
+    const row = await client.sobject(objectType).retrieve(id);
+    return row;
+  } catch (err) {
+    if (err.errorCode === "NOT_FOUND") {
+      return null;
+    }
+    throw err;
+  }
 }
 async function cleanUp(suppressErrors) {
   await deleteUsers(suppressErrors);
@@ -248,146 +255,29 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(user.LastName).toBe("Simpson");
   });
 
-  // test.skip("can add to and create lists", async () => {
-  //   listId1 = await findListId(list1);
-  //   expect(listId1).toBe(null);
-
-  //   const { success, errors } = await exportBatch({
-  //     appOptions,
-  //     destinationOptions,
-  //     exports: [
-  //       {
-  //         profileGuid: guid1,
-  //         oldProfileProperties: { Email: email1, FirstName: "Brian" },
-  //         newProfileProperties: { Email: email1, FirstName: "Brian" },
-  //         oldGroups: [],
-  //         newGroups: [list1],
-  //         toDelete: false,
-  //         profile: null,
-  //       },
-  //     ],
-  //   });
-
-  //   expect(success).toBe(true);
-  //   expect(errors).toBeNull();
-
-  //   listId1 = await findListId(list1);
-  //   expect(listId1).toBeTruthy();
-  //   const members = await getListMemberIds(listId1);
-  //   expect(members.sort()).toEqual([userId1].sort());
-  // });
-
-  // test.skip("wait a bit for the list to take hold", async () => {
-  //   await helper.sleep(2500);
-  // });
-
-  // test.skip("can add multiple users to lists", async () => {
-  //   listId2 = await findListId(list2);
-  //   expect(listId2).toBe(null);
-
-  //   const { success, errors } = await exportBatch({
-  //     appOptions,
-  //     destinationOptions,
-  //     exports: [
-  //       {
-  //         profileGuid: guid1,
-  //         oldProfileProperties: { Email: email1, FirstName: "Brian" },
-  //         newProfileProperties: { Email: email1, FirstName: "Brian" },
-  //         oldGroups: [list1],
-  //         newGroups: [list1, list2],
-  //         toDelete: false,
-  //         profile: null,
-  //       },
-  //       {
-  //         profileGuid: guid2,
-  //         oldProfileProperties: { Email: email2, FirstName: "Andy" },
-  //         newProfileProperties: { Email: email2, FirstName: "Sally" },
-  //         oldGroups: [],
-  //         newGroups: [list1],
-  //         toDelete: false,
-  //         profile: null,
-  //       },
-  //     ],
-  //   });
-
-  //   expect(success).toBe(true);
-  //   expect(errors).toBeNull();
-  //   listId2 = await findListId(list2);
-  //   expect(listId2).toBeTruthy();
-
-  //   let members;
-  //   members = await getListMemberIds(listId1);
-  //   expect(members.sort()).toEqual([userId1, userId2].sort());
-
-  //   members = await getListMemberIds(listId2);
-  //   expect(members.sort()).toEqual([userId1].sort());
-
-  //   let user;
-  //   user = await getUser(userId2);
-  //   expect(user.email).toBe(email2);
-  //   expect(user.firstName).toBe("Sally");
-  //   expect(user.lastName).toBe(null);
-  // });
-
-  // test.skip("can remove users from lists including ones they aren't in", async () => {
-  //   const { success, errors } = await exportBatch({
-  //     appOptions,
-  //     destinationOptions,
-  //     exports: [
-  //       {
-  //         profileGuid: guid1,
-  //         oldProfileProperties: { Email: email1, FirstName: "Brian" },
-  //         newProfileProperties: { Email: email1, FirstName: "Brian" },
-  //         oldGroups: [list1, list2],
-  //         newGroups: [list1],
-  //         toDelete: false,
-  //         profile: null,
-  //       },
-  //       {
-  //         profileGuid: guid2,
-  //         oldProfileProperties: { Email: email2, FirstName: "Andy" },
-  //         newProfileProperties: { Email: email2, FirstName: "Sally" },
-  //         oldGroups: [list2],
-  //         newGroups: [list1],
-  //         toDelete: false,
-  //         profile: null,
-  //       },
-  //     ],
-  //   });
-
-  //   expect(success).toBe(true);
-  //   expect(errors).toBeNull();
-
-  //   let members;
-  //   members = await getListMemberIds(listId1);
-  //   expect(members.sort()).toEqual([userId1, userId2].sort());
-
-  //   members = await getListMemberIds(listId2);
-  //   expect(members.sort()).toEqual([]);
-  // });
-
-  test.skip("it can change the email address", async () => {
+  test("it can change the email address", async () => {
+    console.log("change user test");
     const { success, errors } = await exportBatch({
       appOptions,
       destinationOptions,
       exports: [
         {
           profileGuid: guid1,
-          oldProfileProperties: { Email: email1, FirstName: "Brian" },
+          oldProfileProperties: { Email: email1, LastName: "Brian" },
           newProfileProperties: {
             Email: newEmail1,
             FirstName: "Brian",
-            LastName: "Test",
+            LastName: "Chang",
           },
-          oldGroups: [list1],
-          newGroups: [list1, list2],
+          oldGroups: [],
+          newGroups: [],
           toDelete: false,
           profile: null,
         },
         {
           profileGuid: guid2,
-          oldProfileProperties: { Email: email2, FirstName: "Andy" },
-          newProfileProperties: { Email: email2, FirstName: "Evan" },
+          oldProfileProperties: { Email: email2, LastName: "Jih" },
+          newProfileProperties: { Email: email2, LastName: "Test" },
           oldGroups: [list1],
           newGroups: [],
           toDelete: false,
@@ -401,25 +291,18 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
     let user;
     user = await getUser(userId1);
-    expect(user.email).toBe(newEmail1);
-    expect(user.firstName).toBe("Brian");
-    expect(user.lastName).toBe("Test");
+    expect(user.Email).toBe(newEmail1);
+    expect(user.FirstName).toBe("Brian");
+    expect(user.LastName).toBe("Chang");
 
     expect(await findId(email1)).toBeNull(); // changed!
 
     user = await getUser(userId2);
-    expect(user.email).toBe(email2);
-    expect(user.firstName).toBe("Evan");
-
-    // let members;
-    // members = await getListMemberIds(listId1);
-    // expect(members.sort()).toEqual([userId1].sort());
-
-    // members = await getListMemberIds(listId2);
-    // expect(members.sort()).toEqual([userId1]);
+    expect(user.Email).toBe(email2);
+    expect(user.LastName).toBe("Test");
   });
 
-  test.skip("can delete a user", async () => {
+  test("can delete a user", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
       destinationOptions,
@@ -429,24 +312,24 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
           oldProfileProperties: {
             Email: newEmail1,
             FirstName: "Brian",
-            lastName: "Test",
+            LastName: "Chang",
           },
           newProfileProperties: {
-            Email: email1,
+            Email: email1, // changing back
             FirstName: "Brian",
-            lastName: "Test",
+            LastName: "Chang",
           },
-          oldGroups: [list1, list2],
-          newGroups: [list1],
+          oldGroups: [],
+          newGroups: [],
           toDelete: false,
           profile: null,
         },
         {
           profileGuid: guid2,
-          oldProfileProperties: { Email: email2, FirstName: "Evan" },
-          newProfileProperties: { Email: email2, FirstName: "Evan" },
+          oldProfileProperties: { Email: email2, LastName: "Test" },
+          newProfileProperties: { Email: email2, LastName: "Test" },
           oldGroups: [],
-          newGroups: [list1], // but he's being deleted!
+          newGroups: [],
           toDelete: true,
           profile: null,
         },
@@ -458,22 +341,14 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
     let user;
     user = await getUser(userId1);
-    expect(user.email).toBe(email1);
-    expect(user.firstName).toBe("Brian");
-    expect(user.lastName).toBe("Test");
-    expect(user.boolean_field).toBe(false); // checking default
+    expect(user.Email).toBe(email1);
+    expect(user.FirstName).toBe("Brian");
+    expect(user.LastName).toBe("Chang");
 
     expect(await findId(newEmail1)).toBeNull(); // changed!
 
     expect(await findId(email2)).toBeNull();
     expect(await getUser(userId2)).toBeNull();
-
-    // let members;
-    // members = await getListMemberIds(listId1);
-    // expect(members.sort()).toEqual([userId1].sort());
-
-    // members = await getListMemberIds(listId2);
-    // expect(members.sort()).toEqual([]);
   });
 
   test.skip("can add back a user and many types", async () => {
@@ -901,4 +776,122 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(user.firstName).toEqual("Liz"); // created
     expect(user.email_field).toEqual("valid@grouparoo.com");
   });
+
+  // test.skip("can add to and create lists", async () => {
+  //   listId1 = await findListId(list1);
+  //   expect(listId1).toBe(null);
+
+  //   const { success, errors } = await exportBatch({
+  //     appOptions,
+  //     destinationOptions,
+  //     exports: [
+  //       {
+  //         profileGuid: guid1,
+  //         oldProfileProperties: { Email: email1, FirstName: "Brian" },
+  //         newProfileProperties: { Email: email1, FirstName: "Brian" },
+  //         oldGroups: [],
+  //         newGroups: [list1],
+  //         toDelete: false,
+  //         profile: null,
+  //       },
+  //     ],
+  //   });
+
+  //   expect(success).toBe(true);
+  //   expect(errors).toBeNull();
+
+  //   listId1 = await findListId(list1);
+  //   expect(listId1).toBeTruthy();
+  //   const members = await getListMemberIds(listId1);
+  //   expect(members.sort()).toEqual([userId1].sort());
+  // });
+
+  // test.skip("wait a bit for the list to take hold", async () => {
+  //   await helper.sleep(2500);
+  // });
+
+  // test.skip("can add multiple users to lists", async () => {
+  //   listId2 = await findListId(list2);
+  //   expect(listId2).toBe(null);
+
+  //   const { success, errors } = await exportBatch({
+  //     appOptions,
+  //     destinationOptions,
+  //     exports: [
+  //       {
+  //         profileGuid: guid1,
+  //         oldProfileProperties: { Email: email1, FirstName: "Brian" },
+  //         newProfileProperties: { Email: email1, FirstName: "Brian" },
+  //         oldGroups: [list1],
+  //         newGroups: [list1, list2],
+  //         toDelete: false,
+  //         profile: null,
+  //       },
+  //       {
+  //         profileGuid: guid2,
+  //         oldProfileProperties: { Email: email2, FirstName: "Andy" },
+  //         newProfileProperties: { Email: email2, FirstName: "Sally" },
+  //         oldGroups: [],
+  //         newGroups: [list1],
+  //         toDelete: false,
+  //         profile: null,
+  //       },
+  //     ],
+  //   });
+
+  //   expect(success).toBe(true);
+  //   expect(errors).toBeNull();
+  //   listId2 = await findListId(list2);
+  //   expect(listId2).toBeTruthy();
+
+  //   let members;
+  //   members = await getListMemberIds(listId1);
+  //   expect(members.sort()).toEqual([userId1, userId2].sort());
+
+  //   members = await getListMemberIds(listId2);
+  //   expect(members.sort()).toEqual([userId1].sort());
+
+  //   let user;
+  //   user = await getUser(userId2);
+  //   expect(user.email).toBe(email2);
+  //   expect(user.firstName).toBe("Sally");
+  //   expect(user.lastName).toBe(null);
+  // });
+
+  // test.skip("can remove users from lists including ones they aren't in", async () => {
+  //   const { success, errors } = await exportBatch({
+  //     appOptions,
+  //     destinationOptions,
+  //     exports: [
+  //       {
+  //         profileGuid: guid1,
+  //         oldProfileProperties: { Email: email1, FirstName: "Brian" },
+  //         newProfileProperties: { Email: email1, FirstName: "Brian" },
+  //         oldGroups: [list1, list2],
+  //         newGroups: [list1],
+  //         toDelete: false,
+  //         profile: null,
+  //       },
+  //       {
+  //         profileGuid: guid2,
+  //         oldProfileProperties: { Email: email2, FirstName: "Andy" },
+  //         newProfileProperties: { Email: email2, FirstName: "Sally" },
+  //         oldGroups: [list2],
+  //         newGroups: [list1],
+  //         toDelete: false,
+  //         profile: null,
+  //       },
+  //     ],
+  //   });
+
+  //   expect(success).toBe(true);
+  //   expect(errors).toBeNull();
+
+  //   let members;
+  //   members = await getListMemberIds(listId1);
+  //   expect(members.sort()).toEqual([userId1, userId2].sort());
+
+  //   members = await getListMemberIds(listId2);
+  //   expect(members.sort()).toEqual([]);
+  // });
 });

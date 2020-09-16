@@ -29,12 +29,14 @@ async function setDestinationIds(
 
   const query = { [fkType]: filterValues };
   const fields = [idType, fkType];
+  console.log("sending query", query, fields);
   const records = await client
     .sobject(objectType)
     .find(query, fields)
     .execute();
 
   for (const record of records) {
+    //console.log("record", record);
     const value = normalizeForeignKeyValue(record[fkType]);
     const id = record[idType];
     const found = fkMap[value];
@@ -43,6 +45,7 @@ async function setDestinationIds(
       found.result = record;
     } else {
       // Salesforce result found but didn't have email. not sure what that means
+      console.log("foreign key not found!", record);
     }
   }
 }
@@ -55,14 +58,11 @@ async function deleteByDestinationIds(
   config: BatchConfig
 ): Promise<void> {
   const objectType = config.destinationOptions.profileObject;
-  const payload = Object.keys(destIdMap);
-
+  const users = Object.values(fkMap);
+  const payload = users.map((user) => user.destinationId);
   console.log("sending delete", payload);
-  const response = await client.sobject(objectType).del(payload);
-  for (const result of response) {
-    // TODO destIdMap[result.id] and set error if not result.success
-    console.log("delete response", result.success, result.id);
-  }
+  const results = await client.sobject(objectType).del(payload);
+  processResults(results, users);
 }
 
 function buildPayload(exportedProfile: BatchExport, config: BatchConfig): any {
@@ -107,6 +107,7 @@ function formatVar(value) {
   }
 }
 
+// called from upsert, update, and delete
 function processResults(results, users) {
   if (results.length !== users.length) {
     throw new Error("expected results and users lengths to be the same");
@@ -212,7 +213,7 @@ function normalizeForeignKeyValue(keyValue: any): string {
   if (!keyValue) {
     return null;
   }
-  return keyValue.toString().toLowerCase().trim();
+  return keyValue.toString().trim();
 }
 // mess with the names of groups (tags with no spaces, for example)
 function normalizeGroupName(groupName: string): string {

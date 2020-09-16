@@ -392,7 +392,7 @@ function sortExport(
   if (functions.normalizeForeignKeyValue) {
     newValue = functions.normalizeForeignKeyValue(newValue);
     if (oldValue) {
-      oldValue = functions.normalizeForeignKeyValue(newValue);
+      oldValue = functions.normalizeForeignKeyValue(oldValue);
     }
   }
   if (!newValue || newValue.toString().length === 0) {
@@ -406,7 +406,7 @@ function sortExport(
   // record other one if applicable
   if (oldValue) {
     oldValue = oldValue.toString();
-    if (oldValue !== oldValue) {
+    if (newValue !== oldValue && oldValue.length > 0) {
       exportedProfile.oldForeignKeyValue = oldValue;
       fkMap[oldValue] = exportedProfile;
       exportedProfile.action = BatchAction.ForeignKeyChange;
