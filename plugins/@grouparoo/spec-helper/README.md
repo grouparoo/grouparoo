@@ -25,6 +25,12 @@ describe("test suite", () => {
 });
 ```
 
+Since you are asking Jest/TS-Jest to compile a Typescript file from within `node_modules`, you will need to add the following to your jest config (usually `jest.config.js`)
+
+```js
+transformIgnorePatterns: ["node_modules/(?!(@grouparoo)/)"];
+```
+
 ## Notes
 
 1. You _must_ require `@grouparoo/spec-helper` as the first import in your test files.
