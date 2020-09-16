@@ -1,16 +1,12 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "outDir": "./dist",
     "allowJs": true,
     "module": "commonjs",
     "target": "es2018",
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "paths": {
-      "@grouparoo/spec-helper": ["../plugins/@grouparoo/spec-helper"]
-    }
+    "emitDecoratorMetadata": true
   },
   "include": ["./src/**/*"],
   "exclude": []
