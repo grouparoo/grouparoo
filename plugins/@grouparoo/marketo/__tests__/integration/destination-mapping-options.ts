@@ -1,11 +1,7 @@
-// ~ jump over to core for this test ~
-process.chdir(`${__dirname}/../../../../../core/api`);
-
+import { helper } from "@grouparoo/spec-helper";
 import path from "path";
-
 import { destinationMappingOptions } from "../../src/lib/export/destinationMappingOptions";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { helper } from "@grouparoo/core/api/__tests__/utils/specHelper";
 const nockFile = path.join(
   __dirname,
   "../",

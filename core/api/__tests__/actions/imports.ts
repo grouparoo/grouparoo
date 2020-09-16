@@ -1,4 +1,4 @@
-import { helper } from "../utils/specHelper";
+import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Import } from "./../../src/models/Import";
 let actionhero;

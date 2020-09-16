@@ -1,9 +1,10 @@
 import faker from "faker";
-import { ApiKey } from "./../../src/models/ApiKey";
+import { Team } from "@grouparoo/core/api/src";
 
 const data = async (props = {}) => {
   const defaultProps = {
-    name: faker.name.jobDescriptor(),
+    name: `team ${faker.name.jobDescriptor()} - ${Math.random()}`,
+    locked: false,
 
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -13,5 +14,5 @@ const data = async (props = {}) => {
 };
 
 export default async (props = {}) => {
-  return ApiKey.create(await data(props));
+  return Team.create(await data(props));
 };

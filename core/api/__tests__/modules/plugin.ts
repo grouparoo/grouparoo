@@ -1,4 +1,4 @@
-import { helper } from "./../utils/specHelper";
+import { helper } from "@grouparoo/spec-helper";
 import { plugin } from "./../../src/modules/plugin";
 import { Setting } from "./../../src/models/Setting";
 import { Run } from "./../../src/models/Run";

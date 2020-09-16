@@ -1,21 +1,12 @@
-// mock pluginInjection so that this plugin will be loaded (needs static path string)
-jest.mock(
-  `${__dirname}/../../../../../core/api/src/config/pluginInjection.ts`,
-  () => ({
-    "@grouparoo/bigquery": { path: `${__dirname}/../..` },
-  })
-);
-
-// ~ jump over to core for this test ~
-process.chdir(`${__dirname}/../../../../../core/api`);
-
 import path from "path";
-
+process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
+  "@grouparoo/bigquery": { path: path.join(__dirname, "..", "..") },
+});
+import { helper } from "@grouparoo/spec-helper";
 import { profiles } from "../../src/lib/table-import/profiles";
 import { connect } from "../../src/lib/connect";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
 import { SimpleAppOptions, Import, plugin, Run } from "@grouparoo/core";
 
 const nockFile = path.join(__dirname, "../", "fixtures", "table-profiles.js");

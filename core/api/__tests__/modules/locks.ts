@@ -1,5 +1,5 @@
 import { api } from "actionhero";
-import { helper } from "./../utils/specHelper";
+import { helper } from "@grouparoo/spec-helper";
 import { waitForLock } from "./../../src/modules/locks";
 
 let actionhero;

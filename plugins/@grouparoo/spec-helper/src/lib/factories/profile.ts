@@ -1,11 +1,7 @@
-import faker from "faker";
-import { Team } from "./../../src/models/Team";
+import { Profile } from "@grouparoo/core/api/src";
 
 const data = async (props = {}) => {
   const defaultProps = {
-    name: `team ${faker.name.jobDescriptor()} - ${Math.random()}`,
-    locked: false,
-
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -14,5 +10,5 @@ const data = async (props = {}) => {
 };
 
 export default async (props = {}) => {
-  return Team.create(await data(props));
+  return Profile.create(await data(props));
 };

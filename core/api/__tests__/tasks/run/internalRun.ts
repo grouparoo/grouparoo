@@ -1,4 +1,4 @@
-import { helper } from "../../utils/specHelper";
+import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import { internalRun } from "../../../src/modules/internalRun";
 import { Import } from "../../../src/models/Import";

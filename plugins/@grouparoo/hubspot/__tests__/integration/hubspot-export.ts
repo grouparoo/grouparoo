@@ -1,16 +1,9 @@
-// mock pluginInjection so that this plugin will be loaded (needs static path string)
-jest.mock(
-  `${__dirname}/../../../../../core/api/src/config/pluginInjection.ts`,
-  () => ({
-    "@grouparoo/hubspot": { path: `${__dirname}/../..` },
-  })
-);
+import path from "path";
+process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
+  "@grouparoo/hubspot": { path: path.join(__dirname, "..", "..") },
+});
 
-// ~ jump over to core for this test ~
-process.chdir(`${__dirname}/../../../../../core/api`);
-
-// import statements are still relative to the file, regardless of cwd
-import { helper } from "@grouparoo/core/test";
+import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
 import { Profile, App, Destination, Group } from "@grouparoo/core";
 import { connect } from "./../../src/lib/connect";

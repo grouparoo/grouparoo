@@ -1,56 +1,76 @@
-import LogFactory from "../factories/log";
-import GroupFactory from "../factories/group";
-import ImportFactory from "../factories/import";
-import EventFactory from "../factories/event";
-import TeamFactory from "../factories/team";
-import TeamMemberFactory from "../factories/teamMember";
-import ProfileFactory from "../factories/profile";
-import ProfilePropertyRuleFactory from "../factories/profilePropertyRule";
-import ProfilePropertyRulesFactory from "../factories/profilePropertyRules";
-import AppFactory from "../factories/app";
-import SourceFactory from "../factories/source";
-import ScheduleFactory from "../factories/schedule";
-import DestinationFactory from "../factories/destination";
-import ExportFactory from "../factories/export";
-import RunFactory from "../factories/run";
-import ApiKeyFactory from "../factories/apiKey";
+// At import we need to change the working directory to core/api
+// Don't use the main export path as that will require Actionhero's config
+// We can rely on npm to find the right version of the package for us
+import { getCoreRootPath } from "@grouparoo/core/api/src/utils/pluginDetails";
+const corePath: string = getCoreRootPath();
+process.chdir(corePath);
+process.env.ACTIONHERO_CONFIG = `${corePath}/src/config`;
 
-import { App } from "../../src/models/App";
-import { ApiKey } from "../../src/models/ApiKey";
-import { Source } from "../../src/models/Source";
-import { Schedule } from "../../src/models/Schedule";
-import { Destination } from "../../src/models/Destination";
-import { Option } from "../../src/models/Option";
-import { Import } from "../../src/models/Import";
-import { File } from "../../src/models/File";
-import { Export } from "../../src/models/Export";
-import { Event } from "../../src/models/Event";
-import { EventData } from "../../src/models/EventData";
-import { ExportImport } from "../../src/models/ExportImport";
-import { ExportRun } from "../../src/models/ExportRun";
-import { Group } from "../../src/models/Group";
-import { GroupMember } from "../../src/models/GroupMember";
-import { GroupRule } from "../../src/models/GroupRule";
-import { Log } from "../../src/models/Log";
-import { Permission } from "../../src/models/Permission";
-import { Profile } from "../../src/models/Profile";
-import { ProfileProperty } from "../../src/models/ProfileProperty";
-import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
-import { ProfilePropertyRuleFilter } from "../../src/models/ProfilePropertyRuleFilter";
-import { Run } from "../../src/models/Run";
-import { Mapping } from "../../src/models/Mapping";
-import { Team } from "../../src/models/Team";
-import { TeamMember } from "../../src/models/TeamMember";
+if (
+  corePath.includes("node_modules") &&
+  (!process.env.JEST_WORKER_ID || process.env.JEST_WORKER_ID === "1")
+) {
+  process.stdout.write(
+    `--- using @grouparoo/core from ${corePath} ---\r\n\r\n`
+  );
+}
 
-import { Op } from "sequelize";
+// normal pathway
+
+import LogFactory from "./factories/log";
+import GroupFactory from "./factories/group";
+import ImportFactory from "./factories/import";
+import EventFactory from "./factories/event";
+import TeamFactory from "./factories/team";
+import TeamMemberFactory from "./factories/teamMember";
+import ProfileFactory from "./factories/profile";
+import ProfilePropertyRuleFactory from "./factories/profilePropertyRule";
+import ProfilePropertyRulesFactory from "./factories/profilePropertyRules";
+import AppFactory from "./factories/app";
+import SourceFactory from "./factories/source";
+import ScheduleFactory from "./factories/schedule";
+import DestinationFactory from "./factories/destination";
+import ExportFactory from "./factories/export";
+import RunFactory from "./factories/run";
+import ApiKeyFactory from "./factories/apiKey";
+
 import {
+  // modules
   plugin,
+
+  // types
   SourceOptionsMethodResponse,
   DestinationOptionsMethodResponse,
-} from "../../src/index";
+  // models
+  App,
+  ApiKey,
+  Source,
+  Schedule,
+  Destination,
+  Option,
+  Import,
+  File,
+  Export,
+  Event,
+  EventData,
+  ExportImport,
+  ExportRun,
+  Group,
+  GroupMember,
+  GroupRule,
+  Log,
+  Permission,
+  Profile,
+  ProfileProperty,
+  ProfilePropertyRule,
+  ProfilePropertyRuleFilter,
+  Run,
+  Mapping,
+  Team,
+  TeamMember,
+} from "@grouparoo/core/api/src"; // we explicitly require the src (typescript) files
 
-const { api, cache, Process } = require("actionhero");
-
+import { Op } from "sequelize";
 import fs from "fs";
 import path from "path";
 import nock from "nock";
@@ -125,11 +145,13 @@ export namespace helper {
       })
     );
 
+    const { cache, api } = await import("actionhero");
     await cache.destroy("profilePropertyRules:all");
     await api.resque.queue.connection.redis.flushdb();
   }
 
   export async function shutdown(server1, server2?) {
+    const { api } = await import("actionhero");
     await api.resque.queue.connection.redis.flushdb();
     await Promise.all(
       [server1, server2].map(async (server) => {
@@ -145,17 +167,19 @@ export namespace helper {
     );
   }
 
-  export async function prepareForAPITest(
-    options = {
-      truncate: true,
-    }
-  ) {
+  export async function prepareForAPITest(options = { truncate: true }) {
+    const { Process } = await import("actionhero");
     const actionhero = new Process();
     await actionhero.start();
 
-    if (options.truncate) {
-      await this.truncate();
-    }
+    // prepare models that we are using from /src
+    plugin.mountModels();
+    // prepare models that we are using from /dist
+    try {
+      require("@grouparoo/core").plugin.mountModels();
+    } catch (error) {}
+
+    if (options.truncate) await this.truncate();
 
     enableTestPlugin();
 
@@ -366,6 +390,7 @@ export namespace helper {
   }
 
   export function disableTestPluginImport() {
+    const { api } = require("actionhero");
     api.plugins.plugins.filter(
       (p) => p.name === "@grouparoo/test-plugin"
     )[0].connections[0].methods.profileProperty = async () => {

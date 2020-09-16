@@ -1,4 +1,4 @@
-import { helper } from "./../utils/specHelper";
+import { helper } from "@grouparoo/spec-helper";
 import { groupExportToCSV } from "./../../src/modules/groupExport";
 import { Profile } from "./../../src/models/Profile";
 import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";

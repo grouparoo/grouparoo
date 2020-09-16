@@ -94,6 +94,7 @@
     "ws": "7.3.1"
   },
   "devDependencies": {
+    "@grouparoo/spec-helper": "0.1.14",
     "@types/bluebird": "3.5.32",
     "@types/faker": "5.1.0",
     "@types/jest": "26.0.13",

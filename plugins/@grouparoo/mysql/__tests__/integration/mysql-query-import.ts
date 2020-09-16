@@ -1,19 +1,11 @@
-// mock pluginInjection so that this plugin will be loaded (needs static path string)
-jest.mock(
-  `${__dirname}/../../../../../core/api/src/config/pluginInjection.ts`,
-  () => ({
-    "@grouparoo/mysql": { path: `${__dirname}/../..` },
-  })
-);
-
-// ~ jump over to core for this test ~
-process.chdir(`${__dirname}/../../../../../core/api`);
-
-// import statements are still relative to the file, regardless of cwd
-import fs from "fs";
 import path from "path";
+import fs from "fs";
+process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
+  "@grouparoo/mysql": { path: path.join(__dirname, "..", "..") },
+});
+
+import { helper } from "@grouparoo/spec-helper";
 import parse from "csv-parse/lib/sync";
-import { helper } from "@grouparoo/core/api/__tests__/utils/specHelper";
 import { api, specHelper } from "actionhero";
 import { ProfilePropertyRule } from "@grouparoo/core";
 import { connect } from "../../src/lib/connect";

@@ -1,7 +1,6 @@
-// ~ jump over to core for this test ~
-process.chdir(`${__dirname}/../../../../../core/api`);
-
 import path from "path";
+import "@grouparoo/spec-helper";
+import { helper } from "@grouparoo/spec-helper";
 
 import {
   exportProfile,
@@ -9,7 +8,6 @@ import {
 } from "../../src/lib/export/exportProfile";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
 
 let client: any;
 let userId = null;

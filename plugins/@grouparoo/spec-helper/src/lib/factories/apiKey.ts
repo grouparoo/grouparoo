@@ -1,7 +1,10 @@
-import { Profile } from "./../../src/models/Profile";
+import faker from "faker";
+import { ApiKey } from "@grouparoo/core/api/src";
 
 const data = async (props = {}) => {
   const defaultProps = {
+    name: faker.name.jobDescriptor(),
+
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -10,5 +13,5 @@ const data = async (props = {}) => {
 };
 
 export default async (props = {}) => {
-  return Profile.create(await data(props));
+  return ApiKey.create(await data(props));
 };

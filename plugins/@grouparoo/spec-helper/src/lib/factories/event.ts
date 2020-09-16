@@ -1,6 +1,6 @@
 import faker from "faker";
 import * as UUID from "uuid";
-import { Event } from "./../../src/models/Event";
+import { Event } from "@grouparoo/core/api/src";
 
 const data = async (props = {}) => {
   const defaultProps = {

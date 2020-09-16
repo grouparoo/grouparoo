@@ -4,8 +4,7 @@
     "apps/*",
     "core",
     "clients/@grouparoo/*",
-    "plugins/@grouparoo/*",
-    "plugins/@grouparoo-inc/*"
+    "plugins/@grouparoo/*"
   ],
   "version": "0.1.14",
   "command": {
@@ -13,10 +12,7 @@
       "ignore": "@grouparoo/app-local*"
     },
     "version": {
-      "allowBranch": [
-        "master",
-        "stable"
-      ],
+      "allowBranch": ["master", "stable"],
       "message": "chore(release): publish %s [ci skip]"
     }
   }

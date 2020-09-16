@@ -3,10 +3,11 @@ const path = require("path");
 const {
   getPluginManifest,
   grouparooMonorepoApp,
-  // getParentPath,
+  getParentPath,
   runningCoreDirectly,
 } = require("../api/src/utils/pluginDetails");
 const pluginManifest = getPluginManifest();
+const parentPath = getParentPath();
 
 // prepare the paths we'll be using and start clean
 if (fs.existsSync(path.join(__dirname, "tmp"))) {
@@ -37,10 +38,26 @@ pluginManifest.plugins.forEach((plugin) => {
   if (plugin && plugin.grouparoo && plugin.grouparoo.webComponents) {
     for (const k in plugin.grouparoo.webComponents) {
       plugin.grouparoo.webComponents[k].forEach((file) => {
-        const pluginFile =
-          grouparooMonorepoApp || runningCoreDirectly()
-            ? `../../../../../../../../plugins/${pluginName}/dist/components/${file}.plugin.js`
-            : `../../../../../../../../../${pluginName}/dist/components/${file}.plugin.js`;
+        let pluginFile = "";
+        try {
+          pluginFile = require.resolve(
+            `${pluginName}/dist/components/${file}.plugin.js`
+          );
+        } catch {
+          pluginFile = path.join(
+            parentPath,
+            "node_modules",
+            pluginName,
+            `/dist/components/${file}.plugin.js`
+          );
+          if (!fs.existsSync(pluginFile)) {
+            pluginFile =
+              grouparooMonorepoApp || runningCoreDirectly()
+                ? `../../../../../../../../plugins/${pluginName}/dist/components/${file}.plugin.js`
+                : `../../../../../../../../../${pluginName}/dist/components/${file}.plugin.js`;
+          }
+        }
+
         fs.mkdirpSync(path.join(__dirname, "tmp", "plugin", k, pluginName));
         fs.writeFileSync(
           path.join(__dirname, "tmp", "plugin", k, pluginName, `${file}.tsx`),

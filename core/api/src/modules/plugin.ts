@@ -1,4 +1,4 @@
-import { api, log } from "actionhero";
+import { api } from "actionhero";
 import { GrouparooPlugin } from "../classes/plugin";
 import Mustache from "mustache";
 
@@ -7,8 +7,11 @@ import { ApiKey } from "../models/ApiKey";
 import { Destination } from "../models/Destination";
 import { DestinationGroupMembership } from "../models/DestinationGroupMembership";
 import { File } from "../models/File";
+import { Event } from "../models/Event";
+import { EventData } from "../models/EventData";
 import { Export } from "../models/Export";
 import { ExportImport } from "../models/ExportImport";
+import { ExportRun } from "../models/ExportRun";
 import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
 import { GroupRule } from "../models/GroupRule";
@@ -25,6 +28,7 @@ import { ProfileMultipleAssociationShim } from "../models/ProfileMultipleAssocia
 import { Run } from "../models/Run";
 import { Schedule } from "../models/Schedule";
 import { Setting, settingTypes } from "../models/Setting";
+import { SetupStep } from "../models/SetupStep";
 import { Source } from "../models/Source";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
@@ -39,7 +43,10 @@ const models = [
   DestinationGroupMembership,
   Option,
   Import,
+  Event,
+  EventData,
   ExportImport,
+  ExportRun,
   Run,
   Export,
   File,
@@ -54,6 +61,8 @@ const models = [
   ProfilePropertyRuleFilter,
   ProfileMultipleAssociationShim,
   Mapping,
+  Setting,
+  SetupStep,
   Team,
   TeamMember,
 ];

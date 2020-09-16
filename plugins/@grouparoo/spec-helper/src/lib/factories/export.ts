@@ -1,4 +1,4 @@
-import { Export } from "./../../src/models/Export";
+import { Export } from "@grouparoo/core/api/src";
 import DestinationFactory from "./destination";
 import ProfileFactory from "./profile";
 

@@ -1,19 +1,19 @@
+import { helper } from "@grouparoo/spec-helper";
 import { Profile } from "../../src/models/Profile";
 import { Group } from "../../src/models/Group";
 import { Run } from "../../src/models/Run";
 import { Import } from "../../src/models/Import";
-import { helper } from "./specHelper";
 import { specHelper } from "actionhero";
 
-let actionhero;
-let run: Run;
-let group: Group;
-let mario: Profile;
-let luigi: Profile;
-let peach: Profile;
-let toad: Profile;
-
 export namespace SharedGroupTests {
+  let actionhero;
+  let run: Run;
+  let group: Group;
+  let mario: Profile;
+  let luigi: Profile;
+  let peach: Profile;
+  let toad: Profile;
+
   export async function afterAll(doActionheroTeardown = true) {
     if (doActionheroTeardown) await helper.shutdown(actionhero);
   }

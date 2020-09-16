@@ -1,4 +1,4 @@
-import { helper } from "../utils/specHelper";
+import { helper } from "@grouparoo/spec-helper";
 import { specHelper, api } from "actionhero";
 import { createFactory } from "react";
 let actionhero;

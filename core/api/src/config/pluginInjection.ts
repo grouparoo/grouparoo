@@ -1,4 +1,9 @@
 // I am overridden by tests to add additional plugins to the api
 
-const plugins = {};
+let plugins = {};
+
+if (process.env.GROUPAROO_INJECTED_PLUGINS) {
+  plugins = JSON.parse(process.env.GROUPAROO_INJECTED_PLUGINS);
+}
+
 export default plugins;

@@ -3,6 +3,7 @@ import fs from "fs-extra";
 import os from "os";
 import path from "path";
 import { FileTransport } from "@grouparoo/core";
+import S3 from "@auth0/s3";
 
 export class FileTransportS3 extends FileTransport {
   bucket: string;
@@ -12,7 +13,7 @@ export class FileTransportS3 extends FileTransport {
     super();
     this.name = "s3";
     this.bucket = process.env.S3_BUCKET;
-    this.client = require("@auth0/s3").createClient({
+    this.client = S3.createClient({
       s3Options: {
         accessKeyId: process.env.S3_ACCESS_KEY,
         secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,

@@ -1,5 +1,5 @@
+import { helper } from "@grouparoo/spec-helper";
 import { api } from "actionhero";
-import { helper } from "../utils/specHelper";
 import { App } from "../../src/models/App";
 import { Log } from "../../src/models/Log";
 import { Schedule } from "../../src/models/Schedule";
@@ -7,7 +7,6 @@ import { Source } from "../../src/models/Source";
 import { Option } from "../../src/models/Option";
 import { Run } from "../../src/models/Run";
 import { plugin } from "../../src/modules/plugin";
-import run from "../factories/run";
 let actionhero;
 
 describe("models/schedule", () => {

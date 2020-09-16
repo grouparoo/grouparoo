@@ -1,5 +1,5 @@
+import { helper } from "@grouparoo/spec-helper";
 import { api } from "actionhero";
-import { helper } from "./../utils/specHelper";
 import { Source } from "./../../src/models/Source";
 import { App } from "./../../src/models/App";
 import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
