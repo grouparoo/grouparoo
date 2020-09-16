@@ -2,25 +2,24 @@ import { connect } from "../connect";
 import {
   buildBatchExports,
   exportProfilesInBatch,
-  ForeignKeyMap,
-  DestinationIdMap,
+  BatchFunctions,
   BatchConfig,
-  GroupNameListMap,
   BatchExport,
 } from "../batchHelper";
 import { ExportProfilesPluginMethod } from "@grouparoo/core";
 
 // return an object that you can connect with
-async function getClient(config: BatchConfig): Promise<any> {
+const getClient: BatchFunctions["getClient"] = async ({ config }) => {
   return connect(config.appOptions);
-}
+};
 
 // fetch using the keys in fkMap to set destinationId and result on BatchExports in fkMap
-async function setDestinationIds(
-  client: any,
-  fkMap: ForeignKeyMap, // has newValue and oldValue of foreignKey
-  config: BatchConfig
-): Promise<void> {
+// fkMap has newValue and oldValue of foreignKey
+const setDestinationIds: BatchFunctions["setDestinationIds"] = async ({
+  client,
+  fkMap,
+  config,
+}) => {
   // search for these using the foreign key
   const objectType = config.destinationOptions.profileObject;
   const fkType = config.destinationOptions.profileFieldMatch;
@@ -37,7 +36,10 @@ async function setDestinationIds(
 
   for (const record of records) {
     //console.log("record", record);
-    const value = normalizeForeignKeyValue(record[fkType]);
+    const value = normalizeForeignKeyValue({
+      keyValue: record[fkType],
+      config,
+    });
     const id = record[idType];
     const found = fkMap[value];
     if (found) {
@@ -48,22 +50,20 @@ async function setDestinationIds(
       console.log("foreign key not found!", record);
     }
   }
-}
+};
 
 // delete the given destinationIds
-async function deleteByDestinationIds(
-  client: any,
-  destIdMap: DestinationIdMap,
-  fkMap: ForeignKeyMap,
-  config: BatchConfig
-): Promise<void> {
+const deleteByDestinationIds: BatchFunctions["deleteByDestinationIds"] = async ({
+  client,
+  users,
+  config,
+}) => {
   const objectType = config.destinationOptions.profileObject;
-  const users = Object.values(fkMap);
   const payload = users.map((user) => user.destinationId);
   console.log("sending delete", payload);
   const results = await client.sobject(objectType).del(payload);
   processResults(results, users);
-}
+};
 
 function buildPayload(exportedProfile: BatchExport, config: BatchConfig): any {
   const fkType = config.destinationOptions.profileFieldMatch;
@@ -154,15 +154,12 @@ function processResults(results, users) {
 }
 
 // update these users by destinationId
-async function updateByDestinationIds(
-  client: any,
-  destIdMap: DestinationIdMap,
-  fkMap: ForeignKeyMap,
-  config: BatchConfig
-): Promise<void> {
+const updateByDestinationIds: BatchFunctions["updateByDestinationIds"] = async ({
+  client,
+  users,
+  config,
+}) => {
   const objectType = config.destinationOptions.profileObject;
-  const users = Object.values(fkMap);
-
   const payload = [];
   for (const user of users) {
     payload.push(buildPayload(user, config));
@@ -171,16 +168,15 @@ async function updateByDestinationIds(
   console.log("sending update", payload);
   const results = await client.sobject(objectType).update(payload);
   processResults(results, users);
-}
+};
 
 // usually this is creating them. set the destinationId on each when done
-async function updateByForeignKeyAndSetDestinationIds(
-  client: any,
-  fkMap: ForeignKeyMap,
-  config: BatchConfig
-): Promise<void> {
+const updateByForeignKeyAndSetDestinationIds: BatchFunctions["updateByForeignKeyAndSetDestinationIds"] = async ({
+  client,
+  users,
+  config,
+}) => {
   const objectType = config.destinationOptions.profileObject;
-  const users = Object.values(fkMap);
   const fkType = config.destinationOptions.profileFieldMatch;
 
   const payload = [];
@@ -191,34 +187,36 @@ async function updateByForeignKeyAndSetDestinationIds(
   console.log("sending upsert", payload);
   const results = await client.sobject(objectType).upsert(payload, fkType);
   processResults(results, users);
-}
+};
 
 // make sure these user are in these groups (keys of map are group names)
-async function addToGroups(
-  client: any,
-  groupMap: GroupNameListMap,
-  destIdMap: DestinationIdMap,
-  config: BatchConfig
-): Promise<void> {}
+const addToGroups: BatchFunctions["addToGroups"] = async ({
+  client,
+  groupMap,
+  config,
+}) => {};
 // make sure these users are not in these groups (keys of map are group names)
-async function removeFromGroups(
-  client: any,
-  groupMap: GroupNameListMap,
-  destIdMap: DestinationIdMap,
-  config: BatchConfig
-): Promise<void> {}
+const removeFromGroups: BatchFunctions["removeFromGroups"] = async ({
+  client,
+  groupMap,
+  config,
+}) => {};
 
 // mess with the keys (lowercase emails, for example)
-function normalizeForeignKeyValue(keyValue: any): string {
+const normalizeForeignKeyValue: BatchFunctions["normalizeForeignKeyValue"] = ({
+  keyValue,
+}) => {
   if (!keyValue) {
     return null;
   }
   return keyValue.toString().trim();
-}
+};
 // mess with the names of groups (tags with no spaces, for example)
-function normalizeGroupName(groupName: string): string {
+const normalizeGroupName: BatchFunctions["normalizeGroupName"] = ({
+  groupName,
+}) => {
   return groupName;
-}
+};
 
 // export interface MyBatchMethod {
 //   (
