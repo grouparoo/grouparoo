@@ -8,7 +8,6 @@ import {
   Default,
   BelongsToMany,
   BeforeSave,
-  AfterSave,
   BeforeDestroy,
   AfterDestroy,
   Is,
