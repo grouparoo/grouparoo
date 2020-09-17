@@ -45,7 +45,7 @@ const uploadHandler = new UploadHandler();
 require("../components/icons");
 
 export default function GrouparooWebApp(props) {
-  const { Component, pageProps, err } = props;
+  const { Component, pageProps, err, hydrationError } = props;
   const [routerReady, setRouterReady] = useState(false);
   const [previousPath, setPreviousPath] = useState("");
   const router = useRouter();
@@ -98,7 +98,11 @@ export default function GrouparooWebApp(props) {
 
   return (
     <Injection {...combinedProps}>
-      <Layout display={routerReady} {...combinedProps}>
+      <Layout
+        display={routerReady}
+        hydrationError={hydrationError}
+        {...combinedProps}
+      >
         <Component {...combinedProps} err={err} />
       </Layout>
     </Injection>
@@ -120,7 +124,13 @@ GrouparooWebApp.getInitialProps = async (appContext) => {
   }
 
   // render page-specific getInitialProps
-  const appProps = await App.getInitialProps(appContext);
+  let appProps = {};
+  let hydrationError: string;
+  try {
+    appProps = await App.getInitialProps(appContext);
+  } catch (_error) {
+    hydrationError = JSON.stringify(_error, Object.getOwnPropertyNames(_error));
+  }
 
   return {
     ...appProps,
@@ -128,5 +138,6 @@ GrouparooWebApp.getInitialProps = async (appContext) => {
     navigationMode,
     navigation,
     clusterName,
+    hydrationError,
   };
 };

@@ -1,7 +1,15 @@
+import { Card } from "react-bootstrap";
+
 export default function FourOFourPage() {
   return (
-    <div>
-      <h1>Page not found :(</h1>
-    </div>
+    <>
+      <Card border={"warning"}>
+        <Card.Body>
+          <blockquote className="blockquote mb-0">
+            <p>This page cannot be found :(</p>
+          </blockquote>
+        </Card.Body>
+      </Card>
+    </>
   );
 }
