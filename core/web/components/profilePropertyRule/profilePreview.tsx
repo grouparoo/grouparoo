@@ -3,10 +3,11 @@ import { useApi } from "../../hooks/useApi";
 import { Card, ListGroup } from "react-bootstrap";
 import Loader from "../loader";
 import ProfileImageFromEmail from "../visualizations/profileImageFromEmail";
+import Router from "next/router";
 
 export default function ProfilePreview(props) {
-  const { errorHandler, profilePropertyRule } = props;
-  const [profileGuid, setProfileGuid] = useState("");
+  const { query, errorHandler, profilePropertyRule } = props;
+  const [profileGuid, setProfileGuid] = useState(query.profileGuid);
   const [toHide, setToHide] = useState(true);
   const [profile, setProfile] = useState({ guid: "", properties: {} });
   const [sleeping, setSleeping] = useState(false);
@@ -32,6 +33,16 @@ export default function ProfilePreview(props) {
     JSON.stringify(profilePropertyRule.options),
     JSON.stringify(profilePropertyRule.filters),
   ]);
+
+  function storeProfilePropertyGuid(profileGuid: string) {
+    setProfileGuid(profileGuid);
+    let url = `${window.location.pathname}?`;
+    url += `profileGuid=${profileGuid}&`;
+
+    const routerMethod =
+      url === `${window.location.pathname}?` ? "replace" : "push";
+    Router[routerMethod](Router.route, url, { shallow: true });
+  }
 
   async function load(
     _profileGuid = profileGuid === "" ? undefined : profileGuid,
@@ -64,7 +75,7 @@ export default function ProfilePreview(props) {
             : ""
         );
         setProfile(response.profile);
-        setProfileGuid(response.profile.guid);
+        storeProfilePropertyGuid(response.profile.guid);
       }
 
       setSleeping(false);
@@ -74,7 +85,7 @@ export default function ProfilePreview(props) {
   function chooseProfileProperty() {
     const _profileGuid = prompt("Enter Profile Guid", profileGuid);
     if (_profileGuid) {
-      setProfileGuid(_profileGuid);
+      storeProfilePropertyGuid(_profileGuid);
       load(_profileGuid, 1);
     }
   }
