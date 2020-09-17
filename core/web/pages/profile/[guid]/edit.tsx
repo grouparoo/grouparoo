@@ -368,17 +368,3 @@ Page.getInitialProps = async (ctx) => {
   const { apps } = await execApi("get", `/apps`);
   return { profile, profilePropertyRules, groups, allGroups, apps };
 };
-
-function renderProperty(values: Array<any>, type: string) {
-  return values
-    .map((value) => {
-      if (value === true || value === false) {
-        return <input type="checkbox" value={value} checked={value} readOnly />;
-      } else if (type === "date") {
-        return value ? new Date(value).toLocaleString() : value;
-      } else {
-        return value;
-      }
-    })
-    .join(", ");
-}
