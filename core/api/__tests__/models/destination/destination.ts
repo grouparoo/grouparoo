@@ -367,7 +367,7 @@ describe("models/destination", () => {
         );
       });
 
-      test("an app can only have one destination", async () => {
+      test("an app can only have one destination with the same options", async () => {
         destination = await Destination.create({
           name: "first destination",
           appGuid: app.guid,
@@ -381,8 +381,26 @@ describe("models/destination", () => {
             type: "test-plugin-export",
           })
         ).rejects.toThrow(
-          /destination "first destination" is already using this app/
+          /destination "first destination" .* is already using this app with the same options/
         );
+
+        await destination.setOptions({ table: "users" });
+
+        const otherDestination = await Destination.create({
+          name: "second destination",
+          appGuid: app.guid,
+          type: "test-plugin-export",
+        }); // does not throw
+
+        await otherDestination.setOptions({ table: "purchases" }); // does not throw
+
+        await expect(
+          otherDestination.setOptions({ table: "users" })
+        ).rejects.toThrow(
+          /destination "first destination" .* is already using this app with the same options/
+        );
+
+        await otherDestination.destroy();
       });
     });
 
