@@ -28,6 +28,7 @@ describe("actions/setupSteps", () => {
     let guid: string;
 
     beforeAll(async () => {
+      // log in
       connection = await specHelper.buildConnection();
       connection.params = { email: "mario@example.com", password: "P@ssw0rd!" };
       const sessionResponse = await specHelper.runAction(
@@ -36,11 +37,16 @@ describe("actions/setupSteps", () => {
       );
       csrfToken = sessionResponse.csrfToken;
 
+      // reset the startupSteps
       await SetupStep.update({ skipped: false }, { where: { skipped: true } });
       await SetupStep.update(
         { complete: false },
         { where: { complete: true } }
       );
+      const setting = await Setting.findOne({
+        where: { key: "display-startup-steps" },
+      });
+      await setting.update({ value: true });
     });
 
     test("a reader can list setupSteps", async () => {
