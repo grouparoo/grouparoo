@@ -200,7 +200,7 @@ export class Event extends LoggedModel<Event> {
       }
 
       let match = filter.match;
-      let opSymbol: any; // symbol...
+      let opSymbol: symbol;
       switch (filter.op) {
         case "equals":
           opSymbol = Op["eq"];
@@ -210,13 +210,11 @@ export class Event extends LoggedModel<Event> {
           break;
         case "contains":
           opSymbol = Op["iLike"];
-          match = `%${match.toString().toLowerCase()}%`;
-          key = `LOWER("${key}")`;
+          match = `%${match.toString()}%`;
           break;
         case "does not contain":
           opSymbol = Op["notILike"];
-          match = `%${match.toString().toLowerCase()}%`;
-          key = `LOWER("${key}")`;
+          match = `%${match.toString()}%`;
           break;
         case "greater than":
           opSymbol = Op["gt"];
@@ -226,10 +224,12 @@ export class Event extends LoggedModel<Event> {
           break;
       }
 
-      const localWhere = {};
+      let localWhere = {};
       if (filter.key.match(/^\[data\]-/)) {
+        // we need to check both the value and key in the case of negation matches
         localWhere[opSymbol] = match;
         eventDataWhere["value"] = localWhere;
+        eventDataWhere["key"] = key;
       } else if (key === "occurredAt") {
         localWhere[opSymbol] = new Date(parseInt(match.toString()));
         eventWhere[key] = localWhere;

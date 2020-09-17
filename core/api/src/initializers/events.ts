@@ -1,5 +1,5 @@
 import { api, Initializer, log } from "actionhero";
-import { ProfilePropertyRule } from "../index";
+import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
 import { plugin } from "../modules/plugin";
 import { SourceOptionsMethodResponse } from "../classes/plugin";
 import { App } from "../models/App";
@@ -11,7 +11,7 @@ import {
   PluginConnectionProfilePropertyRuleOption,
   SourceFilterMethod,
   ProfilePropertyPluginMethod,
-} from "./../index";
+} from "../classes/plugin";
 
 export class Events extends Initializer {
   constructor() {
@@ -231,7 +231,6 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
   sourceOptions,
   profilePropertyRuleOptions,
   profilePropertyRuleFilters,
-  profilePropertyRule,
 }) => {
   let events: Event[];
   if (!profilePropertyRuleOptions["column"]) return;
@@ -253,6 +252,17 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
     );
     events = await Event.findAll({
       where,
+      include:
+        Object.keys(includeWhere).length > 0
+          ? [
+              {
+                model: EventData,
+                required: true,
+                where: includeWhere,
+                attributes: [],
+              },
+            ]
+          : undefined,
       order: [["occurredAt", "asc"]],
     });
   } else if (aggregationMethod === "most recent value") {
@@ -265,6 +275,17 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
     );
     events = await Event.findAll({
       where,
+      include:
+        Object.keys(includeWhere).length > 0
+          ? [
+              {
+                model: EventData,
+                required: true,
+                where: includeWhere,
+                attributes: [],
+              },
+            ]
+          : undefined,
       order: [["occurredAt", "desc"]],
       limit: 1,
     });
@@ -278,6 +299,17 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
     );
     events = await Event.findAll({
       where,
+      include:
+        Object.keys(includeWhere).length > 0
+          ? [
+              {
+                model: EventData,
+                required: true,
+                where: includeWhere,
+                attributes: [],
+              },
+            ]
+          : undefined,
       order: [["occurredAt", "asc"]],
       limit: 1,
     });
@@ -293,6 +325,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
       profileGuid: profile.guid,
       type: sourceOptions["type"],
     };
+
     Event.applyProfilePropertyRuleFilters(
       includeWhere,
       where,

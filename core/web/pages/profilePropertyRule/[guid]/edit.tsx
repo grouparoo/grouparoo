@@ -621,6 +621,7 @@ export default function Page(props) {
           <Col md={3}>
             <ProfilePreview
               {...props}
+              localFilters={localFilters}
               profilePropertyRule={profilePropertyRule}
             />
           </Col>
