@@ -7,9 +7,16 @@ import SuccessAlert from "../alerts/success";
 import ErrorAlert from "../alerts/error";
 import Navigation from "../navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import HydrationError from "../alerts/hydrationError";
 
 export default function Main(props) {
-  const { display, children, successHandler, errorHandler } = props;
+  const {
+    display,
+    children,
+    successHandler,
+    errorHandler,
+    hydrationError,
+  } = props;
   const [navExpanded, setNavExpanded] = useState(true);
   const [alertWidth, setAlertWidth] = useState(500);
   const contentAreaLeftPadding = 265;
@@ -140,6 +147,7 @@ export default function Main(props) {
           navExpanded={navExpanded}
           toggleNavExpanded={() => setNavExpanded(!navExpanded)}
         />
+
         <div
           id="navigation-toggle"
           style={{
@@ -183,7 +191,15 @@ export default function Main(props) {
               </div>
             </div>
           </div>
-          {display ? children : <Loader />}
+          {display ? (
+            hydrationError ? (
+              <HydrationError hydrationError={hydrationError} />
+            ) : (
+              children
+            )
+          ) : (
+            <Loader />
+          )}
         </div>
       </div>
     </>
