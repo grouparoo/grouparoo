@@ -122,8 +122,8 @@ export interface BatchFunctions {
       config: BatchConfig;
     }): Promise<void>;
   };
-  // usually this is creating them. set the destinationId on each when done
-  updateByForeignKeyAndSetDestinationIds: {
+  // usually this is creating them. ideally upsert. set the destinationId on each when done
+  createByForeignKeyAndSetDestinationIds: {
     (argument: {
       client: any;
       users: BatchExport[];
@@ -322,7 +322,7 @@ async function updateByForeignKey(
     return;
   }
 
-  await functions.updateByForeignKeyAndSetDestinationIds({
+  await functions.createByForeignKeyAndSetDestinationIds({
     client,
     users,
     fkMap,

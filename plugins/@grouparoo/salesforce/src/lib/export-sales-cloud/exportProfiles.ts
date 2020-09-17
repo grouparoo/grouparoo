@@ -114,7 +114,7 @@ function formatVar(value) {
   return value;
 }
 
-// called from upsert, update, and delete
+// called from create, update, and delete
 function processResults(results, users) {
   if (results.length !== users.length) {
     throw new Error("expected results and users lengths to be the same");
@@ -177,20 +177,21 @@ const updateByDestinationIds: BatchFunctions["updateByDestinationIds"] = async (
   processResults(results, users);
 };
 
-// usually this is creating them. set the destinationId on each when done
-const updateByForeignKeyAndSetDestinationIds: BatchFunctions["updateByForeignKeyAndSetDestinationIds"] = async ({
+// usually this is creating them. ideally upsert. set the destinationId on each when done
+const createByForeignKeyAndSetDestinationIds: BatchFunctions["createByForeignKeyAndSetDestinationIds"] = async ({
   client,
   users,
   config,
 }) => {
-  const { objectType, fkType } = config.data;
+  const { objectType } = config.data;
   const payload = [];
   for (const user of users) {
     payload.push(buildPayload(user, config));
   }
 
-  console.log("sending upsert", payload);
-  const results = await client.sobject(objectType).upsert(payload, fkType);
+  // upsert doesn't have a HTTP batch api (even though jsforce does), so use create
+  console.log("sending create", payload);
+  const results = await client.sobject(objectType).create(payload);
   processResults(results, users);
 };
 
@@ -261,7 +262,7 @@ export async function exportBatch({ appOptions, destinationOptions, exports }) {
       setDestinationIds,
       deleteByDestinationIds,
       updateByDestinationIds,
-      updateByForeignKeyAndSetDestinationIds,
+      createByForeignKeyAndSetDestinationIds,
       addToGroups,
       removeFromGroups,
       normalizeForeignKeyValue,
