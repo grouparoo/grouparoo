@@ -37,13 +37,17 @@ export default function Page(props) {
     }
   }
 
-  async function handleDelete() {
+  async function handleDelete(force = false) {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response = await execApi("delete", `/group/${group.guid}`);
+      const response = await execApi("delete", `/group/${group.guid}`, {
+        force,
+      });
       setLoading(false);
       if (response?.success) {
-        successHandler.set({ message: "Group Deleted" });
+        successHandler.set({
+          message: force ? "Group Deleted" : "Group scheduled to be deleted",
+        });
         Router.push("/groups");
       }
     }
@@ -115,15 +119,38 @@ export default function Page(props) {
 
             <br />
             <br />
-            <Button
-              variant="danger"
-              size="sm"
-              onClick={() => {
-                handleDelete();
-              }}
-            >
-              Delete
-            </Button>
+
+            {group.state === "deleted" ? (
+              <>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => {
+                    handleDelete(true);
+                  }}
+                >
+                  Force Delete
+                </Button>
+                <p>
+                  <br />
+                  <em>
+                    Force-Deleting this Group will immediately remove all Group
+                    Members, but not export them to Destinations. Only use this
+                    if there is a problem with your Group.
+                  </em>
+                </p>
+              </>
+            ) : (
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => {
+                  handleDelete();
+                }}
+              >
+                Delete
+              </Button>
+            )}
           </Form>
         </Col>
         {group.type === "calculated" ? (

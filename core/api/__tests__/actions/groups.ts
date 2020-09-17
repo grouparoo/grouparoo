@@ -171,7 +171,7 @@ describe("actions/groups", () => {
       await destination.destroy();
     });
 
-    test("an administrator can destroy a group", async () => {
+    test("an administrator can enqueue a group to be destroyed", async () => {
       connection.params = {
         csrfToken,
         guid,
@@ -185,6 +185,24 @@ describe("actions/groups", () => {
 
       const foundTasks = await specHelper.findEnqueuedTasks("group:destroy");
       expect(foundTasks.length).toBe(1);
+    });
+
+    test("an administrator can force destroy a group", async () => {
+      const newGroup = await helper.factories.group();
+
+      connection.params = {
+        csrfToken,
+        guid: newGroup.guid,
+        force: true,
+      };
+      const destroyResponse = await specHelper.runAction(
+        "group:destroy",
+        connection
+      );
+      expect(destroyResponse.error).toBeUndefined();
+      expect(destroyResponse.success).toBe(true);
+
+      expect(await Group.count({ where: { guid: newGroup.guid } })).toBe(0);
     });
 
     describe("calculated group", () => {
