@@ -183,7 +183,10 @@ describe("actions/destinations", () => {
         },
         profilePropertyRules: {
           required: [{ key: "primary-id", type: "integer" }],
-          known: [{ key: "secondary-id", type: "any" }],
+          known: [
+            { key: "secondary-id", type: "any" },
+            { key: "string-property", type: "string" },
+          ],
           allowOptionalFromProfilePropertyRules: true,
         },
       });

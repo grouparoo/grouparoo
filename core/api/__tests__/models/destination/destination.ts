@@ -487,6 +487,32 @@ describe("models/destination", () => {
         await profile.destroy();
       });
 
+      test("destination profile previews will convert the type of the property to match the destination", async () => {
+        const profile = await helper.factories.profile();
+        await profile.addOrUpdateProperties({
+          userId: [1],
+          email: ["yoshi@example.com"],
+          ltv: [123],
+        });
+        await group.addProfile(profile);
+        await destination.trackGroup(group);
+
+        const mapping = {
+          "primary-id": "userId",
+          "string-property": "ltv",
+        };
+
+        const _profile = await destination.profilePreview(profile, mapping, {});
+
+        expect(_profile.properties["primary-id"].values[0]).toBe(1);
+        expect(_profile.properties["primary-id"].type).toBe("integer");
+
+        expect(_profile.properties["string-property"].values[0]).toBe("123");
+        expect(_profile.properties["string-property"].type).toBe("string");
+
+        await profile.destroy();
+      });
+
       describe("destinationsForGroups", () => {
         it("determined relevant destinations for a profile", async () => {
           const otherDestination = await helper.factories.destination();
