@@ -1,4 +1,5 @@
 import { connect } from "../connect";
+import { getFieldMap } from "./../objects";
 import {
   buildBatchExports,
   exportProfilesInBatch,
@@ -21,8 +22,7 @@ const setDestinationIds: BatchFunctions["setDestinationIds"] = async ({
   config,
 }) => {
   // search for these using the foreign key
-  const objectType = config.destinationOptions.profileObject;
-  const fkType = config.destinationOptions.profileFieldMatch;
+  const { objectType, fkType } = config.data;
   const filterValues = Object.keys(fkMap);
   const idType = "Id";
 
@@ -58,7 +58,7 @@ const deleteByDestinationIds: BatchFunctions["deleteByDestinationIds"] = async (
   users,
   config,
 }) => {
-  const objectType = config.destinationOptions.profileObject;
+  const { objectType } = config.data;
   const payload = users.map((user) => user.destinationId);
   console.log("sending delete", payload);
   const results = await client.sobject(objectType).del(payload);
@@ -66,7 +66,7 @@ const deleteByDestinationIds: BatchFunctions["deleteByDestinationIds"] = async (
 };
 
 function buildPayload(exportedProfile: BatchExport, config: BatchConfig): any {
-  const fkType = config.destinationOptions.profileFieldMatch;
+  const { fkType } = config.data;
   const idType = "Id";
   const user: any = {};
   const {
@@ -89,8 +89,18 @@ function buildPayload(exportedProfile: BatchExport, config: BatchConfig): any {
     if ([idType, fkType].includes(key)) {
       continue; // set above
     }
+
     const value = newProfileProperties[key]; // includes clearing out removed ones (by setting to null)
-    user[key] = formatVar(value);
+    if (!value) {
+      const field = config.data.fields[key];
+      if (field) {
+        user[key] = field.defaultValue;
+      } else {
+        // otherwise it's no longer a field (got deleted from Salesforce), let it go
+      }
+    } else {
+      user[key] = formatVar(value);
+    }
   }
 
   return user;
@@ -100,11 +110,8 @@ function formatVar(value) {
   if (!value) {
     return null;
   }
-  if (value instanceof Date) {
-    return value.toISOString();
-  } else {
-    return value;
-  }
+  // Dates ok to send by themself
+  return value;
 }
 
 // called from upsert, update, and delete
@@ -159,7 +166,7 @@ const updateByDestinationIds: BatchFunctions["updateByDestinationIds"] = async (
   users,
   config,
 }) => {
-  const objectType = config.destinationOptions.profileObject;
+  const { objectType } = config.data;
   const payload = [];
   for (const user of users) {
     payload.push(buildPayload(user, config));
@@ -176,9 +183,7 @@ const updateByForeignKeyAndSetDestinationIds: BatchFunctions["updateByForeignKey
   users,
   config,
 }) => {
-  const objectType = config.destinationOptions.profileObject;
-  const fkType = config.destinationOptions.profileFieldMatch;
-
+  const { objectType, fkType } = config.data;
   const payload = [];
   for (const user of users) {
     payload.push(buildPayload(user, config));
@@ -231,8 +236,16 @@ const normalizeGroupName: BatchFunctions["normalizeGroupName"] = ({
 // }
 
 export async function exportBatch({ appOptions, destinationOptions, exports }) {
+  const connection = await connect(appOptions);
+
   const batchSize = 200;
   const foreignKey = destinationOptions.profileFieldMatch;
+  const profileObject = destinationOptions.profileObject;
+  const data = {
+    objectType: profileObject,
+    fkType: foreignKey,
+    fields: await getFieldMap(connection, profileObject),
+  };
   return exportProfilesInBatch(
     exports,
     {
@@ -240,6 +253,8 @@ export async function exportBatch({ appOptions, destinationOptions, exports }) {
       foreignKey,
       appOptions,
       destinationOptions,
+      connection,
+      data,
     },
     {
       getClient,
@@ -257,6 +272,7 @@ export async function exportBatch({ appOptions, destinationOptions, exports }) {
 
 export const exportProfiles: ExportProfilesPluginMethod = async ({
   appOptions,
+  connection,
   destinationOptions,
   exports,
 }) => {

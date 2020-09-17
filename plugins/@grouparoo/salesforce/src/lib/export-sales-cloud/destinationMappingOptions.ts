@@ -12,7 +12,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
 }) => {
   const conn = await connect(appOptions);
   const { profileObject, profileFieldMatch } = destinationOptions;
-  const objectInfo = await describeObject(conn, profileObject);
+  const objectInfo = await describeObject(conn, profileObject, true);
   const { known, required } = await getFields(objectInfo, profileFieldMatch);
 
   return {

@@ -38,6 +38,7 @@ export interface BatchConfig {
   appOptions?: SimpleAppOptions;
   destination?: Destination;
   destinationOptions?: SimpleDestinationOptions;
+  data?: any; // set any object you want on here
 }
 
 export interface BuildBatchExportMethod {
@@ -169,7 +170,7 @@ const exportOneBatch: ExportBatchProfilesPluginMethod = async (
     return { success: true };
   }
 
-  const client = await functions.getClient({ config });
+  const client = config.connection || (await functions.getClient({ config }));
 
   for (const exportedProfile of exports) {
     try {

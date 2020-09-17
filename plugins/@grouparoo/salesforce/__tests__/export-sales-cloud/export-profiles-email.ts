@@ -165,8 +165,8 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
       ],
     });
 
-    expect(success).toBe(true);
     expect(errors).toBeNull();
+    expect(success).toBe(true);
     userId1 = await findId(email1);
     expect(userId1).toBeTruthy();
     const user = await getUser(userId1);
@@ -209,15 +209,15 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     });
 
     let user;
-    expect(success).toBe(true);
     expect(errors).toBeNull();
+    expect(success).toBe(true);
     user = await getUser(userId1);
     expect(user.Email).toBe(email1);
     expect(user.FirstName).toBe("John");
     expect(user.LastName).toBe("Jones");
 
-    expect(success).toBe(true);
     expect(errors).toBeNull();
+    expect(success).toBe(true);
     userId2 = await findId(email2);
     expect(userId2).toBeTruthy();
     user = await getUser(userId2);
@@ -247,8 +247,8 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     });
 
     let user;
-    expect(success).toBe(true);
     expect(errors).toBeNull();
+    expect(success).toBe(true);
     user = await getUser(userId1);
     expect(user.Email).toBe(email1);
     expect(user.FirstName).toBe(null);
@@ -256,7 +256,6 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
   });
 
   test("it can change the email address", async () => {
-    console.log("change user test");
     const { success, errors } = await exportBatch({
       appOptions,
       destinationOptions,
@@ -286,8 +285,8 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
       ],
     });
 
-    expect(success).toBe(true);
     expect(errors).toBeNull();
+    expect(success).toBe(true);
 
     let user;
     user = await getUser(userId1);
@@ -336,8 +335,8 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
       ],
     });
 
-    expect(success).toBe(true);
     expect(errors).toBeNull();
+    expect(success).toBe(true);
 
     let user;
     user = await getUser(userId1);
@@ -345,13 +344,18 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(user.FirstName).toBe("Brian");
     expect(user.LastName).toBe("Chang");
 
+    // for types next time
+    expect(user.checkbox_field__c).toEqual(false); // defaulted
+    expect(user.datetime_field__c).toEqual(null);
+    expect(user.number_field__c).toEqual(null);
+
     expect(await findId(newEmail1)).toBeNull(); // changed!
 
     expect(await findId(email2)).toBeNull();
     expect(await getUser(userId2)).toBeNull();
   });
 
-  test.skip("can add back a user and many types", async () => {
+  test("can add back a user and many types", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
       destinationOptions,
@@ -360,16 +364,18 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
           profileGuid: guid2,
           oldProfileProperties: {},
           newProfileProperties: {
+            checkbox_field__c: true,
+            datetime_field__c: new Date(1598766588 * 1000),
+            number_field__c: 42,
+            percent_field__c: 99,
+            email_field__c: "field@grouparoo.com",
+            phone_field__c: "(412) 555-1234",
+            picklist_field__c: "Red",
+            text_field__c: "short text",
+            textarea_field__c: "longer text here",
+            url_field__c: "https://www.grouparoo.com",
             Email: email2,
-            FirstName: "Evan",
-            textarea_field: "text is here",
-            boolean_field: true,
-            email_field: "field@grouparoo.com",
-            integer_field: 5,
-            float_field: 5.4,
-            datetime_field: new Date(1598766588 * 1000),
-            score_field: 10,
-            percent_field: 99,
+            LastName: "Parker",
           },
           oldGroups: [],
           newGroups: [],
@@ -380,26 +386,28 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     });
 
     let user;
-    expect(success).toBe(true);
     expect(errors).toBeNull();
+    expect(success).toBe(true);
 
     userId2 = await findId(email2);
     expect(userId2).toBeTruthy();
 
     user = await getUser(userId2);
+    expect(user.checkbox_field__c).toEqual(true);
+    expect(user.datetime_field__c).toEqual("2020-08-30T05:49:48.000+0000");
+    expect(user.number_field__c).toEqual(42);
+    expect(user.percent_field__c).toEqual(99);
+    expect(user.email_field__c).toEqual("field@grouparoo.com");
+    expect(user.phone_field__c).toEqual("(412) 555-1234");
+    expect(user.picklist_field__c).toEqual("Red");
+    expect(user.text_field__c).toEqual("short text");
+    expect(user.textarea_field__c).toEqual("longer text here");
+    expect(user.url_field__c).toEqual("https://www.grouparoo.com");
     expect(user.Email).toEqual(email2);
-    expect(user.FirstName).toEqual("Evan");
-    expect(user.textarea_field).toEqual("text is here");
-    expect(user.boolean_field).toEqual(true);
-    expect(user.email_field).toEqual("field@grouparoo.com");
-    expect(user.integer_field).toEqual(5);
-    expect(user.float_field).toEqual(5.4);
-    expect(user.datetime_field).toEqual("2020-08-30T05:49:48Z");
-    expect(user.score_field).toEqual(10);
-    expect(user.percent_field).toEqual(99);
+    expect(user.LastName).toEqual("Parker");
   });
 
-  test.skip("can set all those fields to null", async () => {
+  test("can set all those fields to null", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
       destinationOptions,
@@ -407,18 +415,20 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
         {
           profileGuid: guid2,
           oldProfileProperties: {
+            checkbox_field__c: true,
+            datetime_field__c: new Date(1598766588 * 1000),
+            number_field__c: 42,
+            percent_field__c: 99,
+            email_field__c: "field@grouparoo.com",
+            phone_field__c: "(412) 555-1234",
+            picklist_field__c: "Red",
+            text_field__c: "short text",
+            textarea_field__c: "longer text here",
+            url_field__c: "https://www.grouparoo.com",
             Email: email2,
-            FirstName: "Evan",
-            textarea_field: "text is here",
-            boolean_field: true,
-            email_field: "field@grouparoo.com",
-            integer_field: 5,
-            float_field: 5.4,
-            datetime_field: new Date(1598766588 * 1000),
-            score_field: 10,
-            percent_field: 99,
+            LastName: "Parker",
           },
-          newProfileProperties: { Email: email2, FirstName: "Maria" },
+          newProfileProperties: { Email: email2, LastName: "Patil" },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
@@ -428,20 +438,22 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     });
 
     let user;
-    expect(success).toBe(true);
     expect(errors).toBeNull();
+    expect(success).toBe(true);
 
     user = await getUser(userId2);
-    expect(user.email).toEqual(email2);
-    expect(user.firstName).toEqual("Maria");
-    expect(user.textarea_field).toEqual(null);
-    expect(user.boolean_field).toEqual(false);
-    expect(user.email_field).toEqual(null);
-    expect(user.integer_field).toEqual(null);
-    expect(user.float_field).toEqual(null);
-    expect(user.datetime_field).toEqual(null);
-    expect(user.score_field).toEqual(null);
-    expect(user.percent_field).toEqual(null);
+    expect(user.checkbox_field__c).toEqual(false); // defaulted
+    expect(user.datetime_field__c).toEqual(null);
+    expect(user.number_field__c).toEqual(null);
+    expect(user.percent_field__c).toEqual(null);
+    expect(user.email_field__c).toEqual(null);
+    expect(user.phone_field__c).toEqual(null);
+    expect(user.picklist_field__c).toEqual(null);
+    expect(user.text_field__c).toEqual(null);
+    expect(user.textarea_field__c).toEqual(null);
+    expect(user.url_field__c).toEqual(null);
+    expect(user.Email).toEqual(email2);
+    expect(user.LastName).toEqual("Patil");
   });
 
   test.skip("can handle boolean error", async () => {
@@ -796,9 +808,8 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
   //       },
   //     ],
   //   });
-
-  //   expect(success).toBe(true);
   //   expect(errors).toBeNull();
+  //   expect(success).toBe(true);
 
   //   listId1 = await findListId(list1);
   //   expect(listId1).toBeTruthy();
@@ -838,9 +849,9 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
   //       },
   //     ],
   //   });
-
-  //   expect(success).toBe(true);
   //   expect(errors).toBeNull();
+  //   expect(success).toBe(true);
+
   //   listId2 = await findListId(list2);
   //   expect(listId2).toBeTruthy();
 
@@ -884,8 +895,9 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
   //     ],
   //   });
 
-  //   expect(success).toBe(true);
   //   expect(errors).toBeNull();
+
+  //   expect(success).toBe(true);
 
   //   let members;
   //   members = await getListMemberIds(listId1);
