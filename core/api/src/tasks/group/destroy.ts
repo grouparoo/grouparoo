@@ -27,7 +27,8 @@ export class GroupDestroy extends Task {
         (await plugin.readSetting("core", "runs-profile-batch-size")).value
       );
 
-    const group = await Group.findByGuid(params.groupGuid);
+    const group = await Group.findOne({ where: { guid: params.groupGuid } });
+    if (!group) return; // the group may have been force-deleted
 
     let run: Run;
     if (params.runGuid) {

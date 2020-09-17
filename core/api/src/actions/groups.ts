@@ -3,6 +3,7 @@ import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Group, GROUP_RULE_LIMIT, TopLevelGroupRules } from "../models/Group";
 import { ProfilePropertyRuleOpsDictionary } from "../modules/RuleOpsDictionary";
 import { Profile } from "../models/Profile";
+import { GroupMember } from "../models/GroupMember";
 
 export class GroupsList extends AuthenticatedAction {
   constructor() {
@@ -336,17 +337,29 @@ export class GroupDestroy extends AuthenticatedAction {
     this.permission = { topic: "group", mode: "write" };
     this.inputs = {
       guid: { required: true },
+      force: {
+        required: true,
+        default: false,
+        formatter: (p: string | boolean) =>
+          p.toString().toLowerCase() === "true",
+      },
     };
   }
 
   async run({ params, response }) {
     response.success = false;
-    const group = await Group.findByGuid(params.guid);
 
+    const group = await Group.findByGuid(params.guid);
     await Group.checkDestinationTracking(group);
 
-    await group.update({ state: "deleted" });
-    await task.enqueue("group:destroy", { groupGuid: group.guid });
+    if (params.force === true) {
+      await GroupMember.destroy({ where: { groupGuid: group.guid } });
+      await group.destroy(); // other related models are handled by hooks
+    } else {
+      await group.update({ state: "deleted" });
+      await task.enqueue("group:destroy", { groupGuid: group.guid });
+    }
+
     response.success = true;
   }
 }
