@@ -53,9 +53,9 @@ const mapTypesToGrouparoo = (type) => {
     any: "any",
     anytype: "any",
     id: "string",
+    picklist: "string",
     //TODO:
     currency: null,
-    picklist: null,
     address: null,
     date: null,
     time: null,

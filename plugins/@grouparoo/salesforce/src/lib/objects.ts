@@ -2,7 +2,7 @@ import { cache } from "./cache";
 
 export async function describeObject(conn, objectName, force = false) {
   const { id, organizationId } = conn.userInfo;
-  const uniqKey = `salesforce:objects:${objectName}:${organizationId}:${id}`;
+  const uniqKey = `salesforce:objects:${organizationId}:${objectName}:${id}`;
 
   const cacheKey = `${uniqKey}:key`;
   const lockKey = `${uniqKey}:lock`;
