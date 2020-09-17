@@ -21,6 +21,7 @@ export default function Page(props) {
     hydrationError,
   } = props;
   const { execApi } = useApi(props, errorHandler);
+  const [loading, setLoading] = useState(false);
   const [trackedGroupGuid, setTrackedGroupGuid] = useState(
     props.trackedGroupGuid || "_none"
   );
@@ -44,6 +45,7 @@ export default function Page(props) {
 
   const update = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
     // handle destination group membership & mapping
     const filteredMapping = {};
@@ -80,6 +82,7 @@ export default function Page(props) {
       await execApi("post", `/destination/${guid}/export`, { force: true });
     }
 
+    setLoading(false);
     successHandler.set({
       message: "Destination Updated and Profiles Exporting...",
     });
@@ -753,7 +756,7 @@ export default function Page(props) {
               <Col>
                 <br />
                 <hr />
-                <Button type="submit" variant="primary">
+                <Button type="submit" variant="primary" disabled={loading}>
                   Save Destination Data
                 </Button>
               </Col>
