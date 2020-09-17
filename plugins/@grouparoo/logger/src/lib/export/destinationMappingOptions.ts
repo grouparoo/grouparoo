@@ -13,8 +13,8 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
       },
     },
     profilePropertyRules: {
-      required: [{ key: "primary id", type: "any" }],
-      known: [{ key: "secondary id", type: "any", important: true }],
+      required: [{ key: "primary id", type: "string" }],
+      known: [{ key: "secondary id", type: "string", important: true }],
       allowOptionalFromProfilePropertyRules: true,
     },
   };

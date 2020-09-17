@@ -356,7 +356,9 @@ export default function Page(props) {
                                   </option>
                                   {profilePropertyRules
                                     .filter((rule) =>
-                                      type === "any" ? true : rule.type === type
+                                      destinationTypeConversions[
+                                        rule.type
+                                      ].includes(type)
                                     )
                                     .filter((rule) => !rule.isArray)
                                     .map((rule) => (
