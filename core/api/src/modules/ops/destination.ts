@@ -81,6 +81,7 @@ export namespace DestinationOps {
    * It is assumed that the profile provided is already in a Group tracked by this Destination
    */
   export async function profilePreview(
+    destination: Destination,
     profile: Profile,
     mapping: MappingHelper.Mappings,
     destinationGroupMemberships: {
@@ -90,8 +91,31 @@ export namespace DestinationOps {
     const profileProperties = await profile.properties();
     const mappingKeys = Object.keys(mapping);
     const mappedProfileProperties = {};
+    const destinationMappingOptions = await destination.destinationMappingOptions();
     mappingKeys.forEach((k) => {
-      mappedProfileProperties[k] = profileProperties[mapping[k]];
+      const collection = profileProperties[mapping[k]];
+      mappedProfileProperties[k] = collection;
+
+      let destinationType: DestinationMappingOptionsResponseTypes = "any";
+      for (const j in destinationMappingOptions.profilePropertyRules.required) {
+        const destinationProperty =
+          destinationMappingOptions.profilePropertyRules.required[j];
+        if (destinationProperty.key === k) {
+          destinationType = destinationProperty.type;
+        }
+      }
+      for (const j in destinationMappingOptions.profilePropertyRules.known) {
+        const destinationProperty =
+          destinationMappingOptions.profilePropertyRules.known[j];
+        if (destinationProperty.key === k) {
+          destinationType = destinationProperty.type;
+        }
+      }
+
+      mappedProfileProperties[k].values = collection.values.map((value) =>
+        formatOutgoingProfileProperties(value, collection.type, destinationType)
+      );
+      mappedProfileProperties[k].type = destinationType;
     });
 
     const groups = await profile.$get("groups");

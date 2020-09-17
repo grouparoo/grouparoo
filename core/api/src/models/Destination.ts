@@ -362,6 +362,7 @@ export class Destination extends LoggedModel<Destination> {
     }
   ) {
     return DestinationOps.profilePreview(
+      this,
       profile,
       mapping,
       destinationGroupMemberships
