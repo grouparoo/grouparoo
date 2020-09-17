@@ -6,7 +6,7 @@ import ProfileImageFromEmail from "../visualizations/profileImageFromEmail";
 import Router from "next/router";
 
 export default function ProfilePreview(props) {
-  const { query, errorHandler, profilePropertyRule } = props;
+  const { query, errorHandler, profilePropertyRule, localFilters } = props;
   const [profileGuid, setProfileGuid] = useState(query.profileGuid);
   const [toHide, setToHide] = useState(true);
   const [profile, setProfile] = useState({ guid: "", properties: {} });
@@ -32,6 +32,7 @@ export default function ProfilePreview(props) {
     profilePropertyRule.isArray,
     JSON.stringify(profilePropertyRule.options),
     JSON.stringify(profilePropertyRule.filters),
+    JSON.stringify(localFilters),
   ]);
 
   function storeProfilePropertyGuid(profileGuid: string) {
@@ -58,7 +59,7 @@ export default function ProfilePreview(props) {
         `/profilePropertyRule/${profilePropertyRule.guid}/profilePreview`,
         {
           options: profilePropertyRule.options,
-          filters: profilePropertyRule.filters,
+          filters: localFilters,
           profileGuid: _profileGuid,
         }
       );
