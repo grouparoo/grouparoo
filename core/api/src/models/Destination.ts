@@ -149,6 +149,7 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async setOptions(options: SimpleDestinationOptions) {
+    await this.validateUniqueAppAndOptions(options);
     return OptionHelper.setOptions(this, options);
   }
 
@@ -406,6 +407,30 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.sendExports(this, _exports, sync);
   }
 
+  async validateUniqueAppAndOptions(options?: SimpleDestinationOptions) {
+    if (!options) options = await this.getOptions();
+    const otherDestinations = await Destination.scope(null).findAll({
+      where: {
+        appGuid: this.appGuid,
+        guid: { [Op.not]: this.guid },
+      },
+    });
+
+    for (const i in otherDestinations) {
+      const otherDestination = otherDestinations[i];
+      const otherOptions = await otherDestination.getOptions();
+      let isSameOptions =
+        Object.entries(otherOptions).toString() ===
+        Object.entries(options).toString();
+
+      if (isSameOptions) {
+        throw new Error(
+          `destination "${otherDestination.name}" (${otherDestination.guid}) is already using this app with the same options`
+        );
+      }
+    }
+  }
+
   // --- Class Methods --- //
 
   static async findByGuid(guid: string) {
@@ -450,19 +475,10 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeSave
-  static async ensureOnlyOneDestinationPerApp(instance: Destination) {
-    const otherDestination = await Destination.scope(null).findOne({
-      where: {
-        appGuid: instance.appGuid,
-        guid: { [Op.not]: instance.guid },
-      },
-    });
-
-    if (otherDestination) {
-      throw new Error(
-        `destination "${otherDestination.name}" is already using this app`
-      );
-    }
+  static async ensureOnlyOneDestinationPerAppWithSameSettings(
+    instance: Destination
+  ) {
+    await instance.validateUniqueAppAndOptions();
   }
 
   @BeforeSave
