@@ -3,6 +3,8 @@ import { api, specHelper } from "actionhero";
 import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
 import { Profile } from "../../src/models/Profile";
 import { Option } from "../../src/models/Option";
+import { Event } from "../../src/models/Event";
+import { EventData } from "../../src/models/EventData";
 
 let actionhero;
 
@@ -391,7 +393,7 @@ describe("integration/events", () => {
     });
 
     describe("profilePropertyRules", () => {
-      test("an administrator can create a new profilePropertyRule", async () => {
+      test("an administrator can create a new profilePropertyRule against events", async () => {
         connection.params = {
           csrfToken,
           sourceGuid,
@@ -689,6 +691,143 @@ describe("integration/events", () => {
           await profile.import();
           const properties = await profile.properties();
           expect(properties["test-rule"].values).toEqual([200]);
+        });
+      });
+
+      describe("filters", () => {
+        let rule: ProfilePropertyRule;
+        beforeAll(async () => {
+          rule = await ProfilePropertyRule.findByGuid(profilePropertyRuleGuid);
+          await rule.update({ type: "string", isArray: true });
+          await rule.setOptions({
+            column: "[data]-path",
+            "aggregation method": "all values",
+          });
+        });
+
+        beforeEach(async () => {
+          await rule.setFilters([]);
+        });
+
+        test("on event properties - userId", async () => {
+          await rule.setFilters([{ key: "userId", op: "equals", match: "x" }]);
+          await profile.import();
+          let properties = await profile.properties();
+          expect(properties["test-rule"].values).toEqual([null]);
+        });
+
+        test("on event properties - type", async () => {
+          await rule.setFilters([{ key: "type", op: "equals", match: "x" }]);
+          await profile.import();
+          let properties = await profile.properties();
+          expect(properties["test-rule"].values).toEqual([null]);
+
+          await rule.setFilters([
+            { key: "type", op: "equals", match: "pageview" },
+          ]);
+          await profile.import();
+          properties = await profile.properties();
+          expect(properties["test-rule"].values).toEqual([
+            "/",
+            "/about",
+            "/web-sign-in",
+            "/mobile-sign-in",
+          ]);
+        });
+
+        test("on event properties - occurredAt", async () => {
+          const event = await Event.findOne({
+            where: { profileGuid: profile.guid },
+            include: [{ model: EventData, where: { value: "/web-sign-in" } }],
+          });
+
+          await rule.setFilters([
+            {
+              key: "occurredAt",
+              op: "greater than",
+              match: event.createdAt.getTime().toString(),
+            },
+          ]);
+
+          await profile.import();
+          let properties = await profile.properties();
+          expect(properties["test-rule"].values).toEqual(["/mobile-sign-in"]);
+
+          await rule.setFilters([
+            { key: "occurredAt", op: "greater than", match: "0" },
+          ]);
+          await profile.import();
+          properties = await profile.properties();
+          expect(properties["test-rule"].values).toEqual([
+            "/",
+            "/about",
+            "/web-sign-in",
+            "/mobile-sign-in",
+          ]);
+        });
+
+        test("on data properties - equals", async () => {
+          await rule.setFilters([
+            {
+              key: "[data]-path",
+              op: "equals",
+              match: "/about",
+            },
+          ]);
+
+          await profile.import();
+          let properties = await profile.properties();
+          expect(properties["test-rule"].values).toEqual(["/about"]);
+        });
+
+        test("on data properties - does not equal", async () => {
+          await rule.setFilters([
+            {
+              key: "[data]-path",
+              op: "does not equal",
+              match: "/about",
+            },
+          ]);
+
+          await profile.import();
+          let properties = await profile.properties();
+          expect(properties["test-rule"].values).toEqual([
+            "/",
+            "/web-sign-in",
+            "/mobile-sign-in",
+          ]);
+        });
+
+        test("on data properties - contains", async () => {
+          await rule.setFilters([
+            {
+              key: "[data]-path",
+              op: "contains",
+              match: "a",
+            },
+          ]);
+
+          await profile.import();
+          let properties = await profile.properties();
+          expect(properties["test-rule"].values).toEqual(["/about"]);
+        });
+
+        test("on data properties - does not contain", async () => {
+          await rule.setFilters([
+            {
+              key: "[data]-path",
+              op: "does not contain",
+              match: "a",
+            },
+          ]);
+
+          await profile.import();
+          let properties = await profile.properties();
+          expect(properties["test-rule"].values).toEqual([
+            "/",
+            "/web-sign-in",
+            "/mobile-sign-in",
+          ]);
         });
       });
     });
