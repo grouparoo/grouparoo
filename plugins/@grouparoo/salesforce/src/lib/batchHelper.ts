@@ -31,7 +31,8 @@ export declare type DestinationIdMap = { [value: string]: BatchExport };
 export declare type GroupNameListMap = { [groupName: string]: BatchExport[] };
 
 export interface BatchConfig {
-  batchSize: number;
+  batchSize: number; // max number to update, create, delete
+  findSize: number; // max query parameters to send to findAndSetDestinationIds
   foreignKey: string;
   connection?: any;
   app?: App;
@@ -84,7 +85,6 @@ export const exportProfilesInBatch: ProfileBatchProfilesPluginMethod = async (
   config,
   functions
 ) => {
-  // TODO: use input.batchSize
   return exportOneBatch(exports, config, functions);
 };
 
@@ -94,7 +94,7 @@ export interface BatchFunctions {
     (argument: { config: BatchConfig }): Promise<any>;
   };
   // fetch using the keys in fkMap to set destinationId and result on BatchExports in fkMap
-  setDestinationIds: {
+  findAndSetDestinationIds: {
     (argument: {
       client: any;
       users: BatchExport[];
@@ -186,7 +186,7 @@ const exportOneBatch: ExportBatchProfilesPluginMethod = async (
 
   await deleteExports(client, exports, functions, config);
   await updateByIds(client, exports, functions, config);
-  await updateByForeignKey(client, exports, functions, config);
+  await createByForeignKey(client, exports, functions, config);
 
   verifyAllProcessed(exports);
 
@@ -260,6 +260,10 @@ async function updateGroups(
   const removalMap: DestinationIdMap = {};
   const additionMap: DestinationIdMap = {};
 
+  // TODO: how to handle batching?
+  // Use batchSize or some other number?
+  // in either case, does it apply per user or per group (users being added/removed) or number of groups?
+
   for (const exportedProfile of exports) {
     if (exportedProfile.error) {
       continue;
@@ -302,35 +306,46 @@ async function updateGroups(
   }
 }
 
-async function updateByForeignKey(
+async function createByForeignKey(
   client,
   exports: BatchExport[],
   functions: BatchFunctions,
   config: BatchConfig
 ) {
-  const fkMap: ForeignKeyMap = {};
+  const batches: Array<{ fkMap: ForeignKeyMap }> = [];
+  let currentFkMap: ForeignKeyMap = {};
+  let currentCount = 0;
 
   for (const exportedProfile of exports) {
     if (exportedProfile.processed || exportedProfile.error) {
       continue;
     }
-    fkMap[exportedProfile.foreignKeyValue] = exportedProfile;
+    if (currentCount > config.batchSize) {
+      batches.push({ fkMap: currentFkMap });
+      currentFkMap = {};
+      currentCount = 0;
+    }
+
+    currentFkMap[exportedProfile.foreignKeyValue] = exportedProfile;
+    currentCount++;
   }
 
-  const users = Object.values(fkMap);
-  if (users.length === 0) {
-    return;
+  if (currentCount > 0) {
+    batches.push({ fkMap: currentFkMap });
   }
 
-  await functions.createByForeignKeyAndSetDestinationIds({
-    client,
-    users,
-    fkMap,
-    config,
-  });
+  for (const { fkMap } of batches) {
+    const users = Object.values(fkMap);
+    await functions.createByForeignKeyAndSetDestinationIds({
+      client,
+      users,
+      fkMap,
+      config,
+    });
 
-  for (const user of users) {
-    user.processed = true;
+    for (const user of users) {
+      user.processed = true;
+    }
   }
 }
 
@@ -340,8 +355,14 @@ async function updateByIds(
   functions: BatchFunctions,
   config: BatchConfig
 ) {
-  const fkMap: ForeignKeyMap = {};
-  const destIdMap: DestinationIdMap = {};
+  let currentFkMap: ForeignKeyMap = {};
+  let currentDeskIdMap: DestinationIdMap = {};
+  let currentCount = 0;
+
+  const batches: Array<{
+    fkMap: ForeignKeyMap;
+    destIdMap: DestinationIdMap;
+  }> = [];
 
   for (const exportedProfile of exports) {
     if (exportedProfile.processed || exportedProfile.error) {
@@ -350,25 +371,37 @@ async function updateByIds(
     if (!exportedProfile.destinationId) {
       continue;
     }
-    fkMap[exportedProfile.foreignKeyValue] = exportedProfile;
-    destIdMap[exportedProfile.destinationId] = exportedProfile;
+
+    if (currentCount > config.batchSize) {
+      batches.push({ fkMap: currentFkMap, destIdMap: currentDeskIdMap });
+      currentCount = 0;
+      currentFkMap = {};
+      currentDeskIdMap = {};
+    }
+
+    currentFkMap[exportedProfile.foreignKeyValue] = exportedProfile;
+    currentDeskIdMap[exportedProfile.destinationId] = exportedProfile;
+    currentCount++;
   }
 
-  const users = Object.values(destIdMap);
-  if (users.length === 0) {
-    return;
+  if (currentCount > 0) {
+    batches.push({ fkMap: currentFkMap, destIdMap: currentDeskIdMap });
   }
 
-  await functions.updateByDestinationIds({
-    client,
-    users,
-    destIdMap,
-    fkMap,
-    config,
-  });
+  for (const { fkMap, destIdMap } of batches) {
+    const users = Object.values(destIdMap);
 
-  for (const user of users) {
-    user.processed = true;
+    await functions.updateByDestinationIds({
+      client,
+      users,
+      destIdMap,
+      fkMap,
+      config,
+    });
+
+    for (const user of users) {
+      user.processed = true;
+    }
   }
 }
 
@@ -378,8 +411,14 @@ async function deleteExports(
   functions: BatchFunctions,
   config: BatchConfig
 ) {
-  const fkMap: ForeignKeyMap = {};
-  const destIdMap: DestinationIdMap = {};
+  let currentFkMap: ForeignKeyMap = {};
+  let currentDeskIdMap: DestinationIdMap = {};
+  let currentCount = 0;
+
+  const batches: Array<{
+    fkMap: ForeignKeyMap;
+    destIdMap: DestinationIdMap;
+  }> = [];
 
   for (const exportedProfile of exports) {
     if (exportedProfile.processed || exportedProfile.error) {
@@ -391,25 +430,37 @@ async function deleteExports(
     if (!exportedProfile.destinationId) {
       continue; // they aren't there anyway. let it go.
     }
-    fkMap[exportedProfile.foreignKeyValue] = exportedProfile;
-    destIdMap[exportedProfile.destinationId] = exportedProfile;
+
+    if (currentCount > config.batchSize) {
+      batches.push({ fkMap: currentFkMap, destIdMap: currentDeskIdMap });
+      currentFkMap = {};
+      currentDeskIdMap = {};
+      currentCount = 0;
+    }
+
+    currentFkMap[exportedProfile.foreignKeyValue] = exportedProfile;
+    currentDeskIdMap[exportedProfile.destinationId] = exportedProfile;
+    currentCount++;
   }
 
-  const users = Object.values(destIdMap);
-  if (users.length === 0) {
-    return;
+  if (currentCount > 0) {
+    batches.push({ fkMap: currentFkMap, destIdMap: currentDeskIdMap });
   }
 
-  await functions.deleteByDestinationIds({
-    client,
-    users,
-    destIdMap,
-    fkMap,
-    config,
-  });
+  for (const { fkMap, destIdMap } of batches) {
+    const users = Object.values(destIdMap);
 
-  for (const user of users) {
-    user.processed = true;
+    await functions.deleteByDestinationIds({
+      client,
+      users,
+      destIdMap,
+      fkMap,
+      config,
+    });
+
+    for (const user of users) {
+      user.processed = true;
+    }
   }
 }
 
@@ -419,25 +470,46 @@ async function lookupDestinationIds(
   functions: BatchFunctions,
   config: BatchConfig
 ) {
-  const fkMap: ForeignKeyMap = {};
-  const users: BatchExport[] = [];
+  let currentFkMap: ForeignKeyMap = {};
+  let currentUsers: BatchExport[] = [];
+  let currentCount = 0;
+
+  const batches: Array<{
+    fkMap: ForeignKeyMap;
+    users: BatchExport[];
+  }> = [];
+
   for (const exportedProfile of exports) {
     if (exportedProfile.error) {
       continue;
     }
 
     const { foreignKeyValue, oldForeignKeyValue } = exportedProfile;
-    users.push(exportedProfile);
-    fkMap[foreignKeyValue] = exportedProfile;
+
+    const maxSize = oldForeignKeyValue ? config.findSize - 1 : config.findSize;
+    if (currentCount > maxSize) {
+      batches.push({ fkMap: currentFkMap, users: currentUsers });
+      currentFkMap = {};
+      currentUsers = [];
+      currentCount = 0;
+    }
+
+    currentUsers.push(exportedProfile);
+    currentFkMap[foreignKeyValue] = exportedProfile;
+    currentCount++;
     if (oldForeignKeyValue) {
-      fkMap[oldForeignKeyValue] = exportedProfile;
+      currentFkMap[oldForeignKeyValue] = exportedProfile;
+      currentCount++;
     }
   }
 
-  if (users.length === 0) {
-    return;
+  if (currentCount > 0) {
+    batches.push({ fkMap: currentFkMap, users: currentUsers });
   }
-  await functions.setDestinationIds({ client, users, fkMap, config });
+
+  for (const { fkMap, users } of batches) {
+    await functions.findAndSetDestinationIds({ client, users, fkMap, config });
+  }
 }
 
 // puts added and removed on export

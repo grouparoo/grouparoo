@@ -277,7 +277,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
           profileGuid: guid2,
           oldProfileProperties: { Email: email2, LastName: "Jih" },
           newProfileProperties: { Email: email2, LastName: "Test" },
-          oldGroups: [list1],
+          oldGroups: [],
           newGroups: [],
           toDelete: false,
           profile: null,

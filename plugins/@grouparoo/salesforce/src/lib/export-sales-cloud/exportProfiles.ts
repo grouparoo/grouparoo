@@ -16,7 +16,7 @@ const getClient: BatchFunctions["getClient"] = async ({ config }) => {
 
 // fetch using the keys in fkMap to set destinationId and result on BatchExports in fkMap
 // fkMap has newValue and oldValue of foreignKey
-const setDestinationIds: BatchFunctions["setDestinationIds"] = async ({
+const findAndSetDestinationIds: BatchFunctions["findAndSetDestinationIds"] = async ({
   client,
   fkMap,
   config,
@@ -238,8 +238,11 @@ const normalizeGroupName: BatchFunctions["normalizeGroupName"] = ({
 
 export async function exportBatch({ appOptions, destinationOptions, exports }) {
   const connection = await connect(appOptions);
-
-  const batchSize = 200;
+  // use larger number if sales force api >= 42
+  const batchSize = connection._supports("sobject-collection")
+    ? 200
+    : connection.maxRequests;
+  const findSize = 200;
   const foreignKey = destinationOptions.profileFieldMatch;
   const profileObject = destinationOptions.profileObject;
   const data = {
@@ -250,6 +253,7 @@ export async function exportBatch({ appOptions, destinationOptions, exports }) {
   return exportProfilesInBatch(
     exports,
     {
+      findSize,
       batchSize,
       foreignKey,
       appOptions,
@@ -259,7 +263,7 @@ export async function exportBatch({ appOptions, destinationOptions, exports }) {
     },
     {
       getClient,
-      setDestinationIds,
+      findAndSetDestinationIds,
       deleteByDestinationIds,
       updateByDestinationIds,
       createByForeignKeyAndSetDestinationIds,
