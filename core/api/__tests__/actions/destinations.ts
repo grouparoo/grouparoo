@@ -64,7 +64,7 @@ describe("actions/destinations", () => {
       guid = destination.guid;
     });
 
-    test("only one destination can be created for each app", async () => {
+    test("only one destination can be created for each app with the same options", async () => {
       connection.params = {
         csrfToken,
         name: "test destination again",
@@ -77,7 +77,7 @@ describe("actions/destinations", () => {
       );
 
       expect(error.message).toMatch(
-        'destination "test destination" is already using this app'
+        /destination "test destination" .* is already using this app with the same options/
       );
     });
 
