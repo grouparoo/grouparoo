@@ -412,8 +412,13 @@ describe("models/group", () => {
       await group.setRules([
         { key: "firstName", match: "Mario", operation: { op: "eq" } },
       ]);
-      const groupMembersCount = await group.runAddGroupMembers(run);
-      expect(groupMembersCount).toBe(1);
+      const response = await group.runAddGroupMembers(run);
+      expect(response).toEqual(
+        expect.objectContaining({
+          groupMembersCount: 1,
+          nextOffset: 0,
+        })
+      );
 
       // first time
       const _import = await Import.findOne({
@@ -443,8 +448,13 @@ describe("models/group", () => {
       await group.setRules([
         { key: "lastName", match: "Mario", operation: { op: "eq" } },
       ]);
-      const groupMembersCount = await group.runAddGroupMembers(run);
-      expect(groupMembersCount).toBe(2);
+      const response = await group.runAddGroupMembers(run);
+      expect(response).toBe(
+        expect.objectContaining({
+          groupMembersCount: 2,
+          nextOffset: 0,
+        })
+      );
 
       // create the groupMembers
       await mario.updateGroupMembership();
