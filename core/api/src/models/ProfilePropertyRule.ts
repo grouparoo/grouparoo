@@ -5,7 +5,6 @@ import {
   DataType,
   Length,
   Default,
-  BeforeCreate,
   BeforeSave,
   BeforeDestroy,
   AfterSave,
