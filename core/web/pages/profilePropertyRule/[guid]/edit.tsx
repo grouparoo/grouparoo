@@ -17,7 +17,6 @@ import { ProfilePropertyRuleAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
   const {
-    previousPath,
     errorHandler,
     successHandler,
     profilePropertyRulesHandler,
@@ -30,6 +29,7 @@ export default function Page(props) {
   } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
+  const [previousPath] = useState(props.previousPath); // we want to store this when the page was initially loaded because we'll be updating the route for the profilePreview
   const [profilePropertyRule, setProfilePropertyRule] = useState<
     ProfilePropertyRuleAPIData
   >(props.profilePropertyRule);
@@ -69,7 +69,7 @@ export default function Page(props) {
           response.profilePropertyRule.state === "ready" &&
           profilePropertyRule.state === "draft"
         ) {
-          Router.push(previousPath);
+          Router.push(previousPath || "/profilePropertyRules");
         } else {
           successHandler.set({ message: "Profile Property Rule Updated" });
         }
@@ -87,7 +87,7 @@ export default function Page(props) {
       const response = await execApi("delete", `/profilePropertyRule/${guid}`);
       setLoading(false);
       if (response) {
-        Router.push(previousPath);
+        Router.push(previousPath || "/profilePropertyRules");
       }
     }
   }
@@ -608,13 +608,7 @@ export default function Page(props) {
             </Button>
             <br />
             <br />
-            <Button
-              variant="danger"
-              size="sm"
-              onClick={() => {
-                handleDelete();
-              }}
-            >
+            <Button variant="danger" size="sm" onClick={() => handleDelete()}>
               Delete
             </Button>
           </Col>
