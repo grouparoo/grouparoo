@@ -4,12 +4,14 @@ import { useApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { Button, Form, Card, Tabs, Tab } from "react-bootstrap";
 import Moment from "react-moment";
-import ImportAndUpdateAllProfiles from "../../components/settings/importAndUpdate";
-import IdentifyingProfilePropertyRule from "../../components/settings/identifyingProfilePropertyRule";
-import ResetCluster from "../../components/settings/resetCluster";
 import { capitalize } from "../../components/tabs";
 import { useRouter } from "next/router";
 import { SettingAPIData } from "../../utils/apiData";
+
+import ImportAndUpdateAllProfiles from "../../components/settings/importAndUpdate";
+import IdentifyingProfilePropertyRule from "../../components/settings/identifyingProfilePropertyRule";
+import ResetCluster from "../../components/settings/resetCluster";
+import ClearCache from "../../components/settings/clearCache";
 
 export default function Page(props) {
   const { errorHandler, successHandler, tab } = props;
@@ -214,7 +216,6 @@ function ActionsTab({ errorHandler, successHandler }) {
   return (
     <>
       <br />
-
       <h2>Cluster Actions</h2>
 
       <br />
@@ -223,6 +224,10 @@ function ActionsTab({ errorHandler, successHandler }) {
         errorHandler={errorHandler}
         successHandler={successHandler}
       />
+
+      <br />
+
+      <ClearCache errorHandler={errorHandler} successHandler={successHandler} />
 
       <br />
 
