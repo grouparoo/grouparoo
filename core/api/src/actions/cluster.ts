@@ -1,5 +1,6 @@
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Op } from "sequelize";
+import { cache } from "actionhero";
 
 import { App } from "../models/App";
 // import { ApiKey } from "../models/ApiKey";
@@ -108,6 +109,8 @@ export class ClusterReset extends AuthenticatedAction {
 
     await SetupStep.update({ complete: false }, { where: { complete: true } });
 
+    await cache.clear();
+
     await Log.create({
       topic: "cluster",
       verb: "reset",
@@ -117,6 +120,23 @@ export class ClusterReset extends AuthenticatedAction {
     });
 
     response.counts = counts;
+    response.success = true;
+  }
+}
+
+export class ClusterClearCache extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "cluster:clearCache";
+    this.description = "clear the cache";
+    this.outputExample = {};
+    this.permission = { topic: "app", mode: "write" }; // TODO: do we need more elaborate checks?
+    this.inputs = {};
+  }
+
+  async run({ response }) {
+    response.success = false;
+    cache.clear();
     response.success = true;
   }
 }

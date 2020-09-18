@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
+import { api, cache, specHelper } from "actionhero";
 import { Log } from "../../src/models/Log";
 import { App } from "../../src/models/App";
 import { SetupStep } from "../../src";
@@ -15,7 +15,10 @@ describe("actions/cluster", () => {
     await helper.shutdown(actionhero);
   });
 
-  describe("cluster:destroy", () => {
+  describe("cluster", () => {
+    let connection;
+    let csrfToken;
+
     beforeAll(async () => {
       await helper.factories.profilePropertyRules();
       await specHelper.runAction("team:initialize", {
@@ -26,23 +29,38 @@ describe("actions/cluster", () => {
       });
     });
 
-    describe("administrator signed in", () => {
-      let connection;
-      let csrfToken;
+    beforeAll(async () => {
+      connection = await specHelper.buildConnection();
+      connection.params = {
+        email: "mario@example.com",
+        password: "P@ssw0rd!",
+      };
+      const sessionResponse = await specHelper.runAction(
+        "session:create",
+        connection
+      );
+      csrfToken = sessionResponse.csrfToken;
+    });
 
-      beforeAll(async () => {
-        connection = await specHelper.buildConnection();
-        connection.params = {
-          email: "mario@example.com",
-          password: "P@ssw0rd!",
-        };
-        const sessionResponse = await specHelper.runAction(
-          "session:create",
+    describe("cluster:clearCache", () => {
+      test("the cache can be cleared", async () => {
+        await cache.save("testKey", { k: "v" });
+        const responseA = await cache.load("testKey");
+        expect(responseA.value).toEqual({ k: "v" });
+
+        connection.params = { csrfToken };
+        const { success, error } = await specHelper.runAction(
+          "cluster:clearCache",
           connection
         );
-        csrfToken = sessionResponse.csrfToken;
-      });
+        expect(error).toBeFalsy();
+        expect(success).toBe(true);
 
+        await expect(cache.load("testKey")).rejects.toThrow(/not found/);
+      });
+    });
+
+    describe("cluster:destroy", () => {
       test("the action will delete the data from most models", async () => {
         connection.params = { csrfToken };
         const { error, success, counts } = await specHelper.runAction(
