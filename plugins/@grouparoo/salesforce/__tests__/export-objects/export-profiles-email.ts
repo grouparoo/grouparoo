@@ -161,7 +161,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
   }, 1000 * 30);
 
   afterAll(async () => {
-    // TODO: await cleanUp(true);
+    await cleanUp(true);
   }, 1000 * 30);
 
   test("can create profile on Salesforce", async () => {
@@ -584,7 +584,6 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     });
 
     expect(errors).toBeNull();
-
     expect(success).toBe(true);
 
     let members;
@@ -595,18 +594,58 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(members.sort()).toEqual([]);
   });
 
-  test.skip("can handle boolean error", async () => {
+  test("can ignore case for an email address", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid2,
-          oldProfileProperties: { Email: email2, FirstName: "Maria" },
+          profileGuid: guid1,
+          oldProfileProperties: {
+            Email: email1.toUpperCase(),
+            LastName: "Smith",
+          },
           newProfileProperties: {
-            Email: email2,
-            FirstName: "Maria",
-            boolean_field: "other",
+            Email: email1.toUpperCase(),
+            LastName: "MACRON",
+          },
+          oldGroups: [group1],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    let user;
+    expect(errors).toBeNull();
+    expect(success).toBe(true);
+    user = await getUser(userId1);
+    expect(user.Email).toBe(email1);
+    expect(user.LastName).toBe("MACRON");
+
+    let members;
+    members = await getGroupMemberIds(groupId1);
+    expect(members.sort()).toEqual([userId2].sort());
+
+    members = await getGroupMemberIds(groupId2);
+    expect(members.sort()).toEqual([]);
+  });
+
+  test("can set back to lowercase", async () => {
+    const { success, errors } = await exportBatch({
+      appOptions,
+      destinationOptions,
+      exports: [
+        {
+          profileGuid: guid1,
+          oldProfileProperties: {
+            Email: email1.toUpperCase(),
+            LastName: "MACRON",
+          },
+          newProfileProperties: {
+            Email: email1,
+            LastName: "Smith",
           },
           oldGroups: [],
           newGroups: [],
@@ -617,38 +656,141 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     });
 
     let user;
-    expect(success).toBe(false);
-    expect(errors).not.toBeNull();
-    expect(errors.length).toEqual(1);
-    const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
-    expect(error.message).toContain("boolean");
-
-    user = await getUser(userId2);
-    expect(user.email).toEqual(email2);
-    expect(user.firstName).toEqual("Maria");
-    expect(user.textarea_field).toEqual(null);
-    expect(user.boolean_field).toEqual(false);
-    expect(user.email_field).toEqual(null);
-    expect(user.integer_field).toEqual(null);
-    expect(user.float_field).toEqual(null);
-    expect(user.datetime_field).toEqual(null);
-    expect(user.score_field).toEqual(null);
-    expect(user.percent_field).toEqual(null);
+    expect(errors).toBeNull();
+    expect(success).toBe(true);
+    user = await getUser(userId1);
+    expect(user.Email).toBe(email1);
+    expect(user.LastName).toBe("Smith");
   });
 
-  test.skip("can handle email error", async () => {
+  test("can handle unknown field", async () => {
+    const { success, errors } = await exportBatch({
+      appOptions,
+      destinationOptions,
+      exports: [
+        {
+          profileGuid: guid1,
+          oldProfileProperties: {
+            Email: email1,
+            LastName: "Smith",
+          },
+          newProfileProperties: {
+            Email: email1,
+            LastName: "Simpson",
+            unknown_field: "here",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    let user;
+    expect(errors).toBeNull();
+    expect(success).toBe(true);
+    user = await getUser(userId1);
+    expect(user.Email).toBe(email1);
+    expect(user.LastName).toBe("Simpson");
+  });
+
+  test("can not (boo!) handle checkbox error", async () => {
+    try {
+      const { success, errors } = await exportBatch({
+        appOptions,
+        destinationOptions,
+        exports: [
+          {
+            profileGuid: guid2,
+            oldProfileProperties: { Email: email2, LastName: "Jones" },
+            newProfileProperties: {
+              Email: email2,
+              lastName: "Jones",
+              checkbox_field__c: "other",
+            },
+            oldGroups: [],
+            newGroups: [],
+            toDelete: false,
+            profile: null,
+          },
+        ],
+      });
+    } catch (error) {
+      console.log("ERR!", error.message);
+      expect(error.message).toContain("boolean");
+    }
+
+    let user;
+    user = await getUser(userId2);
+    expect(user.checkbox_field__c).toEqual(false); // still defaulted
+    expect(user.datetime_field__c).toEqual(null);
+    expect(user.number_field__c).toEqual(null);
+    expect(user.percent_field__c).toEqual(null);
+    expect(user.email_field__c).toEqual(null);
+    expect(user.phone_field__c).toEqual(null);
+    expect(user.picklist_field__c).toEqual(null);
+    expect(user.text_field__c).toEqual(null);
+    expect(user.textarea_field__c).toEqual(null);
+    expect(user.url_field__c).toEqual(null);
+    expect(user.Email).toEqual(email2);
+    expect(user.LastName).toEqual("Jones");
+  });
+
+  test("can not (boo!) handle datetime error", async () => {
+    try {
+      const { success, errors } = await exportBatch({
+        appOptions,
+        destinationOptions,
+        exports: [
+          {
+            profileGuid: guid2,
+            oldProfileProperties: { Email: email2, LastName: "Jones" },
+            newProfileProperties: {
+              Email: email2,
+              lastName: "Jones",
+              datetime_field__c: "yesterday",
+            },
+            oldGroups: [],
+            newGroups: [],
+            toDelete: false,
+            profile: null,
+          },
+        ],
+      });
+    } catch (error) {
+      console.log("ERR!", error.message);
+      expect(error.message).toContain("datetime");
+    }
+
+    let user;
+    user = await getUser(userId2);
+    expect(user.checkbox_field__c).toEqual(false); // still defaulted
+    expect(user.datetime_field__c).toEqual(null);
+    expect(user.number_field__c).toEqual(null);
+    expect(user.percent_field__c).toEqual(null);
+    expect(user.email_field__c).toEqual(null);
+    expect(user.phone_field__c).toEqual(null);
+    expect(user.picklist_field__c).toEqual(null);
+    expect(user.text_field__c).toEqual(null);
+    expect(user.textarea_field__c).toEqual(null);
+    expect(user.url_field__c).toEqual(null);
+    expect(user.Email).toEqual(email2);
+    expect(user.LastName).toEqual("Jones");
+  });
+
+  test("can handle email error", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
       destinationOptions,
       exports: [
         {
           profileGuid: guid2,
-          oldProfileProperties: { Email: email2, FirstName: "Maria" },
+          oldProfileProperties: { Email: email2, LastName: "Jones" },
           newProfileProperties: {
             Email: email2,
-            FirstName: "Maria",
-            email_field: "bademail",
+            lastName: "Jones",
+            email_field__c: "badmail",
           },
           oldGroups: [],
           newGroups: [],
@@ -667,30 +809,32 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(error.message).toContain("email");
 
     user = await getUser(userId2);
-    expect(user.email).toEqual(email2);
-    expect(user.firstName).toEqual("Maria");
-    expect(user.textarea_field).toEqual(null);
-    expect(user.boolean_field).toEqual(false);
-    expect(user.email_field).toEqual(null);
-    expect(user.integer_field).toEqual(null);
-    expect(user.float_field).toEqual(null);
-    expect(user.datetime_field).toEqual(null);
-    expect(user.score_field).toEqual(null);
-    expect(user.percent_field).toEqual(null);
+    expect(user.checkbox_field__c).toEqual(false);
+    expect(user.datetime_field__c).toEqual(null);
+    expect(user.number_field__c).toEqual(null);
+    expect(user.percent_field__c).toEqual(null);
+    expect(user.email_field__c).toEqual(null);
+    expect(user.phone_field__c).toEqual(null);
+    expect(user.picklist_field__c).toEqual(null);
+    expect(user.text_field__c).toEqual(null);
+    expect(user.textarea_field__c).toEqual(null);
+    expect(user.url_field__c).toEqual(null);
+    expect(user.Email).toEqual(email2);
+    expect(user.LastName).toEqual("Jones");
   });
 
-  test.skip("can handle integer error", async () => {
+  test("can handle picklist error", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
       destinationOptions,
       exports: [
         {
           profileGuid: guid2,
-          oldProfileProperties: { Email: email2, FirstName: "Maria" },
+          oldProfileProperties: { Email: email2, LastName: "Jones" },
           newProfileProperties: {
             Email: email2,
-            FirstName: "Maria",
-            integer_field: 14.1,
+            lastName: "Jones",
+            picklist_field__c: "Other", // not in list!
           },
           oldGroups: [],
           newGroups: [],
@@ -706,148 +850,24 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(errors.length).toEqual(1);
     const error = errors[0];
     expect(error.profileGuid).toEqual(guid2);
-    expect(error.message).toContain("integer");
+    expect(error.message).toContain("picklist");
 
     user = await getUser(userId2);
-    expect(user.email).toEqual(email2);
-    expect(user.firstName).toEqual("Maria");
-    expect(user.textarea_field).toEqual(null);
-    expect(user.boolean_field).toEqual(false);
-    expect(user.email_field).toEqual(null);
-    expect(user.integer_field).toEqual(null);
-    expect(user.float_field).toEqual(null);
-    expect(user.datetime_field).toEqual(null);
-    expect(user.score_field).toEqual(null);
-    expect(user.percent_field).toEqual(null);
+    expect(user.checkbox_field__c).toEqual(false);
+    expect(user.datetime_field__c).toEqual(null);
+    expect(user.number_field__c).toEqual(null);
+    expect(user.percent_field__c).toEqual(null);
+    expect(user.email_field__c).toEqual(null);
+    expect(user.phone_field__c).toEqual(null);
+    expect(user.picklist_field__c).toEqual(null);
+    expect(user.text_field__c).toEqual(null);
+    expect(user.textarea_field__c).toEqual(null);
+    expect(user.url_field__c).toEqual(null);
+    expect(user.Email).toEqual(email2);
+    expect(user.LastName).toEqual("Jones");
   });
 
-  test.skip("can handle float error", async () => {
-    const { success, errors } = await exportBatch({
-      appOptions,
-      destinationOptions,
-      exports: [
-        {
-          profileGuid: guid2,
-          oldProfileProperties: { Email: email2, FirstName: "Maria" },
-          newProfileProperties: {
-            Email: email2,
-            FirstName: "Maria",
-            float_field: "14c",
-          },
-          oldGroups: [],
-          newGroups: [],
-          toDelete: false,
-          profile: null,
-        },
-      ],
-    });
-
-    let user;
-    expect(success).toBe(false);
-    expect(errors).not.toBeNull();
-    expect(errors.length).toEqual(1);
-    const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
-    expect(error.message).toContain("float");
-
-    user = await getUser(userId2);
-    expect(user.email).toEqual(email2);
-    expect(user.firstName).toEqual("Maria");
-    expect(user.textarea_field).toEqual(null);
-    expect(user.boolean_field).toEqual(false);
-    expect(user.email_field).toEqual(null);
-    expect(user.integer_field).toEqual(null);
-    expect(user.float_field).toEqual(null);
-    expect(user.datetime_field).toEqual(null);
-    expect(user.score_field).toEqual(null);
-    expect(user.percent_field).toEqual(null);
-  });
-
-  test.skip("can handle datetime error", async () => {
-    const { success, errors } = await exportBatch({
-      appOptions,
-      destinationOptions,
-      exports: [
-        {
-          profileGuid: guid2,
-          oldProfileProperties: { Email: email2, FirstName: "Maria" },
-          newProfileProperties: {
-            Email: email2,
-            FirstName: "Maria",
-            datetime_field: "yesterday",
-          },
-          oldGroups: [],
-          newGroups: [],
-          toDelete: false,
-          profile: null,
-        },
-      ],
-    });
-
-    let user;
-    expect(success).toBe(false);
-    expect(errors).not.toBeNull();
-    expect(errors.length).toEqual(1);
-    const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
-    expect(error.message).toContain("datetime");
-
-    user = await getUser(userId2);
-    expect(user.email).toEqual(email2);
-    expect(user.firstName).toEqual("Maria");
-    expect(user.textarea_field).toEqual(null);
-    expect(user.boolean_field).toEqual(false);
-    expect(user.email_field).toEqual(null);
-    expect(user.integer_field).toEqual(null);
-    expect(user.float_field).toEqual(null);
-    expect(user.datetime_field).toEqual(null);
-    expect(user.score_field).toEqual(null);
-    expect(user.percent_field).toEqual(null);
-  });
-
-  test.skip("can handle percent error", async () => {
-    const { success, errors } = await exportBatch({
-      appOptions,
-      destinationOptions,
-      exports: [
-        {
-          profileGuid: guid2,
-          oldProfileProperties: { Email: email2, FirstName: "Maria" },
-          newProfileProperties: {
-            Email: email2,
-            FirstName: "Maria",
-            percent_field: "100%", // should be integer
-          },
-          oldGroups: [],
-          newGroups: [],
-          toDelete: false,
-          profile: null,
-        },
-      ],
-    });
-
-    let user;
-    expect(success).toBe(false);
-    expect(errors).not.toBeNull();
-    expect(errors.length).toEqual(1);
-    const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
-    expect(error.message).toContain("percent");
-
-    user = await getUser(userId2);
-    expect(user.email).toEqual(email2);
-    expect(user.firstName).toEqual("Maria");
-    expect(user.textarea_field).toEqual(null);
-    expect(user.boolean_field).toEqual(false);
-    expect(user.email_field).toEqual(null);
-    expect(user.integer_field).toEqual(null);
-    expect(user.float_field).toEqual(null);
-    expect(user.datetime_field).toEqual(null);
-    expect(user.score_field).toEqual(null);
-    expect(user.percent_field).toEqual(null);
-  });
-
-  test.skip("can handle some of them working, but not others", async () => {
+  test("can handle some of them working, but not others", async () => {
     userId3 = await findId(email3);
     expect(userId3).toBe(null);
 
@@ -859,13 +879,11 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
           profileGuid: guid1,
           oldProfileProperties: {
             Email: email1,
-            FirstName: "Brian",
-            lastName: "Test",
+            LastName: "Simpson",
           },
           newProfileProperties: {
             Email: email1,
-            FirstName: "Sam",
-            lastName: "Test",
+            LastName: "Test",
           },
           oldGroups: [],
           newGroups: [],
@@ -874,11 +892,14 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
         },
         {
           profileGuid: guid2,
-          oldProfileProperties: { Email: email2, FirstName: "Maria" },
+          oldProfileProperties: {
+            Email: email2,
+            LastName: "Jones",
+          },
           newProfileProperties: {
             Email: email2,
-            FirstName: "William",
-            email_field: "bademail",
+            LastName: "Simpson",
+            email_field__c: "badone",
           },
           oldGroups: [],
           newGroups: [],
@@ -890,8 +911,8 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
           oldProfileProperties: {},
           newProfileProperties: {
             Email: email3,
-            FirstName: "Liz",
-            email_field: "valid@grouparoo.com",
+            LastName: "King",
+            email_field__c: "valid@grouparoo.com",
           },
           oldGroups: [],
           newGroups: [],
@@ -910,21 +931,20 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(error.message).toContain("email");
 
     user = await getUser(userId1);
-    expect(user.email).toEqual(email1);
-    expect(user.firstName).toEqual("Sam"); // updated
-    expect(user.lastName).toEqual("Test");
-    expect(user.email_field).toEqual(null);
+    expect(user.Email).toEqual(email1);
+    expect(user.LastName).toEqual("Test");
+    expect(user.email_field__c).toEqual(null);
 
     user = await getUser(userId2);
-    expect(user.email).toEqual(email2);
-    expect(user.firstName).toEqual("Maria"); // not updated
-    expect(user.email_field).toEqual(null);
+    expect(user.Email).toEqual(email2);
+    expect(user.LastName).toEqual("Jones"); // not updated
+    expect(user.email_field__c).toEqual(null);
 
     userId3 = await findId(email3);
     expect(userId3).toBeTruthy();
     user = await getUser(userId3);
-    expect(user.email).toEqual(email3);
-    expect(user.firstName).toEqual("Liz"); // created
-    expect(user.email_field).toEqual("valid@grouparoo.com");
+    expect(user.Email).toEqual(email3);
+    expect(user.LastName).toEqual("King"); // created
+    expect(user.email_field__c).toEqual("valid@grouparoo.com");
   });
 });

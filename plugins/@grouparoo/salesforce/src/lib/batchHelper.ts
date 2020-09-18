@@ -22,6 +22,7 @@ export interface BatchExport extends ExportedProfile {
   removedGroups?: string[];
   action?: BatchAction;
   result?: any; // result from find
+  data?: any; // can stick other things on here
   processed?: boolean;
   error?: any;
 }
@@ -88,17 +89,25 @@ export const exportProfilesInBatch: ProfileBatchProfilesPluginMethod = async (
   return exportOneBatch(exports, config, functions);
 };
 
+export interface GetForeignKeyMapFunction {
+  (key: string): any;
+}
+export interface SetForeignKeyMapFunction {
+  (key: string, value: any): void;
+}
 export interface BatchFunctions {
   // return an object that you can connect with
   getClient: {
     (argument: { config: BatchConfig }): Promise<any>;
   };
-  // fetch using the keys in fkMap to set destinationId and result on BatchExports in fkMap
+  // fetch using the keys to set destinationId and result on BatchExports
+  // use the getByForeignKey to lookup results
   findAndSetDestinationIds: {
     (argument: {
       client: any;
       users: BatchExport[];
-      fkMap: ForeignKeyMap; // has newValue and oldValue of foreignKey
+      foreignKeys: string[]; // has newValue and oldValue of foreignKey
+      getByForeignKey: GetForeignKeyMapFunction;
       config: BatchConfig;
     }): Promise<void>;
   };
@@ -108,7 +117,7 @@ export interface BatchFunctions {
       client: any;
       users: BatchExport[];
       destIdMap: DestinationIdMap;
-      fkMap: ForeignKeyMap;
+      getByForeignKey: GetForeignKeyMapFunction;
       config: BatchConfig;
     }): Promise<void>;
   };
@@ -118,7 +127,7 @@ export interface BatchFunctions {
       client: any;
       users: BatchExport[];
       destIdMap: DestinationIdMap;
-      fkMap: ForeignKeyMap;
+      getByForeignKey: GetForeignKeyMapFunction;
       config: BatchConfig;
     }): Promise<void>;
   };
@@ -127,7 +136,7 @@ export interface BatchFunctions {
     (argument: {
       client: any;
       users: BatchExport[];
-      fkMap: ForeignKeyMap;
+      getByForeignKey: GetForeignKeyMapFunction;
       config: BatchConfig;
     }): Promise<void>;
   };
@@ -326,7 +335,11 @@ async function createByForeignKey(
       currentCount = 0;
     }
 
-    currentFkMap[exportedProfile.foreignKeyValue] = exportedProfile;
+    setForeignKey(
+      currentFkMap,
+      exportedProfile.foreignKeyValue,
+      exportedProfile
+    );
     currentCount++;
   }
 
@@ -336,10 +349,12 @@ async function createByForeignKey(
 
   for (const { fkMap } of batches) {
     const users = Object.values(fkMap);
+    const getByForeignKey = functionToGetForeignKey(fkMap);
+
     await functions.createByForeignKeyAndSetDestinationIds({
       client,
       users,
-      fkMap,
+      getByForeignKey,
       config,
     });
 
@@ -379,7 +394,11 @@ async function updateByIds(
       currentDeskIdMap = {};
     }
 
-    currentFkMap[exportedProfile.foreignKeyValue] = exportedProfile;
+    setForeignKey(
+      currentFkMap,
+      exportedProfile.foreignKeyValue,
+      exportedProfile
+    );
     currentDeskIdMap[exportedProfile.destinationId] = exportedProfile;
     currentCount++;
   }
@@ -390,12 +409,13 @@ async function updateByIds(
 
   for (const { fkMap, destIdMap } of batches) {
     const users = Object.values(destIdMap);
+    const getByForeignKey = functionToGetForeignKey(fkMap);
 
     await functions.updateByDestinationIds({
       client,
       users,
       destIdMap,
-      fkMap,
+      getByForeignKey,
       config,
     });
 
@@ -438,7 +458,11 @@ async function deleteExports(
       currentCount = 0;
     }
 
-    currentFkMap[exportedProfile.foreignKeyValue] = exportedProfile;
+    setForeignKey(
+      currentFkMap,
+      exportedProfile.foreignKeyValue,
+      exportedProfile
+    );
     currentDeskIdMap[exportedProfile.destinationId] = exportedProfile;
     currentCount++;
   }
@@ -449,12 +473,13 @@ async function deleteExports(
 
   for (const { fkMap, destIdMap } of batches) {
     const users = Object.values(destIdMap);
+    const getByForeignKey = functionToGetForeignKey(fkMap);
 
     await functions.deleteByDestinationIds({
       client,
       users,
       destIdMap,
-      fkMap,
+      getByForeignKey,
       config,
     });
 
@@ -472,11 +497,13 @@ async function lookupDestinationIds(
 ) {
   let currentFkMap: ForeignKeyMap = {};
   let currentUsers: BatchExport[] = [];
+  let currentForeignKeys: string[] = [];
   let currentCount = 0;
 
   const batches: Array<{
     fkMap: ForeignKeyMap;
     users: BatchExport[];
+    foreignKeys: string[];
   }> = [];
 
   for (const exportedProfile of exports) {
@@ -488,27 +515,45 @@ async function lookupDestinationIds(
 
     const maxSize = oldForeignKeyValue ? config.findSize - 1 : config.findSize;
     if (currentCount > maxSize) {
-      batches.push({ fkMap: currentFkMap, users: currentUsers });
+      batches.push({
+        fkMap: currentFkMap,
+        users: currentUsers,
+        foreignKeys: currentForeignKeys,
+      });
       currentFkMap = {};
       currentUsers = [];
+      currentForeignKeys = [];
       currentCount = 0;
     }
 
     currentUsers.push(exportedProfile);
-    currentFkMap[foreignKeyValue] = exportedProfile;
+    setForeignKey(currentFkMap, foreignKeyValue, exportedProfile);
+    currentForeignKeys.push(foreignKeyValue);
     currentCount++;
     if (oldForeignKeyValue) {
-      currentFkMap[oldForeignKeyValue] = exportedProfile;
+      setForeignKey(currentFkMap, oldForeignKeyValue, exportedProfile);
+      currentForeignKeys.push(oldForeignKeyValue);
       currentCount++;
     }
   }
 
   if (currentCount > 0) {
-    batches.push({ fkMap: currentFkMap, users: currentUsers });
+    batches.push({
+      fkMap: currentFkMap,
+      users: currentUsers,
+      foreignKeys: currentForeignKeys,
+    });
   }
 
-  for (const { fkMap, users } of batches) {
-    await functions.findAndSetDestinationIds({ client, users, fkMap, config });
+  for (const { fkMap, users, foreignKeys } of batches) {
+    const getByForeignKey = functionToGetForeignKey(fkMap);
+    await functions.findAndSetDestinationIds({
+      client,
+      users,
+      foreignKeys,
+      getByForeignKey,
+      config,
+    });
   }
 }
 
@@ -537,6 +582,27 @@ function setGroupNames(
 
   exportedProfile.addedGroups = added;
   exportedProfile.removedGroups = removed;
+}
+
+function fixupKey(key: string): string {
+  key = (key || "").toString().trim().toLowerCase();
+  if (key.length === 0) {
+    throw new Error(`blank key given`);
+  }
+  return key;
+}
+function setForeignKey(fkMap: ForeignKeyMap, key: string, value: BatchExport) {
+  key = fixupKey(key);
+  fkMap[key] = value;
+}
+function functionToGetForeignKey(
+  fkMap: ForeignKeyMap
+): GetForeignKeyMapFunction {
+  const func: GetForeignKeyMapFunction = function (key) {
+    key = fixupKey(key);
+    return fkMap[key];
+  };
+  return func;
 }
 
 // returns what to do for each case

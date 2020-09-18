@@ -15,19 +15,19 @@ const getClient: BatchFunctions["getClient"] = async ({ config }) => {
   return connect(config.appOptions);
 };
 
-// fetch using the keys in fkMap to set destinationId and result on BatchExports in fkMap
-// fkMap has newValue and oldValue of foreignKey
+// fetch using the keys to set destinationId and result on BatchExports
+// use the getByForeignKey to lookup results
 const findAndSetDestinationIds: BatchFunctions["findAndSetDestinationIds"] = async ({
   client,
-  fkMap,
+  foreignKeys,
+  getByForeignKey,
   config,
 }) => {
   // search for these using the foreign key
   const { profileObject, profileMatchField } = config.data;
-  const filterValues = Object.keys(fkMap);
   const idType = "Id";
 
-  const query = { [profileMatchField]: filterValues };
+  const query = { [profileMatchField]: foreignKeys };
   const fields = [idType, profileMatchField];
   console.log("sending query", query, fields);
   const records = await client
@@ -42,7 +42,7 @@ const findAndSetDestinationIds: BatchFunctions["findAndSetDestinationIds"] = asy
       config,
     });
     const id = record[idType];
-    const found = fkMap[value];
+    const found = getByForeignKey(value);
     if (found) {
       found.destinationId = id;
       found.result = record;
@@ -92,15 +92,15 @@ function buildPayload(exportedProfile: BatchExport, config: BatchConfig): any {
     }
 
     const value = newProfileProperties[key]; // includes clearing out removed ones (by setting to null)
-    if (!value) {
-      const field = config.data.profileFields[key];
-      if (field) {
+    const field = config.data.profileFields[key];
+    if (field) {
+      if (!value) {
         user[key] = field.defaultValue;
       } else {
-        // otherwise it's no longer a field (got deleted from Salesforce), let it go
+        user[key] = formatVar(value);
       }
     } else {
-      user[key] = formatVar(value);
+      // otherwise, it's no longer a field (got deleted from Salesforce): let it go
     }
   }
 
@@ -166,7 +166,7 @@ function processResults(results, users, type: ResultType) {
     // I'm assuming these are in the same order. That seems like the only option.
     const user = users[i];
     const result = results[i];
-    //console.log("result", result);
+    console.log("result", result);
     try {
       const id = processResult(result, user.profileGuid, type);
       if (type === ResultType.USER) {
@@ -197,6 +197,7 @@ const updateByDestinationIds: BatchFunctions["updateByDestinationIds"] = async (
 
   console.log("sending update", payload);
   const results = await client.sobject(profileObject).update(payload);
+  console.log("update results!");
   processResults(results, users, ResultType.USER);
 };
 
