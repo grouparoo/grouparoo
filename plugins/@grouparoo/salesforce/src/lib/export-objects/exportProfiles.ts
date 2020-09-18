@@ -1,4 +1,7 @@
-import { exportSalesforceBatch, SalesforceModel } from "../salesforceExporter";
+import {
+  exportSalesforceBatch,
+  SalesforceModel,
+} from "../export/salesforceExporter";
 import { buildBatchExports, BatchExport } from "./../batchHelper";
 import {
   ExportProfilesPluginMethod,

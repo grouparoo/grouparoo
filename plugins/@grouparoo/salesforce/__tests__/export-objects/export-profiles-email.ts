@@ -3,7 +3,7 @@ process.chdir(`${__dirname}/../../../../../core/api`);
 
 import path from "path";
 
-import { exportBatch } from "../../src/lib/export-sales-cloud/exportProfiles";
+import { exportBatch } from "../../src/lib/export-objects/exportProfiles";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
@@ -12,13 +12,13 @@ const nockFile = path.join(
   __dirname,
   "../",
   "fixtures",
-  "export-sales-cloud",
+  "export-objects",
   "export-profiles-email.js"
 );
 
 // these comments to use nock
 // const newNock = false;
-// require("./../fixtures/export-sales-cloud/export-profiles-email");
+// require("./../fixtures/export-objects/export-profiles-email");
 // or these to make it true
 const newNock = true;
 helper.recordNock(nockFile, updater);

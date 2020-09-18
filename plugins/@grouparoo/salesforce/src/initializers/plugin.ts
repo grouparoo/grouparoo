@@ -4,10 +4,10 @@ import { plugin } from "@grouparoo/core";
 import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
 
-import { exportProfiles } from "../lib/export-sales-cloud/exportProfiles";
-import { destinationOptions } from "../lib/export-sales-cloud/destinationOptions";
-import { destinationMappingOptions } from "../lib/export-sales-cloud/destinationMappingOptions";
-import { exportArrayProperties } from "../lib/export-sales-cloud/exportArrayProperties";
+import { exportProfiles } from "../lib/export-objects/exportProfiles";
+import { destinationOptions } from "../lib/export-objects/destinationOptions";
+import { destinationMappingOptions } from "../lib/export-objects/destinationMappingOptions";
+import { exportArrayProperties } from "../lib/export-objects/exportArrayProperties";
 
 const packageJSON = require("./../../package.json");
 
@@ -47,9 +47,9 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "salesforce-sales-cloud-export",
+          name: "salesforce-objects-export",
           direction: "export",
-          description: "Export profiles to a salesforce sales cloud account",
+          description: "Export profiles to a Salesforce sales cloud objects",
           app: "salesforce",
           options: [
             {

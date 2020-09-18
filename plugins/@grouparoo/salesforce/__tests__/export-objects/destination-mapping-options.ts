@@ -3,20 +3,20 @@ process.chdir(`${__dirname}/../../../../../core/api`);
 
 import path from "path";
 
-import { destinationMappingOptions } from "../../src/lib/export-sales-cloud/destinationMappingOptions";
+import { destinationMappingOptions } from "../../src/lib/export-objects/destinationMappingOptions";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "@grouparoo/core/api/__tests__/utils/specHelper";
 const nockFile = path.join(
   __dirname,
   "../",
   "fixtures",
-  "export-sales-cloud",
+  "export-objects",
   "destination-mapping-options.js"
 );
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-sales-cloud/destination-mapping-options");
+require("./../fixtures/export-objects/destination-mapping-options");
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);

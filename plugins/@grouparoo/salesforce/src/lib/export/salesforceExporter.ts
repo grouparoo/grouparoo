@@ -1,11 +1,11 @@
-import { connect } from "./connect";
-import { getFieldMap } from "./objects";
+import { connect } from "../connect";
+import { getFieldMap } from "../objects";
 import {
   exportProfilesInBatch,
   BatchFunctions,
   BatchConfig,
   BatchExport,
-} from "./batchHelper";
+} from "../batchHelper";
 import {
   ErrorWithProfileGuid,
   SimpleAppOptions,
