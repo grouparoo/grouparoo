@@ -11,19 +11,19 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
   destinationOptions,
 }) => {
   const conn = await connect(appOptions);
-  const { profileObject, profileFieldMatch } = destinationOptions;
+  const { profileObject, profileMatchField, groupObject } = destinationOptions;
   const objectInfo = await describeObject(conn, profileObject, true);
-  const { known, required } = await getFields(objectInfo, profileFieldMatch);
+  const { known, required } = await getFields(objectInfo, profileMatchField);
 
   return {
     labels: {
       profilePropertyRule: {
-        singular: "Salesforce Field",
-        plural: "Salesforce Fields",
+        singular: `Salesforce ${profileObject} Field`,
+        plural: `Salesforce ${profileObject} Fields`,
       },
       group: {
-        singular: "Salesforce Group",
-        plural: "Salesforce Groups",
+        singular: `Salesforce ${groupObject} Object`,
+        plural: `Salesforce ${groupObject} Objects`,
       },
     },
     profilePropertyRules: {
@@ -88,7 +88,7 @@ const isFieldImportant = function (field: any): Boolean {
 
 export const getFields = async (
   objectInfo: any,
-  profileFieldMatch
+  profileMatchField
 ): Promise<{
   required: Array<{
     key: string;
@@ -110,7 +110,7 @@ export const getFields = async (
     if (!type) {
       continue;
     }
-    if (key === profileFieldMatch) {
+    if (key === profileMatchField) {
       matchField = { key, type };
       continue;
     }

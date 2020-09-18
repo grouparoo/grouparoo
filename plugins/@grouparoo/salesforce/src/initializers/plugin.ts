@@ -56,13 +56,43 @@ export class Plugins extends Initializer {
               key: "profileObject",
               required: true,
               description:
-                "What object in Salesforce maps to a Grouparoo profile?",
+                "Which object in Salesforce represents a Grouparoo profile?",
             },
             {
-              key: "profileFieldMatch",
+              key: "profileMatchField",
               required: true,
               description:
-                "What field in the Object represents how to match Grouparoo profiles?",
+                "Which field in the profile Object is used to match Grouparoo profiles?",
+            },
+            {
+              key: "groupObject",
+              required: true,
+              description:
+                "Which object in Salesforce represents a Grouparoo group?",
+            },
+            {
+              key: "groupNameField",
+              required: true,
+              description:
+                "Which field in the group Object is used for the name of a Grouparoo group?",
+            },
+            {
+              key: "membershipObject",
+              required: true,
+              description:
+                "Which object in Salesforce maps the profile object to the group object?",
+            },
+            {
+              key: "membershipProfileField",
+              required: true,
+              description:
+                "Which field in the membership Object is the reference to the profile?",
+            },
+            {
+              key: "membershipGroupField",
+              required: true,
+              description:
+                "Which field in the membership Object is the reference to the group?",
             },
           ],
           methods: {

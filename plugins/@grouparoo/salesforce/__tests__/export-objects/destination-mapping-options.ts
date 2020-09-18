@@ -15,11 +15,11 @@ const nockFile = path.join(
 );
 
 // these comments to use nock
-const newNock = false;
-require("./../fixtures/export-objects/destination-mapping-options");
+// const newNock = false;
+// require("./../fixtures/export-objects/destination-mapping-options");
 // or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
+const newNock = true;
+helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 
@@ -27,7 +27,7 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
   test("can load destinationMappingOptions from Contact Email", async () => {
     const destinationOptions = {
       profileObject: "Contact",
-      profileFieldMatch: "Email",
+      profileMatchField: "Email",
     };
     const options = await destinationMappingOptions({
       appOptions,
@@ -66,7 +66,7 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
   test("can load destinationMappingOptions from Contact Id", async () => {
     const destinationOptions = {
       profileObject: "Contact",
-      profileFieldMatch: "Id",
+      profileMatchField: "Id",
     };
     const options = await destinationMappingOptions({
       appOptions,
@@ -106,7 +106,7 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
   test("can load destinationMappingOptions from Contact Custom", async () => {
     const destinationOptions = {
       profileObject: "Contact",
-      profileFieldMatch: "Custom_External_ID__c",
+      profileMatchField: "Custom_External_ID__c",
     };
     const options = await destinationMappingOptions({
       appOptions,

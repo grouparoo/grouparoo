@@ -27,12 +27,27 @@ export const exportBatch: MyBatchMethod = async ({
   destinationOptions,
   exports,
 }) => {
-  const objectType = destinationOptions.profileObject;
-  const fkType = destinationOptions.profileFieldMatch;
-  const model: SalesforceModel = { objectType, fkType };
+  const {
+    profileObject,
+    profileMatchField,
+    groupObject,
+    groupNameField,
+    membershipObject,
+    membershipProfileField,
+    membershipGroupField,
+  } = destinationOptions;
+
+  const model: SalesforceModel = {
+    profileObject,
+    profileMatchField,
+    groupObject,
+    groupNameField,
+    membershipObject,
+    membershipProfileField,
+    membershipGroupField,
+  };
   return exportSalesforceBatch({
     appOptions,
-    destinationOptions,
     exports,
     model,
   });

@@ -1,11 +1,10 @@
 import { cache } from "./cache";
+import { cacheKeyFromClient } from "./connect";
 
 export async function describeObject(conn, objectName, force = false) {
-  const { id, organizationId } = conn.userInfo;
-  const uniqKey = `salesforce:objects:${organizationId}:${objectName}:${id}`;
-
-  const cacheKey = `${uniqKey}:key`;
-  const lockKey = `${uniqKey}:lock`;
+  const uniqKey = cacheKeyFromClient(conn);
+  const cacheKey = `${uniqKey}:describe-${objectName}:key`;
+  const lockKey = `${uniqKey}:describe-${objectName}:lock`;
   const cacheDuration = 1000 * 60 * 30; // 30 minutes
   return cache({ cacheKey, lockKey, cacheDuration, force }, async () => {
     return conn.sobject(objectName).describe();

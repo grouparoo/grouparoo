@@ -14,12 +14,14 @@ const nockFile = path.join(
   "destination-options.js"
 );
 
+// TODO: lots of new options added
+
 // these comments to use nock
-const newNock = false;
-require("./../fixtures/export-objects/destination-options");
+// const newNock = false;
+// require("./../fixtures/export-objects/destination-options");
 // or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
+const newNock = true;
+helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 
@@ -41,7 +43,7 @@ describe("salesforce/sales-cloud/destinationOptions", () => {
     expect(options.indexOf("Contact")).toEqual(0);
     expect(options.indexOf("Lead")).toEqual(1);
 
-    option = result.profileFieldMatch;
+    option = result.profileMatchField;
     expect(option.type).toEqual("pending");
     expect(option.options).toEqual([]);
   });
@@ -63,7 +65,7 @@ describe("salesforce/sales-cloud/destinationOptions", () => {
     expect(options.indexOf("Contact")).toEqual(0);
     expect(options.indexOf("Lead")).toEqual(1);
 
-    option = result.profileFieldMatch;
+    option = result.profileMatchField;
     expect(option.type).toEqual("pending");
     expect(option.options).toEqual([]);
   });
@@ -85,16 +87,18 @@ describe("salesforce/sales-cloud/destinationOptions", () => {
     expect(options.indexOf("Contact")).toEqual(0);
     expect(options.indexOf("Lead")).toEqual(1);
 
-    option = result.profileFieldMatch;
-    expect(option.type).toEqual("list");
-    expect(option.options).toEqual(["Custom_External_ID__c", "Email", "Id"]);
+    option = result.profileMatchField;
+    expect(option.type).toEqual("typeahead");
+    expect(option.options).toEqual(
+      expect.arrayContaining(["Custom_External_ID__c", "Email"])
+    );
   });
 
   test("get same back when sent everything", async () => {
     const result = await destinationOptions({
       destinationOptions: {
         profileObject: "Contact",
-        profileFieldMatch: "Email",
+        profileMatchField: "Email",
       },
       appOptions,
       app: null,
@@ -110,16 +114,18 @@ describe("salesforce/sales-cloud/destinationOptions", () => {
     expect(options.indexOf("Contact")).toEqual(0);
     expect(options.indexOf("Lead")).toEqual(1);
 
-    option = result.profileFieldMatch;
-    expect(option.type).toEqual("list");
-    expect(option.options).toEqual(["Custom_External_ID__c", "Email", "Id"]);
+    option = result.profileMatchField;
+    expect(option.type).toEqual("typeahead");
+    expect(option.options).toEqual(
+      expect.arrayContaining(["Custom_External_ID__c", "Email"])
+    );
   });
 
   test("get same back when sends bad field", async () => {
     const result = await destinationOptions({
       destinationOptions: {
         profileObject: "Contact",
-        profileFieldMatch: "Junk",
+        profileMatchField: "Junk",
       },
       appOptions,
       app: null,
@@ -135,8 +141,11 @@ describe("salesforce/sales-cloud/destinationOptions", () => {
     expect(options.indexOf("Contact")).toEqual(0);
     expect(options.indexOf("Lead")).toEqual(1);
 
-    option = result.profileFieldMatch;
-    expect(option.type).toEqual("list");
-    expect(option.options).toEqual(["Custom_External_ID__c", "Email", "Id"]);
+    option = result.profileMatchField;
+    expect(option.type).toEqual("typeahead");
+
+    expect(option.options).toEqual(
+      expect.arrayContaining(["Custom_External_ID__c", "Email"])
+    );
   });
 });
