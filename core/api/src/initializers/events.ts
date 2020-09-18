@@ -1,5 +1,9 @@
+// Note: There are some imports here from './index rather than the Models themselves.
+// This is important to prevent a circular-dependency tree that won't load.
+// You can test this with `npm prepare && npm start` if you change the import statements back to the models.
+
 import { api, Initializer, log } from "actionhero";
-import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
+import { ProfilePropertyRule } from "../index";
 import { plugin } from "../modules/plugin";
 import { SourceOptionsMethodResponse } from "../classes/plugin";
 import { App } from "../models/App";
@@ -11,7 +15,7 @@ import {
   PluginConnectionProfilePropertyRuleOption,
   SourceFilterMethod,
   ProfilePropertyPluginMethod,
-} from "../classes/plugin";
+} from "./../index";
 
 export class Events extends Initializer {
   constructor() {
