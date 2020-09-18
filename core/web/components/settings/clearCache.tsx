@@ -32,7 +32,7 @@ export default function ClearCache(props) {
 
         <Card.Text>
           <Button onClick={resetCluster} size="sm" variant="outline-warning">
-            Reset Cluster
+            Clear Cache
           </Button>
         </Card.Text>
       </Card.Body>
