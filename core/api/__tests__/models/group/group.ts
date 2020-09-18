@@ -449,7 +449,7 @@ describe("models/group", () => {
         { key: "lastName", match: "Mario", operation: { op: "eq" } },
       ]);
       const response = await group.runAddGroupMembers(run);
-      expect(response).toBe(
+      expect(response).toEqual(
         expect.objectContaining({
           groupMembersCount: 2,
           nextOffset: 0,
