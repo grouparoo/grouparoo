@@ -52,7 +52,7 @@ export default function SetupStepsNavProgressBar({
   return (
     <div
       style={{
-        backgroundColor: "white",
+        backgroundColor: "var(--grouparoo-background-blue)",
         width: "100%",
         padding: 20,
         marginTop: 10,
