@@ -206,6 +206,7 @@ export namespace GroupOps {
     run: Run,
     limit = 1000,
     offset = 0,
+    highWaterMark: number = null,
     force = false,
     destinationGuid?: string
   ) {
@@ -216,9 +217,12 @@ export namespace GroupOps {
     try {
       if (group.type === "manual") {
         profiles = await group.$get("profiles", {
-          attributes: ["guid"],
+          attributes: ["guid", "createdAt"],
           limit,
           offset,
+          where: highWaterMark
+            ? { createdAt: { [Op.gte]: highWaterMark } }
+            : undefined,
           order: [["createdAt", "asc"]],
           transaction,
         });
@@ -226,7 +230,7 @@ export namespace GroupOps {
         const rules = await group.getRules();
         if (Object.keys(rules).length === 0) {
           await transaction.commit();
-          return 0;
+          return { groupMembersCount: 0, nextHighWaterMark: 0, nextOffset: 0 };
         }
 
         const { where, include } = await group._buildGroupMemberQueryParts(
@@ -234,8 +238,10 @@ export namespace GroupOps {
           group.matchType
         );
 
+        if (highWaterMark) where["createdAt"] = { [Op.gte]: highWaterMark };
+
         profiles = await ProfileMultipleAssociationShim.findAll({
-          attributes: ["guid"],
+          attributes: ["guid", "createdAt"],
           where,
           include,
           limit,
@@ -244,6 +250,21 @@ export namespace GroupOps {
           subQuery: false,
           transaction,
         });
+      }
+
+      let nextHighWaterMark = 0;
+      if (profiles.length > 0) {
+        nextHighWaterMark = profiles.reverse()[0].createdAt.getTime() + 1;
+      }
+
+      let nextOffset = 0;
+      if (
+        profiles.length > 1 &&
+        profiles[0].createdAt.getTime() ===
+          profiles.reverse()[0].createdAt.getTime()
+      ) {
+        nextOffset = offset + profiles.length;
+        nextHighWaterMark--;
       }
 
       for (const i in profiles) {
@@ -279,7 +300,7 @@ export namespace GroupOps {
 
       await transaction.commit();
       await group.update({ calculatedAt: new Date() });
-      return groupMembersCount;
+      return { groupMembersCount, nextHighWaterMark, nextOffset };
     } catch (error) {
       await transaction.rollback();
       throw error;
@@ -294,8 +315,6 @@ export namespace GroupOps {
     group: Group,
     run: Run,
     limit = 1000,
-    offset = 0,
-    force = false,
     destinationGuid?: string
   ) {
     let groupMembersCount = 0;

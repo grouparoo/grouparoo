@@ -17,6 +17,7 @@ export class RunGroup extends Task {
       runGuid: { required: false },
       method: { required: false },
       offset: { required: false },
+      highWaterMark: { required: false },
       limit: { required: false },
       force: { required: false },
       destinationGuid: { required: false },
@@ -35,6 +36,7 @@ export class RunGroup extends Task {
     const destinationGuid = params.destinationGuid;
     const method = params.method || "runAddGroupMembers";
     const offset: number = params.offset || 0;
+    const highWaterMark: number = params.highWaterMark || 0;
     const limit: number =
       params.limit ||
       parseInt(
@@ -64,61 +66,71 @@ export class RunGroup extends Task {
     await run.update({
       groupMemberLimit: limit,
       groupMemberOffset: offset,
+      groupHighWaterMark: highWaterMark,
       groupMethod: method,
     });
 
-    let memberCount = 0;
+    let groupMembersCount = 0;
+    let nextHighWaterMark = 0;
+    let nextOffset = 0;
+
     if (method === "runAddGroupMembers") {
-      memberCount = await group.runAddGroupMembers(
+      const response = await group.runAddGroupMembers(
         run,
         limit,
         offset,
+        highWaterMark,
         force,
         destinationGuid
       );
+
+      groupMembersCount = response.groupMembersCount;
+      nextHighWaterMark = response.nextHighWaterMark;
+      nextOffset = response.nextOffset;
     } else if (method === "runRemoveGroupMembers") {
-      memberCount = await group.runRemoveGroupMembers(
+      groupMembersCount = await group.runRemoveGroupMembers(
         run,
         limit,
-        offset,
-        force,
         destinationGuid
       );
     } else if (method === "removePreviousRunGroupMembers") {
-      memberCount = await group.removePreviousRunGroupMembers(run, limit);
+      groupMembersCount = await group.removePreviousRunGroupMembers(run, limit);
     } else {
       throw new Error(`${method} is not now a known method`);
     }
 
     await run.afterBatch();
 
-    if (memberCount === 0 && method === "runAddGroupMembers") {
+    if (groupMembersCount === 0 && method === "runAddGroupMembers") {
       await task.enqueueIn(config.tasks.timeout + 1, this.name, {
         runGuid: run.guid,
         groupGuid: group.guid,
         method: "runRemoveGroupMembers",
-        offset: 0,
         limit,
+        offset: 0,
+        highWaterMark: 0,
         force,
         destinationGuid,
       });
-    } else if (memberCount === 0 && method === "runRemoveGroupMembers") {
+    } else if (groupMembersCount === 0 && method === "runRemoveGroupMembers") {
       await task.enqueueIn(config.tasks.timeout + 1, this.name, {
         runGuid: run.guid,
         groupGuid: group.guid,
         method: "removePreviousRunGroupMembers",
-        offset: 0,
         limit,
+        offset: 0,
+        highWaterMark: 0,
         force,
         destinationGuid,
       });
-    } else if (memberCount > 0) {
+    } else if (groupMembersCount > 0) {
       await task.enqueueIn(config.tasks.timeout + 1, this.name, {
         runGuid: run.guid,
         groupGuid: group.guid,
         method,
-        offset: offset + limit,
         limit,
+        offset: nextOffset,
+        highWaterMark: nextHighWaterMark,
         force,
         destinationGuid,
       });
@@ -135,6 +147,6 @@ export class RunGroup extends Task {
       });
     }
 
-    return memberCount;
+    return groupMembersCount;
   }
 }

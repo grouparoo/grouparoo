@@ -99,6 +99,8 @@ export default function Page(props) {
               <br />
               Group Member Offset: {run.groupMemberOffset}
               <br />
+              Group Member High Water Mark: {run.groupHighWaterMark}
+              <br />
               Source Offset: {run.sourceOffset}
               {run.highWaterMark ? (
                 <>

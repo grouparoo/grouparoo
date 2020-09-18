@@ -124,6 +124,10 @@ export class Run extends Model<Run> {
   @Column
   groupMemberOffset: number;
 
+  @Default(0)
+  @Column
+  groupHighWaterMark: number;
+
   @Column
   groupMethod: string;
 
@@ -304,6 +308,7 @@ export class Run extends Model<Run> {
       sourceOffset: this.sourceOffset,
       groupMemberLimit: this.groupMemberLimit,
       groupMemberOffset: this.groupMemberOffset,
+      groupHighWaterMark: this.groupHighWaterMark,
       groupMethod: this.groupMethod,
       force: this.force,
       completedAt: this.completedAt ? this.completedAt.getTime() : null,
