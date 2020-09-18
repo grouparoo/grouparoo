@@ -5,9 +5,14 @@ export default function HydrationError({
 }: {
   hydrationError: string;
 }) {
-  const parsed = JSON.parse(hydrationError);
-  const error = new Error(parsed.message);
-  error.stack = parsed.stack;
+  let error: Error;
+  try {
+    const parsed = JSON.parse(hydrationError);
+    error = new Error(parsed.message);
+    error.stack = parsed.stack;
+  } catch (e) {
+    error = new Error(hydrationError);
+  }
 
   return (
     <>
