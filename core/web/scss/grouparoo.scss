@@ -15,6 +15,13 @@ $grouparoo-light-violet: #d3d3ff;
 $grouparoo-background-blue: #f6fafb;
 $grouparoo-green: #3fb618;
 
+// define colors we don't use elsewhere as bootstrap elements
+:root {
+  --grouparoo-background-blue: #{$grouparoo-background-blue};
+  --grouparoo-light-blue: #{$grouparoo-light-blue};
+  --grouparoo-violet: #{$grouparoo-violet};
+}
+
 // Bootstrap Colors
 
 $primary: $grouparoo-blue;
