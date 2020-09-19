@@ -120,7 +120,19 @@ async function getMembershipOptions(
     "GrouparooGroupMember",
     "CampaignMember",
     "TopicAssignment",
-    // TODO: lots of tag ones here
+    "AccountTag",
+    "AssetTag",
+    "CampaignTag",
+    "CaseTag",
+    "ContactTag",
+    "ContractTag",
+    "DocumentTag",
+    "EventTag",
+    "LeadTag",
+    "NoteTag",
+    "OpportunityTag",
+    "SolutionTag",
+    "TaskTag",
   ];
   const specialFields = [];
 

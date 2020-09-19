@@ -12,18 +12,19 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
 }) => {
   const conn = await connect(appOptions);
   const { profileObject, profileMatchField, groupObject } = destinationOptions;
-  const objectInfo = await describeObject(conn, profileObject, true);
-  const { known, required } = await getFields(objectInfo, profileMatchField);
+  const profileInfo = await describeObject(conn, profileObject, true);
+  const groupInfo = await describeObject(conn, groupObject, true);
+  const { known, required } = await getFields(profileInfo, profileMatchField);
 
   return {
     labels: {
       profilePropertyRule: {
-        singular: `Salesforce ${profileObject} Field`,
-        plural: `Salesforce ${profileObject} Fields`,
+        singular: `Salesforce ${profileInfo.label || profileObject} Field`,
+        plural: `Salesforce ${profileInfo.label || profileObject} Fields`,
       },
       group: {
-        singular: `Salesforce ${groupObject} Object`,
-        plural: `Salesforce ${groupObject} Objects`,
+        singular: `Salesforce ${groupInfo.label || groupObject}`,
+        plural: `Salesforce ${groupInfo.labelPlural || groupObject}`,
       },
     },
     profilePropertyRules: {

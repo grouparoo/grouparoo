@@ -25,6 +25,7 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     const destinationOptions = {
       profileObject: "Contact",
       profileMatchField: "Email",
+      groupObject: "Campaign",
     };
     const options = await destinationMappingOptions({
       appOptions,
@@ -33,8 +34,9 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
       connection: null,
       destination: null,
     });
-    const { profilePropertyRules } = options;
+    const { profilePropertyRules, labels } = options;
     const { required, known } = profilePropertyRules;
+    const { profilePropertyRule, group } = labels;
 
     expect(required.length).toBe(2);
     let field;
@@ -58,12 +60,18 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     field = known.find((f) => f.key === "Title");
     expect(field.type).toBe("string");
     expect(field.important).toBe(false);
+
+    expect(profilePropertyRule.singular).toBe("Salesforce Contact Field");
+    expect(profilePropertyRule.plural).toBe("Salesforce Contact Fields");
+    expect(group.singular).toBe("Salesforce Campaign");
+    expect(group.plural).toBe("Salesforce Campaigns");
   });
 
   test("can load destinationMappingOptions from Contact Id", async () => {
     const destinationOptions = {
       profileObject: "Contact",
       profileMatchField: "Id",
+      groupObject: "Topic",
     };
     const options = await destinationMappingOptions({
       appOptions,
@@ -72,8 +80,9 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
       connection: null,
       destination: null,
     });
-    const { profilePropertyRules } = options;
+    const { profilePropertyRules, labels } = options;
     const { required, known } = profilePropertyRules;
+    const { profilePropertyRule, group } = labels;
 
     expect(required.length).toBe(2);
     let field;
@@ -98,12 +107,18 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     field = known.find((f) => f.key === "Title");
     expect(field.type).toBe("string");
     expect(field.important).toBe(false);
+
+    expect(profilePropertyRule.singular).toBe("Salesforce Contact Field");
+    expect(profilePropertyRule.plural).toBe("Salesforce Contact Fields");
+    expect(group.singular).toBe("Salesforce Topic");
+    expect(group.plural).toBe("Salesforce Topics");
   });
 
   test("can load destinationMappingOptions from Contact Custom", async () => {
     const destinationOptions = {
       profileObject: "Contact",
       profileMatchField: "Custom_External_ID__c",
+      groupObject: "Campaign",
     };
     const options = await destinationMappingOptions({
       appOptions,
@@ -112,8 +127,9 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
       connection: null,
       destination: null,
     });
-    const { profilePropertyRules } = options;
+    const { profilePropertyRules, labels } = options;
     const { required, known } = profilePropertyRules;
+    const { profilePropertyRule, group } = labels;
 
     expect(required.length).toBe(2);
     let field;
@@ -138,5 +154,10 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     field = known.find((f) => f.key === "Title");
     expect(field.type).toBe("string");
     expect(field.important).toBe(false);
+
+    expect(profilePropertyRule.singular).toBe("Salesforce Contact Field");
+    expect(profilePropertyRule.plural).toBe("Salesforce Contact Fields");
+    expect(group.singular).toBe("Salesforce Campaign");
+    expect(group.plural).toBe("Salesforce Campaigns");
   });
 });
