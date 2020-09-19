@@ -1,8 +1,6 @@
-import {
-  exportSalesforceBatch,
-  SalesforceModel,
-} from "../export/salesforceExporter";
+import { exportSalesforceBatch } from "../export/salesforceExporter";
 import { buildBatchExports, BatchExport } from "./../batchHelper";
+import { getSalesforceModel } from "../export/model";
 import {
   ExportProfilesPluginMethod,
   ErrorWithProfileGuid,
@@ -27,29 +25,10 @@ export const exportBatch: MyBatchMethod = async ({
   destinationOptions,
   exports,
 }) => {
-  const {
-    profileObject,
-    profileMatchField,
-    groupObject,
-    groupNameField,
-    membershipObject,
-    membershipProfileField,
-    membershipGroupField,
-  } = destinationOptions;
-
-  const model: SalesforceModel = {
-    profileObject,
-    profileMatchField,
-    groupObject,
-    groupNameField,
-    membershipObject,
-    membershipProfileField,
-    membershipGroupField,
-  };
   return exportSalesforceBatch({
     appOptions,
     exports,
-    model,
+    model: getSalesforceModel(destinationOptions, {}),
   });
 };
 

@@ -9,6 +9,7 @@ import {
 import { ErrorWithProfileGuid, SimpleAppOptions } from "@grouparoo/core";
 import { cache } from "../cache";
 import { cacheKeyFromClient } from "../connect";
+import { SalesforceModel } from "./model";
 
 // return an object that you can connect with
 const getClient: BatchFunctions["getClient"] = async ({ config }) => {
@@ -377,15 +378,6 @@ const normalizeGroupName: BatchFunctions["normalizeGroupName"] = ({
   return groupName.toString().trim();
 };
 
-export interface SalesforceModel {
-  profileObject: string;
-  profileMatchField: string;
-  groupObject: string;
-  groupNameField: string;
-  membershipObject: string;
-  membershipProfileField: string;
-  membershipGroupField: string;
-}
 export interface SalesforceData extends SalesforceModel {
   profileFields: any;
 }
