@@ -1,12 +1,8 @@
-// ~ jump over to core for this test ~
-process.chdir(`${__dirname}/../../../../../core/api`);
-
+const { helper } = require("@grouparoo/spec-helper");
 import path from "path";
-
 import { exportBatch } from "../../src/lib/export-objects/exportProfiles";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { helper } from "../../../../../core/api/__tests__/utils/specHelper";
 
 const nockFile = path.join(
   __dirname,
@@ -17,11 +13,11 @@ const nockFile = path.join(
 );
 
 // these comments to use nock
-// const newNock = false;
-// require("./../fixtures/export-objects/export-profiles-email");
+const newNock = false;
+require("./../fixtures/export-objects/export-profiles-email");
 // or these to make it true
-const newNock = true;
-helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 
@@ -717,7 +713,6 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
         ],
       });
     } catch (error) {
-      console.log("ERR!", error.message);
       expect(error.message).toContain("boolean");
     }
 
@@ -759,7 +754,6 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
         ],
       });
     } catch (error) {
-      console.log("ERR!", error.message);
       expect(error.message).toContain("datetime");
     }
 

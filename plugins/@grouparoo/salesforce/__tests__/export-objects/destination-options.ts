@@ -1,11 +1,7 @@
-// ~ jump over to core for this test ~
-process.chdir(`${__dirname}/../../../../../core/api`);
-
+const { helper } = require("@grouparoo/spec-helper");
 import path from "path";
-
 import { destinationOptions } from "../../src/lib/export-objects/destinationOptions";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { helper } from "@grouparoo/core/api/__tests__/utils/specHelper";
 const nockFile = path.join(
   __dirname,
   "../",
@@ -15,11 +11,11 @@ const nockFile = path.join(
 );
 
 // these comments to use nock
-// const newNock = false;
-// require("./../fixtures/export-objects/destination-options");
+const newNock = false;
+require("./../fixtures/export-objects/destination-options");
 // or these to make it true
-const newNock = true;
-helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 

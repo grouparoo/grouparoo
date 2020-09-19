@@ -29,7 +29,7 @@ const findAndSetDestinationIds: BatchFunctions["findAndSetDestinationIds"] = asy
 
   const query = { [profileMatchField]: foreignKeys };
   const fields = [idType, profileMatchField];
-  console.log("sending query", query, fields);
+  //console.log("sending query", query, fields);
   const records = await client
     .sobject(profileObject)
     .find(query, fields)
@@ -48,7 +48,7 @@ const findAndSetDestinationIds: BatchFunctions["findAndSetDestinationIds"] = asy
       found.result = record;
     } else {
       // Salesforce result found but didn't have email. not sure what that means
-      console.log("foreign key not found!", record);
+      //console.log("foreign key not found!", record);
     }
   }
 };
@@ -61,7 +61,7 @@ const deleteByDestinationIds: BatchFunctions["deleteByDestinationIds"] = async (
 }) => {
   const { profileObject } = config.data;
   const payload = users.map((user) => user.destinationId);
-  console.log("sending delete", payload);
+  //console.log("sending delete", payload);
   const results = await client.sobject(profileObject).del(payload);
   processResults(results, users, ResultType.USER);
 };
@@ -166,7 +166,7 @@ function processResults(results, users, type: ResultType) {
     // I'm assuming these are in the same order. That seems like the only option.
     const user = users[i];
     const result = results[i];
-    console.log("result", result);
+    //console.log("result", result);
     try {
       const id = processResult(result, user.profileGuid, type);
       if (type === ResultType.USER) {
@@ -195,9 +195,9 @@ const updateByDestinationIds: BatchFunctions["updateByDestinationIds"] = async (
     payload.push(buildPayload(user, config));
   }
 
-  console.log("sending update", payload);
+  //console.log("sending update", payload);
   const results = await client.sobject(profileObject).update(payload);
-  console.log("update results!");
+  //console.log("update results!");
   processResults(results, users, ResultType.USER);
 };
 
@@ -214,7 +214,7 @@ const createByForeignKeyAndSetDestinationIds: BatchFunctions["createByForeignKey
   }
 
   // upsert doesn't have a HTTP batch api (even though jsforce does), so use create
-  console.log("sending create", payload);
+  //console.log("sending create", payload);
   const results = await client.sobject(profileObject).create(payload);
   processResults(results, users, ResultType.USER);
 };
@@ -249,7 +249,7 @@ const addToGroups: BatchFunctions["addToGroups"] = async ({
     return;
   }
 
-  console.log("adding group", payload);
+  //console.log("adding group", payload);
   const results = await client.sobject(membershipObject).create(payload);
   processResults(results, users, ResultType.ADDGROUP);
 };
@@ -305,7 +305,7 @@ const removeFromGroups: BatchFunctions["removeFromGroups"] = async ({
   if (payload.length === 0) {
     return;
   }
-  console.log("removing group", payload);
+  //console.log("removing group", payload);
   const results = await client.sobject(membershipObject).del(payload);
   processResults(results, users, ResultType.REMOVEGROUP);
 };
@@ -356,7 +356,6 @@ async function createList(
 
   const payload = { [groupNameField]: listName };
   const result = await client.sobject(groupObject).create(payload);
-  console.log("group creation results", result);
   return processResult(result, `list ${listName}`, ResultType.LIST);
 }
 

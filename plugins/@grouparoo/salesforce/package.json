@@ -27,8 +27,7 @@
     "lint": "prettier --check src "
   },
   "dependencies": {
-    "jsforce": "^1.9.3",
-    "node-marketo-rest": "grouparoo/node-marketo#restler_upgrade"
+    "jsforce": "^1.9.3"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
