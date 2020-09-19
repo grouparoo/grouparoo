@@ -25,6 +25,7 @@ for word in "${BAD_WORDS[@]}"; do
     --exclude-dir=dist \
     --exclude-dir=.next \
     --exclude-dir=spell-checker \
+    --exclude-dir=fixtures \
     "${word}" .` || true
   if [ -z "$MATCHES" ]; then
     printf " ✅\n"
