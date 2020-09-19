@@ -90,8 +90,8 @@ async function getMembershipObjectNames(conn) {
   const special = [
     "GrouparooGroupMember",
     "CampaignMember",
-    "TagDefinition",
     "TopicAssignment",
+    // TODO: lots of tag ones here
   ];
   return getObjectNames(conn, special, false);
 }
@@ -111,7 +111,6 @@ async function getObjectMatchNames(
   const names = {};
   const first = [];
   const response = await describeObject(conn, objectName, true);
-  console.log("DESCRIBE", objectName, response);
   for (const field of response.fields) {
     if (!field.createable) {
       continue;
