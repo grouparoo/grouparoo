@@ -1,8 +1,9 @@
-const { helper } = require("@grouparoo/spec-helper");
+import "@grouparoo/spec-helper";
 import path from "path";
 import { exportBatch } from "../../src/lib/export-objects/exportProfiles";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
+import { helper } from "@grouparoo/spec-helper";
 
 const nockFile = path.join(
   __dirname,
