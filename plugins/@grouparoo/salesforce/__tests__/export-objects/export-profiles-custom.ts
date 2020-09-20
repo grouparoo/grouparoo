@@ -1,8 +1,10 @@
 import "@grouparoo/spec-helper";
 import path from "path";
 import { exportBatch } from "../../src/lib/export-objects/exportProfiles";
-import { connect } from "../../src/lib/connect";
+import { destinationModel } from "../../src/lib/export-objects/model";
+
 import { loadAppOptions, updater } from "../utils/nockHelper";
+import { getModelHelpers } from "../utils/modelHelper";
 import { helper } from "@grouparoo/spec-helper";
 
 const nockFile = path.join(
@@ -21,8 +23,16 @@ require("./../fixtures/export-objects/export-profiles-custom");
 // helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
-
-let client: any;
+const destinationOptions = {
+  profileObject: "Contact",
+  profileMatchField: "Custom_External_ID__c",
+  groupObject: "Topic",
+  groupNameField: "Name",
+  membershipObject: "TopicAssignment",
+  membershipProfileField: "EntityId",
+  membershipGroupField: "TopicId",
+};
+const model = destinationModel(destinationOptions);
 
 const custom1 = "1id";
 const guid1 = "pro1";
@@ -36,125 +46,29 @@ const custom3 = "3id";
 const guid3 = "pro3";
 let userId3 = null;
 
-const deleteValues = [custom1, custom2, custom3];
-
 const group1 = "(test) High Value2";
 let groupId1 = null;
 
 const group2 = "(test) Churned2";
 let groupId2 = null;
 
-const idType = "Id";
-
-const profileObject = "Contact";
-const profileMatchField = "Custom_External_ID__c";
-const groupObject = "Topic";
-const groupNameField = "Name";
-const membershipObject = "TopicAssignment";
-const membershipProfileField = "EntityId";
-const membershipGroupField = "TopicId";
-
-const destinationOptions = {
-  profileObject,
-  profileMatchField,
-  groupObject,
-  groupNameField,
-  membershipObject,
-  membershipProfileField,
-  membershipGroupField,
-};
-
-async function findId(value) {
-  const query = { [profileMatchField]: value };
-  const fields = [idType];
-  const results = await client.sobject(profileObject).find(query, fields);
-  if (results.length === 0) {
-    return null;
-  } else if (results.length > 1) {
-    throw `more than one result! ${profileMatchField} == ${value}`;
-  }
-  return results[0][idType];
-}
-async function getUser(id) {
-  try {
-    const row = await client.sobject(profileObject).retrieve(id);
-    return row;
-  } catch (err) {
-    if (err.errorCode === "NOT_FOUND") {
-      return null;
-    }
-    throw err;
-  }
-}
-async function cleanUp(suppressErrors) {
-  await deleteUsers(suppressErrors);
-  await deleteGroups(suppressErrors);
-}
-async function findGroupId(value) {
-  const query = { [groupNameField]: value };
-  const fields = [idType];
-  const results = await client.sobject(groupObject).find(query, fields);
-  if (results.length === 0) {
-    return null;
-  } else if (results.length > 1) {
-    throw `more than one result! ${groupNameField} == ${value}`;
-  }
-  return results[0][idType];
-}
-async function getGroupMemberIds(groupId) {
-  const query = { [membershipGroupField]: groupId };
-  const fields = [membershipProfileField];
-  const results = await client.sobject(membershipObject).find(query, fields);
-  return results.map((result) => result[membershipProfileField]);
-}
-async function deleteGroups(suppressErrors) {
-  const names = [group1, group2];
-  const ids = [];
-  for (const name of names) {
-    const id = await findGroupId(name);
-    if (id) {
-      ids.push(id);
-    }
-  }
-  if (ids.length === 0) {
-    return;
-  }
-  try {
-    const allOrNone = true;
-    await client.sobject(groupObject).del(ids, { allOrNone });
-  } catch (error) {
-    console.log("delete error", error);
-    if (!suppressErrors) {
-      throw error;
-    }
-  }
-}
-async function deleteUsers(suppressErrors) {
-  const values = deleteValues;
-  const ids = [];
-  for (const value of values) {
-    const id = await findId(value);
-    if (id) {
-      ids.push(id);
-    }
-  }
-  if (ids.length === 0) {
-    return;
-  }
-  try {
-    const allOrNone = true;
-    await client.sobject(profileObject).del(ids, { allOrNone });
-  } catch (error) {
-    console.log("delete error", error);
-    if (!suppressErrors) {
-      throw error;
-    }
-  }
-}
+const deleteProfileValues = [custom1, custom2, custom3];
+const deleteGroupValues = [group1, group2];
+const {
+  findId,
+  getUser,
+  findGroupId,
+  getGroupMemberIds,
+  cleanUp,
+} = getModelHelpers({
+  appOptions,
+  model,
+  deleteProfileValues,
+  deleteGroupValues,
+});
 
 describe("salesforce/sales-cloud/export-profiles/custom", () => {
   beforeAll(async () => {
-    client = await connect(appOptions);
     await cleanUp(false);
   }, 1000 * 30);
 
