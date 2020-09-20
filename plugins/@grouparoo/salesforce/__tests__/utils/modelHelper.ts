@@ -1,5 +1,5 @@
 import { SimpleAppOptions, SimpleDestinationOptions } from "@grouparoo/core";
-import { SalesforceModel } from "../../dist/lib/export/salesforceExporter";
+import { SalesforceModel } from "../../src/lib/export/model";
 import { connect } from "../../src/lib/connect";
 
 export interface ModelHelperFunctions {
