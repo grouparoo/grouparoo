@@ -43,45 +43,59 @@ export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMe
   };
 };
 
+const supportedTypeMap = {
+  string: "string",
+  email: "email",
+  double: "float",
+  textarea: "string",
+  datetime: "date",
+  boolean: "boolean",
+  phone: "phone",
+  url: "url",
+  percent: "integer",
+  encryptedstring: "string",
+  int: "integer",
+  anyType: "any", // can be several things, but never seen in wild yet
+  any: "any",
+  anytype: "any",
+  id: "string",
+  picklist: "string",
+  //TODO:
+  currency: null,
+  address: null,
+  date: null,
+  time: null,
+  multipicklist: null, // TODO: maybe array
+  location: null, // lat and lng things
+  base64: null,
+  byte: null,
+  reference: null,
+  JunctionIdList: null, // is this the real name? maybe array
+  junctionidlist: null,
+  DataCategoryGroupReference: null, // Reference to a data category group or a category unique name.
+  datacategorygroupreference: null,
+  calculated: null, // Fields that are defined by a formula. See Calculated Field Type.
+  masterrecord: null, // something about deleting
+};
+
+export function getSupportedSalesforceTypes(grouparooTypes = null): string[] {
+  const out = [];
+  for (const type in supportedTypeMap) {
+    if (!supportedTypeMap[type]) {
+      continue;
+    }
+    if (!grouparooTypes || grouparooTypes.includes(supportedTypeMap[type])) {
+      out.push(type);
+    }
+  }
+  return out;
+}
+
 const mapTypesToGrouparoo = (type) => {
   // https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/primitive_data_types.htm
   // https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/field_types.htm
-  const map = {
-    string: "string",
-    email: "email",
-    double: "float",
-    textarea: "string",
-    datetime: "date",
-    boolean: "boolean",
-    phone: "phone",
-    url: "url",
-    percent: "integer",
-    encryptedstring: "string",
-    int: "integer",
-    anyType: "any", // can be several things, but never seen in wild yet
-    any: "any",
-    anytype: "any",
-    id: "string",
-    picklist: "string",
-    //TODO:
-    currency: null,
-    address: null,
-    date: null,
-    time: null,
-    multipicklist: null, // TODO: maybe array
-    location: null, // lat and lng things
-    base64: null,
-    byte: null,
-    reference: null,
-    JunctionIdList: null, // is this the real name? maybe array
-    junctionidlist: null,
-    DataCategoryGroupReference: null, // Reference to a data category group or a category unique name.
-    datacategorygroupreference: null,
-    calculated: null, // Fields that are defined by a formula. See Calculated Field Type.
-    masterrecord: null, // something about deleting
-  };
 
-  const grouparooType = map[type];
+  const grouparooType = supportedTypeMap[type];
   if (grouparooType === undefined) {
     log(`Unknown salesforce type: ${type}`);
     return null;

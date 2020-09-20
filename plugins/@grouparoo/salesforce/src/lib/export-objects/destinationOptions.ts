@@ -10,6 +10,7 @@ export const destinationOptions: DestinationOptionsMethod = async ({
     destinationOptions,
     which: {
       profile: true,
+      reference: true,
       group: true,
       membership: true,
     },

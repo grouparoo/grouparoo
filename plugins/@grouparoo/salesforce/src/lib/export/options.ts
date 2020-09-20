@@ -5,11 +5,13 @@ import {
 } from "@grouparoo/core";
 import { connect } from "../connect";
 import { describeObject } from "../objects";
+import { getSupportedSalesforceTypes } from "./mapping";
 
 export interface WhichOptions {
   profile?: boolean;
   group?: boolean;
   membership?: boolean;
+  reference?: boolean;
 }
 interface SalesforceDestinationOptions {
   (argument: {
@@ -35,7 +37,9 @@ export const getDestinationOptions: SalesforceDestinationOptions = async ({
   if (which.membership) {
     Object.assign(out, await getMembershipOptions(conn, destinationOptions));
   }
-
+  if (which.reference) {
+    Object.assign(out, await getReferenceOptions(conn, destinationOptions));
+  }
   return out;
 };
 
@@ -65,12 +69,22 @@ async function getProfileOptions(
   const name = destinationOptions.profileObject;
   if (name && objects.includes(name)) {
     // look up its fields
-    const fields = await getObjectMatchNames(conn, name, true, specialFields);
+    const supportedTypes = getSupportedSalesforceTypes();
+    const fields = await getObjectMatchNames(
+      conn,
+      name,
+      true,
+      specialFields,
+      supportedTypes
+    );
     out.profileMatchField.type = "typeahead";
     out.profileMatchField.options = fields;
     if (!fields.includes(destinationOptions.profileMatchField)) {
       destinationOptions.profileMatchField = null;
     }
+  } else {
+    destinationOptions.profileObject = null;
+    destinationOptions.profileMatchField = null;
   }
 
   return out;
@@ -99,14 +113,22 @@ async function getGroupOptions(
   const name = destinationOptions.groupObject;
   if (name && objects.includes(name)) {
     // look up its fields
-    const fields = await getObjectMatchNames(conn, name, false, specialFields, [
-      "string",
-    ]);
+    const supportedTypes = getSupportedSalesforceTypes(["string"]);
+    const fields = await getObjectMatchNames(
+      conn,
+      name,
+      false,
+      specialFields,
+      supportedTypes
+    );
     out.groupNameField.type = "typeahead";
     out.groupNameField.options = fields;
     if (!fields.includes(destinationOptions.groupNameField)) {
       destinationOptions.groupNameField = null;
     }
+  } else {
+    destinationOptions.groupObject = null;
+    destinationOptions.groupNameField = null;
   }
 
   return out;
@@ -162,19 +184,82 @@ async function getMembershipOptions(
     if (!fields.includes(destinationOptions.membershipGroupField)) {
       destinationOptions.membershipGroupField = null;
     }
+  } else {
+    destinationOptions.membershipObject = null;
+    destinationOptions.membershipProfileField = null;
+    destinationOptions.membershipGroupField = null;
   }
   return out;
 }
 
-async function getObjectMatchNames(
+async function getReferenceOptions(
+  conn: any,
+  destinationOptions: SimpleDestinationOptions
+) {
+  const out: DestinationOptionsMethodResponse = {
+    profileReferenceField: { type: "pending", options: [] },
+    profileReferenceObject: { type: "pending", options: [] },
+    profileReferenceMatchField: { type: "pending", options: [] },
+  };
+  const { profileObject } = destinationOptions;
+  if (!profileObject) {
+    return out;
+  }
+
+  // for Account, other?
+  const specialFields = ["AccountNumber", "Name"];
+
+  const nameMap = await buildFieldMap(conn, profileObject, true, ["reference"]);
+
+  out.profileReferenceField.type = "typeahead";
+  out.profileReferenceField.options = Object.keys(nameMap);
+
+  const fieldName = destinationOptions.profileReferenceField;
+  if (fieldName && nameMap[fieldName]) {
+    const field = nameMap[fieldName];
+    const relationshipObjects = field.referenceTo;
+
+    out.profileReferenceObject.type = "typeahead";
+    out.profileReferenceObject.options = relationshipObjects;
+
+    const refName = destinationOptions.profileReferenceObject;
+    console.log({ refName, relationshipObjects });
+    if (refName && relationshipObjects.includes(refName)) {
+      const supportedTypes = getSupportedSalesforceTypes();
+      const refFields = await getObjectMatchNames(
+        conn,
+        refName,
+        true,
+        specialFields,
+        supportedTypes
+      );
+
+      console.log({ refFields, supportedTypes });
+      out.profileReferenceMatchField.type = "typeahead";
+      out.profileReferenceMatchField.options = refFields;
+      if (!refFields.includes(destinationOptions.profileReferenceMatchField)) {
+        destinationOptions.profileReferenceMatchField = null;
+      }
+    } else {
+      destinationOptions.profileReferenceObject = null;
+      destinationOptions.profileReferenceMatchField = null;
+    }
+  } else {
+    destinationOptions.profileReferenceField = null;
+    destinationOptions.profileReferenceObject = null;
+    destinationOptions.profileReferenceMatchField = null;
+  }
+
+  return out;
+}
+
+async function buildFieldMap(
   conn: any,
   objectName: string,
   updateable: boolean,
-  special: string[] = [],
   types: string[] = null
-) {
+): Promise<{ [name: string]: any }> {
   const names = {};
-  const first = [];
   const response = await describeObject(conn, objectName, true);
   for (const field of response.fields) {
     if (!field.createable) {
@@ -186,10 +271,26 @@ async function getObjectMatchNames(
     if (types && !types.includes(field.type)) {
       continue;
     }
+    names[field.name] = field;
+  }
+
+  return names;
+}
+
+async function getObjectMatchNames(
+  conn: any,
+  objectName: string,
+  updateable: boolean,
+  special: string[] = [],
+  types: string[] = null
+) {
+  const names = await buildFieldMap(conn, objectName, updateable, types);
+  const first = [];
+  for (const name in names) {
+    const field = names[name];
     if (field.idLookup || field.externalId) {
-      first.push(field.name);
+      first.push(name);
     }
-    names[field.name] = true;
   }
   return uniqueArray(special, first, names);
 }

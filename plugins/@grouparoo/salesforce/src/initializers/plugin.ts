@@ -94,6 +94,24 @@ export class Plugins extends Initializer {
               description:
                 "Which field in the membership Object is the reference to the group?",
             },
+            {
+              key: "profileReferenceField",
+              required: false,
+              description:
+                "Is there a reference field on the profile Object to fill out?",
+            },
+            {
+              key: "profileReferenceObject",
+              required: false,
+              description:
+                "If there is a reference field, which Object should be created to apply to the profile?",
+            },
+            {
+              key: "profileReferenceMatchField",
+              required: false,
+              description:
+                "If there is a reference field, how should it be matched to Grouparoo profiles?",
+            },
           ],
           methods: {
             exportProfiles,
