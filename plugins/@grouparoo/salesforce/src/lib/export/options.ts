@@ -68,6 +68,9 @@ async function getProfileOptions(
     const fields = await getObjectMatchNames(conn, name, true, specialFields);
     out.profileMatchField.type = "typeahead";
     out.profileMatchField.options = fields;
+    if (!fields.includes(destinationOptions.profileMatchField)) {
+      destinationOptions.profileMatchField = null;
+    }
   }
 
   return out;
@@ -101,6 +104,9 @@ async function getGroupOptions(
     ]);
     out.groupNameField.type = "typeahead";
     out.groupNameField.options = fields;
+    if (!fields.includes(destinationOptions.groupNameField)) {
+      destinationOptions.groupNameField = null;
+    }
   }
 
   return out;
@@ -147,9 +153,15 @@ async function getMembershipOptions(
     ]);
     out.membershipProfileField.type = "typeahead";
     out.membershipProfileField.options = fields;
+    if (!fields.includes(destinationOptions.membershipProfileField)) {
+      destinationOptions.membershipProfileField = null;
+    }
 
     out.membershipGroupField.type = "typeahead";
     out.membershipGroupField.options = fields;
+    if (!fields.includes(destinationOptions.membershipGroupField)) {
+      destinationOptions.membershipGroupField = null;
+    }
   }
   return out;
 }
