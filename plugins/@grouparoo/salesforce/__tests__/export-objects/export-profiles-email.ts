@@ -37,6 +37,8 @@ const email3 = "brian3@demo.com";
 const guid3 = "pro3";
 let userId3 = null;
 
+const deleteValues = [email1, email2, email3, newEmail1];
+
 const group1 = "(test) High Value";
 let groupId1 = null;
 
@@ -129,7 +131,7 @@ async function deleteGroups(suppressErrors) {
   }
 }
 async function deleteUsers(suppressErrors) {
-  const values = [email1, email2, email3, newEmail1];
+  const values = deleteValues;
   const ids = [];
   for (const value of values) {
     const id = await findId(value);
@@ -160,6 +162,10 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
   afterAll(async () => {
     await cleanUp(true);
   }, 1000 * 30);
+
+  beforeEach(async () => {
+    jest.setTimeout(1000 * 20);
+  });
 
   test("can create profile on Salesforce", async () => {
     userId1 = await findId(email1);
@@ -369,6 +375,33 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
     expect(await findId(email2)).toBeNull();
     expect(await getUser(userId2)).toBeNull();
+  });
+
+  test("is ok (but gives error) to delete a user that doesn't exist", async () => {
+    const { success, errors } = await exportBatch({
+      appOptions,
+      destinationOptions,
+      exports: [
+        {
+          profileGuid: guid3,
+          oldProfileProperties: { Email: email3, LastName: "None" },
+          newProfileProperties: { Email: email3, LastName: "None" },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: true,
+          profile: null,
+        },
+      ],
+    });
+
+    expect(success).toBe(false);
+    expect(errors).not.toBeNull();
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid3);
+    expect(error.message).toContain("not found to delete");
+
+    expect(await findId(email3)).toBeNull(); // not added
   });
 
   test("can add back a user and many types", async () => {

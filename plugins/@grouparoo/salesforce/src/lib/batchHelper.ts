@@ -249,7 +249,7 @@ function verifyProcessed(exportedProfile) {
     );
   }
   if (exportedProfile.action === BatchAction.Delete) {
-    return;
+    return; // doesn't need a destinationd
   }
   if (!destinationId) {
     throw new Error(
@@ -329,6 +329,9 @@ async function createByForeignKey(
     if (exportedProfile.processed || exportedProfile.error) {
       continue;
     }
+    if (exportedProfile.action === BatchAction.Delete) {
+      continue;
+    }
     if (currentCount > config.batchSize) {
       batches.push({ fkMap: currentFkMap });
       currentFkMap = {};
@@ -381,6 +384,9 @@ async function updateByIds(
 
   for (const exportedProfile of exports) {
     if (exportedProfile.processed || exportedProfile.error) {
+      continue;
+    }
+    if (exportedProfile.action === BatchAction.Delete) {
       continue;
     }
     if (!exportedProfile.destinationId) {
@@ -448,7 +454,16 @@ async function deleteExports(
       continue;
     }
     if (!exportedProfile.destinationId) {
-      continue; // they aren't there anyway. let it go.
+      // should we try again for just this one or something and look them up?
+      // maybe it should make an error. if's a timing issue, we want to be sure to delete it.
+      try {
+        throw new Error(
+          `destinationId not found to delete: ${exportedProfile.foreignKeyValue}`
+        );
+      } catch (error) {
+        exportedProfile.error = error;
+      }
+      continue;
     }
 
     if (currentCount > config.batchSize) {
