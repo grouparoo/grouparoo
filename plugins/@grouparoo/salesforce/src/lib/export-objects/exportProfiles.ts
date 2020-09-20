@@ -1,6 +1,6 @@
 import { exportSalesforceBatch } from "../export/salesforceExporter";
 import { buildBatchExports, BatchExport } from "./../batchHelper";
-import { getSalesforceModel } from "../export/model";
+import { destinationModel } from "./model";
 import {
   ExportProfilesPluginMethod,
   ErrorWithProfileGuid,
@@ -28,7 +28,7 @@ export const exportBatch: MyBatchMethod = async ({
   return exportSalesforceBatch({
     appOptions,
     exports,
-    model: getSalesforceModel(destinationOptions, {}),
+    model: destinationModel(destinationOptions),
   });
 };
 

@@ -21,11 +21,15 @@ require("./../fixtures/export-objects/destination-mapping-options");
 const appOptions = loadAppOptions(newNock);
 
 describe("salesforce/sales-cloud/destinationMappingOptions", () => {
-  test("can load destinationMappingOptions from Contact Email", async () => {
+  test("can load destinationMappingOptions from Lead Email", async () => {
     const destinationOptions = {
-      profileObject: "Contact",
+      profileObject: "Lead",
       profileMatchField: "Email",
       groupObject: "Campaign",
+      groupNameField: "Name",
+      membershipObject: "CampaignMembership",
+      membershipProfileField: "ContactId",
+      membershipGroupField: "CampaignId",
     };
     const options = await destinationMappingOptions({
       appOptions,
@@ -38,12 +42,15 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     const { required, known } = profilePropertyRules;
     const { profilePropertyRule, group } = labels;
 
-    expect(required.length).toBe(2);
+    expect(required.length).toBe(3);
     let field;
     field = required.find((f) => f.key === "Email");
     expect(field.type).toBe("email");
 
     field = required.find((f) => f.key === "LastName");
+    expect(field.type).toBe("string");
+
+    field = required.find((f) => f.key === "Company");
     expect(field.type).toBe("string");
 
     field = known.find((f) => f.key === "Id");
@@ -61,8 +68,8 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     expect(field.type).toBe("string");
     expect(field.important).toBe(false);
 
-    expect(profilePropertyRule.singular).toBe("Salesforce Contact Field");
-    expect(profilePropertyRule.plural).toBe("Salesforce Contact Fields");
+    expect(profilePropertyRule.singular).toBe("Salesforce Lead Field");
+    expect(profilePropertyRule.plural).toBe("Salesforce Lead Fields");
     expect(group.singular).toBe("Salesforce Campaign");
     expect(group.plural).toBe("Salesforce Campaigns");
   });
@@ -72,6 +79,10 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
       profileObject: "Contact",
       profileMatchField: "Id",
       groupObject: "Topic",
+      groupNameField: "Name",
+      membershipObject: "TopicAssignment",
+      membershipProfileField: "EntityId",
+      membershipGroupField: "TopicId",
     };
     const options = await destinationMappingOptions({
       appOptions,
@@ -119,6 +130,10 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
       profileObject: "Contact",
       profileMatchField: "Custom_External_ID__c",
       groupObject: "Campaign",
+      groupNameField: "Name",
+      membershipObject: "CampaignMembership",
+      membershipProfileField: "ContactId",
+      membershipGroupField: "CampaignId",
     };
     const options = await destinationMappingOptions({
       appOptions,
