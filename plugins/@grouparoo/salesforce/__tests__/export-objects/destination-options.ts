@@ -29,6 +29,9 @@ const appOptions = loadAppOptions(newNock);
 // membershipObject
 // membershipProfileField
 // membershipGroupField
+// profileReferenceField
+// profileReferenceObject
+// profileReferenceMatchField
 
 function expectPendingResult(result) {
   let option, options;
@@ -69,6 +72,18 @@ function expectPendingResult(result) {
   option = result.membershipGroupField;
   expect(option.type).toEqual("pending");
   expect(option.options).toEqual([]);
+
+  option = result.profileReferenceField;
+  expect(option.type).toEqual("pending");
+  expect(option.options).toEqual([]);
+
+  option = result.profileReferenceObject;
+  expect(option.type).toEqual("pending");
+  expect(option.options).toEqual([]);
+
+  option = result.profileReferenceMatchField;
+  expect(option.type).toEqual("pending");
+  expect(option.options).toEqual([]);
 }
 
 function expectFullResult(result) {
@@ -96,7 +111,54 @@ function expectFullResult(result) {
   options = option.options;
   expect(option.type).toEqual("typeahead");
   expect(options.length).toBeGreaterThan(10);
+}
 
+function expectContactCampaignResult(result, referenceStage = 0) {
+  let option, options;
+  option = result.membershipProfileField;
+  expect(option.type).toEqual("typeahead");
+  expect(option.options).toEqual(
+    expect.arrayContaining(["ContactId", "LeadId", "ContactId"])
+  );
+
+  option = result.membershipGroupField;
+  expect(option.type).toEqual("typeahead");
+  expect(option.options).toEqual(
+    expect.arrayContaining(["ContactId", "LeadId", "ContactId"])
+  );
+
+  option = result.profileReferenceField;
+  expect(option.type).toEqual("typeahead");
+  expect(option.options).toEqual(
+    expect.arrayContaining(["AccountId", "IndividualId"])
+  );
+
+  if (referenceStage < 1) {
+    option = result.profileReferenceObject;
+    expect(option.type).toEqual("pending");
+    expect(option.options).toEqual([]);
+  } else {
+    option = result.profileReferenceObject;
+    expect(option.type).toEqual("typeahead");
+    expect(option.options).toEqual(expect.arrayContaining(["Account"]));
+  }
+
+  if (referenceStage < 2) {
+    option = result.profileReferenceMatchField;
+    expect(option.type).toEqual("pending");
+    expect(option.options).toEqual([]);
+  } else {
+    option = result.profileReferenceMatchField;
+    expect(option.type).toEqual("typeahead");
+    options = option.options;
+    expect(options.length).toBeGreaterThan(10);
+    expect(options.indexOf("AccountNumber")).toEqual(0);
+    expect(options.indexOf("Name")).toEqual(1);
+  }
+}
+
+function expectLeadTopicResult(result, referenceStage = 0) {
+  let option;
   option = result.membershipProfileField;
   expect(option.type).toEqual("typeahead");
   expect(option.options).toEqual(
@@ -108,6 +170,34 @@ function expectFullResult(result) {
   expect(option.options).toEqual(
     expect.arrayContaining(["EntityId", "TopicId"])
   );
+
+  option = result.profileReferenceField;
+  expect(option.type).toEqual("typeahead");
+  expect(option.options).toEqual(
+    expect.arrayContaining(["IndividualId", "DandbCompanyId"])
+  );
+
+  if (referenceStage < 1) {
+    option = result.profileReferenceObject;
+    expect(option.type).toEqual("pending");
+    expect(option.options).toEqual([]);
+  } else {
+    option = result.profileReferenceObject;
+    expect(option.type).toEqual("typeahead");
+    expect(option.options).toEqual(expect.arrayContaining(["Individual"]));
+  }
+
+  if (referenceStage < 2) {
+    option = result.profileReferenceMatchField;
+    expect(option.type).toEqual("pending");
+    expect(option.options).toEqual([]);
+  } else {
+    option = result.profileReferenceMatchField;
+    expect(option.type).toEqual("typeahead");
+    expect(option.options).toEqual(
+      expect.arrayContaining(["FirstName", "LastName"])
+    );
+  }
 }
 
 describe("salesforce/sales-cloud/destinationOptions", () => {
@@ -150,18 +240,19 @@ describe("salesforce/sales-cloud/destinationOptions", () => {
     });
 
     expectFullResult(result);
+    expectLeadTopicResult(result);
   });
 
   test("get same back when sent everything", async () => {
     const result = await destinationOptions({
       destinationOptions: {
-        profileObject: "Lead",
+        profileObject: "Contact",
         profileMatchField: "Email",
-        groupObject: "Topic",
+        groupObject: "Campaign",
         groupNameField: "Name",
-        membershipObject: "TopicAssignment",
-        membershipProfileField: "EntityId",
-        membershipGroupField: "TopicId",
+        membershipObject: "CampaignMember",
+        membershipProfileField: "ContactId",
+        membershipGroupField: "CampaignId",
       },
       appOptions,
       app: null,
@@ -169,6 +260,7 @@ describe("salesforce/sales-cloud/destinationOptions", () => {
     });
 
     expectFullResult(result);
+    expectContactCampaignResult(result);
   });
 
   test("get same back when sends bad fields", async () => {
@@ -188,5 +280,71 @@ describe("salesforce/sales-cloud/destinationOptions", () => {
     });
 
     expectFullResult(result);
+    expectLeadTopicResult(result);
+  });
+
+  test("gets types of the reference when a field is chosen", async () => {
+    const result = await destinationOptions({
+      destinationOptions: {
+        profileObject: "Lead",
+        profileMatchField: "Email",
+        groupObject: "Topic",
+        groupNameField: "Name",
+        membershipObject: "TopicAssignment",
+        membershipProfileField: "EntityId",
+        membershipGroupField: "TopicId",
+        profileReferenceField: "IndividualId",
+      },
+      appOptions,
+      app: null,
+      connection: null,
+    });
+
+    expectFullResult(result);
+    expectLeadTopicResult(result, 1);
+  });
+
+  test("gets all reference data when object is chosen", async () => {
+    const result = await destinationOptions({
+      destinationOptions: {
+        profileObject: "Contact",
+        profileMatchField: "Email",
+        groupObject: "Campaign",
+        groupNameField: "Name",
+        membershipObject: "CampaignMember",
+        membershipProfileField: "ContactId",
+        membershipGroupField: "CampaignId",
+        profileReferenceField: "AccountId",
+        profileReferenceObject: "Account",
+      },
+      appOptions,
+      app: null,
+      connection: null,
+    });
+
+    expectFullResult(result);
+    expectContactCampaignResult(result, 2);
+  });
+
+  test("gets all reference data when everything is chosen", async () => {
+    const result = await destinationOptions({
+      destinationOptions: {
+        profileObject: "Lead",
+        profileMatchField: "Email",
+        groupObject: "Topic",
+        groupNameField: "Name",
+        membershipObject: "TopicAssignment",
+        membershipProfileField: "EntityId",
+        membershipGroupField: "TopicId",
+        profileReferenceField: "IndividualId",
+        profileReferenceObject: "Individual",
+      },
+      appOptions,
+      app: null,
+      connection: null,
+    });
+
+    expectFullResult(result);
+    expectLeadTopicResult(result, 2);
   });
 });

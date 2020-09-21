@@ -223,7 +223,6 @@ async function getReferenceOptions(
     out.profileReferenceObject.options = relationshipObjects;
 
     const refName = destinationOptions.profileReferenceObject;
-    console.log({ refName, relationshipObjects });
     if (refName && relationshipObjects.includes(refName)) {
       const supportedTypes = getSupportedSalesforceTypes();
       const refFields = await getObjectMatchNames(
@@ -234,7 +233,6 @@ async function getReferenceOptions(
         supportedTypes
       );
 
-      console.log({ refFields, supportedTypes });
       out.profileReferenceMatchField.type = "typeahead";
       out.profileReferenceMatchField.options = refFields;
       if (!refFields.includes(destinationOptions.profileReferenceMatchField)) {
