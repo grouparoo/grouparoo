@@ -19,10 +19,26 @@ export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMe
   model,
 }) => {
   const conn = await connect(appOptions);
-  const { profileObject, profileMatchField, groupObject } = model;
+  const {
+    profileObject,
+    profileMatchField,
+    groupObject,
+    profileReferenceField,
+    profileReferenceObject,
+    profileReferenceMatchField,
+  } = model;
   const profileInfo = await describeObject(conn, profileObject, true);
+  const referenceInfo = profileReferenceField
+    ? await describeObject(conn, profileReferenceObject, true)
+    : null;
   const groupInfo = await describeObject(conn, groupObject, true);
-  const { known, required } = await getFields(profileInfo, profileMatchField);
+  const { known, required } = getFields(
+    profileInfo,
+    profileMatchField,
+    referenceInfo,
+    profileReferenceMatchField,
+    profileReferenceField
+  );
 
   return {
     labels: {
@@ -109,10 +125,25 @@ const isFieldImportant = function (field: any): Boolean {
   return importantFieldNames.indexOf(name) >= 0;
 };
 
-export const getFields = async (
-  objectInfo: any,
-  profileMatchField
-): Promise<{
+const REFERENCE_SEPARATOR = "->";
+export const parseFieldName = function (
+  fieldName: string
+): { reference: string; field: string } {
+  const pieces = fieldName.split(REFERENCE_SEPARATOR);
+  if (pieces.length === 1) {
+    return { reference: null, field: fieldName };
+  }
+  if (pieces.length == 2) {
+    return { reference: pieces[0], field: pieces[1] };
+  }
+  throw new Error(`Invalid field name: ${fieldName}`);
+};
+
+const extractFields = (
+  info: any,
+  match: string,
+  prepend: string
+): {
   required: Array<{
     key: string;
     type: DestinationMappingOptionsResponseTypes;
@@ -122,18 +153,21 @@ export const getFields = async (
     type: DestinationMappingOptionsResponseTypes;
     important?: boolean;
   }>;
-}> => {
+} => {
   const required = [];
   let known = [];
   let matchField = null;
 
-  for (const field of objectInfo.fields) {
-    const key = field.name;
+  for (const field of info.fields) {
+    const keyName = field.name;
+    const key = prepend
+      ? `${prepend}${REFERENCE_SEPARATOR}${keyName}`
+      : keyName;
     const type = mapTypesToGrouparoo(field.type);
     if (!type) {
       continue;
     }
-    if (key === profileMatchField) {
+    if (keyName === match) {
       matchField = { key, type };
       continue;
     }
@@ -162,5 +196,38 @@ export const getFields = async (
   known = known.sort((a, b) => {
     return a.key.localeCompare(b.key);
   });
+  return { required, known };
+};
+
+export const getFields = (
+  objectInfo: any,
+  profileMatchField: string,
+  referenceInfo: any,
+  profileReferenceMatchField: string,
+  profileReferenceField: string
+): {
+  required: Array<{
+    key: string;
+    type: DestinationMappingOptionsResponseTypes;
+  }>;
+  known: Array<{
+    key: string;
+    type: DestinationMappingOptionsResponseTypes;
+    important?: boolean;
+  }>;
+} => {
+  const objectFields = extractFields(objectInfo, profileMatchField, null);
+  let required = objectFields.required;
+  let known = objectFields.known;
+
+  if (referenceInfo) {
+    // add on these (just required)
+    const refFields = extractFields(
+      referenceInfo,
+      profileReferenceMatchField,
+      profileReferenceField
+    );
+    required = required.concat(refFields.required);
+  }
   return { required, known };
 };

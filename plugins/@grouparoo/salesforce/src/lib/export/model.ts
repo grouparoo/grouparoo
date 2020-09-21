@@ -7,6 +7,9 @@ export interface SalesforceModel {
   membershipObject: string;
   membershipProfileField: string;
   membershipGroupField: string;
+  profileReferenceField: string;
+  profileReferenceObject: string;
+  profileReferenceMatchField: string;
 }
 
 export function getSalesforceModel(
@@ -21,11 +24,16 @@ export function getSalesforceModel(
     membershipObject: null,
     membershipProfileField: null,
     membershipGroupField: null,
+    profileReferenceField: null,
+    profileReferenceObject: null,
+    profileReferenceMatchField: null,
   };
-  // all for now, could be less later
-  const requiredKeys = Object.keys(model);
 
   const modelKeys = Object.keys(model);
+  const refKeys = modelKeys.filter((k) => k.indexOf("Reference") > 0);
+  // refKeys are optional
+  const requiredKeys = modelKeys.filter((k) => !refKeys.includes(k));
+
   const destKeys = Object.keys(destinationOptions);
   for (const key of modelKeys) {
     if (destKeys.includes(key)) {
@@ -38,5 +46,19 @@ export function getSalesforceModel(
       throw new Error(`Missing Salesforce model data: ${key}`);
     }
   }
+
+  // needs either zero or all refKeys
+  let count = 0;
+  for (const key of refKeys) {
+    if (model[key]) {
+      count++;
+    }
+  }
+  if (count > 0) {
+    if (refKeys.length !== count) {
+      throw new Error(`All Salesforce reference model data is required`);
+    }
+  }
+
   return model;
 }
