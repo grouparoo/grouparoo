@@ -3,13 +3,15 @@ import { SalesforceModel } from "../../src/lib/export/model";
 import { connect } from "../../src/lib/connect";
 
 export interface ModelHelperFunctions {
-  idType: string;
   getClient: { (): Promise<any> };
   findId: { (value: string): Promise<any> };
   getUser: { (id: string): Promise<any> };
   cleanUp: { (suppressErrors: boolean): Promise<void> };
   findGroupId: { (value: string): Promise<string> };
   getGroupMemberIds: { (id: string): Promise<string[]> };
+  findReferenceId: { (value: string): Promise<string> };
+  getReference: { (id: string): Promise<any> };
+  getReferencedUserIds: { (id: string): Promise<string[]> };
 }
 export interface ModelHelperMethod {
   (argument: {
@@ -17,6 +19,7 @@ export interface ModelHelperMethod {
     model: SalesforceModel;
     deleteProfileValues: any[];
     deleteGroupValues: any[];
+    deleteReferenceValues: any[];
   }): ModelHelperFunctions;
 }
 
@@ -27,6 +30,7 @@ export const getModelHelpers: ModelHelperMethod = function ({
   model,
   deleteProfileValues,
   deleteGroupValues,
+  deleteReferenceValues,
 }) {
   const {
     profileObject,
@@ -36,6 +40,9 @@ export const getModelHelpers: ModelHelperMethod = function ({
     membershipObject,
     membershipProfileField,
     membershipGroupField,
+    profileReferenceField,
+    profileReferenceObject,
+    profileReferenceMatchField,
   } = model;
 
   let savedClient = null;
@@ -55,11 +62,10 @@ export const getModelHelpers: ModelHelperMethod = function ({
     if (results.length === 0) {
       return null;
     } else if (results.length > 1) {
-      throw `more than one result! ${profileMatchField} == ${value}`;
+      throw new Error(`more than one result! ${profileMatchField} == ${value}`);
     }
     return results[0][idType];
   };
-
   const getUser: ModelHelperFunctions["getUser"] = async function (id) {
     const client = await getClient();
     try {
@@ -83,7 +89,7 @@ export const getModelHelpers: ModelHelperMethod = function ({
     if (results.length === 0) {
       return null;
     } else if (results.length > 1) {
-      throw `more than one result! ${groupNameField} == ${value}`;
+      throw new Error(`more than one result! ${groupNameField} == ${value}`);
     }
     return results[0][idType];
   };
@@ -95,6 +101,48 @@ export const getModelHelpers: ModelHelperMethod = function ({
     const fields = [membershipProfileField];
     const results = await client.sobject(membershipObject).find(query, fields);
     return results.map((result) => result[membershipProfileField]);
+  };
+
+  const findReferenceId: ModelHelperFunctions["findReferenceId"] = async function (
+    value
+  ) {
+    const client = await getClient();
+    const query = { [profileReferenceMatchField]: value };
+    const fields = [idType];
+    const results = await client
+      .sobject(profileReferenceObject)
+      .find(query, fields);
+    if (results.length === 0) {
+      return null;
+    } else if (results.length > 1) {
+      throw new Error(
+        `more than one result! ${profileReferenceMatchField} == ${value}`
+      );
+    }
+    return results[0][idType];
+  };
+  const getReference: ModelHelperFunctions["getReference"] = async function (
+    id
+  ) {
+    const client = await getClient();
+    try {
+      const row = await client.sobject(profileReferenceObject).retrieve(id);
+      return row;
+    } catch (err) {
+      if (err.errorCode === "NOT_FOUND") {
+        return null;
+      }
+      throw err;
+    }
+  };
+  const getReferencedUserIds: ModelHelperFunctions["getReferencedUserIds"] = async function (
+    referenceId
+  ) {
+    const client = await getClient();
+    const query = { [profileReferenceField]: referenceId };
+    const fields = [idType];
+    const results = await client.sobject(profileObject).find(query, fields);
+    return results.map((result) => result[idType]);
   };
 
   const deleteGroups = async function (suppressErrors) {
@@ -114,7 +162,6 @@ export const getModelHelpers: ModelHelperMethod = function ({
       const allOrNone = true;
       await client.sobject(groupObject).del(ids, { allOrNone });
     } catch (error) {
-      console.log("delete error", error);
       if (!suppressErrors) {
         throw error;
       }
@@ -137,7 +184,28 @@ export const getModelHelpers: ModelHelperMethod = function ({
       const allOrNone = true;
       await client.sobject(profileObject).del(ids, { allOrNone });
     } catch (error) {
-      console.log("delete error", error);
+      if (!suppressErrors) {
+        throw error;
+      }
+    }
+  };
+  const deleteReferences = async function (suppressErrors) {
+    const client = await getClient();
+    const names = deleteReferenceValues;
+    const ids = [];
+    for (const name of names) {
+      const id = await findReferenceId(name);
+      if (id) {
+        ids.push(id);
+      }
+    }
+    if (ids.length === 0) {
+      return;
+    }
+    try {
+      const allOrNone = true;
+      await client.sobject(profileReferenceObject).del(ids, { allOrNone });
+    } catch (error) {
       if (!suppressErrors) {
         throw error;
       }
@@ -149,15 +217,18 @@ export const getModelHelpers: ModelHelperMethod = function ({
   ) {
     await deleteUsers(suppressErrors);
     await deleteGroups(suppressErrors);
+    await deleteReferences(suppressErrors);
   };
 
   return {
-    idType,
     findId,
     getClient,
     getUser,
     cleanUp,
     getGroupMemberIds,
     findGroupId,
+    findReferenceId,
+    getReference,
+    getReferencedUserIds,
   };
 };

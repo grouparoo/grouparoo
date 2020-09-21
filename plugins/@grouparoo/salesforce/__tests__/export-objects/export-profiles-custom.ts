@@ -31,6 +31,9 @@ const destinationOptions = {
   membershipObject: "TopicAssignment",
   membershipProfileField: "EntityId",
   membershipGroupField: "TopicId",
+  profileReferenceField: "",
+  profileReferenceObject: " ",
+  profileReferenceMatchField: "",
 };
 const model = destinationModel(destinationOptions);
 
@@ -54,6 +57,7 @@ let groupId2 = null;
 
 const deleteProfileValues = [custom1, custom2, custom3];
 const deleteGroupValues = [group1, group2];
+const deleteReferenceValues = [];
 const {
   findId,
   getUser,
@@ -65,6 +69,7 @@ const {
   model,
   deleteProfileValues,
   deleteGroupValues,
+  deleteReferenceValues,
 });
 
 describe("salesforce/sales-cloud/export-profiles/custom", () => {

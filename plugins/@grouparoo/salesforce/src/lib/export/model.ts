@@ -50,8 +50,12 @@ export function getSalesforceModel(
   // needs either zero or all refKeys
   let count = 0;
   for (const key of refKeys) {
-    if (model[key]) {
+    const value = (model[key] || "").toString().trim();
+    if (value.length > 0) {
+      model[key] = value;
       count++;
+    } else {
+      model[key] = null;
     }
   }
   if (count > 0) {

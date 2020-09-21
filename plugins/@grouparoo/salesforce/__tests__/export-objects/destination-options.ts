@@ -11,8 +11,6 @@ const nockFile = path.join(
   "destination-options.js"
 );
 
-// TODO: update for reference
-
 // these comments to use nock
 const newNock = false;
 require("./../fixtures/export-objects/destination-options");

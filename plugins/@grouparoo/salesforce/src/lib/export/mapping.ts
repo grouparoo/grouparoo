@@ -37,7 +37,7 @@ export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMe
     profileMatchField,
     referenceInfo,
     profileReferenceMatchField,
-    profileReferenceField
+    profileReferenceObject
   );
 
   return {
@@ -125,18 +125,19 @@ const isFieldImportant = function (field: any): Boolean {
   return importantFieldNames.indexOf(name) >= 0;
 };
 
-const REFERENCE_SEPARATOR = "->";
-export const parseFieldName = function (
-  fieldName: string
-): { reference: string; field: string } {
-  const pieces = fieldName.split(REFERENCE_SEPARATOR);
-  if (pieces.length === 1) {
-    return { reference: null, field: fieldName };
+const REFERENCE_SEPARATOR = ".";
+export const parseFieldName = function ({
+  profileReferenceObject,
+  key,
+}): { reference: string; fieldName: string } {
+  if (profileReferenceObject) {
+    const refName = `${profileReferenceObject}${REFERENCE_SEPARATOR}`;
+    if (key.startsWith(refName)) {
+      const end = key.substring(refName.length);
+      return { reference: profileReferenceObject, fieldName: end };
+    }
   }
-  if (pieces.length == 2) {
-    return { reference: pieces[0], field: pieces[1] };
-  }
-  throw new Error(`Invalid field name: ${fieldName}`);
+  return { reference: null, fieldName: key };
 };
 
 const extractFields = (
@@ -204,7 +205,7 @@ export const getFields = (
   profileMatchField: string,
   referenceInfo: any,
   profileReferenceMatchField: string,
-  profileReferenceField: string
+  profileReferenceObject: string
 ): {
   required: Array<{
     key: string;
@@ -225,7 +226,7 @@ export const getFields = (
     const refFields = extractFields(
       referenceInfo,
       profileReferenceMatchField,
-      profileReferenceField
+      profileReferenceObject
     );
     required = required.concat(refFields.required);
   }

@@ -31,6 +31,9 @@ const destinationOptions = {
   membershipObject: "CampaignMember",
   membershipProfileField: "ContactId",
   membershipGroupField: "CampaignId",
+  profileReferenceField: "AccountId",
+  profileReferenceObject: "Account",
+  profileReferenceMatchField: "Name",
 };
 const model = destinationModel(destinationOptions);
 
@@ -53,19 +56,29 @@ let groupId1 = null;
 const group2 = "(test) Churned";
 let groupId2 = null;
 
+const account1 = "(test) Big Account";
+let accountId1 = null;
+
+const account2 = "(test) Small Account";
+let accountId2 = null;
+
 const deleteProfileValues = [email1, email2, email3, newEmail1];
 const deleteGroupValues = [group1, group2];
+const deleteReferenceValues = [account1, account2];
 const {
   findId,
   getUser,
   findGroupId,
   getGroupMemberIds,
   cleanUp,
+  findReferenceId,
+  getReferencedUserIds,
 } = getModelHelpers({
   appOptions,
   model,
   deleteProfileValues,
   deleteGroupValues,
+  deleteReferenceValues,
 });
 
 describe("salesforce/sales-cloud/export-profiles/email", () => {
@@ -74,7 +87,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
   }, 1000 * 30);
 
   afterAll(async () => {
-    await cleanUp(true);
+    // await cleanUp(true);
   }, 1000 * 30);
 
   beforeEach(async () => {
@@ -85,6 +98,9 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     userId1 = await findId(email1);
     expect(userId1).toBe(null);
 
+    accountId1 = await findReferenceId(account1);
+    expect(accountId1).toBe(null);
+
     const { success, errors } = await exportBatch({
       appOptions,
       destinationOptions,
@@ -92,7 +108,11 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
         {
           profileGuid: guid1,
           oldProfileProperties: {},
-          newProfileProperties: { Email: email1, LastName: "Smith" },
+          newProfileProperties: {
+            Email: email1,
+            LastName: "Smith",
+            "Account.Name": account1,
+          },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
@@ -109,11 +129,22 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(user.Email).toBe(email1);
     expect(user.LastName).toBe("Smith");
     expect(user.FirstName).toBe(null);
+
+    accountId1 = await findReferenceId(account1);
+    expect(accountId1).toBeTruthy();
+    expect(user.AccountId).toEqual(accountId1);
+
+    const referenced = await getReferencedUserIds(accountId1);
+    expect(referenced.sort()).toEqual([userId1].sort());
+    expect(user.AccountId).toEqual(accountId1);
   });
 
   test("can add/edit user variables and do multiple users", async () => {
     userId2 = await findId(email2);
     expect(userId2).toBe(null);
+
+    accountId2 = await findReferenceId(account2);
+    expect(accountId2).toBe(null);
 
     const { success, errors } = await exportBatch({
       appOptions,
@@ -121,11 +152,16 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
       exports: [
         {
           profileGuid: guid1,
-          oldProfileProperties: { Email: email1, LastName: "Smith" },
+          oldProfileProperties: {
+            Email: email1,
+            LastName: "Smith",
+            "Account.Name": account1,
+          },
           newProfileProperties: {
             Email: email1,
             FirstName: "John",
             LastName: "Jones",
+            "Account.Name": account2,
           },
           oldGroups: [],
           newGroups: [],
@@ -135,7 +171,11 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
         {
           profileGuid: guid2,
           oldProfileProperties: {},
-          newProfileProperties: { Email: email2, LastName: "Jih" },
+          newProfileProperties: {
+            Email: email2,
+            LastName: "Jih",
+            "Account.Name": account2,
+          },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
@@ -144,6 +184,9 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
       ],
     });
 
+    accountId2 = await findReferenceId(account2);
+    expect(accountId2).toBeTruthy();
+
     let user;
     expect(errors).toBeNull();
     expect(success).toBe(true);
@@ -151,6 +194,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(user.Email).toBe(email1);
     expect(user.FirstName).toBe("John");
     expect(user.LastName).toBe("Jones");
+    expect(user.AccountId).toEqual(accountId2);
 
     expect(errors).toBeNull();
     expect(success).toBe(true);
@@ -159,6 +203,14 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     user = await getUser(userId2);
     expect(user.Email).toBe(email2);
     expect(user.LastName).toBe("Jih");
+    expect(user.AccountId).toEqual(accountId2);
+
+    let referenced;
+    referenced = await getReferencedUserIds(accountId1);
+    expect(referenced.sort()).toEqual([]);
+
+    referenced = await getReferencedUserIds(accountId2);
+    expect(referenced.sort()).toEqual([userId1, userId2].sort());
   });
 
   test("can clear user variables", async () => {
@@ -172,8 +224,13 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
             Email: email1,
             FirstName: "John",
             LastName: "Jones",
+            "Account.Name": account2,
           },
-          newProfileProperties: { Email: email1, LastName: "Simpson" },
+          newProfileProperties: {
+            Email: email1,
+            LastName: "Simpson",
+            "Account.Name": null,
+          },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
@@ -189,6 +246,11 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(user.Email).toBe(email1);
     expect(user.FirstName).toBe(null);
     expect(user.LastName).toBe("Simpson");
+    expect(user.AccountId).toEqual(null);
+
+    let referenced;
+    referenced = await getReferencedUserIds(accountId2);
+    expect(referenced.sort()).toEqual([userId2].sort());
   });
 
   test("it can change the email address", async () => {
@@ -198,11 +260,16 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
       exports: [
         {
           profileGuid: guid1,
-          oldProfileProperties: { Email: email1, LastName: "Brian" },
+          oldProfileProperties: {
+            Email: email1,
+            LastName: "Brian",
+            "Account.Name": null,
+          },
           newProfileProperties: {
             Email: newEmail1,
             FirstName: "Brian",
             LastName: "Chang",
+            "Account.Name": null,
           },
           oldGroups: [],
           newGroups: [],
@@ -211,8 +278,16 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
         },
         {
           profileGuid: guid2,
-          oldProfileProperties: { Email: email2, LastName: "Jih" },
-          newProfileProperties: { Email: email2, LastName: "Test" },
+          oldProfileProperties: {
+            Email: email2,
+            LastName: "Jih",
+            "Account.Name": account2,
+          },
+          newProfileProperties: {
+            Email: email2,
+            LastName: "Test",
+            "Account.Name": account2,
+          },
           oldGroups: [],
           newGroups: [],
           toDelete: false,
@@ -248,11 +323,13 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
             Email: newEmail1,
             FirstName: "Brian",
             LastName: "Chang",
+            "Account.Name": null,
           },
           newProfileProperties: {
             Email: email1, // changing back
             FirstName: "Brian",
             LastName: "Chang",
+            "Account.Name": null,
           },
           oldGroups: [],
           newGroups: [],
@@ -261,8 +338,16 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
         },
         {
           profileGuid: guid2,
-          oldProfileProperties: { Email: email2, LastName: "Test" },
-          newProfileProperties: { Email: email2, LastName: "Test" },
+          oldProfileProperties: {
+            Email: email2,
+            LastName: "Test",
+            "Account.Name": account2,
+          },
+          newProfileProperties: {
+            Email: email2,
+            LastName: "Test",
+            "Account.Name": account2,
+          },
           oldGroups: [],
           newGroups: [],
           toDelete: true,
@@ -289,6 +374,9 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
     expect(await findId(email2)).toBeNull();
     expect(await getUser(userId2)).toBeNull();
+
+    let referenced = await getReferencedUserIds(accountId2);
+    expect(referenced.sort()).toEqual([]);
   });
 
   test("is ok (but gives error) to delete a user that doesn't exist", async () => {
@@ -826,6 +914,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
           newProfileProperties: {
             Email: email1,
             LastName: "Test",
+            "Account.Name": account1,
           },
           oldGroups: [],
           newGroups: [],
@@ -842,6 +931,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
             Email: email2,
             LastName: "Simpson",
             email_field__c: "badone",
+            "Account.Name": account1,
           },
           oldGroups: [],
           newGroups: [],
@@ -855,6 +945,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
             Email: email3,
             LastName: "King",
             email_field__c: "valid@grouparoo.com",
+            "Account.Name": account1,
           },
           oldGroups: [],
           newGroups: [],
@@ -876,11 +967,13 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(user.Email).toEqual(email1);
     expect(user.LastName).toEqual("Test");
     expect(user.email_field__c).toEqual(null);
+    expect(user.AccountId).toEqual(accountId1);
 
     user = await getUser(userId2);
     expect(user.Email).toEqual(email2);
     expect(user.LastName).toEqual("Jones"); // not updated
     expect(user.email_field__c).toEqual(null);
+    expect(user.AccountId).toEqual(null); // not updated
 
     userId3 = await findId(email3);
     expect(userId3).toBeTruthy();
@@ -888,5 +981,9 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(user.Email).toEqual(email3);
     expect(user.LastName).toEqual("King"); // created
     expect(user.email_field__c).toEqual("valid@grouparoo.com");
+    expect(user.AccountId).toEqual(accountId1);
+
+    const referenced = await getReferencedUserIds(accountId1);
+    expect(referenced.sort()).toEqual([userId1, userId3].sort());
   });
 });

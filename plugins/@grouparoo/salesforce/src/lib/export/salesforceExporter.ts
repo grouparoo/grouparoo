@@ -10,6 +10,9 @@ import { ErrorWithProfileGuid, SimpleAppOptions } from "@grouparoo/core";
 import { cache } from "../cache";
 import { cacheKeyFromClient } from "../connect";
 import { SalesforceModel } from "./model";
+import { parseFieldName } from "./mapping";
+
+const idType = "Id";
 
 // return an object that you can connect with
 const getClient: BatchFunctions["getClient"] = async ({ config }) => {
@@ -66,11 +69,213 @@ const deleteByDestinationIds: BatchFunctions["deleteByDestinationIds"] = async (
   const results = await client.sobject(profileObject).del(payload);
   processResults(results, users, ResultType.USER);
 };
+interface ReferenceObject {
+  properties: {
+    [key: string]: any;
+  };
+  foreignKeyValue: string;
+  row: any;
+}
+interface ReferenceMap {
+  [refKey: string]: ReferenceObject[];
+}
 
-function buildPayload(exportedProfile: BatchExport, config: BatchConfig): any {
-  const { profileMatchField } = config.data;
+async function buildPayload(
+  client: any,
+  users: BatchExport[],
+  config: BatchConfig
+): Promise<any[]> {
+  const { profileReferenceMatchField } = config.data;
+  const out = [];
+  const refMap: ReferenceMap = {};
+  for (const user of users) {
+    const { row, referenceData } = buildUserPayload(user, config);
+    if (profileReferenceMatchField) {
+      const foreignKeyValue = normalizeReferenceKeyValue({
+        keyValue: referenceData[profileReferenceMatchField],
+        config,
+      });
+      const refObject = {
+        properties: referenceData,
+        foreignKeyValue,
+        row,
+      };
+      const refKey = (foreignKeyValue || "").toString().trim().toLowerCase();
+      refMap[refKey] = refMap[refKey] || [];
+      refMap[refKey].push(refObject);
+    }
+
+    out.push(row);
+  }
+
+  await createAndUpdateReferences(client, refMap, config);
+  return out;
+}
+
+function updateReferences(
+  refObjects: ReferenceObject[],
+  refId: string,
+  config: BatchConfig
+) {
+  const { profileReferenceField } = config.data;
+  for (const refObject of refObjects) {
+    const { row } = refObject;
+    row[profileReferenceField] = refId;
+  }
+}
+
+async function createAndUpdateReferences(
+  client: any,
+  refMap: ReferenceMap,
+  config: BatchConfig
+) {
+  const {
+    profileReferenceField,
+    profileReferenceObject,
+    profileReferenceMatchField,
+  } = config.data;
   const idType = "Id";
-  const user: any = {};
+
+  if (!profileReferenceField) {
+    return;
+  }
+
+  const refKeys = Object.keys(refMap);
+  if (refKeys.length === 0) {
+    return;
+  }
+
+  const updatedKeys = new Set();
+  const foreignKeys = new Set();
+  for (const refKey of refKeys) {
+    const refObjects = refMap[refKey];
+    if (refKey.length === 0) {
+      updateReferences(refObjects, null, config);
+      updatedKeys.add(refKey);
+    } else {
+      for (const refObject of refObjects) {
+        foreignKeys.add(refObject.foreignKeyValue);
+      }
+    }
+  }
+
+  if (foreignKeys.size === 0) {
+    return;
+  }
+  const query = { [profileReferenceMatchField]: Array.from(foreignKeys) };
+  const fields = [idType, profileReferenceMatchField];
+  //console.log("sending reference query", query, fields);
+  const records = await client
+    .sobject(profileReferenceObject)
+    .find(query, fields)
+    .execute();
+
+  for (const record of records) {
+    const value = normalizeReferenceKeyValue({
+      keyValue: record[profileReferenceMatchField],
+      config,
+    })
+      .toString()
+      .trim()
+      .toLowerCase();
+    if (updatedKeys.has(value)) {
+      continue;
+    }
+    const id = record[idType]; // id of the reference object
+    const foundRows = refMap[value]; // key of the reference object
+    if (foundRows) {
+      updateReferences(foundRows, id, config);
+      updatedKeys.add(value);
+    } else {
+      // Salesforce result found but didn't have key. not sure what that means
+      //console.log("reference key not found!", { value, refMap, record });
+    }
+  }
+
+  // TODO: should we do this user by user somehow? have to pass that exportedProfile through and set error
+  const payload = [];
+  const createKeys = [];
+  // one for each key
+  for (const refKey of refKeys) {
+    if (updatedKeys.has(refKey)) {
+      continue; // already updated
+    }
+    const refObjects = refMap[refKey];
+    if (refObjects.length === 0) {
+      continue;
+    }
+    createKeys.push(refKey);
+    payload.push(buildReferenceCreatePayload(refObjects, config));
+  }
+
+  if (payload.length === 0) {
+    return; // all done
+  }
+  //console.log("sending reference create", payload);
+  const results = await client
+    .sobject(profileReferenceObject)
+    .create(payload, { allOrNone: true });
+  for (let i = 0; i < results.length; i++) {
+    // I'm assuming these are in the same order. That seems like the only option.
+    const refKey = createKeys[i];
+    const result = results[i];
+
+    let id = (result.id || "").toString();
+    if (id.length === 0) {
+      throw new Error(
+        `Missing reference id (${refKey}): ${JSON.stringify(result)}`
+      );
+    }
+    const foundRows = refMap[refKey];
+    updateReferences(foundRows, id, config);
+    updatedKeys.add(refKey);
+  }
+}
+
+function buildReferenceCreatePayload(
+  refObjects: ReferenceObject[],
+  config: BatchConfig
+) {
+  const {
+    profileReferenceField,
+    profileReferenceObject,
+    profileReferenceMatchField,
+  } = config.data;
+
+  // we could do a lot here (most common one?) but for now we'll just take the first
+  const refObject = refObjects[0];
+  const { properties, foreignKeyValue } = refObject;
+  const row: any = {};
+
+  row[profileReferenceMatchField] = foreignKeyValue;
+  const allKeys = Object.keys(properties);
+  for (const fieldName of allKeys) {
+    const value = properties[fieldName];
+    if ([idType, profileReferenceMatchField].includes(fieldName)) {
+      continue; // set above
+    }
+
+    const field = config.data.referenceFields[fieldName];
+    if (field) {
+      if (!value) {
+        row[fieldName] = field.defaultValue;
+      } else {
+        row[fieldName] = formatVar(value);
+      }
+    } else {
+      // otherwise, it's no longer a field (got deleted from Salesforce): let it go
+      //console.log("Unknown reference field", fieldName, value);
+    }
+  }
+  return row;
+}
+
+function buildUserPayload(
+  exportedProfile: BatchExport,
+  config: BatchConfig
+): { row: any; referenceData: any } {
+  const { profileMatchField, profileReferenceObject } = config.data;
+  const row: any = {};
   const {
     destinationId,
     oldProfileProperties,
@@ -78,34 +283,44 @@ function buildPayload(exportedProfile: BatchExport, config: BatchConfig): any {
     foreignKeyValue,
   } = exportedProfile;
 
-  user[profileMatchField] = foreignKeyValue;
+  row[profileMatchField] = foreignKeyValue;
   if (destinationId) {
-    user[idType] = destinationId;
+    row[idType] = destinationId;
   }
 
+  const referenceData = {};
   // set profile properties, including old ones
   const newKeys = Object.keys(newProfileProperties);
   const oldKeys = Object.keys(oldProfileProperties);
   const allKeys = oldKeys.concat(newKeys);
-  for (const key of allKeys) {
-    if ([idType, profileMatchField].includes(key)) {
+  for (const keyName of allKeys) {
+    const value = newProfileProperties[keyName]; // includes clearing out removed ones (by setting to null)
+    const { reference, fieldName } = parseFieldName({
+      profileReferenceObject,
+      key: keyName,
+    });
+    if (reference) {
+      referenceData[fieldName] = value;
+      continue;
+    }
+    if ([idType, profileMatchField].includes(fieldName)) {
       continue; // set above
     }
 
-    const value = newProfileProperties[key]; // includes clearing out removed ones (by setting to null)
-    const field = config.data.profileFields[key];
+    const field = config.data.profileFields[fieldName];
     if (field) {
       if (!value) {
-        user[key] = field.defaultValue;
+        row[fieldName] = field.defaultValue;
       } else {
-        user[key] = formatVar(value);
+        row[fieldName] = formatVar(value);
       }
     } else {
       // otherwise, it's no longer a field (got deleted from Salesforce): let it go
+      //console.log("Unknown profile field", keyName, fieldName, value);
     }
   }
 
-  return user;
+  return { row, referenceData };
 }
 
 function formatVar(value) {
@@ -191,10 +406,7 @@ const updateByDestinationIds: BatchFunctions["updateByDestinationIds"] = async (
   config,
 }) => {
   const { profileObject } = config.data;
-  const payload = [];
-  for (const user of users) {
-    payload.push(buildPayload(user, config));
-  }
+  const payload = await buildPayload(client, users, config);
 
   //console.log("sending update", payload);
   const results = await client.sobject(profileObject).update(payload);
@@ -209,10 +421,7 @@ const createByForeignKeyAndSetDestinationIds: BatchFunctions["createByForeignKey
   config,
 }) => {
   const { profileObject } = config.data;
-  const payload = [];
-  for (const user of users) {
-    payload.push(buildPayload(user, config));
-  }
+  const payload = await buildPayload(client, users, config);
 
   // upsert doesn't have a HTTP batch api (even though jsforce does), so use create
   //console.log("sending create", payload);
@@ -275,7 +484,6 @@ const removeFromGroups: BatchFunctions["removeFromGroups"] = async ({
     const profiles = groupMap[name] || [];
     const destIds = profiles.map((pro) => pro.destinationId);
     if (destIds.length > 0) {
-      const idType = "Id";
       const query = {
         [membershipGroupField]: id,
         [membershipProfileField]: destIds,
@@ -316,15 +524,20 @@ async function getListId(
   listName: string,
   model: SalesforceData
 ): Promise<number> {
-  const { groupObject } = model;
+  const { groupObject, groupNameField } = model;
   const uniqKey = cacheKeyFromClient(client);
-  const cacheKey = `${uniqKey}:list-${groupObject}-${listName}:key`;
-  const lockKey = `${uniqKey}:list-${groupObject}-${listName}:lock`;
+  const cacheKey = `${uniqKey}:list-${groupObject}-${groupNameField}-${listName}:key`;
+  const lockKey = `${uniqKey}:list-${groupObject}-${groupNameField}-${listName}:lock`;
   const cacheDuration = 1000 * 60 * 30; // 30 minutes
 
   const listId = await cache({ cacheKey, lockKey, cacheDuration }, async () => {
     // not cached find it
-    let destId = await findListByName(client, listName, model);
+    let destId = await findObjectIdByField({
+      client,
+      objectName: groupObject,
+      objectField: groupNameField,
+      fieldValue: listName,
+    });
     if (destId) {
       return destId;
     }
@@ -333,16 +546,15 @@ async function getListId(
   });
   return listId;
 }
-async function findListByName(
+async function findObjectIdByField({
   client,
-  listName: string,
-  model: SalesforceData
-): Promise<number> {
-  const { groupObject, groupNameField } = model;
-  const query = { [groupNameField]: listName };
-  const idType = "Id";
+  objectName,
+  objectField,
+  fieldValue,
+}): Promise<number> {
+  const query = { [objectField]: fieldValue };
   const fields = [idType];
-  const results = await client.sobject(groupObject).find(query, fields);
+  const results = await client.sobject(objectName).find(query, fields);
   if (results.length === 0) {
     return null;
   }
@@ -377,9 +589,17 @@ const normalizeGroupName: BatchFunctions["normalizeGroupName"] = ({
 }) => {
   return groupName.toString().trim();
 };
+const normalizeReferenceKeyValue = ({ keyValue, config }) => {
+  if (!keyValue) {
+    return null;
+  }
+  // TODO: consider using config.profileFields to check for things
+  return keyValue.toString().trim();
+};
 
 export interface SalesforceData extends SalesforceModel {
   profileFields: any;
+  referenceFields: any;
 }
 export interface ExportSalesforceMethod {
   (argument: {
@@ -405,8 +625,12 @@ export const exportSalesforceBatch: ExportSalesforceMethod = async ({
   const findSize = 200;
 
   const profileFields = await getFieldMap(connection, model.profileObject);
+  const referenceFields = model.profileReferenceObject
+    ? await getFieldMap(connection, model.profileReferenceObject)
+    : null;
   const data: SalesforceData = Object.assign({}, model, {
     profileFields,
+    referenceFields,
   });
   return exportProfilesInBatch(
     exports,

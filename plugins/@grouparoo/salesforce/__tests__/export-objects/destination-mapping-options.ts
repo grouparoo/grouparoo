@@ -18,8 +18,6 @@ require("./../fixtures/export-objects/destination-mapping-options");
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
 
-// TODO: reference work
-
 const appOptions = loadAppOptions(newNock);
 
 describe("salesforce/sales-cloud/destinationMappingOptions", () => {
@@ -127,7 +125,7 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     expect(group.plural).toBe("Salesforce Topics");
   });
 
-  test("can load destinationMappingOptions from Contact Custom", async () => {
+  test("can load destinationMappingOptions from Contact Custom and Reference", async () => {
     const destinationOptions = {
       profileObject: "Contact",
       profileMatchField: "Custom_External_ID__c",
@@ -136,6 +134,9 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
       membershipObject: "CampaignMembership",
       membershipProfileField: "ContactId",
       membershipGroupField: "CampaignId",
+      profileReferenceField: "AccountId",
+      profileReferenceObject: "Account",
+      profileReferenceMatchField: "AccountNumber",
     };
     const options = await destinationMappingOptions({
       appOptions,
@@ -148,12 +149,18 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     const { required, known } = profilePropertyRules;
     const { profilePropertyRule, group } = labels;
 
-    expect(required.length).toBe(2);
+    expect(required.length).toBe(4);
     let field;
     field = required.find((f) => f.key === "Custom_External_ID__c");
     expect(field.type).toBe("string");
 
     field = required.find((f) => f.key === "LastName");
+    expect(field.type).toBe("string");
+
+    field = required.find((f) => f.key === "Account.Name");
+    expect(field.type).toBe("string");
+
+    field = required.find((f) => f.key === "Account.AccountNumber");
     expect(field.type).toBe("string");
 
     field = known.find((f) => f.key === "Email");
