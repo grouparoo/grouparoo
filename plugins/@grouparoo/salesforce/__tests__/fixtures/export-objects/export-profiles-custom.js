@@ -59,7 +59,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
     "X-B3-SpanId",
     "4b7c87bbeb39c718",
     "X-B3-Sampled",
-    "0", 
+    "0",
     "Cache-Control",
     "no-cache,must-revalidate,max-age=0,no-store,private",
     "Set-Cookie",
