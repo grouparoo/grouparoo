@@ -12,6 +12,10 @@ enum BatchAction {
   ForeignKeyChange = "FOREIGNKEYCHANGE",
   Update = "UPDATE",
 }
+export enum GroupBatchMode {
+  WithinGroup = "WITHINGROUP",
+  TotalMembers = "TOTALMEMBERS",
+}
 
 export interface BatchExport extends ExportedProfile {
   profileGuid: string;
@@ -34,6 +38,7 @@ export declare type GroupNameListMap = { [groupName: string]: BatchExport[] };
 export interface BatchConfig {
   batchSize: number; // max number to update, create, delete
   findSize: number; // max query parameters to send to findAndSetDestinationIds
+  groupMode: GroupBatchMode;
   foreignKey: string;
   connection?: any;
   app?: App;
@@ -266,12 +271,6 @@ async function updateGroups(
 ) {
   const removal: GroupNameListMap = {};
   const addition: GroupNameListMap = {};
-  const removalMap: DestinationIdMap = {};
-  const additionMap: DestinationIdMap = {};
-
-  // TODO: how to handle batching?
-  // Use batchSize or some other number?
-  // in either case, does it apply per user or per group (users being added/removed) or number of groups?
 
   for (const exportedProfile of exports) {
     if (exportedProfile.error) {
@@ -285,33 +284,95 @@ async function updateGroups(
     for (const list of exportedProfile.removedGroups) {
       removal[list] = removal[list] || [];
       removal[list].push(exportedProfile);
-      removalMap[exportedProfile.destinationId] = exportedProfile;
     }
     for (const list of exportedProfile.addedGroups) {
       addition[list] = addition[list] || [];
       addition[list].push(exportedProfile);
-      additionMap[exportedProfile.destinationId] = exportedProfile;
     }
   }
 
   if (Object.keys(removal).length > 0) {
-    await functions.removeFromGroups({
-      client,
-      users: Object.values(removalMap),
-      groupMap: removal,
-      destIdMap: removalMap,
-      config,
-    });
+    await batchGroups(client, GroupAction.Remove, removal, functions, config);
   }
 
   if (Object.keys(addition).length > 0) {
-    await functions.addToGroups({
-      client,
-      users: Object.values(additionMap),
-      groupMap: addition,
-      destIdMap: additionMap,
-      config,
+    await batchGroups(client, GroupAction.Add, addition, functions, config);
+  }
+}
+
+enum GroupAction {
+  Add = "ADD",
+  Remove = "REMOVE",
+}
+async function batchGroups(
+  client: any,
+  action: GroupAction,
+  groupMap: GroupNameListMap,
+  functions: BatchFunctions,
+  config: BatchConfig
+) {
+  let currentGroupMap: GroupNameListMap = {};
+  let currentDeskIdMap: DestinationIdMap = {};
+  let currentCount = 0;
+  let hasData = false;
+
+  const batches: Array<{
+    groupMap: GroupNameListMap;
+    destIdMap: DestinationIdMap;
+  }> = [];
+
+  for (const name in groupMap) {
+    if (config.groupMode === GroupBatchMode.WithinGroup) {
+      // the count is per group
+      currentCount = 0;
+    }
+    const users = groupMap[name] || [];
+    for (const user of users) {
+      if (currentCount > config.batchSize) {
+        batches.push({
+          groupMap: currentGroupMap,
+          destIdMap: currentDeskIdMap,
+        });
+        currentGroupMap = {};
+        currentDeskIdMap = {};
+        currentCount = 0;
+        hasData = false;
+      }
+
+      currentGroupMap[name] = currentGroupMap[name] || [];
+      currentDeskIdMap[user.destinationId] = user;
+      currentCount++;
+      hasData = true;
+    }
+  }
+
+  if (hasData) {
+    batches.push({
+      groupMap: currentGroupMap,
+      destIdMap: currentDeskIdMap,
     });
+  }
+
+  for (const { groupMap, destIdMap } of batches) {
+    if (action === GroupAction.Add) {
+      await functions.addToGroups({
+        client,
+        users: Object.values(destIdMap),
+        groupMap,
+        destIdMap,
+        config,
+      });
+    } else if (action === GroupAction.Remove) {
+      await functions.removeFromGroups({
+        client,
+        users: Object.values(destIdMap),
+        groupMap,
+        destIdMap,
+        config,
+      });
+    } else {
+      throw new Error(`Unknown GroupAction: ${action}`);
+    }
   }
 }
 

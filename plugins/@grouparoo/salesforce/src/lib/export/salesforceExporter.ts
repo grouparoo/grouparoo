@@ -1,14 +1,14 @@
-import { connect } from "../connect";
+import { ErrorWithProfileGuid, SimpleAppOptions } from "@grouparoo/core";
+import { connect, cacheKeyFromClient } from "../connect";
+import { cache } from "../cache";
 import { getFieldMap } from "../objects";
 import {
   exportProfilesInBatch,
   BatchFunctions,
   BatchConfig,
   BatchExport,
+  GroupBatchMode,
 } from "../batchHelper";
-import { ErrorWithProfileGuid, SimpleAppOptions } from "@grouparoo/core";
-import { cache } from "../cache";
-import { cacheKeyFromClient } from "../connect";
 import { SalesforceModel } from "./model";
 import { parseFieldName } from "./mapping";
 
@@ -431,7 +431,6 @@ const addToGroups: BatchFunctions["addToGroups"] = async ({
     membershipProfileField,
     membershipGroupField,
   } = config.data;
-  // TODO: still need to decide about batching here
   const payload = [];
   const users = [];
   for (const name in groupMap) {
@@ -466,7 +465,6 @@ const removeFromGroups: BatchFunctions["removeFromGroups"] = async ({
     membershipProfileField,
     membershipGroupField,
   } = config.data;
-  // TODO: still need to decide about batching here
   let payload = []; // to delete
   const users = [];
   for (const name in groupMap) {
@@ -638,6 +636,7 @@ export const exportSalesforceBatch: ExportSalesforceMethod = async ({
     {
       findSize,
       batchSize,
+      groupMode: GroupBatchMode.TotalMembers,
       appOptions,
       connection,
       data,
