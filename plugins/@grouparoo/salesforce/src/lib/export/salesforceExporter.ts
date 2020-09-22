@@ -252,11 +252,7 @@ function buildReferenceCreatePayload(
 
     const field = config.data.referenceFields[fieldName];
     if (field) {
-      if (!value) {
-        row[fieldName] = field.defaultValue;
-      } else {
-        row[fieldName] = formatVar(value);
-      }
+      row[fieldName] = formatAndDefaultValue(value, field);
     } else {
       // otherwise, it's no longer a field (got deleted from Salesforce): let it go
       //console.log("Unknown reference field", fieldName, value);
@@ -304,11 +300,7 @@ function buildUserPayload(
 
     const field = config.data.profileFields[fieldName];
     if (field) {
-      if (!value) {
-        row[fieldName] = field.defaultValue;
-      } else {
-        row[fieldName] = formatVar(value);
-      }
+      row[fieldName] = formatAndDefaultValue(value, field);
     } else {
       // otherwise, it's no longer a field (got deleted from Salesforce): let it go
       //console.log("Unknown profile field", keyName, fieldName, value);
@@ -318,11 +310,15 @@ function buildUserPayload(
   return { row, referenceData };
 }
 
-function formatVar(value) {
+function formatAndDefaultValue(value, field) {
   if (!value) {
+    if (field) {
+      return field.defaultValue;
+    }
     return null;
   }
-  // Dates ok to send by themself
+
+  value = truncateIfString(value, field);
   return value;
 }
 enum ResultType {
@@ -580,13 +576,10 @@ const normalizeReferenceKeyValue = ({ keyValue, config }) => {
   return normalizeValue({ keyValue, field });
 };
 
-function normalizeValue({ keyValue, field }) {
-  if (!keyValue) {
-    return null;
-  }
-  let value = keyValue.toString().trim();
+function truncateIfString(value: any, field): any {
   if (field) {
     if (field.type === "email" || field.type === "string") {
+      value = value.toString().trim();
       if (field.length && field.length > 0) {
         // truncate like it will in the salesforce db
         value = value.substring(0, field.length);
@@ -594,6 +587,13 @@ function normalizeValue({ keyValue, field }) {
     }
   }
   return value;
+}
+function normalizeValue({ keyValue, field }) {
+  if (!keyValue) {
+    return null;
+  }
+  const value = keyValue.toString().trim();
+  return truncateIfString(value, field);
 }
 
 export interface SalesforceData extends SalesforceModel {

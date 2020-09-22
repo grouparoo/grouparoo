@@ -87,7 +87,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
   }, 1000 * 30);
 
   afterAll(async () => {
-    // await cleanUp(true);
+    await cleanUp(true);
   }, 1000 * 30);
 
   beforeEach(async () => {
