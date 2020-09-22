@@ -2,7 +2,7 @@ import { helper } from "../src";
 import { Log } from "@grouparoo/core";
 let actionhero;
 
-describe("model/log", () => {
+describe.skip("model/log", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
