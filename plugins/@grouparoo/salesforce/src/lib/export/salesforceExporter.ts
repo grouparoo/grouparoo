@@ -33,14 +33,12 @@ const findAndSetDestinationIds: BatchFunctions["findAndSetDestinationIds"] = asy
 
   const query = { [profileMatchField]: foreignKeys };
   const fields = [idType, profileMatchField];
-  //console.log("sending query", query, fields);
   const records = await client
     .sobject(profileObject)
     .find(query, fields)
     .execute();
 
   for (const record of records) {
-    //console.log("record", record);
     const value = normalizeForeignKeyValue({
       keyValue: record[profileMatchField],
       config,
@@ -65,7 +63,6 @@ const deleteByDestinationIds: BatchFunctions["deleteByDestinationIds"] = async (
 }) => {
   const { profileObject } = config.data;
   const payload = users.map((user) => user.destinationId);
-  //console.log("sending delete", payload);
   const results = await client.sobject(profileObject).del(payload);
   processResults(results, users, ResultType.USER);
 };
@@ -164,7 +161,6 @@ async function createAndUpdateReferences(
   }
   const query = { [profileReferenceMatchField]: Array.from(foreignKeys) };
   const fields = [idType, profileReferenceMatchField];
-  //console.log("sending reference query", query, fields);
   const records = await client
     .sobject(profileReferenceObject)
     .find(query, fields)
@@ -211,7 +207,6 @@ async function createAndUpdateReferences(
   if (payload.length === 0) {
     return; // all done
   }
-  //console.log("sending reference create", payload);
   const results = await client
     .sobject(profileReferenceObject)
     .create(payload, { allOrNone: true });
@@ -382,7 +377,6 @@ function processResults(results, users, type: ResultType) {
     // I'm assuming these are in the same order. That seems like the only option.
     const user = users[i];
     const result = results[i];
-    //console.log("result", result);
     try {
       const id = processResult(result, user.profileGuid, type);
       if (type === ResultType.USER) {
@@ -408,9 +402,7 @@ const updateByDestinationIds: BatchFunctions["updateByDestinationIds"] = async (
   const { profileObject } = config.data;
   const payload = await buildPayload(client, users, config);
 
-  //console.log("sending update", payload);
   const results = await client.sobject(profileObject).update(payload);
-  //console.log("update results!");
   processResults(results, users, ResultType.USER);
 };
 
@@ -424,7 +416,6 @@ const createByForeignKeyAndSetDestinationIds: BatchFunctions["createByForeignKey
   const payload = await buildPayload(client, users, config);
 
   // upsert doesn't have a HTTP batch api (even though jsforce does), so use create
-  //console.log("sending create", payload);
   const results = await client.sobject(profileObject).create(payload);
   processResults(results, users, ResultType.USER);
 };
@@ -459,7 +450,6 @@ const addToGroups: BatchFunctions["addToGroups"] = async ({
     return;
   }
 
-  //console.log("adding group", payload);
   const results = await client.sobject(membershipObject).create(payload);
   processResults(results, users, ResultType.ADDGROUP);
 };
@@ -514,7 +504,6 @@ const removeFromGroups: BatchFunctions["removeFromGroups"] = async ({
   if (payload.length === 0) {
     return;
   }
-  //console.log("removing group", payload);
   const results = await client.sobject(membershipObject).del(payload);
   processResults(results, users, ResultType.REMOVEGROUP);
 };
@@ -577,11 +566,9 @@ const normalizeForeignKeyValue: BatchFunctions["normalizeForeignKeyValue"] = ({
   keyValue,
   config,
 }) => {
-  if (!keyValue) {
-    return null;
-  }
-  // TODO: consider using config.profileFields to check for email
-  return keyValue.toString().trim();
+  const { profileMatchField } = config.data;
+  const field = config.data.profileFields[profileMatchField];
+  return normalizeValue({ keyValue, field });
 };
 // mess with the names of groups (tags with no spaces, for example)
 const normalizeGroupName: BatchFunctions["normalizeGroupName"] = ({
@@ -590,12 +577,26 @@ const normalizeGroupName: BatchFunctions["normalizeGroupName"] = ({
   return groupName.toString().trim();
 };
 const normalizeReferenceKeyValue = ({ keyValue, config }) => {
+  const { profileReferenceMatchField } = config.data;
+  const field = config.data.referenceFields[profileReferenceMatchField];
+  return normalizeValue({ keyValue, field });
+};
+
+function normalizeValue({ keyValue, field }) {
   if (!keyValue) {
     return null;
   }
-  // TODO: consider using config.profileFields to check for things
-  return keyValue.toString().trim();
-};
+  let value = keyValue.toString().trim();
+  if (field) {
+    if (field.type === "email" || field.type === "string") {
+      if (field.length && field.length > 0) {
+        // truncate like it will in the salesforce db
+        value = value.substring(0, field.length);
+      }
+    }
+  }
+  return value;
+}
 
 export interface SalesforceData extends SalesforceModel {
   profileFields: any;
