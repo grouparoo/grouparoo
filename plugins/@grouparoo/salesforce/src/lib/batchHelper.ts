@@ -340,6 +340,7 @@ async function batchGroups(
       }
 
       currentGroupMap[name] = currentGroupMap[name] || [];
+      currentGroupMap[name].push(user);
       currentDeskIdMap[user.destinationId] = user;
       currentCount++;
       hasData = true;
