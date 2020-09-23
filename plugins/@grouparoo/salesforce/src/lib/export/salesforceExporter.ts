@@ -70,8 +70,9 @@ interface ReferenceObject {
   properties: {
     [key: string]: any;
   };
-  foreignKeyValue: string;
+  refForeignKeyValue: string;
   row: any;
+  user: BatchExport;
 }
 interface ReferenceMap {
   [refKey: string]: ReferenceObject[];
@@ -81,32 +82,44 @@ async function buildPayload(
   client: any,
   users: BatchExport[],
   config: BatchConfig
-): Promise<any[]> {
+): Promise<{ usersInPayload: BatchExport[]; payload: any[] }> {
   const { profileReferenceMatchField } = config.data;
-  const out = [];
   const refMap: ReferenceMap = {};
+  const toUpdate: ReferenceObject[] = [];
   for (const user of users) {
     const { row, referenceData } = buildUserPayload(user, config);
+    const refObject: ReferenceObject = {
+      properties: referenceData,
+      refForeignKeyValue: null,
+      row,
+      user,
+    };
     if (profileReferenceMatchField) {
       const foreignKeyValue = normalizeReferenceKeyValue({
         keyValue: referenceData[profileReferenceMatchField],
         config,
       });
-      const refObject = {
-        properties: referenceData,
-        foreignKeyValue,
-        row,
-      };
+      refObject.refForeignKeyValue = foreignKeyValue;
+
       const refKey = (foreignKeyValue || "").toString().trim().toLowerCase();
       refMap[refKey] = refMap[refKey] || [];
       refMap[refKey].push(refObject);
     }
-
-    out.push(row);
+    toUpdate.push(refObject);
   }
 
-  await createAndUpdateReferences(client, refMap, config);
-  return out;
+  await createAndUpdateReferences(client, toUpdate, refMap, config);
+
+  const payload = [];
+  const usersInPayload: BatchExport[] = [];
+  for (const refObject of toUpdate) {
+    const user = refObject.user;
+    if (!user.error) {
+      payload.push(refObject.row);
+      usersInPayload.push(refObject.user);
+    }
+  }
+  return { payload, usersInPayload };
 }
 
 function updateReferences(
@@ -123,6 +136,7 @@ function updateReferences(
 
 async function createAndUpdateReferences(
   client: any,
+  toUpdate: ReferenceObject[],
   refMap: ReferenceMap,
   config: BatchConfig
 ) {
@@ -151,7 +165,7 @@ async function createAndUpdateReferences(
       updatedKeys.add(refKey);
     } else {
       for (const refObject of refObjects) {
-        foreignKeys.add(refObject.foreignKeyValue);
+        foreignKeys.add(refObject.refForeignKeyValue);
       }
     }
   }
@@ -188,7 +202,6 @@ async function createAndUpdateReferences(
     }
   }
 
-  // TODO: should we do this user by user somehow? have to pass that exportedProfile through and set error
   const payload = [];
   const createKeys = [];
   // one for each key
@@ -207,23 +220,29 @@ async function createAndUpdateReferences(
   if (payload.length === 0) {
     return; // all done
   }
-  const results = await client
-    .sobject(profileReferenceObject)
-    .create(payload, { allOrNone: true });
+  const results = await client.sobject(profileReferenceObject).create(payload);
   for (let i = 0; i < results.length; i++) {
     // I'm assuming these are in the same order. That seems like the only option.
     const refKey = createKeys[i];
+    const refObjects = refMap[refKey] || [];
     const result = results[i];
 
-    let id = (result.id || "").toString();
-    if (id.length === 0) {
-      throw new Error(
-        `Missing reference id (${refKey}): ${JSON.stringify(result)}`
-      );
+    try {
+      let id = (result.id || "").toString();
+      if (id.length === 0) {
+        throw new Error(
+          `Missing reference id (${refKey}): ${JSON.stringify(result)}`
+        );
+      }
+      const foundRows = refMap[refKey];
+      updateReferences(foundRows, id, config);
+      updatedKeys.add(refKey);
+    } catch (error) {
+      for (const refObject of refObjects) {
+        // each has an error
+        refObject.user.error = error;
+      }
     }
-    const foundRows = refMap[refKey];
-    updateReferences(foundRows, id, config);
-    updatedKeys.add(refKey);
   }
 }
 
@@ -239,10 +258,10 @@ function buildReferenceCreatePayload(
 
   // we could do a lot here (most common one?) but for now we'll just take the first
   const refObject = refObjects[0];
-  const { properties, foreignKeyValue } = refObject;
+  const { properties, refForeignKeyValue } = refObject;
   const row: any = {};
 
-  row[profileReferenceMatchField] = foreignKeyValue;
+  row[profileReferenceMatchField] = refForeignKeyValue;
   const allKeys = Object.keys(properties);
   for (const fieldName of allKeys) {
     const value = properties[fieldName];
@@ -396,10 +415,10 @@ const updateByDestinationIds: BatchFunctions["updateByDestinationIds"] = async (
   config,
 }) => {
   const { profileObject } = config.data;
-  const payload = await buildPayload(client, users, config);
+  const { payload, usersInPayload } = await buildPayload(client, users, config);
 
   const results = await client.sobject(profileObject).update(payload);
-  processResults(results, users, ResultType.USER);
+  processResults(results, usersInPayload, ResultType.USER);
 };
 
 // usually this is creating them. ideally upsert. set the destinationId on each when done
@@ -409,11 +428,11 @@ const createByForeignKeyAndSetDestinationIds: BatchFunctions["createByForeignKey
   config,
 }) => {
   const { profileObject } = config.data;
-  const payload = await buildPayload(client, users, config);
+  const { payload, usersInPayload } = await buildPayload(client, users, config);
 
-  // upsert doesn't have a HTTP batch api (even though jsforce does), so use create
+  // upsert doesn't have a HTTP batch api (even though jsforce does and fakes it), so use create
   const results = await client.sobject(profileObject).create(payload);
-  processResults(results, users, ResultType.USER);
+  processResults(results, usersInPayload, ResultType.USER);
 };
 
 // make sure these user are in these groups (keys of map are group names)

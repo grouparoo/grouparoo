@@ -65,9 +65,18 @@ const accountNum2 = "12345678901234567890123456789012345678901234567890";
 const accountNum2Truncated = accountNum2.substring(0, 40);
 let accountId2 = null;
 
+const account3 = null; // testing null name
+const accountNum3 = "shouldnotexist";
+let accountId3 = null;
+
 const deleteProfileValues = [custom1, custom2, custom3];
 const deleteGroupValues = [group1, group2];
-const deleteReferenceValues = [accountNum1, accountNum2, accountNum2Truncated];
+const deleteReferenceValues = [
+  accountNum1,
+  accountNum2,
+  accountNum2Truncated,
+  accountNum3,
+];
 const {
   findId,
   getUser,
@@ -145,7 +154,7 @@ describe("salesforce/sales-cloud/export-profiles/reference", () => {
     expect(account.Name).toEqual(account1);
   });
 
-  test("it handles long account numbers and do it's best", async () => {
+  test("it handles long account numbers and does its best", async () => {
     userId2 = await findId(custom2);
     expect(userId2).toBe(null);
 
@@ -201,7 +210,12 @@ describe("salesforce/sales-cloud/export-profiles/reference", () => {
       exports: [
         {
           profileGuid: guid1,
-          oldProfileProperties: {},
+          oldProfileProperties: {
+            Custom_External_ID__c: custom1,
+            LastName: "Smith",
+            "Account.Name": account1,
+            "Account.AccountNumber": accountNum1,
+          },
           newProfileProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Simpson",
@@ -229,5 +243,107 @@ describe("salesforce/sales-cloud/export-profiles/reference", () => {
     const account = await getReference(accountId2);
     expect(account.AccountNumber).toEqual(accountNum2Truncated);
     expect(account.Name).toEqual(account2); // not the change
+  });
+
+  test("it can update multiple people and error on just one", async () => {
+    userId3 = await findId(custom3);
+    expect(userId3).toBe(null);
+
+    accountId3 = await findReferenceId(accountNum3);
+    expect(accountId3).toBe(null);
+
+    const { success, errors } = await exportBatch({
+      appOptions,
+      destinationOptions,
+      exports: [
+        {
+          profileGuid: guid1,
+          oldProfileProperties: {
+            Custom_External_ID__c: custom1,
+            LastName: "Simpson",
+            "Account.Name": "Something else",
+            "Account.AccountNumber": accountNum2,
+          },
+          newProfileProperties: {
+            Custom_External_ID__c: custom1,
+            LastName: "Test",
+            "Account.Name": null,
+            "Account.AccountNumber": accountNum3,
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+        {
+          profileGuid: guid2,
+          oldProfileProperties: {
+            Custom_External_ID__c: custom2,
+            LastName: "Jones",
+            "Account.Name": account2,
+            "Account.AccountNumber": accountNum2,
+          },
+          newProfileProperties: {
+            Custom_External_ID__c: custom2,
+            LastName: "Updated",
+            "Account.Name": account2,
+            "Account.AccountNumber": null, // should clear it
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+        {
+          profileGuid: guid3,
+          oldProfileProperties: {},
+          newProfileProperties: {
+            Custom_External_ID__c: custom3,
+            LastName: "Three",
+            "Account.Name": account2,
+            "Account.AccountNumber": accountNum2,
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    expect(success).toBe(false);
+    expect(errors).not.toBeNull();
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid1);
+    expect(error.message).toContain("REQUIRED_FIELD_MISSING");
+
+    let user;
+    user = await getUser(userId1);
+    expect(user.Custom_External_ID__c).toBe(custom1);
+    expect(user.LastName).toBe("Simpson"); // no change
+    expect(user.AccountId).toEqual(accountId2); // no change
+
+    user = await getUser(userId2);
+    expect(user.Custom_External_ID__c).toBe(custom2);
+    expect(user.LastName).toBe("Updated");
+    expect(user.AccountId).toEqual(null); // cleared
+
+    userId3 = await findId(custom3);
+    expect(userId3).toBeTruthy();
+    user = await getUser(userId3);
+    expect(user.Custom_External_ID__c).toBe(custom3);
+    expect(user.LastName).toBe("Three");
+    expect(user.AccountId).toEqual(accountId2);
+
+    let referenced;
+    referenced = await getReferencedUserIds(accountId1);
+    expect(referenced.sort()).toEqual([].sort());
+
+    referenced = await getReferencedUserIds(accountId2);
+    expect(referenced.sort()).toEqual([userId1, userId3].sort());
+
+    accountId3 = await findReferenceId(accountNum3);
+    expect(accountId3).toBe(null);
   });
 });

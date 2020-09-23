@@ -32,14 +32,13 @@ export const exportBatch: MyBatchMethod = async ({
   });
 };
 
-const myBatchMethod = exportBatch;
 export const exportProfiles: ExportProfilesPluginMethod = async ({
   appOptions,
   destinationOptions,
-  exports,
+  exports: profilesToExport,
 }) => {
-  const batchExports = buildBatchExports(exports);
-  return myBatchMethod({
+  const batchExports = buildBatchExports(profilesToExport);
+  return exportBatch({
     appOptions,
     destinationOptions,
     exports: batchExports,
