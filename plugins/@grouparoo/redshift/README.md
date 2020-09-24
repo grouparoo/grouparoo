@@ -1,4 +1,4 @@
-# @Grouparoo/Redshift
+# @Grouparoo/Snowflake
 
 ## Notes
 
@@ -6,4 +6,4 @@ This plugin relies on `@grouparoo/postgres`
 
 ## Attribution
 
-The Postgres icon used in this plugin is from https://worldvectorlogo.com/downloaded/aws-redshift-logo
+The Snowflake icon used in this plugin is from https://worldvectorlogo.com/downloaded/aws-redshift-logo
