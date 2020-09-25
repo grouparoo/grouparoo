@@ -48,7 +48,7 @@ export const updater = {
     return `process.env.BIGQUERY_JEST_TIMESTAMP = "${uniqueTimestamp}"`;
   },
   rewrite: function (nockCall) {
-    nockCall = nockCall.replace(/\"assertion\":\".+\"/, '"assertion": /.+/g');
+    nockCall = nockCall.replace(/\"assertion\":\".+?\"/, '"assertion": /.+/g');
     return nockCall;
   },
 };
