@@ -295,7 +295,7 @@ export namespace plugin {
           ? properties[key].values[0] instanceof Date
             ? expandDates(properties[key].values[0] as Date)
             : properties[key].values[0]
-          : properties[key].values.map((value) => value.toString()).join(", ");
+          : properties[key].values.map((value) => (value || "").toString()).join(", ");
     }
     return data;
   }
