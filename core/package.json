@@ -110,7 +110,7 @@
     "jest-fetch-mock": "3.0.3",
     "jest-mock-axios": "4.2.1",
     "nock": "13.0.4",
-    "prettier": "2.1.1",
+    "prettier": "2.1.2",
     "prop-types": "15.7.2",
     "ts-jest": "26.3.0",
     "typedoc": "0.19.1"
