@@ -73,8 +73,15 @@ Use the `staging-public` app to try things out.
 
 ```bash
 cd apps/staging-public
-# populate the system with some events
+# populate the system with 1000 profiles, profile properties, 1000 purchases, groups, and some events
+npm run actionhero -- grouparoo demo dataPurchases
+
+# populate the system with events
 npm run actionhero -- grouparoo demo eventStream
+
+# populate the system with 2,000,000 profiles, profile properties, 2,000,000 purchases, groups, and some events
+npm run actionhero -- grouparoo demo scale
+
 ```
 
 🦘
