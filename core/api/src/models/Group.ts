@@ -396,6 +396,7 @@ export class Group extends LoggedModel<Group> {
     run: Run,
     limit = 1000,
     offset = 0,
+    highWaterMark: number = null,
     force = false,
     destinationGuid?: string
   ) {
@@ -404,6 +405,7 @@ export class Group extends LoggedModel<Group> {
       run,
       limit,
       offset,
+      highWaterMark,
       force,
       destinationGuid
     );
@@ -412,18 +414,9 @@ export class Group extends LoggedModel<Group> {
   async runRemoveGroupMembers(
     run: Run,
     limit = 1000,
-    offset = 0,
-    force = false,
     destinationGuid?: string
   ) {
-    return GroupOps.runRemoveGroupMembers(
-      this,
-      run,
-      limit,
-      offset,
-      force,
-      destinationGuid
-    );
+    return GroupOps.runRemoveGroupMembers(this, run, limit, destinationGuid);
   }
 
   async removePreviousRunGroupMembers(run: Run, limit = 100) {

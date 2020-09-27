@@ -55,7 +55,7 @@ export class GroupDestroy extends Task {
       groupMethod: "runRemoveGroupMembers",
     });
 
-    const importsCounts = await group.runRemoveGroupMembers(run, limit, offset);
+    const importsCounts = await group.runRemoveGroupMembers(run, limit);
     const previousRunMembers = await group.removePreviousRunGroupMembers(
       run,
       limit

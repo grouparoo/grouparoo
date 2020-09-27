@@ -125,7 +125,7 @@ describe("tasks/group:run", () => {
       expect(foundTasks[0].args[0].method).toBe("runRemoveGroupMembers");
       await run.reload();
       expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(100);
+      expect(run.groupMemberOffset).toBe(0);
       expect(run.groupMethod).toBe("runAddGroupMembers");
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:run", foundTasks[0].args[0]); // remove profiles, (none found, enqueue removePreviousRunGroupMembers)

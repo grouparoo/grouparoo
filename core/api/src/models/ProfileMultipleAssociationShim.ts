@@ -6,6 +6,9 @@ export class ProfileMultipleAssociationShim extends Model {
   @Column({ primaryKey: true })
   guid: string;
 
+  @Column
+  createdAt: Date;
+
   // include multiple associations to ProfileProperty for group membership searching
   @HasMany(() => ProfileProperty, {
     as: "ProfileProperties_1",

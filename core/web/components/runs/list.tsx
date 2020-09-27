@@ -210,6 +210,7 @@ export default function RunsList(props) {
                     <>
                       groupMemberLimit: {run.groupMemberLimit} <br />
                       groupMemberOffset: {run.groupMemberOffset} <br />
+                      groupHighWaterMark: {run.groupHighWaterMark} <br />
                       sourceOffset: {run.sourceOffset} <br />
                       force: {run.force.toString()}
                     </>
