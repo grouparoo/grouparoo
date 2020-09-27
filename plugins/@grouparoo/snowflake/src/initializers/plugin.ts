@@ -5,15 +5,19 @@ import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
 import { test } from "./../lib/test";
 
-import { sourcePreview as tableSourcePreview } from "../lib/table-import/sourcePreview";
-import { sourceOptions as tableSourceOptions } from "../lib/table-import/sourceOptions";
-import { sourceFilters as tableSourceFilters } from "../lib/table-import/sourceFilters";
-import { uniqueProfilePropertyRuleBootstrapOptions as tableUniqueProfilePropertyRuleBootstrapOptions } from "../lib/table-import/uniqueProfilePropertyRuleBootstrapOptions";
-import { profiles as tableProfiles } from "../lib/table-import/profiles";
-import { profileProperty as tableProfileProperty } from "../lib/table-import/profileProperty";
-import { profilePropertyRuleOptions as tableProfilePropertyRuleOptions } from "../lib/table-import/profilePropertyRuleOptions";
-import { scheduleOptions as tableScheduleOptions } from "../lib/table-import/scheduleOptions";
-import { sourceRunPercentComplete as tableSourceRunPercentComplete } from "../lib/table-import/sourceRunPercentComplete";
+import {
+  sourcePreview as tableSourcePreview,
+  profilePropertyRuleOptions as tableProfilePropertyRuleOptions,
+  scheduleOptions as tableScheduleOptions,
+  sourceOptions as tableSourceOptions,
+  uniqueProfilePropertyRuleBootstrapOptions as tableUniqueProfilePropertyRuleBootstrapOptions,
+  sourceFilters as tableSourceFilters,
+  profiles as tableProfiles,
+  profileProperty as tableProfileProperty,
+  sourceRunPercentComplete as tableSourceRunPercentComplete,
+} from "../lib/table-import/options";
+
+import { tableNameKey } from "../lib/table";
 
 import {
   sourceOptions as querySourceOptions,
@@ -84,7 +88,7 @@ export class Plugins extends Initializer {
           app: "snowflake",
           options: [
             {
-              key: "table",
+              key: tableNameKey,
               required: true,
               description: "The table to scan",
             },
