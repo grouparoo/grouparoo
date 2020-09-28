@@ -48,7 +48,7 @@
     "@zeit/next-source-maps": "0.0.3",
     "actionhero": "23.0.10",
     "ah-next-plugin": "0.3.0",
-    "ah-sequelize-plugin": "2.2.2",
+    "ah-sequelize-plugin": "2.2.3",
     "axios": "0.20.0",
     "bcrypt": "5.0.0",
     "bootstrap": "4.5.2",
