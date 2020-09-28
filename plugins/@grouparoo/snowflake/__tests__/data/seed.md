@@ -2,7 +2,7 @@
 
 These are the tables that should be loaded into Snowflake. The Snowflake location should be put in this tests `.env` file like the example.
 
-They should have the same names as the files themselves (without the csv).
+They should have the same names as the files themselves (without the csv and in uppercase).
 
 PROFILES
 
