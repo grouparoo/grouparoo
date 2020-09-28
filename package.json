@@ -20,7 +20,7 @@
     "lerna-update-wizard": "0.17.8",
     "license-checker": "github:grouparoo/license-checker",
     "npm-check-updates": "latest",
-    "prettier": "2.1.1"
+    "prettier": "2.1.2"
   },
   "scripts": {
     "prepare": "./bin/prepare",
