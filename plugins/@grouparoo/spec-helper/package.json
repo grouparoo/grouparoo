@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@grouparoo/core": "^0.1.15-alpha.3",
-    "@types/faker": "5.1.0",
+    "@types/faker": "5.1.2",
     "@types/jest": "26.0.13",
     "@types/node": "14.10.1",
     "actionhero": "23.0.10",
