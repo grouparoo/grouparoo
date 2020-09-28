@@ -1,5 +1,4 @@
 import { GetSampleRowsMethod, DataResponseRow } from "../table";
-
 import { validateQuery } from "./validateQuery";
 import { getColumns } from "./getColumns";
 import { castRow, castValue } from "./util";

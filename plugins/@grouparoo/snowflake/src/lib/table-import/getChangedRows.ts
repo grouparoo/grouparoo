@@ -1,4 +1,3 @@
-import { getColumns } from "./getColumns";
 import { makeWhereClause, castRow } from "./util";
 import { validateQuery } from "./validateQuery";
 import {
