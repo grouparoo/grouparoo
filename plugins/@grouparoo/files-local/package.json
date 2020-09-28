@@ -41,7 +41,7 @@
     "jest": "26.4.2",
     "prettier": "2.1.2",
     "ts-jest": "26.3.0",
-    "typescript": "4.0.2"
+    "typescript": "4.0.3"
   },
   "grouparoo": {},
   "gitHead": "d180097c68e2e0db22918e7d51c0e84abd9202c0"

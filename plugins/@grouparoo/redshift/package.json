@@ -40,6 +40,6 @@
     "@types/pg": "^7.14.4",
     "actionhero": "23.0.10",
     "prettier": "2.1.2",
-    "typescript": "4.0.2"
+    "typescript": "4.0.3"
   }
 }
