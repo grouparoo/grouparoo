@@ -13,7 +13,6 @@ export const getSampleRows: GetSampleRowsMethod = async ({
   const query = `SELECT * FROM "${tableName}" LIMIT 10`;
   validateQuery(query);
 
-  console.log({ query });
   const params = [];
   const rows = await connection.execute(query, params);
 
