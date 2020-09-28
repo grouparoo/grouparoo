@@ -27,7 +27,7 @@
     "lint": "prettier --check src "
   },
   "dependencies": {
-    "node-zendesk": "2.0.1"
+    "node-zendesk": "2.0.3"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
