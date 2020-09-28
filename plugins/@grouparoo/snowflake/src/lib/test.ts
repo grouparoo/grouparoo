@@ -1,7 +1,7 @@
 import { TestPluginMethod } from "@grouparoo/core";
 
-export const test: TestPluginMethod = async ({ appOptions, connection }) => {
-  const schema = appOptions.schema || "PUBLIC";
+export const test: TestPluginMethod = async ({ connection }) => {
+  const schema = connection.schemaName;
 
   const response = await connection.execute("SELECT (1+1) as TEST");
   const success = response[0].TEST === 2;
