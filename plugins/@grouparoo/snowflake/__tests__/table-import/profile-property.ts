@@ -1,7 +1,10 @@
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/bigquery": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/snowflake": { path: path.join(__dirname, "..", "..") },
 });
+
+import "../utils/mock";
+import "@grouparoo/spec-helper";
 
 import { helper } from "@grouparoo/spec-helper";
 import { profileProperty } from "../../src/lib/table-import/options";
@@ -22,11 +25,11 @@ const nockFile = path.join(
 );
 
 // these comments to use nock
-// const newNock = false;
-// require("./../fixtures/table-profile-property");
+const newNock = false;
+require("./../fixtures/table-profile-property");
 // or these to make it true
-const newNock = true;
-helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);

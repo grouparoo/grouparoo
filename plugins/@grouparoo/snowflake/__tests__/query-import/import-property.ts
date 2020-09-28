@@ -1,8 +1,11 @@
-import "../utils/mock";
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/snowflake": { path: path.join(__dirname, "..", "..") },
 });
+
+import "../utils/mock";
+import "@grouparoo/spec-helper";
+
 import { helper } from "@grouparoo/spec-helper";
 
 import { profileProperty } from "../../src/lib/query-import/profileProperty";

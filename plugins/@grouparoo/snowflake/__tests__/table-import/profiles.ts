@@ -2,6 +2,10 @@ import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/snowflake": { path: path.join(__dirname, "..", "..") },
 });
+
+import "../utils/mock";
+import "@grouparoo/spec-helper";
+
 import { helper } from "@grouparoo/spec-helper";
 import { profiles } from "../../src/lib/table-import/options";
 import { connect } from "../../src/lib/connect";
@@ -12,11 +16,11 @@ import { SimpleAppOptions, Import, plugin, Run } from "@grouparoo/core";
 const nockFile = path.join(__dirname, "../", "fixtures", "table-profiles.js");
 
 // these comments to use nock
-// const newNock = false;
-// require("./../fixtures/table-profiles");
+const newNock = false;
+require("./../fixtures/table-profiles");
 // or these to make it true
-const newNock = true;
-helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);

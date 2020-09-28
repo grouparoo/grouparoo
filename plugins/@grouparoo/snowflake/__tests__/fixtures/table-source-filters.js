@@ -5,7 +5,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
 })
   .post(
     "/session/v1/login-request",
-    "1f8b08000000000000135591516f82301485ff4b9f5d030545f646b059304a0955f7482a3087eb8000eaa6e1bfefde9ac5edade7bbe79e7bdbde48a106459e6f240843b18d37591cac3979265fdf579b39ee944cc84abc44f12f5f2e0407960452be8a7401e4a33fbe1dcbc3a5001cae220e1941926411d696eaac64de55edf0bfb8e3a98c440c0e9b4ea9f328f27817a5225ec31997aa9ba24413a3f6ccd8ce73901e9d53e6f994394f68a00e6e793a9b34c7a50cd455577ba3a1d306bdef9a41578658d403a0bab23712822dd09f4d71d20679d85f1fde87a165c6e15ac651ab16037096d65805c120cd0580326b55d7979da1be59b669cbbaeff57d0cb50f80725da0c3b90fadf21388d994e28ac3155b2ddbcff13675953fee0e40483817aabb54b5517f9fd0a7f73811ca245b8b05fe53144b1e6e534ec609915ca2354b82143e71038df0b6e338fe0043f2522afd010000"
+    "1f8b0800000000000013558ecb0e82301045ff65d68404910dbba64c4c09b44d0bb86c1a51236e8c125fa4ffee74618cbbc9b98fb90b8c7ef6502ec03857bdec9c642d4209cfd73b5be5eb021268d446c82faf2b85c434b376ab4c45e47c9b0ed3fef81809f346207530ad9d885aedefdeeeaea7cbfc2f0e68ac50921c595aa4f94f443908a3644b771ca5b8d5ae5555fc2ca445de1b849080451bf34e3343b33a6a237708e1039f6be621cf000000"
   )
   .query({
     requestId: /.+/g,
@@ -29,7 +29,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         remMeValidityInSeconds: 0,
         healthCheckInterval: 45,
         newClientForUpgrade: null,
-        sessionId: 180246257689,
+        sessionId: 180246258285,
         parameters: [
           { name: "CLIENT_PREFETCH_THREADS", value: 4 },
           {
@@ -93,7 +93,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "Content-Type",
       "application/json",
       "Date",
-      "Mon, 28 Sep 2020 01:17:30 GMT",
+      "Mon, 28 Sep 2020 23:03:23 GMT",
       "Expect-CT",
       "enforce, max-age=3600",
       "Strict-Transport-Security",
@@ -174,12 +174,12 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
             database: "SAMPLE_SOURCES",
             schema: "INFORMATION_SCHEMA",
             table: "COLUMNS",
-            type: "text",
-            byteLength: 16777216,
             scale: null,
             precision: null,
-            nullable: true,
+            byteLength: 16777216,
+            type: "text",
             collation: null,
+            nullable: true,
             length: 16777216,
           },
           {
@@ -187,12 +187,12 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
             database: "SAMPLE_SOURCES",
             schema: "INFORMATION_SCHEMA",
             table: "COLUMNS",
-            type: "text",
-            byteLength: 16777216,
             scale: null,
             precision: null,
-            nullable: true,
+            byteLength: 16777216,
+            type: "text",
             collation: null,
+            nullable: true,
             length: 16777216,
           },
         ],
@@ -206,7 +206,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         ],
         total: 6,
         returned: 6,
-        queryId: "0197386d-043c-c917-0000-0029f783a269",
+        queryId: "01973d87-042e-08f9-0000-0029f783d4e1",
         databaseProvider: null,
         finalDatabaseName: "SAMPLE_SOURCES",
         finalSchemaName: "PUBLIC",
@@ -216,7 +216,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         arrayBindSupported: false,
         statementTypeId: 4096,
         version: 1,
-        sendResultTime: 1601255851465,
+        sendResultTime: 1601334204867,
         queryResultFormat: "json",
       },
       code: null,
@@ -227,7 +227,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "Content-Type",
       "application/json",
       "Date",
-      "Mon, 28 Sep 2020 01:17:31 GMT",
+      "Mon, 28 Sep 2020 23:03:24 GMT",
       "Expect-CT",
       "enforce, max-age=3600",
       "Strict-Transport-Security",
