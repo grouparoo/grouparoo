@@ -1,64 +1,51 @@
-import { BigQuery } from "@google-cloud/bigquery";
-import { DataResponseRow, DataResponse } from "../table";
+import {
+  DataResponseRow,
+  DataResponse,
+  FilterOperation,
+  MatchCondition,
+} from "../table";
 
-/*
- * Returns what to add to query and appends to arrays
- */
 export function makeWhereClause(
-  columnInfo: any,
-  colName: string,
-  transform: string | null,
-  sqlOp: string,
-  match: any,
-  params: Array<any>,
-  types: Array<string>
+  matchCondition: MatchCondition,
+  params: Array<any>
 ) {
-  // find the column
-  const column = columnInfo[colName];
-  if (!column) {
-    throw `column name not found: ${colName}`;
-  }
-  const dataType = column.data_type;
+  const { columnName, filterOperation, value } = matchCondition;
+  let op;
+  let match = value;
 
-  // interesting code in BigQuery library: function convert(schemaField, value)
-  let param;
-  switch (dataType) {
-    case "DATE":
-      param = BigQuery.date(match);
+  switch (filterOperation) {
+    case FilterOperation.Equal:
+      op = "=";
       break;
-    case "DATETIME":
-      param = BigQuery.datetime(match);
+    case FilterOperation.NotEqual:
+      op = "!=";
       break;
-    case "TIME":
-      param = BigQuery.time(match);
+    case FilterOperation.GreaterThan:
+      op = ">";
       break;
-    case "TIMESTAMP":
-      param = new Date(match);
-      if (!isFinite(param)) {
-        throw `invalid timestamp: ${match}`;
-      }
+    case FilterOperation.GreaterThanOrEqual:
+      op = ">=";
       break;
-    case "BOOL":
-    case "NUMERIC":
-    case "INT64":
-    case "FLOAT64":
-    case "STRING":
-      param = match;
+    case FilterOperation.LessThan:
+      op = "<";
       break;
-    case "GEOGRAPHY":
-    case "ARRAY":
-    case "STRUCT":
-    case "BYTES":
+    case FilterOperation.LessThanOrEqual:
+      op = "<=>";
+      break;
+    case FilterOperation.Contain:
+      op = "ILIKE"; // case insensitive
+      match = `%${match.toString().toLowerCase()}%`;
+      break;
+    case FilterOperation.NotContain:
+      op = "NOT ILIKE"; // case insensitive
+      match = `%${match.toString().toLowerCase()}%`;
+      break;
     default:
-      throw `unsupported data type: ${dataType}`;
+      throw new Error(`Unknown filterOperation: ${filterOperation}`);
   }
 
-  const key = transform ? `${transform}(\`${colName}\`)` : `\`${colName}\``;
-
-  // put the values and types in the array
-  params.push(param);
-  types.push(dataType);
-  return ` ${key} ${sqlOp} ?`;
+  params.push(match);
+  return ` "${columnName}" ${op} :${params.length}`; // "profile_id" = :3
 }
 
 export function castRow(row): DataResponseRow {
