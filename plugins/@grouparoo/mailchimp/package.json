@@ -37,7 +37,7 @@
     "@grouparoo/core": "^0.1.15-alpha.3",
     "@grouparoo/spec-helper": "^0.1.15-alpha.3",
     "@types/jest": "26.0.13",
-    "@types/node": "14.10.1",
+    "@types/node": "14.11.2",
     "actionhero": "23.0.10",
     "jest": "26.4.2",
     "nock": "13.0.4",
