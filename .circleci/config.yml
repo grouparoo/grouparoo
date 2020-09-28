@@ -52,6 +52,7 @@ jobs:
             - plugins/@grouparoo/postgres/node_modules
             - plugins/@grouparoo/redshift/node_modules
             - plugins/@grouparoo/sailthru/node_modules
+            - plugins/@grouparoo/salesforce/node_modules
             - plugins/@grouparoo/sample-ui-plugin/node_modules
             - plugins/@grouparoo/spec-helper/node_modules
             - plugins/@grouparoo/zendesk/node_modules
@@ -77,6 +78,7 @@ jobs:
             - plugins/@grouparoo/postgres/dist
             - plugins/@grouparoo/redshift/dist
             - plugins/@grouparoo/sailthru/dist
+            - plugins/@grouparoo/salesforce/dist
             - plugins/@grouparoo/sample-ui-plugin/dist
             - plugins/@grouparoo/spec-helper/dist
             - plugins/@grouparoo/zendesk/dist
