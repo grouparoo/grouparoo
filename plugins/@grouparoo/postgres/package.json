@@ -38,7 +38,7 @@
   "devDependencies": {
     "@grouparoo/core": "^0.1.15-alpha.3",
     "@grouparoo/spec-helper": "^0.1.15-alpha.3",
-    "@types/jest": "26.0.13",
+    "@types/jest": "26.0.14",
     "@types/node": "14.11.2",
     "@types/pg": "^7.14.4",
     "actionhero": "23.0.10",
