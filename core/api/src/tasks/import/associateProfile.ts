@@ -1,4 +1,4 @@
-import { task, log, env } from "actionhero";
+import { api, task, log, env } from "actionhero";
 import { RetryableTask } from "../../classes/retryableTask";
 import { Import } from "../../models/Import";
 import { Run } from "../../models/Run";
@@ -23,11 +23,28 @@ export class ImportAssociateProfile extends RetryableTask {
       const { profile, isNew } = await _import.associateProfile();
 
       if (_import.creatorType === "run") {
-        const run = await Run.findOne({ where: { guid: _import.creatorGuid } });
-        if (!run) throw new Error(`run ${_import.creatorGuid} not found`);
+        const transaction = await api.sequelize.transaction();
 
-        if (isNew) {
-          await run.increment(["profilesCreated"]);
+        try {
+          const run = await Run.findOne({
+            where: { guid: _import.creatorGuid },
+            transaction,
+          });
+          if (!run) throw new Error(`run ${_import.creatorGuid} not found`);
+
+          if (isNew) {
+            await run.increment(["profilesCreated"], {
+              transaction,
+              silent: true,
+            });
+            run.set("updatedAt", new Date());
+            await run.save({ transaction });
+          }
+
+          await transaction.commit();
+        } catch (error) {
+          await transaction.rollback();
+          throw error;
         }
       }
 

@@ -19,7 +19,7 @@ import {
   DestinationMappingOptionsResponseTypes,
   DestinationMappingOptionsMethodResponse,
 } from "../../classes/plugin";
-import { task, log, config, cache } from "actionhero";
+import { api, task, log, config, cache } from "actionhero";
 import { deepStrictEqual } from "assert";
 import { ProfilePropertyOps } from "./profileProperty";
 import { destinationTypeConversions } from "../destinationTypeConversions";
@@ -368,12 +368,25 @@ export namespace DestinationOps {
     });
 
     if (runs) {
-      await Promise.all(
-        runs.map((run) =>
-          ExportRun.create({ exportGuid: _export.guid, runGuid: run.guid })
-        )
-      );
-      await Promise.all(runs.map((run) => run.increment("exportsCreated")));
+      const transaction = await api.sequelize.transaction();
+
+      try {
+        for (const i in runs) {
+          const run = runs[i];
+          await ExportRun.create(
+            { exportGuid: _export.guid, runGuid: run.guid },
+            { transaction }
+          );
+          await run.increment("exportsCreated", { silent: true, transaction });
+          run.set("updatedAt", new Date());
+          await run.save({ transaction });
+        }
+
+        await transaction.commit();
+      } catch (error) {
+        await transaction.rollback();
+        throw error;
+      }
     }
 
     await _export.associateImports(imports);
@@ -731,18 +744,31 @@ export namespace DestinationOps {
     exportRuns: ExportRun[],
     column: "profilesExported" | "exportsCreated"
   ) {
-    const runs = await Run.findAll({
-      where: {
-        guid: { [Op.in]: exportRuns.map((exportRun) => exportRun.runGuid) },
-      },
-    });
+    const transaction = await api.sequelize.transaction();
 
-    for (const i in runs) {
-      const run = runs[i];
-      const by = exportRuns.filter(
-        (exportRun) => exportRun.runGuid === run.guid
-      ).length;
-      await run.increment(column, { by });
+    try {
+      const runs = await Run.findAll({
+        where: {
+          guid: { [Op.in]: exportRuns.map((exportRun) => exportRun.runGuid) },
+        },
+        transaction,
+      });
+
+      for (const i in runs) {
+        const run = runs[i];
+        const by = exportRuns.filter(
+          (exportRun) => exportRun.runGuid === run.guid
+        ).length;
+
+        await run.increment(column, { by, transaction, silent: true });
+        run.set("updatedAt", new Date());
+        await run.save({ transaction });
+      }
+
+      await transaction.commit();
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
     }
   }
 

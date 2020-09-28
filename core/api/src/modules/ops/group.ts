@@ -211,6 +211,7 @@ export namespace GroupOps {
     destinationGuid?: string
   ) {
     let groupMembersCount = 0;
+    let runIncrementCount = 0;
     let profiles: ProfileMultipleAssociationShim[];
     const transaction = await api.sequelize.transaction();
 
@@ -285,7 +286,7 @@ export namespace GroupOps {
             destinationGuid
           );
           await _import.save({ transaction });
-          await run.increment(["importsCreated"], { transaction });
+          runIncrementCount++;
         }
 
         if (groupMember) {
@@ -297,6 +298,14 @@ export namespace GroupOps {
 
         groupMembersCount++;
       }
+
+      await run.increment(["importsCreated"], {
+        by: runIncrementCount,
+        silent: true,
+        transaction,
+      });
+      run.set("updatedAt", new Date());
+      await run.save({ transaction });
 
       await transaction.commit();
       await group.update({ calculatedAt: new Date() });
@@ -344,11 +353,18 @@ export namespace GroupOps {
           run.guid,
           destinationGuid
         );
-        await run.increment(["importsCreated"], { transaction });
         await _import.save({ transaction });
 
         groupMembersCount++;
       }
+
+      await run.increment(["importsCreated"], {
+        by: groupMembersCount,
+        transaction,
+        silent: true,
+      });
+      run.set("updatedAt", new Date());
+      await run.save({ transaction });
 
       await transaction.commit();
       await group.update({ calculatedAt: new Date() });

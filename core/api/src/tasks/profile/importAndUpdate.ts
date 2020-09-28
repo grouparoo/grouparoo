@@ -1,4 +1,4 @@
-import { task } from "actionhero";
+import { api, task } from "actionhero";
 import { RetryableTask } from "../../classes/retryableTask";
 import { Profile } from "../../models/Profile";
 import { Run } from "../../models/Run";
@@ -90,21 +90,36 @@ export class ProfileImportAndUpdate extends RetryableTask {
         await _import.save();
       }
 
-      const runs = await Run.findAll({
-        where: {
-          guid: {
-            [Op.in]: imports
-              .filter((e) => e.creatorType === "run")
-              .map((e) => e.creatorGuid),
-          },
-        },
-      });
-
+      const transaction = await api.sequelize.transaction();
       let force = false;
-      for (const i in runs) {
-        const run = runs[i];
-        await run.increment("profilesImported", {});
-        if (run.force) force = true;
+
+      try {
+        const runs = await Run.findAll({
+          where: {
+            guid: {
+              [Op.in]: imports
+                .filter((e) => e.creatorType === "run")
+                .map((e) => e.creatorGuid),
+            },
+          },
+          transaction,
+        });
+
+        for (const i in runs) {
+          const run = runs[i];
+          await run.increment("profilesImported", {
+            silent: true,
+            transaction,
+          });
+          run.set("updatedAt", new Date());
+          await run.save({ transaction });
+          if (run.force) force = true;
+        }
+
+        await transaction.commit();
+      } catch (error) {
+        await transaction.rollback();
+        throw error;
       }
 
       await task.enqueue("profile:export", {
