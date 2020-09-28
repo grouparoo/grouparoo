@@ -28,7 +28,8 @@
   },
   "dependencies": {
     "@google-cloud/bigquery": "5.2.0",
-    "snowflake-promise": "4.1.0"
+    "snowflake-promise": "4.1.0",
+    "snowflake-sdk": "1.5.3"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",

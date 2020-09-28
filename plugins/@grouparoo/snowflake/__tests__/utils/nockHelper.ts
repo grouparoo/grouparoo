@@ -1,4 +1,5 @@
 import { SimpleAppOptions } from "@grouparoo/core";
+import SnowflakeGlobalConfig from "snowflake-sdk/lib/global_config";
 import dotenv from "dotenv";
 import path from "path";
 import fs from "fs-extra";
@@ -18,6 +19,8 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
   } else {
     envFile = nockPath;
   }
+
+  SnowflakeGlobalConfig.setInsecureConnect(true); // skip OCSP fetching
 
   const parsed = readEnv(envFile);
   return {

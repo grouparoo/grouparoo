@@ -3,7 +3,7 @@ jest.mock("snowflake-sdk/lib/services/sf", () => {
   const mockConfig = function (connectionConfig) {
     connectionConfig.getClientVersion = jest.fn(() => "1.5.3");
     connectionConfig.getClientEnvironment = jest.fn(() => {
-      return { OCSP_MODE: "FAIL_OPEN" };
+      return { OCSP_MODE: "INSECURE" };
     });
   };
 
