@@ -151,7 +151,7 @@ export class Group extends LoggedModel<Group> {
     return this.$count("groupMembers", search);
   }
 
-  async getRules() {
+  async getRules(transaction = undefined) {
     // We won't be deleting the model for GroupRule until the group is really deleted (to validate other models)
     // But we want to be sure that all membership matching will fail
     if (this.state === "deleted") return [];
@@ -159,11 +159,14 @@ export class Group extends LoggedModel<Group> {
     const rulesWithKey: GroupRuleWithKey[] = [];
     const rules = await this.$get("groupRules", {
       order: [["position", "asc"]],
+      transaction,
     });
 
     for (const i in rules) {
       const rule: GroupRule = rules[i];
-      const profilePropertyRule = await rule.$get("profilePropertyRule");
+      const profilePropertyRule = await rule.$get("profilePropertyRule", {
+        transaction,
+      });
       const type = profilePropertyRule
         ? profilePropertyRule.type
         : TopLevelGroupRules.filter(
