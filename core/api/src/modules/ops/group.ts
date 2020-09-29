@@ -408,6 +408,9 @@ export namespace GroupOps {
       groupMembersCount++;
     }
 
+    run.set("updatedAt", new Date());
+    await run.save();
+
     return groupMembersCount;
   }
 }
