@@ -63,7 +63,9 @@ export const DEFAULT = {
       models: [join(__dirname, "..", "models")],
       migrations: [join(__dirname, "..", "migrations")],
       pool: {
-        max: process.env.WORKERS ? parseInt(process.env.WORKERS) + 1 : 5,
+        max: process.env.SEQUELIZE_POOL_SIZE
+          ? parseInt(process.env.SEQUELIZE_POOL_SIZE)
+          : 5,
         min: 0,
         acquire: 30000,
         idle: 10000,
