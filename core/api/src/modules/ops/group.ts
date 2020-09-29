@@ -213,6 +213,8 @@ export namespace GroupOps {
     let groupMembersCount = 0;
     let runIncrementCount = 0;
     let profiles: ProfileMultipleAssociationShim[];
+    const rules = await group.getRules();
+
     const transaction = await api.sequelize.transaction();
 
     try {
@@ -228,7 +230,6 @@ export namespace GroupOps {
           transaction,
         });
       } else {
-        const rules = await group.getRules(transaction);
         if (Object.keys(rules).length === 0) {
           await transaction.commit();
           return { groupMembersCount: 0, nextHighWaterMark: 0, nextOffset: 0 };
