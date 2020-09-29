@@ -230,6 +230,7 @@ export namespace GroupOps {
           transaction,
         });
       } else {
+        // if there are no group rules, there's nothing to do
         if (Object.keys(rules).length === 0) {
           await transaction.commit();
           return { groupMembersCount: 0, nextHighWaterMark: 0, nextOffset: 0 };
@@ -276,6 +277,7 @@ export namespace GroupOps {
             profileGuid: profile.guid,
             groupGuid: group.guid,
           },
+          lock: true,
           transaction,
         });
 
@@ -293,7 +295,6 @@ export namespace GroupOps {
         if (groupMember) {
           groupMember.removedAt = null;
           groupMember.set("updatedAt", new Date());
-          groupMember.changed("updatedAt", true);
           await groupMember.save({ transaction });
         }
 
