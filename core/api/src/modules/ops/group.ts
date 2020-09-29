@@ -211,7 +211,6 @@ export namespace GroupOps {
     destinationGuid?: string
   ) {
     let groupMembersCount = 0;
-    // let runIncrementCount = 0;
     let profiles: ProfileMultipleAssociationShim[];
     const rules = await group.getRules();
 
