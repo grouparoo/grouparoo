@@ -367,7 +367,7 @@ export namespace DestinationOps {
       force,
     });
 
-    if (runs) {
+    if (runs && runs.length > 0) {
       const transaction = await api.sequelize.transaction();
 
       try {
