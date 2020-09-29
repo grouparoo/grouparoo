@@ -4,7 +4,7 @@ import { Run } from "../../models/Run";
 import { Profile } from "../../models/Profile";
 import { ProfileMultipleAssociationShim } from "../../models/ProfileMultipleAssociationShim";
 import { Import } from "../../models/Import";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import { api, task } from "actionhero";
 
 export namespace GroupOps {
@@ -215,7 +215,9 @@ export namespace GroupOps {
     let profiles: ProfileMultipleAssociationShim[];
     const rules = await group.getRules();
 
-    const transaction = await api.sequelize.transaction();
+    const transaction = await api.sequelize.transaction({
+      isolationLevel: Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED,
+    });
 
     try {
       if (group.type === "manual") {
@@ -277,7 +279,6 @@ export namespace GroupOps {
             profileGuid: profile.guid,
             groupGuid: group.guid,
           },
-          lock: true,
           transaction,
         });
 
@@ -292,14 +293,19 @@ export namespace GroupOps {
           runIncrementCount++;
         }
 
-        if (groupMember) {
-          groupMember.removedAt = null;
-          groupMember.set("updatedAt", new Date());
-          await groupMember.save({ transaction });
-        }
-
         groupMembersCount++;
       }
+
+      await GroupMember.update(
+        { updatedAt: new Date(), removedAt: null },
+        {
+          where: {
+            groupGuid: group.guid,
+            profileGuid: { [Op.in]: profiles.map((p) => p.guid) },
+          },
+          transaction,
+        }
+      );
 
       await run.increment(["importsCreated"], {
         by: runIncrementCount,
@@ -310,6 +316,7 @@ export namespace GroupOps {
       await run.save({ transaction });
 
       await transaction.commit();
+
       await group.update({ calculatedAt: new Date() });
       return { groupMembersCount, nextHighWaterMark, nextOffset };
     } catch (error) {
