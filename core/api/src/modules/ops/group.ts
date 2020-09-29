@@ -210,7 +210,6 @@ export namespace GroupOps {
     force = false,
     destinationGuid?: string
   ) {
-    let groupMembersCount = 0;
     let profiles: ProfileMultipleAssociationShim[];
     const rules = await group.getRules();
 
@@ -314,13 +313,18 @@ export namespace GroupOps {
       await run.save({ transaction });
 
       await transaction.commit();
+
+      await group.update({ calculatedAt: new Date() });
+
+      return {
+        groupMembersCount: profiles.length,
+        nextHighWaterMark,
+        nextOffset,
+      };
     } catch (error) {
       await transaction.rollback();
       throw error;
     }
-
-    await group.update({ calculatedAt: new Date() });
-    return { groupMembersCount, nextHighWaterMark, nextOffset };
   }
 
   /**
