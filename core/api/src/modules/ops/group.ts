@@ -211,104 +211,103 @@ export namespace GroupOps {
     destinationGuid?: string
   ) {
     let groupMembersCount = 0;
-    let runIncrementCount = 0;
+    // let runIncrementCount = 0;
     let profiles: ProfileMultipleAssociationShim[];
     const rules = await group.getRules();
 
-    const transaction = await api.sequelize.transaction({
-      isolationLevel: Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED,
-    });
+    if (group.type === "manual") {
+      profiles = await group.$get("profiles", {
+        attributes: ["guid", "createdAt"],
+        limit,
+        offset,
+        where: highWaterMark
+          ? { createdAt: { [Op.gte]: highWaterMark } }
+          : undefined,
+        order: [["createdAt", "asc"]],
+      });
+    } else {
+      // if there are no group rules, there's nothing to do
+      if (Object.keys(rules).length === 0) {
+        return { groupMembersCount: 0, nextHighWaterMark: 0, nextOffset: 0 };
+      }
+
+      const { where, include } = await group._buildGroupMemberQueryParts(
+        rules,
+        group.matchType
+      );
+
+      if (highWaterMark) where["createdAt"] = { [Op.gte]: highWaterMark };
+
+      profiles = await ProfileMultipleAssociationShim.findAll({
+        attributes: ["guid", "createdAt"],
+        where,
+        include,
+        limit,
+        offset,
+        order: [["createdAt", "asc"]],
+        subQuery: false,
+      });
+    }
+
+    let nextHighWaterMark = 0;
+    if (profiles.length > 0) {
+      nextHighWaterMark = profiles.reverse()[0].createdAt.getTime() + 1;
+    }
+
+    let nextOffset = 0;
+    if (
+      profiles.length > 1 &&
+      profiles[0].createdAt.getTime() ===
+        profiles.reverse()[0].createdAt.getTime()
+    ) {
+      nextOffset = offset + profiles.length;
+      nextHighWaterMark--;
+    }
+
+    const transaction = await api.sequelize.transaction();
 
     try {
-      if (group.type === "manual") {
-        profiles = await group.$get("profiles", {
-          attributes: ["guid", "createdAt"],
-          limit,
-          offset,
-          where: highWaterMark
-            ? { createdAt: { [Op.gte]: highWaterMark } }
-            : undefined,
-          order: [["createdAt", "asc"]],
-          transaction,
-        });
-      } else {
-        // if there are no group rules, there's nothing to do
-        if (Object.keys(rules).length === 0) {
-          await transaction.commit();
-          return { groupMembersCount: 0, nextHighWaterMark: 0, nextOffset: 0 };
-        }
+      const groupMembers = await GroupMember.findAll({
+        where: {
+          profileGuid: { [Op.in]: profiles.map((p) => p.guid) },
+          groupGuid: group.guid,
+        },
+        transaction,
+      });
 
-        const { where, include } = await group._buildGroupMemberQueryParts(
-          rules,
-          group.matchType
-        );
-
-        if (highWaterMark) where["createdAt"] = { [Op.gte]: highWaterMark };
-
-        profiles = await ProfileMultipleAssociationShim.findAll({
-          attributes: ["guid", "createdAt"],
-          where,
-          include,
-          limit,
-          offset,
-          order: [["createdAt", "asc"]],
-          subQuery: false,
-          transaction,
-        });
-      }
-
-      let nextHighWaterMark = 0;
-      if (profiles.length > 0) {
-        nextHighWaterMark = profiles.reverse()[0].createdAt.getTime() + 1;
-      }
-
-      let nextOffset = 0;
-      if (
-        profiles.length > 1 &&
-        profiles[0].createdAt.getTime() ===
-          profiles.reverse()[0].createdAt.getTime()
-      ) {
-        nextOffset = offset + profiles.length;
-        nextHighWaterMark--;
-      }
-
-      for (const i in profiles) {
-        const profile = profiles[i];
-        const groupMember = await GroupMember.findOne({
-          where: {
-            profileGuid: profile.guid,
-            groupGuid: group.guid,
-          },
-          transaction,
-        });
-
-        if (!groupMember || force) {
-          const _import = await group.buildProfileImport(
-            profile.guid,
-            "run",
-            run.guid,
-            destinationGuid
+      const existingGroupMemberProfileGuids = groupMembers.map(
+        (member) => member.profileGuid
+      );
+      const profilesNeedingGroupMembership = force
+        ? profiles
+        : profiles.filter(
+            (p) => !existingGroupMemberProfileGuids.includes(p.guid)
           );
-          await _import.save({ transaction });
-          runIncrementCount++;
-        }
 
-        groupMembersCount++;
+      for (const i in profilesNeedingGroupMembership) {
+        const profileGuid = profilesNeedingGroupMembership[i].guid;
+        const _import = await group.buildProfileImport(
+          profileGuid,
+          "run",
+          run.guid,
+          destinationGuid
+        );
+        await _import.save({ transaction });
       }
 
       await GroupMember.update(
         { updatedAt: new Date(), removedAt: null },
         {
           where: {
-            groupGuid: group.guid,
             profileGuid: { [Op.in]: profiles.map((p) => p.guid) },
+            groupGuid: group.guid,
           },
           transaction,
         }
       );
 
       await run.increment(["importsCreated"], {
-        by: runIncrementCount,
+        by: profilesNeedingGroupMembership.length,
         silent: true,
         transaction,
       });
@@ -316,13 +315,13 @@ export namespace GroupOps {
       await run.save({ transaction });
 
       await transaction.commit();
-
-      await group.update({ calculatedAt: new Date() });
-      return { groupMembersCount, nextHighWaterMark, nextOffset };
     } catch (error) {
       await transaction.rollback();
       throw error;
     }
+
+    await group.update({ calculatedAt: new Date() });
+    return { groupMembersCount, nextHighWaterMark, nextOffset };
   }
 
   /**
