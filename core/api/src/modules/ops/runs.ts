@@ -150,9 +150,9 @@ export namespace RunOps {
             (totalGroupMembers > 0 ? totalGroupMembers : 1))
       );
       if (!run.groupMethod.match(/remove/i)) {
-        percentComplete = Math.round(percentComplete / 2);
+        percentComplete = Math.floor(percentComplete / 2);
       } else {
-        percentComplete = 50 + percentComplete / 2;
+        percentComplete = 50 + Math.floor(percentComplete / 2);
       }
 
       return percentComplete;
