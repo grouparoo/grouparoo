@@ -97,8 +97,14 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
       const profile = profiles[i];
       const row = await buildCsvRowFromProperty(profile);
       csvStream.write(row);
-      await run.increment(["profilesExported"]);
     }
+
+    await run.increment(["profilesExported"], {
+      by: profiles.length,
+      silent: true,
+    });
+    run.set("updatedAt", new Date());
+    await run.save();
 
     offset = limit + offset;
     profiles = await getProfiles();

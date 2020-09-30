@@ -152,6 +152,8 @@ export class Group extends LoggedModel<Group> {
   }
 
   async getRules() {
+    if (this.type === "manual") return [];
+
     // We won't be deleting the model for GroupRule until the group is really deleted (to validate other models)
     // But we want to be sure that all membership matching will fail
     if (this.state === "deleted") return [];

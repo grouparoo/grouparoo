@@ -184,7 +184,9 @@ export namespace plugin {
         },
         { transaction }
       );
-      await run.increment(["importsCreated"], { transaction });
+      await run.increment(["importsCreated"], { transaction, silent: true });
+      run.set("updatedAt", new Date());
+      await run.save({ transaction });
       await transaction.commit();
 
       return _import;

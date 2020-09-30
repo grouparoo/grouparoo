@@ -63,9 +63,15 @@ export class RunInternalRun extends Task {
           },
           { transaction }
         );
-
-        await run.increment(["importsCreated"], { transaction });
       }
+
+      await run.increment(["importsCreated"], {
+        by: profiles.length,
+        transaction,
+        silent: true,
+      });
+      run.set("updatedAt", new Date());
+      await run.save({ transaction });
 
       await transaction.commit();
 

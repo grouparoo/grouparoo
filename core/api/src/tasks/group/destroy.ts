@@ -27,13 +27,14 @@ export class GroupDestroy extends Task {
         (await plugin.readSetting("core", "runs-profile-batch-size")).value
       );
 
-    const group = await Group.findOne({ where: { guid: params.groupGuid } });
+    const group = await Group.scope(null).findOne({
+      where: { guid: params.groupGuid },
+    });
     if (!group) return; // the group may have been force-deleted
 
     let run: Run;
     if (params.runGuid) {
       run = await Run.findByGuid(params.runGuid);
-      if (run.state === "stopped") return;
     } else {
       await group.stopPreviousRuns();
       run = await Run.create({
@@ -48,6 +49,8 @@ export class GroupDestroy extends Task {
         "notice"
       );
     }
+
+    if (run.state === "stopped") return;
 
     await run.update({
       groupMemberLimit: limit,

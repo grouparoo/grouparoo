@@ -48,7 +48,6 @@ export class RunGroup extends Task {
     let run: Run;
     if (params.runGuid) {
       run = await Run.findByGuid(params.runGuid);
-      if (run.state === "stopped") return;
     } else {
       run = await Run.create({
         creatorGuid: group.guid,
@@ -62,6 +61,8 @@ export class RunGroup extends Task {
         "notice"
       );
     }
+
+    if (run.state === "stopped") return;
 
     await run.update({
       groupMemberLimit: limit,

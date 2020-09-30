@@ -1,4 +1,4 @@
-import { CLI } from "actionhero";
+import { CLI, log } from "actionhero";
 import { teams } from "../../../teams";
 import { users, purchases } from "../../../sample_data";
 import { groups } from "../../../groups";
@@ -11,10 +11,14 @@ export class Console extends CLI {
     this.name = "grouparoo demo eCommerce data";
     this.description =
       "Load eCommerce users and purchases into a source database.";
+    this.inputs = {
+      scale: { required: true, default: 2000 }, // 2M users and purchases
+    };
   }
 
-  async run() {
-    const scale = 2000; // 2M users and purchases
+  async run({ params }) {
+    log(`Using scale = ${params.scale}`);
+    const scale = params.scale;
     await init({ reset: true });
     await teams();
     await users({ scale });
