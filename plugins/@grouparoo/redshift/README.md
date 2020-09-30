@@ -1,4 +1,4 @@
-# @Grouparoo/Snowflake
+# @Grouparoo/Redshift
 
 ## Notes
 
