@@ -4,10 +4,10 @@ import { Export } from "../../models/Export";
 import { Profile } from "../../models/Profile";
 import { Group } from "../../models/Group";
 import { Schedule } from "../../models/Schedule";
-import { Op } from "sequelize";
-import { api, log, task, utils, config } from "actionhero";
 import { ExportRun } from "../../models/ExportRun";
-import { plugin } from "../../modules/plugin";
+import { GroupMember } from "../../models/GroupMember";
+import { Op } from "sequelize";
+import { api, log } from "actionhero";
 
 export namespace RunOps {
   /**
@@ -128,29 +128,34 @@ export namespace RunOps {
     if (run.state === "stopped") return 100;
 
     if (run.creatorType === "group") {
+      if (run.groupMethod === "exporting") return 99; // this is hard to predict...
+
       const group = await Group.findByGuid(run.creatorGuid);
-      const groupMembersCount =
+      const totalGroupMembers =
         group.type === "calculated"
           ? await group.countPotentialMembers()
           : await group.$count("groupMembers");
 
-      const offset =
-        run.groupMemberOffset > groupMembersCount
-          ? groupMembersCount
-          : run.groupMemberOffset;
-
-      if (run.groupMethod === "exporting") {
-        return Math.floor(50 + run.profilesExported / 2 / run.exportsCreated);
-      }
+      const membersAlreadyUpdated = await GroupMember.count({
+        where: {
+          groupGuid: group.guid,
+          updatedAt: { [Op.gte]: run.createdAt },
+        },
+      });
 
       // there are 3 phases to group runs, but only 2 really could have work, so we attribute 1/2 to each phase
-      return Math.floor(
+      let percentComplete = Math.floor(
         100 *
-          ((run.groupMethod.match(/remove/i)
-            ? offset + groupMembersCount + 1
-            : offset) /
-            (groupMembersCount > 0 ? groupMembersCount * 2 : 2))
+          (membersAlreadyUpdated /
+            (totalGroupMembers > 0 ? totalGroupMembers : 1))
       );
+      if (!run.groupMethod.match(/remove/i)) {
+        percentComplete = Math.round(percentComplete / 2);
+      } else {
+        percentComplete = 50 + percentComplete / 2;
+      }
+
+      return percentComplete;
     } else if (run.creatorType === "schedule") {
       const schedule = await Schedule.findByGuid(run.creatorGuid);
       try {
