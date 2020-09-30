@@ -14,8 +14,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
     warehouse,
   });
 
-  // @ts-ignore Set this on here for others to use
-  client.schemaName = schema;
+  client["schemaName"] = schema;
 
   await client.connect();
   return client;
