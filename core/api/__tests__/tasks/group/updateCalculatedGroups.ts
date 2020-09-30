@@ -63,5 +63,16 @@ describe("tasks/group:updateCalculatedGroups", () => {
 
       expect(enqueuedTasks.length).toBe(0);
     });
+
+    test("groups already calculating will not be calculated again", async () => {
+      group.calculatedAt = new Date(0); // ~1970 or so
+      group.state = "updating";
+      await group.save();
+
+      await specHelper.runTask("group:updateCalculatedGroups", {});
+      const enqueuedTasks = await specHelper.findEnqueuedTasks("group:run");
+
+      expect(enqueuedTasks.length).toBe(0);
+    });
   });
 });
