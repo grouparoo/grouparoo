@@ -23,9 +23,10 @@ export class GroupsUpdateCalculatedGroups extends RetryableTask {
     const delayMinutes = parseInt(setting.value);
     const lastCheckTime = Moment().subtract(delayMinutes, "minutes");
 
-    const calculatedGroups = await Group.findAll({
+    const calculatedGroups = await Group.scope(null).findAll({
       where: {
         type: "calculated",
+        state: "ready",
         calculatedAt: {
           [Op.or]: {
             [Op.eq]: null,
