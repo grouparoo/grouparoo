@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
 import { Table, Button, Row, Col } from "react-bootstrap";
+import Head from "next/head";
+import ResqueTabs from "../../components/tabs/resque";
 
 export default function ResqueWorkersList(props) {
   const { errorHandler, successHandler } = props;
@@ -95,8 +97,13 @@ export default function ResqueWorkersList(props) {
 
   return (
     <>
-      <h1>Workers ({Object.keys(workers).length})</h1>
+      <Head>
+        <title>Grouparoo: Resque Workers</title>
+      </Head>
 
+      <ResqueTabs />
+
+      <h1>Workers ({Object.keys(workers).length})</h1>
       <Row>
         <Col md={12}>
           <Table striped bordered hover size="sm">
@@ -128,7 +135,7 @@ export default function ResqueWorkersList(props) {
                         {w.queues.map((q) => {
                           return (
                             <li key={`${w}-${q}`}>
-                              <a href={`/resque?tab=queue&queue=${q}`}>{q}</a>
+                              <a href={`/resque/queue/${q}`}>{q}</a>
                             </li>
                           );
                         })}

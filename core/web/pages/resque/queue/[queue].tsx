@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
+import { useApi } from "../../../hooks/useApi";
 import { Button, Table, Row, Col } from "react-bootstrap";
-import Pagination from "../pagination";
+import Pagination from "../../../components/pagination";
 import Router from "next/router";
+import Head from "next/head";
+import ResqueTabs from "../../../components/tabs/resque";
 
 export default function ResqueQueue(props) {
   const { errorHandler, query } = props;
@@ -21,10 +23,6 @@ export default function ResqueQueue(props) {
   }, [offset, limit]);
 
   async function load() {
-    if (queue === "") {
-      return;
-    }
-
     updateURLParams();
     setLoading(true);
     const response = await execApi("get", `/resque/queued`, {
@@ -46,24 +44,20 @@ export default function ResqueQueue(props) {
   }
 
   function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    url += `tab=queue&`;
-    url += `queue=${queue}&`;
-    if (offset && offset !== 0) url += `offset=${offset}&`;
+    let url = `${window.location.pathname}`;
+    if (offset && offset !== 0) url += `?offset=${offset}&`;
 
     Router.push(Router.route, url, { shallow: true });
   }
 
-  if (queue === "") {
-    return (
-      <p>
-        <a href="/resque?tab=overview">choose a queue</a>
-      </p>
-    );
-  }
-
   return (
     <>
+      <Head>
+        <title>Grouparoo: Resque Queue: {queue}</title>
+      </Head>
+
+      <ResqueTabs />
+
       <h1>
         {queue} ({total})
       </h1>

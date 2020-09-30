@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
 import { Button, Table, Row, Col } from "react-bootstrap";
-import Pagination from "../pagination";
+import Pagination from "../../components/pagination";
 import Router from "next/router";
+import Head from "next/head";
+import ResqueTabs from "../../components/tabs/resque";
 
 export default function ResqueDelayedList(props) {
   const { errorHandler, query, successHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const [timestamps, setTimestamps] = useState([]);
   const [delayedJobs, setDelayedJobs] = useState({});
-  const [loading, setLoading] = useState(false);
 
   // pagination
   const limit = 100;
@@ -71,15 +72,20 @@ export default function ResqueDelayedList(props) {
   }
 
   function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    url += `tab=delayed&`;
-    if (offset && offset !== 0) url += `offset=${offset}&`;
+    let url = `${window.location.pathname}`;
+    if (offset && offset !== 0) url += `?offset=${offset}&`;
 
     Router.push(Router.route, url, { shallow: true });
   }
 
   return (
     <>
+      <Head>
+        <title>Grouparoo: Delayed Resque Tasks</title>
+      </Head>
+
+      <ResqueTabs />
+
       <h1>Delayed Jobs ({total} unique timestamps)</h1>
 
       <Row>

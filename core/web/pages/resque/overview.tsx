@@ -1,20 +1,21 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
 import { Row, Col } from "react-bootstrap";
-import Chart from "../visualizations/resqueChart";
+import Chart from "../../components/visualizations/resqueChart";
+import Head from "next/head";
+import ResqueTabs from "../../components/tabs/resque";
 
 const refreshInterval = 1000 * 2;
 const maxSampleLength = 20;
 const samples = [];
 
 export default function ResqueOverview(props) {
-  const { errorHandler, query, successHandler } = props;
+  const { errorHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const [queues, setQueues] = useState({});
   const [workers, setWorkers] = useState({});
   const [failedCount, setFailedCount] = useState(0);
   const [stats, setStats] = useState({});
-  const [loading, setLoading] = useState(false);
 
   let timer: NodeJS.Timeout;
 
@@ -96,6 +97,12 @@ export default function ResqueOverview(props) {
 
   return (
     <>
+      <Head>
+        <title>Grouparoo: Resque Overview</title>
+      </Head>
+
+      <ResqueTabs />
+
       <h1>Resque Overview</h1>
 
       <Row>
@@ -139,12 +146,12 @@ export default function ResqueOverview(props) {
             <tbody>
               <tr className="table-warning">
                 <td>
-                  <a href="/resque?tab=failed">
+                  <a href="/resque/failed">
                     <strong>failed</strong>
                   </a>
                 </td>
                 <td>
-                  <a href="/resque?tab=failed">
+                  <a href="/resque/failed">
                     <strong>{failedCount || 0}</strong>
                   </a>
                 </td>
@@ -154,12 +161,10 @@ export default function ResqueOverview(props) {
                 return (
                   <tr key={q}>
                     <td>
-                      <a href={`/resque?tab=queue&queue=${q}`}>{q}</a>
+                      <a href={`/resque/queue/${q}`}>{q}</a>
                     </td>
                     <td>
-                      <a href={`/resque?tab=queue&queue=${q}`}>
-                        {queues[q].length}
-                      </a>
+                      <a href={`/resque/queue/${q}`}>{queues[q].length}</a>
                     </td>
                   </tr>
                 );
@@ -189,7 +194,7 @@ export default function ResqueOverview(props) {
                       </span>
                     </td>
                     <td>
-                      <span className={worker.delta > 0 ? "text-info" : ""}>
+                      <span className={worker.delta > 0 ? "text-primary" : ""}>
                         {worker.statusString}
                       </span>
                     </td>

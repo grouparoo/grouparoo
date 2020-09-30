@@ -68,6 +68,7 @@ module.exports = withSourceMaps({
   async redirects() {
     return [
       { source: "/settings", destination: "/settings/core", statusCode: 307 },
+      { source: "/resque", destination: "/resque/overview", statusCode: 307 },
     ];
   },
 });

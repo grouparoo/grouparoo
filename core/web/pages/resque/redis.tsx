@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
 import { Table, Row, Col } from "react-bootstrap";
+import Head from "next/head";
+import ResqueTabs from "../../components/tabs/resque";
 
 export default function ResqueRedis(props) {
   const { errorHandler } = props;
@@ -23,8 +25,13 @@ export default function ResqueRedis(props) {
 
   return (
     <>
-      <h1>Redis Information</h1>
+      <Head>
+        <title>Grouparoo: Redis</title>
+      </Head>
 
+      <ResqueTabs />
+
+      <h1>Redis Information</h1>
       <p>
         <em>
           Note: This data was retrieved from the ActionHero Resque Queue
@@ -32,7 +39,6 @@ export default function ResqueRedis(props) {
           configurations this data will be inaccurate.
         </em>
       </p>
-
       <Row>
         <Col md={12}>
           <Table striped bordered hover size="sm">
