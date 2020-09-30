@@ -229,10 +229,7 @@ export namespace GroupOps {
         return { groupMembersCount: 0, nextHighWaterMark: 0, nextOffset: 0 };
       }
 
-      const { where, include } = await group._buildGroupMemberQueryParts(
-        rules,
-        group.matchType
-      );
+      const { where, include } = await group._buildGroupMemberQueryParts(rules);
 
       if (highWaterMark) where["createdAt"] = { [Op.gte]: highWaterMark };
 
