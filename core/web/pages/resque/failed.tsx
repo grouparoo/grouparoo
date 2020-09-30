@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
 import { ButtonToolbar, Button, Table, Modal, Row, Col } from "react-bootstrap";
-import Pagination from "../pagination";
+import Pagination from "../../components/pagination";
 import Router from "next/router";
+import Head from "next/head";
+import ResqueTabs from "../../components/tabs/resque";
 
 export default function ResqueFailedList(props) {
   const { errorHandler, query, successHandler } = props;
@@ -16,7 +18,6 @@ export default function ResqueFailedList(props) {
     payload: { args: [] },
     renderedStack: "",
   });
-  const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   // pagination
@@ -70,9 +71,8 @@ export default function ResqueFailedList(props) {
   }
 
   function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    url += `tab=failed&`;
-    if (offset && offset !== 0) url += `offset=${offset}&`;
+    let url = `${window.location.pathname}`;
+    if (offset && offset !== 0) url += `?offset=${offset}&`;
 
     Router.push(Router.route, url, { shallow: true });
   }
@@ -93,6 +93,12 @@ export default function ResqueFailedList(props) {
 
   return (
     <>
+      <Head>
+        <title>Grouparoo: Failed Tasks</title>
+      </Head>
+
+      <ResqueTabs />
+
       <h1>Failed Jobs ({total})</h1>
 
       <Row>

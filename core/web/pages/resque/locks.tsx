@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
 import { Table, Row, Col, Button } from "react-bootstrap";
-import Pagination from "../pagination";
+import Pagination from "../../components/pagination";
 import Router from "next/router";
+import Head from "next/head";
+import ResqueTabs from "../../components/tabs/resque";
 
 export default function ResqueLocksList(props) {
   const { errorHandler, successHandler, query } = props;
@@ -45,15 +47,20 @@ export default function ResqueLocksList(props) {
   }
 
   function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    url += `tab=locks&`;
-    if (offset && offset !== 0) url += `offset=${offset}&`;
+    let url = `${window.location.pathname}`;
+    if (offset && offset !== 0) url += `?offset=${offset}&`;
 
     Router.push(Router.route, url, { shallow: true });
   }
 
   return (
     <>
+      <Head>
+        <title>Grouparoo: Resque Locks</title>
+      </Head>
+
+      <ResqueTabs />
+
       <h1>Locks ({locks.length})</h1>
 
       <Row>
