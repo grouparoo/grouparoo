@@ -4,10 +4,10 @@ import { Export } from "../../models/Export";
 import { Profile } from "../../models/Profile";
 import { Group } from "../../models/Group";
 import { Schedule } from "../../models/Schedule";
-import { ProfileMultipleAssociationShim } from "../../models/ProfileMultipleAssociationShim";
+import { ExportRun } from "../../models/ExportRun";
+import { GroupMember } from "../../models/GroupMember";
 import { Op } from "sequelize";
 import { api, log } from "actionhero";
-import { ExportRun } from "../../models/ExportRun";
 
 export namespace RunOps {
   /**
@@ -136,13 +136,12 @@ export namespace RunOps {
           ? await group.countPotentialMembers()
           : await group.$count("groupMembers");
 
-      const { where, include } = await group._buildGroupMemberQueryParts();
-      where["createdAt"] = { [Op.lt]: run.groupHighWaterMark || 0 };
-      const membersAlreadyUpdated =
-        (await ProfileMultipleAssociationShim.count({
-          where,
-          include,
-        })) + run.groupMemberOffset;
+      const membersAlreadyUpdated = await GroupMember.count({
+        where: {
+          groupGuid: group.guid,
+          updatedAt: { [Op.gte]: run.createdAt },
+        },
+      });
 
       // there are 3 phases to group runs, but only 2 really could have work, so we attribute 1/2 to each phase
       let percentComplete = Math.floor(
