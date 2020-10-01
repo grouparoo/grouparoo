@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/csv",
   "description": "The Grouparoo CSV Plugin",
-  "version": "0.1.15-alpha.3",
+  "version": "0.1.15",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -35,8 +35,8 @@
     "actionhero": "23.0.11"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.1.15-alpha.3",
-    "@grouparoo/spec-helper": "^0.1.15-alpha.3",
+    "@grouparoo/core": "^0.1.15",
+    "@grouparoo/spec-helper": "^0.1.15",
     "@types/jest": "26.0.14",
     "@types/node": "14.11.2",
     "actionhero": "23.0.11",
