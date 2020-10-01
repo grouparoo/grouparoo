@@ -91,7 +91,7 @@ export namespace AppOps {
       error = err.message || err.toString();
       success = false;
       log(
-        `[ app ] testing app ${app.name || app.guid} threw error: ${error}`,
+        `[ app ] testing app ${app.name} (${app.guid}) threw error: ${error}`,
         "notice"
       );
     }

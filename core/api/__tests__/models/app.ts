@@ -3,7 +3,7 @@ import { App } from "./../../src/models/App";
 import { Option } from "./../../src/models/Option";
 import { Log } from "./../../src/models/Log";
 import { plugin } from "./../../src/modules/plugin";
-import { api } from "actionhero";
+import { api, redis, utils } from "actionhero";
 let actionhero;
 
 describe("models/app", () => {
@@ -432,6 +432,18 @@ describe("models/app", () => {
 
       await app.destroy();
       expect(await redis.exists(key)).toBe(0);
+    });
+  });
+
+  describe("RPC methods", () => {
+    beforeAll(() => {
+      jest.spyOn(App, "disconnect");
+    });
+
+    test("api.rpc.app.disconnect", async () => {
+      await redis.doCluster("api.rpc.app.disconnect");
+      await utils.sleep(100);
+      expect(App.disconnect).toHaveBeenCalled();
     });
   });
 });
