@@ -464,7 +464,7 @@ describe("models/run", () => {
       expect(foundPreviousRun).toBeNull();
     });
 
-    test("will can find a previous run with an error (setting=true)", async () => {
+    test("will find a previous run with an error (setting=true)", async () => {
       await plugin.updateSetting(
         "core",
         "runs-previous-can-include-errors",
