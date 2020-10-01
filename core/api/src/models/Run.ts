@@ -29,6 +29,7 @@ import { StateMachine } from "./../modules/stateMachine";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { TeamMember } from "./TeamMember";
 import { RunOps } from "../modules/ops/runs";
+import { plugin } from "../modules/plugin";
 
 export interface HighWaterMark {
   [key: string]: string | number | Date;
@@ -253,14 +254,24 @@ export class Run extends Model<Run> {
    * Will ensure that the run returned did not error and read at least one profile
    */
   async previousRun() {
+    const setting = await plugin.readSetting(
+      "core",
+      "runs-previous-can-include-errors"
+    );
+
+    const where = {
+      creatorGuid: this.creatorGuid,
+      importsCreated: { [Op.gt]: 0 },
+      guid: { [Op.not]: this.guid },
+      state: "complete",
+    };
+
+    if (setting.value === "false") {
+      where["error"] = { [Op.eq]: null };
+    }
+
     const previousRun = await Run.findOne({
-      where: {
-        creatorGuid: this.creatorGuid,
-        error: { [Op.eq]: null },
-        importsCreated: { [Op.gt]: 0 },
-        guid: { [Op.not]: this.guid },
-        state: "complete",
-      },
+      where,
       order: [["createdAt", "desc"]],
       limit: 1,
     });
