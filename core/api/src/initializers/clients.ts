@@ -2,7 +2,7 @@ import { Initializer } from "actionhero";
 import fs from "fs";
 import path from "path";
 
-export class Files extends Initializer {
+export class Clients extends Initializer {
   constructor() {
     super();
     this.name = "clients";

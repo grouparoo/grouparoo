@@ -12,7 +12,7 @@ import {
   HasMany,
   DefaultScope,
 } from "sequelize-typescript";
-import { api } from "actionhero";
+import { api, redis } from "actionhero";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Source } from "./Source";
@@ -68,11 +68,7 @@ export class App extends LoggedModel<App> {
 
   async appOptions() {
     const { pluginApp } = await this.getPlugin();
-
-    if (!pluginApp?.methods?.appOptions) {
-      return {};
-    }
-
+    if (!pluginApp?.methods?.appOptions) return {};
     return pluginApp.methods.appOptions();
   }
 
@@ -84,11 +80,12 @@ export class App extends LoggedModel<App> {
     return OptionHelper.setOptions(this, options);
   }
 
-  async validateOptions(options?: SimpleAppOptions) {
-    if (!options) {
-      options = await this.getOptions();
-    }
+  async afterSetOptions() {
+    await redis.doCluster("api.rpc.app.disconnect");
+  }
 
+  async validateOptions(options?: SimpleAppOptions) {
+    if (!options) options = await this.getOptions();
     return OptionHelper.validateOptions(this, options);
   }
 
@@ -202,6 +199,12 @@ export class App extends LoggedModel<App> {
     const instance = await this.scope(null).findOne({ where: { guid } });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
+  }
+
+  // Disconnect all Apps from their persistent connections
+  static async disconnect() {
+    const apps = await App.findAll();
+    for (const i in apps) await apps[i].disconnect();
   }
 
   @BeforeCreate
