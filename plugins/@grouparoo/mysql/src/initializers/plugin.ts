@@ -40,8 +40,18 @@ export class Plugins extends Initializer {
         {
           name: "mysql",
           options: [
-            { key: "host", required: false, description: "the mysql host" },
-            { key: "port", required: false, description: "the mysql port" },
+            {
+              key: "host",
+              required: false,
+              description: "the mysql host",
+              placeholder: "localhost",
+            },
+            {
+              key: "port",
+              required: false,
+              description: "the mysql port",
+              placeholder: "3306",
+            },
             {
               key: "database",
               required: true,
