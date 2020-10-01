@@ -132,20 +132,11 @@ function SettingCard({
     updateSetting(setting);
   }
 
-  function capitalize(key: string) {
-    return key
-      .split("-")
-      .map((word) => {
-        return word.charAt(0).toUpperCase() + word.slice(1);
-      })
-      .join(" ");
-  }
-
   return (
     <>
-      <Card>
+      <Card border={setting.variant}>
         <Card.Body>
-          <Card.Title>{capitalize(setting.key)}</Card.Title>
+          <Card.Title>{setting.title}</Card.Title>
           {setting.type !== "boolean" ? (
             <Card.Subtitle className="mb-2 text-muted">
               {setting.description}

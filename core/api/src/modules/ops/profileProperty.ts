@@ -92,7 +92,7 @@ function formatEmail(email: string) {
 
 async function formatPhoneNumber(number: string) {
   const defaultCountryCode = (
-    await plugin.readSetting("core", "default-country-code")
+    await plugin.readSetting("core", "profiles-default-country-code")
   ).value as CountryCode;
 
   const formattedPhoneNumber = parsePhoneNumberFromString(

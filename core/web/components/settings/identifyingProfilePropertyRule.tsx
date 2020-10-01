@@ -66,7 +66,7 @@ export default function IdentifyingProfilePropertyRule(props) {
   }
 
   return (
-    <Card>
+    <Card border={"info"}>
       <Card.Body>
         <Card.Title>Identifying Profile Property</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">
