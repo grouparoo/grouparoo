@@ -25,6 +25,7 @@ export type { PluginConnectionScheduleOption } from "../models/Schedule";
 export type { SimpleAppOptions } from "../models/App";
 export type { SimpleSourceOptions } from "../models/Source";
 export type { SimpleDestinationOptions } from "../models/Destination";
+export type { HighWaterMark } from "../models/Run";
 
 /**
  * The plugin class

@@ -27,6 +27,7 @@
     "@grouparoo/sailthru": "^0.1.15-alpha.3",
     "@grouparoo/salesforce": "^0.1.15-alpha.3",
     "@grouparoo/sample-ui-plugin": "^0.1.15-alpha.3",
+    "@grouparoo/snowflake": "^0.1.15-alpha.3",
     "@grouparoo/zendesk": "^0.1.15-alpha.3"
   },
   "scripts": {
@@ -53,6 +54,7 @@
       "@grouparoo/redshift",
       "@grouparoo/sailthru",
       "@grouparoo/salesforce",
+      "@grouparoo/snowflake",
       "@grouparoo/zendesk"
     ],
     "includedFiles": [

@@ -54,6 +54,7 @@ jobs:
             - plugins/@grouparoo/sailthru/node_modules
             - plugins/@grouparoo/salesforce/node_modules
             - plugins/@grouparoo/sample-ui-plugin/node_modules
+            - plugins/@grouparoo/snowflake/node_modules
             - plugins/@grouparoo/spec-helper/node_modules
             - plugins/@grouparoo/zendesk/node_modules
             - tools/merger/node_modules
@@ -80,6 +81,7 @@ jobs:
             - plugins/@grouparoo/sailthru/dist
             - plugins/@grouparoo/salesforce/dist
             - plugins/@grouparoo/sample-ui-plugin/dist
+            - plugins/@grouparoo/snowflake/dist
             - plugins/@grouparoo/spec-helper/dist
             - plugins/@grouparoo/zendesk/dist
       - save_cache:
