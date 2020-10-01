@@ -436,17 +436,8 @@ describe("models/app", () => {
   });
 
   describe("RPC methods", () => {
-    let mocks = [];
-
     beforeAll(() => {
-      // App.disconnect = jest.fn();
-      mocks.push(
-        jest.spyOn(App, "disconnect").mockImplementation(async () => {})
-      );
-    });
-
-    afterAll(() => {
-      mocks.forEach((mock) => mock.mockRestore());
+      jest.spyOn(App, "disconnect");
     });
 
     test("api.rpc.app.disconnect", async () => {
