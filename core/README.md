@@ -82,6 +82,9 @@ npm run actionhero -- grouparoo demo eventStream
 # populate the system with 2,000,000 profiles, profile properties, 2,000,000 purchases, groups, and some events
 npm run actionhero -- grouparoo demo scale
 
+# including the --scale param allows you to control how many profiles you make. e.g. --scale 10 makes 10,000 profiles.
+npm run actionhero -- grouparoo demo scale --scale 10
+
 ```
 
 🦘
