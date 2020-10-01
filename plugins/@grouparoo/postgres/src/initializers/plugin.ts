@@ -40,8 +40,18 @@ export class Plugins extends Initializer {
         {
           name: "postgres",
           options: [
-            { key: "host", required: false, description: "the postgres host" },
-            { key: "port", required: false, description: "the postgres port" },
+            {
+              key: "host",
+              required: false,
+              description: "the postgres host",
+              placeholder: "localhost",
+            },
+            {
+              key: "port",
+              required: false,
+              description: "the postgres port",
+              placeholder: "5432",
+            },
             {
               key: "database",
               required: true,
@@ -51,6 +61,7 @@ export class Plugins extends Initializer {
               key: "schema",
               required: false,
               description: "the postgres schema (default: public)",
+              placeholder: "public",
             },
             { key: "user", required: false, description: "the postgres user" },
             {

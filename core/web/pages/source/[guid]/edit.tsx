@@ -208,7 +208,7 @@ export default function Page(props) {
                                 };
                               }
                             )}
-                            placeholder={`Select ${opt.key}`}
+                            placeholder={opt.placeholder || `Select ${opt.key}`}
                             renderMenuItemChildren={(opt, props, idx) => {
                               return [
                                 <span key={`opt-${idx}-key`}>
@@ -254,7 +254,7 @@ export default function Page(props) {
                             }
                           >
                             <option value={""} disabled>
-                              Choose an option
+                              Select an option
                             </option>
                             {connectionOptions[opt.key].options.map(
                               (o, idx) => (
@@ -294,6 +294,7 @@ export default function Page(props) {
                             required={opt.required}
                             type="text"
                             defaultValue={source.options[opt.key]}
+                            placeholder={opt.placeholder}
                             onChange={(e) =>
                               updateOption(
                                 e.target.id.replace("_opt~", ""),

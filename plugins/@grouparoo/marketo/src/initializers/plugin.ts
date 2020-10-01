@@ -28,14 +28,14 @@ export class Plugins extends Initializer {
             {
               key: "endpoint",
               required: true,
-              description:
-                "in Web Services - i.e. https://123-ABC-456.mktorest.com/rest",
+              description: "in Web Services",
+              placeholder: "https://123-ABC-456.mktorest.com/rest",
             },
             {
               key: "identity",
               required: true,
-              description:
-                "in Web Services - i.e. https://123-ABC-456.mktorest.com/identity",
+              description: "in Web Services",
+              placeholder: "https://123-ABC-456.mktorest.com/identity",
             },
             {
               key: "clientId",

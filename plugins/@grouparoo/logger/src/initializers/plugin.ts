@@ -28,6 +28,7 @@ export class Plugins extends Initializer {
               key: "filename",
               required: true,
               description: "the name of the file to log to, in /log",
+              placeholder: "/path/to/grouparoo.log",
             },
             {
               key: "stdout",
