@@ -108,7 +108,7 @@ describe("tasks/export:enqueue", () => {
     });
 
     afterEach(async () => {
-      await plugin.updateSetting("core", "export-profile-batch-size", 100);
+      await plugin.updateSetting("core", "exports-profile-batch-size", 100);
     });
 
     test("exports not yet exported or with an error will be enqueued", async () => {
@@ -126,7 +126,7 @@ describe("tasks/export:enqueue", () => {
     });
 
     test("batch size is variable", async () => {
-      await plugin.updateSetting("core", "export-profile-batch-size", 1);
+      await plugin.updateSetting("core", "exports-profile-batch-size", 1);
       await specHelper.runTask("export:enqueue", {});
 
       const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");

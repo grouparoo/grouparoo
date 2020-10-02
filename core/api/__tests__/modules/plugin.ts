@@ -138,12 +138,14 @@ describe("modules/plugin", () => {
       await plugin.registerSetting(
         "test-plugin",
         "sample-setting",
+        "title",
         "100",
         "I am a test setting",
         "string"
       );
 
       let value = await plugin.readSetting("test-plugin", "sample-setting");
+      expect(value.title).toBe("title");
       expect(value.value).toBe("100");
       expect(value.description).toBe("I am a test setting");
       await plugin.updateSetting("test-plugin", "sample-setting", 200);

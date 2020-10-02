@@ -34,6 +34,7 @@ describe("actions/settings", () => {
       await plugin.registerSetting(
         "testPlugin",
         "enabled",
+        "testPlugin:enabled",
         false,
         "Should we do that thing?",
         "string"
@@ -41,6 +42,7 @@ describe("actions/settings", () => {
       await plugin.registerSetting(
         "testPlugin",
         "number",
+        "testPlugin:number",
         10,
         "How many of those things should we do?",
         "number"
@@ -48,6 +50,7 @@ describe("actions/settings", () => {
       await plugin.registerSetting(
         "otherPlugin",
         "enabled",
+        "otherPlugin:enabled",
         true,
         "Should we do that thing?",
         "boolean"

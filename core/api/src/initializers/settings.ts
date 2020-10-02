@@ -5,9 +5,11 @@ import * as UUID from "uuid";
 
 interface SettingsListItem {
   key: string;
+  title: string;
   defaultValue: string | number;
   description: string;
   type: typeof settingTypes[number];
+  variant?: string;
 }
 export class Plugins extends Initializer {
   constructor() {
@@ -20,13 +22,22 @@ export class Plugins extends Initializer {
     pluginName: string
   ) {
     for (const i in settingsList) {
-      const { key, defaultValue, description, type } = settingsList[i];
+      const {
+        key,
+        title,
+        defaultValue,
+        description,
+        type,
+        variant,
+      } = settingsList[i];
       await plugin.registerSetting(
         pluginName,
         key,
+        title,
         defaultValue,
         description,
-        type
+        type,
+        variant
       );
     }
   }
@@ -35,6 +46,7 @@ export class Plugins extends Initializer {
     const coreSettings: SettingsListItem[] = [
       {
         key: "cluster-name",
+        title: "Cluster: Name",
         defaultValue: "My Grouparoo Cluster",
         description:
           "A way to identify this Grouparoo cluster.  Will be displayed in the web interface and sent with Telemetry.",
@@ -42,6 +54,7 @@ export class Plugins extends Initializer {
       },
       {
         key: "groups-calculation-delay-minutes",
+        title: "Groups: Calculation Delay Minutes",
         defaultValue: 60,
         description:
           "How many minutes should wait before recalculating a calculated Group's membership?",
@@ -49,20 +62,32 @@ export class Plugins extends Initializer {
       },
       {
         key: "runs-profile-batch-size",
+        title: "Runs: Profile Batch Size",
         defaultValue: 100,
         description:
           "How many Profiles or Imports should a Run enqueue in each batch before deferring to process those Imports already enqueued?",
         type: "number",
       },
       {
-        key: "export-profile-batch-size",
+        key: "runs-previous-can-include-errors",
+        title: "Runs: Previous Runs with Errors Considered",
+        defaultValue: "false",
+        description:
+          "When creating a new Run for a Source/Schedule, we check the most recent complete run to configure it.  This includes setting the starting HighWaterMark for the Run.  Should we consider those Runs which have an error?",
+        type: "boolean",
+        variant: "warning",
+      },
+      {
+        key: "exports-profile-batch-size",
+        title: "Exports: Profile Batch Size",
         defaultValue: 100,
         description:
           "How many Profiles should a Run try to send at once to Destinations which support batch exporting?",
         type: "number",
       },
       {
-        key: "default-country-code",
+        key: "profiles-default-country-code",
+        title: "Profile: Default Country Code",
         defaultValue: "US",
         description:
           "The default country code Grouparoo will use to format phone numbers and display data",
@@ -70,6 +95,7 @@ export class Plugins extends Initializer {
       },
       {
         key: "sweeper-delete-old-logs-days",
+        title: "Sweeper: Delete Old Logs Days",
         defaultValue: 31,
         description:
           "How many days should we keep Log records for on the server?",
@@ -77,6 +103,7 @@ export class Plugins extends Initializer {
       },
       {
         key: "sweeper-delete-old-imports-days",
+        title: "Sweeper: Delete Old Imports Days",
         defaultValue: 31,
         description:
           "How many days should we keep Import records for on the server?",
@@ -84,6 +111,7 @@ export class Plugins extends Initializer {
       },
       {
         key: "sweeper-delete-old-exports-days",
+        title: "Sweeper: Delete Old Exports Days",
         defaultValue: 31,
         description:
           "How many days should we keep Export records for on the server?  We will keep the most recent export for each Profile & Destination.",
@@ -94,6 +122,7 @@ export class Plugins extends Initializer {
     const interfaceSettings: SettingsListItem[] = [
       {
         key: "display-startup-steps",
+        title: "Display Startup Steps",
         defaultValue: "true",
         description:
           "Should Grouparoo display the Setup Steps to all Team Members?  You can always visit /setup to see your setup steps.",
@@ -104,12 +133,14 @@ export class Plugins extends Initializer {
     const telemetrySettings: SettingsListItem[] = [
       {
         key: "customer-guid",
+        title: "Customer Guid",
         defaultValue: `tcs_${UUID.v4()}`,
         description: "A unique, anonymous ID for this Grouparoo cluster.",
         type: "string",
       },
       {
         key: "customer-license",
+        title: "Customer License",
         defaultValue: ``,
         description: "Your Grouparoo License Key (for paid features).",
         type: "string",

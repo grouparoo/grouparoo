@@ -35,15 +35,23 @@ export class Setting extends LoggedModel<Setting> {
   type: typeof settingTypes[number];
 
   @Column
+  title: string;
+
+  @Column
   description: string;
+
+  @Column
+  variant: string;
 
   async apiData() {
     return {
       guid: this.guid,
       pluginName: this.pluginName,
       key: this.key,
+      title: this.title,
       value: this.value,
       type: this.type,
+      variant: this.variant,
       defaultValue: this.defaultValue,
       description: this.description,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,

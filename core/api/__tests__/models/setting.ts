@@ -19,6 +19,7 @@ describe("models/setting", () => {
     const setting = await plugin.registerSetting(
       "testPlugin",
       "key",
+      "title",
       "value",
       "this is a test setting",
       "string"
@@ -26,6 +27,7 @@ describe("models/setting", () => {
 
     expect(setting.guid.length).toBe(40);
     expect(setting.key).toBe("key");
+    expect(setting.title).toBe("title");
     expect(setting.value).toBe("value");
     expect(setting.defaultValue).toBe("value");
     expect(setting.createdAt).toBeTruthy();
@@ -74,6 +76,7 @@ describe("models/setting", () => {
     await plugin.registerSetting(
       "testPlugin",
       "key",
+      "new title",
       "value2",
       "this is a better description of the setting",
       "string"
@@ -81,6 +84,7 @@ describe("models/setting", () => {
 
     const setting = await plugin.readSetting("testPlugin", "key");
     expect(setting.key).toBe("key");
+    expect(setting.title).toBe("new title");
     expect(setting.value).toBe("new value"); // no change
     expect(setting.defaultValue).toBe("value2");
     expect(setting.description).toBe(

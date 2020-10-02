@@ -95,7 +95,7 @@ export namespace ExportOps {
   ) {
     if (!limit) {
       limit = parseInt(
-        (await plugin.readSetting("core", "export-profile-batch-size")).value
+        (await plugin.readSetting("core", "exports-profile-batch-size")).value
       );
     }
     const app = await destination.$get("app");

@@ -445,7 +445,13 @@ describe("models/run", () => {
       expect(foundPreviousRun).toBeNull();
     });
 
-    test("will not find a previous run with an error", async () => {
+    test("will not find a previous run with an error (setting=false)", async () => {
+      await plugin.updateSetting(
+        "core",
+        "runs-previous-can-include-errors",
+        "false"
+      );
+
       previousRun = await Run.create({
         creatorGuid: schedule.guid,
         creatorType: "schedule",
@@ -456,6 +462,25 @@ describe("models/run", () => {
 
       const foundPreviousRun = await nextRun.previousRun();
       expect(foundPreviousRun).toBeNull();
+    });
+
+    test("will find a previous run with an error (setting=true)", async () => {
+      await plugin.updateSetting(
+        "core",
+        "runs-previous-can-include-errors",
+        "true"
+      );
+
+      previousRun = await Run.create({
+        creatorGuid: schedule.guid,
+        creatorType: "schedule",
+        state: "complete",
+        importsCreated: 1,
+        error: "OH NO!",
+      });
+
+      const foundPreviousRun = await nextRun.previousRun();
+      expect(foundPreviousRun.guid).toEqual(previousRun.guid);
     });
 
     test("will not find a previous run that is not complete", async () => {

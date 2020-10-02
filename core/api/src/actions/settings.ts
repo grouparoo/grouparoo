@@ -14,8 +14,8 @@ export class SettingsList extends AuthenticatedAction {
         required: false,
         default: [
           ["pluginName", "desc"],
+          ["title", "desc"],
           ["key", "desc"],
-          ["createdAt", "desc"],
         ],
       },
     };

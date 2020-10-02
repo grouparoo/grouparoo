@@ -94,22 +94,34 @@ export namespace plugin {
   export async function registerSetting(
     pluginName: string,
     key: string,
+    title: string,
     defaultValue: any,
     description: string,
-    type: typeof settingTypes[number]
+    type: typeof settingTypes[number],
+    variant = "info"
   ) {
     const setting = await Setting.findOne({ where: { pluginName, key } });
 
-    if (setting) return setting.update({ defaultValue, description, type });
+    if (setting) {
+      return setting.update({
+        title,
+        defaultValue,
+        description,
+        type,
+        variant,
+      });
+    }
 
     try {
       const setting = await Setting.create({
         pluginName,
         key,
+        title,
         value: defaultValue,
         defaultValue,
         description,
         type,
+        variant,
       });
 
       return setting;
