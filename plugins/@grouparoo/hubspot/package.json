@@ -32,14 +32,14 @@
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
-    "actionhero": "23.0.11"
+    "actionhero": "23.1.0"
   },
   "devDependencies": {
     "@grouparoo/core": "^0.1.16",
     "@grouparoo/spec-helper": "^0.1.16",
     "@types/jest": "26.0.14",
     "@types/node": "14.11.2",
-    "actionhero": "23.0.11",
+    "actionhero": "23.1.0",
     "jest": "26.4.2",
     "nock": "13.0.4",
     "prettier": "2.1.2",
