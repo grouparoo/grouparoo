@@ -51,11 +51,10 @@ module.exports = withSourceMaps({
       use: [options.defaultLoaders.babel],
     });
 
-    config.resolve.alias["react"] = path.resolve(nodeModulesPath, "react");
-    config.resolve.alias["react-dom"] = path.resolve(
-      nodeModulesPath,
-      "react-dom"
-    );
+    // There may be different version of these core packages in our dependency tree.  We need to pick only one version (our version).
+    ["react", "react-dom"].forEach((package) => {
+      config.resolve.alias[package] = path.resolve(nodeModulesPath, package);
+    });
 
     config.module.rules.push({
       test: /\.md$/,
