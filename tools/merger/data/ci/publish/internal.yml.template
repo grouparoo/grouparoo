@@ -1,6 +1,9 @@
   publish:
     docker:
       - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     steps:
       - run:
           name: not publishing
