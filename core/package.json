@@ -77,7 +77,7 @@
     "react-dom": "16.13.1",
     "react-hook-form": "6.8.6",
     "react-markdown": "4.3.1",
-    "react-moment": "0.9.7",
+    "react-moment": "1.0.0",
     "react-sparklines": "1.7.0",
     "react-transition-group": "4.4.1",
     "reflect-metadata": "0.1.13",
