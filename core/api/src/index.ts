@@ -1,3 +1,4 @@
+import { ObjectCacheInvalidateMethod } from "./modules/cache";
 export { plugin } from "./modules/plugin";
 
 export * from "./classes/plugin";
@@ -34,3 +35,9 @@ export { Team } from "./models/Team";
 export { TeamMember } from "./models/TeamMember";
 
 export { waitForLock } from "./modules/locks";
+export {
+  objectCache,
+  objectCacheInvalidate,
+  ObjectCacheMethod,
+  ObjectCacheInvalidateMethod,
+} from "./modules/cache";
