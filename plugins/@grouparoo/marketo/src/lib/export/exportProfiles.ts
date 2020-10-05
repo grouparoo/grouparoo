@@ -13,7 +13,6 @@ enum MarketoAction {
   Update = "UPDATE",
 }
 export interface MarketoExport extends ExportedProfile {
-  profileGuid: string;
   marketoId?: number;
   action?: MarketoAction;
   result?: any; // result from find
@@ -392,14 +391,10 @@ export const exportProfiles: ExportProfilesPluginMethod = async ({
   // i'm making a separate function to enable that loop
   // the separate function also enabled testing (doesn't need profile model)
 
-  const exportsWithGuid: MarketoExport[] = [];
+  const batchExports: MarketoExport[] = [];
   for (const exportedProfile of exports) {
-    const profileGuid = exportedProfile.profile.guid;
-    const marketo: MarketoExport = Object.assign(
-      { profileGuid },
-      exportedProfile
-    );
-    exportsWithGuid.push(marketo);
+    const marketo: MarketoExport = Object.assign({}, exportedProfile);
+    batchExports.push(marketo);
   }
-  return exportBatch({ appOptions, exports: exportsWithGuid });
+  return exportBatch({ appOptions, exports: batchExports });
 };
