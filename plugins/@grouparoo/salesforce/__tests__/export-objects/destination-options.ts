@@ -1,6 +1,6 @@
 import "@grouparoo/spec-helper";
 import path from "path";
-import { destinationOptions } from "../../src/lib/export-objects/destinationOptions";
+import { destinationOptions as methodToTest } from "../../src/lib/export-objects/destinationOptions";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "@grouparoo/spec-helper";
 const nockFile = path.join(
@@ -198,150 +198,128 @@ function expectLeadTopicResult(result, referenceStage = 0) {
   }
 }
 
+async function runDestinationOptions({ destinationOptions }) {
+  return methodToTest({
+    destinationOptions,
+    appOptions,
+    app: null,
+    appGuid: null,
+    connection: null,
+  });
+}
+
 describe("salesforce/sales-cloud/destinationOptions", () => {
   test("can look up objects", async () => {
-    const result = await destinationOptions({
-      destinationOptions: {},
-      appOptions,
-      app: null,
-      connection: null,
-    });
+    const destinationOptions = {};
 
+    const result = await runDestinationOptions({ destinationOptions });
     expectPendingResult(result);
   });
 
   test("gives original list if bad value", async () => {
-    const result = await destinationOptions({
-      destinationOptions: {
-        profileObject: "Junk",
-        groupObject: "Bad",
-        membershipObject: "False",
-      },
-      appOptions,
-      app: null,
-      connection: null,
-    });
+    const destinationOptions = {
+      profileObject: "Junk",
+      groupObject: "Bad",
+      membershipObject: "False",
+    };
 
+    const result = await runDestinationOptions({ destinationOptions });
     expectPendingResult(result);
   });
 
   test("can look up key fields", async () => {
-    const result = await destinationOptions({
-      destinationOptions: {
-        profileObject: "Lead",
-        groupObject: "Topic",
-        membershipObject: "TopicAssignment",
-      },
-      appOptions,
-      app: null,
-      connection: null,
-    });
+    const destinationOptions = {
+      profileObject: "Lead",
+      groupObject: "Topic",
+      membershipObject: "TopicAssignment",
+    };
 
+    const result = await runDestinationOptions({ destinationOptions });
     expectFullResult(result);
     expectLeadTopicResult(result);
   });
 
   test("get same back when sent everything", async () => {
-    const result = await destinationOptions({
-      destinationOptions: {
-        profileObject: "Contact",
-        profileMatchField: "Email",
-        groupObject: "Campaign",
-        groupNameField: "Name",
-        membershipObject: "CampaignMember",
-        membershipProfileField: "ContactId",
-        membershipGroupField: "CampaignId",
-      },
-      appOptions,
-      app: null,
-      connection: null,
-    });
+    const destinationOptions = {
+      profileObject: "Contact",
+      profileMatchField: "Email",
+      groupObject: "Campaign",
+      groupNameField: "Name",
+      membershipObject: "CampaignMember",
+      membershipProfileField: "ContactId",
+      membershipGroupField: "CampaignId",
+    };
 
+    const result = await runDestinationOptions({ destinationOptions });
     expectFullResult(result);
     expectContactCampaignResult(result);
   });
 
   test("get same back when sends bad fields", async () => {
-    const result = await destinationOptions({
-      destinationOptions: {
-        profileObject: "Lead",
-        profileMatchField: "xEmail",
-        groupObject: "Topic",
-        groupNameField: "xName",
-        membershipObject: "TopicAssignment",
-        membershipProfileField: "xEntityId",
-        membershipGroupField: "xTopicId",
-      },
-      appOptions,
-      app: null,
-      connection: null,
-    });
+    const destinationOptions = {
+      profileObject: "Lead",
+      profileMatchField: "xEmail",
+      groupObject: "Topic",
+      groupNameField: "xName",
+      membershipObject: "TopicAssignment",
+      membershipProfileField: "xEntityId",
+      membershipGroupField: "xTopicId",
+    };
 
+    const result = await runDestinationOptions({ destinationOptions });
     expectFullResult(result);
     expectLeadTopicResult(result);
   });
 
   test("gets types of the reference when a field is chosen", async () => {
-    const result = await destinationOptions({
-      destinationOptions: {
-        profileObject: "Lead",
-        profileMatchField: "Email",
-        groupObject: "Topic",
-        groupNameField: "Name",
-        membershipObject: "TopicAssignment",
-        membershipProfileField: "EntityId",
-        membershipGroupField: "TopicId",
-        profileReferenceField: "IndividualId",
-      },
-      appOptions,
-      app: null,
-      connection: null,
-    });
+    const destinationOptions = {
+      profileObject: "Lead",
+      profileMatchField: "Email",
+      groupObject: "Topic",
+      groupNameField: "Name",
+      membershipObject: "TopicAssignment",
+      membershipProfileField: "EntityId",
+      membershipGroupField: "TopicId",
+      profileReferenceField: "IndividualId",
+    };
 
+    const result = await runDestinationOptions({ destinationOptions });
     expectFullResult(result);
     expectLeadTopicResult(result, 1);
   });
 
   test("gets all reference data when object is chosen", async () => {
-    const result = await destinationOptions({
-      destinationOptions: {
-        profileObject: "Contact",
-        profileMatchField: "Email",
-        groupObject: "Campaign",
-        groupNameField: "Name",
-        membershipObject: "CampaignMember",
-        membershipProfileField: "ContactId",
-        membershipGroupField: "CampaignId",
-        profileReferenceField: "AccountId",
-        profileReferenceObject: "Account",
-      },
-      appOptions,
-      app: null,
-      connection: null,
-    });
+    const destinationOptions = {
+      profileObject: "Contact",
+      profileMatchField: "Email",
+      groupObject: "Campaign",
+      groupNameField: "Name",
+      membershipObject: "CampaignMember",
+      membershipProfileField: "ContactId",
+      membershipGroupField: "CampaignId",
+      profileReferenceField: "AccountId",
+      profileReferenceObject: "Account",
+    };
 
+    const result = await runDestinationOptions({ destinationOptions });
     expectFullResult(result);
     expectContactCampaignResult(result, 2);
   });
 
   test("gets all reference data when everything is chosen", async () => {
-    const result = await destinationOptions({
-      destinationOptions: {
-        profileObject: "Lead",
-        profileMatchField: "Email",
-        groupObject: "Topic",
-        groupNameField: "Name",
-        membershipObject: "TopicAssignment",
-        membershipProfileField: "EntityId",
-        membershipGroupField: "TopicId",
-        profileReferenceField: "IndividualId",
-        profileReferenceObject: "Individual",
-      },
-      appOptions,
-      app: null,
-      connection: null,
-    });
+    const destinationOptions = {
+      profileObject: "Lead",
+      profileMatchField: "Email",
+      groupObject: "Topic",
+      groupNameField: "Name",
+      membershipObject: "TopicAssignment",
+      membershipProfileField: "EntityId",
+      membershipGroupField: "TopicId",
+      profileReferenceField: "IndividualId",
+      profileReferenceObject: "Individual",
+    };
 
+    const result = await runDestinationOptions({ destinationOptions });
     expectFullResult(result);
     expectLeadTopicResult(result, 2);
   });

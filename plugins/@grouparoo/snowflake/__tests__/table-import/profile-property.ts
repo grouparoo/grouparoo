@@ -53,7 +53,7 @@ async function getPropertyValue(
   }
 
   const profilePropertyRuleFilters = useProfilePropertyRuleFilters || [];
-  const connection = await connect({ appOptions, app: null });
+  const connection = await connect({ appOptions, app: null, appGuid: null });
   const profilePropertyRule = await ProfilePropertyRule.findOne({
     where: { key: "email" },
   });
@@ -66,9 +66,13 @@ async function getPropertyValue(
     profilePropertyRuleOptions,
     sourceMapping,
     profilePropertyRuleFilters,
-    source: null,
-    app: null,
     profilePropertyRule,
+    profileGuid: null,
+    source: null,
+    sourceGuid: null,
+    app: null,
+    appGuid: null,
+    profilePropertyRuleGuid: null,
   });
 }
 

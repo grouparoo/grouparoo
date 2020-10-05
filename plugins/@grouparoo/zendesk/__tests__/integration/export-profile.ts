@@ -74,6 +74,33 @@ async function deleteUsers(suppressErrors) {
   }
 }
 
+async function runExport({
+  oldProfileProperties,
+  newProfileProperties,
+  oldGroups,
+  newGroups,
+  toDelete,
+}) {
+  return exportProfile({
+    appOptions,
+    connection: null,
+    app: null,
+    appGuid: null,
+    destination: null,
+    destinationGuid: null,
+    destinationOptions: null,
+    export: {
+      profile: null,
+      profileGuid: null,
+      oldProfileProperties,
+      newProfileProperties,
+      oldGroups,
+      newGroups,
+      toDelete,
+    },
+  });
+}
+
 describe("zendesk/exportProfile", () => {
   beforeAll(async () => {
     client = await connect(appOptions);
@@ -88,20 +115,12 @@ describe("zendesk/exportProfile", () => {
     userId = await findId();
     expect(userId).toBe(null);
 
-    await exportProfile({
-      appOptions,
-      connection: null,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        oldProfileProperties: {},
-        newProfileProperties: { email, external_id, name },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: false,
-        profile: null,
-      },
+    await runExport({
+      oldProfileProperties: {},
+      newProfileProperties: { email, external_id, name },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
     });
 
     userId = await findId();
@@ -112,27 +131,19 @@ describe("zendesk/exportProfile", () => {
   });
 
   test("can add user variables", async () => {
-    await exportProfile({
-      appOptions,
-      connection: null,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        oldProfileProperties: { email, external_id, name },
-        newProfileProperties: {
-          email,
-          external_id,
-          name,
-          alias: "BL",
-          text_field: "testing here",
-          date_field: exampleDate,
-        },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: false,
-        profile: null,
+    await runExport({
+      oldProfileProperties: { email, external_id, name },
+      newProfileProperties: {
+        email,
+        external_id,
+        name,
+        alias: "BL",
+        text_field: "testing here",
+        date_field: exampleDate,
       },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -145,36 +156,28 @@ describe("zendesk/exportProfile", () => {
   });
 
   test("can change user variables", async () => {
-    await exportProfile({
-      appOptions,
-      connection: null,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        oldProfileProperties: {
-          email,
-          external_id,
-          name,
-          alias: "BL",
-          text_field: "testing here",
-          date_field: exampleDate,
-        },
-        newProfileProperties: {
-          email,
-          external_id,
-          name: "Evan",
-          alias: "BL",
-          unknown_junk: "ok", // make sure it doesn't hurt anything
-          text_field: "testing here change",
-          checkbox_field: true,
-          date_field: null,
-        },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: false,
-        profile: null,
+    await runExport({
+      oldProfileProperties: {
+        email,
+        external_id,
+        name,
+        alias: "BL",
+        text_field: "testing here",
+        date_field: exampleDate,
       },
+      newProfileProperties: {
+        email,
+        external_id,
+        name: "Evan",
+        alias: "BL",
+        unknown_junk: "ok", // make sure it doesn't hurt anything
+        text_field: "testing here change",
+        checkbox_field: true,
+        date_field: null,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -189,31 +192,23 @@ describe("zendesk/exportProfile", () => {
   });
 
   test("can clear user variables", async () => {
-    await exportProfile({
-      appOptions,
-      connection: null,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        oldProfileProperties: {
-          email,
-          external_id,
-          name: "Evan",
-          alias: "BL",
-          text_field: "testing here change",
-          checkbox_field: true,
-        },
-        newProfileProperties: {
-          email,
-          external_id,
-          name: "",
-        },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: false,
-        profile: null,
+    await runExport({
+      oldProfileProperties: {
+        email,
+        external_id,
+        name: "Evan",
+        alias: "BL",
+        text_field: "testing here change",
+        checkbox_field: true,
       },
+      newProfileProperties: {
+        email,
+        external_id,
+        name: "",
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -225,26 +220,18 @@ describe("zendesk/exportProfile", () => {
   });
 
   test("can add tags", async () => {
-    await exportProfile({
-      appOptions,
-      connection: null,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        oldProfileProperties: {
-          email,
-          external_id,
-        },
-        newProfileProperties: {
-          email,
-          external_id,
-        },
-        oldGroups: [],
-        newGroups: ["Test Group X", "another"],
-        toDelete: false,
-        profile: null,
+    await runExport({
+      oldProfileProperties: {
+        email,
+        external_id,
       },
+      newProfileProperties: {
+        email,
+        external_id,
+      },
+      oldGroups: [],
+      newGroups: ["Test Group X", "another"],
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -252,26 +239,18 @@ describe("zendesk/exportProfile", () => {
   });
 
   test("can remove tags", async () => {
-    await exportProfile({
-      appOptions,
-      connection: null,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        oldProfileProperties: {
-          email,
-          external_id,
-        },
-        newProfileProperties: {
-          email,
-          external_id,
-        },
-        oldGroups: ["Test Group X", "another"],
-        newGroups: ["Test Group X"],
-        toDelete: false,
-        profile: null,
+    await runExport({
+      oldProfileProperties: {
+        email,
+        external_id,
       },
+      newProfileProperties: {
+        email,
+        external_id,
+      },
+      oldGroups: ["Test Group X", "another"],
+      newGroups: ["Test Group X"],
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -284,26 +263,18 @@ describe("zendesk/exportProfile", () => {
         tags: ["test_group_x", "outside_grouparoo"],
       },
     });
-    await exportProfile({
-      appOptions,
-      connection: null,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        oldProfileProperties: {
-          email,
-          external_id,
-        },
-        newProfileProperties: {
-          email,
-          external_id,
-        },
-        oldGroups: ["Test Group X"],
-        newGroups: ["Test Group X", "New_one"],
-        toDelete: false,
-        profile: null,
+    await runExport({
+      oldProfileProperties: {
+        email,
+        external_id,
       },
+      newProfileProperties: {
+        email,
+        external_id,
+      },
+      oldGroups: ["Test Group X"],
+      newGroups: ["Test Group X", "New_one"],
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -315,26 +286,18 @@ describe("zendesk/exportProfile", () => {
   });
 
   test("it does not change zendesk-created tags when groups are removed", async () => {
-    await exportProfile({
-      appOptions,
-      connection: null,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        oldProfileProperties: {
-          email,
-          external_id,
-        },
-        newProfileProperties: {
-          email,
-          external_id,
-        },
-        oldGroups: ["Test Group X", "New_one"],
-        newGroups: [],
-        toDelete: false,
-        profile: null,
+    await runExport({
+      oldProfileProperties: {
+        email,
+        external_id,
       },
+      newProfileProperties: {
+        email,
+        external_id,
+      },
+      oldGroups: ["Test Group X", "New_one"],
+      newGroups: [],
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -342,26 +305,18 @@ describe("zendesk/exportProfile", () => {
   });
 
   test("it can change the email address", async () => {
-    await exportProfile({
-      appOptions,
-      connection: null,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        oldProfileProperties: {
-          email,
-          external_id,
-        },
-        newProfileProperties: {
-          email: "NewOne@bleonard.com",
-          external_id,
-        },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: false,
-        profile: null,
+    await runExport({
+      oldProfileProperties: {
+        email,
+        external_id,
       },
+      newProfileProperties: {
+        email: "NewOne@bleonard.com",
+        external_id,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -386,25 +341,17 @@ describe("zendesk/exportProfile", () => {
     });
 
     // then sync a profile
-    await exportProfile({
-      appOptions,
-      connection: null,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        oldProfileProperties: {},
-        newProfileProperties: {
-          email: migratedEmail,
-          name: migratedName,
-          external_id: migratedExternalId,
-          text_field: "change",
-        },
-        oldGroups: [],
-        newGroups: ["something"],
-        toDelete: false,
-        profile: null,
+    await runExport({
+      oldProfileProperties: {},
+      newProfileProperties: {
+        email: migratedEmail,
+        name: migratedName,
+        external_id: migratedExternalId,
+        text_field: "change",
       },
+      oldGroups: [],
+      newGroups: ["something"],
+      toDelete: false,
     });
 
     const user = await client.users.show(created.id);
@@ -418,26 +365,18 @@ describe("zendesk/exportProfile", () => {
   });
 
   test("it can change the external id", async () => {
-    await exportProfile({
-      appOptions,
-      connection: null,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        oldProfileProperties: {
-          email: "NewOne@bleonard.com",
-          external_id,
-        },
-        newProfileProperties: {
-          external_id: newExternalId,
-          email,
-        },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: false,
-        profile: null,
+    await runExport({
+      oldProfileProperties: {
+        email: "NewOne@bleonard.com",
+        external_id,
       },
+      newProfileProperties: {
+        external_id: newExternalId,
+        email,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -447,22 +386,14 @@ describe("zendesk/exportProfile", () => {
   });
 
   test("it can make one with the original id and no email", async () => {
-    await exportProfile({
-      appOptions,
-      connection: null,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        oldProfileProperties: {},
-        newProfileProperties: {
-          external_id,
-        },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: false,
-        profile: null,
+    await runExport({
+      oldProfileProperties: {},
+      newProfileProperties: {
+        external_id,
       },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
     });
 
     newId = await findId();
@@ -482,23 +413,15 @@ describe("zendesk/exportProfile", () => {
   });
 
   test("it can add an email address to the new user", async () => {
-    await exportProfile({
-      appOptions,
-      connection: null,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        oldProfileProperties: { external_id },
-        newProfileProperties: {
-          external_id,
-          email: "added@bleonard.com",
-        },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: false,
-        profile: null,
+    await runExport({
+      oldProfileProperties: { external_id },
+      newProfileProperties: {
+        external_id,
+        email: "added@bleonard.com",
       },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
     });
 
     const newUser = await getNewUser();
@@ -508,20 +431,12 @@ describe("zendesk/exportProfile", () => {
   });
 
   test("can delete a user", async () => {
-    await exportProfile({
-      appOptions,
-      connection: null,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        oldProfileProperties: { external_id },
-        newProfileProperties: { external_id },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: true,
-        profile: null,
-      },
+    await runExport({
+      oldProfileProperties: { external_id },
+      newProfileProperties: { external_id },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
     });
 
     expect(await findId()).toBeNull();

@@ -1,3 +1,4 @@
+import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 import path from "path";
 import { destinationMappingOptions } from "../../src/lib/export/destinationMappingOptions";
@@ -25,8 +26,10 @@ describe("marketo/destinationMappingOptions", () => {
       const options = await destinationMappingOptions({
         appOptions,
         app: null,
+        appGuid: null,
         connection: null,
         destination: null,
+        destinationGuid: null,
         destinationOptions: null,
       });
       const { profilePropertyRules } = options;

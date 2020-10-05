@@ -82,7 +82,11 @@ describe("integration/runs/mysql", () => {
   });
 
   beforeAll(async () => {
-    client = await connect({ appOptions: MYSQL_OPTIONS, app: null });
+    client = await connect({
+      appOptions: MYSQL_OPTIONS,
+      app: null,
+      appGuid: null,
+    });
 
     await client.asyncQuery(`drop table if exists ${sourceTableName}`);
     await client.asyncQuery("drop table if exists output_users");

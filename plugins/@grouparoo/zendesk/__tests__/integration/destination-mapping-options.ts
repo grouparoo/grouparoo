@@ -24,6 +24,18 @@ require("./../fixtures/destination-mapping-options");
 
 const appOptions = loadAppOptions(newNock);
 
+async function runDestinationMappingOptions({}) {
+  return destinationMappingOptions({
+    appOptions,
+    app: null,
+    appGuid: null,
+    connection: null,
+    destination: null,
+    destinationGuid: null,
+    destinationOptions: null,
+  });
+}
+
 describe("zendesk/destinationMappingOptions", () => {
   beforeAll(async () => {}, 1000 * 30);
 
@@ -41,13 +53,7 @@ describe("zendesk/destinationMappingOptions", () => {
   });
 
   test("can load all destinationMappingOptions", async () => {
-    const options = await destinationMappingOptions({
-      appOptions,
-      app: null,
-      connection: null,
-      destination: null,
-      destinationOptions: null,
-    });
+    const options = await runDestinationMappingOptions({});
     const { profilePropertyRules } = options;
     const { required, known } = profilePropertyRules;
 
