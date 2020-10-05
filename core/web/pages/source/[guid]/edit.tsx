@@ -2,12 +2,13 @@ import { useApi } from "../../../hooks/useApi";
 import SourceTabs from "../../../components/tabs/source";
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import { Row, Col, Form, Badge, Table } from "react-bootstrap";
+import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import Router from "next/router";
 import AppIcon from "./../../../components/appIcon";
 import StateBadge from "./../../../components/stateBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { SourceAPIData } from "../../../utils/apiData";
+import LoadingTable from "../../../components/loadingTable";
 import LoadingButton from "../../../components/loadingButton";
 import Loader from "../../../components/loader";
 
@@ -18,21 +19,19 @@ export default function Page(props) {
     sourceHandler,
     environmentVariableOptions,
     query,
-    hydrationError,
   } = props;
   const { execApi } = useApi(props, errorHandler);
   const [preview, setPreview] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadingOptions, setLoadingOptions] = useState(false);
+  const [previewLoading, setPreviewLoading] = useState(false);
   const [source, setSource] = useState<SourceAPIData>(props.source);
-  const [connectionOptions, setConnectionOptions] = useState(
-    props.connectionOptions
-  );
+  const [connectionOptions, setConnectionOptions] = useState({});
   const { guid } = query;
-
-  if (hydrationError) errorHandler.set({ error: hydrationError });
 
   useEffect(() => {
     loadPreview(source.previewAvailable);
+    loadOptions();
   }, []);
 
   async function loadPreview(
@@ -42,7 +41,7 @@ export default function Page(props) {
       return;
     }
 
-    setLoading(true);
+    setPreviewLoading(true);
     const response = await execApi(
       "get",
       `/source/${guid}/preview`,
@@ -53,7 +52,7 @@ export default function Page(props) {
       null,
       false
     );
-    setLoading(false);
+    setPreviewLoading(false);
     if (response?.preview) {
       setPreview(response.preview);
     }
@@ -90,16 +89,18 @@ export default function Page(props) {
     }
   };
 
-  async function refreshOptions() {
+  async function loadOptions() {
+    setLoadingOptions(true);
     const response = await execApi(
       "get",
       `/source/${guid}/connectionOptions`,
-      source,
+      { options: source.options },
       null,
       null,
       false
     );
     if (response?.options) setConnectionOptions(response.options);
+    setLoadingOptions(false);
   }
 
   async function handleDelete() {
@@ -177,6 +178,12 @@ export default function Page(props) {
             <hr />
             <p>Options for a {source.type} source:</p>
 
+            {loadingOptions ? (
+              <Alert variant="warning">
+                <Loader size="sm" /> Loading options from {source.app.type}
+              </Alert>
+            ) : null}
+
             {Object.keys(source.connection.options).length === 0 ? (
               <p>No options for this type of source</p>
             ) : null}
@@ -203,7 +210,7 @@ export default function Page(props) {
                           <Typeahead
                             id="typeahead"
                             labelKey="key"
-                            disabled={loading}
+                            disabled={loading || loadingOptions}
                             onChange={(selected) => {
                               updateOption(opt.key, selected[0]?.key);
                             }}
@@ -253,7 +260,7 @@ export default function Page(props) {
                           <Form.Control
                             as="select"
                             required={opt.required}
-                            disabled={loading}
+                            disabled={loading || loadingOptions}
                             defaultValue={source.options[opt.key] || ""}
                             onChange={(e) =>
                               updateOption(
@@ -302,7 +309,7 @@ export default function Page(props) {
                           <Form.Control
                             required={opt.required}
                             type="text"
-                            disabled={loading}
+                            disabled={loading || loadingOptions}
                             defaultValue={source.options[opt.key]}
                             placeholder={opt.placeholder}
                             onChange={(e) =>
@@ -349,7 +356,7 @@ export default function Page(props) {
             {previewColumns.length === 0 && loading ? <Loader /> : null}
 
             <div style={{ overflow: "auto" }}>
-              <Table striped size="sm">
+              <LoadingTable loading={previewLoading} size="sm">
                 <thead>
                   <tr>
                     {previewColumns.map((col) => (
@@ -374,7 +381,7 @@ export default function Page(props) {
                     </tr>
                   ))}
                 </tbody>
-              </Table>
+              </LoadingTable>
             </div>
 
             <br />
@@ -410,24 +417,8 @@ Page.getInitialProps = async (ctx) => {
     `/sources/connectionApps`
   );
 
-  let connectionOptions = {};
-  let hydrationError: Error;
-
-  try {
-    const connectionOptionsResponse = await execApi(
-      "get",
-      `/source/${guid}/connectionOptions`,
-      { options: source.options }
-    );
-    connectionOptions = connectionOptionsResponse.options;
-  } catch (error) {
-    hydrationError = error.toString();
-  }
-
   return {
     source,
-    connectionOptions,
     environmentVariableOptions,
-    hydrationError,
   };
 };
