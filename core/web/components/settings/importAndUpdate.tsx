@@ -10,10 +10,12 @@ export default function ImportAndUpdateProfile(props) {
 
   async function importAndUpdate() {
     if (window.confirm("Are you sure?")) {
+      setLoading(true);
       const response = await execApi("put", `/profiles/importAndUpdate`);
       if (response?.run) {
         successHandler.set({ message: `Run ${response.run.guid} enqueued` });
       }
+      setLoading(false);
     }
   }
 

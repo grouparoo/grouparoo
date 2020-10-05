@@ -14,10 +14,12 @@ export default function ResetCluster(props) {
       return errorHandler.set({ error: "not proceeding" });
     }
 
+    setLoading(true);
     const response = await execApi("delete", `/cluster`);
     if (response?.success) {
       successHandler.set({ message: `Cluster Reset!` });
     }
+    setLoading(false);
   }
 
   return (
