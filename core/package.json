@@ -59,7 +59,7 @@
     "fs-extra": "9.0.1",
     "ioredis": "4.17.3",
     "isomorphic-fetch": "3.0.0",
-    "libphonenumber-js": "1.8.1",
+    "libphonenumber-js": "1.8.3",
     "md5": "2.3.0",
     "moment": "2.29.0",
     "mustache": "4.0.1",
