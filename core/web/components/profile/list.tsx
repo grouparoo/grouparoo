@@ -4,10 +4,11 @@ import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
 import Router from "next/router";
-import { Form, Col, Button, Badge } from "react-bootstrap";
+import { Form, Col, Badge } from "react-bootstrap";
 import Moment from "react-moment";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
+import LoadingButton from "../loadingButton";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { ProfileAPIData } from "../../utils/apiData";
 import ArrayProfilePropertyList from "../../components/profile/arrayProfilePropertyList";
@@ -132,7 +133,7 @@ export default function ProfilesList(props) {
                 name="searchKey"
                 as="select"
                 value={searchKey}
-                disabled={props.searchKey ? true : false}
+                disabled={props.searchKey || loading ? true : false}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   setSearchKey(event.target.value);
                   setSearchValue("");
@@ -157,7 +158,7 @@ export default function ProfilesList(props) {
                   key={`typeahead-search-${searchKey}`}
                   id={`typeahead-search-${searchKey}`}
                   minLength={0}
-                  disabled={props.searchKey ? true : false}
+                  disabled={props.searchKey || loading ? true : false}
                   isLoading={searchLoading}
                   allowNew={true}
                   onChange={(selected) => {
@@ -187,9 +188,9 @@ export default function ProfilesList(props) {
           ) : null}
 
           <Col md={2} style={{ marginTop: 33 }}>
-            <Button size="sm" type="submit">
+            <LoadingButton size="sm" type="submit" disabled={loading}>
               Search
-            </Button>
+            </LoadingButton>
           </Col>
         </Form.Row>
       </Form>

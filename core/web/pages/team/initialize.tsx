@@ -43,6 +43,7 @@ export default function TeamInitializePage(props) {
             name="firstName"
             ref={register}
             placeholder="First Name"
+            disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
             First Name is required
@@ -56,6 +57,7 @@ export default function TeamInitializePage(props) {
             type="text"
             name="lastName"
             placeholder="Last Name"
+            disabled={loading}
             ref={register}
           />
           <Form.Control.Feedback type="invalid">
@@ -70,6 +72,7 @@ export default function TeamInitializePage(props) {
             type="email"
             name="email"
             placeholder="Email Address"
+            disabled={loading}
             ref={register}
           />
           <Form.Control.Feedback type="invalid">
@@ -84,6 +87,7 @@ export default function TeamInitializePage(props) {
             type="password"
             name="password"
             placeholder="Password"
+            disabled={loading}
             ref={register}
           />
           <Form.Control.Feedback type="invalid">
@@ -96,6 +100,7 @@ export default function TeamInitializePage(props) {
             type="checkbox"
             name="subscribe"
             label={`Subscribe to Grouparoo Newsletter`}
+            disabled={loading}
             defaultChecked
             ref={register}
           />

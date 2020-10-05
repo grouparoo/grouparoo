@@ -137,6 +137,7 @@ export default function Page(props) {
                 type="text"
                 placeholder="Name"
                 value={app.name}
+                disabled={loading}
                 onChange={(e) => update(e)}
               />
               <Form.Control.Feedback type="invalid">
@@ -187,6 +188,7 @@ export default function Page(props) {
                               <Typeahead
                                 id="typeahead"
                                 labelKey="key"
+                                disabled={loading}
                                 onChange={(selected) => {
                                   updateOption(opt.key, selected[0]?.key);
                                 }}
@@ -239,6 +241,7 @@ export default function Page(props) {
                                 as="select"
                                 required={opt.required}
                                 defaultValue={app.options[opt.key] || ""}
+                                disabled={loading}
                                 onChange={(e) => {
                                   updateOption(e.target.id, e.target.value);
                                 }}
@@ -275,6 +278,7 @@ export default function Page(props) {
                               <Form.Control
                                 required={opt.required}
                                 type="text"
+                                disabled={loading}
                                 defaultValue={app.options[opt.key]}
                                 placeholder={opt.placeholder}
                                 onChange={(e) => {

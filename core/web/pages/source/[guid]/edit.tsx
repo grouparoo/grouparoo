@@ -163,6 +163,7 @@ export default function Page(props) {
               <Form.Label>Name</Form.Label>
               <Form.Control
                 required
+                disabled={loading}
                 type="text"
                 placeholder="Source Name"
                 defaultValue={source.name}
@@ -202,6 +203,7 @@ export default function Page(props) {
                           <Typeahead
                             id="typeahead"
                             labelKey="key"
+                            disabled={loading}
                             onChange={(selected) => {
                               updateOption(opt.key, selected[0]?.key);
                             }}
@@ -251,6 +253,7 @@ export default function Page(props) {
                           <Form.Control
                             as="select"
                             required={opt.required}
+                            disabled={loading}
                             defaultValue={source.options[opt.key] || ""}
                             onChange={(e) =>
                               updateOption(
@@ -299,6 +302,7 @@ export default function Page(props) {
                           <Form.Control
                             required={opt.required}
                             type="text"
+                            disabled={loading}
                             defaultValue={source.options[opt.key]}
                             placeholder={opt.placeholder}
                             onChange={(e) =>

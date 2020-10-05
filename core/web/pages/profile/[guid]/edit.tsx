@@ -257,7 +257,7 @@ export default function Page(props) {
               <Col md={9}>
                 <Form.Group controlId="groupGuid">
                   <Form.Label>Add Group</Form.Label>
-                  <Form.Control as="select">
+                  <Form.Control as="select" disabled={loading}>
                     {allGroups.map((group) => {
                       const disabled =
                         group.type !== "manual" ||
@@ -321,6 +321,7 @@ export default function Page(props) {
                             <Form.Control
                               required
                               type="text"
+                              disabled={loading}
                               value={
                                 properties[key].values.length === 0
                                   ? ""

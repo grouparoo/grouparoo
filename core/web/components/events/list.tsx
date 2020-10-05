@@ -5,10 +5,11 @@ import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
 import Link from "next/link";
 import Router from "next/router";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Alert } from "react-bootstrap";
 import Moment from "react-moment";
 import Pagination from "../../components/pagination";
 import LoadingTable from "../../components/loadingTable";
+import LoadingButton from "../../components/loadingButton";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
 import { EventAPIData } from "../../utils/apiData";
@@ -110,6 +111,7 @@ export default function EventsList(props) {
             <AsyncTypeahead
               key={`typeahead-search-${type}`}
               id={`typeahead-search-${type}`}
+              disabled={loading}
               minLength={0}
               isLoading={searchLoading}
               allowNew={true}
@@ -133,9 +135,9 @@ export default function EventsList(props) {
             />
           </Form.Group>
 
-          <Button size="sm" type="submit">
+          <LoadingButton size="sm" type="submit" disabled={loading}>
             Search
-          </Button>
+          </LoadingButton>
         </Form>
       )}
 
@@ -161,9 +163,9 @@ export default function EventsList(props) {
           {newEvents > 0 ? (
             <Alert variant="secondary">
               {newEvents} new events.{" "}
-              <Button size="sm" onClick={load}>
+              <LoadingButton size="sm" onClick={load} disabled={loading}>
                 Load
-              </Button>
+              </LoadingButton>
             </Alert>
           ) : null}
         </>

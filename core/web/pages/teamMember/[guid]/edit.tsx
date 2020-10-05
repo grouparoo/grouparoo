@@ -87,6 +87,7 @@ export default function Page(props) {
                 placeholder="Email"
                 value={teamMember.email}
                 onChange={update}
+                disabled={loading}
               />
               <Form.Control.Feedback type="invalid">
                 Email is required
@@ -101,6 +102,7 @@ export default function Page(props) {
                 placeholder="First Name"
                 value={teamMember.firstName}
                 onChange={update}
+                disabled={loading}
               />
               <Form.Control.Feedback type="invalid">
                 First Name is required
@@ -115,6 +117,7 @@ export default function Page(props) {
                 placeholder="Last Name"
                 value={teamMember.lastName}
                 onChange={update}
+                disabled={loading}
               />
               <Form.Control.Feedback type="invalid">
                 Last Name is required
@@ -127,6 +130,7 @@ export default function Page(props) {
                 as="select"
                 value={teamMember.teamGuid}
                 onChange={update}
+                disabled={loading}
               >
                 {teams.map((team) => (
                   <option key={`team-${team.guid}`} value={team.guid}>
@@ -138,7 +142,12 @@ export default function Page(props) {
 
             <Form.Group controlId="password">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="*" onChange={update} />
+              <Form.Control
+                type="password"
+                placeholder="*"
+                onChange={update}
+                disabled={loading}
+              />
             </Form.Group>
 
             <LoadingButton variant="primary" disabled={loading} type="submit">

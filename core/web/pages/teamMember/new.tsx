@@ -49,6 +49,7 @@ export default function Page(props) {
           <Form.Control
             as="select"
             name="teamGuid"
+            disabled={loading}
             ref={register}
             defaultValue={
               teamGuid ? teamGuid : teams.length > 0 ? teams[0].guid : null
@@ -72,6 +73,7 @@ export default function Page(props) {
             name="firstName"
             placeholder="First Name"
             ref={register}
+            disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
             First Name is required
@@ -86,6 +88,7 @@ export default function Page(props) {
             name="lastName"
             placeholder="Last Name"
             ref={register}
+            disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
             Last Name is required
@@ -100,6 +103,7 @@ export default function Page(props) {
             name="email"
             placeholder="email"
             ref={register}
+            disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
             Email is required
@@ -114,6 +118,7 @@ export default function Page(props) {
             type="password"
             placeholder="password"
             ref={register}
+            disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
             Password is required
@@ -127,6 +132,7 @@ export default function Page(props) {
             label={`Subscribe to Grouparoo Newsletter`}
             defaultChecked
             ref={register}
+            disabled={loading}
           />
         </Form.Group>
 

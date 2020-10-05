@@ -210,6 +210,7 @@ export default function Page(props) {
               as="select"
               size="sm"
               value={newRuleSourceGuid}
+              disabled={loading}
               onChange={(e) => {
                 setNewRuleSourceGuid(e.target.value);
               }}

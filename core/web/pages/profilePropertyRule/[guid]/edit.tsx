@@ -191,6 +191,7 @@ export default function Page(props) {
               <Form.Control
                 required
                 type="text"
+                disabled={loading}
                 value={profilePropertyRule.key}
                 onChange={(e) => update(e)}
               />
@@ -204,6 +205,7 @@ export default function Page(props) {
                 as="select"
                 value={profilePropertyRule.type}
                 onChange={(e) => update(e)}
+                disabled={loading}
               >
                 <option value="" disabled>
                   Choose a Type
@@ -219,6 +221,7 @@ export default function Page(props) {
                 label="Unique"
                 checked={profilePropertyRule.unique}
                 onChange={(e) => update(e)}
+                disabled={loading}
               />
             </Form.Group>
             <Form.Group controlId="isArray">
@@ -227,6 +230,7 @@ export default function Page(props) {
                 label="Is Array?"
                 checked={profilePropertyRule.isArray}
                 onChange={(e) => update(e)}
+                disabled={loading}
               />
             </Form.Group>
             <Form.Group controlId="sourceGuid">
@@ -265,6 +269,7 @@ export default function Page(props) {
                     <Typeahead
                       id="typeahead"
                       labelKey="key"
+                      disabled={loading}
                       onChange={(selected) => {
                         if (selected.length === 1 && selected[0].key) {
                           updateOption(opt.key, selected[0].key);
@@ -332,6 +337,7 @@ export default function Page(props) {
                                 inline
                                 type="radio"
                                 name={opt.key}
+                                disabled={loading}
                                 defaultChecked={
                                   profilePropertyRule.options[opt.key] ===
                                   col.key
@@ -362,6 +368,7 @@ export default function Page(props) {
                     <Form.Group controlId="key">
                       <Form.Control
                         required
+                        disabled={loading}
                         type="text"
                         value={profilePropertyRule.options[opt.key]}
                         onChange={(e) => updateOption(opt.key, e.target.value)}
@@ -383,6 +390,7 @@ export default function Page(props) {
                       <Form.Control
                         required
                         as="textarea"
+                        disabled={loading}
                         rows={5}
                         value={profilePropertyRule.options[opt.key]}
                         onChange={(e) =>
@@ -490,6 +498,7 @@ export default function Page(props) {
                               <Form.Control
                                 as="select"
                                 value={localFilter.key}
+                                disabled={loading}
                                 onChange={(e: any) => {
                                   const _localFilters = [...localFilters];
                                   localFilter.key = e.target.value;
@@ -514,6 +523,7 @@ export default function Page(props) {
                             >
                               <Form.Control
                                 as="select"
+                                disabled={loading}
                                 value={localFilter.op}
                                 onChange={(e: any) => {
                                   const _localFilters = [...localFilters];
@@ -564,6 +574,7 @@ export default function Page(props) {
                                 <Form.Control
                                   required
                                   type="text"
+                                  disabled={loading}
                                   value={localFilter.match.toString()}
                                   onChange={(e: any) => {
                                     const _localFilter = [...localFilters];

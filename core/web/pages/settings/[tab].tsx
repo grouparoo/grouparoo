@@ -152,6 +152,7 @@ function SettingCard({
                   required
                   type="text"
                   name="value"
+                  disabled={loading}
                   ref={register}
                   defaultValue={setting.value}
                 />
@@ -162,6 +163,7 @@ function SettingCard({
                   required
                   type="number"
                   name="value"
+                  disabled={loading}
                   ref={register}
                   defaultValue={setting.value}
                 />
@@ -170,6 +172,7 @@ function SettingCard({
                 <Form.Check
                   type="checkbox"
                   name="value"
+                  disabled={loading}
                   label={setting.description}
                   ref={register}
                   defaultChecked={setting.value === "true"}

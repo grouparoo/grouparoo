@@ -215,6 +215,7 @@ export default function Page(props) {
                       <Form.Control
                         as="select"
                         value={rule.key}
+                        disabled={loading}
                         onChange={(e: any) => {
                           const _rules = [...localRules];
                           rule.key = e.target.value;
@@ -260,6 +261,7 @@ export default function Page(props) {
                       <Form.Control
                         as="select"
                         value={rule.operation.op}
+                        disabled={loading}
                         onChange={(e: any) => {
                           const _rules = [...localRules];
                           rule.operation.op = e.target.value;
@@ -314,6 +316,7 @@ export default function Page(props) {
                         <>
                           <Form.Control
                             type="number"
+                            disabled={loading}
                             placeholder="(number)"
                             value={rule.relativeMatchNumber?.toString() || ""}
                             onChange={(e: any) => {
@@ -329,6 +332,7 @@ export default function Page(props) {
 
                           <Form.Control
                             as="select"
+                            disabled={loading}
                             value={rule.relativeMatchUnit || ""}
                             onChange={(e: any) => {
                               const _rules = [...localRules];
@@ -358,6 +362,7 @@ export default function Page(props) {
                       ["integer", "float"].includes(type) ? (
                         <div className="form-inline" style={{ minWidth: 250 }}>
                           <Form.Control
+                            disabled={loading}
                             placeholder="(number)"
                             value={rule.match?.toString() || ""}
                             onChange={(e: any) => {

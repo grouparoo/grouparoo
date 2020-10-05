@@ -88,6 +88,7 @@ export default function Page(props) {
             required
             type="text"
             placeholder="API Key Name"
+            disabled={loading}
             value={apiKey.name}
             onChange={(event) => {
               const _apiKey = Object.assign({}, apiKey);

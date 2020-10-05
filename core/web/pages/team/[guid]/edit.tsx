@@ -83,6 +83,7 @@ export default function Page(props) {
             type="text"
             placeholder="Team Name"
             value={team.name}
+            disabled={loading}
             onChange={(event) => {
               const _team = Object.assign({}, team);
               _team.name = event.target.value;

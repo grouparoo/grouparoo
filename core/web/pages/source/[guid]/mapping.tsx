@@ -18,7 +18,11 @@ export default function Page(props) {
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [newMappingKey, setNewMappingKey] = useState("");
-  const [newMappingValue, setNewMappingValue] = useState("");
+  const [newMappingValue, setNewMappingValue] = useState(
+    Object.keys(props.source.mapping)[0]
+      ? Object.keys(props.source.mapping)[0]
+      : ""
+  );
   const [profilePropertyRules, setProfilePropertyRules] = useState(
     props.profilePropertyRules
   );
@@ -168,6 +172,7 @@ export default function Page(props) {
                           type="radio"
                           id={col}
                           name="remoteProfileIdColumn"
+                          disabled={loading}
                           defaultChecked={
                             Object.keys(source.mapping)[0] === col
                           }
@@ -227,6 +232,7 @@ export default function Page(props) {
                               type="radio"
                               id={rule.guid}
                               name="remoteProfileRuleGuid"
+                              disabled={loading}
                               defaultChecked={
                                 Object.values(source.mapping)[0] === rule.key
                               }
@@ -269,6 +275,7 @@ export default function Page(props) {
                     type="text"
                     placeholder="Profile Property Rule Key"
                     defaultValue={newProfilePropertyRule.key}
+                    disabled={loading}
                     onChange={(e) => {
                       setNewProfilePropertyRule(
                         Object.assign({}, newProfilePropertyRule, {
@@ -288,6 +295,7 @@ export default function Page(props) {
                     as="select"
                     required
                     defaultValue={newProfilePropertyRule.type}
+                    disabled={loading}
                     onChange={(e) => {
                       setNewProfilePropertyRule(
                         Object.assign({}, newProfilePropertyRule, {

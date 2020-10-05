@@ -292,6 +292,7 @@ export default function Page(props) {
                   as="select"
                   required={true}
                   value={trackedGroupGuid}
+                  disabled={loading}
                   onChange={(e) => setTrackedGroupGuid(e.target["value"])}
                 >
                   <option value={"_none"}>No Group</option>
@@ -350,6 +351,7 @@ export default function Page(props) {
                                 <Form.Control
                                   as="select"
                                   required={true}
+                                  disabled={loading}
                                   value={destination.mapping[key] || ""}
                                   onChange={(e) =>
                                     updateMapping(key, e.target["value"])
@@ -414,6 +416,7 @@ export default function Page(props) {
                                 <td>
                                   <Form.Control
                                     as="select"
+                                    disabled={loading}
                                     required={false}
                                     value={destination.mapping[key] || ""}
                                     onChange={(e) =>
@@ -479,6 +482,7 @@ export default function Page(props) {
                             id="displayedDestinationProperties"
                             ref={displayedDestinationPropertiesAutocomleteRef}
                             placeholder={`Choose a ${mappingOptions.labels.profilePropertyRule.singular}...`}
+                            disabled={loading}
                             onChange={(selected) => {
                               displayedDestinationPropertiesAutocomleteRef.current.clear();
 
@@ -535,6 +539,7 @@ export default function Page(props) {
                                 as="select"
                                 required={false}
                                 value={destination.mapping[key] || ""}
+                                disabled={loading}
                                 onChange={(e) =>
                                   updateMapping(
                                     e.target["value"],
@@ -648,6 +653,7 @@ export default function Page(props) {
                               as="select"
                               required={false}
                               value={groupGuid}
+                              disabled={loading}
                               onChange={(e) =>
                                 updateDestinationGroupMembership(
                                   e.target["value"],

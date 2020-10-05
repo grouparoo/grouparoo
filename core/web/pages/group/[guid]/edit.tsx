@@ -83,6 +83,7 @@ export default function Page(props) {
                 type="text"
                 placeholder="Group Name"
                 value={group.name}
+                disabled={loading}
                 onChange={update}
               />
               <Form.Control.Feedback type="invalid">
@@ -110,6 +111,7 @@ export default function Page(props) {
                 as="select"
                 value={group.matchType}
                 onChange={update}
+                disabled={loading}
               >
                 <option>any</option>
                 <option>all</option>

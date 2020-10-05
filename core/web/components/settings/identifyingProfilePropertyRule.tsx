@@ -80,6 +80,7 @@ export default function IdentifyingProfilePropertyRule(props) {
             <Form.Label>Profile Property</Form.Label>
             <Form.Control
               as="select"
+              disabled={loading}
               value={identifyingProfilePropertyGuid}
               onChange={(e) =>
                 setIdentifyingProfilePropertyGuid(e.target.value)

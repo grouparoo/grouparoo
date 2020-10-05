@@ -40,6 +40,7 @@ export default function Page(props) {
           <Form.Control
             autoFocus
             required
+            disabled={loading}
             type="text"
             name="name"
             ref={register}

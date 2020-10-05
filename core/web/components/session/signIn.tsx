@@ -54,6 +54,7 @@ export default function SignInForm(props) {
       <Form.Group>
         <Form.Label>Email Address</Form.Label>
         <Form.Control
+          disabled={loading}
           autoFocus
           required
           name="email"
@@ -70,6 +71,7 @@ export default function SignInForm(props) {
         <Form.Label>Password</Form.Label>
         <Form.Control
           required
+          disabled={loading}
           name="password"
           type="password"
           placeholder="Password"

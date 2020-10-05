@@ -48,6 +48,7 @@ export default function (props) {
             type="text"
             name="name"
             ref={register}
+            disabled={loading}
             placeholder="Group Name"
           />
           <Form.Control.Feedback type="invalid">
@@ -57,7 +58,12 @@ export default function (props) {
 
         <Form.Group>
           <Form.Label>Group Type</Form.Label>
-          <Form.Control as="select" name="type" ref={register}>
+          <Form.Control
+            as="select"
+            name="type"
+            ref={register}
+            disabled={loading}
+          >
             <option>calculated</option>
             <option>manual</option>
           </Form.Control>

@@ -56,6 +56,7 @@ export default function Page(props) {
                 type="text"
                 defaultValue={teamMember.firstName}
                 onChange={update}
+                disabled={loading}
               />
             </Form.Group>
 
@@ -66,6 +67,7 @@ export default function Page(props) {
                 type="text"
                 defaultValue={teamMember.lastName}
                 onChange={update}
+                disabled={loading}
               />
             </Form.Group>
 
@@ -76,12 +78,18 @@ export default function Page(props) {
                 type="email"
                 defaultValue={teamMember.email}
                 onChange={update}
+                disabled={loading}
               />
             </Form.Group>
 
             <Form.Group controlId="password">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="*" onChange={update} />
+              <Form.Control
+                type="password"
+                placeholder="*"
+                onChange={update}
+                disabled={loading}
+              />
             </Form.Group>
 
             <LoadingButton variant="primary" type="submit" disabled={loading}>

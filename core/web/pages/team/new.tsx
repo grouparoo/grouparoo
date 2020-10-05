@@ -39,6 +39,7 @@ export default function NewTeamPage(props) {
             name="name"
             ref={register}
             placeholder="Team Name"
+            disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
             Name is required

@@ -105,6 +105,7 @@ export default function Page(props) {
               <Form.Check
                 type="checkbox"
                 label="Recurring"
+                disabled={loading}
                 checked={schedule.recurring}
                 onChange={(e) => update(e)}
               />
@@ -119,6 +120,7 @@ export default function Page(props) {
                       type="number"
                       min={1}
                       placeholder="Recurring Frequency"
+                      disabled={loading}
                       value={recurringFrequencyMinutes.toString()}
                       onChange={(e) =>
                         setRecurringFrequencyMinutes(parseInt(e.target.value))
@@ -290,8 +292,8 @@ export default function Page(props) {
                         required
                         as="textarea"
                         rows={5}
+                        disabled={loading}
                         value={schedule.options[opt.key]}
-                        disabled={schedule.state !== "draft"}
                         onChange={(e) =>
                           updateOption(opt.key, e.target["value"])
                         }
