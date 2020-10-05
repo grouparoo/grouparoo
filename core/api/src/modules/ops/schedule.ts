@@ -128,8 +128,10 @@ export namespace ScheduleOps {
       const options = await opt.options({
         connection,
         app,
+        appGuid: app.guid,
         appOptions,
         source,
+        sourceGuid: source.guid,
         sourceOptions,
         sourceMapping,
       });

@@ -96,11 +96,14 @@ export interface PluginConnectionProfilePropertyRuleOption {
   options: (argument: {
     connection: any;
     app: App;
+    appGuid: string;
     appOptions: SimpleAppOptions;
     source: Source;
+    sourceGuid: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
     profilePropertyRule: ProfilePropertyRule;
+    profilePropertyRuleGuid: string;
   }) => Promise<
     Array<{
       key: string;
