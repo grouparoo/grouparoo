@@ -49,12 +49,11 @@ export default function Page(props) {
           <Form.Control
             as="select"
             name="teamGuid"
-            disabled={loading}
             ref={register}
             defaultValue={
               teamGuid ? teamGuid : teams.length > 0 ? teams[0].guid : null
             }
-            disabled={teamGuid ? true : false}
+            disabled={teamGuid || loading ? true : false}
           >
             {teams.map((team) => (
               <option key={`team-${team.guid}`} value={team.guid}>
