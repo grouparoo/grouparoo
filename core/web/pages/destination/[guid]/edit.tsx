@@ -185,11 +185,6 @@ export default function Page(props) {
                         <Badge variant="info">required</Badge>&nbsp;
                       </>
                     ) : null}
-                    {/* {loadingOptions ? (
-                      <>
-                        <Badge variant="warning">loading</Badge>&nbsp;
-                      </>
-                    ) : null} */}
                     <code>{opt.key}</code>
                   </Form.Label>
                   {(() => {
@@ -199,7 +194,7 @@ export default function Page(props) {
                           <Typeahead
                             id="typeahead"
                             labelKey="key"
-                            disabled={loading || loadOptions}
+                            disabled={loading || loadingOptions}
                             onChange={(selected) => {
                               updateOption(opt.key, selected[0]?.key);
                             }}
