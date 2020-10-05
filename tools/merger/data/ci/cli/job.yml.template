@@ -1,6 +1,9 @@
   {{{job_name}}}:
     docker:
       - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
 {{{custom_docker}}}
     steps:
       - checkout

@@ -23,6 +23,9 @@ jobs:
   build:
     docker:
       - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - run: sudo apt-get install -y rsync
@@ -49,6 +52,9 @@ jobs:
   complete:
     docker:
       - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     steps:
       - run:
           name: complete
