@@ -1,5 +1,5 @@
 import { PluginConnectionScheduleOption } from "@grouparoo/core";
-import { sourcePreview } from "./sourcePreview";
+import { tablePreview } from "./sourcePreview";
 
 export const scheduleOptions: PluginConnectionScheduleOption[] = [
   {
@@ -7,8 +7,8 @@ export const scheduleOptions: PluginConnectionScheduleOption[] = [
     required: true,
     description: "which column to scan for changes",
     type: "list",
-    options: async (args) => {
-      const rows = await sourcePreview(args);
+    options: async ({ connection, sourceOptions }) => {
+      const rows = await tablePreview({ connection, sourceOptions });
 
       const columns = [];
       Object.keys(rows[0]).map((k) => {

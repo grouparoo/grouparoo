@@ -111,11 +111,14 @@ export namespace ProfilePropertyRuleOps {
     const options = await method({
       connection,
       app,
+      appGuid: app.guid,
       appOptions,
       source,
+      sourceGuid: source.guid,
       sourceOptions,
       sourceMapping,
       profilePropertyRule,
+      profilePropertyRuleGuid: profilePropertyRule.guid,
       profilePropertyRuleOptions,
     });
 

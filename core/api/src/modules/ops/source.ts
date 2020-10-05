@@ -30,6 +30,7 @@ export namespace SourceOps {
     return pluginConnection.methods.sourceOptions({
       connection,
       app,
+      appGuid: app.guid,
       appOptions,
       sourceOptions,
     });
@@ -65,8 +66,10 @@ export namespace SourceOps {
     return pluginConnection.methods.sourcePreview({
       connection,
       app,
+      appGuid: app.guid,
       appOptions,
       source,
+      sourceGuid: source.guid,
       sourceOptions,
     });
   }
@@ -139,11 +142,14 @@ export namespace SourceOps {
       const response = await method({
         connection,
         app,
+        appGuid: app.guid,
         appOptions,
         source,
+        sourceGuid: source.guid,
         sourceOptions,
         sourceMapping,
         profilePropertyRule,
+        profilePropertyRuleGuid: profilePropertyRule.guid,
         profilePropertyRuleOptions: profilePropertyRuleOptionsOverride
           ? profilePropertyRuleOptionsOverride
           : await profilePropertyRule.getOptions(),
@@ -151,6 +157,7 @@ export namespace SourceOps {
           ? profilePropertyRuleFiltersOverride
           : await profilePropertyRule.getFilters(),
         profile,
+        profileGuid: profile.guid,
       });
 
       await app.checkAndUpdateParallelism("decr");
@@ -253,9 +260,11 @@ export namespace SourceOps {
         const ruleOptions = await pluginConnection.methods.uniqueProfilePropertyRuleBootstrapOptions(
           {
             app,
+            appGuid: app.guid,
             connection,
             appOptions,
             source,
+            sourceGuid: source.guid,
             sourceOptions: options,
             mappedColumn,
           }

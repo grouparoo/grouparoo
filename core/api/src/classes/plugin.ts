@@ -90,13 +90,17 @@ export interface ProfilesPluginMethod {
   (argument: {
     connection: any;
     schedule: Schedule;
+    scheduleGuid: string;
     scheduleOptions: SimpleScheduleOptions;
     app: App;
+    appGuid: string;
     appOptions: SimpleAppOptions;
     source: Source;
+    sourceGuid: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
     run: Run;
+    runGuid: string;
     limit: number;
     highWaterMark: HighWaterMark;
     sourceOffset: number | string;
@@ -117,14 +121,18 @@ export interface ProfilePropertyPluginMethod {
   (argument: {
     connection: any;
     app: App;
+    appGuid: string;
     appOptions: SimpleAppOptions;
     source: Source;
+    sourceGuid: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
     profilePropertyRule: ProfilePropertyRule;
+    profilePropertyRuleGuid: string;
     profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions;
     profilePropertyRuleFilters: ProfilePropertyRuleFiltersWithKey[];
     profile: Profile;
+    profileGuid: string;
   }): Promise<ProfilePropertyPluginMethodResponse>;
 }
 
@@ -138,6 +146,7 @@ export type ProfilePropertyPluginMethodResponse = Array<
  */
 export interface ExportedProfile {
   profile: Profile;
+  profileGuid: string;
   oldProfileProperties: { [key: string]: any };
   newProfileProperties: { [key: string]: any };
   oldGroups: Array<string>;
@@ -153,8 +162,10 @@ export interface ExportProfilePluginMethod {
   (argument: {
     connection: any;
     app: App;
+    appGuid: string;
     appOptions: SimpleAppOptions;
     destination: Destination;
+    destinationGuid: string;
     destinationOptions: SimpleDestinationOptions;
     export: ExportedProfile;
   }): Promise<{ success: boolean; retryDelay?: number; error?: Error }>;
@@ -170,8 +181,10 @@ export interface ExportProfilesPluginMethod {
   (argument: {
     connection: any;
     app: App;
+    appGuid: string;
     appOptions: SimpleAppOptions;
     destination: Destination;
+    destinationGuid: string;
     destinationOptions: SimpleDestinationOptions;
     exports: ExportedProfile[];
   }): Promise<{
@@ -214,7 +227,11 @@ export interface AppParallelismMethod {
  * The connection itself should be able to handle reconnection attempts, keep-alive, etc,
  */
 export interface ConnectPluginAppMethod {
-  (argument: { app: App; appOptions: SimpleAppOptions }): Promise<any>;
+  (argument: {
+    app: App;
+    appGuid: string;
+    appOptions: SimpleAppOptions;
+  }): Promise<any>;
 }
 
 /**
@@ -223,6 +240,7 @@ export interface ConnectPluginAppMethod {
 export interface DisconnectPluginAppMethod {
   (argument: {
     app: App;
+    appGuid: string;
     appOptions: SimpleAppOptions;
     connection: any;
   }): Promise<void>;
@@ -235,6 +253,7 @@ export interface DisconnectPluginAppMethod {
 export interface TestPluginMethod {
   (argument: {
     app: App;
+    appGuid: string;
     appOptions: SimpleAppOptions;
     connection: any;
   }): Promise<{ success: boolean; message?: string }>;
@@ -248,6 +267,7 @@ export interface SourceOptionsMethod {
   (argument: {
     connection: any;
     app: App;
+    appGuid: string;
     appOptions: SimpleAppOptions;
     sourceOptions: SimpleSourceOptions;
   }): Promise<SourceOptionsMethodResponse>;
@@ -270,8 +290,10 @@ export interface SourcePreviewMethod {
   (argument: {
     connection: any;
     app: App;
+    appGuid: string;
     appOptions: SimpleAppOptions;
     source: Source;
+    sourceGuid: string;
     sourceOptions: SimpleSourceOptions;
   }): Promise<Array<SourcePreviewMethodResponseRow>>;
 }
@@ -288,11 +310,14 @@ export interface SourceFilterMethod {
   (argument: {
     connection: any;
     app: App;
+    appGuid: string;
     appOptions: SimpleAppOptions;
     source: Source;
+    sourceGuid: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
     profilePropertyRule: ProfilePropertyRule;
+    profilePropertyRuleGuid: string;
     profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions;
   }): Promise<Array<SourceFilterMethodResponseRow>>;
 }
@@ -310,14 +335,18 @@ export interface SourceRunPercentCompleteMethod {
   (argument: {
     connection: any;
     app: App;
+    appGuid: string;
     appOptions: SimpleAppOptions;
     source: Source;
+    sourceGuid: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
     schedule: Schedule;
+    scheduleGuid: string;
     scheduleOptions: SimpleScheduleOptions;
     highWaterMark: HighWaterMark;
     run: Run;
+    runGuid: string;
   }): Promise<number>;
 }
 
@@ -328,8 +357,10 @@ export interface UniqueProfilePropertyRuleBootstrapOptions {
   (argument: {
     connection: any;
     app: App;
+    appGuid: string;
     appOptions: SimpleAppOptions;
     source: Source;
+    sourceGuid: string;
     sourceOptions: SimpleSourceOptions;
     mappedColumn: string;
   }): Promise<SimpleProfilePropertyRuleOptions>;
@@ -343,6 +374,7 @@ export interface DestinationOptionsMethod {
   (argument: {
     connection: any;
     app: App;
+    appGuid: string;
     appOptions: SimpleAppOptions;
     destinationOptions: SimpleDestinationOptions;
   }): Promise<DestinationOptionsMethodResponse>;
@@ -363,8 +395,10 @@ export interface DestinationMappingOptionsMethod {
   (argument: {
     connection: any;
     app: App;
+    appGuid: string;
     appOptions: SimpleAppOptions;
     destination: Destination;
+    destinationGuid: string;
     destinationOptions: SimpleDestinationOptions;
   }): Promise<DestinationMappingOptionsMethodResponse>;
 }
@@ -414,8 +448,10 @@ export interface ExportArrayPropertiesMethod {
   (argument: {
     connection: any;
     app: App;
+    appGuid: string;
     appOptions: SimpleAppOptions;
     destination: Destination;
+    destinationGuid: string;
     destinationOptions: SimpleDestinationOptions;
   }): Promise<ExportArrayPropertiesMethodResponse>;
 }

@@ -1,5 +1,5 @@
 import { PluginConnectionProfilePropertyRuleOption } from "@grouparoo/core";
-import { sourcePreview } from "./sourcePreview";
+import { fileImportPreview } from "./sourcePreview";
 
 export const profilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOption[] = [
   {
@@ -7,14 +7,8 @@ export const profilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOpti
     required: true,
     description: "where the data comes from",
     type: "typeahead",
-    options: async ({ app, appOptions, source, sourceOptions, connection }) => {
-      const rows = await sourcePreview({
-        app,
-        appOptions,
-        source,
-        sourceOptions,
-        connection,
-      });
+    options: async ({ sourceOptions }) => {
+      const rows = await fileImportPreview({ sourceOptions });
       const columns = Object.keys(rows[0]);
       return columns.map((col) => {
         return {

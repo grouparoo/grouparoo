@@ -1,5 +1,5 @@
 import { PluginConnectionProfilePropertyRuleOption } from "@grouparoo/core";
-import { sourcePreview } from "./sourcePreview";
+import { tablePreview } from "./sourcePreview";
 
 export const profilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOption[] = [
   {
@@ -7,8 +7,8 @@ export const profilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOpti
     required: true,
     description: "where the data comes from",
     type: "typeahead",
-    options: async (args) => {
-      const rows = await sourcePreview(args);
+    options: async ({ connection, sourceOptions }) => {
+      const rows = await tablePreview({ connection, sourceOptions });
       const columns = Object.keys(rows[0]);
       return columns.map((col) => {
         return {
@@ -47,8 +47,8 @@ export const profilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOpti
     required: false,
     description: "which column to sort by for most and least recent properties",
     type: "typeahead",
-    options: async (args) => {
-      const rows = await sourcePreview(args);
+    options: async ({ connection, sourceOptions }) => {
+      const rows = await tablePreview({ connection, sourceOptions });
       const columns = Object.keys(rows[0]);
       return columns.map((col) => {
         return {
