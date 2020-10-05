@@ -2,8 +2,9 @@ import { useApi } from "../../../hooks/useApi";
 import SourceTabs from "../../../components/tabs/source";
 import Head from "next/head";
 import { useState } from "react";
-import { Row, Col, Table, Form, Button } from "react-bootstrap";
+import { Row, Col, Table, Form } from "react-bootstrap";
 import { createSchedule } from "../../../components/schedule/add";
+import LoadingButton from "../../../components/loadingButton";
 import Router from "next/router";
 
 export default function Page(props) {
@@ -15,6 +16,7 @@ export default function Page(props) {
     hydrationError,
   } = props;
   const { execApi } = useApi(props, errorHandler);
+  const [loading, setLoading] = useState(false);
   const [newMappingKey, setNewMappingKey] = useState("");
   const [newMappingValue, setNewMappingValue] = useState("");
   const [profilePropertyRules, setProfilePropertyRules] = useState(
@@ -39,6 +41,7 @@ export default function Page(props) {
     }
 
     if (confirm("are you sure?")) {
+      setLoading(true);
       const response = await execApi(
         "post",
         `/source/${source.guid}/bootstrapUniqueProfilePropertyRule`,
@@ -62,11 +65,13 @@ export default function Page(props) {
           // @ts-ignore
         ).checked = true;
       }
+      setLoading(false);
     }
   };
 
   const updateMapping = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
     source.mapping = {};
     source.mapping[newMappingKey] = newMappingValue;
@@ -81,10 +86,9 @@ export default function Page(props) {
       // this source can have a schedule, and we have no schedules yet
       if (scheduleCount === 0 && response.source.scheduleAvailable) {
         await createSchedule({
+          execApi,
           sourceGuid: response.source.guid,
           setLoading: () => {},
-          successHandler,
-          execApi,
         });
       }
 
@@ -96,7 +100,10 @@ export default function Page(props) {
         );
       } else {
         successHandler.set({ message: "Source updated" });
+        setLoading(false);
       }
+    } else {
+      setLoading(false);
     }
   };
 
@@ -188,9 +195,13 @@ export default function Page(props) {
               </Table>
             </fieldset>
 
-            <Button type="submit" onClick={(e) => updateMapping(e)}>
+            <LoadingButton
+              type="submit"
+              disabled={loading}
+              onClick={(e) => updateMapping(e)}
+            >
               Save Mapping
-            </Button>
+            </LoadingButton>
           </Col>
 
           <Col>
@@ -294,13 +305,14 @@ export default function Page(props) {
                     ))}
                   </Form.Control>
                 </Form.Group>
-                <Button
+                <LoadingButton
                   size="sm"
                   variant="outline-primary"
+                  disabled={loading}
                   onClick={bootstrapUniqueProfilePropertyRule}
                 >
                   Create Profile Property Rule
-                </Button>
+                </LoadingButton>
               </>
             ) : null}
           </Col>

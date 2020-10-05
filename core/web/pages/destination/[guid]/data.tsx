@@ -5,6 +5,7 @@ import ProfilePreview from "./../../../components/destination/profilePreview";
 import Head from "next/head";
 import { Typeahead } from "react-bootstrap-typeahead";
 import DestinationTabs from "../../../components/tabs/destination";
+import LoadingButton from "../../../components/loadingButton";
 
 import { DestinationAPIData } from "../../../utils/apiData";
 
@@ -756,9 +757,13 @@ export default function Page(props) {
               <Col>
                 <br />
                 <hr />
-                <Button type="submit" variant="primary" disabled={loading}>
+                <LoadingButton
+                  type="submit"
+                  variant="primary"
+                  disabled={loading}
+                >
                   Save Destination Data
-                </Button>
+                </LoadingButton>
               </Col>
             </Row>
           </Form>

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Form, Button } from "react-bootstrap";
+import { Row, Col, Form } from "react-bootstrap";
 import StateBadge from "../../../components/stateBadge";
 import Moment from "react-moment";
 import Router from "next/router";
 import Head from "next/head";
 import GroupTabs from "../../../components/tabs/group";
+import LoadingButton from "../../../components/loadingButton";
 
 import { GroupAPIData } from "../../../utils/apiData";
 
@@ -29,12 +30,13 @@ export default function Page(props) {
     event.preventDefault();
     setLoading(true);
     const response = await execApi("put", `/group/${group.guid}`, group);
-    setLoading(false);
+
     if (response?.group) {
       successHandler.set({ message: "Group Updated" });
       setGroup(response.group);
       groupHandler.set(response.group);
     }
+    setLoading(false);
   }
 
   async function handleDelete(force = false) {
@@ -43,12 +45,13 @@ export default function Page(props) {
       const response = await execApi("delete", `/group/${group.guid}`, {
         force,
       });
-      setLoading(false);
       if (response?.success) {
         successHandler.set({
           message: force ? "Group Deleted" : "Group scheduled to be deleted",
         });
         Router.push("/groups");
+      } else {
+        setLoading(false);
       }
     }
   }
@@ -113,24 +116,25 @@ export default function Page(props) {
               </Form.Control>
             </Form.Group>
 
-            <Button variant="primary" type="submit" active={!loading}>
+            <LoadingButton variant="primary" type="submit" disabled={loading}>
               Update
-            </Button>
+            </LoadingButton>
 
             <br />
             <br />
 
             {group.state === "deleted" ? (
               <>
-                <Button
+                <LoadingButton
                   variant="danger"
+                  disabled={loading}
                   size="sm"
                   onClick={() => {
                     handleDelete(true);
                   }}
                 >
                   Force Delete
-                </Button>
+                </LoadingButton>
                 <p>
                   <br />
                   <em>
@@ -141,15 +145,16 @@ export default function Page(props) {
                 </p>
               </>
             ) : (
-              <Button
+              <LoadingButton
                 variant="danger"
+                disabled={loading}
                 size="sm"
                 onClick={() => {
                   handleDelete();
                 }}
               >
                 Delete
-              </Button>
+              </LoadingButton>
             )}
           </Form>
         </Col>

@@ -1,6 +1,6 @@
 import { useState, useEffect, Fragment } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Button, Form, Table, Badge } from "react-bootstrap";
+import { Row, Col, Form, Table, Badge, Button } from "react-bootstrap";
 import Router from "next/router";
 import Link from "next/link";
 import Loader from "../../../components/loader";
@@ -9,6 +9,7 @@ import StateBadge from "../../../components/stateBadge";
 import ProfilePreview from "../../../components/profilePropertyRule/profilePreview";
 import { Typeahead } from "react-bootstrap-typeahead";
 import DatePicker from "../../../components/datePicker";
+import LoadingButton from "../../../components/loadingButton";
 
 import Head from "next/head";
 import ProfilePropertyRuleTabs from "../../../components/tabs/profilePropertyRule";
@@ -603,14 +604,19 @@ export default function Page(props) {
               </>
             ) : null}
             <hr />
-            <Button variant="primary" type="submit" active={!loading}>
+            <LoadingButton variant="primary" type="submit" disabled={loading}>
               Update
-            </Button>
+            </LoadingButton>
             <br />
             <br />
-            <Button variant="danger" size="sm" onClick={() => handleDelete()}>
+            <LoadingButton
+              variant="danger"
+              size="sm"
+              disabled={loading}
+              onClick={() => handleDelete()}
+            >
               Delete
-            </Button>
+            </LoadingButton>
           </Col>
           <Col md={3}>
             <ProfilePreview

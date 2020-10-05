@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import LoadingButton from "../../../components/loadingButton";
 import PermissionsList from "../../../components/permissions";
 import Router from "next/router";
 import { TeamAPIData } from "../../../utils/apiData";
@@ -24,20 +25,24 @@ export default function Page(props) {
 
     setLoading(true);
     const response = await execApi("put", `/team/${team.guid}`, _team);
-    setLoading(false);
+
     if (response?.team) {
       successHandler.set({ message: "Team updated" });
       setTeam(response.team);
       teamHandler.set(response.team);
     }
+    setLoading(false);
   };
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
+      setLoading(true);
       const response = await execApi("delete", `/team/${team.guid}`);
       if (response) {
         successHandler.set({ message: "Team deleted" });
         Router.push("/teams");
+      } else {
+        setLoading(false);
       }
     }
   }
@@ -100,21 +105,27 @@ export default function Page(props) {
 
         <hr />
 
-        <Button variant="primary" type="submit">
-          Update
-        </Button>
-        <br />
-        <br />
-        <Button
-          disabled={loading || team.locked}
-          variant="danger"
-          size="sm"
-          onClick={() => {
-            handleDelete();
-          }}
-        >
-          Delete
-        </Button>
+        {team.locked ? null : (
+          <>
+            <LoadingButton disabled={loading} variant="primary" type="submit">
+              Update
+            </LoadingButton>
+
+            <br />
+            <br />
+
+            <LoadingButton
+              disabled={loading}
+              variant="danger"
+              size="sm"
+              onClick={() => {
+                handleDelete();
+              }}
+            >
+              Delete
+            </LoadingButton>
+          </>
+        )}
       </Form>
     </>
   );

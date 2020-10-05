@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
-import { Button } from "react-bootstrap";
+import LoadingButton from "../loadingButton";
 import Router from "next/router";
 
 export default function AddProfilePropertyRuleForm(props) {
@@ -9,31 +9,41 @@ export default function AddProfilePropertyRuleForm(props) {
   const [loading, setLoading] = useState(false);
 
   async function create() {
+    setLoading(true);
+
     const data = {
       sourceGuid: source.guid,
       unique: false,
       type: "string",
     };
 
-    setLoading(true);
     const response = await execApi("post", `/profilePropertyRule`, data);
-    setLoading(false);
 
     if (response?.profilePropertyRule) {
       Router.push(
         `/profilePropertyRule/${response.profilePropertyRule.guid}/edit`
       );
+    } else {
+      setLoading(false);
     }
   }
 
+  if (source.state === "draft") {
+    return (
+      <p>
+        <small>Source is not ready, cannot add Profile Property Rule</small>
+      </p>
+    );
+  }
+
   return (
-    <Button
+    <LoadingButton
       size="sm"
       variant="outline-primary"
-      disabled={loading || source.state === "draft"}
+      disabled={loading}
       onClick={create}
     >
       Add Profile Property Rule
-    </Button>
+    </LoadingButton>
   );
 }

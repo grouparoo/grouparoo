@@ -1,8 +1,11 @@
 import { useApi } from "../../hooks/useApi";
-import { Button, Card } from "react-bootstrap";
+import { useState } from "react";
+import { Card } from "react-bootstrap";
+import LoadingButton from "../loadingButton";
 
 export default function ImportAndUpdateProfile(props) {
   const { errorHandler, successHandler } = props;
+  const [loading, setLoading] = useState(false);
   const { execApi } = useApi(props, errorHandler);
 
   async function importAndUpdate() {
@@ -26,9 +29,14 @@ export default function ImportAndUpdateProfile(props) {
         <br />
 
         <Card.Text>
-          <Button onClick={importAndUpdate} size="sm" variant="outline-warning">
+          <LoadingButton
+            onClick={importAndUpdate}
+            disabled={loading}
+            size="sm"
+            variant="outline-warning"
+          >
             Import and Update all Profiles
-          </Button>
+          </LoadingButton>
         </Card.Text>
       </Card.Body>
     </Card>

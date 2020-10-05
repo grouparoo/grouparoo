@@ -1,17 +1,22 @@
+import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
-import { Button, Card } from "react-bootstrap";
+import { Card } from "react-bootstrap";
+import LoadingButton from "../loadingButton";
 
 export default function ClearCache(props) {
   const { errorHandler, successHandler } = props;
   const { execApi } = useApi(props, errorHandler);
+  const [loading, setLoading] = useState(false);
 
   async function resetCluster() {
     if (!window.confirm("Are you sure?")) return;
 
+    setLoading(true);
     const response = await execApi("delete", `/cluster/cache`);
     if (response?.success) {
       successHandler.set({ message: `Cache Cleared!` });
     }
+    setLoading(false);
   }
 
   return (
@@ -31,9 +36,14 @@ export default function ClearCache(props) {
         <br />
 
         <Card.Text>
-          <Button onClick={resetCluster} size="sm" variant="outline-warning">
+          <LoadingButton
+            onClick={resetCluster}
+            size="sm"
+            variant="outline-warning"
+            disabled={loading}
+          >
             Clear Cache
-          </Button>
+          </LoadingButton>
         </Card.Text>
       </Card.Body>
     </Card>

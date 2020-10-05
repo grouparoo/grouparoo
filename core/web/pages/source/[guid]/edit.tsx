@@ -2,12 +2,13 @@ import { useApi } from "../../../hooks/useApi";
 import SourceTabs from "../../../components/tabs/source";
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import { Row, Col, Form, Button, Badge, Table } from "react-bootstrap";
+import { Row, Col, Form, Badge, Table } from "react-bootstrap";
 import Router from "next/router";
 import AppIcon from "./../../../components/appIcon";
 import StateBadge from "./../../../components/stateBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { SourceAPIData } from "../../../utils/apiData";
+import LoadingButton from "../../../components/loadingButton";
 import Loader from "../../../components/loader";
 
 export default function Page(props) {
@@ -60,6 +61,7 @@ export default function Page(props) {
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     const state = source.connection.skipSourceMapping
       ? "ready"
       : source.previewAvailable
@@ -82,6 +84,7 @@ export default function Page(props) {
       ) {
         Router.push(`/source/${guid}/overview`);
       } else {
+        setLoading(false);
         successHandler.set({ message: "Source updated" });
       }
     }
@@ -101,10 +104,13 @@ export default function Page(props) {
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
+      setLoading(true);
       const response = await execApi("delete", `/source/${guid}`);
       if (response) {
         successHandler.set({ message: "source deleted" });
         Router.push("/sources");
+      } else {
+        setLoading(false);
       }
     }
   }
@@ -369,12 +375,13 @@ export default function Page(props) {
 
             <br />
 
-            <Button variant="primary" type="submit">
+            <LoadingButton variant="primary" type="submit" disabled={loading}>
               Update
-            </Button>
+            </LoadingButton>
             <br />
             <br />
-            <Button
+            <LoadingButton
+              disabled={loading}
               variant="danger"
               size="sm"
               onClick={() => {
@@ -382,7 +389,7 @@ export default function Page(props) {
               }}
             >
               Delete
-            </Button>
+            </LoadingButton>
           </Form>
         </Col>
       </Row>

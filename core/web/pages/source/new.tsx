@@ -1,14 +1,16 @@
 import Head from "next/head";
 import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import SelectorList from "../../components/selectorList";
+import LoadingButton from "../../components/loadingButton";
 import Link from "next/link";
 import Router from "next/router";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, connectionApps } = props;
+  const { errorHandler, connectionApps } = props;
   const { execApi } = useApi(props, errorHandler);
+  const [loading, setLoading] = useState(false);
   const [source, setSource] = useState({
     appGuid: "",
     type: "",
@@ -16,12 +18,15 @@ export default function Page(props) {
 
   const create = async (event) => {
     event.preventDefault();
+    setLoading(true);
     const response = await execApi("post", `/source`, source);
     if (response?.source) {
       Router.push(
         "/source/[guid]/edit",
         `/source/${response.source.guid}/edit`
       );
+    } else {
+      setLoading(false);
     }
   };
 
@@ -62,7 +67,9 @@ export default function Page(props) {
         />
 
         <br />
-        <Button type="submit">Create Source</Button>
+        <LoadingButton type="submit" disabled={loading}>
+          Create Source
+        </LoadingButton>
       </Form>
     </>
   );

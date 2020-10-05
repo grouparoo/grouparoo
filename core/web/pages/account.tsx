@@ -1,8 +1,9 @@
 import Head from "next/head";
 import { useState } from "react";
 import { useApi } from "../hooks/useApi";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Row, Col } from "react-bootstrap";
 import ProfileImageFromEmail from "../components/visualizations/profileImageFromEmail";
+import LoadingButton from "../components/loadingButton";
 
 export default function Page(props) {
   const { errorHandler, successHandler, sessionHandler } = props;
@@ -14,12 +15,12 @@ export default function Page(props) {
     event.preventDefault();
     setLoading(true);
     const response = await execApi("put", `/account`, teamMember);
-    setLoading(false);
     if (response?.teamMember) {
       successHandler.set({ message: "Account updated" });
       sessionHandler.set(teamMember);
       setTeamMember(response.teamMember);
     }
+    setLoading(false);
   }
 
   function update(event) {
@@ -83,9 +84,9 @@ export default function Page(props) {
               <Form.Control type="password" placeholder="*" onChange={update} />
             </Form.Group>
 
-            <Button variant="primary" type="submit" active={!loading}>
+            <LoadingButton variant="primary" type="submit" disabled={loading}>
               Update
-            </Button>
+            </LoadingButton>
           </Form>
         </Col>
       </Row>

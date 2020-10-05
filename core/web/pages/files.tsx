@@ -9,6 +9,7 @@ import { useHistoryPagination } from "../hooks/useHistoryPagination";
 import Moment from "react-moment";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
+import LoadingButton from "../components/loadingButton";
 
 import { FileAPIData } from "../utils/apiData";
 
@@ -38,11 +39,11 @@ export default function Page(props) {
       limit,
       offset,
     });
-    setLoading(false);
     if (response?.files) {
       setFiles(response.files);
       setTotal(response.total);
     }
+    setLoading(false);
   }
 
   async function download(file) {
@@ -55,11 +56,11 @@ export default function Page(props) {
     if (confirm("are you sure?")) {
       setLoading(true);
       const response = await execApi("delete", `/file/${file.guid}`);
-      setLoading(false);
       if (response?.success) {
         successHandler.set({ message: "File Deleted" });
         await load();
       }
+      setLoading(false);
     }
   }
 
@@ -156,15 +157,16 @@ export default function Page(props) {
                   </Button>
                 </td>
                 <td>
-                  <Button
+                  <LoadingButton
                     size="sm"
+                    disabled={loading}
                     variant="outline-danger"
                     onClick={() => {
                       destroy(file);
                     }}
                   >
                     X
-                  </Button>
+                  </LoadingButton>
                 </td>
               </tr>
             );

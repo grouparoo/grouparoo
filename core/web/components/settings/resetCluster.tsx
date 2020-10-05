@@ -1,8 +1,11 @@
 import { useApi } from "../../hooks/useApi";
-import { Button, Card } from "react-bootstrap";
+import { useState } from "react";
+import { Card } from "react-bootstrap";
+import LoadingButton from "../loadingButton";
 
 export default function ResetCluster(props) {
   const { errorHandler, successHandler } = props;
+  const [loading, setLoading] = useState(false);
   const { execApi } = useApi(props, errorHandler);
 
   async function resetCluster() {
@@ -37,9 +40,14 @@ export default function ResetCluster(props) {
         <br />
 
         <Card.Text>
-          <Button onClick={resetCluster} size="sm" variant="outline-danger">
+          <LoadingButton
+            onClick={resetCluster}
+            disabled={loading}
+            size="sm"
+            variant="outline-danger"
+          >
             Reset Cluster
-          </Button>
+          </LoadingButton>
         </Card.Text>
       </Card.Body>
     </Card>

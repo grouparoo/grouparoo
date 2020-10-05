@@ -48,7 +48,6 @@ export default function ProfilesList(props) {
       event.preventDefault();
     }
 
-    setTotal(0);
     setLoading(true);
     const response = await execApi("get", `/profiles`, {
       searchKey,

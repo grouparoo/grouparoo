@@ -3,7 +3,8 @@ import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import Router from "next/router";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import LoadingButton from "../../components/loadingButton";
 
 export default function TeamInitializePage(props) {
   const { errorHandler, successHandler } = props;
@@ -102,9 +103,9 @@ export default function TeamInitializePage(props) {
 
         <br />
 
-        <Button variant="primary" type="submit" active={!loading}>
+        <LoadingButton variant="primary" type="submit" disabled={loading}>
           Submit
-        </Button>
+        </LoadingButton>
       </Form>
     </>
   );

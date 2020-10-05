@@ -2,11 +2,12 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
-import { Button, Form, Card, Tabs, Tab } from "react-bootstrap";
+import { Form, Card, Tabs, Tab } from "react-bootstrap";
 import Moment from "react-moment";
 import { capitalize } from "../../components/tabs";
 import { useRouter } from "next/router";
 import { SettingAPIData } from "../../utils/apiData";
+import LoadingButton from "../../components/loadingButton";
 
 import ImportAndUpdateAllProfiles from "../../components/settings/importAndUpdate";
 import IdentifyingProfilePropertyRule from "../../components/settings/identifyingProfilePropertyRule";
@@ -176,7 +177,7 @@ function SettingCard({
               ) : null}
             </Form.Group>
 
-            <Button
+            <LoadingButton
               style={{ marginTop: 5 }}
               disabled={loading}
               size="sm"
@@ -184,7 +185,7 @@ function SettingCard({
               variant="outline-secondary"
             >
               Update
-            </Button>
+            </LoadingButton>
           </Form>
 
           <br />

@@ -1,9 +1,10 @@
 import Head from "next/head";
 import { useApi } from "../../hooks/useApi";
 import { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import Router from "next/router";
 import SelectorList from "../../components/selectorList";
+import LoadingButton from "../../components/loadingButton";
 
 import { AppAPIData } from "../../utils/apiData";
 
@@ -17,9 +18,10 @@ export default function Page(props) {
     event.preventDefault();
     setLoading(true);
     const response = await execApi("post", `/app`, app);
-    setLoading(false);
     if (response?.app) {
       return Router.push("/app/[guid]/edit", `/app/${response.app.guid}/edit`);
+    } else {
+      setLoading(false);
     }
   }
 
@@ -38,9 +40,9 @@ export default function Page(props) {
       <Form id="form" onSubmit={submit}>
         <SelectorList onClick={updateApp} selectedItem={app} items={types} />
         <br />
-        <Button variant="primary" type="submit" active={!loading}>
+        <LoadingButton variant="primary" type="submit" disabled={loading}>
           Continue
-        </Button>
+        </LoadingButton>
       </Form>
     </>
   );

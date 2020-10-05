@@ -1,5 +1,5 @@
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Table, Card, Badge, Alert } from "react-bootstrap";
+import { Row, Col, Table, Badge, Alert } from "react-bootstrap";
 import AppIcon from "./../../../components/appIcon";
 import StateBadge from "./../../../components/stateBadge";
 import Link from "next/link";

@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Button, Table, Row, Col } from "react-bootstrap";
+import { Table, Row, Col } from "react-bootstrap";
 import Pagination from "../../../components/pagination";
 import Router from "next/router";
 import Head from "next/head";
 import ResqueTabs from "../../../components/tabs/resque";
+import LoadingButton from "../../../components/loadingButton";
 
 export default function ResqueQueue(props) {
   const { errorHandler, query } = props;
@@ -63,7 +64,8 @@ export default function ResqueQueue(props) {
       </h1>
 
       <p>
-        <Button
+        <LoadingButton
+          disabled={loading}
           onClick={() => {
             delQueue();
           }}
@@ -71,7 +73,7 @@ export default function ResqueQueue(props) {
           size="sm"
         >
           Delete Queue
-        </Button>
+        </LoadingButton>
       </p>
 
       <Row>

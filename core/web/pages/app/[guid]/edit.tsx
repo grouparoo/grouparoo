@@ -1,13 +1,14 @@
 import Head from "next/head";
 import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Form, Button, Badge, Alert } from "react-bootstrap";
+import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import Router from "next/router";
 import AppIcon from "../../../components/appIcon";
 import StateBadge from "../../../components/stateBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
 import AppTabs from "../../../components/tabs/app";
 import Loader from "../../../components/loader";
+import LoadingButton from "../../../components/loadingButton";
 
 import { AppAPIData } from "../../../utils/apiData";
 
@@ -24,6 +25,7 @@ export default function Page(props) {
   const { execApi } = useApi(props, errorHandler);
   const [app, setApp] = useState<AppAPIData>(props.app);
   const [loading, setLoading] = useState(false);
+  const [testLoading, setTestLoading] = useState(false);
   const [testResult, setTestResult] = useState<{
     success: boolean;
     error: string;
@@ -41,7 +43,6 @@ export default function Page(props) {
       `/app/${guid}`,
       Object.assign({}, app, { state })
     );
-    setLoading(false);
     if (response?.app) {
       if (response.app.state === "ready" && app.state === "draft") {
         Router.push("/apps");
@@ -51,30 +52,34 @@ export default function Page(props) {
         appHandler.set(response.app);
       }
     }
+    setLoading(false);
   }
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
+      setLoading(true);
       const response = await execApi("delete", `/app/${guid}`);
       if (response?.success) {
         successHandler.set({ message: "App Deleted" });
         Router.push("/apps");
+      } else {
+        setLoading(false);
       }
     }
   }
 
   async function test() {
-    setLoading(true);
+    setTestLoading(true);
     setRanTest(false);
     setTestResult({ success: null, message: null, error: null });
     const response = await execApi("put", `/app/${guid}/test`, {
       options: app.options,
     });
-    setLoading(false);
     if (response) {
       setRanTest(true);
       setTestResult(response.test);
     }
+    setTestLoading(false);
   }
 
   let typeOptions = [];
@@ -307,14 +312,14 @@ export default function Page(props) {
 
             <Row>
               <Col>
-                <Button
+                <LoadingButton
                   variant="outline-secondary"
                   size="sm"
                   onClick={test}
-                  disabled={loading}
+                  disabled={testLoading}
                 >
                   Test Connection
-                </Button>
+                </LoadingButton>
               </Col>
             </Row>
             <br />
@@ -338,16 +343,21 @@ export default function Page(props) {
 
             <hr />
 
-            <Button variant="primary" type="submit">
+            <LoadingButton variant="primary" type="submit" disabled={loading}>
               Update
-            </Button>
+            </LoadingButton>
 
             <br />
             <br />
 
-            <Button variant="danger" size="sm" onClick={handleDelete}>
+            <LoadingButton
+              variant="danger"
+              size="sm"
+              onClick={handleDelete}
+              disabled={loading}
+            >
               Delete
-            </Button>
+            </LoadingButton>
           </Col>
         </Row>
       </Form>

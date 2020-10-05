@@ -4,8 +4,9 @@ import StateBadge from "../../../components/stateBadge";
 import Head from "next/head";
 import GroupTabs from "../../../components/tabs/group";
 import DatePicker from "../../../components/datePicker";
-import { Form, Button, Table, Badge } from "react-bootstrap";
+import { Form, Table, Badge, Button } from "react-bootstrap";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
+import LoadingButton from "../../../components/loadingButton";
 
 import { GroupAPIData } from "../../../utils/apiData";
 
@@ -53,7 +54,7 @@ export default function Page(props) {
       null,
       useCache
     );
-    setLoading(false);
+
     if (response?.componentCounts) {
       setComponentCounts(response.componentCounts);
       // setFunnelCounts(response.funnelCounts);
@@ -70,6 +71,8 @@ export default function Page(props) {
     if (response) {
       setCountPotentialMembers(response.count);
     }
+
+    setLoading(false);
   }
 
   function addRule() {
@@ -100,12 +103,12 @@ export default function Page(props) {
       guid: group.guid,
       rules: localRules,
     });
-    setLoading(false);
     if (response?.group) {
       successHandler.set({ message: "Group Updated" });
       setGroup(response.group);
       setLocalRules(response.group.rules);
     }
+    setLoading(false);
   }
 
   async function autocompleteProfilePropertySearch(localRule, match) {
@@ -448,7 +451,7 @@ export default function Page(props) {
         Add Rule
       </Button>
       &nbsp;
-      <Button
+      <LoadingButton
         disabled={loading}
         variant="outline-dark"
         size="sm"
@@ -457,11 +460,11 @@ export default function Page(props) {
         }}
       >
         Count Potential Group Members
-      </Button>
+      </LoadingButton>
       <br />
       <br />
-      <Button
-        active={!loading}
+      <LoadingButton
+        disabled={loading}
         variant="primary"
         onClick={async () => {
           await updateRules();
@@ -469,7 +472,7 @@ export default function Page(props) {
         }}
       >
         Save Rules
-      </Button>
+      </LoadingButton>
     </>
   );
 }

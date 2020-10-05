@@ -5,10 +5,12 @@ import Pagination from "../../components/pagination";
 import Router from "next/router";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/resque";
+import LoadingButton from "../../components/loadingButton";
 
 export default function ResqueFailedList(props) {
   const { errorHandler, query, successHandler } = props;
   const { execApi } = useApi(props, errorHandler);
+  const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState([]);
   const [focusedException, setFocusedException] = useState({
     exception: "",
@@ -31,6 +33,7 @@ export default function ResqueFailedList(props) {
 
   async function load() {
     updateURLParams();
+    setLoading(true);
     const response = await execApi("get", "/resque/resqueFailed", {
       offset,
       limit,
@@ -38,35 +41,44 @@ export default function ResqueFailedList(props) {
 
     setFailed(response.failed);
     setTotal(response.total);
+    setLoading(false);
   }
 
   async function removeFailedJob(index) {
+    setLoading(true);
     await execApi("post", "/resque/removeFailed", { id: index });
     successHandler.set({ message: "removed" });
     await load();
+    setLoading(false);
   }
 
   async function retryFailedJob(index) {
+    setLoading(true);
     await execApi("post", "/resque/retryAndRemoveFailed", {
       id: index,
     });
     successHandler.set({ message: "retried" });
     await load();
+    setLoading(false);
   }
 
   async function removeAllFailedJobs() {
     if (window.confirm("Are you sure?")) {
+      setLoading(true);
       await execApi("post", "/resque/removeAllFailed");
       successHandler.set({ message: "removed all" });
       await load();
+      setLoading(false);
     }
   }
 
   async function retryAllFailedJobs() {
     if (window.confirm("Are you sure?")) {
+      setLoading(true);
       await execApi("post", "/resque/retryAndRemoveAllFailed");
       successHandler.set({ message: "retried all" });
       await load();
+      setLoading(false);
     }
   }
 
@@ -104,7 +116,8 @@ export default function ResqueFailedList(props) {
       <Row>
         <Col md={12}>
           <ButtonToolbar>
-            <Button
+            <LoadingButton
+              disabled={loading}
               onClick={() => {
                 retryAllFailedJobs();
               }}
@@ -112,9 +125,10 @@ export default function ResqueFailedList(props) {
               variant="warning"
             >
               Retry All
-            </Button>
+            </LoadingButton>
             &nbsp;
-            <Button
+            <LoadingButton
+              disabled={loading}
               onClick={() => {
                 removeAllFailedJobs();
               }}
@@ -122,7 +136,7 @@ export default function ResqueFailedList(props) {
               variant="danger"
             >
               Remove All
-            </Button>
+            </LoadingButton>
           </ButtonToolbar>
         </Col>
         <br />
@@ -182,22 +196,24 @@ export default function ResqueFailedList(props) {
                       </ul>
                     </td>
                     <td>
-                      <Button
+                      <LoadingButton
+                        disabled={loading}
                         onClick={() => retryFailedJob(offset + idx)}
                         variant="warning"
                         size="sm"
                       >
                         Retry
-                      </Button>
+                      </LoadingButton>
                     </td>
                     <td>
-                      <Button
+                      <LoadingButton
+                        disabled={loading}
                         onClick={() => removeFailedJob(offset + idx)}
                         variant="danger"
                         size="sm"
                       >
                         Remove
-                      </Button>
+                      </LoadingButton>
                     </td>
                   </tr>
                 );

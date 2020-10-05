@@ -1,12 +1,15 @@
 import FileTabs from "../../../components/tabs/file";
 import Head from "next/head";
 import Router from "next/router";
+import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Button, Image } from "react-bootstrap";
+import LoadingButton from "../../../components/loadingButton";
 
 export default function Page(props) {
   const { errorhandler, successHandler, file } = props;
   const { execApi } = useApi(props, errorhandler);
+  const [loading, setLoading] = useState(false);
 
   const apiVersion = process.env.API_VERSION || "v1";
   const csrfToken = globalThis?.localStorage?.getItem("session:csrfToken");
@@ -21,10 +24,13 @@ export default function Page(props) {
 
   async function destroy(file) {
     if (confirm("are you sure?")) {
+      setLoading(true);
       const response = await execApi("delete", `/file/${file.guid}`);
       if (response?.success) {
         successHandler.set({ message: "File Deleted" });
         Router.push("/files");
+      } else {
+        setLoading(false);
       }
     }
   }
@@ -81,15 +87,16 @@ export default function Page(props) {
 
       <hr />
 
-      <Button
+      <LoadingButton
         size="sm"
         variant="danger"
+        disabled={loading}
         onClick={() => {
           destroy(file);
         }}
       >
         Delete
-      </Button>
+      </LoadingButton>
     </>
   );
 }

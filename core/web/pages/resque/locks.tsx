@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
-import { Table, Row, Col, Button } from "react-bootstrap";
+import { Table, Row, Col } from "react-bootstrap";
 import Pagination from "../../components/pagination";
 import Router from "next/router";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/resque";
+import LoadingButton from "../../components/loadingButton";
 
 export default function ResqueLocksList(props) {
   const { errorHandler, successHandler, query } = props;
@@ -89,7 +90,8 @@ export default function ResqueLocksList(props) {
                     <td>{l.lock}</td>
                     <td>{l.at.toString()}</td>
                     <td>
-                      <Button
+                      <LoadingButton
+                        disabled={loading}
                         onClick={() => {
                           delLock(l.lock);
                         }}
@@ -97,7 +99,7 @@ export default function ResqueLocksList(props) {
                         variant="warning"
                       >
                         Delete
-                      </Button>
+                      </LoadingButton>
                     </td>
                   </tr>
                 );

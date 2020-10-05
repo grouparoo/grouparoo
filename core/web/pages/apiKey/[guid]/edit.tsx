@@ -1,10 +1,11 @@
 import { useApi } from "../../../hooks/useApi";
 import { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import Head from "next/head";
 import PermissionsList from "../../../components/permissions";
 import Router from "next/router";
 import ApiKeyTabs from "../../../components/tabs/apiKey";
+import LoadingButton from "../../../components/loadingButton";
 
 import { ApiKeyAPIData } from "../../../utils/apiData";
 
@@ -29,11 +30,11 @@ export default function Page(props) {
 
     setLoading(true);
     const response = await execApi("put", `/apiKey/${guid}`, _apiKey);
-    setLoading(false);
     if (response?.apiKey) {
       successHandler.set({ message: "API Key updated" });
       setApiKey(response.apiKey);
     }
+    setLoading(false);
   };
 
   async function handleDelete() {
@@ -42,6 +43,8 @@ export default function Page(props) {
       if (response) {
         successHandler.set({ message: "API Key deleted" });
         Router.push("/apiKeys");
+      } else {
+        setLoading(false);
       }
     }
   }
@@ -128,14 +131,14 @@ export default function Page(props) {
 
         <hr />
 
-        <Button variant="primary" type="submit">
+        <LoadingButton variant="primary" type="submit" disabled={loading}>
           Update
-        </Button>
+        </LoadingButton>
 
         <br />
         <br />
 
-        <Button
+        <LoadingButton
           disabled={loading}
           variant="danger"
           size="sm"
@@ -144,7 +147,7 @@ export default function Page(props) {
           }}
         >
           Delete
-        </Button>
+        </LoadingButton>
       </Form>
     </>
   );

@@ -3,7 +3,8 @@ import SourceTabs from "../../../components/tabs/source";
 import Head from "next/head";
 import { useState } from "react";
 import Moment from "react-moment";
-import { Alert, Row, Col, Form, Button, Badge, Table } from "react-bootstrap";
+import { Alert, Row, Col, Form, Badge, Table } from "react-bootstrap";
+import LoadingButton from "../../../components/loadingButton";
 import Router from "next/router";
 import Link from "next/link";
 import AppIcon from "../../../components/appIcon";
@@ -312,16 +313,21 @@ export default function Page(props) {
 
             <hr />
 
-            <Button variant="primary" type="submit" disabled={loading}>
+            <LoadingButton variant="primary" type="submit" disabled={loading}>
               Update
-            </Button>
+            </LoadingButton>
 
             <br />
             <br />
 
-            <Button variant="danger" size="sm" onClick={handleDelete}>
+            <LoadingButton
+              variant="danger"
+              disabled={loading}
+              size="sm"
+              onClick={handleDelete}
+            >
               Delete
-            </Button>
+            </LoadingButton>
           </Col>
         </Row>
       </Form>

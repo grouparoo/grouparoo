@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Form, Button, Badge } from "react-bootstrap";
+import { Row, Col, Form, Badge } from "react-bootstrap";
 import Router from "next/router";
 import Link from "next/link";
 import Head from "next/head";
@@ -8,6 +8,7 @@ import AppIcon from "./../../../components/appIcon";
 import StateBadge from "./../../../components/stateBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
 import DestinationTabs from "./../../../components/tabs/destination";
+import LoadingButton from "../../../components/loadingButton";
 
 import { DestinationAPIData } from "../../../utils/apiData";
 
@@ -24,6 +25,7 @@ export default function Page(props) {
   const [destination, setDestination] = useState<DestinationAPIData>(
     props.destination
   );
+  const [loading, setLoading] = useState(false);
   const [connectionOptions, setConnectionOptions] = useState(
     props.connectionOptions
   );
@@ -37,6 +39,7 @@ export default function Page(props) {
     delete destination["destinationGroupMemberships"];
     delete destination["groups"];
 
+    setLoading(true);
     const response = await execApi(
       "put",
       `/destination/${guid}`,
@@ -57,9 +60,11 @@ export default function Page(props) {
         successHandler.set({ message: "Destination updated" });
       }
     }
+    setLoading(false);
   };
 
   async function refreshOptions() {
+    setLoading(true);
     const response = await execApi(
       "get",
       `/destination/${guid}/connectionOptions`,
@@ -69,13 +74,17 @@ export default function Page(props) {
       false
     );
     if (response?.options) setConnectionOptions(response.options);
+    setLoading(false);
   }
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
+      setLoading(true);
       const response = await execApi("delete", `/destination/${guid}`);
       if (response) {
         Router.push("/destinations");
+      } else {
+        setLoading(false);
       }
     }
   }
@@ -87,7 +96,7 @@ export default function Page(props) {
         ? event.target.checked
         : event.target.value;
     setDestination(_destination);
-    setTimeout(refreshOptions, 100);
+    if (event.target.id !== "name") setTimeout(refreshOptions, 100);
   };
 
   const updateOption = async (optKey, optValue) => {
@@ -315,20 +324,23 @@ export default function Page(props) {
 
             <br />
 
-            <Button variant="primary" type="submit">
+            <LoadingButton variant="primary" type="submit" disabled={loading}>
               Update
-            </Button>
+            </LoadingButton>
+
             <br />
             <br />
-            <Button
+
+            <LoadingButton
               variant="danger"
               size="sm"
+              disabled={loading}
               onClick={() => {
                 handleDelete();
               }}
             >
               Delete
-            </Button>
+            </LoadingButton>
           </Form>
         </Col>
       </Row>

@@ -3,10 +3,11 @@ import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import Router from "next/router";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import LoadingButton from "../../components/loadingButton";
 
 export default function NewTeamPage(props) {
-  const { errorHandler, successHandler } = props;
+  const { errorHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
@@ -44,9 +45,9 @@ export default function NewTeamPage(props) {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Button variant="primary" type="submit" disabled={loading}>
+        <LoadingButton variant="primary" type="submit" disabled={loading}>
           Submit
-        </Button>
+        </LoadingButton>
       </Form>
     </>
   );
