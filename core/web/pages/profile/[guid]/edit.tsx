@@ -3,7 +3,8 @@ import Link from "next/link";
 import ProfileTabs from "../../../components/tabs/profile";
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Button, Form, ListGroup } from "react-bootstrap";
+import { Row, Col, Form, ListGroup } from "react-bootstrap";
+import LoadingButton from "../../../components/loadingButton";
 import Router from "next/router";
 import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
 import Moment from "react-moment";
@@ -43,13 +44,13 @@ export default function Page(props) {
   async function load() {
     setLoading(true);
     const response = await execApi("get", `/profile/${profile.guid}`);
-    setLoading(false);
     if (response?.profile) {
       profileHandler.set(response.profile);
       setProfile(response.profile);
       setProperties(response.profile.properties);
       setGroups(response.groups);
     }
+    setLoading(false);
   }
 
   async function importAndUpdate() {
@@ -59,25 +60,27 @@ export default function Page(props) {
       "post",
       `/profile/${profile.guid}/importAndUpdate`
     );
-    setLoading(false);
     if (response?.profile) {
       successHandler.set({ message: "Import and Export Complete!" });
       load();
     }
+    setLoading(false);
   }
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
       const response = await execApi("delete", `/profile/${profile.guid}`);
-      setLoading(false);
       if (response) {
         Router.push("/profiles");
+      } else {
+        setLoading(false);
       }
     }
   }
 
   async function handleRemove(group) {
+    setLoading(true);
     const response = await execApi("put", `/group/${group.guid}/remove`, {
       profileGuid: profile.guid,
     });
@@ -87,6 +90,7 @@ export default function Page(props) {
       });
       load();
     }
+    setLoading(false);
   }
 
   async function handleAdd(event) {
@@ -94,6 +98,7 @@ export default function Page(props) {
     event.preventDefault();
     const groupGuid = form.elements[0].value;
 
+    setLoading(true);
     const response = await execApi("put", `/group/${groupGuid}/add`, {
       profileGuid: profile.guid,
     });
@@ -103,6 +108,7 @@ export default function Page(props) {
       });
       load();
     }
+    setLoading(false);
   }
 
   async function handleUpdate(key) {
@@ -112,11 +118,11 @@ export default function Page(props) {
     const response = await execApi("put", `/profile/${profile.guid}`, {
       properties: hash,
     });
-    setLoading(false);
     if (response?.profile?.properties) {
       successHandler.set({ message: `property ${key} updated` });
       load();
     }
+    setLoading(false);
   }
 
   const keys = Object.keys(properties);
@@ -186,18 +192,20 @@ export default function Page(props) {
                 );
               })}
               <br />
-              <Button
+              <LoadingButton
+                disabled={loading}
                 onClick={() => {
                   importAndUpdate();
                 }}
               >
                 Import and Export
-              </Button>
+              </LoadingButton>
 
               <br />
               <br />
 
-              <Button
+              <LoadingButton
+                disabled={loading}
                 variant="danger"
                 size="sm"
                 onClick={() => {
@@ -205,7 +213,7 @@ export default function Page(props) {
                 }}
               >
                 Delete
-              </Button>
+              </LoadingButton>
             </Col>
           </Row>
         </Col>
@@ -219,7 +227,8 @@ export default function Page(props) {
               <ListGroup.Item key={`groupMember-${group.guid}`} variant="info">
                 {group.type === "manual" ? (
                   <>
-                    <Button
+                    <LoadingButton
+                      disabled={loading}
                       size="sm"
                       variant="danger"
                       onClick={() => {
@@ -227,7 +236,7 @@ export default function Page(props) {
                       }}
                     >
                       X
-                    </Button>
+                    </LoadingButton>
                     &nbsp; &nbsp;
                   </>
                 ) : null}
@@ -248,7 +257,7 @@ export default function Page(props) {
               <Col md={9}>
                 <Form.Group controlId="groupGuid">
                   <Form.Label>Add Group</Form.Label>
-                  <Form.Control as="select">
+                  <Form.Control as="select" disabled={loading}>
                     {allGroups.map((group) => {
                       const disabled =
                         group.type !== "manual" ||
@@ -268,9 +277,14 @@ export default function Page(props) {
               </Col>
               <Col md={3}>
                 <div style={{ paddingTop: 34 }} />
-                <Button variant="outline-primary" size="sm" type="submit">
+                <LoadingButton
+                  variant="outline-primary"
+                  size="sm"
+                  type="submit"
+                  disabled={loading}
+                >
                   Add
-                </Button>
+                </LoadingButton>
               </Col>
             </Row>
           </Form>
@@ -307,6 +321,7 @@ export default function Page(props) {
                             <Form.Control
                               required
                               type="text"
+                              disabled={loading}
                               value={
                                 properties[key].values.length === 0
                                   ? ""
@@ -316,16 +331,17 @@ export default function Page(props) {
                             />
                           </Form.Group>
 
-                          <Button
+                          <LoadingButton
                             size="sm"
                             type="submit"
                             variant="info"
+                            disabled={loading}
                             onClick={() => {
                               handleUpdate(key);
                             }}
                           >
                             Update
-                          </Button>
+                          </LoadingButton>
                         </Form>
                       ) : (
                         <span>

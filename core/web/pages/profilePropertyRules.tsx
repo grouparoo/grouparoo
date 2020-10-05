@@ -6,6 +6,7 @@ import { useHistoryPagination } from "../hooks/useHistoryPagination";
 import Router from "next/router";
 import Link from "next/link";
 import { Button, Form, Alert } from "react-bootstrap";
+import LoadingButton from "../components/loadingButton";
 import Moment from "react-moment";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
@@ -209,6 +210,7 @@ export default function Page(props) {
               as="select"
               size="sm"
               value={newRuleSourceGuid}
+              disabled={loading}
               onChange={(e) => {
                 setNewRuleSourceGuid(e.target.value);
               }}
@@ -219,14 +221,14 @@ export default function Page(props) {
                 </option>
               ))}
             </Form.Control>{" "}
-            <Button
+            <LoadingButton
               type="submit"
               size="sm"
               disabled={newRuleLoading}
               variant="primary"
             >
               Create
-            </Button>
+            </LoadingButton>
           </p>
         </Form>
       ) : null}

@@ -2,8 +2,9 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
-import { Form, Button, ProgressBar } from "react-bootstrap";
+import { Form, ProgressBar } from "react-bootstrap";
 import Router from "next/router";
+import LoadingButton from "../../components/loadingButton";
 
 export default function Page(props) {
   const { errorHandler, uploadHandler, types } = props;
@@ -53,6 +54,7 @@ export default function Page(props) {
             as="select"
             name="type"
             defaultValue=""
+            disabled={loading}
             ref={register}
           >
             <option disabled value="">
@@ -66,7 +68,13 @@ export default function Page(props) {
 
         <Form.Group>
           <Form.Label>File</Form.Label>
-          <Form.Control required type="file" name="file" ref={register} />
+          <Form.Control
+            required
+            type="file"
+            name="file"
+            ref={register}
+            disabled={loading}
+          />
           <Form.Control.Feedback type="invalid">
             Type is required
           </Form.Control.Feedback>
@@ -87,9 +95,9 @@ export default function Page(props) {
           </>
         ) : null}
 
-        <Button variant="primary" type="submit" disabled={loading}>
+        <LoadingButton variant="primary" type="submit" disabled={loading}>
           Submit
-        </Button>
+        </LoadingButton>
       </Form>
     </>
   );

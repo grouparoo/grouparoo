@@ -1,11 +1,13 @@
 import { useApi } from "../../../hooks/useApi";
 import { useState } from "react";
-import { Row, Col, Badge, Alert, Button } from "react-bootstrap";
+import { Row, Col, Badge, Alert } from "react-bootstrap";
 import Moment from "react-moment";
 import Link from "next/link";
 import { ResponsiveLine } from "@nivo/line";
 import RunTabs from "../../../components/tabs/run";
 import Head from "next/head";
+import LoadingButton from "../../../components/loadingButton";
+
 import { RunAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
@@ -55,14 +57,14 @@ export default function Page(props) {
               <>
                 <br />
                 <br />
-                <Button
+                <LoadingButton
                   variant="warning"
                   size="sm"
                   disabled={loading}
                   onClick={stopRun}
                 >
                   Stop run
-                </Button>
+                </LoadingButton>
               </>
             ) : null}
           </p>

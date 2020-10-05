@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Form, Button, Badge } from "react-bootstrap";
+import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import Router from "next/router";
 import Link from "next/link";
 import Head from "next/head";
@@ -8,6 +8,8 @@ import AppIcon from "./../../../components/appIcon";
 import StateBadge from "./../../../components/stateBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
 import DestinationTabs from "./../../../components/tabs/destination";
+import LoadingButton from "../../../components/loadingButton";
+import Loader from "../../../components/loader";
 
 import { DestinationAPIData } from "../../../utils/apiData";
 
@@ -18,18 +20,26 @@ export default function Page(props) {
     destinationHandler,
     environmentVariableOptions,
     query,
-    hydrationError,
   } = props;
   const { execApi } = useApi(props, errorHandler);
   const [destination, setDestination] = useState<DestinationAPIData>(
     props.destination
   );
-  const [connectionOptions, setConnectionOptions] = useState(
-    props.connectionOptions
-  );
+  const [loading, setLoading] = useState(false);
+  const [loadingOptions, setLoadingOptions] = useState(false);
+  const [connectionOptions, setConnectionOptions] = useState({});
   const { guid } = query;
 
-  if (hydrationError) errorHandler.set({ error: hydrationError });
+  useEffect(() => {
+    loadOptions();
+    props.destinationHandler.subscribe("destination-edit", (_destination) => {
+      setDestination(_destination);
+    });
+
+    return () => {
+      props.destinationHandler.unsubscribe("destination-edit");
+    };
+  }, []);
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -37,6 +47,7 @@ export default function Page(props) {
     delete destination["destinationGroupMemberships"];
     delete destination["groups"];
 
+    setLoading(true);
     const response = await execApi(
       "put",
       `/destination/${guid}`,
@@ -57,25 +68,31 @@ export default function Page(props) {
         successHandler.set({ message: "Destination updated" });
       }
     }
+    setLoading(false);
   };
 
-  async function refreshOptions() {
+  async function loadOptions() {
+    setLoadingOptions(true);
     const response = await execApi(
       "get",
       `/destination/${guid}/connectionOptions`,
-      destination,
+      { options: destination.options },
       null,
       null,
       false
     );
     if (response?.options) setConnectionOptions(response.options);
+    setLoadingOptions(false);
   }
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
+      setLoading(true);
       const response = await execApi("delete", `/destination/${guid}`);
       if (response) {
         Router.push("/destinations");
+      } else {
+        setLoading(false);
       }
     }
   }
@@ -87,25 +104,15 @@ export default function Page(props) {
         ? event.target.checked
         : event.target.value;
     setDestination(_destination);
-    setTimeout(refreshOptions, 100);
+    if (event.target.id !== "name") setTimeout(loadOptions, 100);
   };
 
   const updateOption = async (optKey, optValue) => {
     const _destination = Object.assign({}, destination);
     _destination.options[optKey] = optValue;
     setDestination(_destination);
-    setTimeout(refreshOptions, 100);
+    setTimeout(loadOptions, 100);
   };
-
-  useEffect(() => {
-    props.destinationHandler.subscribe("destination-edit", (_destination) => {
-      setDestination(_destination);
-    });
-
-    return () => {
-      props.destinationHandler.unsubscribe("destination-edit");
-    };
-  }, []);
 
   return (
     <>
@@ -132,6 +139,7 @@ export default function Page(props) {
                 required
                 type="text"
                 placeholder="Destination Name"
+                disabled={loading}
                 defaultValue={destination.name}
                 onChange={(e) => update(e)}
               />
@@ -154,6 +162,12 @@ export default function Page(props) {
             <strong>Options for a {destination.type} destination</strong>
             <br />
             <br />
+
+            {loadingOptions ? (
+              <Alert variant="warning">
+                <Loader size="sm" /> Loading options from {destination.app.type}
+              </Alert>
+            ) : null}
 
             {Object.keys(destination.connection.options).length === 0 ? (
               <p>No options for this type of destination</p>
@@ -180,6 +194,7 @@ export default function Page(props) {
                           <Typeahead
                             id="typeahead"
                             labelKey="key"
+                            disabled={loading || loadingOptions}
                             onChange={(selected) => {
                               updateOption(opt.key, selected[0]?.key);
                             }}
@@ -229,6 +244,7 @@ export default function Page(props) {
                           <Form.Control
                             as="select"
                             required={opt.required}
+                            disabled={loading || loadingOptions}
                             defaultValue={destination.options[opt.key] || ""}
                             onChange={(e) =>
                               updateOption(
@@ -277,6 +293,7 @@ export default function Page(props) {
                           <Form.Control
                             required={opt.required}
                             type="text"
+                            disabled={loading || loadingOptions}
                             defaultValue={destination.options[opt.key]}
                             placeholder={opt.placeholder}
                             onChange={(e) =>
@@ -315,20 +332,23 @@ export default function Page(props) {
 
             <br />
 
-            <Button variant="primary" type="submit">
+            <LoadingButton variant="primary" type="submit" disabled={loading}>
               Update
-            </Button>
+            </LoadingButton>
+
             <br />
             <br />
-            <Button
+
+            <LoadingButton
               variant="danger"
               size="sm"
+              disabled={loading}
               onClick={() => {
                 handleDelete();
               }}
             >
               Delete
-            </Button>
+            </LoadingButton>
           </Form>
         </Col>
       </Row>
@@ -345,24 +365,8 @@ Page.getInitialProps = async (ctx) => {
     "/destinations/connectionApps"
   );
 
-  let options = {};
-  let hydrationError: Error;
-
-  try {
-    const connectionOptionsResponse = await execApi(
-      "get",
-      `/destination/${guid}/connectionOptions`,
-      { options: destination.options }
-    );
-    options = connectionOptionsResponse.options;
-  } catch (error) {
-    hydrationError = error.toString();
-  }
-
   return {
     destination,
-    connectionOptions: options,
     environmentVariableOptions,
-    hydrationError,
   };
 };

@@ -2,7 +2,8 @@ import Head from "next/head";
 import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import LoadingButton from "../../components/loadingButton";
 import Router from "next/router";
 
 export default function Page(props) {
@@ -22,12 +23,15 @@ export default function Page(props) {
     // if the option is disabled, the default value is not set
     if (!data.teamGuid && teamGuid) data.teamGuid = teamGuid;
 
+    setLoading(true);
     const response = await execApi("post", `/team/member`, data);
-    setLoading(false);
+
     if (response?.teamMember) {
       teamMemberHandler.set(response.teamMember);
       successHandler.set({ message: "Team Member Created" });
       Router.push(`/team/${response.teamMember.teamGuid}/members`);
+    } else {
+      setLoading(false);
     }
   }
 
@@ -49,7 +53,7 @@ export default function Page(props) {
             defaultValue={
               teamGuid ? teamGuid : teams.length > 0 ? teams[0].guid : null
             }
-            disabled={teamGuid ? true : false}
+            disabled={teamGuid || loading ? true : false}
           >
             {teams.map((team) => (
               <option key={`team-${team.guid}`} value={team.guid}>
@@ -68,6 +72,7 @@ export default function Page(props) {
             name="firstName"
             placeholder="First Name"
             ref={register}
+            disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
             First Name is required
@@ -82,6 +87,7 @@ export default function Page(props) {
             name="lastName"
             placeholder="Last Name"
             ref={register}
+            disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
             Last Name is required
@@ -96,6 +102,7 @@ export default function Page(props) {
             name="email"
             placeholder="email"
             ref={register}
+            disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
             Email is required
@@ -110,6 +117,7 @@ export default function Page(props) {
             type="password"
             placeholder="password"
             ref={register}
+            disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
             Password is required
@@ -123,14 +131,15 @@ export default function Page(props) {
             label={`Subscribe to Grouparoo Newsletter`}
             defaultChecked
             ref={register}
+            disabled={loading}
           />
         </Form.Group>
 
         <br />
 
-        <Button variant="primary" type="submit" active={!loading}>
+        <LoadingButton variant="primary" type="submit" disabled={loading}>
           Submit
-        </Button>
+        </LoadingButton>
       </Form>
     </>
   );

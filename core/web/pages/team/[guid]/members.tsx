@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Button } from "react-bootstrap";
+import LoadingButton from "../../../components/loadingButton";
 import Link from "next/link";
 import Router from "next/router";
 import Moment from "react-moment";
@@ -19,6 +19,7 @@ export default function Page(props) {
 
   async function handleDelete(teamMember) {
     if (window.confirm("are you sure?")) {
+      setLoading(true);
       const response = await execApi(
         "delete",
         `/team/member/${teamMember.guid}`
@@ -31,6 +32,7 @@ export default function Page(props) {
         );
         setTeamMembers(_teamMembers);
       }
+      setLoading(false);
     }
   }
 
@@ -81,15 +83,16 @@ export default function Page(props) {
                   <Moment fromNow>{teamMember.createdAt}</Moment>
                 </td>
                 <td>
-                  <Button
+                  <LoadingButton
                     size="sm"
+                    disabled={loading}
                     variant="danger"
                     onClick={() => {
                       handleDelete(teamMember);
                     }}
                   >
                     X
-                  </Button>
+                  </LoadingButton>
                 </td>
               </tr>
             );
@@ -97,14 +100,15 @@ export default function Page(props) {
         </tbody>
       </LoadingTable>
 
-      <Button
+      <LoadingButton
         variant="primary"
+        disabled={loading}
         onClick={() => {
           Router.push(`/team/${team.guid}/teamMember/new`);
         }}
       >
         Add Team Member
-      </Button>
+      </LoadingButton>
     </>
   );
 }

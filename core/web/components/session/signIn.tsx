@@ -1,7 +1,8 @@
 import React from "react"; // needed because this is also used by a plugin
 import { useState } from "react";
 import Router from "next/router";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import LoadingButton from "../loadingButton";
 import { useForm } from "react-hook-form";
 import { SetupStepAPIData } from "../../utils/apiData";
 
@@ -15,7 +16,6 @@ export default function SignInForm(props) {
   const onSubmit = async (data) => {
     setLoading(true);
     const response = await execApi("post", `/session`, data);
-    setLoading(false);
     if (response?.teamMember) {
       window.localStorage.setItem("session:csrfToken", response.csrfToken);
       sessionHandler.set(response.teamMember);
@@ -31,6 +31,8 @@ export default function SignInForm(props) {
           Router.push("/setup");
         }
       }
+    } else {
+      setLoading(false);
     }
   };
 
@@ -52,6 +54,7 @@ export default function SignInForm(props) {
       <Form.Group>
         <Form.Label>Email Address</Form.Label>
         <Form.Control
+          disabled={loading}
           autoFocus
           required
           name="email"
@@ -68,6 +71,7 @@ export default function SignInForm(props) {
         <Form.Label>Password</Form.Label>
         <Form.Control
           required
+          disabled={loading}
           name="password"
           type="password"
           placeholder="Password"
@@ -78,9 +82,9 @@ export default function SignInForm(props) {
         </Form.Control.Feedback>
       </Form.Group>
 
-      <Button active={!loading} variant="primary" type="submit">
-        Submit
-      </Button>
+      <LoadingButton disabled={loading} variant="primary" type="submit">
+        Sign In
+      </LoadingButton>
     </Form>
   );
 }

@@ -1,7 +1,8 @@
 import { useApi } from "../../hooks/useApi";
-import { Button, Card, Form } from "react-bootstrap";
+import { Card, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { ProfilePropertyRuleAPIData } from "../../utils/apiData";
+import LoadingButton from "../loadingButton";
 
 export default function IdentifyingProfilePropertyRule(props) {
   const { errorHandler, successHandler } = props;
@@ -79,6 +80,7 @@ export default function IdentifyingProfilePropertyRule(props) {
             <Form.Label>Profile Property</Form.Label>
             <Form.Control
               as="select"
+              disabled={loading}
               value={identifyingProfilePropertyGuid}
               onChange={(e) =>
                 setIdentifyingProfilePropertyGuid(e.target.value)
@@ -100,7 +102,7 @@ export default function IdentifyingProfilePropertyRule(props) {
             </Form.Control>
           </Form.Group>
 
-          <Button
+          <LoadingButton
             style={{ marginTop: 5 }}
             disabled={loading}
             size="sm"
@@ -108,7 +110,7 @@ export default function IdentifyingProfilePropertyRule(props) {
             variant="outline-secondary"
           >
             Update
-          </Button>
+          </LoadingButton>
         </Form>
       </Card.Body>
     </Card>

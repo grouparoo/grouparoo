@@ -1,7 +1,8 @@
 import Head from "next/head";
 import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Form, Button } from "react-bootstrap";
+import { Row, Col, Form } from "react-bootstrap";
+import LoadingButton from "../../../components/loadingButton";
 import Router from "next/router";
 import Moment from "react-moment";
 import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
@@ -33,6 +34,7 @@ export default function Page(props) {
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
+      setLoading(true);
       const response = await execApi(
         "delete",
         `/team/member/${teamMember.guid}`
@@ -40,6 +42,8 @@ export default function Page(props) {
       if (response) {
         successHandler.set({ message: "team member deleted" });
         Router.push("/teams");
+      } else {
+        setLoading(false);
       }
     }
   }
@@ -83,6 +87,7 @@ export default function Page(props) {
                 placeholder="Email"
                 value={teamMember.email}
                 onChange={update}
+                disabled={loading}
               />
               <Form.Control.Feedback type="invalid">
                 Email is required
@@ -97,6 +102,7 @@ export default function Page(props) {
                 placeholder="First Name"
                 value={teamMember.firstName}
                 onChange={update}
+                disabled={loading}
               />
               <Form.Control.Feedback type="invalid">
                 First Name is required
@@ -111,6 +117,7 @@ export default function Page(props) {
                 placeholder="Last Name"
                 value={teamMember.lastName}
                 onChange={update}
+                disabled={loading}
               />
               <Form.Control.Feedback type="invalid">
                 Last Name is required
@@ -123,6 +130,7 @@ export default function Page(props) {
                 as="select"
                 value={teamMember.teamGuid}
                 onChange={update}
+                disabled={loading}
               >
                 {teams.map((team) => (
                   <option key={`team-${team.guid}`} value={team.guid}>
@@ -134,15 +142,21 @@ export default function Page(props) {
 
             <Form.Group controlId="password">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="*" onChange={update} />
+              <Form.Control
+                type="password"
+                placeholder="*"
+                onChange={update}
+                disabled={loading}
+              />
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <LoadingButton variant="primary" disabled={loading} type="submit">
               Update
-            </Button>
+            </LoadingButton>
             <br />
             <br />
-            <Button
+            <LoadingButton
+              disabled={loading}
               variant="danger"
               size="sm"
               onClick={() => {
@@ -150,7 +164,7 @@ export default function Page(props) {
               }}
             >
               Delete
-            </Button>
+            </LoadingButton>
           </Form>
         </Col>
       </Row>

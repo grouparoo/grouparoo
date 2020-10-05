@@ -7,26 +7,35 @@ interface Props {
   size?: string;
 }
 
-class LoadingTable extends Component<Props> {
+export default class LoadingTable extends Component<Props> {
   render() {
+    const { loading, ...propsExceptLoading } = this.props;
+
     if (this.props.loading) {
+      // @ts-ignore this.props.children is an array, it's OK
+      const head = this.props.children.find((c) => c.type === "thead");
+
+      return (
+        <Table {...propsExceptLoading}>
+          {head ? head : null}
+          <tbody>
+            <tr>
+              <td
+                colSpan={999} // arbitrarily large number to span all columns
+                style={{ textAlign: "center", verticalAlign: "middle" }}
+              >
+                <Loader />
+              </td>
+            </tr>
+          </tbody>
+        </Table>
+      );
+    } else {
       return (
         <>
-          <Loader />
-          <br />
-          <br />
+          <Table {...propsExceptLoading}>{this.props.children}</Table>
         </>
       );
     }
-
-    const { loading, ...propsExceptLoading } = this.props;
-
-    return (
-      <>
-        <Table {...propsExceptLoading}>{this.props.children}</Table>
-      </>
-    );
   }
 }
-
-export default LoadingTable;

@@ -3,7 +3,8 @@ import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import Router from "next/router";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import LoadingButton from "../../components/loadingButton";
 
 export default function TeamInitializePage(props) {
   const { errorHandler, successHandler } = props;
@@ -42,6 +43,7 @@ export default function TeamInitializePage(props) {
             name="firstName"
             ref={register}
             placeholder="First Name"
+            disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
             First Name is required
@@ -55,6 +57,7 @@ export default function TeamInitializePage(props) {
             type="text"
             name="lastName"
             placeholder="Last Name"
+            disabled={loading}
             ref={register}
           />
           <Form.Control.Feedback type="invalid">
@@ -69,6 +72,7 @@ export default function TeamInitializePage(props) {
             type="email"
             name="email"
             placeholder="Email Address"
+            disabled={loading}
             ref={register}
           />
           <Form.Control.Feedback type="invalid">
@@ -83,6 +87,7 @@ export default function TeamInitializePage(props) {
             type="password"
             name="password"
             placeholder="Password"
+            disabled={loading}
             ref={register}
           />
           <Form.Control.Feedback type="invalid">
@@ -95,6 +100,7 @@ export default function TeamInitializePage(props) {
             type="checkbox"
             name="subscribe"
             label={`Subscribe to Grouparoo Newsletter`}
+            disabled={loading}
             defaultChecked
             ref={register}
           />
@@ -102,9 +108,9 @@ export default function TeamInitializePage(props) {
 
         <br />
 
-        <Button variant="primary" type="submit" active={!loading}>
+        <LoadingButton variant="primary" type="submit" disabled={loading}>
           Submit
-        </Button>
+        </LoadingButton>
       </Form>
     </>
   );

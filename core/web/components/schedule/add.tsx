@@ -1,40 +1,38 @@
 import { useApi } from "../../hooks/useApi";
 import { useState } from "react";
 import Router from "next/router";
-import { Button } from "react-bootstrap";
+import LoadingButton from "../loadingButton";
 
 export default function AddScheduleForm(props) {
-  const { errorHandler, successHandler, source } = props;
+  const { errorHandler, source } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
   async function create() {
-    createSchedule({
-      sourceGuid: source.guid,
-      setLoading,
-      successHandler,
-      execApi,
-    });
+    createSchedule({ execApi, sourceGuid: source.guid, setLoading });
+  }
+
+  if (source.state === "draft") {
+    return (
+      <p>
+        <small>Source is not ready, cannot add Schedule</small>
+      </p>
+    );
   }
 
   return (
-    <Button
+    <LoadingButton
       size="sm"
       variant="outline-primary"
-      disabled={loading || source.state === "draft"}
+      disabled={loading}
       onClick={create}
     >
       Add Schedule
-    </Button>
+    </LoadingButton>
   );
 }
 
-export async function createSchedule({
-  sourceGuid,
-  setLoading,
-  successHandler,
-  execApi,
-}) {
+export async function createSchedule({ execApi, sourceGuid, setLoading }) {
   const data = {
     sourceGuid,
     recurring: false,

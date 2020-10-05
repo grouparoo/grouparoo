@@ -26,7 +26,6 @@ jobs:
           password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
-      - run: sudo apt-get install -y rsync
       - run:
           name: npm-install
           command: npm install

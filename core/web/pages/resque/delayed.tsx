@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
-import { Button, Table, Row, Col } from "react-bootstrap";
+import { Table, Row, Col } from "react-bootstrap";
 import Pagination from "../../components/pagination";
 import Router from "next/router";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/resque";
+import LoadingButton from "../../components/loadingButton";
 
 export default function ResqueDelayedList(props) {
   const { errorHandler, query, successHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const [timestamps, setTimestamps] = useState([]);
   const [delayedJobs, setDelayedJobs] = useState({});
+  const [loading, setLoading] = useState(false);
 
   // pagination
   const limit = 100;
@@ -23,6 +25,7 @@ export default function ResqueDelayedList(props) {
 
   async function load() {
     updateURLParams();
+    setLoading(true);
     const response = await execApi(
       "get",
       "/resque/delayedjobs",
@@ -49,26 +52,31 @@ export default function ResqueDelayedList(props) {
 
     setDelayedJobs(response.delayedjobs);
     setTimestamps(_timestamps);
+    setLoading(false);
   }
 
   async function delDelayed(timestamp, count) {
     if (window.confirm("Are you sure?")) {
+      setLoading(true);
       await execApi("post", "/resque/delDelayed", {
         timestamp: timestamp,
         count: count,
       });
       successHandler.set({ message: "deleted" });
       await load();
+      setLoading(false);
     }
   }
 
   async function runDelayed(timestamp, count) {
+    setLoading(true);
     await execApi("post", "/resque/runDelayed", {
       timestamp: timestamp,
       count: count,
     });
     successHandler.set({ message: "run" });
     await load();
+    setLoading(false);
   }
 
   function updateURLParams() {
@@ -143,22 +151,24 @@ export default function ResqueDelayedList(props) {
                                   </ul>
                                 </td>
                                 <td>
-                                  <Button
+                                  <LoadingButton
+                                    disabled={loading}
                                     onClick={() => runDelayed(t.key, jidx)}
                                     variant="warning"
                                     size="sm"
                                   >
                                     Run Now
-                                  </Button>
+                                  </LoadingButton>
                                 </td>
                                 <td>
-                                  <Button
+                                  <LoadingButton
+                                    disabled={loading}
                                     onClick={() => delDelayed(t.key, jidx)}
                                     variant="danger"
                                     size="sm"
                                   >
                                     Remove
-                                  </Button>
+                                  </LoadingButton>
                                 </td>
                               </tr>
                             );

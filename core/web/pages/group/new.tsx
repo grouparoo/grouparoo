@@ -3,7 +3,8 @@ import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import Router from "next/router";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import LoadingButton from "../../components/loadingButton";
 
 export default function (props) {
   const { errorHandler, successHandler } = props;
@@ -19,13 +20,14 @@ export default function (props) {
       `/group`,
       Object.assign({}, data, { state })
     );
-    setLoading(false);
     if (response?.group) {
       const path = response.group.type === "calculated" ? "rules" : "edit";
       Router.push(
         `/group/[guid]/${path}`,
         `/group/${response.group.guid}/${path}`
       );
+    } else {
+      setLoading(false);
     }
   }
 
@@ -46,6 +48,7 @@ export default function (props) {
             type="text"
             name="name"
             ref={register}
+            disabled={loading}
             placeholder="Group Name"
           />
           <Form.Control.Feedback type="invalid">
@@ -55,15 +58,20 @@ export default function (props) {
 
         <Form.Group>
           <Form.Label>Group Type</Form.Label>
-          <Form.Control as="select" name="type" ref={register}>
+          <Form.Control
+            as="select"
+            name="type"
+            ref={register}
+            disabled={loading}
+          >
             <option>calculated</option>
             <option>manual</option>
           </Form.Control>
         </Form.Group>
 
-        <Button variant="primary" type="submit" active={!loading}>
+        <LoadingButton variant="primary" type="submit" disabled={loading}>
           Submit
-        </Button>
+        </LoadingButton>
       </Form>
     </>
   );

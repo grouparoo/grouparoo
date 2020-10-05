@@ -1,6 +1,6 @@
 import { useState, useEffect, Fragment } from "react";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Button, Form, Table, Badge } from "react-bootstrap";
+import { Row, Col, Form, Table, Badge, Button } from "react-bootstrap";
 import Router from "next/router";
 import Link from "next/link";
 import Loader from "../../../components/loader";
@@ -9,6 +9,7 @@ import StateBadge from "../../../components/stateBadge";
 import ProfilePreview from "../../../components/profilePropertyRule/profilePreview";
 import { Typeahead } from "react-bootstrap-typeahead";
 import DatePicker from "../../../components/datePicker";
+import LoadingButton from "../../../components/loadingButton";
 
 import Head from "next/head";
 import ProfilePropertyRuleTabs from "../../../components/tabs/profilePropertyRule";
@@ -190,6 +191,7 @@ export default function Page(props) {
               <Form.Control
                 required
                 type="text"
+                disabled={loading}
                 value={profilePropertyRule.key}
                 onChange={(e) => update(e)}
               />
@@ -203,6 +205,7 @@ export default function Page(props) {
                 as="select"
                 value={profilePropertyRule.type}
                 onChange={(e) => update(e)}
+                disabled={loading}
               >
                 <option value="" disabled>
                   Choose a Type
@@ -218,6 +221,7 @@ export default function Page(props) {
                 label="Unique"
                 checked={profilePropertyRule.unique}
                 onChange={(e) => update(e)}
+                disabled={loading}
               />
             </Form.Group>
             <Form.Group controlId="isArray">
@@ -226,6 +230,7 @@ export default function Page(props) {
                 label="Is Array?"
                 checked={profilePropertyRule.isArray}
                 onChange={(e) => update(e)}
+                disabled={loading}
               />
             </Form.Group>
             <Form.Group controlId="sourceGuid">
@@ -264,6 +269,7 @@ export default function Page(props) {
                     <Typeahead
                       id="typeahead"
                       labelKey="key"
+                      disabled={loading}
                       onChange={(selected) => {
                         if (selected.length === 1 && selected[0].key) {
                           updateOption(opt.key, selected[0].key);
@@ -331,6 +337,7 @@ export default function Page(props) {
                                 inline
                                 type="radio"
                                 name={opt.key}
+                                disabled={loading}
                                 defaultChecked={
                                   profilePropertyRule.options[opt.key] ===
                                   col.key
@@ -361,6 +368,7 @@ export default function Page(props) {
                     <Form.Group controlId="key">
                       <Form.Control
                         required
+                        disabled={loading}
                         type="text"
                         value={profilePropertyRule.options[opt.key]}
                         onChange={(e) => updateOption(opt.key, e.target.value)}
@@ -382,6 +390,7 @@ export default function Page(props) {
                       <Form.Control
                         required
                         as="textarea"
+                        disabled={loading}
                         rows={5}
                         value={profilePropertyRule.options[opt.key]}
                         onChange={(e) =>
@@ -489,6 +498,7 @@ export default function Page(props) {
                               <Form.Control
                                 as="select"
                                 value={localFilter.key}
+                                disabled={loading}
                                 onChange={(e: any) => {
                                   const _localFilters = [...localFilters];
                                   localFilter.key = e.target.value;
@@ -513,6 +523,7 @@ export default function Page(props) {
                             >
                               <Form.Control
                                 as="select"
+                                disabled={loading}
                                 value={localFilter.op}
                                 onChange={(e: any) => {
                                   const _localFilters = [...localFilters];
@@ -563,6 +574,7 @@ export default function Page(props) {
                                 <Form.Control
                                   required
                                   type="text"
+                                  disabled={loading}
                                   value={localFilter.match.toString()}
                                   onChange={(e: any) => {
                                     const _localFilter = [...localFilters];
@@ -603,14 +615,19 @@ export default function Page(props) {
               </>
             ) : null}
             <hr />
-            <Button variant="primary" type="submit" active={!loading}>
+            <LoadingButton variant="primary" type="submit" disabled={loading}>
               Update
-            </Button>
+            </LoadingButton>
             <br />
             <br />
-            <Button variant="danger" size="sm" onClick={() => handleDelete()}>
+            <LoadingButton
+              variant="danger"
+              size="sm"
+              disabled={loading}
+              onClick={() => handleDelete()}
+            >
               Delete
-            </Button>
+            </LoadingButton>
           </Col>
           <Col md={3}>
             <ProfilePreview

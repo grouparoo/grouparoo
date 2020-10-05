@@ -3,7 +3,8 @@ import SourceTabs from "../../../components/tabs/source";
 import Head from "next/head";
 import { useState } from "react";
 import Moment from "react-moment";
-import { Alert, Row, Col, Form, Button, Badge, Table } from "react-bootstrap";
+import { Alert, Row, Col, Form, Badge, Table } from "react-bootstrap";
+import LoadingButton from "../../../components/loadingButton";
 import Router from "next/router";
 import Link from "next/link";
 import AppIcon from "../../../components/appIcon";
@@ -104,6 +105,7 @@ export default function Page(props) {
               <Form.Check
                 type="checkbox"
                 label="Recurring"
+                disabled={loading}
                 checked={schedule.recurring}
                 onChange={(e) => update(e)}
               />
@@ -118,6 +120,7 @@ export default function Page(props) {
                       type="number"
                       min={1}
                       placeholder="Recurring Frequency"
+                      disabled={loading}
                       value={recurringFrequencyMinutes.toString()}
                       onChange={(e) =>
                         setRecurringFrequencyMinutes(parseInt(e.target.value))
@@ -289,8 +292,8 @@ export default function Page(props) {
                         required
                         as="textarea"
                         rows={5}
+                        disabled={loading}
                         value={schedule.options[opt.key]}
-                        disabled={schedule.state !== "draft"}
                         onChange={(e) =>
                           updateOption(opt.key, e.target["value"])
                         }
@@ -312,16 +315,21 @@ export default function Page(props) {
 
             <hr />
 
-            <Button variant="primary" type="submit" disabled={loading}>
+            <LoadingButton variant="primary" type="submit" disabled={loading}>
               Update
-            </Button>
+            </LoadingButton>
 
             <br />
             <br />
 
-            <Button variant="danger" size="sm" onClick={handleDelete}>
+            <LoadingButton
+              variant="danger"
+              disabled={loading}
+              size="sm"
+              onClick={handleDelete}
+            >
               Delete
-            </Button>
+            </LoadingButton>
           </Col>
         </Row>
       </Form>

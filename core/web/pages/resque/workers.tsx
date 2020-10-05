@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
-import { Table, Button, Row, Col } from "react-bootstrap";
+import { Table, Row, Col } from "react-bootstrap";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/resque";
+import LoadingButton from "../../components/loadingButton";
 
 export default function ResqueWorkersList(props) {
   const { errorHandler, successHandler } = props;
@@ -149,7 +150,8 @@ export default function ResqueWorkersList(props) {
                       </span>
                     </td>
                     <td>
-                      <Button
+                      <LoadingButton
+                        disabled={loading}
                         onClick={() => {
                           forceCleanWorker(w.workerName);
                         }}
@@ -157,7 +159,7 @@ export default function ResqueWorkersList(props) {
                         size="sm"
                       >
                         Remove Worker
-                      </Button>
+                      </LoadingButton>
                     </td>
                   </tr>
                 );
