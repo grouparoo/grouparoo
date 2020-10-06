@@ -22,7 +22,7 @@ export default function AddProfilePropertyRuleForm(props) {
 
     if (response?.profilePropertyRule) {
       router.push(
-        `/profilePropertyRule/${response.profilePropertyRule.guid}/edit`
+        `/profilePropertyRule/${response.profilePropertyRule.guid}/edit?nextPage=/source/${source.guid}/overview`
       );
     } else {
       setLoading(false);

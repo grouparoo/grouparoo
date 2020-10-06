@@ -77,7 +77,7 @@ export default function Page(props) {
     setNewRuleLoading(false);
     if (response?.profilePropertyRule?.guid) {
       router.push(
-        `/profilePropertyRule/${response.profilePropertyRule.guid}/edit`
+        `/profilePropertyRule/${response.profilePropertyRule.guid}/edit?nextPage=/profilePropertyRules`
       );
     }
   }

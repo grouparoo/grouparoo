@@ -30,7 +30,7 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [previousPath] = useState(props.previousPath); // we want to store this when the page was initially loaded because we'll be updating the route for the profilePreview
+  const [nextPage] = useState(router.query.nextPage?.toString()); // we want to store this when the page was initially loaded because we'll be updating the route for the profilePreview
   const [profilePropertyRule, setProfilePropertyRule] = useState<
     ProfilePropertyRuleAPIData
   >(props.profilePropertyRule);
@@ -70,7 +70,7 @@ export default function Page(props) {
           response.profilePropertyRule.state === "ready" &&
           profilePropertyRule.state === "draft"
         ) {
-          router.push(previousPath || "/profilePropertyRules");
+          router.push(nextPage || "/profilePropertyRules");
         } else {
           successHandler.set({ message: "Profile Property Rule Updated" });
         }
@@ -88,7 +88,7 @@ export default function Page(props) {
       const response = await execApi("delete", `/profilePropertyRule/${guid}`);
       setLoading(false);
       if (response) {
-        router.push(previousPath || "/profilePropertyRules");
+        router.push(nextPage || "/profilePropertyRules");
       }
     }
   }
