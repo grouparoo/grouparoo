@@ -4,6 +4,7 @@ import { useApi } from "../hooks/useApi";
 import "../scss/grouparoo.scss";
 import Injection from "../components/componentInjection";
 import Layout from "../components/layouts/main";
+import "../components/icons";
 
 import { ErrorHandler } from "../utils/errorHandler";
 import { SuccessHandler } from "../utils/successHandler";
@@ -38,9 +39,6 @@ const sourceHandler = new SourceHandler();
 const teamHandler = new TeamHandler();
 const teamMemberHandler = new TeamMemberHandler();
 const uploadHandler = new UploadHandler();
-
-// we use require here because this is just a contained setup file that doesn't need to return any components or UI elements
-require("../components/icons");
 
 export default function GrouparooWebApp(props) {
   const { Component, pageProps, err, hydrationError } = props;
