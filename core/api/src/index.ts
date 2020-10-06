@@ -35,9 +35,4 @@ export { Team } from "./models/Team";
 export { TeamMember } from "./models/TeamMember";
 
 export { waitForLock } from "./modules/locks";
-export {
-  objectCache,
-  objectCacheInvalidate,
-  ObjectCacheMethod,
-  ObjectCacheInvalidateMethod,
-} from "./modules/cache";
+export * from "./modules/cache";

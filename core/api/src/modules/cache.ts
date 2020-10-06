@@ -1,11 +1,18 @@
 import { api, cache } from "actionhero";
 import { waitForLock } from "./locks";
+import crypto from "crypto";
 
+export type CacheKey =
+  | { [keyName: string]: any }
+  | string
+  | number
+  | boolean
+  | Date;
 export interface ObjectCacheMethod {
   (
     argument: {
       objectGuid: string;
-      cacheKey: string;
+      cacheKey: CacheKey;
       cacheDurationMs?: number;
       lock?: boolean; // send false to no lock
       read?: boolean; // send false to not use cache
@@ -50,15 +57,37 @@ function makeObjectKey({ objectGuid }) {
   return `objectcache:${objectGuid}`;
 }
 
+function makeCacheString(cacheKey: CacheKey) {
+  if (cacheKey === null || cacheKey === undefined) {
+    return "";
+  }
+  if (typeof cacheKey === "object") {
+    const type = cacheKey.constructor.name;
+    if (type === "Date") {
+      const date: Date = <Date>cacheKey;
+      return date.toISOString();
+    } else if (type === "Object") {
+      const keys = Object.keys(cacheKey);
+      let buffer = "";
+      for (const key of keys) {
+        const value = makeCacheString(cacheKey[key]);
+        buffer += `/${key}:${value}`;
+      }
+      return buffer;
+    }
+  }
+  return cacheKey.toString();
+}
+
 function makeBaseKey({ objectGuid, cacheKey }): string {
   const objectKey = makeObjectKey({ objectGuid });
 
-  cacheKey = (cacheKey || "").toString().trim();
-  if (!cacheKey) {
+  const data = makeCacheString(cacheKey);
+  if (!data) {
     throw new Error(`cacheKey required`);
   }
-
-  return `${objectKey}:${cacheKey}`;
+  const calculatedKey = crypto.createHash("md5").update(data).digest("hex");
+  return `${objectKey}:${calculatedKey}`;
 }
 
 function useRedis() {
@@ -91,7 +120,7 @@ export const objectCache: ObjectCacheMethod = async (
   {
     objectGuid,
     cacheKey,
-    cacheDurationMs = 1000 * 10,
+    cacheDurationMs = 1000 * 60 * 1,
     lock = true,
     read = true,
     write = true,

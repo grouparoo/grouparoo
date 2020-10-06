@@ -5,6 +5,8 @@ import { objectCache, objectCacheInvalidate } from "./../../src/modules/cache";
 
 let actionhero;
 
+const objectGuid = "xyz_" + uuid.v4();
+
 describe("modules/cache", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
@@ -24,70 +26,63 @@ describe("modules/cache", () => {
   });
 
   describe("caching", () => {
-    const cacheKey = "getvalue";
-    const objectGuid = "xyz_" + uuid.v4();
-    test("the method is called to get the value", async () => {
-      let value;
-      value = await objectCache({ objectGuid, cacheKey }, async () => {
+    function checkCaching(name, cacheKey) {
+      const meth3 = async () => {
         return 3;
-      });
-      expect(value).toEqual(3);
-
-      value = await objectCache({ objectGuid, cacheKey }, async () => {
+      };
+      const meth4 = async () => {
         return 4;
+      };
+      test(`the method can will cache the value with ${name}`, async () => {
+        let value;
+        value = await objectCache({ objectGuid, cacheKey }, meth3);
+        expect(value).toEqual(3);
+
+        value = await objectCache({ objectGuid, cacheKey }, meth4);
+        expect(value).toEqual(3);
+
+        value = await objectCache({ objectGuid, cacheKey, read: false }, meth4);
+        expect(value).toEqual(4);
       });
-      expect(value).toEqual(3);
-    });
 
-    test("the method can skip cache to get the value", async () => {
-      let value;
-      value = await objectCache({ objectGuid, cacheKey }, async () => {
-        return 3;
+      test(`the method can will not write the value if asked with ${name}`, async () => {
+        let value;
+        value = await objectCache(
+          { objectGuid, cacheKey, write: false },
+          meth3
+        );
+        expect(value).toEqual(3);
+
+        value = await objectCache({ objectGuid, cacheKey }, meth4);
+        expect(value).toEqual(4);
       });
-      expect(value).toEqual(3);
 
-      value = await objectCache(
-        { objectGuid, cacheKey, read: false },
-        async () => {
-          return 4;
-        }
-      );
-      expect(value).toEqual(4);
-    });
+      test(`the value can be cleared with ${name}`, async () => {
+        let value;
+        value = await objectCache({ objectGuid, cacheKey }, meth3);
+        expect(value).toEqual(3);
 
-    test("the method can will not write the value if asked", async () => {
-      const write = false;
-      let value;
-      value = await objectCache({ objectGuid, cacheKey, write }, async () => {
-        return 3;
+        await objectCacheInvalidate({ objectGuid });
+
+        value = await objectCache({ objectGuid, cacheKey }, meth4);
+        expect(value).toEqual(4);
       });
-      expect(value).toEqual(3);
-
-      value = await objectCache({ objectGuid, cacheKey }, async () => {
-        return 4;
-      });
-      expect(value).toEqual(4);
-    });
-
-    test("the value can be cleared", async () => {
-      let value;
-      value = await objectCache({ objectGuid, cacheKey }, async () => {
-        return 3;
-      });
-      expect(value).toEqual(3);
-
-      await objectCacheInvalidate({ objectGuid });
-
-      value = await objectCache({ objectGuid, cacheKey }, async () => {
-        return 4;
-      });
-      expect(value).toEqual(4);
+    }
+    checkCaching("string", "testvalue");
+    checkCaching("integer", 3);
+    checkCaching("Date", new Date());
+    checkCaching("boolean", false);
+    checkCaching("Object", {
+      one: { deep: true, other: 3, deeper: { pass: "true" } },
+      two: "here",
+      three: false,
+      four: "now",
+      five: new Date(),
     });
   });
 
   describe("locking", () => {
     const cacheKey = "getvalue";
-    const objectGuid = "xyz_" + uuid.v4();
 
     test("if a lock is in use, it will wait until it is free", async () => {
       const callee = jest.fn().mockReturnValue(3);
