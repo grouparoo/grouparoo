@@ -1,6 +1,6 @@
 import { parsePhoneNumberFromString, CountryCode } from "libphonenumber-js/max";
 import { plugin } from "../../modules/plugin";
-import isEmail from "validator/lib/isEmail";
+import isEmail from "../validators/isEmail";
 import isURL from "validator/lib/isURL";
 
 export namespace ProfilePropertyOps {
@@ -83,15 +83,7 @@ function formatURL(url: string) {
 }
 
 function formatEmail(email: string) {
-  // The full set of validator options can be found at https://github.com/validatorjs/validator.js
-  const options = {
-    require_tld: false,
-    allow_display_name: true,
-    ignore_max_length: true,
-    allow_ip_domain: true,
-  };
-
-  if (!isEmail(email, options)) {
+  if (!isEmail(email)) {
     throw new Error(`email "${email}" is not valid`);
   }
 
