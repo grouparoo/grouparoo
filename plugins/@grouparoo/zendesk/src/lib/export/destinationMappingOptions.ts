@@ -1,9 +1,9 @@
 import {
   DestinationMappingOptionsMethod,
   DestinationMappingOptionsResponseTypes,
+  objectCache,
 } from "@grouparoo/core";
 import { connect } from "./../connect";
-import { cache } from "./../cache";
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
   appOptions,
@@ -88,12 +88,7 @@ export const getUserFields = async (
     important?: boolean;
   }>
 > => {
-  const cacheKey = "grouparoo:zendesk:userfieldslist";
-  const cacheDuration = 1000 * 60; // 1 minute
-  const lockKey = "grouparoo:zendesk:userfieldslistlock";
-  const list = await cache({ cacheKey, lockKey, cacheDuration }, async () => {
-    return client.userfields.list();
-  });
+  const list = await client.userfields.list();
   const out = [];
   for (const field of list) {
     const type: DestinationMappingOptionsResponseTypes = mapTypesFromZendeskToGrouparoo(

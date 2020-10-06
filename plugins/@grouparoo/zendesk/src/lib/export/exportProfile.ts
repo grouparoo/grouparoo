@@ -3,7 +3,6 @@ import { connect } from "../connect";
 import {
   getBuiltInFields,
   getRequiredFields,
-  getUserFields,
 } from "./destinationMappingOptions";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
@@ -20,8 +19,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     const client = await connect(appOptions);
     let external_id = newProfileProperties.external_id;
     let email = newProfileProperties.email;
-
-    const dateValue = newProfileProperties.date_field;
 
     if (!external_id) {
       throw new Error(
