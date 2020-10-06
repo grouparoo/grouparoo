@@ -4,14 +4,20 @@ import Component from "../../components/navigation";
 import "../../components/icons"; // this is needed to load the library
 import commonProps from "../utils/commonProps";
 
+const useRouter = jest.spyOn(require("next/router"), "useRouter");
+
 describe("navigation", () => {
   let wrapper;
 
   beforeEach(() => {
+    useRouter.mockImplementationOnce(() => ({
+      pathname: "/",
+      asPath: "/",
+    }));
+
     wrapper = mount(
       <Component
         {...commonProps}
-        pathname="/some/page"
         currentTeamMember={{
           firstName: "mario",
           guid: "abc123",
@@ -42,7 +48,7 @@ describe("navigation", () => {
 
   test("shows the nav returned from the server", async () => {
     const html = wrapper.html();
-    expect(html).toContain("Dashboard</a>");
+    expect(html).toContain("<span>Dashboard</span>");
     expect(html).toContain("Something Cool</a>");
     expect(html).toContain("Sign Out</a>");
   });

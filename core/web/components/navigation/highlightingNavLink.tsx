@@ -9,7 +9,7 @@ export default function HighlightingNavLink({ href, text, icon, idx }) {
   const [active, setActive] = useState(false);
 
   useEffect(() => {
-    const mainPathSection = router.asPath.split("/")[1];
+    const mainPathSection = router?.asPath.split("/")[1] || "";
     const mainHrefSection = href.split("/")[1];
     const active =
       mainPathSection === mainHrefSection ||
