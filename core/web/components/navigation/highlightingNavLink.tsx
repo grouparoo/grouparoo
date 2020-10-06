@@ -1,12 +1,19 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { navIconStyle, navLiStyle, iconConstrainedStyle } from "../navigation";
 
 export default function HighlightingNavLink({ href, text, icon, idx }) {
+  const router = useRouter();
   const [active, setActive] = useState(false);
+
   useEffect(() => {
-    const active = globalThis?.location?.pathname === href;
+    const mainPathSection = router.asPath.split("/")[1];
+    const mainHrefSection = href.split("/")[1];
+    const active =
+      mainPathSection === mainHrefSection ||
+      `${mainPathSection}s` === mainHrefSection;
     setActive(active);
   }, [globalThis?.location?.href]);
 
@@ -33,7 +40,9 @@ export default function HighlightingNavLink({ href, text, icon, idx }) {
             color: "white",
           }}
         >
-          {text}
+          <span style={{ fontWeight: active ? "bold" : undefined }}>
+            {text}
+          </span>
         </a>
       </Link>
     </li>
