@@ -1,14 +1,21 @@
-import { objectCache } from "@grouparoo/core";
+import { objectCache, CacheKey } from "@grouparoo/core";
+import { SimpleAppOptions } from "@grouparoo/core";
+
+export interface MarketoCacheData {
+  appGuid: string;
+  appOptions: SimpleAppOptions;
+}
 
 export async function getListId(
-  client,
-  destinationGuid,
+  client: any,
+  cacheData: MarketoCacheData,
   listName: string
 ): Promise<number> {
-  const cacheKey = `list:${listName}`;
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
+  const { appGuid, appOptions } = cacheData;
+  const cacheKey: CacheKey = Object.assign({ listName }, appOptions);
   const listId = await objectCache(
-    { objectGuid: destinationGuid, cacheKey, cacheDurationMs },
+    { objectGuid: appGuid, cacheKey, cacheDurationMs },
     async () => {
       // not cached find it
       let marketoId = await findListByName(client, listName);
@@ -16,12 +23,12 @@ export async function getListId(
         return marketoId;
       }
       // otherwise, create it
-      return createList(client, destinationGuid, listName);
+      return createList(client, cacheData, listName);
     }
   );
   return listId;
 }
-async function findListByName(client, listName: string): Promise<number> {
+async function findListByName(client: any, listName: string): Promise<number> {
   const path = "/asset/v1/staticList/byName.json";
   const options = { query: { name: listName } };
   const response = await client.list._connection.get(path, options);
@@ -33,7 +40,7 @@ async function findListByName(client, listName: string): Promise<number> {
 }
 async function createList(
   client,
-  destinationGuid,
+  cacheData: MarketoCacheData,
   listName: string
 ): Promise<number> {
   const path = "/asset/v1/staticLists.json";
@@ -41,7 +48,7 @@ async function createList(
     name: listName,
     folder: JSON.stringify({
       type: "Folder",
-      id: await getRootFolderId(client, destinationGuid),
+      id: await getRootFolderId(client, cacheData),
     }),
   };
   const response = await client.list._connection.post(path, { data });
@@ -53,16 +60,20 @@ async function createList(
   return results[0].id;
 }
 
-async function getRootFolderId(client, destinationGuid): Promise<number> {
+async function getRootFolderId(
+  client: any,
+  cacheData: MarketoCacheData
+): Promise<number> {
+  const { appGuid, appOptions } = cacheData;
   // for when they get created, they can move the lists anywhere after that
   // TODO: we could consider making a subfolder called "Grouparoo"
   // but we'd have to create that and that's more work. Let's see how it goes.
   const folderName = "Group Lists";
 
-  const cacheKey = `folder:${folderName}`;
+  const cacheKey: CacheKey = Object.assign({ folderName }, appOptions);
   const cacheDurationMs = 1000 * 60 * 120; // 120 minutes
   const folderId = await objectCache(
-    { objectGuid: destinationGuid, cacheKey, cacheDurationMs },
+    { objectGuid: appGuid, cacheKey, cacheDurationMs },
     async () => {
       // not cached find it
       const marketoId = findSystemFolderByName(client, folderName);

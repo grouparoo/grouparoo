@@ -23,6 +23,7 @@ require("./../fixtures/export-objects/export-profiles-reference");
 // helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
+const appGuid = "app_04bb07d8-0c4f-49b5-ad42-545f2e8662fa";
 const destinationOptions = {
   profileObject: "Contact",
   profileMatchField: "Custom_External_ID__c",
@@ -113,6 +114,7 @@ describe("salesforce/sales-cloud/export-profiles/reference", () => {
     expect(accountId1).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -162,6 +164,7 @@ describe("salesforce/sales-cloud/export-profiles/reference", () => {
     expect(await findReferenceId(accountNum2Truncated)).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -205,6 +208,7 @@ describe("salesforce/sales-cloud/export-profiles/reference", () => {
 
   test("it reuses truncated one when adding and doesn't update name", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -253,6 +257,7 @@ describe("salesforce/sales-cloud/export-profiles/reference", () => {
     expect(accountId3).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [

@@ -1,7 +1,6 @@
 import {
   DestinationMappingOptionsMethod,
   DestinationMappingOptionsResponseTypes,
-  objectCache,
 } from "@grouparoo/core";
 import { connect } from "./../connect";
 

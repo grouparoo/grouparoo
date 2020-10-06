@@ -23,6 +23,7 @@ require("./../fixtures/export-objects/export-profiles-email");
 // helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
+const appGuid = "app_f3bb07d8-0c4f-49b5-ad42-545f2e8662e9";
 const destinationOptions = {
   profileObject: "Contact",
   profileMatchField: "Email",
@@ -102,6 +103,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(accountId1).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -147,6 +149,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(accountId2).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -215,6 +218,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can clear user variables", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -255,6 +259,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("it can change the email address", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -314,6 +319,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can delete a user", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -381,6 +387,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("is ok (but gives error) to delete a user that doesn't exist", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -408,6 +415,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can add back a user and many types", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -460,6 +468,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can set all those fields to null", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -512,6 +521,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(groupId1).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -547,6 +557,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(groupId2).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -591,6 +602,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can remove users from lists including ones they aren't in", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -628,6 +640,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can ignore case for an email address", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -666,6 +679,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can set back to lowercase", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -697,6 +711,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can handle unknown field", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -730,6 +745,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
   test("can not (boo!) handle checkbox error", async () => {
     try {
       const { success, errors } = await exportBatch({
+        appGuid,
         appOptions,
         destinationOptions,
         exports: [
@@ -771,6 +787,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
   test("can not (boo!) handle datetime error", async () => {
     try {
       const { success, errors } = await exportBatch({
+        appGuid,
         appOptions,
         destinationOptions,
         exports: [
@@ -811,6 +828,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can handle email error", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -855,6 +873,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can handle picklist error", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -902,6 +921,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(userId3).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [

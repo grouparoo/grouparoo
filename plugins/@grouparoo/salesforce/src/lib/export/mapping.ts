@@ -9,12 +9,15 @@ import { describeObject } from "./../objects";
 import { log } from "actionhero";
 
 export interface SalesforceDestinationMappingOptionsMethod {
-  (argument: { appOptions: SimpleAppOptions; model: SalesforceModel }): Promise<
-    DestinationMappingOptionsMethodResponse
-  >;
+  (argument: {
+    appOptions: SimpleAppOptions;
+    appGuid: string;
+    model: SalesforceModel;
+  }): Promise<DestinationMappingOptionsMethodResponse>;
 }
 
 export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMethod = async ({
+  appGuid,
   appOptions,
   model,
 }) => {
@@ -27,11 +30,17 @@ export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMe
     profileReferenceObject,
     profileReferenceMatchField,
   } = model;
-  const profileInfo = await describeObject(conn, profileObject, true);
+  const cacheData = { appGuid, appOptions };
+  const profileInfo = await describeObject(
+    conn,
+    cacheData,
+    profileObject,
+    true
+  );
   const referenceInfo = profileReferenceField
-    ? await describeObject(conn, profileReferenceObject, true)
+    ? await describeObject(conn, cacheData, profileReferenceObject, true)
     : null;
-  const groupInfo = await describeObject(conn, groupObject, true);
+  const groupInfo = await describeObject(conn, cacheData, groupObject, true);
   const { known, required } = getFields(
     profileInfo,
     profileMatchField,
