@@ -1,7 +1,8 @@
 import Head from "next/head";
 import { Button, Badge } from "react-bootstrap";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { useApi } from "../hooks/useApi";
+import { useOffset } from "../hooks/useOffset";
 import { useState } from "react";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { useHistoryPagination } from "../hooks/useHistoryPagination";
@@ -15,7 +16,8 @@ import StateBadge from "../components/stateBadge";
 import { DestinationAPIData } from "../utils/apiData";
 
 export default function Page(props) {
-  const { errorHandler, query } = props;
+  const { errorHandler } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [destinations, setDestinations] = useState<DestinationAPIData[]>(
@@ -25,7 +27,7 @@ export default function Page(props) {
 
   // pagination
   const limit = 100;
-  const [offset, setOffset] = useState(query.offset || 0);
+  const { offset, setOffset } = useOffset();
   useHistoryPagination(offset, "offset", setOffset);
 
   useSecondaryEffect(() => {
@@ -45,7 +47,7 @@ export default function Page(props) {
       setTotal(response.total);
 
       if (response.total === 0) {
-        Router.push("/destination/new");
+        router.push("/destination/new");
       }
     }
   }
@@ -56,7 +58,7 @@ export default function Page(props) {
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
-    Router[routerMethod](Router.route, url, { shallow: true });
+    router[routerMethod](router.route, url, { shallow: true });
   }
 
   return (
@@ -166,7 +168,7 @@ export default function Page(props) {
       <Button
         variant="primary"
         onClick={() => {
-          Router.push("/destination/new");
+          router.push("/destination/new");
         }}
       >
         Add new Destination

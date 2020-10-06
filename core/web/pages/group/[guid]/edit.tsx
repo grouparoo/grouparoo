@@ -3,7 +3,7 @@ import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form } from "react-bootstrap";
 import StateBadge from "../../../components/stateBadge";
 import Moment from "react-moment";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import GroupTabs from "../../../components/tabs/group";
 import LoadingButton from "../../../components/loadingButton";
@@ -12,6 +12,7 @@ import { GroupAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, successHandler, groupHandler } = props;
+  const router = useRouter();
   const [group, setGroup] = useState<GroupAPIData>(props.group);
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
@@ -49,7 +50,7 @@ export default function Page(props) {
         successHandler.set({
           message: force ? "Group Deleted" : "Group scheduled to be deleted",
         });
-        Router.push("/groups");
+        router.push("/groups");
       } else {
         setLoading(false);
       }

@@ -1,9 +1,10 @@
 import Head from "next/head";
 import { Button, Image } from "react-bootstrap";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { useState } from "react";
 import { useApi } from "../hooks/useApi";
+import { useOffset } from "../hooks/useOffset";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { useHistoryPagination } from "../hooks/useHistoryPagination";
 import Moment from "react-moment";
@@ -16,7 +17,8 @@ import { FileAPIData } from "../utils/apiData";
 const apiVersion = process.env.API_VERSION || "v1";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, query } = props;
+  const { errorHandler, successHandler } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(props.total);
@@ -24,7 +26,7 @@ export default function Page(props) {
 
   // pagination
   const limit = 100;
-  const [offset, setOffset] = useState(query.offset || 0);
+  const { offset, setOffset } = useOffset();
   useHistoryPagination(offset, "offset", setOffset);
   const csrfToken = globalThis?.localStorage?.getItem("session:csrfToken");
 
@@ -70,7 +72,7 @@ export default function Page(props) {
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
-    Router[routerMethod](Router.route, url, { shallow: true });
+    router[routerMethod](router.route, url, { shallow: true });
   }
 
   return (
@@ -184,7 +186,7 @@ export default function Page(props) {
       <Button
         variant="primary"
         onClick={() => {
-          Router.push("/file/new");
+          router.push("/file/new");
         }}
       >
         Add File

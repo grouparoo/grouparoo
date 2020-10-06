@@ -5,7 +5,7 @@ import { useState } from "react";
 import Moment from "react-moment";
 import { Alert, Row, Col, Form, Badge, Table } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import AppIcon from "../../../components/appIcon";
 import StateBadge from "../../../components/stateBadge";
@@ -14,6 +14,7 @@ import { ScheduleAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, successHandler, source, run, pluginOptions } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [schedule, setSchedule] = useState<ScheduleAPIData>(props.schedule);
@@ -45,7 +46,7 @@ export default function Page(props) {
       );
       setSchedule(response.schedule);
       if (response.schedule.state === "ready" && schedule.state === "draft") {
-        Router.push(
+        router.push(
           "/source/[guid]/overview",
           `/source/${schedule.source.guid}/overview`
         );
@@ -59,7 +60,7 @@ export default function Page(props) {
     if (window.confirm("are you sure?")) {
       const response = await execApi("delete", `/schedule/${schedule.guid}`);
       if (response) {
-        Router.push(`/source/${source.guid}/overview`);
+        router.push(`/source/${source.guid}/overview`);
       }
     }
   }

@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
+import { useOffset } from "../../hooks/useOffset";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
 import Link from "next/link";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { ButtonGroup, Button, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
@@ -12,7 +13,8 @@ import LoadingTable from "../loadingTable";
 import { LogAPIData } from "../../utils/apiData";
 
 export default function LogsList(props) {
-  const { errorHandler, query } = props;
+  const { errorHandler } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState<LogAPIData[]>(props.logs);
@@ -24,8 +26,8 @@ export default function LogsList(props) {
 
   // pagination
   const limit = 100;
-  const [offset, setOffset] = useState(query.offset || 0);
-  const [topic, setTopic] = useState(query.topic || null);
+  const { offset, setOffset } = useOffset();
+  const [topic, setTopic] = useState(router.query.topic?.toString() || null);
   useHistoryPagination(offset, "offset", setOffset);
 
   let topics = [
@@ -56,7 +58,7 @@ export default function LogsList(props) {
       limit,
       offset,
       topic,
-      ownerGuid: query.guid,
+      ownerGuid: router.query.guid,
     });
     setLoading(false);
     if (response?.logs) {
@@ -101,12 +103,15 @@ export default function LogsList(props) {
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
-    Router[routerMethod](Router.route, url, { shallow: true });
+    router[routerMethod](router.route, url, { shallow: true });
   }
 
   function handleMessage({ model }) {
     if ((topic && model.topic === topic) || !topic) {
-      if ((query.guid && model.ownerGuid === query.guid) || !query.guid) {
+      if (
+        (router.query.guid && model.ownerGuid === router.query.guid) ||
+        !router.query.guid
+      ) {
         setNewLogs((newLogs) => newLogs + 1);
       }
     }

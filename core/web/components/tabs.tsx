@@ -1,6 +1,6 @@
 import { Tab, Tabs, Breadcrumb } from "react-bootstrap";
 import Link from "next/link";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 export default function GrouparooTabs({
   name,
@@ -14,6 +14,7 @@ export default function GrouparooTabs({
   defaultTab?: string;
 }) {
   if (!globalThis.location) return null;
+  const router = useRouter();
 
   const parts = globalThis.location.href.split("/");
   const topic = parts[3];
@@ -53,7 +54,7 @@ export default function GrouparooTabs({
         activeKey={verb}
         onSelect={(k) => {
           if (k !== verb) {
-            Router.push(`/${topic}/[guid]/${k}`, `/${topic}/${guid}/${k}`);
+            router.push(`/${topic}/[guid]/${k}`, `/${topic}/${guid}/${k}`);
           }
         }}
       >

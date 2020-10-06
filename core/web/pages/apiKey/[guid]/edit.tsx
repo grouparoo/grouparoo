@@ -3,18 +3,19 @@ import { useState } from "react";
 import { Form } from "react-bootstrap";
 import Head from "next/head";
 import PermissionsList from "../../../components/permissions";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import ApiKeyTabs from "../../../components/tabs/apiKey";
 import LoadingButton from "../../../components/loadingButton";
 
 import { ApiKeyAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, query } = props;
+  const { errorHandler, successHandler } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [apiKey, setApiKey] = useState<ApiKeyAPIData>(props.apiKey);
-  const { guid } = query;
+  const { guid } = router.query;
 
   const updateApiKey = async (event) => {
     event.preventDefault();
@@ -42,7 +43,7 @@ export default function Page(props) {
       const response = await execApi("delete", `/apiKey/${guid}`);
       if (response) {
         successHandler.set({ message: "API Key deleted" });
-        Router.push("/apiKeys");
+        router.push("/apiKeys");
       } else {
         setLoading(false);
       }

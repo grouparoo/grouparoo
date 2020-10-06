@@ -1,5 +1,5 @@
 import Loader from "../../components/loader";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { useApi } from "../../hooks/useApi";
 
 const guidPrefixes = {
@@ -21,21 +21,22 @@ const guidPrefixes = {
 };
 
 export default function FindObject(props) {
-  const { query, errorHandler } = props;
+  const router = useRouter();
+  const { errorHandler } = props;
   const { execApi } = useApi(props, errorHandler);
 
-  const guid = query.guid;
+  const guid = router.query.guid?.toString();
   const prefix = guid.split("_")[0];
   const route = guidPrefixes[prefix];
 
-  async function load(model, guid) {
+  async function load(model: string, guid: string) {
     return execApi("get", `/${model}/${guid}`);
   }
 
   async function routeScheduleToSource() {
     const response = await load("schedule", guid);
     if (response?.schedule) {
-      Router.push(
+      router.push(
         `/source/[guid]/schedule`,
         `/source/${response.schedule.source.guid}/schedule`
       );
@@ -48,7 +49,7 @@ export default function FindObject(props) {
     routeScheduleToSource();
   } else {
     const as = route.replace("[guid]", guid);
-    Router.push(route, as);
+    router.push(route, as);
   }
 
   return (

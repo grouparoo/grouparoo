@@ -1,9 +1,10 @@
 import Head from "next/head";
 import { Fragment, useState } from "react";
 import { useApi } from "../hooks/useApi";
+import { useOffset } from "../hooks/useOffset";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { useHistoryPagination } from "../hooks/useHistoryPagination";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { Button, Form, Alert } from "react-bootstrap";
 import LoadingButton from "../components/loadingButton";
@@ -15,7 +16,8 @@ import StateBadge from "../components/stateBadge";
 import { ProfilePropertyRuleAPIData } from "../utils/apiData";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, query } = props;
+  const { errorHandler, successHandler } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [newRuleLoading, setNewRuleLoading] = useState(false);
@@ -30,7 +32,7 @@ export default function Page(props) {
 
   // pagination
   const limit = 100;
-  const [offset, setOffset] = useState(query.offset || 0);
+  const { offset, setOffset } = useOffset();
   const [total, setTotal] = useState(props.total);
   useHistoryPagination(offset, "offset", setOffset);
 
@@ -74,7 +76,7 @@ export default function Page(props) {
     });
     setNewRuleLoading(false);
     if (response?.profilePropertyRule?.guid) {
-      Router.push(
+      router.push(
         `/profilePropertyRule/${response.profilePropertyRule.guid}/edit`
       );
     }
@@ -86,7 +88,7 @@ export default function Page(props) {
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
-    Router[routerMethod](Router.route, url, { shallow: true });
+    router[routerMethod](router.route, url, { shallow: true });
   }
 
   if (sources.length === 0) {

@@ -1,10 +1,12 @@
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Loader from "../components/loader";
 
 export default function TeamMemberRedirect() {
+  const router = useRouter();
+
   useEffect(() => {
-    Router.push("/teams");
+    router.push("/teams");
   }, []);
 
   return <Loader />;

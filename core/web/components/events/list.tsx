@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
+import { useOffset } from "../../hooks/useOffset";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
 import Link from "next/link";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { Form, Alert } from "react-bootstrap";
 import Moment from "react-moment";
 import Pagination from "../../components/pagination";
@@ -15,7 +16,8 @@ import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { EventAPIData } from "../../utils/apiData";
 
 export default function EventsList(props) {
-  const { errorHandler, query, hideSearch, hidePagination } = props;
+  const { errorHandler, hideSearch, hidePagination } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -29,12 +31,12 @@ export default function EventsList(props) {
   useRealtimeModelStream("event", "events-list", handleMessage);
   const [newEvents, setNewEvents] = useState<number>(0);
 
-  const profileGuid = query.guid;
+  const profileGuid = router.query.guid?.toString();
 
   // pagination
   const limit = 100;
-  const [offset, setOffset] = useState(query.offset || 0);
-  const [type, setType] = useState(query.type || "");
+  const { offset, setOffset } = useOffset();
+  const [type, setType] = useState(router.query.type?.toString() || "");
   useHistoryPagination(offset, "offset", setOffset);
 
   useSecondaryEffect(() => {
@@ -78,7 +80,7 @@ export default function EventsList(props) {
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
-    Router[routerMethod](Router.route, url, { shallow: true });
+    router[routerMethod](router.route, url, { shallow: true });
   }
 
   async function autocompleteProfilePropertySearch(match?) {

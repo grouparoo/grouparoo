@@ -1,8 +1,9 @@
 import { Tab, Tabs, Breadcrumb } from "react-bootstrap";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 export default function ResqueTabs() {
   if (!globalThis.location) return null;
+  const router = useRouter();
 
   const tabs = [
     "overview",
@@ -39,7 +40,7 @@ export default function ResqueTabs() {
         id="page-tabs"
         activeKey={key}
         onSelect={(k) => {
-          Router.push(`/resque/${k}`);
+          router.push(`/resque/${k}`);
         }}
         mountOnEnter
         unmountOnExit

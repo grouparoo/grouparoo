@@ -1,22 +1,24 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
+import { useOffset } from "../../../hooks/useOffset";
 import { Table, Row, Col } from "react-bootstrap";
 import Pagination from "../../../components/pagination";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import ResqueTabs from "../../../components/tabs/resque";
 import LoadingButton from "../../../components/loadingButton";
 
 export default function ResqueQueue(props) {
-  const { errorHandler, query } = props;
+  const { errorHandler } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
-  const [queue, setQueue] = useState(query.queue || "");
+  const [queue, setQueue] = useState(router.query.queue || "");
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // pagination
   const limit = 100;
-  const [offset, setOffset] = useState(query.offset || 0);
+  const { offset, setOffset } = useOffset();
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
@@ -48,7 +50,7 @@ export default function ResqueQueue(props) {
     let url = `${window.location.pathname}`;
     if (offset && offset !== 0) url += `?offset=${offset}&`;
 
-    Router.push(Router.route, url, { shallow: true });
+    router.push(router.route, url, { shallow: true });
   }
 
   return (

@@ -1,10 +1,11 @@
 import { useApi } from "../../hooks/useApi";
+import { useOffset } from "../../hooks/useOffset";
 import { Fragment, useState, useEffect } from "react";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import { Row, Col, ButtonGroup, Button, Alert } from "react-bootstrap";
 import Moment from "react-moment";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
@@ -12,17 +13,22 @@ import RunDurationChart from "../visualizations/runDurations";
 import { RunAPIData } from "../../utils/apiData";
 
 export default function RunsList(props) {
-  const { errorHandler, runsHandler, query } = props;
+  const { errorHandler, runsHandler } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(props.total);
   const [runs, setRuns] = useState<RunAPIData[]>(props.runs);
-  const [stateFilter, setStateFilter] = useState(query.state || "");
-  const [errorFilter, setErrorFilter] = useState(query.error || "");
+  const [stateFilter, setStateFilter] = useState(
+    router.query.state?.toString() || ""
+  );
+  const [errorFilter, setErrorFilter] = useState(
+    router.query.error?.toString() || ""
+  );
 
   // pagination
   const limit = 100;
-  const [offset, setOffset] = useState(query.offset || 0);
+  const { offset, setOffset } = useOffset();
   useHistoryPagination(offset, "offset", setOffset);
 
   useSecondaryEffect(() => {
@@ -38,7 +44,7 @@ export default function RunsList(props) {
 
   async function load() {
     const params = { limit, offset };
-    if (query.guid) params["guid"] = query.guid;
+    if (router.query.guid) params["guid"] = router.query.guid.toString();
     if (stateFilter !== "") params["state"] = stateFilter;
     if (errorFilter !== "") params["hasError"] = errorFilter;
 
@@ -60,7 +66,7 @@ export default function RunsList(props) {
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
-    Router[routerMethod](Router.route, url, { shallow: true });
+    router[routerMethod](router.route, url, { shallow: true });
   }
 
   function setFilter({

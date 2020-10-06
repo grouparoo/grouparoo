@@ -1,7 +1,7 @@
 import { useState, useEffect, Fragment } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Table, Badge, Button } from "react-bootstrap";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import Loader from "../../../components/loader";
 import AppIcon from "../../../components/appIcon";
@@ -21,13 +21,13 @@ export default function Page(props) {
     errorHandler,
     successHandler,
     profilePropertyRulesHandler,
-    query,
     types,
     filterOptions,
     pluginOptions,
     profilePropertyRules,
     hydrationError,
   } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [previousPath] = useState(props.previousPath); // we want to store this when the page was initially loaded because we'll be updating the route for the profilePreview
@@ -38,7 +38,7 @@ export default function Page(props) {
     props.profilePropertyRule.filters
   );
 
-  const { guid } = query;
+  const { guid } = router.query;
 
   if (hydrationError) errorHandler.set({ error: hydrationError });
 
@@ -70,7 +70,7 @@ export default function Page(props) {
           response.profilePropertyRule.state === "ready" &&
           profilePropertyRule.state === "draft"
         ) {
-          Router.push(previousPath || "/profilePropertyRules");
+          router.push(previousPath || "/profilePropertyRules");
         } else {
           successHandler.set({ message: "Profile Property Rule Updated" });
         }
@@ -88,7 +88,7 @@ export default function Page(props) {
       const response = await execApi("delete", `/profilePropertyRule/${guid}`);
       setLoading(false);
       if (response) {
-        Router.push(previousPath || "/profilePropertyRules");
+        router.push(previousPath || "/profilePropertyRules");
       }
     }
   }

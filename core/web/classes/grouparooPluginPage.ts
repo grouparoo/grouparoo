@@ -1,5 +1,4 @@
 import { Component } from "react";
-// import Router from "next/router";
 import { Client } from "../client/client";
 
 export interface GrouparooPluginPageProps {

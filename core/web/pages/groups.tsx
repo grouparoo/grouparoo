@@ -1,8 +1,9 @@
 import Head from "next/head";
 import { Button } from "react-bootstrap";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useApi } from "../hooks/useApi";
+import { useOffset } from "../hooks/useOffset";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { useHistoryPagination } from "../hooks/useHistoryPagination";
 import Link from "next/link";
@@ -14,7 +15,8 @@ import StateBadge from "../components/stateBadge";
 import { GroupAPIData } from "../utils/apiData";
 
 export default function Page(props) {
-  const { errorHandler, query } = props;
+  const { errorHandler } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [groups, setGroups] = useState<GroupAPIData[]>(props.groups);
   const [total, setTotal] = useState(props.total);
@@ -22,7 +24,7 @@ export default function Page(props) {
 
   // pagination
   const limit = 100;
-  const [offset, setOffset] = useState(query.offset || 0);
+  const { offset, setOffset } = useOffset();
   useHistoryPagination(offset, "offset", setOffset);
 
   useSecondaryEffect(() => {
@@ -49,7 +51,7 @@ export default function Page(props) {
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
-    Router[routerMethod](Router.route, url, { shallow: true });
+    router[routerMethod](router.route, url, { shallow: true });
   }
 
   return (
@@ -136,7 +138,7 @@ export default function Page(props) {
       <Button
         variant="primary"
         onClick={() => {
-          Router.push("/group/new");
+          router.push("/group/new");
         }}
       >
         Add Group

@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
+import { useOffset } from "../../hooks/useOffset";
 import { ButtonToolbar, Button, Table, Modal, Row, Col } from "react-bootstrap";
 import Pagination from "../../components/pagination";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/resque";
 import LoadingButton from "../../components/loadingButton";
 
 export default function ResqueFailedList(props) {
-  const { errorHandler, query, successHandler } = props;
+  const { errorHandler, successHandler } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState([]);
@@ -24,7 +26,7 @@ export default function ResqueFailedList(props) {
 
   // pagination
   const limit = 100;
-  const [offset, setOffset] = useState(query.offset || 0);
+  const { offset, setOffset } = useOffset();
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
@@ -86,7 +88,7 @@ export default function ResqueFailedList(props) {
     let url = `${window.location.pathname}`;
     if (offset && offset !== 0) url += `?offset=${offset}&`;
 
-    Router.push(Router.route, url, { shallow: true });
+    router.push(router.route, url, { shallow: true });
   }
 
   function renderFailureStack(index) {

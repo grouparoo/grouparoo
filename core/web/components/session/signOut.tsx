@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Loader from "../loader";
 import { useApi } from "../../hooks/useApi";
 
 export default function SignOutForm(props) {
   const { errorHandler, successHandler, sessionHandler } = props;
   const { execApi } = useApi(props, errorHandler);
+  const router = useRouter();
 
   useEffect(() => {
     load();
@@ -13,10 +14,16 @@ export default function SignOutForm(props) {
 
   async function load() {
     window.localStorage.clear();
-    await execApi("delete", `/session`);
-    successHandler.set({ message: "Signed Out" });
-    sessionHandler.set({ firstName: "" });
-    Router.push("/");
+
+    try {
+      await execApi("delete", `/session`);
+      successHandler.set({ message: "Signed Out" });
+      sessionHandler.set({ firstName: "" });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      router.push("/");
+    }
   }
 
   return <Loader />;

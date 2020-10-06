@@ -3,11 +3,12 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { Form, ProgressBar } from "react-bootstrap";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import LoadingButton from "../../components/loadingButton";
 
 export default function Page(props) {
   const { errorHandler, uploadHandler, types } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler, uploadHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
@@ -34,7 +35,7 @@ export default function Page(props) {
     });
     setLoading(false);
     if (response?.file) {
-      Router.push("/files");
+      router.push("/files");
     }
   }
 

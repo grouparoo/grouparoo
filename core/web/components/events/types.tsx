@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
+import { useOffset } from "../../hooks/useOffset";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import Link from "next/link";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Moment from "react-moment";
 import Pagination from "../../components/pagination";
 import LoadingTable from "../../components/loadingTable";
 
 export default function EventsList(props) {
-  const { errorHandler, query, hidePagination } = props;
+  const { errorHandler, hidePagination } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [types, setTypes] = useState<
@@ -19,7 +21,7 @@ export default function EventsList(props) {
 
   // pagination
   const limit = 100;
-  const [offset, setOffset] = useState(query.offset || 0);
+  const { offset, setOffset } = useOffset();
   useHistoryPagination(offset, "offset", setOffset);
 
   useSecondaryEffect(() => {
@@ -55,7 +57,7 @@ export default function EventsList(props) {
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
-    Router[routerMethod](Router.route, url, { shallow: true });
+    router[routerMethod](router.route, url, { shallow: true });
   }
 
   return (

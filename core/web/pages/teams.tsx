@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { Button } from "react-bootstrap";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { useApi } from "../hooks/useApi";
 import Link from "next/link";
 import { Form } from "react-bootstrap";
@@ -9,6 +9,8 @@ import Moment from "react-moment";
 import ProfileImageFromEmail from "../components/visualizations/profileImageFromEmail";
 
 export default function Page({ teams, teamMembers }) {
+  const router = useRouter();
+
   return (
     <>
       <Head>
@@ -50,7 +52,7 @@ export default function Page({ teams, teamMembers }) {
       <Button
         variant="primary"
         onClick={() => {
-          Router.push("/team/new");
+          router.push("/team/new");
         }}
       >
         Add Team
@@ -114,7 +116,7 @@ export default function Page({ teams, teamMembers }) {
       <Button
         variant="primary"
         onClick={() => {
-          Router.push("/teamMember/new");
+          router.push("/teamMember/new");
         }}
       >
         Add Team Member

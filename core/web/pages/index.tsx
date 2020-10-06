@@ -1,8 +1,9 @@
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import { Row, Col, Image, Button } from "react-bootstrap";
 
 export default function Page(props) {
+  const router = useRouter();
   const { navigationMode, navigation } = props;
 
   let CTALink = "/session/sign-in";
@@ -52,7 +53,7 @@ export default function Page(props) {
                 variant="primary"
                 size="lg"
                 onClick={() => {
-                  Router.push(CTALink);
+                  router.push(CTALink);
                 }}
               >
                 {CTAMessage}

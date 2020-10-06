@@ -1,17 +1,18 @@
 import React from "react"; // needed because this is also used by a plugin
 import { useState } from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../loadingButton";
 import { useForm } from "react-hook-form";
 import { SetupStepAPIData } from "../../utils/apiData";
 
 export default function SignInForm(props) {
-  const { errorHandler, successHandler, sessionHandler, query, useApi } = props;
+  const { errorHandler, successHandler, sessionHandler, useApi } = props;
   const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const { nextPage } = query;
+  const { nextPage } = router.query;
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -21,14 +22,14 @@ export default function SignInForm(props) {
       sessionHandler.set(response.teamMember);
       successHandler.set({ message: "Welcome Back!" });
       if (nextPage) {
-        Router.push(nextPage);
+        router.push(nextPage.toString());
       } else {
         const { setupSteps, toDisplay } = await getSetupSteps();
         const isSetupComplete = setupSteps.every((step) => step.complete);
         if (isSetupComplete || !toDisplay) {
-          Router.push("/dashboard");
+          router.push("/dashboard");
         } else {
-          Router.push("/setup");
+          router.push("/setup");
         }
       }
     } else {
@@ -37,7 +38,6 @@ export default function SignInForm(props) {
   };
 
   async function getSetupSteps() {
-    setLoading(true);
     const {
       setupSteps,
       toDisplay,
@@ -45,7 +45,6 @@ export default function SignInForm(props) {
       "get",
       `/setupSteps`
     );
-    setLoading(false);
     return { setupSteps, toDisplay };
   }
 

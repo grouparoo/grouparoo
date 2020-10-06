@@ -6,7 +6,7 @@ import Link from "next/link";
 import ResqueTabs from "../../../components/tabs/resque";
 
 export default function ResqueQueue(props) {
-  const { errorHandler, query } = props;
+  const { errorHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const [queues, setQueues] = useState({});
 

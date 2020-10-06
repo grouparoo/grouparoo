@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Row, Col, Table, Form } from "react-bootstrap";
 import { createSchedule } from "../../../components/schedule/add";
 import LoadingButton from "../../../components/loadingButton";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 export default function Page(props) {
   const {
@@ -15,6 +15,7 @@ export default function Page(props) {
     scheduleCount,
     hydrationError,
   } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [newMappingKey, setNewMappingKey] = useState("");
@@ -98,7 +99,7 @@ export default function Page(props) {
 
       // we just went 'ready'
       if (source.state !== response.source.state) {
-        Router.push(
+        router.push(
           `/source/[guid]/overview`,
           `/source/${source.guid}/overview`
         );

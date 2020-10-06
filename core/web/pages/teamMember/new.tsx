@@ -4,20 +4,15 @@ import { useApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../components/loadingButton";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 export default function Page(props) {
-  const {
-    errorHandler,
-    successHandler,
-    teamMemberHandler,
-    query,
-    teams,
-  } = props;
+  const { errorHandler, successHandler, teamMemberHandler, teams } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
-  const { guid: teamGuid } = query;
+  const { guid: teamGuid } = router.query;
 
   async function onSubmit(data) {
     // if the option is disabled, the default value is not set
@@ -29,7 +24,7 @@ export default function Page(props) {
     if (response?.teamMember) {
       teamMemberHandler.set(response.teamMember);
       successHandler.set({ message: "Team Member Created" });
-      Router.push(`/team/${response.teamMember.teamGuid}/members`);
+      router.push(`/team/${response.teamMember.teamGuid}/members`);
     } else {
       setLoading(false);
     }

@@ -2,18 +2,20 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
 import { Card, ListGroup } from "react-bootstrap";
 import Loader from "../loader";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 export default function ProfilePreview(props) {
   const {
-    query,
     errorHandler,
     destination,
     groups,
     trackedGroupGuid,
     mappingOptions,
   } = props;
-  const [profileGuid, setProfileGuid] = useState(query.profileGuid);
+  const router = useRouter();
+  const [profileGuid, setProfileGuid] = useState(
+    router.query.profileGuid?.toString()
+  );
   const [toHide, setToHide] = useState(true);
   const [profile, setProfile] = useState({
     guid: "",
@@ -49,7 +51,7 @@ export default function ProfilePreview(props) {
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
-    Router[routerMethod](Router.route, url, { shallow: true });
+    router[routerMethod](router.route, url, { shallow: true });
   }
 
   async function load(

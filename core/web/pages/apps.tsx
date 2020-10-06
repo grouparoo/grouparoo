@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useApi } from "../hooks/useApi";
+import { useOffset } from "../hooks/useOffset";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { useHistoryPagination } from "../hooks/useHistoryPagination";
 import Head from "next/head";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import Moment from "react-moment";
 import Pagination from "../components/pagination";
@@ -15,7 +16,8 @@ import { Button } from "react-bootstrap";
 import { AppAPIData } from "../utils/apiData";
 
 export default function Page(props) {
-  const { errorHandler, query } = props;
+  const { errorHandler } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [apps, setApps] = useState<AppAPIData[]>(props.apps);
   const [total, setTotal] = useState(props.total);
@@ -23,7 +25,7 @@ export default function Page(props) {
 
   // pagination
   const limit = 100;
-  const [offset, setOffset] = useState(query.offset || 0);
+  const { offset, setOffset } = useOffset();
   useHistoryPagination(offset, "offset", setOffset);
 
   useSecondaryEffect(() => {
@@ -43,7 +45,7 @@ export default function Page(props) {
       setTotal(response.total);
 
       if (response.total === 0) {
-        Router.push("/app/new");
+        router.push("/app/new");
       }
     }
   }
@@ -54,7 +56,7 @@ export default function Page(props) {
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
-    Router[routerMethod](Router.route, url, { shallow: true });
+    router[routerMethod](router.route, url, { shallow: true });
   }
 
   return (
@@ -133,7 +135,7 @@ export default function Page(props) {
       <Button
         variant="primary"
         onClick={() => {
-          Router.push("/app/new");
+          router.push("/app/new");
         }}
       >
         Add App

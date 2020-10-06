@@ -1,6 +1,6 @@
 import FileTabs from "../../../components/tabs/file";
 import Head from "next/head";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Button, Image } from "react-bootstrap";
@@ -8,6 +8,7 @@ import LoadingButton from "../../../components/loadingButton";
 
 export default function Page(props) {
   const { errorhandler, successHandler, file } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorhandler);
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +29,7 @@ export default function Page(props) {
       const response = await execApi("delete", `/file/${file.guid}`);
       if (response?.success) {
         successHandler.set({ message: "File Deleted" });
-        Router.push("/files");
+        router.push("/files");
       } else {
         setLoading(false);
       }
