@@ -18,6 +18,7 @@ require("./../fixtures/export-profiles");
 //helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
+const destinationGuid = "dst_a0bb07d8-0a4f-49b5-ad42-545f2e8662e6";
 
 let client: any;
 
@@ -147,6 +148,7 @@ describe("marketo/exportProfiles", () => {
 
     const { success, errors } = await exportBatch({
       appOptions,
+      destinationGuid,
       exports: [
         {
           profileGuid: guid1,
@@ -176,6 +178,7 @@ describe("marketo/exportProfiles", () => {
 
     const { success, errors } = await exportBatch({
       appOptions,
+      destinationGuid,
       exports: [
         {
           profileGuid: guid1,
@@ -222,6 +225,7 @@ describe("marketo/exportProfiles", () => {
   test("can clear user variables", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
+      destinationGuid,
       exports: [
         {
           profileGuid: guid1,
@@ -254,6 +258,7 @@ describe("marketo/exportProfiles", () => {
 
     const { success, errors } = await exportBatch({
       appOptions,
+      destinationGuid,
       exports: [
         {
           profileGuid: guid1,
@@ -286,6 +291,7 @@ describe("marketo/exportProfiles", () => {
 
     const { success, errors } = await exportBatch({
       appOptions,
+      destinationGuid,
       exports: [
         {
           profileGuid: guid1,
@@ -330,6 +336,7 @@ describe("marketo/exportProfiles", () => {
   test("can remove users from lists including ones they aren't in", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
+      destinationGuid,
       exports: [
         {
           profileGuid: guid1,
@@ -366,6 +373,7 @@ describe("marketo/exportProfiles", () => {
   test("it can change the email address", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
+      destinationGuid,
       exports: [
         {
           profileGuid: guid1,
@@ -418,6 +426,7 @@ describe("marketo/exportProfiles", () => {
   test("can delete a user", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
+      destinationGuid,
       exports: [
         {
           profileGuid: guid1,
@@ -474,6 +483,7 @@ describe("marketo/exportProfiles", () => {
   test("can add back a user and many types", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
+      destinationGuid,
       exports: [
         {
           profileGuid: guid2,
@@ -521,6 +531,7 @@ describe("marketo/exportProfiles", () => {
   test("can set all those fields to null", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
+      destinationGuid,
       exports: [
         {
           profileGuid: guid2,
@@ -565,6 +576,7 @@ describe("marketo/exportProfiles", () => {
   test("can handle boolean error", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
+      destinationGuid,
       exports: [
         {
           profileGuid: guid2,
@@ -606,6 +618,7 @@ describe("marketo/exportProfiles", () => {
   test("can handle email error", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
+      destinationGuid,
       exports: [
         {
           profileGuid: guid2,
@@ -647,6 +660,7 @@ describe("marketo/exportProfiles", () => {
   test("can handle integer error", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
+      destinationGuid,
       exports: [
         {
           profileGuid: guid2,
@@ -688,6 +702,7 @@ describe("marketo/exportProfiles", () => {
   test("can handle float error", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
+      destinationGuid,
       exports: [
         {
           profileGuid: guid2,
@@ -729,6 +744,7 @@ describe("marketo/exportProfiles", () => {
   test("can handle datetime error", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
+      destinationGuid,
       exports: [
         {
           profileGuid: guid2,
@@ -770,6 +786,7 @@ describe("marketo/exportProfiles", () => {
   test("can handle percent error", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
+      destinationGuid,
       exports: [
         {
           profileGuid: guid2,
@@ -814,6 +831,7 @@ describe("marketo/exportProfiles", () => {
 
     const { success, errors } = await exportBatch({
       appOptions,
+      destinationGuid,
       exports: [
         {
           profileGuid: guid1,

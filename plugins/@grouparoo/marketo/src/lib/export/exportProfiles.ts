@@ -32,7 +32,7 @@ export interface ExportBatchMethod {
 }
 declare type MarketoEmailMap = { [email: string]: MarketoExport };
 
-export async function exportBatch({ appOptions, exports }) {
+export async function exportBatch({ appOptions, destinationGuid, exports }) {
   if (exports.length === 0) {
     return { success: true };
   }
@@ -57,7 +57,7 @@ export async function exportBatch({ appOptions, exports }) {
 
   // so now, all the exports that don't have an error and where not deleted should have a marketoId
   // use those ids to update the groups
-  await updateGroups(client, exports);
+  await updateGroups(client, destinationGuid, exports);
 
   // assuming semantics here of success is only true if there are zero errors
   let errors: ErrorWithProfileGuid[] = null; // for ones that go wrong
@@ -78,7 +78,7 @@ export async function exportBatch({ appOptions, exports }) {
   return { success, errors };
 }
 
-async function updateGroups(client, exports: MarketoExport[]) {
+async function updateGroups(client, destinationGuid, exports: MarketoExport[]) {
   const removal: { [groupName: string]: MarketoExport[] } = {};
   const addition: { [groupName: string]: MarketoExport[] } = {};
   for (const exportedProfile of exports) {
@@ -116,10 +116,22 @@ async function updateGroups(client, exports: MarketoExport[]) {
   }
 
   for (const listName in addition) {
-    await updateList(client, ListAction.Add, listName, addition[listName]);
+    await updateList(
+      client,
+      ListAction.Add,
+      destinationGuid,
+      listName,
+      addition[listName]
+    );
   }
   for (const listName in removal) {
-    await updateList(client, ListAction.Remove, listName, removal[listName]);
+    await updateList(
+      client,
+      ListAction.Remove,
+      destinationGuid,
+      listName,
+      removal[listName]
+    );
   }
 }
 
@@ -130,13 +142,14 @@ enum ListAction {
 async function updateList(
   client,
   action: ListAction,
+  destinationGuid: string,
   listName: string,
   users: MarketoExport[]
 ) {
   if (users.length === 0) {
     return;
   }
-  const id = await getListId(client, listName);
+  const id = await getListId(client, destinationGuid, listName);
   const idMap: { [marketoId: number]: MarketoExport } = {};
   const marketoIds: any[] = [];
   for (const user of users) {
@@ -384,6 +397,7 @@ function sortExport(exportedProfile: MarketoExport, emailMap: MarketoEmailMap) {
 export const exportProfiles: ExportProfilesPluginMethod = async ({
   appOptions,
   exports,
+  destinationGuid,
 }) => {
   // TODO: marketo can do batches of 300 at a time, it seems.
   // developers.marketo.com/rest-api/marketo-integration-best-practices
@@ -396,5 +410,5 @@ export const exportProfiles: ExportProfilesPluginMethod = async ({
     const marketo: MarketoExport = Object.assign({}, exportedProfile);
     batchExports.push(marketo);
   }
-  return exportBatch({ appOptions, exports: batchExports });
+  return exportBatch({ appOptions, destinationGuid, exports: batchExports });
 };
