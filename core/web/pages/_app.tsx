@@ -51,7 +51,7 @@ export default function GrouparooWebApp(props) {
     navigationMode: props.navigationMode,
     clusterName: props.clusterName,
     successHandler,
-
+    errorHandler,
     appHandler,
     destinationHandler,
     fileHandler,
