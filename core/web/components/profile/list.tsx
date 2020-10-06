@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
-import { useOffset } from "../../hooks/useOffset";
-import { useHistoryPagination } from "../../hooks/useHistoryPagination";
+import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -33,7 +32,6 @@ export default function ProfilesList(props) {
   const [searchValue, setSearchValue] = useState<string>(
     router.query.searchValue || props.searchValue || ""
   );
-  useHistoryPagination(offset, "offset", setOffset);
 
   useSecondaryEffect(() => {
     load();
@@ -68,19 +66,7 @@ export default function ProfilesList(props) {
       }
     }
 
-    updateURLParams();
-  }
-
-  function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) url += `offset=${offset}&`;
-    if (searchKey && searchKey !== "") url += `searchKey=${searchKey}&`;
-    if (searchValue && searchValue !== "")
-      url += `searchValue=${escape(searchValue)}&`;
-
-    const routerMethod =
-      url === `${window.location.pathname}?` ? "replace" : "push";
-    router[routerMethod](router.route, url, { shallow: true });
+    updateURLParams(router, { offset, searchKey, searchValue });
   }
 
   async function autocompleteProfilePropertySearch(

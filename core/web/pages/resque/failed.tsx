@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
-import { useOffset } from "../../hooks/useOffset";
+import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { ButtonToolbar, Button, Table, Modal, Row, Col } from "react-bootstrap";
 import Pagination from "../../components/pagination";
 import { useRouter } from "next/router";
@@ -34,7 +34,7 @@ export default function ResqueFailedList(props) {
   }, [offset, limit]);
 
   async function load() {
-    updateURLParams();
+    updateURLParams(router, { offset });
     setLoading(true);
     const response = await execApi("get", "/resque/resqueFailed", {
       offset,
@@ -82,13 +82,6 @@ export default function ResqueFailedList(props) {
       await load();
       setLoading(false);
     }
-  }
-
-  function updateURLParams() {
-    let url = `${window.location.pathname}`;
-    if (offset && offset !== 0) url += `?offset=${offset}&`;
-
-    router.push(router.route, url, { shallow: true });
   }
 
   function renderFailureStack(index) {

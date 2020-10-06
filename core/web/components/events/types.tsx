@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
-import { useOffset } from "../../hooks/useOffset";
+import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Moment from "react-moment";
@@ -22,7 +21,6 @@ export default function EventsList(props) {
   // pagination
   const limit = 100;
   const { offset, setOffset } = useOffset();
-  useHistoryPagination(offset, "offset", setOffset);
 
   useSecondaryEffect(() => {
     load();
@@ -48,16 +46,7 @@ export default function EventsList(props) {
       }
     }
 
-    updateURLParams();
-  }
-
-  function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) url += `offset=${offset}&`;
-
-    const routerMethod =
-      url === `${window.location.pathname}?` ? "replace" : "push";
-    router[routerMethod](router.route, url, { shallow: true });
+    updateURLParams(router, { offset });
   }
 
   return (

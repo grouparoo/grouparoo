@@ -1,7 +1,6 @@
 import { useApi } from "../../../hooks/useApi";
-import { useOffset } from "../../../hooks/useOffset";
+import { useOffset } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
-import { useHistoryPagination } from "../../../hooks/useHistoryPagination";
 import Head from "next/head";
 import GroupTabs from "../../../components/tabs/group";
 import { useState } from "react";
@@ -24,7 +23,6 @@ export default function Page(props) {
   const limit = 100;
   const { offset, setOffset } = useOffset();
   const [total, setTotal] = useState(props.total);
-  useHistoryPagination(offset, "offset", setOffset);
 
   useSecondaryEffect(() => {
     load();

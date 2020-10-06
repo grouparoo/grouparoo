@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useApi } from "../hooks/useApi";
-import { useOffset } from "../hooks/useOffset";
+import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
-import { useHistoryPagination } from "../hooks/useHistoryPagination";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -26,14 +25,13 @@ export default function Page(props) {
   // pagination
   const limit = 100;
   const { offset, setOffset } = useOffset();
-  useHistoryPagination(offset, "offset", setOffset);
 
   useSecondaryEffect(() => {
     load();
   }, [limit, offset]);
 
   async function load() {
-    updateURLParams();
+    updateURLParams(router, { offset });
     setLoading(true);
     const response = await execApi("get", `/apps`, {
       limit,
@@ -48,15 +46,6 @@ export default function Page(props) {
         router.push("/app/new");
       }
     }
-  }
-
-  function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) url += `offset=${offset}&`;
-
-    const routerMethod =
-      url === `${window.location.pathname}?` ? "replace" : "push";
-    router[routerMethod](router.route, url, { shallow: true });
   }
 
   return (

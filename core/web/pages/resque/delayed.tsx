@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
-import { useOffset } from "../../hooks/useOffset";
+import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { Table, Row, Col } from "react-bootstrap";
 import Pagination from "../../components/pagination";
 import { useRouter } from "next/router";
@@ -26,7 +26,7 @@ export default function ResqueDelayedList(props) {
   }, [offset, limit]);
 
   async function load() {
-    updateURLParams();
+    updateURLParams(router, { offset });
     setLoading(true);
     const response = await execApi(
       "get",
@@ -79,13 +79,6 @@ export default function ResqueDelayedList(props) {
     successHandler.set({ message: "run" });
     await load();
     setLoading(false);
-  }
-
-  function updateURLParams() {
-    let url = `${window.location.pathname}`;
-    if (offset && offset !== 0) url += `?offset=${offset}&`;
-
-    router.push(router.route, url, { shallow: true });
   }
 
   return (

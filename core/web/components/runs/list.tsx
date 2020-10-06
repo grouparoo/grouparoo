@@ -1,8 +1,7 @@
 import { useApi } from "../../hooks/useApi";
-import { useOffset } from "../../hooks/useOffset";
+import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { Fragment, useState, useEffect } from "react";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import { Row, Col, ButtonGroup, Button, Alert } from "react-bootstrap";
 import Moment from "react-moment";
 import { useRouter } from "next/router";
@@ -29,7 +28,6 @@ export default function RunsList(props) {
   // pagination
   const limit = 100;
   const { offset, setOffset } = useOffset();
-  useHistoryPagination(offset, "offset", setOffset);
 
   useSecondaryEffect(() => {
     load();
@@ -48,7 +46,7 @@ export default function RunsList(props) {
     if (stateFilter !== "") params["state"] = stateFilter;
     if (errorFilter !== "") params["hasError"] = errorFilter;
 
-    updateURLParams();
+    updateURLParams(router, { offset, stateFilter, errorFilter });
     setLoading(true);
     const response = await execApi("get", `/runs`, params);
     setLoading(false);
@@ -56,17 +54,6 @@ export default function RunsList(props) {
       setRuns(response.runs);
       setTotal(response.total);
     }
-  }
-
-  function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) url += `offset=${offset}&`;
-    if (stateFilter !== "") url += `state=${stateFilter}&`;
-    if (errorFilter != "") url += `error=${errorFilter}&`;
-
-    const routerMethod =
-      url === `${window.location.pathname}?` ? "replace" : "push";
-    router[routerMethod](router.route, url, { shallow: true });
   }
 
   function setFilter({

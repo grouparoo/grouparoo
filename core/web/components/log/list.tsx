@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
-import { useOffset } from "../../hooks/useOffset";
+import { updateURLParams, useOffset } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -28,7 +27,6 @@ export default function LogsList(props) {
   const limit = 100;
   const { offset, setOffset } = useOffset();
   const [topic, setTopic] = useState(router.query.topic?.toString() || null);
-  useHistoryPagination(offset, "offset", setOffset);
 
   let topics = [
     "app",
@@ -51,7 +49,7 @@ export default function LogsList(props) {
   }, [offset, limit, topic]);
 
   async function load() {
-    updateURLParams();
+    updateURLParams(router, { offset, topic });
     setLoading(true);
     setNewLogs(0);
     const response = await execApi("get", `/logs`, {
@@ -94,16 +92,6 @@ export default function LogsList(props) {
     } else {
       return [topic];
     }
-  }
-
-  function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) url += `offset=${offset}&`;
-    if (topic) url += `topic=${topic}&`;
-
-    const routerMethod =
-      url === `${window.location.pathname}?` ? "replace" : "push";
-    router[routerMethod](router.route, url, { shallow: true });
   }
 
   function handleMessage({ model }) {

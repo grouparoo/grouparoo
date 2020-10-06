@@ -1,7 +1,6 @@
 import { Fragment, useState } from "react";
 import { useApi } from "../../hooks/useApi";
-import { useOffset } from "../../hooks/useOffset";
-import { useHistoryPagination } from "../../hooks/useHistoryPagination";
+import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -22,7 +21,6 @@ export default function ImportList(props) {
   // pagination
   const limit = 100;
   const { offset, setOffset } = useOffset();
-  useHistoryPagination(offset, "offset", setOffset);
 
   let profileGuid: string;
   let creatorGuid: string;
@@ -39,7 +37,7 @@ export default function ImportList(props) {
   }, [offset, limit]);
 
   async function load() {
-    updateURLParams();
+    updateURLParams(router, { offset });
     setLoading(true);
 
     const response = await execApi("get", `/imports`, {
@@ -53,15 +51,6 @@ export default function ImportList(props) {
       setImports(response.imports);
       setTotal(response.total);
     }
-  }
-
-  async function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) url += `offset=${offset}&`;
-
-    const routerMethod =
-      url === `${window.location.pathname}?` ? "replace" : "push";
-    router[routerMethod](router.route, url, { shallow: true });
   }
 
   function groupLink(groupGuid) {

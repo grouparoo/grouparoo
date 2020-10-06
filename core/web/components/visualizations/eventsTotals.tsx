@@ -1,6 +1,7 @@
 import { Row, Col, Button, Accordion, Form } from "react-bootstrap";
 import { DateRangePicker } from "react-date-range";
 import { useState } from "react";
+import { updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Loader from "../loader";
 import { useRouter } from "next/router";
@@ -64,18 +65,11 @@ export default function EventsTotals(props) {
       setTotal(response.total);
     }
 
-    updateURLParams();
-  }
-
-  function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    url += `startTime=${startDate.getTime()}&`;
-    url += `endTime=${endDate.getTime()}&`;
-    url += `dateTrunc=${dateTrunc}&`;
-
-    const routerMethod =
-      url === `${window.location.pathname}?` ? "replace" : "push";
-    router[routerMethod](router.route, url, { shallow: true });
+    updateURLParams(router, {
+      startTime: startDate.getTime(),
+      endTime: endDate.getTime(),
+      dateTrunc,
+    });
   }
 
   return (

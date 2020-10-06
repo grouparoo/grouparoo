@@ -1,9 +1,8 @@
 import Head from "next/head";
 import { Fragment, useState } from "react";
 import { useApi } from "../hooks/useApi";
-import { useOffset } from "../hooks/useOffset";
+import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
-import { useHistoryPagination } from "../hooks/useHistoryPagination";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Button, Form, Alert } from "react-bootstrap";
@@ -31,13 +30,12 @@ export default function Page(props) {
   >(props.profilePropertyRules);
 
   // pagination
-  const limit = 100;
+  const limit = 1000;
   const { offset, setOffset } = useOffset();
   const [total, setTotal] = useState(props.total);
-  useHistoryPagination(offset, "offset", setOffset);
 
   useSecondaryEffect(() => {
-    updateURLParams();
+    updateURLParams(router, { offset });
     loadSources();
     loadProfilePropertyRules();
   }, [offset, limit]);
@@ -80,15 +78,6 @@ export default function Page(props) {
         `/profilePropertyRule/${response.profilePropertyRule.guid}/edit?nextPage=/profilePropertyRules`
       );
     }
-  }
-
-  function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) url += `offset=${offset}&`;
-
-    const routerMethod =
-      url === `${window.location.pathname}?` ? "replace" : "push";
-    router[routerMethod](router.route, url, { shallow: true });
   }
 
   if (sources.length === 0) {
