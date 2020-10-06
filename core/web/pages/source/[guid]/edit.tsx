@@ -3,7 +3,7 @@ import SourceTabs from "../../../components/tabs/source";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import AppIcon from "./../../../components/appIcon";
 import StateBadge from "./../../../components/stateBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
@@ -18,8 +18,8 @@ export default function Page(props) {
     successHandler,
     sourceHandler,
     environmentVariableOptions,
-    query,
   } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [preview, setPreview] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -27,7 +27,7 @@ export default function Page(props) {
   const [previewLoading, setPreviewLoading] = useState(false);
   const [source, setSource] = useState<SourceAPIData>(props.source);
   const [connectionOptions, setConnectionOptions] = useState({});
-  const { guid } = query;
+  const { guid } = router.query;
 
   useEffect(() => {
     loadPreview(source.previewAvailable);
@@ -76,12 +76,12 @@ export default function Page(props) {
       setSource(response.source);
       sourceHandler.set(response.source);
       if (response.source.state !== "ready") {
-        Router.push(`/source/[guid]/mapping`, `/source/${guid}/mapping`);
+        router.push(`/source/[guid]/mapping`, `/source/${guid}/mapping`);
       } else if (
         response.source.state === "ready" &&
         source.state === "draft"
       ) {
-        Router.push(`/source/${guid}/overview`);
+        router.push(`/source/${guid}/overview`);
       } else {
         setLoading(false);
         successHandler.set({ message: "Source updated" });
@@ -109,7 +109,7 @@ export default function Page(props) {
       const response = await execApi("delete", `/source/${guid}`);
       if (response) {
         successHandler.set({ message: "source deleted" });
-        Router.push("/sources");
+        router.push("/sources");
       } else {
         setLoading(false);
       }

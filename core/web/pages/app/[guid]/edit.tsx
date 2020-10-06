@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import AppIcon from "../../../components/appIcon";
 import StateBadge from "../../../components/stateBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
@@ -17,11 +17,11 @@ export default function Page(props) {
     errorHandler,
     successHandler,
     appHandler,
-    query,
     types,
     environmentVariableOptions,
     optionOptions,
   } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [app, setApp] = useState<AppAPIData>(props.app);
   const [loading, setLoading] = useState(false);
@@ -32,7 +32,7 @@ export default function Page(props) {
     message: string;
   }>({ success: null, error: null, message: null });
   const [ranTest, setRanTest] = useState(false);
-  const { guid } = query;
+  const { guid } = router.query;
 
   async function edit(event) {
     event.preventDefault();
@@ -45,7 +45,7 @@ export default function Page(props) {
     );
     if (response?.app) {
       if (response.app.state === "ready" && app.state === "draft") {
-        Router.push("/apps");
+        router.push("/apps");
       } else {
         successHandler.set({ message: "App Updated" });
         setApp(response.app);
@@ -61,7 +61,7 @@ export default function Page(props) {
       const response = await execApi("delete", `/app/${guid}`);
       if (response?.success) {
         successHandler.set({ message: "App Deleted" });
-        Router.push("/apps");
+        router.push("/apps");
       } else {
         setLoading(false);
       }

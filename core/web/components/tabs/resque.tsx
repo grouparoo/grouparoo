@@ -1,8 +1,9 @@
 import { Tab, Tabs, Breadcrumb } from "react-bootstrap";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 export default function ResqueTabs() {
-  if (!globalThis.location) return null;
+  const router = useRouter();
+  if (!router.pathname) return null;
 
   const tabs = [
     "overview",
@@ -13,9 +14,10 @@ export default function ResqueTabs() {
     "redis",
     "workers",
   ];
-  const parts = globalThis.location.href.split("/");
-  const key = parts[4].split("?")[0];
-  const subKey = parts[5]?.split("?")[0];
+
+  const parts = router.asPath.split("/");
+  const key = parts[2].split("?")[0];
+  const subKey = parts[3]?.split("?")[0];
 
   function capitalize(s: string) {
     return s.charAt(0).toUpperCase() + s.slice(1);
@@ -39,7 +41,7 @@ export default function ResqueTabs() {
         id="page-tabs"
         activeKey={key}
         onSelect={(k) => {
-          Router.push(`/resque/${k}`);
+          router.push(`/resque/${k}`);
         }}
         mountOnEnter
         unmountOnExit

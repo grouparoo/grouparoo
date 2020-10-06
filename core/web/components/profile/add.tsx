@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import LoadingButton from "../loadingButton";
 
 export default function (props) {
   const { execApi } = useApi(props);
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   async function create() {
     setLoading(true);
     const response = await execApi("post", `/profile`);
-    Router.push(
+    router.push(
       "/profile/[guid]/edit",
       `/profile/${response.profile.guid}/edit`
     );

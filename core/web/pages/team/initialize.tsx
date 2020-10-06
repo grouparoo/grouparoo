@@ -2,12 +2,13 @@ import Head from "next/head";
 import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../components/loadingButton";
 
 export default function TeamInitializePage(props) {
   const { errorHandler, successHandler } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
@@ -18,7 +19,7 @@ export default function TeamInitializePage(props) {
     setLoading(false);
     if (response?.team) {
       successHandler.set({ message: "Team Created" });
-      Router.push(`/session/sign-in`);
+      router.push(`/session/sign-in`);
     }
   }
 

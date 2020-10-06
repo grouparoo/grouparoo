@@ -1,4 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { Image, Accordion, Button, Badge } from "react-bootstrap";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,7 +25,7 @@ export const iconConstrainedStyle = { width: 20 };
 
 export default function Navigation(props) {
   const {
-    pathname,
+    // pathname,
     navigationMode,
     navigation,
     clusterName,
@@ -35,6 +36,7 @@ export default function Navigation(props) {
     setupStepHandler,
   } = props;
   const { execApi } = useApi(props, errorHandler);
+  const router = useRouter();
   const [teamMember, setTeamMember] = useState(props.currentTeamMember);
   const [hasBeenCollapsed, setHasBeenCollapsed] = useState(!navExpanded);
   const [expandPlatformMenu, setExpandPlatformMenu] = useState(false);
@@ -54,14 +56,14 @@ export default function Navigation(props) {
 
   useEffect(() => {
     handleRouteChange();
-  }, [pathname]);
+  }, [router.pathname]);
 
   function handleRouteChange() {
     let onPlatformPage = false;
     let onAccountPage = false;
 
-    if (pathname && pathname !== "/") {
-      const firstPathPart = "/" + pathname.split("/")[1];
+    if (router.pathname && router.pathname !== "/") {
+      const firstPathPart = "/" + router.pathname.split("/")[1];
 
       navigation.platformItems
         .filter((i) => i.type === "link")

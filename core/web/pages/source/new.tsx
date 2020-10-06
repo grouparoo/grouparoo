@@ -5,10 +5,11 @@ import { Form } from "react-bootstrap";
 import SelectorList from "../../components/selectorList";
 import LoadingButton from "../../components/loadingButton";
 import Link from "next/link";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 export default function Page(props) {
   const { errorHandler, connectionApps } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [source, setSource] = useState({
@@ -21,7 +22,7 @@ export default function Page(props) {
     setLoading(true);
     const response = await execApi("post", `/source`, source);
     if (response?.source) {
-      Router.push(
+      router.push(
         "/source/[guid]/edit",
         `/source/${response.source.guid}/edit`
       );

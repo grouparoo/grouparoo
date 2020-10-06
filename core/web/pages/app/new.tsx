@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useApi } from "../../hooks/useApi";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import SelectorList from "../../components/selectorList";
 import LoadingButton from "../../components/loadingButton";
 
@@ -10,6 +10,7 @@ import { AppAPIData } from "../../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, types } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [app, setApp] = useState<AppAPIData>({ type: "" });
   const [loading, setLoading] = useState(false);
@@ -19,7 +20,7 @@ export default function Page(props) {
     setLoading(true);
     const response = await execApi("post", `/app`, app);
     if (response?.app) {
-      return Router.push("/app/[guid]/edit", `/app/${response.app.guid}/edit`);
+      return router.push("/app/[guid]/edit", `/app/${response.app.guid}/edit`);
     } else {
       setLoading(false);
     }

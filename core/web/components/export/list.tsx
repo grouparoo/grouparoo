@@ -1,9 +1,9 @@
 import { Fragment, useState } from "react";
 import { useApi } from "../../hooks/useApi";
+import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import { useHistoryPagination } from "../../hooks/useHistoryPagination";
 import Link from "next/link";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { Row, Col, ButtonGroup, Button, Badge, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
 import Moment from "react-moment";
@@ -11,7 +11,8 @@ import LoadingTable from "../loadingTable";
 import { ExportAPIData } from "../../utils/apiData";
 
 export default function ExportsList(props) {
-  const { pathname, errorHandler, query, groups } = props;
+  const { errorHandler, groups } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [_exports, setExports] = useState<ExportAPIData[]>(props._exports);
@@ -19,17 +20,16 @@ export default function ExportsList(props) {
 
   // pagination
   const limit = 100;
-  const [offset, setOffset] = useState(query.offset || 0);
-  const [state, setState] = useState(query.state || "");
-  useHistoryPagination(offset, "offset", setOffset);
+  const { offset, setOffset } = useOffset();
+  const [state, setState] = useState(router.query.state?.toString() || "");
 
   let profileGuid: string;
   let destinationGuid: string;
-  if (query.guid) {
-    if (pathname.match("/profile/")) {
-      profileGuid = query.guid;
+  if (router.query.guid) {
+    if (router.pathname.match("/profile/")) {
+      profileGuid = router.query.guid.toString();
     } else {
-      destinationGuid = query.guid;
+      destinationGuid = router.query.guid.toString();
     }
   }
 
@@ -38,7 +38,7 @@ export default function ExportsList(props) {
   }, [offset, limit, state]);
 
   async function load() {
-    updateURLParams();
+    updateURLParams(router, { state, offset });
     setLoading(true);
     const response = await execApi("get", `/exports`, {
       limit,
@@ -75,16 +75,6 @@ export default function ExportsList(props) {
   function formatTimestamp(timestamp) {
     const [date, time] = new Date(timestamp).toLocaleString().split(",");
     return `${date} ${time}`;
-  }
-
-  function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    if (state) url += `state=${state}&`;
-    if (offset && offset !== 0) url += `offset=${offset}&`;
-
-    const routerMethod =
-      url === `${window.location.pathname}?` ? "replace" : "push";
-    Router[routerMethod](Router.route, url, { shallow: true });
   }
 
   return (

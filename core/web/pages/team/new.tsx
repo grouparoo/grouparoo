@@ -2,12 +2,13 @@ import Head from "next/head";
 import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../components/loadingButton";
 
 export default function NewTeamPage(props) {
   const { errorHandler } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
@@ -17,7 +18,7 @@ export default function NewTeamPage(props) {
     const response = await execApi("post", `/team`, data);
     setLoading(false);
     if (response?.team) {
-      Router.push("/team/[guid]/edit", `/team/${response.team.guid}/edit`);
+      router.push("/team/[guid]/edit", `/team/${response.team.guid}/edit`);
     }
   }
 

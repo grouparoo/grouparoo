@@ -139,7 +139,7 @@ function PendingExports({ execApi }) {
   }
 
   async function load() {
-    const response = await execApi("get", `/destinations`);
+    const response = await execApi("get", `/destinations`, { state: "ready" });
     if (response) {
       setDestinations(response.destinations);
     }

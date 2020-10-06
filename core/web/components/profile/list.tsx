@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
-import { useHistoryPagination } from "../../hooks/useHistoryPagination";
+import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { Form, Col, Badge } from "react-bootstrap";
 import Moment from "react-moment";
 import Pagination from "../pagination";
@@ -14,8 +14,9 @@ import { ProfileAPIData } from "../../utils/apiData";
 import ArrayProfilePropertyList from "../../components/profile/arrayProfilePropertyList";
 
 export default function ProfilesList(props) {
-  const { pathname, query, errorHandler, profilePropertyRules } = props;
+  const { errorHandler, profilePropertyRules } = props;
   const { execApi } = useApi(props, errorHandler);
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const [total, setTotal] = useState<number>(props.total);
@@ -24,23 +25,22 @@ export default function ProfilesList(props) {
 
   // pagination
   const limit = 100;
-  const [offset, setOffset] = useState(query.offset || 0);
-  const [searchKey, setSearchKey] = useState(
-    query.searchKey || props.searchKey || ""
+  const { offset, setOffset } = useOffset();
+  const [searchKey, setSearchKey] = useState<string>(
+    router.query?.searchKey || props.searchKey || ""
   );
-  const [searchValue, setSearchValue] = useState(
-    query.searchValue || props.searchValue || ""
+  const [searchValue, setSearchValue] = useState<string>(
+    router.query.searchValue || props.searchValue || ""
   );
-  useHistoryPagination(offset, "offset", setOffset);
 
   useSecondaryEffect(() => {
     load();
   }, [offset, limit]);
 
   let groupGuid: string;
-  if (query.guid) {
-    if (pathname.match("/group/")) {
-      groupGuid = query.guid;
+  if (router.query.guid) {
+    if (router.pathname.match("/group/")) {
+      groupGuid = router.query.guid.toString();
     }
   }
 
@@ -66,19 +66,7 @@ export default function ProfilesList(props) {
       }
     }
 
-    updateURLParams();
-  }
-
-  function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) url += `offset=${offset}&`;
-    if (searchKey && searchKey !== "") url += `searchKey=${searchKey}&`;
-    if (searchValue && searchValue !== "")
-      url += `searchValue=${escape(searchValue)}&`;
-
-    const routerMethod =
-      url === `${window.location.pathname}?` ? "replace" : "push";
-    Router[routerMethod](Router.route, url, { shallow: true });
+    updateURLParams(router, { offset, searchKey, searchValue });
   }
 
   async function autocompleteProfilePropertySearch(

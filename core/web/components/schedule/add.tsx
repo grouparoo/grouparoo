@@ -1,6 +1,6 @@
 import { useApi } from "../../hooks/useApi";
 import { useState } from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import LoadingButton from "../loadingButton";
 
 export default function AddScheduleForm(props) {
@@ -33,6 +33,8 @@ export default function AddScheduleForm(props) {
 }
 
 export async function createSchedule({ execApi, sourceGuid, setLoading }) {
+  const router = useRouter();
+
   const data = {
     sourceGuid,
     recurring: false,
@@ -42,7 +44,7 @@ export async function createSchedule({ execApi, sourceGuid, setLoading }) {
   const response = await execApi("post", `/schedule`, data);
 
   if (response?.schedule) {
-    Router.push(`/source/${sourceGuid}/schedule`);
+    router.push(`/source/${sourceGuid}/schedule`);
   } else {
     setLoading(false);
   }

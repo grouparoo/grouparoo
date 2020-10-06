@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form, ListGroup } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
 import Moment from "react-moment";
 import LoadingTable from "../../../components/loadingTable";
@@ -23,6 +23,7 @@ export default function Page(props) {
     allGroups,
     apps,
   } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState<ProfileAPIData>(props.profile);
@@ -72,7 +73,7 @@ export default function Page(props) {
       setLoading(true);
       const response = await execApi("delete", `/profile/${profile.guid}`);
       if (response) {
-        Router.push("/profiles");
+        router.push("/profiles");
       } else {
         setLoading(false);
       }

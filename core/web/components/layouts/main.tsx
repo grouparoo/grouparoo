@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import { Row, Col } from "react-bootstrap";
 import { isBrowser } from "../../utils/isBrowser";
-import Loader from "../loader";
 import SuccessAlert from "../alerts/success";
 import ErrorAlert from "../alerts/error";
 import Navigation from "../navigation";
@@ -10,13 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HydrationError from "../alerts/hydrationError";
 
 export default function Main(props) {
-  const {
-    display,
-    children,
-    successHandler,
-    errorHandler,
-    hydrationError,
-  } = props;
+  const { children, successHandler, errorHandler, hydrationError } = props;
   const [navExpanded, setNavExpanded] = useState(true);
   const [alertWidth, setAlertWidth] = useState(500);
   const contentAreaLeftPadding = 265;
@@ -191,14 +184,10 @@ export default function Main(props) {
               </div>
             </div>
           </div>
-          {display ? (
-            hydrationError ? (
-              <HydrationError hydrationError={hydrationError} />
-            ) : (
-              children
-            )
+          {hydrationError ? (
+            <HydrationError hydrationError={hydrationError} />
           ) : (
-            <Loader />
+            children
           )}
         </div>
       </div>

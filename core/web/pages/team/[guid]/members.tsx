@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import LoadingButton from "../../../components/loadingButton";
 import Link from "next/link";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Moment from "react-moment";
 import LoadingTable from "../../../components/loadingTable";
 import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
@@ -10,7 +10,8 @@ import { TeamMemberAPIData } from "../../../utils/apiData";
 import TeamTabs from "../../../components/tabs/team";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, team, teams } = props;
+  const { errorHandler, successHandler, team } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [teamMembers, setTeamMembers] = useState<TeamMemberAPIData[]>(
@@ -104,7 +105,7 @@ export default function Page(props) {
         variant="primary"
         disabled={loading}
         onClick={() => {
-          Router.push(`/team/${team.guid}/teamMember/new`);
+          router.push(`/team/${team.guid}/teamMember/new`);
         }}
       >
         Add Team Member

@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import LoadingButton from "../loadingButton";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 export default function AddProfilePropertyRuleForm(props) {
-  const { errorHandler, successHandler, source } = props;
+  const { errorHandler, source } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
@@ -20,8 +21,8 @@ export default function AddProfilePropertyRuleForm(props) {
     const response = await execApi("post", `/profilePropertyRule`, data);
 
     if (response?.profilePropertyRule) {
-      Router.push(
-        `/profilePropertyRule/${response.profilePropertyRule.guid}/edit`
+      router.push(
+        `/profilePropertyRule/${response.profilePropertyRule.guid}/edit?nextPage=/source/${source.guid}/overview`
       );
     } else {
       setLoading(false);

@@ -1,6 +1,6 @@
 import Selector from "../components/selector";
 import { CardDeck } from "react-bootstrap";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 function humanizePluginName(name: string) {
   name = name.replace(/-/g, " ");
@@ -22,6 +22,8 @@ export default function SelectorList({
   selectedItem: any;
   displayAddAppButton?: boolean;
 }) {
+  const router = useRouter();
+
   return (
     <CardDeck>
       {items.map((item, idx) => {
@@ -95,7 +97,7 @@ export default function SelectorList({
             padding: "20px",
             cursor: "pointer",
           }}
-          onClick={() => Router.push("/app/new")}
+          onClick={() => router.push("/app/new")}
         >
           <div className="d-flex flex-column">
             <p>Don’t see what you’re looking for?</p>

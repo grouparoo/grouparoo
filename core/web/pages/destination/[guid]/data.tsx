@@ -3,6 +3,7 @@ import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Badge, Button, Table, Alert } from "react-bootstrap";
 import ProfilePreview from "./../../../components/destination/profilePreview";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { Typeahead } from "react-bootstrap-typeahead";
 import DestinationTabs from "../../../components/tabs/destination";
 import LoadingButton from "../../../components/loadingButton";
@@ -13,7 +14,6 @@ export default function Page(props) {
   const {
     errorHandler,
     successHandler,
-    query,
     profilePropertyRules,
     mappingOptions,
     destinationTypeConversions,
@@ -22,6 +22,7 @@ export default function Page(props) {
     hydrationError,
   } = props;
   const { execApi } = useApi(props, errorHandler);
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [trackedGroupGuid, setTrackedGroupGuid] = useState(
     props.trackedGroupGuid || "_none"
@@ -40,7 +41,7 @@ export default function Page(props) {
     setUnlockedProfilePropertyRules,
   ] = useState({});
   const [unlockedGroups, setUnlockedGroups] = useState([]);
-  const { guid } = query;
+  const { guid } = router.query;
 
   if (hydrationError) errorHandler.set({ error: hydrationError });
 

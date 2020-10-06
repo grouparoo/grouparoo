@@ -1,10 +1,9 @@
-import Head from "next/head";
 import { Fragment, useState } from "react";
 import { useApi } from "../../hooks/useApi";
-import { useHistoryPagination } from "../../hooks/useHistoryPagination";
+import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import { Alert, Badge } from "react-bootstrap";
@@ -12,7 +11,8 @@ import Moment from "react-moment";
 import { ImportAPIData } from "../../utils/apiData";
 
 export default function ImportList(props) {
-  const { pathname, query, errorHandler, groups } = props;
+  const { errorHandler, groups } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [imports, setImports] = useState<ImportAPIData[]>(props.imports);
@@ -20,16 +20,15 @@ export default function ImportList(props) {
 
   // pagination
   const limit = 100;
-  const [offset, setOffset] = useState(query.offset || 0);
-  useHistoryPagination(offset, "offset", setOffset);
+  const { offset, setOffset } = useOffset();
 
   let profileGuid: string;
   let creatorGuid: string;
-  if (query.guid) {
-    if (pathname.match("/profile/")) {
-      profileGuid = query.guid;
+  if (router.query.guid) {
+    if (router.pathname.match("/profile/")) {
+      profileGuid = router.query.guid.toString();
     } else {
-      creatorGuid = query.guid;
+      creatorGuid = router.query.guid.toString();
     }
   }
 
@@ -38,7 +37,7 @@ export default function ImportList(props) {
   }, [offset, limit]);
 
   async function load() {
-    updateURLParams();
+    updateURLParams(router, { offset });
     setLoading(true);
 
     const response = await execApi("get", `/imports`, {
@@ -52,15 +51,6 @@ export default function ImportList(props) {
       setImports(response.imports);
       setTotal(response.total);
     }
-  }
-
-  async function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) url += `offset=${offset}&`;
-
-    const routerMethod =
-      url === `${window.location.pathname}?` ? "replace" : "push";
-    Router[routerMethod](Router.route, url, { shallow: true });
   }
 
   function groupLink(groupGuid) {

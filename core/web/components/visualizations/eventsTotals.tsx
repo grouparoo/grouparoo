@@ -1,9 +1,10 @@
 import { Row, Col, Button, Accordion, Form } from "react-bootstrap";
 import { DateRangePicker } from "react-date-range";
 import { useState } from "react";
+import { updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Loader from "../loader";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { ResponsiveLine } from "@nivo/line";
 import { useApi } from "../../hooks/useApi";
 const NodeMoment = require("moment");
@@ -11,24 +12,27 @@ const NodeMoment = require("moment");
 const limit = 1000; // we want to allow for many more data points here...
 
 export default function EventsTotals(props) {
-  const { errorHandler, query } = props;
+  const { errorHandler } = props;
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState<number>(props.total);
   const [counts, setCounts] = useState(props.counts);
   const { execApi } = useApi(props, errorHandler);
-  const [dateTrunc, setDateTrunc] = useState(query.dateTrunc || "day");
+  const [dateTrunc, setDateTrunc] = useState(
+    router.query.dateTrunc?.toString() || "day"
+  );
   const [startDate, setStartDate] = useState<Date>(
-    query.startTime
-      ? new Date(parseInt(query.startTime))
+    router.query.startTime
+      ? new Date(parseInt(router.query.startTime.toString()))
       : NodeMoment().subtract(1, "month").toDate()
   );
   const [endDate, setEndDate] = useState<Date>(
-    query.endTime
-      ? new Date(parseInt(query.endTime))
+    router.query.endTime
+      ? new Date(parseInt(router.query.endTime.toString()))
       : NodeMoment().add(1, "day").toDate()
   );
 
-  const { hideDateRange } = query;
+  const { hideDateRange } = router.query;
 
   const chartData = {};
   counts.map((c) => {
@@ -61,18 +65,11 @@ export default function EventsTotals(props) {
       setTotal(response.total);
     }
 
-    updateURLParams();
-  }
-
-  function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    url += `startTime=${startDate.getTime()}&`;
-    url += `endTime=${endDate.getTime()}&`;
-    url += `dateTrunc=${dateTrunc}&`;
-
-    const routerMethod =
-      url === `${window.location.pathname}?` ? "replace" : "push";
-    Router[routerMethod](Router.route, url, { shallow: true });
+    updateURLParams(router, {
+      startTime: startDate.getTime(),
+      endTime: endDate.getTime(),
+      dateTrunc,
+    });
   }
 
   return (

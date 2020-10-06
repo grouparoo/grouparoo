@@ -1,10 +1,10 @@
 import Head from "next/head";
 import { Button } from "react-bootstrap";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useApi } from "../hooks/useApi";
+import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
-import { useHistoryPagination } from "../hooks/useHistoryPagination";
 import Link from "next/link";
 import Moment from "react-moment";
 import Pagination from "../components/pagination";
@@ -14,7 +14,8 @@ import StateBadge from "../components/stateBadge";
 import { GroupAPIData } from "../utils/apiData";
 
 export default function Page(props) {
-  const { errorHandler, query } = props;
+  const { errorHandler } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [groups, setGroups] = useState<GroupAPIData[]>(props.groups);
   const [total, setTotal] = useState(props.total);
@@ -22,15 +23,14 @@ export default function Page(props) {
 
   // pagination
   const limit = 100;
-  const [offset, setOffset] = useState(query.offset || 0);
-  useHistoryPagination(offset, "offset", setOffset);
+  const { offset, setOffset } = useOffset();
 
   useSecondaryEffect(() => {
     load();
   }, [limit, offset]);
 
   async function load() {
-    updateURLParams();
+    updateURLParams(router, { offset });
     setLoading(true);
     const response = await execApi("get", `/groups`, {
       limit,
@@ -41,15 +41,6 @@ export default function Page(props) {
       setGroups(response.groups);
       setTotal(response.total);
     }
-  }
-
-  function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) url += `offset=${offset}&`;
-
-    const routerMethod =
-      url === `${window.location.pathname}?` ? "replace" : "push";
-    Router[routerMethod](Router.route, url, { shallow: true });
   }
 
   return (
@@ -136,7 +127,7 @@ export default function Page(props) {
       <Button
         variant="primary"
         onClick={() => {
-          Router.push("/group/new");
+          router.push("/group/new");
         }}
       >
         Add Group

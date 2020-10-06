@@ -1,6 +1,6 @@
 import { useApi } from "../../../hooks/useApi";
+import { useOffset } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
-import { useHistoryPagination } from "../../../hooks/useHistoryPagination";
 import Head from "next/head";
 import GroupTabs from "../../../components/tabs/group";
 import { useState } from "react";
@@ -12,7 +12,7 @@ import AppIcon from "./../../../components/appIcon";
 import { DestinationAPIData } from "../../../utils/apiData";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, query, group } = props;
+  const { errorHandler, successHandler, group } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [destinations, setDestinations] = useState<DestinationAPIData[]>(
@@ -21,9 +21,8 @@ export default function Page(props) {
 
   // pagination
   const limit = 100;
-  const [offset, setOffset] = useState(query.offset || 0);
+  const { offset, setOffset } = useOffset();
   const [total, setTotal] = useState(props.total);
-  useHistoryPagination(offset, "offset", setOffset);
 
   useSecondaryEffect(() => {
     load();

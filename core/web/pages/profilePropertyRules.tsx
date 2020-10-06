@@ -1,9 +1,9 @@
 import Head from "next/head";
 import { Fragment, useState } from "react";
 import { useApi } from "../hooks/useApi";
+import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
-import { useHistoryPagination } from "../hooks/useHistoryPagination";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { Button, Form, Alert } from "react-bootstrap";
 import LoadingButton from "../components/loadingButton";
@@ -15,7 +15,8 @@ import StateBadge from "../components/stateBadge";
 import { ProfilePropertyRuleAPIData } from "../utils/apiData";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, query } = props;
+  const { errorHandler, successHandler } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [newRuleLoading, setNewRuleLoading] = useState(false);
@@ -29,13 +30,12 @@ export default function Page(props) {
   >(props.profilePropertyRules);
 
   // pagination
-  const limit = 100;
-  const [offset, setOffset] = useState(query.offset || 0);
+  const limit = 1000;
+  const { offset, setOffset } = useOffset();
   const [total, setTotal] = useState(props.total);
-  useHistoryPagination(offset, "offset", setOffset);
 
   useSecondaryEffect(() => {
-    updateURLParams();
+    updateURLParams(router, { offset });
     loadSources();
     loadProfilePropertyRules();
   }, [offset, limit]);
@@ -74,19 +74,10 @@ export default function Page(props) {
     });
     setNewRuleLoading(false);
     if (response?.profilePropertyRule?.guid) {
-      Router.push(
-        `/profilePropertyRule/${response.profilePropertyRule.guid}/edit`
+      router.push(
+        `/profilePropertyRule/${response.profilePropertyRule.guid}/edit?nextPage=/profilePropertyRules`
       );
     }
-  }
-
-  function updateURLParams() {
-    let url = `${window.location.pathname}?`;
-    if (offset && offset !== 0) url += `offset=${offset}&`;
-
-    const routerMethod =
-      url === `${window.location.pathname}?` ? "replace" : "push";
-    Router[routerMethod](Router.route, url, { shallow: true });
   }
 
   if (sources.length === 0) {

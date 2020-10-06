@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import Head from "next/head";
 import AppIcon from "./../../../components/appIcon";
@@ -19,8 +19,8 @@ export default function Page(props) {
     successHandler,
     destinationHandler,
     environmentVariableOptions,
-    query,
   } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [destination, setDestination] = useState<DestinationAPIData>(
     props.destination
@@ -28,7 +28,7 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false);
   const [loadingOptions, setLoadingOptions] = useState(false);
   const [connectionOptions, setConnectionOptions] = useState({});
-  const { guid } = query;
+  const { guid } = router.query;
 
   useEffect(() => {
     loadOptions();
@@ -60,7 +60,7 @@ export default function Page(props) {
         response.destination.state === "ready" &&
         destination.state === "draft"
       ) {
-        Router.push(
+        router.push(
           `/destination/[guid]/data`,
           `/destination/${destination.guid}/data`
         );
@@ -90,7 +90,7 @@ export default function Page(props) {
       setLoading(true);
       const response = await execApi("delete", `/destination/${guid}`);
       if (response) {
-        Router.push("/destinations");
+        router.push("/destinations");
       } else {
         setLoading(false);
       }

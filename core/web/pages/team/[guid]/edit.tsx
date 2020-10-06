@@ -3,12 +3,13 @@ import { useApi } from "../../../hooks/useApi";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import PermissionsList from "../../../components/permissions";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { TeamAPIData } from "../../../utils/apiData";
 import TeamTabs from "../../../components/tabs/team";
 
 export default function Page(props) {
   const { errorHandler, successHandler, teamHandler } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [team, setTeam] = useState<TeamAPIData>(props.team);
@@ -40,7 +41,7 @@ export default function Page(props) {
       const response = await execApi("delete", `/team/${team.guid}`);
       if (response) {
         successHandler.set({ message: "Team deleted" });
-        Router.push("/teams");
+        router.push("/teams");
       } else {
         setLoading(false);
       }

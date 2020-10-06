@@ -2,12 +2,13 @@ import Head from "next/head";
 import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../components/loadingButton";
 
 export default function Page(props) {
   const { errorHandler } = props;
+  const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
@@ -17,7 +18,7 @@ export default function Page(props) {
     const response = await execApi("post", `/apiKey`, data);
 
     if (response?.apiKey) {
-      Router.push(
+      router.push(
         "/apiKey/[guid]/edit",
         `/apiKey/${response.apiKey.guid}/edit`
       );
