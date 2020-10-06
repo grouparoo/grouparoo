@@ -1,6 +1,6 @@
 import { parsePhoneNumberFromString, CountryCode } from "libphonenumber-js/max";
 import { plugin } from "../../modules/plugin";
-import isEmail from "validator/lib/isEmail";
+import isEmail from "../validators/isEmail";
 import isURL from "validator/lib/isURL";
 
 export namespace ProfilePropertyOps {
