@@ -86,6 +86,8 @@ export default function Page(props) {
         setLoading(false);
         successHandler.set({ message: "Source updated" });
       }
+    } else {
+      setLoading(false);
     }
   };
 

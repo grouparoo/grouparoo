@@ -7,9 +7,10 @@ export default function AddScheduleForm(props) {
   const { errorHandler, source } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   async function create() {
-    createSchedule({ execApi, sourceGuid: source.guid, setLoading });
+    createSchedule({ execApi, router, sourceGuid: source.guid, setLoading });
   }
 
   if (source.state === "draft") {
@@ -32,9 +33,12 @@ export default function AddScheduleForm(props) {
   );
 }
 
-export async function createSchedule({ execApi, sourceGuid, setLoading }) {
-  const router = useRouter();
-
+export async function createSchedule({
+  execApi,
+  router,
+  sourceGuid,
+  setLoading,
+}) {
   const data = {
     sourceGuid,
     recurring: false,
@@ -44,8 +48,10 @@ export async function createSchedule({ execApi, sourceGuid, setLoading }) {
   const response = await execApi("post", `/schedule`, data);
 
   if (response?.schedule) {
-    router.push(`/source/${sourceGuid}/schedule`);
+    router.push(`/source/[guid]/schedule`, `/source/${sourceGuid}/schedule`);
+    return true;
   } else {
     setLoading(false);
+    return false;
   }
 }

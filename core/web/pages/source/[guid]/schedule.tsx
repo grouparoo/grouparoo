@@ -39,7 +39,6 @@ export default function Page(props) {
       `/schedule/${schedule.guid}`,
       _schedule
     );
-    setLoading(false);
     if (response?.schedule) {
       setRecurringFrequencyMinutes(
         response.schedule.recurringFrequency / (60 * 1000)
@@ -51,8 +50,11 @@ export default function Page(props) {
           `/source/${schedule.source.guid}/overview`
         );
       } else {
+        setLoading(false);
         successHandler.set({ message: "Schedule Updated" });
       }
+    } else {
+      setLoading(false);
     }
   }
 

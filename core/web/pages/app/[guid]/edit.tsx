@@ -47,12 +47,14 @@ export default function Page(props) {
       if (response.app.state === "ready" && app.state === "draft") {
         router.push("/apps");
       } else {
+        setLoading(false);
         successHandler.set({ message: "App Updated" });
         setApp(response.app);
         appHandler.set(response.app);
       }
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   async function handleDelete() {

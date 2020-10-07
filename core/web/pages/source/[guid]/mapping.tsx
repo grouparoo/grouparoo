@@ -89,8 +89,10 @@ export default function Page(props) {
       setSource(response.source);
 
       // this source can have a schedule, and we have no schedules yet
+      let hasRedirected = false;
       if (scheduleCount === 0 && response.source.scheduleAvailable) {
-        await createSchedule({
+        hasRedirected = await createSchedule({
+          router,
           execApi,
           sourceGuid: response.source.guid,
           setLoading: () => {},
@@ -98,7 +100,7 @@ export default function Page(props) {
       }
 
       // we just went 'ready'
-      if (source.state !== response.source.state) {
+      if ((hasRedirected = false && source.state !== response.source.state)) {
         router.push(
           `/source/[guid]/overview`,
           `/source/${source.guid}/overview`

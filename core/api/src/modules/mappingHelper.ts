@@ -58,7 +58,7 @@ export namespace MappingHelper {
         await Mapping.create(
           {
             ownerGuid: instance.guid,
-            ownerType: "destination",
+            ownerType: instance.constructor.name.toLowerCase(),
             profilePropertyRuleGuid: profilePropertyRule.guid,
             remoteKey,
           },

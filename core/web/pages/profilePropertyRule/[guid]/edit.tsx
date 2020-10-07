@@ -62,7 +62,6 @@ export default function Page(props) {
           state: "ready",
         })
       );
-      setLoading(false);
       if (response?.profilePropertyRule) {
         setProfilePropertyRule(response.profilePropertyRule);
         profilePropertyRulesHandler.set(response.profilePropertyRule);
@@ -72,8 +71,11 @@ export default function Page(props) {
         ) {
           router.push(nextPage || "/profilePropertyRules");
         } else {
+          setLoading(false);
           successHandler.set({ message: "Profile Property Rule Updated" });
         }
+      } else {
+        setLoading(false);
       }
     }
   }
