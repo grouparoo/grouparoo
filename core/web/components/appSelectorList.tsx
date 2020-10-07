@@ -1,8 +1,8 @@
-import Selector from "../components/selector";
+import Selector from "./selector";
 import { CardDeck } from "react-bootstrap";
 import { useRouter } from "next/router";
 
-function humanizePluginName(name: string) {
+export function humanizePluginName(name: string) {
   name = name.replace(/-/g, " ");
   name = name.replace(/_/g, " ");
   const words = name.toLowerCase().split(" ");
@@ -11,7 +11,7 @@ function humanizePluginName(name: string) {
     .join(" ");
 }
 
-export default function SelectorList({
+export default function AppSelectorList({
   onClick,
   items,
   selectedItem,
@@ -34,18 +34,7 @@ export default function SelectorList({
         let className: string;
         let badges: { message?: string; variant?: string }[] = [];
 
-        if (item?.app?.guid) {
-          // these items are connectionApps, i.e.: ({connection: {}, app: {}})
-          src = item.app.icon;
-          title = humanizePluginName(item.connection.name);
-          subheading = item.app.name;
-          description = item.connection.description;
-          className =
-            item.app.guid === selectedItem.appGuid &&
-            item.connection.name === selectedItem.type
-              ? "selector-list-selected"
-              : "selector-list";
-        } else if (item?.plugin) {
+        if (item?.plugin) {
           // these items are apps themselves
           src = item.plugin.icon;
           title = humanizePluginName(item.name);
@@ -66,7 +55,15 @@ export default function SelectorList({
             badges.push({});
           }
         } else {
-          throw new Error("I do not know what that is");
+          // these are apps extracted from connectionApps
+          src = item.icon;
+          title = humanizePluginName(item.name);
+          subheading = item.type;
+          // description = item.connection.description;
+          className =
+            item.guid === selectedItem.guid
+              ? "selector-list-selected"
+              : "selector-list";
         }
 
         return (
