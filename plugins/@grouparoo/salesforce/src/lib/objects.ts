@@ -11,7 +11,7 @@ export async function describeObject(
   passthru = false
 ) {
   const { appGuid, appOptions } = cacheData;
-  const cacheKey = Object.assign({ objectName }, appOptions);
+  const cacheKey = ["describeObject", objectName, appOptions];
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
   return objectCache(
     { objectGuid: appGuid, cacheKey, cacheDurationMs, passthru },

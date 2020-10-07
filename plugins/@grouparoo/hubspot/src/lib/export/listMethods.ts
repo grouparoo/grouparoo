@@ -1,9 +1,9 @@
-import { objectCache, waitForLock } from "@grouparoo/core";
+import { objectCache } from "@grouparoo/core";
 import Axios from "axios";
 
 async function getLists(appGuid, appOptions, update = false) {
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
-  const cacheKey = Object.assign({ getLists: true }, appOptions);
+  const cacheKey = ["getLists", appOptions];
   const read = !update; // if updating, skip the read from cache. still write.
   return objectCache(
     { objectGuid: appGuid, cacheKey, cacheDurationMs, read },
@@ -34,7 +34,7 @@ async function getListId(appGuid, appOptions, groupName): Promise<string> {
   }
 
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
-  const cacheKey = Object.assign({ getListId: true, groupName }, appOptions);
+  const cacheKey = ["getListId", groupName, appOptions];
   return objectCache(
     { objectGuid: appGuid, cacheKey, cacheDurationMs },
     async () => {

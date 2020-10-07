@@ -13,7 +13,7 @@ export async function getListId(
 ): Promise<number> {
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
   const { appGuid, appOptions } = cacheData;
-  const cacheKey: CacheKey = Object.assign({ listName }, appOptions);
+  const cacheKey: CacheKey = ["getListId", listName, appOptions];
   const listId = await objectCache(
     { objectGuid: appGuid, cacheKey, cacheDurationMs },
     async () => {
@@ -70,7 +70,7 @@ async function getRootFolderId(
   // but we'd have to create that and that's more work. Let's see how it goes.
   const folderName = "Group Lists";
 
-  const cacheKey: CacheKey = Object.assign({ folderName }, appOptions);
+  const cacheKey: CacheKey = ["getRootFolderId", folderName, appOptions];
   const cacheDurationMs = 1000 * 60 * 120; // 120 minutes
   const folderId = await objectCache(
     { objectGuid: appGuid, cacheKey, cacheDurationMs },

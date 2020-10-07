@@ -533,10 +533,13 @@ async function getListId(
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
 
   const { appGuid, appOptions } = cacheData;
-  const cacheKey = Object.assign(
-    { listName, groupObject, groupNameField },
-    appOptions
-  );
+  const cacheKey = [
+    "getListId",
+    groupObject,
+    groupNameField,
+    listName,
+    appOptions,
+  ];
   const listId = await objectCache(
     { objectGuid: appGuid, cacheKey, cacheDurationMs },
     async () => {

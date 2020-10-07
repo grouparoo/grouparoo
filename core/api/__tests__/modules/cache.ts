@@ -73,12 +73,20 @@ describe("modules/cache", () => {
     checkCaching("Date", new Date());
     checkCaching("boolean", false);
     checkCaching("Object", {
-      one: { deep: true, other: 3, deeper: { pass: "true" } },
+      one: { deep: true, other: 3, deeper: { pass: "true", list: [1, 2, 3] } },
       two: "here",
       three: false,
       four: "now",
       five: new Date(),
+      six: ["here", "multi"],
     });
+    checkCaching("Array", [
+      1,
+      { ok: true, other: "here" },
+      ["deep", "array"],
+      false,
+      new Date(),
+    ]);
   });
 
   describe("locking", () => {

@@ -3,11 +3,13 @@ import { waitForLock } from "./locks";
 import crypto from "crypto";
 
 export type CacheKey =
-  | { [keyName: string]: any }
+  | { [keyName: string]: CacheKey }
+  | Array<CacheKey>
   | string
   | number
   | boolean
   | Date;
+
 export interface ObjectCacheMethod {
   (
     argument: {
@@ -66,6 +68,14 @@ function makeCacheString(cacheKey: CacheKey) {
     if (type === "Date") {
       const date: Date = <Date>cacheKey;
       return date.toISOString();
+    } else if (type === "Array") {
+      const array = <Array<CacheKey>>cacheKey;
+      let buffer = "";
+      for (let i = 0; i < array.length; i++) {
+        const value = makeCacheString(array[i]);
+        buffer += `|${i}:${value}`;
+      }
+      return buffer;
     } else if (type === "Object") {
       const keys = Object.keys(cacheKey);
       let buffer = "";

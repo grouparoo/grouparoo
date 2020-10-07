@@ -1,4 +1,3 @@
-import { ObjectCacheInvalidateMethod } from "./modules/cache";
 export { plugin } from "./modules/plugin";
 
 export * from "./classes/plugin";
