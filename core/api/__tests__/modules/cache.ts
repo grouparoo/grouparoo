@@ -105,7 +105,7 @@ describe("modules/cache", () => {
       expect(callee).toHaveBeenCalledTimes(1);
     });
 
-    test("if a lock is in use, it will call them in parallel", async () => {
+    test("if a lock is in use, it will only let one through when called in parallel", async () => {
       const callee = jest.fn().mockReturnValue(3);
       const methodToGetValue = async () => {
         return callee();
