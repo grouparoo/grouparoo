@@ -31,7 +31,7 @@ async function getTables() {
   const response = await sourceOptions({
     connection,
     appOptions,
-    sourceOptions,
+    sourceOptions: null,
     app: null,
     appGuid: null,
   });
