@@ -16,9 +16,11 @@ export default function NewTeamPage(props) {
   async function onSubmit(data) {
     setLoading(true);
     const response = await execApi("post", `/team`, data);
-    setLoading(false);
+
     if (response?.team) {
       router.push("/team/[guid]/edit", `/team/${response.team.guid}/edit`);
+    } else {
+      setLoading(false);
     }
   }
 

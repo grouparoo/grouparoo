@@ -49,7 +49,9 @@ export async function createSchedule({
 
   if (response?.schedule) {
     router.push(`/source/[guid]/schedule`, `/source/${sourceGuid}/schedule`);
+    return true;
   } else {
     setLoading(false);
+    return false;
   }
 }
