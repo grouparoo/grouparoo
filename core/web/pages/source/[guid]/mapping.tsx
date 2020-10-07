@@ -91,6 +91,7 @@ export default function Page(props) {
       // this source can have a schedule, and we have no schedules yet
       if (scheduleCount === 0 && response.source.scheduleAvailable) {
         await createSchedule({
+          router,
           execApi,
           sourceGuid: response.source.guid,
           setLoading: () => {},

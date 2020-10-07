@@ -65,10 +65,12 @@ export default function Page(props) {
           `/destination/${destination.guid}/data`
         );
       } else {
+        setLoading(false);
         successHandler.set({ message: "Destination updated" });
       }
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   async function loadOptions() {
