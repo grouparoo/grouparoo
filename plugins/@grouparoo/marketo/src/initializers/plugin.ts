@@ -28,24 +28,24 @@ export class Plugins extends Initializer {
             {
               key: "endpoint",
               required: true,
-              description: "in Web Services",
+              description: "Found in Marketo Web Services.",
               placeholder: "https://123-ABC-456.mktorest.com/rest",
             },
             {
               key: "identity",
               required: true,
-              description: "in Web Services",
+              description: "Found in Marketo Web Services.",
               placeholder: "https://123-ABC-456.mktorest.com/identity",
             },
             {
               key: "clientId",
               required: true,
-              description: "in LaunchPoint for an API user",
+              description: "Found in LaunchPoint for an API user.",
             },
             {
               key: "clientSecret",
               required: true,
-              description: "in LaunchPoint for an API user",
+              description: "Found in LaunchPoint for an API user.",
             },
           ],
           methods: { test, parallelism },
@@ -55,7 +55,7 @@ export class Plugins extends Initializer {
         {
           name: "marketo-export",
           direction: "export",
-          description: "export profiles to a marketo account",
+          description: "Export Profiles to a Marketo account.",
           app: "marketo",
           options: [],
           methods: {

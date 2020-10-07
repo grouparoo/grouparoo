@@ -45,7 +45,7 @@ export class Plugins extends Initializer {
               key: "account",
               required: true,
               description:
-                "The full name of your account (provided by Snowflake). It is the subdomain you use to access Snowflake.",
+                "The full name of the account (provided by Snowflake). It is the subdomain you use to access Snowflake.",
               placeholder: "e.g. xyz12345.us-east-1 or xy12345.us-east-2.aws",
             },
             {
@@ -84,7 +84,7 @@ export class Plugins extends Initializer {
           name: "snowflake-table-import",
           direction: "import",
           description:
-            "Import or update profiles from a Snowflake database table",
+            "Import or update Profiles from a Snowflake database table.",
           app: "snowflake",
           options: [
             {
@@ -109,7 +109,7 @@ export class Plugins extends Initializer {
           name: "snowflake-query-import",
           direction: "import",
           description:
-            "Import or update profiles from a custom Snowflake query",
+            "Import or update profiles via a custom Snowflake query.",
           app: "snowflake",
           options: [],
           profilePropertyRuleOptions: queryProfilePropertyRuleOptions,

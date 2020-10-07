@@ -32,14 +32,14 @@ export class Plugins extends Initializer {
         {
           name: "csv-file-import",
           direction: "import",
-          description: "import or update profiles from an uploaded CSV",
+          description: "Import or update Profiles from an uploaded CSV.",
           app: "csv",
           options: [
             {
               key: "fileGuid",
               required: true,
               description:
-                "the fileGuid from a file previously uploaded to grouparoo",
+                "The fileGuid from a file previously uploaded to Grouparoo.",
             },
           ],
           scheduleOptions: [],

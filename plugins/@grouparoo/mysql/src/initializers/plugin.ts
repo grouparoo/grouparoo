@@ -43,25 +43,25 @@ export class Plugins extends Initializer {
             {
               key: "host",
               required: false,
-              description: "the mysql host",
+              description: "The MySQL host.",
               placeholder: "localhost",
             },
             {
               key: "port",
               required: false,
-              description: "the mysql port",
+              description: "The MySQL port.",
               placeholder: "3306",
             },
             {
               key: "database",
               required: true,
-              description: "the mysql database",
+              description: "The MySQL database.",
             },
-            { key: "user", required: false, description: "the mysql user" },
+            { key: "user", required: false, description: "The MySQL user." },
             {
               key: "password",
               required: false,
-              description: "the mysql user's password",
+              description: "The MySQL user's password.",
             },
           ],
           methods: { test, connect, disconnect },
@@ -71,13 +71,13 @@ export class Plugins extends Initializer {
         {
           name: "mysql-table-import",
           direction: "import",
-          description: "import or update profiles from a mysql database table",
+          description: "Import or update Profiles from a MySQL database table.",
           app: "mysql",
           options: [
             {
               key: "table",
               required: true,
-              description: "the table to scan",
+              description: "The table to scan",
             },
           ],
           profilePropertyRuleOptions: tableProfilePropertyRuleOptions,
@@ -95,7 +95,7 @@ export class Plugins extends Initializer {
         {
           name: "mysql-query-import",
           direction: "import",
-          description: "import or update profiles from a custom mysql query",
+          description: "Import or update Profiles via a custom MySQL query.",
           app: "mysql",
           options: [],
           profilePropertyRuleOptions: queryProfilePropertyRuleOptions,
@@ -107,35 +107,36 @@ export class Plugins extends Initializer {
         {
           name: "mysql-export",
           direction: "export",
-          description: "export profiles to a mysql table",
+          description:
+            "Export Profiles to a MySQL table.  Groups will be exported to a secondary table linked by a foreign key.",
           app: "mysql",
           options: [
             {
               key: "table",
               required: true,
-              description: "the table to write profiles to",
+              description: "The table to write profiles to.",
             },
             {
               key: "primaryKey",
               required: true,
-              description: "the primaryKey of table",
+              description: "The primaryKey of table.",
             },
             {
               key: "groupsTable",
               required: true,
-              description: "the table to write groups to",
+              description: "The table to write groups to.",
             },
             {
               key: "groupForeignKey",
               required: true,
               description:
-                "the foreign key that the groups table uses to reference table",
+                "The foreign key that the groups table uses to reference table.",
             },
             {
               key: "groupColumnName",
               required: true,
               description:
-                "the foreign key column name for where to store the group names",
+                "The column name for where to store the group names.",
             },
           ],
           methods: {

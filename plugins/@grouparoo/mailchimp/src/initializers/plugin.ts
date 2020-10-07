@@ -28,7 +28,7 @@ export class Plugins extends Initializer {
             {
               key: "apiKey",
               required: true,
-              description: "your mailchimp api key",
+              description: "Mailchimp api key.",
             },
           ],
           methods: { test, parallelism },
@@ -38,13 +38,14 @@ export class Plugins extends Initializer {
         {
           name: "mailchimp-export",
           direction: "export",
-          description: "export profiles to a mailchimp list",
+          description:
+            "Export Profiles to a Mailchimp list with MergeVars and Tags.",
           app: "mailchimp",
           options: [
             {
               key: "listId",
               required: true,
-              description: "your mailchimp list id",
+              description: "Mailchimp list id.",
             },
           ],
           methods: {

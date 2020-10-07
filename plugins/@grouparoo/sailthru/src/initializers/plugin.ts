@@ -27,12 +27,12 @@ export class Plugins extends Initializer {
             {
               key: "apiKey",
               required: true,
-              description: "your sailthru api key",
+              description: "Sailthru api key.",
             },
             {
               key: "apiSecret",
               required: true,
-              description: "your sailthru secret here",
+              description: "Sailthru apiKey secret.",
             },
           ],
           methods: { test },
@@ -42,7 +42,7 @@ export class Plugins extends Initializer {
         {
           name: "sailthru-export",
           direction: "export",
-          description: "export profiles to sailthru",
+          description: "Export Profiles to Sailthru.",
           app: "sailthru",
           options: [],
           methods: {

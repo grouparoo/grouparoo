@@ -39,23 +39,23 @@ export class Plugins extends Initializer {
         {
           name: "redshift",
           options: [
-            { key: "host", required: false, description: "the redshift host" },
-            { key: "port", required: false, description: "the redshift port" },
+            { key: "host", required: false, description: "The Redshift host." },
+            { key: "port", required: false, description: "The Redshift port." },
             {
               key: "database",
               required: true,
-              description: "the redshift database",
+              description: "The Redshift database.",
             },
             {
               key: "schema",
               required: false,
-              description: "the redshift schema (default: public)",
+              description: "The Redshift schema (default: public).",
             },
-            { key: "user", required: false, description: "the redshift user" },
+            { key: "user", required: false, description: "The Redshift user." },
             {
               key: "password",
               required: false,
-              description: "the redshift user's password",
+              description: "The Redshift user's password.",
             },
           ],
           methods: { test, connect, disconnect },
@@ -66,13 +66,13 @@ export class Plugins extends Initializer {
           name: "redshift-table-import",
           direction: "import",
           description:
-            "import or update profiles from a redshift database table",
+            "Import or update Profiles from a Redshift database table.",
           app: "redshift",
           options: [
             {
               key: "table",
               required: true,
-              description: "the table to scan",
+              description: "The table to scan.",
             },
           ],
           profilePropertyRuleOptions: tableProfilePropertyRuleOptions,
@@ -89,7 +89,7 @@ export class Plugins extends Initializer {
         {
           name: "redshift-query-import",
           direction: "import",
-          description: "import or update profiles from a custom redshift query",
+          description: "Import or update Profiles via a custom Redshift query.",
           app: "redshift",
           options: [],
           profilePropertyRuleOptions: queryProfilePropertyRuleOptions,
@@ -101,35 +101,36 @@ export class Plugins extends Initializer {
         {
           name: "redshift-export",
           direction: "export",
-          description: "export profiles to a redshift table",
+          description:
+            "Export Profiles to a Redshift table.  Groups will be exported to a secondary table linked by a foreign key.",
           app: "redshift",
           options: [
             {
               key: "table",
               required: true,
-              description: "the table to write profiles to",
+              description: "The table to write profiles to.",
             },
             {
               key: "primaryKey",
               required: true,
-              description: "the primaryKey of table",
+              description: "The primaryKey of table.",
             },
             {
               key: "groupsTable",
               required: true,
-              description: "the table to write groups to",
+              description: "The table to write groups to.",
             },
             {
               key: "groupForeignKey",
               required: true,
               description:
-                "the foreign key that the groups table uses to reference table",
+                "The foreign key that the groups table uses to reference table.",
             },
             {
               key: "groupColumnName",
               required: true,
               description:
-                "the foreign key column name for where to store the group names",
+                "The column name for where to store the group names.",
             },
           ],
           methods: {
