@@ -220,11 +220,11 @@ describe("models/destination", () => {
 
     test("partial options will be passed to destinationConnectionOptions", async () => {
       const connectionOptions = await destination.destinationConnectionOptions({
-        options: true,
+        options: "true",
       });
       expect(connectionOptions).toEqual({
         table: { type: "list", options: ["users_out"] },
-        receivedOptions: true,
+        receivedOptions: { type: "string", options: ["true"] },
       });
     });
 
