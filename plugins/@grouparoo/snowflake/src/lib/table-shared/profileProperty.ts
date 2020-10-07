@@ -3,6 +3,7 @@ import {
   MatchCondition,
   FilterOperation,
   GetPropertyValueMethod,
+  AggregationMethod,
   columnNameKey,
   tableNameKey,
   aggregationMethodKey,
@@ -31,13 +32,18 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
     const matchName = Object.keys(sourceMapping)[0]; // tableCol
     const profilePropertyMatch = Object.values(sourceMapping)[0];
     const columnName = profilePropertyRuleOptions[columnNameKey];
-    const aggregationMethod = profilePropertyRuleOptions[aggregationMethodKey];
+    const aggregationMethod = <AggregationMethod>(
+      profilePropertyRuleOptions[aggregationMethodKey]
+    );
     const sortColumn = profilePropertyRuleOptions[sortColumnKey];
 
     if (!aggregationMethod || !columnName) return;
 
     // don't `select userId where userId = {userId}` if we don't know {userId}
-    if (matchName === columnName && aggregationMethod === "exact") {
+    if (
+      matchName === columnName &&
+      aggregationMethod === AggregationMethod.Exact
+    ) {
       const tableMappingCol: string = Object.values(sourceMapping)[0];
       const properties = await profile.properties();
       if (properties[tableMappingCol]?.values.length === 0) {

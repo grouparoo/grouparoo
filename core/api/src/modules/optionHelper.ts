@@ -20,7 +20,7 @@ function modelName(instance): string {
 
 export namespace OptionHelper {
   export interface SimpleOptions {
-    [key: string]: any;
+    [key: string]: string;
   }
 
   export async function getOptions(

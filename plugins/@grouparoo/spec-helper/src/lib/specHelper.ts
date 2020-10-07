@@ -254,8 +254,8 @@ export namespace helper {
               const response: SourceOptionsMethodResponse = {
                 table: { type: "list", options: ["users"] },
               };
-              if (sourceOptions.options)
-                response["receivedOptions"] = sourceOptions.options;
+              // if (sourceOptions.options)
+              //   response["receivedOptions"] = sourceOptions.options;
               return response;
             },
             sourcePreview: async () => {
@@ -316,8 +316,8 @@ export namespace helper {
               const response: DestinationOptionsMethodResponse = {
                 table: { type: "list", options: ["users_out"] },
               };
-              if (destinationOptions.options)
-                response["receivedOptions"] = destinationOptions.options;
+              // if (destinationOptions.options)
+              //   response["receivedOptions"] = destinationOptions.options;
               return response;
             },
             exportArrayProperties: async () => [],
@@ -362,8 +362,8 @@ export namespace helper {
               const response: DestinationOptionsMethodResponse = {
                 table: { type: "list", options: ["users_out"] },
               };
-              if (destinationOptions.options)
-                response["receivedOptions"] = destinationOptions.options;
+              // if (destinationOptions.options)
+              //   response["receivedOptions"] = destinationOptions.options;
               return response;
             },
             exportArrayProperties: async () => [],
