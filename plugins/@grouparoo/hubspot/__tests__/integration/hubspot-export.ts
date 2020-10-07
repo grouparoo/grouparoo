@@ -7,22 +7,76 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
 import { Profile, App, Destination, Group } from "@grouparoo/core";
 import { connect } from "./../../src/lib/connect";
+import Axios from "axios";
+import { loadAppOptions, updater } from "../utils/nockHelper";
 
-// uncomment to use real HTTP requests
-// import nock from "nock";
-// nock.recorder.rec();
+const nockFile = path.join(__dirname, "../", "fixtures", "hubspot-export.js");
 
-// load the saved nock recordings
-require("./../fixtures/nock");
+// these comments to use nock
+const newNock = false;
+require("./../fixtures/hubspot-export");
+// or these to make it true
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
-// API Keys
-// Note: These are only needed when recording new nock fixtures
-const HUBSPOT_API_KEY = process.env.HUBSPOT_API_KEY || "xxxxxxxxxxxxxxxxx";
+const appOptions = loadAppOptions(newNock);
+
+const email1 = "luigi@example.com";
+const list1 = "<test> hubspot people";
 
 let actionhero;
+let client;
+
+async function cleanUp(suppressErrors) {
+  try {
+    await deleteUsers();
+    await deleteLists();
+  } catch (err) {
+    if (!suppressErrors) {
+      throw err;
+    }
+  }
+}
+
+async function deleteUsers() {
+  const emails = [email1];
+  for (const email of emails) {
+    try {
+      const contact = await client.contacts.getByEmail(email);
+      if (contact) {
+        await client.contacts.deleteContact(contact.vid);
+      }
+    } catch (error) {
+      if (!error.toString().match(/Request failed with status code 404/)) {
+        throw error;
+      }
+    }
+  }
+}
+
+async function deleteLists() {
+  const lists = [list1];
+
+  const { data } = await Axios({
+    method: "GET",
+    url: `https://api.hubapi.com/contacts/v1/lists/static?hapikey=${appOptions.hapikey}&count=999`,
+    headers: { "Content-Type": "application/json" },
+  });
+  const hubspotLists = data.lists;
+
+  for (const listName of lists) {
+    const found = hubspotLists.filter((list) => list.name === listName)[0];
+    if (found) {
+      await Axios({
+        method: "DELETE",
+        url: `https://api.hubapi.com/contacts/v1/lists/${found.listId}?hapikey=${appOptions.hapikey}`,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+  }
+}
 
 describe("integration/runs/hubspot", () => {
-  let client;
   let session;
   let csrfToken: string;
   let app: App;
@@ -36,9 +90,10 @@ describe("integration/runs/hubspot", () => {
     await api.resque.queue.connection.redis.flushdb();
   }, 1000 * 30);
 
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  beforeAll(async () => {
+    client = await connect(appOptions);
+    await cleanUp(false);
+  }, 1000 * 30);
 
   beforeAll(async () => {
     await helper.factories.profilePropertyRules();
@@ -57,15 +112,19 @@ describe("integration/runs/hubspot", () => {
   beforeAll(async () => {
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({
-      email: ["luigi@grouparoo.com"],
+      email: [email1],
       firstName: ["Luigi"],
-      lastName: ["Mario"],
+      lastName: ["Plumber"],
       userId: [100],
     });
   });
 
   afterAll(async () => {
-    await client.end();
+    await cleanUp(true);
+  });
+
+  afterAll(async () => {
+    await helper.shutdown(actionhero);
   });
 
   test("an administrator can create the related import app and destination", async () => {
@@ -84,7 +143,7 @@ describe("integration/runs/hubspot", () => {
       csrfToken,
       name: "test app",
       type: "hubspot",
-      options: { hapikey: HUBSPOT_API_KEY },
+      options: appOptions,
       state: "ready",
     };
     const appResponse = await specHelper.runAction("app:create", session);
@@ -173,7 +232,7 @@ describe("integration/runs/hubspot", () => {
   test("create the test group and set the destination group membership", async () => {
     group = await helper.factories.group();
     await group.update({
-      name: "hubspot people",
+      name: list1,
       matchType: "all",
       type: "calculated",
     });
@@ -209,8 +268,8 @@ describe("integration/runs/hubspot", () => {
     expect(_destination.destinationGroupMemberships).toEqual([
       {
         groupGuid: group.guid,
-        groupName: "hubspot people",
-        remoteKey: "hubspot people",
+        groupName: list1,
+        remoteKey: list1,
       },
     ]);
   });
@@ -221,11 +280,10 @@ describe("integration/runs/hubspot", () => {
   });
 
   test("hubspot has the profile data", async () => {
-    const client = await connect({ hapikey: HUBSPOT_API_KEY });
-    const contact = await client.contacts.getByEmail("luigi@grouparoo.com");
-    expect(contact.properties.email.value).toBe("luigi@grouparoo.com");
+    const contact = await client.contacts.getByEmail(email1);
+    expect(contact.properties.email.value).toBe(email1);
     expect(contact.properties.firstname.value).toBe("Luigi");
-    expect(contact.properties.lastname.value).toBe("Mario");
+    expect(contact.properties.lastname.value).toBe("Plumber");
     expect(contact["list-memberships"].length).toBe(1); // we would need to look up the list to check the name;
   });
 });
