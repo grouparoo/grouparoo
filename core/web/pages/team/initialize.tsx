@@ -16,10 +16,11 @@ export default function TeamInitializePage(props) {
   async function onSubmit(data) {
     setLoading(true);
     const response = await execApi("post", `/team/initialize`, data);
-    setLoading(false);
     if (response?.team) {
       successHandler.set({ message: "Team Created" });
       router.push(`/session/sign-in`);
+    } else {
+      setLoading(false);
     }
   }
 

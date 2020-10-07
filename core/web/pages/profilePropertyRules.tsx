@@ -72,11 +72,12 @@ export default function Page(props) {
       sourceGuid: newRuleSourceGuid,
       type: "string",
     });
-    setNewRuleLoading(false);
     if (response?.profilePropertyRule?.guid) {
       router.push(
         `/profilePropertyRule/${response.profilePropertyRule.guid}/edit?nextPage=/profilePropertyRules`
       );
+    } else {
+      setNewRuleLoading(false);
     }
   }
 
