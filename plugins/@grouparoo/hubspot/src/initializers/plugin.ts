@@ -29,7 +29,7 @@ export class Plugins extends Initializer {
             {
               key: "hapikey",
               required: true,
-              description: "your hubspot hapikey (api) key",
+              description: "Hubspot hapikey (api) key.",
             },
           ],
           methods: { connect, disconnect, test },
@@ -39,7 +39,8 @@ export class Plugins extends Initializer {
         {
           name: "hubspot-export",
           direction: "export",
-          description: "export profiles to a hubspot contact list",
+          description:
+            "Export Profiles to Hubspot and add them to Contact Lists.",
           app: "hubspot",
           options: [],
           methods: {

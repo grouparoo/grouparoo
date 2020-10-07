@@ -28,18 +28,18 @@ export class Plugins extends Initializer {
             {
               key: "username",
               required: true,
-              description: "Your email address for logging into Salesforce",
+              description: "Email address for logging into Salesforce",
             },
             {
               key: "password",
               required: true,
-              description: "Your password for logging into Salesforce",
+              description: "Password for logging into Salesforce",
             },
             {
               key: "securityToken",
               required: false,
               description:
-                "To get a new security token, click on 'Reset My Security Token' in your personal settings",
+                "To get a new security token, click on 'Reset My Security Token' in `personal settings`",
             },
           ],
           methods: { test, parallelism },
@@ -49,7 +49,8 @@ export class Plugins extends Initializer {
         {
           name: "salesforce-objects-export",
           direction: "export",
-          description: "Export profiles to a Salesforce sales cloud objects",
+          description:
+            "Export Profiles and Groups to Salesforce sales cloud objects.",
           app: "salesforce",
           options: [
             {

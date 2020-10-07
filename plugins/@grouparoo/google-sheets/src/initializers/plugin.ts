@@ -27,14 +27,14 @@ export class Plugins extends Initializer {
             {
               key: "client_email",
               required: true,
-              description: "email of service account",
+              description: "Email of service account.",
               placeholder:
                 "e.g. grouparoo-access@grouparoo-sources.iam.gserviceaccount.com",
             },
             {
               key: "private_key",
               required: true,
-              description: "private key of service account",
+              description: "Private key of service account.",
               placeholder: "e.g. -----BEGIN PRIVATE KEY-----\nMII ...",
             },
           ],
@@ -45,13 +45,13 @@ export class Plugins extends Initializer {
         {
           name: "google-sheet-import",
           direction: "import",
-          description: "import or update profiles from a Google Sheet",
+          description: "Import or update Profiles from a Google Sheet.",
           app: "google-sheets",
           options: [
             {
               key: "sheet_url",
               required: true,
-              description: "the url of the google sheet",
+              description: "The url of the Google Sheet.",
             },
           ],
           profilePropertyRuleOptions,

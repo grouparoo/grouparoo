@@ -27,18 +27,18 @@ export class Plugins extends Initializer {
             {
               key: "subdomain",
               required: true,
-              description: "the companyname in companyname.zendesk.com",
+              description: "The `companyname` in companyname.zendesk.com.",
             },
             {
               key: "username",
               required: true,
               description:
-                "your zendesk username, often the email address of an admin",
+                "Zendesk username, often the email address of an admin user.",
             },
             {
               key: "token",
               required: true,
-              description: "your zendesk api token for the admin user",
+              description: "Zendesk api token for the admin user.",
             },
           ],
           methods: { test },
@@ -48,7 +48,7 @@ export class Plugins extends Initializer {
         {
           name: "zendesk-export",
           direction: "export",
-          description: "export profiles to a zendesk account",
+          description: "Export Profiles to a Zendesk account.",
           app: "zendesk",
           options: [],
           methods: {

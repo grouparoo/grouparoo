@@ -27,13 +27,13 @@ export class Plugins extends Initializer {
             {
               key: "filename",
               required: true,
-              description: "the name of the file to log to, in /log",
+              description: "The name of the file to log to, in /log.",
               placeholder: "/path/to/grouparoo.log",
             },
             {
               key: "stdout",
               required: false,
-              description: "set to 'true' to also log to Grouparoo's console",
+              description: "Set to 'true' to also log to Grouparoo's console.",
               placeholder: "true",
             },
           ],
@@ -44,7 +44,7 @@ export class Plugins extends Initializer {
         {
           name: "logger-export",
           direction: "export",
-          description: "export profiles to a log file for debugging",
+          description: "Export Profiles to a log file as JSON.",
           app: "logger",
           options: [],
           methods: {

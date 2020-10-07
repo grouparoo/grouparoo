@@ -38,26 +38,26 @@ export class Plugins extends Initializer {
             {
               key: "project_id",
               required: true,
-              description: "project id from google",
+              description: "Project id from Google.",
               placeholder: "e.g. grouparoo-sources",
             },
             {
               key: "dataset",
               required: true,
-              description: "default dataset id to use for sources",
+              description: "Default dataset id to use for sources.",
               placeholder: "e.g. product-data",
             },
             {
               key: "client_email",
               required: true,
-              description: "email of service account",
+              description: "Email of service account.",
               placeholder:
                 "e.g. grouparoo-access@grouparoo-sources.iam.gserviceaccount.com",
             },
             {
               key: "private_key",
               required: true,
-              description: "private key of service account",
+              description: "Private key of service account.",
               placeholder: "e.g. -----BEGIN PRIVATE KEY-----\nMII ...",
             },
           ],
@@ -69,13 +69,13 @@ export class Plugins extends Initializer {
           name: "bigquery-table-import",
           direction: "import",
           description:
-            "import or update profiles from a bigquery database table",
+            "Import or update Profiles from a Bigquery database table.",
           app: "bigquery",
           options: [
             {
               key: "table",
               required: true,
-              description: "the table to scan",
+              description: "The table to scan for new and changed Profiles.",
             },
           ],
           profilePropertyRuleOptions: tableProfilePropertyRuleOptions,
@@ -93,7 +93,7 @@ export class Plugins extends Initializer {
         {
           name: "bigquery-query-import",
           direction: "import",
-          description: "import or update profiles from a custom bigquery query",
+          description: "Import or update Profiles via a custom Bigquery query.",
           app: "bigquery",
           options: [],
           profilePropertyRuleOptions: queryProfilePropertyRuleOptions,

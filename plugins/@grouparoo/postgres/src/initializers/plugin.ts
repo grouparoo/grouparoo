@@ -43,52 +43,52 @@ export class Plugins extends Initializer {
             {
               key: "host",
               required: false,
-              description: "the postgres host",
+              description: "The Postgres host.",
               placeholder: "localhost",
             },
             {
               key: "port",
               required: false,
-              description: "the postgres port",
+              description: "The Postgres port.",
               placeholder: "5432",
             },
             {
               key: "database",
               required: true,
-              description: "the postgres database",
+              description: "The Postgres database.",
             },
             {
               key: "schema",
               required: false,
-              description: "the postgres schema (default: public)",
+              description: "The Postgres schema (default: public).",
               placeholder: "public",
             },
-            { key: "user", required: false, description: "the postgres user" },
+            { key: "user", required: false, description: "The Postgres user." },
             {
               key: "password",
               required: false,
-              description: "the postgres user's password",
+              description: "The Postgres user's password.",
             },
             {
               key: "ssl",
               required: false,
               description:
-                "require the use of a SSL connection (default: false).  If you need custom SSL certificates paste in their values below",
+                "Require the use of a SSL connection (default: false).  If you need custom SSL certificates paste in their values below.",
             },
             {
               key: "ssl_cert",
               required: false,
-              description: "the ssl certificate",
+              description: "The ssl certificate.",
             },
             {
               key: "ssl_key",
               required: false,
-              description: "the ssl certificate's key",
+              description: "The ssl certificate's key.",
             },
             {
               key: "ssl_ca",
               required: false,
-              description: "the ssl certificate authority",
+              description: "The ssl certificate authority.",
             },
           ],
           methods: { test, connect, disconnect },
@@ -99,13 +99,13 @@ export class Plugins extends Initializer {
           name: "postgres-table-import",
           direction: "import",
           description:
-            "import or update profiles from a postgres database table",
+            "Import or update Profiles from a Postgres database table.",
           app: "postgres",
           options: [
             {
               key: "table",
               required: true,
-              description: "the table to scan",
+              description: "The table to scan.",
             },
           ],
           profilePropertyRuleOptions: tableProfilePropertyRuleOptions,
@@ -123,7 +123,7 @@ export class Plugins extends Initializer {
         {
           name: "postgres-query-import",
           direction: "import",
-          description: "import or update profiles from a custom postgres query",
+          description: "Import or update Profiles via a custom Postgres query.",
           app: "postgres",
           options: [],
           profilePropertyRuleOptions: queryProfilePropertyRuleOptions,
@@ -135,35 +135,36 @@ export class Plugins extends Initializer {
         {
           name: "postgres-export",
           direction: "export",
-          description: "export profiles to a postgres table",
+          description:
+            "Export Profiles to a Postgres table.  Groups will be exported to a secondary table linked by a foreign key.",
           app: "postgres",
           options: [
             {
               key: "table",
               required: true,
-              description: "the table to write profiles to",
+              description: "The table to write profiles to.",
             },
             {
               key: "primaryKey",
               required: true,
-              description: "the primaryKey of table",
+              description: "The primaryKey of table.",
             },
             {
               key: "groupsTable",
               required: true,
-              description: "the table to write groups to",
+              description: "The table to write groups to.",
             },
             {
               key: "groupForeignKey",
               required: true,
               description:
-                "the foreign key that the groups table uses to reference table",
+                "The foreign key that the groups table uses to reference table.",
             },
             {
               key: "groupColumnName",
               required: true,
               description:
-                "the foreign key column name for where to store the group names",
+                "The column name for where to store the group names.",
             },
           ],
           methods: {
