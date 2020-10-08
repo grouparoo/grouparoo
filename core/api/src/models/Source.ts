@@ -174,7 +174,7 @@ export class Source extends LoggedModel<Source> {
       state: this.state,
       mapping,
       app: app ? await app.apiData() : undefined,
-      appGuid: this.app.guid,
+      appGuid: this.appGuid,
       scheduleAvailable,
       schedule: schedule ? await schedule.apiData() : undefined,
       previewAvailable,
