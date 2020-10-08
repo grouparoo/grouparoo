@@ -19,6 +19,19 @@ require("./../fixtures/export-objects/destination-mapping-options");
 // helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
+const appGuid = "app_c1bb07d8-0c4f-49b5-ad42-545f2e8662e7";
+
+async function runDestinationMappingOptions({ destinationOptions }) {
+  return destinationMappingOptions({
+    appGuid,
+    appOptions,
+    destinationOptions,
+    app: null,
+    connection: null,
+    destination: null,
+    destinationGuid: null,
+  });
+}
 
 describe("salesforce/sales-cloud/destinationMappingOptions", () => {
   test("can load destinationMappingOptions from Lead Email", async () => {
@@ -31,13 +44,7 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
       membershipProfileField: "ContactId",
       membershipGroupField: "CampaignId",
     };
-    const options = await destinationMappingOptions({
-      appOptions,
-      destinationOptions,
-      app: null,
-      connection: null,
-      destination: null,
-    });
+    const options = await runDestinationMappingOptions({ destinationOptions });
     const { profilePropertyRules, labels } = options;
     const { required, known } = profilePropertyRules;
     const { profilePropertyRule, group } = labels;
@@ -84,13 +91,7 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
       membershipProfileField: "EntityId",
       membershipGroupField: "TopicId",
     };
-    const options = await destinationMappingOptions({
-      appOptions,
-      destinationOptions,
-      app: null,
-      connection: null,
-      destination: null,
-    });
+    const options = await runDestinationMappingOptions({ destinationOptions });
     const { profilePropertyRules, labels } = options;
     const { required, known } = profilePropertyRules;
     const { profilePropertyRule, group } = labels;
@@ -138,13 +139,7 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
       profileReferenceObject: "Account",
       profileReferenceMatchField: "AccountNumber",
     };
-    const options = await destinationMappingOptions({
-      appOptions,
-      destinationOptions,
-      app: null,
-      connection: null,
-      destination: null,
-    });
+    const options = await runDestinationMappingOptions({ destinationOptions });
     const { profilePropertyRules, labels } = options;
     const { required, known } = profilePropertyRules;
     const { profilePropertyRule, group } = labels;

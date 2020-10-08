@@ -34,6 +34,33 @@ async function findSid(): Promise<string> {
   return client.findSid({ email });
 }
 
+async function runExport({
+  oldProfileProperties,
+  newProfileProperties,
+  oldGroups,
+  newGroups,
+  toDelete,
+}) {
+  return exportProfile({
+    connection: client,
+    appOptions,
+    app: null,
+    appGuid: null,
+    destination: null,
+    destinationGuid: null,
+    destinationOptions: null,
+    export: {
+      profile: null,
+      profileGuid: null,
+      oldProfileProperties,
+      newProfileProperties,
+      oldGroups,
+      newGroups,
+      toDelete,
+    },
+  });
+}
+
 describe("sailthru/exportProfile", () => {
   beforeAll(async () => {
     client = new Sailthru(appOptions);
@@ -56,20 +83,12 @@ describe("sailthru/exportProfile", () => {
   }, 1000 * 30);
 
   test("can create profile on Sailthru", async () => {
-    await exportProfile({
-      connection: client,
-      appOptions,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        profile: null,
-        oldProfileProperties: {},
-        newProfileProperties: { email: email },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: false,
-      },
+    await runExport({
+      oldProfileProperties: {},
+      newProfileProperties: { email: email },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
     });
 
     userSid = await findSid();
@@ -77,20 +96,12 @@ describe("sailthru/exportProfile", () => {
   });
 
   test("can add user variables", async () => {
-    await exportProfile({
-      connection: client,
-      appOptions,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        profile: null,
-        oldProfileProperties: { email: email },
-        newProfileProperties: { email: email, first_name: "Evan" },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: false,
-      },
+    await runExport({
+      oldProfileProperties: { email: email },
+      newProfileProperties: { email: email, first_name: "Evan" },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -99,20 +110,12 @@ describe("sailthru/exportProfile", () => {
   });
 
   test("can change user variables", async () => {
-    await exportProfile({
-      connection: client,
-      appOptions,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        profile: null,
-        oldProfileProperties: { email: email, first_name: "Evan" },
-        newProfileProperties: { email: email, first_name: "Brian" },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: false,
-      },
+    await runExport({
+      oldProfileProperties: { email: email, first_name: "Evan" },
+      newProfileProperties: { email: email, first_name: "Brian" },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -121,20 +124,12 @@ describe("sailthru/exportProfile", () => {
   });
 
   test("can clear user variables", async () => {
-    await exportProfile({
-      connection: client,
-      appOptions,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        profile: null,
-        oldProfileProperties: { first_name: "Brian" },
-        newProfileProperties: { email: email },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: false,
-      },
+    await runExport({
+      oldProfileProperties: { first_name: "Brian" },
+      newProfileProperties: { email: email },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -143,20 +138,12 @@ describe("sailthru/exportProfile", () => {
   });
 
   test("can add to a list", async () => {
-    await exportProfile({
-      connection: client,
-      appOptions,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        profile: null,
-        oldProfileProperties: { email: email, first_name: null },
-        newProfileProperties: { email: email, first_name: "Brian" },
-        oldGroups: [],
-        newGroups: ["Test Group 1", "Test Group 2"],
-        toDelete: false,
-      },
+    await runExport({
+      oldProfileProperties: { email: email, first_name: null },
+      newProfileProperties: { email: email, first_name: "Brian" },
+      oldGroups: [],
+      newGroups: ["Test Group 1", "Test Group 2"],
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -167,20 +154,12 @@ describe("sailthru/exportProfile", () => {
   });
 
   test("can remove from a list", async () => {
-    await exportProfile({
-      connection: client,
-      appOptions,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        profile: null,
-        oldProfileProperties: { email: email, first_name: "Brian" },
-        newProfileProperties: { email: email, first_name: "Brian" },
-        oldGroups: ["Test Group 1", "Test Group 2"],
-        newGroups: ["Test Group 1"],
-        toDelete: false,
-      },
+    await runExport({
+      oldProfileProperties: { email: email, first_name: "Brian" },
+      newProfileProperties: { email: email, first_name: "Brian" },
+      oldGroups: ["Test Group 1", "Test Group 2"],
+      newGroups: ["Test Group 1"],
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -191,20 +170,12 @@ describe("sailthru/exportProfile", () => {
   });
 
   test("can delete a user", async () => {
-    await exportProfile({
-      connection: client,
-      appOptions,
-      app: null,
-      destination: null,
-      destinationOptions: null,
-      export: {
-        profile: null,
-        oldProfileProperties: { email: email, first_name: "Brian" },
-        newProfileProperties: { email: email, first_name: "Brian" },
-        oldGroups: ["Test Group 2", "Test Group 1"],
-        newGroups: [],
-        toDelete: true,
-      },
+    await runExport({
+      oldProfileProperties: { email: email, first_name: "Brian" },
+      newProfileProperties: { email: email, first_name: "Brian" },
+      oldGroups: ["Test Group 2", "Test Group 1"],
+      newGroups: [],
+      toDelete: true,
     });
 
     expect(await findSid()).toBeNull();

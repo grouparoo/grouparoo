@@ -12,9 +12,3 @@ export async function connect(appOptions: SimpleAppOptions) {
   await conn.login(username, fullPassword);
   return conn;
 }
-
-export function cacheKeyFromClient(conn) {
-  const { id, organizationId } = conn.userInfo;
-  const uniqKey = `salesforce:objects:${organizationId}:${id}`;
-  return uniqKey;
-}

@@ -51,14 +51,18 @@ export namespace ScheduleOps {
     try {
       const response = await method({
         schedule,
+        scheduleGuid: schedule.guid,
         scheduleOptions: options,
         connection,
         app,
+        appGuid: app.guid,
         appOptions,
         source,
+        sourceGuid: source.guid,
         sourceOptions,
         sourceMapping,
         run,
+        runGuid: run.guid,
         limit,
         highWaterMark,
         sourceOffset,
@@ -124,8 +128,10 @@ export namespace ScheduleOps {
       const options = await opt.options({
         connection,
         app,
+        appGuid: app.guid,
         appOptions,
         source,
+        sourceGuid: source.guid,
         sourceOptions,
         sourceMapping,
       });
@@ -168,14 +174,18 @@ export namespace ScheduleOps {
     return method({
       connection: await app.getConnection(),
       app,
+      appGuid: app.guid,
       appOptions,
       source,
+      sourceGuid: source.guid,
       sourceOptions,
       sourceMapping,
       schedule,
+      scheduleGuid: schedule.guid,
       scheduleOptions,
       highWaterMark,
       run,
+      runGuid: run.guid,
     });
   }
 }

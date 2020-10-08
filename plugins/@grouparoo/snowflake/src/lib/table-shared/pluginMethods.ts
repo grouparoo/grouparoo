@@ -44,8 +44,6 @@ export interface MatchCondition {
 export interface ColumnDefinition {
   name: string;
   filterOperations: FilterOperation[];
-  // aggregationsMethods: AggregationMethod[];
-  // dataType?: string;
   data?: any;
 }
 export interface ColumnDefinitionMap {

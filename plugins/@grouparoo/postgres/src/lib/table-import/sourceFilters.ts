@@ -1,9 +1,12 @@
 import { SourceFilterMethod } from "@grouparoo/core";
-import { sourcePreview } from "./sourcePreview";
+import { tablePreview } from "./sourcePreview";
 
-export const sourceFilters: SourceFilterMethod = async (args) => {
+export const sourceFilters: SourceFilterMethod = async ({
+  connection,
+  sourceOptions,
+}) => {
   const options = [];
-  const rows = await sourcePreview(args);
+  const rows = await tablePreview({ connection, sourceOptions });
 
   Object.keys(rows[0]).map((col) => {
     const ops = ["equals", "does not equal"];

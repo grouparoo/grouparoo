@@ -1,9 +1,19 @@
-import { SourcePreviewMethod } from "@grouparoo/core";
+import {
+  SourcePreviewMethod,
+  SourcePreviewMethodResponseRow,
+} from "@grouparoo/core";
 
 export const sourcePreview: SourcePreviewMethod = async ({
   connection,
   sourceOptions,
 }) => {
+  return tablePreview({ connection, sourceOptions });
+};
+
+export async function tablePreview({
+  connection,
+  sourceOptions,
+}): Promise<Array<SourcePreviewMethodResponseRow>> {
   const response = [];
 
   // For large datasets, `order by RAND()` is actually very slow in MySQL
@@ -18,4 +28,4 @@ export const sourcePreview: SourcePreviewMethod = async ({
   rows.map((row) => response.push(row));
 
   return response;
-};
+}

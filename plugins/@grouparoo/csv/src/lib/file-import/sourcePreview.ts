@@ -1,8 +1,18 @@
 import fs from "fs-extra";
 import csvParser from "csv-parser";
-import { plugin, SourcePreviewMethod } from "@grouparoo/core";
+import {
+  plugin,
+  SourcePreviewMethod,
+  SourcePreviewMethodResponseRow,
+} from "@grouparoo/core";
 
 export const sourcePreview: SourcePreviewMethod = async ({ sourceOptions }) => {
+  return fileImportPreview({ sourceOptions });
+};
+
+export async function fileImportPreview({
+  sourceOptions,
+}): Promise<Array<SourcePreviewMethodResponseRow>> {
   const response = [];
 
   if (!sourceOptions.fileGuid) {
@@ -31,4 +41,4 @@ export const sourcePreview: SourcePreviewMethod = async ({ sourceOptions }) => {
   });
 
   return response;
-};
+}

@@ -26,7 +26,10 @@ export const profileProperty: ProfilePropertyPluginMethod = async ({
   if (tableCol === column && aggregationMethod === "exact") {
     const tableMappingCol: string = Object.values(sourceMapping)[0];
     const properties = await profile.properties();
-    if (properties[tableMappingCol]?.values.length === 0) return;
+    // if no property or no values, bail
+    if (!properties[tableMappingCol]?.values.length) {
+      return;
+    }
   }
 
   let aggSelect = `"${column}"`;

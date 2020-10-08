@@ -28,14 +28,16 @@ const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 const sourceOptions = { table: "PURCHASES" };
 
 async function getPreview() {
-  const connection = await connect({ appOptions, app: null });
+  const connection = await connect({ appOptions, app: null, appGuid: null });
 
   const response = await sourcePreview({
     connection,
     appOptions,
     sourceOptions,
     app: null,
+    appGuid: null,
     source: null,
+    sourceGuid: null,
   });
   return response;
 }

@@ -18,6 +18,7 @@ require("./../fixtures/export-profiles");
 //helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
+const appGuid = "app_a0bb07d8-0a4e-49b5-ad42-545f2e8662e6";
 
 let client: any;
 
@@ -146,6 +147,7 @@ describe("marketo/exportProfiles", () => {
     expect(userId1).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       exports: [
         {
@@ -175,6 +177,7 @@ describe("marketo/exportProfiles", () => {
     expect(userId2).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       exports: [
         {
@@ -221,6 +224,7 @@ describe("marketo/exportProfiles", () => {
 
   test("can clear user variables", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       exports: [
         {
@@ -253,6 +257,7 @@ describe("marketo/exportProfiles", () => {
     expect(listId1).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       exports: [
         {
@@ -285,6 +290,7 @@ describe("marketo/exportProfiles", () => {
     expect(listId2).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       exports: [
         {
@@ -329,6 +335,7 @@ describe("marketo/exportProfiles", () => {
 
   test("can remove users from lists including ones they aren't in", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       exports: [
         {
@@ -365,6 +372,7 @@ describe("marketo/exportProfiles", () => {
 
   test("it can change the email address", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       exports: [
         {
@@ -417,6 +425,7 @@ describe("marketo/exportProfiles", () => {
 
   test("can delete a user", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       exports: [
         {
@@ -473,6 +482,7 @@ describe("marketo/exportProfiles", () => {
 
   test("can add back a user and many types", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       exports: [
         {
@@ -520,6 +530,7 @@ describe("marketo/exportProfiles", () => {
 
   test("can set all those fields to null", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       exports: [
         {
@@ -564,6 +575,7 @@ describe("marketo/exportProfiles", () => {
 
   test("can handle boolean error", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       exports: [
         {
@@ -605,6 +617,7 @@ describe("marketo/exportProfiles", () => {
 
   test("can handle email error", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       exports: [
         {
@@ -646,6 +659,7 @@ describe("marketo/exportProfiles", () => {
 
   test("can handle integer error", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       exports: [
         {
@@ -687,6 +701,7 @@ describe("marketo/exportProfiles", () => {
 
   test("can handle float error", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       exports: [
         {
@@ -728,6 +743,7 @@ describe("marketo/exportProfiles", () => {
 
   test("can handle datetime error", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       exports: [
         {
@@ -769,6 +785,7 @@ describe("marketo/exportProfiles", () => {
 
   test("can handle percent error", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       exports: [
         {
@@ -813,6 +830,7 @@ describe("marketo/exportProfiles", () => {
     expect(userId3).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       exports: [
         {

@@ -5,7 +5,7 @@ import {
   SimpleAppOptions,
 } from "@grouparoo/core";
 import { connect } from "../connect";
-import { getListId } from "./listMethods";
+import { getListId, MarketoCacheData } from "./listMethods";
 
 enum MarketoAction {
   Delete = "DELETE",
@@ -13,7 +13,6 @@ enum MarketoAction {
   Update = "UPDATE",
 }
 export interface MarketoExport extends ExportedProfile {
-  profileGuid: string;
   marketoId?: number;
   action?: MarketoAction;
   result?: any; // result from find
@@ -23,6 +22,7 @@ export interface MarketoExport extends ExportedProfile {
 export interface ExportBatchMethod {
   (argument: {
     // connection: any;
+    appGuid: string;
     appOptions: SimpleAppOptions;
     exports: MarketoExport[];
   }): Promise<{
@@ -33,12 +33,13 @@ export interface ExportBatchMethod {
 }
 declare type MarketoEmailMap = { [email: string]: MarketoExport };
 
-export async function exportBatch({ appOptions, exports }) {
+export async function exportBatch({ appGuid, appOptions, exports }) {
   if (exports.length === 0) {
     return { success: true };
   }
 
   const client = await connect(appOptions);
+  const cacheData: MarketoCacheData = { appGuid, appOptions };
 
   const emailMap: MarketoEmailMap = {};
   for (const exportedProfile of exports) {
@@ -58,7 +59,7 @@ export async function exportBatch({ appOptions, exports }) {
 
   // so now, all the exports that don't have an error and where not deleted should have a marketoId
   // use those ids to update the groups
-  await updateGroups(client, exports);
+  await updateGroups(client, cacheData, exports);
 
   // assuming semantics here of success is only true if there are zero errors
   let errors: ErrorWithProfileGuid[] = null; // for ones that go wrong
@@ -79,7 +80,11 @@ export async function exportBatch({ appOptions, exports }) {
   return { success, errors };
 }
 
-async function updateGroups(client, exports: MarketoExport[]) {
+async function updateGroups(
+  client,
+  cacheData: MarketoCacheData,
+  exports: MarketoExport[]
+) {
   const removal: { [groupName: string]: MarketoExport[] } = {};
   const addition: { [groupName: string]: MarketoExport[] } = {};
   for (const exportedProfile of exports) {
@@ -117,10 +122,22 @@ async function updateGroups(client, exports: MarketoExport[]) {
   }
 
   for (const listName in addition) {
-    await updateList(client, ListAction.Add, listName, addition[listName]);
+    await updateList(
+      client,
+      ListAction.Add,
+      cacheData,
+      listName,
+      addition[listName]
+    );
   }
   for (const listName in removal) {
-    await updateList(client, ListAction.Remove, listName, removal[listName]);
+    await updateList(
+      client,
+      ListAction.Remove,
+      cacheData,
+      listName,
+      removal[listName]
+    );
   }
 }
 
@@ -131,13 +148,14 @@ enum ListAction {
 async function updateList(
   client,
   action: ListAction,
+  cacheData: MarketoCacheData,
   listName: string,
   users: MarketoExport[]
 ) {
   if (users.length === 0) {
     return;
   }
-  const id = await getListId(client, listName);
+  const id = await getListId(client, cacheData, listName);
   const idMap: { [marketoId: number]: MarketoExport } = {};
   const marketoIds: any[] = [];
   for (const user of users) {
@@ -232,7 +250,7 @@ async function updateUsers(client, users: MarketoExport[], options) {
     throw new Error("expected results and input lengths to be the same");
   }
   for (let i = 0; i < results.length; i++) {
-    // I'm assuming these are in the same order. THat seems like the only option.
+    // I'm assuming these are in the same order. That seems like the only option.
     const user = users[i];
     const result = results[i];
 
@@ -385,6 +403,7 @@ function sortExport(exportedProfile: MarketoExport, emailMap: MarketoEmailMap) {
 export const exportProfiles: ExportProfilesPluginMethod = async ({
   appOptions,
   exports,
+  appGuid,
 }) => {
   // TODO: marketo can do batches of 300 at a time, it seems.
   // developers.marketo.com/rest-api/marketo-integration-best-practices
@@ -392,14 +411,10 @@ export const exportProfiles: ExportProfilesPluginMethod = async ({
   // i'm making a separate function to enable that loop
   // the separate function also enabled testing (doesn't need profile model)
 
-  const exportsWithGuid: MarketoExport[] = [];
+  const batchExports: MarketoExport[] = [];
   for (const exportedProfile of exports) {
-    const profileGuid = exportedProfile.profile.guid;
-    const marketo: MarketoExport = Object.assign(
-      { profileGuid },
-      exportedProfile
-    );
-    exportsWithGuid.push(marketo);
+    const marketo: MarketoExport = Object.assign({}, exportedProfile);
+    batchExports.push(marketo);
   }
-  return exportBatch({ appOptions, exports: exportsWithGuid });
+  return exportBatch({ appGuid, appOptions, exports: batchExports });
 };

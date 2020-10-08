@@ -3,7 +3,7 @@ import format from "pg-format";
 import { ConnectPluginAppMethod } from "@grouparoo/core";
 
 export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
-  const formattedOptions = Object.assign({}, appOptions);
+  const formattedOptions: any = Object.assign({}, appOptions);
 
   // handle SSL options
   const sslOptions = ["ssl_cert", "ssl_key", "ssl_ca"];

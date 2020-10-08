@@ -10,6 +10,7 @@ import {
 
 export interface MyBatchMethod {
   (argument: {
+    appGuid: string;
     appOptions: SimpleAppOptions;
     destinationOptions: SimpleDestinationOptions;
     exports: BatchExport[];
@@ -21,11 +22,13 @@ export interface MyBatchMethod {
 }
 
 export const exportBatch: MyBatchMethod = async ({
+  appGuid,
   appOptions,
   destinationOptions,
   exports,
 }) => {
   return exportSalesforceBatch({
+    appGuid,
     appOptions,
     exports,
     model: destinationModel(destinationOptions),
@@ -33,12 +36,14 @@ export const exportBatch: MyBatchMethod = async ({
 };
 
 export const exportProfiles: ExportProfilesPluginMethod = async ({
+  appGuid,
   appOptions,
   destinationOptions,
   exports: profilesToExport,
 }) => {
   const batchExports = buildBatchExports(profilesToExport);
   return exportBatch({
+    appGuid,
     appOptions,
     destinationOptions,
     exports: batchExports,

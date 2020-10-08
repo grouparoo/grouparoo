@@ -1,7 +1,10 @@
-import { ErrorWithProfileGuid, SimpleAppOptions } from "@grouparoo/core";
-import { connect, cacheKeyFromClient } from "../connect";
-import { cache } from "../cache";
-import { getFieldMap } from "../objects";
+import {
+  ErrorWithProfileGuid,
+  SimpleAppOptions,
+  objectCache,
+} from "@grouparoo/core";
+import { connect } from "../connect";
+import { getFieldMap, SalesforceCacheData } from "../objects";
 import {
   exportProfilesInBatch,
   BatchFunctions,
@@ -526,26 +529,34 @@ async function getListId(
   listName: string,
   model: SalesforceData
 ): Promise<number> {
-  const { groupObject, groupNameField } = model;
-  const uniqKey = cacheKeyFromClient(client);
-  const cacheKey = `${uniqKey}:list-${groupObject}-${groupNameField}-${listName}:key`;
-  const lockKey = `${uniqKey}:list-${groupObject}-${groupNameField}-${listName}:lock`;
-  const cacheDuration = 1000 * 60 * 30; // 30 minutes
+  const { groupObject, groupNameField, cacheData } = model;
+  const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
 
-  const listId = await cache({ cacheKey, lockKey, cacheDuration }, async () => {
-    // not cached find it
-    let destId = await findObjectIdByField({
-      client,
-      objectName: groupObject,
-      objectField: groupNameField,
-      fieldValue: listName,
-    });
-    if (destId) {
-      return destId;
+  const { appGuid, appOptions } = cacheData;
+  const cacheKey = [
+    "getListId",
+    groupObject,
+    groupNameField,
+    listName,
+    appOptions,
+  ];
+  const listId = await objectCache(
+    { objectGuid: appGuid, cacheKey, cacheDurationMs },
+    async () => {
+      // not cached find it
+      let destId = await findObjectIdByField({
+        client,
+        objectName: groupObject,
+        objectField: groupNameField,
+        fieldValue: listName,
+      });
+      if (destId) {
+        return destId;
+      }
+      // otherwise, create it
+      return createList(client, listName, model);
     }
-    // otherwise, create it
-    return createList(client, listName, model);
-  });
+  );
   return listId;
 }
 async function findObjectIdByField({
@@ -618,9 +629,11 @@ function normalizeValue({ keyValue, field }) {
 export interface SalesforceData extends SalesforceModel {
   profileFields: any;
   referenceFields: any;
+  cacheData: SalesforceCacheData;
 }
 export interface ExportSalesforceMethod {
   (argument: {
+    appGuid: string;
     appOptions: SimpleAppOptions;
     exports: BatchExport[];
     model: SalesforceModel;
@@ -631,24 +644,31 @@ export interface ExportSalesforceMethod {
   }>;
 }
 export const exportSalesforceBatch: ExportSalesforceMethod = async ({
+  appGuid,
   appOptions,
   exports,
   model,
 }) => {
   const connection = await connect(appOptions);
+  const cacheData = { appGuid, appOptions };
   // use larger number if sales force api >= 42
   const batchSize = connection._supports("sobject-collection")
     ? 200
     : connection.maxRequests;
   const findSize = 200;
 
-  const profileFields = await getFieldMap(connection, model.profileObject);
+  const profileFields = await getFieldMap(
+    connection,
+    cacheData,
+    model.profileObject
+  );
   const referenceFields = model.profileReferenceObject
-    ? await getFieldMap(connection, model.profileReferenceObject)
+    ? await getFieldMap(connection, cacheData, model.profileReferenceObject)
     : null;
   const data: SalesforceData = Object.assign({}, model, {
     profileFields,
     referenceFields,
+    cacheData,
   });
   return exportProfilesInBatch(
     exports,

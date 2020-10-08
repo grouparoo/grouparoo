@@ -34,3 +34,4 @@ export { Team } from "./models/Team";
 export { TeamMember } from "./models/TeamMember";
 
 export { waitForLock } from "./modules/locks";
+export * from "./modules/cache";

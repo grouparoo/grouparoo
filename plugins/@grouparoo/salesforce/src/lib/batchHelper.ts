@@ -18,7 +18,6 @@ export enum GroupBatchMode {
 }
 
 export interface BatchExport extends ExportedProfile {
-  profileGuid: string;
   foreignKeyValue?: string;
   oldForeignKeyValue?: string;
   destinationId?: string;
@@ -77,13 +76,12 @@ export interface ExportBatchProfilesPluginMethod {
 }
 
 export const buildBatchExports: BuildBatchExportMethod = (exports) => {
-  const exportsWithGuid: BatchExport[] = [];
+  const batchExports: BatchExport[] = [];
   for (const exportedProfile of exports) {
-    const profileGuid = exportedProfile.profile.guid;
-    const info: BatchExport = Object.assign({ profileGuid }, exportedProfile);
-    exportsWithGuid.push(info);
+    const info: BatchExport = Object.assign({}, exportedProfile);
+    batchExports.push(info);
   }
-  return exportsWithGuid;
+  return batchExports;
 };
 
 export const exportProfilesInBatch: ProfileBatchProfilesPluginMethod = async (

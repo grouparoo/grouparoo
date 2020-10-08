@@ -37,7 +37,7 @@ let actionhero;
 
 async function getPropertyValue(query: string) {
   const profilePropertyRuleOptions = { query };
-  const connection = await connect({ appOptions, app: null });
+  const connection = await connect({ appOptions, app: null, appGuid: null });
   const profilePropertyRule = await ProfilePropertyRule.findOne();
 
   return profileProperty({
@@ -45,11 +45,15 @@ async function getPropertyValue(query: string) {
     appOptions,
     profile,
     profilePropertyRuleOptions,
+    profilePropertyRule,
+    profileGuid: null,
     source: null,
+    sourceGuid: null,
     app: null,
+    appGuid: null,
     sourceOptions: null,
     sourceMapping: null,
-    profilePropertyRule,
+    profilePropertyRuleGuid: null,
     profilePropertyRuleFilters: null,
   });
 }

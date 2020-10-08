@@ -360,11 +360,11 @@ describe("models/source", () => {
 
     test("partial options will be passed to sourceConnectionOptions", async () => {
       const connectionOptions = await source.sourceConnectionOptions({
-        options: true,
+        options: "true",
       });
       expect(connectionOptions).toEqual({
         table: { options: ["users"], type: "list" },
-        receivedOptions: true,
+        receivedOptions: { type: "string", options: ["true"] },
       });
     });
 

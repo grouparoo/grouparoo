@@ -23,6 +23,7 @@ require("./../fixtures/export-objects/export-profiles-custom");
 // helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
+const appGuid = "app_e8bb07d8-0c4f-49b5-ad42-545f2e8662e8";
 const destinationOptions = {
   profileObject: "Contact",
   profileMatchField: "Custom_External_ID__c",
@@ -90,6 +91,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
     expect(userId1).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -123,6 +125,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
     expect(userId2).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -176,6 +179,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
 
   test("can clear user variables", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -209,6 +213,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
 
   test("can delete a user", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -270,6 +275,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
     expect(groupId1).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -305,6 +311,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
     expect(groupId2).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -359,6 +366,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
 
   test("can remove users from lists including ones they aren't in", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -408,6 +416,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
 
   test("can ignore case for an custom value to update same user", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -439,6 +448,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
 
   test("can set back to lowercase", async () => {
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [
@@ -485,6 +495,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
     expect(userId3).toBe(null);
 
     const { success, errors } = await exportBatch({
+      appGuid,
       appOptions,
       destinationOptions,
       exports: [

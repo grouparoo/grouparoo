@@ -155,6 +155,7 @@ export namespace DestinationOps {
     return pluginConnection.methods.destinationOptions({
       connection,
       app,
+      appGuid: app.guid,
       appOptions,
       destinationOptions,
     });
@@ -204,8 +205,10 @@ export namespace DestinationOps {
       {
         connection,
         app,
+        appGuid: app.guid,
         appOptions,
         destination,
+        destinationGuid: destination.guid,
         destinationOptions,
       }
     );
@@ -231,8 +234,10 @@ export namespace DestinationOps {
     return pluginConnection.methods.exportArrayProperties({
       connection,
       app,
+      appGuid: app.guid,
       appOptions,
       destination,
+      destinationGuid: destination.guid,
       destinationOptions,
     });
   }
@@ -452,11 +457,14 @@ export namespace DestinationOps {
       const { success, retryDelay, error } = await method({
         connection,
         app,
+        appGuid: app.guid,
         appOptions,
         destination,
+        destinationGuid: destination.guid,
         destinationOptions: options,
         export: {
           profile,
+          profileGuid: profile.guid,
           oldProfileProperties: await formatProfilePropertiesForDestination(
             _export,
             destination,
@@ -556,6 +564,7 @@ export namespace DestinationOps {
           const profile = await _export.$get("profile");
           destinationExports.push({
             profile,
+            profileGuid: profile.guid,
             oldProfileProperties: await formatProfilePropertiesForDestination(
               _export,
               destination,
@@ -576,8 +585,10 @@ export namespace DestinationOps {
       const { success, retryDelay, errors } = await method({
         connection,
         app,
+        appGuid: app.guid,
         appOptions,
         destination,
+        destinationGuid: destination.guid,
         destinationOptions: options,
         exports: destinationExports,
       });

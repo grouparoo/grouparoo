@@ -27,12 +27,13 @@ require("./../fixtures/table-source-options");
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 
 async function getTables() {
-  const connection = await connect({ appOptions, app: null });
+  const connection = await connect({ appOptions, app: null, appGuid: null });
   const response = await sourceOptions({
     connection,
     appOptions,
-    sourceOptions,
+    sourceOptions: null,
     app: null,
+    appGuid: null,
   });
 
   return response.table.options;

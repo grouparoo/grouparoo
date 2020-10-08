@@ -30,14 +30,16 @@ const sourceOptions = { table: "PURCHASES" };
 async function getColumns() {
   const columnOption = scheduleOptions[0];
   const optionMethod = columnOption.options;
-  const connection = await connect({ appOptions, app: null });
+  const connection = await connect({ appOptions, app: null, appGuid: null });
 
   const response = await optionMethod({
     connection,
     appOptions,
     sourceOptions,
     app: null,
+    appGuid: null,
     source: null,
+    sourceGuid: null,
     sourceMapping: null,
   });
   return response;

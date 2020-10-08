@@ -35,16 +35,19 @@ async function getOptionsForKey(keyName) {
   expect(option.key).toBeTruthy();
 
   const optionMethod = option.options;
-  const connection = await connect({ appOptions, app: null });
+  const connection = await connect({ appOptions, app: null, appGuid: null });
 
   const response = await optionMethod({
     connection,
     appOptions,
     sourceOptions,
     app: null,
+    appGuid: null,
     source: null,
+    sourceGuid: null,
     sourceMapping: null,
     profilePropertyRule: null,
+    profilePropertyRuleGuid: null,
   });
   return response;
 }

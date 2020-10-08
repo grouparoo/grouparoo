@@ -4,7 +4,7 @@ import {
   SimpleDestinationOptions,
 } from "@grouparoo/core";
 import { connect } from "../connect";
-import { describeObject } from "../objects";
+import { describeObject, SalesforceCacheData } from "../objects";
 import { getSupportedSalesforceTypes } from "./mapping";
 
 export interface WhichOptions {
@@ -15,36 +15,52 @@ export interface WhichOptions {
 }
 interface SalesforceDestinationOptions {
   (argument: {
+    appGuid: string;
     appOptions: SimpleAppOptions;
     destinationOptions: SimpleDestinationOptions;
     which: WhichOptions;
   }): Promise<DestinationOptionsMethodResponse>;
 }
 export const getDestinationOptions: SalesforceDestinationOptions = async ({
+  appGuid,
   appOptions,
   destinationOptions,
   which,
 }) => {
+  const cacheData: SalesforceCacheData = { appGuid, appOptions };
   const out: DestinationOptionsMethodResponse = {};
 
   const conn = await connect(appOptions);
   if (which.profile) {
-    Object.assign(out, await getProfileOptions(conn, destinationOptions));
+    Object.assign(
+      out,
+      await getProfileOptions(conn, cacheData, destinationOptions)
+    );
   }
   if (which.group) {
-    Object.assign(out, await getGroupOptions(conn, destinationOptions));
+    Object.assign(
+      out,
+      await getGroupOptions(conn, cacheData, destinationOptions)
+    );
   }
   if (which.membership) {
-    Object.assign(out, await getMembershipOptions(conn, destinationOptions));
+    Object.assign(
+      out,
+      await getMembershipOptions(conn, cacheData, destinationOptions)
+    );
   }
   if (which.reference) {
-    Object.assign(out, await getReferenceOptions(conn, destinationOptions));
+    Object.assign(
+      out,
+      await getReferenceOptions(conn, cacheData, destinationOptions)
+    );
   }
   return out;
 };
 
 async function getProfileOptions(
   conn: any,
+  cacheData: SalesforceCacheData,
   destinationOptions: SimpleDestinationOptions
 ) {
   const out: DestinationOptionsMethodResponse = {
@@ -72,6 +88,7 @@ async function getProfileOptions(
     const supportedTypes = getSupportedSalesforceTypes();
     const fields = await getObjectMatchNames(
       conn,
+      cacheData,
       name,
       true,
       specialFields,
@@ -92,6 +109,7 @@ async function getProfileOptions(
 
 async function getGroupOptions(
   conn: any,
+  cacheData: SalesforceCacheData,
   destinationOptions: SimpleDestinationOptions
 ) {
   const out: DestinationOptionsMethodResponse = {
@@ -116,6 +134,7 @@ async function getGroupOptions(
     const supportedTypes = getSupportedSalesforceTypes(["string"]);
     const fields = await getObjectMatchNames(
       conn,
+      cacheData,
       name,
       false,
       specialFields,
@@ -136,6 +155,7 @@ async function getGroupOptions(
 
 async function getMembershipOptions(
   conn: any,
+  cacheData: SalesforceCacheData,
   destinationOptions: SimpleDestinationOptions
 ) {
   const out: DestinationOptionsMethodResponse = {
@@ -170,9 +190,14 @@ async function getMembershipOptions(
   const name = destinationOptions.membershipObject;
   if (name && objects.includes(name)) {
     // look up its fields
-    const fields = await getObjectMatchNames(conn, name, false, specialFields, [
-      "reference",
-    ]);
+    const fields = await getObjectMatchNames(
+      conn,
+      cacheData,
+      name,
+      false,
+      specialFields,
+      ["reference"]
+    );
     out.membershipProfileField.type = "typeahead";
     out.membershipProfileField.options = fields;
     if (!fields.includes(destinationOptions.membershipProfileField)) {
@@ -194,6 +219,7 @@ async function getMembershipOptions(
 
 async function getReferenceOptions(
   conn: any,
+  cacheData: SalesforceCacheData,
   destinationOptions: SimpleDestinationOptions
 ) {
   const out: DestinationOptionsMethodResponse = {
@@ -209,7 +235,9 @@ async function getReferenceOptions(
   // for Account, other?
   const specialFields = ["AccountNumber", "Name"];
 
-  const nameMap = await buildFieldMap(conn, profileObject, true, ["reference"]);
+  const nameMap = await buildFieldMap(conn, cacheData, profileObject, true, [
+    "reference",
+  ]);
 
   out.profileReferenceField.type = "typeahead";
   out.profileReferenceField.options = Object.keys(nameMap);
@@ -227,6 +255,7 @@ async function getReferenceOptions(
       const supportedTypes = getSupportedSalesforceTypes();
       const refFields = await getObjectMatchNames(
         conn,
+        cacheData,
         refName,
         true,
         specialFields,
@@ -253,12 +282,13 @@ async function getReferenceOptions(
 
 async function buildFieldMap(
   conn: any,
+  cacheData: SalesforceCacheData,
   objectName: string,
   updateable: boolean,
   types: string[] = null
 ): Promise<{ [name: string]: any }> {
   const names = {};
-  const response = await describeObject(conn, objectName, true);
+  const response = await describeObject(conn, cacheData, objectName, true);
   for (const field of response.fields) {
     if (!field.createable) {
       continue;
@@ -277,12 +307,19 @@ async function buildFieldMap(
 
 async function getObjectMatchNames(
   conn: any,
+  cacheData: SalesforceCacheData,
   objectName: string,
   updateable: boolean,
   special: string[] = [],
   types: string[] = null
 ) {
-  const names = await buildFieldMap(conn, objectName, updateable, types);
+  const names = await buildFieldMap(
+    conn,
+    cacheData,
+    objectName,
+    updateable,
+    types
+  );
   const first = [];
   for (const name in names) {
     const field = names[name];

@@ -38,8 +38,10 @@ export interface PluginConnectionScheduleOption {
   options: (argument: {
     connection: any;
     app: App;
+    appGuid: string;
     appOptions: SimpleAppOptions;
     source: Source;
+    sourceGuid: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SimpleSourceOptions;
   }) => Promise<

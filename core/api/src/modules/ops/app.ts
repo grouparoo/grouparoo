@@ -17,6 +17,7 @@ export namespace AppOps {
       log(`connecting to app ${app.name} - ${pluginApp.name} (${app.guid})`);
       const connection = await pluginApp.methods.connect({
         app,
+        appGuid: app.guid,
         appOptions: options ? options : appOptions,
       });
       app.setConnection(connection);
@@ -37,6 +38,7 @@ export namespace AppOps {
       );
       await pluginApp.methods.disconnect({
         app,
+        appGuid: app.guid,
         appOptions,
         connection,
       });
@@ -68,12 +70,14 @@ export namespace AppOps {
       if (pluginApp.methods.connect) {
         connection = await pluginApp.methods.connect({
           app,
+          appGuid: app.guid,
           appOptions: options,
         });
       }
 
       const result = await pluginApp.methods.test({
         app,
+        appGuid: app.guid,
         appOptions: options,
         connection,
       });
@@ -84,6 +88,7 @@ export namespace AppOps {
         await pluginApp.methods.disconnect({
           connection,
           app,
+          appGuid: app.guid,
           appOptions: options,
         });
       }
