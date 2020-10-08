@@ -705,7 +705,7 @@ describe("models/profilePropertyRule", () => {
       });
 
       const apiData = await rule.apiData();
-      expect(apiData.source.guid).toEqual(source.guid);
+      expect(apiData.sourceGuid).toEqual(source.guid);
       await rule.destroy();
     });
   });
