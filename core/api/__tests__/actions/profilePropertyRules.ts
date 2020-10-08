@@ -110,7 +110,7 @@ describe("actions/profilePropertyRules", () => {
       expect(profilePropertyRule.unique).toBe(true);
       expect(profilePropertyRule.isArray).toBe(false);
       expect(profilePropertyRule.state).toBe("draft");
-      expect(profilePropertyRule.source.guid).toBe(source.guid);
+      expect(profilePropertyRule.sourceGuid).toBe(source.guid);
       expect(pluginOptions[0].key).toBe("column");
 
       guid = profilePropertyRule.guid;
@@ -130,7 +130,7 @@ describe("actions/profilePropertyRules", () => {
       expect(profilePropertyRule.key).toBe("email");
       expect(profilePropertyRule.isArray).toBe(false);
       expect(profilePropertyRule.unique).toBe(true);
-      expect(profilePropertyRule.source.guid).toBe(source.guid);
+      expect(profilePropertyRule.sourceGuid).toBe(source.guid);
     });
 
     test("an administrator can view a profilePropertyRule's plugin options", async () => {
@@ -270,7 +270,7 @@ describe("actions/profilePropertyRules", () => {
       } = await specHelper.runAction("profilePropertyRules:list", connection);
       expect(error).toBeUndefined();
       expect(profilePropertyRules.length).toBe(2); // this + userId
-      expect(profilePropertyRules[1].source.guid).toBe(source.guid);
+      expect(profilePropertyRules[1].sourceGuid).toBe(source.guid);
       expect(profilePropertyRules[1].type).toBe("integer");
       expect(profilePropertyRules[1].unique).toBe(true);
       expect(profilePropertyRules[0].type).toBe("string");

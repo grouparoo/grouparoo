@@ -262,7 +262,7 @@ describe("actions/teams", () => {
       expect(destroyResponse.error.message).toMatch(
         /cannot delete a team that has members/
       );
-      expect(destroyResponse.success).toBe(false);
+      expect(destroyResponse.success).toBeUndefined();
     });
 
     test("an administrator cannot destroy a non-locked team", async () => {
@@ -281,7 +281,7 @@ describe("actions/teams", () => {
       expect(destroyResponse.error.message).toMatch(
         /you cannot delete this team/
       );
-      expect(destroyResponse.success).toBe(false);
+      expect(destroyResponse.success).toBeUndefined();
     });
   });
 
