@@ -1,4 +1,7 @@
-import { GetTablesMethod, TableDefinitionMap } from "../table";
+import {
+  GetTablesMethod,
+  TableDefinitionMap,
+} from "@grouparoo/app-templates/src/source/table";
 
 export const getTables: GetTablesMethod = async ({ connection }) => {
   const schema = connection.schemaName;

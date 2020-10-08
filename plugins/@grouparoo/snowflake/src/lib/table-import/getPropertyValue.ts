@@ -4,7 +4,7 @@ import {
   GetPropertyValueMethod,
   DataResponse,
   AggregationMethod,
-} from "../table";
+} from "@grouparoo/app-templates/src/source/table";
 
 export const getPropertyValue: GetPropertyValueMethod = async ({
   connection,

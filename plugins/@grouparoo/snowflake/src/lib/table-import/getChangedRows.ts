@@ -4,7 +4,7 @@ import {
   GetChangedRowsMethod,
   DataResponseRow,
   MatchCondition,
-} from "../table";
+} from "@grouparoo/app-templates/src/source/table";
 
 export const getChangedRows: GetChangedRowsMethod = async ({
   connection,

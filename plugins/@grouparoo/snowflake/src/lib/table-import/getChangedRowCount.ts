@@ -1,4 +1,4 @@
-import { GetChangedRowCountMethod } from "../table";
+import { GetChangedRowCountMethod } from "@grouparoo/app-templates/src/source/table";
 import { makeHighwaterWhereClause } from "./getChangedRows";
 import { validateQuery } from "./validateQuery";
 

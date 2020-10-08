@@ -27,6 +27,7 @@
     "lint": "prettier --check src __tests__"
   },
   "dependencies": {
+    "@grouparoo/app-templates": "^0.1.17",
     "snowflake-promise": "4.1.0",
     "snowflake-sdk": "1.5.3"
   },

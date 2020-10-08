@@ -2,7 +2,7 @@ import {
   GetColumnDefinitionsMethod,
   ColumnDefinitionMap,
   FilterOperation,
-} from "../table";
+} from "@grouparoo/app-templates/src/source/table";
 
 export const getColumns: GetColumnDefinitionsMethod = async ({
   connection,
