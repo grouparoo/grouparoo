@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import LoadingButton from "../loadingButton";
 import { useRouter } from "next/router";
+import { Actions } from "../../utils/apiData";
 
 export default function AddProfilePropertyRuleForm(props) {
   const { errorHandler, source } = props;
@@ -18,7 +19,11 @@ export default function AddProfilePropertyRuleForm(props) {
       type: "string",
     };
 
-    const response = await execApi("post", `/profilePropertyRule`, data);
+    const response: Actions.ProfilePropertyRuleCreate = await execApi(
+      "post",
+      `/profilePropertyRule`,
+      data
+    );
 
     if (response?.profilePropertyRule) {
       router.push(

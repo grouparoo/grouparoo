@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useRouter } from "next/router";
 import LoadingButton from "../loadingButton";
+import { Actions } from "../../utils/apiData";
 
 export default function (props) {
   const { execApi } = useApi(props);
@@ -10,7 +11,7 @@ export default function (props) {
 
   async function create() {
     setLoading(true);
-    const response = await execApi("post", `/profile`);
+    const response: Actions.ProfileCreate = await execApi("post", `/profile`);
     router.push(
       "/profile/[guid]/edit",
       `/profile/${response.profile.guid}/edit`

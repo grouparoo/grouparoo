@@ -2,10 +2,10 @@ import { Action } from "actionhero";
 import PluginDetails from "./../utils/pluginDetails";
 const pluginManifest = PluginDetails.getPluginManifest();
 
-module.exports = class Status extends Action {
+export class PluginsList extends Action {
   constructor() {
     super();
-    this.name = "plugins";
+    this.name = "plugins:list";
     this.description =
       "I will return information about the active plugins on this server";
     this.outputExample = {};
@@ -23,4 +23,4 @@ module.exports = class Status extends Action {
       }),
     };
   }
-};
+}

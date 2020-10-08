@@ -3,6 +3,7 @@ import { useApi } from "../../hooks/useApi";
 import { Card, ListGroup } from "react-bootstrap";
 import Loader from "../loader";
 import { useRouter } from "next/router";
+import { Actions } from "../../utils/apiData";
 
 export default function ProfilePreview(props) {
   const {
@@ -17,7 +18,9 @@ export default function ProfilePreview(props) {
     router.query.profileGuid?.toString()
   );
   const [toHide, setToHide] = useState(true);
-  const [profile, setProfile] = useState({
+  const [profile, setProfile] = useState<
+    Partial<Actions.DestinationProfilePreview["profile"]>
+  >({
     guid: "",
     properties: {},
     groupNames: [],
@@ -75,7 +78,7 @@ export default function ProfilePreview(props) {
 
       const groupGuid = destination.destinationGroup?.guid || trackedGroupGuid;
 
-      const response = await execApi(
+      const response: Actions.DestinationProfilePreview = await execApi(
         "get",
         `/destination/${destination.guid}/profilePreview`,
         {
@@ -159,7 +162,7 @@ export default function ProfilePreview(props) {
                 {profile.properties[k]?.type === "date"
                   ? profile.properties[k]?.values[0]
                     ? new Date(
-                        profile.properties[k]?.values[0]
+                        profile.properties[k]?.values[0].toString()
                       ).toLocaleString()
                     : null
                   : profile.properties[k]?.values?.slice(0, 10).join(", ")}

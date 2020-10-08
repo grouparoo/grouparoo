@@ -1,13 +1,6 @@
 import Loader from "./loader";
 import { Table, Form, Button } from "react-bootstrap";
-
-interface Permission {
-  guid: string;
-  topic: string;
-  read: boolean;
-  write: boolean;
-  locked: boolean;
-}
+import { Models } from "../utils/apiData";
 
 export default function PermissionsList({
   permissions,
@@ -16,7 +9,7 @@ export default function PermissionsList({
   updatePermission,
   updatePermissionAll,
 }: {
-  permissions: Permission[];
+  permissions: Models.PermissionType[];
   permissionAllRead: boolean | null;
   permissionAllWrite: boolean | null;
   updatePermission: (topic: string, read: boolean, write: boolean) => any;

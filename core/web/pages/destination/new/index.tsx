@@ -5,9 +5,14 @@ import { Form } from "react-bootstrap";
 import AppSelectorList from "../../../components/appSelectorList";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Actions } from "../../../utils/apiData";
 
 export default function Page(props) {
-  const { connectionApps } = props;
+  const {
+    connectionApps,
+  }: {
+    connectionApps: Actions.DestinationConnectionApps["connectionApps"];
+  } = props;
   const router = useRouter();
   const [app, setApp] = useState({ guid: null });
 

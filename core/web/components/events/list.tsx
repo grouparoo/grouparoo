@@ -11,8 +11,7 @@ import Pagination from "../../components/pagination";
 import LoadingTable from "../../components/loadingTable";
 import LoadingButton from "../../components/loadingButton";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
-
-import { Models } from "../../utils/apiData";
+import { Models, Actions } from "../../utils/apiData";
 
 export default function EventsList(props) {
   const { errorHandler, hideSearch, hidePagination } = props;
@@ -46,14 +45,12 @@ export default function EventsList(props) {
   }, []);
 
   async function load(event?) {
-    if (event) {
-      event.preventDefault();
-    }
+    if (event) event.preventDefault();
 
     setTotal(0);
     setNewEvents(0);
     setLoading(true);
-    const response = await execApi("get", `/events`, {
+    const response: Actions.EventsList = await execApi("get", `/events`, {
       profileGuid,
       type,
       limit,
@@ -73,9 +70,13 @@ export default function EventsList(props) {
 
   async function autocompleteProfilePropertySearch(match?) {
     setSearchLoading(true);
-    const response = await execApi("get", `/events/autocompleteType`, {
-      match,
-    });
+    const response: Actions.EventAutocompleteType = await execApi(
+      "get",
+      `/events/autocompleteType`,
+      {
+        match,
+      }
+    );
     if (response.types) {
       setAutoCompleteResults(response.types);
     }

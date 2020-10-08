@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { Card } from "react-bootstrap";
 import LoadingButton from "../loadingButton";
+import { Actions } from "../../utils/apiData";
 
 export default function ClearCache(props) {
   const { errorHandler, successHandler } = props;
@@ -12,7 +13,10 @@ export default function ClearCache(props) {
     if (!window.confirm("Are you sure?")) return;
 
     setLoading(true);
-    const response = await execApi("delete", `/cluster/cache`);
+    const response: Actions.ClusterClearCache = await execApi(
+      "delete",
+      `/cluster/cache`
+    );
     if (response?.success) {
       successHandler.set({ message: `Cache Cleared!` });
     }

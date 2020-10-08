@@ -6,7 +6,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/status/public", action: "status:public" },
         { path: "/v:apiVersion/status/private", action: "status:private" },
         { path: "/v:apiVersion/swagger", action: "swagger" },
-        { path: "/v:apiVersion/plugins", action: "plugins" },
+        { path: "/v:apiVersion/plugins", action: "plugins:list" },
         { path: "/v:apiVersion/session", action: "session:view" },
         { path: "/v:apiVersion/setupSteps", action: "setupSteps:list" },
         { path: "/v:apiVersion/totals", action: "totals" },

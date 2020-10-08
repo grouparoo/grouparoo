@@ -3,7 +3,7 @@ import { Export } from "../models/Export";
 import { Op } from "sequelize";
 import { ExportOps } from "../modules/ops/export";
 
-export class ListExports extends AuthenticatedAction {
+export class ExportsList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "exports:list";

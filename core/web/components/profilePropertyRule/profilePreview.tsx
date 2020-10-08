@@ -4,6 +4,7 @@ import { Card, ListGroup } from "react-bootstrap";
 import Loader from "../loader";
 import ProfileImageFromEmail from "../visualizations/profileImageFromEmail";
 import { useRouter } from "next/router";
+import { Actions } from "../../utils/apiData";
 
 export default function ProfilePreview(props) {
   const { errorHandler, profilePropertyRule, localFilters } = props;
@@ -57,7 +58,7 @@ export default function ProfilePreview(props) {
     setDebounceCounter(debounceCounter + 1);
 
     timer = setTimeout(async () => {
-      const response = await execApi(
+      const response: Actions.ProfilePropertyRuleProfilePreview = await execApi(
         "get",
         `/profilePropertyRule/${profilePropertyRule.guid}/profilePreview`,
         {

@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { ButtonGroup, Button, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
-import { Models } from "../../utils/apiData";
+import { Models, Actions } from "../../utils/apiData";
 
 export default function LogsList(props) {
   const { errorHandler } = props;
@@ -51,7 +51,7 @@ export default function LogsList(props) {
     updateURLParams(router, { offset, topic });
     setLoading(true);
     setNewLogs(0);
-    const response = await execApi("get", `/logs`, {
+    const response: Actions.LogsList = await execApi("get", `/logs`, {
       limit,
       offset,
       topic,

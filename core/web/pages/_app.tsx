@@ -40,6 +40,8 @@ const teamHandler = new TeamHandler();
 const teamMemberHandler = new TeamMemberHandler();
 const uploadHandler = new UploadHandler();
 
+import { Actions } from "../utils/apiData";
+
 export default function GrouparooWebApp(props) {
   const { Component, pageProps, err, hydrationError } = props;
 
@@ -77,11 +79,12 @@ export default function GrouparooWebApp(props) {
 
 GrouparooWebApp.getInitialProps = async (appContext) => {
   const { execApi } = useApi(appContext.ctx);
-  const { navigationMode, navigation, clusterName } = await execApi(
-    "get",
-    `/navigation`
-  );
-  let currentTeamMember = {
+  const {
+    navigationMode,
+    navigation,
+    clusterName,
+  }: Actions.NavigationList = await execApi("get", `/navigation`);
+  let currentTeamMember: Partial<Actions.SessionView["teamMember"]> = {
     firstName: "",
     guid: null,
   };

@@ -8,7 +8,7 @@ import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import { Alert, Badge } from "react-bootstrap";
 import Moment from "react-moment";
-import { Models } from "../../utils/apiData";
+import { Models, Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
 
 export default function ImportList(props) {
@@ -44,7 +44,7 @@ export default function ImportList(props) {
     updateURLParams(router, { offset });
     setLoading(true);
 
-    const response = await execApi("get", `/imports`, {
+    const response: Actions.ImportsList = await execApi("get", `/imports`, {
       limit,
       offset,
       creatorGuid,

@@ -8,7 +8,7 @@ import { Row, Col, ButtonGroup, Button, Badge, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
 import Moment from "react-moment";
 import LoadingTable from "../loadingTable";
-import { Models } from "../../utils/apiData";
+import { Models, Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
 
 export default function ExportsList(props) {
@@ -20,7 +20,7 @@ export default function ExportsList(props) {
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [_exports, setExports] = useState<Models.ExportType[]>(props._exports);
-  const [total, setTotal] = useState(props.total);
+  const [total, setTotal] = useState<number>(props.total);
 
   // pagination
   const limit = 100;
@@ -44,7 +44,7 @@ export default function ExportsList(props) {
   async function load() {
     updateURLParams(router, { state, offset });
     setLoading(true);
-    const response = await execApi("get", `/exports`, {
+    const response: Actions.ExportsList = await execApi("get", `/exports`, {
       limit,
       offset,
       state,

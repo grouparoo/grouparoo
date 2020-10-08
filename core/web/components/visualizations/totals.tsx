@@ -11,15 +11,15 @@ import {
   ProgressBar,
 } from "react-bootstrap";
 import { useApi } from "../../hooks/useApi";
-import { Models } from "../../utils/apiData";
+import { Models, Actions } from "../../utils/apiData";
 import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
 import Loader from "../loader";
 
 const TIMEOUT = 15 * 1000;
 
 function SparkCard({ execApi, model, title, href = null }) {
-  const [total, setTotal] = useState(null);
-  const [rolling, setRolling] = useState([]);
+  const [total, setTotal] = useState<number>(null);
+  const [rolling, setRolling] = useState<{ date: string; count: number }[]>([]);
   let timer;
 
   useEffect(() => {
@@ -36,7 +36,7 @@ function SparkCard({ execApi, model, title, href = null }) {
   }
 
   async function load() {
-    const response = await execApi("get", `/totals`, {
+    const response: Actions.TotalsAction = await execApi("get", `/totals`, {
       model,
     });
 
@@ -94,13 +94,11 @@ function BigNumber({ execApi, model, title, href = null }) {
   }
 
   async function load() {
-    const response = await execApi("get", `/totals`, {
+    const response: Actions.TotalsAction = await execApi("get", `/totals`, {
       model,
     });
 
-    if (response) {
-      setTotal(response?.total);
-    }
+    if (response) setTotal(response?.total);
   }
 
   return (
@@ -189,7 +187,9 @@ function RunningRuns({ execApi }) {
   }, []);
 
   async function load() {
-    const { runs } = await execApi("get", `/runs`, { state: "running" });
+    const { runs }: Actions.RunsList = await execApi("get", `/runs`, {
+      state: "running",
+    });
     setRuns(runs);
   }
 

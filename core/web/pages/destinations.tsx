@@ -11,8 +11,7 @@ import LoadingTable from "../components/loadingTable";
 import Moment from "react-moment";
 import AppIcon from "../components/appIcon";
 import StateBadge from "../components/stateBadge";
-
-import { Models } from "../utils/apiData";
+import { Models, Actions } from "../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler } = props;
@@ -35,10 +34,14 @@ export default function Page(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response = await execApi("get", `/destinations`, {
-      limit,
-      offset,
-    });
+    const response: Actions.DestinationsList = await execApi(
+      "get",
+      `/destinations`,
+      {
+        limit,
+        offset,
+      }
+    );
     setLoading(false);
     if (response?.destinations) {
       setDestinations(response.destinations);

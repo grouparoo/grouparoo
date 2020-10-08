@@ -7,8 +7,9 @@ import { useRouter } from "next/router";
 import { Typeahead } from "react-bootstrap-typeahead";
 import DestinationTabs from "../../../components/tabs/destination";
 import LoadingButton from "../../../components/loadingButton";
-
-import { Models } from "../../../utils/apiData";
+import { Models, Actions } from "../../../utils/apiData";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
 
 export default function Page(props) {
   const {
@@ -20,6 +21,15 @@ export default function Page(props) {
     groups,
     exportArrayProperties,
     hydrationError,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    hydrationError: Error;
+    profilePropertyRules: Models.ProfilePropertyRuleType[];
+    groups: Models.GroupType[];
+    mappingOptions: Actions.DestinationMappingOptions["options"];
+    destinationTypeConversions: Actions.DestinationMappingOptions["destinationTypeConversions"];
+    exportArrayProperties: Actions.DestinationExportArrayProperties["exportArrayProperties"];
   } = props;
   const { execApi } = useApi(props, errorHandler);
   const router = useRouter();
@@ -40,7 +50,7 @@ export default function Page(props) {
     unlockedProfilePropertyRules,
     setUnlockedProfilePropertyRules,
   ] = useState({});
-  const [unlockedGroups, setUnlockedGroups] = useState([]);
+  const [unlockedGroups, setUnlockedGroups] = useState<string[]>([]);
   const { guid } = router.query;
 
   if (hydrationError) errorHandler.set({ error: hydrationError });

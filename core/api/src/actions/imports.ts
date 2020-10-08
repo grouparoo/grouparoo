@@ -42,7 +42,7 @@ export class ImportsList extends AuthenticatedAction {
   }
 }
 
-export class ViewImport extends AuthenticatedAction {
+export class ImportView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "import:view";
@@ -60,7 +60,7 @@ export class ViewImport extends AuthenticatedAction {
   }
 }
 
-export class CreateImport extends AuthenticatedAction {
+export class ImportCreate extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "import:create";

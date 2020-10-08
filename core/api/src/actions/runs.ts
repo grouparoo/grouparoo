@@ -4,7 +4,7 @@ import { Op } from "sequelize";
 import { Schedule } from "../models/Schedule";
 import { Destination } from "../models/Destination";
 
-export class ListRuns extends AuthenticatedAction {
+export class RunsList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "runs:list";

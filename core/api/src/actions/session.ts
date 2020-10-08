@@ -2,7 +2,7 @@ import { Action, api, Connection } from "actionhero";
 import { AuthenticatedAction } from "./../classes/authenticatedAction";
 import { TeamMember } from "../models/TeamMember";
 
-export class sessionCreate extends Action {
+export class SessionCreate extends Action {
   constructor() {
     super();
     this.name = "session:create";
@@ -39,7 +39,7 @@ export class sessionCreate extends Action {
   }
 }
 
-export class sessionView extends AuthenticatedAction {
+export class SessionView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "session:view";
@@ -65,7 +65,7 @@ export class sessionView extends AuthenticatedAction {
   }
 }
 
-export class sessionDestroy extends Action {
+export class SessionDestroy extends Action {
   constructor() {
     super();
     this.name = "session:destroy";
