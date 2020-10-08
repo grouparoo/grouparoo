@@ -1,5 +1,5 @@
 import os from "os";
-import { api } from "actionhero";
+import { api, env } from "actionhero";
 import PluginDetails from "./../utils/pluginDetails";
 import {
   App,
@@ -60,6 +60,17 @@ export namespace TelemetryReporters {
           topic: "os",
           aggregation: "exact",
           value: `${process.platform}/${os.release()}`,
+        };
+      }
+    }
+
+    export namespace NODE_ENV {
+      export async function exact() {
+        return {
+          collection: "cluster",
+          topic: "node_env",
+          aggregation: "exact",
+          value: env,
         };
       }
     }

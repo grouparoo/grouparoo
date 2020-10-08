@@ -43,6 +43,7 @@ export class Plugins extends Initializer {
         // information about how Grouparoo is being operated
         metrics.push(await TelemetryReporters.Cluster.Workers.countWorkers());
         metrics.push(await TelemetryReporters.Cluster.OS.exact());
+        metrics.push(await TelemetryReporters.Cluster.NODE_ENV.exact());
 
         // versions of the plugins installed
         metrics.push(...(await TelemetryReporters.Plugins.Versions()));
