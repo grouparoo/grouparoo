@@ -23,11 +23,11 @@ import Moment from "moment";
 import { Op } from "sequelize";
 import { ImportOps } from "../modules/ops/import";
 
-interface ImportData {
+export interface ImportData {
   [key: string]: any;
 }
 
-interface ImportProfileProperties {
+export interface ImportProfileProperties {
   [key: string]: any;
 }
 
