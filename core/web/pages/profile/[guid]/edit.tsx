@@ -11,8 +11,10 @@ import Moment from "react-moment";
 import LoadingTable from "../../../components/loadingTable";
 import getProfileDisplayName from "../../../components/profile/getProfileDisplayName";
 import ArrayProfilePropertyList from "../../../components/profile/arrayProfilePropertyList";
-
 import { Models } from "../../../utils/apiData";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
+import { ProfileHandler } from "../../../utils/profileHandler";
 
 export default function Page(props) {
   const {
@@ -21,7 +23,16 @@ export default function Page(props) {
     profilePropertyRules,
     profileHandler,
     allGroups,
+    sources,
     apps,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    profilePropertyRules: Models.ProfilePropertyRuleType[];
+    allGroups: Models.GroupType[];
+    apps: Models.AppType[];
+    sources: Models.SourceType[];
+    profileHandler: ProfileHandler;
   } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
@@ -38,7 +49,7 @@ export default function Page(props) {
     );
 
     return () => {
-      profileHandler.unsubscribe("profile-edit", load.bind(this));
+      profileHandler.unsubscribe("profile-edit");
     };
   }, []);
 
@@ -135,16 +146,16 @@ export default function Page(props) {
     setProperties(_properties);
   };
 
-  const manualProperties = [];
+  // const manualProperties = [];
   const manualAppGuids = apps
     .filter((app) => app.type === "manual")
     .map((app) => app.guid);
-
-  profilePropertyRules.forEach((rule) => {
-    if (manualAppGuids.includes(rule.source.app.guid)) {
-      manualProperties.push(rule.key);
-    }
-  });
+  const manualSourceGuids = sources
+    .filter((source) => manualAppGuids.includes(source.appGuid))
+    .map((source) => source.guid);
+  const manualProperties = profilePropertyRules
+    .filter((p) => manualSourceGuids.includes(p.sourceGuid))
+    .map((p) => p.key);
 
   const groupMembershipGuids = groups.map((g) => g.guid);
 
@@ -383,5 +394,6 @@ Page.getInitialProps = async (ctx) => {
   );
   const { groups: allGroups } = await execApi("get", `/groups`);
   const { apps } = await execApi("get", `/apps`);
-  return { profile, profilePropertyRules, groups, allGroups, apps };
+  const { sources } = await execApi("get", `/sources`);
+  return { profile, profilePropertyRules, groups, allGroups, sources, apps };
 };
