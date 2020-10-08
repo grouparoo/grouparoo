@@ -1,6 +1,7 @@
 import { OptionallyAuthenticatedAction } from "../classes/optionallyAuthenticatedAction";
-import { Team } from "../models/Team";
 import { Setting } from "../models/Setting";
+import { Team } from "../models/Team";
+import { TeamMember } from "../models/TeamMember";
 
 export class NavigationList extends OptionallyAuthenticatedAction {
   constructor() {
@@ -12,7 +13,11 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     this.outputExample = {};
   }
 
-  async run({ response, session: { teamMember } }) {
+  async run({
+    session: { teamMember },
+  }: {
+    session: { teamMember: TeamMember };
+  }) {
     let navigationItems = [];
     let bottomMenuItems = [];
     let platformItems = [];
@@ -176,12 +181,14 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       where: { pluginName: "core", key: "cluster-name" },
     });
 
-    response.navigationMode = navigationMode;
-    response.clusterName = clusterNameSetting?.value || "";
-    response.navigation = {
-      navigationItems,
-      platformItems,
-      bottomMenuItems,
+    return {
+      navigationMode,
+      clusterName: clusterNameSetting?.value || "",
+      navigation: {
+        navigationItems,
+        platformItems,
+        bottomMenuItems,
+      },
     };
   }
 }

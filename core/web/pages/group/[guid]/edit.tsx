@@ -8,12 +8,12 @@ import Head from "next/head";
 import GroupTabs from "../../../components/tabs/group";
 import LoadingButton from "../../../components/loadingButton";
 
-import { GroupAPIData } from "../../../utils/apiData";
+import { Models } from "../../../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, successHandler, groupHandler } = props;
   const router = useRouter();
-  const [group, setGroup] = useState<GroupAPIData>(props.group);
+  const [group, setGroup] = useState<Models.GroupType>(props.group);
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 

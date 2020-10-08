@@ -3,18 +3,16 @@ import Head from "next/head";
 import Link from "next/link";
 import LoadingTable from "../../../components/loadingTable";
 import ProfilePropertyRuleTabs from "../../../components/tabs/profilePropertyRule";
-import {
-  ProfilePropertyRuleAPIData,
-  GroupAPIData,
-} from "../../../utils/apiData";
+import { Models } from "../../../utils/apiData";
 
 export default function Page({
   profilePropertyRule,
   groups,
+  source,
 }: {
-  profilePropertyRule: ProfilePropertyRuleAPIData;
-  groups: GroupAPIData[];
-  ops: any;
+  profilePropertyRule: Models.ProfilePropertyRuleType;
+  groups: Models.GroupType[];
+  source: Models.SourceType;
 }) {
   return (
     <>
@@ -22,7 +20,10 @@ export default function Page({
         <title>Grouparoo: {profilePropertyRule.key}</title>
       </Head>
 
-      <ProfilePropertyRuleTabs profilePropertyRule={profilePropertyRule} />
+      <ProfilePropertyRuleTabs
+        profilePropertyRule={profilePropertyRule}
+        source={source}
+      />
 
       <LoadingTable loading={false}>
         <thead>
@@ -83,10 +84,14 @@ Page.getInitialProps = async (ctx) => {
     "get",
     `/profilePropertyRule/${guid}`
   );
+  const { source } = await execApi(
+    "/get",
+    `/source/${profilePropertyRule.sourceGuid}`
+  );
   const { groups } = await execApi(
     "get",
     `/profilePropertyRule/${guid}/groups`
   );
 
-  return { profilePropertyRule, groups };
+  return { profilePropertyRule, source, groups };
 };

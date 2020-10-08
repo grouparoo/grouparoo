@@ -21,11 +21,11 @@ export class SettingsList extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const setting = await Setting.findAll({ order: params.order });
-    response.settings = await Promise.all(
-      setting.map(async (s) => await s.apiData())
-    );
+    return {
+      settings: await Promise.all(setting.map(async (s) => await s.apiData())),
+    };
   }
 }
 
@@ -42,7 +42,7 @@ export class SettingEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ response, params }) {
+  async run({ params }) {
     let setting = await Setting.findByGuid(params.guid);
     setting = await plugin.updateSetting(
       setting.pluginName,
@@ -50,6 +50,6 @@ export class SettingEdit extends AuthenticatedAction {
       params.value
     );
 
-    response.setting = await setting.apiData();
+    return { setting: await setting.apiData() };
   }
 }

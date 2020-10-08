@@ -5,9 +5,21 @@ import { Button } from "react-bootstrap";
 import StateBadge from "../../../components/stateBadge";
 import GroupTabs from "../../../components/tabs/group";
 import ProfilesList from "../../../components/profile/list";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
+import { Models } from "../../../utils/apiData";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, group } = props;
+  const {
+    errorHandler,
+    successHandler,
+    group,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    group: Models.GroupType;
+  } = props;
+
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 

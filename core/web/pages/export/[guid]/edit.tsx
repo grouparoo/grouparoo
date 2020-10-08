@@ -4,8 +4,15 @@ import Link from "next/link";
 import Head from "next/head";
 import Moment from "react-moment";
 import ExportTabs from "../../../components/tabs/export";
+import { Models } from "../../../utils/apiData";
 
-export default function Page({ _export, groups }) {
+export default function Page({
+  _export,
+  groups,
+}: {
+  _export: Models.ExportType;
+  groups: Models.GroupType[];
+}) {
   function getGroupGuid(groupName) {
     const group = groups.filter((g) => g.name === groupName)[0];
     if (group) {

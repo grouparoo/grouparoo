@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SetupStepAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 import { Accordion, Card, Row, Col, Button, Badge } from "react-bootstrap";
 
 export default function SetupStepCard({
@@ -7,7 +7,7 @@ export default function SetupStepCard({
   execApi,
   reload,
 }: {
-  setupStep: SetupStepAPIData;
+  setupStep: Models.SetupStepType;
   execApi: Function;
   reload: Function;
 }) {

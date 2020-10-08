@@ -12,14 +12,14 @@ import Moment from "react-moment";
 import AppIcon from "../components/appIcon";
 import StateBadge from "../components/stateBadge";
 
-import { DestinationAPIData } from "../utils/apiData";
+import { Models } from "../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [destinations, setDestinations] = useState<DestinationAPIData[]>(
+  const [destinations, setDestinations] = useState<Models.DestinationType[]>(
     props.destinations
   );
   const [total, setTotal] = useState(props.total);

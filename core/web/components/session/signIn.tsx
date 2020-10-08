@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../loadingButton";
 import { useForm } from "react-hook-form";
-import { SetupStepAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 
 export default function SignInForm(props) {
   const { errorHandler, successHandler, sessionHandler, useApi } = props;
@@ -41,10 +41,10 @@ export default function SignInForm(props) {
     const {
       setupSteps,
       toDisplay,
-    }: { setupSteps: SetupStepAPIData[]; toDisplay: boolean } = await execApi(
-      "get",
-      `/setupSteps`
-    );
+    }: {
+      setupSteps: Models.SetupStepType[];
+      toDisplay: boolean;
+    } = await execApi("get", `/setupSteps`);
     return { setupSteps, toDisplay };
   }
 

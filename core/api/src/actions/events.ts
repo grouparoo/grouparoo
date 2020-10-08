@@ -4,6 +4,7 @@ import { Event } from "../models/Event";
 import { EventData } from "../models/EventData";
 import { Op } from "sequelize";
 import Moment from "moment";
+import { AsyncReturnType } from "type-fest";
 
 export class EventsList extends AuthenticatedAction {
   constructor() {
@@ -26,7 +27,7 @@ export class EventsList extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const where = {};
     const includeWhere = {};
 
@@ -79,8 +80,7 @@ export class EventsList extends AuthenticatedAction {
       ],
     });
 
-    response.events = await Promise.all(events.map((e) => e.apiData()));
-    response.total = total;
+    return { total, events: await Promise.all(events.map((e) => e.apiData())) };
   }
 }
 
@@ -109,7 +109,7 @@ export class EventsCounts extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const where = {
       occurredAt: {
         [Op.gte]: params.startTime,
@@ -141,7 +141,11 @@ export class EventsCounts extends AuthenticatedAction {
       limit: params.limit,
     });
 
-    const formattedCounts = counts.map((c) => {
+    const formattedCounts: Array<{
+      type: string;
+      time: number;
+      count: number;
+    }> = counts.map((c) => {
       return {
         type: c.getDataValue("type"),
         // @ts-ignore
@@ -151,8 +155,8 @@ export class EventsCounts extends AuthenticatedAction {
       };
     });
 
-    response.counts = formattedCounts;
-    response.total = await Event.count({ where });
+    const total = await Event.count({ where });
+    return { total, counts: formattedCounts };
   }
 }
 
@@ -169,7 +173,7 @@ export class EventsTypes extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const types = await Event.findAll({
       attributes: [
         "type",
@@ -183,11 +187,22 @@ export class EventsTypes extends AuthenticatedAction {
       order: [["count", "desc"]],
     });
 
-    response.types = [];
+    const total = await Event.count({
+      col: "type",
+      distinct: true,
+    });
+
+    const _types: Array<{
+      type: string;
+      count: number;
+      min: number;
+      max: number;
+      example: AsyncReturnType<typeof Event.prototype.apiData>;
+    }> = [];
     for (const i in types) {
       const t = types[i];
       const example = await Event.findOne({ where: { type: t.type } });
-      response.types.push({
+      _types.push({
         type: t.type,
         // @ts-ignore
         count: t.getDataValue("count"),
@@ -199,10 +214,7 @@ export class EventsTypes extends AuthenticatedAction {
       });
     }
 
-    response.total = await Event.count({
-      col: "type",
-      distinct: true,
-    });
+    return { total, types: _types };
   }
 }
 
@@ -222,7 +234,7 @@ export class EventCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ session, connection, params, response }) {
+  async run({ session, connection, params }) {
     if (!params.userId && !params.anonymousId) {
       throw new Error(`either anonymousId or userId is required`);
     }
@@ -258,7 +270,7 @@ export class EventCreate extends AuthenticatedAction {
       await event.setData(params.data);
     }
 
-    response.event = await event.apiData();
+    return { event: await event.apiData() };
   }
 }
 
@@ -277,18 +289,20 @@ export class EventAutocompleteType extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const where = {};
     if (params.match) {
       where["type"] = { [Op.iLike]: `%${params.match}%` };
     }
 
-    response.types = await Event.getTypes(
-      where,
-      params.limit,
-      params.offset,
-      params.order
-    );
+    return {
+      types: await Event.getTypes(
+        where,
+        params.limit,
+        params.offset,
+        params.order
+      ),
+    };
   }
 }
 
@@ -304,9 +318,9 @@ export class EventView extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const event = await Event.findByGuid(params.guid);
-    response.event = await event.apiData();
+    return { event: await event.apiData() };
   }
 }
 
@@ -322,10 +336,9 @@ export class EventDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.success = false;
+  async run({ params }) {
     const event = await Event.findByGuid(params.guid);
     await event.destroy();
-    response.success = true;
+    return { success: true };
   }
 }

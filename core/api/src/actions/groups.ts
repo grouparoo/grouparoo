@@ -26,7 +26,7 @@ export class GroupsList extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const where = {};
 
     if (params.state) where["state"] = params.state;
@@ -38,8 +38,12 @@ export class GroupsList extends AuthenticatedAction {
       order: params.order,
     });
 
-    response.groups = await Promise.all(groups.map(async (g) => g.apiData()));
-    response.total = await Group.scope(null).count({ where });
+    const total = await Group.scope(null).count({ where });
+
+    return {
+      total,
+      groups: await Promise.all(groups.map(async (g) => g.apiData())),
+    };
   }
 }
 
@@ -53,10 +57,12 @@ export class GroupsRuleOptions extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run({ response }) {
-    response.ruleLimit = GROUP_RULE_LIMIT;
-    response.ops = ProfilePropertyRuleOpsDictionary;
-    response.topLevelGroupRules = TopLevelGroupRules;
+  async run() {
+    return {
+      ruleLimit: GROUP_RULE_LIMIT,
+      ops: ProfilePropertyRuleOpsDictionary,
+      topLevelGroupRules: TopLevelGroupRules,
+    };
   }
 }
 
@@ -76,15 +82,16 @@ export class GroupCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const group = await Group.create(params);
 
     if (params.rules) {
       await group.setRules(params.rules);
     }
 
-    response.group = await group.apiData();
-    response.group.rules = await group.getRules();
+    const responseGroup = await group.apiData();
+    responseGroup.rules = group.toConvenientRules(await group.getRules());
+    return { group: responseGroup };
   }
 }
 
@@ -104,14 +111,15 @@ export class GroupEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const group = await Group.findByGuid(params.guid);
     await group.update(params);
 
     if (params.rules) await group.setRules(params.rules);
 
-    response.group = await group.apiData();
-    response.group.rules = group.toConvenientRules(await group.getRules());
+    const responseGroup = await group.apiData();
+    responseGroup.rules = group.toConvenientRules(await group.getRules());
+    return { group: responseGroup };
   }
 }
 
@@ -127,11 +135,10 @@ export class GroupRun extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.success = false;
+  async run({ params }) {
     const group = await Group.findByGuid(params.guid);
     await group.run();
-    response.success = true;
+    return { success: true };
   }
 }
 
@@ -148,8 +155,7 @@ export class GroupAddProfile extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.success = false;
+  async run({ params }) {
     const group = await Group.findByGuid(params.guid);
     if (group.type !== "manual") {
       throw new Error(
@@ -158,7 +164,7 @@ export class GroupAddProfile extends AuthenticatedAction {
     }
     const profile = await Profile.findByGuid(params.profileGuid);
     await group.addProfile(profile);
-    response.success = true;
+    return { success: true };
   }
 }
 
@@ -175,8 +181,7 @@ export class GroupRemoveProfile extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.success = false;
+  async run({ params }) {
     const group = await Group.findByGuid(params.guid);
     if (group.type !== "manual") {
       throw new Error(
@@ -186,7 +191,7 @@ export class GroupRemoveProfile extends AuthenticatedAction {
 
     const profile = await Profile.findByGuid(params.profileGuid);
     await group.removeProfile(profile);
-    response.success = true;
+    return { success: true };
   }
 }
 
@@ -202,10 +207,11 @@ export class GroupView extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const group = await Group.findByGuid(params.guid);
-    response.group = await group.apiData();
-    response.group.rules = group.toConvenientRules(await group.getRules());
+    const responseGroup = await group.apiData();
+    responseGroup.rules = group.toConvenientRules(await group.getRules());
+    return { group: responseGroup };
   }
 }
 
@@ -223,7 +229,7 @@ export class GroupCountComponentMembers extends AuthenticatedAction {
     };
   }
 
-  async run({ response, params }) {
+  async run({ params }) {
     const group = await Group.findByGuid(params.guid);
 
     let rules;
@@ -241,8 +247,8 @@ export class GroupCountComponentMembers extends AuthenticatedAction {
     } = await group.countComponentMembersFromRules(
       group.fromConvenientRules(rules)
     );
-    response.componentCounts = componentCounts;
-    response.funnelCounts = funnelCounts;
+
+    return { componentCounts, funnelCounts };
   }
 }
 
@@ -260,7 +266,7 @@ export class GroupCountPotentialMembers extends AuthenticatedAction {
     };
   }
 
-  async run({ response, params }) {
+  async run({ params }) {
     const group = await Group.findByGuid(params.guid);
 
     let rules;
@@ -275,7 +281,8 @@ export class GroupCountPotentialMembers extends AuthenticatedAction {
     const count = await group.countPotentialMembers(
       group.fromConvenientRules(rules)
     );
-    response.count = count;
+
+    return { count };
   }
 }
 
@@ -291,13 +298,13 @@ export class GroupListDestinations extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const group = await Group.findByGuid(params.guid);
 
     const destinations = await group.$get("destinations");
-    response.destinations = await Promise.all(
-      destinations.map((d) => d.apiData())
-    );
+    return {
+      destinations: await Promise.all(destinations.map((d) => d.apiData())),
+    };
   }
 }
 
@@ -314,8 +321,7 @@ export class GroupExport extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.success = false;
+  async run({ params }) {
     const group = await Group.findByGuid(params.guid);
 
     if (params.type === "csv") {
@@ -324,7 +330,7 @@ export class GroupExport extends AuthenticatedAction {
       throw new Error(`${params.type} is not a type of group export`);
     }
 
-    response.success = true;
+    return { success: true };
   }
 }
 
@@ -346,9 +352,7 @@ export class GroupDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.success = false;
-
+  async run({ params }) {
     const group = await Group.findByGuid(params.guid);
     await Group.checkDestinationTracking(group);
 
@@ -360,6 +364,6 @@ export class GroupDestroy extends AuthenticatedAction {
       await task.enqueue("group:destroy", { groupGuid: group.guid });
     }
 
-    response.success = true;
+    return { success: true };
   }
 }

@@ -73,9 +73,8 @@ export class ClusterReset extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run({ response, session: { teamMember } }) {
-    response.success = false;
-    const counts = {};
+  async run({ session: { teamMember } }) {
+    const counts: { [model: string]: number } = {};
 
     for (const i in models) {
       const model = models[i];
@@ -119,8 +118,7 @@ export class ClusterReset extends AuthenticatedAction {
       data: { counts },
     });
 
-    response.counts = counts;
-    response.success = true;
+    return { success: true, counts };
   }
 }
 
@@ -134,9 +132,8 @@ export class ClusterClearCache extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run({ response }) {
-    response.success = false;
-    cache.clear();
-    response.success = true;
+  async run() {
+    await cache.clear();
+    return { success: true };
   }
 }

@@ -6,7 +6,7 @@ import { Form, Card, Tabs, Tab } from "react-bootstrap";
 import Moment from "react-moment";
 import { capitalize } from "../../components/tabs";
 import { useRouter } from "next/router";
-import { SettingAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 import LoadingButton from "../../components/loadingButton";
 
 import ImportAndUpdateAllProfiles from "../../components/settings/importAndUpdate";
@@ -19,7 +19,9 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [settings, setSettings] = useState<SettingAPIData[]>(props.settings);
+  const [settings, setSettings] = useState<Models.SettingType[]>(
+    props.settings
+  );
   const [activeTab, setActiveTab] = useState(tab || "core");
 
   useEffect(() => {
@@ -122,7 +124,7 @@ function SettingCard({
   updateSetting,
   loading,
 }: {
-  setting: SettingAPIData;
+  setting: Models.SettingType;
   updateSetting: Function;
   loading: boolean;
 }) {

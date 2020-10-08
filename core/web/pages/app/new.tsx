@@ -4,14 +4,18 @@ import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useRouter } from "next/router";
 import AppSelectorList from "../../components/appSelectorList";
+import { ErrorHandler } from "../../utils/errorHandler";
 
-import { AppAPIData } from "../../utils/apiData";
+import { Actions, Models } from "../../utils/apiData";
 
 export default function Page(props) {
-  const { errorHandler, types } = props;
+  const {
+    errorHandler,
+    types,
+  }: { errorHandler: ErrorHandler; types: Actions.AppOptions["types"] } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
-  const [app, setApp] = useState<AppAPIData>({ type: "" });
+  const [app, setApp] = useState<Models.AppType>({ type: "" });
   const [loading, setLoading] = useState(false);
 
   async function submit({ name: type }) {
@@ -19,7 +23,7 @@ export default function Page(props) {
 
     setApp({ type });
     setLoading(true);
-    const response = await execApi("post", `/app`, { type });
+    const response: Actions.AppCreate = await execApi("post", `/app`, { type });
     if (response?.app) {
       return router.push("/app/[guid]/edit", `/app/${response.app.guid}/edit`);
     } else {
@@ -44,6 +48,6 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { types } = await execApi("get", `/appOptions`);
+  const { types }: Actions.AppOptions = await execApi("get", `/appOptions`);
   return { types: types.filter((app) => app.addible !== false) };
 };

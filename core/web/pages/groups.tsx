@@ -11,13 +11,13 @@ import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import StateBadge from "../components/stateBadge";
 
-import { GroupAPIData } from "../utils/apiData";
+import { Models } from "../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
-  const [groups, setGroups] = useState<GroupAPIData[]>(props.groups);
+  const [groups, setGroups] = useState<Models.GroupType[]>(props.groups);
   const [total, setTotal] = useState(props.total);
   const [loading, setLoading] = useState(false);
 

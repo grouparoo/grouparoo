@@ -1,11 +1,11 @@
 import { Badge } from "react-bootstrap";
 import { useRealtimeModelStream } from "./../../hooks/useRealtimeModelStream";
 import { useState, useEffect } from "react";
-import { RunAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 
 export default function RunningRunsBadge({ execApi }) {
   useRealtimeModelStream("run", "navigation-runs-badge", load);
-  const [runs, setRuns] = useState<RunAPIData[]>([]);
+  const [runs, setRuns] = useState<Models.RunType[]>([]);
 
   useEffect(() => {
     load();

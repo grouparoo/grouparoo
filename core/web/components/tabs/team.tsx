@@ -1,7 +1,7 @@
 import Tabs from "../tabs";
-import { TeamAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 
-export default function TeamTabs({ team }: { team: TeamAPIData }) {
+export default function TeamTabs({ team }: { team: Models.TeamType }) {
   const tabs = ["edit", "members"];
   return <Tabs name={team.name} tabs={tabs} />;
 }

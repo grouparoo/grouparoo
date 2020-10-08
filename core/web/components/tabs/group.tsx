@@ -1,8 +1,8 @@
 import Tabs from "../tabs";
 import { usePlugins } from "../../hooks/usePlugins";
-import { GroupAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 
-export default function GroupTabs({ group }: { group: GroupAPIData }) {
+export default function GroupTabs({ group }: { group: Models.GroupType }) {
   const [plugins, pluginMetadata] = usePlugins("group/tabs");
   const tabs = ["edit", "rules", "members", "destinations", "runs", "logs"];
 

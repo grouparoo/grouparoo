@@ -11,14 +11,16 @@ module.exports = class Status extends Action {
     this.outputExample = {};
   }
 
-  async run({ response }) {
-    response.plugins = pluginManifest.plugins.sort((a, b) => {
-      if (a.name > b.name) {
-        return 1;
-      }
-      if (a.name < b.name) {
-        return -1;
-      }
-    });
+  async run() {
+    return {
+      plugins: pluginManifest.plugins.sort((a, b) => {
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return -1;
+        }
+      }),
+    };
   }
 };

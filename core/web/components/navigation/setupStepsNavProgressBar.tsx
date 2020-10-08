@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { SetupStepAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 import { ProgressBar } from "react-bootstrap";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,7 +8,7 @@ export default function SetupStepsNavProgressBar({
   execApi,
   setupStepHandler,
 }) {
-  const [steps, setSteps] = useState<SetupStepAPIData[]>([]);
+  const [steps, setSteps] = useState<Models.SetupStepType[]>([]);
   const [shouldDisplay, setShouldDisplay] = useState(false);
   const router = useRouter();
 

@@ -157,26 +157,9 @@ export class Source extends LoggedModel<Source> {
     return SourceOps.sourcePreview(this, sourceOptions);
   }
 
-  async apiData(
-    includeSchedule = true,
-    includeApp = true,
-    includeProfilePropertyRules = true
-  ) {
-    let app: App;
-    let schedule: Schedule;
-    let profilePropertyRules: ProfilePropertyRule[];
-
-    if (includeApp) {
-      app = await this.$get("app", { scope: null });
-    }
-    if (includeSchedule) {
-      schedule = await this.$get("schedule", { scope: null });
-    }
-    if (includeProfilePropertyRules) {
-      profilePropertyRules = await this.$get("profilePropertyRules", {
-        scope: null,
-      });
-    }
+  async apiData() {
+    const app = await this.$get("app", { scope: null });
+    const schedule = await this.$get("schedule", { scope: null });
 
     const options = await this.getOptions();
     const { pluginConnection } = await this.getPlugin();
@@ -190,15 +173,13 @@ export class Source extends LoggedModel<Source> {
       type: this.type,
       state: this.state,
       mapping,
-      app: app ? await app.apiData() : null,
+      app: app ? await app.apiData() : undefined,
+      appGuid: this.app.guid,
       scheduleAvailable,
-      schedule: schedule ? await schedule.apiData() : null,
+      schedule: schedule ? await schedule.apiData() : undefined,
       previewAvailable,
       options,
       connection: pluginConnection,
-      profilePropertyRules: profilePropertyRules
-        ? await Promise.all(profilePropertyRules.map((prp) => prp.apiData()))
-        : [],
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
     };

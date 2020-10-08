@@ -2,8 +2,9 @@ import { api } from "actionhero";
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { App } from "../models/App";
 import { Source } from "../models/Source";
-import { GrouparooPlugin } from "../classes/plugin";
+import { GrouparooPlugin, PluginConnection } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
+import { AsyncReturnType } from "type-fest";
 
 export class SourcesList extends AuthenticatedAction {
   constructor() {
@@ -26,7 +27,7 @@ export class SourcesList extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const where = {};
     if (params.state) where["state"] = params.state;
 
@@ -37,11 +38,14 @@ export class SourcesList extends AuthenticatedAction {
       order: params.order,
     });
 
-    response.sources = await Promise.all(
-      sources.map(async (source) => source.apiData())
-    );
+    const total = await Source.scope(null).count({ where });
 
-    response.total = await Source.scope(null).count({ where });
+    return {
+      total,
+      sources: await Promise.all(
+        sources.map(async (source) => source.apiData())
+      ),
+    };
   }
 }
 
@@ -56,9 +60,14 @@ export class SourceConnectionApps extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run({ response }) {
+  async run() {
     const apps = await App.findAll();
     const existingAppTypes = apps.map((a) => a.type);
+
+    const connectionApps: Array<{
+      app: AsyncReturnType<typeof App.prototype.apiData>;
+      connection: PluginConnection;
+    }> = [];
 
     let importConnections = [];
     api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
@@ -70,7 +79,6 @@ export class SourceConnectionApps extends AuthenticatedAction {
       }
     });
 
-    const connectionApps = [];
     for (const i in apps) {
       for (const j in importConnections) {
         if (apps[i].type === importConnections[j].app) {
@@ -82,11 +90,11 @@ export class SourceConnectionApps extends AuthenticatedAction {
       }
     }
 
-    response.connectionApps = connectionApps;
-
-    response.environmentVariableOptions = OptionHelper.getEnvironmentVariableOptionsForTopic(
+    const environmentVariableOptions = OptionHelper.getEnvironmentVariableOptionsForTopic(
       "source"
     );
+
+    return { connectionApps, environmentVariableOptions };
   }
 }
 
@@ -107,7 +115,7 @@ export class SourceCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const source = await Source.create({
       appGuid: params.appGuid,
       name: params.name,
@@ -118,7 +126,7 @@ export class SourceCreate extends AuthenticatedAction {
     if (params.mapping) await source.setMapping(params.mapping);
     if (params.state) await source.update({ state: params.state });
 
-    response.source = await source.apiData();
+    return { source: await source.apiData() };
   }
 }
 
@@ -134,9 +142,9 @@ export class SourceView extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const source = await Source.findByGuid(params.guid);
-    response.source = await source.apiData();
+    return { source: await source.apiData() };
   }
 }
 
@@ -158,13 +166,13 @@ export class SourceEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const source = await Source.findByGuid(params.guid);
     if (params.options) await source.setOptions(params.options);
     if (params.mapping) await source.setMapping(params.mapping);
 
     await source.update(params);
-    response.source = await source.apiData();
+    return { source: await source.apiData() };
   }
 }
 
@@ -184,7 +192,7 @@ export class SourceBootstrapUniqueProfilePropertyRule extends AuthenticatedActio
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const source = await Source.findByGuid(params.guid);
 
     const rule = await source.bootstrapUniqueProfilePropertyRule(
@@ -192,8 +200,11 @@ export class SourceBootstrapUniqueProfilePropertyRule extends AuthenticatedActio
       params.type,
       params.mappedColumn
     );
-    response.profilePropertyRule = await rule.apiData();
-    response.source = await source.apiData();
+
+    return {
+      source: await source.apiData(),
+      profilePropertyRule: await rule.apiData(),
+    };
   }
 }
 
@@ -210,7 +221,7 @@ export class sourceConnectionOptions extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const source = await Source.findByGuid(params.guid);
 
     const options =
@@ -218,7 +229,7 @@ export class sourceConnectionOptions extends AuthenticatedAction {
         ? JSON.parse(params.options)
         : params.options;
 
-    response.options = await source.sourceConnectionOptions(options);
+    return { options: await source.sourceConnectionOptions(options) };
   }
 }
 
@@ -235,14 +246,15 @@ export class sourcePreview extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const source = await Source.findByGuid(params.guid);
 
     const options =
       typeof params.options === "string"
         ? JSON.parse(params.options)
         : params.options;
-    response.preview = await source.sourcePreview(options);
+
+    return { preview: await source.sourcePreview(options) };
   }
 }
 
@@ -258,10 +270,9 @@ export class SourceDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.success = false;
+  async run({ params }) {
     const source = await Source.findByGuid(params.guid);
     await source.destroy();
-    response.success = true;
+    return { success: true };
   }
 }

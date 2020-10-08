@@ -8,12 +8,12 @@ import RunTabs from "../../../components/tabs/run";
 import Head from "next/head";
 import LoadingButton from "../../../components/loadingButton";
 
-import { RunAPIData } from "../../../utils/apiData";
+import { Models } from "../../../utils/apiData";
 
 export default function Page(props) {
   const { quantizedTimeline, successHandler, errorHandler } = props;
   const { execApi } = useApi(props, errorHandler);
-  const [run, setRun] = useState<RunAPIData>(props.run);
+  const [run, setRun] = useState<Models.RunType>(props.run);
   const chartData = buildChartData(quantizedTimeline);
   const [loading, setLoading] = useState(false);
 

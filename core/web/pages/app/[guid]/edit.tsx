@@ -10,7 +10,10 @@ import AppTabs from "../../../components/tabs/app";
 import Loader from "../../../components/loader";
 import LoadingButton from "../../../components/loadingButton";
 
-import { AppAPIData } from "../../../utils/apiData";
+import { Actions, Models } from "../../../utils/apiData";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
+import { AppHandler } from "../../../utils/appHandler";
 
 export default function Page(props) {
   const {
@@ -20,10 +23,17 @@ export default function Page(props) {
     types,
     environmentVariableOptions,
     optionOptions,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    appHandler: AppHandler;
+    types: Actions.AppOptions["types"];
+    environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
+    optionOptions: Actions.AppOptionOptions["options"];
   } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
-  const [app, setApp] = useState<AppAPIData>(props.app);
+  const [app, setApp] = useState<Models.AppType>(props.app);
   const [loading, setLoading] = useState(false);
   const [testLoading, setTestLoading] = useState(false);
   const [testResult, setTestResult] = useState<{
@@ -38,7 +48,7 @@ export default function Page(props) {
     event.preventDefault();
     const state = app.state === "ready" ? undefined : "ready";
     setLoading(true);
-    const response = await execApi(
+    const response: Actions.AppEdit = await execApi(
       "put",
       `/app/${guid}`,
       Object.assign({}, app, { state })
@@ -60,7 +70,10 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response = await execApi("delete", `/app/${guid}`);
+      const response: Actions.AppDestroy = await execApi(
+        "delete",
+        `/app/${guid}`
+      );
       if (response?.success) {
         successHandler.set({ message: "App Deleted" });
         router.push("/apps");
@@ -74,9 +87,13 @@ export default function Page(props) {
     setTestLoading(true);
     setRanTest(false);
     setTestResult({ success: null, message: null, error: null });
-    const response = await execApi("put", `/app/${guid}/test`, {
-      options: app.options,
-    });
+    const response: Actions.AppTest = await execApi(
+      "put",
+      `/app/${guid}/test`,
+      {
+        options: app.options,
+      }
+    );
     if (response) {
       setRanTest(true);
       setTestResult(response.test);

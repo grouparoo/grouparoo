@@ -1,7 +1,7 @@
 import { useApi } from "../../hooks/useApi";
 import { Card, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { ProfilePropertyRuleAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 import LoadingButton from "../loadingButton";
 
 export default function IdentifyingProfilePropertyRule(props) {
@@ -9,7 +9,7 @@ export default function IdentifyingProfilePropertyRule(props) {
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [profilePropertyRules, setProfilePropertyRules] = useState<
-    ProfilePropertyRuleAPIData[]
+    Models.ProfilePropertyRuleType[]
   >([]);
   const [
     identifyingProfilePropertyGuid,

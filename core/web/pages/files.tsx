@@ -11,7 +11,7 @@ import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import LoadingButton from "../components/loadingButton";
 
-import { FileAPIData } from "../utils/apiData";
+import { Models } from "../utils/apiData";
 
 const apiVersion = process.env.API_VERSION || "v1";
 
@@ -21,7 +21,7 @@ export default function Page(props) {
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(props.total);
-  const [files, setFiles] = useState<FileAPIData[]>(props.files);
+  const [files, setFiles] = useState<Models.FileType[]>(props.files);
 
   // pagination
   const limit = 100;

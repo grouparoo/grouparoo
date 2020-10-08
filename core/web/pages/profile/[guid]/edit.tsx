@@ -12,7 +12,7 @@ import LoadingTable from "../../../components/loadingTable";
 import getProfileDisplayName from "../../../components/profile/getProfileDisplayName";
 import ArrayProfilePropertyList from "../../../components/profile/arrayProfilePropertyList";
 
-import { ProfileAPIData, GroupAPIData } from "../../../utils/apiData";
+import { Models } from "../../../utils/apiData";
 
 export default function Page(props) {
   const {
@@ -26,11 +26,11 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [profile, setProfile] = useState<ProfileAPIData>(props.profile);
-  const [groups, setGroups] = useState<[GroupAPIData]>(props.groups);
-  const [properties, setProperties] = useState<ProfileAPIData["properties"]>(
-    props.profile.properties
-  );
+  const [profile, setProfile] = useState<Models.ProfileType>(props.profile);
+  const [groups, setGroups] = useState<Models.GroupType[]>(props.groups);
+  const [properties, setProperties] = useState<
+    Models.ProfileType["properties"]
+  >(props.profile.properties);
 
   useEffect(() => {
     profileHandler.subscribe("profile-edit", (_profile) =>

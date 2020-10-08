@@ -5,11 +5,22 @@ import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Button, Image } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
+import { Models } from "../../../utils/apiData";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
 
 export default function Page(props) {
-  const { errorhandler, successHandler, file } = props;
+  const {
+    errorHandler,
+    successHandler,
+    file,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    file: Models.FileType;
+  } = props;
   const router = useRouter();
-  const { execApi } = useApi(props, errorhandler);
+  const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
   const apiVersion = process.env.API_VERSION || "v1";

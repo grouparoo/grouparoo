@@ -1,14 +1,14 @@
 import Head from "next/head";
 import { useApi } from "../hooks/useApi";
 import { useState } from "react";
-import { SetupStepAPIData } from "../utils/apiData";
+import { Models } from "../utils/apiData";
 import { Row, Col, ProgressBar, Alert, Button } from "react-bootstrap";
 import SetupStepCard from "../components/setupSteps/setupStepCard";
 
 export default function Page(props) {
   const { errorHandler, setupStepHandler } = props;
   const { execApi } = useApi(props, errorHandler);
-  const [setupSteps, setSetupSteps] = useState<SetupStepAPIData[]>(
+  const [setupSteps, setSetupSteps] = useState<Models.SetupStepType[]>(
     props.setupSteps
   );
 

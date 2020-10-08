@@ -8,8 +8,23 @@ import ScheduleAddButton from "../../../components/schedule/add";
 import ProfilePropertyRuleAddButton from "../../../components/profilePropertyRule/add";
 import SourceTabs from "../../../components/tabs/source";
 import Head from "next/head";
+import { Models } from "../../../utils/apiData";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
 
-export default function Page({ errorHandler, successHandler, source, run }) {
+export default function Page({
+  errorHandler,
+  successHandler,
+  source,
+  run,
+  profilePropertyRules,
+}: {
+  errorHandler: ErrorHandler;
+  successHandler: SuccessHandler;
+  source: Models.SourceType;
+  run: Models.RunType;
+  profilePropertyRules: Models.ProfilePropertyRuleType[];
+}) {
   const recurringFrequencyMinutes = source?.schedule?.recurringFrequency
     ? Math.round(source.schedule.recurringFrequency / 1000 / 60)
     : null;
@@ -66,7 +81,7 @@ export default function Page({ errorHandler, successHandler, source, run }) {
               </tr>
             </thead>
             <tbody>
-              {source.profilePropertyRules.map((rule) => (
+              {profilePropertyRules.map((rule) => (
                 <tr key={`rule-${rule.guid}`}>
                   <td>
                     <Link
@@ -263,6 +278,11 @@ Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
   const { execApi } = useApi(ctx);
   const { source } = await execApi("get", `/source/${guid}`);
+  const { profilePropertyRules } = await execApi(
+    "get",
+    `/profilePropertyRules`,
+    { sourceGuid: guid }
+  );
 
   let run;
   if (source?.schedule?.guid) {
@@ -273,5 +293,5 @@ Page.getInitialProps = async (ctx) => {
     run = runs[0];
   }
 
-  return { source, run };
+  return { source, run, profilePropertyRules };
 };

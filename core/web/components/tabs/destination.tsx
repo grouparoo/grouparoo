@@ -1,10 +1,10 @@
 import Tabs from "../tabs";
-import { DestinationAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 
 export default function DestinationTabs({
   destination,
 }: {
-  destination: DestinationAPIData;
+  destination: Models.DestinationType;
 }) {
   const tabs = ["edit", "data", "runs", "exports"];
   return (

@@ -8,14 +8,18 @@ import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import { Alert, Badge } from "react-bootstrap";
 import Moment from "react-moment";
-import { ImportAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
+import { ErrorHandler } from "../../utils/errorHandler";
 
 export default function ImportList(props) {
-  const { errorHandler, groups } = props;
+  const {
+    errorHandler,
+    groups,
+  }: { errorHandler: ErrorHandler; groups: Models.GroupType[] } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [imports, setImports] = useState<ImportAPIData[]>(props.imports);
+  const [imports, setImports] = useState<Models.ImportType[]>(props.imports);
   const [total, setTotal] = useState(props.total);
 
   // pagination

@@ -4,9 +4,13 @@ import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Badge, Alert } from "react-bootstrap";
 import Link from "next/link";
 import Moment from "react-moment";
+import { Models } from "../../../utils/apiData";
 
 export default function Page(props) {
-  const { groups, _import } = props;
+  const {
+    groups,
+    _import,
+  }: { groups: Models.GroupType[]; _import: Models.ImportType } = props;
 
   function groupName(groupGuid) {
     const group = groups.filter((g) => g.guid === groupGuid)[0];

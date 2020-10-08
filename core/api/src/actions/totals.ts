@@ -35,7 +35,7 @@ function generateDates(
   start = new Date().setDate(new Date().getDate() - 30),
   end = new Date()
 ) {
-  const results = [];
+  const results: string[] = [];
   const dt = new Date(start);
 
   while (dt <= end) {
@@ -58,18 +58,14 @@ export class TotalsAction extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.totals = {};
-    response.rolling = {};
-
+  async run({ params }: { params: { model: string } }) {
     const dates = generateDates();
     const model = modelClasses[params.model];
     if (!model) throw new Error(`cannot return totals for ${params.model}`);
 
-    response.total = await model.count();
+    const total: number = await model.count();
 
-    //@ts-ignore
-    const rolling = await model
+    const rolling: Array<{ date: string; count: number }> = await model
       .count({
         where: { createdAt: { [Op.gte]: new Date(dates[0]) } },
         group: [
@@ -91,6 +87,9 @@ export class TotalsAction extends AuthenticatedAction {
       }
     });
 
-    response.rolling = rolling.sort((a, b) => (b.date > a.date ? 1 : -1));
+    return {
+      total,
+      rolling: rolling.sort((a, b) => (b.date > a.date ? 1 : -1)),
+    };
   }
 }

@@ -10,7 +10,7 @@ import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import LoadingButton from "../loadingButton";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
-import { ProfileAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 import ArrayProfilePropertyList from "../../components/profile/arrayProfilePropertyList";
 
 export default function ProfilesList(props) {
@@ -20,7 +20,9 @@ export default function ProfilesList(props) {
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const [total, setTotal] = useState<number>(props.total);
-  const [profiles, setProfiles] = useState<ProfileAPIData[]>(props.profiles);
+  const [profiles, setProfiles] = useState<Models.ProfileType[]>(
+    props.profiles
+  );
   const [autocompleteResults, setAutoCompleteResults] = useState([]);
 
   // pagination

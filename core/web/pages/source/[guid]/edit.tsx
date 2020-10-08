@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import AppIcon from "./../../../components/appIcon";
 import StateBadge from "./../../../components/stateBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
-import { SourceAPIData } from "../../../utils/apiData";
+import { Models } from "../../../utils/apiData";
 import LoadingTable from "../../../components/loadingTable";
 import LoadingButton from "../../../components/loadingButton";
 import Loader from "../../../components/loader";
@@ -25,7 +25,7 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false);
   const [loadingOptions, setLoadingOptions] = useState(false);
   const [previewLoading, setPreviewLoading] = useState(false);
-  const [source, setSource] = useState<SourceAPIData>(props.source);
+  const [source, setSource] = useState<Models.SourceType>(props.source);
   const [connectionOptions, setConnectionOptions] = useState({});
   const { guid } = router.query;
 

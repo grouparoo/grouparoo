@@ -8,7 +8,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import DestinationTabs from "../../../components/tabs/destination";
 import LoadingButton from "../../../components/loadingButton";
 
-import { DestinationAPIData } from "../../../utils/apiData";
+import { Models } from "../../../utils/apiData";
 
 export default function Page(props) {
   const {
@@ -27,7 +27,7 @@ export default function Page(props) {
   const [trackedGroupGuid, setTrackedGroupGuid] = useState(
     props.trackedGroupGuid || "_none"
   );
-  const [destination, setDestination] = useState<DestinationAPIData>(
+  const [destination, setDestination] = useState<Models.DestinationType>(
     props.destination
   );
   const [

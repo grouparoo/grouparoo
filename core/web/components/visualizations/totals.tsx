@@ -11,7 +11,7 @@ import {
   ProgressBar,
 } from "react-bootstrap";
 import { useApi } from "../../hooks/useApi";
-import { RunAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
 import Loader from "../loader";
 
@@ -183,7 +183,7 @@ function PendingExports({ execApi }) {
 
 function RunningRuns({ execApi }) {
   useRealtimeModelStream("run", "totals-runs-list", load);
-  const [runs, setRuns] = useState<RunAPIData[]>([]);
+  const [runs, setRuns] = useState<Models.RunType[]>([]);
   useEffect(() => {
     load();
   }, []);

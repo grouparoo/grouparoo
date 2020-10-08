@@ -9,7 +9,7 @@ import Link from "next/link";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import RunDurationChart from "../visualizations/runDurations";
-import { RunAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 
 export default function RunsList(props) {
   const { errorHandler, runsHandler } = props;
@@ -17,7 +17,7 @@ export default function RunsList(props) {
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(props.total);
-  const [runs, setRuns] = useState<RunAPIData[]>(props.runs);
+  const [runs, setRuns] = useState<Models.RunType[]>(props.runs);
   const [stateFilter, setStateFilter] = useState(
     router.query.state?.toString() || ""
   );

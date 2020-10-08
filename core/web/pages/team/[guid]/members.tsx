@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import Moment from "react-moment";
 import LoadingTable from "../../../components/loadingTable";
 import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
-import { TeamMemberAPIData } from "../../../utils/apiData";
+import { Models } from "../../../utils/apiData";
 import TeamTabs from "../../../components/tabs/team";
 
 export default function Page(props) {
@@ -14,7 +14,7 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [teamMembers, setTeamMembers] = useState<TeamMemberAPIData[]>(
+  const [teamMembers, setTeamMembers] = useState<Models.TeamMemberType[]>(
     props.teamMembers
   );
 

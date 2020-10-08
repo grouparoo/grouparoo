@@ -1,7 +1,7 @@
 import Tabs from "../tabs";
-import { EventAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 
-export default function EventTabs({ event }: { event: EventAPIData }) {
+export default function EventTabs({ event }: { event: Models.EventType }) {
   const tabs = ["edit", "logs"];
   return <Tabs name={event.guid} tabs={tabs} />;
 }

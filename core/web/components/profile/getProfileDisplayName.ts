@@ -1,6 +1,6 @@
-import { ProfileAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 
-export default function getProfileDisplayName(profile: ProfileAPIData) {
+export default function getProfileDisplayName(profile: Models.ProfileType) {
   let displayName = "";
 
   for (const key in profile.properties) {

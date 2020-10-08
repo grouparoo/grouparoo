@@ -22,7 +22,7 @@ export class SchedulesList extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const where = {};
     if (params.state) where["state"] = params.state;
 
@@ -33,11 +33,14 @@ export class SchedulesList extends AuthenticatedAction {
       order: params.order,
     });
 
-    response.schedules = await Promise.all(
-      schedules.map(async (conn) => conn.apiData())
-    );
+    const total = await Schedule.scope(null).count({ where });
 
-    response.total = await Schedule.scope(null).count({ where });
+    return {
+      total,
+      schedules: await Promise.all(
+        schedules.map(async (conn) => conn.apiData())
+      ),
+    };
   }
 }
 
@@ -53,11 +56,10 @@ export class ScheduleRun extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.success = false;
+  async run({ params }) {
     const schedule = await Schedule.findByGuid(params.guid);
     await schedule.enqueueRun();
-    response.success = true;
+    return { success: true };
   }
 }
 
@@ -78,7 +80,7 @@ export class ScheduleCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const schedule = await Schedule.create({
       name: params.name,
       sourceGuid: params.sourceGuid,
@@ -89,8 +91,10 @@ export class ScheduleCreate extends AuthenticatedAction {
     if (params.options) await schedule.setOptions(params.options);
     if (params.state) await schedule.update({ state: params.state });
 
-    response.schedule = await schedule.apiData();
-    response.pluginOptions = await schedule.pluginOptions();
+    return {
+      schedule: await schedule.apiData(),
+      pluginOptions: await schedule.pluginOptions(),
+    };
   }
 }
 
@@ -112,7 +116,7 @@ export class ScheduleEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const schedule = await Schedule.findByGuid(params.guid);
     // these timing options are validated separately, and should be set first
     if (params.recurringFrequency || params.recurring) {
@@ -125,8 +129,11 @@ export class ScheduleEdit extends AuthenticatedAction {
     if (params.options) await schedule.setOptions(params.options);
 
     await schedule.update({ state: params.state, name: params.name });
-    response.schedule = await schedule.apiData();
-    response.pluginOptions = await schedule.pluginOptions();
+
+    return {
+      schedule: await schedule.apiData(),
+      pluginOptions: await schedule.pluginOptions(),
+    };
   }
 }
 
@@ -142,10 +149,12 @@ export class ScheduleView extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const schedule = await Schedule.findByGuid(params.guid);
-    response.schedule = await schedule.apiData();
-    response.pluginOptions = await schedule.pluginOptions();
+    return {
+      schedule: await schedule.apiData(),
+      pluginOptions: await schedule.pluginOptions(),
+    };
   }
 }
 
@@ -161,10 +170,9 @@ export class ScheduleDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.success = false;
+  async run({ params }) {
     const schedule = await Schedule.findByGuid(params.guid);
     await schedule.destroy();
-    response.success = true;
+    return { success: true };
   }
 }

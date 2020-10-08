@@ -8,7 +8,7 @@ import { Form, Table, Badge, Button } from "react-bootstrap";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import LoadingButton from "../../../components/loadingButton";
 
-import { GroupAPIData } from "../../../utils/apiData";
+import { Models } from "../../../utils/apiData";
 
 export default function Page(props) {
   const {
@@ -19,7 +19,7 @@ export default function Page(props) {
     ops,
     topLevelGroupRules,
   } = props;
-  const [group, setGroup] = useState<GroupAPIData>(props.group);
+  const [group, setGroup] = useState<Models.GroupType>(props.group);
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [localRules, setLocalRules] = useState(
@@ -30,8 +30,6 @@ export default function Page(props) {
   const [componentCounts, setComponentCounts] = useState({});
   const [autocompleteResults, setAutoCompleteResults] = useState({});
   // const [funnelCounts, setFunnelCounts] = useState([]);
-
-  const typeaheadTypes = ["email", "string"];
 
   useEffect(() => {
     getCounts();

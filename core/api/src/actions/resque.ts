@@ -30,10 +30,10 @@ export class ResqueRedisInfo extends ResqueActionRead {
     this.inputs = {};
   }
 
-  async run({ response }) {
+  async run({}) {
     const redisInfo = await api.resque.queue.connection.redis.info();
     if (redisInfo) {
-      response.redisInfo = redisInfo.split(os.EOL);
+      return { redisInfo: redisInfo.split(os.EOL) };
     }
   }
 }
@@ -46,8 +46,8 @@ export class ResqueResqueDetails extends ResqueActionRead {
     this.inputs = {};
   }
 
-  async run({ response }) {
-    response.resqueDetails = await task.details();
+  async run({}) {
+    return { resqueDetails: await task.details() };
   }
 }
 
@@ -59,8 +59,8 @@ export class ResqueLoadWorkerQueues extends ResqueActionRead {
     this.inputs = {};
   }
 
-  async run({ response }) {
-    response.workerQueues = await task.workers();
+  async run({}) {
+    return { workerQueues: await task.workers() };
   }
 }
 
@@ -74,10 +74,12 @@ export class ResqueForceCleanWorker extends ResqueActionWrite {
     };
   }
 
-  async run({ params, response }) {
-    response.generatedErrorPayload = await api.resque.queue.forceCleanWorker(
-      params.workerName
-    );
+  async run({ params }) {
+    return {
+      generatedErrorPayload: await api.resque.queue.forceCleanWorker(
+        params.workerName
+      ),
+    };
   }
 }
 
@@ -89,8 +91,8 @@ export class ResqueFailedCount extends ResqueActionRead {
     this.inputs = {};
   }
 
-  async run({ response }) {
-    response.failedCount = await task.failedCount();
+  async run({}) {
+    return { failedCount: await task.failedCount() };
   }
 }
 
@@ -116,13 +118,15 @@ export class ResqueQueued extends ResqueActionRead {
     };
   }
 
-  async run({ params, response }) {
-    response.queueLength = await api.resque.queue.length(params.queue);
-    response.jobs = await task.queued(
+  async run({ params }) {
+    const queueLength = await api.resque.queue.length(params.queue);
+    const jobs = await task.queued(
       params.queue,
       params.offset,
       params.offset + params.limit - 1
     );
+
+    return { queueLength, jobs };
   }
 }
 
@@ -136,8 +140,8 @@ export class ResqueDelQueue extends ResqueActionWrite {
     };
   }
 
-  async run({ response, params }) {
-    response.deleted = await task.delQueue(params.queue);
+  async run({ params }) {
+    return { deleted: await task.delQueue(params.queue) };
   }
 }
 
@@ -160,12 +164,15 @@ export class ResqueResqueFailed extends ResqueActionRead {
     };
   }
 
-  async run({ response, params }) {
-    response.failed = await task.failed(
+  async run({ params }) {
+    const failed = await task.failed(
       params.offset,
       params.offset + params.limit - 1
     );
-    response.total = await task.failedCount();
+
+    const total = await task.failedCount();
+
+    return { total, failed };
   }
 }
 
@@ -253,8 +260,8 @@ export class ResqueLocks extends ResqueActionRead {
     this.inputs = {};
   }
 
-  async run({ response }) {
-    response.locks = await task.locks();
+  async run({}) {
+    return { locks: await task.locks() };
   }
 }
 
@@ -268,8 +275,8 @@ export class ResqueDelLock extends ResqueActionWrite {
     };
   }
 
-  async run({ response, params }) {
-    response.count = await task.delLock(params.lock);
+  async run({ params }) {
+    return { count: await task.delLock(params.lock) };
   }
 }
 
@@ -292,17 +299,14 @@ export class ResqueDelayedJobs extends ResqueActionRead {
     };
   }
 
-  async run({ response, params }) {
+  async run({ params }) {
     const timestamps = [];
     const delayedjobs = {};
 
-    response.timestampsCount = 0;
     const allTimestamps = await task.timestamps();
     if (allTimestamps.length === 0) {
       return;
     }
-
-    response.total = allTimestamps.length;
 
     for (let i = 0; i < allTimestamps.length; i++) {
       if (i >= params.offset && i <= params.offset + params.limit - 1) {
@@ -315,7 +319,7 @@ export class ResqueDelayedJobs extends ResqueActionRead {
       delayedjobs[timestamp] = await task.delayedAt(timestamp);
     }
 
-    response.delayedjobs = delayedjobs;
+    return { delayedjobs, timestampsCount: 0, total: allTimestamps.length };
   }
 }
 
@@ -336,18 +340,16 @@ export class ResqueDelDelayed extends ResqueActionWrite {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const delayed = await task.delayedAt(params.timestamp);
     if (delayed.tasks.length === 0 || !delayed.tasks[params.count]) {
       throw new Error("delayed job not found");
     }
 
     const job = delayed.tasks[params.count];
-    response.timestamps = await task.delDelayed(
-      job.queue,
-      job.class,
-      job.args[0]
-    );
+    return {
+      timestamps: await task.delDelayed(job.queue, job.class, job.args[0]),
+    };
   }
 }
 
@@ -377,5 +379,7 @@ export class ResqueRunDelayed extends ResqueActionWrite {
     const job = delayed.tasks[params.count];
     await task.delDelayed(job.queue, job.class, job.args[0]);
     await task.enqueue(job.class, job.args[0], job.queue);
+
+    return { success: true };
   }
 }

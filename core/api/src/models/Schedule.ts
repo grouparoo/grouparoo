@@ -135,14 +135,13 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   async apiData() {
-    const source = await this.$get("source");
     const options = await this.getOptions();
 
     return {
       guid: this.guid,
       name: this.name,
       state: this.state,
-      source: source ? await source.apiData(false) : undefined,
+      sourceGuid: this.sourceGuid,
       recurring: this.recurring,
       options,
       recurringFrequency: this.recurringFrequency,

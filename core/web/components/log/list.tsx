@@ -8,15 +8,14 @@ import { useRouter } from "next/router";
 import { ButtonGroup, Button, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
-
-import { LogAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 
 export default function LogsList(props) {
   const { errorHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [logs, setLogs] = useState<LogAPIData[]>(props.logs);
+  const [logs, setLogs] = useState<Models.LogType[]>(props.logs);
   const [total, setTotal] = useState(props.total);
 
   // websocket

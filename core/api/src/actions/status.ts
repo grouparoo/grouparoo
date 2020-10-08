@@ -36,62 +36,58 @@ export class PrivateStatus extends Action {
     this.outputExample = {};
   }
 
-  async checkRam(data) {
+  async checkRam(problems: string[]) {
     const consumedMemoryMB =
       Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100;
-    data.response.consumedMemoryMB = consumedMemoryMB;
+
     if (consumedMemoryMB > maxMemoryAlloted) {
-      data.response.nodeStatus = data.connection.localize("Unhealthy");
-      data.response.problems.push(
-        data.connection.localize([
-          "Using more than {{maxMemoryAlloted}} MB of RAM",
-          { maxMemoryAlloted: maxMemoryAlloted },
-        ])
-      );
+      problems.push(`Using more than ${maxMemoryAlloted} MB of RAM`);
     }
+
+    return { consumedMemoryMB };
   }
 
-  async checkResqueQueues(data) {
+  async checkResqueQueues(problems: string[]) {
     const details = await task.details();
     let length = 0;
     Object.keys(details.queues).forEach((q) => {
       length += details.queues[q].length;
     });
 
-    data.response.resqueTotalQueueLength = length;
     const maxResqueQueueLength: number =
       parseInt(
         (await plugin.readSetting("core", "runs-profile-batch-size")).value
       ) * 10;
 
     if (length > maxResqueQueueLength) {
-      data.response.nodeStatus = data.connection.localize("Unhealthy");
-      data.response.problems.push(
-        data.connection.localize([
-          "Resque queue length over {{maxResqueQueueLength}} jobs",
-          { maxResqueQueueLength: maxResqueQueueLength },
-        ])
-      );
+      problems.push(`Resque queue length over ${maxResqueQueueLength} jobs`);
     }
+
+    return { resqueTotalQueueLength: length };
   }
 
-  async run(data) {
+  async run() {
+    const problems: string[] = [];
+
     const clusterNameSetting = await Setting.findOne({
       where: { pluginName: "core", key: "cluster-name" },
     });
 
-    data.response.clusterName = clusterNameSetting.value;
-    data.response.uptime = new Date().getTime() - api.bootTime;
-    data.response.nodeStatus = data.connection.localize("Healthy");
-    data.response.problems = [];
+    const { consumedMemoryMB } = await this.checkRam(problems);
+    const { resqueTotalQueueLength } = await this.checkResqueQueues(problems);
 
-    data.response.id = id;
-    data.response.actionheroVersion = actionheroVersion;
-    data.response.packageName = packageJSON.name;
-    data.response.description = packageJSON.description;
-    data.response.version = packageJSON.version;
-
-    await this.checkRam(data);
-    await this.checkResqueQueues(data);
+    return {
+      clusterName: clusterNameSetting.value,
+      id,
+      actionheroVersion,
+      packageName: packageJSON.name,
+      description: packageJSON.description,
+      version: packageJSON.version,
+      uptime: new Date().getTime() - api.bootTime,
+      nodeStatus: problems.length === 0 ? "Healthy" : "Unhealthy",
+      problems,
+      resqueTotalQueueLength,
+      consumedMemoryMB,
+    };
   }
 }

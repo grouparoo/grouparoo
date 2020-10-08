@@ -1,7 +1,7 @@
 import Tabs from "../tabs";
-import { FileAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 
-export default function FileTabs({ file }: { file: FileAPIData }) {
+export default function FileTabs({ file }: { file: Models.FileType }) {
   const tabs = ["edit"];
   const fileNameParts = file.path.split("/");
   const fileName = fileNameParts[fileNameParts.length - 1];

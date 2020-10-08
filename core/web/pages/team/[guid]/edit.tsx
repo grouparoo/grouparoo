@@ -4,7 +4,7 @@ import { Form } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import PermissionsList from "../../../components/permissions";
 import { useRouter } from "next/router";
-import { TeamAPIData } from "../../../utils/apiData";
+import { Models } from "../../../utils/apiData";
 import TeamTabs from "../../../components/tabs/team";
 
 export default function Page(props) {
@@ -12,7 +12,7 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [team, setTeam] = useState<TeamAPIData>(props.team);
+  const [team, setTeam] = useState<Models.TeamType>(props.team);
 
   const updateTeam = async (event) => {
     event.preventDefault();

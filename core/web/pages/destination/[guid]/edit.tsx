@@ -11,7 +11,7 @@ import DestinationTabs from "./../../../components/tabs/destination";
 import LoadingButton from "../../../components/loadingButton";
 import Loader from "../../../components/loader";
 
-import { DestinationAPIData } from "../../../utils/apiData";
+import { Models } from "../../../utils/apiData";
 
 export default function Page(props) {
   const {
@@ -22,7 +22,7 @@ export default function Page(props) {
   } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
-  const [destination, setDestination] = useState<DestinationAPIData>(
+  const [destination, setDestination] = useState<Models.DestinationType>(
     props.destination
   );
   const [loading, setLoading] = useState(false);
