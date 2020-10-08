@@ -7,6 +7,7 @@ import {
   getProfileProperty,
   getProfiles,
   getSourceRunPercentComplete,
+  getUniqueProfilePropertyRuleBootstrapOptions,
   SourcePreviewMethod,
   PluginConnectionProfilePropertyRuleOption,
   PluginConnectionScheduleOption,
@@ -15,6 +16,7 @@ import {
   ProfilePropertyPluginMethod,
   ProfilesPluginMethod,
   SourceRunPercentCompleteMethod,
+  UniqueProfilePropertyRuleBootstrapOptions,
 } from "@grouparoo/app-templates/src/source/table";
 
 import { getSampleRows } from "./getSampleRows";
@@ -24,10 +26,6 @@ import { getPropertyValue } from "./getPropertyValue";
 import { getChangedRows } from "./getChangedRows";
 import { getChangedRowCount } from "./getChangedRowCount";
 
-// these are already correct
-export { uniqueProfilePropertyRuleBootstrapOptions } from "@grouparoo/app-templates/src/source/table";
-
-// these get generated from our data
 export const sourcePreview: SourcePreviewMethod = getSourcePreview({
   getSampleRows,
 });
@@ -63,3 +61,5 @@ export const sourceRunPercentComplete: SourceRunPercentCompleteMethod = getSourc
     getChangedRowCount,
   }
 );
+
+export const uniqueProfilePropertyRuleBootstrapOptions: UniqueProfilePropertyRuleBootstrapOptions = getUniqueProfilePropertyRuleBootstrapOptions();

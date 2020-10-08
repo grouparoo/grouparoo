@@ -18,4 +18,5 @@ export {
   ProfilePropertyPluginMethod,
   ProfilesPluginMethod,
   SourceRunPercentCompleteMethod,
+  UniqueProfilePropertyRuleBootstrapOptions,
 } from "@grouparoo/core";
