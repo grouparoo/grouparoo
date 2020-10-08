@@ -1,8 +1,10 @@
 import Head from "next/head";
 import ImportList from "../../components/import/list";
+import { useRouter } from "next/router";
 
 export default function Page(props) {
-  const { query } = props;
+  const router = useRouter();
+  const { query } = router;
 
   return (
     <>
