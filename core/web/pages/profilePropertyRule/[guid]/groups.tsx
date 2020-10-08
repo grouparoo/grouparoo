@@ -85,7 +85,7 @@ Page.getInitialProps = async (ctx) => {
     `/profilePropertyRule/${guid}`
   );
   const { source } = await execApi(
-    "/get",
+    "get",
     `/source/${profilePropertyRule.sourceGuid}`
   );
   const { groups } = await execApi(

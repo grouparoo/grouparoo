@@ -37,7 +37,7 @@ Page.getInitialProps = async (ctx) => {
     `/profilePropertyRule/${guid}`
   );
   const { source } = await execApi(
-    "/get",
+    "get",
     `/source/${profilePropertyRule.sourceGuid}`
   );
   const logListInitialProps = await LogsList.hydrate(ctx);
