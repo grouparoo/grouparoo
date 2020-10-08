@@ -10,8 +10,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import DestinationTabs from "./../../../components/tabs/destination";
 import LoadingButton from "../../../components/loadingButton";
 import Loader from "../../../components/loader";
-
-import { DestinationAPIData } from "../../../utils/apiData";
+import { Models, Actions } from "../../../utils/apiData";
 
 export default function Page(props) {
   const {
@@ -22,7 +21,7 @@ export default function Page(props) {
   } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
-  const [destination, setDestination] = useState<DestinationAPIData>(
+  const [destination, setDestination] = useState<Models.DestinationType>(
     props.destination
   );
   const [loading, setLoading] = useState(false);
@@ -48,7 +47,7 @@ export default function Page(props) {
     delete destination["groups"];
 
     setLoading(true);
-    const response = await execApi(
+    const response: Actions.DestinationEdit = await execApi(
       "put",
       `/destination/${guid}`,
       Object.assign({}, destination, { state: "ready" })
@@ -75,7 +74,7 @@ export default function Page(props) {
 
   async function loadOptions() {
     setLoadingOptions(true);
-    const response = await execApi(
+    const response: Actions.DestinationConnectionOptions = await execApi(
       "get",
       `/destination/${guid}/connectionOptions`,
       { options: destination.options },
@@ -90,8 +89,11 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response = await execApi("delete", `/destination/${guid}`);
-      if (response) {
+      const response: Actions.DestinationDestroy = await execApi(
+        "delete",
+        `/destination/${guid}`
+      );
+      if (response.success) {
         router.push("/destinations");
       } else {
         setLoading(false);

@@ -14,7 +14,7 @@ describe("actions/plugins", () => {
 
   test("can list plugins", async () => {
     // cannot actually test this without injecting some plugins at the package.json level...
-    const { plugins } = await specHelper.runAction("plugins");
+    const { plugins } = await specHelper.runAction("plugins:list");
     expect(plugins.length).toBeGreaterThanOrEqual(0);
   });
 });

@@ -10,15 +10,14 @@ import Moment from "react-moment";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import StateBadge from "../components/stateBadge";
-
-import { GroupAPIData } from "../utils/apiData";
+import { Models, Actions } from "../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
-  const [groups, setGroups] = useState<GroupAPIData[]>(props.groups);
-  const [total, setTotal] = useState(props.total);
+  const [groups, setGroups] = useState<Models.GroupType[]>(props.groups);
+  const [total, setTotal] = useState<number>(props.total);
   const [loading, setLoading] = useState(false);
 
   // pagination
@@ -32,7 +31,7 @@ export default function Page(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response = await execApi("get", `/groups`, {
+    const response: Actions.GroupsList = await execApi("get", `/groups`, {
       limit,
       offset,
     });

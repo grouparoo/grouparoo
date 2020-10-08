@@ -11,22 +11,24 @@ import Moment from "react-moment";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import StateBadge from "../components/stateBadge";
-
-import { ProfilePropertyRuleAPIData } from "../utils/apiData";
+import { Models, Actions } from "../utils/apiData";
+import { ErrorHandler } from "../utils/errorHandler";
 
 export default function Page(props) {
-  const { errorHandler, successHandler } = props;
+  const {
+    errorHandler,
+    sources,
+  }: { errorHandler: ErrorHandler; sources: Models.SourceType[] } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [newRuleLoading, setNewRuleLoading] = useState(false);
   const [examples, setExamples] = useState(props.examples);
-  const [sources, setSources] = useState(props.sources);
   const [newRuleSourceGuid, setNewRuleSourceGuid] = useState(
     props.sources[0]?.guid || ""
   );
   const [profilePropertyRules, setProfilePropertyRules] = useState<
-    ProfilePropertyRuleAPIData[]
+    Models.ProfilePropertyRuleType[]
   >(props.profilePropertyRules);
 
   // pagination
@@ -42,10 +44,14 @@ export default function Page(props) {
 
   async function loadProfilePropertyRules() {
     setLoading(true);
-    const response = await execApi("get", `/profilePropertyRules`, {
-      limit: limit * (total === 0 ? 1 : total),
-      offset: 0,
-    });
+    const response: Actions.ProfilePropertyRulesList = await execApi(
+      "get",
+      `/profilePropertyRules`,
+      {
+        limit: limit * (total === 0 ? 1 : total),
+        offset: 0,
+      }
+    );
     setLoading(false);
     if (response?.profilePropertyRules) {
       setExamples(response.examples);
@@ -54,10 +60,14 @@ export default function Page(props) {
 
   async function loadSources() {
     setLoading(true);
-    const response = await execApi("get", `/profilePropertyRules`, {
-      limit,
-      offset,
-    });
+    const response: Actions.ProfilePropertyRulesList = await execApi(
+      "get",
+      `/profilePropertyRules`,
+      {
+        limit,
+        offset,
+      }
+    );
     setLoading(false);
     if (response?.profilePropertyRules) {
       setProfilePropertyRules(response.profilePropertyRules);
@@ -68,10 +78,14 @@ export default function Page(props) {
   async function createNewProfilePropertyRule(event) {
     event.preventDefault();
     setNewRuleLoading(true);
-    const response = await execApi("post", `/profilePropertyRule`, {
-      sourceGuid: newRuleSourceGuid,
-      type: "string",
-    });
+    const response: Actions.ProfilePropertyRuleCreate = await execApi(
+      "post",
+      `/profilePropertyRule`,
+      {
+        sourceGuid: newRuleSourceGuid,
+        type: "string",
+      }
+    );
     if (response?.profilePropertyRule?.guid) {
       router.push(
         `/profilePropertyRule/${response.profilePropertyRule.guid}/edit?nextPage=/profilePropertyRules`
@@ -128,6 +142,7 @@ export default function Page(props) {
         </thead>
         <tbody>
           {profilePropertyRules.map((rule) => {
+            const source = sources.find((s) => s.guid === rule.sourceGuid);
             return (
               <tr key={`profilePropertyRule-${rule.guid}`}>
                 <td>
@@ -153,9 +168,9 @@ export default function Page(props) {
                 <td>
                   <Link
                     href="/source/[guid]/overview"
-                    as={`/source/${rule.source.guid}/overview`}
+                    as={`/source/${source.guid}/overview`}
                   >
-                    <a>{rule.source.name}</a>
+                    <a>{source.name}</a>
                   </Link>
                 </td>
                 <td>

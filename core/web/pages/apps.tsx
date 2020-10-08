@@ -12,14 +12,14 @@ import AppIcon from "../components/appIcon";
 import StateBadge from "../components/stateBadge";
 import { Button } from "react-bootstrap";
 
-import { AppAPIData } from "../utils/apiData";
+import { Models, Actions } from "../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
-  const [apps, setApps] = useState<AppAPIData[]>(props.apps);
-  const [total, setTotal] = useState(props.total);
+  const [apps, setApps] = useState<Models.AppType[]>(props.apps);
+  const [total, setTotal] = useState<number>(props.total);
   const [loading, setLoading] = useState(false);
 
   // pagination
@@ -33,7 +33,7 @@ export default function Page(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response = await execApi("get", `/apps`, {
+    const response: Actions.AppsList = await execApi("get", `/apps`, {
       limit,
       offset,
     });

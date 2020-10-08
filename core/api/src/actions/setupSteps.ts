@@ -1,6 +1,7 @@
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { SetupStep } from "../models/SetupStep";
 import { Setting } from "../models/Setting";
+import { AsyncReturnType } from "type-fest";
 
 export class SetupStepsList extends AuthenticatedAction {
   constructor() {
@@ -11,22 +12,27 @@ export class SetupStepsList extends AuthenticatedAction {
     this.outputExample = {};
   }
 
-  async run({ response }) {
+  async run() {
     const setupSteps = await SetupStep.findAll({
       order: [["position", "asc"]],
     });
 
-    response.setupSteps = [];
+    const responseSetupSteps: Array<AsyncReturnType<
+      typeof SetupStep.prototype.apiData
+    >> = [];
+
     for (const i in setupSteps) {
       await setupSteps[i].performCheck();
-      response.setupSteps.push(await setupSteps[i].apiData());
+      responseSetupSteps.push(await setupSteps[i].apiData());
     }
 
     const setting = await Setting.findOne({
       where: { key: "display-startup-steps" },
     });
 
-    response.toDisplay = setting.value === "true";
+    const toDisplay = setting.value === "true";
+
+    return { toDisplay, setupSteps: responseSetupSteps };
   }
 }
 
@@ -43,7 +49,7 @@ export class SetupStepEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ response, params }) {
+  async run({ params }) {
     const setupStep = await SetupStep.findByGuid(params.guid);
 
     if (params.skipped !== null) {
@@ -51,6 +57,6 @@ export class SetupStepEdit extends AuthenticatedAction {
     }
 
     await setupStep.performCheck();
-    response.setupStep = await setupStep.apiData();
+    return { setupStep: await setupStep.apiData() };
   }
 }

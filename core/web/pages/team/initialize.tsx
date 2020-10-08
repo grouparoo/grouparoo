@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../components/loadingButton";
+import { Actions } from "../../utils/apiData";
 
 export default function TeamInitializePage(props) {
   const { errorHandler, successHandler } = props;
@@ -15,7 +16,11 @@ export default function TeamInitializePage(props) {
 
   async function onSubmit(data) {
     setLoading(true);
-    const response = await execApi("post", `/team/initialize`, data);
+    const response: Actions.TeamInitialize = await execApi(
+      "post",
+      `/team/initialize`,
+      data
+    );
     if (response?.team) {
       successHandler.set({ message: "Team Created" });
       router.push(`/session/sign-in`);

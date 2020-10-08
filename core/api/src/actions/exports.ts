@@ -3,7 +3,7 @@ import { Export } from "../models/Export";
 import { Op } from "sequelize";
 import { ExportOps } from "../modules/ops/export";
 
-export class ListExports extends AuthenticatedAction {
+export class ExportsList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "exports:list";
@@ -23,7 +23,7 @@ export class ListExports extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const where = {};
     if (params.profileGuid) {
       where["profileGuid"] = params.profileGuid;
@@ -63,8 +63,12 @@ export class ListExports extends AuthenticatedAction {
       order: params.order,
     });
 
-    response.exports = await Promise.all(_exports.map((exp) => exp.apiData()));
-    response.total = await Export.count({ where });
+    const total = await Export.count({ where });
+
+    return {
+      total,
+      exports: await Promise.all(_exports.map((exp) => exp.apiData())),
+    };
   }
 }
 
@@ -81,7 +85,7 @@ export class ExportsTotals extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const where = {};
     if (params.profileGuid) {
       where["profileGuid"] = params.profileGuid;
@@ -90,7 +94,7 @@ export class ExportsTotals extends AuthenticatedAction {
       where["destinationGuid"] = params.destinationGuid;
     }
 
-    response.totals = await ExportOps.totals(where);
+    return { totals: await ExportOps.totals(where) };
   }
 }
 
@@ -106,8 +110,8 @@ export class ExportView extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const _export = await Export.findByGuid(params.guid);
-    response.export = await _export.apiData();
+    return { export: await _export.apiData() };
   }
 }

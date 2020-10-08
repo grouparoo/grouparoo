@@ -10,7 +10,7 @@ import LoadingTable from "../components/loadingTable";
 import Moment from "react-moment";
 import AppIcon from "../components/appIcon";
 import StateBadge from "../components/stateBadge";
-import { SourceAPIData } from "../utils/apiData";
+import { Models, Actions } from "../utils/apiData";
 import { Button } from "react-bootstrap";
 
 export default function Page(props) {
@@ -18,7 +18,7 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [sources, setSources] = useState<SourceAPIData[]>(props.sources);
+  const [sources, setSources] = useState<Models.SourceType[]>(props.sources);
   const [total, setTotal] = useState(props.total);
 
   // pagination
@@ -32,7 +32,7 @@ export default function Page(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response = await execApi("get", `/sources`, {
+    const response: Actions.SourcesList = await execApi("get", `/sources`, {
       limit,
       offset,
     });

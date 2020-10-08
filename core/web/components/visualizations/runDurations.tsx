@@ -1,8 +1,10 @@
 import { Row, Col } from "react-bootstrap";
 import { ResponsiveLine } from "@nivo/line";
+import { Models } from "../../utils/apiData";
+
 const NodeMoment = require("moment");
 
-export default function RunDurationChart({ runs }) {
+export default function RunDurationChart({ runs }: { runs: Models.RunType[] }) {
   const chartData = [];
   const typeTotals = {};
 

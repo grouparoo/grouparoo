@@ -416,7 +416,7 @@ describe("integration/events", () => {
         expect(profilePropertyRule.key).toBe("test-rule");
         expect(profilePropertyRule.unique).toBe(false);
         expect(profilePropertyRule.state).toBe("draft");
-        expect(profilePropertyRule.source.guid).toBe(sourceGuid);
+        expect(profilePropertyRule.sourceGuid).toBe(sourceGuid);
         expect(pluginOptions[0].key).toBe("column");
         expect(pluginOptions[0].options.map((opt) => opt.key)).toEqual([
           "ipAddress",

@@ -7,14 +7,14 @@ import { useRouter } from "next/router";
 import ApiKeyTabs from "../../../components/tabs/apiKey";
 import LoadingButton from "../../../components/loadingButton";
 
-import { ApiKeyAPIData } from "../../../utils/apiData";
+import { Models, Actions } from "../../../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, successHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [apiKey, setApiKey] = useState<ApiKeyAPIData>(props.apiKey);
+  const [apiKey, setApiKey] = useState<Models.ApiKeyType>(props.apiKey);
   const { guid } = router.query;
 
   const updateApiKey = async (event) => {
@@ -30,7 +30,11 @@ export default function Page(props) {
     }
 
     setLoading(true);
-    const response = await execApi("put", `/apiKey/${guid}`, _apiKey);
+    const response: Actions.ApiKeyEdit = await execApi(
+      "put",
+      `/apiKey/${guid}`,
+      _apiKey
+    );
     if (response?.apiKey) {
       successHandler.set({ message: "API Key updated" });
       setApiKey(response.apiKey);
@@ -40,7 +44,10 @@ export default function Page(props) {
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
-      const response = await execApi("delete", `/apiKey/${guid}`);
+      const response: Actions.ApiKeyDestroy = await execApi(
+        "delete",
+        `/apiKey/${guid}`
+      );
       if (response) {
         successHandler.set({ message: "API Key deleted" });
         router.push("/apiKeys");
@@ -158,6 +165,9 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
   const { guid } = ctx.query;
-  const { apiKey } = await execApi("get", `/apiKey/${guid}`);
+  const { apiKey }: Actions.ApiKeyView = await execApi(
+    "get",
+    `/apiKey/${guid}`
+  );
   return { apiKey };
 };

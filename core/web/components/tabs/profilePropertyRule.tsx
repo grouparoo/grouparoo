@@ -1,11 +1,13 @@
 import Tabs from "../tabs";
 import { usePlugins } from "../../hooks/usePlugins";
-import { ProfilePropertyRuleAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 
 export default function ProfilePropertyRuleTabs({
   profilePropertyRule,
+  source,
 }: {
-  profilePropertyRule: ProfilePropertyRuleAPIData;
+  profilePropertyRule: Models.ProfilePropertyRuleType;
+  source: Models.SourceType;
 }) {
   const [plugins, pluginMetadata] = usePlugins("profilePropertyRules/tabs");
   const tabs = ["edit", "profiles", "groups", "runs", "logs"];
@@ -17,7 +19,7 @@ export default function ProfilePropertyRuleTabs({
     <>
       <Tabs
         name={profilePropertyRule.key}
-        draftType={profilePropertyRule.source.name}
+        draftType={source.name}
         tabs={tabs}
       />
     </>

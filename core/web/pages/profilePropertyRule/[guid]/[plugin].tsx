@@ -4,7 +4,7 @@ import { usePlugins } from "../../../hooks/usePlugins";
 import { useApi } from "../../../hooks/useApi";
 
 export default function PluginPage(props) {
-  const { profilePropertyRule, query } = props;
+  const { profilePropertyRule, query, source } = props;
   const [Plugin] = usePlugins("profilePropertyRules/tabs", query.plugin);
 
   if (!Plugin) {
@@ -17,7 +17,10 @@ export default function PluginPage(props) {
         <title>Grouparoo: {profilePropertyRule.key}</title>
       </Head>
 
-      <ProfilePropertyRuleTabs profilePropertyRule={profilePropertyRule} />
+      <ProfilePropertyRuleTabs
+        profilePropertyRule={profilePropertyRule}
+        source={source}
+      />
 
       <Plugin {...props} useApi={useApi} />
     </>
@@ -31,8 +34,13 @@ PluginPage.getInitialProps = async (ctx) => {
     "get",
     `/profilePropertyRule/${guid}`
   );
+  const { source } = await execApi(
+    "get",
+    `/source/${profilePropertyRule.sourceGuid}`
+  );
 
   return {
     profilePropertyRule,
+    source,
   };
 };

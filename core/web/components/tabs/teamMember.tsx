@@ -1,10 +1,10 @@
 import Tabs from "../tabs";
-import { TeamMemberAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 
 export default function TeamMemberTabs({
   teamMember,
 }: {
-  teamMember: TeamMemberAPIData;
+  teamMember: Models.TeamMemberType;
 }) {
   const tabs = ["edit"];
   return <Tabs name={teamMember.email} tabs={tabs} />;

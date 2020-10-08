@@ -108,10 +108,10 @@ export class Swagger extends Action {
     return { swaggerPaths, tags };
   }
 
-  async run(data) {
+  async run() {
     const { swaggerPaths, tags } = this.buildSwaggerPaths();
 
-    data.response = {
+    return {
       swagger: SWAGGER_VERSION,
       info: {
         description: parentPackageJSON.description,

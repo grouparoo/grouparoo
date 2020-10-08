@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../loadingButton";
 import { useForm } from "react-hook-form";
-import { SetupStepAPIData } from "../../utils/apiData";
+import { Actions } from "../../utils/apiData";
 
 export default function SignInForm(props) {
   const { errorHandler, successHandler, sessionHandler, useApi } = props;
@@ -16,7 +16,11 @@ export default function SignInForm(props) {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    const response = await execApi("post", `/session`, data);
+    const response: Actions.SessionCreate = await execApi(
+      "post",
+      `/session`,
+      data
+    );
     if (response?.teamMember) {
       window.localStorage.setItem("session:csrfToken", response.csrfToken);
       sessionHandler.set(response.teamMember);
@@ -38,10 +42,7 @@ export default function SignInForm(props) {
   };
 
   async function getSetupSteps() {
-    const {
-      setupSteps,
-      toDisplay,
-    }: { setupSteps: SetupStepAPIData[]; toDisplay: boolean } = await execApi(
+    const { setupSteps, toDisplay }: Actions.SetupStepsList = await execApi(
       "get",
       `/setupSteps`
     );

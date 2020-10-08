@@ -9,15 +9,15 @@ import Link from "next/link";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import RunDurationChart from "../visualizations/runDurations";
-import { RunAPIData } from "../../utils/apiData";
+import { Models, Actions } from "../../utils/apiData";
 
 export default function RunsList(props) {
   const { errorHandler, runsHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [total, setTotal] = useState(props.total);
-  const [runs, setRuns] = useState<RunAPIData[]>(props.runs);
+  const [total, setTotal] = useState<number>(props.total);
+  const [runs, setRuns] = useState<Models.RunType[]>(props.runs);
   const [stateFilter, setStateFilter] = useState(
     router.query.state?.toString() || ""
   );
@@ -48,7 +48,7 @@ export default function RunsList(props) {
 
     updateURLParams(router, { offset, stateFilter, errorFilter });
     setLoading(true);
-    const response = await execApi("get", `/runs`, params);
+    const response: Actions.RunsList = await execApi("get", `/runs`, params);
     setLoading(false);
     if (response?.runs) {
       setRuns(response.runs);

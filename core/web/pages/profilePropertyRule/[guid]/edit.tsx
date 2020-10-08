@@ -10,16 +10,15 @@ import ProfilePreview from "../../../components/profilePropertyRule/profilePrevi
 import { Typeahead } from "react-bootstrap-typeahead";
 import DatePicker from "../../../components/datePicker";
 import LoadingButton from "../../../components/loadingButton";
-
 import Head from "next/head";
 import ProfilePropertyRuleTabs from "../../../components/tabs/profilePropertyRule";
-
-import { ProfilePropertyRuleAPIData } from "../../../utils/apiData";
+import { Models, Actions } from "../../../utils/apiData";
 
 export default function Page(props) {
   const {
     errorHandler,
     successHandler,
+    sources,
     profilePropertyRulesHandler,
     types,
     filterOptions,
@@ -32,13 +31,14 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false);
   const [nextPage] = useState(router.query.nextPage?.toString()); // we want to store this when the page was initially loaded because we'll be updating the route for the profilePreview
   const [profilePropertyRule, setProfilePropertyRule] = useState<
-    ProfilePropertyRuleAPIData
+    Models.ProfilePropertyRuleType
   >(props.profilePropertyRule);
   const [localFilters, setLocalFilters] = useState(
     props.profilePropertyRule.filters
   );
 
   const { guid } = router.query;
+  const source = sources.find((s) => s.guid === profilePropertyRule.sourceGuid);
 
   if (hydrationError) errorHandler.set({ error: hydrationError });
 
@@ -54,7 +54,7 @@ export default function Page(props) {
       )
     ) {
       setLoading(true);
-      const response = await execApi(
+      const response: Actions.ProfilePropertyRuleEdit = await execApi(
         "put",
         `/profilePropertyRule/${guid}`,
         Object.assign({}, profilePropertyRule, {
@@ -87,7 +87,10 @@ export default function Page(props) {
       )
     ) {
       setLoading(true);
-      const response = await execApi("delete", `/profilePropertyRule/${guid}`);
+      const response: Actions.ProfilePropertyRuleDestroy = await execApi(
+        "delete",
+        `/profilePropertyRule/${guid}`
+      );
       setLoading(false);
       if (response) {
         router.push(nextPage || "/profilePropertyRules");
@@ -160,17 +163,16 @@ export default function Page(props) {
         <title>Grouparoo: {profilePropertyRule.key}</title>
       </Head>
 
-      <ProfilePropertyRuleTabs profilePropertyRule={profilePropertyRule} />
+      <ProfilePropertyRuleTabs
+        profilePropertyRule={profilePropertyRule}
+        source={source}
+      />
 
       <Form id="form" onSubmit={onSubmit}>
         <Row>
           <Col md={1}>
             <br />
-            <AppIcon
-              src={profilePropertyRule.source.app.icon}
-              fluid
-              size={100}
-            />
+            <AppIcon src={source.app.icon} fluid size={100} />
           </Col>
           <Col md={8}>
             <strong>State</strong>:{" "}
@@ -181,9 +183,9 @@ export default function Page(props) {
                 <strong>Source</strong>:{" "}
                 <Link
                   href="/source/[guid]/overview"
-                  as={`/source/${profilePropertyRule.source.guid}/overview`}
+                  as={`/source/${source.guid}/overview`}
                 >
-                  <a>{profilePropertyRule.source.name}</a>
+                  <a>{source.name}</a>
                 </Link>
               </p>
 
@@ -237,22 +239,13 @@ export default function Page(props) {
             </Form.Group>
             <Form.Group controlId="sourceGuid">
               <Form.Label>Profile Property Rule Source</Form.Label>
-              <Form.Control
-                as="select"
-                disabled
-                value={profilePropertyRule.source.guid}
-              >
-                <option value={profilePropertyRule.source.guid}>
-                  {profilePropertyRule.source.name}
-                </option>
+              <Form.Control as="select" disabled value={source.guid}>
+                <option value={source.guid}>{source.name}</option>
               </Form.Control>
             </Form.Group>
             <hr />
             <p>
-              <strong>
-                Options for a {profilePropertyRule.source.type} Profile Property
-                Rule
-              </strong>
+              <strong>Options for a {source.type} Profile Property Rule</strong>
             </p>
             {pluginOptions.map((opt, idx) => (
               <div key={`opt-${idx}`}>
@@ -655,6 +648,7 @@ Page.getInitialProps = async (ctx) => {
       state: "ready",
     }
   );
+  const { sources } = await execApi("get", "/sources");
   const { types } = await execApi("get", `/profilePropertyRuleOptions`);
 
   let profilePropertyRule = {};
@@ -684,6 +678,7 @@ Page.getInitialProps = async (ctx) => {
   return {
     profilePropertyRule,
     profilePropertyRules,
+    sources,
     pluginOptions,
     types,
     filterOptions,

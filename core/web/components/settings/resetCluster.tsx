@@ -2,6 +2,7 @@ import { useApi } from "../../hooks/useApi";
 import { useState } from "react";
 import { Card } from "react-bootstrap";
 import LoadingButton from "../loadingButton";
+import { Actions } from "../../utils/apiData";
 
 export default function ResetCluster(props) {
   const { errorHandler, successHandler } = props;
@@ -15,7 +16,7 @@ export default function ResetCluster(props) {
     }
 
     setLoading(true);
-    const response = await execApi("delete", `/cluster`);
+    const response: Actions.ClusterReset = await execApi("delete", `/cluster`);
     if (response?.success) {
       successHandler.set({ message: `Cluster Reset!` });
     }

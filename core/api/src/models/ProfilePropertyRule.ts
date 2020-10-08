@@ -335,11 +335,10 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   async apiData() {
     const options = await this.getOptions();
     const filters = await this.getFilters();
-    const source = await this.$get("source", { scope: null });
 
     return {
       guid: this.guid,
-      source: source ? await source.apiData(false, true, false) : undefined,
+      sourceGuid: this.sourceGuid,
       key: this.key,
       type: this.type,
       state: this.state,

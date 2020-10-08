@@ -8,14 +8,20 @@ import Link from "next/link";
 import Moment from "react-moment";
 import LoadingTable from "../../../components/loadingTable";
 import AppIcon from "./../../../components/appIcon";
-
-import { DestinationAPIData } from "../../../utils/apiData";
+import { Models, Actions } from "../../../utils/apiData";
+import { ErrorHandler } from "../../../utils/errorHandler";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, group } = props;
+  const {
+    errorHandler,
+    group,
+  }: {
+    errorHandler: ErrorHandler;
+    group: Models.GroupType;
+  } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [destinations, setDestinations] = useState<DestinationAPIData[]>(
+  const [destinations, setDestinations] = useState<Models.DestinationType[]>(
     props.destinations
   );
 
@@ -30,10 +36,14 @@ export default function Page(props) {
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/group/${group.guid}/destinations`, {
-      limit,
-      offset,
-    });
+    const response: Actions.GroupListDestinations = await execApi(
+      "get",
+      `/group/${group.guid}/destinations`,
+      {
+        limit,
+        offset,
+      }
+    );
     setLoading(false);
     if (response?.destinations) {
       setDestinations(response.destinations);

@@ -1,4 +1,5 @@
 import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { TeamMember } from "../models/TeamMember";
 
 export class AccountView extends AuthenticatedAction {
   constructor() {
@@ -10,11 +11,17 @@ export class AccountView extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run({ response, session: { teamMember } }) {
+  async run({
+    session: { teamMember },
+  }: {
+    session: { teamMember: TeamMember };
+  }) {
     if (!teamMember) throw new Error("team member not found");
 
-    response.teamMember = await teamMember.apiData();
-    response.team = await teamMember.team.apiData();
+    return {
+      teamMember: await teamMember.apiData(),
+      team: await teamMember.team.apiData(),
+    };
   }
 }
 
@@ -33,14 +40,22 @@ export class AccountEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response, session: { teamMember } }) {
+  async run({
+    params,
+    session: { teamMember },
+  }: {
+    params: { [key: string]: string };
+    session: { teamMember: TeamMember };
+  }) {
     await teamMember.update(params);
 
     if (params.password) {
       await teamMember.updatePassword(params.password);
     }
 
-    response.teamMember = await teamMember.apiData();
-    response.team = await teamMember.team.apiData();
+    return {
+      teamMember: await teamMember.apiData(),
+      team: await teamMember.team.apiData(),
+    };
   }
 }

@@ -4,7 +4,7 @@ import { Op } from "sequelize";
 import { Schedule } from "../models/Schedule";
 import { Destination } from "../models/Destination";
 
-export class ListRuns extends AuthenticatedAction {
+export class RunsList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "runs:list";
@@ -24,7 +24,7 @@ export class ListRuns extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     let guid = params.guid;
 
     if (guid && guid.match(/^src_/)) {
@@ -46,8 +46,11 @@ export class ListRuns extends AuthenticatedAction {
         params.limit,
         params.offset
       );
-      response.runs = await Promise.all(runs.map(async (run) => run.apiData()));
-      response.total = runs.length;
+
+      return {
+        runs: await Promise.all(runs.map(async (run) => run.apiData())),
+        total: runs.length,
+      };
     } else {
       const where = {};
       if (guid) where["creatorGuid"] = guid;
@@ -63,8 +66,11 @@ export class ListRuns extends AuthenticatedAction {
       };
 
       const runs = await Run.scope(null).findAll(search);
-      response.runs = await Promise.all(runs.map(async (run) => run.apiData()));
-      response.total = await Run.scope(null).count({ where });
+
+      return {
+        runs: await Promise.all(runs.map(async (run) => run.apiData())),
+        total: await Run.scope(null).count({ where }),
+      };
     }
   }
 }
@@ -82,10 +88,10 @@ export class RunEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const run = await Run.findByGuid(params.guid);
     await run.update({ state: params.state });
-    response.run = await run.apiData();
+    return { run: await run.apiData() };
   }
 }
 
@@ -101,9 +107,11 @@ export class RunView extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const run = await Run.findByGuid(params.guid);
-    response.run = await run.apiData();
-    response.quantizedTimeline = await run.quantizedTimeline();
+    return {
+      run: await run.apiData(),
+      quantizedTimeline: await run.quantizedTimeline(),
+    };
   }
 }

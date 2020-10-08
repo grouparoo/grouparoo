@@ -5,16 +5,24 @@ import { Form, Row, Col } from "react-bootstrap";
 import ProfileImageFromEmail from "../components/visualizations/profileImageFromEmail";
 import LoadingButton from "../components/loadingButton";
 
+import { Models, Actions } from "../utils/apiData";
+
 export default function Page(props) {
   const { errorHandler, successHandler, sessionHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [teamMember, setTeamMember] = useState(props.teamMember);
+  const [teamMember, setTeamMember] = useState<Models.TeamMemberType>(
+    props.teamMember
+  );
 
   async function submit(event) {
     event.preventDefault();
     setLoading(true);
-    const response = await execApi("put", `/account`, teamMember);
+    const response: Actions.AccountView = await execApi(
+      "put",
+      `/account`,
+      teamMember
+    );
     if (response?.teamMember) {
       successHandler.set({ message: "Account updated" });
       sessionHandler.set(teamMember);
@@ -104,6 +112,6 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { teamMember } = await execApi("get", `/account`);
+  const { teamMember }: Actions.AccountView = await execApi("get", `/account`);
   return { teamMember };
 };

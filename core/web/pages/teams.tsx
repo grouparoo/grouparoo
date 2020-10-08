@@ -7,8 +7,15 @@ import { Form } from "react-bootstrap";
 import LoadingTable from "../components/loadingTable";
 import Moment from "react-moment";
 import ProfileImageFromEmail from "../components/visualizations/profileImageFromEmail";
+import { Models } from "../utils/apiData";
 
-export default function Page({ teams, teamMembers }) {
+export default function Page({
+  teams,
+  teamMembers,
+}: {
+  teams: Models.TeamType[];
+  teamMembers: Models.TeamMemberType[];
+}) {
   const router = useRouter();
 
   return (

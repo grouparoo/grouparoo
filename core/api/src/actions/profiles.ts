@@ -28,7 +28,7 @@ export class ProfilesList extends AuthenticatedAction {
     };
   }
 
-  async run({ response, params }) {
+  async run({ params }) {
     let profiles, total;
     const where: { [profilePropertyRuleGuid: string]: any } = {};
 
@@ -86,14 +86,16 @@ export class ProfilesList extends AuthenticatedAction {
         include: [],
       });
 
-      response.total = total;
-      response.profiles = await Promise.all(
-        profiles.map(async (p) => {
-          const apiData = await p.apiData();
-          const memberData = { joinedAt: p.groupMembers[0].createdAt };
-          return Object.assign(apiData, memberData);
-        })
-      );
+      return {
+        total,
+        profiles: await Promise.all(
+          profiles.map(async (p) => {
+            const apiData = await p.apiData();
+            const memberData = { joinedAt: p.groupMembers[0].createdAt };
+            return Object.assign(apiData, memberData);
+          })
+        ),
+      };
     } else {
       const requiredJoin = Object.keys(where).length > 0 ? true : false;
 
@@ -109,13 +111,15 @@ export class ProfilesList extends AuthenticatedAction {
         include: [{ model: ProfileProperty, where, required: requiredJoin }],
       });
 
-      response.total = total;
-      response.profiles = await Promise.all(
-        profiles.map(async (p) => {
-          const profile = await Profile.findByGuid(p.guid);
-          return profile.apiData();
-        })
-      );
+      return {
+        total,
+        profiles: await Promise.all(
+          profiles.map(async (p) => {
+            const profile = await Profile.findByGuid(p.guid);
+            return profile.apiData();
+          })
+        ),
+      };
     }
   }
 }
@@ -136,7 +140,7 @@ export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const profileProperties = await ProfileProperty.findAll({
       attributes: [
         [
@@ -155,9 +159,11 @@ export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
       order: params.order,
     });
 
-    response.profileProperties = await Promise.all(
-      profileProperties.map((prop) => prop.getValue())
-    );
+    return {
+      profileProperties: await Promise.all(
+        profileProperties.map((prop) => prop.getValue())
+      ),
+    };
   }
 }
 
@@ -171,9 +177,9 @@ export class ProfilesImportAndUpdate extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run({ session, response }) {
+  async run({ session }) {
     const run = await internalRun("teamMember", session.teamMember.guid);
-    response.run = await run.apiData();
+    return { run: await run.apiData() };
   }
 }
 
@@ -189,12 +195,18 @@ export class ProfileCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const profile = new Profile(params);
     await profile.save();
     await profile.addOrUpdateProperties(params.properties);
     await profile.buildNullProperties();
-    response.profile = await profile.apiData();
+
+    const groups = await profile.$get("groups");
+
+    return {
+      profile: await profile.apiData(),
+      groups: await Promise.all(groups.map((group) => group.apiData())),
+    };
   }
 }
 
@@ -210,17 +222,20 @@ export class ProfileImportAndUpdate extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.success = false;
-
+  async run({ params }) {
     const profile = await Profile.findByGuid(params.guid);
 
     await profile.import();
     await profile.updateGroupMembership();
     await profile.export(true);
 
-    response.profile = await profile.apiData();
-    response.success = true;
+    const groups = await profile.$get("groups");
+
+    return {
+      success: true,
+      profile: await profile.apiData(),
+      groups: await Promise.all(groups.map((group) => group.apiData())),
+    };
   }
 }
 
@@ -238,7 +253,7 @@ export class ProfileEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const profile = await Profile.findByGuid(params.guid);
     const oldGroups = await profile.$get("groups");
     await profile.update(params);
@@ -247,7 +262,13 @@ export class ProfileEdit extends AuthenticatedAction {
     await profile.import();
     await profile.updateGroupMembership();
     await profile.export(false, oldGroups);
-    response.profile = await profile.apiData();
+
+    const groups = await profile.$get("groups");
+
+    return {
+      profile: await profile.apiData(),
+      groups: await Promise.all(groups.map((group) => group.apiData())),
+    };
   }
 }
 
@@ -263,10 +284,13 @@ export class ProfileView extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const profile = await Profile.findByGuid(params.guid);
-    response.profile = await profile.apiData();
-    response.groups = await profile.$get("groups");
+    const groups = await profile.$get("groups");
+    return {
+      profile: await profile.apiData(),
+      groups: await Promise.all(groups.map((group) => group.apiData())),
+    };
   }
 }
 
@@ -282,10 +306,9 @@ export class ProfileDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.success = false;
+  async run({ params }) {
     const profile = await Profile.findByGuid(params.guid);
     await profile.destroy();
-    response.success = true;
+    return { success: true };
   }
 }

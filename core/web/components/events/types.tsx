@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import Moment from "react-moment";
 import Pagination from "../../components/pagination";
 import LoadingTable from "../../components/loadingTable";
+import { Actions } from "../../utils/apiData";
 
 export default function EventsList(props) {
   const { errorHandler, hidePagination } = props;
@@ -33,12 +34,16 @@ export default function EventsList(props) {
 
     setTotal(0);
     setLoading(true);
-    const response = await execApi("get", `/events/types`, {
-      limit,
-      offset,
-    });
+    const response: Actions.EventsTypes = await execApi(
+      "get",
+      `/events/types`,
+      {
+        limit,
+        offset,
+      }
+    );
     setLoading(false);
-    if (response?.events) {
+    if (response?.types) {
       setTypes(response.types);
       setTotal(response.total);
       if (offset > response.total) {

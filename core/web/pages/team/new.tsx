@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../components/loadingButton";
+import { Actions } from "../../utils/apiData";
 
 export default function NewTeamPage(props) {
   const { errorHandler } = props;
@@ -15,8 +16,7 @@ export default function NewTeamPage(props) {
 
   async function onSubmit(data) {
     setLoading(true);
-    const response = await execApi("post", `/team`, data);
-
+    const response: Actions.TeamCreate = await execApi("post", `/team`, data);
     if (response?.team) {
       router.push("/team/[guid]/edit", `/team/${response.team.guid}/edit`);
     } else {

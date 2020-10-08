@@ -4,7 +4,7 @@ import { Form } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import PermissionsList from "../../../components/permissions";
 import { useRouter } from "next/router";
-import { TeamAPIData } from "../../../utils/apiData";
+import { Models, Actions } from "../../../utils/apiData";
 import TeamTabs from "../../../components/tabs/team";
 
 export default function Page(props) {
@@ -12,7 +12,7 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [team, setTeam] = useState<TeamAPIData>(props.team);
+  const [team, setTeam] = useState<Models.TeamType>(props.team);
 
   const updateTeam = async (event) => {
     event.preventDefault();
@@ -25,7 +25,11 @@ export default function Page(props) {
     }
 
     setLoading(true);
-    const response = await execApi("put", `/team/${team.guid}`, _team);
+    const response: Actions.TeamEdit = await execApi(
+      "put",
+      `/team/${team.guid}`,
+      _team
+    );
 
     if (response?.team) {
       successHandler.set({ message: "Team updated" });
@@ -38,7 +42,10 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response = await execApi("delete", `/team/${team.guid}`);
+      const response: Actions.TeamDestroy = await execApi(
+        "delete",
+        `/team/${team.guid}`
+      );
       if (response) {
         successHandler.set({ message: "Team deleted" });
         router.push("/teams");

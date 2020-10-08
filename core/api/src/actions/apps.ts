@@ -1,7 +1,7 @@
 import { api } from "actionhero";
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { App } from "../models/App";
-import { GrouparooPlugin } from "../classes/plugin";
+import { GrouparooPlugin, PluginApp } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
 
 export class AppsList extends AuthenticatedAction {
@@ -25,10 +25,11 @@ export class AppsList extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const where = {};
 
     if (params.state) where["state"] = params.state;
+    const total = await App.scope(null).count({ where });
 
     const apps = await App.scope(null).findAll({
       where,
@@ -37,8 +38,10 @@ export class AppsList extends AuthenticatedAction {
       order: params.order,
     });
 
-    response.apps = await Promise.all(apps.map(async (app) => app.apiData()));
-    response.total = await App.scope(null).count({ where });
+    return {
+      total,
+      apps: await Promise.all(apps.map(async (app) => app.apiData())),
+    };
   }
 }
 
@@ -52,8 +55,15 @@ export class AppOptions extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run({ response }) {
-    response.types = [];
+  async run() {
+    const types: Array<{
+      name: string;
+      addible: boolean;
+      options: PluginApp["options"];
+      plugin: { name: string; icon: string };
+      provides: { source: boolean; destination: boolean };
+    }> = [];
+
     api.plugins.plugins.map((plugin: GrouparooPlugin) => {
       if (plugin.apps) {
         plugin.apps.map((app) => {
@@ -73,7 +83,7 @@ export class AppOptions extends AuthenticatedAction {
             ? true
             : false;
 
-          response.types.push({
+          types.push({
             name: app.name,
             addible: app.addible,
             options: app.options,
@@ -84,9 +94,11 @@ export class AppOptions extends AuthenticatedAction {
       }
     });
 
-    response.environmentVariableOptions = OptionHelper.getEnvironmentVariableOptionsForTopic(
+    const environmentVariableOptions = OptionHelper.getEnvironmentVariableOptionsForTopic(
       "app"
     );
+
+    return { environmentVariableOptions, types };
   }
 }
 
@@ -102,10 +114,9 @@ export class AppOptionOptions extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const app = await App.findByGuid(params.guid);
-
-    response.options = await app.appOptions();
+    return { options: await app.appOptions() };
   }
 }
 
@@ -124,7 +135,7 @@ export class AppCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const app = await App.create({
       name: params.name,
       type: params.type,
@@ -133,7 +144,7 @@ export class AppCreate extends AuthenticatedAction {
     if (params.options) await app.setOptions(params.options);
     if (params.state) await app.update({ state: params.state });
 
-    response.app = await app.apiData();
+    return { app: await app.apiData() };
   }
 }
 
@@ -153,14 +164,14 @@ export class AppEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const app = await App.findByGuid(params.guid);
     if (params.options) {
       await app.setOptions(params.options);
     }
     await app.update(params);
 
-    response.app = await app.apiData();
+    return { app: await app.apiData() };
   }
 }
 
@@ -177,13 +188,15 @@ export class AppTest extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const app = await App.findByGuid(params.guid);
-    let { success, message, error } = await app.test(params.options);
-    if (error) error = String(error);
+    const test = await app.test(params.options);
+    if (test.error) test.error = String(test.error);
 
-    response.test = { success, message, error };
-    response.app = await app.apiData();
+    return {
+      test,
+      app: await app.apiData(),
+    };
   }
 }
 
@@ -199,9 +212,9 @@ export class AppView extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const app = await App.findByGuid(params.guid);
-    response.app = await app.apiData();
+    return { app: await app.apiData() };
   }
 }
 
@@ -217,10 +230,10 @@ export class AppDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.success = false;
+  async run({ params }) {
     const app = await App.findByGuid(params.guid);
     await app.destroy();
-    response.success = true;
+
+    return { success: true };
   }
 }

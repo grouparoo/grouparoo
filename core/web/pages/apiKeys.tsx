@@ -10,13 +10,13 @@ import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import Moment from "react-moment";
 
-import { ApiKeyAPIData } from "../utils/apiData";
+import { Models, Actions } from "../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
-  const [apiKeys, setApiKeys] = useState<ApiKeyAPIData[]>(props.apiKeys);
+  const [apiKeys, setApiKeys] = useState<Models.ApiKeyType[]>(props.apiKeys);
   const [total, setTotal] = useState(props.total);
   const [loading, setLoading] = useState(false);
 
@@ -31,7 +31,7 @@ export default function Page(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response = await execApi("get", `/apiKeys`, {
+    const response: Actions.ApiKeysList = await execApi("get", `/apiKeys`, {
       limit,
       offset,
     });
@@ -115,9 +115,13 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
   const { limit, offset } = ctx.query;
-  const { apiKeys, total } = await execApi("get", `/apiKeys`, {
-    limit,
-    offset,
-  });
+  const { apiKeys, total }: Actions.ApiKeysList = await execApi(
+    "get",
+    `/apiKeys`,
+    {
+      limit,
+      offset,
+    }
+  );
   return { apiKeys, total };
 };

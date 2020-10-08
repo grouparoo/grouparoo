@@ -110,12 +110,6 @@ describe("actions/schedules", () => {
         expect(schedule.guid).toBeTruthy();
         expect(schedule.name).toBe("new schedule name");
 
-        // the app & source should be included
-        expect(schedule.source.guid).toBeTruthy();
-        expect(schedule.source.type).toBe("test-plugin-import");
-        expect(schedule.source.app.guid).toBeTruthy();
-        expect(schedule.source.app.type).toBe("test-plugin-app");
-
         expect(pluginOptions[0].key).toBe("maxColumn");
       });
 

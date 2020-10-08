@@ -21,7 +21,7 @@ export class ImportsList extends AuthenticatedAction {
     };
   }
 
-  async run({ response, params }) {
+  async run({ params }) {
     const where = {};
     if (params.creatorGuid) where["creatorGuid"] = params.creatorGuid;
     if (params.profileGuid) where["profileGuid"] = params.profileGuid;
@@ -32,14 +32,17 @@ export class ImportsList extends AuthenticatedAction {
       offset: params.offset,
       order: params.order,
     };
-
+    const total = await Import.count({ where });
     const imports = await Import.findAll(search);
-    response.imports = await Promise.all(imports.map((e) => e.apiData()));
-    response.total = await Import.count({ where });
+
+    return {
+      total,
+      imports: await Promise.all(imports.map((e) => e.apiData())),
+    };
   }
 }
 
-export class ViewImport extends AuthenticatedAction {
+export class ImportView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "import:view";
@@ -51,13 +54,13 @@ export class ViewImport extends AuthenticatedAction {
     };
   }
 
-  async run({ response, params }) {
+  async run({ params }) {
     const _import = await Import.findByGuid(params.guid);
-    response.import = await _import.apiData();
+    return { import: await _import.apiData() };
   }
 }
 
-export class CreateImport extends AuthenticatedAction {
+export class ImportCreate extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "import:create";
@@ -69,7 +72,7 @@ export class CreateImport extends AuthenticatedAction {
     };
   }
 
-  async run({ response, params }) {
+  async run({ params }) {
     let { properties } = params;
 
     if (typeof properties === "string") properties = JSON.parse(properties);
@@ -96,6 +99,6 @@ export class CreateImport extends AuthenticatedAction {
       creatorGuid: "?",
     });
 
-    response.import = await _import.apiData();
+    return { import: await _import.apiData() };
   }
 }

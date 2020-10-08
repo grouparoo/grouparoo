@@ -16,7 +16,7 @@ export class TeamMembersList extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const where = {};
     if (params.guid) where["teamGuid"] = params.guid;
     if (params.teamGuid) where["teamGuid"] = params.teamGuid;
@@ -26,9 +26,11 @@ export class TeamMembersList extends AuthenticatedAction {
       order: [["email", "asc"]],
     });
 
-    response.teamMembers = await Promise.all(
-      teamMembers.map(async (tem) => tem.apiData())
-    );
+    return {
+      teamMembers: await Promise.all(
+        teamMembers.map(async (tem) => tem.apiData())
+      ),
+    };
   }
 }
 
@@ -49,7 +51,7 @@ export class TeamMemberCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const team = await Team.findByGuid(params.teamGuid);
 
     const teamMember = new TeamMember({
@@ -61,11 +63,10 @@ export class TeamMemberCreate extends AuthenticatedAction {
 
     await teamMember.save();
     await teamMember.updatePassword(params.password);
-    response.teamMember = await teamMember.apiData();
 
-    if (params.subscribe) {
-      await GrouparooSubscription(teamMember);
-    }
+    if (params.subscribe) await GrouparooSubscription(teamMember);
+
+    return { teamMember: await teamMember.apiData() };
   }
 }
 
@@ -81,15 +82,17 @@ export class TeamMemberView extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const teamMember = await TeamMember.findOne({
       where: { guid: params.guid },
       include: [Team],
     });
     if (!teamMember) throw new Error("team member not found");
 
-    response.teamMember = await teamMember.apiData();
-    response.team = await teamMember.team.apiData();
+    return {
+      teamMember: await teamMember.apiData(),
+      team: await teamMember.team.apiData(),
+    };
   }
 }
 
@@ -110,14 +113,14 @@ export class TeamMemberEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const teamMember = await TeamMember.findByGuid(params.guid);
 
     await teamMember.update(params);
 
     if (params.password) await teamMember.updatePassword(params.password);
 
-    response.teamMember = await teamMember.apiData();
+    return { teamMember: await teamMember.apiData() };
   }
 }
 
@@ -133,14 +136,19 @@ export class TeamMemberDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response, session: { teamMember: myself } }) {
-    response.success = false;
+  async run({
+    params,
+    session: { teamMember: myself },
+  }: {
+    params: { guid: string };
+    session: { teamMember: TeamMember };
+  }) {
     const teamMember = await TeamMember.findByGuid(params.guid);
     if (myself.guid === teamMember.guid) {
       throw new Error("you cannot delete yourself");
     }
 
     await teamMember.destroy();
-    response.success = true;
+    return { success: true };
   }
 }

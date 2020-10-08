@@ -6,22 +6,32 @@ import { useRouter } from "next/router";
 import Moment from "react-moment";
 import LoadingTable from "../../../components/loadingTable";
 import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
-import { TeamMemberAPIData } from "../../../utils/apiData";
+import { Models, Actions } from "../../../utils/apiData";
 import TeamTabs from "../../../components/tabs/team";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, team } = props;
+  const {
+    errorHandler,
+    successHandler,
+    team,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    team: Models.TeamType;
+  } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [teamMembers, setTeamMembers] = useState<TeamMemberAPIData[]>(
+  const [teamMembers, setTeamMembers] = useState<Models.TeamMemberType[]>(
     props.teamMembers
   );
 
   async function handleDelete(teamMember) {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response = await execApi(
+      const response: Actions.TeamMemberDestroy = await execApi(
         "delete",
         `/team/member/${teamMember.guid}`
       );

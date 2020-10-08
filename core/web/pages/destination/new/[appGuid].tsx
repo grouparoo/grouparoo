@@ -6,6 +6,7 @@ import LoadingButton from "../../../components/loadingButton";
 import AppIcon from "../../../components/appIcon";
 import { useRouter } from "next/router";
 import { humanizePluginName } from "../../../components/appSelectorList";
+import { Actions } from "../../../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, connectionApps } = props;
@@ -20,10 +21,14 @@ export default function Page(props) {
 
   const create = async (connection) => {
     setLoading(true);
-    const response = await execApi("post", `/destination`, {
-      appGuid,
-      type: connection.name,
-    });
+    const response: Actions.DestinationCreate = await execApi(
+      "post",
+      `/destination`,
+      {
+        appGuid,
+        type: connection.name,
+      }
+    );
     if (response?.destination) {
       router.push(
         "/destination/[guid]/edit",

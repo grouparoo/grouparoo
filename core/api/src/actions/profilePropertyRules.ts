@@ -6,6 +6,7 @@ import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { Group } from "../models/Group";
 import { GroupRule } from "../models/GroupRule";
+import { AsyncReturnType } from "type-fest";
 
 export class ProfilePropertyRulesList extends AuthenticatedAction {
   constructor() {
@@ -19,6 +20,7 @@ export class ProfilePropertyRulesList extends AuthenticatedAction {
       offset: { required: true, default: 0, formatter: parseInt },
       unique: { required: false },
       state: { required: false },
+      sourceGuid: { required: false },
       order: {
         required: false,
         default: [
@@ -29,9 +31,10 @@ export class ProfilePropertyRulesList extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const where = {};
     if (params.state) where["state"] = params.state;
+    if (params.sourceGuid) where["sourceGuid"] = params.sourceGuid;
     if (params?.unique?.toString().toLowerCase() === "true")
       where["unique"] = true;
 
@@ -42,8 +45,10 @@ export class ProfilePropertyRulesList extends AuthenticatedAction {
       where,
     });
 
-    response.profilePropertyRules = [];
-    response.examples = {};
+    const responseProfilePropertyRules: Array<AsyncReturnType<
+      typeof ProfilePropertyRule.prototype.apiData
+    >> = [];
+    const responseExamples: { [guid: string]: string[] } = {};
 
     for (const i in profilePropertyRules) {
       const rule = profilePropertyRules[i];
@@ -59,11 +64,17 @@ export class ProfilePropertyRulesList extends AuthenticatedAction {
       });
       const exampleValues = examples.map((e) => e.rawValue);
 
-      response.profilePropertyRules.push(apiData);
-      response.examples[rule.guid] = exampleValues;
+      responseProfilePropertyRules.push(apiData);
+      responseExamples[rule.guid] = exampleValues;
     }
 
-    response.total = await ProfilePropertyRule.scope(null).count();
+    const total = await ProfilePropertyRule.scope(null).count();
+
+    return {
+      total,
+      profilePropertyRules: responseProfilePropertyRules,
+      examples: responseExamples,
+    };
   }
 }
 
@@ -78,8 +89,8 @@ export class ProfilePropertyRulesOptions extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run({ response }) {
-    response.types = ProfilePropertyRule.rawAttributes.type.values;
+  async run() {
+    return { types: ProfilePropertyRule.rawAttributes.type.values };
   }
 }
 
@@ -94,7 +105,7 @@ export class ProfilePropertyRuleGroups extends AuthenticatedAction {
     this.inputs = { guid: { required: true } };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const profilePropertyRule = await ProfilePropertyRule.findByGuid(
       params.guid
     );
@@ -108,10 +119,9 @@ export class ProfilePropertyRuleGroups extends AuthenticatedAction {
       ],
     });
 
-    response.groups = [];
-    for (const i in groups) {
-      response.groups.push(await groups[i].apiData());
-    }
+    return {
+      groups: await Promise.all(groups.map((group) => group.apiData())),
+    };
   }
 }
 
@@ -135,7 +145,7 @@ export class ProfilePropertyRuleCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const profilePropertyRule = await ProfilePropertyRule.create({
       key: params.key,
       type: params.type,
@@ -149,8 +159,13 @@ export class ProfilePropertyRuleCreate extends AuthenticatedAction {
     if (params.filters) await profilePropertyRule.setFilters(params.filters);
     if (params.state) await profilePropertyRule.update({ state: params.state });
 
-    response.profilePropertyRule = await profilePropertyRule.apiData();
-    response.pluginOptions = await profilePropertyRule.pluginOptions();
+    const source = await profilePropertyRule.$get("source");
+
+    return {
+      profilePropertyRule: await profilePropertyRule.apiData(),
+      pluginOptions: await profilePropertyRule.pluginOptions(),
+      source: source.apiData(),
+    };
   }
 }
 
@@ -175,7 +190,7 @@ export class ProfilePropertyRuleEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const profilePropertyRule = await ProfilePropertyRule.findByGuid(
       params.guid
     );
@@ -185,8 +200,13 @@ export class ProfilePropertyRuleEdit extends AuthenticatedAction {
 
     await profilePropertyRule.update(params);
 
-    response.profilePropertyRule = await profilePropertyRule.apiData();
-    response.pluginOptions = await profilePropertyRule.pluginOptions();
+    const source = await profilePropertyRule.$get("source");
+
+    return {
+      profilePropertyRule: await profilePropertyRule.apiData(),
+      pluginOptions: await profilePropertyRule.pluginOptions(),
+      source: source.apiData(),
+    };
   }
 }
 
@@ -202,11 +222,11 @@ export class ProfilePropertyRuleFilterOptions extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const profilePropertyRule = await ProfilePropertyRule.findByGuid(
       params.guid
     );
-    response.options = await profilePropertyRule.pluginFilterOptions();
+    return { options: await profilePropertyRule.pluginFilterOptions() };
   }
 }
 
@@ -222,12 +242,16 @@ export class ProfilePropertyRuleView extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const profilePropertyRule = await ProfilePropertyRule.findByGuid(
       params.guid
     );
+    const source = await profilePropertyRule.$get("source");
 
-    response.profilePropertyRule = await profilePropertyRule.apiData();
+    return {
+      profilePropertyRule: await profilePropertyRule.apiData(),
+      source: await source.apiData(),
+    };
   }
 }
 
@@ -243,12 +267,12 @@ export class ProfilePropertyRulePluginOptions extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const profilePropertyRule = await ProfilePropertyRule.findByGuid(
       params.guid
     );
 
-    response.pluginOptions = await profilePropertyRule.pluginOptions();
+    return { pluginOptions: await profilePropertyRule.pluginOptions() };
   }
 }
 
@@ -268,7 +292,7 @@ export class ProfilePropertyRuleProfilePreview extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     let profile: Profile;
 
     const profilePropertyRule = await ProfilePropertyRule.findByGuid(
@@ -280,8 +304,7 @@ export class ProfilePropertyRuleProfilePreview extends AuthenticatedAction {
     } else {
       profile = await Profile.findOne({ order: [["guid", "asc"]] });
       if (!profile) {
-        response.errorMessage = "no profiles found";
-        return;
+        return { errorMessage: "No profiles found" };
       }
     }
 
@@ -328,8 +351,7 @@ export class ProfilePropertyRuleProfilePreview extends AuthenticatedAction {
       updatedAt: new Date(),
     };
 
-    response.profile = apiData;
-    response.errorMessage = errorMessage;
+    return { errorMessage, profile: apiData };
   }
 }
 
@@ -345,12 +367,12 @@ export class ProfilePropertyRuleTest extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const profilePropertyRule = await ProfilePropertyRule.findByGuid(
       params.guid
     );
 
-    response.test = (await profilePropertyRule.test()) || true;
+    return { test: (await profilePropertyRule.test()) || true };
   }
 }
 
@@ -366,13 +388,12 @@ export class ProfilePropertyRuleDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.success = false;
+  async run({ params }) {
     const profilePropertyRule = await ProfilePropertyRule.findByGuid(
       params.guid
     );
 
     await profilePropertyRule.destroy();
-    response.success = true;
+    return { success: true };
   }
 }

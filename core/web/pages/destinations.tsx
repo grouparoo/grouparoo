@@ -11,15 +11,14 @@ import LoadingTable from "../components/loadingTable";
 import Moment from "react-moment";
 import AppIcon from "../components/appIcon";
 import StateBadge from "../components/stateBadge";
-
-import { DestinationAPIData } from "../utils/apiData";
+import { Models, Actions } from "../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [destinations, setDestinations] = useState<DestinationAPIData[]>(
+  const [destinations, setDestinations] = useState<Models.DestinationType[]>(
     props.destinations
   );
   const [total, setTotal] = useState(props.total);
@@ -35,10 +34,14 @@ export default function Page(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response = await execApi("get", `/destinations`, {
-      limit,
-      offset,
-    });
+    const response: Actions.DestinationsList = await execApi(
+      "get",
+      `/destinations`,
+      {
+        limit,
+        offset,
+      }
+    );
     setLoading(false);
     if (response?.destinations) {
       setDestinations(response.destinations);

@@ -5,9 +5,9 @@ import Head from "next/head";
 import Moment from "react-moment";
 import EventTabs from "../../../components/tabs/event";
 
-import { EventAPIData } from "../../../utils/apiData";
+import { Models } from "../../../utils/apiData";
 
-export default function Page({ event }: { event: EventAPIData }) {
+export default function Page({ event }: { event: Models.EventType }) {
   return (
     <>
       <Head>

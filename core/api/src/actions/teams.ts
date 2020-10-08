@@ -19,7 +19,7 @@ export class TeamInitialize extends Action {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     let team: Team;
     let teamMember: TeamMember;
 
@@ -45,12 +45,14 @@ export class TeamInitialize extends Action {
 
     await teamMember.updatePassword(params.password);
 
-    response.team = await team.apiData();
-    response.teamMember = await teamMember.apiData();
-
     if (params.subscribe) {
       await GrouparooSubscription(teamMember);
     }
+
+    return {
+      team: await team.apiData(),
+      teamMember: await teamMember.apiData(),
+    };
   }
 }
 
@@ -64,11 +66,11 @@ export class TeamsList extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run({ response }) {
+  async run() {
     const teams = await Team.findAll();
-    response.teams = await Promise.all(
-      teams.map(async (team) => team.apiData())
-    );
+    return {
+      teams: await Promise.all(teams.map(async (team) => team.apiData())),
+    };
   }
 }
 
@@ -86,10 +88,10 @@ export class TeamCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const team = new Team(params);
     await team.save();
-    response.team = await team.apiData();
+    return { team: await team.apiData() };
   }
 }
 
@@ -111,7 +113,7 @@ export class TeamEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const team = await Team.findByGuid(params.guid);
     const updateParams = Object.assign({}, params);
     if (params.disabledPermissionAllRead) updateParams.permissionAllRead = null;
@@ -131,7 +133,7 @@ export class TeamEdit extends AuthenticatedAction {
       await team.setPermissions(permissions);
     }
 
-    response.team = await team.apiData();
+    return { team: await team.apiData() };
   }
 }
 
@@ -147,7 +149,7 @@ export class TeamView extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const team = await Team.findOne({
       where: { guid: params.guid },
       include: [{ model: TeamMember }],
@@ -155,19 +157,22 @@ export class TeamView extends AuthenticatedAction {
 
     if (!team) throw new Error("team not found");
 
-    response.team = await team.apiData();
-    response.teamMembers = await Promise.all(
-      team.teamMembers.map(async (mem) => {
-        return await mem.apiData();
-      })
-    );
-    response.teamMembers.sort((a, b) => {
-      if (a.email < b.email) {
-        return 1;
-      } else {
-        return -1;
-      }
-    });
+    return {
+      team: await team.apiData(),
+      teamMembers: (
+        await Promise.all(
+          team.teamMembers.map(async (mem) => {
+            return await mem.apiData();
+          })
+        )
+      ).sort((a, b) => {
+        if (a.email < b.email) {
+          return 1;
+        } else {
+          return -1;
+        }
+      }),
+    };
   }
 }
 
@@ -183,10 +188,9 @@ export class TeamDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.success = false;
+  async run({ params }) {
     const team = await Team.findByGuid(params.guid);
     await team.destroy();
-    response.success = true;
+    return { success: true };
   }
 }

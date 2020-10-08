@@ -24,7 +24,7 @@ export class FilesList extends AuthenticatedAction {
     };
   }
 
-  async run({ response, params }) {
+  async run({ params }) {
     const search = {
       limit: params.limit,
       offset: params.offset,
@@ -35,8 +35,12 @@ export class FilesList extends AuthenticatedAction {
     if (params.type) search.where = { type: params.type };
 
     const files = await File.findAll(search);
-    response.files = await Promise.all(files.map(async (f) => f.apiData()));
-    response.total = await File.count(search);
+    const total = await File.count(search);
+
+    return {
+      total,
+      files: await Promise.all(files.map(async (f) => f.apiData())),
+    };
   }
 }
 
@@ -50,9 +54,9 @@ export class FileOptions extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run({ response }) {
-    response.options = {
-      types: api.files.types,
+  async run() {
+    return {
+      options: { types: api.files.types },
     };
   }
 }
@@ -72,13 +76,14 @@ export class FileCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ response, params }) {
+  async run({ params }) {
     const file = await api.files.set(
       params.type,
       params._file.name,
       params._file.path
     );
-    response.file = await file.apiData();
+
+    return { file: await file.apiData() };
   }
 }
 
@@ -94,9 +99,9 @@ export class FileDetails extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const file = await File.findByGuid(params.guid);
-    response.file = await file.apiData();
+    return { file: await file.apiData() };
   }
 }
 
@@ -151,10 +156,9 @@ export class FileDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ response, params }) {
-    response.success = false;
+  async run({ params }) {
     const file = await File.findByGuid(params.guid);
     await api.files.destroy(file);
-    response.success = true;
+    return { success: true };
   }
 }

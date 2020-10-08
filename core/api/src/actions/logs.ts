@@ -24,7 +24,7 @@ export class LogsList extends AuthenticatedAction {
     };
   }
 
-  async run({ response, params }) {
+  async run({ params }) {
     const search = {
       limit: params.limit,
       offset: params.offset,
@@ -36,9 +36,9 @@ export class LogsList extends AuthenticatedAction {
     if (params.verb) search.where["verb"] = params.verb;
     if (params.ownerGuid) search.where["ownerGuid"] = params.ownerGuid;
 
+    const total = await Log.count(search);
     const logs = await Log.findAll(search);
-    response.logs = await Promise.all(logs.map((log) => log.apiData()));
 
-    response.total = await Log.count(search);
+    return { total, logs: await Promise.all(logs.map((log) => log.apiData())) };
   }
 }

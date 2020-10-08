@@ -14,17 +14,20 @@ export class ApiKeysList extends AuthenticatedAction {
     };
   }
 
-  async run({ response, params }) {
+  async run({ params }) {
+    const total = await ApiKey.count();
+
     const apiKeys = await ApiKey.findAll({
       limit: params.limit,
       offset: params.offset,
     });
 
-    response.apiKeys = await Promise.all(
-      apiKeys.map(async (apiKey) => apiKey.apiData())
-    );
-
-    response.total = await ApiKey.count();
+    return {
+      total,
+      apiKeys: await Promise.all(
+        apiKeys.map(async (apiKey) => apiKey.apiData())
+      ),
+    };
   }
 }
 
@@ -42,10 +45,10 @@ export class ApiKeyCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const apiKey = new ApiKey(params);
     await apiKey.save();
-    response.apiKey = await apiKey.apiData();
+    return { apiKey: await apiKey.apiData() };
   }
 }
 
@@ -67,7 +70,7 @@ export class ApiKeyEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const apiKey = await ApiKey.findByGuid(params.guid);
     const updateParams = Object.assign({}, params);
     if (params.disabledPermissionAllRead) {
@@ -88,7 +91,7 @@ export class ApiKeyEdit extends AuthenticatedAction {
       await apiKey.setPermissions(permissions);
     }
 
-    response.apiKey = await apiKey.apiData();
+    return { apiKey: await apiKey.apiData() };
   }
 }
 
@@ -104,9 +107,9 @@ export class ApiKeyView extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const apiKey = await ApiKey.findByGuid(params.guid);
-    response.apiKey = await apiKey.apiData();
+    return { apiKey: await apiKey.apiData() };
   }
 }
 
@@ -122,10 +125,9 @@ export class ApiKeyDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.success = false;
+  async run({ params }) {
     const apiKey = await ApiKey.findByGuid(params.guid);
     await apiKey.destroy();
-    response.success = true;
+    return { success: true };
   }
 }

@@ -5,17 +5,33 @@ import { Button } from "react-bootstrap";
 import StateBadge from "../../../components/stateBadge";
 import GroupTabs from "../../../components/tabs/group";
 import ProfilesList from "../../../components/profile/list";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
+import { Models, Actions } from "../../../utils/apiData";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, group } = props;
+  const {
+    errorHandler,
+    successHandler,
+    group,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    group: Models.GroupType;
+  } = props;
+
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
   async function handleExport(type = "csv") {
     setLoading(true);
-    const response = await execApi("put", `/group/${group.guid}/export`, {
-      type,
-    });
+    const response: Actions.GroupExport = await execApi(
+      "put",
+      `/group/${group.guid}/export`,
+      {
+        type,
+      }
+    );
     setLoading(false);
     if (response?.success) {
       successHandler.set({
@@ -28,7 +44,10 @@ export default function Page(props) {
   async function run() {
     if (window.confirm("are you sure? this could take a while")) {
       setLoading(true);
-      const response = await execApi("put", `/group/${group.guid}/run`);
+      const response: Actions.GroupRun = await execApi(
+        "put",
+        `/group/${group.guid}/run`
+      );
       setLoading(false);
       if (response?.success) {
         successHandler.set({ message: "Update Run Enqueued" });

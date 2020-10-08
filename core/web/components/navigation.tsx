@@ -8,6 +8,10 @@ import SetupStepsNavProgressBar from "./navigation/setupStepsNavProgressBar";
 import RunningRunsBadge from "./navigation/runningRunsBadge";
 import ResqueFailedCountBadge from "./navigation/resqueFailedBadgeCount";
 import HighlightingNavLink from "./navigation/highlightingNavLink";
+import { Actions } from "../utils/apiData";
+import { ErrorHandler } from "../utils/errorHandler";
+import { SetupStepHandler } from "../utils/setupStepsHandler";
+import { SessionHandler } from "../utils/sessionHandler";
 
 export const navLiStyle = { marginTop: 20, marginBottom: 20 };
 
@@ -25,15 +29,23 @@ export const iconConstrainedStyle = { width: 20 };
 
 export default function Navigation(props) {
   const {
-    // pathname,
     navigationMode,
     navigation,
     clusterName,
-    sessionHandler,
     navExpanded,
     toggleNavExpanded,
     errorHandler,
     setupStepHandler,
+    sessionHandler,
+  }: {
+    navigationMode: Actions.NavigationList["navigationMode"];
+    navigation: Actions.NavigationList["navigation"];
+    clusterName: string;
+    navExpanded: boolean;
+    toggleNavExpanded: () => {};
+    errorHandler: ErrorHandler;
+    setupStepHandler: SetupStepHandler;
+    sessionHandler: SessionHandler;
   } = props;
   const { execApi } = useApi(props, errorHandler);
   const router = useRouter();

@@ -1,8 +1,8 @@
-import { Action, api } from "actionhero";
+import { Action, api, Connection } from "actionhero";
 import { AuthenticatedAction } from "./../classes/authenticatedAction";
 import { TeamMember } from "../models/TeamMember";
 
-export class sessionCreate extends Action {
+export class SessionCreate extends Action {
   constructor() {
     super();
     this.name = "session:create";
@@ -14,8 +14,13 @@ export class sessionCreate extends Action {
     this.outputExample = {};
   }
 
-  async run({ connection, response, params }) {
-    response.success = false;
+  async run({
+    connection,
+    params,
+  }: {
+    connection: Connection;
+    params: { [key: string]: string };
+  }) {
     const teamMember = await TeamMember.findOne({
       where: { email: params.email.toLocaleLowerCase() },
     });
@@ -25,13 +30,16 @@ export class sessionCreate extends Action {
     if (!match) throw new Error("password does not match");
 
     const sessionData = await api.session.create(connection, teamMember);
-    response.teamMember = await teamMember.apiData();
-    response.success = true;
-    response.csrfToken = sessionData.csrfToken;
+
+    return {
+      success: true,
+      teamMember: await teamMember.apiData(),
+      csrfToken: sessionData.csrfToken,
+    };
   }
 }
 
-export class sessionView extends AuthenticatedAction {
+export class SessionView extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "session:view";
@@ -40,16 +48,24 @@ export class sessionView extends AuthenticatedAction {
     this.outputExample = {};
   }
 
-  async run({ connection, response, session: { teamMember } }) {
+  async run({
+    connection,
+    session: { teamMember },
+  }: {
+    connection: Connection;
+    session: { teamMember: TeamMember };
+  }) {
     const sessionData = await api.session.load(connection);
     if (sessionData) {
-      response.csrfToken = sessionData.csrfToken;
-      response.teamMember = await teamMember.apiData();
+      return {
+        teamMember: await teamMember.apiData(),
+        csrfToken: sessionData.csrfToken,
+      };
     }
   }
 }
 
-export class sessionDestroy extends Action {
+export class SessionDestroy extends Action {
   constructor() {
     super();
     this.name = "session:destroy";
@@ -57,9 +73,8 @@ export class sessionDestroy extends Action {
     this.outputExample = {};
   }
 
-  async run({ connection, response }) {
-    response.success = false;
+  async run({ connection }) {
     await api.session.destroy(connection);
-    response.success = true;
+    return { success: true };
   }
 }

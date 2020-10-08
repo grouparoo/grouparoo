@@ -9,15 +9,28 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import AppIcon from "../../../components/appIcon";
 import StateBadge from "../../../components/stateBadge";
-
-import { ScheduleAPIData } from "../../../utils/apiData";
+import { Models, Actions } from "../../../utils/apiData";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
 
 export default function Page(props) {
-  const { errorHandler, successHandler, source, run, pluginOptions } = props;
+  const {
+    errorHandler,
+    successHandler,
+    source,
+    run,
+    pluginOptions,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    source: Models.SourceType;
+    run: Models.RunType;
+    pluginOptions: Actions.ScheduleView["pluginOptions"];
+  } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [schedule, setSchedule] = useState<ScheduleAPIData>(props.schedule);
+  const [schedule, setSchedule] = useState<Models.ScheduleType>(props.schedule);
   const [recurringFrequencyMinutes, setRecurringFrequencyMinutes] = useState(
     schedule.recurringFrequency / (60 * 1000)
   );
@@ -34,7 +47,7 @@ export default function Page(props) {
     }
 
     setLoading(true);
-    const response = await execApi(
+    const response: Actions.ScheduleEdit = await execApi(
       "put",
       `/schedule/${schedule.guid}`,
       _schedule
@@ -47,7 +60,7 @@ export default function Page(props) {
       if (response.schedule.state === "ready" && schedule.state === "draft") {
         router.push(
           "/source/[guid]/overview",
-          `/source/${schedule.source.guid}/overview`
+          `/source/${source.guid}/overview`
         );
       } else {
         setLoading(false);
@@ -60,7 +73,10 @@ export default function Page(props) {
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
-      const response = await execApi("delete", `/schedule/${schedule.guid}`);
+      const response: Actions.ScheduleDestroy = await execApi(
+        "delete",
+        `/schedule/${schedule.guid}`
+      );
       if (response) {
         router.push(`/source/${source.guid}/overview`);
       }
@@ -94,12 +110,11 @@ export default function Page(props) {
         <Row>
           <Col md={1}>
             <br />
-            <AppIcon src={schedule?.source?.app?.icon} fluid size={100} />
+            <AppIcon src={source?.app?.icon} fluid size={100} />
           </Col>
           <Col>
             <h2>
-              Schedule for source{" "}
-              <Badge variant="info">{schedule.source.name}</Badge>
+              Schedule for source <Badge variant="info">{source.name}</Badge>
             </h2>
             <StateBadge state={schedule.state} />
             <br />
@@ -214,7 +229,7 @@ export default function Page(props) {
             <>
               <hr />
               <p>
-                <strong>Options for a {schedule.source.type} Schedule</strong>
+                <strong>Options for a {source.type} Schedule</strong>
               </p>
               {pluginOptions.map((opt, idx) => (
                 <div key={`opt-${idx}`}>
@@ -247,7 +262,7 @@ export default function Page(props) {
                               <Form.Check
                                 inline
                                 type="radio"
-                                id={col}
+                                id={`${col.key}`}
                                 name={opt.key}
                                 disabled={schedule.state !== "draft"}
                                 defaultChecked={

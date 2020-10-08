@@ -1,7 +1,7 @@
 import Tabs from "../tabs";
-import { RunAPIData } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 
-export default function RunTabs({ run }: { run: RunAPIData }) {
+export default function RunTabs({ run }: { run: Models.RunType }) {
   const tabs = ["edit"];
   return <Tabs name={run.guid} tabs={tabs} />;
 }

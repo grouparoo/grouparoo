@@ -11,8 +11,10 @@ import Moment from "react-moment";
 import LoadingTable from "../../../components/loadingTable";
 import getProfileDisplayName from "../../../components/profile/getProfileDisplayName";
 import ArrayProfilePropertyList from "../../../components/profile/arrayProfilePropertyList";
-
-import { ProfileAPIData, GroupAPIData } from "../../../utils/apiData";
+import { Models, Actions } from "../../../utils/apiData";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
+import { ProfileHandler } from "../../../utils/profileHandler";
 
 export default function Page(props) {
   const {
@@ -21,16 +23,25 @@ export default function Page(props) {
     profilePropertyRules,
     profileHandler,
     allGroups,
+    sources,
     apps,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    profilePropertyRules: Models.ProfilePropertyRuleType[];
+    allGroups: Models.GroupType[];
+    apps: Models.AppType[];
+    sources: Models.SourceType[];
+    profileHandler: ProfileHandler;
   } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [profile, setProfile] = useState<ProfileAPIData>(props.profile);
-  const [groups, setGroups] = useState<[GroupAPIData]>(props.groups);
-  const [properties, setProperties] = useState<ProfileAPIData["properties"]>(
-    props.profile.properties
-  );
+  const [profile, setProfile] = useState<Models.ProfileType>(props.profile);
+  const [groups, setGroups] = useState<Models.GroupType[]>(props.groups);
+  const [properties, setProperties] = useState<
+    Models.ProfileType["properties"]
+  >(props.profile.properties);
 
   useEffect(() => {
     profileHandler.subscribe("profile-edit", (_profile) =>
@@ -38,13 +49,16 @@ export default function Page(props) {
     );
 
     return () => {
-      profileHandler.unsubscribe("profile-edit", load.bind(this));
+      profileHandler.unsubscribe("profile-edit");
     };
   }, []);
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/profile/${profile.guid}`);
+    const response: Actions.ProfileView = await execApi(
+      "get",
+      `/profile/${profile.guid}`
+    );
     if (response?.profile) {
       profileHandler.set(response.profile);
       setProfile(response.profile);
@@ -57,7 +71,7 @@ export default function Page(props) {
   async function importAndUpdate() {
     setLoading(true);
     successHandler.set({ message: "enqueued for import..." });
-    const response = await execApi(
+    const response: Actions.ProfileImportAndUpdate = await execApi(
       "post",
       `/profile/${profile.guid}/importAndUpdate`
     );
@@ -71,7 +85,10 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response = await execApi("delete", `/profile/${profile.guid}`);
+      const response: Actions.ProfileDestroy = await execApi(
+        "delete",
+        `/profile/${profile.guid}`
+      );
       if (response) {
         router.push("/profiles");
       } else {
@@ -82,9 +99,13 @@ export default function Page(props) {
 
   async function handleRemove(group) {
     setLoading(true);
-    const response = await execApi("put", `/group/${group.guid}/remove`, {
-      profileGuid: profile.guid,
-    });
+    const response: Actions.GroupRemoveProfile = await execApi(
+      "put",
+      `/group/${group.guid}/remove`,
+      {
+        profileGuid: profile.guid,
+      }
+    );
     if (response) {
       successHandler.set({
         message: `Profile Removed from Group ${group.name}`,
@@ -100,9 +121,13 @@ export default function Page(props) {
     const groupGuid = form.elements[0].value;
 
     setLoading(true);
-    const response = await execApi("put", `/group/${groupGuid}/add`, {
-      profileGuid: profile.guid,
-    });
+    const response: Actions.GroupAddProfile = await execApi(
+      "put",
+      `/group/${groupGuid}/add`,
+      {
+        profileGuid: profile.guid,
+      }
+    );
     if (response) {
       successHandler.set({
         message: `Profile added to Group!`,
@@ -116,9 +141,13 @@ export default function Page(props) {
     const hash = {};
     hash[key] = properties[key].values;
     setLoading(true);
-    const response = await execApi("put", `/profile/${profile.guid}`, {
-      properties: hash,
-    });
+    const response: Actions.ProfileEdit = await execApi(
+      "put",
+      `/profile/${profile.guid}`,
+      {
+        properties: hash,
+      }
+    );
     if (response?.profile?.properties) {
       successHandler.set({ message: `property ${key} updated` });
       load();
@@ -135,16 +164,16 @@ export default function Page(props) {
     setProperties(_properties);
   };
 
-  const manualProperties = [];
+  // const manualProperties = [];
   const manualAppGuids = apps
     .filter((app) => app.type === "manual")
     .map((app) => app.guid);
-
-  profilePropertyRules.forEach((rule) => {
-    if (manualAppGuids.includes(rule.source.app.guid)) {
-      manualProperties.push(rule.key);
-    }
-  });
+  const manualSourceGuids = sources
+    .filter((source) => manualAppGuids.includes(source.appGuid))
+    .map((source) => source.guid);
+  const manualProperties = profilePropertyRules
+    .filter((p) => manualSourceGuids.includes(p.sourceGuid))
+    .map((p) => p.key);
 
   const groupMembershipGuids = groups.map((g) => g.guid);
 
@@ -383,5 +412,6 @@ Page.getInitialProps = async (ctx) => {
   );
   const { groups: allGroups } = await execApi("get", `/groups`);
   const { apps } = await execApi("get", `/apps`);
-  return { profile, profilePropertyRules, groups, allGroups, apps };
+  const { sources } = await execApi("get", `/sources`);
+  return { profile, profilePropertyRules, groups, allGroups, sources, apps };
 };

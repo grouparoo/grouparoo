@@ -5,9 +5,10 @@ import { App } from "../models/App";
 import { Profile } from "../models/Profile";
 import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
-import { GrouparooPlugin } from "../classes/plugin";
+import { GrouparooPlugin, PluginConnection } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
 import { destinationTypeConversions } from "../modules/destinationTypeConversions";
+import { AsyncReturnType } from "type-fest";
 
 export class DestinationsList extends AuthenticatedAction {
   constructor() {
@@ -30,10 +31,12 @@ export class DestinationsList extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const where = {};
 
     if (params.state) where["state"] = params.state;
+
+    const total = await Destination.scope(null).count({ where });
 
     const destinations = await Destination.scope(null).findAll({
       where,
@@ -42,11 +45,12 @@ export class DestinationsList extends AuthenticatedAction {
       order: params.order,
     });
 
-    response.destinations = await Promise.all(
-      destinations.map(async (conn) => conn.apiData())
-    );
-
-    response.total = await Destination.scope(null).count({ where });
+    return {
+      total,
+      destinations: await Promise.all(
+        destinations.map(async (conn) => conn.apiData())
+      ),
+    };
   }
 }
 
@@ -61,7 +65,12 @@ export class DestinationConnectionApps extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run({ response }) {
+  async run() {
+    const connectionApps: Array<{
+      app: AsyncReturnType<typeof App.prototype.apiData>;
+      connection: PluginConnection;
+    }> = [];
+
     const apps = await App.findAll();
     const existingAppTypes = apps.map((a) => a.type);
 
@@ -75,7 +84,6 @@ export class DestinationConnectionApps extends AuthenticatedAction {
       }
     });
 
-    const connectionApps = [];
     for (const i in apps) {
       for (const j in importConnections) {
         if (apps[i].type === importConnections[j].app) {
@@ -87,11 +95,11 @@ export class DestinationConnectionApps extends AuthenticatedAction {
       }
     }
 
-    response.connectionApps = connectionApps;
-
-    response.environmentVariableOptions = OptionHelper.getEnvironmentVariableOptionsForTopic(
+    const environmentVariableOptions = OptionHelper.getEnvironmentVariableOptionsForTopic(
       "destination"
     );
+
+    return { connectionApps, environmentVariableOptions };
   }
 }
 
@@ -113,7 +121,7 @@ export class DestinationCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const destination = await Destination.create({
       name: params.name,
       type: params.type,
@@ -127,7 +135,7 @@ export class DestinationCreate extends AuthenticatedAction {
       );
     if (params.state) await destination.update({ state: params.state });
 
-    response.destination = await destination.apiData();
+    return { destination: await destination.apiData() };
   }
 }
 
@@ -148,7 +156,7 @@ export class DestinationEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const destination = await Destination.findByGuid(params.guid);
     if (params.options) await destination.setOptions(params.options);
     if (params.mapping) await destination.setMapping(params.mapping);
@@ -160,7 +168,7 @@ export class DestinationEdit extends AuthenticatedAction {
 
     await destination.update(params);
 
-    response.destination = await destination.apiData();
+    return { destination: await destination.apiData() };
   }
 }
 
@@ -177,7 +185,7 @@ export class DestinationConnectionOptions extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const destination = await Destination.findByGuid(params.guid);
 
     const options =
@@ -185,7 +193,7 @@ export class DestinationConnectionOptions extends AuthenticatedAction {
         ? JSON.parse(params.options)
         : params.options;
 
-    response.options = await destination.destinationConnectionOptions(options);
+    return { options: await destination.destinationConnectionOptions(options) };
   }
 }
 
@@ -201,9 +209,9 @@ export class DestinationMappingOptions extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const destination = await Destination.findByGuid(params.guid);
-    response.options = await destination.destinationMappingOptions(false); // never use cache when displaying to the user
+    const options = await destination.destinationMappingOptions(false); // never use cache when displaying to the user
 
     const _destinationTypeConversions: { [key: string]: Array<string> } = {};
     for (const k in destinationTypeConversions) {
@@ -212,7 +220,7 @@ export class DestinationMappingOptions extends AuthenticatedAction {
       );
     }
 
-    response.destinationTypeConversions = _destinationTypeConversions;
+    return { options, destinationTypeConversions: _destinationTypeConversions };
   }
 }
 
@@ -229,9 +237,11 @@ export class DestinationExportArrayProperties extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const destination = await Destination.findByGuid(params.guid);
-    response.exportArrayProperties = await destination.getExportArrayProperties();
+    return {
+      exportArrayProperties: await destination.getExportArrayProperties(),
+    };
   }
 }
 
@@ -248,11 +258,11 @@ export class DestinationTrackGroup extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const destination = await Destination.findByGuid(params.guid);
     const group = await Group.findByGuid(params.groupGuid);
     await destination.trackGroup(group);
-    response.destination = await destination.apiData();
+    return { destination: await destination.apiData() };
   }
 }
 
@@ -268,10 +278,10 @@ export class DestinationUnTrackGroup extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const destination = await Destination.findByGuid(params.guid);
     await destination.unTrackGroup();
-    response.destination = await destination.apiData();
+    return { destination: await destination.apiData() };
   }
 }
 
@@ -286,9 +296,9 @@ export class DestinationView extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const destination = await Destination.findByGuid(params.guid);
-    response.destination = await destination.apiData();
+    return { destination: await destination.apiData() };
   }
 }
 
@@ -305,11 +315,10 @@ export class DestinationExport extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.success = false;
+  async run({ params }) {
     const destination = await Destination.findByGuid(params.guid);
     await destination.exportGroupMembers(params.force);
-    response.success = true;
+    return { success: true };
   }
 }
 
@@ -330,7 +339,7 @@ export class DestinationProfilePreview extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
+  async run({ params }) {
     const destination = await Destination.findByGuid(params.guid);
 
     let profile: Profile;
@@ -376,11 +385,13 @@ export class DestinationProfilePreview extends AuthenticatedAction {
       await destination.checkProfileWillBeExported(profile);
     }
 
-    response.profile = await destination.profilePreview(
-      profile,
-      mapping,
-      destinationGroupMemberships
-    );
+    return {
+      profile: await destination.profilePreview(
+        profile,
+        mapping,
+        destinationGroupMemberships
+      ),
+    };
   }
 }
 
@@ -396,10 +407,9 @@ export class DestinationDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params, response }) {
-    response.success = false;
+  async run({ params }) {
     const destination = await Destination.findByGuid(params.guid);
     await destination.destroy();
-    response.success = true;
+    return { success: true };
   }
 }

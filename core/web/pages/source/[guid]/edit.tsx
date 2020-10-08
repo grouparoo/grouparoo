@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import AppIcon from "./../../../components/appIcon";
 import StateBadge from "./../../../components/stateBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
-import { SourceAPIData } from "../../../utils/apiData";
+import { Models, Actions } from "../../../utils/apiData";
 import LoadingTable from "../../../components/loadingTable";
 import LoadingButton from "../../../components/loadingButton";
 import Loader from "../../../components/loader";
@@ -25,8 +25,10 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false);
   const [loadingOptions, setLoadingOptions] = useState(false);
   const [previewLoading, setPreviewLoading] = useState(false);
-  const [source, setSource] = useState<SourceAPIData>(props.source);
-  const [connectionOptions, setConnectionOptions] = useState({});
+  const [source, setSource] = useState<Models.SourceType>(props.source);
+  const [connectionOptions, setConnectionOptions] = useState<
+    Actions.sourceConnectionOptions["options"]
+  >({});
   const { guid } = router.query;
 
   useEffect(() => {
@@ -42,7 +44,7 @@ export default function Page(props) {
     }
 
     setPreviewLoading(true);
-    const response = await execApi(
+    const response: Actions.SourcePreview = await execApi(
       "get",
       `/source/${guid}/preview`,
       {
@@ -67,7 +69,7 @@ export default function Page(props) {
       ? undefined
       : "ready";
 
-    const response = await execApi(
+    const response: Actions.SourceEdit = await execApi(
       "put",
       `/source/${guid}`,
       Object.assign({}, source, { state })
@@ -93,7 +95,7 @@ export default function Page(props) {
 
   async function loadOptions() {
     setLoadingOptions(true);
-    const response = await execApi(
+    const response: Actions.sourceConnectionOptions = await execApi(
       "get",
       `/source/${guid}/connectionOptions`,
       { options: source.options },
@@ -108,7 +110,10 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response = await execApi("delete", `/source/${guid}`);
+      const response: Actions.SourceDestroy = await execApi(
+        "delete",
+        `/source/${guid}`
+      );
       if (response) {
         successHandler.set({ message: "source deleted" });
         router.push("/sources");

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../components/loadingButton";
+import { Actions } from "../../utils/apiData";
 
 export default function (props) {
   const { errorHandler } = props;
@@ -16,7 +17,7 @@ export default function (props) {
   async function onSubmit(data) {
     setLoading(true);
     const state = data.type === "manual" ? "ready" : "draft";
-    const response = await execApi(
+    const response: Actions.GroupCreate = await execApi(
       "post",
       `/group`,
       Object.assign({}, data, { state })

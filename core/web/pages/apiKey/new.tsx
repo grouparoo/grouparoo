@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../components/loadingButton";
 
+import { Actions } from "../../utils/apiData";
+
 export default function Page(props) {
   const { errorHandler } = props;
   const router = useRouter();
@@ -15,7 +17,11 @@ export default function Page(props) {
 
   async function onSubmit(data) {
     setLoading(true);
-    const response = await execApi("post", `/apiKey`, data);
+    const response: Actions.ApiKeyCreate = await execApi(
+      "post",
+      `/apiKey`,
+      data
+    );
 
     if (response?.apiKey) {
       router.push(

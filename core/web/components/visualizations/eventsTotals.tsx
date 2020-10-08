@@ -7,6 +7,8 @@ import Loader from "../loader";
 import { useRouter } from "next/router";
 import { ResponsiveLine } from "@nivo/line";
 import { useApi } from "../../hooks/useApi";
+import { Actions } from "../../utils/apiData";
+
 const NodeMoment = require("moment");
 
 const limit = 1000; // we want to allow for many more data points here...
@@ -53,12 +55,16 @@ export default function EventsTotals(props) {
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/events/counts`, {
-      startTime: startDate.getTime(),
-      endTime: endDate.getTime(),
-      dateTrunc,
-      limit,
-    });
+    const response: Actions.EventsCounts = await execApi(
+      "get",
+      `/events/counts`,
+      {
+        startTime: startDate.getTime(),
+        endTime: endDate.getTime(),
+        dateTrunc,
+        limit,
+      }
+    );
     setLoading(false);
     if (response?.counts) {
       setCounts(response.counts);

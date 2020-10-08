@@ -2,9 +2,16 @@ import Head from "next/head";
 import { useApi } from "../../../hooks/useApi";
 import LogsList from "../../../components/log/list";
 import ProfilePropertyRuleTabs from "../../../components/tabs/profilePropertyRule";
+import { Models } from "../../../utils/apiData";
 
 export default function Page(props) {
-  const { profilePropertyRule } = props;
+  const {
+    profilePropertyRule,
+    source,
+  }: {
+    profilePropertyRule: Models.ProfilePropertyRuleType;
+    source: Models.SourceType;
+  } = props;
 
   return (
     <>
@@ -12,7 +19,10 @@ export default function Page(props) {
         <title>Grouparoo: Logs</title>
       </Head>
 
-      <ProfilePropertyRuleTabs profilePropertyRule={profilePropertyRule} />
+      <ProfilePropertyRuleTabs
+        profilePropertyRule={profilePropertyRule}
+        source={source}
+      />
 
       <LogsList {...props} />
     </>
@@ -26,6 +36,10 @@ Page.getInitialProps = async (ctx) => {
     "get",
     `/profilePropertyRule/${guid}`
   );
+  const { source } = await execApi(
+    "get",
+    `/source/${profilePropertyRule.sourceGuid}`
+  );
   const logListInitialProps = await LogsList.hydrate(ctx);
-  return { profilePropertyRule, ...logListInitialProps };
+  return { profilePropertyRule, source, ...logListInitialProps };
 };
