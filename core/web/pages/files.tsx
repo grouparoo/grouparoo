@@ -10,8 +10,7 @@ import Moment from "react-moment";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import LoadingButton from "../components/loadingButton";
-
-import { Models } from "../utils/apiData";
+import { Models, Actions } from "../utils/apiData";
 
 const apiVersion = process.env.API_VERSION || "v1";
 
@@ -20,7 +19,7 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [total, setTotal] = useState(props.total);
+  const [total, setTotal] = useState<number>(props.total);
   const [files, setFiles] = useState<Models.FileType[]>(props.files);
 
   // pagination
@@ -35,7 +34,7 @@ export default function Page(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response = await execApi("get", `/files`, {
+    const response: Actions.FilesList = await execApi("get", `/files`, {
       limit,
       offset,
     });
@@ -55,7 +54,10 @@ export default function Page(props) {
   async function destroy(file) {
     if (confirm("are you sure?")) {
       setLoading(true);
-      const response = await execApi("delete", `/file/${file.guid}`);
+      const response: Actions.FileDestroy = await execApi(
+        "delete",
+        `/file/${file.guid}`
+      );
       if (response?.success) {
         successHandler.set({ message: "File Deleted" });
         await load();

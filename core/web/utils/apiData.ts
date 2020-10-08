@@ -215,7 +215,7 @@ import {
   SourceView,
   SourcesList,
   sourceConnectionOptions,
-  sourcePreview,
+  SourcePreview,
 } from "../../api/src/actions/sources";
 import { Swagger } from "../../api/src/actions/swagger";
 import {
@@ -516,8 +516,8 @@ export namespace Actions {
   export type sourceConnectionOptions = AsyncReturnType<
     typeof sourceConnectionOptions.prototype.run
   >;
-  export type sourcePreview = AsyncReturnType<
-    typeof sourcePreview.prototype.run
+  export type SourcePreview = AsyncReturnType<
+    typeof SourcePreview.prototype.run
   >;
 
   export type Swagger = AsyncReturnType<typeof Swagger.prototype.run>;

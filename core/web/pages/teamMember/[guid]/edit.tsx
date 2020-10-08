@@ -6,7 +6,7 @@ import LoadingButton from "../../../components/loadingButton";
 import { useRouter } from "next/router";
 import Moment from "react-moment";
 import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
-import { Models } from "../../../utils/apiData";
+import { Models, Actions } from "../../../utils/apiData";
 import TeamMemberTabs from "../../../components/tabs/teamMember";
 
 export default function Page(props) {
@@ -21,7 +21,7 @@ export default function Page(props) {
   async function submit(event) {
     event.preventDefault();
     setLoading(true);
-    const response = await execApi(
+    const response: Actions.TeamMemberEdit = await execApi(
       "put",
       `/team/member/${teamMember.guid}`,
       teamMember
@@ -36,7 +36,7 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response = await execApi(
+      const response: Actions.TeamMemberDestroy = await execApi(
         "delete",
         `/team/member/${teamMember.guid}`
       );

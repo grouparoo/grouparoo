@@ -233,7 +233,7 @@ export class sourceConnectionOptions extends AuthenticatedAction {
   }
 }
 
-export class sourcePreview extends AuthenticatedAction {
+export class SourcePreview extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "source:preview";

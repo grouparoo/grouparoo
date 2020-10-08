@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Button, Image } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
-import { Models } from "../../../utils/apiData";
+import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 
@@ -37,7 +37,10 @@ export default function Page(props) {
   async function destroy(file) {
     if (confirm("are you sure?")) {
       setLoading(true);
-      const response = await execApi("delete", `/file/${file.guid}`);
+      const response: Actions.FileDestroy = await execApi(
+        "delete",
+        `/file/${file.guid}`
+      );
       if (response?.success) {
         successHandler.set({ message: "File Deleted" });
         router.push("/files");

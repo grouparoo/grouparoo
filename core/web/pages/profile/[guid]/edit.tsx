@@ -11,7 +11,7 @@ import Moment from "react-moment";
 import LoadingTable from "../../../components/loadingTable";
 import getProfileDisplayName from "../../../components/profile/getProfileDisplayName";
 import ArrayProfilePropertyList from "../../../components/profile/arrayProfilePropertyList";
-import { Models } from "../../../utils/apiData";
+import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { ProfileHandler } from "../../../utils/profileHandler";
@@ -55,7 +55,10 @@ export default function Page(props) {
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/profile/${profile.guid}`);
+    const response: Actions.ProfileView = await execApi(
+      "get",
+      `/profile/${profile.guid}`
+    );
     if (response?.profile) {
       profileHandler.set(response.profile);
       setProfile(response.profile);
@@ -68,7 +71,7 @@ export default function Page(props) {
   async function importAndUpdate() {
     setLoading(true);
     successHandler.set({ message: "enqueued for import..." });
-    const response = await execApi(
+    const response: Actions.ProfileImportAndUpdate = await execApi(
       "post",
       `/profile/${profile.guid}/importAndUpdate`
     );
@@ -82,7 +85,10 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response = await execApi("delete", `/profile/${profile.guid}`);
+      const response: Actions.ProfileDestroy = await execApi(
+        "delete",
+        `/profile/${profile.guid}`
+      );
       if (response) {
         router.push("/profiles");
       } else {
@@ -93,9 +99,13 @@ export default function Page(props) {
 
   async function handleRemove(group) {
     setLoading(true);
-    const response = await execApi("put", `/group/${group.guid}/remove`, {
-      profileGuid: profile.guid,
-    });
+    const response: Actions.GroupRemoveProfile = await execApi(
+      "put",
+      `/group/${group.guid}/remove`,
+      {
+        profileGuid: profile.guid,
+      }
+    );
     if (response) {
       successHandler.set({
         message: `Profile Removed from Group ${group.name}`,
@@ -111,9 +121,13 @@ export default function Page(props) {
     const groupGuid = form.elements[0].value;
 
     setLoading(true);
-    const response = await execApi("put", `/group/${groupGuid}/add`, {
-      profileGuid: profile.guid,
-    });
+    const response: Actions.GroupAddProfile = await execApi(
+      "put",
+      `/group/${groupGuid}/add`,
+      {
+        profileGuid: profile.guid,
+      }
+    );
     if (response) {
       successHandler.set({
         message: `Profile added to Group!`,
@@ -127,9 +141,13 @@ export default function Page(props) {
     const hash = {};
     hash[key] = properties[key].values;
     setLoading(true);
-    const response = await execApi("put", `/profile/${profile.guid}`, {
-      properties: hash,
-    });
+    const response: Actions.ProfileEdit = await execApi(
+      "put",
+      `/profile/${profile.guid}`,
+      {
+        properties: hash,
+      }
+    );
     if (response?.profile?.properties) {
       successHandler.set({ message: `property ${key} updated` });
       load();

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { Form, ProgressBar } from "react-bootstrap";
 import { useRouter } from "next/router";
 import LoadingButton from "../../components/loadingButton";
+import { Actions } from "../../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, uploadHandler, types } = props;
@@ -29,7 +30,7 @@ export default function Page(props) {
 
   async function onSubmit(data) {
     setLoading(true);
-    const response = await execApi("post", `/file`, {
+    const response: Actions.FileCreate = await execApi("post", `/file`, {
       type: data.type,
       _file: data.file[0],
     });

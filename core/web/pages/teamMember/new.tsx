@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../components/loadingButton";
 import { useRouter } from "next/router";
+import { Actions } from "../../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, successHandler, teamMemberHandler, teams } = props;
@@ -19,7 +20,11 @@ export default function Page(props) {
     if (!data.teamGuid && teamGuid) data.teamGuid = teamGuid;
 
     setLoading(true);
-    const response = await execApi("post", `/team/member`, data);
+    const response: Actions.TeamMemberCreate = await execApi(
+      "post",
+      `/team/member`,
+      data
+    );
 
     if (response?.teamMember) {
       teamMemberHandler.set(response.teamMember);

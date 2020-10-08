@@ -8,7 +8,7 @@ import Head from "next/head";
 import GroupTabs from "../../../components/tabs/group";
 import LoadingButton from "../../../components/loadingButton";
 
-import { Models } from "../../../utils/apiData";
+import { Models, Actions } from "../../../utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, successHandler, groupHandler } = props;
@@ -30,7 +30,11 @@ export default function Page(props) {
   async function submit(event) {
     event.preventDefault();
     setLoading(true);
-    const response = await execApi("put", `/group/${group.guid}`, group);
+    const response: Actions.GroupEdit = await execApi(
+      "put",
+      `/group/${group.guid}`,
+      group
+    );
 
     if (response?.group) {
       successHandler.set({ message: "Group Updated" });
@@ -43,9 +47,13 @@ export default function Page(props) {
   async function handleDelete(force = false) {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response = await execApi("delete", `/group/${group.guid}`, {
-        force,
-      });
+      const response: Actions.GroupDestroy = await execApi(
+        "delete",
+        `/group/${group.guid}`,
+        {
+          force,
+        }
+      );
       if (response?.success) {
         successHandler.set({
           message: force ? "Group Deleted" : "Group scheduled to be deleted",

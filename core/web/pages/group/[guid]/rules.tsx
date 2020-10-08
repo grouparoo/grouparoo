@@ -7,8 +7,9 @@ import DatePicker from "../../../components/datePicker";
 import { Form, Table, Badge, Button } from "react-bootstrap";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import LoadingButton from "../../../components/loadingButton";
-
-import { Models } from "../../../utils/apiData";
+import { Models, Actions } from "../../../utils/apiData";
+import { ErrorHandler } from "../../../utils/errorHandler";
+import { SuccessHandler } from "../../../utils/successHandler";
 
 export default function Page(props) {
   const {
@@ -18,6 +19,13 @@ export default function Page(props) {
     ruleLimit,
     ops,
     topLevelGroupRules,
+  }: {
+    errorHandler: ErrorHandler;
+    successHandler: SuccessHandler;
+    profilePropertyRules: Models.ProfilePropertyRuleType[];
+    ruleLimit: Actions.GroupsRuleOptions["ruleLimit"];
+    ops: Actions.GroupsRuleOptions["ops"];
+    topLevelGroupRules: Actions.GroupsRuleOptions["topLevelGroupRules"];
   } = props;
   const [group, setGroup] = useState<Models.GroupType>(props.group);
   const { execApi } = useApi(props, errorHandler);
@@ -44,7 +52,7 @@ export default function Page(props) {
 
   async function getCounts(useCache = true) {
     setLoading(true);
-    let response = await execApi(
+    const componentMembersResponse: Actions.GroupCountComponentMembers = await execApi(
       "get",
       `/group/${group.guid}/countComponentMembers`,
       { rules: localRules },
@@ -53,12 +61,12 @@ export default function Page(props) {
       useCache
     );
 
-    if (response?.componentCounts) {
-      setComponentCounts(response.componentCounts);
+    if (componentMembersResponse?.componentCounts) {
+      setComponentCounts(componentMembersResponse.componentCounts);
       // setFunnelCounts(response.funnelCounts);
     }
 
-    response = await execApi(
+    const potentialMembersResponse: Actions.GroupCountPotentialMembers = await execApi(
       "get",
       `/group/${group.guid}/countPotentialMembers`,
       { rules: localRules },
@@ -66,8 +74,8 @@ export default function Page(props) {
       null,
       useCache
     );
-    if (response) {
-      setCountPotentialMembers(response.count);
+    if (potentialMembersResponse) {
+      setCountPotentialMembers(potentialMembersResponse.count);
     }
 
     setLoading(false);
@@ -97,10 +105,14 @@ export default function Page(props) {
 
   async function updateRules() {
     setLoading(true);
-    const response = await execApi("put", `/group/${group.guid}`, {
-      guid: group.guid,
-      rules: localRules,
-    });
+    const response: Actions.GroupEdit = await execApi(
+      "put",
+      `/group/${group.guid}`,
+      {
+        guid: group.guid,
+        rules: localRules,
+      }
+    );
     if (response?.group) {
       successHandler.set({ message: "Group Updated" });
       setGroup(response.group);
@@ -118,7 +130,7 @@ export default function Page(props) {
     if (!profilePropertyRuleGuid) return;
 
     setLoading(true);
-    const response = await execApi(
+    const response: Actions.ProfileAutocompleteProfileProperty = await execApi(
       "get",
       `/profiles/autocompleteProfileProperty`,
       { profilePropertyRuleGuid, match }

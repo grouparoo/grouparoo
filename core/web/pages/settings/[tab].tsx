@@ -6,7 +6,7 @@ import { Form, Card, Tabs, Tab } from "react-bootstrap";
 import Moment from "react-moment";
 import { capitalize } from "../../components/tabs";
 import { useRouter } from "next/router";
-import { Models } from "../../utils/apiData";
+import { Models, Actions } from "../../utils/apiData";
 import LoadingButton from "../../components/loadingButton";
 
 import ImportAndUpdateAllProfiles from "../../components/settings/importAndUpdate";
@@ -30,7 +30,11 @@ export default function Page(props) {
 
   async function updateSetting(setting) {
     setLoading(true);
-    const response = await execApi("put", `/setting/${setting.guid}`, setting);
+    const response: Actions.SettingEdit = await execApi(
+      "put",
+      `/setting/${setting.guid}`,
+      setting
+    );
     setLoading(false);
     if (response?.setting) {
       const _settings = [...settings];
@@ -115,7 +119,7 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx) => {
   const { tab } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { settings } = await execApi("get", `/settings`);
+  const { settings }: Actions.SettingsList = await execApi("get", `/settings`);
   return { settings, tab };
 };
 

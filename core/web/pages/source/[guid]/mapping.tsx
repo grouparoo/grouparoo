@@ -6,6 +6,7 @@ import { Row, Col, Table, Form } from "react-bootstrap";
 import { createSchedule } from "../../../components/schedule/add";
 import LoadingButton from "../../../components/loadingButton";
 import { useRouter } from "next/router";
+import { Actions } from "../../../utils/apiData";
 
 export default function Page(props) {
   const {
@@ -47,7 +48,7 @@ export default function Page(props) {
 
     if (confirm("are you sure?")) {
       setLoading(true);
-      const response = await execApi(
+      const response: Actions.SourceBootstrapUniqueProfilePropertyRule = await execApi(
         "post",
         `/source/${source.guid}/bootstrapUniqueProfilePropertyRule`,
         Object.assign(newProfilePropertyRule, { mappedColumn: newMappingKey })
@@ -55,10 +56,14 @@ export default function Page(props) {
       if (response?.profilePropertyRule) {
         successHandler.set({ message: "Profile Property Rule created" });
 
-        const prrResponse = await execApi("get", `/profilePropertyRules`, {
-          unique: true,
-          state: "ready",
-        });
+        const prrResponse: Actions.ProfilePropertyRulesList = await execApi(
+          "get",
+          `/profilePropertyRules`,
+          {
+            unique: true,
+            state: "ready",
+          }
+        );
         if (prrResponse?.profilePropertyRules) {
           setProfilePropertyRules(prrResponse.profilePropertyRules);
           setProfilePropertyRuleExamples(prrResponse.examples);
@@ -80,7 +85,7 @@ export default function Page(props) {
 
     source.mapping = {};
     source.mapping[newMappingKey] = newMappingValue;
-    const response = await execApi(
+    const response: Actions.SourceEdit = await execApi(
       "put",
       `/source/${source.guid}`,
       Object.assign({}, source, { state: "ready" })

@@ -303,6 +303,7 @@ export class GroupListDestinations extends AuthenticatedAction {
 
     const destinations = await group.$get("destinations");
     return {
+      total: destinations.length,
       destinations: await Promise.all(destinations.map((d) => d.apiData())),
     };
   }

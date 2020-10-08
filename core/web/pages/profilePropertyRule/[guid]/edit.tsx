@@ -10,11 +10,9 @@ import ProfilePreview from "../../../components/profilePropertyRule/profilePrevi
 import { Typeahead } from "react-bootstrap-typeahead";
 import DatePicker from "../../../components/datePicker";
 import LoadingButton from "../../../components/loadingButton";
-
 import Head from "next/head";
 import ProfilePropertyRuleTabs from "../../../components/tabs/profilePropertyRule";
-
-import { Models } from "../../../utils/apiData";
+import { Models, Actions } from "../../../utils/apiData";
 
 export default function Page(props) {
   const {
@@ -56,7 +54,7 @@ export default function Page(props) {
       )
     ) {
       setLoading(true);
-      const response = await execApi(
+      const response: Actions.ProfilePropertyRuleEdit = await execApi(
         "put",
         `/profilePropertyRule/${guid}`,
         Object.assign({}, profilePropertyRule, {
@@ -89,7 +87,10 @@ export default function Page(props) {
       )
     ) {
       setLoading(true);
-      const response = await execApi("delete", `/profilePropertyRule/${guid}`);
+      const response: Actions.ProfilePropertyRuleDestroy = await execApi(
+        "delete",
+        `/profilePropertyRule/${guid}`
+      );
       setLoading(false);
       if (response) {
         router.push(nextPage || "/profilePropertyRules");

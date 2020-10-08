@@ -7,8 +7,7 @@ import { ResponsiveLine } from "@nivo/line";
 import RunTabs from "../../../components/tabs/run";
 import Head from "next/head";
 import LoadingButton from "../../../components/loadingButton";
-
-import { Models } from "../../../utils/apiData";
+import { Models, Actions } from "../../../utils/apiData";
 
 export default function Page(props) {
   const { quantizedTimeline, successHandler, errorHandler } = props;
@@ -19,7 +18,7 @@ export default function Page(props) {
 
   async function stopRun() {
     setLoading(true);
-    const response = await execApi("put", `/run/${run.guid}`, {
+    const response: Actions.RunEdit = await execApi("put", `/run/${run.guid}`, {
       state: "stopped",
     });
     setLoading(false);
