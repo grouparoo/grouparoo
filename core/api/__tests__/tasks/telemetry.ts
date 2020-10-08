@@ -58,6 +58,15 @@ describe("tasks/telemetry", () => {
 
       expect(metrics[2]).toEqual(
         expect.objectContaining({
+          collection: "cluster",
+          topic: "node_env",
+          aggregation: "exact",
+          value: "test",
+        })
+      );
+
+      expect(metrics[3]).toEqual(
+        expect.objectContaining({
           collection: "totals",
           topic: "App",
           aggregation: "count",
