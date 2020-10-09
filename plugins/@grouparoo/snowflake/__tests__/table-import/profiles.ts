@@ -7,11 +7,13 @@ import "../utils/mock";
 import "@grouparoo/spec-helper";
 
 import { helper } from "@grouparoo/spec-helper";
-import { profiles } from "../../src/lib/table-import/options";
 import { connect } from "../../src/lib/connect";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { SimpleAppOptions, Import, plugin, Run } from "@grouparoo/core";
+
+import { getConnection } from "../../src/lib/table-import/connection";
+const profiles = getConnection().methods.profiles;
 
 const nockFile = path.join(__dirname, "../", "fixtures", "table-profiles.js");
 

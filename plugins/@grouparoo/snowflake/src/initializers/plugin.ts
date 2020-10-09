@@ -11,13 +11,7 @@ import {
 } from "../lib/query";
 import { profileProperty as queryProfileProperty } from "../lib/query-import/profileProperty";
 
-import { buildConnection as buildTableConnection } from "@grouparoo/app-templates/src/source/table";
-import { getSampleRows } from "./../lib/table-import/getSampleRows";
-import { getColumns } from "./../lib/table-import/getColumns";
-import { getTables } from "./../lib/table-import/getTables";
-import { getChangedRows } from "./../lib/table-import/getChangedRows";
-import { getPropertyValue } from "./../lib/table-import/getPropertyValue";
-import { getChangedRowCount } from "./../lib/table-import/getChangedRowCount";
+import { getConnection as getTableConnection } from "../lib/table-import/connection";
 
 const packageJSON = require("./../../package.json");
 
@@ -74,19 +68,7 @@ export class Plugins extends Initializer {
         },
       ],
       connections: [
-        buildTableConnection({
-          app: "snowflake",
-          name: "snowflake-table-import",
-          description:
-            "Import or update Profiles from a Snowflake database table.",
-          tableOptionDescription: "The table to scan",
-          getSampleRows,
-          getColumns,
-          getTables,
-          getChangedRows,
-          getPropertyValue,
-          getChangedRowCount,
-        }),
+        getTableConnection(),
         {
           name: "snowflake-query-import",
           direction: "import",

@@ -7,7 +7,6 @@ import "../utils/mock";
 import "@grouparoo/spec-helper";
 
 import { helper } from "@grouparoo/spec-helper";
-import { profileProperty } from "../../src/lib/table-import/options";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import {
@@ -16,6 +15,9 @@ import {
   Profile,
   ProfilePropertyRule,
 } from "@grouparoo/core";
+
+import { getConnection } from "../../src/lib/table-import/connection";
+const profileProperty = getConnection().methods.profileProperty;
 
 const nockFile = path.join(
   __dirname,
