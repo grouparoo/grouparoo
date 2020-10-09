@@ -18,7 +18,7 @@ export interface GetProfilePropertyMethod {
 
 export const getProfileProperty: GetProfilePropertyMethod = ({
   executeQuery,
-  validateQuery,
+  validateQuery = validateGenericQuery,
 }) => {
   const profileProperty: ProfilePropertyPluginMethod = async ({
     connection,
@@ -32,10 +32,9 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
       ruleQuery,
       profile
     );
-    if (!validateQuery) {
-      validateQuery = validateGenericQuery;
+    if (validateQuery) {
+      validateQuery({ query });
     }
-    validateQuery({ query });
 
     let response: ProfilePropertyPluginMethodResponse;
     try {

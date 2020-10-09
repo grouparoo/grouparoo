@@ -8,6 +8,7 @@ import {
   getProfileProperty,
   ExecuteQueryMethod,
   ValidateQueryMethod,
+  validateGenericQuery,
 } from "./options";
 
 export interface BuildConnectionMethod {
@@ -25,7 +26,7 @@ export const buildConnection: BuildConnectionMethod = ({
   description,
   app,
   executeQuery,
-  validateQuery,
+  validateQuery = validateGenericQuery,
 }) => {
   const profilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOption[] = getProfilePropertyRuleOptions();
   const sourceOptions: SourceOptionsMethod = getSourceOptions();
