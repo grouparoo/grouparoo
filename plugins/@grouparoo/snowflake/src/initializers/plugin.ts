@@ -6,24 +6,18 @@ import { disconnect } from "./../lib/disconnect";
 import { test } from "./../lib/test";
 
 import {
-  sourcePreview as tableSourcePreview,
-  profilePropertyRuleOptions as tableProfilePropertyRuleOptions,
-  scheduleOptions as tableScheduleOptions,
-  sourceOptions as tableSourceOptions,
-  uniqueProfilePropertyRuleBootstrapOptions as tableUniqueProfilePropertyRuleBootstrapOptions,
-  sourceFilters as tableSourceFilters,
-  profiles as tableProfiles,
-  profileProperty as tableProfileProperty,
-  sourceRunPercentComplete as tableSourceRunPercentComplete,
-} from "../lib/table-import/options";
-
-import { tableNameKey } from "@grouparoo/app-templates/src/source/table";
-
-import {
   sourceOptions as querySourceOptions,
   profilePropertyRuleOptions as queryProfilePropertyRuleOptions,
 } from "../lib/query";
 import { profileProperty as queryProfileProperty } from "../lib/query-import/profileProperty";
+
+import { buildConnection as buildTableConnection } from "@grouparoo/app-templates/src/source/table";
+import { getSampleRows } from "./../lib/table-import/getSampleRows";
+import { getColumns } from "./../lib/table-import/getColumns";
+import { getTables } from "./../lib/table-import/getTables";
+import { getChangedRows } from "./../lib/table-import/getChangedRows";
+import { getPropertyValue } from "./../lib/table-import/getPropertyValue";
+import { getChangedRowCount } from "./../lib/table-import/getChangedRowCount";
 
 const packageJSON = require("./../../package.json");
 
@@ -80,31 +74,19 @@ export class Plugins extends Initializer {
         },
       ],
       connections: [
-        {
+        buildTableConnection({
+          app: "snowflake",
           name: "snowflake-table-import",
-          direction: "import",
           description:
             "Import or update Profiles from a Snowflake database table.",
-          app: "snowflake",
-          options: [
-            {
-              key: tableNameKey,
-              required: true,
-              description: "The table to scan",
-            },
-          ],
-          profilePropertyRuleOptions: tableProfilePropertyRuleOptions,
-          scheduleOptions: tableScheduleOptions,
-          methods: {
-            sourceOptions: tableSourceOptions,
-            sourcePreview: tableSourcePreview,
-            sourceFilters: tableSourceFilters,
-            uniqueProfilePropertyRuleBootstrapOptions: tableUniqueProfilePropertyRuleBootstrapOptions,
-            profiles: tableProfiles,
-            profileProperty: tableProfileProperty,
-            sourceRunPercentComplete: tableSourceRunPercentComplete,
-          },
-        },
+          tableOptionDescription: "The table to scan",
+          getSampleRows,
+          getColumns,
+          getTables,
+          getChangedRows,
+          getPropertyValue,
+          getChangedRowCount,
+        }),
         {
           name: "snowflake-query-import",
           direction: "import",
