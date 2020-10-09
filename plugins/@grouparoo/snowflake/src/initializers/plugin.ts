@@ -17,7 +17,7 @@ import {
   sourceRunPercentComplete as tableSourceRunPercentComplete,
 } from "../lib/table-import/options";
 
-import { tableNameKey } from "../lib/table";
+import { tableNameKey } from "@grouparoo/app-templates/src/source/table";
 
 import {
   sourceOptions as querySourceOptions,

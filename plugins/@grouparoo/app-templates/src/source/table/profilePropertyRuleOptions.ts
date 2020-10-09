@@ -1,16 +1,19 @@
 import { PluginConnectionProfilePropertyRuleOption } from "@grouparoo/core";
 import {
   GetSampleRowsMethod,
+  GetColumnDefinitionsMethod,
   AggregationMethod,
   aggregationMethodKey,
   sortColumnKey,
   columnNameKey,
   tableNameKey,
 } from "./pluginMethods";
+import { getColumnExamples } from "./getExamples";
 
 export interface GetProfilePropertyRuleOptionsMethod {
   (argument: {
     getSampleRows: GetSampleRowsMethod;
+    getColumns: GetColumnDefinitionsMethod;
   }): PluginConnectionProfilePropertyRuleOption[];
 }
 
@@ -31,6 +34,7 @@ const aggregationOptions = {
 
 export const getProfilePropertyRuleOptions: GetProfilePropertyRuleOptionsMethod = ({
   getSampleRows,
+  getColumns,
 }) => {
   return [
     {
@@ -40,13 +44,11 @@ export const getProfilePropertyRuleOptions: GetProfilePropertyRuleOptionsMethod 
       type: "typeahead",
       options: async ({ connection, sourceOptions }) => {
         const tableName = sourceOptions[tableNameKey];
-        const rows = await getSampleRows({ connection, tableName });
-        const columns = Object.keys(rows[0]);
-        return columns.map((col) => {
-          return {
-            key: col,
-            examples: rows.map((row) => row[col]),
-          };
+        return getColumnExamples({
+          connection,
+          tableName,
+          getSampleRows,
+          getColumns,
         });
       },
     },
@@ -71,13 +73,11 @@ export const getProfilePropertyRuleOptions: GetProfilePropertyRuleOptionsMethod 
       type: "typeahead",
       options: async ({ connection, sourceOptions }) => {
         const tableName = sourceOptions[tableNameKey];
-        const rows = await getSampleRows({ connection, tableName });
-        const columns = Object.keys(rows[0]);
-        return columns.map((col) => {
-          return {
-            key: col,
-            examples: rows.map((row) => row[col]),
-          };
+        return getColumnExamples({
+          connection,
+          tableName,
+          getSampleRows,
+          getColumns,
         });
       },
     },

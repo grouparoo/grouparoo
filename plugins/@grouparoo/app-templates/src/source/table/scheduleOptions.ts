@@ -5,6 +5,7 @@ import {
   columnNameKey,
   tableNameKey,
 } from "./pluginMethods";
+import { getSortableColumnExamples } from "./getExamples";
 import { PluginConnectionScheduleOption } from "@grouparoo/core";
 
 export interface GetScheduleOptionsMethod {
@@ -26,23 +27,11 @@ export const getScheduleOptions: GetScheduleOptionsMethod = ({
       type: "list",
       options: async ({ connection, sourceOptions }) => {
         const tableName = sourceOptions[tableNameKey];
-        const columns = await getColumns({ connection, tableName });
-        const rows = await getSampleRows({ connection, tableName, columns });
-
-        // only handle columns that support >=
-        const choices = [];
-        Object.keys(columns).map((colName) => {
-          const { filterOperations } = columns[colName];
-          if (filterOperations.includes(FilterOperation.GreaterThanOrEqual)) {
-            choices.push(colName);
-          }
-        });
-
-        return choices.map((col) => {
-          return {
-            key: col,
-            examples: rows.map((row) => row[col]),
-          };
+        return getSortableColumnExamples({
+          connection,
+          tableName,
+          getSampleRows,
+          getColumns,
         });
       },
     },

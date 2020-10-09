@@ -59,11 +59,9 @@ export interface DataResponseRow {
 }
 
 export interface GetSampleRowsMethod {
-  (argument: {
-    connection: any;
-    tableName: string;
-    columns?: ColumnDefinitionMap;
-  }): Promise<DataResponseRow[]>;
+  (argument: { connection: any; tableName: string }): Promise<
+    DataResponseRow[]
+  >;
 }
 export interface GetPropertyValueMethod {
   (argument: {
