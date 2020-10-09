@@ -1,3 +1,6 @@
+import { DataResponse, DataResponseRow } from "../shared/types";
+export { DataResponse, DataResponseRow };
+
 export const aggregationMethodKey = "aggregation method";
 export const sortColumnKey = "sort column";
 export const columnNameKey = "column";
@@ -23,8 +26,6 @@ export enum FilterOperation {
   Contain = "contains",
   NotContain = "does not contain",
 }
-
-export type DataResponse = string | number | boolean | Date;
 
 export interface MatchCondition {
   columnName: string;
@@ -53,9 +54,6 @@ export interface GetColumnDefinitionsMethod {
   (argument: { connection: any; tableName: string }): Promise<
     ColumnDefinitionMap
   >;
-}
-export interface DataResponseRow {
-  [column: string]: DataResponse;
 }
 
 export interface GetSampleRowsMethod {
