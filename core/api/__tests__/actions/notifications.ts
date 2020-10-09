@@ -1,9 +1,9 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { Message } from "../../src";
+import { Notification } from "../../src/models/Notification";
 let actionhero;
 
-describe("actions/messages", () => {
+describe("actions/notifications", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
@@ -23,9 +23,9 @@ describe("actions/messages", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.message();
-    await helper.factories.message();
-    await helper.factories.message();
+    await helper.factories.notification();
+    await helper.factories.notification();
+    await helper.factories.notification();
   });
 
   describe("reader signed in", () => {
@@ -42,32 +42,32 @@ describe("actions/messages", () => {
       csrfToken = sessionResponse.csrfToken;
     });
 
-    test("a reader can view messages", async () => {
+    test("a reader can view notifications", async () => {
       connection.params = { csrfToken };
-      const { error, messages, total } = await specHelper.runAction(
-        "messages:list",
+      const { error, notifications, total } = await specHelper.runAction(
+        "notifications:list",
         connection
       );
 
       expect(error).toBeUndefined();
-      expect(messages.length).toBe(3);
+      expect(notifications.length).toBe(3);
       expect(total).toBe(3);
     });
 
-    test("a reader can read a message and mark it as read", async () => {
-      const messageObject = await Message.findOne();
+    test("a reader can read a notification and mark it as read", async () => {
+      const notificationObject = await Notification.findOne();
 
-      connection.params = { csrfToken, guid: messageObject.guid };
-      const { error, message } = await specHelper.runAction(
-        "message:view",
+      connection.params = { csrfToken, guid: notificationObject.guid };
+      const { error, notification } = await specHelper.runAction(
+        "notification:view",
         connection
       );
 
       expect(error).toBeUndefined();
-      expect(message.from).toBeTruthy();
-      expect(message.subject).toBeTruthy();
-      expect(message.body).toBeTruthy();
-      expect(message.readAt).toBeTruthy();
+      expect(notification.from).toBeTruthy();
+      expect(notification.subject).toBeTruthy();
+      expect(notification.body).toBeTruthy();
+      expect(notification.readAt).toBeTruthy();
     });
   });
 });

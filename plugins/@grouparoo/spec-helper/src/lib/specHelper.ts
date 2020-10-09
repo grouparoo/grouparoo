@@ -23,7 +23,7 @@ import ImportFactory from "./factories/import";
 import EventFactory from "./factories/event";
 import TeamFactory from "./factories/team";
 import TeamMemberFactory from "./factories/teamMember";
-import MessageFactory from "./factories/message";
+import NotificationFactory from "./factories/notification";
 import ProfileFactory from "./factories/profile";
 import ProfilePropertyRuleFactory from "./factories/profilePropertyRule";
 import ProfilePropertyRulesFactory from "./factories/profilePropertyRules";
@@ -60,7 +60,7 @@ import {
   GroupMember,
   GroupRule,
   Log,
-  Message,
+  Notification,
   Permission,
   Profile,
   ProfileProperty,
@@ -95,7 +95,7 @@ const models = [
   ExportImport,
   ExportRun,
   Log,
-  Message,
+  Notification,
   Permission,
   Profile,
   ProfileProperty,
@@ -117,7 +117,7 @@ export namespace helper {
     group: GroupFactory,
     import: ImportFactory,
     log: LogFactory,
-    message: MessageFactory,
+    notification: NotificationFactory,
     profile: ProfileFactory,
     profilePropertyRule: ProfilePropertyRuleFactory,
     profilePropertyRules: ProfilePropertyRulesFactory,

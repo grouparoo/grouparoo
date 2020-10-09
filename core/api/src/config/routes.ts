@@ -73,8 +73,8 @@ export const DEFAULT = {
         { path: "/v:apiVersion/files/options", action: "files:options" },
         { path: "/v:apiVersion/file/:guid/details", action: "file:details" },
         { path: "/v:apiVersion/file/:guid", action: "file:view" },
-        { path: "/v:apiVersion/messages", action: "messages:list" },
-        { path: "/v:apiVersion/message/:guid", action: "message:view" }
+        { path: "/v:apiVersion/notifications", action: "notifications:list" },
+        { path: "/v:apiVersion/notification/:guid", action: "notification:view" }
       ],
 
       post: [

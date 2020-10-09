@@ -1,9 +1,9 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Message } from "./../../src/models/Message";
+import { Notification } from "../../src/models/Notification";
 
 let actionhero;
 
-describe("models/message", () => {
+describe("models/notification", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
@@ -13,25 +13,25 @@ describe("models/message", () => {
     await helper.shutdown(actionhero);
   });
 
-  test("messages can be created", async () => {
-    const message = await Message.create({
+  test("notifications can be created", async () => {
+    const notification = await Notification.create({
       from: "test",
       subject: "test",
       body: "test",
     });
 
-    expect(message.readAt).toBeFalsy();
+    expect(notification.readAt).toBeFalsy();
   });
 
   test("from, subject, and body are required", async () => {
     await expect(
-      Message.create({ from: "test", body: "test" })
+      Notification.create({ from: "test", body: "test" })
     ).rejects.toThrow(/notNull Violation/);
     await expect(
-      Message.create({ from: "test", subject: "test" })
+      Notification.create({ from: "test", subject: "test" })
     ).rejects.toThrow(/notNull Violation/);
     await expect(
-      Message.create({ subject: "test", body: "test" })
+      Notification.create({ subject: "test", body: "test" })
     ).rejects.toThrow(/notNull Violation/);
   });
 });

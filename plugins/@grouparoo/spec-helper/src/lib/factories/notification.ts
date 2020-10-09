@@ -1,10 +1,10 @@
-import { Message } from "@grouparoo/core/api/src";
+import { Notification } from "@grouparoo/core/api/src";
 
 const data = async (props = {}) => {
   const defaultProps = {
     from: "grouparoo",
-    subject: "a message",
-    body: `# A message
+    subject: "A notification from Grouparoo",
+    body: `# A notification
 Another Line.
 `,
 
@@ -16,5 +16,5 @@ Another Line.
 };
 
 export default async (props = {}) => {
-  return Message.create(await data(props));
+  return Notification.create(await data(props));
 };

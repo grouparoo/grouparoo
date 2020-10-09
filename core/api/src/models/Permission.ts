@@ -115,7 +115,7 @@ export class Permission extends LoggedModel<Permission> {
       "group",
       "import",
       "log",
-      "message",
+      "notification",
       "profile",
       "profilePropertyRule",
       "resque",

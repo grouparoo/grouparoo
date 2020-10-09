@@ -1,10 +1,10 @@
 import { Table, Column, AllowNull } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 
-@Table({ tableName: "messages", paranoid: false })
-export class Message extends LoggedModel<Message> {
+@Table({ tableName: "notifications", paranoid: false })
+export class Notification extends LoggedModel<Notification> {
   guidPrefix() {
-    return "msg";
+    return "not";
   }
 
   @AllowNull(false)

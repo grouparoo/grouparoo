@@ -18,7 +18,7 @@ export { GroupMember } from "./models/GroupMember";
 export { GroupRule } from "./models/GroupRule";
 export { Import } from "./models/Import";
 export { Log } from "./models/Log";
-export { Message } from "./models/Message";
+export { Notification } from "./models/Notification";
 export { Mapping } from "./models/Mapping";
 export { Option } from "./models/Option";
 export { Permission } from "./models/Permission";

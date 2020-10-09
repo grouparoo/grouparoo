@@ -1,6 +1,6 @@
 module.exports = {
   up: async function (migration, DataTypes) {
-    await migration.createTable("messages", {
+    await migration.createTable("notifications", {
       guid: {
         type: DataTypes.STRING(40),
         primaryKey: true,
@@ -39,6 +39,6 @@ module.exports = {
   },
 
   down: async function (migration) {
-    await migration.dropTable("messages");
+    await migration.dropTable("notifications");
   },
 };

@@ -143,6 +143,10 @@ import {
   ImportView,
 } from "../../api/src/actions/imports";
 import { LogsList } from "../../api/src/actions/logs";
+import {
+  NotificationsList,
+  NotificationView,
+} from "../../api/src/actions/notifications";
 import { NavigationList } from "../../api/src/actions/navigation";
 import { PluginsList } from "../../api/src/actions/plugins";
 import {
@@ -357,6 +361,13 @@ export namespace Actions {
   export type ImportView = AsyncReturnType<typeof ImportView.prototype.run>;
 
   export type LogsList = AsyncReturnType<typeof LogsList.prototype.run>;
+
+  export type NotificationsList = AsyncReturnType<
+    typeof NotificationsList.prototype.run
+  >;
+  export type NotificationView = AsyncReturnType<
+    typeof NotificationView.prototype.run
+  >;
 
   export type NavigationList = AsyncReturnType<
     typeof NavigationList.prototype.run
