@@ -7,6 +7,7 @@ import { useApi } from "../hooks/useApi";
 import SetupStepsNavProgressBar from "./navigation/setupStepsNavProgressBar";
 import RunningRunsBadge from "./navigation/runningRunsBadge";
 import ResqueFailedCountBadge from "./navigation/resqueFailedBadgeCount";
+import UnreadNotificationsBadge from "./navigation/unreadNotificationsBadge";
 import HighlightingNavLink from "./navigation/highlightingNavLink";
 import { Actions } from "../utils/apiData";
 import { ErrorHandler } from "../utils/errorHandler";
@@ -103,14 +104,15 @@ export default function Navigation(props) {
   if (!navExpanded && !hasBeenCollapsed) setHasBeenCollapsed(true);
 
   // resque failure counts
-  const resqueSleep = 10 * 1000 + 1;
-  let resqueTimer: NodeJS.Timeout;
+  const pollTimerSleep = 10 * 1000 + 1;
+  let pollTimer: NodeJS.Timeout;
   const [resqueFailedCount, setResqueFailedCount] = useState(0);
+  const [unreadNotificationsCount, setUnreadNotificationsCount] = useState(0);
 
   useEffect(() => {
     load();
     return () => {
-      clearTimeout(resqueTimer);
+      clearTimeout(pollTimer);
     };
   }, [navigationMode]);
 
@@ -118,11 +120,19 @@ export default function Navigation(props) {
     if (navigationMode === "unauthenticated") return;
 
     try {
-      const { failedCount } = await execApi("get", `/resque/resqueFailedCount`);
+      const { failedCount }: Actions.ResqueFailedCount = await execApi(
+        "get",
+        `/resque/resqueFailedCount`
+      );
       setResqueFailedCount(failedCount);
-      resqueTimer = setTimeout(() => {
+      const { unreadCount }: Actions.NotificationsList = await execApi(
+        "get",
+        `/notifications`
+      );
+      setUnreadNotificationsCount(unreadCount);
+      pollTimer = setTimeout(() => {
         load();
-      }, resqueSleep);
+      }, pollTimerSleep);
     } catch (error) {
       console.error(error);
     }
@@ -258,6 +268,14 @@ export default function Navigation(props) {
                               resqueFailedCount={resqueFailedCount}
                             />
                           ) : null}
+                          {!expandPlatformMenu ? (
+                            <UnreadNotificationsBadge
+                              navigationMode={navigationMode}
+                              unreadNotificationsCount={
+                                unreadNotificationsCount
+                              }
+                            />
+                          ) : null}
                         </span>
                         <div style={{ padding: 6 }} />
                       </Accordion.Toggle>
@@ -275,6 +293,15 @@ export default function Navigation(props) {
                                       {nav.title}
                                     </a>
                                   </Link>
+                                  {expandPlatformMenu &&
+                                  nav.title === "Notifications" ? (
+                                    <UnreadNotificationsBadge
+                                      navigationMode={navigationMode}
+                                      unreadNotificationsCount={
+                                        unreadNotificationsCount
+                                      }
+                                    />
+                                  ) : null}
                                   {expandPlatformMenu &&
                                   nav.title === "Resque" ? (
                                     <ResqueFailedCountBadge

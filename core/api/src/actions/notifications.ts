@@ -1,5 +1,6 @@
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Notification } from "../models/Notification";
+import { Op } from "sequelize";
 
 export class NotificationsList extends AuthenticatedAction {
   constructor() {
@@ -28,9 +29,13 @@ export class NotificationsList extends AuthenticatedAction {
 
     const total = await Notification.count(search);
     const notifications = await Notification.findAll(search);
+    const unreadCount = await Notification.count({
+      where: { readAt: { [Op.eq]: null } },
+    });
 
     return {
       total,
+      unreadCount,
       notifications: await Promise.all(
         notifications.map((notification) => notification.apiData())
       ),

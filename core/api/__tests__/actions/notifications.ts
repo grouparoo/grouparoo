@@ -44,14 +44,17 @@ describe("actions/notifications", () => {
 
     test("a reader can view notifications", async () => {
       connection.params = { csrfToken };
-      const { error, notifications, total } = await specHelper.runAction(
-        "notifications:list",
-        connection
-      );
+      const {
+        error,
+        notifications,
+        total,
+        unreadCount,
+      } = await specHelper.runAction("notifications:list", connection);
 
       expect(error).toBeUndefined();
       expect(notifications.length).toBe(3);
       expect(total).toBe(3);
+      expect(unreadCount).toBe(3);
     });
 
     test("a reader can read a notification and mark it as read", async () => {

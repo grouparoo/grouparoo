@@ -14,6 +14,7 @@ import {
   GroupRule,
   Import,
   Log,
+  Notification,
   Permission,
   Profile,
   ProfileProperty,
@@ -47,6 +48,9 @@ export namespace Models {
   export type GroupRuleType = Partial<AsyncReturnType<GroupRule["apiData"]>>;
   export type ImportType = Partial<AsyncReturnType<Import["apiData"]>>;
   export type LogType = Partial<AsyncReturnType<Log["apiData"]>>;
+  export type NotificationType = Partial<
+    AsyncReturnType<Notification["apiData"]>
+  >;
   export type PermissionType = Partial<AsyncReturnType<Permission["apiData"]>>;
   export type ProfileType = Partial<AsyncReturnType<Profile["apiData"]>>;
   export type ProfilePropertyType = Partial<
