@@ -23,6 +23,7 @@ import ImportFactory from "./factories/import";
 import EventFactory from "./factories/event";
 import TeamFactory from "./factories/team";
 import TeamMemberFactory from "./factories/teamMember";
+import NotificationFactory from "./factories/notification";
 import ProfileFactory from "./factories/profile";
 import ProfilePropertyRuleFactory from "./factories/profilePropertyRule";
 import ProfilePropertyRulesFactory from "./factories/profilePropertyRules";
@@ -59,6 +60,7 @@ import {
   GroupMember,
   GroupRule,
   Log,
+  Notification,
   Permission,
   Profile,
   ProfileProperty,
@@ -93,6 +95,7 @@ const models = [
   ExportImport,
   ExportRun,
   Log,
+  Notification,
   Permission,
   Profile,
   ProfileProperty,
@@ -106,22 +109,23 @@ const models = [
 
 export namespace helper {
   export const factories = {
-    log: LogFactory,
+    apiKey: ApiKeyFactory,
+    app: AppFactory,
+    destination: DestinationFactory,
+    event: EventFactory,
+    export: ExportFactory,
     group: GroupFactory,
     import: ImportFactory,
-    event: EventFactory,
-    apiKey: ApiKeyFactory,
-    team: TeamFactory,
-    teamMember: TeamMemberFactory,
+    log: LogFactory,
+    notification: NotificationFactory,
     profile: ProfileFactory,
     profilePropertyRule: ProfilePropertyRuleFactory,
     profilePropertyRules: ProfilePropertyRulesFactory,
-    app: AppFactory,
-    source: SourceFactory,
-    schedule: ScheduleFactory,
-    destination: DestinationFactory,
-    export: ExportFactory,
     run: RunFactory,
+    schedule: ScheduleFactory,
+    source: SourceFactory,
+    team: TeamFactory,
+    teamMember: TeamMemberFactory,
   };
 
   export async function sleep(time = 1000) {

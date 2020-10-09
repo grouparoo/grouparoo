@@ -42,6 +42,8 @@ export class NavigationList extends OptionallyAuthenticatedAction {
           showSystemLinks = true;
         } else if (prm.topic === "run" && prm.read) {
           showSystemLinks = true;
+        } else if (prm.topic === "notifications" && prm.read) {
+          showSystemLinks = true;
         } else if (prm.topic === "resque" && prm.read) {
           showSystemLinks = true;
         }
@@ -151,6 +153,12 @@ export class NavigationList extends OptionallyAuthenticatedAction {
           type: "link",
           title: "API Documentation",
           href: "/swagger",
+        });
+
+        platformItems.push({
+          type: "link",
+          title: "Notifications",
+          href: "/notifications",
         });
 
         platformItems.push({
