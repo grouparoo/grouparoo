@@ -1,13 +1,12 @@
 import Head from "next/head";
-import { Table } from "react-bootstrap";
+import { Table, Badge } from "react-bootstrap";
 import { useApi } from "../hooks/useApi";
 
-function formatUrl(s) {
-  let url = s;
-  url = url.replace(/\.git$/, "");
+function formatUrl(s = "unknown") {
+  const url = s.replace(/\.git$/, "");
 
   return (
-    <a target="_blank" href={url}>
+    <a target="_blank" href={url === "unknown" ? "#" : url}>
       {url}
     </a>
   );
@@ -32,7 +31,10 @@ export default function Page({ version, plugins }) {
       </p>
 
       <h2>Version</h2>
-      <p>Connected to {version} of the Grouparoo API</p>
+      <p>
+        Connected to <Badge variant="info">{version}</Badge> of the Grouparoo
+        API
+      </p>
 
       <h2>Plugins</h2>
       <p>The following plugins are active:</p>
