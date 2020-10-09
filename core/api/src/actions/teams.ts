@@ -2,6 +2,7 @@ import { Action } from "actionhero";
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
+import { Notification } from "../models/Notification";
 import { GrouparooSubscription } from "../modules/grouparooSubscription";
 
 export class TeamInitialize extends Action {
@@ -48,6 +49,23 @@ export class TeamInitialize extends Action {
     if (params.subscribe) {
       await GrouparooSubscription(teamMember);
     }
+
+    await Notification.create({
+      from: "Grouparoo",
+      subject: "Welcome to Grouparoo!",
+      body: `
+__Welcome to Grouparoo!__
+
+We are excited to help you get started with Grouparoo!.
+You can always get help at [www.grouparoo.com](https://www.grouparoo.com).
+
+ - Brian, Andy, and Evan (the Grouparoo co-founders)
+
+🦘
+      `,
+      cta: "Setup your Grouparoo Cluster",
+      ctaLink: "/setup",
+    });
 
     return {
       team: await team.apiData(),
