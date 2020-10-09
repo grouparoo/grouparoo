@@ -11,6 +11,7 @@ export interface GetExampleRowsMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    appGuid: string;
     tableName: string;
     columns?: ColumnDefinitionMap;
     getSampleRows: GetSampleRowsMethod;
@@ -22,6 +23,7 @@ export interface GetColumnExamplesMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    appGuid: string;
     tableName: string;
     getSampleRows: GetSampleRowsMethod;
     getColumns: GetColumnDefinitionsMethod;
@@ -37,15 +39,26 @@ export interface GetColumnExamplesMethod {
 export const getExampleRows: GetExampleRowsMethod = async ({
   connection,
   appOptions,
+  appGuid,
   tableName,
   columns,
   getSampleRows,
   getColumns,
 }) => {
-  let rows = await getSampleRows({ connection, appOptions, tableName });
+  let rows = await getSampleRows({
+    connection,
+    appOptions,
+    appGuid,
+    tableName,
+  });
   if (!rows || rows.length === 0) {
     if (!columns) {
-      columns = await getColumns({ connection, appOptions, tableName });
+      columns = await getColumns({
+        connection,
+        appOptions,
+        appGuid,
+        tableName,
+      });
     }
     rows = makeRowsFromColumns(columns);
   }
@@ -64,6 +77,7 @@ function makeRowsFromColumns(columns: ColumnDefinitionMap): DataResponseRow[] {
 export const getColumnExamples: GetColumnExamplesMethod = async ({
   connection,
   appOptions,
+  appGuid,
   tableName,
   getSampleRows,
   getColumns,
@@ -71,6 +85,7 @@ export const getColumnExamples: GetColumnExamplesMethod = async ({
   const rows = await getExampleRows({
     connection,
     appOptions,
+    appGuid,
     tableName,
     getSampleRows,
     getColumns,
@@ -87,14 +102,21 @@ export const getColumnExamples: GetColumnExamplesMethod = async ({
 export const getSortableColumnExamples: GetColumnExamplesMethod = async ({
   connection,
   appOptions,
+  appGuid,
   tableName,
   getSampleRows,
   getColumns,
 }) => {
-  const columns = await getColumns({ connection, appOptions, tableName });
+  const columns = await getColumns({
+    connection,
+    appOptions,
+    appGuid,
+    tableName,
+  });
   const rows = await getExampleRows({
     connection,
     appOptions,
+    appGuid,
     tableName,
     columns,
     getSampleRows,

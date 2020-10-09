@@ -14,6 +14,7 @@ export const getSourceRunPercentComplete: GetSourceRunPercentCompleteMethod = ({
   const sourceRunPercentComplete: SourceRunPercentCompleteMethod = async ({
     connection,
     appOptions,
+    appGuid,
     source,
     highWaterMark,
     run,
@@ -27,6 +28,7 @@ export const getSourceRunPercentComplete: GetSourceRunPercentCompleteMethod = ({
     const count = await getChangedRowCount({
       connection,
       appOptions,
+      appGuid,
       tableName,
       highWaterMarkCondition,
     });

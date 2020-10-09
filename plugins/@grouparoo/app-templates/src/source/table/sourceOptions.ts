@@ -16,11 +16,16 @@ export const getSourceOptions: GetSourceOptionsMethod = ({ getTables }) => {
   const sourceOptions: SourceOptionsMethod = async ({
     connection,
     appOptions,
+    appGuid,
   }) => {
     const response: SourceOptionsMethodResponse = {
       [tableNameKey]: { type: "list", options: [] },
     };
-    const map: TableDefinitionMap = await getTables({ connection, appOptions });
+    const map: TableDefinitionMap = await getTables({
+      connection,
+      appOptions,
+      appGuid,
+    });
     for (const tableName in map) {
       response[tableNameKey].options.push(tableName);
     }

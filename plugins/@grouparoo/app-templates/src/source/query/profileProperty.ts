@@ -23,6 +23,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
   const profileProperty: ProfilePropertyPluginMethod = async ({
     connection,
     appOptions,
+    appGuid,
     profile,
     profilePropertyRule,
     profilePropertyRuleOptions,
@@ -39,7 +40,12 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
     let response: ProfilePropertyPluginMethodResponse;
     try {
       // Run the query
-      const rows = await executeQuery({ connection, appOptions, query });
+      const rows = await executeQuery({
+        connection,
+        appOptions,
+        appGuid,
+        query,
+      });
 
       // Get the results
       if (rows && rows.length > 0) {
@@ -51,7 +57,9 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
         }
       }
     } catch (error) {
-      throw new Error(`Error with Query: - \`${query}\`, Error - ${error}`);
+      throw new Error(
+        `Error with Query (${appGuid}): - \`${query}\`, Error - ${error}`
+      );
     }
     return response;
   };

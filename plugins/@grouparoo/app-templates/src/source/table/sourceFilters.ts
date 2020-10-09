@@ -16,12 +16,14 @@ export const getSourceFilters: GetSourceFiltersMethod = ({ getColumns }) => {
   const sourceFilters: SourceFilterMethod = async ({
     connection,
     appOptions,
+    appGuid,
     sourceOptions,
   }) => {
     const tableName = sourceOptions[tableNameKey];
     const map: ColumnDefinitionMap = await getColumns({
       connection,
       appOptions,
+      appGuid,
       tableName,
     });
 

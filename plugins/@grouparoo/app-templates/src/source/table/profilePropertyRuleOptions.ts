@@ -42,11 +42,12 @@ export const getProfilePropertyRuleOptions: GetProfilePropertyRuleOptionsMethod 
       required: true,
       description: "where the data comes from",
       type: "typeahead",
-      options: async ({ connection, appOptions, sourceOptions }) => {
+      options: async ({ connection, appOptions, appGuid, sourceOptions }) => {
         const tableName = sourceOptions[tableNameKey];
         return getColumnExamples({
           connection,
           appOptions,
+          appGuid,
           tableName,
           getSampleRows,
           getColumns,
@@ -72,11 +73,12 @@ export const getProfilePropertyRuleOptions: GetProfilePropertyRuleOptionsMethod 
       description:
         "which column to sort by for most and least recent properties",
       type: "typeahead",
-      options: async ({ connection, appOptions, sourceOptions }) => {
+      options: async ({ connection, appOptions, appGuid, sourceOptions }) => {
         const tableName = sourceOptions[tableNameKey];
         return getColumnExamples({
           connection,
           appOptions,
+          appGuid,
           tableName,
           getSampleRows,
           getColumns,

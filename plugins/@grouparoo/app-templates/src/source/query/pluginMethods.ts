@@ -10,6 +10,7 @@ export interface ExecuteQueryMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    appGuid: string;
     query: string;
   }): Promise<DataResponseRow[]>;
 }

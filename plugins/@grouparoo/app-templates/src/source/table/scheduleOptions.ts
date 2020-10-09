@@ -25,11 +25,12 @@ export const getScheduleOptions: GetScheduleOptionsMethod = ({
       required: true,
       description: "which column to scan for changes",
       type: "list",
-      options: async ({ connection, appOptions, sourceOptions }) => {
+      options: async ({ connection, appOptions, appGuid, sourceOptions }) => {
         const tableName = sourceOptions[tableNameKey];
         return getSortableColumnExamples({
           connection,
           appOptions,
+          appGuid,
           tableName,
           getSampleRows,
           getColumns,

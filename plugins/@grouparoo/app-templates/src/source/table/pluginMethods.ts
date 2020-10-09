@@ -57,6 +57,7 @@ export interface GetColumnDefinitionsMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    appGuid: string;
     tableName: string;
   }): Promise<ColumnDefinitionMap>;
 }
@@ -65,6 +66,7 @@ export interface GetSampleRowsMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    appGuid: string;
     tableName: string;
   }): Promise<DataResponseRow[]>;
 }
@@ -72,6 +74,7 @@ export interface GetPropertyValueMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    appGuid: string;
     tableName: string;
     columnName: string;
     sortColumn: string;
@@ -88,14 +91,17 @@ export interface TableDefinitionMap {
   [tableName: string]: TableDefinition;
 }
 export interface GetTablesMethod {
-  (argument: { connection: any; appOptions: SimpleAppOptions }): Promise<
-    TableDefinitionMap
-  >;
+  (argument: {
+    connection: any;
+    appOptions: SimpleAppOptions;
+    appGuid: string;
+  }): Promise<TableDefinitionMap>;
 }
 export interface GetChangedRowsMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    appGuid: string;
     tableName: string;
     highWaterMarkCondition: MatchCondition;
     limit: number;
@@ -110,6 +116,7 @@ export interface GetChangedRowCountMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    appGuid: string;
     tableName: string;
     highWaterMarkCondition: MatchCondition;
   }): Promise<number>;
