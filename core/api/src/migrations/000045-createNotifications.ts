@@ -21,6 +21,16 @@ module.exports = {
         allowNull: false,
       },
 
+      cta: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+
+      ctaLink: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false,

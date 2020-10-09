@@ -21,6 +21,14 @@ export class Notification extends LoggedModel<Notification> {
 
   @AllowNull(true)
   @Column
+  cta: string;
+
+  @AllowNull(true)
+  @Column
+  ctaLink: string;
+
+  @AllowNull(true)
+  @Column
   readAt: Date;
 
   async apiData() {
@@ -29,6 +37,8 @@ export class Notification extends LoggedModel<Notification> {
       from: this.from,
       subject: this.subject,
       body: this.body,
+      cta: this.cta,
+      ctaLink: this.ctaLink,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
       readAt: this.readAt ? this.readAt.getTime() : null,

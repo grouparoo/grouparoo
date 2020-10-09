@@ -68,6 +68,8 @@ describe("actions/notifications", () => {
       expect(notification.subject).toBeTruthy();
       expect(notification.body).toBeTruthy();
       expect(notification.readAt).toBeTruthy();
+      expect(notification.cta).toBeTruthy();
+      expect(notification.ctaLink).toBeTruthy();
     });
   });
 });

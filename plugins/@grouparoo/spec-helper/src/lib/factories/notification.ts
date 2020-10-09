@@ -7,6 +7,8 @@ const data = async (props = {}) => {
     body: `# A notification
 Another Line.
 `,
+    cta: "Click Me!",
+    ctaLink: "https://www.grouparoo.com",
 
     createdAt: new Date(),
     updatedAt: new Date(),
