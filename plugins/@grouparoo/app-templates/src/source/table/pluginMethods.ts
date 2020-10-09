@@ -34,8 +34,7 @@ export interface MatchCondition {
   columnName: string;
   filterOperation: FilterOperation;
   value: DataResponse;
-  // TODO: there is more in ProfilePropertyRuleFiltersWithKey. How does those happen?
-  // TODO: match (now value) is optional. Is that with presence operation?
+  // Later when adding more filter options...
   // export interface ProfilePropertyRuleFiltersWithKey {
   //     key: string;
   //     op: string;

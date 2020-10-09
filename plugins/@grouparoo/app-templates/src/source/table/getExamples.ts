@@ -2,6 +2,7 @@ import {
   GetColumnDefinitionsMethod,
   GetSampleRowsMethod,
   DataResponseRow,
+  DataResponse,
   ColumnDefinitionMap,
   FilterOperation,
   SimpleAppOptions,
@@ -31,7 +32,7 @@ export interface GetColumnExamplesMethod {
     Array<{
       key: string;
       description?: string;
-      examples?: Array<any>;
+      examples?: Array<DataResponse>;
     }>
   >;
 }
