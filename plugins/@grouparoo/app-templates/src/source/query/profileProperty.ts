@@ -22,6 +22,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
 }) => {
   const profileProperty: ProfilePropertyPluginMethod = async ({
     connection,
+    appOptions,
     profile,
     profilePropertyRule,
     profilePropertyRuleOptions,
@@ -39,7 +40,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
     let response: ProfilePropertyPluginMethodResponse;
     try {
       // Run the query
-      const rows = await executeQuery({ connection, query });
+      const rows = await executeQuery({ connection, appOptions, query });
 
       // Get the results
       if (rows && rows.length > 0) {

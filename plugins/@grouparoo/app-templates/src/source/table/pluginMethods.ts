@@ -1,3 +1,6 @@
+import { SimpleAppOptions } from "@grouparoo/core";
+export { SimpleAppOptions };
+
 import { DataResponse, DataResponseRow } from "../shared/types";
 export { DataResponse, DataResponseRow };
 
@@ -51,19 +54,24 @@ export interface ColumnDefinitionMap {
   [columnName: string]: ColumnDefinition;
 }
 export interface GetColumnDefinitionsMethod {
-  (argument: { connection: any; tableName: string }): Promise<
-    ColumnDefinitionMap
-  >;
+  (argument: {
+    connection: any;
+    appOptions: SimpleAppOptions;
+    tableName: string;
+  }): Promise<ColumnDefinitionMap>;
 }
 
 export interface GetSampleRowsMethod {
-  (argument: { connection: any; tableName: string }): Promise<
-    DataResponseRow[]
-  >;
+  (argument: {
+    connection: any;
+    appOptions: SimpleAppOptions;
+    tableName: string;
+  }): Promise<DataResponseRow[]>;
 }
 export interface GetPropertyValueMethod {
   (argument: {
     connection: any;
+    appOptions: SimpleAppOptions;
     tableName: string;
     columnName: string;
     sortColumn: string;
@@ -80,11 +88,14 @@ export interface TableDefinitionMap {
   [tableName: string]: TableDefinition;
 }
 export interface GetTablesMethod {
-  (argument: { connection: any }): Promise<TableDefinitionMap>;
+  (argument: { connection: any; appOptions: SimpleAppOptions }): Promise<
+    TableDefinitionMap
+  >;
 }
 export interface GetChangedRowsMethod {
   (argument: {
     connection: any;
+    appOptions: SimpleAppOptions;
     tableName: string;
     highWaterMarkCondition: MatchCondition;
     limit: number;
@@ -98,6 +109,7 @@ export interface GetChangedRowsMethod {
 export interface GetChangedRowCountMethod {
   (argument: {
     connection: any;
+    appOptions: SimpleAppOptions;
     tableName: string;
     highWaterMarkCondition: MatchCondition;
   }): Promise<number>;

@@ -19,10 +19,17 @@ export const getSourcePreview: GetSourcePreviewMethod = ({
 }) => {
   const sourcePreview: SourcePreviewMethod = async ({
     connection,
+    appOptions,
     sourceOptions,
   }) => {
     const tableName = sourceOptions[tableNameKey];
-    return getExampleRows({ connection, tableName, getSampleRows, getColumns });
+    return getExampleRows({
+      connection,
+      appOptions,
+      tableName,
+      getSampleRows,
+      getColumns,
+    });
   };
 
   return sourcePreview;

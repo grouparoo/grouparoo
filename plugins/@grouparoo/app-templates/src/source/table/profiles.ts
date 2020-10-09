@@ -21,6 +21,7 @@ export interface GetProfilesMethod {
 export const getProfiles: GetProfilesMethod = ({ getChangedRows }) => {
   const profiles: ProfilesPluginMethod = async ({
     connection,
+    appOptions,
     run,
     sourceMapping,
     scheduleOptions,
@@ -42,6 +43,7 @@ export const getProfiles: GetProfilesMethod = ({ getChangedRows }) => {
 
     const results = await getChangedRows({
       connection,
+      appOptions,
       tableName,
       highWaterMarkAndSortColumnASC,
       secondarySortColumnASC,

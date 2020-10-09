@@ -21,6 +21,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
 }) => {
   const profileProperty: ProfilePropertyPluginMethod = async ({
     connection,
+    appOptions,
     profile,
     sourceOptions,
     sourceMapping,
@@ -79,6 +80,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
 
     return getPropertyValue({
       connection,
+      appOptions,
       tableName,
       columnName,
       sortColumn,

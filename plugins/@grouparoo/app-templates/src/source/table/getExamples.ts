@@ -4,11 +4,13 @@ import {
   DataResponseRow,
   ColumnDefinitionMap,
   FilterOperation,
+  SimpleAppOptions,
 } from "./pluginMethods";
 
 export interface GetExampleRowsMethod {
   (argument: {
     connection: any;
+    appOptions: SimpleAppOptions;
     tableName: string;
     columns?: ColumnDefinitionMap;
     getSampleRows: GetSampleRowsMethod;
@@ -19,6 +21,7 @@ export interface GetExampleRowsMethod {
 export interface GetColumnExamplesMethod {
   (argument: {
     connection: any;
+    appOptions: SimpleAppOptions;
     tableName: string;
     getSampleRows: GetSampleRowsMethod;
     getColumns: GetColumnDefinitionsMethod;
@@ -33,15 +36,16 @@ export interface GetColumnExamplesMethod {
 
 export const getExampleRows: GetExampleRowsMethod = async ({
   connection,
+  appOptions,
   tableName,
   columns,
   getSampleRows,
   getColumns,
 }) => {
-  let rows = await getSampleRows({ connection, tableName });
+  let rows = await getSampleRows({ connection, appOptions, tableName });
   if (!rows || rows.length === 0) {
     if (!columns) {
-      columns = await getColumns({ connection, tableName });
+      columns = await getColumns({ connection, appOptions, tableName });
     }
     rows = makeRowsFromColumns(columns);
   }
@@ -59,12 +63,14 @@ function makeRowsFromColumns(columns: ColumnDefinitionMap): DataResponseRow[] {
 
 export const getColumnExamples: GetColumnExamplesMethod = async ({
   connection,
+  appOptions,
   tableName,
   getSampleRows,
   getColumns,
 }) => {
   const rows = await getExampleRows({
     connection,
+    appOptions,
     tableName,
     getSampleRows,
     getColumns,
@@ -80,13 +86,15 @@ export const getColumnExamples: GetColumnExamplesMethod = async ({
 
 export const getSortableColumnExamples: GetColumnExamplesMethod = async ({
   connection,
+  appOptions,
   tableName,
   getSampleRows,
   getColumns,
 }) => {
-  const columns = await getColumns({ connection, tableName });
+  const columns = await getColumns({ connection, appOptions, tableName });
   const rows = await getExampleRows({
     connection,
+    appOptions,
     tableName,
     columns,
     getSampleRows,

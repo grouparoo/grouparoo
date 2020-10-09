@@ -13,11 +13,14 @@ export interface GetSourceOptionsMethod {
 }
 
 export const getSourceOptions: GetSourceOptionsMethod = ({ getTables }) => {
-  const sourceOptions: SourceOptionsMethod = async ({ connection }) => {
+  const sourceOptions: SourceOptionsMethod = async ({
+    connection,
+    appOptions,
+  }) => {
     const response: SourceOptionsMethodResponse = {
       [tableNameKey]: { type: "list", options: [] },
     };
-    const map: TableDefinitionMap = await getTables({ connection });
+    const map: TableDefinitionMap = await getTables({ connection, appOptions });
     for (const tableName in map) {
       response[tableNameKey].options.push(tableName);
     }
