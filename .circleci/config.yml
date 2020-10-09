@@ -38,6 +38,7 @@ jobs:
             - clients/@grouparoo/web/node_modules
             - core/node_modules
             - node_modules
+            - plugins/@grouparoo/app-templates/node_modules
             - plugins/@grouparoo/bigquery/node_modules
             - plugins/@grouparoo/csv/node_modules
             - plugins/@grouparoo/demo/node_modules
@@ -65,6 +66,7 @@ jobs:
           paths:
             - cli/dist
             - clients/@grouparoo/web/dist
+            - plugins/@grouparoo/app-templates/dist
             - plugins/@grouparoo/bigquery/dist
             - plugins/@grouparoo/csv/dist
             - plugins/@grouparoo/demo/dist
