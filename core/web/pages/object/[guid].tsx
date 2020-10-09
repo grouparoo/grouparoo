@@ -1,6 +1,7 @@
 import Loader from "../../components/loader";
 import { useRouter } from "next/router";
 import { useApi } from "../../hooks/useApi";
+import { Actions } from "../../utils/apiData";
 
 const guidPrefixes = {
   api: "/apiKey/[guid]/edit",
@@ -34,11 +35,11 @@ export default function FindObject(props) {
   }
 
   async function routeScheduleToSource() {
-    const response = await load("schedule", guid);
+    const response: Actions.ScheduleView = await load("schedule", guid);
     if (response?.schedule) {
       router.push(
         `/source/[guid]/schedule`,
-        `/source/${response.schedule.source.guid}/schedule`
+        `/source/${response.schedule.sourceGuid}/schedule`
       );
     }
   }
