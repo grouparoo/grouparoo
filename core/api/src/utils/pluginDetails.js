@@ -85,6 +85,15 @@ function getPluginManifest() {
         grouparoo: pluginPkg.grouparoo || null,
       });
     }
+
+    manifest.plugins.sort((a, b) => {
+      if (a.name > b.name) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+    });
   }
 
   return manifest;
