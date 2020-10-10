@@ -5,4 +5,4 @@ cd ..
 
 export NEXT_DEVELOPMENT_MODE=false
 
-node dist/grouparoo.js
+exec node dist/grouparoo.js
