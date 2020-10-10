@@ -22,5 +22,6 @@ for p in $GROUPAROO_PIDS; do
 done
 
 "$NODEMON" -e js,jsx,ts,tsx --signal SIGTERM --ignore dist --watch ./src --watch ../../plugins/**/*.js \
-"$TS_NODE" --transpile-only --log-error src/grouparoo.ts || exit 0
+"$TS_NODE" --transpile-only --log-error src/grouparoo.ts \
+|| exit 0
 

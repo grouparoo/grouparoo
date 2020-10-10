@@ -16,7 +16,11 @@ async function main() {
   const app = new Process();
 
   app.registerProcessSignals((exitCode) => {
-    process.exit(exitCode);
+    log(
+      `All Grouparoo tasks complete - exiting with code ${exitCode}`,
+      "notice"
+    );
+    process.nextTick(() => process.exit(exitCode));
   });
 
   await app.start();
