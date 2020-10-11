@@ -1,25 +1,25 @@
 import "@grouparoo/spec-helper";
+
 import { helper } from "@grouparoo/spec-helper";
 import path from "path";
-
 import { connect } from "../../src/lib/connect";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { SimpleAppOptions } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/table-import/connection";
-const scheduleOptions = getConnection().scheduleOptions;
+const sourcePreview = getConnection().methods.sourcePreview;
 
 const nockFile = path.join(
   __dirname,
   "../",
   "fixtures",
-  "table-schedule-options.js"
+  "table-source-preview.js"
 );
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/table-schedule-options");
+require("./../fixtures/table-source-preview");
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -28,12 +28,10 @@ require("./../fixtures/table-schedule-options");
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 const sourceOptions = { table: "purchases" };
 
-async function getColumns() {
-  const columnOption = scheduleOptions[0];
-  const optionMethod = columnOption.options;
+async function getPreview() {
   const connection = await connect({ appOptions, app: null, appGuid: null });
 
-  const response = await optionMethod({
+  const response = await sourcePreview({
     connection,
     appOptions,
     sourceOptions,
@@ -41,22 +39,36 @@ async function getColumns() {
     appGuid: null,
     source: null,
     sourceGuid: null,
-    sourceMapping: null,
   });
   return response;
 }
 
-describe("bigquery/table/scheduleOptions", () => {
+describe("snowflake/table/sourcePreview", () => {
   test("gets list of columns that can handle highwatermark", async () => {
-    const columns = await getColumns();
-    const columnNames = columns.map((r) => r.key).sort();
+    const preview = await getPreview();
+    const row = preview[0];
+
+    const columnNames = Object.keys(row).sort();
     expect(columnNames).toEqual([
       "amount",
       "date",
       "id",
       "profile_id",
+      "purchase",
       "stamp",
-    ]); // leaves out
-    expect(columns.length).toBe(5);
+    ]);
+
+    expect(preview.length).toEqual(10);
+
+    let value;
+    value = row["id"];
+    expect(typeof value).toEqual("number");
+
+    value = row["purchase"];
+    expect(typeof value).toEqual("string");
+
+    value = row["date"];
+    expect(typeof value).toEqual("string");
+    expect(new Date(value).getTime()).toBeGreaterThan(0);
   });
 });

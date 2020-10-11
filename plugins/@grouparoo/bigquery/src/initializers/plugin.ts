@@ -62,34 +62,7 @@ export class Plugins extends Initializer {
           methods: { test, connect, disconnect },
         },
       ],
-      connections: [
-        {
-          name: "bigquery-table-import",
-          direction: "import",
-          description:
-            "Import or update Profiles from a Bigquery database table.",
-          app: "bigquery",
-          options: [
-            {
-              key: "table",
-              required: true,
-              description: "The table to scan for new and changed Profiles.",
-            },
-          ],
-          profilePropertyRuleOptions: tableProfilePropertyRuleOptions,
-          scheduleOptions: tableScheduleOptions,
-          methods: {
-            sourceOptions: tableSourceOptions,
-            sourcePreview: tableSourcePreview,
-            sourceFilters: tableSourceFilters,
-            uniqueProfilePropertyRuleBootstrapOptions: tableUniqueProfilePropertyRuleBootstrapOptions,
-            profiles: tableProfiles,
-            profileProperty: tableProfileProperty,
-            sourceRunPercentComplete: tableSourceRunPercentComplete,
-          },
-        },
-        getQueryConnection(),
-      ],
+      connections: [getTableConnection(), getQueryConnection()],
     });
   }
 }

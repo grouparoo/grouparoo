@@ -1,62 +1,42 @@
 import { BigQuery } from "@google-cloud/bigquery";
-import { validateQuery } from "./validateQuery";
+import {
+  FilterOperation,
+  MatchCondition,
+  ColumnDefinitionMap,
+} from "@grouparoo/app-templates/src/source/table";
 
-export async function getColumns(
-  connection,
-  tableName: string
-): Promise<{ [colName: string]: any }> {
-  const query = `SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName`;
-  const options = {
-    query,
-    params: {
-      tableName,
-    },
-  };
-
-  // Run the query
-  const [rows] = await connection.query(options);
-  const response = {};
-  for (const row of rows) {
-    response[row.column_name] = row;
-  }
-  return response;
-}
-
-/*
- * Returns what to add to query and appends to arrays
- */
 export function makeWhereClause(
-  columnInfo: any,
-  colName: string,
-  transform: string | null,
-  sqlOp: string,
-  match: any,
+  columns: ColumnDefinitionMap,
+  matchCondition: MatchCondition,
   params: Array<any>,
-  types: Array<string>
+  types: Array<any>
 ) {
+  const { columnName, filterOperation, value } = matchCondition;
+
   // find the column
-  const column = columnInfo[colName];
+  const column = columns[columnName];
   if (!column) {
-    throw `column name not found: ${colName}`;
+    throw `column name not found: ${columnName}`;
   }
-  const dataType = column.data_type;
+  const dataType = column.data.data_type;
 
   // interesting code in BigQuery library: function convert(schemaField, value)
-  let param;
+  let match;
   switch (dataType) {
     case "DATE":
-      param = BigQuery.date(match);
+      match = BigQuery.date(value.toString());
       break;
     case "DATETIME":
-      param = BigQuery.datetime(match);
+      match = BigQuery.datetime(value.toString());
       break;
     case "TIME":
-      param = BigQuery.time(match);
+      match = BigQuery.time(value.toString());
       break;
     case "TIMESTAMP":
-      param = new Date(match);
-      if (!isFinite(param)) {
-        throw `invalid timestamp: ${match}`;
+      // @ts-ignore cast!
+      match = new Date(value);
+      if (!isFinite(match)) {
+        throw `invalid timestamp: ${value}`;
       }
       break;
     case "BOOL":
@@ -64,7 +44,7 @@ export function makeWhereClause(
     case "INT64":
     case "FLOAT64":
     case "STRING":
-      param = match;
+      match = value;
       break;
     case "GEOGRAPHY":
     case "ARRAY":
@@ -74,44 +54,49 @@ export function makeWhereClause(
       throw `unsupported data type: ${dataType}`;
   }
 
-  const key = transform ? `${transform}(\`${colName}\`)` : `\`${colName}\``;
-
-  // put the values and types in the array
-  params.push(param);
-  types.push(dataType);
-  return ` ${key} ${sqlOp} ?`;
-}
-
-export function supportedEquality(column): Array<string> {
-  const dataType = column.data_type;
-  const ops = ["equals", "does not equal"];
-
-  switch (dataType) {
-    case "DATE":
-    case "DATETIME":
-    case "TIME":
-    case "TIMESTAMP":
-    case "NUMERIC":
-    case "INT64":
-    case "FLOAT64":
-      ops.push("greater than");
-      ops.push("less than");
+  let op;
+  let transform = null;
+  switch (filterOperation) {
+    case FilterOperation.Equal:
+      op = "=";
       break;
-    case "STRING":
-      ops.push("contains");
-      ops.push("does not contain");
+    case FilterOperation.NotEqual:
+      op = "!=";
       break;
-    case "BOOL":
+    case FilterOperation.GreaterThan:
+      op = ">";
       break;
-    case "GEOGRAPHY":
-    case "ARRAY":
-    case "STRUCT":
-    case "BYTES":
+    case FilterOperation.GreaterThanOrEqual:
+      op = ">=";
+      break;
+    case FilterOperation.LessThan:
+      op = "<";
+      break;
+    case FilterOperation.LessThanOrEqual:
+      op = "<=";
+      break;
+    case FilterOperation.Contain:
+      transform = "LOWER";
+      op = "LIKE"; // case insensitive
+      match = `%${match.toString().toLowerCase()}%`;
+      break;
+    case FilterOperation.NotContain:
+      transform = "LOWER";
+      op = "NOT LIKE"; // case insensitive
+      match = `%${match.toString().toLowerCase()}%`;
+      break;
     default:
-      break;
+      throw new Error(`Unknown filterOperation: ${filterOperation}`);
   }
 
-  return ops;
+  const key = transform
+    ? `${transform}(\`${columnName}\`)`
+    : `\`${columnName}\``;
+
+  // put the values and types in the array
+  params.push(match);
+  types.push(dataType);
+  return ` ${key} ${op} ?`;
 }
 
 export function castRow(row) {
@@ -136,34 +121,4 @@ export function castValue(value) {
 
   // otherwise, regular value
   return value;
-}
-
-export async function getSampleRows(
-  connection,
-  tableName,
-  columns?
-): Promise<Array<{ [colName: string]: any }>> {
-  const escapedTableName = tableName;
-  const query = `SELECT * FROM \`${escapedTableName}\` LIMIT 10`;
-  validateQuery(query);
-
-  const options = { query };
-  const [rows] = await connection.query(options);
-
-  const response = [];
-  if (rows.length > 0) {
-    rows.map((row) => response.push(castRow(row)));
-  } else {
-    // use columns for preview
-    if (!columns) {
-      columns = await getColumns(connection, tableName);
-      const sample = {};
-      Object.keys(columns).forEach((colName) => {
-        sample[colName] = castValue(null);
-      });
-      response.push(sample);
-    }
-  }
-
-  return response;
 }
