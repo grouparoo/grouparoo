@@ -30,7 +30,7 @@ export function makeWhereClause(
       op = "<";
       break;
     case FilterOperation.LessThanOrEqual:
-      op = "<=>";
+      op = "<=";
       break;
     case FilterOperation.Contain:
       op = "ILIKE"; // case insensitive
