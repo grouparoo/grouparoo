@@ -15,9 +15,7 @@ import { profilePropertyRuleOptions as tableProfilePropertyRuleOptions } from ".
 import { scheduleOptions as tableScheduleOptions } from "../lib/table-import/scheduleOptions";
 import { sourceRunPercentComplete as tableSourceRunPercentComplete } from "../lib/table-import/sourceRunPercentComplete";
 
-import { sourceOptions as querySourceOptions } from "../lib/query-import/sourceOptions";
-import { profileProperty as queryProfileProperty } from "../lib/query-import/profileProperty";
-import { profilePropertyRuleOptions as queryProfilePropertyRuleOptions } from "../lib/query-import/profilePropertyRuleOptions";
+import { getConnection as getQueryConnection } from "../lib/query-import/connection";
 
 const packageJSON = require("./../../package.json");
 
@@ -90,18 +88,7 @@ export class Plugins extends Initializer {
             sourceRunPercentComplete: tableSourceRunPercentComplete,
           },
         },
-        {
-          name: "bigquery-query-import",
-          direction: "import",
-          description: "Import or update Profiles via a custom Bigquery query.",
-          app: "bigquery",
-          options: [],
-          profilePropertyRuleOptions: queryProfilePropertyRuleOptions,
-          methods: {
-            sourceOptions: querySourceOptions,
-            profileProperty: queryProfileProperty,
-          },
-        },
+        getQueryConnection(),
       ],
     });
   }
