@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "1.2.31",
-    "@fortawesome/free-solid-svg-icons": "5.15.0",
+    "@fortawesome/free-solid-svg-icons": "5.15.1",
     "@fortawesome/react-fontawesome": "0.1.11",
     "@grouparoo/client-web": "^0.1.17",
     "@nivo/line": "0.62.0",
