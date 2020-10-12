@@ -14,10 +14,7 @@ export const getTables: GetTablesMethod = async ({ connection }) => {
   const map: TableDefinitionMap = {};
   for (const row of rows) {
     const name = row.TABLE_NAME;
-    map[row.TABLE_NAME] = {
-      name,
-      data: row,
-    };
+    map[name] = { name, data: row };
   }
   return map;
 };
