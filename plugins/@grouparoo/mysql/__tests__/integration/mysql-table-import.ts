@@ -1,12 +1,10 @@
 import path from "path";
-import fs from "fs";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/mysql": { path: path.join(__dirname, "..", "..") },
 });
 
 import { helper } from "@grouparoo/spec-helper";
 
-import parse from "csv-parse/lib/sync";
 import { api, specHelper } from "actionhero";
 import {
   Profile,
@@ -14,52 +12,16 @@ import {
   ProfileProperty,
   Run,
 } from "@grouparoo/core";
-import { connect } from "../../src/lib/connect";
+
+import { beforeData, afterData, getConfig } from "../utils/data";
 
 let actionhero;
-
-const MYSQL_OPTIONS = {
-  user: "root",
-  database: "grouparoo_test",
-};
-
-const sourceTableName = `users_${process.env.JEST_WORKER_ID || 1}`;
-
-const createSourceTableSQL = `
-CREATE TABLE ${sourceTableName} (
-  id int(11) NOT NULL,
-  first_name VARCHAR(191) DEFAULT NULL,
-  last_name VARCHAR(191) DEFAULT NULL,
-  email VARCHAR(191) DEFAULT NULL,
-  gender VARCHAR(191) DEFAULT NULL,
-  ip_address VARCHAR(191) DEFAULT NULL,
-  ios_app VARCHAR(191) DEFAULT NULL,
-  android_app VARCHAR(191) DEFAULT NULL,
-  vip VARCHAR(191) DEFAULT NULL,
-  ltv VARCHAR(191) DEFAULT NULL,
-  PRIMARY KEY (id)
-)
-`;
-
-const createUsersDestinationTableSQL = `
-CREATE TABLE output_users (
-  id int(11) NOT NULL AUTO_INCREMENT,
-  customer_email text,
-  fname text,
-  lname text,
-  PRIMARY KEY (id)
-)
-`;
-
-const createGroupsDestinationTableSQL = `
-CREATE TABLE output_groups (
-  \`id\` int(11) NOT NULL AUTO_INCREMENT,
-  \`userId\` int(11) DEFAULT NULL,
-  \`group\` varchar(191) DEFAULT '',
-  PRIMARY KEY (\`id\`),
-  UNIQUE KEY userId_group (\`userId\`, \`group\`)
-)
-`;
+const {
+  appOptions,
+  usersTableName,
+  profilesDestinationTableName,
+  groupsDestinationTableName,
+} = getConfig();
 
 describe("integration/runs/mysql", () => {
   let client;
@@ -82,32 +44,7 @@ describe("integration/runs/mysql", () => {
   });
 
   beforeAll(async () => {
-    client = await connect({
-      appOptions: MYSQL_OPTIONS,
-      app: null,
-      appGuid: null,
-    });
-
-    await client.asyncQuery(`drop table if exists ${sourceTableName}`);
-    await client.asyncQuery("drop table if exists output_users");
-    await client.asyncQuery("drop table if exists output_groups");
-    await client.asyncQuery(createSourceTableSQL);
-    await client.asyncQuery(createUsersDestinationTableSQL);
-    await client.asyncQuery(createGroupsDestinationTableSQL);
-    const file = path.join(
-      process.cwd(),
-      "__tests__",
-      "data",
-      "profiles-10.csv"
-    );
-    const rows = parse(fs.readFileSync(file), { columns: true });
-    for (const i in rows) {
-      const row = rows[i];
-      const q = `INSERT INTO ${sourceTableName} (${Object.keys(row).join(
-        ", "
-      )}) VALUES ('${Object.values(row).join("', '")}')`;
-      await client.asyncQuery(q);
-    }
+    ({ client } = await beforeData());
   });
 
   beforeAll(async () => {
@@ -125,7 +62,7 @@ describe("integration/runs/mysql", () => {
   });
 
   afterAll(async () => {
-    await client.end();
+    await afterData();
   });
 
   test("an administrator can create the related import app and schedule", async () => {
@@ -144,7 +81,7 @@ describe("integration/runs/mysql", () => {
       csrfToken,
       name: "test app",
       type: "mysql",
-      options: MYSQL_OPTIONS,
+      options: appOptions,
       state: "ready",
     };
     const appResponse = await specHelper.runAction("app:create", session);
@@ -157,7 +94,7 @@ describe("integration/runs/mysql", () => {
       name: "mysql source",
       type: "mysql-table-import",
       appGuid: app.guid,
-      options: { table: sourceTableName },
+      options: { table: usersTableName },
       mapping: { id: "userId" },
       state: "ready",
     };
@@ -193,9 +130,9 @@ describe("integration/runs/mysql", () => {
       type: "mysql-export",
       appGuid: app.guid,
       options: {
-        table: "output_users",
+        table: profilesDestinationTableName,
         primaryKey: "id",
-        groupsTable: "output_groups",
+        groupsTable: groupsDestinationTableName,
         groupForeignKey: "userId",
         groupColumnName: "group",
       },
@@ -235,6 +172,7 @@ describe("integration/runs/mysql", () => {
     expect(preview.length).toBe(10);
     expect(Object.keys(preview[0]).sort()).toEqual([
       "android_app",
+      "date",
       "email",
       "first_name",
       "gender",
@@ -243,6 +181,7 @@ describe("integration/runs/mysql", () => {
       "ip_address",
       "last_name",
       "ltv",
+      "stamp",
       "vip",
     ]);
   });
@@ -526,11 +465,15 @@ describe("integration/runs/mysql", () => {
       expect(run.percentComplete).toBe(100);
 
       // check the destination
-      const userRows = await client.asyncQuery("SELECT * FROM output_users");
+      const userRows = await client.asyncQuery(
+        `SELECT * FROM ${profilesDestinationTableName}`
+      );
       expect(userRows.length).toBe(10);
       expect(userRows[0].customer_email).toBe("ejervois0@example.com");
 
-      const groupRows = await client.asyncQuery("SELECT * FROM output_groups");
+      const groupRows = await client.asyncQuery(
+        `SELECT * FROM ${groupsDestinationTableName}`
+      );
       expect(groupRows.length).toBe(10);
       expect(groupRows[0].group).toBe(group.name);
     },
@@ -665,11 +608,15 @@ describe("integration/runs/mysql", () => {
       expect(run.percentComplete).toBe(100);
 
       // check the destination
-      const userRows = await client.asyncQuery("SELECT * FROM output_users");
+      const userRows = await client.asyncQuery(
+        `SELECT * FROM ${profilesDestinationTableName}`
+      );
       expect(userRows.length).toBe(10);
       expect(userRows[0].customer_email).toBe("ejervois0@example.com");
 
-      const groupRows = await client.asyncQuery("SELECT * FROM output_groups");
+      const groupRows = await client.asyncQuery(
+        `SELECT * FROM ${groupsDestinationTableName}`
+      );
       expect(groupRows.length).toBe(10);
       expect(groupRows[0].group).toBe(group.name);
     },
