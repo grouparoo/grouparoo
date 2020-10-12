@@ -1,4 +1,4 @@
-import { Action } from "actionhero";
+import { Action, api } from "actionhero";
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
@@ -152,7 +152,8 @@ export class TeamView extends AuthenticatedAction {
   async run({ params }) {
     const team = await Team.findOne({
       where: { guid: params.guid },
-      include: [{ model: TeamMember, order: [["email", "asc"]] }],
+      include: [{ model: TeamMember }],
+      order: [[api.sequelize.literal(`"teamMembers.email"`), "desc"]],
     });
 
     if (!team) throw new Error("team not found");
