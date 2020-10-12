@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/core",
   "description": "The Grouparoo Core",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -43,7 +43,7 @@
     "@fortawesome/fontawesome-svg-core": "1.2.32",
     "@fortawesome/free-solid-svg-icons": "5.15.1",
     "@fortawesome/react-fontawesome": "0.1.11",
-    "@grouparoo/client-web": "^0.1.18",
+    "@grouparoo/client-web": "^0.1.19",
     "@nivo/line": "0.62.0",
     "@zeit/next-source-maps": "0.0.3",
     "actionhero": "24.0.0",
@@ -95,7 +95,7 @@
     "ws": "7.3.1"
   },
   "devDependencies": {
-    "@grouparoo/spec-helper": "^0.1.18",
+    "@grouparoo/spec-helper": "^0.1.19",
     "@types/bluebird": "3.5.32",
     "@types/faker": "5.1.2",
     "@types/fs-extra": "9.0.2",
