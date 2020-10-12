@@ -40,7 +40,7 @@ async function getTables() {
   return response.table.options;
 }
 
-describe("snowflake/table/sourceOptions", () => {
+describe("bigquery/table/sourceOptions", () => {
   test("gets tables", async () => {
     const tables = await getTables();
     const tableNames = tables.sort();

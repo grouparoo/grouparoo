@@ -43,7 +43,7 @@ async function getPreview() {
   return response;
 }
 
-describe("snowflake/table/sourcePreview", () => {
+describe("bigquery/table/sourcePreview", () => {
   test("gets list of columns that can handle highwatermark", async () => {
     const preview = await getPreview();
     const row = preview[0];

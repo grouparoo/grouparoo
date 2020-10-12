@@ -53,7 +53,7 @@ async function getOptionsForKey(keyName) {
   return response;
 }
 
-describe("snowflake/table/profilePropertyRuleOptions", () => {
+describe("bigquery/table/profilePropertyRuleOptions", () => {
   test("gets list of columns to create a source", async () => {
     const response = await getOptionsForKey("column");
     const columnNames = response.map((r) => r.key).sort();

@@ -78,7 +78,7 @@ async function getPropertyValue(
   });
 }
 
-describe("bigquery/table/profileProperty", () => {
+describe("snowflake/table/profileProperty", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
