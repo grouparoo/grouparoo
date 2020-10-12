@@ -33,6 +33,17 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
       ruleQuery,
       profile
     );
+    // DISCUSS: Mysql & Postgres did this...
+    // try {
+    //   query = await profilePropertyRule.parameterizedQueryFromProfile(
+    //     ruleQuery,
+    //     profile
+    //   );
+    // } catch (error) {
+    //   return undefined;
+    // }
+    // Is that right here?
+
     if (validateQuery) {
       validateQuery({ query });
     }
