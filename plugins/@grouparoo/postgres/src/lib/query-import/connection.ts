@@ -1,0 +1,11 @@
+import { buildConnection } from "@grouparoo/app-templates/src/source/query";
+import { executeQuery } from "./executeQuery";
+
+export function getConnection() {
+  return buildConnection({
+    app: "postgres",
+    name: "postgres-query-import",
+    description: "Import or update Profiles via a custom Postgres query.",
+    executeQuery,
+  });
+}

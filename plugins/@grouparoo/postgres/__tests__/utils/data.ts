@@ -135,6 +135,6 @@ export async function beforeData(): Promise<{
   return { client };
 }
 export async function afterData() {
-  // await dropTables();
+  await dropTables();
   await endClient();
 }
