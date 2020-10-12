@@ -107,7 +107,6 @@ export default function Page({
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { version } = await execApi("get", `/status/private`);
   const { plugins } = await execApi("get", `/plugins`);
-  return { version, plugins };
+  return { plugins };
 };
