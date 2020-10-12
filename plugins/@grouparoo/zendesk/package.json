@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/zendesk",
   "description": "The Grouparoo zendesk Plugin",
-  "version": "0.1.20",
+  "version": "0.1.21",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -34,8 +34,8 @@
     "actionhero": "24.0.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.1.20",
-    "@grouparoo/spec-helper": "^0.1.20",
+    "@grouparoo/core": "^0.1.21",
+    "@grouparoo/spec-helper": "^0.1.21",
     "@types/jest": "26.0.14",
     "@types/node": "14.11.8",
     "actionhero": "24.0.0",
