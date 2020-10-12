@@ -1,12 +1,11 @@
 import path from "path";
-import fs from "fs";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/postgres": { path: path.join(__dirname, "..", "..") },
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import parse from "csv-parse/lib/sync";
-import { api, specHelper, config } from "actionhero";
+import { beforeData, afterData, getConfig } from "../utils/data";
+import { api, specHelper } from "actionhero";
 import {
   Profile,
   ProfilePropertyRule,
@@ -15,41 +14,12 @@ import {
 } from "@grouparoo/core";
 
 let actionhero;
-
-const sourceTableName = `users_${process.env.JEST_WORKER_ID || 1}`;
-const createSourceTableSQL = `
-CREATE TABLE ${sourceTableName} (
-    id SERIAL PRIMARY KEY,
-    first_name text,
-    last_name text,
-    email text,
-    gender text,
-    ip_address text,
-    ios_app boolean,
-    android_app boolean,
-    vip boolean,
-    ltv double precision
-)
-`;
-
-const createUsersDestinationTableSQL = `
-CREATE TABLE output_users (
-    id integer PRIMARY KEY,
-    customer_email text,
-    fname text,
-    lname text,
-    UNIQUE(customer_email)
-)
-`;
-
-const createGroupsDestinationTableSQL = `
-CREATE TABLE output_groups (
-    id SERIAL PRIMARY KEY,
-    "userId" integer NOT NULL,
-    "group" text NOT NULL,
-    UNIQUE("userId", "group")
-)
-`;
+const {
+  appOptions,
+  usersTableName,
+  profilesDestinationTableName,
+  groupsDestinationTableName,
+} = getConfig();
 
 describe("integration/runs/postgres", () => {
   let session;
@@ -71,26 +41,11 @@ describe("integration/runs/postgres", () => {
   });
 
   beforeAll(async () => {
-    await api.sequelize.query(`drop table if exists ${sourceTableName}`);
-    await api.sequelize.query("drop table if exists output_users");
-    await api.sequelize.query("drop table if exists output_groups");
-    await api.sequelize.query(createSourceTableSQL);
-    await api.sequelize.query(createUsersDestinationTableSQL);
-    await api.sequelize.query(createGroupsDestinationTableSQL);
-    const file = path.join(
-      process.cwd(),
-      "__tests__",
-      "data",
-      "profiles-10.csv"
-    );
-    const rows = parse(fs.readFileSync(file), { columns: true });
-    for (const i in rows) {
-      const row = rows[i];
-      const q = `INSERT INTO ${sourceTableName} (${Object.keys(row).join(
-        ", "
-      )}) VALUES ('${Object.values(row).join("', '")}')`;
-      await api.sequelize.query(q);
-    }
+    await beforeData();
+  });
+
+  afterAll(async () => {
+    await afterData();
   });
 
   beforeAll(async () => {
@@ -123,13 +78,7 @@ describe("integration/runs/postgres", () => {
       csrfToken,
       name: "test app",
       type: "postgres",
-      options: {
-        user: config.sequelize.username || require("os").userInfo().username,
-        password: config.sequelize.password || "password",
-        host: config.sequelize.host,
-        port: config.sequelize.port,
-        database: config.sequelize.database,
-      },
+      options: appOptions,
       state: "ready",
     };
     const appResponse = await specHelper.runAction("app:create", session);
@@ -142,7 +91,7 @@ describe("integration/runs/postgres", () => {
       name: "pg import source",
       type: "postgres-table-import",
       appGuid: app.guid,
-      options: { table: sourceTableName },
+      options: { table: usersTableName },
       mapping: { id: "userId" },
       state: "ready",
     };
@@ -178,9 +127,9 @@ describe("integration/runs/postgres", () => {
       type: "postgres-export",
       appGuid: app.guid,
       options: {
-        table: "output_users",
+        table: profilesDestinationTableName,
         primaryKey: "id",
-        groupsTable: "output_groups",
+        groupsTable: groupsDestinationTableName,
         groupForeignKey: "userId",
         groupColumnName: "group",
       },
@@ -219,6 +168,7 @@ describe("integration/runs/postgres", () => {
     expect(preview.length).toBe(10);
     expect(Object.keys(preview[0]).sort()).toEqual([
       "android_app",
+      "date",
       "email",
       "first_name",
       "gender",
@@ -227,6 +177,7 @@ describe("integration/runs/postgres", () => {
       "ip_address",
       "last_name",
       "ltv",
+      "stamp",
       "vip",
     ]);
   });
@@ -511,13 +462,13 @@ describe("integration/runs/postgres", () => {
 
       // check the destination
       const userRows = await api.sequelize.query(
-        "SELECT * FROM output_users ORDER BY id ASC"
+        `SELECT * FROM ${profilesDestinationTableName} ORDER BY id ASC`
       );
       expect(userRows[0].length).toBe(10);
       expect(userRows[0][0].customer_email).toBe("ejervois0@example.com");
 
       const groupRows = await api.sequelize.query(
-        "SELECT * FROM output_groups"
+        `SELECT * FROM ${groupsDestinationTableName}`
       );
       expect(groupRows[0].length).toBe(10);
       expect(groupRows[0][0].group).toBe(group.name);
@@ -654,13 +605,13 @@ describe("integration/runs/postgres", () => {
 
       // check the destination
       const userRows = await api.sequelize.query(
-        "SELECT * FROM output_users ORDER BY id ASC"
+        `SELECT * FROM ${profilesDestinationTableName} ORDER BY id ASC`
       );
       expect(userRows[0].length).toBe(10);
       expect(userRows[0][0].customer_email).toBe("ejervois0@example.com");
 
       const groupRows = await api.sequelize.query(
-        "SELECT * FROM output_groups"
+        `SELECT * FROM ${groupsDestinationTableName}`
       );
       expect(groupRows[0].length).toBe(10);
       expect(groupRows[0][0].group).toBe(group.name);
