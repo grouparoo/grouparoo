@@ -7,16 +7,7 @@ import { disconnect } from "./../lib/disconnect";
 import { exportProfile } from "./../lib/export/exportProfile";
 import { exportArrayProperties } from "./../lib/export/exportArrayProperties";
 
-import { sourcePreview as tableSourcePreview } from "../lib/table-import/sourcePreview";
-import { sourceOptions as tableSourceOptions } from "../lib/table-import/sourceOptions";
-import { sourceFilters as tableSourceFilters } from "../lib/table-import/sourceFilters";
-import { uniqueProfilePropertyRuleBootstrapOptions as tableUniqueProfilePropertyRuleBootstrapOptions } from "../lib/table-import/uniqueProfilePropertyRuleBootstrapOptions";
-import { profiles as tableProfiles } from "../lib/table-import/profiles";
-import { profileProperty as tableProfileProperty } from "../lib/table-import/profileProperty";
-import { profilePropertyRuleOptions as tableProfilePropertyRuleOptions } from "../lib/table-import/profilePropertyRuleOptions";
-import { scheduleOptions as tableScheduleOptions } from "../lib/table-import/scheduleOptions";
-import { sourceRunPercentComplete as tableSourceRunPercentComplete } from "../lib/table-import/sourceRunPercentComplete";
-
+import { getConnection as getTableConnection } from "../lib/table-import/connection";
 import { getConnection as getQueryConnection } from "../lib/query-import/connection";
 
 import { destinationOptions } from "../lib/export/destinationOptions";
@@ -66,30 +57,7 @@ export class Plugins extends Initializer {
         },
       ],
       connections: [
-        {
-          name: "mysql-table-import",
-          direction: "import",
-          description: "Import or update Profiles from a MySQL database table.",
-          app: "mysql",
-          options: [
-            {
-              key: "table",
-              required: true,
-              description: "The table to scan",
-            },
-          ],
-          profilePropertyRuleOptions: tableProfilePropertyRuleOptions,
-          scheduleOptions: tableScheduleOptions,
-          methods: {
-            sourceOptions: tableSourceOptions,
-            sourcePreview: tableSourcePreview,
-            sourceFilters: tableSourceFilters,
-            uniqueProfilePropertyRuleBootstrapOptions: tableUniqueProfilePropertyRuleBootstrapOptions,
-            profiles: tableProfiles,
-            profileProperty: tableProfileProperty,
-            sourceRunPercentComplete: tableSourceRunPercentComplete,
-          },
-        },
+        getTableConnection(),
         getQueryConnection(),
         {
           name: "mysql-export",
