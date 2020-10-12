@@ -35,7 +35,7 @@
     "@types/node": "14.11.2",
     "@types/react": "16.9.52",
     "actionhero": "24.0.0",
-    "jest": "26.4.2",
+    "jest": "26.5.3",
     "prettier": "2.1.2",
     "ts-jest": "26.4.1",
     "typescript": "4.0.3"
