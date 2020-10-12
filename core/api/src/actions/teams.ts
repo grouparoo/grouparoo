@@ -152,7 +152,7 @@ export class TeamView extends AuthenticatedAction {
   async run({ params }) {
     const team = await Team.findOne({
       where: { guid: params.guid },
-      include: [{ model: TeamMember, order: [["email", "desc"]] }],
+      include: [{ model: TeamMember, order: [["email", "asc"]] }],
     });
 
     if (!team) throw new Error("team not found");
