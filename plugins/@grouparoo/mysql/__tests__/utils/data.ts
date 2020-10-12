@@ -24,9 +24,9 @@ CREATE TABLE ${usersTableName} (
   ios_app VARCHAR(191) DEFAULT NULL,
   android_app VARCHAR(191) DEFAULT NULL,
   vip VARCHAR(191) DEFAULT NULL,
-  ltv VARCHAR(191) DEFAULT NULL,
-  date DATE DEFAULT NULL,
-  stamp DATETIME DEFAULT NULL,
+  ltv DECIMAL(6,2) DEFAULT NULL,
+  date DATE,
+  stamp TIMESTAMP,
   PRIMARY KEY (id)
 )
 `,
@@ -36,8 +36,8 @@ CREATE TABLE ${purchasesTableName} (
   profile_id INTEGER DEFAULT NULL,
   purchase VARCHAR(191) DEFAULT NULL,
   amount DECIMAL(6,2) DEFAULT NULL,
-  date DATE DEFAULT NULL,
-  stamp DATETIME DEFAULT NULL,
+  date DATE,
+  stamp TIMESTAMP,
   PRIMARY KEY (id)
 )
 `,
@@ -115,12 +115,15 @@ export async function populate() {
   await getClient();
   await createTables();
   await fillTable(usersTableName, "profiles.csv");
+  await fillTable(purchasesTableName, "purchases.csv");
 }
 
 export function getConfig() {
   return {
     appOptions,
+    appGuid,
     usersTableName,
+    purchasesTableName,
     profilesDestinationTableName,
     groupsDestinationTableName,
   };
@@ -132,6 +135,6 @@ export async function beforeData(): Promise<{
   return { client };
 }
 export async function afterData() {
-  await dropTables();
+  // await dropTables();
   await endClient();
 }
