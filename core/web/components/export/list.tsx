@@ -56,7 +56,7 @@ export default function ExportsList(props) {
       setExports(response.exports);
       setTotal(response.total);
 
-      if (response.exports.length === 0 && offset > 0) {
+      if (response.total === 0 && offset > 0) {
         setOffset(0);
       }
     }
