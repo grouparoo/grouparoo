@@ -101,7 +101,7 @@
     "@types/fs-extra": "9.0.1",
     "@types/jest": "26.0.14",
     "@types/node": "14.11.2",
-    "@types/react": "16.9.51",
+    "@types/react": "16.9.52",
     "@types/react-dom": "16.9.8",
     "@types/validator": "13.1.0",
     "csv-parse": "4.12.0",
