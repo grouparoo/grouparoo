@@ -37,7 +37,7 @@
   "devDependencies": {
     "@grouparoo/core": "^0.1.17",
     "@types/jest": "26.0.14",
-    "@types/node": "14.11.2",
+    "@types/node": "14.11.8",
     "actionhero": "24.0.0",
     "jest": "26.5.3",
     "prettier": "2.1.2",
