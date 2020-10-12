@@ -35,7 +35,7 @@ export class PluginsList extends Action {
         name: "@grouparoo/core",
         version: coreVersion,
         license: "MPL-2.0",
-        url: "https://www.grouparoo.com",
+        url: "https://github.com/grouparoo/grouparoo",
       },
     ].concat(pluginManifest.plugins);
 
