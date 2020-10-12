@@ -20,7 +20,7 @@ export const getPropertyValue: GetPropertyValueMethod = async ({
   switch (aggregationMethod) {
     case AggregationMethod.Exact:
       if (sortColumn) {
-        orderBy = `"${sortColumn}" ASC`;
+        orderBy = `\`${sortColumn}\` ASC`;
       }
       break;
     case AggregationMethod.Average:
