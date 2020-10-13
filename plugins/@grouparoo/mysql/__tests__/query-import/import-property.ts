@@ -4,8 +4,6 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 import { helper } from "@grouparoo/spec-helper";
 
-import { connect } from "../../src/lib/connect";
-
 import { beforeData, afterData, getConfig } from "../utils/data";
 import { plugin, Profile, ProfilePropertyRule } from "@grouparoo/core";
 
