@@ -1,4 +1,4 @@
-import { Initializer, api } from "actionhero";
+import { Initializer, api, utils } from "actionhero";
 import { Notifier } from "../classes/notifier";
 import path from "path";
 import glob from "glob";
@@ -21,7 +21,7 @@ export class Notifiers extends Initializer {
     api.notifiers = { notifiers: [] };
 
     const globPath = path.join(__dirname, "..", "notifiers", "+(*.ts|*.js)");
-    const notifierFiles = glob.sync(globPath);
+    const notifierFiles = utils.ensureNoTsHeaderFiles(glob.sync(globPath));
     for (const i in notifierFiles) {
       let collection = await import(notifierFiles[i]);
       if (typeof collection === "function") {
