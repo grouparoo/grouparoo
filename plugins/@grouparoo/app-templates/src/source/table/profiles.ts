@@ -36,6 +36,7 @@ export const getProfiles: GetProfilesMethod = ({ getChangedRows }) => {
       source,
       highWaterMark,
     });
+    sourceOffset = parseInt(sourceOffset.toString()); // we use integers
     const highWaterMarkAndSortColumnASC = scheduleOptions[columnNameKey];
     const secondarySortColumnASC = Object.keys(sourceMapping)[0];
 
@@ -70,7 +71,7 @@ export const getProfiles: GetProfilesMethod = ({ getChangedRows }) => {
       const newValue = lastRow[highWaterMarkKey].toString();
 
       if (currentValue && newValue === currentValue) {
-        nextSourceOffset = parseInt(sourceOffset.toString()) + limit;
+        nextSourceOffset = sourceOffset + limit;
       } else {
         nextHighWaterMark[highWaterMarkAndSortColumnASC] = newValue;
       }
