@@ -7,18 +7,8 @@ import { disconnect } from "@grouparoo/postgres/dist/lib/disconnect";
 import { exportProfile } from "@grouparoo/postgres/dist/lib/export/exportProfile";
 import { exportArrayProperties } from "@grouparoo/postgres/dist/lib/export/exportArrayProperties";
 
-import { sourcePreview as tableSourcePreview } from "@grouparoo/postgres/dist/lib/table-import/sourcePreview";
-import { sourceOptions as tableSourceOptions } from "@grouparoo/postgres/dist/lib/table-import/sourceOptions";
-import { sourceFilters as tableSourceFilters } from "@grouparoo/postgres/dist/lib/table-import/sourceFilters";
-import { uniqueProfilePropertyRuleBootstrapOptions as tableUniqueProfilePropertyRuleBootstrapOptions } from "@grouparoo/postgres/dist/lib/table-import/uniqueProfilePropertyRuleBootstrapOptions";
-import { profiles as tableProfiles } from "@grouparoo/postgres/dist/lib/table-import/profiles";
-import { profileProperty as tableProfileProperty } from "@grouparoo/postgres/dist/lib/table-import/profileProperty";
-import { profilePropertyRuleOptions as tableProfilePropertyRuleOptions } from "@grouparoo/postgres/dist/lib/table-import/profilePropertyRuleOptions";
-import { scheduleOptions as tableScheduleOptions } from "@grouparoo/postgres/dist/lib/table-import/scheduleOptions";
-
-import { sourceOptions as querySourceOptions } from "@grouparoo/postgres/dist/lib/query-import/sourceOptions";
-import { profileProperty as queryProfileProperty } from "@grouparoo/postgres/dist/lib/query-import/profileProperty";
-import { profilePropertyRuleOptions as queryProfilePropertyRuleOptions } from "@grouparoo/postgres/dist/lib/query-import/profilePropertyRuleOptions";
+import { getConnection as getTableConnection } from "../lib/table-import/connection";
+import { getConnection as getQueryConnection } from "../lib/query-import/connection";
 
 import { destinationOptions } from "@grouparoo/postgres/dist/lib/export/destinationOptions";
 import { destinationMappingOptions } from "@grouparoo/postgres/dist/lib/export/destinationMappingOptions";
@@ -62,42 +52,8 @@ export class Plugins extends Initializer {
         },
       ],
       connections: [
-        {
-          name: "redshift-table-import",
-          direction: "import",
-          description:
-            "Import or update Profiles from a Redshift database table.",
-          app: "redshift",
-          options: [
-            {
-              key: "table",
-              required: true,
-              description: "The table to scan.",
-            },
-          ],
-          profilePropertyRuleOptions: tableProfilePropertyRuleOptions,
-          scheduleOptions: tableScheduleOptions,
-          methods: {
-            sourceOptions: tableSourceOptions,
-            sourcePreview: tableSourcePreview,
-            sourceFilters: tableSourceFilters,
-            uniqueProfilePropertyRuleBootstrapOptions: tableUniqueProfilePropertyRuleBootstrapOptions,
-            profiles: tableProfiles,
-            profileProperty: tableProfileProperty,
-          },
-        },
-        {
-          name: "redshift-query-import",
-          direction: "import",
-          description: "Import or update Profiles via a custom Redshift query.",
-          app: "redshift",
-          options: [],
-          profilePropertyRuleOptions: queryProfilePropertyRuleOptions,
-          methods: {
-            sourceOptions: querySourceOptions,
-            profileProperty: queryProfileProperty,
-          },
-        },
+        getTableConnection(),
+        getQueryConnection(),
         {
           name: "redshift-export",
           direction: "export",
