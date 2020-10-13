@@ -1,4 +1,4 @@
-import { buildConnection } from "@grouparoo/app-templates/src/source/query";
+import { buildConnection } from "@grouparoo/app-templates/dist/source/query";
 import { executeQuery } from "./executeQuery";
 
 export function getConnection() {

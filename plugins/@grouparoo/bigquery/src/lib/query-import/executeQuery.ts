@@ -1,7 +1,7 @@
 import {
   ExecuteQueryMethod,
   DataResponseRow,
-} from "@grouparoo/app-templates/src/source/query";
+} from "@grouparoo/app-templates/dist/source/query";
 import { castRow } from "../util";
 
 export const executeQuery: ExecuteQueryMethod = async ({

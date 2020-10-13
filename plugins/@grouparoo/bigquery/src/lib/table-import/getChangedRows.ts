@@ -1,12 +1,12 @@
 import { makeWhereClause, castRow } from "../util";
 import { validateQuery } from "./validateQuery";
 import { getColumnsInternal } from "./getColumns";
-import { ColumnDefinitionMap } from "../../../../app-templates/dist/source/table/pluginMethods";
 import {
   GetChangedRowsMethod,
   DataResponseRow,
   MatchCondition,
-} from "@grouparoo/app-templates/src/source/table";
+  ColumnDefinitionMap,
+} from "@grouparoo/app-templates/dist/source/table";
 
 export const getChangedRows: GetChangedRowsMethod = async ({
   connection,

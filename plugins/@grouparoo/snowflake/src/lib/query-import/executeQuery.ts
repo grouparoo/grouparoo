@@ -1,4 +1,4 @@
-import { ExecuteQueryMethod } from "@grouparoo/app-templates/src/source/query";
+import { ExecuteQueryMethod } from "@grouparoo/app-templates/dist/source/query";
 
 export const executeQuery: ExecuteQueryMethod = async ({
   connection,

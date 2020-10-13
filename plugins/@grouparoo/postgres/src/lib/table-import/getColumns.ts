@@ -2,7 +2,7 @@ import {
   GetColumnDefinitionsMethod,
   ColumnDefinitionMap,
   FilterOperation,
-} from "@grouparoo/app-templates/src/source/table";
+} from "@grouparoo/app-templates/dist/source/table";
 import format from "pg-format";
 
 export const getColumns: GetColumnDefinitionsMethod = async ({

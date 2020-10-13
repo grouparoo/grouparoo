@@ -3,7 +3,7 @@ import {
   DataResponse,
   FilterOperation,
   MatchCondition,
-} from "@grouparoo/app-templates/src/source/table";
+} from "@grouparoo/app-templates/dist/source/table";
 
 export function makeWhereClause(
   matchCondition: MatchCondition,

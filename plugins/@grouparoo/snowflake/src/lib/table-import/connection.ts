@@ -1,4 +1,4 @@
-import { buildConnection } from "@grouparoo/app-templates/src/source/table";
+import { buildConnection } from "@grouparoo/app-templates/dist/source/table";
 import { getSampleRows } from "./getSampleRows";
 import { getColumns } from "./getColumns";
 import { getTables } from "./getTables";

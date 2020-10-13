@@ -1,7 +1,7 @@
 import {
   GetSampleRowsMethod,
   DataResponseRow,
-} from "@grouparoo/app-templates/src/source/table";
+} from "@grouparoo/app-templates/dist/source/table";
 import { validateQuery } from "./validateQuery";
 import { castRow } from "../util";
 
