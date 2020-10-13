@@ -95,6 +95,16 @@ describe("modules/notifiers", () => {
       expect(notifications.length).toBe(1);
     });
 
+    test("notifiers can clear their messages", async () => {
+      await notifier.run();
+      let count = await Notification.count();
+      expect(count).toBe(1);
+
+      await notifier.clearNotifications();
+      count = await Notification.count();
+      expect(count).toBe(0);
+    });
+
     test("notifiers can opt not to return a message by returning null", async () => {
       const hackedNotifier = new TestNotifier();
       hackedNotifier.buildNotification = async () => {

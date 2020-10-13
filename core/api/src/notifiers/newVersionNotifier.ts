@@ -13,9 +13,17 @@ export class NewVersionNotifier extends Notifier {
     const core = plugins.find((p) => p.name === "@grouparoo/core");
     const otherPluginsWithUpdates = plugins
       .filter((p) => p.name !== "@grouparoo/core")
-      .filter((p) => p.version !== p.latestVersion);
+      .filter((p) => p.version !== p.latestVersion)
+      .filter((p) => p.latestVersion !== "unknown");
 
-    if (core.version === core.latestVersion) return;
+    if (core.version === core.latestVersion) {
+      await this.clearNotifications();
+      return;
+    }
+
+    if (core.version === "unknown") {
+      return;
+    }
 
     const notification: NotifierMessagePayload = {
       subject: "There's a new version of Grouparoo!",

@@ -1,3 +1,4 @@
+import { log } from "actionhero";
 import { Notification } from "../models/Notification";
 import { Op } from "sequelize";
 
@@ -17,6 +18,7 @@ export abstract class Notifier {
    * Also check if there are any notifications to remove with `pruneNotifications`
    */
   async run() {
+    log(`running notifier: ${this.constructor.name}`);
     const notificationPayload = await this.buildNotification();
 
     if (!notificationPayload) return;
@@ -56,6 +58,15 @@ export abstract class Notifier {
         updatedAt: new Date(), // always bump the `updatedAt`
       });
     }
+  }
+
+  /**
+   * Remove all notifications from this notifier
+   */
+  async clearNotifications() {
+    return Notification.destroy({
+      where: { from: this.from },
+    });
   }
 
   async pruneNotifications() {
