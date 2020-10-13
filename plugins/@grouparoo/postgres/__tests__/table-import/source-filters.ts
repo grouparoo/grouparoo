@@ -27,7 +27,7 @@ async function getFilters() {
   return response;
 }
 
-describe("bigquery/table/sourceFilters", () => {
+describe("postgres/table/sourceFilters", () => {
   beforeAll(async () => {
     ({ client } = await beforeData());
   });
