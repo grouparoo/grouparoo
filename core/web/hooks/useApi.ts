@@ -2,7 +2,7 @@ import { Client } from "../client/client";
 import { ErrorHandler } from "../utils/errorHandler";
 import { UploadHandler } from "../utils/uploadHandler";
 
-const client = new Client();
+export const client = new Client();
 
 export function useApi(
   ctx: {

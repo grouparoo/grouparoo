@@ -42,7 +42,7 @@ describe("actions/plugins", () => {
       version: coreVersion,
       latestVersion: "0.1.17", // from nock recording
       license: "MPL-2.0",
-      url: "https://www.grouparoo.com",
+      url: "https://github.com/grouparoo/grouparoo",
     });
   });
 });

@@ -7,7 +7,7 @@ describe("pages/about", () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = mount(<Page {...commonProps} version="v1.2.3" plugins={[]} />);
+    wrapper = mount(<Page {...commonProps} plugins={[]} />);
   });
 
   afterEach(() => {
@@ -17,6 +17,6 @@ describe("pages/about", () => {
 
   test("should display the current api version", async () => {
     expect(wrapper.html()).not.toContain("...");
-    expect(wrapper.html()).toContain("v1.2.3");
+    expect(wrapper.html()).toContain("v1");
   });
 });
