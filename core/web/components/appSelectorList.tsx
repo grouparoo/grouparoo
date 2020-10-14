@@ -2,15 +2,6 @@ import Selector from "./selector";
 import { CardDeck } from "react-bootstrap";
 import { useRouter } from "next/router";
 
-export function humanizePluginName(name: string) {
-  name = name.replace(/-/g, " ");
-  name = name.replace(/_/g, " ");
-  const words = name.toLowerCase().split(" ");
-  return words
-    .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
-    .join(" ");
-}
-
 export default function AppSelectorList({
   onClick,
   items,
@@ -37,7 +28,7 @@ export default function AppSelectorList({
         if (item?.plugin) {
           // these items are apps themselves
           src = item.plugin.icon;
-          title = humanizePluginName(item.name);
+          title = item.name;
           className =
             item.name === selectedItem.type
               ? "selector-list-selected"
@@ -57,7 +48,7 @@ export default function AppSelectorList({
         } else {
           // these are apps extracted from connectionApps
           src = item.icon;
-          title = humanizePluginName(item.name);
+          title = item.name;
           subheading = item.type;
           // description = item.connection.description;
           className =
