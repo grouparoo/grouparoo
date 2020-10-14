@@ -1,4 +1,5 @@
 import fs from "fs-extra";
+import ncu from "npm-check-updates";
 import SpawnCommand from "./spawnCommand";
 import Logger from "./logger";
 
@@ -14,7 +15,27 @@ export default async function Generate(workDir: string = process.cwd()) {
   }
 
   log.info("Upgrading dependencies...");
-  await SpawnCommand("npm", ["update"], workDir, log);
 
+  const upgraded = await ncu.run({
+    cwd: workDir,
+    packageFile: `${workDir}/package.json`,
+    upgrade: true,
+    jsonUpgraded: true,
+    silent: true,
+  });
+
+  const upgradedPackages = Object.keys(upgraded);
+
+  if (upgradedPackages.length === 0) {
+    log.success("Everything up to date!");
+    return;
+  }
+
+  upgradedPackages.forEach((p) => {
+    log.success(`Updated ${p} to version ${upgraded[p]}`);
+  });
+
+  log.info("Installing dependencies...");
+  await SpawnCommand("npm", ["install"], workDir, log);
   log.success("Grouparoo project updated!");
 }

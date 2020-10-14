@@ -18,6 +18,7 @@ export default async function Generate(workDir: string = process.cwd()) {
   if (!fs.existsSync(packageJson)) {
     log.info("Creating package.json");
     fs.copyFileSync(getTemplatePath("package.json"), packageJson);
+    injectVersion(packageJson);
   } else {
     log.warn("package.json already exists, not modifying");
   }
@@ -49,4 +50,14 @@ export default async function Generate(workDir: string = process.cwd()) {
 
 function getTemplatePath(filename: string) {
   return path.join(__dirname, "..", "..", "templates", filename);
+}
+
+function injectVersion(filename: string) {
+  const localPackageJSONContents = JSON.parse(
+    fs.readFileSync(path.join(__dirname, "..", "..", "package.json")).toString()
+  );
+  const version = localPackageJSONContents.version;
+  const contents = fs.readFileSync(filename).toString();
+  const updatedContents = contents.replace(/~~VERSION~~/g, version);
+  fs.writeFileSync(filename, updatedContents);
 }
