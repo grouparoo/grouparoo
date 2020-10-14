@@ -136,7 +136,7 @@ export default function Page(props) {
         <Col>
           <StateBadge state={destination.state} />
 
-          <Form id="form" onSubmit={onSubmit}>
+          <Form id="form" onSubmit={onSubmit} autoComplete="off">
             <Form.Group controlId="name">
               <Form.Label>Name</Form.Label>
               <Form.Control

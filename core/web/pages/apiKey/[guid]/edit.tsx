@@ -89,7 +89,7 @@ export default function Page(props) {
 
       <ApiKeyTabs apiKey={apiKey} />
 
-      <Form id="form" onSubmit={updateApiKey}>
+      <Form id="form" onSubmit={updateApiKey} autoComplete="off">
         <Form.Group>
           <Form.Label>Name</Form.Label>
           <Form.Control

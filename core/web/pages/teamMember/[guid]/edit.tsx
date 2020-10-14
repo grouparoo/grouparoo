@@ -79,7 +79,7 @@ export default function Page(props) {
           </small>
         </Col>
         <Col md={10}>
-          <Form id="form" onSubmit={submit}>
+          <Form id="form" onSubmit={submit} autoComplete="off">
             <Form.Group controlId="email">
               <Form.Label>Email</Form.Label>
               <Form.Control

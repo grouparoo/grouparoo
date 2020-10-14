@@ -132,7 +132,7 @@ export default function Page(props) {
         <span className="text-muted">{app.guid}</span>
       </p>
 
-      <Form id="form" onSubmit={edit}>
+      <Form id="form" onSubmit={edit} autoComplete="off">
         <Row>
           <Col md={1} style={{ textAlign: "center" }}>
             <br />

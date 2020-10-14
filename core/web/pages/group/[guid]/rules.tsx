@@ -172,7 +172,7 @@ export default function Page(props) {
         this Group will match <Badge variant="success">{group.matchType}</Badge>{" "}
         of these rules.
       </p>
-      <Form inline>
+      <Form inline autoComplete="off">
         <Table bordered size="sm">
           <thead>
             <tr>
