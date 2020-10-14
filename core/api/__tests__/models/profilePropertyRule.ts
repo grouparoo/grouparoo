@@ -81,6 +81,7 @@ describe("models/profilePropertyRule", () => {
     test("a new rule will have a '' key", async () => {
       const rule = await ProfilePropertyRule.create({
         sourceGuid: source.guid,
+        type: "string",
       });
 
       expect(rule.key).toBe("");
@@ -91,9 +92,11 @@ describe("models/profilePropertyRule", () => {
     test("draft rule can share the same key, but not with ready rule", async () => {
       const ruleOne = await ProfilePropertyRule.create({
         sourceGuid: source.guid,
+        type: "string",
       });
       const ruleTwo = await ProfilePropertyRule.create({
         sourceGuid: source.guid,
+        type: "string",
       });
 
       expect(ruleOne.key).toBe("");
@@ -114,6 +117,7 @@ describe("models/profilePropertyRule", () => {
     test("types must be of a known type", async () => {
       const rule = await ProfilePropertyRule.create({
         sourceGuid: source.guid,
+        type: "string",
       });
 
       await expect(rule.update({ type: "something" })).rejects.toThrow(
@@ -130,6 +134,7 @@ describe("models/profilePropertyRule", () => {
         await expect(
           ProfilePropertyRule.create({
             sourceGuid: source.guid,
+            type: "string",
             key,
           })
         ).rejects.toThrow(/is a reserved key and cannot be used/);
@@ -139,6 +144,7 @@ describe("models/profilePropertyRule", () => {
     test("a profile property rule can be isArray", async () => {
       const rule = await ProfilePropertyRule.create({
         sourceGuid: source.guid,
+        type: "string",
         isArray: true,
       });
 
@@ -149,6 +155,7 @@ describe("models/profilePropertyRule", () => {
       await expect(
         ProfilePropertyRule.create({
           sourceGuid: source.guid,
+          type: "string",
           isArray: true,
           unique: true,
         })
@@ -160,6 +167,7 @@ describe("models/profilePropertyRule", () => {
 
       await expect(
         ProfilePropertyRule.create({
+          type: "string",
           sourceGuid: source.guid,
           identifying: true,
         })
@@ -262,7 +270,7 @@ describe("models/profilePropertyRule", () => {
     const rule = ProfilePropertyRule.build({
       sourceGuid: source.guid,
       name: "no opts",
-      type: "test-plugin-import",
+      type: "string",
       state: "ready",
     });
 
