@@ -3,7 +3,7 @@ import {
   DataResponse,
   FilterOperation,
   MatchCondition,
-} from "../table";
+} from "@grouparoo/app-templates/dist/source/table";
 
 export function makeWhereClause(
   matchCondition: MatchCondition,
@@ -30,7 +30,7 @@ export function makeWhereClause(
       op = "<";
       break;
     case FilterOperation.LessThanOrEqual:
-      op = "<=>";
+      op = "<=";
       break;
     case FilterOperation.Contain:
       op = "ILIKE"; // case insensitive

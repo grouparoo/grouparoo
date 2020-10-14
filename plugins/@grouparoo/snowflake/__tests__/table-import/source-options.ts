@@ -3,11 +3,13 @@ import "@grouparoo/spec-helper";
 
 import { helper } from "@grouparoo/spec-helper";
 import path from "path";
-import { sourceOptions } from "../../src/lib/table-import/options";
 import { connect } from "../../src/lib/connect";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { SimpleAppOptions } from "@grouparoo/core";
+
+import { getConnection } from "../../src/lib/table-import/connection";
+const sourceOptions = getConnection().methods.sourceOptions;
 
 const nockFile = path.join(
   __dirname,

@@ -6,7 +6,21 @@ export interface QueryResultObject {
 }
 
 export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
-  const client = mysql.createConnection(appOptions);
+  const { host, port, database, user, password } = appOptions;
+
+  const config = {
+    host,
+    port: port ? parseInt(port) : null,
+    database,
+    user,
+    password,
+    timezone: "UTC", // Interpret all received timestamps as UTC. Otherwise local timezone is assumed.
+    dateStrings: [
+      "DATE", // DATE's are returned as strings (otherwise they would be interpreted as new Date)
+    ],
+  };
+  // @ts-ignore datestrings supports array but it's not in the types
+  const client = mysql.createConnection(config);
 
   const asyncQuery = function (
     query: string,

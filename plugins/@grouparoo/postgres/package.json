@@ -29,7 +29,8 @@
   "dependencies": {
     "pg": "8.4.1",
     "pg-format": "1.0.4",
-    "pg-hstore": "2.3.3"
+    "pg-hstore": "2.3.3",
+    "@grouparoo/app-templates": "0.1.21"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",

@@ -5,27 +5,12 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import parse from "csv-parse/lib/sync";
-import { api, specHelper, config } from "actionhero";
+import { api, specHelper } from "actionhero";
 import { ProfilePropertyRule } from "@grouparoo/core";
+import { beforeData, afterData, getConfig } from "../utils/data";
 
+const { appOptions, usersTableName } = getConfig();
 let actionhero;
-
-const sourceTableName = `users_${process.env.JEST_WORKER_ID || 1}`;
-const createSourceTableSQL = `
-CREATE TABLE ${sourceTableName} (
-    id SERIAL PRIMARY KEY,
-    first_name text,
-    last_name text,
-    email text,
-    gender text,
-    ip_address text,
-    ios_app boolean,
-    android_app boolean,
-    vip boolean,
-    ltv double precision
-)
-`;
 
 describe("integration/runs/postgres", () => {
   let session;
@@ -44,22 +29,11 @@ describe("integration/runs/postgres", () => {
   });
 
   beforeAll(async () => {
-    await api.sequelize.query(`drop table if exists ${sourceTableName}`);
-    await api.sequelize.query(createSourceTableSQL);
-    const file = path.join(
-      process.cwd(),
-      "__tests__",
-      "data",
-      "profiles-10.csv"
-    );
-    const rows = parse(fs.readFileSync(file), { columns: true });
-    for (const i in rows) {
-      const row = rows[i];
-      const q = `INSERT INTO ${sourceTableName} (${Object.keys(row).join(
-        ", "
-      )}) VALUES ('${Object.values(row).join("', '")}')`;
-      await api.sequelize.query(q);
-    }
+    await beforeData();
+  });
+
+  afterAll(async () => {
+    await afterData();
   });
 
   beforeAll(async () => {
@@ -92,13 +66,7 @@ describe("integration/runs/postgres", () => {
       csrfToken,
       name: "test app",
       type: "postgres",
-      options: {
-        user: config.sequelize.username || require("os").userInfo().username,
-        password: config.sequelize.password || "password",
-        host: config.sequelize.host,
-        port: config.sequelize.port,
-        database: config.sequelize.database,
-      },
+      options: appOptions,
       state: "ready",
     };
     const appResponse = await specHelper.runAction("app:create", session);
@@ -160,7 +128,7 @@ describe("integration/runs/postgres", () => {
       csrfToken,
       guid: profilePropertyRule.guid,
       options: {
-        query: `select email from ${sourceTableName} where id = {{ userId }}`,
+        query: `select email from ${usersTableName} where id = {{ userId }}`,
       },
       state: "ready",
     };

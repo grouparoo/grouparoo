@@ -27,7 +27,8 @@
     "lint": "prettier --check src __tests__"
   },
   "dependencies": {
-    "mysql": "2.18.1"
+    "mysql": "2.18.1",
+    "@grouparoo/app-templates": "0.1.21"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",

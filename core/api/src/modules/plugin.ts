@@ -295,6 +295,7 @@ export namespace plugin {
   export async function getProfileData(
     profile: Profile
   ): Promise<{ [remoteKey: string]: any }> {
+    // TODO: we could do these types better to be string | number | etc | Array<string | etc>
     const data = {
       now: expandDates(new Date()),
       createdAt: expandDates(profile.createdAt),

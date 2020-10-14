@@ -5,19 +5,8 @@ import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
 import { test } from "./../lib/test";
 
-import { sourcePreview as tableSourcePreview } from "../lib/table-import/sourcePreview";
-import { sourceOptions as tableSourceOptions } from "../lib/table-import/sourceOptions";
-import { sourceFilters as tableSourceFilters } from "../lib/table-import/sourceFilters";
-import { uniqueProfilePropertyRuleBootstrapOptions as tableUniqueProfilePropertyRuleBootstrapOptions } from "../lib/table-import/uniqueProfilePropertyRuleBootstrapOptions";
-import { profiles as tableProfiles } from "../lib/table-import/profiles";
-import { profileProperty as tableProfileProperty } from "../lib/table-import/profileProperty";
-import { profilePropertyRuleOptions as tableProfilePropertyRuleOptions } from "../lib/table-import/profilePropertyRuleOptions";
-import { scheduleOptions as tableScheduleOptions } from "../lib/table-import/scheduleOptions";
-import { sourceRunPercentComplete as tableSourceRunPercentComplete } from "../lib/table-import/sourceRunPercentComplete";
-
-import { sourceOptions as querySourceOptions } from "../lib/query-import/sourceOptions";
-import { profileProperty as queryProfileProperty } from "../lib/query-import/profileProperty";
-import { profilePropertyRuleOptions as queryProfilePropertyRuleOptions } from "../lib/query-import/profilePropertyRuleOptions";
+import { getConnection as getTableConnection } from "../lib/table-import/connection";
+import { getConnection as getQueryConnection } from "../lib/query-import/connection";
 
 const packageJSON = require("./../../package.json");
 
@@ -64,45 +53,7 @@ export class Plugins extends Initializer {
           methods: { test, connect, disconnect },
         },
       ],
-      connections: [
-        {
-          name: "bigquery-table-import",
-          direction: "import",
-          description:
-            "Import or update Profiles from a Bigquery database table.",
-          app: "bigquery",
-          options: [
-            {
-              key: "table",
-              required: true,
-              description: "The table to scan for new and changed Profiles.",
-            },
-          ],
-          profilePropertyRuleOptions: tableProfilePropertyRuleOptions,
-          scheduleOptions: tableScheduleOptions,
-          methods: {
-            sourceOptions: tableSourceOptions,
-            sourcePreview: tableSourcePreview,
-            sourceFilters: tableSourceFilters,
-            uniqueProfilePropertyRuleBootstrapOptions: tableUniqueProfilePropertyRuleBootstrapOptions,
-            profiles: tableProfiles,
-            profileProperty: tableProfileProperty,
-            sourceRunPercentComplete: tableSourceRunPercentComplete,
-          },
-        },
-        {
-          name: "bigquery-query-import",
-          direction: "import",
-          description: "Import or update Profiles via a custom Bigquery query.",
-          app: "bigquery",
-          options: [],
-          profilePropertyRuleOptions: queryProfilePropertyRuleOptions,
-          methods: {
-            sourceOptions: querySourceOptions,
-            profileProperty: queryProfileProperty,
-          },
-        },
-      ],
+      connections: [getTableConnection(), getQueryConnection()],
     });
   }
 }

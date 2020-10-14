@@ -1,11 +1,14 @@
+import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 import path from "path";
 
-import { sourceFilters } from "../../src/lib/table-import/sourceFilters";
 import { connect } from "../../src/lib/connect";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { SimpleAppOptions } from "@grouparoo/core";
+
+import { getConnection } from "../../src/lib/table-import/connection";
+const sourceFilters = getConnection().methods.sourceFilters;
 
 const nockFile = path.join(
   __dirname,
@@ -61,19 +64,47 @@ describe("bigquery/table/sourceFilters", () => {
 
     expect(columns[0]).toMatchObject({
       key: "amount",
-      ops: ["equals", "does not equal", "greater than", "less than"],
+      ops: [
+        "equals",
+        "does not equal",
+        "greater than",
+        "greater than or equal to",
+        "less than",
+        "less than or equal to",
+      ],
     });
     expect(columns[1]).toMatchObject({
       key: "date",
-      ops: ["equals", "does not equal", "greater than", "less than"],
+      ops: [
+        "equals",
+        "does not equal",
+        "greater than",
+        "greater than or equal to",
+        "less than",
+        "less than or equal to",
+      ],
     });
     expect(columns[2]).toMatchObject({
       key: "id",
-      ops: ["equals", "does not equal", "greater than", "less than"],
+      ops: [
+        "equals",
+        "does not equal",
+        "greater than",
+        "greater than or equal to",
+        "less than",
+        "less than or equal to",
+      ],
     });
     expect(columns[3]).toMatchObject({
       key: "profile_id",
-      ops: ["equals", "does not equal", "greater than", "less than"],
+      ops: [
+        "equals",
+        "does not equal",
+        "greater than",
+        "greater than or equal to",
+        "less than",
+        "less than or equal to",
+      ],
     });
     expect(columns[4]).toMatchObject({
       key: "purchase",
@@ -81,7 +112,14 @@ describe("bigquery/table/sourceFilters", () => {
     });
     expect(columns[5]).toMatchObject({
       key: "stamp",
-      ops: ["equals", "does not equal", "greater than", "less than"],
+      ops: [
+        "equals",
+        "does not equal",
+        "greater than",
+        "greater than or equal to",
+        "less than",
+        "less than or equal to",
+      ],
     });
   });
 });

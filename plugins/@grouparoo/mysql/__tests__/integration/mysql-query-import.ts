@@ -1,38 +1,15 @@
 import path from "path";
-import fs from "fs";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/mysql": { path: path.join(__dirname, "..", "..") },
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import parse from "csv-parse/lib/sync";
 import { api, specHelper } from "actionhero";
 import { ProfilePropertyRule } from "@grouparoo/core";
-import { connect } from "../../src/lib/connect";
+import { beforeData, afterData, getConfig } from "../utils/data";
 
 let actionhero;
-
-const MYSQL_OPTIONS = {
-  user: "root",
-  database: "grouparoo_test",
-};
-
-const sourceTableName = `users_${process.env.JEST_WORKER_ID || 1}`;
-const createSourceTableSQL = `
-CREATE TABLE ${sourceTableName} (
-  id int(11) NOT NULL,
-  first_name VARCHAR(191) DEFAULT NULL,
-  last_name VARCHAR(191) DEFAULT NULL,
-  email VARCHAR(191) DEFAULT NULL,
-  gender VARCHAR(191) DEFAULT NULL,
-  ip_address VARCHAR(191) DEFAULT NULL,
-  ios_app VARCHAR(191) DEFAULT NULL,
-  android_app VARCHAR(191) DEFAULT NULL,
-  vip VARCHAR(191) DEFAULT NULL,
-  ltv VARCHAR(191) DEFAULT NULL,
-  PRIMARY KEY (id)
-)
-`;
+const { usersTableName, appOptions } = getConfig();
 
 describe("integration/runs/mysql", () => {
   let client;
@@ -52,28 +29,7 @@ describe("integration/runs/mysql", () => {
   });
 
   beforeAll(async () => {
-    client = await connect({
-      appOptions: MYSQL_OPTIONS,
-      app: null,
-      appGuid: null,
-    });
-
-    await client.asyncQuery(`drop table if exists ${sourceTableName}`);
-    await client.asyncQuery(createSourceTableSQL);
-    const file = path.join(
-      process.cwd(),
-      "__tests__",
-      "data",
-      "profiles-10.csv"
-    );
-    const rows = parse(fs.readFileSync(file), { columns: true });
-    for (const i in rows) {
-      const row = rows[i];
-      const q = `INSERT INTO ${sourceTableName} (${Object.keys(row).join(
-        ", "
-      )}) VALUES ('${Object.values(row).join("', '")}')`;
-      await client.asyncQuery(q);
-    }
+    await beforeData();
   });
 
   beforeAll(async () => {
@@ -91,7 +47,7 @@ describe("integration/runs/mysql", () => {
   });
 
   afterAll(async () => {
-    await client.end();
+    await afterData();
   });
 
   test("an administrator can create the related import app", async () => {
@@ -110,7 +66,7 @@ describe("integration/runs/mysql", () => {
       csrfToken,
       name: "test app",
       type: "mysql",
-      options: MYSQL_OPTIONS,
+      options: appOptions,
       state: "ready",
     };
     const appResponse = await specHelper.runAction("app:create", session);
@@ -172,7 +128,7 @@ describe("integration/runs/mysql", () => {
       csrfToken,
       guid: profilePropertyRule.guid,
       options: {
-        query: `select email from ${sourceTableName} where id = {{ userId }}`,
+        query: `select email from ${usersTableName} where id = {{ userId }}`,
       },
       state: "ready",
     };

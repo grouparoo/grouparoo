@@ -2,7 +2,7 @@ import {
   GetColumnDefinitionsMethod,
   ColumnDefinitionMap,
   FilterOperation,
-} from "../table";
+} from "@grouparoo/app-templates/dist/source/table";
 
 export const getColumns: GetColumnDefinitionsMethod = async ({
   connection,
@@ -16,7 +16,7 @@ export const getColumns: GetColumnDefinitionsMethod = async ({
   const map: ColumnDefinitionMap = {};
   for (const row of rows) {
     const name = row.COLUMN_NAME;
-    map[row.COLUMN_NAME] = {
+    map[name] = {
       name,
       filterOperations: getFilterOperations(row.DATA_TYPE),
       data: row,

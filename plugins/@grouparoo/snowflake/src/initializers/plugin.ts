@@ -5,25 +5,8 @@ import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
 import { test } from "./../lib/test";
 
-import {
-  sourcePreview as tableSourcePreview,
-  profilePropertyRuleOptions as tableProfilePropertyRuleOptions,
-  scheduleOptions as tableScheduleOptions,
-  sourceOptions as tableSourceOptions,
-  uniqueProfilePropertyRuleBootstrapOptions as tableUniqueProfilePropertyRuleBootstrapOptions,
-  sourceFilters as tableSourceFilters,
-  profiles as tableProfiles,
-  profileProperty as tableProfileProperty,
-  sourceRunPercentComplete as tableSourceRunPercentComplete,
-} from "../lib/table-import/options";
-
-import { tableNameKey } from "../lib/table";
-
-import {
-  sourceOptions as querySourceOptions,
-  profilePropertyRuleOptions as queryProfilePropertyRuleOptions,
-} from "../lib/query";
-import { profileProperty as queryProfileProperty } from "../lib/query-import/profileProperty";
+import { getConnection as getTableConnection } from "../lib/table-import/connection";
+import { getConnection as getQueryConnection } from "../lib/query-import/connection";
 
 const packageJSON = require("./../../package.json");
 
@@ -79,46 +62,7 @@ export class Plugins extends Initializer {
           methods: { test, connect, disconnect },
         },
       ],
-      connections: [
-        {
-          name: "snowflake-table-import",
-          direction: "import",
-          description:
-            "Import or update Profiles from a Snowflake database table.",
-          app: "snowflake",
-          options: [
-            {
-              key: tableNameKey,
-              required: true,
-              description: "The table to scan",
-            },
-          ],
-          profilePropertyRuleOptions: tableProfilePropertyRuleOptions,
-          scheduleOptions: tableScheduleOptions,
-          methods: {
-            sourceOptions: tableSourceOptions,
-            sourcePreview: tableSourcePreview,
-            sourceFilters: tableSourceFilters,
-            uniqueProfilePropertyRuleBootstrapOptions: tableUniqueProfilePropertyRuleBootstrapOptions,
-            profiles: tableProfiles,
-            profileProperty: tableProfileProperty,
-            sourceRunPercentComplete: tableSourceRunPercentComplete,
-          },
-        },
-        {
-          name: "snowflake-query-import",
-          direction: "import",
-          description:
-            "Import or update profiles via a custom Snowflake query.",
-          app: "snowflake",
-          options: [],
-          profilePropertyRuleOptions: queryProfilePropertyRuleOptions,
-          methods: {
-            sourceOptions: querySourceOptions,
-            profileProperty: queryProfileProperty,
-          },
-        },
-      ],
+      connections: [getTableConnection(), getQueryConnection()],
     });
   }
 }
