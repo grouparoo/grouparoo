@@ -208,6 +208,7 @@ export default function Page(props) {
             <Form.Group controlId="type">
               <Form.Label>Profile Property Type</Form.Label>
               <Form.Control
+                required
                 as="select"
                 value={profilePropertyRule.type}
                 onChange={(e) => update(e)}

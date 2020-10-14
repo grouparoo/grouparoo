@@ -236,7 +236,6 @@ export namespace SourceOps {
     try {
       // manually run the hooks we want
       ProfilePropertyRule.generateGuid(rule);
-      await ProfilePropertyRule.ensureType(rule);
       await ProfilePropertyRule.ensureUniqueKey(rule);
       await ProfilePropertyRule.ensureNonArrayAndUnique(rule);
       await ProfilePropertyRule.ensureOneIdentifyingProperty(rule);
