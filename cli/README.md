@@ -2,7 +2,7 @@
 
 _The Grouparoo project generator_
 
-This package is released as `grouparoo` (no namespace) on NPM. It is used to generate new Grouparoo projects.
+This package is released as `grouparoo` on NPM. It is used to generate and update Grouparoo projects.
 
 ## Installation
 
@@ -27,10 +27,10 @@ Commands:
 
 - To generate a grouparoo project in the current directory (`process.cwd()`): `npx grouparoo generate`
 - To generate a grouparoo project in another directory: `npx grouparoo generate /path/to/project`
-- `npx grouparoo upgrade` assumes you are tracking the `latest` version of all the Grouparoo dependencies, and will simply run `npm update` under the hood.
+- `npx grouparoo upgrade` assumes you are tracking the `latest` version of all the Grouparoo dependencies, and will update your `package.json` to use the latest versions of your packages and then run `npm install` again to install new dependencies and build the project.
 
 ## Notes
 
 - We assume `node` and `npm` are installed and available within your `$PATH`
-- We will not override an existing `package.json` or `.env` file if they already exist in the directory
+- We will not override an existing `package.json` or `.env` file if they already exist in the directory (except in the `upgrade` case)
 - We will attempt to run `npm install` in the new directory

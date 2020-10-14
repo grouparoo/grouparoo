@@ -9,17 +9,20 @@
     "node": ">=12.0.0"
   },
   "dependencies": {
-    "@grouparoo/core": "latest",
-    "@grouparoo/csv": "latest",
-    "@grouparoo/email-authentication": "latest",
-    "@grouparoo/google-sheets": "latest",
-    "@grouparoo/logger": "latest",
-    "@grouparoo/mailchimp": "latest",
-    "@grouparoo/hubspot": "latest",
-    "@grouparoo/sailthru": "latest",
-    "@grouparoo/mysql": "latest",
-    "@grouparoo/bigquery": "latest",
-    "@grouparoo/postgres": "latest"
+    "@grouparoo/bigquery": "~~VERSION~~",
+    "@grouparoo/core": "~~VERSION~~",
+    "@grouparoo/csv": "~~VERSION~~",
+    "@grouparoo/email-authentication": "~~VERSION~~",
+    "@grouparoo/google-sheets": "~~VERSION~~",
+    "@grouparoo/hubspot": "~~VERSION~~",
+    "@grouparoo/logger": "~~VERSION~~",
+    "@grouparoo/mailchimp": "~~VERSION~~",
+    "@grouparoo/mysql": "~~VERSION~~",
+    "@grouparoo/postgres": "~~VERSION~~",
+    "@grouparoo/redshift": "~~VERSION~~",
+    "@grouparoo/salesforce": "~~VERSION~~",
+    "@grouparoo/snowflake": "~~VERSION~~",
+    "@grouparoo/zendesk": "~~VERSION~~"
   },
   "scripts": {
     "prepare": "cd node_modules/@grouparoo/core && npm run prepare",
@@ -29,16 +32,19 @@
   },
   "grouparoo": {
     "plugins": [
+      "@grouparoo/bigquery",
       "@grouparoo/csv",
       "@grouparoo/email-authentication",
       "@grouparoo/google-sheets",
+      "@grouparoo/hubspot",
       "@grouparoo/logger",
       "@grouparoo/mailchimp",
-      "@grouparoo/hubspot",
-      "@grouparoo/sailthru",
       "@grouparoo/mysql",
-      "@grouparoo/bigquery",
-      "@grouparoo/postgres"
+      "@grouparoo/postgres",
+      "@grouparoo/redshift",
+      "@grouparoo/salesforce",
+      "@grouparoo/snowflake",
+      "@grouparoo/zendesk"
     ],
     "includedFiles": [
       "assets"
