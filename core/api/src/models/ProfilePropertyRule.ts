@@ -242,7 +242,11 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       options = await this.getOptions();
     }
 
-    const response = OptionHelper.validateOptions(this, options, allowEmpty);
+    const response = await OptionHelper.validateOptions(
+      this,
+      options,
+      allowEmpty
+    );
     if (CACHE_TTL > 0) {
       await client.set(cacheKey, "true");
       await client.expire(cacheKey, CACHE_TTL / 1000);
