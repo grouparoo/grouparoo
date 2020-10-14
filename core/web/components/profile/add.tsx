@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import LoadingButton from "../loadingButton";
 import { Actions } from "../../utils/apiData";
 
-export default function (props) {
+export default function AddProfile(props) {
   const { execApi } = useApi(props);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
