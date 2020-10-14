@@ -1,14 +1,10 @@
 import { runAction } from "./util/runAction";
+import * as uuid from "uuid";
 import { ApiKey, App, ProfilePropertyRule, Source } from "@grouparoo/core";
 import { getPurchaseCategories, getPurchases } from "./sample_data";
-import {
-  makePropertyRuleIdentifying,
-  createPropertyRule,
-  ensureBootstrapPropertyRule,
-  RuleDefinition,
-} from "./util/propertyRules";
-import * as uuid from "uuid";
+import { createPropertyRule, RuleDefinition } from "./util/propertyRules";
 import { log, userCreatedAt } from "./util/shared";
+import fetch from "isomorphic-fetch";
 
 const PAGEVIEW_RULES: Array<RuleDefinition> = [
   {
@@ -171,7 +167,7 @@ async function findIdentifyingRuleGuid() {
   return found.guid;
 }
 
-async function getApiKey(): Promise<ApiKey> {
+export async function getApiKey(): Promise<ApiKey> {
   const where = { name: "Demo API Key" };
 
   const found = await ApiKey.findOne({ where });
@@ -207,7 +203,7 @@ const funnel = [
   { type: "pageview", data: { page: "/thanks" }, percent: 100, user: true, category: true, purchase: true },
 ];
 
-class MockSession {
+export class MockSession {
   id: string;
   apiKey: ApiKey;
   purchase: { [key: string]: any };
@@ -218,12 +214,16 @@ class MockSession {
   currentStep: number;
   identified: boolean;
   now: number;
+  baseUrl: string;
+  done: boolean;
+  started: boolean;
 
   constructor(
     id: string,
     apiKey: ApiKey,
     purchase: { [key: string]: any },
-    categories: string[]
+    categories: string[],
+    baseUrl?: string
   ) {
     this.id = id;
     this.apiKey = apiKey;
@@ -235,25 +235,39 @@ class MockSession {
     this.category = null;
     this.categories = categories;
     this.now = 0;
+    this.baseUrl = baseUrl;
+    this.done = false;
+    this.started = false;
+  }
+
+  async start() {
+    if (!this.started) {
+      this.started = true;
+      await this.pickCurrentUser();
+      await this.setNow();
+    }
   }
 
   async run() {
-    await this.pickCurrentUser();
-    await this.setNow();
     while (await this.tick()) {
-      this.currentStep++;
       this.now += 1000;
       log(4, `tick: ${this.id} -> ${this.currentStep}`);
     }
   }
 
   async tick(): Promise<boolean> {
+    if (this.done) {
+      return false;
+    }
+    await this.start();
     const step = funnel[this.currentStep];
     if (!this.shouldContinue(step)) {
+      this.done = true;
       return false;
     }
 
     await this.track(step);
+    this.currentStep++;
     return true;
   }
 
@@ -392,6 +406,33 @@ class MockSession {
   }
 
   async sendEvent(params) {
-    await runAction("event:create", params, { apiKey: this.apiKey });
+    if (this.baseUrl) {
+      await this.postEvent(params);
+    } else {
+      await runAction("event:create", params, { apiKey: this.apiKey });
+    }
+  }
+
+  async postEvent(params) {
+    const data = Object.assign({}, params, { apiKey: this.apiKey.apiKey });
+    data.occuredAt = new Date().getTime(); // streaming, do it now
+    log(1, this.baseUrl + " " + JSON.stringify(data));
+    await fetch(this.baseUrl, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (response.ok && !response.error) {
+          return response.json();
+        } else {
+          return Promise.reject(response);
+        }
+      })
+      .catch((err) => {
+        return Promise.reject(err);
+      });
   }
 }
