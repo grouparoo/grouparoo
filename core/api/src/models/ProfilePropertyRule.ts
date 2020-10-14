@@ -12,6 +12,7 @@ import {
   ForeignKey,
   BelongsTo,
   HasMany,
+  Is,
   DefaultScope,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
@@ -143,7 +144,11 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   key: string;
 
   @AllowNull(false)
-  @Default("string")
+  @Is("properType", (value) => {
+    if (!ProfilePropertyRuleTypes.includes(value)) {
+      throw new Error(`${value} is not an allowed type`);
+    }
+  })
   @Column(DataType.ENUM(...ProfilePropertyRuleTypes))
   type: string;
 
@@ -390,13 +395,6 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @BeforeSave
   static async updateState(instance: ProfilePropertyRule) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
-  }
-
-  @BeforeSave
-  static async ensureType(instance: ProfilePropertyRule) {
-    if (!ProfilePropertyRuleTypes.includes(instance.type)) {
-      throw new Error(`${instance.type} is not an allowed type`);
-    }
   }
 
   @BeforeSave
