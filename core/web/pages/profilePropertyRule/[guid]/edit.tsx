@@ -69,6 +69,7 @@ export default function Page(props) {
           response.profilePropertyRule.state === "ready" &&
           profilePropertyRule.state === "draft"
         ) {
+          successHandler.set({ message: "Profile Property Rule Created" });
           router.push(nextPage || "/profilePropertyRules");
         } else {
           setLoading(false);
@@ -93,6 +94,7 @@ export default function Page(props) {
       );
       setLoading(false);
       if (response) {
+        successHandler.set({ message: "Profile Property Rule Deleted" });
         router.push(nextPage || "/profilePropertyRules");
       }
     }

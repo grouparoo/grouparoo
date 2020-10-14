@@ -274,9 +274,13 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   @AfterDestroy
-  static async destroyRuns(instance: Schedule) {
-    await Run.destroy({
-      where: { creatorGuid: instance.guid },
+  static async stopRuns(instance: Schedule) {
+    const runs = await Run.findAll({
+      where: { creatorGuid: instance.guid, state: "running" },
     });
+
+    for (const i in runs) {
+      await runs[i].update({ state: "stopped" });
+    }
   }
 }

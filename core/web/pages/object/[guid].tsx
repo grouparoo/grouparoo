@@ -1,4 +1,5 @@
 import Loader from "../../components/loader";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useApi } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
@@ -30,6 +31,21 @@ export default function FindObject(props) {
   const prefix = guid.split("_")[0];
   const route = guidPrefixes[prefix];
 
+  useEffect(() => {
+    determineRoute();
+  }, []);
+
+  async function determineRoute() {
+    if (!route) {
+      errorHandler.set({ error: `Sorry, I don't know what a "${guid}" is :(` });
+    } else if (prefix === "sch") {
+      routeScheduleToSource();
+    } else {
+      const as = route.replace("[guid]", guid);
+      router.push(route, as);
+    }
+  }
+
   async function load(model: string, guid: string) {
     return execApi("get", `/${model}/${guid}`);
   }
@@ -42,15 +58,6 @@ export default function FindObject(props) {
         `/source/${response.schedule.sourceGuid}/schedule`
       );
     }
-  }
-
-  if (!route) {
-    errorHandler.set({ error: `Sorry, I don't know what a "${guid}" is :(` });
-  } else if (prefix === "sch") {
-    routeScheduleToSource();
-  } else {
-    const as = route.replace("[guid]", guid);
-    router.push(route, as);
   }
 
   return (

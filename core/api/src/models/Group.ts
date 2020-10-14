@@ -706,9 +706,13 @@ export class Group extends LoggedModel<Group> {
   }
 
   @AfterDestroy
-  static async destroyRuns(instance: Group) {
-    await Run.destroy({
-      where: { creatorGuid: instance.guid },
+  static async stopRuns(instance: Group) {
+    const runs = await Run.findAll({
+      where: { creatorGuid: instance.guid, state: "running" },
     });
+
+    for (const i in runs) {
+      await runs[i].update({ state: "stopped" });
+    }
   }
 }

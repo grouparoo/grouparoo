@@ -476,10 +476,14 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   @AfterDestroy
-  static async destroyRuns(instance: ProfilePropertyRule) {
-    await Run.destroy({
-      where: { creatorGuid: instance.guid },
+  static async stopRuns(instance: ProfilePropertyRule) {
+    const runs = await Run.findAll({
+      where: { creatorGuid: instance.guid, state: "running" },
     });
+
+    for (const i in runs) {
+      await runs[i].update({ state: "stopped" });
+    }
   }
 
   @AfterDestroy

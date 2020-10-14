@@ -1,7 +1,8 @@
 import { Task, log } from "actionhero";
-import { Log } from "../models/Log";
+import { Run } from "../models/Run";
 import { Import } from "../models/Import";
 import { Export } from "../models/Export";
+import { Log } from "../models/Log";
 
 export class Sweeper extends Task {
   constructor() {
@@ -27,9 +28,13 @@ export class Sweeper extends Task {
     let count = 0;
     let response: { count: number; days: number };
 
-    // --- LOGS ---
-    response = await Log.sweep();
-    this.log("log", response.count, response.days);
+    // --- RUNS ---
+    count = -1;
+    while (count !== 0) {
+      response = await Run.sweep(limit);
+      count = response.count;
+      this.log("run", response.count, response.days);
+    }
 
     // --- IMPORTS ---
     count = -1;
@@ -46,5 +51,9 @@ export class Sweeper extends Task {
       count = response.count;
       this.log("export", response.count, response.days);
     }
+
+    // --- LOGS ---
+    response = await Log.sweep();
+    this.log("log", response.count, response.days);
   }
 }

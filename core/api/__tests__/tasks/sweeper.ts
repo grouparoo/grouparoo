@@ -1,4 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
+import { Run } from "../../src/models/Run";
 import { Log } from "../../src/models/Log";
 import { Import } from "../../src/models/Import";
 import { Export } from "../../src/models/Export";
@@ -39,23 +40,24 @@ describe("tasks/sweeper", () => {
       expect(found[0].timestamp).toBeNull();
     });
 
-    test("it will delete old logs", async () => {
-      await helper.factories.log();
-      const oldLog = await helper.factories.log();
+    test("it will delete old runs", async () => {
+      await Run.truncate();
+      await helper.factories.run();
+      const oldRun = await helper.factories.run();
 
-      oldLog.set({ createdAt: new Date(0) }, { raw: true });
-      oldLog.changed("createdAt", true);
-      await oldLog.save({
+      oldRun.set({ createdAt: new Date(0) }, { raw: true });
+      oldRun.changed("createdAt", true);
+      await oldRun.save({
         silent: true,
         fields: ["createdAt"],
       });
 
-      let count = await Log.count();
+      let count = await Run.count();
       expect(count).toBe(2);
 
       await specHelper.runTask("sweeper", {});
 
-      count = await Log.count();
+      count = await Run.count();
       expect(count).toBe(1);
     });
 
@@ -96,6 +98,27 @@ describe("tasks/sweeper", () => {
 
       count = await Export.count();
       expect(count).toBe(0);
+    });
+
+    test("it will delete old logs", async () => {
+      await Log.truncate();
+      await helper.factories.log();
+      const oldLog = await helper.factories.log();
+
+      oldLog.set({ createdAt: new Date(0) }, { raw: true });
+      oldLog.changed("createdAt", true);
+      await oldLog.save({
+        silent: true,
+        fields: ["createdAt"],
+      });
+
+      let count = await Log.count();
+      expect(count).toBe(2);
+
+      await specHelper.runTask("sweeper", {});
+
+      count = await Log.count();
+      expect(count).toBe(1);
     });
   });
 });
