@@ -30,6 +30,7 @@ import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { TeamMember } from "./TeamMember";
 import { RunOps } from "../modules/ops/runs";
 import { plugin } from "../modules/plugin";
+import Moment from "moment";
 
 export interface HighWaterMark {
   [key: string]: string | number | Date;
@@ -105,8 +106,16 @@ export class Run extends Model<Run> {
 
   @Column(DataType.STRING)
   get highWaterMark(): HighWaterMark {
-    // @ts-ignore
-    return JSON.parse(this.getDataValue("highWaterMark"));
+    try {
+      // @ts-ignore
+      return JSON.parse(this.getDataValue("highWaterMark"));
+    } catch (error) {
+      log(
+        `error parsing highWaterMark for run ${this.guid}: ${error}`,
+        "error"
+      );
+      return {};
+    }
   }
   set highWaterMark(value: HighWaterMark) {
     // @ts-ignore
@@ -416,5 +425,28 @@ export class Run extends Model<Run> {
         verb: "update",
       });
     }
+  }
+
+  static async sweep(limit: number) {
+    const days = parseInt(
+      (await plugin.readSetting("core", "sweeper-delete-old-runs-days")).value
+    );
+
+    const runs = await Run.findAll({
+      where: {
+        state: { [Op.in]: ["stopped", "complete"] },
+        createdAt: {
+          [Op.lt]: Moment().subtract(days, "days").toDate(),
+        },
+      },
+      order: [["createdAt", "desc"]],
+      limit,
+    });
+
+    for (const i in runs) {
+      await runs[i].destroy();
+    }
+
+    return { count: runs.length, days };
   }
 }

@@ -94,11 +94,11 @@ export class Plugins extends Initializer {
         type: "string",
       },
       {
-        key: "sweeper-delete-old-logs-days",
-        title: "Sweeper: Delete Old Logs Days",
+        key: "sweeper-delete-old-runs-days",
+        title: "Sweeper: Delete Old Runs Days",
         defaultValue: 31,
         description:
-          "How many days should we keep Log records for on the server?",
+          "How many days should we keep Run records for on the server once they are stopped or complete?",
         type: "number",
       },
       {
@@ -115,6 +115,14 @@ export class Plugins extends Initializer {
         defaultValue: 31,
         description:
           "How many days should we keep Export records for on the server?  We will keep the most recent export for each Profile & Destination.",
+        type: "number",
+      },
+      {
+        key: "sweeper-delete-old-logs-days",
+        title: "Sweeper: Delete Old Logs Days",
+        defaultValue: 31,
+        description:
+          "How many days should we keep Log records for on the server?",
         type: "number",
       },
     ];
