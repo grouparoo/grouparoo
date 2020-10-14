@@ -106,7 +106,7 @@ export default function Page(props) {
 
       <SourceTabs source={source} />
 
-      <Form id="form" onSubmit={edit} noValidate>
+      <Form id="form" onSubmit={edit} autoComplete="off">
         <Row>
           <Col md={1}>
             <br />

@@ -150,7 +150,7 @@ function SettingCard({
             </Card.Subtitle>
           ) : null}
 
-          <Form onSubmit={handleSubmit(onSubmit)}>
+          <Form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
             <Form.Group>
               {setting.type === "string" ? (
                 <Form.Control

@@ -282,7 +282,7 @@ export default function Page(props) {
 
           <hr />
 
-          <Form onSubmit={(event) => handleAdd(event)}>
+          <Form onSubmit={(event) => handleAdd(event)} autoComplete="off">
             <Row>
               <Col md={9}>
                 <Form.Group controlId="groupGuid">

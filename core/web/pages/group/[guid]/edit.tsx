@@ -84,7 +84,7 @@ export default function Page(props) {
       <br />
       <Row>
         <Col md={group.type === "calculated" ? 8 : 12}>
-          <Form id="form" onSubmit={submit}>
+          <Form id="form" onSubmit={submit} autoComplete="off">
             <Form.Group controlId="name">
               <Form.Label>Name</Form.Label>
               <Form.Control

@@ -83,7 +83,7 @@ export default function Page(props) {
     <>
       <TeamTabs team={team} />
 
-      <Form id="form" onSubmit={updateTeam}>
+      <Form id="form" onSubmit={updateTeam} autoComplete="off">
         <Form.Group>
           <Form.Label>Name</Form.Label>
           <Form.Control

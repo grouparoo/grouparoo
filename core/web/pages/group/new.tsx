@@ -7,7 +7,7 @@ import { Form } from "react-bootstrap";
 import LoadingButton from "../../components/loadingButton";
 import { Actions } from "../../utils/apiData";
 
-export default function (props) {
+export default function NewGroup(props) {
   const { errorHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);

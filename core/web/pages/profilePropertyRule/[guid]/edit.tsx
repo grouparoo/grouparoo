@@ -168,7 +168,7 @@ export default function Page(props) {
         source={source}
       />
 
-      <Form id="form" onSubmit={onSubmit}>
+      <Form id="form" onSubmit={onSubmit} autoComplete="off">
         <Row>
           <Col md={1}>
             <br />

@@ -5,7 +5,7 @@ import { Row, Col, Card } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import AppIcon from "../../../components/appIcon";
 import { useRouter } from "next/router";
-import { humanizePluginName } from "../../../components/appSelectorList";
+import { humanizePluginName } from "../../../utils/humanizePluginName";
 import { Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 
