@@ -1,38 +1,65 @@
-import { api, log } from "actionhero";
+import { api, log, id } from "actionhero";
 import { App, SimpleAppOptions } from "../../models/App";
+import { waitForLock } from "../locks";
 import { OptionHelper } from "../optionHelper";
 
 export namespace AppOps {
   /**
    * Connect to an App
    */
-  export async function connect(app: App, options?: SimpleAppOptions) {
-    const appOptions = await app.getOptions();
+  export async function connect(
+    app: App,
+    options?: SimpleAppOptions,
+    forceReconnect = false
+  ) {
     const { pluginApp } = await app.getPlugin();
-    const connection = api.plugins.persistentConnections[app.guid];
-    if (connection) {
-      await app.disconnect();
+    if (!pluginApp.methods.connect) return;
+
+    const appOptions = await app.getOptions();
+    const { releaseLock } = await getConnectionLock(app);
+
+    const existingConnection = api.plugins.persistentConnections[app.guid];
+    if (existingConnection) {
+      if (forceReconnect) {
+        await disconnect(app, true);
+      } else {
+        await releaseLock();
+        return existingConnection;
+      }
     }
-    if (pluginApp.methods.connect) {
-      log(`connecting to app ${app.name} - ${pluginApp.name} (${app.guid})`);
-      const connection = await pluginApp.methods.connect({
-        app,
-        appGuid: app.guid,
-        appOptions: options ? options : appOptions,
-      });
-      app.setConnection(connection);
-      return connection;
-    }
+
+    log(`connecting to app ${app.name} - ${pluginApp.name} (${app.guid})`);
+
+    const connection = await pluginApp.methods.connect({
+      app,
+      appGuid: app.guid,
+      appOptions: options ? options : appOptions,
+    });
+
+    app.setConnection(connection);
+
+    await releaseLock();
+    return connection;
   }
 
   /**
    * Disconnect from an App
    */
-  export async function disconnect(app: App) {
+  export async function disconnect(app: App, alreadyLocked = false) {
     const appOptions = await app.getOptions();
     const { pluginApp } = await app.getPlugin();
+
+    if (!pluginApp.methods.disconnect) return;
+
+    let releaseLock: Function;
+    if (!alreadyLocked) {
+      const lockResponse = await getConnectionLock(app);
+      releaseLock = lockResponse.releaseLock;
+    }
+
     const connection = api.plugins.persistentConnections[app.guid];
-    if (pluginApp.methods.disconnect && connection) {
+
+    if (connection) {
       log(
         `disconnecting from app ${app.name} - ${pluginApp.name} (${app.guid})`
       );
@@ -44,6 +71,8 @@ export namespace AppOps {
       });
       app.setConnection(undefined);
     }
+
+    if (releaseLock) await releaseLock();
   }
 
   /**
@@ -102,5 +131,11 @@ export namespace AppOps {
     }
 
     return { success, message, error };
+  }
+
+  async function getConnectionLock(app: App) {
+    console.log("waiting...");
+    const key = `app:${app.guid}:connection:${id}:`;
+    return waitForLock(key);
   }
 }
