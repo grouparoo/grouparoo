@@ -15,30 +15,33 @@ export namespace AppOps {
     const { pluginApp } = await app.getPlugin();
     if (!pluginApp.methods.connect) return;
 
+    let connection;
     const appOptions = await app.getOptions();
     const { releaseLock } = await getConnectionLock(app);
 
-    const existingConnection = api.plugins.persistentConnections[app.guid];
-    if (existingConnection) {
-      if (forceReconnect) {
-        await disconnect(app, true);
-      } else {
-        await releaseLock();
-        return existingConnection;
+    try {
+      connection = api.plugins.persistentConnections[app.guid];
+      if (connection) {
+        if (forceReconnect) {
+          await disconnect(app, true);
+        } else {
+          return;
+        }
       }
+
+      log(`connecting to app ${app.name} - ${pluginApp.name} (${app.guid})`);
+
+      connection = await pluginApp.methods.connect({
+        app,
+        appGuid: app.guid,
+        appOptions: options ? options : appOptions,
+      });
+
+      app.setConnection(connection);
+    } finally {
+      await releaseLock();
     }
 
-    log(`connecting to app ${app.name} - ${pluginApp.name} (${app.guid})`);
-
-    const connection = await pluginApp.methods.connect({
-      app,
-      appGuid: app.guid,
-      appOptions: options ? options : appOptions,
-    });
-
-    app.setConnection(connection);
-
-    await releaseLock();
     return connection;
   }
 
@@ -52,27 +55,29 @@ export namespace AppOps {
     if (!pluginApp.methods.disconnect) return;
 
     let releaseLock: Function;
-    if (!alreadyLocked) {
-      const lockResponse = await getConnectionLock(app);
-      releaseLock = lockResponse.releaseLock;
+    try {
+      if (!alreadyLocked) {
+        const lockResponse = await getConnectionLock(app);
+        releaseLock = lockResponse.releaseLock;
+      }
+
+      const connection = api.plugins.persistentConnections[app.guid];
+
+      if (connection) {
+        log(
+          `disconnecting from app ${app.name} - ${pluginApp.name} (${app.guid})`
+        );
+        await pluginApp.methods.disconnect({
+          app,
+          appGuid: app.guid,
+          appOptions,
+          connection,
+        });
+        app.setConnection(undefined);
+      }
+    } finally {
+      if (releaseLock) await releaseLock();
     }
-
-    const connection = api.plugins.persistentConnections[app.guid];
-
-    if (connection) {
-      log(
-        `disconnecting from app ${app.name} - ${pluginApp.name} (${app.guid})`
-      );
-      await pluginApp.methods.disconnect({
-        app,
-        appGuid: app.guid,
-        appOptions,
-        connection,
-      });
-      app.setConnection(undefined);
-    }
-
-    if (releaseLock) await releaseLock();
   }
 
   /**
