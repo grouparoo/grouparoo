@@ -139,7 +139,7 @@ export namespace AppOps {
   }
 
   async function getConnectionLock(app: App) {
-    const key = `app:${app.guid}:connection:${id}:`;
+    const key = `app:${app.guid}:connection:${id}`;
     return waitForLock(key);
   }
 }
