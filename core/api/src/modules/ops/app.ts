@@ -1,48 +1,82 @@
-import { api, log } from "actionhero";
+import { api, log, id } from "actionhero";
 import { App, SimpleAppOptions } from "../../models/App";
+import { waitForLock } from "../locks";
 import { OptionHelper } from "../optionHelper";
 
 export namespace AppOps {
   /**
    * Connect to an App
    */
-  export async function connect(app: App, options?: SimpleAppOptions) {
-    const appOptions = await app.getOptions();
+  export async function connect(
+    app: App,
+    options?: SimpleAppOptions,
+    forceReconnect = false
+  ) {
     const { pluginApp } = await app.getPlugin();
-    const connection = api.plugins.persistentConnections[app.guid];
-    if (connection) {
-      await app.disconnect();
-    }
-    if (pluginApp.methods.connect) {
+    if (!pluginApp.methods.connect) return;
+
+    let connection;
+    const appOptions = await app.getOptions();
+    const { releaseLock } = await getConnectionLock(app);
+
+    try {
+      connection = api.plugins.persistentConnections[app.guid];
+      if (connection) {
+        if (forceReconnect) {
+          await disconnect(app, true);
+        } else {
+          return;
+        }
+      }
+
       log(`connecting to app ${app.name} - ${pluginApp.name} (${app.guid})`);
-      const connection = await pluginApp.methods.connect({
+
+      connection = await pluginApp.methods.connect({
         app,
         appGuid: app.guid,
         appOptions: options ? options : appOptions,
       });
+
       app.setConnection(connection);
-      return connection;
+    } finally {
+      await releaseLock();
     }
+
+    return connection;
   }
 
   /**
    * Disconnect from an App
    */
-  export async function disconnect(app: App) {
+  export async function disconnect(app: App, alreadyLocked = false) {
     const appOptions = await app.getOptions();
     const { pluginApp } = await app.getPlugin();
-    const connection = api.plugins.persistentConnections[app.guid];
-    if (pluginApp.methods.disconnect && connection) {
-      log(
-        `disconnecting from app ${app.name} - ${pluginApp.name} (${app.guid})`
-      );
-      await pluginApp.methods.disconnect({
-        app,
-        appGuid: app.guid,
-        appOptions,
-        connection,
-      });
-      app.setConnection(undefined);
+
+    if (!pluginApp.methods.disconnect) return;
+
+    let releaseLock: Function;
+    try {
+      if (!alreadyLocked) {
+        const lockResponse = await getConnectionLock(app);
+        releaseLock = lockResponse.releaseLock;
+      }
+
+      const connection = api.plugins.persistentConnections[app.guid];
+
+      if (connection) {
+        log(
+          `disconnecting from app ${app.name} - ${pluginApp.name} (${app.guid})`
+        );
+        await pluginApp.methods.disconnect({
+          app,
+          appGuid: app.guid,
+          appOptions,
+          connection,
+        });
+        app.setConnection(undefined);
+      }
+    } finally {
+      if (releaseLock) await releaseLock();
     }
   }
 
@@ -102,5 +136,10 @@ export namespace AppOps {
     }
 
     return { success, message, error };
+  }
+
+  async function getConnectionLock(app: App) {
+    const key = `app:${app.guid}:connection:${id}`;
+    return waitForLock(key);
   }
 }
