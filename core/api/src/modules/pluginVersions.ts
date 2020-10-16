@@ -35,7 +35,7 @@ export async function pluginVersions() {
         const manifest = await getLatestNPMVersion(plugin);
         latestVersion = manifest.version;
       } catch (error) {
-        log(error, "error");
+        log(error.toString(), "error");
       }
 
       return {
