@@ -28,7 +28,7 @@
     "lint": "prettier --check src __tests__"
   },
   "devDependencies": {
-    "@types/jest": "26.0.14",
+    "@types/jest": "^26.0.14",
     "jest": "26.5.3",
     "jest-fetch-mock": "3.0.3",
     "prettier": "2.1.2",
