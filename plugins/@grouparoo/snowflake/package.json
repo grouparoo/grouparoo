@@ -38,8 +38,8 @@
   "devDependencies": {
     "@grouparoo/core": "^0.1.22-alpha.0",
     "@grouparoo/spec-helper": "^0.1.22-alpha.0",
-    "@types/jest": "26.0.14",
-    "@types/node": "14.11.8",
+    "@types/jest": "^26.0.14",
+    "@types/node": "^14.11.8",
     "actionhero": "24.0.0",
     "dotenv": "8.2.0",
     "fs-extra": "9.0.1",
