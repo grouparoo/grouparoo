@@ -87,7 +87,8 @@ export default function Page({
               <td>{plugin.name}</td>
               <td>
                 {plugin.version}{" "}
-                {plugin.version !== plugin.latestVersion ? (
+                {plugin.version !== plugin.latestVersion &&
+                plugin.latestVersion !== "unknown" ? (
                   <Badge variant={"warning"}>Out of Date</Badge>
                 ) : null}
               </td>
