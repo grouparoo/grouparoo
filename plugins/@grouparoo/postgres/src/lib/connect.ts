@@ -1,4 +1,4 @@
-import { Client, types } from "pg";
+import { Pool, types } from "pg";
 import parseDate from "postgres-date";
 import format from "pg-format";
 import { ConnectPluginAppMethod } from "@grouparoo/core";
@@ -23,21 +23,22 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
     }
   });
 
-  const client = new Client(formattedOptions);
-  // @ts-ignore these are not on the types but exist on the object
-  client.setTypeParser(types.builtins.DATE, formatAsText); // Date
-  // @ts-ignore
-  client.setTypeParser(types.builtins.TIMESTAMP, formatInUtcDefault); // Timestamp without zone
-  // @ts-ignore
-  client.setTypeParser(types.builtins.TIMESTAMPTZ, formatInUtcDefault); // Timestamp without zone
+  const pool = new Pool(formattedOptions);
 
-  await client.connect();
+  pool.on("connect", async (client) => {
+    // @ts-ignore these are not on the types but exist on the object
+    client.setTypeParser(types.builtins.DATE, formatAsText); // Date
+    // @ts-ignore
+    client.setTypeParser(types.builtins.TIMESTAMP, formatInUtcDefault); // Timestamp without zone
+    // @ts-ignore
+    client.setTypeParser(types.builtins.TIMESTAMPTZ, formatInUtcDefault); // Timestamp without zone
 
-  if (appOptions.schema) {
-    await client.query(format(`SET search_path TO %L;`, appOptions.schema));
-  }
+    if (appOptions.schema) {
+      await client.query(format(`SET search_path TO %L;`, appOptions.schema));
+    }
+  });
 
-  return client;
+  return pool;
 };
 
 function formatAsText(text) {
