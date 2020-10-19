@@ -82,7 +82,7 @@ describe("mysql/table/profiles", () => {
 
     // setup the world
     const app = await helper.factories.app({
-      name: "BQ",
+      name: "MYSQL",
       type: "mysql",
       options: appOptions,
     });

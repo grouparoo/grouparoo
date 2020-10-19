@@ -221,6 +221,7 @@ export class Run extends Model<Run> {
     const percentComplete = await RunOps.determinePercentComplete(this);
     await this.update({ percentComplete });
     log(`run ${this.guid} is ${this.percentComplete}% complete`);
+    return percentComplete;
   }
 
   async afterBatch() {

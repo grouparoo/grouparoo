@@ -8,7 +8,7 @@ export const getChangedRowCount: GetChangedRowCountMethod = async ({
   highWaterMarkCondition,
 }) => {
   const params = [];
-  let query = `SELECT COUNT (*) AS __count FROM ??`;
+  let query = `SELECT COUNT(*) AS __count FROM ??`;
   params.push(tableName);
 
   query += await makeHighwaterWhereClause(highWaterMarkCondition, params);
