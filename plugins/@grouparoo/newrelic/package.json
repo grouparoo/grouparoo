@@ -27,7 +27,7 @@
     "lint": "prettier --check src "
   },
   "dependencies": {
-    "newrelic": "6.13.1"
+    "newrelic": "6.13.2"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
