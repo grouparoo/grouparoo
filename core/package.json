@@ -57,7 +57,7 @@
     "ah-sequelize-plugin": "2.2.4",
     "axios": "0.20.0",
     "bcrypt": "5.0.0",
-    "bootstrap": "4.5.2",
+    "bootstrap": "4.5.3",
     "csv-stringify": "5.5.1",
     "date-fns": "2.16.1",
     "dotenv": "8.2.0",
