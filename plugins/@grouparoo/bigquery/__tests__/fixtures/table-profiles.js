@@ -181,7 +181,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT *, SAFE_CAST(`stamp` as STRING) as `__hmw` FROM `profiles` ORDER BY `stamp` ASC, `id` ASC LIMIT 100 OFFSET 0",
+          "SELECT *, SAFE_CAST(`stamp` as STRING) as `__hwm` FROM `profiles` ORDER BY `stamp` ASC, `id` ASC LIMIT 100 OFFSET 0",
         types: [],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -477,7 +477,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT *, SAFE_CAST(`stamp` as STRING) as `__hmw` FROM `profiles` WHERE `stamp` >= ? ORDER BY `stamp` ASC, `id` ASC LIMIT 100 OFFSET 0",
+          "SELECT *, SAFE_CAST(`stamp` as STRING) as `__hwm` FROM `profiles` WHERE `stamp` >= ? ORDER BY `stamp` ASC, `id` ASC LIMIT 100 OFFSET 0",
         types: ["TIMESTAMP"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -768,7 +768,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT *, SAFE_CAST(`stamp` as STRING) as `__hmw` FROM `profiles` WHERE `stamp` >= ? ORDER BY `stamp` ASC, `id` ASC LIMIT 100 OFFSET 0",
+          "SELECT *, SAFE_CAST(`stamp` as STRING) as `__hwm` FROM `profiles` WHERE `stamp` >= ? ORDER BY `stamp` ASC, `id` ASC LIMIT 100 OFFSET 0",
         types: ["TIMESTAMP"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -1085,7 +1085,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT *, SAFE_CAST(`stamp` as STRING) as `__hmw` FROM `profiles` ORDER BY `stamp` ASC, `id` ASC LIMIT 4 OFFSET 0",
+          "SELECT *, SAFE_CAST(`stamp` as STRING) as `__hwm` FROM `profiles` ORDER BY `stamp` ASC, `id` ASC LIMIT 4 OFFSET 0",
         types: [],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -1394,7 +1394,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT *, SAFE_CAST(`stamp` as STRING) as `__hmw` FROM `profiles` WHERE `stamp` >= ? ORDER BY `stamp` ASC, `id` ASC LIMIT 4 OFFSET 0",
+          "SELECT *, SAFE_CAST(`stamp` as STRING) as `__hwm` FROM `profiles` WHERE `stamp` >= ? ORDER BY `stamp` ASC, `id` ASC LIMIT 4 OFFSET 0",
         types: ["TIMESTAMP"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",
@@ -1700,7 +1700,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       query: {
         useLegacySql: false,
         query:
-          "SELECT *, SAFE_CAST(`stamp` as STRING) as `__hmw` FROM `profiles` WHERE `stamp` >= ? ORDER BY `stamp` ASC, `id` ASC LIMIT 4 OFFSET 0",
+          "SELECT *, SAFE_CAST(`stamp` as STRING) as `__hwm` FROM `profiles` WHERE `stamp` >= ? ORDER BY `stamp` ASC, `id` ASC LIMIT 4 OFFSET 0",
         types: ["TIMESTAMP"],
         defaultDataset: { datasetId: "test" },
         parameterMode: "positional",

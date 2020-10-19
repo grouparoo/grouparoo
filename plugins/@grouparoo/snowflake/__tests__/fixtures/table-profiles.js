@@ -326,7 +326,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
             length: null,
           },
           {
-            name: "__hmw",
+            name: "__hwm",
             database: "",
             schema: "",
             table: "",
@@ -859,7 +859,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
             length: null,
           },
           {
-            name: "__hmw",
+            name: "__hwm",
             database: "",
             schema: "",
             table: "",
@@ -1302,7 +1302,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
             length: null,
           },
           {
-            name: "__hmw",
+            name: "__hwm",
             database: "",
             schema: "",
             table: "",
@@ -1684,7 +1684,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
             length: null,
           },
           {
-            name: "__hmw",
+            name: "__hwm",
             database: "",
             schema: "",
             table: "",
@@ -2127,7 +2127,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
             length: null,
           },
           {
-            name: "__hmw",
+            name: "__hwm",
             database: "",
             schema: "",
             table: "",
@@ -2570,7 +2570,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
             length: null,
           },
           {
-            name: "__hmw",
+            name: "__hwm",
             database: "",
             schema: "",
             table: "",

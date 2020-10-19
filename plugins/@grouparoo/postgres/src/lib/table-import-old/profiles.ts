@@ -15,7 +15,7 @@ export const profiles: ProfilesPluginMethod = async ({
   let importsCount = 0;
   const { table } = await source.parameterizedOptions(run);
   const sortColumn = scheduleOptions.column;
-  const highWaterMarkColumnName = "__hmw";
+  const highWaterMarkColumnName = "__hwm";
   const mappingColumn = Object.keys(sourceMapping)[0];
 
   const where = highWaterMark[sortColumn]
