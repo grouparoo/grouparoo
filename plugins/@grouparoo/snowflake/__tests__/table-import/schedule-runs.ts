@@ -3,6 +3,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/snowflake": { path: path.join(__dirname, "..", "..") },
 });
 
+import "../utils/mock";
 import { App, Source, Schedule, SimpleAppOptions } from "@grouparoo/core";
 import { helper } from "@grouparoo/spec-helper";
 import { FilterOperation } from "@grouparoo/app-templates/src/source/table";
