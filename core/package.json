@@ -24,7 +24,7 @@
   "types": "api/dist/index",
   "scripts": {
     "prepare": "npm run build-api && npm run build-web && npm run thank-you",
-    "build-api": "cd api && rm -rf dist && tsc --declaration",
+    "build-api": "./api/bin/build",
     "build-web": "cd web && next build",
     "start": "./api/bin/start",
     "dev": "./api/bin/dev",
