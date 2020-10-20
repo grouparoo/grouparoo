@@ -41,7 +41,7 @@ export const getProfiles: GetProfilesMethod = ({ getChangedRows }) => {
     const secondarySortColumnASC = Object.keys(sourceMapping)[0];
 
     let importsCount = 0;
-    const highWaterMarkKey = "__hmw";
+    const highWaterMarkKey = "__hwm";
 
     const results = await getChangedRows({
       connection,
