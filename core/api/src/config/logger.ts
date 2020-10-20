@@ -39,17 +39,25 @@ export const test = {
 // helpers for building the winston loggers
 
 function buildConsoleLogger(level = "info") {
+  const formats = [];
+  if (!process.env.GROUPAROO_LOGS_STDOUT_DISABLE_COLOR) {
+    formats.push(winston.format.colorize());
+  }
+  if (!process.env.GROUPAROO_LOGS_STDOUT_DISABLE_TIMESTAMP) {
+    formats.push(winston.format.timestamp());
+  }
+
+  formats.push(
+    winston.format.printf((info) => {
+      return `${info.timestamp ? `${info.timestamp} - ` : ""}${info.level}: ${
+        info.message
+      } ${stringifyExtraMessagePropertiesForConsole(info)}`;
+    })
+  );
+
   return function (config) {
     return winston.createLogger({
-      format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.colorize(),
-        winston.format.printf((info) => {
-          return `${info.timestamp} - ${info.level}: ${
-            info.message
-          } ${stringifyExtraMessagePropertiesForConsole(info)}`;
-        })
-      ),
+      format: winston.format.combine(...formats),
       level,
       levels: winston.config.syslog.levels,
       transports: [new winston.transports.Console()],
