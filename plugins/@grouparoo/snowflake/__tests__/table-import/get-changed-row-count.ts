@@ -1,29 +1,36 @@
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/bigquery": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/snowflake": { path: path.join(__dirname, "..", "..") },
 });
 
+import "../utils/mock";
 import { App, Source, Schedule, SimpleAppOptions } from "@grouparoo/core";
 import { helper } from "@grouparoo/spec-helper";
-import { connect } from "../../src/lib/connect";
 import { FilterOperation } from "@grouparoo/app-templates/src/source/table";
 import { getChangedRowCount } from "../../src/lib/table-import/getChangedRowCount";
 import { loadAppOptions, updater } from "../utils/nockHelper";
+import { connect } from "../../src/lib/connect";
 
-const nockFile = path.join(__dirname, "../", "fixtures", "schedule-runs.js");
+const nockFile = path.join(
+  __dirname,
+  "../",
+  "fixtures",
+  "table-get-changed-row-count.js"
+);
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/schedule-runs");
+require("./../fixtures/table-get-changed-row-count");
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
 
+// these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 
 let actionhero, connection;
 
-describe("bigquery/table/scheduleOptions", () => {
+describe("snowflake/table/scheduleOptions", () => {
   let app: App;
   let source: Source;
   let schedule: Schedule;
@@ -42,21 +49,21 @@ describe("bigquery/table/scheduleOptions", () => {
     await helper.factories.profilePropertyRules();
 
     app = await helper.factories.app({
-      name: "BQ",
-      type: "bigquery",
+      name: "SNOW",
+      type: "snowflake",
       options: appOptions,
     });
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "bigquery-table-import",
+      type: "snowflake-table-import",
     });
-    await source.setOptions({ table: "profiles" });
+    await source.setOptions({ table: "PROFILES" });
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
 
     schedule = await helper.factories.schedule(source, {
-      options: { column: "stamp" },
+      options: { column: "STAMP" },
     });
   });
 
@@ -65,10 +72,10 @@ describe("bigquery/table/scheduleOptions", () => {
       connection,
       appOptions,
       appGuid: app.guid,
-      tableName: "profiles",
+      tableName: "PROFILES",
       highWaterMarkCondition: {
-        columnName: "stamp",
-        value: 0,
+        columnName: "STAMP",
+        value: new Date(0),
         filterOperation: FilterOperation.GreaterThan,
       },
     });
