@@ -65,6 +65,8 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
       }
     }
 
+    // the rule can't be found
+    await ProfilePropertyRule.clearCache();
     throw new Error(
       `cached profile property rule not found for this profilePropertyRuleGuid ${this.profilePropertyRuleGuid}`
     );

@@ -16,7 +16,7 @@ import {
   DefaultScope,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
-import { env, api } from "actionhero";
+import { env, api, cache } from "actionhero";
 import { plugin } from "../modules/plugin";
 import { LoggedModel } from "../classes/loggedModel";
 import { Profile } from "./Profile";
@@ -60,21 +60,17 @@ export const ProfilePropertyRuleTypes = [
 ];
 
 const CACHE_TTL = env === "test" ? -1 : 1000 * 30;
+const CACHE_KEY = `grouparoo:profilePropertyRules`;
 
-interface ProfilePropertyRulesCache {
-  createdAt: number;
-  data: {
-    [key: string]: {
-      guid: string;
-      key: string;
-      type: string;
-      unique: boolean;
-      isArray: boolean;
-      identifying: boolean;
-      sourceGuid: string;
-      appGuid: string;
-    };
-  };
+export interface CachedProfilePropertyRule {
+  guid: string;
+  key: string;
+  type: string;
+  unique: boolean;
+  isArray: boolean;
+  identifying: boolean;
+  sourceGuid: string;
+  appGuid: string;
 }
 
 export interface SimpleProfilePropertyRuleOptions
@@ -122,11 +118,6 @@ export interface ProfilePropertyRuleFiltersWithKey {
   relativeMatchUnit?: string;
   relativeMatchDirection?: string;
 }
-
-let CACHE: ProfilePropertyRulesCache = {
-  createdAt: 0,
-  data: {},
-};
 
 @DefaultScope(() => ({
   where: { state: "ready" },
@@ -502,42 +493,43 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   static async clearCache() {
-    CACHE = {
-      createdAt: new Date().getTime() - CACHE_TTL - 1,
-      data: {},
-    };
+    await cache.destroy(CACHE_KEY);
   }
 
-  static async cached() {
-    const now = new Date().getTime();
-    if (CACHE.createdAt + CACHE_TTL >= now) {
-      return CACHE.data;
-    } else {
-      const instances = await ProfilePropertyRule.findAll({
-        order: [["key", "asc"]],
-        include: [Source],
-      });
+  static async cached(): Promise<{
+    [guid: string]: CachedProfilePropertyRule;
+  }> {
+    try {
+      const cacheResponse = await cache.load(CACHE_KEY);
+      return cacheResponse.value;
+    } catch (error) {
+      const message = (error?.message || "").toString();
+      if (message === "Object not found" || message === "Object expired") {
+        const instances = await ProfilePropertyRule.findAll({
+          order: [["key", "asc"]],
+          include: [Source],
+        });
 
-      const rulesHash = {};
-      instances.forEach((rule) => {
-        rulesHash[rule.key] = {
-          guid: rule.guid,
-          key: rule.key,
-          type: rule.type,
-          unique: rule.unique,
-          isArray: rule.isArray,
-          identifying: rule.identifying,
-          sourceGuid: rule.sourceGuid,
-          source: rule.source.appGuid,
-        };
-      });
+        const rulesHash = {};
+        instances.forEach((rule) => {
+          rulesHash[rule.key] = {
+            guid: rule.guid,
+            key: rule.key,
+            type: rule.type,
+            unique: rule.unique,
+            isArray: rule.isArray,
+            identifying: rule.identifying,
+            sourceGuid: rule.sourceGuid,
+            appGuid: rule.source.appGuid,
+          };
+        });
 
-      CACHE = {
-        createdAt: now,
-        data: Object.assign({}, rulesHash),
-      };
+        await cache.save(CACHE_KEY, rulesHash, CACHE_TTL);
 
-      return CACHE.data;
+        return rulesHash;
+      } else {
+        throw error;
+      }
     }
   }
 }
