@@ -49,7 +49,9 @@ export const DEFAULT = {
         next: [path.join(process.cwd(), "..", "web")],
         public: [path.join(process.cwd(), "..", "web", "public")],
         pid: [path.join(process.cwd(), "pids")],
-        log: [path.join(process.cwd(), "log")],
+        log: [
+          process.env.GROUPAROO_LOG_PATH || path.join(process.cwd(), "log"),
+        ],
         plugin: [path.join(process.cwd(), "..", "node_modules")],
         locale: [path.join(process.cwd(), "locales")],
         test: [path.join(process.cwd(), "__tests__")],
