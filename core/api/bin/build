@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+
+cd "$(dirname "$0")"
+cd ..
+
+echo -e "Building @grouparoo/core API..."
+
+START_TIME=$(date +%s);
+
+rm -rf dist
+./../node_modules/.bin/tsc --declaration
+
+END_TIME=$(date +%s);
+
+echo -e "@grouparoo/core API built in $(($END_TIME - $START_TIME))s"
+echo -e ""
