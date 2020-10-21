@@ -22,8 +22,6 @@ import { chatRoom, log } from "actionhero";
 import * as uuid from "uuid";
 import { Schedule } from "./Schedule";
 import { Import } from "./Import";
-import { Export } from "./Export";
-import { ExportRun } from "./ExportRun";
 import { Group } from "./Group";
 import { StateMachine } from "./../modules/stateMachine";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
@@ -91,16 +89,6 @@ export class Run extends Model<Run> {
   @Column
   profilesImported: number;
 
-  @AllowNull(false)
-  @Default(0)
-  @Column
-  exportsCreated: number;
-
-  @AllowNull(false)
-  @Default(0)
-  @Column
-  profilesExported: number;
-
   @Column
   error: string;
 
@@ -156,9 +144,6 @@ export class Run extends Model<Run> {
   @HasMany(() => Import, "creatorGuid")
   imports: Import[];
 
-  @HasMany(() => ExportRun, "runGuid")
-  exportRuns: ExportRun[];
-
   async determineState() {
     await this.reload();
 
@@ -177,38 +162,7 @@ export class Run extends Model<Run> {
       },
     });
 
-    const totalExportsCount = await Export.count({
-      include: [
-        {
-          model: ExportRun,
-          where: { runGuid: this.guid },
-          attributes: [],
-          required: true,
-        },
-      ],
-    });
-
-    const completeExportsCount = await Export.count({
-      where: {
-        [Op.or]: {
-          completedAt: { [Op.not]: null },
-          errorMessage: { [Op.not]: null },
-        },
-      },
-      include: [
-        {
-          model: ExportRun,
-          where: { runGuid: this.guid },
-          attributes: [],
-          required: true,
-        },
-      ],
-    });
-
-    if (
-      completeImportsCount === totalImportsCount &&
-      completeExportsCount === totalExportsCount
-    ) {
+    if (completeImportsCount === totalImportsCount) {
       this.state = "complete";
       this.completedAt = new Date();
       await this.buildErrorMessage();
@@ -322,8 +276,6 @@ export class Run extends Model<Run> {
       importsCreated: this.importsCreated,
       profilesCreated: this.profilesCreated,
       profilesImported: this.profilesImported,
-      exportsCreated: this.exportsCreated,
-      profilesExported: this.profilesExported,
       error: this.error,
       highWaterMark: this.highWaterMark,
       sourceOffset: this.sourceOffset,

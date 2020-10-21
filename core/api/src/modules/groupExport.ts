@@ -73,7 +73,9 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
       .toLocaleLowerCase() +
     "-" +
     new Date().getTime();
+
   const filename = `${os.tmpdir()}/group-export-${cleanName}.csv`;
+
   if (fs.existsSync(filename)) fs.unlinkSync(filename);
   const fileStream = fs.createWriteStream(filename);
   const csvStream = CsvStringify({
@@ -99,7 +101,7 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
       csvStream.write(row);
     }
 
-    await run.increment(["profilesExported"], {
+    await run.increment(["profilesImported"], {
       by: profiles.length,
       silent: true,
     });

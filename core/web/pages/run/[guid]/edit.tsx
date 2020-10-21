@@ -90,10 +90,6 @@ export default function Page(props) {
               Profiles Created: {run.profilesCreated}
               <br />
               Profiles Imported: {run.profilesImported}
-              <br />
-              Exports Created: {run.exportsCreated}
-              <br />
-              Profiles Exported: {run.profilesExported}
             </Col>
             <Col>
               Group Member Limit: {run.groupMemberLimit}

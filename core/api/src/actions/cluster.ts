@@ -10,8 +10,6 @@ import { DestinationGroupMembership } from "../models/DestinationGroupMembership
 import { Export } from "../models/Export";
 import { Event } from "../models/Event";
 import { EventData } from "../models/EventData";
-import { ExportImport } from "../models/ExportImport";
-import { ExportRun } from "../models/ExportRun";
 import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
 import { GroupRule } from "../models/GroupRule";
@@ -40,8 +38,6 @@ const models = [
   Event,
   EventData,
   Export,
-  ExportImport,
-  ExportRun,
   // File,
   Group,
   GroupMember,

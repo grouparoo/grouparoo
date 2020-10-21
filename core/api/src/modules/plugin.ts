@@ -10,8 +10,6 @@ import { File } from "../models/File";
 import { Event } from "../models/Event";
 import { EventData } from "../models/EventData";
 import { Export } from "../models/Export";
-import { ExportImport } from "../models/ExportImport";
-import { ExportRun } from "../models/ExportRun";
 import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
 import { GroupRule } from "../models/GroupRule";
@@ -45,8 +43,6 @@ const models = [
   Import,
   Event,
   EventData,
-  ExportImport,
-  ExportRun,
   Run,
   Export,
   File,

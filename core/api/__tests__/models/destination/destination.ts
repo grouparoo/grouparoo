@@ -154,32 +154,6 @@ describe("models/destination", () => {
       await group.destroy();
     });
 
-    test("deleting a destination creates a log entry and enqueued a destroyExports task", async () => {
-      destination = await Destination.create({
-        name: "bye destination",
-        type: "test-plugin-export",
-        appGuid: app.guid,
-      });
-
-      await destination.destroy();
-
-      const latestLog = await Log.findOne({
-        where: { verb: "create", topic: "destination" },
-        order: [["createdAt", "desc"]],
-        limit: 1,
-      });
-
-      expect(latestLog).toBeTruthy();
-
-      const foundTasks = await specHelper.findEnqueuedTasks(
-        "destination:destroyExports"
-      );
-      expect(foundTasks.length).toBeGreaterThanOrEqual(1);
-      expect(foundTasks[foundTasks.length - 1].args[0]).toEqual({
-        destinationGuid: destination.guid,
-      });
-    });
-
     test("destinations can retrieve related export totals", async () => {
       destination = await Destination.create({
         name: "bye destination",

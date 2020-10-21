@@ -2,7 +2,6 @@ import { RetryableTask } from "../../classes/retryableTask";
 import { Op } from "sequelize";
 import { Profile } from "../../models/Profile";
 import { Import } from "../../models/Import";
-import { Run } from "../../models/Run";
 import { Destination } from "../../models/Destination";
 import { Group } from "../../models/Group";
 
@@ -38,16 +37,6 @@ export class ProfileExport extends RetryableTask {
 
     if (imports.length === 0) return;
 
-    const runs = await Run.findAll({
-      where: {
-        guid: {
-          [Op.in]: imports
-            .filter((e) => e.creatorType === "run")
-            .map((e) => e.creatorGuid),
-        },
-      },
-    });
-
     try {
       const oldGroupGuids = imports[0].oldGroupGuids;
       const newGroupGuids = imports[imports.length - 1].newGroupGuids;
@@ -82,7 +71,6 @@ export class ProfileExport extends RetryableTask {
       for (const i in destinations) {
         await destinations[i].exportProfile(
           profile,
-          runs,
           imports,
           false,
           params.force ? params.force : undefined

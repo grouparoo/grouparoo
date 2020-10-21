@@ -17,7 +17,6 @@ import * as uuid from "uuid";
 import { task } from "actionhero";
 import { Profile } from "./Profile";
 import { Run } from "./Run";
-import { ExportImport } from "./ExportImport";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
 import { Op } from "sequelize";
@@ -149,9 +148,6 @@ export class Import extends Model<Import> {
   @BelongsTo(() => Run)
   run: Run;
 
-  @HasMany(() => ExportImport)
-  exportImports: ExportImport[];
-
   async apiData() {
     const data = this.data || {};
     const rawData = this.rawData || {};
@@ -223,13 +219,6 @@ export class Import extends Model<Import> {
     if (!instance.guid) {
       instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
     }
-  }
-
-  @AfterDestroy
-  static async deleteExportImports(instance: Import) {
-    return ExportImport.destroy({
-      where: { importGuid: instance.guid },
-    });
   }
 
   @AfterCreate

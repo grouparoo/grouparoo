@@ -6,7 +6,7 @@ export default function DestinationTabs({
 }: {
   destination: Models.DestinationType;
 }) {
-  const tabs = ["edit", "data", "runs", "exports"];
+  const tabs = ["edit", "data", "exports"];
   return (
     <Tabs name={destination.name} draftType={destination.type} tabs={tabs} />
   );

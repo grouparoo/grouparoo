@@ -6,18 +6,12 @@ import {
   UpdatedAt,
   AllowNull,
   BelongsTo,
-  BelongsToMany,
   BeforeCreate,
-  HasMany,
   ForeignKey,
   DataType,
-  AfterDestroy,
   Default,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
-import { Import } from "./Import";
-import { ExportImport } from "./ExportImport";
-import { ExportRun } from "./ExportRun";
 import { Destination } from "./Destination";
 import { Profile } from "./Profile";
 import { plugin } from "../modules/plugin";
@@ -148,27 +142,8 @@ export class Export extends Model<Export> {
   @BelongsTo(() => Destination)
   destination: Destination;
 
-  @HasMany(() => ExportImport)
-  exportImports: ExportImport[];
-
-  @BelongsToMany(() => Import, () => ExportImport)
-  imports: Import[];
-
-  @HasMany(() => ExportRun)
-  exportRuns: ExportRun[];
-
   @BelongsTo(() => Profile)
   profile: Profile;
-
-  async associateImports(imports: Array<Import>) {
-    for (const i in imports) {
-      const _import = imports[i];
-      await ExportImport.create({
-        importGuid: _import.guid,
-        exportGuid: this.guid,
-      });
-    }
-  }
 
   async markMostRecent() {
     const [count] = await Export.update(
@@ -216,20 +191,6 @@ export class Export extends Model<Export> {
     const instance = await this.scope(null).findOne({ where: { guid } });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
-  }
-
-  @AfterDestroy
-  static async destroyExportImports(instance: Export) {
-    return ExportImport.destroy({
-      where: { exportGuid: instance.guid },
-    });
-  }
-
-  @AfterDestroy
-  static async destroyExportRuns(instance: Export) {
-    return ExportRun.destroy({
-      where: { exportGuid: instance.guid },
-    });
   }
 
   @BeforeCreate

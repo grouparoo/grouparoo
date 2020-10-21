@@ -23,8 +23,6 @@ import { Profile } from "./Profile";
 import { Group } from "./Group";
 import { Import } from "./Import";
 import { Export } from "./Export";
-import { ExportRun } from "./ExportRun";
-import { Run } from "./Run";
 import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import { plugin } from "../modules/plugin";
 import { Op } from "sequelize";
@@ -325,36 +323,6 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.destinationMappingOptions(this, cached);
   }
 
-  async getRuns(state?: string, limit = 100, offset = 0): Promise<Run[]> {
-    const exportRuns = await ExportRun.findAll({
-      raw: true,
-      attributes: [
-        [api.sequelize.fn("DISTINCT", api.sequelize.col("runGuid")), "runGuid"],
-        [
-          api.sequelize.fn("MIN", api.sequelize.col("export.createdAt")),
-          "createdAt",
-        ],
-      ],
-      group: ["runGuid"],
-      include: [
-        {
-          model: Export,
-          where: { destinationGuid: this.guid },
-          required: true,
-          attributes: [],
-        },
-      ],
-      limit,
-      offset,
-      order: [[api.sequelize.col("createdAt"), "desc"]],
-    });
-
-    const where = { guid: { [Op.in]: exportRuns.map((er) => er.runGuid) } };
-    if (state) where["state"] = state;
-
-    return Run.scope(null).findAll({ where, order: [["createdAt", "desc"]] });
-  }
-
   async profilePreview(
     profile: Profile,
     mapping: MappingHelper.Mappings,
@@ -385,19 +353,11 @@ export class Destination extends LoggedModel<Destination> {
 
   async exportProfile(
     profile: Profile,
-    runs: Run[],
     imports: Array<Import>,
     sync = false,
     force = false
   ) {
-    return DestinationOps.exportProfile(
-      this,
-      profile,
-      runs,
-      imports,
-      sync,
-      force
-    );
+    return DestinationOps.exportProfile(this, profile, imports, sync, force);
   }
 
   async sendExport(_export: Export, sync = false) {
@@ -500,31 +460,13 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeDestroy
-  static async waitForRunningRuns(instance: Destination) {
-    const runningRuns = await instance.getRuns("running");
-    if (runningRuns.length > 0) {
-      throw new Error(
-        `cannot delete destination until all runs are complete (${runningRuns.length} running)`
-      );
-    }
-  }
-
-  @BeforeDestroy
-  static async waitUpdatingGroupsPreviouslySynced(instance: Destination) {
-    const recentRuns = await instance.getRuns(undefined, 1, 0);
-    const recentGroupGuids = Array.from(
-      new Set(
-        recentRuns
-          .filter((run) => run.creatorGuid.match(/^grp_/))
-          .map((run) => run.creatorGuid)
-      )
-    );
-    const updatingGroups = await Group.findAll({
-      where: { guid: { [Op.in]: recentGroupGuids }, state: "updating" },
+  static async waitForPendingExports(instance: Destination) {
+    const pendingExportCount = await instance.$count("exports", {
+      where: { completedAt: { [Op.eq]: null } },
     });
-    if (updatingGroups.length > 0) {
+    if (pendingExportCount > 0) {
       throw new Error(
-        `cannot delete destination until previous exported groups are done updating (${updatingGroups[0].name})`
+        `cannot delete destination until all pending exports have been sent (${pendingExportCount} pending)`
       );
     }
   }
@@ -552,9 +494,7 @@ export class Destination extends LoggedModel<Destination> {
 
   @AfterDestroy
   static async destroyExports(instance: Destination) {
-    await task.enqueue("destination:destroyExports", {
-      destinationGuid: instance.guid,
-    });
+    await Export.destroy({ where: { destinationGuid: instance.guid } });
   }
 
   /**

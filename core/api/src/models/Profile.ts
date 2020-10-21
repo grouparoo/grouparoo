@@ -194,11 +194,6 @@ export class Profile extends LoggedModel<Profile> {
 
   @AfterDestroy
   static async destroyExports(instance: Profile) {
-    let _exports = await instance.$get("exports");
-    while (_exports.length > 0) {
-      // need to loop 1-by-1 to afterDestroy hooks delete related importExport records
-      await Promise.all(_exports.map((_export) => _export.destroy()));
-      _exports = await instance.$get("exports");
-    }
+    await Export.destroy({ where: { profileGuid: instance.guid } });
   }
 }
