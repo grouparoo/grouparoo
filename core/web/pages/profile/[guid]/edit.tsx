@@ -15,6 +15,7 @@ import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { ProfileHandler } from "../../../utils/profileHandler";
+import StateBadge from "../../../components/stateBadge";
 
 export default function Page(props) {
   const {
@@ -210,6 +211,8 @@ export default function Page(props) {
               <span className="text-muted">Updated At: </span>
               <Moment fromNow>{profile.updatedAt}</Moment>
               <br />
+              <StateBadge state={profile.state} />
+              <br />
               <br />
               {uniqueProfileProperties.map((key) => {
                 return (
@@ -333,8 +336,8 @@ export default function Page(props) {
                 <th>Key</th>
                 <th>Value</th>
                 <th>Type</th>
-                <th>Created</th>
-                <th>Updated</th>
+                <th>Changed At</th>
+                <th>Checked At</th>
               </tr>
             </thead>
             <tbody>
@@ -386,10 +389,22 @@ export default function Page(props) {
                     </td>
                     <td>{properties[key].type}</td>
                     <td>
-                      <Moment fromNow>{properties[key].createdAt}</Moment>
+                      {properties[key].valueChangedAt ? (
+                        <Moment fromNow>
+                          {properties[key].valueChangedAt}
+                        </Moment>
+                      ) : (
+                        "Never"
+                      )}
                     </td>
                     <td>
-                      <Moment fromNow>{properties[key].updatedAt}</Moment>
+                      {properties[key].dataConfirmedAt ? (
+                        <Moment fromNow>
+                          {properties[key].dataConfirmedAt}
+                        </Moment>
+                      ) : (
+                        "Never"
+                      )}
                     </td>
                   </tr>
                 );
