@@ -2,6 +2,7 @@ import { api, task, log, env } from "actionhero";
 import { RetryableTask } from "../../classes/retryableTask";
 import { Import } from "../../models/Import";
 import { Run } from "../../models/Run";
+import { ProfileOps } from "../../modules/ops/profile";
 
 export class ImportAssociateProfile extends RetryableTask {
   constructor() {
@@ -21,6 +22,7 @@ export class ImportAssociateProfile extends RetryableTask {
 
     try {
       const { profile, isNew } = await _import.associateProfile();
+      await ProfileOps.markPending(profile);
 
       if (_import.creatorType === "run") {
         const transaction = await api.sequelize.transaction();
@@ -47,8 +49,6 @@ export class ImportAssociateProfile extends RetryableTask {
           throw error;
         }
       }
-
-      await task.enqueue("profile:importAndUpdate", { guid: profile.guid });
     } catch (error) {
       if (env !== "test") {
         log(`[ASSOCIATE PROFILE ERROR] ${error}`, "alert");

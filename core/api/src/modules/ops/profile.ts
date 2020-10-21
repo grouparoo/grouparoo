@@ -268,7 +268,7 @@ export namespace ProfileOps {
     }
   }
 
-  export async function buildNullProperties(profile: Profile) {
+  export async function buildNullProperties(profile: Profile, state = "ready") {
     const properties = await profile.properties();
     const rules = await ProfilePropertyRule.cached();
     let newPropertiesCount = 0;
@@ -277,7 +277,7 @@ export namespace ProfileOps {
         await ProfileProperty.create({
           profileGuid: this.guid,
           profilePropertyRuleGuid: rules[key].guid,
-          state: "ready",
+          state,
           stateChangedAt: new Date(),
           valueChangedAt: new Date(),
           dataConfirmedAt: new Date(),
@@ -436,12 +436,24 @@ export namespace ProfileOps {
     } else {
       profile = await Profile.create();
       await profile.addOrUpdateProperties(uniquePropertiesHash);
+      await buildNullProperties(profile);
       isNew = true;
     }
 
     await Promise.all(lockReleases.map((release) => release()));
 
     return { profile, isNew };
+  }
+
+  /**
+   * Mark the profile and all of its properties as pending
+   */
+  export async function markPending(profile: Profile) {
+    await profile.update({ state: "pending" });
+    await ProfileProperty.update(
+      { state: "pending" },
+      { where: { profileGuid: profile.guid } }
+    );
   }
 
   /**
