@@ -119,6 +119,44 @@ function BigNumber({ execApi, model, title, href = null }) {
   );
 }
 
+function PendingProfiles({ execApi }) {
+  const [count, setCount] = useState(0);
+  let timer;
+
+  useEffect(() => {
+    startTimer();
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  function startTimer() {
+    load();
+    timer = setInterval(load, TIMEOUT);
+  }
+
+  async function load() {
+    const response: Actions.ProfilesList = await execApi("get", `/profiles`);
+    if (response) {
+      setCount(response.pendingTotal);
+    }
+  }
+
+  return (
+    <Table borderless size="sm">
+      <tbody>
+        <tr>
+          <td>Profiles Pending Import</td>
+          <td>
+            {<Badge variant={count > 0 ? "warning" : "info"}>{count}</Badge>}
+          </td>
+        </tr>
+      </tbody>
+    </Table>
+  );
+}
+
 function PendingExports({ execApi }) {
   const [destinations, setDestinations] = useState([]);
   let timer;
@@ -137,7 +175,11 @@ function PendingExports({ execApi }) {
   }
 
   async function load() {
-    const response = await execApi("get", `/destinations`, { state: "ready" });
+    const response: Actions.DestinationsList = await execApi(
+      "get",
+      `/destinations`,
+      { state: "ready" }
+    );
     if (response) {
       setDestinations(response.destinations);
     }
@@ -289,6 +331,10 @@ export default function Totals(props) {
         <Col>
           <h3>Active Runs</h3>
           <RunningRuns execApi={execApi} />
+        </Col>
+        <Col>
+          <h3>Pending Imports</h3>
+          <PendingProfiles execApi={execApi} />
         </Col>
         <Col>
           <h3>Pending Exports</h3>

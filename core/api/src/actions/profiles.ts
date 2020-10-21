@@ -29,7 +29,8 @@ export class ProfilesList extends AuthenticatedAction {
   }
 
   async run({ params }) {
-    let profiles, total;
+    let profiles: Profile[];
+
     const where: { [profilePropertyRuleGuid: string]: any } = {};
 
     if (
@@ -81,13 +82,20 @@ export class ProfilesList extends AuthenticatedAction {
         order: params.order,
       });
 
-      total = await group.profilesCount({
+      const total = await group.profilesCount({
+        distinct: true,
+        include: [],
+      });
+
+      const pendingTotal = await group.profilesCount({
+        where: { state: "pending" },
         distinct: true,
         include: [],
       });
 
       return {
         total,
+        pendingTotal,
         profiles: await Promise.all(
           profiles.map(async (p) => {
             const apiData = await p.apiData();
@@ -106,13 +114,20 @@ export class ProfilesList extends AuthenticatedAction {
         order: params.order,
       });
 
-      total = await Profile.count({
+      const total = await Profile.count({
+        distinct: true,
+        include: [{ model: ProfileProperty, where, required: requiredJoin }],
+      });
+
+      const pendingTotal = await Profile.count({
+        where: { state: "pending" },
         distinct: true,
         include: [{ model: ProfileProperty, where, required: requiredJoin }],
       });
 
       return {
         total,
+        pendingTotal,
         profiles: await Promise.all(
           profiles.map(async (p) => {
             const profile = await Profile.findByGuid(p.guid);

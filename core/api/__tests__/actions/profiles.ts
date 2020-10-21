@@ -153,14 +153,17 @@ describe("actions/profiles", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, profiles, total } = await specHelper.runAction(
-        "profiles:list",
-        connection
-      );
+      const {
+        error,
+        profiles,
+        total,
+        pendingTotal,
+      } = await specHelper.runAction("profiles:list", connection);
       expect(error).toBeUndefined();
       expect(profiles.length).toBe(1);
       expect(simpleProfileValues(profiles[0].properties).userId).toEqual([999]);
       expect(total).toBe(1);
+      expect(pendingTotal).toBe(0);
     });
 
     test("a writer can get autocomplete results from profile properties", async () => {
