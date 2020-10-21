@@ -1,11 +1,11 @@
 import { log, CLI, config, api } from "actionhero";
 import { init } from "../../../util/shared";
-import { getApiKey, MockSession } from "../../../events";
+import { MockSession, getApiKey } from "../../../util/MockSession";
 import { getPurchaseCategories } from "../../../sample_data";
 import { ApiKey } from "@grouparoo/core";
 
 const sleep = 100;
-const parallelSessions = 1;
+const parallelSessions = 2;
 
 export class Console extends CLI {
   apiKey: ApiKey;
@@ -61,7 +61,7 @@ export class Console extends CLI {
           sessions[i] = runner.makeSession(i);
         }
       }
-      setTimeout(tick, sleep);
+      await setTimeout(tick, sleep);
     }
 
     await tick();
