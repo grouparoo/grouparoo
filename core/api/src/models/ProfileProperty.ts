@@ -8,11 +8,21 @@ import {
   AfterSave,
   AfterDestroy,
   BelongsTo,
+  BeforeSave,
+  DataType,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { Profile } from "./Profile";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { ProfilePropertyOps } from "../modules/ops/profileProperty";
+import { StateMachine } from "./../modules/stateMachine";
+
+const STATES = ["pending", "ready"] as const;
+
+const STATE_TRANSITIONS = [
+  { from: "pending", to: "ready", checks: [] },
+  { from: "ready", to: "pending", checks: [] },
+];
 
 @Table({ tableName: "profileProperties", paranoid: false })
 export class ProfileProperty extends LoggedModel<ProfileProperty> {
@@ -30,6 +40,10 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   @Column
   profilePropertyRuleGuid: string;
 
+  @AllowNull(false)
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
+
   @Column
   rawValue: string;
 
@@ -37,6 +51,18 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   @Default(0)
   @Column
   position: number;
+
+  @AllowNull(true)
+  @Column
+  valueChangedAt: Date;
+
+  @AllowNull(false)
+  @Column
+  stateChangedAt: Date;
+
+  @AllowNull(true)
+  @Column
+  dataConfirmedAt: Date;
 
   @BelongsTo(() => Profile)
   profile: Profile;
@@ -50,6 +76,16 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
     return {
       profileGuid: this.profileGuid,
       profilePropertyRule: this.profilePropertyRule,
+      state: this.state,
+      valueChangedAt: this.valueChangedAt
+        ? this.valueChangedAt.getTime()
+        : null,
+      stateChangedAt: this.stateChangedAt
+        ? this.stateChangedAt.getTime()
+        : null,
+      dataConfirmedAt: this.dataConfirmedAt
+        ? this.dataConfirmedAt.getTime()
+        : null,
       position: this.position,
       key: rule.key,
       value: await this.getValue(),
@@ -153,6 +189,11 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
     const instance = await this.scope(null).findOne({ where: { guid } });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
+  }
+
+  @BeforeSave
+  static async updateState(instance: ProfileProperty) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @AfterSave

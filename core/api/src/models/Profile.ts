@@ -4,6 +4,9 @@ import {
   HasMany,
   BelongsToMany,
   AfterDestroy,
+  BeforeSave,
+  DataType,
+  AllowNull,
 } from "sequelize-typescript";
 import { task } from "actionhero";
 import { LoggedModel } from "../classes/loggedModel";
@@ -15,13 +18,25 @@ import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Import } from "./Import";
 import { Export } from "./Export";
 import { Event } from "./Event";
+import { StateMachine } from "./../modules/stateMachine";
 import { ProfileOps } from "../modules/ops/profile";
+
+const STATES = ["pending", "ready"] as const;
+
+const STATE_TRANSITIONS = [
+  { from: "pending", to: "ready", checks: [] },
+  { from: "ready", to: "pending", checks: [] },
+];
 
 @Table({ tableName: "profiles", paranoid: false })
 export class Profile extends LoggedModel<Profile> {
   guidPrefix() {
     return "pro";
   }
+
+  @AllowNull(false)
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
 
   @Column
   anonymousId: string;
@@ -53,6 +68,7 @@ export class Profile extends LoggedModel<Profile> {
     return {
       guid: this.guid,
       anonymousId: this.anonymousId,
+      state: this.state,
       properties,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
@@ -145,6 +161,11 @@ export class Profile extends LoggedModel<Profile> {
     const instance = await this.scope(null).findOne({ where: { guid } });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
+  }
+
+  @BeforeSave
+  static async updateState(instance: Profile) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @AfterDestroy
