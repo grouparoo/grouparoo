@@ -292,13 +292,15 @@ async function getApp() {
   return made;
 }
 
-export async function getPurchases() {
+export async function getPurchases(limit = null) {
   const out = [];
   const db = new Database(SCHEMA_NAME);
   const tableName = "purchases";
   const sqlTable = `${db.config.schema}."${tableName}"`;
-  // TODO: remove LIMIT when it doesn't freeze up with SequelizeConnectionAcquireTimeoutError
-  const sql = `SELECT * FROM ${sqlTable} ORDER BY id DESC LIMIT 10`;
+  let sql = `SELECT * FROM ${sqlTable} ORDER BY created_at DESC`;
+  if (limit) {
+    sql += ` LIMIT ${limit}`;
+  }
   const results = await db.query(3, sql);
   for (const row of results.rows) {
     out.push(row);

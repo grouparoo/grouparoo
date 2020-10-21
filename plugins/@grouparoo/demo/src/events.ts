@@ -33,7 +33,7 @@ export async function events() {
 
   const apiKey = await getApiKey();
   const categories = await getPurchaseCategories();
-  const purchases = await getPurchases();
+  const purchases = await getPurchases(250);
   await generateBrowseEvents(purchases.length * 1.25, apiKey, categories);
   await generatePurchaseEvents(purchases, apiKey);
 
