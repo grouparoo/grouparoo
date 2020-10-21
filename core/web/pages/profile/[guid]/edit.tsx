@@ -337,7 +337,7 @@ export default function Page(props) {
                 <th>Value</th>
                 <th>Type</th>
                 <th>Changed At</th>
-                <th>Checked At</th>
+                <th>Confirmed At</th>
               </tr>
             </thead>
             <tbody>
@@ -387,7 +387,12 @@ export default function Page(props) {
                         </span>
                       )}
                     </td>
-                    <td>{properties[key].type}</td>
+                    <td>
+                      <code>
+                        {properties[key].type}
+                        {properties[key].isArray ? "[]" : null}
+                      </code>
+                    </td>
                     <td>
                       {properties[key].valueChangedAt ? (
                         <Moment fromNow>

@@ -7,6 +7,7 @@ import {
   BeforeSave,
   DataType,
   AllowNull,
+  Default,
 } from "sequelize-typescript";
 import { task } from "actionhero";
 import { LoggedModel } from "../classes/loggedModel";
@@ -21,9 +22,11 @@ import { Event } from "./Event";
 import { StateMachine } from "./../modules/stateMachine";
 import { ProfileOps } from "../modules/ops/profile";
 
-const STATES = ["pending", "ready"] as const;
+const STATES = ["draft", "pending", "ready"] as const;
 
 const STATE_TRANSITIONS = [
+  { from: "draft", to: "pending", checks: [] },
+  { from: "draft", to: "ready", checks: [] },
   { from: "pending", to: "ready", checks: [] },
   { from: "ready", to: "pending", checks: [] },
 ];
@@ -35,6 +38,7 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   @AllowNull(false)
+  @Default("pending")
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
@@ -100,20 +104,7 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   async buildNullProperties() {
-    const properties = await this.properties();
-    const rules = await ProfilePropertyRule.cached();
-    let newPropertiesCount = 0;
-    for (const key in rules) {
-      if (!properties[key]) {
-        await ProfileProperty.create({
-          profileGuid: this.guid,
-          profilePropertyRuleGuid: rules[key].guid,
-        });
-        newPropertiesCount++;
-      }
-    }
-
-    return newPropertiesCount;
+    return ProfileOps.buildNullProperties(this);
   }
 
   async updateGroupMembership() {

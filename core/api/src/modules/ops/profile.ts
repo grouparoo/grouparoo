@@ -7,16 +7,21 @@ import { Destination } from "../../models/Destination";
 import { log } from "actionhero";
 import { Op } from "sequelize";
 import { waitForLock } from "../locks";
+import { ProfilePropertyOps } from "./profileProperty";
 export interface ProfilePropertyType {
   [key: string]: {
-    guid: string;
+    guid: ProfileProperty["guid"];
+    state: ProfileProperty["state"];
     values: Array<string | number | boolean | Date>;
-    type: string;
-    unique: boolean;
-    isArray: boolean;
-    identifying: boolean;
-    createdAt: Date;
-    updatedAt: Date;
+    type: ProfilePropertyRule["type"];
+    unique: ProfilePropertyRule["unique"];
+    isArray: ProfilePropertyRule["isArray"];
+    identifying: ProfilePropertyRule["identifying"];
+    valueChangedAt: ProfileProperty["valueChangedAt"];
+    dataConfirmedAt: ProfileProperty["dataConfirmedAt"];
+    stateChangedAt: ProfileProperty["stateChangedAt"];
+    createdAt: ProfileProperty["createdAt"];
+    updatedAt: ProfileProperty["updatedAt"];
   };
 }
 
@@ -40,23 +45,35 @@ export namespace ProfileOps {
         if (!hash[key]) {
           hash[key] = {
             guid: profileProperties[i].profilePropertyRuleGuid,
+            state: profileProperties[i].state,
             values: [],
             type: rule.type,
             unique: rule.unique,
             isArray: rule.isArray,
             identifying: rule.identifying,
+            valueChangedAt: profileProperties[i].valueChangedAt,
+            dataConfirmedAt: profileProperties[i].dataConfirmedAt,
+            stateChangedAt: profileProperties[i].stateChangedAt,
             createdAt: profileProperties[i].createdAt,
             updatedAt: profileProperties[i].updatedAt,
           };
         }
 
         hash[key].values.push(await profileProperties[i].getValue());
-        if (hash[key].createdAt > profileProperties[i].createdAt) {
-          hash[key].createdAt = profileProperties[i].createdAt;
-        }
-        if (hash[key].updatedAt < profileProperties[i].updatedAt) {
-          hash[key].updatedAt = profileProperties[i].updatedAt;
-        }
+
+        const timeFields = [
+          "valueChangedAt",
+          "dataConfirmedAt",
+          "stateChangedAt",
+          "createdAt",
+          "updatedAt",
+        ];
+
+        timeFields.forEach((field) => {
+          if (hash[key][field] < profileProperties[i][field]) {
+            hash[key][field] = profileProperties[i][field];
+          }
+        });
       } catch (error) {
         if (
           error
@@ -104,6 +121,7 @@ export namespace ProfileOps {
           profileGuid: profile.guid,
           profilePropertyRuleGuid: rule.guid,
         },
+        order: [["position", "asc"]],
       });
 
       const existingValues = await Promise.all(
@@ -111,7 +129,15 @@ export namespace ProfileOps {
       );
 
       if (arraysAreEqual(existingValues, values)) {
-        return;
+        await Promise.all(
+          properties.map((property) =>
+            property.update({
+              state: "ready",
+              stateChangedAt: new Date(),
+              dataConfirmedAt: new Date(),
+            })
+          )
+        );
       } else {
         await Promise.all(properties.map((property) => property.destroy()));
         let position = 0;
@@ -121,6 +147,16 @@ export namespace ProfileOps {
             profileGuid: profile.guid,
             profilePropertyRuleGuid: rule.guid,
             position,
+            state: "ready",
+            stateChangedAt: new Date(),
+            dataConfirmedAt: new Date(),
+            valueChangedAt:
+              properties[i] && properties[i].valueChangedAt !== null
+                ? properties[i].rawValue !==
+                  (await ProfilePropertyOps.buildRawValue(value, rule.type))
+                  ? new Date()
+                  : properties[i].valueChangedAt
+                : new Date(),
           });
           await property.setValue(value);
           await property.save();
@@ -134,6 +170,7 @@ export namespace ProfileOps {
         );
       }
       const value = values[0];
+      let changed = false;
 
       let property = await ProfileProperty.findOne({
         where: {
@@ -144,13 +181,26 @@ export namespace ProfileOps {
       });
 
       if (!property) {
+        changed = true;
         property = new ProfileProperty({
           profileGuid: profile.guid,
           profilePropertyRuleGuid: rule.guid,
         });
+      } else if (
+        property.rawValue !==
+        (await ProfilePropertyOps.buildRawValue(value, rule.type))
+      ) {
+        changed = true;
       }
 
       await property.setValue(value);
+      property.state = "ready";
+      property.stateChangedAt = new Date();
+      property.dataConfirmedAt = new Date();
+      if (changed || property.valueChangedAt === null) {
+        property.valueChangedAt = new Date();
+      }
+
       await property.save();
       await ProfileProperty.destroy({
         where: {
@@ -160,8 +210,6 @@ export namespace ProfileOps {
         },
       });
     }
-
-    return profile;
   }
 
   /**
@@ -182,7 +230,7 @@ export namespace ProfileOps {
         ? properties[keys[i]]
         : [properties[keys[i]]];
 
-      await profile.addOrUpdateProperty(h);
+      await addOrUpdateProperty(profile, h);
     }
 
     return profile;
@@ -220,6 +268,27 @@ export namespace ProfileOps {
     }
   }
 
+  export async function buildNullProperties(profile: Profile) {
+    const properties = await profile.properties();
+    const rules = await ProfilePropertyRule.cached();
+    let newPropertiesCount = 0;
+    for (const key in rules) {
+      if (!properties[key]) {
+        await ProfileProperty.create({
+          profileGuid: this.guid,
+          profilePropertyRuleGuid: rules[key].guid,
+          state: "ready",
+          stateChangedAt: new Date(),
+          valueChangedAt: new Date(),
+          dataConfirmedAt: new Date(),
+        });
+        newPropertiesCount++;
+      }
+    }
+
+    return newPropertiesCount;
+  }
+
   /**
    * Import the properties of this Profile
    */
@@ -247,8 +316,8 @@ export namespace ProfileOps {
       );
 
       if (toSave) {
-        await profile.addOrUpdateProperties(hash);
-        await profile.buildNullProperties();
+        await addOrUpdateProperties(profile, hash);
+        await buildNullProperties(profile);
         await profile.save();
       }
 

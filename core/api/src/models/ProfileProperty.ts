@@ -17,9 +17,11 @@ import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { ProfilePropertyOps } from "../modules/ops/profileProperty";
 import { StateMachine } from "./../modules/stateMachine";
 
-const STATES = ["pending", "ready"] as const;
+const STATES = ["draft", "pending", "ready"] as const;
 
 const STATE_TRANSITIONS = [
+  { from: "draft", to: "ready", checks: [] },
+  { from: "draft", to: "pending", checks: [] },
   { from: "pending", to: "ready", checks: [] },
   { from: "ready", to: "pending", checks: [] },
 ];
@@ -41,6 +43,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   profilePropertyRuleGuid: string;
 
   @AllowNull(false)
+  @Default("pending")
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
