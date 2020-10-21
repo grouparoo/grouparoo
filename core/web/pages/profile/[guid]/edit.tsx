@@ -403,10 +403,8 @@ export default function Page(props) {
                       )}
                     </td>
                     <td>
-                      {properties[key].dataConfirmedAt ? (
-                        <Moment fromNow>
-                          {properties[key].dataConfirmedAt}
-                        </Moment>
+                      {properties[key].confirmedAt ? (
+                        <Moment fromNow>{properties[key].confirmedAt}</Moment>
                       ) : (
                         "Never"
                       )}

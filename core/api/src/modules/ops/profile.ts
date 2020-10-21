@@ -18,7 +18,7 @@ export interface ProfilePropertyType {
     isArray: ProfilePropertyRule["isArray"];
     identifying: ProfilePropertyRule["identifying"];
     valueChangedAt: ProfileProperty["valueChangedAt"];
-    dataConfirmedAt: ProfileProperty["dataConfirmedAt"];
+    confirmedAt: ProfileProperty["confirmedAt"];
     stateChangedAt: ProfileProperty["stateChangedAt"];
     createdAt: ProfileProperty["createdAt"];
     updatedAt: ProfileProperty["updatedAt"];
@@ -52,7 +52,7 @@ export namespace ProfileOps {
             isArray: rule.isArray,
             identifying: rule.identifying,
             valueChangedAt: profileProperties[i].valueChangedAt,
-            dataConfirmedAt: profileProperties[i].dataConfirmedAt,
+            confirmedAt: profileProperties[i].confirmedAt,
             stateChangedAt: profileProperties[i].stateChangedAt,
             createdAt: profileProperties[i].createdAt,
             updatedAt: profileProperties[i].updatedAt,
@@ -196,7 +196,7 @@ export namespace ProfileOps {
       await property.setValue(value);
       property.state = "ready";
       property.stateChangedAt = new Date();
-      property.dataConfirmedAt = new Date();
+      property.confirmedAt = new Date();
       if (changed || property.valueChangedAt === null) {
         property.valueChangedAt = new Date();
       }

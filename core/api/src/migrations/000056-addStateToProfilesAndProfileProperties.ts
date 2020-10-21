@@ -28,7 +28,7 @@ module.exports = {
       type: DataTypes.DATE,
       allowNull: true,
     });
-    await migration.addColumn("profileProperties", "dataConfirmedAt", {
+    await migration.addColumn("profileProperties", "confirmedAt", {
       type: DataTypes.DATE,
       allowNull: true,
     });
@@ -39,6 +39,6 @@ module.exports = {
     await migration.removeColumn("profileProperties", "state");
     await migration.removeColumn("profileProperties", "valueChangedAt");
     await migration.removeColumn("profileProperties", "stateChangedAt");
-    await migration.removeColumn("profileProperties", "dataConfirmedAt");
+    await migration.removeColumn("profileProperties", "confirmedAt");
   },
 };
