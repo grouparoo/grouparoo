@@ -5,6 +5,7 @@ import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
 import { ProfileOps } from "../ops/profile";
 import { Op } from "sequelize";
 import { utils } from "actionhero";
+import { waitForLock } from "../locks";
 
 export namespace EventOps {
   /**
@@ -57,9 +58,7 @@ export namespace EventOps {
         });
 
         if (!profile) {
-          [profile] = await Profile.findOrCreate({
-            where: { anonymousId: event.anonymousId },
-          });
+          profile = await createProfileFromAnonymousId(event.anonymousId);
         }
 
         const profileProperties = {};
@@ -109,9 +108,7 @@ export namespace EventOps {
 
         // if we still don't have a profile, make a new one
         if (!profile) {
-          [profile] = await Profile.findOrCreate({
-            where: { anonymousId: event.anonymousId },
-          });
+          profile = await createProfileFromAnonymousId(event.anonymousId);
         }
 
         event.profileGuid = profile.guid;
@@ -136,6 +133,24 @@ export namespace EventOps {
         return associate(event, identifyingProfilePropertyRuleGuid, true);
       } else {
         throw error;
+      }
+    }
+  }
+
+  async function createProfileFromAnonymousId(
+    anonymousId: string
+  ): Promise<Profile> {
+    const { releaseLock } = await waitForLock(
+      `profiles:anonymousCreate:${anonymousId}`
+    );
+    try {
+      const [profile] = await Profile.findOrCreate({
+        where: { anonymousId },
+      });
+      return profile;
+    } finally {
+      if (releaseLock) {
+        await releaseLock();
       }
     }
   }
