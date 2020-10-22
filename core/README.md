@@ -76,14 +76,11 @@ cd apps/staging-public
 # populate the system with 1000 profiles, profile properties, 1000 purchases, groups, and some events
 npm run actionhero -- grouparoo demo dataPurchases
 
+# including the --scale param allows you to control how many profiles you make. e.g. --scale 10 makes 10,000 extra profiles.
+npm run actionhero -- grouparoo demo dataPurchases --scale 10
+
 # populate the system with events
 npm run actionhero -- grouparoo demo eventStream
-
-# populate the system with 2,000,000 profiles, profile properties, 2,000,000 purchases, groups, and some events
-npm run actionhero -- grouparoo demo scale
-
-# including the --scale param allows you to control how many profiles you make. e.g. --scale 10 makes 10,000 profiles.
-npm run actionhero -- grouparoo demo scale --scale 10
 
 ```
 
