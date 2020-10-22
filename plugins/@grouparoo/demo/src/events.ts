@@ -27,13 +27,19 @@ const PAGEVIEW_RULES: Array<RuleDefinition> = [
     },
   },
 ];
-
-export async function events() {
+interface DataOptions {
+  scale?: number;
+}
+export async function events(options: DataOptions = {}) {
   const app = await enableEventsApp();
+  let { scale } = options;
+  if (!scale || scale < 1) {
+    scale = 1;
+  }
 
   const apiKey = await getApiKey();
   const categories = await getPurchaseCategories();
-  const purchases = await getPurchases(250);
+  const purchases = await getPurchases(200 * scale);
   await generateBrowseEvents(purchases.length * 1.25, apiKey, categories);
   await generatePurchaseEvents(purchases, apiKey);
 
