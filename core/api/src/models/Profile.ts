@@ -107,6 +107,10 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps.buildNullProperties(this);
   }
 
+  async markPending() {
+    return ProfileOps.markPending(this);
+  }
+
   async updateGroupMembership() {
     const results = {};
     const groups = await Group.scope("notDraft").findAll();

@@ -223,28 +223,13 @@ export class Import extends Model<Import> {
 
   @AfterCreate
   static async enqueueTask(instance: Import) {
-    const taskDelay = 3001;
-
     if (!instance.profileGuid) {
-      await task.enqueueIn(taskDelay, "import:associateProfile", {
+      await task.enqueueIn(1, "import:associateProfile", {
         importGuid: instance.guid,
       });
     } else {
-      try {
-        await task.enqueueIn(taskDelay, "profile:importAndUpdate", {
-          guid: instance.profileGuid,
-        });
-      } catch (error) {
-        if (
-          error
-            .toString()
-            .match(/already enqueued at this time with same arguments/)
-        ) {
-          // ok
-        } else {
-          throw error;
-        }
-      }
+      const profile = await Profile.findByGuid(instance.profileGuid);
+      await profile.markPending();
     }
   }
 

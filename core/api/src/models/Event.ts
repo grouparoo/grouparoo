@@ -101,7 +101,7 @@ export class Event extends LoggedModel<Event> {
   }
 
   async updateProfile(profile: Profile) {
-    return task.enqueue("profile:importAndUpdate", { guid: profile.guid });
+    await profile.markPending();
   }
 
   async apiData() {
