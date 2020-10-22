@@ -61,7 +61,7 @@ export class Console extends CLI {
           sessions[i] = runner.makeSession(i);
         }
       }
-      await setTimeout(tick, sleep);
+      setTimeout(tick, sleep);
     }
 
     await tick();
