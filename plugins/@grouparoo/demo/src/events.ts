@@ -27,18 +27,32 @@ const PAGEVIEW_RULES: Array<RuleDefinition> = [
     },
   },
 ];
-
-export async function events() {
+interface DataOptions {
+  scale?: number;
+}
+export async function events(options: DataOptions = {}) {
   const app = await enableEventsApp();
+
+  const purchaseFunnelCount = getPurchaseFunnelCount(options.scale);
+  const browseFunnelCount = purchaseFunnelCount * 1.25;
 
   const apiKey = await getApiKey();
   const categories = await getPurchaseCategories();
-  const purchases = await getPurchases(250);
-  await generateBrowseEvents(purchases.length * 1.25, apiKey, categories);
+  const purchases = await getPurchases(purchaseFunnelCount);
+  await generateBrowseEvents(browseFunnelCount, apiKey, categories);
   await generatePurchaseEvents(purchases, apiKey);
 
   await createSource(app, "pageview");
   await createPropertyRules(app, "pageview", PAGEVIEW_RULES);
+}
+
+function getPurchaseFunnelCount(scale: number): number {
+  // it's just too many for larger scale, make it less
+  scale = Math.pow(scale || 1, 0.5);
+  if (scale < 1) {
+    scale = 1;
+  }
+  return 200 * scale;
 }
 
 export async function createPropertyRules(
