@@ -19,6 +19,7 @@ export const DEFAULT = {
     let username =
       process.env.DB_USER || process.env.CI ? "postgres" : undefined;
     let password = process.env.DB_PASS || undefined;
+    let ssl = false;
 
     // if your environment provides database information via a single JDBC-style URL
     // like mysql://username:password@hostname:port/default_schema
@@ -33,10 +34,21 @@ export const DEFAULT = {
       if (parsed.hostname) host = parsed.hostname;
       if (parsed.port) port = parsed.port;
       if (parsed.pathname) database = parsed.pathname.substring(1);
+
+      const search_ssl = parsed.searchParams.get("ssl");
+      const search_sslmode = parsed.searchParams.get("sslmode");
+      if (search_ssl) ssl = search_ssl === "true";
+      if (search_sslmode) {
+        ssl = search_sslmode === "true" || search_sslmode === "required";
+      }
     }
 
     if (dialect === "postgresql") dialect = "postgres";
     if (dialect === "psql") dialect = "postgres";
+
+    if (process.env.DATABASE_SSL) {
+      ssl = process.env.DATABASE_SSL.toLowerCase() === "true";
+    }
 
     return {
       autoMigrate: true,
@@ -57,9 +69,7 @@ export const DEFAULT = {
         acquire: 30000,
         idle: 10000,
       },
-      dialectOptions: {
-        ssl: process.env.DATABASE_SSL?.toLowerCase() === "true",
-      },
+      dialectOptions: { ssl },
     };
   },
 };
