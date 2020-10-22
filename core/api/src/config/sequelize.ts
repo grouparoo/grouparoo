@@ -27,29 +27,16 @@ export const DEFAULT = {
 
     if (connectionURL) {
       const parsed = new URL(connectionURL);
-      if (parsed.protocol) {
-        dialect = parsed.protocol.slice(0, -1);
-      }
-      if (parsed.username) {
-        username = parsed.username;
-      }
-      if (parsed.password) {
-        password = parsed.password;
-      }
-      if (parsed.hostname) {
-        host = parsed.hostname;
-      }
-      if (parsed.port) {
-        port = parsed.port;
-      }
-      if (parsed.pathname) {
-        database = parsed.pathname.substring(1);
-      }
+      if (parsed.protocol) dialect = parsed.protocol.slice(0, -1);
+      if (parsed.username) username = parsed.username;
+      if (parsed.password) password = parsed.password;
+      if (parsed.hostname) host = parsed.hostname;
+      if (parsed.port) port = parsed.port;
+      if (parsed.pathname) database = parsed.pathname.substring(1);
     }
 
-    if (dialect === "postgresql") {
-      dialect = "postgres";
-    }
+    if (dialect === "postgresql") dialect = "postgres";
+    if (dialect === "psql") dialect = "postgres";
 
     return {
       autoMigrate: true,
@@ -69,6 +56,9 @@ export const DEFAULT = {
         min: 0,
         acquire: 30000,
         idle: 10000,
+      },
+      dialectOptions: {
+        ssl: process.env.DATABASE_SSL?.toLowerCase() === "true",
       },
     };
   },
