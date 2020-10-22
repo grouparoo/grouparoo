@@ -275,7 +275,7 @@ export namespace ProfileOps {
     for (const key in rules) {
       if (!properties[key]) {
         await ProfileProperty.create({
-          profileGuid: this.guid,
+          profileGuid: profile.guid,
           profilePropertyRuleGuid: rules[key].guid,
           state,
           stateChangedAt: new Date(),
@@ -434,6 +434,7 @@ export namespace ProfileOps {
       isNew = false;
     } else {
       profile = await Profile.create();
+      profile = await profile.reload();
       await profile.addOrUpdateProperties(uniquePropertiesHash);
       await buildNullProperties(profile);
       isNew = true;
