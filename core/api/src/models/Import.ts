@@ -137,9 +137,6 @@ export class Import extends Model<Import> {
   groupsUpdatedAt: Date;
 
   @Column
-  exportedAt: Date;
-
-  @Column
   errorMessage: string;
 
   @Column
@@ -177,7 +174,6 @@ export class Import extends Model<Import> {
       groupsUpdatedAt: this.groupsUpdatedAt
         ? this.groupsUpdatedAt.getTime()
         : null,
-      exportedAt: this.exportedAt ? this.exportedAt.getTime() : null,
 
       // data before and after
       oldProfileProperties: this.oldProfileProperties,
