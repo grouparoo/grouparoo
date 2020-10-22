@@ -84,9 +84,7 @@ export class RunInternalRun extends Task {
           limit,
         });
       } else {
-        await task.enqueueIn(config.tasks.timeout + 1, "run:determineState", {
-          runGuid: run.guid,
-        });
+        await run.update({ state: "complete" });
       }
     } catch (error) {
       await transaction.rollback();

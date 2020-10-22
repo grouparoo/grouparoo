@@ -136,11 +136,9 @@ export class RunGroup extends Task {
         destinationGuid,
       });
     } else {
-      await group.countComponentMembersFromRules(null);
+      await group.countComponentMembersFromRules();
+      await run.update({ state: "complete" });
       await group.update({ state: "ready" });
-      await task.enqueueIn(config.tasks.timeout + 1, "run:determineState", {
-        runGuid: run.guid,
-      });
     }
 
     return groupMembersCount;

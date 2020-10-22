@@ -30,9 +30,7 @@ export class ScheduleRun extends Task {
     if (importsCount > 0) {
       await task.enqueueIn(config.tasks.timeout + 1, this.name, params);
     } else {
-      await task.enqueueIn(config.tasks.timeout + 1, "run:determineState", {
-        runGuid: run.guid,
-      });
+      await run.update({ state: "complete" });
     }
   }
 }

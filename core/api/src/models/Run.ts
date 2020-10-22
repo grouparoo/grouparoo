@@ -144,33 +144,6 @@ export class Run extends Model<Run> {
   @HasMany(() => Import, "creatorGuid")
   imports: Import[];
 
-  async determineState() {
-    await this.reload();
-
-    if (this.state === "complete" || this.state === "stopped") {
-      return;
-    }
-
-    const totalImportsCount = await this.$count("imports");
-
-    const completeImportsCount = await this.$count("imports", {
-      where: {
-        [Op.or]: {
-          exportedAt: { [Op.not]: null },
-          errorMessage: { [Op.not]: null },
-        },
-      },
-    });
-
-    if (completeImportsCount === totalImportsCount) {
-      this.state = "complete";
-      this.completedAt = new Date();
-      await this.buildErrorMessage();
-    } else {
-      this.state = "running";
-    }
-  }
-
   async determinePercentComplete() {
     const percentComplete = await RunOps.determinePercentComplete(this);
     await this.update({ percentComplete });
@@ -180,6 +153,10 @@ export class Run extends Model<Run> {
 
   async afterBatch() {
     await this.determinePercentComplete();
+    await this.reload();
+    if (this.percentComplete >= 100) {
+      await this.update({ percentComplete: 100 });
+    }
   }
 
   async buildErrorMessage() {
