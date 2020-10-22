@@ -40,10 +40,15 @@ export const test = {
 
 function buildConsoleLogger(level = "info") {
   const formats = [];
-  if (!process.env.GROUPAROO_LOGS_STDOUT_DISABLE_COLOR) {
+  if (
+    process.env.GROUPAROO_LOGS_STDOUT_DISABLE_COLOR?.toLowerCase() !== "true"
+  ) {
     formats.push(winston.format.colorize());
   }
-  if (!process.env.GROUPAROO_LOGS_STDOUT_DISABLE_TIMESTAMP) {
+  if (
+    process.env.GROUPAROO_LOGS_STDOUT_DISABLE_TIMESTAMP?.toLowerCase() !==
+    "true"
+  ) {
     formats.push(winston.format.timestamp());
   }
 
