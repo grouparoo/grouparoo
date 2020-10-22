@@ -79,7 +79,7 @@ export class GroupDestroy extends Task {
         `[ run ] completed run ${run.guid} for group ${group.name} (${group.guid})`,
         "notice"
       );
-      await run.update({ state: "complete" });
+      await run.afterBatch("complete");
       await group.destroy();
     }
   }

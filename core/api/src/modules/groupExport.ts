@@ -118,7 +118,7 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
     csvStream.end();
   });
 
-  await run.update({ completedAt: new Date(), state: "complete" });
+  await run.afterBatch("complete");
 
   return { runGuid: run.guid, filename, cleanName };
 }

@@ -151,9 +151,18 @@ export class Run extends Model<Run> {
     return percentComplete;
   }
 
-  async afterBatch() {
+  async afterBatch(newSate?: string) {
     await this.determinePercentComplete();
     await this.reload();
+
+    if (newSate && this.state !== newSate) {
+      await this.update({ state: newSate });
+    }
+
+    if (this.state === "complete" && !this.completedAt) {
+      await this.update({ completedAt: new Date(), percentComplete: 100 });
+    }
+
     if (this.percentComplete >= 100) {
       await this.update({ percentComplete: 100 });
     }

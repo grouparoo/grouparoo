@@ -84,7 +84,7 @@ export class RunInternalRun extends Task {
           limit,
         });
       } else {
-        await run.update({ state: "complete" });
+        await run.afterBatch("complete");
       }
     } catch (error) {
       await transaction.rollback();

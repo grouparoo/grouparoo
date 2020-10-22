@@ -137,7 +137,7 @@ export class RunGroup extends Task {
       });
     } else {
       await group.countComponentMembersFromRules();
-      await run.update({ state: "complete" });
+      await run.afterBatch("complete");
       await group.update({ state: "ready" });
     }
 

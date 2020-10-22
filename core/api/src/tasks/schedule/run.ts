@@ -30,7 +30,7 @@ export class ScheduleRun extends Task {
     if (importsCount > 0) {
       await task.enqueueIn(config.tasks.timeout + 1, this.name, params);
     } else {
-      await run.update({ state: "complete" });
+      await run.afterBatch("complete");
     }
   }
 }
