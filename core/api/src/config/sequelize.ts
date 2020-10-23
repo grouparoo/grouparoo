@@ -19,7 +19,7 @@ export const DEFAULT = {
     let username =
       process.env.DB_USER || process.env.CI ? "postgres" : undefined;
     let password = process.env.DB_PASS || undefined;
-    let ssl = false;
+    let ssl: boolean | { [key: string]: any } = false;
 
     // if your environment provides database information via a single JDBC-style URL
     // like mysql://username:password@hostname:port/default_schema
@@ -46,8 +46,11 @@ export const DEFAULT = {
     if (dialect === "postgresql") dialect = "postgres";
     if (dialect === "psql") dialect = "postgres";
 
-    if (process.env.DATABASE_SSL) {
-      ssl = process.env.DATABASE_SSL.toLowerCase() === "true";
+    if (process.env.DATABASE_SSL?.toLowerCase() === "true") {
+      ssl = true;
+    }
+    if (process.env.DATABASE_SSL_SELF_SIGNED?.toLowerCase() === "true") {
+      ssl = { rejectUnauthorized: false };
     }
 
     return {
