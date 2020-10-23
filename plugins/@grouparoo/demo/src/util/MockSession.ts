@@ -1,8 +1,10 @@
-import { ApiKey } from "@grouparoo/core";
+import { api } from "actionhero";
+import { ApiKey, ProfileProperty } from "@grouparoo/core";
 import * as uuid from "uuid";
 import { runAction } from "./runAction";
 import { log, userCreatedAt } from "./shared";
 import fetch from "isomorphic-fetch";
+import { Op } from "sequelize";
 
 // prettier-ignore
 const funnel = [
@@ -26,17 +28,22 @@ function inPercentage(percent) {
   return false;
 }
 
+export interface Runtime {
+  baseUrl: string;
+  userIdGuid: string;
+}
+
 export class MockSession {
   id: string;
   apiKey: ApiKey;
   purchase: { [key: string]: any };
   categories: string[];
   anonymousId: string;
-  currentUserId: number;
+  currentUserId: number | string | boolean | Date;
   currentStep: number;
   identified: boolean;
   now: number;
-  baseUrl: string;
+  runtime: Runtime;
   done: boolean;
   started: boolean;
   cart: string[];
@@ -46,7 +53,7 @@ export class MockSession {
     apiKey: ApiKey,
     purchase: { [key: string]: any },
     categories: string[],
-    baseUrl?: string
+    runtime?: Runtime
   ) {
     this.id = id;
     this.apiKey = apiKey;
@@ -58,7 +65,7 @@ export class MockSession {
     this.categories = categories;
     this.cart = [];
     this.now = 0;
-    this.baseUrl = baseUrl;
+    this.runtime = runtime;
     this.done = false;
     this.started = false;
   }
@@ -120,21 +127,42 @@ export class MockSession {
     return true;
   }
 
-  pickUserId(): number {
+  randomUserId(): number {
     return Math.floor(Math.random() * 1000) + 1;
+  }
+  async pickUserId(): Promise<number | string | boolean | Date> {
+    if (!this.runtime) {
+      return this.randomUserId();
+    }
+
+    const { userIdGuid } = this.runtime;
+    // otherwise pick a real one
+    const property = await ProfileProperty.findOne({
+      order: api.sequelize.random(),
+      where: {
+        profilePropertyRuleGuid: userIdGuid,
+        rawValue: {
+          [Op.ne]: null,
+        },
+      },
+    });
+    if (!property) {
+      return null;
+    }
+    return await property.getValue();
   }
 
   // find a user, (or stay anonymous -- null)
   async pickCurrentUser() {
     const loggedInPercent = 88;
 
-    let userId: number;
+    let userId: number | string | boolean | Date;
     if (this.purchase) {
       // use this user
       userId = this.purchase.user_id;
     } else if (inPercentage(loggedInPercent)) {
       // users 1 through 1000
-      userId = this.pickUserId();
+      userId = await this.pickUserId();
     } else {
       // otherwise, stay logged out
       userId = null;
@@ -151,29 +179,28 @@ export class MockSession {
 
   // set the time to start, there's a second between each step
   async setNow() {
-    let userId = this.currentUserId;
-    if (!userId) {
-      // random user, pick one
-      userId = this.pickUserId();
-    }
-    let firstUser = -1;
-    let firstPurchase = -1;
-
-    for (let i = 0; i < funnel.length; i++) {
-      const step = funnel[i];
-      if (firstUser < 0 && step.user) {
-        firstUser = i;
-      }
-      if (firstPurchase < 0 && step.purchase) {
-        firstPurchase = i;
-      }
-    }
-    if (this.purchase) {
+    const now = new Date().getTime();
+    if (this.runtime) {
+      this.now = now;
+    } else if (this.purchase) {
       // use that
+      let firstUser = -1;
+      let firstPurchase = -1;
+
+      for (let i = 0; i < funnel.length; i++) {
+        const step = funnel[i];
+        if (firstUser < 0 && step.user) {
+          firstUser = i;
+        }
+        if (firstPurchase < 0 && step.purchase) {
+          firstPurchase = i;
+        }
+      }
       this.now = this.purchase.created_at.getTime() - firstPurchase * 1000;
     } else {
       // some time after created
-      const now = new Date().getTime();
+      const userId =
+        parseInt((this.currentUserId || "").toString()) || this.randomUserId();
       let generatedCreateAt = await userCreatedAt(userId);
       let creationAgo = now - generatedCreateAt.getTime();
       creationAgo = Math.random() * creationAgo;
@@ -261,7 +288,7 @@ export class MockSession {
   }
 
   async sendEvent(params) {
-    if (this.baseUrl) {
+    if (this.runtime) {
       await this.postEvent(params);
     } else {
       await runAction("event:create", params, { apiKey: this.apiKey });
@@ -269,10 +296,11 @@ export class MockSession {
   }
 
   async postEvent(params) {
+    const { baseUrl } = this.runtime;
     const data = Object.assign({}, params, { apiKey: this.apiKey.apiKey });
-    data.occurredAt = new Date().getTime(); // streaming, do it now
-    log(1, this.baseUrl + " " + JSON.stringify(data));
-    await fetch(this.baseUrl, {
+    delete data.occurredAt; // streaming, do it now
+    log(1, baseUrl + " " + JSON.stringify(data));
+    await fetch(baseUrl, {
       method: "post",
       headers: {
         "Content-Type": "application/json",

@@ -5,6 +5,14 @@ import parse from "csv-parse/lib/sync";
 import fs from "fs";
 import path from "path";
 
+export function readCsvTable(tableName) {
+  const filePath = path.resolve(
+    path.join(__dirname, "..", "..", "data", `${tableName}.csv`)
+  );
+  const rows = parse(fs.readFileSync(filePath), { columns: true });
+  return rows;
+}
+
 export default class Postgres {
   client: Client;
   config: { [key: string]: any };
@@ -65,10 +73,7 @@ export default class Postgres {
     }
     log(1, `Adding ${tableName}`);
     // read from data file
-    const filePath = path.resolve(
-      path.join(__dirname, "..", "..", "data", `${tableName}.csv`)
-    );
-    const rows = parse(fs.readFileSync(filePath), { columns: true });
+    const rows = readCsvTable(tableName);
     const csvKeys = Object.keys(rows[0]);
     const typeKeys = Object.keys(types);
     const diff = differenceOf2Arrays(csvKeys, typeKeys);
