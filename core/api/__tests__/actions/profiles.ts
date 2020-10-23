@@ -163,7 +163,7 @@ describe("actions/profiles", () => {
       expect(profiles.length).toBe(1);
       expect(simpleProfileValues(profiles[0].properties).userId).toEqual([999]);
       expect(total).toBe(1);
-      expect(pendingTotal).toBe(0);
+      expect(pendingTotal).toBe(1);
     });
 
     test("a writer can get autocomplete results from profile properties", async () => {
@@ -747,6 +747,13 @@ describe("actions/profiles", () => {
       expect(simpleProfileValues(profile.properties)).toEqual({
         firstName: ["Toad"],
         email: ["toad@example.com"],
+        isVIP: [null],
+        lastLoginAt: [null],
+        lastName: [null],
+        ltv: [null],
+        purchaseAmounts: [null],
+        purchases: [null],
+        userId: [null],
       });
     });
 
