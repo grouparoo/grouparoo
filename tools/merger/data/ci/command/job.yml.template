@@ -15,5 +15,8 @@
           <<: *core-cache-options
 {{{custom_steps}}}
       - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
           name: {{{name}}}
           command: {{{command}}}

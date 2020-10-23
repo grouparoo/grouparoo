@@ -111,6 +111,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
           name: license-checker
           command: ./tools/license-checker/check
   spell-checker:
@@ -128,6 +131,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
           name: spell-checker
           command: ./tools/spell-checker/check
   linter:
@@ -144,6 +150,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
       - run:
           name: linter
           command: pnpm run -r lint
