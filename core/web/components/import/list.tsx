@@ -154,12 +154,6 @@ export default function ImportList(props) {
                     ) : (
                       <span>x</span>
                     )}
-                    <br /> Exported:{" "}
-                    {_import.exportedAt ? (
-                      <Moment fromNow>{_import.exportedAt}</Moment>
-                    ) : (
-                      <span>x</span>
-                    )}
                   </td>
                   <td>
                     <ul>

@@ -29,6 +29,7 @@ import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import {
   ProfilePropertyRule,
   profilePropertyRuleJSToSQLType,
+  ProfilePropertyRuleTypes,
 } from "./ProfilePropertyRule";
 import { ProfilePropertyRuleOpsDictionary } from "../modules/RuleOpsDictionary";
 import { StateMachine } from "./../modules/stateMachine";
@@ -75,7 +76,7 @@ const STATE_TRANSITIONS = [
 ];
 
 export const TopLevelGroupRules = [
-  { key: "guid", column: "guid", type: "string" },
+  { key: "guid", column: "guid", type: typeof ProfilePropertyRuleTypes },
   { key: "createdAt", column: "createdAt", type: "date" },
 ];
 

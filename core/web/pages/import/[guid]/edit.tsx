@@ -167,7 +167,10 @@ export default function Page(props) {
           <p>
             Total duration:{" "}
             <strong>
-              <Moment duration={_import.createdAt} date={_import.exportedAt} />
+              <Moment
+                duration={_import.createdAt}
+                date={_import.groupsUpdatedAt}
+              />
             </strong>
           </p>
           <Table size="sm">
@@ -216,17 +219,6 @@ export default function Page(props) {
                   <Moment
                     duration={_import.groupsUpdatedAt}
                     date={_import.profileUpdatedAt}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>Exported</td>
-                <td>{new Date(_import.exportedAt).toLocaleString()}</td>
-                <td>
-                  ⇣
-                  <Moment
-                    duration={_import.groupsUpdatedAt}
-                    date={_import.exportedAt}
                   />
                 </td>
               </tr>
