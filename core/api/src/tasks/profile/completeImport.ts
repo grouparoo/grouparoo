@@ -6,16 +6,16 @@ import { GroupMember } from "../../models/GroupMember";
 import { Op } from "sequelize";
 import { ProfilePropertyType } from "../../modules/ops/profile";
 
-export class ProfileImportAndUpdate extends RetryableTask {
+export class ProfileCompleteImport extends RetryableTask {
   constructor() {
     super();
-    this.name = "profile:importAndUpdate";
+    this.name = "profile:completeImport";
     this.description =
-      "ask every app to update their information about this profile";
+      "Once the profile properties are imported, update runs, imports, and groups then export";
     this.frequency = 0;
     this.queue = "profiles";
     this.inputs = {
-      guid: { required: true },
+      profileGuid: { required: true },
     };
   }
 
@@ -29,19 +29,18 @@ export class ProfileImportAndUpdate extends RetryableTask {
   }
 
   async run(params) {
-    const profile = await Profile.findOne({ where: { guid: params.guid } });
-    // the profile may have been deleted or merged by the time this task ran
-    if (!profile) {
-      return;
-    }
+    const profile = await Profile.findOne({
+      where: { guid: params.profileGuid },
+    });
+    if (!profile) return; // the profile may have been deleted or merged by the time this task ran
 
-    const oldProfileProperties = await profile.properties();
+    // const oldProfileProperties = await profile.properties();
 
-    const oldGroupGuids = (
-      await GroupMember.findAll({
-        where: { profileGuid: profile.guid },
-      })
-    ).map((member) => member.groupGuid);
+    // const oldGroupGuids = (
+    //   await GroupMember.findAll({
+    //     where: { profileGuid: profile.guid },
+    //   })
+    // ).map((member) => member.groupGuid);
 
     const imports = await profile.$get("imports", {
       where: { profileUpdatedAt: null },
@@ -54,7 +53,7 @@ export class ProfileImportAndUpdate extends RetryableTask {
         await profile.addOrUpdateProperties(_import.data);
       }
 
-      await profile.import();
+      // await profile.import();
       const newProfileProperties = await profile.properties();
 
       await profile.updateGroupMembership();
@@ -70,20 +69,20 @@ export class ProfileImportAndUpdate extends RetryableTask {
         // This will be safer for exports, as each import will have the largest possible set of changed properties
         // This set will also cover properties derived from profile#import, via no import in particular
         const _import = imports[i];
-        _import.oldProfileProperties =
-          !_import.oldProfileProperties ||
-          Object.keys(_import.oldProfileProperties).length === 0
-            ? this.simplifyProfileProperties(oldProfileProperties)
-            : _import.oldProfileProperties;
+        // _import.oldProfileProperties =
+        //   !_import.oldProfileProperties ||
+        //   Object.keys(_import.oldProfileProperties).length === 0
+        //     ? this.simplifyProfileProperties(oldProfileProperties)
+        //     : _import.oldProfileProperties;
         _import.newProfileProperties = this.simplifyProfileProperties(
           newProfileProperties
         );
         _import.profileUpdatedAt = new Date();
 
-        _import.oldGroupGuids =
-          !_import.oldGroupGuids || _import.oldGroupGuids.length === 0
-            ? oldGroupGuids
-            : _import.oldGroupGuids;
+        // _import.oldGroupGuids =
+        //   !_import.oldGroupGuids || _import.oldGroupGuids.length === 0
+        //     ? oldGroupGuids
+        //     : _import.oldGroupGuids;
         _import.newGroupGuids = newGroupGuids;
         _import.groupsUpdatedAt = new Date();
 

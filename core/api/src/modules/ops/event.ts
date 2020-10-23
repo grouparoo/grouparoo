@@ -47,6 +47,8 @@ export namespace EventOps {
           "cannot associate a profile without profileGuid, userId, or anonymousId"
         );
       }
+
+      await profile.markPending();
       return profile;
     } catch (error) {
       // It's possible that 2 events for the same profile are getting processed at the same time, which would create a conflicting profile.

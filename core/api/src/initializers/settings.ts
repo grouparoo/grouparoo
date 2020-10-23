@@ -65,7 +65,15 @@ export class Plugins extends Initializer {
         title: "Runs: Profile Batch Size",
         defaultValue: 100,
         description:
-          "How many Profiles or Imports should a Run enqueue in each batch before deferring to process those Imports already enqueued?",
+          "How many Imports should a Run enqueue in each batch before deferring to associate those Imports already enqueued?",
+        type: "number",
+      },
+      {
+        key: "imports-profile-properties-batch-size",
+        title: "Imports: Profile Property Batch Size",
+        defaultValue: 50,
+        description:
+          "How many Profile Properties needing import should we process at once?",
         type: "number",
       },
       {

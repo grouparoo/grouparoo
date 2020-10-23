@@ -449,11 +449,11 @@ export namespace ProfileOps {
    * Mark the profile and all of its properties as pending
    */
   export async function markPending(profile: Profile) {
-    await profile.update({ state: "pending" });
     await ProfileProperty.update(
       { state: "pending" },
       { where: { profileGuid: profile.guid } }
     );
+    await profile.update({ state: "pending" });
   }
 
   /**
