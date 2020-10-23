@@ -14,7 +14,7 @@ fi
 export NEXT_DEVELOPMENT_MODE=true
 
 # in develeopment mode, often there is an orphan next.js/webpack process hanging around if the process crashes.
-GROUPAROO_PIDS=`ps | grep ts-node | grep grouparoo.ts | awk '{print $1}'`
+GROUPAROO_PIDS=`ps | grep src/grouparoo | grep -v grep | awk '{print $1}'`
 for p in $GROUPAROO_PIDS; do
   printf "stopping orphan grouparoo process $p\r\n"
   kill -9 $p
@@ -22,6 +22,6 @@ for p in $GROUPAROO_PIDS; do
 done
 
 "$NODEMON" -e js,jsx,ts,tsx --signal SIGTERM --ignore dist --watch ./src --watch ../../plugins/**/*.js \
-"$TS_NODE" --transpile-only --log-error src/grouparoo.ts \
+--exec "$TS_NODE" --transpile-only --log-error src/grouparoo.ts \
 || exit 0
 

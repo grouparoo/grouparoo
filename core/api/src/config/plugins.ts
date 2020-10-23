@@ -2,11 +2,13 @@ import path from "path";
 import { getPluginManifest } from "../utils/pluginDetails";
 import InjectedPlugins from "./pluginInjection";
 
-// let npm handle the path detection for us!
-const localNodeModulesPath = path.join(
-  path.dirname(require.resolve("react/package.json")),
-  ".."
-);
+function getPluginPath(pluginName: string) {
+  return path.join(
+    path.dirname(require.resolve(`${pluginName}/package.json`)),
+    "..",
+    pluginName
+  );
+}
 
 const pluginManifest = getPluginManifest();
 const parentPlugins = {};
@@ -38,17 +40,19 @@ pluginManifest.plugins.forEach((plugin) => {
 
 export const DEFAULT = {
   plugins: () => {
-    return Object.assign(
+    const plugins = Object.assign(
       {
         "ah-sequelize-plugin": {
-          path: path.join(localNodeModulesPath, "ah-sequelize-plugin"),
+          path: getPluginPath("ah-sequelize-plugin"),
         },
         "ah-next-plugin": {
-          path: path.join(localNodeModulesPath, "ah-next-plugin"),
+          path: getPluginPath("ah-next-plugin"),
         },
       },
       parentPlugins,
       InjectedPlugins
     );
+
+    return plugins;
   },
 };
