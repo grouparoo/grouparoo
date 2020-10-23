@@ -69,9 +69,6 @@ export class Export extends Model<Export> {
   @Column
   completedAt: Date;
 
-  @UpdatedAt
-  exportedAt: Date;
-
   @Column
   errorMessage: string;
 
@@ -177,7 +174,6 @@ export class Export extends Model<Export> {
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       startedAt: this.startedAt ? this.startedAt.getTime() : null,
       completedAt: this.completedAt ? this.completedAt.getTime() : null,
-      exportedAt: this.exportedAt ? this.exportedAt.getTime() : null,
       oldProfileProperties: this.oldProfileProperties,
       newProfileProperties: this.newProfileProperties,
       oldGroups: this.oldGroups,
