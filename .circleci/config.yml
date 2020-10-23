@@ -265,6 +265,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
           name: test
           command: cd cli && pnpm test
   complete:
