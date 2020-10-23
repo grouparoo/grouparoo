@@ -27,8 +27,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: npm-install
-          command: npm install
+          name: install pnpm
+          command: npm install -g pnpm
+      - run:
+          name: pnpm-install
+          command: pnpm install
       - save_cache:
           <<: *node-module-cache-options
           paths:
@@ -143,7 +146,7 @@ jobs:
           <<: *core-cache-options
       - run:
           name: linter
-          command: npm run lint
+          command: pnpm run -r lint
   test-core:
     docker:
       - image: circleci/node:12
@@ -218,6 +221,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: install pnpm
+          command: npm install -g pnpm
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -234,7 +240,7 @@ jobs:
           command: mysql -e "create database grouparoo_test" -u root -h 127.0.0.1
       - run:
           name: test
-          command: ./node_modules/.bin/lerna exec jest --stream --concurrency 1 --ignore "@grouparoo/core" --ignore "@grouparoo"  --ignore "*/app-*" -- --ci --passWithNoTests --runInBand
+          command: pnpm --workspace-concurrency=1 --recursive --filter !'@grouparoo/grouparoo'  --filter !'@grouparoo/core' --filter !'grouparoo' --filter !'*/app-*' exec -- ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-cli:
     docker:
       - image: circleci/node:12
@@ -251,7 +257,7 @@ jobs:
           <<: *core-cache-options
       - run:
           name: test
-          command: cd cli && npm test
+          command: cd cli && pnpm test
   complete:
     docker:
       - image: circleci/node:12
@@ -281,7 +287,7 @@ jobs:
             - 49:46:31:67:74:97:c4:66:44:79:89:67:29:41:89:96
       - run: git config --global user.email "hello@grouparoo.com"
       - run: git config --global user.name "Grouparoo Bot"
-      - run: npm run prepare
+      - run: pnpm run -r prepare
       - run: ./bin/publish
 workflows:
   version: 2

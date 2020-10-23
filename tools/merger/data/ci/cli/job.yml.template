@@ -16,5 +16,5 @@
 {{{custom_steps}}}
       - run:
           name: test
-          command: cd cli && npm test
+          command: cd cli && pnpm test
 {{custom_test}}

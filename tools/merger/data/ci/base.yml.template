@@ -29,8 +29,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: npm-install
-          command: npm install
+          name: install pnpm
+          command: npm install -g pnpm
+      - run:
+          name: pnpm-install
+          command: pnpm install
       - save_cache:
           <<: *node-module-cache-options
           paths:

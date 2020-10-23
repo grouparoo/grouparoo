@@ -26,9 +26,9 @@
     "spell-checker": "./tools/spell-checker/check",
     "version-alpha": "lerna version prerelease --preid alpha --force-publish --yes",
     "version-stable": "lerna version patch --force-publish --yes",
-    "lint": "lerna run lint",
-    "test": "lerna run test --stream --concurrency 1",
+    "lint": "pnpm run -r lint",
+    "test": "pnpm run test --workspace-concurrency=1",
     "nuke": "rm -rf node_modules && rm -rf core/node_modules && rm -rf cli/node_modules && rm -rf clients/*/*/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/api/dist && rm -rf clients/*/*/dist && rm -rf plugins/*/*/dist && rm -rf core/web/tmp",
-    "update": "npm-check-updates -u && lerna exec -- npm-check-updates -u && npm run nuke && npm install"
+    "update": "npm-check-updates -u && pnpm exec -- npm-check-updates -u && npm run nuke && pnpm install"
   }
 }

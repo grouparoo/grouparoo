@@ -28,6 +28,9 @@
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: install pnpm
+          command: npm install -g pnpm
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -45,5 +48,5 @@
 {{{custom_steps}}}
       - run:
           name: test
-          command: ./node_modules/.bin/lerna exec jest --stream --concurrency 1 --ignore "@grouparoo/core" --ignore "@grouparoo"  --ignore "*/app-*" -- --ci --passWithNoTests --runInBand
+          command: pnpm --workspace-concurrency=1 --recursive --filter !'@grouparoo/grouparoo'  --filter !'@grouparoo/core' --filter !'grouparoo' --filter !'*/app-*' exec -- ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
 {{custom_test}}
