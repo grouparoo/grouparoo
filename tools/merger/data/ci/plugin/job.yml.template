@@ -29,7 +29,7 @@
           <<: *core-cache-options
       - run:
           name: install pnpm
-          command: npm install -g pnpm
+          command: sudo npm install -g pnpm
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
