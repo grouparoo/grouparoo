@@ -63,7 +63,7 @@ export namespace ProfileOps {
 
         const timeFields = [
           "valueChangedAt",
-          "dataConfirmedAt",
+          "confirmedAt",
           "stateChangedAt",
           "createdAt",
           "updatedAt",
@@ -134,7 +134,7 @@ export namespace ProfileOps {
             property.update({
               state: "ready",
               stateChangedAt: new Date(),
-              dataConfirmedAt: new Date(),
+              confirmedAt: new Date(),
             })
           )
         );
@@ -149,7 +149,7 @@ export namespace ProfileOps {
             position,
             state: "ready",
             stateChangedAt: new Date(),
-            dataConfirmedAt: new Date(),
+            confirmedAt: new Date(),
             valueChangedAt:
               properties[i] && properties[i].valueChangedAt !== null
                 ? properties[i].rawValue !==
@@ -280,7 +280,7 @@ export namespace ProfileOps {
           state,
           stateChangedAt: new Date(),
           valueChangedAt: new Date(),
-          dataConfirmedAt: new Date(),
+          confirmedAt: new Date(),
         });
         newPropertiesCount++;
       }

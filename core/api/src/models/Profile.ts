@@ -16,7 +16,6 @@ import { GroupMember } from "./GroupMember";
 import { Group } from "./Group";
 import { Log } from "./Log";
 import { ProfileProperty } from "./ProfileProperty";
-import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Import } from "./Import";
 import { Export } from "./Export";
 import { Event } from "./Event";
