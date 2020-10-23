@@ -349,7 +349,6 @@ export namespace ProfileOps {
       destinations.map((destination) =>
         destination.exportProfile(
           profile,
-          [],
           true, // sync = true -> do the export in-line
           force // force = true -> do the export even if it looks like the data hasn't changed
         )

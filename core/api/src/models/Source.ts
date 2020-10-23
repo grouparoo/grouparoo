@@ -225,6 +225,10 @@ export class Source extends LoggedModel<Source> {
     );
   }
 
+  async import(profile: Profile) {
+    return SourceOps._import(this, profile);
+  }
+
   async bootstrapUniqueProfilePropertyRule(
     key: string,
     type: string,

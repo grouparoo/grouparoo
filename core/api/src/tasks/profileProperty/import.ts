@@ -1,4 +1,3 @@
-import { api, task } from "actionhero";
 import { RetryableTask } from "../../classes/retryableTask";
 import { Profile } from "../../models/Profile";
 import { ProfileProperty } from "../../models/ProfileProperty";
@@ -45,14 +44,15 @@ export class ProfilePropertyImport extends RetryableTask {
     }
 
     for (const i in profilesWithDependenciesMet) {
+      // TODO: Batches and write-in-bulk
       const profile = profilesWithDependenciesMet[i];
       const propertyValues = await source.importProfileProperty(
         profile,
         profilePropertyRule
       );
+
       const hash = {};
       hash[profilePropertyRule.key] = propertyValues || [];
-      console.log(hash);
       await profile.addOrUpdateProperty(hash);
     }
   }

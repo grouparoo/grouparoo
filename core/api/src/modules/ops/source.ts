@@ -169,6 +169,51 @@ export namespace SourceOps {
   }
 
   /**
+   * Import all profile properties from a Source for a Profile
+   */
+  export async function _import(source: Source, profile: Profile) {
+    const hash = {};
+    const rules = await source.$get("profilePropertyRules", {
+      where: { state: "ready" },
+    });
+
+    const profileProperties = await profile.properties();
+    const app = await source.$get("app");
+    const appOptions = await app.getOptions();
+    const connection = await app.getConnection();
+    const sourceOptions = await source.getOptions();
+    const sourceMapping = await source.getMapping();
+
+    const preloadedArgs = {
+      app,
+      connection,
+      appOptions,
+      sourceOptions,
+      sourceMapping,
+      profileProperties,
+    };
+
+    await Promise.all(
+      rules.map((rule) =>
+        source
+          .importProfileProperty(profile, rule, null, null, preloadedArgs)
+          .then((response) => (hash[rule.key] = response))
+      )
+    );
+
+    // remove null and undefined as we cannot set that value
+    const hashKeys = Object.keys(hash);
+    for (const i in hashKeys) {
+      const key = hashKeys[i];
+      if (hash[key] === null || hash[key] === undefined) {
+        delete hash[key];
+      }
+    }
+
+    return hash;
+  }
+
+  /**
    * This method is used to bootstrap a new source which requires a profile property rule for a mapping, but the rule doesn't yet exist.
    */
   export async function bootstrapUniqueProfilePropertyRule(

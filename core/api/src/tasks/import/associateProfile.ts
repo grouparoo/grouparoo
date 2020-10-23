@@ -2,7 +2,7 @@ import { api, task, log, env } from "actionhero";
 import { RetryableTask } from "../../classes/retryableTask";
 import { Import } from "../../models/Import";
 import { Run } from "../../models/Run";
-import { ProfileOps } from "../../modules/ops/profile";
+import { ProfileOps, ProfilePropertyType } from "../../modules/ops/profile";
 
 export class ImportAssociateProfile extends RetryableTask {
   constructor() {
@@ -16,6 +16,15 @@ export class ImportAssociateProfile extends RetryableTask {
     };
   }
 
+  simplifyProfileProperties(complexProperties: ProfilePropertyType) {
+    const simpleProperties = {};
+    for (let key in complexProperties) {
+      simpleProperties[key] = complexProperties[key].values;
+    }
+
+    return simpleProperties;
+  }
+
   async run(params) {
     const { importGuid } = params;
     const _import = await Import.findByGuid(importGuid);
@@ -23,6 +32,15 @@ export class ImportAssociateProfile extends RetryableTask {
     try {
       const { profile, isNew } = await _import.associateProfile();
       await ProfileOps.markPending(profile);
+
+      const oldProfileProperties = await profile.properties();
+      const oldGroups = await profile.$get("groups");
+
+      _import.oldProfileProperties = this.simplifyProfileProperties(
+        oldProfileProperties
+      );
+      _import.oldGroupGuids = oldGroups.map((g) => g.guid);
+      await _import.save();
 
       if (_import.creatorType === "run") {
         const transaction = await api.sequelize.transaction();

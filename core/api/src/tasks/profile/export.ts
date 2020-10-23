@@ -2,7 +2,6 @@ import { RetryableTask } from "../../classes/retryableTask";
 import { Op } from "sequelize";
 import { Profile } from "../../models/Profile";
 import { Import } from "../../models/Import";
-import { Export } from "../../models/Export";
 import { Destination } from "../../models/Destination";
 import { Group } from "../../models/Group";
 
@@ -15,44 +14,46 @@ export class ProfileExport extends RetryableTask {
     this.frequency = 0;
     this.queue = "exports";
     this.inputs = {
-      guid: { required: true },
+      profileGuid: { required: true },
       force: { required: false },
     };
   }
 
   async run(params) {
-    const profile = await Profile.findOne({ where: { guid: params.guid } });
+    const profile = await Profile.findOne({
+      where: { guid: params.profileGuid },
+    });
 
     // the profile may have been deleted or merged by the time this task ran
     if (!profile) return;
 
-    const groups = await profile.$get("groups");
-
-    // const imports = await Import.findAll({
-    //   where: {
-    //     profileGuid: profile.guid,
-    //     profileUpdatedAt: { [Op.not]: null },
-    //     groupsUpdatedAt: { [Op.not]: null },
-    //     exportedAt: null,
-    //   },
-    //   order: [["createdAt", "asc"]],
-    // });
-
-    // if (imports.length === 0) return;
-
-    const mostRecentExport = await Export.findOne({
-      where: { profileGuid: profile.guid, mostRecent: true },
+    const imports = await Import.findAll({
+      where: {
+        profileGuid: profile.guid,
+        profileUpdatedAt: { [Op.not]: null },
+        groupsUpdatedAt: { [Op.not]: null },
+        exportedAt: null,
+      },
+      order: [["createdAt", "asc"]],
     });
 
     try {
-      const oldGroupGuids = imports[0].oldGroupGuids;
-      const newGroupGuids = groups.map((g) => g.guid);
-      const oldGroups = await Group.findAll({
-        where: { guid: { [Op.in]: oldGroupGuids } },
-      });
-      const newGroups = await Group.findAll({
-        where: { guid: { [Op.in]: newGroupGuids } },
-      });
+      const oldGroupGuids = imports[0]?.oldGroupGuids;
+      const newGroupGuids = imports[imports.length - 1]?.newGroupGuids;
+
+      const oldGroups =
+        oldGroupGuids && oldGroupGuids.length > 0
+          ? await Group.findAll({
+              where: { guid: { [Op.in]: oldGroupGuids } },
+            })
+          : [];
+
+      const newGroups =
+        newGroupGuids && newGroupGuids.length > 0
+          ? await Group.findAll({
+              where: { guid: { [Op.in]: newGroupGuids } },
+            })
+          : [];
 
       const destinations = await Destination.destinationsForGroups(
         oldGroups,
@@ -78,17 +79,16 @@ export class ProfileExport extends RetryableTask {
       for (const i in destinations) {
         await destinations[i].exportProfile(
           profile,
-          // imports,
           false,
           params.force ? params.force : undefined
         );
       }
 
-      // await Promise.all(
-      //   imports.map((e) => e.update({ exportedAt: new Date() }))
-      // );
+      await Promise.all(
+        imports.map((e) => e.update({ exportedAt: new Date() }))
+      );
     } catch (error) {
-      // await Promise.all(imports.map((e) => e.setError(error, this.name)));
+      await Promise.all(imports.map((e) => e.setError(error, this.name)));
       throw error;
     }
   }
