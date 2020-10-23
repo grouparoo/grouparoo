@@ -144,12 +144,12 @@ export class Group extends LoggedModel<Group> {
   profiles: Profile[];
 
   async profilesCount(options = {}) {
-    let search = { where: { groupGuid: this.guid } };
+    let queryOptions = { where: { groupGuid: this.guid } };
     if (options) {
-      search = Object.assign(search, options);
+      queryOptions = Object.assign(queryOptions, options);
     }
 
-    return this.$count("groupMembers", search);
+    return this.$count("groupMembers", queryOptions);
   }
 
   async getRules() {

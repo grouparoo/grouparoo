@@ -59,6 +59,7 @@ export class ProfilesList extends AuthenticatedAction {
 
     if (params.groupGuid) {
       const group = await Group.findByGuid(params.groupGuid);
+
       const groupMembers: Array<GroupMember> = await group.$get(
         "groupMembers",
         {
@@ -74,6 +75,7 @@ export class ProfilesList extends AuthenticatedAction {
           where,
         });
       }
+
       profiles = await Profile.findAll({
         where: {
           guid: { [Op.in]: groupMembers.map((mem) => mem.profileGuid) },
@@ -88,7 +90,6 @@ export class ProfilesList extends AuthenticatedAction {
       });
 
       const pendingTotal = await group.profilesCount({
-        where: { state: "pending" },
         distinct: true,
         include: [],
       });
