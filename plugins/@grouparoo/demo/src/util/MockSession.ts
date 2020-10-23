@@ -8,13 +8,13 @@ import { Op } from "sequelize";
 
 // prettier-ignore
 const funnel = [
-  { type: "pageview",  data: { page: "/" }, percent: 100, user:false },
-  { type: "pageview",  data: { page: "/about" }, percent: 90, user: false },
-  { type: "pageview",  data: { page: "/product" }, percent: 90, user: false, category: true, addToCart: 50},
-  { type: "pageview",  data: { page: "/product" }, percent: 85, user: false, category: true, addToCart: 50},
-  { type: "pageview",  data: { page: "/product" }, percent: 80, user: false, category: true, addToCart: 50},
-  { type: "pageview",  data: { page: "/cart" }, percent: 75, user: false, cart: true, checkout: true },
-  { type: "pageview",  data: { page: "/sign-in" }, percent: 60, user: true },
+  { type: "pageview",  data: { page: "/" }, percent: 100 },
+  { type: "pageview",  data: { page: "/about" }, percent: 90 },
+  { type: "pageview",  data: { page: "/product" }, percent: 90, category: true, addToCart: 50},
+  { type: "pageview",  data: { page: "/product" }, percent: 85, category: true, addToCart: 50},
+  { type: "pageview",  data: { page: "/product" }, percent: 80,  category: true, addToCart: 50},
+  { type: "pageview",  data: { page: "/cart" }, percent: 75, cart: true },
+  { type: "pageview",  data: { page: "/sign-in" }, percent: 60, user: true, signin: true },
   { type: "pageview",  data: { page: "/purchase" }, percent: 80, user: true, cart: true, purchase: true  },
   { type: "purchase",  data: {}, percent: 100, user: true, cart: true, purchase: true  },
   { type: "pageview",  data: { page: "/thanks" }, percent: 100, user: true, cart: true, purchase: true },
@@ -75,6 +75,7 @@ export class MockSession {
       this.started = true;
       await this.pickCurrentUser();
       await this.setNow();
+      this.login();
     }
   }
 
@@ -92,16 +93,28 @@ export class MockSession {
     await this.start();
 
     const step = funnel[this.currentStep];
-    const track = this.shouldTrack(step);
-    if (!track) {
-      return false;
-    }
+    if (!this.shouldSkip(step)) {
+      const track = this.shouldTrack(step);
+      if (!track) {
+        return false;
+      }
 
-    if (track) {
-      await this.track(step);
+      if (track) {
+        await this.track(step);
+      }
     }
     this.currentStep++;
     return true;
+  }
+
+  shouldSkip(step) {
+    if (!step) {
+      return false;
+    }
+    if (step.signin && this.identified) {
+      return true;
+    }
+    return false;
   }
 
   shouldTrack(step) {
@@ -150,6 +163,16 @@ export class MockSession {
       return null;
     }
     return await property.getValue();
+  }
+
+  // some users login from the beginning
+  login() {
+    if (this.currentUserId) {
+      if (inPercentage(33)) {
+        // identified ahead of time
+        this.identified = true;
+      }
+    }
   }
 
   // find a user, (or stay anonymous -- null)
