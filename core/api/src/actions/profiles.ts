@@ -214,7 +214,6 @@ export class ProfileCreate extends AuthenticatedAction {
     const profile = new Profile(params);
     await profile.save();
     await profile.addOrUpdateProperties(params.properties);
-    await profile.buildNullProperties();
 
     const groups = await profile.$get("groups");
 

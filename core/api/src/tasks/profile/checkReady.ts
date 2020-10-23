@@ -35,7 +35,6 @@ WHERE guid IN (
   ORDER BY "profiles"."guid" ASC
   LIMIT ${limit}
 )
-AND "state" = 'pending'
 RETURNING *
 ;
       `;

@@ -8,6 +8,7 @@ import {
   DataType,
   AllowNull,
   Default,
+  AfterCreate,
 } from "sequelize-typescript";
 import { task } from "actionhero";
 import { LoggedModel } from "../classes/loggedModel";
@@ -161,6 +162,11 @@ export class Profile extends LoggedModel<Profile> {
   @BeforeSave
   static async updateState(instance: Profile) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
+
+  @AfterCreate
+  static async buildNullPropertiesForNewProfile(instance: Profile) {
+    await instance.buildNullProperties();
   }
 
   @AfterDestroy
