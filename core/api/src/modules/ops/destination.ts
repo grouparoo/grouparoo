@@ -247,7 +247,6 @@ export namespace DestinationOps {
   export async function exportProfile(
     destination: Destination,
     profile: Profile,
-    imports: Array<Import>,
     synchronous = false,
     force = false
   ) {

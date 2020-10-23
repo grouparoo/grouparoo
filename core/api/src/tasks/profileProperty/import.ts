@@ -9,7 +9,8 @@ export class ProfilePropertyImport extends RetryableTask {
   constructor() {
     super();
     this.name = "profileProperty:import";
-    this.description = "";
+    this.description =
+      "Import the Profile Properties for a Profile Property Rule";
     this.frequency = 0;
     this.queue = "profileProperties";
     this.inputs = {
@@ -26,6 +27,7 @@ export class ProfilePropertyImport extends RetryableTask {
     const profilePropertyRule = await ProfilePropertyRule.findByGuid(
       params.profilePropertyRuleGuid
     );
+    const source = await profilePropertyRule.$get("source");
 
     const profilesWithDependenciesMet: Profile[] = [];
     const dependencies = await profilePropertyRule.dependsOn();
@@ -40,8 +42,18 @@ export class ProfilePropertyImport extends RetryableTask {
       });
 
       if (ok) profilesWithDependenciesMet.push(profile);
+    }
 
-      // TODO - Import Stuff!
+    for (const i in profilesWithDependenciesMet) {
+      const profile = profilesWithDependenciesMet[i];
+      const propertyValues = await source.importProfileProperty(
+        profile,
+        profilePropertyRule
+      );
+      const hash = {};
+      hash[profilePropertyRule.key] = propertyValues || [];
+      console.log(hash);
+      await profile.addOrUpdateProperty(hash);
     }
   }
 }

@@ -2,6 +2,7 @@ import { RetryableTask } from "../../classes/retryableTask";
 import { Op } from "sequelize";
 import { Profile } from "../../models/Profile";
 import { Import } from "../../models/Import";
+import { Export } from "../../models/Export";
 import { Destination } from "../../models/Destination";
 import { Group } from "../../models/Group";
 
@@ -25,21 +26,27 @@ export class ProfileExport extends RetryableTask {
     // the profile may have been deleted or merged by the time this task ran
     if (!profile) return;
 
-    const imports = await Import.findAll({
-      where: {
-        profileGuid: profile.guid,
-        profileUpdatedAt: { [Op.not]: null },
-        groupsUpdatedAt: { [Op.not]: null },
-        exportedAt: null,
-      },
-      order: [["createdAt", "asc"]],
-    });
+    const groups = await profile.$get("groups");
 
-    if (imports.length === 0) return;
+    // const imports = await Import.findAll({
+    //   where: {
+    //     profileGuid: profile.guid,
+    //     profileUpdatedAt: { [Op.not]: null },
+    //     groupsUpdatedAt: { [Op.not]: null },
+    //     exportedAt: null,
+    //   },
+    //   order: [["createdAt", "asc"]],
+    // });
+
+    // if (imports.length === 0) return;
+
+    const mostRecentExport = await Export.findOne({
+      where: { profileGuid: profile.guid, mostRecent: true },
+    });
 
     try {
       const oldGroupGuids = imports[0].oldGroupGuids;
-      const newGroupGuids = imports[imports.length - 1].newGroupGuids;
+      const newGroupGuids = groups.map((g) => g.guid);
       const oldGroups = await Group.findAll({
         where: { guid: { [Op.in]: oldGroupGuids } },
       });
@@ -71,17 +78,17 @@ export class ProfileExport extends RetryableTask {
       for (const i in destinations) {
         await destinations[i].exportProfile(
           profile,
-          imports,
+          // imports,
           false,
           params.force ? params.force : undefined
         );
       }
 
-      await Promise.all(
-        imports.map((e) => e.update({ exportedAt: new Date() }))
-      );
+      // await Promise.all(
+      //   imports.map((e) => e.update({ exportedAt: new Date() }))
+      // );
     } catch (error) {
-      await Promise.all(imports.map((e) => e.setError(error, this.name)));
+      // await Promise.all(imports.map((e) => e.setError(error, this.name)));
       throw error;
     }
   }
