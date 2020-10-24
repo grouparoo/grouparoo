@@ -9,9 +9,7 @@ import { Schedule } from "../../src/models/Schedule";
 import { Group } from "../../src/models/Group";
 import { Team } from "../../src/models/Team";
 import { TeamMember } from "../../src/models/TeamMember";
-import { Export, Profile, Destination } from "../../src";
-import { ExportRun } from "../../src/models/ExportRun";
-import { api, specHelper } from "actionhero";
+import { Profile } from "../../src/models/Profile";
 
 let actionhero;
 let schedule;
@@ -245,22 +243,10 @@ describe("models/run", () => {
         creatorGuid: run.guid,
       });
 
-      await run.determineState();
+      await run.afterBatch();
       await run.reload();
       expect(run.state).toBe("running");
       await run.update({ state: "stopped" });
-    });
-
-    it("will mark the run as complete if all the imports are complete", async () => {
-      await Import.create({
-        creatorType: "run",
-        creatorGuid: run.guid,
-        exportedAt: new Date(),
-      });
-
-      await run.determineState();
-      await run.reload();
-      expect(run.state).toBe("complete");
     });
 
     it("will move the run to complete if all the imports have failed with an error", async () => {
@@ -270,13 +256,15 @@ describe("models/run", () => {
         errorMessage: "oh no!",
       });
 
-      await run.determineState();
+      await run.afterBatch("complete");
       await run.reload();
       expect(run.state).toBe("complete");
+      expect(run.error).toMatch(/oh no/);
     });
 
     it("a complete run will remain complete", async () => {
-      await run.determineState();
+      await run.update({ state: "complete" });
+      await run.afterBatch();
       await run.reload();
       expect(run.state).toBe("complete");
     });
@@ -298,64 +286,10 @@ describe("models/run", () => {
         errorMessage: "error class B",
       });
 
-      await run.determineState();
+      await run.afterBatch("complete");
       await run.reload();
       expect(run.state).toBe("complete");
       expect(run.error).toBe("error class A (x2)\r\nerror class B (x1)");
-    });
-
-    it("will keep the state running if there are incomplete exports", async () => {
-      const _export = await helper.factories.export(profile);
-      const exportRun = await ExportRun.create({
-        runGuid: run.guid,
-        exportGuid: _export.guid,
-      });
-
-      await run.determineState();
-      await run.reload();
-      expect(run.state).toBe("running");
-      await run.update({ state: "stopped" });
-    });
-
-    it("will mark the run as complete if all the exports are complete", async () => {
-      const _export = await helper.factories.export(profile, null, {
-        completedAt: new Date(),
-      });
-      const exportRun = await ExportRun.create({
-        runGuid: run.guid,
-        exportGuid: _export.guid,
-      });
-
-      await run.determineState();
-      await run.reload();
-      expect(run.state).toBe("complete");
-    });
-
-    it("will mark the run complete if the imports and exports are really done even if the local counts are off", async () => {
-      run.update({
-        importsCreated: 100,
-        profilesCreated: 1,
-        exportsCreated: 100,
-        profilesExported: 1,
-      });
-
-      await Import.create({
-        creatorType: "run",
-        creatorGuid: run.guid,
-        errorMessage: "oh no!",
-      });
-
-      const _export = await helper.factories.export(profile, null, {
-        completedAt: new Date(),
-      });
-      const exportRun = await ExportRun.create({
-        runGuid: run.guid,
-        exportGuid: _export.guid,
-      });
-
-      await run.determineState();
-      await run.reload();
-      expect(run.state).toBe("complete");
     });
   });
 
@@ -395,7 +329,7 @@ describe("models/run", () => {
     });
 
     it("a stopped run will remain stopped", async () => {
-      await run.determineState();
+      await run.afterBatch();
       await run.reload();
       expect(run.state).toBe("stopped");
     });
@@ -548,23 +482,19 @@ describe("models/run", () => {
       let associateTotal = 0;
       let updateTotal = 0;
       let groupsTotal = 0;
-      let exportTotal = 0;
       quantizedTimeline.map((q) => {
         expect(q.steps.associate).toBeLessThanOrEqual(1);
         expect(q.steps.update).toBeLessThanOrEqual(1);
         expect(q.steps.groups).toBeLessThanOrEqual(1);
-        expect(q.steps.export).toBeLessThanOrEqual(1);
 
         associateTotal += q.steps.associate;
         updateTotal += q.steps.update;
         groupsTotal += q.steps.groups;
-        exportTotal += q.steps.export;
       });
 
       expect(associateTotal).toBe(3);
       expect(updateTotal).toBe(3);
       expect(groupsTotal).toBe(3);
-      expect(exportTotal).toBe(3);
     });
   });
 

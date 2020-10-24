@@ -161,6 +161,7 @@ export class Run extends Model<Run> {
 
     if (this.state === "complete" && !this.completedAt) {
       await this.update({ completedAt: new Date(), percentComplete: 100 });
+      await this.buildErrorMessage();
     }
 
     if (this.percentComplete >= 100) {
