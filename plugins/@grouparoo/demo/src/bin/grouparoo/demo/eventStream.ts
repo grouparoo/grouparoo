@@ -1,16 +1,16 @@
 import { log, CLI, config, api } from "actionhero";
-import { init } from "../../../util/shared";
 import { MockSession, getApiKey } from "../../../util/MockSession";
 import { getPurchaseCategories } from "../../../sample_data";
-import { ApiKey } from "@grouparoo/core";
+import { ApiKey, ProfilePropertyRule, App } from "@grouparoo/core";
 
 const sleep = 100;
-const parallelSessions = 2;
+const parallelSessions = 1;
 
 export class Console extends CLI {
   apiKey: ApiKey;
   categories: string[];
   baseUrl: string;
+  userIdGuid: string;
 
   constructor() {
     super();
@@ -20,9 +20,10 @@ export class Console extends CLI {
     this.apiKey = null;
     this.categories = null;
     this.baseUrl = null;
+    this.userIdGuid = null;
   }
 
-  async getBaseUrl() {
+  getBaseUrl() {
     const baseUrl = `${
       process.env.WEB_URL || `http://localhost:${config.servers.web.port}`
     }/api/v1/track`;
@@ -30,22 +31,33 @@ export class Console extends CLI {
     return baseUrl;
   }
 
+  async getUserIdGuid() {
+    const eventApp = await App.findOne({ where: { type: "events" } });
+    if (!eventApp || eventApp.state !== "ready") {
+      throw new Error("your event app is not ready");
+    }
+    const appOptions = await eventApp.getOptions();
+    const guid = appOptions.identifyingProfilePropertyRuleGuid;
+    if (!guid) {
+      throw new Error(
+        "no identifyingProfilePropertyRuleGuid on the events app"
+      );
+    }
+    return guid;
+  }
+
   makeSession(i) {
-    return new MockSession(
-      `stream${i}`,
-      this.apiKey,
-      null,
-      this.categories,
-      this.baseUrl
-    );
+    return new MockSession(`stream${i}`, this.apiKey, null, this.categories, {
+      baseUrl: this.baseUrl,
+      userIdGuid: this.userIdGuid,
+    });
   }
 
   async run() {
-    await init();
-
     this.apiKey = await getApiKey();
     this.categories = await getPurchaseCategories();
-    this.baseUrl = await this.getBaseUrl();
+    this.baseUrl = this.getBaseUrl();
+    this.userIdGuid = await this.getUserIdGuid();
 
     const runner = this;
     const sessions = [];

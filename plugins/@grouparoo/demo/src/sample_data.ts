@@ -1,5 +1,5 @@
-import Database from "./util/postgres";
-import { log, init } from "./util/shared";
+import Database, { readCsvTable } from "./util/postgres";
+import { log } from "./util/shared";
 import { runAction } from "./util/runAction";
 import {
   makePropertyRuleIdentifying,
@@ -309,6 +309,15 @@ export async function getPurchases(limit = null) {
 }
 
 export async function getPurchaseCategories() {
+  try {
+    return await dbPurchaseCategories();
+  } catch (error) {
+    log(0, "Purchases not available in database. Using CSV");
+    return await csvPurchaseCategories();
+  }
+}
+
+export async function dbPurchaseCategories() {
   const out = [];
   const db = new Database(SCHEMA_NAME);
   const tableName = "purchases";
@@ -319,4 +328,19 @@ export async function getPurchaseCategories() {
     out.push(row.category);
   }
   return out;
+}
+
+export async function csvPurchaseCategories() {
+  const rows = readCsvTable("purchases");
+  const categories = {};
+  for (const row of rows) {
+    if (row.category) {
+      categories[row.category] = true;
+    }
+  }
+  const keys = Object.keys(categories);
+  if (keys.length === 0) {
+    throw new Error("no categories found!");
+  }
+  return keys;
 }
