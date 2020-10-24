@@ -69,6 +69,7 @@ describe("actions/profiles", () => {
       );
       expect(error).toBeUndefined();
       expect(profile.guid).toBeTruthy();
+      expect(profile.state).toBe("pending");
       expect(simpleProfileValues(profile.properties)).toEqual({
         userId: [123],
         email: ["luigi@example.com"],
@@ -111,6 +112,7 @@ describe("actions/profiles", () => {
       );
       expect(error).toBeUndefined();
       expect(profile.guid).toBeTruthy();
+      expect(profile.state).toBe("pending");
       expect(simpleProfileValues(profile.properties)).toEqual({
         userId: [999],
         email: ["luigi@example.com"],
@@ -136,6 +138,7 @@ describe("actions/profiles", () => {
       );
       expect(error).toBeUndefined();
       expect(profile.guid).toBeTruthy();
+      expect(profile.state).toBe("pending");
       expect(simpleProfileValues(profile.properties)).toEqual({
         userId: [999],
         email: ["luigi@example.com"],

@@ -20,7 +20,7 @@ export namespace ImportOps {
     } = await ProfileOps.findOrCreateByUniqueProfileProperties(_import.data);
 
     const oldProfileProperties = await profile.properties();
-    const olgGroups = await profile.$get("groups");
+    const oldGroups = await profile.$get("groups");
 
     _import.profileGuid = profile.guid;
     _import.profileAssociatedAt = new Date();
@@ -30,7 +30,7 @@ export namespace ImportOps {
         ? simplifyProfileProperties(oldProfileProperties)
         : {};
 
-    _import.oldGroupGuids = olgGroups.map((group) => group.guid);
+    _import.oldGroupGuids = oldGroups.map((group) => group.guid);
 
     await _import.save();
 

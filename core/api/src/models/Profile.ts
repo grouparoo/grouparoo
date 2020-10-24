@@ -27,7 +27,11 @@ const STATES = ["draft", "pending", "ready"] as const;
 const STATE_TRANSITIONS = [
   { from: "draft", to: "pending", checks: [] },
   { from: "draft", to: "ready", checks: [] },
-  { from: "pending", to: "ready", checks: [] },
+  {
+    from: "pending",
+    to: "ready",
+    checks: ["validateProfilePropertiesAreReady"],
+  },
   { from: "ready", to: "pending", checks: [] },
 ];
 
@@ -148,6 +152,17 @@ export class Profile extends LoggedModel<Profile> {
     }
 
     return message;
+  }
+
+  async validateProfilePropertiesAreReady() {
+    const properties = await this.properties();
+    for (const k in properties) {
+      if (properties[k].state !== "ready") {
+        throw new Error(
+          `cannot transition profile ${this.guid} to ready state as not all properties are ready (${k})`
+        );
+      }
+    }
   }
 
   // --- Class Methods --- //

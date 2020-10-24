@@ -248,8 +248,6 @@ describe("models/profile", () => {
         await source.setMapping({ id: "userId" });
         await source.update({ state: "ready" });
 
-        const rules = await ProfilePropertyRule.findAll();
-
         const emailRule = await ProfilePropertyRule.create({
           sourceGuid: source.guid,
           key: "email",
@@ -294,6 +292,33 @@ describe("models/profile", () => {
         await source.destroy();
       });
 
+      test("creating a profile creates null profile properties", async () => {
+        const newProfile = await Profile.create();
+        const properties = await newProfile.properties();
+        expect(Object.keys(properties).length).toBe(5);
+        for (const k in properties) {
+          expect(properties[k].values).toEqual([null]);
+        }
+      });
+
+      test("a profile can be marked as pending", async () => {
+        const newProfile = await Profile.create();
+        await newProfile.update({ state: "ready" });
+        await ProfileProperty.update(
+          { state: "ready" },
+          { where: { profileGuid: newProfile.guid } }
+        );
+
+        await newProfile.markPending();
+        await newProfile.reload();
+
+        expect(newProfile.state).toBe("pending");
+        const properties = await newProfile.properties();
+        for (const k in properties) {
+          expect(properties[k].state).toEqual("pending");
+        }
+      });
+
       test("it can add a new profile property when the schema is prepared", async () => {
         await profile.addOrUpdateProperty({ email: ["luigi@example.com"] });
         const properties = await profile.properties();
@@ -306,8 +331,157 @@ describe("models/profile", () => {
         });
       });
 
+      test("adding values to profile properties moves them to the ready state", async () => {
+        await ProfileProperty.update(
+          { state: "pending" },
+          { where: { profileGuid: profile.guid } }
+        );
+
+        await profile.addOrUpdateProperty({ email: ["luigi@example.com"] });
+        const properties = await profile.properties();
+        expect(properties.email.state).toBe("ready");
+        expect(properties.firstName.state).toBe("pending");
+      });
+
+      test("profile cannot transition to ready state until all properties are ready", async () => {
+        await ProfileProperty.update(
+          { state: "pending" },
+          { where: { profileGuid: profile.guid } }
+        );
+
+        await expect(profile.update({ state: "ready" })).rejects.toThrow(
+          /cannot transition profile .* to ready state as not all properties are ready/
+        );
+      });
+
+      test("profile can transition to ready state if all properties are ready", async () => {
+        await ProfileProperty.update(
+          { state: "ready" },
+          { where: { profileGuid: profile.guid } }
+        );
+
+        await profile.update({ state: "ready" }); // does not throw
+      });
+
+      describe("profile property timestamps (non-array)", () => {
+        test("changing a value sets valueChangedAt and confirmedAt", async () => {
+          const start = new Date().getTime();
+
+          await profile.addOrUpdateProperties({
+            email: ["new-email@example.com"],
+          });
+          const properties = await profile.properties();
+          expect(properties.email.valueChangedAt.getTime()).toBeGreaterThan(
+            start
+          );
+          expect(properties.email.confirmedAt.getTime()).toBeGreaterThan(start);
+        });
+
+        test("updating with the same value only sets confirmedAt", async () => {
+          const start = new Date().getTime();
+
+          await profile.addOrUpdateProperties({
+            email: ["new-email@example.com"],
+          });
+          const properties = await profile.properties();
+          expect(properties.email.valueChangedAt.getTime()).toBeLessThan(start);
+          expect(properties.email.confirmedAt.getTime()).toBeGreaterThan(start);
+        });
+
+        test("changing state sets stateChangedAt", async () => {
+          await ProfileProperty.update(
+            { state: "pending" },
+            { where: { profileGuid: profile.guid } }
+          );
+          const start = new Date().getTime();
+
+          await profile.addOrUpdateProperties({
+            email: ["new-email@example.com"],
+          });
+          const properties = await profile.properties();
+          expect(properties.email.stateChangedAt.getTime()).toBeGreaterThan(
+            start
+          );
+        });
+      });
+
+      describe("profile property timestamps (array)", () => {
+        let purchasesRule: ProfilePropertyRule;
+
+        beforeAll(async () => {
+          purchasesRule = await ProfilePropertyRule.create({
+            sourceGuid: source.guid,
+            key: "purchases",
+            type: "string",
+            isArray: true,
+          });
+          await purchasesRule.setOptions({ column: "purchases" });
+          await purchasesRule.update({ state: "ready" });
+        });
+
+        afterAll(async () => {
+          await purchasesRule.destroy();
+        });
+
+        test("changing a value sets valueChangedAt and confirmedAt", async () => {
+          const start = new Date().getTime();
+
+          await profile.addOrUpdateProperties({
+            purchases: ["hat"],
+          });
+          let properties = await profile.properties();
+          expect(properties.purchases.valueChangedAt.getTime()).toBeGreaterThan(
+            start
+          );
+          const firstChangeAt = properties.purchases.valueChangedAt.getTime();
+          expect(properties.purchases.confirmedAt.getTime()).toBeGreaterThan(
+            start
+          );
+
+          await profile.addOrUpdateProperties({
+            purchases: ["hat", "mushroom"],
+          });
+          properties = await profile.properties();
+          expect(properties.purchases.valueChangedAt.getTime()).toBeGreaterThan(
+            firstChangeAt
+          );
+        });
+
+        test("updating with the same value only sets confirmedAt", async () => {
+          const start = new Date().getTime();
+
+          await profile.addOrUpdateProperties({
+            purchases: ["hat", "mushroom"],
+          });
+          const properties = await profile.properties();
+          expect(properties.purchases.valueChangedAt.getTime()).toBeLessThan(
+            start
+          );
+          expect(properties.purchases.confirmedAt.getTime()).toBeGreaterThan(
+            start
+          );
+        });
+
+        test("changing state sets stateChangedAt", async () => {
+          await ProfileProperty.update(
+            { state: "pending" },
+            { where: { profileGuid: profile.guid } }
+          );
+          const start = new Date().getTime();
+
+          await profile.addOrUpdateProperties({
+            purchases: ["hat", "mushroom"],
+          });
+          const properties = await profile.properties();
+          expect(properties.purchases.stateChangedAt.getTime()).toBeGreaterThan(
+            start
+          );
+        });
+      });
+
       test("it can add properties in bulk with proper timestamps", async () => {
         await profile.addOrUpdateProperties({
+          email: ["luigi@example.com"],
           firstName: ["Luigi"],
           lastName: ["Mario"],
           color: ["green"],
