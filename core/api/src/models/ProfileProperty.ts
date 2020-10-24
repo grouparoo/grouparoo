@@ -60,6 +60,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   valueChangedAt: Date;
 
   @AllowNull(false)
+  @Default(new Date())
   @Column
   stateChangedAt: Date;
 

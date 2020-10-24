@@ -109,7 +109,7 @@ describe("models/profileProperty", () => {
     let log = await Log.findOne({
       where: { topic: "profileProperty", verb: "create" },
     });
-    expect(log.message).toBe('profileProperty "ltv" created');
+    expect(log.message).toMatch(/profileProperty .* created/);
 
     property.rawValue = "100";
     await property.save();
@@ -456,6 +456,7 @@ describe("models/profileProperty", () => {
       emailRule.unique = true;
       await emailRule.save();
 
+      await profile.buildNullProperties();
       secondProfile = new Profile();
       await secondProfile.save();
     });
@@ -466,58 +467,33 @@ describe("models/profileProperty", () => {
     });
 
     test("allows the addition of another unique, non-conflicting property", async () => {
-      const originalProfileProperty = new ProfileProperty({
-        profileGuid: profile.guid,
-        profilePropertyRuleGuid: emailRule.guid,
+      await profile.addOrUpdateProperties({ email: ["mario@example.com"] });
+      await secondProfile.addOrUpdateProperties({
+        email: ["luigi@example.com"],
       });
-      await originalProfileProperty.setValue("mario@example.com");
-      await originalProfileProperty.save();
-      expect(originalProfileProperty.guid).toBeTruthy();
-
-      const newProfileProperty = new ProfileProperty({
-        profileGuid: secondProfile.guid,
-        profilePropertyRuleGuid: emailRule.guid,
-      });
-      await newProfileProperty.setValue("luigi@example.com");
-      await newProfileProperty.save();
-      expect(newProfileProperty.guid).toBeTruthy();
-
-      await originalProfileProperty.destroy();
-      await newProfileProperty.destroy();
     });
 
-    test("blocks the addition of another unique and updates cascade", async () => {
-      const originalProfileProperty = new ProfileProperty({
-        profileGuid: profile.guid,
-        profilePropertyRuleGuid: emailRule.guid,
-      });
-
-      await originalProfileProperty.setValue("mario@example.com");
-      await originalProfileProperty.save();
-      expect(originalProfileProperty.guid).toBeTruthy();
-
-      try {
-        const newProfileProperty = new ProfileProperty({
-          profileGuid: secondProfile.guid,
-          profilePropertyRuleGuid: emailRule.guid,
-        });
-
-        await newProfileProperty.setValue("mario@example.com");
-        await newProfileProperty.save();
-
-        throw new Error("should not get here");
-      } catch (error) {
-        expect(error.message).toMatch(
-          /another profile already has the value mario@example.com for property email/
-        );
-      }
+    test("blocks the addition of another unique property", async () => {
+      await profile.addOrUpdateProperties({ email: ["mario@example.com"] });
+      await expect(
+        secondProfile.addOrUpdateProperties({
+          email: ["mario@example.com"],
+        })
+      ).rejects.toThrow(
+        /another profile already has the value mario@example.com for property email/
+      );
     });
 
     test("editing the key of a profilePropertyRule renames all the profile properties that have that key", async () => {
+      await profile.addOrUpdateProperties({ email: ["mario@example.com"] });
+      await secondProfile.addOrUpdateProperties({
+        email: ["luigi@example.com"],
+      });
+
       const beforeCount = await ProfileProperty.count({
         where: { profilePropertyRuleGuid: emailRule.guid },
       });
-      expect(beforeCount).toBe(1);
+      expect(beforeCount).toBe(2);
 
       emailRule.key = "EMAIL!";
       await emailRule.save();
@@ -525,20 +501,28 @@ describe("models/profileProperty", () => {
       const afterCount = await ProfileProperty.count({
         where: { profilePropertyRuleGuid: emailRule.guid },
       });
-      expect(afterCount).toBe(1);
+      expect(afterCount).toBe(2);
 
       const property = await ProfileProperty.findOne({
         where: { profilePropertyRuleGuid: emailRule.guid },
       });
       const apiData = await property.apiData();
       expect(apiData.key).toBe("EMAIL!");
+
+      emailRule.key = "email";
+      await emailRule.save();
     });
 
     test("deleting a profilePropertyRule deletes all the profile properties that have that key", async () => {
+      await profile.addOrUpdateProperties({ email: ["mario@example.com"] });
+      await secondProfile.addOrUpdateProperties({
+        email: ["luigi@example.com"],
+      });
+
       const beforeCount = await ProfileProperty.count({
         where: { profilePropertyRuleGuid: emailRule.guid },
       });
-      expect(beforeCount).toBe(1);
+      expect(beforeCount).toBe(2);
 
       await emailRule.destroy();
 
