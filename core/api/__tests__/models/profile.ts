@@ -203,9 +203,10 @@ describe("models/profile", () => {
 
       const profile = responseB.profile;
       const properties = await profile.properties();
-      expect(properties.email).toBeTruthy();
-      expect(properties.userId).toBeTruthy();
-      expect(properties.house).toBeUndefined();
+      expect(properties.email.values).toEqual(["koopa@example.com"]);
+      expect(properties.userId.values).toEqual([99]);
+      expect(properties.house.values).toEqual([null]);
+      expect(properties.house.values).toEqual([null]);
     });
 
     test("properties will include the value, type, unique, and timestamps", async () => {
@@ -298,6 +299,10 @@ describe("models/profile", () => {
         const properties = await profile.properties();
         expect(simpleProfileValues(properties)).toEqual({
           email: ["luigi@example.com"],
+          firstName: [null],
+          lastName: [null],
+          userId: [null],
+          color: [null],
         });
       });
 
@@ -475,7 +480,7 @@ describe("models/profile", () => {
           });
         });
 
-        test("when array properties are the same, they will not be updated", async () => {
+        test("when array properties are the same, they will have bumped timestamps", async () => {
           await profile.addOrUpdateProperties({
             email: ["luigi@example.com"],
             purchases: ["star", "mushroom", "mushroom", "go kart"],
@@ -488,7 +493,9 @@ describe("models/profile", () => {
             purchases: ["star", "mushroom", "mushroom", "go kart"],
           });
           const secondProperties = await profile.properties();
-          expect(secondProperties.purchases.updatedAt).toEqual(firstUpdate);
+          expect(
+            secondProperties.purchases.updatedAt.getTime()
+          ).toBeGreaterThanOrEqual(firstUpdate.getTime());
         });
 
         test("when any array property has changed, they will all be updated", async () => {
@@ -731,6 +738,7 @@ describe("models/profile", () => {
       expect(simpleProfileValues(properties)).toEqual({
         userId: [1001],
         email: ["peach@example.com"],
+        color: [null],
       });
 
       await profile.import();
@@ -747,7 +755,11 @@ describe("models/profile", () => {
       const profile = await Profile.create();
       await profile.addOrUpdateProperties({ userId: [1002] });
       let properties = await profile.properties();
-      expect(Object.keys(properties)).toEqual(["userId"]);
+      expect(Object.keys(properties).sort()).toEqual([
+        "color",
+        "email",
+        "userId",
+      ]);
 
       await profile.import();
 
@@ -832,9 +844,9 @@ describe("models/profile", () => {
       // create the profiles and events
       profileA = await helper.factories.profile();
       await profileA.import();
+
       profileB = await helper.factories.profile();
       await profileB.import();
-
       await profileB.update({ anonymousId: "abc123" });
 
       await helper.factories.event({
@@ -891,42 +903,31 @@ describe("models/profile", () => {
     });
 
     test("profile A has newer email, profile B has newer userId, profile B has a newer ltv but it is null", async () => {
-      await profileA.addOrUpdateProperties({
-        email: ["new-email@example.com"],
-      });
       await profileA.addOrUpdateProperties({ ltv: [123.45] });
-
       await profileB.addOrUpdateProperties({ userId: [100] });
       await profileB.addOrUpdateProperties({ firstName: ["fname"] });
 
       // bump the updatedAt time for the email profile property, even though they remain null
       await helper.sleep(1001);
-      const emailRule = await ProfilePropertyRule.findOne({
-        where: { key: "email" },
+      await profileA.addOrUpdateProperties({
+        email: ["new-email@example.com"],
       });
-      const profileBEmailProperty = await ProfileProperty.findOne({
-        where: {
-          profileGuid: profileB.guid,
-          profilePropertyRuleGuid: emailRule.guid,
-        },
-      });
-      profileBEmailProperty.changed("updatedAt", true);
-      await profileBEmailProperty.save();
 
       const propertiesA = await profileA.properties();
-      expect(propertiesA.email.values[0]).toBe("new-email@example.com");
-      expect(propertiesA.userId.values[0]).toBe(null);
-      expect(propertiesA.firstName.values[0]).toBe(null);
-      expect(propertiesA.ltv.values[0]).toBe(123.45);
-
       const propertiesB = await profileB.properties();
-      expect(propertiesB.email.values[0]).toBe(null);
-      expect(propertiesB.userId.values[0]).toBe(100);
-      expect(propertiesB.firstName.values).toEqual(["fname"]);
-      expect(propertiesB.ltv.values[0]).toBe(null);
 
-      expect(propertiesB.email.updatedAt.getTime()).toBeGreaterThan(
-        propertiesA.email.updatedAt.getTime()
+      expect(propertiesA.email.values).toEqual(["new-email@example.com"]);
+      expect(propertiesA.userId.values).toBeTruthy();
+      expect(propertiesA.firstName.values).toEqual(["Mario"]);
+      expect(propertiesA.ltv.values).toEqual([123.45]);
+
+      expect(propertiesB.email.values).toBeTruthy();
+      expect(propertiesB.userId.values).toEqual([100]);
+      expect(propertiesB.firstName.values).toEqual(["fname"]);
+      expect(propertiesB.ltv.values).toEqual([100]);
+
+      expect(propertiesA.email.updatedAt.getTime()).toBeGreaterThan(
+        propertiesB.email.updatedAt.getTime()
       );
     });
 

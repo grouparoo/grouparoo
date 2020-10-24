@@ -173,10 +173,7 @@ describe("models/destination", () => {
         guid: oldExport.guid,
       });
 
-      const _import = await helper.factories.import();
-      const run = await helper.factories.run(groupA, { state: "running" });
-
-      await destination.exportProfile(profile, [run], [_import]);
+      await destination.exportProfile(profile);
 
       // there should be no export:send tasks
       let foundTasks = await specHelper.findEnqueuedTasks("export:send");
@@ -201,6 +198,7 @@ describe("models/destination", () => {
       });
       expect(exportArgs.exports[0].newProfileProperties).toEqual({
         customer_email: "newemail@example.com",
+        uid: null,
       });
       expect(exportArgs.exports[0].oldGroups).toEqual([]);
       expect(exportArgs.exports[0].newGroups).toEqual(
@@ -224,16 +222,13 @@ describe("models/destination", () => {
       });
       expect(_exports[1].newProfileProperties).toEqual({
         customer_email: "newemail@example.com",
+        uid: null,
       });
       expect(_exports[1].oldGroups).toEqual([]);
       expect(_exports[1].newGroups).toEqual(
         [groupA, groupB].map((g) => `${g.name}+`).sort()
       );
       expect(_exports[1].mostRecent).toBe(true);
-
-      const exportedImports = await _exports[1].$get("imports");
-      expect(exportedImports.length).toBe(1);
-      expect(exportedImports[0].guid).toBe(_import.guid);
 
       await profile.destroy();
     });
@@ -265,10 +260,7 @@ describe("models/destination", () => {
         mostRecent: true,
       });
 
-      const _import = await helper.factories.import();
-      const run = await helper.factories.run(groupA, { state: "running" });
-
-      await destination.exportProfile(profile, [run], [_import]);
+      await destination.exportProfile(profile);
 
       // there should be no export:send tasks
       let foundTasks = await specHelper.findEnqueuedTasks("export:send");
@@ -291,6 +283,7 @@ describe("models/destination", () => {
       });
       expect(exportArgs.exports[0].newProfileProperties).toEqual({
         customer_email: "newemail@example.com",
+        uid: null,
       });
 
       await profile.destroy();
@@ -325,10 +318,7 @@ describe("models/destination", () => {
         guid: oldExport.guid,
       });
 
-      const _import = await helper.factories.import();
-      const run = await helper.factories.run(groupA, { state: "running" });
-
-      await destination.exportProfile(profile, [run], [_import]);
+      await destination.exportProfile(profile);
 
       // there should be no export:send tasks
       let foundTasks = await specHelper.findEnqueuedTasks("export:send");
@@ -351,8 +341,6 @@ describe("models/destination", () => {
       );
       expect(exportArgs.exports[0].newGroups).toEqual([]);
       expect(exportArgs.exports[0].toDelete).toEqual(true);
-
-      await run.determineState();
     });
 
     test("if an export has the same data as the previous export, and force=false, it will not be sent to the destination", async () => {
@@ -365,6 +353,7 @@ describe("models/destination", () => {
         destinationGuid: destination.guid,
         profileGuid: profile.guid,
         startedAt: new Date(),
+        completedAt: new Date(),
         oldProfileProperties: {},
         newProfileProperties: {},
         oldGroups: [],
@@ -372,9 +361,7 @@ describe("models/destination", () => {
         mostRecent: true,
       });
 
-      const run = await helper.factories.run(group, { state: "running" });
-
-      await destination.exportProfile(profile, [run], []);
+      await destination.exportProfile(profile);
       const newExport = await Export.findOne({
         where: {
           destinationGuid: destination.guid,
@@ -408,6 +395,7 @@ describe("models/destination", () => {
         destinationGuid: destination.guid,
         profileGuid: profile.guid,
         startedAt: new Date(),
+        completedAt: new Date(),
         oldProfileProperties: {},
         newProfileProperties: {},
         oldGroups: [],
@@ -415,9 +403,7 @@ describe("models/destination", () => {
         mostRecent: true,
       });
 
-      const run = await helper.factories.run(group, { state: "running" });
-
-      await destination.exportProfile(profile, [run], [], false, true);
+      await destination.exportProfile(profile, false, true);
       const newExport = await Export.findOne({
         where: {
           destinationGuid: destination.guid,
@@ -458,9 +444,7 @@ describe("models/destination", () => {
         destinationGroupMemberships
       );
 
-      const run = await helper.factories.run(group, { state: "running" });
-
-      await destination.exportProfile(profile, [run], []);
+      await destination.exportProfile(profile);
       const newExport = await Export.findOne({
         where: { destinationGuid: destination.guid },
       });
@@ -496,8 +480,8 @@ describe("models/destination", () => {
       );
 
       const profile = await helper.factories.profile();
-      const run = await helper.factories.run(group, { state: "running" });
-      await destination.exportProfile(profile, [run], []);
+
+      await destination.exportProfile(profile);
       const _export = await Export.findOne({
         where: { destinationGuid: destination.guid },
       });
@@ -534,7 +518,6 @@ describe("models/destination", () => {
       expect(foundSendBatchTasks.length).toBe(1 + 1);
       await _export.reload();
       expect(_export.completedAt).toBeTruthy();
-      await run.determineState();
     });
 
     test("sending an export with sync and producing a parallelism error will throw", async () => {
@@ -548,12 +531,12 @@ describe("models/destination", () => {
       );
 
       const profile = await helper.factories.profile();
-      const run = await helper.factories.run(group, { state: "running" });
-      await expect(
-        destination.exportProfile(profile, [run], [], true)
-      ).rejects.toThrow(/parallelism limit reached for test-template-app/);
 
-      await run.stop();
+      await expect(destination.exportProfile(profile, true)).rejects.toThrow(
+        /parallelism limit reached for test-template-app/
+      );
+
+      await Export.truncate();
       parallelismResponse = Infinity;
     });
 
@@ -572,8 +555,7 @@ describe("models/destination", () => {
       );
 
       const profile = await helper.factories.profile();
-      const run = await helper.factories.run(group, { state: "running" });
-      await destination.exportProfile(profile, [run], []);
+      await destination.exportProfile(profile);
       const _export = await Export.findOne({
         where: { destinationGuid: destination.guid },
       });
@@ -617,8 +599,6 @@ describe("models/destination", () => {
       expect(foundSendBatchTasks.length).toBe(1 + 1);
       await _export.reload();
       expect(_export.completedAt).toBeTruthy();
-
-      await run.determineState();
     });
 
     test("sending an export with sync and producing a retry error will throw combined of all sub errors", async () => {
@@ -643,7 +623,7 @@ describe("models/destination", () => {
 
       let combinedError: Error;
       try {
-        await destination.exportProfile(profile, [run], [], true);
+        await destination.exportProfile(profile, true);
       } catch (error) {
         combinedError = error;
       }
@@ -655,7 +635,7 @@ describe("models/destination", () => {
       expect(combinedError["errors"].map((e) => e.message)).toEqual(["oh no!"]);
 
       await run.stop();
-
+      await Export.truncate();
       exportProfilesResponse = {
         success: true,
         errors: undefined,
