@@ -63,7 +63,7 @@
     "dotenv": "8.2.0",
     "faker": "5.1.0",
     "fs-extra": "9.0.1",
-    "ioredis": "4.17.3",
+    "ioredis": "4.19.0",
     "isomorphic-fetch": "3.0.0",
     "libphonenumber-js": "1.8.4",
     "md5": "2.3.0",
