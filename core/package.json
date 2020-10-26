@@ -55,7 +55,7 @@
     "actionhero": "24.0.0",
     "ah-next-plugin": "0.3.0",
     "ah-sequelize-plugin": "2.2.4",
-    "axios": "0.20.0",
+    "axios": "0.21.0",
     "bcrypt": "5.0.0",
     "bootstrap": "4.5.3",
     "csv-stringify": "5.5.1",
