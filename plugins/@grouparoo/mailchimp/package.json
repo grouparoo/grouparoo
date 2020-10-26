@@ -39,7 +39,7 @@
     "@types/jest": "^26.0.14",
     "@types/node": "^14.11.8",
     "actionhero": "24.0.0",
-    "jest": "26.6.0",
+    "jest": "26.6.1",
     "nock": "13.0.4",
     "prettier": "2.1.2",
     "ts-jest": "26.4.1",
