@@ -27,7 +27,7 @@
     "lint": "prettier --check src __tests__"
   },
   "dependencies": {
-    "react-bootstrap": "1.3.0"
+    "react-bootstrap": "1.4.0"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
