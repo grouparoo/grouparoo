@@ -15,3 +15,12 @@ export const DEFAULT = {
     };
   },
 };
+
+export const test = {
+  next: () => {
+    return {
+      enabled: false,
+      quiet: true,
+    };
+  },
+};
