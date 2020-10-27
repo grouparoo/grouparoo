@@ -155,7 +155,7 @@ jobs:
           command: sudo npm install -g pnpm
       - run:
           name: linter
-          command: pnpm run -r lint
+          command: pnpm run lint
   test-core:
     docker:
       - image: circleci/node:12
