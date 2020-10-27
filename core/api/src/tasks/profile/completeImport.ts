@@ -48,10 +48,10 @@ export class ProfileCompleteImport extends RetryableTask {
         await profile.addOrUpdateProperties(_import.data);
       }
 
+      await profile.updateGroupMembership();
+
       const newProfileProperties = await profile.properties();
       const newGroups = await profile.$get("groups");
-
-      await profile.updateGroupMembership();
 
       for (const i in imports) {
         const _import = imports[i];

@@ -37,7 +37,15 @@ export class ProfilePropertyImport extends RetryableTask {
       const properties = await profile.properties();
 
       dependencies.forEach((dep) => {
-        if (properties[dep.key].values.length === 0) ok = false;
+        if (
+          properties[dep.key].values.length === 0 ||
+          properties[dep.key].values.filter((v) => v === null).length ===
+            properties[dep.key].values.length ||
+          properties[dep.key].values.filter((v) => v === undefined).length ===
+            properties[dep.key].values.length
+        ) {
+          ok = false;
+        }
       });
 
       if (ok) profilesWithDependenciesMet.push(profile);
@@ -52,7 +60,11 @@ export class ProfilePropertyImport extends RetryableTask {
       );
 
       const hash = {};
-      hash[profilePropertyRule.key] = propertyValues || [];
+      hash[profilePropertyRule.key] = propertyValues
+        ? Array.isArray(propertyValues)
+          ? propertyValues
+          : [propertyValues]
+        : [];
       await profile.addOrUpdateProperty(hash);
     }
   }
