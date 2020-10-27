@@ -39,7 +39,9 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
     );
     const sortColumn = profilePropertyRuleOptions[sortColumnKey];
 
-    if (!aggregationMethod || !columnName) return;
+    if (!aggregationMethod || !columnName) {
+      return undefined;
+    }
 
     // don't `select userId where userId = {userId}` if we don't know {userId}
     if (
@@ -50,7 +52,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
       const properties = await profile.properties();
       // if no property or no values, bail
       if (!properties[tableMappingCol]?.values.length) {
-        return;
+        return undefined;
       }
     }
 
@@ -58,9 +60,12 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
     const isArray = !!profilePropertyRule.isArray;
 
     if (!profileData.hasOwnProperty(profilePropertyMatch)) {
-      throw `Unknown profile property: ${profilePropertyMatch}`;
+      return undefined;
     }
     const matchValue = profileData[profilePropertyMatch].values[0];
+    if (!matchValue) {
+      return undefined;
+    }
     const foreignKeyMatch: MatchCondition = {
       columnName: matchName,
       value: matchValue,

@@ -95,6 +95,7 @@ describe("bigquery/table/profileProperty", () => {
     await profile.addOrUpdateProperties({
       userId: [1],
       email: ["ejervois0@example.com"],
+      lastName: null,
     });
     expect(profile.guid).toBeTruthy();
   });
@@ -796,6 +797,28 @@ describe("bigquery/table/profileProperty", () => {
         );
         expect(value).toEqual([2]);
       });
+    });
+  });
+
+  describe("edge cases", () => {
+    beforeAll(() => {
+      sourceOptions = { table: "profiles" };
+    });
+    test("unknown profile property", async () => {
+      const value = await getPropertyValue({
+        column: "first_name",
+        sourceMapping: { id: "badName" },
+        aggregationMethod: "exact",
+      });
+      expect(value).toEqual(undefined);
+    });
+    test("null profile property", async () => {
+      const value = await getPropertyValue({
+        column: "first_name",
+        sourceMapping: { id: "lastName" }, // set to NULL
+        aggregationMethod: "exact",
+      });
+      expect(value).toEqual(undefined);
     });
   });
 });
