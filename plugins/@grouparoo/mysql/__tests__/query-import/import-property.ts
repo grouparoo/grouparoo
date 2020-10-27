@@ -106,4 +106,10 @@ describe("mysql/query/profileProperty", () => {
     const value = await getPropertyValue(sql);
     expect(value).toEqual(["true"]);
   });
+
+  test("returns undefined when data is not avilable", async () => {
+    const sql = `SELECT ios_app FROM ${usersTableName} WHERE email = '{{ badName }}'`;
+    const value = await getPropertyValue(sql);
+    expect(value).toEqual(undefined);
+  });
 });

@@ -1,7 +1,6 @@
 import "@grouparoo/spec-helper";
 
 import { getConnection } from "../../src/lib/table-import/connection";
-const sourceFilters = getConnection().methods.sourceFilters;
 
 describe("redshift/table-import/connection", () => {
   test("gets connection", async () => {

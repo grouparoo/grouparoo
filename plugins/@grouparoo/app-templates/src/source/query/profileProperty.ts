@@ -29,20 +29,14 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
     profilePropertyRuleOptions,
   }) => {
     const ruleQuery = profilePropertyRuleOptions[queryKey];
-    const query = await plugin.replaceTemplateProfileVariables(
-      ruleQuery,
-      profile
-    );
-    // DISCUSS: Mysql & Postgres did this...
-    // try {
-    //   query = await profilePropertyRule.parameterizedQueryFromProfile(
-    //     ruleQuery,
-    //     profile
-    //   );
-    // } catch (error) {
-    //   return undefined;
-    // }
-    // Is that right here?
+    let query;
+
+    try {
+      query = await plugin.replaceTemplateProfileVariables(ruleQuery, profile);
+    } catch (error) {
+      // if we don't have the right properties to build the query, bail
+      return undefined;
+    }
 
     if (validateQuery) {
       validateQuery({ query });
