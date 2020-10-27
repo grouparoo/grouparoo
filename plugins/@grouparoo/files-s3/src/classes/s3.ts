@@ -3,46 +3,39 @@ import fs from "fs-extra";
 import os from "os";
 import path from "path";
 import { FileTransport } from "@grouparoo/core";
-import S3 from "@auth0/s3";
+import AWS from "aws-sdk";
 
 export class FileTransportS3 extends FileTransport {
   bucket: string;
-  client: any;
+  client: AWS.S3;
 
   constructor() {
     super();
     this.name = "s3";
     this.bucket = process.env.S3_BUCKET;
-    this.client = S3.createClient({
-      s3Options: {
-        accessKeyId: process.env.S3_ACCESS_KEY,
-        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-        region: process.env.S3_REGION,
-      },
+    this.client = new AWS.S3({
+      accessKeyId: process.env.S3_ACCESS_KEY,
+      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+      region: process.env.S3_REGION,
     });
   }
 
   async downloadToServer(file) {
     const tmp = os.tmpdir();
     const localPath = path.join(tmp, "grouparoo", file.path);
+    const params = {
+      Bucket: this.bucket,
+      Key: `${file.path}`,
+    };
 
     await new Promise((resolve, reject) => {
-      const params = {
-        localFile: localPath,
-        s3Params: {
-          Bucket: this.bucket,
-          Key: `${file.path}`,
-        },
-      };
-
-      log("downloading from s3", "info", params);
-      const getter = this.client.downloadFile(params);
-      getter.on("error", (error) => {
-        console.error(error);
-        reject(error);
-      });
-      getter.on("end", () => {
-        resolve();
+      log("downloading from s3...", "info", params);
+      this.client.getObject(params, (error, data) => {
+        if (error) return reject(error);
+        fs.writeFile(localPath, data.Body, (error) => {
+          if (error) return reject(error);
+          return resolve();
+        });
       });
     });
 
@@ -55,46 +48,39 @@ export class FileTransportS3 extends FileTransport {
     localFilePath: string
   ): Promise<any> {
     const bytes = fs.statSync(localFilePath).size;
+    const readStream = fs.createReadStream(localFilePath);
+    const key = `${type}/${remotePath}`;
+
+    const params = {
+      Bucket: this.bucket,
+      Key: key,
+      Body: readStream,
+    };
 
     return new Promise((resolve, reject) => {
-      const params = {
-        localFile: localFilePath,
-        s3Params: {
-          Bucket: this.bucket,
-          Key: `${type}/${remotePath}`,
-        },
-      };
+      log("uploading to s3...", "info", params);
 
-      log("uploading to s3", "info", params);
-      const uploader = this.client.uploadFile(params);
-
-      uploader.on("error", (error) => {
-        reject(error);
-      });
-
-      uploader.on("end", async () => {
-        const file = await this.afterSet(type, `${type}/${remotePath}`, bytes);
-        resolve(file);
+      this.client.upload(params, async (error) => {
+        readStream.destroy();
+        if (error) return reject(error);
+        const file = await this.afterSet(type, key, bytes);
+        return resolve(file);
       });
     });
   }
 
   async destroy(file) {
-    await new Promise((resolve, reject) => {
-      const params = {
-        Bucket: this.bucket,
-        Delete: {
-          Objects: [{ Key: `${file.path}` }],
-        },
-      };
+    const params = {
+      Bucket: this.bucket,
+      Key: `${file.path}`,
+    };
 
+    await new Promise((resolve, reject) => {
       log("deleting from s3", "info", params);
-      const deleter = this.client.deleteObjects(params);
-      deleter.on("error", (error) => {
-        reject(error);
-      });
-      deleter.on("end", () => {
-        resolve();
+
+      this.client.deleteObject(params, (error) => {
+        if (error) return reject(error);
+        return resolve();
       });
     });
 
