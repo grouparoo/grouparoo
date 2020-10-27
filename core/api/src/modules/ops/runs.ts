@@ -94,6 +94,9 @@ export namespace RunOps {
         },
       });
 
+      // we are exporting the group to CSV
+      if (!run.groupMethod) return 100;
+
       // there are 3 phases to group runs, but only 2 really could have work, so we attribute 1/2 to each phase
       let percentComplete = Math.floor(
         100 *

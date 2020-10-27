@@ -1,5 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
+import { ProfileProperty } from "../../../src";
 import { Profile } from "../../../src/models/Profile";
 
 let actionhero;
@@ -49,11 +50,25 @@ describe("tasks/import:associateProfile", () => {
       expect(_import.profileGuid).toBe(profile.guid);
       expect(_import.profileAssociatedAt).toBeTruthy();
 
+      expect(_import.oldProfileProperties).toEqual({
+        email: ["toad@example.com"],
+        firstName: [null],
+        isVIP: [null],
+        lastLoginAt: [null],
+        lastName: [null],
+        ltv: [null],
+        purchaseAmounts: [null],
+        purchases: [null],
+        userId: [null],
+      });
+      expect(_import.oldGroupGuids).toEqual([]);
+      expect(_import.newProfileProperties).toEqual({});
+      expect(_import.newGroupGuids).toEqual([]);
+
       await run.reload();
       expect(run.importsCreated).toBe(0);
       expect(run.profilesCreated).toBe(1);
       expect(run.profilesImported).toBe(0);
-      expect(run.profilesExported).toBe(0);
     });
 
     test("if there is an error, the import will have the error appended", async () => {
@@ -84,11 +99,14 @@ describe("tasks/import:associateProfile", () => {
       );
     });
 
-    test("running the task should have enqueued a profile:fullUpdate", async () => {
-      const tasks = await specHelper.findEnqueuedTasks(
-        "profile:importAndUpdate"
-      );
-      expect(tasks.length).toBe(1);
+    test("the profile and properties should be marked as pending", async () => {
+      const property = await ProfileProperty.findOne({
+        where: { rawValue: "toad@example.com" },
+      });
+      expect(property.state).toEqual("pending");
+
+      const profile = await Profile.findByGuid(property.profileGuid);
+      expect(profile.state).toEqual("pending");
     });
   });
 });

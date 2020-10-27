@@ -31,7 +31,11 @@ export class ProfileCompleteImport extends RetryableTask {
     const profile = await Profile.findOne({
       where: { guid: params.profileGuid },
     });
+
     if (!profile) return; // the profile may have been deleted or merged by the time this task ran
+
+    // calling this task implies we expect the profile to be in the ready state
+    if (profile.state !== "ready") await profile.update({ state: "ready" });
 
     const imports = await profile.$get("imports", {
       where: { profileUpdatedAt: null },

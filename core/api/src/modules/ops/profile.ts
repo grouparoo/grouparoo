@@ -319,14 +319,17 @@ export namespace ProfileOps {
         await addOrUpdateProperties(profile, hash);
         await buildNullProperties(profile);
         await profile.save();
+        await ProfileProperty.update(
+          { state: "ready" },
+          { where: { profileGuid: profile.guid } }
+        );
       }
-
-      if (toLock) await releaseLock();
 
       return profile;
     } catch (error) {
-      if (toLock) await releaseLock();
       throw error;
+    } finally {
+      if (toLock) await releaseLock();
     }
   }
 

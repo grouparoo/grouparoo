@@ -3,7 +3,6 @@ import { api, task, specHelper } from "actionhero";
 import { Profile } from "../../../src/models/Profile";
 import { Destination } from "../../../src/models/Destination";
 import { Export } from "../../../src/models/Export";
-import { ExportRun } from "../../../src/models/ExportRun";
 import { Run } from "../../../src/models/Run";
 import { plugin } from "../../../src";
 
@@ -78,23 +77,6 @@ describe("tasks/export:enqueue", () => {
         oldGroups: [],
         startedAt: new Date(),
         errorMessage: "Oh No!",
-      });
-
-      await ExportRun.create({
-        runGuid: run.guid,
-        exportGuid: pendingExportA.guid,
-      });
-      await ExportRun.create({
-        runGuid: run.guid,
-        exportGuid: pendingExportB.guid,
-      });
-      await ExportRun.create({
-        runGuid: run.guid,
-        exportGuid: completeExport.guid,
-      });
-      await ExportRun.create({
-        runGuid: run.guid,
-        exportGuid: errorExport.guid,
       });
     });
 
