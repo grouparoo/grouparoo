@@ -3,6 +3,7 @@ import { Profile } from "../../models/Profile";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
 import { Op } from "sequelize";
+import { log } from "actionhero";
 
 export class ProfilePropertyImport extends RetryableTask {
   constructor() {
@@ -67,5 +68,7 @@ export class ProfilePropertyImport extends RetryableTask {
         : [];
       await profile.addOrUpdateProperty(hash);
     }
+
+    log(`imported ${profilePropertyRule.key} for ${profiles.length} profiles`);
   }
 }
