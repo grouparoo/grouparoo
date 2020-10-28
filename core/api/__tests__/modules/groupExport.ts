@@ -1,9 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { groupExportToCSV } from "./../../src/modules/groupExport";
 import { Profile } from "./../../src/models/Profile";
-import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
 import { Group } from "./../../src/models/Group";
-import { Source } from "./../../src/models/Source";
 import { Run } from "./../../src/models/Run";
 import parse from "csv-parse/lib/sync";
 import fs from "fs";
@@ -96,8 +94,7 @@ describe("modules/groupExport", () => {
 
     test("the run is complete", async () => {
       const run = await Run.findOne({ where: { guid: runGuid } });
-      expect(run.profilesImported).toBe(0);
-      expect(run.profilesExported).toBe(4);
+      expect(run.profilesImported).toBe(4);
       expect(run.state).toBe("complete");
       expect(run.completedAt).toBeTruthy();
     });

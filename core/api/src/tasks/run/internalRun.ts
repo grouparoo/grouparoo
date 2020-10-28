@@ -52,6 +52,8 @@ export class RunInternalRun extends Task {
       for (const i in profiles) {
         const profile = profiles[i];
 
+        await profile.buildNullProperties();
+
         await Import.create(
           {
             profileGuid: profile.guid,
