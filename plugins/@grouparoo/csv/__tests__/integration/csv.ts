@@ -268,22 +268,30 @@ describe("integration/runs/csv", () => {
         expect(foundAssociateTasks.length).toEqual(10);
 
         await Promise.all(
-          foundAssociateTasks.map(
-            async (t) =>
-              await specHelper.runTask("import:associateProfile", t.args[0])
+          foundAssociateTasks.map((t) =>
+            specHelper.runTask("import:associateProfile", t.args[0])
           )
         );
 
-        // run all enqueued importAndUpdate tasks
-        const foundImportAndUpdateTasks = await specHelper.findEnqueuedTasks(
-          "profile:importAndUpdate"
+        // run the import workflow
+        await specHelper.runTask("profileProperties:enqueue", {});
+        const importTasks = await specHelper.findEnqueuedTasks(
+          "profileProperty:import"
         );
-        expect(foundImportAndUpdateTasks.length).toEqual(10);
-
+        expect(importTasks.length).toEqual(9); // 9 properties
         await Promise.all(
-          foundImportAndUpdateTasks.map(
-            async (t) =>
-              await specHelper.runTask("profile:importAndUpdate", t.args[0])
+          importTasks.map((t) =>
+            specHelper.runTask("profileProperty:import", t.args[0])
+          )
+        );
+        await specHelper.runTask("profiles:checkReady", {});
+        const completeTasks = await specHelper.findEnqueuedTasks(
+          "profile:completeImport"
+        );
+        expect(completeTasks.length).toEqual(10);
+        await Promise.all(
+          completeTasks.map((t) =>
+            specHelper.runTask("profile:completeImport", t.args[0])
           )
         );
 
@@ -294,25 +302,14 @@ describe("integration/runs/csv", () => {
         expect(foundExportTasks.length).toEqual(10);
 
         await Promise.all(
-          foundExportTasks.map(
-            async (t) => await specHelper.runTask("profile:export", t.args[0])
+          foundExportTasks.map((t) =>
+            specHelper.runTask("profile:export", t.args[0])
           )
         );
 
         // check the run's completion percentage (before the run is complete)
-        await run.determinePercentComplete();
-        expect(run.percentComplete).toBe(90);
-
-        // check if the run is done
-        const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
-          "run:determineState"
-        );
-        await Promise.all(
-          foundRunDetermineStateTasks.map(
-            async (t) =>
-              await specHelper.runTask("run:determineState", t.args[0])
-          )
-        );
+        await run.afterBatch();
+        expect(run.percentComplete).toBe(100);
 
         // check the results of the run
         const profilesCount = await Profile.count();
@@ -323,8 +320,6 @@ describe("integration/runs/csv", () => {
         expect(run.importsCreated).toBe(10);
         expect(run.profilesCreated).toBe(10);
         expect(run.profilesImported).toBe(10);
-        expect(run.exportsCreated).toBe(0);
-        expect(run.profilesExported).toBe(0);
         expect(run.percentComplete).toBe(100);
       },
       1000 * 60
@@ -385,23 +380,30 @@ describe("integration/runs/csv", () => {
         expect(foundAssociateTasks.length).toEqual(20);
 
         await Promise.all(
-          foundAssociateTasks.map(
-            async (t) =>
-              await specHelper.runTask("import:associateProfile", t.args[0])
+          foundAssociateTasks.map((t) =>
+            specHelper.runTask("import:associateProfile", t.args[0])
           )
         );
 
-        // run all enqueued importAndUpdate tasks
-        const foundImportAndUpdateTasks = await specHelper.findEnqueuedTasks(
-          "profile:importAndUpdate"
+        // run the import workflow
+        await specHelper.runTask("profileProperties:enqueue", {});
+        const importTasks = await specHelper.findEnqueuedTasks(
+          "profileProperty:import"
         );
-        // this count is de-duped
-        expect(foundImportAndUpdateTasks.length).toEqual(10);
-
+        expect(importTasks.length).toBeGreaterThanOrEqual(9); // 9 properties
         await Promise.all(
-          foundImportAndUpdateTasks.map(
-            async (t) =>
-              await specHelper.runTask("profile:importAndUpdate", t.args[0])
+          importTasks.map((t) =>
+            specHelper.runTask("profileProperty:import", t.args[0])
+          )
+        );
+        await specHelper.runTask("profiles:checkReady", {});
+        const completeTasks = await specHelper.findEnqueuedTasks(
+          "profile:completeImport"
+        );
+        expect(completeTasks.length).toEqual(10);
+        await Promise.all(
+          completeTasks.map((t) =>
+            specHelper.runTask("profile:completeImport", t.args[0])
           )
         );
 
@@ -413,25 +415,14 @@ describe("integration/runs/csv", () => {
         expect(foundExportTasks.length).toEqual(10);
 
         await Promise.all(
-          foundExportTasks.map(
-            async (t) => await specHelper.runTask("profile:export", t.args[0])
+          foundExportTasks.map((t) =>
+            specHelper.runTask("profile:export", t.args[0])
           )
         );
 
         // check the run's completion percentage (before the run is complete)
-        await run.determinePercentComplete();
-        expect(run.percentComplete).toBe(90);
-
-        // check if the run is done
-        const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
-          "run:determineState"
-        );
-        await Promise.all(
-          foundRunDetermineStateTasks.map(
-            async (t) =>
-              await specHelper.runTask("run:determineState", t.args[0])
-          )
-        );
+        await run.afterBatch();
+        expect(run.percentComplete).toBe(100);
 
         // check the results of the run
         const profilesCount = await Profile.count();
@@ -442,8 +433,6 @@ describe("integration/runs/csv", () => {
         expect(run.importsCreated).toBe(10);
         expect(run.profilesCreated).toBe(0);
         expect(run.profilesImported).toBe(10);
-        expect(run.exportsCreated).toBe(0);
-        expect(run.profilesExported).toBe(0);
         expect(run.percentComplete).toBe(100);
       },
       1000 * 60

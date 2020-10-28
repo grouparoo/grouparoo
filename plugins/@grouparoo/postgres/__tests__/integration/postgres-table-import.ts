@@ -392,16 +392,25 @@ describe("integration/runs/postgres", () => {
         )
       );
 
-      // run all enqueued importAndUpdate tasks
-      const foundImportAndUpdateTasks = await specHelper.findEnqueuedTasks(
-        "profile:importAndUpdate"
+      // run the import workflow
+      await specHelper.runTask("profileProperties:enqueue", {});
+      const importTasks = await specHelper.findEnqueuedTasks(
+        "profileProperty:import"
       );
-      expect(foundImportAndUpdateTasks.length).toEqual(10);
-
+      expect(importTasks.length).toEqual(9); // 9 properties
       await Promise.all(
-        foundImportAndUpdateTasks.map(
-          async (t) =>
-            await specHelper.runTask("profile:importAndUpdate", t.args[0])
+        importTasks.map((t) =>
+          specHelper.runTask("profileProperty:import", t.args[0])
+        )
+      );
+      await specHelper.runTask("profiles:checkReady", {});
+      const completeTasks = await specHelper.findEnqueuedTasks(
+        "profile:completeImport"
+      );
+      expect(completeTasks.length).toEqual(10);
+      await Promise.all(
+        completeTasks.map((t) =>
+          specHelper.runTask("profile:completeImport", t.args[0])
         )
       );
 
@@ -412,8 +421,8 @@ describe("integration/runs/postgres", () => {
       expect(foundExportTasks.length).toEqual(10);
 
       await Promise.all(
-        foundExportTasks.map(
-          async (t) => await specHelper.runTask("profile:export", t.args[0])
+        foundExportTasks.map((t) =>
+          specHelper.runTask("profile:export", t.args[0])
         )
       );
 
@@ -425,9 +434,7 @@ describe("integration/runs/postgres", () => {
       expect(foundSendTasks.length).toEqual(10);
 
       await Promise.all(
-        foundSendTasks.map(
-          async (t) => await specHelper.runTask("export:send", t.args[0])
-        )
+        foundSendTasks.map((t) => specHelper.runTask("export:send", t.args[0]))
       );
 
       // check the run's completion percentage (before the run is complete)
@@ -439,8 +446,8 @@ describe("integration/runs/postgres", () => {
         "run:determineState"
       );
       await Promise.all(
-        foundRunDetermineStateTasks.map(
-          async (t) => await specHelper.runTask("run:determineState", t.args[0])
+        foundRunDetermineStateTasks.map((t) =>
+          specHelper.runTask("run:determineState", t.args[0])
         )
       );
 
@@ -453,8 +460,6 @@ describe("integration/runs/postgres", () => {
       expect(run.importsCreated).toBe(11);
       expect(run.profilesCreated).toBe(10);
       expect(run.profilesImported).toBe(10);
-      expect(run.exportsCreated).toBe(10);
-      expect(run.profilesExported).toBe(10);
       expect(run.highWaterMark).toEqual({ id: "10" });
       expect(run.sourceOffset).toBe("0");
       expect(run.error).toBeFalsy();
@@ -526,23 +531,30 @@ describe("integration/runs/postgres", () => {
       expect(foundAssociateTasks.length).toEqual(11 + 1);
 
       await Promise.all(
-        foundAssociateTasks.map(
-          async (t) =>
-            await specHelper.runTask("import:associateProfile", t.args[0])
+        foundAssociateTasks.map((t) =>
+          specHelper.runTask("import:associateProfile", t.args[0])
         )
       );
 
-      // run all enqueued importAndUpdate tasks
-      const foundImportAndUpdateTasks = await specHelper.findEnqueuedTasks(
-        "profile:importAndUpdate"
+      // run the import workflow
+      await specHelper.runTask("profileProperties:enqueue", {});
+      const importTasks = await specHelper.findEnqueuedTasks(
+        "profileProperty:import"
       );
-      // this count is de-duped
-      expect(foundImportAndUpdateTasks.length).toEqual(10);
-
+      expect(importTasks.length).toBeGreaterThanOrEqual(9); // 9 properties
       await Promise.all(
-        foundImportAndUpdateTasks.map(
-          async (t) =>
-            await specHelper.runTask("profile:importAndUpdate", t.args[0])
+        importTasks.map((t) =>
+          specHelper.runTask("profileProperty:import", t.args[0])
+        )
+      );
+      await specHelper.runTask("profiles:checkReady", {});
+      const completeTasks = await specHelper.findEnqueuedTasks(
+        "profile:completeImport"
+      );
+      expect(completeTasks.length).toEqual(10);
+      await Promise.all(
+        completeTasks.map((t) =>
+          specHelper.runTask("profile:completeImport", t.args[0])
         )
       );
 
@@ -554,8 +566,8 @@ describe("integration/runs/postgres", () => {
       expect(foundExportTasks.length).toEqual(10);
 
       await Promise.all(
-        foundExportTasks.map(
-          async (t) => await specHelper.runTask("profile:export", t.args[0])
+        foundExportTasks.map((t) =>
+          specHelper.runTask("profile:export", t.args[0])
         )
       );
 
@@ -568,9 +580,7 @@ describe("integration/runs/postgres", () => {
       expect(foundSendTasks.length).toEqual(11);
 
       await Promise.all(
-        foundSendTasks.map(
-          async (t) => await specHelper.runTask("export:send", t.args[0])
-        )
+        foundSendTasks.map((t) => specHelper.runTask("export:send", t.args[0]))
       );
 
       // check the run's completion percentage (before the run is complete)
@@ -582,8 +592,8 @@ describe("integration/runs/postgres", () => {
         "run:determineState"
       );
       await Promise.all(
-        foundRunDetermineStateTasks.map(
-          async (t) => await specHelper.runTask("run:determineState", t.args[0])
+        foundRunDetermineStateTasks.map((t) =>
+          specHelper.runTask("run:determineState", t.args[0])
         )
       );
 
@@ -596,8 +606,6 @@ describe("integration/runs/postgres", () => {
       expect(run.importsCreated).toBe(1);
       expect(run.profilesCreated).toBe(0);
       expect(run.profilesImported).toBe(1);
-      expect(run.exportsCreated).toBe(1);
-      expect(run.profilesExported).toBe(1);
       expect(run.highWaterMark).toEqual({ id: "10" });
       expect(run.sourceOffset).toBe("0");
       expect(run.error).toBeFalsy();
