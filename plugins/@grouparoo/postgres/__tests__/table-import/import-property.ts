@@ -217,7 +217,7 @@ describe("postgres/table/profileProperty", () => {
           sourceMapping,
           aggregationMethod: "average",
         });
-        expect(value).toEqual(1.73);
+        expect(fixedLengthFloat(value)).toEqual(1.73);
       });
       test("count", async () => {
         const value = await getPropertyValue({
@@ -233,7 +233,7 @@ describe("postgres/table/profileProperty", () => {
           sourceMapping,
           aggregationMethod: "sum",
         });
-        expect(value).toEqual(10.38);
+        expect(fixedLengthFloat(value)).toEqual(10.38);
       });
       test("min", async () => {
         const value = await getPropertyValue({
@@ -810,3 +810,7 @@ describe("postgres/table/profileProperty", () => {
     });
   });
 });
+
+function fixedLengthFloat(value: any, decimalDigits = 2) {
+  return parseFloat(parseFloat(value.toString()).toFixed(decimalDigits));
+}
