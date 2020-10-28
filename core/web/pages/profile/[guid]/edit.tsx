@@ -336,6 +336,7 @@ export default function Page(props) {
                 <th>Key</th>
                 <th>Value</th>
                 <th>Type</th>
+                <th>State</th>
                 <th>Changed At</th>
                 <th>Confirmed At</th>
               </tr>
@@ -392,6 +393,9 @@ export default function Page(props) {
                         {properties[key].type}
                         {properties[key].isArray ? "[]" : null}
                       </code>
+                    </td>
+                    <td>
+                      <StateBadge state={properties[key].state} />
                     </td>
                     <td>
                       {properties[key].valueChangedAt ? (
