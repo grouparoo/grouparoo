@@ -69,6 +69,8 @@ export class ProfilePropertyImport extends RetryableTask {
       await profile.addOrUpdateProperty(hash);
     }
 
-    log(`imported ${profilePropertyRule.key} for ${profiles.length} profiles`);
+    log(
+      `imported ${profilePropertyRule.key} (${profilePropertyRule.guid}) for ${profiles.length} profiles`
+    );
   }
 }
