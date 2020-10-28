@@ -8,13 +8,11 @@ import {
   AllowNull,
   ForeignKey,
   BelongsTo,
-  HasMany,
   DataType,
   AfterCreate,
-  AfterDestroy,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
-import { task } from "actionhero";
+import { task, config } from "actionhero";
 import { Profile } from "./Profile";
 import { Run } from "./Run";
 import { plugin } from "../modules/plugin";
@@ -224,9 +222,13 @@ export class Import extends Model<Import> {
   @AfterCreate
   static async enqueueTask(instance: Import) {
     if (!instance.profileGuid) {
-      await task.enqueueIn(1, "import:associateProfile", {
-        importGuid: instance.guid,
-      });
+      await task.enqueueIn(
+        config.tasks.timeout + 1,
+        "import:associateProfile",
+        {
+          importGuid: instance.guid,
+        }
+      );
     }
   }
 
