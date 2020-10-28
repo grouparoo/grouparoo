@@ -12,8 +12,11 @@ describe("tasks/profile:checkReady", () => {
   }, 1000 * 30);
 
   beforeEach(async () => {
-    await plugin.updateSetting("core", "runs-profile-batch-size", 100);
     await api.resque.queue.connection.redis.flushdb();
+  });
+
+  afterEach(async () => {
+    await plugin.updateSetting("core", "runs-profile-batch-size", 100);
   });
 
   afterAll(async () => {

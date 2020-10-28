@@ -17,10 +17,6 @@ describe("models/group", () => {
     actionhero = env.actionhero;
   }, 1000 * 30);
 
-  beforeAll(async () => {
-    await plugin.updateSetting("core", "runs-profile-batch-size", 100);
-  });
-
   afterAll(async () => {
     await helper.shutdown(actionhero);
   });

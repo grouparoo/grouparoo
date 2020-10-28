@@ -14,7 +14,7 @@ describe("tasks/profileProperties:enqueue", () => {
     await helper.factories.profilePropertyRules();
   }, 1000 * 30);
 
-  beforeEach(async () => {
+  afterEach(async () => {
     await plugin.updateSetting(
       "core",
       "imports-profile-properties-batch-size",
