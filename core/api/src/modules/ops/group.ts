@@ -4,7 +4,7 @@ import { Run } from "../../models/Run";
 import { Profile } from "../../models/Profile";
 import { ProfileMultipleAssociationShim } from "../../models/ProfileMultipleAssociationShim";
 import { Import } from "../../models/Import";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { api, task } from "actionhero";
 
 export namespace GroupOps {
@@ -47,11 +47,18 @@ export namespace GroupOps {
     profileGuid: string,
     creatorType: string,
     creatorGuid: string,
-    destinationGuid?: string
+    destinationGuid?: string,
+    transaction?: any
   ) {
+    let toCommit = false;
+    if (!transaction) {
+      toCommit = true;
+      transaction = await api.sequelize.transaction();
+    }
+
     const profile = await Profile.findOne({ where: { guid: profileGuid } });
 
-    const oldProfileProperties = [];
+    const oldProfileProperties = {};
     const properties = await profile.properties();
     for (const key in properties) {
       oldProfileProperties[key] = properties[key].values;
@@ -59,16 +66,32 @@ export namespace GroupOps {
 
     const oldGroupGuids = (await profile.$get("groups")).map((g) => g.guid);
 
-    return Import.build({
-      rawData: destinationGuid ? { _meta: { destinationGuid } } : {},
-      data: destinationGuid ? { _meta: { destinationGuid } } : {},
-      creatorType,
-      creatorGuid,
-      profileGuid: profile.guid,
-      profileAssociatedAt: new Date(),
-      oldProfileProperties,
-      oldGroupGuids,
-    });
+    const _import = await Import.create(
+      {
+        rawData: destinationGuid ? { _meta: { destinationGuid } } : {},
+        data: destinationGuid ? { _meta: { destinationGuid } } : {},
+        creatorType,
+        creatorGuid,
+        profileGuid: profile.guid,
+        profileAssociatedAt: new Date(),
+        oldProfileProperties,
+        oldGroupGuids,
+      },
+      { transaction }
+    );
+
+    await profile.update({ state: "pending" }, { transaction });
+
+    if (toCommit) {
+      try {
+        await transaction.commit();
+      } catch (error) {
+        await transaction.rollback();
+        throw error;
+      }
+    }
+
+    return _import;
   }
 
   /**
@@ -281,13 +304,13 @@ export namespace GroupOps {
 
       for (const i in profilesNeedingGroupMembership) {
         const profileGuid = profilesNeedingGroupMembership[i].guid;
-        const _import = await group.buildProfileImport(
+        await buildProfileImport(
           profileGuid,
           "run",
           run.guid,
-          destinationGuid
+          destinationGuid,
+          transaction
         );
-        await _import.save({ transaction });
       }
 
       await GroupMember.update(
@@ -353,15 +376,17 @@ export namespace GroupOps {
 
       for (const i in groupMembersToRemove) {
         const member = groupMembersToRemove[i];
-        member.removedAt = new Date();
-        await member.save({ transaction });
-        const _import = await group.buildProfileImport(
+
+        await buildProfileImport(
           member.profileGuid,
           "run",
           run.guid,
-          destinationGuid
+          destinationGuid,
+          transaction
         );
-        await _import.save({ transaction });
+
+        member.removedAt = new Date();
+        await member.save({ transaction });
 
         groupMembersCount++;
       }
@@ -405,14 +430,12 @@ export namespace GroupOps {
 
     for (const i in groupMembersToRemove) {
       const member = groupMembersToRemove[i];
+
+      await buildProfileImport(member.profileGuid, "run", run.guid);
+
       member.removedAt = new Date();
       await member.save();
-      const _import = await group.buildProfileImport(
-        member.profileGuid,
-        "run",
-        run.guid
-      );
-      await _import.save();
+
       groupMembersCount++;
     }
 

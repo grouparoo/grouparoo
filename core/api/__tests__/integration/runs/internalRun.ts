@@ -81,25 +81,7 @@ describe("integration/runs/internalRun", () => {
     });
 
     test("run the rest of the import pipeline", async () => {
-      // enqueue the profile to be imported
-      await specHelper.runTask("profileProperties:enqueue", {});
-      const importTasks = await specHelper.findEnqueuedTasks(
-        "profileProperty:import"
-      );
-      expect(importTasks.length).toBe(2); // the old and new profile property
-      expect(importTasks[0].args[0].profileGuids).toEqual([profile.guid]);
-      expect(importTasks[1].args[0].profileGuids).toEqual([profile.guid]);
-
-      // import the properties
-      await specHelper.runTask(
-        "profileProperty:import",
-        importTasks[0].args[0]
-      );
-      await specHelper.runTask(
-        "profileProperty:import",
-        importTasks[1].args[0]
-      );
-      await specHelper.runTask("profiles:checkReady", importTasks[0].args[0]);
+      await specHelper.runTask("profiles:checkReady", {});
 
       // complete the import
       const completeTasks = await specHelper.findEnqueuedTasks(

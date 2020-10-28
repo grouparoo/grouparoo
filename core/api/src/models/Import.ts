@@ -227,9 +227,6 @@ export class Import extends Model<Import> {
       await task.enqueueIn(1, "import:associateProfile", {
         importGuid: instance.guid,
       });
-    } else {
-      const profile = await Profile.findByGuid(instance.profileGuid);
-      await profile.markPending();
     }
   }
 

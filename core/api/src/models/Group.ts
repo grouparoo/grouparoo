@@ -349,33 +349,13 @@ export class Group extends LoggedModel<Group> {
     return GroupOps.stopPreviousRuns(this);
   }
 
-  async buildProfileImport(
-    profileGuid: string,
-    creatorType: string,
-    creatorGuid: string,
-    destinationGuid?: string
-  ) {
-    return GroupOps.buildProfileImport(
-      profileGuid,
-      creatorType,
-      creatorGuid,
-      destinationGuid
-    );
-  }
-
   async addProfile(profile: Profile) {
-    const _import = await this.buildProfileImport(
-      profile.guid,
-      "group",
-      this.guid
-    );
+    await GroupOps.buildProfileImport(profile.guid, "group", this.guid);
 
     await GroupMember.create({
       groupGuid: this.guid,
       profileGuid: profile.guid,
     });
-
-    await _import.save();
   }
 
   async removeProfile(profile: Profile) {
@@ -385,13 +365,9 @@ export class Group extends LoggedModel<Group> {
 
     if (!membership) throw new Error("profile is not a member of this group");
 
-    const _import = await this.buildProfileImport(
-      profile.guid,
-      "group",
-      this.guid
-    );
+    await GroupOps.buildProfileImport(profile.guid, "group", this.guid);
+
     await membership.destroy();
-    await _import.save();
   }
 
   async runAddGroupMembers(

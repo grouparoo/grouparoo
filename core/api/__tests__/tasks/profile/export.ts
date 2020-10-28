@@ -7,6 +7,7 @@ import { Group } from "./../../../src/models/Group";
 import { Destination } from "./../../../src/models/Destination";
 import { Export } from "./../../../src/models/Export";
 import { plugin } from "../../../src/modules/plugin";
+import { Op } from "sequelize";
 
 let actionhero;
 
@@ -290,7 +291,9 @@ describe("tasks/profile:export", () => {
           counter = 0;
         });
 
-        beforeAll(() => {
+        beforeAll(async () => {
+          await Profile.destroy({ where: { guid: { [Op.ne]: profile.guid } } });
+
           Destination.prototype.exportProfile = jest.fn(() => {
             counter++;
             throw new Error("oh no");
@@ -298,18 +301,6 @@ describe("tasks/profile:export", () => {
         });
 
         it("will not profiles not yet in the ready state", async () => {
-          const run = await helper.factories.run();
-          const _import = await Import.create({
-            creatorType: "run",
-            creatorGuid: run.guid,
-            profileGuid: profile.guid,
-            profileUpdatedAt: new Date(),
-            groupsUpdatedAt: new Date(),
-            data: {},
-            oldGroupGuids: [],
-            newGroupGuids: [group.guid],
-          });
-
           await profile.update({ state: "pending" });
 
           await specHelper.runTask("profile:export", {
@@ -317,8 +308,6 @@ describe("tasks/profile:export", () => {
           }); // does not throw because it did not run
 
           expect(counter).toBe(0);
-
-          await _import.destroy();
         });
 
         it("applies errors to the imports and export", async () => {
@@ -354,6 +343,8 @@ describe("tasks/profile:export", () => {
           expect(errorMetadata.message).toMatch(/oh no/);
           expect(errorMetadata.step).toBe("profile:export");
           expect(errorMetadata.stack).toMatch(/ProfileExport/);
+
+          await _import.destroy();
         });
       });
     });

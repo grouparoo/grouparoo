@@ -7,6 +7,7 @@ import { Run } from "../../../src/models/Run";
 import { Import } from "../../../src/models/Import";
 import { GroupMember } from "../../../src/models/GroupMember";
 import { SharedGroupTests } from "../../utils/prepareSharedGroupTest";
+import { plugin } from "../../../src";
 
 let actionhero;
 
@@ -15,6 +16,10 @@ describe("models/group", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
   }, 1000 * 30);
+
+  beforeAll(async () => {
+    await plugin.updateSetting("core", "runs-profile-batch-size", 100);
+  });
 
   afterAll(async () => {
     await helper.shutdown(actionhero);
@@ -536,7 +541,6 @@ describe("models/group", () => {
       expect(imports.length).toBe(2);
       await Import.destroy({ truncate: true });
 
-      const newRun = await helper.factories.run();
       await group.run(true);
       const foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(1);
@@ -551,8 +555,6 @@ describe("models/group", () => {
       expect(imports[0].rawData).toEqual({});
       expect(imports[1].data).toEqual({});
       expect(imports[1].rawData).toEqual({});
-
-      await newRun.destroy();
     });
 
     test("runUpdateMembers will create imports which include a destinationGuid in _meta if provided", async () => {
@@ -566,7 +568,6 @@ describe("models/group", () => {
       expect(imports.length).toBe(2);
       await Import.destroy({ truncate: true });
 
-      const newRun = await helper.factories.run();
       await group.run(true, "abc123");
       const foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(1);
@@ -582,8 +583,6 @@ describe("models/group", () => {
       expect(imports[0].rawData).toEqual(data);
       expect(imports[1].data).toEqual(data);
       expect(imports[1].rawData).toEqual(data);
-
-      await newRun.destroy();
     });
 
     test("group rules must have a related profileProperty Ryle", async () => {
