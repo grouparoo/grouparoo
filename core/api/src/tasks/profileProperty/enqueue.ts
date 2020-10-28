@@ -10,7 +10,7 @@ export class ProfilePropertiesEnqueue extends RetryableTask {
     this.name = "profileProperties:enqueue";
     this.description =
       "Enqueue a batch of Profiles who need a Profile Property";
-    this.frequency = 1000 * 30;
+    this.frequency = 1000 * 10;
     this.queue = "profileProperties";
     this.inputs = {};
   }

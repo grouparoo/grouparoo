@@ -9,7 +9,7 @@ export class ProfilesCheckReady extends RetryableTask {
     this.name = "profiles:checkReady";
     this.description =
       "If all of a Profile's Properties are ready, mark the profile ready and complete the import";
-    this.frequency = 1000 * 30;
+    this.frequency = 1000 * 10;
     this.queue = "profiles";
     this.inputs = {};
   }

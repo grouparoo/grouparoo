@@ -35,7 +35,20 @@ export class ProfileCompleteImport extends RetryableTask {
     if (!profile) return; // the profile may have been deleted or merged by the time this task ran
 
     // calling this task implies we expect the profile to be in the ready state
-    if (profile.state !== "ready") await profile.update({ state: "ready" });
+    if (profile.state !== "ready") {
+      try {
+        await profile.update({ state: "ready" });
+      } catch (error) {
+        if (
+          error.toString().match(/cannot transition profile .* to ready state/)
+        ) {
+          // it's OK.  The next run of profile:checkReady will check this profile again
+          return;
+        } else {
+          throw error;
+        }
+      }
+    }
 
     const imports = await profile.$get("imports", {
       where: { profileUpdatedAt: null },
