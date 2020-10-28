@@ -28,6 +28,7 @@ export class ProfilePropertyImport extends RetryableTask {
       params.profilePropertyRuleGuid
     );
     const source = await profilePropertyRule.$get("source");
+    const { pluginConnection } = await source.getPlugin();
 
     const profilesWithDependenciesMet: Profile[] = [];
     const dependencies = await profilePropertyRule.dependsOn();
@@ -52,22 +53,58 @@ export class ProfilePropertyImport extends RetryableTask {
       if (ok) profilesWithDependenciesMet.push(profile);
     }
 
-    for (const i in profilesWithDependenciesMet) {
-      // TODO: Batches and write-in-bulk
-      const profile = profilesWithDependenciesMet[i];
-      const propertyValues = await source.importProfileProperty(
-        profile,
+    // TODO: Move to Op
+    // TODO: Write in Batches?
+    // TODO: Preload Properties?
+    if (pluginConnection.methods.profileProperties) {
+      // in batches
+
+      const propertyValuesBatch = await source.importProfileProperties(
+        profilesWithDependenciesMet,
         profilePropertyRule
       );
 
-      const hash = {};
-      hash[profilePropertyRule.key] = propertyValues
-        ? Array.isArray(propertyValues)
-          ? propertyValues
-          : [propertyValues]
-        : [];
-      await profile.addOrUpdateProperty(hash);
+      for (const profileGuid in propertyValuesBatch) {
+        const profile = profilesWithDependenciesMet.find(
+          (p) => p.guid === profileGuid
+        );
+        const hash = {};
+        hash[profilePropertyRule.key] = propertyValuesBatch[profileGuid];
+        await profile.addOrUpdateProperties(hash);
+      }
+    } else {
+      // not in batches
+
+      for (const i in profilesWithDependenciesMet) {
+        const profile = profilesWithDependenciesMet[i];
+        const propertyValues = await source.importProfileProperty(
+          profile,
+          profilePropertyRule
+        );
+
+        if (propertyValues) {
+          const hash = {};
+          hash[profilePropertyRule.key] = Array.isArray(propertyValues)
+            ? propertyValues
+            : [propertyValues];
+          await profile.addOrUpdateProperty(hash);
+        }
+      }
     }
+
+    // update the properties that got no data back
+    await ProfileProperty.update(
+      { state: "ready", stateChangedAt: new Date(), confirmedAt: new Date() },
+      {
+        where: {
+          profilePropertyRuleGuid: profilePropertyRule.guid,
+          profileGuid: {
+            [Op.in]: profilesWithDependenciesMet.map((p) => p.guid),
+          },
+          state: "pending",
+        },
+      }
+    );
 
     log(
       `imported ${profilePropertyRule.key} (${profilePropertyRule.guid}) for ${profiles.length} profiles`

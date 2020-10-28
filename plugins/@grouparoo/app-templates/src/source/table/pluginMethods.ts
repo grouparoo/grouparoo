@@ -82,6 +82,22 @@ export interface GetPropertyValueMethod {
     isArray: boolean;
   }): Promise<DataResponse[]>;
 }
+export interface GetPropertyValuesMethod {
+  (argument: {
+    connection: any;
+    appOptions: SimpleAppOptions;
+    appGuid: string;
+    tableName: string;
+    columnName: string;
+    tablePrimaryKeyCol: string;
+    tableMappingCol: string;
+    sortColumn: string;
+    matchConditions: MatchCondition[];
+    aggregationMethod: AggregationMethod;
+    isArray: boolean;
+    primaryKeys: Array<number | string>;
+  }): Promise<{ [primaryKey: string]: DataResponse[] }>;
+}
 export interface TableDefinition {
   name: string;
   data?: any;

@@ -73,6 +73,7 @@ export interface PluginConnection {
     uniqueProfilePropertyRuleBootstrapOptions?: UniqueProfilePropertyRuleBootstrapOptions;
     profiles?: ProfilesPluginMethod;
     profileProperty?: ProfilePropertyPluginMethod;
+    profileProperties?: ProfilePropertiesPluginMethod;
     destinationOptions?: DestinationOptionsMethod;
     destinationMappingOptions?: DestinationMappingOptionsMethod;
     exportProfile?: ExportProfilePluginMethod;
@@ -139,6 +140,33 @@ export interface ProfilePropertyPluginMethod {
 export type ProfilePropertyPluginMethodResponse = Array<
   string | number | boolean | Date
 >;
+
+/**
+ * Method to load many profile properties for a many profiles.
+ * It returns an array of key/value hashes for the new Profile Property values, ordered by the profile inputs
+ */
+export interface ProfilePropertiesPluginMethod {
+  (argument: {
+    connection: any;
+    app: App;
+    appGuid: string;
+    appOptions: SimpleAppOptions;
+    source: Source;
+    sourceGuid: string;
+    sourceOptions: SimpleSourceOptions;
+    sourceMapping: SourceMapping;
+    profilePropertyRule: ProfilePropertyRule;
+    profilePropertyRuleGuid: string;
+    profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions;
+    profilePropertyRuleFilters: ProfilePropertyRuleFiltersWithKey[];
+    profiles: Profile[];
+    profileGuids: string[];
+  }): Promise<ProfilePropertiesPluginMethodResponse>;
+}
+
+export type ProfilePropertiesPluginMethodResponse = {
+  [profileGuid: string]: ProfilePropertyPluginMethodResponse;
+};
 
 /**
  * The profile data that a Destination will receive.
