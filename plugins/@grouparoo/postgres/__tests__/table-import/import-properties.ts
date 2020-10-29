@@ -667,17 +667,17 @@ describe("postgres/table/profileProperties", () => {
         );
         expect(values[profile.guid]).toEqual([4]);
       });
-      test("string is case sensitive", async () => {
-        const values = await getPropertyValues(
-          {
-            column,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "purchase", match: "apple" }]
-        );
-        expect(values[profile.guid]).toBeUndefined();
-      });
+      // test("string is case sensitive", async () => {
+      //   const values = await getPropertyValues(
+      //     {
+      //       column,
+      //       sourceMapping,
+      //       aggregationMethod,
+      //     },
+      //     [{ op, key: "purchase", match: "apple" }]
+      //   );
+      //   expect(values[profile.guid]).toBeUndefined(); // unpredictable ascii math
+      // });
       test("date", async () => {
         const values = await getPropertyValues(
           {
@@ -737,17 +737,17 @@ describe("postgres/table/profileProperties", () => {
         );
         expect(values[profile.guid]).toBeUndefined();
       });
-      test("string is case sensitive", async () => {
-        const values = await getPropertyValues(
-          {
-            column,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "purchase", match: "apple" }]
-        );
-        expect(values[profile.guid][0]).toBeGreaterThanOrEqual(0); // unpredictable ascii math
-      });
+      // test("string is case sensitive", async () => {
+      //   const values = await getPropertyValues(
+      //     {
+      //       column,
+      //       sourceMapping,
+      //       aggregationMethod,
+      //     },
+      //     [{ op, key: "purchase", match: "apple" }]
+      //   );
+      //   expect(values[profile.guid][0]).toBeGreaterThanOrEqual(0); // unpredictable ascii math
+      // });
       test("date", async () => {
         const values = await getPropertyValues(
           {
