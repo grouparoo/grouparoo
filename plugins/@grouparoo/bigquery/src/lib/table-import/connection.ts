@@ -4,6 +4,7 @@ import { getColumns } from "./getColumns";
 import { getTables } from "./getTables";
 import { getChangedRows } from "./getChangedRows";
 import { getPropertyValue } from "./getPropertyValue";
+import { getPropertyValues } from "./getPropertyValues";
 import { getChangedRowCount } from "./getChangedRowCount";
 
 export function getConnection() {
@@ -17,6 +18,7 @@ export function getConnection() {
     getTables,
     getChangedRows,
     getPropertyValue,
+    getPropertyValues,
     getChangedRowCount,
   });
 }
