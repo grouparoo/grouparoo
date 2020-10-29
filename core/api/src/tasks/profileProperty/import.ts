@@ -53,6 +53,8 @@ export class ProfilePropertyImport extends RetryableTask {
       if (ok) profilesWithDependenciesMet.push(profile);
     }
 
+    if (profilesWithDependenciesMet.length === 0) return;
+
     // TODO: Move to Op
     // TODO: Write in Batches?
     // TODO: Preload Properties?
@@ -107,7 +109,7 @@ export class ProfilePropertyImport extends RetryableTask {
     );
 
     log(
-      `imported ${profilePropertyRule.key} (${profilePropertyRule.guid}) for ${profiles.length} profiles`
+      `imported ${profilePropertyRule.key} (${profilePropertyRule.guid}) for ${profilesWithDependenciesMet.length} profiles`
     );
   }
 }

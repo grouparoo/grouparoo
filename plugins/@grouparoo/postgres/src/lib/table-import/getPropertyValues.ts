@@ -29,7 +29,10 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   switch (aggregationMethod) {
     case AggregationMethod.Exact:
       groupByColumns.push(columnName);
-      if (sortColumn) orderBy = `"${sortColumn}" ASC`;
+      if (sortColumn) {
+        orderBy = `"${sortColumn}" ASC`;
+        groupByColumns.push(sortColumn);
+      }
       break;
     case AggregationMethod.Average:
       aggSelect = `COALESCE(AVG(${aggSelect}), 0)`;
@@ -47,17 +50,15 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
       aggSelect = `MAX(${aggSelect})`;
       break;
     case AggregationMethod.MostRecentValue:
-      if (!sortColumn) {
-        throw new Error("Sort Column is needed");
-      }
+      if (!sortColumn) throw new Error("Sort Column is needed");
       orderBy = `"${sortColumn}" DESC`;
+      groupByColumns.push(columnName);
       groupByColumns.push(sortColumn);
       break;
     case AggregationMethod.LeastRecentValue:
-      if (!sortColumn) {
-        throw new Error("Sort Column is needed");
-      }
+      if (!sortColumn) throw new Error("Sort Column is needed");
       orderBy = `"${sortColumn}" ASC`;
+      groupByColumns.push(columnName);
       groupByColumns.push(sortColumn);
       break;
     default:
