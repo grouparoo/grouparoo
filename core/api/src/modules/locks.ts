@@ -32,8 +32,9 @@ export async function waitForLock(
   }
 
   const set = await client.setnx(lockKey, requestId);
+  const checkValue = await client.get(lockKey);
 
-  if (!set) {
+  if (!set || checkValue !== requestId) {
     await sleep(sleepTime);
     return waitForLock(key, requestId, ttl, attempts, sleepTime);
   }
