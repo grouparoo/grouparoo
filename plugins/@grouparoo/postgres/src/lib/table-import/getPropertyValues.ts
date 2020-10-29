@@ -77,9 +77,12 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   params.push(primaryKeys);
 
   if (groupByColumns.length > 0) {
-    query += ` GROUP BY ${groupByColumns.join(", ")}`;
+    query += ` GROUP BY %I`;
+    params.push(groupByColumns);
   }
-  if (orderBy.length > 0) query += ` ORDER BY ${orderBy}`;
+  if (orderBy.length > 0) {
+    query += ` ORDER BY ${orderBy}`;
+  }
 
   validateQuery(query);
 
