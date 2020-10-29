@@ -31,8 +31,6 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
     profilePropertyRuleFilters,
   }) => {
     const tableName = sourceOptions[tableNameKey];
-    // const matchName = Object.keys(sourceMapping)[0]; // tableCol
-    // const profilePropertyMatch = Object.values(sourceMapping)[0];
     const columnName = profilePropertyRuleOptions[columnNameKey];
     const aggregationMethod = <AggregationMethod>(
       profilePropertyRuleOptions[aggregationMethodKey]
@@ -61,7 +59,6 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
     const isArray = !!profilePropertyRule.isArray;
 
     const matchConditions: MatchCondition[] = [];
-    // matchConditions.push(foreignKeyMatch); // this narrows it to the correct profile
 
     for (const filter of profilePropertyRuleFilters) {
       let { key, op, match } = filter;
