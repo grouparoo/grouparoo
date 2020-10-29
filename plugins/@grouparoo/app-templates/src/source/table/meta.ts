@@ -42,7 +42,7 @@ export interface BuildConnectionMethod {
     getTables: GetTablesMethod;
     getChangedRows: GetChangedRowsMethod;
     getPropertyValue: GetPropertyValueMethod;
-    getPropertyValues: GetPropertyValuesMethod;
+    getPropertyValues?: GetPropertyValuesMethod;
     getChangedRowCount: GetChangedRowCountMethod;
   }): PluginConnection;
 }
@@ -84,14 +84,16 @@ export const buildConnection: BuildConnectionMethod = ({
   const profiles: ProfilesPluginMethod = getProfiles({
     getChangedRows,
   });
-  const profileProperty: ProfilePropertyPluginMethod = getProfileProperty({
-    getPropertyValue,
-  });
-  const profileProperties: ProfilePropertiesPluginMethod = getProfileProperties(
-    {
-      getPropertyValues,
-    }
-  );
+  const profileProperty: ProfilePropertyPluginMethod = getPropertyValue
+    ? getProfileProperty({
+        getPropertyValue,
+      })
+    : null;
+  const profileProperties: ProfilePropertiesPluginMethod = getPropertyValues
+    ? getProfileProperties({
+        getPropertyValues,
+      })
+    : null;
   const sourceRunPercentComplete: SourceRunPercentCompleteMethod = getSourceRunPercentComplete(
     {
       getChangedRowCount,
