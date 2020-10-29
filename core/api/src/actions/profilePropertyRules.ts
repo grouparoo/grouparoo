@@ -340,10 +340,20 @@ export class ProfilePropertyRuleProfilePreview extends AuthenticatedAction {
       errorMessage = error.toString();
     }
 
-    apiData.properties[profilePropertyRule.key] = Object.assign(
-      apiData.properties[profilePropertyRule.key],
-      { values: newPropertyValues }
-    );
+    apiData.properties[profilePropertyRule.key] = {
+      guid: profilePropertyRule.guid,
+      state: profilePropertyRule.state,
+      values: newPropertyValues,
+      type: profilePropertyRule.type,
+      unique: profilePropertyRule.unique,
+      isArray: profilePropertyRule.isArray,
+      identifying: profilePropertyRule.identifying,
+      valueChangedAt: null,
+      confirmedAt: null,
+      stateChangedAt: null,
+      createdAt: null,
+      updatedAt: null,
+    };
 
     return { errorMessage, profile: apiData };
   }
