@@ -49,41 +49,16 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
 
     for (const i in profiles) {
       const properties = await profiles[i].properties();
-      if (properties[tableMappingCol]?.values.length) {
+      if (
+        properties[tableMappingCol]?.values.length > 0 &&
+        properties[tableMappingCol].values[0] // not null or undefined
+      ) {
         primaryKeysHash[properties[tableMappingCol].values[0].toString()] =
           profiles[i].guid;
       }
     }
 
-    // don't `select userId where userId = {userId}` if we don't know {userId}
-    // if (
-    //   matchName === columnName &&
-    //   aggregationMethod === AggregationMethod.Exact
-    // ) {
-    //   const tableMappingCol: string = Object.values(sourceMapping)[0];
-    //   const properties = await profile.properties();
-    //   // if no property or no values, bail
-    //   if (!properties[tableMappingCol]?.values.length) {
-    //     return undefined;
-    //   }
-    // }
-
-    // const profileData = await profile.properties();
     const isArray = !!profilePropertyRule.isArray;
-
-    // if (!profileData.hasOwnProperty(profilePropertyMatch)) {
-    //   return undefined;
-    // }
-    // const matchValue = profileData[profilePropertyMatch].values[0];
-    // if (!matchValue) {
-    //   return undefined;
-    // }
-
-    // const foreignKeyMatch: MatchCondition = {
-    //   columnName: matchName,
-    //   value: matchValue,
-    //   filterOperation: FilterOperation.Equal,
-    // };
 
     const matchConditions: MatchCondition[] = [];
     // matchConditions.push(foreignKeyMatch); // this narrows it to the correct profile

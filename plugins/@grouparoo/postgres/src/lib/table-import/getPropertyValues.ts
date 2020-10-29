@@ -19,14 +19,17 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   aggregationMethod,
   primaryKeys,
 }) => {
+  let responses: { [key: string]: DataResponse[] } = {};
   let aggSelect = `"${columnName}"`;
   let orderBy = "";
-  let groupByColumns = [tablePrimaryKeyCol, columnName];
+  let groupByColumns = [tablePrimaryKeyCol];
+
+  if (primaryKeys.length === 0) return responses;
+
   switch (aggregationMethod) {
     case AggregationMethod.Exact:
-      if (sortColumn) {
-        orderBy = `"${sortColumn}" ASC`;
-      }
+      groupByColumns.push(columnName);
+      if (sortColumn) orderBy = `"${sortColumn}" ASC`;
       break;
     case AggregationMethod.Average:
       aggSelect = `COALESCE(AVG(${aggSelect}), 0)`;
@@ -85,8 +88,8 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   }
 
   validateQuery(query);
+  // console.log({ q: format(query, ...params), params });
 
-  let responses: { [key: string]: DataResponse[] } = {};
   try {
     const {
       rows,
