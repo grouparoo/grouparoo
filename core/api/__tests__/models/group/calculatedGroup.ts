@@ -7,7 +7,6 @@ import { Run } from "../../../src/models/Run";
 import { Import } from "../../../src/models/Import";
 import { GroupMember } from "../../../src/models/GroupMember";
 import { SharedGroupTests } from "../../utils/prepareSharedGroupTest";
-import { plugin } from "../../../src";
 
 let actionhero;
 
@@ -35,7 +34,7 @@ describe("models/group", () => {
       luigi = response.luigi;
       peach = response.peach;
       toad = response.toad;
-    });
+    }, 1000 * 30);
 
     afterAll(async () => {
       await SharedGroupTests.afterAll(false);
