@@ -1,4 +1,4 @@
-import { api, Task, task, log } from "actionhero";
+import { Task, task, log } from "actionhero";
 import { Event } from "../../models/Event";
 
 export class EventsAssociateProfiles extends Task {

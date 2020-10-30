@@ -1,4 +1,3 @@
-import { api } from "actionhero";
 import { Event } from "../../models/Event";
 import { App } from "../../models/App";
 import { RetryableTask } from "../../classes/retryableTask";
