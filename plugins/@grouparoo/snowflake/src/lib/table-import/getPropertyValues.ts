@@ -4,6 +4,7 @@ import {
   GetPropertyValuesMethod,
   DataResponse,
   AggregationMethod,
+  FilterOperation,
 } from "@grouparoo/app-templates/dist/source/table";
 
 export const getPropertyValues: GetPropertyValuesMethod = async ({
@@ -75,19 +76,17 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
     addAnd = true;
   }
 
+  const inClause = makeWhereClause(
+    {
+      columnName: tablePrimaryKeyCol,
+      filterOperation: FilterOperation.In,
+      values: primaryKeys,
+    },
+    params
+  );
   if (addAnd) query += ` AND`;
-  // params.push(primaryKeys);
-  // query += ` "${tablePrimaryKeyCol}" IN (:${params.length})`;
-  // query += ` "${tablePrimaryKeyCol}" IN (${primaryKeys
-  //   //@ts-ignore
-  //   .map((k) => (isNaN(k) ? `'${k}'` : k))
-  //   .join(", ")})`;
-
-  query += ` "${tablePrimaryKeyCol}" IN (${primaryKeys
-    .map((_, idx) => `:${params.length + idx + 1}`)
-    .join(", ")})`;
-  primaryKeys.forEach((k) => params.push(k));
-  // params = params.concat(primaryKeys);
+  query += ` ${inClause}`;
+  addAnd = true;
 
   if (groupByColumns.length > 0) {
     query += ` GROUP BY ${groupByColumns.map((c) => `"${c}"`).join(", ")}`;

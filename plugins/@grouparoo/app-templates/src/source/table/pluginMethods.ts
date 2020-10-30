@@ -28,12 +28,14 @@ export enum FilterOperation {
   LessThanOrEqual = "less than or equal to",
   Contain = "contains",
   NotContain = "does not contain",
+  In = "in",
 }
 
 export interface MatchCondition {
   columnName: string;
   filterOperation: FilterOperation;
-  value: DataResponse;
+  value?: DataResponse;
+  values?: DataResponse[];
   // Later when adding more filter options...
   // export interface ProfilePropertyRuleFiltersWithKey {
   //     key: string;

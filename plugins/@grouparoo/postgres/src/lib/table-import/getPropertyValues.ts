@@ -4,6 +4,7 @@ import {
   GetPropertyValuesMethod,
   DataResponse,
   AggregationMethod,
+  FilterOperation,
 } from "@grouparoo/app-templates/dist/source/table";
 import format from "pg-format";
 
@@ -76,9 +77,17 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
     addAnd = true;
   }
 
+  const inClause = makeWhereClause(
+    {
+      columnName: tablePrimaryKeyCol,
+      filterOperation: FilterOperation.In,
+      values: primaryKeys,
+    },
+    params
+  );
   if (addAnd) query += ` AND`;
-  query += ` "${tablePrimaryKeyCol}" IN (%L)`;
-  params.push(primaryKeys);
+  query += ` ${inClause}`;
+  addAnd = true;
 
   if (groupByColumns.length > 0) {
     query += ` GROUP BY %I`;
@@ -89,7 +98,6 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   }
 
   validateQuery(query);
-  // console.log({ q: format(query, ...params), params });
 
   try {
     const {

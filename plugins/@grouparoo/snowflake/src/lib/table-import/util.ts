@@ -9,9 +9,9 @@ export function makeWhereClause(
   matchCondition: MatchCondition,
   params: Array<any>
 ) {
-  const { columnName, filterOperation, value } = matchCondition;
+  const { columnName, filterOperation, value, values } = matchCondition;
   let op;
-  let match = value;
+  let match = values || value;
 
   switch (filterOperation) {
     case FilterOperation.Equal:
@@ -40,12 +40,22 @@ export function makeWhereClause(
       op = "NOT ILIKE"; // case insensitive
       match = `%${match.toString().toLowerCase()}%`;
       break;
+    case FilterOperation.In:
+      op = "IN";
+      break;
     default:
       throw new Error(`Unknown filterOperation: ${filterOperation}`);
   }
 
-  params.push(match);
-  return ` "${columnName}" ${op} :${params.length}`; // "profile_id" = :3
+  Array.isArray(match)
+    ? match.forEach((m) => params.push(m))
+    : params.push(match);
+
+  const replacementString = Array.isArray(match)
+    ? `(${match.map((_, idx) => `:${params.length + idx}`).join(", ")})`
+    : `:${params.length}`;
+
+  return ` "${columnName}" ${op} ${replacementString}`; // "profile_id" = :3 or "profile_id" = (:3, :4, :5)
 }
 
 export function castRow(row): DataResponseRow {

@@ -4,6 +4,7 @@ import {
   GetPropertyValuesMethod,
   DataResponse,
   AggregationMethod,
+  FilterOperation,
 } from "@grouparoo/app-templates/dist/source/table";
 
 export const getPropertyValues: GetPropertyValuesMethod = async ({
@@ -75,10 +76,17 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
     addAnd = true;
   }
 
+  const inClause = makeWhereClause(
+    {
+      columnName: tablePrimaryKeyCol,
+      filterOperation: FilterOperation.In,
+      values: primaryKeys,
+    },
+    params
+  );
   if (addAnd) query += ` AND`;
-  query += ` ?? IN (?)`;
-  params.push(tablePrimaryKeyCol);
-  params.push(primaryKeys);
+  query += ` ${inClause}`;
+  addAnd = true;
 
   if (groupByColumns.length > 0) {
     query += ` GROUP BY ??`;
