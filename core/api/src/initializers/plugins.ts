@@ -159,6 +159,7 @@ export class Plugins extends Initializer {
         }
         if (
           connection.direction === "import" &&
+          connection.app !== "manual" &&
           !connection.methods.profileProperty &&
           !connection.methods.profileProperties
         ) {
