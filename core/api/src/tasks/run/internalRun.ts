@@ -1,11 +1,10 @@
-import { task, api, config } from "actionhero";
+import { Task, task, api, config } from "actionhero";
 import { Run } from "../../models/Run";
 import { Import } from "../../models/Import";
 import { Profile } from "../../models/Profile";
 import { plugin } from "../../modules/plugin";
-import { RetryableTask } from "../../classes/retryableTask";
 
-export class RunInternalRun extends RetryableTask {
+export class RunInternalRun extends Task {
   constructor() {
     super();
     this.name = "run:internalRun";

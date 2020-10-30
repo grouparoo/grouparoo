@@ -1,11 +1,10 @@
-import { api, task } from "actionhero";
-import { RetryableTask } from "../../classes/retryableTask";
+import { Task, api, task } from "actionhero";
 import { Profile } from "../../models/Profile";
 import { Run } from "../../models/Run";
 import { Op } from "sequelize";
 import { ProfilePropertyType } from "../../modules/ops/profile";
 
-export class ProfileCompleteImport extends RetryableTask {
+export class ProfileCompleteImport extends Task {
   constructor() {
     super();
     this.name = "profile:completeImport";

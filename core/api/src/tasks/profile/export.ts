@@ -1,11 +1,11 @@
-import { RetryableTask } from "../../classes/retryableTask";
 import { Op } from "sequelize";
 import { Profile } from "../../models/Profile";
 import { Import } from "../../models/Import";
 import { Destination } from "../../models/Destination";
 import { Group } from "../../models/Group";
+import { Task } from "actionhero";
 
-export class ProfileExport extends RetryableTask {
+export class ProfileExport extends Task {
   constructor() {
     super();
     this.name = "profile:export";

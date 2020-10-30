@@ -1,10 +1,9 @@
-import { api, log, env } from "actionhero";
-import { RetryableTask } from "../../classes/retryableTask";
+import { Task, api, log, env } from "actionhero";
 import { Import } from "../../models/Import";
 import { Run } from "../../models/Run";
 import { ProfileOps, ProfilePropertyType } from "../../modules/ops/profile";
 
-export class ImportAssociateProfile extends RetryableTask {
+export class ImportAssociateProfile extends Task {
   constructor() {
     super();
     this.name = "import:associateProfile";
