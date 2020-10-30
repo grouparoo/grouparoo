@@ -282,17 +282,16 @@ export namespace GroupOps {
       nextHighWaterMark--;
     }
 
+    const groupMembers = await GroupMember.findAll({
+      where: {
+        profileGuid: { [Op.in]: profiles.map((p) => p.guid) },
+        groupGuid: group.guid,
+      },
+    });
+
     const transaction = await api.sequelize.transaction();
 
     try {
-      const groupMembers = await GroupMember.findAll({
-        where: {
-          profileGuid: { [Op.in]: profiles.map((p) => p.guid) },
-          groupGuid: group.guid,
-        },
-        transaction,
-      });
-
       const existingGroupMemberProfileGuids = groupMembers.map(
         (member) => member.profileGuid
       );
@@ -359,20 +358,20 @@ export namespace GroupOps {
   ) {
     let groupMembersCount = 0;
 
+    const groupMembersToRemove = await GroupMember.findAll({
+      attributes: ["guid", "profileGuid"],
+      where: {
+        groupGuid: group.guid,
+        updatedAt: { [Op.lt]: run.createdAt },
+        removedAt: null,
+      },
+      limit,
+    });
+
     const transaction = await api.sequelize.transaction();
 
     try {
       // The offset and order can be ignored as we will keep running this query until the set of results becomes 0.
-      const groupMembersToRemove = await GroupMember.findAll({
-        attributes: ["guid", "profileGuid"],
-        where: {
-          groupGuid: group.guid,
-          updatedAt: { [Op.lt]: run.createdAt },
-          removedAt: null,
-        },
-        limit,
-        transaction,
-      });
 
       for (const i in groupMembersToRemove) {
         const member = groupMembersToRemove[i];
