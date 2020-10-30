@@ -1,8 +1,8 @@
 import { Event } from "../../models/Event";
 import { App } from "../../models/App";
-import { Task } from "actionhero";
+import { RetryableTask } from "../../classes/retryableTask";
 
-export class EventAssociateProfile extends Task {
+export class EventAssociateProfile extends RetryableTask {
   constructor() {
     super();
     this.name = "event:associateProfile";

@@ -3,9 +3,9 @@ import { Profile } from "../../models/Profile";
 import { Import } from "../../models/Import";
 import { Destination } from "../../models/Destination";
 import { Group } from "../../models/Group";
-import { Task } from "actionhero";
+import { RetryableTask } from "../../classes/retryableTask";
 
-export class ProfileExport extends Task {
+export class ProfileExport extends RetryableTask {
   constructor() {
     super();
     this.name = "profile:export";

@@ -68,6 +68,17 @@ export class ProfilePropertyImport extends RetryableTask {
         ? propertyValues
         : [propertyValues];
       await profile.addOrUpdateProperty(hash);
+    } else {
+      await ProfileProperty.update(
+        { state: "ready", stateChangedAt: new Date(), confirmedAt: new Date() },
+        {
+          where: {
+            profilePropertyRuleGuid: profilePropertyRule.guid,
+            profileGuid: profile.guid,
+            state: "pending",
+          },
+        }
+      );
     }
 
     log(

@@ -3,7 +3,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/postgres": { path: path.join(__dirname, "..", "..") },
 });
 
-import { helper } from "@grouparoo/spec-helper";
+import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { beforeData, afterData, getConfig } from "../utils/data";
 import { api, specHelper } from "actionhero";
 import {
@@ -392,27 +392,7 @@ describe("integration/runs/postgres", () => {
         )
       );
 
-      // run the import workflow
-      await specHelper.runTask("profileProperties:enqueue", {});
-      const importTasks = await specHelper.findEnqueuedTasks(
-        "profileProperty:import"
-      );
-      expect(importTasks.length).toEqual(9); // 9 properties
-      await Promise.all(
-        importTasks.map((t) =>
-          specHelper.runTask("profileProperty:import", t.args[0])
-        )
-      );
-      await specHelper.runTask("profiles:checkReady", {});
-      const completeTasks = await specHelper.findEnqueuedTasks(
-        "profile:completeImport"
-      );
-      expect(completeTasks.length).toEqual(10);
-      await Promise.all(
-        completeTasks.map((t) =>
-          specHelper.runTask("profile:completeImport", t.args[0])
-        )
-      );
+      await ImportWorkflow();
 
       // run all enqueued export tasks
       const foundExportTasks = await specHelper.findEnqueuedTasks(
@@ -536,27 +516,7 @@ describe("integration/runs/postgres", () => {
         )
       );
 
-      // run the import workflow
-      await specHelper.runTask("profileProperties:enqueue", {});
-      const importTasks = await specHelper.findEnqueuedTasks(
-        "profileProperty:import"
-      );
-      expect(importTasks.length).toBeGreaterThanOrEqual(9); // 9 properties
-      await Promise.all(
-        importTasks.map((t) =>
-          specHelper.runTask("profileProperty:import", t.args[0])
-        )
-      );
-      await specHelper.runTask("profiles:checkReady", {});
-      const completeTasks = await specHelper.findEnqueuedTasks(
-        "profile:completeImport"
-      );
-      expect(completeTasks.length).toEqual(10);
-      await Promise.all(
-        completeTasks.map((t) =>
-          specHelper.runTask("profile:completeImport", t.args[0])
-        )
-      );
+      await ImportWorkflow();
 
       // run all enqueued export tasks
       const foundExportTasks = await specHelper.findEnqueuedTasks(

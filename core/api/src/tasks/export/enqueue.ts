@@ -1,8 +1,9 @@
 import { Destination } from "../../models/Destination";
-import { log, Task } from "actionhero";
+import { log } from "actionhero";
 import { ExportOps } from "../../modules/ops/export";
+import { RetryableTask } from "../../classes/retryableTask";
 
-export class EnqueueExports extends Task {
+export class EnqueueExports extends RetryableTask {
   constructor() {
     super();
     this.name = "export:enqueue";
