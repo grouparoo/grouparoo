@@ -161,6 +161,7 @@ importers:
       typescript: 4.0.3
       umzug: 2.3.0
       uuid: 8.3.1
+      validator: 13.1.17
       winston: 3.3.3
       ws: 7.3.1
     devDependencies:
@@ -254,6 +255,7 @@ importers:
       typescript: 4.0.3
       umzug: 2.3.0
       uuid: 8.3.1
+      validator: 13.1.17
       winston: 3.3.3
       ws: 7.3.1
   plugins/@grouparoo/app-templates:
@@ -16882,6 +16884,12 @@ packages:
       node: '>= 0.10'
     resolution:
       integrity: sha512-X/p3UZerAIsbBfN/IwahhYaBbY68EN/UQBWHtsbXGT5bfrH/p4NQzUCG1kF/rtKaNpnJ7jAu6NGTdSNtyNIXMw==
+  /validator/13.1.17:
+    dev: false
+    engines:
+      node: '>= 0.10'
+    resolution:
+      integrity: sha512-zL5QBoemJ3jYFb2/j38y7ljhwYGXVLUp8H6W1nVxadnAOvUOytec+L7BHh1oBQ82/TzWXHd+GSaxUWp4lROkLg==
   /vary/1.1.2:
     engines:
       node: '>= 0.8'
