@@ -1,9 +1,10 @@
-import { Task, task, log, config } from "actionhero";
+import { task, log, config } from "actionhero";
+import { RetryableTask } from "../../classes/retryableTask";
 import { Group } from "../../models/Group";
 import { Run } from "../../models/Run";
 import { plugin } from "../../modules/plugin";
 
-export class RunGroup extends Task {
+export class RunGroup extends RetryableTask {
   constructor() {
     super();
     this.name = "group:run";

@@ -1,4 +1,4 @@
-import { api, task, log, env } from "actionhero";
+import { api, log, env } from "actionhero";
 import { RetryableTask } from "../../classes/retryableTask";
 import { Import } from "../../models/Import";
 import { Run } from "../../models/Run";

@@ -3,12 +3,13 @@ import { Profile } from "../../models/Profile";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
 import { Op } from "sequelize";
-import { log } from "actionhero";
+import { log, task } from "actionhero";
+import { ProfilePropertiesPluginMethodResponse } from "../../classes/plugin";
 
 export class ProfilePropertyImport extends RetryableTask {
   constructor() {
     super();
-    this.name = "profileProperty:import";
+    this.name = "profileProperty:importProfileProperties";
     this.description =
       "Import the Profile Properties for a Profile Property Rule";
     this.frequency = 0;
@@ -28,7 +29,6 @@ export class ProfilePropertyImport extends RetryableTask {
       params.profilePropertyRuleGuid
     );
     const source = await profilePropertyRule.$get("source");
-    const { pluginConnection } = await source.getPlugin();
 
     const profilesWithDependenciesMet: Profile[] = [];
     const dependencies = await profilePropertyRule.dependsOn();
@@ -55,43 +55,32 @@ export class ProfilePropertyImport extends RetryableTask {
 
     if (profilesWithDependenciesMet.length === 0) return;
 
-    // TODO: Move to Op
-    // TODO: Write in Batches?
-    // TODO: Preload Properties?
-    if (pluginConnection.methods.profileProperties) {
-      // in batches
-
-      const propertyValuesBatch = await source.importProfileProperties(
+    let propertyValuesBatch: ProfilePropertiesPluginMethodResponse = {};
+    try {
+      propertyValuesBatch = await source.importProfileProperties(
         profilesWithDependenciesMet,
         profilePropertyRule
       );
+    } catch (error) {
+      // if something goes wrong with the batch import, fall-back to per-profile/property imports
+      await Promise.all(
+        profilesWithDependenciesMet.map((profile) => {
+          task.enqueue("profileProperty:importProfileProperty", {
+            profileGuid: profile.guid,
+            profilePropertyRuleGuid: profilePropertyRule.guid,
+          });
+        })
+      );
+      return log(error, "error");
+    }
 
-      for (const profileGuid in propertyValuesBatch) {
-        const profile = profilesWithDependenciesMet.find(
-          (p) => p.guid === profileGuid
-        );
-        const hash = {};
-        hash[profilePropertyRule.key] = propertyValuesBatch[profileGuid];
-        await profile.addOrUpdateProperties(hash);
-      }
-    } else {
-      // not in batches
-
-      for (const i in profilesWithDependenciesMet) {
-        const profile = profilesWithDependenciesMet[i];
-        const propertyValues = await source.importProfileProperty(
-          profile,
-          profilePropertyRule
-        );
-
-        if (propertyValues) {
-          const hash = {};
-          hash[profilePropertyRule.key] = Array.isArray(propertyValues)
-            ? propertyValues
-            : [propertyValues];
-          await profile.addOrUpdateProperty(hash);
-        }
-      }
+    for (const profileGuid in propertyValuesBatch) {
+      const profile = profilesWithDependenciesMet.find(
+        (p) => p.guid === profileGuid
+      );
+      const hash = {};
+      hash[profilePropertyRule.key] = propertyValuesBatch[profileGuid];
+      await profile.addOrUpdateProperties(hash);
     }
 
     // update the properties that got no data back

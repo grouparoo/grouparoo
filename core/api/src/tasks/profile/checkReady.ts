@@ -1,9 +1,8 @@
-import { api, task } from "actionhero";
-import { RetryableTask } from "../../classes/retryableTask";
+import { api, Task, task } from "actionhero";
 import { Profile } from "../../models/Profile";
 import { plugin } from "../../modules/plugin";
 
-export class ProfilesCheckReady extends RetryableTask {
+export class ProfilesCheckReady extends Task {
   constructor() {
     super();
     this.name = "profiles:checkReady";

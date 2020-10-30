@@ -1,8 +1,9 @@
-import { Task, task, config } from "actionhero";
+import { task, config } from "actionhero";
 import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
+import { RetryableTask } from "../../classes/retryableTask";
 
-export class ScheduleRun extends Task {
+export class ScheduleRun extends RetryableTask {
   constructor() {
     super();
     this.name = "schedule:run";

@@ -1,10 +1,9 @@
-import { api, task } from "actionhero";
-import { RetryableTask } from "../../classes/retryableTask";
+import { Task, task } from "actionhero";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
 import { plugin } from "../../modules/plugin";
 
-export class ProfilePropertiesEnqueue extends RetryableTask {
+export class ProfilePropertiesEnqueue extends Task {
   constructor() {
     super();
     this.name = "profileProperties:enqueue";
@@ -31,22 +30,44 @@ export class ProfilePropertiesEnqueue extends RetryableTask {
     });
 
     for (const i in profilePropertyRules) {
-      const rule = profilePropertyRules[i];
+      const profilePropertyRule = profilePropertyRules[i];
+      const source = await profilePropertyRule.$get("source");
+      const { pluginConnection } = await source.getPlugin();
 
       const pendingProfileProperties = await ProfileProperty.findAll({
-        where: { profilePropertyRuleGuid: rule.guid, state: "pending" },
+        where: {
+          profilePropertyRuleGuid: profilePropertyRule.guid,
+          state: "pending",
+        },
         order: [["stateChangedAt", "ASC"]],
         limit,
       });
 
-      count = count + pendingProfileProperties.length;
+      const method = pluginConnection.methods.profileProperties
+        ? "ProfileProperties"
+        : "ProfileProperty";
 
       if (pendingProfileProperties.length > 0) {
-        await task.enqueue("profileProperty:import", {
-          profilePropertyRuleGuid: rule.guid,
-          profileGuids: pendingProfileProperties.map((ppp) => ppp.profileGuid),
-        });
+        if (method === "ProfileProperties") {
+          await task.enqueue(`profileProperty:import${method}`, {
+            profilePropertyRuleGuid: profilePropertyRule.guid,
+            profileGuids: pendingProfileProperties.map(
+              (ppp) => ppp.profileGuid
+            ),
+          });
+        } else {
+          await Promise.all(
+            pendingProfileProperties.map((ppp) =>
+              task.enqueue(`profileProperty:import${method}`, {
+                profilePropertyRuleGuid: profilePropertyRule.guid,
+                profileGuid: ppp.profileGuid,
+              })
+            )
+          );
+        }
       }
+
+      count = count + pendingProfileProperties.length;
     }
 
     return count;
