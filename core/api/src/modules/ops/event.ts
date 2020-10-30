@@ -173,14 +173,11 @@ export namespace EventOps {
       `profiles:anonymousCreate:${anonymousId}`
     );
     try {
-      const [profile] = await Profile.findOrCreate({
-        where: { anonymousId },
-      });
+      let profile = await Profile.findOne({ where: { anonymousId } });
+      if (!profile) profile = await Profile.create({ anonymousId });
       return profile;
     } finally {
-      if (releaseLock) {
-        await releaseLock();
-      }
+      await releaseLock();
     }
   }
 }
