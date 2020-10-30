@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/postgres",
   "description": "The Grouparoo postgres Plugin",
-  "version": "0.1.23",
+  "version": "0.1.24-alpha.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -27,7 +27,7 @@
     "lint": "prettier --check src __tests__"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "^0.1.23",
+    "@grouparoo/app-templates": "^0.1.24-alpha.0",
     "pg": "8.4.1",
     "pg-format": "1.0.4",
     "pg-hstore": "2.3.3"
@@ -37,8 +37,8 @@
     "actionhero": "24.0.1"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.1.23",
-    "@grouparoo/spec-helper": "^0.1.23",
+    "@grouparoo/core": "^0.1.24-alpha.0",
+    "@grouparoo/spec-helper": "^0.1.24-alpha.0",
     "@types/jest": "^26.0.14",
     "@types/node": "^14.11.8",
     "@types/pg": "^7.14.4",
