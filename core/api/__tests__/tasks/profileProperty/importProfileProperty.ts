@@ -4,26 +4,29 @@ import { ProfileProperty, ProfilePropertyRule } from "../../../src";
 
 let actionhero;
 
-describe("tasks/profileProperty:import", () => {
+describe("tasks/profileProperty:importProfileProperty", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    await api.resque.queue.connection.redis.flushdb();
     await helper.factories.profilePropertyRules();
   }, 1000 * 30);
+
+  beforeEach(async () => {
+    await api.resque.queue.connection.redis.flushdb();
+  });
 
   afterAll(async () => {
     await helper.shutdown(actionhero);
   });
 
-  describe("profileProperty:import", () => {
+  describe("profileProperty:importProfileProperty", () => {
     test("can be enqueued", async () => {
-      await task.enqueue("profileProperty:import", {
-        profileGuids: ["abc"],
-        profilePropertyRuleGuid: ["abc"],
+      await task.enqueue("profileProperty:importProfileProperty", {
+        profileGuid: "abc",
+        profilePropertyRuleGuid: "abc",
       });
       const found = await specHelper.findEnqueuedTasks(
-        "profileProperty:import"
+        "profileProperty:importProfileProperty"
       );
       expect(found.length).toEqual(1);
     });
@@ -36,9 +39,9 @@ describe("tasks/profileProperty:import", () => {
       });
       await property.update({ state: "pending" });
 
-      await specHelper.runTask("profileProperty:import", {
-        profileGuids: [profile.guid],
-        profilePropertyRuleGuid: [property.profilePropertyRuleGuid],
+      await specHelper.runTask("profileProperty:importProfileProperty", {
+        profileGuid: profile.guid,
+        profilePropertyRuleGuid: property.profilePropertyRuleGuid,
       });
 
       // new value and state
@@ -66,7 +69,7 @@ describe("tasks/profileProperty:import", () => {
       });
       await property.update({ state: "pending" });
 
-      const ltvProperty = await await ProfileProperty.findOne({
+      const ltvProperty = await ProfileProperty.findOne({
         where: {
           profileGuid: profile.guid,
           profilePropertyRuleGuid: ltvRule.guid,
@@ -74,9 +77,9 @@ describe("tasks/profileProperty:import", () => {
       });
       await ltvProperty.update({ rawValue: null });
 
-      await specHelper.runTask("profileProperty:import", {
-        profileGuids: [profile.guid],
-        profilePropertyRuleGuid: [property.profilePropertyRuleGuid],
+      await specHelper.runTask("profileProperty:importProfileProperty", {
+        profileGuid: profile.guid,
+        profilePropertyRuleGuid: property.profilePropertyRuleGuid,
       });
 
       // no change
