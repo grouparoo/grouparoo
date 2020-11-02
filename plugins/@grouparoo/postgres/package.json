@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "^0.1.24-alpha.0",
-    "pg": "8.4.1",
+    "pg": "8.4.2",
     "pg-format": "1.0.4",
     "pg-hstore": "2.3.3"
   },
