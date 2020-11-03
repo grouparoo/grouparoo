@@ -53,7 +53,7 @@
     "@types/validator": "^13.1.0",
     "@zeit/next-source-maps": "0.0.3",
     "actionhero": "24.0.1",
-    "ah-next-plugin": "0.3.0",
+    "ah-next-plugin": "0.4.0",
     "ah-sequelize-plugin": "2.2.4",
     "axios": "0.21.0",
     "bcrypt": "5.0.0",
