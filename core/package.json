@@ -70,7 +70,7 @@
     "moment": "2.29.1",
     "mustache": "4.0.1",
     "next": "10.0.0",
-    "node-sass": "4.14.1",
+    "node-sass": "5.0.0",
     "nodemon": "2.0.6",
     "pacote": "11.1.11",
     "pg": "8.4.2",
