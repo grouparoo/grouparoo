@@ -22,7 +22,6 @@
     "prettier": "2.1.2"
   },
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "license-checker": "./tools/license-checker/check",
     "spell-checker": "./tools/spell-checker/check",
     "version-alpha": "lerna version prerelease --preid alpha --force-publish --yes",
@@ -30,6 +29,8 @@
     "lint": "pnpm run -r lint",
     "test": "pnpm run test --workspace-concurrency=1",
     "nuke": "rm -rf node_modules && rm -rf core/node_modules && rm -rf cli/node_modules && rm -rf clients/*/*/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/api/dist && rm -rf clients/*/*/dist && rm -rf plugins/*/*/dist && rm -rf core/web/tmp",
-    "update": "npm-check-updates -u && pnpm exec -- npm-check-updates -u && npm run nuke && pnpm install"
+    "update": "npm-check-updates -u && pnpm exec -- npm-check-updates -u && npm run nuke && pnpm install",
+    "heroku-prebuild": "pnpm install -g",
+    "heroku-postbuild": "pnpm install"
   }
 }
