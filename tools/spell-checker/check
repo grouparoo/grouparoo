@@ -19,6 +19,7 @@ echo "🦘 Checking Grouparoo for bad words"
 for word in "${BAD_WORDS[@]}"; do
   printf "checking for instances of \`$word\`... "
   MATCHES=`grep -inR \
+    --exclude=*-lock.* \
     --exclude-dir=node_modules \
     --exclude-dir=log \
     --exclude-dir=.git \

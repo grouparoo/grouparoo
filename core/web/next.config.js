@@ -8,10 +8,13 @@ require("./plugins"); // prepare plugins
 
 const withSourceMaps = require("@zeit/next-source-maps");
 
-const nodeModulesPath = path.join(
-  path.dirname(require.resolve("react/package.json")),
-  ".."
-);
+function getPluginPath(pluginName) {
+  return path.join(
+    path.dirname(require.resolve(`${pluginName}/package.json`)),
+    "..",
+    pluginName
+  );
+}
 
 // pass plugin env/web to the build for
 const env = {};
@@ -53,7 +56,7 @@ module.exports = withSourceMaps({
 
     // There may be different version of these core packages in our dependency tree.  We need to pick only one version (our version).
     ["react", "react-dom"].forEach((package) => {
-      config.resolve.alias[package] = path.resolve(nodeModulesPath, package);
+      config.resolve.alias[package] = getPluginPath(package);
     });
 
     config.module.rules.push({

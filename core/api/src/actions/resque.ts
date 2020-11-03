@@ -1,4 +1,5 @@
 import os from "os";
+import "node-resque"; // needed for types
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { api, task } from "actionhero";
 

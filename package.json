@@ -17,23 +17,21 @@
     "glob": "7.1.6",
     "lerna": "3.22.1",
     "lerna-changelog": "1.0.1",
-    "lerna-update-wizard": "0.17.8",
     "license-checker": "github:grouparoo/license-checker",
     "npm-check-updates": "9.2.3",
     "prettier": "2.1.2"
   },
   "scripts": {
-    "prepare": "./bin/prepare",
-    "bootstrap-flat": "lerna bootstrap",
-    "bootstrap-hoist": "lerna bootstrap --strict --hoist",
+    "preinstall": "./bin/preinstall",
     "license-checker": "./tools/license-checker/check",
     "spell-checker": "./tools/spell-checker/check",
     "version-alpha": "lerna version prerelease --preid alpha --force-publish --yes",
     "version-stable": "lerna version patch --force-publish --yes",
-    "clean": "lerna clean",
-    "lint": "lerna run lint",
-    "test": "lerna run test --stream --concurrency 1",
-    "nuke": "rm -rf node_modules && rm -rf core/node_modules && rm -rf clients/*/*/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/api/dist && rm -rf clients/*/*/dist && rm -rf plugins/*/*/dist && rm -rf core/web/tmp",
-    "update": "npm-check-updates -u && lerna exec -- npm-check-updates -u && npm run nuke && npm install"
+    "lint": "pnpm run --stream -r lint --workspace-concurrency=2 --filter !'@grouparoo/grouparoo'",
+    "test": "pnpm run test --stream --workspace-concurrency=1 --filter !'@grouparoo/grouparoo'",
+    "nuke": "rm -rf node_modules && rm -rf core/node_modules && rm -rf cli/node_modules && rm -rf clients/*/*/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/api/dist && rm -rf clients/*/*/dist && rm -rf plugins/*/*/dist && rm -rf core/web/tmp",
+    "update": "npm-check-updates -u && pnpm exec -- npm-check-updates -u && npm run nuke && pnpm install",
+    "heroku-prebuild": "pnpm install -g",
+    "heroku-postbuild": "pnpm install"
   }
 }

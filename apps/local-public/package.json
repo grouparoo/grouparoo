@@ -27,14 +27,23 @@
   },
   "grouparoo": {
     "plugins": [
-      "@grouparoo/mysql",
-      "@grouparoo/postgres",
-      "@grouparoo/mailchimp",
-      "@grouparoo/logger",
+      "@grouparoo/bigquery",
       "@grouparoo/csv",
+      "@grouparoo/demo",
       "@grouparoo/email-authentication",
       "@grouparoo/google-sheets",
-      "@grouparoo/sailthru"
+      "@grouparoo/hubspot",
+      "@grouparoo/logger",
+      "@grouparoo/mailchimp",
+      "@grouparoo/marketo",
+      "@grouparoo/mysql",
+      "@grouparoo/newrelic",
+      "@grouparoo/postgres",
+      "@grouparoo/redshift",
+      "@grouparoo/sailthru",
+      "@grouparoo/salesforce",
+      "@grouparoo/snowflake",
+      "@grouparoo/zendesk"
     ],
     "includedFiles": [
       "assets"

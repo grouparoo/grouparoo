@@ -1,0 +1,7 @@
+#!/bin/bash
+
+NODE_ENV="${NODE_ENV:-development}"
+
+if [ "$NODE_ENV" = "development" ]; then
+  npx only-allow pnpm
+fi
