@@ -7,7 +7,7 @@ GITHUB_REPO='grouparoo'
 
 if [[ -z "$GITHUB_AUTH" ]];then
   echo "No GITHUB_AUTH, exiting.."
-  exit 0;
+  exit 1;
 fi
 
 if [ -f ~/.npmrc ]; then
@@ -15,7 +15,7 @@ if [ -f ~/.npmrc ]; then
 else
     if [[ -z "$NPM_TOKEN" ]];then
       echo "No NPM_TOKEN or ~/.npmrc, exiting.."
-      exit 0;
+      exit 1;
     else
       echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
     fi
