@@ -85,3 +85,12 @@ then
 else
   echo "Did not publish stable packages"
 fi
+
+# update the pnpm lockfile with the new versions
+echo "Updating pnpm lockfile by re-installing"
+git checkout master
+pnpm install
+git add pnpm-lock.yaml
+git commit -m "Update pnpm lockfile [ci skip]"
+git push
+git push origin master
