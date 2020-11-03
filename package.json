@@ -22,6 +22,7 @@
     "prettier": "2.1.2"
   },
   "scripts": {
+    "preinstall": "./bin/preinstall",
     "license-checker": "./tools/license-checker/check",
     "spell-checker": "./tools/spell-checker/check",
     "version-alpha": "lerna version prerelease --preid alpha --force-publish --yes",
