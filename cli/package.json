@@ -33,7 +33,7 @@
     "chalk": "4.1.0",
     "commander": "6.1.0",
     "fs-extra": "9.0.1",
-    "npm-check-updates": "9.2.2"
+    "npm-check-updates": "9.2.3"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.2",
