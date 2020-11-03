@@ -249,7 +249,7 @@ jobs:
           command: mysql -e "create database grouparoo_test" -u root -h 127.0.0.1
       - run:
           name: test
-          command: pnpm --workspace-concurrency=1 --recursive --filter !'@grouparoo/grouparoo'  --filter !'@grouparoo/core' --filter !'grouparoo' --filter !'*/app-*' exec -- ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+          command: pnpm --workspace-concurrency=1 --stream --recursive --filter !'@grouparoo/grouparoo'  --filter !'@grouparoo/core' --filter !'grouparoo' --filter !'*/app-*' exec -- ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-cli:
     docker:
       - image: circleci/node:12

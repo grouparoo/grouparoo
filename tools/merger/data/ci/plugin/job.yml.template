@@ -48,5 +48,5 @@
 {{{custom_steps}}}
       - run:
           name: test
-          command: pnpm --workspace-concurrency=1 --recursive --filter !'@grouparoo/grouparoo'  --filter !'@grouparoo/core' --filter !'grouparoo' --filter !'*/app-*' exec -- ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+          command: pnpm --workspace-concurrency=1 --stream --recursive --filter !'@grouparoo/grouparoo'  --filter !'@grouparoo/core' --filter !'grouparoo' --filter !'*/app-*' exec -- ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
 {{custom_test}}
