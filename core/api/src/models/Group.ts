@@ -15,7 +15,7 @@ import {
   Scopes,
 } from "sequelize-typescript";
 import { api } from "actionhero";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import Moment from "moment";
 import { LoggedModel } from "../classes/loggedModel";
 import { GroupMember } from "./GroupMember";
@@ -202,7 +202,9 @@ export class Group extends LoggedModel<Group> {
 
     const topLevelRuleKeys = TopLevelGroupRules.map((tlr) => tlr.key);
 
-    const transaction = await api.sequelize.transaction();
+    const transaction = await api.sequelize.transaction({
+      lock: Transaction.LOCK.UPDATE,
+    });
 
     try {
       await GroupRule.destroy({

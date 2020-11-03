@@ -4,7 +4,7 @@ import { Run } from "../../models/Run";
 import { Profile } from "../../models/Profile";
 import { ProfileMultipleAssociationShim } from "../../models/ProfileMultipleAssociationShim";
 import { Import } from "../../models/Import";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import { api, task } from "actionhero";
 
 export namespace GroupOps {
@@ -53,10 +53,15 @@ export namespace GroupOps {
     let toCommit = false;
     if (!transaction) {
       toCommit = true;
-      transaction = await api.sequelize.transaction();
+      transaction = await api.sequelize.transaction({
+        lock: Transaction.LOCK.UPDATE,
+      });
     }
 
-    const profile = await Profile.findOne({ where: { guid: profileGuid } });
+    const profile = await Profile.findOne({
+      where: { guid: profileGuid },
+      transaction,
+    });
 
     const oldProfileProperties = {};
     const properties = await profile.properties();
@@ -289,7 +294,9 @@ export namespace GroupOps {
       },
     });
 
-    const transaction = await api.sequelize.transaction();
+    const transaction = await api.sequelize.transaction({
+      type: Transaction.TYPES.EXCLUSIVE,
+    });
 
     try {
       const existingGroupMemberProfileGuids = groupMembers.map(
@@ -368,7 +375,9 @@ export namespace GroupOps {
       limit,
     });
 
-    const transaction = await api.sequelize.transaction();
+    const transaction = await api.sequelize.transaction({
+      type: Transaction.TYPES.EXCLUSIVE,
+    });
 
     try {
       // The offset and order can be ignored as we will keep running this query until the set of results becomes 0.

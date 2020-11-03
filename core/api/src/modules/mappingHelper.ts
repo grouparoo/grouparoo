@@ -3,6 +3,7 @@ import { Mapping } from "../models/Mapping";
 import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
 import { Source } from "./../models/Source";
 import { Destination } from "./../models/Destination";
+import { Transaction } from "sequelize";
 
 export namespace MappingHelper {
   export interface Mappings {
@@ -33,7 +34,9 @@ export namespace MappingHelper {
     instance: Source | Destination,
     mappings: Mappings
   ) {
-    const transaction = await api.sequelize.transaction();
+    const transaction = await api.sequelize.transaction({
+      lock: Transaction.LOCK.UPDATE,
+    });
 
     try {
       await Mapping.destroy({

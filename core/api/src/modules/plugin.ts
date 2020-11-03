@@ -1,6 +1,7 @@
 import { api } from "actionhero";
 import { GrouparooPlugin } from "../classes/plugin";
 import Mustache from "mustache";
+import { Transaction } from "sequelize";
 
 import { App } from "../models/App";
 import { ApiKey } from "../models/ApiKey";
@@ -180,7 +181,9 @@ export namespace plugin {
         : [row[k]];
     });
 
-    const transaction = await api.sequelize.transaction();
+    const transaction = await api.sequelize.transaction({
+      type: Transaction.TYPES.EXCLUSIVE,
+    });
 
     try {
       const _import = await Import.create(

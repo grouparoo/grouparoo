@@ -1,7 +1,7 @@
 import { api, task } from "actionhero";
 import { Profile } from "../../models/Profile";
 import { Run } from "../../models/Run";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import { ProfilePropertyType } from "../../modules/ops/profile";
 import { RetryableTask } from "../../classes/retryableTask";
 
@@ -77,16 +77,18 @@ export class ProfileCompleteImport extends RetryableTask {
         await _import.save();
       }
 
-      const transaction = await api.sequelize.transaction();
       let force = false;
+      const transaction = await api.sequelize.transaction({
+        type: Transaction.TYPES.EXCLUSIVE,
+      });
 
       try {
         const runs = await Run.findAll({
           where: {
             guid: {
               [Op.in]: imports
-                .filter((e) => e.creatorType === "run")
-                .map((e) => e.creatorGuid),
+                .filter((i) => i.creatorType === "run")
+                .map((i) => i.creatorGuid),
             },
           },
           transaction,
@@ -94,13 +96,13 @@ export class ProfileCompleteImport extends RetryableTask {
 
         for (const i in runs) {
           const run = runs[i];
+          if (run.force) force = true;
           await run.increment("profilesImported", {
             silent: true,
             transaction,
           });
           run.set("updatedAt", new Date());
           await run.save({ transaction });
-          if (run.force) force = true;
         }
 
         await transaction.commit();

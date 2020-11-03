@@ -3,6 +3,7 @@ import { Run } from "../../models/Run";
 import { Import } from "../../models/Import";
 import { Profile } from "../../models/Profile";
 import { plugin } from "../../modules/plugin";
+import { Transaction } from "sequelize";
 
 export class RunInternalRun extends Task {
   constructor() {
@@ -30,7 +31,9 @@ export class RunInternalRun extends Task {
 
     if (run.state === "stopped") return;
 
-    const transaction = await api.sequelize.transaction();
+    const transaction = await api.sequelize.transaction({
+      type: Transaction.TYPES.EXCLUSIVE,
+    });
 
     try {
       await run.update(

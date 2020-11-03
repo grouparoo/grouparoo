@@ -11,6 +11,7 @@ import { Schedule } from "./../models/Schedule";
 import { ProfilePropertyRule } from "./../models/ProfilePropertyRule";
 import { App } from "./../models/App";
 import { LoggedModel } from "../classes/loggedModel";
+import { Transaction } from "sequelize";
 
 function modelName(instance): string {
   let name = instance.constructor.name;
@@ -64,7 +65,9 @@ export namespace OptionHelper {
 
     if (!hasChanges) return;
 
-    const transaction = await api.sequelize.transaction();
+    const transaction = await api.sequelize.transaction({
+      lock: Transaction.LOCK.UPDATE,
+    });
 
     try {
       await Option.destroy({

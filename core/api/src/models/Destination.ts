@@ -21,11 +21,10 @@ import { Mapping } from "./Mapping";
 import { Option } from "./Option";
 import { Profile } from "./Profile";
 import { Group } from "./Group";
-import { Import } from "./Import";
 import { Export } from "./Export";
 import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import { plugin } from "../modules/plugin";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import { OptionHelper } from "./../modules/optionHelper";
 import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
@@ -181,7 +180,9 @@ export class Destination extends LoggedModel<Destination> {
       }
     }
 
-    const transaction = await api.sequelize.transaction();
+    const transaction = await api.sequelize.transaction({
+      lock: Transaction.LOCK.UPDATE,
+    });
 
     try {
       await DestinationGroupMembership.destroy({

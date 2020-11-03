@@ -2,6 +2,7 @@ import { Task, api, log, env } from "actionhero";
 import { Import } from "../../models/Import";
 import { Run } from "../../models/Run";
 import { ProfileOps, ProfilePropertyType } from "../../modules/ops/profile";
+import { Transaction } from "sequelize";
 
 export class ImportAssociateProfile extends Task {
   constructor() {
@@ -42,7 +43,9 @@ export class ImportAssociateProfile extends Task {
       await _import.save();
 
       if (_import.creatorType === "run") {
-        const transaction = await api.sequelize.transaction();
+        const transaction = await api.sequelize.transaction({
+          lock: Transaction.LOCK.UPDATE,
+        });
 
         try {
           const run = await Run.findOne({
