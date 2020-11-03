@@ -76,7 +76,7 @@
     "pg": "8.4.2",
     "pg-hstore": "2.3.3",
     "raw-loader": "4.0.2",
-    "react": "16.14.0",
+    "react": "17.0.1",
     "react-bootstrap": "1.4.0",
     "react-bootstrap-typeahead": "5.1.2",
     "react-date-range": "1.1.3",
