@@ -1,10 +1,9 @@
-import { RetryableTask } from "../../classes/retryableTask";
 import { Op } from "sequelize";
 import { Profile } from "../../models/Profile";
 import { Import } from "../../models/Import";
-import { Run } from "../../models/Run";
 import { Destination } from "../../models/Destination";
 import { Group } from "../../models/Group";
+import { RetryableTask } from "../../classes/retryableTask";
 
 export class ProfileExport extends RetryableTask {
   constructor() {
@@ -15,16 +14,19 @@ export class ProfileExport extends RetryableTask {
     this.frequency = 0;
     this.queue = "exports";
     this.inputs = {
-      guid: { required: true },
+      profileGuid: { required: true },
       force: { required: false },
     };
   }
 
   async run(params) {
-    const profile = await Profile.findOne({ where: { guid: params.guid } });
+    const profile = await Profile.findOne({
+      where: { guid: params.profileGuid },
+    });
 
     // the profile may have been deleted or merged by the time this task ran
     if (!profile) return;
+    if (profile.state !== "ready") return;
 
     const imports = await Import.findAll({
       where: {
@@ -36,27 +38,23 @@ export class ProfileExport extends RetryableTask {
       order: [["createdAt", "asc"]],
     });
 
-    if (imports.length === 0) return;
-
-    const runs = await Run.findAll({
-      where: {
-        guid: {
-          [Op.in]: imports
-            .filter((e) => e.creatorType === "run")
-            .map((e) => e.creatorGuid),
-        },
-      },
-    });
-
     try {
-      const oldGroupGuids = imports[0].oldGroupGuids;
-      const newGroupGuids = imports[imports.length - 1].newGroupGuids;
-      const oldGroups = await Group.findAll({
-        where: { guid: { [Op.in]: oldGroupGuids } },
-      });
-      const newGroups = await Group.findAll({
-        where: { guid: { [Op.in]: newGroupGuids } },
-      });
+      const oldGroupGuids = imports[0]?.oldGroupGuids;
+      const newGroupGuids = imports[imports.length - 1]?.newGroupGuids;
+
+      const oldGroups =
+        oldGroupGuids && oldGroupGuids.length > 0
+          ? await Group.findAll({
+              where: { guid: { [Op.in]: oldGroupGuids } },
+            })
+          : [];
+
+      const newGroups =
+        newGroupGuids && newGroupGuids.length > 0
+          ? await Group.findAll({
+              where: { guid: { [Op.in]: newGroupGuids } },
+            })
+          : [];
 
       const destinations = await Destination.destinationsForGroups(
         oldGroups,
@@ -82,8 +80,6 @@ export class ProfileExport extends RetryableTask {
       for (const i in destinations) {
         await destinations[i].exportProfile(
           profile,
-          runs,
-          imports,
           false,
           params.force ? params.force : undefined
         );

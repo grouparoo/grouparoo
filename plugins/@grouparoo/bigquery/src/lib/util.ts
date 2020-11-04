@@ -11,7 +11,7 @@ export function makeWhereClause(
   params: Array<any>,
   types: Array<any>
 ) {
-  const { columnName, filterOperation, value } = matchCondition;
+  const { columnName, filterOperation, value, values } = matchCondition;
 
   // find the column
   const column = columns[columnName];
@@ -24,17 +24,23 @@ export function makeWhereClause(
   let match;
   switch (dataType) {
     case "DATE":
-      match = BigQuery.date(value.toString());
+      match = values
+        ? values.map((v) => BigQuery.date(v.toString()))
+        : BigQuery.date(value.toString());
       break;
     case "DATETIME":
-      match = BigQuery.datetime(value.toString());
+      match = values
+        ? values.map((v) => BigQuery.datetime(v.toString()))
+        : BigQuery.datetime(value.toString());
       break;
     case "TIME":
-      match = BigQuery.time(value.toString());
+      match = values
+        ? values.map((v) => BigQuery.time(v.toString()))
+        : BigQuery.time(value.toString());
       break;
     case "TIMESTAMP":
       // @ts-ignore cast!
-      match = new Date(value);
+      match = values ? values.map((v) => new Date(v)) : new Date(value);
       if (!isFinite(match)) {
         throw `invalid timestamp: ${value}`;
       }
@@ -44,7 +50,7 @@ export function makeWhereClause(
     case "INT64":
     case "FLOAT64":
     case "STRING":
-      match = value;
+      match = values || value;
       break;
     case "GEOGRAPHY":
     case "ARRAY":
@@ -85,6 +91,9 @@ export function makeWhereClause(
       op = "NOT LIKE"; // case insensitive
       match = `%${match.toString().toLowerCase()}%`;
       break;
+    case FilterOperation.In:
+      op = "IN";
+      break;
     default:
       throw new Error(`Unknown filterOperation: ${filterOperation}`);
   }
@@ -96,7 +105,10 @@ export function makeWhereClause(
   // put the values and types in the array
   params.push(match);
   types.push(dataType);
-  return ` ${key} ${op} ?`;
+
+  return ` ${key} ${op} ${Array.isArray(match) ? "(" : ""}?${
+    Array.isArray(match) ? ")" : ""
+  }`;
 }
 
 export function castRow(row) {

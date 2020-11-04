@@ -6,6 +6,7 @@ export * from "./sourceOptions";
 export * from "./uniqueProfilePropertyRuleBootstrapOptions";
 export * from "./sourceFilters";
 export * from "./profileProperty";
+export * from "./profileProperties";
 export * from "./profiles";
 export * from "./sourceRunPercentComplete";
 
@@ -16,6 +17,7 @@ export {
   SourceOptionsMethod,
   SourceFilterMethod,
   ProfilePropertyPluginMethod,
+  ProfilePropertiesPluginMethod,
   ProfilesPluginMethod,
   SourceRunPercentCompleteMethod,
   UniqueProfilePropertyRuleBootstrapOptions,

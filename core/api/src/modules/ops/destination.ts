@@ -7,7 +7,6 @@ import { Profile } from "../../models/Profile";
 import { Run } from "../../models/Run";
 import { Import } from "../../models/Import";
 import { Export, ExportProfilePropertiesWithType } from "../../models/Export";
-import { ExportRun } from "../../models/ExportRun";
 import { Group } from "../../models/Group";
 import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
 import { MappingHelper } from "../mappingHelper";
@@ -248,8 +247,6 @@ export namespace DestinationOps {
   export async function exportProfile(
     destination: Destination,
     profile: Profile,
-    runs: Run[],
-    imports: Array<Import>,
     synchronous = false,
     force = false
   ) {
@@ -372,30 +369,6 @@ export namespace DestinationOps {
       force,
     });
 
-    if (runs && runs.length > 0) {
-      const transaction = await api.sequelize.transaction();
-
-      try {
-        for (const i in runs) {
-          const run = runs[i];
-          await ExportRun.create(
-            { exportGuid: _export.guid, runGuid: run.guid },
-            { transaction }
-          );
-          await run.increment("exportsCreated", { silent: true, transaction });
-          run.set("updatedAt", new Date());
-          await run.save({ transaction });
-        }
-
-        await transaction.commit();
-      } catch (error) {
-        await transaction.rollback();
-        throw error;
-      }
-    }
-
-    await _export.associateImports(imports);
-
     const { pluginConnection } = await destination.getPlugin();
 
     if (synchronous) {
@@ -421,14 +394,9 @@ export namespace DestinationOps {
     const connection = await app.getConnection();
     const profile = await _export.$get("profile");
 
-    const exportRuns = await ExportRun.findAll({
-      where: { exportGuid: _export.guid },
-    });
-
     if (!_export.hasChanges) {
       await _export.update({ completedAt: new Date() });
       await _export.markMostRecent();
-      await safelyIncrementExportRunRuns(exportRuns, "profilesExported");
       return;
     }
 
@@ -497,13 +465,11 @@ export namespace DestinationOps {
 
       await _export.update({ completedAt: new Date() });
       await _export.markMostRecent();
-      await safelyIncrementExportRunRuns(exportRuns, "profilesExported");
 
       return { success, retryDelay, error };
     } catch (error) {
       _export.errorMessage = error.toString();
       await _export.save();
-      await safelyIncrementExportRunRuns(exportRuns, "profilesExported");
       error.message = `error exporting profile ${profile.guid} to destination ${destination.guid}: ${error}`;
       throw error;
     } finally {
@@ -556,10 +522,6 @@ export namespace DestinationOps {
         if (!_export.hasChanges) {
           await _export.update({ completedAt: new Date() });
           await _export.markMostRecent();
-          const exportRuns = await ExportRun.findAll({
-            where: { exportGuid: _export.guid },
-          });
-          await safelyIncrementExportRunRuns(exportRuns, "profilesExported");
         } else {
           const profile = await _export.$get("profile");
           destinationExports.push({
@@ -624,10 +586,6 @@ export namespace DestinationOps {
         const _export = _exports[i];
         await _export.update({ completedAt: new Date() });
         await _export.markMostRecent();
-        const exportRuns = await ExportRun.findAll({
-          where: { exportGuid: _export.guid },
-        });
-        await safelyIncrementExportRunRuns(exportRuns, "profilesExported");
       }
 
       return { success, retryDelay, errors };
@@ -655,21 +613,12 @@ export namespace DestinationOps {
               }
             }
           }
-
-          const exportRuns = await ExportRun.findAll({
-            where: { exportGuid: _export.guid },
-          });
-          await safelyIncrementExportRunRuns(exportRuns, "profilesExported");
         }
       } else {
         for (const i in _exports) {
           const _export = _exports[i];
           _export.errorMessage = error.toString();
           await _export.save();
-          const exportRuns = await ExportRun.findAll({
-            where: { exportGuid: _export.guid },
-          });
-          await safelyIncrementExportRunRuns(exportRuns, "profilesExported");
         }
       }
 
@@ -745,41 +694,6 @@ export namespace DestinationOps {
       throw new Error(
         `cannot export grouparoo type ${grouparooType} to destination type ${destinationType}`
       );
-    }
-  }
-
-  /**
-   * It's possible the run that created this export has been removed (it was from a deleting group).
-   */
-  async function safelyIncrementExportRunRuns(
-    exportRuns: ExportRun[],
-    column: "profilesExported" | "exportsCreated"
-  ) {
-    const transaction = await api.sequelize.transaction();
-
-    try {
-      const runs = await Run.findAll({
-        where: {
-          guid: { [Op.in]: exportRuns.map((exportRun) => exportRun.runGuid) },
-        },
-        transaction,
-      });
-
-      for (const i in runs) {
-        const run = runs[i];
-        const by = exportRuns.filter(
-          (exportRun) => exportRun.runGuid === run.guid
-        ).length;
-
-        await run.increment(column, { by, transaction, silent: true });
-        run.set("updatedAt", new Date());
-        await run.save({ transaction });
-      }
-
-      await transaction.commit();
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
     }
   }
 

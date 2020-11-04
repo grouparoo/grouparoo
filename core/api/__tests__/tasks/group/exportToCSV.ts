@@ -4,6 +4,7 @@ import { Group } from "../../../src/models/Group";
 import { Import } from "../../../src/models/Import";
 import { Profile } from "../../../src/models/Profile";
 import { File } from "../../../src/models/File";
+import { Run } from "../../../src/models/Run";
 import fs from "fs";
 
 let actionhero;
@@ -63,7 +64,7 @@ describe("tasks/group:exportToCSV", () => {
       expect(found.length).toEqual(1);
     });
 
-    it("will create the CSV file and upload it", async () => {
+    test("will create the CSV file and upload it", async () => {
       await specHelper.runTask("group:exportToCSV", { groupGuid: group.guid });
       const files = await File.findAll();
       expect(files.length).toBe(1);
@@ -76,6 +77,13 @@ describe("tasks/group:exportToCSV", () => {
         .toString();
       expect(contents).toMatch(/mario@example.com,Mario/);
       expect(contents).toMatch(/luigi@example.com,Luigi/);
+    });
+
+    test("the run is complete", async () => {
+      const runs = await Run.findAll({ where: { creatorGuid: group.guid } });
+      expect(runs.length).toBe(1);
+      expect(runs[0].percentComplete).toBe(100);
+      expect(runs[0].state).toBe("complete");
     });
   });
 });

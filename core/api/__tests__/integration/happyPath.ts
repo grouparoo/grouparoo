@@ -2,12 +2,12 @@ import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 
 let actionhero;
-let appGuid;
-let sourceGuid;
-let profileGuid;
-let scheduleGuid;
+let appGuid: string;
+let sourceGuid: string;
+let profileGuid: string;
+let scheduleGuid: string;
 let connection;
-let csrfToken;
+let csrfToken: string;
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -290,7 +290,7 @@ describe("integration/happyPath", () => {
   });
 
   describe("calculated group", () => {
-    let groupGuid;
+    let groupGuid: string;
 
     test("a calculated group can be created", async () => {
       connection.params = {
@@ -313,12 +313,6 @@ describe("integration/happyPath", () => {
       expect(group.type).toBe("calculated");
       expect(group.state).not.toBe("draft");
       groupGuid = group.guid;
-
-      // import
-      const tasks = await specHelper.findEnqueuedTasks(
-        "profile:importAndUpdate"
-      );
-      expect(tasks.length).toBe(1);
     });
 
     test("the group#run task can be run, along with the associated import chain", async () => {
@@ -329,10 +323,12 @@ describe("integration/happyPath", () => {
       expect(tasks.length).toBe(1);
       await specHelper.runTask("group:run", tasks[0].args[0]);
 
-      // profile
-      tasks = await specHelper.findEnqueuedTasks("profile:importAndUpdate");
-      expect(tasks.length).toBeGreaterThanOrEqual(1);
-      await specHelper.runTask("profile:importAndUpdate", tasks[0].args[0]);
+      // profiles
+      await specHelper.runTask("profiles:checkReady", {});
+      tasks = await specHelper.findEnqueuedTasks("profile:completeImport");
+      expect(tasks.length).toBe(1);
+      expect(tasks[0].args[0].profileGuid).toBe(profileGuid);
+      await specHelper.runTask("profile:completeImport", tasks[0].args[0]);
     });
 
     test("the profile will be in the calculated group", async () => {
@@ -429,7 +425,7 @@ describe("integration/happyPath", () => {
       expect(error).toBeUndefined();
       expect(runs.length).toBe(1);
       expect(runs[0].creatorGuid).toBe(scheduleGuid);
-      expect(runs[0].state).toBe("running");
+      expect(runs[0].state).toBe("complete");
     });
   });
 });

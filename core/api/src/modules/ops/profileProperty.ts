@@ -4,7 +4,10 @@ import isEmail from "../validators/isEmail";
 import isURL from "validator/lib/isURL";
 
 export namespace ProfilePropertyOps {
-  export async function buildRawValue(value: any, type: string) {
+  export async function buildRawValue(
+    value: any,
+    type: string
+  ): Promise<string> {
     if (value === null || value === undefined || value === "") {
       return null;
     }

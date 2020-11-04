@@ -4,19 +4,25 @@ import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
 import { Source } from "../../models/Source";
 import { Group } from "../../models/Group";
 import { Destination } from "../../models/Destination";
+import { Event } from "../../models/Event";
 import { log } from "actionhero";
 import { Op } from "sequelize";
 import { waitForLock } from "../locks";
+import { ProfilePropertyOps } from "./profileProperty";
 export interface ProfilePropertyType {
   [key: string]: {
-    guid: string;
+    guid: ProfileProperty["guid"];
+    state: ProfileProperty["state"];
     values: Array<string | number | boolean | Date>;
-    type: string;
-    unique: boolean;
-    isArray: boolean;
-    identifying: boolean;
-    createdAt: Date;
-    updatedAt: Date;
+    type: ProfilePropertyRule["type"];
+    unique: ProfilePropertyRule["unique"];
+    isArray: ProfilePropertyRule["isArray"];
+    identifying: ProfilePropertyRule["identifying"];
+    valueChangedAt: ProfileProperty["valueChangedAt"];
+    confirmedAt: ProfileProperty["confirmedAt"];
+    stateChangedAt: ProfileProperty["stateChangedAt"];
+    createdAt: ProfileProperty["createdAt"];
+    updatedAt: ProfileProperty["updatedAt"];
   };
 }
 
@@ -40,23 +46,35 @@ export namespace ProfileOps {
         if (!hash[key]) {
           hash[key] = {
             guid: profileProperties[i].profilePropertyRuleGuid,
+            state: profileProperties[i].state,
             values: [],
             type: rule.type,
             unique: rule.unique,
             isArray: rule.isArray,
             identifying: rule.identifying,
+            valueChangedAt: profileProperties[i].valueChangedAt,
+            confirmedAt: profileProperties[i].confirmedAt,
+            stateChangedAt: profileProperties[i].stateChangedAt,
             createdAt: profileProperties[i].createdAt,
             updatedAt: profileProperties[i].updatedAt,
           };
         }
 
         hash[key].values.push(await profileProperties[i].getValue());
-        if (hash[key].createdAt > profileProperties[i].createdAt) {
-          hash[key].createdAt = profileProperties[i].createdAt;
-        }
-        if (hash[key].updatedAt < profileProperties[i].updatedAt) {
-          hash[key].updatedAt = profileProperties[i].updatedAt;
-        }
+
+        const timeFields = [
+          "valueChangedAt",
+          "confirmedAt",
+          "stateChangedAt",
+          "createdAt",
+          "updatedAt",
+        ];
+
+        timeFields.forEach((field) => {
+          if (hash[key][field] < profileProperties[i][field]) {
+            hash[key][field] = profileProperties[i][field];
+          }
+        });
       } catch (error) {
         if (
           error
@@ -104,6 +122,7 @@ export namespace ProfileOps {
           profileGuid: profile.guid,
           profilePropertyRuleGuid: rule.guid,
         },
+        order: [["position", "asc"]],
       });
 
       const existingValues = await Promise.all(
@@ -111,7 +130,15 @@ export namespace ProfileOps {
       );
 
       if (arraysAreEqual(existingValues, values)) {
-        return;
+        await Promise.all(
+          properties.map((property) =>
+            property.update({
+              state: "ready",
+              stateChangedAt: new Date(),
+              confirmedAt: new Date(),
+            })
+          )
+        );
       } else {
         await Promise.all(properties.map((property) => property.destroy()));
         let position = 0;
@@ -121,6 +148,16 @@ export namespace ProfileOps {
             profileGuid: profile.guid,
             profilePropertyRuleGuid: rule.guid,
             position,
+            state: "ready",
+            stateChangedAt: new Date(),
+            confirmedAt: new Date(),
+            valueChangedAt:
+              properties[i] && properties[i].valueChangedAt !== null
+                ? properties[i].rawValue !==
+                  (await ProfilePropertyOps.buildRawValue(value, rule.type))
+                  ? new Date()
+                  : properties[i].valueChangedAt
+                : new Date(),
           });
           await property.setValue(value);
           await property.save();
@@ -134,6 +171,7 @@ export namespace ProfileOps {
         );
       }
       const value = values[0];
+      let changed = false;
 
       let property = await ProfileProperty.findOne({
         where: {
@@ -144,13 +182,26 @@ export namespace ProfileOps {
       });
 
       if (!property) {
+        changed = true;
         property = new ProfileProperty({
           profileGuid: profile.guid,
           profilePropertyRuleGuid: rule.guid,
         });
+      } else if (
+        property.rawValue !==
+        (await ProfilePropertyOps.buildRawValue(value, rule.type))
+      ) {
+        changed = true;
       }
 
       await property.setValue(value);
+      property.state = "ready";
+      property.stateChangedAt = new Date();
+      property.confirmedAt = new Date();
+      if (changed || property.valueChangedAt === null) {
+        property.valueChangedAt = new Date();
+      }
+
       await property.save();
       await ProfileProperty.destroy({
         where: {
@@ -160,8 +211,6 @@ export namespace ProfileOps {
         },
       });
     }
-
-    return profile;
   }
 
   /**
@@ -169,23 +218,36 @@ export namespace ProfileOps {
    */
   export async function addOrUpdateProperties(
     profile: Profile,
-    properties: { [key: string]: Array<string | number | boolean | Date> | any }
+    properties: {
+      [key: string]: Array<string | number | boolean | Date> | any;
+    },
+    toLock = true
   ) {
-    await profile.save();
-
-    const keys = Object.keys(properties);
-    for (const i in keys) {
-      if (keys[i] === "guid") continue;
-
-      const h = {};
-      h[keys[i]] = Array.isArray(properties[keys[i]])
-        ? properties[keys[i]]
-        : [properties[keys[i]]];
-
-      await profile.addOrUpdateProperty(h);
+    let releaseLock: Function;
+    if (toLock) {
+      const response = await waitForLock(`profile:${profile.guid}`);
+      releaseLock = response.releaseLock;
     }
 
-    return profile;
+    try {
+      await profile.save();
+
+      const keys = Object.keys(properties);
+      for (const i in keys) {
+        if (keys[i] === "guid") continue;
+
+        const h = {};
+        h[keys[i]] = Array.isArray(properties[keys[i]])
+          ? properties[keys[i]]
+          : [properties[keys[i]]];
+
+        await addOrUpdateProperty(profile, h);
+      }
+
+      return profile;
+    } finally {
+      if (releaseLock) await releaseLock();
+    }
   }
 
   /**
@@ -220,6 +282,27 @@ export namespace ProfileOps {
     }
   }
 
+  export async function buildNullProperties(profile: Profile, state = "ready") {
+    const properties = await profile.properties();
+    const rules = await ProfilePropertyRule.cached();
+    let newPropertiesCount = 0;
+    for (const key in rules) {
+      if (!properties[key]) {
+        await ProfileProperty.create({
+          profileGuid: profile.guid,
+          profilePropertyRuleGuid: rules[key].guid,
+          state,
+          stateChangedAt: new Date(),
+          valueChangedAt: new Date(),
+          confirmedAt: new Date(),
+        });
+        newPropertiesCount++;
+      }
+    }
+
+    return newPropertiesCount;
+  }
+
   /**
    * Import the properties of this Profile
    */
@@ -247,17 +330,20 @@ export namespace ProfileOps {
       );
 
       if (toSave) {
-        await profile.addOrUpdateProperties(hash);
-        await profile.buildNullProperties();
+        await addOrUpdateProperties(profile, hash, false);
+        await buildNullProperties(profile);
         await profile.save();
+        await ProfileProperty.update(
+          { state: "ready" },
+          { where: { profileGuid: profile.guid } }
+        );
       }
-
-      if (toLock) await releaseLock();
 
       return profile;
     } catch (error) {
-      if (toLock) await releaseLock();
       throw error;
+    } finally {
+      if (toLock) await releaseLock();
     }
   }
 
@@ -280,8 +366,6 @@ export namespace ProfileOps {
       destinations.map((destination) =>
         destination.exportProfile(
           profile,
-          [],
-          [],
           true, // sync = true -> do the export in-line
           force // force = true -> do the export even if it looks like the data hasn't changed
         )
@@ -339,40 +423,55 @@ export namespace ProfileOps {
     const keys = Object.keys(uniquePropertiesHash);
     const lockReleases = [];
 
-    for (const i in keys) {
-      const key = keys[i];
-      const value = uniquePropertiesHash[key];
-      const rule = rules[key];
+    try {
+      for (const i in keys) {
+        const key = keys[i];
+        const value = uniquePropertiesHash[key];
+        const rule = rules[key];
 
-      const { releaseLock } = await waitForLock(`prp:${key}:${value}`);
-      lockReleases.push(releaseLock);
+        const { releaseLock } = await waitForLock(`prp:${key}:${value}`);
+        lockReleases.push(releaseLock);
 
-      profileProperty = await ProfileProperty.findOne({
-        where: {
-          profilePropertyRuleGuid: rule.guid,
-          rawValue: String(value),
-        },
-      });
+        profileProperty = await ProfileProperty.findOne({
+          where: {
+            profilePropertyRuleGuid: rule.guid,
+            rawValue: String(value),
+          },
+        });
+
+        if (profileProperty) {
+          break;
+        }
+      }
 
       if (profileProperty) {
-        break;
+        profile = await Profile.findOne({
+          where: { guid: profileProperty.profileGuid },
+        });
+        isNew = false;
+      } else {
+        profile = await Profile.create();
+        profile = await profile.reload();
+        await addOrUpdateProperties(profile, uniquePropertiesHash, false);
+        await buildNullProperties(profile);
+        isNew = true;
       }
+
+      return { profile, isNew };
+    } finally {
+      await Promise.all(lockReleases.map((release) => release()));
     }
+  }
 
-    if (profileProperty) {
-      profile = await Profile.findOne({
-        where: { guid: profileProperty.profileGuid },
-      });
-      isNew = false;
-    } else {
-      profile = await Profile.create();
-      await profile.addOrUpdateProperties(uniquePropertiesHash);
-      isNew = true;
-    }
-
-    await Promise.all(lockReleases.map((release) => release()));
-
-    return { profile, isNew };
+  /**
+   * Mark the profile and all of its properties as pending
+   */
+  export async function markPending(profile: Profile) {
+    await ProfileProperty.update(
+      { state: "pending" },
+      { where: { profileGuid: profile.guid } }
+    );
+    await profile.update({ state: "pending" });
   }
 
   /**
@@ -386,58 +485,52 @@ export namespace ProfileOps {
       `profile:${otherProfile.guid}`
     );
 
-    // transfer events
-    let eventsCount = 1;
-    while (eventsCount > 0) {
-      const events = await otherProfile.$get("events", { limit: 1000 });
-      eventsCount = events.length;
-      await Promise.all(
-        events.map((event) => {
-          event.profileGuid = profile.guid;
-          return event.save();
-        })
+    try {
+      // transfer events
+      await Event.update(
+        { profileGuid: profile.guid },
+        { where: { profileGuid: otherProfile.guid } }
       );
-    }
 
-    // transfer properties, keeping the newest values
-    const properties = await profile.properties();
-    const otherProperties = await otherProfile.properties();
-    const newProperties = {};
-    for (const key in otherProperties) {
-      if (
-        !properties[key] ||
-        (otherProperties[key]?.updatedAt?.getTime() >
-          properties[key]?.updatedAt?.getTime() &&
-          otherProperties[key].values.length > 0 &&
-          !(
-            otherProperties[key].values.length === 1 &&
-            (otherProperties[key].values[0] === null ||
-              otherProperties[key].values[0] === undefined)
-          ))
-      ) {
-        newProperties[key] = otherProperties[key].values;
+      // transfer properties, keeping the newest values
+      const properties = await profile.properties();
+      const otherProperties = await otherProfile.properties();
+      const newProperties = {};
+      for (const key in otherProperties) {
+        if (
+          !properties[key] ||
+          (otherProperties[key]?.updatedAt?.getTime() >
+            properties[key]?.updatedAt?.getTime() &&
+            otherProperties[key].values.length > 0 &&
+            !(
+              otherProperties[key].values.length === 1 &&
+              (otherProperties[key].values[0] === null ||
+                otherProperties[key].values[0] === undefined)
+            ))
+        ) {
+          newProperties[key] = otherProperties[key].values;
+        }
       }
+
+      // delete other profile so unique profile properties will be available
+      await otherProfile.destroy();
+      await addOrUpdateProperties(profile, newProperties, false);
+
+      // transfer anonymousId
+      if (!profile.anonymousId && otherProfile.anonymousId) {
+        await profile.update({ anonymousId: otherProfile.anonymousId });
+      }
+
+      // re-import and update groups
+      delete profile.profileProperties; // remove any cached values from the instance
+      await profile.import(true, false);
+      await profile.updateGroupMembership();
+
+      return profile;
+    } finally {
+      await releaseLockForProfile();
+      await releaseLockForOtherProfile();
     }
-
-    // delete other profile so unique profile properties will be available
-    await otherProfile.destroy();
-    await profile.addOrUpdateProperties(newProperties);
-
-    // transfer anonymousId
-    if (!profile.anonymousId && otherProfile.anonymousId) {
-      await profile.update({ anonymousId: otherProfile.anonymousId });
-    }
-
-    // re-import and update groups
-    delete profile.profileProperties; // remove any cached values from the instance
-    await profile.import(true, false);
-    await profile.updateGroupMembership();
-
-    // release locks
-    await releaseLockForProfile();
-    await releaseLockForOtherProfile();
-
-    return profile;
   }
 
   function arraysAreEqual(a: Array<any>, b: Array<any>) {

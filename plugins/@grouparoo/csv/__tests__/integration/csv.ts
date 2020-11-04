@@ -2,7 +2,7 @@ import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/csv": { path: path.join(__dirname, "..", "..") },
 });
-import { helper } from "@grouparoo/spec-helper";
+import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 
 // import statements are still relative to the file, regardless of cwd
 import fs from "fs-extra";
@@ -266,26 +266,13 @@ describe("integration/runs/csv", () => {
           "import:associateProfile"
         );
         expect(foundAssociateTasks.length).toEqual(10);
-
         await Promise.all(
-          foundAssociateTasks.map(
-            async (t) =>
-              await specHelper.runTask("import:associateProfile", t.args[0])
+          foundAssociateTasks.map((t) =>
+            specHelper.runTask("import:associateProfile", t.args[0])
           )
         );
 
-        // run all enqueued importAndUpdate tasks
-        const foundImportAndUpdateTasks = await specHelper.findEnqueuedTasks(
-          "profile:importAndUpdate"
-        );
-        expect(foundImportAndUpdateTasks.length).toEqual(10);
-
-        await Promise.all(
-          foundImportAndUpdateTasks.map(
-            async (t) =>
-              await specHelper.runTask("profile:importAndUpdate", t.args[0])
-          )
-        );
+        await ImportWorkflow();
 
         // run all enqueued export tasks
         const foundExportTasks = await specHelper.findEnqueuedTasks(
@@ -294,25 +281,14 @@ describe("integration/runs/csv", () => {
         expect(foundExportTasks.length).toEqual(10);
 
         await Promise.all(
-          foundExportTasks.map(
-            async (t) => await specHelper.runTask("profile:export", t.args[0])
+          foundExportTasks.map((t) =>
+            specHelper.runTask("profile:export", t.args[0])
           )
         );
 
         // check the run's completion percentage (before the run is complete)
-        await run.determinePercentComplete();
-        expect(run.percentComplete).toBe(90);
-
-        // check if the run is done
-        const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
-          "run:determineState"
-        );
-        await Promise.all(
-          foundRunDetermineStateTasks.map(
-            async (t) =>
-              await specHelper.runTask("run:determineState", t.args[0])
-          )
-        );
+        await run.afterBatch();
+        expect(run.percentComplete).toBe(100);
 
         // check the results of the run
         const profilesCount = await Profile.count();
@@ -323,8 +299,6 @@ describe("integration/runs/csv", () => {
         expect(run.importsCreated).toBe(10);
         expect(run.profilesCreated).toBe(10);
         expect(run.profilesImported).toBe(10);
-        expect(run.exportsCreated).toBe(0);
-        expect(run.profilesExported).toBe(0);
         expect(run.percentComplete).toBe(100);
       },
       1000 * 60
@@ -385,25 +359,12 @@ describe("integration/runs/csv", () => {
         expect(foundAssociateTasks.length).toEqual(20);
 
         await Promise.all(
-          foundAssociateTasks.map(
-            async (t) =>
-              await specHelper.runTask("import:associateProfile", t.args[0])
+          foundAssociateTasks.map((t) =>
+            specHelper.runTask("import:associateProfile", t.args[0])
           )
         );
 
-        // run all enqueued importAndUpdate tasks
-        const foundImportAndUpdateTasks = await specHelper.findEnqueuedTasks(
-          "profile:importAndUpdate"
-        );
-        // this count is de-duped
-        expect(foundImportAndUpdateTasks.length).toEqual(10);
-
-        await Promise.all(
-          foundImportAndUpdateTasks.map(
-            async (t) =>
-              await specHelper.runTask("profile:importAndUpdate", t.args[0])
-          )
-        );
+        await ImportWorkflow();
 
         // run all enqueued export tasks
         const foundExportTasks = await specHelper.findEnqueuedTasks(
@@ -413,25 +374,14 @@ describe("integration/runs/csv", () => {
         expect(foundExportTasks.length).toEqual(10);
 
         await Promise.all(
-          foundExportTasks.map(
-            async (t) => await specHelper.runTask("profile:export", t.args[0])
+          foundExportTasks.map((t) =>
+            specHelper.runTask("profile:export", t.args[0])
           )
         );
 
         // check the run's completion percentage (before the run is complete)
-        await run.determinePercentComplete();
-        expect(run.percentComplete).toBe(90);
-
-        // check if the run is done
-        const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
-          "run:determineState"
-        );
-        await Promise.all(
-          foundRunDetermineStateTasks.map(
-            async (t) =>
-              await specHelper.runTask("run:determineState", t.args[0])
-          )
-        );
+        await run.afterBatch();
+        expect(run.percentComplete).toBe(100);
 
         // check the results of the run
         const profilesCount = await Profile.count();
@@ -442,8 +392,6 @@ describe("integration/runs/csv", () => {
         expect(run.importsCreated).toBe(10);
         expect(run.profilesCreated).toBe(0);
         expect(run.profilesImported).toBe(10);
-        expect(run.exportsCreated).toBe(0);
-        expect(run.profilesExported).toBe(0);
         expect(run.percentComplete).toBe(100);
       },
       1000 * 60

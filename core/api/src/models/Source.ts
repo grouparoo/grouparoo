@@ -225,6 +225,30 @@ export class Source extends LoggedModel<Source> {
     );
   }
 
+  async importProfileProperties(
+    profiles: Profile[],
+    profilePropertyRule: ProfilePropertyRule,
+    profilePropertyRuleOptionsOverride?: OptionHelper.SimpleOptions,
+    profilePropertyRuleFiltersOverride?: ProfilePropertyRuleFiltersWithKey[],
+    preloadedArgs: {
+      app?: App;
+      connection?: any;
+      appOptions?: OptionHelper.SimpleOptions;
+      sourceOptions?: OptionHelper.SimpleOptions;
+      sourceMapping?: MappingHelper.Mappings;
+      profileProperties?: {};
+    } = {}
+  ) {
+    return SourceOps.importProfileProperties(
+      this,
+      profiles,
+      profilePropertyRule,
+      profilePropertyRuleOptionsOverride,
+      profilePropertyRuleFiltersOverride,
+      preloadedArgs
+    );
+  }
+
   async import(profile: Profile) {
     return SourceOps._import(this, profile);
   }

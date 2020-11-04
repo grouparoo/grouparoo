@@ -20,8 +20,11 @@ import {
   getProfiles,
   GetChangedRowsMethod,
   ProfilePropertyPluginMethod,
+  ProfilePropertiesPluginMethod,
   getProfileProperty,
+  getProfileProperties,
   GetPropertyValueMethod,
+  GetPropertyValuesMethod,
   SourceRunPercentCompleteMethod,
   getSourceRunPercentComplete,
   GetChangedRowCountMethod,
@@ -39,6 +42,7 @@ export interface BuildConnectionMethod {
     getTables: GetTablesMethod;
     getChangedRows: GetChangedRowsMethod;
     getPropertyValue: GetPropertyValueMethod;
+    getPropertyValues?: GetPropertyValuesMethod;
     getChangedRowCount: GetChangedRowCountMethod;
   }): PluginConnection;
 }
@@ -53,6 +57,7 @@ export const buildConnection: BuildConnectionMethod = ({
   getTables,
   getChangedRows,
   getPropertyValue,
+  getPropertyValues,
   getChangedRowCount,
 }) => {
   const profilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOption[] = getProfilePropertyRuleOptions(
@@ -79,9 +84,16 @@ export const buildConnection: BuildConnectionMethod = ({
   const profiles: ProfilesPluginMethod = getProfiles({
     getChangedRows,
   });
-  const profileProperty: ProfilePropertyPluginMethod = getProfileProperty({
-    getPropertyValue,
-  });
+  const profileProperty: ProfilePropertyPluginMethod = getPropertyValue
+    ? getProfileProperty({
+        getPropertyValue,
+      })
+    : null;
+  const profileProperties: ProfilePropertiesPluginMethod = getPropertyValues
+    ? getProfileProperties({
+        getPropertyValues,
+      })
+    : null;
   const sourceRunPercentComplete: SourceRunPercentCompleteMethod = getSourceRunPercentComplete(
     {
       getChangedRowCount,
@@ -109,6 +121,7 @@ export const buildConnection: BuildConnectionMethod = ({
       uniqueProfilePropertyRuleBootstrapOptions,
       profiles,
       profileProperty,
+      profileProperties,
       sourceRunPercentComplete,
     },
   };

@@ -148,7 +148,9 @@ export default function Page(props) {
   }
 
   let rowChanges = false;
+
   const profilePropertyRulesAndTopLevelGroupRules = profilePropertyRules.concat(
+    // @ts-ignore
     topLevelGroupRules
   );
 

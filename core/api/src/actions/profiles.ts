@@ -29,7 +29,8 @@ export class ProfilesList extends AuthenticatedAction {
   }
 
   async run({ params }) {
-    let profiles, total;
+    let profiles: Profile[];
+
     const where: { [profilePropertyRuleGuid: string]: any } = {};
 
     if (
@@ -58,6 +59,7 @@ export class ProfilesList extends AuthenticatedAction {
 
     if (params.groupGuid) {
       const group = await Group.findByGuid(params.groupGuid);
+
       const groupMembers: Array<GroupMember> = await group.$get(
         "groupMembers",
         {
@@ -73,6 +75,7 @@ export class ProfilesList extends AuthenticatedAction {
           where,
         });
       }
+
       profiles = await Profile.findAll({
         where: {
           guid: { [Op.in]: groupMembers.map((mem) => mem.profileGuid) },
@@ -81,13 +84,19 @@ export class ProfilesList extends AuthenticatedAction {
         order: params.order,
       });
 
-      total = await group.profilesCount({
+      const total = await group.profilesCount({
+        distinct: true,
+        include: [],
+      });
+
+      const pendingTotal = await group.profilesCount({
         distinct: true,
         include: [],
       });
 
       return {
         total,
+        pendingTotal,
         profiles: await Promise.all(
           profiles.map(async (p) => {
             const apiData = await p.apiData();
@@ -106,13 +115,20 @@ export class ProfilesList extends AuthenticatedAction {
         order: params.order,
       });
 
-      total = await Profile.count({
+      const total = await Profile.count({
+        distinct: true,
+        include: [{ model: ProfileProperty, where, required: requiredJoin }],
+      });
+
+      const pendingTotal = await Profile.count({
+        where: { state: "pending" },
         distinct: true,
         include: [{ model: ProfileProperty, where, required: requiredJoin }],
       });
 
       return {
         total,
+        pendingTotal,
         profiles: await Promise.all(
           profiles.map(async (p) => {
             const profile = await Profile.findByGuid(p.guid);
@@ -199,7 +215,6 @@ export class ProfileCreate extends AuthenticatedAction {
     const profile = new Profile(params);
     await profile.save();
     await profile.addOrUpdateProperties(params.properties);
-    await profile.buildNullProperties();
 
     const groups = await profile.$get("groups");
 

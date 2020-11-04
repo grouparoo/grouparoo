@@ -144,8 +144,6 @@ describe("tasks/group:run", () => {
 
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(0);
-      foundTasks = await specHelper.findEnqueuedTasks("run:determineState"); // run state
-      expect(foundTasks.length).toBe(1);
 
       imports = await Import.findAll();
       expect(imports.length).toBe(4);
@@ -216,8 +214,6 @@ describe("tasks/group:run", () => {
 
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(0);
-      foundTasks = await specHelper.findEnqueuedTasks("run:determineState"); // run state
-      expect(foundTasks.length).toBe(1);
 
       imports = await Import.findAll();
       expect(imports.length).toBe(2); // only the removals
@@ -292,8 +288,6 @@ describe("tasks/group:run", () => {
 
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(0);
-      foundTasks = await specHelper.findEnqueuedTasks("run:determineState"); // run state
-      expect(foundTasks.length).toBe(1);
 
       const imports = await Import.findAll();
       expect(imports.length).toBe(1); // only the removal
@@ -335,8 +329,6 @@ describe("tasks/group:run", () => {
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(0);
       foundTasks = await specHelper.findEnqueuedTasks("run:determineState"); // run state
-      expect(foundTasks[0].args[0].destinationGuid).toBeFalsy();
-      expect(foundTasks.length).toBe(1);
     });
 
     it("will set run.force if that option is provided to the task", async () => {

@@ -1,11 +1,10 @@
-import { task } from "actionhero";
-import { RetryableTask } from "../../classes/retryableTask";
+import { task, Task } from "actionhero";
 import { Group } from "../../models/Group";
 import { plugin } from "../../modules/plugin";
 import { Op } from "sequelize";
 import Moment from "moment";
 
-export class GroupsUpdateCalculatedGroups extends RetryableTask {
+export class GroupsUpdateCalculatedGroups extends Task {
   constructor() {
     super();
     this.name = "group:updateCalculatedGroups";

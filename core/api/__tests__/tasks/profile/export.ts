@@ -7,6 +7,7 @@ import { Group } from "./../../../src/models/Group";
 import { Destination } from "./../../../src/models/Destination";
 import { Export } from "./../../../src/models/Export";
 import { plugin } from "../../../src/modules/plugin";
+import { Op } from "sequelize";
 
 let actionhero;
 
@@ -23,22 +24,22 @@ describe("tasks/profile:export", () => {
 
   describe("profile:export", () => {
     test("can be enqueued", async () => {
-      await task.enqueue("profile:export", { guid: "abc123" });
+      await task.enqueue("profile:export", { profileGuid: "abc123" });
       const found = await specHelper.findEnqueuedTasks("profile:export");
       expect(found.length).toEqual(1);
     });
 
     test("enqueuing more than one tasks for the same profile will de-duplicate", async () => {
-      await task.enqueue("profile:export", { guid: "abc123" });
-      await task.enqueue("profile:export", { guid: "abc123" });
+      await task.enqueue("profile:export", { profileGuid: "abc123" });
+      await task.enqueue("profile:export", { profileGuid: "abc123" });
 
       const found = await specHelper.findEnqueuedTasks("profile:export");
       expect(found.length).toEqual(1);
     });
 
     test("enqueuing more tasks for different profiles is OK", async () => {
-      await task.enqueue("profile:export", { guid: "abc123" });
-      await task.enqueue("profile:export", { guid: "cde456" });
+      await task.enqueue("profile:export", { profileGuid: "abc123" });
+      await task.enqueue("profile:export", { profileGuid: "cde456" });
 
       const found = await specHelper.findEnqueuedTasks("profile:export");
       expect(found.length).toEqual(2);
@@ -179,15 +180,12 @@ describe("tasks/profile:export", () => {
         profiles = await Profile.findAll();
         expect(profiles.length).toBe(1);
 
-        const foundImportAndUpdateTasks = await specHelper.findEnqueuedTasks(
-          "profile:importAndUpdate"
-        );
-        expect(foundImportAndUpdateTasks.length).toEqual(1);
-
-        await specHelper.runTask(
-          "profile:importAndUpdate",
-          foundImportAndUpdateTasks[0].args[0]
-        );
+        // mock the import pipeline
+        await profiles[0].import();
+        await profiles[0].updateGroupMembership();
+        await specHelper.runTask("profile:completeImport", {
+          profileGuid: profiles[0].guid,
+        });
 
         const foundExportTasks = await specHelper.findEnqueuedTasks(
           "profile:export"
@@ -202,21 +200,9 @@ describe("tasks/profile:export", () => {
         expect(foundSendTasks.length).toBe(1);
         await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
 
-        await runA.reload();
-        await runB.reload();
-        expect(runA.exportsCreated).toBe(1);
-        expect(runB.exportsCreated).toBe(1);
-        expect(runA.profilesExported).toBe(1);
-        expect(runB.profilesExported).toBe(1);
-
         const _exports = await Export.findAll();
         expect(_exports.length).toBe(1);
         const _export = _exports[0];
-        const exportedImports = await _export.$get("imports");
-        expect(exportedImports.length).toBe(2);
-        expect(exportedImports.map((e) => e.guid).sort()).toEqual(
-          [importA, importB].map((e) => e.guid).sort()
-        );
 
         expect(_export.destinationGuid).toBe(destination.guid);
         expect(_export.profileGuid).toBe(profile.guid);
@@ -261,15 +247,12 @@ describe("tasks/profile:export", () => {
         const profiles = await Profile.findAll();
         expect(profiles.length).toBe(2);
 
-        const foundImportAndUpdateTasks = await specHelper.findEnqueuedTasks(
-          "profile:importAndUpdate"
-        );
-        expect(foundImportAndUpdateTasks.length).toEqual(1);
-
-        await specHelper.runTask(
-          "profile:importAndUpdate",
-          foundImportAndUpdateTasks[0].args[0]
-        );
+        // mock the import pipeline
+        await profiles[1].import();
+        await profiles[1].updateGroupMembership();
+        await specHelper.runTask("profile:completeImport", {
+          profileGuid: profiles[1].guid,
+        });
 
         const foundExportTasks = await specHelper.findEnqueuedTasks(
           "profile:export"
@@ -287,9 +270,6 @@ describe("tasks/profile:export", () => {
         const _exports = await Export.findAll();
         expect(_exports.length).toBe(1);
         const _export = _exports[0];
-        const exportedImports = await _export.$get("imports");
-        expect(exportedImports.length).toBe(1);
-        expect(exportedImports[0].guid).toBe(_import.guid);
 
         expect(_export.destinationGuid).toBe(destination.guid);
         expect(_export.profileGuid).not.toBe(profile.guid);
@@ -304,14 +284,30 @@ describe("tasks/profile:export", () => {
         expect(_export.newGroups).toEqual([]);
       });
 
-      describe("errors", () => {
+      describe("with exportProfile", () => {
         let counter = 0;
 
-        beforeAll(() => {
+        beforeEach(() => {
+          counter = 0;
+        });
+
+        beforeAll(async () => {
+          await Profile.destroy({ where: { guid: { [Op.ne]: profile.guid } } });
+
           Destination.prototype.exportProfile = jest.fn(() => {
             counter++;
             throw new Error("oh no");
           });
+        });
+
+        it("will not profiles not yet in the ready state", async () => {
+          await profile.update({ state: "pending" });
+
+          await specHelper.runTask("profile:export", {
+            profileGuid: profile.guid,
+          }); // does not throw because it did not run
+
+          expect(counter).toBe(0);
         });
 
         it("applies errors to the imports and export", async () => {
@@ -327,9 +323,15 @@ describe("tasks/profile:export", () => {
             newGroupGuids: [group.guid],
           });
 
+          await profile.import();
+          await profile.updateGroupMembership();
+          await specHelper.runTask("profile:completeImport", {
+            profileGuid: profile.guid,
+          });
+
           await expect(
             specHelper.runTask("profile:export", {
-              guid: profile.guid,
+              profileGuid: profile.guid,
             })
           ).rejects.toThrow(/oh no/);
 
@@ -341,6 +343,8 @@ describe("tasks/profile:export", () => {
           expect(errorMetadata.message).toMatch(/oh no/);
           expect(errorMetadata.step).toBe("profile:export");
           expect(errorMetadata.stack).toMatch(/ProfileExport/);
+
+          await _import.destroy();
         });
       });
     });

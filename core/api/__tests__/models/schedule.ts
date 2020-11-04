@@ -335,6 +335,9 @@ describe("models/schedule", () => {
                   importsCount: 100,
                 };
               },
+              profileProperty: async () => {
+                return [];
+              },
             },
           },
         ],

@@ -69,6 +69,7 @@ describe("actions/profiles", () => {
       );
       expect(error).toBeUndefined();
       expect(profile.guid).toBeTruthy();
+      expect(profile.state).toBe("pending");
       expect(simpleProfileValues(profile.properties)).toEqual({
         userId: [123],
         email: ["luigi@example.com"],
@@ -111,6 +112,7 @@ describe("actions/profiles", () => {
       );
       expect(error).toBeUndefined();
       expect(profile.guid).toBeTruthy();
+      expect(profile.state).toBe("pending");
       expect(simpleProfileValues(profile.properties)).toEqual({
         userId: [999],
         email: ["luigi@example.com"],
@@ -136,6 +138,7 @@ describe("actions/profiles", () => {
       );
       expect(error).toBeUndefined();
       expect(profile.guid).toBeTruthy();
+      expect(profile.state).toBe("pending");
       expect(simpleProfileValues(profile.properties)).toEqual({
         userId: [999],
         email: ["luigi@example.com"],
@@ -153,14 +156,17 @@ describe("actions/profiles", () => {
       connection.params = {
         csrfToken,
       };
-      const { error, profiles, total } = await specHelper.runAction(
-        "profiles:list",
-        connection
-      );
+      const {
+        error,
+        profiles,
+        total,
+        pendingTotal,
+      } = await specHelper.runAction("profiles:list", connection);
       expect(error).toBeUndefined();
       expect(profiles.length).toBe(1);
       expect(simpleProfileValues(profiles[0].properties).userId).toEqual([999]);
       expect(total).toBe(1);
+      expect(pendingTotal).toBe(1);
     });
 
     test("a writer can get autocomplete results from profile properties", async () => {
@@ -744,6 +750,13 @@ describe("actions/profiles", () => {
       expect(simpleProfileValues(profile.properties)).toEqual({
         firstName: ["Toad"],
         email: ["toad@example.com"],
+        isVIP: [null],
+        lastLoginAt: [null],
+        lastName: [null],
+        ltv: [null],
+        purchaseAmounts: [null],
+        purchases: [null],
+        userId: [null],
       });
     });
 

@@ -20,7 +20,6 @@ import {
   Team,
   TeamMember,
 } from "../index";
-import { ExportRun } from "../models/ExportRun";
 
 export interface TelemetryMetric {
   // the possible attributes for a metric are:
@@ -168,18 +167,6 @@ export namespace TelemetryReporters {
           aggregation: "count",
           exports: await Export.count({
             where: { destinationGuid: destination.guid },
-          }),
-          runs: await ExportRun.count({
-            distinct: true,
-            col: "runGuid",
-            include: [
-              {
-                model: Export,
-                where: { destinationGuid: destination.guid },
-                required: true,
-                attributes: [],
-              },
-            ],
           }),
         });
       }

@@ -34,7 +34,7 @@ export const getSourceRunPercentComplete: GetSourceRunPercentCompleteMethod = ({
     });
 
     const percentComplete =
-      count > 0 ? Math.floor((run.profilesImported / count) * 100) : 100;
+      count > 0 ? Math.floor((run.importsCreated / count) * 100) : 100;
 
     return percentComplete;
   };

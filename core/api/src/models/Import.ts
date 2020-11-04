@@ -8,16 +8,13 @@ import {
   AllowNull,
   ForeignKey,
   BelongsTo,
-  HasMany,
   DataType,
   AfterCreate,
-  AfterDestroy,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
-import { task } from "actionhero";
+import { task, config } from "actionhero";
 import { Profile } from "./Profile";
 import { Run } from "./Run";
-import { ExportImport } from "./ExportImport";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
 import { Op } from "sequelize";
@@ -149,9 +146,6 @@ export class Import extends Model<Import> {
   @BelongsTo(() => Run)
   run: Run;
 
-  @HasMany(() => ExportImport)
-  exportImports: ExportImport[];
-
   async apiData() {
     const data = this.data || {};
     const rawData = this.rawData || {};
@@ -225,37 +219,16 @@ export class Import extends Model<Import> {
     }
   }
 
-  @AfterDestroy
-  static async deleteExportImports(instance: Import) {
-    return ExportImport.destroy({
-      where: { importGuid: instance.guid },
-    });
-  }
-
   @AfterCreate
   static async enqueueTask(instance: Import) {
-    const taskDelay = 3001;
-
     if (!instance.profileGuid) {
-      await task.enqueueIn(taskDelay, "import:associateProfile", {
-        importGuid: instance.guid,
-      });
-    } else {
-      try {
-        await task.enqueueIn(taskDelay, "profile:importAndUpdate", {
-          guid: instance.profileGuid,
-        });
-      } catch (error) {
-        if (
-          error
-            .toString()
-            .match(/already enqueued at this time with same arguments/)
-        ) {
-          // ok
-        } else {
-          throw error;
+      await task.enqueueIn(
+        config.tasks.timeout + 1,
+        "import:associateProfile",
+        {
+          importGuid: instance.guid,
         }
-      }
+      );
     }
   }
 

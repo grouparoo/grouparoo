@@ -22,8 +22,6 @@ import { chatRoom, log } from "actionhero";
 import * as uuid from "uuid";
 import { Schedule } from "./Schedule";
 import { Import } from "./Import";
-import { Export } from "./Export";
-import { ExportRun } from "./ExportRun";
 import { Group } from "./Group";
 import { StateMachine } from "./../modules/stateMachine";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
@@ -31,6 +29,7 @@ import { TeamMember } from "./TeamMember";
 import { RunOps } from "../modules/ops/runs";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
+import { waitForLock } from "../modules/locks";
 
 export interface HighWaterMark {
   [key: string]: string | number | Date;
@@ -91,16 +90,6 @@ export class Run extends Model<Run> {
   @Column
   profilesImported: number;
 
-  @AllowNull(false)
-  @Default(0)
-  @Column
-  exportsCreated: number;
-
-  @AllowNull(false)
-  @Default(0)
-  @Column
-  profilesExported: number;
-
   @Column
   error: string;
 
@@ -156,67 +145,6 @@ export class Run extends Model<Run> {
   @HasMany(() => Import, "creatorGuid")
   imports: Import[];
 
-  @HasMany(() => ExportRun, "runGuid")
-  exportRuns: ExportRun[];
-
-  async determineState() {
-    await this.reload();
-
-    if (this.state === "complete" || this.state === "stopped") {
-      return;
-    }
-
-    const totalImportsCount = await this.$count("imports");
-
-    const completeImportsCount = await this.$count("imports", {
-      where: {
-        [Op.or]: {
-          exportedAt: { [Op.not]: null },
-          errorMessage: { [Op.not]: null },
-        },
-      },
-    });
-
-    const totalExportsCount = await Export.count({
-      include: [
-        {
-          model: ExportRun,
-          where: { runGuid: this.guid },
-          attributes: [],
-          required: true,
-        },
-      ],
-    });
-
-    const completeExportsCount = await Export.count({
-      where: {
-        [Op.or]: {
-          completedAt: { [Op.not]: null },
-          errorMessage: { [Op.not]: null },
-        },
-      },
-      include: [
-        {
-          model: ExportRun,
-          where: { runGuid: this.guid },
-          attributes: [],
-          required: true,
-        },
-      ],
-    });
-
-    if (
-      completeImportsCount === totalImportsCount &&
-      completeExportsCount === totalExportsCount
-    ) {
-      this.state = "complete";
-      this.completedAt = new Date();
-      await this.buildErrorMessage();
-    } else {
-      this.state = "running";
-    }
-  }
-
   async determinePercentComplete() {
     const percentComplete = await RunOps.determinePercentComplete(this);
     await this.update({ percentComplete });
@@ -224,8 +152,22 @@ export class Run extends Model<Run> {
     return percentComplete;
   }
 
-  async afterBatch() {
+  async afterBatch(newSate?: string) {
     await this.determinePercentComplete();
+    await this.reload();
+
+    if (newSate && this.state !== newSate) {
+      await this.update({ state: newSate });
+    }
+
+    if (this.state === "complete" && !this.completedAt) {
+      await this.update({ completedAt: new Date(), percentComplete: 100 });
+      await this.buildErrorMessage();
+    }
+
+    if (this.percentComplete >= 100) {
+      await this.update({ percentComplete: 100 });
+    }
   }
 
   async buildErrorMessage() {
@@ -311,6 +253,21 @@ export class Run extends Model<Run> {
     return RunOps.quantizedTimeline(this, steps);
   }
 
+  async incrementWithLock(
+    field: "importsCreated" | "profilesCreated" | "profilesImported",
+    by = 1
+  ) {
+    const { releaseLock } = await waitForLock(`run:${this.guid}:lock`);
+    try {
+      await this.increment(field, { by, silent: true });
+      this.set("updatedAt", new Date());
+      await this.save();
+      return this;
+    } finally {
+      releaseLock();
+    }
+  }
+
   async apiData() {
     return {
       guid: this.guid,
@@ -322,8 +279,6 @@ export class Run extends Model<Run> {
       importsCreated: this.importsCreated,
       profilesCreated: this.profilesCreated,
       profilesImported: this.profilesImported,
-      exportsCreated: this.exportsCreated,
-      profilesExported: this.profilesExported,
       error: this.error,
       highWaterMark: this.highWaterMark,
       sourceOffset: this.sourceOffset,

@@ -3,7 +3,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/mysql": { path: path.join(__dirname, "..", "..") },
 });
 
-import { helper } from "@grouparoo/spec-helper";
+import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 
 import { api, specHelper } from "actionhero";
 import {
@@ -390,24 +390,12 @@ describe("integration/runs/mysql", () => {
       expect(foundAssociateTasks.length).toEqual(11);
 
       await Promise.all(
-        foundAssociateTasks.map(
-          async (t) =>
-            await specHelper.runTask("import:associateProfile", t.args[0])
+        foundAssociateTasks.map((t) =>
+          specHelper.runTask("import:associateProfile", t.args[0])
         )
       );
 
-      // run all enqueued importAndUpdate tasks
-      const foundImportAndUpdateTasks = await specHelper.findEnqueuedTasks(
-        "profile:importAndUpdate"
-      );
-      expect(foundImportAndUpdateTasks.length).toEqual(10);
-
-      await Promise.all(
-        foundImportAndUpdateTasks.map(
-          async (t) =>
-            await specHelper.runTask("profile:importAndUpdate", t.args[0])
-        )
-      );
+      await ImportWorkflow();
 
       // run all enqueued export tasks
       const foundExportTasks = await specHelper.findEnqueuedTasks(
@@ -416,8 +404,8 @@ describe("integration/runs/mysql", () => {
       expect(foundExportTasks.length).toEqual(10);
 
       await Promise.all(
-        foundExportTasks.map(
-          async (t) => await specHelper.runTask("profile:export", t.args[0])
+        foundExportTasks.map((t) =>
+          specHelper.runTask("profile:export", t.args[0])
         )
       );
 
@@ -429,9 +417,7 @@ describe("integration/runs/mysql", () => {
       expect(foundSendTasks.length).toEqual(10);
 
       await Promise.all(
-        foundSendTasks.map(
-          async (t) => await specHelper.runTask("export:send", t.args[0])
-        )
+        foundSendTasks.map((t) => specHelper.runTask("export:send", t.args[0]))
       );
 
       // check the run's completion percentage (before the run is complete)
@@ -443,8 +429,8 @@ describe("integration/runs/mysql", () => {
         "run:determineState"
       );
       await Promise.all(
-        foundRunDetermineStateTasks.map(
-          async (t) => await specHelper.runTask("run:determineState", t.args[0])
+        foundRunDetermineStateTasks.map((t) =>
+          specHelper.runTask("run:determineState", t.args[0])
         )
       );
 
@@ -457,8 +443,6 @@ describe("integration/runs/mysql", () => {
       expect(run.importsCreated).toBe(11);
       expect(run.profilesCreated).toBe(10);
       expect(run.profilesImported).toBe(10);
-      expect(run.exportsCreated).toBe(10);
-      expect(run.profilesExported).toBe(10);
       expect(run.highWaterMark).toEqual({ id: "10" });
       expect(run.sourceOffset).toBe("0");
       expect(run.error).toBeFalsy();
@@ -530,25 +514,12 @@ describe("integration/runs/mysql", () => {
       expect(foundAssociateTasks.length).toEqual(11 + 1);
 
       await Promise.all(
-        foundAssociateTasks.map(
-          async (t) =>
-            await specHelper.runTask("import:associateProfile", t.args[0])
+        foundAssociateTasks.map((t) =>
+          specHelper.runTask("import:associateProfile", t.args[0])
         )
       );
 
-      // run all enqueued importAndUpdate tasks
-      const foundImportAndUpdateTasks = await specHelper.findEnqueuedTasks(
-        "profile:importAndUpdate"
-      );
-      // this count is de-duped
-      expect(foundImportAndUpdateTasks.length).toEqual(10);
-
-      await Promise.all(
-        foundImportAndUpdateTasks.map(
-          async (t) =>
-            await specHelper.runTask("profile:importAndUpdate", t.args[0])
-        )
-      );
+      await ImportWorkflow();
 
       // run all enqueued export tasks
       const foundExportTasks = await specHelper.findEnqueuedTasks(
@@ -558,8 +529,8 @@ describe("integration/runs/mysql", () => {
       expect(foundExportTasks.length).toEqual(10);
 
       await Promise.all(
-        foundExportTasks.map(
-          async (t) => await specHelper.runTask("profile:export", t.args[0])
+        foundExportTasks.map((t) =>
+          specHelper.runTask("profile:export", t.args[0])
         )
       );
 
@@ -572,9 +543,7 @@ describe("integration/runs/mysql", () => {
       expect(foundSendTasks.length).toEqual(11);
 
       await Promise.all(
-        foundSendTasks.map(
-          async (t) => await specHelper.runTask("export:send", t.args[0])
-        )
+        foundSendTasks.map((t) => specHelper.runTask("export:send", t.args[0]))
       );
 
       // check the run's completion percentage (before the run is complete)
@@ -586,8 +555,8 @@ describe("integration/runs/mysql", () => {
         "run:determineState"
       );
       await Promise.all(
-        foundRunDetermineStateTasks.map(
-          async (t) => await specHelper.runTask("run:determineState", t.args[0])
+        foundRunDetermineStateTasks.map((t) =>
+          specHelper.runTask("run:determineState", t.args[0])
         )
       );
 
@@ -600,8 +569,6 @@ describe("integration/runs/mysql", () => {
       expect(run.importsCreated).toBe(1);
       expect(run.profilesCreated).toBe(0);
       expect(run.profilesImported).toBe(1);
-      expect(run.exportsCreated).toBe(1);
-      expect(run.profilesExported).toBe(1);
       expect(run.highWaterMark).toEqual({ id: "10" });
       expect(run.sourceOffset).toBe("0");
       expect(run.error).toBeFalsy();

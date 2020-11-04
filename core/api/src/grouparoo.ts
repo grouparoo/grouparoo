@@ -1,10 +1,5 @@
 import { getCoreVersion, getNodeVersion } from "./utils/pluginDetails";
 
-// have a shorter shutdown timeout
-if (!process.env.ACTIONHERO_SHUTDOWN_TIMEOUT) {
-  process.env.ACTIONHERO_SHUTDOWN_TIMEOUT = (15 * 1000).toString();
-}
-
 async function main() {
   const { Process, log } = await import("actionhero");
 

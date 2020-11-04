@@ -1,4 +1,4 @@
-import { helper } from "@grouparoo/spec-helper";
+import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
 import { Import } from "./../../../src/models/Import";
 import { Run } from "./../../../src/models/Run";
@@ -10,6 +10,8 @@ let profile: Profile;
 let run: Run;
 
 describe("integration/runs/internalRun", () => {
+  let rule: ProfilePropertyRule;
+
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
@@ -33,17 +35,18 @@ describe("integration/runs/internalRun", () => {
       await source.update({ state: "ready" });
 
       profile = await helper.factories.profile();
+      await profile.addOrUpdateProperties({ userId: [1] });
 
       await api.resque.queue.connection.redis.flushdb();
       await Run.destroy({ truncate: true });
 
-      const rule = await ProfilePropertyRule.create({
+      rule = await ProfilePropertyRule.create({
         sourceGuid: source.guid,
         type: "string",
         key: "email",
         unique: true,
       });
-      await rule.setOptions({ column: "id" });
+      await rule.setOptions({ column: "email" });
       await rule.update({ state: "ready" });
 
       const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
@@ -68,27 +71,18 @@ describe("integration/runs/internalRun", () => {
       expect(imports[0].profileGuid).toBe(profile.guid);
     });
 
-    test("run internalRun again to enqueue the determineState task", async () => {
+    test("the run will be complete when all imports are created", async () => {
       const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
       expect(foundTasks.length).toBe(2);
       await specHelper.runTask("run:internalRun", foundTasks[1].args[0]);
 
-      const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
-        "run:determineState"
-      );
-      expect(foundRunDetermineStateTasks.length).toBe(1);
+      await run.reload();
+      expect(run.state).toBe("complete");
+      expect(run.percentComplete).toBe(100);
     });
 
     test("run the rest of the import pipeline", async () => {
-      // run all enqueued importAndUpdate tasks
-      const foundImportAndUpdateTasks = await specHelper.findEnqueuedTasks(
-        "profile:importAndUpdate"
-      );
-      expect(foundImportAndUpdateTasks.length).toEqual(1);
-      await specHelper.runTask(
-        "profile:importAndUpdate",
-        foundImportAndUpdateTasks[0].args[0]
-      );
+      await ImportWorkflow();
 
       // run all enqueued export tasks
       const foundExportTasks = await specHelper.findEnqueuedTasks(
@@ -101,23 +95,12 @@ describe("integration/runs/internalRun", () => {
       const foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
       expect(foundSendTasks.length).toBe(0);
 
-      // check if the run is done
-      const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
-        "run:determineState"
-      );
-      await specHelper.runTask(
-        "run:determineState",
-        foundRunDetermineStateTasks[0].args[0]
-      );
-
       // check the results of the run
       await run.reload();
       expect(run.state).toBe("complete");
       expect(run.importsCreated).toBe(1);
       expect(run.profilesCreated).toBe(0);
       expect(run.profilesImported).toBe(1);
-      expect(run.exportsCreated).toBe(0);
-      expect(run.profilesExported).toBe(0);
     });
   });
 });

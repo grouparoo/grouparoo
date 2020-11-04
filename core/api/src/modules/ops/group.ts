@@ -47,11 +47,23 @@ export namespace GroupOps {
     profileGuid: string,
     creatorType: string,
     creatorGuid: string,
-    destinationGuid?: string
+    destinationGuid?: string,
+    transaction?: any
   ) {
-    const profile = await Profile.findOne({ where: { guid: profileGuid } });
+    let toCommit = false;
+    if (!transaction) {
+      toCommit = true;
+      transaction = await api.sequelize.transaction({
+        lock: Transaction.LOCK.UPDATE,
+      });
+    }
 
-    const oldProfileProperties = [];
+    const profile = await Profile.findOne({
+      where: { guid: profileGuid },
+      transaction,
+    });
+
+    const oldProfileProperties = {};
     const properties = await profile.properties();
     for (const key in properties) {
       oldProfileProperties[key] = properties[key].values;
@@ -59,16 +71,32 @@ export namespace GroupOps {
 
     const oldGroupGuids = (await profile.$get("groups")).map((g) => g.guid);
 
-    return Import.build({
-      rawData: destinationGuid ? { _meta: { destinationGuid } } : {},
-      data: destinationGuid ? { _meta: { destinationGuid } } : {},
-      creatorType,
-      creatorGuid,
-      profileGuid: profile.guid,
-      profileAssociatedAt: new Date(),
-      oldProfileProperties,
-      oldGroupGuids,
-    });
+    const _import = await Import.create(
+      {
+        rawData: destinationGuid ? { _meta: { destinationGuid } } : {},
+        data: destinationGuid ? { _meta: { destinationGuid } } : {},
+        creatorType,
+        creatorGuid,
+        profileGuid: profile.guid,
+        profileAssociatedAt: new Date(),
+        oldProfileProperties,
+        oldGroupGuids,
+      },
+      { transaction }
+    );
+
+    await profile.update({ state: "pending" }, { transaction });
+
+    if (toCommit) {
+      try {
+        await transaction.commit();
+      } catch (error) {
+        await transaction.rollback();
+        throw error;
+      }
+    }
+
+    return _import;
   }
 
   /**
@@ -259,17 +287,18 @@ export namespace GroupOps {
       nextHighWaterMark--;
     }
 
-    const transaction = await api.sequelize.transaction();
+    const groupMembers = await GroupMember.findAll({
+      where: {
+        profileGuid: { [Op.in]: profiles.map((p) => p.guid) },
+        groupGuid: group.guid,
+      },
+    });
+
+    const transaction = await api.sequelize.transaction({
+      type: Transaction.TYPES.EXCLUSIVE,
+    });
 
     try {
-      const groupMembers = await GroupMember.findAll({
-        where: {
-          profileGuid: { [Op.in]: profiles.map((p) => p.guid) },
-          groupGuid: group.guid,
-        },
-        transaction,
-      });
-
       const existingGroupMemberProfileGuids = groupMembers.map(
         (member) => member.profileGuid
       );
@@ -281,13 +310,13 @@ export namespace GroupOps {
 
       for (const i in profilesNeedingGroupMembership) {
         const profileGuid = profilesNeedingGroupMembership[i].guid;
-        const _import = await group.buildProfileImport(
+        await buildProfileImport(
           profileGuid,
           "run",
           run.guid,
-          destinationGuid
+          destinationGuid,
+          transaction
         );
-        await _import.save({ transaction });
       }
 
       await GroupMember.update(
@@ -301,16 +330,12 @@ export namespace GroupOps {
         }
       );
 
-      await run.increment(["importsCreated"], {
-        by: profilesNeedingGroupMembership.length,
-        silent: true,
-        transaction,
-      });
-      run.set("updatedAt", new Date());
-      await run.save({ transaction });
-
       await transaction.commit();
 
+      await run.incrementWithLock(
+        "importsCreated",
+        profilesNeedingGroupMembership.length
+      );
       await group.update({ calculatedAt: new Date() });
 
       return {
@@ -336,45 +361,43 @@ export namespace GroupOps {
   ) {
     let groupMembersCount = 0;
 
-    const transaction = await api.sequelize.transaction();
+    const groupMembersToRemove = await GroupMember.findAll({
+      attributes: ["guid", "profileGuid"],
+      where: {
+        groupGuid: group.guid,
+        updatedAt: { [Op.lt]: run.createdAt },
+        removedAt: null,
+      },
+      limit,
+    });
+
+    const transaction = await api.sequelize.transaction({
+      type: Transaction.TYPES.EXCLUSIVE,
+    });
 
     try {
       // The offset and order can be ignored as we will keep running this query until the set of results becomes 0.
-      const groupMembersToRemove = await GroupMember.findAll({
-        attributes: ["guid", "profileGuid"],
-        where: {
-          groupGuid: group.guid,
-          updatedAt: { [Op.lt]: run.createdAt },
-          removedAt: null,
-        },
-        limit,
-        transaction,
-      });
 
       for (const i in groupMembersToRemove) {
         const member = groupMembersToRemove[i];
-        member.removedAt = new Date();
-        await member.save({ transaction });
-        const _import = await group.buildProfileImport(
+
+        await buildProfileImport(
           member.profileGuid,
           "run",
           run.guid,
-          destinationGuid
+          destinationGuid,
+          transaction
         );
-        await _import.save({ transaction });
+
+        member.removedAt = new Date();
+        await member.save({ transaction });
 
         groupMembersCount++;
       }
 
-      await run.increment(["importsCreated"], {
-        by: groupMembersCount,
-        transaction,
-        silent: true,
-      });
-      run.set("updatedAt", new Date());
-      await run.save({ transaction });
-
       await transaction.commit();
+
+      await run.incrementWithLock("importsCreated", groupMembersCount);
       await group.update({ calculatedAt: new Date() });
       return groupMembersCount;
     } catch (error) {
@@ -405,14 +428,12 @@ export namespace GroupOps {
 
     for (const i in groupMembersToRemove) {
       const member = groupMembersToRemove[i];
+
+      await buildProfileImport(member.profileGuid, "run", run.guid);
+
       member.removedAt = new Date();
       await member.save();
-      const _import = await group.buildProfileImport(
-        member.profileGuid,
-        "run",
-        run.guid
-      );
-      await _import.save();
+
       groupMembersCount++;
     }
 

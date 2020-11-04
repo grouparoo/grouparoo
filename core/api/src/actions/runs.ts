@@ -38,40 +38,25 @@ export class RunsList extends AuthenticatedAction {
       }
     }
 
-    if (guid && guid.match(/^dst_/)) {
-      // special handling for destination runs, as they link through exports
-      const destination = await Destination.findByGuid(guid);
-      const runs = await destination.getRuns(
-        params.state,
-        params.limit,
-        params.offset
-      );
+    const where = {};
+    if (guid) where["creatorGuid"] = guid;
+    if (params.state) where["state"] = params.state;
+    if (params.hasError === "true") where["error"] = { [Op.ne]: null };
+    if (params.hasError === "false") where["error"] = { [Op.eq]: null };
 
-      return {
-        runs: await Promise.all(runs.map(async (run) => run.apiData())),
-        total: runs.length,
-      };
-    } else {
-      const where = {};
-      if (guid) where["creatorGuid"] = guid;
-      if (params.state) where["state"] = params.state;
-      if (params.hasError === "true") where["error"] = { [Op.ne]: null };
-      if (params.hasError === "false") where["error"] = { [Op.eq]: null };
+    const search = {
+      where,
+      limit: params.limit,
+      offset: params.offset,
+      order: params.order,
+    };
 
-      const search = {
-        where,
-        limit: params.limit,
-        offset: params.offset,
-        order: params.order,
-      };
+    const runs = await Run.scope(null).findAll(search);
 
-      const runs = await Run.scope(null).findAll(search);
-
-      return {
-        runs: await Promise.all(runs.map(async (run) => run.apiData())),
-        total: await Run.scope(null).count({ where }),
-      };
-    }
+    return {
+      runs: await Promise.all(runs.map(async (run) => run.apiData())),
+      total: await Run.scope(null).count({ where }),
+    };
   }
 }
 

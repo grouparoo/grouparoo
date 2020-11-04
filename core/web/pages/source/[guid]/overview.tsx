@@ -159,7 +159,6 @@ export default function Page({
                               <li>Imports Created: {run.importsCreated}</li>
                               <li>Profiles Created: {run.profilesCreated}</li>
                               <li>Profiles Imported: {run.profilesImported}</li>
-                              <li>Profiles Exported: {run.profilesExported}</li>
                             </ul>
                           </>
                         ) : (

@@ -108,6 +108,7 @@ export default function Page(props) {
       const _profilePropertyRule = Object.assign({}, profilePropertyRule);
 
       // make the user explicitly choose a type
+      //@ts-ignore
       _profilePropertyRule.type = "";
 
       setProfilePropertyRule(_profilePropertyRule);

@@ -342,13 +342,17 @@ export class ProfilePropertyRuleProfilePreview extends AuthenticatedAction {
 
     apiData.properties[profilePropertyRule.key] = {
       guid: profilePropertyRule.guid,
+      state: profilePropertyRule.state,
       values: newPropertyValues,
       type: profilePropertyRule.type,
       unique: profilePropertyRule.unique,
       isArray: profilePropertyRule.isArray,
       identifying: profilePropertyRule.identifying,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      valueChangedAt: null,
+      confirmedAt: null,
+      stateChangedAt: null,
+      createdAt: null,
+      updatedAt: null,
     };
 
     return { errorMessage, profile: apiData };

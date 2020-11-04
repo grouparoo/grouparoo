@@ -15,7 +15,7 @@ import {
   Scopes,
 } from "sequelize-typescript";
 import { api } from "actionhero";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import Moment from "moment";
 import { LoggedModel } from "../classes/loggedModel";
 import { GroupMember } from "./GroupMember";
@@ -143,12 +143,12 @@ export class Group extends LoggedModel<Group> {
   profiles: Profile[];
 
   async profilesCount(options = {}) {
-    let search = { where: { groupGuid: this.guid } };
+    let queryOptions = { where: { groupGuid: this.guid } };
     if (options) {
-      search = Object.assign(search, options);
+      queryOptions = Object.assign(queryOptions, options);
     }
 
-    return this.$count("groupMembers", search);
+    return this.$count("groupMembers", queryOptions);
   }
 
   async getRules() {
@@ -202,7 +202,9 @@ export class Group extends LoggedModel<Group> {
 
     const topLevelRuleKeys = TopLevelGroupRules.map((tlr) => tlr.key);
 
-    const transaction = await api.sequelize.transaction();
+    const transaction = await api.sequelize.transaction({
+      lock: Transaction.LOCK.UPDATE,
+    });
 
     try {
       await GroupRule.destroy({
@@ -349,33 +351,13 @@ export class Group extends LoggedModel<Group> {
     return GroupOps.stopPreviousRuns(this);
   }
 
-  async buildProfileImport(
-    profileGuid: string,
-    creatorType: string,
-    creatorGuid: string,
-    destinationGuid?: string
-  ) {
-    return GroupOps.buildProfileImport(
-      profileGuid,
-      creatorType,
-      creatorGuid,
-      destinationGuid
-    );
-  }
-
   async addProfile(profile: Profile) {
-    const _import = await this.buildProfileImport(
-      profile.guid,
-      "group",
-      this.guid
-    );
+    await GroupOps.buildProfileImport(profile.guid, "group", this.guid);
 
     await GroupMember.create({
       groupGuid: this.guid,
       profileGuid: profile.guid,
     });
-
-    await _import.save();
   }
 
   async removeProfile(profile: Profile) {
@@ -385,13 +367,9 @@ export class Group extends LoggedModel<Group> {
 
     if (!membership) throw new Error("profile is not a member of this group");
 
-    const _import = await this.buildProfileImport(
-      profile.guid,
-      "group",
-      this.guid
-    );
+    await GroupOps.buildProfileImport(profile.guid, "group", this.guid);
+
     await membership.destroy();
-    await _import.save();
   }
 
   async runAddGroupMembers(

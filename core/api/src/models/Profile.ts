@@ -4,6 +4,11 @@ import {
   HasMany,
   BelongsToMany,
   AfterDestroy,
+  BeforeSave,
+  DataType,
+  AllowNull,
+  Default,
+  AfterCreate,
 } from "sequelize-typescript";
 import { task } from "actionhero";
 import { LoggedModel } from "../classes/loggedModel";
@@ -11,17 +16,35 @@ import { GroupMember } from "./GroupMember";
 import { Group } from "./Group";
 import { Log } from "./Log";
 import { ProfileProperty } from "./ProfileProperty";
-import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { Import } from "./Import";
 import { Export } from "./Export";
 import { Event } from "./Event";
+import { StateMachine } from "./../modules/stateMachine";
 import { ProfileOps } from "../modules/ops/profile";
+
+const STATES = ["draft", "pending", "ready"] as const;
+
+const STATE_TRANSITIONS = [
+  { from: "draft", to: "pending", checks: [] },
+  { from: "draft", to: "ready", checks: [] },
+  {
+    from: "pending",
+    to: "ready",
+    checks: ["validateProfilePropertiesAreReady"],
+  },
+  { from: "ready", to: "pending", checks: [] },
+];
 
 @Table({ tableName: "profiles", paranoid: false })
 export class Profile extends LoggedModel<Profile> {
   guidPrefix() {
     return "pro";
   }
+
+  @AllowNull(false)
+  @Default("pending")
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
 
   @Column
   anonymousId: string;
@@ -53,6 +76,7 @@ export class Profile extends LoggedModel<Profile> {
     return {
       guid: this.guid,
       anonymousId: this.anonymousId,
+      state: this.state,
       properties,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
@@ -84,20 +108,11 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   async buildNullProperties() {
-    const properties = await this.properties();
-    const rules = await ProfilePropertyRule.cached();
-    let newPropertiesCount = 0;
-    for (const key in rules) {
-      if (!properties[key]) {
-        await ProfileProperty.create({
-          profileGuid: this.guid,
-          profilePropertyRuleGuid: rules[key].guid,
-        });
-        newPropertiesCount++;
-      }
-    }
+    return ProfileOps.buildNullProperties(this);
+  }
 
-    return newPropertiesCount;
+  async markPending() {
+    return ProfileOps.markPending(this);
   }
 
   async updateGroupMembership() {
@@ -139,12 +154,33 @@ export class Profile extends LoggedModel<Profile> {
     return message;
   }
 
+  async validateProfilePropertiesAreReady() {
+    const properties = await this.properties();
+    for (const k in properties) {
+      if (properties[k].state !== "ready") {
+        throw new Error(
+          `cannot transition profile ${this.guid} to ready state as not all properties are ready (${k})`
+        );
+      }
+    }
+  }
+
   // --- Class Methods --- //
 
   static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({ where: { guid } });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
+  }
+
+  @BeforeSave
+  static async updateState(instance: Profile) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
+
+  @AfterCreate
+  static async buildNullPropertiesForNewProfile(instance: Profile) {
+    await instance.buildNullProperties();
   }
 
   @AfterDestroy
@@ -182,11 +218,6 @@ export class Profile extends LoggedModel<Profile> {
 
   @AfterDestroy
   static async destroyExports(instance: Profile) {
-    let _exports = await instance.$get("exports");
-    while (_exports.length > 0) {
-      // need to loop 1-by-1 to afterDestroy hooks delete related importExport records
-      await Promise.all(_exports.map((_export) => _export.destroy()));
-      _exports = await instance.$get("exports");
-    }
+    await Export.destroy({ where: { profileGuid: instance.guid } });
   }
 }

@@ -7,9 +7,9 @@ export function makeWhereClause(
   matchCondition: MatchCondition,
   params: Array<any>
 ) {
-  const { columnName, filterOperation, value } = matchCondition;
+  const { columnName, filterOperation, value, values } = matchCondition;
   let op;
-  let match = value;
+  let match = values || value;
   let transform = null;
 
   switch (filterOperation) {
@@ -41,6 +41,9 @@ export function makeWhereClause(
       transform = "LOWER";
       match = `%${match.toString().toLowerCase()}%`;
       break;
+    case FilterOperation.In:
+      op = "IN";
+      break;
     default:
       throw new Error(`Unknown filterOperation: ${filterOperation}`);
   }
@@ -51,5 +54,7 @@ export function makeWhereClause(
 
   // put the values in the array
   params.push(match);
-  return ` ${key} ${op} ?`;
+  return ` ${key} ${op} ${Array.isArray(match) ? "(" : ""}?${
+    Array.isArray(match) ? ")" : ""
+  }`;
 }

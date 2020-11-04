@@ -4,8 +4,6 @@ import { Group } from "./../../../src/models/Group";
 import { Import } from "./../../../src/models/Import";
 import { Profile } from "./../../../src/models/Profile";
 import { Run } from "./../../../src/models/Run";
-import { Export } from "./../../../src/models/Export";
-import { ExportRun } from "./../../../src/models/ExportRun";
 
 let actionhero;
 

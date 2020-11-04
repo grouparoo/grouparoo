@@ -10,11 +10,11 @@ export const DEFAULT = {
         const { api } = await import("actionhero"); // this needs to be async loaded as we are within the config system, to avoid circular dependencies
 
         return [].concat(
-          ["imports", "events", "profiles", "exports"],
+          ["imports", "events", "runs", "schedules", "groups", "exports"],
           api?.plugins?.plugins
             .filter((plugin) => plugin.apps?.length > 0)
             .map((plugin) => plugin.apps.map((app) => `exports:${app.name}`)),
-          ["runs", "groups", "schedules", "destinations", "default"]
+          ["profiles", "profileProperties", "destinations", "default"]
         );
       },
       // Logging levels of task workers

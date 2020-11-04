@@ -35,6 +35,8 @@ import ExportFactory from "./factories/export";
 import RunFactory from "./factories/run";
 import ApiKeyFactory from "./factories/apiKey";
 
+export { ImportWorkflow } from "./workflows/import";
+
 import {
   // modules
   plugin,
@@ -54,8 +56,6 @@ import {
   Export,
   Event,
   EventData,
-  ExportImport,
-  ExportRun,
   Group,
   GroupMember,
   GroupRule,
@@ -92,8 +92,6 @@ const models = [
   Export,
   Event,
   EventData,
-  ExportImport,
-  ExportRun,
   Log,
   Notification,
   Permission,

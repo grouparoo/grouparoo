@@ -158,6 +158,16 @@ export class Plugins extends Initializer {
           );
         }
         if (
+          connection.direction === "import" &&
+          connection.app !== "manual" &&
+          !connection.methods.profileProperty &&
+          !connection.methods.profileProperties
+        ) {
+          errors.push(
+            `import connections must provide either connection.methods.profileProperty or connection.methods.profileProperties`
+          );
+        }
+        if (
           connection.direction === "export" &&
           !connection.methods.exportProfile &&
           !connection.methods.exportProfiles

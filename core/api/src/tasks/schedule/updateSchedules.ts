@@ -7,7 +7,7 @@ export class UpdateSchedules extends Task {
     super();
     this.name = "schedule:updateSchedules";
     this.description = "check all schedules and run them if it is time";
-    this.frequency = 1000 * 60 * 2; // Run every 2 minutes
+    this.frequency = 1000 * 60 * 5; // Run every 5 minutes
     this.queue = "schedules";
   }
 

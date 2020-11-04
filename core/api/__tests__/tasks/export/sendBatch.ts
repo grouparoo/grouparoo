@@ -1,6 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { App } from "../../../src/models/App";
 import { Profile } from "../../../src/models/Profile";
 import { Group } from "../../../src/models/Group";
 import { Destination } from "../../../src/models/Destination";
@@ -66,17 +65,14 @@ describe("tasks/export:sendBatch", () => {
       expect(run.importsCreated).toBe(1);
       expect(run.profilesCreated).toBe(0);
       expect(run.profilesImported).toBe(0);
-      expect(run.profilesExported).toBe(0);
-      expect(run.exportsCreated).toBe(0);
+    });
 
-      const foundImportTasks = await specHelper.findEnqueuedTasks(
-        "profile:importAndUpdate"
-      );
-      expect(foundImportTasks.length).toBe(1);
-      await specHelper.runTask(
-        "profile:importAndUpdate",
-        foundImportTasks[0].args[0]
-      );
+    test("the profile can be imported and exported", async () => {
+      await profile.import();
+      await profile.updateGroupMembership();
+      await specHelper.runTask("profile:completeImport", {
+        profileGuid: profile.guid,
+      });
     });
 
     test("export:sendBatch will be enqueued after a batch from the run", async () => {
@@ -99,18 +95,8 @@ describe("tasks/export:sendBatch", () => {
       expect(foundExportSendBatchTasks.length).toBe(1);
     });
 
-    test("the run will track the export being created separately than the export being sent", async () => {
-      await run.reload();
-
-      expect(run.importsCreated).toBe(1);
-      expect(run.profilesCreated).toBe(0);
-      expect(run.profilesImported).toBe(1);
-      expect(run.exportsCreated).toBe(1);
-      expect(run.profilesExported).toBe(0);
-    });
-
     test("without the export being sent, the run cannot be completed", async () => {
-      await run.determineState();
+      await run.afterBatch();
       await run.reload();
       expect(run.state).toEqual("running");
     });
@@ -133,12 +119,6 @@ describe("tasks/export:sendBatch", () => {
       expect(_exports.length).toBe(1);
       expect(_exports[0].startedAt).toBeTruthy();
       expect(_exports[0].completedAt).toBeTruthy();
-    });
-
-    test("the run can be completed", async () => {
-      await run.determineState();
-      await run.reload();
-      expect(run.state).toEqual("complete");
     });
   });
 });

@@ -1,13 +1,10 @@
 import { Run } from "../../models/Run";
-import { Destination } from "../../models/Destination";
-import { Export } from "../../models/Export";
 import { Profile } from "../../models/Profile";
 import { Group } from "../../models/Group";
 import { Schedule } from "../../models/Schedule";
-import { ExportRun } from "../../models/ExportRun";
 import { GroupMember } from "../../models/GroupMember";
 import { Op } from "sequelize";
-import { api, log } from "actionhero";
+import { log } from "actionhero";
 
 export namespace RunOps {
   /**
@@ -16,7 +13,6 @@ export namespace RunOps {
    */
   export async function quantizedTimeline(run: Run, steps = 25) {
     const data = [];
-    const destinations = await Destination.findAll();
     const start = run.createdAt.getTime();
     const end = run.completedAt
       ? run.completedAt.getTime()
@@ -58,51 +54,8 @@ export namespace RunOps {
               },
             },
           }),
-          export: await run.$count("imports", {
-            where: {
-              exportedAt: {
-                [Op.gte]: lastBoundary,
-                [Op.lt]: nextBoundary,
-              },
-            },
-          }),
         },
       };
-
-      const _exportGroups = await Export.findAll({
-        raw: true,
-        attributes: [
-          [api.sequelize.fn("COUNT", "*"), "count"],
-          "destinationGuid",
-        ],
-        group: ["destinationGuid"],
-        where: {
-          startedAt: {
-            [Op.gte]: lastBoundary,
-            [Op.lt]: nextBoundary,
-          },
-        },
-        include: [
-          {
-            model: ExportRun,
-            where: { runGuid: run.guid },
-            required: true,
-            attributes: [],
-          },
-        ],
-      });
-
-      _exportGroups.forEach((_exportGroup) => {
-        const destination = destinations.filter(
-          (destination) => destination.guid === _exportGroup.destinationGuid
-        )[0];
-        if (destination) {
-          if (!foundDestinationNames.includes(destination.name)) {
-            foundDestinationNames.push(destination.name);
-          }
-          timeData.steps[destination.name] = _exportGroup["count"];
-        }
-      });
 
       data.push(timeData);
       i++;
@@ -128,8 +81,6 @@ export namespace RunOps {
     if (run.state === "stopped") return 100;
 
     if (run.creatorType === "group") {
-      if (run.groupMethod === "exporting") return 99; // this is hard to predict...
-
       const group = await Group.findByGuid(run.creatorGuid);
       const totalGroupMembers =
         group.type === "calculated"
@@ -142,6 +93,9 @@ export namespace RunOps {
           updatedAt: { [Op.gte]: run.createdAt },
         },
       });
+
+      // we are exporting the group to CSV
+      if (!run.groupMethod) return 100;
 
       // there are 3 phases to group runs, but only 2 really could have work, so we attribute 1/2 to each phase
       let percentComplete = Math.floor(
@@ -171,7 +125,7 @@ export namespace RunOps {
       // for profilePropertyRules and for other types of internal run, we can assume we have to check every profile in the system
       const totalProfiles = await Profile.count();
       return Math.floor(
-        100 * (run.profilesImported / (totalProfiles > 0 ? totalProfiles : 1))
+        100 * (run.importsCreated / (totalProfiles > 0 ? totalProfiles : 1))
       );
     }
   }

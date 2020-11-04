@@ -10,7 +10,7 @@ import {
   AfterDestroy,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import { EventData } from "./EventData";
 import { Profile } from "./Profile";
 import { ProfilePropertyRuleFiltersWithKey } from "./ProfilePropertyRule";
@@ -75,7 +75,9 @@ export class Event extends LoggedModel<Event> {
   }
 
   async setData(data: { [key: string]: any }) {
-    const transaction = await api.sequelize.transaction();
+    const transaction = await api.sequelize.transaction({
+      lock: Transaction.LOCK.UPDATE,
+    });
 
     try {
       for (const key in data) {
@@ -101,7 +103,7 @@ export class Event extends LoggedModel<Event> {
   }
 
   async updateProfile(profile: Profile) {
-    return task.enqueue("profile:importAndUpdate", { guid: profile.guid });
+    await profile.markPending();
   }
 
   async apiData() {

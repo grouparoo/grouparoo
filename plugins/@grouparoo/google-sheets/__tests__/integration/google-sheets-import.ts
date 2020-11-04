@@ -2,7 +2,7 @@ import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/google-sheets": { path: path.join(__dirname, "..", "..") },
 });
-import { helper } from "@grouparoo/spec-helper";
+import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import fs from "fs-extra";
 import { api, specHelper } from "actionhero";
 import {
@@ -275,24 +275,12 @@ describe("integration/runs/google-sheets", () => {
         expect(foundAssociateTasks.length).toEqual(10);
 
         await Promise.all(
-          foundAssociateTasks.map(
-            async (t) =>
-              await specHelper.runTask("import:associateProfile", t.args[0])
+          foundAssociateTasks.map((t) =>
+            specHelper.runTask("import:associateProfile", t.args[0])
           )
         );
 
-        // run all enqueued importAndUpdate tasks
-        const foundImportAndUpdateTasks = await specHelper.findEnqueuedTasks(
-          "profile:importAndUpdate"
-        );
-        expect(foundImportAndUpdateTasks.length).toEqual(10);
-
-        await Promise.all(
-          foundImportAndUpdateTasks.map(
-            async (t) =>
-              await specHelper.runTask("profile:importAndUpdate", t.args[0])
-          )
-        );
+        await ImportWorkflow();
 
         // run all enqueued export tasks
         const foundExportTasks = await specHelper.findEnqueuedTasks(
@@ -301,23 +289,21 @@ describe("integration/runs/google-sheets", () => {
         expect(foundExportTasks.length).toEqual(10);
 
         await Promise.all(
-          foundExportTasks.map(
-            async (t) => await specHelper.runTask("profile:export", t.args[0])
+          foundExportTasks.map((t) =>
+            specHelper.runTask("profile:export", t.args[0])
           )
         );
 
-        // check the run's completion percentage (before the run is complete)
-        await run.determinePercentComplete();
-        expect(run.percentComplete).toBe(0); // we can't actually tell :(
+        await run.afterBatch();
+        expect(run.percentComplete).toBe(100);
 
         // check if the run is done
         const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
           "run:determineState"
         );
         await Promise.all(
-          foundRunDetermineStateTasks.map(
-            async (t) =>
-              await specHelper.runTask("run:determineState", t.args[0])
+          foundRunDetermineStateTasks.map((t) =>
+            specHelper.runTask("run:determineState", t.args[0])
           )
         );
 
@@ -330,8 +316,6 @@ describe("integration/runs/google-sheets", () => {
         expect(run.importsCreated).toBe(10);
         expect(run.profilesCreated).toBe(10);
         expect(run.profilesImported).toBe(10);
-        expect(run.exportsCreated).toBe(0);
-        expect(run.profilesExported).toBe(0);
         expect(run.percentComplete).toBe(100);
       },
       1000 * 60
@@ -392,25 +376,12 @@ describe("integration/runs/google-sheets", () => {
         expect(foundAssociateTasks.length).toEqual(20);
 
         await Promise.all(
-          foundAssociateTasks.map(
-            async (t) =>
-              await specHelper.runTask("import:associateProfile", t.args[0])
+          foundAssociateTasks.map((t) =>
+            specHelper.runTask("import:associateProfile", t.args[0])
           )
         );
 
-        // run all enqueued importAndUpdate tasks
-        const foundImportAndUpdateTasks = await specHelper.findEnqueuedTasks(
-          "profile:importAndUpdate"
-        );
-        // this count is de-duped
-        expect(foundImportAndUpdateTasks.length).toEqual(10);
-
-        await Promise.all(
-          foundImportAndUpdateTasks.map(
-            async (t) =>
-              await specHelper.runTask("profile:importAndUpdate", t.args[0])
-          )
-        );
+        await ImportWorkflow();
 
         // run all enqueued export tasks
         const foundExportTasks = await specHelper.findEnqueuedTasks(
@@ -420,23 +391,22 @@ describe("integration/runs/google-sheets", () => {
         expect(foundExportTasks.length).toEqual(10);
 
         await Promise.all(
-          foundExportTasks.map(
-            async (t) => await specHelper.runTask("profile:export", t.args[0])
+          foundExportTasks.map((t) =>
+            specHelper.runTask("profile:export", t.args[0])
           )
         );
 
         // check the run's completion percentage (before the run is complete)
-        await run.determinePercentComplete();
-        expect(run.percentComplete).toBe(0);
+        await run.afterBatch();
+        expect(run.percentComplete).toBe(100);
 
         // check if the run is done
         const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
           "run:determineState"
         );
         await Promise.all(
-          foundRunDetermineStateTasks.map(
-            async (t) =>
-              await specHelper.runTask("run:determineState", t.args[0])
+          foundRunDetermineStateTasks.map((t) =>
+            specHelper.runTask("run:determineState", t.args[0])
           )
         );
 
@@ -449,8 +419,6 @@ describe("integration/runs/google-sheets", () => {
         expect(run.importsCreated).toBe(10);
         expect(run.profilesCreated).toBe(0);
         expect(run.profilesImported).toBe(10);
-        expect(run.exportsCreated).toBe(0);
-        expect(run.profilesExported).toBe(0);
         expect(run.percentComplete).toBe(100);
       },
       1000 * 60

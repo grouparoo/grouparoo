@@ -57,19 +57,19 @@ export const ProfilePropertyRuleTypes = [
   "phoneNumber",
   "string",
   "url",
-];
+] as const;
 
 const CACHE_TTL = env === "test" ? -1 : 1000 * 30;
 const CACHE_KEY = `grouparoo:profilePropertyRules`;
 
 export interface CachedProfilePropertyRule {
-  guid: string;
-  key: string;
-  type: string;
-  unique: boolean;
-  isArray: boolean;
-  identifying: boolean;
-  sourceGuid: string;
+  guid: ProfilePropertyRule["guid"];
+  key: ProfilePropertyRule["key"];
+  type: ProfilePropertyRule["type"];
+  unique: ProfilePropertyRule["unique"];
+  isArray: ProfilePropertyRule["isArray"];
+  identifying: ProfilePropertyRule["identifying"];
+  sourceGuid: ProfilePropertyRule["sourceGuid"];
   appGuid: string;
 }
 
@@ -141,7 +141,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     }
   })
   @Column(DataType.ENUM(...ProfilePropertyRuleTypes))
-  type: string;
+  type: typeof ProfilePropertyRuleTypes[number];
 
   @AllowNull(false)
   @Default(false)
@@ -217,7 +217,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   async afterSetOptions() {
-    await this.enqueueRuns();
+    return ProfilePropertyRuleOps.enqueueRuns(this);
   }
 
   async validateOptions(
@@ -299,10 +299,6 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       });
     }
 
-    await this.enqueueRuns();
-  }
-
-  async enqueueRuns() {
     return ProfilePropertyRuleOps.enqueueRuns(this);
   }
 

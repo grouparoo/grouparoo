@@ -160,12 +160,95 @@ export namespace SourceOps {
         profileGuid: profile.guid,
       });
 
+      return response;
+    } catch (error) {
+      throw error;
+    } finally {
       await app.checkAndUpdateParallelism("decr");
+    }
+  }
+
+  /**
+   * Import a profile property for a Profile from this source
+   */
+  export async function importProfileProperties(
+    source: Source,
+    profiles: Profile[],
+    profilePropertyRule: ProfilePropertyRule,
+    profilePropertyRuleOptionsOverride?: OptionHelper.SimpleOptions,
+    profilePropertyRuleFiltersOverride?: ProfilePropertyRuleFiltersWithKey[],
+    preloadedArgs: {
+      app?: App;
+      connection?: any;
+      appOptions?: OptionHelper.SimpleOptions;
+      sourceOptions?: OptionHelper.SimpleOptions;
+      sourceMapping?: MappingHelper.Mappings;
+      profileProperties?: {};
+    } = {}
+  ) {
+    if (
+      profilePropertyRule.state !== "ready" &&
+      !profilePropertyRuleOptionsOverride
+    ) {
+      return;
+    }
+
+    await profilePropertyRule.validateOptions(
+      profilePropertyRuleOptionsOverride,
+      false,
+      true
+    );
+
+    const { pluginConnection } = await source.getPlugin();
+    if (!pluginConnection) {
+      throw new Error(
+        `cannot find connection for source ${source.type} (${source.guid})`
+      );
+    }
+
+    const method = pluginConnection.methods.profileProperties;
+    if (!method) return;
+
+    const app = preloadedArgs.app || (await source.$get("app"));
+    const connection = preloadedArgs.connection || (await app.getConnection());
+    const appOptions = preloadedArgs.appOptions || (await app.getOptions());
+    const sourceOptions =
+      preloadedArgs.sourceOptions || (await source.getOptions());
+    const sourceMapping =
+      preloadedArgs.sourceMapping || (await source.getMapping());
+
+    while ((await app.checkAndUpdateParallelism("incr")) === false) {
+      log(`parallelism limit reached for ${app.type}, sleeping...`);
+      utils.sleep(100);
+    }
+
+    try {
+      const response = await method({
+        connection,
+        app,
+        appGuid: app.guid,
+        appOptions,
+        source,
+        sourceGuid: source.guid,
+        sourceOptions,
+        sourceMapping,
+        profilePropertyRule,
+        profilePropertyRuleGuid: profilePropertyRule.guid,
+        profilePropertyRuleOptions: profilePropertyRuleOptionsOverride
+          ? profilePropertyRuleOptionsOverride
+          : await profilePropertyRule.getOptions(),
+        profilePropertyRuleFilters: profilePropertyRuleFiltersOverride
+          ? profilePropertyRuleFiltersOverride
+          : await profilePropertyRule.getFilters(),
+        profiles,
+        profileGuids: profiles.map((p) => p.guid),
+      });
 
       return response;
     } catch (error) {
-      await app.checkAndUpdateParallelism("decr");
       throw error;
+    } finally {
+      await app.checkAndUpdateParallelism("decr");
     }
   }
 

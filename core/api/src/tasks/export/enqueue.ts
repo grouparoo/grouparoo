@@ -1,7 +1,7 @@
-import { RetryableTask } from "../../classes/retryableTask";
 import { Destination } from "../../models/Destination";
 import { log } from "actionhero";
 import { ExportOps } from "../../modules/ops/export";
+import { RetryableTask } from "../../classes/retryableTask";
 
 export class EnqueueExports extends RetryableTask {
   constructor() {
@@ -9,7 +9,7 @@ export class EnqueueExports extends RetryableTask {
     this.name = "export:enqueue";
     this.description =
       "check for pending exports and enqueue other tasks to send them";
-    this.frequency = 1000 * 30;
+    this.frequency = 1000 * 10;
     this.queue = "exports";
     this.inputs = {};
   }

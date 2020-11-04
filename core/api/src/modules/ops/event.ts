@@ -47,6 +47,8 @@ export namespace EventOps {
           "cannot associate a profile without profileGuid, userId, or anonymousId"
         );
       }
+
+      await profile.markPending();
       return profile;
     } catch (error) {
       // It's possible that 2 events for the same profile are getting processed at the same time, which would create a conflicting profile.
@@ -171,14 +173,11 @@ export namespace EventOps {
       `profiles:anonymousCreate:${anonymousId}`
     );
     try {
-      const [profile] = await Profile.findOrCreate({
-        where: { anonymousId },
-      });
+      let profile = await Profile.findOne({ where: { anonymousId } });
+      if (!profile) profile = await Profile.create({ anonymousId });
       return profile;
     } finally {
-      if (releaseLock) {
-        await releaseLock();
-      }
+      await releaseLock();
     }
   }
 }

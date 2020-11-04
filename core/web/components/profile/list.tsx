@@ -12,6 +12,7 @@ import LoadingButton from "../loadingButton";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { Models, Actions } from "../../utils/apiData";
 import ArrayProfilePropertyList from "../../components/profile/arrayProfilePropertyList";
+import StateBadge from "../stateBadge";
 
 export default function ProfilesList(props) {
   const { errorHandler, profilePropertyRules } = props;
@@ -206,6 +207,7 @@ export default function ProfilesList(props) {
             ) : (
               <th>Unique Properties</th>
             )}
+            <th>State</th>
             <th>Created At</th>
             <th>Updated At</th>
           </tr>
@@ -270,6 +272,9 @@ export default function ProfilesList(props) {
                       </div>
                     );
                   })}
+                </td>
+                <td>
+                  <StateBadge state={profile.state} />
                 </td>
                 <td>
                   <Moment fromNow>{profile.createdAt}</Moment>

@@ -150,6 +150,19 @@ describe("models/event", () => {
         expect(await Profile.count()).toBe(2);
       });
     });
+
+    test("associating an event to a Profile marks the Profile as pending", async () => {
+      const profile = await helper.factories.profile();
+      await profile.addOrUpdateProperties({ userId: [999] });
+      await profile.update({ state: "ready" });
+
+      const event = await helper.factories.event();
+      await event.update({ userId: "999" });
+      await event.associate(identifyingProfilePropertyRuleGuid);
+
+      await profile.reload();
+      expect(profile.state).toBe("pending");
+    });
   });
 
   describe("class methods", () => {

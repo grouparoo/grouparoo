@@ -10,8 +10,6 @@ import { File } from "../models/File";
 import { Event } from "../models/Event";
 import { EventData } from "../models/EventData";
 import { Export } from "../models/Export";
-import { ExportImport } from "../models/ExportImport";
-import { ExportRun } from "../models/ExportRun";
 import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
 import { GroupRule } from "../models/GroupRule";
@@ -45,8 +43,6 @@ const models = [
   Import,
   Event,
   EventData,
-  ExportImport,
-  ExportRun,
   Run,
   Export,
   File,
@@ -184,28 +180,16 @@ export namespace plugin {
         : [row[k]];
     });
 
-    const transaction = await api.sequelize.transaction();
+    const _import = await Import.create({
+      rawData: row,
+      data: mappedProfileProperties,
+      creatorType: "run",
+      creatorGuid: run.guid,
+    });
 
-    try {
-      const _import = await Import.create(
-        {
-          rawData: row,
-          data: mappedProfileProperties,
-          creatorType: "run",
-          creatorGuid: run.guid,
-        },
-        { transaction }
-      );
-      await run.increment(["importsCreated"], { transaction, silent: true });
-      run.set("updatedAt", new Date());
-      await run.save({ transaction });
-      await transaction.commit();
+    await run.incrementWithLock("importsCreated");
 
-      return _import;
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
-    }
+    return _import;
   }
 
   /**

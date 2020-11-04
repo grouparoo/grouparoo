@@ -65,7 +65,6 @@ export class GroupDestroy extends Task {
     );
     const remainingMembers = await group.$count("groupMembers");
 
-    await run.determineState();
     await run.afterBatch();
 
     if (importsCounts > 0 || previousRunMembers > 0 || remainingMembers > 0) {
@@ -80,12 +79,8 @@ export class GroupDestroy extends Task {
         `[ run ] completed run ${run.guid} for group ${group.name} (${group.guid})`,
         "notice"
       );
+      await run.afterBatch("complete");
       await group.destroy();
-
-      // runs for this group will be deleted, so we don't need to check the state
-      // await task.enqueueIn(config.tasks.timeout + 1, "run:determineState", {
-      //   runGuid: run.guid,
-      // });
     }
   }
 }

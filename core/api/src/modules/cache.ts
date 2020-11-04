@@ -54,8 +54,6 @@ function makeObjectKey({ objectGuid }) {
     throw new Error(`objectGuid required`);
   }
 
-  // TODO: validate if real guid?
-
   return `objectcache:${objectGuid}`;
 }
 

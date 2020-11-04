@@ -24,6 +24,9 @@ export default function StateBadge({ state }: { state: string }) {
     case "initializing":
       variant = "warning";
       break;
+    case "pending":
+      variant = "warning";
+      break;
     case "updating":
       variant = "warning";
       break;

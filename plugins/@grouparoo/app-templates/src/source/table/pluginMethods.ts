@@ -28,12 +28,14 @@ export enum FilterOperation {
   LessThanOrEqual = "less than or equal to",
   Contain = "contains",
   NotContain = "does not contain",
+  In = "in",
 }
 
 export interface MatchCondition {
   columnName: string;
   filterOperation: FilterOperation;
-  value: DataResponse;
+  value?: DataResponse;
+  values?: DataResponse[];
   // Later when adding more filter options...
   // export interface ProfilePropertyRuleFiltersWithKey {
   //     key: string;
@@ -81,6 +83,22 @@ export interface GetPropertyValueMethod {
     aggregationMethod: AggregationMethod;
     isArray: boolean;
   }): Promise<DataResponse[]>;
+}
+export interface GetPropertyValuesMethod {
+  (argument: {
+    connection: any;
+    appOptions: SimpleAppOptions;
+    appGuid: string;
+    tableName: string;
+    columnName: string;
+    tablePrimaryKeyCol: string;
+    tableMappingCol: string;
+    sortColumn: string;
+    matchConditions: MatchCondition[];
+    aggregationMethod: AggregationMethod;
+    isArray: boolean;
+    primaryKeys: Array<number | string>;
+  }): Promise<{ [primaryKey: string]: DataResponse[] }>;
 }
 export interface TableDefinition {
   name: string;

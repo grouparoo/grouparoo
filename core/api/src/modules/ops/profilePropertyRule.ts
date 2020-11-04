@@ -4,6 +4,7 @@ import { GroupRule } from "../../models/GroupRule";
 import { App } from "../../models/App";
 import { internalRun } from "../internalRun";
 import { task } from "actionhero";
+import Mustache from "mustache";
 
 export namespace ProfilePropertyRuleOps {
   /**
@@ -89,6 +90,42 @@ export namespace ProfilePropertyRuleOps {
     }
 
     return response;
+  }
+
+  /**
+   * Returns any Profile Properties that this Rule depends on.
+   * For example, if email depends on userId, this method would return [userIdRule]
+   */
+  export async function dependencies(profilePropertyRule: ProfilePropertyRule) {
+    const dependencies: ProfilePropertyRule[] = [];
+    const source = await profilePropertyRule.$get("source");
+    const sourceMapping = await source.getMapping();
+    const ruleOptions = await profilePropertyRule.getOptions();
+    const rules = await ProfilePropertyRule.findAll();
+
+    // does our source depend on another property to be mapped?
+    const remoteMappingKeys = Object.values(sourceMapping);
+    rules
+      .filter((rule) => remoteMappingKeys.includes(rule.key))
+      .filter((rule) => rule.guid !== profilePropertyRule.guid)
+      .forEach((rule) => dependencies.push(rule));
+
+    // does this rule have any mustache variables depended on?
+    for (const key in ruleOptions) {
+      const mustacheString = ruleOptions[key];
+      const mustacheVariables: string[] = Mustache.parse(mustacheString)
+        .filter((chunk) => chunk[0] === "name")
+        .map((chunk) => chunk[1]);
+      rules
+        .filter((rule) => mustacheVariables.includes(rule.key))
+        .filter((rule) => rule.guid !== profilePropertyRule.guid)
+        .forEach((rule) => dependencies.push(rule));
+    }
+
+    // de-duplicate
+    return dependencies.filter(
+      (v, i, a) => a.findIndex((t) => t.guid === v.guid) === i
+    );
   }
 
   /**
