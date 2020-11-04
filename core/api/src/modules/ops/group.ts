@@ -332,10 +332,6 @@ export namespace GroupOps {
 
       await transaction.commit();
 
-      await run.incrementWithLock(
-        "importsCreated",
-        profilesNeedingGroupMembership.length
-      );
       await group.update({ calculatedAt: new Date() });
 
       return {
@@ -397,7 +393,6 @@ export namespace GroupOps {
 
       await transaction.commit();
 
-      await run.incrementWithLock("importsCreated", groupMembersCount);
       await group.update({ calculatedAt: new Date() });
       return groupMembersCount;
     } catch (error) {

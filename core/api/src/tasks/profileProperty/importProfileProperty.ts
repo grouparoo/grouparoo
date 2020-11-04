@@ -5,7 +5,7 @@ import { log } from "actionhero";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { ProfilePropertyRuleOps } from "../../modules/ops/profilePropertyRule";
 
-export class ProfilePropertyImport extends RetryableTask {
+export class ImportProfileProperty extends RetryableTask {
   constructor() {
     super();
     this.name = "profileProperty:importProfileProperty";

@@ -29,7 +29,6 @@ import { TeamMember } from "./TeamMember";
 import { RunOps } from "../modules/ops/runs";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
-import { waitForLock } from "../modules/locks";
 
 export interface HighWaterMark {
   [key: string]: string | number | Date;
@@ -145,10 +144,13 @@ export class Run extends Model<Run> {
   @HasMany(() => Import, "creatorGuid")
   imports: Import[];
 
-  async determinePercentComplete() {
+  async determinePercentComplete(logPercentMessage = true) {
     const percentComplete = await RunOps.determinePercentComplete(this);
     await this.update({ percentComplete });
-    log(`run ${this.guid} is ${this.percentComplete}% complete`);
+    if (logPercentMessage) {
+      log(`run ${this.guid} is ${this.percentComplete}% complete`);
+    }
+
     return percentComplete;
   }
 
@@ -251,21 +253,6 @@ export class Run extends Model<Run> {
 
   async quantizedTimeline(steps = 25) {
     return RunOps.quantizedTimeline(this, steps);
-  }
-
-  async incrementWithLock(
-    field: "importsCreated" | "profilesCreated" | "profilesImported",
-    by = 1
-  ) {
-    const { releaseLock } = await waitForLock(`run:${this.guid}:lock`);
-    try {
-      await this.increment(field, { by, silent: true });
-      this.set("updatedAt", new Date());
-      await this.save();
-      return this;
-    } finally {
-      releaseLock();
-    }
   }
 
   async apiData() {

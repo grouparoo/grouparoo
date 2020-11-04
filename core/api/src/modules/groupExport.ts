@@ -101,8 +101,6 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
       csvStream.write(row);
     }
 
-    await run.incrementWithLock("profilesImported", profiles.length);
-
     offset = limit + offset;
     profiles = await getProfiles();
   }

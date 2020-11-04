@@ -7,7 +7,7 @@ import { log, task } from "actionhero";
 import { ProfilePropertiesPluginMethodResponse } from "../../classes/plugin";
 import { ProfilePropertyRuleOps } from "../../modules/ops/profilePropertyRule";
 
-export class ProfilePropertyImport extends RetryableTask {
+export class ImportProfileProperties extends RetryableTask {
   constructor() {
     super();
     this.name = "profileProperty:importProfileProperties";
