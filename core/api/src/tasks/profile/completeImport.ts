@@ -78,37 +78,21 @@ export class ProfileCompleteImport extends RetryableTask {
       }
 
       let force = false;
-      const transaction = await api.sequelize.transaction({
-        type: Transaction.TYPES.EXCLUSIVE,
+
+      const runs = await Run.findAll({
+        where: {
+          guid: {
+            [Op.in]: imports
+              .filter((i) => i.creatorType === "run")
+              .map((i) => i.creatorGuid),
+          },
+        },
       });
 
-      try {
-        const runs = await Run.findAll({
-          where: {
-            guid: {
-              [Op.in]: imports
-                .filter((i) => i.creatorType === "run")
-                .map((i) => i.creatorGuid),
-            },
-          },
-          transaction,
-        });
-
-        for (const i in runs) {
-          const run = runs[i];
-          if (run.force) force = true;
-          await run.increment("profilesImported", {
-            silent: true,
-            transaction,
-          });
-          run.set("updatedAt", new Date());
-          await run.save({ transaction });
-        }
-
-        await transaction.commit();
-      } catch (error) {
-        await transaction.rollback();
-        throw error;
+      for (const i in runs) {
+        const run = runs[i];
+        if (run.force) force = true;
+        await run.incrementWithLock("profilesImported");
       }
 
       await task.enqueue("profile:export", {

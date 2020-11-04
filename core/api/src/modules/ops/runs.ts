@@ -125,7 +125,7 @@ export namespace RunOps {
       // for profilePropertyRules and for other types of internal run, we can assume we have to check every profile in the system
       const totalProfiles = await Profile.count();
       return Math.floor(
-        100 * (run.profilesImported / (totalProfiles > 0 ? totalProfiles : 1))
+        100 * (run.importsCreated / (totalProfiles > 0 ? totalProfiles : 1))
       );
     }
   }

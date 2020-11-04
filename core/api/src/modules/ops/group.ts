@@ -330,16 +330,12 @@ export namespace GroupOps {
         }
       );
 
-      await run.increment(["importsCreated"], {
-        by: profilesNeedingGroupMembership.length,
-        silent: true,
-        transaction,
-      });
-      run.set("updatedAt", new Date());
-      await run.save({ transaction });
-
       await transaction.commit();
 
+      await run.incrementWithLock(
+        "importsCreated",
+        profilesNeedingGroupMembership.length
+      );
       await group.update({ calculatedAt: new Date() });
 
       return {
@@ -399,15 +395,9 @@ export namespace GroupOps {
         groupMembersCount++;
       }
 
-      await run.increment(["importsCreated"], {
-        by: groupMembersCount,
-        transaction,
-        silent: true,
-      });
-      run.set("updatedAt", new Date());
-      await run.save({ transaction });
-
       await transaction.commit();
+
+      await run.incrementWithLock("importsCreated", groupMembersCount);
       await group.update({ calculatedAt: new Date() });
       return groupMembersCount;
     } catch (error) {

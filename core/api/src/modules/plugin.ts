@@ -1,7 +1,6 @@
 import { api } from "actionhero";
 import { GrouparooPlugin } from "../classes/plugin";
 import Mustache from "mustache";
-import { Transaction } from "sequelize";
 
 import { App } from "../models/App";
 import { ApiKey } from "../models/ApiKey";
@@ -181,30 +180,16 @@ export namespace plugin {
         : [row[k]];
     });
 
-    const transaction = await api.sequelize.transaction({
-      type: Transaction.TYPES.EXCLUSIVE,
+    const _import = await Import.create({
+      rawData: row,
+      data: mappedProfileProperties,
+      creatorType: "run",
+      creatorGuid: run.guid,
     });
 
-    try {
-      const _import = await Import.create(
-        {
-          rawData: row,
-          data: mappedProfileProperties,
-          creatorType: "run",
-          creatorGuid: run.guid,
-        },
-        { transaction }
-      );
-      await run.increment(["importsCreated"], { transaction, silent: true });
-      run.set("updatedAt", new Date());
-      await run.save({ transaction });
-      await transaction.commit();
+    await run.incrementWithLock("importsCreated");
 
-      return _import;
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
-    }
+    return _import;
   }
 
   /**

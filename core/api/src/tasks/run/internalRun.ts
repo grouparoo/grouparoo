@@ -4,6 +4,8 @@ import { Import } from "../../models/Import";
 import { Profile } from "../../models/Profile";
 import { plugin } from "../../modules/plugin";
 import { Transaction } from "sequelize";
+import { ProfileProperty } from "../../models/ProfileProperty";
+import { ProfilePropertyType } from "../../modules/ops/profile";
 
 export class RunInternalRun extends Task {
   constructor() {
@@ -19,6 +21,15 @@ export class RunInternalRun extends Task {
     };
   }
 
+  simplifyProfileProperties(complexProperties: ProfilePropertyType) {
+    const simpleProperties = {};
+    for (let key in complexProperties) {
+      simpleProperties[key] = complexProperties[key].values;
+    }
+
+    return simpleProperties;
+  }
+
   async run(params) {
     const offset: number = params.offset || 0;
     const limit: number =
@@ -27,22 +38,29 @@ export class RunInternalRun extends Task {
         (await plugin.readSetting("core", "runs-profile-batch-size")).value
       );
 
-    const run = await Run.findByGuid(params.runGuid);
-
-    if (run.state === "stopped") return;
-
     const transaction = await api.sequelize.transaction({
       type: Transaction.TYPES.EXCLUSIVE,
+      lock: Transaction.LOCK.UPDATE,
     });
 
     try {
+      const run = await Run.findOne({
+        where: { guid: params.runGuid },
+        transaction,
+      });
+
+      if (run.state === "stopped") {
+        await transaction.rollback();
+        return;
+      }
+
       await run.update(
         {
           groupMemberLimit: limit,
           groupMemberOffset: offset,
           groupMethod: "internalRun",
         },
-        { transaction }
+        { transaction, silent: true }
       );
 
       const profiles = await Profile.findAll({
@@ -55,12 +73,19 @@ export class RunInternalRun extends Task {
       for (const i in profiles) {
         const profile = profiles[i];
 
+        const oldProfileProperties = await profile.properties();
+        const oldGroups = await profile.$get("groups");
+
         await profile.buildNullProperties();
 
         await Import.create(
           {
             profileGuid: profile.guid,
             profileAssociatedAt: new Date(),
+            oldProfileProperties: this.simplifyProfileProperties(
+              oldProfileProperties
+            ),
+            oldGroupGuids: oldGroups.map((g) => g.guid),
             rawData: {},
             data: {},
             creatorType: "run",
@@ -68,18 +93,30 @@ export class RunInternalRun extends Task {
           },
           { transaction }
         );
-      }
 
-      await run.increment(["importsCreated"], {
-        by: profiles.length,
-        transaction,
-        silent: true,
-      });
-      run.set("updatedAt", new Date());
-      await run.save({ transaction });
+        if (run.creatorType === "profilePropertyRule") {
+          await profile.update({ state: "pending" }, { transaction });
+          const property = await ProfileProperty.findOne({
+            where: {
+              profileGuid: profile.guid,
+              profilePropertyRuleGuid: run.creatorGuid,
+            },
+          });
+          await property.update(
+            {
+              state: "pending",
+              stateChangedAt: new Date(),
+            },
+            { transaction }
+          );
+        } else {
+          await profile.markPending();
+        }
+      }
 
       await transaction.commit();
 
+      await run.incrementWithLock("importsCreated", profiles.length);
       await run.afterBatch();
 
       if (profiles.length > 0) {

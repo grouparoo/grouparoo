@@ -1,4 +1,4 @@
-import { helper } from "@grouparoo/spec-helper";
+import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
 import { Import } from "./../../../src/models/Import";
 import { Run } from "./../../../src/models/Run";
@@ -81,18 +81,7 @@ describe("integration/runs/internalRun", () => {
     });
 
     test("run the rest of the import pipeline", async () => {
-      await specHelper.runTask("profiles:checkReady", {});
-
-      // complete the import
-      const completeTasks = await specHelper.findEnqueuedTasks(
-        "profile:completeImport"
-      );
-      expect(completeTasks.length).toBe(1);
-      expect(completeTasks[0].args[0].profileGuid).toBe(profile.guid);
-      await specHelper.runTask(
-        "profile:completeImport",
-        completeTasks[0].args[0]
-      );
+      await ImportWorkflow();
 
       // run all enqueued export tasks
       const foundExportTasks = await specHelper.findEnqueuedTasks(

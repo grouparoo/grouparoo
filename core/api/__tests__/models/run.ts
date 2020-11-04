@@ -189,7 +189,7 @@ describe("models/run", () => {
           state: "running",
           creatorGuid: teamMember.guid,
           creatorType: "teamMember",
-          profilesImported: 1,
+          importsCreated: 1,
         });
         await run.determinePercentComplete();
         expect(run.percentComplete).toBe(50);

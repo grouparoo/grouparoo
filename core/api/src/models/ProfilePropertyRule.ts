@@ -217,7 +217,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   async afterSetOptions() {
-    await this.enqueueRuns();
+    return ProfilePropertyRuleOps.enqueueRuns(this);
   }
 
   async validateOptions(
@@ -299,10 +299,6 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       });
     }
 
-    await this.enqueueRuns();
-  }
-
-  async enqueueRuns() {
     return ProfilePropertyRuleOps.enqueueRuns(this);
   }
 

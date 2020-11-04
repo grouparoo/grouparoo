@@ -1,7 +1,7 @@
 import { Task, api, log, env } from "actionhero";
 import { Import } from "../../models/Import";
 import { Run } from "../../models/Run";
-import { ProfileOps, ProfilePropertyType } from "../../modules/ops/profile";
+import { ProfilePropertyType } from "../../modules/ops/profile";
 import { Transaction } from "sequelize";
 
 export class ImportAssociateProfile extends Task {
@@ -31,7 +31,7 @@ export class ImportAssociateProfile extends Task {
 
     try {
       const { profile, isNew } = await _import.associateProfile();
-      await ProfileOps.markPending(profile);
+      await profile.markPending();
 
       const oldProfileProperties = await profile.properties();
       const oldGroups = await profile.$get("groups");
@@ -43,30 +43,9 @@ export class ImportAssociateProfile extends Task {
       await _import.save();
 
       if (_import.creatorType === "run") {
-        const transaction = await api.sequelize.transaction({
-          lock: Transaction.LOCK.UPDATE,
-        });
-
-        try {
-          const run = await Run.findOne({
-            where: { guid: _import.creatorGuid },
-            transaction,
-          });
-          if (!run) throw new Error(`run ${_import.creatorGuid} not found`);
-
-          if (isNew) {
-            await run.increment(["profilesCreated"], {
-              transaction,
-              silent: true,
-            });
-            run.set("updatedAt", new Date());
-            await run.save({ transaction });
-          }
-
-          await transaction.commit();
-        } catch (error) {
-          await transaction.rollback();
-          throw error;
+        if (isNew) {
+          const run = await Run.findByGuid(_import.creatorGuid);
+          await run.incrementWithLock("profilesCreated");
         }
       }
     } catch (error) {
