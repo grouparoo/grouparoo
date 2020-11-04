@@ -3,6 +3,7 @@ import { Profile } from "../../models/Profile";
 import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
 import { log } from "actionhero";
 import { ProfileProperty } from "../../models/ProfileProperty";
+import { ProfilePropertyRuleOps } from "../../modules/ops/profilePropertyRule";
 
 export class ProfilePropertyImport extends RetryableTask {
   constructor() {
@@ -38,8 +39,9 @@ export class ProfilePropertyImport extends RetryableTask {
       params.profilePropertyRuleGuid
     );
     const source = await profilePropertyRule.$get("source");
-
-    const dependencies = await profilePropertyRule.dependsOn();
+    const dependencies = await ProfilePropertyRuleOps.dependencies(
+      profilePropertyRule
+    );
 
     let ok = true;
     dependencies.forEach((dep) => {

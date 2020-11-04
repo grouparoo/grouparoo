@@ -5,6 +5,7 @@ import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
 import { Op } from "sequelize";
 import { log, task } from "actionhero";
 import { ProfilePropertiesPluginMethodResponse } from "../../classes/plugin";
+import { ProfilePropertyRuleOps } from "../../modules/ops/profilePropertyRule";
 
 export class ProfilePropertyImport extends RetryableTask {
   constructor() {
@@ -31,7 +32,9 @@ export class ProfilePropertyImport extends RetryableTask {
     const source = await profilePropertyRule.$get("source");
 
     const profilesWithDependenciesMet: Profile[] = [];
-    const dependencies = await profilePropertyRule.dependsOn();
+    const dependencies = await ProfilePropertyRuleOps.dependencies(
+      profilePropertyRule
+    );
 
     for (const i in profiles) {
       const profile = profiles[i];

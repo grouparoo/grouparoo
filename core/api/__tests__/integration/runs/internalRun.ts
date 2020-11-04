@@ -35,6 +35,7 @@ describe("integration/runs/internalRun", () => {
       await source.update({ state: "ready" });
 
       profile = await helper.factories.profile();
+      await profile.addOrUpdateProperties({ userId: [1] });
 
       await api.resque.queue.connection.redis.flushdb();
       await Run.destroy({ truncate: true });

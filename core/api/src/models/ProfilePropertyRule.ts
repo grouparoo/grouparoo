@@ -351,16 +351,6 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     };
   }
 
-  /**
-   * Returns any Profile Properties that this Rule depends on.
-   * For example, if email depends on userId, this method would return [guid_userIdRule]
-   */
-  async dependsOn(): Promise<ProfilePropertyRule[]> {
-    // TODO!
-
-    return [];
-  }
-
   // --- Class Methods --- //
 
   static async findByGuid(guid: string) {

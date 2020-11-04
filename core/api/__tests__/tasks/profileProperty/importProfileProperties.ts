@@ -77,7 +77,10 @@ describe("tasks/profileProperty:importProfileProperties", () => {
 
     test("will import profile properties that have no dependencies", async () => {
       const profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ email: ["old@example.com"] });
+      await profile.addOrUpdateProperties({
+        userId: [1],
+        email: ["old@example.com"],
+      });
       const property = await ProfileProperty.findOne({
         where: { rawValue: "old@example.com" },
       });
@@ -99,13 +102,9 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         where: { key: "ltv" },
       });
 
-      // mock the method some rule is always required
-      ProfilePropertyRule.prototype.dependsOn = jest.fn(async () => {
-        return [ltvRule];
-      });
-
       const profile = await helper.factories.profile();
       await profile.addOrUpdateProperties({
+        userId: [null],
         email: ["old@example.com"],
       });
       const property = await ProfileProperty.findOne({
