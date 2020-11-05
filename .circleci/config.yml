@@ -195,7 +195,7 @@ jobs:
           command: cd core/api && ./bin/create_test_databases
       - run:
           name: test-api
-          command: cd core/api && ./../node_modules/.bin/jest --ci --maxWorkers 4
+          command: cd core/api && ./../node_modules/.bin/jest --ci --maxWorkers 2
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-core-web:
@@ -237,7 +237,7 @@ jobs:
           command: cd core/api && ./bin/create_test_databases
       - run:
           name: test-web
-          command: cd core/web && ./../node_modules/.bin/jest --ci --maxWorkers 4
+          command: cd core/web && ./../node_modules/.bin/jest --ci --maxWorkers 2
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-plugin-app-templates:
