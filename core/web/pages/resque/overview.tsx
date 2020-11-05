@@ -40,9 +40,9 @@ export default function ResqueOverview(props) {
       null,
       false
     );
-    _queues = response.resqueDetails.queues || {};
-    _workers = response.resqueDetails.workers || {};
-    _stats = response.resqueDetails.stats || {};
+    _queues = response?.resqueDetails?.queues || {};
+    _workers = response?.resqueDetails?.workers || {};
+    _stats = response?.resqueDetails?.stats || {};
 
     response = await execApi(
       "get",

@@ -76,7 +76,15 @@ class Generator {
   addCore() {
     this.jobList.push({
       type: "core",
-      job_name: `test-core`,
+      section: "api",
+      job_name: `test-core-api`,
+      relative_path: `core`,
+      name: "core",
+    });
+    this.jobList.push({
+      type: "core",
+      section: "web",
+      job_name: `test-core-web`,
       relative_path: `core`,
       name: "core",
     });
@@ -94,9 +102,10 @@ class Generator {
   getPlugin(fullPath) {
     const relative_path = path.relative(this.rootPath, fullPath);
     const name = path.basename(fullPath);
+    const type = relative_path.split(path.sep)[0].replace(/s$/, "");
     return {
-      type: "plugin",
-      job_name: `test-plugin-${name}`,
+      type: type,
+      job_name: `test-${type}-${name}`,
       name,
       relative_path,
     };
@@ -108,15 +117,15 @@ class Generator {
       plugins.push(this.getPlugin(fullPath));
     }
     plugins.sort((a, b) => a.name.localeCompare(b.name));
-    // for (const plugin of plugins) {
-    //   this.jobList.push(plugin);
-    // }
-    this.jobList.push({
-      type: "plugin",
-      job_name: `test-plugins`,
-      relative_path: "",
-      name: "plugins",
-    });
+    for (const plugin of plugins) {
+      this.jobList.push(plugin);
+    }
+    // this.jobList.push({
+    //   type: "plugin",
+    //   job_name: `test-plugins`,
+    //   relative_path: "",
+    //   name: "plugins",
+    // });
   }
 
   bindJobMethod(job) {
