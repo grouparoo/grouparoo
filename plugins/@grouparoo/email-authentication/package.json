@@ -31,7 +31,7 @@
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
-    "actionhero": "24.0.2",
+    "actionhero": "24.0.3",
     "react": "16.13.1",
     "react-dom": "16.13.1"
   },
@@ -41,7 +41,7 @@
     "@types/jest": "^26.0.14",
     "@types/node": "^14.11.8",
     "@types/react": "^16.9.52",
-    "actionhero": "24.0.2",
+    "actionhero": "24.0.3",
     "jest": "26.6.1",
     "prettier": "2.1.2",
     "ts-jest": "26.4.3",
