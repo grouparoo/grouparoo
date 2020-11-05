@@ -171,7 +171,7 @@ import {
   ProfileCreate,
   ProfileDestroy,
   ProfileEdit,
-  ProfileImportAndUpdate,
+  ProfileImportAndExport,
   ProfileView,
   ProfilesImportAndUpdate,
   ProfilesList,
@@ -423,8 +423,8 @@ export namespace Actions {
     typeof ProfileDestroy.prototype.run
   >;
   export type ProfileEdit = AsyncReturnType<typeof ProfileEdit.prototype.run>;
-  export type ProfileImportAndUpdate = AsyncReturnType<
-    typeof ProfileImportAndUpdate.prototype.run
+  export type ProfileImportAndExport = AsyncReturnType<
+    typeof ProfileImportAndExport.prototype.run
   >;
   export type ProfileView = AsyncReturnType<typeof ProfileView.prototype.run>;
   export type ProfilesImportAndUpdate = AsyncReturnType<

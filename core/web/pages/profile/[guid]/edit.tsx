@@ -69,12 +69,12 @@ export default function Page(props) {
     setLoading(false);
   }
 
-  async function importAndUpdate() {
+  async function importAndExport() {
     setLoading(true);
     successHandler.set({ message: "enqueued for import..." });
-    const response: Actions.ProfileImportAndUpdate = await execApi(
+    const response: Actions.ProfileImportAndExport = await execApi(
       "post",
-      `/profile/${profile.guid}/importAndUpdate`
+      `/profile/${profile.guid}/importAndExport`
     );
     if (response?.profile) {
       successHandler.set({ message: "Import and Export Complete!" });
@@ -228,7 +228,7 @@ export default function Page(props) {
               <LoadingButton
                 disabled={loading}
                 onClick={() => {
-                  importAndUpdate();
+                  importAndExport();
                 }}
               >
                 Import and Export

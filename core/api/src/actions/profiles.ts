@@ -216,10 +216,10 @@ export class ProfileCreate extends AuthenticatedAction {
   }
 }
 
-export class ProfileImportAndUpdate extends AuthenticatedAction {
+export class ProfileImportAndExport extends AuthenticatedAction {
   constructor() {
     super();
-    this.name = "profile:importAndUpdate";
+    this.name = "profile:importAndExport";
     this.description = "fully import a profile from all apps and update groups";
     this.outputExample = {};
     this.permission = { topic: "profile", mode: "write" };
@@ -231,8 +231,10 @@ export class ProfileImportAndUpdate extends AuthenticatedAction {
   async run({ params }) {
     const profile = await Profile.findByGuid(params.guid);
 
+    await profile.markPending();
     await profile.import();
     await profile.updateGroupMembership();
+    await profile.update({ state: "ready" });
     await profile.export(true);
 
     const groups = await profile.$get("groups");
