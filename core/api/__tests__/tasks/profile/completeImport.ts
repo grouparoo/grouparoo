@@ -102,7 +102,7 @@ describe("tasks/profile:completeImport", () => {
       });
 
       await _import.reload();
-      await run.reload();
+      await run.updateTotals();
 
       expect(_import.newProfileProperties.email).toEqual(["mario@example.com"]);
       expect(_import.newProfileProperties.firstName).toEqual(["Mario"]);

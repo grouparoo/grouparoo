@@ -62,6 +62,8 @@ describe("tasks/export:sendBatch", () => {
         where: { creatorGuid: group.guid },
       });
 
+      await run.updateTotals();
+
       expect(run.importsCreated).toBe(1);
       expect(run.profilesCreated).toBe(0);
       expect(run.profilesImported).toBe(0);

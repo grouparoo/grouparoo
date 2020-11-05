@@ -116,7 +116,6 @@ export class RunInternalRun extends Task {
 
       await transaction.commit();
 
-      await run.incrementWithLock("importsCreated", profiles.length);
       await run.afterBatch();
 
       if (profiles.length > 0) {

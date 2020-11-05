@@ -187,8 +187,6 @@ export namespace plugin {
       creatorGuid: run.guid,
     });
 
-    await run.incrementWithLock("importsCreated");
-
     return _import;
   }
 

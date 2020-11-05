@@ -1,8 +1,6 @@
-import { Task, api, log, env } from "actionhero";
+import { Task, log, env } from "actionhero";
 import { Import } from "../../models/Import";
-import { Run } from "../../models/Run";
 import { ProfilePropertyType } from "../../modules/ops/profile";
-import { Transaction } from "sequelize";
 
 export class ImportAssociateProfile extends Task {
   constructor() {
@@ -36,18 +34,12 @@ export class ImportAssociateProfile extends Task {
       const oldProfileProperties = await profile.properties();
       const oldGroups = await profile.$get("groups");
 
+      _import.createdProfile = isNew;
       _import.oldProfileProperties = this.simplifyProfileProperties(
         oldProfileProperties
       );
       _import.oldGroupGuids = oldGroups.map((g) => g.guid);
       await _import.save();
-
-      if (_import.creatorType === "run") {
-        if (isNew) {
-          const run = await Run.findByGuid(_import.creatorGuid);
-          await run.incrementWithLock("profilesCreated");
-        }
-      }
     } catch (error) {
       if (env !== "test") {
         log(`[ASSOCIATE PROFILE ERROR] ${error}`, "alert");

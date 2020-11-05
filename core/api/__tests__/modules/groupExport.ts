@@ -94,7 +94,6 @@ describe("modules/groupExport", () => {
 
     test("the run is complete", async () => {
       const run = await Run.findOne({ where: { guid: runGuid } });
-      expect(run.profilesImported).toBe(4);
       expect(run.state).toBe("complete");
       expect(run.completedAt).toBeTruthy();
     });

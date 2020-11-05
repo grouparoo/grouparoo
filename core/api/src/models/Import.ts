@@ -10,6 +10,7 @@ import {
   BelongsTo,
   DataType,
   AfterCreate,
+  Default,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { task, config } from "actionhero";
@@ -83,6 +84,11 @@ export class Import extends Model<Import> {
 
   @Column
   profileAssociatedAt: Date;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  createdProfile: boolean;
 
   @Column(DataType.TEXT)
   // oldProfileProperties: string;
@@ -166,6 +172,7 @@ export class Import extends Model<Import> {
 
       // lifecycle timestamps
       createdAt: this.createdAt.getTime(),
+      createdProfile: this.createdProfile,
       profileAssociatedAt: this.profileAssociatedAt
         ? this.profileAssociatedAt.getTime()
         : null,

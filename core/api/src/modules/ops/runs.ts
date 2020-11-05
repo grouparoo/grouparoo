@@ -3,6 +3,7 @@ import { Profile } from "../../models/Profile";
 import { Group } from "../../models/Group";
 import { Schedule } from "../../models/Schedule";
 import { GroupMember } from "../../models/GroupMember";
+import { Import } from "../../models/Import";
 import { Op } from "sequelize";
 import { log } from "actionhero";
 
@@ -14,9 +15,25 @@ export namespace RunOps {
   export async function quantizedTimeline(run: Run, steps = 25) {
     const data = [];
     const start = run.createdAt.getTime();
-    const end = run.completedAt
-      ? run.completedAt.getTime()
-      : new Date().getTime();
+
+    const lastExportedImport = await Import.findOne({
+      where: { creatorGuid: run.guid },
+      order: [["exportedAt", "desc"]],
+      limit: 1,
+    });
+
+    const lastImportedImport = await Import.findOne({
+      where: { creatorGuid: run.guid },
+      order: [["profileUpdatedAt", "desc"]],
+      limit: 1,
+    });
+
+    const end =
+      lastExportedImport?.exportedAt?.getTime() ||
+      lastImportedImport?.exportedAt?.getTime() ||
+      run?.completedAt?.getTime() ||
+      new Date().getTime();
+
     const stepSize = Math.floor((end - start) / steps);
     const boundaries = [start - stepSize * 2];
     let i = 1;
@@ -38,7 +55,7 @@ export namespace RunOps {
               },
             },
           }),
-          update: await run.$count("imports", {
+          profilesUpdated: await run.$count("imports", {
             where: {
               profileUpdatedAt: {
                 [Op.gte]: lastBoundary,
@@ -46,9 +63,17 @@ export namespace RunOps {
               },
             },
           }),
-          groups: await run.$count("imports", {
+          groupsUpdated: await run.$count("imports", {
             where: {
               groupsUpdatedAt: {
+                [Op.gte]: lastBoundary,
+                [Op.lt]: nextBoundary,
+              },
+            },
+          }),
+          exported: await run.$count("imports", {
+            where: {
+              exportedAt: {
                 [Op.gte]: lastBoundary,
                 [Op.lt]: nextBoundary,
               },
@@ -69,6 +94,26 @@ export namespace RunOps {
     }
 
     return data;
+  }
+
+  /**
+   * Count up the totals from imports for `importsCreated`, `profilesCreated` and `profilesImported`
+   */
+  export async function updateTotals(run: Run) {
+    const importsCreated = await Import.count({
+      where: { creatorGuid: run.guid },
+    });
+    const profilesCreated = await Import.count({
+      where: { creatorGuid: run.guid, createdProfile: true },
+    });
+    const profilesImported = await Import.count({
+      where: { creatorGuid: run.guid, profileUpdatedAt: { [Op.ne]: null } },
+      distinct: true,
+      col: "profileGuid",
+    });
+
+    await run.update({ importsCreated, profilesCreated, profilesImported });
+    await run.determinePercentComplete(false);
   }
 
   /**
