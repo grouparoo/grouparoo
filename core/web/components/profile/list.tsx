@@ -341,7 +341,7 @@ ProfilesList.hydrate = async (
   _searchValue?: string
 ) => {
   const { execApi } = useApi(ctx);
-  const { guid, limit, offset, searchKey, searchValue } = ctx.query;
+  const { guid, limit, offset, state, searchKey, searchValue } = ctx.query;
 
   let groupGuid: string;
   if (guid) {
@@ -355,6 +355,7 @@ ProfilesList.hydrate = async (
     searchKey: searchKey || _searchKey,
     searchValue: searchValue || _searchValue,
     groupGuid,
+    state,
   });
   const { profilePropertyRules } = await execApi(
     "get",
