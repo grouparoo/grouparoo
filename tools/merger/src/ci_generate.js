@@ -76,7 +76,15 @@ class Generator {
   addCore() {
     this.jobList.push({
       type: "core",
-      job_name: `test-core`,
+      section: "api",
+      job_name: `test-core-api`,
+      relative_path: `core`,
+      name: "core",
+    });
+    this.jobList.push({
+      type: "core",
+      section: "web",
+      job_name: `test-core-web`,
       relative_path: `core`,
       name: "core",
     });

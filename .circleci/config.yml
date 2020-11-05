@@ -156,7 +156,7 @@ jobs:
       - run:
           name: linter
           command: pnpm run lint
-  test-core:
+  test-core-api:
     docker:
       - image: circleci/node:12
         auth:
@@ -195,10 +195,49 @@ jobs:
           command: cd core/api && ./bin/create_test_databases
       - run:
           name: test-api
-          command: cd core/api && ./../node_modules/.bin/jest --ci --maxWorkers 2
+          command: cd core/api && ./../node_modules/.bin/jest --ci --maxWorkers 4
+          environment:
+            SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+  test-core-web:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+      - image: selenium/standalone-chrome:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
       - run:
           name: test-web
-          command: cd core/web && ./../node_modules/.bin/jest --ci --maxWorkers 2
+          command: cd core/web && ./../node_modules/.bin/jest --ci --maxWorkers 4
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-plugin-app-templates:
@@ -1114,7 +1153,12 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-core:
+      - test-core-api:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-web:
           filters:
             <<: *ignored-branches
           requires:
@@ -1246,7 +1290,8 @@ workflows:
             - license-checker
             - spell-checker
             - linter
-            - test-core
+            - test-core-api
+            - test-core-web
             - test-plugin-app-templates
             - test-plugin-bigquery
             - test-plugin-csv
@@ -1307,7 +1352,12 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-core:
+      - test-core-api:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-web:
           filters:
             <<: *ignored-branches
           requires:
@@ -1439,7 +1489,8 @@ workflows:
             - license-checker
             - spell-checker
             - linter
-            - test-core
+            - test-core-api
+            - test-core-web
             - test-plugin-app-templates
             - test-plugin-bigquery
             - test-plugin-csv
