@@ -53,9 +53,9 @@ describe("tasks/profileProperty:importProfileProperty", () => {
       expect(property.rawValue).toBe(`${profile.guid}@example.com`);
     });
 
-    test("will not import profile properties that are missing dependencies", async () => {
-      const ltvRule = await ProfilePropertyRule.findOne({
-        where: { key: "ltv" },
+    test("will not import profile properties that have pending dependencies", async () => {
+      const userIdRule = await ProfilePropertyRule.findOne({
+        where: { key: "userId" },
       });
 
       const profile = await helper.factories.profile();
@@ -68,16 +68,16 @@ describe("tasks/profileProperty:importProfileProperty", () => {
       });
       await property.update({ state: "pending" });
 
-      const ltvProperty = await ProfileProperty.findOne({
+      const userIdProperty = await ProfileProperty.findOne({
         where: {
           profileGuid: profile.guid,
-          profilePropertyRuleGuid: ltvRule.guid,
+          profilePropertyRuleGuid: userIdRule.guid,
         },
       });
-      await ltvProperty.update({ rawValue: null });
+      await userIdProperty.update({ state: "pending" });
 
-      await specHelper.runTask("profileProperty:importProfileProperty", {
-        profileGuid: profile.guid,
+      await specHelper.runTask("profileProperty:importProfileProperties", {
+        profileGuids: [profile.guid],
         profilePropertyRuleGuid: property.profilePropertyRuleGuid,
       });
 

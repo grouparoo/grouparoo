@@ -42,15 +42,7 @@ export class ImportProfileProperties extends RetryableTask {
       const properties = await profile.properties();
 
       dependencies.forEach((dep) => {
-        if (
-          properties[dep.key].values.length === 0 ||
-          properties[dep.key].values.filter((v) => v === null).length ===
-            properties[dep.key].values.length ||
-          properties[dep.key].values.filter((v) => v === undefined).length ===
-            properties[dep.key].values.length
-        ) {
-          ok = false;
-        }
+        if (properties[dep.key].state !== "ready") ok = false;
       });
 
       if (ok) profilesWithDependenciesMet.push(profile);

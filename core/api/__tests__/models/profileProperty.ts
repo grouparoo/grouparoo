@@ -480,7 +480,7 @@ describe("models/profileProperty", () => {
           email: ["mario@example.com"],
         })
       ).rejects.toThrow(
-        /another profile already has the value mario@example.com for property email/
+        /Another profile already has the value mario@example.com for property email/
       );
     });
 

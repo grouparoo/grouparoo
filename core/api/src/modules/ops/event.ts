@@ -108,7 +108,17 @@ export namespace EventOps {
 
     const profileProperties = {};
     profileProperties[profilePropertyRule.key] = event.userId;
-    await profile.addOrUpdateProperties(profileProperties);
+
+    try {
+      await profile.addOrUpdateProperties(profileProperties);
+    } catch (error) {
+      // the profile was created in the middle of this task; try again!
+      if (error.toString().match(/Another profile already has the value/)) {
+        return associateEventWithUserId(event, profilePropertyRule);
+      } else {
+        throw error;
+      }
+    }
 
     event.profileGuid = profile.guid;
     event.profileAssociatedAt = new Date();

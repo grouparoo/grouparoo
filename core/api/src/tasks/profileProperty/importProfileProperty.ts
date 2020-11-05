@@ -45,15 +45,7 @@ export class ImportProfileProperty extends RetryableTask {
 
     let ok = true;
     dependencies.forEach((dep) => {
-      if (
-        properties[dep.key].values.length === 0 ||
-        properties[dep.key].values.filter((v) => v === null).length ===
-          properties[dep.key].values.length ||
-        properties[dep.key].values.filter((v) => v === undefined).length ===
-          properties[dep.key].values.length
-      ) {
-        ok = false;
-      }
+      if (properties[dep.key].state !== "ready") ok = false;
     });
 
     // there's a dependency we don't have yet

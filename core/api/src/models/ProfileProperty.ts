@@ -179,7 +179,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
 
       if (count > 0) {
         throw new Error(
-          `another profile already has the value ${this.rawValue} for property ${rule.key}`
+          `Another profile already has the value ${this.rawValue} for property ${rule.key}`
         );
       }
     }
