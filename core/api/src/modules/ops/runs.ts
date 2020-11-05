@@ -97,6 +97,26 @@ export namespace RunOps {
   }
 
   /**
+   * Count up the totals from imports for `importsCreated`, `profilesCreated` and `profilesImported`
+   */
+  export async function updateTotals(run: Run) {
+    const importsCreated = await Import.count({
+      where: { creatorGuid: run.guid },
+    });
+    const profilesCreated = await Import.count({
+      where: { creatorGuid: run.guid, createdProfile: true },
+    });
+    const profilesImported = await Import.count({
+      where: { creatorGuid: run.guid, profileUpdatedAt: { [Op.ne]: null } },
+      distinct: true,
+      col: "profileGuid",
+    });
+
+    await run.update({ importsCreated, profilesCreated, profilesImported });
+    await run.determinePercentComplete(false);
+  }
+
+  /**
    * Make a guess to what percent complete this Run is
    */
   export async function determinePercentComplete(run: Run) {

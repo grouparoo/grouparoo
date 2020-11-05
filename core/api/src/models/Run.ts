@@ -173,20 +173,7 @@ export class Run extends Model<Run> {
   }
 
   async updateTotals() {
-    const importsCreated = await Import.count({
-      where: { creatorGuid: this.guid },
-    });
-    const profilesCreated = await Import.count({
-      where: { creatorGuid: this.guid, createdProfile: true },
-    });
-    const profilesImported = await Import.count({
-      where: { creatorGuid: this.guid, profileUpdatedAt: { [Op.ne]: null } },
-      distinct: true,
-      col: "profileGuid",
-    });
-
-    await this.update({ importsCreated, profilesCreated, profilesImported });
-    await this.determinePercentComplete(false);
+    return RunOps.updateTotals(this);
   }
 
   async buildErrorMessage() {
