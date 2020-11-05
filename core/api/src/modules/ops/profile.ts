@@ -6,7 +6,7 @@ import { Group } from "../../models/Group";
 import { Destination } from "../../models/Destination";
 import { Event } from "../../models/Event";
 import { log } from "actionhero";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import { waitForLock } from "../locks";
 import { ProfilePropertyOps } from "./profileProperty";
 export interface ProfilePropertyType {
@@ -464,12 +464,15 @@ export namespace ProfileOps {
   /**
    * Mark the profile and all of its properties as pending
    */
-  export async function markPending(profile: Profile) {
+  export async function markPending(
+    profile: Profile,
+    transaction?: Transaction
+  ) {
     await ProfileProperty.update(
       { state: "pending" },
-      { where: { profileGuid: profile.guid } }
+      { where: { profileGuid: profile.guid }, transaction }
     );
-    await profile.update({ state: "pending" });
+    await profile.update({ state: "pending" }, { transaction });
   }
 
   /**

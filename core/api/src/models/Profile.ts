@@ -10,6 +10,7 @@ import {
   Default,
   AfterCreate,
 } from "sequelize-typescript";
+import { Transaction } from "sequelize";
 import { task } from "actionhero";
 import { LoggedModel } from "../classes/loggedModel";
 import { GroupMember } from "./GroupMember";
@@ -111,8 +112,8 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps.buildNullProperties(this);
   }
 
-  async markPending() {
-    return ProfileOps.markPending(this);
+  async markPending(transaction?: Transaction) {
+    return ProfileOps.markPending(this, transaction);
   }
 
   async updateGroupMembership() {
