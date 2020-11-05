@@ -38,31 +38,24 @@ export class RunInternalRun extends Task {
         (await plugin.readSetting("core", "runs-profile-batch-size")).value
       );
 
-    const transaction = await api.sequelize.transaction({
-      type: Transaction.TYPES.EXCLUSIVE,
-      lock: Transaction.LOCK.UPDATE,
+    const run = await Run.findOne({
+      where: { guid: params.runGuid },
     });
 
+    if (run.state === "stopped") return;
+
+    await run.update(
+      {
+        groupMemberLimit: limit,
+        groupMemberOffset: offset,
+        groupMethod: "internalRun",
+      },
+      { silent: true }
+    );
+
+    const transaction = await api.sequelize.transaction();
+
     try {
-      const run = await Run.findOne({
-        where: { guid: params.runGuid },
-        transaction,
-      });
-
-      if (run.state === "stopped") {
-        await transaction.rollback();
-        return;
-      }
-
-      await run.update(
-        {
-          groupMemberLimit: limit,
-          groupMemberOffset: offset,
-          groupMethod: "internalRun",
-        },
-        { transaction, silent: true }
-      );
-
       const profiles = await Profile.findAll({
         order: [["createdAt", "asc"]],
         limit,
@@ -95,22 +88,17 @@ export class RunInternalRun extends Task {
         );
 
         if (run.creatorType === "profilePropertyRule") {
-          await profile.update({ state: "pending" }, { transaction });
           const property = await ProfileProperty.findOne({
             where: {
               profileGuid: profile.guid,
               profilePropertyRuleGuid: run.creatorGuid,
             },
+            transaction,
           });
-          await property.update(
-            {
-              state: "pending",
-              stateChangedAt: new Date(),
-            },
-            { transaction }
-          );
+          await property.update({ state: "pending" }, { transaction });
+          await profile.update({ state: "pending" }, { transaction });
         } else {
-          await profile.markPending();
+          await profile.markPending(transaction);
         }
       }
 

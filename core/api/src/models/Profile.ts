@@ -111,8 +111,8 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps.buildNullProperties(this);
   }
 
-  async markPending() {
-    return ProfileOps.markPending(this);
+  async markPending(transaction) {
+    return ProfileOps.markPending(this, transaction);
   }
 
   async updateGroupMembership() {
