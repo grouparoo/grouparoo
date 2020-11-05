@@ -108,15 +108,15 @@ class Generator {
       plugins.push(this.getPlugin(fullPath));
     }
     plugins.sort((a, b) => a.name.localeCompare(b.name));
-    // for (const plugin of plugins) {
-    //   this.jobList.push(plugin);
-    // }
-    this.jobList.push({
-      type: "plugin",
-      job_name: `test-plugins`,
-      relative_path: "",
-      name: "plugins",
-    });
+    for (const plugin of plugins) {
+      this.jobList.push(plugin);
+    }
+    // this.jobList.push({
+    //   type: "plugin",
+    //   job_name: `test-plugins`,
+    //   relative_path: "",
+    //   name: "plugins",
+    // });
   }
 
   bindJobMethod(job) {

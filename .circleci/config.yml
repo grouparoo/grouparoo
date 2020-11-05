@@ -201,7 +201,475 @@ jobs:
           command: cd core/web && ./../node_modules/.bin/jest --ci --maxWorkers 2
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
-  test-plugins:
+  test-plugin-app-templates:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/app-templates && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-bigquery:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/bigquery && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-csv:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/csv && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-demo:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/demo && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-email-authentication:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/email-authentication && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-files-local:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/files-local && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-files-s3:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/files-s3 && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-google-sheets:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/google-sheets && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-hubspot:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/hubspot && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-logger:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/logger && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-mailchimp:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/mailchimp && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-marketo:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/marketo && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-mysql:
     docker:
       - image: circleci/node:12
         auth:
@@ -249,7 +717,397 @@ jobs:
           command: mysql -e "create database grouparoo_test" -u root -h 127.0.0.1
       - run:
           name: test
-          command: pnpm --workspace-concurrency=1 --stream --recursive --filter !'@grouparoo/grouparoo'  --filter !'@grouparoo/core' --filter !'grouparoo' --filter !'*/app-*' exec -- ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+          command: cd plugins/@grouparoo/mysql && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-newrelic:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/newrelic && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-postgres:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/postgres && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-redshift:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/redshift && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-sailthru:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/sailthru && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-salesforce:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/salesforce && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-sample-ui-plugin:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/sample-ui-plugin && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-snowflake:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/snowflake && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-spec-helper:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/spec-helper && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-web:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/web && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-zendesk:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core/api && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/zendesk && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-cli:
     docker:
       - image: circleci/node:12
@@ -330,7 +1188,117 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-plugins:
+      - test-plugin-app-templates:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-bigquery:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-csv:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-demo:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-email-authentication:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-files-local:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-files-s3:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-google-sheets:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-hubspot:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-logger:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-mailchimp:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-marketo:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-mysql:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-newrelic:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-postgres:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-redshift:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-sailthru:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-salesforce:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-sample-ui-plugin:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-snowflake:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-spec-helper:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-web:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-zendesk:
           filters:
             <<: *ignored-branches
           requires:
@@ -348,7 +1316,29 @@ workflows:
             - spell-checker
             - linter
             - test-core
-            - test-plugins
+            - test-plugin-app-templates
+            - test-plugin-bigquery
+            - test-plugin-csv
+            - test-plugin-demo
+            - test-plugin-email-authentication
+            - test-plugin-files-local
+            - test-plugin-files-s3
+            - test-plugin-google-sheets
+            - test-plugin-hubspot
+            - test-plugin-logger
+            - test-plugin-mailchimp
+            - test-plugin-marketo
+            - test-plugin-mysql
+            - test-plugin-newrelic
+            - test-plugin-postgres
+            - test-plugin-redshift
+            - test-plugin-sailthru
+            - test-plugin-salesforce
+            - test-plugin-sample-ui-plugin
+            - test-plugin-snowflake
+            - test-plugin-spec-helper
+            - test-plugin-web
+            - test-plugin-zendesk
             - test-cli
       - publish:
           filters:
@@ -391,7 +1381,117 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-plugins:
+      - test-plugin-app-templates:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-bigquery:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-csv:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-demo:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-email-authentication:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-files-local:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-files-s3:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-google-sheets:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-hubspot:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-logger:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-mailchimp:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-marketo:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-mysql:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-newrelic:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-postgres:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-redshift:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-sailthru:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-salesforce:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-sample-ui-plugin:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-snowflake:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-spec-helper:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-web:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-zendesk:
           filters:
             <<: *ignored-branches
           requires:
@@ -409,7 +1509,29 @@ workflows:
             - spell-checker
             - linter
             - test-core
-            - test-plugins
+            - test-plugin-app-templates
+            - test-plugin-bigquery
+            - test-plugin-csv
+            - test-plugin-demo
+            - test-plugin-email-authentication
+            - test-plugin-files-local
+            - test-plugin-files-s3
+            - test-plugin-google-sheets
+            - test-plugin-hubspot
+            - test-plugin-logger
+            - test-plugin-mailchimp
+            - test-plugin-marketo
+            - test-plugin-mysql
+            - test-plugin-newrelic
+            - test-plugin-postgres
+            - test-plugin-redshift
+            - test-plugin-sailthru
+            - test-plugin-salesforce
+            - test-plugin-sample-ui-plugin
+            - test-plugin-snowflake
+            - test-plugin-spec-helper
+            - test-plugin-web
+            - test-plugin-zendesk
             - test-cli
       - publish:
           filters:

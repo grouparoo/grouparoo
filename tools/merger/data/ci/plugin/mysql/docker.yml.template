@@ -1,0 +1,4 @@
+      - image: circleci/mysql:5
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
