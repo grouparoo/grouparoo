@@ -565,7 +565,6 @@ describe("integration/runs/mysql", () => {
       expect(profilesCount).toBe(10);
 
       await run.updateTotals();
-      await run.reload();
       expect(run.state).toBe("complete");
       expect(run.importsCreated).toBe(1);
       expect(run.profilesCreated).toBe(0);

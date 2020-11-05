@@ -388,7 +388,6 @@ describe("integration/runs/csv", () => {
         expect(profilesCount).toBe(10);
 
         await run.updateTotals();
-        await run.reload();
         expect(run.state).toBe("complete");
         expect(run.importsCreated).toBe(10);
         expect(run.profilesCreated).toBe(0);
