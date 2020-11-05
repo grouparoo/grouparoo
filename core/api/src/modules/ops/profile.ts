@@ -439,9 +439,7 @@ export namespace ProfileOps {
           },
         });
 
-        if (profileProperty) {
-          break;
-        }
+        if (profileProperty) break;
       }
 
       if (profileProperty) {
@@ -459,7 +457,7 @@ export namespace ProfileOps {
 
       return { profile, isNew };
     } finally {
-      await Promise.all(lockReleases.map((release) => release()));
+      await Promise.all(lockReleases.map((releaseLock) => releaseLock()));
     }
   }
 

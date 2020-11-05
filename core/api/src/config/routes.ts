@@ -85,7 +85,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/apiKey", action: "apiKey:create" },
         { path: "/v:apiVersion/group", action: "group:create" },
         { path: "/v:apiVersion/profile", action: "profile:create" },
-        { path: "/v:apiVersion/profile/:guid/importAndUpdate", action: "profile:importAndUpdate" },
+        { path: "/v:apiVersion/profile/:guid/importAndExport", action: "profile:importAndExport" },
         { path: "/v:apiVersion/profilePropertyRule", action: "profilePropertyRule:create" },
         { path: "/v:apiVersion/app", action: "app:create" },
         { path: "/v:apiVersion/event", action: "event:create" },
