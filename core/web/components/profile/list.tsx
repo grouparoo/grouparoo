@@ -4,7 +4,7 @@ import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Form, Col, Badge } from "react-bootstrap";
+import { Form, Col, Badge, Button, ButtonGroup } from "react-bootstrap";
 import Moment from "react-moment";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
@@ -35,10 +35,12 @@ export default function ProfilesList(props) {
   const [searchValue, setSearchValue] = useState<string>(
     router.query.searchValue || props.searchValue || ""
   );
+  const [state, setState] = useState(router.query.state?.toString() || null);
+  const states = ["pending", "ready"];
 
   useSecondaryEffect(() => {
     load();
-  }, [offset, limit]);
+  }, [offset, limit, state]);
 
   let groupGuid: string;
   if (router.query.guid) {
@@ -58,6 +60,7 @@ export default function ProfilesList(props) {
       searchValue,
       limit,
       offset,
+      state,
       groupGuid,
     });
     setLoading(false);
@@ -69,7 +72,7 @@ export default function ProfilesList(props) {
       }
     }
 
-    updateURLParams(router, { offset, searchKey, searchValue });
+    updateURLParams(router, { offset, searchKey, searchValue, state });
   }
 
   async function autocompleteProfilePropertySearch(
@@ -186,8 +189,42 @@ export default function ProfilesList(props) {
         </Form.Row>
       </Form>
 
+      <ButtonGroup id="profile-states">
+        <Button
+          size="sm"
+          variant={state ? "info" : "secondary"}
+          onClick={() => {
+            setState(null);
+            setOffset(0);
+          }}
+        >
+          All
+        </Button>
+        {states.map((t) => {
+          const variant = t === state ? "secondary" : "info";
+          return (
+            <Button
+              key={`state-${t}`}
+              size="sm"
+              variant={variant}
+              onClick={() => {
+                setState(t);
+                setOffset(0);
+              }}
+            >
+              {t}
+            </Button>
+          );
+        })}
+      </ButtonGroup>
+
+      <br />
+      <br />
+
       <p>
-        <strong>{total} matching profiles</strong>
+        <strong>
+          {total} matching profiles {state ? ` in the ${state} state` : ""}
+        </strong>
       </p>
 
       <Pagination
