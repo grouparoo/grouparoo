@@ -137,9 +137,11 @@ function PendingProfiles({ execApi }) {
   }
 
   async function load() {
-    const response: Actions.ProfilesList = await execApi("get", `/profiles`);
-    if (response) {
-      setCount(response.pendingTotal);
+    const response: Actions.ProfilesList = await execApi("get", `/profiles`, {
+      state: "pending",
+    });
+    if (response.total) {
+      setCount(response.total);
     }
   }
 

@@ -156,17 +156,38 @@ describe("actions/profiles", () => {
       connection.params = {
         csrfToken,
       };
-      const {
-        error,
-        profiles,
-        total,
-        pendingTotal,
-      } = await specHelper.runAction("profiles:list", connection);
+      const { error, profiles, total } = await specHelper.runAction(
+        "profiles:list",
+        connection
+      );
       expect(error).toBeUndefined();
       expect(profiles.length).toBe(1);
       expect(simpleProfileValues(profiles[0].properties).userId).toEqual([999]);
       expect(total).toBe(1);
+    });
+
+    test("a writer can list all the profiles with a certain state", async () => {
+      connection.params = {
+        csrfToken,
+        state: "pending",
+      };
+      const {
+        profiles: pendingProfiles,
+        total: pendingTotal,
+      } = await specHelper.runAction("profiles:list", connection);
+      expect(pendingProfiles.length).toBe(1);
       expect(pendingTotal).toBe(1);
+
+      connection.params = {
+        csrfToken,
+        state: "ready",
+      };
+      const {
+        profiles: readyProfiles,
+        total: readyTotal,
+      } = await specHelper.runAction("profiles:list", connection);
+      expect(readyProfiles.length).toBe(0);
+      expect(readyTotal).toBe(0);
     });
 
     test("a writer can get autocomplete results from profile properties", async () => {

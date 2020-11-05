@@ -19,6 +19,7 @@ export class ProfilesList extends AuthenticatedAction {
       groupGuid: { required: false },
       searchKey: { required: false },
       searchValue: { required: false },
+      state: { required: false },
       limit: { required: true, default: 100 },
       offset: { required: true, default: 0 },
       order: {
@@ -79,6 +80,7 @@ export class ProfilesList extends AuthenticatedAction {
       profiles = await Profile.findAll({
         where: {
           guid: { [Op.in]: groupMembers.map((mem) => mem.profileGuid) },
+          state: params.state ? params.state : { [Op.ne]: null },
         },
         include,
         order: params.order,
@@ -89,14 +91,8 @@ export class ProfilesList extends AuthenticatedAction {
         include: [],
       });
 
-      const pendingTotal = await group.profilesCount({
-        distinct: true,
-        include: [],
-      });
-
       return {
         total,
-        pendingTotal,
         profiles: await Promise.all(
           profiles.map(async (p) => {
             const apiData = await p.apiData();
@@ -111,24 +107,19 @@ export class ProfilesList extends AuthenticatedAction {
       profiles = await Profile.findAll({
         offset: params.offset,
         limit: params.limit,
+        where: { state: params.state ? params.state : { [Op.ne]: null } },
         include: [{ model: ProfileProperty, where, required: requiredJoin }],
         order: params.order,
       });
 
       const total = await Profile.count({
         distinct: true,
-        include: [{ model: ProfileProperty, where, required: requiredJoin }],
-      });
-
-      const pendingTotal = await Profile.count({
-        where: { state: "pending" },
-        distinct: true,
+        where: { state: params.state ? params.state : { [Op.ne]: null } },
         include: [{ model: ProfileProperty, where, required: requiredJoin }],
       });
 
       return {
         total,
-        pendingTotal,
         profiles: await Promise.all(
           profiles.map(async (p) => {
             const profile = await Profile.findByGuid(p.guid);
