@@ -94,9 +94,10 @@ class Generator {
   getPlugin(fullPath) {
     const relative_path = path.relative(this.rootPath, fullPath);
     const name = path.basename(fullPath);
+    const type = relative_path.split(path.sep)[0].replace(/s$/, "");
     return {
-      type: "plugin",
-      job_name: `test-plugin-${name}`,
+      type: type,
+      job_name: `test-${type}-${name}`,
       name,
       relative_path,
     };

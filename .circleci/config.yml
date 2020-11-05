@@ -226,9 +226,6 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
-      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -264,9 +261,6 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
-      - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -304,9 +298,6 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
-      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -342,9 +333,6 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
-      - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -382,9 +370,6 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
-      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -420,9 +405,6 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
-      - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -460,9 +442,6 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
-      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -498,9 +477,6 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
-      - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -538,9 +514,6 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
-      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -576,9 +549,6 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
-      - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -616,9 +586,6 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
-      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -654,9 +621,6 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
-      - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -697,9 +661,6 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
-      - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -743,9 +704,6 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
-      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -781,9 +739,6 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
-      - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -821,9 +776,6 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
-      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -859,9 +811,6 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
-      - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -899,9 +848,6 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
-      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -937,9 +883,6 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
-      - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -977,9 +920,6 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
-      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -1016,9 +956,6 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
-      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -1030,7 +967,7 @@ jobs:
       - run:
           name: test
           command: cd plugins/@grouparoo/spec-helper && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
-  test-plugin-web:
+  test-client-web:
     docker:
       - image: circleci/node:12
         auth:
@@ -1055,9 +992,6 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
-      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -1068,7 +1002,7 @@ jobs:
           command: cd core/api && ./bin/create_test_databases
       - run:
           name: test
-          command: cd plugins/@grouparoo/web && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+          command: cd clients/@grouparoo/web && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-zendesk:
     docker:
       - image: circleci/node:12
@@ -1093,9 +1027,6 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
-      - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -1293,7 +1224,7 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-plugin-web:
+      - test-client-web:
           filters:
             <<: *ignored-branches
           requires:
@@ -1337,7 +1268,7 @@ workflows:
             - test-plugin-sample-ui-plugin
             - test-plugin-snowflake
             - test-plugin-spec-helper
-            - test-plugin-web
+            - test-client-web
             - test-plugin-zendesk
             - test-cli
       - publish:
@@ -1486,7 +1417,7 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-plugin-web:
+      - test-client-web:
           filters:
             <<: *ignored-branches
           requires:
@@ -1530,7 +1461,7 @@ workflows:
             - test-plugin-sample-ui-plugin
             - test-plugin-snowflake
             - test-plugin-spec-helper
-            - test-plugin-web
+            - test-client-web
             - test-plugin-zendesk
             - test-cli
       - publish:
