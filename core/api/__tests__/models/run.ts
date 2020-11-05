@@ -431,9 +431,11 @@ describe("models/run", () => {
     });
   });
 
-  describe("quantizedTimeline", () => {
-    it("returns stats of imports based on sate change time", async () => {
-      const run = await Run.create({
+  describe("with imports", () => {
+    let run: Run;
+
+    beforeAll(async () => {
+      run = await Run.create({
         createdAt: 0,
         creatorGuid: schedule.guid,
         creatorType: "schedule",
@@ -443,6 +445,20 @@ describe("models/run", () => {
       await sleep(100);
 
       await Import.create({
+        profileGuid: "a",
+        creatorType: "run",
+        creatorGuid: run.guid,
+        profileAssociatedAt: new Date(),
+        profileUpdatedAt: new Date(),
+        groupsUpdatedAt: new Date(),
+        exportedAt: new Date(),
+        createdProfile: true,
+      });
+
+      await sleep(100);
+
+      await Import.create({
+        profileGuid: "a",
         creatorType: "run",
         creatorGuid: run.guid,
         profileAssociatedAt: new Date(),
@@ -454,17 +470,7 @@ describe("models/run", () => {
       await sleep(100);
 
       await Import.create({
-        creatorType: "run",
-        creatorGuid: run.guid,
-        profileAssociatedAt: new Date(),
-        profileUpdatedAt: new Date(),
-        groupsUpdatedAt: new Date(),
-        exportedAt: new Date(),
-      });
-
-      await sleep(100);
-
-      await Import.create({
+        profileGuid: "b",
         creatorType: "run",
         creatorGuid: run.guid,
         profileAssociatedAt: new Date(),
@@ -476,7 +482,16 @@ describe("models/run", () => {
       await sleep(100);
 
       await run.update({ state: "complete", completedAt: new Date() });
+    });
 
+    it("can update totals from imports", async () => {
+      await run.updateTotals();
+      expect(run.importsCreated).toBe(3);
+      expect(run.profilesCreated).toBe(1);
+      expect(run.profilesImported).toBe(2);
+    });
+
+    it("returns a quantizedTimeline of imports based on sate change time", async () => {
       const quantizedTimeline = await run.quantizedTimeline();
       expect(quantizedTimeline.length).toBe(25 + 4);
       let associateTotal = 0;
@@ -484,12 +499,13 @@ describe("models/run", () => {
       let groupsTotal = 0;
       quantizedTimeline.map((q) => {
         expect(q.steps.associate).toBeLessThanOrEqual(1);
-        expect(q.steps.update).toBeLessThanOrEqual(1);
-        expect(q.steps.groups).toBeLessThanOrEqual(1);
+        expect(q.steps.profilesUpdated).toBeLessThanOrEqual(1);
+        expect(q.steps.groupsUpdated).toBeLessThanOrEqual(1);
+        expect(q.steps.exported).toBeLessThanOrEqual(1);
 
         associateTotal += q.steps.associate;
-        updateTotal += q.steps.update;
-        groupsTotal += q.steps.groups;
+        updateTotal += q.steps.profilesUpdated;
+        groupsTotal += q.steps.groupsUpdated;
       });
 
       expect(associateTotal).toBe(3);

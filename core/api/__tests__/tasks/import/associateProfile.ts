@@ -65,8 +65,9 @@ describe("tasks/import:associateProfile", () => {
       expect(_import.newProfileProperties).toEqual({});
       expect(_import.newGroupGuids).toEqual([]);
 
-      await run.reload();
-      expect(run.importsCreated).toBe(0);
+      await run.updateTotals();
+
+      expect(run.importsCreated).toBe(1);
       expect(run.profilesCreated).toBe(1);
       expect(run.profilesImported).toBe(0);
     });

@@ -96,7 +96,7 @@ describe("integration/runs/internalRun", () => {
       expect(foundSendTasks.length).toBe(0);
 
       // check the results of the run
-      await run.reload();
+      await run.updateTotals();
       expect(run.state).toBe("complete");
       expect(run.importsCreated).toBe(1);
       expect(run.profilesCreated).toBe(0);

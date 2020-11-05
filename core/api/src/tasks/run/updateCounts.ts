@@ -1,7 +1,6 @@
 import { api, Task } from "actionhero";
 import { Run } from "../../models/Run";
 import { Op } from "sequelize";
-import { Import } from "../../models/Import";
 import Moment from "moment";
 
 export class UpdateRunCounts extends Task {
@@ -34,19 +33,7 @@ export class UpdateRunCounts extends Task {
     });
 
     for (const i in runs) {
-      const run = runs[i];
-      const importsCreated = await Import.count({
-        where: { creatorGuid: run.guid },
-      });
-      const profilesCreated = await Import.count({
-        where: { creatorGuid: run.guid, createdProfile: true },
-      });
-      const profilesImported = await Import.count({
-        where: { creatorGuid: run.guid, profileUpdatedAt: { [Op.ne]: null } },
-      });
-
-      await run.update({ importsCreated, profilesCreated, profilesImported });
-      await run.determinePercentComplete(false);
+      await runs[i].updateTotals();
     }
 
     return runs.length;

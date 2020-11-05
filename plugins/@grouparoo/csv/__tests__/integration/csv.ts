@@ -294,7 +294,7 @@ describe("integration/runs/csv", () => {
         const profilesCount = await Profile.count();
         expect(profilesCount).toBe(10);
 
-        await run.reload();
+        await run.updateTotals();
         expect(run.state).toBe("complete");
         expect(run.importsCreated).toBe(10);
         expect(run.profilesCreated).toBe(10);
@@ -387,6 +387,7 @@ describe("integration/runs/csv", () => {
         const profilesCount = await Profile.count();
         expect(profilesCount).toBe(10);
 
+        await run.updateTotals();
         await run.reload();
         expect(run.state).toBe("complete");
         expect(run.importsCreated).toBe(10);
