@@ -367,11 +367,23 @@ describe("models/profilePropertyRule", () => {
     expect(optionsCount).toBe(0);
   });
 
+  test("profile property rules can determine if they are directly mapped", async () => {
+    const userIdRule = await ProfilePropertyRule.findOne({
+      where: { key: "userId" },
+    });
+    const emailRule = await ProfilePropertyRule.findOne({
+      where: { key: "email" },
+    });
+
+    expect(await userIdRule.directlyMapped()).toBe(true);
+    expect(await emailRule.directlyMapped()).toBe(false);
+  });
+
   describe("cache", () => {
     test("cached data can be returned", async () => {
       const rules = await ProfilePropertyRule.cached();
       const keys = Object.keys(rules);
-      expect(keys).toEqual([
+      expect(keys.sort()).toEqual([
         "email",
         "firstName",
         "isVIP",
@@ -388,7 +400,7 @@ describe("models/profilePropertyRule", () => {
       await ProfilePropertyRule.clearCache();
       const rules = await ProfilePropertyRule.cached();
       const keys = Object.keys(rules);
-      expect(keys).toEqual([
+      expect(keys.sort()).toEqual([
         "email",
         "firstName",
         "isVIP",

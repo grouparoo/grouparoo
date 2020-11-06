@@ -301,7 +301,7 @@ describe("models/profile", () => {
         }
       });
 
-      test("a profile can be marked as pending", async () => {
+      test("a profile can be marked as pending and it's properties will be marked as pending as well", async () => {
         const newProfile = await Profile.create();
         await newProfile.update({ state: "ready" });
         await ProfileProperty.update(
@@ -315,7 +315,11 @@ describe("models/profile", () => {
         expect(newProfile.state).toBe("pending");
         const properties = await newProfile.properties();
         for (const k in properties) {
-          expect(properties[k].state).toEqual("pending");
+          if (k === "userId") {
+            expect(properties[k].state).toEqual("ready");
+          } else {
+            expect(properties[k].state).toEqual("pending");
+          }
         }
       });
 

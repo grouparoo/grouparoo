@@ -129,6 +129,18 @@ export namespace ProfilePropertyRuleOps {
   }
 
   /**
+   * Determine if this profile property rule is directly mapped (ie: used in the mapping) and therefore profile property values for this rule will never change
+   */
+  export async function directlyMapped(
+    profilePropertyRule: ProfilePropertyRule
+  ) {
+    const source = await profilePropertyRule.$get("source");
+    const mapping = await source.getMapping();
+    const mappingValues = Object.values(mapping);
+    return mappingValues.includes(profilePropertyRule.key);
+  }
+
+  /**
    * Get the options for a Profile Property Rule's Filter from its plugin
    */
   export async function pluginFilterOptions(

@@ -71,6 +71,7 @@ export interface CachedProfilePropertyRule {
   identifying: ProfilePropertyRule["identifying"];
   sourceGuid: ProfilePropertyRule["sourceGuid"];
   appGuid: string;
+  directlyMapped: boolean;
 }
 
 export interface SimpleProfilePropertyRuleOptions
@@ -331,6 +332,10 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     }
   }
 
+  async directlyMapped() {
+    return ProfilePropertyRuleOps.directlyMapped(this);
+  }
+
   async apiData() {
     const options = await this.getOptions();
     const filters = await this.getFilters();
@@ -507,18 +512,24 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
         });
 
         const rulesHash = {};
-        instances.forEach((rule) => {
-          rulesHash[rule.key] = {
-            guid: rule.guid,
-            key: rule.key,
-            type: rule.type,
-            unique: rule.unique,
-            isArray: rule.isArray,
-            identifying: rule.identifying,
-            sourceGuid: rule.sourceGuid,
-            appGuid: rule.source.appGuid,
-          };
-        });
+
+        await Promise.all(
+          instances.map(async (rule) => {
+            const directlyMapped = await rule.directlyMapped();
+
+            rulesHash[rule.key] = <CachedProfilePropertyRule>{
+              guid: rule.guid,
+              key: rule.key,
+              type: rule.type,
+              unique: rule.unique,
+              isArray: rule.isArray,
+              identifying: rule.identifying,
+              sourceGuid: rule.sourceGuid,
+              appGuid: rule.source.appGuid,
+              directlyMapped,
+            };
+          })
+        );
 
         await cache.save(CACHE_KEY, rulesHash, CACHE_TTL);
 
