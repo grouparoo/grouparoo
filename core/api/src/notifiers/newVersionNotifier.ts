@@ -13,15 +13,14 @@ export class NewVersionNotifier extends Notifier {
     const core = plugins.find((p) => p.name === "@grouparoo/core");
     const otherPluginsWithUpdates = plugins
       .filter((p) => p.name !== "@grouparoo/core")
-      .filter((p) => p.version !== p.latestVersion)
-      .filter((p) => p.latestVersion !== "unknown");
+      .filter((p) => p.upToDate === false);
 
-    if (core.version === core.latestVersion) {
+    if (core.upToDate) {
       await this.clearNotifications();
       return;
     }
 
-    if (core.version === "unknown") {
+    if (core.latestVersion === "unknown") {
       return;
     }
 
@@ -31,7 +30,7 @@ export class NewVersionNotifier extends Notifier {
 **There is a new version of Grouparoo available!**
 
 You are currently running version **${
-        core.version
+        core.currentVersion
       }** of @grouparoo/core, but the latest version is **${
         core.latestVersion
       }**.  We suggest that you upgrade your server as soon as possible to take advantage of all the new features and fixes.
@@ -43,7 +42,7 @@ ${
   otherPluginsWithUpdates
     ? `There are also other plugins with updates available:
 ${otherPluginsWithUpdates
-  .map((p) => ` * ${p.name} (${p.version} -> ${p.latestVersion})`)
+  .map((p) => ` * ${p.name} (${p.currentVersion} -> ${p.latestVersion})`)
   .join("\r\n")}`
     : null
 }

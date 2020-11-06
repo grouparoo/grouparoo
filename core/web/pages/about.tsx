@@ -22,9 +22,7 @@ export default function Page({
 }: {
   plugins: Actions.PluginsList["plugins"];
 }) {
-  const hasOutOfDatePlugin = plugins.find((p) => p.version !== p.latestVersion)
-    ? true
-    : false;
+  const hasOutOfDatePlugin = plugins.find((p) => !p.upToDate) ? true : false;
 
   return (
     <>
@@ -86,9 +84,8 @@ export default function Page({
             <tr key={`plugin-${plugin.name}`}>
               <td>{plugin.name}</td>
               <td>
-                {plugin.version}{" "}
-                {plugin.version !== plugin.latestVersion &&
-                plugin.latestVersion !== "unknown" ? (
+                {plugin.currentVersion}{" "}
+                {!plugin.upToDate ? (
                   <Badge variant={"warning"}>Out of Date</Badge>
                 ) : null}
               </td>

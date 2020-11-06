@@ -1,9 +1,19 @@
 import PluginDetails from "./../utils/pluginDetails";
-import pacote from "pacote";
+import pacote from "pacote"; // "pacote" means "package" in Spanish!
 import { log } from "actionhero";
+import compareVersions from "compare-versions";
 
 const pluginManifest = PluginDetails.getPluginManifest();
 const coreVersion = PluginDetails.getCoreVersion();
+
+export interface PluginWithVersions {
+  name: string;
+  currentVersion: string;
+  latestVersion: string;
+  upToDate: boolean;
+  license: string;
+  url: string;
+}
 
 interface PluginWithVersion {
   name: string;
@@ -13,7 +23,7 @@ interface PluginWithVersion {
 }
 
 export async function pluginVersions() {
-  const plugins: Array<PluginWithVersion> = [
+  const plugins: PluginWithVersion[] = [
     {
       name: "@grouparoo/core",
       version: coreVersion,
@@ -22,15 +32,10 @@ export async function pluginVersions() {
     },
   ].concat(pluginManifest.plugins);
 
-  const pluginResponse: {
-    name: string;
-    version: string;
-    license: string;
-    url: string;
-    latestVersion: string;
-  }[] = await Promise.all(
+  const pluginResponse: PluginWithVersions[] = await Promise.all(
     plugins.map(async (plugin) => {
       let latestVersion = "unknown";
+
       try {
         const manifest = await getLatestNPMVersion(plugin);
         latestVersion = manifest.version;
@@ -40,10 +45,14 @@ export async function pluginVersions() {
 
       return {
         name: plugin.name,
-        version: plugin.version,
+        currentVersion: plugin.version,
         license: plugin.license,
         url: plugin.url,
         latestVersion,
+        upToDate:
+          latestVersion === "unknown"
+            ? true
+            : compareVersions(plugin.version, latestVersion) >= 0,
       };
     })
   );
