@@ -20,9 +20,7 @@ export class NewVersionNotifier extends Notifier {
       return;
     }
 
-    if (core.latestVersion === "unknown") {
-      return;
-    }
+    if (core.latestVersion === "unknown") return;
 
     const notification: NotifierMessagePayload = {
       subject: "There's a new version of Grouparoo!",

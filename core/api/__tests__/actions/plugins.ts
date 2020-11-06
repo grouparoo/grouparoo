@@ -39,8 +39,9 @@ describe("actions/plugins", () => {
     expect(plugins.length).toBeGreaterThanOrEqual(1);
     expect(plugins[0]).toEqual({
       name: "@grouparoo/core",
-      version: coreVersion,
+      currentVersion: coreVersion,
       latestVersion: "0.1.17", // from nock recording
+      upToDate: true,
       license: "MPL-2.0",
       url: "https://github.com/grouparoo/grouparoo",
     });
