@@ -58,6 +58,7 @@
     "axios": "0.21.0",
     "bcrypt": "5.0.0",
     "bootstrap": "4.5.3",
+    "compare-versions": "3.6.0",
     "csv-stringify": "5.5.1",
     "date-fns": "2.16.1",
     "dotenv": "8.2.0",

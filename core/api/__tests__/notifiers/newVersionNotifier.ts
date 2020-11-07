@@ -8,22 +8,25 @@ jest.mock("../../src/modules/pluginVersions.ts", () => ({
     return [
       {
         name: "@grouparoo/core",
-        version: "1.2.3",
+        currentVersion: "1.2.3",
         latestVersion: "99.0.1",
+        upToDate: false,
         license: "MPL-2.0",
         url: "https://github.com/grouparoo/grouparoo",
       },
       {
         name: "@grouparoo/postgres",
-        version: "1.2.3",
+        currentVersion: "1.2.3",
         latestVersion: "99.0.1",
+        upToDate: false,
         license: "MPL-2.0",
         url: "https://github.com/grouparoo/grouparoo",
       },
       {
         name: "@grouparoo/mysql",
-        version: "1.2.3",
+        currentVersion: "1.2.3",
         latestVersion: "99.0.1",
+        upToDate: false,
         license: "MPL-2.0",
         url: "https://github.com/grouparoo/grouparoo",
       },

@@ -120,6 +120,7 @@ importers:
       axios: 0.21.0
       bcrypt: 5.0.0
       bootstrap: 4.5.3
+      compare-versions: 3.6.0
       csv-stringify: 5.5.1
       date-fns: 2.16.1
       dotenv: 8.2.0
@@ -202,6 +203,7 @@ importers:
       axios: 0.21.0
       bcrypt: 5.0.0
       bootstrap: 4.5.3
+      compare-versions: 3.6.0
       csv-parse: 4.12.0
       csv-stringify: 5.5.1
       date-fns: 2.16.1
@@ -5928,6 +5930,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-zHig5N+tPWARooBnb0Zx1MFcdfpyJrfTJ3Y5L+IFvUm8rM74hHz66z0gw0x4tijh5CorKkKUCnW82R2vmpeCRA==
+  /compare-versions/3.6.0:
+    dev: false
+    resolution:
+      integrity: sha512-W6Af2Iw1z4CB7q4uU4hv646dW9GQuBM+YpC0UvUCWSD8w90SJjp+ujJuXaEMtAXBtSqGfMPuFOVn4/+FlaqfBA==
   /component-emitter/1.3.0:
     resolution:
       integrity: sha512-Rd3se6QB+sO1TwqZjscQrurpEPIfO0/yYnSin6Q/rD3mOutHvUrCAhJub3r90uNb+SESBuE0QYoB90YdfatsRg==
