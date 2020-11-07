@@ -14,6 +14,8 @@ import {
   HasMany,
   Is,
   DefaultScope,
+  BeforeUpdate,
+  BeforeCreate,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { env, api, cache } from "actionhero";
@@ -68,6 +70,7 @@ export interface CachedProfilePropertyRule {
   type: ProfilePropertyRule["type"];
   unique: ProfilePropertyRule["unique"];
   isArray: ProfilePropertyRule["isArray"];
+  directlyMapped: ProfilePropertyRule["directlyMapped"];
   identifying: ProfilePropertyRule["identifying"];
   sourceGuid: ProfilePropertyRule["sourceGuid"];
   appGuid: string;
@@ -162,6 +165,11 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @Default(false)
   @Column
   identifying: boolean;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  directlyMapped: boolean;
 
   @AllowNull(false)
   @Default(false)
@@ -343,6 +351,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       state: this.state,
       unique: this.unique,
       identifying: this.identifying,
+      directlyMapped: this.directlyMapped,
       options,
       filters,
       isArray: this.isArray,
@@ -357,6 +366,17 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     const instance = await this.scope(null).findOne({ where: { guid } });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
+  }
+
+  @BeforeUpdate
+  @BeforeCreate
+  static async determineDirectlyMapped(instance: ProfilePropertyRule) {
+    if (instance.state === "draft") return;
+
+    const source = await instance.$get("source", { scope: null });
+    const mapping = await source.getMapping();
+    const mappingValues = Object.values(mapping);
+    instance.directlyMapped = mappingValues.includes(instance.key);
   }
 
   @BeforeSave
@@ -507,14 +527,16 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
         });
 
         const rulesHash = {};
-        instances.forEach((rule) => {
-          rulesHash[rule.key] = {
+
+        instances.map((rule) => {
+          rulesHash[rule.key] = <CachedProfilePropertyRule>{
             guid: rule.guid,
             key: rule.key,
             type: rule.type,
             unique: rule.unique,
             isArray: rule.isArray,
             identifying: rule.identifying,
+            directlyMapped: rule.directlyMapped,
             sourceGuid: rule.sourceGuid,
             appGuid: rule.source.appGuid,
           };

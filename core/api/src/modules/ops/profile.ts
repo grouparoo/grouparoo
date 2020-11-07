@@ -468,10 +468,28 @@ export namespace ProfileOps {
     profile: Profile,
     transaction?: Transaction
   ) {
+    const profilePropertyRuleGuidsToMakePending: string[] = [];
+    const cachedProfilePropertyRule = await ProfilePropertyRule.cached();
+    for (const guid in cachedProfilePropertyRule) {
+      const rule = cachedProfilePropertyRule[guid];
+      if (!rule.directlyMapped) {
+        profilePropertyRuleGuidsToMakePending.push(rule.guid);
+      }
+    }
+
     await ProfileProperty.update(
       { state: "pending" },
-      { where: { profileGuid: profile.guid }, transaction }
+      {
+        where: {
+          profileGuid: profile.guid,
+          profilePropertyRuleGuid: {
+            [Op.in]: profilePropertyRuleGuidsToMakePending,
+          },
+        },
+        transaction,
+      }
     );
+
     await profile.update({ state: "pending" }, { transaction });
   }
 

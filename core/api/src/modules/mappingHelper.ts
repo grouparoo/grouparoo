@@ -7,7 +7,7 @@ import { Transaction } from "sequelize";
 
 export namespace MappingHelper {
   export interface Mappings {
-    [key: string]: any;
+    [remoteKey: string]: any;
   }
 
   export async function getMapping(instance: Source | Destination) {
