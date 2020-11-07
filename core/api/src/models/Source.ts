@@ -14,6 +14,7 @@ import {
   Default,
   DataType,
   DefaultScope,
+  AfterSave,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
@@ -324,6 +325,16 @@ export class Source extends LoggedModel<Source> {
       throw new Error(
         "you cannot delete a source that has profile property rules"
       );
+    }
+  }
+
+  @AfterSave
+  static async updateRuleDirectMappings(instance: Source) {
+    const rules = await instance.$get("profilePropertyRules");
+    for (const i in rules) {
+      const rule = rules[i];
+      await ProfilePropertyRule.determineDirectlyMapped(rule);
+      if (rule.changed()) await rule.save();
     }
   }
 

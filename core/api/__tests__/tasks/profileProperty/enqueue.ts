@@ -75,7 +75,7 @@ describe("tasks/profileProperties:enqueue", () => {
 
       expect(importProfilePropertiesTasks.length).toBe(0);
       expect(importProfilePropertyTasks.length).toBe(
-        profilePropertyRulesCount * 2
+        (profilePropertyRulesCount - 1) * 2
       );
     });
 
@@ -127,7 +127,7 @@ describe("tasks/profileProperties:enqueue", () => {
 
         expect(importProfilePropertyTasks.length).toBe(0);
         expect(importProfilePropertiesTasks.length).toBe(
-          profilePropertyRulesCount
+          profilePropertyRulesCount - 1
         );
         importProfilePropertiesTasks.forEach((t) =>
           expect(t.args[0].profileGuids.length).toBe(2)
@@ -168,7 +168,7 @@ describe("tasks/profileProperties:enqueue", () => {
 
         expect(importProfilePropertyTasks.length).toBe(0);
         expect(importProfilePropertiesTasks.length).toBe(
-          profilePropertyRulesCount
+          profilePropertyRulesCount - 1
         );
         importProfilePropertiesTasks.forEach((t) =>
           expect(t.args[0].profileGuids.length).toBe(1)

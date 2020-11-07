@@ -367,19 +367,19 @@ describe("models/profilePropertyRule", () => {
     expect(optionsCount).toBe(0);
   });
 
-  test("profile property rules can determine if they are directly mapped", async () => {
-    const userIdRule = await ProfilePropertyRule.findOne({
-      where: { key: "userId" },
-    });
-    const emailRule = await ProfilePropertyRule.findOne({
-      where: { key: "email" },
+  describe("cache and directlyMapping", () => {
+    let userIdRule: ProfilePropertyRule;
+    let emailRule: ProfilePropertyRule;
+
+    beforeAll(async () => {
+      userIdRule = await ProfilePropertyRule.findOne({
+        where: { key: "userId" },
+      });
+      emailRule = await ProfilePropertyRule.findOne({
+        where: { key: "email" },
+      });
     });
 
-    expect(await userIdRule.directlyMapped()).toBe(true);
-    expect(await emailRule.directlyMapped()).toBe(false);
-  });
-
-  describe("cache", () => {
     test("cached data can be returned", async () => {
       const rules = await ProfilePropertyRule.cached();
       const keys = Object.keys(rules);
@@ -411,6 +411,18 @@ describe("models/profilePropertyRule", () => {
         "purchases",
         "userId",
       ]);
+    });
+
+    test("directlyMapping will be determined as on save", async () => {
+      expect(userIdRule.directlyMapped).toBe(true);
+      expect(emailRule.directlyMapped).toBe(false);
+    });
+
+    test("profile property rules include if they are directly mapped", async () => {
+      const rules = await ProfilePropertyRule.cached();
+
+      expect(rules["userId"].directlyMapped).toBe(true);
+      expect(rules["email"].directlyMapped).toBe(false);
     });
   });
 
