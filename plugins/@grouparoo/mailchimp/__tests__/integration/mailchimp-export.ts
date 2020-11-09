@@ -6,7 +6,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
 import { Profile, App, Destination, Group } from "@grouparoo/core";
-import { generateMailchimpId } from "./../../src/lib/generateMailchimpId";
+import { generateMailchimpId } from "./../../src/lib/shared/generateMailchimpId";
 import { connect } from "./../../src/lib/connect";
 
 // uncomment to use real HTTP requests

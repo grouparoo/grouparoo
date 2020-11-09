@@ -1,6 +1,6 @@
 import { ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
-import { generateMailchimpId } from "./../generateMailchimpId";
+import { generateMailchimpId } from "../shared/generateMailchimpId";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
