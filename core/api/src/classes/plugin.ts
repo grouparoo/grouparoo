@@ -442,20 +442,18 @@ export type DestinationMappingOptionsResponseTypes =
   | "phoneNumber"
   | "string"
   | "url";
-
+export interface DestinationMappingOptionsResponseProfilePropertyRule {
+  key: string;
+  type: DestinationMappingOptionsResponseTypes;
+  important?: boolean;
+}
+export interface DestinationMappingOptionsResponseProfilePropertyRules {
+  required: Array<DestinationMappingOptionsResponseProfilePropertyRule>;
+  known: Array<DestinationMappingOptionsResponseProfilePropertyRule>;
+  allowOptionalFromProfilePropertyRules: boolean;
+}
 export interface DestinationMappingOptionsMethodResponse {
-  profilePropertyRules: {
-    required: Array<{
-      key: string;
-      type: DestinationMappingOptionsResponseTypes;
-    }>;
-    known: Array<{
-      key: string;
-      type: DestinationMappingOptionsResponseTypes;
-      important?: boolean;
-    }>;
-    allowOptionalFromProfilePropertyRules: boolean;
-  };
+  profilePropertyRules: DestinationMappingOptionsResponseProfilePropertyRules;
   labels: {
     profilePropertyRule: {
       singular: string; // merge var
