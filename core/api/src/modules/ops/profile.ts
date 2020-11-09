@@ -5,7 +5,7 @@ import { Source } from "../../models/Source";
 import { Group } from "../../models/Group";
 import { Destination } from "../../models/Destination";
 import { Event } from "../../models/Event";
-import { log } from "actionhero";
+import { log, api, task } from "actionhero";
 import { Op, Transaction } from "sequelize";
 import { waitForLock } from "../locks";
 import { ProfilePropertyOps } from "./profileProperty";
@@ -550,6 +550,71 @@ export namespace ProfileOps {
       await releaseLockForProfile();
       await releaseLockForOtherProfile();
     }
+  }
+
+  /**
+   * Find profiles that are not ready but whose properties are and make them ready.
+   * Task `profile:completeImport` will be enqueued for each Profile.
+   */
+  export async function makeReady(limit = 100) {
+    let profiles: Profile[];
+
+    const transaction: Transaction = await api.sequelize.transaction({
+      lock: Transaction.LOCK.UPDATE,
+      type: Transaction.TYPES.EXCLUSIVE,
+    });
+
+    try {
+      const notInQuery = api.sequelize.dialect.QueryGenerator.selectQuery(
+        "profileProperties",
+        {
+          attributes: [
+            api.sequelize.fn("DISTINCT", api.sequelize.col("profileGuid")),
+          ],
+          where: { state: "pending" },
+        }
+      ).slice(0, -1);
+
+      profiles = await Profile.findAll({
+        where: {
+          state: "pending",
+          guid: { [Op.notIn]: api.sequelize.literal(`(${notInQuery})`) },
+        },
+        limit,
+        order: [["guid", "asc"]],
+        transaction,
+      });
+
+      const updateResponse = await Profile.update(
+        { state: "ready" },
+        {
+          where: {
+            guid: { [Op.in]: profiles.map((p) => p.guid) },
+            state: "pending",
+          },
+          transaction,
+        }
+      );
+
+      await transaction.commit();
+
+      profiles = updateResponse[1];
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+
+    if (!profiles) return [];
+
+    await Promise.all(
+      profiles.map((profile) =>
+        task.enqueue("profile:completeImport", {
+          profileGuid: profile.guid,
+        })
+      )
+    );
+
+    return profiles;
   }
 
   function arraysAreEqual(a: Array<any>, b: Array<any>) {
