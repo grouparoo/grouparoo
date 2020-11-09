@@ -109,13 +109,21 @@ export class ApiKey extends LoggedModel<ApiKey> {
     const topics = Permission.topics();
     for (const i in topics) {
       const topic = topics[i];
-      const [permission] = await Permission.findOrCreate({
+      let permission = await Permission.findOne({
         where: {
           topic,
           ownerGuid: instance.guid,
           ownerType: "apiKey",
         },
       });
+
+      if (!permission) {
+        permission = await Permission.create({
+          topic,
+          ownerGuid: instance.guid,
+          ownerType: "apiKey",
+        });
+      }
 
       if (instance.permissionAllRead !== null) {
         await permission.update({ read: instance.permissionAllRead });

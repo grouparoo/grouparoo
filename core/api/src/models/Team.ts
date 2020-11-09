@@ -127,13 +127,23 @@ export class Team extends LoggedModel<Team> {
     const topics = Permission.topics();
     for (const i in topics) {
       const topic = topics[i];
-      const [permission, isNew] = await Permission.findOrCreate({
+      let isNew = false;
+      let permission = await Permission.findOne({
         where: {
           topic,
           ownerGuid: instance.guid,
           ownerType: "team",
         },
       });
+
+      if (!permission) {
+        isNew = true;
+        permission = await Permission.create({
+          topic,
+          ownerGuid: instance.guid,
+          ownerType: "team",
+        });
+      }
 
       if (isNew) {
         // default new teams to having full 'read' access

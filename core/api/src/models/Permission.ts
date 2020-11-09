@@ -11,6 +11,28 @@ import { LoggedModel } from "../classes/loggedModel";
 import { Team } from "./Team";
 import { ApiKey } from "./ApiKey";
 
+export const topics = [
+  "apiKey",
+  "app",
+  "destination",
+  "event",
+  "export",
+  "export",
+  "file",
+  "group",
+  "import",
+  "log",
+  "notification",
+  "profile",
+  "profilePropertyRule",
+  "resque",
+  "run",
+  "setupStep",
+  "source",
+  "system",
+  "team",
+] as const;
+
 @Table({ tableName: "permissions", paranoid: false })
 export class Permission extends LoggedModel<Permission> {
   guidPrefix() {
@@ -104,33 +126,11 @@ export class Permission extends LoggedModel<Permission> {
   }
 
   static topics() {
-    return [
-      "apiKey",
-      "app",
-      "destination",
-      "event",
-      "export",
-      "export",
-      "file",
-      "group",
-      "import",
-      "log",
-      "notification",
-      "profile",
-      "profilePropertyRule",
-      "resque",
-      "run",
-      "setupStep",
-      "source",
-      "system",
-      "team",
-    ];
+    return topics;
   }
 
   static validateTopic(topic) {
-    if (topic === "*") {
-      return;
-    }
+    if (topic === "*") return;
 
     if (!Permission.topics().includes(topic)) {
       throw new Error(`cannot determine permission topic for ${topic}`);
