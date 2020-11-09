@@ -31,7 +31,7 @@ jobs:
           command: sudo npm install -g pnpm
       - run:
           name: pnpm-install
-          command: pnpm install
+          command: pnpm install --prefer-frozen-lockfile
       - save_cache:
           <<: *node-module-cache-options
           paths:
