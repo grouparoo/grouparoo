@@ -29,21 +29,27 @@ export class TeamInitialize extends Action {
       throw new Error("an administration team already exists, please sign in");
     }
 
-    team = await Team.create({
-      name: "Administrators",
-      locked: true,
-      permissionAllRead: true,
-      permissionAllWrite: true,
-    });
+    try {
+      team = await Team.create({
+        name: "Administrators",
+        locked: true,
+        permissionAllRead: true,
+        permissionAllWrite: true,
+      });
 
-    teamMember = await TeamMember.create({
-      teamGuid: team.guid,
-      email: params.email,
-      firstName: params.firstName,
-      lastName: params.lastName,
-    });
+      teamMember = await TeamMember.create({
+        teamGuid: team.guid,
+        email: params.email,
+        firstName: params.firstName,
+        lastName: params.lastName,
+      });
 
-    await teamMember.updatePassword(params.password);
+      await teamMember.updatePassword(params.password);
+    } catch (error) {
+      if (teamMember) await teamMember.destroy();
+      if (team) await team.destroy();
+      throw error;
+    }
 
     if (params.subscribe) {
       await GrouparooSubscription(teamMember);
