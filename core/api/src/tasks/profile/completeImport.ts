@@ -90,6 +90,17 @@ export class ProfileCompleteImport extends RetryableTask {
 
       let force = false;
 
+      // TODO: did we mean to do something here?
+      const runs = await Run.findAll({
+        where: {
+          guid: {
+            [Op.in]: imports
+              .filter((i) => i.creatorType === "run")
+              .map((i) => i.creatorGuid),
+          },
+        },
+      });
+
       await task.enqueue("profile:export", {
         profileGuid: profile.guid,
         force,
