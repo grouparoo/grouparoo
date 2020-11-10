@@ -121,20 +121,21 @@ export namespace ExportOps {
             startedAt: null,
           },
           transaction,
+          returning: true,
         }
       );
 
       transaction.commit();
 
-      _exports = updateResponse[1];
+      // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer startedAt=null
+      // in SQLite this isn't possible, but contention is far less likely
+      if (updateResponse[1]) _exports = updateResponse[1];
     } catch (error) {
       await transaction.rollback();
       throw error;
     }
 
-    if (!_exports) return _exports?.length || 0;
-
-    if (_exports.length > 0)
+    if (_exports.length > 0) {
       if (pluginConnection.methods.exportProfiles) {
         // the plugin has a batch exportProfiles method
         await task.enqueue(
@@ -160,6 +161,7 @@ export namespace ExportOps {
           )
         );
       }
+    }
 
     return _exports.length;
   }

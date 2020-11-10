@@ -598,7 +598,9 @@ export namespace ProfileOps {
 
       await transaction.commit();
 
-      profiles = updateResponse[1];
+      // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer state=pending
+      // in SQLite this isn't possible, but contention is far less likely
+      if (updateResponse[1]) profiles = updateResponse[1];
     } catch (error) {
       await transaction.rollback();
       throw error;
