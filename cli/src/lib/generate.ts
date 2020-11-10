@@ -27,15 +27,17 @@ export default async function Generate(workDir: string = process.cwd()) {
   if (!fs.existsSync(envFile)) {
     log.info("Creating .env");
     fs.copyFileSync(getTemplatePath(".env"), envFile);
-    log.info(
+    log.warn(
       "Please check the options in .env to ensure that they pertain to your environment"
     );
   } else {
     log.warn(".env already exists, not modifying");
   }
 
+  log.info("");
   log.info("Installing dependencies...");
-  await SpawnCommand("npm", ["install"], workDir, log);
+  log.info("");
+  await SpawnCommand("npm", ["install"], workDir, log, " >     ");
 
   log.success("Grouparoo project created!");
   log.info(

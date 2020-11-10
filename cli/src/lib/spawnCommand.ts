@@ -5,16 +5,17 @@ export default async function spawnCommand(
   command: string,
   args: string[],
   cwd: string,
-  log: Logger
+  log: Logger,
+  messagePrefix = ""
 ) {
   return new Promise((resolve, reject) => {
     const process = spawn(command, args, { cwd });
 
     process.stdout.on("data", (message) =>
-      log.debug(message.toString().replace("\n", ""))
+      log.debug(messagePrefix + message.toString().replace("\n", ""))
     );
     process.stderr.on("data", (message) =>
-      log.warn(message.toString().replace("\n", ""))
+      log.warn(messagePrefix + message.toString().replace("\n", ""))
     );
 
     process.on("exit", function (code) {
