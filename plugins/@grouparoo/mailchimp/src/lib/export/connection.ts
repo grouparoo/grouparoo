@@ -1,7 +1,7 @@
 import { PluginConnection } from "@grouparoo/core";
 import { exportProfile } from "./exportProfile";
 
-import { getDestinationOptions } from "../shared/destinationOptions";
+import { getDestinationOptions } from "../shared/connectionOptions";
 import { getDestinationMappingOptions } from "../shared/destinationMappingOptions";
 import { exportArrayProperties } from "../shared/exportArrayProperties";
 
