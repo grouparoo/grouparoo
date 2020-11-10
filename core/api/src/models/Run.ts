@@ -94,16 +94,8 @@ export class Run extends Model<Run> {
 
   @Column(DataType.STRING)
   get highWaterMark(): HighWaterMark {
-    try {
-      // @ts-ignore
-      return JSON.parse(this.getDataValue("highWaterMark"));
-    } catch (error) {
-      log(
-        `error parsing highWaterMark for run ${this.guid}: ${error}`,
-        "error"
-      );
-      return {};
-    }
+    // @ts-ignore
+    return JSON.parse(this.getDataValue("highWaterMark") || "{}");
   }
   set highWaterMark(value: HighWaterMark) {
     // @ts-ignore

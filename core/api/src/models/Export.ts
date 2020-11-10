@@ -98,12 +98,8 @@ export class Export extends Model<Export> {
 
   @Column(DataType.TEXT)
   get oldGroups(): string[] {
-    try {
-      //@ts-ignore
-      return JSON.parse(this.getDataValue("oldGroups"));
-    } catch (e) {
-      return [];
-    }
+    //@ts-ignore
+    return JSON.parse(this.getDataValue("oldGroups") || "[]");
   }
   set oldGroups(value: string[]) {
     //@ts-ignore
@@ -112,12 +108,8 @@ export class Export extends Model<Export> {
 
   @Column(DataType.TEXT)
   get newGroups(): string[] {
-    try {
-      //@ts-ignore
-      return JSON.parse(this.getDataValue("newGroups"));
-    } catch (e) {
-      return [];
-    }
+    //@ts-ignore
+    return JSON.parse(this.getDataValue("newGroups") || "[]");
   }
   set newGroups(value: string[]) {
     //@ts-ignore
