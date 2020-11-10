@@ -10,7 +10,7 @@ import {
 } from "sequelize-typescript";
 import * as UUID from "uuid";
 import { LoggedModel } from "../classes/loggedModel";
-import { Permission } from "./Permission";
+import { Permission, PermissionTopics } from "./Permission";
 import { AsyncReturnType } from "type-fest";
 
 @Table({ tableName: "apiKeys", paranoid: false })
@@ -112,9 +112,8 @@ export class ApiKey extends LoggedModel<ApiKey> {
 
   @AfterSave
   static async buildPermissions(instance: ApiKey, { transaction }) {
-    const topics = Permission.topics();
-    for (const i in topics) {
-      const topic = topics[i];
+    for (const i in PermissionTopics) {
+      const topic = PermissionTopics[i];
       let permission = await Permission.findOne({
         where: {
           topic,

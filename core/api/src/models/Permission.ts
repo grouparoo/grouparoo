@@ -11,7 +11,7 @@ import { LoggedModel } from "../classes/loggedModel";
 import { Team } from "./Team";
 import { ApiKey } from "./ApiKey";
 
-export const topics = [
+export const PermissionTopics = [
   "apiKey",
   "app",
   "destination",
@@ -125,14 +125,10 @@ export class Permission extends LoggedModel<Permission> {
     return permission[mode];
   }
 
-  static topics() {
-    return topics;
-  }
-
   static validateTopic(topic) {
     if (topic === "*") return;
 
-    if (!Permission.topics().includes(topic)) {
+    if (!PermissionTopics.includes(topic)) {
       throw new Error(`cannot determine permission topic for ${topic}`);
     }
   }

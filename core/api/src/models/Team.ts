@@ -13,7 +13,7 @@ import {
 import { api } from "actionhero";
 import { LoggedModel } from "../classes/loggedModel";
 import { TeamMember } from "./TeamMember";
-import { Permission } from "./Permission";
+import { Permission, PermissionTopics } from "./Permission";
 import { AsyncReturnType } from "type-fest";
 import { Transaction } from "sequelize";
 
@@ -127,11 +127,10 @@ export class Team extends LoggedModel<Team> {
       isNew: boolean;
       permission: Permission;
     }> = [];
-    const topics = Permission.topics();
 
     try {
-      for (const i in topics) {
-        const topic = topics[i];
+      for (const i in PermissionTopics) {
+        const topic = PermissionTopics[i];
         let isNew = false;
         let permission = await Permission.findOne({
           where: {
