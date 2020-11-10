@@ -118,7 +118,6 @@ export namespace ExportOps {
             startedAt: null,
           },
           transaction,
-          returning: true,
         }
       );
 
