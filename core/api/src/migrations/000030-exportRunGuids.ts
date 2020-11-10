@@ -5,10 +5,6 @@ module.exports = {
       allowNull: false,
       defaultValue: 0,
     });
-    await migration.changeColumn("runs", "exportsCreated", {
-      type: DataTypes.BIGINT,
-      allowNull: false,
-    });
 
     await migration.addColumn("exports", "runGuids", {
       type: DataTypes.TEXT,

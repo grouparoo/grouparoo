@@ -5,10 +5,6 @@ module.exports = {
       allowNull: false,
       defaultValue: 100,
     });
-    await migration.changeColumn("runs", "percentComplete", {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    });
   },
 
   down: async function (migration) {

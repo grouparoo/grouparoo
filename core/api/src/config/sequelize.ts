@@ -62,7 +62,7 @@ export const DEFAULT = {
 
     return {
       autoMigrate: true,
-      logging: (...msg) => console.log(msg),
+      logging: false,
       dialect: dialect,
       port: parseInt(port),
       database: database,

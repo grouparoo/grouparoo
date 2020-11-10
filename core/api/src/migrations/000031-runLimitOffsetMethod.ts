@@ -5,19 +5,11 @@ module.exports = {
       allowNull: false,
       defaultValue: 0,
     });
-    await migration.changeColumn("runs", "limit", {
-      type: DataTypes.BIGINT,
-      allowNull: false,
-    });
 
     await migration.addColumn("runs", "offset", {
       type: DataTypes.BIGINT,
       allowNull: false,
       defaultValue: 0,
-    });
-    await migration.changeColumn("runs", "offset", {
-      type: DataTypes.BIGINT,
-      allowNull: false,
     });
 
     await migration.addColumn("runs", "method", {
