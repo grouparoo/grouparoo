@@ -218,13 +218,14 @@ export class App extends LoggedModel<App> {
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: App) {
+  static async ensureUniqueName(instance: App, { transaction }) {
     const count = await App.count({
       where: {
         guid: { [Op.ne]: instance.guid },
         name: instance.name,
         state: { [Op.ne]: "draft" },
       },
+      transaction,
     });
     if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
@@ -243,9 +244,10 @@ export class App extends LoggedModel<App> {
   }
 
   @BeforeDestroy
-  static async checkDependents(instance: App) {
+  static async checkDependents(instance: App, { transaction }) {
     const sources = await Source.scope(null).findAll({
       where: { appGuid: instance.guid },
+      transaction,
     });
     if (sources.length > 0) {
       throw new Error(
@@ -255,6 +257,7 @@ export class App extends LoggedModel<App> {
 
     const destinations = await Destination.scope(null).findAll({
       where: { appGuid: instance.guid },
+      transaction,
     });
     if (destinations.length > 0) {
       throw new Error(
@@ -272,11 +275,12 @@ export class App extends LoggedModel<App> {
   }
 
   @AfterDestroy
-  static async destroyOptions(instance: App) {
+  static async destroyOptions(instance: App, { transaction }) {
     return Option.destroy({
       where: {
         ownerGuid: instance.guid,
       },
+      transaction,
     });
   }
 

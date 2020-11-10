@@ -474,37 +474,45 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   @AfterDestroy
-  static async destroyOptions(instance: ProfilePropertyRule) {
+  static async destroyOptions(instance: ProfilePropertyRule, { transaction }) {
     await Option.destroy({
       where: { ownerGuid: instance.guid },
+      transaction,
     });
   }
 
   @AfterDestroy
-  static async stopRuns(instance: ProfilePropertyRule) {
+  static async stopRuns(instance: ProfilePropertyRule, { transaction }) {
     const runs = await Run.findAll({
       where: { creatorGuid: instance.guid, state: "running" },
+      transaction,
     });
 
     for (const i in runs) {
-      await runs[i].update({ state: "stopped" });
+      await runs[i].update({ state: "stopped" }, { transaction });
     }
   }
 
   @AfterDestroy
   static async destroyProfilePropertyRuleFilters(
-    instance: ProfilePropertyRule
+    instance: ProfilePropertyRule,
+    { transaction }
   ) {
     await ProfilePropertyRuleFilter.destroy({
       where: { profilePropertyRuleGuid: instance.guid },
+      transaction,
     });
   }
 
   @AfterDestroy
-  static async clearCacheAfterDestroy(instance: ProfilePropertyRule) {
+  static async clearCacheAfterDestroy(
+    instance: ProfilePropertyRule,
+    { transaction }
+  ) {
     await this.clearCache();
     await ProfileProperty.destroy({
       where: { profilePropertyRuleGuid: instance.guid },
+      transaction,
     });
   }
 

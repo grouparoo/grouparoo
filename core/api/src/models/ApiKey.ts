@@ -102,10 +102,16 @@ export class ApiKey extends LoggedModel<ApiKey> {
 
   // --- Class Methods --- //
 
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+    return instance;
+  }
+
   // TODO: Cache these like Profile Property Rules for faster lookup
 
   @AfterSave
-  static async buildPermissions(instance: ApiKey) {
+  static async buildPermissions(instance: ApiKey, { transaction }) {
     const topics = Permission.topics();
     for (const i in topics) {
       const topic = topics[i];
@@ -115,33 +121,40 @@ export class ApiKey extends LoggedModel<ApiKey> {
           ownerGuid: instance.guid,
           ownerType: "apiKey",
         },
+        transaction,
       });
 
       if (!permission) {
-        permission = await Permission.create({
-          topic,
-          ownerGuid: instance.guid,
-          ownerType: "apiKey",
-        });
+        permission = await Permission.create(
+          {
+            topic,
+            ownerGuid: instance.guid,
+            ownerType: "apiKey",
+          },
+          { transaction }
+        );
       }
 
       if (instance.permissionAllRead !== null) {
-        await permission.update({ read: instance.permissionAllRead });
+        await permission.update(
+          { read: instance.permissionAllRead },
+          { transaction }
+        );
       }
       if (instance.permissionAllWrite !== null) {
-        await permission.update({ write: instance.permissionAllWrite });
+        await permission.update(
+          { write: instance.permissionAllWrite },
+          { transaction }
+        );
       }
     }
   }
 
   @AfterDestroy
-  static async deletePermissions(instance: ApiKey) {
-    return Permission.destroy({ where: { ownerGuid: instance.guid } });
-  }
-
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
-    return instance;
+  static async deletePermissions(instance: ApiKey, { transaction }) {
+    return Permission.destroy({
+      where: { ownerGuid: instance.guid },
+      transaction,
+    });
   }
 }

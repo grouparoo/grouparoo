@@ -282,20 +282,27 @@ export namespace ProfileOps {
     }
   }
 
-  export async function buildNullProperties(profile: Profile, state = "ready") {
+  export async function buildNullProperties(
+    profile: Profile,
+    state = "ready",
+    transaction?: Transaction
+  ) {
     const properties = await profile.properties();
     const rules = await ProfilePropertyRule.cached();
     let newPropertiesCount = 0;
     for (const key in rules) {
       if (!properties[key]) {
-        await ProfileProperty.create({
-          profileGuid: profile.guid,
-          profilePropertyRuleGuid: rules[key].guid,
-          state,
-          stateChangedAt: new Date(),
-          valueChangedAt: new Date(),
-          confirmedAt: new Date(),
-        });
+        await ProfileProperty.create(
+          {
+            profileGuid: profile.guid,
+            profilePropertyRuleGuid: rules[key].guid,
+            state,
+            stateChangedAt: new Date(),
+            valueChangedAt: new Date(),
+            confirmedAt: new Date(),
+          },
+          { transaction }
+        );
         newPropertiesCount++;
       }
     }

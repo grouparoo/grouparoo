@@ -108,8 +108,8 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps.removeProperties(this, properties);
   }
 
-  async buildNullProperties() {
-    return ProfileOps.buildNullProperties(this);
+  async buildNullProperties(transaction?: Transaction) {
+    return ProfileOps.buildNullProperties(this, "ready", transaction);
   }
 
   async markPending(transaction?: Transaction) {
@@ -180,8 +180,11 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   @AfterCreate
-  static async buildNullPropertiesForNewProfile(instance: Profile) {
-    await instance.buildNullProperties();
+  static async buildNullPropertiesForNewProfile(
+    instance: Profile,
+    { transaction }
+  ) {
+    await instance.buildNullProperties(transaction);
   }
 
   @AfterDestroy
@@ -190,16 +193,18 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   @AfterDestroy
-  static async destroyProfileProperties(instance: Profile) {
+  static async destroyProfileProperties(instance: Profile, { transaction }) {
     await ProfileProperty.destroy({
       where: { profileGuid: instance.guid },
+      transaction,
     });
   }
 
   @AfterDestroy
-  static async destroyGroupMembers(instance: Profile) {
+  static async destroyGroupMembers(instance: Profile, { transaction }) {
     await GroupMember.destroy({
       where: { profileGuid: instance.guid },
+      transaction,
     });
   }
 
@@ -211,14 +216,18 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   @AfterDestroy
-  static async destroyImports(instance: Profile) {
+  static async destroyImports(instance: Profile, { transaction }) {
     await Import.destroy({
       where: { profileGuid: instance.guid },
+      transaction,
     });
   }
 
   @AfterDestroy
-  static async destroyExports(instance: Profile) {
-    await Export.destroy({ where: { profileGuid: instance.guid } });
+  static async destroyExports(instance: Profile, { transaction }) {
+    await Export.destroy({
+      where: { profileGuid: instance.guid },
+      transaction,
+    });
   }
 }

@@ -397,13 +397,14 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: Destination) {
+  static async ensureUniqueName(instance: Destination, { transaction }) {
     const count = await Destination.count({
       where: {
         guid: { [Op.ne]: instance.guid },
         name: instance.name,
         state: { [Op.ne]: "draft" },
       },
+      transaction,
     });
     if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
@@ -444,10 +445,14 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeDestroy
-  static async cannotDeleteDestinationWithTrackedGroup(instance: Destination) {
+  static async cannotDeleteDestinationWithTrackedGroup(
+    instance: Destination,
+    { transaction }
+  ) {
     if (instance.groupGuid) {
       const group = await Group.findOne({
         where: { guid: instance.groupGuid },
+        transaction,
       });
       if (group) {
         throw new Error("cannot delete a destination that is tracking a group");
@@ -456,9 +461,10 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeDestroy
-  static async waitForPendingExports(instance: Destination) {
+  static async waitForPendingExports(instance: Destination, { transaction }) {
     const pendingExportCount = await instance.$count("exports", {
       where: { completedAt: { [Op.eq]: null } },
+      transaction,
     });
     if (pendingExportCount > 0) {
       throw new Error(
@@ -468,29 +474,44 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @AfterDestroy
-  static async destroyDestinationMappings(instance: Destination) {
+  static async destroyDestinationMappings(
+    instance: Destination,
+    { transaction }
+  ) {
     return Mapping.destroy({
       where: { ownerGuid: instance.guid },
+      transaction,
     });
   }
 
   @AfterDestroy
-  static async destroyDestinationOptions(instance: Destination) {
+  static async destroyDestinationOptions(
+    instance: Destination,
+    { transaction }
+  ) {
     return Option.destroy({
       where: { ownerGuid: instance.guid },
+      transaction,
     });
   }
 
   @AfterDestroy
-  static async destroyDestinationGroupMemberships(instance: Destination) {
+  static async destroyDestinationGroupMemberships(
+    instance: Destination,
+    { transaction }
+  ) {
     return DestinationGroupMembership.destroy({
       where: { destinationGuid: instance.guid },
+      transaction,
     });
   }
 
   @AfterDestroy
-  static async destroyExports(instance: Destination) {
-    await Export.destroy({ where: { destinationGuid: instance.guid } });
+  static async destroyExports(instance: Destination, { transaction }) {
+    await Export.destroy({
+      where: { destinationGuid: instance.guid },
+      transaction,
+    });
   }
 
   /**

@@ -91,7 +91,7 @@ export namespace OptionHelper {
 
       // @ts-ignore
       instance.changed("updatedAt", true);
-      await LoggedModel.logUpdate(instance);
+      await LoggedModel.logUpdate(instance, { transaction });
       // @ts-ignore
       await instance.save({ transaction, hooks: false });
 
