@@ -10,7 +10,13 @@ import {
   loadSourceOptions,
   updater,
 } from "../utils/nockHelper";
-import { SimpleAppOptions, Import, plugin, Run } from "@grouparoo/core";
+import {
+  SimpleAppOptions,
+  Import,
+  plugin,
+  Run,
+  SimpleDestinationOptions,
+} from "@grouparoo/core";
 
 const nockFile = path.join(__dirname, "../", "fixtures", "import-profiles.js");
 
@@ -25,7 +31,7 @@ require("./../fixtures/import-profiles");
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
-const sourceOptions: SimpleAppOptions = loadSourceOptions(newNock);
+const sourceOptions: SimpleDestinationOptions = loadSourceOptions(newNock);
 
 let actionhero;
 

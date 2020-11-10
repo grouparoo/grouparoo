@@ -1,4 +1,8 @@
-import { SimpleAppOptions } from "@grouparoo/core";
+import {
+  SimpleAppOptions,
+  SimpleSourceOptions,
+  SimpleDestinationOptions,
+} from "@grouparoo/core";
 import dotenv from "dotenv";
 import path from "path";
 import fs from "fs-extra";
@@ -24,7 +28,9 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
   };
 }
 
-export function loadSourceOptions(newNock: boolean = false): SimpleAppOptions {
+export function loadSourceOptions(
+  newNock: boolean = false
+): SimpleSourceOptions {
   let envFile;
   if (newNock) {
     envFile = realPath;
@@ -35,6 +41,22 @@ export function loadSourceOptions(newNock: boolean = false): SimpleAppOptions {
   const parsed = readEnv(envFile);
   return {
     listId: parsed.MAILCHIMP_SOURCE_LIST_ID,
+  };
+}
+
+export function loadDestinationOptions(
+  newNock: boolean = false
+): SimpleDestinationOptions {
+  let envFile;
+  if (newNock) {
+    envFile = realPath;
+  } else {
+    envFile = nockPath;
+  }
+
+  const parsed = readEnv(envFile);
+  return {
+    listId: parsed.MAILCHIMP_DESTINATION_LIST_ID,
   };
 }
 
@@ -60,6 +82,12 @@ export const updater = {
       new RegExp(realEnv.MAILCHIMP_SOURCE_LIST_ID, "gi"),
       nockEnv.MAILCHIMP_SOURCE_LIST_ID
     );
+    nockCall = nockCall.replace(
+      new RegExp(realEnv.MAILCHIMP_DESTINATION_LIST_ID, "gi"),
+      nockEnv.MAILCHIMP_DESTINATION_LIST_ID
+    );
+    // remove contact data for organization
+    nockCall = nockCall.replace(/\"?contact\"?:\s*{[\s\S]*?}\s*,?/gm, "");
 
     return nockCall;
   },
