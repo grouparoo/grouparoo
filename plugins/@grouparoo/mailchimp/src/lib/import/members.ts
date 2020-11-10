@@ -1,5 +1,6 @@
 import { getMergeVars } from "../shared/getMergeVars";
 import { connect } from "../connect";
+import { sourceOptions } from "../../../../csv/src/lib/file-import/sourceOptions";
 
 export interface MailchimpFieldMap {
   [key: string]: { type: string; name: string };
@@ -84,13 +85,18 @@ async function fetchSampleRows(
 
   const fieldKeys = Object.keys(fieldMap);
   const path = `/lists/${listId}/members`;
-  const query = {
-    fields: fieldKeys.join(","),
+  const query: any = {
+    //fields: fieldKeys.join(","), // doesn't seem to work
     sort_field: "last_changed",
     sort_dir: "DESC",
     count: 10,
   };
-  const response = await client.request({ method: "get", path });
+  if (!fieldKeys.includes("email_address")) {
+    // leave out PII: would rather have done the above (only include known fields),
+    // but it doesn't seem to work.
+    query.exclude_fields = "email_address";
+  }
+  const response = await client.request({ method: "get", path, query });
   const members = response.members;
   console.log({ response, members });
   if (!members || members.length === 0) {
@@ -129,18 +135,25 @@ export async function getChangedMembers({
   }
   const path = `/lists/${listId}/members`;
   const query: any = {
-    fields: fieldKeys.join(","),
+    //fields: fieldKeys.join(","), // doesn't seem to work
     sort_field: "last_changed",
     sort_dir: "ASC",
     count: limit,
     offset: sourceOffset,
   };
-
+  if (!fieldKeys.includes("email_address")) {
+    // leave out PII: would rather have done the above (only include known fields),
+    // but it doesn't seem to work.
+    query.exclude_fields = "email_address";
+  }
   if (since_last_changed) {
-    query.since_last_changed = since_last_changed;
+    // this looks to be > and not >= so it can miss things
+    const date = new Date(since_last_changed);
+    const justBefore = new Date(date.getTime() - 1);
+    query.since_last_changed = justBefore.toISOString();
   }
 
-  const { members } = await client.request({ method: "get", path });
+  const { members } = await client.request({ method: "get", path, query });
   for (const data of members) {
     out.push(new Member(data));
   }
@@ -178,9 +191,9 @@ export class Member {
 // TODO: use "status" to have boolean for subscribed or unsubscribed
 
 //https://mailchimp.com/developer/api/marketing/list-members/list-members-info/
-// sort=last_changed
-// since_last_changed=21T15:41:36+00:00
-// use fields: A comma-separated list of fields to return. Reference parameters of sub-objects with dot notation.
+// curl -X GET \
+//   'https://server.api.mailchimp.com/3.0/lists/{list_id}/members?fields=<SOME_ARRAY_VALUE>&exclude_fields=<SOME_ARRAY_VALUE>&count=10&offset=0&email_type=<SOME_STRING_VALUE>&status=<SOME_STRING_VALUE>&since_timestamp_opt=<SOME_STRING_VALUE>&before_timestamp_opt=<SOME_STRING_VALUE>&since_last_changed=<SOME_STRING_VALUE>&before_last_changed=<SOME_STRING_VALUE>&unique_email_id=<SOME_STRING_VALUE>&vip_only=<SOME_BOOLEAN_VALUE>&interest_category_id=<SOME_STRING_VALUE>&interest_ids=<SOME_STRING_VALUE>&interest_match=<SOME_STRING_VALUE>&sort_field=<SOME_STRING_VALUE>&sort_dir=<SOME_STRING_VALUE>&since_last_campaign=<SOME_BOOLEAN_VALUE>&unsubscribed_since=<SOME_STRING_VALUE>' \
+//   -H 'authorization: Basic <USERNAME:PASSWORD>'
 // {
 //   members: [
 //     {
