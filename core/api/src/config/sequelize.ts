@@ -53,9 +53,16 @@ export const DEFAULT = {
       ssl = { rejectUnauthorized: false };
     }
 
+    // sqlite overrides
+    if (dialect === "sqlite") {
+      if (!host) host = ":memory:";
+    }
+
+    // console.log(`grouparoo using ${dialect} database @ ${host}`);
+
     return {
       autoMigrate: true,
-      logging: false,
+      logging: (...msg) => console.log(msg),
       dialect: dialect,
       port: parseInt(port),
       database: database,
@@ -64,6 +71,7 @@ export const DEFAULT = {
       password: password,
       models: [join(__dirname, "..", "models")],
       migrations: [join(__dirname, "..", "migrations")],
+      storage: host, // only used for sqlite
       pool: {
         max: process.env.SEQUELIZE_POOL_SIZE
           ? parseInt(process.env.SEQUELIZE_POOL_SIZE)
