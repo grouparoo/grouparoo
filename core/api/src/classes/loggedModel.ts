@@ -43,7 +43,7 @@ export abstract class LoggedModel<T> extends Model<T> {
 
   @AfterCreate
   static async logCreate(instance) {
-    await Log.create({
+    Log.create({
       topic: modelName(instance),
       verb: "create",
       ownerGuid: instance.guid,
@@ -64,7 +64,7 @@ export abstract class LoggedModel<T> extends Model<T> {
   static async logBulkCreate(instances) {
     for (const i in instances) {
       const instance = instances[i];
-      await Log.create({
+      Log.create({
         topic: modelName(instance),
         verb: "create",
         ownerGuid: instance.guid,
@@ -76,7 +76,7 @@ export abstract class LoggedModel<T> extends Model<T> {
 
   @AfterUpdate
   static async logUpdate(instance) {
-    await Log.create({
+    Log.create({
       topic: modelName(instance),
       verb: "update",
       ownerGuid: instance.guid,
@@ -87,7 +87,7 @@ export abstract class LoggedModel<T> extends Model<T> {
 
   @AfterDestroy
   static async logDestroy(instance) {
-    await Log.create({
+    Log.create({
       topic: modelName(instance),
       verb: "destroy",
       ownerGuid: instance.guid,
