@@ -97,10 +97,7 @@ export namespace ExportOps {
 
     let _exports: Export[];
 
-    const transaction: Transaction = await api.sequelize.transaction({
-      lock: Transaction.LOCK.UPDATE,
-      type: Transaction.TYPES.EXCLUSIVE,
-    });
+    const transaction: Transaction = await api.sequelize.transaction({});
 
     try {
       _exports = await Export.findAll({

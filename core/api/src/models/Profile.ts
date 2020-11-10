@@ -108,12 +108,12 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps.removeProperties(this, properties);
   }
 
-  async buildNullProperties(transaction?: Transaction) {
-    return ProfileOps.buildNullProperties(this, "ready", transaction);
+  async buildNullProperties() {
+    return ProfileOps.buildNullProperties(this, "ready");
   }
 
-  async markPending(transaction?: Transaction) {
-    return ProfileOps.markPending(this, transaction);
+  async markPending() {
+    return ProfileOps.markPending(this);
   }
 
   async updateGroupMembership() {
@@ -180,11 +180,8 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   @AfterCreate
-  static async buildNullPropertiesForNewProfile(
-    instance: Profile,
-    { transaction }
-  ) {
-    await instance.buildNullProperties(transaction);
+  static async buildNullPropertiesForNewProfile(instance: Profile) {
+    await instance.buildNullProperties();
   }
 
   @AfterDestroy

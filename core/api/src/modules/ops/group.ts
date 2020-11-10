@@ -294,9 +294,7 @@ export namespace GroupOps {
       },
     });
 
-    const transaction = await api.sequelize.transaction({
-      type: Transaction.TYPES.EXCLUSIVE,
-    });
+    const transaction = await api.sequelize.transaction({});
 
     try {
       const existingGroupMemberProfileGuids = groupMembers.map(
@@ -367,9 +365,7 @@ export namespace GroupOps {
       limit,
     });
 
-    const transaction = await api.sequelize.transaction({
-      type: Transaction.TYPES.EXCLUSIVE,
-    });
+    const transaction = await api.sequelize.transaction({});
 
     try {
       // The offset and order can be ignored as we will keep running this query until the set of results becomes 0.

@@ -282,27 +282,20 @@ export namespace ProfileOps {
     }
   }
 
-  export async function buildNullProperties(
-    profile: Profile,
-    state = "ready",
-    transaction?: Transaction
-  ) {
+  export async function buildNullProperties(profile: Profile, state = "ready") {
     const properties = await profile.properties();
     const rules = await ProfilePropertyRule.cached();
     let newPropertiesCount = 0;
     for (const key in rules) {
       if (!properties[key]) {
-        await ProfileProperty.create(
-          {
-            profileGuid: profile.guid,
-            profilePropertyRuleGuid: rules[key].guid,
-            state,
-            stateChangedAt: new Date(),
-            valueChangedAt: new Date(),
-            confirmedAt: new Date(),
-          },
-          { transaction }
-        );
+        await ProfileProperty.create({
+          profileGuid: profile.guid,
+          profilePropertyRuleGuid: rules[key].guid,
+          state,
+          stateChangedAt: new Date(),
+          valueChangedAt: new Date(),
+          confirmedAt: new Date(),
+        });
         newPropertiesCount++;
       }
     }
@@ -471,10 +464,7 @@ export namespace ProfileOps {
   /**
    * Mark the profile and all of its properties as pending
    */
-  export async function markPending(
-    profile: Profile,
-    transaction?: Transaction
-  ) {
+  export async function markPending(profile: Profile) {
     const profilePropertyRuleGuidsToMakePending: string[] = [];
     const cachedProfilePropertyRule = await ProfilePropertyRule.cached();
     for (const guid in cachedProfilePropertyRule) {
@@ -493,11 +483,10 @@ export namespace ProfileOps {
             [Op.in]: profilePropertyRuleGuidsToMakePending,
           },
         },
-        transaction,
       }
     );
 
-    await profile.update({ state: "pending" }, { transaction });
+    await profile.update({ state: "pending" });
   }
 
   /**
@@ -566,10 +555,7 @@ export namespace ProfileOps {
   export async function makeReady(limit = 100) {
     let profiles: Profile[];
 
-    const transaction: Transaction = await api.sequelize.transaction({
-      lock: Transaction.LOCK.UPDATE,
-      type: Transaction.TYPES.EXCLUSIVE,
-    });
+    const transaction: Transaction = await api.sequelize.transaction({});
 
     try {
       const notInQuery = api.sequelize.dialect.QueryGenerator.selectQuery(

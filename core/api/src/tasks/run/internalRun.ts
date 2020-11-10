@@ -1,9 +1,8 @@
-import { Task, task, api, config } from "actionhero";
+import { Task, task, config } from "actionhero";
 import { Run } from "../../models/Run";
 import { Import } from "../../models/Import";
 import { Profile } from "../../models/Profile";
 import { plugin } from "../../modules/plugin";
-import { Transaction } from "sequelize";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { ProfilePropertyType } from "../../modules/ops/profile";
 
@@ -53,71 +52,57 @@ export class RunInternalRun extends Task {
       { silent: true }
     );
 
-    const transaction = await api.sequelize.transaction();
+    const profiles = await Profile.findAll({
+      order: [["createdAt", "asc"]],
+      limit,
+      offset,
+    });
 
-    try {
-      const profiles = await Profile.findAll({
-        order: [["createdAt", "asc"]],
-        limit,
-        offset,
-        transaction,
+    for (const i in profiles) {
+      const profile = profiles[i];
+      const oldProfileProperties = await profile.properties();
+      const oldGroups = await profile.$get("groups");
+
+      await profile.buildNullProperties();
+
+      await Import.create({
+        profileGuid: profile.guid,
+        profileAssociatedAt: new Date(),
+        oldProfileProperties: this.simplifyProfileProperties(
+          oldProfileProperties
+        ),
+        oldGroupGuids: oldGroups.map((g) => g.guid),
+        rawData: {},
+        data: {},
+        creatorType: "run",
+        creatorGuid: run.guid,
       });
 
-      for (const i in profiles) {
-        const profile = profiles[i];
-
-        const oldProfileProperties = await profile.properties();
-        const oldGroups = await profile.$get("groups");
-
-        await profile.buildNullProperties();
-
-        await Import.create(
-          {
+      if (run.creatorType === "profilePropertyRule") {
+        const property = await ProfileProperty.findOne({
+          where: {
             profileGuid: profile.guid,
-            profileAssociatedAt: new Date(),
-            oldProfileProperties: this.simplifyProfileProperties(
-              oldProfileProperties
-            ),
-            oldGroupGuids: oldGroups.map((g) => g.guid),
-            rawData: {},
-            data: {},
-            creatorType: "run",
-            creatorGuid: run.guid,
+            profilePropertyRuleGuid: run.creatorGuid,
           },
-          { transaction }
-        );
-
-        if (run.creatorType === "profilePropertyRule") {
-          const property = await ProfileProperty.findOne({
-            where: {
-              profileGuid: profile.guid,
-              profilePropertyRuleGuid: run.creatorGuid,
-            },
-            transaction,
-          });
-          await property.update({ state: "pending" }, { transaction });
-          await profile.update({ state: "pending" }, { transaction });
-        } else {
-          await profile.markPending(transaction);
-        }
-      }
-
-      await transaction.commit();
-
-      await run.afterBatch();
-
-      if (profiles.length > 0) {
-        await task.enqueueIn(config.tasks.timeout + 1, this.name, {
-          runGuid: run.guid,
-          offset: offset + limit,
-          limit,
         });
+
+        await property.update({ state: "pending" });
+        await profile.update({ state: "pending" });
       } else {
-        await run.afterBatch("complete");
+        await profile.markPending();
       }
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
+    }
+
+    await run.afterBatch();
+
+    if (profiles.length > 0) {
+      await task.enqueueIn(config.tasks.timeout + 1, this.name, {
+        runGuid: run.guid,
+        offset: offset + limit,
+        limit,
+      });
+    } else {
+      await run.afterBatch("complete");
     }
   }
 }
