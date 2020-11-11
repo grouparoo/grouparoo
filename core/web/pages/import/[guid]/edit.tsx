@@ -1,10 +1,14 @@
 import ImportTabs from "../../../components/tabs/import";
 import Head from "next/head";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Table, Badge, Alert } from "react-bootstrap";
+import { Row, Col, Table, Alert } from "react-bootstrap";
 import Link from "next/link";
 import Moment from "react-moment";
 import { Models } from "../../../utils/apiData";
+import {
+  ImportProfilePropertiesDiff,
+  ImportGroupsDiff,
+} from "../../../components/import/diff";
 
 export default function Page(props) {
   const {
@@ -72,75 +76,11 @@ export default function Page(props) {
           <Row>
             <Col>
               <strong>Profile Properties</strong>
-              <ul>
-                {Object.keys(_import.oldProfileProperties).map((k) => {
-                  return (
-                    <li key={`${_import.guid}-prp-${k}`}>
-                      {k}:{" "}
-                      {JSON.stringify(_import.oldProfileProperties[k]) !==
-                      JSON.stringify(_import.newProfileProperties[k]) ? (
-                        <>
-                          <Badge variant="danger">-</Badge>&nbsp;
-                          {_import.oldProfileProperties[k]?.toString()}
-                          {_import.newProfileProperties[k] !== null &&
-                          _import.newProfileProperties[k] !== undefined ? (
-                            <>
-                              {" "}
-                              | <Badge variant="success">+</Badge>&nbsp;
-                              {_import.newProfileProperties[k].toString()}
-                            </>
-                          ) : null}
-                        </>
-                      ) : (
-                        _import.oldProfileProperties[k]?.toString()
-                      )}
-                    </li>
-                  );
-                })}
-
-                {Object.keys(_import.newProfileProperties).map((k) =>
-                  _import.oldProfileProperties[k] === undefined ? (
-                    <li key={`old-${k}`}>
-                      {k}: <Badge variant="success">+</Badge>{" "}
-                      {_import.newProfileProperties[k]?.toString()}
-                    </li>
-                  ) : null
-                )}
-              </ul>
+              <ImportProfilePropertiesDiff _import={_import} />
             </Col>
             <Col>
               <strong>Groups</strong>
-              <ul>
-                {_import.oldGroupGuids.map((groupGuid) => {
-                  return (
-                    <li key={`grp-${groupGuid}`}>
-                      {!_import.newGroupGuids.includes(groupGuid) ? (
-                        <Badge variant="danger">-</Badge>
-                      ) : null}{" "}
-                      <Link
-                        href="/group/[guid]/edit"
-                        as={`/group/${groupGuid}/edit`}
-                      >
-                        <a>{groupName(groupGuid)}</a>
-                      </Link>
-                    </li>
-                  );
-                })}
-
-                {_import.newGroupGuids.map((groupGuid) =>
-                  !_import.oldGroupGuids.includes(groupGuid) ? (
-                    <li key={`grp-${groupGuid}`}>
-                      <Badge variant="success">+</Badge>{" "}
-                      <Link
-                        href="/group/[guid]/edit"
-                        as={`/group/${groupGuid}/edit`}
-                      >
-                        <a>{groupName(groupGuid)}</a>
-                      </Link>
-                    </li>
-                  ) : null
-                )}
-              </ul>
+              <ImportGroupsDiff _import={_import} groups={groups} />
             </Col>
           </Row>
 

@@ -5,6 +5,10 @@ import Head from "next/head";
 import Moment from "react-moment";
 import ExportTabs from "../../../components/tabs/export";
 import { Models } from "../../../utils/apiData";
+import {
+  ExportGroupsDiff,
+  ExportProfilePropertiesDiff,
+} from "../../../components/export/diff";
 
 export default function Page({
   _export,
@@ -65,75 +69,11 @@ export default function Page({
           <Row>
             <Col>
               <strong>Profile Properties</strong>
-              <ul>
-                {Object.keys(_export.oldProfileProperties).map((k) => {
-                  return (
-                    <li key={`old-${k}`}>
-                      {k}:{" "}
-                      {_export.oldProfileProperties[k] !==
-                      _export.newProfileProperties[k] ? (
-                        <>
-                          <Badge variant="danger">-</Badge>{" "}
-                          {_export.oldProfileProperties[k]?.toString()}
-                          {_export.newProfileProperties[k] !== null &&
-                          _export.newProfileProperties[k] !== undefined ? (
-                            <>
-                              {" "}
-                              | <Badge variant="success">+</Badge>{" "}
-                              {_export.newProfileProperties[k]?.toString()}
-                            </>
-                          ) : null}
-                        </>
-                      ) : (
-                        _export.oldProfileProperties[k]?.toString()
-                      )}
-                    </li>
-                  );
-                })}
-
-                {Object.keys(_export.newProfileProperties).map((k) =>
-                  _export.oldProfileProperties[k] === undefined ? (
-                    <li key={`old-${k}`}>
-                      {k}: <Badge variant="success">+</Badge>{" "}
-                      {_export.newProfileProperties[k]?.toString()}
-                    </li>
-                  ) : null
-                )}
-              </ul>
+              <ExportProfilePropertiesDiff _export={_export} />
             </Col>
             <Col>
               <strong>Groups</strong>
-              <ul>
-                {_export.oldGroups.map((groupGuid) => {
-                  return (
-                    <li key={`grp-${groupGuid}`}>
-                      {!_export.newGroups.includes(groupGuid) ? (
-                        <Badge variant="danger">-</Badge>
-                      ) : null}{" "}
-                      <Link
-                        href="/group/[guid]/edit"
-                        as={`/group/${getGroupGuid(groupGuid)}/edit`}
-                      >
-                        <a>{groupGuid}</a>
-                      </Link>
-                    </li>
-                  );
-                })}
-
-                {_export.newGroups.map((groupGuid) =>
-                  !_export.oldGroups.includes(groupGuid) ? (
-                    <li key={`grp-${groupGuid}`}>
-                      <Badge variant="success">+</Badge>{" "}
-                      <Link
-                        href="/group/[guid]/edit"
-                        as={`/group/${getGroupGuid(groupGuid)}/edit`}
-                      >
-                        <a>{groupGuid}</a>
-                      </Link>
-                    </li>
-                  ) : null
-                )}
-              </ul>
+              <ExportGroupsDiff _export={_export} groups={groups} />
             </Col>
           </Row>
         </Col>
