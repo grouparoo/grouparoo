@@ -6,10 +6,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
-import { Alert, Badge } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 import Moment from "react-moment";
 import { Models, Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
+import { ImportProfilePropertiesDiff, ImportGroupsDiff } from "./diff";
 
 export default function ImportList(props) {
   const {
@@ -54,20 +55,6 @@ export default function ImportList(props) {
     if (response?.imports) {
       setImports(response.imports);
       setTotal(response.total);
-    }
-  }
-
-  function groupLink(groupGuid) {
-    const group = groups.filter((g) => g.guid === groupGuid)[0];
-
-    if (group) {
-      return (
-        <Link href="/group/[guid]/edit" as={`/group/${group.guid}/edit`}>
-          <a>{group.name}</a>
-        </Link>
-      );
-    } else {
-      return <span>{groupGuid} (deleted)</span>;
     }
   }
 
@@ -156,65 +143,10 @@ export default function ImportList(props) {
                     )}
                   </td>
                   <td>
-                    <ul>
-                      {Object.keys(_import.oldProfileProperties).map((k) => {
-                        return (
-                          <li key={`${_import.guid}-prp-${k}`}>
-                            {k}:{" "}
-                            {JSON.stringify(_import.oldProfileProperties[k]) !==
-                            JSON.stringify(_import.newProfileProperties[k]) ? (
-                              <>
-                                <Badge variant="danger">-</Badge>&nbsp;
-                                {_import.oldProfileProperties[k]?.toString()}
-                                {_import.newProfileProperties[k] !== null &&
-                                _import.newProfileProperties[k] !==
-                                  undefined ? (
-                                  <>
-                                    {" "}
-                                    | <Badge variant="success">+</Badge>&nbsp;
-                                    {_import.newProfileProperties[k].toString()}
-                                  </>
-                                ) : null}
-                              </>
-                            ) : (
-                              _import.oldProfileProperties[k]?.toString()
-                            )}
-                          </li>
-                        );
-                      })}
-
-                      {Object.keys(_import.newProfileProperties).map((k) =>
-                        _import.oldProfileProperties[k] === undefined ? (
-                          <li key={`${_import.guid}-prp-${k}`}>
-                            {k}: <Badge variant="success">+</Badge>&nbsp;
-                            {_import.newProfileProperties[k]?.toString()}
-                          </li>
-                        ) : null
-                      )}
-                    </ul>
+                    <ImportProfilePropertiesDiff _import={_import} />
                   </td>
                   <td>
-                    <ul>
-                      {_import.oldGroupGuids.map((g) => {
-                        return (
-                          <li key={`${_import.guid}-grp-${g}`}>
-                            {!_import.newGroupGuids.includes(g) ? (
-                              <Badge variant="danger">-</Badge>
-                            ) : null}{" "}
-                            {groupLink(g)}
-                          </li>
-                        );
-                      })}
-
-                      {_import.newGroupGuids.map((g) =>
-                        !_import.oldGroupGuids.includes(g) ? (
-                          <li key={`${_import.guid}-grp-${g}`}>
-                            <Badge variant="success">+</Badge>&nbsp;
-                            {groupLink(g)}
-                          </li>
-                        ) : null
-                      )}
-                    </ul>
+                    <ImportGroupsDiff _import={_import} groups={groups} />
                   </td>
                   <td>
                     {Object.keys(_import.data).map((k) => (

@@ -10,6 +10,7 @@ import Moment from "react-moment";
 import LoadingTable from "../loadingTable";
 import { Models, Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
+import { ExportGroupsDiff, ExportProfilePropertiesDiff } from "./diff";
 
 export default function ExportsList(props) {
   const {
@@ -59,20 +60,6 @@ export default function ExportsList(props) {
       if (response.total === 0 && offset > 0) {
         setOffset(0);
       }
-    }
-  }
-
-  function groupLink(groupName) {
-    const group = groups.filter((g) => g.name === groupName)[0];
-
-    if (group) {
-      return (
-        <Link href="/group/[guid]/edit" as={`/group/${group.guid}/edit`}>
-          <a>{groupName}</a>
-        </Link>
-      );
-    } else {
-      return <span>{groupName}</span>;
     }
   }
 
@@ -218,68 +205,10 @@ export default function ExportsList(props) {
                     ) : null}
                   </td>
                   <td>
-                    <ul>
-                      {Object.keys(_export.oldProfileProperties).map((k) => {
-                        return (
-                          <li key={`${_export.guid}-prp-${k}`}>
-                            {k}:{" "}
-                            {JSON.stringify(_export.oldProfileProperties[k]) !==
-                            JSON.stringify(_export.newProfileProperties[k]) ? (
-                              <>
-                                <Badge variant="danger">-</Badge>&nbsp;
-                                {_export.oldProfileProperties[k]?.toString()}
-                                {_export.newProfileProperties[k] !== null &&
-                                _export.newProfileProperties[k] !==
-                                  undefined ? (
-                                  <>
-                                    {" "}
-                                    | <Badge variant="success">+</Badge>&nbsp;
-                                    {_export.newProfileProperties[k].toString()}
-                                  </>
-                                ) : null}
-                              </>
-                            ) : (
-                              <>{_export.oldProfileProperties[k]?.toString()}</>
-                            )}
-                          </li>
-                        );
-                      })}
-
-                      {Object.keys(_export.newProfileProperties).map((k) =>
-                        _export.oldProfileProperties[k] === undefined ? (
-                          <li key={`${_export.guid}-prp-${k}`}>
-                            {k}: <Badge variant="success">+</Badge>&nbsp;
-                            {_export.newProfileProperties[k]?.toString()}
-                          </li>
-                        ) : null
-                      )}
-                    </ul>
+                    <ExportProfilePropertiesDiff _export={_export} />
                   </td>
                   <td>
-                    <ul>
-                      {_export.oldGroups.map((g) => {
-                        return (
-                          <li key={`${_export.guid}-grp-${g}`}>
-                            {!_export.newGroups.includes(g) ? (
-                              <Badge variant={"danger"}>
-                                {!_export.newGroups.includes(g) ? "-" : "+"}
-                              </Badge>
-                            ) : null}
-                            &nbsp;
-                            {groupLink(g)}
-                          </li>
-                        );
-                      })}
-
-                      {_export.newGroups.map((g) =>
-                        !_export.oldGroups.includes(g) ? (
-                          <li key={`${_export.guid}-grp-${g}`}>
-                            <Badge variant="success">+</Badge>&nbsp;
-                            {groupLink(g)}
-                          </li>
-                        ) : null
-                      )}
-                    </ul>
+                    <ExportGroupsDiff _export={_export} groups={groups} />
                   </td>
                 </tr>
 
