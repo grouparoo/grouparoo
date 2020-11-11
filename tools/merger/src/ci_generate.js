@@ -88,6 +88,13 @@ class Generator {
       relative_path: `core`,
       name: "core",
     });
+    this.jobList.push({
+      type: "core-local",
+      section: "api",
+      job_name: `test-core-local`,
+      relative_path: `core`,
+      name: "core",
+    });
   }
 
   addCLI() {

@@ -42,7 +42,7 @@ describe("model/group", () => {
       test("multiple matches (ALL)", async () => {
         await group.setRules([
           { key: "isVIP", match: true, operation: { op: "eq" } },
-          { key: "lastName", match: "mario", operation: { op: "like" } },
+          { key: "lastName", match: "Mario", operation: { op: "like" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(1);
       });
@@ -51,7 +51,7 @@ describe("model/group", () => {
         await group.update({ matchType: "any" });
         await group.setRules([
           { key: "isVIP", match: true, operation: { op: "eq" } },
-          { key: "lastName", match: "mario", operation: { op: "like" } },
+          { key: "lastName", match: "Mario", operation: { op: "like" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(3);
       });

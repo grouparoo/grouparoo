@@ -240,6 +240,29 @@ jobs:
           command: cd core/web && ./../node_modules/.bin/jest --ci --maxWorkers 2
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+  test-core-local:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: test-api
+          command: cd core/api && ./../node_modules/.bin/jest __tests__/models --ci
+          environment:
+            DB_DIALECT: sqlite
   test-plugin-app-templates:
     docker:
       - image: circleci/node:12
@@ -1164,6 +1187,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-core-local:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-plugin-app-templates:
           filters:
             <<: *ignored-branches
@@ -1293,6 +1321,7 @@ workflows:
             - linter
             - test-core-api
             - test-core-web
+            - test-core-local
             - test-plugin-app-templates
             - test-plugin-bigquery
             - test-plugin-csv
@@ -1363,6 +1392,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-core-local:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-plugin-app-templates:
           filters:
             <<: *ignored-branches
@@ -1492,6 +1526,7 @@ workflows:
             - linter
             - test-core-api
             - test-core-web
+            - test-core-local
             - test-plugin-app-templates
             - test-plugin-bigquery
             - test-plugin-csv

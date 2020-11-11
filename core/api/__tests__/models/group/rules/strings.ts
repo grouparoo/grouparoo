@@ -33,7 +33,7 @@ describe("model/group", () => {
 
       test("partial matches", async () => {
         await group.setRules([
-          { key: "lastName", match: "%toad%", operation: { op: "like" } },
+          { key: "lastName", match: "%Toad%", operation: { op: "like" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(2);
       });
@@ -48,7 +48,7 @@ describe("model/group", () => {
 
       test("multiple matches (ALL)", async () => {
         await group.setRules([
-          { key: "lastName", match: "%toad%", operation: { op: "like" } },
+          { key: "lastName", match: "%Toad%", operation: { op: "like" } },
           { key: "firstName", match: "Peach", operation: { op: "eq" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(1);
@@ -57,7 +57,7 @@ describe("model/group", () => {
       test("multiple matches (ANY)", async () => {
         await group.update({ matchType: "any" });
         await group.setRules([
-          { key: "lastName", match: "%toad%", operation: { op: "like" } },
+          { key: "lastName", match: "%Toad%", operation: { op: "like" } },
           { key: "firstName", match: "Peach", operation: { op: "eq" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(2);
