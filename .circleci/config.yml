@@ -260,7 +260,7 @@ jobs:
           <<: *core-cache-options
       - run:
           name: test-api
-          command: cd core/api && ./../node_modules/.bin/jest __tests__/models --ci
+          command: cd core/api && ./../node_modules/.bin/jest __tests__/models --ci --maxWorkers 2
           environment:
             DB_DIALECT: sqlite
   test-plugin-app-templates:
