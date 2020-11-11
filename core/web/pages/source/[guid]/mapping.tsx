@@ -19,10 +19,14 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const [newMappingKey, setNewMappingKey] = useState("");
-  const [newMappingValue, setNewMappingValue] = useState(
+  const [newMappingKey, setNewMappingKey] = useState(
     Object.keys(props.source.mapping)[0]
       ? Object.keys(props.source.mapping)[0]
+      : ""
+  );
+  const [newMappingValue, setNewMappingValue] = useState(
+    Object.values(props.source.mapping)[0]
+      ? Object.values(props.source.mapping)[0]
       : ""
   );
   const [profilePropertyRules, setProfilePropertyRules] = useState(
