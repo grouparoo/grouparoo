@@ -1,6 +1,5 @@
 import { getMergeVars } from "../shared/getMergeVars";
 import { connect } from "../connect";
-import { sourceOptions } from "../../../../csv/src/lib/file-import/sourceOptions";
 
 export interface MailchimpFieldMap {
   [key: string]: { type: string; name: string };
@@ -98,7 +97,6 @@ async function fetchSampleRows(
   }
   const response = await client.request({ method: "get", path, query });
   const members = response.members;
-  console.log({ response, members });
   if (!members || members.length === 0) {
     // empty Mailchimp!
     const sample = {};
