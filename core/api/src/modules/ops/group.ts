@@ -176,9 +176,7 @@ export namespace GroupOps {
     rules?: GroupRuleWithKey[],
     matchType: "any" | "all" = group.matchType
   ) {
-    if (!rules) {
-      rules = await group.getRules();
-    }
+    if (!rules) rules = await group.getRules();
 
     const { where, include } = await group._buildGroupMemberQueryParts(
       rules,
@@ -204,9 +202,7 @@ export namespace GroupOps {
     const funnelCounts = [];
     let funnelStep = 0;
 
-    if (!rules) {
-      rules = await group.getRules();
-    }
+    if (!rules) rules = await group.getRules();
 
     for (const i in rules) {
       const localRule = rules[i];

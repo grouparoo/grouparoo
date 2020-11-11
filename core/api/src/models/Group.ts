@@ -14,7 +14,7 @@ import {
   DefaultScope,
   Scopes,
 } from "sequelize-typescript";
-import { api } from "actionhero";
+import { api, config } from "actionhero";
 import { Op, Transaction } from "sequelize";
 import Moment from "moment";
 import { LoggedModel } from "../classes/loggedModel";
@@ -449,11 +449,11 @@ export class Group extends LoggedModel<Group> {
         operation,
         type,
         topLevel,
-        match,
         relativeMatchNumber,
         relativeMatchDirection,
         relativeMatchUnit,
       } = rule;
+      let { match } = rule;
       const localWhereGroup = {};
       let rawValueMatch = {};
 
@@ -463,6 +463,14 @@ export class Group extends LoggedModel<Group> {
       }
 
       if (match !== null && match !== undefined) {
+        // special cases for dialects
+        if (config.sequelize.dialect === "sqlite") {
+          if (profilePropertyRule?.type === "boolean") {
+            if (match === "1") match = "true";
+            if (match === "0") match = "false";
+          }
+        }
+
         // rewrite null matches
         rawValueMatch[Op[operation.op]] =
           match.toString().toLocaleLowerCase() === "null" ? null : match;

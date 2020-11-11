@@ -8,7 +8,8 @@ const databaseBaseName = "grouparoo";
 
 export const DEFAULT = {
   sequelize: (config) => {
-    let dialect = "postgres";
+    let dialect = process.env.DB_DIALECT || "postgres";
+    let storage: string; //only for sqlite
     let host = process.env.DB_HOST || "127.0.0.1";
     let port = process.env.DB_PORT || "5432";
     let database =
@@ -55,10 +56,10 @@ export const DEFAULT = {
 
     // sqlite overrides
     if (dialect === "sqlite") {
+      storage = host;
       if (!host) host = ":memory:";
+      if (process.env.NODE_ENV === "test") storage = `${database}.sqlite`;
     }
-
-    // console.log(`grouparoo using ${dialect} database @ ${host}`);
 
     return {
       autoMigrate: true,
@@ -71,7 +72,7 @@ export const DEFAULT = {
       password: password,
       models: [join(__dirname, "..", "models")],
       migrations: [join(__dirname, "..", "migrations")],
-      storage: host, // only used for sqlite
+      storage, // only used for sqlite
       pool: {
         max: process.env.SEQUELIZE_POOL_SIZE
           ? parseInt(process.env.SEQUELIZE_POOL_SIZE)

@@ -1,12 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, specHelper } from "actionhero";
 import { ProfilePropertyRule } from "../../../src/models/ProfilePropertyRule";
-import { Log } from "../../../src/models/Log";
-import { App } from "../../../src/models/App";
 import { Source } from "../../../src/models/Source";
-import { Option } from "../../../src/models/Option";
-import { plugin } from "../../../src/modules/plugin";
-import { ProfilePropertyRuleFilter } from "../../../src/models/ProfilePropertyRuleFilter";
 import { ProfilePropertyRuleOps } from "../../../src/modules/ops/profilePropertyRule";
 
 let actionhero;

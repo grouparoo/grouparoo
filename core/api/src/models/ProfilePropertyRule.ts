@@ -18,7 +18,7 @@ import {
   BeforeCreate,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
-import { env, api, cache } from "actionhero";
+import { env, api, cache, config } from "actionhero";
 import { plugin } from "../modules/plugin";
 import { LoggedModel } from "../classes/loggedModel";
 import { Profile } from "./Profile";
@@ -37,7 +37,7 @@ import { ProfilePropertyRuleOps } from "../modules/ops/profilePropertyRule";
 
 export function profilePropertyRuleJSToSQLType(jsType: string) {
   const map = {
-    boolean: "boolean",
+    boolean: config.sequelize.dialect === "sqlite" ? "text" : "boolean", // there is no boolean type in SQLite
     date: "bigint", // we store things via timestamps in the DB
     email: "text",
     float: "float",

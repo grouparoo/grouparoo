@@ -75,8 +75,8 @@ describe("model/group", () => {
 
       test("multiple rules with same key", async () => {
         await group.setRules([
-          { key: "phoneNumber", match: "+1 412%", operation: { op: "iLike" } },
-          { key: "phoneNumber", match: "%000%", operation: { op: "iLike" } },
+          { key: "phoneNumber", match: "+1 412%", operation: { op: "like" } },
+          { key: "phoneNumber", match: "%000%", operation: { op: "like" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(3);
       });

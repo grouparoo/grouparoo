@@ -813,7 +813,7 @@ describe("models/profile", () => {
 
         await group.update({ matchType: "all" });
         await group.setRules([
-          { key: "email", match: "%@example.com", operation: { op: "iLike" } },
+          { key: "email", match: "%@example.com", operation: { op: "like" } },
         ]);
 
         const groupMemberships = await profile.updateGroupMembership();
@@ -1076,7 +1076,7 @@ describe("models/profile", () => {
     });
 
     test("only profile B has an anonymousId", async () => {
-      expect(profileA.anonymousId).toBeNull();
+      expect(profileA.anonymousId).toBeFalsy();
       expect(profileB.anonymousId).toEqual("abc123");
     });
 

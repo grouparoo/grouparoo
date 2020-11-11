@@ -75,8 +75,8 @@ describe("model/group", () => {
 
       test("multiple rules with same key", async () => {
         await group.setRules([
-          { key: "url", match: "https%", operation: { op: "iLike" } },
-          { key: "url", match: "%.com", operation: { op: "iLike" } },
+          { key: "url", match: "https%", operation: { op: "like" } },
+          { key: "url", match: "%.com", operation: { op: "like" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(3);
       });
