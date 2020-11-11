@@ -1,0 +1,26 @@
+  {{{job_name}}}:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+{{{custom_docker}}}
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+{{{custom_steps}}}
+      - run:
+          name: test-{{section}}
+          command: cd {{{relative_path}}}/{{section}} && ./../node_modules/.bin/jest __tests__/models --ci --maxWorkers 2
+          environment:
+            DB_DIALECT: sqlite
+{{{custom_test}}}

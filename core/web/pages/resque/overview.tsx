@@ -88,7 +88,7 @@ export default function ResqueOverview(props) {
     setWorkers(_workers);
     setStats(_stats);
     setQueues(_queues);
-    setFailedCount(response.failedCount);
+    setFailedCount(response?.failedCount);
 
     timer = setTimeout(() => {
       load();

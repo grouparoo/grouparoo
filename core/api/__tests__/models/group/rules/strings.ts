@@ -1,5 +1,6 @@
 import { SharedGroupTests } from "../../../utils/prepareSharedGroupTest";
 import { Group } from "../../../../src/models/Group";
+import { config } from "actionhero";
 
 describe("model/group", () => {
   let group: Group;
@@ -32,7 +33,7 @@ describe("model/group", () => {
 
       test("partial matches", async () => {
         await group.setRules([
-          { key: "lastName", match: "%toad%", operation: { op: "iLike" } },
+          { key: "lastName", match: "%Toad%", operation: { op: "like" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(2);
       });
@@ -40,14 +41,14 @@ describe("model/group", () => {
       test("multiple rules with same key", async () => {
         await group.setRules([
           { key: "lastName", match: "Mario", operation: { op: "eq" } },
-          { key: "lastName", match: "%a%", operation: { op: "iLike" } },
+          { key: "lastName", match: "%a%", operation: { op: "like" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(2);
       });
 
       test("multiple matches (ALL)", async () => {
         await group.setRules([
-          { key: "lastName", match: "%toad%", operation: { op: "iLike" } },
+          { key: "lastName", match: "%Toad%", operation: { op: "like" } },
           { key: "firstName", match: "Peach", operation: { op: "eq" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(1);
@@ -56,7 +57,7 @@ describe("model/group", () => {
       test("multiple matches (ANY)", async () => {
         await group.update({ matchType: "any" });
         await group.setRules([
-          { key: "lastName", match: "%toad%", operation: { op: "iLike" } },
+          { key: "lastName", match: "%Toad%", operation: { op: "like" } },
           { key: "firstName", match: "Peach", operation: { op: "eq" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(2);
@@ -132,19 +133,21 @@ describe("model/group", () => {
         expect(await group.countPotentialMembers()).toBe(3);
       });
 
-      test("array property iLike", async () => {
-        await group.setRules([
-          { key: "purchases", match: "MUSH%", operation: { op: "iLike" } },
-        ]);
-        expect(await group.countPotentialMembers()).toBe(2);
-      });
+      if (config.sequelize.dialect === "postgres") {
+        test("array property iLike", async () => {
+          await group.setRules([
+            { key: "purchases", match: "MUSH%", operation: { op: "iLike" } },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(2);
+        });
 
-      test("array property not iLike", async () => {
-        await group.setRules([
-          { key: "purchases", match: "STA%", operation: { op: "notILike" } },
-        ]);
-        expect(await group.countPotentialMembers()).toBe(3);
-      });
+        test("array property not iLike", async () => {
+          await group.setRules([
+            { key: "purchases", match: "STA%", operation: { op: "notILike" } },
+          ]);
+          expect(await group.countPotentialMembers()).toBe(3);
+        });
+      }
     });
   });
 });

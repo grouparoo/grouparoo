@@ -14,7 +14,7 @@ import {
   DefaultScope,
   Scopes,
 } from "sequelize-typescript";
-import { api } from "actionhero";
+import { api, config } from "actionhero";
 import { Op, Transaction } from "sequelize";
 import Moment from "moment";
 import { LoggedModel } from "../classes/loggedModel";
@@ -449,11 +449,11 @@ export class Group extends LoggedModel<Group> {
         operation,
         type,
         topLevel,
-        match,
         relativeMatchNumber,
         relativeMatchDirection,
         relativeMatchUnit,
       } = rule;
+      let { match } = rule;
       const localWhereGroup = {};
       let rawValueMatch = {};
 
@@ -463,6 +463,14 @@ export class Group extends LoggedModel<Group> {
       }
 
       if (match !== null && match !== undefined) {
+        // special cases for dialects
+        if (config.sequelize.dialect === "sqlite") {
+          if (profilePropertyRule?.type === "boolean") {
+            if (match === "1") match = "true";
+            if (match === "0") match = "false";
+          }
+        }
+
         // rewrite null matches
         rawValueMatch[Op[operation.op]] =
           match.toString().toLocaleLowerCase() === "null" ? null : match;
@@ -614,13 +622,14 @@ export class Group extends LoggedModel<Group> {
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: Group) {
+  static async ensureUniqueName(instance: Group, { transaction }) {
     const count = await Group.count({
       where: {
         guid: { [Op.ne]: instance.guid },
         name: instance.name,
         state: { [Op.ne]: "draft" },
       },
+      transaction,
     });
     if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
@@ -631,16 +640,19 @@ export class Group extends LoggedModel<Group> {
   }
 
   @BeforeDestroy
-  static async checkGroupMembers(instance: Group) {
-    const count = await instance.$count("groupMembers");
+  static async checkGroupMembers(instance: Group, { transaction }) {
+    const count = await instance.$count("groupMembers", { transaction });
     if (count > 0) {
       throw new Error(`this group still has ${count} members, cannot delete`);
     }
   }
 
   @BeforeDestroy
-  static async checkDestinationTracking(instance: Group) {
-    const count = await instance.$count("destinations");
+  static async checkDestinationTracking(
+    instance: Group,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
+    const count = await instance.$count("destinations", { transaction });
     if (count > 0) {
       throw new Error(
         `this group still in use by ${count} destinations, cannot delete`
@@ -649,48 +661,57 @@ export class Group extends LoggedModel<Group> {
   }
 
   @AfterDestroy
-  static async destroyDestinationGroupTracking(instance: Group) {
+  static async destroyDestinationGroupTracking(
+    instance: Group,
+    { transaction }
+  ) {
     const destinations = await instance.$get("destinations", {
       scope: null,
+      transaction,
     });
 
     for (const i in destinations) {
-      await destinations[i].update({ groupGuid: null });
+      await destinations[i].update({ groupGuid: null }, { transaction });
     }
   }
 
   @AfterDestroy
-  static async destroyDestinationGroupMembership(instance: Group) {
+  static async destroyDestinationGroupMembership(
+    instance: Group,
+    { transaction }
+  ) {
     const destinationGroupMemberships = await DestinationGroupMembership.findAll(
-      { where: { groupGuid: instance.guid } }
+      { where: { groupGuid: instance.guid }, transaction }
     );
 
     for (const i in destinationGroupMemberships) {
-      const destination = await destinationGroupMemberships[i].$get(
-        "destination"
-      );
-      await destinationGroupMemberships[i].destroy();
+      const destination = await destinationGroupMemberships[
+        i
+      ].$get("destination", { transaction });
+      await destinationGroupMemberships[i].destroy({ transaction });
       await destination.exportGroupMembers(false);
     }
   }
 
   @AfterDestroy
-  static async destroyGroupRules(instance: Group) {
+  static async destroyGroupRules(instance: Group, { transaction }) {
     return GroupRule.destroy({
       where: {
         groupGuid: instance.guid,
       },
+      transaction,
     });
   }
 
   @AfterDestroy
-  static async stopRuns(instance: Group) {
+  static async stopRuns(instance: Group, { transaction }) {
     const runs = await Run.findAll({
       where: { creatorGuid: instance.guid, state: "running" },
+      transaction,
     });
 
     for (const i in runs) {
-      await runs[i].update({ state: "stopped" });
+      await runs[i].update({ state: "stopped" }, { transaction });
     }
   }
 }

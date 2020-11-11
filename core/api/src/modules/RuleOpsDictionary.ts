@@ -1,3 +1,5 @@
+import { config } from "actionhero";
+
 const _boolean_ops = [
   { op: "exists", description: "exists with any value" },
   { op: "notExists", description: "does not exist" },
@@ -21,14 +23,20 @@ const _string_ops = [
   { op: "notExists", description: "does not exist" },
   { op: "eq", description: "is equal to" },
   { op: "ne", description: "is not equal to" },
-  { op: "like", description: "is like" },
-  { op: "iLike", description: "is like (case insensitive)" },
-  { op: "notLike", description: "is not like (case insensitive)" },
-  { op: "notILike", description: "is not like (case insensitive)" },
+  { op: "like", description: "is like (case sensitive)" },
+  { op: "notLike", description: "is not like (case sensitive)" },
   { op: "startsWith", description: "starts with" },
   { op: "endsWith", description: "ends with" },
   { op: "substring", description: "includes the string" },
 ];
+
+if (config.sequelize.dialect === "postgres") {
+  _string_ops.push({ op: "iLike", description: "is like (case insensitive)" });
+  _string_ops.push({
+    op: "notILike",
+    description: "is not like (case insensitive)",
+  });
+}
 
 const _date_ops = [
   { op: "exists", description: "exists with any value" },

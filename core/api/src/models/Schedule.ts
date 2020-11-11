@@ -265,22 +265,19 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   @AfterDestroy
-  static async destroyAppOptions(instance: Schedule) {
-    return Option.destroy({
-      where: {
-        ownerGuid: instance.guid,
-      },
-    });
+  static async destroyAppOptions(instance: Schedule, { transaction }) {
+    return Option.destroy({ where: { ownerGuid: instance.guid }, transaction });
   }
 
   @AfterDestroy
-  static async stopRuns(instance: Schedule) {
+  static async stopRuns(instance: Schedule, { transaction }) {
     const runs = await Run.findAll({
       where: { creatorGuid: instance.guid, state: "running" },
+      transaction,
     });
 
     for (const i in runs) {
-      await runs[i].update({ state: "stopped" });
+      await runs[i].update({ state: "stopped" }, { transaction });
     }
   }
 }

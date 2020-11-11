@@ -1,4 +1,4 @@
-import { api } from "actionhero";
+import { api, config } from "actionhero";
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
@@ -148,6 +148,10 @@ export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
   }
 
   async run({ params }) {
+    const op = config.sequelize.dialect === "postgres" ? Op.iLike : Op.like;
+    const rawValueWhereClause = {};
+    rawValueWhereClause[op] = `%${params.match}%`;
+
     const profileProperties = await ProfileProperty.findAll({
       attributes: [
         [
@@ -158,7 +162,7 @@ export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
       ],
       where: {
         profilePropertyRuleGuid: params.profilePropertyRuleGuid,
-        rawValue: { [Op.iLike]: `%${params.match}%` },
+        rawValue: rawValueWhereClause,
       },
       group: ["rawValue", "profilePropertyRuleGuid"],
       limit: params.limit,

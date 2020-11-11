@@ -3,11 +3,6 @@ module.exports = {
     await migration.addColumn("settings", "type", {
       type: DataTypes.STRING(191),
       defaultValue: "string",
-      allowNull: true,
-    });
-
-    await migration.changeColumn("settings", "type", {
-      type: DataTypes.STRING(191),
       allowNull: false,
     });
 

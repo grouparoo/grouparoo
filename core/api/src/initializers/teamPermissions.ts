@@ -1,5 +1,6 @@
 import { Initializer, log } from "actionhero";
 import { Team } from "../models/Team";
+import { waitForLock } from "../modules/locks";
 
 export class TeamPermissions extends Initializer {
   constructor() {
@@ -8,16 +9,24 @@ export class TeamPermissions extends Initializer {
   }
 
   async updateTeamPermissions(team: Team) {
-    const permissionsWithStatus = await Team.buildPermissions(team);
-    permissionsWithStatus.map(({ isNew, permission }) => {
-      log(
-        `${isNew ? "Created new" : "Checked"} permission record for team ${
-          team.name
-        } @ ${permission.topic}`,
-        isNew ? "notice" : "debug",
-        { read: permission.read, write: permission.write }
-      );
-    });
+    const { releaseLock } = await waitForLock(
+      `team:${team.guid}:updateTeamPermissions`
+    );
+
+    try {
+      const permissionsWithStatus = await Team.buildPermissions(team);
+      permissionsWithStatus.map(({ isNew, permission }) => {
+        log(
+          `${isNew ? "Created new" : "Checked"} permission record for team ${
+            team.name
+          } @ ${permission.topic}`,
+          isNew ? "notice" : "debug",
+          { read: permission.read, write: permission.write }
+        );
+      });
+    } finally {
+      releaseLock();
+    }
   }
 
   async start() {

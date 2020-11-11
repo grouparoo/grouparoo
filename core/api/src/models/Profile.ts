@@ -109,11 +109,11 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   async buildNullProperties() {
-    return ProfileOps.buildNullProperties(this);
+    return ProfileOps.buildNullProperties(this, "ready");
   }
 
-  async markPending(transaction?: Transaction) {
-    return ProfileOps.markPending(this, transaction);
+  async markPending() {
+    return ProfileOps.markPending(this);
   }
 
   async updateGroupMembership() {
@@ -190,16 +190,18 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   @AfterDestroy
-  static async destroyProfileProperties(instance: Profile) {
+  static async destroyProfileProperties(instance: Profile, { transaction }) {
     await ProfileProperty.destroy({
       where: { profileGuid: instance.guid },
+      transaction,
     });
   }
 
   @AfterDestroy
-  static async destroyGroupMembers(instance: Profile) {
+  static async destroyGroupMembers(instance: Profile, { transaction }) {
     await GroupMember.destroy({
       where: { profileGuid: instance.guid },
+      transaction,
     });
   }
 
@@ -211,14 +213,18 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   @AfterDestroy
-  static async destroyImports(instance: Profile) {
+  static async destroyImports(instance: Profile, { transaction }) {
     await Import.destroy({
       where: { profileGuid: instance.guid },
+      transaction,
     });
   }
 
   @AfterDestroy
-  static async destroyExports(instance: Profile) {
-    await Export.destroy({ where: { profileGuid: instance.guid } });
+  static async destroyExports(instance: Profile, { transaction }) {
+    await Export.destroy({
+      where: { profileGuid: instance.guid },
+      transaction,
+    });
   }
 }

@@ -199,27 +199,31 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   }
 
   @AfterSave
-  static async updateProfileAfterSave(instance: ProfileProperty) {
+  static async updateProfileAfterSave(
+    instance: ProfileProperty,
+    { transaction }
+  ) {
     const changed = instance.changed();
-    if (!changed) {
-      return;
-    }
+    if (!changed) return;
 
-    const profile = await instance.$get("profile");
+    const profile = await instance.$get("profile", { transaction });
     if (profile && changed.indexOf("rawValue") >= 0) {
       profile.updatedAt = new Date();
       profile.changed("updatedAt", true);
-      await profile.save();
+      await profile.save({ transaction });
     }
   }
 
   @AfterDestroy
-  static async updateProfileAfterDestroy(instance: ProfileProperty) {
-    const profile = await instance.$get("profile");
+  static async updateProfileAfterDestroy(
+    instance: ProfileProperty,
+    { transaction }
+  ) {
+    const profile = await instance.$get("profile", { transaction });
     if (profile) {
       profile.updatedAt = new Date();
       profile.changed("updatedAt", true);
-      await profile.save();
+      await profile.save({ transaction });
     }
   }
 }

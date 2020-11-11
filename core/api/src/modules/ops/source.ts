@@ -324,7 +324,7 @@ export namespace SourceOps {
       await ProfilePropertyRule.ensureOneIdentifyingProperty(rule);
 
       // danger zone!
-      await LoggedModel.logCreate(rule);
+      await LoggedModel.logCreate(rule, {});
       // @ts-ignore
       await rule.save({ hooks: false });
       await ProfilePropertyRule.clearCacheAfterSave();

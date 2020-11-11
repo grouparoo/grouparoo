@@ -2,6 +2,7 @@ import { Destination } from "../../models/Destination";
 import { log } from "actionhero";
 import { ExportOps } from "../../modules/ops/export";
 import { RetryableTask } from "../../classes/retryableTask";
+import { plugin } from "../../modules/plugin";
 
 export class EnqueueExports extends RetryableTask {
   constructor() {
@@ -15,6 +16,10 @@ export class EnqueueExports extends RetryableTask {
   }
 
   async run() {
+    const limit = parseInt(
+      (await plugin.readSetting("core", "exports-profile-batch-size")).value
+    );
+
     const destinations = await Destination.findAll({
       where: { state: "ready" },
     });
@@ -22,17 +27,15 @@ export class EnqueueExports extends RetryableTask {
     let totalEnqueued = 0;
 
     for (const i in destinations) {
-      let enqueuedExportsCount = await ExportOps.processPendingExportsForDestination(
-        destinations[i]
-      );
-      totalEnqueued += enqueuedExportsCount;
+      let enqueuedExportsCount = 1;
 
       while (enqueuedExportsCount > 0) {
+        enqueuedExportsCount = await ExportOps.processPendingExportsForDestination(
+          destinations[i],
+          limit
+        );
         log(
           `enqueued ${enqueuedExportsCount} exports to send to ${destinations[i].name} (${destinations[i].guid})`
-        );
-        enqueuedExportsCount = await ExportOps.processPendingExportsForDestination(
-          destinations[i]
         );
         totalEnqueued += enqueuedExportsCount;
       }

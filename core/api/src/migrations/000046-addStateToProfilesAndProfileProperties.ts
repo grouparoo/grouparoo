@@ -2,22 +2,14 @@ module.exports = {
   up: async function (migration, DataTypes) {
     await migration.addColumn("profiles", "state", {
       type: DataTypes.STRING(191),
-      allowNull: true,
-      defaultValue: "ready",
-    });
-    await migration.changeColumn("profiles", "state", {
-      type: DataTypes.STRING(191),
       allowNull: false,
+      defaultValue: "ready",
     });
 
     await migration.addColumn("profileProperties", "state", {
       type: DataTypes.STRING(191),
-      allowNull: true,
-      defaultValue: "ready",
-    });
-    await migration.changeColumn("profileProperties", "state", {
-      type: DataTypes.STRING(191),
       allowNull: false,
+      defaultValue: "ready",
     });
 
     await migration.addColumn("profileProperties", "valueChangedAt", {

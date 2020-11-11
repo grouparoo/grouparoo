@@ -93,6 +93,7 @@
     "reflect-metadata": "0.1.13",
     "sequelize": "5.22.3",
     "sequelize-typescript": "1.1.0",
+    "sqlite3": "^5.0.0",
     "stacktrace-js": "2.0.2",
     "swagger-ui": "3.36.2",
     "ts-node": "9.0.0",

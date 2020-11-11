@@ -71,7 +71,7 @@ describe("model/group", () => {
             match: new Date(0).getTime(),
             operation: { op: "gt" },
           },
-          { key: "lastName", match: "mario", operation: { op: "iLike" } },
+          { key: "lastName", match: "Mario", operation: { op: "like" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(1);
       });
@@ -84,7 +84,7 @@ describe("model/group", () => {
             match: new Date(0).getTime(),
             operation: { op: "gt" },
           },
-          { key: "lastName", match: "mario", operation: { op: "iLike" } },
+          { key: "lastName", match: "Mario", operation: { op: "like" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(3);
       });
@@ -187,7 +187,7 @@ describe("model/group", () => {
             relativeMatchDirection: "subtract",
             operation: { op: "gt" },
           },
-          { key: "lastName", match: "mario", operation: { op: "iLike" } },
+          { key: "lastName", match: "Mario", operation: { op: "like" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(1);
       });
@@ -202,7 +202,7 @@ describe("model/group", () => {
             relativeMatchDirection: "subtract",
             operation: { op: "gt" },
           },
-          { key: "lastName", match: "mario", operation: { op: "iLike" } },
+          { key: "lastName", match: "Mario", operation: { op: "like" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(3);
       });

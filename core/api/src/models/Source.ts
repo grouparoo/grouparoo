@@ -329,30 +329,28 @@ export class Source extends LoggedModel<Source> {
   }
 
   @AfterSave
-  static async updateRuleDirectMappings(instance: Source) {
-    const rules = await instance.$get("profilePropertyRules");
+  static async updateRuleDirectMappings(instance: Source, { transaction }) {
+    const rules = await instance.$get("profilePropertyRules", { transaction });
     for (const i in rules) {
       const rule = rules[i];
       await ProfilePropertyRule.determineDirectlyMapped(rule);
-      if (rule.changed()) await rule.save();
+      if (rule.changed()) await rule.save({ transaction });
     }
   }
 
   @AfterDestroy
-  static async destroyOptions(instance: Source) {
+  static async destroyOptions(instance: Source, { transaction }) {
     return Option.destroy({
-      where: {
-        ownerGuid: instance.guid,
-      },
+      where: { ownerGuid: instance.guid },
+      transaction,
     });
   }
 
   @AfterDestroy
-  static async destroyMappings(instance: Source) {
+  static async destroyMappings(instance: Source, { transaction }) {
     return Mapping.destroy({
-      where: {
-        ownerGuid: instance.guid,
-      },
+      where: { ownerGuid: instance.guid },
+      transaction,
     });
   }
 }

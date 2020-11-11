@@ -1,4 +1,4 @@
-import { api } from "actionhero";
+import { api, config } from "actionhero";
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Op } from "sequelize";
 import { Group } from "../models/Group";
@@ -27,7 +27,11 @@ const modelClasses = {
   TeamMember,
 };
 
-function dateString(d) {
+function dateString(d: Date | string) {
+  if (typeof d === "string") {
+    d = new Date(d);
+  }
+
   return d.toJSON().slice(0, 10);
 }
 
@@ -65,17 +69,19 @@ export class TotalsAction extends AuthenticatedAction {
 
     const total: number = await model.count();
 
+    const groupStatement =
+      config.sequelize.dialect === "postgres"
+        ? api.sequelize.fn("date_trunc", "day", api.sequelize.col("createdAt"))
+        : api.sequelize.literal(`strftime('%Y %m %d', \`createdAt\`)`);
     const rolling: Array<{ date: string; count: number }> = await model
       .count({
         where: { createdAt: { [Op.gte]: new Date(dates[0]) } },
-        group: [
-          api.sequelize.fn("date_trunc", "day", api.sequelize.col("createdAt")),
-        ],
+        group: [groupStatement],
       })
       .map((row) => {
-        // @ts-ignore
+        const dateKey = Object.keys(row).find((r) => r !== "count");
         return {
-          date: dateString(row.date_trunc),
+          date: dateString(row[dateKey]),
           count: row.count,
         };
       });

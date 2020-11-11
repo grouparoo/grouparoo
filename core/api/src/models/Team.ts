@@ -10,10 +10,12 @@ import {
   AfterDestroy,
   BeforeSave,
 } from "sequelize-typescript";
+import { api } from "actionhero";
 import { LoggedModel } from "../classes/loggedModel";
 import { TeamMember } from "./TeamMember";
-import { Permission } from "./Permission";
+import { Permission, PermissionTopics } from "./Permission";
 import { AsyncReturnType } from "type-fest";
+import { Transaction } from "sequelize";
 
 @Table({ tableName: "teams", paranoid: false })
 export class Team extends LoggedModel<Team> {
@@ -120,37 +122,65 @@ export class Team extends LoggedModel<Team> {
 
   @AfterSave
   static async buildPermissions(instance: Team) {
+    const transaction: Transaction = await api.sequelize.transaction();
     const permissionsWithStatus: Array<{
       isNew: boolean;
       permission: Permission;
     }> = [];
-    const topics = Permission.topics();
-    for (const i in topics) {
-      const topic = topics[i];
-      const [permission, isNew] = await Permission.findOrCreate({
-        where: {
-          topic,
-          ownerGuid: instance.guid,
-          ownerType: "team",
-        },
-      });
 
-      if (isNew) {
-        // default new teams to having full 'read' access
-        await permission.update({ read: true });
+    try {
+      for (const i in PermissionTopics) {
+        const topic = PermissionTopics[i];
+        let isNew = false;
+        let permission = await Permission.findOne({
+          where: {
+            topic,
+            ownerGuid: instance.guid,
+            ownerType: "team",
+          },
+          transaction,
+        });
+
+        if (!permission) {
+          isNew = true;
+          permission = await Permission.create(
+            {
+              topic,
+              ownerGuid: instance.guid,
+              ownerType: "team",
+            },
+            { transaction }
+          );
+        }
+
+        if (isNew) {
+          // default new teams to having full 'read' access
+          await permission.update({ read: true }, { transaction });
+        }
+
+        if (instance.permissionAllRead !== null) {
+          await permission.update(
+            { read: instance.permissionAllRead },
+            { transaction }
+          );
+        }
+        if (instance.permissionAllWrite !== null) {
+          await permission.update(
+            { write: instance.permissionAllWrite },
+            { transaction }
+          );
+        }
+
+        permissionsWithStatus.push({ isNew, permission });
       }
 
-      if (instance.permissionAllRead !== null) {
-        await permission.update({ read: instance.permissionAllRead });
-      }
-      if (instance.permissionAllWrite !== null) {
-        await permission.update({ write: instance.permissionAllWrite });
-      }
+      await transaction.commit();
 
-      permissionsWithStatus.push({ isNew, permission });
+      return permissionsWithStatus;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
     }
-
-    return permissionsWithStatus;
   }
 
   @BeforeDestroy
@@ -170,7 +200,10 @@ export class Team extends LoggedModel<Team> {
   }
 
   @AfterDestroy
-  static async deletePermissions(instance: Team) {
-    return Permission.destroy({ where: { ownerGuid: instance.guid } });
+  static async deletePermissions(instance: Team, { transaction }) {
+    return Permission.destroy({
+      where: { ownerGuid: instance.guid },
+      transaction,
+    });
   }
 }

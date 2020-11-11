@@ -12,6 +12,7 @@ import {
 import * as uuid from "uuid";
 import { Log } from "../models/Log";
 import { config, chatRoom } from "actionhero";
+import { Transaction } from "sequelize";
 
 function modelName(instance): string {
   let name = instance.constructor.name;
@@ -42,14 +43,20 @@ export abstract class LoggedModel<T> extends Model<T> {
   updatedAt: Date;
 
   @AfterCreate
-  static async logCreate(instance) {
-    await Log.create({
-      topic: modelName(instance),
-      verb: "create",
-      ownerGuid: instance.guid,
-      data: await instance.filteredDataForLogging(),
-      message: await instance.logMessage("create"),
-    });
+  static async logCreate(
+    instance,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
+    await Log.create(
+      {
+        topic: modelName(instance),
+        verb: "create",
+        ownerGuid: instance.guid,
+        data: await instance.filteredDataForLogging(),
+        message: await instance.logMessage("create"),
+      },
+      { transaction }
+    );
   }
 
   @AfterCreate
@@ -61,39 +68,57 @@ export abstract class LoggedModel<T> extends Model<T> {
   }
 
   @AfterBulkCreate
-  static async logBulkCreate(instances) {
+  static async logBulkCreate(
+    instances,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
     for (const i in instances) {
       const instance = instances[i];
-      await Log.create({
-        topic: modelName(instance),
-        verb: "create",
-        ownerGuid: instance.guid,
-        data: await instance.filteredDataForLogging(),
-        message: await instance.logMessage("create"),
-      });
+      await Log.create(
+        {
+          topic: modelName(instance),
+          verb: "create",
+          ownerGuid: instance.guid,
+          data: await instance.filteredDataForLogging(),
+          message: await instance.logMessage("create"),
+        },
+        { transaction }
+      );
     }
   }
 
   @AfterUpdate
-  static async logUpdate(instance) {
-    await Log.create({
-      topic: modelName(instance),
-      verb: "update",
-      ownerGuid: instance.guid,
-      data: await instance.filteredDataForLogging(),
-      message: await instance.logMessage("update"),
-    });
+  static async logUpdate(
+    instance,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
+    await Log.create(
+      {
+        topic: modelName(instance),
+        verb: "update",
+        ownerGuid: instance.guid,
+        data: await instance.filteredDataForLogging(),
+        message: await instance.logMessage("update"),
+      },
+      { transaction }
+    );
   }
 
   @AfterDestroy
-  static async logDestroy(instance) {
-    await Log.create({
-      topic: modelName(instance),
-      verb: "destroy",
-      ownerGuid: instance.guid,
-      data: await instance.filteredDataForLogging(),
-      message: await instance.logMessage("destroy"),
-    });
+  static async logDestroy(
+    instance,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
+    await Log.create(
+      {
+        topic: modelName(instance),
+        verb: "destroy",
+        ownerGuid: instance.guid,
+        data: await instance.filteredDataForLogging(),
+        message: await instance.logMessage("destroy"),
+      },
+      { transaction }
+    );
   }
 
   async filteredDataForLogging() {

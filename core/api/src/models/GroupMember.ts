@@ -76,32 +76,38 @@ export class GroupMember extends Model<GroupMember> {
   }
 
   @AfterCreate
-  static async logCreate(instance: GroupMember) {
-    const group = await instance.$get("group");
+  static async logCreate(instance: GroupMember, { transaction }) {
+    const group = await instance.$get("group", { transaction });
 
-    await Log.create({
-      topic: "groupMember",
-      verb: "create",
-      data: await instance.apiData(),
-      ownerGuid: instance.profileGuid,
-      message: `added to group ${group ? group.name : ""} (${
-        instance.groupGuid
-      })`,
-    });
+    await Log.create(
+      {
+        topic: "groupMember",
+        verb: "create",
+        data: await instance.apiData(),
+        ownerGuid: instance.profileGuid,
+        message: `added to group ${group ? group.name : ""} (${
+          instance.groupGuid
+        })`,
+      },
+      { transaction }
+    );
   }
 
   @AfterDestroy
-  static async logDestroy(instance: GroupMember) {
-    const group = await instance.$get("group");
+  static async logDestroy(instance: GroupMember, { transaction }) {
+    const group = await instance.$get("group", { transaction });
 
-    await Log.create({
-      topic: "groupMember",
-      verb: "destroy",
-      data: await instance.apiData(),
-      ownerGuid: instance.profileGuid,
-      message: `removed from group ${group ? group.name : ""} (${
-        instance.groupGuid
-      })`,
-    });
+    await Log.create(
+      {
+        topic: "groupMember",
+        verb: "destroy",
+        data: await instance.apiData(),
+        ownerGuid: instance.profileGuid,
+        message: `removed from group ${group ? group.name : ""} (${
+          instance.groupGuid
+        })`,
+      },
+      { transaction }
+    );
   }
 }

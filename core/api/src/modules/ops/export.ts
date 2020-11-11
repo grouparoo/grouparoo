@@ -3,11 +3,10 @@ import {
   ExportProfilePropertiesWithType,
 } from "../../models/Export";
 import { ProfilePropertyOps } from "../../modules/ops/profileProperty";
-import { plugin } from "../../modules/plugin";
 import { Export } from "../../models/Export";
 import { Destination } from "../../models/Destination";
 import { api, task } from "actionhero";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 
 export namespace ExportOps {
   /** Count up the exports in each state, optionally filtered for a profile or destination */
@@ -91,38 +90,46 @@ export namespace ExportOps {
 
   export async function processPendingExportsForDestination(
     destination: Destination,
-    limit?: number
+    limit = 100
   ) {
-    if (!limit) {
-      limit = parseInt(
-        (await plugin.readSetting("core", "exports-profile-batch-size")).value
-      );
-    }
     const app = await destination.$get("app");
     const { pluginConnection } = await destination.getPlugin();
 
-    // We use Export#startedAt to denote that this export needs to be worked.  We can update and claim them in one go.
-    // This requires a custom query.
-    const query = `
-UPDATE "exports"
-SET "startedAt" = NOW()
-WHERE guid IN (
-  SELECT guid FROM "exports"
-  WHERE "startedAt" IS NULL
-  AND "destinationGuid" = '${destination.guid}'
-  ORDER BY "createdAt" DESC
-  LIMIT ${limit}
-)
-AND "startedAt" IS NULL
-AND "destinationGuid" = '${destination.guid}'
-RETURNING *
-;
-  `;
+    let _exports: Export[];
 
-    const _exports: Export[] = await api.sequelize.query(query, {
-      model: Export,
-      mapToModel: true,
-    });
+    const transaction: Transaction = await api.sequelize.transaction({});
+
+    try {
+      _exports = await Export.findAll({
+        where: {
+          startedAt: null,
+          destinationGuid: destination.guid,
+        },
+        order: [["createdAt", "asc"]],
+        limit,
+        transaction,
+      });
+
+      const updateResponse = await Export.update(
+        { startedAt: new Date() },
+        {
+          where: {
+            guid: { [Op.in]: _exports.map((e) => e.guid) },
+            startedAt: null,
+          },
+          transaction,
+        }
+      );
+
+      transaction.commit();
+
+      // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer startedAt=null
+      // in SQLite this isn't possible, but contention is far less likely
+      if (updateResponse[1]) _exports = updateResponse[1];
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
 
     if (_exports.length > 0) {
       if (pluginConnection.methods.exportProfiles) {

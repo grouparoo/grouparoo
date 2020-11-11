@@ -5,19 +5,11 @@ module.exports = {
       allowNull: false,
       defaultValue: true,
     });
-    await migration.changeColumn("exports", "hasChanges", {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    });
 
     await migration.addColumn("runs", "force", {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
-    });
-    await migration.changeColumn("runs", "force", {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
     });
   },
 

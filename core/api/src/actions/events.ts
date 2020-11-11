@@ -1,5 +1,5 @@
 import { AuthenticatedAction } from "../classes/authenticatedAction";
-import { api } from "actionhero";
+import { api, config } from "actionhero";
 import { Event } from "../models/Event";
 import { EventData } from "../models/EventData";
 import { Op } from "sequelize";
@@ -119,17 +119,52 @@ export class EventsCounts extends AuthenticatedAction {
 
     if (params.type) where["type"] = params.type;
 
+    let timeFunc = api.sequelize.fn(
+      "date_trunc",
+      params.dateTrunc,
+      api.sequelize.col("occurredAt")
+    );
+
+    if (config.sequelize.dialect === "sqlite") {
+      switch (params.dateTrunc) {
+        case "year": {
+          timeFunc = api.sequelize.literal(`strftime('%Y', \`occurredAt\`)`);
+          break;
+        }
+        case "month": {
+          timeFunc = api.sequelize.literal(`strftime('%Y %m', \`occurredAt\`)`);
+          break;
+        }
+        case "day": {
+          timeFunc = api.sequelize.literal(
+            `strftime('%Y %m %d', \`occurredAt\`)`
+          );
+          break;
+        }
+        case "hour": {
+          timeFunc = api.sequelize.literal(
+            `strftime('%Y %m %d %H', \`occurredAt\`)`
+          );
+          break;
+        }
+        case "minute": {
+          timeFunc = api.sequelize.literal(
+            `strftime('%Y %m %d %H %M', \`occurredAt\`)`
+          );
+          break;
+        }
+        default: {
+          throw new Error(
+            `cannot build time function for ${params.dateTrunc} on sqlite`
+          );
+        }
+      }
+    }
+
     const counts = await Event.findAll({
       attributes: [
         "type",
-        [
-          api.sequelize.fn(
-            "date_trunc",
-            params.dateTrunc,
-            api.sequelize.col("occurredAt")
-          ),
-          "time",
-        ],
+        [timeFunc, "time"],
         [api.sequelize.fn("COUNT", "guid"), "count"],
       ],
       where,
@@ -184,7 +219,7 @@ export class EventsTypes extends AuthenticatedAction {
       limit: params.limit,
       offset: params.offset,
       group: ["type"],
-      order: [["count", "desc"]],
+      order: [[api.sequelize.literal("count"), "desc"]],
     });
 
     const total = await Event.count({

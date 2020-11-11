@@ -3,7 +3,6 @@ import {
   Column,
   Index,
   AllowNull,
-  BeforeCreate,
   BelongsTo,
   HasMany,
   AfterCreate,
@@ -14,7 +13,6 @@ import { Op, Transaction } from "sequelize";
 import { EventData } from "./EventData";
 import { Profile } from "./Profile";
 import { ProfilePropertyRuleFiltersWithKey } from "./ProfilePropertyRule";
-import * as uuid from "uuid";
 import { api, task } from "actionhero";
 import { EventOps } from "../modules/ops/event";
 
@@ -129,11 +127,10 @@ export class Event extends LoggedModel<Event> {
 
   // --- Class Methods --- //
 
-  @BeforeCreate
-  static generateGuid(instance: Event) {
-    if (!instance.guid) {
-      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
-    }
+  static async findByGuid(guid: string) {
+    const instance = await this.scope(null).findOne({ where: { guid } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+    return instance;
   }
 
   @AfterCreate
@@ -142,18 +139,13 @@ export class Event extends LoggedModel<Event> {
   }
 
   @AfterDestroy
-  static async destroyOptions(instance: Event) {
+  static async destroyOptions(instance: Event, { transaction }) {
     return EventData.destroy({
       where: {
         eventGuid: instance.guid,
       },
+      transaction,
     });
-  }
-
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
-    return instance;
   }
 
   static async getTypes(where = {}, limit?, offset?, order?) {

@@ -331,7 +331,7 @@ describe("models/profilePropertyRule", () => {
 
     const group = await helper.factories.group({ type: "calculated" });
     await group.setRules([
-      { key: "thing", match: "%", operation: { op: "iLike" } },
+      { key: "thing", match: "%", operation: { op: "like" } },
     ]);
 
     await expect(rule.destroy()).rejects.toThrow(

@@ -557,7 +557,7 @@ describe("models/group", () => {
             match: new Date(0).getTime(),
             operation: { op: "gt" },
           },
-          { key: "lastName", match: "mario", operation: { op: "iLike" } },
+          { key: "lastName", match: "Mario", operation: { op: "like" } },
         ]);
         const count = await group.countPotentialMembers();
         expect(count).toBe(3);
@@ -572,7 +572,7 @@ describe("models/group", () => {
             match: new Date(100000).getTime(),
             operation: { op: "gte" },
           },
-          { key: "lastName", match: "mario", operation: { op: "iLike" } },
+          { key: "lastName", match: "Mario", operation: { op: "like" } },
         ];
         const count = await group.countPotentialMembers(rules);
         expect(count).toBe(1);
@@ -588,7 +588,7 @@ describe("models/group", () => {
           {
             key: "firstName",
             match: "%",
-            operation: { op: "iLike" },
+            operation: { op: "like" },
           },
           {
             key: "lastLoginAt",
@@ -597,8 +597,8 @@ describe("models/group", () => {
           },
           {
             key: "lastName",
-            match: "mario",
-            operation: { op: "iLike" },
+            match: "Mario",
+            operation: { op: "like" },
           },
         ];
 

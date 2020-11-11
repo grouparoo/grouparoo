@@ -5,10 +5,6 @@ module.exports = {
       allowNull: false,
       defaultValue: false,
     });
-    await migration.changeColumn("profilePropertyRules", "identifying", {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    });
 
     // we need to pick one of the existing rules to be identifying - prefer the oldest unique rule.
     const [results] = await migration.sequelize.query(

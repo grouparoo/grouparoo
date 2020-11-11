@@ -3,11 +3,6 @@ module.exports = {
     await migration.addColumn("imports", "createdProfile", {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
-      allowNull: true,
-    });
-
-    await migration.changeColumn("imports", "createdProfile", {
-      type: DataTypes.BOOLEAN,
       allowNull: false,
     });
   },

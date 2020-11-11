@@ -176,9 +176,7 @@ export namespace GroupOps {
     rules?: GroupRuleWithKey[],
     matchType: "any" | "all" = group.matchType
   ) {
-    if (!rules) {
-      rules = await group.getRules();
-    }
+    if (!rules) rules = await group.getRules();
 
     const { where, include } = await group._buildGroupMemberQueryParts(
       rules,
@@ -204,9 +202,7 @@ export namespace GroupOps {
     const funnelCounts = [];
     let funnelStep = 0;
 
-    if (!rules) {
-      rules = await group.getRules();
-    }
+    if (!rules) rules = await group.getRules();
 
     for (const i in rules) {
       const localRule = rules[i];
@@ -294,9 +290,7 @@ export namespace GroupOps {
       },
     });
 
-    const transaction = await api.sequelize.transaction({
-      type: Transaction.TYPES.EXCLUSIVE,
-    });
+    const transaction = await api.sequelize.transaction({});
 
     try {
       const existingGroupMemberProfileGuids = groupMembers.map(
@@ -367,9 +361,7 @@ export namespace GroupOps {
       limit,
     });
 
-    const transaction = await api.sequelize.transaction({
-      type: Transaction.TYPES.EXCLUSIVE,
-    });
+    const transaction = await api.sequelize.transaction({});
 
     try {
       // The offset and order can be ignored as we will keep running this query until the set of results becomes 0.

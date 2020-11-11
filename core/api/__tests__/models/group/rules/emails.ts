@@ -48,8 +48,8 @@ describe("model/group", () => {
 
       test("multiple rules with same key", async () => {
         await group.setRules([
-          { key: "email", match: "mario%", operation: { op: "iLike" } },
-          { key: "email", match: "%@example.com", operation: { op: "iLike" } },
+          { key: "email", match: "mario%", operation: { op: "like" } },
+          { key: "email", match: "%@example.com", operation: { op: "like" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(1);
       });
