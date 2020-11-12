@@ -369,13 +369,14 @@ export function PendingImports({ execApi }) {
 
   return (
     <Card>
-      <div style={{ height: 200 }}>
-        <RollingChart
-          data={pendingImportSamples}
-          keys={sources.map((d) => d.name)}
-        />
-      </div>
       <Card.Body>
+        <Card.Title>Pending Profile Properties</Card.Title>
+        <div style={{ height: 200 }}>
+          <RollingChart
+            data={pendingImportSamples}
+            keys={sources.map((d) => d.name)}
+          />
+        </div>
         Most Recent Import:{" "}
         {mostRecentImport ? (
           <Moment fromNow>{mostRecentImport.createdAt}</Moment>
@@ -447,13 +448,14 @@ export function PendingExports({ execApi }) {
 
   return (
     <Card>
-      <div style={{ height: 200 }}>
-        <RollingChart
-          data={pendingExportSamples}
-          keys={destinations.map((d) => d.name)}
-        />
-      </div>
       <Card.Body>
+        <Card.Title>Pending Exports</Card.Title>
+        <div style={{ height: 200 }}>
+          <RollingChart
+            data={pendingExportSamples}
+            keys={destinations.map((d) => d.name)}
+          />
+        </div>
         Most Recent Export:{" "}
         {mostRecentExport ? (
           <Moment fromNow>{mostRecentExport.createdAt}</Moment>
