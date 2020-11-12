@@ -85,7 +85,7 @@ describe("integration/runs/mailchimp-export", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     await api.resque.queue.connection.redis.flushdb();
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await helper.shutdown(actionhero);
@@ -94,7 +94,7 @@ describe("integration/runs/mailchimp-export", () => {
   beforeAll(async () => {
     client = await connect(appOptions);
     await cleanUp(false);
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await cleanUp(true);

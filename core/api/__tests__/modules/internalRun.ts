@@ -12,7 +12,7 @@ describe("modules/internalRun", () => {
     await helper.factories.profilePropertyRules();
     await api.resque.queue.connection.redis.flushdb();
     await Run.destroy({ truncate: true });
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await helper.shutdown(actionhero);

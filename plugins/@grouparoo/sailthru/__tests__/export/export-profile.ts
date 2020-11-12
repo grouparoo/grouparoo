@@ -70,7 +70,7 @@ describe("sailthru/exportProfile", () => {
     if (sid) {
       await client.deleteSid(sid);
     }
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     if (userSid) {
@@ -80,7 +80,7 @@ describe("sailthru/exportProfile", () => {
         // no big deal
       }
     }
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   test("can create profile on Sailthru", async () => {
     await runExport({

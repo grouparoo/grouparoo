@@ -2,6 +2,7 @@ import { SharedGroupTests } from "../../../utils/prepareSharedGroupTest";
 import { Group } from "../../../../src/models/Group";
 import { Profile } from "../../../../src/models/Profile";
 import { ProfilePropertyRule } from "../../../../src/models/ProfilePropertyRule";
+import { helper } from "@grouparoo/spec-helper";
 
 describe("model/group", () => {
   let group: Group;
@@ -15,7 +16,7 @@ describe("model/group", () => {
     emailRule = await ProfilePropertyRule.findOne({
       where: { key: "email" },
     });
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await SharedGroupTests.afterAll();

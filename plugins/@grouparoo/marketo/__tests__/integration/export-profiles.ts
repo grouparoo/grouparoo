@@ -136,11 +136,11 @@ describe("marketo/exportProfiles", () => {
   beforeAll(async () => {
     client = await connect(appOptions);
     await cleanUp(false);
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await cleanUp(true);
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   test("can create profile on Marketo", async () => {
     userId1 = await findId(email1);

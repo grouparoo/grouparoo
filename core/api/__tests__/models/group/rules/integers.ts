@@ -1,12 +1,13 @@
 import { SharedGroupTests } from "../../../utils/prepareSharedGroupTest";
 import { Group } from "../../../../src/models/Group";
+import { helper } from "@grouparoo/spec-helper";
 
 describe("model/group", () => {
   let group: Group;
 
   beforeAll(async () => {
     const response = await SharedGroupTests.beforeAll();
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await SharedGroupTests.afterAll();

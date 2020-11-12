@@ -24,7 +24,7 @@ describe("integration/events", () => {
     actionhero = env.actionhero;
     await api.resque.queue.connection.redis.flushdb();
     await helper.factories.profilePropertyRules();
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await helper.shutdown(actionhero);

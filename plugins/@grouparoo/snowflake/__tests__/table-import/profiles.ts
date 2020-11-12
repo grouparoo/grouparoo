@@ -79,7 +79,7 @@ describe("snowflake/table/profiles", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-  }, 1000 * 60);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await helper.shutdown(actionhero);
@@ -194,6 +194,6 @@ describe("snowflake/table/profiles", () => {
       importedIds = page3.imports.map((r) => r.ID);
       expect(importedIds).toEqual([7, 8, 9, 10]);
     },
-    1000 * 60
+    helper.setupTime
   );
 });

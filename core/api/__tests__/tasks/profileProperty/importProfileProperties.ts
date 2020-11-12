@@ -14,7 +14,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     await helper.factories.profilePropertyRules();
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   beforeEach(async () => {
     await api.resque.queue.connection.redis.flushdb();

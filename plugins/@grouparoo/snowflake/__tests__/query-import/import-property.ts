@@ -69,7 +69,7 @@ describe("snowflake/query/profileProperty", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     plugin.mountModels();
-  }, 1000 * 60);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await helper.shutdown(actionhero);

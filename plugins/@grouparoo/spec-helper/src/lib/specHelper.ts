@@ -106,6 +106,10 @@ const models = [
 ];
 
 export namespace helper {
+  export const setupTime = 60 * 1000;
+  export const longTime = 60 * 1000;
+  export const mediumTime = 20 * 1000;
+
   export const factories = {
     apiKey: ApiKeyFactory,
     app: AppFactory,

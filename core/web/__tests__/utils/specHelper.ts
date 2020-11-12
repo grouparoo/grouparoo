@@ -11,6 +11,10 @@ const serverToken = `serverToken-${process.env.JEST_WORKER_ID || 0}`;
 
 let apiProcess;
 
+export const setupTime = 1000 * 60 * 5;
+export const mediumTime = 1000 * 60 * 2;
+export const longTime = 1000 * 60 * 5;
+
 async function spawnPromise(
   command: string,
   args: Array<string> = [],

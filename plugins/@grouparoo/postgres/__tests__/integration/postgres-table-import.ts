@@ -34,7 +34,7 @@ describe("integration/runs/postgres", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     await api.resque.queue.connection.redis.flushdb();
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await helper.shutdown(actionhero);
@@ -458,7 +458,7 @@ describe("integration/runs/postgres", () => {
       expect(groupRows[0].length).toBe(10);
       expect(groupRows[0][0].group).toBe(group.name);
     },
-    1000 * 60
+    helper.longTime
   );
 
   test("profiles should be created with both the mapping data and additional profile property", async () => {
@@ -584,6 +584,6 @@ describe("integration/runs/postgres", () => {
       expect(groupRows[0].length).toBe(10);
       expect(groupRows[0][0].group).toBe(group.name);
     },
-    1000 * 60
+    helper.longTime
   );
 });

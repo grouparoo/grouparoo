@@ -14,7 +14,7 @@ describe("models/group", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await helper.shutdown(actionhero);
@@ -34,7 +34,7 @@ describe("models/group", () => {
       luigi = response.luigi;
       peach = response.peach;
       toad = response.toad;
-    }, 1000 * 30);
+    }, helper.setupTime);
 
     afterAll(async () => {
       await SharedGroupTests.afterAll(false);

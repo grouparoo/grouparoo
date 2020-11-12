@@ -9,7 +9,7 @@ describe("tasks/group:updateCalculatedGroups", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   beforeEach(async () => {
     await api.resque.queue.connection.redis.flushdb();

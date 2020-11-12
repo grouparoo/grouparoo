@@ -47,7 +47,7 @@ describe("postgres/query/profileProperty", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     plugin.mountModels();
-  }, 1000 * 60);
+  }, helper.setupTime);
 
   beforeAll(async () => {
     ({ client } = await beforeData());

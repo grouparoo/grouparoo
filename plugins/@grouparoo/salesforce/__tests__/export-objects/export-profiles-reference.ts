@@ -96,14 +96,14 @@ const {
 describe("salesforce/sales-cloud/export-profiles/reference", () => {
   beforeAll(async () => {
     await cleanUp(false);
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await cleanUp(true);
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   beforeEach(async () => {
-    jest.setTimeout(1000 * 20);
+    jest.setTimeout(helper.mediumTime);
   });
 
   test("can create profile on Salesforce", async () => {

@@ -12,7 +12,7 @@ describe("modules/groupExport", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await helper.shutdown(actionhero);
@@ -89,7 +89,7 @@ describe("modules/groupExport", () => {
         filename = response.filename;
         runGuid = response.runGuid;
       },
-      1000 * 30
+      helper.longTime
     );
 
     test("the run is complete", async () => {

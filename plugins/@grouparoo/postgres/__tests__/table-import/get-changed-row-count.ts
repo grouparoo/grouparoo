@@ -22,7 +22,7 @@ describe("postgres/table/scheduleOptions", () => {
     actionhero = env.actionhero;
     const setupResp = await beforeData();
     client = setupResp.client;
-  }, 1000 * 60);
+  }, helper.setupTime);
 
   afterAll(async () => {
     afterData();

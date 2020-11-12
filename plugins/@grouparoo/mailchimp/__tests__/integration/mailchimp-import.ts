@@ -40,7 +40,7 @@ describe("integration/runs/mailchimp-import", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     await api.resque.queue.connection.redis.flushdb();
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await helper.shutdown(actionhero);
@@ -135,7 +135,7 @@ describe("integration/runs/mailchimp-import", () => {
         expect(scheduleResponse.schedule.name).toBe("test import schedule");
         schedule = scheduleResponse.schedule;
       },
-      30 * 1000
+      helper.setupTime
     );
 
     test("we can test the app options", async () => {
@@ -335,7 +335,7 @@ describe("integration/runs/mailchimp-import", () => {
         expect(run.profilesImported).toBe(10);
         expect(run.percentComplete).toBe(100);
       },
-      1000 * 60
+      helper.longTime
     );
 
     test("profiles should be created with both the mapping data and additional profile property", async () => {
@@ -440,7 +440,7 @@ describe("integration/runs/mailchimp-import", () => {
         expect(run.profilesImported).toBe(10);
         expect(run.percentComplete).toBe(100);
       },
-      1000 * 60
+      helper.longTime
     );
   });
 });

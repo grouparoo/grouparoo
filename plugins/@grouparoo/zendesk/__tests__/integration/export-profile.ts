@@ -105,11 +105,11 @@ describe("zendesk/exportProfile", () => {
   beforeAll(async () => {
     client = await connect(appOptions);
     await deleteUsers(false);
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await deleteUsers(true);
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   test("can create profile on Zendesk", async () => {
     userId = await findId();

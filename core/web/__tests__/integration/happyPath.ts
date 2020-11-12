@@ -9,8 +9,6 @@ declare var browser: any;
 declare var by: any;
 declare var until: any;
 
-const testTimeout = 1000 * 10;
-
 const firstName = "mario";
 const lastName = "mario";
 const email = "mario@example.com";
@@ -20,7 +18,7 @@ describe("integration", () => {
   beforeAll(async () => {
     const env = await helper.prepareForIntegrationTest();
     url = env.url;
-  }, 1000 * 60 * 5);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await helper.shutdown();
@@ -35,7 +33,7 @@ describe("integration", () => {
         "Sync, Segment, and Send your Product Data Everywhere"
       );
     },
-    testTimeout
+    helper.mediumTime
   );
 
   test(
@@ -53,7 +51,7 @@ describe("integration", () => {
       const button = await browser.findElement(by.id("bottomNavigationMenu"));
       await button.click();
     },
-    testTimeout
+    helper.mediumTime
   );
 
   test(
