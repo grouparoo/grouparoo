@@ -5,7 +5,7 @@ import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
 
 import emailDestination from "../lib/export/connection";
-import extidDestination from "../lib/export-id/connection";
+import idDestination from "../lib/export-id/connection";
 import importSource from "../lib/import/connection";
 
 const packageJSON = require("./../../package.json");
@@ -33,7 +33,7 @@ export class Plugins extends Initializer {
           methods: { test, parallelism },
         },
       ],
-      connections: [importSource, emailDestination, extidDestination],
+      connections: [importSource, emailDestination, idDestination],
     });
   }
 
