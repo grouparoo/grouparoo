@@ -68,71 +68,75 @@ describe("integration/runs/mailchimp-import", () => {
     let schedule;
     let recentUser: any;
 
-    test("an administrator can create the related import app and schedule", async () => {
-      // sign in
-      session = await specHelper.buildConnection();
-      session.params = { email: "mario@example.com", password: "P@ssw0rd!" };
-      const sessionResponse = await specHelper.runAction(
-        "session:create",
-        session
-      );
-      expect(sessionResponse.error).toBeUndefined();
-      csrfToken = sessionResponse.csrfToken;
+    test(
+      "an administrator can create the related import app and schedule",
+      async () => {
+        // sign in
+        session = await specHelper.buildConnection();
+        session.params = { email: "mario@example.com", password: "P@ssw0rd!" };
+        const sessionResponse = await specHelper.runAction(
+          "session:create",
+          session
+        );
+        expect(sessionResponse.error).toBeUndefined();
+        csrfToken = sessionResponse.csrfToken;
 
-      // create a sheet app with an uploaded file
-      session.params = {
-        csrfToken,
-        name: "test import app",
-        type: "mailchimp",
-        options: appOptions,
-        state: "ready",
-      };
-      const appResponse = await specHelper.runAction("app:create", session);
-      expect(appResponse.error).toBeUndefined();
-      app = appResponse.app;
+        // create a sheet app with an uploaded file
+        session.params = {
+          csrfToken,
+          name: "test import app",
+          type: "mailchimp",
+          options: appOptions,
+          state: "ready",
+        };
+        const appResponse = await specHelper.runAction("app:create", session);
+        expect(appResponse.error).toBeUndefined();
+        app = appResponse.app;
 
-      // create the source
-      session.params = {
-        csrfToken,
-        type: "mailchimp-import",
-        name: "source",
-        appGuid: app.guid,
-        options: sourceOptions,
-        mapping: sourceMapping,
-        state: "ready",
-      };
+        // create the source
+        session.params = {
+          csrfToken,
+          type: "mailchimp-import",
+          name: "source",
+          appGuid: app.guid,
+          options: sourceOptions,
+          mapping: sourceMapping,
+          state: "ready",
+        };
 
-      const sourceResponse = await specHelper.runAction(
-        "source:create",
-        session
-      );
-      expect(sourceResponse.error).toBeUndefined();
-      source = sourceResponse.source;
+        const sourceResponse = await specHelper.runAction(
+          "source:create",
+          session
+        );
+        expect(sourceResponse.error).toBeUndefined();
+        source = sourceResponse.source;
 
-      // create the schedule
-      session.params = {
-        csrfToken,
-        name: "test import schedule",
-        type: "mailchimp-import",
-        sourceGuid: source.guid,
-        recurring: false,
-        mappings: {
-          "merge_fields.USERID": "userId",
-          email_address: "email",
-          "merge_fields.FNAME": "firstName",
-          "merge_fields.LNAME": "lastName",
-        },
-        state: "ready",
-      };
-      const scheduleResponse = await specHelper.runAction(
-        "schedule:create",
-        session
-      );
-      expect(scheduleResponse.error).toBeUndefined();
-      expect(scheduleResponse.schedule.guid).toBeTruthy();
-      expect(scheduleResponse.schedule.name).toBe("test import schedule");
-      schedule = scheduleResponse.schedule;
-    });
+        // create the schedule
+        session.params = {
+          csrfToken,
+          name: "test import schedule",
+          type: "mailchimp-import",
+          sourceGuid: source.guid,
+          recurring: false,
+          mappings: {
+            "merge_fields.USERID": "userId",
+            email_address: "email",
+            "merge_fields.FNAME": "firstName",
+            "merge_fields.LNAME": "lastName",
+          },
+          state: "ready",
+        };
+        const scheduleResponse = await specHelper.runAction(
+          "schedule:create",
+          session
+        );
+        expect(scheduleResponse.error).toBeUndefined();
+        expect(scheduleResponse.schedule.guid).toBeTruthy();
+        expect(scheduleResponse.schedule.name).toBe("test import schedule");
+        schedule = scheduleResponse.schedule;
+      },
+      30 * 1000
+    );
 
     test("we can test the app options", async () => {
       session.params = {
