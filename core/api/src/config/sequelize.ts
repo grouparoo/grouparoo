@@ -59,6 +59,11 @@ export const DEFAULT = {
       storage = host;
       if (!host) host = ":memory:";
       if (process.env.NODE_ENV === "test") storage = `${database}.sqlite`;
+      if (config?.tasks?.maxTaskProcessors > 1) {
+        throw new Error(
+          "Only one task worker can be used with a SQLite database"
+        );
+      }
     }
 
     return {
