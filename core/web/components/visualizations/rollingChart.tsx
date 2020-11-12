@@ -13,16 +13,16 @@ const colors = [
   "#17becf",
 ];
 
-function Chart({ data, queueNames }) {
+function Chart({ data, keys }) {
   const formattedData = { _total: [] };
 
-  queueNames.forEach((q) => {
+  keys.forEach((q) => {
     formattedData[q] = [];
   });
 
   data.forEach((sample) => {
     let total = 0;
-    queueNames.forEach((q) => {
+    keys.forEach((q) => {
       formattedData[q].push({ x: sample.time, y: sample[q] });
       total += sample[q];
     });
@@ -32,7 +32,7 @@ function Chart({ data, queueNames }) {
   const chartData = [
     { id: "total", data: formattedData._total, color: "#DDD" },
   ];
-  queueNames
+  keys
     .sort()
     .reverse()
     .forEach((q, idx) => {
@@ -49,7 +49,7 @@ function Chart({ data, queueNames }) {
       enableSlices={"x"}
       useMesh={true}
       animate={false}
-      margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
+      margin={{ top: 40, right: 150, bottom: 40, left: 50 }}
       colors={{ datum: "color" }}
       curve={"monotoneX"}
       lineWidth={3}

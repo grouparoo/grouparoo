@@ -362,9 +362,10 @@ describe("actions/groups", () => {
     let connection;
     let teamGuid;
     let csrfToken;
+    let group: Group;
 
     beforeAll(async () => {
-      const group = new Group({
+      group = new Group({
         type: "manual",
         name: "test group",
       });
@@ -417,6 +418,38 @@ describe("actions/groups", () => {
       );
       expect(error).toBeUndefined();
       expect(groups.length).toBe(2);
+    });
+
+    test("a reader can list all the groups by the newest group member", async () => {
+      const profileA = await helper.factories.profile();
+      const profileB = await helper.factories.profile();
+      const smallGroup = await helper.factories.group();
+      const bigGroup = await helper.factories.group();
+      await smallGroup.addProfile(profileA);
+      await bigGroup.addProfile(profileA);
+      await bigGroup.addProfile(profileB);
+
+      connection.params = {
+        csrfToken,
+      };
+      const { error, groups, newestMembersAdded } = await specHelper.runAction(
+        "groups:list:byNewestMember",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(groups.length).toBe(2);
+      const groupGuids = groups.map((g) => g.guid);
+      expect(groupGuids[0]).toBe(bigGroup.guid);
+      expect(groupGuids[1]).toBe(smallGroup.guid);
+
+      expect(newestMembersAdded[bigGroup.guid]).toBeGreaterThanOrEqual(
+        newestMembersAdded[smallGroup.guid]
+      );
+
+      await profileA.destroy();
+      await profileB.destroy();
+      await smallGroup.destroy();
+      await bigGroup.destroy();
     });
 
     test("a reader cannot edit a group", async () => {

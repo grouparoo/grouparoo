@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
-import { Row, Col } from "react-bootstrap";
-import Chart from "../../components/visualizations/resqueChart";
+import { Row, Col, Card } from "react-bootstrap";
+import RollingChart from "../../components/visualizations/rollingChart";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/resque";
 
@@ -106,10 +106,14 @@ export default function ResqueOverview(props) {
       <h1>Resque Overview</h1>
 
       <Row>
-        <Col md={12} style={{ height: 450 }}>
-          <Chart data={samples} queueNames={Object.keys(queues)} />
+        <Col md={12}>
+          <Card style={{ height: 450 }}>
+            <RollingChart data={samples} keys={Object.keys(queues)} />
+          </Card>
         </Col>
       </Row>
+
+      <br />
 
       <Row>
         <Col md={2}>

@@ -140,6 +140,7 @@ import {
   GroupView,
   GroupsList,
   GroupsRuleOptions,
+  GroupsListByNewestMember,
 } from "../../api/src/actions/groups";
 import {
   ImportsList,
@@ -222,6 +223,7 @@ import {
   SourceEdit,
   SourceView,
   SourcesList,
+  SourcesCountPending,
   sourceConnectionOptions,
   SourcePreview,
 } from "../../api/src/actions/sources";
@@ -356,6 +358,9 @@ export namespace Actions {
   export type GroupRun = AsyncReturnType<typeof GroupRun.prototype.run>;
   export type GroupView = AsyncReturnType<typeof GroupView.prototype.run>;
   export type GroupsList = AsyncReturnType<typeof GroupsList.prototype.run>;
+  export type GroupsListByNewestMember = AsyncReturnType<
+    typeof GroupsListByNewestMember.prototype.run
+  >;
   export type GroupsRuleOptions = AsyncReturnType<
     typeof GroupsRuleOptions.prototype.run
   >;
@@ -528,6 +533,9 @@ export namespace Actions {
   export type SourceEdit = AsyncReturnType<typeof SourceEdit.prototype.run>;
   export type SourceView = AsyncReturnType<typeof SourceView.prototype.run>;
   export type SourcesList = AsyncReturnType<typeof SourcesList.prototype.run>;
+  export type SourcesCountPending = AsyncReturnType<
+    typeof SourcesCountPending.prototype.run
+  >;
   export type sourceConnectionOptions = AsyncReturnType<
     typeof sourceConnectionOptions.prototype.run
   >;
