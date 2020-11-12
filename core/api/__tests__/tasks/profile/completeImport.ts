@@ -82,6 +82,7 @@ describe("tasks/profile:completeImport", () => {
       const _import = await helper.factories.import(run, {
         email: "mario@example.com",
         firstName: "Mario",
+        noExist: "here",
       });
 
       await specHelper.runTask("import:associateProfile", {

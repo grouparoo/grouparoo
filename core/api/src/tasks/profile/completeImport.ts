@@ -1,5 +1,6 @@
 import { task } from "actionhero";
 import { Profile } from "../../models/Profile";
+import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
 import { Run } from "../../models/Run";
 import { Op } from "sequelize";
 import { ProfilePropertyType } from "../../modules/ops/profile";
@@ -50,44 +51,44 @@ export class ProfileCompleteImport extends RetryableTask {
       }
     }
 
+    const profilePropertyRules = await ProfilePropertyRule.cached();
+    const mergedValues = {};
     const imports = await profile.$get("imports", {
       where: { profileUpdatedAt: null },
       order: [["createdAt", "asc"]],
     });
 
-    try {
-      for (const i in imports) {
-        const _import = imports[i];
-        await profile.addOrUpdateProperties(_import.data);
+    for (const i in imports) {
+      const data = imports[i].data;
+      for (const key in data) {
+        // only if we still have property
+        if (profilePropertyRules[key]) {
+          mergedValues[key] = data[key];
+        }
       }
+    }
 
+    try {
+      await profile.addOrUpdateProperties(mergedValues);
       await profile.updateGroupMembership();
 
-      const newProfileProperties = await profile.properties();
+      const newProfileProperties = this.simplifyProfileProperties(
+        await profile.properties()
+      );
       const newGroups = await profile.$get("groups");
+      const newGroupGuids = newGroups.map((g) => g.guid);
+      const now = new Date();
 
       for (const i in imports) {
         const _import = imports[i];
-        _import.newProfileProperties = this.simplifyProfileProperties(
-          newProfileProperties
-        );
-        _import.profileUpdatedAt = new Date();
-        _import.newGroupGuids = newGroups.map((g) => g.guid);
-        _import.groupsUpdatedAt = new Date();
+        _import.newProfileProperties = newProfileProperties;
+        _import.profileUpdatedAt = now;
+        _import.newGroupGuids = newGroupGuids;
+        _import.groupsUpdatedAt = now;
         await _import.save();
       }
 
       let force = false;
-
-      const runs = await Run.findAll({
-        where: {
-          guid: {
-            [Op.in]: imports
-              .filter((i) => i.creatorType === "run")
-              .map((i) => i.creatorGuid),
-          },
-        },
-      });
 
       await task.enqueue("profile:export", {
         profileGuid: profile.guid,
