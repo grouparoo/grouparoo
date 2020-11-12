@@ -26,9 +26,12 @@ const nockFile = path.join(__dirname, "../", "fixtures", "mailchimp-export.js");
 // these comments to use nock
 const newNock = false;
 require("./../fixtures/mailchimp-export");
-// or these to make it true
+// // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
+
+// change this when recording if you really want it to be a new user (recommended)
+const email1 = "test2@grouparoo.com";
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
@@ -37,9 +40,40 @@ const destinationOptions: SimpleDestinationOptions = loadDestinationOptions(
 );
 
 let actionhero;
+let client;
+
+async function getUser(email) {
+  const { listId } = destinationOptions;
+  const mailchimpId = generateMailchimpId(email);
+  try {
+    const response = await client.get(
+      `/lists/${listId}/members/${mailchimpId}`
+    );
+    if (!response.unique_email_id) {
+      return null;
+    }
+    return response;
+  } catch (err) {
+    return null;
+  }
+}
+
+async function deleteUsers(suppressErrors) {
+  const emails = [email1];
+  const { listId } = destinationOptions;
+  for (const email of emails) {
+    try {
+      const mailchimpId = generateMailchimpId(email);
+      await client.delete(`/lists/${listId}/members/${mailchimpId}`);
+    } catch (err) {}
+  }
+}
+
+async function cleanUp(suppressErrors) {
+  await deleteUsers(suppressErrors);
+}
 
 describe("integration/runs/mailchimp-export", () => {
-  let client;
   let session;
   let csrfToken: string;
   let app: App;
@@ -55,6 +89,16 @@ describe("integration/runs/mailchimp-export", () => {
 
   afterAll(async () => {
     await helper.shutdown(actionhero);
+  });
+
+  beforeAll(async () => {
+    client = await connect(appOptions);
+    await cleanUp(false);
+  }, 1000 * 30);
+
+  afterAll(async () => {
+    await cleanUp(true);
+    await client.end();
   });
 
   beforeAll(async () => {
@@ -74,15 +118,20 @@ describe("integration/runs/mailchimp-export", () => {
   beforeAll(async () => {
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({
-      email: ["luigi@grouparoo.com"],
+      email: [email1],
       firstName: ["Luigi"],
-      lastName: ["Mario"],
+      lastName: ["Plumber"],
       userId: [100],
     });
   });
 
-  afterAll(async () => {
-    await client.end();
+  test("User should not exist or be archived", async () => {
+    const user = await getUser(email1);
+    if (user) {
+      expect(user.status).toBe("archived");
+    } else {
+      expect(user).toBeNull();
+    }
   });
 
   test("an administrator can create the related import app and destination", async () => {
@@ -237,28 +286,47 @@ describe("integration/runs/mailchimp-export", () => {
     ]);
   });
 
-  test("a profile can be exported", async () => {
+  test("a profile can be created", async () => {
     await profile.updateGroupMembership();
     await profile.export();
   });
 
-  test("mailchimp has the profile data", async () => {
-    const { listId } = destinationOptions;
-    const mailchimpId = generateMailchimpId("luigi@grouparoo.com");
-    const client = await connect(appOptions);
-    const response = await client.get(
-      `/lists/${listId}/members/${mailchimpId}`
-    );
-    expect(response.email_address).toBe("luigi@grouparoo.com");
-    expect(response.status).toBe("subscribed");
-    expect(response.merge_fields).toEqual(
+  test("mailchimp has the new profile data", async () => {
+    const user = await getUser(email1);
+    expect(user.email_address).toBe(email1);
+    expect(user.status).toBe("subscribed");
+    expect(user.merge_fields).toEqual(
       expect.objectContaining({
         FNAME: "Luigi",
-        LNAME: "Mario",
+        LNAME: "Plumber",
         USERID: 100,
         LTV: "",
       })
     );
-    expect(response.tags.map((t) => t.name)).toEqual(["mailchimp people"]);
+    expect(user.tags.map((t) => t.name)).toEqual(["mailchimp people"]);
+  });
+
+  test("a profile can be updated", async () => {
+    await profile.addOrUpdateProperties({
+      firstName: ["Test2"],
+    });
+
+    await profile.updateGroupMembership();
+    await profile.export();
+  });
+
+  test("mailchimp has the updated profile data", async () => {
+    const user = await getUser(email1);
+    expect(user.email_address).toBe(email1);
+    expect(user.status).toBe("subscribed");
+    expect(user.merge_fields).toEqual(
+      expect.objectContaining({
+        FNAME: "Test2",
+        LNAME: "Plumber",
+        USERID: 100,
+        LTV: "",
+      })
+    );
+    expect(user.tags.map((t) => t.name)).toEqual(["mailchimp people"]);
   });
 });

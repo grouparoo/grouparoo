@@ -82,6 +82,7 @@ export const updateProfile: UpdateProfileMethod = async ({
   } catch (error) {
     // TODO: just letting this go for now.
     // is there a specific error if the user doesn't exist?
+    // looks like "The requested resource could not be found"
   }
 
   if (noCreate && !exists) {
