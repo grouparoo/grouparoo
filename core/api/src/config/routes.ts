@@ -25,6 +25,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/apiKeys", action: "apiKeys:list" },
         { path: "/v:apiVersion/apiKey/:guid", action: "apiKey:view" },
         { path: "/v:apiVersion/groups", action: "groups:list" },
+        { path: "/v:apiVersion/groups/byNewestMember", action: "groups:list:byNewestMember" },
         { path: "/v:apiVersion/groups/ruleOptions",action: "groups:ruleOptions" },
         { path: "/v:apiVersion/group/:guid", action: "group:view" },
         { path: "/v:apiVersion/group/:groupGuid/profiles", action: "profiles:list" },

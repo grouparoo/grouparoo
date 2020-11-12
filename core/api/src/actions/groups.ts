@@ -4,6 +4,7 @@ import { Group, GROUP_RULE_LIMIT, TopLevelGroupRules } from "../models/Group";
 import { ProfilePropertyRuleOpsDictionary } from "../modules/RuleOpsDictionary";
 import { Profile } from "../models/Profile";
 import { GroupMember } from "../models/GroupMember";
+import { Op } from "sequelize";
 
 export class GroupsList extends AuthenticatedAction {
   constructor() {
@@ -43,6 +44,58 @@ export class GroupsList extends AuthenticatedAction {
     return {
       total,
       groups: await Promise.all(groups.map(async (g) => g.apiData())),
+    };
+  }
+}
+
+export class GroupsListByNewestMember extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "groups:list:byNewestMember";
+    this.description = "send the options about groups to the UI";
+    this.outputExample = {};
+    this.permission = { topic: "group", mode: "read" };
+    this.inputs = {
+      limit: { required: true, default: 5, formatter: parseInt },
+    };
+  }
+
+  async run({ params }) {
+    const newGroupMembers = await GroupMember.findAll({
+      attributes: [
+        "groupGuid",
+        [
+          api.sequelize.fn("max", api.sequelize.col("createdAt")),
+          "newestMemberAdded",
+        ],
+      ],
+      group: ["groupGuid"],
+      order: [[api.sequelize.col("newestMemberAdded"), "desc"]],
+      limit: params.limit,
+      logging: true,
+    });
+
+    const groupGuids = newGroupMembers.map((mem) => mem.groupGuid);
+
+    const groups = await Group.findAll({
+      where: { guid: { [Op.in]: groupGuids } },
+    });
+
+    groups.sort(
+      (a, b) => groupGuids.indexOf(a.guid) - groupGuids.indexOf(b.guid)
+    );
+
+    const newestMembersAdded: { [guid: string]: number } = {};
+    newGroupMembers.forEach((g) => {
+      newestMembersAdded[g.groupGuid] = g
+        // @ts-ignore
+        .getDataValue("newestMemberAdded")
+        .getTime();
+    });
+
+    return {
+      groups: await Promise.all(groups.map((g) => g.apiData())),
+      newestMembersAdded: newestMembersAdded,
     };
   }
 }

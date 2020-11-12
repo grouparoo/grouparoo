@@ -140,6 +140,7 @@ import {
   GroupView,
   GroupsList,
   GroupsRuleOptions,
+  GroupsListByNewestMember,
 } from "../../api/src/actions/groups";
 import {
   ImportsList,
@@ -356,6 +357,9 @@ export namespace Actions {
   export type GroupRun = AsyncReturnType<typeof GroupRun.prototype.run>;
   export type GroupView = AsyncReturnType<typeof GroupView.prototype.run>;
   export type GroupsList = AsyncReturnType<typeof GroupsList.prototype.run>;
+  export type GroupsListByNewestMember = AsyncReturnType<
+    typeof GroupsListByNewestMember.prototype.run
+  >;
   export type GroupsRuleOptions = AsyncReturnType<
     typeof GroupsRuleOptions.prototype.run
   >;
