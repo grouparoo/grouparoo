@@ -1,12 +1,12 @@
 import {
-  SimpleDestinationOptions,
   DestinationMappingOptionsMethod,
+  DestinationMappingOptionsResponseProfilePropertyRule,
   DestinationMappingOptionsResponseProfilePropertyRules,
 } from "@grouparoo/core";
 import { connect } from "./../connect";
 import { getMergeVars, GrouparooMergeVar } from "./getMergeVars";
 
-export type MailchimpMappingKey = "email" | "setting";
+export type MailchimpMappingKey = "email" | "id";
 export interface GetDestinationMappingOptionsMethod {
   (mappingKey: MailchimpMappingKey): DestinationMappingOptionsMethod;
 }
@@ -21,12 +21,7 @@ export const getDestinationMappingOptions: GetDestinationMappingOptionsMethod = 
     const client = await connect(appOptions);
     const { listId } = destinationOptions;
     const mergeVars = await getMergeVars(client, listId);
-
-    const profilePropertyRules = getProfilePropertyRules(
-      mergeVars,
-      mappingKey,
-      destinationOptions
-    );
+    const profilePropertyRules = getProfilePropertyRules(mergeVars, mappingKey);
 
     return {
       labels: {
@@ -48,8 +43,7 @@ export const getDestinationMappingOptions: GetDestinationMappingOptionsMethod = 
 
 function getProfilePropertyRules(
   mergeVars: GrouparooMergeVar[],
-  mappingKey: MailchimpMappingKey,
-  destinationOptions: SimpleDestinationOptions
+  mappingKey: MailchimpMappingKey
 ): DestinationMappingOptionsResponseProfilePropertyRules {
   const grouparooFields = {};
   for (const field of mergeVars) {
@@ -57,27 +51,29 @@ function getProfilePropertyRules(
     grouparooFields[key] = { key, type, important };
   }
 
+  const known: DestinationMappingOptionsResponseProfilePropertyRule[] = Object.values(
+    grouparooFields
+  );
+
   let requiredField = null;
   switch (mappingKey) {
     case "email":
       requiredField = { key: "email_address", type: "email" };
       break;
-    case "setting":
-      requiredField = grouparooFields[destinationOptions.mergeVarMatch];
-      // remove so it's not included below
-      delete grouparooFields[destinationOptions.mergeVarMatch];
+    case "id":
+      requiredField = { key: "mailchimp_id", type: "string" };
+      // can still set email, but hide it a bit
+      known.push({ key: "email_address", type: "email", important: false });
       break;
   }
 
   if (!requiredField) {
-    throw new Error(
-      `Unknown MergeVar for profile mapping: ${mappingKey} - ${destinationOptions.mergeVarMatch}`
-    );
+    throw new Error(`Unknown profile mapping key: ${mappingKey}`);
   }
 
   return {
+    known,
     required: [requiredField],
-    known: Object.values(grouparooFields),
     allowOptionalFromProfilePropertyRules: false,
   };
 }

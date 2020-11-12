@@ -5,6 +5,8 @@ export interface UpdateProfileMethod {
     client: any;
     listId: string;
     mailchimpId: string;
+    noCreate: boolean;
+    noDelete: boolean;
     email_address: string;
     export: ExportedProfile;
   }): Promise<{
@@ -18,6 +20,8 @@ export const updateProfile: UpdateProfileMethod = async ({
   client,
   listId,
   mailchimpId,
+  noCreate,
+  noDelete,
   email_address,
   export: {
     toDelete,
@@ -27,7 +31,14 @@ export const updateProfile: UpdateProfileMethod = async ({
     oldGroups,
   },
 }) => {
+  if (!mailchimpId) {
+    throw new Error("mailchimpId is required");
+  }
+
   if (toDelete) {
+    if (noDelete) {
+      return { success: true };
+    }
     const response = await client.delete(
       `/lists/${listId}/members/${mailchimpId}`
     );
@@ -69,8 +80,13 @@ export const updateProfile: UpdateProfileMethod = async ({
     // mailchimp changes the case of tags...
     existingTagNames = getResponse.tags.map((t) => t.name.toLocaleLowerCase());
   } catch (error) {
-    // TODO: just leeting this go for now.
+    // TODO: just letting this go for now.
     // is there a specific error if the user doesn't exist?
+  }
+
+  if (noCreate && !exists) {
+    // only doing updates
+    return { success: true };
   }
 
   // update merge_variables

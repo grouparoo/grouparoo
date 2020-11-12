@@ -10,7 +10,7 @@ import {
 import { connect } from "../connect";
 import { getMergeVars } from "./getMergeVars";
 
-export type MailchimpOptionKey = "listId" | "mergeVarMatch";
+export type MailchimpOptionKey = "listId";
 export interface ConnectionOptionsMethod {
   (argument: {
     connection: any;
@@ -29,10 +29,7 @@ export interface ConnectionMethodResponse {
   };
 }
 export interface GetConnectionOptionsMethod {
-  (
-    optionKeys: MailchimpOptionKey[],
-    optionsName: "destinationOptions" | "sourceOptions"
-  ): ConnectionOptionsMethod;
+  (optionKeys: MailchimpOptionKey[]): ConnectionOptionsMethod;
 }
 export interface GetDestinationOptionsMethod {
   (optionKeys: MailchimpOptionKey[]): DestinationOptionsMethod;
@@ -44,20 +41,18 @@ export interface GetSourceOptionsMethod {
 export const getDestinationOptions: GetDestinationOptionsMethod = (
   optionKeys
 ) => {
-  return getConnectionOptions(optionKeys, "destinationOptions");
+  return getConnectionOptions(optionKeys);
 };
 
 export const getSourceOptions: GetSourceOptionsMethod = (optionKeys) => {
-  return getConnectionOptions(optionKeys, "sourceOptions");
+  return getConnectionOptions(optionKeys);
 };
 
 export const getConnectionOptions: GetConnectionOptionsMethod = (
-  optionKeys,
-  optionsName
+  optionKeys
 ) => {
   const destinationOptionsMethod: ConnectionOptionsMethod = async (input) => {
     const appOptions = input.appOptions;
-    const connectionOptions = input[optionsName];
     const response: ConnectionMethodResponse = {};
 
     const client = await connect(appOptions);
@@ -69,23 +64,6 @@ export const getConnectionOptions: GetConnectionOptionsMethod = (
         response.listId.options.push(list.id);
         response.listId.descriptions.push(list.name);
       });
-    }
-
-    if (optionKeys.includes("mergeVarMatch")) {
-      response.mergeVarMatch = {
-        type: "pending",
-        options: [],
-        descriptions: [],
-      };
-      const listId: string = connectionOptions.listId;
-      if (listId) {
-        response.mergeVarMatch.type = "list";
-        const mergeVars = await getMergeVars(client, listId);
-        for (const field of mergeVars) {
-          response.mergeVarMatch.options.push(field.key);
-          response.mergeVarMatch.descriptions.push(field.name);
-        }
-      }
     }
 
     return response;

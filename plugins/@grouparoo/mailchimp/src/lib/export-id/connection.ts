@@ -6,10 +6,10 @@ import { getDestinationMappingOptions } from "../shared/destinationMappingOption
 import { exportArrayProperties } from "../shared/exportArrayProperties";
 
 const connection: PluginConnection = {
-  name: "mailchimp-export-external-id",
+  name: "mailchimp-export-id",
   direction: "export",
   description:
-    "Updates contacts in a Mailchimp list based on a MergeVar match.",
+    "Updates existing contacts in a Mailchimp list based on a known Mailchimp ID.",
   app: "mailchimp",
   options: [
     {
@@ -17,15 +17,10 @@ const connection: PluginConnection = {
       required: true,
       description: "Mailchimp list id",
     },
-    {
-      key: "mergeVarMatch",
-      required: true,
-      description: "The MergeVar to match for updating",
-    },
   ],
   methods: {
-    destinationOptions: getDestinationOptions(["listId", "mergeVarMatch"]),
-    destinationMappingOptions: getDestinationMappingOptions("setting"),
+    destinationOptions: getDestinationOptions(["listId"]),
+    destinationMappingOptions: getDestinationMappingOptions("id"),
     exportProfile,
     exportArrayProperties,
   },
