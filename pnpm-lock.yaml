@@ -148,7 +148,6 @@ importers:
       react-hook-form: 6.11.0_react@16.14.0
       react-markdown: 5.0.2_02965201666b6854d4b0c2ac7297b644
       react-moment: 1.0.0_eafa27d017aeb76e4fdf82e703ca42a1
-      react-sparklines: 1.7.0_react-dom@16.14.0+react@16.14.0
       react-transition-group: 4.4.1_react-dom@16.14.0+react@16.14.0
       reflect-metadata: 0.1.13
       sequelize: 5.22.3
@@ -242,7 +241,6 @@ importers:
       react-hook-form: 6.11.0
       react-markdown: 5.0.2
       react-moment: 1.0.0
-      react-sparklines: 1.7.0
       react-transition-group: 4.4.1
       reflect-metadata: 0.1.13
       sequelize: 5.22.3
@@ -14019,17 +14017,6 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
-  /react-sparklines/1.7.0_react-dom@16.14.0+react@16.14.0:
-    dependencies:
-      prop-types: 15.7.2
-      react: 16.14.0
-      react-dom: 16.14.0_react@16.14.0
-    dev: false
-    peerDependencies:
-      react: '*'
-      react-dom: '*'
-    resolution:
-      integrity: sha512-bJFt9K4c5Z0k44G8KtxIhbG+iyxrKjBZhdW6afP+R7EnIq+iKjbWbEFISrf3WKNFsda+C46XAfnX0StS5fbDcg==
   /react-syntax-highlighter/13.5.0_react@15.7.0:
     dependencies:
       '@babel/runtime': 7.12.1
