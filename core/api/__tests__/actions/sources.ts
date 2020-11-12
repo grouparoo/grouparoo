@@ -1,8 +1,11 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { Source } from "./../../src/models/Source";
-import { Option } from "./../../src/models/Option";
-import { App } from "./../../src/models/App";
+import {
+  ProfileProperty,
+  ProfilePropertyRule,
+  Option,
+  Source,
+} from "../../src";
 
 let actionhero;
 let app;
@@ -289,6 +292,36 @@ describe("actions/sources", () => {
 
       const count = await Source.count();
       expect(count).toBe(0);
+    });
+
+    describe("with profile properties", () => {
+      beforeAll(async () => {
+        await helper.factories.profilePropertyRules();
+      });
+
+      test("an administrator can list the pending profile properties by source", async () => {
+        connection.params = { csrfToken };
+
+        const profile = await helper.factories.profile();
+        await profile.buildNullProperties();
+        const rule = await ProfilePropertyRule.findOne({
+          where: { key: "email" },
+        });
+        const property = await ProfileProperty.findOne({
+          where: {
+            profileGuid: profile.guid,
+            profilePropertyRuleGuid: rule.guid,
+          },
+        });
+        await property.update({ state: "pending" });
+
+        const { error, counts } = await specHelper.runAction(
+          "sources:countPending",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(counts[rule.sourceGuid]).toBe(1);
+      });
     });
   });
 });

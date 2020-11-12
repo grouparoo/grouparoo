@@ -223,6 +223,7 @@ import {
   SourceEdit,
   SourceView,
   SourcesList,
+  SourcesCountPending,
   sourceConnectionOptions,
   SourcePreview,
 } from "../../api/src/actions/sources";
@@ -532,6 +533,9 @@ export namespace Actions {
   export type SourceEdit = AsyncReturnType<typeof SourceEdit.prototype.run>;
   export type SourceView = AsyncReturnType<typeof SourceView.prototype.run>;
   export type SourcesList = AsyncReturnType<typeof SourcesList.prototype.run>;
+  export type SourcesCountPending = AsyncReturnType<
+    typeof SourcesCountPending.prototype.run
+  >;
   export type sourceConnectionOptions = AsyncReturnType<
     typeof sourceConnectionOptions.prototype.run
   >;

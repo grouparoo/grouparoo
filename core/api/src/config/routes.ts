@@ -51,6 +51,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/events/autocompleteType", action: "events:autocompleteType" },
         { path: "/v:apiVersion/apps", action: "apps:list" },
         { path: "/v:apiVersion/sources", action: "sources:list" },
+        { path: "/v:apiVersion/sources/countPending", action: "sources:countPending" },
         { path: "/v:apiVersion/source/:guid/connectionOptions", action: "source:connectionOptions" },
         { path: "/v:apiVersion/source/:guid/preview", action: "source:preview" },
         { path: "/v:apiVersion/runs", action: "runs:list" },

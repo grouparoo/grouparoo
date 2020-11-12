@@ -3,7 +3,11 @@ import { Row, Col } from "react-bootstrap";
 import {
   BigNumber,
   GroupsByNewestMember,
-} from "../components/visualizations/totals";
+  RunningRuns,
+  ScheduleRuns,
+  PendingImports,
+  PendingExports,
+} from "../components/visualizations/homepageWidgets";
 import { useApi } from "../hooks/useApi";
 
 export default function Page(props) {
@@ -15,11 +19,8 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: Dashboard</title>
       </Head>
-
       <h1>Dashboard</h1>
-
       <h2>Totals</h2>
-
       <Row>
         <Col>
           <BigNumber
@@ -41,7 +42,21 @@ export default function Page(props) {
       </Row>
 
       <br />
+      <h2>Runs</h2>
+      <RunningRuns execApi={execApi} />
+      <br />
+      <ScheduleRuns execApi={execApi} />
 
+      <br />
+      <h2>Updating Data in Grouparoo</h2>
+      <PendingImports execApi={execApi} />
+
+      <br />
+      <h2>Exporting Data to Destinations</h2>
+      <PendingExports execApi={execApi} />
+
+      <br />
+      <h2>Recently Updated Groups</h2>
       <GroupsByNewestMember execApi={execApi} />
     </>
   );

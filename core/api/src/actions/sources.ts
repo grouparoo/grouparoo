@@ -5,6 +5,8 @@ import { Source } from "../models/Source";
 import { GrouparooPlugin, PluginConnection } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
 import { AsyncReturnType } from "type-fest";
+import { ProfileProperty } from "../models/ProfileProperty";
+import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
 
 export class SourcesList extends AuthenticatedAction {
   constructor() {
@@ -46,6 +48,44 @@ export class SourcesList extends AuthenticatedAction {
         sources.map(async (source) => source.apiData())
       ),
     };
+  }
+}
+
+export class SourcesCountPending extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "sources:countPending";
+    this.description = "return counts of pending profile properties by source";
+    this.outputExample = {};
+    this.permission = { topic: "profile", mode: "read" };
+    this.inputs = {};
+  }
+
+  async run() {
+    const rules = await ProfilePropertyRule.findAll();
+    const countsByRule = await ProfileProperty.findAll({
+      attributes: [
+        "profilePropertyRuleGuid",
+        [api.sequelize.fn("count", "guid"), "count"],
+      ],
+      where: { state: "pending" },
+      group: ["profilePropertyRuleGuid"],
+    });
+
+    const counts: { [sourceGuid: string]: number } = {};
+
+    countsByRule.forEach((record) => {
+      //@ts-ignore
+      const count: number = record.getDataValue("count");
+      const rule = rules.find(
+        (rule) => rule.guid === record.profilePropertyRuleGuid
+      );
+
+      if (!counts[rule.sourceGuid]) counts[rule.sourceGuid] = 0;
+      counts[rule.sourceGuid] += count;
+    });
+
+    return { counts };
   }
 }
 

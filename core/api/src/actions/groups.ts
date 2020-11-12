@@ -52,7 +52,7 @@ export class GroupsListByNewestMember extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "groups:list:byNewestMember";
-    this.description = "send the options about groups to the UI";
+    this.description = "return the newest member timestamps for each group";
     this.outputExample = {};
     this.permission = { topic: "group", mode: "read" };
     this.inputs = {
@@ -72,7 +72,6 @@ export class GroupsListByNewestMember extends AuthenticatedAction {
       group: ["groupGuid"],
       order: [[api.sequelize.col("newestMemberAdded"), "desc"]],
       limit: params.limit,
-      logging: true,
     });
 
     const groupGuids = newGroupMembers.map((mem) => mem.groupGuid);
