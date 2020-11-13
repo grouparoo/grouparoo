@@ -39,7 +39,7 @@ describe("integration/runs/google-sheets", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     await api.resque.queue.connection.redis.flushdb();
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await helper.shutdown(actionhero);
@@ -318,7 +318,7 @@ describe("integration/runs/google-sheets", () => {
         expect(run.profilesImported).toBe(10);
         expect(run.percentComplete).toBe(100);
       },
-      1000 * 60
+      helper.longTime
     );
 
     test("profiles should be created with both the mapping data and additional profile property", async () => {
@@ -421,7 +421,7 @@ describe("integration/runs/google-sheets", () => {
         expect(run.profilesImported).toBe(10);
         expect(run.percentComplete).toBe(100);
       },
-      1000 * 60
+      helper.longTime
     );
   });
 });

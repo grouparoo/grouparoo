@@ -37,7 +37,7 @@ describe("bigquery/table/scheduleOptions", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     connection = await connect({ appOptions, app: null, appGuid: null });
-  }, 1000 * 60);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await helper.shutdown(actionhero);

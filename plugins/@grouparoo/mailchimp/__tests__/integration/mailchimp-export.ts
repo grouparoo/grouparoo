@@ -5,27 +5,75 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
-import { Profile, App, Destination, Group } from "@grouparoo/core";
-import { generateMailchimpId } from "./../../src/lib/generateMailchimpId";
+import {
+  Profile,
+  App,
+  Destination,
+  Group,
+  SimpleDestinationOptions,
+  SimpleAppOptions,
+} from "@grouparoo/core";
+import { generateMailchimpId } from "./../../src/lib/shared/generateMailchimpId";
 import { connect } from "./../../src/lib/connect";
+import {
+  loadAppOptions,
+  loadDestinationOptions,
+  updater,
+} from "../utils/nockHelper";
 
-// uncomment to use real HTTP requests
-// import nock from "nock";
-// nock.recorder.rec();
+const nockFile = path.join(__dirname, "../", "fixtures", "mailchimp-export.js");
 
-// load the saved nock recordings
-require("./../fixtures/nock");
+// these comments to use nock
+const newNock = false;
+require("./../fixtures/mailchimp-export");
+// // or these to make it true
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
-// API Keys
-// Note: These are only needed when recording new nock fixtures
-const MAILCHIMP_API_KEY =
-  process.env.MAILCHIMP_API_KEY || "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-us4"; // mailchimp client does local validation on API key
-const MAILCHIMP_LIST_ID = process.env.MAILCHIMP_LIST_ID || "a42c031026";
+// change this when recording if you really want it to be a new user (recommended)
+const email1 = "test2@grouparoo.com";
+
+// these used and set by test
+const appOptions: SimpleAppOptions = loadAppOptions(newNock);
+const destinationOptions: SimpleDestinationOptions = loadDestinationOptions(
+  newNock
+);
 
 let actionhero;
+let client;
 
-describe("integration/runs/mailchimp", () => {
-  let client;
+async function getUser(email) {
+  const { listId } = destinationOptions;
+  const mailchimpId = generateMailchimpId(email);
+  try {
+    const response = await client.get(
+      `/lists/${listId}/members/${mailchimpId}`
+    );
+    if (!response.unique_email_id) {
+      return null;
+    }
+    return response;
+  } catch (err) {
+    return null;
+  }
+}
+
+async function deleteUsers() {
+  const emails = [email1];
+  const { listId } = destinationOptions;
+  for (const email of emails) {
+    try {
+      const mailchimpId = generateMailchimpId(email);
+      await client.delete(`/lists/${listId}/members/${mailchimpId}`);
+    } catch (err) {}
+  }
+}
+
+async function cleanUp() {
+  await deleteUsers();
+}
+
+describe("integration/runs/mailchimp-export", () => {
   let session;
   let csrfToken: string;
   let app: App;
@@ -37,10 +85,20 @@ describe("integration/runs/mailchimp", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     await api.resque.queue.connection.redis.flushdb();
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await helper.shutdown(actionhero);
+  });
+
+  beforeAll(async () => {
+    client = await connect(appOptions);
+    await cleanUp();
+  }, helper.setupTime);
+
+  afterAll(async () => {
+    await cleanUp();
+    await client.end();
   });
 
   beforeAll(async () => {
@@ -60,15 +118,20 @@ describe("integration/runs/mailchimp", () => {
   beforeAll(async () => {
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({
-      email: ["luigi@grouparoo.com"],
+      email: [email1],
       firstName: ["Luigi"],
-      lastName: ["Mario"],
+      lastName: ["Plumber"],
       userId: [100],
     });
   });
 
-  afterAll(async () => {
-    await client.end();
+  test("User should not exist or be archived", async () => {
+    const user = await getUser(email1);
+    if (user) {
+      expect(user.status).toBe("archived");
+    } else {
+      expect(user).toBeNull();
+    }
   });
 
   test("an administrator can create the related import app and destination", async () => {
@@ -87,7 +150,7 @@ describe("integration/runs/mailchimp", () => {
       csrfToken,
       name: "test app",
       type: "mailchimp",
-      options: { apiKey: MAILCHIMP_API_KEY },
+      options: appOptions,
       state: "ready",
     };
     const appResponse = await specHelper.runAction("app:create", session);
@@ -100,9 +163,7 @@ describe("integration/runs/mailchimp", () => {
       name: "test destination",
       type: "mailchimp-export",
       appGuid: app.guid,
-      options: {
-        listId: MAILCHIMP_LIST_ID,
-      },
+      options: destinationOptions,
       mapping: {
         email_address: "email",
         USERID: "userId",
@@ -142,18 +203,11 @@ describe("integration/runs/mailchimp", () => {
       session
     );
     expect(error).toBeUndefined();
-    expect(options).toEqual({
-      listId: {
-        descriptions: [
-          "Demo (Evan)",
-          "Grouparoo",
-          "Demo (Andy)",
-          "Demo (Brian)",
-        ],
-        options: ["1b724bb934", "23d8e9cb6e", "6f890f62ee", "a42c031026"],
-        type: "list",
-      },
-    });
+
+    const listId = options.listId;
+    expect(listId.options.length).toBeGreaterThan(0);
+    expect(listId.descriptions.length).toEqual(listId.options.length);
+    expect(listId.type).toEqual("list");
   });
 
   test("we can read the mailchimp mapping options", async () => {
@@ -166,28 +220,25 @@ describe("integration/runs/mailchimp", () => {
       session
     );
     expect(error).toBeUndefined();
-    expect(options).toEqual({
-      labels: {
-        profilePropertyRule: {
-          singular: "Mailchimp Merge Var",
-          plural: "Mailchimp Merge Vars",
-        },
-        group: { singular: "Mailchimp Tag", plural: "Mailchimp Tags" },
+    const { labels, profilePropertyRules } = options;
+    expect(labels).toEqual({
+      profilePropertyRule: {
+        singular: "Mailchimp Merge Var",
+        plural: "Mailchimp Merge Vars",
       },
-      profilePropertyRules: {
-        required: [{ key: "email_address", type: "email" }],
-        known: [
-          { key: "ADDRESS", type: "string", important: true },
-          { key: "FNAME", type: "string", important: true },
-          { key: "LANGUAGE", type: "string", important: true },
-          { key: "LNAME", type: "string", important: true },
-          { key: "LTV", type: "number", important: true },
-          { key: "PHONE", type: "phoneNumber", important: true },
-          { key: "USERID", type: "number", important: true },
-        ],
-        allowOptionalFromProfilePropertyRules: false,
-      },
+      group: { singular: "Mailchimp Tag", plural: "Mailchimp Tags" },
     });
+
+    expect(profilePropertyRules.required).toEqual([
+      { key: "email_address", type: "email" },
+    ]);
+    const expected = ["FNAME", "LNAME", "LTV", "USERID"];
+    const known = profilePropertyRules.known.map((p) => p.key);
+    expect(known).toEqual(expect.arrayContaining(expected));
+    const types = expected.map(
+      (key) => profilePropertyRules.known.find((p) => p.key == key).type
+    );
+    expect(types).toEqual(["string", "string", "number", "number"]);
   });
 
   test("create the test group and set the destination group membership", async () => {
@@ -235,28 +286,47 @@ describe("integration/runs/mailchimp", () => {
     ]);
   });
 
-  test("a profile can be exported", async () => {
+  test("a profile can be created", async () => {
     await profile.updateGroupMembership();
     await profile.export();
   });
 
-  test("mailchimp has the profile data", async () => {
-    const mailchimpId = generateMailchimpId("luigi@grouparoo.com");
-    const client = await connect({ apiKey: MAILCHIMP_API_KEY });
-    const response = await client.get(
-      `/lists/${MAILCHIMP_LIST_ID}/members/${mailchimpId}`
+  test("mailchimp has the new profile data", async () => {
+    const user = await getUser(email1);
+    expect(user.email_address).toBe(email1);
+    expect(user.status).toBe("subscribed");
+    expect(user.merge_fields).toEqual(
+      expect.objectContaining({
+        FNAME: "Luigi",
+        LNAME: "Plumber",
+        USERID: 100,
+        LTV: "",
+      })
     );
-    expect(response.email_address).toBe("luigi@grouparoo.com");
-    expect(response.status).toBe("subscribed");
-    expect(response.merge_fields).toEqual({
-      FNAME: "Luigi",
-      LNAME: "Mario",
-      ADDRESS: "",
-      PHONE: "",
-      USERID: 100,
-      LTV: "",
-      LANGUAGE: "",
+    expect(user.tags.map((t) => t.name)).toEqual(["mailchimp people"]);
+  });
+
+  test("a profile can be updated", async () => {
+    await profile.addOrUpdateProperties({
+      firstName: ["Test2"],
     });
-    expect(response.tags.map((t) => t.name)).toEqual(["mailchimp people"]);
+
+    await profile.updateGroupMembership();
+    await profile.export();
+  });
+
+  test("mailchimp has the updated profile data", async () => {
+    const user = await getUser(email1);
+    expect(user.email_address).toBe(email1);
+    expect(user.status).toBe("subscribed");
+    expect(user.merge_fields).toEqual(
+      expect.objectContaining({
+        FNAME: "Test2",
+        LNAME: "Plumber",
+        USERID: 100,
+        LTV: "",
+      })
+    );
+    expect(user.tags.map((t) => t.name)).toEqual(["mailchimp people"]);
   });
 });

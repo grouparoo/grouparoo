@@ -2,6 +2,7 @@ import { SharedGroupTests } from "../../../utils/prepareSharedGroupTest";
 import { Group } from "../../../../src/models/Group";
 import { Profile } from "../../../../src/models/Profile";
 import { ProfilePropertyRule } from "../../../../src/models/ProfilePropertyRule";
+import { helper } from "@grouparoo/spec-helper";
 
 describe("model/group", () => {
   let group: Group;
@@ -38,7 +39,7 @@ describe("model/group", () => {
       phoneNumber: ["412 888 0003", "415 644 0001"],
     });
     await toad.buildNullProperties();
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await SharedGroupTests.afterAll();

@@ -88,12 +88,12 @@ describe("integration/runs/hubspot", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     await api.resque.queue.connection.redis.flushdb();
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   beforeAll(async () => {
     client = await connect(appOptions);
     await cleanUp(false);
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   beforeAll(async () => {
     await helper.factories.profilePropertyRules();

@@ -12,7 +12,7 @@ describe("tasks/schedule:run", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   beforeAll(async () => {
     await helper.factories.profilePropertyRules();

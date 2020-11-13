@@ -37,10 +37,6 @@ async function runDestinationMappingOptions({}) {
 }
 
 describe("zendesk/destinationMappingOptions", () => {
-  beforeAll(async () => {}, 1000 * 30);
-
-  afterAll(async () => {}, 1000 * 30);
-
   test("can fetch user fields", async () => {
     const client = await connect(appOptions);
     const fields = await getUserFields(client);

@@ -13,7 +13,7 @@ describe("tasks/telemetry", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     await api.resque.queue.connection.redis.flushdb();
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   beforeEach(() => {
     fetch.resetMocks();

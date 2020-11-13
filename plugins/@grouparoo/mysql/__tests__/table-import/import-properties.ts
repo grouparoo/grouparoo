@@ -65,14 +65,14 @@ describe("mysql/table/profileProperties", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     plugin.mountModels();
-  }, 1000 * 60);
+  }, helper.setupTime);
 
   beforeAll(async () => {
     ({ client } = await beforeData());
   });
 
   beforeAll(async () => {
-    jest.setTimeout(1000 * 10);
+    jest.setTimeout(helper.mediumTime);
     // all of these are in in the test plugin
     await helper.factories.profilePropertyRules();
 

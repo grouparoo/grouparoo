@@ -9,7 +9,7 @@ describe("models/import", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     await helper.factories.profilePropertyRules();
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await helper.shutdown(actionhero);

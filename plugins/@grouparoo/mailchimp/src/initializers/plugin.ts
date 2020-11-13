@@ -4,10 +4,9 @@ import { plugin } from "@grouparoo/core";
 import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
 
-import { exportProfile } from "../lib/export/exportProfile";
-import { destinationOptions } from "../lib/export/destinationOptions";
-import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
-import { exportArrayProperties } from "../lib/export/exportArrayProperties";
+import emailDestination from "../lib/export/connection";
+import idDestination from "../lib/export-id/connection";
+import importSource from "../lib/import/connection";
 
 const packageJSON = require("./../../package.json");
 
@@ -34,28 +33,7 @@ export class Plugins extends Initializer {
           methods: { test, parallelism },
         },
       ],
-      connections: [
-        {
-          name: "mailchimp-export",
-          direction: "export",
-          description:
-            "Export Profiles to a Mailchimp list with MergeVars and Tags.",
-          app: "mailchimp",
-          options: [
-            {
-              key: "listId",
-              required: true,
-              description: "Mailchimp list id.",
-            },
-          ],
-          methods: {
-            exportProfile,
-            destinationOptions,
-            destinationMappingOptions,
-            exportArrayProperties,
-          },
-        },
-      ],
+      connections: [importSource, emailDestination, idDestination],
     });
   }
 

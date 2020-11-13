@@ -2,6 +2,7 @@ import { SharedGroupTests } from "../../../utils/prepareSharedGroupTest";
 import { Group } from "../../../../src/models/Group";
 import { GroupRule } from "../../../../src/models/GroupRule";
 import { Profile } from "../../../../src/models/Profile";
+import { helper } from "@grouparoo/spec-helper";
 
 describe("model/group", () => {
   let group: Group;
@@ -16,7 +17,7 @@ describe("model/group", () => {
     luigi = response.luigi;
     peach = response.peach;
     toad = response.toad;
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await SharedGroupTests.afterAll();

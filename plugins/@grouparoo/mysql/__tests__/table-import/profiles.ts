@@ -62,7 +62,7 @@ describe("mysql/table/profiles", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-  }, 1000 * 60);
+  }, helper.setupTime);
 
   beforeAll(async () => {
     ({ client } = await beforeData());
@@ -185,6 +185,6 @@ describe("mysql/table/profiles", () => {
       importedIds = page3.imports.map((r) => r.id);
       expect(importedIds).toEqual([7, 8, 9, 10]);
     },
-    1000 * 60
+    helper.longTime
   );
 });

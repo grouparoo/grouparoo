@@ -23,7 +23,7 @@ describe("integration/happyPath", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     helper.disableTestPluginImport();
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   afterAll(async () => {
     await helper.shutdown(actionhero);

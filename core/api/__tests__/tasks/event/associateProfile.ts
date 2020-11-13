@@ -11,7 +11,7 @@ describe("tasks/event:associateProfile", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     await helper.factories.profilePropertyRules();
-  }, 1000 * 30);
+  }, helper.setupTime);
 
   beforeAll(async () => {
     const userIdRule = await ProfilePropertyRule.findOne({

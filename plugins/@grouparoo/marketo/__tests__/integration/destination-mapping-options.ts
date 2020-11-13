@@ -61,6 +61,6 @@ describe("marketo/destinationMappingOptions", () => {
       expect(urgency.type).toBe("float");
       expect(urgency.important).toBe(false);
     },
-    30 * 1000
+    helper.longTime
   );
 });
