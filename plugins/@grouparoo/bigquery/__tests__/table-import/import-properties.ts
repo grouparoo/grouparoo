@@ -71,7 +71,7 @@ async function getPropertyValues(
   });
 }
 
-describe("bigquery/table/profileProperty", () => {
+describe("bigquery/table/profileProperties", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
