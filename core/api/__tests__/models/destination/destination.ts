@@ -341,7 +341,7 @@ describe("models/destination", () => {
         );
       });
 
-      test("an app can only have one destination with the same options", async () => {
+      test("an app can only have one destination per connection with the same options", async () => {
         destination = await Destination.create({
           name: "first destination",
           appGuid: app.guid,
@@ -357,6 +357,14 @@ describe("models/destination", () => {
         ).rejects.toThrow(
           /destination "first destination" .* is already using this app with the same options/
         );
+
+        // but it's ok to have one in another type of connection
+        const ok = await Destination.create({
+          name: "ok destination",
+          appGuid: app.guid,
+          type: "test-plugin-export-batch", // different
+        });
+        expect(ok.state).toEqual("draft");
 
         await destination.setOptions({ table: "users" });
 
@@ -375,6 +383,10 @@ describe("models/destination", () => {
         );
 
         await otherDestination.destroy();
+
+        // and it's ok to have the options here
+        await ok.setOptions({ table: "users" });
+        await ok.destroy();
       });
     });
 
