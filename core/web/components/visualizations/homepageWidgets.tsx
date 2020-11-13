@@ -202,9 +202,21 @@ export function RunningRuns({ execApi }) {
 export function ScheduleRuns({ execApi }) {
   const [sources, setSources] = useState<Models.SourceType[]>([]);
   const [runs, setRuns] = useState<{ [guid: string]: Models.RunType }>({});
+
+  let timer;
+
   useEffect(() => {
-    load();
+    startTimer();
+
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
+
+  function startTimer() {
+    load();
+    timer = setInterval(load, TIMEOUT);
+  }
 
   async function load() {
     const { sources }: Actions.SourcesList = await execApi("get", `/sources`);
