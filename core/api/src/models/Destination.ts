@@ -369,6 +369,7 @@ export class Destination extends LoggedModel<Destination> {
     const otherDestinations = await Destination.scope(null).findAll({
       where: {
         appGuid: this.appGuid,
+        type: this.type,
         guid: { [Op.not]: this.guid },
       },
     });
