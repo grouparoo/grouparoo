@@ -58,7 +58,7 @@ async function getUser(email) {
   }
 }
 
-async function deleteUsers(suppressErrors) {
+async function deleteUsers() {
   const emails = [email1];
   const { listId } = destinationOptions;
   for (const email of emails) {
@@ -69,8 +69,8 @@ async function deleteUsers(suppressErrors) {
   }
 }
 
-async function cleanUp(suppressErrors) {
-  await deleteUsers(suppressErrors);
+async function cleanUp() {
+  await deleteUsers();
 }
 
 describe("integration/runs/mailchimp-export", () => {
@@ -93,11 +93,11 @@ describe("integration/runs/mailchimp-export", () => {
 
   beforeAll(async () => {
     client = await connect(appOptions);
-    await cleanUp(false);
+    await cleanUp();
   }, helper.setupTime);
 
   afterAll(async () => {
-    await cleanUp(true);
+    await cleanUp();
     await client.end();
   });
 

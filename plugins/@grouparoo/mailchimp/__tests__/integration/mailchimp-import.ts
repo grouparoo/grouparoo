@@ -81,7 +81,7 @@ describe("integration/runs/mailchimp-import", () => {
         expect(sessionResponse.error).toBeUndefined();
         csrfToken = sessionResponse.csrfToken;
 
-        // create a sheet app with an uploaded file
+        // create an app with an uploaded file
         session.params = {
           csrfToken,
           name: "test import app",
@@ -150,7 +150,7 @@ describe("integration/runs/mailchimp-import", () => {
       expect(test.success).toBe(true);
     });
 
-    test("we can see a preview of the sheet", async () => {
+    test("we can see a preview of the data", async () => {
       session.params = {
         csrfToken,
         guid: source.guid,
@@ -269,6 +269,10 @@ describe("integration/runs/mailchimp-import", () => {
           creatorType: "schedule",
           state: "running",
         });
+
+        // TODO: these sleeps are for re-enqueing at the same time
+        // maybe we should use specHelper.deleteEnqueuedTasks() from actionhero
+        await helper.sleep();
         await specHelper.runTask("schedule:run", {
           runGuid: run.guid,
           scheduleGuid: schedule.guid,
@@ -278,11 +282,13 @@ describe("integration/runs/mailchimp-import", () => {
         // this made another one
         queue = await specHelper.findEnqueuedTasks("schedule:run");
         expect(queue.length).toEqual(2);
+        await helper.sleep();
         await specHelper.runTask("schedule:run", queue[1].args[0]);
 
         // run the schedule task again to enqueue the determineState task
         queue = await specHelper.findEnqueuedTasks("schedule:run");
         expect(queue.length).toEqual(3);
+        await helper.sleep();
         await specHelper.runTask("schedule:run", queue[2].args[0]);
 
         // run all enqueued associateProfile tasks

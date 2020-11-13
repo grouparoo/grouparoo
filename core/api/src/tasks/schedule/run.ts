@@ -13,7 +13,6 @@ export class ScheduleRun extends RetryableTask {
     this.inputs = {
       scheduleGuid: { required: true },
       runGuid: { required: true },
-      count: { required: false },
     };
   }
 
@@ -30,10 +29,6 @@ export class ScheduleRun extends RetryableTask {
     await run.afterBatch();
 
     if (importsCount > 0) {
-      if (process.env.NODE_ENV === "test") {
-        // prevents "job already enqueued" in tests
-        params.count = (params.count || 0) + 1;
-      }
       await task.enqueueIn(config.tasks.timeout + 1, this.name, params);
     } else {
       await run.afterBatch("complete");
