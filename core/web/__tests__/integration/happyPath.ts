@@ -66,7 +66,7 @@ describe("integration", () => {
       const button = await browser.findElement(by.className("btn-primary"));
       await button.click();
     },
-    testTimeout
+    helper.mediumTime
   );
 
   test(
@@ -94,7 +94,7 @@ describe("integration", () => {
         .getText();
       expect(header).toContain("Setup Grouparoo");
     },
-    testTimeout * 2
+    helper.longTime
   );
 
   test(
@@ -115,6 +115,6 @@ describe("integration", () => {
         .getText();
       expect(greeting).toContain("Hello Super Mario");
     },
-    testTimeout
+    helper.mediumTime
   );
 });
