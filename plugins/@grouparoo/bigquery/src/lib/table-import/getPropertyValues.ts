@@ -90,7 +90,11 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
     types
   );
   if (addAnd) query += ` AND`;
-  query += ` ${inClause}`;
+  // for BigQuery we need to use UNNEST: `id in UNNEST(1,2,3)`
+  // See https://github.com/googleapis/nodejs-bigquery/blob/master/samples/queryParamsPositionalTypes.js#L37
+  query += ` ${inClause}`.replace(" IN (", " IN UNNEST (");
+  // for BigQuery need to indicate that the type of the IN-clause array is an array of numbers or strings, ie: `[INT64]` rather than `INT64`
+  types.push([types.pop()]);
   addAnd = true;
 
   if (groupByColumns.length > 0) {
