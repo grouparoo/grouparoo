@@ -167,35 +167,44 @@ export function RunningRuns({ execApi }) {
     <Card>
       <Card.Body>
         <Card.Title>Active Runs</Card.Title>
-        <Table borderless size="sm">
+        <Table size="sm">
+          <thead>
+            <tr>
+              <th>Creator</th>
+              <th>High Water Mark</th>
+              <th>Percent Complete</th>
+            </tr>
+          </thead>
           <tbody>
-            {runs.map((run) => (
-              <tr key={`run-${run.guid}`}>
-                <td>
-                  <Link href="/run/[guid]/edit" as={`/run/${run.guid}/edit`}>
-                    <a>
-                      {run.creatorType}: {run.creatorName}
-                    </a>
-                  </Link>
-                </td>
-                <td>
-                  <code>
-                    {JSON.stringify(
-                      run.highWaterMark || run.groupHighWaterMark || {}
-                    )}
-                  </code>
-                </td>
-                <td>
-                  <ProgressBar
-                    variant="info"
-                    style={{ minWidth: 300 }}
-                    animated={run.percentComplete > 0 ? true : false}
-                    now={run.percentComplete}
-                    label={`${run.percentComplete}%`}
-                  />
-                </td>
-              </tr>
-            ))}
+            {runs.map((run) => {
+              const higWaterMarkCollection =
+                run.highWaterMark || run.groupHighWaterMark;
+              const highWaterMark = higWaterMarkCollection
+                ? Object.values(higWaterMarkCollection)[0]
+                : "n/a";
+
+              return (
+                <tr key={`run-${run.guid}`}>
+                  <td>
+                    <Link href="/run/[guid]/edit" as={`/run/${run.guid}/edit`}>
+                      <a>
+                        {run.creatorType}: {run.creatorName}
+                      </a>
+                    </Link>
+                  </td>
+                  <td>{highWaterMark}</td>
+                  <td>
+                    <ProgressBar
+                      variant="info"
+                      style={{ minWidth: 300 }}
+                      animated={run.percentComplete > 0 ? true : false}
+                      now={run.percentComplete}
+                      label={`${run.percentComplete}%`}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
       </Card.Body>
@@ -267,7 +276,13 @@ export function ScheduleRuns({ execApi }) {
     <Card>
       <Card.Body>
         <Card.Title>Schedules</Card.Title>
-        <Table borderless size="sm">
+        <Table size="sm">
+          <thead>
+            <tr>
+              <th>Schedule</th>
+              <th>Next Run</th>
+            </tr>
+          </thead>
           <tbody>
             {sources.map((source) => {
               const run = runs[source.guid];
