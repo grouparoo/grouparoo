@@ -88,7 +88,7 @@ export default function Page(props) {
       )
     ) {
       setLoading(true);
-      const {success}: Actions.ProfilePropertyRuleDestroy = await execApi(
+      const { success }: Actions.ProfilePropertyRuleDestroy = await execApi(
         "delete",
         `/profilePropertyRule/${guid}`
       );
