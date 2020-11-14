@@ -31,8 +31,10 @@ export class ProfilePropertiesEnqueue extends Task {
 
     for (const i in profilePropertyRules) {
       const profilePropertyRule = profilePropertyRules[i];
-      const source = await profilePropertyRule.$get("source");
+      const source = await profilePropertyRule.$get("source", { scope: null });
       const { pluginConnection } = await source.getPlugin();
+
+      if (source.state !== "ready") continue;
 
       const pendingProfileProperties = await ProfileProperty.findAll({
         where: {
