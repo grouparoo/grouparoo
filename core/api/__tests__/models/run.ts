@@ -269,6 +269,20 @@ describe("models/run", () => {
       expect(run.state).toBe("complete");
     });
 
+    it("will not try to transition a run out of a terminal state (to complete)", async () => {
+      await run.update({ state: "stopped" });
+      await run.afterBatch("complete");
+      await run.reload();
+      expect(run.state).toBe("stopped");
+    });
+
+    it("will not try to transition a run out of a terminal state (to stopped)", async () => {
+      await run.update({ state: "complete" });
+      await run.afterBatch("stopped");
+      await run.reload();
+      expect(run.state).toBe("complete");
+    });
+
     it("will mark the run with an error comprised of the counts of the import errors", async () => {
       await Import.create({
         creatorType: "run",

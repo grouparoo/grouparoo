@@ -153,7 +153,7 @@ export class Run extends Model<Run> {
     if (
       newSate &&
       this.state !== newSate &&
-      !["complete", "stopped"].includes(newSate)
+      !["complete", "stopped"].includes(this.state)
     ) {
       await this.update({ state: newSate });
     }
