@@ -5,6 +5,7 @@ import { Profile } from "../../models/Profile";
 import { plugin } from "../../modules/plugin";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { ProfilePropertyType } from "../../modules/ops/profile";
+import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
 
 export class RunInternalRun extends Task {
   constructor() {
@@ -51,6 +52,9 @@ export class RunInternalRun extends Task {
       },
       { silent: true }
     );
+
+    // this run may be the one for a new profile property rule, and we cannot assume all the hooks have fired yet
+    await ProfilePropertyRule.clearCache();
 
     const profiles = await Profile.findAll({
       order: [["createdAt", "asc"]],

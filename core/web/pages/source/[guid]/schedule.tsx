@@ -73,11 +73,11 @@ export default function Page(props) {
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
-      const response: Actions.ScheduleDestroy = await execApi(
+      const { success }: Actions.ScheduleDestroy = await execApi(
         "delete",
         `/schedule/${schedule.guid}`
       );
-      if (response) {
+      if (success) {
         router.push(`/source/${source.guid}/overview`);
       }
     }
@@ -215,7 +215,7 @@ export default function Page(props) {
                         recurringFrequencyMinutes) ||
                       !run ? (
                         schedule.recurring ? (
-                          <strong>ASAP</strong>
+                          <strong>Soon</strong>
                         ) : (
                           "N/A"
                         )

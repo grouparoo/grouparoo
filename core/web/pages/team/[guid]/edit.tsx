@@ -42,11 +42,11 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response: Actions.TeamDestroy = await execApi(
+      const { success }: Actions.TeamDestroy = await execApi(
         "delete",
         `/team/${team.guid}`
       );
-      if (response) {
+      if (success) {
         successHandler.set({ message: "Team deleted" });
         router.push("/teams");
       } else {

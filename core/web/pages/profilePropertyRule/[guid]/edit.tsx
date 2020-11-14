@@ -88,12 +88,12 @@ export default function Page(props) {
       )
     ) {
       setLoading(true);
-      const response: Actions.ProfilePropertyRuleDestroy = await execApi(
+      const { success }: Actions.ProfilePropertyRuleDestroy = await execApi(
         "delete",
         `/profilePropertyRule/${guid}`
       );
       setLoading(false);
-      if (response) {
+      if (success) {
         successHandler.set({ message: "Profile Property Rule Deleted" });
         router.push(nextPage || "/profilePropertyRules");
       }

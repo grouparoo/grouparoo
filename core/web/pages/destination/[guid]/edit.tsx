@@ -89,11 +89,11 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response: Actions.DestinationDestroy = await execApi(
+      const { success }: Actions.DestinationDestroy = await execApi(
         "delete",
         `/destination/${guid}`
       );
-      if (response.success) {
+      if (success) {
         router.push("/destinations");
       } else {
         setLoading(false);

@@ -2,7 +2,7 @@ import { useApi } from "../../../hooks/useApi";
 import SourceTabs from "../../../components/tabs/source";
 import Head from "next/head";
 import { useState } from "react";
-import { Row, Col, Table, Form } from "react-bootstrap";
+import { Row, Col, Table, Form, Button } from "react-bootstrap";
 import { createSchedule } from "../../../components/schedule/add";
 import LoadingButton from "../../../components/loadingButton";
 import { useRouter } from "next/router";
@@ -208,13 +208,18 @@ export default function Page(props) {
               </Table>
             </fieldset>
 
-            <LoadingButton
-              type="submit"
-              disabled={loading}
-              onClick={(e) => updateMapping(e)}
-            >
-              Save Mapping
-            </LoadingButton>
+            {/** We want to show a disabled button, not a loading button if the mapping key/value are not set */}
+            {newMappingValue === "" || newMappingKey === "" ? (
+              <Button disabled={true}>Save Mapping</Button>
+            ) : (
+              <LoadingButton
+                type="submit"
+                disabled={loading}
+                onClick={(e) => updateMapping(e)}
+              >
+                Save Mapping
+              </LoadingButton>
+            )}
           </Col>
 
           <Col>

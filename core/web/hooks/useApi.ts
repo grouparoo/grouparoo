@@ -48,6 +48,7 @@ export function useApi(
     } catch (error) {
       if (errorHandler) {
         errorHandler.set({ error: error });
+        return {};
       } else {
         throw error;
       }

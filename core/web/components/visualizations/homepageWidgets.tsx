@@ -5,7 +5,6 @@ import { Models, Actions } from "../../utils/apiData";
 import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
 import Moment from "react-moment";
 import RollingChart from "./rollingChart";
-import { Model } from "sequelize/types";
 
 const TIMEOUT = 15 * 1000;
 const CHART_TIMEOUT = 5 * 1000;
@@ -29,11 +28,11 @@ export function BigNumber({ execApi, model, title, href = null }) {
   }
 
   async function load() {
-    const response: Actions.TotalsAction = await execApi("get", `/totals`, {
+    const { total }: Actions.TotalsAction = await execApi("get", `/totals`, {
       model,
     });
 
-    if (response) setTotal(response?.total);
+    if (total) setTotal(total);
   }
 
   return (
@@ -76,16 +75,24 @@ export function GroupsByNewestMember({ execApi }) {
   }
 
   async function load() {
-    const response: Actions.GroupsListByNewestMember = await execApi(
+    const {
+      groups,
+      newestMembersAdded,
+    }: Actions.GroupsListByNewestMember = await execApi(
       "get",
       `/groups/byNewestMember`
     );
 
-    if (response) setGroups(response?.groups);
-    if (response) setNewestMembersAdded(response?.newestMembersAdded);
+    if (groups) setGroups(groups);
+    if (newestMembersAdded) setNewestMembersAdded(newestMembersAdded);
   }
 
-  if (groups.length === 0) return null;
+  if (groups.length === 0)
+    return (
+      <Card>
+        <Card.Body>No Groups</Card.Body>
+      </Card>
+    );
 
   return (
     <Card>
@@ -163,35 +170,44 @@ export function RunningRuns({ execApi }) {
     <Card>
       <Card.Body>
         <Card.Title>Active Runs</Card.Title>
-        <Table borderless size="sm">
+        <Table size="sm">
+          <thead>
+            <tr>
+              <th>Creator</th>
+              <th>High Water Mark</th>
+              <th>Percent Complete</th>
+            </tr>
+          </thead>
           <tbody>
-            {runs.map((run) => (
-              <tr key={`run-${run.guid}`}>
-                <td>
-                  <Link href="/run/[guid]/edit" as={`/run/${run.guid}/edit`}>
-                    <a>
-                      {run.creatorType}: {run.creatorName}
-                    </a>
-                  </Link>
-                </td>
-                <td>
-                  <code>
-                    {JSON.stringify(
-                      run.highWaterMark || run.groupHighWaterMark || {}
-                    )}
-                  </code>
-                </td>
-                <td>
-                  <ProgressBar
-                    variant="info"
-                    style={{ minWidth: 300 }}
-                    animated={run.percentComplete > 0 ? true : false}
-                    now={run.percentComplete}
-                    label={`${run.percentComplete}%`}
-                  />
-                </td>
-              </tr>
-            ))}
+            {runs.map((run) => {
+              const higWaterMarkCollection =
+                run.highWaterMark || run.groupHighWaterMark;
+              const highWaterMark = higWaterMarkCollection
+                ? Object.values(higWaterMarkCollection)[0]
+                : "n/a";
+
+              return (
+                <tr key={`run-${run.guid}`}>
+                  <td>
+                    <Link href="/run/[guid]/edit" as={`/run/${run.guid}/edit`}>
+                      <a>
+                        {run.creatorType}: {run.creatorName}
+                      </a>
+                    </Link>
+                  </td>
+                  <td>{highWaterMark}</td>
+                  <td>
+                    <ProgressBar
+                      variant="info"
+                      style={{ minWidth: 300 }}
+                      animated={run.percentComplete > 0 ? true : false}
+                      now={run.percentComplete}
+                      label={`${run.percentComplete}%`}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
       </Card.Body>
@@ -263,7 +279,13 @@ export function ScheduleRuns({ execApi }) {
     <Card>
       <Card.Body>
         <Card.Title>Schedules</Card.Title>
-        <Table borderless size="sm">
+        <Table size="sm">
+          <thead>
+            <tr>
+              <th>Schedule</th>
+              <th>Next Run</th>
+            </tr>
+          </thead>
           <tbody>
             {sources.map((source) => {
               const run = runs[source.guid];
@@ -307,7 +329,7 @@ export function ScheduleRuns({ execApi }) {
                       recurringFrequencyMinutes) ||
                     !run ? (
                       source.schedule.recurring ? (
-                        <strong>ASAP</strong>
+                        <strong>Soon</strong>
                       ) : (
                         "N/A"
                       )
@@ -326,6 +348,7 @@ export function ScheduleRuns({ execApi }) {
 const pendingImportSamples = [];
 export function PendingImports({ execApi }) {
   const [sources, setSources] = useState<Models.SourceType[]>([]);
+  const [pendingProfilesCount, setPendingProfilesCount] = useState(0);
   const [mostRecentImport, setMostRecentImport] = useState<Models.ImportType>();
   let timer;
 
@@ -345,6 +368,13 @@ export function PendingImports({ execApi }) {
   async function load() {
     const { sources }: Actions.SourcesList = await execApi("get", `/sources`, {
       state: "ready",
+    });
+
+    const {
+      total: _pendingProfilesCount,
+    }: Actions.ProfilesList = await execApi("get", "/profiles", {
+      state: "pending",
+      limit: 1,
     });
 
     const { counts }: Actions.SourcesCountPending = await execApi(
@@ -369,6 +399,7 @@ export function PendingImports({ execApi }) {
 
     setSources(sources);
     setMostRecentImport(imports[0]);
+    setPendingProfilesCount(_pendingProfilesCount);
   }
 
   if (sources.length === 0) {
@@ -382,7 +413,7 @@ export function PendingImports({ execApi }) {
   return (
     <Card>
       <Card.Body>
-        <Card.Title>Pending Profile Properties</Card.Title>
+        <Card.Title>Pending Profiles ({pendingProfilesCount})</Card.Title>
         <div style={{ height: 200 }}>
           <RollingChart
             data={pendingImportSamples}

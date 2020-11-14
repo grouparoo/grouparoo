@@ -78,7 +78,7 @@ export default function ProfilePreview(props) {
 
       const groupGuid = destination.destinationGroup?.guid || trackedGroupGuid;
 
-      const response: Actions.DestinationProfilePreview = await execApi(
+      const { profile }: Actions.DestinationProfilePreview = await execApi(
         "get",
         `/destination/${destination.guid}/profilePreview`,
         {
@@ -89,10 +89,10 @@ export default function ProfilePreview(props) {
         }
       );
 
-      if (response?.profile) {
+      if (profile) {
         setToHide(false);
-        setProfile(response.profile);
-        storeProfilePropertyGuid(response.profile.guid);
+        setProfile(profile);
+        storeProfilePropertyGuid(profile.guid);
       }
 
       setSleeping(false);

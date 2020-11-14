@@ -5,6 +5,8 @@ import {
   plugin,
   ProfilePropertyRule,
   GrouparooPlugin,
+  Source,
+  App,
 } from "../../../src";
 
 let actionhero;
@@ -15,7 +17,6 @@ describe("tasks/profileProperties:enqueue", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    await helper.factories.profilePropertyRules();
   }, helper.setupTime);
 
   beforeEach(async () => {
@@ -30,76 +31,48 @@ describe("tasks/profileProperties:enqueue", () => {
     );
   });
 
-  beforeAll(async () => {
-    profilePropertyRulesCount = await ProfilePropertyRule.scope(null).count();
-  });
-
   afterAll(async () => {
     await helper.shutdown(actionhero);
   });
 
   describe("profileProperties:enqueue", () => {
-    test("can be enqueued", async () => {
-      await task.enqueue("profileProperties:enqueue", {});
-      const found = await specHelper.findEnqueuedTasks(
-        "profileProperties:enqueue"
-      );
-      expect(found.length).toEqual(1);
+    describe("when bootstrapping", () => {
+      afterAll(async () => {
+        await ProfilePropertyRule.truncate();
+        await Source.truncate();
+        await App.truncate();
+      });
+
+      it("will not crash when there is a profile property rule without a ready source", async () => {
+        const source = await helper.factories.source();
+        const rule = await source.bootstrapUniqueProfilePropertyRule(
+          "userId",
+          "integer",
+          "user-id"
+        );
+        expect(source.state).toBe("draft");
+        expect(rule.state).toBe("ready");
+        await specHelper.runTask("profileProperties:enqueue", {}); // does not throw
+      });
     });
 
-    test("it will enqueue batches of profile properties in the pending state", async () => {
-      const run = await helper.factories.run();
-      const marioImport = await helper.factories.import(run, {
-        email: "mario@example.com",
-        firstName: "Mario",
-      });
-      const luigiImport = await helper.factories.import(run, {
-        email: "luigi@example.com",
-      });
-
-      await specHelper.runTask("import:associateProfile", {
-        importGuid: marioImport.guid,
-      });
-      await specHelper.runTask("import:associateProfile", {
-        importGuid: luigiImport.guid,
-      });
-
-      await specHelper.runTask("profileProperties:enqueue", {});
-
-      const importProfilePropertiesTasks = await specHelper.findEnqueuedTasks(
-        "profileProperty:importProfileProperties"
-      );
-      const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
-        "profileProperty:importProfileProperty"
-      );
-
-      expect(importProfilePropertiesTasks.length).toBe(0);
-      expect(importProfilePropertyTasks.length).toBe(
-        (profilePropertyRulesCount - 1) * 2
-      );
-    });
-
-    describe("with profileProperties method", () => {
-      let testPluginConnection: PluginConnection;
-
+    describe("with rules", () => {
       beforeAll(async () => {
-        const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
-          (a) => a.name === "@grouparoo/test-plugin"
-        );
-
-        testPluginConnection = testPlugin.connections.find(
-          (c) => c.name === "test-plugin-import"
-        );
-        testPluginConnection.methods.profileProperties = async () => {
-          return {};
-        };
+        await helper.factories.profilePropertyRules();
+        profilePropertyRulesCount = await ProfilePropertyRule.scope(
+          null
+        ).count();
       });
 
-      afterAll(() => {
-        delete testPluginConnection.methods.profileProperties;
+      test("can be enqueued", async () => {
+        await task.enqueue("profileProperties:enqueue", {});
+        const found = await specHelper.findEnqueuedTasks(
+          "profileProperties:enqueue"
+        );
+        expect(found.length).toEqual(1);
       });
 
-      test("if there is an importProfileProperties it will be preferred", async () => {
+      test("it will enqueue batches of profile properties in the pending state", async () => {
         const run = await helper.factories.run();
         const marioImport = await helper.factories.import(run, {
           email: "mario@example.com",
@@ -125,54 +98,107 @@ describe("tasks/profileProperties:enqueue", () => {
           "profileProperty:importProfileProperty"
         );
 
-        expect(importProfilePropertyTasks.length).toBe(0);
-        expect(importProfilePropertiesTasks.length).toBe(
-          profilePropertyRulesCount - 1
-        );
-        importProfilePropertiesTasks.forEach((t) =>
-          expect(t.args[0].profileGuids.length).toBe(2)
+        expect(importProfilePropertiesTasks.length).toBe(0);
+        expect(importProfilePropertyTasks.length).toBe(
+          (profilePropertyRulesCount - 1) * 2
         );
       });
 
-      test("the batch size can be configured via a setting", async () => {
-        await plugin.updateSetting(
-          "core",
-          "imports-profile-properties-batch-size",
-          1
-        );
+      describe("with profileProperties method", () => {
+        let testPluginConnection: PluginConnection;
 
-        const run = await helper.factories.run();
-        const marioImport = await helper.factories.import(run, {
-          email: "mario@example.com",
-          firstName: "Mario",
-        });
-        const luigiImport = await helper.factories.import(run, {
-          email: "luigi@example.com",
-        });
+        beforeAll(async () => {
+          const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
+            (a) => a.name === "@grouparoo/test-plugin"
+          );
 
-        await specHelper.runTask("import:associateProfile", {
-          importGuid: marioImport.guid,
-        });
-        await specHelper.runTask("import:associateProfile", {
-          importGuid: luigiImport.guid,
+          testPluginConnection = testPlugin.connections.find(
+            (c) => c.name === "test-plugin-import"
+          );
+          testPluginConnection.methods.profileProperties = async () => {
+            return {};
+          };
         });
 
-        await specHelper.runTask("profileProperties:enqueue", {});
+        afterAll(() => {
+          delete testPluginConnection.methods.profileProperties;
+        });
 
-        const importProfilePropertiesTasks = await specHelper.findEnqueuedTasks(
-          "profileProperty:importProfileProperties"
-        );
-        const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
-          "profileProperty:importProfileProperty"
-        );
+        test("if there is an importProfileProperties it will be preferred", async () => {
+          const run = await helper.factories.run();
+          const marioImport = await helper.factories.import(run, {
+            email: "mario@example.com",
+            firstName: "Mario",
+          });
+          const luigiImport = await helper.factories.import(run, {
+            email: "luigi@example.com",
+          });
 
-        expect(importProfilePropertyTasks.length).toBe(0);
-        expect(importProfilePropertiesTasks.length).toBe(
-          profilePropertyRulesCount - 1
-        );
-        importProfilePropertiesTasks.forEach((t) =>
-          expect(t.args[0].profileGuids.length).toBe(1)
-        );
+          await specHelper.runTask("import:associateProfile", {
+            importGuid: marioImport.guid,
+          });
+          await specHelper.runTask("import:associateProfile", {
+            importGuid: luigiImport.guid,
+          });
+
+          await specHelper.runTask("profileProperties:enqueue", {});
+
+          const importProfilePropertiesTasks = await specHelper.findEnqueuedTasks(
+            "profileProperty:importProfileProperties"
+          );
+          const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
+            "profileProperty:importProfileProperty"
+          );
+
+          expect(importProfilePropertyTasks.length).toBe(0);
+          expect(importProfilePropertiesTasks.length).toBe(
+            profilePropertyRulesCount - 1
+          );
+          importProfilePropertiesTasks.forEach((t) =>
+            expect(t.args[0].profileGuids.length).toBe(2)
+          );
+        });
+
+        test("the batch size can be configured via a setting", async () => {
+          await plugin.updateSetting(
+            "core",
+            "imports-profile-properties-batch-size",
+            1
+          );
+
+          const run = await helper.factories.run();
+          const marioImport = await helper.factories.import(run, {
+            email: "mario@example.com",
+            firstName: "Mario",
+          });
+          const luigiImport = await helper.factories.import(run, {
+            email: "luigi@example.com",
+          });
+
+          await specHelper.runTask("import:associateProfile", {
+            importGuid: marioImport.guid,
+          });
+          await specHelper.runTask("import:associateProfile", {
+            importGuid: luigiImport.guid,
+          });
+
+          await specHelper.runTask("profileProperties:enqueue", {});
+
+          const importProfilePropertiesTasks = await specHelper.findEnqueuedTasks(
+            "profileProperty:importProfileProperties"
+          );
+          const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
+            "profileProperty:importProfileProperty"
+          );
+
+          expect(importProfilePropertyTasks.length).toBe(0);
+          expect(importProfilePropertiesTasks.length).toBe(
+            profilePropertyRulesCount - 1
+          );
+          importProfilePropertiesTasks.forEach((t) =>
+            expect(t.args[0].profileGuids.length).toBe(1)
+          );
+        });
       });
     });
   });

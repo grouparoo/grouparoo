@@ -150,7 +150,11 @@ export class Run extends Model<Run> {
     await this.determinePercentComplete();
     await this.reload();
 
-    if (newSate && this.state !== newSate) {
+    if (
+      newSate &&
+      this.state !== newSate &&
+      !["complete", "stopped"].includes(this.state)
+    ) {
       await this.update({ state: newSate });
     }
 
