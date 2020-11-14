@@ -5,7 +5,6 @@ import { Models, Actions } from "../../utils/apiData";
 import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
 import Moment from "react-moment";
 import RollingChart from "./rollingChart";
-import { Model } from "sequelize/types";
 
 const TIMEOUT = 15 * 1000;
 const CHART_TIMEOUT = 5 * 1000;
@@ -85,7 +84,12 @@ export function GroupsByNewestMember({ execApi }) {
     if (response) setNewestMembersAdded(response?.newestMembersAdded);
   }
 
-  if (groups.length === 0) return null;
+  if (groups.length === 0)
+    return (
+      <Card>
+        <Card.Body>No Groups</Card.Body>
+      </Card>
+    );
 
   return (
     <Card>
