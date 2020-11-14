@@ -33,6 +33,7 @@ require(nockFile);
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 let profile: Profile;
+let otherProfile: Profile;
 
 let actionhero;
 
@@ -55,13 +56,13 @@ async function getPropertyValues(
   return profileProperties({
     connection,
     appOptions,
-    profiles: [profile],
+    profiles: [profile, otherProfile],
     sourceOptions,
     profilePropertyRuleOptions,
     sourceMapping,
     profilePropertyRuleFilters,
     profilePropertyRule,
-    profileGuids: [profile.guid],
+    profileGuids: [profile.guid, otherProfile.guid],
     source: null,
     sourceGuid: null,
     app: null,
@@ -70,7 +71,7 @@ async function getPropertyValues(
   });
 }
 
-describe("bigquery/table/profileProperty", () => {
+describe("bigquery/table/profileProperties", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
@@ -93,6 +94,13 @@ describe("bigquery/table/profileProperty", () => {
       lastName: null,
     });
     expect(profile.guid).toBeTruthy();
+
+    otherProfile = await helper.factories.profile();
+    await otherProfile.addOrUpdateProperties({
+      userId: [2],
+      email: ["ceate1@example.com"],
+      lastName: null,
+    });
   });
 
   describe("exact primary tables", () => {
@@ -110,6 +118,7 @@ describe("bigquery/table/profileProperty", () => {
           aggregationMethod,
         });
         expect(values[profile.guid]).toEqual(["Erie"]);
+        expect(values[otherProfile.guid]).toEqual(["Cacilie"]);
       });
       test("to get a float", async () => {
         const column = "ltv";
@@ -119,6 +128,7 @@ describe("bigquery/table/profileProperty", () => {
           aggregationMethod,
         });
         expect(values[profile.guid]).toEqual([259.12]);
+        expect(values[otherProfile.guid]).toEqual([94.36]);
       });
       test("to get a boolean", async () => {
         const column = "ios_app";
@@ -128,6 +138,7 @@ describe("bigquery/table/profileProperty", () => {
           aggregationMethod,
         });
         expect(values[profile.guid]).toEqual([true]);
+        expect(values[otherProfile.guid]).toEqual([false]);
       });
       test("to get a date", async () => {
         const column = "date";
@@ -137,6 +148,7 @@ describe("bigquery/table/profileProperty", () => {
           aggregationMethod,
         });
         expect(values[profile.guid]).toEqual(["2020-02-01"]);
+        expect(values[otherProfile.guid]).toEqual(["2020-02-02"]);
       });
       test("to get a timestamp", async () => {
         const column = "stamp";
@@ -146,6 +158,9 @@ describe("bigquery/table/profileProperty", () => {
           aggregationMethod,
         });
         expect(values[profile.guid][0]).toEqual("2020-02-01T12:13:14.000Z");
+        expect(values[otherProfile.guid][0]).toEqual(
+          "2020-02-02T12:13:14.000Z"
+        );
       });
     });
 
@@ -159,6 +174,7 @@ describe("bigquery/table/profileProperty", () => {
           aggregationMethod,
         });
         expect(values[profile.guid]).toEqual(["Erie"]);
+        expect(values[otherProfile.guid]).toEqual(["Cacilie"]);
       });
       test("to get a float", async () => {
         const column = "ltv";
@@ -168,6 +184,7 @@ describe("bigquery/table/profileProperty", () => {
           aggregationMethod,
         });
         expect(values[profile.guid]).toEqual([259.12]);
+        expect(values[otherProfile.guid]).toEqual([94.36]);
       });
       test("to get a boolean", async () => {
         const column = "ios_app";
@@ -177,6 +194,7 @@ describe("bigquery/table/profileProperty", () => {
           aggregationMethod,
         });
         expect(values[profile.guid]).toEqual([true]);
+        expect(values[otherProfile.guid]).toEqual([false]);
       });
       test("to get a date", async () => {
         const column = "date";
@@ -186,6 +204,7 @@ describe("bigquery/table/profileProperty", () => {
           aggregationMethod,
         });
         expect(values[profile.guid]).toEqual(["2020-02-01"]);
+        expect(values[otherProfile.guid]).toEqual(["2020-02-02"]);
       });
       test("to get a timestamp", async () => {
         const column = "stamp";
@@ -195,6 +214,9 @@ describe("bigquery/table/profileProperty", () => {
           aggregationMethod,
         });
         expect(values[profile.guid][0]).toEqual("2020-02-01T12:13:14.000Z");
+        expect(values[otherProfile.guid][0]).toEqual(
+          "2020-02-02T12:13:14.000Z"
+        );
       });
     });
   });
@@ -213,7 +235,8 @@ describe("bigquery/table/profileProperty", () => {
           sourceMapping,
           aggregationMethod: "average",
         });
-        expect(values[profile.guid][0]).toEqual(1.73);
+        expect(fixedLengthFloat(values[profile.guid][0])).toEqual(1.73);
+        expect(fixedLengthFloat(values[otherProfile.guid][0])).toEqual(1.88);
       });
       test("count", async () => {
         const values = await getPropertyValues({
@@ -222,6 +245,7 @@ describe("bigquery/table/profileProperty", () => {
           aggregationMethod: "count",
         });
         expect(values[profile.guid]).toEqual([6]);
+        expect(values[otherProfile.guid]).toEqual([5]);
       });
       test("sum", async () => {
         const values = await getPropertyValues({
@@ -229,7 +253,8 @@ describe("bigquery/table/profileProperty", () => {
           sourceMapping,
           aggregationMethod: "sum",
         });
-        expect(values[profile.guid][0]).toEqual(10.38);
+        expect(fixedLengthFloat(values[profile.guid][0])).toEqual(10.38);
+        expect(fixedLengthFloat(values[otherProfile.guid][0])).toEqual(9.38);
       });
       test("min", async () => {
         const values = await getPropertyValues({
@@ -238,6 +263,7 @@ describe("bigquery/table/profileProperty", () => {
           aggregationMethod: "min",
         });
         expect(values[profile.guid]).toEqual([1.42]);
+        expect(values[otherProfile.guid]).toEqual([0.78]);
       });
       test("max", async () => {
         const values = await getPropertyValues({
@@ -246,6 +272,7 @@ describe("bigquery/table/profileProperty", () => {
           aggregationMethod: "max",
         });
         expect(values[profile.guid]).toEqual([2.23]);
+        expect(values[otherProfile.guid]).toEqual([3.14]);
       });
       describe("dates", () => {
         const column = "date";
@@ -256,6 +283,7 @@ describe("bigquery/table/profileProperty", () => {
             aggregationMethod: "count",
           });
           expect(values[profile.guid]).toEqual([6]);
+          expect(values[otherProfile.guid]).toEqual([5]);
         });
         test("min", async () => {
           const values = await getPropertyValues({
@@ -264,6 +292,7 @@ describe("bigquery/table/profileProperty", () => {
             aggregationMethod: "min",
           });
           expect(values[profile.guid]).toEqual(["2020-02-01"]);
+          expect(values[otherProfile.guid]).toEqual(["2020-02-02"]);
         });
         test("max", async () => {
           const values = await getPropertyValues({
@@ -272,6 +301,7 @@ describe("bigquery/table/profileProperty", () => {
             aggregationMethod: "max",
           });
           expect(values[profile.guid]).toEqual(["2020-02-20"]);
+          expect(values[otherProfile.guid]).toEqual(["2020-02-19"]);
         });
       });
     });
@@ -304,6 +334,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "id", match: "15" }]
         );
         expect(values[profile.guid]).toEqual([1]);
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("string", async () => {
         const values = await getPropertyValues(
@@ -315,6 +346,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "purchase", match: "Apple" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(otherProfile[profile.guid]).toBeUndefined();
       });
       test("string is case sensitive", async () => {
         const values = await getPropertyValues(
@@ -326,6 +358,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "purchase", match: "apple" }]
         );
         expect(values[profile.guid]).toBeUndefined();
+        expect(otherProfile[profile.guid]).toBeUndefined();
       });
       test("date", async () => {
         const values = await getPropertyValues(
@@ -337,6 +370,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "date", match: "2020-02-15" }]
         );
         expect(values[profile.guid]).toEqual([1]);
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("timestamp", async () => {
         const values = await getPropertyValues(
@@ -348,6 +382,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "stamp", match: "2020-02-15 12:13:14 UTC" }]
         );
         expect(values[profile.guid]).toEqual([1]);
+        expect(otherProfile[profile.guid]).toBeUndefined();
       });
       test("float", async () => {
         const values = await getPropertyValues(
@@ -359,6 +394,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "amount", match: "1.54" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(otherProfile[profile.guid]).toBeUndefined();
       });
     });
 
@@ -374,6 +410,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "id", match: "15" }]
         );
         expect(values[profile.guid]).toEqual([5]);
+        expect(values[otherProfile.guid]).toEqual([5]);
       });
       test("string", async () => {
         const values = await getPropertyValues(
@@ -385,6 +422,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "purchase", match: "Apple" }]
         );
         expect(values[profile.guid]).toEqual([4]);
+        expect(values[otherProfile.guid]).toEqual([2]);
       });
       test("string is case sensitive", async () => {
         const values = await getPropertyValues(
@@ -396,6 +434,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "purchase", match: "apple" }]
         );
         expect(values[profile.guid]).toEqual([6]);
+        expect(values[otherProfile.guid]).toEqual([5]);
       });
       test("date", async () => {
         const values = await getPropertyValues(
@@ -407,6 +446,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "date", match: "2020-02-15" }]
         );
         expect(values[profile.guid]).toEqual([5]);
+        expect(values[otherProfile.guid]).toEqual([5]);
       });
       test("timestamp", async () => {
         const values = await getPropertyValues(
@@ -418,6 +458,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "stamp", match: "2020-02-15 12:13:14 UTC" }]
         );
         expect(values[profile.guid]).toEqual([5]);
+        expect(values[otherProfile.guid]).toEqual([5]);
       });
       test("float", async () => {
         const values = await getPropertyValues(
@@ -429,6 +470,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "amount", match: "1.54" }]
         );
         expect(values[profile.guid]).toEqual([4]);
+        expect(values[otherProfile.guid]).toEqual([4]);
       });
     });
 
@@ -456,6 +498,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "purchase", match: "App" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([3]);
       });
       test("string is case sensitive", async () => {
         const values = await getPropertyValues(
@@ -467,6 +510,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "purchase", match: "app" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([3]);
       });
       test("date", async () => {
         await expect(
@@ -530,6 +574,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "purchase", match: "Oran" }]
         );
         expect(values[profile.guid]).toEqual([4]);
+        expect(values[otherProfile.guid]).toEqual([5]);
       });
       test("string is case sensitive", async () => {
         const values = await getPropertyValues(
@@ -541,6 +586,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "purchase", match: "oran" }]
         );
         expect(values[profile.guid]).toEqual([4]);
+        expect(values[otherProfile.guid]).toEqual([5]);
       });
       test("date", async () => {
         await expect(
@@ -592,6 +638,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "id", match: "15" }]
         );
         expect(values[profile.guid]).toEqual([1]);
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("string", async () => {
         const values = await getPropertyValues(
@@ -603,6 +650,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "purchase", match: "Apple" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([3]);
       });
       test("string is case sensitive", async () => {
         const values = await getPropertyValues(
@@ -614,6 +662,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "purchase", match: "apple" }]
         );
         expect(values[profile.guid]).toBeUndefined();
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("date", async () => {
         const values = await getPropertyValues(
@@ -625,6 +674,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "date", match: "2020-02-15" }]
         );
         expect(values[profile.guid]).toEqual([1]);
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("timestamp", async () => {
         const values = await getPropertyValues(
@@ -636,6 +686,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "stamp", match: "2020-02-15 12:13:14 UTC" }]
         );
         expect(values[profile.guid]).toEqual([1]);
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("float", async () => {
         const values = await getPropertyValues(
@@ -647,6 +698,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "amount", match: "1.54" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([1]);
       });
     });
 
@@ -662,6 +714,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "id", match: "15" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([2]);
       });
       test("string", async () => {
         const values = await getPropertyValues(
@@ -673,6 +726,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "purchase", match: "Apple" }]
         );
         expect(values[profile.guid]).toEqual([4]);
+        expect(values[otherProfile.guid]).toEqual([2]);
       });
       test("string is case sensitive", async () => {
         const values = await getPropertyValues(
@@ -697,6 +751,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "date", match: "2020-02-15" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([2]);
       });
       test("timestamp", async () => {
         const values = await getPropertyValues(
@@ -708,6 +763,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "stamp", match: "2020-02-15 12:13:14 UTC" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([2]);
       });
       test("float", async () => {
         const values = await getPropertyValues(
@@ -719,6 +775,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "amount", match: "1.54" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([2]);
       });
     });
 
@@ -734,6 +791,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "id", match: "15" }]
         );
         expect(values[profile.guid]).toEqual([3]);
+        expect(values[otherProfile.guid]).toEqual([3]);
       });
       test("string", async () => {
         const values = await getPropertyValues(
@@ -745,6 +803,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "purchase", match: "Apple" }]
         );
         expect(values[profile.guid]).toBeUndefined();
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("string is case sensitive", async () => {
         const values = await getPropertyValues(
@@ -769,6 +828,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "date", match: "2020-02-15" }]
         );
         expect(values[profile.guid]).toEqual([3]);
+        expect(values[otherProfile.guid]).toEqual([3]);
       });
       test("timestamp", async () => {
         const values = await getPropertyValues(
@@ -780,6 +840,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "stamp", match: "2020-02-15 12:13:14 UTC" }]
         );
         expect(values[profile.guid]).toEqual([3]);
+        expect(values[otherProfile.guid]).toEqual([3]);
       });
       test("float", async () => {
         const values = await getPropertyValues(
@@ -791,6 +852,7 @@ describe("bigquery/table/profileProperty", () => {
           [{ op, key: "amount", match: "1.54" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([2]);
       });
     });
   });
@@ -806,6 +868,7 @@ describe("bigquery/table/profileProperty", () => {
         aggregationMethod: "exact",
       });
       expect(values[profile.guid]).toBeUndefined();
+      expect(values[otherProfile.guid]).toBeUndefined();
     });
     test("null profile property", async () => {
       const values = await getPropertyValues({
@@ -814,6 +877,11 @@ describe("bigquery/table/profileProperty", () => {
         aggregationMethod: "exact",
       });
       expect(values[profile.guid]).toBeUndefined();
+      expect(values[otherProfile.guid]).toBeUndefined();
     });
   });
 });
+
+function fixedLengthFloat(value: any, decimalDigits = 2) {
+  return parseFloat(parseFloat(value.toString()).toFixed(decimalDigits));
+}

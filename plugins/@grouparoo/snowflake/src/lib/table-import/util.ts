@@ -47,13 +47,13 @@ export function makeWhereClause(
       throw new Error(`Unknown filterOperation: ${filterOperation}`);
   }
 
+  const replacementString = Array.isArray(match)
+    ? `(${match.map((_, idx) => `:${params.length + idx + 1}`).join(", ")})`
+    : `:${params.length + 1}`;
+
   Array.isArray(match)
     ? match.forEach((m) => params.push(m))
     : params.push(match);
-
-  const replacementString = Array.isArray(match)
-    ? `(${match.map((_, idx) => `:${params.length + idx}`).join(", ")})`
-    : `:${params.length}`;
 
   return ` "${columnName}" ${op} ${replacementString}`; // "profile_id" = :3 or "profile_id" = (:3, :4, :5)
 }

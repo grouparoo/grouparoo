@@ -34,6 +34,7 @@ require(nockFile);
 // helper.recordNock(nockFile, updater);
 
 let profile: Profile;
+let otherProfile: Profile;
 let actionhero;
 let sourceOptions;
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
@@ -66,13 +67,13 @@ async function getPropertyArrays(
   return profileProperties({
     connection,
     appOptions,
-    profiles: [profile],
+    profiles: [profile, otherProfile],
     sourceOptions,
     profilePropertyRuleOptions,
     sourceMapping,
     profilePropertyRuleFilters,
     profilePropertyRule,
-    profileGuids: [profile.guid],
+    profileGuids: [profile.guid, otherProfile.guid],
     source: null,
     sourceGuid: null,
     app: null,
@@ -81,7 +82,7 @@ async function getPropertyArrays(
   });
 }
 
-describe("mysql/table/profileProperties", () => {
+describe("snowflake/table/profileProperties", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
@@ -100,6 +101,13 @@ describe("mysql/table/profileProperties", () => {
       lastName: null,
     });
     expect(profile.guid).toBeTruthy();
+
+    otherProfile = await helper.factories.profile();
+    await otherProfile.addOrUpdateProperties({
+      userId: [2],
+      email: ["ceate1@example.com"],
+      lastName: null,
+    });
   });
 
   afterAll(async () => {
@@ -123,6 +131,7 @@ describe("mysql/table/profileProperties", () => {
           aggregationMethod,
         });
         expect(values[profile.guid]).toEqual(["Erie"]);
+        expect(values[otherProfile.guid]).toEqual(["Cacilie"]);
       });
       test("to get a float", async () => {
         const column = "LTV";
@@ -132,6 +141,7 @@ describe("mysql/table/profileProperties", () => {
           aggregationMethod,
         });
         expect(values[profile.guid]).toEqual([259.12]);
+        expect(values[otherProfile.guid]).toEqual([94.36]);
       });
       test("to get a boolean", async () => {
         const column = "IOS_APP";
@@ -141,6 +151,7 @@ describe("mysql/table/profileProperties", () => {
           aggregationMethod,
         });
         expect(values[profile.guid]).toEqual([true]);
+        expect(values[otherProfile.guid]).toEqual([false]);
       });
       test("to get a date", async () => {
         const column = "DATE";
@@ -152,6 +163,9 @@ describe("mysql/table/profileProperties", () => {
         expect(
           values[profile.guid].map((v) => (<Date>v).toISOString())
         ).toEqual(["2020-02-01T00:00:00.000Z"]);
+        expect(
+          values[otherProfile.guid].map((v) => (<Date>v).toISOString())
+        ).toEqual(["2020-02-02T00:00:00.000Z"]);
       });
       test("to get a timestamp", async () => {
         const column = "STAMP";
@@ -163,6 +177,9 @@ describe("mysql/table/profileProperties", () => {
         expect(
           values[profile.guid].map((v) => (<Date>v).toISOString())
         ).toEqual(["2020-02-01T12:13:14.000Z"]);
+        expect(
+          values[otherProfile.guid].map((v) => (<Date>v).toISOString())
+        ).toEqual(["2020-02-02T12:13:14.000Z"]);
       });
     });
 
@@ -176,6 +193,7 @@ describe("mysql/table/profileProperties", () => {
           aggregationMethod,
         });
         expect(values[profile.guid]).toEqual(["Erie"]);
+        expect(values[otherProfile.guid]).toEqual(["Cacilie"]);
       });
       test("to get a float", async () => {
         const column = "LTV";
@@ -185,6 +203,7 @@ describe("mysql/table/profileProperties", () => {
           aggregationMethod,
         });
         expect(values[profile.guid]).toEqual([259.12]);
+        expect(values[otherProfile.guid]).toEqual([94.36]);
       });
       test("to get a boolean", async () => {
         const column = "IOS_APP";
@@ -194,6 +213,7 @@ describe("mysql/table/profileProperties", () => {
           aggregationMethod,
         });
         expect(values[profile.guid]).toEqual([true]);
+        expect(values[otherProfile.guid]).toEqual([false]);
       });
       test("to get a date", async () => {
         const column = "DATE";
@@ -205,6 +225,9 @@ describe("mysql/table/profileProperties", () => {
         expect(
           values[profile.guid].map((v) => (<Date>v).toISOString())
         ).toEqual(["2020-02-01T00:00:00.000Z"]);
+        expect(
+          values[otherProfile.guid].map((v) => (<Date>v).toISOString())
+        ).toEqual(["2020-02-02T00:00:00.000Z"]);
       });
       test("to get a timestamp", async () => {
         const column = "STAMP";
@@ -216,6 +239,9 @@ describe("mysql/table/profileProperties", () => {
         expect(
           values[profile.guid].map((v) => (<Date>v).toISOString())
         ).toEqual(["2020-02-01T12:13:14.000Z"]);
+        expect(
+          values[otherProfile.guid].map((v) => (<Date>v).toISOString())
+        ).toEqual(["2020-02-02T12:13:14.000Z"]);
       });
     });
   });
@@ -234,7 +260,8 @@ describe("mysql/table/profileProperties", () => {
           sourceMapping,
           aggregationMethod: "average",
         });
-        expect(values[profile.guid]).toEqual([1.73]);
+        expect(fixedLengthFloat(values[profile.guid][0])).toEqual(1.73);
+        expect(fixedLengthFloat(values[otherProfile.guid][0])).toEqual(1.88);
       });
       test("count", async () => {
         const values = await getPropertyValues({
@@ -243,6 +270,7 @@ describe("mysql/table/profileProperties", () => {
           aggregationMethod: "count",
         });
         expect(values[profile.guid]).toEqual([6]);
+        expect(values[otherProfile.guid]).toEqual([5]);
       });
       test("sum", async () => {
         const values = await getPropertyValues({
@@ -250,7 +278,8 @@ describe("mysql/table/profileProperties", () => {
           sourceMapping,
           aggregationMethod: "sum",
         });
-        expect(values[profile.guid]).toEqual([10.38]);
+        expect(fixedLengthFloat(values[profile.guid][0])).toEqual(10.38);
+        expect(fixedLengthFloat(values[otherProfile.guid][0])).toEqual(9.38);
       });
       test("min", async () => {
         const values = await getPropertyValues({
@@ -259,6 +288,7 @@ describe("mysql/table/profileProperties", () => {
           aggregationMethod: "min",
         });
         expect(values[profile.guid]).toEqual([1.42]);
+        expect(values[otherProfile.guid]).toEqual([0.78]);
       });
       test("max", async () => {
         const values = await getPropertyValues({
@@ -267,6 +297,7 @@ describe("mysql/table/profileProperties", () => {
           aggregationMethod: "max",
         });
         expect(values[profile.guid]).toEqual([2.23]);
+        expect(values[otherProfile.guid]).toEqual([3.14]);
       });
 
       describe("dates", () => {
@@ -278,6 +309,7 @@ describe("mysql/table/profileProperties", () => {
             aggregationMethod: "count",
           });
           expect(values[profile.guid]).toEqual([6]);
+          expect(values[otherProfile.guid]).toEqual([5]);
         });
         test("min", async () => {
           const values = await getPropertyValues({
@@ -288,6 +320,9 @@ describe("mysql/table/profileProperties", () => {
           expect(
             values[profile.guid].map((v) => (<Date>v).toISOString())
           ).toEqual(["2020-02-01T00:00:00.000Z"]);
+          expect(
+            values[otherProfile.guid].map((v) => (<Date>v).toISOString())
+          ).toEqual(["2020-02-02T00:00:00.000Z"]);
         });
         test("max", async () => {
           const values = await getPropertyValues({
@@ -295,6 +330,9 @@ describe("mysql/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod: "max",
           });
+          expect(
+            values[profile.guid].map((v) => (<Date>v).toISOString())
+          ).toEqual(["2020-02-20T00:00:00.000Z"]);
           expect(
             values[profile.guid].map((v) => (<Date>v).toISOString())
           ).toEqual(["2020-02-20T00:00:00.000Z"]);
@@ -330,6 +368,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "ID", match: "15" }]
         );
         expect(values[profile.guid]).toEqual([1]);
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("string", async () => {
         const values = await getPropertyValues(
@@ -341,6 +380,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "PURCHASE", match: "Apple" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(otherProfile[profile.guid]).toBeUndefined();
       });
       test("string is case sensitive", async () => {
         // TODO: is this the right behavior?
@@ -353,6 +393,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "PURCHASE", match: "apple" }]
         );
         expect(values[profile.guid]).toBeUndefined();
+        expect(otherProfile[profile.guid]).toBeUndefined();
       });
       test("DATE", async () => {
         const values = await getPropertyValues(
@@ -364,6 +405,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "DATE", match: "2020-02-15" }]
         );
         expect(values[profile.guid]).toEqual([1]);
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("timestamp", async () => {
         const values = await getPropertyValues(
@@ -375,6 +417,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "STAMP", match: "2020-02-15 12:13:14" }]
         );
         expect(values[profile.guid]).toEqual([1]);
+        expect(otherProfile[profile.guid]).toBeUndefined();
       });
       test("float", async () => {
         const values = await getPropertyValues(
@@ -386,6 +429,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "AMOUNT", match: "1.54" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(otherProfile[profile.guid]).toBeUndefined();
       });
     });
 
@@ -401,6 +445,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "ID", match: "15" }]
         );
         expect(values[profile.guid]).toEqual([5]);
+        expect(values[otherProfile.guid]).toEqual([5]);
       });
       test("string", async () => {
         const values = await getPropertyValues(
@@ -412,6 +457,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "PURCHASE", match: "Apple" }]
         );
         expect(values[profile.guid]).toEqual([4]);
+        expect(values[otherProfile.guid]).toEqual([2]);
       });
       test("string is case sensitive", async () => {
         // TODO: is this the right behavior?
@@ -424,6 +470,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "PURCHASE", match: "apple" }]
         );
         expect(values[profile.guid]).toEqual([6]);
+        expect(values[otherProfile.guid]).toEqual([5]);
       });
       test("DATE", async () => {
         const values = await getPropertyValues(
@@ -435,6 +482,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "DATE", match: "2020-02-15" }]
         );
         expect(values[profile.guid]).toEqual([5]);
+        expect(values[otherProfile.guid]).toEqual([5]);
       });
       test("timestamp", async () => {
         const values = await getPropertyValues(
@@ -446,6 +494,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "STAMP", match: "2020-02-15 12:13:14" }]
         );
         expect(values[profile.guid]).toEqual([5]);
+        expect(values[otherProfile.guid]).toEqual([5]);
       });
       test("float", async () => {
         const values = await getPropertyValues(
@@ -457,6 +506,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "AMOUNT", match: "1.54" }]
         );
         expect(values[profile.guid]).toEqual([4]);
+        expect(values[otherProfile.guid]).toEqual([4]);
       });
     });
 
@@ -472,6 +522,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "ID", match: "15" }]
         );
         expect(values[profile.guid]).toEqual([1]);
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("string", async () => {
         const values = await getPropertyValues(
@@ -483,6 +534,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "PURCHASE", match: "App" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([3]);
       });
       test("string is not case sensitive", async () => {
         const values = await getPropertyValues(
@@ -494,6 +546,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "PURCHASE", match: "app" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([3]);
       });
       test("DATE", async () => {
         const values = await getPropertyValues(
@@ -505,6 +558,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "STAMP", match: "2020-02-15" }]
         );
         expect(values[profile.guid]).toEqual([1]);
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("timestamp", async () => {
         const values = await getPropertyValues(
@@ -516,6 +570,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "STAMP", match: "2020-02-15 12:13:14" }]
         );
         expect(values[profile.guid]).toEqual([1]);
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("float", async () => {
         const values = await getPropertyValues(
@@ -527,6 +582,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "AMOUNT", match: "1.54" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([1]);
       });
     });
 
@@ -542,6 +598,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "ID", match: "15" }]
         );
         expect(values[profile.guid]).toEqual([5]);
+        expect(values[otherProfile.guid]).toEqual([5]);
       });
       test("string", async () => {
         const values = await getPropertyValues(
@@ -553,6 +610,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "PURCHASE", match: "Oran" }]
         );
         expect(values[profile.guid]).toEqual([4]);
+        expect(values[otherProfile.guid]).toEqual([5]);
       });
       test("string is not case sensitive", async () => {
         const values = await getPropertyValues(
@@ -564,6 +622,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "PURCHASE", match: "oran" }]
         );
         expect(values[profile.guid]).toEqual([4]);
+        expect(values[otherProfile.guid]).toEqual([5]);
       });
       test("DATE", async () => {
         const values = await getPropertyValues(
@@ -575,6 +634,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "DATE", match: "2020-02-15" }]
         );
         expect(values[profile.guid]).toEqual([5]);
+        expect(values[otherProfile.guid]).toEqual([5]);
       });
       test("timestamp", async () => {
         const values = await getPropertyValues(
@@ -586,6 +646,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "STAMP", match: "2020-02-15 12:13:14" }]
         );
         expect(values[profile.guid]).toEqual([5]);
+        expect(values[otherProfile.guid]).toEqual([5]);
       });
       test("float", async () => {
         const values = await getPropertyValues(
@@ -597,6 +658,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "AMOUNT", match: "1.54" }]
         );
         expect(values[profile.guid]).toEqual([4]);
+        expect(values[otherProfile.guid]).toEqual([4]);
       });
     });
 
@@ -612,6 +674,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "ID", match: "15" }]
         );
         expect(values[profile.guid]).toEqual([1]);
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("string", async () => {
         const values = await getPropertyValues(
@@ -623,6 +686,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "PURCHASE", match: "Apple" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([3]);
       });
       test("string is case sensitive", async () => {
         // TODO: is this the right behavior?
@@ -635,6 +699,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "PURCHASE", match: "apple" }]
         );
         expect(values[profile.guid]).toBeUndefined();
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("DATE", async () => {
         const values = await getPropertyValues(
@@ -646,6 +711,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "DATE", match: "2020-02-15" }]
         );
         expect(values[profile.guid]).toEqual([1]);
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("timestamp", async () => {
         const values = await getPropertyValues(
@@ -657,6 +723,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "STAMP", match: "2020-02-15 12:13:14" }]
         );
         expect(values[profile.guid]).toEqual([1]);
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("float", async () => {
         const values = await getPropertyValues(
@@ -668,6 +735,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "AMOUNT", match: "1.54" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([1]);
       });
     });
 
@@ -683,6 +751,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "ID", match: "15" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([2]);
       });
       test("string", async () => {
         const values = await getPropertyValues(
@@ -694,6 +763,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "PURCHASE", match: "Apple" }]
         );
         expect(values[profile.guid]).toEqual([4]);
+        expect(values[otherProfile.guid]).toEqual([2]);
       });
       test("string is case sensitive", async () => {
         const values = await getPropertyValues(
@@ -705,6 +775,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "PURCHASE", match: "apple" }]
         );
         expect(values[profile.guid]).toBeUndefined();
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("DATE", async () => {
         const values = await getPropertyValues(
@@ -716,6 +787,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "DATE", match: "2020-02-15" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([2]);
       });
       test("timestamp", async () => {
         const values = await getPropertyValues(
@@ -727,6 +799,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "STAMP", match: "2020-02-15 12:13:14" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([2]);
       });
       test("float", async () => {
         const values = await getPropertyValues(
@@ -738,6 +811,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "AMOUNT", match: "1.54" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([2]);
       });
     });
 
@@ -753,6 +827,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "ID", match: "15" }]
         );
         expect(values[profile.guid]).toEqual([3]);
+        expect(values[otherProfile.guid]).toEqual([3]);
       });
       test("string", async () => {
         const values = await getPropertyValues(
@@ -764,6 +839,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "PURCHASE", match: "Apple" }]
         );
         expect(values[profile.guid]).toBeUndefined();
+        expect(values[otherProfile.guid]).toBeUndefined();
       });
       test("string is case sensitive", async () => {
         const values = await getPropertyValues(
@@ -775,6 +851,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "PURCHASE", match: "apple" }]
         );
         expect(values[profile.guid]).toEqual([6]); // weird ascii math
+        expect(values[otherProfile.guid]).toEqual([5]); // weird ascii math
       });
       test("DATE", async () => {
         const values = await getPropertyValues(
@@ -786,6 +863,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "DATE", match: "2020-02-15" }]
         );
         expect(values[profile.guid]).toEqual([3]);
+        expect(values[otherProfile.guid]).toEqual([3]);
       });
       test("timestamp", async () => {
         const values = await getPropertyValues(
@@ -797,6 +875,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "STAMP", match: "2020-02-15 12:13:14" }]
         );
         expect(values[profile.guid]).toEqual([3]);
+        expect(values[otherProfile.guid]).toEqual([3]);
       });
       test("float", async () => {
         const values = await getPropertyValues(
@@ -808,6 +887,7 @@ describe("mysql/table/profileProperties", () => {
           [{ op, key: "AMOUNT", match: "1.54" }]
         );
         expect(values[profile.guid]).toEqual([2]);
+        expect(values[otherProfile.guid]).toEqual([2]);
       });
     });
   });
@@ -822,7 +902,8 @@ describe("mysql/table/profileProperties", () => {
         sourceMapping: { id: "badName" },
         aggregationMethod: "exact",
       });
-      expect(values[profile.guid]).toEqual(undefined);
+      expect(values[profile.guid]).toBeUndefined();
+      expect(values[otherProfile.guid]).toBeUndefined();
     });
     test("null profile property", async () => {
       const values = await getPropertyValues({
@@ -830,7 +911,12 @@ describe("mysql/table/profileProperties", () => {
         sourceMapping: { id: "lastName" }, // set to NULL
         aggregationMethod: "exact",
       });
-      expect(values[profile.guid]).toEqual(undefined);
+      expect(values[profile.guid]).toBeUndefined();
+      expect(values[otherProfile.guid]).toBeUndefined();
     });
   });
 });
+
+function fixedLengthFloat(value: any, decimalDigits = 2) {
+  return parseFloat(parseFloat(value.toString()).toFixed(decimalDigits));
+}
