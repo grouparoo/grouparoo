@@ -92,7 +92,9 @@ export function makeWhereClause(
       match = `%${match.toString().toLowerCase()}%`;
       break;
     case FilterOperation.In:
-      op = "IN";
+      // for BigQuery we need to use UNNEST: `id in UNNEST(1,2,3)`
+      // See https://github.com/googleapis/nodejs-bigquery/blob/master/samples/queryParamsPositionalTypes.js#L37
+      op = "IN UNNEST";
       break;
     default:
       throw new Error(`Unknown filterOperation: ${filterOperation}`);
