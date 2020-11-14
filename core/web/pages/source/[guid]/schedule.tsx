@@ -215,7 +215,7 @@ export default function Page(props) {
                         recurringFrequencyMinutes) ||
                       !run ? (
                         schedule.recurring ? (
-                          <strong>ASAP</strong>
+                          <strong>Soon</strong>
                         ) : (
                           "N/A"
                         )

@@ -307,7 +307,7 @@ export function ScheduleRuns({ execApi }) {
                       recurringFrequencyMinutes) ||
                     !run ? (
                       source.schedule.recurring ? (
-                        <strong>ASAP</strong>
+                        <strong>Soon</strong>
                       ) : (
                         "N/A"
                       )
