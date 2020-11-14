@@ -185,6 +185,9 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @HasMany(() => ProfilePropertyRuleFilter)
   profilePropertyRuleFilters: ProfilePropertyRuleFilter[];
 
+  @HasMany(() => ProfileProperty)
+  ProfileProperties: ProfileProperty[];
+
   async parameterizedQueryFromProfile(q: string, profile: Profile) {
     return plugin.replaceTemplateProfileVariables(q, profile);
   }

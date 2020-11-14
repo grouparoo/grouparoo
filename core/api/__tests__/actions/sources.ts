@@ -1,5 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
+import { Op } from "sequelize";
 import {
   ProfileProperty,
   ProfilePropertyRule,
@@ -304,23 +305,30 @@ describe("actions/sources", () => {
 
         const profile = await helper.factories.profile();
         await profile.buildNullProperties();
-        const rule = await ProfilePropertyRule.findOne({
+        const emailRule = await ProfilePropertyRule.findOne({
           where: { key: "email" },
         });
-        const property = await ProfileProperty.findOne({
-          where: {
-            profileGuid: profile.guid,
-            profilePropertyRuleGuid: rule.guid,
-          },
+        const firstNameRule = await ProfilePropertyRule.findOne({
+          where: { key: "firstName" },
         });
-        await property.update({ state: "pending" });
+        await ProfileProperty.update(
+          { state: "pending" },
+          {
+            where: {
+              profileGuid: profile.guid,
+              profilePropertyRuleGuid: {
+                [Op.in]: [emailRule.guid, firstNameRule.guid],
+              },
+            },
+          }
+        );
 
         const { error, counts } = await specHelper.runAction(
           "sources:countPending",
           connection
         );
         expect(error).toBeUndefined();
-        expect(counts[rule.sourceGuid]).toBe(1);
+        expect(counts[emailRule.sourceGuid]).toBe(1);
       });
     });
   });

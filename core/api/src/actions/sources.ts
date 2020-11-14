@@ -62,27 +62,27 @@ export class SourcesCountPending extends AuthenticatedAction {
   }
 
   async run() {
-    const rules = await ProfilePropertyRule.findAll();
-    const countsByRule = await ProfileProperty.findAll({
+    const countsBySource = await ProfilePropertyRule.findAll({
       attributes: [
-        "profilePropertyRuleGuid",
-        [api.sequelize.fn("count", "guid"), "count"],
+        "sourceGuid",
+        [
+          api.sequelize.fn(
+            "COUNT",
+            api.sequelize.fn("DISTINCT", api.sequelize.col("profileGuid"))
+          ),
+          "count",
+        ],
       ],
-      where: { state: "pending" },
-      group: ["profilePropertyRuleGuid"],
+      group: ["sourceGuid"],
+      include: [
+        { model: ProfileProperty, attributes: [], where: { state: "pending" } },
+      ],
+      raw: true,
     });
 
     const counts: { [sourceGuid: string]: number } = {};
-
-    countsByRule.forEach((record) => {
-      //@ts-ignore
-      const count: number = record.getDataValue("count");
-      const rule = rules.find(
-        (rule) => rule.guid === record.profilePropertyRuleGuid
-      );
-
-      if (!counts[rule.sourceGuid]) counts[rule.sourceGuid] = 0;
-      counts[rule.sourceGuid] += count;
+    countsBySource.forEach((record) => {
+      counts[record.sourceGuid] = record["count"];
     });
 
     return { counts };

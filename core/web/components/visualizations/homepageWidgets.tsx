@@ -345,6 +345,7 @@ export function ScheduleRuns({ execApi }) {
 const pendingImportSamples = [];
 export function PendingImports({ execApi }) {
   const [sources, setSources] = useState<Models.SourceType[]>([]);
+  const [pendingProfilesCount, setPendingProfilesCount] = useState(0);
   const [mostRecentImport, setMostRecentImport] = useState<Models.ImportType>();
   let timer;
 
@@ -364,6 +365,13 @@ export function PendingImports({ execApi }) {
   async function load() {
     const { sources }: Actions.SourcesList = await execApi("get", `/sources`, {
       state: "ready",
+    });
+
+    const {
+      total: _pendingProfilesCount,
+    }: Actions.ProfilesList = await execApi("get", "/profiles", {
+      state: "pending",
+      limit: 1,
     });
 
     const { counts }: Actions.SourcesCountPending = await execApi(
@@ -388,6 +396,7 @@ export function PendingImports({ execApi }) {
 
     setSources(sources);
     setMostRecentImport(imports[0]);
+    setPendingProfilesCount(_pendingProfilesCount);
   }
 
   if (sources.length === 0) {
@@ -401,7 +410,7 @@ export function PendingImports({ execApi }) {
   return (
     <Card>
       <Card.Body>
-        <Card.Title>Pending Profile Properties</Card.Title>
+        <Card.Title>Pending Profiles ({pendingProfilesCount})</Card.Title>
         <div style={{ height: 200 }}>
           <RollingChart
             data={pendingImportSamples}
