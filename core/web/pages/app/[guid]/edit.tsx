@@ -94,7 +94,7 @@ export default function Page(props) {
         options: app.options,
       }
     );
-    if (response) {
+    if (response?.test) {
       setRanTest(true);
       setTestResult(response.test);
     }

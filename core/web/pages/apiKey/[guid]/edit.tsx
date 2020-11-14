@@ -44,11 +44,11 @@ export default function Page(props) {
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
-      const response: Actions.ApiKeyDestroy = await execApi(
+      const { success }: Actions.ApiKeyDestroy = await execApi(
         "delete",
         `/apiKey/${guid}`
       );
-      if (response) {
+      if (success) {
         successHandler.set({ message: "API Key deleted" });
         router.push("/apiKeys");
       } else {

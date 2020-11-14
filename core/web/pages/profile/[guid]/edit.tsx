@@ -86,11 +86,11 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response: Actions.ProfileDestroy = await execApi(
+      const { success }: Actions.ProfileDestroy = await execApi(
         "delete",
         `/profile/${profile.guid}`
       );
-      if (response) {
+      if (success) {
         router.push("/profiles");
       } else {
         setLoading(false);
@@ -100,14 +100,14 @@ export default function Page(props) {
 
   async function handleRemove(group) {
     setLoading(true);
-    const response: Actions.GroupRemoveProfile = await execApi(
+    const { success }: Actions.GroupRemoveProfile = await execApi(
       "put",
       `/group/${group.guid}/remove`,
       {
         profileGuid: profile.guid,
       }
     );
-    if (response) {
+    if (success) {
       successHandler.set({
         message: `Profile Removed from Group ${group.name}`,
       });
@@ -122,14 +122,14 @@ export default function Page(props) {
     const groupGuid = form.elements[0].value;
 
     setLoading(true);
-    const response: Actions.GroupAddProfile = await execApi(
+    const { success }: Actions.GroupAddProfile = await execApi(
       "put",
       `/group/${groupGuid}/add`,
       {
         profileGuid: profile.guid,
       }
     );
-    if (response) {
+    if (success) {
       successHandler.set({
         message: `Profile added to Group!`,
       });

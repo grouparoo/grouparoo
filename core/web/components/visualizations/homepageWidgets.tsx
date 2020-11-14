@@ -28,11 +28,11 @@ export function BigNumber({ execApi, model, title, href = null }) {
   }
 
   async function load() {
-    const response: Actions.TotalsAction = await execApi("get", `/totals`, {
+    const { total }: Actions.TotalsAction = await execApi("get", `/totals`, {
       model,
     });
 
-    if (response) setTotal(response?.total);
+    if (total) setTotal(total);
   }
 
   return (
@@ -75,13 +75,16 @@ export function GroupsByNewestMember({ execApi }) {
   }
 
   async function load() {
-    const response: Actions.GroupsListByNewestMember = await execApi(
+    const {
+      groups,
+      newestMembersAdded,
+    }: Actions.GroupsListByNewestMember = await execApi(
       "get",
       `/groups/byNewestMember`
     );
 
-    if (response) setGroups(response?.groups);
-    if (response) setNewestMembersAdded(response?.newestMembersAdded);
+    if (groups) setGroups(groups);
+    if (newestMembersAdded) setNewestMembersAdded(newestMembersAdded);
   }
 
   if (groups.length === 0)

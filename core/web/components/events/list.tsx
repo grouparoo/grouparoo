@@ -70,16 +70,14 @@ export default function EventsList(props) {
 
   async function autocompleteProfilePropertySearch(match?) {
     setSearchLoading(true);
-    const response: Actions.EventAutocompleteType = await execApi(
+    const { types }: Actions.EventAutocompleteType = await execApi(
       "get",
       `/events/autocompleteType`,
       {
         match,
       }
     );
-    if (response.types) {
-      setAutoCompleteResults(response.types);
-    }
+    if (types) setAutoCompleteResults(types);
     setSearchLoading(false);
   }
 

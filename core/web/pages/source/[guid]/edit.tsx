@@ -110,11 +110,11 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response: Actions.SourceDestroy = await execApi(
+      const { success }: Actions.SourceDestroy = await execApi(
         "delete",
         `/source/${guid}`
       );
-      if (response) {
+      if (success) {
         successHandler.set({ message: "source deleted" });
         router.push("/sources");
       } else {
