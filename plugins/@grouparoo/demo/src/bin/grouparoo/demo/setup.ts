@@ -10,7 +10,7 @@ export class Console extends CLI {
   }
 
   async run() {
-    await init();
+    await init({ reset: true });
     await teams();
     return true;
   }
