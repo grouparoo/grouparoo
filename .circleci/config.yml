@@ -1150,7 +1150,7 @@ jobs:
             - 49:46:31:67:74:97:c4:66:44:79:89:67:29:41:89:96
       - run: git config --global user.email "hello@grouparoo.com"
       - run: git config --global user.name "Grouparoo Bot"
-      - run: npm install -g pnpm
+      - run: sudo npm install -g pnpm
       - run: pnpm run -r prepare
       - run: ./bin/publish
 workflows:
