@@ -450,7 +450,7 @@ export namespace ProfileOps {
       } else {
         profile = await Profile.create();
         profile = await profile.reload();
-        await addOrUpdateProperties(profile, uniquePropertiesHash, false);
+        await addOrUpdateProperties(profile, uniquePropertiesHash);
         await buildNullProperties(profile);
         isNew = true;
       }

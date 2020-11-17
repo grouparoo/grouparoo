@@ -10,7 +10,6 @@ import {
   Default,
   AfterCreate,
 } from "sequelize-typescript";
-import { Transaction } from "sequelize";
 import { task } from "actionhero";
 import { LoggedModel } from "../classes/loggedModel";
 import { GroupMember } from "./GroupMember";
