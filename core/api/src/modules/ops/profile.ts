@@ -450,6 +450,8 @@ export namespace ProfileOps {
       } else {
         profile = await Profile.create();
         profile = await profile.reload();
+        const { releaseLock } = await waitForLock(`profile:${profile.guid}`);
+        lockReleases.push(releaseLock);
         await addOrUpdateProperties(profile, uniquePropertiesHash, false);
         await buildNullProperties(profile);
         isNew = true;
