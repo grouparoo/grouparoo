@@ -3,11 +3,13 @@ import { api, specHelper } from "actionhero";
 import { Import } from "./../../../src/models/Import";
 import { Run } from "./../../../src/models/Run";
 import { Profile } from "./../../../src/models/Profile";
+import { Source } from "./../../../src/models/Source";
 import { ProfilePropertyRule } from "./../../../src/models/ProfilePropertyRule";
 
 let actionhero;
 let profile: Profile;
 let run: Run;
+let source: Source;
 
 describe("integration/runs/internalRun", () => {
   let rule: ProfilePropertyRule;
@@ -24,7 +26,7 @@ describe("integration/runs/internalRun", () => {
 
   describe("adding a new Profile Property will import and sync all profiles", () => {
     test("adding a profile property rule with a query creates a run and internalRun task", async () => {
-      const source = await helper.factories.source();
+      source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
       await source.bootstrapUniqueProfilePropertyRule(
         "userId",
@@ -64,6 +66,10 @@ describe("integration/runs/internalRun", () => {
       const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
       expect(foundTasks.length).toBe(1);
 
+      await specHelper.deleteEnqueuedTasks(
+        "run:internalRun",
+        foundTasks[0].args[0]
+      );
       await specHelper.runTask("run:internalRun", foundTasks[0].args[0]);
 
       const imports = await Import.findAll();
@@ -74,6 +80,11 @@ describe("integration/runs/internalRun", () => {
     test("the run will be complete when all imports are created", async () => {
       const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
       expect(foundTasks.length).toBe(2);
+
+      await specHelper.deleteEnqueuedTasks(
+        "run:internalRun",
+        foundTasks[1].args[0]
+      );
       await specHelper.runTask("run:internalRun", foundTasks[1].args[0]);
 
       await run.reload();
@@ -101,6 +112,56 @@ describe("integration/runs/internalRun", () => {
       expect(run.importsCreated).toBe(1);
       expect(run.profilesCreated).toBe(0);
       expect(run.profilesImported).toBe(1);
+    });
+  });
+
+  describe("with 2 new rules", () => {
+    beforeAll(async () => {
+      await api.resque.queue.connection.redis.flushdb();
+      await Run.truncate();
+    });
+
+    test("if a new profile property rule stops a run, both properties will be imported", async () => {
+      const firstNameRule = await ProfilePropertyRule.create({
+        sourceGuid: source.guid,
+        type: "string",
+        key: "firstName",
+        unique: false,
+      });
+      await firstNameRule.setOptions({ column: "firstName" });
+      await firstNameRule.update({ state: "ready" });
+
+      const lastNameRule = await ProfilePropertyRule.create({
+        sourceGuid: source.guid,
+        type: "string",
+        key: "lastName",
+        unique: false,
+      });
+      await lastNameRule.setOptions({ column: "lastName" });
+      await lastNameRule.update({ state: "ready" });
+
+      const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
+      expect(foundTasks.length).toBe(2);
+
+      const runs = await Run.findAll();
+      const firstNameRun = runs.find(
+        (r) => r.creatorGuid === firstNameRule.guid
+      );
+      const lastNameRun = runs.find((r) => r.creatorGuid === lastNameRule.guid);
+      expect(runs.length).toBe(2);
+      expect(firstNameRun.state).toBe("stopped");
+      expect(lastNameRun.state).toBe("running");
+
+      await specHelper.runTask("run:internalRun", {
+        runGuid: lastNameRun.guid,
+      });
+
+      // both new properties are marked as pending
+      const properties = await profile.properties();
+      expect(properties.userId.state).toBe("ready");
+      expect(properties.email.state).toBe("ready");
+      expect(properties.firstName.state).toBe("pending");
+      expect(properties.lastName.state).toBe("pending");
     });
   });
 });

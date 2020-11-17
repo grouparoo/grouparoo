@@ -38,10 +38,21 @@ export namespace ProfileOps {
         order: [["position", "ASC"]],
       }));
 
+    const rules = await ProfilePropertyRule.findAll();
+
     const hash: ProfilePropertyType = {};
+
     for (const i in profileProperties) {
       try {
-        const rule = await profileProperties[i].cachedProfilePropertyRule();
+        const rule = rules.find(
+          (r) => r.guid === profileProperties[i].profilePropertyRuleGuid
+        );
+        if (!rule) {
+          throw new Error(
+            `cannot find Profile Property Rule for ${profileProperties[i].profilePropertyRuleGuid}`
+          );
+        }
+
         const key = rule.key;
         if (!hash[key]) {
           hash[key] = {
@@ -107,9 +118,7 @@ export namespace ProfileOps {
     // ignore reserved property key
     if (key === "_meta") return;
 
-    const profilePropertyRules = await ProfilePropertyRule.cached();
-    const rule = profilePropertyRules[key];
-
+    const rule = await ProfilePropertyRule.findOne({ where: { key } });
     if (!rule) {
       throw new Error(`cannot find a profile property rule for key ${key}`);
     }
@@ -254,12 +263,8 @@ export namespace ProfileOps {
    * Remove a Property on this Profile
    */
   export async function removeProperty(profile: Profile, key: string) {
-    const profilePropertyRules = await ProfilePropertyRule.cached();
-    const rule = profilePropertyRules[key];
-
-    if (!rule) {
-      return;
-    }
+    const rule = await ProfilePropertyRule.findOne({ where: { key } });
+    if (!rule) return;
 
     const properties = await ProfileProperty.findAll({
       where: { profileGuid: profile.guid, profilePropertyRuleGuid: rule.guid },
@@ -284,13 +289,15 @@ export namespace ProfileOps {
 
   export async function buildNullProperties(profile: Profile, state = "ready") {
     const properties = await profile.properties();
-    const rules = await ProfilePropertyRule.cached();
+    const rules = await ProfilePropertyRule.findAll();
+
     let newPropertiesCount = 0;
-    for (const key in rules) {
-      if (!properties[key]) {
+    for (const i in rules) {
+      const rule = rules[i];
+      if (!properties[rule.key]) {
         await ProfileProperty.create({
           profileGuid: profile.guid,
-          profilePropertyRuleGuid: rules[key].guid,
+          profilePropertyRuleGuid: rule.guid,
           state,
           stateChangedAt: new Date(),
           valueChangedAt: new Date(),
@@ -383,17 +390,19 @@ export namespace ProfileOps {
     let profile: Profile;
     let isNew: boolean;
     let profileProperty: ProfileProperty;
-    const rules = await ProfilePropertyRule.cached();
+    const uniqueRules = await ProfilePropertyRule.findAll({
+      where: { unique: true },
+    });
     const uniquePropertiesHash = {};
 
-    Object.keys(rules).forEach((key) => {
-      if (rules[key].unique && hash[key]) {
-        uniquePropertiesHash[key] = hash[key];
+    uniqueRules.forEach((rule) => {
+      if (hash[rule.key] !== null && hash[rule.key] !== undefined) {
+        uniquePropertiesHash[rule.key] = hash[rule.key];
       }
-
-      // and the case when we are sending a profile guid directly
-      if (hash["guid"]) uniquePropertiesHash["guid"] = hash["guid"];
     });
+
+    // and the case when we are sending a profile guid directly
+    if (hash["guid"]) uniquePropertiesHash["guid"] = hash["guid"];
 
     if (Object.keys(uniquePropertiesHash).length === 0) {
       throw new Error(
@@ -427,9 +436,11 @@ export namespace ProfileOps {
       for (const i in keys) {
         const key = keys[i];
         const value = uniquePropertiesHash[key];
-        const rule = rules[key];
+        const rule = uniqueRules.find((r) => r.key === key);
 
-        const { releaseLock } = await waitForLock(`prp:${key}:${value}`);
+        const { releaseLock } = await waitForLock(
+          `profileProperty:${key}:${value}`
+        );
         lockReleases.push(releaseLock);
 
         profileProperty = await ProfileProperty.findOne({
@@ -467,14 +478,9 @@ export namespace ProfileOps {
    * Mark the profile and all of its properties as pending
    */
   export async function markPending(profile: Profile) {
-    const profilePropertyRuleGuidsToMakePending: string[] = [];
-    const cachedProfilePropertyRule = await ProfilePropertyRule.cached();
-    for (const guid in cachedProfilePropertyRule) {
-      const rule = cachedProfilePropertyRule[guid];
-      if (!rule.directlyMapped) {
-        profilePropertyRuleGuidsToMakePending.push(rule.guid);
-      }
-    }
+    const nonDirectlyMappedRules = await ProfilePropertyRule.findAll({
+      where: { directlyMapped: false },
+    });
 
     await ProfileProperty.update(
       { state: "pending" },
@@ -482,7 +488,7 @@ export namespace ProfileOps {
         where: {
           profileGuid: profile.guid,
           profilePropertyRuleGuid: {
-            [Op.in]: profilePropertyRuleGuidsToMakePending,
+            [Op.in]: nonDirectlyMappedRules.map((r) => r.guid),
           },
         },
       }

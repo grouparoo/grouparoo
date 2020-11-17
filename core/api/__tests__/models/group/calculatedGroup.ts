@@ -281,14 +281,9 @@ describe("models/group", () => {
     });
 
     test("group rules must have a related profileProperty Ryle", async () => {
-      try {
-        await group.setRules([
-          { key: "a", match: "cool", operation: { op: "eq" } },
-        ]);
-        throw new Error("should not get here");
-      } catch (error) {
-        expect(error.toString()).toMatch(/cannot find Profile Property Rule a/);
-      }
+      await expect(
+        group.setRules([{ key: "a", match: "cool", operation: { op: "eq" } }])
+      ).rejects.toThrow(/cannot find Profile Property Rule a/);
     });
 
     test("recalculating group membership will reuse existing groupMembers", async () => {

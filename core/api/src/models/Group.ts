@@ -438,8 +438,6 @@ export class Group extends LoggedModel<Group> {
     const wheres = [];
     const localNumbers = [].concat(numbers);
 
-    const profilePropertyRules = await ProfilePropertyRule.cached();
-
     for (const i in rules) {
       const rule = rules[i];
       const number = localNumbers.pop();
@@ -457,7 +455,9 @@ export class Group extends LoggedModel<Group> {
       const localWhereGroup = {};
       let rawValueMatch = {};
 
-      const profilePropertyRule = profilePropertyRules[key];
+      const profilePropertyRule = await ProfilePropertyRule.findOne({
+        where: { key },
+      });
       if (!profilePropertyRule && !topLevel) {
         throw new Error(`cannot find type for ProfilePropertyRule ${key}`);
       }
@@ -545,7 +545,7 @@ export class Group extends LoggedModel<Group> {
         !topLevel &&
         match !== null &&
         match !== undefined &&
-        profilePropertyRules[key].isArray &&
+        profilePropertyRule.isArray &&
         ["ne", "notLike", "notILike"].includes(operation.op)
       ) {
         let reverseMatchWhere = {

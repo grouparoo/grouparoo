@@ -158,16 +158,13 @@ describe("models/profile", () => {
     });
 
     test("it will throw an error if no unique profile properties are included", async () => {
-      try {
-        await ProfileOps.findOrCreateByUniqueProfileProperties({
+      await expect(
+        ProfileOps.findOrCreateByUniqueProfileProperties({
           color: ["orange"],
-        });
-        throw new Error("should not get here");
-      } catch (error) {
-        expect(error.message).toBe(
-          'there are no unique profile properties provided in {"color":["orange"]}'
-        );
-      }
+        })
+      ).rejects.toThrow(
+        'there are no unique profile properties provided in {"color":["orange"]}'
+      );
     });
 
     test("it will lock when creating new profiles so duplicate profiles are not created", async () => {
@@ -755,6 +752,8 @@ describe("models/profile", () => {
     let emailRule: ProfilePropertyRule;
 
     beforeAll(async () => {
+      await Profile.truncate();
+
       app = await App.create({
         name: "test app",
         type: "test-plugin-app",
@@ -833,6 +832,8 @@ describe("models/profile", () => {
     let source: Source;
 
     beforeAll(async () => {
+      await Profile.truncate();
+
       plugin.registerPlugin({
         name: "test-plugin",
         apps: [

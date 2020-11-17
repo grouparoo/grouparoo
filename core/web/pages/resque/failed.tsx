@@ -238,6 +238,9 @@ export default function ResqueFailedList(props) {
         </Modal.Header>
         <Modal.Body>
           <p>
+            <strong>Task Name</strong>: {focusedException.payload["class"]}
+          </p>
+          <p>
             <strong>Queue</strong>: {focusedException.queue}{" "}
           </p>
           <p>

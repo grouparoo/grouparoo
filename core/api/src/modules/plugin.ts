@@ -322,18 +322,14 @@ export namespace plugin {
   ): Promise<string> {
     if (string.indexOf("{{") < 0) return string;
 
-    const profilePropertyRules = await ProfilePropertyRule.cached();
-    for (const i in profilePropertyRules) {
-      if (profilePropertyRules[i].isArray === true) {
-        delete profilePropertyRules[i];
-      }
-    }
+    const profilePropertyRules = await ProfilePropertyRule.findAll({
+      where: { isArray: false },
+    });
 
     const data = {};
-    for (const i in profilePropertyRules) {
-      const rule = profilePropertyRules[i];
+    profilePropertyRules.forEach((rule) => {
       data[rule.key] = `{{ ${rule.guid} }}`;
-    }
+    });
 
     validateMustacheVariables(string, data);
     return Mustache.render(string, data);
@@ -348,12 +344,12 @@ export namespace plugin {
   ): Promise<string> {
     if (string.indexOf("{{") < 0) return string;
 
-    const profilePropertyRules = await ProfilePropertyRule.cached();
+    const profilePropertyRules = await ProfilePropertyRule.findAll();
+
     const data = {};
-    for (const i in profilePropertyRules) {
-      const rule = profilePropertyRules[i];
+    profilePropertyRules.forEach((rule) => {
       data[rule.guid] = `{{ ${rule.key} }}`;
-    }
+    });
 
     validateMustacheVariables(string, data);
     return Mustache.render(string, data);

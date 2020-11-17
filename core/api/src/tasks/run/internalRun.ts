@@ -5,7 +5,7 @@ import { Profile } from "../../models/Profile";
 import { plugin } from "../../modules/plugin";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { ProfilePropertyType } from "../../modules/ops/profile";
-import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+import { waitForLock } from "../../modules/locks";
 
 export class RunInternalRun extends Task {
   constructor() {
@@ -30,44 +30,14 @@ export class RunInternalRun extends Task {
     return simpleProperties;
   }
 
-  async run(params) {
-    const offset: number = params.offset || 0;
-    const limit: number =
-      params.limit ||
-      parseInt(
-        (await plugin.readSetting("core", "runs-profile-batch-size")).value
-      );
+  async updateProfileWithLock(profile: Profile, run: Run) {
+    const { releaseLock } = await waitForLock(`profile:${profile.guid}`);
 
-    const run = await Run.findOne({
-      where: { guid: params.runGuid },
-    });
-
-    if (run.state === "stopped") return;
-
-    await run.update(
-      {
-        groupMemberLimit: limit,
-        groupMemberOffset: offset,
-        groupMethod: "internalRun",
-      },
-      { silent: true }
-    );
-
-    // this run may be the one for a new profile property rule, and we cannot assume all the hooks have fired yet
-    await ProfilePropertyRule.clearCache();
-
-    const profiles = await Profile.findAll({
-      order: [["createdAt", "asc"]],
-      limit,
-      offset,
-    });
-
-    for (const i in profiles) {
-      const profile = profiles[i];
+    try {
       const oldProfileProperties = await profile.properties();
       const oldGroups = await profile.$get("groups");
 
-      await profile.buildNullProperties();
+      await profile.buildNullProperties("pending");
 
       await Import.create({
         profileGuid: profile.guid,
@@ -95,6 +65,43 @@ export class RunInternalRun extends Task {
       } else {
         await profile.markPending();
       }
+    } finally {
+      await releaseLock();
+    }
+  }
+
+  async run(params) {
+    const offset: number = params.offset || 0;
+    const limit: number =
+      params.limit ||
+      parseInt(
+        (await plugin.readSetting("core", "runs-profile-batch-size")).value
+      );
+
+    const run = await Run.scope(null).findOne({
+      where: { guid: params.runGuid },
+    });
+
+    if (run.state === "stopped") return;
+
+    await run.update(
+      {
+        groupMemberLimit: limit,
+        groupMemberOffset: offset,
+        groupMethod: "internalRun",
+      },
+      { silent: true }
+    );
+
+    const profiles = await Profile.findAll({
+      order: [["createdAt", "asc"]],
+      limit,
+      offset,
+    });
+
+    for (const i in profiles) {
+      const profile = profiles[i];
+      await this.updateProfileWithLock(profile, run);
     }
 
     await run.afterBatch();

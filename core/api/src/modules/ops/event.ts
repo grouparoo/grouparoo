@@ -1,10 +1,7 @@
 import { Event } from "../../models/Event";
 import { Profile } from "../../models/Profile";
 import { ProfileProperty } from "../../models/ProfileProperty";
-import {
-  ProfilePropertyRule,
-  CachedProfilePropertyRule,
-} from "../../models/ProfilePropertyRule";
+import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
 import { ProfileOps } from "../ops/profile";
 import { Op } from "sequelize";
 import { utils } from "actionhero";
@@ -19,14 +16,14 @@ export namespace EventOps {
     identifyingProfilePropertyRuleGuid: string,
     isRetry = false
   ): Promise<Profile> {
-    // find the cached profile property rule
-    const profilePropertyRules = await ProfilePropertyRule.cached();
-    const profilePropertyRuleCacheKey = Object.keys(profilePropertyRules).find(
-      (key) =>
-        profilePropertyRules[key].guid === identifyingProfilePropertyRuleGuid
-    );
-    const profilePropertyRule =
-      profilePropertyRules[profilePropertyRuleCacheKey];
+    const profilePropertyRule = await ProfilePropertyRule.findOne({
+      where: { guid: identifyingProfilePropertyRuleGuid },
+    });
+    if (!profilePropertyRule) {
+      throw new Error(
+        `cannot find Profile Property Rule for identifyingProfilePropertyRuleGuid ${identifyingProfilePropertyRuleGuid}`
+      );
+    }
 
     let profile: Profile;
     try {
@@ -67,7 +64,7 @@ export namespace EventOps {
 
   async function associateEventWithProfileGuid(
     event: Event,
-    profilePropertyRule: CachedProfilePropertyRule
+    profilePropertyRule: ProfilePropertyRule
   ) {
     // we are already identified
     try {
@@ -87,7 +84,7 @@ export namespace EventOps {
 
   async function associateEventWithUserId(
     event: Event,
-    profilePropertyRule: CachedProfilePropertyRule
+    profilePropertyRule: ProfilePropertyRule
   ) {
     // we have a userId (primaryIdentifyingProfilePropertyRule)
     let profile = await Profile.findOne({
@@ -142,7 +139,7 @@ export namespace EventOps {
 
   async function associateEventWithAnonymousId(
     event: Event,
-    profilePropertyRule: CachedProfilePropertyRule
+    profilePropertyRule: ProfilePropertyRule
   ) {
     // can we find the profile by anonymousId?
     let profile = await Profile.findOne({

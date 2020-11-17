@@ -241,12 +241,12 @@ export class Destination extends LoggedModel<Destination> {
     const destinationMappingOptions = await this.destinationMappingOptions(
       false
     );
-    const cachedProfilePropertyRules = await ProfilePropertyRule.cached();
+    const rules = await ProfilePropertyRule.findAll();
     const exportArrayProperties = await this.getExportArrayProperties();
 
     // check for array properties
     Object.values(mappings).forEach((k) => {
-      const profilePropertyRule = cachedProfilePropertyRules[k];
+      const profilePropertyRule = rules.find((r) => r.key === k);
       if (
         profilePropertyRule &&
         profilePropertyRule.isArray &&
@@ -266,7 +266,9 @@ export class Destination extends LoggedModel<Destination> {
         throw new Error(`${opt.key} is a required destination mapping option`);
       }
 
-      const profilePropertyRule = cachedProfilePropertyRules[mappings[opt.key]];
+      const profilePropertyRule = rules.find(
+        (r) => r.key === mappings[opt.key]
+      );
       const validDestinationTypes = profilePropertyRule?.type
         ? Object.keys(destinationTypeConversions[profilePropertyRule.type])
         : [];
@@ -281,7 +283,9 @@ export class Destination extends LoggedModel<Destination> {
     // known
     for (const i in destinationMappingOptions.profilePropertyRules.known) {
       const opt = destinationMappingOptions.profilePropertyRules.known[i];
-      const profilePropertyRule = cachedProfilePropertyRules[mappings[opt.key]];
+      const profilePropertyRule = rules.find(
+        (r) => r.key === mappings[opt.key]
+      );
       const validDestinationTypes = profilePropertyRule?.type
         ? Object.keys(destinationTypeConversions[profilePropertyRule.type])
         : [];

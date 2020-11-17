@@ -39,8 +39,9 @@ export class ProfilesList extends AuthenticatedAction {
       params.searchValue &&
       params.searchValue.length > 0
     ) {
-      const rules = await ProfilePropertyRule.cached();
-      const rule = rules[params.searchKey];
+      const rule = await ProfilePropertyRule.findOne({
+        where: { key: params.searchKey },
+      });
       if (!rule) {
         throw new Error(
           `cannot find a profile property rule for ${params.searchKey}`

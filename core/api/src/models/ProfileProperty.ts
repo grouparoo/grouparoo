@@ -75,7 +75,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   profilePropertyRule: ProfilePropertyRule;
 
   async apiData() {
-    const rule = await this.cachedProfilePropertyRule();
+    const rule = await this.$get("profilePropertyRule");
 
     return {
       profileGuid: this.profileGuid,
@@ -94,42 +94,30 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
     };
   }
 
-  async cachedProfilePropertyRule() {
-    const profilePropertyRules = await ProfilePropertyRule.cached();
-    for (const i in profilePropertyRules) {
-      const rule = profilePropertyRules[i];
-      if (rule.guid === this.profilePropertyRuleGuid) {
-        return rule;
-      }
-    }
-
-    // the rule can't be found
-    await ProfilePropertyRule.clearCache();
-    throw new Error(
-      `cached profile property rule not found for this profilePropertyRuleGuid ${this.profilePropertyRuleGuid}`
-    );
-  }
-
   async getValue() {
-    const rule = await this.cachedProfilePropertyRule();
+    const rule = await this.ensureProfilePropertyRule();
     return ProfilePropertyOps.getValue(this.rawValue, rule.type);
   }
 
   async setValue(value: any) {
-    const rule = await this.cachedProfilePropertyRule();
+    const rule = await this.ensureProfilePropertyRule();
     this.rawValue = await ProfilePropertyOps.buildRawValue(value, rule.type);
     await this.validateValue();
   }
 
-  async logMessage(verb: "create" | "update" | "destroy") {
-    let rule;
-    let message = "";
-    const rules = await ProfilePropertyRule.cached();
-    for (let i in rules) {
-      if (rules[i].guid === this.profilePropertyRuleGuid) {
-        rule = rules[i];
-      }
+  async ensureProfilePropertyRule() {
+    const rule = await this.$get("profilePropertyRule");
+    if (!rule) {
+      throw new Error(
+        `profile property rule not found for profilePropertyRuleGuid ${this.profilePropertyRuleGuid}`
+      );
     }
+    return rule;
+  }
+
+  async logMessage(verb: "create" | "update" | "destroy") {
+    let message = "";
+    const rule = await this.ensureProfilePropertyRule();
 
     switch (verb) {
       case "create":
@@ -155,13 +143,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   }
 
   async validateValue() {
-    const rule = await this.cachedProfilePropertyRule();
-
-    if (!rule) {
-      throw new Error(
-        `(validation) profile property rule is not defined for key`
-      );
-    }
+    const rule = await this.ensureProfilePropertyRule();
 
     // null values are always "unique", even for unique profile properties
     if (this.rawValue === null || this.rawValue === undefined) {

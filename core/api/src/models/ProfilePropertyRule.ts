@@ -18,7 +18,7 @@ import {
   BeforeCreate,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
-import { env, api, cache, config } from "actionhero";
+import { env, api, config } from "actionhero";
 import { plugin } from "../modules/plugin";
 import { LoggedModel } from "../classes/loggedModel";
 import { Profile } from "./Profile";
@@ -62,19 +62,6 @@ export const ProfilePropertyRuleTypes = [
 ] as const;
 
 const CACHE_TTL = env === "test" ? -1 : 1000 * 30;
-const CACHE_KEY = `grouparoo:profilePropertyRules`;
-
-export interface CachedProfilePropertyRule {
-  guid: ProfilePropertyRule["guid"];
-  key: ProfilePropertyRule["key"];
-  type: ProfilePropertyRule["type"];
-  unique: ProfilePropertyRule["unique"];
-  isArray: ProfilePropertyRule["isArray"];
-  directlyMapped: ProfilePropertyRule["directlyMapped"];
-  identifying: ProfilePropertyRule["identifying"];
-  sourceGuid: ProfilePropertyRule["sourceGuid"];
-  appGuid: string;
-}
 
 export interface SimpleProfilePropertyRuleOptions
   extends OptionHelper.SimpleOptions {}
@@ -254,10 +241,12 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       options,
       allowEmpty
     );
+
     if (CACHE_TTL > 0) {
       await client.set(cacheKey, "true");
       await client.expire(cacheKey, CACHE_TTL / 1000);
     }
+
     return response;
   }
 
@@ -474,11 +463,6 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     }
   }
 
-  @AfterSave
-  static async clearCacheAfterSave() {
-    return this.clearCache();
-  }
-
   @BeforeDestroy
   static async ensureNotInUse(instance: ProfilePropertyRule) {
     const groupRule = await GroupRule.findOne({
@@ -534,57 +518,13 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   @AfterDestroy
-  static async clearCacheAfterDestroy(
+  static async destroyProfileProperties(
     instance: ProfilePropertyRule,
     { transaction }
   ) {
-    await this.clearCache();
     await ProfileProperty.destroy({
       where: { profilePropertyRuleGuid: instance.guid },
       transaction,
     });
-  }
-
-  static async clearCache() {
-    await cache.destroy(CACHE_KEY);
-  }
-
-  static async cached(): Promise<{
-    [guid: string]: CachedProfilePropertyRule;
-  }> {
-    try {
-      const cacheResponse = await cache.load(CACHE_KEY);
-      return cacheResponse.value;
-    } catch (error) {
-      const message = (error?.message || "").toString();
-      if (message === "Object not found" || message === "Object expired") {
-        const instances = await ProfilePropertyRule.findAll({
-          order: [["key", "asc"]],
-          include: [Source],
-        });
-
-        const rulesHash = {};
-
-        instances.map((rule) => {
-          rulesHash[rule.key] = <CachedProfilePropertyRule>{
-            guid: rule.guid,
-            key: rule.key,
-            type: rule.type,
-            unique: rule.unique,
-            isArray: rule.isArray,
-            identifying: rule.identifying,
-            directlyMapped: rule.directlyMapped,
-            sourceGuid: rule.sourceGuid,
-            appGuid: rule.source.appGuid,
-          };
-        });
-
-        await cache.save(CACHE_KEY, rulesHash, CACHE_TTL);
-
-        return rulesHash;
-      } else {
-        throw error;
-      }
-    }
   }
 }
