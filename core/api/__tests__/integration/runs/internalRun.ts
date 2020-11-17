@@ -64,6 +64,10 @@ describe("integration/runs/internalRun", () => {
       const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
       expect(foundTasks.length).toBe(1);
 
+      await specHelper.deleteEnqueuedTasks(
+        "run:internalRun",
+        foundTasks[0].args[0]
+      );
       await specHelper.runTask("run:internalRun", foundTasks[0].args[0]);
 
       const imports = await Import.findAll();
@@ -74,6 +78,11 @@ describe("integration/runs/internalRun", () => {
     test("the run will be complete when all imports are created", async () => {
       const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
       expect(foundTasks.length).toBe(2);
+
+      await specHelper.deleteEnqueuedTasks(
+        "run:internalRun",
+        foundTasks[1].args[0]
+      );
       await specHelper.runTask("run:internalRun", foundTasks[1].args[0]);
 
       await run.reload();

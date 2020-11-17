@@ -47,6 +47,11 @@ export namespace ProfileOps {
         const rule = rules.find(
           (r) => r.guid === profileProperties[i].profilePropertyRuleGuid
         );
+        if (!rule) {
+          throw new Error(
+            `cannot find Profile Property Rule for ${profileProperties[i].profilePropertyRuleGuid}`
+          );
+        }
 
         const key = rule.key;
         if (!hash[key]) {

@@ -439,14 +439,10 @@ describe("models/profileProperty", () => {
         profileGuid: profile.guid,
         profilePropertyRuleGuid: "abc",
       });
-      try {
-        await profileProperty.setValue(true);
-        throw new Error("should not get here");
-      } catch (error) {
-        expect(error.message).toMatch(
-          /profile property rule not found for this profilePropertyRuleGuid/
-        );
-      }
+
+      await expect(profileProperty.setValue(true)).rejects.toThrow(
+        /profile property rule not found for profilePropertyRuleGuid/
+      );
     });
   });
 
