@@ -77,16 +77,11 @@ export class ImportCreate extends AuthenticatedAction {
 
     if (typeof properties === "string") properties = JSON.parse(properties);
 
-    const profilePropertyRules = await ProfilePropertyRule.cached();
+    const profilePropertyRules = await ProfilePropertyRule.findAll();
     let foundUniqueProperty = false;
-    for (const key in profilePropertyRules) {
-      if (profilePropertyRules[key].unique) {
-        if (properties[key]) {
-          foundUniqueProperty = true;
-          break;
-        }
-      }
-    }
+    profilePropertyRules.forEach((rule) => {
+      if (rule.unique && properties[rule.key]) foundUniqueProperty = true;
+    });
 
     if (!foundUniqueProperty) {
       throw new Error("no unique profile property included");

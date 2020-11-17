@@ -253,7 +253,7 @@ export namespace DestinationOps {
     const app = await destination.$get("app");
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);
-    const cachedProfileProperties = await ProfilePropertyRule.cached();
+    const rules = await ProfilePropertyRule.findAll();
     const destinationGroupMemberships = await destination.getDestinationGroupMemberships();
     const mapping = await destination.getMapping();
 
@@ -293,7 +293,7 @@ export namespace DestinationOps {
     }
 
     for (const k in mapping) {
-      const rule = cachedProfileProperties[mapping[k]];
+      const rule = rules.find((r) => r.key === mapping[k]);
       if (!rule) throw new Error(`cannot find rule for ${mapping[k]}`);
       const { type } = rule;
       mappedNewProfileProperties[k] = {

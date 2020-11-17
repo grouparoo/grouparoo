@@ -51,18 +51,19 @@ export class ProfileCompleteImport extends RetryableTask {
       }
     }
 
-    const profilePropertyRules = await ProfilePropertyRule.cached();
     const mergedValues = {};
     const imports = await profile.$get("imports", {
       where: { profileUpdatedAt: null },
       order: [["createdAt", "asc"]],
     });
 
+    const profilePropertyRules = await ProfilePropertyRule.findAll();
+
     for (const i in imports) {
       const data = imports[i].data;
       for (const key in data) {
         // only if we still have property
-        if (profilePropertyRules[key]) {
+        if (profilePropertyRules.find((r) => r.key === key)) {
           mergedValues[key] = data[key];
         }
       }

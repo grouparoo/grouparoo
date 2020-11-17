@@ -94,9 +94,6 @@ export class RunInternalRun extends Task {
       { silent: true }
     );
 
-    // this run may be the one for a new profile property rule, and we cannot assume all the hooks have fired yet
-    await ProfilePropertyRule.clearCache();
-
     const profiles = await Profile.findAll({
       order: [["createdAt", "asc"]],
       limit,
