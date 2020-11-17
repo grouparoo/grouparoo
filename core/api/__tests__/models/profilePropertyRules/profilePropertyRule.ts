@@ -162,6 +162,36 @@ describe("models/profilePropertyRule", () => {
       ).rejects.toThrow(/unique profile properties cannot be arrays/);
     });
 
+    test("a profile property rule cannot be made unique if there are non-unique values already", async () => {
+      const rule = await ProfilePropertyRule.create({
+        sourceGuid: source.guid,
+        key: "name",
+        type: "string",
+      });
+      await rule.setOptions({ column: "name" });
+      await rule.update({ state: "ready" });
+
+      const profileA = await helper.factories.profile();
+      const profileB = await helper.factories.profile();
+      const profileC = await helper.factories.profile();
+      await profileA.addOrUpdateProperties({ name: ["mario"] });
+      await profileB.addOrUpdateProperties({ name: ["toad"] });
+      await profileC.addOrUpdateProperties({ name: ["toad"] });
+
+      await expect(rule.update({ unique: true })).rejects.toThrow(
+        /cannot make this Profile Property Rule unique as there are 2 records with the value 'toad'/
+      );
+
+      await profileC.addOrUpdateProperties({ name: ["peach"] });
+
+      await rule.update({ unique: true }); // does not throw
+
+      await profileA.destroy();
+      await profileB.destroy();
+      await profileC.destroy();
+      await rule.destroy();
+    });
+
     test("only one profile property rule can be identifying", async () => {
       // the bootstrapped rule is already identifying
 
