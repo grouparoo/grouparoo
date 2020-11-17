@@ -5,7 +5,6 @@ import { Profile } from "../../models/Profile";
 import { plugin } from "../../modules/plugin";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { ProfilePropertyType } from "../../modules/ops/profile";
-import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
 import { waitForLock } from "../../modules/locks";
 
 export class RunInternalRun extends Task {
@@ -38,7 +37,7 @@ export class RunInternalRun extends Task {
       const oldProfileProperties = await profile.properties();
       const oldGroups = await profile.$get("groups");
 
-      await profile.buildNullProperties();
+      await profile.buildNullProperties("pending");
 
       await Import.create({
         profileGuid: profile.guid,
@@ -79,7 +78,7 @@ export class RunInternalRun extends Task {
         (await plugin.readSetting("core", "runs-profile-batch-size")).value
       );
 
-    const run = await Run.findOne({
+    const run = await Run.scope(null).findOne({
       where: { guid: params.runGuid },
     });
 
