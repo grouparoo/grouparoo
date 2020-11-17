@@ -6,6 +6,7 @@ import { plugin } from "../../modules/plugin";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { ProfilePropertyType } from "../../modules/ops/profile";
 import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+import { waitForLock } from "../../modules/locks";
 
 export class RunInternalRun extends Task {
   constructor() {
@@ -28,6 +29,46 @@ export class RunInternalRun extends Task {
     }
 
     return simpleProperties;
+  }
+
+  async updateProfileWithLock(profile: Profile, run: Run) {
+    const { releaseLock } = await waitForLock(`profile:${profile.guid}`);
+
+    try {
+      const oldProfileProperties = await profile.properties();
+      const oldGroups = await profile.$get("groups");
+
+      await profile.buildNullProperties();
+
+      await Import.create({
+        profileGuid: profile.guid,
+        profileAssociatedAt: new Date(),
+        oldProfileProperties: this.simplifyProfileProperties(
+          oldProfileProperties
+        ),
+        oldGroupGuids: oldGroups.map((g) => g.guid),
+        rawData: {},
+        data: {},
+        creatorType: "run",
+        creatorGuid: run.guid,
+      });
+
+      if (run.creatorType === "profilePropertyRule") {
+        const property = await ProfileProperty.findOne({
+          where: {
+            profileGuid: profile.guid,
+            profilePropertyRuleGuid: run.creatorGuid,
+          },
+        });
+
+        await property.update({ state: "pending" });
+        await profile.update({ state: "pending" });
+      } else {
+        await profile.markPending();
+      }
+    } finally {
+      await releaseLock();
+    }
   }
 
   async run(params) {
@@ -64,37 +105,7 @@ export class RunInternalRun extends Task {
 
     for (const i in profiles) {
       const profile = profiles[i];
-      const oldProfileProperties = await profile.properties();
-      const oldGroups = await profile.$get("groups");
-
-      await profile.buildNullProperties();
-
-      await Import.create({
-        profileGuid: profile.guid,
-        profileAssociatedAt: new Date(),
-        oldProfileProperties: this.simplifyProfileProperties(
-          oldProfileProperties
-        ),
-        oldGroupGuids: oldGroups.map((g) => g.guid),
-        rawData: {},
-        data: {},
-        creatorType: "run",
-        creatorGuid: run.guid,
-      });
-
-      if (run.creatorType === "profilePropertyRule") {
-        const property = await ProfileProperty.findOne({
-          where: {
-            profileGuid: profile.guid,
-            profilePropertyRuleGuid: run.creatorGuid,
-          },
-        });
-
-        await property.update({ state: "pending" });
-        await profile.update({ state: "pending" });
-      } else {
-        await profile.markPending();
-      }
+      await this.updateProfileWithLock(profile, run);
     }
 
     await run.afterBatch();

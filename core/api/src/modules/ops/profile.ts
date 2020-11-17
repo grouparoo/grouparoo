@@ -429,7 +429,9 @@ export namespace ProfileOps {
         const value = uniquePropertiesHash[key];
         const rule = rules[key];
 
-        const { releaseLock } = await waitForLock(`prp:${key}:${value}`);
+        const { releaseLock } = await waitForLock(
+          `profileProperty:${key}:${value}`
+        );
         lockReleases.push(releaseLock);
 
         profileProperty = await ProfileProperty.findOne({
