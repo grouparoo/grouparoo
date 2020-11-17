@@ -31,7 +31,8 @@ export async function internalRun(creatorType: string, creatorGuid: string) {
     "notice"
   );
 
-  await task.enqueue("run:internalRun", { runGuid: run.guid });
+  // we need to allow time to for the rest of the model update to complete (ie: this could be run after ProfilePropertyRule#updateOptions and we still need to wait for the state to change)
+  await task.enqueueIn(1000 * 5, "run:internalRun", { runGuid: run.guid });
 
   return run;
 }
