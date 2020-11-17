@@ -415,6 +415,32 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   @BeforeSave
+  static async ensureUniqueProperties(instance: ProfilePropertyRule) {
+    if (instance.changed("unique") && instance.unique) {
+      const valueCounts = await ProfileProperty.findAll({
+        attributes: [
+          "rawValue",
+          [api.sequelize.fn("COUNT", api.sequelize.col("rawValue")), "count"],
+        ],
+        group: ["rawValue"],
+        where: { profilePropertyRuleGuid: instance.guid },
+        having: api.sequelize.where(
+          api.sequelize.fn("COUNT", api.sequelize.col("rawValue")),
+          { [Op.gt]: 1 }
+        ),
+        limit: 1,
+        raw: true,
+      });
+
+      if (valueCounts.length > 0) {
+        throw new Error(
+          `cannot make this Profile Property Rule unique as there are ${valueCounts[0]["count"]} records with the value \'${valueCounts[0]["rawValue"]}\'`
+        );
+      }
+    }
+  }
+
+  @BeforeSave
   static async ensureOneIdentifyingProperty(instance: ProfilePropertyRule) {
     if (instance.identifying) {
       const otherIdentifyingRulesCount = await ProfilePropertyRule.count({
