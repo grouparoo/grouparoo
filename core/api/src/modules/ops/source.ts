@@ -327,7 +327,6 @@ export namespace SourceOps {
       await LoggedModel.logCreate(rule, {});
       // @ts-ignore
       await rule.save({ hooks: false });
-      await ProfilePropertyRule.clearCacheAfterSave();
 
       // build the default options
       const { pluginConnection } = await source.getPlugin();
