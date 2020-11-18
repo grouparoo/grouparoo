@@ -1,6 +1,6 @@
 import { CLI, log } from "actionhero";
 import { teams } from "../../../teams";
-import { users, purchases } from "../../../sample_data";
+import { users, purchases, stopRuns } from "../../../sample_data";
 import { groups } from "../../../groups";
 import { events } from "../../../events";
 import { init } from "../../../util/shared";
@@ -27,6 +27,7 @@ export class Console extends CLI {
     await purchases({ scale });
     await events({ scale });
     await groups();
+    await stopRuns();
     return true;
   }
 }

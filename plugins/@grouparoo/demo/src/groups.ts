@@ -84,6 +84,8 @@ export async function groups() {
   for (const definition of GROUP_DEFINITIONS) {
     await createGroup(definition);
   }
+  const groups = await Group.findAll();
+  for (const i in groups) groups[i].update({ state: "ready" });
 }
 
 async function createGroup(definition: GroupDefinition) {
