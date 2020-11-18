@@ -87,9 +87,12 @@ else
 fi
 
 # update the pnpm lockfile with the new versions
+echo "---"
 echo "Updating pnpm lockfile by re-installing"
+echo "---"
+
 git checkout master
-pnpm install
+pnpm install --prefer-frozen-lockfile --ignore-scripts
 git add pnpm-lock.yaml
 git commit -m "Update pnpm lockfile [ci skip]"
 git push
