@@ -214,7 +214,7 @@ export default function LogsList(props) {
 
 LogsList.hydrate = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { guid, limit, offset, topic, ownerGuid } = ctx.query;
+  const { guid, limit, offset, topic } = ctx.query;
   const { logs, total } = await execApi("get", `/logs`, {
     ownerGuid: guid,
     limit,
