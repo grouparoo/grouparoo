@@ -7,7 +7,7 @@ import {
   ensureBootstrapPropertyRule,
   RuleDefinition,
 } from "./util/propertyRules";
-import { App, Source, Schedule } from "@grouparoo/core";
+import { App, Source, Schedule, Run } from "@grouparoo/core";
 
 export const SCHEMA_NAME = "demo";
 export const USER_ID_PROPERTY_NAME = "userId";
@@ -117,7 +117,7 @@ export async function users(options: DataOptions = {}) {
   await createSource("users", "id");
   await createPropertyRules("users", USER_RULES);
   await setEmailAsIdentifying("users");
-  await createAndRunSchedule("users", "updated_at");
+  await createSchedule("users", "updated_at");
 }
 
 export async function purchases(options: DataOptions = {}) {
@@ -126,7 +126,7 @@ export async function purchases(options: DataOptions = {}) {
   await createPropertyRules("purchases", PURCHASE_RULES);
 }
 
-async function createAndRunSchedule(tableName: string, columnName: string) {
+async function createSchedule(tableName: string, columnName: string) {
   const source = await findSource(tableName);
   const where = { sourceGuid: source.guid };
   const found = await Schedule.scope(null).findOne({ where });
@@ -149,8 +149,6 @@ async function createAndRunSchedule(tableName: string, columnName: string) {
   if (!made) {
     throw new Error(`Schedule not created (${tableName})`);
   }
-
-  await runAction("schedule:run", { guid: made.guid });
 }
 
 async function createCsvTable(
@@ -249,6 +247,11 @@ export async function createPropertyRules(
   for (const rule of rules) {
     await createPropertyRule(source, rule);
   }
+}
+
+export async function stopRuns() {
+  const runs = await Run.findAll({ where: { state: "running" } });
+  for (const i in runs) await runs[i].stop();
 }
 
 async function setEmailAsIdentifying(tableName: string) {

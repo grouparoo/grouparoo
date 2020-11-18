@@ -45,7 +45,6 @@ export async function init(options: InitOptions = {}) {
     return;
   }
   envInit = true;
-  await api.resque.startQueue();
 
   if (options.reset) {
     await reset();
