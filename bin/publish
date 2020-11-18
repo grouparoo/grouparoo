@@ -95,5 +95,4 @@ git checkout master
 pnpm install --prefer-frozen-lockfile --ignore-scripts
 git add pnpm-lock.yaml
 git commit -m "Update pnpm lockfile [ci skip]"
-git push
 git push origin master
