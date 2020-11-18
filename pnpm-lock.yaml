@@ -125,6 +125,7 @@ importers:
       faker: 5.1.0
       fs-extra: 9.0.1
       ioredis: 4.19.2
+      ioredis-mock: 5.1.0_ioredis@4.19.2
       isomorphic-fetch: 3.0.0
       libphonenumber-js: 1.9.4
       md5: 2.3.0
@@ -211,6 +212,7 @@ importers:
       faker: 5.1.0
       fs-extra: 9.0.1
       ioredis: 4.19.2
+      ioredis-mock: ^5.1.0
       isomorphic-fetch: 3.0.0
       jest: 26.6.3
       jest-environment-webdriver: 0.2.0
