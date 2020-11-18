@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/files-local",
   "description": "The Grouparoo file transport for local file storage",
-  "version": "0.1.24-alpha.3",
+  "version": "0.1.24",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -34,7 +34,7 @@
     "actionhero": "24.0.4"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.1.24-alpha.3",
+    "@grouparoo/core": "^0.1.24",
     "@types/jest": "^26.0.14",
     "@types/node": "^14.11.8",
     "actionhero": "24.0.4",
