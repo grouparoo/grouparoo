@@ -2,7 +2,7 @@ import { URL } from "url";
 
 export const DEFAULT = {
   redis: () =>
-    !process.env.REDIS_URL || process.env.REDIS_URL.length === 0
+    process.env.REDIS_URL === "redis://mock" || process.env.REDIS_URL === "mock"
       ? MockRedisConfig()
       : RealRedisConfig(),
 };
