@@ -6,8 +6,7 @@ import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
 import Moment from "react-moment";
 import RollingChart from "./rollingChart";
 
-const TIMEOUT = 15 * 1000;
-const CHART_TIMEOUT = 5 * 1000;
+const TIMEOUT = 5 * 1000;
 const maxSampleLength = 20;
 
 export function BigNumber({ execApi, model, title, href = null }) {
@@ -362,7 +361,7 @@ export function PendingImports({ execApi }) {
 
   function startTimer() {
     load();
-    timer = setInterval(load, CHART_TIMEOUT);
+    timer = setInterval(load, TIMEOUT);
   }
 
   async function load() {
@@ -449,7 +448,7 @@ export function PendingExports({ execApi }) {
 
   function startTimer() {
     load();
-    timer = setInterval(load, CHART_TIMEOUT);
+    timer = setInterval(load, TIMEOUT);
   }
 
   async function load() {
