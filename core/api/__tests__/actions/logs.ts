@@ -6,6 +6,7 @@ describe("actions/logs", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
+    await helper.factories.profilePropertyRules();
   }, helper.setupTime);
 
   afterAll(async () => {
@@ -68,8 +69,10 @@ describe("actions/logs", () => {
       expect(logs.length).toBeGreaterThanOrEqual(3);
     });
 
-    test("a reader can ask for logs about a profile", async () => {
+    test("a reader can ask for logs about a profile and also see logs about properties", async () => {
       const profile = await helper.factories.profile();
+      await profile.buildNullProperties();
+
       connection.params = {
         csrfToken,
         ownerGuid: profile.guid,
@@ -81,9 +84,12 @@ describe("actions/logs", () => {
       );
 
       expect(error).toBeUndefined();
-      expect(logs.length).toBe(1);
-      expect(logs[0].topic).toBe("profile");
-      expect(logs[0].verb).toBe("create");
+
+      expect(logs.length).toBeGreaterThan(1);
+      expect(logs.reverse()[0].topic).toBe("profile");
+      expect(logs.reverse()[0].verb).toBe("create");
+      expect(logs.reverse()[1].topic).toBe("profileProperty");
+      expect(logs.reverse()[1].verb).toBe("create");
     });
   });
 });

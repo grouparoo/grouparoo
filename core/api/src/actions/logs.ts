@@ -1,5 +1,7 @@
 import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { ProfileProperty } from "../models/ProfileProperty";
 import { Log } from "../models/Log";
+import { Op } from "sequelize";
 
 export class LogsList extends AuthenticatedAction {
   constructor() {
@@ -34,7 +36,18 @@ export class LogsList extends AuthenticatedAction {
 
     if (params.topic) search.where["topic"] = params.topic;
     if (params.verb) search.where["verb"] = params.verb;
-    if (params.ownerGuid) search.where["ownerGuid"] = params.ownerGuid;
+    if (params.ownerGuid) {
+      const ownerGuids = [params.ownerGuid];
+
+      if (params.ownerGuid.match(/^pro_/)) {
+        const profileProperties = await ProfileProperty.findAll({
+          where: { profileGuid: params.ownerGuid },
+        });
+        profileProperties.forEach((prop) => ownerGuids.push(prop.guid));
+      }
+
+      search.where["ownerGuid"] = { [Op.in]: ownerGuids };
+    }
 
     const total = await Log.count(search);
     const logs = await Log.findAll(search);
