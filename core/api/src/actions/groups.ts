@@ -76,20 +76,21 @@ export class GroupsListByNewestMember extends AuthenticatedAction {
 
     const groupGuids = newGroupMembers.map((mem) => mem.groupGuid);
 
-    const groups = await Group.findAll({
-      where: { guid: { [Op.in]: groupGuids } },
-    });
-
-    groups.sort(
-      (a, b) => groupGuids.indexOf(a.guid) - groupGuids.indexOf(b.guid)
-    );
+    let groups = await Group.findAll();
+    groups = groups
+      .sort((a, b) => {
+        if (groupGuids.indexOf(a.guid) < 0) return 1;
+        if (groupGuids.indexOf(b.guid) < 0) return -1;
+        return groupGuids.indexOf(a.guid) - groupGuids.indexOf(b.guid);
+      })
+      .slice(0, params.limit);
 
     const newestMembersAdded: { [guid: string]: number } = {};
     newGroupMembers.forEach((g) => {
-      newestMembersAdded[g.groupGuid] = g
-        // @ts-ignore
-        .getDataValue("newestMemberAdded")
-        .getTime();
+      // @ts-ignore
+      const value: Date | string = g.getDataValue("newestMemberAdded"); // this may be a string if SQLite is used
+      newestMembersAdded[g.groupGuid] =
+        value instanceof Date ? value.getTime() : new Date(value).getTime();
     });
 
     return {

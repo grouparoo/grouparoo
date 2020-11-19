@@ -127,7 +127,11 @@ export function GroupsByNewestMember({ execApi }) {
                   </td>
                   <td>{group.profilesCount}</td>
                   <td>
-                    <Moment fromNow>{newestMembersAdded[group.guid]}</Moment>
+                    {newestMembersAdded[group.guid] ? (
+                      <Moment fromNow>{newestMembersAdded[group.guid]}</Moment>
+                    ) : (
+                      "No Group Members"
+                    )}
                   </td>
                 </tr>
               );
