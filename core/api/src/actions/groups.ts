@@ -87,10 +87,10 @@ export class GroupsListByNewestMember extends AuthenticatedAction {
 
     const newestMembersAdded: { [guid: string]: number } = {};
     newGroupMembers.forEach((g) => {
-      newestMembersAdded[g.groupGuid] = g
-        // @ts-ignore
-        .getDataValue("newestMemberAdded")
-        .getTime();
+      // @ts-ignore
+      const value: Date | string = g.getDataValue("newestMemberAdded"); // this may be a string if SQLite is used
+      newestMembersAdded[g.groupGuid] =
+        value instanceof Date ? value.getTime() : new Date(value).getTime();
     });
 
     return {
