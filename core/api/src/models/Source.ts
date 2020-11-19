@@ -31,6 +31,7 @@ import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { ProfilePropertyRuleFiltersWithKey } from "../classes/plugin";
 import { SourceOps } from "../modules/ops/source";
+import { LockableHelper } from "../modules/lockableHelper";
 
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}
@@ -72,6 +73,11 @@ export class Source extends LoggedModel<Source> {
   @Default("draft")
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  locked: boolean;
 
   @BelongsTo(() => App)
   app: App;
@@ -275,18 +281,6 @@ export class Source extends LoggedModel<Source> {
     return instance;
   }
 
-  @BeforeSave
-  static async ensureUniqueName(instance: Source) {
-    const count = await Source.count({
-      where: {
-        guid: { [Op.ne]: instance.guid },
-        name: instance.name,
-        state: { [Op.ne]: "draft" },
-      },
-    });
-    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
-  }
-
   @BeforeCreate
   static async ensurePluginConnection(instance: Source) {
     const { plugin } = await instance.getPlugin();
@@ -306,6 +300,11 @@ export class Source extends LoggedModel<Source> {
   @BeforeSave
   static async updateState(instance: App) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
+
+  @BeforeSave
+  static async noUpdateIfLocked(instance) {
+    LockableHelper.beforeSave(instance);
   }
 
   @BeforeDestroy

@@ -3,9 +3,11 @@ import {
   Column,
   AllowNull,
   BeforeSave,
+  Default,
   DataType,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
+import { LockableHelper } from "../modules/lockableHelper";
 
 export const settingTypes = ["string", "number", "boolean"] as const;
 
@@ -47,6 +49,11 @@ export class Setting extends LoggedModel<Setting> {
   @Column(DataType.ENUM(...settingTypes))
   type: typeof settingTypes[number];
 
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  locked: boolean;
+
   @Column
   title: string;
 
@@ -85,5 +92,10 @@ export class Setting extends LoggedModel<Setting> {
     if (!settingTypes.includes(instance.type)) {
       throw new Error(`${instance.type} is not a valid Setting type`);
     }
+  }
+
+  @BeforeSave
+  static async noUpdateIfLocked(instance) {
+    LockableHelper.beforeSave(instance);
   }
 }

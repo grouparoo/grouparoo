@@ -8,10 +8,12 @@ import {
   ForeignKey,
   IsLowercase,
   BeforeValidate,
+  Default,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { Team } from "./Team";
 import { TeamMemberOps } from "../modules/ops/teamMember";
+import { LockableHelper } from "../modules/lockableHelper";
 
 @Table({ tableName: "teamMembers", paranoid: false })
 export class TeamMember extends LoggedModel<TeamMember> {
@@ -23,6 +25,11 @@ export class TeamMember extends LoggedModel<TeamMember> {
   @Column
   @ForeignKey(() => Team)
   teamGuid: string;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  locked: boolean;
 
   @AllowNull(false)
   @Column
@@ -85,5 +92,10 @@ export class TeamMember extends LoggedModel<TeamMember> {
   @BeforeValidate
   static lowercaseEmail(instance: TeamMember) {
     if (instance.email) instance.email = instance.email.toLocaleLowerCase();
+  }
+
+  @BeforeSave
+  static async noUpdateIfLocked(instance) {
+    LockableHelper.beforeSave(instance);
   }
 }

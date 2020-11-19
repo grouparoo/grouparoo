@@ -34,6 +34,7 @@ import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { Mapping } from "./Mapping";
 import { ProfilePropertyRuleOps } from "../modules/ops/profilePropertyRule";
+import { LockableHelper } from "../modules/lockableHelper";
 
 export function profilePropertyRuleJSToSQLType(jsType: string) {
   const map = {
@@ -152,6 +153,11 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @AllowNull(false)
   @Default(false)
   @Column
+  locked: boolean;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
   identifying: boolean;
 
   @AllowNull(false)
@@ -215,8 +221,8 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     return OptionHelper.setOptions(this, options);
   }
 
-  async afterSetOptions() {
-    return ProfilePropertyRuleOps.enqueueRuns(this);
+  async afterSetOptions(hasChanges: boolean) {
+    if (hasChanges) await ProfilePropertyRuleOps.enqueueRuns(this);
   }
 
   async validateOptions(
@@ -373,20 +379,6 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   @BeforeSave
-  static async ensureUniqueKey(instance: ProfilePropertyRule) {
-    const count = await ProfilePropertyRule.count({
-      where: {
-        guid: { [Op.ne]: instance.guid },
-        key: instance.key,
-        state: { [Op.ne]: "draft" },
-      },
-    });
-    if (count > 0) {
-      throw new Error(`key "${instance.key}" is already in use`);
-    }
-  }
-
-  @BeforeSave
   static async ensureOptions(instance: ProfilePropertyRule) {
     const source = await Source.findByGuid(instance.sourceGuid);
     await source.validateOptions();
@@ -462,6 +454,11 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
         `${instance.key} is a reserved key and cannot be used as a profile property rule`
       );
     }
+  }
+
+  @BeforeSave
+  static async noUpdateIfLocked(instance) {
+    LockableHelper.beforeSave(instance);
   }
 
   @BeforeDestroy

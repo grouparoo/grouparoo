@@ -99,7 +99,7 @@ export namespace OptionHelper {
 
       // if there's an afterSetMapping hook
       if (typeof instance["afterSetOptions"] === "function") {
-        await instance["afterSetOptions"]();
+        await instance["afterSetOptions"](hasChanges);
       }
     } catch (error) {
       await transaction.rollback();

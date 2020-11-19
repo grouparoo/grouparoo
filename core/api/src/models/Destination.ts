@@ -32,6 +32,7 @@ import { ProfilePropertyRule } from "./ProfilePropertyRule";
 import { DestinationOps } from "./../modules/ops/destination";
 import { ExportOps } from "../modules/ops/export";
 import { destinationTypeConversions } from "../modules/destinationTypeConversions";
+import { LockableHelper } from "../modules/lockableHelper";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -69,6 +70,11 @@ export class Destination extends LoggedModel<Destination> {
   @AllowNull(false)
   @Column
   type: string;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  locked: boolean;
 
   @AllowNull(false)
   @Default("draft")
@@ -401,19 +407,6 @@ export class Destination extends LoggedModel<Destination> {
     return instance;
   }
 
-  @BeforeSave
-  static async ensureUniqueName(instance: Destination, { transaction }) {
-    const count = await Destination.count({
-      where: {
-        guid: { [Op.ne]: instance.guid },
-        name: instance.name,
-        state: { [Op.ne]: "draft" },
-      },
-      transaction,
-    });
-    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
-  }
-
   @BeforeCreate
   static async ensureAppReady(instance: Destination) {
     const app = await App.findByGuid(instance.appGuid);
@@ -447,6 +440,11 @@ export class Destination extends LoggedModel<Destination> {
   @BeforeSave
   static async updateState(instance: Destination) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
+
+  @BeforeSave
+  static async noUpdateIfLocked(instance) {
+    LockableHelper.beforeSave(instance);
   }
 
   @BeforeDestroy

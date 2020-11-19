@@ -33,6 +33,7 @@ import {
 import { ProfilePropertyRuleOpsDictionary } from "../modules/RuleOpsDictionary";
 import { StateMachine } from "./../modules/stateMachine";
 import { GroupOps } from "../modules/ops/group";
+import { LockableHelper } from "../modules/lockableHelper";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -126,6 +127,11 @@ export class Group extends LoggedModel<Group> {
   @Default("draft")
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  locked: boolean;
 
   @Column
   calculatedAt: Date;
@@ -622,21 +628,13 @@ export class Group extends LoggedModel<Group> {
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: Group, { transaction }) {
-    const count = await Group.count({
-      where: {
-        guid: { [Op.ne]: instance.guid },
-        name: instance.name,
-        state: { [Op.ne]: "draft" },
-      },
-      transaction,
-    });
-    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
+  static async updateState(instance: Group) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeSave
-  static async updateState(instance: Group) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  static async noUpdateIfLocked(instance) {
+    LockableHelper.beforeSave(instance);
   }
 
   @BeforeDestroy

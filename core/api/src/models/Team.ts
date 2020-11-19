@@ -16,6 +16,7 @@ import { TeamMember } from "./TeamMember";
 import { Permission, PermissionTopics } from "./Permission";
 import { AsyncReturnType } from "type-fest";
 import { Transaction } from "sequelize";
+import { LockableHelper } from "../modules/lockableHelper";
 
 @Table({ tableName: "teams", paranoid: false })
 export class Team extends LoggedModel<Team> {
@@ -112,6 +113,7 @@ export class Team extends LoggedModel<Team> {
   static async checkLockedPermissions(instance: Team) {
     if (
       instance.locked &&
+      api.codeConfig.allowLockedModelChanges === false &&
       !instance.isNewRecord &&
       (instance.permissionAllRead !== null ||
         instance.permissionAllWrite !== null)
@@ -183,11 +185,9 @@ export class Team extends LoggedModel<Team> {
     }
   }
 
-  @BeforeDestroy
-  static async checkLocked(instance: Team) {
-    if (instance.locked === true) {
-      throw new Error("you cannot delete this team");
-    }
+  @BeforeSave
+  static async noUpdateIfLocked(instance) {
+    LockableHelper.beforeSave(instance);
   }
 
   @BeforeDestroy

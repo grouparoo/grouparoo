@@ -25,6 +25,7 @@ import { Option } from "./Option";
 import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { ScheduleOps } from "../modules/ops/schedule";
+import { LockableHelper } from "../modules/lockableHelper";
 
 /**
  * Metadata and methods to return the options a Schedule for this connection/app.
@@ -84,6 +85,11 @@ export class Schedule extends LoggedModel<Schedule> {
   @Default("draft")
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  locked: boolean;
 
   @AllowNull(false)
   @Default(false)
@@ -199,6 +205,11 @@ export class Schedule extends LoggedModel<Schedule> {
     }
   }
 
+  @BeforeSave
+  static async noUpdateIfLocked(instance) {
+    LockableHelper.beforeSave(instance);
+  }
+
   @BeforeUpdate
   static async checkRecurringFrequency(instance: Schedule) {
     // we cannot use the @Min validator as null is also allowed
@@ -220,18 +231,6 @@ export class Schedule extends LoggedModel<Schedule> {
       const source = await Source.findByGuid(instance.sourceGuid);
       instance.name = `${source.name} schedule`;
     }
-  }
-
-  @BeforeSave
-  static async ensureUniqueName(instance: Schedule) {
-    const count = await Schedule.scope(null).count({
-      where: {
-        guid: { [Op.ne]: instance.guid },
-        name: instance.name,
-        state: { [Op.ne]: "draft" },
-      },
-    });
-    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
 
   @BeforeCreate

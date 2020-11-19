@@ -6,12 +6,15 @@ import {
   HasMany,
   AfterSave,
   AfterDestroy,
+  Default,
   BeforeValidate,
+  BeforeSave,
 } from "sequelize-typescript";
 import * as UUID from "uuid";
 import { LoggedModel } from "../classes/loggedModel";
 import { Permission, PermissionTopics } from "./Permission";
 import { AsyncReturnType } from "type-fest";
+import { LockableHelper } from "../modules/lockableHelper";
 
 @Table({ tableName: "apiKeys", paranoid: false })
 export class ApiKey extends LoggedModel<ApiKey> {
@@ -27,6 +30,11 @@ export class ApiKey extends LoggedModel<ApiKey> {
   @AllowNull(false)
   @Column
   apiKey: string;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  locked: boolean;
 
   @AllowNull(true)
   @Column
@@ -45,7 +53,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
       instance.apiKey = UUID.v4()
         .replace(/-/g, "")
         .replace(/_/g, "")
-        .toLocaleLowerCase();
+        .toLowerCase();
     }
   }
 
@@ -108,7 +116,10 @@ export class ApiKey extends LoggedModel<ApiKey> {
     return instance;
   }
 
-  // TODO: Cache these like Profile Property Rules for faster lookup
+  @BeforeSave
+  static async noUpdateIfLocked(instance) {
+    LockableHelper.beforeSave(instance);
+  }
 
   @AfterSave
   static async buildPermissions(instance: ApiKey, { transaction }) {
