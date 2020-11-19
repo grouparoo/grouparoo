@@ -2,7 +2,7 @@ import sharedExecSync from "./exec";
 import { api } from "actionhero";
 import Database from "./database";
 
-const LOG_LEVEL = 2;
+const LOG_LEVEL = 1;
 
 export function log(level: number, ...toLog) {
   if (LOG_LEVEL >= level) {
