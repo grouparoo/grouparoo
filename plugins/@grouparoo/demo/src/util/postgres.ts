@@ -1,6 +1,6 @@
 import { Client } from "pg";
 import { log, execSync, userCreatedAt, numberOfUsers } from "./shared";
-import { api } from "actionhero";
+import { api, config } from "actionhero";
 import parse from "csv-parse/lib/sync";
 import fs from "fs";
 import path from "path";
@@ -13,11 +13,57 @@ export function readCsvTable(tableName) {
   return rows;
 }
 
+function findConfig() {
+  const connectionURL = process.env.DEMO_DATABASE_URL;
+  if (!connectionURL) {
+    // return the default
+    if (config.sequelize.dialect !== "postgres") {
+      throw new Error("Set DEMO_DATABASE_URL to a Postgres database.");
+    }
+    return api.sequelize.config;
+  }
+
+  let dialect = null;
+  const clientConfig = {
+    user: null,
+    password: null,
+    host: null,
+    database: null,
+    port: null,
+    ssl: false,
+    // statement_timeout: number,
+    // query_timeout: number,
+    // connectionTimeoutMillis: number,
+    // idle_in_transaction_session_timeout: number,
+  };
+  const parsed = new URL(connectionURL);
+  if (parsed.protocol) dialect = parsed.protocol.slice(0, -1);
+  if (parsed.username) clientConfig.user = parsed.username;
+  if (parsed.password) clientConfig.password = parsed.password;
+  if (parsed.hostname) clientConfig.host = parsed.hostname;
+  if (parsed.port) clientConfig.port = parsed.port;
+  if (parsed.pathname) clientConfig.database = parsed.pathname.substring(1);
+
+  const search_ssl = parsed.searchParams.get("ssl");
+  const search_sslmode = parsed.searchParams.get("sslmode");
+  if (search_ssl) clientConfig.ssl = search_ssl === "true";
+  if (search_sslmode) {
+    clientConfig.ssl =
+      search_sslmode === "true" || search_sslmode === "required";
+  }
+  if (dialect === "postgresql") dialect = "postgres";
+
+  if (dialect !== "postgres") {
+    throw new Error("Set DEMO_DATABASE_URL to a Postgres database.");
+  }
+  return clientConfig;
+}
+
 export default class Postgres {
   client: Client;
   config: { [key: string]: any };
   constructor(schema) {
-    this.config = Object.assign({}, api.sequelize.config, { schema });
+    this.config = Object.assign({}, findConfig(), { schema });
     this.client = null;
   }
 
@@ -48,13 +94,13 @@ export default class Postgres {
     return this.client;
   }
 
-  async query(level, one, two = null) {
-    log(level, one, two);
+  async query(level, sql, params = null) {
+    log(level, sql, params);
     const client = await this.connect();
-    if (two) {
-      return client.query(one, two);
+    if (params) {
+      return client.query(sql, params);
     }
-    return client.query(one);
+    return client.query(sql);
   }
 
   async createCsvTable(
