@@ -1,8 +1,8 @@
 import sharedExecSync from "./exec";
-import { api, config } from "actionhero";
-import Database from "./postgres";
+import { api } from "actionhero";
+import Database from "./database";
 
-const LOG_LEVEL = 1;
+const LOG_LEVEL = 2;
 
 export function log(level: number, ...toLog) {
   if (LOG_LEVEL >= level) {
@@ -53,20 +53,8 @@ export async function init(options: InitOptions = {}) {
 
 export async function reset() {
   // Database
-  const db = new Database("public");
-  await db.connect();
-  const skipTables = ["sequelizemeta"];
-  const sql =
-    "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_catalog = $1 AND table_schema = $2";
-  const result = await db.query(1, sql, [db.config.database, db.config.schema]);
-  for (const row of result.rows) {
-    if (skipTables.includes(row.table_name.toLowerCase())) {
-      continue;
-    }
-    const sqlTable = `${db.config.schema}."${row.table_name}"`;
-    await db.query(2, `TRUNCATE TABLE ${sqlTable};`);
-  }
-  await db.disconnect();
+  const db = new Database();
+  await db.reset();
 
   // Redis
   await await api.resque.queue.connection.redis.flushdb();
