@@ -1,4 +1,4 @@
-import { helper } from "@grouparoo/spec-helper";
+import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import { Group } from "./../../../src/models/Group";
 import { Import } from "./../../../src/models/Import";
@@ -99,7 +99,7 @@ describe("tasks/group:run", () => {
       let foundTasks = [];
       let imports = [];
       await group.setRules([
-        { key: "email", match: "%@%", operation: { op: "iLike" } },
+        { key: "email", match: "%@%", operation: { op: "like" } },
       ]);
 
       expect(group.state).toBe("initializing");
@@ -139,6 +139,10 @@ describe("tasks/group:run", () => {
       expect(run.groupMemberLimit).toBe(100);
       expect(run.groupMemberOffset).toBe(0);
       expect(run.groupMethod).toBe("runRemoveGroupMembers");
+
+      // complete pending imports
+      await ImportWorkflow();
+
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:run", foundTasks[0].args[0]); // remove profiles, (none found, enqueue run state)
 
@@ -209,6 +213,10 @@ describe("tasks/group:run", () => {
       expect(foundTasks[0].args[0].method).toBe(
         "removePreviousRunGroupMembers"
       );
+
+      // complete pending imports
+      await ImportWorkflow();
+
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:run", foundTasks[0].args[0]); // remove profiles, (none found, enqueue run state)
 
@@ -283,6 +291,10 @@ describe("tasks/group:run", () => {
       expect(foundTasks[0].args[0].method).toBe(
         "removePreviousRunGroupMembers"
       );
+
+      // complete pending imports
+      await ImportWorkflow();
+
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:run", foundTasks[0].args[0]); // found none, enqueue state
 
@@ -339,6 +351,65 @@ describe("tasks/group:run", () => {
       const run = await Run.findOne({ where: { creatorGuid: group.guid } });
       expect(run.state).toBe("running");
       expect(run.force).toBe(true);
+    });
+
+    it("the group run will not complete until all imports are complete", async () => {
+      await group.setRules([
+        { key: "email", match: "%@%", operation: { op: "like" } },
+      ]);
+
+      expect(group.state).toBe("initializing");
+
+      let foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      await api.resque.queue.connection.redis.flushdb();
+      await specHelper.runTask("group:run", foundTasks[0].args[0]); // adding profiles (some found, enqueue add again)
+
+      foundTasks = await specHelper.findEnqueuedTasks("group:run");
+
+      const run = await Run.findByGuid(foundTasks[0].args[0].runGuid);
+      expect(run.state).toBe("running");
+
+      await api.resque.queue.connection.redis.flushdb();
+      await specHelper.runTask("group:run", foundTasks[0].args[0]); // adding profiles (none found, enqueue remove)
+
+      foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      await api.resque.queue.connection.redis.flushdb();
+      await specHelper.runTask("group:run", foundTasks[0].args[0]); // remove profiles, (none found, enqueue removePreviousRunGroupMembers)
+
+      foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      await api.resque.queue.connection.redis.flushdb();
+      await specHelper.runTask("group:run", foundTasks[0].args[0]); // remove profiles, (none found, enqueue run state)
+
+      await run.reload();
+      await group.reload();
+
+      expect(group.state).toBe("updating");
+      expect(run.state).toBe("running");
+
+      // check again
+
+      foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      await api.resque.queue.connection.redis.flushdb();
+      await specHelper.runTask("group:run", foundTasks[0].args[0]);
+
+      await run.reload();
+      await group.reload();
+
+      expect(group.state).toBe("updating");
+      expect(run.state).toBe("running");
+
+      // complete pending imports
+      await ImportWorkflow();
+
+      foundTasks = await specHelper.findEnqueuedTasks("group:run");
+      await api.resque.queue.connection.redis.flushdb();
+      await specHelper.runTask("group:run", foundTasks[0].args[0]);
+
+      await run.reload();
+      await group.reload();
+
+      expect(group.state).toBe("ready");
+      expect(run.state).toBe("complete");
     });
   });
 });

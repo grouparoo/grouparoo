@@ -136,9 +136,17 @@ export class RunGroup extends Task {
         destinationGuid,
       });
     } else {
-      await group.countComponentMembersFromRules();
-      await run.afterBatch("complete");
-      await group.update({ state: "ready" });
+      const pendingImports = await run.$count("imports", {
+        where: { groupsUpdatedAt: null },
+      });
+
+      // we don't want to denote the group as ready until all the imports are imported
+      if (pendingImports === 0) {
+        await run.afterBatch("complete");
+        await group.update({ state: "ready" });
+      } else {
+        await task.enqueueIn(config.tasks.timeout + 1, this.name, params);
+      }
     }
 
     return groupMembersCount;
