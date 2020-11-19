@@ -1,4 +1,4 @@
-import Database, { readCsvTable } from "./util/postgres";
+import Postgres, { readCsvTable } from "./util/postgres";
 import { log } from "./util/shared";
 import { runAction } from "./util/runAction";
 import {
@@ -160,7 +160,7 @@ async function createCsvTable(
   options: DataOptions = {}
 ) {
   log(0, `Adding Sample Data: ${tableName}`);
-  const db = new Database(SCHEMA_NAME);
+  const db = new Postgres(SCHEMA_NAME);
   await db.connect();
   await db.createCsvTable(
     tableName,
@@ -265,7 +265,7 @@ async function getApp() {
     type: "postgres",
   };
 
-  const db = new Database(SCHEMA_NAME);
+  const db = new Postgres(SCHEMA_NAME);
   const { host, port, database, schema, user, password } = db.getConfig();
   const appOptions = { host, port, database, schema, user, password };
   for (const key in appOptions) {
@@ -297,7 +297,7 @@ async function getApp() {
 
 export async function getPurchases(limit = null) {
   const out = [];
-  const db = new Database(SCHEMA_NAME);
+  const db = new Postgres(SCHEMA_NAME);
   const tableName = "purchases";
   const sqlTable = `${db.config.schema}."${tableName}"`;
   let sql = `SELECT * FROM ${sqlTable} ORDER BY created_at DESC`;
@@ -322,7 +322,7 @@ export async function getPurchaseCategories() {
 
 export async function dbPurchaseCategories() {
   const out = [];
-  const db = new Database(SCHEMA_NAME);
+  const db = new Postgres(SCHEMA_NAME);
   const tableName = "purchases";
   const sqlTable = `${db.config.schema}."${tableName}"`;
   const sql = `SELECT category FROM ${sqlTable} WHERE category IS NOT NULL GROUP BY category`;
