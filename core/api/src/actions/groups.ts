@@ -76,13 +76,14 @@ export class GroupsListByNewestMember extends AuthenticatedAction {
 
     const groupGuids = newGroupMembers.map((mem) => mem.groupGuid);
 
-    const groups = await Group.findAll({
-      where: { guid: { [Op.in]: groupGuids } },
-    });
-
-    groups.sort(
-      (a, b) => groupGuids.indexOf(a.guid) - groupGuids.indexOf(b.guid)
-    );
+    let groups = await Group.findAll();
+    groups = groups
+      .sort((a, b) => {
+        if (groupGuids.indexOf(a.guid) < 0) return 1;
+        if (groupGuids.indexOf(b.guid) < 0) return -1;
+        return groupGuids.indexOf(a.guid) - groupGuids.indexOf(b.guid);
+      })
+      .slice(0, params.limit);
 
     const newestMembersAdded: { [guid: string]: number } = {};
     newGroupMembers.forEach((g) => {
