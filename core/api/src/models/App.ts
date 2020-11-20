@@ -165,6 +165,7 @@ export class App extends LoggedModel<App> {
       icon,
       type: this.type,
       state: this.state,
+      locked: this.locked,
       options,
       provides,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,

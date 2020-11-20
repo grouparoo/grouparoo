@@ -122,6 +122,7 @@ export class Destination extends LoggedModel<Destination> {
       name: this.name,
       type: this.type,
       state: this.state,
+      locked: this.locked,
       app: app ? await app.apiData() : null,
       mapping,
       options,

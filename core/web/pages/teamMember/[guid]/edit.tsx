@@ -80,92 +80,94 @@ export default function Page(props) {
         </Col>
         <Col md={10}>
           <Form id="form" onSubmit={submit} autoComplete="off">
-            <Form.Group controlId="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                placeholder="Email"
-                value={teamMember.email}
-                onChange={update}
-                disabled={loading}
-              />
-              <Form.Control.Feedback type="invalid">
-                Email is required
-              </Form.Control.Feedback>
-            </Form.Group>
+            <fieldset disabled={teamMember.locked}>
+              <Form.Group controlId="email">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  placeholder="Email"
+                  value={teamMember.email}
+                  onChange={update}
+                  disabled={loading}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Email is required
+                </Form.Control.Feedback>
+              </Form.Group>
 
-            <Form.Group controlId="firstName">
-              <Form.Label>First Name</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                placeholder="First Name"
-                value={teamMember.firstName}
-                onChange={update}
-                disabled={loading}
-              />
-              <Form.Control.Feedback type="invalid">
-                First Name is required
-              </Form.Control.Feedback>
-            </Form.Group>
+              <Form.Group controlId="firstName">
+                <Form.Label>First Name</Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  placeholder="First Name"
+                  value={teamMember.firstName}
+                  onChange={update}
+                  disabled={loading}
+                />
+                <Form.Control.Feedback type="invalid">
+                  First Name is required
+                </Form.Control.Feedback>
+              </Form.Group>
 
-            <Form.Group controlId="lastName">
-              <Form.Label>Last Name</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                placeholder="Last Name"
-                value={teamMember.lastName}
-                onChange={update}
-                disabled={loading}
-              />
-              <Form.Control.Feedback type="invalid">
-                Last Name is required
-              </Form.Control.Feedback>
-            </Form.Group>
+              <Form.Group controlId="lastName">
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  placeholder="Last Name"
+                  value={teamMember.lastName}
+                  onChange={update}
+                  disabled={loading}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Last Name is required
+                </Form.Control.Feedback>
+              </Form.Group>
 
-            <Form.Group controlId="teamGuid">
-              <Form.Label>Team</Form.Label>
-              <Form.Control
-                as="select"
-                value={teamMember.teamGuid}
-                onChange={update}
+              <Form.Group controlId="teamGuid">
+                <Form.Label>Team</Form.Label>
+                <Form.Control
+                  as="select"
+                  value={teamMember.teamGuid}
+                  onChange={update}
+                  disabled={loading}
+                >
+                  {teams.map((team) => (
+                    <option key={`team-${team.guid}`} value={team.guid}>
+                      {team.name}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+
+              <Form.Group controlId="password">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="*"
+                  onChange={update}
+                  disabled={loading}
+                />
+              </Form.Group>
+
+              <LoadingButton variant="primary" disabled={loading} type="submit">
+                Update
+              </LoadingButton>
+              <br />
+              <br />
+              <LoadingButton
                 disabled={loading}
+                variant="danger"
+                size="sm"
+                onClick={() => {
+                  handleDelete();
+                }}
               >
-                {teams.map((team) => (
-                  <option key={`team-${team.guid}`} value={team.guid}>
-                    {team.name}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-
-            <Form.Group controlId="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="*"
-                onChange={update}
-                disabled={loading}
-              />
-            </Form.Group>
-
-            <LoadingButton variant="primary" disabled={loading} type="submit">
-              Update
-            </LoadingButton>
-            <br />
-            <br />
-            <LoadingButton
-              disabled={loading}
-              variant="danger"
-              size="sm"
-              onClick={() => {
-                handleDelete();
-              }}
-            >
-              Delete
-            </LoadingButton>
+                Delete
+              </LoadingButton>
+            </fieldset>
           </Form>
         </Col>
       </Row>

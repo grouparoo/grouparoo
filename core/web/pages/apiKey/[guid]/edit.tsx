@@ -90,73 +90,75 @@ export default function Page(props) {
       <ApiKeyTabs apiKey={apiKey} />
 
       <Form id="form" onSubmit={updateApiKey} autoComplete="off">
-        <Form.Group>
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            required
-            type="text"
-            placeholder="API Key Name"
+        <fieldset disabled={apiKey.locked}>
+          <Form.Group>
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              required
+              type="text"
+              placeholder="API Key Name"
+              disabled={loading}
+              value={apiKey.name}
+              onChange={(event) => {
+                const _apiKey = Object.assign({}, apiKey);
+                _apiKey.name = event.target.value;
+                setApiKey(_apiKey);
+              }}
+            />
+            <Form.Control.Feedback type="invalid">
+              Name is required
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>API Key</Form.Label>
+            <Form.Control
+              disabled
+              type="text"
+              placeholder="API Key"
+              value={apiKey.apiKey}
+            />
+          </Form.Group>
+
+          <p>
+            Try this API Key in the browser{" "}
+            <a
+              href={`/examples/events.html?apiKey=${apiKey.apiKey}`}
+              target="_new"
+            >
+              here
+            </a>
+            .
+          </p>
+
+          <h3>Permissions</h3>
+          <PermissionsList
+            permissions={apiKey.permissions}
+            permissionAllRead={apiKey.permissionAllRead}
+            permissionAllWrite={apiKey.permissionAllWrite}
+            updatePermission={updatePermission}
+            updatePermissionAll={updatePermissionAll}
+          />
+
+          <hr />
+
+          <LoadingButton variant="primary" type="submit" disabled={loading}>
+            Update
+          </LoadingButton>
+
+          <br />
+          <br />
+
+          <LoadingButton
             disabled={loading}
-            value={apiKey.name}
-            onChange={(event) => {
-              const _apiKey = Object.assign({}, apiKey);
-              _apiKey.name = event.target.value;
-              setApiKey(_apiKey);
+            variant="danger"
+            size="sm"
+            onClick={() => {
+              handleDelete();
             }}
-          />
-          <Form.Control.Feedback type="invalid">
-            Name is required
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>API Key</Form.Label>
-          <Form.Control
-            disabled
-            type="text"
-            placeholder="API Key"
-            value={apiKey.apiKey}
-          />
-        </Form.Group>
-
-        <p>
-          Try this API Key in the browser{" "}
-          <a
-            href={`/examples/events.html?apiKey=${apiKey.apiKey}`}
-            target="_new"
           >
-            here
-          </a>
-          .
-        </p>
-
-        <h3>Permissions</h3>
-        <PermissionsList
-          permissions={apiKey.permissions}
-          permissionAllRead={apiKey.permissionAllRead}
-          permissionAllWrite={apiKey.permissionAllWrite}
-          updatePermission={updatePermission}
-          updatePermissionAll={updatePermissionAll}
-        />
-
-        <hr />
-
-        <LoadingButton variant="primary" type="submit" disabled={loading}>
-          Update
-        </LoadingButton>
-
-        <br />
-        <br />
-
-        <LoadingButton
-          disabled={loading}
-          variant="danger"
-          size="sm"
-          onClick={() => {
-            handleDelete();
-          }}
-        >
-          Delete
-        </LoadingButton>
+            Delete
+          </LoadingButton>
+        </fieldset>
       </Form>
     </>
   );

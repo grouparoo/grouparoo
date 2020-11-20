@@ -70,6 +70,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
       guid: this.guid,
       name: this.name,
       apiKey: this.apiKey,
+      locked: this.locked,
       permissionAllRead: this.permissionAllRead,
       permissionAllWrite: this.permissionAllWrite,
       permissions: permissionsApiData,

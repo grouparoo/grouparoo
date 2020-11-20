@@ -175,289 +175,297 @@ export default function Page(props) {
         of these rules.
       </p>
       <Form inline autoComplete="off">
-        <Table bordered size="sm">
-          <thead>
-            <tr>
-              <th />
-              <th>
-                <strong>Profile Property</strong>
-              </th>
-              <th>
-                <strong>Operation</strong>
-              </th>
-              <th>
-                <strong># of Profiles</strong>
-              </th>
-              <th>&nbsp;</th>
-            </tr>
-          </thead>
+        <fieldset disabled={group.locked}>
+          <Table bordered size="sm">
+            <thead>
+              <tr>
+                <th />
+                <th>
+                  <strong>Profile Property</strong>
+                </th>
+                <th>
+                  <strong>Operation</strong>
+                </th>
+                <th>
+                  <strong># of Profiles</strong>
+                </th>
+                <th>&nbsp;</th>
+              </tr>
+            </thead>
 
-          <tbody>
-            {localRules.map((rule, idx) => {
-              let type: string;
-              profilePropertyRulesAndTopLevelGroupRules.forEach((r) => {
-                if (rule.key === r.key) {
-                  type = r.type;
+            <tbody>
+              {localRules.map((rule, idx) => {
+                let type: string;
+                profilePropertyRulesAndTopLevelGroupRules.forEach((r) => {
+                  if (rule.key === r.key) {
+                    type = r.type;
+                  }
+                });
+
+                if (ops[type] && rule.op) {
+                  if (ops[type].indexOf(rule.op) < 0) {
+                    rule.op = ops[type][0];
+                  }
                 }
-              });
 
-              if (ops[type] && rule.op) {
-                if (ops[type].indexOf(rule.op) < 0) {
-                  rule.op = ops[type][0];
+                let rowChanged = false;
+                if (!rulesAreEqual(group.rules[idx], localRules[idx])) {
+                  rowChanged = true;
+                  rowChanges = true;
                 }
-              }
 
-              let rowChanged = false;
-              if (!rulesAreEqual(group.rules[idx], localRules[idx])) {
-                rowChanged = true;
-                rowChanges = true;
-              }
+                return (
+                  <tr key={`rule-${rule.key}-${idx}`}>
+                    <td>
+                      <h5>
+                        <Badge variant={rowChanged ? "warning" : "light"}>
+                          {idx}
+                        </Badge>
+                      </h5>
+                    </td>
+                    <td>
+                      <Form.Group controlId={`${rule.key}-key-${idx}`}>
+                        <Form.Control
+                          as="select"
+                          value={rule.key}
+                          disabled={loading}
+                          onChange={(e: any) => {
+                            const _rules = [...localRules];
+                            rule.key = e.target.value;
+                            rule.operation.op = "exists"; // every type has an existence check
+                            rule.match = undefined;
+                            rule.relativeMatchNumber = undefined;
+                            rule.relativeMatchUnit = undefined;
+                            rule.relativeMatchDirection = undefined;
+                            rule.topLevel = topLevelGroupRules
+                              .map((tlgr) => tlgr.key)
+                              .includes(rule.key);
+                            _rules[idx] = rule;
+                            setLocalRules(_rules);
+                            autocompleteProfilePropertySearch(
+                              { key: e.target.value },
+                              "%"
+                            );
+                          }}
+                        >
+                          {profilePropertyRulesAndTopLevelGroupRules.map(
+                            (rule, idx) => (
+                              <Fragment key={`ruleKeyOpt-${rule.key}-${idx}`}>
+                                {idx === 0 ? (
+                                  <option disabled>
+                                    --- profile properties ---
+                                  </option>
+                                ) : null}
+                                {idx === profilePropertyRules.length ? (
+                                  <option disabled>
+                                    --- profile columns ---
+                                  </option>
+                                ) : null}
+                                <option>{rule.key}</option>
+                              </Fragment>
+                            )
+                          )}
+                        </Form.Control>
+                      </Form.Group>
+                    </td>
 
-              return (
-                <tr key={`rule-${rule.key}-${idx}`}>
-                  <td>
-                    <h5>
-                      <Badge variant={rowChanged ? "warning" : "light"}>
-                        {idx}
-                      </Badge>
-                    </h5>
-                  </td>
-                  <td>
-                    <Form.Group controlId={`${rule.key}-key-${idx}`}>
-                      <Form.Control
-                        as="select"
-                        value={rule.key}
-                        disabled={loading}
-                        onChange={(e: any) => {
-                          const _rules = [...localRules];
-                          rule.key = e.target.value;
-                          rule.operation.op = "exists"; // every type has an existence check
-                          rule.match = undefined;
-                          rule.relativeMatchNumber = undefined;
-                          rule.relativeMatchUnit = undefined;
-                          rule.relativeMatchDirection = undefined;
-                          rule.topLevel = topLevelGroupRules
-                            .map((tlgr) => tlgr.key)
-                            .includes(rule.key);
-                          _rules[idx] = rule;
-                          setLocalRules(_rules);
-                          autocompleteProfilePropertySearch(
-                            { key: e.target.value },
-                            "%"
-                          );
-                        }}
-                      >
-                        {profilePropertyRulesAndTopLevelGroupRules.map(
-                          (rule, idx) => (
-                            <Fragment key={`ruleKeyOpt-${rule.key}-${idx}`}>
-                              {idx === 0 ? (
-                                <option disabled>
-                                  --- profile properties ---
+                    <td>
+                      <Form.Group controlId={`${rule.key}-op-${idx}`}>
+                        <Form.Control
+                          as="select"
+                          value={rule.operation.op}
+                          disabled={loading}
+                          onChange={(e: any) => {
+                            const _rules = [...localRules];
+                            rule.operation.op = e.target.value;
+                            _rules[idx] = rule;
+                            setLocalRules(_rules);
+                          }}
+                        >
+                          <option disabled>(operation)</option>
+                          {ops[type]
+                            ? ops[type].map((operation) => (
+                                <option
+                                  value={operation.op}
+                                  key={`ruleKeyOpt-${rule.key}-${idx}-${operation.op}`}
+                                >
+                                  {operation.description}
                                 </option>
-                              ) : null}
-                              {idx === profilePropertyRules.length ? (
-                                <option disabled>
-                                  --- profile columns ---
-                                </option>
-                              ) : null}
-                              <option>{rule.key}</option>
-                            </Fragment>
-                          )
-                        )}
-                      </Form.Control>
-                    </Form.Group>
-                  </td>
+                              ))
+                            : null}
+                        </Form.Control>
+                        <span>&nbsp;</span>
 
-                  <td>
-                    <Form.Group controlId={`${rule.key}-op-${idx}`}>
-                      <Form.Control
-                        as="select"
-                        value={rule.operation.op}
-                        disabled={loading}
-                        onChange={(e: any) => {
-                          const _rules = [...localRules];
-                          rule.operation.op = e.target.value;
-                          _rules[idx] = rule;
-                          setLocalRules(_rules);
-                        }}
-                      >
-                        <option disabled>(operation)</option>
-                        {ops[type]
-                          ? ops[type].map((operation) => (
-                              <option
-                                value={operation.op}
-                                key={`ruleKeyOpt-${rule.key}-${idx}-${operation.op}`}
-                              >
-                                {operation.description}
-                              </option>
-                            ))
-                          : null}
-                      </Form.Control>
-                      <span>&nbsp;</span>
+                        {/* exists or not exists */}
+                        {["exists", "notExists"].includes(rule.operation.op) ? (
+                          <></>
+                        ) : null}
 
-                      {/* exists or not exists */}
-                      {["exists", "notExists"].includes(rule.operation.op) ? (
-                        <></>
-                      ) : null}
-
-                      {/* absolute dates */}
-                      {!["exists", "notExists"].includes(rule.operation.op) &&
-                      type === "date" &&
-                      !rule.operation.op.match(/relative_/) ? (
-                        <>
-                          <DatePicker
-                            selected={
-                              rule.match && rule.match !== "null"
-                                ? new Date(parseInt(rule.match))
-                                : null
-                            }
-                            onChange={(d: Date) => {
-                              const _rules = [...localRules];
-                              rule.match = d.getTime();
-                              _rules[idx] = rule;
-                              setLocalRules(_rules);
-                            }}
-                          />
-                        </>
-                      ) : null}
-
-                      {/* relative dates */}
-                      {!["exists", "notExists"].includes(rule.operation.op) &&
-                      type === "date" &&
-                      rule.operation.op.match(/relative_/) ? (
-                        <>
-                          <Form.Control
-                            type="number"
-                            disabled={loading}
-                            placeholder="(number)"
-                            value={rule.relativeMatchNumber?.toString() || ""}
-                            onChange={(e: any) => {
-                              const _rules = [...localRules];
-                              rule.relativeMatchNumber = e.target.value;
-                              delete rule.match;
-                              _rules[idx] = rule;
-                              setLocalRules(_rules);
-                            }}
-                          />
-
-                          <span>&nbsp;</span>
-
-                          <Form.Control
-                            as="select"
-                            disabled={loading}
-                            value={rule.relativeMatchUnit || ""}
-                            onChange={(e: any) => {
-                              const _rules = [...localRules];
-                              rule.relativeMatchUnit = e.target.value;
-                              _rules[idx] = rule;
-                              setLocalRules(_rules);
-                            }}
-                          >
-                            <option disabled value="">
-                              (unit)
-                            </option>
-                            {ops._relativeMatchUnits.map((unit) => (
-                              <option
-                                value={unit}
-                                key={`relativeMatchUnit-${rule.key}-${idx}-${unit}`}
-                              >
-                                {unit}
-                              </option>
-                            ))}
-                          </Form.Control>
-                        </>
-                      ) : null}
-
-                      {/* normal matchers - numbers */}
-                      {!["exists", "notExists"].includes(rule.operation.op) &&
-                      type !== "date" &&
-                      ["integer", "float"].includes(type) ? (
-                        <div className="form-inline" style={{ minWidth: 250 }}>
-                          <Form.Control
-                            disabled={loading}
-                            placeholder="(number)"
-                            value={rule.match?.toString() || ""}
-                            onChange={(e: any) => {
-                              const _rules = [...localRules];
-                              rule.match = e.target.value;
-                              _rules[idx] = rule;
-                              setLocalRules(_rules);
-                            }}
-                          />
-                        </div>
-                      ) : null}
-
-                      {/* normal matchers - strings */}
-                      {!["exists", "notExists"].includes(rule.operation.op) &&
-                      type !== "date" &&
-                      !["integer", "float"].includes(type) ? (
-                        <div className="form-inline" style={{ minWidth: 250 }}>
-                          <AsyncTypeahead
-                            key={`typeahead-${rule.key}`}
-                            id={`typeahead-${rule.key}`}
-                            minLength={0}
-                            labelKey="key"
-                            isLoading={loading}
-                            allowNew={true}
-                            onChange={(selected) => {
-                              if (!selected[0]) {
-                                return;
+                        {/* absolute dates */}
+                        {!["exists", "notExists"].includes(rule.operation.op) &&
+                        type === "date" &&
+                        !rule.operation.op.match(/relative_/) ? (
+                          <>
+                            <DatePicker
+                              selected={
+                                rule.match && rule.match !== "null"
+                                  ? new Date(parseInt(rule.match))
+                                  : null
                               }
-
-                              const _rules = [...localRules];
-                              rule.match = selected[0].key
-                                ? selected[0].key // when a new custom option is set
-                                : selected[0]; // when a list option is chosen
-                              _rules[idx] = rule;
-                              setLocalRules(_rules);
-                            }}
-                            onBlur={(e) => {
-                              const value = e.target.value;
-                              if (value && value.length > 0) {
+                              onChange={(d: Date) => {
                                 const _rules = [...localRules];
-                                rule.match = value;
+                                rule.match = d.getTime();
                                 _rules[idx] = rule;
                                 setLocalRules(_rules);
+                              }}
+                            />
+                          </>
+                        ) : null}
+
+                        {/* relative dates */}
+                        {!["exists", "notExists"].includes(rule.operation.op) &&
+                        type === "date" &&
+                        rule.operation.op.match(/relative_/) ? (
+                          <>
+                            <Form.Control
+                              type="number"
+                              disabled={loading}
+                              placeholder="(number)"
+                              value={rule.relativeMatchNumber?.toString() || ""}
+                              onChange={(e: any) => {
+                                const _rules = [...localRules];
+                                rule.relativeMatchNumber = e.target.value;
+                                delete rule.match;
+                                _rules[idx] = rule;
+                                setLocalRules(_rules);
+                              }}
+                            />
+
+                            <span>&nbsp;</span>
+
+                            <Form.Control
+                              as="select"
+                              disabled={loading}
+                              value={rule.relativeMatchUnit || ""}
+                              onChange={(e: any) => {
+                                const _rules = [...localRules];
+                                rule.relativeMatchUnit = e.target.value;
+                                _rules[idx] = rule;
+                                setLocalRules(_rules);
+                              }}
+                            >
+                              <option disabled value="">
+                                (unit)
+                              </option>
+                              {ops._relativeMatchUnits.map((unit) => (
+                                <option
+                                  value={unit}
+                                  key={`relativeMatchUnit-${rule.key}-${idx}-${unit}`}
+                                >
+                                  {unit}
+                                </option>
+                              ))}
+                            </Form.Control>
+                          </>
+                        ) : null}
+
+                        {/* normal matchers - numbers */}
+                        {!["exists", "notExists"].includes(rule.operation.op) &&
+                        type !== "date" &&
+                        ["integer", "float"].includes(type) ? (
+                          <div
+                            className="form-inline"
+                            style={{ minWidth: 250 }}
+                          >
+                            <Form.Control
+                              disabled={loading}
+                              placeholder="(number)"
+                              value={rule.match?.toString() || ""}
+                              onChange={(e: any) => {
+                                const _rules = [...localRules];
+                                rule.match = e.target.value;
+                                _rules[idx] = rule;
+                                setLocalRules(_rules);
+                              }}
+                            />
+                          </div>
+                        ) : null}
+
+                        {/* normal matchers - strings */}
+                        {!["exists", "notExists"].includes(rule.operation.op) &&
+                        type !== "date" &&
+                        !["integer", "float"].includes(type) ? (
+                          <div
+                            className="form-inline"
+                            style={{ minWidth: 250 }}
+                          >
+                            <AsyncTypeahead
+                              key={`typeahead-${rule.key}`}
+                              id={`typeahead-${rule.key}`}
+                              minLength={0}
+                              labelKey="key"
+                              isLoading={loading}
+                              allowNew={true}
+                              onChange={(selected) => {
+                                if (!selected[0]) {
+                                  return;
+                                }
+
+                                const _rules = [...localRules];
+                                rule.match = selected[0].key
+                                  ? selected[0].key // when a new custom option is set
+                                  : selected[0]; // when a list option is chosen
+                                _rules[idx] = rule;
+                                setLocalRules(_rules);
+                              }}
+                              onBlur={(e) => {
+                                const value = e.target.value;
+                                if (value && value.length > 0) {
+                                  const _rules = [...localRules];
+                                  rule.match = value;
+                                  _rules[idx] = rule;
+                                  setLocalRules(_rules);
+                                }
+                              }}
+                              options={
+                                autocompleteResults[rule.key]?.map((v) =>
+                                  v.toString()
+                                ) || []
                               }
-                            }}
-                            options={
-                              autocompleteResults[rule.key]?.map((v) =>
-                                v.toString()
-                              ) || []
-                            }
-                            onSearch={(_match) => {
-                              autocompleteProfilePropertySearch(rule, _match);
-                            }}
-                            placeholder={`match (% is wildcard)`}
-                            defaultSelected={
-                              rule.match ? [rule.match.toString()] : undefined
-                            }
-                          />
-                        </div>
-                      ) : null}
-                    </Form.Group>
-                  </td>
+                              onSearch={(_match) => {
+                                autocompleteProfilePropertySearch(rule, _match);
+                              }}
+                              placeholder={`match (% is wildcard)`}
+                              defaultSelected={
+                                rule.match ? [rule.match.toString()] : undefined
+                              }
+                            />
+                          </div>
+                        ) : null}
+                      </Form.Group>
+                    </td>
 
-                  <td>
-                    <Badge variant="info">{componentCounts[idx]}</Badge>
-                  </td>
+                    <td>
+                      <Badge variant="info">{componentCounts[idx]}</Badge>
+                    </td>
 
-                  <td>
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => {
-                        deleteRule(idx);
-                      }}
-                    >
-                      x
-                    </Button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
+                    <td>
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={() => {
+                          deleteRule(idx);
+                        }}
+                      >
+                        x
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+        </fieldset>
       </Form>
       {localRules.length < group.rules.length || rowChanges ? (
         <p>

@@ -185,6 +185,7 @@ export class Source extends LoggedModel<Source> {
       scheduleAvailable,
       schedule: schedule ? await schedule.apiData() : undefined,
       previewAvailable,
+      locked: this.locked,
       options,
       connection: pluginConnection,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,

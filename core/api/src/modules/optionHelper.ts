@@ -12,6 +12,7 @@ import { ProfilePropertyRule } from "./../models/ProfilePropertyRule";
 import { App } from "./../models/App";
 import { LoggedModel } from "../classes/loggedModel";
 import { Transaction } from "sequelize";
+import { LockableHelper } from "./lockableHelper";
 
 function modelName(instance): string {
   let name = instance.constructor.name;
@@ -64,6 +65,7 @@ export namespace OptionHelper {
     }
 
     if (!hasChanges) return;
+    await LockableHelper.beforeUpdateOptions(instance, hasChanges);
 
     const transaction = await api.sequelize.transaction({
       lock: Transaction.LOCK.UPDATE,

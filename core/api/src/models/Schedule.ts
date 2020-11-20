@@ -152,6 +152,7 @@ export class Schedule extends LoggedModel<Schedule> {
       state: this.state,
       sourceGuid: this.sourceGuid,
       recurring: this.recurring,
+      locked: this.locked,
       options,
       recurringFrequency: this.recurringFrequency,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,

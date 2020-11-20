@@ -62,6 +62,7 @@ export class TeamMember extends LoggedModel<TeamMember> {
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,
+      locked: this.locked,
       lastLoginAt: this.lastLoginAt,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,

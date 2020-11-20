@@ -151,50 +151,52 @@ function SettingCard({
           ) : null}
 
           <Form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-            <Form.Group>
-              {setting.type === "string" ? (
-                <Form.Control
-                  style={{ width: "100%" }}
-                  required
-                  type="text"
-                  name="value"
-                  disabled={loading}
-                  ref={register}
-                  defaultValue={setting.value}
-                />
-              ) : null}
-              {setting.type === "number" ? (
-                <Form.Control
-                  style={{ width: "100%" }}
-                  required
-                  type="number"
-                  name="value"
-                  disabled={loading}
-                  ref={register}
-                  defaultValue={setting.value}
-                />
-              ) : null}
-              {setting.type === "boolean" ? (
-                <Form.Check
-                  type="checkbox"
-                  name="value"
-                  disabled={loading}
-                  label={setting.description}
-                  ref={register}
-                  defaultChecked={setting.value === "true"}
-                />
-              ) : null}
-            </Form.Group>
+            <fieldset disabled={setting.locked}>
+              <Form.Group>
+                {setting.type === "string" ? (
+                  <Form.Control
+                    style={{ width: "100%" }}
+                    required
+                    type="text"
+                    name="value"
+                    disabled={loading}
+                    ref={register}
+                    defaultValue={setting.value}
+                  />
+                ) : null}
+                {setting.type === "number" ? (
+                  <Form.Control
+                    style={{ width: "100%" }}
+                    required
+                    type="number"
+                    name="value"
+                    disabled={loading}
+                    ref={register}
+                    defaultValue={setting.value}
+                  />
+                ) : null}
+                {setting.type === "boolean" ? (
+                  <Form.Check
+                    type="checkbox"
+                    name="value"
+                    disabled={loading}
+                    label={setting.description}
+                    ref={register}
+                    defaultChecked={setting.value === "true"}
+                  />
+                ) : null}
+              </Form.Group>
 
-            <LoadingButton
-              style={{ marginTop: 5 }}
-              disabled={loading}
-              size="sm"
-              type="submit"
-              variant="outline-secondary"
-            >
-              Update
-            </LoadingButton>
+              <LoadingButton
+                style={{ marginTop: 5 }}
+                disabled={loading}
+                size="sm"
+                type="submit"
+                variant="outline-secondary"
+              >
+                Update
+              </LoadingButton>
+            </fieldset>
           </Form>
 
           <br />

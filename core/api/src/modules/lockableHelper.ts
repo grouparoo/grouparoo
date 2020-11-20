@@ -28,8 +28,22 @@ export namespace LockableHelper {
     }
   }
 
+  export async function beforeUpdateOptions(instance, hasChanges = true) {
+    if (!instance.locked) return;
+    if (api?.codeConfig?.allowLockedModelChanges !== false) return;
+
+    if (hasChanges) {
+      throw new Error(
+        `you cannot update the options for a locked ${modelName(instance)} (${
+          instance.guid
+        })`
+      );
+    }
+  }
+
   export async function beforeDestroy(instance) {
     if (!instance.locked) return;
+    if (api?.codeConfig?.allowLockedModelChanges !== false) return;
 
     throw new Error(
       `you cannot destroy a locked ${modelName(instance)} (${instance.guid})`

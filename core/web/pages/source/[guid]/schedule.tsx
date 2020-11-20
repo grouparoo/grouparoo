@@ -107,248 +107,257 @@ export default function Page(props) {
       <SourceTabs source={source} />
 
       <Form id="form" onSubmit={edit} autoComplete="off">
-        <Row>
-          <Col md={1}>
-            <br />
-            <AppIcon src={source?.app?.icon} fluid size={100} />
-          </Col>
-          <Col>
-            <h2>
-              Schedule for source <Badge variant="info">{source.name}</Badge>
-            </h2>
-            <StateBadge state={schedule.state} />
-            <br />
-            <br />
-            <Form.Group controlId="recurring">
-              <Form.Check
-                type="checkbox"
-                label="Recurring"
-                disabled={loading}
-                checked={schedule.recurring}
-                onChange={(e) => update(e)}
-              />
-            </Form.Group>
-            {schedule.recurring ? (
-              <Row>
-                <Col>
-                  <Form.Group controlId="recurringFrequencyMinutes">
-                    <Form.Label>Recurring Frequency (minutes)</Form.Label>
-                    <Form.Control
-                      required
-                      type="number"
-                      min={1}
-                      placeholder="Recurring Frequency"
-                      disabled={loading}
-                      value={recurringFrequencyMinutes.toString()}
-                      onChange={(e) =>
-                        setRecurringFrequencyMinutes(parseInt(e.target.value))
-                      }
-                    />
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Alert variant="success">
-                    <strong>Most Recent Run</strong>
-                    {run ? (
-                      <>
-                        <br /> State: {run.state}
-                        <br />
-                        {run.createdAt ? (
-                          <>
-                            Started <Moment fromNow>{run.createdAt}</Moment>
-                            <ul>
-                              <li>Imports Created: {run.importsCreated}</li>
-                              <li>Profiles Created: {run.profilesCreated}</li>
-                              <li>Profiles Imported: {run.profilesImported}</li>
-                            </ul>
-                          </>
-                        ) : (
-                          <span>never run</span>
-                        )}
-                        {run.completedAt ? (
-                          <p>
-                            Completed <Moment fromNow>{run.completedAt}</Moment>
-                          </p>
-                        ) : null}
-                        <p>
-                          <Link
-                            href="/run/[guid]/edit"
-                            as={`/run/${run.guid}/edit`}
-                          >
-                            <a>See More</a>
-                          </Link>
-                        </p>
-                      </>
-                    ) : (
-                      <p>no runs yet</p>
-                    )}{" "}
-                  </Alert>
-                </Col>
-                <Col>
-                  <Alert variant="info">
-                    <p>
-                      <strong>Next Run</strong>
-                      <br />
-                      {run?.updatedAt &&
-                      new Date(run.updatedAt).getTime() +
-                        schedule.recurringFrequency >
-                        new Date().getTime() &&
-                      recurringFrequencyMinutes > 0 ? (
+        <fieldset disabled={schedule.locked}>
+          <Row>
+            <Col md={1}>
+              <br />
+              <AppIcon src={source?.app?.icon} fluid size={100} />
+            </Col>
+            <Col>
+              <h2>
+                Schedule for source <Badge variant="info">{source.name}</Badge>
+              </h2>
+              <StateBadge state={schedule.state} />
+              <br />
+              <br />
+              <Form.Group controlId="recurring">
+                <Form.Check
+                  type="checkbox"
+                  label="Recurring"
+                  disabled={loading}
+                  checked={schedule.recurring}
+                  onChange={(e) => update(e)}
+                />
+              </Form.Group>
+              {schedule.recurring ? (
+                <Row>
+                  <Col>
+                    <Form.Group controlId="recurringFrequencyMinutes">
+                      <Form.Label>Recurring Frequency (minutes)</Form.Label>
+                      <Form.Control
+                        required
+                        type="number"
+                        min={1}
+                        placeholder="Recurring Frequency"
+                        disabled={loading}
+                        value={recurringFrequencyMinutes.toString()}
+                        onChange={(e) =>
+                          setRecurringFrequencyMinutes(parseInt(e.target.value))
+                        }
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Alert variant="success">
+                      <strong>Most Recent Run</strong>
+                      {run ? (
                         <>
-                          in{" "}
-                          <Moment
-                            add={{
-                              minutes: recurringFrequencyMinutes,
-                            }}
-                            toNow
-                            ago
-                          >
-                            {run.updatedAt}
-                          </Moment>
+                          <br /> State: {run.state}
+                          <br />
+                          {run.createdAt ? (
+                            <>
+                              Started <Moment fromNow>{run.createdAt}</Moment>
+                              <ul>
+                                <li>Imports Created: {run.importsCreated}</li>
+                                <li>Profiles Created: {run.profilesCreated}</li>
+                                <li>
+                                  Profiles Imported: {run.profilesImported}
+                                </li>
+                              </ul>
+                            </>
+                          ) : (
+                            <span>never run</span>
+                          )}
+                          {run.completedAt ? (
+                            <p>
+                              Completed{" "}
+                              <Moment fromNow>{run.completedAt}</Moment>
+                            </p>
+                          ) : null}
+                          <p>
+                            <Link
+                              href="/run/[guid]/edit"
+                              as={`/run/${run.guid}/edit`}
+                            >
+                              <a>See More</a>
+                            </Link>
+                          </p>
+                        </>
+                      ) : (
+                        <p>no runs yet</p>
+                      )}{" "}
+                    </Alert>
+                  </Col>
+                  <Col>
+                    <Alert variant="info">
+                      <p>
+                        <strong>Next Run</strong>
+                        <br />
+                        {run?.updatedAt &&
+                        new Date(run.updatedAt).getTime() +
+                          schedule.recurringFrequency >
+                          new Date().getTime() &&
+                        recurringFrequencyMinutes > 0 ? (
+                          <>
+                            in{" "}
+                            <Moment
+                              add={{
+                                minutes: recurringFrequencyMinutes,
+                              }}
+                              toNow
+                              ago
+                            >
+                              {run.updatedAt}
+                            </Moment>
+                          </>
+                        ) : null}
+
+                        {(run?.updatedAt &&
+                          new Date(run.updatedAt).getTime() +
+                            schedule.recurringFrequency <=
+                            new Date().getTime() &&
+                          recurringFrequencyMinutes) ||
+                        !run ? (
+                          schedule.recurring ? (
+                            <strong>Soon</strong>
+                          ) : (
+                            "N/A"
+                          )
+                        ) : null}
+                      </p>
+                    </Alert>
+                  </Col>
+                </Row>
+              ) : null}
+              <>
+                <hr />
+                <p>
+                  <strong>Options for a {source.type} Schedule</strong>
+                </p>
+                {pluginOptions.map((opt, idx) => (
+                  <div key={`opt-${idx}`}>
+                    <p>
+                      {opt.required ? (
+                        <>
+                          <Badge variant="info">required</Badge>&nbsp;
                         </>
                       ) : null}
-
-                      {(run?.updatedAt &&
-                        new Date(run.updatedAt).getTime() +
-                          schedule.recurringFrequency <=
-                          new Date().getTime() &&
-                        recurringFrequencyMinutes) ||
-                      !run ? (
-                        schedule.recurring ? (
-                          <strong>Soon</strong>
-                        ) : (
-                          "N/A"
-                        )
-                      ) : null}
+                      <code>{opt.key}</code>: <small>{opt.description}</small>
                     </p>
-                  </Alert>
-                </Col>
-              </Row>
-            ) : null}
-            <>
-              <hr />
-              <p>
-                <strong>Options for a {source.type} Schedule</strong>
-              </p>
-              {pluginOptions.map((opt, idx) => (
-                <div key={`opt-${idx}`}>
-                  <p>
-                    {opt.required ? (
-                      <>
-                        <Badge variant="info">required</Badge>&nbsp;
-                      </>
-                    ) : null}
-                    <code>{opt.key}</code>: <small>{opt.description}</small>
-                  </p>
 
-                  {/* list options */}
-                  {opt.type === "list" ? (
-                    <Table striped bordered size="sm">
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th>Key</th>
-                          {opt?.options[0].description ? (
-                            <th>Description</th>
-                          ) : null}
-                          {opt?.options[0].examples ? <th>Examples</th> : null}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {opt?.options?.map((col) => (
-                          <tr key={`source-${col.key}`}>
-                            <td>
-                              <Form.Check
-                                inline
-                                type="radio"
-                                id={`${col.key}`}
-                                name={opt.key}
-                                disabled={schedule.state !== "draft"}
-                                defaultChecked={
-                                  schedule.options[opt.key] === col.key
-                                }
-                                onClick={() => updateOption(opt.key, col.key)}
-                              />
-                            </td>
-                            <td>
-                              <strong>{col.key}</strong>
-                            </td>
-                            {col.description ? (
-                              <td>{col.description}</td>
+                    {/* list options */}
+                    {opt.type === "list" ? (
+                      <Table striped bordered size="sm">
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th>Key</th>
+                            {opt?.options[0].description ? (
+                              <th>Description</th>
                             ) : null}
-
-                            {col.examples ? (
-                              <td>{col.examples.slice(0, 3).join(", ")}</td>
+                            {opt?.options[0].examples ? (
+                              <th>Examples</th>
                             ) : null}
                           </tr>
-                        ))}
-                      </tbody>
-                    </Table>
-                  ) : null}
+                        </thead>
+                        <tbody>
+                          {opt?.options?.map((col) => (
+                            <tr key={`source-${col.key}`}>
+                              <td>
+                                <Form.Check
+                                  inline
+                                  type="radio"
+                                  id={`${col.key}`}
+                                  name={opt.key}
+                                  disabled={schedule.state !== "draft"}
+                                  defaultChecked={
+                                    schedule.options[opt.key] === col.key
+                                  }
+                                  onClick={() => updateOption(opt.key, col.key)}
+                                />
+                              </td>
+                              <td>
+                                <strong>{col.key}</strong>
+                              </td>
+                              {col.description ? (
+                                <td>{col.description}</td>
+                              ) : null}
 
-                  {/* textarea options */}
-                  {opt.type === "text" ? (
-                    <Form.Group controlId="key">
-                      <Form.Control
-                        required
-                        type="text"
-                        value={schedule.options[opt.key]}
-                        disabled={schedule.state !== "draft"}
-                        onChange={(e) => updateOption(opt.key, e.target.value)}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Key is required
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  ) : null}
+                              {col.examples ? (
+                                <td>{col.examples.slice(0, 3).join(", ")}</td>
+                              ) : null}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+                    ) : null}
 
-                  {/* text options */}
-                  {opt.type === "textarea" ? (
-                    <Form.Group controlId="key">
-                      <Form.Control
-                        required
-                        as="textarea"
-                        rows={5}
-                        disabled={loading}
-                        value={schedule.options[opt.key]}
-                        onChange={(e) =>
-                          updateOption(opt.key, e.target["value"])
-                        }
-                        placeholder="select statement with mustache template"
-                        style={{
-                          fontFamily:
-                            'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                          color: "#e83e8c",
-                        }}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Key is required
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  ) : null}
-                </div>
-              ))}
-            </>
+                    {/* textarea options */}
+                    {opt.type === "text" ? (
+                      <Form.Group controlId="key">
+                        <Form.Control
+                          required
+                          type="text"
+                          value={schedule.options[opt.key]}
+                          disabled={schedule.state !== "draft"}
+                          onChange={(e) =>
+                            updateOption(opt.key, e.target.value)
+                          }
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Key is required
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    ) : null}
 
-            <hr />
+                    {/* text options */}
+                    {opt.type === "textarea" ? (
+                      <Form.Group controlId="key">
+                        <Form.Control
+                          required
+                          as="textarea"
+                          rows={5}
+                          disabled={loading}
+                          value={schedule.options[opt.key]}
+                          onChange={(e) =>
+                            updateOption(opt.key, e.target["value"])
+                          }
+                          placeholder="select statement with mustache template"
+                          style={{
+                            fontFamily:
+                              'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                            color: "#e83e8c",
+                          }}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Key is required
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    ) : null}
+                  </div>
+                ))}
+              </>
 
-            <LoadingButton variant="primary" type="submit" disabled={loading}>
-              Update
-            </LoadingButton>
+              <hr />
 
-            <br />
-            <br />
+              <LoadingButton variant="primary" type="submit" disabled={loading}>
+                Update
+              </LoadingButton>
 
-            <LoadingButton
-              variant="danger"
-              disabled={loading}
-              size="sm"
-              onClick={handleDelete}
-            >
-              Delete
-            </LoadingButton>
-          </Col>
-        </Row>
+              <br />
+              <br />
+
+              <LoadingButton
+                variant="danger"
+                disabled={loading}
+                size="sm"
+                onClick={handleDelete}
+              >
+                Delete
+              </LoadingButton>
+            </Col>
+          </Row>
+        </fieldset>
       </Form>
     </>
   );

@@ -158,186 +158,188 @@ export default function Page(props) {
       <h1>Profile Identification</h1>
 
       <Form>
-        <Row>
-          <Col>
-            <p>What column identifies the user?</p>
-            <fieldset>
-              <Table bordered striped size="sm">
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Column</th>
-                    <th>Examples</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {previewColumns.map((col) => (
-                    <tr key={`source-${col}`}>
-                      <td>
-                        <Form.Check
-                          inline
-                          required
-                          type="radio"
-                          id={col}
-                          name="remoteProfileIdColumn"
-                          disabled={loading}
-                          defaultChecked={
-                            Object.keys(source.mapping)[0] === col
-                          }
-                          onClick={() => setNewMappingKey(col)}
-                        />
-                      </td>
-                      <td>
-                        <strong>{col}</strong>
-                      </td>
-                      <td
-                        style={{
-                          textOverflow: "ellipsis",
-                          overflow: "hidden",
-                          maxWidth: "400px",
-                        }}
-                      >
-                        {preview
-                          .map((p) => p[col])
-                          .slice(0, 3)
-                          .join(", ")}
-                      </td>
+        <fieldset disabled={source.locked}>
+          <Row>
+            <Col>
+              <p>What column identifies the user?</p>
+              <fieldset>
+                <Table bordered striped size="sm">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Column</th>
+                      <th>Examples</th>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </fieldset>
-
-            {/** We want to show a disabled button, not a loading button if the mapping key/value are not set */}
-            {newMappingValue === "" || newMappingKey === "" ? (
-              <Button disabled={true}>Save Mapping</Button>
-            ) : (
-              <LoadingButton
-                type="submit"
-                disabled={loading}
-                onClick={(e) => updateMapping(e)}
-              >
-                Save Mapping
-              </LoadingButton>
-            )}
-          </Col>
-
-          <Col>
-            {profilePropertyRules.length > 0 ? (
-              <>
-                <p>Choose the Unique Grouparoo Profile Property:</p>
-                <fieldset>
-                  <Table bordered striped size="sm">
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th>Profile Property Rule</th>
-                        <th>Examples</th>
+                  </thead>
+                  <tbody>
+                    {previewColumns.map((col) => (
+                      <tr key={`source-${col}`}>
+                        <td>
+                          <Form.Check
+                            inline
+                            required
+                            type="radio"
+                            id={col}
+                            name="remoteProfileIdColumn"
+                            disabled={loading}
+                            defaultChecked={
+                              Object.keys(source.mapping)[0] === col
+                            }
+                            onClick={() => setNewMappingKey(col)}
+                          />
+                        </td>
+                        <td>
+                          <strong>{col}</strong>
+                        </td>
+                        <td
+                          style={{
+                            textOverflow: "ellipsis",
+                            overflow: "hidden",
+                            maxWidth: "400px",
+                          }}
+                        >
+                          {preview
+                            .map((p) => p[col])
+                            .slice(0, 3)
+                            .join(", ")}
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {profilePropertyRules.map((rule) => (
-                        <tr key={`prr-${rule.guid}`}>
-                          <td>
-                            <Form.Check
-                              inline
-                              required
-                              type="radio"
-                              id={rule.guid}
-                              name="remoteProfileRuleGuid"
-                              disabled={loading}
-                              defaultChecked={
-                                Object.values(source.mapping)[0] === rule.key
-                              }
-                              onClick={() => setNewMappingValue(rule.key)}
-                            />
-                          </td>
-                          <td>
-                            <strong>{rule.key}</strong>
-                          </td>
-                          <td>
-                            {profilePropertyRuleExamples[rule.guid]
-                              ? profilePropertyRuleExamples[rule.guid]
-                                  .slice(0, 3)
-                                  .join(", ")
-                              : null}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </fieldset>
-              </>
-            ) : null}
-
-            {newMappingValue === "" ? (
-              <>
-                <hr />
-                <p>
-                  <strong>Create a new Unique Profile Property Rule</strong>
-                </p>
-                <p>
-                  This profile property should be unique, meaning only one
-                  profile in your entire customer base will have this value.
-                  Normally this is an email or a user id.
-                </p>
-                <Form.Group controlId="key">
-                  <Form.Label>Key</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    placeholder="Profile Property Rule Key"
-                    defaultValue={newProfilePropertyRule.key}
-                    disabled={loading}
-                    onChange={(e) => {
-                      setNewProfilePropertyRule(
-                        Object.assign({}, newProfilePropertyRule, {
-                          key: e.target.value,
-                        })
-                      );
-                    }}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Key is required
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group controlId="type">
-                  <Form.Label>Type</Form.Label>
-
-                  <Form.Control
-                    as="select"
-                    required
-                    defaultValue={newProfilePropertyRule.type}
-                    disabled={loading}
-                    onChange={(e) => {
-                      setNewProfilePropertyRule(
-                        Object.assign({}, newProfilePropertyRule, {
-                          //@ts-ignore
-                          type: e.target.value,
-                        })
-                      );
-                    }}
-                  >
-                    <option value={""} disabled>
-                      Choose a type
-                    </option>
-                    {types.map((type) => (
-                      <option key={`type-${type}`}>{type}</option>
                     ))}
-                  </Form.Control>
-                </Form.Group>
+                  </tbody>
+                </Table>
+              </fieldset>
+
+              {/** We want to show a disabled button, not a loading button if the mapping key/value are not set */}
+              {newMappingValue === "" || newMappingKey === "" ? (
+                <Button disabled={true}>Save Mapping</Button>
+              ) : (
                 <LoadingButton
-                  size="sm"
-                  variant="outline-primary"
+                  type="submit"
                   disabled={loading}
-                  onClick={bootstrapUniqueProfilePropertyRule}
+                  onClick={(e) => updateMapping(e)}
                 >
-                  Create Profile Property Rule
+                  Save Mapping
                 </LoadingButton>
-              </>
-            ) : null}
-          </Col>
-        </Row>
+              )}
+            </Col>
+
+            <Col>
+              {profilePropertyRules.length > 0 ? (
+                <>
+                  <p>Choose the Unique Grouparoo Profile Property:</p>
+                  <fieldset>
+                    <Table bordered striped size="sm">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th>Profile Property Rule</th>
+                          <th>Examples</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {profilePropertyRules.map((rule) => (
+                          <tr key={`prr-${rule.guid}`}>
+                            <td>
+                              <Form.Check
+                                inline
+                                required
+                                type="radio"
+                                id={rule.guid}
+                                name="remoteProfileRuleGuid"
+                                disabled={loading}
+                                defaultChecked={
+                                  Object.values(source.mapping)[0] === rule.key
+                                }
+                                onClick={() => setNewMappingValue(rule.key)}
+                              />
+                            </td>
+                            <td>
+                              <strong>{rule.key}</strong>
+                            </td>
+                            <td>
+                              {profilePropertyRuleExamples[rule.guid]
+                                ? profilePropertyRuleExamples[rule.guid]
+                                    .slice(0, 3)
+                                    .join(", ")
+                                : null}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </fieldset>
+                </>
+              ) : null}
+
+              {newMappingValue === "" ? (
+                <>
+                  <hr />
+                  <p>
+                    <strong>Create a new Unique Profile Property Rule</strong>
+                  </p>
+                  <p>
+                    This profile property should be unique, meaning only one
+                    profile in your entire customer base will have this value.
+                    Normally this is an email or a user id.
+                  </p>
+                  <Form.Group controlId="key">
+                    <Form.Label>Key</Form.Label>
+                    <Form.Control
+                      required
+                      type="text"
+                      placeholder="Profile Property Rule Key"
+                      defaultValue={newProfilePropertyRule.key}
+                      disabled={loading}
+                      onChange={(e) => {
+                        setNewProfilePropertyRule(
+                          Object.assign({}, newProfilePropertyRule, {
+                            key: e.target.value,
+                          })
+                        );
+                      }}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Key is required
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group controlId="type">
+                    <Form.Label>Type</Form.Label>
+
+                    <Form.Control
+                      as="select"
+                      required
+                      defaultValue={newProfilePropertyRule.type}
+                      disabled={loading}
+                      onChange={(e) => {
+                        setNewProfilePropertyRule(
+                          Object.assign({}, newProfilePropertyRule, {
+                            //@ts-ignore
+                            type: e.target.value,
+                          })
+                        );
+                      }}
+                    >
+                      <option value={""} disabled>
+                        Choose a type
+                      </option>
+                      {types.map((type) => (
+                        <option key={`type-${type}`}>{type}</option>
+                      ))}
+                    </Form.Control>
+                  </Form.Group>
+                  <LoadingButton
+                    size="sm"
+                    variant="outline-primary"
+                    disabled={loading}
+                    onClick={bootstrapUniqueProfilePropertyRule}
+                  >
+                    Create Profile Property Rule
+                  </LoadingButton>
+                </>
+              ) : null}
+            </Col>
+          </Row>
+        </fieldset>
       </Form>
     </>
   );

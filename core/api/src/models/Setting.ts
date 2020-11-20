@@ -75,6 +75,7 @@ export class Setting extends LoggedModel<Setting> {
       variant: this.variant,
       defaultValue: this.defaultValue,
       description: this.description,
+      locked: this.locked,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
     };

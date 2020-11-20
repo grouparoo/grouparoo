@@ -351,6 +351,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       unique: this.unique,
       identifying: this.identifying,
       directlyMapped: this.directlyMapped,
+      locked: this.locked,
       options,
       filters,
       isArray: this.isArray,
