@@ -24,7 +24,20 @@ export class Setting extends LoggedModel<Setting> {
   key: string;
 
   @Column
-  value: string;
+  get value(): string {
+    const rawValue = this.getDataValue("value").toString();
+    switch (this.type) {
+      case "boolean":
+        // SQLite returns booleans as numbers
+        const booleanValue = rawValue === "true" || rawValue === "1";
+        return booleanValue ? "true" : "false";
+      default:
+        return rawValue;
+    }
+  }
+  set value(data) {
+    this.setDataValue("value", data);
+  }
 
   @AllowNull(false)
   @Column

@@ -315,7 +315,7 @@ describe("actions/profilePropertyRules", () => {
       await group.setRules([
         {
           key: "email",
-          operation: { op: "iLike" },
+          operation: { op: "like" },
           match: "%@%",
         },
       ]);
