@@ -379,6 +379,20 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   @BeforeSave
+  static async ensureUniqueKey(instance: ProfilePropertyRule) {
+    const count = await ProfilePropertyRule.count({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        key: instance.key,
+        state: { [Op.ne]: "draft" },
+      },
+    });
+    if (count > 0) {
+      throw new Error(`key "${instance.key}" is already in use`);
+    }
+  }
+
+  @BeforeSave
   static async ensureOptions(instance: ProfilePropertyRule) {
     const source = await Source.findByGuid(instance.sourceGuid);
     await source.validateOptions();

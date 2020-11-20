@@ -225,6 +225,19 @@ export class App extends LoggedModel<App> {
   }
 
   @BeforeSave
+  static async ensureUniqueName(instance: App, { transaction }) {
+    const count = await App.count({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        name: instance.name,
+        state: { [Op.ne]: "draft" },
+      },
+      transaction,
+    });
+    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
+  }
+
+  @BeforeSave
   static async validateType(instance: App) {
     const { pluginApp } = await instance.getPlugin();
     if (!pluginApp) {

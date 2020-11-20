@@ -260,6 +260,18 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   @BeforeSave
+  static async ensureUniqueName(instance: Schedule) {
+    const count = await Schedule.scope(null).count({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        name: instance.name,
+        state: { [Op.ne]: "draft" },
+      },
+    });
+    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
+  }
+
+  @BeforeSave
   static async updateState(instance: Schedule) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
   }

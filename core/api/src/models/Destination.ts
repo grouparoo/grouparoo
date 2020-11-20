@@ -431,6 +431,19 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeSave
+  static async ensureUniqueName(instance: Destination, { transaction }) {
+    const count = await Destination.count({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        name: instance.name,
+        state: { [Op.ne]: "draft" },
+      },
+      transaction,
+    });
+    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
+  }
+
+  @BeforeSave
   static async ensureOnlyOneDestinationPerAppWithSameSettings(
     instance: Destination
   ) {
