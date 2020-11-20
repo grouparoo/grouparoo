@@ -55,8 +55,8 @@ export class CodeConfig extends Initializer {
   }
 }
 
-async function loadConfigFile(file: string) {
-  let { default: payload } = require(file);
+async function loadConfigFile(file: string): Promise<ConfigurationObject> {
+  let payload = require(file);
   if (typeof payload === "function") payload = await payload(config);
   return payload;
 }

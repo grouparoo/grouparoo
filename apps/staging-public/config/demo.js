@@ -1,4 +1,4 @@
-export default async function getConfig() {
+module.exports = async function getConfig() {
   await new Promise((resolve) => setTimeout(resolve, 100));
 
   // TODO: How can I delete an option.name?  Does null/undefined delete stuff?
@@ -158,4 +158,4 @@ export default async function getConfig() {
       },
     },
   ];
-}
+};
