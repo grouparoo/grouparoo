@@ -118,7 +118,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
 
   @BeforeSave
   static async noUpdateIfLocked(instance) {
-    LockableHelper.beforeSave(instance);
+    await LockableHelper.beforeSave(instance);
   }
 
   @AfterSave

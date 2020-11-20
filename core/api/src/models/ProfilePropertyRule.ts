@@ -458,7 +458,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   @BeforeSave
   static async noUpdateIfLocked(instance) {
-    LockableHelper.beforeSave(instance);
+    await LockableHelper.beforeSave(instance);
   }
 
   @BeforeDestroy

@@ -187,7 +187,7 @@ export class Team extends LoggedModel<Team> {
 
   @BeforeSave
   static async noUpdateIfLocked(instance) {
-    LockableHelper.beforeSave(instance);
+    await LockableHelper.beforeSave(instance);
   }
 
   @BeforeDestroy

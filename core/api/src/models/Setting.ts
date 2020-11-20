@@ -96,6 +96,6 @@ export class Setting extends LoggedModel<Setting> {
 
   @BeforeSave
   static async noUpdateIfLocked(instance) {
-    LockableHelper.beforeSave(instance);
+    await LockableHelper.beforeSave(instance);
   }
 }

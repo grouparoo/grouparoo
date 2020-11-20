@@ -306,7 +306,7 @@ export class Source extends LoggedModel<Source> {
 
   @BeforeSave
   static async noUpdateIfLocked(instance) {
-    LockableHelper.beforeSave(instance);
+    await LockableHelper.beforeSave(instance);
   }
 
   @BeforeDestroy
