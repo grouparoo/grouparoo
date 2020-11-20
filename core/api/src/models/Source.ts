@@ -309,6 +309,16 @@ export class Source extends LoggedModel<Source> {
     await LockableHelper.beforeSave(instance);
   }
 
+  @AfterSave
+  static async updateRuleDirectMappings(instance: Source, { transaction }) {
+    const rules = await instance.$get("profilePropertyRules", { transaction });
+    for (const i in rules) {
+      const rule = rules[i];
+      await ProfilePropertyRule.determineDirectlyMapped(rule);
+      if (rule.changed()) await rule.save({ transaction });
+    }
+  }
+
   @BeforeDestroy
   static async ensureNoSchedule(instance: Source) {
     const schedule = await instance.$get("schedule", { scope: null });
@@ -329,14 +339,9 @@ export class Source extends LoggedModel<Source> {
     }
   }
 
-  @AfterSave
-  static async updateRuleDirectMappings(instance: Source, { transaction }) {
-    const rules = await instance.$get("profilePropertyRules", { transaction });
-    for (const i in rules) {
-      const rule = rules[i];
-      await ProfilePropertyRule.determineDirectlyMapped(rule);
-      if (rule.changed()) await rule.save({ transaction });
-    }
+  @BeforeDestroy
+  static async noDestroyIfLocked(instance) {
+    await LockableHelper.beforeDestroy(instance);
   }
 
   @AfterDestroy

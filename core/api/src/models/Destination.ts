@@ -448,6 +448,11 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeDestroy
+  static async noDestroyIfLocked(instance) {
+    await LockableHelper.beforeDestroy(instance);
+  }
+
+  @BeforeDestroy
   static async cannotDeleteDestinationWithTrackedGroup(
     instance: Destination,
     { transaction }

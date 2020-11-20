@@ -658,6 +658,11 @@ export class Group extends LoggedModel<Group> {
     }
   }
 
+  @BeforeDestroy
+  static async noDestroyIfLocked(instance) {
+    await LockableHelper.beforeDestroy(instance);
+  }
+
   @AfterDestroy
   static async destroyDestinationGroupTracking(
     instance: Group,

@@ -9,6 +9,7 @@ import {
   Default,
   BeforeValidate,
   BeforeSave,
+  BeforeDestroy,
 } from "sequelize-typescript";
 import * as UUID from "uuid";
 import { LoggedModel } from "../classes/loggedModel";
@@ -158,6 +159,11 @@ export class ApiKey extends LoggedModel<ApiKey> {
         );
       }
     }
+  }
+
+  @BeforeDestroy
+  static async noDestroyIfLocked(instance) {
+    await LockableHelper.beforeDestroy(instance);
   }
 
   @AfterDestroy

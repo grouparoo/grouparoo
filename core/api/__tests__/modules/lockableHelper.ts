@@ -59,5 +59,11 @@ describe("modules/lockableHelper", () => {
         teamMember.update({ firstName: "someone", lastLoginAt: new Date() })
       ).rejects.toThrow(/you cannot update this locked teamMember/);
     });
+
+    test("locked models cannot be destroyed", async () => {
+      await expect(teamMember.destroy()).rejects.toThrow(
+        /you cannot destroy a locked teamMember/
+      );
+    });
   });
 });

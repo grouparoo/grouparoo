@@ -191,6 +191,11 @@ export class Team extends LoggedModel<Team> {
   }
 
   @BeforeDestroy
+  static async noDestroyIfLocked(instance) {
+    await LockableHelper.beforeDestroy(instance);
+  }
+
+  @BeforeDestroy
   static async ensureNoTeamMembers(instance: Team) {
     const teamMembersCount = await instance.$count("teamMembers");
 

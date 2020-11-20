@@ -12,6 +12,7 @@ export namespace LockableHelper {
     allowedColumnsThatCanChangeWhenLocked: string[] = []
   ) {
     if (!instance.locked) return;
+    if (instance.isNewRecord) return;
     if (api?.codeConfig?.allowLockedModelChanges !== false) return;
 
     const changedCols = instance.changed(); // ['firstName', 'lastLoginAt']
@@ -21,9 +22,17 @@ export namespace LockableHelper {
         throw new Error(
           `you cannot update this locked ${modelName(instance)} (${
             instance.guid
-          })`
+          }) [${changedCols.join(", ")} changed]`
         );
       }
     }
+  }
+
+  export async function beforeDestroy(instance) {
+    if (!instance.locked) return;
+
+    throw new Error(
+      `you cannot destroy a locked ${modelName(instance)} (${instance.guid})`
+    );
   }
 }

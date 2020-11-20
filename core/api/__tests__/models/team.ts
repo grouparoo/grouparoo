@@ -109,7 +109,7 @@ describe("models/team", () => {
         locked: true,
       });
       await expect(team.destroy()).rejects.toThrow(
-        /you cannot delete this team/
+        /you cannot destroy a locked team/
       );
     });
   });

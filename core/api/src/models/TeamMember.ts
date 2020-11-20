@@ -9,6 +9,7 @@ import {
   IsLowercase,
   BeforeValidate,
   Default,
+  BeforeDestroy,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { Team } from "./Team";
@@ -97,5 +98,10 @@ export class TeamMember extends LoggedModel<TeamMember> {
   @BeforeSave
   static async noUpdateIfLocked(instance) {
     await LockableHelper.beforeSave(instance, ["lastLoginAt"]);
+  }
+
+  @BeforeDestroy
+  static async noDestroyIfLocked(instance) {
+    await LockableHelper.beforeDestroy(instance);
   }
 }

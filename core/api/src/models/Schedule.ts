@@ -15,6 +15,7 @@ import {
   AfterDestroy,
   DataType,
   DefaultScope,
+  BeforeDestroy,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
@@ -261,6 +262,11 @@ export class Schedule extends LoggedModel<Schedule> {
   @BeforeSave
   static async updateState(instance: Schedule) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
+
+  @BeforeDestroy
+  static async noDestroyIfLocked(instance) {
+    await LockableHelper.beforeDestroy(instance);
   }
 
   @AfterDestroy

@@ -5,6 +5,7 @@ import {
   BeforeSave,
   Default,
   DataType,
+  BeforeDestroy,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { LockableHelper } from "../modules/lockableHelper";
@@ -97,5 +98,10 @@ export class Setting extends LoggedModel<Setting> {
   @BeforeSave
   static async noUpdateIfLocked(instance) {
     await LockableHelper.beforeSave(instance);
+  }
+
+  @BeforeDestroy
+  static async noDestroyIfLocked(instance) {
+    await LockableHelper.beforeDestroy(instance);
   }
 }

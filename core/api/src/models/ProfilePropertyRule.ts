@@ -484,6 +484,11 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     }
   }
 
+  @BeforeDestroy
+  static async noDestroyIfLocked(instance) {
+    await LockableHelper.beforeDestroy(instance);
+  }
+
   @AfterDestroy
   static async destroyOptions(instance: ProfilePropertyRule, { transaction }) {
     await Option.destroy({

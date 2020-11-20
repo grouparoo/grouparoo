@@ -279,7 +279,7 @@ describe("actions/teams", () => {
         connection
       );
       expect(destroyResponse.error.message).toMatch(
-        /you cannot delete this team/
+        /you cannot destroy a locked team/
       );
       expect(destroyResponse.success).toBeUndefined();
     });

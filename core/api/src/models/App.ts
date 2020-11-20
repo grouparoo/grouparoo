@@ -243,6 +243,11 @@ export class App extends LoggedModel<App> {
   }
 
   @BeforeDestroy
+  static async noDestroyIfLocked(instance) {
+    await LockableHelper.beforeDestroy(instance);
+  }
+
+  @BeforeDestroy
   static async checkDependents(instance: App, { transaction }) {
     const sources = await Source.scope(null).findAll({
       where: { appGuid: instance.guid },
