@@ -13,7 +13,7 @@ import { Op, Transaction } from "sequelize";
 import { EventData } from "./EventData";
 import { Profile } from "./Profile";
 import { ProfilePropertyRuleFiltersWithKey } from "./ProfilePropertyRule";
-import { api, task } from "actionhero";
+import { api, task, config } from "actionhero";
 import { EventOps } from "../modules/ops/event";
 
 @Table({ tableName: "events", paranoid: false })
@@ -203,11 +203,15 @@ export class Event extends LoggedModel<Event> {
           opSymbol = Op["ne"];
           break;
         case "contains":
-          opSymbol = Op["iLike"];
+          opSymbol =
+            config.sequelize.dialect === "postgres" ? Op["iLike"] : Op["like"];
           match = `%${match.toString()}%`;
           break;
         case "does not contain":
-          opSymbol = Op["notILike"];
+          opSymbol =
+            config.sequelize.dialect === "postgres"
+              ? Op["notILike"]
+              : Op["notLike"];
           match = `%${match.toString()}%`;
           break;
         case "greater than":

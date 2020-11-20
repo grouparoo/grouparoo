@@ -31,7 +31,13 @@ export class EventsList extends AuthenticatedAction {
     const where = {};
     const includeWhere = {};
 
-    if (params.type) where["type"] = { [Op.iLike]: params.type };
+    if (params.type) {
+      if (config.sequelize.dialect === "postgres") {
+        where["type"] = { [Op.iLike]: params.type };
+      } else {
+        where["type"] = { [Op.like]: params.type };
+      }
+    }
 
     if (params.profileGuid) {
       where["profileGuid"] = params.profileGuid;
@@ -183,8 +189,14 @@ export class EventsCounts extends AuthenticatedAction {
     }> = counts.map((c) => {
       return {
         type: c.getDataValue("type"),
-        // @ts-ignore
-        time: c.getDataValue("time").getTime(),
+        time:
+          // SQLite returns a string
+          // @ts-ignore
+          c.getDataValue("time") instanceof Date
+            ? // @ts-ignore
+              c.getDataValue("time").getTime()
+            : // @ts-ignore
+              new Date(c.getDataValue("time")).getTime(),
         // @ts-ignore
         count: c.getDataValue("count"),
       };
@@ -241,10 +253,22 @@ export class EventsTypes extends AuthenticatedAction {
         type: t.type,
         // @ts-ignore
         count: t.getDataValue("count"),
+        // SQLite returns strings
+        min:
+          // @ts-ignore
+          t.getDataValue("min") instanceof Date
+            ? // @ts-ignore
+              t.getDataValue("min").getTime()
+            : // @ts-ignore
+              new Date(t.getDataValue("min")).getTime(),
         // @ts-ignore
-        min: t.getDataValue("min").getTime(),
-        // @ts-ignore
-        max: t.getDataValue("max").getTime(),
+        max:
+          // @ts-ignore
+          t.getDataValue("max") instanceof Date
+            ? // @ts-ignore
+              t.getDataValue("max").getTime()
+            : // @ts-ignore
+              new Date(t.getDataValue("max")).getTime(),
         example: await example.apiData(),
       });
     }
@@ -327,7 +351,11 @@ export class EventAutocompleteType extends AuthenticatedAction {
   async run({ params }) {
     const where = {};
     if (params.match) {
-      where["type"] = { [Op.iLike]: `%${params.match}%` };
+      if (config.sequelize.dialect === "postgres") {
+        where["type"] = { [Op.iLike]: `%${params.match}%` };
+      } else {
+        where["type"] = { [Op.like]: `%${params.match}%` };
+      }
     }
 
     return {

@@ -55,7 +55,10 @@ export class ProfilesList extends AuthenticatedAction {
       ) {
         where.rawValue = { [Op.eq]: null };
       } else {
-        where.rawValue = { [Op.iLike]: `${params.searchValue}` };
+        const op = config.sequelize.dialect === "postgres" ? Op.iLike : Op.like;
+        const rawValueWhereClause = {};
+        rawValueWhereClause[op] = `${params.searchValue}`;
+        where.rawValue = rawValueWhereClause;
       }
     }
 
