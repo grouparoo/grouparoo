@@ -26,6 +26,7 @@ export async function loadTeamMember(configObject: ConfigurationObject) {
     });
   }
 
+  teamMember.teamGuid = team.guid;
   if (configObject?.options.firstName) {
     teamMember.firstName = configObject.options.firstName;
   }

@@ -115,24 +115,34 @@ export default async function getConfig() {
     },
 
     {
-      id: "marketing_team", // guid -> `tea_marketing_team`
-      name: "Marketing Team",
+      id: "admin_team", // guid -> `tea_admin_team`
+      name: "Admin Team",
       class: "team",
       options: {
         permissionAllRead: true,
-        permissionAllWrite: false,
+        permissionAllWrite: true,
       },
     },
 
     {
       id: "demo", // guid -> `tea_person`
       email: "demo@grouparoo.com",
-      teamId: "marketing_team", // guid -> `tea_marketing_team`
+      teamId: "admin_team", // guid -> `tea_marketing_team`
       class: "teamMember",
       options: {
         firstName: "Example",
         lastName: "Person",
         password: "password",
+      },
+    },
+
+    {
+      id: "marketing_team", // guid -> `tea_marketing_team`
+      name: "Marketing Team",
+      class: "team",
+      options: {
+        permissionAllRead: true,
+        permissionAllWrite: false,
       },
     },
 
