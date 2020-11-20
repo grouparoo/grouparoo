@@ -209,7 +209,7 @@ export class Schedule extends LoggedModel<Schedule> {
 
   @BeforeSave
   static async noUpdateIfLocked(instance) {
-    await LockableHelper.beforeSave(instance);
+    await LockableHelper.beforeSave(instance, ["state"]);
   }
 
   @BeforeUpdate

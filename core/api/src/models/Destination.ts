@@ -458,7 +458,7 @@ export class Destination extends LoggedModel<Destination> {
 
   @BeforeSave
   static async noUpdateIfLocked(instance) {
-    await LockableHelper.beforeSave(instance);
+    await LockableHelper.beforeSave(instance, ["state"]);
   }
 
   @BeforeDestroy
