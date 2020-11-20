@@ -12,7 +12,12 @@ export interface ConfigurationObject {
   teamId?: string;
   email?: string;
   options?: { [key: string]: any };
+  identifying?: boolean;
+  unique?: boolean;
+  isArray?: boolean;
   rules?: GroupRuleWithKey[];
+  recurring?: boolean;
+  recurringFrequency: number;
   bootstrappedProfilePropertyRule?: ConfigurationObject;
 }
 

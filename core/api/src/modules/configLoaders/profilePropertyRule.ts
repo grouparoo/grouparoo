@@ -31,6 +31,13 @@ export async function loadProfilePropertyRule(
     });
   }
 
+  await profilePropertyRule.update({
+    key: configObject.key || configObject.name,
+    unique: configObject.unique,
+    isArray: configObject.isArray,
+    identifying: configObject.identifying,
+  });
+
   await profilePropertyRule.setOptions(
     extractNonNullParts(configObject, "options")
   );

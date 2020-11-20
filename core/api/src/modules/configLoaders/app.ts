@@ -21,6 +21,8 @@ export async function loadApp(configObject: ConfigurationObject) {
     });
   }
 
+  await app.update({ name: configObject.name });
+
   await app.setOptions(extractNonNullParts(configObject, "options"));
   await app.update({ state: "ready" });
   logModel(app, isNew);

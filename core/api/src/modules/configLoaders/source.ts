@@ -27,6 +27,8 @@ export async function loadSource(configObject: ConfigurationObject) {
     });
   }
 
+  await source.update({ name: configObject.name });
+
   await source.setOptions(extractNonNullParts(configObject, "options"));
 
   let bootstrappedRule: ProfilePropertyRule;

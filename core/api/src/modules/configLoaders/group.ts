@@ -23,6 +23,8 @@ export async function loadGroup(configObject: ConfigurationObject) {
     });
   }
 
+  await group.update({ name: configObject.name });
+
   if (configObject.rules) {
     const rules = [...configObject.rules];
     for (const i in rules) {
@@ -38,8 +40,6 @@ export async function loadGroup(configObject: ConfigurationObject) {
         rules[i].key = profilePropertyRule.key;
       }
     }
-
-    console.log(configObject.rules);
 
     await group.setRules(configObject.rules);
   }

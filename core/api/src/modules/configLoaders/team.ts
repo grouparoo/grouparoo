@@ -20,6 +20,8 @@ export async function loadTeam(configObject: ConfigurationObject) {
     });
   }
 
+  await team.update({ name: configObject.name });
+
   if (configObject.options?.permissionAllRead) {
     await team.update({
       permissionAllRead: configObject.options.permissionAllRead,

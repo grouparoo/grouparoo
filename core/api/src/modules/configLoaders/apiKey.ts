@@ -22,6 +22,8 @@ export async function loadApiKey(configObject: ConfigurationObject) {
     });
   }
 
+  await apiKey.update({ name: configObject.name });
+
   if (configObject.options?.permissionAllRead) {
     await apiKey.update({
       permissionAllRead: configObject.options.permissionAllRead,
