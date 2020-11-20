@@ -353,6 +353,8 @@ export class DestinationProfilePreview extends AuthenticatedAction {
       profile = await Profile.findByGuid(groupMember.profileGuid);
     }
 
+    await profile.buildNullProperties(); // the preview may include a brand new property
+
     let mapping = params.mapping;
     if (!mapping) {
       mapping = await destination.getMapping();

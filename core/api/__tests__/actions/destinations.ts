@@ -3,6 +3,8 @@ import { specHelper } from "actionhero";
 import { Destination } from "./../../src/models/Destination";
 import { Group } from "./../../src/models/Group";
 import { Profile } from "./../../src/models/Profile";
+import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
+import { Source } from "./../../src/models/Source";
 
 let actionhero;
 let app;
@@ -387,6 +389,36 @@ describe("actions/destinations", () => {
           "yoshi@example.com",
         ]);
         expect(_profile.groupNames).toEqual(["another-group-tag"]);
+      });
+
+      test("destination:profilePreview will not fail if a new profile property has just been created or there are missing profile properties", async () => {
+        const source = await Source.findOne({ where: { state: "ready" } });
+        const colorRule = await ProfilePropertyRule.create({
+          key: "color",
+          type: "string",
+          sourceGuid: source.guid,
+        });
+        await colorRule.setOptions({ column: "new_rule" });
+        await colorRule.update({ state: "ready" });
+
+        connection.params = {
+          csrfToken,
+          guid,
+          groupGuid: group.guid,
+          mapping: {
+            "primary-id": "userId",
+            color: "color",
+          },
+        };
+        const { error, profile: _profile } = await specHelper.runAction(
+          "destination:profilePreview",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(_profile.properties["primary-id"].values).toEqual([1]);
+        expect(_profile.properties["color"].values).toEqual([null]);
+
+        await colorRule.destroy();
       });
 
       test("an administrator can list and remove a tracked group", async () => {
