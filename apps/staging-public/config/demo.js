@@ -49,6 +49,18 @@ module.exports = async function getConfig() {
     },
 
     {
+      id: "users_table_schedule", // guid -> `sch_users_table_schedule`
+      name: "Users Table Schedule",
+      class: "Schedule",
+      sourceId: "users_table", // sourceGuid -> `src_users_table`
+      recurring: true,
+      recurringFrequency: 1000 * 60 * 15, // 15 minutes in ms
+      options: {
+        column: "updated_at",
+      },
+    },
+
+    {
       id: "email", // guid -> `rul_email`
       name: "email",
       class: "ProfilePropertyRule",
@@ -103,13 +115,13 @@ module.exports = async function getConfig() {
       type: "calculated",
       rules: [
         {
+          profilePropertyRuleId: "user_id",
+          operation: { op: "exists" },
+        },
+        {
           profilePropertyRuleId: "email",
           operation: { op: "like" },
           match: "%@%",
-        },
-        {
-          profilePropertyRuleId: "user_id",
-          operation: { op: "exists" },
         },
       ], // reference prp_email
     },
