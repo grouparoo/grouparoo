@@ -281,7 +281,7 @@ describe("actions/groups", () => {
           {
             key: "lastName",
             match: "Mario",
-            operation: { op: "iLike" },
+            operation: { op: "like" },
           },
         ]);
 
@@ -300,7 +300,7 @@ describe("actions/groups", () => {
           {
             key: "firstName",
             match: "Mario",
-            operation: { op: "iLike" },
+            operation: { op: "like" },
           },
         ];
         connection.params = { csrfToken, guid: group.guid, rules: newRules };
@@ -319,7 +319,7 @@ describe("actions/groups", () => {
           {
             key: "lastName",
             match: "Mario",
-            operation: { op: "iLike" },
+            operation: { op: "like" },
           },
         ]);
 
@@ -337,7 +337,7 @@ describe("actions/groups", () => {
           {
             key: "firstName",
             match: "Mario",
-            operation: { op: "iLike" },
+            operation: { op: "like" },
           },
         ];
         connection.params = { csrfToken, guid: group.guid, rules: newRules };

@@ -34,9 +34,9 @@ describe("actions/settings", () => {
       await plugin.registerSetting(
         "testPlugin",
         "enabled",
-        "testPlugin:enabled",
-        false,
-        "Should we do that thing?",
+        "testPlugin:name",
+        "name!",
+        "name of the thing?",
         "string"
       );
       await plugin.registerSetting(
@@ -101,7 +101,7 @@ describe("actions/settings", () => {
         settings.map((p) => {
           return p.value;
         })
-      ).toEqual(["10", "false", "true"]);
+      ).toEqual(["10", "name!", "true"]);
 
       guid = settings[0].guid;
     });
