@@ -10,7 +10,7 @@ export async function loadTeam(configObject: ConfigurationObject) {
   let isNew = false;
 
   const guid = await validateAndFormatGuid(Team, configObject.id);
-  let team = await Team.findOne({ where: { locked: true, guid } });
+  let team = await Team.scope(null).findOne({ where: { locked: true, guid } });
   if (!team) {
     isNew = true;
     team = await Team.create({

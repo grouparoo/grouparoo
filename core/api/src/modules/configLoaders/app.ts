@@ -10,7 +10,7 @@ export async function loadApp(configObject: ConfigurationObject) {
   let isNew = false;
   const guid = await validateAndFormatGuid(App, configObject.id);
 
-  let app = await App.findOne({ where: { guid, locked: true } });
+  let app = await App.scope(null).findOne({ where: { guid, locked: true } });
   if (!app) {
     isNew = true;
     app = await App.create({

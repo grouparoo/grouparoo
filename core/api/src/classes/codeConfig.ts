@@ -1,4 +1,5 @@
 import { log } from "actionhero";
+import { GroupRuleWithKey } from "../models/Group";
 
 export interface ConfigurationObject {
   id: string;
@@ -10,7 +11,8 @@ export interface ConfigurationObject {
   sourceId?: string;
   teamId?: string;
   email?: string;
-  options: { [key: string]: any };
+  options?: { [key: string]: any };
+  rules?: GroupRuleWithKey[];
   bootstrappedProfilePropertyRule?: ConfigurationObject;
 }
 

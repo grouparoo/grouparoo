@@ -1,0 +1,50 @@
+import {
+  ConfigurationObject,
+  validateAndFormatGuid,
+  logModel,
+} from "../../classes/codeConfig";
+import { Group } from "../..";
+import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+
+export async function loadGroup(configObject: ConfigurationObject) {
+  let isNew = false;
+  const guid = await validateAndFormatGuid(Group, configObject.id);
+
+  let group = await Group.scope(null).findOne({
+    where: { guid, locked: true },
+  });
+  if (!group) {
+    isNew = true;
+    group = await Group.create({
+      guid,
+      locked: true,
+      name: configObject.name,
+      type: configObject.type,
+    });
+  }
+
+  if (configObject.rules) {
+    const rules = [...configObject.rules];
+    for (const i in rules) {
+      if (rules[i]["profilePropertyRuleId"]) {
+        const profilePropertyRuleGuid = await validateAndFormatGuid(
+          ProfilePropertyRule,
+          rules[i]["profilePropertyRuleId"]
+        );
+        const profilePropertyRule = await ProfilePropertyRule.findByGuid(
+          profilePropertyRuleGuid
+        );
+        delete rules[i]["profilePropertyRuleId"];
+        rules[i].key = profilePropertyRule.key;
+      }
+    }
+
+    console.log(configObject.rules);
+
+    await group.setRules(configObject.rules);
+  }
+
+  await group.update({ state: "ready" });
+  logModel(group, isNew);
+  return group;
+}

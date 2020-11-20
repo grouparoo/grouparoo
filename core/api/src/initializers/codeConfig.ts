@@ -13,6 +13,7 @@ import { loadProfilePropertyRule } from "../modules/configLoaders/profilePropert
 import { loadApiKey } from "../modules/configLoaders/apiKey";
 import { loadTeam } from "../modules/configLoaders/team";
 import { loadTeamMember } from "../modules/configLoaders/teamMember";
+import { loadGroup } from "../modules/configLoaders/group";
 
 declare module "actionhero" {
   export interface Api {
@@ -77,6 +78,9 @@ async function processConfigObjects(configObjects: Array<ConfigurationObject>) {
         case "profilepropertyrule":
           await loadProfilePropertyRule(configObject);
           break;
+        case "group":
+          await loadGroup(configObject);
+          break;
         case "apikey":
           await loadApiKey(configObject);
           break;
@@ -92,7 +96,8 @@ async function processConfigObjects(configObjects: Array<ConfigurationObject>) {
     } catch (error) {
       // TODO: Fancier error handling
       // console.error(error);
-      throw error;
+
+      throw error.original ? error.original : error;
     }
   }
 }

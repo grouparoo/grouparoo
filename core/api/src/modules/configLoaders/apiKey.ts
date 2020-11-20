@@ -10,7 +10,9 @@ export async function loadApiKey(configObject: ConfigurationObject) {
   let isNew = false;
 
   const guid = await validateAndFormatGuid(ApiKey, configObject.id);
-  let apiKey = await ApiKey.findOne({ where: { locked: true, guid } });
+  let apiKey = await ApiKey.scope(null).findOne({
+    where: { locked: true, guid },
+  });
   if (!apiKey) {
     isNew = true;
     apiKey = await ApiKey.create({

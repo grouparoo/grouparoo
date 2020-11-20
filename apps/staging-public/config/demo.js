@@ -49,7 +49,7 @@ module.exports = async function getConfig() {
     },
 
     {
-      id: "email_rule", // guid -> `pro_data_warehouse`
+      id: "email", // guid -> `rul_email`
       name: "email",
       class: "ProfilePropertyRule",
       type: "email",
@@ -65,7 +65,7 @@ module.exports = async function getConfig() {
     },
 
     {
-      id: "first_name", // guid -> `pro_first_name`
+      id: "first_name", // guid -> `rul_first_name`
       name: "first name",
       class: "ProfilePropertyRule",
       type: "string",
@@ -81,7 +81,7 @@ module.exports = async function getConfig() {
     },
 
     {
-      id: "last_name", // guid -> `pro_first_name`
+      id: "last_name", // guid -> `rul_first_name`
       name: "last name",
       class: "ProfilePropertyRule",
       type: "string",
@@ -96,13 +96,23 @@ module.exports = async function getConfig() {
       filters: [],
     },
 
-    // {
-    //   id: "email_group", // guid -> `grp_marketing_team`
-    //   name: "People with Email Addresses",
-    //   class: "Group",
-    //   type: "calculated",
-    //   rules: [{ profilePropertyRuleId: "email", op: "like", match: "%@%" }], // reference prp_email
-    // },
+    {
+      id: "email_group", // guid -> `grp_marketing_team`
+      name: "People with Email Addresses",
+      class: "Group",
+      type: "calculated",
+      rules: [
+        {
+          profilePropertyRuleId: "email",
+          operation: { op: "like" },
+          match: "%@%",
+        },
+        {
+          profilePropertyRuleId: "user_id",
+          operation: { op: "exists" },
+        },
+      ], // reference prp_email
+    },
 
     {
       id: "website_api_key", // guid -> `api_website_api_key`
