@@ -7,16 +7,23 @@ function modelName(instance): string {
 }
 
 export namespace LockableHelper {
-  export async function beforeSave(instance) {
-    if (
-      instance.locked === true &&
-      api?.codeConfig?.allowLockedModelChanges === false
-    ) {
-      throw new Error(
-        `you cannot update this locked ${modelName(instance)} (${
-          instance.guid
-        })`
-      );
+  export async function beforeSave(
+    instance,
+    allowedColumnsThatCanChangeWhenLocked: string[] = []
+  ) {
+    if (!instance.locked) return;
+    if (api?.codeConfig?.allowLockedModelChanges !== false) return;
+
+    const changedCols = instance.changed(); // ['firstName', 'lastLoginAt']
+
+    for (const i in changedCols) {
+      if (!allowedColumnsThatCanChangeWhenLocked.includes(changedCols[i])) {
+        throw new Error(
+          `you cannot update this locked ${modelName(instance)} (${
+            instance.guid
+          })`
+        );
+      }
     }
   }
 }
