@@ -634,7 +634,7 @@ export class Group extends LoggedModel<Group> {
 
   @BeforeSave
   static async noUpdateIfLocked(instance) {
-  await  LockableHelper.beforeSave(instance);
+    await LockableHelper.beforeSave(instance);
   }
 
   @BeforeDestroy
