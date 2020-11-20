@@ -304,9 +304,11 @@ export namespace SourceOps {
     source: Source,
     key: string,
     type: string,
-    mappedColumn: string
+    mappedColumn: string,
+    guid?: string
   ) {
     const rule = ProfilePropertyRule.build({
+      guid,
       key,
       type,
       state: "ready",

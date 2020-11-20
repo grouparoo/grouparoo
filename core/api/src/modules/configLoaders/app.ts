@@ -8,7 +8,7 @@ import { App } from "../..";
 
 export async function loadApp(configObject: ConfigurationObject) {
   let isNew = false;
-  const guid = await validateAndFormatGuid(App, configObject.guid);
+  const guid = await validateAndFormatGuid(App, configObject.id);
 
   let app = await App.findOne({ where: { guid, locked: true } });
   if (!app) {

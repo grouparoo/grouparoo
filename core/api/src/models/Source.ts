@@ -263,13 +263,15 @@ export class Source extends LoggedModel<Source> {
   async bootstrapUniqueProfilePropertyRule(
     key: string,
     type: string,
-    mappedColumn: string
+    mappedColumn: string,
+    guid?: string
   ) {
     return SourceOps.bootstrapUniqueProfilePropertyRule(
       this,
       key,
       type,
-      mappedColumn
+      mappedColumn,
+      guid
     );
   }
 

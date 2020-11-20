@@ -1,14 +1,14 @@
 import { log } from "actionhero";
 
 export interface ConfigurationObject {
-  guid: string;
+  id: string;
   class: string;
   type: string;
   name?: string;
   key?: string;
-  app?: string;
-  source?: string;
-  team?: string;
+  appId?: string;
+  sourceId?: string;
+  teamId?: string;
   email?: string;
   options: { [key: string]: any };
   bootstrappedProfilePropertyRule?: ConfigurationObject;
@@ -16,21 +16,24 @@ export interface ConfigurationObject {
 
 // Utils
 
-export async function getParentByName(model: any, guid: string) {
-  if (!name) {
-    throw new Error(`missing parent lookup key to find a ${model.name}`);
+export async function getParentByName(model: any, id: string) {
+  if (!id) {
+    throw new Error(`missing parent id to find a ${model.name}`);
   }
 
+  const guid = await validateAndFormatGuid(model, id);
   const instance = await model.scope(null).findOne({ where: { guid } });
 
   if (!instance) {
     throw new Error(`cannot find ${model.name} with guid "${guid}"`);
   }
+
   return instance;
 }
 
-export async function validateAndFormatGuid(model, guid: string) {
-  if (!guid) throw new Error("guid is required");
+export async function validateAndFormatGuid(model, id: string) {
+  if (!id) throw new Error("id is required");
+  let guid = `${id}`;
 
   const guidPrefix: string = new model().guidPrefix();
   if (guid.indexOf(`${guidPrefix}_`) !== 0) guid = `${guidPrefix}_${guid}`;

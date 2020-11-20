@@ -2,19 +2,30 @@ import {
   ConfigurationObject,
   extractNonNullParts,
   logModel,
+  validateAndFormatGuid,
 } from "../../classes/codeConfig";
 import { Team, Permission } from "../..";
 
 export async function loadTeam(configObject: ConfigurationObject) {
-  let [team, isNew] = await Team.scope(null).findOrCreate({
-    where: { locked: true, name: configObject.name },
-  });
+  let isNew = false;
+
+  const guid = await validateAndFormatGuid(Team, configObject.id);
+  let team = await Team.findOne({ where: { locked: true, guid } });
+  if (!team) {
+    isNew = true;
+    team = await Team.create({
+      guid,
+      locked: true,
+      name: configObject.name,
+    });
+  }
 
   if (configObject.options?.permissionAllRead) {
     await team.update({
       permissionAllRead: configObject.options.permissionAllRead,
     });
   }
+
   if (configObject.options?.permissionAllWrite) {
     await team.update({
       permissionAllWrite: configObject.options.permissionAllWrite,

@@ -3,24 +3,45 @@ import {
   extractNonNullParts,
   logModel,
   getParentByName,
+  validateAndFormatGuid,
 } from "../../classes/codeConfig";
-import { App, Source } from "../..";
+import { App, Source, ProfilePropertyRule } from "../..";
 
 export async function loadSource(configObject: ConfigurationObject) {
-  const app: App = await getParentByName(App, configObject.app);
+  let isNew = false;
 
-  let [source, isNew] = await Source.scope(null).findOrCreate({
-    where: {
+  const app: App = await getParentByName(App, configObject.appId);
+
+  const guid = await validateAndFormatGuid(Source, configObject.id);
+  let source = await Source.scope(null).findOne({
+    where: { guid, appGuid: app.guid },
+  });
+  if (!source) {
+    isNew = true;
+    source = await Source.create({
+      guid,
       locked: true,
       name: configObject.name,
       type: configObject.type,
       appGuid: app.guid,
-    },
-  });
+    });
+  }
+
   await source.setOptions(extractNonNullParts(configObject, "options"));
 
+  let bootstrappedRule: ProfilePropertyRule;
   try {
     await source.setMapping(extractNonNullParts(configObject, "mapping"));
+    if (configObject.bootstrappedProfilePropertyRule) {
+      bootstrappedRule = await ProfilePropertyRule.findOne({
+        where: {
+          guid: await validateAndFormatGuid(
+            ProfilePropertyRule,
+            configObject.bootstrappedProfilePropertyRule.id
+          ),
+        },
+      });
+    }
   } catch (error) {
     if (
       error.toString().match(/cannot find profile property rule/) &&
@@ -28,10 +49,11 @@ export async function loadSource(configObject: ConfigurationObject) {
     ) {
       const rule = configObject.bootstrappedProfilePropertyRule;
       const mappedColumn = Object.values(rule.options)[0];
-      await source.bootstrapUniqueProfilePropertyRule(
+      bootstrappedRule = await source.bootstrapUniqueProfilePropertyRule(
         rule.key || rule.name,
         rule.type,
-        mappedColumn
+        mappedColumn,
+        await validateAndFormatGuid(ProfilePropertyRule, rule.id)
       );
       await source.setMapping(extractNonNullParts(configObject, "mapping"));
     } else {
@@ -40,6 +62,11 @@ export async function loadSource(configObject: ConfigurationObject) {
   }
 
   await source.update({ state: "ready" });
+
+  if (isNew) await bootstrappedRule.update({ locked: true });
+
   logModel(source, isNew);
+  if (bootstrappedRule) logModel(bootstrappedRule, isNew);
+
   return source;
 }

@@ -1,9 +1,18 @@
 export default async function getConfig() {
   await new Promise((resolve) => setTimeout(resolve, 100));
 
+  // TODO: How can I delete an option.name?  Does null/undefined delete stuff?
+  // TODO: Delete Objects that are no longer in config
+  //   - Perhaps the guid is stored in the `locked` column so that we know it's save to delete?
+  // TODO: Configurable config dir
+
+  // QUESTION: Can we use the Actions vs the Code Config-ers?
+
+  // DECIDED: use ID in these configs.  Guids, are made form IDS => `app_${id}`
+
   return [
     {
-      guid: "data_warehouse", // we can prefix `app_` ourselves
+      id: "data_warehouse", // guid -> `app_data_warehouse`
       name: "Data Warehouse",
       class: "App",
       type: "postgres",
@@ -18,11 +27,11 @@ export default async function getConfig() {
     },
 
     {
-      guid: "users_table", // src_users_table
+      id: "users_table", // guid -> `src_data_warehouse`
       name: "Users Table",
       class: "Source",
       type: "postgres-table-import",
-      app: "data_warehouse", // <-- reference name
+      appId: "data_warehouse", // appGuid -> `app_data_warehouse`
       options: {
         table: "users",
       },
@@ -32,6 +41,7 @@ export default async function getConfig() {
       bootstrappedProfilePropertyRule: {
         name: "User Id",
         type: "integer",
+        id: "user_id", // guid -> `rul_user_id`
         options: {
           column: "id",
         },
@@ -39,13 +49,13 @@ export default async function getConfig() {
     },
 
     {
-      guid: "email_rule", // prp_email_rule
+      id: "email_rule", // guid -> `pro_data_warehouse`
       name: "email",
       class: "ProfilePropertyRule",
       type: "email",
       unique: true,
       isArray: false,
-      source: "users_table", // <-- reference name
+      sourceId: "users_table", // sourceGuid -> `src_users_table`
       options: {
         column: "email",
         "aggregation method": "exact",
@@ -55,13 +65,13 @@ export default async function getConfig() {
     },
 
     {
-      guid: "first_name", // pro_first_name
+      id: "first_name", // guid -> `pro_first_name`
       name: "first name",
       class: "ProfilePropertyRule",
       type: "string",
       unique: false,
       isArray: false,
-      source: "users_table", // <-- reference name
+      sourceId: "users_table", // sourceGuid -> `src_users_table`
       options: {
         column: "first_name",
         "aggregation method": "exact",
@@ -71,13 +81,13 @@ export default async function getConfig() {
     },
 
     {
-      guid: "last_name", // prp_last_name
+      id: "last_name", // guid -> `pro_first_name`
       name: "last name",
       class: "ProfilePropertyRule",
       type: "string",
       unique: false,
       isArray: false,
-      source: "users_table", // <-- reference name
+      sourceId: "users_table", // sourceGuid -> `src_users_table`
       options: {
         column: "last_name",
         "aggregation method": "exact",
@@ -86,16 +96,16 @@ export default async function getConfig() {
       filters: [],
     },
 
-    {
-      guid: "email_group", // grp_email_group
-      name: "People with Email Addresses",
-      class: "Group",
-      type: "calculated",
-      rules: [{ profilePropertyRule: "email", op: "like", match: "%@%" }], // reference prp_email
-    },
+    // {
+    //   id: "email_group", // guid -> `grp_marketing_team`
+    //   name: "People with Email Addresses",
+    //   class: "Group",
+    //   type: "calculated",
+    //   rules: [{ profilePropertyRuleId: "email", op: "like", match: "%@%" }], // reference prp_email
+    // },
 
     {
-      guid: "website_api_key", // api_website_api_key
+      id: "website_api_key", // guid -> `api_website_api_key`
       name: "web-api-key",
       class: "apiKey",
       options: {
@@ -105,7 +115,7 @@ export default async function getConfig() {
     },
 
     {
-      guid: "marketing_team", // tea_marketing_team
+      id: "marketing_team", // guid -> `tea_marketing_team`
       name: "Marketing Team",
       class: "team",
       options: {
@@ -115,9 +125,21 @@ export default async function getConfig() {
     },
 
     {
-      guid: "person_team_member", // tem_person_team_member
+      id: "demo", // guid -> `tea_person`
+      email: "demo@grouparoo.com",
+      teamId: "marketing_team", // guid -> `tea_marketing_team`
+      class: "teamMember",
+      options: {
+        firstName: "Example",
+        lastName: "Person",
+        password: "password",
+      },
+    },
+
+    {
+      id: "person", // guid -> `tea_person`
       email: "person@grouparoo.com",
-      team: "Marketing Team",
+      teamId: "marketing_team", // guid -> `tea_marketing_team`
       class: "teamMember",
       options: {
         firstName: "Example",
