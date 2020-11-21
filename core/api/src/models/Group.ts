@@ -208,6 +208,11 @@ export class Group extends LoggedModel<Group> {
 
     const topLevelRuleKeys = TopLevelGroupRules.map((tlr) => tlr.key);
 
+    // TODO
+    const existingRules = await this.getRules();
+    const rulesAreEqual = GroupOps.rulesAreEqual(existingRules, rules);
+    if (rulesAreEqual) return;
+
     const transaction = await api.sequelize.transaction({
       lock: Transaction.LOCK.UPDATE,
     });

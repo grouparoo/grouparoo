@@ -7,6 +7,7 @@ import { Run } from "../../../src/models/Run";
 import { Import } from "../../../src/models/Import";
 import { GroupMember } from "../../../src/models/GroupMember";
 import { SharedGroupTests } from "../../utils/prepareSharedGroupTest";
+import { GroupOps } from "../../../src/modules/ops/group";
 
 let actionhero;
 
@@ -106,6 +107,35 @@ describe("models/group", () => {
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
       await firstRun.reload();
       expect(firstRun.state).toBe("stopped");
+    });
+
+    test("we can determine if group rules have been changed", async () => {
+      await group.setRules([
+        { key: "firstName", match: "Mario", operation: { op: "eq" } },
+      ]);
+      const rules = await group.getRules();
+
+      expect(GroupOps.rulesAreEqual(rules, [])).toBe(false);
+      expect(
+        GroupOps.rulesAreEqual(rules, [
+          { key: "firstName", match: "Mario", operation: { op: "eq" } },
+        ])
+      ).toBe(true);
+      expect(
+        GroupOps.rulesAreEqual(rules, [
+          { key: "firstName", match: "Luigi", operation: { op: "eq" } },
+        ])
+      ).toBe(false);
+      expect(
+        GroupOps.rulesAreEqual(rules, [
+          { key: "LastName", match: "Mario", operation: { op: "eq" } },
+        ])
+      ).toBe(false);
+      expect(
+        GroupOps.rulesAreEqual(rules, [
+          { key: "firstName", match: "Mario", operation: { op: "ne" } },
+        ])
+      ).toBe(false);
     });
 
     test("group#runAddGroupMembers will create an import for new members, and touch the updatedAt for existing members", async () => {

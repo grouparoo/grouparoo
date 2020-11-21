@@ -15,6 +15,8 @@ export namespace LockableHelper {
     if (instance.isNewRecord) return;
     if (api?.codeConfig?.allowLockedModelChanges !== false) return;
 
+    allowedColumnsThatCanChangeWhenLocked.push("updatedAt", "createdAt");
+
     const changedCols = instance.changed(); // ['firstName', 'lastLoginAt']
 
     for (const i in changedCols) {
@@ -22,7 +24,7 @@ export namespace LockableHelper {
         throw new Error(
           `you cannot update this locked ${modelName(instance)} (${
             instance.guid
-          }) [${changedCols.join(", ")} changed]`
+          }) [${changedCols.map((k) => `\`${k}\``).join(", ")} have changed]`
         );
       }
     }
