@@ -12,6 +12,14 @@ module.exports = async function getConfig() {
 
   return [
     {
+      id: "setting_cluster_name", // this is actually ignored
+      class: "Setting",
+      pluginName: "core",
+      key: "cluster-name",
+      value: "Evan's Test Cluster",
+    },
+
+    {
       id: "data_warehouse", // guid -> `app_data_warehouse`
       name: "Data Warehouse",
       class: "App",
@@ -27,6 +35,16 @@ module.exports = async function getConfig() {
     },
 
     {
+      id: "hubspot", // guid -> `app_hubspot`
+      name: "Hubspot",
+      class: "App",
+      type: "hubspot",
+      options: {
+        hapikey: "HUBSPOT_API_KEY", // Use an ENV variable `GROUPAROO_OPTION__APP__HUBSPOT_API_KEY` without storing it in the DB
+      },
+    },
+
+    {
       id: "users_table", // guid -> `src_data_warehouse`
       name: "Users Table",
       class: "Source",
@@ -36,7 +54,7 @@ module.exports = async function getConfig() {
         table: "users",
       },
       mapping: {
-        id: "User Id",
+        id: "user_id",
       },
       bootstrappedProfilePropertyRule: {
         name: "User Id",
@@ -123,7 +141,45 @@ module.exports = async function getConfig() {
           operation: { op: "like" },
           match: "%@%",
         },
-      ], // reference prp_email
+      ],
+    },
+
+    {
+      id: "small_group", // guid -> `grp_marketing_team`
+      name: "A Small Group",
+      class: "Group",
+      type: "calculated",
+      rules: [
+        {
+          profilePropertyRuleId: "user_id",
+          operation: { op: "gt" },
+          match: 950,
+        },
+        {
+          profilePropertyRuleId: "email",
+          operation: { op: "like" },
+          match: "%@%",
+        },
+      ],
+    },
+
+    {
+      id: "hubspot_destination", // guid -> `dst_hubspot_destination`
+      name: "Hubspot Destination",
+      class: "destination",
+      type: "hubspot-export",
+      appId: "hubspot", // guid -> app_hubspot
+      groupId: "small_group", // guid -> grp_small_group
+      options: {},
+      mapping: {
+        email: "email",
+        firstname: "first_name",
+        lastname: "last_name",
+      },
+      destinationGroupMemberships: {
+        "Hubspot Small Group": "small_group",
+        "Literally Everyone": "email_group",
+      },
     },
 
     {

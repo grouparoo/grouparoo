@@ -350,8 +350,12 @@ export class DestinationProfilePreview extends AuthenticatedAction {
       const groupMember = await GroupMember.findOne({
         where: { groupGuid: group.guid },
       });
-      profile = await Profile.findByGuid(groupMember.profileGuid);
+      if (groupMember) {
+        profile = await Profile.findByGuid(groupMember.profileGuid);
+      }
     }
+
+    if (!profile) return;
 
     await profile.buildNullProperties(); // the preview may include a brand new property
 

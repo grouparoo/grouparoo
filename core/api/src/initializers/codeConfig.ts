@@ -15,6 +15,8 @@ import { loadTeam } from "../modules/configLoaders/team";
 import { loadTeamMember } from "../modules/configLoaders/teamMember";
 import { loadGroup } from "../modules/configLoaders/group";
 import { loadSchedule } from "../modules/configLoaders/schedule";
+import { loadSetting } from "../modules/configLoaders/setting";
+import { loadDestination } from "../modules/configLoaders/destination";
 
 declare module "actionhero" {
   export interface Api {
@@ -84,6 +86,12 @@ async function processConfigObjects(configObjects: Array<ConfigurationObject>) {
           break;
         case "schedule":
           await loadSchedule(configObject);
+          break;
+        case "destination":
+          await loadDestination(configObject);
+          break;
+        case "setting":
+          await loadSetting(configObject);
           break;
         case "apikey":
           await loadApiKey(configObject);

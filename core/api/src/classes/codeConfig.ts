@@ -18,6 +18,9 @@ export interface ConfigurationObject {
   rules?: GroupRuleWithKey[];
   recurring?: boolean;
   recurringFrequency: number;
+  groupId?: string;
+  pluginName?: string;
+  value: string | boolean | number;
   bootstrappedProfilePropertyRule?: ConfigurationObject;
 }
 
@@ -94,12 +97,12 @@ export function sortConfigurationObject(
   const otherKlass = b.class.toLocaleLowerCase();
 
   const points = {
-    app: 10,
-    source: 9,
-    profilepropertyrule: 8,
+    setting: 10,
+    app: 9,
+    source: 8,
+    profilepropertyrule: 7,
     group: 7,
-    destination: 6,
-    setting: 5,
+    destination: 5,
     schedule: 4,
     apikey: 3,
     team: 2,

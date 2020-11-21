@@ -32,8 +32,21 @@ export async function loadSource(configObject: ConfigurationObject) {
   await source.setOptions(extractNonNullParts(configObject, "options"));
 
   let bootstrappedRule: ProfilePropertyRule;
+  let mappedProfileProperty: ProfilePropertyRule;
+  let mapping = {};
+
+  async function setMapping() {
+    mappedProfileProperty = await getParentByName(
+      ProfilePropertyRule,
+      Object.values(extractNonNullParts(configObject, "mapping"))[0]
+    );
+    mapping[Object.keys(extractNonNullParts(configObject, "mapping"))[0]] =
+      mappedProfileProperty.key;
+    await source.setMapping(mapping);
+  }
+
   try {
-    await source.setMapping(extractNonNullParts(configObject, "mapping"));
+    await setMapping();
     if (configObject.bootstrappedProfilePropertyRule) {
       bootstrappedRule = await ProfilePropertyRule.findOne({
         where: {
@@ -46,7 +59,7 @@ export async function loadSource(configObject: ConfigurationObject) {
     }
   } catch (error) {
     if (
-      error.toString().match(/cannot find profile property rule/) &&
+      error.toString().match(/cannot find ProfilePropertyRule/) &&
       configObject.bootstrappedProfilePropertyRule
     ) {
       const rule = configObject.bootstrappedProfilePropertyRule;
@@ -57,7 +70,7 @@ export async function loadSource(configObject: ConfigurationObject) {
         mappedColumn,
         await validateAndFormatGuid(ProfilePropertyRule, rule.id)
       );
-      await source.setMapping(extractNonNullParts(configObject, "mapping"));
+      await setMapping();
     } else {
       throw error;
     }
