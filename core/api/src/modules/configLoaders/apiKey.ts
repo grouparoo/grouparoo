@@ -24,13 +24,19 @@ export async function loadApiKey(configObject: ConfigurationObject) {
 
   await apiKey.update({ name: configObject.name });
 
-  if (configObject.options?.permissionAllRead) {
+  if (
+    configObject.options?.permissionAllRead !== undefined &&
+    configObject.options?.permissionAllRead !== null
+  ) {
     await apiKey.update({
       permissionAllRead: configObject.options.permissionAllRead,
     });
   }
 
-  if (configObject.options?.permissionAllWrite) {
+  if (
+    configObject.options?.permissionAllWrite !== undefined &&
+    configObject.options?.permissionAllWrite !== null
+  ) {
     await apiKey.update({
       permissionAllWrite: configObject.options.permissionAllWrite,
     });

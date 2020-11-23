@@ -10,8 +10,11 @@ import {
   ApiKey,
   Team,
   TeamMember,
+  Setting,
 } from "../../..";
 import path from "path";
+import { api } from "actionhero";
+import { Op } from "sequelize";
 import { CodeConfig } from "../../src/initializers/codeConfig";
 
 let actionhero;
@@ -24,6 +27,7 @@ describe("modules/codeConfig", () => {
   }, helper.setupTime);
 
   afterAll(async () => {
+    await Setting.truncate();
     await helper.shutdown(actionhero);
   });
 
@@ -31,6 +35,7 @@ describe("modules/codeConfig", () => {
     beforeAll(async () => {
       // manually run the initializer again after the server has started.
       // the test test-app plugin has been loaded
+      api.codeConfig.allowLockedModelChanges = true;
       process.env.GROUPAROO_CONFIG_DIR = path.join(
         __dirname,
         "..",
@@ -47,7 +52,9 @@ describe("modules/codeConfig", () => {
     });
 
     test("apps are created", async () => {
-      const apps = await App.findAll();
+      const apps = await App.findAll({
+        where: { type: { [Op.ne]: "events" } },
+      });
       expect(apps.length).toBe(1);
       expect(apps[0].guid).toBe("app_data_warehouse");
       expect(apps[0].name).toBe("Data Warehouse");
@@ -194,6 +201,110 @@ describe("modules/codeConfig", () => {
       expect(teamMembers[0].firstName).toEqual("Example");
       expect(teamMembers[0].lastName).toEqual("Person");
       expect(await teamMembers[0].checkPassword("password")).toBe(true);
+    });
+  });
+
+  describe("changed config", () => {
+    beforeAll(async () => {
+      api.codeConfig.allowLockedModelChanges = true;
+      process.env.GROUPAROO_CONFIG_DIR = path.join(
+        __dirname,
+        "..",
+        "fixtures",
+        "codeConfig",
+        "changes"
+      );
+      await initializer.initialize();
+    });
+
+    test("settings can be changed", async () => {
+      const setting = await plugin.readSetting("core", "cluster-name");
+      expect(setting.value).toBe("Test Cluster!!!");
+    });
+
+    test("changes to an app setting will be updated", async () => {
+      const apps = await App.findAll({
+        where: { type: { [Op.ne]: "events" } },
+      });
+      expect(apps.length).toBe(1);
+      expect(apps[0].guid).toBe("app_data_warehouse");
+      expect(apps[0].name).toBe("Data Warehouse");
+      expect(apps[0].state).toBe("ready");
+      expect(apps[0].locked).toBe(true);
+      const options = await apps[0].getOptions();
+      expect(options).toEqual({ fileGuid: "new-file-path.db" });
+    });
+
+    test("profile property rule keys changes will be updated", async () => {
+      const rules = await ProfilePropertyRule.findAll();
+      expect(rules.length).toBe(4);
+      expect(rules.map((r) => r.key).sort()).toEqual([
+        "Email",
+        "First Name",
+        "Last Name",
+        "User Id",
+      ]);
+      expect(rules.map((r) => r.sourceGuid).sort()).toEqual([
+        "src_users_table",
+        "src_users_table",
+        "src_users_table",
+        "src_users_table",
+      ]);
+      expect(rules.map((r) => r.state).sort()).toEqual([
+        "ready",
+        "ready",
+        "ready",
+        "ready",
+      ]);
+      expect(rules.map((r) => r.locked).sort()).toEqual([
+        true,
+        true,
+        true,
+        true,
+      ]);
+    });
+
+    test("groups can have changed names and rules", async () => {
+      const groups = await Group.findAll();
+      expect(groups.length).toBe(1);
+      expect(groups[0].guid).toBe("grp_email_group");
+      expect(groups[0].name).toBe("People who have Email Addresses");
+      expect(groups[0].state).toBe("ready");
+      expect(groups[0].locked).toBe(true);
+      const rules = await groups[0].getRules();
+      expect(rules).toEqual([
+        {
+          key: "Email",
+          match: "%@%",
+          operation: { description: "is like (case sensitive)", op: "like" },
+          relativeMatchDirection: null,
+          relativeMatchNumber: null,
+          relativeMatchUnit: null,
+          topLevel: false,
+          type: "email",
+        },
+      ]);
+    });
+
+    test.todo("a removed destination will be deleted");
+
+    test("changes to team permissions will be updated", async () => {
+      const teams = await Team.findAll();
+      expect(teams.length).toBe(1);
+      expect(teams[0].guid).toBe("tea_admin_team");
+      expect(teams[0].name).toBe("Admin Team (no write)");
+      expect(teams[0].locked).toBe(true);
+      expect(teams[0].permissionAllRead).toBe(true);
+      expect(teams[0].permissionAllWrite).toBe(false);
+    });
+
+    test("a team member password can be changed", async () => {
+      const teamMembers = await TeamMember.findAll();
+      expect(teamMembers.length).toBe(1);
+      expect(teamMembers[0].email).toEqual("demo@grouparoo.com");
+      expect(teamMembers[0].firstName).toEqual("Example");
+      expect(teamMembers[0].lastName).toEqual("Person");
+      expect(await teamMembers[0].checkPassword("new-password")).toBe(true);
     });
   });
 });

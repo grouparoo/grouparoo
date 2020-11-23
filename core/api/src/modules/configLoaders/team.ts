@@ -22,13 +22,19 @@ export async function loadTeam(configObject: ConfigurationObject) {
 
   await team.update({ name: configObject.name });
 
-  if (configObject.options?.permissionAllRead) {
+  if (
+    configObject.options?.permissionAllRead !== undefined &&
+    configObject.options?.permissionAllRead !== null
+  ) {
     await team.update({
       permissionAllRead: configObject.options.permissionAllRead,
     });
   }
 
-  if (configObject.options?.permissionAllWrite) {
+  if (
+    configObject.options?.permissionAllWrite !== undefined &&
+    configObject.options?.permissionAllWrite !== null
+  ) {
     await team.update({
       permissionAllWrite: configObject.options.permissionAllWrite,
     });

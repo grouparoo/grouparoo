@@ -10,6 +10,7 @@ import {
 import { LoggedModel } from "../classes/loggedModel";
 import { Team } from "./Team";
 import { ApiKey } from "./ApiKey";
+import { LockableHelper } from "../modules/lockableHelper";
 
 export const PermissionTopics = [
   "apiKey",
@@ -93,14 +94,8 @@ export class Permission extends LoggedModel<Permission> {
   }
 
   @BeforeSave
-  static async checkLocked(instance: Permission) {
-    if (
-      instance.locked &&
-      instance["_previousDataValues"].locked &&
-      (instance.changed("read") || instance.changed("write"))
-    ) {
-      throw new Error("permission is locked");
-    }
+  static async noUpdateIfLocked(instance) {
+    await LockableHelper.beforeSave(instance);
   }
 
   static async authorizeAction(

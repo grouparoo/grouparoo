@@ -29,7 +29,7 @@ export class TeamPermissions extends Initializer {
     }
   }
 
-  async start() {
+  async initialize() {
     const teams = await Team.findAll();
     for (const i in teams) {
       await this.updateTeamPermissions(teams[i]);

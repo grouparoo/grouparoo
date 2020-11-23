@@ -403,9 +403,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
 
 async function addEventsApp() {
   let eventsApp = await App.scope(null).findOne({
-    where: {
-      type: "events",
-    },
+    where: { type: "events" },
   });
   if (!eventsApp) {
     eventsApp = App.build({

@@ -24,7 +24,7 @@ export namespace LockableHelper {
         throw new Error(
           `you cannot update this locked ${modelName(instance)} (${
             instance.guid
-          }) [${changedCols.map((k) => `\`${k}\``).join(", ")} have changed]`
+          }) [${changedCols.map((k) => `\`${k}\``).join(", ")} has changes]`
         );
       }
     }
