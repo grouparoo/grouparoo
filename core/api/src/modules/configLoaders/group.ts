@@ -50,7 +50,7 @@ export async function loadGroup(configObject: ConfigurationObject) {
   return group;
 }
 
-export async function deleteUnseenGroups(guids: string[]) {
+export async function deleteGroups(guids: string[]) {
   const groups = await Group.scope(null).findAll({
     where: { locked: true, guid: { [Op.notIn]: guids } },
   });

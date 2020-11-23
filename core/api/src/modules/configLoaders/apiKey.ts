@@ -54,7 +54,7 @@ export async function loadApiKey(configObject: ConfigurationObject) {
   return apiKey;
 }
 
-export async function deleteUnseenApiKeys(guids: string[]) {
+export async function deleteApiKeys(guids: string[]) {
   const apiKeys = await ApiKey.scope(null).findAll({
     where: { locked: true, guid: { [Op.notIn]: guids } },
   });

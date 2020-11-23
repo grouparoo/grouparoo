@@ -7,33 +7,27 @@ import {
   sortConfigurationObject,
 } from "../classes/codeConfig";
 
-import { loadApp, deleteUnseenApps } from "../modules/configLoaders/app";
-import {
-  loadSource,
-  deleteUnseenSources,
-} from "../modules/configLoaders/source";
+import { loadApp, deleteApps } from "../modules/configLoaders/app";
+import { loadSource, deleteSources } from "../modules/configLoaders/source";
 import {
   loadProfilePropertyRule,
-  deleteUnseenProfilePropertyRules,
+  deleteProfilePropertyRules,
 } from "../modules/configLoaders/profilePropertyRule";
-import {
-  loadApiKey,
-  deleteUnseenApiKeys,
-} from "../modules/configLoaders/apiKey";
-import { loadTeam, deleteUnseenTeams } from "../modules/configLoaders/team";
+import { loadApiKey, deleteApiKeys } from "../modules/configLoaders/apiKey";
+import { loadTeam, deleteTeams } from "../modules/configLoaders/team";
 import {
   loadTeamMember,
-  deleteUnseenTeamMembers,
+  deleteTeamMembers,
 } from "../modules/configLoaders/teamMember";
-import { loadGroup, deleteUnseenGroups } from "../modules/configLoaders/group";
+import { loadGroup, deleteGroups } from "../modules/configLoaders/group";
 import {
   loadSchedule,
-  deleteUnseenSchedules,
+  deleteSchedules,
 } from "../modules/configLoaders/schedule";
 import { loadSetting } from "../modules/configLoaders/setting";
 import {
   loadDestination,
-  deleteUnseenDestinations,
+  deleteDestinations,
 } from "../modules/configLoaders/destination";
 
 declare module "actionhero" {
@@ -79,8 +73,10 @@ export class CodeConfig extends Initializer {
       );
     }
 
-    const seenGuids = await processConfigObjects(configObjects);
-    await deleteUnseenLockedObjects(seenGuids);
+    if (configObjects.length > 0) {
+      const seenGuids = await processConfigObjects(configObjects);
+      await deleteLockedObjects(seenGuids);
+    }
 
     // after this point in the Actionhero boot lifecycle, locked models cannot be changed
     api.codeConfig.allowLockedModelChanges = false;
@@ -148,28 +144,23 @@ async function processConfigObjects(configObjects: Array<ConfigurationObject>) {
           throw new Error(`unknown config object class: ${configObject.class}`);
       }
     } catch (error) {
-      // TODO: Fancier error handling
-      // console.error(error);
-
       throw error.original ? error.original : error;
     }
 
-    seenGuids[klass].push(object);
+    if (klass !== "setting") seenGuids[klass].push(object.guid);
   }
 
   return seenGuids;
 }
 
-async function deleteUnseenLockedObjects(seenGuids: SeenGuids) {
-  console.log(seenGuids);
-
-  await deleteUnseenTeamMembers(seenGuids.teammember);
-  await deleteUnseenTeams(seenGuids.team);
-  await deleteUnseenApiKeys(seenGuids.apikey);
-  await deleteUnseenDestinations(seenGuids.destination);
-  await deleteUnseenSchedules(seenGuids.schedule);
-  await deleteUnseenGroups(seenGuids.group);
-  await deleteUnseenProfilePropertyRules(seenGuids.profilepropertyrule);
-  await deleteUnseenSources(seenGuids.source);
-  await deleteUnseenApps(seenGuids.app);
+async function deleteLockedObjects(seenGuids: SeenGuids) {
+  await deleteTeamMembers(seenGuids.teammember);
+  await deleteTeams(seenGuids.team);
+  await deleteApiKeys(seenGuids.apikey);
+  await deleteDestinations(seenGuids.destination);
+  await deleteSchedules(seenGuids.schedule);
+  await deleteGroups(seenGuids.group);
+  await deleteProfilePropertyRules(seenGuids.profilepropertyrule);
+  await deleteSources(seenGuids.source);
+  await deleteApps(seenGuids.app);
 }

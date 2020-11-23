@@ -71,7 +71,7 @@ export async function loadDestination(configObject: ConfigurationObject) {
   return destination;
 }
 
-export async function deleteUnseenDestinations(guids: string[]) {
+export async function deleteDestinations(guids: string[]) {
   const destinations = await Destination.scope(null).findAll({
     where: { locked: true, guid: { [Op.notIn]: guids } },
   });

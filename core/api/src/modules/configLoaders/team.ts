@@ -52,7 +52,7 @@ export async function loadTeam(configObject: ConfigurationObject) {
   return team;
 }
 
-export async function deleteUnseenTeams(guids: string[]) {
+export async function deleteTeams(guids: string[]) {
   const teams = await Team.scope(null).findAll({
     where: { locked: true, guid: { [Op.notIn]: guids } },
   });

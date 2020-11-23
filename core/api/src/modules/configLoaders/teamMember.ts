@@ -44,7 +44,7 @@ export async function loadTeamMember(configObject: ConfigurationObject) {
   return teamMember;
 }
 
-export async function deleteUnseenTeamMembers(guids: string[]) {
+export async function deleteTeamMembers(guids: string[]) {
   const teamMembers = await TeamMember.scope(null).findAll({
     where: { locked: true, guid: { [Op.notIn]: guids } },
   });

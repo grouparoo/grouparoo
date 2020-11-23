@@ -30,7 +30,7 @@ export async function loadApp(configObject: ConfigurationObject) {
   return app;
 }
 
-export async function deleteUnseenApps(guids: string[]) {
+export async function deleteApps(guids: string[]) {
   const apps = await App.scope(null).findAll({
     where: { locked: true, guid: { [Op.notIn]: guids } },
   });

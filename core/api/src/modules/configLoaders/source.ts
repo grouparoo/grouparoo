@@ -7,6 +7,7 @@ import {
 } from "../../classes/codeConfig";
 import { App, Source, ProfilePropertyRule } from "../..";
 import { Op } from "sequelize";
+import { ProfileProperty } from "../../models/ProfileProperty";
 
 export async function loadSource(configObject: ConfigurationObject) {
   let isNew = false;
@@ -87,10 +88,27 @@ export async function loadSource(configObject: ConfigurationObject) {
   return source;
 }
 
-export async function deleteUnseenSources(guids: string[]) {
+export async function deleteSources(guids: string[]) {
   const sources = await Source.scope(null).findAll({
     where: { locked: true, guid: { [Op.notIn]: guids } },
   });
 
-  for (const i in sources) await sources[i].destroy();
+  for (const i in sources) {
+    const source = sources[i];
+    const rules = await source.$get("profilePropertyRules");
+
+    for (const j in rules) {
+      const rule = rules[j];
+      if (rule.directlyMapped) {
+        //@ts-ignore
+        await rule.destroy({ hooks: false });
+        await ProfilePropertyRule.stopRuns(rule);
+        await ProfilePropertyRule.destroyOptions(rule);
+        await ProfilePropertyRule.destroyProfilePropertyRuleFilters(rule);
+        await ProfilePropertyRule.destroyProfileProperties(rule);
+      }
+    }
+
+    await source.destroy();
+  }
 }

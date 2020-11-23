@@ -38,7 +38,7 @@ export async function loadSchedule(configObject: ConfigurationObject) {
   return schedule;
 }
 
-export async function deleteUnseenSchedules(guids: string[]) {
+export async function deleteSchedules(guids: string[]) {
   const schedules = await Schedule.scope(null).findAll({
     where: { locked: true, guid: { [Op.notIn]: guids } },
   });

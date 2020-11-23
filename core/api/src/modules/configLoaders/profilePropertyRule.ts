@@ -48,7 +48,7 @@ export async function loadProfilePropertyRule(
   return profilePropertyRule;
 }
 
-export async function deleteUnseenProfilePropertyRules(guids: string[]) {
+export async function deleteProfilePropertyRules(guids: string[]) {
   const rules = await ProfilePropertyRule.scope(null).findAll({
     where: { locked: true, guid: { [Op.notIn]: guids } },
   });

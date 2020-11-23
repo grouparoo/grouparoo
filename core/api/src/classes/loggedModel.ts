@@ -11,7 +11,7 @@ import {
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { Log } from "../models/Log";
-import { config, chatRoom } from "actionhero";
+import { config, chatRoom, log } from "actionhero";
 import { Transaction } from "sequelize";
 
 function modelName(instance): string {
@@ -122,13 +122,18 @@ export abstract class LoggedModel<T> extends Model<T> {
   }
 
   async filteredDataForLogging() {
-    const apiData = await this.apiData();
+    let apiData = {};
+    try {
+      apiData = await this.apiData();
+    } catch (error) {
+      log(error, "error");
+    }
 
     config.general.filteredParams.forEach((p) => {
       if (apiData[p]) apiData[p] = "** filtered **";
     });
 
-    if (apiData.options) apiData.options = "** filtered **";
+    if (apiData["options"]) apiData["options"] = "** filtered **";
 
     return apiData;
   }

@@ -7,7 +7,6 @@ import {
   Default,
   BeforeSave,
   BeforeDestroy,
-  AfterSave,
   AfterDestroy,
   ForeignKey,
   BelongsTo,
@@ -17,7 +16,7 @@ import {
   BeforeUpdate,
   BeforeCreate,
 } from "sequelize-typescript";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import { env, api, config } from "actionhero";
 import { plugin } from "../modules/plugin";
 import { LoggedModel } from "../classes/loggedModel";
@@ -505,7 +504,10 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   @AfterDestroy
-  static async destroyOptions(instance: ProfilePropertyRule, { transaction }) {
+  static async destroyOptions(
+    instance: ProfilePropertyRule,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
     await Option.destroy({
       where: { ownerGuid: instance.guid },
       transaction,
@@ -513,7 +515,10 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   @AfterDestroy
-  static async stopRuns(instance: ProfilePropertyRule, { transaction }) {
+  static async stopRuns(
+    instance: ProfilePropertyRule,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
     const runs = await Run.findAll({
       where: { creatorGuid: instance.guid, state: "running" },
       transaction,
@@ -527,7 +532,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @AfterDestroy
   static async destroyProfilePropertyRuleFilters(
     instance: ProfilePropertyRule,
-    { transaction }
+    { transaction }: { transaction?: Transaction } = {}
   ) {
     await ProfilePropertyRuleFilter.destroy({
       where: { profilePropertyRuleGuid: instance.guid },
@@ -538,7 +543,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @AfterDestroy
   static async destroyProfileProperties(
     instance: ProfilePropertyRule,
-    { transaction }
+    { transaction }: { transaction?: Transaction } = {}
   ) {
     await ProfileProperty.destroy({
       where: { profilePropertyRuleGuid: instance.guid },
