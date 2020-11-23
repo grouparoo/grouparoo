@@ -27,7 +27,7 @@
     "lint": "prettier --check src"
   },
   "dependencies": {
-    "aws-sdk": "2.792.0",
+    "aws-sdk": "2.797.0",
     "fs-extra": "9.0.1"
   },
   "peerDependencies": {
