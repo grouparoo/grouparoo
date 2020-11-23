@@ -1,6 +1,5 @@
 import {
   ConfigurationObject,
-  extractNonNullParts,
   validateAndFormatGuid,
   logModel,
 } from "../../classes/codeConfig";
@@ -43,7 +42,9 @@ export async function loadApiKey(configObject: ConfigurationObject) {
     });
   }
 
-  // await apiKey.setPermissions();
+  if (configObject.permissions) {
+    await apiKey.setPermissions(configObject.permissions);
+  }
 
   await Permission.update(
     { locked: true },

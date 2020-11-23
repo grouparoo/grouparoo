@@ -20,6 +20,7 @@ export interface ConfigurationObject {
   recurringFrequency: number;
   groupId?: string;
   pluginName?: string;
+  permissions?: Array<{ guid: string; read: boolean; write: boolean }>;
   value: string | boolean | number;
   bootstrappedProfilePropertyRule?: ConfigurationObject;
 }

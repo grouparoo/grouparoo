@@ -41,7 +41,9 @@ export async function loadTeam(configObject: ConfigurationObject) {
     });
   }
 
-  // await team.setPermissions();
+  if (configObject.permissions) {
+    await team.setPermissions(configObject.permissions);
+  }
 
   await Permission.update(
     { locked: true },
