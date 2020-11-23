@@ -73,7 +73,7 @@ export class CodeConfig extends Initializer {
       );
     }
 
-    if (configObjects.length > 0) {
+    if (configFiles.length > 0) {
       const seenGuids = await processConfigObjects(configObjects);
       await deleteLockedObjects(seenGuids);
     }
