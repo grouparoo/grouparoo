@@ -59,15 +59,12 @@ export const useRealtimeModelStream = (
     client.on("api", function (message) {
       alert("[websocket] " + JSON.stringify(message));
     });
-    client.on("say", function ({
-      context,
-      from,
-      room: messageRoom,
-      sentAt,
-      message,
-    }) {
-      handleMessage(context, from, messageRoom, sentAt, message);
-    });
+    client.on(
+      "say",
+      function ({ context, from, room: messageRoom, sentAt, message }) {
+        handleMessage(context, from, messageRoom, sentAt, message);
+      }
+    );
 
     client.connect(function (error, details) {
       if (error) console.error(error);

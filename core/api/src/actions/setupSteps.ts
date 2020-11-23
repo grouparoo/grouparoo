@@ -17,9 +17,9 @@ export class SetupStepsList extends AuthenticatedAction {
       order: [["position", "asc"]],
     });
 
-    const responseSetupSteps: Array<AsyncReturnType<
-      typeof SetupStep.prototype.apiData
-    >> = [];
+    const responseSetupSteps: Array<
+      AsyncReturnType<typeof SetupStep.prototype.apiData>
+    > = [];
 
     for (const i in setupSteps) {
       await setupSteps[i].performCheck();

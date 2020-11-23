@@ -11,9 +11,7 @@ import { Group } from "./Group";
 import { Destination } from "./Destination";
 
 @Table({ tableName: "destinationGroupMemberships", paranoid: false })
-export class DestinationGroupMembership extends LoggedModel<
-  DestinationGroupMembership
-> {
+export class DestinationGroupMembership extends LoggedModel<DestinationGroupMembership> {
   guidPrefix() {
     return "dgm";
   }

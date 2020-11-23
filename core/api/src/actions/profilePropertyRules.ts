@@ -45,9 +45,9 @@ export class ProfilePropertyRulesList extends AuthenticatedAction {
       where,
     });
 
-    const responseProfilePropertyRules: Array<AsyncReturnType<
-      typeof ProfilePropertyRule.prototype.apiData
-    >> = [];
+    const responseProfilePropertyRules: Array<
+      AsyncReturnType<typeof ProfilePropertyRule.prototype.apiData>
+    > = [];
     const responseExamples: { [guid: string]: string[] } = {};
 
     for (const i in profilePropertyRules) {
