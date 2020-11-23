@@ -56,7 +56,7 @@ export async function validateAndFormatGuid(model, id: string) {
 
   if (failing) {
     throw new Error(
-      `guids must be less than 40 characters and only contain lower-case letters, numbers, and underscores`
+      `invalid guid: \`${guid}\` - guids must be less than 40 characters and only contain lower-case letters, numbers, and underscores`
     );
   }
 

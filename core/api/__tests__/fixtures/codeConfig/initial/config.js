@@ -1,37 +1,20 @@
 module.exports = async function getConfig() {
-  await new Promise((resolve) => setTimeout(resolve, 100));
-
   return [
     {
       id: "setting_cluster_name", // this is actually ignored
       class: "Setting",
       pluginName: "core",
       key: "cluster-name",
-      value: "Evan's Test Cluster",
+      value: "Test Cluster",
     },
 
     {
       id: "data_warehouse", // guid -> `app_data_warehouse`
       name: "Data Warehouse",
       class: "App",
-      type: "postgres",
+      type: "test-plugin-app",
       options: {
-        host: "127.0.0.1",
-        port: "5432",
-        user: "evan",
-        password: null,
-        database: "grouparoo_development",
-        schema: "demo",
-      },
-    },
-
-    {
-      id: "hubspot", // guid -> `app_hubspot`
-      name: "Hubspot",
-      class: "App",
-      type: "hubspot",
-      options: {
-        hapikey: "HUBSPOT_API_KEY", // Use an ENV variable `GROUPAROO_OPTION__APP__HUBSPOT_API_KEY` without storing it in the DB
+        fileGuid: "test-file-path.db",
       },
     },
 
@@ -39,7 +22,7 @@ module.exports = async function getConfig() {
       id: "users_table", // guid -> `src_data_warehouse`
       name: "Users Table",
       class: "Source",
-      type: "postgres-table-import",
+      type: "test-plugin-import",
       appId: "data_warehouse", // appGuid -> `app_data_warehouse`
       options: {
         table: "users",
@@ -65,7 +48,7 @@ module.exports = async function getConfig() {
       recurring: true,
       recurringFrequency: 1000 * 60 * 15, // 15 minutes in ms
       options: {
-        column: "updated_at",
+        maxColumn: "updated_at",
       },
     },
 
@@ -79,8 +62,6 @@ module.exports = async function getConfig() {
       sourceId: "users_table", // sourceGuid -> `src_users_table`
       options: {
         column: "email",
-        "aggregation method": "exact",
-        sort: null,
       },
       filters: [],
     },
@@ -95,8 +76,6 @@ module.exports = async function getConfig() {
       sourceId: "users_table", // sourceGuid -> `src_users_table`
       options: {
         column: "first_name",
-        "aggregation method": "exact",
-        sort: null,
       },
       filters: [],
     },
@@ -111,8 +90,6 @@ module.exports = async function getConfig() {
       sourceId: "users_table", // sourceGuid -> `src_users_table`
       options: {
         column: "last_name",
-        "aggregation method": "exact",
-        sort: null,
       },
       filters: [],
     },
@@ -136,39 +113,20 @@ module.exports = async function getConfig() {
     },
 
     {
-      id: "small_group", // guid -> `grp_marketing_team`
-      name: "A Small Group",
-      class: "Group",
-      type: "calculated",
-      rules: [
-        {
-          profilePropertyRuleId: "user_id",
-          operation: { op: "gt" },
-          match: 950,
-        },
-        {
-          profilePropertyRuleId: "email",
-          operation: { op: "like" },
-          match: "%@%",
-        },
-      ],
-    },
-
-    {
-      id: "hubspot_destination", // guid -> `dst_hubspot_destination`
-      name: "Hubspot Destination",
+      id: "test_destination", // guid -> `dst_hubspot_destination`
+      name: "Test Destination",
       class: "destination",
-      type: "hubspot-export",
-      appId: "hubspot", // guid -> app_hubspot
-      groupId: "small_group", // guid -> grp_small_group
-      options: {},
+      type: "test-plugin-export",
+      appId: "data_warehouse", // guid -> app_data_warehouse
+      groupId: "email_group", // guid -> grp_email_group
+      options: {
+        table: "output",
+      },
       mapping: {
-        email: "email",
-        firstname: "first_name",
-        lastname: "last_name",
+        "primary-id": "user_id",
+        "secondary-id": "email",
       },
       destinationGroupMemberships: {
-        "Hubspot Small Group": "small_group",
         "Literally Everyone": "email_group",
       },
     },
@@ -197,28 +155,6 @@ module.exports = async function getConfig() {
       id: "demo", // guid -> `tea_person`
       email: "demo@grouparoo.com",
       teamId: "admin_team", // guid -> `tea_marketing_team`
-      class: "teamMember",
-      options: {
-        firstName: "Example",
-        lastName: "Person",
-        password: "password",
-      },
-    },
-
-    {
-      id: "marketing_team", // guid -> `tea_marketing_team`
-      name: "Marketing Team",
-      class: "team",
-      options: {
-        permissionAllRead: true,
-        permissionAllWrite: false,
-      },
-    },
-
-    {
-      id: "person", // guid -> `tea_person`
-      email: "person@grouparoo.com",
-      teamId: "marketing_team", // guid -> `tea_marketing_team`
       class: "teamMember",
       options: {
         firstName: "Example",

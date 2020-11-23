@@ -38,12 +38,9 @@ export class CodeConfig extends Initializer {
       allowLockedModelChanges: true,
     };
 
-    const globSearch = path.join(
-      getParentPath(),
-      "config",
-      "**",
-      "+(*.json|*.js)"
-    );
+    const configDir =
+      process.env.GROUPAROO_CONFIG_DIR || path.join(getParentPath(), "config");
+    const globSearch = path.join(configDir, "**", "+(*.json|*.js)");
     const configFiles = glob.sync(globSearch);
     let configObjects: ConfigurationObject[] = [];
     for (const i in configFiles) {
