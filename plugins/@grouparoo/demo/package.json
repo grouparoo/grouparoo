@@ -27,7 +27,7 @@
     "lint": "prettier --check src "
   },
   "dependencies": {
-    "csv-parse": "4.14.0",
+    "csv-parse": "4.14.1",
     "isomorphic-fetch": "3.0.0",
     "pg": "8.5.1",
     "sequelize": "5.22.3",
