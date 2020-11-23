@@ -47,7 +47,7 @@ async function spawnPromise(
         return reject(new Error("something is wrong with the process"));
       }
 
-      resolve();
+      resolve(null);
     });
   });
 }

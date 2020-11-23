@@ -34,7 +34,7 @@ export async function fileImportPreview({
         }
       }
 
-      return resolve();
+      return resolve(null);
     });
 
     parser.on("error", reject);

@@ -58,7 +58,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
     return new Promise((resolve, reject) => {
       pool.end((error) => {
         if (error) return reject(error);
-        return resolve();
+        return resolve(null);
       });
     });
   };

@@ -67,7 +67,7 @@ importers:
       '@types/fs-extra': 9.0.2
       '@types/node': 14.14.2
       prettier: 2.2.0
-      typescript: 4.0.5
+      typescript: 4.1.2
     specifiers:
       '@types/fs-extra': ^9.0.2
       '@types/node': ^14.11.8
@@ -76,16 +76,16 @@ importers:
       fs-extra: 9.0.1
       npm-check-updates: 10.2.2
       prettier: 2.2.0
-      typescript: 4.0.5
+      typescript: 4.1.2
   clients/@grouparoo/web:
     devDependencies:
       '@types/jest': 26.0.15
       jest: 26.6.3
       jest-fetch-mock: 3.0.3
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      ts-loader: 8.0.11_typescript@4.0.5+webpack@4.44.2
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      ts-loader: 8.0.11_typescript@4.1.2+webpack@4.44.2
+      typescript: 4.1.2
       webpack: 4.44.2_webpack-cli@4.2.0
       webpack-cli: 4.2.0_webpack@4.44.2
     specifiers:
@@ -95,7 +95,7 @@ importers:
       prettier: 2.2.0
       ts-jest: 26.4.4
       ts-loader: 8.0.11
-      typescript: 4.0.5
+      typescript: 4.1.2
       webpack: 4.44.2
       webpack-cli: 4.2.0
   core:
@@ -132,7 +132,7 @@ importers:
       mime: 2.4.6
       moment: 2.29.1
       mustache: 4.0.1
-      next: 10.0.2_013ca1e6df91592e392504bce9dc821b
+      next: 10.0.2_97d6dcb83076ab669df2dacde4d88552
       node-resque: 8.1.0
       node-sass: 4.14.1
       nodemon: 2.0.6
@@ -156,9 +156,9 @@ importers:
       sqlite3: 5.0.0
       stacktrace-js: 2.0.2
       swagger-ui: 3.37.0
-      ts-node: 9.0.0_typescript@4.0.5
+      ts-node: 9.0.0_typescript@4.1.2
       type-fest: 0.19.0
-      typescript: 4.0.5
+      typescript: 4.1.2
       umzug: 2.3.0
       uuid: 8.3.1
       validator: 13.1.17
@@ -178,8 +178,8 @@ importers:
       nock: 13.0.5
       prettier: 2.2.0
       prop-types: 15.7.2
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typedoc: 0.19.2_typescript@4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typedoc: 0.19.2_typescript@4.1.2
     specifiers:
       '@fortawesome/fontawesome-svg-core': 1.2.32
       '@fortawesome/free-solid-svg-icons': 5.15.1
@@ -254,7 +254,7 @@ importers:
       ts-node: 9.0.0
       type-fest: 0.19.0
       typedoc: 0.19.2
-      typescript: 4.0.5
+      typescript: 4.1.2
       umzug: 2.3.0
       uuid: 8.3.1
       validator: 13.1.17
@@ -270,8 +270,8 @@ importers:
       jest: 26.6.3
       nock: 13.0.5
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/core': ^0.1.25-alpha.0
       '@grouparoo/spec-helper': ^0.1.25-alpha.0
@@ -282,7 +282,7 @@ importers:
       nock: 13.0.5
       prettier: 2.2.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/bigquery:
     dependencies:
       '@google-cloud/bigquery': 5.3.0
@@ -298,8 +298,8 @@ importers:
       jest: 26.6.3
       nock: 13.0.5
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@google-cloud/bigquery': 5.3.0
       '@grouparoo/app-templates': ^0.1.25-alpha.0
@@ -314,7 +314,7 @@ importers:
       nock: 13.0.5
       prettier: 2.2.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/csv:
     dependencies:
       csv-parser: 2.3.3
@@ -327,8 +327,8 @@ importers:
       actionhero: 25.0.0-alpha.1
       jest: 26.6.3
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/core': ^0.1.25-alpha.0
       '@grouparoo/spec-helper': ^0.1.25-alpha.0
@@ -340,7 +340,7 @@ importers:
       jest: 26.6.3
       prettier: 2.2.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/demo:
     dependencies:
       csv-parse: 4.14.0
@@ -356,8 +356,8 @@ importers:
       actionhero: 25.0.0-alpha.1
       jest: 26.6.3
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/core': ^0.1.25-alpha.0
       '@grouparoo/spec-helper': ^0.1.25-alpha.0
@@ -371,7 +371,7 @@ importers:
       prettier: 2.2.0
       sequelize: 5.22.3
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
       uuid: 8.3.1
   plugins/@grouparoo/email-authentication:
     dependencies:
@@ -385,8 +385,8 @@ importers:
       actionhero: 25.0.0-alpha.1
       jest: 26.6.3
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/core': ^0.1.25-alpha.0
       '@grouparoo/spec-helper': ^0.1.25-alpha.0
@@ -398,7 +398,7 @@ importers:
       prettier: 2.2.0
       react-bootstrap: 1.4.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/files-local:
     dependencies:
       fs-extra: 9.0.1
@@ -409,8 +409,8 @@ importers:
       actionhero: 25.0.0-alpha.1
       jest: 26.6.3
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/core': ^0.1.25-alpha.0
       '@types/jest': ^26.0.14
@@ -420,7 +420,7 @@ importers:
       jest: 26.6.3
       prettier: 2.2.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/files-s3:
     dependencies:
       aws-sdk: 2.797.0
@@ -432,8 +432,8 @@ importers:
       actionhero: 25.0.0-alpha.1
       jest: 26.6.3
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/core': ^0.1.25-alpha.0
       '@types/jest': ^26.0.14
@@ -444,7 +444,7 @@ importers:
       jest: 26.6.3
       prettier: 2.2.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/google-sheets:
     dependencies:
       google-spreadsheet: 3.0.13
@@ -459,8 +459,8 @@ importers:
       jest: 26.6.3
       nock: 13.0.5
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/core': ^0.1.25-alpha.0
       '@grouparoo/spec-helper': ^0.1.25-alpha.0
@@ -474,7 +474,7 @@ importers:
       nock: 13.0.5
       prettier: 2.2.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/hubspot:
     dependencies:
       axios: 0.21.0
@@ -490,8 +490,8 @@ importers:
       jest: 26.6.3
       nock: 13.0.5
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/core': ^0.1.25-alpha.0
       '@grouparoo/spec-helper': ^0.1.25-alpha.0
@@ -506,7 +506,7 @@ importers:
       nock: 13.0.5
       prettier: 2.2.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/logger:
     devDependencies:
       '@grouparoo/core': 'link:../../../core'
@@ -515,8 +515,8 @@ importers:
       actionhero: 25.0.0-alpha.1
       jest: 26.6.3
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/core': ^0.1.25-alpha.0
       '@types/jest': ^26.0.14
@@ -525,7 +525,7 @@ importers:
       jest: 26.6.3
       prettier: 2.2.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/mailchimp:
     dependencies:
       mailchimp-api-v3: 1.14.0
@@ -539,8 +539,8 @@ importers:
       jest: 26.6.3
       nock: 13.0.5
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/core': ^0.1.25-alpha.0
       '@grouparoo/spec-helper': ^0.1.25-alpha.0
@@ -553,7 +553,7 @@ importers:
       nock: 13.0.5
       prettier: 2.2.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/marketo:
     dependencies:
       node-marketo-rest: github.com/grouparoo/node-marketo/01019570eac0de5f05107ddf815de86ccf536792
@@ -568,8 +568,8 @@ importers:
       jest: 26.6.3
       nock: 13.0.5
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/core': ^0.1.25-alpha.0
       '@grouparoo/spec-helper': ^0.1.25-alpha.0
@@ -583,7 +583,7 @@ importers:
       node-marketo-rest: grouparoo/node-marketo#restler_upgrade
       prettier: 2.2.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/mysql:
     dependencies:
       '@grouparoo/app-templates': 'link:../app-templates'
@@ -598,8 +598,8 @@ importers:
       csv-parse: 4.14.0
       jest: 26.6.3
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/app-templates': ^0.1.25-alpha.0
       '@grouparoo/core': ^0.1.25-alpha.0
@@ -613,7 +613,7 @@ importers:
       mysql: 2.18.1
       prettier: 2.2.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/newrelic:
     dependencies:
       newrelic: 7.0.1
@@ -624,8 +624,8 @@ importers:
       actionhero: 25.0.0-alpha.1
       jest: 26.6.3
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/core': ^0.1.25-alpha.0
       '@types/jest': ^26.0.14
@@ -635,7 +635,7 @@ importers:
       newrelic: 7.0.1
       prettier: 2.2.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/postgres:
     dependencies:
       '@grouparoo/app-templates': 'link:../app-templates'
@@ -653,8 +653,8 @@ importers:
       csv-parse: 4.14.0
       jest: 26.6.3
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/app-templates': ^0.1.25-alpha.0
       '@grouparoo/core': ^0.1.25-alpha.0
@@ -671,7 +671,7 @@ importers:
       postgres-date: 2.0.0
       prettier: 2.2.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/redshift:
     dependencies:
       '@grouparoo/app-templates': 'link:../app-templates'
@@ -685,8 +685,8 @@ importers:
       actionhero: 25.0.0-alpha.1
       jest: 26.6.3
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/app-templates': ^0.1.25-alpha.0
       '@grouparoo/core': ^0.1.25-alpha.0
@@ -699,7 +699,7 @@ importers:
       jest: 26.6.3
       prettier: 2.2.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/sailthru:
     dependencies:
       sailthru-client: 3.0.5
@@ -714,8 +714,8 @@ importers:
       jest: 26.6.3
       nock: 13.0.5
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/core': ^0.1.25-alpha.0
       '@grouparoo/spec-helper': ^0.1.25-alpha.0
@@ -729,7 +729,7 @@ importers:
       prettier: 2.2.0
       sailthru-client: 3.0.5
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/salesforce:
     dependencies:
       jsforce: 1.10.0
@@ -744,8 +744,8 @@ importers:
       jest: 26.6.3
       nock: 13.0.5
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/core': ^0.1.25-alpha.0
       '@grouparoo/spec-helper': ^0.1.25-alpha.0
@@ -759,7 +759,7 @@ importers:
       nock: 13.0.5
       prettier: 2.2.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/sample-ui-plugin:
     devDependencies:
       '@grouparoo/core': 'link:../../../core'
@@ -769,8 +769,8 @@ importers:
       actionhero: 25.0.0-alpha.1
       jest: 26.6.3
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/core': ^0.1.25-alpha.0
       '@types/jest': ^26.0.14
@@ -780,7 +780,7 @@ importers:
       jest: 26.6.3
       prettier: 2.2.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/snowflake:
     dependencies:
       '@grouparoo/app-templates': 'link:../app-templates'
@@ -797,8 +797,8 @@ importers:
       jest: 26.6.3
       nock: 13.0.5
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/app-templates': ^0.1.25-alpha.0
       '@grouparoo/core': ^0.1.25-alpha.0
@@ -814,7 +814,7 @@ importers:
       snowflake-promise: 4.2.0
       snowflake-sdk: 1.5.3
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
   plugins/@grouparoo/spec-helper:
     dependencies:
       faker: 5.1.0
@@ -829,8 +829,8 @@ importers:
       actionhero: 25.0.0-alpha.1
       jest: 26.6.3
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/core': ^0.1.25-alpha.0
       '@types/faker': ^5.1.2
@@ -843,7 +843,7 @@ importers:
       prettier: 2.2.0
       sequelize: 5.22.3
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
       uuid: 8.3.1
   plugins/@grouparoo/zendesk:
     dependencies:
@@ -859,8 +859,8 @@ importers:
       jest: 26.6.3
       nock: 13.0.5
       prettier: 2.2.0
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.0.5
-      typescript: 4.0.5
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+      typescript: 4.1.2
     specifiers:
       '@grouparoo/core': ^0.1.25-alpha.0
       '@grouparoo/spec-helper': ^0.1.25-alpha.0
@@ -874,7 +874,7 @@ importers:
       node-zendesk: 2.0.3
       prettier: 2.2.0
       ts-jest: 26.4.4
-      typescript: 4.0.5
+      typescript: 4.1.2
 lockfileVersion: 5.2
 packages:
   /@ampproject/toolbox-core/2.6.1:
@@ -3436,7 +3436,7 @@ packages:
   /ah-next-plugin/0.4.0_edbf9a85d651b88777dd86489c4fb35b:
     dependencies:
       actionhero: 25.0.0-alpha.1
-      next: 10.0.2_013ca1e6df91592e392504bce9dc821b
+      next: 10.0.2_97d6dcb83076ab669df2dacde4d88552
       react: 16.14.0
       react-dom: 16.14.0_react@16.14.0
     dev: false
@@ -10719,7 +10719,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==
-  /next/10.0.2_013ca1e6df91592e392504bce9dc821b:
+  /next/10.0.2_97d6dcb83076ab669df2dacde4d88552:
     dependencies:
       '@ampproject/toolbox-optimizer': 2.7.0-alpha.1
       '@babel/runtime': 7.12.5
@@ -10747,7 +10747,7 @@ packages:
       node-fetch: 2.6.1
       node-html-parser: 1.4.9
       path-browserify: 1.0.1
-      pnp-webpack-plugin: 1.6.4_typescript@4.0.5
+      pnp-webpack-plugin: 1.6.4_typescript@4.1.2
       postcss: 8.1.7
       process: 0.11.10
       prop-types: 15.7.2
@@ -12137,9 +12137,9 @@ packages:
     dev: false
     resolution:
       integrity: sha1-ZGx3ARiZhwtqCQPnXpl+jlHadGE=
-  /pnp-webpack-plugin/1.6.4_typescript@4.0.5:
+  /pnp-webpack-plugin/1.6.4_typescript@4.1.2:
     dependencies:
-      ts-pnp: 1.2.0_typescript@4.0.5
+      ts-pnp: 1.2.0_typescript@4.1.2
     dev: false
     engines:
       node: '>=6'
@@ -15475,7 +15475,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-m6s2OdQe5wgpFMC+pAJ+q9djG82O2jcHPOI6RNg1yy9rCYR+WD6Nbpl32fDpfC56nirdRy+opFa/Vk7HYhqaew==
-  /ts-jest/26.4.4_jest@26.6.3+typescript@4.0.5:
+  /ts-jest/26.4.4_jest@26.6.3+typescript@4.1.2:
     dependencies:
       '@types/jest': 26.0.15
       bs-logger: 0.2.6
@@ -15488,7 +15488,7 @@ packages:
       make-error: 1.3.6
       mkdirp: 1.0.4
       semver: 7.3.2
-      typescript: 4.0.5
+      typescript: 4.1.2
       yargs-parser: 20.2.3
     dev: true
     engines:
@@ -15499,14 +15499,14 @@ packages:
       typescript: '>=3.8 <5.0'
     resolution:
       integrity: sha512-3lFWKbLxJm34QxyVNNCgXX1u4o/RV0myvA2y2Bxm46iGIjKlaY0own9gIckbjZJPn+WaJEnfPPJ20HHGpoq4yg==
-  /ts-loader/8.0.11_typescript@4.0.5+webpack@4.44.2:
+  /ts-loader/8.0.11_typescript@4.1.2+webpack@4.44.2:
     dependencies:
       chalk: 2.4.2
       enhanced-resolve: 4.3.0
       loader-utils: 1.4.0
       micromatch: 4.0.2
       semver: 6.3.0
-      typescript: 4.0.5
+      typescript: 4.1.2
       webpack: 4.44.2_webpack-cli@4.2.0
     dev: true
     engines:
@@ -15516,13 +15516,13 @@ packages:
       webpack: '*'
     resolution:
       integrity: sha512-06X+mWA2JXoXJHYAesUUL4mHFYhnmyoCdQVMXofXF552Lzd4wNwSGg7unJpttqUP7ziaruM8d7u8LUB6I1sgzA==
-  /ts-node/9.0.0_typescript@4.0.5:
+  /ts-node/9.0.0_typescript@4.1.2:
     dependencies:
       arg: 4.1.3
       diff: 4.0.2
       make-error: 1.3.6
       source-map-support: 0.5.19
-      typescript: 4.0.5
+      typescript: 4.1.2
       yn: 3.1.1
     dev: false
     engines:
@@ -15532,9 +15532,9 @@ packages:
       typescript: '>=2.7'
     resolution:
       integrity: sha512-/TqB4SnererCDR/vb4S/QvSZvzQMJN8daAslg7MeaiHvD8rDZsSfXmNeNumyZZzMned72Xoq/isQljYSt8Ynfg==
-  /ts-pnp/1.2.0_typescript@4.0.5:
+  /ts-pnp/1.2.0_typescript@4.1.2:
     dependencies:
-      typescript: 4.0.5
+      typescript: 4.1.2
     dev: false
     engines:
       node: '>=6'
@@ -15641,7 +15641,7 @@ packages:
       node: '>= 8'
     resolution:
       integrity: sha512-Y4Lf+qIb9NTydrexlazAM46SSLrmrQRqWiD52593g53SsmUFioAsMWt8m834J6qsp+7wHRjxCXSZeiiW5cMUdw==
-  /typedoc/0.19.2_typescript@4.0.5:
+  /typedoc/0.19.2_typescript@4.1.2:
     dependencies:
       fs-extra: 9.0.1
       handlebars: 4.7.6
@@ -15654,7 +15654,7 @@ packages:
       semver: 7.3.2
       shelljs: 0.8.4
       typedoc-default-themes: 0.11.4
-      typescript: 4.0.5
+      typescript: 4.1.2
     dev: true
     engines:
       node: '>= 10.0.0'
@@ -15663,12 +15663,12 @@ packages:
       typescript: 3.9.x || 4.0.x
     resolution:
       integrity: sha512-oDEg1BLEzi1qvgdQXc658EYgJ5qJLVSeZ0hQ57Eq4JXy6Vj2VX4RVo18qYxRWz75ifAaYuYNBUCnbhjd37TfOg==
-  /typescript/4.0.5:
+  /typescript/4.1.2:
     engines:
       node: '>=4.2.0'
     hasBin: true
     resolution:
-      integrity: sha512-ywmr/VrTVCmNTJ6iV2LwIrfG1P+lv6luD8sUJs+2eI9NLGigaN+nUQc13iHqisq7bra9lnmUSYqbJvegraBOPQ==
+      integrity: sha512-thGloWsGH3SOxv1SoY7QojKi0tc+8FnOmiarEGMbd/lar7QOEd3hvlx3Fp5y6FlDUGl9L+pd4n2e+oToGMmhRQ==
   /typical/5.2.0:
     dev: true
     engines:

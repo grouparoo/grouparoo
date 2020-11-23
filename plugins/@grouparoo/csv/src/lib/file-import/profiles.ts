@@ -58,7 +58,7 @@ export const profiles: ProfilesPluginMethod = async ({
         row = parser.read();
       }
 
-      return resolve();
+      return resolve(null);
     });
 
     parser.on("error", reject);

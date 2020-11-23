@@ -34,7 +34,7 @@ export class FileTransportS3 extends FileTransport {
         if (error) return reject(error);
         fs.writeFile(localPath, data.Body, (error) => {
           if (error) return reject(error);
-          return resolve();
+          return resolve(null);
         });
       });
     });
@@ -80,7 +80,7 @@ export class FileTransportS3 extends FileTransport {
 
       this.client.deleteObject(params, (error) => {
         if (error) return reject(error);
-        return resolve();
+        return resolve(null);
       });
     });
 

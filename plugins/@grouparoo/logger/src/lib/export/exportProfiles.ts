@@ -43,10 +43,8 @@ export const exportProfiles: ExportProfilesPluginMethod = async ({
 
   await new Promise((resolve, reject) => {
     fs.appendFile(filePath, lines.join("\r\n"), (error) => {
-      if (error) {
-        return reject(error);
-      }
-      return resolve();
+      if (error) return reject(error);
+      return resolve(null);
     });
   });
 

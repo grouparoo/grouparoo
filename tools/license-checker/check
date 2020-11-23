@@ -69,7 +69,7 @@ console.log("");
               Object.keys(packages).length
             } packages. All OK!`
           );
-          return resolve();
+          return resolve(null);
         }
       });
     });
