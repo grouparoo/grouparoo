@@ -6,6 +6,7 @@ import {
   validateAndFormatGuid,
 } from "../../classes/codeConfig";
 import { ProfilePropertyRule, Source } from "../..";
+import { Op } from "sequelize";
 
 export async function loadProfilePropertyRule(
   configObject: ConfigurationObject
@@ -45,4 +46,16 @@ export async function loadProfilePropertyRule(
   await profilePropertyRule.update({ state: "ready" });
   logModel(profilePropertyRule, isNew);
   return profilePropertyRule;
+}
+
+export async function deleteUnseenProfilePropertyRules(guids: string[]) {
+  const rules = await ProfilePropertyRule.scope(null).findAll({
+    where: { locked: true, guid: { [Op.notIn]: guids } },
+  });
+
+  for (const i in rules) {
+    const rule = rules[i];
+    if (rule.directlyMapped) continue;
+    await rule.destroy();
+  }
 }

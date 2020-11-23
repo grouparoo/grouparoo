@@ -6,6 +6,7 @@ import {
   validateAndFormatGuid,
 } from "../../classes/codeConfig";
 import { App, Destination, Group, ProfilePropertyRule } from "../..";
+import { Op } from "sequelize";
 
 export async function loadDestination(configObject: ConfigurationObject) {
   let isNew = false;
@@ -68,4 +69,16 @@ export async function loadDestination(configObject: ConfigurationObject) {
 
   logModel(destination, isNew);
   return destination;
+}
+
+export async function deleteUnseenDestinations(guids: string[]) {
+  const destinations = await Destination.scope(null).findAll({
+    where: { locked: true, guid: { [Op.notIn]: guids } },
+  });
+
+  for (const i in destinations) {
+    const destination = destinations[i];
+    await destination.unTrackGroup();
+    await destination.destroy();
+  }
 }

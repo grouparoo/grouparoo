@@ -286,7 +286,10 @@ describe("modules/codeConfig", () => {
       ]);
     });
 
-    test.todo("a removed destination will be deleted");
+    test("a removed destination will be deleted", async () => {
+      const destinations = await Destination.findAll();
+      expect(destinations.length).toBe(0);
+    });
 
     test("changes to team permissions will be updated", async () => {
       const teams = await Team.findAll();

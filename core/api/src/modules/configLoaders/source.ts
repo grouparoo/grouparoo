@@ -6,6 +6,7 @@ import {
   validateAndFormatGuid,
 } from "../../classes/codeConfig";
 import { App, Source, ProfilePropertyRule } from "../..";
+import { Op } from "sequelize";
 
 export async function loadSource(configObject: ConfigurationObject) {
   let isNew = false;
@@ -84,4 +85,12 @@ export async function loadSource(configObject: ConfigurationObject) {
   if (bootstrappedRule) logModel(bootstrappedRule, isNew);
 
   return source;
+}
+
+export async function deleteUnseenSources(guids: string[]) {
+  const sources = await Source.scope(null).findAll({
+    where: { locked: true, guid: { [Op.notIn]: guids } },
+  });
+
+  for (const i in sources) await sources[i].destroy();
 }

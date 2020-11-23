@@ -6,6 +6,7 @@ import {
   extractNonNullParts,
 } from "../../classes/codeConfig";
 import { Schedule, Source } from "../..";
+import { Op } from "sequelize";
 
 export async function loadSchedule(configObject: ConfigurationObject) {
   let isNew = false;
@@ -35,4 +36,12 @@ export async function loadSchedule(configObject: ConfigurationObject) {
   await schedule.update({ state: "ready" });
   logModel(schedule, isNew);
   return schedule;
+}
+
+export async function deleteUnseenSchedules(guids: string[]) {
+  const schedules = await Schedule.scope(null).findAll({
+    where: { locked: true, guid: { [Op.notIn]: guids } },
+  });
+
+  for (const i in schedules) await schedules[i].destroy();
 }

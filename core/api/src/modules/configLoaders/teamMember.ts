@@ -6,6 +6,7 @@ import {
   validateAndFormatGuid,
 } from "../../classes/codeConfig";
 import { Team, TeamMember } from "../..";
+import { Op } from "sequelize";
 
 export async function loadTeamMember(configObject: ConfigurationObject) {
   let isNew = false;
@@ -41,4 +42,12 @@ export async function loadTeamMember(configObject: ConfigurationObject) {
 
   logModel(teamMember, isNew);
   return teamMember;
+}
+
+export async function deleteUnseenTeamMembers(guids: string[]) {
+  const teamMembers = await TeamMember.scope(null).findAll({
+    where: { locked: true, guid: { [Op.notIn]: guids } },
+  });
+
+  for (const i in teamMembers) await teamMembers[i].destroy();
 }

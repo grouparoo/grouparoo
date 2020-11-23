@@ -7,16 +7,34 @@ import {
   sortConfigurationObject,
 } from "../classes/codeConfig";
 
-import { loadApp } from "../modules/configLoaders/app";
-import { loadSource } from "../modules/configLoaders/source";
-import { loadProfilePropertyRule } from "../modules/configLoaders/profilePropertyRule";
-import { loadApiKey } from "../modules/configLoaders/apiKey";
-import { loadTeam } from "../modules/configLoaders/team";
-import { loadTeamMember } from "../modules/configLoaders/teamMember";
-import { loadGroup } from "../modules/configLoaders/group";
-import { loadSchedule } from "../modules/configLoaders/schedule";
+import { loadApp, deleteUnseenApps } from "../modules/configLoaders/app";
+import {
+  loadSource,
+  deleteUnseenSources,
+} from "../modules/configLoaders/source";
+import {
+  loadProfilePropertyRule,
+  deleteUnseenProfilePropertyRules,
+} from "../modules/configLoaders/profilePropertyRule";
+import {
+  loadApiKey,
+  deleteUnseenApiKeys,
+} from "../modules/configLoaders/apiKey";
+import { loadTeam, deleteUnseenTeams } from "../modules/configLoaders/team";
+import {
+  loadTeamMember,
+  deleteUnseenTeamMembers,
+} from "../modules/configLoaders/teamMember";
+import { loadGroup, deleteUnseenGroups } from "../modules/configLoaders/group";
+import {
+  loadSchedule,
+  deleteUnseenSchedules,
+} from "../modules/configLoaders/schedule";
 import { loadSetting } from "../modules/configLoaders/setting";
-import { loadDestination } from "../modules/configLoaders/destination";
+import {
+  loadDestination,
+  deleteUnseenDestinations,
+} from "../modules/configLoaders/destination";
 
 declare module "actionhero" {
   export interface Api {
@@ -24,6 +42,18 @@ declare module "actionhero" {
       allowLockedModelChanges: boolean;
     };
   }
+}
+
+interface SeenGuids {
+  app: string[];
+  source: string[];
+  profilepropertyrule: string[];
+  group: string[];
+  schedule: string[];
+  destination: string[];
+  apikey: string[];
+  team: string[];
+  teammember: string[];
 }
 
 export class CodeConfig extends Initializer {
@@ -49,7 +79,8 @@ export class CodeConfig extends Initializer {
       );
     }
 
-    await processConfigObjects(configObjects);
+    const seenGuids = await processConfigObjects(configObjects);
+    await deleteUnseenLockedObjects(seenGuids);
 
     // after this point in the Actionhero boot lifecycle, locked models cannot be changed
     api.codeConfig.allowLockedModelChanges = false;
@@ -63,41 +94,55 @@ async function loadConfigFile(file: string): Promise<ConfigurationObject> {
 }
 
 async function processConfigObjects(configObjects: Array<ConfigurationObject>) {
+  const seenGuids: SeenGuids = {
+    app: [],
+    source: [],
+    profilepropertyrule: [],
+    group: [],
+    schedule: [],
+    destination: [],
+    apikey: [],
+    team: [],
+    teammember: [],
+  };
+
   const sortedConfigObjects = configObjects.sort(sortConfigurationObject);
 
   for (const i in sortedConfigObjects) {
     const configObject = sortedConfigObjects[i];
+    let klass = configObject.class.toLocaleLowerCase();
+    let object;
     try {
-      switch (configObject.class.toLocaleLowerCase()) {
+      switch (klass) {
+        case "setting":
+          object = await loadSetting(configObject);
+          break;
         case "app":
-          await loadApp(configObject);
+          object = await loadApp(configObject);
           break;
         case "source":
-          await loadSource(configObject);
+          object = await loadSource(configObject);
           break;
         case "profilepropertyrule":
-          await loadProfilePropertyRule(configObject);
+          object = await loadProfilePropertyRule(configObject);
           break;
         case "group":
-          await loadGroup(configObject);
+          object = await loadGroup(configObject);
           break;
         case "schedule":
-          await loadSchedule(configObject);
+          object = await loadSchedule(configObject);
           break;
         case "destination":
-          await loadDestination(configObject);
-          break;
-        case "setting":
-          await loadSetting(configObject);
+          object = await loadDestination(configObject);
           break;
         case "apikey":
-          await loadApiKey(configObject);
+          object = await loadApiKey(configObject);
           break;
         case "team":
-          await loadTeam(configObject);
+          object = await loadTeam(configObject);
           break;
         case "teammember":
-          await loadTeamMember(configObject);
+          object = await loadTeamMember(configObject);
           break;
         default:
           throw new Error(`unknown config object class: ${configObject.class}`);
@@ -108,5 +153,23 @@ async function processConfigObjects(configObjects: Array<ConfigurationObject>) {
 
       throw error.original ? error.original : error;
     }
+
+    seenGuids[klass].push(object);
   }
+
+  return seenGuids;
+}
+
+async function deleteUnseenLockedObjects(seenGuids: SeenGuids) {
+  console.log(seenGuids);
+
+  await deleteUnseenTeamMembers(seenGuids.teammember);
+  await deleteUnseenTeams(seenGuids.team);
+  await deleteUnseenApiKeys(seenGuids.apikey);
+  await deleteUnseenDestinations(seenGuids.destination);
+  await deleteUnseenSchedules(seenGuids.schedule);
+  await deleteUnseenGroups(seenGuids.group);
+  await deleteUnseenProfilePropertyRules(seenGuids.profilepropertyrule);
+  await deleteUnseenSources(seenGuids.source);
+  await deleteUnseenApps(seenGuids.app);
 }

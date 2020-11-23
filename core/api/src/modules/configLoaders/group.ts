@@ -5,6 +5,7 @@ import {
 } from "../../classes/codeConfig";
 import { Group } from "../..";
 import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+import { Op } from "sequelize";
 
 export async function loadGroup(configObject: ConfigurationObject) {
   let isNew = false;
@@ -47,4 +48,12 @@ export async function loadGroup(configObject: ConfigurationObject) {
   await group.update({ state: "ready" });
   logModel(group, isNew);
   return group;
+}
+
+export async function deleteUnseenGroups(guids: string[]) {
+  const groups = await Group.scope(null).findAll({
+    where: { locked: true, guid: { [Op.notIn]: guids } },
+  });
+
+  for (const i in groups) await groups[i].destroy();
 }

@@ -5,6 +5,7 @@ import {
   logModel,
 } from "../../classes/codeConfig";
 import { ApiKey, Permission } from "../..";
+import { Op } from "sequelize";
 
 export async function loadApiKey(configObject: ConfigurationObject) {
   let isNew = false;
@@ -51,4 +52,12 @@ export async function loadApiKey(configObject: ConfigurationObject) {
 
   logModel(apiKey, isNew);
   return apiKey;
+}
+
+export async function deleteUnseenApiKeys(guids: string[]) {
+  const apiKeys = await ApiKey.scope(null).findAll({
+    where: { locked: true, guid: { [Op.notIn]: guids } },
+  });
+
+  for (const i in apiKeys) await apiKeys[i].destroy();
 }

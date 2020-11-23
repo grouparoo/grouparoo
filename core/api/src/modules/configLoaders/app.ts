@@ -5,6 +5,7 @@ import {
   logModel,
 } from "../../classes/codeConfig";
 import { App } from "../..";
+import { Op } from "sequelize";
 
 export async function loadApp(configObject: ConfigurationObject) {
   let isNew = false;
@@ -27,4 +28,12 @@ export async function loadApp(configObject: ConfigurationObject) {
   await app.update({ state: "ready" });
   logModel(app, isNew);
   return app;
+}
+
+export async function deleteUnseenApps(guids: string[]) {
+  const apps = await App.scope(null).findAll({
+    where: { locked: true, guid: { [Op.notIn]: guids } },
+  });
+
+  for (const i in apps) await apps[i].destroy();
 }
