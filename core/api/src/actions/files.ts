@@ -138,7 +138,7 @@ export class FileView extends AuthenticatedAction {
         }
         data.toRender = false;
         connection.pipe(fileBuffer, headers);
-        return resolve();
+        return resolve(null);
       });
     });
   }

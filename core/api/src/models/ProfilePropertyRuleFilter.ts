@@ -13,9 +13,7 @@ import * as uuid from "uuid";
 import { ProfilePropertyRule } from "./ProfilePropertyRule";
 
 @Table({ tableName: "profilePropertyRuleFilters", paranoid: false })
-export class ProfilePropertyRuleFilter extends Model<
-  ProfilePropertyRuleFilter
-> {
+export class ProfilePropertyRuleFilter extends Model<ProfilePropertyRuleFilter> {
   guidPrefix() {
     return "prf";
   }

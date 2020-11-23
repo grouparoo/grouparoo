@@ -9,19 +9,19 @@ export abstract class FileTransport {
   tmp: string;
   bucket: string;
 
-  abstract async downloadToServer(
+  abstract downloadToServer(
     file: File
   ): Promise<{
     localPath: string;
   }>;
 
-  abstract async set(
+  abstract set(
     type: string,
     remotePath: string,
     localFilePath: string
   ): Promise<File>;
 
-  abstract async destroy(file): Promise<File>;
+  abstract destroy(file): Promise<File>;
 
   async afterSet(type, remotePath, sizeBytes): Promise<File> {
     const extension = path.extname(remotePath);
