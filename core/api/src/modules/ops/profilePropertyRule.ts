@@ -1,4 +1,7 @@
-import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+import {
+  ProfilePropertyRule,
+  ProfilePropertyRuleFiltersWithKey,
+} from "../../models/ProfilePropertyRule";
 import { Group } from "../../models/Group";
 import { GroupRule } from "../../models/GroupRule";
 import { App } from "../../models/App";
@@ -165,5 +168,43 @@ export namespace ProfilePropertyRuleOps {
     });
 
     return options;
+  }
+
+  /**
+   * Determine if these Filters are equal
+   */
+  export function filtersAreEqual(
+    oldFilters: ProfilePropertyRuleFiltersWithKey[],
+    newFilters: ProfilePropertyRuleFiltersWithKey[]
+  ) {
+    if (oldFilters.length !== newFilters.length) return false;
+
+    function nullish(value: string | number | boolean) {
+      if (value === null) return null;
+      if (value === undefined) return null;
+      if (value === "null") return null;
+      return value;
+    }
+
+    for (const i in oldFilters) {
+      const A = oldFilters[i];
+      const B = newFilters[i];
+      if (A.key !== B.key) return false;
+      if (A.op !== B.op) return false;
+      if (nullish(A.match) !== nullish(B.match)) return false;
+      if (nullish(A.relativeMatchNumber) !== nullish(B.relativeMatchNumber)) {
+        return false;
+      }
+      if (nullish(A.relativeMatchUnit) !== nullish(B.relativeMatchUnit)) {
+        return false;
+      }
+      if (
+        nullish(A.relativeMatchDirection) !== nullish(B.relativeMatchDirection)
+      ) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }

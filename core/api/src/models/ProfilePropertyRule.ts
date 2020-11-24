@@ -283,6 +283,12 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   async setFilters(filters: ProfilePropertyRuleFiltersWithKey[]) {
     await this.validateFilters(filters);
+    const existingFilters = await this.getFilters();
+    const filtersAreEqual = await ProfilePropertyRuleOps.filtersAreEqual(
+      filters,
+      existingFilters
+    );
+    if (filtersAreEqual) return;
 
     await ProfilePropertyRuleFilter.destroy({
       where: {
