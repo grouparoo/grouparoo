@@ -310,4 +310,30 @@ describe("modules/codeConfig", () => {
       expect(await teamMembers[0].checkPassword("new-password")).toBe(true);
     });
   });
+
+  describe("empty config", () => {
+    beforeAll(async () => {
+      api.codeConfig.allowLockedModelChanges = true;
+      process.env.GROUPAROO_CONFIG_DIR = path.join(
+        __dirname,
+        "..",
+        "fixtures",
+        "codeConfig",
+        "empty"
+      );
+      await initializer.initialize();
+    });
+
+    test("all objects will be deleted with an empty config file", async () => {
+      expect(await App.count()).toBe(0);
+      expect(await Source.count()).toBe(0);
+      expect(await Schedule.count()).toBe(0);
+      expect(await Destination.count()).toBe(0);
+      expect(await Group.count()).toBe(0);
+      expect(await ProfilePropertyRule.count()).toBe(0);
+      expect(await ApiKey.count()).toBe(0);
+      expect(await Team.count()).toBe(0);
+      expect(await TeamMember.count()).toBe(0);
+    });
+  });
 });
