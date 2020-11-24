@@ -30,9 +30,10 @@ export default function Page(props) {
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [nextPage] = useState(router.query.nextPage?.toString()); // we want to store this when the page was initially loaded because we'll be updating the route for the profilePreview
-  const [profilePropertyRule, setProfilePropertyRule] = useState<
-    Models.ProfilePropertyRuleType
-  >(props.profilePropertyRule);
+  const [
+    profilePropertyRule,
+    setProfilePropertyRule,
+  ] = useState<Models.ProfilePropertyRuleType>(props.profilePropertyRule);
   const [localFilters, setLocalFilters] = useState(
     props.profilePropertyRule.filters
   );
