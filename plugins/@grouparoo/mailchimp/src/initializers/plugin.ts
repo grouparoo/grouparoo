@@ -26,6 +26,7 @@ export class Plugins extends Initializer {
           options: [
             {
               key: "apiKey",
+              displayName: "API Key",
               required: true,
               description: "Mailchimp api key.",
             },

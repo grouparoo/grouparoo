@@ -27,23 +27,27 @@ export class Plugins extends Initializer {
           options: [
             {
               key: "endpoint",
+              displayName: "Endpoint",
               required: true,
               description: "Found in Marketo Web Services.",
               placeholder: "https://123-ABC-456.mktorest.com/rest",
             },
             {
               key: "identity",
+              displayName: "Identity",
               required: true,
               description: "Found in Marketo Web Services.",
               placeholder: "https://123-ABC-456.mktorest.com/identity",
             },
             {
               key: "clientId",
+              displayName: "Client ID",
               required: true,
               description: "Found in LaunchPoint for an API user.",
             },
             {
               key: "clientSecret",
+              displayName: "Client Secret",
               required: true,
               description: "Found in LaunchPoint for an API user.",
             },

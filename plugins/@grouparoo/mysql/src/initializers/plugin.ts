@@ -31,24 +31,33 @@ export class Plugins extends Initializer {
           options: [
             {
               key: "host",
+              displayName: "Host",
               required: false,
               description: "The MySQL host.",
               placeholder: "localhost",
             },
             {
               key: "port",
+              displayName: "Port",
               required: false,
               description: "The MySQL port.",
               placeholder: "3306",
             },
             {
               key: "database",
+              displayName: "Database",
               required: true,
               description: "The MySQL database.",
             },
-            { key: "user", required: false, description: "The MySQL user." },
+            {
+              key: "user",
+              displayName: "User",
+              required: false,
+              description: "The MySQL user.",
+            },
             {
               key: "password",
+              displayName: "Password",
               required: false,
               description: "The MySQL user's password.",
             },

@@ -26,17 +26,20 @@ export class Plugins extends Initializer {
           options: [
             {
               key: "subdomain",
+              displayName: "Zendesk Subdomain",
               required: true,
               description: "The `companyname` in companyname.zendesk.com.",
             },
             {
               key: "username",
+              displayName: "User Name",
               required: true,
               description:
                 "Zendesk username, often the email address of an admin user.",
             },
             {
               key: "token",
+              displayName: "API Token",
               required: true,
               description: "Zendesk api token for the admin user.",
             },

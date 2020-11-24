@@ -29,21 +29,39 @@ export class Plugins extends Initializer {
         {
           name: "redshift",
           options: [
-            { key: "host", required: false, description: "The Redshift host." },
-            { key: "port", required: false, description: "The Redshift port." },
+            {
+              key: "host",
+              displayName: "Host",
+              required: false,
+              description: "The Redshift host.",
+            },
+            {
+              key: "port",
+              displayName: "Port",
+              required: false,
+              description: "The Redshift port.",
+            },
             {
               key: "database",
+              displayName: "Database",
               required: true,
               description: "The Redshift database.",
             },
             {
               key: "schema",
+              displayName: "Schema",
               required: false,
               description: "The Redshift schema (default: public).",
             },
-            { key: "user", required: false, description: "The Redshift user." },
+            {
+              key: "user",
+              displayName: "User",
+              required: false,
+              description: "The Redshift user.",
+            },
             {
               key: "password",
+              displayName: "Password",
               required: false,
               description: "The Redshift user's password.",
             },

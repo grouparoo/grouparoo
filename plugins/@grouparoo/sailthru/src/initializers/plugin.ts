@@ -26,11 +26,13 @@ export class Plugins extends Initializer {
           options: [
             {
               key: "apiKey",
+              displayName: "API Key",
               required: true,
               description: "Sailthru api key.",
             },
             {
               key: "apiSecret",
+              displayName: "API Key Secret",
               required: true,
               description: "Sailthru apiKey secret.",
             },
