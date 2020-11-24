@@ -5,7 +5,7 @@ module.exports = async function getConfig() {
       class: "Setting",
       pluginName: "core",
       key: "cluster-name",
-      value: `${process.env.USER ? process.env.USER + "'s" : ""} dev cluster`,
+      value: `${process.env.USER ? process.env.USER + "'s " : ""}dev cluster`,
     },
 
     {
