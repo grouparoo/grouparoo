@@ -443,7 +443,7 @@ export namespace GroupOps {
       if (value === null) return null;
       if (value === undefined) return null;
       if (value === "null") return null;
-      return value;
+      return value.toString();
     }
 
     for (const i in oldRules) {
