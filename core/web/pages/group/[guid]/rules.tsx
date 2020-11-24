@@ -487,17 +487,21 @@ export default function Page(props) {
         Count Potential Group Members
       </LoadingButton>
       <br />
-      <br />
-      <LoadingButton
-        disabled={loading}
-        variant="primary"
-        onClick={async () => {
-          await updateRules();
-          await getCounts();
-        }}
-      >
-        Save Rules
-      </LoadingButton>
+      <br />{" "}
+      {group.locked ? (
+        <Button disabled>Save Rules</Button>
+      ) : (
+        <LoadingButton
+          disabled={loading}
+          variant="primary"
+          onClick={async () => {
+            await updateRules();
+            await getCounts();
+          }}
+        >
+          Save Rules
+        </LoadingButton>
+      )}
     </>
   );
 }
