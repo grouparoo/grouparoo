@@ -42,7 +42,7 @@
     "options": {
       "column": "email",
       "aggregationMethod": "exact",
-      "sort": null
+      "sortColumn": null
     },
     "filters": []
   },
@@ -57,7 +57,7 @@
     "options": {
       "column": "first_name",
       "aggregationMethod": "exact",
-      "sort": null
+      "sortColumn": null
     },
     "filters": []
   },
@@ -72,7 +72,7 @@
     "options": {
       "column": "last_name",
       "aggregationMethod": "exact",
-      "sort": null
+      "sortColumn": null
     },
     "filters": []
   },
@@ -87,7 +87,7 @@
     "options": {
       "column": "language",
       "aggregationMethod": "exact",
-      "sort": null
+      "sortColumn": null
     },
     "filters": []
   },
@@ -102,7 +102,7 @@
     "options": {
       "column": "deactivated",
       "aggregationMethod": "exact",
-      "sort": null
+      "sortColumn": null
     },
     "filters": []
   }
