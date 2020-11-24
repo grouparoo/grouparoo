@@ -1,4 +1,4 @@
-import { api, Initializer, config } from "actionhero";
+import { api, log, Initializer, config } from "actionhero";
 import path from "path";
 import glob from "glob";
 import { getParentPath } from "../utils/pluginDetails";
@@ -144,6 +144,10 @@ async function processConfigObjects(configObjects: Array<ConfigurationObject>) {
           throw new Error(`unknown config object class: ${configObject.class}`);
       }
     } catch (error) {
+      log(
+        `error with config object: ${JSON.stringify(configObject)} - ${error}`,
+        "emerg"
+      );
       throw error.original ? error.original : error;
     }
 
