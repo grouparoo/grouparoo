@@ -1,6 +1,4 @@
 module.exports = async function getConfig() {
-  await new Promise((resolve) => setTimeout(resolve, 100));
-
   return [
     {
       id: "setting_cluster_name", // this is actually ignored
