@@ -167,247 +167,257 @@ export default function Page(props) {
           <br />
           <br />
           <Form id="form" onSubmit={onSubmit} autoComplete="off">
-            <Form.Group controlId="name">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                required
-                disabled={loading}
-                type="text"
-                placeholder="Source Name"
-                defaultValue={source.name}
-                onChange={(e) => update(e)}
-              />
-              <Form.Control.Feedback type="invalid">
-                Name is required
-              </Form.Control.Feedback>
-            </Form.Group>
+            <fieldset disabled={source.locked}>
+              <Form.Group controlId="name">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  required
+                  disabled={loading}
+                  type="text"
+                  placeholder="Source Name"
+                  defaultValue={source.name}
+                  onChange={(e) => update(e)}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Name is required
+                </Form.Control.Feedback>
+              </Form.Group>
 
-            <hr />
-            <p>Options for a {source.type} source:</p>
+              <hr />
+              <p>Options for a {source.type} source:</p>
 
-            {loadingOptions ? (
-              <Alert variant="warning">
-                <Loader size="sm" /> Loading options from {source.app.type}
-              </Alert>
-            ) : null}
+              {loadingOptions ? (
+                <Alert variant="warning">
+                  <Loader size="sm" /> Loading options from {source.app.type}
+                </Alert>
+              ) : null}
 
-            {Object.keys(source.connection.options).length === 0 ? (
-              <p>No options for this type of source</p>
-            ) : null}
+              {Object.keys(source.connection.options).length === 0 ? (
+                <p>No options for this type of source</p>
+              ) : null}
 
-            {source.connection.options.map((opt) => {
-              return (
-                <Form.Group
-                  key={`group-${opt.key}`}
-                  controlId={`_opt~${opt.key}`}
-                >
-                  <Form.Label>
-                    <code>{opt.displayName || opt.key}</code>{" "}
-                    {opt.required ? (
-                      <>
-                        <Badge variant="info">required</Badge>&nbsp;
-                      </>
-                    ) : null}
-                  </Form.Label>
-
-                  {(() => {
-                    if (connectionOptions[opt.key]?.type === "typeahead") {
-                      return (
+              {source.connection.options.map((opt) => {
+                return (
+                  <Form.Group
+                    key={`group-${opt.key}`}
+                    controlId={`_opt~${opt.key}`}
+                  >
+                    <Form.Label>
+                      <code>{opt.displayName || opt.key}</code>{" "}
+                      {opt.required ? (
                         <>
-                          <Typeahead
-                            id="typeahead"
-                            labelKey="key"
-                            disabled={loading || loadingOptions}
-                            onChange={(selected) => {
-                              updateOption(opt.key, selected[0]?.key);
-                            }}
-                            options={connectionOptions[opt.key]?.options.map(
-                              (k, idx) => {
-                                return {
-                                  key: k,
-                                  descriptions:
-                                    connectionOptions[k]?.descriptions[idx],
-                                };
+                          <Badge variant="info">required</Badge>&nbsp;
+                        </>
+                      ) : null}
+                    </Form.Label>
+
+                    {(() => {
+                      if (connectionOptions[opt.key]?.type === "typeahead") {
+                        return (
+                          <>
+                            <Typeahead
+                              id="typeahead"
+                              labelKey="key"
+                              disabled={loading || loadingOptions}
+                              onChange={(selected) => {
+                                updateOption(opt.key, selected[0]?.key);
+                              }}
+                              options={connectionOptions[opt.key]?.options.map(
+                                (k, idx) => {
+                                  return {
+                                    key: k,
+                                    descriptions:
+                                      connectionOptions[k]?.descriptions[idx],
+                                  };
+                                }
+                              )}
+                              placeholder={
+                                opt.placeholder || `Select ${opt.key}`
                               }
-                            )}
-                            placeholder={opt.placeholder || `Select ${opt.key}`}
-                            renderMenuItemChildren={(opt, props, idx) => {
-                              return [
-                                <span key={`opt-${idx}-key`}>
-                                  {opt.key}
-                                  <br />
-                                </span>,
-                                <small
-                                  key={`opt-${idx}-descriptions`}
-                                  className="text-small"
-                                >
-                                  {opt.descriptions ? (
-                                    <em>
-                                      Descriptions:{" "}
-                                      {opt.descriptions.join(", ")}
-                                    </em>
-                                  ) : null}
-                                </small>,
-                              ];
-                            }}
-                            defaultSelected={
-                              source.options[opt.key]
-                                ? [source.options[opt.key]]
-                                : undefined
-                            }
-                          />
-                          <Form.Text className="text-muted">
-                            {opt.description}
-                          </Form.Text>
-                        </>
-                      );
-                    } else if (connectionOptions[opt.key]?.type === "list") {
-                      return (
-                        <>
-                          <Form.Control
-                            as="select"
-                            required={opt.required}
-                            disabled={loading || loadingOptions}
-                            defaultValue={source.options[opt.key] || ""}
-                            onChange={(e) =>
-                              updateOption(
-                                e.target.id.replace("_opt~", ""),
-                                e.target.value
-                              )
-                            }
-                          >
-                            <option value={""} disabled>
-                              Select an option
-                            </option>
-                            {connectionOptions[opt.key].options.map(
-                              (o, idx) => (
-                                <option key={`opt~${opt.key}-${o}`} value={o}>
-                                  {o}{" "}
-                                  {connectionOptions[opt.key]?.descriptions &&
-                                  connectionOptions[opt.key]?.descriptions[idx]
-                                    ? ` | ${
-                                        connectionOptions[opt.key]
-                                          ?.descriptions[idx]
-                                      }`
-                                    : null}
-                                </option>
-                              )
-                            )}
-                          </Form.Control>
-                          <Form.Text className="text-muted">
-                            {opt.description}
-                          </Form.Text>
-                        </>
-                      );
-                    } else if (connectionOptions[opt.key]?.type === "pending") {
-                      return (
-                        <>
-                          <Form.Control
-                            size="sm"
-                            disabled
-                            type="text"
-                            value="pending another selection"
-                          ></Form.Control>
-                        </>
-                      );
-                    } else {
-                      return (
-                        <>
-                          <Form.Control
-                            required={opt.required}
-                            type="text"
-                            disabled={loading || loadingOptions}
-                            defaultValue={source.options[opt.key]}
-                            placeholder={opt.placeholder}
-                            onChange={(e) =>
-                              updateOption(
-                                e.target.id.replace("_opt~", ""),
-                                e.target.value
-                              )
-                            }
-                          />
-                          <Form.Text className="text-muted">
-                            {opt.description}
-                          </Form.Text>
-                        </>
-                      );
-                    }
-                  })()}
+                              renderMenuItemChildren={(opt, props, idx) => {
+                                return [
+                                  <span key={`opt-${idx}-key`}>
+                                    {opt.key}
+                                    <br />
+                                  </span>,
+                                  <small
+                                    key={`opt-${idx}-descriptions`}
+                                    className="text-small"
+                                  >
+                                    {opt.descriptions ? (
+                                      <em>
+                                        Descriptions:{" "}
+                                        {opt.descriptions.join(", ")}
+                                      </em>
+                                    ) : null}
+                                  </small>,
+                                ];
+                              }}
+                              defaultSelected={
+                                source.options[opt.key]
+                                  ? [source.options[opt.key]]
+                                  : undefined
+                              }
+                            />
+                            <Form.Text className="text-muted">
+                              {opt.description}
+                            </Form.Text>
+                          </>
+                        );
+                      } else if (connectionOptions[opt.key]?.type === "list") {
+                        return (
+                          <>
+                            <Form.Control
+                              as="select"
+                              required={opt.required}
+                              disabled={loading || loadingOptions}
+                              defaultValue={source.options[opt.key] || ""}
+                              onChange={(e) =>
+                                updateOption(
+                                  e.target.id.replace("_opt~", ""),
+                                  e.target.value
+                                )
+                              }
+                            >
+                              <option value={""} disabled>
+                                Select an option
+                              </option>
+                              {connectionOptions[opt.key].options.map(
+                                (o, idx) => (
+                                  <option key={`opt~${opt.key}-${o}`} value={o}>
+                                    {o}{" "}
+                                    {connectionOptions[opt.key]?.descriptions &&
+                                    connectionOptions[opt.key]?.descriptions[
+                                      idx
+                                    ]
+                                      ? ` | ${
+                                          connectionOptions[opt.key]
+                                            ?.descriptions[idx]
+                                        }`
+                                      : null}
+                                  </option>
+                                )
+                              )}
+                            </Form.Control>
+                            <Form.Text className="text-muted">
+                              {opt.description}
+                            </Form.Text>
+                          </>
+                        );
+                      } else if (
+                        connectionOptions[opt.key]?.type === "pending"
+                      ) {
+                        return (
+                          <>
+                            <Form.Control
+                              size="sm"
+                              disabled
+                              type="text"
+                              value="pending another selection"
+                            ></Form.Control>
+                          </>
+                        );
+                      } else {
+                        return (
+                          <>
+                            <Form.Control
+                              required={opt.required}
+                              type="text"
+                              disabled={loading || loadingOptions}
+                              defaultValue={source.options[opt.key]}
+                              placeholder={opt.placeholder}
+                              onChange={(e) =>
+                                updateOption(
+                                  e.target.id.replace("_opt~", ""),
+                                  e.target.value
+                                )
+                              }
+                            />
+                            <Form.Text className="text-muted">
+                              {opt.description}
+                            </Form.Text>
+                          </>
+                        );
+                      }
+                    })()}
 
-                  {/* list-type options */}
-                </Form.Group>
-              );
-            })}
+                    {/* list-type options */}
+                  </Form.Group>
+                );
+              })}
 
-            {environmentVariableOptions.length > 0 ? (
-              <Row>
-                <Col>
-                  <p>
-                    Environment Variable Options for Sources:{" "}
-                    {environmentVariableOptions.sort().map((envOpt) => (
-                      <Badge key={`envOpt-${envOpt}`} variant="info">
-                        {envOpt}
-                      </Badge>
-                    ))}
-                  </p>
-                  <br />
-                </Col>
-              </Row>
-            ) : null}
+              {environmentVariableOptions.length > 0 ? (
+                <Row>
+                  <Col>
+                    <p>
+                      Environment Variable Options for Sources:{" "}
+                      {environmentVariableOptions.sort().map((envOpt) => (
+                        <Badge key={`envOpt-${envOpt}`} variant="info">
+                          {envOpt}
+                        </Badge>
+                      ))}
+                    </p>
+                    <br />
+                  </Col>
+                </Row>
+              ) : null}
 
-            <hr />
+              <hr />
 
-            <h3>Example Data</h3>
+              <h3>Example Data</h3>
 
-            {previewColumns.length === 0 && !loading ? <p>No preview</p> : null}
-            {previewColumns.length === 0 && loading ? <Loader /> : null}
+              {previewColumns.length === 0 && !loading ? (
+                <p>No preview</p>
+              ) : null}
+              {previewColumns.length === 0 && loading ? <Loader /> : null}
 
-            <div style={{ overflow: "auto" }}>
-              <LoadingTable loading={previewLoading} size="sm">
-                <thead>
-                  <tr>
-                    {previewColumns.map((col) => (
-                      <th key={`head-${col}`}>{col}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {preview.map((row, i) => (
-                    <tr key={`row-${i}`}>
-                      {previewColumns.map((col, j) => (
-                        <td key={`table-${i}-${j}`}>
-                          {row[col] ? (
-                            typeof row[col] === "object" ? (
-                              <code>{JSON.stringify(row[col])}</code>
-                            ) : (
-                              row[col]
-                            )
-                          ) : null}
-                        </td>
+              <div style={{ overflow: "auto" }}>
+                <LoadingTable loading={previewLoading} size="sm">
+                  <thead>
+                    <tr>
+                      {previewColumns.map((col) => (
+                        <th key={`head-${col}`}>{col}</th>
                       ))}
                     </tr>
-                  ))}
-                </tbody>
-              </LoadingTable>
-            </div>
+                  </thead>
+                  <tbody>
+                    {preview.map((row, i) => (
+                      <tr key={`row-${i}`}>
+                        {previewColumns.map((col, j) => (
+                          <td key={`table-${i}-${j}`}>
+                            {row[col] ? (
+                              typeof row[col] === "object" ? (
+                                <code>{JSON.stringify(row[col])}</code>
+                              ) : (
+                                row[col]
+                              )
+                            ) : null}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </LoadingTable>
+              </div>
 
-            <br />
+              <br />
 
-            <LoadingButton variant="primary" type="submit" disabled={loading}>
-              Update
-            </LoadingButton>
-            <br />
-            <br />
-            <LoadingButton
-              disabled={loading}
-              variant="danger"
-              size="sm"
-              onClick={() => {
-                handleDelete();
-              }}
-            >
-              Delete
-            </LoadingButton>
+              <LoadingButton variant="primary" type="submit" disabled={loading}>
+                Update
+              </LoadingButton>
+              <br />
+              <br />
+              <LoadingButton
+                disabled={loading}
+                variant="danger"
+                size="sm"
+                onClick={() => {
+                  handleDelete();
+                }}
+              >
+                Delete
+              </LoadingButton>
+            </fieldset>
           </Form>
         </Col>
       </Row>
