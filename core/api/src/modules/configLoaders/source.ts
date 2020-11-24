@@ -65,6 +65,7 @@ export async function loadSource(configObject: ConfigurationObject) {
       configObject.bootstrappedProfilePropertyRule
     ) {
       const rule = configObject.bootstrappedProfilePropertyRule;
+      if (!rule || !rule.options) throw error;
       const mappedColumn = Object.values(rule.options)[0];
       bootstrappedRule = await source.bootstrapUniqueProfilePropertyRule(
         rule.key || rule.name,

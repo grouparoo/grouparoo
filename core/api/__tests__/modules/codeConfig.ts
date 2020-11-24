@@ -336,4 +336,101 @@ describe("modules/codeConfig", () => {
       expect(await TeamMember.count()).toBe(0);
     });
   });
+
+  describe("errors", () => {
+    describe("app", () => {
+      beforeAll(async () => {
+        api.codeConfig.allowLockedModelChanges = true;
+        process.env.GROUPAROO_CONFIG_DIR = path.join(
+          __dirname,
+          "..",
+          "fixtures",
+          "codeConfig",
+          "error-app"
+        );
+      });
+
+      test("errors will be thrown if the configuration is invalid", async () => {
+        await expect(initializer.initialize()).rejects.toThrow(
+          /fileGuid is required for a app of type test-plugin-app/
+        );
+      });
+    });
+
+    describe("source", () => {
+      beforeAll(async () => {
+        api.codeConfig.allowLockedModelChanges = true;
+        process.env.GROUPAROO_CONFIG_DIR = path.join(
+          __dirname,
+          "..",
+          "fixtures",
+          "codeConfig",
+          "error-source"
+        );
+      });
+
+      test("errors will be thrown if the configuration is invalid", async () => {
+        await expect(initializer.initialize()).rejects.toThrow(
+          /cannot find ProfilePropertyRule/
+        );
+      });
+    });
+
+    describe("profile property rule", () => {
+      beforeAll(async () => {
+        api.codeConfig.allowLockedModelChanges = true;
+        process.env.GROUPAROO_CONFIG_DIR = path.join(
+          __dirname,
+          "..",
+          "fixtures",
+          "codeConfig",
+          "error-profilePropertyRule"
+        );
+      });
+
+      test("errors will be thrown if the configuration is invalid", async () => {
+        await expect(initializer.initialize()).rejects.toThrow(
+          /cannot find Source/
+        );
+      });
+    });
+
+    describe("group", () => {
+      beforeAll(async () => {
+        api.codeConfig.allowLockedModelChanges = true;
+        process.env.GROUPAROO_CONFIG_DIR = path.join(
+          __dirname,
+          "..",
+          "fixtures",
+          "codeConfig",
+          "error-group"
+        );
+      });
+
+      test("errors will be thrown if the configuration is invalid", async () => {
+        await expect(initializer.initialize()).rejects.toThrow(
+          /cannot find ProfilePropertyRule/
+        );
+      });
+    });
+
+    describe("team member", () => {
+      beforeAll(async () => {
+        api.codeConfig.allowLockedModelChanges = true;
+        process.env.GROUPAROO_CONFIG_DIR = path.join(
+          __dirname,
+          "..",
+          "fixtures",
+          "codeConfig",
+          "error-teamMember"
+        );
+      });
+
+      test("errors will be thrown if the configuration is invalid", async () => {
+        await expect(initializer.initialize()).rejects.toThrow(
+          /TeamMember.firstName cannot be null/
+        );
+      });
+    });
+  });
 });

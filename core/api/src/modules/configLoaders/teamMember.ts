@@ -28,15 +28,15 @@ export async function loadTeamMember(configObject: ConfigurationObject) {
   }
 
   teamMember.teamGuid = team.guid;
-  if (configObject?.options.firstName) {
+  if (configObject?.options?.firstName) {
     teamMember.firstName = configObject.options.firstName;
   }
-  if (configObject?.options.lastName) {
+  if (configObject?.options?.lastName) {
     teamMember.lastName = configObject.options.lastName;
   }
   await teamMember.save();
 
-  if (configObject?.options.password) {
+  if (configObject?.options?.password) {
     await teamMember.updatePassword(configObject.options.password);
   }
 
