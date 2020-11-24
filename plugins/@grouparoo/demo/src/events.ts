@@ -9,20 +9,20 @@ const PAGEVIEW_RULES: Array<RuleDefinition> = [
   {
     key: "pageviewCount",
     type: "integer",
-    options: { "aggregation method": "count", column: "[data]-page" },
+    options: { aggregationMethod: "count", column: "[data]-page" },
   },
   {
     key: "categoriesViewed",
     type: "string",
     isArray: true,
-    options: { column: "[data]-category", "aggregation method": "all values" },
+    options: { column: "[data]-category", aggregationMethod: "all values" },
     filters: [{ key: "[data]-page", op: "equals", match: "/product" }],
   },
   {
     key: "recentVisitDate",
     type: "date",
     options: {
-      "aggregation method": "most recent value",
+      aggregationMethod: "most recent value",
       column: "occurredAt",
     },
   },

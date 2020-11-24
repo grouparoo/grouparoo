@@ -77,8 +77,8 @@ describe("mysql/table/profilePropertyRuleOptions", () => {
     expect((<Date>value).getTime()).toBeGreaterThan(0);
   });
 
-  test("gets aggregation methods", async () => {
-    const response = await getOptionsForKey("aggregation method");
+  test("gets aggregationMethod", async () => {
+    const response = await getOptionsForKey("aggregationMethod");
 
     const methods = response.map((r) => r.key).sort();
     expect(methods).toEqual([
@@ -93,8 +93,8 @@ describe("mysql/table/profilePropertyRuleOptions", () => {
     ]);
   });
 
-  test("gets sort columns", async () => {
-    const response = await getOptionsForKey("sort column");
+  test("gets sortColumn", async () => {
+    const response = await getOptionsForKey("sortColumn");
     const columnNames = response.map((r) => r.key).sort();
     expect(columnNames).toEqual([
       "amount",

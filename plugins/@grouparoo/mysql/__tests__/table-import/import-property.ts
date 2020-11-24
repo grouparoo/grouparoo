@@ -37,7 +37,7 @@ async function getPropertyArray(
 ) {
   const profilePropertyRuleOptions = {
     column,
-    "aggregation method": aggregationMethod,
+    aggregationMethod: aggregationMethod,
   };
 
   if (!useProfile) {

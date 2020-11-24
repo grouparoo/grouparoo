@@ -4,8 +4,8 @@ export { SimpleAppOptions };
 import { DataResponse, DataResponseRow } from "../shared/types";
 export { DataResponse, DataResponseRow };
 
-export const aggregationMethodKey = "aggregation method";
-export const sortColumnKey = "sort column";
+export const aggregationMethodKey = "aggregationMethod";
+export const sortColumnKey = "sortColumn";
 export const columnNameKey = "column";
 export const tableNameKey = "table";
 

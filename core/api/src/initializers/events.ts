@@ -165,13 +165,15 @@ const eventProfilePropertyRuleOptionOptions = async (args) => {
 const eventProfilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOption[] = [
   {
     key: "column",
+    displayName: "Column",
     required: true,
     description: "where the data comes from",
     type: "typeahead",
     options: eventProfilePropertyRuleOptionOptions,
   },
   {
-    key: "aggregation method",
+    key: "aggregationMethod",
+    displayName: "Aggregation Method",
     required: true,
     description: "how we combine the data",
     type: "list",
@@ -238,13 +240,13 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
 }) => {
   let events: Event[];
   if (!profilePropertyRuleOptions["column"]) return;
-  if (!profilePropertyRuleOptions["aggregation method"]) return;
+  if (!profilePropertyRuleOptions["aggregationMethod"]) return;
 
   const dataKey = profilePropertyRuleOptions["column"].replace(
     /^\[data\]-/,
     ""
   );
-  const aggregationMethod = profilePropertyRuleOptions["aggregation method"];
+  const aggregationMethod = profilePropertyRuleOptions["aggregationMethod"];
 
   if (aggregationMethod === "all values") {
     const where = { profileGuid: profile.guid, type: sourceOptions["type"] };

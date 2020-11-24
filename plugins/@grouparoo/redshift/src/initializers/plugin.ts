@@ -63,27 +63,32 @@ export class Plugins extends Initializer {
           options: [
             {
               key: "table",
+              displayName: "Table",
               required: true,
               description: "The table to write profiles to.",
             },
             {
               key: "primaryKey",
+              displayName: "Primary Key",
               required: true,
               description: "The primaryKey of table.",
             },
             {
               key: "groupsTable",
+              displayName: "Groups Table",
               required: true,
               description: "The table to write groups to.",
             },
             {
               key: "groupForeignKey",
+              displayName: "Group Foreign Key",
               required: true,
               description:
                 "The foreign key that the groups table uses to reference table.",
             },
             {
               key: "groupColumnName",
+              displayName: "Group Column Name",
               required: true,
               description:
                 "The column name for where to store the group names.",

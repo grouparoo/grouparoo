@@ -108,6 +108,7 @@ export const buildConnection: BuildConnectionMethod = ({
     options: [
       {
         key: tableNameKey,
+        displayName: "Table",
         required: true,
         description: tableOptionDescription || "The table to scan",
       },

@@ -77,6 +77,7 @@ const STATE_TRANSITIONS = [
  */
 export interface PluginConnectionProfilePropertyRuleOption {
   key: string;
+  displayName?: string;
   required: boolean;
   description: string;
   type: string;

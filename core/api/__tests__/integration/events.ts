@@ -426,7 +426,8 @@ describe("integration/events", () => {
           "[data]-loadTime",
           "[data]-path",
         ]);
-        expect(pluginOptions[1].key).toBe("aggregation method");
+        expect(pluginOptions[1].key).toBe("aggregationMethod");
+        expect(pluginOptions[1].displayName).toBe("Aggregation Method");
         expect(pluginOptions[1].options.map((opt) => opt.key)).toEqual([
           "all values",
           "most recent value",
@@ -510,7 +511,7 @@ describe("integration/events", () => {
         ]);
       });
 
-      test("the rule cannot be made ready without an aggregation method", async () => {
+      test("the rule cannot be made ready without an aggregationMethod", async () => {
         connection.params = {
           csrfToken,
           guid: profilePropertyRuleGuid,
@@ -521,14 +522,14 @@ describe("integration/events", () => {
           "profilePropertyRule:edit",
           connection
         );
-        expect(error.message).toMatch(/aggregation method is required/);
+        expect(error.message).toMatch(/aggregationMethod is required/);
       });
 
       test("an administrator can make a rule ready", async () => {
         connection.params = {
           csrfToken,
           guid: profilePropertyRuleGuid,
-          options: { column: "[data]-path", "aggregation method": "count" },
+          options: { column: "[data]-path", aggregationMethod: "count" },
           state: "ready",
         };
         const { error, profilePropertyRule } = await specHelper.runAction(
@@ -603,7 +604,7 @@ describe("integration/events", () => {
           await rule.update({ type: "string", isArray: true });
           await rule.setOptions({
             column: "[data]-path",
-            "aggregation method": "all values",
+            aggregationMethod: "all values",
           });
           await profile.import();
           const properties = await profile.properties();
@@ -620,7 +621,7 @@ describe("integration/events", () => {
           await rule.update({ type: "string" });
           await rule.setOptions({
             column: "[data]-path",
-            "aggregation method": "most recent value",
+            aggregationMethod: "most recent value",
           });
           await profile.import();
           const properties = await profile.properties();
@@ -631,7 +632,7 @@ describe("integration/events", () => {
           await rule.update({ type: "string" });
           await rule.setOptions({
             column: "[data]-path",
-            "aggregation method": "least recent value",
+            aggregationMethod: "least recent value",
           });
           await profile.import();
           const properties = await profile.properties();
@@ -642,7 +643,7 @@ describe("integration/events", () => {
           await rule.update({ type: "float" });
           await rule.setOptions({
             column: "[data]-loadTime",
-            "aggregation method": "avg",
+            aggregationMethod: "avg",
           });
           await profile.import();
           const properties = await profile.properties();
@@ -653,7 +654,7 @@ describe("integration/events", () => {
           await rule.update({ type: "integer" });
           await rule.setOptions({
             column: "[data]-path",
-            "aggregation method": "count",
+            aggregationMethod: "count",
           });
           await profile.import();
           const properties = await profile.properties();
@@ -664,7 +665,7 @@ describe("integration/events", () => {
           await rule.update({ type: "integer" });
           await rule.setOptions({
             column: "[data]-loadTime",
-            "aggregation method": "sum",
+            aggregationMethod: "sum",
           });
           await profile.import();
           const properties = await profile.properties();
@@ -675,7 +676,7 @@ describe("integration/events", () => {
           await rule.update({ type: "integer" });
           await rule.setOptions({
             column: "[data]-loadTime",
-            "aggregation method": "min",
+            aggregationMethod: "min",
           });
           await profile.import();
           const properties = await profile.properties();
@@ -686,7 +687,7 @@ describe("integration/events", () => {
           await rule.update({ type: "integer" });
           await rule.setOptions({
             column: "[data]-loadTime",
-            "aggregation method": "max",
+            aggregationMethod: "max",
           });
           await profile.import();
           const properties = await profile.properties();
@@ -701,7 +702,7 @@ describe("integration/events", () => {
           await rule.update({ type: "string", isArray: true });
           await rule.setOptions({
             column: "[data]-path",
-            "aggregation method": "all values",
+            aggregationMethod: "all values",
           });
         });
 
