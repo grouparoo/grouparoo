@@ -79,7 +79,7 @@ module.exports = async function getConfig() {
       sourceId: "users_table", // sourceGuid -> `src_users_table`
       options: {
         column: "email",
-        "aggregation method": "exact",
+        aggregationMethod: "exact",
         sort: null,
       },
       filters: [],
@@ -95,7 +95,7 @@ module.exports = async function getConfig() {
       sourceId: "users_table", // sourceGuid -> `src_users_table`
       options: {
         column: "first_name",
-        "aggregation method": "exact",
+        aggregationMethod: "exact",
         sort: null,
       },
       filters: [],
@@ -111,7 +111,7 @@ module.exports = async function getConfig() {
       sourceId: "users_table", // sourceGuid -> `src_users_table`
       options: {
         column: "last_name",
-        "aggregation method": "exact",
+        aggregationMethod: "exact",
         sort: null,
       },
       filters: [],
