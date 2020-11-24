@@ -80,7 +80,9 @@ export async function loadSource(configObject: ConfigurationObject) {
 
   await source.update({ state: "ready" });
 
-  if (isNew) await bootstrappedRule.update({ locked: true });
+  if (isNew && bootstrappedRule) {
+    await bootstrappedRule.update({ locked: true });
+  }
 
   logModel(source, isNew);
   if (bootstrappedRule) logModel(bootstrappedRule, isNew);
