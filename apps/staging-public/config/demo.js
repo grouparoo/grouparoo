@@ -154,24 +154,24 @@ module.exports = async function getConfig() {
       ],
     },
 
-    {
-      id: "hubspot_destination", // guid -> `dst_hubspot_destination`
-      name: "Hubspot Destination",
-      class: "destination",
-      type: "hubspot-export",
-      appId: "hubspot", // guid -> app_hubspot
-      groupId: "small_group", // guid -> grp_small_group
-      options: {},
-      mapping: {
-        email: "email",
-        firstname: "first_name",
-        lastname: "last_name",
-      },
-      destinationGroupMemberships: {
-        "Hubspot Small Group": "small_group",
-        "Literally Everyone": "email_group",
-      },
-    },
+    // {
+    //   id: "hubspot_destination", // guid -> `dst_hubspot_destination`
+    //   name: "Hubspot Destination",
+    //   class: "destination",
+    //   type: "hubspot-export",
+    //   appId: "hubspot", // guid -> app_hubspot
+    //   groupId: "small_group", // guid -> grp_small_group
+    //   options: {},
+    //   mapping: {
+    //     email: "email",
+    //     firstname: "first_name",
+    //     lastname: "last_name",
+    //   },
+    //   destinationGroupMemberships: {
+    //     "Hubspot Small Group": "small_group",
+    //     "Literally Everyone": "email_group",
+    //   },
+    // },
 
     {
       id: "website_api_key", // guid -> `api_website_api_key`
