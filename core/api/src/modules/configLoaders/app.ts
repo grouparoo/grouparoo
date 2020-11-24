@@ -23,8 +23,15 @@ export async function loadApp(configObject: ConfigurationObject) {
   }
 
   await app.update({ name: configObject.name });
-
   await app.setOptions(extractNonNullParts(configObject, "options"));
+
+  const response = await app.test();
+  if (!response.success) {
+    throw new Error(
+      `error testing app ${app.name} (${app.guid}) - ${response.error}`
+    );
+  }
+
   await app.update({ state: "ready" });
   logModel(app, isNew);
   return app;
