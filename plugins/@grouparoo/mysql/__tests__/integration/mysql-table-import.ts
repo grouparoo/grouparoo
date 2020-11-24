@@ -222,8 +222,8 @@ describe("integration/runs/mysql", () => {
     // check the pluginOptions
     expect(pluginOptions.length).toBe(3);
     expect(pluginOptions[0].key).toBe("column");
-    expect(pluginOptions[1].key).toBe("aggregation method");
-    expect(pluginOptions[2].key).toBe("sort column");
+    expect(pluginOptions[1].key).toBe("aggregationMethod");
+    expect(pluginOptions[2].key).toBe("sortColumn");
     expect(pluginOptions[0].required).toBe(true);
     expect(pluginOptions[0].options[0].key).toBe("id");
     expect(pluginOptions[1].options[0].key).toBe("exact");
@@ -234,7 +234,7 @@ describe("integration/runs/mysql", () => {
       csrfToken,
       guid: profilePropertyRule.guid,
       unique: true,
-      options: { column: "email", "aggregation method": "exact" },
+      options: { column: "email", aggregationMethod: "exact" },
       state: "ready",
     };
     const { error: editError } = await specHelper.runAction(

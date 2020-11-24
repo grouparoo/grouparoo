@@ -189,7 +189,7 @@ export default function Page(props) {
                         <Badge variant="info">required</Badge>&nbsp;
                       </>
                     ) : null}
-                    <code>{opt.key}</code>
+                    <code>{opt.displayName || opt.key}</code>
                   </Form.Label>
                   {(() => {
                     if (connectionOptions[opt.key]?.type === "typeahead") {

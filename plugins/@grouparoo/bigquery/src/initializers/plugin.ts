@@ -26,18 +26,21 @@ export class Plugins extends Initializer {
           options: [
             {
               key: "project_id",
+              displayName: "Project ID",
               required: true,
               description: "Project id from Google.",
               placeholder: "e.g. grouparoo-sources",
             },
             {
               key: "dataset",
+              displayName: "Dataset",
               required: true,
               description: "Default dataset id to use for sources.",
               placeholder: "e.g. product-data",
             },
             {
               key: "client_email",
+              displayName: "Client Email Address",
               required: true,
               description: "Email of service account.",
               placeholder:
@@ -45,6 +48,7 @@ export class Plugins extends Initializer {
             },
             {
               key: "private_key",
+              displayName: "Private Key",
               required: true,
               description: "Private key of service account.",
               placeholder: "e.g. -----BEGIN PRIVATE KEY-----\nMII ...",

@@ -26,6 +26,7 @@ export class Plugins extends Initializer {
           options: [
             {
               key: "client_email",
+              displayName: "Client Email Address",
               required: true,
               description: "Email of service account.",
               placeholder:
@@ -33,6 +34,7 @@ export class Plugins extends Initializer {
             },
             {
               key: "private_key",
+              displayName: "Private Key",
               required: true,
               description: "Private key of service account.",
               placeholder: "e.g. -----BEGIN PRIVATE KEY-----\nMII ...",
@@ -50,6 +52,7 @@ export class Plugins extends Initializer {
           options: [
             {
               key: "sheet_url",
+              displayName: "Google Sheet URL",
               required: true,
               description: "The url of the Google Sheet.",
             },

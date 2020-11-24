@@ -26,6 +26,7 @@ export class Plugins extends Initializer {
           options: [
             {
               key: "hapikey",
+              displayName: "Hubspot API Key",
               required: true,
               description: "Hubspot hapikey (api) key.",
             },

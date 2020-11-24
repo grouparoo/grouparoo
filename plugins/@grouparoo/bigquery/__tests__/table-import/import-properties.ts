@@ -44,7 +44,7 @@ async function getPropertyValues(
 ) {
   const profilePropertyRuleOptions = {
     column,
-    "aggregation method": aggregationMethod,
+    aggregationMethod: aggregationMethod,
   };
 
   const profilePropertyRuleFilters = useProfilePropertyRuleFilters || [];

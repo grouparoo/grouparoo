@@ -202,7 +202,7 @@ export default function Page(props) {
                   controlId={`_opt~${opt.key}`}
                 >
                   <Form.Label>
-                    <strong>{opt.key}</strong>{" "}
+                    <code>{opt.displayName || opt.key}</code>{" "}
                     {opt.required ? (
                       <>
                         <Badge variant="info">required</Badge>&nbsp;

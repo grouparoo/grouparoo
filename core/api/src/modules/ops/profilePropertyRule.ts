@@ -50,6 +50,7 @@ export namespace ProfilePropertyRuleOps {
 
     const response: Array<{
       key: string;
+      displayName?: string;
       description: string;
       required: boolean;
       type: string;
@@ -82,6 +83,7 @@ export namespace ProfilePropertyRuleOps {
 
       response.push({
         key: opt.key,
+        displayName: opt.displayName,
         description: opt.description,
         required: opt.required,
         type: opt.type,

@@ -29,35 +29,35 @@ const USER_ID_PROPERTY_RULE: RuleDefinition = {
   type: "integer",
   unique: true,
   identifying: true,
-  options: { column: "id", "aggregation method": "exact" },
+  options: { column: "id", aggregationMethod: "exact" },
 };
 
 const USER_RULES: Array<RuleDefinition> = [
   {
     key: "firstName",
     type: "string",
-    options: { column: "first_name", "aggregation method": "exact" },
+    options: { column: "first_name", aggregationMethod: "exact" },
   },
   {
     key: "lastName",
     type: "string",
-    options: { column: "last_name", "aggregation method": "exact" },
+    options: { column: "last_name", aggregationMethod: "exact" },
   },
   {
     key: "email",
     type: "email",
-    options: { column: "email", "aggregation method": "exact" },
+    options: { column: "email", aggregationMethod: "exact" },
     unique: true,
   },
   {
     key: "language",
     type: "string",
-    options: { column: "language", "aggregation method": "exact" },
+    options: { column: "language", aggregationMethod: "exact" },
   },
   {
     key: "deactivated",
     type: "boolean",
-    options: { column: "deactivated", "aggregation method": "exact" },
+    options: { column: "deactivated", aggregationMethod: "exact" },
   },
 ];
 
@@ -75,7 +75,7 @@ const PURCHASE_RULES: Array<RuleDefinition> = [
   {
     key: "LTV",
     type: "float",
-    options: { column: "price", "aggregation method": "sum" },
+    options: { column: "price", aggregationMethod: "sum" },
     filters: PURCHASE_FILTERS,
   },
   {
@@ -83,7 +83,7 @@ const PURCHASE_RULES: Array<RuleDefinition> = [
     type: "integer",
     options: {
       column: "id",
-      "aggregation method": "count",
+      aggregationMethod: "count",
     },
     filters: PURCHASE_FILTERS,
   },
@@ -92,8 +92,8 @@ const PURCHASE_RULES: Array<RuleDefinition> = [
     type: "string",
     options: {
       column: "category",
-      "aggregation method": "most recent value",
-      "sort column": "created_at",
+      aggregationMethod: "most recent value",
+      sortColumn: "created_at",
     },
     filters: PURCHASE_FILTERS,
   },
@@ -102,8 +102,8 @@ const PURCHASE_RULES: Array<RuleDefinition> = [
     type: "date",
     options: {
       column: "created_at",
-      "aggregation method": "most recent value",
-      "sort column": "created_at",
+      aggregationMethod: "most recent value",
+      sortColumn: "created_at",
     },
     filters: PURCHASE_FILTERS,
   },

@@ -39,6 +39,7 @@ export const getProfilePropertyRuleOptions: GetProfilePropertyRuleOptionsMethod 
   return [
     {
       key: columnNameKey,
+      displayName: "Column Name",
       required: true,
       description: "where the data comes from",
       type: "typeahead",
@@ -56,6 +57,7 @@ export const getProfilePropertyRuleOptions: GetProfilePropertyRuleOptionsMethod 
     },
     {
       key: aggregationMethodKey,
+      displayName: "Aggregation Method",
       required: true,
       description: "how we combine the data",
       type: "list",
@@ -69,6 +71,7 @@ export const getProfilePropertyRuleOptions: GetProfilePropertyRuleOptionsMethod 
     },
     {
       key: sortColumnKey,
+      displayName: "Sort Column",
       required: false,
       description:
         "which column to sort by for most and least recent properties",

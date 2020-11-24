@@ -24,6 +24,7 @@ import { AppOps } from "../modules/ops/app";
 
 export interface AppOption {
   key: string;
+  displayName?: string;
   required: boolean;
   description?: string;
   placeholder?: string;
