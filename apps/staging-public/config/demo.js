@@ -7,7 +7,7 @@ module.exports = async function getConfig() {
       class: "Setting",
       pluginName: "core",
       key: "cluster-name",
-      value: `${process.env.USER ? process.env.USER + "'s" : ""} Dev Cluster`,
+      value: `${process.env.USER ? process.env.USER + "'s" : ""} dev cluster`,
     },
 
     {
@@ -54,6 +54,20 @@ module.exports = async function getConfig() {
         options: {
           column: "id",
         },
+      },
+    },
+
+    {
+      id: "purchases_table", // guid -> `src_purchases_table`
+      name: "Purchases Table",
+      class: "Source",
+      type: "postgres-table-import",
+      appId: "data_warehouse", // appGuid -> `app_data_warehouse`
+      options: {
+        table: "purchases",
+      },
+      mapping: {
+        user_id: "user_id",
       },
     },
 
@@ -118,6 +132,22 @@ module.exports = async function getConfig() {
     },
 
     {
+      id: "ltv", // guid -> `rul_ltv`
+      name: "LTV",
+      class: "ProfilePropertyRule",
+      type: "float",
+      unique: false,
+      isArray: false,
+      sourceId: "purchases_table", // sourceGuid -> `src_purchases_table`
+      options: {
+        column: "price",
+        aggregationMethod: "sum",
+        sort: null,
+      },
+      filters: [{ key: "state", op: "equals", match: "successful" }],
+    },
+
+    {
       id: "email_group", // guid -> `grp_marketing_team`
       name: "People with Email Addresses",
       class: "Group",
@@ -150,6 +180,33 @@ module.exports = async function getConfig() {
           profilePropertyRuleId: "email",
           operation: { op: "like" },
           match: "%@%",
+        },
+      ],
+    },
+
+    {
+      id: "email_group", // guid -> `grp_marketing_team`
+      name: "Everyone With an Email Address",
+      class: "Group",
+      type: "calculated",
+      rules: [
+        {
+          profilePropertyRuleId: "email",
+          operation: { op: "exists" },
+        },
+      ],
+    },
+
+    {
+      id: "high_value_group", // guid -> `grp_marketing_team`
+      name: "High Value Customers",
+      class: "Group",
+      type: "calculated",
+      rules: [
+        {
+          profilePropertyRuleId: "ltv",
+          operation: { op: "gt" },
+          match: 100,
         },
       ],
     },

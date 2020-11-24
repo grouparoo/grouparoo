@@ -43,6 +43,10 @@ export async function loadProfilePropertyRule(
     extractNonNullParts(configObject, "options")
   );
 
+  if (configObject.filters) {
+    await profilePropertyRule.setFilters(configObject.filters);
+  }
+
   await profilePropertyRule.update({ state: "ready" });
   logModel(profilePropertyRule, isNew);
   return profilePropertyRule;

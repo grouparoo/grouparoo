@@ -1,5 +1,6 @@
 import { log } from "actionhero";
 import { GroupRuleWithKey } from "../models/Group";
+import { ProfilePropertyRuleFiltersWithKey } from "../models/ProfilePropertyRule";
 
 export interface ConfigurationObject {
   id: string;
@@ -12,6 +13,7 @@ export interface ConfigurationObject {
   teamId?: string;
   email?: string;
   options?: { [key: string]: any };
+  filters?: ProfilePropertyRuleFiltersWithKey[];
   identifying?: boolean;
   unique?: boolean;
   isArray?: boolean;
