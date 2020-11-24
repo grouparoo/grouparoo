@@ -4,6 +4,7 @@ import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
 import { Source } from "./../models/Source";
 import { Destination } from "./../models/Destination";
 import { Transaction } from "sequelize";
+import { LockableHelper } from "./lockableHelper";
 
 export namespace MappingHelper {
   export interface Mappings {
@@ -39,6 +40,8 @@ export namespace MappingHelper {
     });
 
     try {
+      await LockableHelper.beforeUpdateOptions(instance);
+
       await Mapping.destroy({
         where: { ownerGuid: instance.guid },
         transaction,

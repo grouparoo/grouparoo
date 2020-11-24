@@ -7,7 +7,6 @@ import {
   Default,
   BeforeSave,
   BeforeDestroy,
-  AfterSave,
   AfterDestroy,
   ForeignKey,
   BelongsTo,
@@ -17,7 +16,7 @@ import {
   BeforeUpdate,
   BeforeCreate,
 } from "sequelize-typescript";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import { env, api, config } from "actionhero";
 import { plugin } from "../modules/plugin";
 import { LoggedModel } from "../classes/loggedModel";
@@ -34,6 +33,7 @@ import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { Mapping } from "./Mapping";
 import { ProfilePropertyRuleOps } from "../modules/ops/profilePropertyRule";
+import { LockableHelper } from "../modules/lockableHelper";
 
 export function profilePropertyRuleJSToSQLType(jsType: string) {
   const map = {
@@ -152,6 +152,11 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @AllowNull(false)
   @Default(false)
   @Column
+  locked: boolean;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
   identifying: boolean;
 
   @AllowNull(false)
@@ -215,8 +220,8 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     return OptionHelper.setOptions(this, options);
   }
 
-  async afterSetOptions() {
-    return ProfilePropertyRuleOps.enqueueRuns(this);
+  async afterSetOptions(hasChanges: boolean) {
+    if (hasChanges) await ProfilePropertyRuleOps.enqueueRuns(this);
   }
 
   async validateOptions(
@@ -278,6 +283,12 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
 
   async setFilters(filters: ProfilePropertyRuleFiltersWithKey[]) {
     await this.validateFilters(filters);
+    const existingFilters = await this.getFilters();
+    const filtersAreEqual = await ProfilePropertyRuleOps.filtersAreEqual(
+      filters,
+      existingFilters
+    );
+    if (filtersAreEqual) return;
 
     await ProfilePropertyRuleFilter.destroy({
       where: {
@@ -345,6 +356,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
       unique: this.unique,
       identifying: this.identifying,
       directlyMapped: this.directlyMapped,
+      locked: this.locked,
       options,
       filters,
       isArray: this.isArray,
@@ -464,6 +476,11 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     }
   }
 
+  @BeforeSave
+  static async noUpdateIfLocked(instance) {
+    await LockableHelper.beforeSave(instance, ["state", "directlyMapped"]);
+  }
+
   @BeforeDestroy
   static async ensureNotInUse(instance: ProfilePropertyRule) {
     const groupRule = await GroupRule.findOne({
@@ -487,8 +504,16 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     }
   }
 
+  @BeforeDestroy
+  static async noDestroyIfLocked(instance) {
+    await LockableHelper.beforeDestroy(instance);
+  }
+
   @AfterDestroy
-  static async destroyOptions(instance: ProfilePropertyRule, { transaction }) {
+  static async destroyOptions(
+    instance: ProfilePropertyRule,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
     await Option.destroy({
       where: { ownerGuid: instance.guid },
       transaction,
@@ -496,7 +521,10 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   }
 
   @AfterDestroy
-  static async stopRuns(instance: ProfilePropertyRule, { transaction }) {
+  static async stopRuns(
+    instance: ProfilePropertyRule,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
     const runs = await Run.findAll({
       where: { creatorGuid: instance.guid, state: "running" },
       transaction,
@@ -510,7 +538,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @AfterDestroy
   static async destroyProfilePropertyRuleFilters(
     instance: ProfilePropertyRule,
-    { transaction }
+    { transaction }: { transaction?: Transaction } = {}
   ) {
     await ProfilePropertyRuleFilter.destroy({
       where: { profilePropertyRuleGuid: instance.guid },
@@ -521,7 +549,7 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @AfterDestroy
   static async destroyProfileProperties(
     instance: ProfilePropertyRule,
-    { transaction }
+    { transaction }: { transaction?: Transaction } = {}
   ) {
     await ProfileProperty.destroy({
       where: { profilePropertyRuleGuid: instance.guid },

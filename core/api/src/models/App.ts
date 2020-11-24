@@ -21,6 +21,7 @@ import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { Destination } from "./Destination";
 import { AppOps } from "../modules/ops/app";
+import { LockableHelper } from "../modules/lockableHelper";
 
 export interface AppOption {
   key: string;
@@ -57,6 +58,11 @@ export class App extends LoggedModel<App> {
   type: string;
 
   @AllowNull(false)
+  @Default(false)
+  @Column
+  locked: boolean;
+
+  @AllowNull(false)
   @Default("draft")
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
@@ -81,8 +87,8 @@ export class App extends LoggedModel<App> {
     return OptionHelper.setOptions(this, options);
   }
 
-  async afterSetOptions() {
-    await redis.doCluster("api.rpc.app.disconnect");
+  async afterSetOptions(hasChanges: boolean) {
+    if (hasChanges) await redis.doCluster("api.rpc.app.disconnect");
   }
 
   async validateOptions(options?: SimpleAppOptions) {
@@ -159,6 +165,7 @@ export class App extends LoggedModel<App> {
       icon,
       type: this.type,
       state: this.state,
+      locked: this.locked,
       options,
       provides,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
@@ -242,6 +249,16 @@ export class App extends LoggedModel<App> {
   @BeforeSave
   static async updateState(instance: App) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
+
+  @BeforeSave
+  static async noUpdateIfLocked(instance) {
+    await LockableHelper.beforeSave(instance, ["state"]);
+  }
+
+  @BeforeDestroy
+  static async noDestroyIfLocked(instance) {
+    await LockableHelper.beforeDestroy(instance);
   }
 
   @BeforeDestroy

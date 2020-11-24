@@ -15,6 +15,7 @@ import {
   AfterDestroy,
   DataType,
   DefaultScope,
+  BeforeDestroy,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
@@ -25,6 +26,7 @@ import { Option } from "./Option";
 import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { ScheduleOps } from "../modules/ops/schedule";
+import { LockableHelper } from "../modules/lockableHelper";
 
 /**
  * Metadata and methods to return the options a Schedule for this connection/app.
@@ -88,6 +90,11 @@ export class Schedule extends LoggedModel<Schedule> {
   @AllowNull(false)
   @Default(false)
   @Column
+  locked: boolean;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
   recurring: boolean;
 
   @Column
@@ -106,7 +113,7 @@ export class Schedule extends LoggedModel<Schedule> {
   async setOptions(options: SimpleScheduleOptions) {
     const existingOptions = await this.getOptions();
     for (const key in options) {
-      if (existingOptions[key]) {
+      if (existingOptions[key] && existingOptions[key] !== options[key]) {
         throw new Error(
           `schedule already has option set for ${key}, cannot update`
         );
@@ -145,6 +152,7 @@ export class Schedule extends LoggedModel<Schedule> {
       state: this.state,
       sourceGuid: this.sourceGuid,
       recurring: this.recurring,
+      locked: this.locked,
       options,
       recurringFrequency: this.recurringFrequency,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
@@ -199,6 +207,11 @@ export class Schedule extends LoggedModel<Schedule> {
     }
   }
 
+  @BeforeSave
+  static async noUpdateIfLocked(instance) {
+    await LockableHelper.beforeSave(instance, ["state"]);
+  }
+
   @BeforeUpdate
   static async checkRecurringFrequency(instance: Schedule) {
     // we cannot use the @Min validator as null is also allowed
@@ -220,18 +233,6 @@ export class Schedule extends LoggedModel<Schedule> {
       const source = await Source.findByGuid(instance.sourceGuid);
       instance.name = `${source.name} schedule`;
     }
-  }
-
-  @BeforeSave
-  static async ensureUniqueName(instance: Schedule) {
-    const count = await Schedule.scope(null).count({
-      where: {
-        guid: { [Op.ne]: instance.guid },
-        name: instance.name,
-        state: { [Op.ne]: "draft" },
-      },
-    });
-    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
 
   @BeforeCreate
@@ -260,8 +261,25 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   @BeforeSave
+  static async ensureUniqueName(instance: Schedule) {
+    const count = await Schedule.scope(null).count({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        name: instance.name,
+        state: { [Op.ne]: "draft" },
+      },
+    });
+    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
+  }
+
+  @BeforeSave
   static async updateState(instance: Schedule) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
+
+  @BeforeDestroy
+  static async noDestroyIfLocked(instance) {
+    await LockableHelper.beforeDestroy(instance);
   }
 
   @AfterDestroy

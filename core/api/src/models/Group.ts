@@ -33,6 +33,7 @@ import {
 import { ProfilePropertyRuleOpsDictionary } from "../modules/RuleOpsDictionary";
 import { StateMachine } from "./../modules/stateMachine";
 import { GroupOps } from "../modules/ops/group";
+import { LockableHelper } from "../modules/lockableHelper";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -127,6 +128,11 @@ export class Group extends LoggedModel<Group> {
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  locked: boolean;
+
   @Column
   calculatedAt: Date;
 
@@ -202,6 +208,10 @@ export class Group extends LoggedModel<Group> {
 
     const topLevelRuleKeys = TopLevelGroupRules.map((tlr) => tlr.key);
 
+    const existingRules = await this.getRules();
+    const rulesAreEqual = GroupOps.rulesAreEqual(existingRules, rules);
+    if (rulesAreEqual) return;
+
     const transaction = await api.sequelize.transaction({
       lock: Transaction.LOCK.UPDATE,
     });
@@ -270,6 +280,7 @@ export class Group extends LoggedModel<Group> {
       rules,
       matchType: this.matchType,
       state: this.state,
+      locked: this.locked,
       profilesCount,
       calculatedAt: this.calculatedAt ? this.calculatedAt.getTime() : null,
       nextCalculatedAt: nextCalculatedAt ? nextCalculatedAt.getTime() : null,
@@ -639,6 +650,11 @@ export class Group extends LoggedModel<Group> {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
+  @BeforeSave
+  static async noUpdateIfLocked(instance) {
+    await LockableHelper.beforeSave(instance, ["state", "calculatedAt"]);
+  }
+
   @BeforeDestroy
   static async checkGroupMembers(instance: Group, { transaction }) {
     const count = await instance.$count("groupMembers", { transaction });
@@ -658,6 +674,11 @@ export class Group extends LoggedModel<Group> {
         `this group still in use by ${count} destinations, cannot delete`
       );
     }
+  }
+
+  @BeforeDestroy
+  static async noDestroyIfLocked(instance) {
+    await LockableHelper.beforeDestroy(instance);
   }
 
   @AfterDestroy

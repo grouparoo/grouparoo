@@ -84,57 +84,59 @@ export default function Page(props) {
       <TeamTabs team={team} />
 
       <Form id="form" onSubmit={updateTeam} autoComplete="off">
-        <Form.Group>
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            required
-            type="text"
-            placeholder="Team Name"
-            value={team.name}
-            disabled={loading}
-            onChange={(event) => {
-              const _team = Object.assign({}, team);
-              _team.name = event.target.value;
-              setTeam(_team);
-            }}
-          />
-          <Form.Control.Feedback type="invalid">
-            Name is required
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <h3>Permissions</h3>
-        <PermissionsList
-          permissions={team.permissions}
-          permissionAllRead={team.permissionAllRead}
-          permissionAllWrite={team.permissionAllWrite}
-          updatePermission={updatePermission}
-          updatePermissionAll={updatePermissionAll}
-        />
-
-        <hr />
-
-        {team.locked ? null : (
-          <>
-            <LoadingButton disabled={loading} variant="primary" type="submit">
-              Update
-            </LoadingButton>
-
-            <br />
-            <br />
-
-            <LoadingButton
+        <fieldset disabled={team.locked}>
+          <Form.Group>
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              required
+              type="text"
+              placeholder="Team Name"
+              value={team.name}
               disabled={loading}
-              variant="danger"
-              size="sm"
-              onClick={() => {
-                handleDelete();
+              onChange={(event) => {
+                const _team = Object.assign({}, team);
+                _team.name = event.target.value;
+                setTeam(_team);
               }}
-            >
-              Delete
-            </LoadingButton>
-          </>
-        )}
+            />
+            <Form.Control.Feedback type="invalid">
+              Name is required
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <h3>Permissions</h3>
+          <PermissionsList
+            permissions={team.permissions}
+            permissionAllRead={team.permissionAllRead}
+            permissionAllWrite={team.permissionAllWrite}
+            updatePermission={updatePermission}
+            updatePermissionAll={updatePermissionAll}
+          />
+
+          <hr />
+
+          {team.locked ? null : (
+            <>
+              <LoadingButton disabled={loading} variant="primary" type="submit">
+                Update
+              </LoadingButton>
+
+              <br />
+              <br />
+
+              <LoadingButton
+                disabled={loading}
+                variant="danger"
+                size="sm"
+                onClick={() => {
+                  handleDelete();
+                }}
+              >
+                Delete
+              </LoadingButton>
+            </>
+          )}
+        </fieldset>
       </Form>
     </>
   );

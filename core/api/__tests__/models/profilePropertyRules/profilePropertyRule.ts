@@ -7,6 +7,7 @@ import { Source } from "../../../src/models/Source";
 import { Option } from "../../../src/models/Option";
 import { plugin } from "../../../src/modules/plugin";
 import { ProfilePropertyRuleFilter } from "../../../src/models/ProfilePropertyRuleFilter";
+import { ProfilePropertyRuleOps } from "../../../src/modules/ops/profilePropertyRule";
 
 let actionhero;
 
@@ -534,6 +535,36 @@ describe("models/profilePropertyRule", () => {
     });
 
     describe("filters", () => {
+      test("we can determine if rule's filters have been changed", async () => {
+        const rule = await ProfilePropertyRule.create({
+          key: "test",
+          type: "string",
+          sourceGuid: source.guid,
+        });
+
+        await rule.setFilters([{ key: "id", match: "0", op: "greater than" }]);
+        const filters = await rule.getFilters();
+
+        expect(ProfilePropertyRuleOps.filtersAreEqual(filters, [])).toBe(false);
+        expect(
+          ProfilePropertyRuleOps.filtersAreEqual(filters, [
+            { key: "id", match: "0", op: "greater than" },
+          ])
+        ).toBe(true);
+        expect(
+          ProfilePropertyRuleOps.filtersAreEqual(filters, [
+            { key: "id", match: "1", op: "greater than" },
+          ])
+        ).toBe(false);
+        expect(
+          ProfilePropertyRuleOps.filtersAreEqual(filters, [
+            { key: "id", match: "0", op: "less than" },
+          ])
+        ).toBe(false);
+
+        await rule.destroy();
+      });
+
       test("it can get the filter options from the plugin", async () => {
         const rule = await ProfilePropertyRule.create({
           key: "test",

@@ -11,6 +11,7 @@ newrelic_agent.log
 coverage
 *.sqlite
 *.sqlite-journal
+apps/*/config/*
 
 # API
 log

@@ -5,7 +5,6 @@ import { Profile } from "../../../src/models/Profile";
 import { Group } from "../../../src/models/Group";
 import { Import } from "../../../src/models/Import";
 import { GroupMember } from "../../../src/models/GroupMember";
-import { plugin } from "../../../src";
 
 let actionhero;
 

@@ -42,7 +42,7 @@ export class Plugins extends Initializer {
     }
   }
 
-  async start() {
+  async initialize() {
     const coreSettings: SettingsListItem[] = [
       {
         key: "cluster-name",

@@ -133,256 +133,260 @@ export default function Page(props) {
       </p>
 
       <Form id="form" onSubmit={edit} autoComplete="off">
-        <Row>
-          <Col md={1} style={{ textAlign: "center" }}>
-            <br />
-            <AppIcon src={app.icon} fluid size={100} />
-            <br />
-            <br />
-            {app.provides.source ? (
-              <Badge variant="primary">source</Badge>
-            ) : null}
-            <br />
-            {app.provides.destination ? (
-              <Badge variant="info">destination</Badge>
-            ) : null}
-          </Col>
+        <fieldset disabled={app.locked}>
+          <Row>
+            <Col md={1} style={{ textAlign: "center" }}>
+              <br />
+              <AppIcon src={app.icon} fluid size={100} />
+              <br />
+              <br />
+              {app.provides.source ? (
+                <Badge variant="primary">source</Badge>
+              ) : null}
+              <br />
+              {app.provides.destination ? (
+                <Badge variant="info">destination</Badge>
+              ) : null}
+            </Col>
 
-          <Col>
-            <Form.Group controlId="name">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                placeholder="Name"
-                value={app.name}
-                disabled={loading}
-                onChange={(e) => update(e)}
-              />
-              <Form.Control.Feedback type="invalid">
-                Name is required
-              </Form.Control.Feedback>
-            </Form.Group>
+            <Col>
+              <Form.Group controlId="name">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  placeholder="Name"
+                  value={app.name}
+                  disabled={loading}
+                  onChange={(e) => update(e)}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Name is required
+                </Form.Control.Feedback>
+              </Form.Group>
 
-            <Form.Group controlId="type">
-              <Form.Label>Type</Form.Label>
-              <Form.Control
-                as="select"
-                value={app.type}
-                onChange={(e) => update(e)}
-                disabled
-              >
-                {types.map((type) => (
-                  <option key={`type-${type.name}`}>{type.name}</option>
-                ))}
-              </Form.Control>
-            </Form.Group>
+              <Form.Group controlId="type">
+                <Form.Label>Type</Form.Label>
+                <Form.Control
+                  as="select"
+                  value={app.type}
+                  onChange={(e) => update(e)}
+                  disabled
+                >
+                  {types.map((type) => (
+                    <option key={`type-${type.name}`}>{type.name}</option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
 
-            <p>
-              <StateBadge state={app.state} />
-            </p>
+              <p>
+                <StateBadge state={app.state} />
+              </p>
 
-            {typeOptions.length > 0 ? (
-              <>
-                <hr />
-                <strong>Options for a {app.type} app</strong>
-                <br />
-                <br />
+              {typeOptions.length > 0 ? (
+                <>
+                  <hr />
+                  <strong>Options for a {app.type} app</strong>
+                  <br />
+                  <br />
 
-                {typeOptions.map((opt) => {
-                  return (
-                    <Form.Group key={`opt-${opt.key}`} controlId={opt.key}>
-                      <Form.Label>
-                        {opt.required ? (
-                          <>
-                            <Badge variant="info">required</Badge>&nbsp;
-                          </>
-                        ) : null}
-                        <code>{opt.displayName || opt.key}</code>
-                      </Form.Label>
-                      {(() => {
-                        if (optionOptions[opt.key]?.type === "typeahead") {
-                          return (
+                  {typeOptions.map((opt) => {
+                    return (
+                      <Form.Group key={`opt-${opt.key}`} controlId={opt.key}>
+                        <Form.Label>
+                          {opt.required ? (
                             <>
-                              <Typeahead
-                                id="typeahead"
-                                labelKey="key"
-                                disabled={loading}
-                                onChange={(selected) => {
-                                  updateOption(opt.key, selected[0]?.key);
-                                }}
-                                options={optionOptions[opt.key]?.options.map(
-                                  (k, idx) => {
-                                    return {
-                                      key: k,
-                                      descriptions:
-                                        optionOptions[k]?.descriptions[idx],
-                                    };
+                              <Badge variant="info">required</Badge>&nbsp;
+                            </>
+                          ) : null}
+                          <code>{opt.displayName || opt.key}</code>
+                        </Form.Label>
+                        {(() => {
+                          if (optionOptions[opt.key]?.type === "typeahead") {
+                            return (
+                              <>
+                                <Typeahead
+                                  id="typeahead"
+                                  labelKey="key"
+                                  disabled={loading}
+                                  onChange={(selected) => {
+                                    updateOption(opt.key, selected[0]?.key);
+                                  }}
+                                  options={optionOptions[opt.key]?.options.map(
+                                    (k, idx) => {
+                                      return {
+                                        key: k,
+                                        descriptions:
+                                          optionOptions[k]?.descriptions[idx],
+                                      };
+                                    }
+                                  )}
+                                  placeholder={
+                                    opt.placeholder || `Select ${opt.key}`
                                   }
-                                )}
-                                placeholder={
-                                  opt.placeholder || `Select ${opt.key}`
-                                }
-                                renderMenuItemChildren={(opt, props, idx) => {
-                                  return [
-                                    <span key={`opt-${idx}-key`}>
-                                      {opt.key}
-                                      <br />
-                                    </span>,
-                                    <small
-                                      key={`opt-${idx}-descriptions`}
-                                      className="text-small"
-                                    >
-                                      <em>
-                                        Descriptions:{" "}
-                                        {opt.descriptions
-                                          ? opt.descriptions.join(", ")
-                                          : "None"}
-                                      </em>
-                                    </small>,
-                                  ];
-                                }}
-                                defaultSelected={
-                                  app.options[opt.key]
-                                    ? [app.options[opt.key]]
-                                    : undefined
-                                }
-                              />
-                              <Form.Text className="text-muted">
-                                {opt.description}
-                              </Form.Text>
-                            </>
-                          );
-                        } else if (optionOptions[opt.key]?.type === "list") {
-                          return (
-                            <>
-                              <Form.Control
-                                as="select"
-                                required={opt.required}
-                                defaultValue={app.options[opt.key] || ""}
-                                disabled={loading}
-                                onChange={(e) => {
-                                  updateOption(e.target.id, e.target.value);
-                                }}
-                              >
-                                <option value={""} disabled>
-                                  Select an option
-                                </option>
-                                {optionOptions[opt.key].options.map(
-                                  (o, idx) => (
-                                    <option
-                                      key={`opt~${opt.key}-${o}`}
-                                      value={o}
-                                    >
-                                      {o}{" "}
-                                      {optionOptions[opt.key]?.descriptions &&
-                                      optionOptions[opt.key]?.descriptions[idx]
-                                        ? ` | ${
-                                            optionOptions[opt.key]
-                                              ?.descriptions[idx]
-                                          }`
-                                        : null}
-                                    </option>
-                                  )
-                                )}
-                              </Form.Control>
-                              <Form.Text className="text-muted">
-                                {opt.description}
-                              </Form.Text>
-                            </>
-                          );
-                        } else {
-                          return (
-                            <>
-                              <Form.Control
-                                required={opt.required}
-                                type="text"
-                                disabled={loading}
-                                defaultValue={app.options[opt.key]}
-                                placeholder={opt.placeholder}
-                                onChange={(e) => {
-                                  updateOption(e.target.id, e.target.value);
-                                }}
-                              />
-                              <Form.Text className="text-muted">
-                                {opt.description}
-                              </Form.Text>
-                            </>
-                          );
-                        }
-                      })()}
-                    </Form.Group>
-                  );
-                })}
-              </>
-            ) : null}
+                                  renderMenuItemChildren={(opt, props, idx) => {
+                                    return [
+                                      <span key={`opt-${idx}-key`}>
+                                        {opt.key}
+                                        <br />
+                                      </span>,
+                                      <small
+                                        key={`opt-${idx}-descriptions`}
+                                        className="text-small"
+                                      >
+                                        <em>
+                                          Descriptions:{" "}
+                                          {opt.descriptions
+                                            ? opt.descriptions.join(", ")
+                                            : "None"}
+                                        </em>
+                                      </small>,
+                                    ];
+                                  }}
+                                  defaultSelected={
+                                    app.options[opt.key]
+                                      ? [app.options[opt.key]]
+                                      : undefined
+                                  }
+                                />
+                                <Form.Text className="text-muted">
+                                  {opt.description}
+                                </Form.Text>
+                              </>
+                            );
+                          } else if (optionOptions[opt.key]?.type === "list") {
+                            return (
+                              <>
+                                <Form.Control
+                                  as="select"
+                                  required={opt.required}
+                                  defaultValue={app.options[opt.key] || ""}
+                                  disabled={loading}
+                                  onChange={(e) => {
+                                    updateOption(e.target.id, e.target.value);
+                                  }}
+                                >
+                                  <option value={""} disabled>
+                                    Select an option
+                                  </option>
+                                  {optionOptions[opt.key].options.map(
+                                    (o, idx) => (
+                                      <option
+                                        key={`opt~${opt.key}-${o}`}
+                                        value={o}
+                                      >
+                                        {o}{" "}
+                                        {optionOptions[opt.key]?.descriptions &&
+                                        optionOptions[opt.key]?.descriptions[
+                                          idx
+                                        ]
+                                          ? ` | ${
+                                              optionOptions[opt.key]
+                                                ?.descriptions[idx]
+                                            }`
+                                          : null}
+                                      </option>
+                                    )
+                                  )}
+                                </Form.Control>
+                                <Form.Text className="text-muted">
+                                  {opt.description}
+                                </Form.Text>
+                              </>
+                            );
+                          } else {
+                            return (
+                              <>
+                                <Form.Control
+                                  required={opt.required}
+                                  type="text"
+                                  disabled={loading}
+                                  defaultValue={app.options[opt.key]}
+                                  placeholder={opt.placeholder}
+                                  onChange={(e) => {
+                                    updateOption(e.target.id, e.target.value);
+                                  }}
+                                />
+                                <Form.Text className="text-muted">
+                                  {opt.description}
+                                </Form.Text>
+                              </>
+                            );
+                          }
+                        })()}
+                      </Form.Group>
+                    );
+                  })}
+                </>
+              ) : null}
 
-            {environmentVariableOptions.length > 0 ? (
+              {environmentVariableOptions.length > 0 ? (
+                <Row>
+                  <Col>
+                    <p>
+                      Environment Variable Options for Apps:{" "}
+                      {environmentVariableOptions.sort().map((envOpt) => (
+                        <Badge key={`envOpt-${envOpt}`} variant="info">
+                          {envOpt}
+                        </Badge>
+                      ))}
+                    </p>
+                    <br />
+                  </Col>
+                </Row>
+              ) : null}
+
               <Row>
                 <Col>
-                  <p>
-                    Environment Variable Options for Apps:{" "}
-                    {environmentVariableOptions.sort().map((envOpt) => (
-                      <Badge key={`envOpt-${envOpt}`} variant="info">
-                        {envOpt}
-                      </Badge>
-                    ))}
-                  </p>
-                  <br />
+                  <LoadingButton
+                    variant="outline-secondary"
+                    size="sm"
+                    onClick={test}
+                    disabled={testLoading}
+                  >
+                    Test Connection
+                  </LoadingButton>
                 </Col>
               </Row>
-            ) : null}
+              <br />
+              <Row>
+                <Col>
+                  {testResult.success !== null &&
+                  testResult.success !== false &&
+                  testResult.success !== undefined &&
+                  !testResult.error ? (
+                    <Alert variant="success">
+                      <strong>Test Passed</strong> {testResult.message}
+                    </Alert>
+                  ) : ranTest ? (
+                    <Alert variant="warning">
+                      <strong>Test Failed</strong> {testResult.error}
+                    </Alert>
+                  ) : null}
+                  {loading ? <Loader /> : null}
+                </Col>
+              </Row>
 
-            <Row>
-              <Col>
-                <LoadingButton
-                  variant="outline-secondary"
-                  size="sm"
-                  onClick={test}
-                  disabled={testLoading}
-                >
-                  Test Connection
-                </LoadingButton>
-              </Col>
-            </Row>
-            <br />
-            <Row>
-              <Col>
-                {testResult.success !== null &&
-                testResult.success !== false &&
-                testResult.success !== undefined &&
-                !testResult.error ? (
-                  <Alert variant="success">
-                    <strong>Test Passed</strong> {testResult.message}
-                  </Alert>
-                ) : ranTest ? (
-                  <Alert variant="warning">
-                    <strong>Test Failed</strong> {testResult.error}
-                  </Alert>
-                ) : null}
-                {loading ? <Loader /> : null}
-              </Col>
-            </Row>
+              <hr />
 
-            <hr />
+              <LoadingButton variant="primary" type="submit" disabled={loading}>
+                Update
+              </LoadingButton>
 
-            <LoadingButton variant="primary" type="submit" disabled={loading}>
-              Update
-            </LoadingButton>
+              <br />
+              <br />
 
-            <br />
-            <br />
-
-            <LoadingButton
-              variant="danger"
-              size="sm"
-              onClick={handleDelete}
-              disabled={loading}
-            >
-              Delete
-            </LoadingButton>
-          </Col>
-        </Row>
+              <LoadingButton
+                variant="danger"
+                size="sm"
+                onClick={handleDelete}
+                disabled={loading}
+              >
+                Delete
+              </LoadingButton>
+            </Col>
+          </Row>
+        </fieldset>
       </Form>
     </>
   );

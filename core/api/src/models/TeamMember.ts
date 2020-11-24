@@ -8,10 +8,13 @@ import {
   ForeignKey,
   IsLowercase,
   BeforeValidate,
+  Default,
+  BeforeDestroy,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { Team } from "./Team";
 import { TeamMemberOps } from "../modules/ops/teamMember";
+import { LockableHelper } from "../modules/lockableHelper";
 
 @Table({ tableName: "teamMembers", paranoid: false })
 export class TeamMember extends LoggedModel<TeamMember> {
@@ -23,6 +26,11 @@ export class TeamMember extends LoggedModel<TeamMember> {
   @Column
   @ForeignKey(() => Team)
   teamGuid: string;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  locked: boolean;
 
   @AllowNull(false)
   @Column
@@ -54,6 +62,7 @@ export class TeamMember extends LoggedModel<TeamMember> {
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,
+      locked: this.locked,
       lastLoginAt: this.lastLoginAt,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
@@ -85,5 +94,15 @@ export class TeamMember extends LoggedModel<TeamMember> {
   @BeforeValidate
   static lowercaseEmail(instance: TeamMember) {
     if (instance.email) instance.email = instance.email.toLocaleLowerCase();
+  }
+
+  @BeforeSave
+  static async noUpdateIfLocked(instance) {
+    await LockableHelper.beforeSave(instance, ["lastLoginAt"]);
+  }
+
+  @BeforeDestroy
+  static async noDestroyIfLocked(instance) {
+    await LockableHelper.beforeDestroy(instance);
   }
 }

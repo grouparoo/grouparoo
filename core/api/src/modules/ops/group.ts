@@ -429,4 +429,42 @@ export namespace GroupOps {
 
     return groupMembersCount;
   }
+
+  /**
+   * Determine if these Group Rules are equal
+   */
+  export function rulesAreEqual(
+    oldRules: GroupRuleWithKey[],
+    newRules: GroupRuleWithKey[]
+  ) {
+    if (oldRules.length !== newRules.length) return false;
+
+    function nullish(value: string | number | boolean) {
+      if (value === null) return null;
+      if (value === undefined) return null;
+      if (value === "null") return null;
+      return value.toString();
+    }
+
+    for (const i in oldRules) {
+      const A = oldRules[i];
+      const B = newRules[i];
+      if (A.key !== B.key) return false;
+      if (A.operation?.op !== B.operation?.op) return false;
+      if (nullish(A.match) !== nullish(B.match)) return false;
+      if (nullish(A.relativeMatchNumber) !== nullish(B.relativeMatchNumber)) {
+        return false;
+      }
+      if (nullish(A.relativeMatchUnit) !== nullish(B.relativeMatchUnit)) {
+        return false;
+      }
+      if (
+        nullish(A.relativeMatchDirection) !== nullish(B.relativeMatchDirection)
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 }
