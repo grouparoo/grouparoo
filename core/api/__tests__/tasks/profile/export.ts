@@ -144,8 +144,8 @@ describe("tasks/profile:export", () => {
 
       beforeEach(async () => {
         await api.resque.queue.connection.redis.flushdb();
-        await Import.destroy({ truncate: true });
-        await Export.destroy({ truncate: true });
+        await Import.truncate();
+        await Export.truncate();
       });
 
       it("updates the run and imports", async () => {

@@ -221,7 +221,7 @@ describe("models/run", () => {
     let profile: Profile;
 
     beforeEach(async () => {
-      Import.destroy({ truncate: true });
+      Import.truncate();
 
       profile = await helper.factories.profile();
 
@@ -311,7 +311,7 @@ describe("models/run", () => {
     let run: Run;
 
     beforeAll(async () => {
-      Import.destroy({ truncate: true });
+      Import.truncate();
 
       run = await Run.create({
         creatorGuid: schedule.guid,

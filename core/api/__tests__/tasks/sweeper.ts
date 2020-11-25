@@ -22,7 +22,7 @@ describe("tasks/sweeper", () => {
   describe("sweeper", () => {
     beforeAll(async () => {
       await helper.factories.profilePropertyRules();
-      await Log.destroy({ truncate: true });
+      await Log.truncate();
     });
 
     test("settings are loaded at boot", async () => {

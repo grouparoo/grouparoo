@@ -103,7 +103,7 @@ describe("models/app", () => {
   });
 
   test("the app options will not be logged", async () => {
-    await Log.destroy({ truncate: true });
+    await Log.truncate();
 
     const app = await App.create({
       name: "test log app",

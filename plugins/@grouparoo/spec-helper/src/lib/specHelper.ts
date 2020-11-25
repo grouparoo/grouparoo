@@ -146,7 +146,7 @@ export namespace helper {
             },
           });
         } else {
-          return model.destroy({ truncate: true, force: true });
+          return model.truncate();
         }
       })
     );

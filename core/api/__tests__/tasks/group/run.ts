@@ -27,7 +27,7 @@ describe("tasks/group:run", () => {
 
     beforeEach(async () => {
       await api.resque.queue.connection.redis.flushdb();
-      await Import.destroy({ truncate: true });
+      await Import.truncate();
     });
 
     beforeAll(async () => {
@@ -39,7 +39,7 @@ describe("tasks/group:run", () => {
         type: "calculated",
       });
 
-      await Profile.destroy({ truncate: true });
+      await Profile.truncate();
 
       mario = await Profile.create();
       luigi = await Profile.create();

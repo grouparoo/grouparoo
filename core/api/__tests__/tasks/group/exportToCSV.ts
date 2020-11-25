@@ -26,14 +26,14 @@ describe("tasks/group:exportToCSV", () => {
 
     beforeEach(async () => {
       await api.resque.queue.connection.redis.flushdb();
-      await Import.destroy({ truncate: true });
+      await Import.truncate();
     });
 
     beforeAll(async () => {
       await helper.factories.profilePropertyRules();
       helper.disableTestPluginImport();
 
-      await Profile.destroy({ truncate: true });
+      await Profile.truncate();
 
       mario = await Profile.create();
       luigi = await Profile.create();

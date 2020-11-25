@@ -11,7 +11,7 @@ describe("modules/internalRun", () => {
     actionhero = env.actionhero;
     await helper.factories.profilePropertyRules();
     await api.resque.queue.connection.redis.flushdb();
-    await Run.destroy({ truncate: true });
+    await Run.truncate();
   }, helper.setupTime);
 
   afterAll(async () => {

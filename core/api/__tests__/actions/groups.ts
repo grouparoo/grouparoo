@@ -227,7 +227,7 @@ describe("actions/groups", () => {
       });
 
       beforeAll(async () => {
-        await Profile.destroy({ truncate: true });
+        await Profile.truncate();
 
         mario = await Profile.create();
         luigi = await Profile.create();

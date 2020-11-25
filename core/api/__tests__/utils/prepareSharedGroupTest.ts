@@ -24,7 +24,7 @@ export namespace SharedGroupTests {
       actionhero = env.actionhero;
     }
 
-    await Profile.destroy({ truncate: true });
+    await Profile.truncate();
     await helper.factories.profilePropertyRules();
     helper.disableTestPluginImport();
 
@@ -111,6 +111,6 @@ export namespace SharedGroupTests {
     await Promise.all(members.map((m) => m.destroy()));
     await group.destroy();
     await run.destroy();
-    await Import.destroy({ truncate: true });
+    await Import.truncate();
   }
 }

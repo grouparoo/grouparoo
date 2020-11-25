@@ -25,7 +25,7 @@ describe("actions/profilePropertyRules", () => {
       email: "mario@example.com",
     });
 
-    await ProfilePropertyRule.destroy({ truncate: true });
+    await ProfilePropertyRule.truncate();
 
     source = await helper.factories.source();
     await source.setOptions({ table: "test table" });

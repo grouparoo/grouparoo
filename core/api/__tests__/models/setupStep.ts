@@ -59,7 +59,7 @@ describe("models/setupStep", () => {
   });
 
   test("complete checks will remain complete and not check again", async () => {
-    await Team.destroy({ truncate: true });
+    await Team.truncate();
 
     const teamStep = await SetupStep.findOne({
       where: { key: "create_a_team" },

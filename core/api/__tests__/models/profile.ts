@@ -69,7 +69,7 @@ describe("models/profile", () => {
     let houseRule: ProfilePropertyRule;
 
     beforeAll(async () => {
-      await Profile.destroy({ truncate: true });
+      await Profile.truncate();
 
       source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
@@ -219,7 +219,7 @@ describe("models/profile", () => {
   describe("profile property helpers", () => {
     let profile: Profile;
     beforeAll(async () => {
-      await Profile.destroy({ truncate: true });
+      await Profile.truncate();
     });
 
     test("it cannot add a profile property that is not defined", async () => {
@@ -285,7 +285,7 @@ describe("models/profile", () => {
 
       afterAll(async () => {
         await source.setMapping({});
-        await ProfilePropertyRule.destroy({ truncate: true });
+        await ProfilePropertyRule.truncate();
         await source.destroy();
       });
 
@@ -800,7 +800,7 @@ describe("models/profile", () => {
       await Promise.all(members.map((m) => m.destroy()));
       await group.destroy();
       await source.setMapping({});
-      await ProfilePropertyRule.destroy({ truncate: true });
+      await ProfilePropertyRule.truncate();
       await source.destroy();
       await app.destroy();
     });
@@ -904,9 +904,9 @@ describe("models/profile", () => {
     });
 
     afterAll(async () => {
-      await ProfilePropertyRule.destroy({ truncate: true });
-      await Source.destroy({ truncate: true });
-      await App.destroy({ truncate: true });
+      await ProfilePropertyRule.truncate();
+      await Source.truncate();
+      await App.truncate();
     });
 
     test("it can pull profile properties in from all connected apps", async () => {
@@ -1017,7 +1017,7 @@ describe("models/profile", () => {
     let profileB: Profile;
 
     beforeAll(async () => {
-      await Profile.destroy({ truncate: true });
+      await Profile.truncate();
       await helper.factories.profilePropertyRules();
 
       // create the profiles and events
@@ -1060,9 +1060,9 @@ describe("models/profile", () => {
     });
 
     afterAll(async () => {
-      await ProfilePropertyRule.destroy({ truncate: true });
-      await Source.destroy({ truncate: true });
-      await App.destroy({ truncate: true });
+      await ProfilePropertyRule.truncate();
+      await Source.truncate();
+      await App.truncate();
     });
 
     test("the profiles both have properties and events", async () => {
