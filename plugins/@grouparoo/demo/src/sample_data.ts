@@ -7,7 +7,7 @@ import {
   ensureBootstrapPropertyRule,
   RuleDefinition,
 } from "./util/propertyRules";
-import { App, Source, Schedule, Run } from "@grouparoo/core";
+import { App, Source, Schedule, Run, SimpleAppOptions } from "@grouparoo/core";
 
 export const SCHEMA_NAME = "demo";
 export const USER_ID_PROPERTY_NAME = "userId";
@@ -259,18 +259,23 @@ async function setEmailAsIdentifying(tableName: string) {
   await makePropertyRuleIdentifying(source, "email");
 }
 
-async function getApp() {
-  const where = {
-    name: "Demo Database",
-    type: "postgres",
-  };
-
+export function getAppOptions(): SimpleAppOptions {
   const db = new Postgres(SCHEMA_NAME);
   const { host, port, database, schema, user, password } = db.getConfig();
   const appOptions = { host, port, database, schema, user, password };
   for (const key in appOptions) {
     appOptions[key] = (appOptions[key] || "").toString();
   }
+  return appOptions;
+}
+
+async function getApp() {
+  const where = {
+    name: "Demo Database",
+    type: "postgres",
+  };
+
+  const appOptions = getAppOptions();
 
   const params = {
     name: where.name,

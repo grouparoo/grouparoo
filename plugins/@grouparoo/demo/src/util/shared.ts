@@ -1,5 +1,6 @@
 import sharedExecSync from "./exec";
 import { api } from "actionhero";
+import path from "path";
 import Database from "./database";
 
 const LOG_LEVEL = 1;
@@ -14,6 +15,20 @@ export function log(level: number, ...toLog) {
 export async function execSync(level: number, command) {
   log(level, "    Running:", command);
   await sharedExecSync(command);
+}
+
+export async function prettier(fileOrDirPath) {
+  // prettier format
+  const pCmd = path.resolve(
+    path.join(__dirname, "..", "..", "node_modules", ".bin", "prettier")
+  );
+  const pConfig = path.resolve(
+    path.join(__dirname, "..", "..", "..", "..", "..", ".prettierrc")
+  );
+  await execSync(
+    2,
+    `'${pCmd}' --config '${pConfig}' --write '${fileOrDirPath}'`
+  );
 }
 
 export async function sleep(time = 1000) {

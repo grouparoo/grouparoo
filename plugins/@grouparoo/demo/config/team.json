@@ -1,0 +1,22 @@
+[
+  {
+    "id": "admin_team",
+    "name": "Admin Team",
+    "class": "team",
+    "options": {
+      "permissionAllRead": true,
+      "permissionAllWrite": true
+    }
+  },
+  {
+    "id": "demo",
+    "email": "demo@grouparoo.com",
+    "teamId": "admin_team",
+    "class": "teamMember",
+    "options": {
+      "firstName": "Example",
+      "lastName": "Person",
+      "password": "password"
+    }
+  }
+]
