@@ -11,7 +11,7 @@ export class Console extends CLI {
 
   async run() {
     await init({ reset: true });
-    await teams();
+    await teams(); // TODO: use single teams.json config
     return true;
   }
 }
