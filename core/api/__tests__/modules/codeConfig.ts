@@ -325,7 +325,9 @@ describe("modules/codeConfig", () => {
     });
 
     test("all objects will be deleted with an empty config file", async () => {
-      expect(await App.count()).toBe(0);
+      expect(await App.count({ where: { type: { [Op.ne]: "events" } } })).toBe(
+        0
+      );
       expect(await Source.count()).toBe(0);
       expect(await Schedule.count()).toBe(0);
       expect(await Destination.count()).toBe(0);
