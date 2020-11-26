@@ -60,7 +60,7 @@ describe("models/teamMember", () => {
   });
 
   test("creating and updating a team member creates a log entry but does not include passwordHash", async () => {
-    await Log.destroy({ truncate: true });
+    await Log.truncate();
 
     const teamMember = await TeamMember.create({
       teamGuid: team.guid,
@@ -77,7 +77,7 @@ describe("models/teamMember", () => {
     expect(createLog.data.email).toBe("luigi@example.com");
     expect(createLog.message).toBe('teamMember "luigi@example.com" created');
 
-    await Log.destroy({ truncate: true });
+    await Log.truncate();
     await teamMember.update({ firstName: "Luigi!" });
 
     let updateNameLog = await Log.findOne({
@@ -89,7 +89,7 @@ describe("models/teamMember", () => {
       'teamMember "luigi@example.com" updated: firstName -> Luigi!'
     );
 
-    await Log.destroy({ truncate: true });
+    await Log.truncate();
     await teamMember.updatePassword("gold-coins");
 
     let updateLog = await Log.findOne({

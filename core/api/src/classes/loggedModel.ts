@@ -47,13 +47,20 @@ export abstract class LoggedModel<T> extends Model<T> {
     instance,
     { transaction }: { transaction?: Transaction } = {}
   ) {
+    let message = `${modelName(this)} "${instance.guid}" created`;
+    try {
+      message = await instance.logMessage("create");
+    } catch (error) {
+      message += ` (${error})`;
+    }
+
     await Log.create(
       {
         topic: modelName(instance),
         verb: "create",
         ownerGuid: instance.guid,
         data: await instance.filteredDataForLogging(),
-        message: await instance.logMessage("create"),
+        message,
       },
       { transaction }
     );
@@ -61,10 +68,12 @@ export abstract class LoggedModel<T> extends Model<T> {
 
   @AfterCreate
   static async broadcast(instance) {
-    await chatRoom.broadcast({}, `model:${modelName(instance)}`, {
-      model: await instance.apiData(),
-      verb: "create",
-    });
+    try {
+      await chatRoom.broadcast({}, `model:${modelName(instance)}`, {
+        model: await instance.apiData(),
+        verb: "create",
+      });
+    } catch {}
   }
 
   @AfterBulkCreate
@@ -74,13 +83,21 @@ export abstract class LoggedModel<T> extends Model<T> {
   ) {
     for (const i in instances) {
       const instance = instances[i];
+
+      let message = `${modelName(this)} "${instance.guid}" created`;
+      try {
+        message = await instance.logMessage("create");
+      } catch (error) {
+        message += ` (${error})`;
+      }
+
       await Log.create(
         {
           topic: modelName(instance),
           verb: "create",
           ownerGuid: instance.guid,
           data: await instance.filteredDataForLogging(),
-          message: await instance.logMessage("create"),
+          message,
         },
         { transaction }
       );
@@ -92,13 +109,20 @@ export abstract class LoggedModel<T> extends Model<T> {
     instance,
     { transaction }: { transaction?: Transaction } = {}
   ) {
+    let message = `${modelName(this)} "${instance.guid}" updated`;
+    try {
+      message = await instance.logMessage("update");
+    } catch (error) {
+      message += ` (${error})`;
+    }
+
     await Log.create(
       {
         topic: modelName(instance),
         verb: "update",
         ownerGuid: instance.guid,
         data: await instance.filteredDataForLogging(),
-        message: await instance.logMessage("update"),
+        message,
       },
       { transaction }
     );
@@ -109,13 +133,20 @@ export abstract class LoggedModel<T> extends Model<T> {
     instance,
     { transaction }: { transaction?: Transaction } = {}
   ) {
+    let message = `${modelName(this)} "${instance.guid}" destroyed`;
+    try {
+      message = await instance.logMessage("destroy");
+    } catch (error) {
+      message += ` (${error})`;
+    }
+
     await Log.create(
       {
         topic: modelName(instance),
         verb: "destroy",
         ownerGuid: instance.guid,
         data: await instance.filteredDataForLogging(),
-        message: await instance.logMessage("destroy"),
+        message,
       },
       { transaction }
     );
@@ -125,9 +156,7 @@ export abstract class LoggedModel<T> extends Model<T> {
     let apiData = {};
     try {
       apiData = await this.apiData();
-    } catch (error) {
-      log(error, "error");
-    }
+    } catch {}
 
     config.general.filteredParams.forEach((p) => {
       if (apiData[p]) apiData[p] = "** filtered **";

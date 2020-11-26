@@ -40,7 +40,7 @@ describe("integration/runs/internalRun", () => {
       await profile.addOrUpdateProperties({ userId: [1] });
 
       await api.resque.queue.connection.redis.flushdb();
-      await Run.destroy({ truncate: true });
+      await Run.truncate();
 
       rule = await ProfilePropertyRule.create({
         sourceGuid: source.guid,

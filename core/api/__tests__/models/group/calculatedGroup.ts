@@ -264,7 +264,7 @@ describe("models/group", () => {
 
       let imports = await Import.findAll();
       expect(imports.length).toBe(2);
-      await Import.destroy({ truncate: true });
+      await Import.truncate();
 
       await group.run(true);
       const foundTasks = await specHelper.findEnqueuedTasks("group:run");
@@ -291,7 +291,7 @@ describe("models/group", () => {
 
       let imports = await Import.findAll();
       expect(imports.length).toBe(2);
-      await Import.destroy({ truncate: true });
+      await Import.truncate();
 
       await group.run(true, "abc123");
       const foundTasks = await specHelper.findEnqueuedTasks("group:run");
@@ -337,7 +337,7 @@ describe("models/group", () => {
     });
 
     test("adding and removing members from a calculated group produces log entries", async () => {
-      await Log.destroy({ truncate: true });
+      await Log.truncate();
 
       await group.update({ matchType: "all" });
       await group.setRules([

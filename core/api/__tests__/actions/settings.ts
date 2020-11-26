@@ -29,7 +29,7 @@ describe("actions/settings", () => {
     let guid;
 
     beforeAll(async () => {
-      await Setting.destroy({ truncate: true });
+      await Setting.truncate();
 
       await plugin.registerSetting(
         "testPlugin",

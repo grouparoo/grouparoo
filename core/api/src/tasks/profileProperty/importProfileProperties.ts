@@ -26,9 +26,10 @@ export class ImportProfileProperties extends RetryableTask {
       where: { guid: { [Op.in]: params.profileGuids } },
       include: [ProfileProperty],
     });
-    const profilePropertyRule = await ProfilePropertyRule.findByGuid(
-      params.profilePropertyRuleGuid
-    );
+    const profilePropertyRule = await ProfilePropertyRule.findOne({
+      where: { guid: params.profilePropertyRuleGuid },
+    });
+    if (!profilePropertyRule) return;
     const source = await profilePropertyRule.$get("source");
 
     const profilesWithDependenciesMet: Profile[] = [];

@@ -88,7 +88,7 @@ export class ClusterReset extends AuthenticatedAction {
           models.map((m) => m.update({ state: "draft" }, { hooks: false }))
         );
       } else {
-        await model.destroy({ truncate: true, force: true });
+        await model.truncate();
       }
 
       counts[modelName] = count;

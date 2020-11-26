@@ -23,14 +23,14 @@ describe("tasks/group:destroy", () => {
 
     beforeEach(async () => {
       await api.resque.queue.connection.redis.flushdb();
-      await Import.destroy({ truncate: true });
+      await Import.truncate();
     });
 
     beforeAll(async () => {
       await helper.factories.profilePropertyRules();
       helper.disableTestPluginImport();
 
-      await Profile.destroy({ truncate: true });
+      await Profile.truncate();
 
       mario = await Profile.create();
       luigi = await Profile.create();
@@ -74,7 +74,7 @@ describe("tasks/group:destroy", () => {
       expect(groupMemberCount).toBe(2);
       _imports = await Import.findAll();
       expect(_imports.length).toBe(2);
-      await Import.destroy({ truncate: true });
+      await Import.truncate();
 
       await task.enqueue("group:destroy", {
         groupGuid: group.guid,
