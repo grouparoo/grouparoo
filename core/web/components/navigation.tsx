@@ -54,8 +54,8 @@ export default function Navigation(props) {
   const [hasBeenCollapsed, setHasBeenCollapsed] = useState(!navExpanded);
   const [expandPlatformMenu, setExpandPlatformMenu] = useState(false);
   const [expandAccountMenu, setExpandAccountMenu] = useState(false);
-  const subMenuGreeting = `Hello ${teamMember.firstName} »`;
-  const logoLink = teamMember.guid ? "/dashboard" : "/";
+  const subMenuGreeting = `Hello ${teamMember ? teamMember.firstName : ""} »`;
+  const logoLink = teamMember?.guid ? "/dashboard" : "/";
 
   useEffect(() => {
     sessionHandler.subscribe("navigation", (_teamMember) =>
@@ -78,7 +78,7 @@ export default function Navigation(props) {
     if (router.pathname && router.pathname !== "/") {
       const firstPathPart = "/" + router.pathname.split("/")[1];
 
-      navigation.platformItems
+      navigation?.platformItems
         .filter((i) => i.type === "link")
         .map((i) => i.href)
         .forEach((route) => {
@@ -87,7 +87,7 @@ export default function Navigation(props) {
           }
         });
 
-      navigation.bottomMenuItems
+      navigation?.bottomMenuItems
         .filter((i) => i.type === "link")
         .map((i) => i.href)
         .forEach((route) => {
@@ -117,7 +117,7 @@ export default function Navigation(props) {
   }, [navigationMode]);
 
   async function load() {
-    if (navigationMode === "unauthenticated") return;
+    if (!navigationMode || navigationMode === "unauthenticated") return;
 
     try {
       const { failedCount }: Actions.ResqueFailedCount = await execApi(
@@ -195,7 +195,7 @@ export default function Navigation(props) {
           </div>
         </div>
 
-        {navigationMode !== "unauthenticated" && (
+        {navigationMode && navigationMode !== "unauthenticated" && (
           <SetupStepsNavProgressBar
             execApi={execApi}
             setupStepHandler={setupStepHandler}
@@ -207,7 +207,7 @@ export default function Navigation(props) {
           style={{ paddingLeft: 20, paddingRight: 20 }}
         >
           <ul style={{ padding: 0, margin: 0 }}>
-            {navigation.navigationItems.map((nav, idx) => {
+            {navigation?.navigationItems.map((nav, idx) => {
               if (nav.type === "link") {
                 return (
                   <Fragment key={nav.href}>
@@ -367,7 +367,7 @@ export default function Navigation(props) {
                 marginLeft: 10,
               }}
             >
-              {navigation.bottomMenuItems.map((nav, idx) => {
+              {navigation?.bottomMenuItems.map((nav, idx) => {
                 if (nav.type === "link") {
                   return (
                     <p key={`bottom-dropdown-${idx}`}>

@@ -125,7 +125,7 @@ export class Swagger extends Action {
       )
         .replace("http://", "")
         .replace("https://", ""),
-      basePath: `/v${API_VERSION}`,
+      basePath: `/api/v${API_VERSION}`,
       // tags: tags.map((tag) => {
       //   return { name: tag, description: `topic: ${tag}` };
       // }),

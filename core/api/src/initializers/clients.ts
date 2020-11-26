@@ -1,4 +1,4 @@
-import { Initializer } from "actionhero";
+import { Initializer, config } from "actionhero";
 import fs from "fs";
 import path from "path";
 
@@ -9,15 +9,7 @@ export class Clients extends Initializer {
   }
 
   async initialize() {
-    const publicJSDir = path.join(
-      __dirname,
-      "..",
-      "..",
-      "..",
-      "web",
-      "public",
-      "javascript"
-    );
+    const publicJSDir = path.join(config.general.paths.public[0], "javascript");
     if (!fs.existsSync(publicJSDir)) fs.mkdirSync(path.join(publicJSDir));
 
     // copy the web client javascript from the plugin to the public directory
