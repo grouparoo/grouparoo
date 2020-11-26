@@ -158,7 +158,8 @@ export function RunningRuns({ execApi }) {
     const { runs }: Actions.RunsList = await execApi("get", `/runs`, {
       state: "running",
     });
-    setRuns(runs);
+
+    if (runs) setRuns(runs);
   }
 
   if (runs.length === 0) {
@@ -239,6 +240,8 @@ export function ScheduleRuns({ execApi }) {
 
   async function load() {
     const { sources }: Actions.SourcesList = await execApi("get", `/sources`);
+    if (!sources) return;
+
     const sourcesWithSchedules = sources.filter(
       (source) => source?.schedule?.recurring
     );
@@ -400,9 +403,9 @@ export function PendingImports({ execApi }) {
       pendingImportSamples.shift();
     }
 
-    setSources(sources);
-    setMostRecentImport(imports[0]);
-    setPendingProfilesCount(_pendingProfilesCount);
+    if (sources) setSources(sources);
+    if (imports) setMostRecentImport(imports[0]);
+    if (_pendingProfilesCount) setPendingProfilesCount(_pendingProfilesCount);
   }
 
   if (sources.length === 0) {
@@ -480,8 +483,8 @@ export function PendingExports({ execApi }) {
       pendingExportSamples.shift();
     }
 
-    setDestinations(destinations);
-    setMostRecentExport(_exports[0]);
+    if (destinations) setDestinations(destinations);
+    if (_exports) setMostRecentExport(_exports[0]);
   }
 
   if (destinations.length === 0) {
