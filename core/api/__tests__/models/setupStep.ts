@@ -39,7 +39,7 @@ describe("models/setupStep", () => {
 
   test("setup steps have unique keys", async () => {
     await expect(
-      SetupStep.create({ position: 1, key: "create_team" })
+      SetupStep.create({ position: 1, key: "create_a_team" })
     ).rejects.toThrow();
   });
 
