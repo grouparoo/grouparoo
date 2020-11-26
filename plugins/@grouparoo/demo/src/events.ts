@@ -128,29 +128,32 @@ async function generatePurchaseEvents(purchases, apiKey) {
   }
 }
 
-// copied from initializer/events.ts
+const EVENTS_GUID = "app_events";
+// mostly copied from initializer/events.ts
 async function addEventsApp() {
   let eventsApp = await App.scope(null).findOne({
     where: {
       type: "events",
+      guid: EVENTS_GUID,
     },
   });
   if (!eventsApp) {
     eventsApp = App.build({
       type: "events",
-      name: "events",
+      name: "Events",
       state: "draft",
     });
-    App.generateGuid(eventsApp);
+    eventsApp.guid = EVENTS_GUID;
+
     // @ts-ignore
     await eventsApp.save({ hooks: false });
     log(1, `created events app (${eventsApp.guid})`);
   }
 }
 
-async function enableEventsApp() {
+export async function enableEventsApp() {
   await addEventsApp();
-  const where = { type: "events" };
+  const where = { guid: EVENTS_GUID };
   const found = await App.scope(null).findOne({ where });
   if (!found) {
     throw new Error(`Events App not found!`);
@@ -160,8 +163,6 @@ async function enableEventsApp() {
 
   const params = {
     guid: found.guid,
-    name: "events",
-    type: "events",
     state: "ready",
     options: { identifyingProfilePropertyRuleGuid: ruleGuid },
   };
