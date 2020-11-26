@@ -1,6 +1,6 @@
 import { CLI, log } from "actionhero";
-import { teams } from "../../../teams";
 import { users, purchases, stopRuns } from "../../../sample_data";
+import { loadConfigFiles } from "../../../configFiles";
 import { groups } from "../../../groups";
 import { events } from "../../../events";
 import { init } from "../../../util/shared";
@@ -22,9 +22,9 @@ export class Console extends CLI {
       log(`Using scale = ${params.scale}`);
     }
     await init({ reset: true });
-    await teams();
     await users({ scale });
     await purchases({ scale });
+    await loadConfigFiles();
     await events({ scale });
     await groups();
     await stopRuns();

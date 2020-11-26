@@ -1,6 +1,5 @@
 import { CLI } from "actionhero";
-import { configFiles } from "../../../configFiles";
-import { init } from "../../../util/shared";
+import { writeConfigFiles } from "../../../configFiles";
 
 export class Console extends CLI {
   constructor() {
@@ -10,9 +9,8 @@ export class Console extends CLI {
     this.inputs = {};
   }
 
-  async run({ params }) {
-    await init({ reset: true });
-    await configFiles();
+  async run() {
+    await writeConfigFiles();
     return true;
   }
 }

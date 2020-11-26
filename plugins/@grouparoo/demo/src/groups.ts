@@ -18,35 +18,6 @@ const DEFINITION_DEFAULT = {
 
 const GROUP_DEFINITIONS: GroupDefinition[] = [
   {
-    name: "All Emails",
-    rules: [{ key: "email", operation: { op: "exists" } }],
-  },
-  {
-    name: "Spanish Speakers",
-    rules: [{ key: "language", match: "Spanish", operation: { op: "eq" } }],
-  },
-  {
-    name: "High Value",
-    rules: [{ key: "LTV", match: "100", operation: { op: "gt" } }],
-  },
-  {
-    name: "High Value with Recent Automotive Purchase",
-    rules: [
-      { key: "LTV", match: "100", operation: { op: "gt" } },
-      {
-        key: "lastPurchaseDate",
-        operation: { op: "relative_gt" },
-        relativeMatchNumber: "60",
-        relativeMatchUnit: "days",
-      },
-      {
-        key: "lastPurchaseCategory",
-        match: "Automotive",
-        operation: { op: "eq" },
-      },
-    ],
-  },
-  {
     name: "Recent Automotive Visits",
     rules: [
       {

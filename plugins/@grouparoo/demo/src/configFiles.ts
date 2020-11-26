@@ -1,7 +1,9 @@
-import { api, log, config } from "actionhero";
 import path from "path";
 import fs from "fs-extra";
+import os from "os";
+import { api } from "actionhero";
 import { getParentPath } from "@grouparoo/core/api/src/utils/pluginDetails";
+import { loadConfigDirectory } from "@grouparoo/core/api/dist/modules/configLoaders/all";
 import { getAppOptions } from "./sample_data";
 import { prettier } from "./util/shared";
 
@@ -11,18 +13,33 @@ export function getConfigDir() {
   return configDir;
 }
 
-export async function configFiles() {
-  deleteConfigDir();
+export async function writeConfigFiles() {
   const configDir = getConfigDir();
+  await generateConfig(configDir);
+  await prettier(configDir);
+}
+
+export async function loadConfigFiles() {
+  const configDir = path.resolve(path.join(os.tmpdir(), "grouparoo", "demo"));
+  await generateConfig(configDir);
+
+  const locked = api.codeConfig.allowLockedModelChanges;
+  api.codeConfig.allowLockedModelChanges = true;
+
+  await loadConfigDirectory(configDir);
+
+  api.codeConfig.allowLockedModelChanges = locked;
+}
+
+async function generateConfig(configDir) {
+  deleteDir(configDir);
   console.log({ configDir });
   fs.mkdirpSync(configDir);
   copy(configDir);
   update(configDir);
-  await prettier(configDir);
 }
 
-export function deleteConfigDir() {
-  const configDir = getConfigDir();
+function deleteDir(configDir) {
   if (fs.existsSync(configDir)) {
     fs.rmdirSync(configDir, { recursive: true });
   }
