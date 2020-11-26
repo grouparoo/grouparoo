@@ -1,4 +1,4 @@
-import { log, config } from "actionhero";
+import { log, config, env } from "actionhero";
 import path from "path";
 import glob from "glob";
 import {
@@ -108,7 +108,7 @@ async function processConfigObjects(configObjects: Array<ConfigurationObject>) {
     } catch (error) {
       log(
         `error with config object: ${JSON.stringify(configObject)} - ${error}`,
-        "emerg"
+        env === "test" ? "info" : "emerg"
       );
       throw error.original ? error.original : error;
     }
