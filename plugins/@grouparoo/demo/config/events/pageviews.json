@@ -1,0 +1,51 @@
+[
+  {
+    "id": "event_pageviews",
+    "name": "Pageview Events",
+    "class": "Source",
+    "type": "events-table-import",
+    "appId": "events",
+    "options": {
+      "type": "pageview"
+    }
+  },
+  {
+    "id": "pageview_count",
+    "name": "pageviewCount",
+    "class": "ProfilePropertyRule",
+    "type": "integer",
+    "unique": false,
+    "isArray": false,
+    "sourceId": "event_pageviews",
+    "options": { "aggregationMethod": "count", "column": "[data]-page" },
+    "filters": []
+  },
+  {
+    "id": "categories_viewed",
+    "name": "categoriesViewed",
+    "class": "ProfilePropertyRule",
+    "type": "string",
+    "unique": false,
+    "isArray": true,
+    "sourceId": "event_pageviews",
+    "options": {
+      "column": "[data]-category",
+      "aggregationMethod": "all values"
+    },
+    "filters": [{ "key": "[data]-page", "op": "equals", "match": "/product" }]
+  },
+  {
+    "id": "recent_visit_date",
+    "name": "recentVisitDate",
+    "class": "ProfilePropertyRule",
+    "type": "date",
+    "unique": false,
+    "isArray": false,
+    "sourceId": "event_pageviews",
+    "options": {
+      "aggregationMethod": "most recent value",
+      "column": "occurredAt"
+    },
+    "filters": []
+  }
+]
