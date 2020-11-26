@@ -1,4 +1,4 @@
-import { Task, config } from "actionhero";
+import { Task, env } from "actionhero";
 
 export abstract class RetryableTask extends Task {
   constructor() {
@@ -7,13 +7,10 @@ export abstract class RetryableTask extends Task {
     this.plugins = ["QueueLock", "Retry"];
     this.pluginOptions = {
       Retry: {
-        retryLimit:
-          config.process.env === "development" || config.process.env === "test"
-            ? 1
-            : 7,
+        retryLimit: env === "development" || env === "test" ? 1 : 7,
         backoffStrategy:
-          config.process.env === "development" || config.process.env === "test"
-            ? [1]
+          env === "development" || env === "test"
+            ? [1000]
             : [
                 1000, // 1 second
                 10 * 1000, // 10 seconds
