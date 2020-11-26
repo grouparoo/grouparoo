@@ -6,7 +6,6 @@ import { getParentPath } from "@grouparoo/core/api/src/utils/pluginDetails";
 import { loadConfigDirectory } from "@grouparoo/core/api/dist/modules/configLoaders/all";
 import { getAppOptions } from "./sample_data";
 import { prettier, log } from "./util/shared";
-import { Schedule } from "@grouparoo/core";
 
 export function getConfigDir() {
   const configDir =
@@ -20,9 +19,9 @@ export async function writeConfigFiles() {
   await prettier(configDir);
 }
 
-export async function loadConfigFiles() {
+export async function loadConfigFiles(setup = false) {
   const configDir = path.resolve(path.join(os.tmpdir(), "grouparoo", "demo"));
-  await generateConfig(configDir);
+  await generateConfig(configDir, setup);
 
   const locked = api.codeConfig.allowLockedModelChanges;
   api.codeConfig.allowLockedModelChanges = true;
@@ -34,12 +33,21 @@ export async function loadConfigFiles() {
   await unlockAll();
 }
 
-async function generateConfig(configDir) {
+export async function loadSetupFiles() {
+  return loadConfigFiles(true);
+}
+
+async function generateConfig(configDir, setup = false) {
+  log(1, `Config Directory: ${configDir}`);
   deleteDir(configDir);
-  console.log({ configDir });
   fs.mkdirpSync(configDir);
-  copy(configDir);
-  update(configDir);
+
+  if (setup) {
+    copyFile(configDir, "team.json");
+  } else {
+    copyDir(configDir);
+    updatePurchases(configDir);
+  }
 }
 
 function deleteDir(configDir) {
@@ -48,13 +56,16 @@ function deleteDir(configDir) {
   }
 }
 
-function copy(configDir) {
+function copyFile(configDir, relativePath) {
   const dirPath = path.resolve(path.join(__dirname, "..", "config"));
-  fs.copySync(dirPath, configDir);
+  const srcPath = path.join(dirPath, relativePath);
+  const destPath = path.join(configDir, relativePath);
+  fs.copyFileSync(srcPath, destPath);
 }
 
-function update(configDir) {
-  updatePurchases(configDir);
+function copyDir(configDir) {
+  const dirPath = path.resolve(path.join(__dirname, "..", "config"));
+  fs.copySync(dirPath, configDir);
 }
 
 function updatePurchases(configDir) {

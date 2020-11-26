@@ -1,6 +1,6 @@
 import { CLI } from "actionhero";
-import { teams } from "../../../teams";
 import { init } from "../../../util/shared";
+import { loadSetupFiles } from "../../../configFiles";
 
 export class Console extends CLI {
   constructor() {
@@ -11,7 +11,7 @@ export class Console extends CLI {
 
   async run() {
     await init({ reset: true });
-    await teams(); // TODO: use single teams.json config
+    await loadSetupFiles();
     return true;
   }
 }
