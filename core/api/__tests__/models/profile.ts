@@ -605,6 +605,29 @@ describe("models/profile", () => {
         await profile.addOrUpdateProperty({ email: ["luigi@example.com"] });
       });
 
+      test("orphan profile properties will be removed", async () => {
+        await profile.reload();
+
+        const profileProperty = await ProfileProperty.create(
+          {
+            guid: "rule_missing",
+            profileGuid: profile.guid,
+            profilePropertyRuleGuid: "missing",
+            rawValue: "green-hat",
+            position: 0,
+          },
+          //@ts-ignore
+          { hooks: false } // we need to skip validations
+        );
+
+        const properties = await profile.properties(); // does not throw
+        expect(Object.keys(properties).length).toBe(5);
+
+        await expect(profileProperty.reload()).rejects.toThrow(
+          /does not exist anymore/
+        );
+      });
+
       test("deleting the profile also deletes the properties", async () => {
         const beforeCount = await ProfileProperty.count({
           where: { profileGuid: profile.guid },

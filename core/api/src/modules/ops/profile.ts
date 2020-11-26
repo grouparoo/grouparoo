@@ -43,62 +43,47 @@ export namespace ProfileOps {
     const hash: ProfilePropertyType = {};
 
     for (const i in profileProperties) {
-      try {
-        const rule = rules.find(
-          (r) => r.guid === profileProperties[i].profilePropertyRuleGuid
-        );
-        if (!rule) {
-          await removeOrphanProperties(profile);
-          return properties(profile);
-        }
-
-        const key = rule.key;
-        if (!hash[key]) {
-          hash[key] = {
-            guid: profileProperties[i].profilePropertyRuleGuid,
-            state: profileProperties[i].state,
-            values: [],
-            type: rule.type,
-            unique: rule.unique,
-            isArray: rule.isArray,
-            identifying: rule.identifying,
-            valueChangedAt: profileProperties[i].valueChangedAt,
-            confirmedAt: profileProperties[i].confirmedAt,
-            stateChangedAt: profileProperties[i].stateChangedAt,
-            createdAt: profileProperties[i].createdAt,
-            updatedAt: profileProperties[i].updatedAt,
-          };
-        }
-
-        hash[key].values.push(await profileProperties[i].getValue());
-
-        const timeFields = [
-          "valueChangedAt",
-          "confirmedAt",
-          "stateChangedAt",
-          "createdAt",
-          "updatedAt",
-        ];
-
-        timeFields.forEach((field) => {
-          if (hash[key][field] < profileProperties[i][field]) {
-            hash[key][field] = profileProperties[i][field];
-          }
-        });
-      } catch (error) {
-        if (
-          error
-            .toString()
-            .match(
-              /cached profile property rule not found for this profilePropertyRuleGuid/
-            )
-        ) {
-          // it's ok, we are in the middle of creating or destroying a profile property
-          log(error, "info");
-        } else {
-          throw error;
-        }
+      const rule = rules.find(
+        (r) => r.guid === profileProperties[i].profilePropertyRuleGuid
+      );
+      if (!rule) {
+        await profileProperties[i].destroy();
+        continue;
       }
+
+      const key = rule.key;
+      if (!hash[key]) {
+        hash[key] = {
+          guid: profileProperties[i].profilePropertyRuleGuid,
+          state: profileProperties[i].state,
+          values: [],
+          type: rule.type,
+          unique: rule.unique,
+          isArray: rule.isArray,
+          identifying: rule.identifying,
+          valueChangedAt: profileProperties[i].valueChangedAt,
+          confirmedAt: profileProperties[i].confirmedAt,
+          stateChangedAt: profileProperties[i].stateChangedAt,
+          createdAt: profileProperties[i].createdAt,
+          updatedAt: profileProperties[i].updatedAt,
+        };
+      }
+
+      hash[key].values.push(await profileProperties[i].getValue());
+
+      const timeFields = [
+        "valueChangedAt",
+        "confirmedAt",
+        "stateChangedAt",
+        "createdAt",
+        "updatedAt",
+      ];
+
+      timeFields.forEach((field) => {
+        if (hash[key][field] < profileProperties[i][field]) {
+          hash[key][field] = profileProperties[i][field];
+        }
+      });
     }
 
     return hash;
@@ -307,20 +292,6 @@ export namespace ProfileOps {
     }
 
     return newPropertiesCount;
-  }
-
-  /**
-   * remove any orphan profile properties for this profile
-   */
-  export async function removeOrphanProperties(profile: Profile) {
-    const orphanProperties = await ProfileProperty.findAll({
-      include: [{ model: ProfilePropertyRule, required: false }],
-      where: { profileGuid: profile.guid, "$profilePropertyRule.guid$": null },
-    });
-
-    for (const i in orphanProperties) await orphanProperties[i].destroy();
-
-    return orphanProperties.length;
   }
 
   /**
