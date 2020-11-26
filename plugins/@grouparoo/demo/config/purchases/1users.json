@@ -33,7 +33,7 @@
   },
   {
     "id": "email",
-    "name": "Email",
+    "name": "email",
     "class": "ProfilePropertyRule",
     "type": "email",
     "unique": true,
