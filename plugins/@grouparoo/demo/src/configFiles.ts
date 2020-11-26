@@ -19,9 +19,9 @@ export async function writeConfigFiles() {
   await prettier(configDir);
 }
 
-export async function loadConfigFiles(setup = false) {
+export async function loadConfigFiles(subDir = null) {
   const configDir = path.resolve(path.join(os.tmpdir(), "grouparoo", "demo"));
-  await generateConfig(configDir, setup);
+  await generateConfig(configDir, subDir);
 
   const locked = api.codeConfig.allowLockedModelChanges;
   api.codeConfig.allowLockedModelChanges = true;
@@ -33,19 +33,12 @@ export async function loadConfigFiles(setup = false) {
   await unlockAll();
 }
 
-export async function loadSetupFiles() {
-  return loadConfigFiles(true);
-}
-
-async function generateConfig(configDir, setup = false) {
+async function generateConfig(configDir, subDir = null) {
   log(1, `Config Directory: ${configDir}`);
   deleteDir(configDir);
-  fs.mkdirpSync(configDir);
 
-  if (setup) {
-    copyFile(configDir, "team.json");
-  } else {
-    copyDir(configDir);
+  copyDir(configDir, subDir);
+  if (!subDir || subDir === "purchases") {
     updatePurchases(configDir);
   }
 }
@@ -56,15 +49,13 @@ function deleteDir(configDir) {
   }
 }
 
-function copyFile(configDir, relativePath) {
-  const dirPath = path.resolve(path.join(__dirname, "..", "config"));
-  const srcPath = path.join(dirPath, relativePath);
-  const destPath = path.join(configDir, relativePath);
-  fs.copyFileSync(srcPath, destPath);
-}
-
-function copyDir(configDir) {
-  const dirPath = path.resolve(path.join(__dirname, "..", "config"));
+function copyDir(configDir, subDir = null) {
+  let dirPath = path.resolve(path.join(__dirname, "..", "config"));
+  if (subDir) {
+    dirPath = path.join(dirPath, subDir);
+    configDir = path.join(configDir, subDir);
+  }
+  fs.mkdirpSync(configDir);
   fs.copySync(dirPath, configDir);
 }
 
@@ -82,13 +73,11 @@ function updatePurchases(configDir) {
 async function unlockAll() {
   // unlock these for the demo so they can be shared
   const models = api.sequelize.models;
-  //console.log({ thing: api.sequelize });
-  api.sequelize.options.logging = console.log;
   for (const name in models) {
     const Model = models[name];
-    if (["Team"].includes(name)) {
-      continue;
-    }
+    // if (["Team"].includes(name)) {
+    //   continue;
+    // }
     const attributes = Model.rawAttributes;
     if (attributes.locked) {
       log(3, `Unlocking ${name}`);

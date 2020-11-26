@@ -2,7 +2,7 @@ import { CLI, log } from "actionhero";
 import { users, purchases } from "../../../sample_data";
 import { loadConfigFiles } from "../../../configFiles";
 import { groups } from "../../../groups";
-import { events } from "../../../events";
+import { events, enableEventsApp } from "../../../events";
 import { init, finalize } from "../../../util/shared";
 
 export class Console extends CLI {
@@ -22,9 +22,11 @@ export class Console extends CLI {
       log(`Using scale = ${params.scale}`);
     }
     await init({ reset: true });
+    await loadConfigFiles("setup");
+    await loadConfigFiles("purchases");
     await users({ scale });
     await purchases({ scale });
-    await loadConfigFiles();
+    await enableEventsApp();
     await events({ scale });
     await groups();
     await finalize();
