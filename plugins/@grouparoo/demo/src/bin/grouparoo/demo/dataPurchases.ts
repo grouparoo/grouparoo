@@ -1,9 +1,9 @@
 import { CLI, log } from "actionhero";
-import { users, purchases, stopRuns } from "../../../sample_data";
+import { users, purchases } from "../../../sample_data";
 import { loadConfigFiles } from "../../../configFiles";
 import { groups } from "../../../groups";
 import { events } from "../../../events";
-import { init } from "../../../util/shared";
+import { init, finalize } from "../../../util/shared";
 
 export class Console extends CLI {
   constructor() {
@@ -27,7 +27,7 @@ export class Console extends CLI {
     await loadConfigFiles();
     await events({ scale });
     await groups();
-    await stopRuns();
+    await finalize();
     return true;
   }
 }

@@ -5,7 +5,8 @@ import { api } from "actionhero";
 import { getParentPath } from "@grouparoo/core/api/src/utils/pluginDetails";
 import { loadConfigDirectory } from "@grouparoo/core/api/dist/modules/configLoaders/all";
 import { getAppOptions } from "./sample_data";
-import { prettier } from "./util/shared";
+import { prettier, log } from "./util/shared";
+import { Schedule } from "@grouparoo/core";
 
 export function getConfigDir() {
   const configDir =
@@ -29,6 +30,8 @@ export async function loadConfigFiles() {
   await loadConfigDirectory(configDir);
 
   api.codeConfig.allowLockedModelChanges = locked;
+
+  await unlockAll();
 }
 
 async function generateConfig(configDir) {
@@ -63,4 +66,31 @@ function updatePurchases(configDir) {
   app.options = appOptions;
   const out = JSON.stringify(contents);
   fs.writeFileSync(appPath, out);
+}
+
+async function unlockAll() {
+  // unlock these for the demo so they can be shared
+  const models = api.sequelize.models;
+  //console.log({ thing: api.sequelize });
+  api.sequelize.options.logging = console.log;
+  for (const name in models) {
+    const Model = models[name];
+    if (["Team"].includes(name)) {
+      continue;
+    }
+    const attributes = Model.rawAttributes;
+    if (attributes.locked) {
+      log(3, `Unlocking ${name}`);
+      await Model.scope(null).update(
+        { locked: false },
+        {
+          where: { locked: true },
+          hooks: false,
+          validate: false,
+          sideEffects: false,
+          silent: true,
+        }
+      );
+    }
+  }
 }
