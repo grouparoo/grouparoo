@@ -76,6 +76,7 @@ export class ProfileCompleteImport extends RetryableTask {
       const newProfileProperties = this.simplifyProfileProperties(
         await profile.properties()
       );
+
       const newGroups = await profile.$get("groups");
       const newGroupGuids = newGroups.map((g) => g.guid);
       const now = new Date();

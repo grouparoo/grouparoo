@@ -60,7 +60,7 @@ export class RunInternalRun extends Task {
           },
         });
 
-        await property.update({ state: "pending" });
+        await property?.update({ state: "pending" });
         await profile.update({ state: "pending" });
       } else {
         await profile.markPending();
@@ -82,6 +82,7 @@ export class RunInternalRun extends Task {
       where: { guid: params.runGuid },
     });
 
+    if (!run) return;
     if (run.state === "stopped") return;
 
     await run.update(

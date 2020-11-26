@@ -34,10 +34,11 @@ export class ImportProfileProperty extends RetryableTask {
       });
     }
 
+    const profilePropertyRule = await ProfilePropertyRule.findOne({
+      where: { guid: params.profilePropertyRuleGuid },
+    });
+    if (!profilePropertyRule) return;
     const properties = await profile.properties();
-    const profilePropertyRule = await ProfilePropertyRule.findByGuid(
-      params.profilePropertyRuleGuid
-    );
     const source = await profilePropertyRule.$get("source");
     const dependencies = await ProfilePropertyRuleOps.dependencies(
       profilePropertyRule

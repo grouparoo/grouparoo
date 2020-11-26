@@ -48,9 +48,8 @@ export namespace ProfileOps {
           (r) => r.guid === profileProperties[i].profilePropertyRuleGuid
         );
         if (!rule) {
-          throw new Error(
-            `cannot find Profile Property Rule for ${profileProperties[i].profilePropertyRuleGuid}`
-          );
+          await removeOrphanProperties(profile);
+          return properties(profile);
         }
 
         const key = rule.key;
@@ -308,6 +307,20 @@ export namespace ProfileOps {
     }
 
     return newPropertiesCount;
+  }
+
+  /**
+   * remove any orphan profile properties for this profile
+   */
+  export async function removeOrphanProperties(profile: Profile) {
+    const orphanProperties = await ProfileProperty.findAll({
+      include: [{ model: ProfilePropertyRule, required: false }],
+      where: { profileGuid: profile.guid, "$profilePropertyRule.guid$": null },
+    });
+
+    for (const i in orphanProperties) await orphanProperties[i].destroy();
+
+    return orphanProperties.length;
   }
 
   /**
