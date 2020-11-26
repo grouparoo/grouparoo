@@ -25,6 +25,7 @@ export interface ConfigurationObject {
   permissions?: Array<{ guid: string; read: boolean; write: boolean }>;
   value: string | boolean | number;
   bootstrappedProfilePropertyRule?: ConfigurationObject;
+  mapping?: { [key: string]: any };
 }
 
 // Utils
