@@ -37,26 +37,26 @@ importers:
       '@grouparoo/snowflake': 'link:../../plugins/@grouparoo/snowflake'
       '@grouparoo/zendesk': 'link:../../plugins/@grouparoo/zendesk'
     specifiers:
-      '@grouparoo/bigquery': ^0.1.26-alpha.0
-      '@grouparoo/core': ^0.1.26-alpha.0
-      '@grouparoo/csv': ^0.1.26-alpha.0
-      '@grouparoo/demo': ^0.1.26-alpha.0
-      '@grouparoo/email-authentication': ^0.1.26-alpha.0
-      '@grouparoo/files-s3': ^0.1.26-alpha.0
-      '@grouparoo/google-sheets': ^0.1.26-alpha.0
-      '@grouparoo/hubspot': ^0.1.26-alpha.0
-      '@grouparoo/logger': ^0.1.26-alpha.0
-      '@grouparoo/mailchimp': ^0.1.26-alpha.0
-      '@grouparoo/marketo': ^0.1.26-alpha.0
-      '@grouparoo/mysql': ^0.1.26-alpha.0
-      '@grouparoo/newrelic': ^0.1.26-alpha.0
-      '@grouparoo/postgres': ^0.1.26-alpha.0
-      '@grouparoo/redshift': ^0.1.26-alpha.0
-      '@grouparoo/sailthru': ^0.1.26-alpha.0
-      '@grouparoo/salesforce': ^0.1.26-alpha.0
-      '@grouparoo/sample-ui-plugin': ^0.1.26-alpha.0
-      '@grouparoo/snowflake': ^0.1.26-alpha.0
-      '@grouparoo/zendesk': ^0.1.26-alpha.0
+      '@grouparoo/bigquery': ^0.1.26-alpha.1
+      '@grouparoo/core': ^0.1.26-alpha.1
+      '@grouparoo/csv': ^0.1.26-alpha.1
+      '@grouparoo/demo': ^0.1.26-alpha.1
+      '@grouparoo/email-authentication': ^0.1.26-alpha.1
+      '@grouparoo/files-s3': ^0.1.26-alpha.1
+      '@grouparoo/google-sheets': ^0.1.26-alpha.1
+      '@grouparoo/hubspot': ^0.1.26-alpha.1
+      '@grouparoo/logger': ^0.1.26-alpha.1
+      '@grouparoo/mailchimp': ^0.1.26-alpha.1
+      '@grouparoo/marketo': ^0.1.26-alpha.1
+      '@grouparoo/mysql': ^0.1.26-alpha.1
+      '@grouparoo/newrelic': ^0.1.26-alpha.1
+      '@grouparoo/postgres': ^0.1.26-alpha.1
+      '@grouparoo/redshift': ^0.1.26-alpha.1
+      '@grouparoo/sailthru': ^0.1.26-alpha.1
+      '@grouparoo/salesforce': ^0.1.26-alpha.1
+      '@grouparoo/sample-ui-plugin': ^0.1.26-alpha.1
+      '@grouparoo/snowflake': ^0.1.26-alpha.1
+      '@grouparoo/zendesk': ^0.1.26-alpha.1
   cli:
     dependencies:
       chalk: 4.1.0
@@ -170,7 +170,7 @@ importers:
       csv-parse: 4.14.1
       enzyme: 3.11.0
       enzyme-adapter-react-16: 1.15.5_4f82faf5e8cab057bc46d4d95079ec42
-      jest: 26.6.3_ts-node@9.0.0
+      jest: 26.6.3
       jest-environment-webdriver: 0.2.0_jest@26.6.3
       jest-fetch-mock: 3.0.3
       jest-mock-axios: 4.2.1
@@ -183,8 +183,8 @@ importers:
       '@fortawesome/fontawesome-svg-core': 1.2.32
       '@fortawesome/free-solid-svg-icons': 5.15.1
       '@fortawesome/react-fontawesome': 0.1.12
-      '@grouparoo/client-web': ^0.1.26-alpha.0
-      '@grouparoo/spec-helper': ^0.1.26-alpha.0
+      '@grouparoo/client-web': ^0.1.26-alpha.1
+      '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@nivo/line': 0.62.0
       '@types/bluebird': '*'
       '@types/faker': '*'
@@ -271,8 +271,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.0
-      '@grouparoo/spec-helper': ^0.1.26-alpha.0
+      '@grouparoo/core': ^0.1.26-alpha.1
+      '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.0-alpha.1
@@ -300,9 +300,9 @@ importers:
       typescript: 4.1.2
     specifiers:
       '@google-cloud/bigquery': 5.5.0
-      '@grouparoo/app-templates': ^0.1.26-alpha.0
-      '@grouparoo/core': ^0.1.26-alpha.0
-      '@grouparoo/spec-helper': ^0.1.26-alpha.0
+      '@grouparoo/app-templates': ^0.1.26-alpha.1
+      '@grouparoo/core': ^0.1.26-alpha.1
+      '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.0-alpha.1
@@ -328,8 +328,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.0
-      '@grouparoo/spec-helper': ^0.1.26-alpha.0
+      '@grouparoo/core': ^0.1.26-alpha.1
+      '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.0-alpha.1
@@ -358,8 +358,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.0
-      '@grouparoo/spec-helper': ^0.1.26-alpha.0
+      '@grouparoo/core': ^0.1.26-alpha.1
+      '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.0-alpha.1
@@ -388,8 +388,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.0
-      '@grouparoo/spec-helper': ^0.1.26-alpha.0
+      '@grouparoo/core': ^0.1.26-alpha.1
+      '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       '@types/react': '*'
@@ -412,7 +412,7 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.0
+      '@grouparoo/core': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.0-alpha.1
@@ -435,7 +435,7 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.0
+      '@grouparoo/core': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.0-alpha.1
@@ -462,8 +462,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.0
-      '@grouparoo/spec-helper': ^0.1.26-alpha.0
+      '@grouparoo/core': ^0.1.26-alpha.1
+      '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.0-alpha.1
@@ -493,8 +493,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.0
-      '@grouparoo/spec-helper': ^0.1.26-alpha.0
+      '@grouparoo/core': ^0.1.26-alpha.1
+      '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.0-alpha.1
@@ -518,7 +518,7 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.0
+      '@grouparoo/core': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.0-alpha.1
@@ -542,8 +542,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.0
-      '@grouparoo/spec-helper': ^0.1.26-alpha.0
+      '@grouparoo/core': ^0.1.26-alpha.1
+      '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.0-alpha.1
@@ -571,8 +571,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.0
-      '@grouparoo/spec-helper': ^0.1.26-alpha.0
+      '@grouparoo/core': ^0.1.26-alpha.1
+      '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.0-alpha.1
@@ -601,9 +601,9 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/app-templates': ^0.1.26-alpha.0
-      '@grouparoo/core': ^0.1.26-alpha.0
-      '@grouparoo/spec-helper': ^0.1.26-alpha.0
+      '@grouparoo/app-templates': ^0.1.26-alpha.1
+      '@grouparoo/core': ^0.1.26-alpha.1
+      '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/mysql': '*'
       '@types/node': '*'
@@ -627,7 +627,7 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.0
+      '@grouparoo/core': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.0-alpha.1
@@ -656,9 +656,9 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/app-templates': ^0.1.26-alpha.0
-      '@grouparoo/core': ^0.1.26-alpha.0
-      '@grouparoo/spec-helper': ^0.1.26-alpha.0
+      '@grouparoo/app-templates': ^0.1.26-alpha.1
+      '@grouparoo/core': ^0.1.26-alpha.1
+      '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       '@types/pg': '*'
@@ -688,10 +688,10 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/app-templates': ^0.1.26-alpha.0
-      '@grouparoo/core': ^0.1.26-alpha.0
-      '@grouparoo/postgres': ^0.1.26-alpha.0
-      '@grouparoo/spec-helper': ^0.1.26-alpha.0
+      '@grouparoo/app-templates': ^0.1.26-alpha.1
+      '@grouparoo/core': ^0.1.26-alpha.1
+      '@grouparoo/postgres': ^0.1.26-alpha.1
+      '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       '@types/pg': '*'
@@ -717,8 +717,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.0
-      '@grouparoo/spec-helper': ^0.1.26-alpha.0
+      '@grouparoo/core': ^0.1.26-alpha.1
+      '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.0-alpha.1
@@ -747,8 +747,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.0
-      '@grouparoo/spec-helper': ^0.1.26-alpha.0
+      '@grouparoo/core': ^0.1.26-alpha.1
+      '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.0-alpha.1
@@ -772,7 +772,7 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.0
+      '@grouparoo/core': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       '@types/react': '*'
@@ -800,9 +800,9 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/app-templates': ^0.1.26-alpha.0
-      '@grouparoo/core': ^0.1.26-alpha.0
-      '@grouparoo/spec-helper': ^0.1.26-alpha.0
+      '@grouparoo/app-templates': ^0.1.26-alpha.1
+      '@grouparoo/core': ^0.1.26-alpha.1
+      '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.0-alpha.1
@@ -832,7 +832,7 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.0
+      '@grouparoo/core': ^0.1.26-alpha.1
       '@types/faker': '*'
       '@types/jest': '*'
       '@types/node': '*'
@@ -862,8 +862,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.0
-      '@grouparoo/spec-helper': ^0.1.26-alpha.0
+      '@grouparoo/core': ^0.1.26-alpha.1
+      '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.0-alpha.1
@@ -1501,43 +1501,6 @@ packages:
       node: '>= 10.14.2'
     resolution:
       integrity: sha512-xvV1kKbhfUqFVuZ8Cyo+JPpipAHHAV3kcDBftiduK8EICXmTFddryy3P7NfZt8Pv37rA9nEJBKCCkglCPt/Xjw==
-  /@jest/core/26.6.3_ts-node@9.0.0:
-    dependencies:
-      '@jest/console': 26.6.2
-      '@jest/reporters': 26.6.2
-      '@jest/test-result': 26.6.2
-      '@jest/transform': 26.6.2
-      '@jest/types': 26.6.2
-      '@types/node': 14.14.6
-      ansi-escapes: 4.3.1
-      chalk: 4.1.0
-      exit: 0.1.2
-      graceful-fs: 4.2.4
-      jest-changed-files: 26.6.2
-      jest-config: 26.6.3_ts-node@9.0.0
-      jest-haste-map: 26.6.2
-      jest-message-util: 26.6.2
-      jest-regex-util: 26.0.0
-      jest-resolve: 26.6.2
-      jest-resolve-dependencies: 26.6.3
-      jest-runner: 26.6.3_ts-node@9.0.0
-      jest-runtime: 26.6.3_ts-node@9.0.0
-      jest-snapshot: 26.6.2
-      jest-util: 26.6.2
-      jest-validate: 26.6.2
-      jest-watcher: 26.6.2
-      micromatch: 4.0.2
-      p-each-series: 2.1.0
-      rimraf: 3.0.2
-      slash: 3.0.0
-      strip-ansi: 6.0.0
-    dev: true
-    engines:
-      node: '>= 10.14.2'
-    peerDependencies:
-      ts-node: '*'
-    resolution:
-      integrity: sha512-xvV1kKbhfUqFVuZ8Cyo+JPpipAHHAV3kcDBftiduK8EICXmTFddryy3P7NfZt8Pv37rA9nEJBKCCkglCPt/Xjw==
   /@jest/environment/26.6.2:
     dependencies:
       '@jest/fake-timers': 26.6.2
@@ -1636,20 +1599,6 @@ packages:
     dev: true
     engines:
       node: '>= 10.14.2'
-    resolution:
-      integrity: sha512-YHlVIjP5nfEyjlrSr8t/YdNfU/1XEt7c5b4OxcXCjyRhjzLYu/rO69/WHPuYcbCWkz8kAeZVZp2N2+IOLLEPGw==
-  /@jest/test-sequencer/26.6.3_ts-node@9.0.0:
-    dependencies:
-      '@jest/test-result': 26.6.2
-      graceful-fs: 4.2.4
-      jest-haste-map: 26.6.2
-      jest-runner: 26.6.3_ts-node@9.0.0
-      jest-runtime: 26.6.3_ts-node@9.0.0
-    dev: true
-    engines:
-      node: '>= 10.14.2'
-    peerDependencies:
-      ts-node: '*'
     resolution:
       integrity: sha512-YHlVIjP5nfEyjlrSr8t/YdNfU/1XEt7c5b4OxcXCjyRhjzLYu/rO69/WHPuYcbCWkz8kAeZVZp2N2+IOLLEPGw==
   /@jest/transform/26.6.2:
@@ -8844,29 +8793,6 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-GF9noBSa9t08pSyl3CY4frMrqp+aQXFGFkf5hEPbh/pIUFYWMK6ZLTfbmadxJVcJrdRoChlWQsA2VkJcDFK8hg==
-  /jest-cli/26.6.3_ts-node@9.0.0:
-    dependencies:
-      '@jest/core': 26.6.3_ts-node@9.0.0
-      '@jest/test-result': 26.6.2
-      '@jest/types': 26.6.2
-      chalk: 4.1.0
-      exit: 0.1.2
-      graceful-fs: 4.2.4
-      import-local: 3.0.2
-      is-ci: 2.0.0
-      jest-config: 26.6.3_ts-node@9.0.0
-      jest-util: 26.6.2
-      jest-validate: 26.6.2
-      prompts: 2.3.2
-      yargs: 15.4.1
-    dev: true
-    engines:
-      node: '>= 10.14.2'
-    hasBin: true
-    peerDependencies:
-      ts-node: '*'
-    resolution:
-      integrity: sha512-GF9noBSa9t08pSyl3CY4frMrqp+aQXFGFkf5hEPbh/pIUFYWMK6ZLTfbmadxJVcJrdRoChlWQsA2VkJcDFK8hg==
   /jest-config/26.6.3:
     dependencies:
       '@babel/core': 7.12.3
@@ -8887,37 +8813,6 @@ packages:
       jest-validate: 26.6.2
       micromatch: 4.0.2
       pretty-format: 26.6.2
-    dev: true
-    engines:
-      node: '>= 10.14.2'
-    peerDependencies:
-      ts-node: '>=9.0.0'
-    peerDependenciesMeta:
-      ts-node:
-        optional: true
-    resolution:
-      integrity: sha512-t5qdIj/bCj2j7NFVHb2nFB4aUdfucDn3JRKgrZnplb8nieAirAzRSHP8uDEd+qV6ygzg9Pz4YG7UTJf94LPSyg==
-  /jest-config/26.6.3_ts-node@9.0.0:
-    dependencies:
-      '@babel/core': 7.12.3
-      '@jest/test-sequencer': 26.6.3_ts-node@9.0.0
-      '@jest/types': 26.6.2
-      babel-jest: 26.6.3_@babel+core@7.12.3
-      chalk: 4.1.0
-      deepmerge: 4.2.2
-      glob: 7.1.6
-      graceful-fs: 4.2.4
-      jest-environment-jsdom: 26.6.2
-      jest-environment-node: 26.6.2
-      jest-get-type: 26.3.0
-      jest-jasmine2: 26.6.3_ts-node@9.0.0
-      jest-regex-util: 26.0.0
-      jest-resolve: 26.6.2
-      jest-util: 26.6.2
-      jest-validate: 26.6.2
-      micromatch: 4.0.2
-      pretty-format: 26.6.2
-      ts-node: 9.0.0_typescript@4.1.2
     dev: true
     engines:
       node: '>= 10.14.2'
@@ -8995,7 +8890,7 @@ packages:
       integrity: sha512-zhtMio3Exty18dy8ee8eJ9kjnRyZC1N4C1Nt/VShN1apyXc8rWGtJ9lI7vqiWcyyXS4BVSEn9lxAM2D+07/Tag==
   /jest-environment-webdriver/0.2.0_jest@26.6.3:
     dependencies:
-      jest: 26.6.3_ts-node@9.0.0
+      jest: 26.6.3
       jest-environment-node: 22.1.4
       selenium-webdriver: 4.0.0-alpha.7
     dev: true
@@ -9063,33 +8958,6 @@ packages:
     dev: true
     engines:
       node: '>= 10.14.2'
-    resolution:
-      integrity: sha512-kPKUrQtc8aYwBV7CqBg5pu+tmYXlvFlSFYn18ev4gPFtrRzB15N2gW/Roew3187q2w2eHuu0MU9TJz6w0/nPEg==
-  /jest-jasmine2/26.6.3_ts-node@9.0.0:
-    dependencies:
-      '@babel/traverse': 7.12.1
-      '@jest/environment': 26.6.2
-      '@jest/source-map': 26.6.2
-      '@jest/test-result': 26.6.2
-      '@jest/types': 26.6.2
-      '@types/node': 14.14.6
-      chalk: 4.1.0
-      co: 4.6.0
-      expect: 26.6.2
-      is-generator-fn: 2.1.0
-      jest-each: 26.6.2
-      jest-matcher-utils: 26.6.2
-      jest-message-util: 26.6.2
-      jest-runtime: 26.6.3_ts-node@9.0.0
-      jest-snapshot: 26.6.2
-      jest-util: 26.6.2
-      pretty-format: 26.6.2
-      throat: 5.0.0
-    dev: true
-    engines:
-      node: '>= 10.14.2'
-    peerDependencies:
-      ts-node: '*'
     resolution:
       integrity: sha512-kPKUrQtc8aYwBV7CqBg5pu+tmYXlvFlSFYn18ev4gPFtrRzB15N2gW/Roew3187q2w2eHuu0MU9TJz6w0/nPEg==
   /jest-leak-detector/26.6.2:
@@ -9228,35 +9096,6 @@ packages:
       node: '>= 10.14.2'
     resolution:
       integrity: sha512-atgKpRHnaA2OvByG/HpGA4g6CSPS/1LK0jK3gATJAoptC1ojltpmVlYC3TYgdmGp+GLuhzpH30Gvs36szSL2JQ==
-  /jest-runner/26.6.3_ts-node@9.0.0:
-    dependencies:
-      '@jest/console': 26.6.2
-      '@jest/environment': 26.6.2
-      '@jest/test-result': 26.6.2
-      '@jest/types': 26.6.2
-      '@types/node': 14.14.6
-      chalk: 4.1.0
-      emittery: 0.7.2
-      exit: 0.1.2
-      graceful-fs: 4.2.4
-      jest-config: 26.6.3_ts-node@9.0.0
-      jest-docblock: 26.0.0
-      jest-haste-map: 26.6.2
-      jest-leak-detector: 26.6.2
-      jest-message-util: 26.6.2
-      jest-resolve: 26.6.2
-      jest-runtime: 26.6.3_ts-node@9.0.0
-      jest-util: 26.6.2
-      jest-worker: 26.6.2
-      source-map-support: 0.5.19
-      throat: 5.0.0
-    dev: true
-    engines:
-      node: '>= 10.14.2'
-    peerDependencies:
-      ts-node: '*'
-    resolution:
-      integrity: sha512-atgKpRHnaA2OvByG/HpGA4g6CSPS/1LK0jK3gATJAoptC1ojltpmVlYC3TYgdmGp+GLuhzpH30Gvs36szSL2JQ==
   /jest-runtime/26.6.3:
     dependencies:
       '@jest/console': 26.6.2
@@ -9290,43 +9129,6 @@ packages:
     engines:
       node: '>= 10.14.2'
     hasBin: true
-    resolution:
-      integrity: sha512-lrzyR3N8sacTAMeonbqpnSka1dHNux2uk0qqDXVkMv2c/A3wYnvQ4EXuI013Y6+gSKSCxdaczvf4HF0mVXHRdw==
-  /jest-runtime/26.6.3_ts-node@9.0.0:
-    dependencies:
-      '@jest/console': 26.6.2
-      '@jest/environment': 26.6.2
-      '@jest/fake-timers': 26.6.2
-      '@jest/globals': 26.6.2
-      '@jest/source-map': 26.6.2
-      '@jest/test-result': 26.6.2
-      '@jest/transform': 26.6.2
-      '@jest/types': 26.6.2
-      '@types/yargs': 15.0.9
-      chalk: 4.1.0
-      cjs-module-lexer: 0.6.0
-      collect-v8-coverage: 1.0.1
-      exit: 0.1.2
-      glob: 7.1.6
-      graceful-fs: 4.2.4
-      jest-config: 26.6.3_ts-node@9.0.0
-      jest-haste-map: 26.6.2
-      jest-message-util: 26.6.2
-      jest-mock: 26.6.2
-      jest-regex-util: 26.0.0
-      jest-resolve: 26.6.2
-      jest-snapshot: 26.6.2
-      jest-util: 26.6.2
-      jest-validate: 26.6.2
-      slash: 3.0.0
-      strip-bom: 4.0.0
-      yargs: 15.4.1
-    dev: true
-    engines:
-      node: '>= 10.14.2'
-    hasBin: true
-    peerDependencies:
-      ts-node: '*'
     resolution:
       integrity: sha512-lrzyR3N8sacTAMeonbqpnSka1dHNux2uk0qqDXVkMv2c/A3wYnvQ4EXuI013Y6+gSKSCxdaczvf4HF0mVXHRdw==
   /jest-serializer/26.6.2:
@@ -9454,19 +9256,6 @@ packages:
     engines:
       node: '>= 10.14.2'
     hasBin: true
-    resolution:
-      integrity: sha512-lGS5PXGAzR4RF7V5+XObhqz2KZIDUA1yD0DG6pBVmy10eh0ZIXQImRuzocsI/N2XZ1GrLFwTS27In2i2jlpq1Q==
-  /jest/26.6.3_ts-node@9.0.0:
-    dependencies:
-      '@jest/core': 26.6.3_ts-node@9.0.0
-      import-local: 3.0.2
-      jest-cli: 26.6.3_ts-node@9.0.0
-    dev: true
-    engines:
-      node: '>= 10.14.2'
-    hasBin: true
-    peerDependencies:
-      ts-node: '*'
     resolution:
       integrity: sha512-lGS5PXGAzR4RF7V5+XObhqz2KZIDUA1yD0DG6pBVmy10eh0ZIXQImRuzocsI/N2XZ1GrLFwTS27In2i2jlpq1Q==
   /jju/1.4.0:
