@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/email-authentication",
   "description": "The Grouparoo Email Authentication Plugin",
-  "version": "0.1.26-alpha.0",
+  "version": "0.1.26-alpha.1",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -36,8 +36,8 @@
     "react-dom": "16.13.1"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.1.26-alpha.0",
-    "@grouparoo/spec-helper": "^0.1.26-alpha.0",
+    "@grouparoo/core": "^0.1.26-alpha.1",
+    "@grouparoo/spec-helper": "^0.1.26-alpha.1",
     "@types/jest": "*",
     "@types/node": "*",
     "@types/react": "*",
