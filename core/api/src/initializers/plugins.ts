@@ -160,11 +160,12 @@ export class Plugins extends Initializer {
         if (
           connection.direction === "import" &&
           connection.app !== "manual" &&
+          !connection.methods.profiles &&
           !connection.methods.profileProperty &&
           !connection.methods.profileProperties
         ) {
           errors.push(
-            `import connections must provide either connection.methods.profileProperty or connection.methods.profileProperties`
+            `import connections must provide a way to import profiles`
           );
         }
         if (

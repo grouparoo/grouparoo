@@ -2,7 +2,6 @@ import { PluginConnection } from "@grouparoo/core";
 import { profilePropertyRuleOptions } from "./profilePropertyRuleOptions";
 import { sourcePreview } from "./sourcePreview";
 import { profiles } from "./profiles";
-import { profileProperty } from "./profileProperty";
 import { sourceRunPercentComplete } from "./sourceRunPercentComplete";
 import { getSourceOptions } from "../shared/connectionOptions";
 
@@ -23,7 +22,6 @@ const connection: PluginConnection = {
     sourceOptions: getSourceOptions(["listId"]),
     sourcePreview,
     profiles,
-    profileProperty,
     sourceRunPercentComplete,
   },
 };
