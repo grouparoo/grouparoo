@@ -5,7 +5,6 @@ import { test } from "../lib/test";
 import { sourceOptions } from "../lib/file-import/sourceOptions";
 import { sourcePreview } from "../lib/file-import/sourcePreview";
 import { profiles } from "../lib/file-import/profiles";
-import { profileProperty } from "../lib/file-import/profileProperty";
 import { profilePropertyRuleOptions } from "../lib/file-import/profilePropertyRuleOptions";
 import { sourceRunPercentComplete } from "../lib/file-import/sourceRunPercentComplete";
 
@@ -49,7 +48,6 @@ export class Plugins extends Initializer {
             sourceOptions,
             sourcePreview,
             profiles,
-            profileProperty,
             sourceRunPercentComplete,
           },
         },
