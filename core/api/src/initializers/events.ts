@@ -40,7 +40,8 @@ export class Events extends Initializer {
                 "The profile property rule which will map to the event field 'userId'.  Only unique profile property rules can be used.",
             },
           ],
-          addible: false,
+          maxInstances: 1,
+          minInstances: 1,
           methods: {
             test: async () => {
               return { success: (await Event.count()) >= 0 };
@@ -405,10 +406,11 @@ async function addEventsApp() {
   let eventsApp = await App.scope(null).findOne({
     where: { type: "events" },
   });
+
   if (!eventsApp) {
     eventsApp = App.build({
       type: "events",
-      name: "events",
+      name: "Grouparoo Events",
       state: "draft",
     });
     App.generateGuid(eventsApp);

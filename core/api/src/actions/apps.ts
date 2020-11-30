@@ -58,7 +58,7 @@ export class AppOptions extends AuthenticatedAction {
   async run() {
     const types: Array<{
       name: string;
-      addible: boolean;
+      maxInstances: number;
       options: PluginApp["options"];
       plugin: { name: string; icon: string };
       provides: { source: boolean; destination: boolean };
