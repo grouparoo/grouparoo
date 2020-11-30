@@ -1,6 +1,6 @@
 import Postgres, { readCsvTable } from "./util/postgres";
 import { log } from "./util/shared";
-import { Run, SimpleAppOptions } from "@grouparoo/core";
+import { SimpleAppOptions } from "@grouparoo/core";
 
 export const SCHEMA_NAME = "demo";
 export const USER_ID_PROPERTY_NAME = "userId";
@@ -67,11 +67,6 @@ async function createCsvTable(
     options.scale
   );
   await db.disconnect();
-}
-
-export async function stopRuns() {
-  const runs = await Run.findAll({ where: { state: "running" } });
-  for (const i in runs) await runs[i].stop();
 }
 
 export async function getPurchases(limit = null) {

@@ -5,7 +5,7 @@ import { api } from "actionhero";
 import { getParentPath } from "@grouparoo/core/api/src/utils/pluginDetails";
 import { loadConfigDirectory } from "@grouparoo/core/api/dist/modules/configLoaders/all";
 import { getAppOptions } from "./sample_data";
-import { prettier } from "./util/shared";
+import { prettier, log } from "./util/shared";
 
 export function getConfigDir() {
   const configDir =
@@ -19,9 +19,9 @@ export async function writeConfigFiles() {
   await prettier(configDir);
 }
 
-export async function loadConfigFiles() {
+export async function loadConfigFiles(subDir = null) {
   const configDir = path.resolve(path.join(os.tmpdir(), "grouparoo", "demo"));
-  await generateConfig(configDir);
+  await generateConfig(configDir, subDir);
 
   const locked = api.codeConfig.allowLockedModelChanges;
   api.codeConfig.allowLockedModelChanges = true;
@@ -29,14 +29,18 @@ export async function loadConfigFiles() {
   await loadConfigDirectory(configDir);
 
   api.codeConfig.allowLockedModelChanges = locked;
+
+  await unlockAll();
 }
 
-async function generateConfig(configDir) {
+async function generateConfig(configDir, subDir = null) {
+  log(1, `Config Directory: ${configDir}`);
   deleteDir(configDir);
-  console.log({ configDir });
-  fs.mkdirpSync(configDir);
-  copy(configDir);
-  update(configDir);
+
+  copyDir(configDir, subDir);
+  if (!subDir || subDir === "purchases") {
+    updatePurchases(configDir);
+  }
 }
 
 function deleteDir(configDir) {
@@ -45,13 +49,14 @@ function deleteDir(configDir) {
   }
 }
 
-function copy(configDir) {
-  const dirPath = path.resolve(path.join(__dirname, "..", "config"));
+function copyDir(configDir, subDir = null) {
+  let dirPath = path.resolve(path.join(__dirname, "..", "config"));
+  if (subDir) {
+    dirPath = path.join(dirPath, subDir);
+    configDir = path.join(configDir, subDir);
+  }
+  fs.mkdirpSync(configDir);
   fs.copySync(dirPath, configDir);
-}
-
-function update(configDir) {
-  updatePurchases(configDir);
 }
 
 function updatePurchases(configDir) {
@@ -63,4 +68,29 @@ function updatePurchases(configDir) {
   app.options = appOptions;
   const out = JSON.stringify(contents);
   fs.writeFileSync(appPath, out);
+}
+
+async function unlockAll() {
+  // unlock these for the demo so they can be shared
+  const models = api.sequelize.models;
+  for (const name in models) {
+    const Model = models[name];
+    // if (["Team"].includes(name)) {
+    //   continue;
+    // }
+    const attributes = Model.rawAttributes;
+    if (attributes.locked) {
+      log(3, `Unlocking ${name}`);
+      await Model.scope(null).update(
+        { locked: false },
+        {
+          where: { locked: true },
+          hooks: false,
+          validate: false,
+          sideEffects: false,
+          silent: true,
+        }
+      );
+    }
+  }
 }

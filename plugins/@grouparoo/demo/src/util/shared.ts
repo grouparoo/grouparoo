@@ -2,6 +2,7 @@ import sharedExecSync from "./exec";
 import { api } from "actionhero";
 import path from "path";
 import Database from "./database";
+import { Run, SimpleAppOptions } from "@grouparoo/core";
 
 const LOG_LEVEL = 1;
 
@@ -73,4 +74,12 @@ export async function reset() {
 
   // Redis
   await await api.resque.queue.connection.redis.flushdb();
+}
+
+export async function finalize() {
+  // stop all the runs. they will get picked up later
+  const runs = await Run.findAll({ where: { state: "running" } });
+  for (const run of runs) {
+    await run.stop();
+  }
 }

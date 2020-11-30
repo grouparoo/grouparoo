@@ -1,38 +1,13 @@
 import { runAction } from "./util/runAction";
 import { MockSession, getApiKey } from "./util/MockSession";
-import { App, ProfilePropertyRule, Source } from "@grouparoo/core";
+import { App, ProfilePropertyRule } from "@grouparoo/core";
 import { getPurchaseCategories, getPurchases } from "./sample_data";
-import { createPropertyRule, RuleDefinition } from "./util/propertyRules";
 import { log } from "./util/shared";
 
-const PAGEVIEW_RULES: Array<RuleDefinition> = [
-  {
-    key: "pageviewCount",
-    type: "integer",
-    options: { aggregationMethod: "count", column: "[data]-page" },
-  },
-  {
-    key: "categoriesViewed",
-    type: "string",
-    isArray: true,
-    options: { column: "[data]-category", aggregationMethod: "all values" },
-    filters: [{ key: "[data]-page", op: "equals", match: "/product" }],
-  },
-  {
-    key: "recentVisitDate",
-    type: "date",
-    options: {
-      aggregationMethod: "most recent value",
-      column: "occurredAt",
-    },
-  },
-];
 interface DataOptions {
   scale?: number;
 }
 export async function events(options: DataOptions = {}) {
-  const app = await enableEventsApp();
-
   const purchaseFunnelCount = getPurchaseFunnelCount(options.scale);
   const browseFunnelCount = purchaseFunnelCount * 1.25;
 
@@ -41,9 +16,6 @@ export async function events(options: DataOptions = {}) {
   const purchases = await getPurchases(purchaseFunnelCount);
   await generateBrowseEvents(browseFunnelCount, apiKey, categories);
   await generatePurchaseEvents(purchases, apiKey);
-
-  await createSource(app, "pageview");
-  await createPropertyRules(app, "pageview", PAGEVIEW_RULES);
 }
 
 function getPurchaseFunnelCount(scale: number): number {
@@ -53,60 +25,6 @@ function getPurchaseFunnelCount(scale: number): number {
     scale = 1;
   }
   return 200 * scale;
-}
-
-export async function createPropertyRules(
-  app: App,
-  eventType: string,
-  rules: Array<RuleDefinition>
-) {
-  const source = await findEventSource(app, eventType);
-  for (const rule of rules) {
-    await createPropertyRule(source, rule);
-  }
-}
-
-async function findEventSource(app, eventType) {
-  const where = {
-    appGuid: app.guid,
-    type: "events-table-import",
-  };
-  const sources = await Source.scope(null).findAll({ where });
-  for (const source of sources) {
-    const options = await source.getOptions();
-    if (options.type === eventType) {
-      return source;
-    }
-  }
-  return null;
-}
-
-async function createSource(app: App, eventType: string) {
-  const found = await findEventSource(app, eventType);
-
-  const params = {
-    appGuid: app.guid,
-    name: `${eventType} Events`,
-    type: "events-table-import",
-    state: "ready",
-    mapping: {},
-    options: {
-      type: eventType,
-    },
-    guid: found?.guid,
-  };
-
-  if (found) {
-    await runAction("source:edit", params);
-  } else {
-    await runAction("source:create", params);
-  }
-
-  const made = await findEventSource(app, eventType);
-  if (!made) {
-    throw new Error(`Event source not created (${eventType})!`);
-  }
-  return made;
 }
 
 async function generateBrowseEvents(count, apiKey, categories) {
@@ -128,29 +46,32 @@ async function generatePurchaseEvents(purchases, apiKey) {
   }
 }
 
-// copied from initializer/events.ts
+const EVENTS_GUID = "app_events";
+// mostly copied from initializer/events.ts
 async function addEventsApp() {
   let eventsApp = await App.scope(null).findOne({
     where: {
       type: "events",
+      guid: EVENTS_GUID,
     },
   });
   if (!eventsApp) {
     eventsApp = App.build({
       type: "events",
-      name: "events",
+      name: "Events",
       state: "draft",
     });
-    App.generateGuid(eventsApp);
+    eventsApp.guid = EVENTS_GUID;
+
     // @ts-ignore
     await eventsApp.save({ hooks: false });
     log(1, `created events app (${eventsApp.guid})`);
   }
 }
 
-async function enableEventsApp() {
+export async function enableEventsApp() {
   await addEventsApp();
-  const where = { type: "events" };
+  const where = { guid: EVENTS_GUID };
   const found = await App.scope(null).findOne({ where });
   if (!found) {
     throw new Error(`Events App not found!`);
@@ -160,8 +81,6 @@ async function enableEventsApp() {
 
   const params = {
     guid: found.guid,
-    name: "events",
-    type: "events",
     state: "ready",
     options: { identifyingProfilePropertyRuleGuid: ruleGuid },
   };

@@ -7,7 +7,6 @@ import {
 } from "../../classes/codeConfig";
 import { App, Source, ProfilePropertyRule } from "../..";
 import { Op } from "sequelize";
-import { ProfileProperty } from "../../models/ProfileProperty";
 
 export async function loadSource(configObject: ConfigurationObject) {
   let isNew = false;
@@ -38,13 +37,15 @@ export async function loadSource(configObject: ConfigurationObject) {
   let mapping = {};
 
   async function setMapping() {
-    mappedProfileProperty = await getParentByName(
-      ProfilePropertyRule,
-      Object.values(extractNonNullParts(configObject, "mapping"))[0]
-    );
-    mapping[Object.keys(extractNonNullParts(configObject, "mapping"))[0]] =
-      mappedProfileProperty.key;
-    await source.setMapping(mapping);
+    if (configObject.mapping) {
+      mappedProfileProperty = await getParentByName(
+        ProfilePropertyRule,
+        Object.values(extractNonNullParts(configObject, "mapping"))[0]
+      );
+      mapping[Object.keys(extractNonNullParts(configObject, "mapping"))[0]] =
+        mappedProfileProperty.key;
+      await source.setMapping(mapping);
+    }
   }
 
   try {

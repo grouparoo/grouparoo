@@ -1,9 +1,9 @@
 import { CLI, log } from "actionhero";
-import { users, purchases, stopRuns } from "../../../sample_data";
+import { users, purchases } from "../../../sample_data";
 import { loadConfigFiles } from "../../../configFiles";
 import { groups } from "../../../groups";
-import { events } from "../../../events";
-import { init } from "../../../util/shared";
+import { events, enableEventsApp } from "../../../events";
+import { init, finalize } from "../../../util/shared";
 
 export class Console extends CLI {
   constructor() {
@@ -22,12 +22,15 @@ export class Console extends CLI {
       log(`Using scale = ${params.scale}`);
     }
     await init({ reset: true });
+    await loadConfigFiles("setup");
+    await loadConfigFiles("purchases");
     await users({ scale });
     await purchases({ scale });
-    await loadConfigFiles();
+    await enableEventsApp();
     await events({ scale });
+    await loadConfigFiles("events");
     await groups();
-    await stopRuns();
+    await finalize();
     return true;
   }
 }
