@@ -6,74 +6,20 @@ import {
   SimpleDestinationOptions,
   ErrorWithProfileGuid,
 } from "@grouparoo/core";
-
-enum BatchAction {
-  Delete = "DELETE",
-  ForeignKeyChange = "FOREIGNKEYCHANGE",
-  Update = "UPDATE",
-}
-export enum GroupBatchMode {
-  WithinGroup = "WITHINGROUP",
-  TotalMembers = "TOTALMEMBERS",
-}
-
-export interface BatchExport extends ExportedProfile {
-  foreignKeyValue?: string;
-  oldForeignKeyValue?: string;
-  destinationId?: string;
-  addedGroups?: string[];
-  removedGroups?: string[];
-  action?: BatchAction;
-  result?: any; // result from find
-  data?: any; // can stick other things on here
-  processed?: boolean;
-  error?: any;
-}
-
-export declare type ForeignKeyMap = { [value: string]: BatchExport };
-export declare type DestinationIdMap = { [value: string]: BatchExport };
-export declare type GroupNameListMap = { [groupName: string]: BatchExport[] };
-
-export interface BatchConfig {
-  batchSize: number; // max number to update, create, delete
-  findSize: number; // max query parameters to send to findAndSetDestinationIds
-  groupMode: GroupBatchMode;
-  foreignKey: string;
-  connection?: any;
-  app?: App;
-  appOptions?: SimpleAppOptions;
-  destination?: Destination;
-  destinationOptions?: SimpleDestinationOptions;
-  data?: any; // set any object you want on here
-}
-
-export interface BuildBatchExportMethod {
-  (exports: ExportedProfile[]): BatchExport[];
-}
-
-export interface ProfileBatchProfilesPluginMethod {
-  (
-    exports: BatchExport[],
-    config: BatchConfig,
-    functions: BatchFunctions
-  ): Promise<{
-    success: boolean;
-    retryDelay?: number;
-    errors?: ErrorWithProfileGuid[];
-  }>;
-}
-
-export interface ExportBatchProfilesPluginMethod {
-  (
-    exports: BatchExport[],
-    config: BatchConfig,
-    functions: BatchFunctions
-  ): Promise<{
-    success: boolean;
-    retryDelay?: number;
-    errors?: ErrorWithProfileGuid[];
-  }>;
-}
+import {
+  BatchAction,
+  BatchGroupMode,
+  BatchExport,
+  BuildBatchExportMethod,
+  ProfileBatchProfilesPluginMethod,
+  ExportBatchProfilesPluginMethod,
+  BatchMethods,
+  BatchConfig,
+  GroupNameListMap,
+  DestinationIdMap,
+  ForeignKeyMap,
+  GetForeignKeyMapMethod,
+} from "./types";
 
 export const buildBatchExports: BuildBatchExportMethod = (exports) => {
   const batchExports: BatchExport[] = [];
@@ -87,124 +33,43 @@ export const buildBatchExports: BuildBatchExportMethod = (exports) => {
 export const exportProfilesInBatch: ProfileBatchProfilesPluginMethod = async (
   exports,
   config,
-  functions
+  methods
 ) => {
-  return exportOneBatch(exports, config, functions);
+  return exportOneBatch(exports, config, methods);
 };
-
-export interface GetForeignKeyMapFunction {
-  (key: string): any;
-}
-export interface SetForeignKeyMapFunction {
-  (key: string, value: any): void;
-}
-export interface BatchFunctions {
-  // return an object that you can connect with
-  getClient: {
-    (argument: { config: BatchConfig }): Promise<any>;
-  };
-  // fetch using the keys to set destinationId and result on BatchExports
-  // use the getByForeignKey to lookup results
-  findAndSetDestinationIds: {
-    (argument: {
-      client: any;
-      users: BatchExport[];
-      foreignKeys: string[]; // has newValue and oldValue of foreignKey
-      getByForeignKey: GetForeignKeyMapFunction;
-      config: BatchConfig;
-    }): Promise<void>;
-  };
-  // delete the given destinationIds
-  deleteByDestinationIds: {
-    (argument: {
-      client: any;
-      users: BatchExport[];
-      destIdMap: DestinationIdMap;
-      getByForeignKey: GetForeignKeyMapFunction;
-      config: BatchConfig;
-    }): Promise<void>;
-  };
-  // update these users by destinationId
-  updateByDestinationIds: {
-    (argument: {
-      client: any;
-      users: BatchExport[];
-      destIdMap: DestinationIdMap;
-      getByForeignKey: GetForeignKeyMapFunction;
-      config: BatchConfig;
-    }): Promise<void>;
-  };
-  // usually this is creating them. ideally upsert. set the destinationId on each when done
-  createByForeignKeyAndSetDestinationIds: {
-    (argument: {
-      client: any;
-      users: BatchExport[];
-      getByForeignKey: GetForeignKeyMapFunction;
-      config: BatchConfig;
-    }): Promise<void>;
-  };
-  // make sure these user are in these groups (keys of map are group names)
-  addToGroups: {
-    (argument: {
-      client: any;
-      users: BatchExport[];
-      groupMap: GroupNameListMap;
-      destIdMap: DestinationIdMap;
-      config: BatchConfig;
-    }): Promise<void>;
-  };
-  // make sure these users are not in these groups (keys of map are group names)
-  removeFromGroups: {
-    (argument: {
-      client: any;
-      users: BatchExport[];
-      groupMap: GroupNameListMap;
-      destIdMap: DestinationIdMap;
-      config: BatchConfig;
-    }): Promise<void>;
-  };
-  // mess with the keys (lowercase emails, for example)
-  normalizeForeignKeyValue?: {
-    (argument: { keyValue: any; config: BatchConfig }): string;
-  };
-  // mess with the names of groups (tags with no spaces, for example)
-  normalizeGroupName?: {
-    (argument: { groupName: string; config: BatchConfig }): string;
-  };
-}
 
 const exportOneBatch: ExportBatchProfilesPluginMethod = async (
   exports,
   config,
-  functions
+  methods
 ) => {
   if (exports.length === 0) {
     return { success: true };
   }
 
-  const client = config.connection || (await functions.getClient({ config }));
+  const client = config.connection || (await methods.getClient({ config }));
 
   for (const exportedProfile of exports) {
     try {
-      setGroupNames(exportedProfile, functions, config);
-      sortExport(exportedProfile, functions, config);
+      setGroupNames(exportedProfile, methods, config);
+      sortExport(exportedProfile, methods, config);
     } catch (error) {
       // if just one of them is missing foreign key or something, move on
       exportedProfile.error = error;
     }
   }
 
-  await lookupDestinationIds(client, exports, functions, config);
+  await lookupDestinationIds(client, exports, methods, config);
 
-  await deleteExports(client, exports, functions, config);
-  await updateByIds(client, exports, functions, config);
-  await createByForeignKey(client, exports, functions, config);
+  await deleteExports(client, exports, methods, config);
+  await updateByIds(client, exports, methods, config);
+  await createByForeignKey(client, exports, methods, config);
 
   verifyAllProcessed(exports);
 
   // so now, all the exports that don't have an error and where not deleted should have a destinationId
   // use those ids to update the groups
-  await updateGroups(client, exports, functions, config);
+  await updateGroups(client, exports, methods, config);
 
   return checkErrors(exports);
 };
@@ -264,7 +129,7 @@ function verifyProcessed(exportedProfile) {
 async function updateGroups(
   client,
   exports: BatchExport[],
-  functions: BatchFunctions,
+  methods: BatchMethods,
   config: BatchConfig
 ) {
   const removal: GroupNameListMap = {};
@@ -290,11 +155,11 @@ async function updateGroups(
   }
 
   if (Object.keys(removal).length > 0) {
-    await batchGroups(client, GroupAction.Remove, removal, functions, config);
+    await batchGroups(client, GroupAction.Remove, removal, methods, config);
   }
 
   if (Object.keys(addition).length > 0) {
-    await batchGroups(client, GroupAction.Add, addition, functions, config);
+    await batchGroups(client, GroupAction.Add, addition, methods, config);
   }
 }
 
@@ -306,7 +171,7 @@ async function batchGroups(
   client: any,
   action: GroupAction,
   groupMap: GroupNameListMap,
-  functions: BatchFunctions,
+  methods: BatchMethods,
   config: BatchConfig
 ) {
   let currentGroupMap: GroupNameListMap = {};
@@ -320,7 +185,7 @@ async function batchGroups(
   }> = [];
 
   for (const name in groupMap) {
-    if (config.groupMode === GroupBatchMode.WithinGroup) {
+    if (config.groupMode === BatchGroupMode.WithinGroup) {
       // the count is per group
       currentCount = 0;
     }
@@ -354,7 +219,7 @@ async function batchGroups(
 
   for (const { groupMap, destIdMap } of batches) {
     if (action === GroupAction.Add) {
-      await functions.addToGroups({
+      await methods.addToGroups({
         client,
         users: Object.values(destIdMap),
         groupMap,
@@ -362,7 +227,7 @@ async function batchGroups(
         config,
       });
     } else if (action === GroupAction.Remove) {
-      await functions.removeFromGroups({
+      await methods.removeFromGroups({
         client,
         users: Object.values(destIdMap),
         groupMap,
@@ -378,7 +243,7 @@ async function batchGroups(
 async function createByForeignKey(
   client,
   exports: BatchExport[],
-  functions: BatchFunctions,
+  methods: BatchMethods,
   config: BatchConfig
 ) {
   const batches: Array<{ fkMap: ForeignKeyMap }> = [];
@@ -414,7 +279,7 @@ async function createByForeignKey(
     const users = Object.values(fkMap);
     const getByForeignKey = functionToGetForeignKey(fkMap);
 
-    await functions.createByForeignKeyAndSetDestinationIds({
+    await methods.createByForeignKeyAndSetDestinationIds({
       client,
       users,
       getByForeignKey,
@@ -430,7 +295,7 @@ async function createByForeignKey(
 async function updateByIds(
   client: any,
   exports: BatchExport[],
-  functions: BatchFunctions,
+  methods: BatchMethods,
   config: BatchConfig
 ) {
   let currentFkMap: ForeignKeyMap = {};
@@ -477,7 +342,7 @@ async function updateByIds(
     const users = Object.values(destIdMap);
     const getByForeignKey = functionToGetForeignKey(fkMap);
 
-    await functions.updateByDestinationIds({
+    await methods.updateByDestinationIds({
       client,
       users,
       destIdMap,
@@ -494,7 +359,7 @@ async function updateByIds(
 async function deleteExports(
   client,
   exports: BatchExport[],
-  functions: BatchFunctions,
+  methods: BatchMethods,
   config: BatchConfig
 ) {
   let currentFkMap: ForeignKeyMap = {};
@@ -550,7 +415,7 @@ async function deleteExports(
     const users = Object.values(destIdMap);
     const getByForeignKey = functionToGetForeignKey(fkMap);
 
-    await functions.deleteByDestinationIds({
+    await methods.deleteByDestinationIds({
       client,
       users,
       destIdMap,
@@ -567,7 +432,7 @@ async function deleteExports(
 async function lookupDestinationIds(
   client: any,
   exports: BatchExport[],
-  functions: BatchFunctions,
+  methods: BatchMethods,
   config: BatchConfig
 ) {
   let currentFkMap: ForeignKeyMap = {};
@@ -622,7 +487,7 @@ async function lookupDestinationIds(
 
   for (const { fkMap, users, foreignKeys } of batches) {
     const getByForeignKey = functionToGetForeignKey(fkMap);
-    await functions.findAndSetDestinationIds({
+    await methods.findAndSetDestinationIds({
       client,
       users,
       foreignKeys,
@@ -635,18 +500,18 @@ async function lookupDestinationIds(
 // puts added and removed on export
 function setGroupNames(
   exportedProfile: BatchExport,
-  functions: BatchFunctions,
+  methods: BatchMethods,
   config: BatchConfig
 ) {
   // build up groups situation of group names to addition and removal
   let oldGroups = exportedProfile.oldGroups || [];
   let newGroups = exportedProfile.newGroups || [];
-  if (functions.normalizeGroupName) {
+  if (methods.normalizeGroupName) {
     oldGroups = oldGroups.map((groupName) =>
-      functions.normalizeGroupName({ groupName, config })
+      methods.normalizeGroupName({ groupName, config })
     );
     newGroups = newGroups.map((groupName) =>
-      functions.normalizeGroupName({ groupName, config })
+      methods.normalizeGroupName({ groupName, config })
     );
   }
   oldGroups = oldGroups.filter((name) => name && name.length > 0);
@@ -670,10 +535,8 @@ function setForeignKey(fkMap: ForeignKeyMap, key: string, value: BatchExport) {
   key = fixupKey(key);
   fkMap[key] = value;
 }
-function functionToGetForeignKey(
-  fkMap: ForeignKeyMap
-): GetForeignKeyMapFunction {
-  const func: GetForeignKeyMapFunction = function (key) {
+function functionToGetForeignKey(fkMap: ForeignKeyMap): GetForeignKeyMapMethod {
+  const func: GetForeignKeyMapMethod = function (key) {
     key = fixupKey(key);
     return fkMap[key];
   };
@@ -683,7 +546,7 @@ function functionToGetForeignKey(
 // returns what to do for each case
 function sortExport(
   exportedProfile: BatchExport,
-  functions: BatchFunctions,
+  methods: BatchMethods,
   config: BatchConfig
 ) {
   const {
@@ -700,13 +563,13 @@ function sortExport(
       `newProfileProperties[${foreignKey}] is a required mapping`
     );
   }
-  if (functions.normalizeForeignKeyValue) {
-    newValue = functions.normalizeForeignKeyValue({
+  if (methods.normalizeForeignKeyValue) {
+    newValue = methods.normalizeForeignKeyValue({
       keyValue: newValue,
       config,
     });
     if (oldValue) {
-      oldValue = functions.normalizeForeignKeyValue({
+      oldValue = methods.normalizeForeignKeyValue({
         keyValue: oldValue,
         config,
       });
