@@ -37,7 +37,7 @@ describe("modules/lockableHelper", () => {
   describe("with locked team member", () => {
     beforeAll(async () => {
       //@ts-ignore
-      await teamMember.update({ locked: true }, { hooks: false });
+      await teamMember.update({ locked: "locked" }, { hooks: false });
     });
 
     test("if the model is locked, and there are no changes, it will not throw", async () => {

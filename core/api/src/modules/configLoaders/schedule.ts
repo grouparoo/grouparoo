@@ -3,6 +3,7 @@ import {
   validateAndFormatGuid,
   logModel,
   getParentByName,
+  codeConfigLockKey,
   extractNonNullParts,
 } from "../../classes/codeConfig";
 import { Schedule, Source } from "../..";
@@ -14,13 +15,13 @@ export async function loadSchedule(configObject: ConfigurationObject) {
   const source: Source = await getParentByName(Source, configObject.sourceId);
 
   let schedule = await Schedule.scope(null).findOne({
-    where: { guid, locked: true },
+    where: { guid, locked: codeConfigLockKey },
   });
   if (!schedule) {
     isNew = true;
     schedule = await Schedule.create({
       guid,
-      locked: true,
+      locked: codeConfigLockKey,
       sourceGuid: source.guid,
     });
   }
@@ -40,7 +41,7 @@ export async function loadSchedule(configObject: ConfigurationObject) {
 
 export async function deleteSchedules(guids: string[]) {
   const schedules = await Schedule.scope(null).findAll({
-    where: { locked: true, guid: { [Op.notIn]: guids } },
+    where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
   });
 
   for (const i in schedules) await schedules[i].destroy();

@@ -49,6 +49,7 @@ describe("modules/codeConfig", () => {
     test("settings are updated", async () => {
       const setting = await plugin.readSetting("core", "cluster-name");
       expect(setting.value).toBe("Test Cluster");
+      expect(setting.locked).toBe("config:code");
     });
 
     test("apps are created", async () => {
@@ -59,7 +60,7 @@ describe("modules/codeConfig", () => {
       expect(apps[0].guid).toBe("app_data_warehouse");
       expect(apps[0].name).toBe("Data Warehouse");
       expect(apps[0].state).toBe("ready");
-      expect(apps[0].locked).toBe(true);
+      expect(apps[0].locked).toBe("config:code");
       const options = await apps[0].getOptions();
       expect(options).toEqual({ fileGuid: "test-file-path.db" });
     });
@@ -71,7 +72,7 @@ describe("modules/codeConfig", () => {
       expect(sources[0].appGuid).toBe("app_data_warehouse");
       expect(sources[0].name).toBe("Users Table");
       expect(sources[0].state).toBe("ready");
-      expect(sources[0].locked).toBe(true);
+      expect(sources[0].locked).toBe("config:code");
       const options = await sources[0].getOptions();
       expect(options).toEqual({ table: "users" });
     });
@@ -86,7 +87,7 @@ describe("modules/codeConfig", () => {
       expect(rule.unique).toBe(true);
       expect(rule.identifying).toBe(true);
       expect(rule.state).toBe("ready");
-      expect(rule.locked).toBe(true);
+      expect(rule.locked).toBe("config:code");
     });
 
     test("schedules are created", async () => {
@@ -98,7 +99,7 @@ describe("modules/codeConfig", () => {
       expect(schedules[0].state).toBe("ready");
       expect(schedules[0].recurring).toBe(true);
       expect(schedules[0].recurringFrequency).toBe(900000);
-      expect(schedules[0].locked).toBe(true);
+      expect(schedules[0].locked).toBe("config:code");
     });
 
     test("profile property rules are created", async () => {
@@ -123,10 +124,10 @@ describe("modules/codeConfig", () => {
         "ready",
       ]);
       expect(rules.map((r) => r.locked).sort()).toEqual([
-        true,
-        true,
-        true,
-        true,
+        "config:code",
+        "config:code",
+        "config:code",
+        "config:code",
       ]);
     });
 
@@ -136,7 +137,7 @@ describe("modules/codeConfig", () => {
       expect(groups[0].guid).toBe("grp_email_group");
       expect(groups[0].name).toBe("People with Email Addresses");
       expect(groups[0].state).toBe("ready");
-      expect(groups[0].locked).toBe(true);
+      expect(groups[0].locked).toBe("config:code");
       const rules = await groups[0].getRules();
       expect(rules).toEqual([
         {
@@ -169,7 +170,7 @@ describe("modules/codeConfig", () => {
       expect(destinations[0].appGuid).toBe("app_data_warehouse");
       expect(destinations[0].name).toBe("Test Destination");
       expect(destinations[0].state).toBe("ready");
-      expect(destinations[0].locked).toBe(true);
+      expect(destinations[0].locked).toBe("config:code");
       const options = await destinations[0].getOptions();
       expect(options).toEqual({ table: "output" });
     });
@@ -179,7 +180,7 @@ describe("modules/codeConfig", () => {
       expect(apiKeys.length).toBe(1);
       expect(apiKeys[0].guid).toBe("key_website_api_key");
       expect(apiKeys[0].name).toBe("web-api-key");
-      expect(apiKeys[0].locked).toBe(true);
+      expect(apiKeys[0].locked).toBe("config:code");
       expect(apiKeys[0].permissionAllRead).toBe(true);
       expect(apiKeys[0].permissionAllWrite).toBe(true);
     });
@@ -189,7 +190,7 @@ describe("modules/codeConfig", () => {
       expect(teams.length).toBe(1);
       expect(teams[0].guid).toBe("tea_admin_team");
       expect(teams[0].name).toBe("Admin Team");
-      expect(teams[0].locked).toBe(true);
+      expect(teams[0].locked).toBe("config:code");
       expect(teams[0].permissionAllRead).toBe(true);
       expect(teams[0].permissionAllWrite).toBe(true);
     });
@@ -230,7 +231,7 @@ describe("modules/codeConfig", () => {
       expect(apps[0].guid).toBe("app_data_warehouse");
       expect(apps[0].name).toBe("Data Warehouse");
       expect(apps[0].state).toBe("ready");
-      expect(apps[0].locked).toBe(true);
+      expect(apps[0].locked).toBe("config:code");
       const options = await apps[0].getOptions();
       expect(options).toEqual({ fileGuid: "new-file-path.db" });
     });
@@ -257,10 +258,10 @@ describe("modules/codeConfig", () => {
         "ready",
       ]);
       expect(rules.map((r) => r.locked).sort()).toEqual([
-        true,
-        true,
-        true,
-        true,
+        "config:code",
+        "config:code",
+        "config:code",
+        "config:code",
       ]);
     });
 
@@ -270,7 +271,7 @@ describe("modules/codeConfig", () => {
       expect(groups[0].guid).toBe("grp_email_group");
       expect(groups[0].name).toBe("People who have Email Addresses");
       expect(groups[0].state).toBe("ready");
-      expect(groups[0].locked).toBe(true);
+      expect(groups[0].locked).toBe("config:code");
       const rules = await groups[0].getRules();
       expect(rules).toEqual([
         {
@@ -296,7 +297,7 @@ describe("modules/codeConfig", () => {
       expect(teams.length).toBe(1);
       expect(teams[0].guid).toBe("tea_admin_team");
       expect(teams[0].name).toBe("Admin Team (no write)");
-      expect(teams[0].locked).toBe(true);
+      expect(teams[0].locked).toBe("config:code");
       expect(teams[0].permissionAllRead).toBe(true);
       expect(teams[0].permissionAllWrite).toBe(false);
     });

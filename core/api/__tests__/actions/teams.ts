@@ -31,7 +31,7 @@ describe("actions/teams", () => {
 
       expect(response.team.guid.length).toBe(40);
       expect(response.team.name).toBe("Administrators");
-      expect(response.team.locked).toBe(true);
+      expect(response.team.locked).toBe("team:initialize");
       expect(response.team.membersCount).toBe(1);
       expect(response.team.permissions.length).toBeGreaterThan(1);
 

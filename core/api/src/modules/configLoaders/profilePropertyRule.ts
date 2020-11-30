@@ -3,6 +3,7 @@ import {
   extractNonNullParts,
   logModel,
   getParentByName,
+  codeConfigLockKey,
   validateAndFormatGuid,
 } from "../../classes/codeConfig";
 import { ProfilePropertyRule, Source } from "../..";
@@ -19,13 +20,13 @@ export async function loadProfilePropertyRule(
     configObject.id
   );
   let profilePropertyRule = await ProfilePropertyRule.scope(null).findOne({
-    where: { locked: true, guid },
+    where: { locked: codeConfigLockKey, guid },
   });
   if (!profilePropertyRule) {
     isNew = true;
     profilePropertyRule = await ProfilePropertyRule.create({
       guid,
-      locked: true,
+      locked: codeConfigLockKey,
       key: configObject.key || configObject.name,
       type: configObject.type,
       sourceGuid: source.guid,
@@ -54,7 +55,7 @@ export async function loadProfilePropertyRule(
 
 export async function deleteProfilePropertyRules(guids: string[]) {
   const rules = await ProfilePropertyRule.scope(null).findAll({
-    where: { locked: true, guid: { [Op.notIn]: guids } },
+    where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
   });
 
   for (const i in rules) {

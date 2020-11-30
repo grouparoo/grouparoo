@@ -173,7 +173,7 @@ export default function Page(props) {
       />
 
       <Form id="form" onSubmit={onSubmit} autoComplete="off">
-        <fieldset disabled={profilePropertyRule.locked}>
+        <fieldset disabled={profilePropertyRule.locked !== null}>
           <Row>
             <Col md={1}>
               <br />

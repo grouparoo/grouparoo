@@ -1,7 +1,7 @@
 import {
   ConfigurationObject,
-  extractNonNullParts,
   logModel,
+  codeConfigLockKey,
   validateAndFormatGuid,
 } from "../../classes/codeConfig";
 import { Team, Permission } from "../..";
@@ -11,12 +11,14 @@ export async function loadTeam(configObject: ConfigurationObject) {
   let isNew = false;
 
   const guid = await validateAndFormatGuid(Team, configObject.id);
-  let team = await Team.scope(null).findOne({ where: { locked: true, guid } });
+  let team = await Team.scope(null).findOne({
+    where: { locked: codeConfigLockKey, guid },
+  });
   if (!team) {
     isNew = true;
     team = await Team.create({
       guid,
-      locked: true,
+      locked: codeConfigLockKey,
       name: configObject.name,
     });
   }
@@ -46,7 +48,7 @@ export async function loadTeam(configObject: ConfigurationObject) {
   }
 
   await Permission.update(
-    { locked: true },
+    { locked: codeConfigLockKey },
     { where: { ownerGuid: team.guid } }
   );
 
@@ -56,7 +58,7 @@ export async function loadTeam(configObject: ConfigurationObject) {
 
 export async function deleteTeams(guids: string[]) {
   const teams = await Team.scope(null).findAll({
-    where: { locked: true, guid: { [Op.notIn]: guids } },
+    where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
   });
 
   for (const i in teams) await teams[i].destroy();

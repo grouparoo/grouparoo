@@ -167,7 +167,7 @@ export default function Page(props) {
           <br />
           <br />
           <Form id="form" onSubmit={onSubmit} autoComplete="off">
-            <fieldset disabled={source.locked}>
+            <fieldset disabled={source.locked !== null}>
               <Form.Group controlId="name">
                 <Form.Label>Name</Form.Label>
                 <Form.Control

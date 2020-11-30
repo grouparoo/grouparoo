@@ -3,6 +3,7 @@ import {
   extractNonNullParts,
   logModel,
   getParentByName,
+  codeConfigLockKey,
   validateAndFormatGuid,
 } from "../../classes/codeConfig";
 import { App, Source, ProfilePropertyRule } from "../..";
@@ -15,13 +16,13 @@ export async function loadSource(configObject: ConfigurationObject) {
 
   const guid = await validateAndFormatGuid(Source, configObject.id);
   let source = await Source.scope(null).findOne({
-    where: { guid, appGuid: app.guid },
+    where: { guid, locked: codeConfigLockKey, appGuid: app.guid },
   });
   if (!source) {
     isNew = true;
     source = await Source.create({
       guid,
-      locked: true,
+      locked: codeConfigLockKey,
       name: configObject.name,
       type: configObject.type,
       appGuid: app.guid,
@@ -83,7 +84,7 @@ export async function loadSource(configObject: ConfigurationObject) {
   await source.update({ state: "ready" });
 
   if (isNew && bootstrappedRule) {
-    await bootstrappedRule.update({ locked: true });
+    await bootstrappedRule.update({ locked: codeConfigLockKey });
   }
 
   logModel(source, isNew);
@@ -94,7 +95,7 @@ export async function loadSource(configObject: ConfigurationObject) {
 
 export async function deleteSources(guids: string[]) {
   const sources = await Source.scope(null).findAll({
-    where: { locked: true, guid: { [Op.notIn]: guids } },
+    where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
   });
 
   for (const i in sources) {

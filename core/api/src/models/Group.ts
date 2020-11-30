@@ -128,10 +128,9 @@ export class Group extends LoggedModel<Group> {
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
-  @AllowNull(false)
-  @Default(false)
+  @AllowNull(true)
   @Column
-  locked: boolean;
+  locked: string;
 
   @Column
   calculatedAt: Date;

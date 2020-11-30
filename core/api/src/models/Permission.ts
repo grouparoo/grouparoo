@@ -64,10 +64,9 @@ export class Permission extends LoggedModel<Permission> {
   @Column
   write: boolean;
 
-  @AllowNull(false)
-  @Default(false)
+  @AllowNull(true)
   @Column
-  locked: boolean;
+  locked: string;
 
   @BelongsTo(() => Team)
   team: Team;

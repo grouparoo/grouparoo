@@ -3,7 +3,6 @@ import {
   Column,
   AllowNull,
   BeforeSave,
-  Default,
   DataType,
   BeforeDestroy,
 } from "sequelize-typescript";
@@ -50,10 +49,9 @@ export class Setting extends LoggedModel<Setting> {
   @Column(DataType.ENUM(...settingTypes))
   type: typeof settingTypes[number];
 
-  @AllowNull(false)
-  @Default(false)
+  @AllowNull(true)
   @Column
-  locked: boolean;
+  locked: string;
 
   @Column
   title: string;

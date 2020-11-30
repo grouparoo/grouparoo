@@ -48,7 +48,11 @@ export default function Page({
                 </td>
                 <td>{team.membersCount}</td>
                 <td>
-                  <Form.Check type="checkbox" disabled checked={team.locked} />
+                  <Form.Check
+                    type="checkbox"
+                    disabled
+                    checked={team.locked !== null}
+                  />
                 </td>
               </tr>
             );

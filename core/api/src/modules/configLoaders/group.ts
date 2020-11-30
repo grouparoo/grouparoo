@@ -1,6 +1,7 @@
 import {
   ConfigurationObject,
   validateAndFormatGuid,
+  codeConfigLockKey,
   logModel,
 } from "../../classes/codeConfig";
 import { Group } from "../..";
@@ -12,13 +13,13 @@ export async function loadGroup(configObject: ConfigurationObject) {
   const guid = await validateAndFormatGuid(Group, configObject.id);
 
   let group = await Group.scope(null).findOne({
-    where: { guid, locked: true },
+    where: { guid, locked: codeConfigLockKey },
   });
   if (!group) {
     isNew = true;
     group = await Group.create({
       guid,
-      locked: true,
+      locked: codeConfigLockKey,
       name: configObject.name,
       type: configObject.type,
     });
@@ -52,7 +53,7 @@ export async function loadGroup(configObject: ConfigurationObject) {
 
 export async function deleteGroups(guids: string[]) {
   const groups = await Group.scope(null).findAll({
-    where: { locked: true, guid: { [Op.notIn]: guids } },
+    where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
   });
 
   for (const i in groups) await groups[i].destroy();

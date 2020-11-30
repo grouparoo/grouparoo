@@ -71,10 +71,9 @@ export class Destination extends LoggedModel<Destination> {
   @Column
   type: string;
 
-  @AllowNull(false)
-  @Default(false)
+  @AllowNull(true)
   @Column
-  locked: boolean;
+  locked: string;
 
   @AllowNull(false)
   @Default("draft")
