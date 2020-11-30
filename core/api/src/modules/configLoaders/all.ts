@@ -1,5 +1,6 @@
 import { log, config, env } from "actionhero";
 import path from "path";
+import fs from "fs";
 import glob from "glob";
 import {
   ConfigurationObject,
@@ -18,6 +19,7 @@ import { loadGroup, deleteGroups } from "./group";
 import { loadSchedule, deleteSchedules } from "./schedule";
 import { loadSetting } from "./setting";
 import { loadDestination, deleteDestinations } from "./destination";
+import JSON5 from "json5";
 
 interface SeenGuids {
   app: string[];
@@ -46,7 +48,13 @@ export async function loadConfigDirectory(configDir: string) {
 }
 
 async function loadConfigFile(file: string): Promise<ConfigurationObject> {
-  let payload = require(file);
+  let payload;
+  if (file.match(/\.json$/)) {
+    payload = JSON5.parse(fs.readFileSync(file));
+  } else {
+    payload = require(file);
+  }
+
   if (typeof payload === "function") payload = await payload(config);
   return payload;
 }
