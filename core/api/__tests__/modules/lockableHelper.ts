@@ -29,8 +29,13 @@ describe("modules/lockableHelper", () => {
     });
   });
 
-  test("if the model is not locked, I can update it", async () => {
-    await teamMember.update({ locked: false });
+  test("if the model is not locked, I can update it (null)", async () => {
+    await teamMember.update({ locked: null });
+    await LockableHelper.beforeSave(teamMember);
+  });
+
+  test("if the model is not locked, I can update it (undefined)", async () => {
+    await teamMember.update({ locked: undefined });
     await LockableHelper.beforeSave(teamMember);
   });
 
@@ -50,6 +55,12 @@ describe("modules/lockableHelper", () => {
 
     test("if the model is locked, and there are changes to a disallowed column, it throws", async () => {
       await expect(teamMember.update({ firstName: "Luigi" })).rejects.toThrow(
+        /you cannot update this locked teamMember/
+      );
+    });
+
+    test("if the model is locked, and there are changes to a disallowed column, even an empty string, it throws", async () => {
+      await expect(teamMember.update({ firstName: "" })).rejects.toThrow(
         /you cannot update this locked teamMember/
       );
     });
