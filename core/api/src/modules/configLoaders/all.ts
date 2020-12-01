@@ -55,6 +55,7 @@ async function loadConfigFile(file: string): Promise<ConfigurationObject> {
     payload = require(file);
   }
 
+  if (Object.keys(payload) === ["default"]) payload = payload.default;
   if (typeof payload === "function") payload = await payload(config);
   return payload;
 }
