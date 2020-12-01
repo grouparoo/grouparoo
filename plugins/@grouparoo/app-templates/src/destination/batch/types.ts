@@ -13,8 +13,8 @@ export enum BatchAction {
   Update = "UPDATE",
 }
 export enum BatchGroupMode {
-  WithinGroup = "WITHINGROUP",
-  TotalMembers = "TOTALMEMBERS",
+  WithinGroup = "WITHINGROUP", // update group by group
+  TotalMembers = "TOTALMEMBERS", // update all groups at once
 }
 
 export interface BatchExport extends ExportedProfile {
@@ -76,10 +76,7 @@ export interface ExportBatchProfilesPluginMethod {
 }
 
 export interface GetForeignKeyMapMethod {
-  (key: string): any;
-}
-export interface SetForeignKeyMapMethod {
-  (key: string, value: any): void;
+  (key: string): BatchExport;
 }
 
 export interface BatchMethodGetClient {

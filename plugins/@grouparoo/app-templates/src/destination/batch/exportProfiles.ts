@@ -1,11 +1,4 @@
-import {
-  ExportedProfile,
-  App,
-  SimpleAppOptions,
-  Destination,
-  SimpleDestinationOptions,
-  ErrorWithProfileGuid,
-} from "@grouparoo/core";
+import { ErrorWithProfileGuid } from "@grouparoo/core";
 import {
   BatchAction,
   BatchGroupMode,
@@ -277,7 +270,7 @@ async function createByForeignKey(
 
   for (const { fkMap } of batches) {
     const users = Object.values(fkMap);
-    const getByForeignKey = functionToGetForeignKey(fkMap);
+    const getByForeignKey = functionToGetForeignKey(fkMap, methods, config);
 
     await methods.createByForeignKeyAndSetDestinationIds({
       client,
@@ -340,7 +333,7 @@ async function updateByIds(
 
   for (const { fkMap, destIdMap } of batches) {
     const users = Object.values(destIdMap);
-    const getByForeignKey = functionToGetForeignKey(fkMap);
+    const getByForeignKey = functionToGetForeignKey(fkMap, methods, config);
 
     await methods.updateByDestinationIds({
       client,
@@ -413,7 +406,7 @@ async function deleteExports(
 
   for (const { fkMap, destIdMap } of batches) {
     const users = Object.values(destIdMap);
-    const getByForeignKey = functionToGetForeignKey(fkMap);
+    const getByForeignKey = functionToGetForeignKey(fkMap, methods, config);
 
     await methods.deleteByDestinationIds({
       client,
@@ -486,7 +479,7 @@ async function lookupDestinationIds(
   }
 
   for (const { fkMap, users, foreignKeys } of batches) {
-    const getByForeignKey = functionToGetForeignKey(fkMap);
+    const getByForeignKey = functionToGetForeignKey(fkMap, methods, config);
     await methods.findAndSetDestinationIds({
       client,
       users,
@@ -535,8 +528,15 @@ function setForeignKey(fkMap: ForeignKeyMap, key: string, value: BatchExport) {
   key = fixupKey(key);
   fkMap[key] = value;
 }
-function functionToGetForeignKey(fkMap: ForeignKeyMap): GetForeignKeyMapMethod {
+function functionToGetForeignKey(
+  fkMap: ForeignKeyMap,
+  methods: BatchMethods,
+  config: BatchConfig
+): GetForeignKeyMapMethod {
   const func: GetForeignKeyMapMethod = function (key) {
+    if (methods.normalizeForeignKeyValue) {
+      key = methods.normalizeForeignKeyValue({ keyValue: key, config });
+    }
     key = fixupKey(key);
     return fkMap[key];
   };

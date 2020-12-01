@@ -50,10 +50,7 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
     .execute();
 
   for (const record of records) {
-    const value = normalizeForeignKeyValue({
-      keyValue: record[profileMatchField],
-      config,
-    });
+    const value = record[profileMatchField];
     const id = record[idType];
     const found = getByForeignKey(value);
     if (found) {
