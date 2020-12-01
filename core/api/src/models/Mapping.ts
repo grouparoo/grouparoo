@@ -73,7 +73,7 @@ export class Mapping extends LoggedModel<Mapping> {
     instance: Mapping,
     { transaction }: { transaction?: Transaction } = {}
   ) {
-    const existing = await Mapping.findOne({
+    const existing = await Mapping.scope(null).findOne({
       where: {
         guid: { [Op.ne]: instance.guid },
         ownerGuid: instance.ownerGuid,
@@ -93,7 +93,7 @@ export class Mapping extends LoggedModel<Mapping> {
     instance: Mapping,
     { transaction }: { transaction?: Transaction } = {}
   ) {
-    const existing = await Mapping.findOne({
+    const existing = await Mapping.scope(null).findOne({
       where: {
         guid: { [Op.ne]: instance.guid },
         ownerGuid: instance.ownerGuid,

@@ -103,7 +103,7 @@ export class Permission extends LoggedModel<Permission> {
     instance: Permission,
     { transaction }: { transaction?: Transaction } = {}
   ) {
-    const existing = await Permission.findOne({
+    const existing = await Permission.scope(null).findOne({
       where: {
         guid: { [Op.ne]: instance.guid },
         ownerGuid: instance.ownerGuid,

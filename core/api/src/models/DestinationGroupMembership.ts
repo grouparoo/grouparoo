@@ -62,7 +62,7 @@ export class DestinationGroupMembership extends LoggedModel<DestinationGroupMemb
     instance: DestinationGroupMembership,
     { transaction }: { transaction?: Transaction } = {}
   ) {
-    const existing = await DestinationGroupMembership.findOne({
+    const existing = await DestinationGroupMembership.scope(null).findOne({
       where: {
         guid: { [Op.ne]: instance.guid },
         destinationGuid: instance.destinationGuid,
@@ -82,7 +82,7 @@ export class DestinationGroupMembership extends LoggedModel<DestinationGroupMemb
     instance: DestinationGroupMembership,
     { transaction }: { transaction?: Transaction } = {}
   ) {
-    const existing = await DestinationGroupMembership.findOne({
+    const existing = await DestinationGroupMembership.scope(null).findOne({
       where: {
         guid: { [Op.ne]: instance.guid },
         destinationGuid: instance.destinationGuid,

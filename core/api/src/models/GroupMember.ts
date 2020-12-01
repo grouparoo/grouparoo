@@ -82,7 +82,7 @@ export class GroupMember extends Model<GroupMember> {
     instance: GroupMember,
     { transaction }: { transaction?: Transaction } = {}
   ) {
-    const existing = await GroupMember.findOne({
+    const existing = await GroupMember.scope(null).findOne({
       where: {
         guid: { [Op.ne]: instance.guid },
         profileGuid: instance.profileGuid,

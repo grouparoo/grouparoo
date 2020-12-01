@@ -216,7 +216,9 @@ export class App extends LoggedModel<App> {
 
   @BeforeCreate
   static async checkMaxInstances(instance: App) {
-    const count = await App.count({ where: { type: instance.type } });
+    const count = await App.scope(null).count({
+      where: { type: instance.type },
+    });
     const { pluginApp } = await instance.getPlugin();
     if (
       pluginApp &&
@@ -290,7 +292,9 @@ export class App extends LoggedModel<App> {
 
   @BeforeDestroy
   static async checkMinInstances(instance: App) {
-    const count = await App.count({ where: { type: instance.type } });
+    const count = await App.scope(null).count({
+      where: { type: instance.type },
+    });
     const { pluginApp } = await instance.getPlugin();
     if (
       pluginApp &&
