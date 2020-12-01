@@ -81,7 +81,8 @@ async function processConfigObjects(configObjects: Array<ConfigurationObject>) {
 
   for (const i in sortedConfigObjects) {
     const configObject = sortedConfigObjects[i];
-    let klass = configObject.class.toLocaleLowerCase();
+    if (Object.keys(configObject).length === 0) continue;
+    let klass = configObject?.class?.toLocaleLowerCase();
     let object;
     try {
       switch (klass) {
