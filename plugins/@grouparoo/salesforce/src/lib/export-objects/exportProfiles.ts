@@ -1,7 +1,7 @@
 import {
   buildBatchExports,
   BatchExport,
-} from "@grouparoo/app-templates/src/destination/batch";
+} from "@grouparoo/app-templates/dist/destination/batch";
 import { exportSalesforceBatch } from "../export/salesforceExporter";
 import { destinationModel } from "./model";
 import {

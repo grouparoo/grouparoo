@@ -5,7 +5,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 
 import { App, Source, Schedule } from "@grouparoo/core";
 import { helper } from "@grouparoo/spec-helper";
-import { FilterOperation } from "@grouparoo/app-templates/src/source/table";
+import { FilterOperation } from "@grouparoo/app-templates/dist/source/table";
 import { getChangedRowCount } from "../../src/lib/table-import/getChangedRowCount";
 import { beforeData, afterData, getConfig } from "../utils/data";
 const { appOptions, usersTableName } = getConfig();

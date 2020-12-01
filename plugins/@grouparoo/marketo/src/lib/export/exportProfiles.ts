@@ -14,7 +14,7 @@ import {
   BatchMethodNormalizeForeignKeyValue,
   BatchMethodNormalizeGroupName,
   BatchMethodRemoveFromGroups,
-} from "@grouparoo/app-templates/src/destination/batch";
+} from "@grouparoo/app-templates/dist/destination/batch";
 import { ExportProfilesPluginMethod, SimpleAppOptions } from "@grouparoo/core";
 import { connect } from "../connect";
 import { getListId, MarketoCacheData } from "./listMethods";
