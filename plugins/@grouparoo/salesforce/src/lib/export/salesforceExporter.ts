@@ -7,24 +7,32 @@ import { connect } from "../connect";
 import { getFieldMap, SalesforceCacheData } from "../objects";
 import {
   exportProfilesInBatch,
-  BatchFunctions,
   BatchConfig,
   BatchExport,
-  GroupBatchMode,
-} from "../batchHelper";
+  BatchGroupMode,
+  BatchMethodGetClient,
+  BatchMethodFindAndSetDestinationIds,
+  BatchMethodDeleteByDestinationIds,
+  BatchMethodUpdateByDestinationIds,
+  BatchMethodCreateByForeignKeyAndSetDestinationIds,
+  BatchMethodAddToGroups,
+  BatchMethodRemoveFromGroups,
+  BatchMethodNormalizeForeignKeyValue,
+  BatchMethodNormalizeGroupName,
+} from "@grouparoo/app-templates/src/destination/batch";
 import { SalesforceModel } from "./model";
 import { parseFieldName } from "./mapping";
 
 const idType = "Id";
 
 // return an object that you can connect with
-const getClient: BatchFunctions["getClient"] = async ({ config }) => {
+const getClient: BatchMethodGetClient = async ({ config }) => {
   return connect(config.appOptions);
 };
 
 // fetch using the keys to set destinationId and result on BatchExports
 // use the getByForeignKey to lookup results
-const findAndSetDestinationIds: BatchFunctions["findAndSetDestinationIds"] = async ({
+const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
   client,
   foreignKeys,
   getByForeignKey,
@@ -42,10 +50,7 @@ const findAndSetDestinationIds: BatchFunctions["findAndSetDestinationIds"] = asy
     .execute();
 
   for (const record of records) {
-    const value = normalizeForeignKeyValue({
-      keyValue: record[profileMatchField],
-      config,
-    });
+    const value = record[profileMatchField];
     const id = record[idType];
     const found = getByForeignKey(value);
     if (found) {
@@ -59,7 +64,7 @@ const findAndSetDestinationIds: BatchFunctions["findAndSetDestinationIds"] = asy
 };
 
 // delete the given destinationIds
-const deleteByDestinationIds: BatchFunctions["deleteByDestinationIds"] = async ({
+const deleteByDestinationIds: BatchMethodDeleteByDestinationIds = async ({
   client,
   users,
   config,
@@ -412,7 +417,7 @@ function processResults(results, users, type: ResultType) {
 }
 
 // update these users by destinationId
-const updateByDestinationIds: BatchFunctions["updateByDestinationIds"] = async ({
+const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
   client,
   users,
   config,
@@ -425,7 +430,7 @@ const updateByDestinationIds: BatchFunctions["updateByDestinationIds"] = async (
 };
 
 // usually this is creating them. ideally upsert. set the destinationId on each when done
-const createByForeignKeyAndSetDestinationIds: BatchFunctions["createByForeignKeyAndSetDestinationIds"] = async ({
+const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds = async ({
   client,
   users,
   config,
@@ -439,7 +444,7 @@ const createByForeignKeyAndSetDestinationIds: BatchFunctions["createByForeignKey
 };
 
 // make sure these user are in these groups (keys of map are group names)
-const addToGroups: BatchFunctions["addToGroups"] = async ({
+const addToGroups: BatchMethodAddToGroups = async ({
   client,
   groupMap,
   config,
@@ -472,7 +477,7 @@ const addToGroups: BatchFunctions["addToGroups"] = async ({
 };
 
 // make sure these users are not in these groups (keys of map are group names)
-const removeFromGroups: BatchFunctions["removeFromGroups"] = async ({
+const removeFromGroups: BatchMethodRemoveFromGroups = async ({
   client,
   groupMap,
   destIdMap,
@@ -586,7 +591,7 @@ async function createList(
 }
 
 // mess with the keys (lowercase emails, for example)
-const normalizeForeignKeyValue: BatchFunctions["normalizeForeignKeyValue"] = ({
+const normalizeForeignKeyValue: BatchMethodNormalizeForeignKeyValue = ({
   keyValue,
   config,
 }) => {
@@ -595,9 +600,7 @@ const normalizeForeignKeyValue: BatchFunctions["normalizeForeignKeyValue"] = ({
   return normalizeValue({ keyValue, field });
 };
 // mess with the names of groups (tags with no spaces, for example)
-const normalizeGroupName: BatchFunctions["normalizeGroupName"] = ({
-  groupName,
-}) => {
+const normalizeGroupName: BatchMethodNormalizeGroupName = ({ groupName }) => {
   return groupName.toString().trim();
 };
 const normalizeReferenceKeyValue = ({ keyValue, config }) => {
@@ -675,7 +678,7 @@ export const exportSalesforceBatch: ExportSalesforceMethod = async ({
     {
       findSize,
       batchSize,
-      groupMode: GroupBatchMode.TotalMembers,
+      groupMode: BatchGroupMode.TotalMembers,
       appOptions,
       connection,
       data,

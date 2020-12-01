@@ -1,5 +1,8 @@
+import {
+  buildBatchExports,
+  BatchExport,
+} from "@grouparoo/app-templates/src/destination/batch";
 import { exportSalesforceBatch } from "../export/salesforceExporter";
-import { buildBatchExports, BatchExport } from "./../batchHelper";
 import { destinationModel } from "./model";
 import {
   ExportProfilesPluginMethod,

@@ -558,6 +558,7 @@ importers:
       typescript: 4.1.2
   plugins/@grouparoo/marketo:
     dependencies:
+      '@grouparoo/app-templates': 'link:../app-templates'
       node-marketo-rest: github.com/grouparoo/node-marketo/01019570eac0de5f05107ddf815de86ccf536792
     devDependencies:
       '@grouparoo/core': 'link:../../../core'
@@ -573,6 +574,7 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
+      '@grouparoo/app-templates': ^0.1.26-alpha.1
       '@grouparoo/core': ^0.1.26-alpha.1
       '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
@@ -734,6 +736,7 @@ importers:
       typescript: 4.1.2
   plugins/@grouparoo/salesforce:
     dependencies:
+      '@grouparoo/app-templates': 'link:../app-templates'
       jsforce: 1.10.0
     devDependencies:
       '@grouparoo/core': 'link:../../../core'
@@ -749,6 +752,7 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
     specifiers:
+      '@grouparoo/app-templates': ^0.1.26-alpha.1
       '@grouparoo/core': ^0.1.26-alpha.1
       '@grouparoo/spec-helper': ^0.1.26-alpha.1
       '@types/jest': '*'
