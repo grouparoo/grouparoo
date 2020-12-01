@@ -293,7 +293,7 @@ describe("models/app", () => {
     test("the events app should be created automatically", async () => {
       eventApp = await App.scope(null).findOne({ where: { type: "events" } });
       expect(eventApp.guid).toBeTruthy();
-      expect(eventApp.name).toBe("events");
+      expect(eventApp.name).toBe("Grouparoo Events");
     });
 
     test("another events app cannot be created", async () => {
@@ -302,12 +302,12 @@ describe("models/app", () => {
           name: "events 2",
           type: "events",
         })
-      ).rejects.toThrow(/cannot create a new events app/);
+      ).rejects.toThrow(/cannot create a new events app, only 1 allowed/);
     });
 
     test("the events app cannot be deleted", async () => {
       await expect(eventApp.destroy()).rejects.toThrow(
-        /this app cannot be deleted/
+        /cannot delete this events app, at least 1 required/
       );
     });
 

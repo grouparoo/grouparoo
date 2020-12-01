@@ -221,7 +221,7 @@ export class App extends LoggedModel<App> {
     if (
       pluginApp &&
       pluginApp.maxInstances &&
-      pluginApp.maxInstances > count + 1
+      pluginApp.maxInstances < count + 1
     ) {
       throw new Error(
         `cannot create a new ${instance.type} app, only ${pluginApp.maxInstances} allowed`

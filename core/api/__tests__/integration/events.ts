@@ -68,7 +68,7 @@ describe("integration/events", () => {
     const { error, app } = await specHelper.runAction("app:edit", connection);
 
     expect(error).toBeUndefined();
-    expect(app.name).toBe("events");
+    expect(app.name).toBe("Grouparoo Events");
     expect(app.state).toBe("ready");
     appGuid = app.guid;
   });
@@ -389,7 +389,7 @@ describe("integration/events", () => {
 
       expect(error).toBeUndefined();
       expect(source.guid).toBeTruthy();
-      expect(source.app.name).toBe("events");
+      expect(source.app.name).toBe("Grouparoo Events");
     });
 
     describe("profilePropertyRules", () => {
