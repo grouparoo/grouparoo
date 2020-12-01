@@ -47,6 +47,17 @@ describe("integration/events", () => {
     csrfToken = sessionResponse.csrfToken;
   });
 
+  test("an events app can be created", async () => {
+    connection.params = {
+      csrfToken,
+      type: "events",
+      name: "Grouparoo Events",
+    };
+    const { app, error } = await specHelper.runAction("app:create", connection);
+    expect(error).toBeFalsy();
+    expect(app.type).toBe("events");
+  });
+
   test("the events app is present and can be configured", async () => {
     connection.params = {
       csrfToken,

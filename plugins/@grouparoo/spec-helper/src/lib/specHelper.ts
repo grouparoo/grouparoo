@@ -140,15 +140,7 @@ export namespace helper {
   export async function truncate() {
     await Promise.all(
       models.map(async (model) => {
-        if (model === App) {
-          return model.scope(null).destroy({
-            where: {
-              type: { [Op.ne]: "events" },
-            },
-          });
-        } else {
-          return model.truncate();
-        }
+        return model.truncate();
       })
     );
 
