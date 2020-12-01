@@ -106,7 +106,7 @@ describe("models/team", () => {
     test("teams that are locked cannot be deleted", async () => {
       const team = new Team({
         name: "forever team",
-        locked: true,
+        locked: "locked",
       });
       await expect(team.destroy()).rejects.toThrow(
         /you cannot destroy a locked team/

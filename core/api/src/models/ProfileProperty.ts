@@ -1,4 +1,4 @@
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import {
   Table,
   Column,
@@ -178,6 +178,27 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   @BeforeSave
   static async updateState(instance: ProfileProperty) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
+
+  @BeforeSave
+  static async ensureOneProfilePropertyPerProfileProeprtyRule(
+    instance: ProfileProperty,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
+    const existing = await ProfileProperty.findOne({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        profileGuid: instance.profileGuid,
+        profilePropertyRuleGuid: instance.profilePropertyRuleGuid,
+        position: instance.position,
+      },
+      transaction,
+    });
+    if (existing) {
+      throw new Error(
+        `There is already a ProfileProperty for ${instance.profileGuid} and ${instance.profilePropertyRuleGuid} at position ${instance.position}`
+      );
+    }
   }
 
   @AfterSave

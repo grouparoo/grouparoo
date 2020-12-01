@@ -149,10 +149,9 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
-  @AllowNull(false)
-  @Default(false)
+  @AllowNull(true)
   @Column
-  locked: boolean;
+  locked: string;
 
   @AllowNull(false)
   @Default(false)

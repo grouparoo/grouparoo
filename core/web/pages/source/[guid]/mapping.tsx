@@ -158,7 +158,7 @@ export default function Page(props) {
       <h1>Profile Identification</h1>
 
       <Form>
-        <fieldset disabled={source.locked}>
+        <fieldset disabled={source.locked !== null}>
           <Row>
             <Col>
               <p>What column identifies the user?</p>

@@ -11,11 +11,15 @@ export namespace LockableHelper {
     instance,
     allowedColumnsThatCanChangeWhenLocked: string[] = []
   ) {
-    if (!instance.locked) return;
-    if (instance.isNewRecord) return;
+    if (instance.locked === null || instance.locked === undefined) return;
     if (api?.codeConfig?.allowLockedModelChanges !== false) return;
+    if (instance.isNewRecord) return;
 
-    allowedColumnsThatCanChangeWhenLocked.push("updatedAt", "createdAt");
+    allowedColumnsThatCanChangeWhenLocked.push(
+      "locked",
+      "updatedAt",
+      "createdAt"
+    );
 
     const changedCols = instance.changed(); // ['firstName', 'lastLoginAt']
 
@@ -31,7 +35,7 @@ export namespace LockableHelper {
   }
 
   export async function beforeUpdateOptions(instance, hasChanges = true) {
-    if (!instance.locked) return;
+    if (instance.locked === null || instance.locked === undefined) return;
     if (api?.codeConfig?.allowLockedModelChanges !== false) return;
 
     if (hasChanges) {
@@ -44,7 +48,7 @@ export namespace LockableHelper {
   }
 
   export async function beforeDestroy(instance) {
-    if (!instance.locked) return;
+    if (instance.locked === null || instance.locked === undefined) return;
     if (api?.codeConfig?.allowLockedModelChanges !== false) return;
 
     throw new Error(

@@ -4,7 +4,9 @@ import {
   AllowNull,
   ForeignKey,
   BelongsTo,
+  BeforeSave,
 } from "sequelize-typescript";
+import { Op, Transaction } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { App } from "./App";
 import { Source } from "./Source";
@@ -60,5 +62,25 @@ export class Option extends LoggedModel<Option> {
     const instance = await this.scope(null).findOne({ where: { guid } });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
+  }
+
+  @BeforeSave
+  static async ensureOneOwnerGuidPerKey(
+    instance: Option,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
+    const existing = await Option.findOne({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        ownerGuid: instance.ownerGuid,
+        key: instance.key,
+      },
+      transaction,
+    });
+    if (existing) {
+      throw new Error(
+        `There is already a Option for ${instance.ownerGuid} and ${instance.key}`
+      );
+    }
   }
 }

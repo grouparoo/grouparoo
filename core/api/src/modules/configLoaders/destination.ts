@@ -3,6 +3,7 @@ import {
   extractNonNullParts,
   logModel,
   getParentByName,
+  codeConfigLockKey,
   validateAndFormatGuid,
 } from "../../classes/codeConfig";
 import { App, Destination, Group, ProfilePropertyRule } from "../..";
@@ -21,7 +22,7 @@ export async function loadDestination(configObject: ConfigurationObject) {
     isNew = true;
     destination = await Destination.create({
       guid,
-      locked: true,
+      locked: codeConfigLockKey,
       name: configObject.name,
       type: configObject.type,
       appGuid: app.guid,
@@ -73,7 +74,7 @@ export async function loadDestination(configObject: ConfigurationObject) {
 
 export async function deleteDestinations(guids: string[]) {
   const destinations = await Destination.scope(null).findAll({
-    where: { locked: true, guid: { [Op.notIn]: guids } },
+    where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
   });
 
   for (const i in destinations) {

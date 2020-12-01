@@ -7,6 +7,7 @@ import {
   BeforeSave,
   ForeignKey,
 } from "sequelize-typescript";
+import { Op, Transaction } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Team } from "./Team";
 import { ApiKey } from "./ApiKey";
@@ -64,10 +65,9 @@ export class Permission extends LoggedModel<Permission> {
   @Column
   write: boolean;
 
-  @AllowNull(false)
-  @Default(false)
+  @AllowNull(true)
   @Column
-  locked: boolean;
+  locked: string;
 
   @BelongsTo(() => Team)
   team: Team;
@@ -96,6 +96,26 @@ export class Permission extends LoggedModel<Permission> {
   @BeforeSave
   static async noUpdateIfLocked(instance) {
     await LockableHelper.beforeSave(instance);
+  }
+
+  @BeforeSave
+  static async ensureOneOwnerGuidPerTopic(
+    instance: Permission,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
+    const existing = await Permission.findOne({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        ownerGuid: instance.ownerGuid,
+        topic: instance.topic,
+      },
+      transaction,
+    });
+    if (existing) {
+      throw new Error(
+        `There is already a Permission for ${instance.ownerGuid} and ${instance.topic}`
+      );
+    }
   }
 
   static async authorizeAction(

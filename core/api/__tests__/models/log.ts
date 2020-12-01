@@ -9,6 +9,10 @@ describe("models/log", () => {
     actionhero = env.actionhero;
   }, helper.setupTime);
 
+  beforeAll(async () => {
+    await Log.truncate();
+  });
+
   afterAll(async () => {
     await helper.shutdown(actionhero);
   });

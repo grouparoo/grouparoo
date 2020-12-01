@@ -29,10 +29,9 @@ export class Team extends LoggedModel<Team> {
   @Column
   name: string;
 
-  @AllowNull(false)
-  @Default(false)
+  @AllowNull(true)
   @Column
-  locked: boolean;
+  locked: string;
 
   @AllowNull(true)
   @Column
@@ -87,7 +86,7 @@ export class Team extends LoggedModel<Team> {
         );
       }
 
-      if (!permission.locked) {
+      if (permission.locked === null) {
         permission.read =
           this.permissionAllRead !== null
             ? this.permissionAllRead
@@ -123,66 +122,64 @@ export class Team extends LoggedModel<Team> {
   }
 
   @AfterSave
-  static async buildPermissions(instance: Team) {
-    const transaction: Transaction = await api.sequelize.transaction();
+  static async buildPermissions(
+    instance: Team,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
     const permissionsWithStatus: Array<{
       isNew: boolean;
       permission: Permission;
     }> = [];
 
-    try {
-      for (const i in PermissionTopics) {
-        const topic = PermissionTopics[i];
-        let isNew = false;
-        let permission = await Permission.findOne({
-          where: {
+    for (const i in PermissionTopics) {
+      const topic = PermissionTopics[i];
+      let isNew = false;
+      let permission = await Permission.findOne({
+        where: {
+          topic,
+          ownerGuid: instance.guid,
+          ownerType: "team",
+        },
+        transaction,
+      });
+
+      if (!permission) {
+        isNew = true;
+        permission = await Permission.create(
+          {
             topic,
             ownerGuid: instance.guid,
             ownerType: "team",
           },
-          transaction,
-        });
-
-        if (!permission) {
-          isNew = true;
-          permission = await Permission.create(
-            {
-              topic,
-              ownerGuid: instance.guid,
-              ownerType: "team",
-            },
-            { transaction }
-          );
-        }
-
-        if (isNew) {
-          // default new teams to having full 'read' access
-          await permission.update({ read: true }, { transaction });
-        }
-
-        if (instance.permissionAllRead !== null) {
-          await permission.update(
-            { read: instance.permissionAllRead },
-            { transaction }
-          );
-        }
-        if (instance.permissionAllWrite !== null) {
-          await permission.update(
-            { write: instance.permissionAllWrite },
-            { transaction }
-          );
-        }
-
-        permissionsWithStatus.push({ isNew, permission });
+          { transaction }
+        );
       }
 
-      await transaction.commit();
+      if (isNew) {
+        // default new teams to having full 'read' access
+        await permission.update({ read: true }, { transaction });
+      }
 
-      return permissionsWithStatus;
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
+      if (instance.permissionAllRead !== null) {
+        await permission.update(
+          { read: instance.permissionAllRead },
+          { transaction }
+        );
+      }
+      if (instance.permissionAllWrite !== null) {
+        await permission.update(
+          { write: instance.permissionAllWrite },
+          { transaction }
+        );
+      }
+      if (instance.locked && !permission.locked) {
+        await permission.update({ locked: instance.locked });
+      }
+
+      permissionsWithStatus.push({ isNew, permission });
     }
+
+    return permissionsWithStatus;
   }
 
   @BeforeSave
@@ -205,7 +202,10 @@ export class Team extends LoggedModel<Team> {
   }
 
   @AfterDestroy
-  static async deletePermissions(instance: Team, { transaction }) {
+  static async deletePermissions(
+    instance: Team,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
     return Permission.destroy({
       where: { ownerGuid: instance.guid },
       transaction,

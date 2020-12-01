@@ -1,6 +1,7 @@
 import {
   ConfigurationObject,
   validateAndFormatGuid,
+  codeConfigLockKey,
   logModel,
 } from "../../classes/codeConfig";
 import { ApiKey, Permission } from "../..";
@@ -11,13 +12,13 @@ export async function loadApiKey(configObject: ConfigurationObject) {
 
   const guid = await validateAndFormatGuid(ApiKey, configObject.id);
   let apiKey = await ApiKey.scope(null).findOne({
-    where: { locked: true, guid },
+    where: { locked: codeConfigLockKey, guid },
   });
   if (!apiKey) {
     isNew = true;
     apiKey = await ApiKey.create({
       guid,
-      locked: true,
+      locked: codeConfigLockKey,
       name: configObject.name,
     });
   }
@@ -47,7 +48,7 @@ export async function loadApiKey(configObject: ConfigurationObject) {
   }
 
   await Permission.update(
-    { locked: true },
+    { locked: codeConfigLockKey },
     { where: { ownerGuid: apiKey.guid } }
   );
 
@@ -57,7 +58,7 @@ export async function loadApiKey(configObject: ConfigurationObject) {
 
 export async function deleteApiKeys(guids: string[]) {
   const apiKeys = await ApiKey.scope(null).findAll({
-    where: { locked: true, guid: { [Op.notIn]: guids } },
+    where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
   });
 
   for (const i in apiKeys) await apiKeys[i].destroy();

@@ -85,7 +85,7 @@ export default function Page(props) {
       <Row>
         <Col md={group.type === "calculated" ? 8 : 12}>
           <Form id="form" onSubmit={submit} autoComplete="off">
-            <fieldset disabled={group.locked}>
+            <fieldset disabled={group.locked !== null}>
               <Form.Group controlId="name">
                 <Form.Label>Name</Form.Label>
                 <Form.Control

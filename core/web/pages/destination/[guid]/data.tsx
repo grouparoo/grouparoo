@@ -293,7 +293,7 @@ export default function Page(props) {
       <Row>
         <Col>
           <Form id="form" onSubmit={update}>
-            <fieldset disabled={destination.locked}>
+            <fieldset disabled={destination.locked !== null}>
               <Row>
                 <Col>
                   <h5>

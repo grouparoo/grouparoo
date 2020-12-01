@@ -67,6 +67,7 @@ import {
   ProfilePropertyRule,
   ProfilePropertyRuleFilter,
   Run,
+  Setting,
   Mapping,
   Team,
   TeamMember,
@@ -173,6 +174,14 @@ export namespace helper {
     );
   }
 
+  export async function resetSettings() {
+    const settings = await Setting.findAll();
+    for (const i in settings) {
+      const setting = settings[i];
+      await setting.update({ value: setting.defaultValue, locked: null });
+    }
+  }
+
   export async function prepareForAPITest(options = { truncate: true }) {
     const { Process } = await import("actionhero");
     const actionhero = new Process();
@@ -186,6 +195,7 @@ export namespace helper {
     } catch (error) {}
 
     if (options.truncate) await this.truncate();
+    await this.resetSettings();
 
     enableTestPlugin();
 

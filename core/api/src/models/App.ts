@@ -57,10 +57,9 @@ export class App extends LoggedModel<App> {
   @Column
   type: string;
 
-  @AllowNull(false)
-  @Default(false)
+  @AllowNull(true)
   @Column
-  locked: boolean;
+  locked: string;
 
   @AllowNull(false)
   @Default("draft")

@@ -6,12 +6,12 @@ import {
   HasMany,
   AfterSave,
   AfterDestroy,
-  Default,
   BeforeValidate,
   BeforeSave,
   BeforeDestroy,
 } from "sequelize-typescript";
 import * as UUID from "uuid";
+import { Transaction } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Permission, PermissionTopics } from "./Permission";
 import { AsyncReturnType } from "type-fest";
@@ -32,10 +32,9 @@ export class ApiKey extends LoggedModel<ApiKey> {
   @Column
   apiKey: string;
 
-  @AllowNull(false)
-  @Default(false)
+  @AllowNull(true)
   @Column
-  locked: boolean;
+  locked: string;
 
   @AllowNull(true)
   @Column
@@ -96,7 +95,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
         );
       }
 
-      if (!permission.locked) {
+      if (permission.locked === null) {
         permission.read =
           this.permissionAllRead !== null
             ? this.permissionAllRead
@@ -124,7 +123,10 @@ export class ApiKey extends LoggedModel<ApiKey> {
   }
 
   @AfterSave
-  static async buildPermissions(instance: ApiKey, { transaction }) {
+  static async buildPermissions(
+    instance: ApiKey,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
     for (const i in PermissionTopics) {
       const topic = PermissionTopics[i];
       let permission = await Permission.findOne({
@@ -158,6 +160,9 @@ export class ApiKey extends LoggedModel<ApiKey> {
           { write: instance.permissionAllWrite },
           { transaction }
         );
+      }
+      if (instance.locked && !permission.locked) {
+        await permission.update({ locked: instance.locked });
       }
     }
   }

@@ -84,7 +84,7 @@ export default function Page(props) {
       <TeamTabs team={team} />
 
       <Form id="form" onSubmit={updateTeam} autoComplete="off">
-        <fieldset disabled={team.locked}>
+        <fieldset disabled={team.locked !== null}>
           <Form.Group>
             <Form.Label>Name</Form.Label>
             <Form.Control

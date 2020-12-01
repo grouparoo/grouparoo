@@ -185,7 +185,7 @@ describe("models/profileProperty", () => {
           profilePropertyRuleGuid: purchasesRule.guid,
           rawValue: "hat",
         })
-      ).rejects.toThrow(/Validation error/);
+      ).rejects.toThrow(/There is already a ProfileProperty/);
 
       await property.destroy();
     });

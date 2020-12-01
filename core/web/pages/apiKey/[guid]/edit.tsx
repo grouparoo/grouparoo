@@ -90,7 +90,7 @@ export default function Page(props) {
       <ApiKeyTabs apiKey={apiKey} />
 
       <Form id="form" onSubmit={updateApiKey} autoComplete="off">
-        <fieldset disabled={apiKey.locked}>
+        <fieldset disabled={apiKey.locked !== null}>
           <Form.Group>
             <Form.Label>Name</Form.Label>
             <Form.Control

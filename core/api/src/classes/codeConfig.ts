@@ -30,6 +30,8 @@ export interface ConfigurationObject {
 
 // Utils
 
+export const codeConfigLockKey = "config:code";
+
 export async function getParentByName(model: any, id: string) {
   if (!id) {
     throw new Error(`missing parent id to find a ${model.name}`);

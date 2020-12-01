@@ -84,7 +84,7 @@ async function unlockAll() {
       await Model.scope(null).update(
         { locked: false },
         {
-          where: { locked: true },
+          where: { locked: "config:code" },
           hooks: false,
           validate: false,
           sideEffects: false,

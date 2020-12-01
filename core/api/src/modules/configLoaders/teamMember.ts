@@ -1,6 +1,6 @@
 import {
   ConfigurationObject,
-  extractNonNullParts,
+  codeConfigLockKey,
   getParentByName,
   logModel,
   validateAndFormatGuid,
@@ -15,13 +15,13 @@ export async function loadTeamMember(configObject: ConfigurationObject) {
 
   const guid = await validateAndFormatGuid(TeamMember, configObject.id);
   let teamMember = await TeamMember.scope(null).findOne({
-    where: { locked: true, guid },
+    where: { locked: codeConfigLockKey, guid },
   });
   if (!teamMember) {
     isNew = true;
     teamMember = TeamMember.build({
       guid,
-      locked: true,
+      locked: codeConfigLockKey,
       email: configObject.email,
       teamGuid: team.guid,
     });
@@ -46,7 +46,7 @@ export async function loadTeamMember(configObject: ConfigurationObject) {
 
 export async function deleteTeamMembers(guids: string[]) {
   const teamMembers = await TeamMember.scope(null).findAll({
-    where: { locked: true, guid: { [Op.notIn]: guids } },
+    where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
   });
 
   for (const i in teamMembers) await teamMembers[i].destroy();

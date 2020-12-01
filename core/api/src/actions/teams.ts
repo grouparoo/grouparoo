@@ -23,16 +23,14 @@ export class TeamInitialize extends Action {
     let team: Team;
     let teamMember: TeamMember;
 
-    const teamsCount = await Team.count();
-
-    if (teamsCount > 0) {
+    if ((await Team.count()) > 0) {
       throw new Error("an administration team already exists, please sign in");
     }
 
     try {
       team = await Team.create({
         name: "Administrators",
-        locked: true,
+        locked: "team:initialize",
         permissionAllRead: true,
         permissionAllWrite: true,
       });

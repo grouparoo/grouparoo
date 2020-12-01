@@ -107,7 +107,7 @@ export default function Page(props) {
       <SourceTabs source={source} />
 
       <Form id="form" onSubmit={edit} autoComplete="off">
-        <fieldset disabled={schedule.locked}>
+        <fieldset disabled={schedule.locked !== null}>
           <Row>
             <Col md={1}>
               <br />

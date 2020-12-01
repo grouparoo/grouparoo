@@ -133,7 +133,7 @@ export default function Page(props) {
       </p>
 
       <Form id="form" onSubmit={edit} autoComplete="off">
-        <fieldset disabled={app.locked}>
+        <fieldset disabled={app.locked !== null}>
           <Row>
             <Col md={1} style={{ textAlign: "center" }}>
               <br />

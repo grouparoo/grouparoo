@@ -1,4 +1,8 @@
-import { ConfigurationObject, logModel } from "../../classes/codeConfig";
+import {
+  ConfigurationObject,
+  logModel,
+  codeConfigLockKey,
+} from "../../classes/codeConfig";
 import { plugin } from "../..";
 
 export async function loadSetting(configObject: ConfigurationObject) {
@@ -7,6 +11,8 @@ export async function loadSetting(configObject: ConfigurationObject) {
     configObject.key,
     configObject.value
   );
+
+  await setting.update({ locked: codeConfigLockKey });
 
   logModel(setting, false);
   return setting;

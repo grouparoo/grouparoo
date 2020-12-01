@@ -151,7 +151,7 @@ function SettingCard({
           ) : null}
 
           <Form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-            <fieldset disabled={setting.locked}>
+            <fieldset disabled={setting.locked !== null}>
               <Form.Group>
                 {setting.type === "string" ? (
                   <Form.Control

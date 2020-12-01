@@ -3,10 +3,10 @@ import {
   Column,
   AllowNull,
   BeforeSave,
-  Default,
   DataType,
   BeforeDestroy,
 } from "sequelize-typescript";
+import { Op, Transaction } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { LockableHelper } from "../modules/lockableHelper";
 
@@ -50,10 +50,9 @@ export class Setting extends LoggedModel<Setting> {
   @Column(DataType.ENUM(...settingTypes))
   type: typeof settingTypes[number];
 
-  @AllowNull(false)
-  @Default(false)
+  @AllowNull(true)
   @Column
-  locked: boolean;
+  locked: string;
 
   @Column
   title: string;
@@ -99,6 +98,26 @@ export class Setting extends LoggedModel<Setting> {
   @BeforeSave
   static async noUpdateIfLocked(instance) {
     await LockableHelper.beforeSave(instance);
+  }
+
+  @BeforeSave
+  static async ensureOneKeyPerPluginName(
+    instance: Setting,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
+    const existing = await Setting.findOne({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        pluginName: instance.pluginName,
+        key: instance.key,
+      },
+      transaction,
+    });
+    if (existing) {
+      throw new Error(
+        `There is already a Setting for ${instance.pluginName} and ${instance.key}`
+      );
+    }
   }
 
   @BeforeDestroy

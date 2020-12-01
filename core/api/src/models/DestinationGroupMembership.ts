@@ -5,7 +5,9 @@ import {
   BelongsTo,
   ForeignKey,
   Length,
+  BeforeSave,
 } from "sequelize-typescript";
+import { Op, Transaction } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Group } from "./Group";
 import { Destination } from "./Destination";
@@ -53,5 +55,45 @@ export class DestinationGroupMembership extends LoggedModel<DestinationGroupMemb
     const instance = await this.scope(null).findOne({ where: { guid } });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
+  }
+
+  @BeforeSave
+  static async ensureOneDestinationPerGroup(
+    instance: DestinationGroupMembership,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
+    const existing = await DestinationGroupMembership.findOne({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        destinationGuid: instance.destinationGuid,
+        groupGuid: instance.groupGuid,
+      },
+      transaction,
+    });
+    if (existing) {
+      throw new Error(
+        `There is already a DestinationGroupMembership for ${instance.destinationGuid} and ${instance.groupGuid}`
+      );
+    }
+  }
+
+  @BeforeSave
+  static async ensureOneDestinationPerRemoteKey(
+    instance: DestinationGroupMembership,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
+    const existing = await DestinationGroupMembership.findOne({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        destinationGuid: instance.destinationGuid,
+        remoteKey: instance.remoteKey,
+      },
+      transaction,
+    });
+    if (existing) {
+      throw new Error(
+        `There is already a DestinationGroupMembership for ${instance.destinationGuid} and ${instance.remoteKey}`
+      );
+    }
   }
 }

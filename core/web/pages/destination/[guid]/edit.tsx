@@ -137,7 +137,7 @@ export default function Page(props) {
           <StateBadge state={destination.state} />
 
           <Form id="form" onSubmit={onSubmit} autoComplete="off">
-            <fieldset disabled={destination.locked}>
+            <fieldset disabled={destination.locked !== null}>
               <Form.Group controlId="name">
                 <Form.Label>Name</Form.Label>
                 <Form.Control

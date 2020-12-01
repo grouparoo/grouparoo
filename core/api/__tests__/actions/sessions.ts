@@ -224,7 +224,11 @@ describe("session", () => {
         // start with no read or write permissions
         const permissions = await team.$get("permissions");
         for (const i in permissions) {
-          await permissions[i].update({ read: false, write: false });
+          //@ts-ignore
+          await permissions[i].update(
+            { read: false, write: false },
+            { hooks: false }
+          );
         }
 
         toad = new TeamMember({
@@ -300,7 +304,8 @@ describe("session", () => {
         const permission = await Permission.findOne({
           where: { ownerGuid: team.guid, topic: "app" },
         });
-        await permission.update({ read: true, write: false });
+        //@ts-ignore
+        await permission.update({ read: true, write: false }, { hooks: false });
 
         await signIn();
         let response = await specHelper.runAction(
@@ -331,7 +336,8 @@ describe("session", () => {
         const permission = await Permission.findOne({
           where: { ownerGuid: team.guid, topic: "app" },
         });
-        await permission.update({ read: false, write: true });
+        //@ts-ignore
+        await permission.update({ read: false, write: true }, { hooks: false });
 
         await signIn();
         connection.params = { csrfToken };
