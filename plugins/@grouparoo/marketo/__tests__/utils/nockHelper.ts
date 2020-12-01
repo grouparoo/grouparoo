@@ -2,6 +2,7 @@ import { SimpleAppOptions } from "@grouparoo/core";
 import dotenv from "dotenv";
 import path from "path";
 import fs from "fs-extra";
+import { URL } from "url";
 
 const dirPath = path.resolve(path.join(__dirname, ".."));
 const nockPath = path.join(dirPath, ".env.example");
