@@ -1,17 +1,15 @@
 import { helper } from "@grouparoo/spec-helper";
-import {
-  plugin,
-  ProfilePropertyRule,
-  App,
-  Source,
-  Schedule,
-  Group,
-  Destination,
-  ApiKey,
-  Team,
-  TeamMember,
-  Setting,
-} from "../../..";
+import { plugin } from "../../src/modules/plugin";
+import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
+import { App } from "../../src/models/App";
+import { Source } from "../../src/models/Source";
+import { Schedule } from "../../src/models/Schedule";
+import { Group } from "../../src/models/Group";
+import { Destination } from "../../src/models/Destination";
+import { ApiKey } from "../../src/models/ApiKey";
+import { Team } from "../../src/models/Team";
+import { TeamMember } from "../../src/models/TeamMember";
+import { Setting } from "../../src/models/Setting";
 import path from "path";
 import { api } from "actionhero";
 import { Op } from "sequelize";

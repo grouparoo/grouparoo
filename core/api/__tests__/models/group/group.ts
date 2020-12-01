@@ -284,7 +284,7 @@ describe("models/group", () => {
 
     test("it cannot add a member a second time", async () => {
       await expect(group.addProfile(profile)).rejects.toThrow(
-        /Validation error/
+        /There is already a GroupMember/
       );
 
       const profiles = await group.$get("profiles");

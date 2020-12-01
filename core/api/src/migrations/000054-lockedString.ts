@@ -21,7 +21,6 @@ module.exports = {
         allowNull: true,
         defaultValue: null,
       });
-
       if (table !== "teams") {
         await migration.sequelize.query(
           `UPDATE "${table}" SET locked='config:code' where locked IS NOT NULL`

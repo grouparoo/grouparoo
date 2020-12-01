@@ -6,12 +6,14 @@ import {
   UpdatedAt,
   AllowNull,
   BeforeCreate,
+  BeforeSave,
   BelongsTo,
   ForeignKey,
   AfterCreate,
   AfterDestroy,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
+import { Op, Transaction } from "sequelize";
 import { Group } from "./Group";
 import { Profile } from "./Profile";
 import { Log } from "./Log";
@@ -72,6 +74,26 @@ export class GroupMember extends Model<GroupMember> {
   static generateGuid(instance) {
     if (!instance.guid) {
       instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+    }
+  }
+
+  @BeforeSave
+  static async ensureOneProfilePerGroup(
+    instance: GroupMember,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
+    const existing = await GroupMember.findOne({
+      where: {
+        guid: { [Op.ne]: instance.guid },
+        profileGuid: instance.profileGuid,
+        groupGuid: instance.groupGuid,
+      },
+      transaction,
+    });
+    if (existing) {
+      throw new Error(
+        `There is already a GroupMember for ${instance.profileGuid} and ${instance.groupGuid}`
+      );
     }
   }
 

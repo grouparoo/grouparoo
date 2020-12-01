@@ -352,7 +352,6 @@ export namespace GroupOps {
     let groupMembersCount = 0;
 
     const groupMembersToRemove = await GroupMember.findAll({
-      attributes: ["guid", "profileGuid"],
       where: {
         groupGuid: group.guid,
         updatedAt: { [Op.lt]: run.createdAt },
@@ -405,7 +404,6 @@ export namespace GroupOps {
     let groupMembersCount = 0;
 
     const groupMembersToRemove = await GroupMember.findAll({
-      attributes: ["guid", "profileGuid"],
       where: {
         groupGuid: group.guid,
         removedAt: { [Op.lte]: run.createdAt },
