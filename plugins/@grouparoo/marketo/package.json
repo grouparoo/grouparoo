@@ -27,6 +27,7 @@
     "lint": "prettier --check src "
   },
   "dependencies": {
+    "@grouparoo/app-templates": "^0.1.26-alpha.1",
     "node-marketo-rest": "grouparoo/node-marketo#restler_upgrade"
   },
   "peerDependencies": {
