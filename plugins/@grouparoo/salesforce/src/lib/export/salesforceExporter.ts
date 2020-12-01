@@ -19,7 +19,7 @@ import {
   BatchMethodRemoveFromGroups,
   BatchMethodNormalizeForeignKeyValue,
   BatchMethodNormalizeGroupName,
-} from "@grouparoo/app-templates/src/destination/batch";
+} from "@grouparoo/app-templates/dist/destination/batch";
 import { SalesforceModel } from "./model";
 import { parseFieldName } from "./mapping";
 
