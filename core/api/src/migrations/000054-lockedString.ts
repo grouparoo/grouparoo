@@ -23,16 +23,19 @@ module.exports = {
       });
       if (table !== "teams") {
         await migration.sequelize.query(
-          `UPDATE "${table}" SET locked='config:code' where locked IS NOT NULL`
+          `UPDATE "${table}" SET locked='config:code' WHERE (locked = '1' OR locked = 'true')`
         );
       } else {
         await migration.sequelize.query(
-          `UPDATE "${table}" SET locked='team:initialize' where locked IS NOT NULL and name = 'Administrators' and "permissionAllWrite" = true and "permissionAllRead" = true`
+          `UPDATE "${table}" SET locked='team:initialize' WHERE (locked = '1' OR locked = 'true') AND name = 'Administrators' AND "permissionAllWrite" = true AND "permissionAllRead" = true`
         );
         await migration.sequelize.query(
-          `UPDATE "${table}" SET locked='config:code' where locked IS NOT NULL and name != 'Administrators'`
+          `UPDATE "${table}" SET locked='config:code' WHERE (locked = '1' OR locked = 'true') AND name != 'Administrators'`
         );
       }
+      await migration.sequelize.query(
+        `UPDATE "${table}" SET locked=NULL WHERE (locked = '0' OR locked = 'false')`
+      );
     }
   },
 
