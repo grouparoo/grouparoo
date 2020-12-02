@@ -3,7 +3,7 @@ import fs from "fs-extra";
 import os from "os";
 import { api } from "actionhero";
 import { getParentPath } from "@grouparoo/core/api/src/utils/pluginDetails";
-import { loadConfigDirectory } from "@grouparoo/core/api/dist/modules/configLoaders/all";
+import { loadConfigDirectory } from "@grouparoo/core/api/dist/modules/configLoaders";
 import { getAppOptions } from "./sample_data";
 import { prettier, log } from "./util/shared";
 

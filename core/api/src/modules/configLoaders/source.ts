@@ -87,8 +87,10 @@ export async function loadSource(configObject: ConfigurationObject) {
     await bootstrappedRule.update({ locked: codeConfigLockKey });
   }
 
-  logModel(source, isNew);
-  if (bootstrappedRule) logModel(bootstrappedRule, isNew);
+  logModel(source, isNew ? "created" : "updated");
+  if (bootstrappedRule) {
+    logModel(bootstrappedRule, isNew ? "created" : "updated");
+  }
 
   return source;
 }
@@ -115,5 +117,6 @@ export async function deleteSources(guids: string[]) {
     }
 
     await source.destroy();
+    logModel(source, "deleted");
   }
 }

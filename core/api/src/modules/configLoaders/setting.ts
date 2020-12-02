@@ -14,6 +14,6 @@ export async function loadSetting(configObject: ConfigurationObject) {
 
   await setting.update({ locked: codeConfigLockKey });
 
-  logModel(setting, false);
+  logModel(setting, "updated");
   return setting;
 }

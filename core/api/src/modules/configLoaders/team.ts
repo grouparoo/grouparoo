@@ -52,7 +52,7 @@ export async function loadTeam(configObject: ConfigurationObject) {
     { where: { ownerGuid: team.guid } }
   );
 
-  logModel(team, isNew);
+  logModel(team, isNew ? "created" : "updated");
   return team;
 }
 
@@ -61,5 +61,8 @@ export async function deleteTeams(guids: string[]) {
     where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
   });
 
-  for (const i in teams) await teams[i].destroy();
+  for (const i in teams) {
+    await teams[i].destroy();
+    logModel(teams[i], "deleted");
+  }
 }

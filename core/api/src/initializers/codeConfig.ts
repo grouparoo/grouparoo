@@ -1,7 +1,7 @@
 import { api, Initializer } from "actionhero";
 import path from "path";
 import { getParentPath } from "../utils/pluginDetails";
-import { loadConfigDirectory } from "../modules/configLoaders/all";
+import { loadConfigDirectory } from "../modules/configLoaders";
 
 declare module "actionhero" {
   export interface Api {

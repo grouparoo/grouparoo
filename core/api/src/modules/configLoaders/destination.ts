@@ -68,7 +68,7 @@ export async function loadDestination(configObject: ConfigurationObject) {
 
   await destination.update({ state: "ready" });
 
-  logModel(destination, isNew);
+  logModel(destination, isNew ? "created" : "updated");
   return destination;
 }
 
@@ -81,5 +81,6 @@ export async function deleteDestinations(guids: string[]) {
     const destination = destinations[i];
     await destination.unTrackGroup();
     await destination.destroy();
+    logModel(destination, "deleted");
   }
 }
