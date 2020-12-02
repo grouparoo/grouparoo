@@ -49,7 +49,7 @@ export async function loadProfilePropertyRule(
   }
 
   await profilePropertyRule.update({ state: "ready" });
-  logModel(profilePropertyRule, isNew);
+  logModel(profilePropertyRule, isNew ? "created" : "updated");
   return profilePropertyRule;
 }
 
@@ -62,5 +62,6 @@ export async function deleteProfilePropertyRules(guids: string[]) {
     const rule = rules[i];
     if (rule.directlyMapped) continue;
     await rule.destroy();
+    logModel(rule, "deleted");
   }
 }

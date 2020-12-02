@@ -47,7 +47,7 @@ export async function loadGroup(configObject: ConfigurationObject) {
   }
 
   await group.update({ state: "ready" });
-  logModel(group, isNew);
+  logModel(group, isNew ? "created" : "updated");
   return group;
 }
 
@@ -56,5 +56,8 @@ export async function deleteGroups(guids: string[]) {
     where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
   });
 
-  for (const i in groups) await groups[i].destroy();
+  for (const i in groups) {
+    await groups[i].destroy();
+    logModel(groups[i], "deleted");
+  }
 }

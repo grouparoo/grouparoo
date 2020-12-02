@@ -40,7 +40,7 @@ export async function loadTeamMember(configObject: ConfigurationObject) {
     await teamMember.updatePassword(configObject.options.password);
   }
 
-  logModel(teamMember, isNew);
+  logModel(teamMember, isNew ? "created" : "updated");
   return teamMember;
 }
 
@@ -49,5 +49,8 @@ export async function deleteTeamMembers(guids: string[]) {
     where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
   });
 
-  for (const i in teamMembers) await teamMembers[i].destroy();
+  for (const i in teamMembers) {
+    await teamMembers[i].destroy();
+    logModel(teamMembers[i], "deleted");
+  }
 }

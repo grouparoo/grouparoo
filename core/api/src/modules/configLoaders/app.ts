@@ -36,7 +36,7 @@ export async function loadApp(configObject: ConfigurationObject) {
   }
 
   await app.update({ state: "ready" });
-  logModel(app, isNew);
+  logModel(app, isNew ? "created" : "updated");
   return app;
 }
 
@@ -45,5 +45,8 @@ export async function deleteApps(guids: string[]) {
     where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
   });
 
-  for (const i in apps) await apps[i].destroy();
+  for (const i in apps) {
+    await apps[i].destroy();
+    logModel(apps[i], "deleted");
+  }
 }

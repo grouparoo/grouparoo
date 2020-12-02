@@ -35,7 +35,7 @@ export async function loadSchedule(configObject: ConfigurationObject) {
   await schedule.setOptions(extractNonNullParts(configObject, "options"));
 
   await schedule.update({ state: "ready" });
-  logModel(schedule, isNew);
+  logModel(schedule, isNew ? "created" : "updated");
   return schedule;
 }
 
@@ -44,5 +44,8 @@ export async function deleteSchedules(guids: string[]) {
     where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
   });
 
-  for (const i in schedules) await schedules[i].destroy();
+  for (const i in schedules) {
+    await schedules[i].destroy();
+    logModel(schedules[i], "deleted");
+  }
 }

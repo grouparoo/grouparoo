@@ -75,13 +75,16 @@ export async function validateAndFormatGuid(model, id: string) {
   return guid;
 }
 
-export function logModel(instance, isNew: boolean) {
+export function logModel(instance, mode: "created" | "updated" | "deleted") {
+  let logLevel = "info";
+  if (mode === "created") logLevel = "notice";
+  if (mode === "deleted") logLevel = "warning";
+
   log(
-    `[ config ] ${isNew ? "created" : "updated"} ${
-      instance.constructor.name
-    } \`${instance.key || instance.email || instance.name}\` (${
-      instance.guid
-    }) from config file`
+    `[ config ] ${mode} ${instance.constructor.name} \`${
+      instance.key || instance.email || instance.name
+    }\` (${instance.guid})`,
+    logLevel
   );
 }
 

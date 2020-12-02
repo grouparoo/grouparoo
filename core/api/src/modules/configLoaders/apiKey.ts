@@ -52,7 +52,7 @@ export async function loadApiKey(configObject: ConfigurationObject) {
     { where: { ownerGuid: apiKey.guid } }
   );
 
-  logModel(apiKey, isNew);
+  logModel(apiKey, isNew ? "created" : "updated");
   return apiKey;
 }
 
@@ -61,5 +61,8 @@ export async function deleteApiKeys(guids: string[]) {
     where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
   });
 
-  for (const i in apiKeys) await apiKeys[i].destroy();
+  for (const i in apiKeys) {
+    await apiKeys[i].destroy();
+    logModel(apiKeys[i], "deleted");
+  }
 }
