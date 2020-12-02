@@ -117,6 +117,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/profile/:guid", action: "profile:edit" },
         { path: "/v:apiVersion/profiles/importAndUpdate", action: "profiles:importAndUpdate" },
         { path: "/v:apiVersion/profilePropertyRule/:guid", action: "profilePropertyRule:edit" },
+        { path: "/v:apiVersion/profilePropertyRule/:guid/makeIdentifying", action: "profilePropertyRule:makeIdentifying" },
         { path: "/v:apiVersion/account", action: "account:edit" },
         { path: "/v:apiVersion/setting/:guid", action: "setting:edit" },
         { path: "/v:apiVersion/app/:guid/test", action: "app:test" },

@@ -137,7 +137,6 @@ export class ProfilePropertyRuleCreate extends AuthenticatedAction {
       type: { required: true },
       unique: { required: false },
       isArray: { required: false },
-      identifying: { required: false },
       state: { required: false },
       sourceGuid: { required: false },
       options: { required: false },
@@ -151,7 +150,6 @@ export class ProfilePropertyRuleCreate extends AuthenticatedAction {
       type: params.type,
       unique: params.unique,
       isArray: params.isArray,
-      identifying: params.identifying,
       sourceGuid: params.sourceGuid,
     });
 
@@ -182,7 +180,6 @@ export class ProfilePropertyRuleEdit extends AuthenticatedAction {
       type: { required: false },
       unique: { required: false },
       isArray: { required: false },
-      identifying: { required: false },
       state: { required: false },
       sourceGuid: { required: false },
       options: { required: false },
@@ -207,6 +204,27 @@ export class ProfilePropertyRuleEdit extends AuthenticatedAction {
       pluginOptions: await profilePropertyRule.pluginOptions(),
       source: source.apiData(),
     };
+  }
+}
+
+export class ProfilePropertyRuleMakeIdentifying extends AuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "profilePropertyRule:makeIdentifying";
+    this.description = "make a profilePropertyRule identifying for the cluster";
+    this.outputExample = {};
+    this.permission = { topic: "profilePropertyRule", mode: "write" };
+    this.inputs = {
+      guid: { required: true },
+    };
+  }
+
+  async run({ params }) {
+    const profilePropertyRule = await ProfilePropertyRule.findByGuid(
+      params.guid
+    );
+    await profilePropertyRule.makeIdentifying();
+    return { profilePropertyRule: await profilePropertyRule.apiData() };
   }
 }
 

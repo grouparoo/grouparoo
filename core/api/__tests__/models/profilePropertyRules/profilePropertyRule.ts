@@ -204,6 +204,19 @@ describe("models/profilePropertyRule", () => {
         })
       ).rejects.toThrow(/only one profile property rule can be identifying/);
     });
+
+    test("the identifying rule can be changed", async () => {
+      const rule = await ProfilePropertyRule.create({
+        key: "New Rule",
+        type: "string",
+        sourceGuid: source.guid,
+      });
+      expect(rule.identifying).toBe(false);
+
+      await rule.makeIdentifying();
+      expect(rule.identifying).toBe(true);
+      await rule.destroy();
+    });
   });
 
   test("updating a profile property rule with new options enqueued an internalRun and update groups relying on it", async () => {

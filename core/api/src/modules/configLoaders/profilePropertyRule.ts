@@ -37,7 +37,6 @@ export async function loadProfilePropertyRule(
     key: configObject.key || configObject.name,
     unique: configObject.unique,
     isArray: configObject.isArray,
-    identifying: configObject.identifying,
   });
 
   await profilePropertyRule.setOptions(
@@ -46,6 +45,10 @@ export async function loadProfilePropertyRule(
 
   if (configObject.filters) {
     await profilePropertyRule.setFilters(configObject.filters);
+  }
+
+  if (configObject.identifying === true) {
+    await profilePropertyRule.makeIdentifying();
   }
 
   await profilePropertyRule.update({ state: "ready" });
