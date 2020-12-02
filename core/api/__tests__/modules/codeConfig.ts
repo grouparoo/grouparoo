@@ -52,14 +52,24 @@ describe("modules/codeConfig", () => {
 
     test("apps are created", async () => {
       const apps = await App.findAll({
-        where: { type: { [Op.ne]: "events" } },
+        order: [["type", "asc"]],
       });
-      expect(apps.length).toBe(1);
-      expect(apps[0].guid).toBe("app_data_warehouse");
-      expect(apps[0].name).toBe("Data Warehouse");
+      expect(apps.length).toBe(2);
+
+      expect(apps[0].guid).toBe("app_events");
+      expect(apps[0].name).toBe("Grouparoo Events");
       expect(apps[0].state).toBe("ready");
       expect(apps[0].locked).toBe("config:code");
-      const options = await apps[0].getOptions();
+      let options = await apps[0].getOptions();
+      expect(options).toEqual({
+        identifyingProfilePropertyRuleGuid: "rul_user_id",
+      });
+
+      expect(apps[1].guid).toBe("app_data_warehouse");
+      expect(apps[1].name).toBe("Data Warehouse");
+      expect(apps[1].state).toBe("ready");
+      expect(apps[1].locked).toBe("config:code");
+      options = await apps[1].getOptions();
       expect(options).toEqual({ fileGuid: "test-file-path.db" });
     });
 

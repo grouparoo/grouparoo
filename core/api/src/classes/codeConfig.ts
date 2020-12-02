@@ -117,7 +117,6 @@ export function sortConfigurationObject(configObjects: ConfigurationObject[]) {
   const sortedConfigObjectsWithIds = sortConfigObjectsWithIds(
     configObjectsWithIds
   );
-  console.log(sortedConfigObjectsWithIds);
   return sortedConfigObjectsWithIds.map((o) => o.configObject);
 }
 
