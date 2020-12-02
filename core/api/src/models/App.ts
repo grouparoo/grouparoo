@@ -215,11 +215,18 @@ export class App extends LoggedModel<App> {
   }
 
   @BeforeCreate
-  static async checkAddibleCreate(instance: App) {
+  static async checkMaxInstances(instance: App) {
+    const count = await App.scope(null).count({
+      where: { type: instance.type },
+    });
     const { pluginApp } = await instance.getPlugin();
-    if (pluginApp && pluginApp.addible === false) {
+    if (
+      pluginApp &&
+      pluginApp.maxInstances &&
+      pluginApp.maxInstances < count + 1
+    ) {
       throw new Error(
-        `cannot create a new ${instance.type} app, it is not addible`
+        `cannot create a new ${instance.type} app, only ${pluginApp.maxInstances} allowed`
       );
     }
   }
@@ -284,10 +291,19 @@ export class App extends LoggedModel<App> {
   }
 
   @BeforeDestroy
-  static async checkAddibleDestroy(instance: App) {
+  static async checkMinInstances(instance: App) {
+    const count = await App.scope(null).count({
+      where: { type: instance.type },
+    });
     const { pluginApp } = await instance.getPlugin();
-    if (pluginApp && pluginApp.addible === false) {
-      throw new Error(`this app cannot be deleted`);
+    if (
+      pluginApp &&
+      pluginApp.minInstances &&
+      pluginApp.minInstances > count - 1
+    ) {
+      throw new Error(
+        `cannot delete this ${instance.type} app, at least ${pluginApp.minInstances} required`
+      );
     }
   }
 

@@ -1,8 +1,8 @@
 import { helper } from "@grouparoo/spec-helper";
-import { App } from "./../../src/models/App";
-import { Option } from "./../../src/models/Option";
-import { Log } from "./../../src/models/Log";
-import { plugin } from "./../../src/modules/plugin";
+import { App } from "../../../src/models/App";
+import { Option } from "../../../src/models/Option";
+import { Log } from "../../../src/models/Log";
+import { plugin } from "../../../src/modules/plugin";
 import { api, redis, utils } from "actionhero";
 let actionhero;
 
@@ -280,42 +280,6 @@ describe("models/app", () => {
       // doesn't throw
       await source.destroy();
       await app.destroy();
-    });
-  });
-
-  describe("events app", () => {
-    let eventApp: App;
-
-    beforeAll(async () => {
-      await helper.factories.profilePropertyRules();
-    });
-
-    test("the events app should be created automatically", async () => {
-      eventApp = await App.scope(null).findOne({ where: { type: "events" } });
-      expect(eventApp.guid).toBeTruthy();
-      expect(eventApp.name).toBe("events");
-    });
-
-    test("another events app cannot be created", async () => {
-      await expect(
-        App.create({
-          name: "events 2",
-          type: "events",
-        })
-      ).rejects.toThrow(/cannot create a new events app/);
-    });
-
-    test("the events app cannot be deleted", async () => {
-      await expect(eventApp.destroy()).rejects.toThrow(
-        /this app cannot be deleted/
-      );
-    });
-
-    test("the appOptions for the events app only include unique profile property rules", async () => {
-      const appOptions = await eventApp.appOptions();
-      expect(
-        appOptions.identifyingProfilePropertyRuleGuid.descriptions.sort()
-      ).toEqual(["email", "userId"]);
     });
   });
 

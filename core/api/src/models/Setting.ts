@@ -105,7 +105,7 @@ export class Setting extends LoggedModel<Setting> {
     instance: Setting,
     { transaction }: { transaction?: Transaction } = {}
   ) {
-    const existing = await Setting.findOne({
+    const existing = await Setting.scope(null).findOne({
       where: {
         guid: { [Op.ne]: instance.guid },
         pluginName: instance.pluginName,

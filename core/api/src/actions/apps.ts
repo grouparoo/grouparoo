@@ -58,15 +58,19 @@ export class AppOptions extends AuthenticatedAction {
   async run() {
     const types: Array<{
       name: string;
+      maxInstances: number;
+      minInstances: number;
       addible: boolean;
       options: PluginApp["options"];
       plugin: { name: string; icon: string };
       provides: { source: boolean; destination: boolean };
     }> = [];
 
-    api.plugins.plugins.map((plugin: GrouparooPlugin) => {
+    for (const i in api.plugins.plugins) {
+      const plugin = api.plugins.plugins[i];
       if (plugin.apps) {
-        plugin.apps.map((app) => {
+        for (const j in plugin.apps) {
+          const app = plugin.apps[j];
           const source = api.plugins.plugins.find((p) =>
             p?.connections?.find(
               (c) => c.app === app.name && c.direction === "import"
@@ -83,16 +87,24 @@ export class AppOptions extends AuthenticatedAction {
             ? true
             : false;
 
+          const appsOfThisType = await App.count({ where: { type: app.name } });
+          let addible = true;
+          if (app.maxInstances && app.maxInstances === appsOfThisType) {
+            addible = false;
+          }
+
           types.push({
             name: app.name,
-            addible: app.addible,
+            maxInstances: app.maxInstances,
+            minInstances: app.minInstances,
+            addible,
             options: app.options,
             plugin: { name: plugin.name, icon: plugin.icon },
             provides: { source, destination },
           });
-        });
+        }
       }
-    });
+    }
 
     const environmentVariableOptions = OptionHelper.getEnvironmentVariableOptionsForTopic(
       "app"

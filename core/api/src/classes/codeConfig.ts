@@ -28,6 +28,12 @@ export interface ConfigurationObject {
   mapping?: { [key: string]: any };
 }
 
+interface orderedConfigObject {
+  configObject: ConfigurationObject;
+  providedIds: string[];
+  prerequisiteIds: string[];
+}
+
 // Utils
 
 export const codeConfigLockKey = "config:code";
@@ -95,25 +101,122 @@ export function extractNonNullParts(
   return cleanedOptions;
 }
 
-export function sortConfigurationObject(
-  a: ConfigurationObject,
-  b: ConfigurationObject
-) {
-  const klass = a.class.toLocaleLowerCase();
-  const otherKlass = b.class.toLocaleLowerCase();
+export function sortConfigurationObject(configObjects: ConfigurationObject[]) {
+  const configObjectsWithIds: orderedConfigObject[] = [];
 
-  const points = {
-    setting: 10,
-    app: 9,
-    source: 8,
-    profilepropertyrule: 7,
-    group: 7,
-    destination: 5,
-    schedule: 4,
-    apikey: 3,
-    team: 2,
-    teammember: 1,
-  };
+  for (const i in configObjects) {
+    const configObject = configObjects[i];
+    const { providedIds, prerequisiteIds } = getParentIds(configObject);
+    configObjectsWithIds.push({
+      configObject,
+      providedIds,
+      prerequisiteIds,
+    });
+  }
 
-  return points[otherKlass] - points[klass];
+  const sortedConfigObjectsWithIds = sortConfigObjectsWithIds(
+    configObjectsWithIds
+  );
+  return sortedConfigObjectsWithIds.map((o) => o.configObject);
+}
+
+function getParentIds(configObject: ConfigurationObject) {
+  const keys = Object.keys(configObject);
+  const prerequisiteIds: string[] = [];
+  const providedIds: string[] = [];
+
+  providedIds.push(configObject.id);
+
+  // special cases
+  // - Bootstrapped profile property rules
+  if (configObject?.bootstrappedProfilePropertyRule?.id) {
+    providedIds.push(configObject.bootstrappedProfilePropertyRule.id);
+  }
+
+  // prerequisites
+  for (const i in keys) {
+    if (keys[i].match(/.+Id$/)) {
+      prerequisiteIds.push(configObject[keys[i]]);
+    }
+  }
+
+  const objectContainers = ["options"];
+  objectContainers.map((_container) => {
+    if (configObject[_container]) {
+      const containerKeys = Object.keys(configObject[_container]);
+      for (const i in containerKeys) {
+        if (containerKeys[i].match(/.+Id$/)) {
+          prerequisiteIds.push(configObject[_container][containerKeys[i]]);
+        } else if (containerKeys[i].match(/.+Guid$/)) {
+          prerequisiteIds.push(
+            configObject[_container][containerKeys[i]].replace(/^.{3}_/, "")
+          );
+        }
+      }
+    }
+  });
+
+  const arrayContainers = ["rules"];
+  arrayContainers.map((_container) => {
+    for (const i in configObject[_container]) {
+      const record = configObject[_container][i];
+      const recordKeys = Object.keys(record);
+      for (const j in recordKeys) {
+        if (recordKeys[j].match(/.+Id$/)) {
+          prerequisiteIds.push(record[recordKeys[j]]);
+        }
+      }
+    }
+  });
+
+  if (configObject["mapping"]) {
+    const mappingValues = Object.keys(configObject["mapping"]);
+    mappingValues.forEach((v) => {
+      prerequisiteIds.push(v);
+    });
+  }
+
+  return { prerequisiteIds, providedIds };
+}
+
+function sortConfigObjectsWithIds(configObjectsWithIds: orderedConfigObject[]) {
+  const sortedConfigObjectsWithIds: orderedConfigObject[] = [];
+
+  configObjectsWithIds.forEach((c) => {
+    if (sortedConfigObjectsWithIds.length === 0) {
+      sortedConfigObjectsWithIds.push(c);
+    } else if (c.prerequisiteIds.length === 0) {
+      sortedConfigObjectsWithIds.unshift(c);
+    } else {
+      let indexOfLastDependency: number;
+      let indexOfFirstDependent: number;
+
+      sortedConfigObjectsWithIds.forEach((listedConfigObject, idx) => {
+        c.prerequisiteIds.forEach((id) => {
+          if (listedConfigObject.providedIds.includes(id)) {
+            indexOfLastDependency = idx;
+          }
+        });
+
+        c.providedIds.map((id) => {
+          if (
+            !indexOfFirstDependent &&
+            listedConfigObject.prerequisiteIds.includes(id)
+          ) {
+            indexOfFirstDependent = idx;
+          }
+        });
+      });
+
+      if (indexOfLastDependency) {
+        sortedConfigObjectsWithIds.splice(indexOfLastDependency + 1, 0, c);
+      } else if (indexOfFirstDependent) {
+        sortedConfigObjectsWithIds.splice(indexOfFirstDependent, 0, c);
+      } else {
+        sortedConfigObjectsWithIds.push(c);
+      }
+    }
+  });
+
+  return sortedConfigObjectsWithIds;
 }

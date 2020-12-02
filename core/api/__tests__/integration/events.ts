@@ -47,6 +47,17 @@ describe("integration/events", () => {
     csrfToken = sessionResponse.csrfToken;
   });
 
+  test("an events app can be created", async () => {
+    connection.params = {
+      csrfToken,
+      type: "events",
+      name: "Grouparoo Events",
+    };
+    const { app, error } = await specHelper.runAction("app:create", connection);
+    expect(error).toBeFalsy();
+    expect(app.type).toBe("events");
+  });
+
   test("the events app is present and can be configured", async () => {
     connection.params = {
       csrfToken,
@@ -68,7 +79,7 @@ describe("integration/events", () => {
     const { error, app } = await specHelper.runAction("app:edit", connection);
 
     expect(error).toBeUndefined();
-    expect(app.name).toBe("events");
+    expect(app.name).toBe("Grouparoo Events");
     expect(app.state).toBe("ready");
     appGuid = app.guid;
   });
@@ -389,7 +400,7 @@ describe("integration/events", () => {
 
       expect(error).toBeUndefined();
       expect(source.guid).toBeTruthy();
-      expect(source.app.name).toBe("events");
+      expect(source.app.name).toBe("Grouparoo Events");
     });
 
     describe("profilePropertyRules", () => {

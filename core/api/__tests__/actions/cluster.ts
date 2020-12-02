@@ -73,11 +73,9 @@ describe("actions/cluster", () => {
         expect(counts).toEqual(expect.objectContaining({ Source: 1 }));
       });
 
-      test("only the event app remains, and it has been moved back to draft", async () => {
+      test("there are no apps", async () => {
         const apps = await App.scope(null).findAll();
-        expect(apps.length).toBe(1);
-        expect(apps[0].type).toBe("events");
-        expect(apps[0].state).toBe("draft");
+        expect(apps.length).toBe(0);
       });
 
       test("all the SetupSteps will be set to incomplete", async () => {

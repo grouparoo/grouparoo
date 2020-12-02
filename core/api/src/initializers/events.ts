@@ -2,11 +2,10 @@
 // This is important to prevent a circular-dependency tree that won't load.
 // You can test this with `npm prepare && npm start` if you change the import statements back to the models.
 
-import { api, Initializer, log } from "actionhero";
+import { api, Initializer } from "actionhero";
 import { ProfilePropertyRule } from "../index";
 import { plugin } from "../modules/plugin";
 import { SourceOptionsMethodResponse } from "../classes/plugin";
-import { App } from "../models/App";
 import { Event } from "../models/Event";
 import { EventData } from "../models/EventData";
 import {
@@ -15,6 +14,7 @@ import {
   PluginConnectionProfilePropertyRuleOption,
   SourceFilterMethod,
   ProfilePropertyPluginMethod,
+  TestPluginMethod,
 } from "./../index";
 
 export class Events extends Initializer {
@@ -40,11 +40,9 @@ export class Events extends Initializer {
                 "The profile property rule which will map to the event field 'userId'.  Only unique profile property rules can be used.",
             },
           ],
-          addible: false,
+          maxInstances: 1,
           methods: {
-            test: async () => {
-              return { success: (await Event.count()) >= 0 };
-            },
+            test: testEventsApp,
             appOptions: async () => {
               const uniqueRules = await ProfilePropertyRule.findAll({
                 where: { unique: true },
@@ -85,10 +83,6 @@ export class Events extends Initializer {
         },
       ],
     });
-  }
-
-  async start() {
-    await addEventsApp();
   }
 }
 
@@ -139,6 +133,19 @@ const eventSourcePreview: SourcePreviewMethod = async ({ sourceOptions }) => {
   }
 
   return eventPreviews;
+};
+
+const testEventsApp: TestPluginMethod = async ({ appOptions }) => {
+  const identifyingProfilePropertyRule = await ProfilePropertyRule.findOne({
+    where: { guid: appOptions.identifyingProfilePropertyRuleGuid },
+  });
+  if (!identifyingProfilePropertyRule) {
+    throw new Error(
+      `cannot find identifying profile property rule (${appOptions.identifyingProfilePropertyRuleGuid})`
+    );
+  }
+
+  return { success: true, message: "Events App OK" };
 };
 
 const eventProfilePropertyRuleOptionOptions = async (args) => {
@@ -400,20 +407,3 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
     }
   }
 };
-
-async function addEventsApp() {
-  let eventsApp = await App.scope(null).findOne({
-    where: { type: "events" },
-  });
-  if (!eventsApp) {
-    eventsApp = App.build({
-      type: "events",
-      name: "events",
-      state: "draft",
-    });
-    App.generateGuid(eventsApp);
-    // @ts-ignore
-    await eventsApp.save({ hooks: false });
-    log(`created events app (${eventsApp.guid})`);
-  }
-}

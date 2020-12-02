@@ -185,7 +185,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
     instance: ProfileProperty,
     { transaction }: { transaction?: Transaction } = {}
   ) {
-    const existing = await ProfileProperty.findOne({
+    const existing = await ProfileProperty.scope(null).findOne({
       where: {
         guid: { [Op.ne]: instance.guid },
         profileGuid: instance.profileGuid,

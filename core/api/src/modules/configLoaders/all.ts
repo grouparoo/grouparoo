@@ -42,7 +42,8 @@ export async function loadConfigDirectory(configDir: string) {
   }
 
   if (configFiles.length > 0) {
-    const seenGuids = await processConfigObjects(configObjects);
+    const sortedConfigObjects = sortConfigurationObject(configObjects);
+    const seenGuids = await processConfigObjects(sortedConfigObjects);
     await deleteLockedObjects(seenGuids);
   }
 }
@@ -53,6 +54,11 @@ async function loadConfigFile(file: string): Promise<ConfigurationObject> {
     payload = JSON5.parse(fs.readFileSync(file));
   } else {
     payload = require(file);
+  }
+
+  const payloadKeys = Object.keys(payload);
+  if (payloadKeys.length === 1 && payloadKeys[0] === "default") {
+    payload = payload.default;
   }
 
   if (typeof payload === "function") payload = await payload(config);
@@ -72,11 +78,10 @@ async function processConfigObjects(configObjects: Array<ConfigurationObject>) {
     teammember: [],
   };
 
-  const sortedConfigObjects = configObjects.sort(sortConfigurationObject);
-
-  for (const i in sortedConfigObjects) {
-    const configObject = sortedConfigObjects[i];
-    let klass = configObject.class.toLocaleLowerCase();
+  for (const i in configObjects) {
+    const configObject = configObjects[i];
+    if (Object.keys(configObject).length === 0) continue;
+    let klass = configObject?.class?.toLocaleLowerCase();
     let object;
     try {
       switch (klass) {

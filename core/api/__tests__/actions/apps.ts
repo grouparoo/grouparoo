@@ -169,9 +169,9 @@ describe("actions/apps", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(apps.length).toBe(2); // this app and the events app
+      expect(apps.length).toBe(1);
       expect(apps[0].name).toBe("test app");
-      expect(total).toBe(2);
+      expect(total).toBe(1);
     });
 
     test("an administrator can edit an app", async () => {

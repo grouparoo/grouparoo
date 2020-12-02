@@ -69,7 +69,7 @@ export class Option extends LoggedModel<Option> {
     instance: Option,
     { transaction }: { transaction?: Transaction } = {}
   ) {
-    const existing = await Option.findOne({
+    const existing = await Option.scope(null).findOne({
       where: {
         guid: { [Op.ne]: instance.guid },
         ownerGuid: instance.ownerGuid,

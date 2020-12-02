@@ -1,8 +1,5 @@
-import { runAction } from "./util/runAction";
 import { MockSession, getApiKey } from "./util/MockSession";
-import { App, ProfilePropertyRule } from "@grouparoo/core";
 import { getPurchaseCategories, getPurchases } from "./sample_data";
-import { log } from "./util/shared";
 
 interface DataOptions {
   scale?: number;
@@ -44,57 +41,4 @@ async function generatePurchaseEvents(purchases, apiKey) {
     );
     await session.run();
   }
-}
-
-const EVENTS_GUID = "app_events";
-// mostly copied from initializer/events.ts
-async function addEventsApp() {
-  let eventsApp = await App.scope(null).findOne({
-    where: {
-      type: "events",
-      guid: EVENTS_GUID,
-    },
-  });
-  if (!eventsApp) {
-    eventsApp = App.build({
-      type: "events",
-      name: "Events",
-      state: "draft",
-    });
-    eventsApp.guid = EVENTS_GUID;
-
-    // @ts-ignore
-    await eventsApp.save({ hooks: false });
-    log(1, `created events app (${eventsApp.guid})`);
-  }
-}
-
-export async function enableEventsApp() {
-  await addEventsApp();
-  const where = { guid: EVENTS_GUID };
-  const found = await App.scope(null).findOne({ where });
-  if (!found) {
-    throw new Error(`Events App not found!`);
-  }
-
-  const ruleGuid = await findIdentifyingRuleGuid();
-
-  const params = {
-    guid: found.guid,
-    state: "ready",
-    options: { identifyingProfilePropertyRuleGuid: ruleGuid },
-  };
-
-  await runAction("app:edit", params);
-
-  return found.reload();
-}
-
-async function findIdentifyingRuleGuid() {
-  const where = { key: "userId" };
-  const found = await ProfilePropertyRule.findOne({ where });
-  if (!found) {
-    throw new Error(`Identifying rule not found: ${where.key}`);
-  }
-  return found.guid;
 }

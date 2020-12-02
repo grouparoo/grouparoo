@@ -17,9 +17,7 @@ describe("tasks/event:associateProfile", () => {
     const userIdRule = await ProfilePropertyRule.findOne({
       where: { key: "userId" },
     });
-    const eventApp = await App.scope(null).findOne({
-      where: { type: "events" },
-    });
+    const eventApp = await App.create({ type: "events", name: "events" });
     await eventApp.setOptions({
       identifyingProfilePropertyRuleGuid: userIdRule.guid,
     });

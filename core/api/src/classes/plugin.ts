@@ -43,7 +43,8 @@ export interface GrouparooPlugin {
 export interface PluginApp {
   name: string;
   options: AppOption[];
-  addible?: boolean;
+  minInstances?: number;
+  maxInstances?: number;
   methods: {
     connect?: ConnectPluginAppMethod;
     disconnect?: DisconnectPluginAppMethod;

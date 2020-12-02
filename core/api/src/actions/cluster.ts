@@ -77,19 +77,7 @@ export class ClusterReset extends AuthenticatedAction {
       const modelName = model.name;
       const count = await model.count();
 
-      if (model === App) {
-        await model
-          .scope(null)
-          .destroy({ where: { type: { [Op.ne]: "events" } } });
-
-        const models = await model.findAll();
-        await Promise.all(
-          // @ts-ignore
-          models.map((m) => m.update({ state: "draft" }, { hooks: false }))
-        );
-      } else {
-        await model.truncate();
-      }
+      await model.truncate();
 
       counts[modelName] = count;
 
