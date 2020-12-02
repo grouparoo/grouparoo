@@ -36,7 +36,6 @@ export async function loadDestination(configObject: ConfigurationObject) {
 
   await destination.update({
     name: configObject.name,
-    groupGuid: group?.guid,
   });
 
   await destination.setOptions(extractNonNullParts(configObject, "options"));
@@ -58,13 +57,17 @@ export async function loadDestination(configObject: ConfigurationObject) {
     "destinationGroupMemberships"
   );
   for (const remoteName in sanitizedDestinationGroupMemberships) {
-    const group = await getParentByName(
+    const membershipGroup = await getParentByName(
       Group,
       sanitizedDestinationGroupMemberships[remoteName]
     );
-    destinationGroupMemberships[group.guid] = remoteName;
+    destinationGroupMemberships[membershipGroup.guid] = remoteName;
   }
   await destination.setDestinationGroupMemberships(destinationGroupMemberships);
+
+  if (destination.groupGuid !== group.guid) {
+    await destination.trackGroup(group);
+  }
 
   await destination.update({ state: "ready" });
 
