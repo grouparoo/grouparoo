@@ -132,24 +132,22 @@ export default function Page(props) {
         <span className="text-muted">{app.guid}</span>
       </p>
 
-      <Form id="form" onSubmit={edit} autoComplete="off">
-        <fieldset disabled={app.locked !== null}>
-          <Row>
-            <Col md={1} style={{ textAlign: "center" }}>
-              <br />
-              <AppIcon src={app.icon} fluid size={100} />
-              <br />
-              <br />
-              {app.provides.source ? (
-                <Badge variant="primary">source</Badge>
-              ) : null}
-              <br />
-              {app.provides.destination ? (
-                <Badge variant="info">destination</Badge>
-              ) : null}
-            </Col>
+      <Row>
+        <Col md={1} style={{ textAlign: "center" }}>
+          <br />
+          <AppIcon src={app.icon} fluid size={100} />
+          <br />
+          <br />
+          {app.provides.source ? <Badge variant="primary">source</Badge> : null}
+          <br />
+          {app.provides.destination ? (
+            <Badge variant="info">destination</Badge>
+          ) : null}
+        </Col>
 
-            <Col>
+        <Col>
+          <Form id="form" onSubmit={edit} autoComplete="off">
+            <fieldset disabled={app.locked !== null}>
               <Form.Group controlId="name">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
@@ -319,56 +317,56 @@ export default function Page(props) {
                   })}
                 </>
               ) : null}
+            </fieldset>
 
-              {environmentVariableOptions.length > 0 ? (
-                <Row>
-                  <Col>
-                    <p>
-                      Environment Variable Options for Apps:{" "}
-                      {environmentVariableOptions.sort().map((envOpt) => (
-                        <Badge key={`envOpt-${envOpt}`} variant="info">
-                          {envOpt}
-                        </Badge>
-                      ))}
-                    </p>
-                    <br />
-                  </Col>
-                </Row>
-              ) : null}
-
+            {environmentVariableOptions.length > 0 ? (
               <Row>
                 <Col>
-                  <LoadingButton
-                    variant="outline-secondary"
-                    size="sm"
-                    onClick={test}
-                    disabled={testLoading}
-                  >
-                    Test Connection
-                  </LoadingButton>
+                  <p>
+                    Environment Variable Options for Apps:{" "}
+                    {environmentVariableOptions.sort().map((envOpt) => (
+                      <Badge key={`envOpt-${envOpt}`} variant="info">
+                        {envOpt}
+                      </Badge>
+                    ))}
+                  </p>
+                  <br />
                 </Col>
               </Row>
-              <br />
-              <Row>
-                <Col>
-                  {testResult.success !== null &&
-                  testResult.success !== false &&
-                  testResult.success !== undefined &&
-                  !testResult.error ? (
-                    <Alert variant="success">
-                      <strong>Test Passed</strong> {testResult.message}
-                    </Alert>
-                  ) : ranTest ? (
-                    <Alert variant="warning">
-                      <strong>Test Failed</strong> {testResult.error}
-                    </Alert>
-                  ) : null}
-                  {loading ? <Loader /> : null}
-                </Col>
-              </Row>
+            ) : null}
 
-              <hr />
+            <Row>
+              <Col md={3}>
+                <LoadingButton
+                  variant="outline-secondary"
+                  size="sm"
+                  onClick={test}
+                  disabled={testLoading}
+                >
+                  Test Connection
+                </LoadingButton>
+                <br />
+                <br />
+              </Col>
 
+              <Col>
+                {testResult.success !== null &&
+                testResult.success !== false &&
+                testResult.success !== undefined &&
+                !testResult.error ? (
+                  <Alert variant="success">
+                    <strong>Test Passed</strong> {testResult.message}
+                  </Alert>
+                ) : ranTest ? (
+                  <Alert variant="warning">
+                    <strong>Test Failed</strong> {testResult.error}
+                  </Alert>
+                ) : null}
+                {loading ? <Loader /> : null}
+              </Col>
+            </Row>
+
+            <fieldset disabled={app.locked !== null}>
               <LoadingButton variant="primary" type="submit" disabled={loading}>
                 Update
               </LoadingButton>
@@ -384,10 +382,10 @@ export default function Page(props) {
               >
                 Delete
               </LoadingButton>
-            </Col>
-          </Row>
-        </fieldset>
-      </Form>
+            </fieldset>
+          </Form>
+        </Col>
+      </Row>
     </>
   );
 }
