@@ -42,7 +42,8 @@ export async function loadConfigDirectory(configDir: string) {
   }
 
   if (configFiles.length > 0) {
-    const seenGuids = await processConfigObjects(configObjects);
+    const sortedConfigObjects = sortConfigurationObject(configObjects);
+    const seenGuids = await processConfigObjects(sortedConfigObjects);
     await deleteLockedObjects(seenGuids);
   }
 }
@@ -77,10 +78,8 @@ async function processConfigObjects(configObjects: Array<ConfigurationObject>) {
     teammember: [],
   };
 
-  const sortedConfigObjects = configObjects.sort(sortConfigurationObject);
-
-  for (const i in sortedConfigObjects) {
-    const configObject = sortedConfigObjects[i];
+  for (const i in configObjects) {
+    const configObject = configObjects[i];
     if (Object.keys(configObject).length === 0) continue;
     let klass = configObject?.class?.toLocaleLowerCase();
     let object;
