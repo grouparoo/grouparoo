@@ -465,43 +465,43 @@ export default function Page(props) {
               })}
             </tbody>
           </Table>
+          {localRules.length < group.rules.length || rowChanges ? (
+            <p>
+              <Badge variant="warning">Unsaved Rule Changes</Badge>
+            </p>
+          ) : null}
+          <Button size="sm" variant="outline-primary" onClick={addRule}>
+            Add Rule
+          </Button>
+          &nbsp;
+          <LoadingButton
+            disabled={loading}
+            variant="outline-dark"
+            size="sm"
+            onClick={async () => {
+              await getCounts(false);
+            }}
+          >
+            Count Potential Group Members
+          </LoadingButton>
+          <br />
+          <br />{" "}
+          {group.locked ? (
+            <Button disabled>Save Rules</Button>
+          ) : (
+            <LoadingButton
+              disabled={loading}
+              variant="primary"
+              onClick={async () => {
+                await updateRules();
+                await getCounts();
+              }}
+            >
+              Save Rules
+            </LoadingButton>
+          )}
         </fieldset>
       </Form>
-      {localRules.length < group.rules.length || rowChanges ? (
-        <p>
-          <Badge variant="warning">Unsaved Rule Changes</Badge>
-        </p>
-      ) : null}
-      <Button size="sm" variant="outline-primary" onClick={addRule}>
-        Add Rule
-      </Button>
-      &nbsp;
-      <LoadingButton
-        disabled={loading}
-        variant="outline-dark"
-        size="sm"
-        onClick={async () => {
-          await getCounts(false);
-        }}
-      >
-        Count Potential Group Members
-      </LoadingButton>
-      <br />
-      <br />{" "}
-      {group.locked ? (
-        <Button disabled>Save Rules</Button>
-      ) : (
-        <LoadingButton
-          disabled={loading}
-          variant="primary"
-          onClick={async () => {
-            await updateRules();
-            await getCounts();
-          }}
-        >
-          Save Rules
-        </LoadingButton>
-      )}
     </>
   );
 }
