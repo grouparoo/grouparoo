@@ -301,9 +301,9 @@ jobs:
           command: cd apps/staging-public && ./__tests__/integration
           environment:
             PORT: 3000
-            GROUPAROO_TELEMETRY_ENABLED: true
-            WEB_SERVER: true
-            SCHEDULER: true
+            GROUPAROO_TELEMETRY_ENABLED: "false"
+            WEB_SERVER: "true"
+            SCHEDULER: "true"
             WORKERS: 1
   test-plugin-app-templates:
     docker:
