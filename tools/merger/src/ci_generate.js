@@ -53,6 +53,7 @@ class Generator {
   compile() {
     this.addCommands();
     this.addCore();
+    this.addStagingPublic();
     this.addPlugins();
     this.addCLI();
 
@@ -94,6 +95,16 @@ class Generator {
       job_name: `test-core-local`,
       relative_path: `core`,
       name: "core",
+    });
+  }
+
+  addStagingPublic() {
+    this.jobList.push({
+      type: "apps",
+      section: "staging-public",
+      job_name: `test-staging-public`,
+      relative_path: `apps`,
+      name: "staging-public",
     });
   }
 
