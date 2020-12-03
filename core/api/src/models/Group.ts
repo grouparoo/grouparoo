@@ -173,18 +173,17 @@ export class Group extends LoggedModel<Group> {
       const profilePropertyRule = await rule.$get("profilePropertyRule");
       const type = profilePropertyRule
         ? profilePropertyRule.type
-        : TopLevelGroupRules.filter(
-            (tlgr) => tlgr.key === rule.profileColumn
-          )[0].type;
+        : TopLevelGroupRules.find((tlgr) => tlgr.key === rule.profileColumn)
+            .type;
       rulesWithKey.push({
         key: profilePropertyRule ? profilePropertyRule.key : rule.profileColumn,
         topLevel: profilePropertyRule ? false : true,
         type: type,
         operation: {
           op: rule.op,
-          description: ProfilePropertyRuleOpsDictionary[type].filter(
+          description: ProfilePropertyRuleOpsDictionary[type].find(
             (operation) => operation.op === rule.op
-          )[0].description,
+          ).description,
         },
         match: rule.match,
         relativeMatchNumber: rule.relativeMatchNumber,
@@ -234,9 +233,16 @@ export class Group extends LoggedModel<Group> {
           throw new Error(`cannot find Profile Property Rule ${key}`);
         }
 
-        const dictionaryEntries = ProfilePropertyRuleOpsDictionary[
-          profilePropertyRule.type
-        ].filter((operation) => operation.op === rule.operation.op);
+        let type = profilePropertyRule?.type;
+        if (topLevelRuleKeys.includes(key)) {
+          type = TopLevelGroupRules.find((tlgr) => tlgr.key === key).type as
+            | "string"
+            | "date";
+        }
+
+        const dictionaryEntries = ProfilePropertyRuleOpsDictionary[type].filter(
+          (operation) => operation.op === rule.operation.op
+        );
         if (!dictionaryEntries || dictionaryEntries.length === 0) {
           throw new Error(
             `invalid group rule operation "${rule.operation.op}" for profile property rule of type ${profilePropertyRule.type}`
