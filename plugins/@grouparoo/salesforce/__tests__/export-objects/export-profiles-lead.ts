@@ -16,11 +16,11 @@ const nockFile = path.join(
 );
 
 // these comments to use nock
-// const newNock = false;
-// require("./../fixtures/export-objects/export-profiles-lead");
+const newNock = false;
+require("./../fixtures/export-objects/export-profiles-lead");
 // or these to make it true
-const newNock = true;
-helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 const appGuid = "app_f3bb07d8-0c4f-49b5-ad42-545f2e8662f2";
@@ -458,12 +458,12 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
     contact = await getContact(contactId1);
     expect(contact.LastName).toBe("Smith");
 
-    // still in the group
+    // removed
     const members = await getGroupMemberIds(groupId1);
-    expect(members.sort()).toEqual([userId1].sort());
+    expect(members.sort()).toEqual([].sort());
   });
 
-  test("can add and remove groups for converted lead", async () => {
+  test("converted lead is removed from all groups", async () => {
     groupId2 = await findGroupId(group2);
     expect(groupId2).toBe(null);
 
@@ -485,7 +485,7 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
             Company: accountName1,
           },
           oldGroups: [group1],
-          newGroups: [group2],
+          newGroups: [group1, group2],
           toDelete: false,
           profile: null,
         },
@@ -502,12 +502,11 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
     groupId2 = await findGroupId(group1);
     expect(groupId2).toBeTruthy();
 
+    // removed from all groups (and can't be added)
     let members;
-    // can still remove
     members = await getGroupMemberIds(groupId1);
     expect(members.sort()).toEqual([].sort());
 
-    // but can't be added
     members = await getGroupMemberIds(groupId2);
     expect(members.sort()).toEqual([].sort());
   });
