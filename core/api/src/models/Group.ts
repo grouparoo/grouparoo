@@ -234,6 +234,15 @@ export class Group extends LoggedModel<Group> {
           throw new Error(`cannot find Profile Property Rule ${key}`);
         }
 
+        const dictionaryEntries = ProfilePropertyRuleOpsDictionary[
+          profilePropertyRule.type
+        ].filter((operation) => operation.op === rule.operation.op);
+        if (!dictionaryEntries || dictionaryEntries.length === 0) {
+          throw new Error(
+            `invalid group rule operation "${rule.operation.op}" for profile property rule of type ${profilePropertyRule.type}`
+          );
+        }
+
         await GroupRule.create(
           {
             position: parseInt(i) + 1,

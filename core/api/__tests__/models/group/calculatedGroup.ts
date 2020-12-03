@@ -57,6 +57,16 @@ describe("models/group", () => {
       expect(group.state).toBe("draft");
     });
 
+    test("setting rules outside of the dictionary will fail", async () => {
+      await expect(
+        group.setRules([
+          { key: "firstName", match: "nobody", operation: { op: "wacky" } },
+        ])
+      ).rejects.toThrow(
+        /invalid group rule operation "wacky" for profile property rule of type string/
+      );
+    });
+
     test("changing group rules changes the state to initializing and enquires a run, and then back to ready when complete", async () => {
       await api.resque.queue.connection.redis.flushdb();
 
