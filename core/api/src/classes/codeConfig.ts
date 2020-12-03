@@ -53,7 +53,7 @@ export async function getParentByName(model: any, id: string) {
   return instance;
 }
 
-export async function validateAndFormatGuid(model, id: string) {
+export async function validateAndFormatGuid(model: any, id: string) {
   if (!id) throw new Error("id is required");
   let guid = `${id}`;
 
@@ -73,6 +73,41 @@ export async function validateAndFormatGuid(model, id: string) {
   }
 
   return guid;
+}
+
+export function validateConfigObjectKeys(
+  model: any,
+  configObject,
+  additionalAllowedKeys: string[] = []
+) {
+  const errors: string[] = [];
+  const modelKeys = Object.keys(model.rawAttributes).concat(
+    additionalAllowedKeys
+  );
+  let idFound = false;
+  const configKeys = Object.keys(configObject)
+    .filter((k) => k !== "class")
+    .filter((k) => typeof configObject[k] !== "object")
+    .map((k) => {
+      if (k === "id") {
+        idFound = true;
+        return "guid";
+      } else if (k.match(/.+Id$/)) {
+        return k.replace(/Id$/, "Guid");
+      } else {
+        return k;
+      }
+    });
+
+  if (!idFound) errors.push(`id is required for a ${model.name}`);
+
+  configKeys.forEach((k) => {
+    if (!modelKeys.includes(k)) {
+      errors.push(`${k} is not a valid property of a ${model.name}`);
+    }
+  });
+
+  if (errors.length > 0) throw new Error(errors.join(", "));
 }
 
 export function logModel(instance, mode: "created" | "updated" | "deleted") {

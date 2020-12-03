@@ -14,6 +14,7 @@ import path from "path";
 import { api } from "actionhero";
 import { Op } from "sequelize";
 import { CodeConfig } from "../../src/initializers/codeConfig";
+import { validateConfigObjectKeys } from "../../src/classes/codeConfig";
 
 let actionhero;
 const initializer = new CodeConfig();
@@ -442,6 +443,46 @@ describe("modules/codeConfig", () => {
           /TeamMember.firstName cannot be null/
         );
       });
+    });
+  });
+
+  describe("validations", () => {
+    test("id is always required", async () => {
+      const configObject = {
+        name: "Marketing Team",
+        class: "team",
+      };
+
+      expect(() => validateConfigObjectKeys(Team, configObject)).toThrow(
+        /id is required for a Team/
+      );
+    });
+
+    test("extraneous keys throw an error", async () => {
+      const configObject = {
+        id: "marketing_team",
+        name: "Marketing Team",
+        class: "team",
+        cool: true,
+      };
+
+      expect(() => validateConfigObjectKeys(Team, configObject)).toThrow(
+        /cool is not a valid property of a Team/
+      );
+    });
+
+    test("multiple errors can be returned", async () => {
+      const configObject = {
+        id: "marketing_team",
+        name: "Marketing Team",
+        class: "team",
+        cool: true,
+        thing: "stuff",
+      };
+
+      expect(() => validateConfigObjectKeys(Team, configObject)).toThrow(
+        /cool is not a valid property of a Team, thing is not a valid property of a Team/
+      );
     });
   });
 });

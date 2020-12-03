@@ -5,6 +5,7 @@ import {
   getParentByName,
   codeConfigLockKey,
   extractNonNullParts,
+  validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { Schedule, Source } from "../..";
 import { Op } from "sequelize";
@@ -12,6 +13,7 @@ import { Op } from "sequelize";
 export async function loadSchedule(configObject: ConfigurationObject) {
   let isNew = false;
   const guid = await validateAndFormatGuid(Schedule, configObject.id);
+  validateConfigObjectKeys(Schedule, configObject);
   const source: Source = await getParentByName(Source, configObject.sourceId);
 
   let schedule = await Schedule.scope(null).findOne({

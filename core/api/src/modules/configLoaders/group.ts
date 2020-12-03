@@ -3,6 +3,7 @@ import {
   validateAndFormatGuid,
   codeConfigLockKey,
   logModel,
+  validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { Group } from "../..";
 import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
@@ -11,6 +12,7 @@ import { Op } from "sequelize";
 export async function loadGroup(configObject: ConfigurationObject) {
   let isNew = false;
   const guid = await validateAndFormatGuid(Group, configObject.id);
+  validateConfigObjectKeys(Group, configObject);
 
   let group = await Group.scope(null).findOne({
     where: { guid, locked: codeConfigLockKey },

@@ -3,6 +3,7 @@ import {
   validateAndFormatGuid,
   codeConfigLockKey,
   logModel,
+  validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { ApiKey, Permission } from "../..";
 import { Op } from "sequelize";
@@ -11,6 +12,8 @@ export async function loadApiKey(configObject: ConfigurationObject) {
   let isNew = false;
 
   const guid = await validateAndFormatGuid(ApiKey, configObject.id);
+  validateConfigObjectKeys(ApiKey, configObject);
+
   let apiKey = await ApiKey.scope(null).findOne({
     where: { locked: codeConfigLockKey, guid },
   });

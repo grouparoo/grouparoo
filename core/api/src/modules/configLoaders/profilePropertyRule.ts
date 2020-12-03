@@ -5,6 +5,7 @@ import {
   getParentByName,
   codeConfigLockKey,
   validateAndFormatGuid,
+  validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { ProfilePropertyRule, Source } from "../..";
 import { Op } from "sequelize";
@@ -19,6 +20,8 @@ export async function loadProfilePropertyRule(
     ProfilePropertyRule,
     configObject.id
   );
+  validateConfigObjectKeys(ProfilePropertyRule, configObject, ["name"]);
+
   let profilePropertyRule = await ProfilePropertyRule.scope(null).findOne({
     where: { locked: codeConfigLockKey, guid },
   });
