@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import StateBadge from "../../../components/stateBadge";
+import LockedBadge from "../../../components/lockedBadge";
 import Head from "next/head";
 import GroupTabs from "../../../components/tabs/group";
 import DatePicker from "../../../components/datePicker";
@@ -160,14 +161,13 @@ export default function Page(props) {
         <title>Grouparoo: {group.name}</title>
       </Head>
       <GroupTabs group={group} />
-      <h1>Group Rules for {group.name}</h1>
+      <h1>{group.name} - Rules</h1>
+      <StateBadge state={group.state} /> <LockedBadge object={group} />
       <p>
         Total Profiles in this group: &nbsp;
         <Badge style={{ fontSize: 16 }} variant="info">
           {countPotentialMembers}
         </Badge>
-        <br />
-        <StateBadge state={group.state} />
       </p>
       <p>
         Define the profile properties that you want to segment by. Profiles in

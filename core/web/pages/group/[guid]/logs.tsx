@@ -14,7 +14,7 @@ export default function Page(props) {
 
       <GroupTabs group={group} />
 
-      <LogsList {...props} />
+      <LogsList header={<h1>{group.name} - Logs</h1>} {...props} />
     </>
   );
 }

@@ -6,6 +6,7 @@ import PermissionsList from "../../../components/permissions";
 import { useRouter } from "next/router";
 import ApiKeyTabs from "../../../components/tabs/apiKey";
 import LoadingButton from "../../../components/loadingButton";
+import LockedBadge from "../../../components/lockedBadge";
 
 import { Models, Actions } from "../../../utils/apiData";
 
@@ -89,6 +90,8 @@ export default function Page(props) {
 
       <ApiKeyTabs apiKey={apiKey} />
 
+      <h1>{apiKey.name}</h1>
+      <LockedBadge object={apiKey} />
       <Form id="form" onSubmit={updateApiKey} autoComplete="off">
         <fieldset disabled={apiKey.locked !== null}>
           <Form.Group>

@@ -9,6 +9,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import AppTabs from "../../../components/tabs/app";
 import Loader from "../../../components/loader";
 import LoadingButton from "../../../components/loadingButton";
+import LockedBadge from "../../../components/lockedBadge";
 
 import { Actions, Models } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
@@ -128,24 +129,24 @@ export default function Page(props) {
 
       <AppTabs app={app} />
 
-      <p>
-        <span className="text-muted">{app.guid}</span>
-      </p>
-
       <Row>
         <Col md={1} style={{ textAlign: "center" }}>
-          <br />
           <AppIcon src={app.icon} fluid size={100} />
-          <br />
-          <br />
-          {app.provides.source ? <Badge variant="primary">source</Badge> : null}
-          <br />
+        </Col>
+        <Col>
+          <h1>{app.name}</h1>
+          {app.provides.source ? (
+            <Badge variant="primary">source</Badge>
+          ) : null}{" "}
           {app.provides.destination ? (
             <Badge variant="info">destination</Badge>
-          ) : null}
+          ) : null}{" "}
+          <LockedBadge object={app} />{" "}
         </Col>
-
+      </Row>
+      <Row>
         <Col>
+          <br />
           <Form id="form" onSubmit={edit} autoComplete="off">
             <fieldset disabled={app.locked !== null}>
               <Form.Group controlId="name">

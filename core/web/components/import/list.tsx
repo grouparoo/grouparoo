@@ -60,7 +60,7 @@ export default function ImportList(props) {
 
   return (
     <>
-      <h1>Imports</h1>
+      {props.header ? props.header : <h1>Imports</h1>}
 
       <p>
         {total} imports {creatorGuid ? `for ${creatorGuid}` : null}{" "}

@@ -91,6 +91,8 @@ export default function EventsList(props) {
 
   return (
     <>
+      {props.header ? props.header : <h1>Events</h1>}
+
       {hideSearch ? null : (
         <Form id="search" onSubmit={load}>
           <Form.Group>

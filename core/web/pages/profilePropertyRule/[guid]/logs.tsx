@@ -2,6 +2,10 @@ import Head from "next/head";
 import { useApi } from "../../../hooks/useApi";
 import LogsList from "../../../components/log/list";
 import ProfilePropertyRuleTabs from "../../../components/tabs/profilePropertyRule";
+import { Row, Col } from "react-bootstrap";
+import AppIcon from "../../../components/appIcon";
+import StateBadge from "../../../components/stateBadge";
+import LockedBadge from "../../../components/lockedBadge";
 import { Models } from "../../../utils/apiData";
 
 export default function Page(props) {
@@ -24,7 +28,21 @@ export default function Page(props) {
         source={source}
       />
 
-      <LogsList {...props} />
+      <LogsList
+        header={
+          <Row>
+            <Col md={1}>
+              <AppIcon src={source.app.icon} fluid size={100} />
+            </Col>
+            <Col md={8}>
+              <h1>{profilePropertyRule.key} - Logs</h1>
+              <StateBadge state={profilePropertyRule.state} />{" "}
+              <LockedBadge object={profilePropertyRule} />
+            </Col>
+          </Row>
+        }
+        {...props}
+      />
     </>
   );
 }

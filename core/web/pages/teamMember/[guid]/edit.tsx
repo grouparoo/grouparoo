@@ -62,6 +62,8 @@ export default function Page(props) {
 
       <TeamMemberTabs teamMember={teamMember} />
 
+      <h1>{teamMember.email}</h1>
+
       <Row>
         <Col md={2}>
           <p>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form } from "react-bootstrap";
 import StateBadge from "../../../components/stateBadge";
+import LockedBadge from "../../../components/lockedBadge";
 import Moment from "react-moment";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -76,12 +77,9 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: {group.name}</title>
       </Head>
-
       <GroupTabs group={group} />
-
-      <StateBadge state={group.state} />
-      <br />
-      <br />
+      <h1>{group.name}</h1>
+      <StateBadge state={group.state} /> <LockedBadge object={group} />
       <Row>
         <Col md={group.type === "calculated" ? 8 : 12}>
           <Form id="form" onSubmit={submit} autoComplete="off">

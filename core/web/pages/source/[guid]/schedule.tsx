@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import AppIcon from "../../../components/appIcon";
 import StateBadge from "../../../components/stateBadge";
+import LockedBadge from "../../../components/lockedBadge";
 import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
@@ -110,16 +111,16 @@ export default function Page(props) {
         <fieldset disabled={schedule.locked !== null}>
           <Row>
             <Col md={1}>
-              <br />
               <AppIcon src={source?.app?.icon} fluid size={100} />
             </Col>
             <Col>
-              <h2>
-                Schedule for source <Badge variant="info">{source.name}</Badge>
-              </h2>
-              <StateBadge state={schedule.state} />
-              <br />
-              <br />
+              <h1>{source.name} - Schedule</h1>
+              <StateBadge state={schedule.state} />{" "}
+              <LockedBadge object={source} />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
               <Form.Group controlId="recurring">
                 <Form.Check
                   type="checkbox"
@@ -337,16 +338,12 @@ export default function Page(props) {
                   </div>
                 ))}
               </>
-
               <hr />
-
               <LoadingButton variant="primary" type="submit" disabled={loading}>
                 Update
               </LoadingButton>
-
               <br />
               <br />
-
               <LoadingButton
                 variant="danger"
                 disabled={loading}

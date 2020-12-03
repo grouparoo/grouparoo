@@ -106,7 +106,7 @@ export default function LogsList(props) {
 
   return (
     <>
-      <h1>Logs</h1>
+      {props.header ? props.header : <h1>Logs</h1>}
 
       <ButtonGroup id="log-types">
         <Button

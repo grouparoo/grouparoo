@@ -70,7 +70,7 @@ export default function RunsList(props) {
 
   return (
     <>
-      <h1>Runs</h1>
+      {props.header ? props.header : <h1>Runs</h1>}
 
       <Row>
         <Col>

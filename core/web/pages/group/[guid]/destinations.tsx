@@ -59,7 +59,7 @@ export default function Page(props) {
 
       <GroupTabs group={group} />
 
-      <h1>Group Destination</h1>
+      <h1>{group.name} - Destinations</h1>
       <p>{destinations.length} destinations interested in this group</p>
 
       <LoadingTable loading={loading}>

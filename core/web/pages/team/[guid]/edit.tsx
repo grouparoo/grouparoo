@@ -6,6 +6,7 @@ import PermissionsList from "../../../components/permissions";
 import { useRouter } from "next/router";
 import { Models, Actions } from "../../../utils/apiData";
 import TeamTabs from "../../../components/tabs/team";
+import LockedBadge from "../../../components/lockedBadge";
 
 export default function Page(props) {
   const { errorHandler, successHandler, teamHandler } = props;
@@ -82,6 +83,9 @@ export default function Page(props) {
   return (
     <>
       <TeamTabs team={team} />
+
+      <h1>{team.name}</h1>
+      <LockedBadge object={team} />
 
       <Form id="form" onSubmit={updateTeam} autoComplete="off">
         <fieldset disabled={team.locked !== null}>
