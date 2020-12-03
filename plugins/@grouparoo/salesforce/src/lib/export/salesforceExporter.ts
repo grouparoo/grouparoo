@@ -354,6 +354,7 @@ enum ResultType {
   REMOVEGROUP = "REMOVEGROUP",
   LIST = "LIST",
 }
+const OK_PROCESS_ERROR = new Error("this is fine");
 function processResult(result, identifier, type: ResultType) {
   let id = (result.id || "").toString();
   let errors = result.errors || [];
@@ -363,7 +364,7 @@ function processResult(result, identifier, type: ResultType) {
     // it's ok if it was already there
     errors = errors.filter((err) => err?.statusCode !== "DUPLICATE_VALUE");
     if (errors.length === 0) {
-      success = true;
+      throw OK_PROCESS_ERROR;
     }
     id = "doesntmatter";
   }
@@ -371,11 +372,19 @@ function processResult(result, identifier, type: ResultType) {
     // it's ok if it wasn't there
     errors = errors.filter((err) => err?.statusCode !== "NOT_FOUND");
     if (errors.length === 0) {
-      success = true;
+      throw OK_PROCESS_ERROR;
     }
     id = "doesntmatter";
   }
   if (!success || errors.length > 0) {
+    if (
+      errors.length === 1 &&
+      errors[0].statusCode === "CANNOT_UPDATE_CONVERTED_LEAD"
+    ) {
+      // it's ok if this lead has been converted. it's now a contact.
+      throw OK_PROCESS_ERROR;
+    }
+
     const messages = errors.map((err) => err?.message).filter((msg) => !!msg);
     if (messages.length > 0) {
       throw new Error(`Error (${identifier}): ${messages.join(",")}`);
@@ -411,7 +420,18 @@ function processResults(results, users, type: ResultType) {
         user.destinationId = id;
       }
     } catch (error) {
-      user.error = error;
+      if (error === OK_PROCESS_ERROR) {
+        if (type === ResultType.USER) {
+          if (!user.destinationId) {
+            // still should have an id!
+            user.error = new Error(
+              `destinationId never set from ok process error: ${user.destinationId}`
+            );
+          }
+        }
+      } else {
+        user.error = error;
+      }
     }
   }
 }

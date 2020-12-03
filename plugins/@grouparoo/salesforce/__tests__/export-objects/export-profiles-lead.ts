@@ -42,14 +42,12 @@ const email1 = "brian@demo.com";
 const guid1 = "pro1";
 const newEmail1 = "other@demo.com";
 let userId1 = null;
+const accountName1 = "ConvertedCorp";
+let contactId1 = null;
 
 const email2 = "brian2@demo.com";
 const guid2 = "pro2";
 let userId2 = null;
-
-const email3 = "brian3@demo.com";
-const guid3 = "pro3";
-let userId3 = null;
 
 const group1 = "(test) High Value";
 let groupId1 = null;
@@ -57,7 +55,7 @@ let groupId1 = null;
 const group2 = "(test) Churned";
 let groupId2 = null;
 
-const deleteProfileValues = [email1, email2, email3, newEmail1];
+const deleteProfileValues = [email1, email2, newEmail1];
 const deleteGroupValues = [group1, group2];
 const deleteReferenceValues = [];
 const {
@@ -74,13 +72,40 @@ const {
   deleteReferenceValues,
 });
 
+const {
+  getClient,
+  findId: findContactId,
+  getUser: getContact,
+  cleanUp: cleanUpConversion,
+  findReferenceId: findAccountId,
+} = getModelHelpers({
+  appOptions,
+  model: destinationModel({
+    profileObject: "Contact",
+    profileMatchField: "Email",
+    groupObject: "Campaign",
+    groupNameField: "Name",
+    membershipObject: "CampaignMember",
+    membershipProfileField: "ContactId",
+    membershipGroupField: "CampaignId",
+    profileReferenceField: "AccountId",
+    profileReferenceObject: "Account",
+    profileReferenceMatchField: "Name",
+  }),
+  deleteProfileValues,
+  deleteGroupValues,
+  deleteReferenceValues: [accountName1],
+});
+
 describe("salesforce/sales-cloud/export-profiles/leads", () => {
   beforeAll(async () => {
     await cleanUp(false);
+    await cleanUpConversion(false);
   }, helper.setupTime);
 
   afterAll(async () => {
-    await cleanUp(true);
+    // await cleanUp(true);
+    // await cleanUpConversion(true);
   }, helper.setupTime);
 
   beforeEach(async () => {
@@ -329,7 +354,7 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
           newProfileProperties: {
             Email: email1,
             LastName: "Smith",
-            Company: "SmithCorp",
+            Company: accountName1,
           },
           oldGroups: [],
           newGroups: [group1],
@@ -345,5 +370,145 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
     expect(groupId1).toBeTruthy();
     const members = await getGroupMemberIds(groupId1);
     expect(members.sort()).toEqual([userId1].sort());
+  });
+
+  test("can convert to a contact", async () => {
+    contactId1 = await findContactId(email1);
+    expect(contactId1).toBe(null);
+
+    let user;
+    user = await getUser(userId1);
+    expect(user.Email).toBe(email1);
+    expect(user.LastName).toBe("Smith");
+    expect(user.Company).toBe(accountName1);
+    expect(user.Status).toBe("Open - Not Contacted");
+
+    const client = await getClient();
+    const results = await client.soap.convertLead([
+      {
+        leadId: userId1,
+        convertedStatus: "Closed - Converted",
+        doNotCreateOpportunity: true,
+      },
+    ]);
+    expect(results.length).toEqual(1);
+    const result = results[0];
+    expect(result.errors).toBeFalsy();
+    expect(result.success).toBeTruthy();
+
+    contactId1 = await findContactId(email1);
+    const accountId1 = await findAccountId(accountName1);
+    expect(contactId1).toBeTruthy();
+    expect(accountId1).toBeTruthy();
+    expect(result.contactId).toEqual(contactId1);
+    expect(result.leadId).toEqual(userId1);
+    expect(result.accountId).toBe(accountId1);
+
+    user = await getUser(userId1);
+    expect(user.LastName).toBe("Smith");
+    expect(user.Status).toBe("Closed - Converted");
+    expect(user.ConvertedAccountId).toBe(accountId1);
+    expect(user.ConvertedContactId).toBe(contactId1);
+
+    let contact;
+    contact = await getContact(contactId1);
+    expect(contact.LastName).toBe("Smith");
+    expect(contact.AccountId).toBe(accountId1);
+
+    // still in the group
+    const members = await getGroupMemberIds(groupId1);
+    expect(members.sort()).toEqual([userId1].sort());
+  });
+
+  test("does not edit converted leads", async () => {
+    const { success, errors } = await exportBatch({
+      appGuid,
+      appOptions,
+      destinationOptions,
+      exports: [
+        {
+          profileGuid: guid1,
+          oldProfileProperties: {
+            Email: email1,
+            LastName: "Smith",
+            Company: accountName1,
+          },
+          newProfileProperties: {
+            Email: email1,
+            LastName: "NoEdit",
+            Company: accountName1,
+          },
+          oldGroups: [group1],
+          newGroups: [group1],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+    expect(errors).toBeNull();
+    expect(success).toBe(true);
+
+    let user;
+    user = await getUser(userId1);
+    expect(user.Email).toBe(email1);
+    expect(user.LastName).toBe("Smith");
+    expect(user.Company).toBe(accountName1);
+
+    let contact;
+    contact = await getContact(contactId1);
+    expect(contact.LastName).toBe("Smith");
+
+    // still in the group
+    const members = await getGroupMemberIds(groupId1);
+    expect(members.sort()).toEqual([userId1].sort());
+  });
+
+  test("can add and remove groups for converted lead", async () => {
+    groupId2 = await findGroupId(group2);
+    expect(groupId2).toBe(null);
+
+    const { success, errors } = await exportBatch({
+      appGuid,
+      appOptions,
+      destinationOptions,
+      exports: [
+        {
+          profileGuid: guid1,
+          oldProfileProperties: {
+            Email: email1,
+            LastName: "NoEdit",
+            Company: accountName1,
+          },
+          newProfileProperties: {
+            Email: email1,
+            LastName: "NoEdit",
+            Company: accountName1,
+          },
+          oldGroups: [group1],
+          newGroups: [group2],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+    expect(errors).toBeNull();
+    expect(success).toBe(true);
+
+    let contact;
+    contact = await getContact(contactId1);
+    expect(contact.LastName).toBe("Smith");
+
+    // made new group
+    groupId2 = await findGroupId(group1);
+    expect(groupId2).toBeTruthy();
+
+    let members;
+    // can still remove
+    members = await getGroupMemberIds(groupId1);
+    expect(members.sort()).toEqual([].sort());
+
+    // but can't be added
+    members = await getGroupMemberIds(groupId2);
+    expect(members.sort()).toEqual([].sort());
   });
 });
