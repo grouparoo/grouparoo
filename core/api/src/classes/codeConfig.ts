@@ -214,6 +214,15 @@ function getParentIds(configObject: ConfigurationObject) {
     });
   }
 
+  if (configObject["destinationGroupMemberships"]) {
+    const groupIds: string[] = Object.values(
+      configObject["destinationGroupMemberships"]
+    );
+    groupIds.forEach((v) => {
+      prerequisiteIds.push(v);
+    });
+  }
+
   return { prerequisiteIds, providedIds };
 }
 
