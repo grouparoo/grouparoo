@@ -76,6 +76,7 @@ const {
   getClient,
   findId: findContactId,
   getUser: getContact,
+  getGroupMemberIds: getContactMemberIds,
   cleanUp: cleanUpConversion,
   findReferenceId: findAccountId,
 } = getModelHelpers({
@@ -416,8 +417,14 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
     expect(contact.AccountId).toBe(accountId1);
 
     // still in the group
-    const members = await getGroupMemberIds(groupId1);
+    let members;
+    members = await getGroupMemberIds(groupId1);
     expect(members.sort()).toEqual([userId1].sort());
+
+    // the campaign member has both!
+    // note: possible race condition with another Contact source set up in similar way
+    members = await getContactMemberIds(groupId1);
+    expect(members.sort()).toEqual([contactId1].sort());
   });
 
   test("does not edit converted leads", async () => {
