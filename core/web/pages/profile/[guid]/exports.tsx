@@ -15,7 +15,10 @@ export default function Page(props) {
 
       <ProfileTabs profile={profile} />
 
-      <ExportsList {...props} />
+      <ExportsList
+        header={<h1>{getProfileDisplayName(profile)} - Exports</h1>}
+        {...props}
+      />
     </>
   );
 }

@@ -255,6 +255,19 @@ describe("actions/profilePropertyRules", () => {
       expect(error.message).toMatch("column is required");
     });
 
+    test("a rule can be made identifying", async () => {
+      connection.params = {
+        csrfToken,
+        guid,
+      };
+      const { error, profilePropertyRule } = await specHelper.runAction(
+        "profilePropertyRule:makeIdentifying",
+        connection
+      );
+      expect(error).toBeFalsy();
+      expect(profilePropertyRule.identifying).toEqual(true);
+    });
+
     test("an administrator can list all the profilePropertyRules with examples", async () => {
       const profile = await helper.factories.profile();
       await profile.addOrUpdateProperties({ email: ["person@example.com"] });

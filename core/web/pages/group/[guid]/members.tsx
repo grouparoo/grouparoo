@@ -61,9 +61,9 @@ export default function Page(props) {
         <title>Grouparoo: {group.name}</title>
       </Head>
       <GroupTabs group={group} />
-      <p>
-        <StateBadge state={group.state} />
-      </p>
+      <h1>{group.name} - Members</h1>
+      <StateBadge state={group.state} />
+      <br />
       <Button
         disabled={group.state !== "ready"}
         variant="outline-secondary"
@@ -85,7 +85,7 @@ export default function Page(props) {
         Recalculate Members
       </Button>
       <br />
-      <br />
+      <hr />
       <ProfilesList {...props} />
     </>
   );

@@ -4,6 +4,7 @@ import {
   extractNonNullParts,
   codeConfigLockKey,
   logModel,
+  validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { App } from "../..";
 import { Op } from "sequelize";
@@ -11,6 +12,7 @@ import { Op } from "sequelize";
 export async function loadApp(configObject: ConfigurationObject) {
   let isNew = false;
   const guid = await validateAndFormatGuid(App, configObject.id);
+  validateConfigObjectKeys(App, configObject);
 
   let app = await App.scope(null).findOne({
     where: { guid, locked: codeConfigLockKey },

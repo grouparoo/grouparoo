@@ -3,14 +3,17 @@ import {
   validateAndFormatGuid,
   codeConfigLockKey,
   logModel,
+  validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { Group } from "../..";
 import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
 import { Op } from "sequelize";
+import { task } from "actionhero";
 
 export async function loadGroup(configObject: ConfigurationObject) {
   let isNew = false;
   const guid = await validateAndFormatGuid(Group, configObject.id);
+  validateConfigObjectKeys(Group, configObject);
 
   let group = await Group.scope(null).findOne({
     where: { guid, locked: codeConfigLockKey },
@@ -43,7 +46,7 @@ export async function loadGroup(configObject: ConfigurationObject) {
       }
     }
 
-    await group.setRules(configObject.rules);
+    await group.setRules(group.fromConvenientRules(configObject.rules));
   }
 
   await group.update({ state: "ready" });
@@ -53,11 +56,16 @@ export async function loadGroup(configObject: ConfigurationObject) {
 
 export async function deleteGroups(guids: string[]) {
   const groups = await Group.scope(null).findAll({
-    where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
+    where: {
+      locked: codeConfigLockKey,
+      guid: { [Op.notIn]: guids },
+      state: { [Op.ne]: "deleted" },
+    },
   });
 
   for (const i in groups) {
-    await groups[i].destroy();
+    await groups[i].update({ state: "deleted", locked: null });
+    await task.enqueue("group:destroy", { groupGuid: groups[i].guid });
     logModel(groups[i], "deleted");
   }
 }

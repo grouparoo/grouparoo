@@ -24,7 +24,13 @@ export default function Page(props) {
       <h2>Stream</h2>
       <Button href="/events/stream">See Full Stream</Button>
       <br />
-      <EventsList {...props} hideSearch hidePagination limit={25} />
+      <EventsList
+        header={" "}
+        {...props}
+        hideSearch
+        hidePagination
+        limit={25}
+      />
 
       <br />
       <br />

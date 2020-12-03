@@ -16,8 +16,6 @@ export default function Page(props) {
         </Link>
       </Alert>
 
-      <h1>Event Stream</h1>
-
       <EventsList {...props} />
     </>
   );

@@ -442,6 +442,7 @@ export function PendingExports({ execApi }) {
   const [destinations, setDestinations] = useState<Models.DestinationType[]>(
     []
   );
+  const [pendingExportsCount, setPendingExportsCount] = useState(0);
   const [mostRecentExport, setMostRecentExport] = useState<Models.ExportType>();
   let timer;
 
@@ -471,10 +472,13 @@ export function PendingExports({ execApi }) {
       { limit: 1 }
     );
 
+    let _pendingExportsCount = 0;
     const sample = { time: new Date() };
     for (const i in destinations) {
       const destination = destinations[i];
       sample[destination.name] =
+        destination.exportTotals.created + destination.exportTotals.started;
+      _pendingExportsCount +=
         destination.exportTotals.created + destination.exportTotals.started;
     }
 
@@ -485,6 +489,7 @@ export function PendingExports({ execApi }) {
 
     if (destinations) setDestinations(destinations);
     if (_exports) setMostRecentExport(_exports[0]);
+    if (destinations) setPendingExportsCount(_pendingExportsCount);
   }
 
   if (destinations.length === 0) {
@@ -498,7 +503,7 @@ export function PendingExports({ execApi }) {
   return (
     <Card>
       <Card.Body>
-        <Card.Title>Pending Exports</Card.Title>
+        <Card.Title>Pending Exports ({pendingExportsCount})</Card.Title>
         <div style={{ height: 200 }}>
           <RollingChart
             data={pendingExportSamples}

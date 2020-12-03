@@ -201,10 +201,7 @@ export default function Page(props) {
       <Row>
         <Col md={9}>
           <Row>
-            <Col md={2}>
-              <ProfileImageFromEmail loading={loading} email={email} />
-            </Col>
-            <Col md={10}>
+            <Col>
               <span className="text-muted">Created At: </span>
               <Moment fromNow>{profile.createdAt}</Moment>
               <br />
@@ -212,8 +209,13 @@ export default function Page(props) {
               <Moment fromNow>{profile.updatedAt}</Moment>
               <br />
               <StateBadge state={profile.state} />
-              <br />
-              <br />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={2}>
+              <ProfileImageFromEmail loading={loading} email={email} />
+            </Col>
+            <Col>
               {uniqueProfileProperties.map((key) => {
                 return (
                   <h3 key={`profileHeader-${key}`}>
@@ -224,7 +226,11 @@ export default function Page(props) {
                   </h3>
                 );
               })}
-              <br />
+            </Col>
+          </Row>
+          <br />
+          <Row>
+            <Col>
               <LoadingButton
                 disabled={loading}
                 onClick={() => {
@@ -249,78 +255,6 @@ export default function Page(props) {
               </LoadingButton>
             </Col>
           </Row>
-        </Col>
-        <Col md={3}>
-          <h3>Groups</h3>
-
-          {groups.length > 0 ? null : <p>None</p>}
-
-          <ListGroup>
-            {groups.map((group) => (
-              <ListGroup.Item key={`groupMember-${group.guid}`} variant="info">
-                {group.type === "manual" ? (
-                  <>
-                    <LoadingButton
-                      disabled={loading}
-                      size="sm"
-                      variant="danger"
-                      onClick={() => {
-                        handleRemove(group);
-                      }}
-                    >
-                      X
-                    </LoadingButton>
-                    &nbsp; &nbsp;
-                  </>
-                ) : null}
-                <Link
-                  href="/group/[guid]/members"
-                  as={`/group/${group.guid}/members`}
-                >
-                  <a>{group.name}</a>
-                </Link>
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-
-          <hr />
-
-          <Form onSubmit={(event) => handleAdd(event)} autoComplete="off">
-            <Row>
-              <Col md={9}>
-                <Form.Group controlId="groupGuid">
-                  <Form.Label>Add Group</Form.Label>
-                  <Form.Control as="select" disabled={loading}>
-                    {allGroups.map((group) => {
-                      const disabled =
-                        group.type !== "manual" ||
-                        groupMembershipGuids.includes(group.guid);
-                      return (
-                        <option
-                          disabled={disabled}
-                          value={group.guid}
-                          key={`group-${group.guid}`}
-                        >
-                          {group.name}
-                        </option>
-                      );
-                    })}
-                  </Form.Control>
-                </Form.Group>
-              </Col>
-              <Col md={3}>
-                <div style={{ paddingTop: 34 }} />
-                <LoadingButton
-                  variant="outline-primary"
-                  size="sm"
-                  type="submit"
-                  disabled={loading}
-                >
-                  Add
-                </LoadingButton>
-              </Col>
-            </Row>
-          </Form>
         </Col>
       </Row>
 
@@ -418,6 +352,81 @@ export default function Page(props) {
               })}
             </tbody>
           </LoadingTable>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
+          <h3>Groups</h3>
+
+          {groups.length > 0 ? null : <p>None</p>}
+
+          <ListGroup>
+            {groups.map((group) => (
+              <ListGroup.Item key={`groupMember-${group.guid}`} variant="info">
+                {group.type === "manual" ? (
+                  <>
+                    <LoadingButton
+                      disabled={loading}
+                      size="sm"
+                      variant="danger"
+                      onClick={() => {
+                        handleRemove(group);
+                      }}
+                    >
+                      X
+                    </LoadingButton>
+                    &nbsp; &nbsp;
+                  </>
+                ) : null}
+                <Link
+                  href="/group/[guid]/members"
+                  as={`/group/${group.guid}/members`}
+                >
+                  <a>{group.name}</a>
+                </Link>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+
+          <hr />
+
+          <Form onSubmit={(event) => handleAdd(event)} autoComplete="off">
+            <Row>
+              <Col md={9}>
+                <Form.Group controlId="groupGuid">
+                  <Form.Label>Add Group</Form.Label>
+                  <Form.Control as="select" disabled={loading}>
+                    {allGroups.map((group) => {
+                      const disabled =
+                        group.type !== "manual" ||
+                        groupMembershipGuids.includes(group.guid);
+                      return (
+                        <option
+                          disabled={disabled}
+                          value={group.guid}
+                          key={`group-${group.guid}`}
+                        >
+                          {group.name}
+                        </option>
+                      );
+                    })}
+                  </Form.Control>
+                </Form.Group>
+              </Col>
+              <Col md={3}>
+                <div style={{ paddingTop: 34 }} />
+                <LoadingButton
+                  variant="outline-primary"
+                  size="sm"
+                  type="submit"
+                  disabled={loading}
+                >
+                  Add
+                </LoadingButton>
+              </Col>
+            </Row>
+          </Form>
         </Col>
       </Row>
     </>

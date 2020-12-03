@@ -5,6 +5,7 @@ import {
   getParentByName,
   codeConfigLockKey,
   validateAndFormatGuid,
+  validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { App, Destination, Group, ProfilePropertyRule } from "../..";
 import { Op } from "sequelize";
@@ -15,6 +16,8 @@ export async function loadDestination(configObject: ConfigurationObject) {
   const app: App = await getParentByName(App, configObject.appId);
 
   const guid = await validateAndFormatGuid(Destination, configObject.id);
+  validateConfigObjectKeys(Destination, configObject);
+
   let destination = await Destination.scope(null).findOne({
     where: { guid, appGuid: app.guid },
   });
@@ -36,7 +39,6 @@ export async function loadDestination(configObject: ConfigurationObject) {
 
   await destination.update({
     name: configObject.name,
-    groupGuid: group?.guid,
   });
 
   await destination.setOptions(extractNonNullParts(configObject, "options"));
@@ -58,13 +60,17 @@ export async function loadDestination(configObject: ConfigurationObject) {
     "destinationGroupMemberships"
   );
   for (const remoteName in sanitizedDestinationGroupMemberships) {
-    const group = await getParentByName(
+    const membershipGroup = await getParentByName(
       Group,
       sanitizedDestinationGroupMemberships[remoteName]
     );
-    destinationGroupMemberships[group.guid] = remoteName;
+    destinationGroupMemberships[membershipGroup.guid] = remoteName;
   }
   await destination.setDestinationGroupMemberships(destinationGroupMemberships);
+
+  if (destination.groupGuid !== group.guid) {
+    await destination.trackGroup(group);
+  }
 
   await destination.update({ state: "ready" });
 

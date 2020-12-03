@@ -5,6 +5,9 @@ import { useState } from "react";
 import { Row, Col, Table, Form, Button } from "react-bootstrap";
 import { createSchedule } from "../../../components/schedule/add";
 import LoadingButton from "../../../components/loadingButton";
+import AppIcon from "../../../components/appIcon";
+import StateBadge from "../../../components/stateBadge";
+import LockedBadge from "../../../components/lockedBadge";
 import { useRouter } from "next/router";
 import { Actions } from "../../../utils/apiData";
 
@@ -127,11 +130,25 @@ export default function Page(props) {
       return self.indexOf(value) === index;
     });
 
+  const Header = function () {
+    return (
+      <Row>
+        <Col md={1}>
+          <AppIcon src={source.app.icon} fluid size={100} />
+        </Col>
+        <Col>
+          <h1>{source.name} - Profile Identification</h1>
+          <StateBadge state={source.state} /> <LockedBadge object={source} />
+        </Col>
+      </Row>
+    );
+  };
+
   if (!source.previewAvailable) {
     return (
       <>
-        <h2>Profile Identification</h2>
         <SourceTabs source={source} />
+        <Header />
         <p>Mapping not available for a {source.type} source</p>
       </>
     );
@@ -140,8 +157,8 @@ export default function Page(props) {
   if (previewColumns.length === 0) {
     return (
       <>
-        <h2>Profile Identification</h2>
         <SourceTabs source={source} />
+        <Header />
         <p>Set the options first!</p>
       </>
     );
@@ -154,8 +171,7 @@ export default function Page(props) {
       </Head>
 
       <SourceTabs source={source} />
-
-      <h1>Profile Identification</h1>
+      <Header />
 
       <Form>
         <fieldset disabled={source.locked !== null}>

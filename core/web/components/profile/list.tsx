@@ -116,78 +116,80 @@ export default function ProfilesList(props) {
 
   return (
     <>
-      <h1>Profiles</h1>
+      {props.header ? props.header : <h1>Profiles</h1>}
 
-      <Form id="search" onSubmit={load}>
-        <Form.Row>
-          <Col md={3}>
-            <Form.Group>
-              <Form.Label>Search Property</Form.Label>
-              <Form.Control
-                name="searchKey"
-                as="select"
-                value={searchKey}
-                disabled={props.searchKey || loading ? true : false}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  setSearchKey(event.target.value);
-                  setSearchValue("");
-                  autocompleteProfilePropertySearch("%", event.target.value);
-                }}
-              >
-                <option value="">Show All</option>
-                {profilePropertyRules.map((rule) => (
-                  <option key={`rule-${rule.key}`}>{rule.key}</option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-          </Col>
-          {searchKey !== "" ? (
-            <Col md={7}>
-              <>
-                <Form.Label>
-                  Search Term (use <code>%</code> for wildcards and{" "}
-                  <code>null</code> for empty values)
-                </Form.Label>
-                <AsyncTypeahead
-                  key={`typeahead-search-${searchKey}`}
-                  id={`typeahead-search-${searchKey}`}
-                  minLength={0}
+      {groupGuid ? null : (
+        <Form id="search" onSubmit={load}>
+          <Form.Row>
+            <Col md={3}>
+              <Form.Group>
+                <Form.Label>Search Property</Form.Label>
+                <Form.Control
+                  name="searchKey"
+                  as="select"
+                  value={searchKey}
                   disabled={props.searchKey || loading ? true : false}
-                  isLoading={searchLoading}
-                  allowNew={true}
-                  onChange={(selected) => {
-                    if (!selected[0]) {
-                      return;
-                    }
-
-                    setSearchValue(
-                      selected[0].label
-                        ? selected[0].label // when a new custom option is set
-                        : selected[0] // when a list option is chosen);
-                    );
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setSearchKey(event.target.value);
+                    setSearchValue("");
+                    autocompleteProfilePropertySearch("%", event.target.value);
                   }}
-                  onBlur={(e) => {
-                    const value = e.target.value;
-                    if (value && value.length > 0) setSearchValue(value);
-                  }}
-                  options={autocompleteResults}
-                  onSearch={autocompleteProfilePropertySearch}
-                  placeholder={`name@example.com`}
-                  defaultSelected={
-                    searchValue ? [searchValue.toString()] : undefined
-                  }
-                />
-              </>
+                >
+                  <option value="">Show All</option>
+                  {profilePropertyRules.map((rule) => (
+                    <option key={`rule-${rule.key}`}>{rule.key}</option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
             </Col>
-          ) : null}
+            {searchKey !== "" ? (
+              <Col md={7}>
+                <>
+                  <Form.Label>
+                    Search Term (use <code>%</code> for wildcards and{" "}
+                    <code>null</code> for empty values)
+                  </Form.Label>
+                  <AsyncTypeahead
+                    key={`typeahead-search-${searchKey}`}
+                    id={`typeahead-search-${searchKey}`}
+                    minLength={0}
+                    disabled={props.searchKey || loading ? true : false}
+                    isLoading={searchLoading}
+                    allowNew={true}
+                    onChange={(selected) => {
+                      if (!selected[0]) {
+                        return;
+                      }
 
-          <Col md={2} style={{ marginTop: 33 }}>
-            <LoadingButton size="sm" type="submit" disabled={loading}>
-              Search
-            </LoadingButton>
-          </Col>
-        </Form.Row>
-      </Form>
+                      setSearchValue(
+                        selected[0].label
+                          ? selected[0].label // when a new custom option is set
+                          : selected[0] // when a list option is chosen);
+                      );
+                    }}
+                    onBlur={(e) => {
+                      const value = e.target.value;
+                      if (value && value.length > 0) setSearchValue(value);
+                    }}
+                    options={autocompleteResults}
+                    onSearch={autocompleteProfilePropertySearch}
+                    placeholder={`name@example.com`}
+                    defaultSelected={
+                      searchValue ? [searchValue.toString()] : undefined
+                    }
+                  />
+                </>
+              </Col>
+            ) : null}
+
+            <Col md={2} style={{ marginTop: 33 }}>
+              <LoadingButton size="sm" type="submit" disabled={loading}>
+                Search
+              </LoadingButton>
+            </Col>
+          </Form.Row>
+        </Form>
+      )}
 
       <ButtonGroup id="profile-states">
         <Button

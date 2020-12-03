@@ -2,6 +2,7 @@ import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Badge, Alert } from "react-bootstrap";
 import AppIcon from "./../../../components/appIcon";
 import StateBadge from "./../../../components/stateBadge";
+import LockedBadge from "./../../../components/lockedBadge";
 import Link from "next/link";
 import Moment from "react-moment";
 import ScheduleAddButton from "../../../components/schedule/add";
@@ -43,9 +44,11 @@ export default function Page({
         </Col>
         <Col>
           <h1>{source.name}</h1>
-          <StateBadge state={source.state} />
-          <br />
-          <br />
+          <StateBadge state={source.state} /> <LockedBadge object={source} />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
           <p>
             <strong>App</strong>:{" "}
             <Link href="/app/[guid]" as={`/app/${source.app.guid}`}>
@@ -55,7 +58,6 @@ export default function Page({
             <strong>Connection</strong>: {source.connection.name}:{" "}
             {source.connection.description}
           </p>
-
           <p>
             <strong>Options</strong>
             <br />
@@ -66,11 +68,8 @@ export default function Page({
               </span>
             ))}
           </p>
-
           <hr />
-
           <h2>Profile Property Rules</h2>
-
           <Table>
             <thead>
               <tr>
@@ -111,15 +110,12 @@ export default function Page({
               ))}
             </tbody>
           </Table>
-
           <ProfilePropertyRuleAddButton
             errorHandler={errorHandler}
             successHandler={successHandler}
             source={source}
           />
-
           <hr />
-
           <h2>Schedule</h2>
           <br />
           {source.scheduleAvailable ? (
@@ -241,9 +237,7 @@ export default function Page({
               Schedule not available for this connection type
             </Alert>
           )}
-
           <hr />
-
           <h2>Profile Identification</h2>
           {source.previewAvailable && !source.connection.skipSourceMapping ? (
             Object.keys(source.mapping).length === 1 ? (

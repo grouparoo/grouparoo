@@ -158,6 +158,7 @@ import {
   ProfilePropertyRuleCreate,
   ProfilePropertyRuleDestroy,
   ProfilePropertyRuleEdit,
+  ProfilePropertyRuleMakeIdentifying,
   ProfilePropertyRuleFilterOptions,
   ProfilePropertyRuleGroups,
   ProfilePropertyRulePluginOptions,
@@ -392,6 +393,9 @@ export namespace Actions {
   >;
   export type ProfilePropertyRuleEdit = AsyncReturnType<
     typeof ProfilePropertyRuleEdit.prototype.run
+  >;
+  export type ProfilePropertyRuleMakeIdentifying = AsyncReturnType<
+    typeof ProfilePropertyRuleMakeIdentifying.prototype.run
   >;
   export type ProfilePropertyRuleFilterOptions = AsyncReturnType<
     typeof ProfilePropertyRuleFilterOptions.prototype.run

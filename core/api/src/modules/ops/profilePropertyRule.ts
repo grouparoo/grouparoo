@@ -7,6 +7,7 @@ import { GroupRule } from "../../models/GroupRule";
 import { App } from "../../models/App";
 import { internalRun } from "../internalRun";
 import { task } from "actionhero";
+import { Op } from "sequelize";
 import Mustache from "mustache";
 
 export namespace ProfilePropertyRuleOps {
@@ -131,6 +132,17 @@ export namespace ProfilePropertyRuleOps {
     return dependencies.filter(
       (v, i, a) => a.findIndex((t) => t.guid === v.guid) === i
     );
+  }
+
+  /** Make this rule identifying */
+  export async function makeIdentifying(rule: ProfilePropertyRule) {
+    if (rule.identifying === true) return;
+
+    await ProfilePropertyRule.update(
+      { identifying: false },
+      { where: { guid: { [Op.ne]: rule.guid } } }
+    );
+    await rule.update({ identifying: true });
   }
 
   /**

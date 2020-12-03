@@ -6,6 +6,7 @@ import Link from "next/link";
 import Head from "next/head";
 import AppIcon from "./../../../components/appIcon";
 import StateBadge from "./../../../components/stateBadge";
+import LockedBadge from "../../../components/lockedBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
 import DestinationTabs from "./../../../components/tabs/destination";
 import LoadingButton from "../../../components/loadingButton";
@@ -126,16 +127,18 @@ export default function Page(props) {
 
       <DestinationTabs destination={destination} />
 
-      <h1>Edit Destination</h1>
-
       <Row>
         <Col md={1}>
-          <br />
           <AppIcon src={destination.app.icon} fluid size={100} />
         </Col>
         <Col>
-          <StateBadge state={destination.state} />
-
+          <h1>{destination.name}</h1>
+          <StateBadge state={destination.state} />{" "}
+          <LockedBadge object={destination} />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
           <Form id="form" onSubmit={onSubmit} autoComplete="off">
             <fieldset disabled={destination.locked !== null}>
               <Form.Group controlId="name">

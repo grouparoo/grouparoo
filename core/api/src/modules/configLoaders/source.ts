@@ -5,6 +5,7 @@ import {
   getParentByName,
   codeConfigLockKey,
   validateAndFormatGuid,
+  validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { App, Source, ProfilePropertyRule } from "../..";
 import { Op } from "sequelize";
@@ -15,6 +16,8 @@ export async function loadSource(configObject: ConfigurationObject) {
   const app: App = await getParentByName(App, configObject.appId);
 
   const guid = await validateAndFormatGuid(Source, configObject.id);
+  validateConfigObjectKeys(Source, configObject);
+
   let source = await Source.scope(null).findOne({
     where: { guid, locked: codeConfigLockKey, appGuid: app.guid },
   });

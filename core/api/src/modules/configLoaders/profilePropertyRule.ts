@@ -5,6 +5,7 @@ import {
   getParentByName,
   codeConfigLockKey,
   validateAndFormatGuid,
+  validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { ProfilePropertyRule, Source } from "../..";
 import { Op } from "sequelize";
@@ -19,6 +20,8 @@ export async function loadProfilePropertyRule(
     ProfilePropertyRule,
     configObject.id
   );
+  validateConfigObjectKeys(ProfilePropertyRule, configObject, ["name"]);
+
   let profilePropertyRule = await ProfilePropertyRule.scope(null).findOne({
     where: { locked: codeConfigLockKey, guid },
   });
@@ -37,7 +40,6 @@ export async function loadProfilePropertyRule(
     key: configObject.key || configObject.name,
     unique: configObject.unique,
     isArray: configObject.isArray,
-    identifying: configObject.identifying,
   });
 
   await profilePropertyRule.setOptions(
@@ -46,6 +48,10 @@ export async function loadProfilePropertyRule(
 
   if (configObject.filters) {
     await profilePropertyRule.setFilters(configObject.filters);
+  }
+
+  if (configObject.identifying === true) {
+    await profilePropertyRule.makeIdentifying();
   }
 
   await profilePropertyRule.update({ state: "ready" });

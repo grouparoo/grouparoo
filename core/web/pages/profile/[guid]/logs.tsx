@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useApi } from "../../../hooks/useApi";
 import LogsList from "../../../components/log/list";
 import ProfileTabs from "../../../components/tabs/profile";
+import getProfileDisplayName from "../../../components/profile/getProfileDisplayName";
 
 export default function Page(props) {
   const { profile } = props;
@@ -14,7 +15,10 @@ export default function Page(props) {
 
       <ProfileTabs profile={profile} />
 
-      <LogsList {...props} />
+      <LogsList
+        header={<h1>{getProfileDisplayName(profile)} - Logs</h1>}
+        {...props}
+      />
     </>
   );
 }

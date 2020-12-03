@@ -8,6 +8,7 @@ import { capitalize } from "../../components/tabs";
 import { useRouter } from "next/router";
 import { Models, Actions } from "../../utils/apiData";
 import LoadingButton from "../../components/loadingButton";
+import LockedBadge from "../../components/lockedBadge";
 
 import ImportAndUpdateAllProfiles from "../../components/settings/importAndUpdate";
 import IdentifyingProfilePropertyRule from "../../components/settings/identifyingProfilePropertyRule";
@@ -149,6 +150,7 @@ function SettingCard({
               {setting.description}
             </Card.Subtitle>
           ) : null}
+          <LockedBadge object={setting} />
 
           <Form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
             <fieldset disabled={setting.locked !== null}>

@@ -3,7 +3,10 @@ import RunsList from "../../../components/runs/list";
 import { useApi } from "../../../hooks/useApi";
 import { useState } from "react";
 import SourceTabs from "../../../components/tabs/source";
-import { Button } from "react-bootstrap";
+import AppIcon from "../../../components/appIcon";
+import StateBadge from "../../../components/stateBadge";
+import LockedBadge from "../../../components/lockedBadge";
+import { Button, Row, Col } from "react-bootstrap";
 
 export default function Page(props) {
   const { errorHandler, successHandler, runsHandler, source } = props;
@@ -29,20 +32,39 @@ export default function Page(props) {
 
       <SourceTabs source={source} />
 
-      <Button
-        size="sm"
-        variant="outline-primary"
-        disabled={loading}
-        onClick={() => {
-          enqueueScheduleRun();
-        }}
-      >
-        Run Now
-      </Button>
-      <br />
-      <br />
-
-      <RunsList {...props} />
+      <RunsList
+        header={
+          <>
+            <Row>
+              <Col md={1}>
+                <AppIcon src={source?.app?.icon} fluid size={100} />
+              </Col>
+              <Col>
+                <h1>{source.name} - Runs</h1>
+                <StateBadge state={source.state} />{" "}
+                <LockedBadge object={source} />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Button
+                  size="sm"
+                  variant="outline-primary"
+                  disabled={loading}
+                  onClick={() => {
+                    enqueueScheduleRun();
+                  }}
+                >
+                  Run Now
+                </Button>
+                <br />
+                <br />
+              </Col>
+            </Row>
+          </>
+        }
+        {...props}
+      />
     </>
   );
 }

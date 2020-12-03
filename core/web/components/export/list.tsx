@@ -70,7 +70,7 @@ export default function ExportsList(props) {
 
   return (
     <>
-      <h1>Exports</h1>
+      {props.header ? props.header : <h1>Exports</h1>}
 
       <Row>
         <Col md={3}>

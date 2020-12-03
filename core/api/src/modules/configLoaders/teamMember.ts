@@ -4,6 +4,7 @@ import {
   getParentByName,
   logModel,
   validateAndFormatGuid,
+  validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { Team, TeamMember } from "../..";
 import { Op } from "sequelize";
@@ -14,6 +15,8 @@ export async function loadTeamMember(configObject: ConfigurationObject) {
   const team: Team = await getParentByName(Team, configObject.teamId);
 
   const guid = await validateAndFormatGuid(TeamMember, configObject.id);
+  validateConfigObjectKeys(TeamMember, configObject);
+
   let teamMember = await TeamMember.scope(null).findOne({
     where: { locked: codeConfigLockKey, guid },
   });

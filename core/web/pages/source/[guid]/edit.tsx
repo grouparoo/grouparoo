@@ -6,6 +6,7 @@ import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 import AppIcon from "./../../../components/appIcon";
 import StateBadge from "./../../../components/stateBadge";
+import LockedBadge from "./../../../components/lockedBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { Models, Actions } from "../../../utils/apiData";
 import LoadingTable from "../../../components/loadingTable";
@@ -152,20 +153,18 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: {source.name}</title>
       </Head>
-
       <SourceTabs source={source} />
-
-      <h2>Edit this {source.app.name} Source</h2>
-
       <Row>
         <Col md={1}>
-          <br />
           <AppIcon src={source.app.icon} fluid size={100} />
         </Col>
         <Col>
-          <StateBadge state={source.state} />
-          <br />
-          <br />
+          <h1>Edit this {source.app.name} Source</h1>
+          <StateBadge state={source.state} /> <LockedBadge object={source} />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
           <Form id="form" onSubmit={onSubmit} autoComplete="off">
             <fieldset disabled={source.locked !== null}>
               <Form.Group controlId="name">

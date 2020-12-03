@@ -342,6 +342,10 @@ export class ProfilePropertyRule extends LoggedModel<ProfilePropertyRule> {
     }
   }
 
+  async makeIdentifying() {
+    return ProfilePropertyRuleOps.makeIdentifying(this);
+  }
+
   async apiData() {
     const options = await this.getOptions();
     const filters = await this.getFilters();

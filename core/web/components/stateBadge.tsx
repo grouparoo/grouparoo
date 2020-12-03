@@ -34,5 +34,9 @@ export default function StateBadge({ state }: { state: string }) {
       variant = "primary";
   }
 
-  return <Badge variant={variant}>{state}</Badge>;
+  return (
+    <Badge style={{ marginBottom: 20 }} variant={variant}>
+      {state}
+    </Badge>
+  );
 }

@@ -1,7 +1,11 @@
 import { useApi } from "../../../hooks/useApi";
 import Head from "next/head";
 import Link from "next/link";
+import { Row, Col } from "react-bootstrap";
 import LoadingTable from "../../../components/loadingTable";
+import AppIcon from "../../../components/appIcon";
+import StateBadge from "../../../components/stateBadge";
+import LockedBadge from "../../../components/lockedBadge";
 import ProfilePropertyRuleTabs from "../../../components/tabs/profilePropertyRule";
 import { Models } from "../../../utils/apiData";
 
@@ -24,6 +28,17 @@ export default function Page({
         profilePropertyRule={profilePropertyRule}
         source={source}
       />
+
+      <Row>
+        <Col md={1}>
+          <AppIcon src={source.app.icon} fluid size={100} />
+        </Col>
+        <Col md={8}>
+          <h1>{profilePropertyRule.key} - Groups</h1>
+          <StateBadge state={profilePropertyRule.state} />{" "}
+          <LockedBadge object={profilePropertyRule} />
+        </Col>
+      </Row>
 
       <LoadingTable loading={false}>
         <thead>

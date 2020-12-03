@@ -6,6 +6,7 @@ import Link from "next/link";
 import Loader from "../../../components/loader";
 import AppIcon from "../../../components/appIcon";
 import StateBadge from "../../../components/stateBadge";
+import LockedBadge from "../../../components/lockedBadge";
 import ProfilePreview from "../../../components/profilePropertyRule/profilePreview";
 import { Typeahead } from "react-bootstrap-typeahead";
 import DatePicker from "../../../components/datePicker";
@@ -176,13 +177,16 @@ export default function Page(props) {
         <fieldset disabled={profilePropertyRule.locked !== null}>
           <Row>
             <Col md={1}>
-              <br />
               <AppIcon src={source.app.icon} fluid size={100} />
             </Col>
             <Col md={8}>
-              <strong>State</strong>:{" "}
-              <StateBadge state={profilePropertyRule.state} />
-              <br />
+              <h1>{profilePropertyRule.key}</h1>
+              <StateBadge state={profilePropertyRule.state} />{" "}
+              <LockedBadge object={profilePropertyRule} />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
               <Form.Group controlId="key">
                 <p>
                   <strong>Source</strong>:{" "}

@@ -42,21 +42,10 @@ export default function IdentifyingProfilePropertyRule(props) {
 
     setLoading(true);
 
-    for (const i in profilePropertyRules) {
-      if (profilePropertyRules[i].identifying) {
-        await execApi(
-          "put",
-          `/profilePropertyRule/${profilePropertyRules[i].guid}`,
-          { identifying: false }
-        );
-      }
-    }
-
     if (identifyingProfilePropertyGuid !== "") {
       await execApi(
         "put",
-        `/profilePropertyRule/${identifyingProfilePropertyGuid}`,
-        { identifying: true }
+        `/profilePropertyRule/${identifyingProfilePropertyGuid}/makeIdentifying`
       );
     }
 
