@@ -8,14 +8,44 @@ import {
 } from "@grouparoo/core";
 
 export enum BatchAction {
-  Delete = "DELETE",
-  ForeignKeyChange = "FOREIGNKEYCHANGE",
-  Update = "UPDATE",
+  Delete = "Delete",
+  Update = "Update",
+  Create = "Create",
+  // CreateOrUpdate = "CreateOrUpdate",
+  Skip = "Skip",
 }
 export enum BatchGroupMode {
-  WithinGroup = "WITHINGROUP", // update group by group
-  TotalMembers = "TOTALMEMBERS", // update all groups at once
+  WithinGroup = "WithinGroup", // update group by group
+  TotalMembers = "TotalMembers", // update all groups at once
 }
+
+export enum BatchSyncMode {
+  // these values actually used in destinationOptions settings
+  Sync = "Sync", // create, update, delete (default)
+  Enrich = "Enrich", // update only (no create or delete)
+  Additive = "Additive", // create or update (no delete)
+}
+
+export const BatchSyncModeData = {
+  [BatchSyncMode.Sync]: {
+    create: true,
+    update: true,
+    delete: true,
+    description: "Sync all profiles (create, update, delete)",
+  },
+  [BatchSyncMode.Enrich]: {
+    create: false,
+    update: true,
+    delete: false,
+    description: "Only update existing objects (update)",
+  },
+  [BatchSyncMode.Additive]: {
+    create: true,
+    update: true,
+    delete: false,
+    description: "Sync all profiles, but do not delete (create, update)",
+  },
+};
 
 export interface BatchExport extends ExportedProfile {
   foreignKeyValue?: string;
@@ -38,6 +68,7 @@ export interface BatchConfig {
   batchSize: number; // max number to update, create, delete
   findSize: number; // max query parameters to send to findAndSetDestinationIds
   groupMode: BatchGroupMode;
+  syncMode: BatchSyncMode;
   foreignKey: string;
   connection?: any;
   app?: App;

@@ -1,4 +1,5 @@
 import { ErrorWithProfileGuid } from "@grouparoo/core";
+import { BatchSyncModeData } from "./types";
 import {
   BatchAction,
   BatchGroupMode,
@@ -45,7 +46,7 @@ const exportOneBatch: ExportBatchProfilesPluginMethod = async (
   for (const exportedProfile of exports) {
     try {
       setGroupNames(exportedProfile, methods, config);
-      sortExport(exportedProfile, methods, config);
+      assignForeignKeys(exportedProfile, methods, config);
     } catch (error) {
       // if just one of them is missing foreign key or something, move on
       exportedProfile.error = error;
@@ -53,6 +54,7 @@ const exportOneBatch: ExportBatchProfilesPluginMethod = async (
   }
 
   await lookupDestinationIds(client, exports, methods, config);
+  assignActions(exports, config);
 
   await deleteExports(client, exports, methods, config);
   await updateByIds(client, exports, methods, config);
@@ -89,7 +91,7 @@ function checkErrors(
   return { success, errors };
 }
 
-function verifyAllProcessed(exports) {
+function verifyAllProcessed(exports: BatchExport[]) {
   for (const exportedProfile of exports) {
     try {
       verifyProcessed(exportedProfile);
@@ -99,19 +101,22 @@ function verifyAllProcessed(exports) {
   }
 }
 
-function verifyProcessed(exportedProfile) {
+function verifyProcessed(exportedProfile: BatchExport) {
   const { destinationId, processed, error } = exportedProfile;
+
   if (error) {
     return;
   }
+  if (exportedProfile.action === BatchAction.Skip) {
+    return;
+  }
+
   if (!processed) {
     throw new Error(
       `profile has not processed: ${exportedProfile.foreignKeyValue}`
     );
   }
-  if (exportedProfile.action === BatchAction.Delete) {
-    return; // doesn't need a destinationd
-  }
+
   if (!destinationId) {
     throw new Error(
       `profile does not have a destination id: ${exportedProfile.foreignKeyValue}`
@@ -132,7 +137,9 @@ async function updateGroups(
     if (exportedProfile.error) {
       continue;
     }
-    if (exportedProfile.action === BatchAction.Delete) {
+    if (
+      ![BatchAction.Create, BatchAction.Update].includes(exportedProfile.action)
+    ) {
       continue;
     }
 
@@ -239,6 +246,11 @@ async function createByForeignKey(
   methods: BatchMethods,
   config: BatchConfig
 ) {
+  const { syncMode } = config;
+  if (!BatchSyncModeData[syncMode].create) {
+    return;
+  }
+
   const batches: Array<{ fkMap: ForeignKeyMap }> = [];
   let currentFkMap: ForeignKeyMap = {};
   let currentCount = 0;
@@ -247,9 +259,13 @@ async function createByForeignKey(
     if (exportedProfile.processed || exportedProfile.error) {
       continue;
     }
-    if (exportedProfile.action === BatchAction.Delete) {
+    if (exportedProfile.action !== BatchAction.Create) {
       continue;
     }
+    if (!exportedProfile.foreignKeyValue) {
+      throw new Error(`cannot create without foreignKeyValue`);
+    }
+
     if (currentCount > config.batchSize) {
       batches.push({ fkMap: currentFkMap });
       currentFkMap = {};
@@ -291,6 +307,11 @@ async function updateByIds(
   methods: BatchMethods,
   config: BatchConfig
 ) {
+  const { syncMode } = config;
+  if (!BatchSyncModeData[syncMode].update) {
+    return;
+  }
+
   let currentFkMap: ForeignKeyMap = {};
   let currentDeskIdMap: DestinationIdMap = {};
   let currentCount = 0;
@@ -304,11 +325,13 @@ async function updateByIds(
     if (exportedProfile.processed || exportedProfile.error) {
       continue;
     }
-    if (exportedProfile.action === BatchAction.Delete) {
+    if (exportedProfile.action !== BatchAction.Update) {
       continue;
     }
     if (!exportedProfile.destinationId) {
-      continue;
+      throw new Error(
+        `cannot update without destinationId: ${exportedProfile.foreignKeyValue}`
+      );
     }
 
     if (currentCount > config.batchSize) {
@@ -355,6 +378,10 @@ async function deleteExports(
   methods: BatchMethods,
   config: BatchConfig
 ) {
+  const { syncMode } = config;
+  if (!BatchSyncModeData[syncMode].delete) {
+    return;
+  }
   let currentFkMap: ForeignKeyMap = {};
   let currentDeskIdMap: DestinationIdMap = {};
   let currentCount = 0;
@@ -544,7 +571,7 @@ function functionToGetForeignKey(
 }
 
 // returns what to do for each case
-function sortExport(
+function assignForeignKeys(
   exportedProfile: BatchExport,
   methods: BatchMethods,
   config: BatchConfig
@@ -587,17 +614,41 @@ function sortExport(
     oldValue = oldValue.toString();
     if (newValue !== oldValue && oldValue.length > 0) {
       exportedProfile.oldForeignKeyValue = oldValue;
-      exportedProfile.action = BatchAction.ForeignKeyChange;
     }
   }
 
-  if (toDelete) {
-    exportedProfile.action = BatchAction.Delete;
-  }
-
-  if (!exportedProfile.action) {
-    exportedProfile.action = BatchAction.Update;
-  }
-
   return exportedProfile;
+}
+
+function assignActions(exports: BatchExport[], config: BatchConfig) {
+  for (const exportedProfile of exports) {
+    const { toDelete, destinationId } = exportedProfile;
+    if (toDelete) {
+      exportedProfile.action = BatchAction.Delete;
+    } else if (destinationId) {
+      exportedProfile.action = BatchAction.Update;
+    } else {
+      exportedProfile.action = BatchAction.Create;
+    }
+    if (shouldSkip(exportedProfile, config)) {
+      exportedProfile.action = BatchAction.Skip;
+    }
+  }
+
+  function shouldSkip(exportedProfile: BatchExport, config: BatchConfig) {
+    // see if we are actually dealing with this user
+    const { syncMode } = config;
+    switch (exportedProfile.action) {
+      case BatchAction.Skip:
+        return true;
+      case BatchAction.Delete:
+        return !BatchSyncModeData[syncMode].delete;
+      case BatchAction.Update:
+        return !BatchSyncModeData[syncMode].update;
+      case BatchAction.Create:
+        return !BatchSyncModeData[syncMode].create;
+      default:
+        throw new Error(`Unknown BatchAction: ${exportedProfile.action}`);
+    }
+  }
 }
