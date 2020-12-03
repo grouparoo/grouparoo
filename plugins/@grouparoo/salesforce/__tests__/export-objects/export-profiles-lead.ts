@@ -38,21 +38,21 @@ const destinationOptions = {
 };
 const model = destinationModel(destinationOptions);
 
-const email1 = "brian@demo.com";
+const email1 = "leadbrian@demo.com";
 const guid1 = "pro1";
-const newEmail1 = "other@demo.com";
+const newEmail1 = "leadother@demo.com";
 let userId1 = null;
 const accountName1 = "ConvertedCorp";
 let contactId1 = null;
 
-const email2 = "brian2@demo.com";
+const email2 = "leadbrian2@demo.com";
 const guid2 = "pro2";
 let userId2 = null;
 
-const group1 = "(test) High Value";
+const group1 = "(test) High Value4";
 let groupId1 = null;
 
-const group2 = "(test) Churned";
+const group2 = "(test) Churned4";
 let groupId2 = null;
 
 const deleteProfileValues = [email1, email2, newEmail1];
@@ -104,8 +104,8 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
   }, helper.setupTime);
 
   afterAll(async () => {
-    // await cleanUp(true);
-    // await cleanUpConversion(true);
+    await cleanUp(true);
+    await cleanUpConversion(true);
   }, helper.setupTime);
 
   beforeEach(async () => {
