@@ -51,16 +51,16 @@ const email3 = "brian3@demo.com";
 const guid3 = "pro3";
 let userId3 = null;
 
-const group1 = "(test) High Value";
+const group1 = "(test) High Value1";
 let groupId1 = null;
 
-const group2 = "(test) Churned";
+const group2 = "(test) Churned1";
 let groupId2 = null;
 
-const account1 = "(test) Big Account";
+const account1 = "(test) Big Account1";
 let accountId1 = null;
 
-const account2 = "(test) Small Account";
+const account2 = "(test) Small Account1";
 let accountId2 = null;
 
 const deleteProfileValues = [email1, email2, email3, newEmail1];

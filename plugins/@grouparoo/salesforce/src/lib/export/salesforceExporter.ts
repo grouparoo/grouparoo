@@ -354,6 +354,8 @@ enum ResultType {
   REMOVEGROUP = "REMOVEGROUP",
   LIST = "LIST",
 }
+const OK_PROCESS_ERROR = new Error("this is fine");
+const CONVERTED_LEAD_ERROR = new Error("converted lead");
 function processResult(result, identifier, type: ResultType) {
   let id = (result.id || "").toString();
   let errors = result.errors || [];
@@ -363,7 +365,7 @@ function processResult(result, identifier, type: ResultType) {
     // it's ok if it was already there
     errors = errors.filter((err) => err?.statusCode !== "DUPLICATE_VALUE");
     if (errors.length === 0) {
-      success = true;
+      throw OK_PROCESS_ERROR;
     }
     id = "doesntmatter";
   }
@@ -371,11 +373,19 @@ function processResult(result, identifier, type: ResultType) {
     // it's ok if it wasn't there
     errors = errors.filter((err) => err?.statusCode !== "NOT_FOUND");
     if (errors.length === 0) {
-      success = true;
+      throw OK_PROCESS_ERROR;
     }
     id = "doesntmatter";
   }
   if (!success || errors.length > 0) {
+    if (
+      errors.length === 1 &&
+      errors[0].statusCode === "CANNOT_UPDATE_CONVERTED_LEAD"
+    ) {
+      // it's ok if this lead has been converted. it's now a contact.
+      throw CONVERTED_LEAD_ERROR;
+    }
+
     const messages = errors.map((err) => err?.message).filter((msg) => !!msg);
     if (messages.length > 0) {
       throw new Error(`Error (${identifier}): ${messages.join(",")}`);
@@ -392,7 +402,7 @@ function processResult(result, identifier, type: ResultType) {
 }
 
 // called from create, update, and delete
-function processResults(results, users, type: ResultType) {
+function processResults(results, users: BatchExport[], type: ResultType) {
   if (results.length !== users.length) {
     throw new Error("expected results and users lengths to be the same");
   }
@@ -411,7 +421,27 @@ function processResults(results, users, type: ResultType) {
         user.destinationId = id;
       }
     } catch (error) {
-      user.error = error;
+      if ([OK_PROCESS_ERROR, CONVERTED_LEAD_ERROR].includes(error)) {
+        if (type === ResultType.USER) {
+          if (!user.destinationId) {
+            // still should have an id!
+            user.error = new Error(
+              `destinationId never set from ok process error: ${user.destinationId}`
+            );
+          }
+          if (error === CONVERTED_LEAD_ERROR) {
+            // remove from all groups.
+            // groups are done in the batch helper after processing users
+            // remove from all old and (just to be sure) all new groups
+            user.removedGroups = Array.from(
+              new Set(user.removedGroups.concat(user.addedGroups))
+            );
+            user.addedGroups = [];
+          }
+        }
+      } else {
+        user.error = error;
+      }
     }
   }
 }
