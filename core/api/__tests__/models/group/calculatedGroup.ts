@@ -467,6 +467,25 @@ describe("models/group", () => {
 
         expect(group.fromConvenientRules(convenientRules)).toEqual(rules);
       });
+
+      test("convenientRules work with rulesAreEqual", async () => {
+        await group.setRules(
+          group.fromConvenientRules([
+            { key: "firstName", operation: { op: "exists" } },
+          ])
+        );
+        const rules = await group.getRules();
+
+        expect(
+          GroupOps.rulesAreEqual(rules, [
+            {
+              key: "firstName",
+              operation: { op: "ne" },
+              match: "null",
+            },
+          ])
+        ).toBe(true);
+      });
     });
 
     describe("#updateProfileMembership", () => {

@@ -5,6 +5,7 @@ import { App } from "../../src/models/App";
 import { Source } from "../../src/models/Source";
 import { Schedule } from "../../src/models/Schedule";
 import { Group } from "../../src/models/Group";
+import { GroupRule } from "../../src/models/GroupRule";
 import { Destination } from "../../src/models/Destination";
 import { ApiKey } from "../../src/models/ApiKey";
 import { Team } from "../../src/models/Team";
@@ -152,7 +153,7 @@ describe("modules/codeConfig", () => {
         {
           key: "User Id",
           match: "null",
-          operation: { description: "exists with any value", op: "ne" },
+          operation: { description: "is not equal to", op: "ne" },
           relativeMatchDirection: null,
           relativeMatchNumber: null,
           relativeMatchUnit: null,
@@ -321,6 +322,48 @@ describe("modules/codeConfig", () => {
     });
   });
 
+  describe("partially empty config", () => {
+    beforeAll(async () => {
+      api.codeConfig.allowLockedModelChanges = true;
+      process.env.GROUPAROO_CONFIG_DIR = path.join(
+        __dirname,
+        "..",
+        "fixtures",
+        "codeConfig",
+        "partially-empty"
+      );
+      await initializer.initialize();
+    });
+
+    afterAll(async () => {
+      // pretending that the task had run to delete the group
+      await Group.truncate();
+      await GroupRule.truncate();
+    });
+
+    test("most objects will be deleted with an empty config file", async () => {
+      expect(await App.count()).toBe(1);
+      expect(await Source.count()).toBe(1);
+      expect(await Schedule.count()).toBe(0);
+      expect(await Destination.count()).toBe(0);
+      expect(await ProfilePropertyRule.count()).toBe(2);
+      expect(await ApiKey.count()).toBe(0);
+      expect(await Team.count()).toBe(0);
+      expect(await TeamMember.count()).toBe(0);
+    });
+
+    test("settings remain", async () => {
+      expect(await Setting.count()).toBeGreaterThan(1);
+    });
+
+    test("groups will be moved to the deleted state and unlocked", async () => {
+      const groups = await Group.scope(null).findAll();
+      expect(groups.length).toBe(1);
+      expect(groups[0].state).toBe("deleted");
+      expect(groups[0].locked).toBe(null);
+    });
+  });
+
   describe("empty config", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
@@ -335,9 +378,7 @@ describe("modules/codeConfig", () => {
     });
 
     test("all objects will be deleted with an empty config file", async () => {
-      expect(await App.count({ where: { type: { [Op.ne]: "events" } } })).toBe(
-        0
-      );
+      expect(await App.count()).toBe(0);
       expect(await Source.count()).toBe(0);
       expect(await Schedule.count()).toBe(0);
       expect(await Destination.count()).toBe(0);
@@ -346,6 +387,10 @@ describe("modules/codeConfig", () => {
       expect(await ApiKey.count()).toBe(0);
       expect(await Team.count()).toBe(0);
       expect(await TeamMember.count()).toBe(0);
+    });
+
+    test("settings remain", async () => {
+      expect(await Setting.count()).toBeGreaterThan(1);
     });
   });
 
