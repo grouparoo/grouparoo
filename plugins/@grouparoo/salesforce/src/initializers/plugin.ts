@@ -57,6 +57,12 @@ export class Plugins extends Initializer {
           app: "salesforce",
           options: [
             {
+              key: "syncMode",
+              displayName: "Sync Mode",
+              required: true,
+              description: "How should Grouparoo modify Salesforce objects?",
+            },
+            {
               key: "profileObject",
               displayName: "Profile Object",
               required: true,
