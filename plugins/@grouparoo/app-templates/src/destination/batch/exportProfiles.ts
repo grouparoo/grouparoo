@@ -1,5 +1,5 @@
 import { ErrorWithProfileGuid } from "@grouparoo/core";
-import { BatchSyncMode, BatchSyncModeData } from "./types";
+import { BatchSyncModeData } from "./types";
 import {
   BatchGroupMode,
   BatchExport,
@@ -261,11 +261,6 @@ async function createByForeignKey(
   methods: BatchMethods,
   config: BatchConfig
 ) {
-  const { syncMode } = config;
-  if (!BatchSyncModeData[syncMode].create) {
-    return;
-  }
-
   const batches: Array<{ fkMap: ForeignKeyMap }> = [];
   let currentFkMap: ForeignKeyMap = {};
   let currentCount = 0;
@@ -322,11 +317,6 @@ async function updateByIds(
   methods: BatchMethods,
   config: BatchConfig
 ) {
-  const { syncMode } = config;
-  if (!BatchSyncModeData[syncMode].update) {
-    return;
-  }
-
   let currentFkMap: ForeignKeyMap = {};
   let currentDeskIdMap: DestinationIdMap = {};
   let currentCount = 0;
@@ -393,10 +383,6 @@ async function deleteExports(
   methods: BatchMethods,
   config: BatchConfig
 ) {
-  const { syncMode } = config;
-  if (!BatchSyncModeData[syncMode].delete) {
-    return;
-  }
   let currentFkMap: ForeignKeyMap = {};
   let currentDeskIdMap: DestinationIdMap = {};
   let currentCount = 0;
