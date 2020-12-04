@@ -35,8 +35,8 @@ jobs:
       - save_cache:
           <<: *node-module-cache-options
           paths:
-            - apps/local-public/node_modules
             - apps/staging-public/node_modules
+            - apps/ui-test/node_modules
             - cli/node_modules
             - clients/@grouparoo/web/node_modules
             - core/node_modules
