@@ -25,7 +25,7 @@
   "scripts": {
     "prepare": "./bin/build",
     "dev": "./bin/dev",
-    "pretest": "npm run lint && npm run build",
+    "pretest": "npm run lint && npm run prepare",
     "test": "jest",
     "lint": "prettier --check src __tests__",
     "docs": "typedoc --out docs --theme default --mode file --exclude \"src/actions/**/*.ts\" --exclude \"src/tasks/**/*.ts\"",

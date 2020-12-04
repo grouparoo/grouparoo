@@ -17,10 +17,10 @@ apps/*/config/*
 log
 pids
 dist
-api/test/files
-api/report.*.json
-api/docs
-api/gh-pages
+core/files/test*
+core/report.*.json
+core/docs
+core/gh-pages
 
 # Web
 .next

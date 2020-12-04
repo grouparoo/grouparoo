@@ -3,13 +3,7 @@ import path from "path";
 import { plugin } from "../modules/plugin";
 import { Setting } from "../models/Setting";
 
-const packageJSON = require(path.join(
-  __dirname,
-  "..",
-  "..",
-  "..",
-  "package.json"
-));
+const packageJSON = require(path.join(__dirname, "..", "..", "package.json"));
 
 // These values are probably good starting points, but you should expect to tweak them for your application
 const maxMemoryAlloted = process.env.maxMemoryAlloted || 500;

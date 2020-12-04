@@ -13,7 +13,7 @@ function readPackageJson(path) {
 
 function getParentPath() {
   if (process.env.GROUPAROO_PARENT_PATH) {
-    return path.realpathSync(
+    return fs.realpathSync(
       path.join(process.cwd(), process.env.GROUPAROO_PARENT_PATH)
     );
   }
@@ -24,7 +24,7 @@ function getParentPath() {
 }
 
 function getCoreRootPath() {
-  return path.realpathSync(path.join(__dirname, "..", ".."));
+  return fs.realpathSync(path.join(__dirname, "..", ".."));
 }
 
 function getPluginManifest() {
@@ -56,7 +56,6 @@ function getPluginManifest() {
             grouparooMonorepoApp
               ? path.join(
                   __dirname,
-                  "..",
                   "..",
                   "..",
                   "..",

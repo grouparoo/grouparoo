@@ -51,7 +51,7 @@ describe("actions/files", () => {
           "..",
           "..",
           "..",
-          "web",
+          "ui",
           "public",
           "images",
           "logo",
