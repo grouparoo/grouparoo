@@ -13,7 +13,7 @@ function readPackageJson(path) {
 
 function getParentPath() {
   if (process.env.GROUPAROO_PARENT_PATH) {
-    return path.normalize(
+    return path.realpathSync(
       path.join(process.cwd(), process.env.GROUPAROO_PARENT_PATH)
     );
   }
@@ -24,7 +24,7 @@ function getParentPath() {
 }
 
 function getCoreRootPath() {
-  return path.normalize(path.join(__dirname, "..", ".."));
+  return path.realpathSync(path.join(__dirname, "..", ".."));
 }
 
 function getPluginManifest() {
@@ -69,6 +69,8 @@ function getPluginManifest() {
           );
         }
       }
+
+      pluginPath = fs.realpathSync(pluginPath);
 
       const pluginPkg = readPackageJson(path.join(pluginPath, "package.json"));
       manifest.plugins.push({
