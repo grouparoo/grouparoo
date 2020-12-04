@@ -709,6 +709,7 @@ export const exportSalesforceBatch: ExportSalesforceMethod = async ({
       findSize,
       batchSize,
       groupMode: BatchGroupMode.TotalMembers,
+      syncMode: model.syncMode,
       appOptions,
       connection,
       data,

@@ -1,5 +1,10 @@
 import { SimpleDestinationOptions } from "@grouparoo/core";
+import {
+  BatchSyncMode,
+  BatchSyncModeData,
+} from "@grouparoo/app-templates/dist/destination/batch/types";
 export interface SalesforceModel {
+  syncMode: BatchSyncMode;
   profileObject: string;
   profileMatchField: string;
   groupObject: string;
@@ -17,6 +22,7 @@ export function getSalesforceModel(
   defaults: { [key: string]: string }
 ): SalesforceModel {
   const model: SalesforceModel = {
+    syncMode: null,
     profileObject: null,
     profileMatchField: null,
     groupObject: null,
@@ -45,6 +51,11 @@ export function getSalesforceModel(
     if (requiredKeys.includes(key) && !model[key]) {
       throw new Error(`Missing Salesforce model data: ${key}`);
     }
+  }
+
+  const foundMode = BatchSyncModeData[model.syncMode];
+  if (!foundMode) {
+    throw new Error(`Unknown sync mode: ${model.syncMode}`);
   }
 
   // needs either zero or all refKeys

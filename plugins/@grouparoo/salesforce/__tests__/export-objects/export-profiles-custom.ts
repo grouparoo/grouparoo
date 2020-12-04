@@ -25,6 +25,7 @@ require("./../fixtures/export-objects/export-profiles-custom");
 const appOptions = loadAppOptions(newNock);
 const appGuid = "app_e8bb07d8-0c4f-49b5-ad42-545f2e8662e8";
 const destinationOptions = {
+  syncMode: "Sync",
   profileObject: "Contact",
   profileMatchField: "Custom_External_ID__c",
   groupObject: "Topic",
