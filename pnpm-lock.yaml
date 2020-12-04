@@ -57,6 +57,13 @@ importers:
       '@grouparoo/snowflake': ^0.1.26-alpha.2
       '@grouparoo/ui': ^0.1.26-alpha.2
       '@grouparoo/zendesk': ^0.1.26-alpha.2
+  apps/ui-test:
+    dependencies:
+      '@grouparoo/core': 'link:../../core'
+      '@grouparoo/ui': 'link:../../ui'
+    specifiers:
+      '@grouparoo/core': ^0.1.26-alpha.2
+      '@grouparoo/ui': ^0.1.26-alpha.2
   cli:
     dependencies:
       chalk: 4.1.0
@@ -835,6 +842,7 @@ importers:
       '@types/jest': 26.0.15
       enzyme: 3.11.0
       enzyme-adapter-react-16: 1.15.5_4f82faf5e8cab057bc46d4d95079ec42
+      isomorphic-fetch: 3.0.0
       jest: 26.6.3
       jest-environment-webdriver: 0.2.0_jest@26.6.3
       jest-fetch-mock: 3.0.3
@@ -860,6 +868,7 @@ importers:
       dotenv: 8.2.0
       enzyme: 3.11.0
       enzyme-adapter-react-16: 1.15.5
+      isomorphic-fetch: 3.0.0
       jest: 26.6.3
       jest-environment-webdriver: 0.2.0
       jest-fetch-mock: 3.0.3
@@ -8726,8 +8735,7 @@ packages:
   /isomorphic-fetch/3.0.0:
     dependencies:
       node-fetch: 2.6.1
-      whatwg-fetch: 3.4.1
-    dev: false
+      whatwg-fetch: 3.5.0
     resolution:
       integrity: sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA==
   /isomorphic-form-data/2.0.0:
@@ -16213,6 +16221,9 @@ packages:
     dev: false
     resolution:
       integrity: sha512-sofZVzE1wKwO+EYPbWfiwzaKovWiZXf4coEzjGP9b2GBVgQRLQUZ2QcuPpQExGDAW5GItpEm6Tl4OU5mywnAoQ==
+  /whatwg-fetch/3.5.0:
+    resolution:
+      integrity: sha512-jXkLtsR42xhXg7akoDKvKWE40eJeI+2KZqcp2h3NsOrRnDvtWX36KcKl30dy+hxECivdk2BVUHVNrPtoMBUx6A==
   /whatwg-mimetype/2.3.0:
     dev: true
     resolution:

@@ -5,7 +5,14 @@ import fetch from "isomorphic-fetch";
 // set server overrides
 const port = 12345;
 const url = `http://localhost:${port}`;
-const apiProjectPath = path.join(__dirname, "..", "..", "..", "api");
+const apiProjectPath = path.join(
+  __dirname,
+  "..",
+  "..",
+  "..",
+  "apps",
+  "ui-test"
+);
 const jestId = process.env.JEST_WORKER_ID || "1";
 const serverToken = `serverToken-${process.env.JEST_WORKER_ID || 0}`;
 
@@ -84,11 +91,21 @@ export async function prepareForIntegrationTest() {
   const env = process.env;
 
   // re-create the test database
-  await spawnPromise("./bin/drop_test_databases", [jestId], apiProjectPath);
-  await spawnPromise("./bin/create_test_databases", [jestId], apiProjectPath);
+  // relative to app/ui-test
+  await spawnPromise(
+    "./../../core/bin/drop_test_databases",
+    [jestId],
+    apiProjectPath
+  );
+  await spawnPromise(
+    "./../../core/bin/create_test_databases",
+    [jestId],
+    apiProjectPath
+  );
 
   // start the api server
   const serverEnv = Object.assign(env, {
+    GROUPAROO_MONOREPO_APP: "ui-test",
     ACTIONHERO_TEST_FILE_EXTENSION: "js", // ensure that the test server doesn't run typescript files
     WEB_SERVER: true,
     PORT: port,
@@ -98,8 +115,8 @@ export async function prepareForIntegrationTest() {
     SERVER_TOKEN: serverToken,
   });
 
-  apiProcess = spawn("node", ["./dist/grouparoo.js"], {
-    cwd: apiProjectPath,
+  apiProcess = spawn("node", ["dist/grouparoo.js"], {
+    cwd: path.join(apiProjectPath, "node_modules/@grouparoo/core"),
     env: serverEnv,
   });
 
