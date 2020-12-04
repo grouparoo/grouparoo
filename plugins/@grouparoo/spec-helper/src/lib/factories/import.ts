@@ -1,4 +1,4 @@
-import { Import } from "@grouparoo/core/api/src";
+import { Import } from "@grouparoo/core/src";
 import RunFactory from "./run";
 
 export default async (run?, props: { [key: string]: any } = {}) => {

@@ -35,7 +35,7 @@
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
 {{{custom_steps}}}
       - run:
           name: test-{{section}}

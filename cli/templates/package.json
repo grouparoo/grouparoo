@@ -22,13 +22,13 @@
     "@grouparoo/redshift": "~~VERSION~~",
     "@grouparoo/salesforce": "~~VERSION~~",
     "@grouparoo/snowflake": "~~VERSION~~",
+    "@grouparoo/ui": "~~VERSION~~",
     "@grouparoo/zendesk": "~~VERSION~~"
   },
   "scripts": {
-    "prepare": "cd node_modules/@grouparoo/core && npm run prepare",
-    "start": "cd node_modules/@grouparoo/core && ./api/bin/start",
-    "dev": "cd node_modules/@grouparoo/core && ./api/bin/dev",
-    "actionhero": "cd node_modules/@grouparoo/core/api && ../../../.bin/actionhero"
+    "start": "cd node_modules/@grouparoo/core && ./bin/start",
+    "dev": "cd node_modules/@grouparoo/core && ./bin/dev",
+    "actionhero": "cd node_modules/@grouparoo/core && ../../../.bin/actionhero"
   },
   "grouparoo": {
     "plugins": [
@@ -44,6 +44,7 @@
       "@grouparoo/redshift",
       "@grouparoo/salesforce",
       "@grouparoo/snowflake",
+      "@grouparoo/ui",
       "@grouparoo/zendesk"
     ],
     "includedFiles": [

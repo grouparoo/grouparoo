@@ -1,7 +1,7 @@
-// At import we need to change the working directory to core/api
+// At import we need to change the working directory to core
 // Don't use the main export path as that will require Actionhero's config
 // We can rely on npm to find the right version of the package for us
-import { getCoreRootPath } from "@grouparoo/core/api/src/utils/pluginDetails";
+import { getCoreRootPath } from "@grouparoo/core/src/utils/pluginDetails";
 const corePath: string = getCoreRootPath();
 process.chdir(corePath);
 process.env.ACTIONHERO_CONFIG = `${corePath}/src/config`;
@@ -71,7 +71,7 @@ import {
   Mapping,
   Team,
   TeamMember,
-} from "@grouparoo/core/api/src"; // we explicitly require the src (typescript) files
+} from "@grouparoo/core/src"; // we explicitly require the src (typescript) files
 
 import { Op } from "sequelize";
 import fs from "fs";

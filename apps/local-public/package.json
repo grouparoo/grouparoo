@@ -20,10 +20,9 @@
     "@grouparoo/sailthru": "^0.1.26-alpha.2"
   },
   "scripts": {
-    "prepare": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=local-public npm run prepare",
-    "start": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=local-public ./api/bin/start",
-    "dev": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=local-public ./api/bin/dev",
-    "actionhero": "cd node_modules/@grouparoo/core/api && GROUPAROO_MONOREPO_APP=local-public ../node_modules/.bin/actionhero"
+    "start": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=local-public ./bin/start",
+    "dev": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=local-public ./bin/dev",
+    "actionhero": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=local-public ../node_modules/.bin/actionhero"
   },
   "grouparoo": {
     "plugins": [

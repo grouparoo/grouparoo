@@ -1,5 +1,5 @@
 import faker from "faker";
-import { App } from "@grouparoo/core/api/src";
+import { App } from "@grouparoo/core/src";
 
 const data = async (props = {}) => {
   const defaultProps = {

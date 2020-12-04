@@ -33,7 +33,7 @@
   "scripts": {
     "start": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./bin/start",
     "dev": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./bin/dev",
-    "actionhero": "cd node_modules/@grouparoo/core/api && GROUPAROO_MONOREPO_APP=staging-public ../node_modules/.bin/actionhero"
+    "actionhero": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ../node_modules/.bin/actionhero"
   },
   "grouparoo": {
     "plugins": [
