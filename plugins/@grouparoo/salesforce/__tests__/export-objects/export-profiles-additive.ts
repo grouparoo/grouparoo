@@ -12,20 +12,20 @@ const nockFile = path.join(
   "../",
   "fixtures",
   "export-objects",
-  "export-profiles-enrich.js"
+  "export-profiles-additive.js"
 );
 
 // these comments to use nock
 // const newNock = false;
-// require("./../fixtures/export-objects/export-profiles-enrich");
+// require("./../fixtures/export-objects/export-profiles-additive");
 // or these to make it true
 const newNock = true;
 helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
-const appGuid = "app_f3bb07d8-0c4f-49b5-ad42-545f2e8662e9";
+const appGuid = "app_f3bb07d8-0c4f-49b5-ad42-545f2e8632e2";
 const destinationOptions = {
-  syncMode: "Enrich",
+  syncMode: "Additive",
   profileObject: "Contact",
   profileMatchField: "Email",
   groupObject: "Campaign",
@@ -39,31 +39,29 @@ const destinationOptions = {
 };
 const model = destinationModel(destinationOptions);
 
-const syncOptions = Object.assign({}, destinationOptions, { syncMode: "Sync" });
-
-const email1 = "enrichbrian@demo.com";
+const email1 = "additivebrian@demo.com";
 const guid1 = "pro1";
-const newEmail1 = "enrichother@demo.com";
+const newEmail1 = "additiveother@demo.com";
 let userId1 = null;
 
-const email2 = "enrichbrian2@demo.com";
+const email2 = "additivebrian2@demo.com";
 const guid2 = "pro2";
 let userId2 = null;
 
-const email3 = "enrichbrian3@demo.com";
+const email3 = "additivebrian3@demo.com";
 const guid3 = "pro3";
 let userId3 = null;
 
-const group1 = "(test) High Value5";
+const group1 = "(test) High Value6";
 let groupId1 = null;
 
-const group2 = "(test) Churned5";
+const group2 = "(test) Churned6";
 let groupId2 = null;
 
-const account1 = "(test) Big Account5";
+const account1 = "(test) Big Account6";
 let accountId1 = null;
 
-const account2 = "(test) Small Account5";
+const account2 = "(test) Small Account6";
 let accountId2 = null;
 
 const deleteProfileValues = [email1, email2, email3, newEmail1];
@@ -85,7 +83,7 @@ const {
   deleteReferenceValues,
 });
 
-describe("salesforce/sales-cloud/export-profiles/enrich", () => {
+describe("salesforce/sales-cloud/export-profiles/additive", () => {
   beforeAll(async () => {
     await cleanUp(false);
   }, helper.setupTime);
@@ -98,7 +96,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     jest.setTimeout(helper.mediumTime);
   });
 
-  test("will not create profile on Salesforce", async () => {
+  test("can create profile on Salesforce", async () => {
     userId1 = await findId(email1);
     expect(userId1).toBe(null);
 
@@ -128,47 +126,8 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
 
     expect(errors).toBeNull();
     expect(success).toBe(true);
-
-    userId1 = await findId(email1);
-    expect(userId1).toBe(null);
-
-    accountId1 = await findReferenceId(account1);
-    expect(accountId1).toBe(null);
-  });
-
-  test("makes a profile to enrich using sync mode", async () => {
-    userId1 = await findId(email1);
-    expect(userId1).toBe(null);
-
-    accountId1 = await findReferenceId(account1);
-    expect(accountId1).toBe(null);
-
-    const { success, errors } = await exportBatch({
-      appGuid,
-      appOptions,
-      destinationOptions: syncOptions,
-      exports: [
-        {
-          profileGuid: guid1,
-          oldProfileProperties: {},
-          newProfileProperties: {
-            Email: email1,
-            LastName: "Smith",
-            "Account.Name": account1,
-          },
-          oldGroups: [],
-          newGroups: [],
-          toDelete: false,
-          profile: null,
-        },
-      ],
-    });
-
-    expect(errors).toBeNull();
-    expect(success).toBe(true);
     userId1 = await findId(email1);
     expect(userId1).toBeTruthy();
-
     const user = await getUser(userId1);
     expect(user.Email).toBe(email1);
     expect(user.LastName).toBe("Smith");
@@ -183,7 +142,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(user.AccountId).toEqual(accountId1);
   });
 
-  test("can add/edit user variables and and skip one", async () => {
+  test("can add/edit user variables and do multiple users", async () => {
     userId2 = await findId(email2);
     expect(userId2).toBe(null);
 
@@ -244,14 +203,18 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(errors).toBeNull();
     expect(success).toBe(true);
     userId2 = await findId(email2);
-    expect(userId2).toBe(null);
+    expect(userId2).toBeTruthy();
+    user = await getUser(userId2);
+    expect(user.Email).toBe(email2);
+    expect(user.LastName).toBe("Jih");
+    expect(user.AccountId).toEqual(accountId2);
 
     let referenced;
     referenced = await getReferencedUserIds(accountId1);
     expect(referenced.sort()).toEqual([]);
 
     referenced = await getReferencedUserIds(accountId2);
-    expect(referenced.sort()).toEqual([userId1].sort());
+    expect(referenced.sort()).toEqual([userId1, userId2].sort());
   });
 
   test("can clear user variables", async () => {
@@ -292,7 +255,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
 
     let referenced;
     referenced = await getReferencedUserIds(accountId2);
-    expect(referenced.sort()).toEqual([].sort());
+    expect(referenced.sort()).toEqual([userId2].sort());
   });
 
   test("it can change the email address", async () => {
@@ -349,7 +312,10 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(user.LastName).toBe("Chang");
 
     expect(await findId(email1)).toBeNull(); // changed!
-    expect(await findId(email2)).toBeNull(); // still not there!
+
+    user = await getUser(userId2);
+    expect(user.Email).toBe(email2);
+    expect(user.LastName).toBe("Test");
   });
 
   test("can add to and create groups", async () => {
@@ -367,12 +333,10 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
             Email: newEmail1,
             FirstName: "Brian",
             LastName: "Chang",
-            "Account.Name": account1,
           },
           newProfileProperties: {
-            Email: email1,
+            Email: email1, // change back
             LastName: "Smith",
-            "Account.Name": account1,
           },
           oldGroups: [],
           newGroups: [group1],
@@ -387,113 +351,11 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     let user;
     user = await getUser(userId1);
     expect(user.Email).toBe(email1);
-    expect(user.FirstName).toBe(null);
-    expect(user.LastName).toBe("Smith");
 
     groupId1 = await findGroupId(group1);
     expect(groupId1).toBeTruthy();
     const members = await getGroupMemberIds(groupId1);
     expect(members.sort()).toEqual([userId1].sort());
-  });
-
-  test("will not delete a user, but remove them from groups", async () => {
-    const { success, errors } = await exportBatch({
-      appGuid,
-      appOptions,
-      destinationOptions,
-      exports: [
-        {
-          profileGuid: guid1,
-          oldProfileProperties: {
-            Email: email1,
-            LastName: "Smith",
-            "Account.Name": null,
-          },
-          newProfileProperties: {
-            Email: email1,
-            FirstName: "Brian",
-            LastName: "Other", // it should not listen
-            "Account.Name": null,
-          },
-          oldGroups: [group1],
-          newGroups: [group1],
-          toDelete: true,
-          profile: null,
-        },
-      ],
-    });
-
-    expect(errors).toBeNull();
-    expect(success).toBe(true);
-
-    let user;
-    user = await getUser(userId1);
-    expect(user).toBeTruthy(); // not deleted
-    expect(user.Email).toBe(email1);
-    expect(user.LastName).toBe("Smith"); // not changed
-
-    const members = await getGroupMemberIds(groupId1);
-    expect(members.sort()).toEqual([].sort()); // removed
-  });
-
-  test("is ok (and gives no error) to delete a user that doesn't exist", async () => {
-    const { success, errors } = await exportBatch({
-      appGuid,
-      appOptions,
-      destinationOptions,
-      exports: [
-        {
-          profileGuid: guid3,
-          oldProfileProperties: { Email: email3, LastName: "None" },
-          newProfileProperties: { Email: email3, LastName: "None" },
-          oldGroups: [],
-          newGroups: [],
-          toDelete: true,
-          profile: null,
-        },
-      ],
-    });
-
-    expect(errors).toBeNull();
-    expect(success).toBe(true);
-
-    expect(await findId(email3)).toBeNull(); // not added
-  });
-
-  test("makes another profile to enrich using sync mode", async () => {
-    userId2 = await findId(email2);
-    expect(userId2).toBe(null);
-
-    const { success, errors } = await exportBatch({
-      appGuid,
-      appOptions,
-      destinationOptions: syncOptions,
-      exports: [
-        {
-          profileGuid: guid2,
-          oldProfileProperties: {},
-          newProfileProperties: {
-            Email: email2,
-            LastName: "Patil",
-          },
-          oldGroups: [],
-          newGroups: [],
-          toDelete: false,
-          profile: null,
-        },
-      ],
-    });
-
-    expect(errors).toBeNull();
-    expect(success).toBe(true);
-
-    userId2 = await findId(email2);
-    expect(userId2).toBeTruthy();
-
-    const user = await getUser(userId2);
-    expect(user.Email).toBe(email2);
-    expect(user.LastName).toBe("Patil");
-    expect(user.FirstName).toBe(null);
   });
 
   test("can add multiple users to lists", async () => {
@@ -523,15 +385,6 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
           toDelete: false,
           profile: null,
         },
-        {
-          profileGuid: guid3,
-          oldProfileProperties: { Email: email3, LastName: "None" },
-          newProfileProperties: { Email: email3, LastName: "None" },
-          oldGroups: [],
-          newGroups: [group1],
-          toDelete: false,
-          profile: null,
-        },
       ],
     });
     expect(errors).toBeNull();
@@ -551,9 +404,6 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     user = await getUser(userId2);
     expect(user.Email).toBe(email2);
     expect(user.LastName).toBe("Jones");
-
-    userId3 = await findId(email3);
-    expect(userId3).toBe(null);
   });
 
   test("can remove users from lists including ones they aren't in", async () => {
@@ -580,15 +430,6 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
           toDelete: false,
           profile: null,
         },
-        {
-          profileGuid: guid3,
-          oldProfileProperties: { Email: email3, LastName: "None" },
-          newProfileProperties: { Email: email3, LastName: "None" },
-          oldGroups: [],
-          newGroups: [group1],
-          toDelete: false,
-          profile: null,
-        },
       ],
     });
 
@@ -601,9 +442,93 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
 
     members = await getGroupMemberIds(groupId2);
     expect(members.sort()).toEqual([]);
+  });
 
-    userId3 = await findId(email3);
-    expect(userId3).toBe(null);
+  test("won't delete a user, but remove them from groups", async () => {
+    const { success, errors } = await exportBatch({
+      appGuid,
+      appOptions,
+      destinationOptions,
+      exports: [
+        {
+          profileGuid: guid1,
+          oldProfileProperties: {
+            Email: newEmail1,
+            FirstName: "Brian",
+            LastName: "Chang",
+            "Account.Name": null,
+          },
+          newProfileProperties: {
+            Email: email1, // changing back
+            FirstName: "Brian",
+            LastName: "Chang",
+            "Account.Name": null,
+          },
+          oldGroups: [group1],
+          newGroups: [group1],
+          toDelete: false,
+          profile: null,
+        },
+        {
+          profileGuid: guid2,
+          oldProfileProperties: {
+            Email: email2,
+            LastName: "Jones",
+            "Account.Name": account2,
+          },
+          newProfileProperties: {
+            Email: email2,
+            LastName: "NoEdit",
+            "Account.Name": account2,
+          },
+          oldGroups: [group1],
+          newGroups: [group1],
+          toDelete: true,
+          profile: null,
+        },
+      ],
+    });
+
+    expect(errors).toBeNull();
+    expect(success).toBe(true);
+
+    let user;
+    user = await getUser(userId1);
+    expect(user.Email).toBe(email1);
+    expect(user.FirstName).toBe("Brian");
+    expect(user.LastName).toBe("Chang");
+
+    user = await getUser(userId2);
+    expect(user.Email).toBe(email2);
+    expect(user.LastName).toBe("Jones");
+
+    let members;
+    members = await getGroupMemberIds(groupId1);
+    expect(members.sort()).toEqual([userId1].sort()); // removed!
+  });
+
+  test("is ok (and gives no error) to delete a user that doesn't exist", async () => {
+    const { success, errors } = await exportBatch({
+      appGuid,
+      appOptions,
+      destinationOptions,
+      exports: [
+        {
+          profileGuid: guid3,
+          oldProfileProperties: { Email: email3, LastName: "None" },
+          newProfileProperties: { Email: email3, LastName: "None" },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: true,
+          profile: null,
+        },
+      ],
+    });
+
+    expect(errors).toBeNull();
+    expect(success).toBe(true);
+
+    expect(await findId(email3)).toBeNull(); // not added
   });
 
   test("can handle some of them working, but not others", async () => {
@@ -643,7 +568,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
             email_field__c: "badone",
             "Account.Name": account1,
           },
-          oldGroups: [],
+          oldGroups: [group1],
           newGroups: [],
           toDelete: false,
           profile: null,
@@ -659,15 +584,6 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
           },
           oldGroups: [],
           newGroups: [],
-          toDelete: false,
-          profile: null,
-        },
-        {
-          profileGuid: guid3,
-          oldProfileProperties: { Email: email3, LastName: "None" },
-          newProfileProperties: { Email: email3, LastName: "None" },
-          oldGroups: [],
-          newGroups: [group1],
           toDelete: false,
           profile: null,
         },
@@ -694,10 +610,15 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(user.email_field__c).toEqual(null);
     expect(user.AccountId).toEqual(null); // not updated
 
-    const referenced = await getReferencedUserIds(accountId1);
-    expect(referenced.sort()).toEqual([userId1].sort());
-
     userId3 = await findId(email3);
-    expect(userId3).toBe(null);
+    expect(userId3).toBeTruthy();
+    user = await getUser(userId3);
+    expect(user.Email).toEqual(email3);
+    expect(user.LastName).toEqual("King"); // created
+    expect(user.email_field__c).toEqual("valid@grouparoo.com");
+    expect(user.AccountId).toEqual(accountId1);
+
+    const referenced = await getReferencedUserIds(accountId1);
+    expect(referenced.sort()).toEqual([userId1, userId3].sort());
   });
 });
