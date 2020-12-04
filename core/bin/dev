@@ -3,9 +3,9 @@
 cd "$(dirname "$0")"
 cd ..
 
-if [ -f "../node_modules/.bin/ts-node" ]; then
-  TS_NODE="../node_modules/.bin/ts-node"
-  NODEMON="../node_modules/.bin/nodemon"
+if [ -f "node_modules/.bin/ts-node" ]; then
+  TS_NODE="node_modules/.bin/ts-node"
+  NODEMON="node_modules/.bin/nodemon"
 else
   TS_NODE="../../../../node_modules/.bin/ts-node"
   NODEMON="../../../../node_modules/.bin/nodemon"

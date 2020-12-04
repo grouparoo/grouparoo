@@ -46,8 +46,8 @@ export const DEFAULT = {
         server: [path.join(__dirname, "..", "servers")],
         cli: [path.join(__dirname, "..", "bin")],
         initializer: [path.join(__dirname, "..", "initializers")],
-        next: [path.join(process.cwd(), "..", "web")],
-        public: [path.join(process.cwd(), "..", "web", "public")],
+        public: [path.join(__dirname, "..", "..", "public")],
+        next: [config.next.path],
         pid: [path.join(process.cwd(), "pids")],
         log: [
           process.env.GROUPAROO_LOGS_PATH || path.join(process.cwd(), "log"),

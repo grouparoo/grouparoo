@@ -29,6 +29,11 @@ module.exports = withSourceMaps({
       use: "raw-loader",
     });
 
+    config.module.rules.push({
+      test: /grouparoo\/ui\/.*.ts$|grouparoo\/ui\/.*.tsx$/,
+      use: [options.defaultLoaders.babel],
+    });
+
     return config;
   },
 

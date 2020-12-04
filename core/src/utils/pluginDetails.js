@@ -19,7 +19,7 @@ function getParentPath() {
   }
 
   return grouparooMonorepoApp
-    ? path.join(__dirname, "..", "..", "..", "..", "apps", grouparooMonorepoApp)
+    ? path.join(__dirname, "..", "..", "..", "apps", grouparooMonorepoApp)
     : path.join(__dirname, "..", "..", "..", "..", "..", "..");
 }
 
@@ -120,7 +120,7 @@ function runningCoreDirectly() {
 
 function getCoreVersion() {
   const corePkgJson = readPackageJson(
-    path.join(__dirname, "..", "..", "..", "package.json")
+    path.join(__dirname, "..", "..", "package.json")
   );
   return corePkgJson.version;
 }

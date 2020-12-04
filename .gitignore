@@ -25,6 +25,7 @@ api/gh-pages
 # Web
 .next
 web/out
+core/public/javascript/*
 ui/public/javascript/*
 
 # Builds
