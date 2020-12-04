@@ -2,7 +2,12 @@ const path = require("path");
 
 export const DEFAULT = {
   general: (config) => {
-    const packageJSON = require("./../../../package.json");
+    const packageJSON = require(path.join(
+      __dirname,
+      "..",
+      "..",
+      "package.json"
+    ));
 
     return {
       apiVersion: packageJSON.version,

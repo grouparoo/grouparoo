@@ -3,13 +3,7 @@ import { log } from "actionhero";
 import path from "path";
 
 require("isomorphic-fetch"); // I need to be required vs imported to avoid TS conflicts with the @grouparoo/ui package which has its own fetch polyfill
-const packageJSON = require(path.join(
-  __dirname,
-  "..",
-  "..",
-  "..",
-  "package.json"
-));
+const packageJSON = require(path.join(__dirname, "..", "..", "package.json"));
 
 const host = "https://telemetry.grouparoo.com";
 const route = "/api/v1/subscribers";
