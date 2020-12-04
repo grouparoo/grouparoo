@@ -194,7 +194,7 @@ jobs:
           command: cd core && ./bin/create_test_databases
       - run:
           name: test-
-          command: cd core/ && ./../node_modules/.bin/jest --ci --maxWorkers 2
+          command: cd core/ && ./node_modules/.bin/jest --ci --maxWorkers 2
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-core-web:
@@ -236,7 +236,7 @@ jobs:
           command: cd core && ./bin/create_test_databases
       - run:
           name: test-
-          command: cd core/ && ./../node_modules/.bin/jest --ci --maxWorkers 2
+          command: cd core/ && ./node_modules/.bin/jest --ci --maxWorkers 2
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-core-local:
@@ -259,7 +259,7 @@ jobs:
           <<: *core-cache-options
       - run:
           name: test-
-          command: cd core/ && ./../node_modules/.bin/jest __tests__/models __tests__/actions --ci --maxWorkers 2
+          command: cd core/ && ./node_modules/.bin/jest __tests__/models __tests__/actions --ci --maxWorkers 2
           environment:
             DB_DIALECT: sqlite
   test-staging-public:
