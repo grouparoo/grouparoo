@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/redshift",
   "description": "The Grouparoo redshift Plugin",
-  "version": "0.1.26-alpha.1",
+  "version": "0.1.26-alpha.2",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -27,16 +27,16 @@
     "lint": "prettier --check src"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "^0.1.26-alpha.1",
-    "@grouparoo/postgres": "^0.1.26-alpha.1"
+    "@grouparoo/app-templates": "^0.1.26-alpha.2",
+    "@grouparoo/postgres": "^0.1.26-alpha.2"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
     "actionhero": "25.0.0-alpha.1"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.1.26-alpha.1",
-    "@grouparoo/spec-helper": "^0.1.26-alpha.1",
+    "@grouparoo/core": "^0.1.26-alpha.2",
+    "@grouparoo/spec-helper": "^0.1.26-alpha.2",
     "@types/jest": "*",
     "@types/node": "*",
     "@types/pg": "*",
