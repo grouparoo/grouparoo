@@ -2,6 +2,7 @@ import {
   buildBatchExports,
   BatchExport,
   exportProfilesInBatch,
+  BatchSyncMode,
   BatchGroupMode,
   BatchMethodGetClient,
   BatchMethodFindAndSetDestinationIds,
@@ -15,7 +16,7 @@ import {
   BatchMethodNormalizeGroupName,
   BatchMethodRemoveFromGroups,
 } from "@grouparoo/app-templates/dist/destination/batch";
-import { ExportProfilesPluginMethod, SimpleAppOptions } from "@grouparoo/core";
+import { ExportProfilesPluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { getListId, MarketoCacheData } from "./listMethods";
 
@@ -276,6 +277,7 @@ export async function exportBatch({ appGuid, appOptions, exports }) {
       findSize,
       batchSize,
       groupMode: BatchGroupMode.WithinGroup,
+      syncMode: BatchSyncMode.Sync,
       appOptions,
       data,
       foreignKey: "email",
