@@ -1,7 +1,6 @@
 import { ErrorWithProfileGuid } from "@grouparoo/core";
-import { BatchSyncModeData } from "./types";
+import { BatchSyncMode, BatchSyncModeData } from "./types";
 import {
-  BatchAction,
   BatchGroupMode,
   BatchExport,
   BuildBatchExportMethod,
@@ -102,22 +101,37 @@ function verifyAllProcessed(exports: BatchExport[]) {
 }
 
 function verifyProcessed(exportedProfile: BatchExport) {
-  const { destinationId, processed, error } = exportedProfile;
+  const {
+    destinationId,
+    processed,
+    error,
+    shouldCreate,
+    shouldUpdate,
+    shouldDelete,
+  } = exportedProfile;
+
+  let needProcessed = false;
+  let needDestinationId = false;
 
   if (error) {
     return;
   }
-  if (exportedProfile.action === BatchAction.Skip) {
-    return;
+
+  if (shouldCreate || shouldUpdate) {
+    needProcessed = true;
+    needDestinationId = true;
+  }
+  if (shouldDelete) {
+    needProcessed = true;
   }
 
-  if (!processed) {
+  if (needProcessed && !processed) {
     throw new Error(
       `profile has not processed: ${exportedProfile.foreignKeyValue}`
     );
   }
 
-  if (!destinationId) {
+  if (needDestinationId && !destinationId) {
     throw new Error(
       `profile does not have a destination id: ${exportedProfile.foreignKeyValue}`
     );
@@ -137,9 +151,10 @@ async function updateGroups(
     if (exportedProfile.error) {
       continue;
     }
-    if (
-      ![BatchAction.Create, BatchAction.Update].includes(exportedProfile.action)
-    ) {
+    if (!exportedProfile.shouldGroups) {
+      continue;
+    }
+    if (!exportedProfile.destinationId) {
       continue;
     }
 
@@ -259,7 +274,7 @@ async function createByForeignKey(
     if (exportedProfile.processed || exportedProfile.error) {
       continue;
     }
-    if (exportedProfile.action !== BatchAction.Create) {
+    if (!exportedProfile.shouldCreate) {
       continue;
     }
     if (!exportedProfile.foreignKeyValue) {
@@ -325,7 +340,7 @@ async function updateByIds(
     if (exportedProfile.processed || exportedProfile.error) {
       continue;
     }
-    if (exportedProfile.action !== BatchAction.Update) {
+    if (!exportedProfile.shouldUpdate) {
       continue;
     }
     if (!exportedProfile.destinationId) {
@@ -395,7 +410,7 @@ async function deleteExports(
     if (exportedProfile.processed || exportedProfile.error) {
       continue;
     }
-    if (exportedProfile.action !== BatchAction.Delete) {
+    if (!exportedProfile.shouldDelete) {
       continue;
     }
     if (!exportedProfile.destinationId) {
@@ -526,6 +541,11 @@ function setGroupNames(
   // build up groups situation of group names to addition and removal
   let oldGroups = exportedProfile.oldGroups || [];
   let newGroups = exportedProfile.newGroups || [];
+  if (exportedProfile.toDelete) {
+    // if anyone asks, removing from all groups as part of deletion
+    oldGroups = Array.from(new Set(oldGroups.concat(newGroups)));
+    newGroups = [];
+  }
   if (methods.normalizeGroupName) {
     oldGroups = oldGroups.map((groupName) =>
       methods.normalizeGroupName({ groupName, config })
@@ -576,11 +596,7 @@ function assignForeignKeys(
   methods: BatchMethods,
   config: BatchConfig
 ) {
-  const {
-    oldProfileProperties,
-    newProfileProperties,
-    toDelete,
-  } = exportedProfile;
+  const { oldProfileProperties, newProfileProperties } = exportedProfile;
 
   const { foreignKey } = config;
   let newValue = newProfileProperties[foreignKey];
@@ -622,33 +638,36 @@ function assignForeignKeys(
 
 function assignActions(exports: BatchExport[], config: BatchConfig) {
   for (const exportedProfile of exports) {
-    const { toDelete, destinationId } = exportedProfile;
-    if (toDelete) {
-      exportedProfile.action = BatchAction.Delete;
-    } else if (destinationId) {
-      exportedProfile.action = BatchAction.Update;
-    } else {
-      exportedProfile.action = BatchAction.Create;
-    }
-    if (shouldSkip(exportedProfile, config)) {
-      exportedProfile.action = BatchAction.Skip;
-    }
+    assignAction(exportedProfile, config);
   }
+}
 
-  function shouldSkip(exportedProfile: BatchExport, config: BatchConfig) {
-    // see if we are actually dealing with this user
-    const { syncMode } = config;
-    switch (exportedProfile.action) {
-      case BatchAction.Skip:
-        return true;
-      case BatchAction.Delete:
-        return !BatchSyncModeData[syncMode].delete;
-      case BatchAction.Update:
-        return !BatchSyncModeData[syncMode].update;
-      case BatchAction.Create:
-        return !BatchSyncModeData[syncMode].create;
-      default:
-        throw new Error(`Unknown BatchAction: ${exportedProfile.action}`);
+function assignAction(exportedProfile: BatchExport, config: BatchConfig) {
+  const { toDelete, destinationId } = exportedProfile;
+  const { syncMode } = config;
+  const mode = BatchSyncModeData[syncMode];
+
+  // all shouldX are falsy to start with
+
+  if (toDelete) {
+    // semantic: delete
+    if (mode.delete) {
+      exportedProfile.shouldDelete = true;
+    } else if (destinationId) {
+      // just remove the groups
+      exportedProfile.shouldGroups = true;
+    }
+  } else if (destinationId) {
+    // semantic: update
+    if (mode.update) {
+      exportedProfile.shouldUpdate = true;
+      exportedProfile.shouldGroups = true;
+    }
+  } else {
+    // semantic: create
+    if (mode.create) {
+      exportedProfile.shouldCreate = true;
+      exportedProfile.shouldGroups = true;
     }
   }
 }

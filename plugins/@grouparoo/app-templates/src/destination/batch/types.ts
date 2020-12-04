@@ -7,13 +7,6 @@ import {
   ErrorWithProfileGuid,
 } from "@grouparoo/core";
 
-export enum BatchAction {
-  Delete = "Delete",
-  Update = "Update",
-  Create = "Create",
-  // CreateOrUpdate = "CreateOrUpdate",
-  Skip = "Skip",
-}
 export enum BatchGroupMode {
   WithinGroup = "WithinGroup", // update group by group
   TotalMembers = "TotalMembers", // update all groups at once
@@ -53,7 +46,10 @@ export interface BatchExport extends ExportedProfile {
   destinationId?: string;
   addedGroups?: string[];
   removedGroups?: string[];
-  action?: BatchAction;
+  shouldCreate?: boolean;
+  shouldUpdate?: boolean;
+  shouldDelete?: boolean;
+  shouldGroups?: boolean;
   result?: any; // result from find
   data?: any; // can stick other things on here
   processed?: boolean;
