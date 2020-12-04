@@ -17,15 +17,15 @@ apps/*/config/*
 log
 pids
 dist
-core/api/files
-core/api/report.*.json
-core/api/docs
-core/api/gh-pages
+api/test/files
+api/report.*.json
+api/docs
+api/gh-pages
 
 # Web
 .next
 web/out
-core/web/public/javascript/*
+ui/public/javascript/*
 
 # Builds
 *.tgz
