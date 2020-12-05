@@ -20,11 +20,11 @@ function getParentPath() {
 
   return grouparooMonorepoApp
     ? path.join(__dirname, "..", "..", "..", "apps", grouparooMonorepoApp)
-    : path.join(__dirname, "..", "..", "..", "..", "..", "..");
+    : path.join(__dirname, "..", "..", "..", "..", "..");
 }
 
 function getCoreRootPath() {
-  return fs.realpathSync(path.join(__dirname, "..", ".."));
+  return fs.realpathSync(path.join(__dirname, ".."));
 }
 
 function getPluginManifest() {
