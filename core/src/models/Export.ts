@@ -5,8 +5,10 @@ import {
   CreatedAt,
   UpdatedAt,
   AllowNull,
+  Is,
   BelongsTo,
   BeforeCreate,
+  BeforeSave,
   ForeignKey,
   DataType,
   Default,
@@ -32,6 +34,8 @@ export interface ExportProfileProperties {
 export interface ExportProfilePropertiesWithType {
   [key: string]: { type: string; rawValue: string | string[] };
 }
+
+const errorLevels = ["error", "info"] as const;
 
 @Table({ tableName: "exports", paranoid: false })
 export class Export extends Model<Export> {
@@ -71,6 +75,15 @@ export class Export extends Model<Export> {
 
   @Column
   errorMessage: string;
+
+  @Is("ofValidErrorLevel", (value) => {
+    if (value && !errorLevels.includes(value)) {
+      console.log("here2");
+      throw new Error(`errorLevel must be one of: ${errorLevels.join(",")}`);
+    }
+  })
+  @Column
+  errorLevel: string;
 
   @Column(DataType.TEXT)
   get oldProfileProperties(): ExportProfileProperties {
@@ -174,6 +187,7 @@ export class Export extends Model<Export> {
       hasChanges: this.hasChanges,
       mostRecent: this.mostRecent,
       errorMessage: this.errorMessage,
+      errorLevel: this.errorLevel,
     };
   }
 
@@ -189,6 +203,13 @@ export class Export extends Model<Export> {
   static generateGuid(instance) {
     if (!instance.guid) {
       instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+    }
+  }
+
+  @BeforeSave
+  static ensureErrorLevel(instance) {
+    if (instance.errorMessage && !instance.errorLevel) {
+      instance.errorLevel = "error";
     }
   }
 
