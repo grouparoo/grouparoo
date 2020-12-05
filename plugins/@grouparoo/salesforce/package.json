@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/salesforce",
   "description": "The Grouparoo Salesforce Plugin",
-  "version": "0.1.26-alpha.2",
+  "version": "0.2.0-alpha.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -27,7 +27,7 @@
     "lint": "prettier --check src "
   },
   "dependencies": {
-    "@grouparoo/app-templates": "^0.1.26-alpha.2",
+    "@grouparoo/app-templates": "^0.2.0-alpha.0",
     "jsforce": "^1.9.3"
   },
   "peerDependencies": {
@@ -35,8 +35,8 @@
     "actionhero": "25.0.0-alpha.1"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.1.26-alpha.2",
-    "@grouparoo/spec-helper": "^0.1.26-alpha.2",
+    "@grouparoo/core": "^0.2.0-alpha.0",
+    "@grouparoo/spec-helper": "^0.2.0-alpha.0",
     "@types/jest": "*",
     "@types/node": "*",
     "actionhero": "25.0.0-alpha.1",
