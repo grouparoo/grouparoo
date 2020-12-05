@@ -11,13 +11,9 @@ newrelic_agent.log
 coverage
 
 # API
-api/log
-api/pids
-api/newrelic_agent.log
-api/public/javascript/ActionheroWebsocketClient.js
-api/public/javascript/ActionheroWebsocketClient.min.js
-
-# WEB
-web/.next
-web/tmp/plugin*
-web/out
+log
+pids
+newrelic_agent.log
+public/javascript/ActionheroWebsocketClient.js
+public/javascript/ActionheroWebsocketClient.min.js
+files/test*
