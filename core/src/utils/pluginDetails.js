@@ -24,7 +24,7 @@ function getParentPath() {
 }
 
 function getCoreRootPath() {
-  return fs.realpathSync(path.join(__dirname, ".."));
+  return fs.realpathSync(path.join(__dirname, "..", ".."));
 }
 
 function getPluginManifest() {
