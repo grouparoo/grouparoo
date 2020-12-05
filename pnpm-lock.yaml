@@ -110,9 +110,9 @@ importers:
       '@types/fs-extra': 9.0.2
       '@types/node': 14.14.7
       '@types/validator': 13.1.0
-      actionhero: 25.0.0-alpha.1
-      ah-next-plugin: 0.4.0_actionhero@25.0.0-alpha.1
-      ah-sequelize-plugin: 2.2.4_9a9bafa3f73159ae2f49a555482d3220
+      actionhero: 25.0.0-alpha.2
+      ah-next-plugin: 0.4.0_actionhero@25.0.0-alpha.2
+      ah-sequelize-plugin: 2.2.4_4a06ab0768f01afaf380a82c4963ac40
       bcrypt: 5.0.0
       compare-versions: 3.6.0
       csv-stringify: 5.5.3
@@ -128,7 +128,7 @@ importers:
       mime: 2.4.6
       moment: 2.29.1
       mustache: 4.0.1
-      node-resque: 8.1.0
+      node-resque: 8.2.0
       nodemon: 2.0.6
       pacote: 11.1.11
       pg: 8.5.1
@@ -165,7 +165,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       '@types/validator': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       ah-next-plugin: 0.4.0
       ah-sequelize-plugin: 2.2.4
       bcrypt: 5.0.0
@@ -187,7 +187,7 @@ importers:
       moment: 2.29.1
       mustache: 4.0.1
       nock: 13.0.5
-      node-resque: 8.1.0
+      node-resque: 8.2.0
       nodemon: 2.0.6
       pacote: 11.1.11
       pg: 8.5.1
@@ -213,7 +213,7 @@ importers:
       '@grouparoo/spec-helper': 'link:../spec-helper'
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       jest: 26.6.3
       nock: 13.0.5
       prettier: 2.2.1
@@ -224,7 +224,7 @@ importers:
       '@grouparoo/spec-helper': ^0.2.0-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       jest: 26.6.3
       nock: 13.0.5
       prettier: 2.2.1
@@ -239,7 +239,7 @@ importers:
       '@grouparoo/spec-helper': 'link:../spec-helper'
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       dotenv: 8.2.0
       fs-extra: 9.0.1
       jest: 26.6.3
@@ -254,7 +254,7 @@ importers:
       '@grouparoo/spec-helper': ^0.2.0-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       dotenv: 8.2.0
       fs-extra: 9.0.1
       jest: 26.6.3
@@ -271,7 +271,7 @@ importers:
       '@grouparoo/spec-helper': 'link:../spec-helper'
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       jest: 26.6.3
       prettier: 2.2.1
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
@@ -281,7 +281,7 @@ importers:
       '@grouparoo/spec-helper': ^0.2.0-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       csv-parser: 2.3.3
       fs-extra: 9.0.1
       jest: 26.6.3
@@ -302,7 +302,7 @@ importers:
       '@grouparoo/spec-helper': 'link:../spec-helper'
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       jest: 26.6.3
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typescript: 4.1.2
@@ -311,7 +311,7 @@ importers:
       '@grouparoo/spec-helper': ^0.2.0-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       csv-parse: 4.14.1
       fs-extra: 9.0.1
       isomorphic-fetch: 3.0.0
@@ -329,7 +329,7 @@ importers:
       '@grouparoo/core': 'link:../../../core'
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       jest: 26.6.3
       prettier: 2.2.1
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
@@ -338,7 +338,7 @@ importers:
       '@grouparoo/core': ^0.2.0-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       fs-extra: 9.0.1
       jest: 26.6.3
       prettier: 2.2.1
@@ -352,7 +352,7 @@ importers:
       '@grouparoo/core': 'link:../../../core'
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       jest: 26.6.3
       prettier: 2.2.1
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
@@ -361,7 +361,7 @@ importers:
       '@grouparoo/core': ^0.2.0-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       aws-sdk: 2.799.0
       fs-extra: 9.0.1
       jest: 26.6.3
@@ -376,7 +376,7 @@ importers:
       '@grouparoo/spec-helper': 'link:../spec-helper'
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       dotenv: 8.2.0
       fs-extra: 9.0.1
       jest: 26.6.3
@@ -389,7 +389,7 @@ importers:
       '@grouparoo/spec-helper': ^0.2.0-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       dotenv: 8.2.0
       fs-extra: 9.0.1
       google-spreadsheet: 3.0.14
@@ -407,7 +407,7 @@ importers:
       '@grouparoo/spec-helper': 'link:../spec-helper'
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       dotenv: 8.2.0
       fs-extra: 9.0.1
       jest: 26.6.3
@@ -420,7 +420,7 @@ importers:
       '@grouparoo/spec-helper': ^0.2.0-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       axios: 0.21.0
       dotenv: 8.2.0
       fs-extra: 9.0.1
@@ -435,7 +435,7 @@ importers:
       '@grouparoo/core': 'link:../../../core'
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       jest: 26.6.3
       prettier: 2.2.1
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
@@ -444,7 +444,7 @@ importers:
       '@grouparoo/core': ^0.2.0-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       jest: 26.6.3
       prettier: 2.2.1
       ts-jest: 26.4.4
@@ -457,7 +457,7 @@ importers:
       '@grouparoo/spec-helper': 'link:../spec-helper'
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       dotenv: 8.2.0
       jest: 26.6.3
       nock: 13.0.5
@@ -469,7 +469,7 @@ importers:
       '@grouparoo/spec-helper': ^0.2.0-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       dotenv: 8.2.0
       jest: 26.6.3
       mailchimp-api-v3: 1.14.0
@@ -486,7 +486,7 @@ importers:
       '@grouparoo/spec-helper': 'link:../spec-helper'
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       dotenv: 8.2.0
       fs-extra: 9.0.1
       jest: 26.6.3
@@ -500,7 +500,7 @@ importers:
       '@grouparoo/spec-helper': ^0.2.0-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       dotenv: 8.2.0
       fs-extra: 9.0.1
       jest: 26.6.3
@@ -519,7 +519,7 @@ importers:
       '@types/jest': 26.0.15
       '@types/mysql': 2.15.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       csv-parse: 4.14.1
       jest: 26.6.3
       prettier: 2.2.1
@@ -532,7 +532,7 @@ importers:
       '@types/jest': '*'
       '@types/mysql': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       csv-parse: 4.14.1
       jest: 26.6.3
       mysql: 2.18.1
@@ -546,7 +546,7 @@ importers:
       '@grouparoo/core': 'link:../../../core'
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       jest: 26.6.3
       prettier: 2.2.1
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
@@ -555,7 +555,7 @@ importers:
       '@grouparoo/core': ^0.2.0-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       jest: 26.6.3
       newrelic: 7.0.1
       prettier: 2.2.1
@@ -574,7 +574,7 @@ importers:
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
       '@types/pg': 7.14.5
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       csv-parse: 4.14.1
       jest: 26.6.3
       prettier: 2.2.1
@@ -587,7 +587,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       '@types/pg': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       csv-parse: 4.14.1
       jest: 26.6.3
       pg: 8.5.1
@@ -607,7 +607,7 @@ importers:
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
       '@types/pg': 7.14.5
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       jest: 26.6.3
       prettier: 2.2.1
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
@@ -620,7 +620,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       '@types/pg': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       jest: 26.6.3
       prettier: 2.2.1
       ts-jest: 26.4.4
@@ -633,7 +633,7 @@ importers:
       '@grouparoo/spec-helper': 'link:../spec-helper'
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       dotenv: 8.2.0
       fs-extra: 9.0.1
       jest: 26.6.3
@@ -646,7 +646,7 @@ importers:
       '@grouparoo/spec-helper': ^0.2.0-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       dotenv: 8.2.0
       fs-extra: 9.0.1
       jest: 26.6.3
@@ -664,7 +664,7 @@ importers:
       '@grouparoo/spec-helper': 'link:../spec-helper'
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       dotenv: 8.2.0
       fs-extra: 9.0.1
       jest: 26.6.3
@@ -678,7 +678,7 @@ importers:
       '@grouparoo/spec-helper': ^0.2.0-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       dotenv: 8.2.0
       fs-extra: 9.0.1
       jest: 26.6.3
@@ -697,7 +697,7 @@ importers:
       '@grouparoo/spec-helper': 'link:../spec-helper'
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       dotenv: 8.2.0
       fs-extra: 9.0.1
       jest: 26.6.3
@@ -711,7 +711,7 @@ importers:
       '@grouparoo/spec-helper': ^0.2.0-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       dotenv: 8.2.0
       fs-extra: 9.0.1
       jest: 26.6.3
@@ -732,7 +732,7 @@ importers:
       '@types/faker': 5.1.3
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       jest: 26.6.3
       prettier: 2.2.1
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
@@ -742,7 +742,7 @@ importers:
       '@types/faker': '*'
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       faker: 5.1.0
       jest: 26.6.3
       nock: 13.0.5
@@ -759,7 +759,7 @@ importers:
       '@grouparoo/spec-helper': 'link:../spec-helper'
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       dotenv: 8.2.0
       fs-extra: 9.0.1
       jest: 26.6.3
@@ -772,7 +772,7 @@ importers:
       '@grouparoo/spec-helper': ^0.2.0-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       dotenv: 8.2.0
       fs-extra: 9.0.1
       jest: 26.6.3
@@ -2923,7 +2923,7 @@ packages:
   /@types/glob/7.1.3:
     dependencies:
       '@types/minimatch': 3.0.3
-      '@types/node': 14.14.7
+      '@types/node': 14.14.10
     resolution:
       integrity: sha512-SEYeGAIQIQX8NN6LDKprLjbrd5dARM5EXsd8GI/A5l0apYI1fGMWgPHSe4ZKL4eozlAyI+doUE9XbYS4xCkQ1w==
   /@types/graceful-fs/4.1.4:
@@ -2944,7 +2944,7 @@ packages:
       integrity: sha512-lYUtmJ9BqUN688fGY1U1HZoWT1/Jrmgigx2loq4ZcJpICECm/Om3V314BxdzypO0u5PORKGMM6x0OXaljV1YFg==
   /@types/ioredis/4.17.8:
     dependencies:
-      '@types/node': 14.14.7
+      '@types/node': 14.14.10
     resolution:
       integrity: sha512-13WwLG9jMvzjabpBydDXKSPdvAnKI8pZOKk9rEFp3QizyJS8riyNyVRV5ATvU1DCKsz31KM9g90etnTGgMFh3g==
   /@types/istanbul-lib-coverage/2.0.3:
@@ -3005,6 +3005,9 @@ packages:
     dev: false
     resolution:
       integrity: sha512-EM/qFeRH8ZCD+TlsaIPULyyFm9vOhFIvgskY2JmHbEsWsOPgN+rtjSXrcHGgJpob4Nu17VfO95FKewr0XY7iOQ==
+  /@types/node/14.14.10:
+    resolution:
+      integrity: sha512-J32dgx2hw8vXrSbu4ZlVhn1Nm3GbeCFNw2FWL8S5QKucHGY0cyNwjdQdO+KMBZ4wpmC7KhLCiNsdk1RFRIYUQQ==
   /@types/node/14.14.2:
     dev: false
     resolution:
@@ -3308,36 +3311,36 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
-  /actionhero/25.0.0-alpha.1:
+  /actionhero/25.0.0-alpha.2:
     dependencies:
       '@types/glob': 7.1.3
       '@types/ioredis': 4.17.8
-      '@types/node': 14.14.7
+      '@types/node': 14.14.10
       '@types/uuid': 8.3.0
       browser_fingerprint: 2.0.2
-      dot-prop: 6.0.0
+      dot-prop: 6.0.1
       etag: 1.8.1
       formidable: 1.2.2
       glob: 7.1.6
       i18n: 0.13.2
       ioredis: 4.19.2
-      ioredis-mock: 5.1.0_ioredis@4.19.2
+      ioredis-mock: 5.2.0_ioredis@4.19.2
       is-running: 2.1.0
       mime: 2.4.6
-      node-resque: 8.1.0
+      node-resque: 8.2.0
       optimist: 0.6.1
       primus: 8.0.0
       qs: 6.9.4
-      uglify-js: 3.11.6
+      uglify-js: 3.12.1
       uuid: 8.3.1
       winston: 3.3.3
-      ws: 7.4.0
+      ws: 7.4.1
     engines:
       node: '>=8.0.0'
     hasBin: true
     requiresBuild: true
     resolution:
-      integrity: sha512-Bz6BIzq5d3ge2XfYbJe3eFY+70ZoezTsyq7jZxrsRcBp6s3CLg4k/J9hDJZwj8FkrPYfeiath2YXaOPDq2JtrQ==
+      integrity: sha512-W3WsGz+SBP/2SfalzTuUpUO9ThL7F7SlHUcBcuh6zYX1E5tgOloOwresljBoR0T9tEGzEIQVPGbg5zvglzzIHw==
   /adjust-sourcemap-loader/3.0.0:
     dependencies:
       loader-utils: 2.0.0
@@ -3405,9 +3408,9 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-4I7Td01quW/RpocfNayFdFVk1qSuoh0E7JrbRJ16nH01HhKFQ88INq9Sd+nd72zqRySlr9BmDA8xlEJ6vJMrYA==
-  /ah-next-plugin/0.4.0_actionhero@25.0.0-alpha.1:
+  /ah-next-plugin/0.4.0_actionhero@25.0.0-alpha.2:
     dependencies:
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
     dev: false
     engines:
       node: '>=8.0.0'
@@ -3418,9 +3421,9 @@ packages:
       react-dom: '*'
     resolution:
       integrity: sha512-vB/x+9fTILHK6g56S4G3Dla2NM5zHVpqR157RTyOLJTmBH4d98Oyvg1EylMb43boGIDc+AjYnwr3LM4WuyuCuA==
-  /ah-sequelize-plugin/2.2.4_9a9bafa3f73159ae2f49a555482d3220:
+  /ah-sequelize-plugin/2.2.4_4a06ab0768f01afaf380a82c4963ac40:
     dependencies:
-      actionhero: 25.0.0-alpha.1
+      actionhero: 25.0.0-alpha.2
       sequelize: 5.22.3
       sequelize-typescript: 1.1.0_8d46493fa10ea791e6df2eb14ee234d8
       umzug: 3.0.0-beta.5
@@ -5995,13 +5998,13 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-QM8q3zDe58hqUqjraQOmzZ1LIH9SWQJTlEKCH4kJ2oQvLZk7RbQXvtDM2XEq3fwkV9CCvvH4LA0AV+ogFsBM2Q==
-  /dot-prop/6.0.0:
+  /dot-prop/6.0.1:
     dependencies:
       is-obj: 2.0.0
     engines:
       node: '>=10'
     resolution:
-      integrity: sha512-xCbB8IN3IT+tdgoEPOnJmYTNJDrygGFOmiQEiVa5eAD+JEB1vTgMNhVGRnN5Eex/6amck7cdcrixb1qN9Go+GQ==
+      integrity: sha512-tE7ztYzXHIeyvc7N+hR3oi7FIbf/NIjVP9hmAt3yMXzrQ072/fpjGLx2GxNxGxUl5V73MEqYzioOMoVhGMJ5cA==
   /dotenv/8.2.0:
     engines:
       node: '>=8'
@@ -8138,23 +8141,6 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-EEqOSqym09jNFXqO+L+rLXo//bY=
-  /ioredis-mock/5.1.0_ioredis@4.19.2:
-    dependencies:
-      array-from: 2.1.1
-      es6-map: 0.1.5
-      es6-set: 0.1.5
-      fengari: 0.1.4
-      fengari-interop: 0.1.2_fengari@0.1.4
-      ioredis: 4.19.2
-      lodash: 4.17.20
-      minimatch: 3.0.4
-      standard-as-callback: 2.0.1
-    engines:
-      node: '>=10'
-    peerDependencies:
-      ioredis: 4.x
-    resolution:
-      integrity: sha512-6t5ru9KWz6/U2IfvgPKd69MILfnqgz8s5oj3bPsiI50WavHuCTzlAwHF2Yw/MaEeJM5BkBwPIzY0AdTU4bzscw==
   /ioredis-mock/5.2.0_ioredis@4.19.2:
     dependencies:
       array-from: 2.1.1
@@ -8166,7 +8152,6 @@ packages:
       lodash: 4.17.20
       minimatch: 3.0.4
       standard-as-callback: 2.0.1
-    dev: false
     engines:
       node: '>=10'
     peerDependencies:
@@ -10582,14 +10567,7 @@ packages:
   /nan/2.14.2:
     resolution:
       integrity: sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ==
-  /nanoid/3.1.15:
-    engines:
-      node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1
-    hasBin: true
-    resolution:
-      integrity: sha512-n8rXUZ8UU3lV6+43atPrSizqzh25n1/f00Wx1sCiE7R1sSHytZLTTiQl8DjC4IDLOnEZDlgJhy0yO4VsIpMxow==
   /nanoid/3.1.18:
-    dev: false
     engines:
       node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1
     hasBin: true
@@ -10976,13 +10954,13 @@ packages:
     dev: false
     resolution:
       integrity: sha512-V5QF9noGFl3EymEwUYzO+3NTDpGfQB4ve6Qfnzf3UNydMhjQRVPR1DZTuvWiLzaFJYw2fmDwAfnRNEVb64hSIg==
-  /node-resque/8.1.0:
+  /node-resque/8.2.0:
     dependencies:
       ioredis: 4.19.2
     engines:
       node: '>= 8'
     resolution:
-      integrity: sha512-2gwz6/LuvgL7Qv+JxwIgqFhciICnMTR915KBceKOBcF8zg9KFZu7gFWewesAE5iSYdXWnMnGLRYkBKYJEIEtDg==
+      integrity: sha512-7umkTbLSPoW1ZnKJx+F/ZSUMXDi4zi+eKXcIOg8uGlxXyjkAg3hT32cnEil96qonASeXJI67MhRDqlB211WBMA==
   /node-sass/4.14.1:
     dependencies:
       async-foreach: 0.1.3
@@ -12341,7 +12319,7 @@ packages:
       eventemitter3: 4.0.7
       forwarded-for: 1.1.0
       fusing: 1.0.0
-      nanoid: 3.1.15
+      nanoid: 3.1.18
       setheader: 1.0.2
       ultron: 1.1.1
     resolution:
@@ -15589,12 +15567,12 @@ packages:
     optional: true
     resolution:
       integrity: sha512-FyYnoxVL1D6+jDGQpbK5jW6y/2JlVfRfEeQ67BPCUg5wfCjaKOpr2XeceE4QL+MkhxliLtf5EbrMDZgzpt2CNw==
-  /uglify-js/3.11.6:
+  /uglify-js/3.12.1:
     engines:
       node: '>=0.8.0'
     hasBin: true
     resolution:
-      integrity: sha512-oASI1FOJ7BBFkSCNDZ446EgkSuHkOZBuqRFrwXIKWCoXw8ZXQETooTQjkAcBS03Acab7ubCKsXnwuV2svy061g==
+      integrity: sha512-o8lHP20KjIiQe5b/67Rh68xEGRrc2SRsCuuoYclXXoC74AfSRGblU1HKzJWH3HxPZ+Ort85fWHpSX7KwBUC9CQ==
   /uid-number/0.0.6:
     dev: true
     resolution:
@@ -16432,6 +16410,7 @@ packages:
     resolution:
       integrity: sha512-D3RuNkynyHmEJIpD2qrgVkc9DQ23OrN/moAwZX4L8DfvszsJxpjQuUq3LMx6HoYji9fbIOBY18XWBsAux1ZZUA==
   /ws/7.4.0:
+    dev: false
     engines:
       node: '>=8.3.0'
     peerDependencies:
@@ -16444,6 +16423,19 @@ packages:
         optional: true
     resolution:
       integrity: sha512-kyFwXuV/5ymf+IXhS6f0+eAFvydbaBW3zjpT6hUdAh/hbVjTIB5EHBGi0bPoCLSK2wcuz3BrEkB9LrYv1Nm4NQ==
+  /ws/7.4.1:
+    engines:
+      node: '>=8.3.0'
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: ^5.0.2
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    resolution:
+      integrity: sha512-pTsP8UAfhy3sk1lSk/O/s4tjD0CRwvMnzvwr4OKGX7ZvqZtUyx4KIJB5JWbkykPoc55tixMGgTNoh3k4FkNGFQ==
   /xdg-basedir/4.0.0:
     engines:
       node: '>=8'
