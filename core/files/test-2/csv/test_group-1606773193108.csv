@@ -1,0 +1,3 @@
+guid,createdAt,updatedAt,email,firstName,isVIP,lastLoginAt,lastName,ltv,purchaseAmounts,purchases,userId
+pro_e5007d0e-eb64-45c8-97f1-927e3415a329,1606773192,1606773192,mario@example.com,Mario,,,Mario,,,,1
+pro_c40f5a93-fc58-4215-afaf-6da2fedf6372,1606773192,1606773193,luigi@example.com,Luigi,,,Mario,,,,2

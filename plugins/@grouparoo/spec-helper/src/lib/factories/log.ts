@@ -1,4 +1,4 @@
-import { Log } from "@grouparoo/core/api/src";
+import { Log } from "@grouparoo/core/src";
 
 const data = async (props = {}) => {
   const defaultProps = {

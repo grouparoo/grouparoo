@@ -3,6 +3,7 @@
     "cli",
     "apps/*",
     "core",
+    "ui",
     "clients/@grouparoo/*",
     "plugins/@grouparoo/*"
   ],
@@ -12,10 +13,7 @@
       "ignore": "@grouparoo/app-local*"
     },
     "version": {
-      "allowBranch": [
-        "master",
-        "stable"
-      ],
+      "allowBranch": ["master", "stable"],
       "message": "chore(release): publish %s [ci skip]"
     }
   }

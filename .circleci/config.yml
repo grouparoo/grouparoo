@@ -35,8 +35,8 @@ jobs:
       - save_cache:
           <<: *node-module-cache-options
           paths:
-            - apps/local-public/node_modules
             - apps/staging-public/node_modules
+            - apps/ui-test/node_modules
             - cli/node_modules
             - clients/@grouparoo/web/node_modules
             - core/node_modules
@@ -45,7 +45,6 @@ jobs:
             - plugins/@grouparoo/bigquery/node_modules
             - plugins/@grouparoo/csv/node_modules
             - plugins/@grouparoo/demo/node_modules
-            - plugins/@grouparoo/email-authentication/node_modules
             - plugins/@grouparoo/files-local/node_modules
             - plugins/@grouparoo/files-s3/node_modules
             - plugins/@grouparoo/google-sheets/node_modules
@@ -64,6 +63,7 @@ jobs:
             - plugins/@grouparoo/spec-helper/node_modules
             - plugins/@grouparoo/zendesk/node_modules
             - tools/merger/node_modules
+            - ui/node_modules
       - save_cache:
           <<: *dist-cache-options
           paths:
@@ -73,7 +73,6 @@ jobs:
             - plugins/@grouparoo/bigquery/dist
             - plugins/@grouparoo/csv/dist
             - plugins/@grouparoo/demo/dist
-            - plugins/@grouparoo/email-authentication/dist
             - plugins/@grouparoo/files-local/dist
             - plugins/@grouparoo/files-s3/dist
             - plugins/@grouparoo/google-sheets/dist
@@ -94,8 +93,8 @@ jobs:
       - save_cache:
           <<: *core-cache-options
           paths:
-            - core/api/dist
-            - core/web/.next
+            - core/dist
+            - ui/.next
   license-checker:
     docker:
       - image: circleci/node:12
@@ -192,10 +191,10 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
-          name: test-api
-          command: cd core/api && ./../node_modules/.bin/jest --ci --maxWorkers 2
+          name: test-
+          command: cd core/ && ./node_modules/.bin/jest --ci --maxWorkers 2
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-core-web:
@@ -234,10 +233,10 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
-          name: test-web
-          command: cd core/web && ./../node_modules/.bin/jest --ci --maxWorkers 2
+          name: test-
+          command: cd core/ && ./node_modules/.bin/jest --ci --maxWorkers 2
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-core-local:
@@ -259,8 +258,8 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
-          name: test-api
-          command: cd core/api && ./../node_modules/.bin/jest __tests__/models __tests__/actions --ci --maxWorkers 2
+          name: test-
+          command: cd core/ && ./node_modules/.bin/jest __tests__/models __tests__/actions --ci --maxWorkers 2
           environment:
             DB_DIALECT: sqlite
   test-staging-public:
@@ -337,7 +336,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/app-templates && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -373,7 +372,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/bigquery && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -409,7 +408,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/csv && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -445,46 +444,10 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/demo && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
-  test-plugin-email-authentication:
-    docker:
-      - image: circleci/node:12
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-      - image: redis:latest
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-      - image: circleci/postgres:9
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-        environment:
-          POSTGRES_PASSWORD: password
-    steps:
-      - checkout
-      - restore_cache:
-          <<: *node-module-cache-options
-      - restore_cache:
-          <<: *dist-cache-options
-      - restore_cache:
-          <<: *core-cache-options
-      - run:
-          name: install postgresql client
-          command: sudo apt install -y postgresql-client
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run:
-          name: create test databases
-          command: cd core/api && ./bin/create_test_databases
-      - run:
-          name: test
-          command: cd plugins/@grouparoo/email-authentication && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-files-local:
     docker:
       - image: circleci/node:12
@@ -517,7 +480,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/files-local && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -553,7 +516,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/files-s3 && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -589,7 +552,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/google-sheets && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -625,7 +588,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/hubspot && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -661,7 +624,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/logger && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -697,7 +660,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/mailchimp && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -733,7 +696,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/marketo && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -773,7 +736,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: install mysql client
           command: sudo apt install -y mysql-client
@@ -815,7 +778,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/newrelic && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -851,7 +814,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/postgres && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -887,7 +850,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/redshift && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -923,7 +886,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/sailthru && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -959,7 +922,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/salesforce && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -995,7 +958,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/sample-ui-plugin && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -1031,7 +994,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/snowflake && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -1067,7 +1030,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/spec-helper && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -1103,7 +1066,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd clients/@grouparoo/web && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -1139,7 +1102,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: create test databases
-          command: cd core/api && ./bin/create_test_databases
+          command: cd core && ./bin/create_test_databases
       - run:
           name: test
           command: cd plugins/@grouparoo/zendesk && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
@@ -1259,11 +1222,6 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-plugin-email-authentication:
-          filters:
-            <<: *ignored-branches
-          requires:
-            - build
       - test-plugin-files-local:
           filters:
             <<: *ignored-branches
@@ -1374,7 +1332,6 @@ workflows:
             - test-plugin-bigquery
             - test-plugin-csv
             - test-plugin-demo
-            - test-plugin-email-authentication
             - test-plugin-files-local
             - test-plugin-files-s3
             - test-plugin-google-sheets
@@ -1470,11 +1427,6 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-plugin-email-authentication:
-          filters:
-            <<: *ignored-branches
-          requires:
-            - build
       - test-plugin-files-local:
           filters:
             <<: *ignored-branches
@@ -1585,7 +1537,6 @@ workflows:
             - test-plugin-bigquery
             - test-plugin-csv
             - test-plugin-demo
-            - test-plugin-email-authentication
             - test-plugin-files-local
             - test-plugin-files-s3
             - test-plugin-google-sheets

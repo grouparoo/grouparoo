@@ -1,1 +1,1 @@
-export { FileTransportLocal } from "@grouparoo/core/api/dist/classes/fileTransportLocal";
+export { FileTransportLocal } from "@grouparoo/core/dist/classes/fileTransportLocal";

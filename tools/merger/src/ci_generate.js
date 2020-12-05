@@ -77,21 +77,18 @@ class Generator {
   addCore() {
     this.jobList.push({
       type: "core",
-      section: "api",
       job_name: `test-core-api`,
       relative_path: `core`,
       name: "core",
     });
     this.jobList.push({
       type: "core",
-      section: "web",
       job_name: `test-core-web`,
       relative_path: `core`,
       name: "core",
     });
     this.jobList.push({
       type: "core-local",
-      section: "api",
       job_name: `test-core-local`,
       relative_path: `core`,
       name: "core",
@@ -221,9 +218,7 @@ class Generator {
       return [];
     }
 
-    return ["core/api/dist", "core/web/.next"]
-      .map((p) => `${prefix}${p}`)
-      .join("\n");
+    return ["core/dist", "ui/.next"].map((p) => `${prefix}${p}`).join("\n");
   }
 
   renderJob(job, name) {

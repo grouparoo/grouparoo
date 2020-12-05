@@ -1,7 +1,7 @@
 packages:
   - "core"
+  - "ui"
   - "cli"
   - "clients/**"
   - "plugins/**"
   - "apps/**"
-  - "!apps/local-public"

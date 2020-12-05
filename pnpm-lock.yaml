@@ -20,7 +20,6 @@ importers:
       '@grouparoo/core': 'link:../../core'
       '@grouparoo/csv': 'link:../../plugins/@grouparoo/csv'
       '@grouparoo/demo': 'link:../../plugins/@grouparoo/demo'
-      '@grouparoo/email-authentication': 'link:../../plugins/@grouparoo/email-authentication'
       '@grouparoo/files-s3': 'link:../../plugins/@grouparoo/files-s3'
       '@grouparoo/google-sheets': 'link:../../plugins/@grouparoo/google-sheets'
       '@grouparoo/hubspot': 'link:../../plugins/@grouparoo/hubspot'
@@ -35,13 +34,13 @@ importers:
       '@grouparoo/salesforce': 'link:../../plugins/@grouparoo/salesforce'
       '@grouparoo/sample-ui-plugin': 'link:../../plugins/@grouparoo/sample-ui-plugin'
       '@grouparoo/snowflake': 'link:../../plugins/@grouparoo/snowflake'
+      '@grouparoo/ui': 'link:../../ui'
       '@grouparoo/zendesk': 'link:../../plugins/@grouparoo/zendesk'
     specifiers:
       '@grouparoo/bigquery': ^0.1.26-alpha.2
       '@grouparoo/core': ^0.1.26-alpha.2
       '@grouparoo/csv': ^0.1.26-alpha.2
       '@grouparoo/demo': ^0.1.26-alpha.2
-      '@grouparoo/email-authentication': ^0.1.26-alpha.2
       '@grouparoo/files-s3': ^0.1.26-alpha.2
       '@grouparoo/google-sheets': ^0.1.26-alpha.2
       '@grouparoo/hubspot': ^0.1.26-alpha.2
@@ -56,7 +55,15 @@ importers:
       '@grouparoo/salesforce': ^0.1.26-alpha.2
       '@grouparoo/sample-ui-plugin': ^0.1.26-alpha.2
       '@grouparoo/snowflake': ^0.1.26-alpha.2
+      '@grouparoo/ui': ^0.1.26-alpha.2
       '@grouparoo/zendesk': ^0.1.26-alpha.2
+  apps/ui-test:
+    dependencies:
+      '@grouparoo/core': 'link:../../core'
+      '@grouparoo/ui': 'link:../../ui'
+    specifiers:
+      '@grouparoo/core': ^0.1.26-alpha.2
+      '@grouparoo/ui': ^0.1.26-alpha.2
   cli:
     dependencies:
       chalk: 4.1.0
@@ -100,24 +107,15 @@ importers:
       webpack-cli: 4.2.0
   core:
     dependencies:
-      '@fortawesome/fontawesome-svg-core': 1.2.32
-      '@fortawesome/free-solid-svg-icons': 5.15.1
-      '@fortawesome/react-fontawesome': 0.1.13_7b53ac401c65ded4c43384956efd993a
       '@grouparoo/client-web': 'link:../clients/@grouparoo/web'
-      '@nivo/line': 0.62.0_0106054ed56650b7cf08997e12b36ef5
       '@types/bluebird': 3.5.32
       '@types/fs-extra': 9.0.2
       '@types/node': 14.14.7
-      '@types/react': 16.9.53
-      '@types/react-dom': 16.9.10
       '@types/validator': 13.1.0
-      '@zeit/next-source-maps': 0.0.3
       actionhero: 25.0.0-alpha.1
-      ah-next-plugin: 0.4.0_1ff6080b5532b3e202481883c66f838c
+      ah-next-plugin: 0.4.0_actionhero@25.0.0-alpha.1
       ah-sequelize-plugin: 2.2.4_9a9bafa3f73159ae2f49a555482d3220
-      axios: 0.21.0
       bcrypt: 5.0.0
-      bootstrap: 4.5.3
       compare-versions: 3.6.0
       csv-stringify: 5.5.3
       date-fns: 2.16.1
@@ -129,33 +127,18 @@ importers:
       isomorphic-fetch: 3.0.0
       json5: 2.1.3
       libphonenumber-js: 1.9.4
-      md5: 2.3.0
       mime: 2.4.6
       moment: 2.29.1
       mustache: 4.0.1
-      next: 10.0.3_97d6dcb83076ab669df2dacde4d88552
       node-resque: 8.1.0
-      node-sass: 4.14.1
       nodemon: 2.0.6
       pacote: 11.1.11
       pg: 8.5.1
       pg-hstore: 2.3.3
-      raw-loader: 4.0.2
-      react: 16.14.0
-      react-bootstrap: 1.4.0_react-dom@16.14.0+react@16.14.0
-      react-bootstrap-typeahead: 5.1.2_react-dom@16.14.0+react@16.14.0
-      react-date-range: 1.1.3_date-fns@2.16.1+react@16.14.0
-      react-datepicker: 3.3.0_react-dom@16.14.0+react@16.14.0
-      react-dom: 16.14.0_react@16.14.0
-      react-hook-form: 6.12.1_react@16.14.0
-      react-markdown: 5.0.3_805fb73a4e37c8146142b351347c22d7
-      react-moment: 1.0.0_eafa27d017aeb76e4fdf82e703ca42a1
       reflect-metadata: 0.1.13
       sequelize: 5.22.3
       sequelize-typescript: 1.1.0_8d46493fa10ea791e6df2eb14ee234d8
       sqlite3: 5.0.0
-      stacktrace-js: 2.0.2
-      swagger-ui: 3.37.2
       ts-node: 9.0.0_typescript@4.1.2
       type-fest: 0.20.2
       typescript: 4.1.2
@@ -169,87 +152,53 @@ importers:
       '@types/faker': 5.1.3
       '@types/jest': 26.0.15
       csv-parse: 4.14.1
-      enzyme: 3.11.0
-      enzyme-adapter-react-16: 1.15.5_4f82faf5e8cab057bc46d4d95079ec42
       jest: 26.6.3
-      jest-environment-webdriver: 0.2.0_jest@26.6.3
       jest-fetch-mock: 3.0.3
-      jest-mock-axios: 4.2.1
       nock: 13.0.5
       prettier: 2.2.1
-      prop-types: 15.7.2
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
       typedoc: 0.19.2_typescript@4.1.2
     specifiers:
-      '@fortawesome/fontawesome-svg-core': 1.2.32
-      '@fortawesome/free-solid-svg-icons': 5.15.1
-      '@fortawesome/react-fontawesome': 0.1.13
       '@grouparoo/client-web': ^0.1.26-alpha.2
       '@grouparoo/spec-helper': ^0.1.26-alpha.2
-      '@nivo/line': 0.62.0
       '@types/bluebird': '*'
       '@types/faker': '*'
       '@types/fs-extra': '*'
       '@types/jest': '*'
       '@types/node': '*'
-      '@types/react': '*'
-      '@types/react-dom': '*'
       '@types/validator': '*'
-      '@zeit/next-source-maps': 0.0.3
       actionhero: 25.0.0-alpha.1
       ah-next-plugin: 0.4.0
       ah-sequelize-plugin: 2.2.4
-      axios: 0.21.0
       bcrypt: 5.0.0
-      bootstrap: 4.5.3
       compare-versions: 3.6.0
       csv-parse: 4.14.1
       csv-stringify: 5.5.3
       date-fns: 2.16.1
       dotenv: 8.2.0
-      enzyme: 3.11.0
-      enzyme-adapter-react-16: 1.15.5
       faker: 5.1.0
       fs-extra: 9.0.1
       ioredis: 4.19.2
       ioredis-mock: 5.2.0
       isomorphic-fetch: 3.0.0
       jest: 26.6.3
-      jest-environment-webdriver: 0.2.0
       jest-fetch-mock: 3.0.3
-      jest-mock-axios: 4.2.1
       json5: 2.1.3
       libphonenumber-js: 1.9.4
-      md5: 2.3.0
       mime: 2.4.6
       moment: 2.29.1
       mustache: 4.0.1
-      next: 10.0.3
       nock: 13.0.5
       node-resque: 8.1.0
-      node-sass: 4.14.1
       nodemon: 2.0.6
       pacote: 11.1.11
       pg: 8.5.1
       pg-hstore: 2.3.3
       prettier: 2.2.1
-      prop-types: 15.7.2
-      raw-loader: 4.0.2
-      react: 16.14.0
-      react-bootstrap: 1.4.0
-      react-bootstrap-typeahead: 5.1.2
-      react-date-range: 1.1.3
-      react-datepicker: 3.3.0
-      react-dom: 16.14.0
-      react-hook-form: 6.12.1
-      react-markdown: 5.0.3
-      react-moment: 1.0.0
       reflect-metadata: 0.1.13
       sequelize: 5.22.3
       sequelize-typescript: 1.1.0
       sqlite3: ^5.0.0
-      stacktrace-js: 2.0.2
-      swagger-ui: 3.37.2
       ts-jest: 26.4.4
       ts-node: 9.0.0
       type-fest: 0.20.2
@@ -375,32 +324,6 @@ importers:
       ts-jest: 26.4.4
       typescript: 4.1.2
       uuid: 8.3.1
-  plugins/@grouparoo/email-authentication:
-    dependencies:
-      react-bootstrap: 1.4.0
-    devDependencies:
-      '@grouparoo/core': 'link:../../../core'
-      '@grouparoo/spec-helper': 'link:../spec-helper'
-      '@types/jest': 26.0.15
-      '@types/node': 14.14.7
-      '@types/react': 16.9.53
-      actionhero: 25.0.0-alpha.1
-      jest: 26.6.3
-      prettier: 2.2.1
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
-      typescript: 4.1.2
-    specifiers:
-      '@grouparoo/core': ^0.1.26-alpha.2
-      '@grouparoo/spec-helper': ^0.1.26-alpha.2
-      '@types/jest': '*'
-      '@types/node': '*'
-      '@types/react': '*'
-      actionhero: 25.0.0-alpha.1
-      jest: 26.6.3
-      prettier: 2.2.1
-      react-bootstrap: 1.4.0
-      ts-jest: 26.4.4
-      typescript: 4.1.2
   plugins/@grouparoo/files-local:
     dependencies:
       fs-extra: 9.0.1
@@ -880,6 +803,96 @@ importers:
       node-zendesk: 2.0.3
       prettier: 2.2.1
       ts-jest: 26.4.4
+      typescript: 4.1.2
+  ui:
+    dependencies:
+      '@fortawesome/fontawesome-svg-core': 1.2.32
+      '@fortawesome/free-solid-svg-icons': 5.15.1
+      '@fortawesome/react-fontawesome': 0.1.13_7b53ac401c65ded4c43384956efd993a
+      '@grouparoo/client-web': 'link:../clients/@grouparoo/web'
+      '@nivo/line': 0.62.0_0106054ed56650b7cf08997e12b36ef5
+      '@types/react': 16.9.53
+      '@types/react-dom': 16.9.10
+      '@zeit/next-source-maps': 0.0.3
+      axios: 0.21.0
+      bootstrap: 4.5.3
+      date-fns: 2.16.1
+      dotenv: 8.2.0
+      md5: 2.3.0
+      moment: 2.29.1
+      next: 10.0.3_97d6dcb83076ab669df2dacde4d88552
+      node-sass: 4.14.1
+      raw-loader: 4.0.2
+      react: 16.14.0
+      react-bootstrap: 1.4.0_react-dom@16.14.0+react@16.14.0
+      react-bootstrap-typeahead: 5.1.2_react-dom@16.14.0+react@16.14.0
+      react-date-range: 1.1.3_date-fns@2.16.1+react@16.14.0
+      react-datepicker: 3.3.0_react-dom@16.14.0+react@16.14.0
+      react-dom: 16.14.0_react@16.14.0
+      react-hook-form: 6.12.1_react@16.14.0
+      react-markdown: 5.0.3_6e8834a71204835dd543aa9883583486
+      react-moment: 1.0.0_eafa27d017aeb76e4fdf82e703ca42a1
+      stacktrace-js: 2.0.2
+      swagger-ui: 3.37.2
+      type-fest: 0.20.2
+      typescript: 4.1.2
+    devDependencies:
+      '@grouparoo/core': 'link:../core'
+      '@grouparoo/spec-helper': 'link:../plugins/@grouparoo/spec-helper'
+      '@types/jest': 26.0.15
+      enzyme: 3.11.0
+      enzyme-adapter-react-16: 1.15.5_4f82faf5e8cab057bc46d4d95079ec42
+      isomorphic-fetch: 3.0.0
+      jest: 26.6.3
+      jest-environment-webdriver: 0.2.0_jest@26.6.3
+      jest-fetch-mock: 3.0.3
+      jest-mock-axios: 4.2.1
+      prettier: 2.2.1
+      prop-types: 15.7.2
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
+    specifiers:
+      '@fortawesome/fontawesome-svg-core': 1.2.32
+      '@fortawesome/free-solid-svg-icons': 5.15.1
+      '@fortawesome/react-fontawesome': 0.1.13
+      '@grouparoo/client-web': ^0.1.26-alpha.2
+      '@grouparoo/core': ^0.1.26-alpha.2
+      '@grouparoo/spec-helper': ^0.1.26-alpha.2
+      '@nivo/line': 0.62.0
+      '@types/jest': '*'
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      '@zeit/next-source-maps': 0.0.3
+      axios: 0.21.0
+      bootstrap: 4.5.3
+      date-fns: 2.16.1
+      dotenv: 8.2.0
+      enzyme: 3.11.0
+      enzyme-adapter-react-16: 1.15.5
+      isomorphic-fetch: 3.0.0
+      jest: 26.6.3
+      jest-environment-webdriver: 0.2.0
+      jest-fetch-mock: 3.0.3
+      jest-mock-axios: 4.2.1
+      md5: ^2.3.0
+      moment: 2.29.1
+      next: 10.0.3
+      node-sass: 4.14.1
+      prettier: 2.2.1
+      prop-types: 15.7.2
+      raw-loader: 4.0.2
+      react: 16.14.0
+      react-bootstrap: 1.4.0
+      react-bootstrap-typeahead: 5.1.2
+      react-date-range: 1.1.3
+      react-datepicker: 3.3.0
+      react-dom: 16.14.0
+      react-hook-form: 6.12.1
+      react-markdown: 5.0.3
+      react-moment: 1.0.0
+      stacktrace-js: 2.0.2
+      swagger-ui: 3.37.2
+      ts-jest: 26.4.4
+      type-fest: 0.20.2
       typescript: 4.1.2
 lockfileVersion: 5.2
 packages:
@@ -1376,7 +1389,7 @@ packages:
       duplexify: 4.1.1
       ent: 2.2.0
       extend: 3.0.2
-      google-auth-library: 6.1.2
+      google-auth-library: 6.1.3
       retry-request: 4.1.3
       teeny-request: 7.0.1
     dev: false
@@ -2837,12 +2850,6 @@ packages:
     dev: false
     resolution:
       integrity: sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
-  /@restart/context/2.1.4:
-    dev: false
-    peerDependencies:
-      react: '>=16.3.2'
-    resolution:
-      integrity: sha512-INJYZQJP7g+IoDUh/475NlGiTeMfwTXUEr3tmRneckHIxNolGOW9CTq83S8cxq0CgJwwcMzMJFchxvlwe7Rk8Q==
   /@restart/context/2.1.4_react@16.14.0:
     dependencies:
       react: 16.14.0
@@ -2851,15 +2858,6 @@ packages:
       react: '>=16.3.2'
     resolution:
       integrity: sha512-INJYZQJP7g+IoDUh/475NlGiTeMfwTXUEr3tmRneckHIxNolGOW9CTq83S8cxq0CgJwwcMzMJFchxvlwe7Rk8Q==
-  /@restart/hooks/0.3.25:
-    dependencies:
-      lodash: 4.17.20
-      lodash-es: 4.17.15
-    dev: false
-    peerDependencies:
-      react: ^16.8.0
-    resolution:
-      integrity: sha512-m2v3N5pxTsIiSH74/sb1yW8D9RxkJidGW+5Mfwn/lHb2QzhZNlaU1su7abSyT9EGf0xS/0waLjrf7/XxQHUk7w==
   /@restart/hooks/0.3.25_react@16.14.0:
     dependencies:
       lodash: 4.17.20
@@ -3031,6 +3029,7 @@ packages:
     resolution:
       integrity: sha512-EM/qFeRH8ZCD+TlsaIPULyyFm9vOhFIvgskY2JmHbEsWsOPgN+rtjSXrcHGgJpob4Nu17VfO95FKewr0XY7iOQ==
   /@types/node/14.14.2:
+    dev: false
     resolution:
       integrity: sha512-jeYJU2kl7hL9U5xuI/BhKPZ4vqGM/OmK6whiFAXVhlstzZhVamWhDSmHyGLIp+RVyuF9/d0dqr2P85aFj4BvJg==
   /@types/node/14.14.5:
@@ -3427,12 +3426,9 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-4I7Td01quW/RpocfNayFdFVk1qSuoh0E7JrbRJ16nH01HhKFQ88INq9Sd+nd72zqRySlr9BmDA8xlEJ6vJMrYA==
-  /ah-next-plugin/0.4.0_1ff6080b5532b3e202481883c66f838c:
+  /ah-next-plugin/0.4.0_actionhero@25.0.0-alpha.1:
     dependencies:
       actionhero: 25.0.0-alpha.1
-      next: 10.0.3_97d6dcb83076ab669df2dacde4d88552
-      react: 16.14.0
-      react-dom: 16.14.0_react@16.14.0
     dev: false
     engines:
       node: '>=8.0.0'
@@ -4070,6 +4066,7 @@ packages:
     resolution:
       integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==
   /big.js/6.0.2:
+    deprecated: Strict mode bug fixed in v6.0.3
     dev: false
     resolution:
       integrity: sha512-5PQYFp5ZrznQwD7cNgUHZwpC0gm/Pmh2GiUMSW4KurSXEtjLUVAXnmxYnM2W1X0Dx9JFAcvYJ4IQ+dchanp5VA==
@@ -4319,14 +4316,14 @@ packages:
   /buffer/4.9.2:
     dependencies:
       base64-js: 1.3.1
-      ieee754: 1.1.13
+      ieee754: 1.2.1
       isarray: 1.0.0
     resolution:
       integrity: sha512-xq+q3SRMOxGivLhBNaUdC64hDTQwejJ+H0T/NB1XMtTVEwNTrfFF3gAxiyW0Bu/xWEGhjVKgUcMhCrUy2+uCWg==
   /buffer/5.6.0:
     dependencies:
       base64-js: 1.3.1
-      ieee754: 1.1.13
+      ieee754: 1.2.1
     dev: false
     resolution:
       integrity: sha512-/gDYp/UtU0eA1ys8bOs9J6a+E/KWIY+DZ+Q2WESNUA0jFRsJOc0SNUO6xJ5SGA1xueg3NL65W6s+NY5l9cunuw==
@@ -5450,10 +5447,6 @@ packages:
   /csstype/3.0.4:
     resolution:
       integrity: sha512-xc8DUsCLmjvCfoD7LTGE0ou2MIWLx0K9RCZwSHMOdynqRsP4MtUcLeqh1HcQ2dInwDTqn+3CE0/FZh1et+p4jA==
-  /csv-parse/4.12.0:
-    dev: false
-    resolution:
-      integrity: sha512-wPQl3H79vWLPI8cgKFcQXl0NBgYYEqVnT1i6/So7OjMpsI540oD7p93r3w6fDSyPvwkTepG05F69/7AViX2lXg==
   /csv-parse/4.14.1:
     resolution:
       integrity: sha512-4wmcO7QbWtDAncGFaBwlWFPhEN4Akr64IbM4zvDwEOFekI8blLc04Nw7XjQjtSNy+3AUAgBgtUa9nWo5Cq89Xg==
@@ -5896,7 +5889,7 @@ packages:
       integrity: sha1-44Mx8IRLukm5qctxx3FYWqsbxlo=
   /dom-helpers/5.2.0:
     dependencies:
-      '@babel/runtime': 7.12.1
+      '@babel/runtime': 7.12.5
       csstype: 3.0.4
     dev: false
     resolution:
@@ -5912,7 +5905,6 @@ packages:
     dependencies:
       domelementtype: 2.0.2
       entities: 2.1.0
-    dev: false
     resolution:
       integrity: sha512-2/xPb3ORsQ42nHYiSunXkDjPLBaEj/xTwUO4B7XCZQTRk7EBtTOPaygh10YAAh2OI1Qrp6NWfpAhzswj0ydt9g==
   /dom-serializer/1.0.1:
@@ -5942,7 +5934,6 @@ packages:
     resolution:
       integrity: sha512-BSKB+TSpMpFI/HOxCNr1O8aMOTZ8hT3pM3GQ0w/mWRmkhEDSFJkkyzz4XQsBV44BChwGkrDfMyjVD0eA2aFV3w==
   /domelementtype/2.0.2:
-    dev: false
     resolution:
       integrity: sha512-wFwTwCVebUrMgGeAwRL/NhZtHAUyT9n9yg4IMDwf10+6iCMxSkVq9MGCVEH+QZWo1nNidy8kNvwmv4zWHDTqvA==
   /domexception/2.0.1:
@@ -5981,14 +5972,14 @@ packages:
       integrity: sha512-BsGR4nDLaC5CNBnyT5I+d5pOeaoWvgVeg6Gq/aqmKYWMPR07131u60I80BvExLAJ0FQEIBQ1BTicw+C5+jOyrg==
   /domutils/1.5.1:
     dependencies:
-      dom-serializer: 0.1.1
+      dom-serializer: 0.2.2
       domelementtype: 1.3.1
     dev: true
     resolution:
       integrity: sha1-3NhIiib1Y9YQeeSMn3t+Mjc2gs8=
   /domutils/1.7.0:
     dependencies:
-      dom-serializer: 0.1.1
+      dom-serializer: 0.2.2
       domelementtype: 1.3.1
     dev: true
     resolution:
@@ -6165,7 +6156,6 @@ packages:
     resolution:
       integrity: sha512-f2LZMYl1Fzu7YSBKg+RoROelpOaNrcGmE9AZubeDfrCEia483oW4MI4VyFd5VNHIgQ/7qm1I0wUHK1eJnn2y2w==
   /entities/2.1.0:
-    dev: false
     resolution:
       integrity: sha512-hCx1oky9PFrJ611mf0ifBLBRW8lUUVRlFolb5gWRfIELabBlbp9xZvrqZLZAs+NxFnbfQoeGd8wDkygjg7U85w==
   /env-paths/2.2.0:
@@ -7702,6 +7692,7 @@ packages:
     resolution:
       integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
   /highlight.js/10.3.1:
+    deprecated: Potential vulnerability. Please upgrade to @latest
     resolution:
       integrity: sha512-jeW8rdPdhshYKObedYg5XGbpVgb1/DT4AHvDFXhkU7UnGSIjy9kkJ7zHG7qplhFHMitTSzh5/iClKQk3Kb2RFQ==
   /highlight.js/9.18.3:
@@ -7761,16 +7752,15 @@ packages:
     dev: true
     resolution:
       integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==
-  /html-to-react/1.4.4_4d5f4f9b80a7e562319d25ce52a1f52d:
+  /html-to-react/1.4.4_react@16.14.0:
     dependencies:
       domhandler: 3.3.0
-      htmlparser2: 5.0.0_@types+node@14.14.7
+      htmlparser2: 5.0.0
       lodash.camelcase: 4.3.0
       ramda: 0.27.1
       react: 16.14.0
     dev: false
     peerDependencies:
-      '@types/node': '*'
       react: ^16.0
     resolution:
       integrity: sha512-oE4GYH8c/gvFQwfNHBhg1LpfiPsQRKj0JQmvccvUHqyyF7U1H7UzZ7Z6CyF7okv1QFukyvjH9aAApNa4kYSO9g==
@@ -7794,9 +7784,8 @@ packages:
     dev: false
     resolution:
       integrity: sha512-4zDq1a1zhE4gQso/c5LP1OtrhYTncXNSpvJYtWJBtXAETPlMfi3IFNjGuQbYLuVY4ZR0QMqRVvo4Pdy9KLyP8Q==
-  /htmlparser2/5.0.0_@types+node@14.14.7:
+  /htmlparser2/5.0.0:
     dependencies:
-      '@types/node': 14.14.7
       domelementtype: 2.0.2
       domhandler: 3.3.0
       domutils: 2.4.2
@@ -7975,10 +7964,10 @@ packages:
     resolution:
       integrity: sha512-4aFq7wvWyMHKgxsH8QQtGpvbASCf+eM3wPRLI6R+MgAnTCZ6STYsRvttLvRWK0Nfif5piF394St3HeJDaljGPA==
   /ieee754/1.1.13:
+    dev: false
     resolution:
       integrity: sha512-4vf7I2LYV/HaWerSo3XmlMkp5eZ83i+/CDluXi/IGTs/O1sejBNhTtnxzmRZfvOUqj7lZjqHkeTvpgSFDlWZTg==
   /ieee754/1.2.1:
-    dev: false
     resolution:
       integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==
   /iferr/0.1.5:
@@ -8746,8 +8735,7 @@ packages:
   /isomorphic-fetch/3.0.0:
     dependencies:
       node-fetch: 2.6.1
-      whatwg-fetch: 3.4.1
-    dev: false
+      whatwg-fetch: 3.5.0
     resolution:
       integrity: sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA==
   /isomorphic-form-data/2.0.0:
@@ -9381,7 +9369,7 @@ packages:
       co-prompt: 1.0.0
       coffeescript: 1.12.7
       commander: 2.20.3
-      csv-parse: 4.12.0
+      csv-parse: 4.14.1
       csv-stringify: 1.1.2
       faye: 1.4.0
       inherits: 2.0.4
@@ -11914,7 +11902,7 @@ packages:
       integrity: sha512-CF+TKjXqoqyDwHqBhFQ+3l5t83xYi6fVT1tQNg+Ye0JRLnTxWvIroCjEp1A0k4lneHNBGnICUf0cfYVYGEazqw==
   /parse5/3.0.3:
     dependencies:
-      '@types/node': 14.14.2
+      '@types/node': 14.14.7
     dev: true
     resolution:
       integrity: sha512-rgO9Zg5LLLkfJF9E6CCmXlSE4UVceloys8JrFqCcHloC3usd/kJCyPDwH2SOlzix2j3xaP9sUX3e8+kvkuleAA==
@@ -12449,15 +12437,6 @@ packages:
     dev: true
     resolution:
       integrity: sha512-K+Tk3Kd9V0odiXFP9fwDHUYRyvK3Nun3GVyPapSIs5OBkITAm15W0CPFD/YKTkMUAbc0b9CUwRQp2ybiBIq+eA==
-  /prop-types-extra/1.1.1:
-    dependencies:
-      react-is: 16.13.1
-      warning: 4.0.3
-    dev: false
-    peerDependencies:
-      react: '>=0.14.0'
-    resolution:
-      integrity: sha512-59+AHNnHYCdiC+vMwY52WmvP5dM3QLeoumYuEyceQDi9aEhtwN9zIQ2ZNo25sMyXnbh32h+P1ezDsUpUH3JAew==
   /prop-types-extra/1.1.1_react@16.14.0:
     dependencies:
       react: 16.14.0
@@ -12593,14 +12572,6 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
-  /pupa/2.1.0:
-    dependencies:
-      escape-goat: 2.1.1
-    dev: false
-    engines:
-      node: '>=8'
-    resolution:
-      integrity: sha512-Pj8EhJzFiPwnf4dEXpuUWwH8M/Yl4vpl4cN2RX1i3R77DWvbY5ZPKni7CCKkOYxz+XKt2fieemsV+WTZbIlYzg==
   /pupa/2.1.1:
     dependencies:
       escape-goat: 2.1.1
@@ -12739,7 +12710,7 @@ packages:
       integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==
   /react-bootstrap-typeahead/5.1.2_react-dom@16.14.0+react@16.14.0:
     dependencies:
-      '@babel/runtime': 7.12.1
+      '@babel/runtime': 7.12.5
       '@restart/hooks': 0.3.25_react@16.14.0
       classnames: 2.2.6
       fast-deep-equal: 3.1.3
@@ -12758,35 +12729,9 @@ packages:
       react-dom: '>=16.8.0'
     resolution:
       integrity: sha512-GQ6lRtVkgE5UcQPBgX4foJ/WcRdMgXzi1x1eg9RyXRLF0G3m/TfUJ6+kGkLg+X7U3b1/r+21JurH1OQ2gf1uBg==
-  /react-bootstrap/1.4.0:
-    dependencies:
-      '@babel/runtime': 7.12.1
-      '@restart/context': 2.1.4
-      '@restart/hooks': 0.3.25
-      '@types/classnames': 2.2.10
-      '@types/invariant': 2.2.34
-      '@types/prop-types': 15.7.3
-      '@types/react': 16.9.53
-      '@types/react-transition-group': 4.4.0
-      '@types/warning': 3.0.0
-      classnames: 2.2.6
-      dom-helpers: 5.2.0
-      invariant: 2.2.4
-      prop-types: 15.7.2
-      prop-types-extra: 1.1.1
-      react-overlays: 4.1.0
-      react-transition-group: 4.4.1
-      uncontrollable: 7.1.1
-      warning: 4.0.3
-    dev: false
-    peerDependencies:
-      react: '>=16.8.0'
-      react-dom: '>=16.8.0'
-    resolution:
-      integrity: sha512-0BMzgeUAxH126v7VYDzIXbHxQVHSnniPVKpz9fblumdQpWaiElMnnzk+u8h8DoELX0nCXwPlcUzgXqmpncdc2Q==
   /react-bootstrap/1.4.0_react-dom@16.14.0+react@16.14.0:
     dependencies:
-      '@babel/runtime': 7.12.1
+      '@babel/runtime': 7.12.5
       '@restart/context': 2.1.4_react@16.14.0
       '@restart/hooks': 0.3.25_react@16.14.0
       '@types/classnames': 2.2.10
@@ -12946,12 +12891,12 @@ packages:
       react: 0.14 || 15 || 16
     resolution:
       integrity: sha512-ghb0XInIVkxNW0GM+JULAeaDAjxEcCaKa6kNFPvIVC4FDFYIU24B/+gumCoCvXWuPwcUmkcVL7yZ/WLEcFjebA==
-  /react-markdown/5.0.3_805fb73a4e37c8146142b351347c22d7:
+  /react-markdown/5.0.3_6e8834a71204835dd543aa9883583486:
     dependencies:
       '@types/mdast': 3.0.3
       '@types/react': 16.9.53
       '@types/unist': 2.0.3
-      html-to-react: 1.4.4_4d5f4f9b80a7e562319d25ce52a1f52d
+      html-to-react: 1.4.4_react@16.14.0
       mdast-add-list-metadata: 1.0.1
       prop-types: 15.7.2
       react: 16.14.0
@@ -12962,14 +12907,13 @@ packages:
       xtend: 4.0.2
     dev: false
     peerDependencies:
-      '@types/node': '*'
       '@types/react': '>=16'
       react: '>=16'
     resolution:
       integrity: sha512-jDWOc1AvWn0WahpjW6NK64mtx6cwjM4iSsLHJPNBqoAgGOVoIdJMqaKX4++plhOtdd4JksdqzlDibgPx6B/M2w==
   /react-measure/2.5.2_react-dom@16.14.0+react@16.14.0:
     dependencies:
-      '@babel/runtime': 7.12.1
+      '@babel/runtime': 7.12.5
       get-node-dimensions: 1.2.1
       prop-types: 15.7.2
       react: 16.14.0
@@ -13027,7 +12971,7 @@ packages:
       integrity: sha512-8ltIY3bC7oGhj2nPAvWOGi+xGFybPNhJM0V1H8hY/whNcXgmDeaeoCMPPd8VatrpTsUWjb/vGzrmu6SrXVty3A==
   /react-overlays/2.1.1_react-dom@16.14.0+react@16.14.0:
     dependencies:
-      '@babel/runtime': 7.12.1
+      '@babel/runtime': 7.12.5
       '@restart/hooks': 0.3.25_react@16.14.0
       dom-helpers: 5.2.0
       popper.js: 1.16.1
@@ -13042,25 +12986,9 @@ packages:
       react-dom: '>=16.3.0'
     resolution:
       integrity: sha512-gaQJwmb8Ij2IGVt4D1HmLtl4A0mDVYxlsv/8i0dHWK7Mw0kNat6ORelbbEWzaXTK1TqMeQtJw/jraL3WOADz3w==
-  /react-overlays/4.1.0:
-    dependencies:
-      '@babel/runtime': 7.12.1
-      '@popperjs/core': 2.5.3
-      '@restart/hooks': 0.3.25
-      '@types/warning': 3.0.0
-      dom-helpers: 5.2.0
-      prop-types: 15.7.2
-      uncontrollable: 7.1.1
-      warning: 4.0.3
-    dev: false
-    peerDependencies:
-      react: '>=16.3.0'
-      react-dom: '>=16.3.0'
-    resolution:
-      integrity: sha512-vdRpnKe0ckWOOD9uWdqykLUPHLPndIiUV7XfEKsi5008xiyHCfL8bxsx4LbMrfnxW1LzRthLyfy50XYRFNQqqw==
   /react-overlays/4.1.0_react-dom@16.14.0+react@16.14.0:
     dependencies:
-      '@babel/runtime': 7.12.1
+      '@babel/runtime': 7.12.5
       '@popperjs/core': 2.5.3
       '@restart/hooks': 0.3.25_react@16.14.0
       '@types/warning': 3.0.0
@@ -13078,7 +13006,7 @@ packages:
       integrity: sha512-vdRpnKe0ckWOOD9uWdqykLUPHLPndIiUV7XfEKsi5008xiyHCfL8bxsx4LbMrfnxW1LzRthLyfy50XYRFNQqqw==
   /react-popper/1.3.7_react@16.14.0:
     dependencies:
-      '@babel/runtime': 7.12.1
+      '@babel/runtime': 7.12.5
       create-react-context: 0.3.0_prop-types@15.7.2+react@16.14.0
       deep-equal: 1.1.1
       popper.js: 1.16.1
@@ -13138,21 +13066,9 @@ packages:
       react: ^16.14.0
     resolution:
       integrity: sha512-L8yPjqPE5CZO6rKsKXRO/rVPiaCOy0tQQJbC+UjPNlobl5mad59lvPjwFsQHTvL03caVDIVr9x9/OSgDe6I5Eg==
-  /react-transition-group/4.4.1:
-    dependencies:
-      '@babel/runtime': 7.12.1
-      dom-helpers: 5.2.0
-      loose-envify: 1.4.0
-      prop-types: 15.7.2
-    dev: false
-    peerDependencies:
-      react: '>=16.6.0'
-      react-dom: '>=16.6.0'
-    resolution:
-      integrity: sha512-Djqr7OQ2aPUiYurhPalTrVy9ddmFCCzwhqQmtN+J3+3DzLO209Fdr70QrN8Z3DsglWql6iY1lDWAfpFiBtuKGw==
   /react-transition-group/4.4.1_react-dom@16.14.0+react@16.14.0:
     dependencies:
-      '@babel/runtime': 7.12.1
+      '@babel/runtime': 7.12.5
       dom-helpers: 5.2.0
       loose-envify: 1.4.0
       prop-types: 15.7.2
@@ -13369,7 +13285,7 @@ packages:
       integrity: sha512-ADsDEH2bvbjltXEP+hTIAmeFekTFK0V2BTxMkok6qILyAJEXV0AFfoWcAq4yfll5VdIMd/RVXq0lR+wQi5ZU3Q==
   /recompose/0.30.0_react@16.14.0:
     dependencies:
-      '@babel/runtime': 7.12.1
+      '@babel/runtime': 7.12.5
       change-emitter: 0.1.6
       fbjs: 0.8.17
       hoist-non-react-statics: 2.5.5
@@ -15001,7 +14917,7 @@ packages:
       css.escape: 1.5.1
       deep-extend: 0.6.0
       dompurify: 2.2.2
-      ieee754: 1.1.13
+      ieee754: 1.2.1
       immutable: 3.8.2
       js-file-download: 0.4.12
       js-yaml: 3.14.0
@@ -15735,20 +15651,9 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-5z3T17DXxe2G+6xrCufYxqadUPo=
-  /uncontrollable/7.1.1:
-    dependencies:
-      '@babel/runtime': 7.12.1
-      '@types/react': 16.9.53
-      invariant: 2.2.4
-      react-lifecycles-compat: 3.0.4
-    dev: false
-    peerDependencies:
-      react: '>=15.0.0'
-    resolution:
-      integrity: sha512-EcPYhot3uWTS3w00R32R2+vS8Vr53tttrvMj/yA1uYRhf8hbTG2GyugGqWDY0qIskxn0uTTojVd6wPYW9ZEf8Q==
   /uncontrollable/7.1.1_react@16.14.0:
     dependencies:
-      '@babel/runtime': 7.12.1
+      '@babel/runtime': 7.12.5
       '@types/react': 16.9.53
       invariant: 2.2.4
       react: 16.14.0
@@ -15890,7 +15795,7 @@ packages:
       is-npm: 4.0.0
       is-yarn-global: 0.3.0
       latest-version: 5.1.0
-      pupa: 2.1.0
+      pupa: 2.1.1
       semver-diff: 3.1.1
       xdg-basedir: 4.0.0
     dev: false
@@ -16316,6 +16221,9 @@ packages:
     dev: false
     resolution:
       integrity: sha512-sofZVzE1wKwO+EYPbWfiwzaKovWiZXf4coEzjGP9b2GBVgQRLQUZ2QcuPpQExGDAW5GItpEm6Tl4OU5mywnAoQ==
+  /whatwg-fetch/3.5.0:
+    resolution:
+      integrity: sha512-jXkLtsR42xhXg7akoDKvKWE40eJeI+2KZqcp2h3NsOrRnDvtWX36KcKl30dy+hxECivdk2BVUHVNrPtoMBUx6A==
   /whatwg-mimetype/2.3.0:
     dev: true
     resolution:

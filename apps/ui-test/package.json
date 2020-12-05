@@ -1,0 +1,28 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "@grouparoo/app-ui-test",
+  "description": "The Grouparoo UI Test Application",
+  "version": "0.1.26-alpha.2",
+  "license": "MPL-2.0",
+  "private": true,
+  "engines": {
+    "node": ">=12.0.0 <15.0.0"
+  },
+  "dependencies": {
+    "@grouparoo/core": "^0.1.26-alpha.2",
+    "@grouparoo/ui": "^0.1.26-alpha.2"
+  },
+  "scripts": {
+    "start": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=ui-test ./bin/start",
+    "dev": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=ui-test ./bin/dev",
+    "actionhero": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=ui-test node_modules/.bin/actionhero"
+  },
+  "grouparoo": {
+    "plugins": [
+      "@grouparoo/ui"
+    ],
+    "includedFiles": [
+      "assets"
+    ]
+  }
+}

@@ -11,9 +11,9 @@
   "dependencies": {
     "@grouparoo/bigquery": "^0.1.26-alpha.2",
     "@grouparoo/core": "^0.1.26-alpha.2",
+    "@grouparoo/ui": "^0.1.26-alpha.2",
     "@grouparoo/csv": "^0.1.26-alpha.2",
     "@grouparoo/demo": "^0.1.26-alpha.2",
-    "@grouparoo/email-authentication": "^0.1.26-alpha.2",
     "@grouparoo/files-s3": "^0.1.26-alpha.2",
     "@grouparoo/google-sheets": "^0.1.26-alpha.2",
     "@grouparoo/hubspot": "^0.1.26-alpha.2",
@@ -31,17 +31,15 @@
     "@grouparoo/zendesk": "^0.1.26-alpha.2"
   },
   "scripts": {
-    "prepare": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public npm run prepare",
-    "start": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./api/bin/start",
-    "dev": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./api/bin/dev",
-    "actionhero": "cd node_modules/@grouparoo/core/api && GROUPAROO_MONOREPO_APP=staging-public ../node_modules/.bin/actionhero"
+    "start": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./bin/start",
+    "dev": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./bin/dev",
+    "actionhero": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public node_modules/.bin/actionhero"
   },
   "grouparoo": {
     "plugins": [
       "@grouparoo/bigquery",
       "@grouparoo/csv",
       "@grouparoo/demo",
-      "@grouparoo/email-authentication",
       "@grouparoo/files-s3",
       "@grouparoo/google-sheets",
       "@grouparoo/hubspot",
@@ -55,6 +53,7 @@
       "@grouparoo/sailthru",
       "@grouparoo/salesforce",
       "@grouparoo/snowflake",
+      "@grouparoo/ui",
       "@grouparoo/zendesk"
     ],
     "includedFiles": [

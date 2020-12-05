@@ -1,4 +1,4 @@
-import { Run } from "@grouparoo/core/api/src";
+import { Run } from "@grouparoo/core/src";
 import ScheduleFactory from "./schedule";
 
 const data = async (props = {}) => {
