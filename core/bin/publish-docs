@@ -28,7 +28,7 @@ rm -rf docs
 mkdir docs
 npm run docs
 cp -a docs/. gh-pages/
-cp -a ../../.circleci gh-pages
+cp -a ../.circleci gh-pages
 touch gh-pages/.nojekyll
 echo 'docs.grouparoo.com' >> gh-pages/CNAME
 
