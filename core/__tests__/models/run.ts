@@ -303,7 +303,10 @@ describe("models/run", () => {
       await run.afterBatch("complete");
       await run.reload();
       expect(run.state).toBe("complete");
-      expect(run.error).toBe("error class A (x2)\r\nerror class B (x1)");
+      expect(run.error.split("\r\n").sort()).toEqual([
+        "error class A (x2)",
+        "error class B (x1)",
+      ]);
     });
   });
 
@@ -339,7 +342,10 @@ describe("models/run", () => {
 
       await run.stop();
       expect(run.state).toBe("stopped");
-      expect(run.error).toBe("error class A (x2)\r\nerror class B (x1)");
+      expect(run.error.split("\r\n").sort()).toEqual([
+        "error class A (x2)",
+        "error class B (x1)",
+      ]);
     });
 
     it("a stopped run will remain stopped", async () => {
