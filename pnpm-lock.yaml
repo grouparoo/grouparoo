@@ -32,7 +32,6 @@ importers:
       '@grouparoo/redshift': 'link:../../plugins/@grouparoo/redshift'
       '@grouparoo/sailthru': 'link:../../plugins/@grouparoo/sailthru'
       '@grouparoo/salesforce': 'link:../../plugins/@grouparoo/salesforce'
-      '@grouparoo/sample-ui-plugin': 'link:../../plugins/@grouparoo/sample-ui-plugin'
       '@grouparoo/snowflake': 'link:../../plugins/@grouparoo/snowflake'
       '@grouparoo/ui': 'link:../../ui'
       '@grouparoo/zendesk': 'link:../../plugins/@grouparoo/zendesk'
@@ -53,7 +52,6 @@ importers:
       '@grouparoo/redshift': ^0.2.0-alpha.0
       '@grouparoo/sailthru': ^0.2.0-alpha.0
       '@grouparoo/salesforce': ^0.2.0-alpha.0
-      '@grouparoo/sample-ui-plugin': ^0.2.0-alpha.0
       '@grouparoo/snowflake': ^0.2.0-alpha.0
       '@grouparoo/ui': ^0.2.0-alpha.0
       '@grouparoo/zendesk': ^0.2.0-alpha.0
@@ -686,27 +684,6 @@ importers:
       jest: 26.6.3
       jsforce: ^1.9.3
       nock: 13.0.5
-      prettier: 2.2.1
-      ts-jest: 26.4.4
-      typescript: 4.1.2
-  plugins/@grouparoo/sample-ui-plugin:
-    devDependencies:
-      '@grouparoo/core': 'link:../../../core'
-      '@types/jest': 26.0.15
-      '@types/node': 14.14.7
-      '@types/react': 16.9.53
-      actionhero: 25.0.0-alpha.1
-      jest: 26.6.3
-      prettier: 2.2.1
-      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.2
-      typescript: 4.1.2
-    specifiers:
-      '@grouparoo/core': ^0.2.0-alpha.0
-      '@types/jest': '*'
-      '@types/node': '*'
-      '@types/react': '*'
-      actionhero: 25.0.0-alpha.1
-      jest: 26.6.3
       prettier: 2.2.1
       ts-jest: 26.4.4
       typescript: 4.1.2
@@ -3063,6 +3040,7 @@ packages:
     resolution:
       integrity: sha512-UEyp8LwZ4Dg30kVU2Q3amHHyTn1jEdhCIE59ANed76GaT1Vp76DD3ZWSAxgCrw6wJ0TqeoBpqmfUHiUDPs//HQ==
   /@types/prop-types/15.7.3:
+    dev: false
     resolution:
       integrity: sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
   /@types/react-dom/16.9.10:
@@ -3088,6 +3066,7 @@ packages:
     dependencies:
       '@types/prop-types': 15.7.3
       csstype: 3.0.4
+    dev: false
     resolution:
       integrity: sha512-4nW60Sd4L7+WMXH1D6jCdVftuW7j4Za6zdp6tJ33Rqv0nk1ZAmQKML9ZLD4H0dehA3FZxXR/GM8gXplf82oNGw==
   /@types/stack-utils/2.0.0:
@@ -5445,6 +5424,7 @@ packages:
     resolution:
       integrity: sha512-ul26pfSQTZW8dcOnD2iiJssfXw0gdNVX9IJDH/X3K5DGPfj+fUYe3kB+swUY6BF3oZDxaID3AJt+9/ojSAE05A==
   /csstype/3.0.4:
+    dev: false
     resolution:
       integrity: sha512-xc8DUsCLmjvCfoD7LTGE0ou2MIWLx0K9RCZwSHMOdynqRsP4MtUcLeqh1HcQ2dInwDTqn+3CE0/FZh1et+p4jA==
   /csv-parse/4.14.1:

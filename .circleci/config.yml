@@ -58,7 +58,6 @@ jobs:
             - plugins/@grouparoo/redshift/node_modules
             - plugins/@grouparoo/sailthru/node_modules
             - plugins/@grouparoo/salesforce/node_modules
-            - plugins/@grouparoo/sample-ui-plugin/node_modules
             - plugins/@grouparoo/snowflake/node_modules
             - plugins/@grouparoo/spec-helper/node_modules
             - plugins/@grouparoo/zendesk/node_modules
@@ -86,7 +85,6 @@ jobs:
             - plugins/@grouparoo/redshift/dist
             - plugins/@grouparoo/sailthru/dist
             - plugins/@grouparoo/salesforce/dist
-            - plugins/@grouparoo/sample-ui-plugin/dist
             - plugins/@grouparoo/snowflake/dist
             - plugins/@grouparoo/spec-helper/dist
             - plugins/@grouparoo/zendesk/dist
@@ -926,42 +924,6 @@ jobs:
       - run:
           name: test
           command: cd plugins/@grouparoo/salesforce && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
-  test-plugin-sample-ui-plugin:
-    docker:
-      - image: circleci/node:12
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-      - image: redis:latest
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-      - image: circleci/postgres:9
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-        environment:
-          POSTGRES_PASSWORD: password
-    steps:
-      - checkout
-      - restore_cache:
-          <<: *node-module-cache-options
-      - restore_cache:
-          <<: *dist-cache-options
-      - restore_cache:
-          <<: *core-cache-options
-      - run:
-          name: install postgresql client
-          command: sudo apt install -y postgresql-client
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run:
-          name: create test databases
-          command: cd core && ./bin/create_test_databases
-      - run:
-          name: test
-          command: cd plugins/@grouparoo/sample-ui-plugin && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-snowflake:
     docker:
       - image: circleci/node:12
@@ -1287,11 +1249,6 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-plugin-sample-ui-plugin:
-          filters:
-            <<: *ignored-branches
-          requires:
-            - build
       - test-plugin-snowflake:
           filters:
             <<: *ignored-branches
@@ -1345,7 +1302,6 @@ workflows:
             - test-plugin-redshift
             - test-plugin-sailthru
             - test-plugin-salesforce
-            - test-plugin-sample-ui-plugin
             - test-plugin-snowflake
             - test-plugin-spec-helper
             - test-client-web
@@ -1492,11 +1448,6 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-plugin-sample-ui-plugin:
-          filters:
-            <<: *ignored-branches
-          requires:
-            - build
       - test-plugin-snowflake:
           filters:
             <<: *ignored-branches
@@ -1550,7 +1501,6 @@ workflows:
             - test-plugin-redshift
             - test-plugin-sailthru
             - test-plugin-salesforce
-            - test-plugin-sample-ui-plugin
             - test-plugin-snowflake
             - test-plugin-spec-helper
             - test-client-web

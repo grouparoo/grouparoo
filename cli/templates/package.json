@@ -12,7 +12,6 @@
     "@grouparoo/bigquery": "~~VERSION~~",
     "@grouparoo/core": "~~VERSION~~",
     "@grouparoo/csv": "~~VERSION~~",
-    "@grouparoo/email-authentication": "~~VERSION~~",
     "@grouparoo/google-sheets": "~~VERSION~~",
     "@grouparoo/hubspot": "~~VERSION~~",
     "@grouparoo/logger": "~~VERSION~~",
@@ -34,7 +33,6 @@
     "plugins": [
       "@grouparoo/bigquery",
       "@grouparoo/csv",
-      "@grouparoo/email-authentication",
       "@grouparoo/google-sheets",
       "@grouparoo/hubspot",
       "@grouparoo/logger",
