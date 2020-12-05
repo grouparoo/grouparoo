@@ -117,7 +117,7 @@ export class Group extends LoggedModel<Group> {
   @Default("all")
   @Is("ofValidMatchType", (value) => {
     if (value && !matchTypes.includes(value)) {
-      throw new Error("matchType must be one of: all, any");
+      throw new Error(`matchType must be one of: ${matchTypes.join(",")}`);
     }
   })
   @Column(DataType.ENUM(...matchTypes))
