@@ -225,6 +225,7 @@ export interface ExportProfilesPluginMethod {
 
 export interface ErrorWithProfileGuid extends Error {
   profileGuid: string;
+  errorLevel: "error" | "info";
 }
 
 export interface ConnectionOption extends AppOption {}

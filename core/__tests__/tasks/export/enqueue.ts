@@ -30,7 +30,8 @@ describe("tasks/export:enqueue", () => {
     let pendingExportA: Export,
       pendingExportB: Export,
       completeExport: Export,
-      errorExport: Export;
+      errorExport: Export,
+      infoExport: Export;
 
     beforeEach(async () => {
       run = await helper.factories.run(null, { state: "running" });
@@ -77,6 +78,19 @@ describe("tasks/export:enqueue", () => {
         oldGroups: [],
         startedAt: new Date(),
         errorMessage: "Oh No!",
+        errorLevel: "error",
+      });
+
+      infoExport = await Export.create({
+        profileGuid: profile.guid,
+        destinationGuid: destination.guid,
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        startedAt: new Date(),
+        errorMessage: "Oh No!",
+        errorLevel: "info",
       });
     });
 
@@ -105,6 +119,7 @@ describe("tasks/export:enqueue", () => {
         completeExport.guid
       );
       expect(foundTasks[0].args[0].exportGuids).not.toContain(errorExport.guid);
+      expect(foundTasks[0].args[0].exportGuids).not.toContain(infoExport.guid);
     });
 
     test("batch size is variable", async () => {

@@ -469,9 +469,15 @@ export namespace DestinationOps {
       return { success, retryDelay, error };
     } catch (error) {
       _export.errorMessage = error.toString();
+      if (error.errorLevel) {
+        _export.errorLevel = error.errorLevel;
+      }
       await _export.save();
-      error.message = `error exporting profile ${profile.guid} to destination ${destination.guid}: ${error}`;
-      throw error;
+
+      if (_export.errorLevel !== "info") {
+        error.message = `error exporting profile ${profile.guid} to destination ${destination.guid}: ${error}`;
+        throw error;
+      }
     } finally {
       await app.checkAndUpdateParallelism("decr");
     }
@@ -609,6 +615,9 @@ export namespace DestinationOps {
               if (_error.profileGuid === _export.profileGuid) {
                 // this export had the error
                 _export.errorMessage = error.toString();
+                if (_error.errorLevel) {
+                  _export.errorLevel = error.errorLevel;
+                }
                 await _export.save();
               }
             }
