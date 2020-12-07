@@ -484,7 +484,10 @@ export class Destination extends LoggedModel<Destination> {
   @BeforeDestroy
   static async waitForPendingExports(instance: Destination, { transaction }) {
     const pendingExportCount = await instance.$count("exports", {
-      where: { completedAt: { [Op.eq]: null } },
+      where: {
+        completedAt: { [Op.eq]: null },
+        errorMessage: { [Op.eq]: null },
+      },
       transaction,
     });
     if (pendingExportCount > 0) {
