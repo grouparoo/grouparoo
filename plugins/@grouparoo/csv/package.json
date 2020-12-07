@@ -27,7 +27,7 @@
     "lint": "prettier --check src __tests__"
   },
   "dependencies": {
-    "csv-parser": "2.3.3",
+    "csv-parser": "3.0.0",
     "fs-extra": "9.0.1"
   },
   "peerDependencies": {
