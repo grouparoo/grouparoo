@@ -746,19 +746,28 @@ describe("models/destination", () => {
       const profile1 = await helper.factories.profile();
       await destination.exportProfile(profile1);
       const _export1 = await Export.findOne({
-        where: { destinationGuid: destination.guid },
+        where: {
+          destinationGuid: destination.guid,
+          profileGuid: profile1.guid,
+        },
       });
 
       const profile2 = await helper.factories.profile();
       await destination.exportProfile(profile2);
       const _export2 = await Export.findOne({
-        where: { destinationGuid: destination.guid },
+        where: {
+          destinationGuid: destination.guid,
+          profileGuid: profile2.guid,
+        },
       });
 
       const profile3 = await helper.factories.profile();
       await destination.exportProfile(profile3);
       const _export3 = await Export.findOne({
-        where: { destinationGuid: destination.guid },
+        where: {
+          destinationGuid: destination.guid,
+          profileGuid: profile3.guid,
+        },
       });
 
       const profileError1 = new Error("oh no!");
