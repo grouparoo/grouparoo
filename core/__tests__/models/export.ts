@@ -330,7 +330,7 @@ describe("models/export", () => {
 
     expect(newExport.mostRecent).toBe(false);
 
-    await newExport.markMostRecent();
+    await newExport.completeAndMarkMostRecent();
 
     await _export.reload();
     await newExport.reload();

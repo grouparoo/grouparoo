@@ -150,7 +150,15 @@ export class Export extends Model<Export> {
   @BelongsTo(() => Profile)
   profile: Profile;
 
-  async markMostRecent() {
+  async setError(error: Error) {
+    this.errorMessage = error.toString();
+    if (error["errorLevel"]) {
+      this.errorLevel = error["errorLevel"];
+    }
+    await this.save();
+  }
+
+  async completeAndMarkMostRecent() {
     const [count] = await Export.update(
       { mostRecent: false },
       {
@@ -162,6 +170,7 @@ export class Export extends Model<Export> {
       }
     );
 
+    this.completedAt = new Date();
     this.mostRecent = true;
     await this.save();
 

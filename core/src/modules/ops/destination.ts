@@ -24,6 +24,7 @@ import { ProfilePropertyOps } from "./profileProperty";
 import { destinationTypeConversions } from "../destinationTypeConversions";
 import { GroupMember } from "../../models/GroupMember";
 import { Op } from "sequelize";
+import { PluginConnection } from "../../classes/plugin";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -372,269 +373,311 @@ export namespace DestinationOps {
     const { pluginConnection } = await destination.getPlugin();
 
     if (synchronous) {
-      if (pluginConnection.methods.exportProfiles) {
-        return destination.sendExports([_export], synchronous);
-      } else {
-        return destination.sendExport(_export, synchronous);
-      }
+      return destination.sendExports([_export], synchronous);
     }
   }
 
-  /**
-   * Send an export previously created to the destination
-   */
+  function transformError(
+    error: Error,
+    profileGuid: string
+  ): ErrorWithProfileGuid {
+    if (typeof error === "string") {
+      error = new Error(error);
+    }
+    if (!error) {
+      error = new Error(`unknown export error with profile ${profileGuid}`);
+    }
+    const myError: ErrorWithProfileGuid = <ErrorWithProfileGuid>error;
+    myError.profileGuid = profileGuid;
+    // also can have error.errorLevel on it already
+    return myError;
+  }
+
+  async function getBatchFunction(
+    destination: Destination
+  ): Promise<ExportProfilesPluginMethod> {
+    const { pluginConnection } = await destination.getPlugin();
+    if (pluginConnection.methods.exportProfiles) {
+      return pluginConnection.methods.exportProfiles;
+    }
+
+    const method = pluginConnection.methods.exportProfile;
+    if (!method) {
+      throw new Error(
+        `destination ${destination.name} (${destination.guid}) has no exportProfile or exportProfiles method`
+      );
+    }
+
+    // loop through each one
+    const singleAsBatch: ExportProfilesPluginMethod = async function ({
+      connection,
+      app,
+      appGuid,
+      appOptions,
+      destination,
+      destinationGuid,
+      destinationOptions,
+      exports: _exports,
+    }) {
+      const outErrors: ErrorWithProfileGuid[] = [];
+      let outRetryDelay: number = undefined;
+      let outSuccess = true;
+
+      for (const _export of _exports) {
+        const { profileGuid } = _export;
+        try {
+          let { success, retryDelay, error } = await method({
+            connection,
+            app,
+            appGuid,
+            appOptions,
+            destination,
+            destinationGuid,
+            destinationOptions,
+            export: _export,
+          });
+
+          if (!success || error) {
+            outSuccess = false;
+            outErrors.push(transformError(error, profileGuid));
+          }
+          if (retryDelay) {
+            if (!outRetryDelay || outRetryDelay < retryDelay) {
+              outRetryDelay = retryDelay;
+            }
+          }
+        } catch (err) {
+          outSuccess = false;
+          outErrors.push(transformError(err, profileGuid));
+        }
+      }
+
+      return {
+        errors: outErrors.length === 0 ? undefined : outErrors,
+        retryDelay: outRetryDelay,
+        success: outSuccess,
+      };
+    };
+    return singleAsBatch;
+  }
+
+  async function buildExportedProfiles(
+    destination: Destination,
+    _exports: Export[]
+  ): Promise<ExportedProfile[]> {
+    const exportedProfiles: ExportedProfile[] = [];
+    for (const _export of _exports) {
+      const profile = await _export.$get("profile"); // PEFORMANCE: get all profiles at once
+      exportedProfiles.push({
+        profile,
+        profileGuid: profile.guid,
+        oldProfileProperties: await formatProfilePropertiesForDestination(
+          _export,
+          destination,
+          "oldProfileProperties"
+        ),
+        newProfileProperties: await formatProfilePropertiesForDestination(
+          _export,
+          destination,
+          "newProfileProperties"
+        ),
+        oldGroups: _export.oldGroups,
+        newGroups: _export.newGroups,
+        toDelete: _export.toDelete,
+      });
+    }
+    return exportedProfiles;
+  }
+
+  export interface CombinedError extends Error {
+    errors?: ErrorWithProfileGuid[];
+  }
+
+  export async function sendExports(
+    destination: Destination,
+    givenExports: Export[],
+    synchronous = false
+  ): Promise<{
+    retryDelay: number;
+    retryExportGuids: string[];
+    success: boolean;
+    error: Error;
+  }> {
+    const _exports: Export[] = []; // only ones we are sending
+    for (const _export of givenExports) {
+      // TODO: maybe should recalcuate hasChanges and from current mostRecent
+      if (!_export.hasChanges) {
+        // do not include exports with hasChanges=false
+        await _export.completeAndMarkMostRecent();
+        continue;
+      }
+      _exports.push(_export);
+    }
+
+    const exportProfiles: ExportProfilesPluginMethod = await getBatchFunction(
+      destination
+    );
+
+    const options = await destination.getOptions();
+    const app = await destination.$get("app");
+    const appOptions = await app.getOptions();
+    const connection = await app.getConnection();
+
+    // check if parallelism ok
+    const parallelismOk = await app.checkAndUpdateParallelism("incr");
+    if (!parallelismOk) {
+      const error = new Error(`parallelism limit reached for ${app.type}`);
+      if (synchronous) {
+        throw error;
+      }
+      return {
+        success: false,
+        error,
+        retryDelay: config.tasks.timeout + 1,
+        retryExportGuids: _exports.map((e) => e.guid),
+      };
+    }
+
+    let combinedError: CombinedError = null;
+    let outRetryDelay: number = undefined;
+    let outSuccess = false;
+
+    try {
+      const exportedProfiles = await buildExportedProfiles(
+        destination,
+        _exports
+      );
+
+      let { success, retryDelay, errors } = await exportProfiles({
+        connection,
+        app,
+        appGuid: app.guid,
+        appOptions,
+        destination,
+        destinationGuid: destination.guid,
+        destinationOptions: options,
+        exports: exportedProfiles,
+      });
+
+      combinedError = new Error(
+        `error exporting ${
+          errors ? errors.length : "?"
+        } profiles to destination ${destination.name} (${destination.guid}): ${
+          errors ? errors.map((e) => e.message).join(", ") : ""
+        }`
+      );
+      combinedError.errors = errors || [];
+      outRetryDelay = retryDelay;
+      outSuccess = success && combinedError.errors.length === 0;
+    } catch (error) {
+      combinedError = error;
+    } finally {
+      await app.checkAndUpdateParallelism("decr");
+    }
+
+    if (outSuccess) {
+      // they were all correct!
+      for (const _export of _exports) {
+        await _export.completeAndMarkMostRecent();
+      }
+      return {
+        success: true,
+        error: undefined,
+        retryExportGuids: undefined,
+        retryDelay: undefined,
+      };
+    }
+
+    // problem!
+    if (!combinedError.errors || combinedError.errors.length === 0) {
+      // unspecified error, so don't know specific profile with issue.
+      const retryExportGuids: string[] = [];
+      for (const _export of _exports) {
+        await _export.setError(combinedError);
+        retryExportGuids.push(_export.guid);
+      }
+      if (synchronous) {
+        // caller wants to raise
+        throw combinedError;
+      }
+      return {
+        success: false,
+        error: combinedError,
+        retryExportGuids,
+        retryDelay: outRetryDelay,
+      };
+    }
+
+    // known specific profiles where there were errors
+    const profilesWithErrors: { [guid: string]: ErrorWithProfileGuid } = {};
+    for (const errorWithGuid of combinedError.errors) {
+      const profileGuid = errorWithGuid.profileGuid;
+      if (!profileGuid) {
+        throw new Error(
+          `Errors returned without profileGuid - throw if unknown (${destination.guid})`
+        );
+      }
+      profilesWithErrors[profileGuid] = errorWithGuid;
+    }
+
+    const remainingProfilesWithErrors = Object.assign({}, profilesWithErrors);
+
+    const retryExportGuids: string[] = [];
+    for (const _export of _exports) {
+      const { profileGuid } = _export;
+      const errorWithGuid = profilesWithErrors[profileGuid];
+      if (errorWithGuid) {
+        await _export.setError(errorWithGuid);
+        delete remainingProfilesWithErrors[profileGuid]; // used
+
+        // "info" means that it's actually ok. for example, skipped.
+        // we don't need to retry it.
+        if (_export.errorLevel != "info") {
+          retryExportGuids.push(_export.guid);
+        }
+      } else {
+        // this one was a success!
+        await _export.completeAndMarkMostRecent();
+      }
+    }
+
+    const profilesNotUsed = Object.keys(remainingProfilesWithErrors);
+    if (profilesNotUsed.length > 0) {
+      throw new Error(
+        `Invalid ErrorWithProfileGuid given but not used (${
+          destination.guid
+        }): ${profilesNotUsed.join(",")}`
+      );
+    }
+
+    // because of the "info" errorLevel, it's actually possible that everything is ok again
+    if (retryExportGuids.length === 0) {
+      return {
+        success: true,
+        error: undefined,
+        retryExportGuids: undefined,
+        retryDelay: undefined,
+      };
+    }
+
+    if (synchronous) {
+      // caller wants to raise
+      throw combinedError;
+    }
+    return {
+      success: false,
+      error: combinedError,
+      retryExportGuids,
+      retryDelay: outRetryDelay,
+    };
+  }
+
   export async function sendExport(
     destination: Destination,
     _export: Export,
     synchronous = false
   ) {
-    const options = await destination.getOptions();
-    const app = await destination.$get("app");
-    const appOptions = await app.getOptions();
-    const connection = await app.getConnection();
-    const profile = await _export.$get("profile");
-
-    if (!_export.hasChanges) {
-      await _export.update({ completedAt: new Date() });
-      await _export.markMostRecent();
-      return;
-    }
-
-    let method: ExportProfilePluginMethod;
-    const { pluginConnection } = await destination.getPlugin();
-    method = pluginConnection.methods.exportProfile;
-    if (!method) {
-      throw new Error(
-        `destination ${destination.name} (${destination.guid}) has no exportProfile method`
-      );
-    }
-
-    const parallelismOk = await checkSendExportParallelism(
-      app,
-      destination,
-      "export:send",
-      {
-        destinationGuid: destination.guid,
-        exportGuid: _export.guid,
-      },
-      synchronous
-    );
-    if (!parallelismOk) return;
-
-    try {
-      const { success, retryDelay, error } = await method({
-        connection,
-        app,
-        appGuid: app.guid,
-        appOptions,
-        destination,
-        destinationGuid: destination.guid,
-        destinationOptions: options,
-        export: {
-          profile,
-          profileGuid: profile.guid,
-          oldProfileProperties: await formatProfilePropertiesForDestination(
-            _export,
-            destination,
-            "oldProfileProperties"
-          ),
-          newProfileProperties: await formatProfilePropertiesForDestination(
-            _export,
-            destination,
-            "newProfileProperties"
-          ),
-          oldGroups: _export.oldGroups,
-          newGroups: _export.newGroups,
-          toDelete: _export.toDelete,
-        },
-      });
-
-      if (!success && retryDelay && !synchronous) {
-        return task.enqueueIn(
-          retryDelay,
-          "export:send",
-          {
-            destinationGuid: destination.guid,
-            exportGuid: _export.guid,
-          },
-          `exports:${app.type}`
-        );
-      }
-
-      if (!success && retryDelay && synchronous) throw error;
-
-      await _export.update({ completedAt: new Date() });
-      await _export.markMostRecent();
-
-      return { success, retryDelay, error };
-    } catch (error) {
-      _export.errorMessage = error.toString();
-      if (error.errorLevel) {
-        _export.errorLevel = error.errorLevel;
-      }
-      await _export.save();
-
-      if (_export.errorLevel !== "info") {
-        error.message = `error exporting profile ${profile.guid} to destination ${destination.guid}: ${error}`;
-        throw error;
-      }
-    } finally {
-      await app.checkAndUpdateParallelism("decr");
-    }
-  }
-
-  /**
-   * Send all pending exports previously created to the destination in a batch.
-   * Batch size is handled by the task export:sendBatch.
-   */
-  export async function sendExports(
-    destination: Destination,
-    _exports: Export[],
-    synchronous = false
-  ) {
-    const destinationExports: ExportedProfile[] = [];
-
-    let method: ExportProfilesPluginMethod;
-    const { pluginConnection } = await destination.getPlugin();
-    method = pluginConnection.methods.exportProfiles;
-    if (!method) {
-      throw new Error(
-        `destination ${destination.name} (${destination.guid}) has no exportProfiles method`
-      );
-    }
-
-    const options = await destination.getOptions();
-    const app = await destination.$get("app");
-    const appOptions = await app.getOptions();
-    const connection = await app.getConnection();
-
-    const parallelismOk = await checkSendExportParallelism(
-      app,
-      destination,
-      "export:sendBatch",
-      {
-        destinationGuid: destination.guid,
-        exportGuids: _exports.map((e) => e.guid),
-      },
-      synchronous
-    );
-    if (!parallelismOk) return;
-
-    try {
-      for (const i in _exports) {
-        const _export = _exports[i];
-
-        // do not include exports with hasChanges=false
-        if (!_export.hasChanges) {
-          await _export.update({ completedAt: new Date() });
-          await _export.markMostRecent();
-        } else {
-          const profile = await _export.$get("profile");
-          destinationExports.push({
-            profile,
-            profileGuid: profile.guid,
-            oldProfileProperties: await formatProfilePropertiesForDestination(
-              _export,
-              destination,
-              "oldProfileProperties"
-            ),
-            newProfileProperties: await formatProfilePropertiesForDestination(
-              _export,
-              destination,
-              "newProfileProperties"
-            ),
-            oldGroups: _export.oldGroups,
-            newGroups: _export.newGroups,
-            toDelete: _export.toDelete,
-          });
-        }
-      }
-
-      const { success, retryDelay, errors } = await method({
-        connection,
-        app,
-        appGuid: app.guid,
-        appOptions,
-        destination,
-        destinationGuid: destination.guid,
-        destinationOptions: options,
-        exports: destinationExports,
-      });
-
-      if (!success && retryDelay && !synchronous) {
-        return task.enqueueIn(
-          retryDelay,
-          "export:sendBatch",
-          {
-            destinationGuid: destination.guid,
-            exportGuids: _exports.map((e) => e.guid),
-          },
-          `exports:${app.type}`
-        );
-      }
-
-      const combinedError = new Error(
-        `error exporting a batch of ${
-          errors ? errors.length : ""
-        } profiles to destination ${destination.name} (${destination.guid}): ${
-          errors ? errors.map((e) => e.message).join(", ") : ""
-        }`
-      );
-      combinedError["errors"] = errors;
-
-      if (!success && retryDelay && synchronous) {
-        throw combinedError;
-      }
-
-      if (errors && errors.length > 0) throw combinedError;
-
-      for (const i in _exports) {
-        const _export = _exports[i];
-        await _export.update({ completedAt: new Date() });
-        await _export.markMostRecent();
-      }
-
-      return { success, retryDelay, errors };
-    } catch (error) {
-      // error might have an array of errors which correspond to specific profiles, or it may be generic
-      if (error.errors) {
-        const profileWithErrors: string[] = error.errors.map(
-          (e) => e.profileGuid
-        );
-
-        for (const i in _exports) {
-          const _export = _exports[i];
-
-          if (!profileWithErrors.includes(_export.profileGuid)) {
-            // this export was OK
-            await _export.update({ completedAt: new Date() });
-            await _export.markMostRecent();
-          } else {
-            for (const j in error.errors) {
-              const _error: ErrorWithProfileGuid = error.errors[j];
-              if (_error.profileGuid === _export.profileGuid) {
-                // this export had the error
-                _export.errorMessage = error.toString();
-                if (_error.errorLevel) {
-                  _export.errorLevel = error.errorLevel;
-                }
-                await _export.save();
-              }
-            }
-          }
-        }
-      } else {
-        for (const i in _exports) {
-          const _export = _exports[i];
-          _export.errorMessage = error.toString();
-          await _export.save();
-        }
-      }
-
-      throw error;
-    } finally {
-      await app.checkAndUpdateParallelism("decr");
-    }
+    return sendExports(destination, [_export], synchronous);
   }
 
   async function formatProfilePropertiesForDestination(
@@ -703,33 +746,6 @@ export namespace DestinationOps {
       throw new Error(
         `cannot export grouparoo type ${grouparooType} to destination type ${destinationType}`
       );
-    }
-  }
-
-  async function checkSendExportParallelism(
-    app: App,
-    destination: Destination,
-    taskName: string,
-    taskArgs: { [key: string]: any },
-    synchronous: boolean
-  ) {
-    const open = await app.checkAndUpdateParallelism("incr");
-    if (!open) {
-      const message = `parallelism limit reached for ${app.type}`;
-      if (synchronous) {
-        throw new Error(message);
-      } else {
-        log(message + ", re-enqueuing export ${_export.guid}");
-        await task.enqueueIn(
-          config.tasks.timeout + 1,
-          taskName,
-          taskArgs,
-          `exports:${app.type}`
-        );
-        return false;
-      }
-    } else {
-      return true;
     }
   }
 }

@@ -42,6 +42,7 @@ describe("models/destination", () => {
       error: undefined,
       retryDelay: undefined,
     };
+    let exportProfileThrow = null;
 
     beforeAll(async () => {
       plugin.registerPlugin({
@@ -114,6 +115,9 @@ describe("models/destination", () => {
                   newGroups,
                   toDelete,
                 };
+                if (exportProfileThrow) {
+                  throw exportProfileThrow;
+                }
                 return exportProfileResponse;
               },
             },
@@ -638,7 +642,11 @@ describe("models/destination", () => {
       foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
       expect(foundSendTasks.length).toBe(1 + 1);
       expect(foundSendTasks[1].timestamp).toBeGreaterThan(new Date().getTime());
+
       await _export.reload();
+      expect(_export.completedAt).toBeFalsy();
+      expect(_export.errorMessage).toMatch(/oh no!/);
+      expect(_export.errorLevel).toBe("error");
       expect(_export.completedAt).toBeFalsy();
 
       // when the response is back to success
@@ -653,6 +661,106 @@ describe("models/destination", () => {
       expect(foundSendTasks.length).toBe(1 + 1);
       await _export.reload();
       expect(_export.completedAt).toBeTruthy();
+    });
+
+    test("export:send task will be re-enqueued on profile id error", async () => {
+      const group = await helper.factories.group();
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[group.guid] = group.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      const profile = await helper.factories.profile();
+      const error = new Error("oh no!");
+      error["profileGuid"] = profile.guid;
+      exportProfileResponse = {
+        success: false,
+        error,
+        retryDelay: 1000,
+      };
+
+      await destination.exportProfile(profile);
+      const _export = await Export.findOne({
+        where: { destinationGuid: destination.guid },
+      });
+
+      await specHelper.runTask("export:enqueue", {});
+
+      let foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundSendTasks.length).toBe(1);
+
+      // the task should be re-enqueued with no error
+      await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
+      foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundSendTasks.length).toBe(1 + 1);
+      expect(foundSendTasks[1].timestamp).toBeGreaterThan(new Date().getTime());
+
+      await _export.reload();
+      expect(_export.completedAt).toBeFalsy();
+      expect(_export.errorMessage).toMatch(/oh no!/);
+      expect(_export.errorLevel).toBe("error");
+      expect(_export.completedAt).toBeFalsy();
+
+      // when the response is back to success
+      exportProfileResponse = {
+        success: true,
+        error: undefined,
+        retryDelay: undefined,
+      };
+
+      await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
+      foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundSendTasks.length).toBe(1 + 1);
+      await _export.reload();
+      expect(_export.completedAt).toBeTruthy();
+    });
+
+    test("export:send task will not be re-enqueued on info error", async () => {
+      const group = await helper.factories.group();
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[group.guid] = group.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      const profile = await helper.factories.profile();
+      const error = new Error("oh no!");
+      error["profileGuid"] = profile.guid;
+      error["errorLevel"] = "info";
+      exportProfileResponse = {
+        success: false,
+        error,
+        retryDelay: 1000,
+      };
+
+      await destination.exportProfile(profile);
+      const _export = await Export.findOne({
+        where: { destinationGuid: destination.guid },
+      });
+
+      await specHelper.runTask("export:enqueue", {});
+
+      let foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundSendTasks.length).toBe(1);
+
+      // the task should be re-enqueued with no error
+      await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
+      foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundSendTasks.length).toBe(1 + 0); // nothing new
+
+      await _export.reload();
+      expect(_export.completedAt).toBeFalsy();
+      expect(_export.errorMessage).toMatch(/oh no!/);
+      expect(_export.errorLevel).toBe("info");
+      expect(_export.completedAt).toBeFalsy();
+
+      // later, the response is back to success
+      exportProfileResponse = {
+        success: true,
+        error: undefined,
+        retryDelay: undefined,
+      };
     });
 
     test("sending an export with sync and producing a retry error will throw", async () => {
@@ -671,7 +779,7 @@ describe("models/destination", () => {
 
       const profile = await helper.factories.profile();
       await expect(destination.exportProfile(profile, true)).rejects.toThrow(
-        /Error: oh no!/
+        /: oh no!/
       );
 
       await Export.truncate();
@@ -680,6 +788,89 @@ describe("models/destination", () => {
         error: undefined,
         retryDelay: undefined,
       };
+    });
+
+    test("sending an export with sync and throwing an error will throw", async () => {
+      const group = await helper.factories.group();
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[group.guid] = group.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      const profile = await helper.factories.profile();
+
+      exportProfileThrow = new Error("oh no!");
+      await expect(destination.exportProfile(profile, true)).rejects.toThrow(
+        /: oh no!/
+      );
+      exportProfileThrow = null;
+
+      const newExport = await Export.findOne({
+        where: { profileGuid: profile.guid, destinationGuid: destination.guid },
+      });
+      expect(newExport.errorMessage).toMatch(/oh no!/);
+      expect(newExport.errorLevel).toBe("error");
+      expect(newExport.completedAt).toBeFalsy();
+
+      await Export.truncate();
+    });
+
+    test("sending an export and throwing an error with profile id will record it", async () => {
+      const group = await helper.factories.group();
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[group.guid] = group.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      const profile = await helper.factories.profile();
+
+      exportProfileThrow = new Error("oh no!");
+      exportProfileThrow["profileGuid"] = profile.guid;
+
+      await expect(destination.exportProfile(profile, true)).rejects.toThrow(
+        /: oh no!/
+      );
+      exportProfileThrow = null;
+
+      const newExport = await Export.findOne({
+        where: { profileGuid: profile.guid, destinationGuid: destination.guid },
+      });
+      expect(newExport.errorMessage).toMatch(/oh no!/);
+      expect(newExport.errorLevel).toBe("error");
+      expect(newExport.completedAt).toBeFalsy();
+
+      await Export.truncate();
+      exportProfileThrow = null;
+    });
+
+    test("sending an export and throwing an error with info level will record it and have success", async () => {
+      const group = await helper.factories.group();
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[group.guid] = group.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      const profile = await helper.factories.profile();
+
+      exportProfileThrow = new Error("oh no!");
+      exportProfileThrow["profileGuid"] = profile.guid;
+      exportProfileThrow["errorLevel"] = "info";
+
+      await destination.exportProfile(profile, true);
+      exportProfileThrow = null;
+
+      const newExport = await Export.findOne({
+        where: { profileGuid: profile.guid, destinationGuid: destination.guid },
+      });
+      expect(newExport.errorMessage).toMatch(/oh no!/);
+      expect(newExport.errorLevel).toBe("info");
+      expect(newExport.completedAt).toBeFalsy();
+
+      await Export.truncate();
+      exportProfileThrow = null;
     });
 
     describe("deletion validations with pending exports", () => {
