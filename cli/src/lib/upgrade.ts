@@ -1,16 +1,11 @@
-import fs from "fs-extra";
 import ncu from "npm-check-updates";
 import SpawnCommand from "../utils/spawnCommand";
 import { buildLogger } from "../utils/logger";
+import { ensurePath } from "../utils/ensurePath";
 
 export default async function Generate(workDir: string = process.cwd()) {
   const logger = buildLogger("Upgrading Grouparoo Project");
-  logger.info(`path: ${workDir}`);
-
-  if (!fs.existsSync(workDir)) {
-    logger.fail(`${workDir} does not exist`);
-    process.exit(1);
-  }
+  ensurePath(workDir, logger);
 
   logger.info("Upgrading dependencies...");
 

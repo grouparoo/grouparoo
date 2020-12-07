@@ -1,9 +1,17 @@
 import fs from "fs-extra";
 import path from "path";
 import SpawnCommand from "../utils/spawnCommand";
+import { Templates } from "../utils/templates";
 import { buildLogger } from "../utils/logger";
 
-export default async function Generate(workDir: string = process.cwd()) {
+export default async function Generate(
+  workDir: string = process.cwd(),
+  program
+) {
+  const opts: {
+    force: boolean;
+  } = program.opts();
+
   const logger = buildLogger("Generating new Grouparoo Project");
   logger.info(`path: ${workDir}`);
 
@@ -13,17 +21,23 @@ export default async function Generate(workDir: string = process.cwd()) {
   }
 
   const packageJson = path.join(workDir, "package.json");
-  if (!fs.existsSync(packageJson)) {
-    fs.copyFileSync(getTemplatePath("package.json"), packageJson);
-    injectVersion(packageJson);
+  if (!fs.existsSync(packageJson) || opts.force) {
+    const localPackageJSONContents = JSON.parse(
+      fs
+        .readFileSync(path.join(__dirname, "..", "..", "package.json"))
+        .toString()
+    );
+    const replacements = { version: localPackageJSONContents.version };
+    fs.copyFileSync(Templates.getTemplatePath("package.json"), packageJson);
+    Templates.replacePlaceholders(packageJson, replacements);
     logger.succeed("Created package.json");
   } else {
     logger.warn("package.json already exists, not modifying");
   }
 
   const envFile = path.join(workDir, ".env");
-  if (!fs.existsSync(envFile)) {
-    fs.copyFileSync(getTemplatePath(".env"), envFile);
+  if (!fs.existsSync(envFile) || opts.force) {
+    fs.copyFileSync(Templates.getTemplatePath(".env"), envFile);
     logger.succeed("Created .env");
     logger.warn(
       "Please check the options in .env to ensure that they pertain to your environment"
@@ -50,18 +64,4 @@ export default async function Generate(workDir: string = process.cwd()) {
       workDir !== process.cwd() ? `Navigate to ${workDir} and ` : ""
     }type "npm start" to start the Grouparoo application.`
   );
-}
-
-function getTemplatePath(filename: string) {
-  return path.join(__dirname, "..", "..", "templates", filename);
-}
-
-function injectVersion(filename: string) {
-  const localPackageJSONContents = JSON.parse(
-    fs.readFileSync(path.join(__dirname, "..", "..", "package.json")).toString()
-  );
-  const version = localPackageJSONContents.version;
-  const contents = fs.readFileSync(filename).toString();
-  const updatedContents = contents.replace(/~~VERSION~~/g, version);
-  fs.writeFileSync(filename, updatedContents);
 }
