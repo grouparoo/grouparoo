@@ -35,7 +35,8 @@ export interface ExportProfilePropertiesWithType {
   [key: string]: { type: string; rawValue: string | string[] };
 }
 
-const errorLevels = ["error", "info"] as const;
+const ERROR_LEVELS = ["error", "info"] as const;
+export type ExportErrorLevel = typeof ERROR_LEVELS[number];
 
 @Table({ tableName: "exports", paranoid: false })
 export class Export extends Model<Export> {
@@ -77,13 +78,12 @@ export class Export extends Model<Export> {
   errorMessage: string;
 
   @Is("ofValidErrorLevel", (value) => {
-    if (value && !errorLevels.includes(value)) {
-      console.log("here2");
-      throw new Error(`errorLevel must be one of: ${errorLevels.join(",")}`);
+    if (value && !ERROR_LEVELS.includes(value)) {
+      throw new Error(`errorLevel must be one of: ${ERROR_LEVELS.join(",")}`);
     }
   })
-  @Column
-  errorLevel: string;
+  @Column(DataType.ENUM(...ERROR_LEVELS))
+  errorLevel: ExportErrorLevel;
 
   @Column(DataType.TEXT)
   get oldProfileProperties(): ExportProfileProperties {
