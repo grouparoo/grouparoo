@@ -155,6 +155,9 @@ export class Export extends Model<Export> {
     if (error["errorLevel"]) {
       this.errorLevel = error["errorLevel"];
     }
+    // QUESTION: are we sure this shouldn't be complete?
+    // for example, how do we really know what is still pending if these are still retrying?
+    // there would have to be some other way to mark it an error or something
     await this.save();
   }
 
@@ -170,6 +173,7 @@ export class Export extends Model<Export> {
       }
     );
 
+    // QUESTION: should this clear the error and level?
     this.completedAt = new Date();
     this.mostRecent = true;
     await this.save();
