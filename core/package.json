@@ -73,7 +73,7 @@
     "uuid": "8.3.1",
     "validator": "13.5.1",
     "winston": "3.3.3",
-    "ws": "7.4.0"
+    "ws": "7.4.1"
   },
   "devDependencies": {
     "@grouparoo/spec-helper": "^0.2.0-alpha.0",
