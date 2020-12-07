@@ -5,7 +5,7 @@ import Ora from "ora";
 
 import Generate from "./lib/generate";
 import Upgrade from "./lib/upgrade";
-import Scaffold from "./lib/scaffold";
+// import Scaffold from "./lib/scaffold";
 
 const Package = require("../package.json");
 
