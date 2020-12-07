@@ -1,49 +1,51 @@
 import fs from "fs-extra";
 import path from "path";
-import SpawnCommand from "./spawnCommand";
-import Logger from "./logger";
+import SpawnCommand from "../utils/spawnCommand";
+import { buildLogger } from "../utils/logger";
 
 export default async function Generate(workDir: string = process.cwd()) {
-  const log = new Logger();
-
-  log.headline("Generating new Grouparoo Project");
-  log.debug(`path: ${workDir}`);
+  const logger = buildLogger("Generating new Grouparoo Project");
+  logger.info(`path: ${workDir}`);
 
   if (!fs.existsSync(workDir)) {
-    log.info(`${workDir} does not exist, creating`);
     fs.mkdirpSync(workDir);
+    logger.succeed(`Created ${workDir}`);
   }
 
   const packageJson = path.join(workDir, "package.json");
   if (!fs.existsSync(packageJson)) {
-    log.info("Creating package.json");
     fs.copyFileSync(getTemplatePath("package.json"), packageJson);
     injectVersion(packageJson);
+    logger.succeed("Created package.json");
   } else {
-    log.warn("package.json already exists, not modifying");
+    logger.warn("package.json already exists, not modifying");
   }
 
   const envFile = path.join(workDir, ".env");
   if (!fs.existsSync(envFile)) {
-    log.info("Creating .env");
     fs.copyFileSync(getTemplatePath(".env"), envFile);
-    log.warn(
+    logger.succeed("Created .env");
+    logger.warn(
       "Please check the options in .env to ensure that they pertain to your environment"
     );
   } else {
-    log.warn(".env already exists, not modifying");
+    logger.warn(".env already exists, not modifying");
   }
 
-  log.info("");
-  log.info("Installing dependencies...");
-  log.info("");
-  await SpawnCommand("npm", ["install"], workDir, log, " >     ");
+  await SpawnCommand(
+    "npm",
+    ["install"],
+    workDir,
+    logger,
+    "Installing dependencies",
+    "Dependencies Installed"
+  );
 
-  log.success("Grouparoo project created!");
-  log.info(
+  logger.succeed("Grouparoo project created!");
+  console.log(
     "- Ensure that Postgres and Redis are running according to the values in .env or your environment"
   );
-  log.info(
+  console.log(
     `- ${
       workDir !== process.cwd() ? `Navigate to ${workDir} and ` : ""
     }type "npm start" to start the Grouparoo application.`

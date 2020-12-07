@@ -1,20 +1,18 @@
 import fs from "fs-extra";
 import ncu from "npm-check-updates";
-import SpawnCommand from "./spawnCommand";
-import Logger from "./logger";
+import SpawnCommand from "../utils/spawnCommand";
+import { buildLogger } from "../utils/logger";
 
 export default async function Generate(workDir: string = process.cwd()) {
-  const log = new Logger();
-
-  log.headline("Upgrading Grouparoo Project");
-  log.debug(`path: ${workDir}`);
+  const logger = buildLogger("Upgrading Grouparoo Project");
+  logger.info(`path: ${workDir}`);
 
   if (!fs.existsSync(workDir)) {
-    log.error(`${workDir} does not exist`);
+    logger.fail(`${workDir} does not exist`);
     process.exit(1);
   }
 
-  log.info("Upgrading dependencies...");
+  logger.info("Upgrading dependencies...");
 
   const upgraded = await ncu.run({
     cwd: workDir,
@@ -27,15 +25,22 @@ export default async function Generate(workDir: string = process.cwd()) {
   const upgradedPackages = Object.keys(upgraded);
 
   if (upgradedPackages.length === 0) {
-    log.success("Everything up to date!");
+    logger.succeed("Everything up to date!");
     return;
   }
 
   upgradedPackages.forEach((p) => {
-    log.success(`Updated ${p} to version ${upgraded[p]}`);
+    logger.succeed(`Updated ${p} to version ${upgraded[p]}`);
   });
 
-  log.info("Installing dependencies...");
-  await SpawnCommand("npm", ["install"], workDir, log);
-  log.success("Grouparoo project updated!");
+  await SpawnCommand(
+    "npm",
+    ["install"],
+    workDir,
+    logger,
+    "Installing dependencies",
+    "Dependencies Updated"
+  );
+
+  logger.succeed("Grouparoo project updated!");
 }
