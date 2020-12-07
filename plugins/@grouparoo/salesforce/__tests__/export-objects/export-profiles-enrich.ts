@@ -126,8 +126,13 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
       ],
     });
 
-    expect(errors).toBeNull();
+    expect(errors).not.toBeNull();
     expect(success).toBe(true);
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid1);
+    expect(error.message).toContain("not creating");
+    expect(error.errorLevel).toEqual("info");
 
     userId1 = await findId(email1);
     expect(userId1).toBe(null);
@@ -229,20 +234,24 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
       ],
     });
 
+    expect(errors).not.toBeNull();
+    expect(success).toBe(true);
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid2);
+    expect(error.message).toContain("not creating");
+    expect(error.errorLevel).toEqual("info");
+
     accountId2 = await findReferenceId(account2);
     expect(accountId2).toBeTruthy();
 
     let user;
-    expect(errors).toBeNull();
-    expect(success).toBe(true);
     user = await getUser(userId1);
     expect(user.Email).toBe(email1);
     expect(user.FirstName).toBe("John");
     expect(user.LastName).toBe("Jones");
     expect(user.AccountId).toEqual(accountId2);
 
-    expect(errors).toBeNull();
-    expect(success).toBe(true);
     userId2 = await findId(email2);
     expect(userId2).toBe(null);
 
@@ -339,8 +348,13 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
       ],
     });
 
-    expect(errors).toBeNull();
+    expect(errors).not.toBeNull();
     expect(success).toBe(true);
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid2);
+    expect(error.message).toContain("not creating");
+    expect(error.errorLevel).toEqual("info");
 
     let user;
     user = await getUser(userId1);
@@ -423,8 +437,13 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
       ],
     });
 
-    expect(errors).toBeNull();
+    expect(errors).not.toBeNull();
     expect(success).toBe(true);
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid1);
+    expect(error.message).toContain("not deleting");
+    expect(error.errorLevel).toEqual("info");
 
     let user;
     user = await getUser(userId1);
@@ -454,8 +473,13 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
       ],
     });
 
-    expect(errors).toBeNull();
+    expect(errors).not.toBeNull();
     expect(success).toBe(true);
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid3);
+    expect(error.message).toContain("not deleting");
+    expect(error.errorLevel).toEqual("info");
 
     expect(await findId(email3)).toBeNull(); // not added
   });
@@ -534,8 +558,14 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
         },
       ],
     });
-    expect(errors).toBeNull();
+
+    expect(errors).not.toBeNull();
     expect(success).toBe(true);
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid3);
+    expect(error.message).toContain("not creating");
+    expect(error.errorLevel).toEqual("info");
 
     groupId2 = await findGroupId(group2);
     expect(groupId2).toBeTruthy();
@@ -592,8 +622,13 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
       ],
     });
 
-    expect(errors).toBeNull();
+    expect(errors).not.toBeNull();
     expect(success).toBe(true);
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid3);
+    expect(error.message).toContain("not creating");
+    expect(error.errorLevel).toEqual("info");
 
     let members;
     members = await getGroupMemberIds(groupId1);
@@ -650,20 +685,6 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
         },
         {
           profileGuid: guid3,
-          oldProfileProperties: {},
-          newProfileProperties: {
-            Email: email3,
-            LastName: "King",
-            email_field__c: "valid@grouparoo.com",
-            "Account.Name": account1,
-          },
-          oldGroups: [],
-          newGroups: [],
-          toDelete: false,
-          profile: null,
-        },
-        {
-          profileGuid: guid3,
           oldProfileProperties: { Email: email3, LastName: "None" },
           newProfileProperties: { Email: email3, LastName: "None" },
           oldGroups: [],
@@ -677,10 +698,17 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     let user;
     expect(success).toBe(false);
     expect(errors).not.toBeNull();
-    expect(errors.length).toEqual(1);
-    const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
-    expect(error.message).toContain("email");
+    expect(errors.length).toEqual(2);
+
+    const error2 = errors.find((e) => e.profileGuid === guid2);
+    expect(error2).toBeTruthy();
+    expect(error2.message).toContain("email");
+    expect(error2.errorLevel).toBeFalsy();
+
+    const error3 = errors.find((e) => e.profileGuid === guid3);
+    expect(error3).toBeTruthy();
+    expect(error3.message).toContain("not creating");
+    expect(error3.errorLevel).toEqual("info");
 
     user = await getUser(userId1);
     expect(user.Email).toEqual(email1);

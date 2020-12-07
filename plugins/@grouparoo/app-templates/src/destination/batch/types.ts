@@ -50,6 +50,7 @@ export interface BatchExport extends ExportedProfile {
   shouldUpdate?: boolean;
   shouldDelete?: boolean;
   shouldGroups?: boolean;
+  skippedMessage?: string;
   result?: any; // result from find
   data?: any; // can stick other things on here
   processed?: boolean;

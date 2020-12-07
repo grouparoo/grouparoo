@@ -489,8 +489,13 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
       ],
     });
 
-    expect(errors).toBeNull();
+    expect(errors).not.toBeNull();
     expect(success).toBe(true);
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid2);
+    expect(error.message).toContain("not deleting");
+    expect(error.errorLevel).toEqual("info");
 
     let user;
     user = await getUser(userId1);
@@ -525,8 +530,13 @@ describe("salesforce/sales-cloud/export-profiles/additive", () => {
       ],
     });
 
-    expect(errors).toBeNull();
+    expect(errors).not.toBeNull();
     expect(success).toBe(true);
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileGuid).toEqual(guid3);
+    expect(error.message).toContain("not deleting");
+    expect(error.errorLevel).toEqual("info");
 
     expect(await findId(email3)).toBeNull(); // not added
   });

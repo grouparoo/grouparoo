@@ -69,13 +69,13 @@ const exportOneBatch: ExportBatchProfilesPluginMethod = async (
 };
 
 function checkErrors(
-  exports
+  exportedProfiles: BatchExport[]
 ): { success: boolean; errors: ErrorWithProfileGuid[] } {
   // assuming semantics here of success is only true if there are zero errors
   let errors: ErrorWithProfileGuid[] = null; // for ones that go wrong
   let success = true;
-  for (const exportedProfile of exports) {
-    let { error } = exportedProfile;
+  for (const exportedProfile of exportedProfiles) {
+    let { error, skippedMessage } = exportedProfile;
     if (error) {
       success = false;
       errors = errors || [];
@@ -84,6 +84,12 @@ function checkErrors(
       }
       error.profileGuid = exportedProfile.profileGuid;
       errors.push(error);
+    } else if (skippedMessage) {
+      errors = errors || [];
+      const skip = <ErrorWithProfileGuid>new Error(skippedMessage);
+      skip.profileGuid = exportedProfile.profileGuid;
+      skip.errorLevel = "info";
+      errors.push(skip);
     }
   }
 
@@ -632,6 +638,7 @@ function assignAction(exportedProfile: BatchExport, config: BatchConfig) {
   const { toDelete, destinationId } = exportedProfile;
   const { syncMode } = config;
   const mode = BatchSyncModeData[syncMode];
+  let skippedMessage = null;
 
   // all shouldX are falsy to start with
 
@@ -639,21 +646,34 @@ function assignAction(exportedProfile: BatchExport, config: BatchConfig) {
     // semantic: delete
     if (mode.delete) {
       exportedProfile.shouldDelete = true;
-    } else if (destinationId) {
+    } else {
       // just remove the groups
       exportedProfile.shouldGroups = true;
+      if (destinationId) {
+        skippedMessage =
+          "Destination not deleting. Removing profile from groups.";
+      } else {
+        skippedMessage =
+          "Destination not deleting, though profile was not found.";
+      }
     }
   } else if (destinationId) {
     // semantic: update
     if (mode.update) {
       exportedProfile.shouldUpdate = true;
       exportedProfile.shouldGroups = true;
+    } else {
+      skippedMessage = "Destination not updating. No changes made.";
     }
   } else {
     // semantic: create
     if (mode.create) {
       exportedProfile.shouldCreate = true;
       exportedProfile.shouldGroups = true;
+    } else {
+      skippedMessage = "Destination not creating. No changes made.";
     }
   }
+
+  exportedProfile.skippedMessage = skippedMessage;
 }
