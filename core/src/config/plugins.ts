@@ -16,28 +16,6 @@ pluginManifest.plugins.map((p) => {
   parentPlugins[p.name] = { path: p.path };
 });
 
-// ensure that the ENV variables for the plugins are set
-pluginManifest.plugins.forEach((plugin) => {
-  if (plugin?.grouparoo?.env?.api) {
-    plugin.grouparoo.env.api.forEach((e) => {
-      if (!process.env[e]) {
-        console.error(
-          `\r\n!!! plugin ${plugin.name} requires environment variable ${e} to be set !!!\r\n`
-        );
-      }
-    });
-  }
-  if (plugin?.grouparoo?.env?.web) {
-    plugin.grouparoo.env.web.forEach((e) => {
-      if (!process.env[e]) {
-        console.error(
-          `\r\n!!! plugin ${plugin.name} requires environment variable ${e} to be set !!!\r\n`
-        );
-      }
-    });
-  }
-});
-
 export const DEFAULT = {
   plugins: () => {
     const plugins = Object.assign(

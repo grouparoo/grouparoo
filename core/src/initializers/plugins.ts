@@ -2,6 +2,7 @@ import { Initializer, api, log } from "actionhero";
 import { GrouparooPlugin } from "../classes/plugin";
 import { plugin } from "../modules/plugin";
 import { App } from "../models/App";
+import { getPluginManifest } from "../utils/pluginDetails";
 
 declare module "actionhero" {
   export interface Api {
@@ -31,6 +32,8 @@ export class Plugins extends Initializer {
       validate: this.validatePlugin,
       register: this.registerPlugin,
     };
+
+    this.checkPluginEnvironmentVariables();
 
     // --- Add the core plugin --- //
 
@@ -195,5 +198,35 @@ export class Plugins extends Initializer {
     if (validate) api.plugins.validate(plugin);
     api.plugins.plugins.push(plugin);
     log(`registered grouparoo plugin: ${plugin.name}`);
+  }
+
+  /*
+   * ensure that the ENV variables for the plugins are set
+   */
+  checkPluginEnvironmentVariables() {
+    const pluginManifest = getPluginManifest();
+
+    pluginManifest.plugins.forEach((plugin) => {
+      if (plugin?.grouparoo?.env?.api) {
+        plugin.grouparoo.env.api.forEach((e) => {
+          if (!process.env[e]) {
+            log(
+              `Plugin ${plugin.name} requires environment variable ${e} to be set`,
+              "error"
+            );
+          }
+        });
+      }
+      if (plugin?.grouparoo?.env?.web) {
+        plugin.grouparoo.env.web.forEach((e) => {
+          if (!process.env[e]) {
+            log(
+              `plugin ${plugin.name} requires environment variable ${e} to be set`,
+              "error"
+            );
+          }
+        });
+      }
+    });
   }
 }
