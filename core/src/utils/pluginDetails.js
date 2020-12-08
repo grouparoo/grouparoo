@@ -1,13 +1,18 @@
 const fs = require("fs");
 const path = require("path");
 
-const grouparooMonorepoApp = process.env.GROUPAROO_MONOREPO_APP;
+let initialPackageJSON = {};
+if (process.env.INIT_CWD) {
+  initialPackageJSON = readPackageJson(
+    path.join(process.env.INIT_CWD, "package.json")
+  );
+}
+const grouparooMonorepoApp =
+  process.env.GROUPAROO_MONOREPO_APP ||
+  initialPackageJSON?.grouparoo?.grouparoo_monorepo_app;
 
 function readPackageJson(path) {
-  if (!fs.existsSync(path)) {
-    return {};
-  }
-
+  if (!fs.existsSync(path)) return {};
   return JSON.parse(fs.readFileSync(path).toString());
 }
 
@@ -88,12 +93,8 @@ function getPluginManifest() {
     }
 
     manifest.plugins.sort((a, b) => {
-      if (a.name > b.name) {
-        return 1;
-      }
-      if (a.name < b.name) {
-        return -1;
-      }
+      if (a.name > b.name) return 1;
+      if (a.name < b.name) return -1;
     });
   }
 

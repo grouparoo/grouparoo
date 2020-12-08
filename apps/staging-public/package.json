@@ -30,11 +30,12 @@
     "@grouparoo/zendesk": "^0.2.0-alpha.1"
   },
   "scripts": {
-    "start": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./bin/start",
-    "dev": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public ./bin/dev",
-    "actionhero": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=staging-public node_modules/.bin/actionhero"
+    "start": "cd node_modules/@grouparoo/core && ./bin/start",
+    "dev": "cd node_modules/@grouparoo/core && ./bin/dev",
+    "actionhero": "cd node_modules/@grouparoo/core && node_modules/.bin/actionhero"
   },
   "grouparoo": {
+    "grouparoo_monorepo_app": "staging-public",
     "plugins": [
       "@grouparoo/bigquery",
       "@grouparoo/csv",
