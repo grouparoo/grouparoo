@@ -330,7 +330,7 @@ describe("models/export", () => {
 
     expect(newExport.mostRecent).toBe(false);
 
-    await newExport.markMostRecent();
+    await newExport.completeAndMarkMostRecent();
 
     await _export.reload();
     await newExport.reload();
@@ -423,5 +423,41 @@ describe("models/export", () => {
     const remaining = await Export.findAll();
     expect(remaining.length).toBe(1);
     expect(remaining[0].guid).toBe(oldExportMostRecent.guid);
+  });
+
+  describe("errors", () => {
+    let errorExport;
+    beforeEach(async () => {
+      errorExport = await Export.create({
+        destinationGuid: destination.guid,
+        profileGuid: profile.guid,
+        startedAt: new Date(),
+        oldProfileProperties: { firstName: "old" },
+        newProfileProperties: { firstName: "new" },
+        oldGroups: [],
+        newGroups: [],
+        mostRecent: true,
+      });
+    });
+    test("an export can save an error message", async () => {
+      errorExport.errorMessage = "bad stuff happened!";
+      await errorExport.save();
+      await errorExport.reload();
+      expect(errorExport.errorLevel).toEqual("error");
+    });
+
+    test("an export can save an info message", async () => {
+      errorExport.errorMessage = "interesting stuff happened!";
+      errorExport.errorLevel = "info";
+      await errorExport.save();
+      await errorExport.reload();
+      expect(errorExport.errorLevel).toEqual("info");
+    });
+
+    test("an export needs a valid level", async () => {
+      errorExport.errorMessage = "interesting stuff happened!";
+      errorExport.errorLevel = "other";
+      await expect(errorExport.save()).rejects.toThrow(/Validation error/);
+    });
   });
 });

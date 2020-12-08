@@ -2,6 +2,7 @@ import { RetryableTask } from "../../classes/retryableTask";
 import { Destination } from "../../models/Destination";
 import { Export } from "../../models/Export";
 import { Op } from "sequelize";
+import { task } from "actionhero";
 
 export class ExportSendBatches extends RetryableTask {
   constructor() {
@@ -24,12 +25,55 @@ export class ExportSendBatches extends RetryableTask {
     const _exports = await Export.findAll({
       where: {
         destinationGuid,
+        completedAt: null, // be sure not to export twice
         guid: { [Op.in]: exportGuids },
-        completedAt: null,
-        errorMessage: null,
       },
     });
 
-    if (_exports.length > 0) await destination.sendExports(_exports);
+    if (_exports.length === 0) {
+      return;
+    }
+
+    const {
+      success,
+      error,
+      retryDelay,
+      retryExportGuids,
+    } = await destination.sendExports(_exports);
+
+    if (!success) {
+      const app = await destination.$get("app");
+      if (retryExportGuids.length === _exports.length) {
+        // all failed!
+        if (retryDelay) {
+          return task.enqueueIn(
+            retryDelay,
+            "export:sendBatch",
+            params,
+            `exports:${app.type}`
+          );
+        } else {
+          // auto retry
+          // RESILIENCE: maybe we should split this in half or something, down to 1
+          throw error;
+        }
+      } else {
+        // some of them succeeded
+        // RESILIENCE: maybe we should split this in half or something, down to 1
+        const newParams = {
+          destinationGuid: params.destinationGuid,
+          exportGuids: retryExportGuids,
+        };
+        const strategy = this.pluginOptions?.Retry?.backoffStrategy;
+        const backoff = strategy ? strategy[0] : undefined;
+        const when = retryDelay || backoff || 1000;
+        return task.enqueueIn(
+          when,
+          "export:sendBatch",
+          newParams,
+          `exports:${app.type}`
+        );
+      }
+    }
   }
 }

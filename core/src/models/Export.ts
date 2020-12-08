@@ -5,8 +5,10 @@ import {
   CreatedAt,
   UpdatedAt,
   AllowNull,
+  Is,
   BelongsTo,
   BeforeCreate,
+  BeforeSave,
   ForeignKey,
   DataType,
   Default,
@@ -32,6 +34,9 @@ export interface ExportProfileProperties {
 export interface ExportProfilePropertiesWithType {
   [key: string]: { type: string; rawValue: string | string[] };
 }
+
+const ERROR_LEVELS = ["error", "info"] as const;
+export type ExportErrorLevel = typeof ERROR_LEVELS[number];
 
 @Table({ tableName: "exports", paranoid: false })
 export class Export extends Model<Export> {
@@ -71,6 +76,14 @@ export class Export extends Model<Export> {
 
   @Column
   errorMessage: string;
+
+  @Is("ofValidErrorLevel", (value) => {
+    if (value && !ERROR_LEVELS.includes(value)) {
+      throw new Error(`errorLevel must be one of: ${ERROR_LEVELS.join(",")}`);
+    }
+  })
+  @Column(DataType.ENUM(...ERROR_LEVELS))
+  errorLevel: ExportErrorLevel;
 
   @Column(DataType.TEXT)
   get oldProfileProperties(): ExportProfileProperties {
@@ -137,7 +150,15 @@ export class Export extends Model<Export> {
   @BelongsTo(() => Profile)
   profile: Profile;
 
-  async markMostRecent() {
+  async setError(error: Error) {
+    this.errorMessage = error.message || error.toString();
+    if (error["errorLevel"]) {
+      this.errorLevel = error["errorLevel"];
+    }
+    await this.save();
+  }
+
+  async completeAndMarkMostRecent() {
     const [count] = await Export.update(
       { mostRecent: false },
       {
@@ -149,6 +170,8 @@ export class Export extends Model<Export> {
       }
     );
 
+    // QUESTION: should this clear the error and level?
+    this.completedAt = new Date();
     this.mostRecent = true;
     await this.save();
 
@@ -174,6 +197,7 @@ export class Export extends Model<Export> {
       hasChanges: this.hasChanges,
       mostRecent: this.mostRecent,
       errorMessage: this.errorMessage,
+      errorLevel: this.errorLevel,
     };
   }
 
@@ -189,6 +213,13 @@ export class Export extends Model<Export> {
   static generateGuid(instance) {
     if (!instance.guid) {
       instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+    }
+  }
+
+  @BeforeSave
+  static ensureErrorLevel(instance) {
+    if (instance.errorMessage && !instance.errorLevel) {
+      instance.errorLevel = "error";
     }
   }
 

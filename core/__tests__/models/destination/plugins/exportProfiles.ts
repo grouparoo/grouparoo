@@ -35,6 +35,7 @@ describe("models/destination", () => {
       errors: undefined,
       retryDelay: undefined,
     };
+    let exportProfilesThrow = null;
 
     beforeEach(() => {
       exportArgs = {
@@ -105,6 +106,9 @@ describe("models/destination", () => {
                   destinationOptions,
                   exports,
                 };
+                if (exportProfilesThrow) {
+                  throw exportProfilesThrow;
+                }
                 return exportProfilesResponse;
               },
             },
@@ -469,7 +473,7 @@ describe("models/destination", () => {
       await profile.destroy();
     });
 
-    test("exportProfile can return that it is rate limited and the export:send task will be re-enqueued", async () => {
+    test("exportProfile can handle parallelsims export:sendBatch task will be re-enqueued", async () => {
       parallelismResponse = 0;
 
       const group = await helper.factories.group();
@@ -503,6 +507,8 @@ describe("models/destination", () => {
       );
       expect(foundSendBatchTasks.length).toBe(1 + 1);
       await _export.reload();
+      expect(_export.errorMessage).toBeNull();
+      expect(_export.errorLevel).toBeNull();
       expect(_export.completedAt).toBeFalsy();
 
       // when the parallelism is back to OK...
@@ -540,13 +546,78 @@ describe("models/destination", () => {
       parallelismResponse = Infinity;
     });
 
-    test("the app can be rate-limited and the export:sendBatches task will be re-enqueued", async () => {
+    test("sending an export with sync and throwing an error will throw in task", async () => {
+      const group = await helper.factories.group();
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[group.guid] = group.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      const profile = await helper.factories.profile();
+      const run = await helper.factories.run(group, { state: "running" });
+
+      exportProfilesThrow = new Error("oh no!");
+
+      let thrownError: Error;
+      try {
+        await destination.exportProfile(profile, true);
+      } catch (error) {
+        thrownError = error;
+      }
+
+      exportProfilesThrow = null;
+
+      expect(thrownError.message).toEqual("oh no!");
+      expect(thrownError["errors"]).toBeUndefined();
+
+      await run.stop();
+      await Export.truncate();
+    });
+
+    test("sending an export with sync and producing an error will throw combined of all sub errors", async () => {
+      const group = await helper.factories.group();
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[group.guid] = group.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      const profile = await helper.factories.profile();
+      const run = await helper.factories.run(group, { state: "running" });
+
+      const error = new Error("oh no!");
+      error["profileGuid"] = profile.guid;
+
       exportProfilesResponse = {
         success: false,
-        errors: [new Error("oh no!")],
-        retryDelay: 1000,
+        errors: [error],
+        retryDelay: undefined,
       };
 
+      let combinedError: Error;
+      try {
+        await destination.exportProfile(profile, true);
+      } catch (error) {
+        combinedError = error;
+      }
+
+      expect(combinedError.message).toMatch(
+        /error exporting 1 profiles to destination test plugin destination/
+      );
+      expect(combinedError.message).toMatch(/oh no!/);
+      expect(combinedError["errors"].map((e) => e.message)).toEqual(["oh no!"]);
+
+      await run.stop();
+      await Export.truncate();
+      exportProfilesResponse = {
+        success: true,
+        errors: undefined,
+        retryDelay: undefined,
+      };
+    });
+
+    test("the app can be rate-limited and the export:sendBatches task will be re-enqueued", async () => {
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.guid] = group.name;
@@ -559,6 +630,14 @@ describe("models/destination", () => {
       const _export = await Export.findOne({
         where: { destinationGuid: destination.guid },
       });
+
+      const profileError = new Error("oh no!");
+      profileError["profileGuid"] = profile.guid;
+      exportProfilesResponse = {
+        success: false,
+        errors: [profileError],
+        retryDelay: 1000,
+      };
 
       await specHelper.runTask("export:enqueue", {});
 
@@ -580,6 +659,8 @@ describe("models/destination", () => {
         new Date().getTime()
       );
       await _export.reload();
+      expect(_export.errorMessage).toMatch(/oh no!/);
+      expect(_export.errorLevel).toMatch("error");
       expect(_export.completedAt).toBeFalsy();
 
       // when the response is back to success
@@ -591,7 +672,7 @@ describe("models/destination", () => {
 
       await specHelper.runTask(
         "export:sendBatch",
-        foundSendBatchTasks[0].args[0]
+        foundSendBatchTasks[1].args[0]
       );
       foundSendBatchTasks = await specHelper.findEnqueuedTasks(
         "export:sendBatch"
@@ -601,7 +682,7 @@ describe("models/destination", () => {
       expect(_export.completedAt).toBeTruthy();
     });
 
-    test("sending an export with sync and producing a retry error will throw combined of all sub errors", async () => {
+    test("the app have export:sendBatches task with info level", async () => {
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.guid] = group.name;
@@ -610,37 +691,160 @@ describe("models/destination", () => {
       );
 
       const profile = await helper.factories.profile();
-      const run = await helper.factories.run(group, { state: "running" });
+      await destination.exportProfile(profile);
+      const _export = await Export.findOne({
+        where: { destinationGuid: destination.guid },
+      });
 
-      const error = new Error("oh no!");
-      error["profileGuid"] = profile.guid;
-
+      const profileError = new Error("oh no!");
+      profileError["profileGuid"] = profile.guid;
+      profileError["errorLevel"] = "info";
       exportProfilesResponse = {
         success: false,
-        errors: [error],
+        errors: [profileError],
         retryDelay: 1000,
       };
 
-      let combinedError: Error;
-      try {
-        await destination.exportProfile(profile, true);
-      } catch (error) {
-        combinedError = error;
-      }
+      await specHelper.runTask("export:enqueue", {});
 
-      expect(combinedError.message).toMatch(
-        /error exporting a batch of 1 profiles to destination test plugin destination/
+      let foundSendBatchTasks = await specHelper.findEnqueuedTasks(
+        "export:sendBatch"
       );
-      expect(combinedError.message).toMatch(/oh no!/);
-      expect(combinedError["errors"].map((e) => e.message)).toEqual(["oh no!"]);
+      expect(foundSendBatchTasks.length).toBe(1);
 
-      await run.stop();
-      await Export.truncate();
+      // the task should be re-enqueued with no error
+      await specHelper.runTask(
+        "export:sendBatch",
+        foundSendBatchTasks[0].args[0]
+      );
+      foundSendBatchTasks = await specHelper.findEnqueuedTasks(
+        "export:sendBatch"
+      );
+      expect(foundSendBatchTasks.length).toBe(1 + 0); // actually fine!
+
+      await _export.reload();
+      expect(_export.errorMessage).toMatch(/oh no!/);
+      expect(_export.errorLevel).toMatch("info");
+      expect(_export.completedAt).toBeFalsy();
+
+      // when the response is back to success
       exportProfilesResponse = {
         success: true,
         errors: undefined,
         retryDelay: undefined,
       };
+    });
+
+    test("the app can be re-enqueued for some profiles", async () => {
+      const group = await helper.factories.group();
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[group.guid] = group.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      const profile1 = await helper.factories.profile();
+      await destination.exportProfile(profile1);
+      const _export1 = await Export.findOne({
+        where: {
+          destinationGuid: destination.guid,
+          profileGuid: profile1.guid,
+        },
+      });
+
+      const profile2 = await helper.factories.profile();
+      await destination.exportProfile(profile2);
+      const _export2 = await Export.findOne({
+        where: {
+          destinationGuid: destination.guid,
+          profileGuid: profile2.guid,
+        },
+      });
+
+      const profile3 = await helper.factories.profile();
+      await destination.exportProfile(profile3);
+      const _export3 = await Export.findOne({
+        where: {
+          destinationGuid: destination.guid,
+          profileGuid: profile3.guid,
+        },
+      });
+
+      const profileError1 = new Error("oh no!");
+      profileError1["profileGuid"] = profile1.guid;
+      const profileError2 = new Error("inform me!");
+      profileError2["profileGuid"] = profile2.guid;
+      profileError2["errorLevel"] = "info";
+      exportProfilesResponse = {
+        success: false,
+        errors: [profileError1, profileError2],
+        retryDelay: 1000,
+      };
+
+      await specHelper.runTask("export:enqueue", {});
+
+      let exportGuids;
+      let foundSendBatchTasks = await specHelper.findEnqueuedTasks(
+        "export:sendBatch"
+      );
+      expect(foundSendBatchTasks.length).toBe(1);
+      exportGuids = foundSendBatchTasks[0].args[0].exportGuids;
+      expect(exportGuids.length).toBe(3);
+      expect(exportGuids.sort()).toEqual(
+        [_export1.guid, _export2.guid, _export3.guid].sort()
+      );
+
+      // the task should be re-enqueued with no error
+      await specHelper.runTask(
+        "export:sendBatch",
+        foundSendBatchTasks[0].args[0]
+      );
+      foundSendBatchTasks = await specHelper.findEnqueuedTasks(
+        "export:sendBatch"
+      );
+      expect(foundSendBatchTasks.length).toBe(1 + 1);
+      expect(foundSendBatchTasks[1].timestamp).toBeGreaterThan(
+        new Date().getTime()
+      );
+      exportGuids = foundSendBatchTasks[1].args[0].exportGuids;
+      expect(exportGuids.length).toBe(1);
+      expect(exportGuids.sort()).toEqual([_export1.guid].sort());
+
+      await _export1.reload();
+      expect(_export1.errorMessage).toMatch(/oh no!/);
+      expect(_export1.errorLevel).toMatch("error");
+      expect(_export1.completedAt).toBeFalsy();
+
+      await _export2.reload();
+      expect(_export2.errorMessage).toMatch(/inform me!/);
+      expect(_export2.errorLevel).toMatch("info");
+      expect(_export2.completedAt).toBeFalsy();
+
+      await _export3.reload();
+      expect(_export3.errorMessage).toBeNull();
+      expect(_export3.errorLevel).toBeNull();
+      expect(_export3.completedAt).toBeTruthy();
+
+      // when the response is back to success
+      exportProfilesResponse = {
+        success: true,
+        errors: undefined,
+        retryDelay: undefined,
+      };
+
+      await specHelper.runTask(
+        "export:sendBatch",
+        foundSendBatchTasks[1].args[0]
+      );
+      foundSendBatchTasks = await specHelper.findEnqueuedTasks(
+        "export:sendBatch"
+      );
+      expect(foundSendBatchTasks.length).toBe(1 + 1); // sames
+      await _export1.reload();
+      // QUESTION: this is bit weird. added note to Export.
+      expect(_export1.errorMessage).toMatch(/oh no!/);
+      expect(_export1.errorLevel).toMatch("error");
+      expect(_export1.completedAt).toBeTruthy();
     });
   });
 });
