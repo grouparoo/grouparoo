@@ -68,6 +68,24 @@ export default function ExportsList(props) {
     return `${date} ${time}`;
   }
 
+  function getErrorRow(_export: Models.ExportType) {
+    if (!_export.errorMessage) {
+      return null;
+    }
+
+    let level = "warning";
+    if (_export.errorLevel === "info") {
+      level = "info";
+    }
+    return (
+      <tr>
+        <td colSpan={7} style={{ border: 0 }}>
+          <Alert variant={level}>{_export.errorMessage}</Alert>
+        </td>
+      </tr>
+    );
+  }
+
   return (
     <>
       {props.header ? props.header : <h1>Exports</h1>}
@@ -212,13 +230,7 @@ export default function ExportsList(props) {
                   </td>
                 </tr>
 
-                {_export.errorMessage ? (
-                  <tr>
-                    <td colSpan={7} style={{ border: 0 }}>
-                      <Alert variant="warning">{_export.errorMessage}</Alert>
-                    </td>
-                  </tr>
-                ) : null}
+                {getErrorRow(_export)}
               </Fragment>
             );
           })}
