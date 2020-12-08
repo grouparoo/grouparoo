@@ -8,8 +8,9 @@ if (process.env.INIT_CWD) {
   );
 }
 const grouparooMonorepoApp =
-  process.env.GROUPAROO_MONOREPO_APP ||
-  initialPackageJSON?.grouparoo?.grouparoo_monorepo_app;
+  process.env.GROUPAROO_MONOREPO_APP || initialPackageJSON.grouparoo
+    ? initialPackageJSON.grouparoo.grouparoo_monorepo_app
+    : null;
 
 function readPackageJson(path) {
   if (!fs.existsSync(path)) return {};
