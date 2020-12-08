@@ -42,6 +42,7 @@ const mapTypesFromMarketoToGrouparoo = (marketoType) => {
     float: "float",
     datetime: "date",
     score: "integer",
+    currency: "float",
     // unhandled:
     lead_function: null,
     reference: null,
@@ -50,7 +51,6 @@ const mapTypesFromMarketoToGrouparoo = (marketoType) => {
     date: null, // like birthday (just date)
     phone: null,
     url: null,
-    currency: null,
     percent: "integer", // 0 to 100 (should we more specific?)
   };
 

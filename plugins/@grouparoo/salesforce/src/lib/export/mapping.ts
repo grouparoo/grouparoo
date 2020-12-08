@@ -80,13 +80,12 @@ const supportedTypeMap = {
   percent: "integer",
   encryptedstring: "string",
   int: "integer",
-  anyType: "any", // can be several things, but never seen in wild yet
   any: "any",
   anytype: "any",
   id: "string",
   picklist: "string",
+  currency: "float",
   //TODO:
-  currency: null,
   address: null,
   date: null,
   time: null,
@@ -94,6 +93,7 @@ const supportedTypeMap = {
   location: null, // lat and lng things
   base64: null,
   byte: null,
+  anyType: null, // can be several things, but never seen in wild yet
   reference: null,
   JunctionIdList: null, // is this the real name? maybe array
   junctionidlist: null,

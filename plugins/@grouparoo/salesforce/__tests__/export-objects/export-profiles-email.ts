@@ -433,6 +433,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
             text_field__c: "short text",
             textarea_field__c: "longer text here",
             url_field__c: "https://www.grouparoo.com",
+            currency_field__c: 34.66,
             Email: email2,
             LastName: "Parker",
           },
@@ -462,6 +463,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(user.text_field__c).toEqual("short text");
     expect(user.textarea_field__c).toEqual("longer text here");
     expect(user.url_field__c).toEqual("https://www.grouparoo.com");
+    expect(user.currency_field__c).toEqual(34.66);
     expect(user.Email).toEqual(email2);
     expect(user.LastName).toEqual("Parker");
   });
@@ -485,6 +487,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
             text_field__c: "short text",
             textarea_field__c: "longer text here",
             url_field__c: "https://www.grouparoo.com",
+            currency_field__c: 34.66,
             Email: email2,
             LastName: "Parker",
           },
@@ -512,6 +515,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(user.text_field__c).toEqual(null);
     expect(user.textarea_field__c).toEqual(null);
     expect(user.url_field__c).toEqual(null);
+    expect(user.currency_field__c).toEqual(null);
     expect(user.Email).toEqual(email2);
     expect(user.LastName).toEqual("Patil");
   });

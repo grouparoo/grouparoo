@@ -65,6 +65,7 @@ async function getUser(id) {
     "datetime_field",
     "score_field",
     "percent_field",
+    "currency_field",
   ];
   const response = await client.lead.find("id", [id], {
     fields: fields.join(","),
@@ -499,6 +500,7 @@ describe("marketo/exportProfiles", () => {
             datetime_field: new Date(1598766588 * 1000),
             score_field: 10,
             percent_field: 99,
+            currency_field: 34.66,
           },
           oldGroups: [],
           newGroups: [],
@@ -526,6 +528,7 @@ describe("marketo/exportProfiles", () => {
     expect(user.datetime_field).toEqual("2020-08-30T05:49:48Z");
     expect(user.score_field).toEqual(10);
     expect(user.percent_field).toEqual(99);
+    expect(user.currency_field).toEqual(34.66);
   });
 
   test("can set all those fields to null", async () => {
@@ -546,6 +549,7 @@ describe("marketo/exportProfiles", () => {
             datetime_field: new Date(1598766588 * 1000),
             score_field: 10,
             percent_field: 99,
+            currency_field: 34.66,
           },
           newProfileProperties: { email: email2, firstName: "Maria" },
           oldGroups: [],
@@ -571,6 +575,7 @@ describe("marketo/exportProfiles", () => {
     expect(user.datetime_field).toEqual(null);
     expect(user.score_field).toEqual(null);
     expect(user.percent_field).toEqual(null);
+    expect(user.currency_field).toEqual(null);
   });
 
   test("can handle boolean error", async () => {
@@ -613,6 +618,7 @@ describe("marketo/exportProfiles", () => {
     expect(user.datetime_field).toEqual(null);
     expect(user.score_field).toEqual(null);
     expect(user.percent_field).toEqual(null);
+    expect(user.currency_field).toEqual(null);
   });
 
   test("can handle email error", async () => {
@@ -655,6 +661,7 @@ describe("marketo/exportProfiles", () => {
     expect(user.datetime_field).toEqual(null);
     expect(user.score_field).toEqual(null);
     expect(user.percent_field).toEqual(null);
+    expect(user.currency_field).toEqual(null);
   });
 
   test("can handle integer error", async () => {
@@ -697,6 +704,7 @@ describe("marketo/exportProfiles", () => {
     expect(user.datetime_field).toEqual(null);
     expect(user.score_field).toEqual(null);
     expect(user.percent_field).toEqual(null);
+    expect(user.currency_field).toEqual(null);
   });
 
   test("can handle float error", async () => {
@@ -739,6 +747,7 @@ describe("marketo/exportProfiles", () => {
     expect(user.datetime_field).toEqual(null);
     expect(user.score_field).toEqual(null);
     expect(user.percent_field).toEqual(null);
+    expect(user.currency_field).toEqual(null);
   });
 
   test("can handle datetime error", async () => {
@@ -781,6 +790,7 @@ describe("marketo/exportProfiles", () => {
     expect(user.datetime_field).toEqual(null);
     expect(user.score_field).toEqual(null);
     expect(user.percent_field).toEqual(null);
+    expect(user.currency_field).toEqual(null);
   });
 
   test("can handle percent error", async () => {
@@ -823,6 +833,7 @@ describe("marketo/exportProfiles", () => {
     expect(user.datetime_field).toEqual(null);
     expect(user.score_field).toEqual(null);
     expect(user.percent_field).toEqual(null);
+    expect(user.currency_field).toEqual(null);
   });
 
   test("can handle some of them working, but not others", async () => {
