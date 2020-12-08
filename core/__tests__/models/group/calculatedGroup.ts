@@ -67,6 +67,12 @@ describe("models/group", () => {
       );
     });
 
+    test("setting rules that fail a SQL comparison", async () => {
+      await expect(
+        group.setRules([{ key: "ltv", match: "fish", operation: { op: "gt" } }])
+      ).rejects.toThrow(/fish/); // the error message is dependant on the database, but should contain the column name
+    });
+
     test("changing group rules changes the state to initializing and enquires a run, and then back to ready when complete", async () => {
       await api.resque.queue.connection.redis.flushdb();
 

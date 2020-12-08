@@ -249,6 +249,8 @@ export class Group extends LoggedModel<Group> {
           );
         }
 
+        await this.countPotentialMembers([rule]); // test out the new rule
+
         await GroupRule.create(
           {
             position: parseInt(i) + 1,
