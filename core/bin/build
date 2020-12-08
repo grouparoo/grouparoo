@@ -8,7 +8,7 @@ cd ..
 if [ -f "node_modules/.bin/ts-node" ]; then
   TSC="node_modules/.bin/tsc"
 else
-  TSC="../../../../node_modules/.bin/tsc"
+  TSC="../../../node_modules/.bin/tsc"
 fi
 
 echo -e "Building @grouparoo/core API..."

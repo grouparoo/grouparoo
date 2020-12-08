@@ -7,8 +7,8 @@ if [ -f "node_modules/.bin/ts-node" ]; then
   TS_NODE="node_modules/.bin/ts-node"
   NODEMON="node_modules/.bin/nodemon"
 else
-  TS_NODE="../../../../node_modules/.bin/ts-node"
-  NODEMON="../../../../node_modules/.bin/nodemon"
+  TS_NODE="../../../node_modules/.bin/ts-node"
+  NODEMON="../../../node_modules/.bin/nodemon"
 fi
 
 export NEXT_DEVELOPMENT_MODE=true
