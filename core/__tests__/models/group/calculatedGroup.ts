@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, specHelper } from "actionhero";
+import { api, specHelper, config } from "actionhero";
 import { Log } from "../../../src/models/Log";
 import { Profile } from "../../../src/models/Profile";
 import { Group } from "../../../src/models/Group";
@@ -67,11 +67,15 @@ describe("models/group", () => {
       );
     });
 
-    test("setting rules that fail a SQL comparison", async () => {
-      await expect(
-        group.setRules([{ key: "ltv", match: "fish", operation: { op: "gt" } }])
-      ).rejects.toThrow(/fish/); // the error message is dependant on the database, but should contain the column name
-    });
+    if (config.sequelize.dialect !== "sqlite") {
+      test("setting rules that fail a SQL comparison", async () => {
+        await expect(
+          group.setRules([
+            { key: "ltv", match: "fish", operation: { op: "gt" } },
+          ])
+        ).rejects.toThrow(/fish/); // the error message is dependant on the database, but should contain the column name
+      });
+    }
 
     test("changing group rules changes the state to initializing and enquires a run, and then back to ready when complete", async () => {
       await api.resque.queue.connection.redis.flushdb();
