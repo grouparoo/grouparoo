@@ -151,13 +151,10 @@ export class Export extends Model<Export> {
   profile: Profile;
 
   async setError(error: Error) {
-    this.errorMessage = error.toString();
+    this.errorMessage = error.message || error.toString();
     if (error["errorLevel"]) {
       this.errorLevel = error["errorLevel"];
     }
-    // QUESTION: are we sure this shouldn't be complete?
-    // for example, how do we really know what is still pending if these are still retrying?
-    // there would have to be some other way to mark it an error or something
     await this.save();
   }
 
