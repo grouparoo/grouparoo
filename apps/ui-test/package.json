@@ -13,11 +13,12 @@
     "@grouparoo/ui": "^0.2.0-alpha.1"
   },
   "scripts": {
-    "start": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=ui-test ./bin/start",
-    "dev": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=ui-test ./bin/dev",
-    "actionhero": "cd node_modules/@grouparoo/core && GROUPAROO_MONOREPO_APP=ui-test node_modules/.bin/actionhero"
+    "start": "cd node_modules/@grouparoo/core && ./bin/start",
+    "dev": "cd node_modules/@grouparoo/core && ./bin/dev",
+    "actionhero": "cd node_modules/@grouparoo/core && node_modules/.bin/actionhero"
   },
   "grouparoo": {
+    "grouparoo_monorepo_app": "ui-test",
     "plugins": [
       "@grouparoo/ui"
     ],

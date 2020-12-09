@@ -106,7 +106,7 @@ export async function prepareForIntegrationTest() {
   // start the api server
   const serverEnv = Object.assign(env, {
     GROUPAROO_MONOREPO_APP: "ui-test",
-    ACTIONHERO_TEST_FILE_EXTENSION: "js", // ensure that the test server doesn't run typescript files
+    ACTIONHERO_TYPESCRIPT_MODE: "false", // ensure that the test server doesn't run typescript files
     WEB_SERVER: true,
     PORT: port,
     WEB_URL: url,

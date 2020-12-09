@@ -16,9 +16,26 @@ export PATH="$HOME/.npm-global/bin:$PATH"
 ## use /this/ version of the "grouparoo" package with NPX
 npm link
 
+echo ""
 echo "--- npm linked ---"
 
+## try the version command
+echo ""
+echo "--- test: version ---"
+npx grouparoo --version
+
+## the help command should be the default
+# echo "--- test: (empty) ---"
+# npx grouparoo (we can't test this because the output is actually stderr)
+
+## the help command should work too
+echo ""
+echo "--- test: help ---"
+npx grouparoo --help
+
 ## try the generate command
+echo ""
+echo "--- test: generate ---"
 npx grouparoo generate $WORKDIR
 
 if [ -f "$WORKDIR/package.json" ]; then
@@ -43,6 +60,8 @@ else
 fi
 
 ## try the upgrade command
+echo ""
+echo "--- test: upgrade ---"
 npx grouparoo upgrade $WORKDIR
 
 ## reset the NPM/NPX link

@@ -35,14 +35,14 @@
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.1.1",
-    "actionhero": "25.0.0-alpha.2"
+    "actionhero": "25.0.0-alpha.5"
   },
   "devDependencies": {
     "@grouparoo/core": "^0.2.0-alpha.1",
     "@types/faker": "*",
     "@types/jest": "*",
     "@types/node": "*",
-    "actionhero": "25.0.0-alpha.2",
+    "actionhero": "25.0.0-alpha.5",
     "jest": "26.6.3",
     "prettier": "2.2.1",
     "ts-jest": "26.4.4",

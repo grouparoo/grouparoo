@@ -33,12 +33,15 @@
     "chalk": "4.1.0",
     "commander": "6.1.0",
     "fs-extra": "9.0.1",
-    "npm-check-updates": "10.2.3"
+    "glob": "^7.1.6",
+    "npm-check-updates": "10.2.3",
+    "ora": "5.1.0"
   },
   "devDependencies": {
     "@types/fs-extra": "*",
     "@types/node": "*",
     "prettier": "2.2.1",
+    "ts-node": "9.1.1",
     "typescript": "4.1.2"
   },
   "gitHead": "fde75653f20bf5c26b7457ea37682d9ca55f0786"

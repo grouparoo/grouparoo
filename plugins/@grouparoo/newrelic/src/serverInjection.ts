@@ -7,9 +7,5 @@ if (process.env.NEW_RELIC_LICENSE_KEY) {
 export default function main() {
   if (process.env.NEW_RELIC_LICENSE_KEY) {
     console.log("newrelic injected into application");
-  } else {
-    console.log(
-      "not injecting newrelic because NEW_RELIC_LICENSE_KEY is not set"
-    );
   }
 }

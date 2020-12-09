@@ -1,25 +1,48 @@
 #! /usr/bin/env node
 
 import { program } from "commander";
-const Package = require("../package.json");
+import Ora from "ora";
+import { loadLocalCommands } from "./utils/loadLocalCommands";
+
 import Generate from "./lib/generate";
 import Upgrade from "./lib/upgrade";
 
-program.version(Package.version);
+const Package = require("../package.json");
 
-program
-  .command("generate [path]")
-  .description("generate a new Grouparoo project")
-  .action(Generate);
+if (!process.env.INIT_CWD) process.env.INIT_CWD = process.cwd(); // used for monorepo app determination
 
-program
-  .command("upgrade [path]")
-  .description("upgrade an existing Grouparoo project")
-  .action(Upgrade);
+async function main() {
+  program.storeOptionsAsProperties(false);
+  program.version(Package.version);
 
-program.parse(process.argv);
+  await loadLocalCommands(program);
+
+  program
+    .command("generate [path]")
+    .description("Generate a new Grouparoo project")
+    .option(
+      "-f, --force",
+      "(over)write the generated files if they already exist",
+      false
+    )
+    .action(Generate);
+
+  program
+    .command("upgrade [path]")
+    .description("Upgrade an existing Grouparoo project")
+    .action(Upgrade);
+
+  program.parse(process.argv);
+}
 
 process.on("unhandledRejection", (error) => {
-  console.error(error);
+  Ora().fail(error.toString());
   process.exit(1);
 });
+
+process.on("uncaughtError", (error) => {
+  Ora().fail(error.toString());
+  process.exit(1);
+});
+
+main();
