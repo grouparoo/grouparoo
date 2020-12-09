@@ -1,6 +1,6 @@
 import { CLI } from "actionhero";
 
-export class Console extends CLI {
+export class Start extends CLI {
   constructor() {
     super();
     this.name = "start";

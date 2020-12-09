@@ -7,7 +7,7 @@ import { Import } from "../models/Import";
 import { Export } from "../models/Export";
 import { env, CLI } from "actionhero";
 
-export class Console extends CLI {
+export class Status extends CLI {
   constructor() {
     super();
     this.name = "status";
@@ -40,12 +40,13 @@ export class Console extends CLI {
     console.log(`Groups: ${groupsCount}`);
     for (const i in groups) {
       const group = groups[i];
+      const additionTime = newestMembersAdded[group.guid]
+        ? new Date(newestMembersAdded[group.guid]).toISOString()
+        : "Never";
       console.log(
         `  ${group.name}: ${await group.$count(
           "groupMembers"
-        )} members (most recent addition at ${new Date(
-          newestMembersAdded[group.guid]
-        ).toISOString()})`
+        )} members (most recent addition - ${additionTime})`
       );
     }
 
