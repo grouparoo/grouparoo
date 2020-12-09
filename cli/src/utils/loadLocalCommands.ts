@@ -56,23 +56,27 @@ function getActionhero() {
     actionheroPackage = require("actionhero");
   } catch {}
 
-  try {
-    // the actionhero package is a peer of @grouparoo/core (client install)
-    actionheroPackage = require(path.join(
-      process.env.INIT_CWD,
-      "node_modules",
-      "actionhero"
-    ));
-  } catch {}
+  if (!actionheroPackage) {
+    try {
+      // the actionhero package is a peer of @grouparoo/core (client install)
+      actionheroPackage = require(path.join(
+        process.env.INIT_CWD,
+        "node_modules",
+        "actionhero"
+      ));
+    } catch {}
+  }
 
-  try {
-    // the actionhero package is a child of @grouparoo/core (monorepo)
-    actionheroPackage = require(path.join(
-      process.cwd(),
-      "node_modules",
-      "actionhero"
-    ));
-  } catch {}
+  if (!actionheroPackage) {
+    try {
+      // the actionhero package is a child of @grouparoo/core (monorepo)
+      actionheroPackage = require(path.join(
+        process.cwd(),
+        "node_modules",
+        "actionhero"
+      ));
+    } catch {}
+  }
 
   if (!actionheroPackage) {
     throw new Error(`Cannot find actionhero package.  Did you "npm install"?`);
