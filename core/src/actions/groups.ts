@@ -4,7 +4,7 @@ import { Group, GROUP_RULE_LIMIT, TopLevelGroupRules } from "../models/Group";
 import { ProfilePropertyRuleOpsDictionary } from "../modules/RuleOpsDictionary";
 import { Profile } from "../models/Profile";
 import { GroupMember } from "../models/GroupMember";
-import { Op } from "sequelize";
+import { GroupOps } from "../modules/ops/group";
 
 export class GroupsList extends AuthenticatedAction {
   constructor() {
@@ -61,41 +61,12 @@ export class GroupsListByNewestMember extends AuthenticatedAction {
   }
 
   async run({ params }) {
-    const newGroupMembers = await GroupMember.findAll({
-      attributes: [
-        "groupGuid",
-        [
-          api.sequelize.fn("max", api.sequelize.col("createdAt")),
-          "newestMemberAdded",
-        ],
-      ],
-      group: ["groupGuid"],
-      order: [[api.sequelize.col("newestMemberAdded"), "desc"]],
-      limit: params.limit,
-    });
-
-    const groupGuids = newGroupMembers.map((mem) => mem.groupGuid);
-
-    let groups = await Group.findAll();
-    groups = groups
-      .sort((a, b) => {
-        if (groupGuids.indexOf(a.guid) < 0) return 1;
-        if (groupGuids.indexOf(b.guid) < 0) return -1;
-        return groupGuids.indexOf(a.guid) - groupGuids.indexOf(b.guid);
-      })
-      .slice(0, params.limit);
-
-    const newestMembersAdded: { [guid: string]: number } = {};
-    newGroupMembers.forEach((g) => {
-      // @ts-ignore
-      const value: Date | string = g.getDataValue("newestMemberAdded"); // this may be a string if SQLite is used
-      newestMembersAdded[g.groupGuid] =
-        value instanceof Date ? value.getTime() : new Date(value).getTime();
-    });
-
+    const { groups, newestMembersAdded } = await GroupOps.newestGroupMembers(
+      params.limit
+    );
     return {
       groups: await Promise.all(groups.map((g) => g.apiData())),
-      newestMembersAdded: newestMembersAdded,
+      newestMembersAdded,
     };
   }
 }

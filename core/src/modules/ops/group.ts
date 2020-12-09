@@ -465,4 +465,46 @@ export namespace GroupOps {
 
     return true;
   }
+
+  /**
+   * Get a list of all groups and when the newest member was added
+   */
+  export async function newestGroupMembers(limit = 5) {
+    const newGroupMembers = await GroupMember.findAll({
+      attributes: [
+        "groupGuid",
+        [
+          api.sequelize.fn("max", api.sequelize.col("createdAt")),
+          "newestMemberAdded",
+        ],
+      ],
+      group: ["groupGuid"],
+      order: [[api.sequelize.col("newestMemberAdded"), "desc"]],
+      limit: limit,
+    });
+
+    const groupGuids = newGroupMembers.map((mem) => mem.groupGuid);
+
+    let groups = await Group.findAll();
+    groups = groups
+      .sort((a, b) => {
+        if (groupGuids.indexOf(a.guid) < 0) return 1;
+        if (groupGuids.indexOf(b.guid) < 0) return -1;
+        return groupGuids.indexOf(a.guid) - groupGuids.indexOf(b.guid);
+      })
+      .slice(0, limit);
+
+    const newestMembersAdded: { [guid: string]: number } = {};
+    newGroupMembers.forEach((g) => {
+      // @ts-ignore
+      const value: Date | string = g.getDataValue("newestMemberAdded"); // this may be a string if SQLite is used
+      newestMembersAdded[g.groupGuid] =
+        value instanceof Date ? value.getTime() : new Date(value).getTime();
+    });
+
+    return {
+      groups,
+      newestMembersAdded: newestMembersAdded,
+    };
+  }
 }
