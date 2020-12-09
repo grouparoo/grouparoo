@@ -405,7 +405,9 @@ export function PendingImports({ execApi }) {
 
     if (sources) setSources(sources);
     if (imports) setMostRecentImport(imports[0]);
-    if (_pendingProfilesCount) setPendingProfilesCount(_pendingProfilesCount);
+    if (_pendingProfilesCount !== undefined) {
+      setPendingProfilesCount(_pendingProfilesCount);
+    }
   }
 
   if (sources.length === 0) {
