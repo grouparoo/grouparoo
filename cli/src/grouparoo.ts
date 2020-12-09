@@ -15,6 +15,8 @@ async function main() {
   program.storeOptionsAsProperties(false);
   program.version(Package.version);
 
+  await loadLocalCommands(program);
+
   program
     .command("generate [path]")
     .description("Generate a new Grouparoo project")
@@ -29,8 +31,6 @@ async function main() {
     .command("upgrade [path]")
     .description("Upgrade an existing Grouparoo project")
     .action(Upgrade);
-
-  await loadLocalCommands(program);
 
   program.parse(process.argv);
 }
