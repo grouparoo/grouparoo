@@ -67,6 +67,7 @@ importers:
       chalk: 4.1.0
       commander: 6.1.0
       fs-extra: 9.0.1
+      glob: 7.1.6
       npm-check-updates: 10.2.3
       ora: 5.1.0
     devDependencies:
@@ -81,6 +82,7 @@ importers:
       chalk: 4.1.0
       commander: 6.1.0
       fs-extra: 9.0.1
+      glob: ^7.1.6
       npm-check-updates: 10.2.3
       ora: 5.1.0
       prettier: 2.2.1
