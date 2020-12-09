@@ -8,7 +8,7 @@ import { init, finalize } from "../../../util/shared";
 export class Console extends CLI {
   constructor() {
     super();
-    this.name = "grouparoo demo dataPurchases";
+    this.name = "demo-data-purchases";
     this.description =
       "Load eCommerce users and purchases into a source database.";
     this.inputs = {

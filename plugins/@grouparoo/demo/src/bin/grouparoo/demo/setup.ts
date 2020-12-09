@@ -5,7 +5,7 @@ import { loadConfigFiles } from "../../../configFiles";
 export class Console extends CLI {
   constructor() {
     super();
-    this.name = "grouparoo demo setup";
+    this.name = "demo-setup";
     this.description = "Start from empty bootstrap";
   }
 

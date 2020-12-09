@@ -14,7 +14,7 @@ export class Console extends CLI {
 
   constructor() {
     super();
-    this.name = "grouparoo demo eventStream";
+    this.name = "demo-event-stream";
     this.description = "Makes a continuous stream of user browsing events";
 
     this.apiKey = null;
