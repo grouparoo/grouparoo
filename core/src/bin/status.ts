@@ -58,8 +58,10 @@ export class Console extends CLI {
       for (const i in runningRuns) {
         const run = runningRuns[i];
         console.log(
-          `  ${run.getCreatorName()} - ${run.percentComplete}% ${
-            run.highWaterMark ? `(${run.highWaterMark})` : ""
+          `  ${await run.getCreatorName()} - ${run.percentComplete}% ${
+            Object.keys(run.highWaterMark).length > 0
+              ? `(${Object.keys(run.highWaterMark)[0]})`
+              : ""
           }`
         );
       }

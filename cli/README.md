@@ -8,8 +8,8 @@ This package is released as `grouparoo` on NPM. It is used to generate and updat
 
 This package does not need to be installed, and can be run ad-hoc with the `npx` command, i.e.: `npx grouparoo generate`. That said you could also install and run this package either globally or locally:
 
-- **Global** - `npm install -g grouparoo && grouparoo help`
-- **Local** - `npm install grouparoo && ./node_modules/.bin/grouparoo help`
+- **Global** - `npm install -g grouparoo && grouparoo`
+- **Local** - `npm install grouparoo && ./node_modules/.bin/grouparoo`
 
 ## Usage
 
@@ -29,6 +29,8 @@ Commands:
 ```
 
 ## Commands
+
+In addition to the `generate` and `upgrade` commands included with this package, the `grouparoo` command line interface will load commands from `@grouparoo/core` and any plugins you have installed. The list of available commands will vary based on your plugins and Grouparoo version.
 
 ### Generate
 
