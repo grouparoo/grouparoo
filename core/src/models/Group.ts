@@ -156,7 +156,7 @@ export class Group extends LoggedModel<Group> {
     return this.$count("groupMembers", queryOptions);
   }
 
-  async getRules() {
+  async getRules(transaction?: Transaction) {
     if (this.type === "manual") return [];
 
     // We won't be deleting the model for GroupRule until the group is really deleted (to validate other models)
@@ -166,11 +166,14 @@ export class Group extends LoggedModel<Group> {
     const rulesWithKey: GroupRuleWithKey[] = [];
     const rules = await this.$get("groupRules", {
       order: [["position", "asc"]],
+      transaction,
     });
 
     for (const i in rules) {
       const rule: GroupRule = rules[i];
-      const profilePropertyRule = await rule.$get("profilePropertyRule");
+      const profilePropertyRule = await rule.$get("profilePropertyRule", {
+        transaction,
+      });
       const type = profilePropertyRule
         ? profilePropertyRule.type
         : TopLevelGroupRules.find((tlgr) => tlgr.key === rule.profileColumn)
@@ -266,6 +269,10 @@ export class Group extends LoggedModel<Group> {
           { transaction }
         );
       }
+
+      // test the rules
+      const savedRules = await this.getRules(transaction);
+      await this.countPotentialMembers(savedRules);
 
       if (this.state !== "deleted" && rules.length > 0) {
         this.state = "initializing";
