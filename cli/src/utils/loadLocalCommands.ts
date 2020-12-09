@@ -49,17 +49,40 @@ function getActionhero() {
     path.join(process.env.INIT_CWD, "node_modules", "@grouparoo", "core")
   );
 
+  let actionheroPackage = null;
+
   try {
+    // we are in a client project with `grouparoo` installed, or we can resolve the package directly (best case)
+    actionheroPackage = require("actionhero");
+  } catch {}
+
+  if (!actionheroPackage) {
     try {
-      // we are in a client project with flat install, or we can resolve the package directly
-      return require("actionhero");
-    } catch (e) {
-      // the actionhero package is a child of grouparoo/core
-      return require(path.join(process.cwd(), "node_modules", "actionhero"));
-    }
-  } catch (error) {
-    throw new Error(`cannot find actionhero package - ${error}`);
+      // the actionhero package is a peer of @grouparoo/core (client install)
+      actionheroPackage = require(path.join(
+        process.env.INIT_CWD,
+        "node_modules",
+        "actionhero"
+      ));
+    } catch {}
   }
+
+  if (!actionheroPackage) {
+    try {
+      // the actionhero package is a child of @grouparoo/core (monorepo)
+      actionheroPackage = require(path.join(
+        process.cwd(),
+        "node_modules",
+        "actionhero"
+      ));
+    } catch {}
+  }
+
+  if (!actionheroPackage) {
+    throw new Error(`Cannot find actionhero package.  Did you "npm install"?`);
+  }
+
+  return actionheroPackage;
 }
 
 async function loadDirectory(

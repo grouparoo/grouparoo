@@ -31,7 +31,7 @@
     "@grouparoo/postgres": "^0.2.0-alpha.3"
   },
   "peerDependencies": {
-    "@grouparoo/core": "^0.1.1",
+    "@grouparoo/core": "^0.2.0",
     "actionhero": "25.0.0-alpha.5"
   },
   "devDependencies": {
