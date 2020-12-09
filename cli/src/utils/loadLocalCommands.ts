@@ -36,8 +36,9 @@ export async function loadLocalCommands(program) {
       }
     }
   } catch (error) {
-    process.chdir(process.env.INIT_CWD);
     throw error;
+  } finally {
+    process.chdir(process.env.INIT_CWD);
   }
 }
 
