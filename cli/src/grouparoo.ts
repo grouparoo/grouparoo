@@ -18,7 +18,7 @@ program
   .description("Generate a new Grouparoo project")
   .option(
     "-f, --force",
-    "(over)write the scaffold file, even if it already exists",
+    "(over)write the generated files if it already exists",
     false
   )
   .action(Generate);
