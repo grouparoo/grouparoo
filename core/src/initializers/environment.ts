@@ -1,4 +1,4 @@
-import { Initializer, log } from "actionhero";
+import { Initializer, log, config } from "actionhero";
 
 export class Environment extends Initializer {
   constructor() {
@@ -13,6 +13,10 @@ export class Environment extends Initializer {
         `Modified your runtime environment with ${process.env.GROUPAROO_ENV_CONFIG_FILE}`,
         "notice"
       );
+    }
+
+    if (config.sequelize.dialect === "sqlite") {
+      log(`using SQLite database: ${config.sequelize.storage}`);
     }
   }
 }
