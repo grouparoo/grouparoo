@@ -6,7 +6,7 @@ import PermissionsList from "../../../components/permissions";
 import { useRouter } from "next/router";
 import ApiKeyTabs from "../../../components/tabs/apiKey";
 import LoadingButton from "../../../components/loadingButton";
-import LockedBadge from "../../../components/lockedBadge";
+import LockedBadge from "../../../components/badges/lockedBadge";
 
 import { Models, Actions } from "../../../utils/apiData";
 

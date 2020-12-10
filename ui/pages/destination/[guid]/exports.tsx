@@ -1,11 +1,10 @@
 import Head from "next/head";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col } from "react-bootstrap";
 import ExportsList from "../../../components/export/list";
 import DestinationTabs from "../../../components/tabs/destination";
-import AppIcon from "./../../../components/appIcon";
-import StateBadge from "./../../../components/stateBadge";
-import LockedBadge from "../../../components/lockedBadge";
+import PageHeader from "./../../../components/pageHeader";
+import StateBadge from "./../../../components/badges/stateBadge";
+import LockedBadge from "../../../components/badges/lockedBadge";
 
 export default function Page(props) {
   const { destination } = props;
@@ -20,16 +19,14 @@ export default function Page(props) {
 
       <ExportsList
         header={
-          <Row>
-            <Col md={1}>
-              <AppIcon src={destination.app.icon} fluid size={100} />
-            </Col>
-            <Col>
-              <h1>{destination.name} - Exports</h1>
-              <StateBadge state={destination.state} />{" "}
-              <LockedBadge object={destination} />
-            </Col>
-          </Row>
+          <PageHeader
+            icon={destination.app.icon}
+            title={destination.name}
+            badges={[
+              <LockedBadge object={destination} />,
+              <StateBadge state={destination.state} />,
+            ]}
+          />
         }
         {...props}
       />

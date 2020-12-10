@@ -4,9 +4,9 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
-import AppIcon from "./../../../components/appIcon";
-import StateBadge from "./../../../components/stateBadge";
-import LockedBadge from "./../../../components/lockedBadge";
+import PageHeader from "./../../../components/pageHeader";
+import StateBadge from "./../../../components/badges/stateBadge";
+import LockedBadge from "../../../components/badges/lockedBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { Models, Actions } from "../../../utils/apiData";
 import LoadingTable from "../../../components/loadingTable";
@@ -153,16 +153,18 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: {source.name}</title>
       </Head>
+
       <SourceTabs source={source} />
-      <Row>
-        <Col md={1}>
-          <AppIcon src={source.app.icon} fluid size={100} />
-        </Col>
-        <Col>
-          <h1>Edit this {source.app.name} Source</h1>
-          <StateBadge state={source.state} /> <LockedBadge object={source} />
-        </Col>
-      </Row>
+
+      <PageHeader
+        icon={source.app.icon}
+        title={source.name}
+        badges={[
+          <LockedBadge object={source} />,
+          <StateBadge state={source.state} />,
+        ]}
+      />
+
       <Row>
         <Col>
           <Form id="form" onSubmit={onSubmit} autoComplete="off">

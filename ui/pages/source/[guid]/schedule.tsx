@@ -7,9 +7,9 @@ import { Alert, Row, Col, Form, Badge, Table } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import AppIcon from "../../../components/appIcon";
-import StateBadge from "../../../components/stateBadge";
-import LockedBadge from "../../../components/lockedBadge";
+import PageHeader from "../../../components/pageHeader";
+import StateBadge from "../../../components/badges/stateBadge";
+import LockedBadge from "../../../components/badges/lockedBadge";
 import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
@@ -107,18 +107,17 @@ export default function Page(props) {
 
       <SourceTabs source={source} />
 
+      <PageHeader
+        icon={source.app.icon}
+        title={`${source.name} - Schedule`}
+        badges={[
+          <LockedBadge object={source} />,
+          <StateBadge state={source.state} />,
+        ]}
+      />
+
       <Form id="form" onSubmit={edit} autoComplete="off">
         <fieldset disabled={schedule.locked !== null}>
-          <Row>
-            <Col md={1}>
-              <AppIcon src={source?.app?.icon} fluid size={100} />
-            </Col>
-            <Col>
-              <h1>{source.name} - Schedule</h1>
-              <StateBadge state={schedule.state} />{" "}
-              <LockedBadge object={source} />
-            </Col>
-          </Row>
           <Row>
             <Col>
               <Form.Group controlId="recurring">

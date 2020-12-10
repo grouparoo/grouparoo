@@ -3,9 +3,9 @@ import RunsList from "../../../components/runs/list";
 import { useApi } from "../../../hooks/useApi";
 import { useState } from "react";
 import SourceTabs from "../../../components/tabs/source";
-import AppIcon from "../../../components/appIcon";
-import StateBadge from "../../../components/stateBadge";
-import LockedBadge from "../../../components/lockedBadge";
+import PageHeader from "../../../components/pageHeader";
+import StateBadge from "../../../components/badges/stateBadge";
+import LockedBadge from "../../../components/badges/lockedBadge";
 import { Button, Row, Col } from "react-bootstrap";
 
 export default function Page(props) {
@@ -35,16 +35,15 @@ export default function Page(props) {
       <RunsList
         header={
           <>
-            <Row>
-              <Col md={1}>
-                <AppIcon src={source?.app?.icon} fluid size={100} />
-              </Col>
-              <Col>
-                <h1>{source.name} - Runs</h1>
-                <StateBadge state={source.state} />{" "}
-                <LockedBadge object={source} />
-              </Col>
-            </Row>
+            <PageHeader
+              icon={source.app.icon}
+              title={`${source.name} - Runs`}
+              badges={[
+                <LockedBadge object={source} />,
+                <StateBadge state={source.state} />,
+              ]}
+            />
+
             <Row>
               <Col>
                 <Button

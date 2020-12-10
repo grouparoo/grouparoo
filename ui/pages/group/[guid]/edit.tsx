@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form } from "react-bootstrap";
-import StateBadge from "../../../components/stateBadge";
-import LockedBadge from "../../../components/lockedBadge";
+import StateBadge from "../../../components/badges/stateBadge";
+import LockedBadge from "../../../components/badges/lockedBadge";
 import Moment from "react-moment";
 import { useRouter } from "next/router";
 import Head from "next/head";

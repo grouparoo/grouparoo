@@ -9,7 +9,7 @@ import Link from "next/link";
 import Moment from "react-moment";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
-import StateBadge from "../components/stateBadge";
+import StateBadge from "../components/badges/stateBadge";
 import { Models, Actions } from "../utils/apiData";
 
 export default function Page(props) {

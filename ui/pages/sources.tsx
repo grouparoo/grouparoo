@@ -9,7 +9,7 @@ import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import Moment from "react-moment";
 import AppIcon from "../components/appIcon";
-import StateBadge from "../components/stateBadge";
+import StateBadge from "../components/badges/stateBadge";
 import { Models, Actions } from "../utils/apiData";
 import { Button } from "react-bootstrap";
 

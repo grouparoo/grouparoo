@@ -1,8 +1,8 @@
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Badge, Alert } from "react-bootstrap";
-import AppIcon from "./../../../components/appIcon";
-import StateBadge from "./../../../components/stateBadge";
-import LockedBadge from "./../../../components/lockedBadge";
+import PageHeader from "./../../../components/pageHeader";
+import StateBadge from "./../../../components/badges/stateBadge";
+import LockedBadge from "../../../components/badges/lockedBadge";
 import Link from "next/link";
 import Moment from "react-moment";
 import ScheduleAddButton from "../../../components/schedule/add";
@@ -38,15 +38,15 @@ export default function Page({
 
       <SourceTabs source={source} />
 
-      <Row>
-        <Col md={1}>
-          <AppIcon src={source.app.icon} fluid size={100} />
-        </Col>
-        <Col>
-          <h1>{source.name}</h1>
-          <StateBadge state={source.state} /> <LockedBadge object={source} />
-        </Col>
-      </Row>
+      <PageHeader
+        icon={source.app.icon}
+        title={`${source.name} - Overview`}
+        badges={[
+          <LockedBadge object={source} />,
+          <StateBadge state={source.state} />,
+        ]}
+      />
+
       <Row>
         <Col>
           <p>

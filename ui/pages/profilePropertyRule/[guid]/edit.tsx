@@ -4,9 +4,9 @@ import { Row, Col, Form, Table, Badge, Button } from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Loader from "../../../components/loader";
-import AppIcon from "../../../components/appIcon";
-import StateBadge from "../../../components/stateBadge";
-import LockedBadge from "../../../components/lockedBadge";
+import PageHeader from "../../../components/pageHeader";
+import StateBadge from "../../../components/badges/stateBadge";
+import LockedBadge from "../../../components/badges/lockedBadge";
 import ProfilePreview from "../../../components/profilePropertyRule/profilePreview";
 import { Typeahead } from "react-bootstrap-typeahead";
 import DatePicker from "../../../components/datePicker";
@@ -173,18 +173,17 @@ export default function Page(props) {
         source={source}
       />
 
+      <PageHeader
+        icon={source.app.icon}
+        title={profilePropertyRule.key}
+        badges={[
+          <LockedBadge object={profilePropertyRule} />,
+          <StateBadge state={profilePropertyRule.state} />,
+        ]}
+      />
+
       <Form id="form" onSubmit={onSubmit} autoComplete="off">
         <fieldset disabled={profilePropertyRule.locked !== null}>
-          <Row>
-            <Col md={1}>
-              <AppIcon src={source.app.icon} fluid size={100} />
-            </Col>
-            <Col md={8}>
-              <h1>{profilePropertyRule.key}</h1>
-              <StateBadge state={profilePropertyRule.state} />{" "}
-              <LockedBadge object={profilePropertyRule} />
-            </Col>
-          </Row>
           <Row>
             <Col>
               <Form.Group controlId="key">

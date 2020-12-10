@@ -16,7 +16,12 @@ export default function Page(props) {
       <ProfileTabs profile={profile} />
 
       <EventsList
-        header={<h1>{getProfileDisplayName(profile)} - Events</h1>}
+        header={
+          <>
+            <h1>{getProfileDisplayName(profile)} - Events</h1>
+            <br />
+          </>
+        }
         {...props}
       />
     </>
