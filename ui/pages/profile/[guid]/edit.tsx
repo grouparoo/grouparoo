@@ -200,31 +200,33 @@ export default function Page(props) {
 
       <table>
         <tbody>
-          <td valign="top" style={{ textAlign: "center", paddingRight: 20 }}>
-            <ProfileImageFromEmail
-              width={100}
-              loading={loading}
-              email={email}
-            />
-          </td>
-          <td valign="top">
-            {uniqueProfileProperties.map((key) => {
-              return (
-                <h3 key={`profileHeader-${key}`}>
-                  <span className="text-muted">{key}: </span>
-                  {profile.properties[key]
-                    ? profile.properties[key].values.join(", ")
-                    : null}
-                </h3>
-              );
-            })}
-            <span className="text-muted">Created: </span>
-            <Moment fromNow>{profile.createdAt}</Moment> /{" "}
-            <span className="text-muted">Updated: </span>
-            <Moment fromNow>{profile.updatedAt}</Moment>
-            <br />
-            <StateBadge state={profile.state} />
-          </td>
+          <tr>
+            <td valign="top" style={{ textAlign: "center", paddingRight: 20 }}>
+              <ProfileImageFromEmail
+                width={100}
+                loading={loading}
+                email={email}
+              />
+            </td>
+            <td valign="top">
+              {uniqueProfileProperties.map((key) => {
+                return (
+                  <h3 key={`profileHeader-${key}`}>
+                    <span className="text-muted">{key}: </span>
+                    {profile.properties[key]
+                      ? profile.properties[key].values.join(", ")
+                      : null}
+                  </h3>
+                );
+              })}
+              <span className="text-muted">Created: </span>
+              <Moment fromNow>{profile.createdAt}</Moment> /{" "}
+              <span className="text-muted">Updated: </span>
+              <Moment fromNow>{profile.updatedAt}</Moment>
+              <br />
+              <StateBadge state={profile.state} />
+            </td>
+          </tr>
         </tbody>
       </table>
 
