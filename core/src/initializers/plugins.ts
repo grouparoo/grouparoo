@@ -10,6 +10,7 @@ declare module "actionhero" {
       plugins: Array<GrouparooPlugin>;
       validate: (plugin: GrouparooPlugin) => boolean;
       register: (plugin: GrouparooPlugin, validate: boolean) => void;
+      announcePlugin: (name: string) => void;
       persistentConnections: {
         [guid: string]: any;
       };
@@ -31,6 +32,7 @@ export class Plugins extends Initializer {
       persistentConnections: {},
       validate: this.validatePlugin,
       register: this.registerPlugin,
+      announcePlugin: this.announcePlugin,
     };
 
     this.checkPluginEnvironmentVariables();
@@ -197,7 +199,11 @@ export class Plugins extends Initializer {
   registerPlugin(plugin: GrouparooPlugin, validate = true) {
     if (validate) api.plugins.validate(plugin);
     api.plugins.plugins.push(plugin);
-    log(`registered grouparoo plugin: ${plugin.name}`);
+    api.plugins.announcePlugin(plugin.name);
+  }
+
+  announcePlugin(name: string) {
+    log(`registered grouparoo plugin: ${name}`);
   }
 
   /*
