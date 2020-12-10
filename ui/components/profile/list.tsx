@@ -12,7 +12,7 @@ import LoadingButton from "../loadingButton";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { Models, Actions } from "../../utils/apiData";
 import ArrayProfilePropertyList from "../../components/profile/arrayProfilePropertyList";
-import StateBadge from "../stateBadge";
+import StateBadge from "../badges/stateBadge";
 
 export default function ProfilesList(props) {
   const { errorHandler, profilePropertyRules } = props;

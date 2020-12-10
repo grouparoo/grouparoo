@@ -3,13 +3,15 @@ import { useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
-import AppIcon from "../../../components/appIcon";
-import StateBadge from "../../../components/stateBadge";
+import PageHeader from "../../../components/pageHeader";
+import StateBadge from "../../../components/badges/stateBadge";
+import SourceBadge from "../../../components/badges/sourceBadge";
+import DestinationBadge from "../../../components/badges/destinationBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
 import AppTabs from "../../../components/tabs/app";
 import Loader from "../../../components/loader";
 import LoadingButton from "../../../components/loadingButton";
-import LockedBadge from "../../../components/lockedBadge";
+import LockedBadge from "../../../components/badges/lockedBadge";
 
 import { Actions, Models } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
@@ -129,24 +131,19 @@ export default function Page(props) {
 
       <AppTabs app={app} />
 
-      <Row>
-        <Col md={1} style={{ textAlign: "center" }}>
-          <AppIcon src={app.icon} fluid size={100} />
-        </Col>
-        <Col>
-          <h1>{app.name}</h1>
-          {app.provides.source ? (
-            <Badge variant="primary">source</Badge>
-          ) : null}{" "}
-          {app.provides.destination ? (
-            <Badge variant="info">destination</Badge>
-          ) : null}{" "}
-          <LockedBadge object={app} />{" "}
-        </Col>
-      </Row>
+      <PageHeader
+        icon={app.icon}
+        title={app.name}
+        badges={[
+          <SourceBadge object={app} />,
+          <DestinationBadge object={app} />,
+          <LockedBadge object={app} />,
+          <StateBadge state={app.state} />,
+        ]}
+      />
+
       <Row>
         <Col>
-          <br />
           <Form id="form" onSubmit={edit} autoComplete="off">
             <fieldset disabled={app.locked !== null}>
               <Form.Group controlId="name">
@@ -177,10 +174,6 @@ export default function Page(props) {
                   ))}
                 </Form.Control>
               </Form.Group>
-
-              <p>
-                <StateBadge state={app.state} />
-              </p>
 
               {typeOptions.length > 0 ? (
                 <>

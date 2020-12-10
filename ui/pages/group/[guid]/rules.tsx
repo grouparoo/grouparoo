@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
-import StateBadge from "../../../components/stateBadge";
-import LockedBadge from "../../../components/lockedBadge";
+import StateBadge from "../../../components/badges/stateBadge";
+import LockedBadge from "../../../components/badges/lockedBadge";
 import Head from "next/head";
 import GroupTabs from "../../../components/tabs/group";
 import DatePicker from "../../../components/datePicker";

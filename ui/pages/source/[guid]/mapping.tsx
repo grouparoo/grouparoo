@@ -5,9 +5,9 @@ import { useState } from "react";
 import { Row, Col, Table, Form, Button } from "react-bootstrap";
 import { createSchedule } from "../../../components/schedule/add";
 import LoadingButton from "../../../components/loadingButton";
-import AppIcon from "../../../components/appIcon";
-import StateBadge from "../../../components/stateBadge";
-import LockedBadge from "../../../components/lockedBadge";
+import PageHeader from "../../../components/pageHeader";
+import StateBadge from "../../../components/badges/stateBadge";
+import LockedBadge from "../../../components/badges/lockedBadge";
 import { useRouter } from "next/router";
 import { Actions } from "../../../utils/apiData";
 
@@ -132,15 +132,14 @@ export default function Page(props) {
 
   const Header = function () {
     return (
-      <Row>
-        <Col md={1}>
-          <AppIcon src={source.app.icon} fluid size={100} />
-        </Col>
-        <Col>
-          <h1>{source.name} - Profile Identification</h1>
-          <StateBadge state={source.state} /> <LockedBadge object={source} />
-        </Col>
-      </Row>
+      <PageHeader
+        icon={source.app.icon}
+        title={`${source.name} - Profile Identification`}
+        badges={[
+          <LockedBadge object={source} />,
+          <StateBadge state={source.state} />,
+        ]}
+      />
     );
   };
 

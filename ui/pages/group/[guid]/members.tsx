@@ -2,7 +2,7 @@ import { useApi } from "../../../hooks/useApi";
 import Head from "next/head";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
-import StateBadge from "../../../components/stateBadge";
+import StateBadge from "../../../components/badges/stateBadge";
 import GroupTabs from "../../../components/tabs/group";
 import ProfilesList from "../../../components/profile/list";
 import { ErrorHandler } from "../../../utils/errorHandler";

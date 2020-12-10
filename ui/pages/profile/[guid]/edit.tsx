@@ -15,7 +15,7 @@ import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
 import { ProfileHandler } from "../../../utils/profileHandler";
-import StateBadge from "../../../components/stateBadge";
+import StateBadge from "../../../components/badges/stateBadge";
 
 export default function Page(props) {
   const {
@@ -198,37 +198,38 @@ export default function Page(props) {
 
       <ProfileTabs profile={profile} />
 
+      <table>
+        <tbody>
+          <td valign="top" style={{ textAlign: "center", paddingRight: 20 }}>
+            <ProfileImageFromEmail
+              width={100}
+              loading={loading}
+              email={email}
+            />
+          </td>
+          <td valign="top">
+            {uniqueProfileProperties.map((key) => {
+              return (
+                <h3 key={`profileHeader-${key}`}>
+                  <span className="text-muted">{key}: </span>
+                  {profile.properties[key]
+                    ? profile.properties[key].values.join(", ")
+                    : null}
+                </h3>
+              );
+            })}
+            <span className="text-muted">Created: </span>
+            <Moment fromNow>{profile.createdAt}</Moment> /{" "}
+            <span className="text-muted">Updated: </span>
+            <Moment fromNow>{profile.updatedAt}</Moment>
+            <br />
+            <StateBadge state={profile.state} />
+          </td>
+        </tbody>
+      </table>
+
       <Row>
-        <Col md={9}>
-          <Row>
-            <Col>
-              <span className="text-muted">Created At: </span>
-              <Moment fromNow>{profile.createdAt}</Moment>
-              <br />
-              <span className="text-muted">Updated At: </span>
-              <Moment fromNow>{profile.updatedAt}</Moment>
-              <br />
-              <StateBadge state={profile.state} />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={2}>
-              <ProfileImageFromEmail loading={loading} email={email} />
-            </Col>
-            <Col>
-              {uniqueProfileProperties.map((key) => {
-                return (
-                  <h3 key={`profileHeader-${key}`}>
-                    <span className="text-muted">{key}: </span>
-                    {profile.properties[key]
-                      ? profile.properties[key].values.join(", ")
-                      : null}
-                  </h3>
-                );
-              })}
-            </Col>
-          </Row>
-          <br />
+        <Col>
           <Row>
             <Col>
               <LoadingButton

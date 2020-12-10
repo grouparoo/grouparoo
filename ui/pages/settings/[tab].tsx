@@ -8,7 +8,7 @@ import { capitalize } from "../../components/tabs";
 import { useRouter } from "next/router";
 import { Models, Actions } from "../../utils/apiData";
 import LoadingButton from "../../components/loadingButton";
-import LockedBadge from "../../components/lockedBadge";
+import LockedBadge from "../../components/badges/lockedBadge";
 
 import ImportAndUpdateAllProfiles from "../../components/settings/importAndUpdate";
 import IdentifyingProfilePropertyRule from "../../components/settings/identifyingProfilePropertyRule";

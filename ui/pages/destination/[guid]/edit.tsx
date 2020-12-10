@@ -4,9 +4,9 @@ import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Head from "next/head";
-import AppIcon from "./../../../components/appIcon";
-import StateBadge from "./../../../components/stateBadge";
-import LockedBadge from "../../../components/lockedBadge";
+import PageHeader from "../../../components/pageHeader";
+import StateBadge from "./../../../components/badges/stateBadge";
+import LockedBadge from "../../../components/badges/lockedBadge";
 import { Typeahead } from "react-bootstrap-typeahead";
 import DestinationTabs from "./../../../components/tabs/destination";
 import LoadingButton from "../../../components/loadingButton";
@@ -127,16 +127,15 @@ export default function Page(props) {
 
       <DestinationTabs destination={destination} />
 
-      <Row>
-        <Col md={1}>
-          <AppIcon src={destination.app.icon} fluid size={100} />
-        </Col>
-        <Col>
-          <h1>{destination.name}</h1>
-          <StateBadge state={destination.state} />{" "}
-          <LockedBadge object={destination} />
-        </Col>
-      </Row>
+      <PageHeader
+        icon={destination.app.icon}
+        title={destination.name}
+        badges={[
+          <LockedBadge object={destination} />,
+          <StateBadge state={destination.state} />,
+        ]}
+      />
+
       <Row>
         <Col>
           <Form id="form" onSubmit={onSubmit} autoComplete="off">

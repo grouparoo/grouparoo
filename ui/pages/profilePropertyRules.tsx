@@ -10,7 +10,7 @@ import LoadingButton from "../components/loadingButton";
 import Moment from "react-moment";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
-import StateBadge from "../components/stateBadge";
+import StateBadge from "../components/badges/stateBadge";
 import { Models, Actions } from "../utils/apiData";
 import { ErrorHandler } from "../utils/errorHandler";
 

@@ -6,7 +6,7 @@ import PermissionsList from "../../../components/permissions";
 import { useRouter } from "next/router";
 import { Models, Actions } from "../../../utils/apiData";
 import TeamTabs from "../../../components/tabs/team";
-import LockedBadge from "../../../components/lockedBadge";
+import LockedBadge from "../../../components/badges/lockedBadge";
 
 export default function Page(props) {
   const { errorHandler, successHandler, teamHandler } = props;

@@ -1,10 +1,9 @@
 import Head from "next/head";
 import RunsList from "../../../components/runs/list";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col } from "react-bootstrap";
-import AppIcon from "../../../components/appIcon";
-import StateBadge from "../../../components/stateBadge";
-import LockedBadge from "../../../components/lockedBadge";
+import PageHeader from "../../../components/pageHeader";
+import StateBadge from "../../../components/badges/stateBadge";
+import LockedBadge from "../../../components/badges/lockedBadge";
 import ProfilePropertyRuleTabs from "../../../components/tabs/profilePropertyRule";
 import { Models } from "../../../utils/apiData";
 
@@ -30,16 +29,14 @@ export default function Page(props) {
 
       <RunsList
         header={
-          <Row>
-            <Col md={1}>
-              <AppIcon src={source.app.icon} fluid size={100} />
-            </Col>
-            <Col md={8}>
-              <h1>{profilePropertyRule.key} - Runs</h1>
-              <StateBadge state={profilePropertyRule.state} />{" "}
-              <LockedBadge object={profilePropertyRule} />
-            </Col>
-          </Row>
+          <PageHeader
+            icon={source.app.icon}
+            title={`${profilePropertyRule.key} - Runs`}
+            badges={[
+              <LockedBadge object={profilePropertyRule} />,
+              <StateBadge state={profilePropertyRule.state} />,
+            ]}
+          />
         }
         {...props}
       />
