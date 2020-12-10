@@ -51,10 +51,11 @@ function getActionhero() {
 
   let actionheroPackage = null;
 
-  try {
-    // we are in a client project with `grouparoo` installed, or we can resolve the package directly (best case)
-    actionheroPackage = require("actionhero");
-  } catch {}
+  // TODO: If we are running globally, and there is also a global install of actionhero, we'll find it.  That's bad
+  // try {
+  //   // we are in a client project with `grouparoo` installed, or we can resolve the package directly (best case)
+  //   actionheroPackage = require("actionhero");
+  // } catch {}
 
   if (!actionheroPackage) {
     try {

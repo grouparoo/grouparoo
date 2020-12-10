@@ -74,14 +74,13 @@ Use the `staging-public` app to try things out.
 ```bash
 cd apps/staging-public
 # populate the system with 1000 profiles, profile properties, 1000 purchases, groups, and some events
-npm run actionhero -- grouparoo demo dataPurchases
+(npx) grouparoo demo-data-purchases
 
 # including the --scale param allows you to control how many profiles you make. e.g. --scale 10 makes 10,000 extra profiles.
-npm run actionhero -- grouparoo demo dataPurchases --scale 10
+(npx) grouparoo demo-data-purchases --scale 10
 
 # populate the system with events
-npm run actionhero -- grouparoo demo eventStream
-
+(npx) grouparoo demo-event-stream
 ```
 
 🦘
