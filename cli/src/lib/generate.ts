@@ -38,10 +38,7 @@ export default async function Generate(
   const envFile = path.join(workDir, ".env");
   if (!fs.existsSync(envFile) || opts.force) {
     const replacements = {
-      SQLITE_DB_PATH: `sqlite://${path.join(
-        workDir,
-        "grouparoo_development.sqlite"
-      )}`,
+      SQLITE_DB_PATH: `sqlite://grouparoo_development.sqlite`,
     };
     fs.copyFileSync(Templates.getTemplatePath(".env"), envFile);
     Templates.replacePlaceholders(envFile, replacements);

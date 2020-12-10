@@ -1,5 +1,6 @@
 import { URL } from "url";
-import { join } from "path";
+import { join, isAbsolute } from "path";
+import { getParentPath } from "../utils/pluginDetails";
 
 // we want BIGINTs to be returned as JS integer types
 require("pg").defaults.parseInt8 = true;
@@ -59,8 +60,14 @@ export const DEFAULT = {
     /** SQLITE */
     if (dialect === "sqlite") {
       storage = ":memory:";
-      if (parsed.hostname && parsed.hostname !== "") storage = parsed.hostname;
-      if (parsed.pathname && parsed.pathname !== "") storage = parsed.pathname;
+      if (parsed.hostname || parsed.pathname) {
+        storage = `${parsed.hostname}${parsed.pathname}`;
+      }
+
+      // without a starting "/" we assume relative locations are against project root
+      if (storage !== ":memory:" && !isAbsolute(storage)) {
+        storage = join(getParentPath(), storage);
+      }
 
       if (config?.tasks?.maxTaskProcessors > 1) {
         throw new Error(
