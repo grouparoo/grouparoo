@@ -1,6 +1,8 @@
 import fs from "fs-extra";
 import path from "path";
 import * as glob from "glob";
+import { readPackageJSON } from "./readPackageJSON";
+import { ensureNoTsHeaderFiles } from "./ensureNoTsHeaderFiles";
 
 export async function loadLocalCommands(program) {
   // are we in a grouparoo project directory?
@@ -161,18 +163,4 @@ async function runCommand(instance, _program) {
   if (toStop || toStop === null || toStop === undefined) {
     setTimeout(process.exit, 500, 0);
   }
-}
-
-function ensureNoTsHeaderFiles(files: Array<string>): Array<string> {
-  return files.filter((f) => {
-    if (f.match(/.*\.d\.ts$/)) {
-      return false;
-    } else {
-      return true;
-    }
-  });
-}
-
-function readPackageJSON(file: string) {
-  return JSON.parse(fs.readFileSync(file).toString());
 }
