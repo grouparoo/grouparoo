@@ -1,6 +1,6 @@
 import { URL } from "url";
 import { join, isAbsolute } from "path";
-import { getParentPath } from "../utils/pluginDetails";
+import { getParentPath, getCoreRootPath } from "../utils/pluginDetails";
 
 // we want BIGINTs to be returned as JS integer types
 require("pg").defaults.parseInt8 = true;
@@ -62,6 +62,10 @@ export const DEFAULT = {
       storage = ":memory:";
       if (parsed.hostname || parsed.pathname) {
         storage = `${parsed.hostname}${parsed.pathname}`;
+      }
+
+      if (process.env.NODE_ENV === "test") {
+        storage = join(getCoreRootPath(), `${database}.sqlite`);
       }
 
       // without a starting "/" we assume relative locations are against project root
