@@ -3,6 +3,7 @@
 import { program } from "commander";
 import Ora from "ora";
 import { loadLocalCommands } from "./utils/loadLocalCommands";
+import { checkNodeVersion } from "./utils/checkNodeVersion";
 
 import Generate from "./lib/generate";
 import Upgrade from "./lib/upgrade";
@@ -12,6 +13,7 @@ const Package = require("../package.json");
 if (!process.env.INIT_CWD) process.env.INIT_CWD = process.cwd(); // used for monorepo app determination
 
 async function main() {
+  checkNodeVersion();
   program.storeOptionsAsProperties(false);
   program.version(Package.version);
 
