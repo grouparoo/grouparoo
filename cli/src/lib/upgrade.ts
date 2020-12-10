@@ -3,7 +3,7 @@ import SpawnCommand from "../utils/spawnCommand";
 import { buildLogger } from "../utils/logger";
 import { ensurePath } from "../utils/ensurePath";
 
-export default async function Generate(workDir: string = process.cwd()) {
+export default async function Generate(workDir: string = process.env.INIT_CWD) {
   const logger = buildLogger("Upgrading Grouparoo Project");
   ensurePath(workDir, logger);
 

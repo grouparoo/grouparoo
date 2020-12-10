@@ -5,7 +5,7 @@ import { Templates } from "../utils/templates";
 import { buildLogger } from "../utils/logger";
 
 export default async function Generate(
-  workDir: string = process.cwd(),
+  workDir: string = process.env.INIT_CWD,
   program
 ) {
   const opts: {
@@ -37,7 +37,14 @@ export default async function Generate(
 
   const envFile = path.join(workDir, ".env");
   if (!fs.existsSync(envFile) || opts.force) {
+    const replacements = {
+      SQLITE_DB_PATH: `sqlite://${path.join(
+        workDir,
+        "grouparoo_development.sqlite"
+      )}`,
+    };
     fs.copyFileSync(Templates.getTemplatePath(".env"), envFile);
+    Templates.replacePlaceholders(envFile, replacements);
     logger.succeed("Created .env");
     logger.warn(
       "Please check the options in .env to ensure that they pertain to your environment"
