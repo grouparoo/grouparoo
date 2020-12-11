@@ -7,10 +7,9 @@ if (process.env.INIT_CWD) {
     path.join(process.env.INIT_CWD, "package.json")
   );
 }
-const grouparooMonorepoApp =
-  process.env.GROUPAROO_MONOREPO_APP || initialPackageJSON.grouparoo
-    ? initialPackageJSON.grouparoo.grouparoo_monorepo_app
-    : null;
+const grouparooMonorepoApp = initialPackageJSON.grouparoo
+  ? initialPackageJSON.grouparoo.grouparoo_monorepo_app
+  : null;
 
 function readPackageJson(path) {
   if (!fs.existsSync(path)) return {};
