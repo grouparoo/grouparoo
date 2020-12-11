@@ -23,16 +23,16 @@ export const DEFAULT = {
     let password = process.env.DB_PASS || undefined;
     let ssl: boolean | { [key: string]: any } = false;
 
-    if (dialect === "postgresql") dialect = "postgres";
-    if (dialect === "psql") dialect = "postgres";
-
     // if your environment provides database information via a single JDBC-style URL
     // like mysql://username:password@hostname:port/default_schema
     let parsed: { [key: string]: any } = {};
     const connectionURL =
       process.env.DATABASE_URL || process.env.MYSQL_URL || process.env.PG_URL;
     if (connectionURL) parsed = new URL(connectionURL);
+
     if (parsed.protocol) dialect = parsed.protocol.slice(0, -1).toLowerCase();
+    if (dialect === "postgresql") dialect = "postgres";
+    if (dialect === "psql") dialect = "postgres";
 
     /** POSTGRES */
     if (dialect === "postgres") {
