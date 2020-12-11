@@ -53,6 +53,7 @@ class Generator {
   compile() {
     this.addCommands();
     this.addCore();
+    this.addUi();
     this.addStagingPublic();
     this.addPlugins();
     this.addCLI();
@@ -83,15 +84,18 @@ class Generator {
     });
     this.jobList.push({
       type: "core",
-      job_name: `test-core-web`,
-      relative_path: `core`,
-      name: "core",
-    });
-    this.jobList.push({
-      type: "core-local",
       job_name: `test-core-local`,
       relative_path: `core`,
       name: "core",
+    });
+  }
+
+  addUi() {
+    this.jobList.push({
+      type: "ui",
+      job_name: `test-ui`,
+      relative_path: `ui`,
+      name: "ui",
     });
   }
 
