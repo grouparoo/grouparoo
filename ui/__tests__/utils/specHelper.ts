@@ -105,6 +105,7 @@ export async function prepareForIntegrationTest() {
 
   // start the api server
   const serverEnv = Object.assign(env, {
+    INIT_CWD: apiProjectPath,
     ACTIONHERO_TYPESCRIPT_MODE: "false", // ensure that the test server doesn't run typescript files
     WEB_SERVER: true,
     PORT: port,
