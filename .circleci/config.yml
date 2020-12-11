@@ -169,10 +169,6 @@ jobs:
           password: $DOCKERHUB_PASSWORD
         environment:
           POSTGRES_PASSWORD: password
-      - image: selenium/standalone-chrome:latest
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - restore_cache:
@@ -191,11 +187,32 @@ jobs:
           name: create test databases
           command: cd core && ./bin/create_test_databases
       - run:
-          name: test-
-          command: cd core/ && ./node_modules/.bin/jest --ci --maxWorkers 2
+          name: test
+          command: cd core && ./node_modules/.bin/jest --ci --maxWorkers 2
+  test-core-local:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: test
+          command: cd core/ && ./node_modules/.bin/jest __tests__/models __tests__/actions --ci --maxWorkers 2
           environment:
-            SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
-  test-core-web:
+            DB_DIALECT: sqlite
+  test-ui:
     docker:
       - image: circleci/node:12
         auth:
@@ -233,33 +250,10 @@ jobs:
           name: create test databases
           command: cd core && ./bin/create_test_databases
       - run:
-          name: test-
-          command: cd core/ && ./node_modules/.bin/jest --ci --maxWorkers 2
+          name: test
+          command: cd ui && ./node_modules/.bin/jest --ci --maxWorkers 2
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
-  test-core-local:
-    docker:
-      - image: circleci/node:12
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-      - image: redis:latest
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-    steps:
-      - checkout
-      - restore_cache:
-          <<: *node-module-cache-options
-      - restore_cache:
-          <<: *dist-cache-options
-      - restore_cache:
-          <<: *core-cache-options
-      - run:
-          name: test-
-          command: cd core/ && ./node_modules/.bin/jest __tests__/models __tests__/actions --ci --maxWorkers 2
-          environment:
-            DB_DIALECT: sqlite
   test-staging-public:
     docker:
       - image: circleci/node:12
@@ -1149,12 +1143,12 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-web:
+      - test-core-local:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-local:
+      - test-ui:
           filters:
             <<: *ignored-branches
           requires:
@@ -1282,8 +1276,8 @@ workflows:
             - spell-checker
             - linter
             - test-core-api
-            - test-core-web
             - test-core-local
+            - test-ui
             - test-staging-public
             - test-plugin-app-templates
             - test-plugin-bigquery
@@ -1348,12 +1342,12 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-web:
+      - test-core-local:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-local:
+      - test-ui:
           filters:
             <<: *ignored-branches
           requires:
@@ -1481,8 +1475,8 @@ workflows:
             - spell-checker
             - linter
             - test-core-api
-            - test-core-web
             - test-core-local
+            - test-ui
             - test-staging-public
             - test-plugin-app-templates
             - test-plugin-bigquery

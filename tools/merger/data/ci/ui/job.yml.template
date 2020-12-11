@@ -14,6 +14,10 @@
           password: $DOCKERHUB_PASSWORD
         environment:
           POSTGRES_PASSWORD: password
+      - image: selenium/standalone-chrome:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
 {{{custom_docker}}}
     steps:
       - checkout
@@ -36,4 +40,6 @@
       - run:
           name: test
           command: cd {{{relative_path}}} && ./node_modules/.bin/jest --ci --maxWorkers 2
+          environment:
+            SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
 {{{custom_test}}}

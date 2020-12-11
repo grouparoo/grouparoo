@@ -393,6 +393,14 @@ export default function Page(props) {
                                         ].includes(type)
                                       )
                                       .filter((rule) => !rule.isArray)
+                                      .filter(
+                                        (rule) =>
+                                          rule.key ===
+                                            destination.mapping[key] ||
+                                          !Object.values(
+                                            destination.mapping
+                                          ).includes(rule.key)
+                                      )
                                       .map((rule) => (
                                         <option
                                           key={`opt-required-${rule.guid}`}
@@ -466,6 +474,14 @@ export default function Page(props) {
                                           ].includes(type)
                                         )
                                         .filter(filterRuleForArrayProperties)
+                                        .filter(
+                                          (rule) =>
+                                            rule.key ===
+                                              destination.mapping[key] ||
+                                            !Object.values(
+                                              destination.mapping
+                                            ).includes(rule.key)
+                                        )
                                         .map((rule) => (
                                           <option
                                             key={`opt-known-${rule.guid}`}
@@ -591,13 +607,19 @@ export default function Page(props) {
                                   <option disabled value={""}>
                                     choose a profile property rule
                                   </option>
-                                  {remainingProfilePropertyRuleKeysForOptional.map(
-                                    (k) => (
+                                  {remainingProfilePropertyRuleKeysForOptional
+                                    .filter(
+                                      (k) =>
+                                        k === destination.mapping[key] ||
+                                        !Object.values(
+                                          destination.mapping
+                                        ).includes(k)
+                                    )
+                                    .map((k) => (
                                       <option key={`opt-optional-${k}`}>
                                         {k}
                                       </option>
-                                    )
-                                  )}
+                                    ))}
                                 </Form.Control>
                               </td>
                               <td style={{ textAlign: "center" }}>→</td>
@@ -658,7 +680,13 @@ export default function Page(props) {
                       <Button
                         size="sm"
                         variant="outline-primary"
-                        disabled={profilePropertyRules.length === 0}
+                        disabled={
+                          profilePropertyRules.length === 0 ||
+                          remainingProfilePropertyRuleKeysForOptional.filter(
+                            (k) =>
+                              !Object.values(destination.mapping).includes(k)
+                          ).length === 0
+                        }
                         onClick={() => {
                           updateMapping("new mapping", "");
                         }}
