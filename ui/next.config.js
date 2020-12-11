@@ -14,7 +14,6 @@ function getPluginPath(pluginName) {
 const envFile = path.resolve(path.join(getParentPath(), ".env"));
 if (fs.existsSync(envFile)) {
   require("dotenv").config({ path: envFile });
-  console.log(`modified your next.js environment with ${envFile}`);
 }
 
 module.exports = withSourceMaps({
