@@ -83,7 +83,7 @@ class Generator {
       name: "core",
     });
     this.jobList.push({
-      type: "core",
+      type: "core-local",
       job_name: `test-core-local`,
       relative_path: `core`,
       name: "core",

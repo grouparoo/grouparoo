@@ -34,6 +34,6 @@
           command: cd core && ./bin/create_test_databases
 {{{custom_steps}}}
       - run:
-          name: test-{{section}}
+          name: test
           command: cd {{{relative_path}}} && ./node_modules/.bin/jest --ci --maxWorkers 2
 {{{custom_test}}}

@@ -38,7 +38,7 @@
           command: cd core && ./bin/create_test_databases
 {{{custom_steps}}}
       - run:
-          name: test-{{section}}
+          name: test
           command: cd {{{relative_path}}} && ./node_modules/.bin/jest --ci --maxWorkers 2
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub

@@ -187,7 +187,7 @@ jobs:
           name: create test databases
           command: cd core && ./bin/create_test_databases
       - run:
-          name: test-
+          name: test
           command: cd core && ./node_modules/.bin/jest --ci --maxWorkers 2
   test-core-local:
     docker:
@@ -199,12 +199,6 @@ jobs:
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
-      - image: circleci/postgres:9
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-        environment:
-          POSTGRES_PASSWORD: password
     steps:
       - checkout
       - restore_cache:
@@ -214,17 +208,10 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
-          name: install postgresql client
-          command: sudo apt install -y postgresql-client
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run:
-          name: create test databases
-          command: cd core && ./bin/create_test_databases
-      - run:
-          name: test-
-          command: cd core && ./node_modules/.bin/jest --ci --maxWorkers 2
+          name: test
+          command: cd core/ && ./node_modules/.bin/jest __tests__/models __tests__/actions --ci --maxWorkers 2
+          environment:
+            DB_DIALECT: sqlite
   test-ui:
     docker:
       - image: circleci/node:12
@@ -263,7 +250,7 @@ jobs:
           name: create test databases
           command: cd core && ./bin/create_test_databases
       - run:
-          name: test-
+          name: test
           command: cd ui && ./node_modules/.bin/jest --ci --maxWorkers 2
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
