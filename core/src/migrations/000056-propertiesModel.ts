@@ -1,37 +1,59 @@
 module.exports = {
   up: async function (migration) {
-    await migration.renameColumn("groupRules", "propertyGuid", "propertyGuid");
-    await migration.renameColumn("mappings", "propertyGuid", "propertyGuid");
     await migration.renameColumn(
-      "profileProperties",
-      "propertyGuid",
+      "groupRules",
+      "profilePropertyRuleGuid",
       "propertyGuid"
     );
     await migration.renameColumn(
-      "propertyFilters",
-      "propertyGuid",
+      "mappings",
+      "profilePropertyRuleGuid",
+      "propertyGuid"
+    );
+    await migration.renameColumn(
+      "profileProperties",
+      "profilePropertyRuleGuid",
+      "propertyGuid"
+    );
+    await migration.renameColumn(
+      "profilePropertyRuleFilters",
+      "profilePropertyRuleGuid",
       "propertyGuid"
     );
 
-    await migration.renameTable("properties", "properties");
-    await migration.renameTable("propertyFilters", "propertyFilters");
+    await migration.renameTable("profilePropertyRules", "properties");
+    await migration.renameTable(
+      "profilePropertyRuleFilters",
+      "propertyFilters"
+    );
   },
 
   down: async function (migration) {
-    await migration.renameTable("properties", "properties");
-    await migration.renameTable("propertyFilters", "propertyFilters");
+    await migration.renameTable("properties", "profilePropertyRules");
+    await migration.renameTable(
+      "propertyFilters",
+      "profilePropertyRuleFilters"
+    );
 
-    await migration.renameColumn("groupRules", "propertyGuid", "propertyGuid");
-    await migration.renameColumn("mappings", "propertyGuid", "propertyGuid");
+    await migration.renameColumn(
+      "groupRules",
+      "propertyGuid",
+      "profilePropertyRuleGuid"
+    );
+    await migration.renameColumn(
+      "mappings",
+      "propertyGuid",
+      "profilePropertyRuleGuid"
+    );
     await migration.renameColumn(
       "profileProperties",
       "propertyGuid",
-      "propertyGuid"
+      "profilePropertyRuleGuid"
     );
     await migration.renameColumn(
-      "propertyFilters",
+      "profilePropertyRuleFilters",
       "propertyGuid",
-      "propertyGuid"
+      "profilePropertyRuleGuid"
     );
   },
 };
