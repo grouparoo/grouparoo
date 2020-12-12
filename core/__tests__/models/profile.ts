@@ -153,13 +153,13 @@ describe("models/profile", () => {
       expect(profile.guid).not.toBe(toad.guid);
     });
 
-    test("it will throw an error if no unique properties are included", async () => {
+    test("it will throw an error if no unique profile properties are included", async () => {
       await expect(
         ProfileOps.findOrCreateByUniqueProfileProperties({
           color: ["orange"],
         })
       ).rejects.toThrow(
-        'there are no unique properties provided in {"color":["orange"]}'
+        'there are no unique profile properties provided in {"color":["orange"]}'
       );
     });
 
