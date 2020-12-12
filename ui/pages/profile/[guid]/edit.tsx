@@ -40,7 +40,7 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState<Models.ProfileType>(props.profile);
   const [groups, setGroups] = useState<Models.GroupType[]>(props.groups);
-  const [properties, setProperties] = useState<
+  const [profileProperties, setProfileProperties] = useState<
     Models.ProfileType["properties"]
   >(props.profile.properties);
 
@@ -63,7 +63,7 @@ export default function Page(props) {
     if (response?.profile) {
       profileHandler.set(response.profile);
       setProfile(response.profile);
-      setProperties(response.profile.properties);
+      setProfileProperties(response.profile.properties);
       setGroups(response.groups);
     }
     setLoading(false);
@@ -140,7 +140,7 @@ export default function Page(props) {
 
   async function handleUpdate(key) {
     const hash = {};
-    hash[key] = properties[key].values;
+    hash[key] = profileProperties[key].values;
     setLoading(true);
     const response: Actions.ProfileEdit = await execApi(
       "put",
@@ -160,9 +160,9 @@ export default function Page(props) {
   keys.sort();
 
   const updateExistingProperty = async (event) => {
-    const _properties = Object.assign({}, properties);
-    _properties[event.target.id].values = [event.target.value];
-    setProperties(_properties);
+    const _profileProperties = Object.assign({}, profileProperties);
+    _profileProperties[event.target.id].values = [event.target.value];
+    setProfileProperties(_profileProperties);
   };
 
   // const manualProperties = [];
