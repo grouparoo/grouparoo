@@ -9,8 +9,7 @@ export class ImportProfileProperty extends RetryableTask {
   constructor() {
     super();
     this.name = "profileProperty:importProfileProperty";
-    this.description =
-      "Import the Profile Property for a Profile Property Rule";
+    this.description = "Import the Profile Property for a Property";
     this.frequency = 0;
     this.queue = "profileProperties";
     this.inputs = {

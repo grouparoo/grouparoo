@@ -109,7 +109,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
     const rule = await this.$get("property");
     if (!rule) {
       throw new Error(
-        `profile property rule not found for propertyGuid ${this.propertyGuid}`
+        `property not found for propertyGuid ${this.propertyGuid}`
       );
     }
     return rule;

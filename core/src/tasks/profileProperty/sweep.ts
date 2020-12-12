@@ -9,7 +9,7 @@ export class ProfilePropertySweep extends Task {
     super();
     this.name = "profileProperties:sweep";
     this.description =
-      "Double check that all profile properties are removed that don't belong to a profile or profile property rule";
+      "Double check that all profile properties are removed that don't belong to a profile or property";
     this.frequency = 1000 * 30;
     this.queue = "profileProperties";
     this.inputs = {};
@@ -34,7 +34,7 @@ export class ProfilePropertySweep extends Task {
       limit,
     });
 
-    // delete those profile properties who have no profile property rule
+    // delete those profile properties who have no property
     const profilePropertiesMissingRule = await ProfileProperty.findAll({
       include: [{ model: Property, required: false }],
       where: { "$property.guid$": null },

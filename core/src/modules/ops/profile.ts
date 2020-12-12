@@ -104,7 +104,7 @@ export namespace ProfileOps {
 
     const rule = await Property.findOne({ where: { key } });
     if (!rule) {
-      throw new Error(`cannot find a profile property rule for key ${key}`);
+      throw new Error(`cannot find a property for key ${key}`);
     }
 
     // Note: Lifecycle hooks do not fire on upserts, so we need to manually check if the property exists or not
@@ -160,7 +160,7 @@ export namespace ProfileOps {
     } else {
       if (values.length > 1) {
         throw new Error(
-          "cannot set multiple profile properties for a non-array profile property rule"
+          "cannot set multiple profile properties for a non-array property"
         );
       }
       const value = values[0];

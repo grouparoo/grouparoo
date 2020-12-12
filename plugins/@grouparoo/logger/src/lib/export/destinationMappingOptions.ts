@@ -4,8 +4,8 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
   return {
     labels: {
       property: {
-        singular: "Logger Profile Property Rule",
-        plural: "Logger Profile Property Rules",
+        singular: "Logger Property",
+        plural: "Logger Properties",
       },
       group: {
         singular: "Logger Tag",

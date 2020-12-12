@@ -453,7 +453,7 @@ describe("models/destination", () => {
       await expect(
         destination.setMapping({ "remote-id": "firstName" })
       ).rejects.toThrow(
-        "remote-id requires a profile property rule of type integer, but a string (firstName) was mapped"
+        "remote-id requires a property of type integer, but a string (firstName) was mapped"
       );
     });
 

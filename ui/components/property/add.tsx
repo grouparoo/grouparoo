@@ -37,7 +37,7 @@ export default function AddPropertyForm(props) {
   if (source.state === "draft") {
     return (
       <p>
-        <small>Source is not ready, cannot add Profile Property Rule</small>
+        <small>Source is not ready, cannot add Property</small>
       </p>
     );
   }
@@ -49,7 +49,7 @@ export default function AddPropertyForm(props) {
       disabled={loading}
       onClick={create}
     >
-      Add Profile Property Rule
+      Add Property
     </LoadingButton>
   );
 }

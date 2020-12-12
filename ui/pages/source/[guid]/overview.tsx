@@ -69,7 +69,7 @@ export default function Page({
             ))}
           </p>
           <hr />
-          <h2>Profile Property Rules</h2>
+          <h2>Properties</h2>
           <Table>
             <thead>
               <tr>

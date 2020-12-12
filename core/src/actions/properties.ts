@@ -97,7 +97,7 @@ export class PropertyGroups extends AuthenticatedAction {
     super();
     this.name = "property:groups";
     this.description =
-      "enumerate the groups using this profile property rule in their rules";
+      "enumerate the groups using this property in their rules";
     this.outputExample = {};
     this.permission = { topic: "property", mode: "read" };
     this.inputs = { guid: { required: true } };
@@ -224,7 +224,7 @@ export class PropertyFilterOptions extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "property:filterOptions";
-    this.description = "view a the filter options for a profile property rule";
+    this.description = "view a the filter options for a property";
     this.outputExample = {};
     this.permission = { topic: "property", mode: "read" };
     this.inputs = {
@@ -265,7 +265,7 @@ export class PropertyPluginOptions extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "property:pluginOptions";
-    this.description = "view the plugin options for a profile property rule";
+    this.description = "view the plugin options for a property";
     this.outputExample = {};
     this.permission = { topic: "property", mode: "read" };
     this.inputs = {

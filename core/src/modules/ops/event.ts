@@ -21,7 +21,7 @@ export namespace EventOps {
     });
     if (!property) {
       throw new Error(
-        `cannot find Profile Property Rule for identifyingPropertyGuid ${identifyingPropertyGuid}`
+        `cannot find Property for identifyingPropertyGuid ${identifyingPropertyGuid}`
       );
     }
 

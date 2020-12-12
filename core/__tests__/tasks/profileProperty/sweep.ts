@@ -51,7 +51,7 @@ describe("tasks/profileProperties:sweep", () => {
     expect(marioProperties["email"].values).toEqual(["mario@example.com"]);
   });
 
-  test("a profile property with a missing profile property rule", async () => {
+  test("a profile property with a missing property", async () => {
     const luigi = await helper.factories.profile();
     await luigi.addOrUpdateProperties({
       firstName: ["Luigi"],

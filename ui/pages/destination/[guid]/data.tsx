@@ -344,7 +344,7 @@ export default function Page(props) {
                       <Table size="sm">
                         <thead>
                           <tr>
-                            <th>Grouparoo Profile Property Rule</th>
+                            <th>Grouparoo Property</th>
                             <th />
                             <th>{mappingOptions.labels.property.singular}</th>
                           </tr>
@@ -364,7 +364,7 @@ export default function Page(props) {
                                     }
                                   >
                                     <option disabled value={""}>
-                                      choose a profile property rule
+                                      choose a Property
                                     </option>
                                     {properties
                                       .filter((rule) =>
@@ -412,7 +412,7 @@ export default function Page(props) {
                       <Table size="sm">
                         <thead>
                           <tr>
-                            <th>Grouparoo Profile Property Rule</th>
+                            <th>Grouparoo Property</th>
                             <th />
                             <th>{mappingOptions.labels.property.singular}</th>
                             <th />
@@ -544,7 +544,7 @@ export default function Page(props) {
                       <Table size="sm">
                         <thead>
                           <tr>
-                            <th>Grouparoo Profile Property Rule</th>
+                            <th>Grouparoo Property</th>
                             <th />
                             <th>{mappingOptions.labels.property.singular}</th>
                             <th />
@@ -569,7 +569,7 @@ export default function Page(props) {
                                   }
                                 >
                                   <option disabled value={""}>
-                                    choose a profile property rule
+                                    choose a Property
                                   </option>
                                   {remainingPropertyKeysForOptional
                                     .filter(

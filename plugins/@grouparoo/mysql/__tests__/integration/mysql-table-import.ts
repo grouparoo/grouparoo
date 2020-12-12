@@ -191,7 +191,7 @@ describe("integration/runs/mysql", () => {
     expect(error).toBeUndefined();
   });
 
-  test("replace the email profile property rule with a new one for this source", async () => {
+  test("replace the email property with a new one for this source", async () => {
     // delete the old rule
     const oldRule = await Property.findOne({
       where: { key: "email" },
@@ -275,8 +275,8 @@ describe("integration/runs/mysql", () => {
     expect(options).toEqual({
       labels: {
         property: {
-          singular: "Exported Profile Property Rule",
-          plural: "Exported Profile Property Rules",
+          singular: "Exported Property",
+          plural: "Exported Properties",
         },
         group: { singular: "Exported Groups", plural: "Exported Groups" },
       },

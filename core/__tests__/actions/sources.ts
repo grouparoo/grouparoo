@@ -79,7 +79,7 @@ describe("actions/sources", () => {
       expect(total).toBe(1);
     });
 
-    test("a source can be bootstrapped with a profile property rule", async () => {
+    test("a source can be bootstrapped with a property", async () => {
       connection.params = {
         csrfToken,
         guid,

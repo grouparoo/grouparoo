@@ -334,7 +334,7 @@ export interface SourcePreviewMethodResponseRow {
 }
 
 /**
- * Return a list of things that this profile property rule can be filtered by
+ * Return a list of things that this property can be filtered by
  * [{key: createdAt, ops: ['greater than', 'less than'], canHaveRelativeMatch: true}]
  */
 export interface SourceFilterMethod {
@@ -382,7 +382,7 @@ export interface SourceRunPercentCompleteMethod {
 }
 
 /**
- * If a Profile Property Rule is created within the source creation workflow, what default options should that new rule get?
+ * If a Property is created within the source creation workflow, what default options should that new rule get?
  */
 export interface UniquePropertyBootstrapOptions {
   (argument: {
@@ -420,7 +420,7 @@ export interface DestinationOptionsMethodResponse {
 }
 
 /**
- * Method to return the details of how this destination wants to map it's profile property rules
+ * Method to return the details of how this destination wants to map it's property
  */
 export interface DestinationMappingOptionsMethod {
   (argument: {

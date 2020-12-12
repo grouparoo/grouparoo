@@ -223,7 +223,7 @@ describe("models/profile", () => {
       await profile.save();
       await expect(
         profile.addOrUpdateProperty({ email: ["luigi@example.com"] })
-      ).rejects.toThrow(/cannot find a profile property rule for key email/);
+      ).rejects.toThrow(/cannot find a property for key email/);
       await profile.destroy();
     });
 
@@ -715,7 +715,7 @@ describe("models/profile", () => {
               userId: [123],
             })
           ).rejects.toThrow(
-            /cannot set multiple profile properties for a non-array profile property rule/
+            /cannot set multiple profile properties for a non-array property/
           );
         });
       });
@@ -937,7 +937,7 @@ describe("models/profile", () => {
       });
     });
 
-    test("after importing, all missing profile property rules will have created a null profile property", async () => {
+    test("after importing, all missing properties will have created a null profile property", async () => {
       const profile = await Profile.create();
       await profile.addOrUpdateProperties({ userId: [1002] });
       let properties = await profile.properties();

@@ -335,7 +335,7 @@ export class Source extends LoggedModel<Source> {
   static async ensureNoSchedule(instance: Source) {
     const schedule = await instance.$get("schedule", { scope: null });
     if (schedule) {
-      throw new Error("you cannot delete a source that has a schedule");
+      throw new Error("cannot delete a source that has a schedule");
     }
   }
 
@@ -345,9 +345,7 @@ export class Source extends LoggedModel<Source> {
       scope: null,
     });
     if (properties.length > 0) {
-      throw new Error(
-        "you cannot delete a source that has profile property rules"
-      );
+      throw new Error("cannot delete a source that has a property");
     }
   }
 

@@ -58,7 +58,7 @@ export default function Page(props) {
         Object.assign(newProperty, { mappedColumn: newMappingKey })
       );
       if (response?.property) {
-        successHandler.set({ message: "Profile Property Rule created" });
+        successHandler.set({ message: "Property created" });
 
         const prrResponse: Actions.PropertiesList = await execApi(
           "get",
@@ -244,7 +244,7 @@ export default function Page(props) {
                       <thead>
                         <tr>
                           <th></th>
-                          <th>Profile Property Rule</th>
+                          <th>Property</th>
                           <th>Examples</th>
                         </tr>
                       </thead>
@@ -287,7 +287,7 @@ export default function Page(props) {
                 <>
                   <hr />
                   <p>
-                    <strong>Create a new Unique Profile Property Rule</strong>
+                    <strong>Create a new Unique Property</strong>
                   </p>
                   <p>
                     This profile property should be unique, meaning only one
@@ -299,7 +299,7 @@ export default function Page(props) {
                     <Form.Control
                       required
                       type="text"
-                      placeholder="Profile Property Rule Key"
+                      placeholder="Property Key"
                       defaultValue={newProperty.key}
                       disabled={loading}
                       onChange={(e) => {
@@ -345,7 +345,7 @@ export default function Page(props) {
                     disabled={loading}
                     onClick={bootstrapUniqueProperty}
                   >
-                    Create Profile Property Rule
+                    Create Property
                   </LoadingButton>
                 </>
               ) : null}

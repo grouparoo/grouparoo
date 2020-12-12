@@ -230,7 +230,7 @@ export class Group extends LoggedModel<Group> {
         });
 
         if (!property && !topLevelRuleKeys.includes(key)) {
-          throw new Error(`cannot find Profile Property Rule ${key}`);
+          throw new Error(`cannot find property ${key}`);
         }
 
         let type = property?.type;
@@ -245,7 +245,7 @@ export class Group extends LoggedModel<Group> {
         );
         if (!dictionaryEntries || dictionaryEntries.length === 0) {
           throw new Error(
-            `invalid group rule operation "${rule.operation.op}" for profile property rule of type ${property.type}`
+            `invalid group rule operation "${rule.operation.op}" for property of type ${property.type}`
           );
         }
 

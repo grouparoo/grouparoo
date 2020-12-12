@@ -186,7 +186,7 @@ describe("models/source", () => {
       await source.destroy();
     });
 
-    test("a source with a profile property rule cannot be deleted", async () => {
+    test("a source with a property cannot be deleted", async () => {
       const source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
@@ -203,7 +203,7 @@ describe("models/source", () => {
       });
 
       await expect(source.destroy()).rejects.toThrow(
-        /cannot delete a source that has profile property rules/
+        /cannot delete a source that has a property/
       );
 
       await rule.destroy();
@@ -405,7 +405,7 @@ describe("models/source", () => {
         source.setMapping({
           local_user_id: "TheUserID",
         })
-      ).rejects.toThrow(/cannot find profile property rule TheUserID/);
+      ).rejects.toThrow(/cannot find property TheUserID/);
     });
   });
 
@@ -425,7 +425,7 @@ describe("models/source", () => {
       await source.destroy();
     });
 
-    test("it can remove identifying from other profile property rules", async () => {
+    test("it can remove identifying from other properties", async () => {
       const rule = await Property.findOne({
         where: { identifying: true },
       });
@@ -433,7 +433,7 @@ describe("models/source", () => {
       await rule.save();
     });
 
-    test("bootstrapUniqueProperty will create a new profile property rule", async () => {
+    test("bootstrapUniqueProperty will create a new property", async () => {
       const rule = await source.bootstrapUniqueProperty(
         "uniqueId",
         "integer",
@@ -526,7 +526,7 @@ describe("models/source", () => {
       expect(property).toEqual("...mario");
     });
 
-    test("it can import one profile property for a profile with an override of the profile property rule options", async () => {
+    test("it can import one profile property for a profile with an override of the property options", async () => {
       await expect(
         source.importProfileProperty(profile, lnameRule, {
           something: "else",
@@ -538,11 +538,11 @@ describe("models/source", () => {
       }); // does not throw
     });
 
-    test("it can import one profile property for a profile with an override of the profile property rule filters", async () => {
+    test("it can import one profile property for a profile with an override of the property filters", async () => {
       await source.importProfileProperty(profile, lnameRule, null, []); // does not throw
     });
 
-    test("it can import all profile property rules for this source, mapped to the keys properly", async () => {
+    test("it can import all profile properties for this source, mapped to the keys properly", async () => {
       const properties = await source.import(profile);
       expect(properties).toEqual({ __fname: "...mario" });
     });

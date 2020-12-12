@@ -22,7 +22,7 @@ export namespace MappingHelper {
       const rule = await mapping.$get("property", { scope: null });
       if (!rule) {
         throw new Error(
-          `cannot find profile property rule or this source/destination not ready (remoteKey: ${mapping.remoteKey})`
+          `cannot find property or this source/destination not ready (remoteKey: ${mapping.remoteKey})`
         );
       }
       MappingObject[mapping.remoteKey] = rule.key;
@@ -56,7 +56,7 @@ export namespace MappingHelper {
         });
 
         if (!property) {
-          throw new Error(`cannot find profile property rule ${key}`);
+          throw new Error(`cannot find property ${key}`);
         }
 
         await Mapping.create(

@@ -146,7 +146,7 @@ describe("actions/properties", () => {
       expect(pluginOptions[0].key).toBe("column");
     });
 
-    test("an administrator can view the filter options for a profile property rule", async () => {
+    test("an administrator can view the filter options for a property", async () => {
       connection.params = {
         csrfToken,
         guid,
@@ -166,7 +166,7 @@ describe("actions/properties", () => {
       ]);
     });
 
-    test("an administrator can set the filters for a profile property rule", async () => {
+    test("an administrator can set the filters for a property", async () => {
       connection.params = {
         csrfToken,
         guid,
@@ -205,7 +205,7 @@ describe("actions/properties", () => {
       expect(property.state).toBe("ready");
     });
 
-    test("an administrator can test a profile property rule", async () => {
+    test("an administrator can test a property", async () => {
       connection.params = {
         csrfToken,
         guid,
@@ -355,7 +355,7 @@ describe("actions/properties", () => {
       expect(property.unique).toBe(true);
     });
 
-    test("an administrator can see a profile preview of a profile property rule", async () => {
+    test("an administrator can see a profile preview of a property", async () => {
       const _profile = await helper.factories.profile();
       await _profile.addOrUpdateProperties({ userId: [1001] });
 

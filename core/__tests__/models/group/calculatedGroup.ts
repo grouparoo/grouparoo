@@ -63,7 +63,7 @@ describe("models/group", () => {
           { key: "firstName", match: "nobody", operation: { op: "wacky" } },
         ])
       ).rejects.toThrow(
-        /invalid group rule operation "wacky" for profile property rule of type string/
+        /invalid group rule operation "wacky" for property of type string/
       );
     });
 
@@ -333,7 +333,7 @@ describe("models/group", () => {
     test("group rules must have a related profileProperty Ryle", async () => {
       await expect(
         group.setRules([{ key: "a", match: "cool", operation: { op: "eq" } }])
-      ).rejects.toThrow(/cannot find Profile Property Rule a/);
+      ).rejects.toThrow(/cannot find property a/);
     });
 
     test("recalculating group membership will reuse existing groupMembers", async () => {

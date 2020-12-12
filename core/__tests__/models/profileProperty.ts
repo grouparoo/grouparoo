@@ -441,7 +441,7 @@ describe("models/profileProperty", () => {
       });
 
       await expect(profileProperty.setValue(true)).rejects.toThrow(
-        /profile property rule not found for propertyGuid/
+        /property not found for propertyGuid/
       );
     });
   });

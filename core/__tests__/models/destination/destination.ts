@@ -270,9 +270,7 @@ describe("models/destination", () => {
           destination.setMapping({
             "primary-id": "email",
           })
-        ).rejects.toThrow(
-          /primary-id requires a profile property rule of type integer/
-        );
+        ).rejects.toThrow(/primary-id requires a property of type integer/);
       });
 
       test("mappings must map to properties", async () => {
@@ -309,7 +307,7 @@ describe("models/destination", () => {
           destination.setMapping({
             "primary-id": "TheUserID",
           })
-        ).rejects.toThrow(/cannot find profile property rule TheUserID/);
+        ).rejects.toThrow(/cannot find property TheUserID/);
       });
 
       test("a destination cannot be created in the ready state with missing required options", async () => {

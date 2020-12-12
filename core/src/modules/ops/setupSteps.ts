@@ -80,7 +80,7 @@ export namespace SetupStepOps {
       key: "create_a_unique_profile_property",
       title: "Create a Unique Profile Property",
       description:
-        "Create your first unique Profile Property Rule.  Grouparoo needs at least one unique Profile Property Rule to identify your Profiles (email, userId, etc).  You can have more than one!",
+        "Create your first unique Property.  Grouparoo needs at least one unique Property to identify your Profiles (email, userId, etc).  You can have more than one!",
       href: "/properties",
       cta: "Add a Profile Property",
       check: async () => {

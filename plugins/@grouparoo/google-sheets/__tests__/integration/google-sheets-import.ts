@@ -183,7 +183,7 @@ describe("integration/runs/google-sheets", () => {
       expect(error).toBeUndefined();
     });
 
-    test("replace the email profile property rule with a new one for this source", async () => {
+    test("replace the email property with a new one for this source", async () => {
       const oldRule = await Property.findOne({
         where: { key: "email" },
       });

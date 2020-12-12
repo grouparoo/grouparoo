@@ -27,8 +27,8 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
   return {
     labels: {
       property: {
-        singular: "Exported Profile Property Rule",
-        plural: "Exported Profile Property Rules",
+        singular: "Exported Property",
+        plural: "Exported Properties",
       },
       group: {
         singular: "Exported Groups",

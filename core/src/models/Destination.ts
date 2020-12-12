@@ -279,7 +279,7 @@ export class Destination extends LoggedModel<Destination> {
 
       if (property && !validDestinationTypes?.includes(opt.type)) {
         throw new Error(
-          `${opt.key} requires a profile property rule of type ${opt.type}, but a ${property.type} (${property.key}) was mapped`
+          `${opt.key} requires a property of type ${opt.type}, but a ${property.type} (${property.key}) was mapped`
         );
       }
     }
@@ -294,7 +294,7 @@ export class Destination extends LoggedModel<Destination> {
 
       if (property && !validDestinationTypes?.includes(opt.type)) {
         throw new Error(
-          `${opt.key} requires a profile property rule of type ${opt.type}, but a ${property.type} (${property.key}) was mapped`
+          `${opt.key} requires a property of type ${opt.type}, but a ${property.type} (${property.key}) was mapped`
         );
       }
     }

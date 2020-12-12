@@ -63,11 +63,11 @@ export default function Page(props) {
         setProperty(response.property);
         propertiesHandler.set(response.property);
         if (response.property.state === "ready" && property.state === "draft") {
-          successHandler.set({ message: "Profile Property Rule Created" });
+          successHandler.set({ message: "Property Created" });
           router.push(nextPage || "/properties");
         } else {
           setLoading(false);
-          successHandler.set({ message: "Profile Property Rule Updated" });
+          successHandler.set({ message: "Property Updated" });
         }
       } else {
         setLoading(false);
@@ -88,7 +88,7 @@ export default function Page(props) {
       );
       setLoading(false);
       if (success) {
-        successHandler.set({ message: "Profile Property Rule Deleted" });
+        successHandler.set({ message: "Property Deleted" });
         router.push(nextPage || "/properties");
       }
     }
@@ -233,16 +233,14 @@ export default function Page(props) {
                 />
               </Form.Group>
               <Form.Group controlId="sourceGuid">
-                <Form.Label>Profile Property Rule Source</Form.Label>
+                <Form.Label>Property Source</Form.Label>
                 <Form.Control as="select" disabled value={source.guid}>
                   <option value={source.guid}>{source.name}</option>
                 </Form.Control>
               </Form.Group>
               <hr />
               <p>
-                <strong>
-                  Options for a {source.type} Profile Property Rule
-                </strong>
+                <strong>Options for a {source.type} Property</strong>
               </p>
               {pluginOptions.map((opt, idx) => (
                 <div key={`opt-${idx}`}>

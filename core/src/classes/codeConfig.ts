@@ -166,7 +166,7 @@ function getParentIds(configObject: ConfigurationObject) {
   providedIds.push(configObject.id);
 
   // special cases
-  // - Bootstrapped profile property rules
+  // - Bootstrapped property
   if (configObject?.bootstrappedProperty?.id) {
     providedIds.push(configObject.bootstrappedProperty.id);
   }

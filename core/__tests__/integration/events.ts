@@ -63,7 +63,7 @@ describe("integration/events", () => {
       csrfToken,
     };
     const { apps } = await specHelper.runAction("apps:list", connection);
-    expect(apps.length).toBe(2); // profile property rules + events
+    expect(apps.length).toBe(2); // properties + events
     appGuid = apps.filter((app) => app.type === "events")[0].guid;
 
     userIdRule = await Property.findOne({
@@ -449,7 +449,7 @@ describe("integration/events", () => {
         propertyGuid = property.guid;
       });
 
-      test("an administrator can view the filter options for a profile property rule", async () => {
+      test("an administrator can view the filter options for a property", async () => {
         connection.params = {
           csrfToken,
           guid: propertyGuid,
@@ -494,7 +494,7 @@ describe("integration/events", () => {
         ]);
       });
 
-      test("an administrator can set the filters for a profile property rule", async () => {
+      test("an administrator can set the filters for a property", async () => {
         connection.params = {
           csrfToken,
           guid: propertyGuid,
@@ -547,7 +547,7 @@ describe("integration/events", () => {
         expect(property.state).toBe("ready");
       });
 
-      test("an administrator can test a profile property rule", async () => {
+      test("an administrator can test a property", async () => {
         connection.params = {
           csrfToken,
           guid: propertyGuid,

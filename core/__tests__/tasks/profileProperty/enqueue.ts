@@ -43,7 +43,7 @@ describe("tasks/profileProperties:enqueue", () => {
         await App.truncate();
       });
 
-      it("will not crash when there is a profile property rule without a ready source", async () => {
+      it("will not crash when there is a property without a ready source", async () => {
         const source = await helper.factories.source();
         const rule = await source.bootstrapUniqueProperty(
           "userId",

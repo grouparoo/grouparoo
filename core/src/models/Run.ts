@@ -323,7 +323,7 @@ export class Run extends Model<Run> {
   @BeforeCreate
   static async ensureCreatorReady(instance: Run) {
     let ready = true;
-    // profile property rules are ok to enqueue if they are in draft at the time.  Options update before state
+    // properties are ok to enqueue if they are in draft at the time.  Options update before state
     if (instance.creatorType === "group") {
       let creator = await Group.findByGuid(instance.creatorGuid);
       if (creator.state === "draft") {

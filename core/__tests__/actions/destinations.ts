@@ -92,7 +92,7 @@ describe("actions/destinations", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(connectionApps.length).toBe(4); // (this one + the app created for the profile property rules ) * export & export-batch
+      expect(connectionApps.length).toBe(4); // (this one + the app created for the properties ) * export & export-batch
       expect(connectionApps[0].connection.name).toBe("test-plugin-export");
     });
 

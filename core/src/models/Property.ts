@@ -71,7 +71,7 @@ const STATE_TRANSITIONS = [
 ];
 
 /**
- * Metadata and methods to return the options a Profile Property Rule for this connection/app.
+ * Metadata and methods to return the options a Property for this connection/app.
  * Options is a method which will poll the source for available options to select (ie: names of tables or columns)
  */
 export interface PluginConnectionPropertyOption {
@@ -227,7 +227,7 @@ export class Property extends LoggedModel<Property> {
     allowEmpty = false,
     useCache = false
   ) {
-    // this method is called on every profile property rule, for every profile, before an import
+    // This method is called on every Property, for every profile, before an import
     // caching that we are already valid can speed this up
     const cacheKey = `cache:property:${this.guid}`;
     const client = api.redis.clients.client;
@@ -436,7 +436,7 @@ export class Property extends LoggedModel<Property> {
 
       if (valueCounts.length > 0) {
         throw new Error(
-          `cannot make this Profile Property Rule unique as there are ${valueCounts[0]["count"]} records with the value \'${valueCounts[0]["rawValue"]}\'`
+          `cannot make this property unique as there are ${valueCounts[0]["count"]} records with the value \'${valueCounts[0]["rawValue"]}\'`
         );
       }
     }
@@ -450,7 +450,7 @@ export class Property extends LoggedModel<Property> {
       });
 
       if (otherIdentifyingRulesCount > 0) {
-        throw new Error("only one profile property rule can be identifying");
+        throw new Error("only one property can be identifying");
       }
     }
   }
@@ -471,7 +471,7 @@ export class Property extends LoggedModel<Property> {
     const reservedKeys = ["guid", "createdAt", "updatedAt"];
     if (reservedKeys.includes(instance.key)) {
       throw new Error(
-        `${instance.key} is a reserved key and cannot be used as a profile property rule`
+        `${instance.key} is a reserved key and cannot be used as a property`
       );
     }
   }
@@ -490,7 +490,7 @@ export class Property extends LoggedModel<Property> {
     if (groupRule) {
       const group = await Group.findByGuid(groupRule.groupGuid);
       throw new Error(
-        `cannot delete profile property rule "${instance.key}", group ${group.name} (${group.guid}) is based on it`
+        `cannot delete property "${instance.key}", group ${group.name} (${group.guid}) is based on it`
       );
     }
 
@@ -499,7 +499,7 @@ export class Property extends LoggedModel<Property> {
     });
     if (mapping) {
       throw new Error(
-        `cannot delete profile property rule "${instance.key}" as ${mapping.ownerGuid} is using it in a mapping`
+        `cannot delete property "${instance.key}" as ${mapping.ownerGuid} is using it in a mapping`
       );
     }
   }

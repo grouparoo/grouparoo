@@ -25,7 +25,7 @@ describe("integration/runs/internalRun", () => {
   });
 
   describe("adding a new Profile Property will import and sync all profiles", () => {
-    test("adding a profile property rule with a query creates a run and internalRun task", async () => {
+    test("adding a property with a query creates a run and internalRun task", async () => {
       source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
       await source.bootstrapUniqueProperty("userId", "integer", "id");
@@ -117,7 +117,7 @@ describe("integration/runs/internalRun", () => {
       await Run.truncate();
     });
 
-    test("if a new profile property rule stops a run, both properties will be imported", async () => {
+    test("if a new property stops a run, both properties will be imported", async () => {
       const firstNameRule = await Property.create({
         sourceGuid: source.guid,
         type: "string",

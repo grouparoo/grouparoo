@@ -97,7 +97,7 @@ describe("integration/runs/postgres", () => {
     expect(test.error).toBeUndefined();
   });
 
-  test("replace the email profile property rule with a new one for this source", async () => {
+  test("replace the email property with a new one for this source", async () => {
     const oldRule = await Property.findOne({
       where: { key: "email" },
     });
@@ -138,7 +138,7 @@ describe("integration/runs/postgres", () => {
     expect(editError).toBeUndefined();
   });
 
-  test("the profile property rule sets profile data upon import", async () => {
+  test("the property sets profile data upon import", async () => {
     let i = 1;
     while (i <= 10) {
       const profile = await helper.factories.profile();

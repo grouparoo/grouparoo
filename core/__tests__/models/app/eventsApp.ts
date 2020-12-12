@@ -28,7 +28,7 @@ describe("models/app", () => {
       ).rejects.toThrow(/cannot create a new events app, only 1 allowed/);
     });
 
-    test("the appOptions for the events app only include unique profile property rules", async () => {
+    test("the appOptions for the events app only include unique properties", async () => {
       const app = await App.scope(null).findOne({ where: { type: "events" } });
       const appOptions = await app.appOptions();
       expect(appOptions.identifyingPropertyGuid.descriptions.sort()).toEqual([
@@ -42,7 +42,7 @@ describe("models/app", () => {
 
       await app.setOptions({ identifyingPropertyGuid: "missing" });
       expect(await app.test()).toEqual({
-        error: "cannot find identifying profile property rule (missing)",
+        error: "cannot find identifying property (missing)",
         message: undefined,
         success: false,
       });

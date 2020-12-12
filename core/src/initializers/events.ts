@@ -37,7 +37,7 @@ export class Events extends Initializer {
               key: "identifyingPropertyGuid",
               required: true,
               description:
-                "The profile property rule which will map to the event field 'userId'.  Only unique profile property rules can be used.",
+                "The property which will map to the event field 'userId'.  Only unique properties can be used.",
             },
           ],
           maxInstances: 1,
@@ -141,7 +141,7 @@ const testEventsApp: TestPluginMethod = async ({ appOptions }) => {
   });
   if (!identifyingProperty) {
     throw new Error(
-      `cannot find identifying profile property rule (${appOptions.identifyingPropertyGuid})`
+      `cannot find identifying property (${appOptions.identifyingPropertyGuid})`
     );
   }
 

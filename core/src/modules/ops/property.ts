@@ -9,7 +9,7 @@ import Mustache from "mustache";
 
 export namespace PropertyOps {
   /**
-   * Enqueue Runs to update all Groups that rely on this Profile Property Rule
+   * Enqueue Runs to update all Groups that rely on this Property
    */
   export async function enqueueRuns(property: Property) {
     await internalRun("property", property.guid); // update *all* profiles
@@ -31,7 +31,7 @@ export namespace PropertyOps {
   }
 
   /**
-   * Get the options for a Profile Property Rule from its plugin
+   * Get the options for a Property from its plugin
    */
   export async function pluginOptions(property: Property) {
     const source = await property.$get("source", { scope: null });
@@ -139,7 +139,7 @@ export namespace PropertyOps {
   }
 
   /**
-   * Get the options for a Profile Property Rule's Filter from its plugin
+   * Get the options for a Property's Filter from its plugin
    */
   export async function pluginFilterOptions(property: Property) {
     const { pluginConnection } = await property.getPlugin();

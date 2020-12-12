@@ -43,9 +43,7 @@ export class ProfilesList extends AuthenticatedAction {
         where: { key: params.searchKey },
       });
       if (!rule) {
-        throw new Error(
-          `cannot find a profile property rule for ${params.searchKey}`
-        );
+        throw new Error(`cannot find a property for ${params.searchKey}`);
       }
 
       where.propertyGuid = rule.guid;

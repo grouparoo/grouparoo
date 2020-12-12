@@ -281,7 +281,7 @@ export namespace SourceOps {
   }
 
   /**
-   * This method is used to bootstrap a new source which requires a profile property rule for a mapping, but the rule doesn't yet exist.
+   * This method is used to bootstrap a new source which requires a Property for a mapping, when the rule doesn't yet exist.
    */
   export async function bootstrapUniqueProperty(
     source: Source,

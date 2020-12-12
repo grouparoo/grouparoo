@@ -113,12 +113,12 @@ export default function Page(props) {
   return (
     <>
       <Head>
-        <title>Grouparoo: Profile Property Rules</title>
+        <title>Grouparoo: Properties</title>
       </Head>
 
-      <h1>Profile Property Rules</h1>
+      <h1>Properties</h1>
 
-      <p>{total} profile property rules</p>
+      <p>{total} Properties</p>
 
       <Pagination
         total={total}
@@ -212,7 +212,7 @@ export default function Page(props) {
       {sources.length > 0 ? (
         <Form inline onSubmit={createNewProperty}>
           <p>
-            Add new Profile Property Rule for source{" "}
+            Add new Property for source{" "}
             <Form.Control
               as="select"
               size="sm"

@@ -72,7 +72,7 @@ describe("model/group", () => {
               operation: { op: "exists" },
             },
           ])
-        ).rejects.toThrow(/cannot find Profile Property Rule koopa/);
+        ).rejects.toThrow(/cannot find property koopa/);
       });
 
       test("GroupRules must have either a profilePropertyGuid or a profileColumn", async () => {

@@ -22,13 +22,13 @@ describe("models/property", () => {
     await helper.shutdown(actionhero);
   });
 
-  test("creating a profile property rule for non-manual apps with options enqueued an internalRun", async () => {
+  test("creating a property for non-manual apps with options enqueued an internalRun", async () => {
     const rulesCount = await Property.count();
     const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
     expect(foundTasks.length).toBe(rulesCount);
   });
 
-  test("a profile property rule cannot be created if the source does not have all the required options set", async () => {
+  test("a property cannot be created if the source does not have all the required options set", async () => {
     const app = await helper.factories.app();
     await app.update({ type: "manual" });
     const source = await helper.factories.source(app);
@@ -47,7 +47,7 @@ describe("models/property", () => {
     ).rejects.toThrow(/table is required/);
   });
 
-  test("a profile property rule cannot be created if the source is not ready", async () => {
+  test("a property cannot be created if the source is not ready", async () => {
     const app = await helper.factories.app();
     await app.update({ type: "manual" });
     const source = await helper.factories.source(app);
@@ -142,7 +142,7 @@ describe("models/property", () => {
       }
     });
 
-    test("a profile property rule can be isArray", async () => {
+    test("a property can be isArray", async () => {
       const rule = await Property.create({
         sourceGuid: source.guid,
         type: "string",
@@ -152,7 +152,7 @@ describe("models/property", () => {
       await rule.destroy();
     });
 
-    test("a profile property rule cannot be isArray and unique", async () => {
+    test("a property cannot be isArray and unique", async () => {
       await expect(
         Property.create({
           sourceGuid: source.guid,
@@ -163,7 +163,7 @@ describe("models/property", () => {
       ).rejects.toThrow(/unique profile properties cannot be arrays/);
     });
 
-    test("a profile property rule cannot be made unique if there are non-unique values already", async () => {
+    test("a property cannot be made unique if there are non-unique values already", async () => {
       const rule = await Property.create({
         sourceGuid: source.guid,
         key: "name",
@@ -180,7 +180,7 @@ describe("models/property", () => {
       await profileC.addOrUpdateProperties({ name: ["toad"] });
 
       await expect(rule.update({ unique: true })).rejects.toThrow(
-        /cannot make this Profile Property Rule unique as there are 2 records with the value 'toad'/
+        /cannot make this property unique as there are 2 records with the value 'toad'/
       );
 
       await profileC.addOrUpdateProperties({ name: ["peach"] });
@@ -193,7 +193,7 @@ describe("models/property", () => {
       await rule.destroy();
     });
 
-    test("only one profile property rule can be identifying", async () => {
+    test("only one property can be identifying", async () => {
       // the bootstrapped rule is already identifying
 
       await expect(
@@ -202,7 +202,7 @@ describe("models/property", () => {
           sourceGuid: source.guid,
           identifying: true,
         })
-      ).rejects.toThrow(/only one profile property rule can be identifying/);
+      ).rejects.toThrow(/only one property can be identifying/);
     });
 
     test("the identifying rule can be changed", async () => {
@@ -219,7 +219,7 @@ describe("models/property", () => {
     });
   });
 
-  test("updating a profile property rule with new options enqueued an internalRun and update groups relying on it", async () => {
+  test("updating a property with new options enqueued an internalRun and update groups relying on it", async () => {
     await api.resque.queue.connection.redis.flushdb();
     const rule = await Property.findOne({ where: { key: "email" } });
 
@@ -283,7 +283,7 @@ describe("models/property", () => {
     expect(rawOption.value).toBe(`{{ ${rule.guid} }}@example.com`);
   });
 
-  test("an array profile property rule cannot be used as an option", async () => {
+  test("an array property cannot be used as an option", async () => {
     const source = await helper.factories.source();
     await source.setOptions({ table: "test table" });
     await source.setMapping({ id: "userId" });
@@ -309,7 +309,7 @@ describe("models/property", () => {
     await source.destroy();
   });
 
-  test("a profile property rule cannot be created in the ready state with missing required options", async () => {
+  test("a property cannot be created in the ready state with missing required options", async () => {
     const source = await helper.factories.source();
     const rule = Property.build({
       sourceGuid: source.guid,
@@ -337,7 +337,7 @@ describe("models/property", () => {
     expect(foundInternalRunTasks.length).toBe(0);
   });
 
-  test("creating a profile property rule creates a log entry", async () => {
+  test("creating a property creates a log entry", async () => {
     const source = await helper.factories.source();
     await source.setOptions({ table: "test table" });
     await source.setMapping({ id: "userId" });
@@ -358,7 +358,7 @@ describe("models/property", () => {
     await source.destroy();
   });
 
-  test("a profile property rule cannot be deleted if a calculated group is using it", async () => {
+  test("a property cannot be deleted if a calculated group is using it", async () => {
     const source = await helper.factories.source();
     await source.setOptions({ table: "some table" });
     await source.setMapping({ id: "userId" });
@@ -379,7 +379,7 @@ describe("models/property", () => {
     ]);
 
     await expect(rule.destroy()).rejects.toThrow(
-      /cannot delete profile property rule "thing", group .* is based on it/
+      /cannot delete property "thing", group .* is based on it/
     );
 
     await group.destroy();
@@ -387,7 +387,7 @@ describe("models/property", () => {
     await source.destroy();
   });
 
-  test("deleting a profile property rule deleted the options", async () => {
+  test("deleting a property deleted the options", async () => {
     const source = await helper.factories.source();
     await source.setOptions({ table: "some table" });
     await source.setMapping({ id: "userId" });
@@ -429,7 +429,7 @@ describe("models/property", () => {
       expect(emailRule.directlyMapped).toBe(false);
     });
 
-    test("profile property rules include if they are directly mapped", async () => {
+    test("properties include if they are directly mapped", async () => {
       const rules = await Property.findAll();
 
       expect(rules.find((r) => r.key === "userId").directlyMapped).toBe(true);
@@ -656,7 +656,7 @@ describe("models/property", () => {
       });
     });
 
-    test("profile property rules can retrieve their options from the source", async () => {
+    test("properties can retrieve their options from the source", async () => {
       const rule = await Property.create({
         key: "test",
         type: "string",
@@ -677,7 +677,7 @@ describe("models/property", () => {
       await rule.destroy();
     });
 
-    test("creating or editing a profile property rule options will test the query against a profile", async () => {
+    test("creating or editing a property options will test the query against a profile", async () => {
       expect(queryCounter).toBe(0);
 
       const profile = await helper.factories.profile();
@@ -731,7 +731,7 @@ describe("models/property", () => {
       await profile.destroy();
     });
 
-    test("the profile property rule can be tested against the existing options or potential new options", async () => {
+    test("the property can be tested against the existing options or potential new options", async () => {
       const profile = await helper.factories.profile();
       await profile.addOrUpdateProperties({ userId: [1000] });
 

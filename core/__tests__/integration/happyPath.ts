@@ -65,7 +65,7 @@ describe("integration/happyPath", () => {
     appGuid = app.guid;
   });
 
-  test("an admin can create the first source and bootstrap it with a profile property rule", async () => {
+  test("an admin can create the first source and bootstrap it with a property", async () => {
     connection.params = {
       csrfToken,
       name: "test source",
@@ -110,7 +110,7 @@ describe("integration/happyPath", () => {
     expect(editResponse.source.state).toBe("ready");
   });
 
-  test("an admin can create profile property rules", async () => {
+  test("an admin can create properties", async () => {
     connection.params = {
       csrfToken,
       sourceGuid,

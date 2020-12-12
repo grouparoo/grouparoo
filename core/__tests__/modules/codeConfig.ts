@@ -87,7 +87,7 @@ describe("modules/codeConfig", () => {
       expect(options).toEqual({ table: "users" });
     });
 
-    test("the bootstrapped profile property rule is created", async () => {
+    test("the bootstrapped property is created", async () => {
       const rule = await Property.findOne({
         where: { directlyMapped: true },
       });
@@ -112,7 +112,7 @@ describe("modules/codeConfig", () => {
       expect(schedules[0].locked).toBe("config:code");
     });
 
-    test("profile property rules are created", async () => {
+    test("properties are created", async () => {
       const rules = await Property.findAll();
       expect(rules.length).toBe(4);
       expect(rules.map((r) => r.key).sort()).toEqual([
@@ -246,7 +246,7 @@ describe("modules/codeConfig", () => {
       expect(options).toEqual({ fileGuid: "new-file-path.db" });
     });
 
-    test("profile property rule keys changes will be updated", async () => {
+    test("property keys changes will be updated", async () => {
       const rules = await Property.findAll();
       expect(rules.length).toBe(4);
       expect(rules.map((r) => r.key).sort()).toEqual([
@@ -433,7 +433,7 @@ describe("modules/codeConfig", () => {
       });
     });
 
-    describe("profile property rule", () => {
+    describe("property", () => {
       beforeAll(async () => {
         api.codeConfig.allowLockedModelChanges = true;
         process.env.GROUPAROO_CONFIG_DIR = path.join(
