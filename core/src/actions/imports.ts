@@ -79,10 +79,11 @@ export class ImportCreate extends AuthenticatedAction {
 
     const properties = await Property.findAll();
     let foundUniqueProperty = false;
-    properties.forEach((rule) => {
-      if (rule.unique && properties[rule.key]) foundUniqueProperty = true;
+    properties.forEach((property) => {
+      if (property.unique && _properties[property.key]) {
+        foundUniqueProperty = true;
+      }
     });
-
     if (!foundUniqueProperty) {
       throw new Error("no unique profile property included");
     }

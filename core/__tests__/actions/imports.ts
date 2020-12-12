@@ -39,7 +39,7 @@ describe("actions/imports", () => {
     expect(error.code).toBe("AUTHENTICATION_ERROR");
   });
 
-  test("an import can be added that contains unique properties", async () => {
+  test("an import can be added that contains unique profile properties", async () => {
     const { error, import: _import } = await specHelper.runAction(
       "import:create",
       {
@@ -73,7 +73,7 @@ describe("actions/imports", () => {
     expect(_import.creatorType).toBe("api");
   });
 
-  test("an import cannot be added if it has no unique properties", async () => {
+  test("an import cannot be added if it has no unique profile properties", async () => {
     const { error, import: _import } = await specHelper.runAction(
       "import:create",
       {
