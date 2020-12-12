@@ -326,11 +326,7 @@ describe("models/app", () => {
                   sourceOffset: 0,
                 };
               },
-              profileProperty: async ({
-                app,
-                profilePropertyRule,
-                profile,
-              }) => {
+              profileProperty: async ({ app, property, profile }) => {
                 profilePropertyCount++;
                 return ["test@example.com"];
               },

@@ -1,4 +1,4 @@
-import { Source, ProfilePropertyRule } from "@grouparoo/core";
+import { Source, Property } from "@grouparoo/core";
 import { runAction } from "./runAction";
 
 const RULE_DEFAULT = {
@@ -23,7 +23,7 @@ export async function findPropertyRule(source: Source, propertyKey: string) {
     sourceGuid: source.guid,
     key: propertyKey,
   };
-  return ProfilePropertyRule.scope(null).findOne({ where });
+  return Property.scope(null).findOne({ where });
 }
 
 export async function createPropertyRule(source: Source, rule: RuleDefinition) {
@@ -35,9 +35,9 @@ export async function createPropertyRule(source: Source, rule: RuleDefinition) {
     guid: found?.guid,
   });
   if (found) {
-    await runAction("profilePropertyRule:edit", params);
+    await runAction("property:edit", params);
   } else {
-    await runAction("profilePropertyRule:create", params);
+    await runAction("property:create", params);
   }
   const made = await findPropertyRule(source, rule.key);
   if (!made) {
@@ -51,12 +51,12 @@ export async function makePropertyRuleIdentifying(
   propertyKey: string
 ) {
   // remove current one
-  const current = await ProfilePropertyRule.scope(null).findAll({
+  const current = await Property.scope(null).findAll({
     where: { identifying: true },
   });
   for (const propertyRule of current) {
     const params = { identifying: false, guid: propertyRule.guid };
-    await runAction("profilePropertyRule:edit", params);
+    await runAction("property:edit", params);
   }
 
   // set on new one
@@ -66,7 +66,7 @@ export async function makePropertyRuleIdentifying(
   }
 
   const params = { identifying: false, guid: found.guid };
-  await runAction("profilePropertyRule:edit", params);
+  await runAction("property:edit", params);
 }
 
 export async function ensureBootstrapPropertyRule(
@@ -80,7 +80,7 @@ export async function ensureBootstrapPropertyRule(
       sourceGuid: source.guid,
       guid: found?.guid,
     });
-    await runAction("profilePropertyRule:edit", params);
+    await runAction("property:edit", params);
   } else {
     // need to bootstrap it
     const params = {
@@ -89,7 +89,7 @@ export async function ensureBootstrapPropertyRule(
       type: rule.type,
       mappedColumn: rule.options.column,
     };
-    await runAction("source:bootstrapUniqueProfilePropertyRule", params);
+    await runAction("source:bootstrapUniqueProperty", params);
   }
 
   const made = await findPropertyRule(source, rule.key);

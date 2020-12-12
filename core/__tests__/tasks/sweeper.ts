@@ -21,7 +21,7 @@ describe("tasks/sweeper", () => {
 
   describe("sweeper", () => {
     beforeAll(async () => {
-      await helper.factories.profilePropertyRules();
+      await helper.factories.properties();
       await Log.truncate();
     });
 

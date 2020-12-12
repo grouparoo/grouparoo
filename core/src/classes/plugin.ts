@@ -4,13 +4,13 @@ import { ExportErrorLevel } from "../models/Export";
 import { Destination, SimpleDestinationOptions } from "../models/Destination";
 import { Run } from "../models/Run";
 import {
-  PluginConnectionProfilePropertyRuleOption,
-  SimpleProfilePropertyRuleOptions,
-  ProfilePropertyRuleFiltersWithKey,
-} from "../models/ProfilePropertyRule";
+  PluginConnectionPropertyOption,
+  SimplePropertyOptions,
+  PropertyFiltersWithKey,
+} from "../models/Property";
 import { Profile } from "../models/Profile";
 import { HighWaterMark } from "../models/Run";
-import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
+import { Property } from "../models/Property";
 import {
   Schedule,
   SimpleScheduleOptions,
@@ -18,10 +18,10 @@ import {
 } from "../models/Schedule";
 
 export type {
-  SimpleProfilePropertyRuleOptions,
-  PluginConnectionProfilePropertyRuleOption,
-  ProfilePropertyRuleFiltersWithKey,
-} from "../models/ProfilePropertyRule";
+  SimplePropertyOptions,
+  PluginConnectionPropertyOption,
+  PropertyFiltersWithKey,
+} from "../models/Property";
 export type { PluginConnectionScheduleOption } from "../models/Schedule";
 export type { SimpleAppOptions } from "../models/App";
 export type { SimpleSourceOptions } from "../models/Source";
@@ -65,14 +65,14 @@ export interface PluginConnection {
   skipSourceMapping?: boolean;
   app: string;
   options: ConnectionOption[];
-  profilePropertyRuleOptions?: PluginConnectionProfilePropertyRuleOption[];
+  propertyOptions?: PluginConnectionPropertyOption[];
   scheduleOptions?: PluginConnectionScheduleOption[];
   methods?: {
     sourceOptions?: SourceOptionsMethod;
     sourcePreview?: SourcePreviewMethod;
     sourceFilters?: SourceFilterMethod;
     sourceRunPercentComplete?: SourceRunPercentCompleteMethod;
-    uniqueProfilePropertyRuleBootstrapOptions?: UniqueProfilePropertyRuleBootstrapOptions;
+    uniquePropertyBootstrapOptions?: UniquePropertyBootstrapOptions;
     profiles?: ProfilesPluginMethod;
     profileProperty?: ProfilePropertyPluginMethod;
     profileProperties?: ProfilePropertiesPluginMethod;
@@ -130,10 +130,10 @@ export interface ProfilePropertyPluginMethod {
     sourceGuid: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
-    profilePropertyRule: ProfilePropertyRule;
-    profilePropertyRuleGuid: string;
-    profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions;
-    profilePropertyRuleFilters: ProfilePropertyRuleFiltersWithKey[];
+    property: Property;
+    propertyGuid: string;
+    propertyOptions: SimplePropertyOptions;
+    propertyFilters: PropertyFiltersWithKey[];
     profile: Profile;
     profileGuid: string;
   }): Promise<ProfilePropertyPluginMethodResponse>;
@@ -157,10 +157,10 @@ export interface ProfilePropertiesPluginMethod {
     sourceGuid: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
-    profilePropertyRule: ProfilePropertyRule;
-    profilePropertyRuleGuid: string;
-    profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions;
-    profilePropertyRuleFilters: ProfilePropertyRuleFiltersWithKey[];
+    property: Property;
+    propertyGuid: string;
+    propertyOptions: SimplePropertyOptions;
+    propertyFilters: PropertyFiltersWithKey[];
     profiles: Profile[];
     profileGuids: string[];
   }): Promise<ProfilePropertiesPluginMethodResponse>;
@@ -347,9 +347,9 @@ export interface SourceFilterMethod {
     sourceGuid: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
-    profilePropertyRule: ProfilePropertyRule;
-    profilePropertyRuleGuid: string;
-    profilePropertyRuleOptions: SimpleProfilePropertyRuleOptions;
+    property: Property;
+    propertyGuid: string;
+    propertyOptions: SimplePropertyOptions;
   }): Promise<Array<SourceFilterMethodResponseRow>>;
 }
 
@@ -384,7 +384,7 @@ export interface SourceRunPercentCompleteMethod {
 /**
  * If a Profile Property Rule is created within the source creation workflow, what default options should that new rule get?
  */
-export interface UniqueProfilePropertyRuleBootstrapOptions {
+export interface UniquePropertyBootstrapOptions {
   (argument: {
     connection: any;
     app: App;
@@ -394,7 +394,7 @@ export interface UniqueProfilePropertyRuleBootstrapOptions {
     sourceGuid: string;
     sourceOptions: SimpleSourceOptions;
     mappedColumn: string;
-  }): Promise<SimpleProfilePropertyRuleOptions>;
+  }): Promise<SimplePropertyOptions>;
 }
 
 /**
@@ -445,20 +445,20 @@ export type DestinationMappingOptionsResponseTypes =
   | "phoneNumber"
   | "string"
   | "url";
-export interface DestinationMappingOptionsResponseProfilePropertyRule {
+export interface DestinationMappingOptionsResponseProperty {
   key: string;
   type: DestinationMappingOptionsResponseTypes;
   important?: boolean;
 }
-export interface DestinationMappingOptionsResponseProfilePropertyRules {
-  required: Array<DestinationMappingOptionsResponseProfilePropertyRule>;
-  known: Array<DestinationMappingOptionsResponseProfilePropertyRule>;
-  allowOptionalFromProfilePropertyRules: boolean;
+export interface DestinationMappingOptionsResponseProperties {
+  required: Array<DestinationMappingOptionsResponseProperty>;
+  known: Array<DestinationMappingOptionsResponseProperty>;
+  allowOptionalFromProperties: boolean;
 }
 export interface DestinationMappingOptionsMethodResponse {
-  profilePropertyRules: DestinationMappingOptionsResponseProfilePropertyRules;
+  properties: DestinationMappingOptionsResponseProperties;
   labels: {
-    profilePropertyRule: {
+    property: {
       singular: string; // merge var
       plural: string; // merge vars
     };

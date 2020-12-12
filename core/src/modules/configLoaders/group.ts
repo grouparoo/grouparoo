@@ -6,7 +6,7 @@ import {
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { Group } from "../..";
-import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+import { Property } from "../../models/Property";
 import { Op } from "sequelize";
 import { task } from "actionhero";
 
@@ -33,16 +33,14 @@ export async function loadGroup(configObject: ConfigurationObject) {
   if (configObject.rules) {
     const rules = [...configObject.rules];
     for (const i in rules) {
-      if (rules[i]["profilePropertyRuleId"]) {
-        const profilePropertyRuleGuid = await validateAndFormatGuid(
-          ProfilePropertyRule,
-          rules[i]["profilePropertyRuleId"]
+      if (rules[i]["propertyId"]) {
+        const propertyGuid = await validateAndFormatGuid(
+          Property,
+          rules[i]["propertyId"]
         );
-        const profilePropertyRule = await ProfilePropertyRule.findByGuid(
-          profilePropertyRuleGuid
-        );
-        delete rules[i]["profilePropertyRuleId"];
-        rules[i].key = profilePropertyRule.key;
+        const property = await Property.findByGuid(propertyGuid);
+        delete rules[i]["propertyId"];
+        rules[i].key = property.key;
       }
     }
 

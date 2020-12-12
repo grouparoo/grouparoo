@@ -3,7 +3,7 @@ import { specHelper } from "actionhero";
 import { Destination } from "./../../src/models/Destination";
 import { Group } from "./../../src/models/Group";
 import { Profile } from "./../../src/models/Profile";
-import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
+import { Property } from "./../../src/models/Property";
 import { Source } from "./../../src/models/Source";
 
 let actionhero;
@@ -27,7 +27,7 @@ describe("actions/destinations", () => {
       password: "P@ssw0rd!",
       email: "mario@example.com",
     });
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
   });
 
   describe("administrator signed in", () => {
@@ -178,18 +178,18 @@ describe("actions/destinations", () => {
             singular: "list",
             plural: "lists",
           },
-          profilePropertyRule: {
+          property: {
             singular: "var",
             plural: "vars",
           },
         },
-        profilePropertyRules: {
+        properties: {
           required: [{ key: "primary-id", type: "integer" }],
           known: [
             { key: "secondary-id", type: "any" },
             { key: "string-property", type: "string" },
           ],
-          allowOptionalFromProfilePropertyRules: true,
+          allowOptionalFromProperties: true,
         },
       });
       expect(_destinationTypeConversions).toEqual({
@@ -391,9 +391,9 @@ describe("actions/destinations", () => {
         expect(_profile.groupNames).toEqual(["another-group-tag"]);
       });
 
-      test("destination:profilePreview will not fail if a new profile property has just been created or there are missing profile properties", async () => {
+      test("destination:profilePreview will not fail if a new profile property has just been created or there are missing properties", async () => {
         const source = await Source.findOne({ where: { state: "ready" } });
-        const colorRule = await ProfilePropertyRule.create({
+        const colorRule = await Property.create({
           key: "color",
           type: "string",
           sourceGuid: source.guid,

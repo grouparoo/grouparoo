@@ -20,7 +20,7 @@ describe("actions/cluster", () => {
     let csrfToken;
 
     beforeAll(async () => {
-      await helper.factories.profilePropertyRules();
+      await helper.factories.properties();
       await specHelper.runAction("team:initialize", {
         firstName: "Mario",
         lastName: "Mario",

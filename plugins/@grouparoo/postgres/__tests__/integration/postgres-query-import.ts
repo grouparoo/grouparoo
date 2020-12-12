@@ -6,7 +6,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
-import { ProfilePropertyRule } from "@grouparoo/core";
+import { Property } from "@grouparoo/core";
 import { beforeData, afterData, getConfig } from "../utils/data";
 
 const { appOptions, usersTableName } = getConfig();
@@ -37,7 +37,7 @@ describe("integration/runs/postgres", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
     helper.disableTestPluginImport();
   });
 
@@ -98,7 +98,7 @@ describe("integration/runs/postgres", () => {
   });
 
   test("replace the email profile property rule with a new one for this source", async () => {
-    const oldRule = await ProfilePropertyRule.findOne({
+    const oldRule = await Property.findOne({
       where: { key: "email" },
     });
     await oldRule.destroy();
@@ -111,13 +111,12 @@ describe("integration/runs/postgres", () => {
       unique: true,
     };
 
-    const {
-      error,
-      profilePropertyRule,
-      pluginOptions,
-    } = await specHelper.runAction("profilePropertyRule:create", session);
+    const { error, property, pluginOptions } = await specHelper.runAction(
+      "property:create",
+      session
+    );
     expect(error).toBeUndefined();
-    expect(profilePropertyRule.guid).toBeTruthy();
+    expect(property.guid).toBeTruthy();
 
     // check the pluginOptions
     expect(pluginOptions.length).toBe(1);
@@ -126,14 +125,14 @@ describe("integration/runs/postgres", () => {
     // set the options
     session.params = {
       csrfToken,
-      guid: profilePropertyRule.guid,
+      guid: property.guid,
       options: {
         query: `select email from ${usersTableName} where id = {{ userId }}`,
       },
       state: "ready",
     };
     const { error: editError } = await specHelper.runAction(
-      "profilePropertyRule:edit",
+      "property:edit",
       session
     );
     expect(editError).toBeUndefined();

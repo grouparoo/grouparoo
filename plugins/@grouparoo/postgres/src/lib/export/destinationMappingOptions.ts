@@ -31,7 +31,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
 
   return {
     labels: {
-      profilePropertyRule: {
+      property: {
         singular: "Exported Profile Property Rule",
         plural: "Exported Profile Property Rules",
       },
@@ -40,10 +40,10 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
         plural: "Exported Groups",
       },
     },
-    profilePropertyRules: {
+    properties: {
       required: [{ key: destinationOptions.primaryKey, type: "any" }],
       known: columns,
-      allowOptionalFromProfilePropertyRules: false,
+      allowOptionalFromProperties: false,
     },
   };
 };

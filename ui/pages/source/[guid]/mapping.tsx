@@ -32,15 +32,12 @@ export default function Page(props) {
       ? Object.values(props.source.mapping)[0]
       : ""
   );
-  const [profilePropertyRules, setProfilePropertyRules] = useState(
-    props.profilePropertyRules
-  );
+  const [properties, setProperties] = useState(props.properties);
   const [preview, setPreview] = useState(props.preview || []);
-  const [
-    profilePropertyRuleExamples,
-    setProfilePropertyRuleExamples,
-  ] = useState(props.profilePropertyRuleExamples);
-  const [newProfilePropertyRule, setNewProfilePropertyRule] = useState({
+  const [propertyExamples, setPropertyExamples] = useState(
+    props.propertyExamples
+  );
+  const [newProperty, setNewProperty] = useState({
     key: "",
     type: "",
   });
@@ -48,37 +45,37 @@ export default function Page(props) {
 
   if (hydrationError) errorHandler.set({ error: hydrationError });
 
-  const bootstrapUniqueProfilePropertyRule = async () => {
+  const bootstrapUniqueProperty = async () => {
     if (newMappingKey === "") {
       return errorHandler.set({ error: "select profile identification" });
     }
 
     if (confirm("are you sure?")) {
       setLoading(true);
-      const response: Actions.SourceBootstrapUniqueProfilePropertyRule = await execApi(
+      const response: Actions.SourceBootstrapUniqueProperty = await execApi(
         "post",
-        `/source/${source.guid}/bootstrapUniqueProfilePropertyRule`,
-        Object.assign(newProfilePropertyRule, { mappedColumn: newMappingKey })
+        `/source/${source.guid}/bootstrapUniqueProperty`,
+        Object.assign(newProperty, { mappedColumn: newMappingKey })
       );
-      if (response?.profilePropertyRule) {
+      if (response?.property) {
         successHandler.set({ message: "Profile Property Rule created" });
 
-        const prrResponse: Actions.ProfilePropertyRulesList = await execApi(
+        const prrResponse: Actions.PropertiesList = await execApi(
           "get",
-          `/profilePropertyRules`,
+          `/properties`,
           {
             unique: true,
             state: "ready",
           }
         );
-        if (prrResponse?.profilePropertyRules) {
-          setProfilePropertyRules(prrResponse.profilePropertyRules);
-          setProfilePropertyRuleExamples(prrResponse.examples);
+        if (prrResponse?.properties) {
+          setProperties(prrResponse.properties);
+          setPropertyExamples(prrResponse.examples);
         }
 
-        setNewMappingValue(response.profilePropertyRule.key);
+        setNewMappingValue(response.property.key);
         document.getElementById(
-          response.profilePropertyRule.guid
+          response.property.guid
           // @ts-ignore
         ).checked = true;
       }
@@ -239,7 +236,7 @@ export default function Page(props) {
             </Col>
 
             <Col>
-              {profilePropertyRules.length > 0 ? (
+              {properties.length > 0 ? (
                 <>
                   <p>Choose the Unique Grouparoo Profile Property:</p>
                   <fieldset>
@@ -252,7 +249,7 @@ export default function Page(props) {
                         </tr>
                       </thead>
                       <tbody>
-                        {profilePropertyRules.map((rule) => (
+                        {properties.map((rule) => (
                           <tr key={`prr-${rule.guid}`}>
                             <td>
                               <Form.Check
@@ -272,8 +269,8 @@ export default function Page(props) {
                               <strong>{rule.key}</strong>
                             </td>
                             <td>
-                              {profilePropertyRuleExamples[rule.guid]
-                                ? profilePropertyRuleExamples[rule.guid]
+                              {propertyExamples[rule.guid]
+                                ? propertyExamples[rule.guid]
                                     .slice(0, 3)
                                     .join(", ")
                                 : null}
@@ -303,11 +300,11 @@ export default function Page(props) {
                       required
                       type="text"
                       placeholder="Profile Property Rule Key"
-                      defaultValue={newProfilePropertyRule.key}
+                      defaultValue={newProperty.key}
                       disabled={loading}
                       onChange={(e) => {
-                        setNewProfilePropertyRule(
-                          Object.assign({}, newProfilePropertyRule, {
+                        setNewProperty(
+                          Object.assign({}, newProperty, {
                             key: e.target.value,
                           })
                         );
@@ -323,11 +320,11 @@ export default function Page(props) {
                     <Form.Control
                       as="select"
                       required
-                      defaultValue={newProfilePropertyRule.type}
+                      defaultValue={newProperty.type}
                       disabled={loading}
                       onChange={(e) => {
-                        setNewProfilePropertyRule(
-                          Object.assign({}, newProfilePropertyRule, {
+                        setNewProperty(
+                          Object.assign({}, newProperty, {
                             //@ts-ignore
                             type: e.target.value,
                           })
@@ -346,7 +343,7 @@ export default function Page(props) {
                     size="sm"
                     variant="outline-primary"
                     disabled={loading}
-                    onClick={bootstrapUniqueProfilePropertyRule}
+                    onClick={bootstrapUniqueProperty}
                   >
                     Create Profile Property Rule
                   </LoadingButton>
@@ -365,14 +362,15 @@ Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
   const { source } = await execApi("get", `/source/${guid}`);
 
-  const {
-    profilePropertyRules,
-    examples: profilePropertyRuleExamples,
-  } = await execApi("get", `/profilePropertyRules`, {
-    state: "ready",
-    unique: true,
-  });
-  const { types } = await execApi("get", `/profilePropertyRuleOptions`);
+  const { properties, examples: propertyExamples } = await execApi(
+    "get",
+    `/properties`,
+    {
+      state: "ready",
+      unique: true,
+    }
+  );
+  const { types } = await execApi("get", `/propertyOptions`);
   const { total: scheduleCount } = await execApi("get", `/schedules`);
 
   let preview;
@@ -390,8 +388,8 @@ Page.getInitialProps = async (ctx) => {
   return {
     source,
     preview,
-    profilePropertyRules,
-    profilePropertyRuleExamples,
+    properties,
+    propertyExamples,
     types,
     scheduleCount,
     hydrationError,

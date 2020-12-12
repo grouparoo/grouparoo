@@ -51,7 +51,7 @@ const _date_ops = [
   { op: "relative_lt", description: "is in the future" },
 ];
 
-export const ProfilePropertyRuleOpsDictionary = {
+export const PropertyOpsDictionary = {
   // types
   boolean: _boolean_ops,
   date: _date_ops,

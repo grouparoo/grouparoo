@@ -1,7 +1,7 @@
 import {
-  getProfilePropertyRuleOptions,
+  getPropertyOptions,
   PluginConnection,
-  PluginConnectionProfilePropertyRuleOption,
+  PluginConnectionPropertyOption,
   SourceOptionsMethod,
   getSourceOptions,
   ProfilePropertyPluginMethod,
@@ -28,7 +28,7 @@ export const buildConnection: BuildConnectionMethod = ({
   executeQuery,
   validateQuery = validateGenericQuery,
 }) => {
-  const profilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOption[] = getProfilePropertyRuleOptions();
+  const propertyOptions: PluginConnectionPropertyOption[] = getPropertyOptions();
   const sourceOptions: SourceOptionsMethod = getSourceOptions();
   const profileProperty: ProfilePropertyPluginMethod = getProfileProperty({
     executeQuery,
@@ -41,7 +41,7 @@ export const buildConnection: BuildConnectionMethod = ({
     description,
     app,
     options: [],
-    profilePropertyRuleOptions,
+    propertyOptions,
     methods: {
       sourceOptions,
       profileProperty,

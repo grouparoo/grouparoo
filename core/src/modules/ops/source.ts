@@ -1,8 +1,5 @@
 import { Source, SimpleSourceOptions } from "../../models/Source";
-import {
-  ProfilePropertyRule,
-  ProfilePropertyRuleFiltersWithKey,
-} from "../../models/ProfilePropertyRule";
+import { Property, PropertyFiltersWithKey } from "../../models/Property";
 import { Profile } from "../../models/Profile";
 import { App } from "../../models/App";
 import { OptionHelper } from "../optionHelper";
@@ -80,9 +77,9 @@ export namespace SourceOps {
   export async function importProfileProperty(
     source: Source,
     profile: Profile,
-    profilePropertyRule: ProfilePropertyRule,
-    profilePropertyRuleOptionsOverride?: OptionHelper.SimpleOptions,
-    profilePropertyRuleFiltersOverride?: ProfilePropertyRuleFiltersWithKey[],
+    property: Property,
+    propertyOptionsOverride?: OptionHelper.SimpleOptions,
+    propertyFiltersOverride?: PropertyFiltersWithKey[],
     preloadedArgs: {
       app?: App;
       connection?: any;
@@ -92,18 +89,11 @@ export namespace SourceOps {
       profileProperties?: {};
     } = {}
   ) {
-    if (
-      profilePropertyRule.state !== "ready" &&
-      !profilePropertyRuleOptionsOverride
-    ) {
+    if (property.state !== "ready" && !propertyOptionsOverride) {
       return;
     }
 
-    await profilePropertyRule.validateOptions(
-      profilePropertyRuleOptionsOverride,
-      false,
-      true
-    );
+    await property.validateOptions(propertyOptionsOverride, false, true);
 
     const { pluginConnection } = await source.getPlugin();
     if (!pluginConnection) {
@@ -125,10 +115,10 @@ export namespace SourceOps {
 
     // we may not have the profile property needed to make the mapping (ie: userId is not set on this anonymous profile)
     if (Object.values(sourceMapping).length > 0) {
-      const profilePropertyRuleMappingKey = Object.values(sourceMapping)[0];
+      const propertyMappingKey = Object.values(sourceMapping)[0];
       const profileProperties =
         preloadedArgs.profileProperties || (await profile.properties());
-      if (!profileProperties[profilePropertyRuleMappingKey]) {
+      if (!profileProperties[propertyMappingKey]) {
         return;
       }
     }
@@ -148,14 +138,14 @@ export namespace SourceOps {
         sourceGuid: source.guid,
         sourceOptions,
         sourceMapping,
-        profilePropertyRule,
-        profilePropertyRuleGuid: profilePropertyRule.guid,
-        profilePropertyRuleOptions: profilePropertyRuleOptionsOverride
-          ? profilePropertyRuleOptionsOverride
-          : await profilePropertyRule.getOptions(),
-        profilePropertyRuleFilters: profilePropertyRuleFiltersOverride
-          ? profilePropertyRuleFiltersOverride
-          : await profilePropertyRule.getFilters(),
+        property,
+        propertyGuid: property.guid,
+        propertyOptions: propertyOptionsOverride
+          ? propertyOptionsOverride
+          : await property.getOptions(),
+        propertyFilters: propertyFiltersOverride
+          ? propertyFiltersOverride
+          : await property.getFilters(),
         profile,
         profileGuid: profile.guid,
       });
@@ -174,9 +164,9 @@ export namespace SourceOps {
   export async function importProfileProperties(
     source: Source,
     profiles: Profile[],
-    profilePropertyRule: ProfilePropertyRule,
-    profilePropertyRuleOptionsOverride?: OptionHelper.SimpleOptions,
-    profilePropertyRuleFiltersOverride?: ProfilePropertyRuleFiltersWithKey[],
+    property: Property,
+    propertyOptionsOverride?: OptionHelper.SimpleOptions,
+    propertyFiltersOverride?: PropertyFiltersWithKey[],
     preloadedArgs: {
       app?: App;
       connection?: any;
@@ -186,18 +176,11 @@ export namespace SourceOps {
       profileProperties?: {};
     } = {}
   ) {
-    if (
-      profilePropertyRule.state !== "ready" &&
-      !profilePropertyRuleOptionsOverride
-    ) {
+    if (property.state !== "ready" && !propertyOptionsOverride) {
       return;
     }
 
-    await profilePropertyRule.validateOptions(
-      profilePropertyRuleOptionsOverride,
-      false,
-      true
-    );
+    await property.validateOptions(propertyOptionsOverride, false, true);
 
     const { pluginConnection } = await source.getPlugin();
     if (!pluginConnection) {
@@ -232,14 +215,14 @@ export namespace SourceOps {
         sourceGuid: source.guid,
         sourceOptions,
         sourceMapping,
-        profilePropertyRule,
-        profilePropertyRuleGuid: profilePropertyRule.guid,
-        profilePropertyRuleOptions: profilePropertyRuleOptionsOverride
-          ? profilePropertyRuleOptionsOverride
-          : await profilePropertyRule.getOptions(),
-        profilePropertyRuleFilters: profilePropertyRuleFiltersOverride
-          ? profilePropertyRuleFiltersOverride
-          : await profilePropertyRule.getFilters(),
+        property,
+        propertyGuid: property.guid,
+        propertyOptions: propertyOptionsOverride
+          ? propertyOptionsOverride
+          : await property.getOptions(),
+        propertyFilters: propertyFiltersOverride
+          ? propertyFiltersOverride
+          : await property.getFilters(),
         profiles,
         profileGuids: profiles.map((p) => p.guid),
       });
@@ -257,7 +240,7 @@ export namespace SourceOps {
    */
   export async function _import(source: Source, profile: Profile) {
     const hash = {};
-    const rules = await source.$get("profilePropertyRules", {
+    const rules = await source.$get("properties", {
       where: { state: "ready" },
     });
 
@@ -300,14 +283,14 @@ export namespace SourceOps {
   /**
    * This method is used to bootstrap a new source which requires a profile property rule for a mapping, but the rule doesn't yet exist.
    */
-  export async function bootstrapUniqueProfilePropertyRule(
+  export async function bootstrapUniqueProperty(
     source: Source,
     key: string,
     type: string,
     mappedColumn: string,
     guid?: string
   ) {
-    const rule = ProfilePropertyRule.build({
+    const rule = Property.build({
       guid,
       key,
       type,
@@ -320,10 +303,10 @@ export namespace SourceOps {
 
     try {
       // manually run the hooks we want
-      ProfilePropertyRule.generateGuid(rule);
-      await ProfilePropertyRule.ensureUniqueKey(rule);
-      await ProfilePropertyRule.ensureNonArrayAndUnique(rule);
-      await ProfilePropertyRule.ensureOneIdentifyingProperty(rule);
+      Property.generateGuid(rule);
+      await Property.ensureUniqueKey(rule);
+      await Property.ensureNonArrayAndUnique(rule);
+      await Property.ensureOneIdentifyingProperty(rule);
 
       // danger zone!
       await LoggedModel.logCreate(rule, {});
@@ -333,14 +316,14 @@ export namespace SourceOps {
       // build the default options
       const { pluginConnection } = await source.getPlugin();
       if (
-        typeof pluginConnection.methods
-          .uniqueProfilePropertyRuleBootstrapOptions === "function"
+        typeof pluginConnection.methods.uniquePropertyBootstrapOptions ===
+        "function"
       ) {
         const app = await source.$get("app");
         const connection = await app.getConnection();
         const appOptions = await app.getOptions();
         const options = await source.getOptions();
-        const ruleOptions = await pluginConnection.methods.uniqueProfilePropertyRuleBootstrapOptions(
+        const ruleOptions = await pluginConnection.methods.uniquePropertyBootstrapOptions(
           {
             app,
             appGuid: app.guid,

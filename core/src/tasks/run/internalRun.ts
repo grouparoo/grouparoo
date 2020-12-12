@@ -52,11 +52,11 @@ export class RunInternalRun extends Task {
         creatorGuid: run.guid,
       });
 
-      if (run.creatorType === "profilePropertyRule") {
+      if (run.creatorType === "property") {
         const property = await ProfileProperty.findOne({
           where: {
             profileGuid: profile.guid,
-            profilePropertyRuleGuid: run.creatorGuid,
+            propertyGuid: run.creatorGuid,
           },
         });
 

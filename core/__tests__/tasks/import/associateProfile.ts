@@ -10,7 +10,7 @@ describe("tasks/import:associateProfile", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     await api.resque.queue.connection.redis.flushdb();
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
   }, helper.setupTime);
 
   afterAll(async () => {

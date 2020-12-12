@@ -11,7 +11,7 @@ import LoadingButton from "../../components/loadingButton";
 import LockedBadge from "../../components/badges/lockedBadge";
 
 import ImportAndUpdateAllProfiles from "../../components/settings/importAndUpdate";
-import IdentifyingProfilePropertyRule from "../../components/settings/identifyingProfilePropertyRule";
+import IdentifyingProperty from "../../components/settings/identifyingProperty";
 import ResetCluster from "../../components/settings/resetCluster";
 import ClearCache from "../../components/settings/clearCache";
 
@@ -247,7 +247,7 @@ function ActionsTab({ errorHandler, successHandler }) {
 function InterfaceTab({ errorHandler, successHandler }) {
   return (
     <>
-      <IdentifyingProfilePropertyRule
+      <IdentifyingProperty
         errorHandler={errorHandler}
         successHandler={successHandler}
       />

@@ -13,7 +13,7 @@ describe("models/destination", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
   }, helper.setupTime);
 
   afterAll(async () => {
@@ -377,15 +377,15 @@ describe("models/destination", () => {
                       singular: "list",
                       plural: "lists",
                     },
-                    profilePropertyRule: {
+                    property: {
                       singular: "var",
                       plural: "vars",
                     },
                   },
-                  profilePropertyRules: {
+                  properties: {
                     required,
                     known,
-                    allowOptionalFromProfilePropertyRules: true,
+                    allowOptionalFromProperties: true,
                   },
                 };
               },

@@ -59,7 +59,7 @@ describe("model/group", () => {
           where: { groupGuid: group.guid },
         });
         expect(groupRule.profileColumn).toBe("guid");
-        expect(groupRule.profilePropertyRuleGuid).toBe(null);
+        expect(groupRule.propertyGuid).toBe(null);
 
         expect(await group.countPotentialMembers()).toBe(4);
       });
@@ -83,7 +83,7 @@ describe("model/group", () => {
             groupGuid: group.guid,
           })
         ).rejects.toThrow(
-          /either profilePropertyRuleGuid or profileColumn is required for a GroupRule/
+          /either propertyGuid or profileColumn is required for a GroupRule/
         );
       });
 
@@ -110,7 +110,7 @@ describe("model/group", () => {
               operation: { op: "exists" },
             },
           ])
-        ).rejects.toThrow(/cannot find type for ProfilePropertyRule gui/);
+        ).rejects.toThrow(/cannot find type for Property gui/);
       });
 
       describe("guid", () => {

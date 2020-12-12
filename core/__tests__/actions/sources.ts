@@ -1,17 +1,12 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Op } from "sequelize";
-import {
-  ProfileProperty,
-  ProfilePropertyRule,
-  Option,
-  Source,
-} from "../../src";
+import { ProfileProperty, Property, Option, Source } from "../../src";
 
 let actionhero;
 let app;
 let guid;
-let profilePropertyRuleGuid;
+let propertyGuid;
 
 describe("actions/sources", () => {
   beforeAll(async () => {
@@ -92,13 +87,13 @@ describe("actions/sources", () => {
         type: "integer",
         mappedColumn: "id",
       };
-      const { profilePropertyRule, error } = await specHelper.runAction(
-        "source:bootstrapUniqueProfilePropertyRule",
+      const { property, error } = await specHelper.runAction(
+        "source:bootstrapUniqueProperty",
         connection
       );
       expect(error).toBeUndefined();
-      expect(profilePropertyRule.guid).toBeTruthy();
-      profilePropertyRuleGuid = profilePropertyRule.guid;
+      expect(property.guid).toBeTruthy();
+      propertyGuid = property.guid;
     });
 
     test("an administrator can list the connection + app pairs available for a new connection", async () => {
@@ -272,10 +267,10 @@ describe("actions/sources", () => {
 
       connection.params = {
         csrfToken,
-        guid: profilePropertyRuleGuid,
+        guid: propertyGuid,
       };
       const deleteRuleResponse = await specHelper.runAction(
-        "profilePropertyRule:destroy",
+        "property:destroy",
         connection
       );
       expect(deleteRuleResponse.error).toBeUndefined();
@@ -295,20 +290,20 @@ describe("actions/sources", () => {
       expect(count).toBe(0);
     });
 
-    describe("with profile properties", () => {
+    describe("with properties", () => {
       beforeAll(async () => {
-        await helper.factories.profilePropertyRules();
+        await helper.factories.properties();
       });
 
-      test("an administrator can list the pending profile properties by source", async () => {
+      test("an administrator can list the pending properties by source", async () => {
         connection.params = { csrfToken };
 
         const profile = await helper.factories.profile();
         await profile.buildNullProperties();
-        const emailRule = await ProfilePropertyRule.findOne({
+        const emailRule = await Property.findOne({
           where: { key: "email" },
         });
-        const firstNameRule = await ProfilePropertyRule.findOne({
+        const firstNameRule = await Property.findOne({
           where: { key: "firstName" },
         });
         await ProfileProperty.update(
@@ -316,7 +311,7 @@ describe("actions/sources", () => {
           {
             where: {
               profileGuid: profile.guid,
-              profilePropertyRuleGuid: {
+              propertyGuid: {
                 [Op.in]: [emailRule.guid, firstNameRule.guid],
               },
             },

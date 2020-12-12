@@ -15,7 +15,7 @@ describe("modules/locks", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
   });
 
   beforeEach(async () => {

@@ -15,7 +15,7 @@ describe("models/destination", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
   }, helper.setupTime);
 
   afterAll(async () => {
@@ -275,7 +275,7 @@ describe("models/destination", () => {
         );
       });
 
-      test("mappings must map to profilePropertyRules", async () => {
+      test("mappings must map to properties", async () => {
         destination = await helper.factories.destination();
         await destination.setMapping({
           "primary-id": "userId",

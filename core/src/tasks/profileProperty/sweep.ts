@@ -1,7 +1,7 @@
 import { Task } from "actionhero";
 import { Profile } from "../../models/Profile";
 import { ProfileProperty } from "../../models/ProfileProperty";
-import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+import { Property } from "../../models/Property";
 import { plugin } from "../../modules/plugin";
 
 export class ProfilePropertySweep extends Task {
@@ -36,8 +36,8 @@ export class ProfilePropertySweep extends Task {
 
     // delete those profile properties who have no profile property rule
     const profilePropertiesMissingRule = await ProfileProperty.findAll({
-      include: [{ model: ProfilePropertyRule, required: false }],
-      where: { "$profilePropertyRule.guid$": null },
+      include: [{ model: Property, required: false }],
+      where: { "$property.guid$": null },
       limit,
     });
 

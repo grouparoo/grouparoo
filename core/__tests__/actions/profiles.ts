@@ -4,7 +4,7 @@ import { Profile } from "./../../src/models/Profile";
 import { Group } from "./../../src/models/Group";
 import { Team } from "./../../src/models/Team";
 import { TeamMember } from "./../../src/models/TeamMember";
-import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
+import { Property } from "./../../src/models/Property";
 let actionhero;
 let guid;
 
@@ -28,7 +28,7 @@ describe("actions/profiles", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
     helper.disableTestPluginImport();
 
     await specHelper.runAction("team:initialize", {
@@ -190,14 +190,14 @@ describe("actions/profiles", () => {
       expect(readyTotal).toBe(0);
     });
 
-    test("a writer can get autocomplete results from profile properties", async () => {
-      const emailRule = await ProfilePropertyRule.findOne({
+    test("a writer can get autocomplete results from properties", async () => {
+      const emailRule = await Property.findOne({
         where: { key: "email" },
       });
 
       connection.params = {
         csrfToken,
-        profilePropertyRuleGuid: emailRule.guid,
+        propertyGuid: emailRule.guid,
         match: "@example.com",
       };
       const { error, profileProperties } = await specHelper.runAction(
@@ -221,7 +221,7 @@ describe("actions/profiles", () => {
       expect(run.guid).toBeTruthy();
 
       const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
-      const rulesCount = await ProfilePropertyRule.count();
+      const rulesCount = await Property.count();
       expect(foundTasks.length).toBe(rulesCount + 1);
     });
 
@@ -539,7 +539,7 @@ describe("actions/profiles", () => {
           simpleProfileValues(profiles[0].properties).userId
         ).toBeUndefined();
 
-        // TODO: we need to do a double join to check group member's profile properties.  The profiles returned are good, but not the total counts
+        // TODO: we need to do a double join to check group member's properties.  The profiles returned are good, but not the total counts
         // expect(total).toBe(1)
       });
 
@@ -563,7 +563,7 @@ describe("actions/profiles", () => {
           simpleProfileValues(profiles[0].properties).userId
         ).toBeUndefined();
 
-        // TODO: we need to do a double join to check group member's profile properties.  The profiles returned are good, but not the total counts
+        // TODO: we need to do a double join to check group member's properties.  The profiles returned are good, but not the total counts
         // expect(total).toBe(1)
       });
 
@@ -617,7 +617,7 @@ describe("actions/profiles", () => {
           simpleProfileValues(profiles[0].properties).userId
         ).toBeUndefined();
 
-        // TODO: we need to do a double join to check group member's profile properties.  The profiles returned are good, but not the total counts
+        // TODO: we need to do a double join to check group member's properties.  The profiles returned are good, but not the total counts
         // expect(total).toBe(1)
       });
 

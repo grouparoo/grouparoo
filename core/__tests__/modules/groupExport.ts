@@ -19,7 +19,7 @@ describe("modules/groupExport", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
   });
 
   describe("groupExport", () => {

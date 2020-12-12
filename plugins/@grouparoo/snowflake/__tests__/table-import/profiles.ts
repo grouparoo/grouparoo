@@ -87,7 +87,7 @@ describe("snowflake/table/profiles", () => {
 
   beforeAll(async () => {
     // make the userId and email and other properties
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
 
     // setup the world
     const app = await helper.factories.app({

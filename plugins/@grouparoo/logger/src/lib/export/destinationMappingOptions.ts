@@ -3,7 +3,7 @@ import { DestinationMappingOptionsMethod } from "@grouparoo/core";
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async () => {
   return {
     labels: {
-      profilePropertyRule: {
+      property: {
         singular: "Logger Profile Property Rule",
         plural: "Logger Profile Property Rules",
       },
@@ -12,10 +12,10 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
         plural: "Logger Tags",
       },
     },
-    profilePropertyRules: {
+    properties: {
       required: [{ key: "primary id", type: "string" }],
       known: [{ key: "secondary id", type: "string", important: true }],
-      allowOptionalFromProfilePropertyRules: true,
+      allowOptionalFromProperties: true,
     },
   };
 };

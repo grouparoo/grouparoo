@@ -6,7 +6,7 @@ import LockedBadge from "../../../components/badges/lockedBadge";
 import Link from "next/link";
 import Moment from "react-moment";
 import ScheduleAddButton from "../../../components/schedule/add";
-import ProfilePropertyRuleAddButton from "../../../components/profilePropertyRule/add";
+import PropertyAddButton from "../../../components/property/add";
 import SourceTabs from "../../../components/tabs/source";
 import Head from "next/head";
 import { Models } from "../../../utils/apiData";
@@ -18,13 +18,13 @@ export default function Page({
   successHandler,
   source,
   run,
-  profilePropertyRules,
+  properties,
 }: {
   errorHandler: ErrorHandler;
   successHandler: SuccessHandler;
   source: Models.SourceType;
   run: Models.RunType;
-  profilePropertyRules: Models.ProfilePropertyRuleType[];
+  properties: Models.PropertyType[];
 }) {
   const recurringFrequencyMinutes = source?.schedule?.recurringFrequency
     ? Math.round(source.schedule.recurringFrequency / 1000 / 60)
@@ -80,12 +80,12 @@ export default function Page({
               </tr>
             </thead>
             <tbody>
-              {profilePropertyRules.map((rule) => (
+              {properties.map((rule) => (
                 <tr key={`rule-${rule.guid}`}>
                   <td>
                     <Link
-                      href="/profilePropertyRule/[guid]/edit"
-                      as={`/profilePropertyRule/${rule.guid}/edit`}
+                      href="/property/[guid]/edit"
+                      as={`/property/${rule.guid}/edit`}
                     >
                       <a>
                         <strong>
@@ -110,7 +110,7 @@ export default function Page({
               ))}
             </tbody>
           </Table>
-          <ProfilePropertyRuleAddButton
+          <PropertyAddButton
             errorHandler={errorHandler}
             successHandler={successHandler}
             source={source}
@@ -271,11 +271,9 @@ Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
   const { execApi } = useApi(ctx);
   const { source } = await execApi("get", `/source/${guid}`);
-  const { profilePropertyRules } = await execApi(
-    "get",
-    `/profilePropertyRules`,
-    { sourceGuid: guid }
-  );
+  const { properties } = await execApi("get", `/properties`, {
+    sourceGuid: guid,
+  });
 
   let run;
   if (source?.schedule?.guid) {
@@ -286,5 +284,5 @@ Page.getInitialProps = async (ctx) => {
     run = runs[0];
   }
 
-  return { source, run, profilePropertyRules };
+  return { source, run, properties };
 };

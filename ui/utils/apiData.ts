@@ -18,7 +18,7 @@ import {
   Permission,
   Profile,
   ProfileProperty,
-  ProfilePropertyRule,
+  Property,
   Run,
   Setting,
   SetupStep,
@@ -56,9 +56,7 @@ export namespace Models {
   export type ProfilePropertyType = Partial<
     AsyncReturnType<ProfileProperty["apiData"]>
   >;
-  export type ProfilePropertyRuleType = Partial<
-    AsyncReturnType<ProfilePropertyRule["apiData"]>
-  >;
+  export type PropertyType = Partial<AsyncReturnType<Property["apiData"]>>;
   export type SettingType = Partial<AsyncReturnType<Setting["apiData"]>>;
   export type SetupStepType = Partial<AsyncReturnType<SetupStep["apiData"]>>;
   export type RunType = Partial<AsyncReturnType<Run["apiData"]>>;
@@ -158,19 +156,19 @@ import {
 import { NavigationList } from "@grouparoo/core/src/actions/navigation";
 import { PluginsList } from "@grouparoo/core/src/actions/plugins";
 import {
-  ProfilePropertyRuleCreate,
-  ProfilePropertyRuleDestroy,
-  ProfilePropertyRuleEdit,
-  ProfilePropertyRuleMakeIdentifying,
-  ProfilePropertyRuleFilterOptions,
-  ProfilePropertyRuleGroups,
-  ProfilePropertyRulePluginOptions,
-  ProfilePropertyRuleProfilePreview,
-  ProfilePropertyRuleTest,
-  ProfilePropertyRuleView,
-  ProfilePropertyRulesList,
-  ProfilePropertyRulesOptions,
-} from "@grouparoo/core/src/actions/profilePropertyRules";
+  PropertyCreate,
+  PropertyDestroy,
+  PropertyEdit,
+  PropertyMakeIdentifying,
+  PropertyFilterOptions,
+  PropertyGroups,
+  PropertyPluginOptions,
+  PropertyProfilePreview,
+  PropertyTest,
+  PropertyView,
+  PropertiesList,
+  PropertiesOptions,
+} from "@grouparoo/core/src/actions/properties";
 import {
   ProfileAutocompleteProfileProperty,
   ProfileCreate,
@@ -223,7 +221,7 @@ import {
   SetupStepsList,
 } from "@grouparoo/core/src/actions/setupSteps";
 import {
-  SourceBootstrapUniqueProfilePropertyRule,
+  SourceBootstrapUniqueProperty,
   SourceConnectionApps,
   SourceCreate,
   SourceDestroy,
@@ -391,41 +389,35 @@ export namespace Actions {
 
   export type PluginsList = AsyncReturnType<typeof PluginsList.prototype.run>;
 
-  export type ProfilePropertyRuleCreate = AsyncReturnType<
-    typeof ProfilePropertyRuleCreate.prototype.run
+  export type PropertyCreate = AsyncReturnType<
+    typeof PropertyCreate.prototype.run
   >;
-  export type ProfilePropertyRuleDestroy = AsyncReturnType<
-    typeof ProfilePropertyRuleDestroy.prototype.run
+  export type PropertyDestroy = AsyncReturnType<
+    typeof PropertyDestroy.prototype.run
   >;
-  export type ProfilePropertyRuleEdit = AsyncReturnType<
-    typeof ProfilePropertyRuleEdit.prototype.run
+  export type PropertyEdit = AsyncReturnType<typeof PropertyEdit.prototype.run>;
+  export type PropertyMakeIdentifying = AsyncReturnType<
+    typeof PropertyMakeIdentifying.prototype.run
   >;
-  export type ProfilePropertyRuleMakeIdentifying = AsyncReturnType<
-    typeof ProfilePropertyRuleMakeIdentifying.prototype.run
+  export type PropertyFilterOptions = AsyncReturnType<
+    typeof PropertyFilterOptions.prototype.run
   >;
-  export type ProfilePropertyRuleFilterOptions = AsyncReturnType<
-    typeof ProfilePropertyRuleFilterOptions.prototype.run
+  export type PropertyGroups = AsyncReturnType<
+    typeof PropertyGroups.prototype.run
   >;
-  export type ProfilePropertyRuleGroups = AsyncReturnType<
-    typeof ProfilePropertyRuleGroups.prototype.run
+  export type PropertyPluginOptions = AsyncReturnType<
+    typeof PropertyPluginOptions.prototype.run
   >;
-  export type ProfilePropertyRulePluginOptions = AsyncReturnType<
-    typeof ProfilePropertyRulePluginOptions.prototype.run
+  export type PropertyProfilePreview = AsyncReturnType<
+    typeof PropertyProfilePreview.prototype.run
   >;
-  export type ProfilePropertyRuleProfilePreview = AsyncReturnType<
-    typeof ProfilePropertyRuleProfilePreview.prototype.run
+  export type PropertyTest = AsyncReturnType<typeof PropertyTest.prototype.run>;
+  export type PropertyView = AsyncReturnType<typeof PropertyView.prototype.run>;
+  export type PropertiesList = AsyncReturnType<
+    typeof PropertiesList.prototype.run
   >;
-  export type ProfilePropertyRuleTest = AsyncReturnType<
-    typeof ProfilePropertyRuleTest.prototype.run
-  >;
-  export type ProfilePropertyRuleView = AsyncReturnType<
-    typeof ProfilePropertyRuleView.prototype.run
-  >;
-  export type ProfilePropertyRulesList = AsyncReturnType<
-    typeof ProfilePropertyRulesList.prototype.run
-  >;
-  export type ProfilePropertyRulesOptions = AsyncReturnType<
-    typeof ProfilePropertyRulesOptions.prototype.run
+  export type PropertiesOptions = AsyncReturnType<
+    typeof PropertiesOptions.prototype.run
   >;
 
   export type ProfileAutocompleteProfileProperty = AsyncReturnType<
@@ -530,8 +522,8 @@ export namespace Actions {
     typeof SetupStepsList.prototype.run
   >;
 
-  export type SourceBootstrapUniqueProfilePropertyRule = AsyncReturnType<
-    typeof SourceBootstrapUniqueProfilePropertyRule.prototype.run
+  export type SourceBootstrapUniqueProperty = AsyncReturnType<
+    typeof SourceBootstrapUniqueProperty.prototype.run
   >;
   export type SourceConnectionApps = AsyncReturnType<
     typeof SourceConnectionApps.prototype.run

@@ -8,7 +8,7 @@ import { Option } from "./../models/Option";
 import { Source } from "./../models/Source";
 import { Destination } from "./../models/Destination";
 import { Schedule } from "./../models/Schedule";
-import { ProfilePropertyRule } from "./../models/ProfilePropertyRule";
+import { Property } from "../models/Property";
 import { App } from "./../models/App";
 import { LoggedModel } from "../classes/loggedModel";
 import { Transaction } from "sequelize";
@@ -26,7 +26,7 @@ export namespace OptionHelper {
   }
 
   export async function getOptions(
-    instance: Source | Destination | Schedule | ProfilePropertyRule | App,
+    instance: Source | Destination | Schedule | Property | App,
     sourceFromEnvironment = true
   ) {
     let optionsObject: SimpleOptions = {};
@@ -46,7 +46,7 @@ export namespace OptionHelper {
   }
 
   export async function setOptions(
-    instance: Source | Destination | Schedule | ProfilePropertyRule | App,
+    instance: Source | Destination | Schedule | Property | App,
     options: SimpleOptions
   ) {
     await validateOptions(instance, options);
@@ -110,7 +110,7 @@ export namespace OptionHelper {
   }
 
   export async function getPlugin(
-    instance: Source | Destination | Schedule | ProfilePropertyRule | App
+    instance: Source | Destination | Schedule | Property | App
   ) {
     let match: {
       plugin: GrouparooPlugin;
@@ -142,7 +142,7 @@ export namespace OptionHelper {
   }
 
   export async function validateOptions(
-    instance: Source | Destination | Schedule | ProfilePropertyRule | App,
+    instance: Source | Destination | Schedule | Property | App,
     options: { [key: string]: string },
     allowEmpty = false
   ) {
@@ -169,11 +169,11 @@ export namespace OptionHelper {
       allOptions = pluginConnection.scheduleOptions
         ? pluginConnection.scheduleOptions.map((o) => o.key)
         : [];
-    } else if (instance instanceof ProfilePropertyRule) {
-      requiredOptions = await getRequiredProfilePropertyRuleOptions(instance);
+    } else if (instance instanceof Property) {
+      requiredOptions = await getRequiredPropertyOptions(instance);
       const { pluginConnection } = await getPlugin(instance);
-      allOptions = pluginConnection.profilePropertyRuleOptions
-        ? pluginConnection.profilePropertyRuleOptions.map((o) => o.key)
+      allOptions = pluginConnection.propertyOptions
+        ? pluginConnection.propertyOptions.map((o) => o.key)
         : [];
     } else if (instance instanceof App) {
       requiredOptions = await getRequiredAppOptions(instance);
@@ -236,9 +236,7 @@ export namespace OptionHelper {
       .map((o) => o.key);
   }
 
-  export async function getRequiredProfilePropertyRuleOptions(
-    instance: ProfilePropertyRule
-  ) {
+  export async function getRequiredPropertyOptions(instance: Property) {
     const { pluginConnection } = await getPlugin(instance);
     const type = await getInstanceType(instance);
 
@@ -246,11 +244,11 @@ export namespace OptionHelper {
       throw new Error(`cannot find a pluginConnection for type ${type}`);
     }
 
-    if (!pluginConnection.profilePropertyRuleOptions) {
+    if (!pluginConnection.propertyOptions) {
       return [];
     }
 
-    return pluginConnection.profilePropertyRuleOptions
+    return pluginConnection.propertyOptions
       .filter((o) => o.required)
       .map((o) => o.key);
   }
@@ -265,11 +263,11 @@ export namespace OptionHelper {
   }
 
   async function getInstanceType(
-    instance: Source | Destination | Schedule | ProfilePropertyRule | App
+    instance: Source | Destination | Schedule | Property | App
   ) {
     let type = instance["type"];
 
-    if (!type || instance instanceof ProfilePropertyRule) {
+    if (!type || instance instanceof Property) {
       if (instance["sourceGuid"]) {
         const source = await Source.scope(null).findOne({
           where: { guid: instance["sourceGuid"] },
@@ -314,7 +312,7 @@ export namespace OptionHelper {
    * Replace all values in a bundle of SimpleOptions with those values loaded from the ENV
    */
   export function sourceEnvironmentVariableOptions(
-    instance: Source | Destination | Schedule | ProfilePropertyRule | App,
+    instance: Source | Destination | Schedule | Property | App,
     options: SimpleOptions
   ) {
     const envOptionKeys = getEnvironmentVariableOptionsForTopic(

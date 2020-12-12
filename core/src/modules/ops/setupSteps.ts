@@ -2,7 +2,7 @@ import { Team } from "./../../models/Team";
 import { plugin } from "../plugin";
 import { App } from "../../models/App";
 import { Source } from "../../models/Source";
-import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+import { Property } from "../../models/Property";
 import { Profile } from "../../models/Profile";
 import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
@@ -81,10 +81,10 @@ export namespace SetupStepOps {
       title: "Create a Unique Profile Property",
       description:
         "Create your first unique Profile Property Rule.  Grouparoo needs at least one unique Profile Property Rule to identify your Profiles (email, userId, etc).  You can have more than one!",
-      href: "/profilePropertyRules",
+      href: "/properties",
       cta: "Add a Profile Property",
       check: async () => {
-        const count = await ProfilePropertyRule.count({
+        const count = await Property.count({
           where: { unique: true },
         });
         return count > 0;

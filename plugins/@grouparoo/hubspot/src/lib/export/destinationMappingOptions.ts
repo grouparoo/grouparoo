@@ -9,7 +9,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
 
   return {
     labels: {
-      profilePropertyRule: {
+      property: {
         singular: "Hubspot Contact Property",
         plural: "Hubspot Contact Properties",
       },
@@ -18,7 +18,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
         plural: "Hubspot Lists",
       },
     },
-    profilePropertyRules: {
+    properties: {
       required: [{ key: "email", type: "email" }],
       known: contactsProperties
         .filter((contactProperty) => contactProperty.name !== "email")
@@ -45,7 +45,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
             important,
           };
         }),
-      allowOptionalFromProfilePropertyRules: false,
+      allowOptionalFromProperties: false,
     },
   };
 };

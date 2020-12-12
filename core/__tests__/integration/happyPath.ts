@@ -93,11 +93,11 @@ describe("integration/happyPath", () => {
       mappedColumn: "id",
     };
     const bootstrapResponse = await specHelper.runAction(
-      "source:bootstrapUniqueProfilePropertyRule",
+      "source:bootstrapUniqueProperty",
       connection
     );
     expect(bootstrapResponse.error).toBeUndefined();
-    expect(bootstrapResponse.profilePropertyRule.guid).toBeTruthy();
+    expect(bootstrapResponse.property.guid).toBeTruthy();
 
     connection.params = {
       csrfToken,
@@ -122,10 +122,7 @@ describe("integration/happyPath", () => {
         column: "email",
       },
     };
-    let { error } = await specHelper.runAction(
-      "profilePropertyRule:create",
-      connection
-    );
+    let { error } = await specHelper.runAction("property:create", connection);
     expect(error).toBeUndefined();
 
     connection.params = {
@@ -139,7 +136,7 @@ describe("integration/happyPath", () => {
         column: "firstName",
       },
     };
-    await specHelper.runAction("profilePropertyRule:create", connection);
+    await specHelper.runAction("property:create", connection);
 
     connection.params = {
       csrfToken,
@@ -152,7 +149,7 @@ describe("integration/happyPath", () => {
         column: "lastName",
       },
     };
-    await specHelper.runAction("profilePropertyRule:create", connection);
+    await specHelper.runAction("property:create", connection);
 
     connection.params = {
       csrfToken,
@@ -165,7 +162,7 @@ describe("integration/happyPath", () => {
         column: "ltv",
       },
     };
-    await specHelper.runAction("profilePropertyRule:create", connection);
+    await specHelper.runAction("property:create", connection);
   });
 
   test("an admin can set the source mapping", async () => {

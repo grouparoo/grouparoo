@@ -30,7 +30,7 @@ module.exports = async function getConfig() {
       mapping: {
         id: "user_id",
       },
-      bootstrappedProfilePropertyRule: {
+      bootstrappedProperty: {
         name: "User Id",
         type: "integer",
         id: "user_id", // guid -> `rul_user_id`
@@ -43,7 +43,7 @@ module.exports = async function getConfig() {
     {
       id: "email", // guid -> `rul_email`
       name: "email",
-      class: "ProfilePropertyRule",
+      class: "Property",
       type: "email",
       unique: true,
       isArray: false,

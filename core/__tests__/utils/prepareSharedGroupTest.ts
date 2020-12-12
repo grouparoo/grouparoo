@@ -25,7 +25,7 @@ export namespace SharedGroupTests {
     }
 
     await Profile.truncate();
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
     helper.disableTestPluginImport();
 
     mario = await Profile.create();

@@ -24,7 +24,7 @@ describe("models/schedule", () => {
     let source: Source;
 
     beforeAll(async () => {
-      await helper.factories.profilePropertyRules();
+      await helper.factories.properties();
       app = await helper.factories.app();
 
       source = await Source.create({

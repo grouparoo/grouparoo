@@ -1,11 +1,11 @@
 import { RetryableTask } from "../../classes/retryableTask";
 import { Profile } from "../../models/Profile";
 import { ProfileProperty } from "../../models/ProfileProperty";
-import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+import { Property } from "../../models/Property";
 import { Op } from "sequelize";
 import { log, task } from "actionhero";
 import { ProfilePropertiesPluginMethodResponse } from "../../classes/plugin";
-import { ProfilePropertyRuleOps } from "../../modules/ops/profilePropertyRule";
+import { PropertyOps } from "../../modules/ops/property";
 
 export class ImportProfileProperties extends RetryableTask {
   constructor() {
@@ -17,7 +17,7 @@ export class ImportProfileProperties extends RetryableTask {
     this.queue = "profileProperties";
     this.inputs = {
       profileGuids: { required: true },
-      profilePropertyRuleGuid: { required: true },
+      propertyGuid: { required: true },
     };
   }
 
@@ -26,16 +26,14 @@ export class ImportProfileProperties extends RetryableTask {
       where: { guid: { [Op.in]: params.profileGuids } },
       include: [ProfileProperty],
     });
-    const profilePropertyRule = await ProfilePropertyRule.findOne({
-      where: { guid: params.profilePropertyRuleGuid },
+    const property = await Property.findOne({
+      where: { guid: params.propertyGuid },
     });
-    if (!profilePropertyRule) return;
-    const source = await profilePropertyRule.$get("source");
+    if (!property) return;
+    const source = await property.$get("source");
 
     const profilesWithDependenciesMet: Profile[] = [];
-    const dependencies = await ProfilePropertyRuleOps.dependencies(
-      profilePropertyRule
-    );
+    const dependencies = await PropertyOps.dependencies(property);
 
     for (const i in profiles) {
       const profile = profiles[i];
@@ -55,7 +53,7 @@ export class ImportProfileProperties extends RetryableTask {
     try {
       propertyValuesBatch = await source.importProfileProperties(
         profilesWithDependenciesMet,
-        profilePropertyRule
+        property
       );
     } catch (error) {
       // if something goes wrong with the batch import, fall-back to per-profile/property imports
@@ -63,7 +61,7 @@ export class ImportProfileProperties extends RetryableTask {
         profilesWithDependenciesMet.map((profile) => {
           task.enqueue("profileProperty:importProfileProperty", {
             profileGuid: profile.guid,
-            profilePropertyRuleGuid: profilePropertyRule.guid,
+            propertyGuid: property.guid,
           });
         })
       );
@@ -75,7 +73,7 @@ export class ImportProfileProperties extends RetryableTask {
         (p) => p.guid === profileGuid
       );
       const hash = {};
-      hash[profilePropertyRule.key] = propertyValuesBatch[profileGuid];
+      hash[property.key] = propertyValuesBatch[profileGuid];
       await profile.addOrUpdateProperties(hash);
     }
 
@@ -84,7 +82,7 @@ export class ImportProfileProperties extends RetryableTask {
       { state: "ready", stateChangedAt: new Date(), confirmedAt: new Date() },
       {
         where: {
-          profilePropertyRuleGuid: profilePropertyRule.guid,
+          propertyGuid: property.guid,
           profileGuid: {
             [Op.in]: profilesWithDependenciesMet.map((p) => p.guid),
           },
@@ -94,7 +92,7 @@ export class ImportProfileProperties extends RetryableTask {
     );
 
     log(
-      `imported ${profilePropertyRule.key} (${profilePropertyRule.guid}) for ${profilesWithDependenciesMet.length} profiles`
+      `imported ${property.key} (${property.guid}) for ${profilesWithDependenciesMet.length} profiles`
     );
   }
 }

@@ -19,7 +19,7 @@ import {
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Schedule } from "./Schedule";
-import { ProfilePropertyRule } from "./ProfilePropertyRule";
+import { Property } from "./Property";
 import { Option } from "./Option";
 import { App } from "./App";
 import { Run } from "./Run";
@@ -29,7 +29,7 @@ import { plugin } from "../modules/plugin";
 import { OptionHelper } from "./../modules/optionHelper";
 import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
-import { ProfilePropertyRuleFiltersWithKey } from "../classes/plugin";
+import { PropertyFiltersWithKey } from "../classes/plugin";
 import { SourceOps } from "../modules/ops/source";
 import { LockableHelper } from "../modules/lockableHelper";
 
@@ -87,8 +87,8 @@ export class Source extends LoggedModel<Source> {
   @HasMany(() => Mapping)
   mappings: Mapping[];
 
-  @HasMany(() => ProfilePropertyRule)
-  profilePropertyRules: ProfilePropertyRule[];
+  @HasMany(() => Property)
+  properties: Property[];
 
   @HasMany(() => Option, "ownerGuid")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
@@ -210,9 +210,9 @@ export class Source extends LoggedModel<Source> {
 
   async importProfileProperty(
     profile: Profile,
-    profilePropertyRule: ProfilePropertyRule,
-    profilePropertyRuleOptionsOverride?: OptionHelper.SimpleOptions,
-    profilePropertyRuleFiltersOverride?: ProfilePropertyRuleFiltersWithKey[],
+    property: Property,
+    propertyOptionsOverride?: OptionHelper.SimpleOptions,
+    propertyFiltersOverride?: PropertyFiltersWithKey[],
     preloadedArgs: {
       app?: App;
       connection?: any;
@@ -225,18 +225,18 @@ export class Source extends LoggedModel<Source> {
     return SourceOps.importProfileProperty(
       this,
       profile,
-      profilePropertyRule,
-      profilePropertyRuleOptionsOverride,
-      profilePropertyRuleFiltersOverride,
+      property,
+      propertyOptionsOverride,
+      propertyFiltersOverride,
       preloadedArgs
     );
   }
 
   async importProfileProperties(
     profiles: Profile[],
-    profilePropertyRule: ProfilePropertyRule,
-    profilePropertyRuleOptionsOverride?: OptionHelper.SimpleOptions,
-    profilePropertyRuleFiltersOverride?: ProfilePropertyRuleFiltersWithKey[],
+    property: Property,
+    propertyOptionsOverride?: OptionHelper.SimpleOptions,
+    propertyFiltersOverride?: PropertyFiltersWithKey[],
     preloadedArgs: {
       app?: App;
       connection?: any;
@@ -249,9 +249,9 @@ export class Source extends LoggedModel<Source> {
     return SourceOps.importProfileProperties(
       this,
       profiles,
-      profilePropertyRule,
-      profilePropertyRuleOptionsOverride,
-      profilePropertyRuleFiltersOverride,
+      property,
+      propertyOptionsOverride,
+      propertyFiltersOverride,
       preloadedArgs
     );
   }
@@ -260,13 +260,13 @@ export class Source extends LoggedModel<Source> {
     return SourceOps._import(this, profile);
   }
 
-  async bootstrapUniqueProfilePropertyRule(
+  async bootstrapUniqueProperty(
     key: string,
     type: string,
     mappedColumn: string,
     guid?: string
   ) {
-    return SourceOps.bootstrapUniqueProfilePropertyRule(
+    return SourceOps.bootstrapUniqueProperty(
       this,
       key,
       type,
@@ -323,10 +323,10 @@ export class Source extends LoggedModel<Source> {
 
   @AfterSave
   static async updateRuleDirectMappings(instance: Source, { transaction }) {
-    const rules = await instance.$get("profilePropertyRules", { transaction });
+    const rules = await instance.$get("properties", { transaction });
     for (const i in rules) {
       const rule = rules[i];
-      await ProfilePropertyRule.determineDirectlyMapped(rule);
+      await Property.determineDirectlyMapped(rule);
       if (rule.changed()) await rule.save({ transaction });
     }
   }
@@ -340,11 +340,11 @@ export class Source extends LoggedModel<Source> {
   }
 
   @BeforeDestroy
-  static async ensureNoProfilePropertyRules(instance: Source) {
-    const profilePropertyRules = await instance.$get("profilePropertyRules", {
+  static async ensureNoProperties(instance: Source) {
+    const properties = await instance.$get("properties", {
       scope: null,
     });
-    if (profilePropertyRules.length > 0) {
+    if (properties.length > 0) {
       throw new Error(
         "you cannot delete a source that has profile property rules"
       );

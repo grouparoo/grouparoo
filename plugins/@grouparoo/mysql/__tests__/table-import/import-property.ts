@@ -4,7 +4,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { plugin, Profile, ProfilePropertyRule } from "@grouparoo/core";
+import { plugin, Profile, Property } from "@grouparoo/core";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
 
@@ -20,22 +20,22 @@ let actionhero, client;
 let sourceOptions;
 async function getPropertyValue(
   { column, sourceMapping, aggregationMethod },
-  useProfilePropertyRuleFilters?,
+  usePropertyFilters?,
   useProfile?: Profile
 ) {
   const array = await getPropertyArray(
     { column, sourceMapping, aggregationMethod },
-    useProfilePropertyRuleFilters,
+    usePropertyFilters,
     useProfile
   );
   return array ? array[0] : array;
 }
 async function getPropertyArray(
   { column, sourceMapping, aggregationMethod },
-  useProfilePropertyRuleFilters?,
+  usePropertyFilters?,
   useProfile?: Profile
 ) {
-  const profilePropertyRuleOptions = {
+  const propertyOptions = {
     column,
     aggregationMethod: aggregationMethod,
   };
@@ -44,8 +44,8 @@ async function getPropertyArray(
     useProfile = profile;
   }
 
-  const profilePropertyRuleFilters = useProfilePropertyRuleFilters || [];
-  const profilePropertyRule = await ProfilePropertyRule.findOne({
+  const propertyFilters = usePropertyFilters || [];
+  const property = await Property.findOne({
     where: { key: "email" },
   });
 
@@ -54,16 +54,16 @@ async function getPropertyArray(
     appOptions,
     profile: useProfile,
     sourceOptions,
-    profilePropertyRuleOptions,
+    propertyOptions,
     sourceMapping,
-    profilePropertyRuleFilters,
-    profilePropertyRule,
+    propertyFilters,
+    property,
     profileGuid: null,
     source: null,
     sourceGuid: null,
     app: null,
     appGuid: null,
-    profilePropertyRuleGuid: null,
+    propertyGuid: null,
   });
 }
 
@@ -81,7 +81,7 @@ describe("mysql/table/profileProperty", () => {
   beforeAll(async () => {
     jest.setTimeout(helper.mediumTime);
     // all of these are in in the test plugin
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
 
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({
@@ -289,7 +289,7 @@ describe("mysql/table/profileProperty", () => {
     beforeAll(() => {
       sourceOptions = { table: purchasesTableName };
     });
-    // export interface ProfilePropertyRuleFiltersWithKey {
+    // export interface PropertyFiltersWithKey {
     //   key: string;
     //   op: string;
     //   match?: string | number | boolean;

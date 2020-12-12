@@ -51,7 +51,7 @@ export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMe
 
   return {
     labels: {
-      profilePropertyRule: {
+      property: {
         singular: `Salesforce ${profileInfo.label || profileObject} Field`,
         plural: `Salesforce ${profileInfo.label || profileObject} Fields`,
       },
@@ -60,10 +60,10 @@ export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMe
         plural: `Salesforce ${groupInfo.labelPlural || groupObject}`,
       },
     },
-    profilePropertyRules: {
+    properties: {
       required,
       known,
-      allowOptionalFromProfilePropertyRules: false,
+      allowOptionalFromProperties: false,
     },
   };
 };

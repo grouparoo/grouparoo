@@ -5,12 +5,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import fs from "fs-extra";
 import { api, specHelper } from "actionhero";
-import {
-  Profile,
-  ProfileProperty,
-  ProfilePropertyRule,
-  Run,
-} from "@grouparoo/core";
+import { Profile, ProfileProperty, Property, Run } from "@grouparoo/core";
 
 let envFile = path.resolve(path.join(__dirname, "../", ".env"));
 if (fs.existsSync(envFile)) {
@@ -55,7 +50,7 @@ describe("integration/runs/google-sheets", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
     helper.disableTestPluginImport();
   });
 
@@ -189,7 +184,7 @@ describe("integration/runs/google-sheets", () => {
     });
 
     test("replace the email profile property rule with a new one for this source", async () => {
-      const oldRule = await ProfilePropertyRule.findOne({
+      const oldRule = await Property.findOne({
         where: { key: "email" },
       });
       await oldRule.destroy();
@@ -204,13 +199,12 @@ describe("integration/runs/google-sheets", () => {
         state: "ready",
       };
 
-      const {
-        error,
-        profilePropertyRule,
-        pluginOptions,
-      } = await specHelper.runAction("profilePropertyRule:create", session);
+      const { error, property, pluginOptions } = await specHelper.runAction(
+        "property:create",
+        session
+      );
       expect(error).toBeUndefined();
-      expect(profilePropertyRule.guid).toBeTruthy();
+      expect(property.guid).toBeTruthy();
 
       // check the pluginOptions
       expect(pluginOptions.length).toBe(1);
@@ -222,11 +216,11 @@ describe("integration/runs/google-sheets", () => {
       // set the options
       session.params = {
         csrfToken,
-        guid: profilePropertyRule.guid,
+        guid: property.guid,
         options: { column: "email" },
       };
       const { error: editError } = await specHelper.runAction(
-        "profilePropertyRule:edit",
+        "property:edit",
         session
       );
       expect(editError).toBeUndefined();

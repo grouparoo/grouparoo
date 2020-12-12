@@ -4,7 +4,7 @@ import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
-import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
+import { Property } from "../models/Property";
 import { internalRun } from "../modules/internalRun";
 import { Op } from "sequelize";
 
@@ -32,14 +32,14 @@ export class ProfilesList extends AuthenticatedAction {
   async run({ params }) {
     let profiles: Profile[];
 
-    const where: { [profilePropertyRuleGuid: string]: any } = {};
+    const where: { [propertyGuid: string]: any } = {};
 
     if (
       params.searchKey &&
       params.searchValue &&
       params.searchValue.length > 0
     ) {
-      const rule = await ProfilePropertyRule.findOne({
+      const rule = await Property.findOne({
         where: { key: params.searchKey },
       });
       if (!rule) {
@@ -48,7 +48,7 @@ export class ProfilesList extends AuthenticatedAction {
         );
       }
 
-      where.profilePropertyRuleGuid = rule.guid;
+      where.propertyGuid = rule.guid;
       if (
         params.searchValue.toLowerCase() === "null" ||
         params.searchValue === ""
@@ -143,7 +143,7 @@ export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "profile", mode: "read" };
     this.inputs = {
-      profilePropertyRuleGuid: { required: true },
+      propertyGuid: { required: true },
       match: { required: true },
       limit: { required: false, default: 25 },
       offset: { required: false, default: 0 },
@@ -162,13 +162,13 @@ export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
           api.sequelize.fn("DISTINCT", api.sequelize.col("rawValue")),
           "rawValue",
         ],
-        "profilePropertyRuleGuid",
+        "propertyGuid",
       ],
       where: {
-        profilePropertyRuleGuid: params.profilePropertyRuleGuid,
+        propertyGuid: params.propertyGuid,
         rawValue: rawValueWhereClause,
       },
-      group: ["rawValue", "profilePropertyRuleGuid"],
+      group: ["rawValue", "propertyGuid"],
       limit: params.limit,
       offset: params.offset,
       order: params.order,

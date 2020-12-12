@@ -1,21 +1,21 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { ProfilePropertyRule, ProfileProperty, Profile } from "../../../src";
+import { Property, ProfileProperty, Profile } from "../../../src";
 
 let actionhero;
 
 describe("tasks/profileProperties:sweep", () => {
-  let emailRule: ProfilePropertyRule;
+  let emailRule: Property;
   let mario: Profile;
 
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
     actionhero = env.actionhero;
   }, helper.setupTime);
 
   beforeAll(async () => {
-    emailRule = await ProfilePropertyRule.findOne({ where: { key: "email" } });
+    emailRule = await Property.findOne({ where: { key: "email" } });
     mario = await helper.factories.profile();
     await mario.addOrUpdateProperties({
       firstName: ["Mario"],
@@ -35,7 +35,7 @@ describe("tasks/profileProperties:sweep", () => {
   test("a profile property with a missing profile", async () => {
     const profileProperty = await ProfileProperty.create({
       profileGuid: "missing",
-      profilePropertyRuleGuid: emailRule.guid,
+      propertyGuid: emailRule.guid,
       rawValue: "person@example.com",
       position: 0,
     });
@@ -63,7 +63,7 @@ describe("tasks/profileProperties:sweep", () => {
       {
         guid: "rule_missing",
         profileGuid: luigi.guid,
-        profilePropertyRuleGuid: "missing",
+        propertyGuid: "missing",
         rawValue: "green-hat",
         position: 0,
       },

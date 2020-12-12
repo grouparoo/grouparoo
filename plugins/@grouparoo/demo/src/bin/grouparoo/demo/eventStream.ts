@@ -1,7 +1,7 @@
 import { log, CLI, config, api } from "actionhero";
 import { MockSession, getApiKey } from "../../../util/MockSession";
 import { getPurchaseCategories } from "../../../sample_data";
-import { ApiKey, ProfilePropertyRule, App } from "@grouparoo/core";
+import { ApiKey, Property, App } from "@grouparoo/core";
 
 const sleep = 100;
 const parallelSessions = 1;
@@ -37,11 +37,9 @@ export class Console extends CLI {
       throw new Error("your event app is not ready");
     }
     const appOptions = await eventApp.getOptions();
-    const guid = appOptions.identifyingProfilePropertyRuleGuid;
+    const guid = appOptions.identifyingPropertyGuid;
     if (!guid) {
-      throw new Error(
-        "no identifyingProfilePropertyRuleGuid on the events app"
-      );
+      throw new Error("no identifyingPropertyGuid on the events app");
     }
     return guid;
   }

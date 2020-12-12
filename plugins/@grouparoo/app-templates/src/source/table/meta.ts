@@ -6,16 +6,16 @@ import {
   getScheduleOptions,
   getSourceOptions,
   SourceOptionsMethod,
-  getProfilePropertyRuleOptions,
-  PluginConnectionProfilePropertyRuleOption,
+  getPropertyOptions,
+  PluginConnectionPropertyOption,
   PluginConnectionScheduleOption,
   PluginConnection,
   SourcePreviewMethod,
   getSourcePreview,
   SourceFilterMethod,
   getSourceFilters,
-  UniqueProfilePropertyRuleBootstrapOptions,
-  getUniqueProfilePropertyRuleBootstrapOptions,
+  UniquePropertyBootstrapOptions,
+  getUniquePropertyBootstrapOptions,
   ProfilesPluginMethod,
   getProfiles,
   GetChangedRowsMethod,
@@ -60,12 +60,10 @@ export const buildConnection: BuildConnectionMethod = ({
   getPropertyValues,
   getChangedRowCount,
 }) => {
-  const profilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOption[] = getProfilePropertyRuleOptions(
-    {
-      getSampleRows,
-      getColumns,
-    }
-  );
+  const propertyOptions: PluginConnectionPropertyOption[] = getPropertyOptions({
+    getSampleRows,
+    getColumns,
+  });
   const scheduleOptions: PluginConnectionScheduleOption[] = getScheduleOptions({
     getSampleRows,
     getColumns,
@@ -80,7 +78,7 @@ export const buildConnection: BuildConnectionMethod = ({
   const sourceFilters: SourceFilterMethod = getSourceFilters({
     getColumns,
   });
-  const uniqueProfilePropertyRuleBootstrapOptions: UniqueProfilePropertyRuleBootstrapOptions = getUniqueProfilePropertyRuleBootstrapOptions();
+  const uniquePropertyBootstrapOptions: UniquePropertyBootstrapOptions = getUniquePropertyBootstrapOptions();
   const profiles: ProfilesPluginMethod = getProfiles({
     getChangedRows,
   });
@@ -113,13 +111,13 @@ export const buildConnection: BuildConnectionMethod = ({
         description: tableOptionDescription || "The table to scan",
       },
     ],
-    profilePropertyRuleOptions,
+    propertyOptions,
     scheduleOptions,
     methods: {
       sourceOptions,
       sourcePreview,
       sourceFilters,
-      uniqueProfilePropertyRuleBootstrapOptions,
+      uniquePropertyBootstrapOptions,
       profiles,
       profileProperty,
       profileProperties,

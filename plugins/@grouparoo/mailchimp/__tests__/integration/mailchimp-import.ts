@@ -7,7 +7,7 @@ import { api, specHelper } from "actionhero";
 import {
   Profile,
   ProfileProperty,
-  ProfilePropertyRule,
+  Property,
   Run,
   SimpleAppOptions,
   SimpleDestinationOptions,
@@ -56,7 +56,7 @@ describe("integration/runs/mailchimp-import", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
     helper.disableTestPluginImport();
   });
 
@@ -200,7 +200,7 @@ describe("integration/runs/mailchimp-import", () => {
     });
 
     test("replace the email profile property rule with a new one for this source", async () => {
-      const oldRule = await ProfilePropertyRule.findOne({
+      const oldRule = await Property.findOne({
         where: { key: "email" },
       });
       await oldRule.destroy();
@@ -215,13 +215,12 @@ describe("integration/runs/mailchimp-import", () => {
         state: "ready",
       };
 
-      const {
-        error,
-        profilePropertyRule,
-        pluginOptions,
-      } = await specHelper.runAction("profilePropertyRule:create", session);
+      const { error, property, pluginOptions } = await specHelper.runAction(
+        "property:create",
+        session
+      );
       expect(error).toBeUndefined();
-      expect(profilePropertyRule.guid).toBeTruthy();
+      expect(property.guid).toBeTruthy();
 
       // check the pluginOptions
       expect(pluginOptions.length).toBe(1);
@@ -233,11 +232,11 @@ describe("integration/runs/mailchimp-import", () => {
       // set the options
       session.params = {
         csrfToken,
-        guid: profilePropertyRule.guid,
+        guid: property.guid,
         options: { field: "email_address" },
       };
       const { error: editError } = await specHelper.runAction(
-        "profilePropertyRule:edit",
+        "property:edit",
         session
       );
       expect(editError).toBeUndefined();

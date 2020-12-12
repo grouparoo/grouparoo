@@ -1,9 +1,9 @@
 import { RetryableTask } from "../../classes/retryableTask";
 import { Profile } from "../../models/Profile";
-import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+import { Property } from "../../models/Property";
 import { log } from "actionhero";
 import { ProfileProperty } from "../../models/ProfileProperty";
-import { ProfilePropertyRuleOps } from "../../modules/ops/profilePropertyRule";
+import { PropertyOps } from "../../modules/ops/property";
 
 export class ImportProfileProperty extends RetryableTask {
   constructor() {
@@ -15,7 +15,7 @@ export class ImportProfileProperty extends RetryableTask {
     this.queue = "profileProperties";
     this.inputs = {
       profileGuid: { required: true },
-      profilePropertyRuleGuid: { required: true },
+      propertyGuid: { required: true },
     };
   }
 
@@ -29,20 +29,18 @@ export class ImportProfileProperty extends RetryableTask {
       return ProfileProperty.destroy({
         where: {
           profileGuid: params.profileGuid,
-          profilePropertyRuleGuid: params.profilePropertyRuleGuid,
+          propertyGuid: params.propertyGuid,
         },
       });
     }
 
-    const profilePropertyRule = await ProfilePropertyRule.findOne({
-      where: { guid: params.profilePropertyRuleGuid },
+    const property = await Property.findOne({
+      where: { guid: params.propertyGuid },
     });
-    if (!profilePropertyRule) return;
+    if (!property) return;
     const properties = await profile.properties();
-    const source = await profilePropertyRule.$get("source");
-    const dependencies = await ProfilePropertyRuleOps.dependencies(
-      profilePropertyRule
-    );
+    const source = await property.$get("source");
+    const dependencies = await PropertyOps.dependencies(property);
 
     let ok = true;
     dependencies.forEach((dep) => {
@@ -54,12 +52,12 @@ export class ImportProfileProperty extends RetryableTask {
 
     const propertyValues = await source.importProfileProperty(
       profile,
-      profilePropertyRule
+      property
     );
 
     if (propertyValues) {
       const hash = {};
-      hash[profilePropertyRule.key] = Array.isArray(propertyValues)
+      hash[property.key] = Array.isArray(propertyValues)
         ? propertyValues
         : [propertyValues];
       await profile.addOrUpdateProperty(hash);
@@ -68,7 +66,7 @@ export class ImportProfileProperty extends RetryableTask {
         { state: "ready", stateChangedAt: new Date(), confirmedAt: new Date() },
         {
           where: {
-            profilePropertyRuleGuid: profilePropertyRule.guid,
+            propertyGuid: property.guid,
             profileGuid: profile.guid,
             state: "pending",
           },
@@ -76,8 +74,6 @@ export class ImportProfileProperty extends RetryableTask {
       );
     }
 
-    log(
-      `imported ${profilePropertyRule.key} (${profilePropertyRule.guid}) for 1 profile`
-    );
+    log(`imported ${property.key} (${property.guid}) for 1 profile`);
   }
 }

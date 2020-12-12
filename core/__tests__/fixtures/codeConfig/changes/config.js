@@ -24,7 +24,7 @@ module.exports = async function getConfig() {
       class: "App",
       type: "events",
       options: {
-        identifyingProfilePropertyRuleGuid: "rul_user_id",
+        identifyingPropertyGuid: "rul_user_id",
       },
     },
 
@@ -40,7 +40,7 @@ module.exports = async function getConfig() {
       mapping: {
         id: "user_id",
       },
-      bootstrappedProfilePropertyRule: {
+      bootstrappedProperty: {
         name: "User Id",
         type: "integer",
         id: "user_id", // guid -> `rul_user_id`
@@ -65,7 +65,7 @@ module.exports = async function getConfig() {
     {
       id: "email", // guid -> `rul_email`
       name: "Email",
-      class: "ProfilePropertyRule",
+      class: "Property",
       type: "email",
       unique: true,
       isArray: false,
@@ -79,7 +79,7 @@ module.exports = async function getConfig() {
     {
       id: "first_name", // guid -> `rul_first_name`
       name: "First Name",
-      class: "ProfilePropertyRule",
+      class: "Property",
       type: "string",
       unique: false,
       isArray: false,
@@ -93,7 +93,7 @@ module.exports = async function getConfig() {
     {
       id: "last_name", // guid -> `rul_first_name`
       name: "Last Name",
-      class: "ProfilePropertyRule",
+      class: "Property",
       type: "string",
       unique: false,
       isArray: false,
@@ -111,7 +111,7 @@ module.exports = async function getConfig() {
       type: "calculated",
       rules: [
         {
-          profilePropertyRuleId: "email",
+          propertyId: "email",
           operation: { op: "like" },
           match: "%@%",
         },

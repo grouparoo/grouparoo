@@ -21,7 +21,7 @@ export default function Page(props) {
   const {
     errorHandler,
     successHandler,
-    profilePropertyRules,
+    properties,
     profileHandler,
     allGroups,
     sources,
@@ -29,7 +29,7 @@ export default function Page(props) {
   }: {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
-    profilePropertyRules: Models.ProfilePropertyRuleType[];
+    properties: Models.PropertyType[];
     allGroups: Models.GroupType[];
     apps: Models.AppType[];
     sources: Models.SourceType[];
@@ -172,7 +172,7 @@ export default function Page(props) {
   const manualSourceGuids = sources
     .filter((source) => manualAppGuids.includes(source.appGuid))
     .map((source) => source.guid);
-  const manualProperties = profilePropertyRules
+  const manualProperties = properties
     .filter((p) => manualSourceGuids.includes(p.sourceGuid))
     .map((p) => p.key);
 
@@ -180,7 +180,7 @@ export default function Page(props) {
 
   const uniqueProfileProperties = [];
   let email: string;
-  profilePropertyRules.forEach((rule) => {
+  properties.forEach((rule) => {
     if (rule.unique) {
       uniqueProfileProperties.push(rule.key);
     }
@@ -440,12 +440,9 @@ Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
   const { execApi } = useApi(ctx);
   const { profile, groups } = await execApi("get", `/profile/${guid}`);
-  const { profilePropertyRules } = await execApi(
-    "get",
-    `/profilePropertyRules`
-  );
+  const { properties } = await execApi("get", `/properties`);
   const { groups: allGroups } = await execApi("get", `/groups`);
   const { apps } = await execApi("get", `/apps`);
   const { sources } = await execApi("get", `/sources`);
-  return { profile, profilePropertyRules, groups, allGroups, sources, apps };
+  return { profile, properties, groups, allGroups, sources, apps };
 };

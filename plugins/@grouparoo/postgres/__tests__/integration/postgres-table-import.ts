@@ -6,12 +6,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { beforeData, afterData, getConfig } from "../utils/data";
 import { api, specHelper } from "actionhero";
-import {
-  Profile,
-  ProfilePropertyRule,
-  ProfileProperty,
-  Run,
-} from "@grouparoo/core";
+import { Profile, Property, ProfileProperty, Run } from "@grouparoo/core";
 
 let actionhero;
 const {
@@ -49,7 +44,7 @@ describe("integration/runs/postgres", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
     helper.disableTestPluginImport();
   });
 
@@ -194,7 +189,7 @@ describe("integration/runs/postgres", () => {
 
   test("replace the email profile property rule with a new one for this source", async () => {
     // delete the old rule
-    const oldRule = await ProfilePropertyRule.findOne({
+    const oldRule = await Property.findOne({
       where: { key: "email" },
     });
     await oldRule.destroy();
@@ -207,13 +202,12 @@ describe("integration/runs/postgres", () => {
       type: "string",
     };
 
-    const {
-      error,
-      profilePropertyRule,
-      pluginOptions,
-    } = await specHelper.runAction("profilePropertyRule:create", session);
+    const { error, property, pluginOptions } = await specHelper.runAction(
+      "property:create",
+      session
+    );
     expect(error).toBeUndefined();
-    expect(profilePropertyRule.guid).toBeTruthy();
+    expect(property.guid).toBeTruthy();
 
     // check the pluginOptions
     expect(pluginOptions.length).toBe(3);
@@ -228,13 +222,13 @@ describe("integration/runs/postgres", () => {
     // set the options
     session.params = {
       csrfToken,
-      guid: profilePropertyRule.guid,
+      guid: property.guid,
       unique: true,
       options: { column: "email", aggregationMethod: "exact" },
       state: "ready",
     };
     const { error: editError } = await specHelper.runAction(
-      "profilePropertyRule:edit",
+      "property:edit",
       session
     );
     expect(editError).toBeUndefined();
@@ -276,20 +270,20 @@ describe("integration/runs/postgres", () => {
     expect(error).toBeUndefined();
     expect(options).toEqual({
       labels: {
-        profilePropertyRule: {
+        property: {
           singular: "Exported Profile Property Rule",
           plural: "Exported Profile Property Rules",
         },
         group: { singular: "Exported Groups", plural: "Exported Groups" },
       },
-      profilePropertyRules: {
+      properties: {
         required: [{ key: "id", type: "any" }],
         known: [
           { key: "customer_email", type: "any", important: true },
           { key: "fname", type: "any", important: true },
           { key: "lname", type: "any", important: true },
         ],
-        allowOptionalFromProfilePropertyRules: false,
+        allowOptionalFromProperties: false,
       },
     });
   });

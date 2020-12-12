@@ -1,12 +1,12 @@
 import { Fragment, useEffect, useState } from "react";
+import { Form, Table, Badge, Button } from "react-bootstrap";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { useApi } from "../../../hooks/useApi";
 import StateBadge from "../../../components/badges/stateBadge";
 import LockedBadge from "../../../components/badges/lockedBadge";
 import Head from "next/head";
 import GroupTabs from "../../../components/tabs/group";
 import DatePicker from "../../../components/datePicker";
-import { Form, Table, Badge, Button } from "react-bootstrap";
-import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import LoadingButton from "../../../components/loadingButton";
 import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
@@ -16,14 +16,14 @@ export default function Page(props) {
   const {
     errorHandler,
     successHandler,
-    profilePropertyRules,
+    properties,
     ruleLimit,
     ops,
     topLevelGroupRules,
   }: {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
-    profilePropertyRules: Models.ProfilePropertyRuleType[];
+    properties: Models.PropertyType[];
     ruleLimit: Actions.GroupsRuleOptions["ruleLimit"];
     ops: Actions.GroupsRuleOptions["ops"];
     topLevelGroupRules: Actions.GroupsRuleOptions["topLevelGroupRules"];
@@ -90,7 +90,7 @@ export default function Page(props) {
     }
 
     _rules.push({
-      key: profilePropertyRules[0].key,
+      key: properties[0].key,
       match: null,
       operation: { op: "exists" },
     });
@@ -123,18 +123,17 @@ export default function Page(props) {
   }
 
   async function autocompleteProfilePropertySearch(localRule, match) {
-    const profilePropertyRuleGuid = profilePropertyRules.filter(
-      (r) => r.key === localRule.key
-    )[0]?.guid;
+    const propertyGuid = properties.filter((r) => r.key === localRule.key)[0]
+      ?.guid;
 
     // we are dealing with a topLevelGroupRule
-    if (!profilePropertyRuleGuid) return;
+    if (!propertyGuid) return;
 
     setLoading(true);
     const response: Actions.ProfileAutocompleteProfileProperty = await execApi(
       "get",
       `/profiles/autocompleteProfileProperty`,
-      { profilePropertyRuleGuid, match }
+      { propertyGuid, match }
     );
     if (response.profileProperties) {
       const _autocompleteResults = Object.assign({}, autocompleteResults);
@@ -150,7 +149,7 @@ export default function Page(props) {
 
   let rowChanges = false;
 
-  const profilePropertyRulesAndTopLevelGroupRules = profilePropertyRules.concat(
+  const propertiesAndTopLevelGroupRules = properties.concat(
     // @ts-ignore
     topLevelGroupRules
   );
@@ -196,7 +195,7 @@ export default function Page(props) {
             <tbody>
               {localRules.map((rule, idx) => {
                 let type: string;
-                profilePropertyRulesAndTopLevelGroupRules.forEach((r) => {
+                propertiesAndTopLevelGroupRules.forEach((r) => {
                   if (rule.key === r.key) {
                     type = r.type;
                   }
@@ -248,23 +247,21 @@ export default function Page(props) {
                             );
                           }}
                         >
-                          {profilePropertyRulesAndTopLevelGroupRules.map(
-                            (rule, idx) => (
-                              <Fragment key={`ruleKeyOpt-${rule.key}-${idx}`}>
-                                {idx === 0 ? (
-                                  <option disabled>
-                                    --- profile properties ---
-                                  </option>
-                                ) : null}
-                                {idx === profilePropertyRules.length ? (
-                                  <option disabled>
-                                    --- profile columns ---
-                                  </option>
-                                ) : null}
-                                <option>{rule.key}</option>
-                              </Fragment>
-                            )
-                          )}
+                          {propertiesAndTopLevelGroupRules.map((rule, idx) => (
+                            <Fragment key={`ruleKeyOpt-${rule.key}-${idx}`}>
+                              {idx === 0 ? (
+                                <option disabled>
+                                  --- profile properties ---
+                                </option>
+                              ) : null}
+                              {idx === properties.length ? (
+                                <option disabled>
+                                  --- profile columns ---
+                                </option>
+                              ) : null}
+                              <option>{rule.key}</option>
+                            </Fragment>
+                          ))}
                         </Form.Control>
                       </Form.Group>
                     </td>
@@ -510,18 +507,14 @@ Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
   const { execApi } = useApi(ctx);
   const { group } = await execApi("get", `/group/${guid}`);
-  const { profilePropertyRules } = await execApi(
-    "get",
-    `/profilePropertyRules`,
-    {
-      state: "ready",
-    }
-  );
+  const { properties } = await execApi("get", `/properties`, {
+    state: "ready",
+  });
   const { ruleLimit, ops, topLevelGroupRules } = await execApi(
     "get",
     `/groups/ruleOptions`
   );
-  return { group, profilePropertyRules, ruleLimit, ops, topLevelGroupRules };
+  return { group, properties, ruleLimit, ops, topLevelGroupRules };
 };
 
 function rulesAreEqual(a, b) {

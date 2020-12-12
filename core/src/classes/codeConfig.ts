@@ -1,6 +1,6 @@
 import { log } from "actionhero";
 import { GroupRuleWithKey } from "../models/Group";
-import { ProfilePropertyRuleFiltersWithKey } from "../models/ProfilePropertyRule";
+import { PropertyFiltersWithKey } from "../models/Property";
 
 export interface ConfigurationObject {
   id: string;
@@ -13,7 +13,7 @@ export interface ConfigurationObject {
   teamId?: string;
   email?: string;
   options?: { [key: string]: any };
-  filters?: ProfilePropertyRuleFiltersWithKey[];
+  filters?: PropertyFiltersWithKey[];
   identifying?: boolean;
   unique?: boolean;
   isArray?: boolean;
@@ -24,7 +24,7 @@ export interface ConfigurationObject {
   pluginName?: string;
   permissions?: Array<{ guid: string; read: boolean; write: boolean }>;
   value: string | boolean | number;
-  bootstrappedProfilePropertyRule?: ConfigurationObject;
+  bootstrappedProperty?: ConfigurationObject;
   mapping?: { [key: string]: any };
 }
 
@@ -167,8 +167,8 @@ function getParentIds(configObject: ConfigurationObject) {
 
   // special cases
   // - Bootstrapped profile property rules
-  if (configObject?.bootstrappedProfilePropertyRule?.id) {
-    providedIds.push(configObject.bootstrappedProfilePropertyRule.id);
+  if (configObject?.bootstrappedProperty?.id) {
+    providedIds.push(configObject.bootstrappedProperty.id);
   }
 
   // prerequisites

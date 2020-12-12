@@ -13,7 +13,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
 
   return {
     labels: {
-      profilePropertyRule: {
+      property: {
         singular: "Marketo Field",
         plural: "Marketo Fields",
       },
@@ -22,10 +22,10 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
         plural: "Marketo Lists",
       },
     },
-    profilePropertyRules: {
+    properties: {
       required,
       known,
-      allowOptionalFromProfilePropertyRules: false,
+      allowOptionalFromProperties: false,
     },
   };
 };

@@ -20,8 +20,8 @@ import { Option } from "../models/Option";
 // import { Permission } from "../models/Permission";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
-import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
-import { ProfilePropertyRuleFilter } from "../models/ProfilePropertyRuleFilter";
+import { Property } from "../models/Property";
+import { PropertyFilter } from "../models/PropertyFilter";
 import { Run } from "../models/Run";
 import { Schedule } from "../models/Schedule";
 // import { Setting } from "../models/Setting";
@@ -49,8 +49,8 @@ const models = [
   // Permission,
   Profile,
   ProfileProperty,
-  ProfilePropertyRule,
-  ProfilePropertyRuleFilter,
+  Property,
+  PropertyFilter,
   Run,
   Schedule,
   // Setting,

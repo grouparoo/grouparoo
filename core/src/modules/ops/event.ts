@@ -1,7 +1,7 @@
 import { Event } from "../../models/Event";
 import { Profile } from "../../models/Profile";
 import { ProfileProperty } from "../../models/ProfileProperty";
-import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+import { Property } from "../../models/Property";
 import { ProfileOps } from "../ops/profile";
 import { Op } from "sequelize";
 import { utils } from "actionhero";
@@ -13,32 +13,26 @@ export namespace EventOps {
    */
   export async function associate(
     event: Event,
-    identifyingProfilePropertyRuleGuid: string,
+    identifyingPropertyGuid: string,
     isRetry = false
   ): Promise<Profile> {
-    const profilePropertyRule = await ProfilePropertyRule.findOne({
-      where: { guid: identifyingProfilePropertyRuleGuid },
+    const property = await Property.findOne({
+      where: { guid: identifyingPropertyGuid },
     });
-    if (!profilePropertyRule) {
+    if (!property) {
       throw new Error(
-        `cannot find Profile Property Rule for identifyingProfilePropertyRuleGuid ${identifyingProfilePropertyRuleGuid}`
+        `cannot find Profile Property Rule for identifyingPropertyGuid ${identifyingPropertyGuid}`
       );
     }
 
     let profile: Profile;
     try {
       if (event.profileGuid) {
-        profile = await associateEventWithProfileGuid(
-          event,
-          profilePropertyRule
-        );
+        profile = await associateEventWithProfileGuid(event, property);
       } else if (event.userId) {
-        profile = await associateEventWithUserId(event, profilePropertyRule);
+        profile = await associateEventWithUserId(event, property);
       } else if (event.anonymousId) {
-        profile = await associateEventWithAnonymousId(
-          event,
-          profilePropertyRule
-        );
+        profile = await associateEventWithAnonymousId(event, property);
       } else {
         throw new Error(
           "cannot associate a profile without profileGuid, userId, or anonymousId"
@@ -55,7 +49,7 @@ export namespace EventOps {
         error.toString().match(/SequelizeUniqueConstraintError/)
       ) {
         await utils.sleep(100);
-        return associate(event, identifyingProfilePropertyRuleGuid, true);
+        return associate(event, identifyingPropertyGuid, true);
       } else {
         throw error;
       }
@@ -64,7 +58,7 @@ export namespace EventOps {
 
   async function associateEventWithProfileGuid(
     event: Event,
-    profilePropertyRule: ProfilePropertyRule
+    property: Property
   ) {
     // we are already identified
     try {
@@ -82,18 +76,15 @@ export namespace EventOps {
     }
   }
 
-  async function associateEventWithUserId(
-    event: Event,
-    profilePropertyRule: ProfilePropertyRule
-  ) {
-    // we have a userId (primaryIdentifyingProfilePropertyRule)
+  async function associateEventWithUserId(event: Event, property: Property) {
+    // we have a userId (primaryIdentifyingProperty)
     let profile = await Profile.findOne({
       include: [
         {
           model: ProfileProperty,
           where: {
             rawValue: event.userId,
-            profilePropertyRuleGuid: profilePropertyRule.guid,
+            propertyGuid: property.guid,
           },
         },
       ],
@@ -104,14 +95,14 @@ export namespace EventOps {
     }
 
     const profileProperties = {};
-    profileProperties[profilePropertyRule.key] = event.userId;
+    profileProperties[property.key] = event.userId;
 
     try {
       await profile.addOrUpdateProperties(profileProperties);
     } catch (error) {
       // the profile was created in the middle of this task; try again!
       if (error.toString().match(/Another profile already has the value/)) {
-        return associateEventWithUserId(event, profilePropertyRule);
+        return associateEventWithUserId(event, property);
       } else {
         throw error;
       }
@@ -139,7 +130,7 @@ export namespace EventOps {
 
   async function associateEventWithAnonymousId(
     event: Event,
-    profilePropertyRule: ProfilePropertyRule
+    property: Property
   ) {
     // can we find the profile by anonymousId?
     let profile = await Profile.findOne({

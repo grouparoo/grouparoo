@@ -25,8 +25,8 @@ import TeamFactory from "./factories/team";
 import TeamMemberFactory from "./factories/teamMember";
 import NotificationFactory from "./factories/notification";
 import ProfileFactory from "./factories/profile";
-import ProfilePropertyRuleFactory from "./factories/profilePropertyRule";
-import ProfilePropertyRulesFactory from "./factories/profilePropertyRules";
+import PropertyFactory from "./factories/property";
+import PropertiesFactory from "./factories/properties";
 import AppFactory from "./factories/app";
 import SourceFactory from "./factories/source";
 import ScheduleFactory from "./factories/schedule";
@@ -64,8 +64,8 @@ import {
   Permission,
   Profile,
   ProfileProperty,
-  ProfilePropertyRule,
-  ProfilePropertyRuleFilter,
+  Property,
+  PropertyFilter,
   Run,
   Setting,
   Mapping,
@@ -98,8 +98,8 @@ const models = [
   Permission,
   Profile,
   ProfileProperty,
-  ProfilePropertyRule,
-  ProfilePropertyRuleFilter,
+  Property,
+  PropertyFilter,
   Run,
   Mapping,
   Team,
@@ -122,8 +122,8 @@ export namespace helper {
     log: LogFactory,
     notification: NotificationFactory,
     profile: ProfileFactory,
-    profilePropertyRule: ProfilePropertyRuleFactory,
-    profilePropertyRules: ProfilePropertyRulesFactory,
+    property: PropertyFactory,
+    properties: PropertiesFactory,
     run: RunFactory,
     schedule: ScheduleFactory,
     source: SourceFactory,
@@ -145,7 +145,7 @@ export namespace helper {
     );
 
     const { cache, api } = await import("actionhero");
-    await cache.destroy("profilePropertyRules:all");
+    await cache.destroy("properties:all");
     await api.resque.queue.connection.redis.flushdb();
   }
 
@@ -228,7 +228,7 @@ export namespace helper {
             { key: "table", required: true },
             { key: "where", required: false },
           ],
-          profilePropertyRuleOptions: [
+          propertyOptions: [
             {
               key: "column",
               required: true,
@@ -275,7 +275,7 @@ export namespace helper {
                 { id: 2, fname: "luigi", lname: "mario" },
               ];
             },
-            uniqueProfilePropertyRuleBootstrapOptions: async () => {
+            uniquePropertyBootstrapOptions: async () => {
               return {
                 column: "__default_column",
               };
@@ -296,7 +296,7 @@ export namespace helper {
                 sourceOffset: 0,
               };
             },
-            profileProperty: async ({ profilePropertyRule, profile }) => {
+            profileProperty: async ({ property, profile }) => {
               const data = {
                 userId: new Date().getTime(),
                 isVIP: true,
@@ -306,7 +306,7 @@ export namespace helper {
                 ltv: 100.0,
                 lastLoginAt: new Date(),
               };
-              return data[profilePropertyRule.key] || "...mario";
+              return data[property.key] || "...mario";
             },
           },
         },
@@ -342,18 +342,18 @@ export namespace helper {
                     singular: "list",
                     plural: "lists",
                   },
-                  profilePropertyRule: {
+                  property: {
                     singular: "var",
                     plural: "vars",
                   },
                 },
-                profilePropertyRules: {
+                properties: {
                   required: [{ key: "primary-id", type: "integer" }],
                   known: [
                     { key: "secondary-id", type: "any" },
                     { key: "string-property", type: "string" },
                   ],
-                  allowOptionalFromProfilePropertyRules: true,
+                  allowOptionalFromProperties: true,
                 },
               };
             },
@@ -391,15 +391,15 @@ export namespace helper {
                     singular: "list",
                     plural: "lists",
                   },
-                  profilePropertyRule: {
+                  property: {
                     singular: "var",
                     plural: "vars",
                   },
                 },
-                profilePropertyRules: {
+                properties: {
                   required: [{ key: "primary-id", type: "integer" }],
                   known: [{ key: "secondary-id", type: "any" }],
-                  allowOptionalFromProfilePropertyRules: true,
+                  allowOptionalFromProperties: true,
                 },
               };
             },

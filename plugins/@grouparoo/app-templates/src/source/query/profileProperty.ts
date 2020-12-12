@@ -25,10 +25,10 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
     appOptions,
     appGuid,
     profile,
-    profilePropertyRule,
-    profilePropertyRuleOptions,
+    property,
+    propertyOptions,
   }) => {
-    const ruleQuery = profilePropertyRuleOptions[queryKey];
+    const ruleQuery = propertyOptions[queryKey];
     let query;
 
     try {
@@ -54,7 +54,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
 
       // Get the results
       if (rows && rows.length > 0) {
-        if (!profilePropertyRule.isArray) {
+        if (!property.isArray) {
           const row = rows[0];
           response = [Object.values(row)[0]];
         } else {

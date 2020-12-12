@@ -24,7 +24,7 @@ import { Schedule } from "./Schedule";
 import { Import } from "./Import";
 import { Group } from "./Group";
 import { StateMachine } from "./../modules/stateMachine";
-import { ProfilePropertyRule } from "./ProfilePropertyRule";
+import { Property } from "./Property";
 import { TeamMember } from "./TeamMember";
 import { RunOps } from "../modules/ops/runs";
 import { plugin } from "../modules/plugin";
@@ -234,7 +234,7 @@ export class Run extends Model<Run> {
   }
 
   /**
-   * This method tries to import a random profile to check if the ProfilePropertyRules are valid
+   * This method tries to import a random profile to check if the Properties are valid
    */
   async test() {
     const profile = await Profile.findOne({ order: [["guid", "asc"]] });
@@ -287,11 +287,9 @@ export class Run extends Model<Run> {
       if (this.creatorType === "group") {
         const group = await Group.findByGuid(this.creatorGuid);
         name = group.name;
-      } else if (this.creatorType === "profilePropertyRule") {
-        const profilePropertyRule = await ProfilePropertyRule.findByGuid(
-          this.creatorGuid
-        );
-        name = profilePropertyRule.key;
+      } else if (this.creatorType === "property") {
+        const property = await Property.findByGuid(this.creatorGuid);
+        name = property.key;
       } else if (this.creatorType === "schedule") {
         const schedule = await Schedule.findByGuid(this.creatorGuid);
         const source = await schedule.$get("source");

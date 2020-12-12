@@ -40,9 +40,9 @@ async function getFilters() {
     source: null,
     sourceGuid: null,
     sourceMapping: null,
-    profilePropertyRule: null,
-    profilePropertyRuleGuid: null,
-    profilePropertyRuleOptions: null,
+    property: null,
+    propertyGuid: null,
+    propertyOptions: null,
   });
   return response;
 }

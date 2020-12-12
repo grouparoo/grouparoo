@@ -13,7 +13,7 @@ import {
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { Profile } from "./Profile";
-import { ProfilePropertyRule } from "./ProfilePropertyRule";
+import { Property } from "./Property";
 import { ProfilePropertyOps } from "../modules/ops/profileProperty";
 import { StateMachine } from "./../modules/stateMachine";
 
@@ -38,9 +38,9 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   profileGuid: string;
 
   @AllowNull(false)
-  @ForeignKey(() => ProfilePropertyRule)
+  @ForeignKey(() => Property)
   @Column
-  profilePropertyRuleGuid: string;
+  propertyGuid: string;
 
   @AllowNull(false)
   @Default("pending")
@@ -71,15 +71,15 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   @BelongsTo(() => Profile)
   profile: Profile;
 
-  @BelongsTo(() => ProfilePropertyRule)
-  profilePropertyRule: ProfilePropertyRule;
+  @BelongsTo(() => Property)
+  property: Property;
 
   async apiData() {
-    const rule = await this.$get("profilePropertyRule");
+    const rule = await this.$get("property");
 
     return {
       profileGuid: this.profileGuid,
-      profilePropertyRule: this.profilePropertyRule,
+      property: this.property,
       state: this.state,
       valueChangedAt: this.valueChangedAt
         ? this.valueChangedAt.getTime()
@@ -95,21 +95,21 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   }
 
   async getValue() {
-    const rule = await this.ensureProfilePropertyRule();
+    const rule = await this.ensureProperty();
     return ProfilePropertyOps.getValue(this.rawValue, rule.type);
   }
 
   async setValue(value: any) {
-    const rule = await this.ensureProfilePropertyRule();
+    const rule = await this.ensureProperty();
     this.rawValue = await ProfilePropertyOps.buildRawValue(value, rule.type);
     await this.validateValue();
   }
 
-  async ensureProfilePropertyRule() {
-    const rule = await this.$get("profilePropertyRule");
+  async ensureProperty() {
+    const rule = await this.$get("property");
     if (!rule) {
       throw new Error(
-        `profile property rule not found for profilePropertyRuleGuid ${this.profilePropertyRuleGuid}`
+        `profile property rule not found for propertyGuid ${this.propertyGuid}`
       );
     }
     return rule;
@@ -117,7 +117,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
 
   async logMessage(verb: "create" | "update" | "destroy") {
     let message = "";
-    const rule = await this.ensureProfilePropertyRule();
+    const rule = await this.ensureProperty();
 
     switch (verb) {
       case "create":
@@ -143,7 +143,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   }
 
   async validateValue() {
-    const rule = await this.ensureProfilePropertyRule();
+    const rule = await this.ensureProperty();
 
     // null values are always "unique", even for unique profile properties
     if (this.rawValue === null || this.rawValue === undefined) {
@@ -153,7 +153,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
     if (rule.unique) {
       const count = await ProfileProperty.count({
         where: {
-          profilePropertyRuleGuid: rule.guid,
+          propertyGuid: rule.guid,
           rawValue: this.rawValue,
           profileGuid: { [Op.notIn]: [this.profileGuid] },
         },
@@ -189,14 +189,14 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
       where: {
         guid: { [Op.ne]: instance.guid },
         profileGuid: instance.profileGuid,
-        profilePropertyRuleGuid: instance.profilePropertyRuleGuid,
+        propertyGuid: instance.propertyGuid,
         position: instance.position,
       },
       transaction,
     });
     if (existing) {
       throw new Error(
-        `There is already a ProfileProperty for ${instance.profileGuid} and ${instance.profilePropertyRuleGuid} at position ${instance.position}`
+        `There is already a ProfileProperty for ${instance.profileGuid} and ${instance.propertyGuid} at position ${instance.position}`
       );
     }
   }

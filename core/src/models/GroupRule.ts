@@ -12,7 +12,7 @@ import {
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { Group } from "./Group";
-import { ProfilePropertyRule } from "./ProfilePropertyRule";
+import { Property } from "./Property";
 
 @Table({ tableName: "groupRules", paranoid: false })
 export class GroupRule extends Model<GroupRule> {
@@ -35,9 +35,9 @@ export class GroupRule extends Model<GroupRule> {
   groupGuid: string;
 
   @AllowNull(true)
-  @ForeignKey(() => ProfilePropertyRule)
+  @ForeignKey(() => Property)
   @Column
-  profilePropertyRuleGuid: string;
+  propertyGuid: string;
 
   @AllowNull(true)
   @Column
@@ -66,14 +66,14 @@ export class GroupRule extends Model<GroupRule> {
   @BelongsTo(() => Group)
   schedule: Group;
 
-  @BelongsTo(() => ProfilePropertyRule)
-  profilePropertyRule: ProfilePropertyRule;
+  @BelongsTo(() => Property)
+  property: Property;
 
   async apiData() {
     return {
       guid: this.guid,
       groupGuid: this.groupGuid,
-      profilePropertyRuleGuid: this.profilePropertyRuleGuid,
+      propertyGuid: this.propertyGuid,
       profileColumn: this.profileColumn,
       position: this.position,
       match: this.match,
@@ -102,15 +102,13 @@ export class GroupRule extends Model<GroupRule> {
   }
 
   @BeforeSave
-  static async ensureEitherProfilePropertyRuleOrProfileColumn(
-    instance: GroupRule
-  ) {
+  static async ensureEitherPropertyOrProfileColumn(instance: GroupRule) {
     if (
-      (!instance.profilePropertyRuleGuid && !instance.profileColumn) ||
-      (instance.profilePropertyRuleGuid && instance.profileColumn)
+      (!instance.propertyGuid && !instance.profileColumn) ||
+      (instance.propertyGuid && instance.profileColumn)
     ) {
       throw new Error(
-        "either profilePropertyRuleGuid or profileColumn is required for a GroupRule"
+        "either propertyGuid or profileColumn is required for a GroupRule"
       );
     }
   }
