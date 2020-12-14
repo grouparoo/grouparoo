@@ -13,6 +13,7 @@
     "@grouparoo/core": "^0.2.0-alpha.6",
     "@grouparoo/csv": "^0.2.0-alpha.6",
     "@grouparoo/demo": "^0.2.0-alpha.6",
+    "@grouparoo/facebook": "^0.2.0-alpha.6",
     "@grouparoo/files-s3": "^0.2.0-alpha.6",
     "@grouparoo/google-sheets": "^0.2.0-alpha.6",
     "@grouparoo/hubspot": "^0.2.0-alpha.6",
@@ -56,9 +57,6 @@
       "@grouparoo/snowflake",
       "@grouparoo/ui",
       "@grouparoo/zendesk"
-    ],
-    "includedFiles": [
-      "assets"
     ]
   }
 }
