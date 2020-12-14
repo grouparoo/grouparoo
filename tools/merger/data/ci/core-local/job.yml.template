@@ -19,7 +19,7 @@
           <<: *core-cache-options
 {{{custom_steps}}}
       - run:
-          name: test-{{section}}
+          name: test
           command: cd {{{relative_path}}}/{{section}} && ./node_modules/.bin/jest __tests__/models __tests__/actions --ci --maxWorkers 2
           environment:
             DB_DIALECT: sqlite

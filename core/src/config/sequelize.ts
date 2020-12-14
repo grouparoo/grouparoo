@@ -1,5 +1,6 @@
 import { URL } from "url";
-import { join } from "path";
+import { join, isAbsolute } from "path";
+import { getParentPath, getCoreRootPath } from "../utils/pluginDetails";
 
 // we want BIGINTs to be returned as JS integer types
 require("pg").defaults.parseInt8 = true;
@@ -24,41 +25,54 @@ export const DEFAULT = {
 
     // if your environment provides database information via a single JDBC-style URL
     // like mysql://username:password@hostname:port/default_schema
+    let parsed: { [key: string]: any } = {};
     const connectionURL =
       process.env.DATABASE_URL || process.env.MYSQL_URL || process.env.PG_URL;
+    if (connectionURL) parsed = new URL(connectionURL);
 
-    if (connectionURL) {
-      const parsed = new URL(connectionURL);
-      if (parsed.protocol) dialect = parsed.protocol.slice(0, -1);
+    if (parsed.protocol) dialect = parsed.protocol.slice(0, -1).toLowerCase();
+    if (dialect === "postgresql") dialect = "postgres";
+    if (dialect === "psql") dialect = "postgres";
+
+    /** POSTGRES */
+    if (dialect === "postgres") {
       if (parsed.username) username = parsed.username;
       if (parsed.password) password = parsed.password;
       if (parsed.hostname) host = parsed.hostname;
       if (parsed.port) port = parsed.port;
       if (parsed.pathname) database = parsed.pathname.substring(1);
 
-      const search_ssl = parsed.searchParams.get("ssl");
-      const search_sslmode = parsed.searchParams.get("sslmode");
+      const search_ssl = parsed.searchParams?.get("ssl");
+      const search_sslmode = parsed.searchParams?.get("sslmode");
       if (search_ssl) ssl = search_ssl === "true";
       if (search_sslmode) {
         ssl = search_sslmode === "true" || search_sslmode === "required";
       }
+
+      if (process.env.DATABASE_SSL?.toLowerCase() === "true") {
+        ssl = true;
+      }
+      if (process.env.DATABASE_SSL_SELF_SIGNED?.toLowerCase() === "true") {
+        ssl = { rejectUnauthorized: false };
+      }
     }
 
-    if (dialect === "postgresql") dialect = "postgres";
-    if (dialect === "psql") dialect = "postgres";
-
-    if (process.env.DATABASE_SSL?.toLowerCase() === "true") {
-      ssl = true;
-    }
-    if (process.env.DATABASE_SSL_SELF_SIGNED?.toLowerCase() === "true") {
-      ssl = { rejectUnauthorized: false };
-    }
-
-    // sqlite overrides
+    /** SQLITE */
     if (dialect === "sqlite") {
-      storage = host;
-      if (!host) host = ":memory:";
-      if (process.env.NODE_ENV === "test") storage = `${database}.sqlite`;
+      storage = ":memory:";
+      if (parsed.hostname || parsed.pathname) {
+        storage = `${parsed.hostname}${parsed.pathname}`;
+      }
+
+      if (process.env.NODE_ENV === "test") {
+        storage = join(getCoreRootPath(), `${database}.sqlite`);
+      }
+
+      // without a starting "/" we assume relative locations are against project root
+      if (storage !== ":memory:" && !isAbsolute(storage)) {
+        storage = join(getParentPath(), storage);
+      }
+
       if (config?.tasks?.maxTaskProcessors > 1) {
         throw new Error(
           "Only one task worker can be used with a SQLite database"
