@@ -1,19 +1,23 @@
 import fs from "fs-extra";
 import path from "path";
-import SpawnCommand from "../utils/spawnCommand";
 import { Templates } from "../utils/templates";
 import { buildLogger } from "../utils/logger";
+import { ensurePath } from "../utils/ensurePath";
+import { NPM } from "../utils/npm";
 
-export default async function Generate(
-  workDir: string = process.env.INIT_CWD,
-  program
-) {
+export default async function Initialize(workDir: string, program) {
+  const logger = buildLogger("Generating new Grouparoo Project");
+
+  if (!workDir) {
+    logger.fail("path is required");
+    process.exit(1);
+  }
+
   const opts: {
     force: boolean;
   } = program.opts();
 
-  const logger = buildLogger("Generating new Grouparoo Project");
-  logger.info(`path: ${workDir}`);
+  ensurePath(workDir, logger);
 
   if (!fs.existsSync(workDir)) {
     fs.mkdirpSync(workDir);
@@ -50,22 +54,13 @@ export default async function Generate(
     logger.warn(".env already exists, not modifying");
   }
 
-  await SpawnCommand(
-    "npm",
-    ["install"],
-    workDir,
-    logger,
-    "Installing dependencies",
-    "Dependencies Installed"
-  );
+  await NPM.install(logger);
 
   logger.succeed("Grouparoo project created!");
+
+  console.log("");
   console.log(
-    "- Ensure that Postgres and Redis are running according to the values in .env or your environment"
+    "- Ensure that Postgres and Redis are running if you have enabled them in .env or your environment"
   );
-  console.log(
-    `- ${
-      workDir !== process.cwd() ? `Navigate to ${workDir} and ` : ""
-    }type "npm start" to start the Grouparoo application.`
-  );
+  console.log(`- type "npm start" to start the Grouparoo application.`);
 }

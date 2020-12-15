@@ -1,5 +1,6 @@
 import fs from "fs-extra";
 import path from "path";
+import Ora from "ora";
 import * as glob from "glob";
 import { readPackageJSON } from "./readPackageJSON";
 import { ensureNoTsHeaderFiles } from "./ensureNoTsHeaderFiles";
@@ -38,7 +39,8 @@ export async function loadLocalCommands(program) {
       }
     }
   } catch (error) {
-    throw error;
+    Ora().fail(error.message || error);
+    process.exit(1);
   } finally {
     process.chdir(process.env.INIT_CWD);
   }
@@ -47,9 +49,19 @@ export async function loadLocalCommands(program) {
 // --- UTILS ---
 
 function getActionhero() {
-  process.chdir(
-    path.join(process.env.INIT_CWD, "node_modules", "@grouparoo", "core")
+  const corePath = path.join(
+    process.env.INIT_CWD,
+    "node_modules",
+    "@grouparoo",
+    "core"
   );
+  if (fs.existsSync(corePath)) {
+    process.chdir(corePath);
+  } else {
+    throw new Error(
+      `Cannot find @grouparoo/core package.  Did you "grouparoo install"?`
+    );
+  }
 
   let actionheroPackage = null;
 
@@ -82,7 +94,9 @@ function getActionhero() {
   }
 
   if (!actionheroPackage) {
-    throw new Error(`Cannot find actionhero package.  Did you "npm install"?`);
+    throw new Error(
+      `Cannot find actionhero package.  Did you "grouparoo install"?`
+    );
   }
 
   return actionheroPackage;
