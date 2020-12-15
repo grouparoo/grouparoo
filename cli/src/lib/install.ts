@@ -26,7 +26,7 @@ export default async function Update(pkg: string) {
     process.exit();
   }
 
-  await NPM.install(logger, pkg);
+  await NPM.install(logger, workDir, pkg);
 
   // reload after npm install
   pkgJSONContents = readPackageJSON(packageFile);

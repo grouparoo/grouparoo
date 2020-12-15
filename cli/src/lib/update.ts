@@ -32,7 +32,7 @@ export default async function Update() {
     logger.succeed(`Updated ${p} to version ${upgraded[p]}`);
   });
 
-  await NPM.install(logger);
+  await NPM.install(logger, workDir);
 
   logger.succeed("Grouparoo project updated!");
 }

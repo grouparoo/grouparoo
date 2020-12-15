@@ -4,6 +4,7 @@ set -e
 
 TIME=`date +%s`
 WORKDIR="/tmp/grouparoo-$TIME"
+export INIT_CWD=$WORKDIR
 
 echo " >>> testing with WORKDIR=$WORKDIR <<< "
 
@@ -33,10 +34,10 @@ echo ""
 echo "--- test: help ---"
 npx grouparoo --help
 
-## try the generate command
+## try the init command
 echo ""
-echo "--- test: generate ---"
-npx grouparoo generate $WORKDIR
+echo "--- test: init ---"
+npx grouparoo init $WORKDIR
 
 if [ -f "$WORKDIR/package.json" ]; then
     echo "✅ package.json exists."
@@ -59,10 +60,16 @@ else
     exit 1
 fi
 
-## try the upgrade command
+## try the update command
 echo ""
-echo "--- test: upgrade ---"
-npx grouparoo upgrade $WORKDIR
+echo "--- test: update ---"
+cd $WORKDIR && npx grouparoo update
+
+## try the install command
+echo ""
+echo "--- test: install ---"
+cd $WORKDIR && npx grouparoo install @grouparoo/logger@next
+cd $WORKDIR && cat package.json
 
 ## reset the NPM/NPX link
 npm unlink

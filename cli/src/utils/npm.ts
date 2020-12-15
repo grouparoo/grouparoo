@@ -3,6 +3,7 @@ import npm from "npm";
 export namespace NPM {
   export function install(
     logger,
+    workDir,
     pkg?: string,
     exact = true,
     npm_config_loglevel = "error"
@@ -22,16 +23,20 @@ export namespace NPM {
       npm.load(npmOptions, async function (error: Error) {
         if (error) return fail(logger, error);
 
-        npm.commands.install(installList, async function (error: Error, data) {
-          if (error) return fail(logger, error);
+        npm.commands.install(
+          workDir,
+          installList,
+          async function (error: Error, data) {
+            if (error) return fail(logger, error);
 
-          console.log("");
-          console.log("");
-          console.log(" --- Installation Complete --- ");
-          console.log("");
+            console.log("");
+            console.log("");
+            console.log(" --- Installation Complete --- ");
+            console.log("");
 
-          return resolve(data);
-        });
+            return resolve(data);
+          }
+        );
 
         npm.on("log", function (message) {
           console.log(message);

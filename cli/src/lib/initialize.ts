@@ -17,6 +17,7 @@ export default async function Initialize(workDir: string, program) {
     force: boolean;
   } = program.opts();
 
+  fs.mkdirpSync(workDir);
   ensurePath(workDir, logger);
 
   if (!fs.existsSync(workDir)) {
@@ -54,7 +55,7 @@ export default async function Initialize(workDir: string, program) {
     logger.warn(".env already exists, not modifying");
   }
 
-  await NPM.install(logger);
+  await NPM.install(logger, workDir);
 
   logger.succeed("Grouparoo project created!");
 
