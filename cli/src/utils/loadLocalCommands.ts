@@ -1,13 +1,16 @@
 import fs from "fs-extra";
 import path from "path";
+import Ora from "ora";
 import * as glob from "glob";
 import { readPackageJSON } from "./readPackageJSON";
 import { ensureNoTsHeaderFiles } from "./ensureNoTsHeaderFiles";
 
 export async function loadLocalCommands(program) {
   // are we in a grouparoo project directory?
-  const localPackageFile = path.join(process.cwd(), "package.json");
+  const localPackageFile = path.join(process.env.INIT_CWD, "package.json");
   if (!fs.existsSync(localPackageFile)) return;
+  const nodeModulesDir = path.join(process.env.INIT_CWD, "node_modules");
+  if (!fs.existsSync(nodeModulesDir)) return;
   const pkgJSON = readPackageJSON(localPackageFile);
   if (!Object.keys(pkgJSON?.dependencies || {}).includes("@grouparoo/core")) {
     return;
@@ -38,7 +41,8 @@ export async function loadLocalCommands(program) {
       }
     }
   } catch (error) {
-    throw error;
+    Ora().fail(error.message || error);
+    process.exit(1);
   } finally {
     process.chdir(process.env.INIT_CWD);
   }
@@ -47,9 +51,19 @@ export async function loadLocalCommands(program) {
 // --- UTILS ---
 
 function getActionhero() {
-  process.chdir(
-    path.join(process.env.INIT_CWD, "node_modules", "@grouparoo", "core")
+  const corePath = path.join(
+    process.env.INIT_CWD,
+    "node_modules",
+    "@grouparoo",
+    "core"
   );
+  if (fs.existsSync(corePath)) {
+    process.chdir(corePath);
+  } else {
+    throw new Error(
+      `Cannot find @grouparoo/core package.  Did you "grouparoo install"?`
+    );
+  }
 
   let actionheroPackage = null;
 
@@ -82,7 +96,9 @@ function getActionhero() {
   }
 
   if (!actionheroPackage) {
-    throw new Error(`Cannot find actionhero package.  Did you "npm install"?`);
+    throw new Error(
+      `Cannot find actionhero package.  Did you "grouparoo install"?`
+    );
   }
 
   return actionheroPackage;
