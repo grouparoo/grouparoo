@@ -18,7 +18,7 @@ apps/*/*.log
 log
 pids
 dist
-core/files/test*
+core/files/*
 core/report.*.json
 core/docs
 core/gh-pages

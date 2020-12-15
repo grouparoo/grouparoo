@@ -8,6 +8,7 @@ import LoadingButton from "../../../components/loadingButton";
 import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
 import { SuccessHandler } from "../../../utils/successHandler";
+import { FilePreview, downloadFile } from "../../../components/filePreview";
 
 export default function Page(props) {
   const {
@@ -23,16 +24,8 @@ export default function Page(props) {
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
-  const apiVersion = process.env.API_VERSION || "v1";
-  const csrfToken = globalThis?.localStorage?.getItem("session:csrfToken");
   const fileNameParts = file.path.split("/");
   const fileName = fileNameParts[fileNameParts.length - 1];
-
-  async function download(file) {
-    console.info("downloading file", file);
-    const url = `/api/${apiVersion}/file/${file.guid}?csrfToken=${csrfToken}`;
-    window.open(url, "_new");
-  }
 
   async function destroy(file) {
     if (confirm("are you sure?")) {
@@ -62,17 +55,7 @@ export default function Page(props) {
 
       <Row>
         <Col md={8}>
-          {file.type === "image" ? (
-            <Image
-              thumbnail
-              style={{ maxWidth: "100%", maxHeight: "100%" }}
-              src={`/api/${apiVersion}/file/${file.guid}?csrfToken=${csrfToken}`}
-            />
-          ) : (
-            <p>
-              <em>no preview</em>
-            </p>
-          )}
+          <FilePreview maxWidth="100%" maxHeight="100%" file={file} />
         </Col>
         <Col>
           <p>
@@ -92,7 +75,7 @@ export default function Page(props) {
             size="sm"
             variant="outline-primary"
             onClick={() => {
-              download(file);
+              downloadFile(file);
             }}
           >
             Download
