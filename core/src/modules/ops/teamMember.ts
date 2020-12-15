@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import { TeamMember } from "../../models/TeamMember";
 
 const SALT_ROUNDS = 10;
@@ -12,7 +12,10 @@ export namespace TeamMemberOps {
     password: string,
     transaction = undefined
   ) {
-    teamMember.passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
+    teamMember.passwordHash = bcryptjs.hashSync(
+      password,
+      bcryptjs.genSaltSync(SALT_ROUNDS)
+    );
     await teamMember.save({ transaction });
   }
 
@@ -27,7 +30,7 @@ export namespace TeamMemberOps {
       throw new Error("password not set for this team member");
     }
 
-    const match: boolean = await bcrypt.compare(
+    const match: boolean = await bcryptjs.compareSync(
       password,
       teamMember.passwordHash
     );
