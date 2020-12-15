@@ -26,7 +26,7 @@ export namespace PropertyOps {
     for (const i in groups) {
       const group = groups[i];
       await group.update({ state: "initializing" });
-      await task.enqueue("group:run", { groupGuid: group.guid });
+      await group.run();
     }
   }
 

@@ -5,6 +5,8 @@ import { Group } from "./../../src/models/Group";
 import { Profile } from "./../../src/models/Profile";
 import { Property } from "./../../src/models/Property";
 import { Source } from "./../../src/models/Source";
+import { Run } from "./../../src/models/Run";
+import { api } from "actionhero";
 
 let actionhero;
 let app;
@@ -28,6 +30,7 @@ describe("actions/destinations", () => {
       email: "mario@example.com",
     });
     await helper.factories.properties();
+    await api.resque.queue.connection.redis.flushdb();
   });
 
   describe("administrator signed in", () => {
@@ -465,20 +468,29 @@ describe("actions/destinations", () => {
         );
 
         const foundTasks = await specHelper.findEnqueuedTasks("group:run");
-        expect(foundTasks.length).toBe(1);
-        expect(foundTasks[0].args[0]).toEqual({
-          destinationGuid: guid,
-          groupGuid: destination.destinationGroup.guid,
-          force: true,
+        const runs = await Run.scope(null).findAll();
+        const runningRunTasks = foundTasks.filter((t) => {
+          const run = runs.filter((r) => r.guid === t.args[0].runGuid)[0];
+          return run.state === "running";
         });
+
+        expect(runningRunTasks.length).toBe(1);
+        expect(runningRunTasks[0].args[0]).toEqual(
+          expect.objectContaining({
+            destinationGuid: guid,
+            groupGuid: destination.destinationGroup.guid,
+            force: true,
+          })
+        );
 
         await specHelper.runAction("destination:unTrackGroup", connection);
       });
     });
 
-    test("an administrator can destroy a destination", async () => {
+    test("an administrator can destroy a destination (soft)", async () => {
       connection.params = {
         csrfToken,
+        force: false,
         guid,
       };
       const destroyResponse = await specHelper.runAction(
@@ -488,8 +500,29 @@ describe("actions/destinations", () => {
       expect(destroyResponse.error).toBeUndefined();
       expect(destroyResponse.success).toBe(true);
 
-      const count = await Destination.count();
-      expect(count).toBe(0);
+      const destination = await Destination.scope(null).findOne({
+        where: { guid },
+      });
+      expect(destination.state).toBe("deleted");
+    });
+
+    test("an administrator can destroy a destination (force)", async () => {
+      connection.params = {
+        csrfToken,
+        force: true,
+        guid,
+      };
+      const destroyResponse = await specHelper.runAction(
+        "destination:destroy",
+        connection
+      );
+      expect(destroyResponse.error).toBeUndefined();
+      expect(destroyResponse.success).toBe(true);
+
+      const destination = await Destination.scope(null).findOne({
+        where: { guid },
+      });
+      expect(destination).toBeFalsy();
     });
   });
 });

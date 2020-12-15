@@ -244,7 +244,7 @@ describe("models/property", () => {
     );
     expect(foundInternalRunTasks.length).toBe(1);
 
-    expect(group.state).toBe("initializing");
+    expect(group.state).toBe("updating");
     foundGroupRunTasks = await specHelper.findEnqueuedTasks("group:run");
     expect(foundGroupRunTasks.length).toBe(2); // + the one from the profile property change
   });

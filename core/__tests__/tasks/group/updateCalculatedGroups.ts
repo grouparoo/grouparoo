@@ -1,9 +1,10 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
+import { Group } from "../../../src";
 import { plugin } from "./../../../src/modules/plugin";
 
 let actionhero;
-let group;
+let group: Group;
 
 describe("tasks/group:updateCalculatedGroups", () => {
   beforeAll(async () => {
@@ -13,6 +14,7 @@ describe("tasks/group:updateCalculatedGroups", () => {
 
   beforeEach(async () => {
     await api.resque.queue.connection.redis.flushdb();
+    await group.reload();
   });
 
   afterAll(async () => {
@@ -35,8 +37,7 @@ describe("tasks/group:updateCalculatedGroups", () => {
     });
 
     test("running it will enqueue an update for groups that have never been calculated", async () => {
-      group.calculatedAt = null;
-      await group.save();
+      await group.update({ state: "ready", calculatedAt: null });
 
       await specHelper.runTask("group:updateCalculatedGroups", {});
       const enqueuedTasks = await specHelper.findEnqueuedTasks("group:run");
@@ -45,8 +46,7 @@ describe("tasks/group:updateCalculatedGroups", () => {
     });
 
     test("running it will enqueue an update for groups that were last recalculated in the far past", async () => {
-      group.calculatedAt = new Date(0); // ~1970 or so
-      await group.save();
+      await group.update({ state: "ready", calculatedAt: new Date(0) }); // ~1970 or so
 
       await specHelper.runTask("group:updateCalculatedGroups", {});
       const enqueuedTasks = await specHelper.findEnqueuedTasks("group:run");
@@ -55,8 +55,7 @@ describe("tasks/group:updateCalculatedGroups", () => {
     });
 
     test("running it will not enqueue an update for groups that were last recalculated recently", async () => {
-      group.calculatedAt = new Date(); // now
-      await group.save();
+      await group.update({ state: "ready", calculatedAt: new Date() }); // now
 
       await specHelper.runTask("group:updateCalculatedGroups", {});
       const enqueuedTasks = await specHelper.findEnqueuedTasks("group:run");
@@ -65,9 +64,7 @@ describe("tasks/group:updateCalculatedGroups", () => {
     });
 
     test("groups already calculating will not be calculated again", async () => {
-      group.calculatedAt = new Date(0); // ~1970 or so
-      group.state = "updating";
-      await group.save();
+      await group.update({ state: "updating", calculatedAt: new Date(0) }); // ~1970 or so
 
       await specHelper.runTask("group:updateCalculatedGroups", {});
       const enqueuedTasks = await specHelper.findEnqueuedTasks("group:run");

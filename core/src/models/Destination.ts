@@ -45,6 +45,8 @@ export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 const STATES = ["draft", "ready"] as const;
 const STATE_TRANSITIONS = [
   { from: "draft", to: "ready", checks: ["validateOptions"] },
+  { from: "draft", to: "deleted", checks: [] },
+  { from: "ready", to: "deleted", checks: [] },
 ];
 
 @DefaultScope(() => ({
@@ -478,7 +480,10 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeDestroy
-  static async waitForPendingExports(instance: Destination, { transaction }) {
+  static async waitForPendingExports(
+    instance: Destination,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
     const pendingExportCount = await instance.$count("exports", {
       where: {
         completedAt: { [Op.eq]: null },
@@ -542,11 +547,8 @@ export class Destination extends LoggedModel<Destination> {
     newGroups: Group[] = []
   ) {
     const combinedGroupGuids = [...oldGroups, ...newGroups].map((g) => g.guid);
-    const relevantDestinations = await Destination.scope(null).findAll({
-      where: {
-        state: "ready",
-        groupGuid: { [Op.in]: combinedGroupGuids },
-      },
+    const relevantDestinations = await Destination.findAll({
+      where: { groupGuid: { [Op.in]: combinedGroupGuids } },
     });
 
     return relevantDestinations;
