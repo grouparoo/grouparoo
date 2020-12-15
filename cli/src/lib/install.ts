@@ -19,7 +19,7 @@ export default async function Update(pkg: string) {
 
   const packageFile = path.join(workDir, "package.json");
   let pkgJSONContents = readPackageJSON(packageFile);
-  const plugins: string[] = pkgJSONContents?.grouparoo?.plugins;
+  let plugins: string[] = pkgJSONContents?.grouparoo?.plugins;
 
   if (!plugins) {
     logger.fail("there is no grouparoo section in this package.json");
@@ -28,7 +28,9 @@ export default async function Update(pkg: string) {
 
   await NPM.install(logger, pkg);
 
-  pkgJSONContents = readPackageJSON(packageFile); // reload after npm install
+  // reload after npm install
+  pkgJSONContents = readPackageJSON(packageFile);
+  plugins = pkgJSONContents?.grouparoo?.plugins;
 
   if (pkg) {
     let cleanedPackageName = "@" + pkg.split("@")[1];
