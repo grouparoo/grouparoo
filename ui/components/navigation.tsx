@@ -149,7 +149,7 @@ export default function Navigation(props) {
         display: "flex",
         justifyContent: "space-between",
         flexDirection: "column",
-        width: 250,
+        width: 235,
         overflowY: "auto",
         overflowX: "hidden",
         height: "100%",
@@ -163,7 +163,7 @@ export default function Navigation(props) {
               className="navbar-toggler"
               style={{
                 position: "absolute",
-                left: 205,
+                left: 190,
               }}
               onClick={toggleNavExpanded}
             >

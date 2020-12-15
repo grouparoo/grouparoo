@@ -46,7 +46,7 @@ describe("snowflake/table/scheduleOptions", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
 
     app = await helper.factories.app({
       name: "SNOW",

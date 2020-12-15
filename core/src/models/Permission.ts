@@ -26,7 +26,7 @@ export const PermissionTopics = [
   "log",
   "notification",
   "profile",
-  "profilePropertyRule",
+  "property",
   "resque",
   "run",
   "setupStep",

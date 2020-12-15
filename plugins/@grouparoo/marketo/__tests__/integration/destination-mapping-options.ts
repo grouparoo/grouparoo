@@ -33,8 +33,8 @@ describe("marketo/destinationMappingOptions", () => {
         destinationGuid: null,
         destinationOptions: null,
       });
-      const { profilePropertyRules } = options;
-      const { required, known } = profilePropertyRules;
+      const { properties } = options;
+      const { required, known } = properties;
 
       expect(required.length).toBe(1);
       const external_id = required.find((f) => f.key === "email");

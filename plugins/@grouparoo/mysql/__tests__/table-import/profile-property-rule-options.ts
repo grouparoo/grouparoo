@@ -3,7 +3,7 @@ import "@grouparoo/spec-helper";
 import { beforeData, afterData, getConfig } from "../utils/data";
 
 import { getConnection } from "../../src/lib/table-import/connection";
-const profilePropertyRuleOptions = getConnection().profilePropertyRuleOptions;
+const propertyOptions = getConnection().propertyOptions;
 
 // these used and set by test
 const { appOptions, purchasesTableName } = getConfig();
@@ -11,9 +11,7 @@ const sourceOptions = { table: purchasesTableName };
 let client;
 
 async function getOptionsForKey(keyName) {
-  const option = profilePropertyRuleOptions.find(
-    (rule) => rule.key === keyName
-  );
+  const option = propertyOptions.find((rule) => rule.key === keyName);
   expect(option.key).toBeTruthy();
 
   const optionMethod = option.options;
@@ -27,13 +25,13 @@ async function getOptionsForKey(keyName) {
     source: null,
     sourceGuid: null,
     sourceMapping: null,
-    profilePropertyRule: null,
-    profilePropertyRuleGuid: null,
+    property: null,
+    propertyGuid: null,
   });
   return response;
 }
 
-describe("mysql/table/profilePropertyRuleOptions", () => {
+describe("mysql/table/propertyOptions", () => {
   beforeAll(async () => {
     ({ client } = await beforeData());
   });

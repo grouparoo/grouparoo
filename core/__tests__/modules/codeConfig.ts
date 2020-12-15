@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { plugin } from "../../src/modules/plugin";
-import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
+import { Property } from "../../src/models/Property";
 import { App } from "../../src/models/App";
 import { Source } from "../../src/models/Source";
 import { Schedule } from "../../src/models/Schedule";
@@ -64,7 +64,7 @@ describe("modules/codeConfig", () => {
       expect(apps[0].locked).toBe("config:code");
       let options = await apps[0].getOptions();
       expect(options).toEqual({
-        identifyingProfilePropertyRuleGuid: "rul_user_id",
+        identifyingPropertyGuid: "rul_user_id",
       });
 
       expect(apps[1].guid).toBe("app_data_warehouse");
@@ -87,8 +87,8 @@ describe("modules/codeConfig", () => {
       expect(options).toEqual({ table: "users" });
     });
 
-    test("the bootstrapped profile property rule is created", async () => {
-      const rule = await ProfilePropertyRule.findOne({
+    test("the bootstrapped property is created", async () => {
+      const rule = await Property.findOne({
         where: { directlyMapped: true },
       });
       expect(rule.guid).toBe("rul_user_id");
@@ -112,8 +112,8 @@ describe("modules/codeConfig", () => {
       expect(schedules[0].locked).toBe("config:code");
     });
 
-    test("profile property rules are created", async () => {
-      const rules = await ProfilePropertyRule.findAll();
+    test("properties are created", async () => {
+      const rules = await Property.findAll();
       expect(rules.length).toBe(4);
       expect(rules.map((r) => r.key).sort()).toEqual([
         "User Id",
@@ -246,8 +246,8 @@ describe("modules/codeConfig", () => {
       expect(options).toEqual({ fileGuid: "new-file-path.db" });
     });
 
-    test("profile property rule keys changes will be updated", async () => {
-      const rules = await ProfilePropertyRule.findAll();
+    test("property keys changes will be updated", async () => {
+      const rules = await Property.findAll();
       expect(rules.length).toBe(4);
       expect(rules.map((r) => r.key).sort()).toEqual([
         "Email",
@@ -346,7 +346,7 @@ describe("modules/codeConfig", () => {
       expect(await Source.count()).toBe(1);
       expect(await Schedule.count()).toBe(0);
       expect(await Destination.count()).toBe(0);
-      expect(await ProfilePropertyRule.count()).toBe(2);
+      expect(await Property.count()).toBe(2);
       expect(await ApiKey.count()).toBe(0);
       expect(await Team.count()).toBe(0);
       expect(await TeamMember.count()).toBe(0);
@@ -383,7 +383,7 @@ describe("modules/codeConfig", () => {
       expect(await Schedule.count()).toBe(0);
       expect(await Destination.count()).toBe(0);
       expect(await Group.count()).toBe(0);
-      expect(await ProfilePropertyRule.count()).toBe(0);
+      expect(await Property.count()).toBe(0);
       expect(await ApiKey.count()).toBe(0);
       expect(await Team.count()).toBe(0);
       expect(await TeamMember.count()).toBe(0);
@@ -428,12 +428,12 @@ describe("modules/codeConfig", () => {
 
       test("errors will be thrown if the configuration is invalid", async () => {
         await expect(initializer.initialize()).rejects.toThrow(
-          /cannot find ProfilePropertyRule/
+          /cannot find Property/
         );
       });
     });
 
-    describe("profile property rule", () => {
+    describe("property", () => {
       beforeAll(async () => {
         api.codeConfig.allowLockedModelChanges = true;
         process.env.GROUPAROO_CONFIG_DIR = path.join(
@@ -441,7 +441,7 @@ describe("modules/codeConfig", () => {
           "..",
           "fixtures",
           "codeConfig",
-          "error-profilePropertyRule"
+          "error-property"
         );
       });
 
@@ -466,7 +466,7 @@ describe("modules/codeConfig", () => {
 
       test("errors will be thrown if the configuration is invalid", async () => {
         await expect(initializer.initialize()).rejects.toThrow(
-          /cannot find ProfilePropertyRule/
+          /cannot find Property/
         );
       });
     });

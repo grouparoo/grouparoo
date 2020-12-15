@@ -53,7 +53,7 @@ describe("tasks/profile:export", () => {
 
       beforeAll(async () => {
         await helper.truncate();
-        await helper.factories.profilePropertyRules();
+        await helper.factories.properties();
         helper.disableTestPluginImport();
 
         profile = await helper.factories.profile();
@@ -98,15 +98,15 @@ describe("tasks/profile:export", () => {
                         singular: "list",
                         plural: "lists",
                       },
-                      profilePropertyRule: {
+                      property: {
                         singular: "var",
                         plural: "vars",
                       },
                     },
-                    profilePropertyRules: {
+                    properties: {
                       required: [],
                       known: [],
-                      allowOptionalFromProfilePropertyRules: true,
+                      allowOptionalFromProperties: true,
                     },
                   };
                 },

@@ -26,11 +26,8 @@ import { Setting } from "./Setting";
 import { ProfileProperty } from "./ProfileProperty";
 import { Destination } from "./Destination";
 import { DestinationGroupMembership } from "./DestinationGroupMembership";
-import {
-  ProfilePropertyRule,
-  profilePropertyRuleJSToSQLType,
-} from "./ProfilePropertyRule";
-import { ProfilePropertyRuleOpsDictionary } from "../modules/RuleOpsDictionary";
+import { Property, propertyJSToSQLType } from "./Property";
+import { PropertyOpsDictionary } from "../modules/RuleOpsDictionary";
 import { StateMachine } from "./../modules/stateMachine";
 import { GroupOps } from "../modules/ops/group";
 import { LockableHelper } from "../modules/lockableHelper";
@@ -171,20 +168,20 @@ export class Group extends LoggedModel<Group> {
 
     for (const i in rules) {
       const rule: GroupRule = rules[i];
-      const profilePropertyRule = await rule.$get("profilePropertyRule", {
+      const property = await rule.$get("property", {
         transaction,
       });
-      const type = profilePropertyRule
-        ? profilePropertyRule.type
+      const type = property
+        ? property.type
         : TopLevelGroupRules.find((tlgr) => tlgr.key === rule.profileColumn)
             .type;
       rulesWithKey.push({
-        key: profilePropertyRule ? profilePropertyRule.key : rule.profileColumn,
-        topLevel: profilePropertyRule ? false : true,
+        key: property ? property.key : rule.profileColumn,
+        topLevel: property ? false : true,
         type: type,
         operation: {
           op: rule.op,
-          description: ProfilePropertyRuleOpsDictionary[type].find(
+          description: PropertyOpsDictionary[type].find(
             (operation) => operation.op === rule.op
           ).description,
         },
@@ -228,27 +225,27 @@ export class Group extends LoggedModel<Group> {
       for (const i in rules) {
         const rule = rules[i];
         const key = rule.key;
-        const profilePropertyRule = await ProfilePropertyRule.findOne({
+        const property = await Property.findOne({
           where: { key },
         });
 
-        if (!profilePropertyRule && !topLevelRuleKeys.includes(key)) {
-          throw new Error(`cannot find Profile Property Rule ${key}`);
+        if (!property && !topLevelRuleKeys.includes(key)) {
+          throw new Error(`cannot find property ${key}`);
         }
 
-        let type = profilePropertyRule?.type;
+        let type = property?.type;
         if (topLevelRuleKeys.includes(key)) {
           type = TopLevelGroupRules.find((tlgr) => tlgr.key === key).type as
             | "string"
             | "date";
         }
 
-        const dictionaryEntries = ProfilePropertyRuleOpsDictionary[type].filter(
+        const dictionaryEntries = PropertyOpsDictionary[type].filter(
           (operation) => operation.op === rule.operation.op
         );
         if (!dictionaryEntries || dictionaryEntries.length === 0) {
           throw new Error(
-            `invalid group rule operation "${rule.operation.op}" for profile property rule of type ${profilePropertyRule.type}`
+            `invalid group rule operation "${rule.operation.op}" for property of type ${property.type}`
           );
         }
 
@@ -256,10 +253,8 @@ export class Group extends LoggedModel<Group> {
           {
             position: parseInt(i) + 1,
             groupGuid: this.guid,
-            profilePropertyRuleGuid: profilePropertyRule
-              ? profilePropertyRule.guid
-              : null,
-            profileColumn: profilePropertyRule ? null : key,
+            propertyGuid: property ? property.guid : null,
+            profileColumn: property ? null : key,
             op: rule.operation.op,
             match: rule.match,
             relativeMatchNumber: rule.relativeMatchNumber,
@@ -311,7 +306,7 @@ export class Group extends LoggedModel<Group> {
   }
 
   fromConvenientRules(rules: GroupRuleWithKey[]) {
-    const convenientRules = ProfilePropertyRuleOpsDictionary._convenientRules;
+    const convenientRules = PropertyOpsDictionary._convenientRules;
 
     for (const i in rules) {
       if (convenientRules[rules[i].operation.op]) {
@@ -334,7 +329,7 @@ export class Group extends LoggedModel<Group> {
   }
 
   toConvenientRules(rules: GroupRuleWithKey[]) {
-    const convenientRules = ProfilePropertyRuleOpsDictionary._convenientRules;
+    const convenientRules = PropertyOpsDictionary._convenientRules;
 
     for (const i in rules) {
       for (const k in convenientRules) {
@@ -352,7 +347,7 @@ export class Group extends LoggedModel<Group> {
         !rules[i].operation.op.match(/^relative_/)
       ) {
         rules[i].operation.op = `relative_${rules[i].operation.op}`;
-        rules[i].operation.description = ProfilePropertyRuleOpsDictionary[
+        rules[i].operation.description = PropertyOpsDictionary[
           rules[i].type
         ].filter(
           (operation) => operation.op === rules[i].operation.op
@@ -487,17 +482,17 @@ export class Group extends LoggedModel<Group> {
       const localWhereGroup = {};
       let rawValueMatch = {};
 
-      const profilePropertyRule = await ProfilePropertyRule.findOne({
+      const property = await Property.findOne({
         where: { key },
       });
-      if (!profilePropertyRule && !topLevel) {
-        throw new Error(`cannot find type for ProfilePropertyRule ${key}`);
+      if (!property && !topLevel) {
+        throw new Error(`cannot find type for Property ${key}`);
       }
 
       if (match !== null && match !== undefined) {
         // special cases for dialects
         if (config.sequelize.dialect === "sqlite") {
-          if (profilePropertyRule?.type === "boolean") {
+          if (property?.type === "boolean") {
             if (match === "1") match = "true";
             if (match === "0") match = "false";
           }
@@ -510,7 +505,7 @@ export class Group extends LoggedModel<Group> {
         // in the case of Array property negation, we also want to consider those profiles with the property never set
         if (
           !topLevel &&
-          profilePropertyRule.isArray &&
+          property.isArray &&
           ["ne", "notLike", "notILike"].includes(operation.op)
         ) {
           rawValueMatch = { [Op.or]: [rawValueMatch, { [Op.eq]: null }] };
@@ -534,7 +529,7 @@ export class Group extends LoggedModel<Group> {
           api.sequelize.where(
             api.sequelize.cast(
               api.sequelize.col(`${alias}.rawValue`),
-              profilePropertyRuleJSToSQLType(profilePropertyRule.type)
+              propertyJSToSQLType(property.type)
             ),
             rawValueMatch
           ),
@@ -564,7 +559,7 @@ export class Group extends LoggedModel<Group> {
         todayBoundWhereGroup[Op.and] = api.sequelize.where(
           api.sequelize.cast(
             api.sequelize.col(`${alias}.rawValue`),
-            profilePropertyRuleJSToSQLType(profilePropertyRule.type)
+            propertyJSToSQLType(property.type)
           ),
           todayBoundMatch
         );
@@ -577,15 +572,15 @@ export class Group extends LoggedModel<Group> {
         !topLevel &&
         match !== null &&
         match !== undefined &&
-        profilePropertyRule.isArray &&
+        property.isArray &&
         ["ne", "notLike", "notILike"].includes(operation.op)
       ) {
         let reverseMatchWhere = {
-          [Op.and]: [{ profilePropertyRuleGuid: profilePropertyRule.guid }],
+          [Op.and]: [{ propertyGuid: property.guid }],
         };
         const castedValue = api.sequelize.cast(
           api.sequelize.col(`rawValue`),
-          profilePropertyRuleJSToSQLType(profilePropertyRule.type)
+          propertyJSToSQLType(property.type)
         );
         const nullCheckedMatch =
           match.toString().toLocaleLowerCase() === "null" ? null : match;
@@ -627,7 +622,7 @@ export class Group extends LoggedModel<Group> {
           // $_$ wrapping is an option with eager loading
           // https://sequelize.org/master/manual/models-usage.html#eager-loading
           where: {
-            [`$${alias}.profilePropertyRuleGuid$`]: profilePropertyRule.guid,
+            [`$${alias}.propertyGuid$`]: property.guid,
           },
           attributes: [],
           model: ProfileProperty,

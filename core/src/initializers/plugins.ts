@@ -60,7 +60,7 @@ export class Plugins extends Initializer {
           app: "manual",
           description: "manually update the properties of a profile",
           options: [],
-          profilePropertyRuleOptions: [],
+          propertyOptions: [],
           methods: {
             sourceOptions: async () => {
               return {};

@@ -3,7 +3,7 @@ import { api, task, specHelper } from "actionhero";
 import {
   PluginConnection,
   plugin,
-  ProfilePropertyRule,
+  Property,
   GrouparooPlugin,
   Source,
   App,
@@ -12,7 +12,7 @@ import {
 let actionhero;
 
 describe("tasks/profileProperties:enqueue", () => {
-  let profilePropertyRulesCount: number;
+  let propertiesCount: number;
 
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
@@ -38,14 +38,14 @@ describe("tasks/profileProperties:enqueue", () => {
   describe("profileProperties:enqueue", () => {
     describe("when bootstrapping", () => {
       afterAll(async () => {
-        await ProfilePropertyRule.truncate();
+        await Property.truncate();
         await Source.truncate();
         await App.truncate();
       });
 
-      it("will not crash when there is a profile property rule without a ready source", async () => {
+      it("will not crash when there is a property without a ready source", async () => {
         const source = await helper.factories.source();
-        const rule = await source.bootstrapUniqueProfilePropertyRule(
+        const rule = await source.bootstrapUniqueProperty(
           "userId",
           "integer",
           "user-id"
@@ -58,10 +58,8 @@ describe("tasks/profileProperties:enqueue", () => {
 
     describe("with rules", () => {
       beforeAll(async () => {
-        await helper.factories.profilePropertyRules();
-        profilePropertyRulesCount = await ProfilePropertyRule.scope(
-          null
-        ).count();
+        await helper.factories.properties();
+        propertiesCount = await Property.scope(null).count();
       });
 
       test("can be enqueued", async () => {
@@ -100,7 +98,7 @@ describe("tasks/profileProperties:enqueue", () => {
 
         expect(importProfilePropertiesTasks.length).toBe(0);
         expect(importProfilePropertyTasks.length).toBe(
-          (profilePropertyRulesCount - 1) * 2
+          (propertiesCount - 1) * 2
         );
       });
 
@@ -151,9 +149,7 @@ describe("tasks/profileProperties:enqueue", () => {
           );
 
           expect(importProfilePropertyTasks.length).toBe(0);
-          expect(importProfilePropertiesTasks.length).toBe(
-            profilePropertyRulesCount - 1
-          );
+          expect(importProfilePropertiesTasks.length).toBe(propertiesCount - 1);
           importProfilePropertiesTasks.forEach((t) =>
             expect(t.args[0].profileGuids.length).toBe(2)
           );
@@ -192,9 +188,7 @@ describe("tasks/profileProperties:enqueue", () => {
           );
 
           expect(importProfilePropertyTasks.length).toBe(0);
-          expect(importProfilePropertiesTasks.length).toBe(
-            profilePropertyRulesCount - 1
-          );
+          expect(importProfilePropertiesTasks.length).toBe(propertiesCount - 1);
           importProfilePropertiesTasks.forEach((t) =>
             expect(t.args[0].profileGuids.length).toBe(1)
           );

@@ -5,7 +5,7 @@ import { test } from "../lib/test";
 import { sourceOptions } from "../lib/file-import/sourceOptions";
 import { sourcePreview } from "../lib/file-import/sourcePreview";
 import { profiles } from "../lib/file-import/profiles";
-import { profilePropertyRuleOptions } from "../lib/file-import/profilePropertyRuleOptions";
+import { propertyOptions } from "../lib/file-import/propertyOptions";
 import { sourceRunPercentComplete } from "../lib/file-import/sourceRunPercentComplete";
 
 const packageJSON = require("./../../package.json");
@@ -43,7 +43,7 @@ export class Plugins extends Initializer {
             },
           ],
           scheduleOptions: [],
-          profilePropertyRuleOptions,
+          propertyOptions,
           methods: {
             sourceOptions,
             sourcePreview,

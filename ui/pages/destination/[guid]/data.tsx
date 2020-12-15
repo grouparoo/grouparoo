@@ -1,10 +1,10 @@
 import { useState, useRef } from "react";
 import { useApi } from "../../../hooks/useApi";
+import { Typeahead } from "react-bootstrap-typeahead";
 import { Row, Col, Form, Badge, Button, Table, Alert } from "react-bootstrap";
 import ProfilePreview from "./../../../components/destination/profilePreview";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Typeahead } from "react-bootstrap-typeahead";
 import DestinationTabs from "../../../components/tabs/destination";
 import LoadingButton from "../../../components/loadingButton";
 import StateBadge from "../../../components/badges/stateBadge";
@@ -18,7 +18,7 @@ export default function Page(props) {
   const {
     errorHandler,
     successHandler,
-    profilePropertyRules,
+    properties,
     mappingOptions,
     destinationTypeConversions,
     groups,
@@ -28,7 +28,7 @@ export default function Page(props) {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     hydrationError: Error;
-    profilePropertyRules: Models.ProfilePropertyRuleType[];
+    properties: Models.PropertyType[];
     groups: Models.GroupType[];
     mappingOptions: Actions.DestinationMappingOptions["options"];
     destinationTypeConversions: Actions.DestinationMappingOptions["destinationTypeConversions"];
@@ -49,10 +49,7 @@ export default function Page(props) {
   ] = useState<string[]>([]);
   const displayedDestinationPropertiesAutocomleteRef = useRef(null);
   const taggedGroupRef = useRef(null);
-  const [
-    unlockedProfilePropertyRules,
-    setUnlockedProfilePropertyRules,
-  ] = useState({});
+  const [unlockedProperties, setUnlockedProperties] = useState({});
   const [unlockedGroups, setUnlockedGroups] = useState<string[]>([]);
   const { guid } = router.query;
 
@@ -103,41 +100,37 @@ export default function Page(props) {
     });
   };
 
-  const remainingProfilePropertyRulesForKnown = [];
-  for (const i in profilePropertyRules) {
+  const remainingPropertiesForKnown = [];
+  for (const i in properties) {
     let inUse = false;
-    for (const j in mappingOptions?.profilePropertyRules?.required) {
-      const opt = mappingOptions.profilePropertyRules.required[j];
-      if (destination.mapping[opt.key] === profilePropertyRules[i].key) {
+    for (const j in mappingOptions?.properties?.required) {
+      const opt = mappingOptions.properties.required[j];
+      if (destination.mapping[opt.key] === properties[i].key) {
         inUse = true;
       }
     }
 
     if (!inUse) {
-      remainingProfilePropertyRulesForKnown.push(profilePropertyRules[i]);
+      remainingPropertiesForKnown.push(properties[i]);
     }
   }
 
-  const remainingProfilePropertyRuleKeysForOptional = profilePropertyRules
+  const remainingPropertyKeysForOptional = properties
     .filter(filterRuleForArrayProperties)
     .map((rule) => rule.key);
 
-  mappingOptions?.profilePropertyRules?.required.map((opt) => {
+  mappingOptions?.properties?.required.map((opt) => {
     if (destination.mapping[opt.key]) {
-      remainingProfilePropertyRuleKeysForOptional.splice(
-        remainingProfilePropertyRuleKeysForOptional.indexOf(
-          destination.mapping[opt.key]
-        ),
+      remainingPropertyKeysForOptional.splice(
+        remainingPropertyKeysForOptional.indexOf(destination.mapping[opt.key]),
         1
       );
     }
   });
-  mappingOptions?.profilePropertyRules?.known.map((opt) => {
+  mappingOptions?.properties?.known.map((opt) => {
     if (destination.mapping[opt.key]) {
-      remainingProfilePropertyRuleKeysForOptional.splice(
-        remainingProfilePropertyRuleKeysForOptional.indexOf(
-          destination.mapping[opt.key]
-        ),
+      remainingPropertyKeysForOptional.splice(
+        remainingPropertyKeysForOptional.indexOf(destination.mapping[opt.key]),
         1
       );
     }
@@ -146,16 +139,12 @@ export default function Page(props) {
   const optionalMappingRemoteKeys = Object.keys(destination.mapping).filter(
     (key) => {
       if (
-        mappingOptions?.profilePropertyRules?.required
-          .map((opt) => opt.key)
-          .includes(key)
+        mappingOptions?.properties?.required.map((opt) => opt.key).includes(key)
       ) {
         return false;
       }
       if (
-        mappingOptions?.profilePropertyRules?.known
-          .map((opt) => opt.key)
-          .includes(key)
+        mappingOptions?.properties?.known.map((opt) => opt.key).includes(key)
       ) {
         return false;
       }
@@ -236,15 +225,14 @@ export default function Page(props) {
     setDestination(_destination);
   }
 
-  function toggleUnlockedProfilePropertyRule(key) {
-    const _unlockedProfilePropertyRules = Object.assign(
-      {},
-      unlockedProfilePropertyRules
-    );
-    _unlockedProfilePropertyRules[
+  function toggleUnlockedProperty(key) {
+    const _unlockedProperties = Object.assign({}, unlockedProperties);
+    _unlockedProperties[destination.mapping[key]] = _unlockedProperties[
       destination.mapping[key]
-    ] = _unlockedProfilePropertyRules[destination.mapping[key]] ? false : true;
-    setUnlockedProfilePropertyRules(_unlockedProfilePropertyRules);
+    ]
+      ? false
+      : true;
+    setUnlockedProperties(_unlockedProperties);
   }
 
   function toggleUnlockedGroup(groupGuid) {
@@ -350,27 +338,19 @@ export default function Page(props) {
 
                   {/* Required Vars */}
 
-                  {mappingOptions?.profilePropertyRules?.required.length > 0 ? (
+                  {mappingOptions?.properties?.required.length > 0 ? (
                     <>
-                      <h6>
-                        Required{" "}
-                        {mappingOptions.labels.profilePropertyRule.plural}
-                      </h6>
+                      <h6>Required {mappingOptions.labels.property.plural}</h6>
                       <Table size="sm">
                         <thead>
                           <tr>
-                            <th>Grouparoo Profile Property Rule</th>
+                            <th>Grouparoo Property</th>
                             <th />
-                            <th>
-                              {
-                                mappingOptions.labels.profilePropertyRule
-                                  .singular
-                              }
-                            </th>
+                            <th>{mappingOptions.labels.property.singular}</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {mappingOptions.profilePropertyRules.required.map(
+                          {mappingOptions.properties.required.map(
                             ({ key, type }, idx) => (
                               <tr key={`required-mapping-${idx}`}>
                                 <td>
@@ -384,9 +364,9 @@ export default function Page(props) {
                                     }
                                   >
                                     <option disabled value={""}>
-                                      choose a profile property rule
+                                      choose a Property
                                     </option>
-                                    {profilePropertyRules
+                                    {properties
                                       .filter((rule) =>
                                         destinationTypeConversions[
                                           rule.type
@@ -426,27 +406,20 @@ export default function Page(props) {
 
                   {/* Known Vars */}
 
-                  {mappingOptions?.profilePropertyRules?.known.length > 0 ? (
+                  {mappingOptions?.properties?.known.length > 0 ? (
                     <>
-                      <h6>
-                        Known {mappingOptions.labels.profilePropertyRule.plural}
-                      </h6>
+                      <h6>Known {mappingOptions.labels.property.plural}</h6>
                       <Table size="sm">
                         <thead>
                           <tr>
-                            <th>Grouparoo Profile Property Rule</th>
+                            <th>Grouparoo Property</th>
                             <th />
-                            <th>
-                              {
-                                mappingOptions.labels.profilePropertyRule
-                                  .singular
-                              }
-                            </th>
+                            <th>{mappingOptions.labels.property.singular}</th>
                             <th />
                           </tr>
                         </thead>
                         <tbody>
-                          {mappingOptions.profilePropertyRules.known.map(
+                          {mappingOptions.properties.known.map(
                             ({ key, type, important }, idx) =>
                               displayedDestinationProperties.includes(key) ||
                               important ||
@@ -467,7 +440,7 @@ export default function Page(props) {
                                           None
                                         </option>
                                       ) : null}
-                                      {remainingProfilePropertyRulesForKnown
+                                      {remainingPropertiesForKnown
                                         .filter((rule) =>
                                           destinationTypeConversions[
                                             rule.type
@@ -532,7 +505,7 @@ export default function Page(props) {
                             <Typeahead
                               id="displayedDestinationProperties"
                               ref={displayedDestinationPropertiesAutocomleteRef}
-                              placeholder={`Choose a ${mappingOptions.labels.profilePropertyRule.singular}...`}
+                              placeholder={`Choose a ${mappingOptions.labels.property.singular}...`}
                               disabled={loading}
                               onChange={(selected) => {
                                 displayedDestinationPropertiesAutocomleteRef.current.clear();
@@ -547,7 +520,7 @@ export default function Page(props) {
                                   _displayedDestinationProperties
                                 );
                               }}
-                              options={mappingOptions.profilePropertyRules.known
+                              options={mappingOptions.properties.known
                                 .filter(
                                   ({ key }) =>
                                     !displayedDestinationProperties.includes(
@@ -565,24 +538,15 @@ export default function Page(props) {
 
                   {/* Optional Vars */}
 
-                  {mappingOptions?.profilePropertyRules
-                    ?.allowOptionalFromProfilePropertyRules ? (
+                  {mappingOptions?.properties?.allowOptionalFromProperties ? (
                     <>
-                      <h6>
-                        Optional{" "}
-                        {mappingOptions.labels.profilePropertyRule.plural}
-                      </h6>
+                      <h6>Optional {mappingOptions.labels.property.plural}</h6>
                       <Table size="sm">
                         <thead>
                           <tr>
-                            <th>Grouparoo Profile Property Rule</th>
+                            <th>Grouparoo Property</th>
                             <th />
-                            <th>
-                              {
-                                mappingOptions.labels.profilePropertyRule
-                                  .singular
-                              }
-                            </th>
+                            <th>{mappingOptions.labels.property.singular}</th>
                             <th />
                             <th />
                           </tr>
@@ -605,9 +569,9 @@ export default function Page(props) {
                                   }
                                 >
                                   <option disabled value={""}>
-                                    choose a profile property rule
+                                    choose a Property
                                   </option>
-                                  {remainingProfilePropertyRuleKeysForOptional
+                                  {remainingPropertyKeysForOptional
                                     .filter(
                                       (k) =>
                                         k === destination.mapping[key] ||
@@ -629,9 +593,7 @@ export default function Page(props) {
                                   type="text"
                                   value={key}
                                   disabled={
-                                    unlockedProfilePropertyRules[
-                                      destination.mapping[key]
-                                    ]
+                                    unlockedProperties[destination.mapping[key]]
                                       ? false
                                       : true
                                   }
@@ -644,20 +606,15 @@ export default function Page(props) {
                                   }
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  {
-                                    mappingOptions.labels.profilePropertyRule
-                                      .singular
-                                  }{" "}
-                                  is required
+                                  {mappingOptions.labels.property.singular} is
+                                  required
                                 </Form.Control.Feedback>
                               </td>
                               <td>
                                 <Button
                                   size="sm"
                                   variant="light"
-                                  onClick={() =>
-                                    toggleUnlockedProfilePropertyRule(key)
-                                  }
+                                  onClick={() => toggleUnlockedProperty(key)}
                                 >
                                   ✏️
                                 </Button>
@@ -681,8 +638,8 @@ export default function Page(props) {
                         size="sm"
                         variant="outline-primary"
                         disabled={
-                          profilePropertyRules.length === 0 ||
-                          remainingProfilePropertyRuleKeysForOptional.filter(
+                          properties.length === 0 ||
+                          remainingPropertyKeysForOptional.filter(
                             (k) =>
                               !Object.values(destination.mapping).includes(k)
                           ).length === 0
@@ -691,8 +648,7 @@ export default function Page(props) {
                           updateMapping("new mapping", "");
                         }}
                       >
-                        Add new{" "}
-                        {mappingOptions.labels.profilePropertyRule.singular}
+                        Add new {mappingOptions.labels.property.singular}
                       </Button>{" "}
                       <br />
                     </>
@@ -862,11 +818,9 @@ Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
   const { destination } = await execApi("get", `/destination/${guid}`);
   const { groups } = await execApi("get", `/groups`);
-  const { profilePropertyRules } = await execApi(
-    "get",
-    `/profilePropertyRules`,
-    { state: "ready" }
-  );
+  const { properties } = await execApi("get", `/properties`, {
+    state: "ready",
+  });
 
   let mappingOptions = {};
   let destinationTypeConversions = {};
@@ -893,7 +847,7 @@ Page.getInitialProps = async (ctx) => {
 
   return {
     destination,
-    profilePropertyRules,
+    properties,
     mappingOptions,
     destinationTypeConversions,
     exportArrayProperties,

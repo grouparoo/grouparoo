@@ -1,5 +1,5 @@
 import { PluginConnection } from "@grouparoo/core";
-import { profilePropertyRuleOptions } from "./profilePropertyRuleOptions";
+import { propertyOptions } from "./propertyOptions";
 import { sourcePreview } from "./sourcePreview";
 import { profiles } from "./profiles";
 import { sourceRunPercentComplete } from "./sourceRunPercentComplete";
@@ -17,7 +17,7 @@ const connection: PluginConnection = {
       description: "Mailchimp list id",
     },
   ],
-  profilePropertyRuleOptions,
+  propertyOptions,
   methods: {
     sourceOptions: getSourceOptions(["listId"]),
     sourcePreview,

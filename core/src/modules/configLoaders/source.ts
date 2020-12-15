@@ -7,7 +7,7 @@ import {
   validateAndFormatGuid,
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
-import { App, Source, ProfilePropertyRule } from "../..";
+import { App, Source, Property } from "../..";
 import { Op } from "sequelize";
 
 export async function loadSource(configObject: ConfigurationObject) {
@@ -36,14 +36,14 @@ export async function loadSource(configObject: ConfigurationObject) {
 
   await source.setOptions(extractNonNullParts(configObject, "options"));
 
-  let bootstrappedRule: ProfilePropertyRule;
-  let mappedProfileProperty: ProfilePropertyRule;
+  let bootstrappedRule: Property;
+  let mappedProfileProperty: Property;
   let mapping = {};
 
   async function setMapping() {
     if (configObject.mapping) {
       mappedProfileProperty = await getParentByName(
-        ProfilePropertyRule,
+        Property,
         Object.values(extractNonNullParts(configObject, "mapping"))[0]
       );
       mapping[Object.keys(extractNonNullParts(configObject, "mapping"))[0]] =
@@ -54,29 +54,29 @@ export async function loadSource(configObject: ConfigurationObject) {
 
   try {
     await setMapping();
-    if (configObject.bootstrappedProfilePropertyRule) {
-      bootstrappedRule = await ProfilePropertyRule.findOne({
+    if (configObject.bootstrappedProperty) {
+      bootstrappedRule = await Property.findOne({
         where: {
           guid: await validateAndFormatGuid(
-            ProfilePropertyRule,
-            configObject.bootstrappedProfilePropertyRule.id
+            Property,
+            configObject.bootstrappedProperty.id
           ),
         },
       });
     }
   } catch (error) {
     if (
-      error.toString().match(/cannot find ProfilePropertyRule/) &&
-      configObject.bootstrappedProfilePropertyRule
+      error.toString().match(/cannot find Property/) &&
+      configObject.bootstrappedProperty
     ) {
-      const rule = configObject.bootstrappedProfilePropertyRule;
+      const rule = configObject.bootstrappedProperty;
       if (!rule || !rule.options) throw error;
       const mappedColumn = Object.values(rule.options)[0];
-      bootstrappedRule = await source.bootstrapUniqueProfilePropertyRule(
+      bootstrappedRule = await source.bootstrapUniqueProperty(
         rule.key || rule.name,
         rule.type,
         mappedColumn,
-        await validateAndFormatGuid(ProfilePropertyRule, rule.id)
+        await validateAndFormatGuid(Property, rule.id)
       );
       await setMapping();
     } else {
@@ -105,17 +105,17 @@ export async function deleteSources(guids: string[]) {
 
   for (const i in sources) {
     const source = sources[i];
-    const rules = await source.$get("profilePropertyRules");
+    const rules = await source.$get("properties");
 
     for (const j in rules) {
       const rule = rules[j];
       if (rule.directlyMapped) {
         //@ts-ignore
         await rule.destroy({ hooks: false });
-        await ProfilePropertyRule.stopRuns(rule);
-        await ProfilePropertyRule.destroyOptions(rule);
-        await ProfilePropertyRule.destroyProfilePropertyRuleFilters(rule);
-        await ProfilePropertyRule.destroyProfileProperties(rule);
+        await Property.stopRuns(rule);
+        await Property.destroyOptions(rule);
+        await Property.destroyPropertyFilters(rule);
+        await Property.destroyProfileProperties(rule);
       }
     }
 

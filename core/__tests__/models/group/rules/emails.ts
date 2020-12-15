@@ -1,19 +1,19 @@
 import { SharedGroupTests } from "../../../utils/prepareSharedGroupTest";
 import { Group } from "../../../../src/models/Group";
 import { Profile } from "../../../../src/models/Profile";
-import { ProfilePropertyRule } from "../../../../src/models/ProfilePropertyRule";
+import { Property } from "../../../../src/models/Property";
 import { helper } from "@grouparoo/spec-helper";
 
 describe("model/group", () => {
   let group: Group;
   let luigi: Profile;
-  let emailRule: ProfilePropertyRule;
+  let emailRule: Property;
 
   beforeAll(async () => {
     const response = await SharedGroupTests.beforeAll();
     luigi = response.luigi;
 
-    emailRule = await ProfilePropertyRule.findOne({
+    emailRule = await Property.findOne({
       where: { key: "email" },
     });
   }, helper.setupTime);

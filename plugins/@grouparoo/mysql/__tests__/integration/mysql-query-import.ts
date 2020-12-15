@@ -5,7 +5,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
-import { ProfilePropertyRule } from "@grouparoo/core";
+import { Property } from "@grouparoo/core";
 import { beforeData, afterData, getConfig } from "../utils/data";
 
 let actionhero;
@@ -33,7 +33,7 @@ describe("integration/runs/mysql", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
     helper.disableTestPluginImport();
   });
 
@@ -97,8 +97,8 @@ describe("integration/runs/mysql", () => {
     expect(test.error).toBeUndefined();
   });
 
-  test("replace the email profile property rule with a new one for this source", async () => {
-    const oldRule = await ProfilePropertyRule.findOne({
+  test("replace the email property with a new one for this source", async () => {
+    const oldRule = await Property.findOne({
       where: { key: "email" },
     });
     await oldRule.destroy();
@@ -111,13 +111,12 @@ describe("integration/runs/mysql", () => {
       unique: true,
     };
 
-    const {
-      error,
-      profilePropertyRule,
-      pluginOptions,
-    } = await specHelper.runAction("profilePropertyRule:create", session);
+    const { error, property, pluginOptions } = await specHelper.runAction(
+      "property:create",
+      session
+    );
     expect(error).toBeUndefined();
-    expect(profilePropertyRule.guid).toBeTruthy();
+    expect(property.guid).toBeTruthy();
 
     // check the pluginOptions
     expect(pluginOptions.length).toBe(1);
@@ -126,20 +125,20 @@ describe("integration/runs/mysql", () => {
     // set the options
     session.params = {
       csrfToken,
-      guid: profilePropertyRule.guid,
+      guid: property.guid,
       options: {
         query: `select email from ${usersTableName} where id = {{ userId }}`,
       },
       state: "ready",
     };
     const { error: editError } = await specHelper.runAction(
-      "profilePropertyRule:edit",
+      "property:edit",
       session
     );
     expect(editError).toBeUndefined();
   });
 
-  test("the profile property rule sets profile data upon import", async () => {
+  test("the property sets profile data upon import", async () => {
     let i = 1;
     while (i <= 10) {
       const profile = await helper.factories.profile();

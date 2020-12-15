@@ -150,9 +150,7 @@ export default function ProfilePreview(props) {
       {sleeping ? null : (
         <>
           <Card.Body style={{ textAlign: "center" }}>
-            <strong>
-              {mappingOptions?.labels?.profilePropertyRule.plural}
-            </strong>
+            <strong>{mappingOptions?.labels?.property.plural}</strong>
           </Card.Body>
 
           <ListGroup variant="flush">

@@ -25,7 +25,7 @@ describe("tasks/telemetry", () => {
 
   describe("telemetry", () => {
     beforeAll(async () => {
-      await helper.factories.profilePropertyRules();
+      await helper.factories.properties();
       await Log.truncate();
     });
 

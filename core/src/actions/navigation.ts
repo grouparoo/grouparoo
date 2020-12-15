@@ -80,8 +80,8 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         { type: "link", title: "Profiles", href: "/profiles", icon: "user" },
         {
           type: "link",
-          title: "Profile Properties",
-          href: "/profilePropertyRules",
+          title: "Properties",
+          href: "/properties",
           icon: "address-card",
         },
         { type: "link", title: "Groups", href: "/groups", icon: "users" },

@@ -83,7 +83,7 @@ describe("actions/apps", () => {
       const eventsAppType = types.find((t) => t.name === "events");
       expect(eventsAppType.options).toEqual([
         expect.objectContaining({
-          key: "identifyingProfilePropertyRuleGuid",
+          key: "identifyingPropertyGuid",
           required: true,
         }),
       ]);

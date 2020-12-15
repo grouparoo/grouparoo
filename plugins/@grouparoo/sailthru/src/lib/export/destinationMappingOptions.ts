@@ -3,7 +3,7 @@ import { DestinationMappingOptionsMethod } from "@grouparoo/core";
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async () => {
   return {
     labels: {
-      profilePropertyRule: {
+      property: {
         singular: "Sailthru Var",
         plural: "Sailthru Vars",
       },
@@ -12,10 +12,10 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
         plural: "Sailthru Lists",
       },
     },
-    profilePropertyRules: {
+    properties: {
       required: [{ key: "email", type: "email" }],
       known: [{ key: "extid", type: "any", important: true }],
-      allowOptionalFromProfilePropertyRules: true,
+      allowOptionalFromProperties: true,
     },
   };
 };

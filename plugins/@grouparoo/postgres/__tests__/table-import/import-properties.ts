@@ -4,7 +4,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { plugin, Profile, ProfilePropertyRule } from "@grouparoo/core";
+import { plugin, Profile, Property } from "@grouparoo/core";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
 
@@ -21,25 +21,25 @@ let actionhero, client;
 let sourceOptions;
 async function getPropertyValues(
   { column, sourceMapping, aggregationMethod },
-  useProfilePropertyRuleFilters?
+  usePropertyFilters?
 ) {
   const arrays = await getPropertyArrays(
     { column, sourceMapping, aggregationMethod },
-    useProfilePropertyRuleFilters
+    usePropertyFilters
   );
   return arrays;
 }
 async function getPropertyArrays(
   { column, sourceMapping, aggregationMethod },
-  useProfilePropertyRuleFilters?
+  usePropertyFilters?
 ) {
-  const profilePropertyRuleOptions = {
+  const propertyOptions = {
     column,
     aggregationMethod: aggregationMethod,
   };
 
-  const profilePropertyRuleFilters = useProfilePropertyRuleFilters || [];
-  const profilePropertyRule = await ProfilePropertyRule.findOne({
+  const propertyFilters = usePropertyFilters || [];
+  const property = await Property.findOne({
     where: { key: "email" },
   });
 
@@ -48,16 +48,16 @@ async function getPropertyArrays(
     appOptions,
     profiles: [profile, otherProfile],
     sourceOptions,
-    profilePropertyRuleOptions,
+    propertyOptions,
     sourceMapping,
-    profilePropertyRuleFilters,
-    profilePropertyRule,
+    propertyFilters,
+    property,
     profileGuids: [profile.guid, otherProfile.guid],
     source: null,
     sourceGuid: null,
     app: null,
     appGuid: null,
-    profilePropertyRuleGuid: null,
+    propertyGuid: null,
   });
 }
 
@@ -75,7 +75,7 @@ describe("postgres/table/profileProperties", () => {
   beforeAll(async () => {
     jest.setTimeout(helper.mediumTime);
     // all of these are in in the test plugin
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
 
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({
@@ -319,7 +319,7 @@ describe("postgres/table/profileProperties", () => {
     beforeAll(() => {
       sourceOptions = { table: purchasesTableName };
     });
-    // export interface ProfilePropertyRuleFiltersWithKey {
+    // export interface PropertyFiltersWithKey {
     //   key: string;
     //   op: string;
     //   match?: string | number | boolean;

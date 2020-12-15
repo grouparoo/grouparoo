@@ -1,6 +1,6 @@
 import { api } from "actionhero";
 import { Mapping } from "../models/Mapping";
-import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
+import { Property } from "../models/Property";
 import { Source } from "./../models/Source";
 import { Destination } from "./../models/Destination";
 import { Transaction } from "sequelize";
@@ -19,10 +19,10 @@ export namespace MappingHelper {
 
     for (const i in mappings) {
       const mapping = mappings[i];
-      const rule = await mapping.$get("profilePropertyRule", { scope: null });
+      const rule = await mapping.$get("property", { scope: null });
       if (!rule) {
         throw new Error(
-          `cannot find profile property rule or this source/destination not ready (remoteKey: ${mapping.remoteKey})`
+          `cannot find property or this source/destination not ready (remoteKey: ${mapping.remoteKey})`
         );
       }
       MappingObject[mapping.remoteKey] = rule.key;
@@ -51,21 +51,19 @@ export namespace MappingHelper {
       for (const i in keys) {
         const remoteKey = keys[i];
         const key = mappings[remoteKey];
-        const profilePropertyRule = await ProfilePropertyRule.scope(
-          null
-        ).findOne({
+        const property = await Property.scope(null).findOne({
           where: { key },
         });
 
-        if (!profilePropertyRule) {
-          throw new Error(`cannot find profile property rule ${key}`);
+        if (!property) {
+          throw new Error(`cannot find property ${key}`);
         }
 
         await Mapping.create(
           {
             ownerGuid: instance.guid,
             ownerType: instance.constructor.name.toLowerCase(),
-            profilePropertyRuleGuid: profilePropertyRule.guid,
+            propertyGuid: property.guid,
             remoteKey,
           },
           { transaction }

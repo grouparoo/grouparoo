@@ -1,6 +1,6 @@
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Import } from "../models/Import";
-import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
+import { Property } from "../models/Property";
 
 export class ImportsList extends AuthenticatedAction {
   constructor() {
@@ -73,23 +73,24 @@ export class ImportCreate extends AuthenticatedAction {
   }
 
   async run({ params }) {
-    let { properties } = params;
+    let { properties: _properties } = params;
 
-    if (typeof properties === "string") properties = JSON.parse(properties);
+    if (typeof _properties === "string") _properties = JSON.parse(_properties);
 
-    const profilePropertyRules = await ProfilePropertyRule.findAll();
+    const properties = await Property.findAll();
     let foundUniqueProperty = false;
-    profilePropertyRules.forEach((rule) => {
-      if (rule.unique && properties[rule.key]) foundUniqueProperty = true;
+    properties.forEach((property) => {
+      if (property.unique && _properties[property.key]) {
+        foundUniqueProperty = true;
+      }
     });
-
     if (!foundUniqueProperty) {
       throw new Error("no unique profile property included");
     }
 
     const _import = await Import.create({
-      data: properties,
-      rawData: properties,
+      data: _properties,
+      rawData: _properties,
       creatorType: "api",
       creatorGuid: "?",
     });

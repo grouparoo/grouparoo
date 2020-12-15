@@ -1,7 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Profile } from "./../../src/models/Profile";
 import { ProfileProperty } from "./../../src/models/ProfileProperty";
-import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
+import { Property } from "./../../src/models/Property";
 import { Group } from "./../../src/models/Group";
 import { GroupMember } from "./../../src/models/GroupMember";
 import { App } from "./../../src/models/App";
@@ -63,29 +63,25 @@ describe("models/profile", () => {
   describe("findOrCreateByUniqueProfileProperties", () => {
     let source: Source;
     let toad: Profile;
-    let emailRule: ProfilePropertyRule;
-    let userIdRule: ProfilePropertyRule;
-    let colorRule: ProfilePropertyRule;
-    let houseRule: ProfilePropertyRule;
+    let emailRule: Property;
+    let userIdRule: Property;
+    let colorRule: Property;
+    let houseRule: Property;
 
     beforeAll(async () => {
       await Profile.truncate();
 
       source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
-      await source.bootstrapUniqueProfilePropertyRule(
-        "userId",
-        "integer",
-        "id"
-      );
+      await source.bootstrapUniqueProperty("userId", "integer", "id");
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
-      userIdRule = await ProfilePropertyRule.findOne({
+      userIdRule = await Property.findOne({
         where: { key: "userId" },
       });
 
-      emailRule = await ProfilePropertyRule.create({
+      emailRule = await Property.create({
         sourceGuid: source.guid,
         key: "email",
         type: "email",
@@ -94,7 +90,7 @@ describe("models/profile", () => {
       await emailRule.setOptions({ column: "email" });
       await emailRule.update({ state: "ready" });
 
-      colorRule = await ProfilePropertyRule.create({
+      colorRule = await Property.create({
         sourceGuid: source.guid,
         key: "color",
         type: "string",
@@ -103,7 +99,7 @@ describe("models/profile", () => {
       await colorRule.setOptions({ column: "color" });
       await colorRule.update({ state: "ready" });
 
-      houseRule = await ProfilePropertyRule.create({
+      houseRule = await Property.create({
         sourceGuid: source.guid,
         key: "house",
         type: "string",
@@ -183,7 +179,7 @@ describe("models/profile", () => {
       expect(responseB.isNew).toBe(false);
     });
 
-    test("it will merge overlapping unique profile properties and not store non-unique properties", async () => {
+    test("it will merge overlapping unique properties and not store non-unique properties", async () => {
       const responseA = await ProfileOps.findOrCreateByUniqueProfileProperties({
         email: ["koopa@example.com"],
         userId: [99],
@@ -227,25 +223,21 @@ describe("models/profile", () => {
       await profile.save();
       await expect(
         profile.addOrUpdateProperty({ email: ["luigi@example.com"] })
-      ).rejects.toThrow(/cannot find a profile property rule for key email/);
+      ).rejects.toThrow(/cannot find a property for key email/);
       await profile.destroy();
     });
 
-    describe("with profilePropertyRules", () => {
+    describe("with properties", () => {
       let source: Source;
 
       beforeAll(async () => {
         source = await helper.factories.source();
         await source.setOptions({ table: "test table" });
-        await source.bootstrapUniqueProfilePropertyRule(
-          "userId",
-          "integer",
-          "id"
-        );
+        await source.bootstrapUniqueProperty("userId", "integer", "id");
         await source.setMapping({ id: "userId" });
         await source.update({ state: "ready" });
 
-        const emailRule = await ProfilePropertyRule.create({
+        const emailRule = await Property.create({
           sourceGuid: source.guid,
           key: "email",
           type: "string",
@@ -253,7 +245,7 @@ describe("models/profile", () => {
         await emailRule.setOptions({ column: "email" });
         await emailRule.update({ state: "ready" });
 
-        const firstNameRule = await ProfilePropertyRule.create({
+        const firstNameRule = await Property.create({
           sourceGuid: source.guid,
           key: "firstName",
           type: "string",
@@ -261,7 +253,7 @@ describe("models/profile", () => {
         await firstNameRule.setOptions({ column: "firstName" });
         await firstNameRule.update({ state: "ready" });
 
-        const lastNameRule = await ProfilePropertyRule.create({
+        const lastNameRule = await Property.create({
           sourceGuid: source.guid,
           key: "lastName",
           type: "string",
@@ -269,7 +261,7 @@ describe("models/profile", () => {
         await lastNameRule.setOptions({ column: "lastName" });
         await lastNameRule.update({ state: "ready" });
 
-        const colorRule = await ProfilePropertyRule.create({
+        const colorRule = await Property.create({
           sourceGuid: source.guid,
           key: "color",
           type: "string",
@@ -285,7 +277,7 @@ describe("models/profile", () => {
 
       afterAll(async () => {
         await source.setMapping({});
-        await ProfilePropertyRule.truncate();
+        await Property.truncate();
         await source.destroy();
       });
 
@@ -407,10 +399,10 @@ describe("models/profile", () => {
       });
 
       describe("profile property timestamps (array)", () => {
-        let purchasesRule: ProfilePropertyRule;
+        let purchasesRule: Property;
 
         beforeAll(async () => {
-          purchasesRule = await ProfilePropertyRule.create({
+          purchasesRule = await Property.create({
             sourceGuid: source.guid,
             key: "purchases",
             type: "string",
@@ -612,7 +604,7 @@ describe("models/profile", () => {
           {
             guid: "rule_missing",
             profileGuid: profile.guid,
-            profilePropertyRuleGuid: "missing",
+            propertyGuid: "missing",
             rawValue: "green-hat",
             position: 0,
           },
@@ -641,10 +633,10 @@ describe("models/profile", () => {
       });
 
       describe("array properties", () => {
-        let purchasesRule: ProfilePropertyRule;
+        let purchasesRule: Property;
 
         beforeAll(async () => {
-          const purchasesRule = await ProfilePropertyRule.create({
+          const purchasesRule = await Property.create({
             sourceGuid: source.guid,
             key: "purchases",
             type: "string",
@@ -723,7 +715,7 @@ describe("models/profile", () => {
               userId: [123],
             })
           ).rejects.toThrow(
-            /cannot set multiple profile properties for a non-array profile property rule/
+            /cannot set multiple profile properties for a non-array property/
           );
         });
       });
@@ -772,7 +764,7 @@ describe("models/profile", () => {
     let profile: Profile;
     let app: App;
     let source: Source;
-    let emailRule: ProfilePropertyRule;
+    let emailRule: Property;
 
     beforeAll(async () => {
       await Profile.truncate();
@@ -790,15 +782,11 @@ describe("models/profile", () => {
         type: "test-plugin-import",
       });
       await source.setOptions({ table: "test table" });
-      await source.bootstrapUniqueProfilePropertyRule(
-        "userId",
-        "integer",
-        "id"
-      );
+      await source.bootstrapUniqueProperty("userId", "integer", "id");
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
-      emailRule = await ProfilePropertyRule.create({
+      emailRule = await Property.create({
         sourceGuid: source.guid,
         key: "email",
         type: "string",
@@ -823,7 +811,7 @@ describe("models/profile", () => {
       await Promise.all(members.map((m) => m.destroy()));
       await group.destroy();
       await source.setMapping({});
-      await ProfilePropertyRule.truncate();
+      await Property.truncate();
       await source.destroy();
       await app.destroy();
     });
@@ -849,8 +837,8 @@ describe("models/profile", () => {
   });
 
   describe("#import", () => {
-    let emailRule: ProfilePropertyRule;
-    let colorRule: ProfilePropertyRule;
+    let emailRule: Property;
+    let colorRule: Property;
     let app: App;
     let source: Source;
 
@@ -878,8 +866,8 @@ describe("models/profile", () => {
             direction: "import" as "import",
             options: [],
             methods: {
-              profileProperty: async ({ profilePropertyRule }) => {
-                if (profilePropertyRule.key === "color") {
+              profileProperty: async ({ property }) => {
+                if (property.key === "color") {
                   return ["pink"];
                 }
               },
@@ -900,22 +888,18 @@ describe("models/profile", () => {
         name: "test import source",
         type: "import-from-test-template-app",
       });
-      await source.bootstrapUniqueProfilePropertyRule(
-        "userId",
-        "integer",
-        "id"
-      );
+      await source.bootstrapUniqueProperty("userId", "integer", "id");
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
-      emailRule = await ProfilePropertyRule.create({
+      emailRule = await Property.create({
         sourceGuid: source.guid,
         key: "email",
         type: "string",
         unique: true,
       });
 
-      colorRule = await ProfilePropertyRule.create({
+      colorRule = await Property.create({
         sourceGuid: source.guid,
         key: "color",
         type: "string",
@@ -927,7 +911,7 @@ describe("models/profile", () => {
     });
 
     afterAll(async () => {
-      await ProfilePropertyRule.truncate();
+      await Property.truncate();
       await Source.truncate();
       await App.truncate();
     });
@@ -953,7 +937,7 @@ describe("models/profile", () => {
       });
     });
 
-    test("after importing, all missing profile property rules will have created a null profile property", async () => {
+    test("after importing, all missing properties will have created a null profile property", async () => {
       const profile = await Profile.create();
       await profile.addOrUpdateProperties({ userId: [1002] });
       let properties = await profile.properties();
@@ -1041,7 +1025,7 @@ describe("models/profile", () => {
 
     beforeAll(async () => {
       await Profile.truncate();
-      await helper.factories.profilePropertyRules();
+      await helper.factories.properties();
 
       // create the profiles and events
       profileA = await helper.factories.profile();
@@ -1083,7 +1067,7 @@ describe("models/profile", () => {
     });
 
     afterAll(async () => {
-      await ProfilePropertyRule.truncate();
+      await Property.truncate();
       await Source.truncate();
       await App.truncate();
     });

@@ -20,8 +20,8 @@ import { Option } from "../models/Option";
 import { Permission } from "../models/Permission";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
-import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
-import { ProfilePropertyRuleFilter } from "../models/ProfilePropertyRuleFilter";
+import { Property } from "../models/Property";
+import { PropertyFilter } from "../models/PropertyFilter";
 import { ProfileMultipleAssociationShim } from "../models/ProfileMultipleAssociationShim";
 import { Run } from "../models/Run";
 import { Schedule } from "../models/Schedule";
@@ -53,8 +53,8 @@ const models = [
   Permission,
   Profile,
   ProfileProperty,
-  ProfilePropertyRule,
-  ProfilePropertyRuleFilter,
+  Property,
+  PropertyFilter,
   ProfileMultipleAssociationShim,
   Mapping,
   Setting,
@@ -164,7 +164,7 @@ export namespace plugin {
 
   /**
    * When your plugin has a record for a profile, send it to this method.  We will use the provided mapping against your raw data row to store the original data and mapped data to the profile.
-   * mapping: an object whose keys are remote columns and whose values are the profilePropertyRule keys, ie: {remoteColumnId: 'userId'}
+   * mapping: an object whose keys are remote columns and whose values are the property keys, ie: {remoteColumnId: 'userId'}
    * row: {email: 'abc@company.com', vip: true}
    */
   export async function createImport(
@@ -322,12 +322,12 @@ export namespace plugin {
   ): Promise<string> {
     if (string.indexOf("{{") < 0) return string;
 
-    const profilePropertyRules = await ProfilePropertyRule.findAll({
+    const properties = await Property.findAll({
       where: { isArray: false },
     });
 
     const data = {};
-    profilePropertyRules.forEach((rule) => {
+    properties.forEach((rule) => {
       data[rule.key] = `{{ ${rule.guid} }}`;
     });
 
@@ -344,10 +344,10 @@ export namespace plugin {
   ): Promise<string> {
     if (string.indexOf("{{") < 0) return string;
 
-    const profilePropertyRules = await ProfilePropertyRule.findAll();
+    const properties = await Property.findAll();
 
     const data = {};
-    profilePropertyRules.forEach((rule) => {
+    properties.forEach((rule) => {
       data[rule.guid] = `{{ ${rule.key} }}`;
     });
 

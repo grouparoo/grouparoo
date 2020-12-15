@@ -7,7 +7,7 @@ import {
   validateAndFormatGuid,
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
-import { App, Destination, Group, ProfilePropertyRule } from "../..";
+import { App, Destination, Group, Property } from "../..";
 import { Op } from "sequelize";
 
 export async function loadDestination(configObject: ConfigurationObject) {
@@ -46,10 +46,7 @@ export async function loadDestination(configObject: ConfigurationObject) {
   let mapping = {};
   const sanitizedMappings = extractNonNullParts(configObject, "mapping");
   for (const key in sanitizedMappings) {
-    const rule = await getParentByName(
-      ProfilePropertyRule,
-      sanitizedMappings[key]
-    );
+    const rule = await getParentByName(Property, sanitizedMappings[key]);
     mapping[key] = rule.key;
   }
   await destination.setMapping(mapping);

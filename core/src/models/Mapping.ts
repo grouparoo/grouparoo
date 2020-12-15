@@ -9,7 +9,7 @@ import {
 } from "sequelize-typescript";
 import { Op, Transaction } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
-import { ProfilePropertyRule } from "./ProfilePropertyRule";
+import { Property } from "./Property";
 import { Destination } from "./Destination";
 import { Source } from "./Source";
 
@@ -30,9 +30,9 @@ export class Mapping extends LoggedModel<Mapping> {
   ownerType: string;
 
   @AllowNull(false)
-  @ForeignKey(() => ProfilePropertyRule)
+  @ForeignKey(() => Property)
   @Column
-  profilePropertyRuleGuid: string;
+  propertyGuid: string;
 
   @AllowNull(false)
   @Length({ min: 1, max: 191 })
@@ -45,15 +45,15 @@ export class Mapping extends LoggedModel<Mapping> {
   @BelongsTo(() => Source)
   source: Source;
 
-  @BelongsTo(() => ProfilePropertyRule)
-  profilePropertyRule: ProfilePropertyRule;
+  @BelongsTo(() => Property)
+  property: Property;
 
   async apiData() {
     return {
       guid: this.guid,
       ownerGuid: this.ownerGuid,
       ownerType: this.ownerType,
-      profilePropertyRuleGuid: this.profilePropertyRuleGuid,
+      propertyGuid: this.propertyGuid,
       remoteKey: this.remoteKey,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
@@ -69,7 +69,7 @@ export class Mapping extends LoggedModel<Mapping> {
   }
 
   @BeforeSave
-  static async ensureOneOwnerPerProfilePropertyRule(
+  static async ensureOneOwnerPerProperty(
     instance: Mapping,
     { transaction }: { transaction?: Transaction } = {}
   ) {
@@ -77,13 +77,13 @@ export class Mapping extends LoggedModel<Mapping> {
       where: {
         guid: { [Op.ne]: instance.guid },
         ownerGuid: instance.ownerGuid,
-        profilePropertyRuleGuid: instance.profilePropertyRuleGuid,
+        propertyGuid: instance.propertyGuid,
       },
       transaction,
     });
     if (existing) {
       throw new Error(
-        `There is already a Mapping for ${instance.ownerGuid} and ${instance.profilePropertyRuleGuid}`
+        `There is already a Mapping for ${instance.ownerGuid} and ${instance.propertyGuid}`
       );
     }
   }

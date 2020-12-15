@@ -4,7 +4,7 @@ import {
   GrouparooPlugin,
   PluginConnection,
   ProfileProperty,
-  ProfilePropertyRule,
+  Property,
 } from "../../../src";
 
 let actionhero;
@@ -13,7 +13,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
   }, helper.setupTime);
 
   beforeEach(async () => {
@@ -36,7 +36,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         (c) => c.name === "test-plugin-import"
       );
       testPluginConnection.methods.profileProperties = async ({
-        profilePropertyRule,
+        property,
         profiles,
       }) => {
         const response = {};
@@ -53,7 +53,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
             lastLoginAt: new Date(),
           };
 
-          response[profile.guid] = data[profilePropertyRule.key];
+          response[profile.guid] = data[property.key];
         }
 
         return response;
@@ -67,7 +67,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
     test("can be enqueued", async () => {
       await task.enqueue("profileProperty:importProfileProperties", {
         profileGuids: ["abc"],
-        profilePropertyRuleGuid: "abc",
+        propertyGuid: "abc",
       });
       const found = await specHelper.findEnqueuedTasks(
         "profileProperty:importProfileProperties"
@@ -88,7 +88,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
         profileGuids: [profile.guid],
-        profilePropertyRuleGuid: property.profilePropertyRuleGuid,
+        propertyGuid: property.propertyGuid,
       });
 
       // new value and state
@@ -98,7 +98,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
     });
 
     test("will not import profile properties that have pending dependencies", async () => {
-      const userIdRule = await ProfilePropertyRule.findOne({
+      const userIdRule = await Property.findOne({
         where: { key: "userId" },
       });
 
@@ -115,14 +115,14 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       const userIdProperty = await ProfileProperty.findOne({
         where: {
           profileGuid: profile.guid,
-          profilePropertyRuleGuid: userIdRule.guid,
+          propertyGuid: userIdRule.guid,
         },
       });
       await userIdProperty.update({ state: "pending" });
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
         profileGuids: [profile.guid],
-        profilePropertyRuleGuid: property.profilePropertyRuleGuid,
+        propertyGuid: property.propertyGuid,
       });
 
       // no change

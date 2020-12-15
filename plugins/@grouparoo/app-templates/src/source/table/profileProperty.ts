@@ -26,18 +26,18 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
     profile,
     sourceOptions,
     sourceMapping,
-    profilePropertyRule,
-    profilePropertyRuleOptions,
-    profilePropertyRuleFilters,
+    property,
+    propertyOptions,
+    propertyFilters,
   }) => {
     const tableName = sourceOptions[tableNameKey];
     const matchName = Object.keys(sourceMapping)[0]; // tableCol
     const profilePropertyMatch = Object.values(sourceMapping)[0];
-    const columnName = profilePropertyRuleOptions[columnNameKey];
+    const columnName = propertyOptions[columnNameKey];
     const aggregationMethod = <AggregationMethod>(
-      profilePropertyRuleOptions[aggregationMethodKey]
+      propertyOptions[aggregationMethodKey]
     );
-    const sortColumn = profilePropertyRuleOptions[sortColumnKey];
+    const sortColumn = propertyOptions[sortColumnKey];
 
     if (!aggregationMethod || !columnName) {
       return undefined;
@@ -57,7 +57,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
     }
 
     const profileData = await profile.properties();
-    const isArray = !!profilePropertyRule.isArray;
+    const isArray = !!property.isArray;
 
     if (!profileData.hasOwnProperty(profilePropertyMatch)) {
       return undefined;
@@ -75,7 +75,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
     const matchConditions: MatchCondition[] = [];
     matchConditions.push(foreignKeyMatch); // this narrows it to the correct profile
 
-    for (const filter of profilePropertyRuleFilters) {
+    for (const filter of propertyFilters) {
       let { key, op, match } = filter;
       matchConditions.push({
         columnName: key,

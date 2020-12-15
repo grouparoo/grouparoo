@@ -11,7 +11,7 @@
     "mapping": {
       "id": "user_id"
     },
-    "bootstrappedProfilePropertyRule": {
+    "bootstrappedProperty": {
       "name": "userId",
       "type": "integer",
       "id": "user_id",
@@ -34,7 +34,7 @@
   {
     "id": "email",
     "name": "email",
-    "class": "ProfilePropertyRule",
+    "class": "Property",
     "type": "email",
     "unique": true,
     "isArray": false,
@@ -49,7 +49,7 @@
   {
     "id": "first_name",
     "name": "firstName",
-    "class": "ProfilePropertyRule",
+    "class": "Property",
     "type": "string",
     "unique": false,
     "isArray": false,
@@ -64,7 +64,7 @@
   {
     "id": "last_name",
     "name": "lastName",
-    "class": "ProfilePropertyRule",
+    "class": "Property",
     "type": "string",
     "unique": false,
     "isArray": false,
@@ -79,7 +79,7 @@
   {
     "id": "language",
     "name": "Language",
-    "class": "ProfilePropertyRule",
+    "class": "Property",
     "type": "string",
     "unique": false,
     "isArray": false,
@@ -94,7 +94,7 @@
   {
     "id": "deactivated",
     "name": "Deactivated",
-    "class": "ProfilePropertyRule",
+    "class": "Property",
     "type": "boolean",
     "unique": false,
     "isArray": false,

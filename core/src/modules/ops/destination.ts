@@ -8,7 +8,7 @@ import { Run } from "../../models/Run";
 import { Import } from "../../models/Import";
 import { Export, ExportProfilePropertiesWithType } from "../../models/Export";
 import { Group } from "../../models/Group";
-import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+import { Property } from "../../models/Property";
 import { MappingHelper } from "../mappingHelper";
 import {
   ExportedProfile,
@@ -97,16 +97,16 @@ export namespace DestinationOps {
       mappedProfileProperties[k] = collection;
 
       let destinationType: DestinationMappingOptionsResponseTypes = "any";
-      for (const j in destinationMappingOptions.profilePropertyRules.required) {
+      for (const j in destinationMappingOptions.properties.required) {
         const destinationProperty =
-          destinationMappingOptions.profilePropertyRules.required[j];
+          destinationMappingOptions.properties.required[j];
         if (destinationProperty.key === k) {
           destinationType = destinationProperty.type;
         }
       }
-      for (const j in destinationMappingOptions.profilePropertyRules.known) {
+      for (const j in destinationMappingOptions.properties.known) {
         const destinationProperty =
-          destinationMappingOptions.profilePropertyRules.known[j];
+          destinationMappingOptions.properties.known[j];
         if (destinationProperty.key === k) {
           destinationType = destinationProperty.type;
         }
@@ -254,7 +254,7 @@ export namespace DestinationOps {
     const app = await destination.$get("app");
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);
-    const rules = await ProfilePropertyRule.findAll();
+    const rules = await Property.findAll();
     const destinationGroupMemberships = await destination.getDestinationGroupMemberships();
     const mapping = await destination.getMapping();
 
@@ -693,16 +693,16 @@ export namespace DestinationOps {
       const value = _export[key][k];
       let destinationType: DestinationMappingOptionsResponseTypes = "any";
 
-      for (const j in destinationMappingOptions.profilePropertyRules.required) {
+      for (const j in destinationMappingOptions.properties.required) {
         const destinationProperty =
-          destinationMappingOptions.profilePropertyRules.required[j];
+          destinationMappingOptions.properties.required[j];
         if (destinationProperty.key === k) {
           destinationType = destinationProperty.type;
         }
       }
-      for (const j in destinationMappingOptions.profilePropertyRules.known) {
+      for (const j in destinationMappingOptions.properties.known) {
         const destinationProperty =
-          destinationMappingOptions.profilePropertyRules.known[j];
+          destinationMappingOptions.properties.known[j];
         if (destinationProperty.key === k) {
           destinationType = destinationProperty.type;
         }

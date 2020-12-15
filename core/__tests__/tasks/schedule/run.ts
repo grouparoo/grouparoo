@@ -15,7 +15,7 @@ describe("tasks/schedule:run", () => {
   }, helper.setupTime);
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
     source = await helper.factories.source();
     await source.setOptions({ table: "test table" });
     await source.setMapping({ id: "userId" });

@@ -31,7 +31,7 @@ describe("tasks/group:run", () => {
     });
 
     beforeAll(async () => {
-      await helper.factories.profilePropertyRules();
+      await helper.factories.properties();
       helper.disableTestPluginImport();
 
       group = await Group.create({

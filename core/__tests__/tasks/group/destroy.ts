@@ -27,7 +27,7 @@ describe("tasks/group:destroy", () => {
     });
 
     beforeAll(async () => {
-      await helper.factories.profilePropertyRules();
+      await helper.factories.properties();
       helper.disableTestPluginImport();
 
       await Profile.truncate();

@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
-import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
+import { Property } from "../../src/models/Property";
 import { Profile } from "../../src/models/Profile";
 import { Option } from "../../src/models/Option";
 import { Event } from "../../src/models/Event";
@@ -13,7 +13,7 @@ describe("integration/events", () => {
   let csrfToken;
   let appGuid;
   let sourceGuid;
-  let profilePropertyRuleGuid;
+  let propertyGuid;
   let userIdRule;
   let apiKey;
   let eventGuid;
@@ -23,7 +23,7 @@ describe("integration/events", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     await api.resque.queue.connection.redis.flushdb();
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
   }, helper.setupTime);
 
   afterAll(async () => {
@@ -63,17 +63,17 @@ describe("integration/events", () => {
       csrfToken,
     };
     const { apps } = await specHelper.runAction("apps:list", connection);
-    expect(apps.length).toBe(2); // profile property rules + events
+    expect(apps.length).toBe(2); // properties + events
     appGuid = apps.filter((app) => app.type === "events")[0].guid;
 
-    userIdRule = await ProfilePropertyRule.findOne({
+    userIdRule = await Property.findOne({
       where: { key: "userId" },
     });
 
     connection.params = {
       csrfToken,
       guid: appGuid,
-      options: { identifyingProfilePropertyRuleGuid: userIdRule.guid },
+      options: { identifyingPropertyGuid: userIdRule.guid },
       state: "ready",
     };
     const { error, app } = await specHelper.runAction("app:edit", connection);
@@ -403,8 +403,8 @@ describe("integration/events", () => {
       expect(source.app.name).toBe("Grouparoo Events");
     });
 
-    describe("profilePropertyRules", () => {
-      test("an administrator can create a new profilePropertyRule against events", async () => {
+    describe("properties", () => {
+      test("an administrator can create a new property against events", async () => {
         connection.params = {
           csrfToken,
           sourceGuid,
@@ -413,21 +413,17 @@ describe("integration/events", () => {
           unique: "false",
         };
 
-        const {
-          error,
-          profilePropertyRule,
-          pluginOptions,
-        } = await specHelper.runAction(
-          "profilePropertyRule:create",
+        const { error, property, pluginOptions } = await specHelper.runAction(
+          "property:create",
           connection
         );
 
         expect(error).toBeUndefined();
-        expect(profilePropertyRule.guid).toBeTruthy();
-        expect(profilePropertyRule.key).toBe("test-rule");
-        expect(profilePropertyRule.unique).toBe(false);
-        expect(profilePropertyRule.state).toBe("draft");
-        expect(profilePropertyRule.sourceGuid).toBe(sourceGuid);
+        expect(property.guid).toBeTruthy();
+        expect(property.key).toBe("test-rule");
+        expect(property.unique).toBe(false);
+        expect(property.state).toBe("draft");
+        expect(property.sourceGuid).toBe(sourceGuid);
         expect(pluginOptions[0].key).toBe("column");
         expect(pluginOptions[0].options.map((opt) => opt.key)).toEqual([
           "ipAddress",
@@ -450,16 +446,16 @@ describe("integration/events", () => {
           "max",
         ]);
 
-        profilePropertyRuleGuid = profilePropertyRule.guid;
+        propertyGuid = property.guid;
       });
 
-      test("an administrator can view the filter options for a profile property rule", async () => {
+      test("an administrator can view the filter options for a property", async () => {
         connection.params = {
           csrfToken,
-          guid: profilePropertyRuleGuid,
+          guid: propertyGuid,
         };
         const { error, options } = await specHelper.runAction(
-          "profilePropertyRule:filterOptions",
+          "property:filterOptions",
           connection
         );
 
@@ -498,19 +494,19 @@ describe("integration/events", () => {
         ]);
       });
 
-      test("an administrator can set the filters for a profile property rule", async () => {
+      test("an administrator can set the filters for a property", async () => {
         connection.params = {
           csrfToken,
-          guid: profilePropertyRuleGuid,
+          guid: propertyGuid,
           filters: [{ key: "[data]-path", op: "does not equal", match: "/" }],
         };
-        const { error, profilePropertyRule } = await specHelper.runAction(
-          "profilePropertyRule:edit",
+        const { error, property } = await specHelper.runAction(
+          "property:edit",
           connection
         );
 
         expect(error).toBeUndefined();
-        expect(profilePropertyRule.filters).toEqual([
+        expect(property.filters).toEqual([
           {
             key: "[data]-path",
             match: "/",
@@ -525,12 +521,12 @@ describe("integration/events", () => {
       test("the rule cannot be made ready without an aggregationMethod", async () => {
         connection.params = {
           csrfToken,
-          guid: profilePropertyRuleGuid,
+          guid: propertyGuid,
           options: { column: "[data]-path" },
           state: "ready",
         };
-        const { error, profilePropertyRule } = await specHelper.runAction(
-          "profilePropertyRule:edit",
+        const { error, property } = await specHelper.runAction(
+          "property:edit",
           connection
         );
         expect(error.message).toMatch(/aggregationMethod is required/);
@@ -539,25 +535,25 @@ describe("integration/events", () => {
       test("an administrator can make a rule ready", async () => {
         connection.params = {
           csrfToken,
-          guid: profilePropertyRuleGuid,
+          guid: propertyGuid,
           options: { column: "[data]-path", aggregationMethod: "count" },
           state: "ready",
         };
-        const { error, profilePropertyRule } = await specHelper.runAction(
-          "profilePropertyRule:edit",
+        const { error, property } = await specHelper.runAction(
+          "property:edit",
           connection
         );
         expect(error).toBeUndefined();
-        expect(profilePropertyRule.state).toBe("ready");
+        expect(property.state).toBe("ready");
       });
 
-      test("an administrator can test a profile property rule", async () => {
+      test("an administrator can test a property", async () => {
         connection.params = {
           csrfToken,
-          guid: profilePropertyRuleGuid,
+          guid: propertyGuid,
         };
         const { error, test } = await specHelper.runAction(
-          "profilePropertyRule:test",
+          "property:test",
           connection
         );
 
@@ -567,10 +563,10 @@ describe("integration/events", () => {
 
       describe("with profile", () => {
         let profile: Profile;
-        let rule: ProfilePropertyRule;
+        let rule: Property;
 
         beforeAll(async () => {
-          rule = await ProfilePropertyRule.findByGuid(profilePropertyRuleGuid);
+          rule = await Property.findByGuid(propertyGuid);
           await rule.setFilters([]);
         });
 
@@ -580,14 +576,14 @@ describe("integration/events", () => {
           profile = profiles[0];
         });
 
-        test("profile properties will be imported (without filter)", async () => {
+        test("properties will be imported (without filter)", async () => {
           await rule.setFilters([]);
           await profile.import();
           const properties = await profile.properties();
           expect(properties["test-rule"].values).toEqual([4]);
         });
 
-        test("profile properties will be imported (with filter)", async () => {
+        test("properties will be imported (with filter)", async () => {
           await rule.setFilters([
             { key: "[data]-path", op: "does not equal", match: "/" },
           ]);
@@ -605,9 +601,9 @@ describe("integration/events", () => {
       });
 
       describe("aggregations", () => {
-        let rule: ProfilePropertyRule;
+        let rule: Property;
         beforeAll(async () => {
-          rule = await ProfilePropertyRule.findByGuid(profilePropertyRuleGuid);
+          rule = await Property.findByGuid(propertyGuid);
           await rule.setFilters([]);
         });
 
@@ -707,9 +703,9 @@ describe("integration/events", () => {
       });
 
       describe("filters", () => {
-        let rule: ProfilePropertyRule;
+        let rule: Property;
         beforeAll(async () => {
-          rule = await ProfilePropertyRule.findByGuid(profilePropertyRuleGuid);
+          rule = await Property.findByGuid(propertyGuid);
           await rule.update({ type: "string", isArray: true });
           await rule.setOptions({
             column: "[data]-path",

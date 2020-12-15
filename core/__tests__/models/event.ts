@@ -2,10 +2,10 @@ import { helper } from "@grouparoo/spec-helper";
 import { Profile } from "./../../src/models/Profile";
 import { Event } from "./../../src/models/Event";
 import { Log } from "./../../src/models/Log";
-import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
+import { Property } from "../../src/models/Property";
 
 let actionhero;
-let identifyingProfilePropertyRuleGuid;
+let identifyingPropertyGuid;
 
 describe("models/event", () => {
   beforeAll(async () => {
@@ -18,9 +18,9 @@ describe("models/event", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
-    identifyingProfilePropertyRuleGuid = (
-      await ProfilePropertyRule.findOne({ where: { key: "userId" } })
+    await helper.factories.properties();
+    identifyingPropertyGuid = (
+      await Property.findOne({ where: { key: "userId" } })
     ).guid;
   });
 
@@ -76,9 +76,7 @@ describe("models/event", () => {
       const event = await helper.factories.event();
       await event.update({ profileGuid: profileA.guid });
 
-      const response = await event.associate(
-        identifyingProfilePropertyRuleGuid
-      );
+      const response = await event.associate(identifyingPropertyGuid);
       expect(response.guid).toBe(profileA.guid);
       expect(await Profile.count()).toBe(2);
     });
@@ -88,9 +86,7 @@ describe("models/event", () => {
         const event = await helper.factories.event();
         await event.update({ userId: "100" });
 
-        const response = await event.associate(
-          identifyingProfilePropertyRuleGuid
-        );
+        const response = await event.associate(identifyingPropertyGuid);
 
         expect(await Profile.count()).toBe(3);
       });
@@ -99,9 +95,7 @@ describe("models/event", () => {
         const event = await helper.factories.event();
         await event.update({ userId: "1" });
 
-        const response = await event.associate(
-          identifyingProfilePropertyRuleGuid
-        );
+        const response = await event.associate(identifyingPropertyGuid);
         expect(response.guid).toBe(profileA.guid);
 
         expect(await Profile.count()).toBe(2);
@@ -113,9 +107,7 @@ describe("models/event", () => {
         const event = await helper.factories.event();
         await event.update({ anonymousId: "abc123" });
 
-        const response = await event.associate(
-          identifyingProfilePropertyRuleGuid
-        );
+        const response = await event.associate(identifyingPropertyGuid);
 
         expect(await Profile.count()).toBe(3);
       });
@@ -130,9 +122,7 @@ describe("models/event", () => {
           profileGuid: profileA.guid,
         });
 
-        const response = await event.associate(
-          identifyingProfilePropertyRuleGuid
-        );
+        const response = await event.associate(identifyingPropertyGuid);
         expect(response.guid).toBe(profileA.guid);
         expect(await Profile.count()).toBe(2);
       });
@@ -144,8 +134,8 @@ describe("models/event", () => {
         const otherEvent = await helper.factories.event();
         await otherEvent.update({ anonymousId: "abc123", userId: "1" });
 
-        await event.associate(identifyingProfilePropertyRuleGuid);
-        await otherEvent.associate(identifyingProfilePropertyRuleGuid);
+        await event.associate(identifyingPropertyGuid);
+        await otherEvent.associate(identifyingPropertyGuid);
 
         expect(await Profile.count()).toBe(2);
       });
@@ -158,7 +148,7 @@ describe("models/event", () => {
 
       const event = await helper.factories.event();
       await event.update({ userId: "999" });
-      await event.associate(identifyingProfilePropertyRuleGuid);
+      await event.associate(identifyingPropertyGuid);
 
       await profile.reload();
       expect(profile.state).toBe("pending");

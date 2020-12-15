@@ -9,7 +9,7 @@ describe("modules/internalRun", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
     await api.resque.queue.connection.redis.flushdb();
     await Run.truncate();
   }, helper.setupTime);

@@ -4,7 +4,7 @@ import { Import } from "./../../../src/models/Import";
 import { Run } from "./../../../src/models/Run";
 import { Profile } from "./../../../src/models/Profile";
 import { Source } from "./../../../src/models/Source";
-import { ProfilePropertyRule } from "./../../../src/models/ProfilePropertyRule";
+import { Property } from "./../../../src/models/Property";
 
 let actionhero;
 let profile: Profile;
@@ -12,7 +12,7 @@ let run: Run;
 let source: Source;
 
 describe("integration/runs/internalRun", () => {
-  let rule: ProfilePropertyRule;
+  let rule: Property;
 
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
@@ -25,14 +25,10 @@ describe("integration/runs/internalRun", () => {
   });
 
   describe("adding a new Profile Property will import and sync all profiles", () => {
-    test("adding a profile property rule with a query creates a run and internalRun task", async () => {
+    test("adding a property with a query creates a run and internalRun task", async () => {
       source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
-      await source.bootstrapUniqueProfilePropertyRule(
-        "userId",
-        "integer",
-        "id"
-      );
+      await source.bootstrapUniqueProperty("userId", "integer", "id");
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
@@ -42,7 +38,7 @@ describe("integration/runs/internalRun", () => {
       await api.resque.queue.connection.redis.flushdb();
       await Run.truncate();
 
-      rule = await ProfilePropertyRule.create({
+      rule = await Property.create({
         sourceGuid: source.guid,
         type: "string",
         key: "email",
@@ -56,7 +52,7 @@ describe("integration/runs/internalRun", () => {
 
       const runs = await Run.findAll();
       expect(runs.length).toBe(1);
-      expect(runs[0].creatorType).toBe("profilePropertyRule");
+      expect(runs[0].creatorType).toBe("property");
       expect(runs[0].creatorGuid).toBe(rule.guid);
       expect(runs[0].state).toBe("running");
       run = runs[0];
@@ -121,8 +117,8 @@ describe("integration/runs/internalRun", () => {
       await Run.truncate();
     });
 
-    test("if a new profile property rule stops a run, both properties will be imported", async () => {
-      const firstNameRule = await ProfilePropertyRule.create({
+    test("if a new property stops a run, both properties will be imported", async () => {
+      const firstNameRule = await Property.create({
         sourceGuid: source.guid,
         type: "string",
         key: "firstName",
@@ -131,7 +127,7 @@ describe("integration/runs/internalRun", () => {
       await firstNameRule.setOptions({ column: "firstName" });
       await firstNameRule.update({ state: "ready" });
 
-      const lastNameRule = await ProfilePropertyRule.create({
+      const lastNameRule = await Property.create({
         sourceGuid: source.guid,
         type: "string",
         key: "lastName",

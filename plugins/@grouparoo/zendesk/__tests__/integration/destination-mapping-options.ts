@@ -50,8 +50,8 @@ describe("zendesk/destinationMappingOptions", () => {
 
   test("can load all destinationMappingOptions", async () => {
     const options = await runDestinationMappingOptions({});
-    const { profilePropertyRules } = options;
-    const { required, known } = profilePropertyRules;
+    const { properties } = options;
+    const { required, known } = properties;
 
     expect(required.length).toBe(2);
     const external_id = required.find((f) => f.key === "external_id");

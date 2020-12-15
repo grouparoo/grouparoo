@@ -3,7 +3,7 @@
 // You can test this with `npm prepare && npm start` if you change the import statements back to the models.
 
 import { api, Initializer } from "actionhero";
-import { ProfilePropertyRule } from "../index";
+import { Property } from "../index";
 import { plugin } from "../modules/plugin";
 import { SourceOptionsMethodResponse } from "../classes/plugin";
 import { Event } from "../models/Event";
@@ -11,7 +11,7 @@ import { EventData } from "../models/EventData";
 import {
   SourceOptionsMethod,
   SourcePreviewMethod,
-  PluginConnectionProfilePropertyRuleOption,
+  PluginConnectionPropertyOption,
   SourceFilterMethod,
   ProfilePropertyPluginMethod,
   TestPluginMethod,
@@ -34,22 +34,22 @@ export class Events extends Initializer {
           name: "events",
           options: [
             {
-              key: "identifyingProfilePropertyRuleGuid",
+              key: "identifyingPropertyGuid",
               required: true,
               description:
-                "The profile property rule which will map to the event field 'userId'.  Only unique profile property rules can be used.",
+                "The property which will map to the event field 'userId'.  Only unique properties can be used.",
             },
           ],
           maxInstances: 1,
           methods: {
             test: testEventsApp,
             appOptions: async () => {
-              const uniqueRules = await ProfilePropertyRule.findAll({
+              const uniqueRules = await Property.findAll({
                 where: { unique: true },
               });
 
               return {
-                identifyingProfilePropertyRuleGuid: {
+                identifyingPropertyGuid: {
                   type: "list",
                   options: uniqueRules.map((rule) => rule.guid),
                   descriptions: uniqueRules.map((rule) => rule.key),
@@ -73,7 +73,7 @@ export class Events extends Initializer {
               description: "the type of event to use",
             },
           ],
-          profilePropertyRuleOptions: eventProfilePropertyRuleOptions,
+          propertyOptions: eventPropertyOptions,
           methods: {
             sourceOptions: eventSourceOptions,
             sourcePreview: eventSourcePreview,
@@ -136,19 +136,19 @@ const eventSourcePreview: SourcePreviewMethod = async ({ sourceOptions }) => {
 };
 
 const testEventsApp: TestPluginMethod = async ({ appOptions }) => {
-  const identifyingProfilePropertyRule = await ProfilePropertyRule.findOne({
-    where: { guid: appOptions.identifyingProfilePropertyRuleGuid },
+  const identifyingProperty = await Property.findOne({
+    where: { guid: appOptions.identifyingPropertyGuid },
   });
-  if (!identifyingProfilePropertyRule) {
+  if (!identifyingProperty) {
     throw new Error(
-      `cannot find identifying profile property rule (${appOptions.identifyingProfilePropertyRuleGuid})`
+      `cannot find identifying property (${appOptions.identifyingPropertyGuid})`
     );
   }
 
   return { success: true, message: "Events App OK" };
 };
 
-const eventProfilePropertyRuleOptionOptions = async (args) => {
+const eventPropertyOptionOptions = async (args) => {
   const rows = await eventSourcePreview(args);
   const columns = ["ipAddress", "type", "userId", "occurredAt"];
   const result = columns.map((col) => {
@@ -169,14 +169,14 @@ const eventProfilePropertyRuleOptionOptions = async (args) => {
   return result;
 };
 
-const eventProfilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOption[] = [
+const eventPropertyOptions: PluginConnectionPropertyOption[] = [
   {
     key: "column",
     displayName: "Column",
     required: true,
     description: "where the data comes from",
     type: "typeahead",
-    options: eventProfilePropertyRuleOptionOptions,
+    options: eventPropertyOptionOptions,
   },
   {
     key: "aggregationMethod",
@@ -211,7 +211,7 @@ const eventProfilePropertyRuleOptions: PluginConnectionProfilePropertyRuleOption
 
 const eventSourceFilters: SourceFilterMethod = async (args) => {
   const options = [];
-  const optionsWithExamples = await eventProfilePropertyRuleOptionOptions(args);
+  const optionsWithExamples = await eventPropertyOptionOptions(args);
   for (const i in optionsWithExamples) {
     const ops = ["equals", "does not equal"];
     const example = optionsWithExamples[i].examples.filter(
@@ -242,27 +242,20 @@ const eventSourceFilters: SourceFilterMethod = async (args) => {
 const eventProfileProperty: ProfilePropertyPluginMethod = async ({
   profile,
   sourceOptions,
-  profilePropertyRuleOptions,
-  profilePropertyRuleFilters,
+  propertyOptions,
+  propertyFilters,
 }) => {
   let events: Event[];
-  if (!profilePropertyRuleOptions["column"]) return;
-  if (!profilePropertyRuleOptions["aggregationMethod"]) return;
+  if (!propertyOptions["column"]) return;
+  if (!propertyOptions["aggregationMethod"]) return;
 
-  const dataKey = profilePropertyRuleOptions["column"].replace(
-    /^\[data\]-/,
-    ""
-  );
-  const aggregationMethod = profilePropertyRuleOptions["aggregationMethod"];
+  const dataKey = propertyOptions["column"].replace(/^\[data\]-/, "");
+  const aggregationMethod = propertyOptions["aggregationMethod"];
 
   if (aggregationMethod === "all values") {
     const where = { profileGuid: profile.guid, type: sourceOptions["type"] };
     const includeWhere = {};
-    Event.applyProfilePropertyRuleFilters(
-      where,
-      includeWhere,
-      profilePropertyRuleFilters
-    );
+    Event.applyPropertyFilters(where, includeWhere, propertyFilters);
     events = await Event.findAll({
       where,
       include:
@@ -281,11 +274,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
   } else if (aggregationMethod === "most recent value") {
     const where = { profileGuid: profile.guid, type: sourceOptions["type"] };
     const includeWhere = {};
-    Event.applyProfilePropertyRuleFilters(
-      where,
-      includeWhere,
-      profilePropertyRuleFilters
-    );
+    Event.applyPropertyFilters(where, includeWhere, propertyFilters);
     events = await Event.findAll({
       where,
       include:
@@ -305,11 +294,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
   } else if (aggregationMethod === "least recent value") {
     const where = { profileGuid: profile.guid, type: sourceOptions["type"] };
     const includeWhere = {};
-    Event.applyProfilePropertyRuleFilters(
-      where,
-      includeWhere,
-      profilePropertyRuleFilters
-    );
+    Event.applyPropertyFilters(where, includeWhere, propertyFilters);
     events = await Event.findAll({
       where,
       include:
@@ -327,7 +312,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
       limit: 1,
     });
   } else {
-    if (!profilePropertyRuleOptions["column"].match(/^\[data\]-/)) {
+    if (!propertyOptions["column"].match(/^\[data\]-/)) {
       throw new Error(
         "aggregation method not available outside of event data properties"
       );
@@ -339,11 +324,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
       type: sourceOptions["type"],
     };
 
-    Event.applyProfilePropertyRuleFilters(
-      includeWhere,
-      where,
-      profilePropertyRuleFilters
-    );
+    Event.applyPropertyFilters(includeWhere, where, propertyFilters);
 
     if (aggregationMethod === "count") {
       const count = await EventData.count({
@@ -388,7 +369,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
   if (!events) {
     return null;
   } else {
-    if (profilePropertyRuleOptions["column"].match(/^\[data\]-/)) {
+    if (propertyOptions["column"].match(/^\[data\]-/)) {
       const eventData = await Promise.all(events.map((e) => e.getData()));
       return eventData
         .map((eventData) => eventData[dataKey])
@@ -403,7 +384,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
         })
         .flat();
     } else {
-      return events.map((event) => event[profilePropertyRuleOptions["column"]]);
+      return events.map((event) => event[propertyOptions["column"]]);
     }
   }
 };

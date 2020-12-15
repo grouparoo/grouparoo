@@ -5,18 +5,18 @@ import { log } from "actionhero";
 import { Profile } from "../models/Profile";
 import { Group } from "../models/Group";
 import { Run } from "../models/Run";
-import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
+import { Property } from "../models/Property";
 
 /**
  * Build a CSV file on this host which contains all profiles, properties, and groups
  */
 export async function groupExportToCSV(group: Group, limit = 1000) {
   // get the headers
-  const numberedProfilePropertyRuleKeys = (await ProfilePropertyRule.findAll())
+  const numberedPropertyKeys = (await Property.findAll())
     .map((rule) => rule.key)
     .sort();
   const columns = ["guid", "createdAt", "updatedAt"].concat(
-    numberedProfilePropertyRuleKeys
+    numberedPropertyKeys
   );
 
   // add the profiles

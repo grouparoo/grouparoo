@@ -33,10 +33,9 @@ export default function ResetCluster(props) {
           <br />
           <small>
             This will erase all of your Apps, Sources, Destinations, Profile
-            Properties, Profile Property Rules, Groups and related data. The
-            only data that will be kept will be your Settings, Teams, Team
-            Members, and ApiKeys. This action will not remove data from your
-            Destinations.
+            Properties, Properties, Groups and related data. The only data that
+            will be kept will be your Settings, Teams, Team Members, and
+            ApiKeys. This action will not remove data from your Destinations.
           </small>
         </Card.Subtitle>
 

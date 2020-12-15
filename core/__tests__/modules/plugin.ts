@@ -4,7 +4,7 @@ import { Setting } from "./../../src/models/Setting";
 import { Run } from "./../../src/models/Run";
 import { Import } from "./../../src/models/Import";
 import { specHelper } from "actionhero";
-import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
+import { Property } from "../../src/models/Property";
 import { SourceOptionsMethodResponse } from "../../src";
 let actionhero;
 
@@ -19,7 +19,7 @@ describe("modules/plugin", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
   });
 
   describe("registerPlugin", () => {
@@ -48,7 +48,7 @@ describe("modules/plugin", () => {
             description: "import or update profiles from an uploaded file",
             app: "sample-plugin-app",
             options: [],
-            profilePropertyRuleOptions: [],
+            propertyOptions: [],
             scheduleOptions: [],
             methods: {
               sourceOptions: async ({ sourceOptions }) => {
@@ -60,7 +60,7 @@ describe("modules/plugin", () => {
               sourcePreview: async () => {
                 return [];
               },
-              uniqueProfilePropertyRuleBootstrapOptions: async () => {
+              uniquePropertyBootstrapOptions: async () => {
                 return {};
               },
               sourceFilters: async () => {
@@ -73,7 +73,7 @@ describe("modules/plugin", () => {
                   sourceOffset: 0,
                 };
               },
-              profileProperty: async ({ profilePropertyRule, profile }) => {
+              profileProperty: async ({ property, profile }) => {
                 return ["value"];
               },
             },
@@ -105,7 +105,7 @@ describe("modules/plugin", () => {
               description: "export stuff",
               app: "sample-plugin-app",
               options: [],
-              profilePropertyRuleOptions: [],
+              propertyOptions: [],
               scheduleOptions: [],
               methods: {},
             },
@@ -245,7 +245,7 @@ describe("modules/plugin", () => {
 
     describe("replaceTemplateProfilePropertyKeysWithProfilePropertyGuid and replaceTemplateProfilePropertyGuidsWithProfilePropertyKeys", () => {
       test("they work to convert each other", async () => {
-        const rule = await ProfilePropertyRule.findOne({
+        const rule = await Property.findOne({
           where: { key: "userId" },
         });
         const initialString = "select * from users where id = {{ userId }}";

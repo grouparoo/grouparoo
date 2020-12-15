@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { ProfilePropertyRule } from "../../../src/models/ProfilePropertyRule";
+import { Property } from "../../../src/models/Property";
 import { App } from "../../../src/models/App";
 let actionhero;
 
@@ -15,7 +15,7 @@ describe("models/app", () => {
 
   describe("events app", () => {
     beforeAll(async () => {
-      await helper.factories.profilePropertyRules();
+      await helper.factories.properties();
     });
 
     test("an events app can be created", async () => {
@@ -28,28 +28,29 @@ describe("models/app", () => {
       ).rejects.toThrow(/cannot create a new events app, only 1 allowed/);
     });
 
-    test("the appOptions for the events app only include unique profile property rules", async () => {
+    test("the appOptions for the events app only include unique properties", async () => {
       const app = await App.scope(null).findOne({ where: { type: "events" } });
       const appOptions = await app.appOptions();
-      expect(
-        appOptions.identifyingProfilePropertyRuleGuid.descriptions.sort()
-      ).toEqual(["email", "userId"]);
+      expect(appOptions.identifyingPropertyGuid.descriptions.sort()).toEqual([
+        "email",
+        "userId",
+      ]);
     });
 
-    test("the events app tests that there is a valid identifyingProfilePropertyRuleGuid", async () => {
+    test("the events app tests that there is a valid identifyingPropertyGuid", async () => {
       const app = await App.scope(null).findOne({ where: { type: "events" } });
 
-      await app.setOptions({ identifyingProfilePropertyRuleGuid: "missing" });
+      await app.setOptions({ identifyingPropertyGuid: "missing" });
       expect(await app.test()).toEqual({
-        error: "cannot find identifying profile property rule (missing)",
+        error: "cannot find identifying property (missing)",
         message: undefined,
         success: false,
       });
 
-      const rule = await ProfilePropertyRule.findOne({
+      const rule = await Property.findOne({
         where: { key: "userId" },
       });
-      await app.setOptions({ identifyingProfilePropertyRuleGuid: rule.guid });
+      await app.setOptions({ identifyingPropertyGuid: rule.guid });
       expect(await app.test()).toEqual({
         error: undefined,
         message: "Events App OK",

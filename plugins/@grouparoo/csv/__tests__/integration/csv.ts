@@ -7,12 +7,7 @@ import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 // import statements are still relative to the file, regardless of cwd
 import fs from "fs-extra";
 import { api, specHelper } from "actionhero";
-import {
-  Profile,
-  ProfileProperty,
-  ProfilePropertyRule,
-  Run,
-} from "@grouparoo/core";
+import { Profile, ProfileProperty, Property, Run } from "@grouparoo/core";
 
 let actionhero;
 
@@ -37,7 +32,7 @@ describe("integration/runs/csv", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
     helper.disableTestPluginImport();
   });
 
@@ -181,8 +176,8 @@ describe("integration/runs/csv", () => {
       expect(error).toBeUndefined();
     });
 
-    test("replace the email profile property rule with a new one for this source", async () => {
-      const oldRule = await ProfilePropertyRule.findOne({
+    test("replace the email property with a new one for this source", async () => {
+      const oldRule = await Property.findOne({
         where: { key: "email" },
       });
       await oldRule.destroy();
@@ -197,13 +192,12 @@ describe("integration/runs/csv", () => {
         state: "ready",
       };
 
-      const {
-        error,
-        profilePropertyRule,
-        pluginOptions,
-      } = await specHelper.runAction("profilePropertyRule:create", session);
+      const { error, property, pluginOptions } = await specHelper.runAction(
+        "property:create",
+        session
+      );
       expect(error).toBeUndefined();
-      expect(profilePropertyRule.guid).toBeTruthy();
+      expect(property.guid).toBeTruthy();
 
       // check the pluginOptions
       expect(pluginOptions.length).toBe(1);
@@ -215,11 +209,11 @@ describe("integration/runs/csv", () => {
       // set the options
       session.params = {
         csrfToken,
-        guid: profilePropertyRule.guid,
+        guid: property.guid,
         options: { column: "email" },
       };
       const { error: editError } = await specHelper.runAction(
-        "profilePropertyRule:edit",
+        "property:edit",
         session
       );
       expect(editError).toBeUndefined();

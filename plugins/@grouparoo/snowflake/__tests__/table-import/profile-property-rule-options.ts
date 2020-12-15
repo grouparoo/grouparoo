@@ -10,7 +10,7 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 import { SimpleAppOptions } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/table-import/connection";
-const profilePropertyRuleOptions = getConnection().profilePropertyRuleOptions;
+const propertyOptions = getConnection().propertyOptions;
 
 const nockFile = path.join(
   __dirname,
@@ -31,9 +31,7 @@ const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 const sourceOptions = { table: "PURCHASES" };
 
 async function getOptionsForKey(keyName) {
-  const option = profilePropertyRuleOptions.find(
-    (rule) => rule.key === keyName
-  );
+  const option = propertyOptions.find((rule) => rule.key === keyName);
   expect(option.key).toBeTruthy();
 
   const optionMethod = option.options;
@@ -48,13 +46,13 @@ async function getOptionsForKey(keyName) {
     source: null,
     sourceGuid: null,
     sourceMapping: null,
-    profilePropertyRule: null,
-    profilePropertyRuleGuid: null,
+    property: null,
+    propertyGuid: null,
   });
   return response;
 }
 
-describe("snowflake/table/profilePropertyRuleOptions", () => {
+describe("snowflake/table/propertyOptions", () => {
   test("gets list of columns to create a source", async () => {
     const response = await getOptionsForKey("column");
     const columnNames = response.map((r) => r.key).sort();

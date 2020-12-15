@@ -30,7 +30,7 @@ describe("tasks/group:exportToCSV", () => {
     });
 
     beforeAll(async () => {
-      await helper.factories.profilePropertyRules();
+      await helper.factories.properties();
       helper.disableTestPluginImport();
 
       await Profile.truncate();

@@ -6,7 +6,7 @@
     "type": "calculated",
     "rules": [
       {
-        "profilePropertyRuleId": "email",
+        "propertyId": "email",
         "operation": { "op": "exists" }
       }
     ]
@@ -18,7 +18,7 @@
     "type": "calculated",
     "rules": [
       {
-        "profilePropertyRuleId": "language",
+        "propertyId": "language",
         "operation": { "op": "eq" },
         "match": "Spanish"
       }
@@ -31,7 +31,7 @@
     "type": "calculated",
     "rules": [
       {
-        "profilePropertyRuleId": "ltv",
+        "propertyId": "ltv",
         "operation": { "op": "gt" },
         "match": "100"
       }
@@ -44,18 +44,18 @@
     "type": "calculated",
     "rules": [
       {
-        "profilePropertyRuleId": "ltv",
+        "propertyId": "ltv",
         "operation": { "op": "gt" },
         "match": "100"
       },
       {
-        "profilePropertyRuleId": "last_purchase_date",
+        "propertyId": "last_purchase_date",
         "operation": { "op": "relative_gt" },
         "relativeMatchNumber": "60",
         "relativeMatchUnit": "days"
       },
       {
-        "profilePropertyRuleId": "last_purchase_category",
+        "propertyId": "last_purchase_category",
         "operation": { "op": "eq" },
         "match": "Automotive"
       }
