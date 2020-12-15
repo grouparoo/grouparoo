@@ -69,7 +69,11 @@ cd $WORKDIR && npx grouparoo update
 echo ""
 echo "--- test: install ---"
 cd $WORKDIR && npx grouparoo install @grouparoo/logger@next
+echo ""
+echo ""
 cd $WORKDIR && cat package.json
+echo ""
+echo ""
 
 ## reset the NPM/NPX link
 npm unlink
