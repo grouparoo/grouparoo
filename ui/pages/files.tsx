@@ -11,6 +11,7 @@ import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import LoadingButton from "../components/loadingButton";
 import { Models, Actions } from "../utils/apiData";
+import { FilePreview, downloadFile } from "../components/filePreview";
 
 const apiVersion = process.env.API_VERSION || "v1";
 
@@ -25,7 +26,6 @@ export default function Page(props) {
   // pagination
   const limit = 100;
   const { offset, setOffset } = useOffset();
-  const csrfToken = globalThis?.localStorage?.getItem("session:csrfToken");
 
   useSecondaryEffect(() => {
     load();
@@ -43,12 +43,6 @@ export default function Page(props) {
       setTotal(response.total);
     }
     setLoading(false);
-  }
-
-  async function download(file) {
-    console.info("downloading file", file);
-    const url = `/api/${apiVersion}/file/${file.guid}?csrfToken=${csrfToken}`;
-    window.open(url, "_new");
   }
 
   async function destroy(file) {
@@ -104,17 +98,7 @@ export default function Page(props) {
             return (
               <tr key={`file-${file.guid}`}>
                 <td>
-                  {file.type === "image" ? (
-                    <Image
-                      thumbnail
-                      style={{ maxWidth: 100, maxHeight: 100 }}
-                      src={`/api/${apiVersion}/file/${file.guid}?csrfToken=${csrfToken}`}
-                    />
-                  ) : (
-                    <p>
-                      <em>no preview</em>
-                    </p>
-                  )}
+                  <FilePreview maxWidth={100} maxHeight={100} file={file} />
                 </td>
                 <td>
                   <strong>
@@ -143,7 +127,7 @@ export default function Page(props) {
                     size="sm"
                     variant="outline-primary"
                     onClick={() => {
-                      download(file);
+                      downloadFile(file);
                     }}
                   >
                     Download
