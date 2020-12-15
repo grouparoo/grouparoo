@@ -35,7 +35,7 @@ export class Plugins extends Initializer {
               key: "accessToken",
               displayName: "Access Token",
               required: true,
-              description: "TODO",
+              description: "Needs the ads_management permission",
             },
           ],
           methods: { test },
@@ -47,7 +47,15 @@ export class Plugins extends Initializer {
           direction: "export",
           description: "Export to Facebook Custom Audiences",
           app: "facebook",
-          options: [],
+          options: [
+            {
+              key: "primaryKey",
+              displayName: "Primary Key",
+              required: true,
+              description:
+                "Which field should uniquely identify Facebook users.",
+            },
+          ],
           methods: {
             exportProfiles,
             destinationOptions,
