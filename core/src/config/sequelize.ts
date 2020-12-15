@@ -72,12 +72,6 @@ export const DEFAULT = {
       if (storage !== ":memory:" && !isAbsolute(storage)) {
         storage = join(getParentPath(), storage);
       }
-
-      if (config?.tasks?.maxTaskProcessors > 1) {
-        throw new Error(
-          "Only one task worker can be used with a SQLite database"
-        );
-      }
     }
 
     return {
