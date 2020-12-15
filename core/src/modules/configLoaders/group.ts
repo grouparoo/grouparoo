@@ -62,8 +62,9 @@ export async function deleteGroups(guids: string[]) {
   });
 
   for (const i in groups) {
-    await groups[i].update({ state: "deleted", locked: null });
-    await task.enqueue("group:destroy", { groupGuid: groups[i].guid });
-    logModel(groups[i], "deleted");
+    const group = groups[i];
+    await group.update({ state: "deleted", locked: null });
+    await task.enqueue("group:destroy", { groupGuid: group.guid });
+    logModel(group, "deleted");
   }
 }

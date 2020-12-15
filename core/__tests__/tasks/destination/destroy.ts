@@ -161,7 +161,23 @@ describe("tasks/destination:destroy", () => {
       );
     });
 
+    test("the destination will not be deleted yet (not enough time has passed)", async () => {
+      await api.resque.queue.connection.redis.flushdb();
+      await specHelper.runTask("destination:destroy", {
+        destinationGuid: destination.guid,
+        runGuid: run.guid,
+      });
+
+      destination = await Destination.findByGuid(destination.guid);
+      expect(destination.state).toBe("deleted");
+    });
+
+    test("time passes", async () => {
+      await utils.sleep(1000);
+    });
+
     test("now the destination can be deleted", async () => {
+      await utils.sleep(1000);
       await specHelper.runTask("destination:destroy", {
         destinationGuid: destination.guid,
         runGuid: run.guid,
