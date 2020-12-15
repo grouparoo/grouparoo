@@ -44,5 +44,5 @@ export default async function Update(pkg: string) {
     }
   }
 
-  logger.succeed(`Installed ${pkg}!`);
+  logger.succeed(`Installed${pkg ? ` ${pkg}` : ""}!`);
 }
