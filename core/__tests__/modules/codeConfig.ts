@@ -146,7 +146,6 @@ describe("modules/codeConfig", () => {
       expect(groups.length).toBe(1);
       expect(groups[0].guid).toBe("grp_email_group");
       expect(groups[0].name).toBe("People with Email Addresses");
-      expect(groups[0].state).toBe("ready");
       expect(groups[0].locked).toBe("config:code");
       const rules = await groups[0].getRules();
       expect(rules).toEqual([
@@ -280,7 +279,6 @@ describe("modules/codeConfig", () => {
       expect(groups.length).toBe(1);
       expect(groups[0].guid).toBe("grp_email_group");
       expect(groups[0].name).toBe("People who have Email Addresses");
-      expect(groups[0].state).toBe("ready");
       expect(groups[0].locked).toBe("config:code");
       const rules = await groups[0].getRules();
       expect(rules).toEqual([

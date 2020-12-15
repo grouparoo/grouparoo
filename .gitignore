@@ -12,6 +12,7 @@ coverage
 *.sqlite
 *.sqlite-journal
 apps/*/config/*
+apps/*/*.log
 
 # API
 log

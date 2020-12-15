@@ -1,13 +1,13 @@
 import { ExportProfilesPluginMethod } from "@grouparoo/core";
-import * as fs from "fs";
-import * as path from "path";
-import { config, log } from "actionhero";
+import fs from "fs";
+import { getFilePath } from "../utils/getFilePath";
+import { log } from "actionhero";
 
 export const exportProfiles: ExportProfilesPluginMethod = async ({
   appOptions,
   exports,
 }) => {
-  const filePath = path.join(config.general.paths.log[0], appOptions.filename);
+  const filePath = getFilePath(appOptions.filename);
   let lines = [];
 
   exports.map((_export) => {

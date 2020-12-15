@@ -83,7 +83,7 @@ describe("models/group", () => {
       await group.setRules([
         { key: "firstName", match: "nobody", operation: { op: "eq" } },
       ]);
-      expect(group.state).toBe("initializing");
+      expect(group.state).toBe("updating");
 
       let foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(1);

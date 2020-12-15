@@ -5,7 +5,7 @@ import { Profile } from "../../models/Profile";
 import { ProfileMultipleAssociationShim } from "../../models/ProfileMultipleAssociationShim";
 import { Import } from "../../models/Import";
 import { Op, Transaction } from "sequelize";
-import { api, task } from "actionhero";
+import { api, task, log } from "actionhero";
 
 export namespace GroupOps {
   /**
@@ -17,11 +17,28 @@ export namespace GroupOps {
     destinationGuid?: string
   ) {
     await group.stopPreviousRuns();
+    await group.update({ state: "updating" });
+
+    const run = await Run.create({
+      creatorGuid: group.guid,
+      creatorType: "group",
+      state: "running",
+      force,
+    });
+
+    log(
+      `[ run ] starting run ${run.guid} for group ${group.name} (${group.guid})`,
+      "notice"
+    );
+
     await task.enqueue("group:run", {
       groupGuid: group.guid,
+      runGuid: run.guid,
       force,
       destinationGuid,
     });
+
+    return run;
   }
 
   /**

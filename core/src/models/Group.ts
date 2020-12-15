@@ -69,6 +69,7 @@ const STATE_TRANSITIONS = [
   { from: "ready", to: "updating", checks: [] },
   { from: "updating", to: "ready", checks: [] },
   { from: "updating", to: "initializing", checks: [] },
+  { from: "updating", to: "deleted", checks: [] },
   { from: "ready", to: "deleted", checks: [] },
 ];
 

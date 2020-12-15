@@ -534,23 +534,27 @@ describe("models/destination", () => {
         test("when the group being tracked is removed, the previous group should be exported one last time", async () => {
           await api.resque.queue.connection.redis.flushdb();
 
-          await destination.trackGroup(group);
+          const runA = await destination.trackGroup(group);
           let foundTasks = await specHelper.findEnqueuedTasks("group:run");
           expect(foundTasks.length).toBe(1);
-          expect(foundTasks[0].args[0]).toEqual({
-            force: true,
-            destinationGuid: destination.guid,
-            groupGuid: group.guid,
-          });
+          expect(foundTasks[0].args[0]).toEqual(
+            expect.objectContaining({
+              force: true,
+              destinationGuid: destination.guid,
+              groupGuid: group.guid,
+              runGuid: runA.guid,
+            })
+          );
 
           await api.resque.queue.connection.redis.flushdb();
-          await destination.unTrackGroup();
+          const runB = await destination.unTrackGroup();
           foundTasks = await specHelper.findEnqueuedTasks("group:run");
           expect(foundTasks.length).toBe(1);
           expect(foundTasks[0].args[0]).toEqual({
             force: true,
             destinationGuid: destination.guid,
             groupGuid: group.guid,
+            runGuid: runB.guid,
           });
         });
 
@@ -560,19 +564,24 @@ describe("models/destination", () => {
           await destination.trackGroup(group);
           await api.resque.queue.connection.redis.flushdb();
 
-          await destination.trackGroup(otherGroup);
+          const run = await destination.trackGroup(otherGroup);
 
           let foundTasks = await specHelper.findEnqueuedTasks("group:run");
           expect(foundTasks.length).toBe(2);
-          expect(foundTasks[0].args[0]).toEqual({
-            force: true,
-            destinationGuid: destination.guid,
-            groupGuid: group.guid,
-          });
+          expect(foundTasks[0].args[0]).toEqual(
+            expect.objectContaining({
+              force: true,
+              destinationGuid: destination.guid,
+              groupGuid: group.guid,
+            })
+          );
+          expect(foundTasks[0].args[0].runGuid).not.toEqual(run.guid);
+
           expect(foundTasks[1].args[0]).toEqual({
             force: true,
             destinationGuid: destination.guid,
             groupGuid: otherGroup.guid,
+            runGuid: run.guid,
           });
 
           await otherGroup.destroy();

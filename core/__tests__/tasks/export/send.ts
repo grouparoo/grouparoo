@@ -38,10 +38,12 @@ describe("tasks/export:send", () => {
       group = await helper.factories.group({ type: "manual" });
       await group.addProfile(profile);
 
-      await api.resque.queue.connection.redis.flushdb();
-
       destination = await helper.factories.destination();
       await destination.trackGroup(group);
+
+      await api.resque.queue.connection.redis.flushdb();
+      await Run.truncate();
+
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.guid] = group.name;
       await destination.setDestinationGroupMemberships(
