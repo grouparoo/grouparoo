@@ -7,8 +7,10 @@ import { ensureNoTsHeaderFiles } from "./ensureNoTsHeaderFiles";
 
 export async function loadLocalCommands(program) {
   // are we in a grouparoo project directory?
-  const localPackageFile = path.join(process.cwd(), "package.json");
+  const localPackageFile = path.join(process.env.INIT_CWD, "package.json");
   if (!fs.existsSync(localPackageFile)) return;
+  const nodeModulesDir = path.join(process.env.INIT_CWD, "node_modules");
+  if (!fs.existsSync(nodeModulesDir)) return;
   const pkgJSON = readPackageJSON(localPackageFile);
   if (!Object.keys(pkgJSON?.dependencies || {}).includes("@grouparoo/core")) {
     return;
