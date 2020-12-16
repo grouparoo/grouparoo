@@ -2,8 +2,6 @@
  * based on https://github.com/facebook/facebook-nodejs-business-sdk/blob/567f097d06fd5375238feed8ee23dff13d5a081a/src/objects/serverside/utils.js
  */
 
-import DeliveryCategory from "./delivery-category.js";
-
 const sha256 = require("js-sha256");
 const currency_codes = require("currency-codes");
 const country_codes = require("iso-3166-1-alpha-2");
@@ -138,26 +136,6 @@ export default class ServerSideUtils {
     }
 
     return currency;
-  }
-
-  /**
-   * Normalizes the given delivery category value and returns a valid string.
-   * @param  {String} [input] delivery_category input to be validated.
-   * @return {String} Valid delivery_category value.
-   */
-  static normalizeDeliveryCategory(input: string) {
-    let delivery_category = input.trim().toLowerCase();
-
-    if (!Object.values(DeliveryCategory).includes(delivery_category)) {
-      throw new Error(
-        "Invalid delivery_category passed: " +
-          input +
-          ". Allowed values are one of " +
-          Object.values(DeliveryCategory).join(",")
-      );
-    }
-
-    return delivery_category;
   }
 
   /**
