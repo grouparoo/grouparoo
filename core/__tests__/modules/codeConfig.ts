@@ -14,11 +14,10 @@ import { Setting } from "../../src/models/Setting";
 import path from "path";
 import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
-import { CodeConfig } from "../../src/initializers/codeConfig";
 import { validateConfigObjectKeys } from "../../src/classes/codeConfig";
+import { loadConfigDirectory } from "../../src/modules/configLoaders";
 
 let actionhero;
-const initializer = new CodeConfig();
 
 describe("modules/codeConfig", () => {
   beforeAll(async () => {
@@ -36,14 +35,9 @@ describe("modules/codeConfig", () => {
       // manually run the initializer again after the server has started.
       // the test test-app plugin has been loaded
       api.codeConfig.allowLockedModelChanges = true;
-      process.env.GROUPAROO_CONFIG_DIR = path.join(
-        __dirname,
-        "..",
-        "fixtures",
-        "codeConfig",
-        "initial"
+      await loadConfigDirectory(
+        path.join(__dirname, "..", "fixtures", "codeConfig", "initial")
       );
-      await initializer.initialize();
     });
 
     test("settings are updated", async () => {
@@ -217,14 +211,9 @@ describe("modules/codeConfig", () => {
   describe("changed config", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
-      process.env.GROUPAROO_CONFIG_DIR = path.join(
-        __dirname,
-        "..",
-        "fixtures",
-        "codeConfig",
-        "changes"
+      await loadConfigDirectory(
+        path.join(__dirname, "..", "fixtures", "codeConfig", "changes")
       );
-      await initializer.initialize();
     });
 
     test("settings can be changed", async () => {
@@ -333,14 +322,9 @@ describe("modules/codeConfig", () => {
   describe("partially empty config", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
-      process.env.GROUPAROO_CONFIG_DIR = path.join(
-        __dirname,
-        "..",
-        "fixtures",
-        "codeConfig",
-        "partially-empty"
+      await loadConfigDirectory(
+        path.join(__dirname, "..", "fixtures", "codeConfig", "partially-empty")
       );
-      await initializer.initialize();
     });
 
     afterAll(async () => {
@@ -375,14 +359,9 @@ describe("modules/codeConfig", () => {
   describe("empty config", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
-      process.env.GROUPAROO_CONFIG_DIR = path.join(
-        __dirname,
-        "..",
-        "fixtures",
-        "codeConfig",
-        "empty"
+      await loadConfigDirectory(
+        path.join(__dirname, "..", "fixtures", "codeConfig", "empty")
       );
-      await initializer.initialize();
     });
 
     test("all objects will be deleted with an empty config file", async () => {
@@ -406,17 +385,14 @@ describe("modules/codeConfig", () => {
     describe("app", () => {
       beforeAll(async () => {
         api.codeConfig.allowLockedModelChanges = true;
-        process.env.GROUPAROO_CONFIG_DIR = path.join(
-          __dirname,
-          "..",
-          "fixtures",
-          "codeConfig",
-          "error-app"
-        );
       });
 
       test("errors will be thrown if the configuration is invalid", async () => {
-        await expect(initializer.initialize()).rejects.toThrow(
+        await expect(
+          loadConfigDirectory(
+            path.join(__dirname, "..", "fixtures", "codeConfig", "error-app")
+          )
+        ).rejects.toThrow(
           /fileGuid is required for a app of type test-plugin-app/
         );
       });
@@ -425,76 +401,68 @@ describe("modules/codeConfig", () => {
     describe("source", () => {
       beforeAll(async () => {
         api.codeConfig.allowLockedModelChanges = true;
-        process.env.GROUPAROO_CONFIG_DIR = path.join(
-          __dirname,
-          "..",
-          "fixtures",
-          "codeConfig",
-          "error-source"
-        );
       });
 
       test("errors will be thrown if the configuration is invalid", async () => {
-        await expect(initializer.initialize()).rejects.toThrow(
-          /cannot find Property/
-        );
+        await expect(
+          loadConfigDirectory(
+            path.join(__dirname, "..", "fixtures", "codeConfig", "error-source")
+          )
+        ).rejects.toThrow(/cannot find Property/);
       });
     });
 
     describe("property", () => {
       beforeAll(async () => {
         api.codeConfig.allowLockedModelChanges = true;
-        process.env.GROUPAROO_CONFIG_DIR = path.join(
-          __dirname,
-          "..",
-          "fixtures",
-          "codeConfig",
-          "error-property"
-        );
       });
 
       test("errors will be thrown if the configuration is invalid", async () => {
-        await expect(initializer.initialize()).rejects.toThrow(
-          /cannot find Source/
-        );
+        await expect(
+          loadConfigDirectory(
+            path.join(
+              __dirname,
+              "..",
+              "fixtures",
+              "codeConfig",
+              "error-property"
+            )
+          )
+        ).rejects.toThrow(/cannot find Source/);
       });
     });
 
     describe("group", () => {
       beforeAll(async () => {
         api.codeConfig.allowLockedModelChanges = true;
-        process.env.GROUPAROO_CONFIG_DIR = path.join(
-          __dirname,
-          "..",
-          "fixtures",
-          "codeConfig",
-          "error-group"
-        );
       });
 
       test("errors will be thrown if the configuration is invalid", async () => {
-        await expect(initializer.initialize()).rejects.toThrow(
-          /cannot find Property/
-        );
+        await expect(
+          loadConfigDirectory(
+            path.join(__dirname, "..", "fixtures", "codeConfig", "error-group")
+          )
+        ).rejects.toThrow(/cannot find Property/);
       });
     });
 
     describe("team member", () => {
       beforeAll(async () => {
         api.codeConfig.allowLockedModelChanges = true;
-        process.env.GROUPAROO_CONFIG_DIR = path.join(
-          __dirname,
-          "..",
-          "fixtures",
-          "codeConfig",
-          "error-teamMember"
-        );
       });
 
       test("errors will be thrown if the configuration is invalid", async () => {
-        await expect(initializer.initialize()).rejects.toThrow(
-          /TeamMember.firstName cannot be null/
-        );
+        await expect(
+          loadConfigDirectory(
+            path.join(
+              __dirname,
+              "..",
+              "fixtures",
+              "codeConfig",
+              "error-teamMember"
+            )
+          )
+        ).rejects.toThrow(/TeamMember.firstName cannot be null/);
       });
     });
   });

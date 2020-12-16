@@ -25,6 +25,7 @@ export class CodeConfig extends Initializer {
 
     const configDir =
       process.env.GROUPAROO_CONFIG_DIR || path.join(getParentPath(), "config");
+
     await loadConfigDirectory(configDir);
 
     // after this point in the Actionhero boot lifecycle, locked models cannot be changed
