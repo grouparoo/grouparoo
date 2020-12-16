@@ -12,7 +12,7 @@ import { Team } from "../../src/models/Team";
 import { TeamMember } from "../../src/models/TeamMember";
 import { Setting } from "../../src/models/Setting";
 import path from "path";
-import { api } from "actionhero";
+import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
 import { CodeConfig } from "../../src/initializers/codeConfig";
 import { validateConfigObjectKeys } from "../../src/classes/codeConfig";
@@ -296,8 +296,18 @@ describe("modules/codeConfig", () => {
     });
 
     test("a removed destination will be deleted", async () => {
-      const destinations = await Destination.findAll();
-      expect(destinations.length).toBe(0);
+      const destinations = await Destination.scope(null).findAll();
+      expect(destinations.length).toBe(1);
+      const destination = destinations[0];
+      expect(destination.state).toEqual("deleted");
+
+      // we need to "wait" for the destination to be deleted to remove it's dependant models
+      const foundTasks = await specHelper.findEnqueuedTasks(
+        "destination:destroy"
+      );
+      await specHelper.runTask("destination:destroy", foundTasks[0].args[0]);
+      await destination.reload();
+      await destination.destroy();
     });
 
     test("changes to team permissions will be updated", async () => {
