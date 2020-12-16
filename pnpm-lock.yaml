@@ -123,7 +123,7 @@ importers:
       actionhero: 25.0.1
       ah-next-plugin: 0.4.0_actionhero@25.0.1
       ah-sequelize-plugin: 2.2.4_82cc64290862f1d57d7a58e23b6b833e
-      bcrypt: 5.0.0
+      bcryptjs: 2.4.3
       compare-versions: 3.6.0
       csv-stringify: 5.5.3
       date-fns: 2.16.1
@@ -148,8 +148,6 @@ importers:
       sequelize-typescript: 1.1.0_8d46493fa10ea791e6df2eb14ee234d8
       sqlite3: 5.0.0
       ts-node: 9.1.0_typescript@4.1.3
-      type-fest: 0.20.2
-      typescript: 4.1.3
       umzug: 2.3.0
       uuid: 8.3.2
       validator: 13.5.2
@@ -165,7 +163,9 @@ importers:
       nock: 13.0.5
       prettier: 2.2.1
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
+      type-fest: 0.20.2
       typedoc: 0.19.2_typescript@4.1.3
+      typescript: 4.1.3
     specifiers:
       '@grouparoo/client-web': ^0.2.0-alpha.6
       '@grouparoo/spec-helper': ^0.2.0-alpha.6
@@ -178,7 +178,7 @@ importers:
       actionhero: 25.0.1
       ah-next-plugin: 0.4.0
       ah-sequelize-plugin: 2.2.4
-      bcrypt: 5.0.0
+      bcryptjs: 2.4.3
       compare-versions: 3.6.0
       csv-parse: 4.14.1
       csv-stringify: 5.5.3
@@ -4030,16 +4030,10 @@ packages:
       tweetnacl: 0.14.5
     resolution:
       integrity: sha1-pDAdOJtqQ/m2f/PKEaP2Y342Dp4=
-  /bcrypt/5.0.0:
-    dependencies:
-      node-addon-api: 3.0.2
-      node-pre-gyp: 0.15.0
+  /bcryptjs/2.4.3:
     dev: false
-    engines:
-      node: '>= 10.0.0'
-    requiresBuild: true
     resolution:
-      integrity: sha512-jB0yCBl4W/kVHM2whjfyqnxTmOHkCX4kHEa5nYKSoGeYe8YrjTYTc87/6bwt1g8cmV0QrbhKriETg9jWtcREhg==
+      integrity: sha1-mrVie5PmBiH/fNrF2pczAn3x0Ms=
   /before-after-hook/2.1.0:
     dev: true
     resolution:
@@ -10802,6 +10796,7 @@ packages:
       integrity: sha512-ASCL5U13as7HhOExbT6OlWJJUV/lLzL2voOSP1UVehpRD8FbSrSDjfScK/KwAvVTI5AS6r4VwbOMlIqtvRidnA==
   /node-addon-api/3.0.2:
     dev: false
+    optional: true
     resolution:
       integrity: sha512-+D4s2HCnxPd5PjjI0STKwncjXTUKKqm74MDMz9OPXavjsGmjkvwgLtA5yoxJUdmpj52+2u+RrXgPipahKczMKg==
   /node-fetch-npm/2.0.4:
@@ -10965,22 +10960,6 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-TwWAOZb0j7e9eGaf9esRx3ZcLaE5tQ2lvYy1pb5IAaG1a2e2Kv5Lms1Y4hpj+ciXJRofIxxlt5haeQ/2ANeE0Q==
-  /node-pre-gyp/0.15.0:
-    dependencies:
-      detect-libc: 1.0.3
-      mkdirp: 0.5.5
-      needle: 2.5.2
-      nopt: 4.0.3
-      npm-packlist: 1.4.8
-      npmlog: 4.1.2
-      rc: 1.2.8
-      rimraf: 2.7.1
-      semver: 5.7.1
-      tar: 4.4.13
-    dev: false
-    hasBin: true
-    resolution:
-      integrity: sha512-7QcZa8/fpaU/BKenjcaeFF9hLz2+7S9AqyXFhlH/rilsQ/hPZKK32RtR5EQHJElgu+q5RfbJ34KriI79UWaorA==
   /node-releases/1.1.67:
     dev: false
     resolution:
@@ -15682,7 +15661,6 @@ packages:
     resolution:
       integrity: sha512-34R7HTnG0XIJcBSn5XhDd7nNFPRcXYRZrBB2O2jdKqYODldSzBAqzsWoZYYvduky73toYS/ESqxPvkDf/F0XMg==
   /type-fest/0.20.2:
-    dev: false
     engines:
       node: '>=10'
     resolution:
