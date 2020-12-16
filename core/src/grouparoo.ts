@@ -1,14 +1,14 @@
 import { getCoreVersion, getNodeVersion } from "./utils/pluginDetails";
 
 async function main() {
-  const { Process, log } = await import("actionhero");
+  const { Process, log, api } = await import("actionhero");
 
   log(
     `Starting Grouparoo ${getCoreVersion()} on node.js ${getNodeVersion()}`,
     "notice"
   );
 
-  const app = new Process();
+  const app = api?.process || new Process();
 
   app.registerProcessSignals((exitCode) => {
     log(
