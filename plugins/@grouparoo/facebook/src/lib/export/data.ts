@@ -28,3 +28,7 @@ function formatVar(field, value) {
       return value || "";
   }
 }
+
+export function sha(input) {
+  return ServerSideUtils.toSHA256(input);
+}

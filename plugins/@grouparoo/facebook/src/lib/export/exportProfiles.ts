@@ -62,12 +62,17 @@ function updatePayload(users: GroupExport[]) {
       fields[field] = true;
     }
   }
-  const schema = Object.keys(fields);
+  const schema = Object.keys(fields).sort();
   const data = [];
 
   for (const user of users) {
-    const me = userData(schema, user.newProfileProperties);
-    data.push(me);
+    try {
+      const me = userData(schema, user.newProfileProperties);
+      data.push(me);
+    } catch (error) {
+      // invalid property
+      user.error = error;
+    }
   }
   const payload = { schema, data };
   return payload;
@@ -79,9 +84,14 @@ function deletePayload(users: GroupExport[], config: GroupConfig) {
   const data = [];
 
   for (const user of users) {
-    const { foreignKeyValue } = user;
-    const me = userData(schema, { [foreignKey]: foreignKeyValue });
-    data.push(me);
+    try {
+      const { foreignKeyValue } = user;
+      const me = userData(schema, { [foreignKey]: foreignKeyValue });
+      data.push(me);
+    } catch (error) {
+      // invalid property
+      user.error = error;
+    }
   }
   const payload = { schema, data };
   return payload;
@@ -90,23 +100,46 @@ function deletePayload(users: GroupExport[], config: GroupConfig) {
 async function updateAudience(
   audience: any,
   action: Action,
+  name: string,
   users: GroupExport[],
   config: GroupConfig
 ) {
   // const foreignKeys: string[] = users.map((user) => user.foreignKeyValue);
 
-  let response;
+  let payload = null;
   const fields = [];
   if (action === Action.Add) {
-    const payload = updatePayload(users);
-    const params = { payload };
+    payload = updatePayload(users);
+  } else if (action === Action.Remove) {
+    payload = deletePayload(users, config);
+  } else {
+    throw new Error(`no users updated: ${action}`);
+  }
+
+  if (payload.data.length === 0) {
+    return;
+  }
+
+  let response;
+  const params = { payload };
+  testFunction({ action, name, payload });
+  if (action === Action.Add) {
     response = await audience.createUser(fields, params);
   } else if (action === Action.Remove) {
-    const payload = deletePayload(users, config);
-    const params = { payload };
     response = await audience.deleteUser(fields, params);
   }
-  console.log({ action, response });
+
+  const { num_received, num_invalid_entries, invalid_entry_samples } = response;
+
+  // console.log({
+  //   action,
+  //   num_received,
+  //   num_invalid_entries,
+  //   invalid_entry_samples,
+  // });
+  if (num_received === users.length && num_invalid_entries === 0) {
+    return; // full success!
+  }
 
   // if (!response.success) {
   //   throw new Error(`Facebook list error: ${listName}`);
@@ -133,6 +166,17 @@ async function updateAudience(
   // }
 }
 
+let _testFunction = null;
+export function setTestFunction(fn) {
+  _testFunction = fn;
+}
+
+function testFunction(data) {
+  if (_testFunction) {
+    _testFunction(data);
+  }
+}
+
 async function updateAudiences(
   client: Client,
   action: Action,
@@ -144,7 +188,7 @@ async function updateAudiences(
     const id = await getAudienceId(client, cacheData, "CUSTOM", audienceName);
     const audience = client.audience(id);
     const users = groupMap[audienceName];
-    await updateAudience(audience, action, users, config);
+    await updateAudience(audience, action, audienceName, users, config);
   }
 }
 

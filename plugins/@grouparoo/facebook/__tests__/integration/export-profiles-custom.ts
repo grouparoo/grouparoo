@@ -4,7 +4,11 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { exportProfiles } from "../../src/lib/export/exportProfiles";
+import {
+  exportProfiles,
+  setTestFunction,
+} from "../../src/lib/export/exportProfiles";
+import { sha } from "../../src/lib/export/data";
 import { Client, connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 
@@ -16,11 +20,11 @@ const nockFile = path.join(
 );
 
 // these comments to use nock
-// const newNock = false;
-// require("./../fixtures/export-profiles-custom");
+const newNock = false;
+require("./../fixtures/export-profiles-custom");
 // or these to make it true
-const newNock = true;
-helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 const appGuid = "app_a0bb05e8-0a4e-49b5-ad42-545f2e8662e6";
@@ -51,22 +55,52 @@ let listId1 = null;
 const list2 = "(test) Churned";
 let listId2 = null;
 
-async function deleteAudiences(suppressErrors) {
-  const names = [list1, list2];
+async function getAudience(id) {
+  const audience = client.audience(id);
+  // "approximate_count" always -1!
+  const fields = ["id", "name", "subtype"];
+  const params = {};
+  await audience.get(fields, params);
+  return audience;
+}
+
+async function findAudienceId(name) {
   const adAccount = client.adAccount();
-  const fields = ["id", "name", "data_source", "subtype"];
+  const fields = ["id", "name"];
   const params = {};
   const result = await adAccount.getCustomAudiences(fields, params);
   for (const audience of result) {
-    if (names.includes(audience.name)) {
+    if (name === audience.name) {
       audience._changes = {}; // this is needed for some reason
-      await audience.delete();
+      return audience.id;
+    }
+  }
+  return null;
+}
+
+async function deleteAudiences(suppressErrors) {
+  const names = [list1, list2];
+  for (const name of names) {
+    const id = await findAudienceId(name);
+    if (id) {
+      await client.audience(id).delete();
     }
   }
 }
 
 async function cleanUp(suppressErrors) {
   await deleteAudiences(suppressErrors);
+}
+
+let _sentValues;
+function setupTest() {
+  _sentValues = [];
+  setTestFunction((data) => {
+    _sentValues.push(data);
+  });
+}
+function getSentValues() {
+  return _sentValues;
 }
 
 describe("facebook/audiences-custom/exportProfiles", () => {
@@ -79,9 +113,14 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     // await cleanUp(true);
   }, helper.setupTime);
 
+  beforeEach(() => {
+    setupTest();
+  });
+
   test("doesn't do anything if no groups", async () => {
-    // userId1 = await findId(email1);
-    // expect(userId1).toBe(null);
+    listId1 = await findAudienceId(list1);
+    expect(listId1).toBe(null);
+
     const { success, errors } = await exportProfiles({
       appGuid,
       appOptions,
@@ -105,17 +144,17 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     expect(success).toBe(true);
     expect(errors).toBeNull();
 
-    // userId1 = await findId(email1);
-    // expect(userId1).toBeTruthy();
-    // const user = await getUser(userId1);
-    // expect(user.email).toBe(email1);
-    // expect(user.firstName).toBe("Brian");
-    // expect(user.lastName).toBe(null);
+    const sent = getSentValues();
+    expect(sent.length).toEqual(0); // nothing sent
+
+    listId1 = await findAudienceId(list1);
+    expect(listId1).toBe(null);
   });
 
   test("can add to an audience", async () => {
-    // userId1 = await findId(email1);
-    // expect(userId1).toBe(null);
+    listId1 = await findAudienceId(list1);
+    expect(listId1).toBe(null);
+
     const { success, errors } = await exportProfiles({
       appGuid,
       appOptions,
@@ -139,11 +178,24 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     expect(success).toBe(true);
     expect(errors).toBeNull();
 
-    // userId1 = await findId(email1);
-    // expect(userId1).toBeTruthy();
-    // const user = await getUser(userId1);
-    // expect(user.email).toBe(email1);
-    // expect(user.firstName).toBe("Brian");
-    // expect(user.lastName).toBe(null);
+    listId1 = await findAudienceId(list1);
+    expect(listId1).toBeTruthy();
+
+    let audience;
+    audience = await getAudience(listId1);
+    expect(audience.name).toEqual(list1);
+    expect(audience.subtype).toEqual("CUSTOM");
+
+    const sent = getSentValues();
+    expect(sent.length).toEqual(1); // nothing sent
+    let call, schema, data, row;
+    call = sent[0];
+    schema = call.payload.schema;
+    data = call.payload.data;
+    expect(call.action).toEqual("ADD");
+    expect(call.name).toEqual(list1);
+    expect(schema).toEqual(["EMAIL", "FN"]);
+    row = data[0];
+    expect(row).toEqual([sha(email1), sha("brian")]);
   });
 });
