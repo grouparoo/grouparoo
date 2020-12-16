@@ -183,7 +183,7 @@ export default class ServerSideUtils {
    * @return {String} Normalized 5 character {first,last}name field value.
    */
   static normalizeF5NameField(name: string) {
-    return name.length <= 5 ? name : name.substring(0, 5);
+    return name;
   }
 
   /**
