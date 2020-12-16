@@ -2,7 +2,7 @@ import { SimpleAppOptions } from "@grouparoo/core";
 const bizSdk = require("facebook-nodejs-business-sdk");
 const { FacebookAdsApi, AdAccount, CustomAudience } = bizSdk;
 
-export async function connect(appOptions: SimpleAppOptions) {
+export async function connect(appOptions: SimpleAppOptions): Promise<Client> {
   return new Client(appOptions);
 }
 
@@ -37,5 +37,9 @@ export class Client {
 
   adAccount() {
     return new AdAccount(this.adAccountId, {}, null, this.getApi());
+  }
+
+  audience(id: string) {
+    return new CustomAudience(id, {}, null, this.getApi());
   }
 }
