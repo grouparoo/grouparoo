@@ -346,7 +346,7 @@ export default class ServerSideUtils {
    * @param  {String} [input] String to be hashed
    * @return {String} SHA 256 Hash of the string
    */
-  static toSHA256(input: ?string) {
+  static toSHA256(input) {
     if (input === null) return input;
 
     return sha256(input);
