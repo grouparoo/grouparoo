@@ -7,7 +7,8 @@ export const test: TestPluginMethod = async ({ appOptions }) => {
 
   const fields = [AdAccount.Fields.name];
   const params = {};
-  const result = await client.get(fields, params);
+  const adAccount = client.adAccount();
+  const result = await adAccount.get(fields, params);
   const name = result[AdAccount.Fields.name];
   if (!name) {
     const message = `Could not determine account name`;
