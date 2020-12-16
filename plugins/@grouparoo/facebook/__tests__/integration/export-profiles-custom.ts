@@ -260,7 +260,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     expect(schema).toEqual(["EMAIL", "FN", "LN"]);
     expect(data.length).toEqual(1);
     //row = data.find((r) => r[0] === sha(email1));
-    expect(data).toContainEqual([sha(email1), sha("brian"), sha("simps")]);
+    expect(data).toContainEqual([sha(email1), sha("brian"), sha("simpson")]);
 
     call = sent.find((c) => c.name === list2);
     schema = call.payload.schema;
@@ -270,7 +270,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     expect(schema).toEqual(["EMAIL", "FN", "LN"]);
     expect(data.length).toEqual(2);
     //row = data.find((r) => r[0] === sha(email1));
-    expect(data).toContainEqual([sha(email1), sha("brian"), sha("simps")]);
+    expect(data).toContainEqual([sha(email1), sha("brian"), sha("simpson")]);
     //row = data.find((r) => r[0] === sha(email2));
     expect(data).toContainEqual([sha(email2), sha("andy"), sha("jones")]);
   });
