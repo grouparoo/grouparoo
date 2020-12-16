@@ -8,6 +8,7 @@ import {
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { App, Destination, Group, Property } from "../..";
+import { task } from "actionhero";
 import { Op } from "sequelize";
 
 export async function loadDestination(configObject: ConfigurationObject) {
@@ -82,8 +83,10 @@ export async function deleteDestinations(guids: string[]) {
 
   for (const i in destinations) {
     const destination = destinations[i];
-    await destination.unTrackGroup();
-    await destination.destroy();
+    await destination.update({ state: "deleted", locked: null });
+    await task.enqueue("destination:destroy", {
+      destinationGuid: destination.guid,
+    });
     logModel(destination, "deleted");
   }
 }
