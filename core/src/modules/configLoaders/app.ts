@@ -63,4 +63,6 @@ export async function deleteApps(guids: string[], transaction?: Transaction) {
     await apps[i].destroy({ transaction });
     logModel(apps[i], "deleted");
   }
+
+  return apps.map((instance) => instance.guid);
 }

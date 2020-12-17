@@ -109,4 +109,6 @@ export async function deleteDestinations(guids: string[]) {
     });
     logModel(destination, "deleted");
   }
+
+  return destinations.map((instance) => instance.guid);
 }

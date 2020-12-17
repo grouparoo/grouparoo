@@ -79,4 +79,6 @@ export async function deleteGroups(guids: string[]) {
     await task.enqueue("group:destroy", { groupGuid: group.guid });
     logModel(group, "deleted");
   }
+
+  return groups.map((instance) => instance.guid);
 }

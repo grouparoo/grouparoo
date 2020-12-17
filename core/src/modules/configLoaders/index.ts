@@ -6,6 +6,7 @@ import {
   codeConfigModels,
   ConfigurationObject,
   sortConfigurationObject,
+  validateAndFormatGuid,
 } from "../../classes/codeConfig";
 import { loadApp, deleteApps } from "./app";
 import { loadSource, deleteSources } from "./source";
@@ -19,6 +20,7 @@ import { loadSetting } from "./setting";
 import { loadDestination, deleteDestinations } from "./destination";
 import JSON5 from "json5";
 import { getParentPath } from "../../utils/pluginDetails";
+import { Property } from "../../models/Property";
 import { Transaction } from "sequelize";
 
 export function getConfigDir() {
@@ -28,15 +30,24 @@ export function getConfigDir() {
 }
 
 export async function loadConfigDirectory(configDir: string) {
-  const configObjects = await loadConfigObjects(configDir);
-  if (configObjects.length > 0) {
-    const sortedConfigObjects = sortConfigurationObject(configObjects);
-    const { seenGuids, errors } = await processConfigObjects(
-      sortedConfigObjects
-    );
+  let seenGuids = {};
+  let deletedGuids = {};
+  let errors = [];
 
-    if (!errors) await deleteLockedObjects(seenGuids);
+  const { configObjects, configFiles } = await loadConfigObjects(configDir);
+
+  if (configFiles.length > 0) {
+    const sortedConfigObjects = sortConfigurationObject(configObjects);
+    const response = await processConfigObjects(sortedConfigObjects);
+    seenGuids = response.seenGuids;
+    errors = response.errors;
+
+    if (errors.length === 0) {
+      deletedGuids = await deleteLockedObjects(seenGuids);
+    }
   }
+
+  return { seenGuids, errors, deletedGuids };
 }
 
 export async function loadConfigObjects(configDir: string) {
@@ -46,7 +57,7 @@ export async function loadConfigObjects(configDir: string) {
   for (const i in configFiles) {
     configObjects = configObjects.concat(await loadConfigFile(configFiles[i]));
   }
-  return configObjects;
+  return { configObjects, configFiles };
 }
 
 async function loadConfigFile(file: string): Promise<ConfigurationObject> {
@@ -91,6 +102,14 @@ export async function processConfigObjects(
           break;
         case "source":
           object = await loadSource(configObject, transaction);
+          if (configObject.bootstrappedProperty) {
+            seenGuids["property"].push(
+              await validateAndFormatGuid(
+                Property,
+                configObject.bootstrappedProperty.id
+              )
+            );
+          }
           break;
         case "property":
           object = await loadProperty(configObject, transaction);
@@ -133,13 +152,24 @@ export async function processConfigObjects(
 }
 
 async function deleteLockedObjects(seenGuids, transaction?: Transaction) {
-  await deleteTeamMembers(seenGuids.teammember);
-  await deleteTeams(seenGuids.team);
-  await deleteApiKeys(seenGuids.apikey);
-  await deleteDestinations(seenGuids.destination);
-  await deleteSchedules(seenGuids.schedule);
-  await deleteGroups(seenGuids.group);
-  await deleteProperties(seenGuids.property);
-  await deleteSources(seenGuids.source);
-  await deleteApps(seenGuids.app);
+  const deletedGuids = {};
+
+  deletedGuids["teammember"] = await deleteTeamMembers(seenGuids.teammember);
+  deletedGuids["team"] = await deleteTeams(seenGuids.team);
+  deletedGuids["apikey"] = await deleteApiKeys(seenGuids.apikey);
+  deletedGuids["destination"] = await deleteDestinations(seenGuids.destination);
+  deletedGuids["schedule"] = await deleteSchedules(seenGuids.schedule);
+  deletedGuids["group"] = await deleteGroups(seenGuids.group);
+  deletedGuids["property"] = await deleteProperties(seenGuids.property);
+  // might return a bootstrapped property, needs special processing
+  const deletedSourceGuids = await deleteSources(seenGuids.source);
+  deletedGuids["source"] = deletedSourceGuids.filter((g) => g.match(/^src_/));
+  deletedSourceGuids
+    .filter((g) => g.match(/^rul_/))
+    .filter((g) => !deletedGuids["property"].includes(g))
+    .forEach((g) => deletedGuids["property"].push(g));
+  // back to normal
+  deletedGuids["app"] = await deleteApps(seenGuids.app);
+
+  return deletedGuids;
 }

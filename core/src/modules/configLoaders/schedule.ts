@@ -69,4 +69,6 @@ export async function deleteSchedules(guids: string[]) {
     await schedules[i].destroy();
     logModel(schedules[i], "deleted");
   }
+
+  return schedules.map((instance) => instance.guid);
 }

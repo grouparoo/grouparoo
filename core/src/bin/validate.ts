@@ -25,7 +25,8 @@ export class Validate extends CLI {
 
     // Can we read the config directory?  Is the JSON/JS valid?
     try {
-      configObjects = await loadConfigObjects(configDir);
+      const loadResponse = await loadConfigObjects(configDir);
+      configObjects = loadResponse.configObjects;
     } catch (error) {
       logFatalError(
         `error loading config from ${configDir}: \r\n\r\n${error.stack}`
@@ -39,13 +40,11 @@ export class Validate extends CLI {
     try {
       const { errors } = await processConfigObjects(configObjects, transaction);
       if (errors.length > 0) {
-        log(
+        logFatalError(
           `❌ Validation failed - ${errors.length} validation error${
             errors.length > 0 ? "s" : ""
-          }`,
-          "error"
+          }`
         );
-        process.exit(1);
       } else {
         log(
           `✅ Validation succeeded - ${configObjects.length} config objects OK!`

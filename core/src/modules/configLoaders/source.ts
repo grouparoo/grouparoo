@@ -118,27 +118,32 @@ export async function loadSource(
 }
 
 export async function deleteSources(guids: string[]) {
+  const deletedGuids: string[] = [];
   const sources = await Source.scope(null).findAll({
     where: { locked: getCodeConfigLockKey(), guid: { [Op.notIn]: guids } },
   });
 
   for (const i in sources) {
     const source = sources[i];
-    const rules = await source.$get("properties");
+    const properties = await source.$get("properties");
 
-    for (const j in rules) {
-      const rule = rules[j];
-      if (rule.directlyMapped) {
+    for (const j in properties) {
+      const property = properties[j];
+      if (property.directlyMapped) {
         //@ts-ignore
-        await rule.destroy({ hooks: false });
-        await Property.stopRuns(rule);
-        await Property.destroyOptions(rule);
-        await Property.destroyPropertyFilters(rule);
-        await Property.destroyProfileProperties(rule);
+        await property.destroy({ hooks: false });
+        await Property.stopRuns(property);
+        await Property.destroyOptions(property);
+        await Property.destroyPropertyFilters(property);
+        await Property.destroyProfileProperties(property);
+        deletedGuids.push(property.guid);
       }
     }
 
     await source.destroy();
     logModel(source, "deleted");
   }
+
+  sources.map((instance) => deletedGuids.push(instance.guid));
+  return deletedGuids;
 }

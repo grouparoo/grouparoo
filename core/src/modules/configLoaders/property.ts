@@ -73,14 +73,16 @@ export async function loadProperty(
 }
 
 export async function deleteProperties(guids: string[]) {
-  const rules = await Property.scope(null).findAll({
+  const properties = await Property.scope(null).findAll({
     where: { locked: getCodeConfigLockKey(), guid: { [Op.notIn]: guids } },
   });
 
-  for (const i in rules) {
-    const rule = rules[i];
-    if (rule.directlyMapped) continue;
-    await rule.destroy();
-    logModel(rule, "deleted");
+  for (const i in properties) {
+    const property = properties[i];
+    if (property.directlyMapped) continue;
+    await property.destroy();
+    logModel(property, "deleted");
   }
+
+  return properties.map((instance) => instance.guid);
 }

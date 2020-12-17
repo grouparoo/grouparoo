@@ -82,4 +82,6 @@ export async function deleteTeams(guids: string[]) {
     await teams[i].destroy();
     logModel(teams[i], "deleted");
   }
+
+  return teams.map((instance) => instance.guid);
 }

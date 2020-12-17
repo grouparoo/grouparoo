@@ -35,9 +35,37 @@ describe("modules/codeConfig", () => {
       // manually run the initializer again after the server has started.
       // the test test-app plugin has been loaded
       api.codeConfig.allowLockedModelChanges = true;
-      await loadConfigDirectory(
+      const { errors, seenGuids, deletedGuids } = await loadConfigDirectory(
         path.join(__dirname, "..", "fixtures", "codeConfig", "initial")
       );
+      expect(errors).toEqual([]);
+      expect(seenGuids).toEqual({
+        apikey: ["key_website_api_key"],
+        app: ["app_data_warehouse", "app_events"],
+        destination: ["dst_test_destination"],
+        group: ["grp_email_group"],
+        property: [
+          "rul_user_id",
+          "rul_last_name",
+          "rul_first_name",
+          "rul_email",
+        ],
+        schedule: ["sch_users_table_schedule"],
+        source: ["src_users_table"],
+        team: ["tea_admin_team"],
+        teammember: ["tem_demo"],
+      });
+      expect(deletedGuids).toEqual({
+        apikey: [],
+        app: [],
+        destination: [],
+        group: [],
+        property: [],
+        schedule: [],
+        source: [],
+        team: [],
+        teammember: [],
+      });
     });
 
     test("settings are updated", async () => {
@@ -211,9 +239,37 @@ describe("modules/codeConfig", () => {
   describe("changed config", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
-      await loadConfigDirectory(
+      const { errors, seenGuids, deletedGuids } = await loadConfigDirectory(
         path.join(__dirname, "..", "fixtures", "codeConfig", "changes")
       );
+      expect(errors).toEqual([]);
+      expect(seenGuids).toEqual({
+        apikey: ["key_website_api_key"],
+        app: ["app_data_warehouse", "app_events"],
+        destination: [],
+        group: ["grp_email_group"],
+        property: [
+          "rul_user_id",
+          "rul_last_name",
+          "rul_first_name",
+          "rul_email",
+        ],
+        schedule: ["sch_users_table_schedule"],
+        source: ["src_users_table"],
+        team: ["tea_admin_team"],
+        teammember: ["tem_demo"],
+      });
+      expect(deletedGuids).toEqual({
+        apikey: [],
+        app: [],
+        destination: ["dst_test_destination"],
+        group: [],
+        property: [],
+        schedule: [],
+        source: [],
+        team: [],
+        teammember: [],
+      });
     });
 
     test("settings can be changed", async () => {
@@ -322,9 +378,32 @@ describe("modules/codeConfig", () => {
   describe("partially empty config", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
-      await loadConfigDirectory(
+      const { errors, seenGuids, deletedGuids } = await loadConfigDirectory(
         path.join(__dirname, "..", "fixtures", "codeConfig", "partially-empty")
       );
+      expect(errors).toEqual([]);
+      expect(seenGuids).toEqual({
+        apikey: [],
+        app: ["app_data_warehouse"],
+        destination: [],
+        group: [],
+        property: ["rul_user_id", "rul_email"],
+        schedule: [],
+        source: ["src_users_table"],
+        team: [],
+        teammember: [],
+      });
+      expect(deletedGuids).toEqual({
+        apikey: ["key_website_api_key"],
+        app: ["app_events"],
+        destination: [],
+        group: ["grp_email_group"],
+        property: ["rul_last_name", "rul_first_name"],
+        schedule: ["sch_users_table_schedule"],
+        source: [],
+        team: ["tea_admin_team"],
+        teammember: ["tem_demo"],
+      });
     });
 
     afterAll(async () => {
@@ -359,9 +438,32 @@ describe("modules/codeConfig", () => {
   describe("empty config", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
-      await loadConfigDirectory(
+      const { errors, seenGuids, deletedGuids } = await loadConfigDirectory(
         path.join(__dirname, "..", "fixtures", "codeConfig", "empty")
       );
+      expect(errors).toEqual([]);
+      expect(seenGuids).toEqual({
+        apikey: [],
+        app: [],
+        destination: [],
+        group: [],
+        property: [],
+        schedule: [],
+        source: [],
+        team: [],
+        teammember: [],
+      });
+      expect(deletedGuids).toEqual({
+        apikey: [],
+        app: ["app_data_warehouse"],
+        destination: [],
+        group: [],
+        property: ["rul_user_id", "rul_email"],
+        schedule: [],
+        source: ["src_users_table"],
+        team: [],
+        teammember: [],
+      });
     });
 
     test("all objects will be deleted with an empty config file", async () => {
@@ -388,11 +490,10 @@ describe("modules/codeConfig", () => {
       });
 
       test("errors will be thrown if the configuration is invalid", async () => {
-        await expect(
-          loadConfigDirectory(
-            path.join(__dirname, "..", "fixtures", "codeConfig", "error-app")
-          )
-        ).rejects.toThrow(
+        const { errors } = await loadConfigDirectory(
+          path.join(__dirname, "..", "fixtures", "codeConfig", "error-app")
+        );
+        expect(errors[0]).toMatch(
           /fileGuid is required for a app of type test-plugin-app/
         );
       });
@@ -404,11 +505,10 @@ describe("modules/codeConfig", () => {
       });
 
       test("errors will be thrown if the configuration is invalid", async () => {
-        await expect(
-          loadConfigDirectory(
-            path.join(__dirname, "..", "fixtures", "codeConfig", "error-source")
-          )
-        ).rejects.toThrow(/cannot find Property/);
+        const { errors } = await loadConfigDirectory(
+          path.join(__dirname, "..", "fixtures", "codeConfig", "error-source")
+        );
+        expect(errors[0]).toMatch(/cannot find Property/);
       });
     });
 
@@ -418,17 +518,10 @@ describe("modules/codeConfig", () => {
       });
 
       test("errors will be thrown if the configuration is invalid", async () => {
-        await expect(
-          loadConfigDirectory(
-            path.join(
-              __dirname,
-              "..",
-              "fixtures",
-              "codeConfig",
-              "error-property"
-            )
-          )
-        ).rejects.toThrow(/cannot find Source/);
+        const { errors } = await loadConfigDirectory(
+          path.join(__dirname, "..", "fixtures", "codeConfig", "error-property")
+        );
+        expect(errors[0]).toMatch(/cannot find Source/);
       });
     });
 
@@ -438,11 +531,10 @@ describe("modules/codeConfig", () => {
       });
 
       test("errors will be thrown if the configuration is invalid", async () => {
-        await expect(
-          loadConfigDirectory(
-            path.join(__dirname, "..", "fixtures", "codeConfig", "error-group")
-          )
-        ).rejects.toThrow(/cannot find Property/);
+        const { errors } = await loadConfigDirectory(
+          path.join(__dirname, "..", "fixtures", "codeConfig", "error-group")
+        );
+        expect(errors[0]).toMatch(/cannot find Property/);
       });
     });
 
@@ -452,17 +544,16 @@ describe("modules/codeConfig", () => {
       });
 
       test("errors will be thrown if the configuration is invalid", async () => {
-        await expect(
-          loadConfigDirectory(
-            path.join(
-              __dirname,
-              "..",
-              "fixtures",
-              "codeConfig",
-              "error-teamMember"
-            )
+        const { errors } = await loadConfigDirectory(
+          path.join(
+            __dirname,
+            "..",
+            "fixtures",
+            "codeConfig",
+            "error-teamMember"
           )
-        ).rejects.toThrow(/TeamMember.firstName cannot be null/);
+        );
+        expect(errors[0]).toMatch(/TeamMember.firstName cannot be null/);
       });
     });
   });

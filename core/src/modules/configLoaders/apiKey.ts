@@ -82,4 +82,6 @@ export async function deleteApiKeys(guids: string[]) {
     await apiKeys[i].destroy();
     logModel(apiKeys[i], "deleted");
   }
+
+  return apiKeys.map((instance) => instance.guid);
 }
