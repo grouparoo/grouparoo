@@ -98,7 +98,7 @@ export class App extends LoggedModel<App> {
   }
 
   async validateOptions(options?: SimpleAppOptions, transaction?: Transaction) {
-    if (!options) options = await this.getOptions(null, transaction);
+    if (!options) options = await this.getOptions(true, transaction);
     return OptionHelper.validateOptions(this, options, null, transaction);
   }
 
@@ -120,8 +120,8 @@ export class App extends LoggedModel<App> {
     return AppOps.connect(this, options, null, transaction);
   }
 
-  async disconnect() {
-    return AppOps.disconnect(this);
+  async disconnect(transaction?: Transaction) {
+    return AppOps.disconnect(this, undefined, transaction);
   }
 
   async test(options?: SimpleAppOptions, transaction?: Transaction) {

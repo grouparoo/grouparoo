@@ -156,8 +156,8 @@ export class Destination extends LoggedModel<Destination> {
     return MappingHelper.setMapping(this, mappings, transaction);
   }
 
-  async getOptions(transaction?: Transaction) {
-    return OptionHelper.getOptions(this, null, transaction);
+  async getOptions(sourceFromEnvironment = true, transaction?: Transaction) {
+    return OptionHelper.getOptions(this, sourceFromEnvironment, transaction);
   }
 
   async setOptions(
@@ -240,7 +240,7 @@ export class Destination extends LoggedModel<Destination> {
     options: SimpleDestinationOptions,
     transaction?: Transaction
   ) {
-    if (!options) options = await this.getOptions(transaction);
+    if (!options) options = await this.getOptions(true, transaction);
     return OptionHelper.validateOptions(this, options, null, transaction);
   }
 
@@ -401,7 +401,7 @@ export class Destination extends LoggedModel<Destination> {
     options?: SimpleDestinationOptions,
     transaction?: Transaction
   ) {
-    if (!options) options = await this.getOptions(transaction);
+    if (!options) options = await this.getOptions(true, transaction);
     const otherDestinations = await Destination.scope(null).findAll({
       where: {
         appGuid: this.appGuid,
@@ -413,7 +413,7 @@ export class Destination extends LoggedModel<Destination> {
 
     for (const i in otherDestinations) {
       const otherDestination = otherDestinations[i];
-      const otherOptions = await otherDestination.getOptions(transaction);
+      const otherOptions = await otherDestination.getOptions(true, transaction);
       let isSameOptions =
         Object.entries(otherOptions).toString() ===
         Object.entries(options).toString();

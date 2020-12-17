@@ -110,7 +110,7 @@ export class Source extends LoggedModel<Source> {
     options?: SimpleSourceOptions,
     transaction?: Transaction
   ) {
-    if (!options) options = await this.getOptions(null, transaction);
+    if (!options) options = await this.getOptions(true, transaction);
     return OptionHelper.validateOptions(this, options, null, transaction);
   }
 

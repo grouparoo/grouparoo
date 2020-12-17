@@ -198,8 +198,12 @@ export class Property extends LoggedModel<Property> {
     }
   }
 
-  async getOptions(transaction?: Transaction) {
-    const options = await OptionHelper.getOptions(this, null, transaction);
+  async getOptions(sourceFromEnvironment = true, transaction?: Transaction) {
+    const options = await OptionHelper.getOptions(
+      this,
+      sourceFromEnvironment,
+      transaction
+    );
     for (const i in options) {
       options[
         i
@@ -248,7 +252,7 @@ export class Property extends LoggedModel<Property> {
       if (previouslyValidated === "true") return;
     }
 
-    if (!options) options = await this.getOptions(transaction);
+    if (!options) options = await this.getOptions(true, transaction);
 
     const response = await OptionHelper.validateOptions(
       this,

@@ -20,7 +20,7 @@ export namespace SourceOps {
     const { pluginConnection } = await source.getPlugin(transaction);
     const app = await source.$get("app", { transaction });
     const connection = await app.getConnection(transaction);
-    const appOptions = await app.getOptions(null, transaction);
+    const appOptions = await app.getOptions(true, transaction);
 
     if (!pluginConnection.methods.sourceOptions) return {};
 
@@ -42,7 +42,7 @@ export namespace SourceOps {
     transaction?: Transaction
   ) {
     if (!sourceOptions)
-      sourceOptions = await source.getOptions(null, transaction);
+      sourceOptions = await source.getOptions(true, transaction);
 
     try {
       // if the options aren't set yet, return an empty array of rows
@@ -54,7 +54,7 @@ export namespace SourceOps {
     const { pluginConnection } = await source.getPlugin(transaction);
     const app = await source.$get("app", { transaction });
     const connection = await app.getConnection(transaction);
-    const appOptions = await app.getOptions(null, transaction);
+    const appOptions = await app.getOptions(true, transaction);
 
     if (!pluginConnection.methods.sourcePreview) {
       throw new Error(`cannot return a source preview for ${source.type}`);
@@ -322,8 +322,8 @@ export namespace SourceOps {
       ) {
         const app = await source.$get("app", { transaction });
         const connection = await app.getConnection(transaction);
-        const appOptions = await app.getOptions(null, transaction);
-        const options = await source.getOptions(null, transaction);
+        const appOptions = await app.getOptions(true, transaction);
+        const options = await source.getOptions(true, transaction);
         const ruleOptions = await pluginConnection.methods.uniquePropertyBootstrapOptions(
           {
             app,

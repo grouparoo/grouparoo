@@ -147,7 +147,7 @@ export namespace DestinationOps {
     const { pluginConnection } = await destination.getPlugin(transaction);
     const app = await destination.$get("app", { transaction });
     const connection = await app.getConnection(transaction);
-    const appOptions = await app.getOptions(null, transaction);
+    const appOptions = await app.getOptions(true, transaction);
 
     if (!pluginConnection.methods.destinationOptions) {
       throw new Error(
@@ -196,8 +196,8 @@ export namespace DestinationOps {
     const { pluginConnection } = await destination.getPlugin(transaction);
     const app = await destination.$get("app", { transaction });
     const connection = await app.getConnection(transaction);
-    const appOptions = await app.getOptions(null, transaction);
-    const destinationOptions = await destination.getOptions(transaction);
+    const appOptions = await app.getOptions(true, transaction);
+    const destinationOptions = await destination.getOptions(true, transaction);
 
     if (!pluginConnection.methods.destinationMappingOptions) {
       throw new Error(
@@ -229,8 +229,8 @@ export namespace DestinationOps {
     const { pluginConnection } = await destination.getPlugin(transaction);
     const app = await destination.$get("app", { transaction });
     const connection = await app.getConnection(transaction);
-    const appOptions = await app.getOptions(null, transaction);
-    const destinationOptions = await destination.getOptions(transaction);
+    const appOptions = await app.getOptions(true, transaction);
+    const destinationOptions = await destination.getOptions(true, transaction);
 
     if (!pluginConnection.methods.exportArrayProperties) {
       throw new Error(

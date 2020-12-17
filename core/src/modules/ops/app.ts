@@ -18,7 +18,7 @@ export namespace AppOps {
     if (!pluginApp.methods.connect) return;
 
     let connection;
-    const appOptions = await app.getOptions(null, transaction);
+    const appOptions = await app.getOptions(true, transaction);
     const { releaseLock } = await getConnectionLock(app);
 
     try {
@@ -53,9 +53,13 @@ export namespace AppOps {
   /**
    * Disconnect from an App
    */
-  export async function disconnect(app: App, alreadyLocked = false) {
-    const appOptions = await app.getOptions();
-    const { pluginApp } = await app.getPlugin();
+  export async function disconnect(
+    app: App,
+    alreadyLocked = false,
+    transaction?: Transaction
+  ) {
+    const appOptions = await app.getOptions(true, transaction);
+    const { pluginApp } = await app.getPlugin(transaction);
 
     if (!pluginApp.methods.disconnect) return;
 
@@ -103,7 +107,7 @@ export namespace AppOps {
       throw new Error(`cannot find a pluginApp type of ${app.type}`);
     }
 
-    if (!options) options = await app.getOptions(null, transaction);
+    if (!options) options = await app.getOptions(true, transaction);
     options = OptionHelper.sourceEnvironmentVariableOptions(app, options);
 
     try {

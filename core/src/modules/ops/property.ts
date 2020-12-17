@@ -62,8 +62,8 @@ export namespace PropertyOps {
     }> = [];
     const app = await App.findByGuid(source.appGuid, transaction);
     const connection = await app.getConnection(transaction);
-    const appOptions = await app.getOptions(null, transaction);
-    const sourceOptions = await source.getOptions(null, transaction);
+    const appOptions = await app.getOptions(true, transaction);
+    const sourceOptions = await source.getOptions(true, transaction);
     const sourceMapping = await source.getMapping(transaction);
 
     for (const i in pluginConnection.propertyOptions) {
@@ -154,13 +154,13 @@ export namespace PropertyOps {
     const { pluginConnection } = await property.getPlugin(transaction);
     if (!pluginConnection.methods.sourceFilters) return [];
 
-    const propertyOptions = await property.getOptions(transaction);
+    const propertyOptions = await property.getOptions(true, transaction);
     const source = await property.$get("source", { scope: null, transaction });
-    const sourceOptions = await source.getOptions(null, transaction);
+    const sourceOptions = await source.getOptions(true, transaction);
     const sourceMapping = await source.getMapping(transaction);
     const app = await App.findByGuid(source.appGuid, transaction);
     const connection = await app.getConnection(transaction);
-    const appOptions = await app.getOptions(null, transaction);
+    const appOptions = await app.getOptions(true, transaction);
 
     const method = pluginConnection.methods.sourceFilters;
     const options = await method({

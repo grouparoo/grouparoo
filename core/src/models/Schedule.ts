@@ -112,12 +112,12 @@ export class Schedule extends LoggedModel<Schedule> {
   @BelongsTo(() => Source)
   source: Source;
 
-  async getOptions(transaction?: Transaction) {
-    return OptionHelper.getOptions(this, null, transaction);
+  async getOptions(sourceFromEnvironment = true, transaction?: Transaction) {
+    return OptionHelper.getOptions(this, sourceFromEnvironment, transaction);
   }
 
   async setOptions(options: SimpleScheduleOptions, transaction?: Transaction) {
-    const existingOptions = await this.getOptions(transaction);
+    const existingOptions = await this.getOptions(true, transaction);
     for (const key in options) {
       if (existingOptions[key] && existingOptions[key] !== options[key]) {
         throw new Error(
@@ -133,7 +133,7 @@ export class Schedule extends LoggedModel<Schedule> {
     options?: SimpleScheduleOptions,
     transaction?: Transaction
   ) {
-    if (!options) options = await this.getOptions(transaction);
+    if (!options) options = await this.getOptions(true, transaction);
     return OptionHelper.validateOptions(this, options, null, transaction);
   }
 
@@ -203,7 +203,7 @@ export class Schedule extends LoggedModel<Schedule> {
   @BeforeSave
   static async ensureSourceOptions(instance: Schedule, { transaction }) {
     const source = await Source.findByGuid(instance.sourceGuid, transaction);
-    const sourceOptions = await source.getOptions(null, transaction);
+    const sourceOptions = await source.getOptions(true, transaction);
     await source.validateOptions(sourceOptions, transaction);
   }
 
