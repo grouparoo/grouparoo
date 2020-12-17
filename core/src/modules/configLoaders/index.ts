@@ -140,7 +140,7 @@ export async function processConfigObjects(
         configObject?.class
       }: ${JSON.stringify(configObject)} --> ${error}`;
       errors.push(errorMessage);
-      log(errorMessage, env === "test" ? "info" : "emerg");
+      log(errorMessage, env === "test" ? "info" : "error");
       continue;
       // throw error.original ? error.original : error;
     }
