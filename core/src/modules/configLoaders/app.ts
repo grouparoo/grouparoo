@@ -40,7 +40,10 @@ export async function loadApp(
     transaction
   );
 
-  const response = await app.test(extractNonNullParts(configObject, "options"));
+  const response = await app.test(
+    extractNonNullParts(configObject, "options"),
+    transaction
+  );
   if (!response.success) {
     throw new Error(
       `error testing app ${app.name} (${app.guid}) - ${response.error}`

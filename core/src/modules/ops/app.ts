@@ -125,6 +125,7 @@ export namespace AppOps {
         appGuid: app.guid,
         appOptions: options,
         connection,
+        transaction,
       });
       message = result.message;
       success = result.success;
