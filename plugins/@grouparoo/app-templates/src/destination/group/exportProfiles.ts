@@ -151,16 +151,16 @@ function separateForeignKeys(
   }
 
   const newUser = convertExportedProfile(exportedProfile);
-  let oldUser = null;
   newValue = newValue.toString();
   newUser.foreignKeyValue = newValue;
   newUser.type = "new";
 
   // record other one if applicable
+  let oldUser = null;
   if (oldValue) {
     oldValue = oldValue.toString();
     if (newValue !== oldValue && oldValue.length > 0) {
-      const oldUser = convertExportedProfile(exportedProfile);
+      oldUser = convertExportedProfile(exportedProfile);
       oldUser.foreignKeyValue = oldValue;
       oldUser.type = "old";
       oldUser.toDelete = true;

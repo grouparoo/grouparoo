@@ -13,7 +13,7 @@ import {
 import { ExportProfilesPluginMethod } from "@grouparoo/core";
 import { connect, Client } from "../connect";
 import { getAudienceId, FacebookCacheData } from "./audienceMethods";
-import { userData } from "./data";
+import { userData, sha } from "./data";
 
 export interface FacebookModel {
   primaryKey: string;
@@ -43,8 +43,7 @@ const removeFromGroups: GroupMethodRemoveFromGroups = async ({
   groupMap,
   config,
 }) => {
-  const { cacheData } = config.data;
-  return updateAudiences(client, Action.Remove, groupMap, cacheData);
+  return updateAudiences(client, Action.Remove, groupMap, config);
 };
 
 enum Action {
@@ -52,7 +51,15 @@ enum Action {
   Remove = "REMOVE",
 }
 
-function updatePayload(users: GroupExport[]) {
+function makeSampleKey(array: any[]) {
+  const data = JSON.stringify(array);
+  return data;
+}
+
+function updatePayload(
+  users: GroupExport[],
+  dataMap: { [data: string]: GroupExport }
+) {
   const fields = {}; // the fields in play
   for (const user of users) {
     for (const field in user.oldProfileProperties) {
@@ -68,17 +75,22 @@ function updatePayload(users: GroupExport[]) {
   for (const user of users) {
     try {
       const me = userData(schema, user.newProfileProperties);
+      const key = makeSampleKey(me);
+      dataMap[key] = user;
       data.push(me);
     } catch (error) {
       // invalid property
       user.error = error;
     }
   }
-  const payload = { schema, data };
-  return payload;
+  return { schema, data };
 }
 
-function deletePayload(users: GroupExport[], config: GroupConfig) {
+function deletePayload(
+  users: GroupExport[],
+  dataMap: { [data: string]: GroupExport },
+  config: GroupConfig
+) {
   const { foreignKey } = config;
   const schema = [foreignKey];
   const data = [];
@@ -87,14 +99,15 @@ function deletePayload(users: GroupExport[], config: GroupConfig) {
     try {
       const { foreignKeyValue } = user;
       const me = userData(schema, { [foreignKey]: foreignKeyValue });
+      const key = makeSampleKey(me);
+      dataMap[key] = user;
       data.push(me);
     } catch (error) {
       // invalid property
       user.error = error;
     }
   }
-  const payload = { schema, data };
-  return payload;
+  return { schema, data };
 }
 
 async function updateAudience(
@@ -104,14 +117,12 @@ async function updateAudience(
   users: GroupExport[],
   config: GroupConfig
 ) {
-  // const foreignKeys: string[] = users.map((user) => user.foreignKeyValue);
-
   let payload = null;
-  const fields = [];
+  const dataMap: { [data: string]: GroupExport } = {};
   if (action === Action.Add) {
-    payload = updatePayload(users);
+    payload = updatePayload(users, dataMap);
   } else if (action === Action.Remove) {
-    payload = deletePayload(users, config);
+    payload = deletePayload(users, dataMap, config);
   } else {
     throw new Error(`no users updated: ${action}`);
   }
@@ -121,49 +132,76 @@ async function updateAudience(
   }
 
   let response;
+  const fields = [];
   const params = { payload };
-  testFunction({ action, name, payload });
-  if (action === Action.Add) {
-    response = await audience.createUser(fields, params);
-  } else if (action === Action.Remove) {
-    response = await audience.deleteUser(fields, params);
+  testFunction({ action, name, payload, id: audience.id });
+
+  try {
+    if (action === Action.Add) {
+      response = await audience.createUser(fields, params);
+    } else if (action === Action.Remove) {
+      response = await audience.deleteUsers(params);
+    }
+  } catch (error) {
+    const message: string = error.message || "Facebook error.";
+    if (message.includes("result in a low audience size")) {
+      error.message = `${message} You need to have more than 100 users in your audience.`;
+      error.errorLevel = "info";
+    }
+    throw error;
   }
 
   const { num_received, num_invalid_entries, invalid_entry_samples } = response;
 
-  // console.log({
-  //   action,
-  //   num_received,
-  //   num_invalid_entries,
-  //   invalid_entry_samples,
-  // });
-  if (num_received === users.length && num_invalid_entries === 0) {
+  if (num_received === payload.data.length && num_invalid_entries === 0) {
     return; // full success!
   }
 
-  // if (!response.success) {
-  //   throw new Error(`Facebook list error: ${listName}`);
-  // }
-  // const results = response.result || [];
-  // if (results.length === 0) {
-  //   throw new Error(`Facebook empty results: ${listName}`);
-  // }
-  // for (const result of results) {
-  //   const { id } = result;
-  //   if (result.reasons) {
-  //     if (action === ListAction.Remove && result.status === "skipped") {
-  //       // this is ok, not in the  list
-  //     } else {
-  //       const message = result.reasons.map((r) => r.message).join(", ");
-  //       const user = destIdMap[id];
-  //       if (!user) {
-  //         throw new Error(`Unknown user id in list: ${id}`);
-  //       }
-  //       user.error =
-  //         user.error || new Error(`could update list ${listName}: ${message}`);
-  //     }
-  //   }
-  // }
+  const mapped = {};
+  const failed = Object.keys(invalid_entry_samples || {});
+  for (const data of failed) {
+    // data is a string like made from getSampleKey
+    const user: GroupExport = dataMap[data];
+    if (user) {
+      const message = invalid_entry_samples[data];
+      user.error = new Error(`Facebook data invalid: ${message}`);
+      mapped[data] = user.profileGuid;
+    }
+  }
+
+  if (Object.keys(mapped).length === num_invalid_entries) {
+    // found them all!
+    return;
+  }
+
+  // I've never actually seen these cases, so I will throw to see if we can discover them
+  const debug = {
+    action,
+    audienceId: audience.id,
+    audienceName: name,
+    schema: payload.schema,
+    payloadCount: payload.data.length,
+    num_received,
+    num_invalid_entries,
+    mapped,
+    invalid_entry_samples,
+  };
+
+  if (failed.length > 0) {
+    throw new Error(
+      `Facebook ${action} Error (failed)! ${JSON.stringify(debug)}`
+    );
+  }
+
+  if (num_invalid_entries > 0) {
+    throw new Error(
+      `Facebook ${action} Error (no samples)! ${JSON.stringify(debug)}`
+    );
+  }
+
+  throw new Error(
+    `Facebook ${action} Error (unknown)! ${JSON.stringify(debug)}`
+  );
 }
 
 let _testFunction = null;
@@ -188,7 +226,29 @@ async function updateAudiences(
     const id = await getAudienceId(client, cacheData, "CUSTOM", audienceName);
     const audience = client.audience(id);
     const users = groupMap[audienceName];
-    await updateAudience(audience, action, audienceName, users, config);
+    try {
+      await updateAudience(audience, action, audienceName, users, config);
+    } catch (error) {
+      // TODO: check for rate-limit or other global errors here and just throw
+      for (const user of users) {
+        // otherwise, put error on each user
+        let verb = "?";
+        if (Action.Add === action) {
+          verb = "add to";
+        } else if (Action.Remove === action) {
+          verb = "delete from";
+        }
+        let message = error.message || "Facebook error.";
+        const info = `Could not ${verb} ${audienceName} (${id}) because: ${message}`;
+        if (!user.error) {
+          user.error = error;
+          user.error.message = info;
+        } else {
+          const current = user.error.message || "Unknown Facebook error.";
+          user.error.message = `${current} \n| ${info}`;
+        }
+      }
+    }
   }
 }
 
