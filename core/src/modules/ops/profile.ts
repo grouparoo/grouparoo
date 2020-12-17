@@ -30,15 +30,19 @@ export namespace ProfileOps {
   /**
    * Get the Properties of this Profile
    */
-  export async function properties(profile: Profile) {
+  export async function properties(
+    profile: Profile,
+    transaction?: Transaction
+  ) {
     const profileProperties =
       profile.profileProperties ||
       (await ProfileProperty.findAll({
         where: { profileGuid: profile.guid },
         order: [["position", "ASC"]],
+        transaction,
       }));
 
-    const rules = await Property.findAll();
+    const rules = await Property.findAll({ transaction });
 
     const hash: ProfilePropertyType = {};
 
@@ -47,7 +51,7 @@ export namespace ProfileOps {
         (r) => r.guid === profileProperties[i].propertyGuid
       );
       if (!rule) {
-        await profileProperties[i].destroy();
+        await profileProperties[i].destroy({ transaction });
         continue;
       }
 
@@ -271,22 +275,29 @@ export namespace ProfileOps {
     }
   }
 
-  export async function buildNullProperties(profile: Profile, state = "ready") {
-    const properties = await profile.properties();
-    const rules = await Property.findAll();
+  export async function buildNullProperties(
+    profile: Profile,
+    state = "ready",
+    transaction?: Transaction
+  ) {
+    const properties = await profile.properties(transaction);
+    const rules = await Property.findAll({ transaction });
 
     let newPropertiesCount = 0;
     for (const i in rules) {
       const rule = rules[i];
       if (!properties[rule.key]) {
-        await ProfileProperty.create({
-          profileGuid: profile.guid,
-          propertyGuid: rule.guid,
-          state,
-          stateChangedAt: new Date(),
-          valueChangedAt: new Date(),
-          confirmedAt: new Date(),
-        });
+        await ProfileProperty.create(
+          {
+            profileGuid: profile.guid,
+            propertyGuid: rule.guid,
+            state,
+            stateChangedAt: new Date(),
+            valueChangedAt: new Date(),
+            confirmedAt: new Date(),
+          },
+          { transaction }
+        );
         newPropertiesCount++;
       }
     }
