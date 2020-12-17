@@ -3,38 +3,48 @@ import {
   extractNonNullParts,
   logModel,
   getParentByName,
-  codeConfigLockKey,
+  getCodeConfigLockKey,
   validateAndFormatGuid,
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { App, Source, Property } from "../..";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 
-export async function loadSource(configObject: ConfigurationObject) {
+export async function loadSource(
+  configObject: ConfigurationObject,
+  transaction?: Transaction
+) {
   let isNew = false;
 
-  const app: App = await getParentByName(App, configObject.appId);
+  const app: App = await getParentByName(App, configObject.appId, transaction);
 
   const guid = await validateAndFormatGuid(Source, configObject.id);
   validateConfigObjectKeys(Source, configObject);
 
   let source = await Source.scope(null).findOne({
-    where: { guid, locked: codeConfigLockKey, appGuid: app.guid },
+    where: { guid, locked: getCodeConfigLockKey(), appGuid: app.guid },
+    transaction,
   });
   if (!source) {
     isNew = true;
-    source = await Source.create({
-      guid,
-      locked: codeConfigLockKey,
-      name: configObject.name,
-      type: configObject.type,
-      appGuid: app.guid,
-    });
+    source = await Source.create(
+      {
+        guid,
+        locked: getCodeConfigLockKey(),
+        name: configObject.name,
+        type: configObject.type,
+        appGuid: app.guid,
+      },
+      { transaction }
+    );
   }
 
-  await source.update({ name: configObject.name });
+  await source.update({ name: configObject.name }, { transaction });
 
-  await source.setOptions(extractNonNullParts(configObject, "options"));
+  await source.setOptions(
+    extractNonNullParts(configObject, "options"),
+    transaction
+  );
 
   let bootstrappedRule: Property;
   let mappedProfileProperty: Property;
@@ -44,11 +54,12 @@ export async function loadSource(configObject: ConfigurationObject) {
     if (configObject.mapping) {
       mappedProfileProperty = await getParentByName(
         Property,
-        Object.values(extractNonNullParts(configObject, "mapping"))[0]
+        Object.values(extractNonNullParts(configObject, "mapping"))[0],
+        transaction
       );
       mapping[Object.keys(extractNonNullParts(configObject, "mapping"))[0]] =
         mappedProfileProperty.key;
-      await source.setMapping(mapping);
+      await source.setMapping(mapping, transaction);
     }
   }
 
@@ -62,6 +73,7 @@ export async function loadSource(configObject: ConfigurationObject) {
             configObject.bootstrappedProperty.id
           ),
         },
+        transaction,
       });
     }
   } catch (error) {
@@ -76,7 +88,8 @@ export async function loadSource(configObject: ConfigurationObject) {
         rule.key || rule.name,
         rule.type,
         mappedColumn,
-        await validateAndFormatGuid(Property, rule.id)
+        await validateAndFormatGuid(Property, rule.id),
+        transaction
       );
       await setMapping();
     } else {
@@ -84,15 +97,21 @@ export async function loadSource(configObject: ConfigurationObject) {
     }
   }
 
-  await source.update({ state: "ready" });
+  await source.update({ state: "ready" }, { transaction });
 
   if (isNew && bootstrappedRule) {
-    await bootstrappedRule.update({ locked: codeConfigLockKey });
+    await bootstrappedRule.update(
+      { locked: getCodeConfigLockKey() },
+      { transaction }
+    );
   }
 
-  logModel(source, isNew ? "created" : "updated");
+  logModel(source, transaction ? "validated" : isNew ? "created" : "updated");
   if (bootstrappedRule) {
-    logModel(bootstrappedRule, isNew ? "created" : "updated");
+    logModel(
+      bootstrappedRule,
+      transaction ? "validated" : isNew ? "created" : "updated"
+    );
   }
 
   return source;
@@ -100,7 +119,7 @@ export async function loadSource(configObject: ConfigurationObject) {
 
 export async function deleteSources(guids: string[]) {
   const sources = await Source.scope(null).findAll({
-    where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
+    where: { locked: getCodeConfigLockKey(), guid: { [Op.notIn]: guids } },
   });
 
   for (const i in sources) {

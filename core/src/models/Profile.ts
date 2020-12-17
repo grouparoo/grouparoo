@@ -21,6 +21,7 @@ import { Export } from "./Export";
 import { Event } from "./Event";
 import { StateMachine } from "./../modules/stateMachine";
 import { ProfileOps } from "../modules/ops/profile";
+import { Transaction } from "sequelize";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
@@ -167,8 +168,11 @@ export class Profile extends LoggedModel<Profile> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
+  static async findByGuid(guid: string, transaction?: Transaction) {
+    const instance = await this.scope(null).findOne({
+      where: { guid },
+      transaction,
+    });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }

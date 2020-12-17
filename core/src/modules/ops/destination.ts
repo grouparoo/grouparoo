@@ -19,6 +19,7 @@ import { deepStrictEqual } from "assert";
 import { ProfilePropertyOps } from "./profileProperty";
 import { destinationTypeConversions } from "../destinationTypeConversions";
 import { GroupMember } from "../../models/GroupMember";
+import { Transaction } from "sequelize/types";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -44,11 +45,15 @@ export namespace DestinationOps {
   /**
    * Track a Group
    */
-  export async function trackGroup(destination: Destination, group: Group) {
+  export async function trackGroup(
+    destination: Destination,
+    group: Group,
+    transaction?: Transaction
+  ) {
     const oldGroupGuid = destination.groupGuid;
-    await destination.update({ groupGuid: group.guid });
+    await destination.update({ groupGuid: group.guid }, { transaction });
 
-    if (oldGroupGuid !== group.guid) {
+    if (!transaction && oldGroupGuid !== group.guid) {
       if (oldGroupGuid) {
         const oldGroup = await Group.findByGuid(oldGroupGuid);
         await oldGroup.run(true, destination.guid);
@@ -60,11 +65,14 @@ export namespace DestinationOps {
   /**
    * Un-track a Group
    */
-  export async function unTrackGroup(destination: Destination) {
+  export async function unTrackGroup(
+    destination: Destination,
+    transaction?: Transaction
+  ) {
     const oldGroupGuid = destination.groupGuid;
-    await destination.update({ groupGuid: null });
+    await destination.update({ groupGuid: null }, { transaction });
 
-    if (oldGroupGuid) {
+    if (!transaction && oldGroupGuid) {
       const oldGroup = await Group.findByGuid(oldGroupGuid);
       return oldGroup.run(true, destination.guid);
     }
@@ -133,12 +141,13 @@ export namespace DestinationOps {
    */
   export async function destinationConnectionOptions(
     destination: Destination,
-    destinationOptions: SimpleDestinationOptions = {}
+    destinationOptions: SimpleDestinationOptions = {},
+    transaction?: Transaction
   ) {
-    const { pluginConnection } = await destination.getPlugin();
-    const app = await destination.$get("app");
-    const connection = await app.getConnection();
-    const appOptions = await app.getOptions();
+    const { pluginConnection } = await destination.getPlugin(transaction);
+    const app = await destination.$get("app", { transaction });
+    const connection = await app.getConnection(transaction);
+    const appOptions = await app.getOptions(null, transaction);
 
     if (!pluginConnection.methods.destinationOptions) {
       throw new Error(
@@ -160,7 +169,8 @@ export namespace DestinationOps {
    */
   export async function destinationMappingOptions(
     destination: Destination,
-    cached = true
+    cached = true,
+    transaction?: Transaction
   ) {
     const cacheKey = `destination:${destination.guid}:mappingOptions`;
     const cacheDuration = 1000 * 60 * 10; // 10 minutes
@@ -183,11 +193,11 @@ export namespace DestinationOps {
       }
     }
 
-    const { pluginConnection } = await destination.getPlugin();
-    const app = await destination.$get("app");
-    const connection = await app.getConnection();
-    const appOptions = await app.getOptions();
-    const destinationOptions = await destination.getOptions();
+    const { pluginConnection } = await destination.getPlugin(transaction);
+    const app = await destination.$get("app", { transaction });
+    const connection = await app.getConnection(transaction);
+    const appOptions = await app.getOptions(null, transaction);
+    const destinationOptions = await destination.getOptions(transaction);
 
     if (!pluginConnection.methods.destinationMappingOptions) {
       throw new Error(
@@ -207,17 +217,20 @@ export namespace DestinationOps {
       }
     );
 
-    await cache.save(cacheKey, mappingOptions, cacheDuration);
+    if (!transaction) await cache.save(cacheKey, mappingOptions, cacheDuration);
 
     return mappingOptions;
   }
 
-  export async function getExportArrayProperties(destination: Destination) {
-    const { pluginConnection } = await destination.getPlugin();
-    const app = await destination.$get("app");
-    const connection = await app.getConnection();
-    const appOptions = await app.getOptions();
-    const destinationOptions = await destination.getOptions();
+  export async function getExportArrayProperties(
+    destination: Destination,
+    transaction?: Transaction
+  ) {
+    const { pluginConnection } = await destination.getPlugin(transaction);
+    const app = await destination.$get("app", { transaction });
+    const connection = await app.getConnection(transaction);
+    const appOptions = await app.getOptions(null, transaction);
+    const destinationOptions = await destination.getOptions(transaction);
 
     if (!pluginConnection.methods.exportArrayProperties) {
       throw new Error(

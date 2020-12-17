@@ -1,15 +1,17 @@
 import { Model } from "sequelize-typescript";
+import { Transaction } from "sequelize";
 
 export namespace StateMachine {
   export interface StateTransition {
     from: string;
     to: string;
-    checks: Array<string>;
+    checks: Array<(instance: any, transaction: Transaction) => Promise<any>>;
   }
 
   export async function transition(
     instance: Model,
-    transitions: Array<StateTransition>
+    transitions: Array<StateTransition>,
+    transaction?: Transaction
   ) {
     const klass = modelName(instance);
     const newState: string = instance["state"];
@@ -29,7 +31,7 @@ export namespace StateMachine {
 
     for (const i in transition.checks) {
       const check = transition.checks[i];
-      await instance[check]();
+      await check(instance, transaction);
     }
   }
 

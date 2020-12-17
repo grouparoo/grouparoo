@@ -127,8 +127,11 @@ export class Event extends LoggedModel<Event> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
+  static async findByGuid(guid: string, transaction?: Transaction) {
+    const instance = await this.scope(null).findOne({
+      where: { guid },
+      transaction,
+    });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }

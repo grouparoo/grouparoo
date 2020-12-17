@@ -18,7 +18,7 @@ import { Profile } from "./Profile";
 import { Run } from "./Run";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import { ImportOps } from "../modules/ops/import";
 
 export interface ImportData {
@@ -213,8 +213,11 @@ export class Import extends Model<Import> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
+  static async findByGuid(guid: string, transaction?: Transaction) {
+    const instance = await this.scope(null).findOne({
+      where: { guid },
+      transaction,
+    });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }

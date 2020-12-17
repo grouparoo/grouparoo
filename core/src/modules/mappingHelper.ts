@@ -11,15 +11,19 @@ export namespace MappingHelper {
     [remoteKey: string]: any;
   }
 
-  export async function getMapping(instance: Source | Destination) {
+  export async function getMapping(
+    instance: Source | Destination,
+    transaction?: Transaction
+  ) {
     const MappingObject: Mappings = {};
     const mappings = await Mapping.findAll({
       where: { ownerGuid: instance.guid },
+      transaction,
     });
 
     for (const i in mappings) {
       const mapping = mappings[i];
-      const rule = await mapping.$get("property", { scope: null });
+      const rule = await mapping.$get("property", { scope: null, transaction });
       if (!rule) {
         throw new Error(
           `cannot find property or this source/destination not ready (remoteKey: ${mapping.remoteKey})`
@@ -33,11 +37,16 @@ export namespace MappingHelper {
 
   export async function setMapping(
     instance: Source | Destination,
-    mappings: Mappings
+    mappings: Mappings,
+    transaction?: Transaction
   ) {
-    const transaction = await api.sequelize.transaction({
-      lock: Transaction.LOCK.UPDATE,
-    });
+    let toCommit = false;
+    if (!transaction) {
+      transaction = await api.sequelize.transaction({
+        lock: Transaction.LOCK.UPDATE,
+      });
+      toCommit = true;
+    }
 
     try {
       await LockableHelper.beforeUpdateOptions(instance);
@@ -53,6 +62,7 @@ export namespace MappingHelper {
         const key = mappings[remoteKey];
         const property = await Property.scope(null).findOne({
           where: { key },
+          transaction,
         });
 
         if (!property) {
@@ -74,14 +84,14 @@ export namespace MappingHelper {
       instance.changed("updatedAt", true);
       await instance.save({ transaction });
 
-      await transaction.commit();
+      if (toCommit) await transaction.commit();
 
-      // if there's an afterSetMapping hook
-      if (typeof instance["afterSetMapping"] === "function") {
+      // if there's an afterSetMapping hook and we want to commit our changes
+      if (toCommit && typeof instance["afterSetMapping"] === "function") {
         await instance["afterSetMapping"]();
       }
     } catch (error) {
-      await transaction.rollback();
+      if (toCommit) await transaction.rollback();
       throw error;
     }
   }

@@ -1,23 +1,28 @@
 import {
   ConfigurationObject,
   logModel,
-  codeConfigLockKey,
+  getCodeConfigLockKey,
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { plugin } from "../..";
 import { Setting } from "../../models/Setting";
+import { Transaction } from "sequelize";
 
-export async function loadSetting(configObject: ConfigurationObject) {
+export async function loadSetting(
+  configObject: ConfigurationObject,
+  transaction?: Transaction
+) {
   validateConfigObjectKeys(Setting, configObject);
 
   const setting = await plugin.updateSetting(
     configObject.pluginName,
     configObject.key,
-    configObject.value
+    configObject.value,
+    transaction
   );
 
-  await setting.update({ locked: codeConfigLockKey });
+  await setting.update({ locked: getCodeConfigLockKey() }, { transaction });
 
-  logModel(setting, "updated");
+  logModel(setting, transaction ? "validated" : "updated");
   return setting;
 }

@@ -1,5 +1,6 @@
 import { api } from "actionhero";
 import { GrouparooPlugin } from "../classes/plugin";
+import { Transaction } from "sequelize";
 import Mustache from "mustache";
 
 import { App } from "../models/App";
@@ -137,8 +138,15 @@ export namespace plugin {
   /**
    * Read a setting for this plugin
    */
-  export async function readSetting(pluginName: string, key: string) {
-    const setting = await Setting.findOne({ where: { pluginName, key } });
+  export async function readSetting(
+    pluginName: string,
+    key: string,
+    transaction?: Transaction
+  ) {
+    const setting = await Setting.findOne({
+      where: { pluginName, key },
+      transaction,
+    });
     if (!setting) {
       throw new Error(
         `setting ${key} not registered for grouparoo plugin ${pluginName}`
@@ -154,11 +162,12 @@ export namespace plugin {
   export async function updateSetting(
     pluginName: string,
     key: string,
-    value: any
+    value: any,
+    transaction?: Transaction
   ) {
-    const setting = await plugin.readSetting(pluginName, key);
+    const setting = await plugin.readSetting(pluginName, key, transaction);
     setting.value = value;
-    await setting.save();
+    await setting.save({ transaction });
     return setting;
   }
 

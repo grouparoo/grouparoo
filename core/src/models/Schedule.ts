@@ -17,7 +17,7 @@ import {
   DefaultScope,
   BeforeDestroy,
 } from "sequelize-typescript";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Source, SimpleSourceOptions } from "./Source";
 import { App, SimpleAppOptions } from "./App";
@@ -59,7 +59,14 @@ export interface SimpleScheduleOptions extends OptionHelper.SimpleOptions {}
 
 const STATES = ["draft", "ready"] as const;
 const STATE_TRANSITIONS = [
-  { from: "draft", to: "ready", checks: ["validateOptions"] },
+  {
+    from: "draft",
+    to: "ready",
+    checks: [
+      (instance: Schedule, transaction?: Transaction) =>
+        instance.validateOptions(null, transaction),
+    ],
+  },
 ];
 
 @DefaultScope(() => ({
@@ -105,12 +112,12 @@ export class Schedule extends LoggedModel<Schedule> {
   @BelongsTo(() => Source)
   source: Source;
 
-  async getOptions() {
-    return OptionHelper.getOptions(this);
+  async getOptions(transaction?: Transaction) {
+    return OptionHelper.getOptions(this, null, transaction);
   }
 
-  async setOptions(options: SimpleScheduleOptions) {
-    const existingOptions = await this.getOptions();
+  async setOptions(options: SimpleScheduleOptions, transaction?: Transaction) {
+    const existingOptions = await this.getOptions(transaction);
     for (const key in options) {
       if (existingOptions[key] && existingOptions[key] !== options[key]) {
         throw new Error(
@@ -119,15 +126,15 @@ export class Schedule extends LoggedModel<Schedule> {
       }
     }
 
-    return OptionHelper.setOptions(this, options);
+    return OptionHelper.setOptions(this, options, transaction);
   }
 
-  async validateOptions(options?: SimpleSourceOptions) {
-    if (!options) {
-      options = await this.getOptions();
-    }
-
-    return OptionHelper.validateOptions(this, options);
+  async validateOptions(
+    options?: SimpleScheduleOptions,
+    transaction?: Transaction
+  ) {
+    if (!options) options = await this.getOptions(transaction);
+    return OptionHelper.validateOptions(this, options, null, transaction);
   }
 
   async getPlugin() {
@@ -184,23 +191,26 @@ export class Schedule extends LoggedModel<Schedule> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
+  static async findByGuid(guid: string, transaction?: Transaction) {
+    const instance = await this.scope(null).findOne({
+      where: { guid },
+      transaction,
+    });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
   @BeforeSave
-  static async ensureSourceOptions(instance: Schedule) {
-    const source = await Source.findByGuid(instance.sourceGuid);
-    const sourceOptions = await source.getOptions();
-    await source.validateOptions(sourceOptions);
+  static async ensureSourceOptions(instance: Schedule, { transaction }) {
+    const source = await Source.findByGuid(instance.sourceGuid, transaction);
+    const sourceOptions = await source.getOptions(null, transaction);
+    await source.validateOptions(sourceOptions, transaction);
   }
 
   @BeforeSave
-  static async ensureSourceMapping(instance: Schedule) {
-    const source = await Source.findByGuid(instance.sourceGuid);
-    const sourceMapping = await source.getMapping();
+  static async ensureSourceMapping(instance: Schedule, { transaction }) {
+    const source = await Source.findByGuid(instance.sourceGuid, transaction);
+    const sourceMapping = await source.getMapping(transaction);
     if (!sourceMapping || Object.keys(sourceMapping).length === 0) {
       throw new Error("source has no mapping");
     }
@@ -227,19 +237,20 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   @BeforeValidate
-  static async ensureName(instance: Schedule) {
+  static async ensureName(instance: Schedule, { transaction }) {
     if (!instance.name) {
-      const source = await Source.findByGuid(instance.sourceGuid);
+      const source = await Source.findByGuid(instance.sourceGuid, transaction);
       instance.name = `${source.name} schedule`;
     }
   }
 
   @BeforeCreate
-  static async ensureOnePerSource(instance: Schedule) {
+  static async ensureOnePerSource(instance: Schedule, { transaction }) {
     const existingCount = await Schedule.scope(null).count({
       where: {
         sourceGuid: instance.sourceGuid,
       },
+      transaction,
     });
 
     if (existingCount > 0) {
@@ -248,8 +259,8 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   @BeforeCreate
-  static async ensureSourceCanUseSchedule(instance: Schedule) {
-    const source = await Source.findByGuid(instance.sourceGuid);
+  static async ensureSourceCanUseSchedule(instance: Schedule, { transaction }) {
+    const source = await Source.findByGuid(instance.sourceGuid, transaction);
 
     if (source.state !== "ready") throw new Error("source is not ready");
 
@@ -260,20 +271,21 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: Schedule) {
+  static async ensureUniqueName(instance: Schedule, { transaction }) {
     const count = await Schedule.scope(null).count({
       where: {
         guid: { [Op.ne]: instance.guid },
         name: instance.name,
         state: { [Op.ne]: "draft" },
       },
+      transaction,
     });
     if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
 
   @BeforeSave
-  static async updateState(instance: Schedule) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  static async updateState(instance: Schedule, { transaction }) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS, transaction);
   }
 
   @BeforeDestroy

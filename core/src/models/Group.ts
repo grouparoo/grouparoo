@@ -145,8 +145,8 @@ export class Group extends LoggedModel<Group> {
   @BelongsToMany(() => Profile, () => GroupMember)
   profiles: Profile[];
 
-  async profilesCount(options = {}) {
-    let queryOptions = { where: { groupGuid: this.guid } };
+  async profilesCount(options = {}, transaction?: Transaction) {
+    let queryOptions = { where: { groupGuid: this.guid }, transaction };
     if (options) {
       queryOptions = Object.assign(queryOptions, options);
     }
@@ -196,7 +196,7 @@ export class Group extends LoggedModel<Group> {
     return this.fromConvenientRules(rulesWithKey);
   }
 
-  async setRules(rules: GroupRuleWithKey[]) {
+  async setRules(rules: GroupRuleWithKey[], transaction?: Transaction) {
     if (this.type !== "calculated") {
       throw new Error("group type not calculated");
     }
@@ -207,19 +207,21 @@ export class Group extends LoggedModel<Group> {
 
     const topLevelRuleKeys = TopLevelGroupRules.map((tlr) => tlr.key);
 
-    const existingRules = await this.getRules();
+    const existingRules = await this.getRules(transaction);
     const rulesAreEqual = GroupOps.rulesAreEqual(existingRules, rules);
     if (rulesAreEqual) return;
 
-    const transaction = await api.sequelize.transaction({
-      lock: Transaction.LOCK.UPDATE,
-    });
+    let toCommit = false;
+    if (!transaction) {
+      toCommit = true;
+      transaction = await api.sequelize.transaction({
+        lock: Transaction.LOCK.UPDATE,
+      });
+    }
 
     try {
       await GroupRule.destroy({
-        where: {
-          groupGuid: this.guid,
-        },
+        where: { groupGuid: this.guid },
         transaction,
       });
 
@@ -228,6 +230,7 @@ export class Group extends LoggedModel<Group> {
         const key = rule.key;
         const property = await Property.findOne({
           where: { key },
+          transaction,
         });
 
         if (!property && !topLevelRuleKeys.includes(key)) {
@@ -268,19 +271,22 @@ export class Group extends LoggedModel<Group> {
 
       // test the rules
       const savedRules = await this.getRules(transaction);
-      await this.countPotentialMembers(savedRules);
+      await this.countPotentialMembers(savedRules, null, transaction);
 
       if (this.state !== "deleted" && rules.length > 0) {
         this.state = "initializing";
         this.changed("updatedAt", true);
         await this.save({ transaction });
-        await transaction.commit();
-        await this.run();
-      } else {
+
+        if (toCommit) {
+          await transaction.commit();
+          await this.run();
+        }
+      } else if (toCommit) {
         await transaction.commit();
       }
     } catch (error) {
-      await transaction.rollback();
+      if (toCommit) await transaction.rollback();
       throw error;
     }
   }
@@ -359,13 +365,12 @@ export class Group extends LoggedModel<Group> {
     return rules;
   }
 
-  async nextCalculatedAt() {
-    if (!this.calculatedAt) {
-      return Moment().toDate();
-    }
+  async nextCalculatedAt(transaction?: Transaction) {
+    if (!this.calculatedAt) return Moment().toDate();
 
     const setting = await Setting.findOne({
       where: { pluginName: "core", key: "groups-calculation-delay-minutes" },
+      transaction,
     });
     const delayMinutes = parseInt(setting.value);
     return Moment(this.calculatedAt).add(delayMinutes, "minutes").toDate();
@@ -437,9 +442,10 @@ export class Group extends LoggedModel<Group> {
 
   async countPotentialMembers(
     rules?: GroupRuleWithKey[],
-    matchType: typeof matchTypes[number] = this.matchType
+    matchType: typeof matchTypes[number] = this.matchType,
+    transaction?: Transaction
   ) {
-    return GroupOps.countPotentialMembers(this, rules, matchType);
+    return GroupOps.countPotentialMembers(this, rules, matchType, transaction);
   }
 
   /**
@@ -454,13 +460,14 @@ export class Group extends LoggedModel<Group> {
    */
   async _buildGroupMemberQueryParts(
     rules?: GroupRuleWithKey[],
-    matchType: typeof matchTypes[number] = this.matchType
+    matchType: typeof matchTypes[number] = this.matchType,
+    transaction?: Transaction
   ) {
     if (this.type !== "calculated") {
       throw new Error("only calculated groups can be calculated");
     }
 
-    if (!rules) rules = await this.getRules();
+    if (!rules) rules = await this.getRules(transaction);
 
     const include = [];
     const wheres = [];
@@ -485,6 +492,7 @@ export class Group extends LoggedModel<Group> {
 
       const property = await Property.findOne({
         where: { key },
+        transaction,
       });
       if (!property && !topLevel) {
         throw new Error(`cannot find type for Property ${key}`);
@@ -643,8 +651,11 @@ export class Group extends LoggedModel<Group> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
+  static async findByGuid(guid: string, transaction?: Transaction) {
+    const instance = await this.scope(null).findOne({
+      where: { guid },
+      transaction,
+    });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
@@ -663,8 +674,8 @@ export class Group extends LoggedModel<Group> {
   }
 
   @BeforeSave
-  static async updateState(instance: Group) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  static async updateState(instance: Group, { transaction }) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS, transaction);
   }
 
   @BeforeSave

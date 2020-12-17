@@ -1,67 +1,81 @@
 import {
   ConfigurationObject,
   logModel,
-  codeConfigLockKey,
+  getCodeConfigLockKey,
   validateAndFormatGuid,
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { Team, Permission } from "../..";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 
-export async function loadTeam(configObject: ConfigurationObject) {
+export async function loadTeam(
+  configObject: ConfigurationObject,
+  transaction?: Transaction
+) {
   let isNew = false;
 
   const guid = await validateAndFormatGuid(Team, configObject.id);
   validateConfigObjectKeys(Team, configObject);
 
   let team = await Team.scope(null).findOne({
-    where: { locked: codeConfigLockKey, guid },
+    where: { locked: getCodeConfigLockKey(), guid },
+    transaction,
   });
   if (!team) {
     isNew = true;
-    team = await Team.create({
-      guid,
-      locked: codeConfigLockKey,
-      name: configObject.name,
-    });
+    team = await Team.create(
+      {
+        guid,
+        locked: getCodeConfigLockKey(),
+        name: configObject.name,
+      },
+      { transaction }
+    );
   }
 
-  await team.update({ name: configObject.name });
+  await team.update({ name: configObject.name }, { transaction });
 
   if (
     configObject.options?.permissionAllRead !== undefined &&
     configObject.options?.permissionAllRead !== null
   ) {
-    await team.update({
-      permissionAllRead: configObject.options.permissionAllRead,
-    });
+    await team.update(
+      {
+        permissionAllRead: configObject.options.permissionAllRead,
+      },
+      { transaction }
+    );
   }
 
   if (
     configObject.options?.permissionAllWrite !== undefined &&
     configObject.options?.permissionAllWrite !== null
   ) {
-    await team.update({
-      permissionAllWrite: configObject.options.permissionAllWrite,
-    });
+    await team.update(
+      {
+        permissionAllWrite: configObject.options.permissionAllWrite,
+      },
+      { transaction }
+    );
   }
 
   if (configObject.permissions) {
-    await team.setPermissions(configObject.permissions);
+    await team.setPermissions(configObject.permissions, transaction);
   }
 
   await Permission.update(
-    { locked: codeConfigLockKey },
-    { where: { ownerGuid: team.guid } }
+    { locked: getCodeConfigLockKey() },
+    { where: { ownerGuid: team.guid }, transaction }
   );
 
-  logModel(team, isNew ? "created" : "updated");
+  logModel(team, transaction ? "validated" : isNew ? "created" : "updated");
+
   return team;
 }
 
 export async function deleteTeams(guids: string[]) {
   const teams = await Team.scope(null).findAll({
-    where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
+    where: { locked: getCodeConfigLockKey(), guid: { [Op.notIn]: guids } },
   });
 
   for (const i in teams) {

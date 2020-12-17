@@ -1,6 +1,7 @@
 import { api } from "actionhero";
 import { Table, Column, AllowNull, BeforeSave } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
+import { Transaction } from "sequelize";
 
 @Table({ tableName: "files", paranoid: false })
 export class File extends LoggedModel<File> {
@@ -53,8 +54,11 @@ export class File extends LoggedModel<File> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
+  static async findByGuid(guid: string, transaction?: Transaction) {
+    const instance = await this.scope(null).findOne({
+      where: { guid },
+      transaction,
+    });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }

@@ -28,6 +28,7 @@ import { Property } from "./Property";
 import { TeamMember } from "./TeamMember";
 import { RunOps } from "../modules/ops/runs";
 import { plugin } from "../modules/plugin";
+import { Transaction } from "sequelize";
 import Moment from "moment";
 
 export interface HighWaterMark {
@@ -307,8 +308,11 @@ export class Run extends Model<Run> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
+  static async findByGuid(guid: string, transaction?: Transaction) {
+    const instance = await this.scope(null).findOne({
+      where: { guid },
+      transaction,
+    });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }

@@ -191,13 +191,15 @@ export namespace GroupOps {
   export async function countPotentialMembers(
     group: Group,
     rules?: GroupRuleWithKey[],
-    matchType: "any" | "all" = group.matchType
+    matchType: "any" | "all" = group.matchType,
+    transaction?: Transaction
   ) {
     if (!rules) rules = await group.getRules();
 
     const { where, include } = await group._buildGroupMemberQueryParts(
       rules,
-      matchType
+      matchType,
+      transaction
     );
 
     // we use ProfileMultipleAssociationShim as a shim model which has extra associations
@@ -205,6 +207,7 @@ export namespace GroupOps {
       distinct: true,
       where,
       include,
+      transaction,
     });
   }
 

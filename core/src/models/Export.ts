@@ -18,7 +18,7 @@ import { Destination } from "./Destination";
 import { Profile } from "./Profile";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import { ExportOps } from "../modules/ops/export";
 
 /**
@@ -203,8 +203,11 @@ export class Export extends Model<Export> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
+  static async findByGuid(guid: string, transaction?: Transaction) {
+    const instance = await this.scope(null).findOne({
+      where: { guid },
+      transaction,
+    });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }

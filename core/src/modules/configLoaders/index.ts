@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import glob from "glob";
 import {
+  codeConfigModels,
   ConfigurationObject,
   sortConfigurationObject,
 } from "../../classes/codeConfig";
@@ -17,32 +18,32 @@ import { loadSchedule, deleteSchedules } from "./schedule";
 import { loadSetting } from "./setting";
 import { loadDestination, deleteDestinations } from "./destination";
 import JSON5 from "json5";
+import { getParentPath } from "../../utils/pluginDetails";
+import { Transaction } from "sequelize";
 
-interface SeenGuids {
-  app: string[];
-  source: string[];
-  property: string[];
-  group: string[];
-  schedule: string[];
-  destination: string[];
-  apikey: string[];
-  team: string[];
-  teammember: string[];
+export function getConfigDir() {
+  const configDir =
+    process.env.GROUPAROO_CONFIG_DIR || path.join(getParentPath(), "config");
+  return configDir;
 }
 
 export async function loadConfigDirectory(configDir: string) {
+  const configObjects = await loadConfigObjects(configDir);
+  if (configObjects.length > 0) {
+    const sortedConfigObjects = sortConfigurationObject(configObjects);
+    const seenGuids = await processConfigObjects(sortedConfigObjects);
+    await deleteLockedObjects(seenGuids);
+  }
+}
+
+export async function loadConfigObjects(configDir: string) {
   const globSearch = path.join(configDir, "**", "+(*.json|*.js)");
   const configFiles = glob.sync(globSearch);
   let configObjects: ConfigurationObject[] = [];
   for (const i in configFiles) {
     configObjects = configObjects.concat(await loadConfigFile(configFiles[i]));
   }
-
-  if (configFiles.length > 0) {
-    const sortedConfigObjects = sortConfigurationObject(configObjects);
-    const seenGuids = await processConfigObjects(sortedConfigObjects);
-    await deleteLockedObjects(seenGuids);
-  }
+  return configObjects;
 }
 
 async function loadConfigFile(file: string): Promise<ConfigurationObject> {
@@ -62,18 +63,14 @@ async function loadConfigFile(file: string): Promise<ConfigurationObject> {
   return payload;
 }
 
-async function processConfigObjects(configObjects: Array<ConfigurationObject>) {
-  const seenGuids: SeenGuids = {
-    app: [],
-    source: [],
-    property: [],
-    group: [],
-    schedule: [],
-    destination: [],
-    apikey: [],
-    team: [],
-    teammember: [],
-  };
+export async function processConfigObjects(
+  configObjects: Array<ConfigurationObject>,
+  transaction?: Transaction
+) {
+  const seenGuids = {};
+  codeConfigModels.forEach(
+    (model) => (seenGuids[model.name.toLowerCase()] = [])
+  );
 
   for (const i in configObjects) {
     const configObject = configObjects[i];
@@ -83,34 +80,34 @@ async function processConfigObjects(configObjects: Array<ConfigurationObject>) {
     try {
       switch (klass) {
         case "setting":
-          object = await loadSetting(configObject);
+          object = await loadSetting(configObject, transaction);
           break;
         case "app":
-          object = await loadApp(configObject);
+          object = await loadApp(configObject, transaction);
           break;
         case "source":
-          object = await loadSource(configObject);
+          object = await loadSource(configObject, transaction);
           break;
         case "property":
-          object = await loadProperty(configObject);
+          object = await loadProperty(configObject, transaction);
           break;
         case "group":
-          object = await loadGroup(configObject);
+          object = await loadGroup(configObject, transaction);
           break;
         case "schedule":
-          object = await loadSchedule(configObject);
+          object = await loadSchedule(configObject, transaction);
           break;
         case "destination":
-          object = await loadDestination(configObject);
+          object = await loadDestination(configObject, transaction);
           break;
         case "apikey":
-          object = await loadApiKey(configObject);
+          object = await loadApiKey(configObject, transaction);
           break;
         case "team":
-          object = await loadTeam(configObject);
+          object = await loadTeam(configObject, transaction);
           break;
         case "teammember":
-          object = await loadTeamMember(configObject);
+          object = await loadTeamMember(configObject, transaction);
           break;
         default:
           throw new Error(`unknown config object class: ${configObject.class}`);
@@ -129,7 +126,7 @@ async function processConfigObjects(configObjects: Array<ConfigurationObject>) {
   return seenGuids;
 }
 
-async function deleteLockedObjects(seenGuids: SeenGuids) {
+async function deleteLockedObjects(seenGuids, transaction?: Transaction) {
   await deleteTeamMembers(seenGuids.teammember);
   await deleteTeams(seenGuids.team);
   await deleteApiKeys(seenGuids.apikey);
