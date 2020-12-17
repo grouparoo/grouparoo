@@ -20,11 +20,11 @@ const nockFile = path.join(
 );
 
 // these comments to use nock
-// const newNock = false;
-// require("./../fixtures/export-profiles-custom");
+const newNock = false;
+require("./../fixtures/export-profiles-custom");
 // or these to make it true
-const newNock = true;
-helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 const appGuid = "app_a0bb05e8-0a4e-49b5-ad42-545f2e8662e6";
