@@ -3,7 +3,6 @@ import path from "path";
 import fs from "fs";
 import glob from "glob";
 import {
-  codeConfigModels,
   ConfigurationObject,
   sortConfigurationObject,
   validateAndFormatGuid,
@@ -22,6 +21,18 @@ import JSON5 from "json5";
 import { getParentPath } from "../../utils/pluginDetails";
 import { Property } from "../../models/Property";
 import { Transaction } from "sequelize";
+
+interface guidsByClass {
+  app: string[];
+  source: string[];
+  property: string[];
+  group: string[];
+  schedule: string[];
+  destination: string[];
+  apikey: string[];
+  team: string[];
+  teammember: string[];
+}
 
 export function getConfigDir() {
   const configDir =
@@ -81,11 +92,18 @@ export async function processConfigObjects(
   configObjects: Array<ConfigurationObject>,
   transaction?: Transaction
 ) {
-  const seenGuids = {};
+  const seenGuids: guidsByClass = {
+    app: [],
+    source: [],
+    property: [],
+    group: [],
+    schedule: [],
+    destination: [],
+    apikey: [],
+    team: [],
+    teammember: [],
+  };
   const errors: string[] = [];
-  codeConfigModels.forEach(
-    (model) => (seenGuids[model.name.toLowerCase()] = [])
-  );
 
   for (const i in configObjects) {
     const configObject = configObjects[i];
@@ -152,7 +170,17 @@ export async function processConfigObjects(
 }
 
 async function deleteLockedObjects(seenGuids, transaction?: Transaction) {
-  const deletedGuids = {};
+  const deletedGuids: guidsByClass = {
+    app: [],
+    source: [],
+    property: [],
+    group: [],
+    schedule: [],
+    destination: [],
+    apikey: [],
+    team: [],
+    teammember: [],
+  };
 
   deletedGuids["teammember"] = await deleteTeamMembers(seenGuids.teammember);
   deletedGuids["team"] = await deleteTeams(seenGuids.team);

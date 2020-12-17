@@ -1,13 +1,6 @@
 import { log } from "actionhero";
-import { App } from "../models/App";
-import { Source } from "../models/Source";
-import { Property, PropertyFiltersWithKey } from "../models/Property";
-import { Schedule } from "../models/Schedule";
-import { Destination } from "../models/Destination";
-import { Group, GroupRuleWithKey } from "../models/Group";
-import { ApiKey } from "../models/ApiKey";
-import { Team } from "../models/Team";
-import { TeamMember } from "../models/TeamMember";
+import { PropertyFiltersWithKey } from "../models/Property";
+import { GroupRuleWithKey } from "../models/Group";
 import { Transaction } from "sequelize";
 
 export interface ConfigurationObject {
@@ -43,18 +36,6 @@ interface orderedConfigObject {
 }
 
 // Utils
-
-export const codeConfigModels = [
-  App,
-  Source,
-  Property,
-  Group,
-  Schedule,
-  Destination,
-  ApiKey,
-  Team,
-  TeamMember,
-];
 
 export function getCodeConfigLockKey() {
   return "config:code";

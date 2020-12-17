@@ -72,9 +72,7 @@ export namespace plugin {
    */
   export function mountModels() {
     models.map((model) => {
-      if (!model.isInitialized) {
-        api.sequelize.addModels([model]);
-      }
+      if (!model.isInitialized) api.sequelize.addModels([model]);
     });
   }
 
