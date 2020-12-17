@@ -8,6 +8,7 @@ import {
   GroupMethods,
   GroupNameListMap,
   GroupSizeMode,
+  GroupSyncModeData,
 } from "./types";
 
 export const exportProfilesInGroups: ProfileGroupProfilesPluginMethod = async (
@@ -176,6 +177,10 @@ async function updateGroups(
   methods: GroupMethods,
   config: GroupConfig
 ) {
+  const { syncMode } = config;
+  const mode = GroupSyncModeData[syncMode];
+  let skipped = false;
+
   const removal: GroupNameListMap = {};
   const addition: GroupNameListMap = {};
 
@@ -184,14 +189,31 @@ async function updateGroups(
       continue;
     }
 
+    let skipMessage = null;
+
     // build up groups situation of group names to addition and removal
-    for (const list of user.removedGroups) {
-      removal[list] = removal[list] || [];
-      removal[list].push(user);
+    if (mode.remove) {
+      for (const list of user.removedGroups) {
+        removal[list] = removal[list] || [];
+        removal[list].push(user);
+      }
+    } else if (user.removedGroups.length > 0) {
+      const message = "Destination is not removing.";
+      skipMessage = skipMessage ? `${skipMessage} ${message}` : message;
     }
-    for (const list of user.addedGroups) {
-      addition[list] = addition[list] || [];
-      addition[list].push(user);
+
+    if (mode.add) {
+      for (const list of user.addedGroups) {
+        addition[list] = addition[list] || [];
+        addition[list].push(user);
+      }
+    } else if (user.addedGroups.length > 0) {
+      const message = "Destination is not adding.";
+      skipMessage = skipMessage ? `${skipMessage} ${message}` : message;
+    }
+
+    if (skipMessage) {
+      user.skippedMessage = skipMessage;
     }
   }
 

@@ -32,6 +32,12 @@ const appGuid = "app_a0bb05e8-0a4e-49b5-ad42-545f2e8662e6";
 const destinationGuid = "dst_b0bb05e8-0a4e-49b5-ad42-545f2e8662e6";
 const destinationOptions = {
   primaryKey: "EMAIL",
+  syncMode: "Sync",
+};
+
+const additiveDestinationOptions = {
+  primaryKey: "EMAIL",
+  syncMode: "Additive",
 };
 
 let client: Client;
@@ -213,7 +219,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     expect(row).toEqual([sha(email1), sha("brian")]);
   });
 
-  test.skip("can add to multiple audiences", async () => {
+  test("can add to multiple audiences", async () => {
     listId2 = await findAudienceId(list2);
     expect(listId2).toBe(null);
 
@@ -287,7 +293,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     expect(data).toContainEqual([sha(email2), sha("andy"), sha("jones")]);
   });
 
-  test.skip("has issues removing from small group", async () => {
+  test("has issues deleting from small group", async () => {
     const { success, errors } = await exportProfiles({
       appGuid,
       appOptions,
@@ -371,7 +377,56 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     expect(data).toContainEqual([sha(email1)]);
   });
 
-  test.skip("adds lots of people to list", async () => {
+  test("removes user (low issue) when no longer in group", async () => {
+    const { success, errors } = await exportProfiles({
+      appGuid,
+      appOptions,
+      destinationGuid,
+      destinationOptions,
+      connection: null,
+      app: null,
+      destination: null,
+      exports: [
+        {
+          profileGuid: guid1,
+          oldProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
+          newProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
+          oldGroups: [list1, list2],
+          newGroups: [list1],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+    expect(success).toBe(false);
+    expect(errors.length).toBe(1);
+    let error;
+    error = errors.find((e) => e.profileGuid === guid1);
+    expect(error.message).toContain(
+      "cannot remove users from this audience because it will result in a low audience size"
+    );
+    expect(error.message).toContain(listId2);
+
+    const sent = getSentValues();
+    expect(sent.length).toEqual(2);
+    let call, schema, data;
+
+    call = sent.find((c) => c.id === listId1 && c.action === "ADD");
+    schema = call.payload.schema;
+    data = call.payload.data;
+    expect(schema).toEqual(["EMAIL", "FN", "LN"]);
+    expect(data.length).toEqual(1);
+    expect(data).toContainEqual([sha(email1), sha("brian"), sha("simpson")]);
+
+    call = sent.find((c) => c.id === listId2 && c.action === "REMOVE");
+    schema = call.payload.schema;
+    data = call.payload.data;
+    expect(schema).toEqual(["EMAIL"]);
+    expect(data.length).toEqual(1);
+    expect(data).toContainEqual([sha(email1)]);
+  });
+
+  test("adds lots of people to list", async () => {
     listId3 = await findAudienceId(list3);
     expect(listId3).toBe(null);
 
@@ -489,9 +544,6 @@ describe("facebook/audiences-custom/exportProfiles", () => {
   });
 
   test("will error on local invalidated data", async () => {
-    listId2 = await findAudienceId(list2);
-    expect(listId2).toBe(null);
-
     const { success, errors } = await exportProfiles({
       appGuid,
       appOptions,
@@ -608,5 +660,154 @@ describe("facebook/audiences-custom/exportProfiles", () => {
       sha("71711"),
     ]);
     expect(data).toContainEqual([sha(email3), "", sha("sam"), "", ""]);
+  });
+
+  describe("Additive destination sync Mode", () => {
+    const destinationOptions = additiveDestinationOptions;
+    test("skips deleting", async () => {
+      const { success, errors } = await exportProfiles({
+        appGuid,
+        appOptions,
+        destinationGuid,
+        destinationOptions,
+        connection: null,
+        app: null,
+        destination: null,
+        exports: [
+          {
+            profileGuid: guid1,
+            oldProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
+            newProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
+            oldGroups: [list1, list2],
+            newGroups: [list1],
+            toDelete: true,
+            profile: null,
+          },
+          {
+            profileGuid: guid2,
+            oldProfileProperties: { EMAIL: email2, FN: "Andy", LN: " Jones" },
+            newProfileProperties: { EMAIL: email2, FN: "Andy", LN: "OK" },
+            oldGroups: [list2],
+            newGroups: [list1, list2],
+            toDelete: false,
+            profile: null,
+          },
+        ],
+      });
+      expect(success).toBe(true);
+      expect(errors.length).toBe(1);
+      let error;
+      error = errors.find((e) => e.profileGuid === guid1);
+      expect(error.message).toEqual("Destination is not removing.");
+
+      const sent = getSentValues();
+      expect(sent.length).toEqual(2);
+      let call, schema, data;
+
+      call = sent.find((c) => c.id === listId1 && c.action === "ADD");
+      schema = call.payload.schema;
+      data = call.payload.data;
+      expect(schema).toEqual(["EMAIL", "FN", "LN"]);
+      expect(data.length).toEqual(1);
+      expect(data).toContainEqual([sha(email2), sha("andy"), sha("ok")]);
+
+      call = sent.find((c) => c.id === listId2 && c.action === "ADD");
+      schema = call.payload.schema;
+      data = call.payload.data;
+      expect(schema).toEqual(["EMAIL", "FN", "LN"]);
+      expect(data.length).toEqual(1);
+      expect(data).toContainEqual([sha(email2), sha("andy"), sha("ok")]);
+    });
+
+    test("keeps both when change user email address", async () => {
+      const { success, errors } = await exportProfiles({
+        appGuid,
+        appOptions,
+        destinationGuid,
+        destinationOptions,
+        connection: null,
+        app: null,
+        destination: null,
+        exports: [
+          {
+            profileGuid: guid1,
+            oldProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
+            newProfileProperties: {
+              EMAIL: newEmail1,
+              FN: "Brian",
+              LN: "Simpson",
+            },
+            oldGroups: [list1],
+            newGroups: [list1],
+            toDelete: false,
+            profile: null,
+          },
+        ],
+      });
+      expect(success).toBe(true);
+      expect(errors.length).toBe(1);
+      let error;
+      error = errors.find((e) => e.profileGuid === guid1);
+      expect(error.message).toEqual("Destination is not removing.");
+
+      const sent = getSentValues();
+      expect(sent.length).toEqual(1);
+      let call, schema, data;
+
+      // adds new one
+      call = sent.find((c) => c.id === listId1 && c.action === "ADD");
+      schema = call.payload.schema;
+      data = call.payload.data;
+      expect(schema).toEqual(["EMAIL", "FN", "LN"]);
+      expect(data.length).toEqual(1);
+      expect(data).toContainEqual([
+        sha(newEmail1),
+        sha("brian"),
+        sha("simpson"),
+      ]);
+
+      // does not delete old one
+    });
+
+    test("does not remove user when no longer in group", async () => {
+      const { success, errors } = await exportProfiles({
+        appGuid,
+        appOptions,
+        destinationGuid,
+        destinationOptions,
+        connection: null,
+        app: null,
+        destination: null,
+        exports: [
+          {
+            profileGuid: guid1,
+            oldProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
+            newProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
+            oldGroups: [list1, list2],
+            newGroups: [list1],
+            toDelete: false,
+            profile: null,
+          },
+        ],
+      });
+      expect(success).toBe(true);
+      expect(errors.length).toBe(1);
+      let error;
+      error = errors.find((e) => e.profileGuid === guid1);
+      expect(error.message).toEqual("Destination is not removing.");
+
+      const sent = getSentValues();
+      expect(sent.length).toEqual(1);
+      let call, schema, data;
+
+      call = sent.find((c) => c.id === listId1 && c.action === "ADD");
+      schema = call.payload.schema;
+      data = call.payload.data;
+      expect(schema).toEqual(["EMAIL", "FN", "LN"]);
+      expect(data.length).toEqual(1);
+      expect(data).toContainEqual([sha(email1), sha("brian"), sha("simpson")]);
+
+      // does not remove from old one
+    });
   });
 });

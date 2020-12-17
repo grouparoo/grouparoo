@@ -1,3 +1,4 @@
+import { GroupSyncModeData } from "@grouparoo/app-templates/dist/destination/group";
 import {
   DestinationMappingOptionsResponseTypes,
   DestinationOptionsMethodResponse,
@@ -105,6 +106,13 @@ export const getMappingFields = (
 };
 
 export const getFieldList = (): DestinationOptionsMethodResponse => {
+  const out: DestinationOptionsMethodResponse = {};
+  Object.assign(out, getPrimaryKeys());
+  Object.assign(out, getSyncModes());
+  return out;
+};
+
+function getPrimaryKeys() {
   const out: DestinationOptionsMethodResponse = {
     primaryKey: { type: "list", options: [], descriptions: [] },
   };
@@ -119,7 +127,20 @@ export const getFieldList = (): DestinationOptionsMethodResponse => {
   }
 
   return out;
-};
+}
+
+function getSyncModes() {
+  const out: DestinationOptionsMethodResponse = {
+    syncMode: { type: "list", options: [], descriptions: [] },
+  };
+
+  for (const mode in GroupSyncModeData) {
+    out.syncMode.options.push(mode);
+    out.syncMode.descriptions.push(GroupSyncModeData[mode].description);
+  }
+
+  return out;
+}
 
 export function getEncodeKey(key: string) {
   const obj = FIELDS[key];

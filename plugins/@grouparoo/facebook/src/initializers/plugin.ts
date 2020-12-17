@@ -53,7 +53,14 @@ export class Plugins extends Initializer {
               displayName: "Primary Key",
               required: true,
               description:
-                "Which field should uniquely identify Facebook users.",
+                "Which field should uniquely identify Facebook users?",
+            },
+            {
+              key: "syncMode",
+              displayName: "Sync Mode",
+              required: true,
+              description:
+                "How should Grouparoo update Facebook audiences? Users can often not be deleted from small audiences.",
             },
           ],
           methods: {

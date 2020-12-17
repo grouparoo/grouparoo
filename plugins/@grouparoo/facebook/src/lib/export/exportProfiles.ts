@@ -9,14 +9,17 @@ import {
   GroupSizeMode,
   GroupNameListMap,
   GroupExport,
+  GroupSyncModeData,
+  GroupSyncMode,
 } from "@grouparoo/app-templates/dist/destination/group";
 import { ExportProfilesPluginMethod } from "@grouparoo/core";
 import { connect, Client } from "../connect";
 import { getAudienceId, FacebookCacheData } from "./audienceMethods";
-import { userData, sha } from "./data";
+import { userData } from "./data";
 
 export interface FacebookModel {
   primaryKey: string;
+  audienceType: string;
 }
 
 export interface FacebookData {
@@ -221,9 +224,17 @@ async function updateAudiences(
   groupMap: GroupNameListMap,
   config: GroupConfig
 ) {
-  const { cacheData } = config.data;
+  const { cacheData, model } = config.data;
+  const { audienceType } = model;
+
   for (const audienceName in groupMap) {
-    const id = await getAudienceId(client, cacheData, "CUSTOM", audienceName);
+    const id = await getAudienceId(
+      client,
+      cacheData,
+      audienceType,
+      audienceName
+    );
+
     const audience = client.audience(id);
     const users = groupMap[audienceName];
     try {
@@ -274,9 +285,10 @@ export const exportProfiles: ExportProfilesPluginMethod = async ({
 }) => {
   const cacheData = { appGuid, appOptions };
   const batchSize = 10000;
-  const { primaryKey } = destinationOptions;
+  const { primaryKey, syncMode } = destinationOptions;
+  const audienceType = "CUSTOM";
 
-  const model: FacebookModel = { primaryKey };
+  const model: FacebookModel = { primaryKey, audienceType };
   const data: FacebookData = { cacheData, model };
 
   return exportProfilesInGroups(
@@ -284,6 +296,7 @@ export const exportProfiles: ExportProfilesPluginMethod = async ({
     {
       batchSize,
       groupMode: GroupSizeMode.WithinGroup,
+      syncMode: <GroupSyncMode>syncMode,
       appOptions,
       data,
       foreignKey: primaryKey,
