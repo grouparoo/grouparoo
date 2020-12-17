@@ -1,21 +1,20 @@
 import { helper } from "@grouparoo/spec-helper";
-import { plugin } from "../../src/modules/plugin";
-import { Property } from "../../src/models/Property";
-import { App } from "../../src/models/App";
-import { Source } from "../../src/models/Source";
-import { Schedule } from "../../src/models/Schedule";
-import { Group } from "../../src/models/Group";
-import { GroupRule } from "../../src/models/GroupRule";
-import { Destination } from "../../src/models/Destination";
-import { ApiKey } from "../../src/models/ApiKey";
-import { Team } from "../../src/models/Team";
-import { TeamMember } from "../../src/models/TeamMember";
-import { Setting } from "../../src/models/Setting";
+import { plugin } from "../../../src/modules/plugin";
+import { Property } from "../../../src/models/Property";
+import { App } from "../../../src/models/App";
+import { Source } from "../../../src/models/Source";
+import { Schedule } from "../../../src/models/Schedule";
+import { Group } from "../../../src/models/Group";
+import { GroupRule } from "../../../src/models/GroupRule";
+import { Destination } from "../../../src/models/Destination";
+import { ApiKey } from "../../../src/models/ApiKey";
+import { Team } from "../../../src/models/Team";
+import { TeamMember } from "../../../src/models/TeamMember";
+import { Setting } from "../../../src/models/Setting";
 import path from "path";
 import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
-import { validateConfigObjectKeys } from "../../src/classes/codeConfig";
-import { loadConfigDirectory } from "../../src/modules/configLoaders";
+import { loadConfigDirectory } from "../../../src/modules/configLoaders";
 
 let actionhero;
 
@@ -36,7 +35,7 @@ describe("modules/codeConfig", () => {
       // the test test-app plugin has been loaded
       api.codeConfig.allowLockedModelChanges = true;
       const { errors, seenGuids, deletedGuids } = await loadConfigDirectory(
-        path.join(__dirname, "..", "fixtures", "codeConfig", "initial")
+        path.join(__dirname, "..", "..", "fixtures", "codeConfig", "initial")
       );
       expect(errors).toEqual([]);
       expect(seenGuids).toEqual({
@@ -240,7 +239,7 @@ describe("modules/codeConfig", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
       const { errors, seenGuids, deletedGuids } = await loadConfigDirectory(
-        path.join(__dirname, "..", "fixtures", "codeConfig", "changes")
+        path.join(__dirname, "..", "..", "fixtures", "codeConfig", "changes")
       );
       expect(errors).toEqual([]);
       expect(seenGuids).toEqual({
@@ -379,7 +378,14 @@ describe("modules/codeConfig", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
       const { errors, seenGuids, deletedGuids } = await loadConfigDirectory(
-        path.join(__dirname, "..", "fixtures", "codeConfig", "partially-empty")
+        path.join(
+          __dirname,
+          "..",
+          "..",
+          "fixtures",
+          "codeConfig",
+          "partially-empty"
+        )
       );
       expect(errors).toEqual([]);
       expect(seenGuids).toEqual({
@@ -439,7 +445,7 @@ describe("modules/codeConfig", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
       const { errors, seenGuids, deletedGuids } = await loadConfigDirectory(
-        path.join(__dirname, "..", "fixtures", "codeConfig", "empty")
+        path.join(__dirname, "..", "..", "fixtures", "codeConfig", "empty")
       );
       expect(errors).toEqual([]);
       expect(seenGuids).toEqual({
@@ -491,7 +497,14 @@ describe("modules/codeConfig", () => {
 
       test("errors will be thrown if the configuration is invalid", async () => {
         const { errors } = await loadConfigDirectory(
-          path.join(__dirname, "..", "fixtures", "codeConfig", "error-app")
+          path.join(
+            __dirname,
+            "..",
+            "..",
+            "fixtures",
+            "codeConfig",
+            "error-app"
+          )
         );
         expect(errors[0]).toMatch(
           /fileGuid is required for a app of type test-plugin-app/
@@ -506,7 +519,14 @@ describe("modules/codeConfig", () => {
 
       test("errors will be thrown if the configuration is invalid", async () => {
         const { errors } = await loadConfigDirectory(
-          path.join(__dirname, "..", "fixtures", "codeConfig", "error-source")
+          path.join(
+            __dirname,
+            "..",
+            "..",
+            "fixtures",
+            "codeConfig",
+            "error-source"
+          )
         );
         expect(errors[0]).toMatch(/cannot find Property/);
       });
@@ -519,7 +539,14 @@ describe("modules/codeConfig", () => {
 
       test("errors will be thrown if the configuration is invalid", async () => {
         const { errors } = await loadConfigDirectory(
-          path.join(__dirname, "..", "fixtures", "codeConfig", "error-property")
+          path.join(
+            __dirname,
+            "..",
+            "..",
+            "fixtures",
+            "codeConfig",
+            "error-property"
+          )
         );
         expect(errors[0]).toMatch(/cannot find Source/);
       });
@@ -532,7 +559,14 @@ describe("modules/codeConfig", () => {
 
       test("errors will be thrown if the configuration is invalid", async () => {
         const { errors } = await loadConfigDirectory(
-          path.join(__dirname, "..", "fixtures", "codeConfig", "error-group")
+          path.join(
+            __dirname,
+            "..",
+            "..",
+            "fixtures",
+            "codeConfig",
+            "error-group"
+          )
         );
         expect(errors[0]).toMatch(/cannot find Property/);
       });
@@ -548,6 +582,7 @@ describe("modules/codeConfig", () => {
           path.join(
             __dirname,
             "..",
+            "..",
             "fixtures",
             "codeConfig",
             "error-teamMember"
@@ -555,46 +590,6 @@ describe("modules/codeConfig", () => {
         );
         expect(errors[0]).toMatch(/TeamMember.firstName cannot be null/);
       });
-    });
-  });
-
-  describe("validations", () => {
-    test("id is always required", async () => {
-      const configObject = {
-        name: "Marketing Team",
-        class: "team",
-      };
-
-      expect(() => validateConfigObjectKeys(Team, configObject)).toThrow(
-        /id is required for a Team/
-      );
-    });
-
-    test("extraneous keys throw an error", async () => {
-      const configObject = {
-        id: "marketing_team",
-        name: "Marketing Team",
-        class: "team",
-        cool: true,
-      };
-
-      expect(() => validateConfigObjectKeys(Team, configObject)).toThrow(
-        /cool is not a valid property of a Team/
-      );
-    });
-
-    test("multiple errors can be returned", async () => {
-      const configObject = {
-        id: "marketing_team",
-        name: "Marketing Team",
-        class: "team",
-        cool: true,
-        thing: "stuff",
-      };
-
-      expect(() => validateConfigObjectKeys(Team, configObject)).toThrow(
-        /cool is not a valid property of a Team, thing is not a valid property of a Team/
-      );
     });
   });
 });
