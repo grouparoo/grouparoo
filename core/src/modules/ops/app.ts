@@ -1,5 +1,5 @@
 import { api, log, id } from "actionhero";
-import { Transaction } from "sequelize/types";
+import { Transaction } from "sequelize";
 import { App, SimpleAppOptions } from "../../models/App";
 import { waitForLock } from "../locks";
 import { OptionHelper } from "../optionHelper";

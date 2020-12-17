@@ -19,7 +19,7 @@ import { deepStrictEqual } from "assert";
 import { ProfilePropertyOps } from "./profileProperty";
 import { destinationTypeConversions } from "../destinationTypeConversions";
 import { GroupMember } from "../../models/GroupMember";
-import { Transaction } from "sequelize/types";
+import { Transaction } from "sequelize";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {

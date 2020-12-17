@@ -6,7 +6,7 @@ import { OptionHelper } from "../optionHelper";
 import { MappingHelper } from "../mappingHelper";
 import { log, utils } from "actionhero";
 import { LoggedModel } from "../../classes/loggedModel";
-import { Transaction } from "sequelize/types";
+import { Transaction } from "sequelize";
 
 export namespace SourceOps {
   /**

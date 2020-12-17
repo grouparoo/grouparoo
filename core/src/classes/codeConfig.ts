@@ -8,7 +8,7 @@ import { Group, GroupRuleWithKey } from "../models/Group";
 import { ApiKey } from "../models/ApiKey";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
-import { Transaction } from "sequelize/types";
+import { Transaction } from "sequelize";
 
 export interface ConfigurationObject {
   id: string;
