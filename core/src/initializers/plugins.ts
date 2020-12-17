@@ -222,7 +222,7 @@ export class Plugins extends Initializer {
           if (!process.env[e]) {
             log(
               `Plugin ${plugin.name} requires environment variable ${e} to be set`,
-              "error"
+              "warning"
             );
           }
         });
@@ -232,7 +232,7 @@ export class Plugins extends Initializer {
           if (!process.env[e]) {
             log(
               `plugin ${plugin.name} requires environment variable ${e} to be set`,
-              "error"
+              "warning"
             );
           }
         });

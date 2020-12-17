@@ -31,8 +31,11 @@ export async function loadConfigDirectory(configDir: string) {
   const configObjects = await loadConfigObjects(configDir);
   if (configObjects.length > 0) {
     const sortedConfigObjects = sortConfigurationObject(configObjects);
-    const seenGuids = await processConfigObjects(sortedConfigObjects);
-    await deleteLockedObjects(seenGuids);
+    const { seenGuids, errors } = await processConfigObjects(
+      sortedConfigObjects
+    );
+
+    if (!errors) await deleteLockedObjects(seenGuids);
   }
 }
 
@@ -68,6 +71,7 @@ export async function processConfigObjects(
   transaction?: Transaction
 ) {
   const seenGuids = {};
+  const errors: string[] = [];
   codeConfigModels.forEach(
     (model) => (seenGuids[model.name.toLowerCase()] = [])
   );
@@ -113,17 +117,19 @@ export async function processConfigObjects(
           throw new Error(`unknown config object class: ${configObject.class}`);
       }
     } catch (error) {
-      log(
-        `error with config object: ${JSON.stringify(configObject)} - ${error}`,
-        env === "test" ? "info" : "emerg"
-      );
-      throw error.original ? error.original : error;
+      const errorMessage = `[ config ] error with config object: ${JSON.stringify(
+        configObject
+      )} - ${error}`;
+      errors.push(errorMessage);
+      log(errorMessage, env === "test" ? "info" : "emerg");
+      continue;
+      // throw error.original ? error.original : error;
     }
 
     if (klass !== "setting") seenGuids[klass].push(object.guid);
   }
 
-  return seenGuids;
+  return { seenGuids, errors };
 }
 
 async function deleteLockedObjects(seenGuids, transaction?: Transaction) {

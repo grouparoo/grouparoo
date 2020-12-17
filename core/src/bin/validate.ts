@@ -37,10 +37,21 @@ export class Validate extends CLI {
     const transaction: Transaction = await api.sequelize.transaction();
 
     try {
-      await processConfigObjects(configObjects, transaction);
-      log(`✅ All Config Objects OK!`);
+      const { errors } = await processConfigObjects(configObjects, transaction);
+      if (errors.length > 0) {
+        log(
+          `❌ Validation failed - ${errors.length} validation error${
+            errors.length > 0 ? "s" : ""
+          }`,
+          "error"
+        );
+        process.exit(1);
+      } else {
+        log(
+          `✅ Validation succeeded - ${configObjects.length} config objects OK!`
+        );
+      }
     } catch (e) {
-      console.log(e);
       // error will already be logged; nothing to do here
     } finally {
       await transaction.rollback();
