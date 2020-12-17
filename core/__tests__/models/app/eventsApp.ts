@@ -47,10 +47,10 @@ describe("models/app", () => {
         success: false,
       });
 
-      const rule = await Property.findOne({
+      const property = await Property.findOne({
         where: { key: "userId" },
       });
-      await app.setOptions({ identifyingPropertyGuid: rule.guid });
+      await app.setOptions({ identifyingPropertyGuid: property.guid });
       expect(await app.test()).toEqual({
         error: undefined,
         message: "Events App OK",

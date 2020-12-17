@@ -42,29 +42,29 @@ export namespace ProfileOps {
         transaction,
       }));
 
-    const rules = await Property.findAll({ transaction });
+    const properties = await Property.findAll({ transaction });
 
     const hash: ProfilePropertyType = {};
 
     for (const i in profileProperties) {
-      const rule = rules.find(
+      const property = properties.find(
         (r) => r.guid === profileProperties[i].propertyGuid
       );
-      if (!rule) {
+      if (!property) {
         await profileProperties[i].destroy({ transaction });
         continue;
       }
 
-      const key = rule.key;
+      const key = property.key;
       if (!hash[key]) {
         hash[key] = {
           guid: profileProperties[i].propertyGuid,
           state: profileProperties[i].state,
           values: [],
-          type: rule.type,
-          unique: rule.unique,
-          isArray: rule.isArray,
-          identifying: rule.identifying,
+          type: property.type,
+          unique: property.unique,
+          isArray: property.isArray,
+          identifying: property.identifying,
           valueChangedAt: profileProperties[i].valueChangedAt,
           confirmedAt: profileProperties[i].confirmedAt,
           stateChangedAt: profileProperties[i].stateChangedAt,
@@ -103,32 +103,32 @@ export namespace ProfileOps {
     const key = Object.keys(hash)[0];
     const values = hash[key];
 
-    // ignore reserved property key
+    // ignore reserved profile property key
     if (key === "_meta") return;
 
-    const rule = await Property.findOne({ where: { key } });
-    if (!rule) {
+    const property = await Property.findOne({ where: { key } });
+    if (!property) {
       throw new Error(`cannot find a property for key ${key}`);
     }
 
     // Note: Lifecycle hooks do not fire on upserts, so we need to manually check if the property exists or not
 
-    if (rule.isArray) {
-      let properties = await ProfileProperty.findAll({
+    if (property.isArray) {
+      let profileProperties = await ProfileProperty.findAll({
         where: {
           profileGuid: profile.guid,
-          propertyGuid: rule.guid,
+          propertyGuid: property.guid,
         },
         order: [["position", "asc"]],
       });
 
       const existingValues = await Promise.all(
-        properties.map((property) => property.getValue())
+        profileProperties.map((property) => property.getValue())
       );
 
       if (arraysAreEqual(existingValues, values)) {
         await Promise.all(
-          properties.map((property) =>
+          profileProperties.map((property) =>
             property.update({
               state: "ready",
               stateChangedAt: new Date(),
@@ -137,27 +137,30 @@ export namespace ProfileOps {
           )
         );
       } else {
-        await Promise.all(properties.map((property) => property.destroy()));
+        await Promise.all(
+          profileProperties.map((property) => property.destroy())
+        );
         let position = 0;
         for (const i in values) {
           const value = values[i];
-          const property = new ProfileProperty({
+          const profileProperty = new ProfileProperty({
             profileGuid: profile.guid,
-            propertyGuid: rule.guid,
+            propertyGuid: property.guid,
             position,
             state: "ready",
             stateChangedAt: new Date(),
             confirmedAt: new Date(),
             valueChangedAt:
-              properties[i] && properties[i].valueChangedAt !== null
-                ? properties[i].rawValue !==
-                  (await ProfilePropertyOps.buildRawValue(value, rule.type))
+              profileProperties[i] &&
+              profileProperties[i].valueChangedAt !== null
+                ? profileProperties[i].rawValue !==
+                  (await ProfilePropertyOps.buildRawValue(value, property.type))
                   ? new Date()
-                  : properties[i].valueChangedAt
+                  : profileProperties[i].valueChangedAt
                 : new Date(),
           });
-          await property.setValue(value);
-          await property.save();
+          await profileProperty.setValue(value);
+          await profileProperty.save();
           position++;
         }
       }
@@ -170,40 +173,40 @@ export namespace ProfileOps {
       const value = values[0];
       let changed = false;
 
-      let property = await ProfileProperty.findOne({
+      let profileProperty = await ProfileProperty.findOne({
         where: {
           profileGuid: profile.guid,
-          propertyGuid: rule.guid,
+          propertyGuid: property.guid,
           position: 0,
         },
       });
 
-      if (!property) {
+      if (!profileProperty) {
         changed = true;
-        property = new ProfileProperty({
+        profileProperty = new ProfileProperty({
           profileGuid: profile.guid,
-          propertyGuid: rule.guid,
+          propertyGuid: property.guid,
         });
       } else if (
-        property.rawValue !==
-        (await ProfilePropertyOps.buildRawValue(value, rule.type))
+        profileProperty.rawValue !==
+        (await ProfilePropertyOps.buildRawValue(value, property.type))
       ) {
         changed = true;
       }
 
-      await property.setValue(value);
-      property.state = "ready";
-      property.stateChangedAt = new Date();
-      property.confirmedAt = new Date();
-      if (changed || property.valueChangedAt === null) {
-        property.valueChangedAt = new Date();
+      await profileProperty.setValue(value);
+      profileProperty.state = "ready";
+      profileProperty.stateChangedAt = new Date();
+      profileProperty.confirmedAt = new Date();
+      if (changed || profileProperty.valueChangedAt === null) {
+        profileProperty.valueChangedAt = new Date();
       }
 
-      await property.save();
+      await profileProperty.save();
       await ProfileProperty.destroy({
         where: {
           profileGuid: profile.guid,
-          propertyGuid: rule.guid,
+          propertyGuid: property.guid,
           position: { [Op.ne]: 0 },
         },
       });
@@ -251,11 +254,11 @@ export namespace ProfileOps {
    * Remove a Property on this Profile
    */
   export async function removeProperty(profile: Profile, key: string) {
-    const rule = await Property.findOne({ where: { key } });
-    if (!rule) return;
+    const property = await Property.findOne({ where: { key } });
+    if (!property) return;
 
     const properties = await ProfileProperty.findAll({
-      where: { profileGuid: profile.guid, propertyGuid: rule.guid },
+      where: { profileGuid: profile.guid, propertyGuid: property.guid },
     });
 
     for (const i in properties) {
@@ -280,17 +283,17 @@ export namespace ProfileOps {
     state = "ready",
     transaction?: Transaction
   ) {
-    const properties = await profile.properties(transaction);
-    const rules = await Property.findAll({ transaction });
+    const profileProperties = await profile.properties(transaction);
+    const properties = await Property.findAll({ transaction });
 
     let newPropertiesCount = 0;
-    for (const i in rules) {
-      const rule = rules[i];
-      if (!properties[rule.key]) {
+    for (const i in properties) {
+      const property = properties[i];
+      if (!profileProperties[property.key]) {
         await ProfileProperty.create(
           {
             profileGuid: profile.guid,
-            propertyGuid: rule.guid,
+            propertyGuid: property.guid,
             state,
             stateChangedAt: new Date(),
             valueChangedAt: new Date(),
@@ -385,12 +388,12 @@ export namespace ProfileOps {
     let profile: Profile;
     let isNew: boolean;
     let profileProperty: ProfileProperty;
-    const uniqueRules = await Property.findAll({
+    const uniqueProperties = await Property.findAll({
       where: { unique: true },
     });
     const uniquePropertiesHash = {};
 
-    uniqueRules.forEach((rule) => {
+    uniqueProperties.forEach((rule) => {
       if (hash[rule.key] !== null && hash[rule.key] !== undefined) {
         uniquePropertiesHash[rule.key] = hash[rule.key];
       }
@@ -431,7 +434,7 @@ export namespace ProfileOps {
       for (const i in keys) {
         const key = keys[i];
         const value = uniquePropertiesHash[key];
-        const rule = uniqueRules.find((r) => r.key === key);
+        const property = uniqueProperties.find((r) => r.key === key);
 
         const { releaseLock } = await waitForLock(
           `profileProperty:${key}:${value}`
@@ -440,7 +443,7 @@ export namespace ProfileOps {
 
         profileProperty = await ProfileProperty.findOne({
           where: {
-            propertyGuid: rule.guid,
+            propertyGuid: property.guid,
             rawValue: String(value),
           },
         });

@@ -12,7 +12,7 @@ let run: Run;
 let source: Source;
 
 describe("integration/runs/internalRun", () => {
-  let rule: Property;
+  let property: Property;
 
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
@@ -38,14 +38,14 @@ describe("integration/runs/internalRun", () => {
       await api.resque.queue.connection.redis.flushdb();
       await Run.truncate();
 
-      rule = await Property.create({
+      property = await Property.create({
         sourceGuid: source.guid,
         type: "string",
         key: "email",
         unique: true,
       });
-      await rule.setOptions({ column: "email" });
-      await rule.update({ state: "ready" });
+      await property.setOptions({ column: "email" });
+      await property.update({ state: "ready" });
 
       const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
       expect(foundTasks.length).toBe(1);
@@ -53,7 +53,7 @@ describe("integration/runs/internalRun", () => {
       const runs = await Run.findAll();
       expect(runs.length).toBe(1);
       expect(runs[0].creatorType).toBe("property");
-      expect(runs[0].creatorGuid).toBe(rule.guid);
+      expect(runs[0].creatorGuid).toBe(property.guid);
       expect(runs[0].state).toBe("running");
       run = runs[0];
     });
@@ -118,32 +118,34 @@ describe("integration/runs/internalRun", () => {
     });
 
     test("if a new property stops a run, both properties will be imported", async () => {
-      const firstNameRule = await Property.create({
+      const firstNameProperty = await Property.create({
         sourceGuid: source.guid,
         type: "string",
         key: "firstName",
         unique: false,
       });
-      await firstNameRule.setOptions({ column: "firstName" });
-      await firstNameRule.update({ state: "ready" });
+      await firstNameProperty.setOptions({ column: "firstName" });
+      await firstNameProperty.update({ state: "ready" });
 
-      const lastNameRule = await Property.create({
+      const lastNameProperty = await Property.create({
         sourceGuid: source.guid,
         type: "string",
         key: "lastName",
         unique: false,
       });
-      await lastNameRule.setOptions({ column: "lastName" });
-      await lastNameRule.update({ state: "ready" });
+      await lastNameProperty.setOptions({ column: "lastName" });
+      await lastNameProperty.update({ state: "ready" });
 
       const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
       expect(foundTasks.length).toBe(2);
 
       const runs = await Run.findAll();
       const firstNameRun = runs.find(
-        (r) => r.creatorGuid === firstNameRule.guid
+        (r) => r.creatorGuid === firstNameProperty.guid
       );
-      const lastNameRun = runs.find((r) => r.creatorGuid === lastNameRule.guid);
+      const lastNameRun = runs.find(
+        (r) => r.creatorGuid === lastNameProperty.guid
+      );
       expect(runs.length).toBe(2);
       expect(firstNameRun.state).toBe("stopped");
       expect(lastNameRun.state).toBe("running");

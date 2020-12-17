@@ -10,7 +10,7 @@ describe("model/group", () => {
   let luigi: Profile;
   let peach: Profile;
   let toad: Profile;
-  let urlRule: Property;
+  let urlProperty: Property;
 
   beforeAll(async () => {
     const response = await SharedGroupTests.beforeAll();
@@ -19,19 +19,19 @@ describe("model/group", () => {
     peach = response.peach;
     toad = response.toad;
 
-    const emailRule = await Property.findOne({
+    const emailProperty = await Property.findOne({
       where: { key: "email" },
     });
 
-    urlRule = await Property.create({
+    urlProperty = await Property.create({
       isArray: true,
       unique: false,
       key: "url",
       type: "url",
-      sourceGuid: emailRule.sourceGuid,
+      sourceGuid: emailProperty.sourceGuid,
     });
-    await urlRule.setOptions({ column: "url" });
-    await urlRule.update({ state: "ready" });
+    await urlProperty.setOptions({ column: "url" });
+    await urlProperty.update({ state: "ready" });
 
     await mario.addOrUpdateProperties({ url: ["https://nintendo.com"] });
     await luigi.addOrUpdateProperties({ url: ["https://nintendo.com"] });

@@ -23,13 +23,16 @@ export namespace MappingHelper {
 
     for (const i in mappings) {
       const mapping = mappings[i];
-      const rule = await mapping.$get("property", { scope: null, transaction });
-      if (!rule) {
+      const property = await mapping.$get("property", {
+        scope: null,
+        transaction,
+      });
+      if (!property) {
         throw new Error(
           `cannot find property or this source/destination not ready (remoteKey: ${mapping.remoteKey})`
         );
       }
-      MappingObject[mapping.remoteKey] = rule.key;
+      MappingObject[mapping.remoteKey] = property.key;
     }
 
     return MappingObject;

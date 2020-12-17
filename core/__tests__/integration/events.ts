@@ -14,7 +14,7 @@ describe("integration/events", () => {
   let appGuid;
   let sourceGuid;
   let propertyGuid;
-  let userIdRule;
+  let userIdProperty;
   let apiKey;
   let eventGuid;
   let profile: Profile;
@@ -66,14 +66,14 @@ describe("integration/events", () => {
     expect(apps.length).toBe(2); // properties + events
     appGuid = apps.filter((app) => app.type === "events")[0].guid;
 
-    userIdRule = await Property.findOne({
+    userIdProperty = await Property.findOne({
       where: { key: "userId" },
     });
 
     connection.params = {
       csrfToken,
       guid: appGuid,
-      options: { identifyingPropertyGuid: userIdRule.guid },
+      options: { identifyingPropertyGuid: userIdProperty.guid },
       state: "ready",
     };
     const { error, app } = await specHelper.runAction("app:edit", connection);
@@ -563,11 +563,11 @@ describe("integration/events", () => {
 
       describe("with profile", () => {
         let profile: Profile;
-        let rule: Property;
+        let property: Property;
 
         beforeAll(async () => {
-          rule = await Property.findByGuid(propertyGuid);
-          await rule.setFilters([]);
+          property = await Property.findByGuid(propertyGuid);
+          await property.setFilters([]);
         });
 
         beforeAll(async () => {
@@ -577,21 +577,21 @@ describe("integration/events", () => {
         });
 
         test("properties will be imported (without filter)", async () => {
-          await rule.setFilters([]);
+          await property.setFilters([]);
           await profile.import();
           const properties = await profile.properties();
           expect(properties["test-rule"].values).toEqual([4]);
         });
 
         test("properties will be imported (with filter)", async () => {
-          await rule.setFilters([
+          await property.setFilters([
             { key: "[data]-path", op: "does not equal", match: "/" },
           ]);
           await profile.import();
           let properties = await profile.properties();
           expect(properties["test-rule"].values).toEqual([3]);
 
-          await rule.setFilters([
+          await property.setFilters([
             { key: "[data]-path", op: "does not contain", match: "/" },
           ]);
           await profile.import();
@@ -601,15 +601,15 @@ describe("integration/events", () => {
       });
 
       describe("aggregations", () => {
-        let rule: Property;
+        let property: Property;
         beforeAll(async () => {
-          rule = await Property.findByGuid(propertyGuid);
-          await rule.setFilters([]);
+          property = await Property.findByGuid(propertyGuid);
+          await property.setFilters([]);
         });
 
         test("all values", async () => {
-          await rule.update({ type: "string", isArray: true });
-          await rule.setOptions({
+          await property.update({ type: "string", isArray: true });
+          await property.setOptions({
             column: "[data]-path",
             aggregationMethod: "all values",
           });
@@ -621,12 +621,12 @@ describe("integration/events", () => {
             "/web-sign-in",
             "/mobile-sign-in",
           ]);
-          await rule.update({ type: "string", isArray: false });
+          await property.update({ type: "string", isArray: false });
         });
 
         test("most recent value", async () => {
-          await rule.update({ type: "string" });
-          await rule.setOptions({
+          await property.update({ type: "string" });
+          await property.setOptions({
             column: "[data]-path",
             aggregationMethod: "most recent value",
           });
@@ -636,8 +636,8 @@ describe("integration/events", () => {
         });
 
         test("least recent value", async () => {
-          await rule.update({ type: "string" });
-          await rule.setOptions({
+          await property.update({ type: "string" });
+          await property.setOptions({
             column: "[data]-path",
             aggregationMethod: "least recent value",
           });
@@ -647,8 +647,8 @@ describe("integration/events", () => {
         });
 
         test("avg", async () => {
-          await rule.update({ type: "float" });
-          await rule.setOptions({
+          await property.update({ type: "float" });
+          await property.setOptions({
             column: "[data]-loadTime",
             aggregationMethod: "avg",
           });
@@ -658,8 +658,8 @@ describe("integration/events", () => {
         });
 
         test("count", async () => {
-          await rule.update({ type: "integer" });
-          await rule.setOptions({
+          await property.update({ type: "integer" });
+          await property.setOptions({
             column: "[data]-path",
             aggregationMethod: "count",
           });
@@ -669,8 +669,8 @@ describe("integration/events", () => {
         });
 
         test("sum", async () => {
-          await rule.update({ type: "integer" });
-          await rule.setOptions({
+          await property.update({ type: "integer" });
+          await property.setOptions({
             column: "[data]-loadTime",
             aggregationMethod: "sum",
           });
@@ -680,8 +680,8 @@ describe("integration/events", () => {
         });
 
         test("min", async () => {
-          await rule.update({ type: "integer" });
-          await rule.setOptions({
+          await property.update({ type: "integer" });
+          await property.setOptions({
             column: "[data]-loadTime",
             aggregationMethod: "min",
           });
@@ -691,8 +691,8 @@ describe("integration/events", () => {
         });
 
         test("max", async () => {
-          await rule.update({ type: "integer" });
-          await rule.setOptions({
+          await property.update({ type: "integer" });
+          await property.setOptions({
             column: "[data]-loadTime",
             aggregationMethod: "max",
           });
@@ -703,34 +703,38 @@ describe("integration/events", () => {
       });
 
       describe("filters", () => {
-        let rule: Property;
+        let property: Property;
         beforeAll(async () => {
-          rule = await Property.findByGuid(propertyGuid);
-          await rule.update({ type: "string", isArray: true });
-          await rule.setOptions({
+          property = await Property.findByGuid(propertyGuid);
+          await property.update({ type: "string", isArray: true });
+          await property.setOptions({
             column: "[data]-path",
             aggregationMethod: "all values",
           });
         });
 
         beforeEach(async () => {
-          await rule.setFilters([]);
+          await property.setFilters([]);
         });
 
         test("on event properties - userId", async () => {
-          await rule.setFilters([{ key: "userId", op: "equals", match: "x" }]);
+          await property.setFilters([
+            { key: "userId", op: "equals", match: "x" },
+          ]);
           await profile.import();
           let properties = await profile.properties();
           expect(properties["test-rule"].values).toEqual([null]);
         });
 
         test("on event properties - type", async () => {
-          await rule.setFilters([{ key: "type", op: "equals", match: "x" }]);
+          await property.setFilters([
+            { key: "type", op: "equals", match: "x" },
+          ]);
           await profile.import();
           let properties = await profile.properties();
           expect(properties["test-rule"].values).toEqual([null]);
 
-          await rule.setFilters([
+          await property.setFilters([
             { key: "type", op: "equals", match: "pageview" },
           ]);
           await profile.import();
@@ -749,7 +753,7 @@ describe("integration/events", () => {
             include: [{ model: EventData, where: { value: "/web-sign-in" } }],
           });
 
-          await rule.setFilters([
+          await property.setFilters([
             {
               key: "occurredAt",
               op: "greater than",
@@ -761,7 +765,7 @@ describe("integration/events", () => {
           let properties = await profile.properties();
           expect(properties["test-rule"].values).toEqual(["/mobile-sign-in"]);
 
-          await rule.setFilters([
+          await property.setFilters([
             { key: "occurredAt", op: "greater than", match: "0" },
           ]);
           await profile.import();
@@ -775,7 +779,7 @@ describe("integration/events", () => {
         });
 
         test("on data properties - equals", async () => {
-          await rule.setFilters([
+          await property.setFilters([
             {
               key: "[data]-path",
               op: "equals",
@@ -789,7 +793,7 @@ describe("integration/events", () => {
         });
 
         test("on data properties - does not equal", async () => {
-          await rule.setFilters([
+          await property.setFilters([
             {
               key: "[data]-path",
               op: "does not equal",
@@ -807,7 +811,7 @@ describe("integration/events", () => {
         });
 
         test("on data properties - contains", async () => {
-          await rule.setFilters([
+          await property.setFilters([
             {
               key: "[data]-path",
               op: "contains",
@@ -821,7 +825,7 @@ describe("integration/events", () => {
         });
 
         test("on data properties - does not contain", async () => {
-          await rule.setFilters([
+          await property.setFilters([
             {
               key: "[data]-path",
               op: "does not contain",

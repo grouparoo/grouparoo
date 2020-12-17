@@ -63,10 +63,10 @@ describe("models/profile", () => {
   describe("findOrCreateByUniqueProfileProperties", () => {
     let source: Source;
     let toad: Profile;
-    let emailRule: Property;
-    let userIdRule: Property;
-    let colorRule: Property;
-    let houseRule: Property;
+    let emailProperty: Property;
+    let userIdProperty: Property;
+    let colorProperty: Property;
+    let houseProperty: Property;
 
     beforeAll(async () => {
       await Profile.truncate();
@@ -77,36 +77,36 @@ describe("models/profile", () => {
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
-      userIdRule = await Property.findOne({
+      userIdProperty = await Property.findOne({
         where: { key: "userId" },
       });
 
-      emailRule = await Property.create({
+      emailProperty = await Property.create({
         sourceGuid: source.guid,
         key: "email",
         type: "email",
         unique: true,
       });
-      await emailRule.setOptions({ column: "email" });
-      await emailRule.update({ state: "ready" });
+      await emailProperty.setOptions({ column: "email" });
+      await emailProperty.update({ state: "ready" });
 
-      colorRule = await Property.create({
+      colorProperty = await Property.create({
         sourceGuid: source.guid,
         key: "color",
         type: "string",
         unique: false,
       });
-      await colorRule.setOptions({ column: "color" });
-      await colorRule.update({ state: "ready" });
+      await colorProperty.setOptions({ column: "color" });
+      await colorProperty.update({ state: "ready" });
 
-      houseRule = await Property.create({
+      houseProperty = await Property.create({
         sourceGuid: source.guid,
         key: "house",
         type: "string",
         unique: false,
       });
-      await houseRule.setOptions({ column: "house" });
-      await houseRule.update({ state: "ready" });
+      await houseProperty.setOptions({ column: "house" });
+      await houseProperty.update({ state: "ready" });
 
       const profile = await Profile.create();
       await profile.addOrUpdateProperties({
@@ -120,10 +120,10 @@ describe("models/profile", () => {
     afterAll(async () => {
       await source.setMapping({});
       await toad.destroy();
-      await userIdRule.destroy();
-      await emailRule.destroy();
-      await colorRule.destroy();
-      await houseRule.destroy();
+      await userIdProperty.destroy();
+      await emailProperty.destroy();
+      await colorProperty.destroy();
+      await houseProperty.destroy();
       await source.destroy();
     });
 
@@ -237,37 +237,37 @@ describe("models/profile", () => {
         await source.setMapping({ id: "userId" });
         await source.update({ state: "ready" });
 
-        const emailRule = await Property.create({
+        const emailProperty = await Property.create({
           sourceGuid: source.guid,
           key: "email",
           type: "string",
         });
-        await emailRule.setOptions({ column: "email" });
-        await emailRule.update({ state: "ready" });
+        await emailProperty.setOptions({ column: "email" });
+        await emailProperty.update({ state: "ready" });
 
-        const firstNameRule = await Property.create({
+        const firstNameProperty = await Property.create({
           sourceGuid: source.guid,
           key: "firstName",
           type: "string",
         });
-        await firstNameRule.setOptions({ column: "firstName" });
-        await firstNameRule.update({ state: "ready" });
+        await firstNameProperty.setOptions({ column: "firstName" });
+        await firstNameProperty.update({ state: "ready" });
 
-        const lastNameRule = await Property.create({
+        const lastNameProperty = await Property.create({
           sourceGuid: source.guid,
           key: "lastName",
           type: "string",
         });
-        await lastNameRule.setOptions({ column: "lastName" });
-        await lastNameRule.update({ state: "ready" });
+        await lastNameProperty.setOptions({ column: "lastName" });
+        await lastNameProperty.update({ state: "ready" });
 
-        const colorRule = await Property.create({
+        const colorProperty = await Property.create({
           sourceGuid: source.guid,
           key: "color",
           type: "string",
         });
-        await colorRule.setOptions({ column: "color" });
-        await colorRule.update({ state: "ready" });
+        await colorProperty.setOptions({ column: "color" });
+        await colorProperty.update({ state: "ready" });
       });
 
       beforeAll(async () => {
@@ -399,21 +399,21 @@ describe("models/profile", () => {
       });
 
       describe("profile property timestamps (array)", () => {
-        let purchasesRule: Property;
+        let purchasesProperty: Property;
 
         beforeAll(async () => {
-          purchasesRule = await Property.create({
+          purchasesProperty = await Property.create({
             sourceGuid: source.guid,
             key: "purchases",
             type: "string",
             isArray: true,
           });
-          await purchasesRule.setOptions({ column: "purchases" });
-          await purchasesRule.update({ state: "ready" });
+          await purchasesProperty.setOptions({ column: "purchases" });
+          await purchasesProperty.update({ state: "ready" });
         });
 
         afterAll(async () => {
-          await purchasesRule.destroy();
+          await purchasesProperty.destroy();
         });
 
         test("changing a value sets valueChangedAt and confirmedAt", async () => {
@@ -633,21 +633,21 @@ describe("models/profile", () => {
       });
 
       describe("array properties", () => {
-        let purchasesRule: Property;
+        let purchasesProperty: Property;
 
         beforeAll(async () => {
-          const purchasesRule = await Property.create({
+          const purchasesProperty = await Property.create({
             sourceGuid: source.guid,
             key: "purchases",
             type: "string",
             isArray: true,
           });
-          await purchasesRule.setOptions({ column: "purchases" });
-          await purchasesRule.update({ state: "ready" });
+          await purchasesProperty.setOptions({ column: "purchases" });
+          await purchasesProperty.update({ state: "ready" });
         });
 
         afterAll(async () => {
-          await purchasesRule.destroy();
+          await purchasesProperty.destroy();
         });
 
         test("multiple values can be set for array properties and the order is maintained", async () => {
@@ -764,7 +764,7 @@ describe("models/profile", () => {
     let profile: Profile;
     let app: App;
     let source: Source;
-    let emailRule: Property;
+    let emailProperty: Property;
 
     beforeAll(async () => {
       await Profile.truncate();
@@ -786,14 +786,14 @@ describe("models/profile", () => {
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
-      emailRule = await Property.create({
+      emailProperty = await Property.create({
         sourceGuid: source.guid,
         key: "email",
         type: "string",
         unique: true,
       });
-      await emailRule.setOptions({ column: "email" });
-      await emailRule.update({ state: "ready" });
+      await emailProperty.setOptions({ column: "email" });
+      await emailProperty.update({ state: "ready" });
 
       group = await helper.factories.group({
         name: "calculated-group",
@@ -837,8 +837,8 @@ describe("models/profile", () => {
   });
 
   describe("#import", () => {
-    let emailRule: Property;
-    let colorRule: Property;
+    let emailProperty: Property;
+    let colorProperty: Property;
     let app: App;
     let source: Source;
 
@@ -892,22 +892,22 @@ describe("models/profile", () => {
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
-      emailRule = await Property.create({
+      emailProperty = await Property.create({
         sourceGuid: source.guid,
         key: "email",
         type: "string",
         unique: true,
       });
 
-      colorRule = await Property.create({
+      colorProperty = await Property.create({
         sourceGuid: source.guid,
         key: "color",
         type: "string",
         unique: false,
       });
 
-      await emailRule.update({ state: "ready" });
-      await colorRule.update({ state: "ready" });
+      await emailProperty.update({ state: "ready" });
+      await colorProperty.update({ state: "ready" });
     });
 
     afterAll(async () => {

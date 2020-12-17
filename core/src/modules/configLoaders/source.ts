@@ -46,7 +46,7 @@ export async function loadSource(
     transaction
   );
 
-  let bootstrappedRule: Property;
+  let bootstrappedProperty: Property;
   let mappedProfileProperty: Property;
   let mapping = {};
 
@@ -66,7 +66,7 @@ export async function loadSource(
   try {
     await setMapping();
     if (configObject.bootstrappedProperty) {
-      bootstrappedRule = await Property.findOne({
+      bootstrappedProperty = await Property.findOne({
         where: {
           guid: await validateAndFormatGuid(
             Property,
@@ -81,14 +81,14 @@ export async function loadSource(
       error.toString().match(/cannot find Property/) &&
       configObject.bootstrappedProperty
     ) {
-      const rule = configObject.bootstrappedProperty;
-      if (!rule || !rule.options) throw error;
-      const mappedColumn = Object.values(rule.options)[0];
-      bootstrappedRule = await source.bootstrapUniqueProperty(
-        rule.key || rule.name,
-        rule.type,
+      const property = configObject.bootstrappedProperty;
+      if (!property || !property.options) throw error;
+      const mappedColumn = Object.values(property.options)[0];
+      bootstrappedProperty = await source.bootstrapUniqueProperty(
+        property.key || property.name,
+        property.type,
         mappedColumn,
-        await validateAndFormatGuid(Property, rule.id),
+        await validateAndFormatGuid(Property, property.id),
         transaction
       );
       await setMapping();
@@ -99,17 +99,17 @@ export async function loadSource(
 
   await source.update({ state: "ready" }, { transaction });
 
-  if (isNew && bootstrappedRule) {
-    await bootstrappedRule.update(
+  if (isNew && bootstrappedProperty) {
+    await bootstrappedProperty.update(
       { locked: getCodeConfigLockKey() },
       { transaction }
     );
   }
 
   logModel(source, transaction ? "validated" : isNew ? "created" : "updated");
-  if (bootstrappedRule) {
+  if (bootstrappedProperty) {
     logModel(
-      bootstrappedRule,
+      bootstrappedProperty,
       transaction ? "validated" : isNew ? "created" : "updated"
     );
   }

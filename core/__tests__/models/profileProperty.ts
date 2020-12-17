@@ -19,14 +19,14 @@ describe("models/profileProperty", () => {
 
   let source: Source;
   let profile: Profile;
-  let firstNameRule: Property;
-  let emailRule: Property;
-  let urlRule: Property;
-  let phoneNumberRule: Property;
-  let userIdRule: Property;
-  let lastLoginRule: Property;
-  let ltvRule: Property;
-  let vipRule: Property;
+  let firstNameProperty: Property;
+  let emailProperty: Property;
+  let urlProperty: Property;
+  let phoneNumberProperty: Property;
+  let userIdProperty: Property;
+  let lastLoginProperty: Property;
+  let ltvProperty: Property;
+  let vipProperty: Property;
 
   beforeAll(async () => {
     source = await helper.factories.source();
@@ -38,71 +38,71 @@ describe("models/profileProperty", () => {
     profile = new Profile();
     await profile.save();
 
-    userIdRule = await Property.findOne({
+    userIdProperty = await Property.findOne({
       where: { key: "userId" },
     });
 
-    firstNameRule = await Property.create({
+    firstNameProperty = await Property.create({
       sourceGuid: source.guid,
       key: "firstName",
       type: "string",
     });
-    await firstNameRule.setOptions({ column: "firstName" });
-    await firstNameRule.update({ state: "ready" });
+    await firstNameProperty.setOptions({ column: "firstName" });
+    await firstNameProperty.update({ state: "ready" });
 
-    emailRule = await Property.create({
+    emailProperty = await Property.create({
       sourceGuid: source.guid,
       key: "email",
       type: "email",
     });
-    await emailRule.setOptions({ column: "email" });
-    await emailRule.update({ state: "ready" });
+    await emailProperty.setOptions({ column: "email" });
+    await emailProperty.update({ state: "ready" });
 
-    urlRule = await Property.create({
+    urlProperty = await Property.create({
       sourceGuid: source.guid,
       key: "url",
       type: "url",
     });
-    await urlRule.setOptions({ column: "url" });
-    await urlRule.update({ state: "ready" });
+    await urlProperty.setOptions({ column: "url" });
+    await urlProperty.update({ state: "ready" });
 
-    phoneNumberRule = await Property.create({
+    phoneNumberProperty = await Property.create({
       sourceGuid: source.guid,
       key: "phoneNumber",
       type: "phoneNumber",
     });
-    await phoneNumberRule.setOptions({ column: "phoneNumber" });
-    await phoneNumberRule.update({ state: "ready" });
+    await phoneNumberProperty.setOptions({ column: "phoneNumber" });
+    await phoneNumberProperty.update({ state: "ready" });
 
-    lastLoginRule = await Property.create({
+    lastLoginProperty = await Property.create({
       sourceGuid: source.guid,
       key: "lastLoginAt",
       type: "date",
     });
-    await lastLoginRule.setOptions({ column: "lastLoginAt" });
-    await lastLoginRule.update({ state: "ready" });
+    await lastLoginProperty.setOptions({ column: "lastLoginAt" });
+    await lastLoginProperty.update({ state: "ready" });
 
-    ltvRule = await Property.create({
+    ltvProperty = await Property.create({
       sourceGuid: source.guid,
       key: "ltv",
       type: "float",
     });
-    await ltvRule.setOptions({ column: "ltv" });
-    await ltvRule.update({ state: "ready" });
+    await ltvProperty.setOptions({ column: "ltv" });
+    await ltvProperty.update({ state: "ready" });
 
-    vipRule = await Property.create({
+    vipProperty = await Property.create({
       sourceGuid: source.guid,
       key: "isVIP",
       type: "boolean",
     });
-    await vipRule.setOptions({ column: "isVIP" });
-    await vipRule.update({ state: "ready" });
+    await vipProperty.setOptions({ column: "isVIP" });
+    await vipProperty.update({ state: "ready" });
   });
 
   test("creating, editing, and deleting a profile property creates a relevant log message", async () => {
     const property = await ProfileProperty.create({
       profileGuid: profile.guid,
-      propertyGuid: ltvRule.guid,
+      propertyGuid: ltvProperty.guid,
       rawValue: "123.0",
     });
 
@@ -126,27 +126,27 @@ describe("models/profileProperty", () => {
   });
 
   describe("array properties", () => {
-    let purchasesRule: Property;
+    let purchasesProperty: Property;
 
     beforeAll(async () => {
-      purchasesRule = await Property.create({
+      purchasesProperty = await Property.create({
         sourceGuid: source.guid,
         key: "purchases",
         type: "string",
         isArray: true,
       });
-      await purchasesRule.setOptions({ column: "purchases" });
-      await purchasesRule.update({ state: "ready" });
+      await purchasesProperty.setOptions({ column: "purchases" });
+      await purchasesProperty.update({ state: "ready" });
     });
 
     afterAll(async () => {
-      await purchasesRule.destroy();
+      await purchasesProperty.destroy();
     });
 
     test("by default profile properties have a position of 0", async () => {
       const property = await ProfileProperty.create({
         profileGuid: profile.guid,
-        propertyGuid: purchasesRule.guid,
+        propertyGuid: purchasesProperty.guid,
         rawValue: "hat",
       });
       expect(property.position).toBe(0);
@@ -156,13 +156,13 @@ describe("models/profileProperty", () => {
     test("multiple values can be set with different positions", async () => {
       const propertyA = await ProfileProperty.create({
         profileGuid: profile.guid,
-        propertyGuid: purchasesRule.guid,
+        propertyGuid: purchasesProperty.guid,
         rawValue: "hat",
         position: 1,
       });
       const propertyB = await ProfileProperty.create({
         profileGuid: profile.guid,
-        propertyGuid: purchasesRule.guid,
+        propertyGuid: purchasesProperty.guid,
         rawValue: "shoe",
         position: 0,
       });
@@ -175,14 +175,14 @@ describe("models/profileProperty", () => {
     test("multiple values cannot re-use the same position", async () => {
       const property = await ProfileProperty.create({
         profileGuid: profile.guid,
-        propertyGuid: purchasesRule.guid,
+        propertyGuid: purchasesProperty.guid,
         rawValue: "hat",
       });
 
       await expect(
         ProfileProperty.create({
           profileGuid: profile.guid,
-          propertyGuid: purchasesRule.guid,
+          propertyGuid: purchasesProperty.guid,
           rawValue: "hat",
         })
       ).rejects.toThrow(/There is already a ProfileProperty/);
@@ -195,7 +195,7 @@ describe("models/profileProperty", () => {
     test("strings", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
-        propertyGuid: firstNameRule.guid,
+        propertyGuid: firstNameProperty.guid,
       });
       await profileProperty.setValue("Mario");
       const response = await profileProperty.getValue();
@@ -205,7 +205,7 @@ describe("models/profileProperty", () => {
     test("emails", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
-        propertyGuid: emailRule.guid,
+        propertyGuid: emailProperty.guid,
       });
       await profileProperty.setValue("mario@example.com");
       const response = await profileProperty.getValue();
@@ -215,7 +215,7 @@ describe("models/profileProperty", () => {
     test("emails are lower cased", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
-        propertyGuid: emailRule.guid,
+        propertyGuid: emailProperty.guid,
       });
       await profileProperty.setValue("MARIO@example.com");
       const response = await profileProperty.getValue();
@@ -225,7 +225,7 @@ describe("models/profileProperty", () => {
     test("invalid emails throw an error", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
-        propertyGuid: emailRule.guid,
+        propertyGuid: emailProperty.guid,
       });
 
       const badEmails = [
@@ -246,7 +246,7 @@ describe("models/profileProperty", () => {
     test("very long emails are valid", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
-        propertyGuid: emailRule.guid,
+        propertyGuid: emailProperty.guid,
       });
       const value =
         "Deleted-user-id-19430-Team-5051deleted-user-id-19430-team-5051XXXXXX@example.com";
@@ -258,7 +258,7 @@ describe("models/profileProperty", () => {
     test("urls", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
-        propertyGuid: urlRule.guid,
+        propertyGuid: urlProperty.guid,
       });
       await profileProperty.setValue("HTTPS://grouparoo.com/picture");
       const response = await profileProperty.getValue();
@@ -268,7 +268,7 @@ describe("models/profileProperty", () => {
     test("invalid urls throw an error", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
-        propertyGuid: urlRule.guid,
+        propertyGuid: urlProperty.guid,
       });
       await expect(profileProperty.setValue("not a url")).rejects.toThrowError(
         /url .* is not valid/
@@ -278,7 +278,7 @@ describe("models/profileProperty", () => {
     test("phone numbers", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
-        propertyGuid: phoneNumberRule.guid,
+        propertyGuid: phoneNumberProperty.guid,
       });
       await profileProperty.setValue("4128889999");
       const response = await profileProperty.getValue();
@@ -288,7 +288,7 @@ describe("models/profileProperty", () => {
     test("phone numbers with another country code", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
-        propertyGuid: phoneNumberRule.guid,
+        propertyGuid: phoneNumberProperty.guid,
       });
       await profileProperty.setValue("+42 123 123 1231");
       const response = await profileProperty.getValue();
@@ -298,7 +298,7 @@ describe("models/profileProperty", () => {
     test("phone numbers which we cannot parse throw an error", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
-        propertyGuid: phoneNumberRule.guid,
+        propertyGuid: phoneNumberProperty.guid,
       });
       await expect(profileProperty.setValue("1-800-got-milk")).rejects.toThrow(
         /phone number .* is not valid/
@@ -308,7 +308,7 @@ describe("models/profileProperty", () => {
     test("integers", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
-        propertyGuid: userIdRule.guid,
+        propertyGuid: userIdProperty.guid,
       });
       await profileProperty.setValue(123);
       const response = await profileProperty.getValue();
@@ -318,7 +318,7 @@ describe("models/profileProperty", () => {
     test("dates (object form)", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
-        propertyGuid: lastLoginRule.guid,
+        propertyGuid: lastLoginProperty.guid,
       });
       await profileProperty.setValue(new Date(0));
       const response = (await profileProperty.getValue()) as Date;
@@ -329,7 +329,7 @@ describe("models/profileProperty", () => {
     test("dates (timestamp form)", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
-        propertyGuid: lastLoginRule.guid,
+        propertyGuid: lastLoginProperty.guid,
       });
       await profileProperty.setValue(0);
       const response = (await profileProperty.getValue()) as Date;
@@ -340,7 +340,7 @@ describe("models/profileProperty", () => {
     test("floats", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
-        propertyGuid: ltvRule.guid,
+        propertyGuid: ltvProperty.guid,
       });
       await profileProperty.setValue(100.21);
       const response = await profileProperty.getValue();
@@ -350,7 +350,7 @@ describe("models/profileProperty", () => {
     test("booleans", async () => {
       const profileProperty = new ProfileProperty({
         profileGuid: profile.guid,
-        propertyGuid: vipRule.guid,
+        propertyGuid: vipProperty.guid,
       });
       await profileProperty.setValue(true);
       let response = await profileProperty.getValue();
@@ -381,7 +381,7 @@ describe("models/profileProperty", () => {
       test("string rules can be null", async () => {
         const profileProperty = new ProfileProperty({
           profileGuid: profile.guid,
-          propertyGuid: firstNameRule.guid,
+          propertyGuid: firstNameProperty.guid,
         });
         await profileProperty.setValue(null);
         const response = await profileProperty.getValue();
@@ -390,7 +390,7 @@ describe("models/profileProperty", () => {
       test("email rules can be null", async () => {
         const profileProperty = new ProfileProperty({
           profileGuid: profile.guid,
-          propertyGuid: emailRule.guid,
+          propertyGuid: emailProperty.guid,
         });
         await profileProperty.setValue(null);
         const response = await profileProperty.getValue();
@@ -399,7 +399,7 @@ describe("models/profileProperty", () => {
       test("integer rules can be null", async () => {
         const profileProperty = new ProfileProperty({
           profileGuid: profile.guid,
-          propertyGuid: userIdRule.guid,
+          propertyGuid: userIdProperty.guid,
         });
         await profileProperty.setValue(null);
         const response = await profileProperty.getValue();
@@ -408,7 +408,7 @@ describe("models/profileProperty", () => {
       test("date rules can be null", async () => {
         const profileProperty = new ProfileProperty({
           profileGuid: profile.guid,
-          propertyGuid: lastLoginRule.guid,
+          propertyGuid: lastLoginProperty.guid,
         });
         await profileProperty.setValue(null);
         const response = await profileProperty.getValue();
@@ -417,7 +417,7 @@ describe("models/profileProperty", () => {
       test("float rules can be null", async () => {
         const profileProperty = new ProfileProperty({
           profileGuid: profile.guid,
-          propertyGuid: ltvRule.guid,
+          propertyGuid: ltvProperty.guid,
         });
         await profileProperty.setValue(null);
         const response = await profileProperty.getValue();
@@ -426,7 +426,7 @@ describe("models/profileProperty", () => {
       test("boolean rules can be null", async () => {
         const profileProperty = new ProfileProperty({
           profileGuid: profile.guid,
-          propertyGuid: vipRule.guid,
+          propertyGuid: vipProperty.guid,
         });
         await profileProperty.setValue(null);
         let response = await profileProperty.getValue();
@@ -449,8 +449,8 @@ describe("models/profileProperty", () => {
   describe("uniqueness and cascade destruction", () => {
     let secondProfile;
     beforeAll(async () => {
-      emailRule.unique = true;
-      await emailRule.save();
+      emailProperty.unique = true;
+      await emailProperty.save();
 
       await profile.buildNullProperties();
       secondProfile = new Profile();
@@ -458,8 +458,8 @@ describe("models/profileProperty", () => {
     });
 
     afterAll(async () => {
-      emailRule.unique = false;
-      await emailRule.save();
+      emailProperty.unique = false;
+      await emailProperty.save();
     });
 
     test("allows the addition of another unique, non-conflicting property", async () => {
@@ -487,26 +487,26 @@ describe("models/profileProperty", () => {
       });
 
       const beforeCount = await ProfileProperty.count({
-        where: { propertyGuid: emailRule.guid },
+        where: { propertyGuid: emailProperty.guid },
       });
       expect(beforeCount).toBe(2);
 
-      emailRule.key = "EMAIL!";
-      await emailRule.save();
+      emailProperty.key = "EMAIL!";
+      await emailProperty.save();
 
       const afterCount = await ProfileProperty.count({
-        where: { propertyGuid: emailRule.guid },
+        where: { propertyGuid: emailProperty.guid },
       });
       expect(afterCount).toBe(2);
 
       const property = await ProfileProperty.findOne({
-        where: { propertyGuid: emailRule.guid },
+        where: { propertyGuid: emailProperty.guid },
       });
       const apiData = await property.apiData();
       expect(apiData.key).toBe("EMAIL!");
 
-      emailRule.key = "email";
-      await emailRule.save();
+      emailProperty.key = "email";
+      await emailProperty.save();
     });
 
     test("deleting a property deletes all the profile properties that have that key", async () => {
@@ -516,14 +516,14 @@ describe("models/profileProperty", () => {
       });
 
       const beforeCount = await ProfileProperty.count({
-        where: { propertyGuid: emailRule.guid },
+        where: { propertyGuid: emailProperty.guid },
       });
       expect(beforeCount).toBe(2);
 
-      await emailRule.destroy();
+      await emailProperty.destroy();
 
       const afterCount = await ProfileProperty.count({
-        where: { propertyGuid: emailRule.guid },
+        where: { propertyGuid: emailProperty.guid },
       });
       expect(afterCount).toBe(0);
     });

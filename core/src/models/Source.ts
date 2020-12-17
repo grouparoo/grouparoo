@@ -338,11 +338,11 @@ export class Source extends LoggedModel<Source> {
 
   @AfterSave
   static async updateRuleDirectMappings(instance: Source, { transaction }) {
-    const rules = await instance.$get("properties", { transaction });
-    for (const i in rules) {
-      const rule = rules[i];
-      await Property.determineDirectlyMapped(rule, { transaction });
-      if (rule.changed()) await rule.save({ transaction });
+    const properties = await instance.$get("properties", { transaction });
+    for (const i in properties) {
+      const property = properties[i];
+      await Property.determineDirectlyMapped(property, { transaction });
+      if (property.changed()) await property.save({ transaction });
     }
   }
 

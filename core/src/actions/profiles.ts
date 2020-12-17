@@ -39,14 +39,14 @@ export class ProfilesList extends AuthenticatedAction {
       params.searchValue &&
       params.searchValue.length > 0
     ) {
-      const rule = await Property.findOne({
+      const property = await Property.findOne({
         where: { key: params.searchKey },
       });
-      if (!rule) {
+      if (!property) {
         throw new Error(`cannot find a property for ${params.searchKey}`);
       }
 
-      where.propertyGuid = rule.guid;
+      where.propertyGuid = property.guid;
       if (
         params.searchValue.toLowerCase() === "null" ||
         params.searchValue === ""

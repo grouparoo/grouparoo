@@ -235,7 +235,7 @@ export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
   async run({ params }) {
     const source = await Source.findByGuid(params.guid);
 
-    const rule = await source.bootstrapUniqueProperty(
+    const property = await source.bootstrapUniqueProperty(
       params.key,
       params.type,
       params.mappedColumn
@@ -243,7 +243,7 @@ export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
 
     return {
       source: await source.apiData(),
-      property: await rule.apiData(),
+      property: await property.apiData(),
     };
   }
 }

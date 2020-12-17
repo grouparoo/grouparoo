@@ -191,13 +191,13 @@ describe("actions/profiles", () => {
     });
 
     test("a writer can get autocomplete results from properties", async () => {
-      const emailRule = await Property.findOne({
+      const emailProperty = await Property.findOne({
         where: { key: "email" },
       });
 
       connection.params = {
         csrfToken,
-        propertyGuid: emailRule.guid,
+        propertyGuid: emailProperty.guid,
         match: "@example.com",
       };
       const { error, profileProperties } = await specHelper.runAction(

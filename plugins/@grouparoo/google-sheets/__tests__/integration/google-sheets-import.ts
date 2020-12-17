@@ -184,10 +184,10 @@ describe("integration/runs/google-sheets", () => {
     });
 
     test("replace the email property with a new one for this source", async () => {
-      const oldRule = await Property.findOne({
+      const oldProperty = await Property.findOne({
         where: { key: "email" },
       });
-      await oldRule.destroy();
+      await oldProperty.destroy();
 
       session.params = {
         csrfToken,

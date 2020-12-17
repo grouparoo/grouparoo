@@ -5,7 +5,7 @@ import { Property, ProfileProperty, Profile } from "../../../src";
 let actionhero;
 
 describe("tasks/profileProperties:sweep", () => {
-  let emailRule: Property;
+  let emailProperty: Property;
   let mario: Profile;
 
   beforeAll(async () => {
@@ -15,7 +15,7 @@ describe("tasks/profileProperties:sweep", () => {
   }, helper.setupTime);
 
   beforeAll(async () => {
-    emailRule = await Property.findOne({ where: { key: "email" } });
+    emailProperty = await Property.findOne({ where: { key: "email" } });
     mario = await helper.factories.profile();
     await mario.addOrUpdateProperties({
       firstName: ["Mario"],
@@ -35,7 +35,7 @@ describe("tasks/profileProperties:sweep", () => {
   test("a profile property with a missing profile", async () => {
     const profileProperty = await ProfileProperty.create({
       profileGuid: "missing",
-      propertyGuid: emailRule.guid,
+      propertyGuid: emailProperty.guid,
       rawValue: "person@example.com",
       position: 0,
     });

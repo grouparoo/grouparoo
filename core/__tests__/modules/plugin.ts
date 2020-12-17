@@ -245,7 +245,7 @@ describe("modules/plugin", () => {
 
     describe("replaceTemplateProfilePropertyKeysWithProfilePropertyGuid and replaceTemplateProfilePropertyGuidsWithProfilePropertyKeys", () => {
       test("they work to convert each other", async () => {
-        const rule = await Property.findOne({
+        const property = await Property.findOne({
           where: { key: "userId" },
         });
         const initialString = "select * from users where id = {{ userId }}";
@@ -253,7 +253,7 @@ describe("modules/plugin", () => {
           initialString
         );
         expect(replacedWithGuid).toEqual(
-          `select * from users where id = {{ ${rule.guid} }}`
+          `select * from users where id = {{ ${property.guid} }}`
         );
 
         expect(

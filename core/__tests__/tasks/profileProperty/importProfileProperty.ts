@@ -54,7 +54,7 @@ describe("tasks/profileProperty:importProfileProperty", () => {
     });
 
     test("will not import profile properties that have pending dependencies", async () => {
-      const userIdRule = await Property.findOne({
+      const userIdProperty = await Property.findOne({
         where: { key: "userId" },
       });
 
@@ -68,13 +68,13 @@ describe("tasks/profileProperty:importProfileProperty", () => {
       });
       await property.update({ state: "pending" });
 
-      const userIdProperty = await ProfileProperty.findOne({
+      const userIdProfileProperty = await ProfileProperty.findOne({
         where: {
           profileGuid: profile.guid,
-          propertyGuid: userIdRule.guid,
+          propertyGuid: userIdProperty.guid,
         },
       });
-      await userIdProperty.update({ state: "pending" });
+      await userIdProfileProperty.update({ state: "pending" });
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
         profileGuids: [profile.guid],

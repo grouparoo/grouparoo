@@ -19,12 +19,12 @@ export const profiles: ProfilesPluginMethod = async ({
   let combinedMapping = sourceMapping;
   const properties = await source.$get("properties");
   for (const i in properties) {
-    const rule = properties[i];
-    const ruleOptions = await rule.getOptions();
-    const ruleMapping = {};
-    if (ruleOptions.column) {
-      ruleMapping[ruleOptions.column] = rule.key;
-      combinedMapping = Object.assign(combinedMapping, ruleMapping);
+    const property = properties[i];
+    const propertyOptions = await property.getOptions();
+    const propertyMapping = {};
+    if (propertyOptions.column) {
+      propertyMapping[propertyOptions.column] = property.key;
+      combinedMapping = Object.assign(combinedMapping, propertyMapping);
     }
   }
 

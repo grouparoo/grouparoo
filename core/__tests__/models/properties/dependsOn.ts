@@ -36,11 +36,11 @@ describe("models/property", () => {
     let supportTicketsTableSource: Source;
     let querySource: Source;
 
-    let userIdRule: Property;
-    let emailRule: Property;
-    let purchasesCountRule: Property;
-    let supportTicketsCountRule: Property;
-    let emailDomainRule: Property;
+    let userIdProperty: Property;
+    let emailProperty: Property;
+    let purchasesCountProperty: Property;
+    let supportTicketsCountProperty: Property;
+    let emailDomainProperty: Property;
 
     beforeAll(async () => {
       usersTableSource = await helper.factories.source();
@@ -50,92 +50,102 @@ describe("models/property", () => {
       await usersTableSource.update({ state: "ready" });
 
       // bootstrapped
-      userIdRule = await Property.findOne({
+      userIdProperty = await Property.findOne({
         where: { key: "userId" },
       });
 
-      emailRule = await Property.create({
+      emailProperty = await Property.create({
         key: "email",
         type: "string",
         unique: true,
         sourceGuid: usersTableSource.guid,
       });
-      await emailRule.setOptions({ column: "email" });
-      await emailRule.update({ state: "ready" });
+      await emailProperty.setOptions({ column: "email" });
+      await emailProperty.update({ state: "ready" });
 
       purchasesTableSource = await helper.factories.source();
       await purchasesTableSource.setOptions({ table: "purchases" });
       await purchasesTableSource.setMapping({ user_id: "userId" });
       await purchasesTableSource.update({ state: "ready" });
 
-      purchasesCountRule = await Property.create({
+      purchasesCountProperty = await Property.create({
         key: "purchases",
         type: "integer",
         unique: false,
         sourceGuid: purchasesTableSource.guid,
       });
-      await purchasesCountRule.setOptions({ column: "purchases" });
-      await purchasesCountRule.update({ state: "ready" });
+      await purchasesCountProperty.setOptions({ column: "purchases" });
+      await purchasesCountProperty.update({ state: "ready" });
 
       supportTicketsTableSource = await helper.factories.source();
       await supportTicketsTableSource.setOptions({ table: "support_tickets" });
       await supportTicketsTableSource.setMapping({ customer_email: "email" });
       await supportTicketsTableSource.update({ state: "ready" });
 
-      supportTicketsCountRule = await Property.create({
+      supportTicketsCountProperty = await Property.create({
         key: "supportTickets",
         type: "integer",
         unique: false,
         sourceGuid: supportTicketsTableSource.guid,
       });
-      await supportTicketsCountRule.setOptions({ column: "support_tickets" });
-      await supportTicketsCountRule.update({ state: "ready" });
+      await supportTicketsCountProperty.setOptions({
+        column: "support_tickets",
+      });
+      await supportTicketsCountProperty.update({ state: "ready" });
 
       querySource = await helper.factories.source();
       await querySource.setOptions({ table: "x" }); // we don't have a test quey source...
       await querySource.setMapping({ x: "userId" });
       await querySource.update({ state: "ready" });
 
-      emailDomainRule = await Property.create({
+      emailDomainProperty = await Property.create({
         key: "emailDomain",
         type: "string",
         unique: false,
         sourceGuid: querySource.guid,
       });
-      await emailDomainRule.setOptions({
+      await emailDomainProperty.setOptions({
         column:
           "select split_part(email, '@', 2) AS domain from users where email = {{ email }}",
       });
-      await emailDomainRule.update({ state: "ready" });
+      await emailDomainProperty.update({ state: "ready" });
     });
 
     test("direct mapping rules do not depend on themselves", async () => {
-      const dependencies = await PropertyOps.dependencies(userIdRule);
+      const dependencies = await PropertyOps.dependencies(userIdProperty);
       expect(dependencies.map((rule) => rule.guid)).toEqual([]);
     });
 
     test("dependent rules of this source", async () => {
-      const dependencies = await PropertyOps.dependencies(emailRule);
-      expect(dependencies.map((rule) => rule.guid)).toEqual([userIdRule.guid]);
+      const dependencies = await PropertyOps.dependencies(emailProperty);
+      expect(dependencies.map((rule) => rule.guid)).toEqual([
+        userIdProperty.guid,
+      ]);
     });
 
     test("dependent rules for another source", async () => {
-      const dependencies = await PropertyOps.dependencies(purchasesCountRule);
-      expect(dependencies.map((rule) => rule.guid)).toEqual([userIdRule.guid]);
+      const dependencies = await PropertyOps.dependencies(
+        purchasesCountProperty
+      );
+      expect(dependencies.map((rule) => rule.guid)).toEqual([
+        userIdProperty.guid,
+      ]);
     });
 
     test("chained dependent rules for another source", async () => {
       const dependencies = await PropertyOps.dependencies(
-        supportTicketsCountRule
+        supportTicketsCountProperty
       );
-      expect(dependencies.map((rule) => rule.guid)).toEqual([emailRule.guid]);
+      expect(dependencies.map((rule) => rule.guid)).toEqual([
+        emailProperty.guid,
+      ]);
     });
 
     test("mustache variables reference another rule", async () => {
-      const dependencies = await PropertyOps.dependencies(emailDomainRule);
+      const dependencies = await PropertyOps.dependencies(emailDomainProperty);
       expect(dependencies.map((rule) => rule.guid)).toEqual([
-        userIdRule.guid, // from the mapping
-        emailRule.guid, // from the mustache rule
+        userIdProperty.guid, // from the mapping
+        emailProperty.guid, // from the mustache rule
       ]);
     });
   });

@@ -75,7 +75,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   property: Property;
 
   async apiData() {
-    const rule = await this.$get("property");
+    const property = await this.$get("property");
 
     return {
       profileGuid: this.profileGuid,
@@ -89,39 +89,42 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
         : null,
       confirmedAt: this.confirmedAt ? this.confirmedAt.getTime() : null,
       position: this.position,
-      key: rule.key,
+      key: property.key,
       value: await this.getValue(),
     };
   }
 
   async getValue() {
-    const rule = await this.ensureProperty();
-    return ProfilePropertyOps.getValue(this.rawValue, rule.type);
+    const property = await this.ensureProperty();
+    return ProfilePropertyOps.getValue(this.rawValue, property.type);
   }
 
   async setValue(value: any) {
-    const rule = await this.ensureProperty();
-    this.rawValue = await ProfilePropertyOps.buildRawValue(value, rule.type);
+    const property = await this.ensureProperty();
+    this.rawValue = await ProfilePropertyOps.buildRawValue(
+      value,
+      property.type
+    );
     await this.validateValue();
   }
 
   async ensureProperty() {
-    const rule = await this.$get("property");
-    if (!rule) {
+    const property = await this.$get("property");
+    if (!property) {
       throw new Error(
         `property not found for propertyGuid ${this.propertyGuid}`
       );
     }
-    return rule;
+    return property;
   }
 
   async logMessage(verb: "create" | "update" | "destroy") {
     let message = "";
-    const rule = await this.ensureProperty();
+    const property = await this.ensureProperty();
 
     switch (verb) {
       case "create":
-        message = `profileProperty "${rule.key}" created`;
+        message = `profileProperty "${property.key}" created`;
         break;
       case "update":
         const changedValueStrings = [];
@@ -131,11 +134,11 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
         });
 
         message = `profileProperty "${
-          rule.key
+          property.key
         }" updated: ${changedValueStrings.join(", ")}`;
         break;
       case "destroy":
-        message = `profileProperty "${rule.key}" destroyed`;
+        message = `profileProperty "${property.key}" destroyed`;
         break;
     }
 
@@ -143,17 +146,17 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   }
 
   async validateValue() {
-    const rule = await this.ensureProperty();
+    const property = await this.ensureProperty();
 
     // null values are always "unique", even for unique profile properties
     if (this.rawValue === null || this.rawValue === undefined) {
       return;
     }
 
-    if (rule.unique) {
+    if (property.unique) {
       const count = await ProfileProperty.count({
         where: {
-          propertyGuid: rule.guid,
+          propertyGuid: property.guid,
           rawValue: this.rawValue,
           profileGuid: { [Op.notIn]: [this.profileGuid] },
         },
@@ -161,7 +164,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
 
       if (count > 0) {
         throw new Error(
-          `Another profile already has the value ${this.rawValue} for property ${rule.key}`
+          `Another profile already has the value ${this.rawValue} for property ${property.key}`
         );
       }
     }

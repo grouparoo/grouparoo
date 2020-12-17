@@ -110,16 +110,16 @@ describe("modules/codeConfig", () => {
     });
 
     test("the bootstrapped property is created", async () => {
-      const rule = await Property.findOne({
+      const property = await Property.findOne({
         where: { directlyMapped: true },
       });
-      expect(rule.guid).toBe("rul_user_id");
-      expect(rule.key).toBe("User Id");
-      expect(rule.type).toBe("integer");
-      expect(rule.unique).toBe(true);
-      expect(rule.identifying).toBe(true);
-      expect(rule.state).toBe("ready");
-      expect(rule.locked).toBe("config:code");
+      expect(property.guid).toBe("rul_user_id");
+      expect(property.key).toBe("User Id");
+      expect(property.type).toBe("integer");
+      expect(property.unique).toBe(true);
+      expect(property.identifying).toBe(true);
+      expect(property.state).toBe("ready");
+      expect(property.locked).toBe("config:code");
     });
 
     test("schedules are created", async () => {

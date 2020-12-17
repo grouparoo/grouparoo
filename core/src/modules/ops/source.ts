@@ -291,7 +291,7 @@ export namespace SourceOps {
     guid?: string,
     transaction?: Transaction
   ) {
-    const rule = Property.build({
+    const property = Property.build({
       guid,
       key,
       type,
@@ -304,15 +304,15 @@ export namespace SourceOps {
 
     try {
       // manually run the hooks we want
-      Property.generateGuid(rule);
-      await Property.ensureUniqueKey(rule, { transaction });
-      await Property.ensureNonArrayAndUnique(rule);
-      await Property.ensureOneIdentifyingProperty(rule, { transaction });
+      Property.generateGuid(property);
+      await Property.ensureUniqueKey(property, { transaction });
+      await Property.ensureNonArrayAndUnique(property);
+      await Property.ensureOneIdentifyingProperty(property, { transaction });
 
       // danger zone!
-      await LoggedModel.logCreate(rule, { transaction });
+      await LoggedModel.logCreate(property, { transaction });
       // @ts-ignore
-      await rule.save({ hooks: false, transaction });
+      await property.save({ hooks: false, transaction });
 
       // build the default options
       const { pluginConnection } = await source.getPlugin();
@@ -337,13 +337,13 @@ export namespace SourceOps {
           }
         );
 
-        await rule.setOptions(ruleOptions, false, transaction);
+        await property.setOptions(ruleOptions, false, transaction);
       }
 
-      return rule;
+      return property;
     } catch (error) {
-      if (rule) {
-        await rule.destroy();
+      if (property) {
+        await property.destroy();
         throw error;
       }
     }

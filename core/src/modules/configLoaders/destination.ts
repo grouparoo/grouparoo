@@ -55,12 +55,12 @@ export async function loadDestination(
   let mapping = {};
   const sanitizedMappings = extractNonNullParts(configObject, "mapping");
   for (const key in sanitizedMappings) {
-    const rule = await getParentByName(
+    const property = await getParentByName(
       Property,
       sanitizedMappings[key],
       transaction
     );
-    mapping[key] = rule.key;
+    mapping[key] = property.key;
   }
   await destination.setMapping(mapping, transaction);
 
