@@ -117,9 +117,9 @@ export async function processConfigObjects(
           throw new Error(`unknown config object class: ${configObject.class}`);
       }
     } catch (error) {
-      const errorMessage = `[ config ] error with config object: ${JSON.stringify(
-        configObject
-      )} - ${error}`;
+      const errorMessage = `[ config ] error with ${
+        configObject?.class
+      }: ${JSON.stringify(configObject)} --> ${error}`;
       errors.push(errorMessage);
       log(errorMessage, env === "test" ? "info" : "emerg");
       continue;
