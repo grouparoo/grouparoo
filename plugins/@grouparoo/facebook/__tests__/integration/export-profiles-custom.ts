@@ -7,7 +7,7 @@ import { helper } from "@grouparoo/spec-helper";
 import {
   exportProfiles,
   setTestFunction,
-} from "../../src/lib/export/exportProfiles";
+} from "../../src/lib/export-custom/exportProfiles";
 import { sha } from "../../src/lib/export/data";
 import { Client, connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";

@@ -1,4 +1,4 @@
-import { getEncodeKey, getFieldType } from "./options";
+import { getEncodeKey, getFieldType } from "./fields";
 import ServerSideUtils from "./utils";
 
 export function userData(schema: string[], properties: { [key: string]: any }) {

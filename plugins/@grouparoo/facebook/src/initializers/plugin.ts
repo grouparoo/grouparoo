@@ -1,12 +1,7 @@
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
-
 import { test } from "./../lib/test";
-
-import { exportProfiles } from "../lib/export/exportProfiles";
-import { destinationOptions } from "../lib/export/destinationOptions";
-import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
-import { exportArrayProperties } from "../lib/export/exportArrayProperties";
+import { buildConnection as buildCustomConnection } from "../lib/export-custom/connection";
 
 const packageJSON = require("./../../package.json");
 
@@ -41,36 +36,7 @@ export class Plugins extends Initializer {
           methods: { test },
         },
       ],
-      connections: [
-        {
-          name: "facebook-audiences-custom",
-          direction: "export",
-          description: "Export to Facebook Custom Audiences",
-          app: "facebook",
-          options: [
-            {
-              key: "primaryKey",
-              displayName: "Primary Key",
-              required: true,
-              description:
-                "Which field should uniquely identify Facebook users?",
-            },
-            {
-              key: "syncMode",
-              displayName: "Sync Mode",
-              required: true,
-              description:
-                "How should Grouparoo update Facebook audiences? Users can often not be deleted from small audiences.",
-            },
-          ],
-          methods: {
-            exportProfiles,
-            destinationOptions,
-            destinationMappingOptions,
-            exportArrayProperties,
-          },
-        },
-      ],
+      connections: [buildCustomConnection()],
     });
   }
 

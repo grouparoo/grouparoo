@@ -5,6 +5,7 @@ import {
   SimpleDestinationOptions,
 } from "@grouparoo/core";
 import { log } from "actionhero";
+import { FacebookModel } from "./model";
 
 const FIELDS = {
   // don't need to hash. can be used to update and delete
@@ -74,7 +75,7 @@ const FIELDS = {
 };
 
 export const getMappingFields = (
-  destinationOptions: SimpleDestinationOptions
+  model: FacebookModel
 ): {
   required: Array<{
     key: string;
@@ -86,7 +87,7 @@ export const getMappingFields = (
     important?: boolean;
   }>;
 } => {
-  const { primaryKey } = destinationOptions;
+  const { primaryKey } = model;
   const required = [];
   let known = [];
   for (const key in FIELDS) {
@@ -105,7 +106,9 @@ export const getMappingFields = (
   return { required, known };
 };
 
-export const getFieldList = (): DestinationOptionsMethodResponse => {
+export const getFieldList = (
+  model: FacebookModel
+): DestinationOptionsMethodResponse => {
   const out: DestinationOptionsMethodResponse = {};
   Object.assign(out, getPrimaryKeys());
   Object.assign(out, getSyncModes());
