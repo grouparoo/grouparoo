@@ -46,7 +46,7 @@ export namespace SourceOps {
 
     try {
       // if the options aren't set yet, return an empty array of rows
-      await source.validateOptions(sourceOptions);
+      await source.validateOptions(sourceOptions, transaction);
     } catch {
       return [];
     }
@@ -59,7 +59,6 @@ export namespace SourceOps {
     if (!pluginConnection.methods.sourcePreview) {
       throw new Error(`cannot return a source preview for ${source.type}`);
     }
-
     return pluginConnection.methods.sourcePreview({
       connection,
       app,

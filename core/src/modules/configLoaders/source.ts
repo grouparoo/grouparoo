@@ -46,6 +46,11 @@ export async function loadSource(
     transaction
   );
 
+  // a form of testing the options
+  if (await source.previewAvailable()) {
+    await source.sourcePreview(null, transaction);
+  }
+
   let bootstrappedProperty: Property;
   let mappedProfileProperty: Property;
   let mapping = {};
