@@ -27,12 +27,18 @@ export class RunRecurringInternalRun extends Task {
       order: [["createdAt", "desc"]],
     });
 
-    if (
-      !lastRun ||
-      lastRun.state !== "running" ||
-      new Date().getTime() - lastRun.createdAt.getTime() >= frequency
-    ) {
-      await internalRun("task", this.name);
+    let toRun = false;
+
+    if (!lastRun) {
+      toRun = true;
     }
+    if (new Date().getTime() - lastRun?.createdAt?.getTime() >= frequency) {
+      toRun = true;
+    }
+    if (lastRun?.state === "running") {
+      toRun = false;
+    }
+
+    if (toRun) await internalRun("task", this.name);
   }
 }
