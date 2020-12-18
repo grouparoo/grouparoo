@@ -7,13 +7,13 @@ import { helper } from "@grouparoo/spec-helper";
 describe("model/group", () => {
   let group: Group;
   let luigi: Profile;
-  let emailRule: Property;
+  let emailProperty: Property;
 
   beforeAll(async () => {
     const response = await SharedGroupTests.beforeAll();
     luigi = response.luigi;
 
-    emailRule = await Property.findOne({
+    emailProperty = await Property.findOne({
       where: { key: "email" },
     });
   }, helper.setupTime);
@@ -83,7 +83,7 @@ describe("model/group", () => {
 
       describe("with arrays", () => {
         beforeAll(async () => {
-          await emailRule.update({ isArray: true, unique: false });
+          await emailProperty.update({ isArray: true, unique: false });
           await luigi.addOrUpdateProperties({
             email: ["luigi@example.com", "ghostbuster@example.com"],
           });

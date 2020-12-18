@@ -50,12 +50,12 @@ export class PropertiesList extends AuthenticatedAction {
     const responseExamples: { [guid: string]: string[] } = {};
 
     for (const i in properties) {
-      const rule = properties[i];
-      const apiData = await rule.apiData();
+      const property = properties[i];
+      const apiData = await property.apiData();
 
       const examples = await ProfileProperty.findAll({
         where: {
-          propertyGuid: rule.guid,
+          propertyGuid: property.guid,
           rawValue: { [Op.not]: null },
         },
         order: [["guid", "asc"]],
@@ -64,7 +64,7 @@ export class PropertiesList extends AuthenticatedAction {
       const exampleValues = examples.map((e) => e.rawValue);
 
       responseProperties.push(apiData);
-      responseExamples[rule.guid] = exampleValues;
+      responseExamples[property.guid] = exampleValues;
     }
 
     const total = await Property.scope(null).count();

@@ -1,30 +1,39 @@
 import {
   ConfigurationObject,
-  codeConfigLockKey,
+  getCodeConfigLockKey,
   getParentByName,
   logModel,
   validateAndFormatGuid,
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { Team, TeamMember } from "../..";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 
-export async function loadTeamMember(configObject: ConfigurationObject) {
+export async function loadTeamMember(
+  configObject: ConfigurationObject,
+  externallyValidate: boolean,
+  transaction?: Transaction
+) {
   let isNew = false;
 
-  const team: Team = await getParentByName(Team, configObject.teamId);
+  const team: Team = await getParentByName(
+    Team,
+    configObject.teamId,
+    transaction
+  );
 
   const guid = await validateAndFormatGuid(TeamMember, configObject.id);
   validateConfigObjectKeys(TeamMember, configObject);
 
   let teamMember = await TeamMember.scope(null).findOne({
-    where: { locked: codeConfigLockKey, guid },
+    where: { locked: getCodeConfigLockKey(), guid },
+    transaction,
   });
   if (!teamMember) {
     isNew = true;
     teamMember = TeamMember.build({
       guid,
-      locked: codeConfigLockKey,
+      locked: getCodeConfigLockKey(),
       email: configObject.email,
       teamGuid: team.guid,
     });
@@ -37,23 +46,29 @@ export async function loadTeamMember(configObject: ConfigurationObject) {
   if (configObject?.options?.lastName) {
     teamMember.lastName = configObject.options.lastName;
   }
-  await teamMember.save();
+  await teamMember.save({ transaction });
 
   if (configObject?.options?.password) {
-    await teamMember.updatePassword(configObject.options.password);
+    await teamMember.updatePassword(configObject.options.password, transaction);
   }
 
-  logModel(teamMember, isNew ? "created" : "updated");
+  logModel(
+    teamMember,
+    transaction ? "validated" : isNew ? "created" : "updated"
+  );
+
   return teamMember;
 }
 
 export async function deleteTeamMembers(guids: string[]) {
   const teamMembers = await TeamMember.scope(null).findAll({
-    where: { locked: codeConfigLockKey, guid: { [Op.notIn]: guids } },
+    where: { locked: getCodeConfigLockKey(), guid: { [Op.notIn]: guids } },
   });
 
   for (const i in teamMembers) {
     await teamMembers[i].destroy();
     logModel(teamMembers[i], "deleted");
   }
+
+  return teamMembers.map((instance) => instance.guid);
 }

@@ -13,7 +13,7 @@ import {
   DefaultScope,
 } from "sequelize-typescript";
 import { api, redis } from "actionhero";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Source } from "./Source";
 import { Option } from "./Option";
@@ -35,7 +35,14 @@ export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}
 
 const STATES = ["draft", "ready"] as const;
 const STATE_TRANSITIONS = [
-  { from: "draft", to: "ready", checks: ["validateOptions"] },
+  {
+    from: "draft",
+    to: "ready",
+    checks: [
+      (instance: App, transaction?: Transaction) =>
+        instance.validateOptions(null, transaction),
+    ],
+  },
 ];
 
 @DefaultScope(() => ({
@@ -78,47 +85,47 @@ export class App extends LoggedModel<App> {
     return pluginApp.methods.appOptions();
   }
 
-  async getOptions(sourceFromEnvironment = true) {
-    return OptionHelper.getOptions(this, sourceFromEnvironment);
+  async getOptions(sourceFromEnvironment = true, transaction?: Transaction) {
+    return OptionHelper.getOptions(this, sourceFromEnvironment, transaction);
   }
 
-  async setOptions(options: SimpleAppOptions) {
-    return OptionHelper.setOptions(this, options);
+  async setOptions(options: SimpleAppOptions, transaction?) {
+    return OptionHelper.setOptions(this, options, transaction);
   }
 
   async afterSetOptions(hasChanges: boolean) {
     if (hasChanges) await redis.doCluster("api.rpc.app.disconnect");
   }
 
-  async validateOptions(options?: SimpleAppOptions) {
-    if (!options) options = await this.getOptions();
-    return OptionHelper.validateOptions(this, options);
+  async validateOptions(options?: SimpleAppOptions, transaction?: Transaction) {
+    if (!options) options = await this.getOptions(true, transaction);
+    return OptionHelper.validateOptions(this, options, null, transaction);
   }
 
-  async getPlugin() {
-    return OptionHelper.getPlugin(this);
+  async getPlugin(transaction?: Transaction) {
+    return OptionHelper.getPlugin(this, transaction);
   }
 
   async setConnection(connection) {
     api.plugins.persistentConnections[this.guid] = connection;
   }
 
-  async getConnection() {
+  async getConnection(transaction?: Transaction) {
     const connection = api.plugins.persistentConnections[this.guid];
-    if (!connection) return this.connect();
+    if (!connection) return this.connect(null, transaction);
     return connection;
   }
 
-  async connect(options?: SimpleAppOptions) {
-    return AppOps.connect(this, options);
+  async connect(options?: SimpleAppOptions, transaction?: Transaction) {
+    return AppOps.connect(this, options, null, transaction);
   }
 
-  async disconnect() {
-    return AppOps.disconnect(this);
+  async disconnect(transaction?: Transaction) {
+    return AppOps.disconnect(this, undefined, transaction);
   }
 
-  async test(options?: SimpleAppOptions) {
-    return AppOps.test(this, options);
+  async test(options?: SimpleAppOptions, transaction?: Transaction) {
+    return AppOps.test(this, options, transaction);
   }
 
   async getParallelism(): Promise<number> {
@@ -202,8 +209,11 @@ export class App extends LoggedModel<App> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
+  static async findByGuid(guid: string, transaction?: Transaction) {
+    const instance = await this.scope(null).findOne({
+      where: { guid },
+      transaction,
+    });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
@@ -215,9 +225,10 @@ export class App extends LoggedModel<App> {
   }
 
   @BeforeCreate
-  static async checkMaxInstances(instance: App) {
+  static async checkMaxInstances(instance: App, { transaction }) {
     const count = await App.scope(null).count({
       where: { type: instance.type },
+      transaction,
     });
     const { pluginApp } = await instance.getPlugin();
     if (
@@ -253,8 +264,8 @@ export class App extends LoggedModel<App> {
   }
 
   @BeforeSave
-  static async updateState(instance: App) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  static async updateState(instance: App, { transaction }) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS, transaction);
   }
 
   @BeforeSave

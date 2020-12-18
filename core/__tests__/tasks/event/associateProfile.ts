@@ -14,12 +14,12 @@ describe("tasks/event:associateProfile", () => {
   }, helper.setupTime);
 
   beforeAll(async () => {
-    const userIdRule = await Property.findOne({
+    const userIdProperty = await Property.findOne({
       where: { key: "userId" },
     });
     const eventApp = await App.create({ type: "events", name: "events" });
     await eventApp.setOptions({
-      identifyingPropertyGuid: userIdRule.guid,
+      identifyingPropertyGuid: userIdProperty.guid,
     });
     await eventApp.update({ state: "ready" });
   });

@@ -1,4 +1,5 @@
 import { api, log, id } from "actionhero";
+import { Transaction } from "sequelize";
 import { App, SimpleAppOptions } from "../../models/App";
 import { waitForLock } from "../locks";
 import { OptionHelper } from "../optionHelper";
@@ -10,13 +11,14 @@ export namespace AppOps {
   export async function connect(
     app: App,
     options?: SimpleAppOptions,
-    forceReconnect = false
+    forceReconnect = false,
+    transaction?: Transaction
   ) {
-    const { pluginApp } = await app.getPlugin();
+    const { pluginApp } = await app.getPlugin(transaction);
     if (!pluginApp.methods.connect) return;
 
     let connection;
-    const appOptions = await app.getOptions();
+    const appOptions = await app.getOptions(true, transaction);
     const { releaseLock } = await getConnectionLock(app);
 
     try {
@@ -29,7 +31,10 @@ export namespace AppOps {
         }
       }
 
-      log(`connecting to app ${app.name} - ${pluginApp.name} (${app.guid})`);
+      log(
+        `connecting to app ${app.name} - ${pluginApp.name} (${app.guid})`,
+        "debug"
+      );
 
       connection = await pluginApp.methods.connect({
         app,
@@ -48,9 +53,13 @@ export namespace AppOps {
   /**
    * Disconnect from an App
    */
-  export async function disconnect(app: App, alreadyLocked = false) {
-    const appOptions = await app.getOptions();
-    const { pluginApp } = await app.getPlugin();
+  export async function disconnect(
+    app: App,
+    alreadyLocked = false,
+    transaction?: Transaction
+  ) {
+    const appOptions = await app.getOptions(true, transaction);
+    const { pluginApp } = await app.getPlugin(transaction);
 
     if (!pluginApp.methods.disconnect) return;
 
@@ -65,7 +74,8 @@ export namespace AppOps {
 
       if (connection) {
         log(
-          `disconnecting from app ${app.name} - ${pluginApp.name} (${app.guid})`
+          `disconnecting from app ${app.name} - ${pluginApp.name} (${app.guid})`,
+          "debug"
         );
         await pluginApp.methods.disconnect({
           app,
@@ -83,21 +93,22 @@ export namespace AppOps {
   /**
    * Test an App's Connection
    */
-  export async function test(app: App, options?: SimpleAppOptions) {
+  export async function test(
+    app: App,
+    options?: SimpleAppOptions,
+    transaction?: Transaction
+  ) {
     let success = false;
     let message: string;
     let error;
 
-    const { pluginApp } = await app.getPlugin();
+    const { pluginApp } = await app.getPlugin(transaction);
     if (!pluginApp) {
       throw new Error(`cannot find a pluginApp type of ${app.type}`);
     }
 
-    if (!options) {
-      options = await app.getOptions();
-    } else {
-      options = OptionHelper.sourceEnvironmentVariableOptions(app, options);
-    }
+    if (!options) options = await app.getOptions(true, transaction);
+    options = OptionHelper.sourceEnvironmentVariableOptions(app, options);
 
     try {
       let connection;
@@ -114,6 +125,7 @@ export namespace AppOps {
         appGuid: app.guid,
         appOptions: options,
         connection,
+        transaction,
       });
       message = result.message;
       success = result.success;

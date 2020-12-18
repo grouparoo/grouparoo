@@ -27,11 +27,17 @@ export namespace OptionHelper {
 
   export async function getOptions(
     instance: Source | Destination | Schedule | Property | App,
-    sourceFromEnvironment = true
+    sourceFromEnvironment = true,
+    transaction?: Transaction
   ) {
+    if (sourceFromEnvironment === null || sourceFromEnvironment === undefined) {
+      sourceFromEnvironment = true;
+    }
+
     let optionsObject: SimpleOptions = {};
     const options = await Option.findAll({
       where: { ownerGuid: instance.guid },
+      transaction,
     });
 
     options.forEach((option) => {
@@ -47,10 +53,11 @@ export namespace OptionHelper {
 
   export async function setOptions(
     instance: Source | Destination | Schedule | Property | App,
-    options: SimpleOptions
+    options: SimpleOptions,
+    transaction?: Transaction
   ) {
-    await validateOptions(instance, options);
-    const oldOptions = await getOptions(instance, false);
+    await validateOptions(instance, options, null, transaction);
+    const oldOptions = await getOptions(instance, false, transaction);
     let hasChanges = false;
 
     for (const i in oldOptions) {
@@ -67,9 +74,13 @@ export namespace OptionHelper {
     if (!hasChanges) return;
     await LockableHelper.beforeUpdateOptions(instance, hasChanges);
 
-    const transaction = await api.sequelize.transaction({
-      lock: Transaction.LOCK.UPDATE,
-    });
+    let toCommit = false;
+    if (!transaction) {
+      transaction = await api.sequelize.transaction({
+        lock: Transaction.LOCK.UPDATE,
+      });
+      toCommit = true;
+    }
 
     try {
       await Option.destroy({
@@ -97,27 +108,28 @@ export namespace OptionHelper {
       // @ts-ignore
       await instance.save({ transaction, hooks: false });
 
-      await transaction.commit();
+      if (toCommit) await transaction.commit();
 
-      // if there's an afterSetMapping hook
-      if (typeof instance["afterSetOptions"] === "function") {
+      // if there's an afterSetMapping hook and we want to commit our changes
+      if (toCommit && typeof instance["afterSetOptions"] === "function") {
         await instance["afterSetOptions"](hasChanges);
       }
     } catch (error) {
-      await transaction.rollback();
+      if (toCommit) await transaction.rollback();
       throw error;
     }
   }
 
   export async function getPlugin(
-    instance: Source | Destination | Schedule | Property | App
+    instance: Source | Destination | Schedule | Property | App,
+    transaction?: Transaction
   ) {
     let match: {
       plugin: GrouparooPlugin;
       pluginConnection: PluginConnection;
       pluginApp: PluginApp;
     } = { plugin: null, pluginConnection: null, pluginApp: null };
-    const type = await getInstanceType(instance);
+    const type = await getInstanceType(instance, transaction);
     api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
       if (plugin.apps) {
         plugin.apps.forEach((pluginApp) => {
@@ -144,7 +156,8 @@ export namespace OptionHelper {
   export async function validateOptions(
     instance: Source | Destination | Schedule | Property | App,
     options: { [key: string]: string },
-    allowEmpty = false
+    allowEmpty = false,
+    transaction?: Transaction
   ) {
     let requiredOptions: string[];
     let allOptions: string[];
@@ -153,31 +166,37 @@ export namespace OptionHelper {
       return;
     }
 
-    const type = await getInstanceType(instance);
+    const type = await getInstanceType(instance, transaction);
 
     if (instance instanceof Source) {
-      requiredOptions = await getRequiredConnectionOptions(instance);
-      const { pluginConnection } = await getPlugin(instance);
+      requiredOptions = await getRequiredConnectionOptions(
+        instance,
+        transaction
+      );
+      const { pluginConnection } = await getPlugin(instance, transaction);
       allOptions = pluginConnection.options.map((o) => o.key);
     } else if (instance instanceof Destination) {
-      requiredOptions = await getRequiredConnectionOptions(instance);
-      const { pluginConnection } = await getPlugin(instance);
+      requiredOptions = await getRequiredConnectionOptions(
+        instance,
+        transaction
+      );
+      const { pluginConnection } = await getPlugin(instance, transaction);
       allOptions = pluginConnection.options.map((o) => o.key);
     } else if (instance instanceof Schedule) {
-      requiredOptions = await getRequiredScheduleOptions(instance);
-      const { pluginConnection } = await getPlugin(instance);
+      requiredOptions = await getRequiredScheduleOptions(instance, transaction);
+      const { pluginConnection } = await getPlugin(instance, transaction);
       allOptions = pluginConnection.scheduleOptions
         ? pluginConnection.scheduleOptions.map((o) => o.key)
         : [];
     } else if (instance instanceof Property) {
-      requiredOptions = await getRequiredPropertyOptions(instance);
-      const { pluginConnection } = await getPlugin(instance);
+      requiredOptions = await getRequiredPropertyOptions(instance, transaction);
+      const { pluginConnection } = await getPlugin(instance, transaction);
       allOptions = pluginConnection.propertyOptions
         ? pluginConnection.propertyOptions.map((o) => o.key)
         : [];
     } else if (instance instanceof App) {
-      requiredOptions = await getRequiredAppOptions(instance);
-      const { pluginApp } = await getPlugin(instance);
+      requiredOptions = await getRequiredAppOptions(instance, transaction);
+      const { pluginApp } = await getPlugin(instance, transaction);
       allOptions = pluginApp.options.map((o) => o.key);
     } else {
       throw new Error(`cannot get required options`);
@@ -207,10 +226,11 @@ export namespace OptionHelper {
   }
 
   export async function getRequiredConnectionOptions(
-    instance: Source | Destination
+    instance: Source | Destination,
+    transaction?: Transaction
   ) {
-    const { pluginConnection } = await getPlugin(instance);
-    const type = await getInstanceType(instance);
+    const { pluginConnection } = await getPlugin(instance, transaction);
+    const type = await getInstanceType(instance, transaction);
 
     if (!pluginConnection) {
       throw new Error(`cannot find a pluginConnection for type ${type}`);
@@ -219,9 +239,12 @@ export namespace OptionHelper {
     return pluginConnection.options.filter((o) => o.required).map((o) => o.key);
   }
 
-  export async function getRequiredScheduleOptions(instance: Schedule) {
-    const { pluginConnection } = await getPlugin(instance);
-    const type = await getInstanceType(instance);
+  export async function getRequiredScheduleOptions(
+    instance: Schedule,
+    transaction?: Transaction
+  ) {
+    const { pluginConnection } = await getPlugin(instance, transaction);
+    const type = await getInstanceType(instance, transaction);
 
     if (!pluginConnection) {
       throw new Error(`cannot find a pluginConnection for type ${type}`);
@@ -236,10 +259,12 @@ export namespace OptionHelper {
       .map((o) => o.key);
   }
 
-  export async function getRequiredPropertyOptions(instance: Property) {
-    const { pluginConnection } = await getPlugin(instance);
-    const type = await getInstanceType(instance);
-
+  export async function getRequiredPropertyOptions(
+    instance: Property,
+    transaction?: Transaction
+  ) {
+    const { pluginConnection } = await getPlugin(instance, transaction);
+    const type = await getInstanceType(instance, transaction);
     if (!pluginConnection) {
       throw new Error(`cannot find a pluginConnection for type ${type}`);
     }
@@ -253,9 +278,12 @@ export namespace OptionHelper {
       .map((o) => o.key);
   }
 
-  export async function getRequiredAppOptions(instance: App) {
-    const { pluginApp } = await getPlugin(instance);
-    const type = await getInstanceType(instance);
+  export async function getRequiredAppOptions(
+    instance: App,
+    transaction?: Transaction
+  ) {
+    const { pluginApp } = await getPlugin(instance, transaction);
+    const type = await getInstanceType(instance, transaction);
 
     if (!pluginApp) throw new Error(`cannot find a pluginApp for type ${type}`);
 
@@ -263,7 +291,8 @@ export namespace OptionHelper {
   }
 
   async function getInstanceType(
-    instance: Source | Destination | Schedule | Property | App
+    instance: Source | Destination | Schedule | Property | App,
+    transaction?: Transaction
   ) {
     let type = instance["type"];
 
@@ -271,10 +300,9 @@ export namespace OptionHelper {
       if (instance["sourceGuid"]) {
         const source = await Source.scope(null).findOne({
           where: { guid: instance["sourceGuid"] },
+          transaction,
         });
-        if (source) {
-          type = source.type;
-        }
+        if (source) type = source.type;
       }
     }
 

@@ -45,18 +45,18 @@ describe("tasks/profileProperties:enqueue", () => {
 
       it("will not crash when there is a property without a ready source", async () => {
         const source = await helper.factories.source();
-        const rule = await source.bootstrapUniqueProperty(
+        const property = await source.bootstrapUniqueProperty(
           "userId",
           "integer",
           "user-id"
         );
         expect(source.state).toBe("draft");
-        expect(rule.state).toBe("ready");
+        expect(property.state).toBe("ready");
         await specHelper.runTask("profileProperties:enqueue", {}); // does not throw
       });
     });
 
-    describe("with rules", () => {
+    describe("with properties", () => {
       beforeAll(async () => {
         await helper.factories.properties();
         propertiesCount = await Property.scope(null).count();

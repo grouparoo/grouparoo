@@ -196,7 +196,7 @@ describe("models/source", () => {
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
-      const rule = await Property.create({
+      const property = await Property.create({
         key: "thing",
         type: "string",
         sourceGuid: source.guid,
@@ -206,7 +206,7 @@ describe("models/source", () => {
         /cannot delete a source that has a property/
       );
 
-      await rule.destroy();
+      await property.destroy();
       await source.destroy();
     });
 
@@ -426,39 +426,39 @@ describe("models/source", () => {
     });
 
     test("it can remove identifying from other properties", async () => {
-      const rule = await Property.findOne({
+      const property = await Property.findOne({
         where: { identifying: true },
       });
-      rule.identifying = false;
-      await rule.save();
+      property.identifying = false;
+      await property.save();
     });
 
     test("bootstrapUniqueProperty will create a new property", async () => {
-      const rule = await source.bootstrapUniqueProperty(
+      const property = await source.bootstrapUniqueProperty(
         "uniqueId",
         "integer",
         "id"
       );
 
-      expect(rule.key).toBe("uniqueId");
-      expect(rule.type).toBe("integer");
-      expect(rule.isArray).toBe(false);
-      expect(rule.identifying).toBe(true);
-      expect(rule.state).toBe("ready");
-      expect(rule.unique).toBe(true);
+      expect(property.key).toBe("uniqueId");
+      expect(property.type).toBe("integer");
+      expect(property.isArray).toBe(false);
+      expect(property.identifying).toBe(true);
+      expect(property.state).toBe("ready");
+      expect(property.unique).toBe(true);
 
-      await rule.destroy();
+      await property.destroy();
     });
 
     test("the plugin provides uniquePropertyBootstrapOptions", async () => {
-      const rule = await Property.findOne({
+      const property = await Property.findOne({
         where: { key: "userId" },
       });
-      const options = await rule.getOptions();
+      const options = await property.getOptions();
       expect(options).toEqual({ column: "__default_column" }); // from the plugin; see specHelper.ts
     });
 
-    test("bootstrapUniqueProperty will fail if the rule cannot be created", async () => {
+    test("bootstrapUniqueProperty will fail if the property cannot be created", async () => {
       await expect(
         source.bootstrapUniqueProperty("userId", "integer", "id")
       ).rejects.toThrow(/already in use/);
@@ -468,7 +468,7 @@ describe("models/source", () => {
   describe("import", () => {
     let source: Source;
     let profile: Profile;
-    let lnameRule: Property;
+    let lnameProperty: Property;
     let originalProfilePropertyMethod;
 
     beforeAll(async () => {
@@ -484,7 +484,7 @@ describe("models/source", () => {
       profile = await helper.factories.profile();
       await profile.addOrUpdateProperties({ userId: [1000] });
 
-      lnameRule = await Property.create({
+      lnameProperty = await Property.create({
         key: "__fname",
         sourceGuid: source.guid,
         type: "string",
@@ -497,7 +497,7 @@ describe("models/source", () => {
 
     afterAll(async () => {
       await profile.destroy();
-      await lnameRule.destroy();
+      await lnameProperty.destroy();
       await source.destroy();
     });
 
@@ -507,39 +507,45 @@ describe("models/source", () => {
       )[0].connections[0].methods.profileProperty = originalProfilePropertyMethod;
     });
 
-    test("it will not import a draft rule (single)", async () => {
-      expect(lnameRule.state).toBe("draft");
-      const property = await source.importProfileProperty(profile, lnameRule);
+    test("it will not import a draft property (single)", async () => {
+      expect(lnameProperty.state).toBe("draft");
+      const property = await source.importProfileProperty(
+        profile,
+        lnameProperty
+      );
       expect(property).toBeUndefined();
     });
 
-    test("it will not import a draft rule (batch)", async () => {
-      expect(lnameRule.state).toBe("draft");
+    test("it will not import a draft property (batch)", async () => {
+      expect(lnameProperty.state).toBe("draft");
       const properties = await source.import(profile);
       expect(properties).toEqual({});
     });
 
     test("it can import one profile property for a profile", async () => {
-      await lnameRule.setOptions({ column: "lname" });
-      await lnameRule.update({ state: "ready" });
-      const property = await source.importProfileProperty(profile, lnameRule);
+      await lnameProperty.setOptions({ column: "lname" });
+      await lnameProperty.update({ state: "ready" });
+      const property = await source.importProfileProperty(
+        profile,
+        lnameProperty
+      );
       expect(property).toEqual("...mario");
     });
 
     test("it can import one profile property for a profile with an override of the property options", async () => {
       await expect(
-        source.importProfileProperty(profile, lnameRule, {
+        source.importProfileProperty(profile, lnameProperty, {
           something: "else",
         })
       ).rejects.toThrow(/column is required/);
 
-      await source.importProfileProperty(profile, lnameRule, {
+      await source.importProfileProperty(profile, lnameProperty, {
         column: "abc",
       }); // does not throw
     });
 
     test("it can import one profile property for a profile with an override of the property filters", async () => {
-      await source.importProfileProperty(profile, lnameRule, null, []); // does not throw
+      await source.importProfileProperty(profile, lnameProperty, null, []); // does not throw
     });
 
     test("it can import all profile properties for this source, mapped to the keys properly", async () => {

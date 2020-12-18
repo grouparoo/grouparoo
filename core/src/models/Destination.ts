@@ -44,7 +44,14 @@ export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 
 const STATES = ["draft", "ready"] as const;
 const STATE_TRANSITIONS = [
-  { from: "draft", to: "ready", checks: ["validateOptions"] },
+  {
+    from: "draft",
+    to: "ready",
+    checks: [
+      (instance: Destination, transaction?: Transaction) =>
+        instance.validateOptions(null, transaction),
+    ],
+  },
   { from: "draft", to: "deleted", checks: [] },
   { from: "ready", to: "deleted", checks: [] },
 ];
@@ -140,33 +147,40 @@ export class Destination extends LoggedModel<Destination> {
     return ExportOps.totals({ destinationGuid: this.guid });
   }
 
-  async getMapping() {
-    return MappingHelper.getMapping(this);
+  async getMapping(transaction?: Transaction) {
+    return MappingHelper.getMapping(this, transaction);
   }
 
-  async setMapping(mappings: DestinationMapping) {
-    await this.validateMappings(mappings);
-    return MappingHelper.setMapping(this, mappings);
+  async setMapping(
+    mappings: DestinationMapping,
+    transaction?: Transaction,
+    externallyValidate = true
+  ) {
+    if (externallyValidate) await this.validateMappings(mappings, transaction);
+    return MappingHelper.setMapping(this, mappings, transaction);
   }
 
-  async getOptions() {
-    return OptionHelper.getOptions(this);
+  async getOptions(sourceFromEnvironment = true, transaction?: Transaction) {
+    return OptionHelper.getOptions(this, sourceFromEnvironment, transaction);
   }
 
-  async setOptions(options: SimpleDestinationOptions) {
-    await this.validateUniqueAppAndOptions(options);
-    return OptionHelper.setOptions(this, options);
+  async setOptions(
+    options: SimpleDestinationOptions,
+    transaction?: Transaction
+  ) {
+    await this.validateUniqueAppAndOptions(options, transaction);
+    return OptionHelper.setOptions(this, options, transaction);
   }
 
-  async getExportArrayProperties() {
-    return DestinationOps.getExportArrayProperties(this);
+  async getExportArrayProperties(transaction?: Transaction) {
+    return DestinationOps.getExportArrayProperties(this, transaction);
   }
 
-  async getDestinationGroupMemberships(): Promise<
-    SimpleDestinationGroupMembership[]
-  > {
+  async getDestinationGroupMemberships(
+    transaction?: Transaction
+  ): Promise<SimpleDestinationGroupMembership[]> {
     const destinationGroupMemberships = await DestinationGroupMembership.findAll(
-      { where: { destinationGuid: this.guid }, include: [Group] }
+      { where: { destinationGuid: this.guid }, include: [Group], transaction }
     );
 
     return destinationGroupMemberships.map((dgm) => {
@@ -178,19 +192,26 @@ export class Destination extends LoggedModel<Destination> {
     });
   }
 
-  async setDestinationGroupMemberships(newDestinationGroupMemberships: {
-    [groupGuid: string]: string;
-  }) {
+  async setDestinationGroupMemberships(
+    newDestinationGroupMemberships: {
+      [groupGuid: string]: string;
+    },
+    transaction?: Transaction
+  ) {
     for (const groupGuid in newDestinationGroupMemberships) {
-      const group = await Group.findByGuid(groupGuid);
+      const group = await Group.findByGuid(groupGuid, transaction);
       if (group.state === "draft" || group.state === "deleted") {
         throw new Error(`group ${group.name} is not ready`);
       }
     }
 
-    const transaction = await api.sequelize.transaction({
-      lock: Transaction.LOCK.UPDATE,
-    });
+    let toCommit = false;
+    if (!transaction) {
+      transaction = await api.sequelize.transaction({
+        lock: Transaction.LOCK.UPDATE,
+      });
+      toCommit = true;
+    }
 
     try {
       await DestinationGroupMembership.destroy({
@@ -211,50 +232,56 @@ export class Destination extends LoggedModel<Destination> {
         );
       }
 
-      await transaction.commit();
+      if (toCommit) await transaction.commit();
       return this.getDestinationGroupMemberships();
     } catch (error) {
-      await transaction.rollback();
+      if (toCommit) await transaction.rollback();
       throw error;
     }
   }
 
-  async validateOptions(options: SimpleDestinationOptions) {
-    if (!options) {
-      options = await this.getOptions();
-    }
-
-    return OptionHelper.validateOptions(this, options);
+  async validateOptions(
+    options: SimpleDestinationOptions,
+    transaction?: Transaction
+  ) {
+    if (!options) options = await this.getOptions(true, transaction);
+    return OptionHelper.validateOptions(this, options, null, transaction);
   }
 
-  async getPlugin() {
-    return OptionHelper.getPlugin(this);
+  async getPlugin(transaction?: Transaction) {
+    return OptionHelper.getPlugin(this, transaction);
   }
 
   async exportGroupMembers(force = false) {
     return DestinationOps.exportGroupMembers(this, force);
   }
 
-  async trackGroup(group: Group) {
-    return DestinationOps.trackGroup(this, group);
+  async trackGroup(group: Group, transaction?: Transaction) {
+    return DestinationOps.trackGroup(this, group, transaction);
   }
 
-  async unTrackGroup() {
-    return DestinationOps.unTrackGroup(this);
+  async unTrackGroup(transaction?: Transaction) {
+    return DestinationOps.unTrackGroup(this, transaction);
   }
 
-  async validateMappings(mappings: { [key: string]: string }) {
+  async validateMappings(
+    mappings: { [key: string]: string },
+    transaction?: Transaction
+  ) {
     if (Object.keys(mappings).length === 0) return;
 
     const destinationMappingOptions = await this.destinationMappingOptions(
-      false
+      false,
+      transaction
     );
-    const rules = await Property.findAll();
-    const exportArrayProperties = await this.getExportArrayProperties();
+    const properties = await Property.findAll({ transaction });
+    const exportArrayProperties = await this.getExportArrayProperties(
+      transaction
+    );
 
     // check for array properties
     Object.values(mappings).forEach((k) => {
-      const property = rules.find((r) => r.key === k);
+      const property = properties.find((r) => r.key === k);
       if (
         property &&
         property.isArray &&
@@ -274,7 +301,7 @@ export class Destination extends LoggedModel<Destination> {
         throw new Error(`${opt.key} is a required destination mapping option`);
       }
 
-      const property = rules.find((r) => r.key === mappings[opt.key]);
+      const property = properties.find((r) => r.key === mappings[opt.key]);
       const validDestinationTypes = property?.type
         ? Object.keys(destinationTypeConversions[property.type])
         : [];
@@ -289,7 +316,7 @@ export class Destination extends LoggedModel<Destination> {
     // known
     for (const i in destinationMappingOptions.properties.known) {
       const opt = destinationMappingOptions.properties.known[i];
-      const property = rules.find((r) => r.key === mappings[opt.key]);
+      const property = properties.find((r) => r.key === mappings[opt.key]);
       const validDestinationTypes = property?.type
         ? Object.keys(destinationTypeConversions[property.type])
         : [];
@@ -320,16 +347,18 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async destinationConnectionOptions(
-    destinationOptions: SimpleDestinationOptions = {}
+    destinationOptions: SimpleDestinationOptions = {},
+    transaction?: Transaction
   ) {
     return DestinationOps.destinationConnectionOptions(
       this,
-      destinationOptions
+      destinationOptions,
+      transaction
     );
   }
 
-  async destinationMappingOptions(cached?: boolean) {
-    return DestinationOps.destinationMappingOptions(this, cached);
+  async destinationMappingOptions(cached?: boolean, transaction?: Transaction) {
+    return DestinationOps.destinationMappingOptions(this, cached, transaction);
   }
 
   async profilePreview(
@@ -372,19 +401,23 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.sendExports(this, _exports, sync);
   }
 
-  async validateUniqueAppAndOptions(options?: SimpleDestinationOptions) {
-    if (!options) options = await this.getOptions();
+  async validateUniqueAppAndOptions(
+    options?: SimpleDestinationOptions,
+    transaction?: Transaction
+  ) {
+    if (!options) options = await this.getOptions(true, transaction);
     const otherDestinations = await Destination.scope(null).findAll({
       where: {
         appGuid: this.appGuid,
         type: this.type,
         guid: { [Op.not]: this.guid },
       },
+      transaction,
     });
 
     for (const i in otherDestinations) {
       const otherDestination = otherDestinations[i];
-      const otherOptions = await otherDestination.getOptions();
+      const otherOptions = await otherDestination.getOptions(true, transaction);
       let isSameOptions =
         Object.entries(otherOptions).toString() ===
         Object.entries(options).toString();
@@ -399,21 +432,27 @@ export class Destination extends LoggedModel<Destination> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
+  static async findByGuid(guid: string, transaction?: Transaction) {
+    const instance = await this.scope(null).findOne({
+      where: { guid },
+      transaction,
+    });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
   @BeforeCreate
-  static async ensureAppReady(instance: Destination) {
-    const app = await App.findByGuid(instance.appGuid);
+  static async ensureAppReady(instance: Destination, { transaction }) {
+    const app = await App.findByGuid(instance.appGuid, transaction);
     if (app.state !== "ready") throw new Error(`app ${app.guid} is not ready`);
   }
 
   @BeforeCreate
-  static async ensureExportProfilesMethod(instance: Destination) {
-    const { pluginConnection } = await instance.getPlugin();
+  static async ensureExportProfilesMethod(
+    instance: Destination,
+    { transaction }
+  ) {
+    const { pluginConnection } = await instance.getPlugin(transaction);
     if (!pluginConnection) {
       throw new Error(`a destination of type ${instance.type} cannot be found`);
     }
@@ -443,14 +482,15 @@ export class Destination extends LoggedModel<Destination> {
 
   @BeforeSave
   static async ensureOnlyOneDestinationPerAppWithSameSettings(
-    instance: Destination
+    instance: Destination,
+    { transaction }
   ) {
-    await instance.validateUniqueAppAndOptions();
+    await instance.validateUniqueAppAndOptions(null, transaction);
   }
 
   @BeforeSave
-  static async updateState(instance: Destination) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  static async updateState(instance: Destination, { transaction }) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS, transaction);
   }
 
   @BeforeSave

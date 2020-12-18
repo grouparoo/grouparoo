@@ -67,7 +67,14 @@ export interface SimplePropertyOptions extends OptionHelper.SimpleOptions {}
 
 const STATES = ["draft", "ready"] as const;
 const STATE_TRANSITIONS = [
-  { from: "draft", to: "ready", checks: ["validateOptions"] },
+  {
+    from: "draft",
+    to: "ready",
+    checks: [
+      (instance: Property, transaction?: Transaction) =>
+        instance.validateOptions(null, null, null, transaction),
+    ],
+  },
 ];
 
 /**
@@ -191,8 +198,12 @@ export class Property extends LoggedModel<Property> {
     }
   }
 
-  async getOptions() {
-    const options = await OptionHelper.getOptions(this);
+  async getOptions(sourceFromEnvironment = true, transaction?: Transaction) {
+    const options = await OptionHelper.getOptions(
+      this,
+      sourceFromEnvironment,
+      transaction
+    );
     for (const i in options) {
       options[
         i
@@ -204,7 +215,11 @@ export class Property extends LoggedModel<Property> {
     return options;
   }
 
-  async setOptions(options: SimplePropertyOptions, test = true) {
+  async setOptions(
+    options: SimplePropertyOptions,
+    test = true,
+    transaction?: Transaction
+  ) {
     if (test) await this.test(options);
 
     for (const i in options) {
@@ -215,7 +230,7 @@ export class Property extends LoggedModel<Property> {
       );
     }
 
-    return OptionHelper.setOptions(this, options);
+    return OptionHelper.setOptions(this, options, transaction);
   }
 
   async afterSetOptions(hasChanges: boolean) {
@@ -225,7 +240,8 @@ export class Property extends LoggedModel<Property> {
   async validateOptions(
     options?: SimplePropertyOptions,
     allowEmpty = false,
-    useCache = false
+    useCache = false,
+    transaction?: Transaction
   ) {
     // This method is called on every Property, for every profile, before an import
     // caching that we are already valid can speed this up
@@ -236,14 +252,13 @@ export class Property extends LoggedModel<Property> {
       if (previouslyValidated === "true") return;
     }
 
-    if (!options) {
-      options = await this.getOptions();
-    }
+    if (!options) options = await this.getOptions(true, transaction);
 
     const response = await OptionHelper.validateOptions(
       this,
       options,
-      allowEmpty
+      allowEmpty,
+      transaction
     );
 
     if (CACHE_TTL > 0) {
@@ -254,14 +269,15 @@ export class Property extends LoggedModel<Property> {
     return response;
   }
 
-  async getPlugin() {
-    return OptionHelper.getPlugin(this);
+  async getPlugin(transaction?: Transaction) {
+    return OptionHelper.getPlugin(this, transaction);
   }
 
-  async getFilters() {
+  async getFilters(transaction?: Transaction) {
     const filtersWithCol: PropertyFiltersWithKey[] = [];
     const filters = await this.$get("propertyFilters", {
       order: [["position", "asc"]],
+      transaction,
     });
 
     for (const i in filters) {
@@ -279,9 +295,13 @@ export class Property extends LoggedModel<Property> {
     return filtersWithCol;
   }
 
-  async setFilters(filters: PropertyFiltersWithKey[]) {
-    await this.validateFilters(filters);
-    const existingFilters = await this.getFilters();
+  async setFilters(
+    filters: PropertyFiltersWithKey[],
+    transaction?: Transaction,
+    externallyValidate = true
+  ) {
+    if (externallyValidate) await this.validateFilters(filters, transaction);
+    const existingFilters = await this.getFilters(transaction);
     const filtersAreEqual = await PropertyOps.filtersAreEqual(
       filters,
       existingFilters
@@ -290,40 +310,45 @@ export class Property extends LoggedModel<Property> {
 
     await PropertyFilter.destroy({
       where: { propertyGuid: this.guid },
+      transaction,
     });
 
     for (const i in filters) {
       const filter = filters[i];
 
-      await PropertyFilter.create({
-        position: parseInt(i) + 1,
-        propertyGuid: this.guid,
-        key: filter.key,
-        op: filter.op,
-        match: filter.match,
-        relativeMatchNumber: filter.relativeMatchNumber,
-        relativeMatchUnit: filter.relativeMatchUnit,
-        relativeMatchDirection: filter.relativeMatchDirection,
-      });
+      await PropertyFilter.create(
+        {
+          position: parseInt(i) + 1,
+          propertyGuid: this.guid,
+          key: filter.key,
+          op: filter.op,
+          match: filter.match,
+          relativeMatchNumber: filter.relativeMatchNumber,
+          relativeMatchUnit: filter.relativeMatchUnit,
+          relativeMatchDirection: filter.relativeMatchDirection,
+        },
+        { transaction }
+      );
     }
 
-    return PropertyOps.enqueueRuns(this);
+    if (!transaction) return PropertyOps.enqueueRuns(this);
   }
 
   async pluginOptions() {
     return PropertyOps.pluginOptions(this);
   }
 
-  async pluginFilterOptions() {
-    return PropertyOps.pluginFilterOptions(this);
+  async pluginFilterOptions(transaction?: Transaction) {
+    return PropertyOps.pluginFilterOptions(this, transaction);
   }
 
-  async validateFilters(filters: PropertyFiltersWithKey[]) {
-    if (!filters) {
-      filters = await this.getFilters();
-    }
+  async validateFilters(
+    filters: PropertyFiltersWithKey[],
+    transaction?: Transaction
+  ) {
+    if (!filters) filters = await this.getFilters(transaction);
 
-    const pluginFilterOptions = await this.pluginFilterOptions();
+    const pluginFilterOptions = await this.pluginFilterOptions(transaction);
 
     for (const i in filters) {
       const filter = filters[i];
@@ -339,8 +364,8 @@ export class Property extends LoggedModel<Property> {
     }
   }
 
-  async makeIdentifying() {
-    return PropertyOps.makeIdentifying(this);
+  async makeIdentifying(transaction?: Transaction) {
+    return PropertyOps.makeIdentifying(this, transaction);
   }
 
   async apiData() {
@@ -367,31 +392,41 @@ export class Property extends LoggedModel<Property> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
+  static async findByGuid(guid: string, transaction?: Transaction) {
+    const instance = await this.scope(null).findOne({
+      where: { guid },
+      transaction,
+    });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
   @BeforeUpdate
   @BeforeCreate
-  static async determineDirectlyMapped(instance: Property) {
+  static async determineDirectlyMapped(
+    instance: Property,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
     if (instance.state === "draft") return;
 
-    const source = await instance.$get("source", { scope: null });
+    const source = await instance.$get("source", { scope: null, transaction });
     const mapping = await source.getMapping();
     const mappingValues = Object.values(mapping);
     instance.directlyMapped = mappingValues.includes(instance.key);
   }
 
   @BeforeSave
-  static async ensureUniqueKey(instance: Property) {
+  static async ensureUniqueKey(
+    instance: Property,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
     const count = await Property.count({
       where: {
         guid: { [Op.ne]: instance.guid },
         key: instance.key,
         state: { [Op.ne]: "draft" },
       },
+      transaction,
     });
     if (count > 0) {
       throw new Error(`key "${instance.key}" is already in use`);
@@ -399,14 +434,20 @@ export class Property extends LoggedModel<Property> {
   }
 
   @BeforeSave
-  static async ensureOptions(instance: Property) {
-    const source = await Source.findByGuid(instance.sourceGuid);
-    await source.validateOptions();
+  static async ensureOptions(
+    instance: Property,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
+    const source = await Source.findByGuid(instance.sourceGuid, transaction);
+    await source.validateOptions(null, transaction);
   }
 
   @BeforeSave
-  static async updateState(instance: Property) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  static async updateState(
+    instance: Property,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS, transaction);
   }
 
   @BeforeSave
@@ -417,7 +458,10 @@ export class Property extends LoggedModel<Property> {
   }
 
   @BeforeSave
-  static async ensureUniqueProperties(instance: Property) {
+  static async ensureUniqueProperties(
+    instance: Property,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
     if (instance.changed("unique") && instance.unique) {
       const valueCounts = await ProfileProperty.findAll({
         attributes: [
@@ -432,6 +476,7 @@ export class Property extends LoggedModel<Property> {
         ),
         limit: 1,
         raw: true,
+        transaction,
       });
 
       if (valueCounts.length > 0) {
@@ -443,10 +488,14 @@ export class Property extends LoggedModel<Property> {
   }
 
   @BeforeSave
-  static async ensureOneIdentifyingProperty(instance: Property) {
+  static async ensureOneIdentifyingProperty(
+    instance: Property,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
     if (instance.identifying) {
       const otherIdentifyingRulesCount = await Property.count({
         where: { identifying: true, guid: { [Op.ne]: instance.guid } },
+        transaction,
       });
 
       if (otherIdentifyingRulesCount > 0) {
@@ -456,8 +505,11 @@ export class Property extends LoggedModel<Property> {
   }
 
   @BeforeSave
-  static async ensureSourceReady(instance: Property) {
-    const source = await Source.findByGuid(instance.sourceGuid);
+  static async ensureSourceReady(
+    instance: Property,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
+    const source = await Source.findByGuid(instance.sourceGuid, transaction);
     if (source.state !== "ready") throw new Error("source is not ready");
   }
 

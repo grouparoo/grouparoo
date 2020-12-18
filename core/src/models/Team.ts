@@ -69,16 +69,22 @@ export class Team extends LoggedModel<Team> {
     };
   }
 
-  async authorizeAction(topic: string, mode: "read" | "write") {
-    return Permission.authorizeAction(this.guid, topic, mode);
+  async authorizeAction(
+    topic: string,
+    mode: "read" | "write",
+    transaction?: Transaction
+  ) {
+    return Permission.authorizeAction(this.guid, topic, mode, transaction);
   }
 
   async setPermissions(
-    permissions: Array<{ guid: string; read: boolean; write: boolean }>
+    permissions: Array<{ guid: string; read: boolean; write: boolean }>,
+    transaction?: Transaction
   ) {
     for (const i in permissions) {
       const permission = await Permission.findOne({
         where: { ownerGuid: this.guid, guid: permissions[i].guid },
+        transaction,
       });
       if (!permission) {
         throw new Error(
@@ -95,15 +101,19 @@ export class Team extends LoggedModel<Team> {
           this.permissionAllWrite !== null
             ? this.permissionAllWrite
             : permissions[i].write;
-        await permission.save();
+
+        await permission.save({ transaction });
       }
     }
   }
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
+  static async findByGuid(guid: string, transaction?: Transaction) {
+    const instance = await this.scope(null).findOne({
+      where: { guid },
+      transaction,
+    });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }

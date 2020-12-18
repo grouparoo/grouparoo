@@ -21,6 +21,7 @@ import { Export } from "./Export";
 import { Event } from "./Event";
 import { StateMachine } from "./../modules/stateMachine";
 import { ProfileOps } from "../modules/ops/profile";
+import { Transaction } from "sequelize";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
@@ -30,7 +31,10 @@ const STATE_TRANSITIONS = [
   {
     from: "pending",
     to: "ready",
-    checks: ["validateProfilePropertiesAreReady"],
+    checks: [
+      (instance: Profile, transaction?: Transaction) =>
+        instance.validateProfilePropertiesAreReady(transaction),
+    ],
   },
   { from: "ready", to: "pending", checks: [] },
 ];
@@ -83,8 +87,8 @@ export class Profile extends LoggedModel<Profile> {
     };
   }
 
-  async properties() {
-    return ProfileOps.properties(this);
+  async properties(transaction?: Transaction) {
+    return ProfileOps.properties(this, transaction);
   }
 
   async addOrUpdateProperty(properties: {
@@ -107,8 +111,8 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps.removeProperties(this, properties);
   }
 
-  async buildNullProperties(state = "ready") {
-    return ProfileOps.buildNullProperties(this, state);
+  async buildNullProperties(state = "ready", transaction?: Transaction) {
+    return ProfileOps.buildNullProperties(this, state, transaction);
   }
 
   async markPending() {
@@ -154,8 +158,8 @@ export class Profile extends LoggedModel<Profile> {
     return message;
   }
 
-  async validateProfilePropertiesAreReady() {
-    const properties = await this.properties();
+  async validateProfilePropertiesAreReady(transaction?: Transaction) {
+    const properties = await this.properties(transaction);
     for (const k in properties) {
       if (properties[k].state !== "ready") {
         throw new Error(
@@ -167,20 +171,26 @@ export class Profile extends LoggedModel<Profile> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
+  static async findByGuid(guid: string, transaction?: Transaction) {
+    const instance = await this.scope(null).findOne({
+      where: { guid },
+      transaction,
+    });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
   @BeforeSave
-  static async updateState(instance: Profile) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  static async updateState(instance: Profile, { transaction }) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS, transaction);
   }
 
   @AfterCreate
-  static async buildNullPropertiesForNewProfile(instance: Profile) {
-    await instance.buildNullProperties();
+  static async buildNullPropertiesForNewProfile(
+    instance: Profile,
+    { transaction }
+  ) {
+    await instance.buildNullProperties(undefined, transaction);
   }
 
   @AfterDestroy

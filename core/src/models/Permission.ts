@@ -87,8 +87,11 @@ export class Permission extends LoggedModel<Permission> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
+  static async findByGuid(guid: string, transaction?: Transaction) {
+    const instance = await this.scope(null).findOne({
+      where: { guid },
+      transaction,
+    });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
@@ -121,7 +124,8 @@ export class Permission extends LoggedModel<Permission> {
   static async authorizeAction(
     ownerGuid: string,
     topic: string,
-    mode: "read" | "write"
+    mode: "read" | "write",
+    transaction?: Transaction
   ) {
     Permission.validateTopic(topic);
 
@@ -131,6 +135,7 @@ export class Permission extends LoggedModel<Permission> {
 
     const permission = await Permission.findOne({
       where: { ownerGuid: ownerGuid, topic: topic },
+      transaction,
     });
 
     if (!permission) {

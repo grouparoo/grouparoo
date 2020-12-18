@@ -300,10 +300,10 @@ describe("actions/sources", () => {
 
         const profile = await helper.factories.profile();
         await profile.buildNullProperties();
-        const emailRule = await Property.findOne({
+        const emailProperty = await Property.findOne({
           where: { key: "email" },
         });
-        const firstNameRule = await Property.findOne({
+        const firstNameProperty = await Property.findOne({
           where: { key: "firstName" },
         });
         await ProfileProperty.update(
@@ -312,7 +312,7 @@ describe("actions/sources", () => {
             where: {
               profileGuid: profile.guid,
               propertyGuid: {
-                [Op.in]: [emailRule.guid, firstNameRule.guid],
+                [Op.in]: [emailProperty.guid, firstNameProperty.guid],
               },
             },
           }
@@ -323,7 +323,7 @@ describe("actions/sources", () => {
           connection
         );
         expect(error).toBeUndefined();
-        expect(counts[emailRule.sourceGuid]).toBe(1);
+        expect(counts[emailProperty.sourceGuid]).toBe(1);
       });
     });
   });

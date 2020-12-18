@@ -1,6 +1,7 @@
 import { log } from "actionhero";
-import { GroupRuleWithKey } from "../models/Group";
 import { PropertyFiltersWithKey } from "../models/Property";
+import { GroupRuleWithKey } from "../models/Group";
+import { Transaction } from "sequelize";
 
 export interface ConfigurationObject {
   id: string;
@@ -36,15 +37,23 @@ interface orderedConfigObject {
 
 // Utils
 
-export const codeConfigLockKey = "config:code";
+export function getCodeConfigLockKey() {
+  return "config:code";
+}
 
-export async function getParentByName(model: any, id: string) {
+export async function getParentByName(
+  model: any,
+  id: string,
+  transaction?: Transaction
+) {
   if (!id) {
     throw new Error(`missing parent id to find a ${model.name}`);
   }
 
   const guid = await validateAndFormatGuid(model, id);
-  const instance = await model.scope(null).findOne({ where: { guid } });
+  const instance = await model
+    .scope(null)
+    .findOne({ where: { guid }, transaction });
 
   if (!instance) {
     throw new Error(`cannot find ${model.name} with guid "${guid}"`);
@@ -110,7 +119,10 @@ export function validateConfigObjectKeys(
   if (errors.length > 0) throw new Error(errors.join(", "));
 }
 
-export function logModel(instance, mode: "created" | "updated" | "deleted") {
+export function logModel(
+  instance,
+  mode: "created" | "updated" | "deleted" | "validated"
+) {
   let logLevel = "info";
   if (mode === "created") logLevel = "notice";
   if (mode === "deleted") logLevel = "warning";

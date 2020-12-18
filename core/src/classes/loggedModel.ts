@@ -213,7 +213,10 @@ export abstract class LoggedModel<T> extends Model<T> {
   /**
    * Find an instance of this class, regardless of scope
    */
-  static async findByGuid(guid: string): Promise<any> {
+  static async findByGuid(
+    guid: string,
+    transaction?: Transaction
+  ): Promise<any> {
     // static class definitions or type defining are not yet available in TS.  See:
     // * https://github.com/microsoft/TypeScript/issues/14600
     // * https://github.com/microsoft/TypeScript/issues/34516

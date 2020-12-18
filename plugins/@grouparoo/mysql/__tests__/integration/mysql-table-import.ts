@@ -193,10 +193,10 @@ describe("integration/runs/mysql", () => {
 
   test("replace the email property with a new one for this source", async () => {
     // delete the old rule
-    const oldRule = await Property.findOne({
+    const oldProperty = await Property.findOne({
       where: { key: "email" },
     });
-    await oldRule.destroy();
+    await oldProperty.destroy();
 
     // create the new rule
     session.params = {

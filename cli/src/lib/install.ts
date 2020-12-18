@@ -12,7 +12,7 @@ export default async function Update(pkg: string) {
   const workDir: string = process.env.INIT_CWD;
 
   if (pkg && !pkg.match(/^.+@/)) pkg = `${pkg}@latest`;
-  const logger = buildLogger(`Installing ${pkg}`);
+  const logger = buildLogger(`Installing${pkg ? ` ${pkg}` : ""}`);
 
   ensurePath(workDir, logger);
   ensurePackageJSON(workDir, logger);

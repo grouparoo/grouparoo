@@ -16,7 +16,7 @@ import {
   DefaultScope,
   AfterSave,
 } from "sequelize-typescript";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Schedule } from "./Schedule";
 import { Property } from "./Property";
@@ -41,7 +41,12 @@ const STATE_TRANSITIONS = [
   {
     from: "draft",
     to: "ready",
-    checks: ["validateOptions", "validateMapping"],
+    checks: [
+      (instance: Source, transaction?: Transaction) =>
+        instance.validateOptions(null, transaction),
+      (instance: Source, transaction?: Transaction) =>
+        instance.validateMapping(transaction),
+    ],
   },
 ];
 
@@ -93,24 +98,24 @@ export class Source extends LoggedModel<Source> {
   @HasMany(() => Option, "ownerGuid")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
 
-  async getOptions() {
-    return OptionHelper.getOptions(this);
+  async getOptions(sourceFromEnvironment = true, transaction?: Transaction) {
+    return OptionHelper.getOptions(this, sourceFromEnvironment, transaction);
   }
 
-  async setOptions(options: SimpleSourceOptions) {
-    return OptionHelper.setOptions(this, options);
+  async setOptions(options: SimpleSourceOptions, transaction?: Transaction) {
+    return OptionHelper.setOptions(this, options, transaction);
   }
 
-  async validateOptions(options?: SimpleSourceOptions) {
-    if (!options) {
-      options = await this.getOptions();
-    }
-
-    return OptionHelper.validateOptions(this, options);
+  async validateOptions(
+    options?: SimpleSourceOptions,
+    transaction?: Transaction
+  ) {
+    if (!options) options = await this.getOptions(true, transaction);
+    return OptionHelper.validateOptions(this, options, null, transaction);
   }
 
-  async getPlugin() {
-    return OptionHelper.getPlugin(this);
+  async getPlugin(transaction?: Transaction) {
+    return OptionHelper.getPlugin(this, transaction);
   }
 
   async parameterizedOptions(run?: Run): Promise<SimpleSourceOptions> {
@@ -128,26 +133,24 @@ export class Source extends LoggedModel<Source> {
     return parameterizedOptions;
   }
 
-  async getMapping() {
-    return MappingHelper.getMapping(this);
+  async getMapping(transaction?: Transaction) {
+    return MappingHelper.getMapping(this, transaction);
   }
 
-  async setMapping(mappings: SourceMapping) {
-    return MappingHelper.setMapping(this, mappings);
+  async setMapping(mappings: SourceMapping, transaction?: Transaction) {
+    return MappingHelper.setMapping(this, mappings, transaction);
   }
 
-  async validateMapping() {
-    const { pluginConnection } = await this.getPlugin();
-    if (pluginConnection.skipSourceMapping) {
-      return true;
-    }
+  async validateMapping(transaction?: Transaction) {
+    const { pluginConnection } = await this.getPlugin(transaction);
+    if (pluginConnection.skipSourceMapping) return true;
 
     const previewAvailable = await this.previewAvailable();
     if (!previewAvailable) {
       return true;
     }
 
-    const mapping = await this.getMapping();
+    const mapping = await this.getMapping(transaction);
     if (Object.keys(mapping).length === 1) {
       return true;
     } else {
@@ -155,12 +158,18 @@ export class Source extends LoggedModel<Source> {
     }
   }
 
-  async sourceConnectionOptions(sourceOptions: SimpleSourceOptions = {}) {
-    return SourceOps.sourceConnectionOptions(this, sourceOptions);
+  async sourceConnectionOptions(
+    sourceOptions: SimpleSourceOptions = {},
+    transaction?: Transaction
+  ) {
+    return SourceOps.sourceConnectionOptions(this, sourceOptions, transaction);
   }
 
-  async sourcePreview(sourceOptions?: SimpleSourceOptions) {
-    return SourceOps.sourcePreview(this, sourceOptions);
+  async sourcePreview(
+    sourceOptions?: SimpleSourceOptions,
+    transaction?: Transaction
+  ) {
+    return SourceOps.sourcePreview(this, sourceOptions, transaction);
   }
 
   async apiData() {
@@ -264,21 +273,26 @@ export class Source extends LoggedModel<Source> {
     key: string,
     type: string,
     mappedColumn: string,
-    guid?: string
+    guid?: string,
+    transaction?: Transaction
   ) {
     return SourceOps.bootstrapUniqueProperty(
       this,
       key,
       type,
       mappedColumn,
-      guid
+      guid,
+      transaction
     );
   }
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({ where: { guid } });
+  static async findByGuid(guid: string, transaction?: Transaction) {
+    const instance = await this.scope(null).findOne({
+      where: { guid },
+      transaction,
+    });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
@@ -294,40 +308,41 @@ export class Source extends LoggedModel<Source> {
   }
 
   @BeforeCreate
-  static async ensureAppReady(instance: Source) {
-    const app = await App.findByGuid(instance.appGuid);
+  static async ensureAppReady(instance: Source, { transaction }) {
+    const app = await App.findByGuid(instance.appGuid, transaction);
     if (app.state !== "ready") throw new Error(`app ${app.guid} is not ready`);
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: Source) {
+  static async ensureUniqueName(instance: Source, { transaction }) {
     const count = await Source.count({
       where: {
         guid: { [Op.ne]: instance.guid },
         name: instance.name,
         state: { [Op.ne]: "draft" },
       },
+      transaction,
     });
     if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
 
   @BeforeSave
-  static async updateState(instance: App) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  static async updateState(instance: Source, { transaction }) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS, transaction);
   }
 
   @BeforeSave
-  static async noUpdateIfLocked(instance) {
+  static async noUpdateIfLocked(instance: Source) {
     await LockableHelper.beforeSave(instance, ["state"]);
   }
 
   @AfterSave
   static async updateRuleDirectMappings(instance: Source, { transaction }) {
-    const rules = await instance.$get("properties", { transaction });
-    for (const i in rules) {
-      const rule = rules[i];
-      await Property.determineDirectlyMapped(rule);
-      if (rule.changed()) await rule.save({ transaction });
+    const properties = await instance.$get("properties", { transaction });
+    for (const i in properties) {
+      const property = properties[i];
+      await Property.determineDirectlyMapped(property, { transaction });
+      if (property.changed()) await property.save({ transaction });
     }
   }
 

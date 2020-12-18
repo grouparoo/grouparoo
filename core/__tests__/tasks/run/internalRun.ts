@@ -47,8 +47,8 @@ describe("tasks/run:internalRun", () => {
     });
 
     test("a run can be stopped outside of the task and not enqueue another task", async () => {
-      const rule = await Property.findOne();
-      const run = await helper.factories.run(rule, {
+      const property = await Property.findOne();
+      const run = await helper.factories.run(property, {
         creatorType: "test",
         creatorGuid: "test",
         state: "running",

@@ -10,7 +10,7 @@ describe("model/group", () => {
   let luigi: Profile;
   let peach: Profile;
   let toad: Profile;
-  let phoneNumberRule: Property;
+  let phoneNumberProperty: Property;
 
   beforeAll(async () => {
     const response = await SharedGroupTests.beforeAll();
@@ -19,19 +19,19 @@ describe("model/group", () => {
     peach = response.peach;
     toad = response.toad;
 
-    const emailRule = await Property.findOne({
+    const emailProperty = await Property.findOne({
       where: { key: "email" },
     });
 
-    phoneNumberRule = await Property.create({
+    phoneNumberProperty = await Property.create({
       isArray: true,
       unique: false,
       key: "phoneNumber",
       type: "phoneNumber",
-      sourceGuid: emailRule.sourceGuid,
+      sourceGuid: emailProperty.sourceGuid,
     });
-    await phoneNumberRule.setOptions({ column: "phoneNumber" });
-    await phoneNumberRule.update({ state: "ready" });
+    await phoneNumberProperty.setOptions({ column: "phoneNumber" });
+    await phoneNumberProperty.update({ state: "ready" });
 
     await mario.addOrUpdateProperties({ phoneNumber: ["412 888 0001"] });
     await luigi.addOrUpdateProperties({ phoneNumber: ["412 888 0002"] });

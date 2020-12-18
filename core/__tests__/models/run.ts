@@ -598,12 +598,12 @@ describe("models/run", () => {
       await source.update({ state: "ready" });
 
       // the app throws whatever the query is a new error (see above)
-      const rule = await helper.factories.property(
+      const property = await helper.factories.property(
         source,
         { key: "new_property" },
         { column: "something-broken" }
       );
-      await rule.update({ state: "ready" });
+      await property.update({ state: "ready" });
 
       // we need at least one profile to test against
       const profile = await helper.factories.profile();

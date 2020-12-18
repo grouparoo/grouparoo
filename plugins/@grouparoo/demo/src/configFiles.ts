@@ -2,16 +2,12 @@ import path from "path";
 import fs from "fs-extra";
 import os from "os";
 import { api } from "actionhero";
-import { getParentPath } from "@grouparoo/core/dist/utils/pluginDetails";
-import { loadConfigDirectory } from "@grouparoo/core/dist/modules/configLoaders";
+import {
+  loadConfigDirectory,
+  getConfigDir,
+} from "@grouparoo/core/dist/modules/configLoaders";
 import { getAppOptions } from "./sample_data";
 import { prettier, log } from "./util/shared";
-
-export function getConfigDir() {
-  const configDir =
-    process.env.GROUPAROO_CONFIG_DIR || path.join(getParentPath(), "config");
-  return configDir;
-}
 
 export async function writeConfigFiles() {
   const configDir = getConfigDir();

@@ -16,6 +16,7 @@ import {
   SimpleScheduleOptions,
   PluginConnectionScheduleOption,
 } from "../models/Schedule";
+import { Transaction } from "sequelize";
 
 export type {
   SimplePropertyOptions,
@@ -287,6 +288,7 @@ export interface TestPluginMethod {
     appGuid: string;
     appOptions: SimpleAppOptions;
     connection: any;
+    transaction: Transaction;
   }): Promise<{ success: boolean; message?: string }>;
 }
 

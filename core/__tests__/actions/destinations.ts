@@ -396,13 +396,13 @@ describe("actions/destinations", () => {
 
       test("destination:profilePreview will not fail if a new profile property has just been created or there are missing properties", async () => {
         const source = await Source.findOne({ where: { state: "ready" } });
-        const colorRule = await Property.create({
+        const colorProperty = await Property.create({
           key: "color",
           type: "string",
           sourceGuid: source.guid,
         });
-        await colorRule.setOptions({ column: "new_rule" });
-        await colorRule.update({ state: "ready" });
+        await colorProperty.setOptions({ column: "new_rule" });
+        await colorProperty.update({ state: "ready" });
 
         connection.params = {
           csrfToken,
@@ -421,7 +421,7 @@ describe("actions/destinations", () => {
         expect(_profile.properties["primary-id"].values).toEqual([1]);
         expect(_profile.properties["color"].values).toEqual([null]);
 
-        await colorRule.destroy();
+        await colorProperty.destroy();
       });
 
       test("an administrator can list and remove a tracked group", async () => {

@@ -79,18 +79,18 @@ describe("models/property", () => {
       await source.destroy();
     });
 
-    test("a new rule will have a '' key", async () => {
-      const rule = await Property.create({
+    test("a new property will have a '' key", async () => {
+      const property = await Property.create({
         sourceGuid: source.guid,
         type: "string",
       });
 
-      expect(rule.key).toBe("");
+      expect(property.key).toBe("");
 
-      await rule.destroy();
+      await property.destroy();
     });
 
-    test("draft rule can share the same key, but not with ready rule", async () => {
+    test("draft property can share the same key, but not with ready rule", async () => {
       const ruleOne = await Property.create({
         sourceGuid: source.guid,
         type: "string",
@@ -116,16 +116,16 @@ describe("models/property", () => {
     });
 
     test("types must be of a known type", async () => {
-      const rule = await Property.create({
+      const property = await Property.create({
         sourceGuid: source.guid,
         type: "string",
       });
 
-      await expect(rule.update({ type: "something" })).rejects.toThrow(
+      await expect(property.update({ type: "something" })).rejects.toThrow(
         /something is not an allowed type/
       );
 
-      await rule.destroy();
+      await property.destroy();
     });
 
     test("keys cannot be from the reserved list of keys", async () => {
@@ -143,13 +143,13 @@ describe("models/property", () => {
     });
 
     test("a property can be isArray", async () => {
-      const rule = await Property.create({
+      const property = await Property.create({
         sourceGuid: source.guid,
         type: "string",
         isArray: true,
       });
 
-      await rule.destroy();
+      await property.destroy();
     });
 
     test("a property cannot be isArray and unique", async () => {
@@ -164,13 +164,13 @@ describe("models/property", () => {
     });
 
     test("a property cannot be made unique if there are non-unique values already", async () => {
-      const rule = await Property.create({
+      const property = await Property.create({
         sourceGuid: source.guid,
         key: "name",
         type: "string",
       });
-      await rule.setOptions({ column: "name" });
-      await rule.update({ state: "ready" });
+      await property.setOptions({ column: "name" });
+      await property.update({ state: "ready" });
 
       const profileA = await helper.factories.profile();
       const profileB = await helper.factories.profile();
@@ -179,22 +179,22 @@ describe("models/property", () => {
       await profileB.addOrUpdateProperties({ name: ["toad"] });
       await profileC.addOrUpdateProperties({ name: ["toad"] });
 
-      await expect(rule.update({ unique: true })).rejects.toThrow(
+      await expect(property.update({ unique: true })).rejects.toThrow(
         /cannot make this property unique as there are 2 records with the value 'toad'/
       );
 
       await profileC.addOrUpdateProperties({ name: ["peach"] });
 
-      await rule.update({ unique: true }); // does not throw
+      await property.update({ unique: true }); // does not throw
 
       await profileA.destroy();
       await profileB.destroy();
       await profileC.destroy();
-      await rule.destroy();
+      await property.destroy();
     });
 
     test("only one property can be identifying", async () => {
-      // the bootstrapped rule is already identifying
+      // the bootstrapped property is already identifying
 
       await expect(
         Property.create({
@@ -205,30 +205,30 @@ describe("models/property", () => {
       ).rejects.toThrow(/only one property can be identifying/);
     });
 
-    test("the identifying rule can be changed", async () => {
-      const rule = await Property.create({
+    test("the identifying property can be changed", async () => {
+      const property = await Property.create({
         key: "New Rule",
         type: "string",
         sourceGuid: source.guid,
       });
-      expect(rule.identifying).toBe(false);
+      expect(property.identifying).toBe(false);
 
-      await rule.makeIdentifying();
-      expect(rule.identifying).toBe(true);
-      await rule.destroy();
+      await property.makeIdentifying();
+      expect(property.identifying).toBe(true);
+      await property.destroy();
     });
   });
 
   test("updating a property with new options enqueued an internalRun and update groups relying on it", async () => {
     await api.resque.queue.connection.redis.flushdb();
-    const rule = await Property.findOne({ where: { key: "email" } });
+    const property = await Property.findOne({ where: { key: "email" } });
 
     const group = await helper.factories.group();
     expect(group.state).toBe("ready");
     await group.update({ type: "calculated" });
     await group.setRules([
       {
-        key: rule.key,
+        key: property.key,
         operation: { op: "eq" },
         match: "abc",
       },
@@ -237,7 +237,7 @@ describe("models/property", () => {
     let foundGroupRunTasks = await specHelper.findEnqueuedTasks("group:run");
     expect(foundGroupRunTasks.length).toBe(1); // the group's rules changed
 
-    await rule.setOptions({ column: "id" });
+    await property.setOptions({ column: "id" });
 
     const foundInternalRunTasks = await specHelper.findEnqueuedTasks(
       "run:internalRun"
@@ -250,37 +250,39 @@ describe("models/property", () => {
   });
 
   test("options can be set and retrieved", async () => {
-    const rule = await Property.findOne({ where: { key: "email" } });
-    await rule.setOptions({ column: "id" });
-    const options = await rule.getOptions();
+    const property = await Property.findOne({ where: { key: "email" } });
+    await property.setOptions({ column: "id" });
+    const options = await property.getOptions();
     expect(options).toEqual({ column: "id" });
   });
 
   test("providing invalid options will result in an error", async () => {
-    const rule = await Property.findOne({
+    const property = await Property.findOne({
       where: { key: "email" },
     });
-    await expect(rule.setOptions({ notThing: "abc" })).rejects.toThrow(
+    await expect(property.setOptions({ notThing: "abc" })).rejects.toThrow(
       /column is required for a property of type test-plugin-import/
     );
 
     await expect(
-      rule.setOptions({ column: "userId", otherThing: "false" })
+      property.setOptions({ column: "userId", otherThing: "false" })
     ).rejects.toThrow(
       /otherThing is not an option for a test-plugin-import property/
     );
   });
 
   test("options will have mustache keys converted to mustache guids", async () => {
-    const rule = await Property.findOne({ where: { key: "email" } });
-    await rule.setOptions({
+    const property = await Property.findOne({ where: { key: "email" } });
+    await property.setOptions({
       column: "{{   email}}@example.com",
     });
-    let options = await rule.getOptions();
+    let options = await property.getOptions();
     expect(options).toEqual({ column: "{{ email }}@example.com" }); //appears normal (but formatted) to the user
 
-    const rawOption = await Option.findOne({ where: { ownerGuid: rule.guid } });
-    expect(rawOption.value).toBe(`{{ ${rule.guid} }}@example.com`);
+    const rawOption = await Option.findOne({
+      where: { ownerGuid: property.guid },
+    });
+    expect(rawOption.value).toBe(`{{ ${property.guid} }}@example.com`);
   });
 
   test("an array property cannot be used as an option", async () => {
@@ -289,47 +291,47 @@ describe("models/property", () => {
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
 
-    const cartsRule = await Property.create({
+    const cartsProperty = await Property.create({
       sourceGuid: source.guid,
       key: "carts",
       type: "string",
       isArray: true,
     });
-    await cartsRule.setOptions({ column: "carts" });
-    await cartsRule.update({ state: "ready" });
+    await cartsProperty.setOptions({ column: "carts" });
+    await cartsProperty.update({ state: "ready" });
 
-    const rule = await Property.findOne({ where: { key: "email" } });
+    const property = await Property.findOne({ where: { key: "email" } });
     await expect(
-      rule.setOptions({
+      property.setOptions({
         column: "{{carts}}@example.com",
       })
     ).rejects.toThrow('missing mustache key "carts"');
 
-    await cartsRule.destroy();
+    await cartsProperty.destroy();
     await source.destroy();
   });
 
   test("a property cannot be created in the ready state with missing required options", async () => {
     const source = await helper.factories.source();
-    const rule = Property.build({
+    const property = Property.build({
       sourceGuid: source.guid,
       name: "no opts",
       type: "string",
       state: "ready",
     });
 
-    await expect(rule.save()).rejects.toThrow(
+    await expect(property.save()).rejects.toThrow(
       /table is required for a source of type test-plugin-import/
     );
     await source.destroy();
   });
 
   test("if there is no change to options, the internalRun will not be enqueued", async () => {
-    const rule = await Property.findOne({ where: { key: "email" } });
-    await rule.setOptions({ column: "id" });
+    const property = await Property.findOne({ where: { key: "email" } });
+    await property.setOptions({ column: "id" });
     await api.resque.queue.connection.redis.flushdb();
 
-    await rule.setOptions({ column: "id" });
+    await property.setOptions({ column: "id" });
 
     const foundInternalRunTasks = await specHelper.findEnqueuedTasks(
       "run:internalRun"
@@ -343,7 +345,7 @@ describe("models/property", () => {
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
 
-    const rule = await Property.create({
+    const property = await Property.create({
       sourceGuid: source.guid,
       key: "thing",
       type: "string",
@@ -353,8 +355,8 @@ describe("models/property", () => {
       where: { topic: "property", verb: "create" },
       order: [["createdAt", "desc"]],
     });
-    expect(log.message).toBe(`property "${rule.key}" created`);
-    await rule.destroy();
+    expect(log.message).toBe(`property "${property.key}" created`);
+    await property.destroy();
     await source.destroy();
   });
 
@@ -364,26 +366,26 @@ describe("models/property", () => {
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
 
-    const rule = await Property.create({
+    const property = await Property.create({
       sourceGuid: source.guid,
       key: "thing",
       type: "string",
       unique: false,
     });
-    await rule.setOptions({ column: "thing" });
-    await rule.update({ state: "ready" });
+    await property.setOptions({ column: "thing" });
+    await property.update({ state: "ready" });
 
     const group = await helper.factories.group({ type: "calculated" });
     await group.setRules([
       { key: "thing", match: "%", operation: { op: "like" } },
     ]);
 
-    await expect(rule.destroy()).rejects.toThrow(
+    await expect(property.destroy()).rejects.toThrow(
       /cannot delete property "thing", group .* is based on it/
     );
 
     await group.destroy();
-    await rule.destroy(); // doesn't throw
+    await property.destroy(); // doesn't throw
     await source.destroy();
   });
 
@@ -393,40 +395,40 @@ describe("models/property", () => {
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
 
-    const rule = await Property.create({
+    const property = await Property.create({
       sourceGuid: source.guid,
       key: "thing",
       type: "string",
       unique: false,
     });
 
-    await rule.setOptions({ column: "abc" });
+    await property.setOptions({ column: "abc" });
 
-    await rule.destroy(); // doesn't throw
+    await property.destroy(); // doesn't throw
     await source.destroy();
 
     const optionsCount = await Option.count({
-      where: { ownerGuid: rule.guid },
+      where: { ownerGuid: property.guid },
     });
     expect(optionsCount).toBe(0);
   });
 
   describe("directlyMapping", () => {
-    let userIdRule: Property;
-    let emailRule: Property;
+    let userIdProperty: Property;
+    let emailProperty: Property;
 
     beforeAll(async () => {
-      userIdRule = await Property.findOne({
+      userIdProperty = await Property.findOne({
         where: { key: "userId" },
       });
-      emailRule = await Property.findOne({
+      emailProperty = await Property.findOne({
         where: { key: "email" },
       });
     });
 
     test("directlyMapping will be determined as on save", async () => {
-      expect(userIdRule.directlyMapped).toBe(true);
-      expect(emailRule.directlyMapped).toBe(false);
+      expect(userIdProperty.directlyMapped).toBe(true);
+      expect(emailProperty.directlyMapped).toBe(false);
     });
 
     test("properties include if they are directly mapped", async () => {
@@ -529,18 +531,18 @@ describe("models/property", () => {
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
-      const firstNameRule = await Property.findOne({
+      const firstNameProperty = await Property.findOne({
         where: { key: "firstName" },
       });
 
-      firstNameRule.sourceGuid = source.guid;
-      await firstNameRule.save();
+      firstNameProperty.sourceGuid = source.guid;
+      await firstNameProperty.save();
 
-      const lastNameRule = await Property.findOne({
+      const lastNameProperty = await Property.findOne({
         where: { key: "lastName" },
       });
-      lastNameRule.sourceGuid = source.guid;
-      await lastNameRule.save();
+      lastNameProperty.sourceGuid = source.guid;
+      await lastNameProperty.save();
     });
 
     beforeEach(() => {
@@ -549,14 +551,16 @@ describe("models/property", () => {
 
     describe("filters", () => {
       test("we can determine if rule's filters have been changed", async () => {
-        const rule = await Property.create({
+        const property = await Property.create({
           key: "test",
           type: "string",
           sourceGuid: source.guid,
         });
 
-        await rule.setFilters([{ key: "id", match: "0", op: "greater than" }]);
-        const filters = await rule.getFilters();
+        await property.setFilters([
+          { key: "id", match: "0", op: "greater than" },
+        ]);
+        const filters = await property.getFilters();
 
         expect(PropertyOps.filtersAreEqual(filters, [])).toBe(false);
         expect(
@@ -575,17 +579,17 @@ describe("models/property", () => {
           ])
         ).toBe(false);
 
-        await rule.destroy();
+        await property.destroy();
       });
 
       test("it can get the filter options from the plugin", async () => {
-        const rule = await Property.create({
+        const property = await Property.create({
           key: "test",
           type: "string",
           sourceGuid: source.guid,
         });
 
-        const filterOptions = await rule.pluginFilterOptions();
+        const filterOptions = await property.pluginFilterOptions();
         expect(filterOptions).toEqual([
           {
             key: "id",
@@ -594,22 +598,22 @@ describe("models/property", () => {
           },
         ]);
 
-        await rule.destroy();
+        await property.destroy();
       });
 
       test("filters that match the options can be set", async () => {
-        const rule = await Property.create({
+        const property = await Property.create({
           key: "test",
           type: "string",
           sourceGuid: source.guid,
         });
 
-        await rule.setFilters([
+        await property.setFilters([
           { op: "greater than", match: 1, key: "id" },
           { op: "less than", match: 99, key: "id" },
         ]);
 
-        const filters = await rule.getFilters();
+        const filters = await property.getFilters();
         expect(filters).toEqual([
           {
             op: "greater than",
@@ -629,41 +633,43 @@ describe("models/property", () => {
           },
         ]);
 
-        await rule.destroy();
+        await property.destroy();
       });
 
-      test("deleting a rule also deleted the filters", async () => {
+      test("deleting a property also deleted the filters", async () => {
         const count = await PropertyFilter.count();
         expect(count).toBe(0);
       });
 
       test("filters that do not match the options cannot be set", async () => {
-        const rule = await Property.create({
+        const property = await Property.create({
           key: "test",
           type: "string",
           sourceGuid: source.guid,
         });
 
         await expect(
-          rule.setFilters([{ op: "greater than", match: 1, key: "other-key" }])
+          property.setFilters([
+            { op: "greater than", match: 1, key: "other-key" },
+          ])
         ).rejects.toThrow("other-key is not filterable");
 
         await expect(
-          rule.setFilters([{ op: "max it out", match: 1, key: "id" }])
+          property.setFilters([{ op: "max it out", match: 1, key: "id" }])
         ).rejects.toThrow('"max it out" cannot be applied to id');
 
-        await rule.destroy();
+        await property.destroy();
       });
     });
 
     test("properties can retrieve their options from the source", async () => {
-      const rule = await Property.create({
+      const property = await Property.create({
         key: "test",
         type: "string",
         sourceGuid: source.guid,
       });
 
-      const pluginOptions = await rule.pluginOptions();
+      const pluginOptions = await property.pluginOptions();
       expect(pluginOptions).toEqual([
         {
           description: "the column to choose",
@@ -674,7 +680,7 @@ describe("models/property", () => {
         },
       ]);
 
-      await rule.destroy();
+      await property.destroy();
     });
 
     test("creating or editing a property options will test the query against a profile", async () => {
@@ -683,32 +689,32 @@ describe("models/property", () => {
       const profile = await helper.factories.profile();
       await profile.addOrUpdateProperties({ userId: [1000] });
 
-      const rule = await Property.create({
+      const property = await Property.create({
         key: "test",
         type: "string",
         sourceGuid: source.guid,
       });
-      await rule.setOptions({ column: "test" });
-      await rule.update({ state: "ready" });
+      await property.setOptions({ column: "test" });
+      await property.update({ state: "ready" });
 
       // not ready yet
-      await rule.update({ state: "ready" });
+      await property.update({ state: "ready" });
 
       // initial test
       expect(queryCounter).toBeGreaterThanOrEqual(2);
-      await rule.setOptions({ column: "id" });
+      await property.setOptions({ column: "id" });
 
       // +2 checking the options
       // +2 from the afterSave hook updating the rule
       // +n for the mustache builder
       expect(queryCounter).toBeGreaterThan(2);
-      await expect(rule.setOptions({ column: "throw" })).rejects.toThrow(
+      await expect(property.setOptions({ column: "throw" })).rejects.toThrow(
         /throw/
       );
 
       // no change
       expect(queryCounter).toBeGreaterThan(2);
-      await rule.destroy();
+      await property.destroy();
       await profile.destroy();
     });
 
@@ -716,18 +722,18 @@ describe("models/property", () => {
       const profile = await helper.factories.profile();
       await profile.addOrUpdateProperties({ userId: [1000] });
 
-      const rule = await Property.create({
+      const property = await Property.create({
         key: "test",
         type: "string",
         sourceGuid: source.guid,
       });
 
-      await expect(rule.setOptions({ column: "throw" })).rejects.toThrow(
+      await expect(property.setOptions({ column: "throw" })).rejects.toThrow(
         /throw/
       );
 
-      expect(await rule.getOptions()).toEqual({});
-      await rule.destroy();
+      expect(await property.getOptions()).toEqual({});
+      await property.destroy();
       await profile.destroy();
     });
 
@@ -735,51 +741,51 @@ describe("models/property", () => {
       const profile = await helper.factories.profile();
       await profile.addOrUpdateProperties({ userId: [1000] });
 
-      const rule = await Property.create({
+      const property = await Property.create({
         key: "test",
         type: "string",
         sourceGuid: source.guid,
       });
-      await rule.setOptions({ column: "~" });
-      await rule.update({ state: "ready" });
+      await property.setOptions({ column: "~" });
+      await property.update({ state: "ready" });
 
       await profile.addOrUpdateProperties({ test: [true] });
 
       // against saved query
-      const response = await rule.test();
+      const response = await property.test();
       expect(response[0]).toMatch(`+ {"column":"~"}`);
 
       // against new query
-      const responseAgain = await rule.test({ column: "abc" });
+      const responseAgain = await property.test({ column: "abc" });
       expect(responseAgain[0]).toMatch('+ {"column":"abc"}');
 
       await profile.destroy();
-      await rule.destroy();
+      await property.destroy();
     });
 
     test("apiData will include the options", async () => {
-      const rule = await Property.create({
+      const property = await Property.create({
         key: "test",
         type: "string",
         sourceGuid: source.guid,
       });
-      await rule.setOptions({ column: "id" });
+      await property.setOptions({ column: "id" });
 
-      const apiData = await rule.apiData();
+      const apiData = await property.apiData();
       expect(apiData.options).toEqual({ column: "id" });
-      await rule.destroy();
+      await property.destroy();
     });
 
     test("apiData will include the source", async () => {
-      const rule = await Property.create({
+      const property = await Property.create({
         key: "test",
         type: "string",
         sourceGuid: source.guid,
       });
 
-      const apiData = await rule.apiData();
+      const apiData = await property.apiData();
       expect(apiData.sourceGuid).toEqual(source.guid);
-      await rule.destroy();
+      await property.destroy();
     });
   });
 });
