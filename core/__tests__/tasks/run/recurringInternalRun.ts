@@ -26,7 +26,7 @@ describe("tasks/run:recurringInternalRun", () => {
 
     beforeAll(async () => {
       setting = await Setting.findOne({
-        where: { key: "runs-recurring-internal-run-frequency" },
+        where: { key: "runs-recurring-internal-run-frequency-hours" },
       });
     });
 
@@ -36,7 +36,7 @@ describe("tasks/run:recurringInternalRun", () => {
     });
 
     test("the task will create a run when the frequency is set and no previous runs exist", async () => {
-      await setting.update({ value: 1000 * 60 * 10 });
+      await setting.update({ value: 1 });
       await specHelper.runTask("run:recurringInternalRun", {});
       const run = await Run.findOne({
         where: { creatorType: "task" },
@@ -45,7 +45,7 @@ describe("tasks/run:recurringInternalRun", () => {
     });
 
     test("the task will not create a run when the frequency is set and a previous run exists (too soon)", async () => {
-      await setting.update({ value: 1000 * 60 * 10 });
+      await setting.update({ value: 1 });
       const firstRun = await Run.create({
         creatorType: "task",
         creatorGuid: "run:recurringInternalRun",
@@ -61,7 +61,7 @@ describe("tasks/run:recurringInternalRun", () => {
     });
 
     test("the task will not create a run when the frequency is set and a previous run exists (currently running and is old)", async () => {
-      await setting.update({ value: 1000 * 60 * 10 });
+      await setting.update({ value: 1 });
       const firstRun = await Run.create({
         creatorType: "task",
         creatorGuid: "run:recurringInternalRun",
@@ -78,7 +78,7 @@ describe("tasks/run:recurringInternalRun", () => {
     });
 
     test("the task will create a run when the frequency is set and a previous run exists (old enough to run again)", async () => {
-      await setting.update({ value: 1000 * 60 * 10 });
+      await setting.update({ value: 1 });
       const firstRun = await Run.create({
         creatorType: "task",
         creatorGuid: "run:recurringInternalRun",

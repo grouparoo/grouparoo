@@ -15,10 +15,10 @@ export class RunRecurringInternalRun extends Task {
 
   async run() {
     const setting = await Setting.findOne({
-      where: { key: "runs-recurring-internal-run-frequency" },
+      where: { key: "runs-recurring-internal-run-frequency-hours" },
     });
-    const frequency = parseInt(setting.value);
-    if (frequency <= 0) {
+    const frequencyInMs = parseInt(setting.value) * 60 * 60 * 1000;
+    if (frequencyInMs <= 0) {
       return;
     }
 
@@ -32,7 +32,7 @@ export class RunRecurringInternalRun extends Task {
     if (!lastRun) {
       toRun = true;
     }
-    if (new Date().getTime() - lastRun?.createdAt?.getTime() >= frequency) {
+    if (new Date().getTime() - lastRun?.createdAt?.getTime() >= frequencyInMs) {
       toRun = true;
     }
     if (lastRun?.state === "running") {

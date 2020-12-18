@@ -69,11 +69,11 @@ export class Plugins extends Initializer {
         type: "number",
       },
       {
-        key: "runs-recurring-internal-run-frequency",
-        title: "Runs: Recurring Internal Run Frequency",
+        key: "runs-recurring-internal-run-frequency-hours",
+        title: "Runs: Recurring Internal Run Frequency Hours",
         defaultValue: 0,
         description:
-          "Should Grouparoo periodically re-import all of your profiles, and if so, how long between runs?",
+          "Should Grouparoo periodically re-import all of your profiles, and if so, how long between runs (in hours)?",
         type: "number",
       },
       {
