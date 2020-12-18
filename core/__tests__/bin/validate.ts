@@ -33,6 +33,7 @@ describe("bin/validate", () => {
     actionhero = new Process();
     await actionhero.initialize();
     await helper.enableTestPlugin();
+    await helper.truncate();
   }, helper.setupTime);
 
   afterAll(async () => {
