@@ -20,9 +20,7 @@ export default async (owner?, props: { [key: string]: any } = {}) => {
   }
 
   props.creatorGuid = owner.guid;
-  props.creatorType = owner.guid.match(/^sch_/)
-    ? "schedule"
-    : "profilePropertyRule";
+  props.creatorType = owner.guid.match(/^sch_/) ? "schedule" : "property";
 
   const instance = await Run.create(await data(props));
   return instance;

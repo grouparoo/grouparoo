@@ -17,7 +17,7 @@ describe("actions/schedules", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
 
     await specHelper.runAction("team:initialize", {
       firstName: "Mario",

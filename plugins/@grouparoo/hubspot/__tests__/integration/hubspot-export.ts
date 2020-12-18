@@ -96,7 +96,7 @@ describe("integration/runs/hubspot", () => {
   }, helper.setupTime);
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
     helper.disableTestPluginImport();
   });
 
@@ -208,22 +208,18 @@ describe("integration/runs/hubspot", () => {
     );
     expect(error).toBeUndefined();
     expect(options.labels).toEqual({
-      profilePropertyRule: {
+      property: {
         singular: "Hubspot Contact Property",
         plural: "Hubspot Contact Properties",
       },
       group: { singular: "Hubspot List", plural: "Hubspot Lists" },
     });
-    expect(options.profilePropertyRules.required).toEqual([
+    expect(options.properties.required).toEqual([
       { key: "email", type: "email" },
     ]);
-    expect(
-      options.profilePropertyRules.allowOptionalFromProfilePropertyRules
-    ).toEqual(false);
+    expect(options.properties.allowOptionalFromProperties).toEqual(false);
 
-    const hubspotPropertyNames = options.profilePropertyRules.known.map(
-      (o) => o.key
-    );
+    const hubspotPropertyNames = options.properties.known.map((o) => o.key);
     expect(hubspotPropertyNames).not.toContain("email");
     expect(hubspotPropertyNames).toContain("firstname");
     expect(hubspotPropertyNames).toContain("lastname");

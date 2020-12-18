@@ -19,7 +19,7 @@ describe("actions/runs", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
     await Run.truncate();
 
     await specHelper.runAction("team:initialize", {

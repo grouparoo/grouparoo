@@ -10,7 +10,7 @@ declare module "actionhero" {
       plugins: Array<GrouparooPlugin>;
       validate: (plugin: GrouparooPlugin) => boolean;
       register: (plugin: GrouparooPlugin, validate: boolean) => void;
-      announcePlugin: (name: string) => void;
+      announcePlugins: () => void;
       persistentConnections: {
         [guid: string]: any;
       };
@@ -23,6 +23,7 @@ export class Plugins extends Initializer {
     super();
     this.name = "plugins";
     this.loadPriority = 999;
+    this.startPriority = 1;
     this.stopPriority = 999;
   }
 
@@ -32,7 +33,7 @@ export class Plugins extends Initializer {
       persistentConnections: {},
       validate: this.validatePlugin,
       register: this.registerPlugin,
-      announcePlugin: this.announcePlugin,
+      announcePlugins: this.announcePlugins,
     };
 
     this.checkPluginEnvironmentVariables();
@@ -60,7 +61,7 @@ export class Plugins extends Initializer {
           app: "manual",
           description: "manually update the properties of a profile",
           options: [],
-          profilePropertyRuleOptions: [],
+          propertyOptions: [],
           methods: {
             sourceOptions: async () => {
               return {};
@@ -69,6 +70,10 @@ export class Plugins extends Initializer {
         },
       ],
     });
+  }
+
+  async start() {
+    api.plugins.announcePlugins();
   }
 
   async stop() {
@@ -199,11 +204,10 @@ export class Plugins extends Initializer {
   registerPlugin(plugin: GrouparooPlugin, validate = true) {
     if (validate) api.plugins.validate(plugin);
     api.plugins.plugins.push(plugin);
-    api.plugins.announcePlugin(plugin.name);
   }
 
-  announcePlugin(name: string) {
-    log(`registered grouparoo plugin: ${name}`);
+  announcePlugins() {
+    log(`active plugins: ${api.plugins.plugins.map((p) => p.name).join(", ")}`);
   }
 
   /*

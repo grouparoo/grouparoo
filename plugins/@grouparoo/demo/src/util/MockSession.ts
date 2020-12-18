@@ -153,7 +153,7 @@ export class MockSession {
     const property = await ProfileProperty.findOne({
       order: api.sequelize.random(),
       where: {
-        profilePropertyRuleGuid: userIdGuid,
+        propertyGuid: userIdGuid,
         rawValue: {
           [Op.ne]: null,
         },

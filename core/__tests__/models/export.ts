@@ -20,7 +20,7 @@ describe("models/export", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
     destination = await helper.factories.destination();
     profile = await helper.factories.profile();
   });
@@ -236,7 +236,7 @@ describe("models/export", () => {
     await oldNullExport.destroy();
   });
 
-  test("when destinations build exports, profile properties are serialized back to strings", async () => {
+  test("when destinations build exports, properties are serialized back to strings", async () => {
     const profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({
       userId: [123],

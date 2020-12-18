@@ -14,7 +14,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
 
   return {
     labels: {
-      profilePropertyRule: {
+      property: {
         singular: "Zendesk User Field",
         plural: "Zendesk User Fields",
       },
@@ -23,10 +23,10 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
         plural: "Zendesk Tags",
       },
     },
-    profilePropertyRules: {
+    properties: {
       required,
       known,
-      allowOptionalFromProfilePropertyRules: false,
+      allowOptionalFromProperties: false,
     },
   };
 };

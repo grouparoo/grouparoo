@@ -2,29 +2,23 @@ import {
   Destination,
   SimpleDestinationOptions,
 } from "../../models/Destination";
-import { App } from "../../models/App";
 import { Profile } from "../../models/Profile";
-import { Run } from "../../models/Run";
-import { Import } from "../../models/Import";
 import { Export, ExportProfilePropertiesWithType } from "../../models/Export";
 import { Group } from "../../models/Group";
-import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+import { Property } from "../../models/Property";
 import { MappingHelper } from "../mappingHelper";
 import {
   ExportedProfile,
-  ExportProfilePluginMethod,
   ExportProfilesPluginMethod,
   ErrorWithProfileGuid,
   DestinationMappingOptionsResponseTypes,
   DestinationMappingOptionsMethodResponse,
 } from "../../classes/plugin";
-import { api, task, log, config, cache } from "actionhero";
+import { config, cache } from "actionhero";
 import { deepStrictEqual } from "assert";
 import { ProfilePropertyOps } from "./profileProperty";
 import { destinationTypeConversions } from "../destinationTypeConversions";
 import { GroupMember } from "../../models/GroupMember";
-import { Op } from "sequelize";
-import { PluginConnection } from "../../classes/plugin";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -59,7 +53,7 @@ export namespace DestinationOps {
         const oldGroup = await Group.findByGuid(oldGroupGuid);
         await oldGroup.run(true, destination.guid);
       }
-      await group.run(true, destination.guid);
+      return group.run(true, destination.guid);
     }
   }
 
@@ -72,7 +66,7 @@ export namespace DestinationOps {
 
     if (oldGroupGuid) {
       const oldGroup = await Group.findByGuid(oldGroupGuid);
-      await oldGroup.run(true, destination.guid);
+      return oldGroup.run(true, destination.guid);
     }
   }
 
@@ -97,16 +91,16 @@ export namespace DestinationOps {
       mappedProfileProperties[k] = collection;
 
       let destinationType: DestinationMappingOptionsResponseTypes = "any";
-      for (const j in destinationMappingOptions.profilePropertyRules.required) {
+      for (const j in destinationMappingOptions.properties.required) {
         const destinationProperty =
-          destinationMappingOptions.profilePropertyRules.required[j];
+          destinationMappingOptions.properties.required[j];
         if (destinationProperty.key === k) {
           destinationType = destinationProperty.type;
         }
       }
-      for (const j in destinationMappingOptions.profilePropertyRules.known) {
+      for (const j in destinationMappingOptions.properties.known) {
         const destinationProperty =
-          destinationMappingOptions.profilePropertyRules.known[j];
+          destinationMappingOptions.properties.known[j];
         if (destinationProperty.key === k) {
           destinationType = destinationProperty.type;
         }
@@ -254,7 +248,7 @@ export namespace DestinationOps {
     const app = await destination.$get("app");
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);
-    const rules = await ProfilePropertyRule.findAll();
+    const rules = await Property.findAll();
     const destinationGroupMemberships = await destination.getDestinationGroupMemberships();
     const mapping = await destination.getMapping();
 
@@ -693,16 +687,16 @@ export namespace DestinationOps {
       const value = _export[key][k];
       let destinationType: DestinationMappingOptionsResponseTypes = "any";
 
-      for (const j in destinationMappingOptions.profilePropertyRules.required) {
+      for (const j in destinationMappingOptions.properties.required) {
         const destinationProperty =
-          destinationMappingOptions.profilePropertyRules.required[j];
+          destinationMappingOptions.properties.required[j];
         if (destinationProperty.key === k) {
           destinationType = destinationProperty.type;
         }
       }
-      for (const j in destinationMappingOptions.profilePropertyRules.known) {
+      for (const j in destinationMappingOptions.properties.known) {
         const destinationProperty =
-          destinationMappingOptions.profilePropertyRules.known[j];
+          destinationMappingOptions.properties.known[j];
         if (destinationProperty.key === k) {
           destinationType = destinationProperty.type;
         }

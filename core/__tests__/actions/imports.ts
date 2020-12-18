@@ -9,7 +9,7 @@ describe("actions/imports", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
   }, helper.setupTime);
 
   afterAll(async () => {
@@ -56,7 +56,7 @@ describe("actions/imports", () => {
     expect(_import.creatorType).toBe("api");
   });
 
-  test("import profile properties are parsed from JSON as needed", async () => {
+  test("import properties are parsed from JSON as needed", async () => {
     const { error, import: _import } = await specHelper.runAction(
       "import:create",
       {

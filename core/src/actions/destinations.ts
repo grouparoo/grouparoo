@@ -1,4 +1,4 @@
-import { api } from "actionhero";
+import { api, task } from "actionhero";
 import { AuthenticatedAction } from "../classes/authenticatedAction";
 import { Destination } from "../models/Destination";
 import { App } from "../models/App";
@@ -410,12 +410,26 @@ export class DestinationDestroy extends AuthenticatedAction {
     this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
       guid: { required: true },
+      force: {
+        required: true,
+        default: false,
+        formatter: (p: string | boolean) =>
+          p.toString().toLowerCase() === "true",
+      },
     };
   }
 
   async run({ params }) {
     const destination = await Destination.findByGuid(params.guid);
-    await destination.destroy();
+    if (params.force) {
+      await destination.destroy();
+    } else {
+      await destination.update({ state: "deleted" });
+      await task.enqueue("destination:destroy", {
+        destinationGuid: destination.guid,
+      });
+    }
+
     return { success: true };
   }
 }

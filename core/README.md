@@ -73,7 +73,7 @@ Use the `staging-public` app to try things out.
 
 ```bash
 cd apps/staging-public
-# populate the system with 1000 profiles, profile properties, 1000 purchases, groups, and some events
+# populate the system with 1000 profiles, properties, 1000 purchases, groups, and some events
 (npx) grouparoo demo-data-purchases
 
 # including the --scale param allows you to control how many profiles you make. e.g. --scale 10 makes 10,000 extra profiles.

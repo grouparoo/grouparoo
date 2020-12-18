@@ -15,7 +15,7 @@
   {
     "id": "ltv",
     "name": "LTV",
-    "class": "ProfilePropertyRule",
+    "class": "Property",
     "type": "float",
     "unique": false,
     "isArray": false,
@@ -30,7 +30,7 @@
   {
     "id": "purchase_count",
     "name": "purchaseCount",
-    "class": "ProfilePropertyRule",
+    "class": "Property",
     "type": "integer",
     "unique": false,
     "isArray": false,
@@ -45,7 +45,7 @@
   {
     "id": "last_purchase_category",
     "name": "lastPurchaseCategory",
-    "class": "ProfilePropertyRule",
+    "class": "Property",
     "type": "string",
     "unique": false,
     "isArray": false,
@@ -60,7 +60,7 @@
   {
     "id": "last_purchase_date",
     "name": "lastPurchaseDate",
-    "class": "ProfilePropertyRule",
+    "class": "Property",
     "type": "date",
     "unique": false,
     "isArray": false,

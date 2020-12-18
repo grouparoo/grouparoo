@@ -3,7 +3,7 @@ import { Run } from "./../../src/models/Run";
 import { App } from "./../../src/models/App";
 import { Source } from "./../../src/models/Source";
 import { Import } from "./../../src/models/Import";
-import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
+import { Property } from "./../../src/models/Property";
 import { plugin } from "./../../src/modules/plugin";
 import { Schedule } from "../../src/models/Schedule";
 import { Group } from "../../src/models/Group";
@@ -32,7 +32,7 @@ describe("models/run", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
     schedule = await helper.factories.schedule();
   });
 
@@ -51,7 +51,7 @@ describe("models/run", () => {
   describe("with creators", () => {
     let run: Run;
     let source: Source;
-    let profilePropertyRule: ProfilePropertyRule;
+    let property: Property;
     let group: Group;
     let team: Team;
     let teamMember: TeamMember;
@@ -62,7 +62,7 @@ describe("models/run", () => {
       await source.setOptions({ table: "table" });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
-      profilePropertyRule = await ProfilePropertyRule.findOne();
+      property = await Property.findOne();
       group = await helper.factories.group();
       team = await helper.factories.team();
       teamMember = await helper.factories.teamMember(team);
@@ -79,13 +79,13 @@ describe("models/run", () => {
         expect(await run.getCreatorName()).toBe("unknown");
       });
 
-      test("profilePropertyRule Name", async () => {
+      test("property Name", async () => {
         run = await Run.create({
           state: "running",
-          creatorGuid: profilePropertyRule.guid,
-          creatorType: "profilePropertyRule",
+          creatorGuid: property.guid,
+          creatorType: "property",
         });
-        expect(await run.getCreatorName()).toBe(profilePropertyRule.key);
+        expect(await run.getCreatorName()).toBe(property.key);
       });
 
       test("group Name", async () => {
@@ -556,7 +556,7 @@ describe("models/run", () => {
             app: "test-error-app",
             direction: "import",
             options: [{ key: "query", required: true }],
-            profilePropertyRuleOptions: [
+            propertyOptions: [
               {
                 key: "column",
                 required: true,
@@ -568,9 +568,9 @@ describe("models/run", () => {
               },
             ],
             methods: {
-              profileProperty: async ({ profilePropertyRuleOptions }) => {
-                if (profilePropertyRuleOptions.column) {
-                  throw new Error(profilePropertyRuleOptions.column);
+              profileProperty: async ({ propertyOptions }) => {
+                if (propertyOptions.column) {
+                  throw new Error(propertyOptions.column);
                 } else {
                   return ["ok"];
                 }
@@ -581,7 +581,7 @@ describe("models/run", () => {
       });
     });
 
-    test("creating a run will throw and become complete if there is an error with a profilePropertyRule", async () => {
+    test("creating a run will throw and become complete if there is an error with a property", async () => {
       const app = await App.create({
         name: "bad app",
         type: "test-error-app",
@@ -598,7 +598,7 @@ describe("models/run", () => {
       await source.update({ state: "ready" });
 
       // the app throws whatever the query is a new error (see above)
-      const rule = await helper.factories.profilePropertyRule(
+      const rule = await helper.factories.property(
         source,
         { key: "new_property" },
         { column: "something-broken" }

@@ -1,7 +1,7 @@
 import { SharedGroupTests } from "../../../utils/prepareSharedGroupTest";
 import { Group } from "../../../../src/models/Group";
 import { Profile } from "../../../../src/models/Profile";
-import { ProfilePropertyRule } from "../../../../src/models/ProfilePropertyRule";
+import { Property } from "../../../../src/models/Property";
 import { helper } from "@grouparoo/spec-helper";
 
 describe("model/group", () => {
@@ -10,7 +10,7 @@ describe("model/group", () => {
   let luigi: Profile;
   let peach: Profile;
   let toad: Profile;
-  let urlRule: ProfilePropertyRule;
+  let urlRule: Property;
 
   beforeAll(async () => {
     const response = await SharedGroupTests.beforeAll();
@@ -19,11 +19,11 @@ describe("model/group", () => {
     peach = response.peach;
     toad = response.toad;
 
-    const emailRule = await ProfilePropertyRule.findOne({
+    const emailRule = await Property.findOne({
       where: { key: "email" },
     });
 
-    urlRule = await ProfilePropertyRule.create({
+    urlRule = await Property.create({
       isArray: true,
       unique: false,
       key: "url",

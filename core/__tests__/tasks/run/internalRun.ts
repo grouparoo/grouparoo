@@ -2,7 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import { internalRun } from "../../../src/modules/internalRun";
 import { Import } from "../../../src/models/Import";
-import { ProfilePropertyRule } from "../../../src/models/ProfilePropertyRule";
+import { Property } from "../../../src/models/Property";
 import { Run } from "../../../src/models/Run";
 
 let actionhero;
@@ -12,7 +12,7 @@ describe("tasks/run:internalRun", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
   }, helper.setupTime);
 
   beforeEach(async () => {
@@ -47,7 +47,7 @@ describe("tasks/run:internalRun", () => {
     });
 
     test("a run can be stopped outside of the task and not enqueue another task", async () => {
-      const rule = await ProfilePropertyRule.findOne();
+      const rule = await Property.findOne();
       const run = await helper.factories.run(rule, {
         creatorType: "test",
         creatorGuid: "test",

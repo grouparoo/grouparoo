@@ -1,10 +1,10 @@
 import { TestPluginMethod } from "@grouparoo/core";
-import * as fs from "fs";
-import * as path from "path";
-import { config } from "actionhero";
+import fs from "fs";
+import { getFilePath } from "./utils/getFilePath";
 
 export const test: TestPluginMethod = async ({ appOptions }) => {
-  const filePath = path.join(config.general.paths.log[0], appOptions.filename);
+  const filePath = getFilePath(appOptions.filename);
+
   const now = new Date();
   try {
     // touch the file
@@ -16,6 +16,6 @@ export const test: TestPluginMethod = async ({ appOptions }) => {
 
   return {
     success: true,
-    message: `Access to ${appOptions.filename} confirmed`,
+    message: `Access to ${filePath} confirmed`,
   };
 };

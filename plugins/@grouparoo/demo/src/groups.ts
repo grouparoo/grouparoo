@@ -1,5 +1,5 @@
 import { runAction } from "./util/runAction";
-import { Group, ProfilePropertyRule } from "@grouparoo/core";
+import { Group, Property } from "@grouparoo/core";
 import { log } from "./util/shared";
 
 export interface GroupDefinition {
@@ -86,7 +86,7 @@ async function createGroup(definition: GroupDefinition) {
 async function hasProperties(definition: GroupDefinition): Promise<boolean> {
   for (const rule of definition.rules) {
     const where = { key: rule.key, state: "ready" };
-    const found = await ProfilePropertyRule.scope(null).findOne({ where });
+    const found = await Property.scope(null).findOne({ where });
     if (!found) {
       log(1, `${rule.key} not found for group: ${definition.name}`);
       return false;

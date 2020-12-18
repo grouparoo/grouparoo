@@ -5,8 +5,9 @@ import Ora from "ora";
 import { loadLocalCommands } from "./utils/loadLocalCommands";
 import { checkNodeVersion } from "./utils/checkNodeVersion";
 
-import Generate from "./lib/generate";
-import Upgrade from "./lib/upgrade";
+import Initialize from "./lib/initialize";
+import Update from "./lib/update";
+import Install from "./lib/install";
 
 const Package = require("../package.json");
 
@@ -20,19 +21,28 @@ async function main() {
   await loadLocalCommands(program);
 
   program
-    .command("generate [path]")
-    .description("Generate a new Grouparoo project")
+    .command("init [path]")
+    .description(
+      'Initialize a new Grouparoo project.  Use "." for this directory.'
+    )
     .option(
       "-f, --force",
-      "(over)write the generated files if they already exist",
+      "overwrite the generated files if they already exist",
       false
     )
-    .action(Generate);
+    .action(Initialize);
 
   program
-    .command("upgrade [path]")
-    .description("Upgrade an existing Grouparoo project")
-    .action(Upgrade);
+    .command("update")
+    .description("Upgrade the NPM packages in this Grouparoo project")
+    .action(Update);
+
+  program
+    .command("install [package]")
+    .description(
+      "Install a grouparoo plugin (via npm install) and enable it.  Use package@version for a specific version or tag"
+    )
+    .action(Install);
 
   program.parse(process.argv);
 }

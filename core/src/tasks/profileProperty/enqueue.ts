@@ -1,6 +1,6 @@
 import { Task, task } from "actionhero";
 import { ProfileProperty } from "../../models/ProfileProperty";
-import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+import { Property } from "../../models/Property";
 import { plugin } from "../../modules/plugin";
 
 export class ProfilePropertiesEnqueue extends Task {
@@ -25,20 +25,20 @@ export class ProfilePropertiesEnqueue extends Task {
       ).value
     );
 
-    const profilePropertyRules = await ProfilePropertyRule.findAll({
+    const properties = await Property.findAll({
       where: { state: "ready" },
     });
 
-    for (const i in profilePropertyRules) {
-      const profilePropertyRule = profilePropertyRules[i];
-      const source = await profilePropertyRule.$get("source", { scope: null });
+    for (const i in properties) {
+      const property = properties[i];
+      const source = await property.$get("source", { scope: null });
       const { pluginConnection } = await source.getPlugin();
 
       if (source.state !== "ready") continue;
 
       const pendingProfileProperties = await ProfileProperty.findAll({
         where: {
-          profilePropertyRuleGuid: profilePropertyRule.guid,
+          propertyGuid: property.guid,
           state: "pending",
         },
         order: [["stateChangedAt", "ASC"]],
@@ -52,7 +52,7 @@ export class ProfilePropertiesEnqueue extends Task {
       if (pendingProfileProperties.length > 0) {
         if (method === "ProfileProperties") {
           await task.enqueue(`profileProperty:import${method}`, {
-            profilePropertyRuleGuid: profilePropertyRule.guid,
+            propertyGuid: property.guid,
             profileGuids: pendingProfileProperties.map(
               (ppp) => ppp.profileGuid
             ),
@@ -61,7 +61,7 @@ export class ProfilePropertiesEnqueue extends Task {
           await Promise.all(
             pendingProfileProperties.map((ppp) =>
               task.enqueue(`profileProperty:import${method}`, {
-                profilePropertyRuleGuid: profilePropertyRule.guid,
+                propertyGuid: property.guid,
                 profileGuid: ppp.profileGuid,
               })
             )

@@ -36,7 +36,7 @@ export default function LogsList(props) {
     "groupMember",
     "profile",
     "profileProperty",
-    "profilePropertyRule",
+    "property",
     "schedule",
     "setting",
     "team",

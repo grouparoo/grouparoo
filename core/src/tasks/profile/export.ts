@@ -70,7 +70,7 @@ export class ProfileExport extends RetryableTask {
             .map((d) => d.guid)
             .includes(_import.data?._meta?.destinationGuid)
         ) {
-          const destination = await Destination.findOne({
+          const destination = await Destination.scope(null).findOne({
             where: { guid: _import.data._meta.destinationGuid },
           });
           if (destination) destinations.push(destination);

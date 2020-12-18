@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Form, Col, Badge, Button, ButtonGroup } from "react-bootstrap";
@@ -9,13 +10,12 @@ import Moment from "react-moment";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import LoadingButton from "../loadingButton";
-import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { Models, Actions } from "../../utils/apiData";
 import ArrayProfilePropertyList from "../../components/profile/arrayProfilePropertyList";
 import StateBadge from "../badges/stateBadge";
 
 export default function ProfilesList(props) {
-  const { errorHandler, profilePropertyRules } = props;
+  const { errorHandler, properties } = props;
   const { execApi } = useApi(props, errorHandler);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -83,15 +83,13 @@ export default function ProfilesList(props) {
       return;
     }
 
-    const profilePropertyRuleGuid = profilePropertyRules.filter(
-      (r) => r.key === _searchKey
-    )[0].guid;
+    const propertyGuid = properties.filter((r) => r.key === _searchKey)[0].guid;
 
     setSearchLoading(true);
     const response: Actions.ProfileAutocompleteProfileProperty = await execApi(
       "get",
       `/profiles/autocompleteProfileProperty`,
-      { profilePropertyRuleGuid, match }
+      { propertyGuid, match }
     );
     if (response.profileProperties) {
       setAutoCompleteResults(
@@ -101,11 +99,11 @@ export default function ProfilesList(props) {
     setSearchLoading(false);
   }
 
-  const identifyingProfileProperty = profilePropertyRules.filter(
+  const identifyingProfileProperty = properties.filter(
     (rule) => rule.identifying
   )[0];
 
-  const uniqueProfilePropertyKeys = profilePropertyRules
+  const uniqueProfilePropertyKeys = properties
     .filter((rule) =>
       identifyingProfileProperty
         ? rule.guid !== identifyingProfileProperty.guid
@@ -136,7 +134,7 @@ export default function ProfilesList(props) {
                   }}
                 >
                   <option value="">Show All</option>
-                  {profilePropertyRules.map((rule) => (
+                  {properties.map((rule) => (
                     <option key={`rule-${rule.key}`}>{rule.key}</option>
                   ))}
                 </Form.Control>
@@ -359,9 +357,6 @@ ProfilesList.hydrate = async (
     groupGuid,
     state,
   });
-  const { profilePropertyRules } = await execApi(
-    "get",
-    `/profilePropertyRules`
-  );
-  return { profiles, total, profilePropertyRules };
+  const { properties } = await execApi("get", `/properties`);
+  return { profiles, total, properties };
 };

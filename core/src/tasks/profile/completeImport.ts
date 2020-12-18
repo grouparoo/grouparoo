@@ -1,6 +1,6 @@
 import { task } from "actionhero";
 import { Profile } from "../../models/Profile";
-import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+import { Property } from "../../models/Property";
 import { Run } from "../../models/Run";
 import { Op } from "sequelize";
 import { ProfilePropertyType } from "../../modules/ops/profile";
@@ -57,13 +57,13 @@ export class ProfileCompleteImport extends RetryableTask {
       order: [["createdAt", "asc"]],
     });
 
-    const profilePropertyRules = await ProfilePropertyRule.findAll();
+    const properties = await Property.findAll();
 
     for (const i in imports) {
       const data = imports[i].data;
       for (const key in data) {
         // only if we still have property
-        if (profilePropertyRules.find((r) => r.key === key)) {
+        if (properties.find((r) => r.key === key)) {
           mergedValues[key] = data[key];
         }
       }

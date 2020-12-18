@@ -28,7 +28,7 @@ import { Op, Transaction } from "sequelize";
 import { OptionHelper } from "./../modules/optionHelper";
 import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
-import { ProfilePropertyRule } from "./ProfilePropertyRule";
+import { Property } from "./Property";
 import { DestinationOps } from "./../modules/ops/destination";
 import { ExportOps } from "../modules/ops/export";
 import { destinationTypeConversions } from "../modules/destinationTypeConversions";
@@ -45,6 +45,8 @@ export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 const STATES = ["draft", "ready"] as const;
 const STATE_TRANSITIONS = [
   { from: "draft", to: "ready", checks: ["validateOptions"] },
+  { from: "draft", to: "deleted", checks: [] },
+  { from: "ready", to: "deleted", checks: [] },
 ];
 
 @DefaultScope(() => ({
@@ -247,15 +249,15 @@ export class Destination extends LoggedModel<Destination> {
     const destinationMappingOptions = await this.destinationMappingOptions(
       false
     );
-    const rules = await ProfilePropertyRule.findAll();
+    const rules = await Property.findAll();
     const exportArrayProperties = await this.getExportArrayProperties();
 
     // check for array properties
     Object.values(mappings).forEach((k) => {
-      const profilePropertyRule = rules.find((r) => r.key === k);
+      const property = rules.find((r) => r.key === k);
       if (
-        profilePropertyRule &&
-        profilePropertyRule.isArray &&
+        property &&
+        property.isArray &&
         !exportArrayProperties.includes(k) &&
         !exportArrayProperties.includes("*")
       ) {
@@ -266,39 +268,35 @@ export class Destination extends LoggedModel<Destination> {
     });
 
     // required
-    for (const i in destinationMappingOptions.profilePropertyRules.required) {
-      const opt = destinationMappingOptions.profilePropertyRules.required[i];
+    for (const i in destinationMappingOptions.properties.required) {
+      const opt = destinationMappingOptions.properties.required[i];
       if (!mappings[opt.key]) {
         throw new Error(`${opt.key} is a required destination mapping option`);
       }
 
-      const profilePropertyRule = rules.find(
-        (r) => r.key === mappings[opt.key]
-      );
-      const validDestinationTypes = profilePropertyRule?.type
-        ? Object.keys(destinationTypeConversions[profilePropertyRule.type])
+      const property = rules.find((r) => r.key === mappings[opt.key]);
+      const validDestinationTypes = property?.type
+        ? Object.keys(destinationTypeConversions[property.type])
         : [];
 
-      if (profilePropertyRule && !validDestinationTypes?.includes(opt.type)) {
+      if (property && !validDestinationTypes?.includes(opt.type)) {
         throw new Error(
-          `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
+          `${opt.key} requires a property of type ${opt.type}, but a ${property.type} (${property.key}) was mapped`
         );
       }
     }
 
     // known
-    for (const i in destinationMappingOptions.profilePropertyRules.known) {
-      const opt = destinationMappingOptions.profilePropertyRules.known[i];
-      const profilePropertyRule = rules.find(
-        (r) => r.key === mappings[opt.key]
-      );
-      const validDestinationTypes = profilePropertyRule?.type
-        ? Object.keys(destinationTypeConversions[profilePropertyRule.type])
+    for (const i in destinationMappingOptions.properties.known) {
+      const opt = destinationMappingOptions.properties.known[i];
+      const property = rules.find((r) => r.key === mappings[opt.key]);
+      const validDestinationTypes = property?.type
+        ? Object.keys(destinationTypeConversions[property.type])
         : [];
 
-      if (profilePropertyRule && !validDestinationTypes?.includes(opt.type)) {
+      if (property && !validDestinationTypes?.includes(opt.type)) {
         throw new Error(
-          `${opt.key} requires a profile property rule of type ${opt.type}, but a ${profilePropertyRule.type} (${profilePropertyRule.key}) was mapped`
+          `${opt.key} requires a property of type ${opt.type}, but a ${property.type} (${property.key}) was mapped`
         );
       }
     }
@@ -482,7 +480,10 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeDestroy
-  static async waitForPendingExports(instance: Destination, { transaction }) {
+  static async waitForPendingExports(
+    instance: Destination,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
     const pendingExportCount = await instance.$count("exports", {
       where: {
         completedAt: { [Op.eq]: null },
@@ -546,11 +547,8 @@ export class Destination extends LoggedModel<Destination> {
     newGroups: Group[] = []
   ) {
     const combinedGroupGuids = [...oldGroups, ...newGroups].map((g) => g.guid);
-    const relevantDestinations = await Destination.scope(null).findAll({
-      where: {
-        state: "ready",
-        groupGuid: { [Op.in]: combinedGroupGuids },
-      },
+    const relevantDestinations = await Destination.findAll({
+      where: { groupGuid: { [Op.in]: combinedGroupGuids } },
     });
 
     return relevantDestinations;

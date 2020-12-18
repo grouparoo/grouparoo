@@ -5,7 +5,7 @@
     "class": "App",
     "type": "events",
     "options": {
-      "identifyingProfilePropertyRuleGuid": "rul_user_id"
+      "identifyingPropertyGuid": "rul_user_id"
     }
   },
   {
@@ -21,7 +21,7 @@
   {
     "id": "pageview_count",
     "name": "pageviewCount",
-    "class": "ProfilePropertyRule",
+    "class": "Property",
     "type": "integer",
     "unique": false,
     "isArray": false,
@@ -32,7 +32,7 @@
   {
     "id": "categories_viewed",
     "name": "categoriesViewed",
-    "class": "ProfilePropertyRule",
+    "class": "Property",
     "type": "string",
     "unique": false,
     "isArray": true,
@@ -46,7 +46,7 @@
   {
     "id": "recent_visit_date",
     "name": "recentVisitDate",
-    "class": "ProfilePropertyRule",
+    "class": "Property",
     "type": "date",
     "unique": false,
     "isArray": false,

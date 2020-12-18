@@ -8,10 +8,7 @@ import {
 } from "../../classes/codeConfig";
 import { loadApp, deleteApps } from "./app";
 import { loadSource, deleteSources } from "./source";
-import {
-  loadProfilePropertyRule,
-  deleteProfilePropertyRules,
-} from "./profilePropertyRule";
+import { loadProperty, deleteProperties } from "./property";
 import { loadApiKey, deleteApiKeys } from "./apiKey";
 import { loadTeam, deleteTeams } from "./team";
 import { loadTeamMember, deleteTeamMembers } from "./teamMember";
@@ -24,7 +21,7 @@ import JSON5 from "json5";
 interface SeenGuids {
   app: string[];
   source: string[];
-  profilepropertyrule: string[];
+  property: string[];
   group: string[];
   schedule: string[];
   destination: string[];
@@ -69,7 +66,7 @@ async function processConfigObjects(configObjects: Array<ConfigurationObject>) {
   const seenGuids: SeenGuids = {
     app: [],
     source: [],
-    profilepropertyrule: [],
+    property: [],
     group: [],
     schedule: [],
     destination: [],
@@ -94,8 +91,8 @@ async function processConfigObjects(configObjects: Array<ConfigurationObject>) {
         case "source":
           object = await loadSource(configObject);
           break;
-        case "profilepropertyrule":
-          object = await loadProfilePropertyRule(configObject);
+        case "property":
+          object = await loadProperty(configObject);
           break;
         case "group":
           object = await loadGroup(configObject);
@@ -139,7 +136,7 @@ async function deleteLockedObjects(seenGuids: SeenGuids) {
   await deleteDestinations(seenGuids.destination);
   await deleteSchedules(seenGuids.schedule);
   await deleteGroups(seenGuids.group);
-  await deleteProfilePropertyRules(seenGuids.profilepropertyrule);
+  await deleteProperties(seenGuids.property);
   await deleteSources(seenGuids.source);
   await deleteApps(seenGuids.app);
 }

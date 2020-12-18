@@ -21,7 +21,7 @@ export default function Page(props) {
   const {
     errorHandler,
     successHandler,
-    profilePropertyRules,
+    properties,
     profileHandler,
     allGroups,
     sources,
@@ -29,7 +29,7 @@ export default function Page(props) {
   }: {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
-    profilePropertyRules: Models.ProfilePropertyRuleType[];
+    properties: Models.PropertyType[];
     allGroups: Models.GroupType[];
     apps: Models.AppType[];
     sources: Models.SourceType[];
@@ -40,7 +40,7 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState<Models.ProfileType>(props.profile);
   const [groups, setGroups] = useState<Models.GroupType[]>(props.groups);
-  const [properties, setProperties] = useState<
+  const [profileProperties, setProfileProperties] = useState<
     Models.ProfileType["properties"]
   >(props.profile.properties);
 
@@ -63,7 +63,7 @@ export default function Page(props) {
     if (response?.profile) {
       profileHandler.set(response.profile);
       setProfile(response.profile);
-      setProperties(response.profile.properties);
+      setProfileProperties(response.profile.properties);
       setGroups(response.groups);
     }
     setLoading(false);
@@ -140,7 +140,7 @@ export default function Page(props) {
 
   async function handleUpdate(key) {
     const hash = {};
-    hash[key] = properties[key].values;
+    hash[key] = profileProperties[key].values;
     setLoading(true);
     const response: Actions.ProfileEdit = await execApi(
       "put",
@@ -160,9 +160,9 @@ export default function Page(props) {
   keys.sort();
 
   const updateExistingProperty = async (event) => {
-    const _properties = Object.assign({}, properties);
-    _properties[event.target.id].values = [event.target.value];
-    setProperties(_properties);
+    const _profileProperties = Object.assign({}, profileProperties);
+    _profileProperties[event.target.id].values = [event.target.value];
+    setProfileProperties(_profileProperties);
   };
 
   // const manualProperties = [];
@@ -172,7 +172,7 @@ export default function Page(props) {
   const manualSourceGuids = sources
     .filter((source) => manualAppGuids.includes(source.appGuid))
     .map((source) => source.guid);
-  const manualProperties = profilePropertyRules
+  const manualProperties = properties
     .filter((p) => manualSourceGuids.includes(p.sourceGuid))
     .map((p) => p.key);
 
@@ -180,7 +180,7 @@ export default function Page(props) {
 
   const uniqueProfileProperties = [];
   let email: string;
-  profilePropertyRules.forEach((rule) => {
+  properties.forEach((rule) => {
     if (rule.unique) {
       uniqueProfileProperties.push(rule.key);
     }
@@ -440,12 +440,9 @@ Page.getInitialProps = async (ctx) => {
   const { guid } = ctx.query;
   const { execApi } = useApi(ctx);
   const { profile, groups } = await execApi("get", `/profile/${guid}`);
-  const { profilePropertyRules } = await execApi(
-    "get",
-    `/profilePropertyRules`
-  );
+  const { properties } = await execApi("get", `/properties`);
   const { groups: allGroups } = await execApi("get", `/groups`);
   const { apps } = await execApi("get", `/apps`);
   const { sources } = await execApi("get", `/sources`);
-  return { profile, profilePropertyRules, groups, allGroups, sources, apps };
+  return { profile, properties, groups, allGroups, sources, apps };
 };

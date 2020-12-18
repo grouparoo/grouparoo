@@ -3,8 +3,10 @@ import { specHelper } from "actionhero";
 import { Destination } from "./../../src/models/Destination";
 import { Group } from "./../../src/models/Group";
 import { Profile } from "./../../src/models/Profile";
-import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
+import { Property } from "./../../src/models/Property";
 import { Source } from "./../../src/models/Source";
+import { Run } from "./../../src/models/Run";
+import { api } from "actionhero";
 
 let actionhero;
 let app;
@@ -27,7 +29,8 @@ describe("actions/destinations", () => {
       password: "P@ssw0rd!",
       email: "mario@example.com",
     });
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
+    await api.resque.queue.connection.redis.flushdb();
   });
 
   describe("administrator signed in", () => {
@@ -92,7 +95,7 @@ describe("actions/destinations", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(connectionApps.length).toBe(4); // (this one + the app created for the profile property rules ) * export & export-batch
+      expect(connectionApps.length).toBe(4); // (this one + the app created for the properties ) * export & export-batch
       expect(connectionApps[0].connection.name).toBe("test-plugin-export");
     });
 
@@ -178,18 +181,18 @@ describe("actions/destinations", () => {
             singular: "list",
             plural: "lists",
           },
-          profilePropertyRule: {
+          property: {
             singular: "var",
             plural: "vars",
           },
         },
-        profilePropertyRules: {
+        properties: {
           required: [{ key: "primary-id", type: "integer" }],
           known: [
             { key: "secondary-id", type: "any" },
             { key: "string-property", type: "string" },
           ],
-          allowOptionalFromProfilePropertyRules: true,
+          allowOptionalFromProperties: true,
         },
       });
       expect(_destinationTypeConversions).toEqual({
@@ -391,9 +394,9 @@ describe("actions/destinations", () => {
         expect(_profile.groupNames).toEqual(["another-group-tag"]);
       });
 
-      test("destination:profilePreview will not fail if a new profile property has just been created or there are missing profile properties", async () => {
+      test("destination:profilePreview will not fail if a new profile property has just been created or there are missing properties", async () => {
         const source = await Source.findOne({ where: { state: "ready" } });
-        const colorRule = await ProfilePropertyRule.create({
+        const colorRule = await Property.create({
           key: "color",
           type: "string",
           sourceGuid: source.guid,
@@ -465,20 +468,29 @@ describe("actions/destinations", () => {
         );
 
         const foundTasks = await specHelper.findEnqueuedTasks("group:run");
-        expect(foundTasks.length).toBe(1);
-        expect(foundTasks[0].args[0]).toEqual({
-          destinationGuid: guid,
-          groupGuid: destination.destinationGroup.guid,
-          force: true,
+        const runs = await Run.scope(null).findAll();
+        const runningRunTasks = foundTasks.filter((t) => {
+          const run = runs.filter((r) => r.guid === t.args[0].runGuid)[0];
+          return run.state === "running";
         });
+
+        expect(runningRunTasks.length).toBe(1);
+        expect(runningRunTasks[0].args[0]).toEqual(
+          expect.objectContaining({
+            destinationGuid: guid,
+            groupGuid: destination.destinationGroup.guid,
+            force: true,
+          })
+        );
 
         await specHelper.runAction("destination:unTrackGroup", connection);
       });
     });
 
-    test("an administrator can destroy a destination", async () => {
+    test("an administrator can destroy a destination (soft)", async () => {
       connection.params = {
         csrfToken,
+        force: false,
         guid,
       };
       const destroyResponse = await specHelper.runAction(
@@ -488,8 +500,29 @@ describe("actions/destinations", () => {
       expect(destroyResponse.error).toBeUndefined();
       expect(destroyResponse.success).toBe(true);
 
-      const count = await Destination.count();
-      expect(count).toBe(0);
+      const destination = await Destination.scope(null).findOne({
+        where: { guid },
+      });
+      expect(destination.state).toBe("deleted");
+    });
+
+    test("an administrator can destroy a destination (force)", async () => {
+      connection.params = {
+        csrfToken,
+        force: true,
+        guid,
+      };
+      const destroyResponse = await specHelper.runAction(
+        "destination:destroy",
+        connection
+      );
+      expect(destroyResponse.error).toBeUndefined();
+      expect(destroyResponse.success).toBe(true);
+
+      const destination = await Destination.scope(null).findOne({
+        where: { guid },
+      });
+      expect(destination).toBeFalsy();
     });
   });
 });

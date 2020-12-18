@@ -7,12 +7,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import {
-  plugin,
-  Profile,
-  SimpleAppOptions,
-  ProfilePropertyRule,
-} from "@grouparoo/core";
+import { plugin, Profile, SimpleAppOptions, Property } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/query-import/connection";
 const profileProperty = getConnection().methods.profileProperty;
@@ -38,16 +33,16 @@ let profile: Profile;
 let actionhero;
 
 async function getPropertyValue(query: string) {
-  const profilePropertyRuleOptions = { query };
+  const propertyOptions = { query };
   const connection = await connect({ appOptions, app: null, appGuid: null });
-  const profilePropertyRule = await ProfilePropertyRule.findOne();
+  const property = await Property.findOne();
 
   return profileProperty({
     connection,
     appOptions,
     profile,
-    profilePropertyRuleOptions,
-    profilePropertyRule,
+    propertyOptions,
+    property,
     profileGuid: null,
     source: null,
     sourceGuid: null,
@@ -55,8 +50,8 @@ async function getPropertyValue(query: string) {
     appGuid: null,
     sourceOptions: null,
     sourceMapping: null,
-    profilePropertyRuleGuid: null,
-    profilePropertyRuleFilters: null,
+    propertyGuid: null,
+    propertyFilters: null,
   });
 }
 
@@ -75,7 +70,7 @@ describe("bigquery/query/profileProperty", () => {
 
   beforeAll(async () => {
     // all of these are in in the test plugin
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
 
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({

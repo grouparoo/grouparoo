@@ -1,7 +1,7 @@
 import {
   DestinationMappingOptionsMethod,
-  DestinationMappingOptionsResponseProfilePropertyRule,
-  DestinationMappingOptionsResponseProfilePropertyRules,
+  DestinationMappingOptionsResponseProperty,
+  DestinationMappingOptionsResponseProperties,
 } from "@grouparoo/core";
 import { connect } from "./../connect";
 import { getMergeVars, GrouparooMergeVar } from "./getMergeVars";
@@ -21,11 +21,11 @@ export const getDestinationMappingOptions: GetDestinationMappingOptionsMethod = 
     const client = await connect(appOptions);
     const { listId } = destinationOptions;
     const mergeVars = await getMergeVars(client, listId);
-    const profilePropertyRules = getProfilePropertyRules(mergeVars, mappingKey);
+    const properties = getProperties(mergeVars, mappingKey);
 
     return {
       labels: {
-        profilePropertyRule: {
+        property: {
           singular: "Mailchimp Merge Var",
           plural: "Mailchimp Merge Vars",
         },
@@ -34,24 +34,24 @@ export const getDestinationMappingOptions: GetDestinationMappingOptionsMethod = 
           plural: "Mailchimp Tags",
         },
       },
-      profilePropertyRules,
+      properties,
     };
   };
 
   return destinationMappingOptionsMethod;
 };
 
-function getProfilePropertyRules(
+function getProperties(
   mergeVars: GrouparooMergeVar[],
   mappingKey: MailchimpMappingKey
-): DestinationMappingOptionsResponseProfilePropertyRules {
+): DestinationMappingOptionsResponseProperties {
   const grouparooFields = {};
   for (const field of mergeVars) {
     const { key, type, important } = field;
     grouparooFields[key] = { key, type, important };
   }
 
-  const known: DestinationMappingOptionsResponseProfilePropertyRule[] = Object.values(
+  const known: DestinationMappingOptionsResponseProperty[] = Object.values(
     grouparooFields
   );
 
@@ -74,6 +74,6 @@ function getProfilePropertyRules(
   return {
     known,
     required: [requiredField],
-    allowOptionalFromProfilePropertyRules: false,
+    allowOptionalFromProperties: false,
   };
 }

@@ -26,16 +26,16 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
     profiles,
     sourceOptions,
     sourceMapping,
-    profilePropertyRule,
-    profilePropertyRuleOptions,
-    profilePropertyRuleFilters,
+    property,
+    propertyOptions,
+    propertyFilters,
   }) => {
     const tableName = sourceOptions[tableNameKey];
-    const columnName = profilePropertyRuleOptions[columnNameKey];
+    const columnName = propertyOptions[columnNameKey];
     const aggregationMethod = <AggregationMethod>(
-      profilePropertyRuleOptions[aggregationMethodKey]
+      propertyOptions[aggregationMethodKey]
     );
-    const sortColumn = profilePropertyRuleOptions[sortColumnKey];
+    const sortColumn = propertyOptions[sortColumnKey];
 
     if (!aggregationMethod || !columnName) {
       return undefined;
@@ -56,11 +56,11 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
       }
     }
 
-    const isArray = !!profilePropertyRule.isArray;
+    const isArray = !!property.isArray;
 
     const matchConditions: MatchCondition[] = [];
 
-    for (const filter of profilePropertyRuleFilters) {
+    for (const filter of propertyFilters) {
       let { key, op, match } = filter;
       matchConditions.push({
         columnName: key,

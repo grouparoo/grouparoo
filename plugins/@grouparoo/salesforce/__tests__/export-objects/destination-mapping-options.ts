@@ -45,9 +45,9 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
       membershipGroupField: "CampaignId",
     };
     const options = await runDestinationMappingOptions({ destinationOptions });
-    const { profilePropertyRules, labels } = options;
-    const { required, known } = profilePropertyRules;
-    const { profilePropertyRule, group } = labels;
+    const { properties, labels } = options;
+    const { required, known } = properties;
+    const { property, group } = labels;
 
     expect(required.length).toBe(3);
     let field;
@@ -75,8 +75,8 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     expect(field.type).toBe("string");
     expect(field.important).toBe(false);
 
-    expect(profilePropertyRule.singular).toBe("Salesforce Lead Field");
-    expect(profilePropertyRule.plural).toBe("Salesforce Lead Fields");
+    expect(property.singular).toBe("Salesforce Lead Field");
+    expect(property.plural).toBe("Salesforce Lead Fields");
     expect(group.singular).toBe("Salesforce Campaign");
     expect(group.plural).toBe("Salesforce Campaigns");
   });
@@ -92,9 +92,9 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
       membershipGroupField: "TopicId",
     };
     const options = await runDestinationMappingOptions({ destinationOptions });
-    const { profilePropertyRules, labels } = options;
-    const { required, known } = profilePropertyRules;
-    const { profilePropertyRule, group } = labels;
+    const { properties, labels } = options;
+    const { required, known } = properties;
+    const { property, group } = labels;
 
     expect(required.length).toBe(2);
     let field;
@@ -120,8 +120,8 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     expect(field.type).toBe("string");
     expect(field.important).toBe(false);
 
-    expect(profilePropertyRule.singular).toBe("Salesforce Contact Field");
-    expect(profilePropertyRule.plural).toBe("Salesforce Contact Fields");
+    expect(property.singular).toBe("Salesforce Contact Field");
+    expect(property.plural).toBe("Salesforce Contact Fields");
     expect(group.singular).toBe("Salesforce Topic");
     expect(group.plural).toBe("Salesforce Topics");
   });
@@ -140,9 +140,9 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
       profileReferenceMatchField: "AccountNumber",
     };
     const options = await runDestinationMappingOptions({ destinationOptions });
-    const { profilePropertyRules, labels } = options;
-    const { required, known } = profilePropertyRules;
-    const { profilePropertyRule, group } = labels;
+    const { properties, labels } = options;
+    const { required, known } = properties;
+    const { property, group } = labels;
 
     expect(required.length).toBe(4);
     let field;
@@ -174,8 +174,8 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     expect(field.type).toBe("string");
     expect(field.important).toBe(false);
 
-    expect(profilePropertyRule.singular).toBe("Salesforce Contact Field");
-    expect(profilePropertyRule.plural).toBe("Salesforce Contact Fields");
+    expect(property.singular).toBe("Salesforce Contact Field");
+    expect(property.plural).toBe("Salesforce Contact Fields");
     expect(group.singular).toBe("Salesforce Campaign");
     expect(group.plural).toBe("Salesforce Campaigns");
   });

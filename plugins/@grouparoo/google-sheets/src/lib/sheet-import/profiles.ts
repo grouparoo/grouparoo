@@ -11,8 +11,8 @@ export const profiles: ProfilesPluginMethod = async ({
   limit,
 }) => {
   let combinedMapping = sourceMapping;
-  const profilePropertyRules = await source.$get("profilePropertyRules");
-  for (const rule of profilePropertyRules) {
+  const properties = await source.$get("properties");
+  for (const rule of properties) {
     const ruleOptions = await rule.getOptions();
     const ruleMapping = {};
     if (ruleOptions.column) {

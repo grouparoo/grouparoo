@@ -23,6 +23,14 @@ export class FileTransportS3 extends FileTransport {
   async downloadToServer(file) {
     const tmp = os.tmpdir();
     const localPath = path.join(tmp, "grouparoo", file.path);
+
+    await new Promise((resolve, reject) => {
+      fs.mkdirp(path.dirname(localPath), (error) => {
+        if (error) return reject(error);
+        return resolve(null);
+      });
+    });
+
     const params = {
       Bucket: this.bucket,
       Key: `${file.path}`,

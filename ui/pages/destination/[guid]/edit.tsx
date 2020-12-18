@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
+import { Typeahead } from "react-bootstrap-typeahead";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Head from "next/head";
 import PageHeader from "../../../components/pageHeader";
 import StateBadge from "./../../../components/badges/stateBadge";
 import LockedBadge from "../../../components/badges/lockedBadge";
-import { Typeahead } from "react-bootstrap-typeahead";
 import DestinationTabs from "./../../../components/tabs/destination";
 import LoadingButton from "../../../components/loadingButton";
 import Loader from "../../../components/loader";

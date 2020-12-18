@@ -31,7 +31,7 @@ describe("tasks/group:run", () => {
     });
 
     beforeAll(async () => {
-      await helper.factories.profilePropertyRules();
+      await helper.factories.properties();
       helper.disableTestPluginImport();
 
       group = await Group.create({
@@ -76,7 +76,7 @@ describe("tasks/group:run", () => {
     });
 
     test("can be enqueued", async () => {
-      await task.enqueue("group:run", { groupGuid: "abc123" });
+      await group.run();
       const found = await specHelper.findEnqueuedTasks("group:run");
       expect(found.length).toEqual(1);
     });
@@ -102,7 +102,7 @@ describe("tasks/group:run", () => {
         { key: "email", match: "%@%", operation: { op: "like" } },
       ]);
 
-      expect(group.state).toBe("initializing");
+      expect(group.state).toBe("updating");
 
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(1);
@@ -179,7 +179,7 @@ describe("tasks/group:run", () => {
         },
       ]);
 
-      expect(group.state).toBe("initializing");
+      expect(group.state).toBe("updating");
 
       imports = await Import.findAll();
       expect(imports.length).toBe(0); // no imports to add profiles to the group
@@ -266,6 +266,9 @@ describe("tasks/group:run", () => {
 
       expect((await group.$get("groupMembers")).length).toBe(1);
 
+      await api.resque.queue.connection.redis.flushdb();
+      await group.run();
+
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(1);
       expect(foundTasks[0].args[0].method).toBeUndefined();
@@ -311,10 +314,7 @@ describe("tasks/group:run", () => {
 
     it("will pass destinationGuid to all run steps", async () => {
       let foundTasks = [];
-      await task.enqueue("group:run", {
-        groupGuid: group.guid,
-        destinationGuid: "abc123",
-      });
+      await group.run(false, "abc123");
 
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(1);
@@ -345,7 +345,7 @@ describe("tasks/group:run", () => {
 
     it("will set run.force if that option is provided to the task", async () => {
       const group = await helper.factories.group();
-      await task.enqueue("group:run", { groupGuid: group.guid, force: true });
+      await group.run(true);
       const foundTasks = await specHelper.findEnqueuedTasks("group:run");
       await specHelper.runTask("group:run", foundTasks[0].args[0]);
       const run = await Run.findOne({ where: { creatorGuid: group.guid } });
@@ -358,7 +358,7 @@ describe("tasks/group:run", () => {
         { key: "email", match: "%@%", operation: { op: "like" } },
       ]);
 
-      expect(group.state).toBe("initializing");
+      expect(group.state).toBe("updating");
 
       let foundTasks = await specHelper.findEnqueuedTasks("group:run");
       await api.resque.queue.connection.redis.flushdb();

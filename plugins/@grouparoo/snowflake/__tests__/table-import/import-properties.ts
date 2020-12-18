@@ -9,12 +9,7 @@ import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import {
-  plugin,
-  SimpleAppOptions,
-  Profile,
-  ProfilePropertyRule,
-} from "@grouparoo/core";
+import { plugin, SimpleAppOptions, Profile, Property } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/table-import/connection";
 const profileProperties = getConnection().methods.profileProperties;
@@ -41,26 +36,26 @@ const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 
 async function getPropertyValues(
   { column, sourceMapping, aggregationMethod },
-  useProfilePropertyRuleFilters?
+  usePropertyFilters?
 ) {
   const arrays = await getPropertyArrays(
     { column, sourceMapping, aggregationMethod },
-    useProfilePropertyRuleFilters
+    usePropertyFilters
   );
   return arrays;
 }
 async function getPropertyArrays(
   { column, sourceMapping, aggregationMethod },
-  useProfilePropertyRuleFilters?
+  usePropertyFilters?
 ) {
-  const profilePropertyRuleOptions = {
+  const propertyOptions = {
     column,
     aggregationMethod: aggregationMethod,
   };
 
-  const profilePropertyRuleFilters = useProfilePropertyRuleFilters || [];
+  const propertyFilters = usePropertyFilters || [];
   const connection = await connect({ appOptions, app: null, appGuid: null });
-  const profilePropertyRule = await ProfilePropertyRule.findOne({
+  const property = await Property.findOne({
     where: { key: "email" },
   });
 
@@ -69,16 +64,16 @@ async function getPropertyArrays(
     appOptions,
     profiles: [profile, otherProfile],
     sourceOptions,
-    profilePropertyRuleOptions,
+    propertyOptions,
     sourceMapping,
-    profilePropertyRuleFilters,
-    profilePropertyRule,
+    propertyFilters,
+    property,
     profileGuids: [profile.guid, otherProfile.guid],
     source: null,
     sourceGuid: null,
     app: null,
     appGuid: null,
-    profilePropertyRuleGuid: null,
+    propertyGuid: null,
   });
 }
 
@@ -92,7 +87,7 @@ describe("snowflake/table/profileProperties", () => {
   beforeAll(async () => {
     jest.setTimeout(helper.mediumTime);
     // all of these are in in the test plugin
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
 
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({
@@ -348,7 +343,7 @@ describe("snowflake/table/profileProperties", () => {
     beforeAll(() => {
       sourceOptions = { table: "PURCHASES" };
     });
-    // export interface ProfilePropertyRuleFiltersWithKey {
+    // export interface PropertyFiltersWithKey {
     //   key: string;
     //   op: string;
     //   match?: string | number | boolean;

@@ -102,7 +102,7 @@ describe("integration/runs/mailchimp-export", () => {
   });
 
   beforeAll(async () => {
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
     helper.disableTestPluginImport();
   });
 
@@ -220,23 +220,23 @@ describe("integration/runs/mailchimp-export", () => {
       session
     );
     expect(error).toBeUndefined();
-    const { labels, profilePropertyRules } = options;
+    const { labels, properties } = options;
     expect(labels).toEqual({
-      profilePropertyRule: {
+      property: {
         singular: "Mailchimp Merge Var",
         plural: "Mailchimp Merge Vars",
       },
       group: { singular: "Mailchimp Tag", plural: "Mailchimp Tags" },
     });
 
-    expect(profilePropertyRules.required).toEqual([
+    expect(properties.required).toEqual([
       { key: "email_address", type: "email" },
     ]);
     const expected = ["FNAME", "LNAME", "LTV", "USERID"];
-    const known = profilePropertyRules.known.map((p) => p.key);
+    const known = properties.known.map((p) => p.key);
     expect(known).toEqual(expect.arrayContaining(expected));
     const types = expected.map(
-      (key) => profilePropertyRules.known.find((p) => p.key == key).type
+      (key) => properties.known.find((p) => p.key == key).type
     );
     expect(types).toEqual(["string", "string", "number", "number"]);
   });

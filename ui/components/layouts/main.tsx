@@ -12,7 +12,7 @@ export default function Main(props) {
   const { children, successHandler, errorHandler, hydrationError } = props;
   const [navExpanded, setNavExpanded] = useState(true);
   const [alertWidth, setAlertWidth] = useState(500);
-  const contentAreaLeftPadding = 265;
+  const contentAreaLeftPadding = 250;
 
   useEffect(setWidth, []);
   useEffect(() => {

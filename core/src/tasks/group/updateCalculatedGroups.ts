@@ -1,4 +1,4 @@
-import { task, Task } from "actionhero";
+import { Task } from "actionhero";
 import { Group } from "../../models/Group";
 import { plugin } from "../../modules/plugin";
 import { Op } from "sequelize";
@@ -35,10 +35,6 @@ export class GroupsUpdateCalculatedGroups extends Task {
       },
     });
 
-    await Promise.all(
-      calculatedGroups.map(async (group) => {
-        return task.enqueue("group:run", { groupGuid: group.guid });
-      })
-    );
+    await Promise.all(calculatedGroups.map((group) => group.run()));
   }
 }

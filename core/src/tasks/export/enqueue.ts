@@ -20,9 +20,7 @@ export class EnqueueExports extends RetryableTask {
       (await plugin.readSetting("core", "exports-profile-batch-size")).value
     );
 
-    const destinations = await Destination.findAll({
-      where: { state: "ready" },
-    });
+    const destinations = await Destination.scope(null).findAll();
 
     let totalEnqueued = 0;
 

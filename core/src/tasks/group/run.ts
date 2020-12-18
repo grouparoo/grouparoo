@@ -14,7 +14,7 @@ export class RunGroup extends Task {
     this.queue = "groups";
     this.inputs = {
       groupGuid: { required: true },
-      runGuid: { required: false },
+      runGuid: { required: true },
       method: { required: false },
       offset: { required: false },
       highWaterMark: { required: false },
@@ -44,23 +44,7 @@ export class RunGroup extends Task {
       );
 
     const group = await Group.findByGuid(params.groupGuid);
-
-    let run: Run;
-    if (params.runGuid) {
-      run = await Run.findByGuid(params.runGuid);
-    } else {
-      run = await Run.create({
-        creatorGuid: group.guid,
-        creatorType: "group",
-        state: "running",
-        force,
-      });
-      await group.update({ state: "updating" });
-      log(
-        `[ run ] starting run ${run.guid} for group ${group.name} (${group.guid})`,
-        "notice"
-      );
-    }
+    const run = await Run.findByGuid(params.runGuid);
 
     if (run.state === "stopped") return;
 

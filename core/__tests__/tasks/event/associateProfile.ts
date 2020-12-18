@@ -2,7 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import { Profile } from "../../../src/models/Profile";
 import { App } from "../../../src/models/App";
-import { ProfilePropertyRule } from "../../../src/models/ProfilePropertyRule";
+import { Property } from "../../../src/models/Property";
 
 let actionhero;
 
@@ -10,16 +10,16 @@ describe("tasks/event:associateProfile", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
   }, helper.setupTime);
 
   beforeAll(async () => {
-    const userIdRule = await ProfilePropertyRule.findOne({
+    const userIdRule = await Property.findOne({
       where: { key: "userId" },
     });
     const eventApp = await App.create({ type: "events", name: "events" });
     await eventApp.setOptions({
-      identifyingProfilePropertyRuleGuid: userIdRule.guid,
+      identifyingPropertyGuid: userIdRule.guid,
     });
     await eventApp.update({ state: "ready" });
   });

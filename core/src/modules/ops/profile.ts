@@ -1,6 +1,6 @@
 import { Profile } from "../../models/Profile";
 import { ProfileProperty } from "../../models/ProfileProperty";
-import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+import { Property } from "../../models/Property";
 import { Source } from "../../models/Source";
 import { Group } from "../../models/Group";
 import { Destination } from "../../models/Destination";
@@ -14,10 +14,10 @@ export interface ProfilePropertyType {
     guid: ProfileProperty["guid"];
     state: ProfileProperty["state"];
     values: Array<string | number | boolean | Date>;
-    type: ProfilePropertyRule["type"];
-    unique: ProfilePropertyRule["unique"];
-    isArray: ProfilePropertyRule["isArray"];
-    identifying: ProfilePropertyRule["identifying"];
+    type: Property["type"];
+    unique: Property["unique"];
+    isArray: Property["isArray"];
+    identifying: Property["identifying"];
     valueChangedAt: ProfileProperty["valueChangedAt"];
     confirmedAt: ProfileProperty["confirmedAt"];
     stateChangedAt: ProfileProperty["stateChangedAt"];
@@ -38,13 +38,13 @@ export namespace ProfileOps {
         order: [["position", "ASC"]],
       }));
 
-    const rules = await ProfilePropertyRule.findAll();
+    const rules = await Property.findAll();
 
     const hash: ProfilePropertyType = {};
 
     for (const i in profileProperties) {
       const rule = rules.find(
-        (r) => r.guid === profileProperties[i].profilePropertyRuleGuid
+        (r) => r.guid === profileProperties[i].propertyGuid
       );
       if (!rule) {
         await profileProperties[i].destroy();
@@ -54,7 +54,7 @@ export namespace ProfileOps {
       const key = rule.key;
       if (!hash[key]) {
         hash[key] = {
-          guid: profileProperties[i].profilePropertyRuleGuid,
+          guid: profileProperties[i].propertyGuid,
           state: profileProperties[i].state,
           values: [],
           type: rule.type,
@@ -102,9 +102,9 @@ export namespace ProfileOps {
     // ignore reserved property key
     if (key === "_meta") return;
 
-    const rule = await ProfilePropertyRule.findOne({ where: { key } });
+    const rule = await Property.findOne({ where: { key } });
     if (!rule) {
-      throw new Error(`cannot find a profile property rule for key ${key}`);
+      throw new Error(`cannot find a property for key ${key}`);
     }
 
     // Note: Lifecycle hooks do not fire on upserts, so we need to manually check if the property exists or not
@@ -113,7 +113,7 @@ export namespace ProfileOps {
       let properties = await ProfileProperty.findAll({
         where: {
           profileGuid: profile.guid,
-          profilePropertyRuleGuid: rule.guid,
+          propertyGuid: rule.guid,
         },
         order: [["position", "asc"]],
       });
@@ -139,7 +139,7 @@ export namespace ProfileOps {
           const value = values[i];
           const property = new ProfileProperty({
             profileGuid: profile.guid,
-            profilePropertyRuleGuid: rule.guid,
+            propertyGuid: rule.guid,
             position,
             state: "ready",
             stateChangedAt: new Date(),
@@ -160,7 +160,7 @@ export namespace ProfileOps {
     } else {
       if (values.length > 1) {
         throw new Error(
-          "cannot set multiple profile properties for a non-array profile property rule"
+          "cannot set multiple profile properties for a non-array property"
         );
       }
       const value = values[0];
@@ -169,7 +169,7 @@ export namespace ProfileOps {
       let property = await ProfileProperty.findOne({
         where: {
           profileGuid: profile.guid,
-          profilePropertyRuleGuid: rule.guid,
+          propertyGuid: rule.guid,
           position: 0,
         },
       });
@@ -178,7 +178,7 @@ export namespace ProfileOps {
         changed = true;
         property = new ProfileProperty({
           profileGuid: profile.guid,
-          profilePropertyRuleGuid: rule.guid,
+          propertyGuid: rule.guid,
         });
       } else if (
         property.rawValue !==
@@ -199,7 +199,7 @@ export namespace ProfileOps {
       await ProfileProperty.destroy({
         where: {
           profileGuid: profile.guid,
-          profilePropertyRuleGuid: rule.guid,
+          propertyGuid: rule.guid,
           position: { [Op.ne]: 0 },
         },
       });
@@ -247,11 +247,11 @@ export namespace ProfileOps {
    * Remove a Property on this Profile
    */
   export async function removeProperty(profile: Profile, key: string) {
-    const rule = await ProfilePropertyRule.findOne({ where: { key } });
+    const rule = await Property.findOne({ where: { key } });
     if (!rule) return;
 
     const properties = await ProfileProperty.findAll({
-      where: { profileGuid: profile.guid, profilePropertyRuleGuid: rule.guid },
+      where: { profileGuid: profile.guid, propertyGuid: rule.guid },
     });
 
     for (const i in properties) {
@@ -273,7 +273,7 @@ export namespace ProfileOps {
 
   export async function buildNullProperties(profile: Profile, state = "ready") {
     const properties = await profile.properties();
-    const rules = await ProfilePropertyRule.findAll();
+    const rules = await Property.findAll();
 
     let newPropertiesCount = 0;
     for (const i in rules) {
@@ -281,7 +281,7 @@ export namespace ProfileOps {
       if (!properties[rule.key]) {
         await ProfileProperty.create({
           profileGuid: profile.guid,
-          profilePropertyRuleGuid: rule.guid,
+          propertyGuid: rule.guid,
           state,
           stateChangedAt: new Date(),
           valueChangedAt: new Date(),
@@ -374,7 +374,7 @@ export namespace ProfileOps {
     let profile: Profile;
     let isNew: boolean;
     let profileProperty: ProfileProperty;
-    const uniqueRules = await ProfilePropertyRule.findAll({
+    const uniqueRules = await Property.findAll({
       where: { unique: true },
     });
     const uniquePropertiesHash = {};
@@ -429,7 +429,7 @@ export namespace ProfileOps {
 
         profileProperty = await ProfileProperty.findOne({
           where: {
-            profilePropertyRuleGuid: rule.guid,
+            propertyGuid: rule.guid,
             rawValue: String(value),
           },
         });
@@ -462,7 +462,7 @@ export namespace ProfileOps {
    * Mark the profile and all of its properties as pending
    */
   export async function markPending(profile: Profile) {
-    const nonDirectlyMappedRules = await ProfilePropertyRule.findAll({
+    const nonDirectlyMappedRules = await Property.findAll({
       where: { directlyMapped: false },
     });
 
@@ -471,7 +471,7 @@ export namespace ProfileOps {
       {
         where: {
           profileGuid: profile.guid,
-          profilePropertyRuleGuid: {
+          propertyGuid: {
             [Op.in]: nonDirectlyMappedRules.map((r) => r.guid),
           },
         },

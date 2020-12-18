@@ -12,7 +12,7 @@ describe("tasks/export:sendBatch", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
   }, helper.setupTime);
 
   afterAll(async () => {
@@ -38,12 +38,14 @@ describe("tasks/export:sendBatch", () => {
       group = await helper.factories.group({ type: "manual" });
       await group.addProfile(profile);
 
-      await api.resque.queue.connection.redis.flushdb();
-
       destination = await helper.factories.destination(null, {
         type: "test-plugin-export-batch",
       });
       await destination.trackGroup(group);
+
+      await api.resque.queue.connection.redis.flushdb();
+      await Run.truncate();
+
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.guid] = group.name;
       await destination.setDestinationGroupMemberships(

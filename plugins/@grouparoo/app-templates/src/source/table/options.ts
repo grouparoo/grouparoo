@@ -1,9 +1,9 @@
 export * from "./pluginMethods";
-export * from "./profilePropertyRuleOptions";
+export * from "./propertyOptions";
 export * from "./scheduleOptions";
 export * from "./sourcePreview";
 export * from "./sourceOptions";
-export * from "./uniqueProfilePropertyRuleBootstrapOptions";
+export * from "./uniquePropertyBootstrapOptions";
 export * from "./sourceFilters";
 export * from "./profileProperty";
 export * from "./profileProperties";
@@ -11,7 +11,7 @@ export * from "./profiles";
 export * from "./sourceRunPercentComplete";
 
 export {
-  PluginConnectionProfilePropertyRuleOption,
+  PluginConnectionPropertyOption,
   PluginConnectionScheduleOption,
   SourcePreviewMethod,
   SourceOptionsMethod,
@@ -20,6 +20,6 @@ export {
   ProfilePropertiesPluginMethod,
   ProfilesPluginMethod,
   SourceRunPercentCompleteMethod,
-  UniqueProfilePropertyRuleBootstrapOptions,
+  UniquePropertyBootstrapOptions,
   PluginConnection,
 } from "@grouparoo/core";

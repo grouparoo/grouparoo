@@ -25,6 +25,6 @@ export class EventAssociateProfile extends RetryableTask {
     }
 
     const appOptions = await app.getOptions();
-    await event.associate(appOptions.identifyingProfilePropertyRuleGuid);
+    await event.associate(appOptions.identifyingPropertyGuid);
   }
 }

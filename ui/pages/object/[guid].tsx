@@ -14,7 +14,7 @@ const guidPrefixes = {
   grp: "/group/[guid]/members",
   imp: "/import/[guid]/edit",
   pro: "/profile/[guid]/edit",
-  rul: "/profilePropertyRule/[guid]/edit",
+  rul: "/property/[guid]/edit",
   run: "/run/[guid]/edit",
   sch: "/source/[guid]/overview",
   src: "/source/[guid]/overview",

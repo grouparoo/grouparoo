@@ -6,7 +6,7 @@ import { GrouparooPlugin, PluginConnection } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
 import { AsyncReturnType } from "type-fest";
 import { ProfileProperty } from "../models/ProfileProperty";
-import { ProfilePropertyRule } from "../models/ProfilePropertyRule";
+import { Property } from "../models/Property";
 
 export class SourcesList extends AuthenticatedAction {
   constructor() {
@@ -62,7 +62,7 @@ export class SourcesCountPending extends AuthenticatedAction {
   }
 
   async run() {
-    const countsBySource = await ProfilePropertyRule.findAll({
+    const countsBySource = await Property.findAll({
       attributes: [
         "sourceGuid",
         [
@@ -216,10 +216,10 @@ export class SourceEdit extends AuthenticatedAction {
   }
 }
 
-export class SourceBootstrapUniqueProfilePropertyRule extends AuthenticatedAction {
+export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
   constructor() {
     super();
-    this.name = "source:bootstrapUniqueProfilePropertyRule";
+    this.name = "source:bootstrapUniqueProperty";
     this.description =
       "bootstrap a new unique profile property for this source before the mapping is set";
     this.outputExample = {};
@@ -235,7 +235,7 @@ export class SourceBootstrapUniqueProfilePropertyRule extends AuthenticatedActio
   async run({ params }) {
     const source = await Source.findByGuid(params.guid);
 
-    const rule = await source.bootstrapUniqueProfilePropertyRule(
+    const rule = await source.bootstrapUniqueProperty(
       params.key,
       params.type,
       params.mappedColumn
@@ -243,7 +243,7 @@ export class SourceBootstrapUniqueProfilePropertyRule extends AuthenticatedActio
 
     return {
       source: await source.apiData(),
-      profilePropertyRule: await rule.apiData(),
+      property: await rule.apiData(),
     };
   }
 }

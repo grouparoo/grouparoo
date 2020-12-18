@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { plugin } from "../../src/modules/plugin";
-import { ProfilePropertyRule } from "../../src/models/ProfilePropertyRule";
+import { Property } from "../../src/models/Property";
 import { App } from "../../src/models/App";
 import { Source } from "../../src/models/Source";
 import { Schedule } from "../../src/models/Schedule";
@@ -12,13 +12,12 @@ import { Team } from "../../src/models/Team";
 import { TeamMember } from "../../src/models/TeamMember";
 import { Setting } from "../../src/models/Setting";
 import path from "path";
-import { api } from "actionhero";
+import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
-import { CodeConfig } from "../../src/initializers/codeConfig";
 import { validateConfigObjectKeys } from "../../src/classes/codeConfig";
+import { loadConfigDirectory } from "../../src/modules/configLoaders";
 
 let actionhero;
-const initializer = new CodeConfig();
 
 describe("modules/codeConfig", () => {
   beforeAll(async () => {
@@ -36,14 +35,9 @@ describe("modules/codeConfig", () => {
       // manually run the initializer again after the server has started.
       // the test test-app plugin has been loaded
       api.codeConfig.allowLockedModelChanges = true;
-      process.env.GROUPAROO_CONFIG_DIR = path.join(
-        __dirname,
-        "..",
-        "fixtures",
-        "codeConfig",
-        "initial"
+      await loadConfigDirectory(
+        path.join(__dirname, "..", "fixtures", "codeConfig", "initial")
       );
-      await initializer.initialize();
     });
 
     test("settings are updated", async () => {
@@ -64,7 +58,7 @@ describe("modules/codeConfig", () => {
       expect(apps[0].locked).toBe("config:code");
       let options = await apps[0].getOptions();
       expect(options).toEqual({
-        identifyingProfilePropertyRuleGuid: "rul_user_id",
+        identifyingPropertyGuid: "rul_user_id",
       });
 
       expect(apps[1].guid).toBe("app_data_warehouse");
@@ -87,8 +81,8 @@ describe("modules/codeConfig", () => {
       expect(options).toEqual({ table: "users" });
     });
 
-    test("the bootstrapped profile property rule is created", async () => {
-      const rule = await ProfilePropertyRule.findOne({
+    test("the bootstrapped property is created", async () => {
+      const rule = await Property.findOne({
         where: { directlyMapped: true },
       });
       expect(rule.guid).toBe("rul_user_id");
@@ -112,8 +106,8 @@ describe("modules/codeConfig", () => {
       expect(schedules[0].locked).toBe("config:code");
     });
 
-    test("profile property rules are created", async () => {
-      const rules = await ProfilePropertyRule.findAll();
+    test("properties are created", async () => {
+      const rules = await Property.findAll();
       expect(rules.length).toBe(4);
       expect(rules.map((r) => r.key).sort()).toEqual([
         "User Id",
@@ -146,7 +140,6 @@ describe("modules/codeConfig", () => {
       expect(groups.length).toBe(1);
       expect(groups[0].guid).toBe("grp_email_group");
       expect(groups[0].name).toBe("People with Email Addresses");
-      expect(groups[0].state).toBe("ready");
       expect(groups[0].locked).toBe("config:code");
       const rules = await groups[0].getRules();
       expect(rules).toEqual([
@@ -218,14 +211,9 @@ describe("modules/codeConfig", () => {
   describe("changed config", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
-      process.env.GROUPAROO_CONFIG_DIR = path.join(
-        __dirname,
-        "..",
-        "fixtures",
-        "codeConfig",
-        "changes"
+      await loadConfigDirectory(
+        path.join(__dirname, "..", "fixtures", "codeConfig", "changes")
       );
-      await initializer.initialize();
     });
 
     test("settings can be changed", async () => {
@@ -246,8 +234,8 @@ describe("modules/codeConfig", () => {
       expect(options).toEqual({ fileGuid: "new-file-path.db" });
     });
 
-    test("profile property rule keys changes will be updated", async () => {
-      const rules = await ProfilePropertyRule.findAll();
+    test("property keys changes will be updated", async () => {
+      const rules = await Property.findAll();
       expect(rules.length).toBe(4);
       expect(rules.map((r) => r.key).sort()).toEqual([
         "Email",
@@ -280,7 +268,6 @@ describe("modules/codeConfig", () => {
       expect(groups.length).toBe(1);
       expect(groups[0].guid).toBe("grp_email_group");
       expect(groups[0].name).toBe("People who have Email Addresses");
-      expect(groups[0].state).toBe("ready");
       expect(groups[0].locked).toBe("config:code");
       const rules = await groups[0].getRules();
       expect(rules).toEqual([
@@ -298,8 +285,18 @@ describe("modules/codeConfig", () => {
     });
 
     test("a removed destination will be deleted", async () => {
-      const destinations = await Destination.findAll();
-      expect(destinations.length).toBe(0);
+      const destinations = await Destination.scope(null).findAll();
+      expect(destinations.length).toBe(1);
+      const destination = destinations[0];
+      expect(destination.state).toEqual("deleted");
+
+      // we need to "wait" for the destination to be deleted to remove it's dependant models
+      const foundTasks = await specHelper.findEnqueuedTasks(
+        "destination:destroy"
+      );
+      await specHelper.runTask("destination:destroy", foundTasks[0].args[0]);
+      await destination.reload();
+      await destination.destroy();
     });
 
     test("changes to team permissions will be updated", async () => {
@@ -325,14 +322,9 @@ describe("modules/codeConfig", () => {
   describe("partially empty config", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
-      process.env.GROUPAROO_CONFIG_DIR = path.join(
-        __dirname,
-        "..",
-        "fixtures",
-        "codeConfig",
-        "partially-empty"
+      await loadConfigDirectory(
+        path.join(__dirname, "..", "fixtures", "codeConfig", "partially-empty")
       );
-      await initializer.initialize();
     });
 
     afterAll(async () => {
@@ -346,7 +338,7 @@ describe("modules/codeConfig", () => {
       expect(await Source.count()).toBe(1);
       expect(await Schedule.count()).toBe(0);
       expect(await Destination.count()).toBe(0);
-      expect(await ProfilePropertyRule.count()).toBe(2);
+      expect(await Property.count()).toBe(2);
       expect(await ApiKey.count()).toBe(0);
       expect(await Team.count()).toBe(0);
       expect(await TeamMember.count()).toBe(0);
@@ -367,14 +359,9 @@ describe("modules/codeConfig", () => {
   describe("empty config", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
-      process.env.GROUPAROO_CONFIG_DIR = path.join(
-        __dirname,
-        "..",
-        "fixtures",
-        "codeConfig",
-        "empty"
+      await loadConfigDirectory(
+        path.join(__dirname, "..", "fixtures", "codeConfig", "empty")
       );
-      await initializer.initialize();
     });
 
     test("all objects will be deleted with an empty config file", async () => {
@@ -383,7 +370,7 @@ describe("modules/codeConfig", () => {
       expect(await Schedule.count()).toBe(0);
       expect(await Destination.count()).toBe(0);
       expect(await Group.count()).toBe(0);
-      expect(await ProfilePropertyRule.count()).toBe(0);
+      expect(await Property.count()).toBe(0);
       expect(await ApiKey.count()).toBe(0);
       expect(await Team.count()).toBe(0);
       expect(await TeamMember.count()).toBe(0);
@@ -398,17 +385,14 @@ describe("modules/codeConfig", () => {
     describe("app", () => {
       beforeAll(async () => {
         api.codeConfig.allowLockedModelChanges = true;
-        process.env.GROUPAROO_CONFIG_DIR = path.join(
-          __dirname,
-          "..",
-          "fixtures",
-          "codeConfig",
-          "error-app"
-        );
       });
 
       test("errors will be thrown if the configuration is invalid", async () => {
-        await expect(initializer.initialize()).rejects.toThrow(
+        await expect(
+          loadConfigDirectory(
+            path.join(__dirname, "..", "fixtures", "codeConfig", "error-app")
+          )
+        ).rejects.toThrow(
           /fileGuid is required for a app of type test-plugin-app/
         );
       });
@@ -417,76 +401,68 @@ describe("modules/codeConfig", () => {
     describe("source", () => {
       beforeAll(async () => {
         api.codeConfig.allowLockedModelChanges = true;
-        process.env.GROUPAROO_CONFIG_DIR = path.join(
-          __dirname,
-          "..",
-          "fixtures",
-          "codeConfig",
-          "error-source"
-        );
       });
 
       test("errors will be thrown if the configuration is invalid", async () => {
-        await expect(initializer.initialize()).rejects.toThrow(
-          /cannot find ProfilePropertyRule/
-        );
+        await expect(
+          loadConfigDirectory(
+            path.join(__dirname, "..", "fixtures", "codeConfig", "error-source")
+          )
+        ).rejects.toThrow(/cannot find Property/);
       });
     });
 
-    describe("profile property rule", () => {
+    describe("property", () => {
       beforeAll(async () => {
         api.codeConfig.allowLockedModelChanges = true;
-        process.env.GROUPAROO_CONFIG_DIR = path.join(
-          __dirname,
-          "..",
-          "fixtures",
-          "codeConfig",
-          "error-profilePropertyRule"
-        );
       });
 
       test("errors will be thrown if the configuration is invalid", async () => {
-        await expect(initializer.initialize()).rejects.toThrow(
-          /cannot find Source/
-        );
+        await expect(
+          loadConfigDirectory(
+            path.join(
+              __dirname,
+              "..",
+              "fixtures",
+              "codeConfig",
+              "error-property"
+            )
+          )
+        ).rejects.toThrow(/cannot find Source/);
       });
     });
 
     describe("group", () => {
       beforeAll(async () => {
         api.codeConfig.allowLockedModelChanges = true;
-        process.env.GROUPAROO_CONFIG_DIR = path.join(
-          __dirname,
-          "..",
-          "fixtures",
-          "codeConfig",
-          "error-group"
-        );
       });
 
       test("errors will be thrown if the configuration is invalid", async () => {
-        await expect(initializer.initialize()).rejects.toThrow(
-          /cannot find ProfilePropertyRule/
-        );
+        await expect(
+          loadConfigDirectory(
+            path.join(__dirname, "..", "fixtures", "codeConfig", "error-group")
+          )
+        ).rejects.toThrow(/cannot find Property/);
       });
     });
 
     describe("team member", () => {
       beforeAll(async () => {
         api.codeConfig.allowLockedModelChanges = true;
-        process.env.GROUPAROO_CONFIG_DIR = path.join(
-          __dirname,
-          "..",
-          "fixtures",
-          "codeConfig",
-          "error-teamMember"
-        );
       });
 
       test("errors will be thrown if the configuration is invalid", async () => {
-        await expect(initializer.initialize()).rejects.toThrow(
-          /TeamMember.firstName cannot be null/
-        );
+        await expect(
+          loadConfigDirectory(
+            path.join(
+              __dirname,
+              "..",
+              "fixtures",
+              "codeConfig",
+              "error-teamMember"
+            )
+          )
+        ).rejects.toThrow(/TeamMember.firstName cannot be null/);
       });
     });
   });

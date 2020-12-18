@@ -12,12 +12,13 @@ coverage
 *.sqlite
 *.sqlite-journal
 apps/*/config/*
+apps/*/*.log
 
 # API
 log
 pids
 dist
-core/files/test*
+core/files/*
 core/report.*.json
 core/docs
 core/gh-pages

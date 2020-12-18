@@ -15,7 +15,7 @@ describe("models/destination", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
   }, helper.setupTime);
 
   afterAll(async () => {
@@ -270,12 +270,10 @@ describe("models/destination", () => {
           destination.setMapping({
             "primary-id": "email",
           })
-        ).rejects.toThrow(
-          /primary-id requires a profile property rule of type integer/
-        );
+        ).rejects.toThrow(/primary-id requires a property of type integer/);
       });
 
-      test("mappings must map to profilePropertyRules", async () => {
+      test("mappings must map to properties", async () => {
         destination = await helper.factories.destination();
         await destination.setMapping({
           "primary-id": "userId",
@@ -309,7 +307,7 @@ describe("models/destination", () => {
           destination.setMapping({
             "primary-id": "TheUserID",
           })
-        ).rejects.toThrow(/cannot find profile property rule TheUserID/);
+        ).rejects.toThrow(/cannot find property TheUserID/);
       });
 
       test("a destination cannot be created in the ready state with missing required options", async () => {
@@ -536,23 +534,27 @@ describe("models/destination", () => {
         test("when the group being tracked is removed, the previous group should be exported one last time", async () => {
           await api.resque.queue.connection.redis.flushdb();
 
-          await destination.trackGroup(group);
+          const runA = await destination.trackGroup(group);
           let foundTasks = await specHelper.findEnqueuedTasks("group:run");
           expect(foundTasks.length).toBe(1);
-          expect(foundTasks[0].args[0]).toEqual({
-            force: true,
-            destinationGuid: destination.guid,
-            groupGuid: group.guid,
-          });
+          expect(foundTasks[0].args[0]).toEqual(
+            expect.objectContaining({
+              force: true,
+              destinationGuid: destination.guid,
+              groupGuid: group.guid,
+              runGuid: runA.guid,
+            })
+          );
 
           await api.resque.queue.connection.redis.flushdb();
-          await destination.unTrackGroup();
+          const runB = await destination.unTrackGroup();
           foundTasks = await specHelper.findEnqueuedTasks("group:run");
           expect(foundTasks.length).toBe(1);
           expect(foundTasks[0].args[0]).toEqual({
             force: true,
             destinationGuid: destination.guid,
             groupGuid: group.guid,
+            runGuid: runB.guid,
           });
         });
 
@@ -562,19 +564,24 @@ describe("models/destination", () => {
           await destination.trackGroup(group);
           await api.resque.queue.connection.redis.flushdb();
 
-          await destination.trackGroup(otherGroup);
+          const run = await destination.trackGroup(otherGroup);
 
           let foundTasks = await specHelper.findEnqueuedTasks("group:run");
           expect(foundTasks.length).toBe(2);
-          expect(foundTasks[0].args[0]).toEqual({
-            force: true,
-            destinationGuid: destination.guid,
-            groupGuid: group.guid,
-          });
+          expect(foundTasks[0].args[0]).toEqual(
+            expect.objectContaining({
+              force: true,
+              destinationGuid: destination.guid,
+              groupGuid: group.guid,
+            })
+          );
+          expect(foundTasks[0].args[0].runGuid).not.toEqual(run.guid);
+
           expect(foundTasks[1].args[0]).toEqual({
             force: true,
             destinationGuid: destination.guid,
             groupGuid: otherGroup.guid,
+            runGuid: run.guid,
           });
 
           await otherGroup.destroy();

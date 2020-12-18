@@ -37,7 +37,7 @@ export interface MatchCondition {
   value?: DataResponse;
   values?: DataResponse[];
   // Later when adding more filter options...
-  // export interface ProfilePropertyRuleFiltersWithKey {
+  // export interface PropertyFiltersWithKey {
   //     key: string;
   //     op: string;
   //     match?: string | number | boolean;

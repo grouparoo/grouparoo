@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { updateURLParams, useOffset } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
@@ -10,7 +11,6 @@ import Moment from "react-moment";
 import Pagination from "../../components/pagination";
 import LoadingTable from "../../components/loadingTable";
 import LoadingButton from "../../components/loadingButton";
-import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { Models, Actions } from "../../utils/apiData";
 
 export default function EventsList(props) {

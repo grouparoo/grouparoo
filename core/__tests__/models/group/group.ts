@@ -192,7 +192,7 @@ describe("models/group", () => {
         });
 
         const destination = await helper.factories.destination();
-        await destination.trackGroup(trackedGroup);
+        const run = await destination.trackGroup(trackedGroup);
         const destinationGroupMemberships = {};
         destinationGroupMemberships[taggedGroup.guid] = "remote-tagged-group";
         await destination.setDestinationGroupMemberships(
@@ -205,11 +205,15 @@ describe("models/group", () => {
 
         const foundTasks = await specHelper.findEnqueuedTasks("group:run");
         expect(foundTasks.length).toBe(1);
-        expect(foundTasks[0].args[0]).toEqual({
-          destinationGuid: destination.guid,
-          groupGuid: trackedGroup.guid,
-          force: false,
-        });
+        expect(foundTasks[0].args[0]).toEqual(
+          expect.objectContaining({
+            destinationGuid: destination.guid,
+            groupGuid: trackedGroup.guid,
+            force: false,
+          })
+        );
+        expect(foundTasks[0].args[0].runGuid).toBeTruthy();
+        expect(foundTasks[0].args[0].runGuid).not.toEqual(run.guid);
       });
     });
   });

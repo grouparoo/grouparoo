@@ -1,10 +1,10 @@
 export * from "./pluginMethods";
-export * from "./profilePropertyRuleOptions";
+export * from "./propertyOptions";
 export * from "./sourceOptions";
 export * from "./profileProperty";
 
 export {
-  PluginConnectionProfilePropertyRuleOption,
+  PluginConnectionPropertyOption,
   PluginConnection,
   SourceOptionsMethod,
   ProfilePropertyPluginMethod,

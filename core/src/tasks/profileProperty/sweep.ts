@@ -1,7 +1,7 @@
 import { Task } from "actionhero";
 import { Profile } from "../../models/Profile";
 import { ProfileProperty } from "../../models/ProfileProperty";
-import { ProfilePropertyRule } from "../../models/ProfilePropertyRule";
+import { Property } from "../../models/Property";
 import { plugin } from "../../modules/plugin";
 
 export class ProfilePropertySweep extends Task {
@@ -9,7 +9,7 @@ export class ProfilePropertySweep extends Task {
     super();
     this.name = "profileProperties:sweep";
     this.description =
-      "Double check that all profile properties are removed that don't belong to a profile or profile property rule";
+      "Double check that all profile properties are removed that don't belong to a profile or property";
     this.frequency = 1000 * 30;
     this.queue = "profileProperties";
     this.inputs = {};
@@ -34,10 +34,10 @@ export class ProfilePropertySweep extends Task {
       limit,
     });
 
-    // delete those profile properties who have no profile property rule
+    // delete those profile properties who have no property
     const profilePropertiesMissingRule = await ProfileProperty.findAll({
-      include: [{ model: ProfilePropertyRule, required: false }],
-      where: { "$profilePropertyRule.guid$": null },
+      include: [{ model: Property, required: false }],
+      where: { "$property.guid$": null },
       limit,
     });
 

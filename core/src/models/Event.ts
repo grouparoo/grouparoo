@@ -12,7 +12,7 @@ import { LoggedModel } from "../classes/loggedModel";
 import { Op, Transaction } from "sequelize";
 import { EventData } from "./EventData";
 import { Profile } from "./Profile";
-import { ProfilePropertyRuleFiltersWithKey } from "./ProfilePropertyRule";
+import { PropertyFiltersWithKey } from "./Property";
 import { api, task, config } from "actionhero";
 import { EventOps } from "../modules/ops/event";
 
@@ -96,8 +96,8 @@ export class Event extends LoggedModel<Event> {
     }
   }
 
-  async associate(identifyingProfilePropertyRuleGuid: string) {
-    return EventOps.associate(this, identifyingProfilePropertyRuleGuid);
+  async associate(identifyingPropertyGuid: string) {
+    return EventOps.associate(this, identifyingPropertyGuid);
   }
 
   async updateProfile(profile: Profile) {
@@ -181,13 +181,13 @@ export class Event extends LoggedModel<Event> {
     return results.map((r) => r.key).sort();
   }
 
-  static async applyProfilePropertyRuleFilters(
+  static async applyPropertyFilters(
     eventWhere: { [key: string]: any },
     eventDataWhere: { [key: string]: any },
-    profilePropertyRuleFilters: ProfilePropertyRuleFiltersWithKey[]
+    propertyFilters: PropertyFiltersWithKey[]
   ) {
-    for (const i in profilePropertyRuleFilters) {
-      const filter = profilePropertyRuleFilters[i];
+    for (const i in propertyFilters) {
+      const filter = propertyFilters[i];
       let key = filter.key;
       if (key.match(/^\[data\]-/)) {
         key = key.replace(/^\[data\]-/, "");

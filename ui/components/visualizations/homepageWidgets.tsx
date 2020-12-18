@@ -464,8 +464,7 @@ export function PendingExports({ execApi }) {
   async function load() {
     const { destinations }: Actions.DestinationsList = await execApi(
       "get",
-      `/destinations`,
-      { state: "ready" }
+      `/destinations`
     );
 
     const { exports: _exports }: Actions.ExportsList = await execApi(

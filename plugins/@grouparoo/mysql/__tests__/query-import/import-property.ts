@@ -5,7 +5,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper } from "@grouparoo/spec-helper";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
-import { plugin, Profile, ProfilePropertyRule } from "@grouparoo/core";
+import { plugin, Profile, Property } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/query-import/connection";
 const profileProperty = getConnection().methods.profileProperty;
@@ -17,15 +17,15 @@ let profile: Profile;
 let actionhero, client;
 
 async function getPropertyValue(query: string) {
-  const profilePropertyRuleOptions = { query };
-  const profilePropertyRule = await ProfilePropertyRule.findOne();
+  const propertyOptions = { query };
+  const property = await Property.findOne();
 
   return profileProperty({
     connection: client,
     appOptions,
     profile,
-    profilePropertyRuleOptions,
-    profilePropertyRule,
+    propertyOptions,
+    property,
     profileGuid: null,
     source: null,
     sourceGuid: null,
@@ -33,8 +33,8 @@ async function getPropertyValue(query: string) {
     appGuid: null,
     sourceOptions: null,
     sourceMapping: null,
-    profilePropertyRuleGuid: null,
-    profilePropertyRuleFilters: null,
+    propertyGuid: null,
+    propertyFilters: null,
   });
 }
 
@@ -53,7 +53,7 @@ describe("mysql/query/profileProperty", () => {
 
   beforeAll(async () => {
     // all of these are in in the test plugin
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
 
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({

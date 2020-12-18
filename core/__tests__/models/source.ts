@@ -2,7 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { api } from "actionhero";
 import { Source } from "./../../src/models/Source";
 import { App } from "./../../src/models/App";
-import { ProfilePropertyRule } from "./../../src/models/ProfilePropertyRule";
+import { Property } from "./../../src/models/Property";
 import { Log } from "./../../src/models/Log";
 import { Profile } from "./../../src/models/Profile";
 import { Schedule } from "./../../src/models/Schedule";
@@ -23,7 +23,7 @@ describe("models/source", () => {
 
   beforeAll(async () => {
     app = await helper.factories.app();
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
   });
 
   describe("plugin connections", () => {
@@ -186,7 +186,7 @@ describe("models/source", () => {
       await source.destroy();
     });
 
-    test("a source with a profile property rule cannot be deleted", async () => {
+    test("a source with a property cannot be deleted", async () => {
       const source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
@@ -196,14 +196,14 @@ describe("models/source", () => {
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
-      const rule = await ProfilePropertyRule.create({
+      const rule = await Property.create({
         key: "thing",
         type: "string",
         sourceGuid: source.guid,
       });
 
       await expect(source.destroy()).rejects.toThrow(
-        /cannot delete a source that has profile property rules/
+        /cannot delete a source that has a property/
       );
 
       await rule.destroy();
@@ -389,7 +389,7 @@ describe("models/source", () => {
       await source.destroy();
     });
 
-    test("mappings must map to profilePropertyRules", async () => {
+    test("mappings must map to properties", async () => {
       await source.setMapping({
         local_user_id: "userId",
       });
@@ -405,11 +405,11 @@ describe("models/source", () => {
         source.setMapping({
           local_user_id: "TheUserID",
         })
-      ).rejects.toThrow(/cannot find profile property rule TheUserID/);
+      ).rejects.toThrow(/cannot find property TheUserID/);
     });
   });
 
-  describe("bootstrapUniqueProfilePropertyRule", () => {
+  describe("bootstrapUniqueProperty", () => {
     let source: Source;
 
     beforeAll(async () => {
@@ -425,16 +425,16 @@ describe("models/source", () => {
       await source.destroy();
     });
 
-    test("it can remove identifying from other profile property rules", async () => {
-      const rule = await ProfilePropertyRule.findOne({
+    test("it can remove identifying from other properties", async () => {
+      const rule = await Property.findOne({
         where: { identifying: true },
       });
       rule.identifying = false;
       await rule.save();
     });
 
-    test("bootstrapUniqueProfilePropertyRule will create a new profile property rule", async () => {
-      const rule = await source.bootstrapUniqueProfilePropertyRule(
+    test("bootstrapUniqueProperty will create a new property", async () => {
+      const rule = await source.bootstrapUniqueProperty(
         "uniqueId",
         "integer",
         "id"
@@ -450,17 +450,17 @@ describe("models/source", () => {
       await rule.destroy();
     });
 
-    test("the plugin provides uniqueProfilePropertyRuleBootstrapOptions", async () => {
-      const rule = await ProfilePropertyRule.findOne({
+    test("the plugin provides uniquePropertyBootstrapOptions", async () => {
+      const rule = await Property.findOne({
         where: { key: "userId" },
       });
       const options = await rule.getOptions();
       expect(options).toEqual({ column: "__default_column" }); // from the plugin; see specHelper.ts
     });
 
-    test("bootstrapUniqueProfilePropertyRule will fail if the rule cannot be created", async () => {
+    test("bootstrapUniqueProperty will fail if the rule cannot be created", async () => {
       await expect(
-        source.bootstrapUniqueProfilePropertyRule("userId", "integer", "id")
+        source.bootstrapUniqueProperty("userId", "integer", "id")
       ).rejects.toThrow(/already in use/);
     });
   });
@@ -468,7 +468,7 @@ describe("models/source", () => {
   describe("import", () => {
     let source: Source;
     let profile: Profile;
-    let lnameRule: ProfilePropertyRule;
+    let lnameRule: Property;
     let originalProfilePropertyMethod;
 
     beforeAll(async () => {
@@ -484,7 +484,7 @@ describe("models/source", () => {
       profile = await helper.factories.profile();
       await profile.addOrUpdateProperties({ userId: [1000] });
 
-      lnameRule = await ProfilePropertyRule.create({
+      lnameRule = await Property.create({
         key: "__fname",
         sourceGuid: source.guid,
         type: "string",
@@ -526,7 +526,7 @@ describe("models/source", () => {
       expect(property).toEqual("...mario");
     });
 
-    test("it can import one profile property for a profile with an override of the profile property rule options", async () => {
+    test("it can import one profile property for a profile with an override of the property options", async () => {
       await expect(
         source.importProfileProperty(profile, lnameRule, {
           something: "else",
@@ -538,11 +538,11 @@ describe("models/source", () => {
       }); // does not throw
     });
 
-    test("it can import one profile property for a profile with an override of the profile property rule filters", async () => {
+    test("it can import one profile property for a profile with an override of the property filters", async () => {
       await source.importProfileProperty(profile, lnameRule, null, []); // does not throw
     });
 
-    test("it can import all profile property rules for this source, mapped to the keys properly", async () => {
+    test("it can import all profile properties for this source, mapped to the keys properly", async () => {
       const properties = await source.import(profile);
       expect(properties).toEqual({ __fname: "...mario" });
     });

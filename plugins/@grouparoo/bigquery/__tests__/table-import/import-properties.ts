@@ -6,12 +6,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import {
-  plugin,
-  SimpleAppOptions,
-  Profile,
-  ProfilePropertyRule,
-} from "@grouparoo/core";
+import { plugin, SimpleAppOptions, Profile, Property } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/table-import/connection";
 const profileProperties = getConnection().methods.profileProperties;
@@ -40,16 +35,16 @@ let actionhero;
 let sourceOptions;
 async function getPropertyValues(
   { column, sourceMapping, aggregationMethod },
-  useProfilePropertyRuleFilters?
+  usePropertyFilters?
 ) {
-  const profilePropertyRuleOptions = {
+  const propertyOptions = {
     column,
     aggregationMethod: aggregationMethod,
   };
 
-  const profilePropertyRuleFilters = useProfilePropertyRuleFilters || [];
+  const propertyFilters = usePropertyFilters || [];
   const connection = await connect({ appOptions, app: null, appGuid: null });
-  const profilePropertyRule = await ProfilePropertyRule.findOne({
+  const property = await Property.findOne({
     where: { key: "email" },
   });
 
@@ -58,16 +53,16 @@ async function getPropertyValues(
     appOptions,
     profiles: [profile, otherProfile],
     sourceOptions,
-    profilePropertyRuleOptions,
+    propertyOptions,
     sourceMapping,
-    profilePropertyRuleFilters,
-    profilePropertyRule,
+    propertyFilters,
+    property,
     profileGuids: [profile.guid, otherProfile.guid],
     source: null,
     sourceGuid: null,
     app: null,
     appGuid: null,
-    profilePropertyRuleGuid: null,
+    propertyGuid: null,
   });
 }
 
@@ -85,7 +80,7 @@ describe("bigquery/table/profileProperties", () => {
   beforeAll(async () => {
     jest.setTimeout(helper.mediumTime);
     // all of these are in in the test plugin
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
 
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({
@@ -314,7 +309,7 @@ describe("bigquery/table/profileProperties", () => {
     beforeAll(() => {
       sourceOptions = { table: "purchases" };
     });
-    // export interface ProfilePropertyRuleFiltersWithKey {
+    // export interface PropertyFiltersWithKey {
     //   key: string;
     //   op: string;
     //   match?: string | number | boolean;

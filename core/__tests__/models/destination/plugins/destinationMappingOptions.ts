@@ -13,7 +13,7 @@ describe("models/destination", () => {
   beforeAll(async () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
-    await helper.factories.profilePropertyRules();
+    await helper.factories.properties();
   }, helper.setupTime);
 
   afterAll(async () => {
@@ -377,15 +377,15 @@ describe("models/destination", () => {
                       singular: "list",
                       plural: "lists",
                     },
-                    profilePropertyRule: {
+                    property: {
                       singular: "var",
                       plural: "vars",
                     },
                   },
-                  profilePropertyRules: {
+                  properties: {
                     required,
                     known,
-                    allowOptionalFromProfilePropertyRules: true,
+                    allowOptionalFromProperties: true,
                   },
                 };
               },
@@ -453,7 +453,7 @@ describe("models/destination", () => {
       await expect(
         destination.setMapping({ "remote-id": "firstName" })
       ).rejects.toThrow(
-        "remote-id requires a profile property rule of type integer, but a string (firstName) was mapped"
+        "remote-id requires a property of type integer, but a string (firstName) was mapped"
       );
     });
 

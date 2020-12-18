@@ -4,7 +4,7 @@ import { plugin } from "@grouparoo/core";
 import { test } from "../lib/test";
 import { sourcePreview } from "../lib/sheet-import/sourcePreview";
 import { profiles } from "../lib/sheet-import/profiles";
-import { profilePropertyRuleOptions } from "../lib/sheet-import/profilePropertyRuleOptions";
+import { propertyOptions } from "../lib/sheet-import/propertyOptions";
 import { sourceRunPercentComplete } from "../lib/sheet-import/sourceRunPercentComplete";
 
 const packageJSON = require("./../../package.json");
@@ -56,7 +56,7 @@ export class Plugins extends Initializer {
               description: "The url of the Google Sheet.",
             },
           ],
-          profilePropertyRuleOptions,
+          propertyOptions,
           methods: {
             sourcePreview,
             profiles,

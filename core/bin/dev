@@ -21,7 +21,7 @@ for p in $GROUPAROO_PIDS; do
   sleep 1
 done
 
-"$NODEMON" -e js,jsx,ts,tsx --signal SIGTERM --ignore dist --watch ./src --watch ../../plugins/**/*.js \
+"$NODEMON" -e js,jsx,ts,tsx --signal SIGTERM --ignore dist --watch ./src --watch ../plugins/**/*.js \
 --exec "$TS_NODE" --transpile-only --log-error src/grouparoo.ts \
 || exit 0
 
