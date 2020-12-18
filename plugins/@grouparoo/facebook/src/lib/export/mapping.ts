@@ -1,8 +1,4 @@
-import {
-  DestinationMappingOptionsMethod,
-  DestinationMappingOptionsMethodResponse,
-  SimpleAppOptions,
-} from "@grouparoo/core";
+import { DestinationMappingOptionsMethodResponse } from "@grouparoo/core";
 import { getMappingFields } from "./fields";
 import { FacebookModel } from "./model";
 
@@ -19,7 +15,7 @@ export const getDestinationMappingOptions: FacebookDestinationMappingOptionsMeth
 
   return {
     labels: {
-      profilePropertyRule: {
+      property: {
         singular: "Facebook Key",
         plural: "Facebook Keys",
       },
@@ -28,10 +24,10 @@ export const getDestinationMappingOptions: FacebookDestinationMappingOptionsMeth
         plural: "Facebook Audiences",
       },
     },
-    profilePropertyRules: {
+    properties: {
       required,
       known,
-      allowOptionalFromProfilePropertyRules: false,
+      allowOptionalFromProperties: false,
     },
   };
 };

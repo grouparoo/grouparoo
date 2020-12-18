@@ -1,12 +1,12 @@
 import "@grouparoo/spec-helper";
-import { helper } from "@grouparoo/spec-helper";
-import { destinationMappingOptions } from "../../src/lib/export/destinationMappingOptions";
+import { destinationMappingOptions } from "../../src/lib/export-custom/destinationMappingOptions";
 
 const destinationOptions = {
   primaryKey: "EMAIL",
+  syncMode: "Sync",
 };
 
-describe("facebook/destinationMappingOptions", () => {
+describe("facebook/audiences-custom/destinationMappingOptions", () => {
   test("can load destinationMappingOptions", async () => {
     const options = await destinationMappingOptions({
       destinationOptions,
@@ -17,8 +17,8 @@ describe("facebook/destinationMappingOptions", () => {
       destination: null,
       destinationGuid: null,
     });
-    const { profilePropertyRules } = options;
-    const { required, known } = profilePropertyRules;
+    const { properties } = options;
+    const { required, known } = properties;
 
     expect(required.length).toBe(1);
 
@@ -44,5 +44,8 @@ describe("facebook/destinationMappingOptions", () => {
     expect(initial.key).toBe("FI");
     expect(initial.type).toBe("string");
     expect(initial.important).toBe(false);
+
+    const lookalikeValue = known.find((f) => f.key === "LOOKALIKE_VALUE");
+    expect(lookalikeValue).toBeFalsy();
   });
 });
