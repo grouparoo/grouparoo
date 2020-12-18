@@ -12,6 +12,7 @@ import { Op, Transaction } from "sequelize";
 
 export async function loadProperty(
   configObject: ConfigurationObject,
+  externallyValidate: boolean,
   transaction?: Transaction
 ) {
   let isNew = false;
@@ -58,7 +59,11 @@ export async function loadProperty(
   );
 
   if (configObject.filters) {
-    await property.setFilters(configObject.filters, transaction);
+    await property.setFilters(
+      configObject.filters,
+      transaction,
+      externallyValidate
+    );
   }
 
   if (configObject.identifying === true) {

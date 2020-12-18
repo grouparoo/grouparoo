@@ -12,6 +12,7 @@ import { Op, Transaction } from "sequelize";
 
 export async function loadSchedule(
   configObject: ConfigurationObject,
+  externallyValidate: boolean,
   transaction?: Transaction
 ) {
   let isNew = false;

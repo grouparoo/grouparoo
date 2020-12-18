@@ -13,6 +13,7 @@ import { Op, Transaction } from "sequelize";
 
 export async function loadDestination(
   configObject: ConfigurationObject,
+  externallyValidate: boolean,
   transaction?: Transaction
 ) {
   let isNew = false;
@@ -62,7 +63,7 @@ export async function loadDestination(
     );
     mapping[key] = property.key;
   }
-  await destination.setMapping(mapping, transaction);
+  await destination.setMapping(mapping, transaction, externallyValidate);
 
   let destinationGroupMemberships = {};
   const sanitizedDestinationGroupMemberships = extractNonNullParts(

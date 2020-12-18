@@ -11,6 +11,7 @@ import { Op, Transaction } from "sequelize";
 
 export async function loadApp(
   configObject: ConfigurationObject,
+  externallyValidate: boolean,
   transaction?: Transaction
 ) {
   let isNew = false;
@@ -40,14 +41,16 @@ export async function loadApp(
     transaction
   );
 
-  const response = await app.test(
-    extractNonNullParts(configObject, "options"),
-    transaction
-  );
-  if (!response.success) {
-    throw new Error(
-      `error testing app ${app.name} (${app.guid}) - ${response.error}`
+  if (externallyValidate) {
+    const response = await app.test(
+      extractNonNullParts(configObject, "options"),
+      transaction
     );
+    if (!response.success) {
+      throw new Error(
+        `error testing app ${app.name} (${app.guid}) - ${response.error}`
+      );
+    }
   }
 
   await app.update({ state: "ready" }, { transaction });

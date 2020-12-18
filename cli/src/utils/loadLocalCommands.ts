@@ -150,7 +150,7 @@ async function convertCLIToCommanderAction(cli, program) {
     if (input.required && !input.default) {
       command.requiredOption(`--${key} <${key}>`, input.description);
     } else {
-      command.option(`--${key} <${key}>`, input.description, input.default);
+      command.option(`--${key} [${key}]`, input.description, input.default);
     }
   }
 }

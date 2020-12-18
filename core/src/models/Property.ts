@@ -297,9 +297,10 @@ export class Property extends LoggedModel<Property> {
 
   async setFilters(
     filters: PropertyFiltersWithKey[],
-    transaction?: Transaction
+    transaction?: Transaction,
+    externallyValidate = true
   ) {
-    await this.validateFilters(filters, transaction);
+    if (externallyValidate) await this.validateFilters(filters, transaction);
     const existingFilters = await this.getFilters(transaction);
     const filtersAreEqual = await PropertyOps.filtersAreEqual(
       filters,

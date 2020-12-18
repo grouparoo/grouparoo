@@ -72,6 +72,7 @@ describe("modules/codeConfig", () => {
       const transaction: Transaction = await api.sequelize.transaction();
       const { errors, seenGuids } = await processConfigObjects(
         sortedConfigObjects,
+        true,
         transaction
       );
       await transaction.rollback();
@@ -112,6 +113,7 @@ describe("modules/codeConfig", () => {
       const transaction: Transaction = await api.sequelize.transaction();
       const { errors } = await processConfigObjects(
         sortedConfigObjects,
+        true,
         transaction
       );
       await transaction.rollback();
@@ -121,6 +123,34 @@ describe("modules/codeConfig", () => {
         /Error: cannot find Property rul_missing_profile_property/
       );
       expect(errors[0]).toMatch(/error with Group/);
+    });
+
+    ensureNoSavedModels();
+
+    test("validation can be skipped", async () => {
+      const dir = path.join(
+        __dirname,
+        "..",
+        "..",
+        "fixtures",
+        "codeConfig",
+        "error-group"
+      );
+
+      const { configObjects } = await loadConfigObjects(dir);
+      const sortedConfigObjects = sortConfigurationObject(configObjects);
+      const transaction: Transaction = await api.sequelize.transaction();
+      const { errors } = await processConfigObjects(
+        sortedConfigObjects,
+        false, // <-- here
+        transaction
+      );
+      await transaction.rollback();
+
+      expect(errors.length).toBe(1);
+      expect(errors[0]).toMatch(
+        /Error: cannot find Property rul_missing_profile_property/
+      );
     });
 
     ensureNoSavedModels();

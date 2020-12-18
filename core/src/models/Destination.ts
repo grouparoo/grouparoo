@@ -151,8 +151,12 @@ export class Destination extends LoggedModel<Destination> {
     return MappingHelper.getMapping(this, transaction);
   }
 
-  async setMapping(mappings: DestinationMapping, transaction?: Transaction) {
-    await this.validateMappings(mappings, transaction);
+  async setMapping(
+    mappings: DestinationMapping,
+    transaction?: Transaction,
+    externallyValidate = true
+  ) {
+    if (externallyValidate) await this.validateMappings(mappings, transaction);
     return MappingHelper.setMapping(this, mappings, transaction);
   }
 

@@ -10,6 +10,7 @@ import { Transaction } from "sequelize";
 
 export async function loadSetting(
   configObject: ConfigurationObject,
+  externallyValidate: boolean,
   transaction?: Transaction
 ) {
   validateConfigObjectKeys(Setting, configObject);

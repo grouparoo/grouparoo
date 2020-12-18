@@ -49,7 +49,7 @@ export async function loadConfigDirectory(configDir: string) {
 
   if (configFiles.length > 0) {
     const sortedConfigObjects = sortConfigurationObject(configObjects);
-    const response = await processConfigObjects(sortedConfigObjects);
+    const response = await processConfigObjects(sortedConfigObjects, true);
     seenGuids = response.seenGuids;
     errors = response.errors;
 
@@ -90,6 +90,7 @@ async function loadConfigFile(file: string): Promise<ConfigurationObject> {
 
 export async function processConfigObjects(
   configObjects: Array<ConfigurationObject>,
+  externallyValidate: boolean,
   transaction?: Transaction
 ) {
   const seenGuids: guidsByClass = {
@@ -113,13 +114,21 @@ export async function processConfigObjects(
     try {
       switch (klass) {
         case "setting":
-          object = await loadSetting(configObject, transaction);
+          object = await loadSetting(
+            configObject,
+            externallyValidate,
+            transaction
+          );
           break;
         case "app":
-          object = await loadApp(configObject, transaction);
+          object = await loadApp(configObject, externallyValidate, transaction);
           break;
         case "source":
-          object = await loadSource(configObject, transaction);
+          object = await loadSource(
+            configObject,
+            externallyValidate,
+            transaction
+          );
           if (configObject.bootstrappedProperty) {
             seenGuids["property"].push(
               await validateAndFormatGuid(
@@ -130,25 +139,53 @@ export async function processConfigObjects(
           }
           break;
         case "property":
-          object = await loadProperty(configObject, transaction);
+          object = await loadProperty(
+            configObject,
+            externallyValidate,
+            transaction
+          );
           break;
         case "group":
-          object = await loadGroup(configObject, transaction);
+          object = await loadGroup(
+            configObject,
+            externallyValidate,
+            transaction
+          );
           break;
         case "schedule":
-          object = await loadSchedule(configObject, transaction);
+          object = await loadSchedule(
+            configObject,
+            externallyValidate,
+            transaction
+          );
           break;
         case "destination":
-          object = await loadDestination(configObject, transaction);
+          object = await loadDestination(
+            configObject,
+            externallyValidate,
+            transaction
+          );
           break;
         case "apikey":
-          object = await loadApiKey(configObject, transaction);
+          object = await loadApiKey(
+            configObject,
+            externallyValidate,
+            transaction
+          );
           break;
         case "team":
-          object = await loadTeam(configObject, transaction);
+          object = await loadTeam(
+            configObject,
+            externallyValidate,
+            transaction
+          );
           break;
         case "teammember":
-          object = await loadTeamMember(configObject, transaction);
+          object = await loadTeamMember(
+            configObject,
+            externallyValidate,
+            transaction
+          );
           break;
         default:
           throw new Error(`unknown config object class: ${configObject.class}`);
@@ -160,7 +197,6 @@ export async function processConfigObjects(
       errors.push(errorMessage);
       log(errorMessage, env === "test" ? "info" : "error");
       continue;
-      // throw error.original ? error.original : error;
     }
 
     if (klass !== "setting") seenGuids[klass].push(object.guid);

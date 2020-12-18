@@ -12,6 +12,7 @@ import { task } from "actionhero";
 
 export async function loadGroup(
   configObject: ConfigurationObject,
+  externallyValidate: boolean,
   transaction?: Transaction
 ) {
   let isNew = false;

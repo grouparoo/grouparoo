@@ -16,11 +16,15 @@ export class Validate extends CLI {
     this.name = "validate";
     this.description = "Validate your code config";
     this.inputs = {
-      "only-local": { required: false, default: false },
+      "externally-validate": {
+        required: false,
+        description:
+          "Should we validate the config by connecting to sources and destinations?",
+      },
     };
   }
 
-  async run() {
+  async run({ params }) {
     api.plugins.announcePlugins();
 
     const configDir = getConfigDir();
@@ -41,7 +45,11 @@ export class Validate extends CLI {
     const transaction: Transaction = await api.sequelize.transaction();
 
     try {
-      const { errors } = await processConfigObjects(configObjects, transaction);
+      const { errors } = await processConfigObjects(
+        configObjects,
+        !!params.externallyValidate,
+        transaction
+      );
       if (errors.length > 0) {
         logFatalError(
           `❌ Validation failed - ${errors.length} validation error${

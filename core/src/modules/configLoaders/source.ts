@@ -12,6 +12,7 @@ import { Op, Transaction } from "sequelize";
 
 export async function loadSource(
   configObject: ConfigurationObject,
+  externallyValidate: boolean,
   transaction?: Transaction
 ) {
   let isNew = false;
@@ -47,7 +48,7 @@ export async function loadSource(
   );
 
   // a form of testing the options
-  if (await source.previewAvailable()) {
+  if (externallyValidate && (await source.previewAvailable())) {
     await source.sourcePreview(null, transaction);
   }
 
