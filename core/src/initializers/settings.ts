@@ -69,6 +69,14 @@ export class Plugins extends Initializer {
         type: "number",
       },
       {
+        key: "runs-recurring-internal-run-frequency",
+        title: "Runs: Recurring Internal Run Frequency",
+        defaultValue: 0,
+        description:
+          "Should Grouparoo periodically re-import all of your profiles, and if so, how long between runs?",
+        type: "number",
+      },
+      {
         key: "imports-profile-properties-batch-size",
         title: "Imports: Profile Property Batch Size",
         defaultValue: 50,

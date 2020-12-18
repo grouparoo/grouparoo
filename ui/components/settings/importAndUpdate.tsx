@@ -2,6 +2,7 @@ import { useApi } from "../../hooks/useApi";
 import { useState } from "react";
 import { Card } from "react-bootstrap";
 import LoadingButton from "../loadingButton";
+import { Actions } from "../../utils/apiData";
 
 export default function ImportAndUpdateProfile(props) {
   const { errorHandler, successHandler } = props;
@@ -11,7 +12,10 @@ export default function ImportAndUpdateProfile(props) {
   async function importAndUpdate() {
     if (window.confirm("Are you sure?")) {
       setLoading(true);
-      const response = await execApi("put", `/profiles/importAndUpdate`);
+      const response: Actions.ProfilesImportAndUpdate = await execApi(
+        "put",
+        `/profiles/importAndUpdate`
+      );
       if (response?.run) {
         successHandler.set({ message: `Run ${response.run.guid} enqueued` });
       }
