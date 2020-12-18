@@ -128,7 +128,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
   }, helper.setupTime);
 
   afterAll(async () => {
-    // await cleanUp(true);
+    await cleanUp(true);
   }, helper.setupTime);
 
   beforeEach(() => {
