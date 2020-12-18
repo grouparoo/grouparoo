@@ -7,6 +7,7 @@ import {
   getConfigDir,
   loadConfigObjects,
   processConfigObjects,
+  logFatalError,
 } from "../modules/configLoaders";
 import { Transaction } from "sequelize";
 
@@ -53,7 +54,7 @@ export class Validate extends CLI {
       if (errors.length > 0) {
         logFatalError(
           `❌ Validation failed - ${errors.length} validation error${
-            errors.length > 0 ? "s" : ""
+            errors.length !== 1 ? "s" : ""
           }`
         );
       } else {
@@ -69,9 +70,4 @@ export class Validate extends CLI {
 
     return true;
   }
-}
-
-function logFatalError(message) {
-  log(message, "error");
-  process.exit(1);
 }

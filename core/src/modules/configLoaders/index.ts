@@ -237,3 +237,8 @@ async function deleteLockedObjects(seenGuids, transaction?: Transaction) {
 
   return deletedGuids;
 }
+
+export function logFatalError(message) {
+  log(message, "error");
+  if (env !== "test") process.exit(1);
+}
