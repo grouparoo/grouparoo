@@ -283,7 +283,9 @@ export default function Page(props) {
                 return (
                   <tr key={`property-${key}`}>
                     <td>
-                      <span style={{ fontWeight: "bold" }}>{key}</span>
+                      <span style={{ fontWeight: "bold" }}>
+                        {properties[key].key}
+                      </span>
                     </td>
                     <td>
                       {manualProperties.includes(key) ? (
@@ -318,8 +320,10 @@ export default function Page(props) {
                         <span>
                           <strong>
                             <ArrayProfilePropertyList
-                              type={properties[key].type}
-                              values={properties[key].values}
+                              type={profileProperties[properties[key].key].type}
+                              values={
+                                profileProperties[properties[key].key].values
+                              }
                             />
                           </strong>
                         </span>
@@ -332,20 +336,27 @@ export default function Page(props) {
                       </code>
                     </td>
                     <td>
-                      <StateBadge state={properties[key].state} />
+                      <StateBadge
+                        state={profileProperties[properties[key].key].state}
+                      />
                     </td>
                     <td>
-                      {properties[key].valueChangedAt ? (
+                      {profileProperties[properties[key].key].valueChangedAt ? (
                         <Moment fromNow>
-                          {properties[key].valueChangedAt}
+                          {
+                            profileProperties[properties[key].key]
+                              .valueChangedAt
+                          }
                         </Moment>
                       ) : (
                         "Never"
                       )}
                     </td>
                     <td>
-                      {properties[key].confirmedAt ? (
-                        <Moment fromNow>{properties[key].confirmedAt}</Moment>
+                      {profileProperties[properties[key].key].confirmedAt ? (
+                        <Moment fromNow>
+                          {profileProperties[properties[key].key].confirmedAt}
+                        </Moment>
                       ) : (
                         "Never"
                       )}
