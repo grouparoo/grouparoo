@@ -1,13 +1,12 @@
 import { objectCache, CacheKey } from "@grouparoo/core";
 import { SimpleAppOptions } from "@grouparoo/core";
 import { Client } from "../connect";
+import { AudienceSubtype } from "./model";
 
 export interface FacebookCacheData {
   appGuid: string;
   appOptions: SimpleAppOptions;
 }
-
-export type AudienceSubtype = "CUSTOM" | "LOOKALIKE";
 
 export async function getAudienceId(
   client: Client,

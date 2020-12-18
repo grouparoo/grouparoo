@@ -5,7 +5,7 @@ import {
   SimpleDestinationOptions,
 } from "@grouparoo/core";
 import { log } from "actionhero";
-import { FacebookModel } from "./model";
+import { FacebookModel, AudienceSubtype } from "./model";
 
 const FIELDS = {
   // don't need to hash. can be used to update and delete
@@ -23,6 +23,13 @@ const FIELDS = {
     important: true,
     identity: true,
     encode: "em",
+  },
+
+  LOOKALIKE_VALUE: {
+    type: "float",
+    name: "Lookalike Value",
+    important: true,
+    audienceTypes: ["LOOKALIKE"],
   },
 
   // Hashing required. Use these values: m for male and f for female.
@@ -69,9 +76,6 @@ const FIELDS = {
 
   // Hashing required. Use the YYYY format from 1900 to current year.
   DOBY: { type: null, name: "Birth Year", encode: "doby" },
-
-  // TODO: look alike audiences
-  LOOKALIKE_VALUE: { type: null, name: "Lookalike Value" }, // "float"
 };
 
 export const getMappingFields = (
@@ -87,13 +91,16 @@ export const getMappingFields = (
     important?: boolean;
   }>;
 } => {
-  const { primaryKey } = model;
+  const { primaryKey, audienceType } = model;
   const required = [];
   let known = [];
   for (const key in FIELDS) {
     const obj = FIELDS[key];
     const type = getFieldType(key);
     if (!type) {
+      continue;
+    }
+    if (obj.audienceTypes && !obj.audienceTypes.includes(audienceType)) {
       continue;
     }
     if (key === primaryKey) {
@@ -107,15 +114,17 @@ export const getMappingFields = (
 };
 
 export const getFieldList = (
-  model: FacebookModel
+  audienceType: AudienceSubtype
 ): DestinationOptionsMethodResponse => {
   const out: DestinationOptionsMethodResponse = {};
-  Object.assign(out, getPrimaryKeys());
-  Object.assign(out, getSyncModes());
+  Object.assign(out, getPrimaryKeys(audienceType));
+  if (audienceType === "CUSTOM") {
+    Object.assign(out, getSyncModes());
+  }
   return out;
 };
 
-function getPrimaryKeys() {
+function getPrimaryKeys(audienceType: AudienceSubtype) {
   const out: DestinationOptionsMethodResponse = {
     primaryKey: { type: "list", options: [], descriptions: [] },
   };
@@ -123,6 +132,9 @@ function getPrimaryKeys() {
   for (const key in FIELDS) {
     const obj = FIELDS[key];
     if (!obj.identity) {
+      continue;
+    }
+    if (obj.audienceTypes && !obj.audienceTypes.includes(audienceType)) {
       continue;
     }
     out.primaryKey.options.push(key);

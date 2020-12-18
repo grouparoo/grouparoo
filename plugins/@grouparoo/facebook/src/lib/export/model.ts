@@ -3,10 +3,13 @@ import {
   GroupSyncMode,
   GroupSyncModeData,
 } from "@grouparoo/app-templates/dist/destination/group";
+
+export type AudienceSubtype = "CUSTOM" | "LOOKALIKE";
+
 export interface FacebookModel {
   syncMode: GroupSyncMode;
   primaryKey: string;
-  audienceType: string;
+  audienceType: AudienceSubtype;
 }
 
 export function getFacebookModel(
