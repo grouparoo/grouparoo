@@ -3,7 +3,6 @@ import { Group } from "../../models/Group";
 import { GroupRule } from "../../models/GroupRule";
 import { App } from "../../models/App";
 import { internalRun } from "../internalRun";
-import { task } from "actionhero";
 import { Op, Transaction } from "sequelize";
 import Mustache from "mustache";
 
