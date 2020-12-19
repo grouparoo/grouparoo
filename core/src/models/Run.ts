@@ -298,6 +298,8 @@ export class Run extends Model<Run> {
       } else if (this.creatorType === "teamMember") {
         const teamMember = await TeamMember.findByGuid(this.creatorGuid);
         name = `${teamMember.firstName} ${teamMember.lastName}`;
+      } else if (this.creatorType === "task") {
+        name = this.creatorGuid;
       }
     } catch (error) {
       // likely the creator has been deleted
