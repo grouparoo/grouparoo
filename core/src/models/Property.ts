@@ -533,6 +533,21 @@ export class Property extends LoggedModel<Property> {
     await LockableHelper.beforeSave(instance, ["state", "directlyMapped"]);
   }
 
+  @BeforeSave
+  static async runPropertyWithNoOptionsOrFiltersWhenReady(instance: Property) {
+    const changedState = instance.changed("state");
+    if (changedState && instance.state === "ready") {
+      const options = await instance.getOptions();
+      const filters = await instance.getFilters();
+      if (
+        Object.keys(options).length === 0 &&
+        Object.keys(filters).length === 0
+      ) {
+        await PropertyOps.enqueueRuns(instance);
+      }
+    }
+  }
+
   @BeforeDestroy
   static async ensureNotInUse(instance: Property) {
     const groupRule = await GroupRule.findOne({

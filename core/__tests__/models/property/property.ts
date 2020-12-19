@@ -4,6 +4,7 @@ import { Property } from "../../../src/models/Property";
 import { Log } from "../../../src/models/Log";
 import { App } from "../../../src/models/App";
 import { Source } from "../../../src/models/Source";
+import { Run } from "../../../src/models/Run";
 import { Option } from "../../../src/models/Option";
 import { plugin } from "../../../src/modules/plugin";
 import { PropertyFilter } from "../../../src/models/PropertyFilter";
@@ -247,6 +248,35 @@ describe("models/property", () => {
     expect(group.state).toBe("updating");
     foundGroupRunTasks = await specHelper.findEnqueuedTasks("group:run");
     expect(foundGroupRunTasks.length).toBe(2); // + the one from the profile property change
+  });
+
+  test("when a property with no options or filters first becomes ready, a run will be started", async () => {
+    const app = await App.create({ type: "manual" });
+    await app.update({ state: "ready" });
+    const source = await Source.create({ appGuid: app.guid, type: "manual" });
+    await source.update({ state: "ready" });
+    const property = await Property.create({
+      key: "manual-property",
+      sourceGuid: source.guid,
+      type: "boolean",
+    });
+    await property.update({ state: "ready" });
+
+    const firstRun = await Run.findOne({
+      where: { creatorGuid: property.guid },
+    });
+    expect(firstRun).toBeTruthy();
+    await firstRun.destroy();
+
+    await property.update({ key: "new-key" });
+    const secondRun = await Run.findOne({
+      where: { creatorGuid: property.guid },
+    });
+    expect(secondRun).toBeNull();
+
+    await property.destroy();
+    await source.destroy();
+    await app.destroy();
   });
 
   test("options can be set and retrieved", async () => {
