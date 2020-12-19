@@ -156,9 +156,6 @@ export default function Page(props) {
     setLoading(false);
   }
 
-  const keys = Object.keys(properties);
-  keys.sort();
-
   const updateExistingProperty = async (event) => {
     const _profileProperties = Object.assign({}, profileProperties);
     _profileProperties[event.target.id].values = [event.target.value];
@@ -279,91 +276,83 @@ export default function Page(props) {
               </tr>
             </thead>
             <tbody>
-              {keys.map((key) => {
-                return (
-                  <tr key={`property-${key}`}>
-                    <td>
-                      <span style={{ fontWeight: "bold" }}>
-                        {properties[key].key}
-                      </span>
-                    </td>
-                    <td>
-                      {manualProperties.includes(key) ? (
-                        <Form>
-                          <Form.Group controlId={key}>
-                            <Form.Control
-                              required
-                              type="text"
-                              disabled={loading}
-                              value={
-                                properties[key].values.length === 0
-                                  ? ""
-                                  : properties[key].values.join(", ")
-                              }
-                              onChange={(e) => updateExistingProperty(e)}
-                            />
-                          </Form.Group>
+              {Object.keys(profileProperties)
+                .sort()
+                .map((key) => {
+                  const profileProperty = profileProperties[key];
+                  return (
+                    <tr key={`property-${key}`}>
+                      <td>
+                        <span style={{ fontWeight: "bold" }}>{key}</span>
+                      </td>
+                      <td>
+                        {manualProperties.includes(key) ? (
+                          <Form>
+                            <Form.Group controlId={key}>
+                              <Form.Control
+                                required
+                                type="text"
+                                disabled={loading}
+                                value={
+                                  profileProperty.values.length === 0
+                                    ? ""
+                                    : profileProperty.values.join(", ")
+                                }
+                                onChange={(e) => updateExistingProperty(e)}
+                              />
+                            </Form.Group>
 
-                          <LoadingButton
-                            size="sm"
-                            type="submit"
-                            variant="info"
-                            disabled={loading}
-                            onClick={() => {
-                              handleUpdate(key);
-                            }}
-                          >
-                            Update
-                          </LoadingButton>
-                        </Form>
-                      ) : (
-                        <span>
-                          <strong>
-                            <ArrayProfilePropertyList
-                              type={profileProperties[properties[key].key].type}
-                              values={
-                                profileProperties[properties[key].key].values
-                              }
-                            />
-                          </strong>
-                        </span>
-                      )}
-                    </td>
-                    <td>
-                      <code>
-                        {properties[key].type}
-                        {properties[key].isArray ? "[]" : null}
-                      </code>
-                    </td>
-                    <td>
-                      <StateBadge
-                        state={profileProperties[properties[key].key].state}
-                      />
-                    </td>
-                    <td>
-                      {profileProperties[properties[key].key].valueChangedAt ? (
-                        <Moment fromNow>
-                          {
-                            profileProperties[properties[key].key]
-                              .valueChangedAt
-                          }
-                        </Moment>
-                      ) : (
-                        "Never"
-                      )}
-                    </td>
-                    <td>
-                      {profileProperties[properties[key].key].confirmedAt ? (
-                        <Moment fromNow>
-                          {profileProperties[properties[key].key].confirmedAt}
-                        </Moment>
-                      ) : (
-                        "Never"
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
+                            <LoadingButton
+                              size="sm"
+                              type="submit"
+                              variant="info"
+                              disabled={loading}
+                              onClick={() => {
+                                handleUpdate(key);
+                              }}
+                            >
+                              Update
+                            </LoadingButton>
+                          </Form>
+                        ) : (
+                          <span>
+                            <strong>
+                              <ArrayProfilePropertyList
+                                type={profileProperty.type}
+                                values={profileProperty.values}
+                              />
+                            </strong>
+                          </span>
+                        )}
+                      </td>
+                      <td>
+                        <code>
+                          {profileProperty.type}
+                          {profileProperty.isArray ? "[]" : null}
+                        </code>
+                      </td>
+                      <td>
+                        <StateBadge state={profileProperty.state} />
+                      </td>
+                      <td>
+                        {profileProperty.valueChangedAt ? (
+                          <Moment fromNow>
+                            {profileProperty.valueChangedAt}
+                          </Moment>
+                        ) : (
+                          "Never"
+                        )}
+                      </td>
+                      <td>
+                        {profileProperty.confirmedAt ? (
+                          <Moment fromNow>{profileProperty.confirmedAt}</Moment>
+                        ) : (
+                          "Never"
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </LoadingTable>
         </Col>
