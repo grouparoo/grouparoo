@@ -54,7 +54,7 @@
     "react-dom": "16.14.0",
     "react-hook-form": "6.13.0",
     "react-markdown": "5.0.3",
-    "react-moment": "1.0.0",
+    "react-moment": "1.1.1",
     "stacktrace-js": "2.0.2",
     "swagger-ui": "3.38.0",
     "type-fest": "0.20.2",
