@@ -4,7 +4,7 @@
 
 Focus on building your core product, not integrating with 3rd-party tools. Learn more at [www.grouparoo.com](https://www.grouparoo.com)
 
-![Grouparoo Data Bowtie](https://raw.githubusercontent.com/grouparoo/grouparoo/master/documents/images/grouparoo-bowtie.png)
+![Grouparoo Data Bowtie](https://raw.githubusercontent.com/grouparoo/grouparoo/master/documents/images/grouparoo-diagram.png)
 
 <p align="center">
   <a aria-label="NPM version" href="https://www.npmjs.com/package/@grouparoo/core">
