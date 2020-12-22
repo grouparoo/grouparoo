@@ -117,7 +117,9 @@ export default function Page(props) {
       />
 
       <Form id="form" onSubmit={edit} autoComplete="off">
-        <fieldset disabled={schedule.locked !== null}>
+        <fieldset
+          disabled={schedule.locked !== null || schedule.state === "ready"}
+        >
           <Row>
             <Col>
               <Form.Group controlId="recurring">
@@ -269,7 +271,6 @@ export default function Page(props) {
                                   type="radio"
                                   id={`${col.key}`}
                                   name={opt.key}
-                                  disabled={schedule.state !== "draft"}
                                   defaultChecked={
                                     schedule.options[opt.key] === col.key
                                   }
@@ -299,7 +300,6 @@ export default function Page(props) {
                           required
                           type="text"
                           value={schedule.options[opt.key]}
-                          disabled={schedule.state !== "draft"}
                           onChange={(e) =>
                             updateOption(opt.key, e.target.value)
                           }
@@ -317,7 +317,6 @@ export default function Page(props) {
                           required
                           as="textarea"
                           rows={5}
-                          disabled={loading}
                           value={schedule.options[opt.key]}
                           onChange={(e) =>
                             updateOption(opt.key, e.target["value"])
