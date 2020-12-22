@@ -1,5 +1,5 @@
-import { ErrorWithProfileGuid } from "@grouparoo/core";
 import { BatchSyncModeData } from "./types";
+import { setGroupNames, checkErrors } from "../shared/batch";
 import {
   BatchGroupMode,
   BatchExport,
@@ -67,34 +67,6 @@ const exportOneBatch: ExportBatchProfilesPluginMethod = async (
 
   return checkErrors(exports);
 };
-
-function checkErrors(
-  exportedProfiles: BatchExport[]
-): { success: boolean; errors: ErrorWithProfileGuid[] } {
-  // assuming semantics here of success is only true if there are zero errors
-  let errors: ErrorWithProfileGuid[] = null; // for ones that go wrong
-  let success = true;
-  for (const exportedProfile of exportedProfiles) {
-    let { error, skippedMessage } = exportedProfile;
-    if (error) {
-      success = false;
-      errors = errors || [];
-      if (typeof error === "string") {
-        error = new Error(error);
-      }
-      error.profileGuid = exportedProfile.profileGuid;
-      errors.push(error);
-    } else if (skippedMessage) {
-      errors = errors || [];
-      const skip = <ErrorWithProfileGuid>new Error(skippedMessage);
-      skip.profileGuid = exportedProfile.profileGuid;
-      skip.errorLevel = "info";
-      errors.push(skip);
-    }
-  }
-
-  return { success, errors };
-}
 
 function verifyAllProcessed(exports: BatchExport[]) {
   for (const exportedProfile of exports) {
@@ -524,38 +496,6 @@ async function lookupDestinationIds(
   }
 }
 
-// puts added and removed on export
-function setGroupNames(
-  exportedProfile: BatchExport,
-  methods: BatchMethods,
-  config: BatchConfig
-) {
-  // build up groups situation of group names to addition and removal
-  let oldGroups = exportedProfile.oldGroups || [];
-  let newGroups = exportedProfile.newGroups || [];
-  if (exportedProfile.toDelete) {
-    // if anyone asks, removing from all groups as part of deletion
-    oldGroups = Array.from(new Set(oldGroups.concat(newGroups)));
-    newGroups = [];
-  }
-  if (methods.normalizeGroupName) {
-    oldGroups = oldGroups.map((groupName) =>
-      methods.normalizeGroupName({ groupName, config })
-    );
-    newGroups = newGroups.map((groupName) =>
-      methods.normalizeGroupName({ groupName, config })
-    );
-  }
-  oldGroups = oldGroups.filter((name) => name && name.length > 0);
-  newGroups = newGroups.filter((name) => name && name.length > 0);
-
-  const removed = oldGroups.filter((k) => !newGroups.includes(k));
-  const added = newGroups;
-
-  exportedProfile.addedGroups = added;
-  exportedProfile.removedGroups = removed;
-}
-
 function fixupKey(key: string): string {
   key = (key || "").toString().trim().toLowerCase();
   if (key.length === 0) {
@@ -582,7 +522,6 @@ function functionToGetForeignKey(
   return func;
 }
 
-// returns what to do for each case
 function assignForeignKeys(
   exportedProfile: BatchExport,
   methods: BatchMethods,
