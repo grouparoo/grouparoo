@@ -36,7 +36,7 @@ export interface PluginConnectionScheduleOption {
   key: string;
   required: boolean;
   description: string;
-  type: string;
+  type: "list" | "text" | "textarea";
   options: (argument: {
     connection: any;
     app: App;
