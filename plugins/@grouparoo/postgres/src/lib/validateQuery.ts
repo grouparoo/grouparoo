@@ -1,4 +1,4 @@
-export function validateQuery(sql: string, checkForLimitAndOffset = false) {
+export function validateQuery(sql: string, allowLimitAndOffset = true) {
   const lowerCaseSQL = sql.toLowerCase();
 
   if (lowerCaseSQL.indexOf(";") >= 0) {
@@ -9,11 +9,11 @@ export function validateQuery(sql: string, checkForLimitAndOffset = false) {
     throw new Error("please remove any comments from the query");
   }
 
-  if (checkForLimitAndOffset && lowerCaseSQL.indexOf(" limit") >= 0) {
+  if (!allowLimitAndOffset && lowerCaseSQL.indexOf(" limit") >= 0) {
     throw new Error("please remove any limits from the query");
   }
 
-  if (checkForLimitAndOffset && lowerCaseSQL.indexOf(" offset") >= 0) {
+  if (!allowLimitAndOffset && lowerCaseSQL.indexOf(" offset") >= 0) {
     throw new Error("please remove any offsets from the query");
   }
 
