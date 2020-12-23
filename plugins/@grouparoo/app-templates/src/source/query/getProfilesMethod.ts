@@ -42,7 +42,6 @@ export const getProfilesMethod = (getChangedRows: GetChangedRowsMethod) => {
       offset,
       connection,
     });
-    // console.log({ rows, scheduleOptions, limit, offset });
 
     let processed = 0;
     for (const row of rows) {
