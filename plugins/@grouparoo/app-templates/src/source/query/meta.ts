@@ -40,8 +40,8 @@ export const buildConnection: BuildConnectionMethod = ({
     executeQuery,
     validateQuery,
   });
-  const scheduleOptions = getScheduleOptions();
-  const profiles = getProfilesMethod(getChangedRows);
+  const scheduleOptions = getChangedRows ? getScheduleOptions() : null;
+  const profiles = getChangedRows ? getProfilesMethod(getChangedRows) : null;
 
   return {
     name,
