@@ -4,7 +4,7 @@ export * from "./sourceOptions";
 export * from "./profileProperty";
 export * from "./scheduleOptions";
 export * from "./sourcePreview";
-export * from "./getProfilesMethod";
+export * from "./profiles";
 
 export {
   PluginConnectionPropertyOption,
