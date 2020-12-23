@@ -1,5 +1,4 @@
 import format from "pg-format";
-import {} from "@grouparoo/app-templates/dist/source/query";
 
 import { validateQuery } from "../validateQuery";
 
@@ -13,7 +12,7 @@ export const getChangedRows = async ({
     throw new Error("query required");
   }
 
-  validateQuery(scheduleOptions.query, true);
+  validateQuery(scheduleOptions.query, false);
 
   const queryWithLimitAndOffset = format(
     `${scheduleOptions.query} LIMIT %L OFFSET %L`,
