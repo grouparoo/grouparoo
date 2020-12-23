@@ -32,7 +32,10 @@ export const getProfilesMethod = (getChangedRows: GetChangedRowsMethod) => {
       : 0;
     const limit = highWaterMark.limit
       ? parseInt(highWaterMark.limit.toString(), 10)
-      : 100;
+      : parseInt(
+          (await plugin.readSetting("core", "runs-profile-batch-size")).value,
+          10
+        );
 
     const rows = await getChangedRows({
       appGuid,
