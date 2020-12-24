@@ -3,7 +3,7 @@ import SourceTabs from "../../../components/tabs/source";
 import Head from "next/head";
 import { useState } from "react";
 import Moment from "react-moment";
-import { Alert, Row, Col, Form, Badge, Table } from "react-bootstrap";
+import { Alert, Row, Col, Form, Badge, Button } from "react-bootstrap";
 import LoadingButton from "../../../components/loadingButton";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -104,15 +104,18 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: {source.name}</title>
       </Head>
-
       <SourceTabs source={source} />
-
       <PageHeader
         icon={source.app.icon}
         title={`${source.name} - Schedule`}
         badges={[
           <LockedBadge object={source} />,
-          <StateBadge state={source.state} />,
+          <>
+            Source: <StateBadge state={source.state} />
+          </>,
+          <>
+            Schedule: <StateBadge state={schedule.state} />
+          </>,
         ]}
       />
 
@@ -247,49 +250,33 @@ export default function Page(props) {
 
                     {/* list options */}
                     {opt.type === "list" ? (
-                      <Table striped bordered size="sm">
-                        <thead>
-                          <tr>
-                            <th></th>
-                            <th>Key</th>
-                            {opt?.options[0].description ? (
-                              <th>Description</th>
-                            ) : null}
-                            {opt?.options[0].examples ? (
-                              <th>Examples</th>
-                            ) : null}
-                          </tr>
-                        </thead>
-                        <tbody>
+                      <>
+                        <Form.Control
+                          as="select"
+                          required={opt.required}
+                          defaultValue={schedule.options[opt.key] || ""}
+                          disabled={schedule.state !== "draft"}
+                          onChange={(e) => {
+                            updateOption(opt.key, e.target.value);
+                          }}
+                        >
+                          <option value={""} disabled>
+                            Select an option
+                          </option>
                           {opt?.options?.map((col) => (
-                            <tr key={`source-${col.key}`}>
-                              <td>
-                                <Form.Check
-                                  inline
-                                  type="radio"
-                                  id={`${col.key}`}
-                                  name={opt.key}
-                                  disabled={schedule.state !== "draft"}
-                                  defaultChecked={
-                                    schedule.options[opt.key] === col.key
-                                  }
-                                  onClick={() => updateOption(opt.key, col.key)}
-                                />
-                              </td>
-                              <td>
-                                <strong>{col.key}</strong>
-                              </td>
-                              {col.description ? (
-                                <td>{col.description}</td>
-                              ) : null}
-
-                              {col.examples ? (
-                                <td>{col.examples.slice(0, 3).join(", ")}</td>
-                              ) : null}
-                            </tr>
+                            <option
+                              key={`opt~${opt.key}-${col.key}`}
+                              value={col.key}
+                            >
+                              {col.key}{" "}
+                              {col.description ? ` | ${col.description} ` : ""}
+                            </option>
                           ))}
-                        </tbody>
-                      </Table>
+                        </Form.Control>
+                        <Form.Text className="text-muted">
+                          {opt.description}
+                        </Form.Text>
+                      </>
                     ) : null}
 
                     {/* textarea options */}
@@ -338,9 +325,18 @@ export default function Page(props) {
                 ))}
               </>
               <hr />
-              <LoadingButton variant="primary" type="submit" disabled={loading}>
-                Update
-              </LoadingButton>
+              {schedule.state !== "draft" ? (
+                <Button disabled>Update</Button>
+              ) : (
+                <LoadingButton
+                  variant="primary"
+                  type="submit"
+                  disabled={loading}
+                >
+                  Update
+                </LoadingButton>
+              )}
+
               <br />
               <br />
               <LoadingButton
