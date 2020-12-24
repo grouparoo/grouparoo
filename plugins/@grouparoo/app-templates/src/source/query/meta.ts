@@ -50,6 +50,7 @@ export const buildConnection: BuildConnectionMethod = ({
     options: [],
     propertyOptions,
     scheduleOptions,
+    skipSourceMapping: true,
     methods: {
       sourceOptions,
       profileProperty,
