@@ -1,5 +1,6 @@
 import { SimpleAppOptions } from "@grouparoo/core";
 import { Client } from "intercom-client";
+import DataAttribute from "./client/data-attribute";
 
 export async function connect(appOptions: SimpleAppOptions) {
   const { token } = appOptions;
@@ -10,5 +11,7 @@ export async function connect(appOptions: SimpleAppOptions) {
       "Intercom-Version": 2.3,
     },
   });
+
+  client.dataAttributes = new DataAttribute(client);
   return client;
 }
