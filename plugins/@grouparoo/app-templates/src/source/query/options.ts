@@ -3,7 +3,6 @@ export * from "./propertyOptions";
 export * from "./sourceOptions";
 export * from "./profileProperty";
 export * from "./scheduleOptions";
-export * from "./sourcePreview";
 export * from "./profiles";
 
 export {

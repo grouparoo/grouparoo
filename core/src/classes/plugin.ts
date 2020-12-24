@@ -103,6 +103,7 @@ export interface ProfilesPluginMethod {
     sourceGuid: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
+    properties: Property[];
     run: Run;
     runGuid: string;
     limit: number;

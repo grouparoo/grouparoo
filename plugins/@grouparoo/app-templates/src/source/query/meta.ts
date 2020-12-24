@@ -1,7 +1,6 @@
 import {
   getPropertyOptions,
   getScheduleOptions,
-  sourcePreview,
   PluginConnection,
   getProfilesMethod,
   PluginConnectionPropertyOption,
@@ -54,7 +53,6 @@ export const buildConnection: BuildConnectionMethod = ({
     methods: {
       sourceOptions,
       profileProperty,
-      sourcePreview,
       profiles,
     },
   };

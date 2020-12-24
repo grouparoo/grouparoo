@@ -11,6 +11,23 @@ export const getScheduleOptions = () => {
         return [];
       },
     },
+    {
+      key: "propertyGuid",
+      required: true,
+      description: "What single property is this query returning?",
+      type: "list",
+      options: async ({ properties }) => {
+        const opts = [];
+        properties.forEach((property) => {
+          opts.push({
+            key: property.guid,
+            description: `${property.key} (${property.type})`,
+          });
+        });
+
+        return opts;
+      },
+    },
   ];
 
   return options;

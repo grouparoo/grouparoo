@@ -2,6 +2,7 @@ import { Schedule } from "../../models/Schedule";
 import { Source } from "../../models/Source";
 import { Run, HighWaterMark } from "../../models/Run";
 import { App } from "../../models/App";
+import { Property } from "../../models/Property";
 import { plugin } from "../plugin";
 import { log } from "actionhero";
 
@@ -10,6 +11,7 @@ export namespace ScheduleOps {
     const options = await schedule.getOptions();
     const source = await schedule.$get("source");
     const app = await App.findByGuid(source.appGuid);
+    const properties = await Property.findAll();
     const { pluginConnection } = await source.getPlugin();
     const method = pluginConnection.methods.profiles;
 
@@ -61,6 +63,7 @@ export namespace ScheduleOps {
         sourceGuid: source.guid,
         sourceOptions,
         sourceMapping,
+        properties,
         run,
         runGuid: run.guid,
         limit,
@@ -122,6 +125,7 @@ export namespace ScheduleOps {
     const appOptions = await app.getOptions();
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();
+    const properties = await Property.findAll();
 
     for (const i in pluginConnection.scheduleOptions) {
       const opt = pluginConnection.scheduleOptions[i];
@@ -134,6 +138,7 @@ export namespace ScheduleOps {
         sourceGuid: source.guid,
         sourceOptions,
         sourceMapping,
+        properties,
       });
 
       response.push({

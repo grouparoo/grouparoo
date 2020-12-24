@@ -2,8 +2,8 @@ import {
   plugin,
   SimpleAppOptions,
   SimpleScheduleOptions,
+  ProfilesPluginMethod,
 } from "@grouparoo/core";
-import { sourcePreviewKey } from "./sourcePreview";
 import { DataResponseRow } from "../shared/types";
 
 export interface GetChangedRowsMethod {
@@ -18,23 +18,22 @@ export interface GetChangedRowsMethod {
 }
 
 export const getProfilesMethod = (getChangedRows: GetChangedRowsMethod) => {
-  return async ({
-    sourceMapping,
+  const profiles: ProfilesPluginMethod = async ({
     scheduleOptions,
     connection,
     highWaterMark,
     run,
     appGuid,
     appOptions,
+    properties,
   }) => {
     let offset = highWaterMark.offset
-      ? parseInt(highWaterMark.offset.toString(), 10)
+      ? parseInt(highWaterMark.offset.toString())
       : 0;
     const limit = highWaterMark.limit
-      ? parseInt(highWaterMark.limit.toString(), 10)
+      ? parseInt(highWaterMark.limit.toString())
       : parseInt(
-          (await plugin.readSetting("core", "runs-profile-batch-size")).value,
-          10
+          (await plugin.readSetting("core", "runs-profile-batch-size")).value
         );
 
     const rows = await getChangedRows({
@@ -49,15 +48,21 @@ export const getProfilesMethod = (getChangedRows: GetChangedRowsMethod) => {
     let processed = 0;
     for (const row of rows) {
       const queryCol = Object.keys(row)[0];
-      const propertyMapping = { [queryCol]: sourceMapping[sourcePreviewKey] };
+      const property = properties.find(
+        (p) => p.guid === scheduleOptions.propertyGuid
+      );
+
+      if (!property) {
+        throw new Error(`cannot find property ${scheduleOptions.propertyGuid}`);
+      }
+
+      const propertyMapping = { [queryCol]: property.key };
 
       await plugin.createImport(propertyMapping, run, row);
       processed++;
     }
 
-    if (processed === 0) {
-      offset = 0;
-    }
+    if (processed === 0) offset = 0;
 
     return {
       importsCount: rows.length,
@@ -65,4 +70,6 @@ export const getProfilesMethod = (getChangedRows: GetChangedRowsMethod) => {
       sourceOffset: null,
     };
   };
+
+  return profiles;
 };

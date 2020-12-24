@@ -128,7 +128,7 @@ describe("models/schedule", () => {
           type: "test-plugin-import",
           sourceGuid: source.guid,
         })
-      ).rejects.toThrow(/source has no mapping/);
+      ).rejects.toThrow(/a manual source cannot have a schedule/);
     });
 
     describe("validations", () => {
