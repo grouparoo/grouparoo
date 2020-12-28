@@ -44,7 +44,7 @@
     "ah-sequelize-plugin": "2.2.4",
     "bcryptjs": "2.4.3",
     "compare-versions": "3.6.0",
-    "csv-stringify": "5.5.3",
+    "csv-stringify": "5.6.0",
     "date-fns": "2.16.1",
     "dotenv": "8.2.0",
     "faker": "5.1.0",
