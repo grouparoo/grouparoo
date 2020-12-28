@@ -37,7 +37,7 @@
     "@types/react": "*",
     "@types/react-dom": "*",
     "@zeit/next-source-maps": "0.0.3",
-    "axios": "0.21.0",
+    "axios": "0.21.1",
     "bootstrap": "4.5.3",
     "date-fns": "2.16.1",
     "dotenv": "8.2.0",
