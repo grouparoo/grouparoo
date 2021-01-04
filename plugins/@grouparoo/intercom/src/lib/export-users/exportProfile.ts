@@ -1,5 +1,9 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import {
+  ExportProfilePluginMethod,
+  SimpleDestinationOptions,
+} from "@grouparoo/core";
 import { connect } from "../connect";
+import { CreationMode, RemovalMode } from "./destinationOptions";
 import {
   getTagId,
   normalizeTagName,
@@ -8,11 +12,24 @@ import {
   getTagIdMap,
 } from "./listMethods";
 
-interface IntercomContact {
+interface IntercomUser {
   id: string;
+  role: string;
+}
+
+interface IntercomContact extends IntercomUser {
   tags: {
     data: { id: string }[];
   };
+}
+
+class InfoError extends Error {
+  errorLevel: string;
+
+  constructor(message) {
+    super(message);
+    this.errorLevel = "info";
+  }
 }
 
 export const exportProfile: ExportProfilePluginMethod = async (args) => {
@@ -68,17 +85,14 @@ export const sendProfile: ExportProfilePluginMethod = async ({
     throw new Error(`external_id or email is a required mapping`);
   }
 
-  let destinationId = await findDestinationId(
+  const destinationId = await findDestinationId(
     client,
     newProfileProperties,
     oldProfileProperties
   );
 
   if (toDelete) {
-    if (destinationId) {
-      // this does a soft delete
-      await client.users.archive(destinationId);
-    }
+    await deleteUser(client, destinationOptions, destinationId);
     return { success: true };
   }
 
@@ -88,14 +102,19 @@ export const sendProfile: ExportProfilePluginMethod = async ({
     oldProfileProperties,
     newProfileProperties
   );
-  const user = await createOrUpdateUser(client, destinationId, payload);
+  const contact = await createOrUpdateUser(
+    client,
+    destinationOptions,
+    destinationId,
+    payload
+  );
 
-  if (!user) {
+  if (!contact) {
     throw new Error(`Unknown intercom id: ${external_id} ${email}`);
   }
 
   if (oldGroups.length > 0 || newGroups.length > 0) {
-    await updateTags(client, cacheData, user, oldGroups, newGroups);
+    await updateTags(client, cacheData, contact, oldGroups, newGroups);
   }
 
   return { success: true };
@@ -182,7 +201,7 @@ export async function findDestinationId(
   }
 
   const { body } = await client.contacts.search(query);
-  const users = body.data;
+  const users: IntercomUser[] = body.data;
 
   if (!users || users.length === 0) {
     return null;
@@ -190,9 +209,34 @@ export async function findDestinationId(
 
   if (users.length > 1) {
     // TODO: how to pick if more than one?
+    // have to merge?
     throw new Error("more than one found!");
   }
+
   return users[0].id;
+}
+
+async function deleteUser(
+  client: any,
+  destinationOptions: SimpleDestinationOptions,
+  destinationId: string
+) {
+  if (!destinationId) {
+    return;
+  }
+
+  const { removalMode } = destinationOptions;
+  switch (removalMode) {
+    case RemovalMode.Archive:
+      return client.users.archive(destinationId);
+    case RemovalMode.Delete:
+      return client.users.delete(destinationId);
+    case RemovalMode.Skip:
+      // not removing
+      throw new InfoError("Destination is not removing contacts.");
+    default:
+      throw new Error(`Unknown removalMode: ${removalMode}`);
+  }
 }
 
 function formatVar(value) {
@@ -216,8 +260,7 @@ function makePayload(
     [key: string]: any;
   }
 ) {
-  const role = "user"; // OR "lead"
-  const payload: any = { role, external_id, email };
+  const payload: any = { external_id, email };
 
   // set profile properties, including old ones
   const newKeys = Object.keys(newProfileProperties);
@@ -245,8 +288,69 @@ function makePayload(
   return payload;
 }
 
+function addCreationPayload(
+  payload: any,
+  destinationOptions: SimpleDestinationOptions
+) {
+  const { creationMode } = destinationOptions;
+  const external_id = payload.external_id || null;
+  let role = null;
+  switch (creationMode) {
+    case CreationMode.User:
+      role = "user";
+      break;
+    case CreationMode.Lead:
+      role = "lead";
+      break;
+    case CreationMode.Lifecycle:
+      if (external_id) {
+        role = "user";
+      } else {
+        role = "lead";
+      }
+      break;
+    case CreationMode.Enrich:
+      // not updating
+      throw new InfoError("Destination is not creating contacts.");
+    default:
+      throw new Error(`Unknown creationMode: ${creationMode}`);
+  }
+  return Object.assign({}, payload, { role });
+}
+
+function addUpdatePayload(
+  payload: any,
+  destinationOptions: SimpleDestinationOptions
+) {
+  const { creationMode } = destinationOptions;
+  const external_id = payload.external_id || null;
+  const extra: any = {};
+  switch (creationMode) {
+    case CreationMode.User:
+    case CreationMode.Lead:
+    case CreationMode.Enrich:
+      // no changes
+      break;
+    case CreationMode.Lifecycle:
+      // make sure it's the right one
+      let role;
+      if (external_id) {
+        role = "user";
+      } else {
+        role = "lead";
+      }
+      extra.role = role;
+      break;
+
+    default:
+      throw new Error(`Unknown creationMode: ${creationMode}`);
+  }
+  return Object.assign({}, payload, extra);
+}
+
 async function createOrUpdateUser(
   client: any,
+  destinationOptions: SimpleDestinationOptions,
   destinationId: string,
   payload: any,
   attemptedDestinationIds: string[] = []
@@ -254,11 +358,13 @@ async function createOrUpdateUser(
   try {
     console.log({ destinationId, payload });
     if (destinationId) {
+      payload = addUpdatePayload(payload, destinationOptions);
       attemptedDestinationIds.push(destinationId);
       const { body } = await client.contacts.update(destinationId, payload);
       // console.log({ updated: body });
       return body;
     } else {
+      payload = addCreationPayload(payload, destinationOptions);
       const { body } = await client.contacts.create(payload);
       // console.log({ created: body });
       return body;
@@ -293,6 +399,7 @@ async function createOrUpdateUser(
             // try again
             return await createOrUpdateUser(
               client,
+              destinationOptions,
               conflictDestinationId,
               payload,
               attemptedDestinationIds

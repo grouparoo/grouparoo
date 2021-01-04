@@ -9,19 +9,28 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 
 let client: any;
 let userId = null;
-let newId = null;
+let userId2 = null;
+let userId3 = null;
+// let newId = null;
 
 const rand1 = Math.floor(Math.random() * 9999999999);
 const rand2 = Math.floor(Math.random() * 9999999999);
 const rand3 = Math.floor(Math.random() * 9999999999);
+const rand9 = Math.floor(Math.random() * 9999999999);
 
 const external_id = `testuser${rand1}`;
 const email = `testuser${rand1}@demo.com`;
+const newExternalId = `testuser${rand9}`;
+
+const externalId2 = `testuser${rand2}`;
+const email2 = `testuser${rand2}@demo.com`;
+
+const externalId3 = `testuser${rand3}`;
+const email3 = `testuser${rand3}@demo.com`;
 
 // const migratedExternalId = "testother1";
 // const migratedName = "migratedusername1";
 // const migratedEmail = "testother1@demo.com";
-// const newExternalId = "testuser789";
 
 const exampleEpoch = 1597870204;
 const exampleDate = new Date(exampleEpoch * 1000);
@@ -30,12 +39,12 @@ const nockFile = path.join(
   __dirname,
   "../",
   "fixtures",
-  "export-profile-users-sync.js"
+  "export-profile-user.js"
 );
 
 // these comments to use nock
 // const newNock = false;
-// require("./../fixtures/export-profile-users-sync");
+// require("./../fixtures/export-profile-user");
 // or these to make it true
 const newNock = true;
 helper.recordNock(nockFile, updater);
@@ -43,7 +52,8 @@ helper.recordNock(nockFile, updater);
 const appGuid = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8662f9";
 const appOptions = loadAppOptions(newNock);
 const destinationOptions = {
-  syncMode: "Sync",
+  creationMode: "User",
+  removalMode: "Archive",
 };
 
 async function getUser(id): Promise<any> {
@@ -353,65 +363,90 @@ describe("intercom/users/exportProfile/sync", () => {
     expect(tags).toEqual(["outside_grouparoo"]);
   });
 
-  // test("it can change the email address", async () => {
-  //   await runExport({
-  //     oldProfileProperties: {
-  //       email,
-  //       external_id,
-  //     },
-  //     newProfileProperties: {
-  //       email: "NewOne@bleonard.com",
-  //       external_id,
-  //     },
-  //     oldGroups: [],
-  //     newGroups: [],
-  //     toDelete: false,
-  //   });
+  test("it can change the external id", async () => {
+    await runExport({
+      oldProfileProperties: {
+        external_id,
+      },
+      newProfileProperties: {
+        external_id: newExternalId,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
 
-  //   const user = await getUser(userId);
-  //   expect(user.external_id).toBe(external_id);
-  //   expect(user.email).toBe("newone@bleonard.com");
-  //   expect(user.tags.sort()).toEqual(["outside_grouparoo"]);
-  // });
+    const user = await getUser(userId);
+    expect(user.external_id).toBe(newExternalId);
+    expect(user.email).toBe("");
 
-  // test("it can migrate an email user to having a external_id", async () => {
-  //   // make a user
-  //   const created = await client.users.create({
-  //     user: {
-  //       verified: true,
-  //       name: migratedName,
-  //       alias: "MU",
-  //       email: migratedEmail,
-  //       user_fields: {
-  //         text_field: "my text",
-  //         checkbox_field: true,
-  //       },
-  //     },
-  //   });
+    const tags = await getTags(userId);
+    expect(tags).toEqual(["outside_grouparoo"]);
+  });
 
-  //   // then sync a profile
-  //   await runExport({
-  //     oldProfileProperties: {},
-  //     newProfileProperties: {
-  //       email: migratedEmail,
-  //       name: migratedName,
-  //       external_id: migratedExternalId,
-  //       text_field: "change",
-  //     },
-  //     oldGroups: [],
-  //     newGroups: ["something"],
-  //     toDelete: false,
-  //   });
+  test("it can sync a different user", async () => {
+    userId2 = await findId(externalId2);
+    expect(userId2).toBe(null);
 
-  //   const user = await client.users.show(created.id);
-  //   expect(user.external_id).toBe(migratedExternalId);
-  //   expect(user.email).toBe(migratedEmail);
-  //   expect(user.alias).toBe("MU");
-  //   expect(user.name).toBe(migratedName);
-  //   expect(user.user_fields.checkbox_field).toBe(true);
-  //   expect(user.user_fields.text_field).toBe("change");
-  //   expect(user.tags.sort()).toEqual(["something"]);
-  // });
+    await runExport({
+      oldProfileProperties: {},
+      newProfileProperties: {
+        email: email2,
+        external_id: externalId2,
+        name: "Sally",
+      },
+      oldGroups: [],
+      newGroups: ["Test Group X"],
+      toDelete: false,
+    });
+
+    await indexContacts();
+
+    userId2 = await findId(externalId2);
+    expect(userId2).toBeTruthy();
+    const user = await getUser(userId2);
+    expect(user.email).toBe(email2);
+    expect(user.external_id).toBe(externalId2);
+    expect(user.name).toBe("Sally");
+    expect(user.role).toBe("user");
+
+    const tags = await getTags(userId2);
+    expect(tags).toEqual(["Test Group X"]);
+  });
+
+  test("it will update a lead", async () => {
+    const { body } = await client.contacts.create({
+      role: "lead",
+      email: email3,
+      name: "Alan",
+    });
+    userId3 = body.id;
+    const assignedGuid = body.external_id;
+    expect(userId3).toBeTruthy();
+    expect(assignedGuid).toBeTruthy(); // assigned one automatically by Intercom
+
+    await indexContacts();
+
+    await runExport({
+      oldProfileProperties: {},
+      newProfileProperties: {
+        email: email3,
+        name: "Allison",
+      },
+      oldGroups: [],
+      newGroups: ["Test Group X"],
+      toDelete: false,
+    });
+
+    const user = await getUser(userId3);
+    expect(user.email).toBe(email3);
+    expect(user.external_id).toBe(assignedGuid); // not changed for some reason
+    expect(user.name).toBe("Allison");
+    expect(user.role).toBe("lead");
+
+    const tags = await getTags(userId2);
+    expect(tags).toEqual(["Test Group X"]);
+  });
 
   // test("it can change the external id", async () => {
   //   await runExport({
