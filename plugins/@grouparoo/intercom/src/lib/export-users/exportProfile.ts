@@ -1,6 +1,19 @@
 import { ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
-import {} from "./destinationMappingOptions";
+import {
+  getTagId,
+  normalizeTagName,
+  IntercomCacheData,
+  IntercomTag,
+  getTagIdMap,
+} from "./listMethods";
+
+interface IntercomContact {
+  id: string;
+  tags: {
+    data: { id: string }[];
+  };
+}
 
 export const exportProfile: ExportProfilePluginMethod = async (args) => {
   try {
@@ -34,131 +47,8 @@ export const exportProfile: ExportProfilePluginMethod = async (args) => {
   }
 };
 
-function cleanEmail(email) {
-  if (!email) {
-    return null;
-  }
-  email = email.toLowerCase().trim();
-  if (email.length === 0) {
-    return null;
-  }
-  return email;
-}
-
-function cleanExternalId(external_id) {
-  if (!external_id) {
-    return null;
-  }
-  external_id = external_id.trim();
-  if (external_id.length === 0) {
-    return null;
-  }
-  return external_id;
-}
-
-function cleanTagName(groupName) {
-  // TODO: need something here?
-  // let tagName = groupName.toLowerCase();
-  // tagName = tagName.replace(/[^a-z]/g, "_");
-  return groupName;
-}
-
-function makePayload(
-  { email, external_id },
-  oldProfileProperties: {
-    [key: string]: any;
-  },
-  newProfileProperties: {
-    [key: string]: any;
-  }
-) {
-  const role = "user"; // OR "lead"
-  const payload: any = { role, external_id, email };
-
-  // set profile properties, including old ones
-  const newKeys = Object.keys(newProfileProperties);
-  const oldKeys = Object.keys(oldProfileProperties);
-  const allKeys = oldKeys.concat(newKeys);
-  for (const key of allKeys) {
-    if (["email", "external_id"].includes(key)) {
-      continue; // already there
-    }
-    const value = newProfileProperties[key]; // includes clearing out removed ones
-    const formatted = formatVar(value);
-
-    const pieces = key.split("."); // for example, custom_attributes.my_field
-    if (pieces.length > 1 && pieces[0] === "custom_attributes") {
-      pieces.shift(); // remove it
-      const customKey = pieces.join(".");
-      payload.custom_attributes = payload.custom_attributes || {};
-      payload.custom_attributes[customKey] = formatted;
-    } else {
-      payload[key] = formatted;
-    }
-  }
-  return payload;
-}
-
-async function createOrUpdateUser(
-  client: any,
-  destinationId: string,
-  payload: any,
-  attemptedDestinationIds: string[] = []
-): Promise<string> {
-  try {
-    let updated;
-    console.log({ payload });
-    if (destinationId) {
-      attemptedDestinationIds.push(destinationId);
-      const { body } = await client.contacts.update(destinationId, payload);
-      console.log({ updated: body });
-      return body.id;
-    } else {
-      const { body } = await client.contacts.create(payload);
-      console.log({ created: body });
-      return body.id;
-    }
-  } catch (error) {
-    console.log({ errorCreate: error });
-    if (error?.statusCode === 409) {
-      // Conflict - Multiple existing users match this email address - must be more specific using user_id
-      const errors = error?.body?.errors || [];
-      console.log({ errors });
-      for (const e of errors) {
-        const idRegex = /id=(\w+)/g;
-        const archivedRegex = /archived/g;
-        // 'An archived contact matching those details already exists with id=5ff25dc6ec394ef8296e873f'
-        const message = e.message || "";
-        const idMatch = idRegex.exec(message);
-        if (idMatch) {
-          const conflictDestinationId = idMatch[1];
-          if (
-            conflictDestinationId &&
-            !attemptedDestinationIds.includes(conflictDestinationId)
-          ) {
-            console.log({ conflictDestinationId });
-            // was it an archived match?
-            if (archivedRegex.exec(message)) {
-              await client.contacts.unarchive(conflictDestinationId);
-              // console.log({ unarchive: body });
-            }
-
-            // try again
-            return await createOrUpdateUser(
-              client,
-              conflictDestinationId,
-              payload,
-              attemptedDestinationIds
-            );
-          }
-        }
-      }
-    }
-    throw error;
-  }
-}
-
 export const sendProfile: ExportProfilePluginMethod = async ({
+  appGuid,
   appOptions,
   destinationOptions,
   export: {
@@ -172,6 +62,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   const client = await connect(appOptions);
   const external_id = cleanExternalId(newProfileProperties.external_id);
   const email = cleanEmail(newProfileProperties.email);
+  const cacheData: IntercomCacheData = { appGuid, appOptions };
 
   if (!external_id && !email) {
     throw new Error(`external_id or email is a required mapping`);
@@ -197,39 +88,50 @@ export const sendProfile: ExportProfilePluginMethod = async ({
     oldProfileProperties,
     newProfileProperties
   );
-  destinationId = await createOrUpdateUser(client, destinationId, payload);
+  const user = await createOrUpdateUser(client, destinationId, payload);
 
-  // tags need to be formatted
-  // TODO: check and compare current tags
-  // TODO: minimize http requests
-  // TODO: will have to make tags with mutex
+  if (!user) {
+    throw new Error(`Unknown intercom id: ${external_id} ${email}`);
+  }
 
-  // const newTags = newGroups.map((groupName) => cleanTagName(groupName));
-  // const oldTags = oldGroups.map((groupName) => cleanTagName(groupName));
-  // const removedTags = oldTags.filter((k) => !newTags.includes(k));
-  // // get the current tags if there was a user
-  // const currentTags = user?.tags || [];
-  // for (const tagName of currentTags) {
-  //   // add it to newTags if it's not there already or in removedTags
-  //   if (removedTags.includes(tagName)) {
-  //     // it got removed, don't add it back
-  //     continue;
-  //   }
-  //   if (!newTags.includes(tagName)) {
-  //     // it is from zendesk directly, add it back
-  //     newTags.push(tagName);
-  //   }
-  // }
-  // payload.tags = newTags.sort();
+  if (oldGroups.length > 0 || newGroups.length > 0) {
+    await updateTags(client, cacheData, user, oldGroups, newGroups);
+  }
 
   return { success: true };
 };
+
+function cleanEmail(email) {
+  if (!email) {
+    return null;
+  }
+  email = email.toLowerCase().trim();
+  if (email.length === 0) {
+    return null;
+  }
+  return email;
+}
+
+function cleanExternalId(external_id) {
+  if (!external_id) {
+    return null;
+  }
+  external_id = external_id.trim();
+  if (external_id.length === 0) {
+    return null;
+  }
+  return external_id;
+}
+
+function cleanTagName(groupName) {
+  return groupName.trim();
+}
 
 export async function findDestinationId(
   client,
   newProfileProperties,
   oldProfileProperties
-) {
+): Promise<string> {
   const newId = cleanExternalId(newProfileProperties.external_id);
   let oldId = cleanExternalId(oldProfileProperties.external_id);
   const newEmail = cleanEmail(newProfileProperties.email);
@@ -281,13 +183,15 @@ export async function findDestinationId(
 
   const { body } = await client.contacts.search(query);
   const users = body.data;
-  console.log({ findDestinationId: users });
 
-  if (!users || users.length == 0) {
+  if (!users || users.length === 0) {
     return null;
   }
 
-  // TODO: how to pick if more than one?
+  if (users.length > 1) {
+    // TODO: how to pick if more than one?
+    throw new Error("more than one found!");
+  }
   return users[0].id;
 }
 
@@ -300,5 +204,149 @@ function formatVar(value) {
     return Math.round(value.getTime() / 1000.0);
   } else {
     return value;
+  }
+}
+
+function makePayload(
+  { email, external_id },
+  oldProfileProperties: {
+    [key: string]: any;
+  },
+  newProfileProperties: {
+    [key: string]: any;
+  }
+) {
+  const role = "user"; // OR "lead"
+  const payload: any = { role, external_id, email };
+
+  // set profile properties, including old ones
+  const newKeys = Object.keys(newProfileProperties);
+  const oldKeys = Object.keys(oldProfileProperties);
+  const allKeys = oldKeys.concat(newKeys);
+  for (const key of allKeys) {
+    if (["email", "external_id"].includes(key)) {
+      continue; // already there
+    }
+    const value = newProfileProperties[key]; // includes clearing out removed ones
+    const formatted = formatVar(value);
+
+    // TODO: make sure custom attribute still actually exists
+
+    const pieces = key.split("."); // for example, custom_attributes.my_field
+    if (pieces.length > 1 && pieces[0] === "custom_attributes") {
+      pieces.shift(); // remove it
+      const customKey = pieces.join(".");
+      payload.custom_attributes = payload.custom_attributes || {};
+      payload.custom_attributes[customKey] = formatted;
+    } else {
+      payload[key] = formatted;
+    }
+  }
+  return payload;
+}
+
+async function createOrUpdateUser(
+  client: any,
+  destinationId: string,
+  payload: any,
+  attemptedDestinationIds: string[] = []
+): Promise<IntercomContact> {
+  try {
+    console.log({ destinationId, payload });
+    if (destinationId) {
+      attemptedDestinationIds.push(destinationId);
+      const { body } = await client.contacts.update(destinationId, payload);
+      // console.log({ updated: body });
+      return body;
+    } else {
+      const { body } = await client.contacts.create(payload);
+      // console.log({ created: body });
+      return body;
+    }
+  } catch (error) {
+    console.log({ errorCreate: error });
+    if (error?.statusCode === 409) {
+      // Conflict - Multiple existing users match this email address - must be more specific using user_id
+      const errors = error?.body?.errors || [];
+      console.log({ errors });
+      for (const e of errors) {
+        // E.g. 'An archived contact matching those details already exists with id=5ff25dc6ec394ef8296e873f'
+        // E.g. 'A contact matching those details already exists with id=5ff2b0a47543cba3058e8b79'
+        const idRegex = /id=(\w+)/g;
+        const archivedRegex = /archived/g;
+
+        const message = e.message || "";
+        const idMatch = idRegex.exec(message);
+        if (idMatch) {
+          const conflictDestinationId = idMatch[1];
+          if (
+            conflictDestinationId &&
+            !attemptedDestinationIds.includes(conflictDestinationId)
+          ) {
+            console.log({ conflictDestinationId });
+            // was it an archived match?
+            if (archivedRegex.exec(message)) {
+              await client.contacts.unarchive(conflictDestinationId);
+              // console.log({ unarchive: body });
+            }
+
+            // try again
+            return await createOrUpdateUser(
+              client,
+              conflictDestinationId,
+              payload,
+              attemptedDestinationIds
+            );
+          }
+        }
+      }
+    }
+    throw error;
+  }
+}
+
+async function updateTags(
+  client: any,
+  cacheData: IntercomCacheData,
+  user: IntercomContact,
+  oldGroups: string[],
+  newGroups: string[]
+) {
+  const newTags = newGroups.map((groupName) => cleanTagName(groupName));
+  const oldTags = oldGroups.map((groupName) => cleanTagName(groupName));
+  const removedTags = oldTags.filter((k) => !newTags.includes(k));
+
+  const currentTags: { [name: string]: string } = {};
+  let refetched = false;
+  let tagIdMap = await getTagIdMap(client, cacheData);
+
+  for (const tag of user.tags.data) {
+    let normName = tagIdMap[tag.id];
+    if (!normName && !refetched) {
+      tagIdMap = await getTagIdMap(client, cacheData, true);
+      refetched = true;
+      normName = tagIdMap[tag.id];
+    }
+    if (!normName) {
+      throw new Error(`Current tag not found: ${tag.id}`);
+    }
+    currentTags[normName] = tag.id;
+  }
+  for (const tagName of removedTags) {
+    const normName = normalizeTagName(tagName);
+    const tagId = currentTags[normName];
+    if (tagId) {
+      await client.contacts.untag(user.id, tagId);
+    }
+    // else not currently tagged as that
+  }
+  for (const tagName of newTags) {
+    const normName = normalizeTagName(tagName);
+    let tagId = currentTags[normName];
+    if (!tagId) {
+      tagId = await getTagId(client, cacheData, tagName, tagIdMap);
+      await client.contacts.tag(user.id, tagId);
+    }
+    // else already tagged
   }
 }

@@ -3,6 +3,7 @@ import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
 import { exportProfile } from "../../src/lib/export-users/exportProfile";
+import { getTagId } from "../../src/lib/export-users/listMethods";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 
@@ -39,6 +40,7 @@ const nockFile = path.join(
 const newNock = true;
 helper.recordNock(nockFile, updater);
 
+const appGuid = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8662f9";
 const appOptions = loadAppOptions(newNock);
 const destinationOptions = {
   syncMode: "Sync",
@@ -49,8 +51,11 @@ async function getUser(id): Promise<any> {
   // console.log({ getUser: body });
   return body;
 }
-
-async function findIdWithIndexTime(extId) {}
+async function getTags(id): Promise<string[]> {
+  const { body } = await client.contacts.tags(id);
+  console.log({ getTags: body });
+  return body.data.map((tag) => tag.name).sort();
+}
 
 async function findId(extId): Promise<string> {
   const { body } = await client.contacts.search({
@@ -103,11 +108,11 @@ async function runExport({
   toDelete,
 }) {
   return exportProfile({
+    appGuid,
     appOptions,
     destinationOptions,
     connection: null,
     app: null,
-    appGuid: null,
     destination: null,
     destinationGuid: null,
     export: {
@@ -273,90 +278,80 @@ describe("intercom/users/exportProfile/sync", () => {
     expect(user.custom_attributes.decimal_field).toBe(null);
   });
 
-  // test("can add tags", async () => {
-  //   await runExport({
-  //     oldProfileProperties: {
-  //       email,
-  //       external_id,
-  //     },
-  //     newProfileProperties: {
-  //       email,
-  //       external_id,
-  //     },
-  //     oldGroups: [],
-  //     newGroups: ["Test Group X", "another"],
-  //     toDelete: false,
-  //   });
+  test("can add tags", async () => {
+    await runExport({
+      oldProfileProperties: {
+        external_id,
+      },
+      newProfileProperties: {
+        external_id,
+      },
+      oldGroups: [],
+      newGroups: ["another", "Test Group X"],
+      toDelete: false,
+    });
 
-  //   const user = await getUser(userId);
-  //   expect(user.tags.sort()).toEqual(["another", "test_group_x"]);
-  // });
+    const tags = await getTags(userId);
+    expect(tags).toEqual(["Test Group X", "another"]);
+  });
 
-  // test("can remove tags", async () => {
-  //   await runExport({
-  //     oldProfileProperties: {
-  //       email,
-  //       external_id,
-  //     },
-  //     newProfileProperties: {
-  //       email,
-  //       external_id,
-  //     },
-  //     oldGroups: ["Test Group X", "another"],
-  //     newGroups: ["Test Group X"],
-  //     toDelete: false,
-  //   });
+  test("can remove tags", async () => {
+    await runExport({
+      oldProfileProperties: {
+        external_id,
+      },
+      newProfileProperties: {
+        external_id,
+      },
+      oldGroups: ["another", "Test Group X"],
+      newGroups: ["Test Group X"],
+      toDelete: false,
+    });
 
-  //   const user = await getUser(userId);
-  //   expect(user.tags.sort()).toEqual(["test_group_x"]);
-  // });
+    const tags = await getTags(userId);
+    expect(tags).toEqual(["Test Group X"]);
+  });
 
-  // test("it does not change zendesk-created tags", async () => {
-  //   await client.users.update(userId, {
-  //     user: {
-  //       tags: ["test_group_x", "outside_grouparoo"],
-  //     },
-  //   });
-  //   await runExport({
-  //     oldProfileProperties: {
-  //       email,
-  //       external_id,
-  //     },
-  //     newProfileProperties: {
-  //       email,
-  //       external_id,
-  //     },
-  //     oldGroups: ["Test Group X"],
-  //     newGroups: ["Test Group X", "New_one"],
-  //     toDelete: false,
-  //   });
+  test("it does not change intercom-created tags", async () => {
+    const tagId = await getTagId(
+      client,
+      { appGuid, appOptions },
+      "outside_grouparoo"
+    );
+    await client.contacts.tag(userId, tagId);
 
-  //   const user = await getUser(userId);
-  //   expect(user.tags.sort()).toEqual([
-  //     "new_one",
-  //     "outside_grouparoo",
-  //     "test_group_x",
-  //   ]);
-  // });
+    await runExport({
+      oldProfileProperties: {
+        external_id,
+      },
+      newProfileProperties: {
+        external_id,
+      },
+      oldGroups: ["Test Group X"],
+      newGroups: ["Test Group X", "New_one"],
+      toDelete: false,
+    });
 
-  // test("it does not change zendesk-created tags when groups are removed", async () => {
-  //   await runExport({
-  //     oldProfileProperties: {
-  //       email,
-  //       external_id,
-  //     },
-  //     newProfileProperties: {
-  //       email,
-  //       external_id,
-  //     },
-  //     oldGroups: ["Test Group X", "New_one"],
-  //     newGroups: [],
-  //     toDelete: false,
-  //   });
+    const tags = await getTags(userId);
+    expect(tags).toEqual(["New_one", "Test Group X", "outside_grouparoo"]);
+  });
 
-  //   const user = await getUser(userId);
-  //   expect(user.tags.sort()).toEqual(["outside_grouparoo"]);
-  // });
+  test("it does not change intercom-created tags when groups are removed", async () => {
+    await runExport({
+      oldProfileProperties: {
+        external_id,
+      },
+      newProfileProperties: {
+        external_id,
+      },
+      oldGroups: ["Test Group X", "New_one"],
+      newGroups: [],
+      toDelete: false,
+    });
+
+    const tags = await getTags(userId);
+    expect(tags).toEqual(["outside_grouparoo"]);
+  });
 
   // test("it can change the email address", async () => {
   //   await runExport({
