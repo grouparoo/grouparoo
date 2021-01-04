@@ -1,52 +1,35 @@
-import npm from "npm";
+import { spawnPromise } from "./spawnPromise";
+import Chalk from "chalk";
 
 export namespace NPM {
-  export function install(
-    logger,
-    workDir,
+  export async function install(
+    logger: any,
+    workDir: string,
     pkg?: string,
     exact = true,
     npm_config_loglevel = "error"
   ) {
-    const installList = [];
-    if (pkg) installList.push(pkg);
+    const args = ["install"];
+    if (pkg) args.push(pkg);
+    if (args.length > 0 && exact) args.unshift("--save-exact");
 
-    console.log("");
-    console.log("--- Installing ---");
-    console.log("");
+    logger.start("Installing...");
 
-    return new Promise((resolve, reject) => {
-      process.env.npm_config_loglevel = npm_config_loglevel;
-      const npmOptions = { loaded: false };
-      if (exact) npmOptions["save-exact"] = true;
+    const { exitCode, stdout, stderr } = await spawnPromise(
+      "npm",
+      args,
+      workDir,
+      { npm_config_loglevel },
+      logger
+    );
 
-      npm.load(npmOptions, async function (error: Error) {
-        if (error) return fail(logger, error);
-
-        npm.commands.install(
-          workDir,
-          installList,
-          async function (error: Error, data) {
-            if (error) return fail(logger, error);
-
-            console.log("");
-            console.log("");
-            console.log(" --- Installation Complete --- ");
-            console.log("");
-
-            return resolve(data);
-          }
-        );
-
-        npm.on("log", function (message) {
-          console.log(message);
-        });
-      });
-    });
-  }
-
-  function fail(logger, error: Error) {
-    logger.fail(`NPM error: ${error}`);
-    process.exit(1);
+    if (exitCode === 0) {
+      logger.succeed("Installation Complete!");
+      console.log("\r\n------\r\n");
+      console.log(Chalk.gray(stdout));
+      console.log("------\r\n");
+    } else {
+      throw new Error(stderr);
+    }
   }
 }
