@@ -51,6 +51,8 @@ function getPluginManifest() {
     for (const i in manifest.parent.grouparoo.plugins) {
       const pluginName = manifest.parent.grouparoo.plugins[i];
 
+      if (pluginName === "@grouparoo/core") continue;
+
       let pluginPath = "";
       try {
         pluginPath = require.resolve(pluginName);
