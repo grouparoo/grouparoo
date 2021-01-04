@@ -59,9 +59,8 @@ export default async function Initialize(workDir: string, program) {
 
   logger.succeed("Grouparoo project created!");
 
-  console.log("");
-  console.log(
-    "- Ensure that Postgres and Redis are running if you have enabled them in .env or your environment"
+  console.info(
+    "    - Ensure that Postgres and Redis are running if you have enabled them in .env or your environment"
   );
-  console.log(`- type "npm start" to start the Grouparoo application.`);
+  console.info(`    - Type "npm start" to start the Grouparoo application.`);
 }
