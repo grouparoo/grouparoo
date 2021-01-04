@@ -223,7 +223,7 @@ describe("models/profile", () => {
       await profile.save();
       await expect(
         profile.addOrUpdateProperty({ email: ["luigi@example.com"] })
-      ).rejects.toThrow(/cannot find a property for key email/);
+      ).rejects.toThrow("cannot find a property for guid or key `email`");
       await profile.destroy();
     });
 

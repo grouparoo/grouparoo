@@ -485,7 +485,7 @@ describe("models/source", () => {
       await profile.addOrUpdateProperties({ userId: [1000] });
 
       lnameProperty = await Property.create({
-        key: "__fname",
+        key: "__lname",
         sourceGuid: source.guid,
         type: "string",
       });
@@ -548,9 +548,9 @@ describe("models/source", () => {
       await source.importProfileProperty(profile, lnameProperty, null, []); // does not throw
     });
 
-    test("it can import all profile properties for this source, mapped to the keys properly", async () => {
+    test("it can import all profile properties for this source, mapped to the property guids properly", async () => {
       const properties = await source.import(profile);
-      expect(properties).toEqual({ __fname: "...mario" });
+      expect(properties).toEqual({ [lnameProperty.guid]: "...mario" });
     });
 
     test("if importing returned null, it will not be included in the response hash to set profile properties", async () => {

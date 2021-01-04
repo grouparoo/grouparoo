@@ -72,7 +72,7 @@ export class ImportProfileProperties extends RetryableTask {
         (p) => p.guid === profileGuid
       );
       const hash = {};
-      hash[property.key] = propertyValuesBatch[profileGuid];
+      hash[property.guid] = propertyValuesBatch[profileGuid];
       await profile.addOrUpdateProperties(hash);
     }
 

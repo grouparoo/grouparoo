@@ -100,15 +100,16 @@ export namespace ProfileOps {
     profile: Profile,
     hash: { [key: string]: Array<string | number | boolean | Date> }
   ) {
-    const key = Object.keys(hash)[0];
+    const key = Object.keys(hash)[0]; // either the key or guid of the property, preferring the guid
     const values = hash[key];
 
     // ignore reserved profile property key
     if (key === "_meta") return;
 
-    const property = await Property.findOne({ where: { key } });
+    let property = await Property.findOne({ where: { guid: key } });
+    if (!property) property = await Property.findOne({ where: { key } });
     if (!property) {
-      throw new Error(`cannot find a property for key ${key}`);
+      throw new Error(`cannot find a property for guid or key \`${key}\``);
     }
 
     // Note: Lifecycle hooks do not fire on upserts, so we need to manually check if the property exists or not
@@ -395,7 +396,7 @@ export namespace ProfileOps {
 
     uniqueProperties.forEach((rule) => {
       if (hash[rule.key] !== null && hash[rule.key] !== undefined) {
-        uniquePropertiesHash[rule.key] = hash[rule.key];
+        uniquePropertiesHash[rule.guid] = hash[rule.key];
       }
     });
 
@@ -432,12 +433,12 @@ export namespace ProfileOps {
 
     try {
       for (const i in keys) {
-        const key = keys[i];
-        const value = uniquePropertiesHash[key];
-        const property = uniqueProperties.find((r) => r.key === key);
+        const guid = keys[i];
+        const value = uniquePropertiesHash[guid];
+        const property = uniqueProperties.find((r) => r.guid === guid);
 
         const { releaseLock } = await waitForLock(
-          `profileProperty:${key}:${value}`
+          `profileProperty:${guid}:${value}`
         );
         lockReleases.push(releaseLock);
 
