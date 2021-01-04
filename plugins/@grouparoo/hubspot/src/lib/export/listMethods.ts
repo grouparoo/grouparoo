@@ -44,6 +44,7 @@ async function getListId(appGuid, appOptions, groupName): Promise<string> {
 }
 
 function filterLists(hubspotLists, groupName) {
+  hubspotLists = hubspotLists || [];
   const matchingList = hubspotLists.filter(
     (list) => list.name === groupName
   )[0];
