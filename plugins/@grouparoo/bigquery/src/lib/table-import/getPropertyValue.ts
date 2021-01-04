@@ -1,5 +1,5 @@
 import { makeWhereClause, castValue } from "../util";
-import { validateQuery } from "./validateQuery";
+import { validateQuery } from "../validateQuery";
 import { getColumnsInternal } from "./getColumns";
 import {
   GetPropertyValueMethod,

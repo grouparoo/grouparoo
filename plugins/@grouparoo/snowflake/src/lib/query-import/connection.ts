@@ -1,5 +1,6 @@
 import { buildConnection } from "@grouparoo/app-templates/dist/source/query";
 import { executeQuery } from "./executeQuery";
+import { getChangedRows } from "./getChangedRows";
 
 export function getConnection() {
   return buildConnection({
@@ -7,5 +8,6 @@ export function getConnection() {
     name: "snowflake-query-import",
     description: "Import or update profiles via a custom Snowflake query.",
     executeQuery,
+    getChangedRows,
   });
 }

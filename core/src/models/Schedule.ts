@@ -20,6 +20,7 @@ import {
 import { Op, Transaction } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Source, SimpleSourceOptions } from "./Source";
+import { Property } from "./Property";
 import { App, SimpleAppOptions } from "./App";
 import { Run } from "./Run";
 import { Option } from "./Option";
@@ -36,7 +37,7 @@ export interface PluginConnectionScheduleOption {
   key: string;
   required: boolean;
   description: string;
-  type: string;
+  type: "list" | "text" | "textarea";
   options: (argument: {
     connection: any;
     app: App;
@@ -46,6 +47,7 @@ export interface PluginConnectionScheduleOption {
     sourceGuid: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SimpleSourceOptions;
+    properties: Property[];
   }) => Promise<
     Array<{
       key: string;
@@ -210,9 +212,8 @@ export class Schedule extends LoggedModel<Schedule> {
   @BeforeSave
   static async ensureSourceMapping(instance: Schedule, { transaction }) {
     const source = await Source.findByGuid(instance.sourceGuid, transaction);
-    const sourceMapping = await source.getMapping(transaction);
-    if (!sourceMapping || Object.keys(sourceMapping).length === 0) {
-      throw new Error("source has no mapping");
+    if (!source.scheduleAvailable()) {
+      throw new Error(`a ${source.type} source cannot have a schedule`);
     }
   }
 
@@ -266,7 +267,9 @@ export class Schedule extends LoggedModel<Schedule> {
 
     const scheduleAvailable = await source.scheduleAvailable();
     if (!scheduleAvailable) {
-      throw new Error(`source ${instance.sourceGuid} cannot have a schedule`);
+      throw new Error(
+        `source ${source.name} (${instance.sourceGuid}) cannot have a schedule`
+      );
     }
   }
 

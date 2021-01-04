@@ -116,11 +116,11 @@ describe("models/schedule", () => {
       ).rejects.toThrow(/table is required/);
     });
 
-    test("a schedule cannot be created if the source does not have a mapping set", async () => {
-      const app = await helper.factories.app();
-      await app.update({ type: "manual" });
-      const source = await helper.factories.source(app);
-      await source.setOptions({ table: "test table" });
+    test("a schedule cannot be created if the source does not support schedules", async () => {
+      const app = await App.create({ type: "manual", name: "manual app" });
+      await app.update({ state: "ready" });
+      const source = await Source.create({ type: "manual", appGuid: app.guid });
+      await source.update({ state: "ready" });
 
       await expect(
         Schedule.create({
@@ -128,7 +128,10 @@ describe("models/schedule", () => {
           type: "test-plugin-import",
           sourceGuid: source.guid,
         })
-      ).rejects.toThrow(/source has no mapping/);
+      ).rejects.toThrow(/cannot have a schedule/);
+
+      await source.destroy();
+      await app.destroy();
     });
 
     describe("validations", () => {

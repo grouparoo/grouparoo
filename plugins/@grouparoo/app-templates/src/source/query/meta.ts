@@ -1,6 +1,8 @@
 import {
   getPropertyOptions,
+  getScheduleOptions,
   PluginConnection,
+  getProfilesMethod,
   PluginConnectionPropertyOption,
   SourceOptionsMethod,
   getSourceOptions,
@@ -9,6 +11,7 @@ import {
   ExecuteQueryMethod,
   ValidateQueryMethod,
   validateGenericQuery,
+  GetChangedRowsMethod,
 } from "./options";
 
 export interface BuildConnectionMethod {
@@ -18,6 +21,7 @@ export interface BuildConnectionMethod {
     app: string;
     executeQuery: ExecuteQueryMethod;
     validateQuery?: ValidateQueryMethod;
+    getChangedRows?: GetChangedRowsMethod;
   }): PluginConnection;
 }
 
@@ -26,6 +30,7 @@ export const buildConnection: BuildConnectionMethod = ({
   description,
   app,
   executeQuery,
+  getChangedRows,
   validateQuery = validateGenericQuery,
 }) => {
   const propertyOptions: PluginConnectionPropertyOption[] = getPropertyOptions();
@@ -34,6 +39,8 @@ export const buildConnection: BuildConnectionMethod = ({
     executeQuery,
     validateQuery,
   });
+  const scheduleOptions = getChangedRows ? getScheduleOptions() : null;
+  const profiles = getChangedRows ? getProfilesMethod(getChangedRows) : null;
 
   return {
     name,
@@ -42,9 +49,12 @@ export const buildConnection: BuildConnectionMethod = ({
     app,
     options: [],
     propertyOptions,
+    scheduleOptions,
+    skipSourceMapping: true,
     methods: {
       sourceOptions,
       profileProperty,
+      profiles,
     },
   };
 };

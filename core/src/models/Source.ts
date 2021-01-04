@@ -142,13 +142,11 @@ export class Source extends LoggedModel<Source> {
   }
 
   async validateMapping(transaction?: Transaction) {
+    const previewAvailable = await this.previewAvailable();
+    if (!previewAvailable) return true;
+
     const { pluginConnection } = await this.getPlugin(transaction);
     if (pluginConnection.skipSourceMapping) return true;
-
-    const previewAvailable = await this.previewAvailable();
-    if (!previewAvailable) {
-      return true;
-    }
 
     const mapping = await this.getMapping(transaction);
     if (Object.keys(mapping).length === 1) {

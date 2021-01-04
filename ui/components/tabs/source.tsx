@@ -4,7 +4,7 @@ import { Models } from "../../utils/apiData";
 export default function SourceTabs({ source }: { source: Models.SourceType }) {
   const tabs = ["overview", "edit"];
 
-  if (source.app.type !== "events") {
+  if (source.previewAvailable) {
     tabs.push("mapping");
   }
 

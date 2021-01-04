@@ -42,6 +42,7 @@ async function getColumns() {
     source: null,
     sourceGuid: null,
     sourceMapping: null,
+    properties: [],
   });
   return response;
 }
