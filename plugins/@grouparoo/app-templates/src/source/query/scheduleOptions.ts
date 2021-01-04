@@ -5,7 +5,8 @@ export const getScheduleOptions = () => {
     {
       key: "query",
       required: true,
-      description: "What query should I run?",
+      description:
+        "What query should I run?  Do not include LIMIT or OFFSET, as theses will be controlled automatically according to your settings.",
       type: "textarea",
       options: async () => {
         return [];
