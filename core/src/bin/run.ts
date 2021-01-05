@@ -10,6 +10,12 @@ export class RunCLI extends CLI {
     this.description =
       "Run all Schedules, Runs, Imports and Exports pending in this cluster.  Use GROUPAROO_LOG_LEVEL env to set log level.";
     this.inputs = {
+      destroy: {
+        required: true,
+        default: "false",
+        description:
+          "[DANGER] Empty the cluster of all Profile data before starting the run?",
+      },
       web: {
         required: true,
         default: "false",
@@ -28,6 +34,10 @@ export class RunCLI extends CLI {
   async run() {
     GrouparooCLI.logCLI(this, false);
     this.checkWorkers();
+
+    if (process.argv.slice(2).includes("--destroy")) {
+      await GrouparooCLI.destroyProfiles();
+    }
 
     await import("../grouparoo"); // run the server
 

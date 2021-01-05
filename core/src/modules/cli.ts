@@ -1,7 +1,15 @@
-import { CLI, api } from "actionhero";
+import { CLI, api, log } from "actionhero";
 import Colors from "colors/safe";
 import { Op } from "sequelize";
-import { Run, Profile, Import, Export } from "..";
+import {
+  Run,
+  Profile,
+  ProfileProperty,
+  GroupMember,
+  Import,
+  Export,
+  Log,
+} from "..";
 
 export namespace GrouparooCLI {
   /** Types */
@@ -36,6 +44,17 @@ export namespace GrouparooCLI {
     console.log("");
     console.log(Colors.underline(Colors.bold(`🦘 Grouparoo: ${cli.name}`)));
     console.log("");
+  }
+
+  export async function destroyProfiles() {
+    log("Destroying all Profile and Related data", "warning");
+    await Profile.truncate();
+    await ProfileProperty.truncate();
+    await GroupMember.truncate();
+    await Import.truncate();
+    await Export.truncate();
+    await Run.truncate();
+    await Log.truncate();
   }
 
   /** Status */
