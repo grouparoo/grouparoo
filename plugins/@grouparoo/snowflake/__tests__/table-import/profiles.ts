@@ -66,6 +66,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
     app: null,
     appGuid: null,
     sourceOptions: null,
+    properties: [],
   });
   return {
     imports,

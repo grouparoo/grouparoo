@@ -2,7 +2,7 @@ import {
   GetSampleRowsMethod,
   DataResponseRow,
 } from "@grouparoo/app-templates/dist/source/table";
-import { validateQuery } from "./validateQuery";
+import { validateQuery } from "../validateQuery";
 import { castRow } from "../util";
 
 export const getSampleRows: GetSampleRowsMethod = async ({

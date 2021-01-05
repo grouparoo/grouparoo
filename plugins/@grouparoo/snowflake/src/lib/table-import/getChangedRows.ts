@@ -1,5 +1,5 @@
 import { makeWhereClause, castRow } from "./util";
-import { validateQuery } from "./validateQuery";
+import { validateQuery } from "../validateQuery";
 import {
   GetChangedRowsMethod,
   DataResponseRow,

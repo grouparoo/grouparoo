@@ -95,7 +95,7 @@ export namespace EventOps {
     }
 
     const profileProperties = {};
-    profileProperties[property.key] = event.userId;
+    profileProperties[property.guid] = event.userId;
 
     try {
       await profile.addOrUpdateProperties(profileProperties);

@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/mysql",
   "description": "The Grouparoo mysql Plugin",
-  "version": "0.2.0-alpha.7",
+  "version": "0.2.0-alpha.10",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -27,21 +27,21 @@
     "lint": "prettier --check src __tests__"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "^0.2.0-alpha.7",
+    "@grouparoo/app-templates": "^0.2.0-alpha.10",
     "mysql": "2.18.1"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.2.0",
-    "actionhero": "25.0.1"
+    "actionhero": "25.0.2"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.2.0-alpha.7",
-    "@grouparoo/spec-helper": "^0.2.0-alpha.7",
+    "@grouparoo/core": "^0.2.0-alpha.10",
+    "@grouparoo/spec-helper": "^0.2.0-alpha.10",
     "@types/jest": "*",
     "@types/mysql": "*",
     "@types/node": "*",
-    "actionhero": "25.0.1",
-    "csv-parse": "4.14.1",
+    "actionhero": "25.0.2",
+    "csv-parse": "4.14.2",
     "jest": "26.6.3",
     "prettier": "2.2.1",
     "ts-jest": "26.4.4",

@@ -3,9 +3,9 @@ export { plugin } from "./modules/plugin";
 export * from "./classes/plugin";
 export * from "./classes/fileTransport";
 
-export { App } from "./models/App";
+export { App, SimpleAppOptions } from "./models/App";
 export { ApiKey } from "./models/ApiKey";
-export { Destination } from "./models/Destination";
+export { Destination, SimpleDestinationOptions } from "./models/Destination";
 export { DestinationGroupMembership } from "./models/DestinationGroupMembership";
 export { Event } from "./models/Event";
 export { EventData } from "./models/EventData";
@@ -25,10 +25,10 @@ export { ProfileProperty } from "./models/ProfileProperty";
 export { Property } from "./models/Property";
 export { PropertyFilter } from "./models/PropertyFilter";
 export { Run } from "./models/Run";
-export { Schedule } from "./models/Schedule";
+export { Schedule, SimpleScheduleOptions } from "./models/Schedule";
 export { Setting } from "./models/Setting";
 export { SetupStep } from "./models/SetupStep";
-export { Source } from "./models/Source";
+export { Source, SimpleSourceOptions } from "./models/Source";
 export { Team } from "./models/Team";
 export { TeamMember } from "./models/TeamMember";
 

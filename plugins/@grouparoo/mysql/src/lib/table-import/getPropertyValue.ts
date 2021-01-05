@@ -1,5 +1,5 @@
 import { makeWhereClause } from "./util";
-import { validateQuery } from "./validateQuery";
+import { validateQuery } from "../validateQuery";
 import {
   GetPropertyValueMethod,
   DataResponse,

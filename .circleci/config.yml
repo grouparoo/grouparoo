@@ -1150,7 +1150,6 @@ jobs:
       - run: git config --global user.email "hello@grouparoo.com"
       - run: git config --global user.name "Grouparoo Bot"
       - run: sudo npm install -g pnpm
-      - run: pnpm run -r prepare
       - run: ./bin/publish
 workflows:
   version: 2

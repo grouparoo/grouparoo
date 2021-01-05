@@ -21,6 +21,9 @@ else
     fi
 fi
 
+# Rebuild all packages
+pnpm run -r prepare
+
 # Push new version & tags to git with lerna
 OLD_VERSION=`cat lerna.json | jq -r '.version'`
 BRANCH=`git rev-parse --abbrev-ref HEAD`

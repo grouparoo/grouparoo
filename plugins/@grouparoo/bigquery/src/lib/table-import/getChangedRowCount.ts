@@ -1,7 +1,7 @@
 import { GetChangedRowCountMethod } from "@grouparoo/app-templates/dist/source/table";
 import { makeHighwaterWhereClause } from "./getChangedRows";
 import { getColumnsInternal } from "./getColumns";
-import { validateQuery } from "./validateQuery";
+import { validateQuery } from "../validateQuery";
 
 export const getChangedRowCount: GetChangedRowCountMethod = async ({
   connection,

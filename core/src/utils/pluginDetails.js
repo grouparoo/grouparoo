@@ -51,6 +51,8 @@ function getPluginManifest() {
     for (const i in manifest.parent.grouparoo.plugins) {
       const pluginName = manifest.parent.grouparoo.plugins[i];
 
+      if (pluginName === "@grouparoo/core") continue;
+
       let pluginPath = "";
       try {
         pluginPath = require.resolve(pluginName);
@@ -75,21 +77,23 @@ function getPluginManifest() {
       }
 
       pluginPath = fs.realpathSync(pluginPath);
-
       const pluginPkg = readPackageJson(path.join(pluginPath, "package.json"));
-      manifest.plugins.push({
-        name: pluginPkg.name,
-        version: pluginPkg.version,
-        license: pluginPkg.license,
-        url:
-          pluginPkg.url ||
-          (pluginPkg.repository && pluginPkg.repository.url
-            ? pluginPkg.repository.url
-            : null) ||
-          pluginPkg.homepage,
-        path: pluginPath,
-        grouparoo: pluginPkg.grouparoo || null,
-      });
+
+      if (pluginPkg.name) {
+        manifest.plugins.push({
+          name: pluginPkg.name,
+          version: pluginPkg.version,
+          license: pluginPkg.license,
+          url:
+            pluginPkg.url ||
+            (pluginPkg.repository && pluginPkg.repository.url
+              ? pluginPkg.repository.url
+              : null) ||
+            pluginPkg.homepage,
+          path: pluginPath,
+          grouparoo: pluginPkg.grouparoo || null,
+        });
+      }
     }
 
     manifest.plugins.sort((a, b) => {

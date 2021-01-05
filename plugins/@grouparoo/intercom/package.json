@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/intercom",
   "description": "The Grouparoo Intercom Plugin",
-  "version": "0.2.0-alpha.7",
+  "version": "0.2.0-alpha.10",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -27,19 +27,18 @@
     "lint": "prettier --check src "
   },
   "dependencies": {
-    "intercom-client": "2.11.0",
-    "node-zendesk": "2.0.3"
+    "intercom-client": "2.11.0"
   },
   "peerDependencies": {
     "@grouparoo/core": "^0.2.0",
-    "actionhero": "25.0.1"
+    "actionhero": "25.0.2"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.2.0-alpha.7",
-    "@grouparoo/spec-helper": "^0.2.0-alpha.7",
+    "@grouparoo/core": "^0.2.0-alpha.10",
+    "@grouparoo/spec-helper": "^0.2.0-alpha.10",
     "@types/jest": "*",
     "@types/node": "*",
-    "actionhero": "25.0.1",
+    "actionhero": "25.0.2",
     "dotenv": "8.2.0",
     "fs-extra": "9.0.1",
     "jest": "26.6.3",
