@@ -35,7 +35,8 @@ describe("bin/status", () => {
 
       const output = messages.join(" ");
       expect(spy).toHaveBeenCalled();
-      expect(output).toContain("Status for My Grouparoo Cluster (test)");
+      expect(output).toContain("Cluster Status @");
+      expect(output).toContain("Cluster Name: My Grouparoo Cluster / test");
       expect(output).toContain("Groups: 0");
       expect(output).toContain("Pending Exports: 0");
     });
@@ -48,9 +49,7 @@ describe("bin/status", () => {
 
       const output = messages.join(" ");
       expect(output).toContain("Groups: 1");
-      expect(output).toContain(
-        `${group.name}: 0 members (most recent addition - Never)`
-      );
+      expect(output).toContain(`0 members / newest member: Never`);
     });
   });
 });
