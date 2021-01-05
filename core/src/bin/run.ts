@@ -1,7 +1,7 @@
 import { GrouparooCLI } from "../modules/cli";
 import { CLI, Task, log, api, config } from "actionhero";
 
-const CHECK_TIMEOUT = 1000 * 5;
+const CHECK_TIMEOUT = 1000 * 10;
 
 export class RunCLI extends CLI {
   constructor() {
