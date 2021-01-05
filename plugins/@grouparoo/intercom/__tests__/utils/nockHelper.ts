@@ -7,6 +7,15 @@ const dirPath = path.resolve(path.join(__dirname, ".."));
 const nockPath = path.join(dirPath, ".env.example");
 const realPath = path.join(dirPath, ".env");
 
+function buildRandoms() {
+  const out = [];
+  for (let i = 0; i < 10; i++) {
+    out.push(Math.floor(Math.random() * 9999999999));
+  }
+  return out;
+}
+const randomNumbers = JSON.stringify(buildRandoms());
+
 function readEnv(filePath) {
   return dotenv.parse(fs.readFileSync(filePath));
 }
@@ -16,6 +25,7 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
     envFile = realPath;
   } else {
     envFile = nockPath;
+    // process.env.INTERCOM_RANDOM_NUMBERS set by nock file
   }
   const parsed = readEnv(envFile);
   return {
@@ -23,7 +33,13 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
   };
 }
 
+export function getRandomNumbers() {
+  return JSON.parse(process.env.INTERCOM_RANDOM_NUMBERS || randomNumbers);
+}
 export const updater = {
+  prepend: function () {
+    return `process.env.INTERCOM_RANDOM_NUMBERS = "${randomNumbers}"`;
+  },
   rewrite: function (nockCall) {
     const realEnv = readEnv(realPath);
     const nockEnv = readEnv(nockPath);

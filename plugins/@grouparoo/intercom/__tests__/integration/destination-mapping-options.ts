@@ -4,7 +4,7 @@ import { helper } from "@grouparoo/spec-helper";
 
 import {
   destinationMappingOptions,
-  getKnownAttributes,
+  fetchKnownAttributes,
 } from "../../src/lib/export-users/destinationMappingOptions";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { connect } from "../../src/lib/connect";
@@ -22,17 +22,19 @@ require("./../fixtures/destination-mapping-options");
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
 
+const appGuid = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8762f9";
 const appOptions = loadAppOptions(newNock);
 const destinationOptions = {
-  syncMode: "Sync",
+  creationMode: "User",
+  removalMode: "Archive",
 };
 
 async function runDestinationMappingOptions() {
   return destinationMappingOptions({
+    appGuid,
     appOptions,
     destinationOptions,
     app: null,
-    appGuid: null,
     connection: null,
     destination: null,
     destinationGuid: null,
@@ -42,7 +44,7 @@ async function runDestinationMappingOptions() {
 describe("intercom/destinationMappingOptions", () => {
   test("can fetch custom attributes", async () => {
     const client = await connect(appOptions);
-    const fields = await getKnownAttributes(client);
+    const fields = await fetchKnownAttributes(client);
 
     const text = fields.find((f) => f.key === "custom_attributes.text_field");
     expect(text.type).toBe("string");

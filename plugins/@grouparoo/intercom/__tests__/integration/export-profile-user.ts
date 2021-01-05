@@ -5,32 +5,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { exportProfile } from "../../src/lib/export-users/exportProfile";
 import { getTagId } from "../../src/lib/export-users/listMethods";
 import { connect } from "../../src/lib/connect";
-import { loadAppOptions, updater } from "../utils/nockHelper";
-
-let client: any;
-let userId = null;
-// let newId = null;
-let userId2 = null;
-let userId3 = null;
-
-const rand1 = Math.floor(Math.random() * 9999999999);
-const rand2 = Math.floor(Math.random() * 9999999999);
-const rand3 = Math.floor(Math.random() * 9999999999);
-const rand9 = Math.floor(Math.random() * 9999999999);
-
-const external_id = `testuser${rand1}`;
-const email = `testuser${rand1}@demo.com`;
-const newExternalId = `testuser${rand9}`;
-const newEmail = `testother${rand9}@demo.com`;
-
-const externalId2 = `testuser${rand2}`;
-const email2 = `testuser${rand2}@demo.com`;
-
-const externalId3 = `testuser${rand3}`;
-const email3 = `testuser${rand3}@demo.com`;
-
-const exampleEpoch = 1597870204;
-const exampleDate = new Date(exampleEpoch * 1000);
+import { getRandomNumbers, loadAppOptions, updater } from "../utils/nockHelper";
 
 const nockFile = path.join(
   __dirname,
@@ -40,11 +15,11 @@ const nockFile = path.join(
 );
 
 // these comments to use nock
-// const newNock = false;
-// require("./../fixtures/export-profile-user");
+const newNock = false;
+require("./../fixtures/export-profile-user");
 // or these to make it true
-const newNock = true;
-helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 const appGuid = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8662f9";
 const appOptions = loadAppOptions(newNock);
@@ -53,14 +28,32 @@ const destinationOptions = {
   removalMode: "Archive",
 };
 
+let client: any;
+let userId = null;
+let userId2 = null;
+let userId3 = null;
+
+const rand = getRandomNumbers(); // has to be after requiring nock
+
+const external_id = `testuser${rand[1]}`;
+const email = `testuser${rand[1]}@demo.com`;
+const newExternalId = `testuser${rand[9]}`;
+const newEmail = `testother${rand[9]}@demo.com`;
+
+const externalId2 = `testuser${rand[2]}`;
+const email2 = `testuser${rand[2]}@demo.com`;
+
+const email3 = `testuser${rand[3]}@demo.com`;
+
+const exampleEpoch = 1597870204;
+const exampleDate = new Date(exampleEpoch * 1000);
+
 async function getUser(id): Promise<any> {
   const { body } = await client.contacts.show(id);
-  // console.log({ getUser: body });
   return body;
 }
 async function getTags(id): Promise<string[]> {
   const { body } = await client.contacts.tags(id);
-  console.log({ getTags: body });
   return body.data.map((tag) => tag.name).sort();
 }
 
@@ -76,21 +69,6 @@ async function findId(extId): Promise<string> {
   }
   if (users.length > 1) {
     throw new Error(`more than one user! ${extId}`);
-  }
-  return users[0].id;
-}
-
-async function findEmail(email): Promise<string> {
-  const users = await client.contacts.search({
-    field: "email",
-    operator: "=",
-    value: email,
-  });
-  if (!users || users.length === 0) {
-    return null;
-  }
-  if (users.length > 1) {
-    throw new Error(`more than one user! ${email}`);
   }
   return users[0].id;
 }
@@ -134,10 +112,11 @@ async function runExport({
   });
 }
 
-const veryLongTime = 2 * 60 * 1000;
-const indexTime = 60 * 1000;
+const veryLongTime = 4 * 60 * 1000;
+const indexTime = 2 * 60 * 1000;
 
 async function indexContacts() {
+  // search index takes a while to catch up after important change or add
   if (newNock) {
     await helper.sleep(indexTime);
   }
@@ -150,7 +129,7 @@ describe("intercom/users/exportProfile/sync", () => {
   }, veryLongTime);
 
   afterAll(async () => {
-    // await cleanUp(true);
+    await cleanUp(true);
   }, veryLongTime);
 
   beforeAll(() => {
@@ -158,7 +137,6 @@ describe("intercom/users/exportProfile/sync", () => {
   });
 
   test("can create profile on Intercom", async () => {
-    console.log({ external_id, email });
     userId = await findId(external_id);
     expect(userId).toBe(null);
 
@@ -226,7 +204,7 @@ describe("intercom/users/exportProfile/sync", () => {
         external_id,
         name: "Evan",
         unknown_junk: "ok", // note:  it doesn't hurt anything
-        // "custom_attributes.something_junk": "here", TODO (does hurt - write test)
+        "custom_attributes.other_junk": "here", // note: also extra
         "custom_attributes.text_field": "testing here change",
         "custom_attributes.boolean_field": true,
         "custom_attributes.number_field": 13,
@@ -250,6 +228,7 @@ describe("intercom/users/exportProfile/sync", () => {
     expect(user.custom_attributes.decimal_field).toBe(3.14);
 
     expect(user.unknown_junk).toBeUndefined();
+    expect(user.custom_attributes.other_junk).toBeUndefined();
   });
 
   test("can clear user variables", async () => {
@@ -273,7 +252,6 @@ describe("intercom/users/exportProfile/sync", () => {
     });
 
     const user = await getUser(userId);
-    console.log({ cleared: user });
     expect(user.external_id).toBe(external_id);
     expect(user.email).toBe(""); // empty string for some reason
     expect(user.name).toBe(null);

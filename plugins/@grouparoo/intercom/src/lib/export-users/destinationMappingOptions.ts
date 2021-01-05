@@ -1,15 +1,18 @@
 import {
   DestinationMappingOptionsMethod,
   DestinationMappingOptionsResponseTypes,
+  objectCache,
 } from "@grouparoo/core";
 import { connect } from "../connect";
+import { IntercomCacheData } from "./listMethods";
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
+  appGuid,
   appOptions,
 }) => {
   const client = await connect(appOptions);
   const required = getRequiredFields();
-  const known = await getKnownAttributes(client);
+  const known = await getKnownAttributes(client, { appGuid, appOptions }, true);
 
   return {
     labels: {
@@ -52,7 +55,7 @@ const mapTypesFromIntercomToGrouparoo = (key, intercomType) => {
   return grouparooType;
 };
 
-export const getRequiredFields = (): Array<{
+const getRequiredFields = (): Array<{
   key: string;
   type: DestinationMappingOptionsResponseTypes;
 }> => {
@@ -62,7 +65,46 @@ export const getRequiredFields = (): Array<{
   ];
 };
 
-export const getKnownAttributes = async (
+export const getAttributeMap = async (
+  client: any,
+  cacheData: IntercomCacheData
+): Promise<{ [attributeName: string]: string }> => {
+  const required = getRequiredFields();
+  const known = await getKnownAttributes(client, cacheData);
+  const out = {};
+  for (const field of required) {
+    out[field.key] = field.type;
+  }
+  for (const field of known) {
+    out[field.key] = field.type;
+  }
+  return out;
+};
+
+const getKnownAttributes = async (
+  client: any,
+  cacheData: IntercomCacheData,
+  update: boolean = false
+): Promise<
+  Array<{
+    key: string;
+    type: DestinationMappingOptionsResponseTypes;
+    important?: boolean;
+  }>
+> => {
+  const { appGuid, appOptions } = cacheData;
+  const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
+  const cacheKey = ["getKnownAttributes", appOptions];
+  const read = !update; // if updating, skip the read from cache. still write.
+  return objectCache(
+    { objectGuid: appGuid, cacheKey, cacheDurationMs, read },
+    async () => {
+      return fetchKnownAttributes(client);
+    }
+  );
+};
+
+export const fetchKnownAttributes = async (
   client: any
 ): Promise<
   Array<{

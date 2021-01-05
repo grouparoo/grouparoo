@@ -4,6 +4,7 @@ import {
 } from "@grouparoo/core";
 import { connect } from "../connect";
 import { CreationMode, RemovalMode } from "./destinationOptions";
+import { getAttributeMap } from "./destinationMappingOptions";
 import {
   getTagId,
   normalizeTagName,
@@ -97,7 +98,9 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   }
 
   // do the update
-  const payload = makePayload(
+  const payload = await makePayload(
+    client,
+    cacheData,
     { email, external_id },
     oldProfileProperties,
     newProfileProperties
@@ -283,7 +286,9 @@ function formatVar(value) {
   }
 }
 
-function makePayload(
+async function makePayload(
+  client: any,
+  cacheData: IntercomCacheData,
   { email, external_id },
   oldProfileProperties: {
     [key: string]: any;
@@ -298,14 +303,17 @@ function makePayload(
   const newKeys = Object.keys(newProfileProperties);
   const oldKeys = Object.keys(oldProfileProperties);
   const allKeys = oldKeys.concat(newKeys);
+
+  const validAttributes = await getAttributeMap(client, cacheData);
   for (const key of allKeys) {
     if (["email", "external_id"].includes(key)) {
       continue; // already there
     }
+    if (!validAttributes[key]) {
+      continue; // unknown key
+    }
     const value = newProfileProperties[key]; // includes clearing out removed ones
     const formatted = formatVar(value);
-
-    // TODO: make sure custom attribute still actually exists
 
     const pieces = key.split("."); // for example, custom_attributes.my_field
     if (pieces.length > 1 && pieces[0] === "custom_attributes") {
@@ -388,25 +396,20 @@ async function createOrUpdateUser(
   attemptedDestinationIds: string[] = []
 ): Promise<IntercomContact> {
   try {
-    console.log({ destinationId, payload });
     if (destinationId) {
       payload = addUpdatePayload(payload, destinationOptions);
       attemptedDestinationIds.push(destinationId);
       const { body } = await client.contacts.update(destinationId, payload);
-      // console.log({ updated: body });
       return body;
     } else {
       payload = addCreationPayload(payload, destinationOptions);
       const { body } = await client.contacts.create(payload);
-      // console.log({ created: body });
       return body;
     }
   } catch (error) {
-    console.log({ errorCreate: error });
     if (error?.statusCode === 409) {
       // Conflict - Multiple existing users match this email address - must be more specific using user_id
       const errors = error?.body?.errors || [];
-      console.log({ errors });
       for (const e of errors) {
         // E.g. 'An archived contact matching those details already exists with id=5ff25dc6ec394ef8296e873f'
         // E.g. 'A contact matching those details already exists with id=5ff2b0a47543cba3058e8b79'
@@ -421,11 +424,9 @@ async function createOrUpdateUser(
             conflictDestinationId &&
             !attemptedDestinationIds.includes(conflictDestinationId)
           ) {
-            console.log({ conflictDestinationId });
             // was it an archived match?
             if (archivedRegex.exec(message)) {
               await client.contacts.unarchive(conflictDestinationId);
-              // console.log({ unarchive: body });
             }
 
             // try again

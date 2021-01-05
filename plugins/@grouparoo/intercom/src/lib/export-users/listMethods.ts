@@ -72,7 +72,6 @@ async function getTags(
 // gets called if the lists are not cached
 async function fetchTags(client: any): Promise<IntercomTag[]> {
   const { body } = await client.tags.list();
-  console.log({ fetchTags: body });
   return body.data;
 }
 
@@ -116,6 +115,5 @@ async function ensureTag(
 
   // need to create it
   const { body } = await client.tags.create({ name: tagName });
-  console.log({ ensureTag: body });
   return body.id;
 }
