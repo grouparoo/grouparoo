@@ -13,43 +13,41 @@ describe("bin/status", () => {
     await helper.shutdown(actionhero);
   });
 
-  describe("mock console.log", () => {
-    let messages = [];
-    let spy;
+  let messages = [];
+  let spy;
 
-    beforeEach(() => {
-      messages = [];
-      spy = jest
-        .spyOn(console, "log")
-        .mockImplementation((message) => messages.push(message));
-    });
+  beforeEach(() => {
+    messages = [];
+    spy = jest
+      .spyOn(console, "log")
+      .mockImplementation((message) => messages.push(message));
+  });
 
-    afterEach(() => {
-      spy.mockRestore();
-    });
+  afterEach(() => {
+    spy.mockRestore();
+  });
 
-    test("the status command can be run", async () => {
-      const command = new Status();
-      const toStop = await command.run();
-      expect(toStop).toBe(true);
+  test("the status command can be run", async () => {
+    const command = new Status();
+    const toStop = await command.run();
+    expect(toStop).toBe(true);
 
-      const output = messages.join(" ");
-      expect(spy).toHaveBeenCalled();
-      expect(output).toContain("Cluster Status @");
-      expect(output).toContain("Cluster Name: My Grouparoo Cluster / test");
-      expect(output).toContain("Groups: 0");
-      expect(output).toContain("Pending Exports: 0");
-    });
+    const output = messages.join(" ");
+    expect(spy).toHaveBeenCalled();
+    expect(output).toContain("Cluster Status @");
+    expect(output).toContain("Cluster Name: My Grouparoo Cluster / test");
+    expect(output).toContain("Groups: 0");
+    expect(output).toContain("Pending Exports: 0");
+  });
 
-    test("with a group", async () => {
-      const group = await helper.factories.group();
+  test("with a group", async () => {
+    const group = await helper.factories.group();
 
-      const command = new Status();
-      await command.run();
+    const command = new Status();
+    await command.run();
 
-      const output = messages.join(" ");
-      expect(output).toContain("Groups: 1");
-      expect(output).toContain(`0 members / newest member: Never`);
-    });
+    const output = messages.join(" ");
+    expect(output).toContain("Groups: 1");
+    expect(output).toContain(`0 members / newest member: Never`);
   });
 });
