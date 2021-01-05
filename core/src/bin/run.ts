@@ -41,9 +41,11 @@ export class RunCLI extends CLI {
 
     await import("../grouparoo"); // run the server
 
-    const status = await GrouparooCLI.getPendingStatus();
+    const pendingStatus = await GrouparooCLI.getPendingStatus();
+    const runStatus = await GrouparooCLI.getRunsStatus();
     GrouparooCLI.logStatus("Initial Status", [
-      { header: "Pending Items", status },
+      { header: "Pending Items", status: pendingStatus },
+      { header: "Active Runs", status: runStatus },
     ]);
 
     await this.waitForReady();
@@ -98,13 +100,17 @@ export class RunCLI extends CLI {
   }
 
   async checkForComplete() {
-    const status = await GrouparooCLI.getPendingStatus();
-    GrouparooCLI.logStatus("Cluster Status", [
-      { header: "Pending Items", status },
+    const pendingStatus = await GrouparooCLI.getPendingStatus();
+    const runStatus = await GrouparooCLI.getRunsStatus();
+    GrouparooCLI.logStatus("Initial Status", [
+      { header: "Pending Items", status: pendingStatus },
+      { header: "Active Runs", status: runStatus },
     ]);
 
     let pendingItems = 0;
-    for (const key in status) pendingItems += status[key][0] as number;
+    for (const key in pendingStatus) {
+      pendingItems += pendingStatus[key][0] as number;
+    }
 
     if (pendingItems > 0) return false;
     return true;

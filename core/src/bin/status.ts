@@ -48,10 +48,12 @@ export class Status extends CLI {
     };
 
     const pendingStatus = await GrouparooCLI.getPendingStatus();
+    const runStatus = await GrouparooCLI.getRunsStatus();
 
     GrouparooCLI.logStatus("Cluster Status", [
       { header: "Overview", status: overview },
       { header: "Groups", status: groupsStatus },
+      { header: "Active Runs", status: runStatus },
       { header: "Pending Items", status: pendingStatus },
     ]);
 

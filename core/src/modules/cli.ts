@@ -80,6 +80,27 @@ export namespace GrouparooCLI {
     };
   }
 
+  export async function getRunsStatus(): Promise<LogStatus> {
+    const activeRuns = await Run.findAll({ where: { state: "running" } });
+
+    const status = {};
+    for (const i in activeRuns) {
+      const run = activeRuns[i];
+      const creatorName = await run.getCreatorName();
+      const percentComplete = run.percentComplete;
+      const highWaterMark = run.highWaterMark
+        ? Object.values(run.highWaterMark)[0]
+        : run.groupHighWaterMark;
+      status[creatorName] = [`${percentComplete}%`, highWaterMark];
+    }
+
+    if (activeRuns.length === 0) {
+      status["None"] = [null];
+    }
+
+    return status;
+  }
+
   /** Logging */
 
   export function logStatus(title: string, statusArray: LogStatusArray) {
@@ -95,8 +116,8 @@ export namespace GrouparooCLI {
       for (const key in status) {
         const [v1, v2] = status[key];
         console.log(
-          `${blueBold("|")} * ${deCamel(key)}: ${
-            v1.toString() + (v2 ? ` / ${v2.toString()}` : "")
+          `${blueBold("|")} * ${deCamel(key)}${
+            (v1 ? ": " + v1.toString() : "") + (v2 ? ` / ${v2.toString()}` : "")
           }`
         );
       }
