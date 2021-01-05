@@ -40,21 +40,15 @@ export const test = {
 
 function buildConsoleLogger(level = "info") {
   const formats = [];
-  if (
-    process.env.GROUPAROO_LOGS_STDOUT_DISABLE_COLOR?.toLowerCase() !== "true"
-  ) {
-    formats.push(winston.format.colorize());
-  }
-  if (
-    process.env.GROUPAROO_LOGS_STDOUT_DISABLE_TIMESTAMP?.toLowerCase() !==
-    "true"
-  ) {
-    formats.push(winston.format.timestamp());
-  }
+
+  if (!disableColor()) formats.push(winston.format.colorize());
+  if (!disableTimestamps()) formats.push(winston.format.timestamp());
 
   formats.push(
     winston.format.printf((info) => {
-      return `${info.timestamp ? `${info.timestamp} - ` : ""}${info.level}: ${
+      return `${
+        info.timestamp && !disableTimestamps() ? `${info.timestamp} - ` : ""
+      }${info.level}: ${
         info.message
       } ${stringifyExtraMessagePropertiesForConsole(info)}`;
     })
@@ -107,3 +101,8 @@ function buildFileLogger(path, level = "info", maxFiles = undefined) {
     });
   };
 }
+
+const disableColor = () =>
+  process.env.GROUPAROO_LOGS_STDOUT_DISABLE_COLOR?.toLowerCase() === "true";
+const disableTimestamps = () =>
+  process.env.GROUPAROO_LOGS_STDOUT_DISABLE_TIMESTAMP?.toLowerCase() === "true";

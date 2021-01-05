@@ -1,3 +1,4 @@
+import { GrouparooCLI } from "../modules/cli";
 import { plugin } from "../modules/plugin";
 import { Profile } from "../models/Profile";
 import { Group } from "../models/Group";
@@ -12,16 +13,20 @@ export class Status extends CLI {
     super();
     this.name = "status";
     this.description = "Display the status of your Grouparoo cluster";
+
+    GrouparooCLI.setGrouparooRunMode(this);
+    GrouparooCLI.timestampOption(this);
   }
 
   async run() {
+    GrouparooCLI.logCLI(this);
+
     const { value: clusterName } = await plugin.readSetting(
       "core",
       "cluster-name"
     );
 
     // Intro
-    console.log("");
     console.log(`Status for ${clusterName} (${env}):`);
     console.log("");
 
