@@ -7,7 +7,7 @@ import * as winston from "winston";
 export const DEFAULT = {
   logger: (config) => {
     const loggers = [];
-    loggers.push(buildConsoleLogger());
+    loggers.push(buildConsoleLogger(process.env.GROUPAROO_LOG_LEVEL));
     config.general.paths.log.forEach((p) => {
       loggers.push(buildFileLogger(p));
     });

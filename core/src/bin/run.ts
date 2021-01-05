@@ -1,8 +1,5 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, Task, api, log } from "actionhero";
-import { Op } from "sequelize";
-
-import { Run, Profile, Import, Export } from "..";
+import { CLI, Task, log, api, config } from "actionhero";
 
 const CHECK_TIMEOUT = 1000 * 5;
 
@@ -11,7 +8,18 @@ export class RunCLI extends CLI {
     super();
     this.name = "run";
     this.description =
-      "Run all Schedules, Runs, Imports and Exports pending in this cluster.";
+      "Run all Schedules, Runs, Imports and Exports pending in this cluster.  Use GROUPAROO_LOG_LEVEL env to set log level.";
+    this.inputs = {
+      web: {
+        required: true,
+        default: "false",
+        description: "Enable the web server during this run?",
+      },
+    };
+
+    if (!process.argv.slice(2).includes("--web")) {
+      process.env.WEB_SERVER = "false";
+    }
 
     GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.timestampOption(this);
@@ -19,8 +27,15 @@ export class RunCLI extends CLI {
 
   async run() {
     GrouparooCLI.logCLI(this, false);
+    this.checkWorkers();
 
     await import("../grouparoo"); // run the server
+
+    const status = await GrouparooCLI.getPendingStatus();
+    GrouparooCLI.logStatus("Initial Status", [
+      { header: "Pending Items", status },
+    ]);
+
     await this.waitForReady();
     await this.runPausedTasks();
 
@@ -29,14 +44,21 @@ export class RunCLI extends CLI {
     return false;
   }
 
+  checkWorkers() {
+    if (!config.tasks.scheduler)
+      throw new Error(`The Task Scheduler is not enabled`);
+    if (config.tasks.minTaskProcessors < 1)
+      throw new Error(`No Task Workers are enabled`);
+  }
+
   async waitForReady() {
-    return new Promise((resolve) => {
-      function check() {
+    return new Promise(async (resolve) => {
+      async function check() {
         if (api.process.running) return resolve(null);
         setTimeout(() => check(), CHECK_TIMEOUT);
       }
 
-      check();
+      await check();
     });
   }
 
@@ -66,39 +88,22 @@ export class RunCLI extends CLI {
   }
 
   async checkForComplete() {
-    const pendingProfiles = await Profile.count({
-      where: { [Op.ne]: "ready" },
-    });
-    const pendingImports = await Import.count({
-      where: { exportedAt: null },
-    });
-    const pendingExports = await Export.count({
-      where: {
-        completedAt: null,
-        errorMessage: null,
-      },
-    });
-    const pendingRuns = await Run.count({ where: { state: "running" } });
+    const status = await GrouparooCLI.getPendingStatus();
+    GrouparooCLI.logStatus("Cluster Status", [
+      { header: "Pending Items", status },
+    ]);
 
-    console.log("---");
-    console.log({
-      pendingProfiles,
-      pendingImports,
-      pendingExports,
-      pendingRuns,
-    });
-    console.log("---");
+    let pendingItems = 0;
+    for (const key in status) pendingItems += status[key][0] as number;
 
-    const pendingItems =
-      pendingProfiles + pendingImports + pendingExports + pendingRuns;
     if (pendingItems > 0) return false;
-
     return true;
   }
 
   async stopServer() {
-    log("All good!", "notice");
+    api.log("All Tasks Complete!", "notice");
     await api.process.stop();
+    log(`All Grouparoo tasks complete - exiting with code 0`, "notice");
     process.exit(0);
   }
 }
