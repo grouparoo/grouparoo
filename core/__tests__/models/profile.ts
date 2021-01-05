@@ -549,6 +549,28 @@ describe("models/profile", () => {
         });
       });
 
+      test("profile properties can be addded by key", async () => {
+        await profile.addOrUpdateProperty({ email: ["luigi@example.com"] });
+        const properties = await profile.properties();
+        expect(simpleProfileValues(properties).email).toEqual([
+          "luigi@example.com",
+        ]);
+      });
+
+      test("profile properties can be addded by guid", async () => {
+        const emailProperty = await Property.findOne({
+          where: { key: "email" },
+        });
+        await profile.addOrUpdateProperty({
+          [emailProperty.guid]: ["luigi@example.com"],
+        });
+
+        const properties = await profile.properties();
+        expect(simpleProfileValues(properties).email).toEqual([
+          "luigi@example.com",
+        ]);
+      });
+
       test("adding a profile property touches the profile", async () => {
         await profile.removeProperty("email");
 
