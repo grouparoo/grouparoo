@@ -56,7 +56,7 @@ export class ImportProfileProperty extends RetryableTask {
 
     if (propertyValues) {
       const hash = {};
-      hash[property.key] = Array.isArray(propertyValues)
+      hash[property.guid] = Array.isArray(propertyValues)
         ? propertyValues
         : [propertyValues];
       await profile.addOrUpdateProperty(hash);

@@ -263,16 +263,16 @@ export namespace SourceOps {
       rules.map((rule) =>
         source
           .importProfileProperty(profile, rule, null, null, preloadedArgs)
-          .then((response) => (hash[rule.key] = response))
+          .then((response) => (hash[rule.guid] = response))
       )
     );
 
     // remove null and undefined as we cannot set that value
     const hashKeys = Object.keys(hash);
     for (const i in hashKeys) {
-      const key = hashKeys[i];
-      if (hash[key] === null || hash[key] === undefined) {
-        delete hash[key];
+      const guid = hashKeys[i];
+      if (hash[guid] === null || hash[guid] === undefined) {
+        delete hash[guid];
       }
     }
 
