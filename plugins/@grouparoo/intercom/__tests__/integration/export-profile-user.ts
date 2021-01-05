@@ -9,9 +9,9 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 
 let client: any;
 let userId = null;
+// let newId = null;
 let userId2 = null;
 let userId3 = null;
-// let newId = null;
 
 const rand1 = Math.floor(Math.random() * 9999999999);
 const rand2 = Math.floor(Math.random() * 9999999999);
@@ -21,16 +21,13 @@ const rand9 = Math.floor(Math.random() * 9999999999);
 const external_id = `testuser${rand1}`;
 const email = `testuser${rand1}@demo.com`;
 const newExternalId = `testuser${rand9}`;
+const newEmail = `testother${rand9}@demo.com`;
 
 const externalId2 = `testuser${rand2}`;
 const email2 = `testuser${rand2}@demo.com`;
 
 const externalId3 = `testuser${rand3}`;
 const email3 = `testuser${rand3}@demo.com`;
-
-// const migratedExternalId = "testother1";
-// const migratedName = "migratedusername1";
-// const migratedEmail = "testother1@demo.com";
 
 const exampleEpoch = 1597870204;
 const exampleDate = new Date(exampleEpoch * 1000);
@@ -376,6 +373,8 @@ describe("intercom/users/exportProfile/sync", () => {
       toDelete: false,
     });
 
+    await indexContacts();
+
     const user = await getUser(userId);
     expect(user.external_id).toBe(newExternalId);
     expect(user.email).toBe("");
@@ -414,7 +413,7 @@ describe("intercom/users/exportProfile/sync", () => {
     expect(tags).toEqual(["Test Group X"]);
   });
 
-  test("it will update a lead", async () => {
+  test("it will update a lead as well", async () => {
     const { body } = await client.contacts.create({
       role: "lead",
       email: email3,
@@ -440,7 +439,7 @@ describe("intercom/users/exportProfile/sync", () => {
 
     const user = await getUser(userId3);
     expect(user.email).toBe(email3);
-    expect(user.external_id).toBe(assignedGuid); // not changed for some reason
+    expect(user.external_id).toBe(assignedGuid);
     expect(user.name).toBe("Allison");
     expect(user.role).toBe("lead");
 
@@ -448,86 +447,115 @@ describe("intercom/users/exportProfile/sync", () => {
     expect(tags).toEqual(["Test Group X"]);
   });
 
-  // test("it can change the external id", async () => {
-  //   await runExport({
-  //     oldProfileProperties: {
-  //       email: "NewOne@bleonard.com",
-  //       external_id,
-  //     },
-  //     newProfileProperties: {
-  //       external_id: newExternalId,
-  //       email,
-  //     },
-  //     oldGroups: [],
-  //     newGroups: [],
-  //     toDelete: false,
-  //   });
+  test("it can change back the external id", async () => {
+    await runExport({
+      oldProfileProperties: {
+        external_id: newExternalId,
+      },
+      newProfileProperties: {
+        external_id,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
 
-  //   const user = await getUser(userId);
-  //   expect(user.id).toBe(userId);
-  //   expect(user.external_id).toBe(newExternalId);
-  //   expect(user.email).toBe(email);
-  // });
+    await indexContacts();
 
-  // test("it can make one with the original id and no email", async () => {
-  //   await runExport({
-  //     oldProfileProperties: {},
-  //     newProfileProperties: {
-  //       external_id,
-  //     },
-  //     oldGroups: [],
-  //     newGroups: [],
-  //     toDelete: false,
-  //   });
+    const user = await getUser(userId);
+    expect(user.id).toBe(userId);
+    expect(user.external_id).toBe(external_id);
+    expect(user.email).toBe("");
+    expect(user.role).toBe("user");
+  });
 
-  //   newId = await findId(newExternalId);
-  //   expect(newId).toBeTruthy();
-  //   expect(newId).not.toEqual(userId);
+  test("it can't switch to only having an email", async () => {
+    await runExport({
+      oldProfileProperties: {
+        external_id,
+      },
+      newProfileProperties: {
+        email: newEmail,
+        name: "No Ext",
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
 
-  //   const newUser = await getUser(newId);
-  //   expect(newUser.id).toBe(newId);
-  //   expect(newUser.external_id).toBe(external_id);
-  //   expect(newUser.email).toBe(null);
-  //   expect(newUser.name).toBe(external_id); // defaults to something
+    await indexContacts();
 
-  //   const user = await getUser(userId);
-  //   expect(user.id).toBe(userId);
-  //   expect(user.external_id).toBe(newExternalId);
-  //   expect(user.email).toBe(email);
-  // });
+    const user = await getUser(userId);
+    expect(user.external_id).toBe(external_id);
+    expect(user.email).toBe(newEmail);
+    expect(user.name).toBe("No Ext");
+    expect(user.role).toBe("user");
+  });
 
-  // test("it can add an email address to the new user", async () => {
-  //   await runExport({
-  //     oldProfileProperties: { external_id },
-  //     newProfileProperties: {
-  //       external_id,
-  //       email: "added@bleonard.com",
-  //     },
-  //     oldGroups: [],
-  //     newGroups: [],
-  //     toDelete: false,
-  //   });
+  test("it can change emails", async () => {
+    await runExport({
+      oldProfileProperties: {
+        email: newEmail,
+      },
+      newProfileProperties: {
+        email,
+        name: "New Email",
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
 
-  //   const newUser = await getUser(newId);
-  //   expect(newUser.id).toBe(newId);
-  //   expect(newUser.email).toBe("added@bleonard.com");
-  //   expect(newUser.active).toBe(true);
-  // });
+    await indexContacts();
 
-  // test("can delete a user", async () => {
-  //   await runExport({
-  //     oldProfileProperties: { external_id },
-  //     newProfileProperties: { external_id },
-  //     oldGroups: [],
-  //     newGroups: [],
-  //     toDelete: true,
-  //   });
+    const user = await getUser(userId);
+    expect(user.id).toBe(userId);
+    expect(user.external_id).toBe(external_id);
+    expect(user.email).toBe(email);
+    expect(user.name).toBe("New Email");
+    expect(user.role).toBe("user");
+  });
 
-  //   expect(await findId(userId)).toBeNull();
+  test("it picks external_id when conflicting email address", async () => {
+    await runExport({
+      oldProfileProperties: {},
+      newProfileProperties: {
+        external_id,
+        email: email2,
+        name: "Conflict",
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
 
-  //   const newUser = await getUser(newId);
-  //   expect(newUser.id).toBe(newId);
-  //   expect(newUser.email).toBe(null);
-  //   expect(newUser.active).toBe(false);
-  // });
+    await indexContacts();
+
+    let user = await getUser(userId2);
+    expect(user.email).toBe(email2);
+    expect(user.external_id).toBe(externalId2);
+    expect(user.name).toBe("Sally");
+    expect(user.role).toBe("user");
+
+    // this one actually updated
+    user = await getUser(userId);
+    expect(user.email).toBe(email2);
+    expect(user.external_id).toBe(external_id);
+    expect(user.name).toBe("Conflict");
+    expect(user.role).toBe("user");
+  });
+
+  test("can delete a user", async () => {
+    await runExport({
+      oldProfileProperties: { external_id: externalId2 },
+      newProfileProperties: { external_id: externalId2 },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+    });
+
+    await indexContacts();
+
+    expect(await findId(userId2)).toBeNull();
+  });
 });

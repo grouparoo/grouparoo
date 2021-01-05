@@ -121,14 +121,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
 };
 
 function cleanEmail(email) {
-  if (!email) {
-    return null;
-  }
-  email = email.toLowerCase().trim();
-  if (email.length === 0) {
-    return null;
-  }
-  return email;
+  return trimLower(email);
 }
 
 function cleanExternalId(external_id) {
@@ -144,6 +137,34 @@ function cleanExternalId(external_id) {
 
 function cleanTagName(groupName) {
   return groupName.trim();
+}
+
+function trimLower(value) {
+  if (!value) {
+    return null;
+  }
+  value = value.toLowerCase().trim();
+  if (value.length === 0) {
+    return null;
+  }
+  return value;
+}
+
+function filterUser(users: IntercomUser[], key: string, value) {
+  const check = trimLower(value);
+  if (!check) {
+    return null;
+  }
+  for (const user of users) {
+    const value = trimLower(user[key]);
+    if (!value) {
+      continue;
+    }
+    if (value === check) {
+      return user;
+    }
+  }
+  return null;
 }
 
 export async function findDestinationId(
@@ -207,13 +228,24 @@ export async function findDestinationId(
     return null;
   }
 
-  if (users.length > 1) {
-    // TODO: how to pick if more than one?
-    // have to merge?
-    throw new Error("more than one found!");
+  let found = null;
+  // favor external_id match
+  if (!found && newId) {
+    found = filterUser(users, "external_id", newId);
   }
-
-  return users[0].id;
+  if (!found && oldId) {
+    found = filterUser(users, "external_id", oldId);
+  }
+  if (!found && newEmail) {
+    found = filterUser(users, "email", newEmail);
+  }
+  if (!found && oldEmail) {
+    found = filterUser(users, "email", oldEmail);
+  }
+  if (!found) {
+    found = users[0];
+  }
+  return found.id;
 }
 
 async function deleteUser(
