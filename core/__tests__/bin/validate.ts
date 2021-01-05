@@ -41,6 +41,20 @@ describe("bin/validate", () => {
     await actionhero.stop();
   });
 
+  let messages = [];
+  let spy;
+
+  beforeEach(() => {
+    messages = [];
+    spy = jest
+      .spyOn(console, "log")
+      .mockImplementation((message) => messages.push(message));
+  });
+
+  afterEach(() => {
+    spy.mockRestore();
+  });
+
   test("the validate command can be run", async () => {
     process.env.GROUPAROO_CONFIG_DIR = join(
       __dirname,

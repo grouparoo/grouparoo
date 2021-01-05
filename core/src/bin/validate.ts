@@ -1,3 +1,4 @@
+import { GrouparooCLI } from "../modules/cli";
 import { CLI, api, log } from "actionhero";
 import {
   ConfigurationObject,
@@ -23,10 +24,13 @@ export class Validate extends CLI {
           "Should we validate the config by connecting to sources and destinations?",
       },
     };
+
+    GrouparooCLI.setGrouparooRunMode(this);
+    GrouparooCLI.timestampOption(this);
   }
 
   async run({ params }) {
-    api.plugins.announcePlugins();
+    GrouparooCLI.logCLI(this);
 
     const configDir = getConfigDir();
     let configObjects: ConfigurationObject[];

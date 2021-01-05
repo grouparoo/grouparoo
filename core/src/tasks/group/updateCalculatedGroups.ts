@@ -10,7 +10,8 @@ export class GroupsUpdateCalculatedGroups extends Task {
     this.name = "group:updateCalculatedGroups";
     this.description =
       "enqueue an update of calculated groups that to be updated";
-    this.frequency = 1000 * 60 * 5; // Run every 5 minutes
+    this.frequency =
+      process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60 * 5; // Run every 5 minutes
     this.queue = "groups";
   }
 
