@@ -117,7 +117,8 @@ export namespace GrouparooCLI {
         const [v1, v2] = status[key];
         console.log(
           `${blueBold("|")} * ${deCamel(key)}${
-            (v1 ? ": " + v1.toString() : "") + (v2 ? ` / ${v2.toString()}` : "")
+            (v1 !== null && v1 !== undefined ? ": " + v1.toString() : "") +
+            (v2 !== null && v2 !== undefined ? ` / ${v2.toString()}` : "")
           }`
         );
       }
