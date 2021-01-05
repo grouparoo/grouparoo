@@ -9,7 +9,8 @@ export class RunRecurringInternalRun extends Task {
     this.name = "run:recurringInternalRun";
     this.description =
       "check if we should run an internal import on a frequency";
-    this.frequency = 1000 * 60 * 10; // 10 minutes
+    this.frequency =
+      process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60 * 10; // 10 minutes
     this.queue = "runs";
   }
 
