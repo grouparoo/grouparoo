@@ -319,9 +319,7 @@ export namespace ProfileOps {
 
     try {
       let hash = {};
-      const sources = await Source.findAll({
-        where: { state: "ready" },
-      });
+      const sources = await Source.findAll({ where: { state: "ready" } });
       await Promise.all(
         sources.map((source) =>
           source
@@ -332,7 +330,7 @@ export namespace ProfileOps {
 
       if (toSave) {
         await addOrUpdateProperties(profile, hash, false);
-        await buildNullProperties(profile, null);
+        await buildNullProperties(profile);
         await profile.save();
         await ProfileProperty.update(
           { state: "ready" },

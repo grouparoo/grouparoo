@@ -184,7 +184,7 @@ export class Profile extends LoggedModel<Profile> {
 
   @AfterCreate
   static async buildNullPropertiesForNewProfile(instance: Profile) {
-    await instance.buildNullProperties(undefined);
+    await instance.buildNullProperties();
   }
 
   @AfterDestroy

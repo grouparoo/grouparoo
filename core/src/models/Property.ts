@@ -195,7 +195,7 @@ export class Property extends LoggedModel<Property> {
     });
     if (profile) {
       const source = await Source.findByGuid(this.sourceGuid);
-      return source.importProfileProperty(profile, this, options, null, null);
+      return source.importProfileProperty(profile, this, options);
     }
   }
 
