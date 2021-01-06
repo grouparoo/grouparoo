@@ -14,7 +14,7 @@ import {
 export class Validate extends CLI {
   constructor() {
     super();
-    this.name = "validate";
+    this.name = "config-validate";
     this.description = "Validate your code config";
     this.inputs = {
       "externally-validate": {
