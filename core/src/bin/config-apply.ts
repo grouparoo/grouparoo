@@ -1,9 +1,6 @@
 import { GrouparooCLI } from "../modules/cli";
 import { CLI, api, log } from "actionhero";
-import {
-  ConfigurationObject,
-  sortConfigurationObject,
-} from "../classes/codeConfig";
+import { sortConfigurationObject } from "../classes/codeConfig";
 import {
   getConfigDir,
   loadConfigObjects,
