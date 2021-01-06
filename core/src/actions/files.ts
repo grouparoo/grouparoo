@@ -54,7 +54,7 @@ export class FileOptions extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     return {
       options: { types: api.files.types },
     };
@@ -117,7 +117,7 @@ export class FileView extends AuthenticatedAction {
     };
   }
 
-  async run(data) {
+  async runWithinTransaction(data) {
     const { connection, params } = data;
 
     const file = await File.findByGuid(params.guid);

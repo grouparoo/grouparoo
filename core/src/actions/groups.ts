@@ -81,7 +81,7 @@ export class GroupsRuleOptions extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     return {
       ruleLimit: GROUP_RULE_LIMIT,
       ops: PropertyOpsDictionary,

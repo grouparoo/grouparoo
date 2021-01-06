@@ -251,257 +251,365 @@ import {
 import { TotalsAction } from "@grouparoo/core/src/actions/totals";
 
 export namespace Actions {
-  export type ApiKeyCreate = AsyncReturnType<typeof ApiKeyCreate.prototype.run>;
+  export type ApiKeyCreate = AsyncReturnType<
+    typeof ApiKeyCreate.prototype.runWithinTransaction
+  >;
   export type ApiKeyDestroy = AsyncReturnType<
-    typeof ApiKeyDestroy.prototype.run
+    typeof ApiKeyDestroy.prototype.runWithinTransaction
   >;
-  export type ApiKeyEdit = AsyncReturnType<typeof ApiKeyEdit.prototype.run>;
-  export type ApiKeyView = AsyncReturnType<typeof ApiKeyView.prototype.run>;
-  export type ApiKeysList = AsyncReturnType<typeof ApiKeysList.prototype.run>;
+  export type ApiKeyEdit = AsyncReturnType<
+    typeof ApiKeyEdit.prototype.runWithinTransaction
+  >;
+  export type ApiKeyView = AsyncReturnType<
+    typeof ApiKeyView.prototype.runWithinTransaction
+  >;
+  export type ApiKeysList = AsyncReturnType<
+    typeof ApiKeysList.prototype.runWithinTransaction
+  >;
 
-  export type AppCreate = AsyncReturnType<typeof AppCreate.prototype.run>;
-  export type AppDestroy = AsyncReturnType<typeof AppDestroy.prototype.run>;
-  export type AppEdit = AsyncReturnType<typeof AppEdit.prototype.run>;
+  export type AppCreate = AsyncReturnType<
+    typeof AppCreate.prototype.runWithinTransaction
+  >;
+  export type AppDestroy = AsyncReturnType<
+    typeof AppDestroy.prototype.runWithinTransaction
+  >;
+  export type AppEdit = AsyncReturnType<
+    typeof AppEdit.prototype.runWithinTransaction
+  >;
   export type AppOptionOptions = AsyncReturnType<
-    typeof AppOptionOptions.prototype.run
+    typeof AppOptionOptions.prototype.runWithinTransaction
   >;
-  export type AppOptions = AsyncReturnType<typeof AppOptions.prototype.run>;
-  export type AppTest = AsyncReturnType<typeof AppTest.prototype.run>;
-  export type AppView = AsyncReturnType<typeof AppView.prototype.run>;
-  export type AppsList = AsyncReturnType<typeof AppsList.prototype.run>;
+  export type AppOptions = AsyncReturnType<
+    typeof AppOptions.prototype.runWithinTransaction
+  >;
+  export type AppTest = AsyncReturnType<
+    typeof AppTest.prototype.runWithinTransaction
+  >;
+  export type AppView = AsyncReturnType<
+    typeof AppView.prototype.runWithinTransaction
+  >;
+  export type AppsList = AsyncReturnType<
+    typeof AppsList.prototype.runWithinTransaction
+  >;
 
-  export type AccountView = AsyncReturnType<typeof AccountView.prototype.run>;
-  export type AccountEdit = AsyncReturnType<typeof AccountEdit.prototype.run>;
+  export type AccountView = AsyncReturnType<
+    typeof AccountView.prototype.runWithinTransaction
+  >;
+  export type AccountEdit = AsyncReturnType<
+    typeof AccountEdit.prototype.runWithinTransaction
+  >;
 
   export type ClusterClearCache = AsyncReturnType<
-    typeof ClusterClearCache.prototype.run
+    typeof ClusterClearCache.prototype.runWithinTransaction
   >;
-  export type ClusterReset = AsyncReturnType<typeof ClusterReset.prototype.run>;
+  export type ClusterReset = AsyncReturnType<
+    typeof ClusterReset.prototype.runWithinTransaction
+  >;
 
   export type DestinationsList = AsyncReturnType<
-    typeof DestinationsList.prototype.run
+    typeof DestinationsList.prototype.runWithinTransaction
   >;
   export type DestinationConnectionApps = AsyncReturnType<
-    typeof DestinationConnectionApps.prototype.run
+    typeof DestinationConnectionApps.prototype.runWithinTransaction
   >;
   export type DestinationConnectionOptions = AsyncReturnType<
-    typeof DestinationConnectionOptions.prototype.run
+    typeof DestinationConnectionOptions.prototype.runWithinTransaction
   >;
   export type DestinationCreate = AsyncReturnType<
-    typeof DestinationCreate.prototype.run
+    typeof DestinationCreate.prototype.runWithinTransaction
   >;
   export type DestinationDestroy = AsyncReturnType<
-    typeof DestinationDestroy.prototype.run
+    typeof DestinationDestroy.prototype.runWithinTransaction
   >;
   export type DestinationEdit = AsyncReturnType<
-    typeof DestinationEdit.prototype.run
+    typeof DestinationEdit.prototype.runWithinTransaction
   >;
   export type DestinationExport = AsyncReturnType<
-    typeof DestinationExport.prototype.run
+    typeof DestinationExport.prototype.runWithinTransaction
   >;
   export type DestinationExportArrayProperties = AsyncReturnType<
-    typeof DestinationExportArrayProperties.prototype.run
+    typeof DestinationExportArrayProperties.prototype.runWithinTransaction
   >;
   export type DestinationMappingOptions = AsyncReturnType<
-    typeof DestinationMappingOptions.prototype.run
+    typeof DestinationMappingOptions.prototype.runWithinTransaction
   >;
   export type DestinationProfilePreview = AsyncReturnType<
-    typeof DestinationProfilePreview.prototype.run
+    typeof DestinationProfilePreview.prototype.runWithinTransaction
   >;
   export type DestinationTrackGroup = AsyncReturnType<
-    typeof DestinationTrackGroup.prototype.run
+    typeof DestinationTrackGroup.prototype.runWithinTransaction
   >;
   export type DestinationUnTrackGroup = AsyncReturnType<
-    typeof DestinationUnTrackGroup.prototype.run
+    typeof DestinationUnTrackGroup.prototype.runWithinTransaction
   >;
   export type DestinationView = AsyncReturnType<
-    typeof DestinationView.prototype.run
+    typeof DestinationView.prototype.runWithinTransaction
   >;
 
   export type EventAutocompleteType = AsyncReturnType<
-    typeof EventAutocompleteType.prototype.run
+    typeof EventAutocompleteType.prototype.runWithinTransaction
   >;
-  export type EventCreate = AsyncReturnType<typeof EventCreate.prototype.run>;
-  export type EventView = AsyncReturnType<typeof EventView.prototype.run>;
-  export type EventDestroy = AsyncReturnType<typeof EventDestroy.prototype.run>;
-  export type EventsCounts = AsyncReturnType<typeof EventsCounts.prototype.run>;
-  export type EventsList = AsyncReturnType<typeof EventsList.prototype.run>;
-  export type EventsTypes = AsyncReturnType<typeof EventsTypes.prototype.run>;
+  export type EventCreate = AsyncReturnType<
+    typeof EventCreate.prototype.runWithinTransaction
+  >;
+  export type EventView = AsyncReturnType<
+    typeof EventView.prototype.runWithinTransaction
+  >;
+  export type EventDestroy = AsyncReturnType<
+    typeof EventDestroy.prototype.runWithinTransaction
+  >;
+  export type EventsCounts = AsyncReturnType<
+    typeof EventsCounts.prototype.runWithinTransaction
+  >;
+  export type EventsList = AsyncReturnType<
+    typeof EventsList.prototype.runWithinTransaction
+  >;
+  export type EventsTypes = AsyncReturnType<
+    typeof EventsTypes.prototype.runWithinTransaction
+  >;
 
-  export type ExportView = AsyncReturnType<typeof ExportView.prototype.run>;
+  export type ExportView = AsyncReturnType<
+    typeof ExportView.prototype.runWithinTransaction
+  >;
   export type ExportsTotals = AsyncReturnType<
-    typeof ExportsTotals.prototype.run
+    typeof ExportsTotals.prototype.runWithinTransaction
   >;
-  export type ExportsList = AsyncReturnType<typeof ExportsList.prototype.run>;
+  export type ExportsList = AsyncReturnType<
+    typeof ExportsList.prototype.runWithinTransaction
+  >;
 
-  export type FileCreate = AsyncReturnType<typeof FileCreate.prototype.run>;
-  export type FileDestroy = AsyncReturnType<typeof FileDestroy.prototype.run>;
-  export type FileDetails = AsyncReturnType<typeof FileDetails.prototype.run>;
-  export type FileOptions = AsyncReturnType<typeof FileOptions.prototype.run>;
-  export type FileView = AsyncReturnType<typeof FileView.prototype.run>;
-  export type FilesList = AsyncReturnType<typeof FilesList.prototype.run>;
+  export type FileCreate = AsyncReturnType<
+    typeof FileCreate.prototype.runWithinTransaction
+  >;
+  export type FileDestroy = AsyncReturnType<
+    typeof FileDestroy.prototype.runWithinTransaction
+  >;
+  export type FileDetails = AsyncReturnType<
+    typeof FileDetails.prototype.runWithinTransaction
+  >;
+  export type FileOptions = AsyncReturnType<
+    typeof FileOptions.prototype.runWithinTransaction
+  >;
+  export type FileView = AsyncReturnType<
+    typeof FileView.prototype.runWithinTransaction
+  >;
+  export type FilesList = AsyncReturnType<
+    typeof FilesList.prototype.runWithinTransaction
+  >;
 
   export type GroupAddProfile = AsyncReturnType<
-    typeof GroupAddProfile.prototype.run
+    typeof GroupAddProfile.prototype.runWithinTransaction
   >;
   export type GroupCountComponentMembers = AsyncReturnType<
-    typeof GroupCountComponentMembers.prototype.run
+    typeof GroupCountComponentMembers.prototype.runWithinTransaction
   >;
   export type GroupCountPotentialMembers = AsyncReturnType<
-    typeof GroupCountPotentialMembers.prototype.run
+    typeof GroupCountPotentialMembers.prototype.runWithinTransaction
   >;
-  export type GroupCreate = AsyncReturnType<typeof GroupCreate.prototype.run>;
-  export type GroupDestroy = AsyncReturnType<typeof GroupDestroy.prototype.run>;
-  export type GroupEdit = AsyncReturnType<typeof GroupEdit.prototype.run>;
-  export type GroupExport = AsyncReturnType<typeof GroupExport.prototype.run>;
+  export type GroupCreate = AsyncReturnType<
+    typeof GroupCreate.prototype.runWithinTransaction
+  >;
+  export type GroupDestroy = AsyncReturnType<
+    typeof GroupDestroy.prototype.runWithinTransaction
+  >;
+  export type GroupEdit = AsyncReturnType<
+    typeof GroupEdit.prototype.runWithinTransaction
+  >;
+  export type GroupExport = AsyncReturnType<
+    typeof GroupExport.prototype.runWithinTransaction
+  >;
   export type GroupListDestinations = AsyncReturnType<
-    typeof GroupListDestinations.prototype.run
+    typeof GroupListDestinations.prototype.runWithinTransaction
   >;
   export type GroupRemoveProfile = AsyncReturnType<
-    typeof GroupRemoveProfile.prototype.run
+    typeof GroupRemoveProfile.prototype.runWithinTransaction
   >;
-  export type GroupRun = AsyncReturnType<typeof GroupRun.prototype.run>;
-  export type GroupView = AsyncReturnType<typeof GroupView.prototype.run>;
-  export type GroupsList = AsyncReturnType<typeof GroupsList.prototype.run>;
+  export type GroupRun = AsyncReturnType<
+    typeof GroupRun.prototype.runWithinTransaction
+  >;
+  export type GroupView = AsyncReturnType<
+    typeof GroupView.prototype.runWithinTransaction
+  >;
+  export type GroupsList = AsyncReturnType<
+    typeof GroupsList.prototype.runWithinTransaction
+  >;
   export type GroupsListByNewestMember = AsyncReturnType<
-    typeof GroupsListByNewestMember.prototype.run
+    typeof GroupsListByNewestMember.prototype.runWithinTransaction
   >;
   export type GroupsRuleOptions = AsyncReturnType<
-    typeof GroupsRuleOptions.prototype.run
+    typeof GroupsRuleOptions.prototype.runWithinTransaction
   >;
 
-  export type ImportsList = AsyncReturnType<typeof ImportsList.prototype.run>;
-  export type ImportCreate = AsyncReturnType<typeof ImportCreate.prototype.run>;
-  export type ImportView = AsyncReturnType<typeof ImportView.prototype.run>;
+  export type ImportsList = AsyncReturnType<
+    typeof ImportsList.prototype.runWithinTransaction
+  >;
+  export type ImportCreate = AsyncReturnType<
+    typeof ImportCreate.prototype.runWithinTransaction
+  >;
+  export type ImportView = AsyncReturnType<
+    typeof ImportView.prototype.runWithinTransaction
+  >;
 
-  export type LogsList = AsyncReturnType<typeof LogsList.prototype.run>;
+  export type LogsList = AsyncReturnType<
+    typeof LogsList.prototype.runWithinTransaction
+  >;
 
   export type NotificationsList = AsyncReturnType<
-    typeof NotificationsList.prototype.run
+    typeof NotificationsList.prototype.runWithinTransaction
   >;
   export type NotificationView = AsyncReturnType<
-    typeof NotificationView.prototype.run
+    typeof NotificationView.prototype.runWithinTransaction
   >;
 
   export type NavigationList = AsyncReturnType<
-    typeof NavigationList.prototype.run
+    typeof NavigationList.prototype.runWithinTransaction
   >;
 
-  export type PluginsList = AsyncReturnType<typeof PluginsList.prototype.run>;
+  export type PluginsList = AsyncReturnType<
+    typeof PluginsList.prototype.runWithinTransaction
+  >;
 
   export type PropertyCreate = AsyncReturnType<
-    typeof PropertyCreate.prototype.run
+    typeof PropertyCreate.prototype.runWithinTransaction
   >;
   export type PropertyDestroy = AsyncReturnType<
-    typeof PropertyDestroy.prototype.run
+    typeof PropertyDestroy.prototype.runWithinTransaction
   >;
-  export type PropertyEdit = AsyncReturnType<typeof PropertyEdit.prototype.run>;
+  export type PropertyEdit = AsyncReturnType<
+    typeof PropertyEdit.prototype.runWithinTransaction
+  >;
   export type PropertyMakeIdentifying = AsyncReturnType<
-    typeof PropertyMakeIdentifying.prototype.run
+    typeof PropertyMakeIdentifying.prototype.runWithinTransaction
   >;
   export type PropertyFilterOptions = AsyncReturnType<
-    typeof PropertyFilterOptions.prototype.run
+    typeof PropertyFilterOptions.prototype.runWithinTransaction
   >;
   export type PropertyGroups = AsyncReturnType<
-    typeof PropertyGroups.prototype.run
+    typeof PropertyGroups.prototype.runWithinTransaction
   >;
   export type PropertyPluginOptions = AsyncReturnType<
-    typeof PropertyPluginOptions.prototype.run
+    typeof PropertyPluginOptions.prototype.runWithinTransaction
   >;
   export type PropertyProfilePreview = AsyncReturnType<
-    typeof PropertyProfilePreview.prototype.run
+    typeof PropertyProfilePreview.prototype.runWithinTransaction
   >;
-  export type PropertyTest = AsyncReturnType<typeof PropertyTest.prototype.run>;
-  export type PropertyView = AsyncReturnType<typeof PropertyView.prototype.run>;
+  export type PropertyTest = AsyncReturnType<
+    typeof PropertyTest.prototype.runWithinTransaction
+  >;
+  export type PropertyView = AsyncReturnType<
+    typeof PropertyView.prototype.runWithinTransaction
+  >;
   export type PropertiesList = AsyncReturnType<
-    typeof PropertiesList.prototype.run
+    typeof PropertiesList.prototype.runWithinTransaction
   >;
   export type PropertiesOptions = AsyncReturnType<
-    typeof PropertiesOptions.prototype.run
+    typeof PropertiesOptions.prototype.runWithinTransaction
   >;
 
   export type ProfileAutocompleteProfileProperty = AsyncReturnType<
-    typeof ProfileAutocompleteProfileProperty.prototype.run
+    typeof ProfileAutocompleteProfileProperty.prototype.runWithinTransaction
   >;
   export type ProfileCreate = AsyncReturnType<
-    typeof ProfileCreate.prototype.run
+    typeof ProfileCreate.prototype.runWithinTransaction
   >;
   export type ProfileDestroy = AsyncReturnType<
-    typeof ProfileDestroy.prototype.run
+    typeof ProfileDestroy.prototype.runWithinTransaction
   >;
-  export type ProfileEdit = AsyncReturnType<typeof ProfileEdit.prototype.run>;
+  export type ProfileEdit = AsyncReturnType<
+    typeof ProfileEdit.prototype.runWithinTransaction
+  >;
   export type ProfileImportAndExport = AsyncReturnType<
-    typeof ProfileImportAndExport.prototype.run
+    typeof ProfileImportAndExport.prototype.runWithinTransaction
   >;
-  export type ProfileView = AsyncReturnType<typeof ProfileView.prototype.run>;
+  export type ProfileView = AsyncReturnType<
+    typeof ProfileView.prototype.runWithinTransaction
+  >;
   export type ProfilesImportAndUpdate = AsyncReturnType<
-    typeof ProfilesImportAndUpdate.prototype.run
+    typeof ProfilesImportAndUpdate.prototype.runWithinTransaction
   >;
-  export type ProfilesList = AsyncReturnType<typeof ProfilesList.prototype.run>;
+  export type ProfilesList = AsyncReturnType<
+    typeof ProfilesList.prototype.runWithinTransaction
+  >;
 
   export type ResqueDelDelayed = AsyncReturnType<
-    typeof ResqueDelDelayed.prototype.run
+    typeof ResqueDelDelayed.prototype.runWithinTransaction
   >;
   export type ResqueDelLock = AsyncReturnType<
-    typeof ResqueDelLock.prototype.run
+    typeof ResqueDelLock.prototype.runWithinTransaction
   >;
   export type ResqueDelQueue = AsyncReturnType<
-    typeof ResqueDelQueue.prototype.run
+    typeof ResqueDelQueue.prototype.runWithinTransaction
   >;
   export type ResqueDelayedJobs = AsyncReturnType<
-    typeof ResqueDelayedJobs.prototype.run
+    typeof ResqueDelayedJobs.prototype.runWithinTransaction
   >;
   export type ResqueFailedCount = AsyncReturnType<
-    typeof ResqueFailedCount.prototype.run
+    typeof ResqueFailedCount.prototype.runWithinTransaction
   >;
   export type ResqueForceCleanWorker = AsyncReturnType<
-    typeof ResqueForceCleanWorker.prototype.run
+    typeof ResqueForceCleanWorker.prototype.runWithinTransaction
   >;
   export type ResqueLoadWorkerQueues = AsyncReturnType<
-    typeof ResqueLoadWorkerQueues.prototype.run
+    typeof ResqueLoadWorkerQueues.prototype.runWithinTransaction
   >;
-  export type ResqueLocks = AsyncReturnType<typeof ResqueLocks.prototype.run>;
-  export type ResqueQueued = AsyncReturnType<typeof ResqueQueued.prototype.run>;
+  export type ResqueLocks = AsyncReturnType<
+    typeof ResqueLocks.prototype.runWithinTransaction
+  >;
+  export type ResqueQueued = AsyncReturnType<
+    typeof ResqueQueued.prototype.runWithinTransaction
+  >;
   export type ResqueRedisInfo = AsyncReturnType<
-    typeof ResqueRedisInfo.prototype.run
+    typeof ResqueRedisInfo.prototype.runWithinTransaction
   >;
   export type ResqueRemoveAllFailed = AsyncReturnType<
-    typeof ResqueRemoveAllFailed.prototype.run
+    typeof ResqueRemoveAllFailed.prototype.runWithinTransaction
   >;
   export type ResqueRemoveFailed = AsyncReturnType<
-    typeof ResqueRemoveFailed.prototype.run
+    typeof ResqueRemoveFailed.prototype.runWithinTransaction
   >;
   export type ResqueResqueDetails = AsyncReturnType<
-    typeof ResqueResqueDetails.prototype.run
+    typeof ResqueResqueDetails.prototype.runWithinTransaction
   >;
   export type ResqueResqueFailed = AsyncReturnType<
-    typeof ResqueResqueFailed.prototype.run
+    typeof ResqueResqueFailed.prototype.runWithinTransaction
   >;
   export type ResqueRetryAndRemoveAllFailed = AsyncReturnType<
-    typeof ResqueRetryAndRemoveAllFailed.prototype.run
+    typeof ResqueRetryAndRemoveAllFailed.prototype.runWithinTransaction
   >;
   export type ResqueRetryAndRemoveFailed = AsyncReturnType<
-    typeof ResqueRetryAndRemoveFailed.prototype.run
+    typeof ResqueRetryAndRemoveFailed.prototype.runWithinTransaction
   >;
   export type ResqueRunDelayed = AsyncReturnType<
-    typeof ResqueRunDelayed.prototype.run
+    typeof ResqueRunDelayed.prototype.runWithinTransaction
   >;
 
-  export type RunEdit = AsyncReturnType<typeof RunEdit.prototype.run>;
-  export type RunView = AsyncReturnType<typeof RunView.prototype.run>;
-  export type RunsList = AsyncReturnType<typeof RunsList.prototype.run>;
+  export type RunEdit = AsyncReturnType<
+    typeof RunEdit.prototype.runWithinTransaction
+  >;
+  export type RunView = AsyncReturnType<
+    typeof RunView.prototype.runWithinTransaction
+  >;
+  export type RunsList = AsyncReturnType<
+    typeof RunsList.prototype.runWithinTransaction
+  >;
 
   export type ScheduleCreate = AsyncReturnType<
-    typeof ScheduleCreate.prototype.run
+    typeof ScheduleCreate.prototype.runWithinTransaction
   >;
   export type ScheduleDestroy = AsyncReturnType<
-    typeof ScheduleDestroy.prototype.run
+    typeof ScheduleDestroy.prototype.runWithinTransaction
   >;
-  export type ScheduleEdit = AsyncReturnType<typeof ScheduleEdit.prototype.run>;
-  export type ScheduleRun = AsyncReturnType<typeof ScheduleRun.prototype.run>;
-  export type ScheduleView = AsyncReturnType<typeof ScheduleView.prototype.run>;
+  export type ScheduleEdit = AsyncReturnType<
+    typeof ScheduleEdit.prototype.runWithinTransaction
+  >;
+  export type ScheduleRun = AsyncReturnType<
+    typeof ScheduleRun.prototype.runWithinTransaction
+  >;
+  export type ScheduleView = AsyncReturnType<
+    typeof ScheduleView.prototype.runWithinTransaction
+  >;
   export type SchedulesList = AsyncReturnType<
-    typeof SchedulesList.prototype.run
+    typeof SchedulesList.prototype.runWithinTransaction
   >;
 
   export type SessionCreate = AsyncReturnType<
@@ -510,67 +618,93 @@ export namespace Actions {
   export type SessionDestroy = AsyncReturnType<
     typeof SessionDestroy.prototype.run
   >;
-  export type SessionView = AsyncReturnType<typeof SessionView.prototype.run>;
+  export type SessionView = AsyncReturnType<
+    typeof SessionView.prototype.runWithinTransaction
+  >;
 
-  export type SettingEdit = AsyncReturnType<typeof SettingEdit.prototype.run>;
-  export type SettingsList = AsyncReturnType<typeof SettingsList.prototype.run>;
+  export type SettingEdit = AsyncReturnType<
+    typeof SettingEdit.prototype.runWithinTransaction
+  >;
+  export type SettingsList = AsyncReturnType<
+    typeof SettingsList.prototype.runWithinTransaction
+  >;
 
   export type SetupStepEdit = AsyncReturnType<
-    typeof SetupStepEdit.prototype.run
+    typeof SetupStepEdit.prototype.runWithinTransaction
   >;
   export type SetupStepsList = AsyncReturnType<
-    typeof SetupStepsList.prototype.run
+    typeof SetupStepsList.prototype.runWithinTransaction
   >;
 
   export type SourceBootstrapUniqueProperty = AsyncReturnType<
-    typeof SourceBootstrapUniqueProperty.prototype.run
+    typeof SourceBootstrapUniqueProperty.prototype.runWithinTransaction
   >;
   export type SourceConnectionApps = AsyncReturnType<
-    typeof SourceConnectionApps.prototype.run
+    typeof SourceConnectionApps.prototype.runWithinTransaction
   >;
-  export type SourceCreate = AsyncReturnType<typeof SourceCreate.prototype.run>;
+  export type SourceCreate = AsyncReturnType<
+    typeof SourceCreate.prototype.runWithinTransaction
+  >;
   export type SourceDestroy = AsyncReturnType<
-    typeof SourceDestroy.prototype.run
+    typeof SourceDestroy.prototype.runWithinTransaction
   >;
-  export type SourceEdit = AsyncReturnType<typeof SourceEdit.prototype.run>;
-  export type SourceView = AsyncReturnType<typeof SourceView.prototype.run>;
-  export type SourcesList = AsyncReturnType<typeof SourcesList.prototype.run>;
+  export type SourceEdit = AsyncReturnType<
+    typeof SourceEdit.prototype.runWithinTransaction
+  >;
+  export type SourceView = AsyncReturnType<
+    typeof SourceView.prototype.runWithinTransaction
+  >;
+  export type SourcesList = AsyncReturnType<
+    typeof SourcesList.prototype.runWithinTransaction
+  >;
   export type SourcesCountPending = AsyncReturnType<
-    typeof SourcesCountPending.prototype.run
+    typeof SourcesCountPending.prototype.runWithinTransaction
   >;
   export type sourceConnectionOptions = AsyncReturnType<
-    typeof sourceConnectionOptions.prototype.run
+    typeof sourceConnectionOptions.prototype.runWithinTransaction
   >;
   export type SourcePreview = AsyncReturnType<
-    typeof SourcePreview.prototype.run
+    typeof SourcePreview.prototype.runWithinTransaction
   >;
 
   export type Swagger = AsyncReturnType<typeof Swagger.prototype.run>;
 
   export type TeamMemberCreate = AsyncReturnType<
-    typeof TeamMemberCreate.prototype.run
+    typeof TeamMemberCreate.prototype.runWithinTransaction
   >;
   export type TeamMemberDestroy = AsyncReturnType<
-    typeof TeamMemberDestroy.prototype.run
+    typeof TeamMemberDestroy.prototype.runWithinTransaction
   >;
   export type TeamMemberEdit = AsyncReturnType<
-    typeof TeamMemberEdit.prototype.run
+    typeof TeamMemberEdit.prototype.runWithinTransaction
   >;
   export type TeamMemberView = AsyncReturnType<
-    typeof TeamMemberView.prototype.run
+    typeof TeamMemberView.prototype.runWithinTransaction
   >;
   export type TeamMembersList = AsyncReturnType<
-    typeof TeamMembersList.prototype.run
+    typeof TeamMembersList.prototype.runWithinTransaction
   >;
 
-  export type TeamCreate = AsyncReturnType<typeof TeamCreate.prototype.run>;
-  export type TeamDestroy = AsyncReturnType<typeof TeamDestroy.prototype.run>;
-  export type TeamEdit = AsyncReturnType<typeof TeamEdit.prototype.run>;
+  export type TeamCreate = AsyncReturnType<
+    typeof TeamCreate.prototype.runWithinTransaction
+  >;
+  export type TeamDestroy = AsyncReturnType<
+    typeof TeamDestroy.prototype.runWithinTransaction
+  >;
+  export type TeamEdit = AsyncReturnType<
+    typeof TeamEdit.prototype.runWithinTransaction
+  >;
   export type TeamInitialize = AsyncReturnType<
-    typeof TeamInitialize.prototype.run
+    typeof TeamInitialize.prototype.runWithinTransaction
   >;
-  export type TeamView = AsyncReturnType<typeof TeamView.prototype.run>;
-  export type TeamsList = AsyncReturnType<typeof TeamsList.prototype.run>;
+  export type TeamView = AsyncReturnType<
+    typeof TeamView.prototype.runWithinTransaction
+  >;
+  export type TeamsList = AsyncReturnType<
+    typeof TeamsList.prototype.runWithinTransaction
+  >;
 
-  export type TotalsAction = AsyncReturnType<typeof TotalsAction.prototype.run>;
+  export type TotalsAction = AsyncReturnType<
+    typeof TotalsAction.prototype.runWithinTransaction
+  >;
 }

@@ -13,7 +13,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     this.outputExample = {};
   }
 
-  async run({
+  async runWithinTransaction({
     session: { teamMember },
   }: {
     session: { teamMember: TeamMember };

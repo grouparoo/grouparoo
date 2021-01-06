@@ -293,7 +293,7 @@ export class EventCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ session, connection, params }) {
+  async runWithinTransaction({ session, connection, params }) {
     if (!params.userId && !params.anonymousId) {
       throw new Error(`either anonymousId or userId is required`);
     }

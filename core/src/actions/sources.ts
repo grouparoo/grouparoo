@@ -61,7 +61,7 @@ export class SourcesCountPending extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     const countsBySource = await Property.findAll({
       attributes: [
         "sourceGuid",
@@ -100,7 +100,7 @@ export class SourceConnectionApps extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     const apps = await App.findAll();
     const existingAppTypes = apps.map((a) => a.type);
 
