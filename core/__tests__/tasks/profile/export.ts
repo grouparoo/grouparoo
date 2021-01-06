@@ -329,11 +329,10 @@ describe("tasks/profile:export", () => {
             profileGuid: profile.guid,
           });
 
-          await expect(
-            specHelper.runTask("profile:export", {
-              profileGuid: profile.guid,
-            })
-          ).rejects.toThrow(/oh no/);
+          // I don't throw, but append the error to the Export
+          await specHelper.runTask("profile:export", {
+            profileGuid: profile.guid,
+          });
 
           expect(counter).toBe(1);
 

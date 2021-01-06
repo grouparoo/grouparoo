@@ -78,13 +78,10 @@ describe("tasks/import:associateProfile", () => {
         thing: "stuff",
       });
 
-      await expect(
-        specHelper.runTask("import:associateProfile", {
-          importGuid: _import.guid,
-        })
-      ).rejects.toThrow(
-        /there are no unique profile properties provided in {"thing":"stuff"}/
-      );
+      // I don't throw, but append the error to the Import
+      await specHelper.runTask("import:associateProfile", {
+        importGuid: _import.guid,
+      });
 
       await _import.reload();
       expect(_import.errorMessage).toMatch(

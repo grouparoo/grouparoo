@@ -42,11 +42,8 @@ export class ImportAssociateProfile extends CLSTask {
       _import.oldGroupGuids = oldGroups.map((g) => g.guid);
       await _import.save();
     } catch (error) {
-      if (env !== "test") {
-        log(`[ASSOCIATE PROFILE ERROR] ${error}`, "alert");
-      }
+      if (env !== "test") log(`[ASSOCIATE PROFILE ERROR] ${error}`, "alert");
       await _import.setError(error, this.name);
-      throw error;
     }
   }
 }
