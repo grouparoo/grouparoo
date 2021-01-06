@@ -1,4 +1,4 @@
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Op } from "sequelize";
 import { Profile } from "../models/Profile";
 import { Property } from "../models/Property";
@@ -30,7 +30,7 @@ export class PropertiesList extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const where = {};
     if (params.state) where["state"] = params.state;
     if (params.sourceGuid) where["sourceGuid"] = params.sourceGuid;
@@ -87,7 +87,7 @@ export class PropertiesOptions extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     return { types: Property.rawAttributes.type.values };
   }
 }
@@ -103,7 +103,7 @@ export class PropertyGroups extends AuthenticatedAction {
     this.inputs = { guid: { required: true } };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const property = await Property.findByGuid(params.guid);
 
     const groups = await Group.findAll({
@@ -140,7 +140,7 @@ export class PropertyCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const property = await Property.create({
       key: params.key,
       type: params.type,
@@ -183,7 +183,7 @@ export class PropertyEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const property = await Property.findByGuid(params.guid);
 
     if (params.options) await property.setOptions(params.options);
@@ -213,7 +213,7 @@ export class PropertyMakeIdentifying extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const property = await Property.findByGuid(params.guid);
     await property.makeIdentifying();
     return { property: await property.apiData() };
@@ -232,7 +232,7 @@ export class PropertyFilterOptions extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const property = await Property.findByGuid(params.guid);
     return { options: await property.pluginFilterOptions() };
   }
@@ -250,7 +250,7 @@ export class PropertyView extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const property = await Property.findByGuid(params.guid);
     const source = await property.$get("source");
 
@@ -273,7 +273,7 @@ export class PropertyPluginOptions extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const property = await Property.findByGuid(params.guid);
 
     return { pluginOptions: await property.pluginOptions() };
@@ -295,7 +295,7 @@ export class PropertyProfilePreview extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     let profile: Profile;
 
     const property = await Property.findByGuid(params.guid);
@@ -372,7 +372,7 @@ export class PropertyTest extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const property = await Property.findByGuid(params.guid);
 
     return { test: (await property.test()) || true };
@@ -391,7 +391,7 @@ export class PropertyDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const property = await Property.findByGuid(params.guid);
 
     await property.destroy();

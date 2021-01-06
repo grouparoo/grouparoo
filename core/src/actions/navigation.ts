@@ -1,4 +1,4 @@
-import { OptionallyAuthenticatedAction } from "../classes/optionallyAuthenticatedAction";
+import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuthenticatedAction";
 import { Setting } from "../models/Setting";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";

@@ -1,10 +1,10 @@
-import { Task } from "actionhero";
+import { CLSTask } from "../../classes/tasks/clsTask";
 import { Profile } from "../../models/Profile";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { Property } from "../../models/Property";
 import { plugin } from "../../modules/plugin";
 
-export class ProfilePropertySweep extends Task {
+export class ProfilePropertySweep extends CLSTask {
   constructor() {
     super();
     this.name = "profileProperties:sweep";
@@ -15,7 +15,7 @@ export class ProfilePropertySweep extends Task {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     let count = 0;
 
     const limit = parseInt(

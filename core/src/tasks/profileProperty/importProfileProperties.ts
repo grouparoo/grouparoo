@@ -1,4 +1,4 @@
-import { RetryableTask } from "../../classes/retryableTask";
+import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { Profile } from "../../models/Profile";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { Property } from "../../models/Property";
@@ -20,7 +20,7 @@ export class ImportProfileProperties extends RetryableTask {
     };
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     const profiles = await Profile.findAll({
       where: { guid: { [Op.in]: params.profileGuids } },
       include: [ProfileProperty],

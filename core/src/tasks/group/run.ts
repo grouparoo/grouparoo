@@ -1,9 +1,10 @@
-import { Task, task, log, config } from "actionhero";
+import { task, config } from "actionhero";
+import { CLSTask } from "../../classes/tasks/clsTask";
 import { Group } from "../../models/Group";
 import { Run } from "../../models/Run";
 import { plugin } from "../../modules/plugin";
 
-export class RunGroup extends Task {
+export class RunGroup extends CLSTask {
   constructor() {
     super();
     this.name = "group:run";
@@ -24,7 +25,7 @@ export class RunGroup extends Task {
     };
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     // 1. Calculate the set of profiles that should be in this group, with a limit and offset (looping)
     // 2. Find or create GroupMembers, touch the updatedAt for those that already exist. (group#runAddGroupMembers)
     //    > Create imports for new profiles

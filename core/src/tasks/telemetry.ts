@@ -1,10 +1,11 @@
-import { Task, api, config } from "actionhero";
+import { api, config } from "actionhero";
 import "isomorphic-fetch";
 import { plugin } from "../modules/plugin";
 import path from "path";
 import os from "os";
+import { CLSTask } from "../classes/tasks/clsTask";
 
-export class Telemetry extends Task {
+export class Telemetry extends CLSTask {
   constructor() {
     super();
     this.name = "telemetry";
@@ -13,7 +14,7 @@ export class Telemetry extends Task {
     this.queue = "default";
   }
 
-  async run() {
+  async runWithinTransaction() {
     if (!config.telemetry.enabled) return;
 
     try {

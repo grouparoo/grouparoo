@@ -1,6 +1,6 @@
 import os from "os";
 import "node-resque"; // needed for types
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { api, task } from "actionhero";
 
 // Helper Classes for Permissions
@@ -31,7 +31,7 @@ export class ResqueRedisInfo extends ResqueActionRead {
     this.inputs = {};
   }
 
-  async run({}) {
+  async runWithinTransaction() {
     const redisInfo = await api.resque.queue.connection.redis.info();
     if (redisInfo) {
       return { redisInfo: redisInfo.split(os.EOL) };
@@ -47,7 +47,7 @@ export class ResqueResqueDetails extends ResqueActionRead {
     this.inputs = {};
   }
 
-  async run({}) {
+  async runWithinTransaction() {
     return { resqueDetails: await task.details() };
   }
 }
@@ -60,7 +60,7 @@ export class ResqueLoadWorkerQueues extends ResqueActionRead {
     this.inputs = {};
   }
 
-  async run({}) {
+  async runWithinTransaction() {
     return { workerQueues: await task.workers() };
   }
 }
@@ -75,7 +75,7 @@ export class ResqueForceCleanWorker extends ResqueActionWrite {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     return {
       generatedErrorPayload: await api.resque.queue.forceCleanWorker(
         params.workerName
@@ -92,7 +92,7 @@ export class ResqueFailedCount extends ResqueActionRead {
     this.inputs = {};
   }
 
-  async run({}) {
+  async runWithinTransaction() {
     return { failedCount: await task.failedCount() };
   }
 }
@@ -119,7 +119,7 @@ export class ResqueQueued extends ResqueActionRead {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const queueLength = await api.resque.queue.length(params.queue);
     const jobs = await task.queued(
       params.queue,
@@ -141,7 +141,7 @@ export class ResqueDelQueue extends ResqueActionWrite {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     return { deleted: await task.delQueue(params.queue) };
   }
 }
@@ -165,7 +165,7 @@ export class ResqueResqueFailed extends ResqueActionRead {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const failed = await task.failed(
       params.offset,
       params.offset + params.limit - 1
@@ -190,7 +190,7 @@ export class ResqueRemoveFailed extends ResqueActionWrite {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const failed = await task.failed(params.id, params.id);
     if (!failed) throw Error("failed job not found");
     await task.removeFailed(failed[0]);
@@ -205,12 +205,12 @@ export class ResqueRemoveAllFailed extends ResqueActionWrite {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     const failed = await task.failed(0, 0);
     if (failed && failed.length > 0) {
       const failedJob = failed[0];
       await task.removeFailed(failedJob);
-      return this.run();
+      return this.runWithinTransaction();
     }
   }
 }
@@ -228,7 +228,7 @@ export class ResqueRetryAndRemoveFailed extends ResqueActionWrite {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const failed = await task.failed(params.id, params.id);
     if (!failed) throw new Error("failed job not found");
     await task.retryAndRemoveFailed(failed[0]);
@@ -243,12 +243,12 @@ export class ResqueRetryAndRemoveAllFailed extends ResqueActionWrite {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     const failed = await task.failed(0, 0);
     if (failed && failed.length > 0) {
       const failedJob = failed[0];
       await task.retryAndRemoveFailed(failedJob);
-      return this.run();
+      return this.runWithinTransaction();
     }
   }
 }
@@ -261,7 +261,7 @@ export class ResqueLocks extends ResqueActionRead {
     this.inputs = {};
   }
 
-  async run({}) {
+  async runWithinTransaction() {
     return { locks: await task.locks() };
   }
 }
@@ -276,7 +276,7 @@ export class ResqueDelLock extends ResqueActionWrite {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     return { count: await task.delLock(params.lock) };
   }
 }
@@ -300,7 +300,7 @@ export class ResqueDelayedJobs extends ResqueActionRead {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const timestamps = [];
     const delayedjobs = {};
 
@@ -341,7 +341,7 @@ export class ResqueDelDelayed extends ResqueActionWrite {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const delayed = await task.delayedAt(params.timestamp);
     if (delayed.tasks.length === 0 || !delayed.tasks[params.count]) {
       throw new Error("delayed job not found");
@@ -371,7 +371,7 @@ export class ResqueRunDelayed extends ResqueActionWrite {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const delayed = await task.delayedAt(params.timestamp);
     if (delayed.tasks.length === 0 || !delayed.tasks[params.count]) {
       throw new Error("delayed job not found");

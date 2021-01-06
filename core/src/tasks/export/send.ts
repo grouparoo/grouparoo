@@ -1,4 +1,4 @@
-import { RetryableTask } from "../../classes/retryableTask";
+import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { Destination } from "../../models/Destination";
 import { Export } from "../../models/Export";
 import { task } from "actionhero";
@@ -16,7 +16,7 @@ export class ExportSend extends RetryableTask {
     };
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     const destination = await Destination.findByGuid(params.destinationGuid);
     const _export = await Export.findByGuid(params.exportGuid);
     if (_export.completedAt) {

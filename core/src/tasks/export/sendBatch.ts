@@ -1,4 +1,4 @@
-import { RetryableTask } from "../../classes/retryableTask";
+import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { Destination } from "../../models/Destination";
 import { Export } from "../../models/Export";
 import { Op } from "sequelize";
@@ -17,7 +17,7 @@ export class ExportSendBatches extends RetryableTask {
     };
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     const destinationGuid: string = params.destinationGuid;
     const exportGuids: string[] = params.exportGuids;
     const destination = await Destination.findByGuid(params.destinationGuid);

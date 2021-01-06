@@ -1,7 +1,7 @@
 import { task, config } from "actionhero";
 import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
-import { RetryableTask } from "../../classes/retryableTask";
+import { RetryableTask } from "../../classes/tasks/retryableTask";
 
 export class ScheduleRun extends RetryableTask {
   constructor() {
@@ -16,7 +16,7 @@ export class ScheduleRun extends RetryableTask {
     };
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     const schedule = await Schedule.findByGuid(params.scheduleGuid);
     if (schedule.state !== "ready") {
       throw new Error(`schedule ${params.scheduleGuid} is not ready`);

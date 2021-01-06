@@ -1,8 +1,9 @@
-import { Task, task, log } from "actionhero";
+import { task, log } from "actionhero";
 import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
+import { CLSTask } from "../../classes/tasks/clsTask";
 
-export class UpdateSchedules extends Task {
+export class UpdateSchedules extends CLSTask {
   constructor() {
     super();
     this.name = "schedule:updateSchedules";
@@ -12,7 +13,7 @@ export class UpdateSchedules extends Task {
     this.queue = "schedules";
   }
 
-  async run() {
+  async runWithinTransaction() {
     const schedules = await Schedule.findAll({
       where: { recurring: true, state: "ready" },
     });

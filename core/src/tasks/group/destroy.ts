@@ -1,9 +1,10 @@
-import { Task, task, log, config } from "actionhero";
+import { task, log, config } from "actionhero";
+import { CLSTask } from "../../classes/tasks/clsTask";
 import { Group } from "../../models/Group";
 import { Run } from "../../models/Run";
 import { plugin } from "../../modules/plugin";
 
-export class GroupDestroy extends Task {
+export class GroupDestroy extends CLSTask {
   constructor() {
     super();
     this.name = "group:destroy";
@@ -19,7 +20,7 @@ export class GroupDestroy extends Task {
     };
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     const offset: number = params.offset || 0;
     const limit: number =
       params.limit ||

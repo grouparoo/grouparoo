@@ -1,4 +1,4 @@
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { TeamMember } from "../models/TeamMember";
 
 export class AccountView extends AuthenticatedAction {
@@ -11,7 +11,7 @@ export class AccountView extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run({
+  async runWithinTransaction({
     session: { teamMember },
   }: {
     session: { teamMember: TeamMember };
@@ -40,7 +40,7 @@ export class AccountEdit extends AuthenticatedAction {
     };
   }
 
-  async run({
+  async runWithinTransaction({
     params,
     session: { teamMember },
   }: {

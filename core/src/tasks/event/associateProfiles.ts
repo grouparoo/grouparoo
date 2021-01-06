@@ -1,8 +1,9 @@
-import { Task, task, log } from "actionhero";
+import { task, log } from "actionhero";
 import { plugin } from "../../modules/plugin";
 import { Event } from "../../models/Event";
+import { CLSTask } from "../../classes/tasks/clsTask";
 
-export class EventsAssociateProfiles extends Task {
+export class EventsAssociateProfiles extends CLSTask {
   constructor() {
     super();
     this.name = "event:associateProfiles";
@@ -13,7 +14,7 @@ export class EventsAssociateProfiles extends Task {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     const limit = parseInt(
       (await plugin.readSetting("core", "runs-profile-batch-size")).value
     );

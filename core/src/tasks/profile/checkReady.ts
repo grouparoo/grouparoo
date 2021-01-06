@@ -1,8 +1,8 @@
-import { Task, task } from "actionhero";
+import { CLSTask } from "../../classes/tasks/clsTask";
 import { ProfileOps } from "../../modules/ops/profile";
 import { plugin } from "../../modules/plugin";
 
-export class ProfilesCheckReady extends Task {
+export class ProfilesCheckReady extends CLSTask {
   constructor() {
     super();
     this.name = "profiles:checkReady";
@@ -13,7 +13,7 @@ export class ProfilesCheckReady extends Task {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     const limit = parseInt(
       (await plugin.readSetting("core", "runs-profile-batch-size")).value
     );

@@ -1,4 +1,4 @@
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Import } from "../models/Import";
 import { Property } from "../models/Property";
 
@@ -21,7 +21,7 @@ export class ImportsList extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const where = {};
     if (params.creatorGuid) where["creatorGuid"] = params.creatorGuid;
     if (params.profileGuid) where["profileGuid"] = params.profileGuid;
@@ -54,7 +54,7 @@ export class ImportView extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const _import = await Import.findByGuid(params.guid);
     return { import: await _import.apiData() };
   }
@@ -72,7 +72,7 @@ export class ImportCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     let { properties: _properties } = params;
 
     if (typeof _properties === "string") _properties = JSON.parse(_properties);

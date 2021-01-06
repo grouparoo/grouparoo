@@ -1,5 +1,5 @@
 import { api, config } from "actionhero";
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Op } from "sequelize";
 import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
@@ -62,7 +62,7 @@ export class TotalsAction extends AuthenticatedAction {
     };
   }
 
-  async run({ params }: { params: { model: string } }) {
+  async runWithinTransaction({ params }: { params: { model: string } }) {
     const dates = generateDates();
     const model = modelClasses[params.model];
     if (!model) throw new Error(`cannot return totals for ${params.model}`);

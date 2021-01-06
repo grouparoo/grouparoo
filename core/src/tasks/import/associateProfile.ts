@@ -1,8 +1,9 @@
-import { Task, log, env } from "actionhero";
+import { log, env } from "actionhero";
+import { CLSTask } from "../../classes/tasks/clsTask";
 import { Import } from "../../models/Import";
 import { ProfilePropertyType } from "../../modules/ops/profile";
 
-export class ImportAssociateProfile extends Task {
+export class ImportAssociateProfile extends CLSTask {
   constructor() {
     super();
     this.name = "import:associateProfile";
@@ -23,7 +24,7 @@ export class ImportAssociateProfile extends Task {
     return simpleProperties;
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     const { importGuid } = params;
     const _import = await Import.findByGuid(importGuid);
 

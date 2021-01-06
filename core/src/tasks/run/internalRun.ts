@@ -1,4 +1,4 @@
-import { Task, task, config } from "actionhero";
+import { task, config } from "actionhero";
 import { Run } from "../../models/Run";
 import { Import } from "../../models/Import";
 import { Profile } from "../../models/Profile";
@@ -6,8 +6,9 @@ import { plugin } from "../../modules/plugin";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { ProfilePropertyType } from "../../modules/ops/profile";
 import { waitForLock } from "../../modules/locks";
+import { CLSTask } from "../../classes/tasks/clsTask";
 
-export class RunInternalRun extends Task {
+export class RunInternalRun extends CLSTask {
   constructor() {
     super();
     this.name = "run:internalRun";
@@ -70,7 +71,7 @@ export class RunInternalRun extends Task {
     }
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     const offset: number = params.offset || 0;
     const limit: number =
       params.limit ||

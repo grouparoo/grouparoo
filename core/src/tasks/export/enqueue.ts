@@ -1,7 +1,7 @@
 import { Destination } from "../../models/Destination";
 import { log } from "actionhero";
 import { ExportOps } from "../../modules/ops/export";
-import { RetryableTask } from "../../classes/retryableTask";
+import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { plugin } from "../../modules/plugin";
 
 export class EnqueueExports extends RetryableTask {
@@ -15,7 +15,7 @@ export class EnqueueExports extends RetryableTask {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     const limit = parseInt(
       (await plugin.readSetting("core", "exports-profile-batch-size")).value
     );

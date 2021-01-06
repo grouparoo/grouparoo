@@ -1,4 +1,4 @@
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Op } from "sequelize";
 import { cache } from "actionhero";
 
@@ -69,7 +69,7 @@ export class ClusterReset extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run({ session: { teamMember } }) {
+  async runWithinTransaction({ session: { teamMember } }) {
     const counts: { [model: string]: number } = {};
 
     for (const i in models) {
@@ -116,7 +116,7 @@ export class ClusterClearCache extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     await cache.clear();
     return { success: true };
   }

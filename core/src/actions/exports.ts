@@ -1,4 +1,4 @@
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Export } from "../models/Export";
 import { Op } from "sequelize";
 import { ExportOps } from "../modules/ops/export";
@@ -23,7 +23,7 @@ export class ExportsList extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const where = {};
     if (params.profileGuid) {
       where["profileGuid"] = params.profileGuid;
@@ -85,7 +85,7 @@ export class ExportsTotals extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const where = {};
     if (params.profileGuid) {
       where["profileGuid"] = params.profileGuid;
@@ -110,7 +110,7 @@ export class ExportView extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const _export = await Export.findByGuid(params.guid);
     return { export: await _export.apiData() };
   }

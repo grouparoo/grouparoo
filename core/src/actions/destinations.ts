@@ -1,5 +1,5 @@
 import { api, task } from "actionhero";
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Destination } from "../models/Destination";
 import { App } from "../models/App";
 import { Profile } from "../models/Profile";
@@ -31,7 +31,7 @@ export class DestinationsList extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const where = {};
 
     if (params.state) where["state"] = params.state;
@@ -65,7 +65,7 @@ export class DestinationConnectionApps extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     const connectionApps: Array<{
       app: AsyncReturnType<typeof App.prototype.apiData>;
       connection: PluginConnection;
@@ -121,7 +121,7 @@ export class DestinationCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const destination = await Destination.create({
       name: params.name,
       type: params.type,
@@ -156,7 +156,7 @@ export class DestinationEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const destination = await Destination.findByGuid(params.guid);
     if (params.options) await destination.setOptions(params.options);
     if (params.mapping) await destination.setMapping(params.mapping);
@@ -185,7 +185,7 @@ export class DestinationConnectionOptions extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const destination = await Destination.findByGuid(params.guid);
 
     const options =
@@ -209,7 +209,7 @@ export class DestinationMappingOptions extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const destination = await Destination.findByGuid(params.guid);
     const options = await destination.destinationMappingOptions(false); // never use cache when displaying to the user
 
@@ -237,7 +237,7 @@ export class DestinationExportArrayProperties extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const destination = await Destination.findByGuid(params.guid);
     return {
       exportArrayProperties: await destination.getExportArrayProperties(),
@@ -258,7 +258,7 @@ export class DestinationTrackGroup extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const destination = await Destination.findByGuid(params.guid);
     const group = await Group.findByGuid(params.groupGuid);
     await destination.trackGroup(group);
@@ -278,7 +278,7 @@ export class DestinationUnTrackGroup extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const destination = await Destination.findByGuid(params.guid);
     await destination.unTrackGroup();
     return { destination: await destination.apiData() };
@@ -296,7 +296,7 @@ export class DestinationView extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const destination = await Destination.findByGuid(params.guid);
     return { destination: await destination.apiData() };
   }
@@ -315,7 +315,7 @@ export class DestinationExport extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const destination = await Destination.findByGuid(params.guid);
     await destination.exportGroupMembers(params.force);
     return { success: true };
@@ -339,7 +339,7 @@ export class DestinationProfilePreview extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const destination = await Destination.findByGuid(params.guid);
 
     let profile: Profile;
@@ -419,7 +419,7 @@ export class DestinationDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const destination = await Destination.findByGuid(params.guid);
     if (params.force) {
       await destination.destroy();

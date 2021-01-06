@@ -1,9 +1,10 @@
-import { Task, task, config } from "actionhero";
+import { task, config } from "actionhero";
 import { Destination } from "../../models/Destination";
 import { Run } from "../../models/Run";
 import { Export } from "../../models/Export";
+import { CLSTask } from "../../classes/tasks/clsTask";
 
-export class DestinationDestroy extends Task {
+export class DestinationDestroy extends CLSTask {
   constructor() {
     super();
     this.name = "destination:destroy";
@@ -24,7 +25,7 @@ export class DestinationDestroy extends Task {
     });
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     const destination = await Destination.scope(null).findOne({
       where: { guid: params.destinationGuid, state: "deleted" },
     });
