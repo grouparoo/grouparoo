@@ -52,7 +52,7 @@ export async function loadDestination(
     const property = await getParentByName(Property, sanitizedMappings[key]);
     mapping[key] = property.key;
   }
-  await destination.setMapping(mapping, externallyValidate);
+  await destination.setMapping(mapping, externallyValidate, false);
 
   let destinationGroupMemberships = {};
   const sanitizedDestinationGroupMemberships = extractNonNullParts(

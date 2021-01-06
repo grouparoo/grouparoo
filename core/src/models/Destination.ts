@@ -151,10 +151,10 @@ export class Destination extends LoggedModel<Destination> {
 
   async setMapping(
     mappings: DestinationMapping,
-
-    externallyValidate = true
+    externallyValidate = true,
+    saveCache = true
   ) {
-    if (externallyValidate) await this.validateMappings(mappings);
+    if (externallyValidate) await this.validateMappings(mappings, saveCache);
     return MappingHelper.setMapping(this, mappings);
   }
 
@@ -235,11 +235,15 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.unTrackGroup(this);
   }
 
-  async validateMappings(mappings: { [key: string]: string }) {
+  async validateMappings(
+    mappings: { [key: string]: string },
+    saveCache = true
+  ) {
     if (Object.keys(mappings).length === 0) return;
 
     const destinationMappingOptions = await this.destinationMappingOptions(
-      false
+      false,
+      saveCache
     );
     const properties = await Property.findAll();
     const exportArrayProperties = await this.getExportArrayProperties();
@@ -320,8 +324,8 @@ export class Destination extends LoggedModel<Destination> {
     );
   }
 
-  async destinationMappingOptions(cached?: boolean) {
-    return DestinationOps.destinationMappingOptions(this, cached);
+  async destinationMappingOptions(cached?: boolean, saveCache = true) {
+    return DestinationOps.destinationMappingOptions(this, cached, saveCache);
   }
 
   async profilePreview(

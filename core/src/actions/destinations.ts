@@ -128,7 +128,9 @@ export class DestinationCreate extends AuthenticatedAction {
       appGuid: params.appGuid,
     });
     if (params.options) await destination.setOptions(params.options);
-    if (params.mapping) await destination.setMapping(params.mapping);
+    if (params.mapping) {
+      await destination.setMapping(params.mapping, undefined, false);
+    }
     if (params.destinationGroupMemberships)
       await destination.setDestinationGroupMemberships(
         params.destinationGroupMemberships
@@ -159,7 +161,9 @@ export class DestinationEdit extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const destination = await Destination.findByGuid(params.guid);
     if (params.options) await destination.setOptions(params.options);
-    if (params.mapping) await destination.setMapping(params.mapping);
+    if (params.mapping) {
+      await destination.setMapping(params.mapping, undefined, false);
+    }
     if (params.destinationGroupMemberships) {
       await destination.setDestinationGroupMemberships(
         params.destinationGroupMemberships

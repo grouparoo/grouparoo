@@ -160,7 +160,8 @@ export namespace DestinationOps {
    */
   export async function destinationMappingOptions(
     destination: Destination,
-    cached = true
+    cached = true,
+    saveCache = true
   ) {
     const cacheKey = `destination:${destination.guid}:mappingOptions`;
     const cacheDuration = 1000 * 60 * 10; // 10 minutes
@@ -207,8 +208,7 @@ export namespace DestinationOps {
       }
     );
 
-    // TODO: we used to use the transaction to know if we should update the cache or not...
-    // if (!transaction) await cache.save(cacheKey, mappingOptions, cacheDuration);
+    if (saveCache) await cache.save(cacheKey, mappingOptions, cacheDuration);
 
     return mappingOptions;
   }
