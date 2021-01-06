@@ -98,7 +98,8 @@ export namespace ProfileOps {
    */
   export async function addOrUpdateProperty(
     profile: Profile,
-    hash: { [key: string]: Array<string | number | boolean | Date> }
+    hash: { [key: string]: Array<string | number | boolean | Date> },
+    transaction?: Transaction
   ) {
     const key = Object.keys(hash)[0]; // either the key or guid of the property, preferring the guid
     const values = hash[key];
@@ -106,8 +107,13 @@ export namespace ProfileOps {
     // ignore reserved profile property key
     if (key === "_meta") return;
 
-    let property = await Property.findOne({ where: { guid: key } });
-    if (!property) property = await Property.findOne({ where: { key } });
+    let property = await Property.findOne({
+      where: { guid: key },
+      transaction,
+    });
+    if (!property) {
+      property = await Property.findOne({ where: { key }, transaction });
+    }
     if (!property) {
       throw new Error(`cannot find a property for guid or key \`${key}\``);
     }
@@ -121,6 +127,7 @@ export namespace ProfileOps {
           propertyGuid: property.guid,
         },
         order: [["position", "asc"]],
+        transaction,
       });
 
       const existingValues = await Promise.all(
@@ -130,16 +137,19 @@ export namespace ProfileOps {
       if (arraysAreEqual(existingValues, values)) {
         await Promise.all(
           profileProperties.map((property) =>
-            property.update({
-              state: "ready",
-              stateChangedAt: new Date(),
-              confirmedAt: new Date(),
-            })
+            property.update(
+              {
+                state: "ready",
+                stateChangedAt: new Date(),
+                confirmedAt: new Date(),
+              },
+              { transaction }
+            )
           )
         );
       } else {
         await Promise.all(
-          profileProperties.map((property) => property.destroy())
+          profileProperties.map((property) => property.destroy({ transaction }))
         );
         let position = 0;
         for (const i in values) {
@@ -161,7 +171,7 @@ export namespace ProfileOps {
                 : new Date(),
           });
           await profileProperty.setValue(value);
-          await profileProperty.save();
+          await profileProperty.save({ transaction });
           position++;
         }
       }
@@ -180,6 +190,7 @@ export namespace ProfileOps {
           propertyGuid: property.guid,
           position: 0,
         },
+        transaction,
       });
 
       if (!profileProperty) {
@@ -203,13 +214,14 @@ export namespace ProfileOps {
         profileProperty.valueChangedAt = new Date();
       }
 
-      await profileProperty.save();
+      await profileProperty.save({ transaction });
       await ProfileProperty.destroy({
         where: {
           profileGuid: profile.guid,
           propertyGuid: property.guid,
           position: { [Op.ne]: 0 },
         },
+        transaction,
       });
     }
   }
@@ -222,7 +234,8 @@ export namespace ProfileOps {
     properties: {
       [key: string]: Array<string | number | boolean | Date> | any;
     },
-    toLock = true
+    toLock = true,
+    transaction?: Transaction
   ) {
     let releaseLock: Function;
     if (toLock) {
@@ -231,7 +244,7 @@ export namespace ProfileOps {
     }
 
     try {
-      await profile.save();
+      await profile.save({ transaction });
 
       const keys = Object.keys(properties);
       for (const i in keys) {
@@ -242,7 +255,7 @@ export namespace ProfileOps {
           ? properties[keys[i]]
           : [properties[keys[i]]];
 
-        await addOrUpdateProperty(profile, h);
+        await addOrUpdateProperty(profile, h, transaction);
       }
 
       return profile;
@@ -315,7 +328,8 @@ export namespace ProfileOps {
   export async function _import(
     profile: Profile,
     toSave = true,
-    toLock = true
+    toLock = true,
+    transaction?: Transaction
   ) {
     let releaseLock: Function;
 
@@ -326,22 +340,25 @@ export namespace ProfileOps {
 
     try {
       let hash = {};
-      const sources = await Source.findAll({ where: { state: "ready" } });
+      const sources = await Source.findAll({
+        where: { state: "ready" },
+        transaction,
+      });
       await Promise.all(
         sources.map((source) =>
           source
-            .import(profile)
+            .import(profile, transaction)
             .then((data) => (hash = Object.assign(hash, data)))
         )
       );
 
       if (toSave) {
-        await addOrUpdateProperties(profile, hash, false);
-        await buildNullProperties(profile);
-        await profile.save();
+        await addOrUpdateProperties(profile, hash, false, transaction);
+        await buildNullProperties(profile, null, transaction);
+        await profile.save({ transaction });
         await ProfileProperty.update(
           { state: "ready" },
-          { where: { profileGuid: profile.guid } }
+          { where: { profileGuid: profile.guid }, transaction }
         );
       }
 

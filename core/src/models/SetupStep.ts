@@ -34,7 +34,7 @@ export class SetupStep extends LoggedModel<SetupStep> {
   @Column
   complete: boolean;
 
-  async apiData() {
+  async apiData(transaction?: Transaction) {
     const ssd = this.getSetupStepDescription();
     const title = this.getTitle(ssd);
     const description = this.getDescription(ssd);

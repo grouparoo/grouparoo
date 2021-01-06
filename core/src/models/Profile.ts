@@ -74,8 +74,8 @@ export class Profile extends LoggedModel<Profile> {
   @HasMany(() => Event, "profileGuid")
   events: Event[];
 
-  async apiData() {
-    const properties = await this.properties();
+  async apiData(transaction?: Transaction) {
+    const properties = await this.properties(transaction);
 
     return {
       guid: this.guid,
@@ -132,8 +132,8 @@ export class Profile extends LoggedModel<Profile> {
     return results;
   }
 
-  async import(toSave = true, toLock = true) {
-    return ProfileOps._import(this, toSave, toLock);
+  async import(toSave = true, toLock = true, transaction?: Transaction) {
+    return ProfileOps._import(this, toSave, toLock, transaction);
   }
 
   async export(force = false, oldGroupsOverride?: Group[]) {

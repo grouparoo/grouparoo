@@ -59,7 +59,7 @@ export abstract class LoggedModel<T> extends Model<T> {
         topic: modelName(instance),
         verb: "create",
         ownerGuid: instance.guid,
-        data: await instance.filteredDataForLogging(),
+        data: await instance.filteredDataForLogging(transaction),
         message,
       },
       { transaction }
@@ -67,10 +67,13 @@ export abstract class LoggedModel<T> extends Model<T> {
   }
 
   @AfterCreate
-  static async broadcast(instance) {
+  static async broadcast(
+    instance,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
     try {
       await chatRoom.broadcast({}, `model:${modelName(instance)}`, {
-        model: await instance.apiData(),
+        model: await instance.apiData(transaction),
         verb: "create",
       });
     } catch {}
@@ -96,7 +99,7 @@ export abstract class LoggedModel<T> extends Model<T> {
           topic: modelName(instance),
           verb: "create",
           ownerGuid: instance.guid,
-          data: await instance.filteredDataForLogging(),
+          data: await instance.filteredDataForLogging(transaction),
           message,
         },
         { transaction }
@@ -121,7 +124,7 @@ export abstract class LoggedModel<T> extends Model<T> {
         topic: modelName(instance),
         verb: "update",
         ownerGuid: instance.guid,
-        data: await instance.filteredDataForLogging(),
+        data: await instance.filteredDataForLogging(transaction),
         message,
       },
       { transaction }
@@ -145,17 +148,17 @@ export abstract class LoggedModel<T> extends Model<T> {
         topic: modelName(instance),
         verb: "destroy",
         ownerGuid: instance.guid,
-        data: await instance.filteredDataForLogging(),
+        data: await instance.filteredDataForLogging(transaction),
         message,
       },
       { transaction }
     );
   }
 
-  async filteredDataForLogging() {
+  async filteredDataForLogging(transaction?: Transaction) {
     let apiData = {};
     try {
-      apiData = await this.apiData();
+      apiData = await this.apiData(transaction);
     } catch {}
 
     config.general.filteredParams.forEach((p) => {
@@ -208,7 +211,7 @@ export abstract class LoggedModel<T> extends Model<T> {
     return message;
   }
 
-  abstract apiData(): Promise<{ [key: string]: any }>;
+  abstract apiData(transaction?: Transaction): Promise<{ [key: string]: any }>;
 
   /**
    * Find an instance of this class, regardless of scope

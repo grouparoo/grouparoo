@@ -74,8 +74,8 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   @BelongsTo(() => Property)
   property: Property;
 
-  async apiData() {
-    const property = await this.$get("property");
+  async apiData(transaction?: Transaction) {
+    const property = await this.$get("property", { transaction });
 
     return {
       profileGuid: this.profileGuid,

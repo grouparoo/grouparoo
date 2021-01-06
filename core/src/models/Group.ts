@@ -291,10 +291,10 @@ export class Group extends LoggedModel<Group> {
     }
   }
 
-  async apiData() {
-    const profilesCount = await this.profilesCount();
-    const rules = await this.getRules();
-    const nextCalculatedAt = await this.nextCalculatedAt();
+  async apiData(transaction?: Transaction) {
+    const profilesCount = await this.profilesCount(null, transaction);
+    const rules = await this.getRules(transaction);
+    const nextCalculatedAt = await this.nextCalculatedAt(transaction);
 
     return {
       guid: this.guid,
@@ -376,12 +376,16 @@ export class Group extends LoggedModel<Group> {
     return Moment(this.calculatedAt).add(delayMinutes, "minutes").toDate();
   }
 
-  async run(force = false, destinationGuid?: string) {
-    return GroupOps.run(this, force, destinationGuid);
+  async run(
+    force = false,
+    destinationGuid?: string,
+    transaction?: Transaction
+  ) {
+    return GroupOps.run(this, force, destinationGuid, transaction);
   }
 
-  async stopPreviousRuns() {
-    return GroupOps.stopPreviousRuns(this);
+  async stopPreviousRuns(transaction?: Transaction) {
+    return GroupOps.stopPreviousRuns(this, transaction);
   }
 
   async addProfile(profile: Profile) {

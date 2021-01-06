@@ -37,7 +37,7 @@ export class File extends LoggedModel<File> {
   @Column
   sizeBytes: number;
 
-  async apiData() {
+  async apiData(transaction?: Transaction) {
     return {
       guid: this.guid,
       transport: this.transport,

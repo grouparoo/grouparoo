@@ -4,14 +4,19 @@ import { GroupRule } from "../../models/GroupRule";
 import { App } from "../../models/App";
 import { internalRun } from "../internalRun";
 import { Op, Transaction } from "sequelize";
+import { api } from "actionhero";
 import Mustache from "mustache";
 
 export namespace PropertyOps {
   /**
    * Enqueue Runs to update all Groups that rely on this Property
    */
-  export async function enqueueRuns(property: Property) {
-    await internalRun("property", property.guid); // update *all* profiles
+  export async function enqueueRuns(
+    property: Property,
+    transaction: Transaction
+  ) {
+    if (!api.process.running) return; // we are in an initializer (validating)
+    await internalRun("property", property.guid, transaction); // update *all* profiles
 
     const groups = await Group.findAll({
       include: [
@@ -20,12 +25,13 @@ export namespace PropertyOps {
           where: { propertyGuid: property.guid },
         },
       ],
+      transaction,
     });
 
     for (const i in groups) {
       const group = groups[i];
-      await group.update({ state: "initializing" });
-      await group.run();
+      await group.update({ state: "initializing" }, { transaction });
+      await group.run(null, null, transaction);
     }
   }
 

@@ -32,7 +32,7 @@ export class Notification extends LoggedModel<Notification> {
   @Column
   readAt: Date;
 
-  async apiData() {
+  async apiData(transaction?: Transaction) {
     return {
       guid: this.guid,
       from: this.from,

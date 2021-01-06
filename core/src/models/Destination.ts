@@ -112,18 +112,26 @@ export class Destination extends LoggedModel<Destination> {
   @HasMany(() => Export)
   exports: Export[];
 
-  async apiData(includeApp = true, includeGroup = true) {
+  async apiData(
+    transaction?: Transaction,
+    includeApp = true,
+    includeGroup = true
+  ) {
     let app: App;
     let group: Group;
-    if (includeApp) app = await this.$get("app", { scope: null });
-    if (includeGroup) group = await this.$get("group", { scope: null });
+    if (includeApp) app = await this.$get("app", { scope: null, transaction });
+    if (includeGroup) {
+      group = await this.$get("group", { scope: null, transaction });
+    }
 
-    const mapping = await this.getMapping();
-    const options = await this.getOptions();
-    const destinationGroupMemberships = await this.getDestinationGroupMemberships();
-    const { pluginConnection } = await this.getPlugin();
+    const mapping = await this.getMapping(transaction);
+    const options = await this.getOptions(null, transaction);
+    const destinationGroupMemberships = await this.getDestinationGroupMemberships(
+      transaction
+    );
+    const { pluginConnection } = await this.getPlugin(transaction);
 
-    const exportTotals = await this.getExportTotals();
+    const exportTotals = await this.getExportTotals(transaction);
 
     return {
       guid: this.guid,
@@ -131,11 +139,11 @@ export class Destination extends LoggedModel<Destination> {
       type: this.type,
       state: this.state,
       locked: this.locked,
-      app: app ? await app.apiData() : null,
+      app: app ? await app.apiData(transaction) : null,
       mapping,
       options,
       connection: pluginConnection,
-      destinationGroup: group ? await group.apiData() : null,
+      destinationGroup: group ? await group.apiData(transaction) : null,
       destinationGroupMemberships,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
@@ -143,8 +151,8 @@ export class Destination extends LoggedModel<Destination> {
     };
   }
 
-  async getExportTotals() {
-    return ExportOps.totals({ destinationGuid: this.guid });
+  async getExportTotals(transaction?: Transaction) {
+    return ExportOps.totals({ destinationGuid: this.guid }, transaction);
   }
 
   async getMapping(transaction?: Transaction) {

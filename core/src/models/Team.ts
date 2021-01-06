@@ -47,14 +47,15 @@ export class Team extends LoggedModel<Team> {
   @HasMany(() => Permission)
   permissions: Permission[];
 
-  async apiData() {
-    const membersCount = await this.$count("teamMembers");
+  async apiData(transaction?: Transaction) {
+    const membersCount = await this.$count("teamMembers", { transaction });
     const permissions = await this.$get("permissions", {
       order: [["topic", "asc"]],
+      transaction,
     });
     const permissionsApiData: AsyncReturnType<
       Permission["apiData"]
-    >[] = await Promise.all(permissions.map((prm) => prm.apiData()));
+    >[] = await Promise.all(permissions.map((prm) => prm.apiData(transaction)));
 
     return {
       guid: this.guid,
@@ -183,7 +184,7 @@ export class Team extends LoggedModel<Team> {
         );
       }
       if (instance.locked && !permission.locked) {
-        await permission.update({ locked: instance.locked });
+        await permission.update({ locked: instance.locked }, { transaction });
       }
 
       permissionsWithStatus.push({ isNew, permission });

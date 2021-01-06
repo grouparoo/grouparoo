@@ -190,11 +190,21 @@ export class Property extends LoggedModel<Property> {
     return plugin.replaceTemplateProfileVariables(q, profile);
   }
 
-  async test(options?: SimplePropertyOptions) {
-    const profile = await Profile.findOne({ order: [["guid", "asc"]] });
+  async test(options?: SimplePropertyOptions, transaction?: Transaction) {
+    const profile = await Profile.findOne({
+      order: [["guid", "asc"]],
+      transaction,
+    });
     if (profile) {
-      const source = await Source.findByGuid(this.sourceGuid);
-      return source.importProfileProperty(profile, this, options);
+      const source = await Source.findByGuid(this.sourceGuid, transaction);
+      return source.importProfileProperty(
+        profile,
+        this,
+        options,
+        null,
+        null,
+        transaction
+      );
     }
   }
 
@@ -220,7 +230,7 @@ export class Property extends LoggedModel<Property> {
     test = true,
     transaction?: Transaction
   ) {
-    if (test) await this.test(options);
+    if (test) await this.test(options, transaction);
 
     for (const i in options) {
       options[
@@ -233,8 +243,8 @@ export class Property extends LoggedModel<Property> {
     return OptionHelper.setOptions(this, options, transaction);
   }
 
-  async afterSetOptions(hasChanges: boolean) {
-    if (hasChanges) await PropertyOps.enqueueRuns(this);
+  async afterSetOptions(hasChanges: boolean, transaction) {
+    if (hasChanges) await PropertyOps.enqueueRuns(this, transaction);
   }
 
   async validateOptions(
@@ -331,7 +341,7 @@ export class Property extends LoggedModel<Property> {
       );
     }
 
-    if (!transaction) return PropertyOps.enqueueRuns(this);
+    if (!transaction) return PropertyOps.enqueueRuns(this, transaction);
   }
 
   async pluginOptions() {
@@ -368,9 +378,9 @@ export class Property extends LoggedModel<Property> {
     return PropertyOps.makeIdentifying(this, transaction);
   }
 
-  async apiData() {
-    const options = await this.getOptions();
-    const filters = await this.getFilters();
+  async apiData(transaction?: Transaction) {
+    const options = await this.getOptions(null, transaction);
+    const filters = await this.getFilters(transaction);
 
     return {
       guid: this.guid,
@@ -410,7 +420,7 @@ export class Property extends LoggedModel<Property> {
     if (instance.state === "draft") return;
 
     const source = await instance.$get("source", { scope: null, transaction });
-    const mapping = await source.getMapping();
+    const mapping = await source.getMapping(transaction);
     const mappingValues = Object.values(mapping);
     instance.directlyMapped = mappingValues.includes(instance.key);
   }
@@ -509,13 +519,17 @@ export class Property extends LoggedModel<Property> {
     instance: Property,
     { transaction }: { transaction?: Transaction } = {}
   ) {
+    // we don't use a transaction here because we only want to check previously committed sources (ie: bootstrap case)
     const source = await Source.findByGuid(instance.sourceGuid, transaction);
-    if (source.state !== "ready") throw new Error("source is not ready");
+    // if (source.state !== "ready") throw new Error("source is not ready");
   }
 
   @BeforeSave
-  static async validateQuery(instance: Property) {
-    await instance.test();
+  static async validateQuery(
+    instance: Property,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
+    await instance.test(null, transaction);
   }
 
   @BeforeSave
@@ -534,7 +548,10 @@ export class Property extends LoggedModel<Property> {
   }
 
   @BeforeSave
-  static async runPropertyWithNoOptionsOrFiltersWhenReady(instance: Property) {
+  static async runPropertyWithNoOptionsOrFiltersWhenReady(
+    instance: Property,
+    { transaction }: { transaction?: Transaction } = {}
+  ) {
     const changedState = instance.changed("state");
     if (changedState && instance.state === "ready") {
       const options = await instance.getOptions();
@@ -543,7 +560,7 @@ export class Property extends LoggedModel<Property> {
         Object.keys(options).length === 0 &&
         Object.keys(filters).length === 0
       ) {
-        await PropertyOps.enqueueRuns(instance);
+        await PropertyOps.enqueueRuns(instance, transaction);
       }
     }
   }

@@ -112,7 +112,7 @@ export namespace OptionHelper {
 
       // if there's an afterSetMapping hook and we want to commit our changes
       if (toCommit && typeof instance["afterSetOptions"] === "function") {
-        await instance["afterSetOptions"](hasChanges);
+        await instance["afterSetOptions"](hasChanges, transaction);
       }
     } catch (error) {
       if (toCommit) await transaction.rollback();

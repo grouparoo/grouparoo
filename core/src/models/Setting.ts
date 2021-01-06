@@ -63,7 +63,7 @@ export class Setting extends LoggedModel<Setting> {
   @Column
   variant: string;
 
-  async apiData() {
+  async apiData(transaction?: Transaction) {
     return {
       guid: this.guid,
       pluginName: this.pluginName,

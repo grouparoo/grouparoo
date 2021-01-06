@@ -54,7 +54,7 @@ export class TeamMember extends LoggedModel<TeamMember> {
   @BelongsTo(() => Team)
   team: Team;
 
-  async apiData() {
+  async apiData(transaction?: Transaction) {
     return {
       guid: this.guid,
       teamGuid: this.teamGuid,

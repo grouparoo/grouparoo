@@ -44,7 +44,7 @@ export class Option extends LoggedModel<Option> {
   @BelongsTo(() => Destination, "ownerGuid")
   destination: Destination;
 
-  async apiData() {
+  async apiData(transaction?: Transaction) {
     return {
       guid: this.guid,
       ownerGuid: this.ownerGuid,

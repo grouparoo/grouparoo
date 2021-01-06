@@ -178,12 +178,17 @@ export class Export extends Model<Export> {
     return count;
   }
 
-  async apiData() {
-    const destination = await this.$get("destination", { scope: null });
+  async apiData(transaction?: Transaction) {
+    const destination = await this.$get("destination", {
+      scope: null,
+      transaction,
+    });
 
     return {
       guid: this.guid,
-      destination: destination ? await destination.apiData(false, false) : null,
+      destination: destination
+        ? await destination.apiData(transaction, false, false)
+        : null,
       profileGuid: this.profileGuid,
       force: this.force,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,

@@ -173,7 +173,7 @@ export class Run extends Model<Run> {
     return RunOps.updateTotals(this);
   }
 
-  async buildErrorMessage() {
+  async buildErrorMessage(transaction?: Transaction) {
     const importErrorCounts = await Import.findAll({
       attributes: [
         "errorMessage",
@@ -184,6 +184,7 @@ export class Run extends Model<Run> {
         errorMessage: { [Op.not]: null },
       },
       group: ["errorMessage"],
+      transaction,
     });
 
     const errorMessage = importErrorCounts
@@ -196,12 +197,15 @@ export class Run extends Model<Run> {
         : errorMessage;
     }
 
-    return this.save();
+    return this.save({ transaction });
   }
 
-  async stop() {
-    await this.update({ state: "stopped", completedAt: new Date() });
-    await this.buildErrorMessage();
+  async stop(transaction?: Transaction) {
+    await this.update(
+      { state: "stopped", completedAt: new Date() },
+      { transaction }
+    );
+    await this.buildErrorMessage(transaction);
   }
 
   /**
@@ -237,16 +241,19 @@ export class Run extends Model<Run> {
   /**
    * This method tries to import a random profile to check if the Properties are valid
    */
-  async test() {
-    const profile = await Profile.findOne({ order: [["guid", "asc"]] });
+  async test(transaction?: Transaction) {
+    const profile = await Profile.findOne({
+      order: [["guid", "asc"]],
+      transaction,
+    });
 
     if (profile) {
       try {
-        await profile.import(false);
+        await profile.import(false, null, transaction);
       } catch (error) {
         this.error = error.toString();
         this.state = "stopped";
-        await this.save();
+        await this.save({ transaction });
         throw error;
       }
     }
@@ -256,11 +263,13 @@ export class Run extends Model<Run> {
     return RunOps.quantizedTimeline(this, steps);
   }
 
-  async apiData() {
+  async apiData(transaction?: Transaction) {
+    const creatorName = await this.getCreatorName(transaction);
+
     return {
       guid: this.guid,
       creatorGuid: this.creatorGuid,
-      creatorName: await this.getCreatorName(),
+      creatorName,
       creatorType: this.creatorType,
       state: this.state,
       percentComplete: this.percentComplete,
@@ -281,22 +290,31 @@ export class Run extends Model<Run> {
     };
   }
 
-  async getCreatorName() {
+  async getCreatorName(transaction?: Transaction) {
     let name = "unknown";
 
     try {
       if (this.creatorType === "group") {
-        const group = await Group.findByGuid(this.creatorGuid);
+        const group = await Group.findByGuid(this.creatorGuid, transaction);
         name = group.name;
       } else if (this.creatorType === "property") {
-        const property = await Property.findByGuid(this.creatorGuid);
+        const property = await Property.findByGuid(
+          this.creatorGuid,
+          transaction
+        );
         name = property.key;
       } else if (this.creatorType === "schedule") {
-        const schedule = await Schedule.findByGuid(this.creatorGuid);
+        const schedule = await Schedule.findByGuid(
+          this.creatorGuid,
+          transaction
+        );
         const source = await schedule.$get("source");
         name = source.name;
       } else if (this.creatorType === "teamMember") {
-        const teamMember = await TeamMember.findByGuid(this.creatorGuid);
+        const teamMember = await TeamMember.findByGuid(
+          this.creatorGuid,
+          transaction
+        );
         name = `${teamMember.firstName} ${teamMember.lastName}`;
       } else if (this.creatorType === "task") {
         name = this.creatorGuid;
@@ -352,8 +370,8 @@ export class Run extends Model<Run> {
   }
 
   @AfterCreate
-  static async testRun(instance: Run) {
-    return instance.test();
+  static async testRun(instance: Run, { transaction }) {
+    return instance.test(transaction);
   }
 
   @BeforeUpdate

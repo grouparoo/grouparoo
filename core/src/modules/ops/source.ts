@@ -86,15 +86,19 @@ export namespace SourceOps {
       sourceOptions?: OptionHelper.SimpleOptions;
       sourceMapping?: MappingHelper.Mappings;
       profileProperties?: {};
-    } = {}
+    } = {},
+    transaction?: Transaction
   ) {
-    if (property.state !== "ready" && !propertyOptionsOverride) {
-      return;
-    }
+    if (property.state !== "ready" && !propertyOptionsOverride) return;
 
-    await property.validateOptions(propertyOptionsOverride, false, true);
+    await property.validateOptions(
+      propertyOptionsOverride,
+      false,
+      true,
+      transaction
+    );
 
-    const { pluginConnection } = await source.getPlugin();
+    const { pluginConnection } = await source.getPlugin(transaction);
     if (!pluginConnection) {
       throw new Error(
         `cannot find connection for source ${source.type} (${source.guid})`
@@ -104,19 +108,24 @@ export namespace SourceOps {
     const method = pluginConnection.methods.profileProperty;
     if (!method) return;
 
-    const app = preloadedArgs.app || (await source.$get("app"));
-    const connection = preloadedArgs.connection || (await app.getConnection());
-    const appOptions = preloadedArgs.appOptions || (await app.getOptions());
+    const app =
+      preloadedArgs.app || (await source.$get("app", { transaction }));
+    const connection =
+      preloadedArgs.connection || (await app.getConnection(transaction));
+    const appOptions =
+      preloadedArgs.appOptions || (await app.getOptions(null, transaction));
     const sourceOptions =
-      preloadedArgs.sourceOptions || (await source.getOptions());
+      preloadedArgs.sourceOptions ||
+      (await source.getOptions(null, transaction));
     const sourceMapping =
-      preloadedArgs.sourceMapping || (await source.getMapping());
+      preloadedArgs.sourceMapping || (await source.getMapping(transaction));
 
     // we may not have the profile property needed to make the mapping (ie: userId is not set on this anonymous profile)
     if (Object.values(sourceMapping).length > 0) {
       const propertyMappingKey = Object.values(sourceMapping)[0];
       const profileProperties =
-        preloadedArgs.profileProperties || (await profile.properties());
+        preloadedArgs.profileProperties ||
+        (await profile.properties(transaction));
       if (!profileProperties[propertyMappingKey]) {
         return;
       }
@@ -237,18 +246,23 @@ export namespace SourceOps {
   /**
    * Import all profile properties from a Source for a Profile
    */
-  export async function _import(source: Source, profile: Profile) {
+  export async function _import(
+    source: Source,
+    profile: Profile,
+    transaction?: Transaction
+  ) {
     const hash = {};
     const rules = await source.$get("properties", {
       where: { state: "ready" },
+      transaction,
     });
 
-    const profileProperties = await profile.properties();
-    const app = await source.$get("app");
-    const appOptions = await app.getOptions();
-    const connection = await app.getConnection();
-    const sourceOptions = await source.getOptions();
-    const sourceMapping = await source.getMapping();
+    const profileProperties = await profile.properties(transaction);
+    const app = await source.$get("app", { transaction });
+    const appOptions = await app.getOptions(null, transaction);
+    const connection = await app.getConnection(transaction);
+    const sourceOptions = await source.getOptions(null, transaction);
+    const sourceMapping = await source.getMapping(transaction);
 
     const preloadedArgs = {
       app,
@@ -262,7 +276,14 @@ export namespace SourceOps {
     await Promise.all(
       rules.map((rule) =>
         source
-          .importProfileProperty(profile, rule, null, null, preloadedArgs)
+          .importProfileProperty(
+            profile,
+            rule,
+            null,
+            null,
+            preloadedArgs,
+            transaction
+          )
           .then((response) => (hash[rule.guid] = response))
       )
     );

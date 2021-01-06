@@ -63,8 +63,9 @@ export class Event extends LoggedModel<Event> {
   @BelongsTo(() => Profile, "profileGuid")
   profile: Profile;
 
-  async getData() {
-    const eventData = this.eventData || (await this.$get("eventData"));
+  async getData(transaction?: Transaction) {
+    const eventData =
+      this.eventData || (await this.$get("eventData", { transaction }));
     const data = {};
     eventData.forEach((eventData) => {
       data[eventData.key] = eventData.value;
@@ -104,8 +105,8 @@ export class Event extends LoggedModel<Event> {
     await profile.markPending();
   }
 
-  async apiData() {
-    const data = await this.getData();
+  async apiData(transaction?: Transaction) {
+    const data = await this.getData(transaction);
 
     return {
       guid: this.guid,

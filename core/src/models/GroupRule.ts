@@ -70,7 +70,7 @@ export class GroupRule extends Model<GroupRule> {
   @BelongsTo(() => Property)
   property: Property;
 
-  async apiData() {
+  async apiData(transaction?: Transaction) {
     return {
       guid: this.guid,
       groupGuid: this.groupGuid,

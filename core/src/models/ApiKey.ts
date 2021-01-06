@@ -57,13 +57,14 @@ export class ApiKey extends LoggedModel<ApiKey> {
     }
   }
 
-  async apiData() {
+  async apiData(transaction?: Transaction) {
     const permissions = await this.$get("permissions", {
       order: [["topic", "asc"]],
+      transaction,
     });
     const permissionsApiData: AsyncReturnType<
       Permission["apiData"]
-    >[] = await Promise.all(permissions.map((prm) => prm.apiData()));
+    >[] = await Promise.all(permissions.map((prm) => prm.apiData(transaction)));
 
     return {
       guid: this.guid,
@@ -172,7 +173,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
         );
       }
       if (instance.locked && !permission.locked) {
-        await permission.update({ locked: instance.locked });
+        await permission.update({ locked: instance.locked }, { transaction });
       }
     }
   }

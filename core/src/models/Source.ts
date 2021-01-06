@@ -170,15 +170,15 @@ export class Source extends LoggedModel<Source> {
     return SourceOps.sourcePreview(this, sourceOptions, transaction);
   }
 
-  async apiData() {
-    const app = await this.$get("app", { scope: null });
-    const schedule = await this.$get("schedule", { scope: null });
+  async apiData(transaction?: Transaction) {
+    const app = await this.$get("app", { scope: null, transaction });
+    const schedule = await this.$get("schedule", { scope: null, transaction });
 
-    const options = await this.getOptions();
-    const { pluginConnection } = await this.getPlugin();
-    const scheduleAvailable = await this.scheduleAvailable();
-    const previewAvailable = await this.previewAvailable();
-    const mapping = await this.getMapping();
+    const options = await this.getOptions(null, transaction);
+    const { pluginConnection } = await this.getPlugin(transaction);
+    const scheduleAvailable = await this.scheduleAvailable(transaction);
+    const previewAvailable = await this.previewAvailable(transaction);
+    const mapping = await this.getMapping(transaction);
 
     return {
       guid: this.guid,
@@ -186,10 +186,10 @@ export class Source extends LoggedModel<Source> {
       type: this.type,
       state: this.state,
       mapping,
-      app: app ? await app.apiData() : undefined,
+      app: app ? await app.apiData(transaction) : undefined,
       appGuid: this.appGuid,
       scheduleAvailable,
-      schedule: schedule ? await schedule.apiData() : undefined,
+      schedule: schedule ? await schedule.apiData(transaction) : undefined,
       previewAvailable,
       locked: this.locked,
       options,
@@ -199,16 +199,16 @@ export class Source extends LoggedModel<Source> {
     };
   }
 
-  async scheduleAvailable() {
-    const { pluginConnection } = await this.getPlugin();
+  async scheduleAvailable(transaction?: Transaction) {
+    const { pluginConnection } = await this.getPlugin(transaction);
     if (typeof pluginConnection?.methods?.profiles === "function") {
       return true;
     }
     return false;
   }
 
-  async previewAvailable() {
-    const { pluginConnection } = await this.getPlugin();
+  async previewAvailable(transaction?: Transaction) {
+    const { pluginConnection } = await this.getPlugin(transaction);
     if (typeof pluginConnection?.methods?.sourcePreview === "function") {
       return true;
     }
@@ -227,7 +227,8 @@ export class Source extends LoggedModel<Source> {
       sourceOptions?: OptionHelper.SimpleOptions;
       sourceMapping?: MappingHelper.Mappings;
       profileProperties?: {};
-    } = {}
+    } = {},
+    transaction?: Transaction
   ) {
     return SourceOps.importProfileProperty(
       this,
@@ -235,7 +236,8 @@ export class Source extends LoggedModel<Source> {
       property,
       propertyOptionsOverride,
       propertyFiltersOverride,
-      preloadedArgs
+      preloadedArgs,
+      transaction
     );
   }
 
@@ -263,8 +265,8 @@ export class Source extends LoggedModel<Source> {
     );
   }
 
-  async import(profile: Profile) {
-    return SourceOps._import(this, profile);
+  async import(profile: Profile, transaction?: Transaction) {
+    return SourceOps._import(this, profile, transaction);
   }
 
   async bootstrapUniqueProperty(

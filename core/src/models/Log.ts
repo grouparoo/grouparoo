@@ -65,7 +65,7 @@ export class Log extends Model<Log> {
   @UpdatedAt
   updatedAt: Date;
 
-  async apiData() {
+  async apiData(transaction?: Transaction) {
     return {
       guid: this.guid,
       ownerGuid: this.ownerGuid,
@@ -108,9 +108,9 @@ export class Log extends Model<Log> {
   }
 
   @AfterCreate
-  static async broadcast(instance: Log) {
+  static async broadcast(instance: Log, { transaction }) {
     await chatRoom.broadcast({}, `model:log`, {
-      model: await instance.apiData(),
+      model: await instance.apiData(transaction),
       verb: "create",
     });
   }

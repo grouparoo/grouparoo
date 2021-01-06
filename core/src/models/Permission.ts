@@ -75,7 +75,7 @@ export class Permission extends LoggedModel<Permission> {
   @BelongsTo(() => ApiKey)
   apiKey: ApiKey;
 
-  async apiData() {
+  async apiData(transaction?: Transaction) {
     return {
       guid: this.guid,
       topic: this.topic,

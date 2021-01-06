@@ -48,7 +48,7 @@ export class Mapping extends LoggedModel<Mapping> {
   @BelongsTo(() => Property)
   property: Property;
 
-  async apiData() {
+  async apiData(transaction?: Transaction) {
     return {
       guid: this.guid,
       ownerGuid: this.ownerGuid,

@@ -52,7 +52,7 @@ export class GroupMember extends Model<GroupMember> {
   @BelongsTo(() => Profile)
   profile: Profile;
 
-  async apiData() {
+  async apiData(transaction?: Transaction) {
     return {
       profileGuid: this.profileGuid,
       groupGuid: this.groupGuid,

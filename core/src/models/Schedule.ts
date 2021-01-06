@@ -151,8 +151,8 @@ export class Schedule extends LoggedModel<Schedule> {
     return ScheduleOps.runPercentComplete(this, run);
   }
 
-  async apiData() {
-    const options = await this.getOptions();
+  async apiData(transaction?: Transaction) {
+    const options = await this.getOptions(null, transaction);
 
     return {
       guid: this.guid,

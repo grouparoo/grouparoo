@@ -11,6 +11,7 @@ import {
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { Property } from "./Property";
+import { Transaction } from "sequelize";
 
 @Table({ tableName: "propertyFilters", paranoid: false })
 export class PropertyFilter extends Model<PropertyFilter> {
@@ -59,7 +60,7 @@ export class PropertyFilter extends Model<PropertyFilter> {
   @BelongsTo(() => Property)
   property: Property;
 
-  async apiData() {
+  async apiData(transaction?: Transaction) {
     return {
       guid: this.guid,
       propertyGuid: this.propertyGuid,

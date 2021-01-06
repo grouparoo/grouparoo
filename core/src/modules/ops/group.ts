@@ -14,17 +14,21 @@ export namespace GroupOps {
   export async function run(
     group: Group,
     force = false,
-    destinationGuid?: string
+    destinationGuid?: string,
+    transaction?: Transaction
   ) {
-    await group.stopPreviousRuns();
-    await group.update({ state: "updating" });
+    await group.stopPreviousRuns(transaction);
+    await group.update({ state: "updating" }, { transaction });
 
-    const run = await Run.create({
-      creatorGuid: group.guid,
-      creatorType: "group",
-      state: "running",
-      force,
-    });
+    const run = await Run.create(
+      {
+        creatorGuid: group.guid,
+        creatorType: "group",
+        state: "running",
+        force,
+      },
+      { transaction }
+    );
 
     log(
       `[ run ] starting run ${run.guid} for group ${group.name} (${group.guid})`,
@@ -44,16 +48,20 @@ export namespace GroupOps {
   /**
    * Stop previous Runs for this Group
    */
-  export async function stopPreviousRuns(group: Group) {
+  export async function stopPreviousRuns(
+    group: Group,
+    transaction?: Transaction
+  ) {
     const previousRuns = await Run.findAll({
       where: {
         creatorGuid: group.guid,
         state: "running",
       },
+      transaction,
     });
 
     for (const i in previousRuns) {
-      await previousRuns[i].stop();
+      await previousRuns[i].stop(transaction);
     }
   }
 

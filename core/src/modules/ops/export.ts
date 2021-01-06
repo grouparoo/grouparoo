@@ -11,11 +11,12 @@ import { Op, Transaction } from "sequelize";
 export namespace ExportOps {
   /** Count up the exports in each state, optionally filtered for a profile or destination */
   export async function totals(
-    where: { profileGuid?: string; destinationGuid?: string } = {}
+    where: { profileGuid?: string; destinationGuid?: string } = {},
+    transaction?: Transaction
   ) {
     const totals = { all: 0, created: 0, started: 0, completed: 0, error: 0 };
 
-    totals.all = await Export.count({ where });
+    totals.all = await Export.count({ where, transaction });
 
     totals.created = await Export.count({
       where: Object.assign({}, where, {
@@ -25,6 +26,7 @@ export namespace ExportOps {
           errorMessage: { [Op.eq]: null },
         },
       }),
+      transaction,
     });
 
     totals.started = await Export.count({
@@ -35,6 +37,7 @@ export namespace ExportOps {
           errorMessage: { [Op.eq]: null },
         },
       }),
+      transaction,
     });
 
     totals.completed = await Export.count({
@@ -43,12 +46,14 @@ export namespace ExportOps {
         completedAt: { [Op.ne]: null },
         errorMessage: { [Op.eq]: null },
       }),
+      transaction,
     });
 
     totals.error = await Export.count({
       where: Object.assign({}, where, {
         errorMessage: { [Op.ne]: null },
       }),
+      transaction,
     });
 
     return totals;

@@ -160,8 +160,8 @@ export class App extends LoggedModel<App> {
     return `app:${this.guid}:ratelimit:parallel`;
   }
 
-  async apiData() {
-    const options = await this.getOptions(false);
+  async apiData(transaction?: Transaction) {
+    const options = await this.getOptions(false, transaction);
     const icon = await this._getIcon();
     const provides = this.provides();
 

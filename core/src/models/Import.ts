@@ -152,7 +152,7 @@ export class Import extends Model<Import> {
   @BelongsTo(() => Run)
   run: Run;
 
-  async apiData() {
+  async apiData(transaction?: Transaction) {
     const data = this.data || {};
     const rawData = this.rawData || {};
 

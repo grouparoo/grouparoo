@@ -39,7 +39,7 @@ export class DestinationGroupMembership extends LoggedModel<DestinationGroupMemb
   @BelongsTo(() => Destination)
   destination: Destination;
 
-  async apiData() {
+  async apiData(transaction?: Transaction) {
     return {
       destinationGuid: this.destinationGuid,
       groupGuid: this.groupGuid,
