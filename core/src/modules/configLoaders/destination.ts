@@ -9,61 +9,50 @@ import {
 } from "../../classes/codeConfig";
 import { App, Destination, Group, Property } from "../..";
 import { task } from "actionhero";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 
 export async function loadDestination(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
-  transaction?: Transaction
+  validate = false
 ) {
   let isNew = false;
 
-  const app: App = await getParentByName(App, configObject.appId, transaction);
+  const app: App = await getParentByName(App, configObject.appId);
 
   const guid = await validateAndFormatGuid(Destination, configObject.id);
   validateConfigObjectKeys(Destination, configObject);
 
   let destination = await Destination.scope(null).findOne({
     where: { guid, appGuid: app.guid },
-    transaction,
   });
   if (!destination) {
     isNew = true;
-    destination = await Destination.create(
-      {
-        guid,
-        locked: getCodeConfigLockKey(),
-        name: configObject.name,
-        type: configObject.type,
-        appGuid: app.guid,
-      },
-      { transaction }
-    );
+    destination = await Destination.create({
+      guid,
+      locked: getCodeConfigLockKey(),
+      name: configObject.name,
+      type: configObject.type,
+      appGuid: app.guid,
+    });
   }
 
   let group: Group;
   if (configObject.groupId) {
-    group = await getParentByName(Group, configObject.groupId, transaction);
+    group = await getParentByName(Group, configObject.groupId);
   }
 
-  await destination.update({ name: configObject.name }, { transaction });
+  await destination.update({ name: configObject.name });
 
-  await destination.setOptions(
-    extractNonNullParts(configObject, "options"),
-    transaction
-  );
+  await destination.setOptions(extractNonNullParts(configObject, "options"));
 
   let mapping = {};
   const sanitizedMappings = extractNonNullParts(configObject, "mapping");
   for (const key in sanitizedMappings) {
-    const property = await getParentByName(
-      Property,
-      sanitizedMappings[key],
-      transaction
-    );
+    const property = await getParentByName(Property, sanitizedMappings[key]);
     mapping[key] = property.key;
   }
-  await destination.setMapping(mapping, transaction, externallyValidate);
+  await destination.setMapping(mapping, externallyValidate);
 
   let destinationGroupMemberships = {};
   const sanitizedDestinationGroupMemberships = extractNonNullParts(
@@ -73,26 +62,19 @@ export async function loadDestination(
   for (const remoteName in sanitizedDestinationGroupMemberships) {
     const membershipGroup = await getParentByName(
       Group,
-      sanitizedDestinationGroupMemberships[remoteName],
-      transaction
+      sanitizedDestinationGroupMemberships[remoteName]
     );
     destinationGroupMemberships[membershipGroup.guid] = remoteName;
   }
-  await destination.setDestinationGroupMemberships(
-    destinationGroupMemberships,
-    transaction
-  );
+  await destination.setDestinationGroupMemberships(destinationGroupMemberships);
 
   if (destination.groupGuid !== group.guid) {
-    await destination.trackGroup(group, transaction);
+    await destination.trackGroup(group);
   }
 
-  await destination.update({ state: "ready" }, { transaction });
+  await destination.update({ state: "ready" });
 
-  logModel(
-    destination,
-    transaction ? "validated" : isNew ? "created" : "updated"
-  );
+  logModel(destination, validate ? "validated" : isNew ? "created" : "updated");
 
   return destination;
 }

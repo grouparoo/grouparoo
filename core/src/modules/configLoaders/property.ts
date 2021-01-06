@@ -8,71 +8,52 @@ import {
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { Property, Source } from "../..";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 
 export async function loadProperty(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
-  transaction?: Transaction
+  validate = false
 ) {
   let isNew = false;
-  const source: Source = await getParentByName(
-    Source,
-    configObject.sourceId,
-    transaction
-  );
+  const source: Source = await getParentByName(Source, configObject.sourceId);
 
   const guid = await validateAndFormatGuid(Property, configObject.id);
   validateConfigObjectKeys(Property, configObject, ["name"]);
 
   let property = await Property.scope(null).findOne({
     where: { locked: getCodeConfigLockKey(), guid },
-    transaction,
   });
   if (!property) {
     isNew = true;
-    property = await Property.create(
-      {
-        guid,
-        locked: getCodeConfigLockKey(),
-        key: configObject.key || configObject.name,
-        type: configObject.type,
-        sourceGuid: source.guid,
-      },
-      { transaction }
-    );
+    property = await Property.create({
+      guid,
+      locked: getCodeConfigLockKey(),
+      key: configObject.key || configObject.name,
+      type: configObject.type,
+      sourceGuid: source.guid,
+    });
   }
 
-  await property.update(
-    {
-      key: configObject.key || configObject.name,
-      unique: configObject.unique,
-      isArray: configObject.isArray,
-    },
-    { transaction }
-  );
+  await property.update({
+    key: configObject.key || configObject.name,
+    unique: configObject.unique,
+    isArray: configObject.isArray,
+  });
 
-  await property.setOptions(
-    extractNonNullParts(configObject, "options"),
-    null,
-    transaction
-  );
+  await property.setOptions(extractNonNullParts(configObject, "options"), null);
 
   if (configObject.filters) {
-    await property.setFilters(
-      configObject.filters,
-      transaction,
-      externallyValidate
-    );
+    await property.setFilters(configObject.filters, externallyValidate);
   }
 
   if (configObject.identifying === true) {
-    await property.makeIdentifying(transaction);
+    await property.makeIdentifying();
   }
 
-  await property.update({ state: "ready" }, { transaction });
+  await property.update({ state: "ready" });
 
-  logModel(property, transaction ? "validated" : isNew ? "created" : "updated");
+  logModel(property, validate ? "validated" : isNew ? "created" : "updated");
 
   return property;
 }

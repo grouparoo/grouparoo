@@ -7,7 +7,7 @@ import {
   Length,
   BeforeSave,
 } from "sequelize-typescript";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Property } from "./Property";
 import { Destination } from "./Destination";
@@ -48,7 +48,7 @@ export class Mapping extends LoggedModel<Mapping> {
   @BelongsTo(() => Property)
   property: Property;
 
-  async apiData(transaction?: Transaction) {
+  async apiData() {
     return {
       guid: this.guid,
       ownerGuid: this.ownerGuid,
@@ -62,27 +62,22 @@ export class Mapping extends LoggedModel<Mapping> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
   @BeforeSave
-  static async ensureOneOwnerPerProperty(
-    instance: Mapping,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async ensureOneOwnerPerProperty(instance: Mapping) {
     const existing = await Mapping.scope(null).findOne({
       where: {
         guid: { [Op.ne]: instance.guid },
         ownerGuid: instance.ownerGuid,
         propertyGuid: instance.propertyGuid,
       },
-      transaction,
     });
     if (existing) {
       throw new Error(
@@ -92,17 +87,13 @@ export class Mapping extends LoggedModel<Mapping> {
   }
 
   @BeforeSave
-  static async ensureOneOwnerPerRemoteKey(
-    instance: Mapping,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async ensureOneOwnerPerRemoteKey(instance: Mapping) {
     const existing = await Mapping.scope(null).findOne({
       where: {
         guid: { [Op.ne]: instance.guid },
         ownerGuid: instance.ownerGuid,
         remoteKey: instance.remoteKey,
       },
-      transaction,
     });
     if (existing) {
       throw new Error(

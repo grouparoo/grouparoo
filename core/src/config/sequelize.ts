@@ -1,6 +1,8 @@
 import { URL } from "url";
 import { join, isAbsolute } from "path";
 import { getParentPath, getCoreRootPath } from "../utils/pluginDetails";
+import cls from "cls-hooked";
+import Sequelize from "sequelize";
 
 // we want BIGINTs to be returned as JS integer types
 require("pg").defaults.parseInt8 = true;
@@ -73,6 +75,11 @@ export const DEFAULT = {
         storage = join(getParentPath(), storage);
       }
     }
+
+    // Opt Into CLS
+    const namespace = cls.createNamespace("grouparoo-sequelize");
+    // @ts-ignore
+    Sequelize.useCLS(namespace);
 
     return {
       autoMigrate: true,

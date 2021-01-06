@@ -13,7 +13,6 @@ import {
 import * as uuid from "uuid";
 import { Group } from "./Group";
 import { Property } from "./Property";
-import { Transaction } from "sequelize";
 
 @Table({ tableName: "groupRules", paranoid: false })
 export class GroupRule extends Model<GroupRule> {
@@ -70,7 +69,7 @@ export class GroupRule extends Model<GroupRule> {
   @BelongsTo(() => Property)
   property: Property;
 
-  async apiData(transaction?: Transaction) {
+  async apiData() {
     return {
       guid: this.guid,
       groupGuid: this.groupGuid,
@@ -89,10 +88,9 @@ export class GroupRule extends Model<GroupRule> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;

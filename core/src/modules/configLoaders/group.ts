@@ -7,13 +7,13 @@ import {
 } from "../../classes/codeConfig";
 import { Group } from "../..";
 import { Property } from "../../models/Property";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { task } from "actionhero";
 
 export async function loadGroup(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
-  transaction?: Transaction
+  validate = false
 ) {
   let isNew = false;
   const guid = await validateAndFormatGuid(Group, configObject.id);
@@ -21,22 +21,18 @@ export async function loadGroup(
 
   let group = await Group.scope(null).findOne({
     where: { guid, locked: getCodeConfigLockKey() },
-    transaction,
   });
   if (!group) {
     isNew = true;
-    group = await Group.create(
-      {
-        guid,
-        locked: getCodeConfigLockKey(),
-        name: configObject.name,
-        type: configObject.type,
-      },
-      { transaction }
-    );
+    group = await Group.create({
+      guid,
+      locked: getCodeConfigLockKey(),
+      name: configObject.name,
+      type: configObject.type,
+    });
   }
 
-  await group.update({ name: configObject.name }, { transaction });
+  await group.update({ name: configObject.name });
 
   if (configObject.rules) {
     const rules = [...configObject.rules];
@@ -46,21 +42,18 @@ export async function loadGroup(
           Property,
           rules[i]["propertyId"]
         );
-        const property = await Property.findByGuid(propertyGuid, transaction);
+        const property = await Property.findByGuid(propertyGuid);
         delete rules[i]["propertyId"];
         rules[i].key = property.key;
       }
     }
 
-    await group.setRules(
-      group.fromConvenientRules(configObject.rules),
-      transaction
-    );
+    await group.setRules(group.fromConvenientRules(configObject.rules));
   }
 
-  await group.update({ state: "ready" }, { transaction });
+  await group.update({ state: "ready" });
 
-  logModel(group, transaction ? "validated" : isNew ? "created" : "updated");
+  logModel(group, validate ? "validated" : isNew ? "created" : "updated");
 
   return group;
 }

@@ -28,7 +28,6 @@ import { Property } from "./Property";
 import { TeamMember } from "./TeamMember";
 import { RunOps } from "../modules/ops/runs";
 import { plugin } from "../modules/plugin";
-import { Transaction } from "sequelize";
 import Moment from "moment";
 
 export interface HighWaterMark {
@@ -173,7 +172,7 @@ export class Run extends Model<Run> {
     return RunOps.updateTotals(this);
   }
 
-  async buildErrorMessage(transaction?: Transaction) {
+  async buildErrorMessage() {
     const importErrorCounts = await Import.findAll({
       attributes: [
         "errorMessage",
@@ -184,7 +183,6 @@ export class Run extends Model<Run> {
         errorMessage: { [Op.not]: null },
       },
       group: ["errorMessage"],
-      transaction,
     });
 
     const errorMessage = importErrorCounts
@@ -197,15 +195,12 @@ export class Run extends Model<Run> {
         : errorMessage;
     }
 
-    return this.save({ transaction });
+    return this.save();
   }
 
-  async stop(transaction?: Transaction) {
-    await this.update(
-      { state: "stopped", completedAt: new Date() },
-      { transaction }
-    );
-    await this.buildErrorMessage(transaction);
+  async stop() {
+    await this.update({ state: "stopped", completedAt: new Date() });
+    await this.buildErrorMessage();
   }
 
   /**
@@ -241,19 +236,18 @@ export class Run extends Model<Run> {
   /**
    * This method tries to import a random profile to check if the Properties are valid
    */
-  async test(transaction?: Transaction) {
+  async test() {
     const profile = await Profile.findOne({
       order: [["guid", "asc"]],
-      transaction,
     });
 
     if (profile) {
       try {
-        await profile.import(false, null, transaction);
+        await profile.import(false, null);
       } catch (error) {
         this.error = error.toString();
         this.state = "stopped";
-        await this.save({ transaction });
+        await this.save();
         throw error;
       }
     }
@@ -263,8 +257,8 @@ export class Run extends Model<Run> {
     return RunOps.quantizedTimeline(this, steps);
   }
 
-  async apiData(transaction?: Transaction) {
-    const creatorName = await this.getCreatorName(transaction);
+  async apiData() {
+    const creatorName = await this.getCreatorName();
 
     return {
       guid: this.guid,
@@ -290,31 +284,22 @@ export class Run extends Model<Run> {
     };
   }
 
-  async getCreatorName(transaction?: Transaction) {
+  async getCreatorName() {
     let name = "unknown";
 
     try {
       if (this.creatorType === "group") {
-        const group = await Group.findByGuid(this.creatorGuid, transaction);
+        const group = await Group.findByGuid(this.creatorGuid);
         name = group.name;
       } else if (this.creatorType === "property") {
-        const property = await Property.findByGuid(
-          this.creatorGuid,
-          transaction
-        );
+        const property = await Property.findByGuid(this.creatorGuid);
         name = property.key;
       } else if (this.creatorType === "schedule") {
-        const schedule = await Schedule.findByGuid(
-          this.creatorGuid,
-          transaction
-        );
+        const schedule = await Schedule.findByGuid(this.creatorGuid);
         const source = await schedule.$get("source");
         name = source.name;
       } else if (this.creatorType === "teamMember") {
-        const teamMember = await TeamMember.findByGuid(
-          this.creatorGuid,
-          transaction
-        );
+        const teamMember = await TeamMember.findByGuid(this.creatorGuid);
         name = `${teamMember.firstName} ${teamMember.lastName}`;
       } else if (this.creatorType === "task") {
         name = this.creatorGuid;
@@ -328,10 +313,9 @@ export class Run extends Model<Run> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
@@ -370,8 +354,8 @@ export class Run extends Model<Run> {
   }
 
   @AfterCreate
-  static async testRun(instance: Run, { transaction }) {
-    return instance.test(transaction);
+  static async testRun(instance: Run) {
+    return instance.test();
   }
 
   @BeforeUpdate

@@ -18,7 +18,7 @@ import { Profile } from "./Profile";
 import { Run } from "./Run";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { ImportOps } from "../modules/ops/import";
 
 export interface ImportData {
@@ -152,7 +152,7 @@ export class Import extends Model<Import> {
   @BelongsTo(() => Run)
   run: Run;
 
-  async apiData(transaction?: Transaction) {
+  async apiData() {
     const data = this.data || {};
     const rawData = this.rawData || {};
 
@@ -213,10 +213,9 @@ export class Import extends Model<Import> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;

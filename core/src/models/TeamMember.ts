@@ -14,7 +14,6 @@ import { LoggedModel } from "../classes/loggedModel";
 import { Team } from "./Team";
 import { TeamMemberOps } from "../modules/ops/teamMember";
 import { LockableHelper } from "../modules/lockableHelper";
-import { Transaction } from "sequelize";
 
 @Table({ tableName: "teamMembers", paranoid: false })
 export class TeamMember extends LoggedModel<TeamMember> {
@@ -54,7 +53,7 @@ export class TeamMember extends LoggedModel<TeamMember> {
   @BelongsTo(() => Team)
   team: Team;
 
-  async apiData(transaction?: Transaction) {
+  async apiData() {
     return {
       guid: this.guid,
       teamGuid: this.teamGuid,
@@ -68,8 +67,8 @@ export class TeamMember extends LoggedModel<TeamMember> {
     };
   }
 
-  async updatePassword(password: string, transaction?: Transaction) {
-    return TeamMemberOps.updatePassword(this, password, transaction);
+  async updatePassword(password: string) {
+    return TeamMemberOps.updatePassword(this, password);
   }
 
   async checkPassword(password: string) {
@@ -78,18 +77,17 @@ export class TeamMember extends LoggedModel<TeamMember> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
   @BeforeSave
-  static async ensureTeamExists(instance: TeamMember, { transaction }) {
-    const team = await instance.$get("team", { transaction });
+  static async ensureTeamExists(instance: TeamMember) {
+    const team = await instance.$get("team");
     if (!team) throw new Error("team not found");
   }
 

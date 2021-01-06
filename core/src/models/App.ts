@@ -13,7 +13,7 @@ import {
   DefaultScope,
 } from "sequelize-typescript";
 import { api, redis } from "actionhero";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Source } from "./Source";
 import { Option } from "./Option";
@@ -38,10 +38,7 @@ const STATE_TRANSITIONS = [
   {
     from: "draft",
     to: "ready",
-    checks: [
-      (instance: App, transaction?: Transaction) =>
-        instance.validateOptions(null, transaction),
-    ],
+    checks: [(instance: App) => instance.validateOptions(null)],
   },
 ];
 
@@ -85,47 +82,47 @@ export class App extends LoggedModel<App> {
     return pluginApp.methods.appOptions();
   }
 
-  async getOptions(sourceFromEnvironment = true, transaction?: Transaction) {
-    return OptionHelper.getOptions(this, sourceFromEnvironment, transaction);
+  async getOptions(sourceFromEnvironment = true) {
+    return OptionHelper.getOptions(this, sourceFromEnvironment);
   }
 
-  async setOptions(options: SimpleAppOptions, transaction?) {
-    return OptionHelper.setOptions(this, options, transaction);
+  async setOptions(options: SimpleAppOptions) {
+    return OptionHelper.setOptions(this, options);
   }
 
   async afterSetOptions(hasChanges: boolean) {
     if (hasChanges) await redis.doCluster("api.rpc.app.disconnect");
   }
 
-  async validateOptions(options?: SimpleAppOptions, transaction?: Transaction) {
-    if (!options) options = await this.getOptions(true, transaction);
-    return OptionHelper.validateOptions(this, options, null, transaction);
+  async validateOptions(options?: SimpleAppOptions) {
+    if (!options) options = await this.getOptions(true);
+    return OptionHelper.validateOptions(this, options, null);
   }
 
-  async getPlugin(transaction?: Transaction) {
-    return OptionHelper.getPlugin(this, transaction);
+  async getPlugin() {
+    return OptionHelper.getPlugin(this);
   }
 
   async setConnection(connection) {
     api.plugins.persistentConnections[this.guid] = connection;
   }
 
-  async getConnection(transaction?: Transaction) {
+  async getConnection() {
     const connection = api.plugins.persistentConnections[this.guid];
-    if (!connection) return this.connect(null, transaction);
+    if (!connection) return this.connect(null);
     return connection;
   }
 
-  async connect(options?: SimpleAppOptions, transaction?: Transaction) {
-    return AppOps.connect(this, options, null, transaction);
+  async connect(options?: SimpleAppOptions) {
+    return AppOps.connect(this, options, null);
   }
 
-  async disconnect(transaction?: Transaction) {
-    return AppOps.disconnect(this, undefined, transaction);
+  async disconnect() {
+    return AppOps.disconnect(this, undefined);
   }
 
-  async test(options?: SimpleAppOptions, transaction?: Transaction) {
-    return AppOps.test(this, options, transaction);
+  async test(options?: SimpleAppOptions) {
+    return AppOps.test(this, options);
   }
 
   async getParallelism(): Promise<number> {
@@ -160,8 +157,8 @@ export class App extends LoggedModel<App> {
     return `app:${this.guid}:ratelimit:parallel`;
   }
 
-  async apiData(transaction?: Transaction) {
-    const options = await this.getOptions(false, transaction);
+  async apiData() {
+    const options = await this.getOptions(false);
     const icon = await this._getIcon();
     const provides = this.provides();
 
@@ -209,10 +206,9 @@ export class App extends LoggedModel<App> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
@@ -225,10 +221,9 @@ export class App extends LoggedModel<App> {
   }
 
   @BeforeCreate
-  static async checkMaxInstances(instance: App, { transaction }) {
+  static async checkMaxInstances(instance: App) {
     const count = await App.scope(null).count({
       where: { type: instance.type },
-      transaction,
     });
     const { pluginApp } = await instance.getPlugin();
     if (
@@ -243,14 +238,13 @@ export class App extends LoggedModel<App> {
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: App, { transaction }) {
+  static async ensureUniqueName(instance: App) {
     const count = await App.count({
       where: {
         guid: { [Op.ne]: instance.guid },
         name: instance.name,
         state: { [Op.ne]: "draft" },
       },
-      transaction,
     });
     if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
@@ -264,8 +258,8 @@ export class App extends LoggedModel<App> {
   }
 
   @BeforeSave
-  static async updateState(instance: App, { transaction }) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS, transaction);
+  static async updateState(instance: App) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeSave
@@ -279,10 +273,9 @@ export class App extends LoggedModel<App> {
   }
 
   @BeforeDestroy
-  static async checkDependents(instance: App, { transaction }) {
+  static async checkDependents(instance: App) {
     const sources = await Source.scope(null).findAll({
       where: { appGuid: instance.guid },
-      transaction,
     });
     if (sources.length > 0) {
       throw new Error(
@@ -292,7 +285,6 @@ export class App extends LoggedModel<App> {
 
     const destinations = await Destination.scope(null).findAll({
       where: { appGuid: instance.guid },
-      transaction,
     });
     if (destinations.length > 0) {
       throw new Error(
@@ -319,12 +311,11 @@ export class App extends LoggedModel<App> {
   }
 
   @AfterDestroy
-  static async destroyOptions(instance: App, { transaction }) {
+  static async destroyOptions(instance: App) {
     return Option.destroy({
       where: {
         ownerGuid: instance.guid,
       },
-      transaction,
     });
   }
 

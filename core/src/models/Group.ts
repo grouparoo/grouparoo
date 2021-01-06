@@ -15,7 +15,7 @@ import {
   Scopes,
 } from "sequelize-typescript";
 import { api, config } from "actionhero";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import Moment from "moment";
 import { LoggedModel } from "../classes/loggedModel";
 import { GroupMember } from "./GroupMember";
@@ -145,8 +145,8 @@ export class Group extends LoggedModel<Group> {
   @BelongsToMany(() => Profile, () => GroupMember)
   profiles: Profile[];
 
-  async profilesCount(options = {}, transaction?: Transaction) {
-    let queryOptions = { where: { groupGuid: this.guid }, transaction };
+  async profilesCount(options = {}) {
+    let queryOptions = { where: { groupGuid: this.guid } };
     if (options) {
       queryOptions = Object.assign(queryOptions, options);
     }
@@ -154,7 +154,7 @@ export class Group extends LoggedModel<Group> {
     return this.$count("groupMembers", queryOptions);
   }
 
-  async getRules(transaction?: Transaction) {
+  async getRules() {
     if (this.type === "manual") return [];
 
     // We won't be deleting the model for GroupRule until the group is really deleted (to validate other models)
@@ -164,14 +164,11 @@ export class Group extends LoggedModel<Group> {
     const rulesWithKey: GroupRuleWithKey[] = [];
     const rules = await this.$get("groupRules", {
       order: [["position", "asc"]],
-      transaction,
     });
 
     for (const i in rules) {
       const rule: GroupRule = rules[i];
-      const property = await rule.$get("property", {
-        transaction,
-      });
+      const property = await rule.$get("property");
       const type = property
         ? property.type
         : TopLevelGroupRules.find((tlgr) => tlgr.key === rule.profileColumn)
@@ -196,7 +193,7 @@ export class Group extends LoggedModel<Group> {
     return this.fromConvenientRules(rulesWithKey);
   }
 
-  async setRules(rules: GroupRuleWithKey[], transaction?: Transaction) {
+  async setRules(rules: GroupRuleWithKey[]) {
     if (this.type !== "calculated") {
       throw new Error("group type not calculated");
     }
@@ -207,94 +204,70 @@ export class Group extends LoggedModel<Group> {
 
     const topLevelRuleKeys = TopLevelGroupRules.map((tlr) => tlr.key);
 
-    const existingRules = await this.getRules(transaction);
+    const existingRules = await this.getRules();
     const rulesAreEqual = GroupOps.rulesAreEqual(existingRules, rules);
     if (rulesAreEqual) return;
 
-    let toCommit = false;
-    if (!transaction) {
-      toCommit = true;
-      transaction = await api.sequelize.transaction({
-        lock: Transaction.LOCK.UPDATE,
+    await GroupRule.destroy({
+      where: { groupGuid: this.guid },
+    });
+
+    for (const i in rules) {
+      const rule = rules[i];
+      const key = rule.key;
+      const property = await Property.findOne({
+        where: { key },
+      });
+
+      if (!property && !topLevelRuleKeys.includes(key)) {
+        throw new Error(`cannot find property ${key}`);
+      }
+
+      let type = property?.type;
+      if (topLevelRuleKeys.includes(key)) {
+        type = TopLevelGroupRules.find((tlgr) => tlgr.key === key).type as
+          | "string"
+          | "date";
+      }
+
+      const dictionaryEntries = PropertyOpsDictionary[type].filter(
+        (operation) => operation.op === rule.operation.op
+      );
+      if (!dictionaryEntries || dictionaryEntries.length === 0) {
+        throw new Error(
+          `invalid group rule operation "${rule.operation.op}" for property of type ${property.type}`
+        );
+      }
+
+      await GroupRule.create({
+        position: parseInt(i) + 1,
+        groupGuid: this.guid,
+        propertyGuid: property ? property.guid : null,
+        profileColumn: property ? null : key,
+        op: rule.operation.op,
+        match: rule.match,
+        relativeMatchNumber: rule.relativeMatchNumber,
+        relativeMatchUnit: rule.relativeMatchUnit,
+        relativeMatchDirection: rule.relativeMatchDirection,
       });
     }
 
-    try {
-      await GroupRule.destroy({
-        where: { groupGuid: this.guid },
-        transaction,
-      });
+    // test the rules
+    const savedRules = await this.getRules();
+    await this.countPotentialMembers(savedRules, null);
 
-      for (const i in rules) {
-        const rule = rules[i];
-        const key = rule.key;
-        const property = await Property.findOne({
-          where: { key },
-          transaction,
-        });
-
-        if (!property && !topLevelRuleKeys.includes(key)) {
-          throw new Error(`cannot find property ${key}`);
-        }
-
-        let type = property?.type;
-        if (topLevelRuleKeys.includes(key)) {
-          type = TopLevelGroupRules.find((tlgr) => tlgr.key === key).type as
-            | "string"
-            | "date";
-        }
-
-        const dictionaryEntries = PropertyOpsDictionary[type].filter(
-          (operation) => operation.op === rule.operation.op
-        );
-        if (!dictionaryEntries || dictionaryEntries.length === 0) {
-          throw new Error(
-            `invalid group rule operation "${rule.operation.op}" for property of type ${property.type}`
-          );
-        }
-
-        await GroupRule.create(
-          {
-            position: parseInt(i) + 1,
-            groupGuid: this.guid,
-            propertyGuid: property ? property.guid : null,
-            profileColumn: property ? null : key,
-            op: rule.operation.op,
-            match: rule.match,
-            relativeMatchNumber: rule.relativeMatchNumber,
-            relativeMatchUnit: rule.relativeMatchUnit,
-            relativeMatchDirection: rule.relativeMatchDirection,
-          },
-          { transaction }
-        );
-      }
-
-      // test the rules
-      const savedRules = await this.getRules(transaction);
-      await this.countPotentialMembers(savedRules, null, transaction);
-
-      if (this.state !== "deleted" && rules.length > 0) {
-        this.state = "initializing";
-        this.changed("updatedAt", true);
-        await this.save({ transaction });
-
-        if (toCommit) {
-          await transaction.commit();
-          await this.run();
-        }
-      } else if (toCommit) {
-        await transaction.commit();
-      }
-    } catch (error) {
-      if (toCommit) await transaction.rollback();
-      throw error;
+    if (this.state !== "deleted" && rules.length > 0) {
+      this.state = "initializing";
+      this.changed("updatedAt", true);
+      await this.save();
+      await this.run();
     }
   }
 
-  async apiData(transaction?: Transaction) {
-    const profilesCount = await this.profilesCount(null, transaction);
-    const rules = await this.getRules(transaction);
-    const nextCalculatedAt = await this.nextCalculatedAt(transaction);
+  async apiData() {
+    const profilesCount = await this.profilesCount(null);
+    const rules = await this.getRules();
+    const nextCalculatedAt = await this.nextCalculatedAt();
 
     return {
       guid: this.guid,
@@ -365,27 +338,22 @@ export class Group extends LoggedModel<Group> {
     return rules;
   }
 
-  async nextCalculatedAt(transaction?: Transaction) {
+  async nextCalculatedAt() {
     if (!this.calculatedAt) return Moment().toDate();
 
     const setting = await Setting.findOne({
       where: { pluginName: "core", key: "groups-calculation-delay-minutes" },
-      transaction,
     });
     const delayMinutes = parseInt(setting.value);
     return Moment(this.calculatedAt).add(delayMinutes, "minutes").toDate();
   }
 
-  async run(
-    force = false,
-    destinationGuid?: string,
-    transaction?: Transaction
-  ) {
-    return GroupOps.run(this, force, destinationGuid, transaction);
+  async run(force = false, destinationGuid?: string) {
+    return GroupOps.run(this, force, destinationGuid);
   }
 
-  async stopPreviousRuns(transaction?: Transaction) {
-    return GroupOps.stopPreviousRuns(this, transaction);
+  async stopPreviousRuns() {
+    return GroupOps.stopPreviousRuns(this);
   }
 
   async addProfile(profile: Profile) {
@@ -446,10 +414,9 @@ export class Group extends LoggedModel<Group> {
 
   async countPotentialMembers(
     rules?: GroupRuleWithKey[],
-    matchType: typeof matchTypes[number] = this.matchType,
-    transaction?: Transaction
+    matchType: typeof matchTypes[number] = this.matchType
   ) {
-    return GroupOps.countPotentialMembers(this, rules, matchType, transaction);
+    return GroupOps.countPotentialMembers(this, rules, matchType);
   }
 
   /**
@@ -464,14 +431,13 @@ export class Group extends LoggedModel<Group> {
    */
   async _buildGroupMemberQueryParts(
     rules?: GroupRuleWithKey[],
-    matchType: typeof matchTypes[number] = this.matchType,
-    transaction?: Transaction
+    matchType: typeof matchTypes[number] = this.matchType
   ) {
     if (this.type !== "calculated") {
       throw new Error("only calculated groups can be calculated");
     }
 
-    if (!rules) rules = await this.getRules(transaction);
+    if (!rules) rules = await this.getRules();
 
     const include = [];
     const wheres = [];
@@ -496,7 +462,6 @@ export class Group extends LoggedModel<Group> {
 
       const property = await Property.findOne({
         where: { key },
-        transaction,
       });
       if (!property && !topLevel) {
         throw new Error(`cannot find type for Property ${key}`);
@@ -655,31 +620,29 @@ export class Group extends LoggedModel<Group> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: Group, { transaction }) {
+  static async ensureUniqueName(instance: Group) {
     const count = await Group.count({
       where: {
         guid: { [Op.ne]: instance.guid },
         name: instance.name,
         state: { [Op.ne]: "draft" },
       },
-      transaction,
     });
     if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
 
   @BeforeSave
-  static async updateState(instance: Group, { transaction }) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS, transaction);
+  static async updateState(instance: Group) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeSave
@@ -688,19 +651,16 @@ export class Group extends LoggedModel<Group> {
   }
 
   @BeforeDestroy
-  static async checkGroupMembers(instance: Group, { transaction }) {
-    const count = await instance.$count("groupMembers", { transaction });
+  static async checkGroupMembers(instance: Group) {
+    const count = await instance.$count("groupMembers");
     if (count > 0) {
       throw new Error(`this group still has ${count} members, cannot delete`);
     }
   }
 
   @BeforeDestroy
-  static async checkDestinationTracking(
-    instance: Group,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
-    const count = await instance.$count("destinations", { transaction });
+  static async checkDestinationTracking(instance: Group) {
+    const count = await instance.$count("destinations");
     if (count > 0) {
       throw new Error(
         `this group still in use by ${count} destinations, cannot delete`
@@ -714,57 +674,48 @@ export class Group extends LoggedModel<Group> {
   }
 
   @AfterDestroy
-  static async destroyDestinationGroupTracking(
-    instance: Group,
-    { transaction }
-  ) {
+  static async destroyDestinationGroupTracking(instance: Group) {
     const destinations = await instance.$get("destinations", {
       scope: null,
-      transaction,
     });
 
     for (const i in destinations) {
-      await destinations[i].update({ groupGuid: null }, { transaction });
+      await destinations[i].update({ groupGuid: null });
     }
   }
 
   @AfterDestroy
-  static async destroyDestinationGroupMembership(
-    instance: Group,
-    { transaction }
-  ) {
+  static async destroyDestinationGroupMembership(instance: Group) {
     const destinationGroupMemberships = await DestinationGroupMembership.findAll(
-      { where: { groupGuid: instance.guid }, transaction }
+      { where: { groupGuid: instance.guid } }
     );
 
     for (const i in destinationGroupMemberships) {
-      const destination = await destinationGroupMemberships[
-        i
-      ].$get("destination", { transaction });
-      await destinationGroupMemberships[i].destroy({ transaction });
+      const destination = await destinationGroupMemberships[i].$get(
+        "destination"
+      );
+      await destinationGroupMemberships[i].destroy();
       await destination.exportGroupMembers(false);
     }
   }
 
   @AfterDestroy
-  static async destroyGroupRules(instance: Group, { transaction }) {
+  static async destroyGroupRules(instance: Group) {
     return GroupRule.destroy({
       where: {
         groupGuid: instance.guid,
       },
-      transaction,
     });
   }
 
   @AfterDestroy
-  static async stopRuns(instance: Group, { transaction }) {
+  static async stopRuns(instance: Group) {
     const runs = await Run.findAll({
       where: { creatorGuid: instance.guid, state: "running" },
-      transaction,
     });
 
     for (const i in runs) {
-      await runs[i].update({ state: "stopped" }, { transaction });
+      await runs[i].update({ state: "stopped" });
     }
   }
 }

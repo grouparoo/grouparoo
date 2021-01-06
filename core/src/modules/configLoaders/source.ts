@@ -8,48 +8,41 @@ import {
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { App, Source, Property } from "../..";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 
 export async function loadSource(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
-  transaction?: Transaction
+  validate = false
 ) {
   let isNew = false;
 
-  const app: App = await getParentByName(App, configObject.appId, transaction);
+  const app: App = await getParentByName(App, configObject.appId);
 
   const guid = await validateAndFormatGuid(Source, configObject.id);
   validateConfigObjectKeys(Source, configObject);
 
   let source = await Source.scope(null).findOne({
     where: { guid, locked: getCodeConfigLockKey(), appGuid: app.guid },
-    transaction,
   });
   if (!source) {
     isNew = true;
-    source = await Source.create(
-      {
-        guid,
-        locked: getCodeConfigLockKey(),
-        name: configObject.name,
-        type: configObject.type,
-        appGuid: app.guid,
-      },
-      { transaction }
-    );
+    source = await Source.create({
+      guid,
+      locked: getCodeConfigLockKey(),
+      name: configObject.name,
+      type: configObject.type,
+      appGuid: app.guid,
+    });
   }
 
-  await source.update({ name: configObject.name }, { transaction });
+  await source.update({ name: configObject.name });
 
-  await source.setOptions(
-    extractNonNullParts(configObject, "options"),
-    transaction
-  );
+  await source.setOptions(extractNonNullParts(configObject, "options"));
 
   // a form of testing the options
   if (externallyValidate && (await source.previewAvailable())) {
-    await source.sourcePreview(null, transaction);
+    await source.sourcePreview();
   }
 
   let bootstrappedProperty: Property;
@@ -60,12 +53,11 @@ export async function loadSource(
     if (configObject.mapping) {
       mappedProfileProperty = await getParentByName(
         Property,
-        Object.values(extractNonNullParts(configObject, "mapping"))[0],
-        transaction
+        Object.values(extractNonNullParts(configObject, "mapping"))[0]
       );
       mapping[Object.keys(extractNonNullParts(configObject, "mapping"))[0]] =
         mappedProfileProperty.key;
-      await source.setMapping(mapping, transaction);
+      await source.setMapping(mapping);
     }
   }
 
@@ -79,7 +71,6 @@ export async function loadSource(
             configObject.bootstrappedProperty.id
           ),
         },
-        transaction,
       });
     }
   } catch (error) {
@@ -94,8 +85,7 @@ export async function loadSource(
         property.key || property.name,
         property.type,
         mappedColumn,
-        await validateAndFormatGuid(Property, property.id),
-        transaction
+        await validateAndFormatGuid(Property, property.id)
       );
       await setMapping();
     } else {
@@ -103,20 +93,17 @@ export async function loadSource(
     }
   }
 
-  await source.update({ state: "ready" }, { transaction });
+  await source.update({ state: "ready" });
 
   if (isNew && bootstrappedProperty) {
-    await bootstrappedProperty.update(
-      { locked: getCodeConfigLockKey() },
-      { transaction }
-    );
+    await bootstrappedProperty.update({ locked: getCodeConfigLockKey() });
   }
 
-  logModel(source, transaction ? "validated" : isNew ? "created" : "updated");
+  logModel(source, validate ? "validated" : isNew ? "created" : "updated");
   if (bootstrappedProperty) {
     logModel(
       bootstrappedProperty,
-      transaction ? "validated" : isNew ? "created" : "updated"
+      validate ? "validated" : isNew ? "created" : "updated"
     );
   }
 

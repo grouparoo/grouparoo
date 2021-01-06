@@ -10,7 +10,6 @@ import {
   processConfigObjects,
   logFatalError,
 } from "../modules/configLoaders";
-import { Transaction } from "sequelize";
 
 export class Validate extends CLI {
   constructor() {
@@ -47,29 +46,29 @@ export class Validate extends CLI {
 
     log(`validating ${configObjects.length} objects...`);
 
-    const transaction: Transaction = await api.sequelize.transaction();
-
     try {
-      const { errors } = await processConfigObjects(
-        configObjects,
-        !!params.externallyValidate,
-        transaction
-      );
-      if (errors.length > 0) {
-        logFatalError(
-          `❌ Validation failed - ${errors.length} validation error${
-            errors.length !== 1 ? "s" : ""
-          }`
+      await api.sequelize.transaction(async () => {
+        const { errors } = await processConfigObjects(
+          configObjects,
+          !!params.externallyValidate,
+          true
         );
-      } else {
-        log(
-          `✅ Validation succeeded - ${configObjects.length} config objects OK!`
-        );
-      }
-    } catch (e) {
-      // error will already be logged; nothing to do here
-    } finally {
-      await transaction.rollback();
+        if (errors.length > 0) {
+          logFatalError(
+            `❌ Validation failed - ${errors.length} validation error${
+              errors.length !== 1 ? "s" : ""
+            }`
+          );
+        } else {
+          log(
+            `✅ Validation succeeded - ${configObjects.length} config objects OK!`
+          );
+        }
+
+        throw new Error("validate-rollback");
+      });
+    } catch (error) {
+      if (error.message !== "validate-rollback") throw error;
     }
 
     return true;

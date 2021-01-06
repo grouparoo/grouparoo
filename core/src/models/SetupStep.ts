@@ -7,7 +7,6 @@ import {
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { SetupStepOps } from "../modules/ops/setupSteps";
-import { Transaction } from "sequelize";
 
 @Table({ tableName: "setupSteps", paranoid: false })
 export class SetupStep extends LoggedModel<SetupStep> {
@@ -34,7 +33,7 @@ export class SetupStep extends LoggedModel<SetupStep> {
   @Column
   complete: boolean;
 
-  async apiData(transaction?: Transaction) {
+  async apiData() {
     const ssd = this.getSetupStepDescription();
     const title = this.getTitle(ssd);
     const description = this.getDescription(ssd);
@@ -109,10 +108,9 @@ export class SetupStep extends LoggedModel<SetupStep> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;

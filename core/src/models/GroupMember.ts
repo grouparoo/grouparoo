@@ -13,7 +13,7 @@ import {
   AfterDestroy,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { Group } from "./Group";
 import { Profile } from "./Profile";
 import { Log } from "./Log";
@@ -52,7 +52,7 @@ export class GroupMember extends Model<GroupMember> {
   @BelongsTo(() => Profile)
   profile: Profile;
 
-  async apiData(transaction?: Transaction) {
+  async apiData() {
     return {
       profileGuid: this.profileGuid,
       groupGuid: this.groupGuid,
@@ -64,10 +64,9 @@ export class GroupMember extends Model<GroupMember> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
@@ -81,17 +80,13 @@ export class GroupMember extends Model<GroupMember> {
   }
 
   @BeforeSave
-  static async ensureOneProfilePerGroup(
-    instance: GroupMember,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async ensureOneProfilePerGroup(instance: GroupMember) {
     const existing = await GroupMember.scope(null).findOne({
       where: {
         guid: { [Op.ne]: instance.guid },
         profileGuid: instance.profileGuid,
         groupGuid: instance.groupGuid,
       },
-      transaction,
     });
     if (existing) {
       throw new Error(
@@ -101,38 +96,32 @@ export class GroupMember extends Model<GroupMember> {
   }
 
   @AfterCreate
-  static async logCreate(instance: GroupMember, { transaction }) {
-    const group = await instance.$get("group", { transaction });
+  static async logCreate(instance: GroupMember) {
+    const group = await instance.$get("group");
 
-    await Log.create(
-      {
-        topic: "groupMember",
-        verb: "create",
-        data: await instance.apiData(),
-        ownerGuid: instance.profileGuid,
-        message: `added to group ${group ? group.name : ""} (${
-          instance.groupGuid
-        })`,
-      },
-      { transaction }
-    );
+    await Log.create({
+      topic: "groupMember",
+      verb: "create",
+      data: await instance.apiData(),
+      ownerGuid: instance.profileGuid,
+      message: `added to group ${group ? group.name : ""} (${
+        instance.groupGuid
+      })`,
+    });
   }
 
   @AfterDestroy
-  static async logDestroy(instance: GroupMember, { transaction }) {
-    const group = await instance.$get("group", { transaction });
+  static async logDestroy(instance: GroupMember) {
+    const group = await instance.$get("group");
 
-    await Log.create(
-      {
-        topic: "groupMember",
-        verb: "destroy",
-        data: await instance.apiData(),
-        ownerGuid: instance.profileGuid,
-        message: `removed from group ${group ? group.name : ""} (${
-          instance.groupGuid
-        })`,
-      },
-      { transaction }
-    );
+    await Log.create({
+      topic: "groupMember",
+      verb: "destroy",
+      data: await instance.apiData(),
+      ownerGuid: instance.profileGuid,
+      message: `removed from group ${group ? group.name : ""} (${
+        instance.groupGuid
+      })`,
+    });
   }
 }

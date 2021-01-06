@@ -11,8 +11,7 @@ import {
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { Log } from "../models/Log";
-import { config, chatRoom, log } from "actionhero";
-import { Transaction } from "sequelize";
+import { config, chatRoom } from "actionhero";
 
 function modelName(instance): string {
   let name = instance.constructor.name;
@@ -43,10 +42,7 @@ export abstract class LoggedModel<T> extends Model<T> {
   updatedAt: Date;
 
   @AfterCreate
-  static async logCreate(
-    instance,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async logCreate(instance) {
     let message = `${modelName(this)} "${instance.guid}" created`;
     try {
       message = await instance.logMessage("create");
@@ -54,36 +50,27 @@ export abstract class LoggedModel<T> extends Model<T> {
       message += ` (${error})`;
     }
 
-    await Log.create(
-      {
-        topic: modelName(instance),
-        verb: "create",
-        ownerGuid: instance.guid,
-        data: await instance.filteredDataForLogging(transaction),
-        message,
-      },
-      { transaction }
-    );
+    await Log.create({
+      topic: modelName(instance),
+      verb: "create",
+      ownerGuid: instance.guid,
+      data: await instance.filteredDataForLogging(),
+      message,
+    });
   }
 
   @AfterCreate
-  static async broadcast(
-    instance,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async broadcast(instance) {
     try {
       await chatRoom.broadcast({}, `model:${modelName(instance)}`, {
-        model: await instance.apiData(transaction),
+        model: await instance.apiData(),
         verb: "create",
       });
     } catch {}
   }
 
   @AfterBulkCreate
-  static async logBulkCreate(
-    instances,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async logBulkCreate(instances) {
     for (const i in instances) {
       const instance = instances[i];
 
@@ -94,24 +81,18 @@ export abstract class LoggedModel<T> extends Model<T> {
         message += ` (${error})`;
       }
 
-      await Log.create(
-        {
-          topic: modelName(instance),
-          verb: "create",
-          ownerGuid: instance.guid,
-          data: await instance.filteredDataForLogging(transaction),
-          message,
-        },
-        { transaction }
-      );
+      await Log.create({
+        topic: modelName(instance),
+        verb: "create",
+        ownerGuid: instance.guid,
+        data: await instance.filteredDataForLogging(),
+        message,
+      });
     }
   }
 
   @AfterUpdate
-  static async logUpdate(
-    instance,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async logUpdate(instance) {
     let message = `${modelName(this)} "${instance.guid}" updated`;
     try {
       message = await instance.logMessage("update");
@@ -119,23 +100,17 @@ export abstract class LoggedModel<T> extends Model<T> {
       message += ` (${error})`;
     }
 
-    await Log.create(
-      {
-        topic: modelName(instance),
-        verb: "update",
-        ownerGuid: instance.guid,
-        data: await instance.filteredDataForLogging(transaction),
-        message,
-      },
-      { transaction }
-    );
+    await Log.create({
+      topic: modelName(instance),
+      verb: "update",
+      ownerGuid: instance.guid,
+      data: await instance.filteredDataForLogging(),
+      message,
+    });
   }
 
   @AfterDestroy
-  static async logDestroy(
-    instance,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async logDestroy(instance) {
     let message = `${modelName(this)} "${instance.guid}" destroyed`;
     try {
       message = await instance.logMessage("destroy");
@@ -143,22 +118,19 @@ export abstract class LoggedModel<T> extends Model<T> {
       message += ` (${error})`;
     }
 
-    await Log.create(
-      {
-        topic: modelName(instance),
-        verb: "destroy",
-        ownerGuid: instance.guid,
-        data: await instance.filteredDataForLogging(transaction),
-        message,
-      },
-      { transaction }
-    );
+    await Log.create({
+      topic: modelName(instance),
+      verb: "destroy",
+      ownerGuid: instance.guid,
+      data: await instance.filteredDataForLogging(),
+      message,
+    });
   }
 
-  async filteredDataForLogging(transaction?: Transaction) {
+  async filteredDataForLogging() {
     let apiData = {};
     try {
-      apiData = await this.apiData(transaction);
+      apiData = await this.apiData();
     } catch {}
 
     config.general.filteredParams.forEach((p) => {
@@ -211,15 +183,12 @@ export abstract class LoggedModel<T> extends Model<T> {
     return message;
   }
 
-  abstract apiData(transaction?: Transaction): Promise<{ [key: string]: any }>;
+  abstract apiData(): Promise<{ [key: string]: any }>;
 
   /**
    * Find an instance of this class, regardless of scope
    */
-  static async findByGuid(
-    guid: string,
-    transaction?: Transaction
-  ): Promise<any> {
+  static async findByGuid(guid: string): Promise<any> {
     // static class definitions or type defining are not yet available in TS.  See:
     // * https://github.com/microsoft/TypeScript/issues/14600
     // * https://github.com/microsoft/TypeScript/issues/34516

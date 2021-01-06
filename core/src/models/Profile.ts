@@ -21,7 +21,6 @@ import { Export } from "./Export";
 import { Event } from "./Event";
 import { StateMachine } from "./../modules/stateMachine";
 import { ProfileOps } from "../modules/ops/profile";
-import { Transaction } from "sequelize";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
@@ -32,8 +31,7 @@ const STATE_TRANSITIONS = [
     from: "pending",
     to: "ready",
     checks: [
-      (instance: Profile, transaction?: Transaction) =>
-        instance.validateProfilePropertiesAreReady(transaction),
+      (instance: Profile) => instance.validateProfilePropertiesAreReady(),
     ],
   },
   { from: "ready", to: "pending", checks: [] },
@@ -74,8 +72,8 @@ export class Profile extends LoggedModel<Profile> {
   @HasMany(() => Event, "profileGuid")
   events: Event[];
 
-  async apiData(transaction?: Transaction) {
-    const properties = await this.properties(transaction);
+  async apiData() {
+    const properties = await this.properties();
 
     return {
       guid: this.guid,
@@ -87,8 +85,8 @@ export class Profile extends LoggedModel<Profile> {
     };
   }
 
-  async properties(transaction?: Transaction) {
-    return ProfileOps.properties(this, transaction);
+  async properties() {
+    return ProfileOps.properties(this);
   }
 
   async addOrUpdateProperty(properties: {
@@ -111,8 +109,8 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps.removeProperties(this, properties);
   }
 
-  async buildNullProperties(state = "ready", transaction?: Transaction) {
-    return ProfileOps.buildNullProperties(this, state, transaction);
+  async buildNullProperties(state = "ready") {
+    return ProfileOps.buildNullProperties(this, state);
   }
 
   async markPending() {
@@ -132,8 +130,8 @@ export class Profile extends LoggedModel<Profile> {
     return results;
   }
 
-  async import(toSave = true, toLock = true, transaction?: Transaction) {
-    return ProfileOps._import(this, toSave, toLock, transaction);
+  async import(toSave = true, toLock = true) {
+    return ProfileOps._import(this, toSave, toLock);
   }
 
   async export(force = false, oldGroupsOverride?: Group[]) {
@@ -158,8 +156,8 @@ export class Profile extends LoggedModel<Profile> {
     return message;
   }
 
-  async validateProfilePropertiesAreReady(transaction?: Transaction) {
-    const properties = await this.properties(transaction);
+  async validateProfilePropertiesAreReady() {
+    const properties = await this.properties();
     for (const k in properties) {
       if (properties[k].state !== "ready") {
         throw new Error(
@@ -171,26 +169,22 @@ export class Profile extends LoggedModel<Profile> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
   @BeforeSave
-  static async updateState(instance: Profile, { transaction }) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS, transaction);
+  static async updateState(instance: Profile) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @AfterCreate
-  static async buildNullPropertiesForNewProfile(
-    instance: Profile,
-    { transaction }
-  ) {
-    await instance.buildNullProperties(undefined, transaction);
+  static async buildNullPropertiesForNewProfile(instance: Profile) {
+    await instance.buildNullProperties(undefined);
   }
 
   @AfterDestroy
@@ -199,18 +193,16 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   @AfterDestroy
-  static async destroyProfileProperties(instance: Profile, { transaction }) {
+  static async destroyProfileProperties(instance: Profile) {
     await ProfileProperty.destroy({
       where: { profileGuid: instance.guid },
-      transaction,
     });
   }
 
   @AfterDestroy
-  static async destroyGroupMembers(instance: Profile, { transaction }) {
+  static async destroyGroupMembers(instance: Profile) {
     await GroupMember.destroy({
       where: { profileGuid: instance.guid },
-      transaction,
     });
   }
 
@@ -222,18 +214,16 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   @AfterDestroy
-  static async destroyImports(instance: Profile, { transaction }) {
+  static async destroyImports(instance: Profile) {
     await Import.destroy({
       where: { profileGuid: instance.guid },
-      transaction,
     });
   }
 
   @AfterDestroy
-  static async destroyExports(instance: Profile, { transaction }) {
+  static async destroyExports(instance: Profile) {
     await Export.destroy({
       where: { profileGuid: instance.guid },
-      transaction,
     });
   }
 }

@@ -1,7 +1,6 @@
 import { log } from "actionhero";
 import { PropertyFiltersWithKey } from "../models/Property";
 import { GroupRuleWithKey } from "../models/Group";
-import { Transaction } from "sequelize";
 
 export interface ConfigurationObject {
   id: string;
@@ -41,19 +40,13 @@ export function getCodeConfigLockKey() {
   return "config:code";
 }
 
-export async function getParentByName(
-  model: any,
-  id: string,
-  transaction?: Transaction
-) {
+export async function getParentByName(model: any, id: string) {
   if (!id) {
     throw new Error(`missing parent id to find a ${model.name}`);
   }
 
   const guid = await validateAndFormatGuid(model, id);
-  const instance = await model
-    .scope(null)
-    .findOne({ where: { guid }, transaction });
+  const instance = await model.scope(null).findOne({ where: { guid } });
 
   if (!instance) {
     throw new Error(`cannot find ${model.name} with guid "${guid}"`);

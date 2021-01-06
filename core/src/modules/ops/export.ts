@@ -6,17 +6,16 @@ import { ProfilePropertyOps } from "../../modules/ops/profileProperty";
 import { Export } from "../../models/Export";
 import { Destination } from "../../models/Destination";
 import { api, task } from "actionhero";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 
 export namespace ExportOps {
   /** Count up the exports in each state, optionally filtered for a profile or destination */
   export async function totals(
-    where: { profileGuid?: string; destinationGuid?: string } = {},
-    transaction?: Transaction
+    where: { profileGuid?: string; destinationGuid?: string } = {}
   ) {
     const totals = { all: 0, created: 0, started: 0, completed: 0, error: 0 };
 
-    totals.all = await Export.count({ where, transaction });
+    totals.all = await Export.count({ where });
 
     totals.created = await Export.count({
       where: Object.assign({}, where, {
@@ -26,7 +25,6 @@ export namespace ExportOps {
           errorMessage: { [Op.eq]: null },
         },
       }),
-      transaction,
     });
 
     totals.started = await Export.count({
@@ -37,7 +35,6 @@ export namespace ExportOps {
           errorMessage: { [Op.eq]: null },
         },
       }),
-      transaction,
     });
 
     totals.completed = await Export.count({
@@ -46,14 +43,12 @@ export namespace ExportOps {
         completedAt: { [Op.ne]: null },
         errorMessage: { [Op.eq]: null },
       }),
-      transaction,
     });
 
     totals.error = await Export.count({
       where: Object.assign({}, where, {
         errorMessage: { [Op.ne]: null },
       }),
-      transaction,
     });
 
     return totals;
@@ -102,39 +97,28 @@ export namespace ExportOps {
 
     let _exports: Export[];
 
-    const transaction: Transaction = await api.sequelize.transaction({});
+    _exports = await Export.findAll({
+      where: {
+        startedAt: null,
+        destinationGuid: destination.guid,
+      },
+      order: [["createdAt", "asc"]],
+      limit,
+    });
 
-    try {
-      _exports = await Export.findAll({
+    const updateResponse = await Export.update(
+      { startedAt: new Date() },
+      {
         where: {
+          guid: { [Op.in]: _exports.map((e) => e.guid) },
           startedAt: null,
-          destinationGuid: destination.guid,
         },
-        order: [["createdAt", "asc"]],
-        limit,
-        transaction,
-      });
+      }
+    );
 
-      const updateResponse = await Export.update(
-        { startedAt: new Date() },
-        {
-          where: {
-            guid: { [Op.in]: _exports.map((e) => e.guid) },
-            startedAt: null,
-          },
-          transaction,
-        }
-      );
-
-      transaction.commit();
-
-      // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer startedAt=null
-      // in SQLite this isn't possible, but contention is far less likely
-      if (updateResponse[1]) _exports = updateResponse[1];
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
-    }
+    // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer startedAt=null
+    // in SQLite this isn't possible, but contention is far less likely
+    if (updateResponse[1]) _exports = updateResponse[1];
 
     if (_exports.length > 0) {
       if (pluginConnection.methods.exportProfiles) {

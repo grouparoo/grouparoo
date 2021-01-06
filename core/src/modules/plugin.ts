@@ -1,6 +1,5 @@
 import { api } from "actionhero";
 import { GrouparooPlugin } from "../classes/plugin";
-import { Transaction } from "sequelize";
 import Mustache from "mustache";
 
 import { App } from "../models/App";
@@ -136,14 +135,9 @@ export namespace plugin {
   /**
    * Read a setting for this plugin
    */
-  export async function readSetting(
-    pluginName: string,
-    key: string,
-    transaction?: Transaction
-  ) {
+  export async function readSetting(pluginName: string, key: string) {
     const setting = await Setting.findOne({
       where: { pluginName, key },
-      transaction,
     });
     if (!setting) {
       throw new Error(
@@ -160,12 +154,11 @@ export namespace plugin {
   export async function updateSetting(
     pluginName: string,
     key: string,
-    value: any,
-    transaction?: Transaction
+    value: any
   ) {
-    const setting = await plugin.readSetting(pluginName, key, transaction);
+    const setting = await plugin.readSetting(pluginName, key);
     setting.value = value;
-    await setting.save({ transaction });
+    await setting.save();
     return setting;
   }
 

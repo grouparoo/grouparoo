@@ -24,7 +24,7 @@ import { Group } from "./Group";
 import { Export } from "./Export";
 import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import { plugin } from "../modules/plugin";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { OptionHelper } from "./../modules/optionHelper";
 import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
@@ -47,10 +47,7 @@ const STATE_TRANSITIONS = [
   {
     from: "draft",
     to: "ready",
-    checks: [
-      (instance: Destination, transaction?: Transaction) =>
-        instance.validateOptions(null, transaction),
-    ],
+    checks: [(instance: Destination) => instance.validateOptions(null)],
   },
   { from: "draft", to: "deleted", checks: [] },
   { from: "ready", to: "deleted", checks: [] },
@@ -112,26 +109,19 @@ export class Destination extends LoggedModel<Destination> {
   @HasMany(() => Export)
   exports: Export[];
 
-  async apiData(
-    transaction?: Transaction,
-    includeApp = true,
-    includeGroup = true
-  ) {
+  async apiData(includeApp = true, includeGroup = true) {
     let app: App;
     let group: Group;
-    if (includeApp) app = await this.$get("app", { scope: null, transaction });
+    if (includeApp) app = await this.$get("app", { scope: null });
     if (includeGroup) {
-      group = await this.$get("group", { scope: null, transaction });
+      group = await this.$get("group", { scope: null });
     }
 
-    const mapping = await this.getMapping(transaction);
-    const options = await this.getOptions(null, transaction);
-    const destinationGroupMemberships = await this.getDestinationGroupMemberships(
-      transaction
-    );
-    const { pluginConnection } = await this.getPlugin(transaction);
-
-    const exportTotals = await this.getExportTotals(transaction);
+    const mapping = await this.getMapping();
+    const options = await this.getOptions(null);
+    const destinationGroupMemberships = await this.getDestinationGroupMemberships();
+    const { pluginConnection } = await this.getPlugin();
+    const exportTotals = await this.getExportTotals();
 
     return {
       guid: this.guid,
@@ -139,11 +129,11 @@ export class Destination extends LoggedModel<Destination> {
       type: this.type,
       state: this.state,
       locked: this.locked,
-      app: app ? await app.apiData(transaction) : null,
+      app: app ? await app.apiData() : null,
       mapping,
       options,
       connection: pluginConnection,
-      destinationGroup: group ? await group.apiData(transaction) : null,
+      destinationGroup: group ? await group.apiData() : null,
       destinationGroupMemberships,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
@@ -151,44 +141,41 @@ export class Destination extends LoggedModel<Destination> {
     };
   }
 
-  async getExportTotals(transaction?: Transaction) {
-    return ExportOps.totals({ destinationGuid: this.guid }, transaction);
+  async getExportTotals() {
+    return ExportOps.totals({ destinationGuid: this.guid });
   }
 
-  async getMapping(transaction?: Transaction) {
-    return MappingHelper.getMapping(this, transaction);
+  async getMapping() {
+    return MappingHelper.getMapping(this);
   }
 
   async setMapping(
     mappings: DestinationMapping,
-    transaction?: Transaction,
+
     externallyValidate = true
   ) {
-    if (externallyValidate) await this.validateMappings(mappings, transaction);
-    return MappingHelper.setMapping(this, mappings, transaction);
+    if (externallyValidate) await this.validateMappings(mappings);
+    return MappingHelper.setMapping(this, mappings);
   }
 
-  async getOptions(sourceFromEnvironment = true, transaction?: Transaction) {
-    return OptionHelper.getOptions(this, sourceFromEnvironment, transaction);
+  async getOptions(sourceFromEnvironment = true) {
+    return OptionHelper.getOptions(this, sourceFromEnvironment);
   }
 
-  async setOptions(
-    options: SimpleDestinationOptions,
-    transaction?: Transaction
-  ) {
-    await this.validateUniqueAppAndOptions(options, transaction);
-    return OptionHelper.setOptions(this, options, transaction);
+  async setOptions(options: SimpleDestinationOptions) {
+    await this.validateUniqueAppAndOptions(options);
+    return OptionHelper.setOptions(this, options);
   }
 
-  async getExportArrayProperties(transaction?: Transaction) {
-    return DestinationOps.getExportArrayProperties(this, transaction);
+  async getExportArrayProperties() {
+    return DestinationOps.getExportArrayProperties(this);
   }
 
-  async getDestinationGroupMemberships(
-    transaction?: Transaction
-  ): Promise<SimpleDestinationGroupMembership[]> {
+  async getDestinationGroupMemberships(): Promise<
+    SimpleDestinationGroupMembership[]
+  > {
     const destinationGroupMemberships = await DestinationGroupMembership.findAll(
-      { where: { destinationGuid: this.guid }, include: [Group], transaction }
+      { where: { destinationGuid: this.guid }, include: [Group] }
     );
 
     return destinationGroupMemberships.map((dgm) => {
@@ -200,92 +187,62 @@ export class Destination extends LoggedModel<Destination> {
     });
   }
 
-  async setDestinationGroupMemberships(
-    newDestinationGroupMemberships: {
-      [groupGuid: string]: string;
-    },
-    transaction?: Transaction
-  ) {
+  async setDestinationGroupMemberships(newDestinationGroupMemberships: {
+    [groupGuid: string]: string;
+  }) {
     for (const groupGuid in newDestinationGroupMemberships) {
-      const group = await Group.findByGuid(groupGuid, transaction);
+      const group = await Group.findByGuid(groupGuid);
       if (group.state === "draft" || group.state === "deleted") {
         throw new Error(`group ${group.name} is not ready`);
       }
     }
 
-    let toCommit = false;
-    if (!transaction) {
-      transaction = await api.sequelize.transaction({
-        lock: Transaction.LOCK.UPDATE,
+    await DestinationGroupMembership.destroy({
+      where: {
+        destinationGuid: this.guid,
+      },
+    });
+
+    for (const groupGuid in newDestinationGroupMemberships) {
+      await DestinationGroupMembership.create({
+        destinationGuid: this.guid,
+        groupGuid,
+        remoteKey: newDestinationGroupMemberships[groupGuid],
       });
-      toCommit = true;
     }
 
-    try {
-      await DestinationGroupMembership.destroy({
-        where: {
-          destinationGuid: this.guid,
-        },
-        transaction,
-      });
-
-      for (const groupGuid in newDestinationGroupMemberships) {
-        await DestinationGroupMembership.create(
-          {
-            destinationGuid: this.guid,
-            groupGuid,
-            remoteKey: newDestinationGroupMemberships[groupGuid],
-          },
-          { transaction }
-        );
-      }
-
-      if (toCommit) await transaction.commit();
-      return this.getDestinationGroupMemberships();
-    } catch (error) {
-      if (toCommit) await transaction.rollback();
-      throw error;
-    }
+    return this.getDestinationGroupMemberships();
   }
 
-  async validateOptions(
-    options: SimpleDestinationOptions,
-    transaction?: Transaction
-  ) {
-    if (!options) options = await this.getOptions(true, transaction);
-    return OptionHelper.validateOptions(this, options, null, transaction);
+  async validateOptions(options: SimpleDestinationOptions) {
+    if (!options) options = await this.getOptions(true);
+    return OptionHelper.validateOptions(this, options, null);
   }
 
-  async getPlugin(transaction?: Transaction) {
-    return OptionHelper.getPlugin(this, transaction);
+  async getPlugin() {
+    return OptionHelper.getPlugin(this);
   }
 
   async exportGroupMembers(force = false) {
     return DestinationOps.exportGroupMembers(this, force);
   }
 
-  async trackGroup(group: Group, transaction?: Transaction) {
-    return DestinationOps.trackGroup(this, group, transaction);
+  async trackGroup(group: Group) {
+    return DestinationOps.trackGroup(this, group);
   }
 
-  async unTrackGroup(transaction?: Transaction) {
-    return DestinationOps.unTrackGroup(this, transaction);
+  async unTrackGroup() {
+    return DestinationOps.unTrackGroup(this);
   }
 
-  async validateMappings(
-    mappings: { [key: string]: string },
-    transaction?: Transaction
-  ) {
+  async validateMappings(mappings: { [key: string]: string }) {
     if (Object.keys(mappings).length === 0) return;
 
     const destinationMappingOptions = await this.destinationMappingOptions(
-      false,
-      transaction
+      false
     );
-    const properties = await Property.findAll({ transaction });
-    const exportArrayProperties = await this.getExportArrayProperties(
-      transaction
-    );
+    const properties = await Property.findAll();
+    const exportArrayProperties = await this.getExportArrayProperties();
 
     // check for array properties
     Object.values(mappings).forEach((k) => {
@@ -355,18 +312,16 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async destinationConnectionOptions(
-    destinationOptions: SimpleDestinationOptions = {},
-    transaction?: Transaction
+    destinationOptions: SimpleDestinationOptions = {}
   ) {
     return DestinationOps.destinationConnectionOptions(
       this,
-      destinationOptions,
-      transaction
+      destinationOptions
     );
   }
 
-  async destinationMappingOptions(cached?: boolean, transaction?: Transaction) {
-    return DestinationOps.destinationMappingOptions(this, cached, transaction);
+  async destinationMappingOptions(cached?: boolean) {
+    return DestinationOps.destinationMappingOptions(this, cached);
   }
 
   async profilePreview(
@@ -409,23 +364,19 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.sendExports(this, _exports, sync);
   }
 
-  async validateUniqueAppAndOptions(
-    options?: SimpleDestinationOptions,
-    transaction?: Transaction
-  ) {
-    if (!options) options = await this.getOptions(true, transaction);
+  async validateUniqueAppAndOptions(options?: SimpleDestinationOptions) {
+    if (!options) options = await this.getOptions(true);
     const otherDestinations = await Destination.scope(null).findAll({
       where: {
         appGuid: this.appGuid,
         type: this.type,
         guid: { [Op.not]: this.guid },
       },
-      transaction,
     });
 
     for (const i in otherDestinations) {
       const otherDestination = otherDestinations[i];
-      const otherOptions = await otherDestination.getOptions(true, transaction);
+      const otherOptions = await otherDestination.getOptions(true);
       let isSameOptions =
         Object.entries(otherOptions).toString() ===
         Object.entries(options).toString();
@@ -440,27 +391,23 @@ export class Destination extends LoggedModel<Destination> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
   @BeforeCreate
-  static async ensureAppReady(instance: Destination, { transaction }) {
-    const app = await App.findByGuid(instance.appGuid, transaction);
+  static async ensureAppReady(instance: Destination) {
+    const app = await App.findByGuid(instance.appGuid);
     if (app.state !== "ready") throw new Error(`app ${app.guid} is not ready`);
   }
 
   @BeforeCreate
-  static async ensureExportProfilesMethod(
-    instance: Destination,
-    { transaction }
-  ) {
-    const { pluginConnection } = await instance.getPlugin(transaction);
+  static async ensureExportProfilesMethod(instance: Destination) {
+    const { pluginConnection } = await instance.getPlugin();
     if (!pluginConnection) {
       throw new Error(`a destination of type ${instance.type} cannot be found`);
     }
@@ -476,29 +423,27 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: Destination, { transaction }) {
+  static async ensureUniqueName(instance: Destination) {
     const count = await Destination.count({
       where: {
         guid: { [Op.ne]: instance.guid },
         name: instance.name,
         state: { [Op.ne]: "draft" },
       },
-      transaction,
     });
     if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
 
   @BeforeSave
   static async ensureOnlyOneDestinationPerAppWithSameSettings(
-    instance: Destination,
-    { transaction }
+    instance: Destination
   ) {
-    await instance.validateUniqueAppAndOptions(null, transaction);
+    await instance.validateUniqueAppAndOptions(null);
   }
 
   @BeforeSave
-  static async updateState(instance: Destination, { transaction }) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS, transaction);
+  static async updateState(instance: Destination) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeSave
@@ -512,14 +457,10 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeDestroy
-  static async cannotDeleteDestinationWithTrackedGroup(
-    instance: Destination,
-    { transaction }
-  ) {
+  static async cannotDeleteDestinationWithTrackedGroup(instance: Destination) {
     if (instance.groupGuid) {
       const group = await Group.findOne({
         where: { guid: instance.groupGuid },
-        transaction,
       });
       if (group) {
         throw new Error("cannot delete a destination that is tracking a group");
@@ -528,16 +469,12 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeDestroy
-  static async waitForPendingExports(
-    instance: Destination,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async waitForPendingExports(instance: Destination) {
     const pendingExportCount = await instance.$count("exports", {
       where: {
         completedAt: { [Op.eq]: null },
         errorMessage: { [Op.eq]: null },
       },
-      transaction,
     });
     if (pendingExportCount > 0) {
       throw new Error(
@@ -547,43 +484,30 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @AfterDestroy
-  static async destroyDestinationMappings(
-    instance: Destination,
-    { transaction }
-  ) {
+  static async destroyDestinationMappings(instance: Destination) {
     return Mapping.destroy({
       where: { ownerGuid: instance.guid },
-      transaction,
     });
   }
 
   @AfterDestroy
-  static async destroyDestinationOptions(
-    instance: Destination,
-    { transaction }
-  ) {
+  static async destroyDestinationOptions(instance: Destination) {
     return Option.destroy({
       where: { ownerGuid: instance.guid },
-      transaction,
     });
   }
 
   @AfterDestroy
-  static async destroyDestinationGroupMemberships(
-    instance: Destination,
-    { transaction }
-  ) {
+  static async destroyDestinationGroupMemberships(instance: Destination) {
     return DestinationGroupMembership.destroy({
       where: { destinationGuid: instance.guid },
-      transaction,
     });
   }
 
   @AfterDestroy
-  static async destroyExports(instance: Destination, { transaction }) {
+  static async destroyExports(instance: Destination) {
     await Export.destroy({
       where: { destinationGuid: instance.guid },
-      transaction,
     });
   }
 
