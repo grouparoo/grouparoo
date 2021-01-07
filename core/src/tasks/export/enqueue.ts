@@ -20,24 +20,19 @@ export class EnqueueExports extends RetryableTask {
       (await plugin.readSetting("core", "exports-profile-batch-size")).value
     );
 
+    let totalEnqueued = 0;
     const destinations = await Destination.scope(null).findAll();
 
-    let totalEnqueued = 0;
-
     for (const i in destinations) {
-      let enqueuedExportsCount = 1;
-
-      while (enqueuedExportsCount > 0) {
-        enqueuedExportsCount = await ExportOps.processPendingExportsForDestination(
-          destinations[i],
-          limit
+      const enqueuedExportsCount = await ExportOps.processPendingExportsForDestination(
+        destinations[i],
+        limit
+      );
+      totalEnqueued += enqueuedExportsCount;
+      if (enqueuedExportsCount > 0) {
+        log(
+          `enqueued ${enqueuedExportsCount} exports to send to ${destinations[i].name} (${destinations[i].guid})`
         );
-        totalEnqueued += enqueuedExportsCount;
-        if (enqueuedExportsCount > 0) {
-          log(
-            `enqueued ${enqueuedExportsCount} exports to send to ${destinations[i].name} (${destinations[i].guid})`
-          );
-        }
       }
     }
 
