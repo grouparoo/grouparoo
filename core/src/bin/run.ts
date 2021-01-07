@@ -23,10 +23,6 @@ export class RunCLI extends CLI {
       },
     };
 
-    if (!process.argv.slice(2).includes("--web")) {
-      process.env.WEB_SERVER = "false";
-    }
-
     GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.timestampOption(this);
   }
@@ -34,6 +30,10 @@ export class RunCLI extends CLI {
   async run() {
     GrouparooCLI.logCLI(this, false);
     this.checkWorkers();
+
+    if (!process.argv.slice(2).includes("--web")) {
+      this.disableWebServer();
+    }
 
     if (process.argv.slice(2).includes("--destroy")) {
       await GrouparooCLI.destroyProfiles();
@@ -61,6 +61,11 @@ export class RunCLI extends CLI {
       throw new Error(`The Task Scheduler is not enabled`);
     if (config.tasks.minTaskProcessors < 1)
       throw new Error(`No Task Workers are enabled`);
+  }
+
+  disableWebServer() {
+    delete api.servers.servers.web;
+    delete api.servers.servers.websocket;
   }
 
   async waitForReady() {
