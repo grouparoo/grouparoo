@@ -8,7 +8,7 @@ import {
 import { Group } from "../..";
 import { Property } from "../../models/Property";
 import { Op } from "sequelize";
-import { api } from "actionhero";
+import { CLS } from "../../modules/cls";
 
 export async function loadGroup(
   configObject: ConfigurationObject,
@@ -70,7 +70,7 @@ export async function deleteGroups(guids: string[]) {
   for (const i in groups) {
     const group = groups[i];
     await group.update({ state: "deleted", locked: null });
-    await api.cls.enqueueTask("group:destroy", { groupGuid: group.guid });
+    await CLS.enqueueTask("group:destroy", { groupGuid: group.guid });
     logModel(group, "deleted");
   }
 

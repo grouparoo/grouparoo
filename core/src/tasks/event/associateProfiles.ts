@@ -1,7 +1,8 @@
-import { api, log } from "actionhero";
+import { log } from "actionhero";
 import { plugin } from "../../modules/plugin";
 import { Event } from "../../models/Event";
 import { CLSTask } from "../../classes/tasks/clsTask";
+import { CLS } from "../../modules/cls";
 
 export class EventsAssociateProfiles extends CLSTask {
   constructor() {
@@ -27,7 +28,7 @@ export class EventsAssociateProfiles extends CLSTask {
     });
 
     for (const i in events) {
-      await api.cls.enqueueTask("event:associateProfile", {
+      await CLS.enqueueTask("event:associateProfile", {
         eventGuid: events[i].guid,
       });
     }

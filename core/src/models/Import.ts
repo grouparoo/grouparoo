@@ -13,7 +13,8 @@ import {
   Default,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
-import { api, config } from "actionhero";
+import { config } from "actionhero";
+import { CLS } from "../modules/cls";
 import { Profile } from "./Profile";
 import { Run } from "./Run";
 import { plugin } from "../modules/plugin";
@@ -231,7 +232,7 @@ export class Import extends Model<Import> {
   @AfterCreate
   static async enqueueTask(instance: Import) {
     if (!instance.profileGuid) {
-      await api.cls.enqueueTaskIn(
+      await CLS.enqueueTaskIn(
         config.tasks.timeout + 1,
         "import:associateProfile",
         {

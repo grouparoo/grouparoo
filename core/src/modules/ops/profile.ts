@@ -5,10 +5,12 @@ import { Source } from "../../models/Source";
 import { Group } from "../../models/Group";
 import { Destination } from "../../models/Destination";
 import { Event } from "../../models/Event";
-import { api, task } from "actionhero";
+import { api } from "actionhero";
 import { Op } from "sequelize";
 import { waitForLock } from "../locks";
 import { ProfilePropertyOps } from "./profileProperty";
+import { CLS } from "../../modules/cls";
+
 export interface ProfilePropertyType {
   [key: string]: {
     guid: ProfileProperty["guid"];
@@ -592,7 +594,7 @@ export namespace ProfileOps {
 
     await Promise.all(
       profiles.map((profile) =>
-        api.cls.enqueueTask("profile:completeImport", {
+        CLS.enqueueTask("profile:completeImport", {
           profileGuid: profile.guid,
         })
       )

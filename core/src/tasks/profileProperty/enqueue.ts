@@ -1,8 +1,8 @@
-import { api } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { Property } from "../../models/Property";
 import { plugin } from "../../modules/plugin";
+import { CLS } from "../../modules/cls";
 
 export class ProfilePropertiesEnqueue extends CLSTask {
   constructor() {
@@ -52,7 +52,7 @@ export class ProfilePropertiesEnqueue extends CLSTask {
 
       if (pendingProfileProperties.length > 0) {
         if (method === "ProfileProperties") {
-          await api.cls.enqueueTask(`profileProperty:import${method}`, {
+          await CLS.enqueueTask(`profileProperty:import${method}`, {
             propertyGuid: property.guid,
             profileGuids: pendingProfileProperties.map(
               (ppp) => ppp.profileGuid
@@ -61,7 +61,7 @@ export class ProfilePropertiesEnqueue extends CLSTask {
         } else {
           await Promise.all(
             pendingProfileProperties.map((ppp) =>
-              api.cls.enqueueTask(`profileProperty:import${method}`, {
+              CLS.enqueueTask(`profileProperty:import${method}`, {
                 propertyGuid: property.guid,
                 profileGuid: ppp.profileGuid,
               })

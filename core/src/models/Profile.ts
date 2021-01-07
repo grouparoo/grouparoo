@@ -10,7 +10,7 @@ import {
   Default,
   AfterCreate,
 } from "sequelize-typescript";
-import { api } from "actionhero";
+import { CLS } from "../modules/cls";
 import { LoggedModel } from "../classes/loggedModel";
 import { GroupMember } from "./GroupMember";
 import { Group } from "./Group";
@@ -208,7 +208,7 @@ export class Profile extends LoggedModel<Profile> {
 
   @AfterDestroy
   static async destroyEvents(instance: Profile) {
-    await api.cls.enqueueTask("profile:destroyEvents", {
+    await CLS.enqueueTask("profile:destroyEvents", {
       guid: instance.guid,
     });
   }

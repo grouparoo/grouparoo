@@ -2,6 +2,7 @@ import os from "os";
 import "node-resque"; // needed for types
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { api, task } from "actionhero";
+import { CLS } from "../modules/cls";
 
 // Helper Classes for Permissions
 
@@ -379,7 +380,7 @@ export class ResqueRunDelayed extends ResqueActionWrite {
 
     const job = delayed.tasks[params.count];
     await task.delDelayed(job.queue, job.class, job.args[0]);
-    await api.cls.enqueueTask(job.class, job.args[0], job.queue);
+    await CLS.enqueueTask(job.class, job.args[0], job.queue);
 
     return { success: true };
   }

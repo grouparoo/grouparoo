@@ -5,7 +5,7 @@ import {
 import { ProfilePropertyOps } from "../../modules/ops/profileProperty";
 import { Export } from "../../models/Export";
 import { Destination } from "../../models/Destination";
-import { api, task } from "actionhero";
+import { CLS } from "../../modules/cls";
 import { Op } from "sequelize";
 
 export namespace ExportOps {
@@ -123,7 +123,7 @@ export namespace ExportOps {
     if (_exports.length > 0) {
       if (pluginConnection.methods.exportProfiles) {
         // the plugin has a batch exportProfiles method
-        await api.cls.enqueueTask(
+        await CLS.enqueueTask(
           "export:sendBatch",
           {
             destinationGuid: destination.guid,
@@ -135,7 +135,7 @@ export namespace ExportOps {
         // the plugin has a per-profile exportProfile method
         await Promise.all(
           _exports.map((_export) =>
-            api.cls.enqueueTask(
+            CLS.enqueueTask(
               "export:send",
               {
                 destinationGuid: destination.guid,

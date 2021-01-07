@@ -1,5 +1,6 @@
-import { Task, api } from "actionhero";
+import { Task } from "actionhero";
 import { TaskInputs } from "actionhero/dist/classes/task";
+import { CLS } from "../../modules/cls";
 
 export abstract class CLSTask extends Task {
   constructor() {
@@ -7,18 +8,10 @@ export abstract class CLSTask extends Task {
   }
 
   async run(data: TaskInputs, worker: any) {
-    let afterCommitJobs: Array<Function>;
-    let runResponse;
-
     if (typeof this.runWithinTransaction === "function") {
-      await api.sequelize.transaction(async () => {
-        runResponse = await this.runWithinTransaction(data, worker);
-        afterCommitJobs = api.cls.namespace.get("afterCommitJobs");
-      });
-
-      for (const i in afterCommitJobs) await afterCommitJobs[i]();
-
-      return runResponse;
+      return CLS.wrap(
+        async () => await this.runWithinTransaction(data, worker)
+      );
     } else {
       throw new Error(
         "No run or runWithinTransaction method for this task: " + this.name

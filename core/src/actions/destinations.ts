@@ -1,4 +1,5 @@
-import { api, task } from "actionhero";
+import { api } from "actionhero";
+import { CLS } from "../modules/cls";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Destination } from "../models/Destination";
 import { App } from "../models/App";
@@ -429,7 +430,7 @@ export class DestinationDestroy extends AuthenticatedAction {
       await destination.destroy();
     } else {
       await destination.update({ state: "deleted" });
-      await api.cls.enqueueTask("destination:destroy", {
+      await CLS.enqueueTask("destination:destroy", {
         destinationGuid: destination.guid,
       });
     }

@@ -1,4 +1,4 @@
-import { api } from "actionhero";
+import { CLS } from "../../modules/cls";
 import { Profile } from "../../models/Profile";
 import { Property } from "../../models/Property";
 import { ProfilePropertyType } from "../../modules/ops/profile";
@@ -90,7 +90,7 @@ export class ProfileCompleteImport extends RetryableTask {
 
       let force = false;
 
-      await api.cls.enqueueTask("profile:export", {
+      await CLS.enqueueTask("profile:export", {
         profileGuid: profile.guid,
         force,
       });

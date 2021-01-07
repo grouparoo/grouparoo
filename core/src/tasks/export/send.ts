@@ -1,7 +1,7 @@
 import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { Destination } from "../../models/Destination";
 import { Export } from "../../models/Export";
-import { api } from "actionhero";
+import { CLS } from "../../modules/cls";
 
 export class ExportSend extends RetryableTask {
   constructor() {
@@ -31,7 +31,7 @@ export class ExportSend extends RetryableTask {
     if (!success) {
       if (retryDelay) {
         const app = await destination.$get("app");
-        return api.cls.enqueueTaskIn(
+        return CLS.enqueueTaskIn(
           retryDelay,
           "export:send",
           params,

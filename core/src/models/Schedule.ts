@@ -1,4 +1,4 @@
-import { log, api } from "actionhero";
+import { log } from "actionhero";
 import {
   Table,
   Column,
@@ -28,6 +28,7 @@ import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { ScheduleOps } from "../modules/ops/schedule";
 import { LockableHelper } from "../modules/lockableHelper";
+import { CLS } from "../modules/cls";
 
 /**
  * Metadata and methods to return the options a Schedule for this connection/app.
@@ -174,7 +175,7 @@ export class Schedule extends LoggedModel<Schedule> {
       "notice"
     );
 
-    await api.cls.enqueueTask(
+    await CLS.enqueueTask(
       "schedule:run",
       { scheduleGuid: this.guid, runGuid: run.guid },
       "schedules"

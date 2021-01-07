@@ -8,7 +8,7 @@ import {
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { App, Destination, Group, Property } from "../..";
-import { api } from "actionhero";
+import { CLS } from "../../modules/cls";
 import { Op } from "sequelize";
 
 export async function loadDestination(
@@ -87,7 +87,7 @@ export async function deleteDestinations(guids: string[]) {
   for (const i in destinations) {
     const destination = destinations[i];
     await destination.update({ state: "deleted", locked: null });
-    await api.cls.enqueueTask("destination:destroy", {
+    await CLS.enqueueTask("destination:destroy", {
       destinationGuid: destination.guid,
     });
     logModel(destination, "deleted");

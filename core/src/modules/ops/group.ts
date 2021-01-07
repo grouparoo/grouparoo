@@ -5,7 +5,8 @@ import { Profile } from "../../models/Profile";
 import { ProfileMultipleAssociationShim } from "../../models/ProfileMultipleAssociationShim";
 import { Import } from "../../models/Import";
 import { Op } from "sequelize";
-import { api, task, log } from "actionhero";
+import { api, log } from "actionhero";
+import { CLS } from "../../modules/cls";
 
 export namespace GroupOps {
   /**
@@ -32,7 +33,7 @@ export namespace GroupOps {
       "notice"
     );
 
-    await api.cls.enqueueTask("group:run", {
+    await CLS.enqueueTask("group:run", {
       groupGuid: group.guid,
       runGuid: run.guid,
       force,

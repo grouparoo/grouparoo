@@ -13,7 +13,8 @@ import { Op } from "sequelize";
 import { EventData } from "./EventData";
 import { Profile } from "./Profile";
 import { PropertyFiltersWithKey } from "./Property";
-import { api, task, config } from "actionhero";
+import { api, config } from "actionhero";
+import { CLS } from "../modules/cls";
 import { EventOps } from "../modules/ops/event";
 
 @Table({ tableName: "events", paranoid: false })
@@ -123,7 +124,7 @@ export class Event extends LoggedModel<Event> {
 
   @AfterCreate
   static async enqueueAssociateEvent(instance: Event) {
-    await api.cls.enqueueTask("event:associateProfile", {
+    await CLS.enqueueTask("event:associateProfile", {
       eventGuid: instance.guid,
     });
   }
