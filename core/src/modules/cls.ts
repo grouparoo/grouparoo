@@ -14,7 +14,7 @@ import cls from "cls-hooked";
  */
 export namespace CLS {
   // export const namespace = cls.getNamespace("grouparoo-cls");
-  function getNamespace() {
+  export function getNamespace() {
     return cls.getNamespace("grouparoo-cls");
   }
 
