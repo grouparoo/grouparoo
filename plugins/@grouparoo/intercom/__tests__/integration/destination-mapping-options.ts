@@ -5,7 +5,7 @@ import { helper } from "@grouparoo/spec-helper";
 import {
   destinationMappingOptions,
   fetchKnownAttributes,
-} from "../../src/lib/export-users/destinationMappingOptions";
+} from "../../src/lib/export-contacts/destinationMappingOptions";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { connect } from "../../src/lib/connect";
 const nockFile = path.join(

@@ -2,8 +2,8 @@ import path from "path";
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
-import { exportProfile } from "../../src/lib/export-users/exportProfile";
-import { getTagId } from "../../src/lib/export-users/listMethods";
+import { exportProfile } from "../../src/lib/export-contacts/exportProfile";
+import { getTagId } from "../../src/lib/export-contacts/listMethods";
 import { connect } from "../../src/lib/connect";
 import { getRandomNumbers, loadAppOptions, updater } from "../utils/nockHelper";
 

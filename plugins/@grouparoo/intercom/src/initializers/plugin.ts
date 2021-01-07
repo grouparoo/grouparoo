@@ -3,10 +3,10 @@ import { plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 
-import { exportProfile } from "../lib/export-users/exportProfile";
-import { destinationOptions } from "../lib/export-users/destinationOptions";
-import { destinationMappingOptions } from "../lib/export-users/destinationMappingOptions";
-import { exportArrayProperties } from "../lib/export-users/exportArrayProperties";
+import { exportProfile } from "../lib/export-contacts/exportProfile";
+import { destinationOptions } from "../lib/export-contacts/destinationOptions";
+import { destinationMappingOptions } from "../lib/export-contacts/destinationMappingOptions";
+import { exportArrayProperties } from "../lib/export-contacts/exportArrayProperties";
 
 const packageJSON = require("./../../package.json");
 
@@ -37,7 +37,7 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "intercom-export-users",
+          name: "intercom-export-contacts",
           direction: "export",
           description: "Export Profiles to contacts in an Intercom account.",
           app: "intercom",
