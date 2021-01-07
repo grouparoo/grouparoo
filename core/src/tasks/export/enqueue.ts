@@ -32,10 +32,12 @@ export class EnqueueExports extends RetryableTask {
           destinations[i],
           limit
         );
-        log(
-          `enqueued ${enqueuedExportsCount} exports to send to ${destinations[i].name} (${destinations[i].guid})`
-        );
         totalEnqueued += enqueuedExportsCount;
+        if (enqueuedExportsCount > 0) {
+          log(
+            `enqueued ${enqueuedExportsCount} exports to send to ${destinations[i].name} (${destinations[i].guid})`
+          );
+        }
       }
     }
 
