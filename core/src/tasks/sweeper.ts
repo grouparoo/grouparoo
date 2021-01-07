@@ -1,10 +1,11 @@
-import { Task, log } from "actionhero";
+import { log } from "actionhero";
 import { Run } from "../models/Run";
 import { Import } from "../models/Import";
 import { Export } from "../models/Export";
 import { Log } from "../models/Log";
+import { CLSTask } from "../classes/tasks/clsTask";
 
-export class Sweeper extends Task {
+export class Sweeper extends CLSTask {
   constructor() {
     super();
     this.name = "sweeper";
@@ -23,7 +24,7 @@ export class Sweeper extends Task {
     );
   }
 
-  async run() {
+  async runWithinTransaction() {
     const limit = 1000;
     let count = 0;
     let response: { count: number; days: number };

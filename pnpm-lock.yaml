@@ -124,6 +124,7 @@ importers:
       ah-next-plugin: 0.4.0_actionhero@25.0.2
       ah-sequelize-plugin: 2.2.4_d942fb36d97b052d8fff18743f3446f5
       bcryptjs: 2.4.3
+      cls-hooked: 4.2.2
       colors: 1.4.0
       compare-versions: 3.6.0
       csv-stringify: 5.6.0
@@ -180,6 +181,7 @@ importers:
       ah-next-plugin: 0.4.0
       ah-sequelize-plugin: 2.2.4
       bcryptjs: 2.4.3
+      cls-hooked: 4.2.2
       colors: 1.4.0
       compare-versions: 3.6.0
       csv-parse: 4.14.2
@@ -3924,6 +3926,14 @@ packages:
     dev: false
     resolution:
       integrity: sha1-NhIfhFwFeBct5Bmpfb6x0W7DRUI=
+  /async-hook-jl/1.7.6:
+    dependencies:
+      stack-chain: 1.3.7
+    dev: false
+    engines:
+      node: ^4.7 || >=6.9 || >=7.3
+    resolution:
+      integrity: sha512-gFaHkFfSxTjvoxDMYqDuGHlcRyUuamF8s+ZTtJdDzqjws4mCt7v0vuV79/E2Wr2/riMQgtG4/yUtXWs1gZ7JMg==
   /async/1.5.2:
     dev: false
     resolution:
@@ -4936,6 +4946,16 @@ packages:
     dev: false
     resolution:
       integrity: sha1-N+8eCAqP+1XC9BZPU28ZGeeWiu4=
+  /cls-hooked/4.2.2:
+    dependencies:
+      async-hook-jl: 1.7.6
+      emitter-listener: 1.1.2
+      semver: 5.7.1
+    dev: false
+    engines:
+      node: ^4.7 || >=6.9 || >=7.3 || >=8.2.1
+    resolution:
+      integrity: sha512-J4Xj5f5wq/4jAvcdgoGsL3G103BtWpZrMo8NEinRltN+xpTZdI+M38pyQqhuFU/P792xkMFvnKSf+Lm81U1bxw==
   /cluster-key-slot/1.1.0:
     engines:
       node: '>=0.10.0'
@@ -6149,6 +6169,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-Bl4tvtaVm/RwZ57avq95gdEAOrY=
+  /emitter-listener/1.1.2:
+    dependencies:
+      shimmer: 1.2.1
+    dev: false
+    resolution:
+      integrity: sha512-Bt1sBAGFHY9DKY+4/2cV6izcKJUf5T7/gkdmkxzX/qv9CcGH8xSwVRW5mtX03SWJtRTWSOpzCuWN9rBFYZepZQ==
   /emittery/0.7.2:
     dev: true
     engines:
@@ -14833,6 +14859,10 @@ packages:
       node: '>= 8'
     resolution:
       integrity: sha512-aq/pz989nxVYwn16Tsbj1TqFpD5LLrQxHf5zaHuieFV+R0Bbr4y8qUsOA45hXT/N4/9UNXTarBjnjVmjSOVaAA==
+  /stack-chain/1.3.7:
+    dev: false
+    resolution:
+      integrity: sha1-0ZLJ/06moiyUxN1FkXHj8AzqEoU=
   /stack-generator/2.0.5:
     dependencies:
       stackframe: 1.2.0
@@ -15728,7 +15758,7 @@ packages:
       bs-logger: 0.2.6
       buffer-from: 1.1.1
       fast-json-stable-stringify: 2.1.0
-      jest: 26.6.3
+      jest: 26.6.3_ts-node@9.1.0
       jest-util: 26.6.1
       json5: 2.1.3
       lodash.memoize: 4.1.2

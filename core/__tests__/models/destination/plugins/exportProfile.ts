@@ -284,9 +284,9 @@ describe("models/destination", () => {
       await specHelper.runTask("export:enqueue", {});
       const foundTasks = await specHelper.findEnqueuedTasks("export:send");
       expect(foundTasks.length).toBe(2);
-      await Promise.all(
-        foundTasks.map((t) => specHelper.runTask("export:send", t.args[0]))
-      );
+      for (const i in foundTasks) {
+        await specHelper.runTask("export:send", foundTasks[i].args[0]);
+      }
 
       expect(exportArgs.oldProfileProperties).toEqual({
         customer_email: "oldmail@example.com",
@@ -334,9 +334,9 @@ describe("models/destination", () => {
       await specHelper.runTask("export:enqueue", {});
       const foundTasks = await specHelper.findEnqueuedTasks("export:send");
       expect(foundTasks.length).toBe(2);
-      await Promise.all(
-        foundTasks.map((t) => specHelper.runTask("export:send", t.args[0]))
-      );
+      for (const i in foundTasks) {
+        await specHelper.runTask("export:send", foundTasks[i].args[0]);
+      }
 
       expect(exportArgs.oldGroups).toEqual([]);
       expect(exportArgs.newGroups).toEqual([group.name]);
@@ -382,9 +382,9 @@ describe("models/destination", () => {
       await specHelper.runTask("export:enqueue", {});
       const foundTasks = await specHelper.findEnqueuedTasks("export:send");
       expect(foundTasks.length).toBe(2);
-      await Promise.all(
-        foundTasks.map((t) => specHelper.runTask("export:send", t.args[0]))
-      );
+      for (const i in foundTasks) {
+        await specHelper.runTask("export:send", foundTasks[i].args[0]);
+      }
 
       expect(exportArgs.oldGroups).toEqual([group.name]);
       expect(exportArgs.newGroups).toEqual([]);

@@ -1,6 +1,6 @@
 import { Event } from "../../models/Event";
 import { App } from "../../models/App";
-import { RetryableTask } from "../../classes/retryableTask";
+import { RetryableTask } from "../../classes/tasks/retryableTask";
 
 export class EventAssociateProfile extends RetryableTask {
   constructor() {
@@ -14,7 +14,7 @@ export class EventAssociateProfile extends RetryableTask {
     };
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     const { eventGuid } = params;
     const event = await Event.findByGuid(eventGuid);
 

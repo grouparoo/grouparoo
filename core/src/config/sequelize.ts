@@ -2,6 +2,16 @@ import { URL } from "url";
 import { join, isAbsolute } from "path";
 import { getParentPath, getCoreRootPath } from "../utils/pluginDetails";
 
+// import {CLS} from '../modules/cls'
+import cls from "cls-hooked";
+import Sequelize from "sequelize";
+
+// Opt Into CLS
+// Learn more @ https://sequelize.org/master/manual/transactions.html and https://github.com/Jeff-Lewis/cls-hooked
+const namespace = cls.createNamespace("grouparoo-cls");
+// @ts-ignore
+Sequelize.useCLS(namespace);
+
 // we want BIGINTs to be returned as JS integer types
 require("pg").defaults.parseInt8 = true;
 

@@ -1,9 +1,10 @@
-import { api, Task } from "actionhero";
+import { api } from "actionhero";
 import { Run } from "../../models/Run";
 import { Op } from "sequelize";
 import Moment from "moment";
+import { CLSTask } from "../../classes/tasks/clsTask";
 
-export class UpdateRunCounts extends Task {
+export class UpdateRunCounts extends CLSTask {
   constructor() {
     super();
     this.name = "runs:updateCounts";
@@ -13,7 +14,7 @@ export class UpdateRunCounts extends Task {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     const since = Moment().subtract(1, "day");
 
     const runs = await Run.findAll({

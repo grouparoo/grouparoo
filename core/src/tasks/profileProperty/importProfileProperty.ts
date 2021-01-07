@@ -1,4 +1,4 @@
-import { RetryableTask } from "../../classes/retryableTask";
+import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { Profile } from "../../models/Profile";
 import { Property } from "../../models/Property";
 import { log } from "actionhero";
@@ -18,7 +18,7 @@ export class ImportProfileProperty extends RetryableTask {
     };
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     const profile = await Profile.findOne({
       where: { guid: params.profileGuid },
     });

@@ -1,10 +1,10 @@
-import { Task } from "actionhero";
 import { Group } from "../../models/Group";
 import { plugin } from "../../modules/plugin";
 import { Op } from "sequelize";
 import Moment from "moment";
+import { CLSTask } from "../../classes/tasks/clsTask";
 
-export class GroupsUpdateCalculatedGroups extends Task {
+export class GroupsUpdateCalculatedGroups extends CLSTask {
   constructor() {
     super();
     this.name = "group:updateCalculatedGroups";
@@ -15,7 +15,7 @@ export class GroupsUpdateCalculatedGroups extends Task {
     this.queue = "groups";
   }
 
-  async run() {
+  async runWithinTransaction() {
     const setting = await plugin.readSetting(
       "core",
       "groups-calculation-delay-minutes"

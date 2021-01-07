@@ -43,6 +43,7 @@
     "ah-next-plugin": "0.4.0",
     "ah-sequelize-plugin": "2.2.4",
     "bcryptjs": "2.4.3",
+    "cls-hooked": "4.2.2",
     "colors": "1.4.0",
     "compare-versions": "3.6.0",
     "csv-stringify": "5.6.0",

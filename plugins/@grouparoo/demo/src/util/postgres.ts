@@ -34,7 +34,6 @@ function findConfig() {
     // statement_timeout: number,
     // query_timeout: number,
     // connectionTimeoutMillis: number,
-    // idle_in_transaction_session_timeout: number,
   };
   const parsed = new URL(connectionURL);
   if (parsed.protocol) dialect = parsed.protocol.slice(0, -1);

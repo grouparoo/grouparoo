@@ -1,4 +1,4 @@
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Notification } from "../models/Notification";
 import { Op } from "sequelize";
 
@@ -19,7 +19,7 @@ export class NotificationsList extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const search = {
       limit: params.limit,
       offset: params.offset,
@@ -55,7 +55,7 @@ export class NotificationView extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const notification = await Notification.findByGuid(params.guid);
     await notification.update({ readAt: new Date() });
     return { notification: await notification.apiData() };

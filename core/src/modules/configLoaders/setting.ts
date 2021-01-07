@@ -6,24 +6,22 @@ import {
 } from "../../classes/codeConfig";
 import { plugin } from "../..";
 import { Setting } from "../../models/Setting";
-import { Transaction } from "sequelize";
 
 export async function loadSetting(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
-  transaction?: Transaction
+  validate = false
 ) {
   validateConfigObjectKeys(Setting, configObject);
 
   const setting = await plugin.updateSetting(
     configObject.pluginName,
     configObject.key,
-    configObject.value,
-    transaction
+    configObject.value
   );
 
-  await setting.update({ locked: getCodeConfigLockKey() }, { transaction });
+  await setting.update({ locked: getCodeConfigLockKey() });
 
-  logModel(setting, transaction ? "validated" : "updated");
+  logModel(setting, validate ? "validated" : "updated");
   return setting;
 }

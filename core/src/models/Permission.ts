@@ -7,7 +7,7 @@ import {
   BeforeSave,
   ForeignKey,
 } from "sequelize-typescript";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Team } from "./Team";
 import { ApiKey } from "./ApiKey";
@@ -87,10 +87,9 @@ export class Permission extends LoggedModel<Permission> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
@@ -102,17 +101,13 @@ export class Permission extends LoggedModel<Permission> {
   }
 
   @BeforeSave
-  static async ensureOneOwnerGuidPerTopic(
-    instance: Permission,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async ensureOneOwnerGuidPerTopic(instance: Permission) {
     const existing = await Permission.scope(null).findOne({
       where: {
         guid: { [Op.ne]: instance.guid },
         ownerGuid: instance.ownerGuid,
         topic: instance.topic,
       },
-      transaction,
     });
     if (existing) {
       throw new Error(
@@ -124,18 +119,14 @@ export class Permission extends LoggedModel<Permission> {
   static async authorizeAction(
     ownerGuid: string,
     topic: string,
-    mode: "read" | "write",
-    transaction?: Transaction
+    mode: "read" | "write"
   ) {
     Permission.validateTopic(topic);
 
-    if (topic === "*") {
-      return true;
-    }
+    if (topic === "*") return true;
 
     const permission = await Permission.findOne({
       where: { ownerGuid: ownerGuid, topic: topic },
-      transaction,
     });
 
     if (!permission) {

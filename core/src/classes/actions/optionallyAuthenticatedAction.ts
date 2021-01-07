@@ -1,6 +1,6 @@
-import { Action } from "actionhero";
+import { CLSAction } from "./clsAction";
 
-export abstract class OptionallyAuthenticatedAction extends Action {
+export abstract class OptionallyAuthenticatedAction extends CLSAction {
   permission: {
     topic: string;
     mode: "read" | "write";

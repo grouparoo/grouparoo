@@ -1,4 +1,4 @@
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
 import { GrouparooSubscription } from "../modules/grouparooSubscription";
@@ -16,7 +16,7 @@ export class TeamMembersList extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const where = {};
     if (params.guid) where["teamGuid"] = params.guid;
     if (params.teamGuid) where["teamGuid"] = params.teamGuid;
@@ -51,7 +51,7 @@ export class TeamMemberCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const team = await Team.findByGuid(params.teamGuid);
 
     const teamMember = new TeamMember({
@@ -82,7 +82,7 @@ export class TeamMemberView extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const teamMember = await TeamMember.findOne({
       where: { guid: params.guid },
       include: [Team],
@@ -113,7 +113,7 @@ export class TeamMemberEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const teamMember = await TeamMember.findByGuid(params.guid);
 
     await teamMember.update(params);
@@ -136,7 +136,7 @@ export class TeamMemberDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({
+  async runWithinTransaction({
     params,
     session: { teamMember: myself },
   }: {

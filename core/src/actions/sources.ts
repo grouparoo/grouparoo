@@ -1,5 +1,5 @@
 import { api } from "actionhero";
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { App } from "../models/App";
 import { Source } from "../models/Source";
 import { GrouparooPlugin, PluginConnection } from "../classes/plugin";
@@ -29,7 +29,7 @@ export class SourcesList extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const where = {};
     if (params.state) where["state"] = params.state;
 
@@ -61,7 +61,7 @@ export class SourcesCountPending extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     const countsBySource = await Property.findAll({
       attributes: [
         "sourceGuid",
@@ -100,7 +100,7 @@ export class SourceConnectionApps extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     const apps = await App.findAll();
     const existingAppTypes = apps.map((a) => a.type);
 
@@ -155,7 +155,7 @@ export class SourceCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const source = await Source.create({
       appGuid: params.appGuid,
       name: params.name,
@@ -182,7 +182,7 @@ export class SourceView extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const source = await Source.findByGuid(params.guid);
     return { source: await source.apiData() };
   }
@@ -206,7 +206,7 @@ export class SourceEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const source = await Source.findByGuid(params.guid);
     if (params.options) await source.setOptions(params.options);
     if (params.mapping) await source.setMapping(params.mapping);
@@ -232,7 +232,7 @@ export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const source = await Source.findByGuid(params.guid);
 
     const property = await source.bootstrapUniqueProperty(
@@ -261,7 +261,7 @@ export class sourceConnectionOptions extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const source = await Source.findByGuid(params.guid);
 
     const options =
@@ -286,7 +286,7 @@ export class SourcePreview extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const source = await Source.findByGuid(params.guid);
 
     const options =
@@ -310,7 +310,7 @@ export class SourceDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const source = await Source.findByGuid(params.guid);
     await source.destroy();
     return { success: true };

@@ -1,9 +1,11 @@
-import { Task, task, log, config } from "actionhero";
+import { config } from "actionhero";
+import { CLSTask } from "../../classes/tasks/clsTask";
 import { Group } from "../../models/Group";
 import { Run } from "../../models/Run";
 import { plugin } from "../../modules/plugin";
+import { CLS } from "../../modules/cls";
 
-export class RunGroup extends Task {
+export class RunGroup extends CLSTask {
   constructor() {
     super();
     this.name = "group:run";
@@ -24,7 +26,7 @@ export class RunGroup extends Task {
     };
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     // 1. Calculate the set of profiles that should be in this group, with a limit and offset (looping)
     // 2. Find or create GroupMembers, touch the updatedAt for those that already exist. (group#runAddGroupMembers)
     //    > Create imports for new profiles
@@ -87,7 +89,7 @@ export class RunGroup extends Task {
     await run.afterBatch();
 
     if (groupMembersCount === 0 && method === "runAddGroupMembers") {
-      await task.enqueueIn(config.tasks.timeout + 1, this.name, {
+      await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
         runGuid: run.guid,
         groupGuid: group.guid,
         method: "runRemoveGroupMembers",
@@ -98,7 +100,7 @@ export class RunGroup extends Task {
         destinationGuid,
       });
     } else if (groupMembersCount === 0 && method === "runRemoveGroupMembers") {
-      await task.enqueueIn(config.tasks.timeout + 1, this.name, {
+      await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
         runGuid: run.guid,
         groupGuid: group.guid,
         method: "removePreviousRunGroupMembers",
@@ -109,7 +111,7 @@ export class RunGroup extends Task {
         destinationGuid,
       });
     } else if (groupMembersCount > 0) {
-      await task.enqueueIn(config.tasks.timeout + 1, this.name, {
+      await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
         runGuid: run.guid,
         groupGuid: group.guid,
         method,
@@ -129,7 +131,7 @@ export class RunGroup extends Task {
         await run.afterBatch("complete");
         await group.update({ state: "ready" });
       } else {
-        await task.enqueueIn(config.tasks.timeout + 1, this.name, params);
+        await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, params);
       }
     }
 

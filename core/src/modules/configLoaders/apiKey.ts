@@ -6,12 +6,12 @@ import {
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { ApiKey, Permission } from "../..";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 
 export async function loadApiKey(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
-  transaction?: Transaction
+  validate = false
 ) {
   let isNew = false;
 
@@ -20,56 +20,46 @@ export async function loadApiKey(
 
   let apiKey = await ApiKey.scope(null).findOne({
     where: { locked: getCodeConfigLockKey(), guid },
-    transaction,
   });
   if (!apiKey) {
     isNew = true;
-    apiKey = await ApiKey.create(
-      {
-        guid,
-        locked: getCodeConfigLockKey(),
-        name: configObject.name,
-      },
-      { transaction }
-    );
+    apiKey = await ApiKey.create({
+      guid,
+      locked: getCodeConfigLockKey(),
+      name: configObject.name,
+    });
   }
 
-  await apiKey.update({ name: configObject.name }, { transaction });
+  await apiKey.update({ name: configObject.name }, {});
 
   if (
     configObject.options?.permissionAllRead !== undefined &&
     configObject.options?.permissionAllRead !== null
   ) {
-    await apiKey.update(
-      {
-        permissionAllRead: configObject.options.permissionAllRead,
-      },
-      { transaction }
-    );
+    await apiKey.update({
+      permissionAllRead: configObject.options.permissionAllRead,
+    });
   }
 
   if (
     configObject.options?.permissionAllWrite !== undefined &&
     configObject.options?.permissionAllWrite !== null
   ) {
-    await apiKey.update(
-      {
-        permissionAllWrite: configObject.options.permissionAllWrite,
-      },
-      { transaction }
-    );
+    await apiKey.update({
+      permissionAllWrite: configObject.options.permissionAllWrite,
+    });
   }
 
   if (configObject.permissions) {
-    await apiKey.setPermissions(configObject.permissions, transaction);
+    await apiKey.setPermissions(configObject.permissions);
   }
 
   await Permission.update(
     { locked: getCodeConfigLockKey() },
-    { where: { ownerGuid: apiKey.guid }, transaction }
+    { where: { ownerGuid: apiKey.guid } }
   );
 
-  logModel(apiKey, transaction ? "validated" : isNew ? "created" : "updated");
+  logModel(apiKey, validate ? "validated" : isNew ? "created" : "updated");
 
   return apiKey;
 }

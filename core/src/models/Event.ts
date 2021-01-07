@@ -9,11 +9,12 @@ import {
   AfterDestroy,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { EventData } from "./EventData";
 import { Profile } from "./Profile";
 import { PropertyFiltersWithKey } from "./Property";
-import { api, task, config } from "actionhero";
+import { api, config } from "actionhero";
+import { CLS } from "../modules/cls";
 import { EventOps } from "../modules/ops/event";
 
 @Table({ tableName: "events", paranoid: false })
@@ -73,26 +74,12 @@ export class Event extends LoggedModel<Event> {
   }
 
   async setData(data: { [key: string]: any }) {
-    const transaction = await api.sequelize.transaction({
-      lock: Transaction.LOCK.UPDATE,
-    });
-
-    try {
-      for (const key in data) {
-        await EventData.create(
-          {
-            eventGuid: this.guid,
-            key,
-            value: data[key].toString(),
-          },
-          { transaction }
-        );
-      }
-
-      await transaction.commit();
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
+    for (const key in data) {
+      await EventData.create({
+        eventGuid: this.guid,
+        key,
+        value: data[key].toString(),
+      });
     }
   }
 
@@ -127,10 +114,9 @@ export class Event extends LoggedModel<Event> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
@@ -138,16 +124,17 @@ export class Event extends LoggedModel<Event> {
 
   @AfterCreate
   static async enqueueAssociateEvent(instance: Event) {
-    await task.enqueue("event:associateProfile", { eventGuid: instance.guid });
+    await CLS.enqueueTask("event:associateProfile", {
+      eventGuid: instance.guid,
+    });
   }
 
   @AfterDestroy
-  static async destroyOptions(instance: Event, { transaction }) {
+  static async destroyOptions(instance: Event) {
     return EventData.destroy({
       where: {
         eventGuid: instance.guid,
       },
-      transaction,
     });
   }
 

@@ -1,5 +1,4 @@
 import { api, log, id } from "actionhero";
-import { Transaction } from "sequelize";
 import { App, SimpleAppOptions } from "../../models/App";
 import { waitForLock } from "../locks";
 import { OptionHelper } from "../optionHelper";
@@ -11,14 +10,13 @@ export namespace AppOps {
   export async function connect(
     app: App,
     options?: SimpleAppOptions,
-    forceReconnect = false,
-    transaction?: Transaction
+    forceReconnect = false
   ) {
-    const { pluginApp } = await app.getPlugin(transaction);
+    const { pluginApp } = await app.getPlugin();
     if (!pluginApp.methods.connect) return;
 
     let connection;
-    const appOptions = await app.getOptions(true, transaction);
+    const appOptions = await app.getOptions(true);
     const { releaseLock } = await getConnectionLock(app);
 
     try {
@@ -53,13 +51,9 @@ export namespace AppOps {
   /**
    * Disconnect from an App
    */
-  export async function disconnect(
-    app: App,
-    alreadyLocked = false,
-    transaction?: Transaction
-  ) {
-    const appOptions = await app.getOptions(true, transaction);
-    const { pluginApp } = await app.getPlugin(transaction);
+  export async function disconnect(app: App, alreadyLocked = false) {
+    const appOptions = await app.getOptions(true);
+    const { pluginApp } = await app.getPlugin();
 
     if (!pluginApp.methods.disconnect) return;
 
@@ -93,21 +87,17 @@ export namespace AppOps {
   /**
    * Test an App's Connection
    */
-  export async function test(
-    app: App,
-    options?: SimpleAppOptions,
-    transaction?: Transaction
-  ) {
+  export async function test(app: App, options?: SimpleAppOptions) {
     let success = false;
     let message: string;
     let error;
 
-    const { pluginApp } = await app.getPlugin(transaction);
+    const { pluginApp } = await app.getPlugin();
     if (!pluginApp) {
       throw new Error(`cannot find a pluginApp type of ${app.type}`);
     }
 
-    if (!options) options = await app.getOptions(true, transaction);
+    if (!options) options = await app.getOptions(true);
     options = OptionHelper.sourceEnvironmentVariableOptions(app, options);
 
     try {
@@ -125,7 +115,6 @@ export namespace AppOps {
         appGuid: app.guid,
         appOptions: options,
         connection,
-        transaction,
       });
       message = result.message;
       success = result.success;

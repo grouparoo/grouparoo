@@ -1,9 +1,9 @@
-import { Task } from "actionhero";
 import { Setting } from "../../models/Setting";
 import { Run } from "../../models/Run";
 import { internalRun } from "../../modules/internalRun";
+import { CLSTask } from "../../classes/tasks/clsTask";
 
-export class RunRecurringInternalRun extends Task {
+export class RunRecurringInternalRun extends CLSTask {
   constructor() {
     super();
     this.name = "run:recurringInternalRun";
@@ -14,7 +14,7 @@ export class RunRecurringInternalRun extends Task {
     this.queue = "runs";
   }
 
-  async run() {
+  async runWithinTransaction() {
     const setting = await Setting.findOne({
       where: { key: "runs-recurring-internal-run-frequency-hours" },
     });

@@ -4,8 +4,9 @@ import { Run } from "../../models/Run";
 import { Profile } from "../../models/Profile";
 import { ProfileMultipleAssociationShim } from "../../models/ProfileMultipleAssociationShim";
 import { Import } from "../../models/Import";
-import { Op, Transaction } from "sequelize";
-import { api, task, log } from "actionhero";
+import { Op } from "sequelize";
+import { api, log } from "actionhero";
+import { CLS } from "../../modules/cls";
 
 export namespace GroupOps {
   /**
@@ -16,6 +17,7 @@ export namespace GroupOps {
     force = false,
     destinationGuid?: string
   ) {
+    if (!api.process.running) return; // we are in an initializer (validating)
     await group.stopPreviousRuns();
     await group.update({ state: "updating" });
 
@@ -31,7 +33,7 @@ export namespace GroupOps {
       "notice"
     );
 
-    await task.enqueue("group:run", {
+    await CLS.enqueueTask("group:run", {
       groupGuid: group.guid,
       runGuid: run.guid,
       force,
@@ -64,20 +66,10 @@ export namespace GroupOps {
     profileGuid: string,
     creatorType: string,
     creatorGuid: string,
-    destinationGuid?: string,
-    transaction?: any
+    destinationGuid?: string
   ) {
-    let toCommit = false;
-    if (!transaction) {
-      toCommit = true;
-      transaction = await api.sequelize.transaction({
-        lock: Transaction.LOCK.UPDATE,
-      });
-    }
-
     const profile = await Profile.findOne({
       where: { guid: profileGuid },
-      transaction,
     });
 
     const oldProfileProperties = {};
@@ -88,30 +80,18 @@ export namespace GroupOps {
 
     const oldGroupGuids = (await profile.$get("groups")).map((g) => g.guid);
 
-    const _import = await Import.create(
-      {
-        rawData: destinationGuid ? { _meta: { destinationGuid } } : {},
-        data: destinationGuid ? { _meta: { destinationGuid } } : {},
-        creatorType,
-        creatorGuid,
-        profileGuid: profile.guid,
-        profileAssociatedAt: new Date(),
-        oldProfileProperties,
-        oldGroupGuids,
-      },
-      { transaction }
-    );
+    const _import = await Import.create({
+      rawData: destinationGuid ? { _meta: { destinationGuid } } : {},
+      data: destinationGuid ? { _meta: { destinationGuid } } : {},
+      creatorType,
+      creatorGuid,
+      profileGuid: profile.guid,
+      profileAssociatedAt: new Date(),
+      oldProfileProperties,
+      oldGroupGuids,
+    });
 
-    await profile.update({ state: "pending" }, { transaction });
-
-    if (toCommit) {
-      try {
-        await transaction.commit();
-      } catch (error) {
-        await transaction.rollback();
-        throw error;
-      }
-    }
+    await profile.update({ state: "pending" });
 
     return _import;
   }
@@ -191,15 +171,13 @@ export namespace GroupOps {
   export async function countPotentialMembers(
     group: Group,
     rules?: GroupRuleWithKey[],
-    matchType: "any" | "all" = group.matchType,
-    transaction?: Transaction
+    matchType: "any" | "all" = group.matchType
   ) {
     if (!rules) rules = await group.getRules();
 
     const { where, include } = await group._buildGroupMemberQueryParts(
       rules,
-      matchType,
-      transaction
+      matchType
     );
 
     // we use ProfileMultipleAssociationShim as a shim model which has extra associations
@@ -207,7 +185,6 @@ export namespace GroupOps {
       distinct: true,
       where,
       include,
-      transaction,
     });
   }
 
@@ -310,53 +287,37 @@ export namespace GroupOps {
       },
     });
 
-    const transaction = await api.sequelize.transaction({});
-
-    try {
-      const existingGroupMemberProfileGuids = groupMembers.map(
-        (member) => member.profileGuid
-      );
-      const profilesNeedingGroupMembership = force
-        ? profiles
-        : profiles.filter(
-            (p) => !existingGroupMemberProfileGuids.includes(p.guid)
-          );
-
-      for (const i in profilesNeedingGroupMembership) {
-        const profileGuid = profilesNeedingGroupMembership[i].guid;
-        await buildProfileImport(
-          profileGuid,
-          "run",
-          run.guid,
-          destinationGuid,
-          transaction
+    const existingGroupMemberProfileGuids = groupMembers.map(
+      (member) => member.profileGuid
+    );
+    const profilesNeedingGroupMembership = force
+      ? profiles
+      : profiles.filter(
+          (p) => !existingGroupMemberProfileGuids.includes(p.guid)
         );
-      }
 
-      await GroupMember.update(
-        { updatedAt: new Date(), removedAt: null },
-        {
-          where: {
-            profileGuid: { [Op.in]: profiles.map((p) => p.guid) },
-            groupGuid: group.guid,
-          },
-          transaction,
-        }
-      );
-
-      await transaction.commit();
-
-      await group.update({ calculatedAt: new Date() });
-
-      return {
-        groupMembersCount: profiles.length,
-        nextHighWaterMark,
-        nextOffset,
-      };
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
+    for (const i in profilesNeedingGroupMembership) {
+      const profileGuid = profilesNeedingGroupMembership[i].guid;
+      await buildProfileImport(profileGuid, "run", run.guid, destinationGuid);
     }
+
+    await GroupMember.update(
+      { updatedAt: new Date(), removedAt: null },
+      {
+        where: {
+          profileGuid: { [Op.in]: profiles.map((p) => p.guid) },
+          groupGuid: group.guid,
+        },
+      }
+    );
+
+    await group.update({ calculatedAt: new Date() });
+
+    return {
+      groupMembersCount: profiles.length,
+      nextHighWaterMark,
+      nextOffset,
+    };
   }
 
   /**
@@ -380,36 +341,25 @@ export namespace GroupOps {
       limit,
     });
 
-    const transaction = await api.sequelize.transaction({});
+    // The offset and order can be ignored as we will keep running this query until the set of results becomes 0.
+    for (const i in groupMembersToRemove) {
+      const member = groupMembersToRemove[i];
 
-    try {
-      // The offset and order can be ignored as we will keep running this query until the set of results becomes 0.
+      await buildProfileImport(
+        member.profileGuid,
+        "run",
+        run.guid,
+        destinationGuid
+      );
 
-      for (const i in groupMembersToRemove) {
-        const member = groupMembersToRemove[i];
+      member.removedAt = new Date();
+      await member.save();
 
-        await buildProfileImport(
-          member.profileGuid,
-          "run",
-          run.guid,
-          destinationGuid,
-          transaction
-        );
-
-        member.removedAt = new Date();
-        await member.save({ transaction });
-
-        groupMembersCount++;
-      }
-
-      await transaction.commit();
-
-      await group.update({ calculatedAt: new Date() });
-      return groupMembersCount;
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
+      groupMembersCount++;
     }
+
+    await group.update({ calculatedAt: new Date() });
+    return groupMembersCount;
   }
 
   /**

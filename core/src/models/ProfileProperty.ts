@@ -1,4 +1,4 @@
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import {
   Table,
   Column,
@@ -172,10 +172,9 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
@@ -188,8 +187,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
 
   @BeforeSave
   static async ensureOneProfilePropertyPerProfileProeprtyRule(
-    instance: ProfileProperty,
-    { transaction }: { transaction?: Transaction } = {}
+    instance: ProfileProperty
   ) {
     const existing = await ProfileProperty.scope(null).findOne({
       where: {
@@ -198,7 +196,6 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
         propertyGuid: instance.propertyGuid,
         position: instance.position,
       },
-      transaction,
     });
     if (existing) {
       throw new Error(
@@ -208,31 +205,25 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   }
 
   @AfterSave
-  static async updateProfileAfterSave(
-    instance: ProfileProperty,
-    { transaction }
-  ) {
+  static async updateProfileAfterSave(instance: ProfileProperty) {
     const changed = instance.changed();
     if (!changed) return;
 
-    const profile = await instance.$get("profile", { transaction });
+    const profile = await instance.$get("profile");
     if (profile && changed.indexOf("rawValue") >= 0) {
       profile.updatedAt = new Date();
       profile.changed("updatedAt", true);
-      await profile.save({ transaction });
+      await profile.save();
     }
   }
 
   @AfterDestroy
-  static async updateProfileAfterDestroy(
-    instance: ProfileProperty,
-    { transaction }
-  ) {
-    const profile = await instance.$get("profile", { transaction });
+  static async updateProfileAfterDestroy(instance: ProfileProperty) {
+    const profile = await instance.$get("profile");
     if (profile) {
       profile.updatedAt = new Date();
       profile.changed("updatedAt", true);
-      await profile.save({ transaction });
+      await profile.save();
     }
   }
 }

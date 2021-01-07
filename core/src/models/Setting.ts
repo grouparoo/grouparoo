@@ -6,7 +6,7 @@ import {
   DataType,
   BeforeDestroy,
 } from "sequelize-typescript";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { LockableHelper } from "../modules/lockableHelper";
 
@@ -82,10 +82,9 @@ export class Setting extends LoggedModel<Setting> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
@@ -104,17 +103,13 @@ export class Setting extends LoggedModel<Setting> {
   }
 
   @BeforeSave
-  static async ensureOneKeyPerPluginName(
-    instance: Setting,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async ensureOneKeyPerPluginName(instance: Setting) {
     const existing = await Setting.scope(null).findOne({
       where: {
         guid: { [Op.ne]: instance.guid },
         pluginName: instance.pluginName,
         key: instance.key,
       },
-      transaction,
     });
     if (existing) {
       throw new Error(

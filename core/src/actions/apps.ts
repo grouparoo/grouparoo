@@ -1,5 +1,5 @@
 import { api } from "actionhero";
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { App } from "../models/App";
 import { GrouparooPlugin, PluginApp } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
@@ -25,7 +25,7 @@ export class AppsList extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const where = {};
 
     if (params.state) where["state"] = params.state;
@@ -55,7 +55,7 @@ export class AppOptions extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     const types: Array<{
       name: string;
       maxInstances: number;
@@ -126,7 +126,7 @@ export class AppOptionOptions extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const app = await App.findByGuid(params.guid);
     return { options: await app.appOptions() };
   }
@@ -147,7 +147,7 @@ export class AppCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const app = await App.create({
       name: params.name,
       type: params.type,
@@ -176,7 +176,7 @@ export class AppEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const app = await App.findByGuid(params.guid);
     if (params.options) {
       await app.setOptions(params.options);
@@ -200,7 +200,7 @@ export class AppTest extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const app = await App.findByGuid(params.guid);
     const test = await app.test(params.options);
     if (test.error) test.error = String(test.error);
@@ -224,7 +224,7 @@ export class AppView extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const app = await App.findByGuid(params.guid);
     return { app: await app.apiData() };
   }
@@ -242,7 +242,7 @@ export class AppDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const app = await App.findByGuid(params.guid);
     await app.destroy();
 

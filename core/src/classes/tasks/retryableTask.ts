@@ -1,6 +1,7 @@
-import { Task, env } from "actionhero";
+import { env } from "actionhero";
+import { CLSTask } from "./clsTask";
 
-export abstract class RetryableTask extends Task {
+export abstract class RetryableTask extends CLSTask {
   constructor() {
     super();
 

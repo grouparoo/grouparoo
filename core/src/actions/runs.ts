@@ -1,4 +1,4 @@
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Run } from "../models/Run";
 import { Op } from "sequelize";
 import { Schedule } from "../models/Schedule";
@@ -24,7 +24,7 @@ export class RunsList extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     let guid = params.guid;
 
     if (guid && guid.match(/^src_/)) {
@@ -73,7 +73,7 @@ export class RunEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const run = await Run.findByGuid(params.guid);
     await run.update({ state: params.state });
     return { run: await run.apiData() };
@@ -92,7 +92,7 @@ export class RunView extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const run = await Run.findByGuid(params.guid);
     return {
       run: await run.apiData(),

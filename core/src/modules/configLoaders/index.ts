@@ -20,7 +20,6 @@ import { loadDestination, deleteDestinations } from "./destination";
 import JSON5 from "json5";
 import { getParentPath } from "../../utils/pluginDetails";
 import { Property } from "../../models/Property";
-import { Transaction } from "sequelize";
 
 interface guidsByClass {
   app: string[];
@@ -91,7 +90,7 @@ async function loadConfigFile(file: string): Promise<ConfigurationObject> {
 export async function processConfigObjects(
   configObjects: Array<ConfigurationObject>,
   externallyValidate: boolean,
-  transaction?: Transaction
+  validate = false
 ) {
   const seenGuids: guidsByClass = {
     app: [],
@@ -117,18 +116,14 @@ export async function processConfigObjects(
           object = await loadSetting(
             configObject,
             externallyValidate,
-            transaction
+            validate
           );
           break;
         case "app":
-          object = await loadApp(configObject, externallyValidate, transaction);
+          object = await loadApp(configObject, externallyValidate, validate);
           break;
         case "source":
-          object = await loadSource(
-            configObject,
-            externallyValidate,
-            transaction
-          );
+          object = await loadSource(configObject, externallyValidate, validate);
           if (configObject.bootstrappedProperty) {
             seenGuids["property"].push(
               await validateAndFormatGuid(
@@ -142,49 +137,37 @@ export async function processConfigObjects(
           object = await loadProperty(
             configObject,
             externallyValidate,
-            transaction
+            validate
           );
           break;
         case "group":
-          object = await loadGroup(
-            configObject,
-            externallyValidate,
-            transaction
-          );
+          object = await loadGroup(configObject, externallyValidate, validate);
           break;
         case "schedule":
           object = await loadSchedule(
             configObject,
             externallyValidate,
-            transaction
+            validate
           );
           break;
         case "destination":
           object = await loadDestination(
             configObject,
             externallyValidate,
-            transaction
+            validate
           );
           break;
         case "apikey":
-          object = await loadApiKey(
-            configObject,
-            externallyValidate,
-            transaction
-          );
+          object = await loadApiKey(configObject, externallyValidate, validate);
           break;
         case "team":
-          object = await loadTeam(
-            configObject,
-            externallyValidate,
-            transaction
-          );
+          object = await loadTeam(configObject, externallyValidate, validate);
           break;
         case "teammember":
           object = await loadTeamMember(
             configObject,
             externallyValidate,
-            transaction
+            validate
           );
           break;
         default:
@@ -205,7 +188,7 @@ export async function processConfigObjects(
   return { seenGuids, errors };
 }
 
-async function deleteLockedObjects(seenGuids, transaction?: Transaction) {
+async function deleteLockedObjects(seenGuids) {
   const deletedGuids: guidsByClass = {
     app: [],
     source: [],

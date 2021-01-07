@@ -1,4 +1,4 @@
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { ApiKey } from "../models/ApiKey";
 
 export class ApiKeysList extends AuthenticatedAction {
@@ -14,7 +14,7 @@ export class ApiKeysList extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const total = await ApiKey.count();
 
     const apiKeys = await ApiKey.findAll({
@@ -45,7 +45,7 @@ export class ApiKeyCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const apiKey = new ApiKey(params);
     await apiKey.save();
     return { apiKey: await apiKey.apiData() };
@@ -70,7 +70,7 @@ export class ApiKeyEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const apiKey = await ApiKey.findByGuid(params.guid);
     const updateParams = Object.assign({}, params);
     if (params.disabledPermissionAllRead) {
@@ -107,7 +107,7 @@ export class ApiKeyView extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const apiKey = await ApiKey.findByGuid(params.guid);
     return { apiKey: await apiKey.apiData() };
   }
@@ -125,7 +125,7 @@ export class ApiKeyDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const apiKey = await ApiKey.findByGuid(params.guid);
     await apiKey.destroy();
     return { success: true };

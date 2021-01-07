@@ -7,12 +7,12 @@ import {
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { App } from "../..";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 
 export async function loadApp(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
-  transaction?: Transaction
+  validate = false
 ) {
   let isNew = false;
   const guid = await validateAndFormatGuid(App, configObject.id);
@@ -20,31 +20,23 @@ export async function loadApp(
 
   let app = await App.scope(null).findOne({
     where: { guid, locked: getCodeConfigLockKey() },
-    transaction,
   });
   if (!app) {
     isNew = true;
-    app = await App.create(
-      {
-        guid,
-        locked: getCodeConfigLockKey(),
-        name: configObject.name,
-        type: configObject.type,
-      },
-      { transaction }
-    );
+    app = await App.create({
+      guid,
+      locked: getCodeConfigLockKey(),
+      name: configObject.name,
+      type: configObject.type,
+    });
   }
 
-  await app.update({ name: configObject.name }, { transaction });
-  await app.setOptions(
-    extractNonNullParts(configObject, "options"),
-    transaction
-  );
+  await app.update({ name: configObject.name });
+  await app.setOptions(extractNonNullParts(configObject, "options"));
 
   if (externallyValidate) {
     const response = await app.test(
-      extractNonNullParts(configObject, "options"),
-      transaction
+      extractNonNullParts(configObject, "options")
     );
     if (!response.success) {
       throw new Error(
@@ -53,20 +45,20 @@ export async function loadApp(
     }
   }
 
-  await app.update({ state: "ready" }, { transaction });
+  await app.update({ state: "ready" }, {});
 
-  logModel(app, transaction ? "validated" : isNew ? "created" : "updated");
+  logModel(app, validate ? "validated" : isNew ? "created" : "updated");
 
   return app;
 }
 
-export async function deleteApps(guids: string[], transaction?: Transaction) {
+export async function deleteApps(guids: string[]) {
   const apps = await App.scope(null).findAll({
     where: { locked: getCodeConfigLockKey(), guid: { [Op.notIn]: guids } },
   });
 
   for (const i in apps) {
-    await apps[i].destroy({ transaction });
+    await apps[i].destroy();
     logModel(apps[i], "deleted");
   }
 

@@ -1,7 +1,8 @@
-import { task, config } from "actionhero";
+import { config } from "actionhero";
 import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
-import { RetryableTask } from "../../classes/retryableTask";
+import { RetryableTask } from "../../classes/tasks/retryableTask";
+import { CLS } from "../../modules/cls";
 
 export class ScheduleRun extends RetryableTask {
   constructor() {
@@ -16,7 +17,7 @@ export class ScheduleRun extends RetryableTask {
     };
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     const schedule = await Schedule.findByGuid(params.scheduleGuid);
     if (schedule.state !== "ready") {
       throw new Error(`schedule ${params.scheduleGuid} is not ready`);
@@ -29,7 +30,7 @@ export class ScheduleRun extends RetryableTask {
     await run.afterBatch();
 
     if (importsCount > 0) {
-      await task.enqueueIn(config.tasks.timeout + 1, this.name, params);
+      await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, params);
     } else {
       await run.afterBatch("complete");
     }

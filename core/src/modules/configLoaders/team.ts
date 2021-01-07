@@ -6,12 +6,12 @@ import {
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { Team, Permission } from "../..";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 
 export async function loadTeam(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
-  transaction?: Transaction
+  validate = false
 ) {
   let isNew = false;
 
@@ -20,56 +20,46 @@ export async function loadTeam(
 
   let team = await Team.scope(null).findOne({
     where: { locked: getCodeConfigLockKey(), guid },
-    transaction,
   });
   if (!team) {
     isNew = true;
-    team = await Team.create(
-      {
-        guid,
-        locked: getCodeConfigLockKey(),
-        name: configObject.name,
-      },
-      { transaction }
-    );
+    team = await Team.create({
+      guid,
+      locked: getCodeConfigLockKey(),
+      name: configObject.name,
+    });
   }
 
-  await team.update({ name: configObject.name }, { transaction });
+  await team.update({ name: configObject.name });
 
   if (
     configObject.options?.permissionAllRead !== undefined &&
     configObject.options?.permissionAllRead !== null
   ) {
-    await team.update(
-      {
-        permissionAllRead: configObject.options.permissionAllRead,
-      },
-      { transaction }
-    );
+    await team.update({
+      permissionAllRead: configObject.options.permissionAllRead,
+    });
   }
 
   if (
     configObject.options?.permissionAllWrite !== undefined &&
     configObject.options?.permissionAllWrite !== null
   ) {
-    await team.update(
-      {
-        permissionAllWrite: configObject.options.permissionAllWrite,
-      },
-      { transaction }
-    );
+    await team.update({
+      permissionAllWrite: configObject.options.permissionAllWrite,
+    });
   }
 
   if (configObject.permissions) {
-    await team.setPermissions(configObject.permissions, transaction);
+    await team.setPermissions(configObject.permissions);
   }
 
   await Permission.update(
     { locked: getCodeConfigLockKey() },
-    { where: { ownerGuid: team.guid }, transaction }
+    { where: { ownerGuid: team.guid } }
   );
 
-  logModel(team, transaction ? "validated" : isNew ? "created" : "updated");
+  logModel(team, validate ? "validated" : isNew ? "created" : "updated");
 
   return team;
 }

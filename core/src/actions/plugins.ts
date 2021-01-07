@@ -1,7 +1,7 @@
-import { Action } from "actionhero";
+import { CLSAction } from "../classes/actions/clsAction";
 import { pluginVersions } from "../modules/pluginVersions";
 
-export class PluginsList extends Action {
+export class PluginsList extends CLSAction {
   constructor() {
     super();
     this.name = "plugins:list";
@@ -10,7 +10,8 @@ export class PluginsList extends Action {
     this.outputExample = {};
   }
 
-  async run() {
-    return { plugins: await pluginVersions() };
+  async runWithinTransaction() {
+    const plugins = await pluginVersions();
+    return { plugins };
   }
 }

@@ -1,9 +1,10 @@
-import { Task, api } from "actionhero";
+import { api } from "actionhero";
 import { Group } from "../../models/Group";
 import { plugin } from "../../modules/plugin";
 import { groupExportToCSV } from "../../modules/groupExport";
+import { CLSTask } from "../../classes/tasks/clsTask";
 
-export class GroupExportToCSV extends Task {
+export class GroupExportToCSV extends CLSTask {
   constructor() {
     super();
     this.name = "group:exportToCSV";
@@ -17,7 +18,7 @@ export class GroupExportToCSV extends Task {
     };
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     const limit: number =
       params.limit ||
       parseInt(

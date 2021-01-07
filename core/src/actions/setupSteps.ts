@@ -1,4 +1,4 @@
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { SetupStep } from "../models/SetupStep";
 import { Setting } from "../models/Setting";
 import { AsyncReturnType } from "type-fest";
@@ -12,7 +12,7 @@ export class SetupStepsList extends AuthenticatedAction {
     this.outputExample = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     const setupSteps = await SetupStep.findAll({
       order: [["position", "asc"]],
     });
@@ -49,7 +49,7 @@ export class SetupStepEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const setupStep = await SetupStep.findByGuid(params.guid);
 
     if (params.skipped !== null) {
