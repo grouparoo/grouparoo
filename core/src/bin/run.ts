@@ -23,10 +23,6 @@ export class RunCLI extends CLI {
       },
     };
 
-    if (!process.argv.slice(2).includes("--web")) {
-      process.env.WEB_SERVER = "false";
-    }
-
     GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.timestampOption(this);
   }
@@ -34,6 +30,10 @@ export class RunCLI extends CLI {
   async run() {
     GrouparooCLI.logCLI(this, false);
     this.checkWorkers();
+
+    if (!process.argv.slice(2).includes("--web")) {
+      GrouparooCLI.disableWebServer();
+    }
 
     if (process.argv.slice(2).includes("--destroy")) {
       await GrouparooCLI.destroyProfiles();
