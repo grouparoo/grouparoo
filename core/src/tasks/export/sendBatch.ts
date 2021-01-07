@@ -2,7 +2,7 @@ import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { Destination } from "../../models/Destination";
 import { Export } from "../../models/Export";
 import { Op } from "sequelize";
-import { task } from "actionhero";
+import { api } from "actionhero";
 
 export class ExportSendBatches extends RetryableTask {
   constructor() {
@@ -46,7 +46,7 @@ export class ExportSendBatches extends RetryableTask {
       if (retryExportGuids.length === _exports.length) {
         // all failed!
         if (retryDelay) {
-          return task.enqueueIn(
+          return api.cls.enqueueTaskIn(
             retryDelay,
             "export:sendBatch",
             params,
@@ -67,7 +67,7 @@ export class ExportSendBatches extends RetryableTask {
         const strategy = this.pluginOptions?.Retry?.backoffStrategy;
         const backoff = strategy ? strategy[0] : undefined;
         const when = retryDelay || backoff || 1000;
-        return task.enqueueIn(
+        return api.cls.enqueueTaskIn(
           when,
           "export:sendBatch",
           newParams,

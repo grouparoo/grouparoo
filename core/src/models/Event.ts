@@ -123,7 +123,9 @@ export class Event extends LoggedModel<Event> {
 
   @AfterCreate
   static async enqueueAssociateEvent(instance: Event) {
-    await task.enqueue("event:associateProfile", { eventGuid: instance.guid });
+    await api.cls.enqueueTask("event:associateProfile", {
+      eventGuid: instance.guid,
+    });
   }
 
   @AfterDestroy

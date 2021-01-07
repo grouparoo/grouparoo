@@ -379,7 +379,7 @@ export class ResqueRunDelayed extends ResqueActionWrite {
 
     const job = delayed.tasks[params.count];
     await task.delDelayed(job.queue, job.class, job.args[0]);
-    await task.enqueue(job.class, job.args[0], job.queue);
+    await api.cls.enqueueTask(job.class, job.args[0], job.queue);
 
     return { success: true };
   }

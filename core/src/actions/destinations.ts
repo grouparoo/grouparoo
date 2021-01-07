@@ -429,7 +429,7 @@ export class DestinationDestroy extends AuthenticatedAction {
       await destination.destroy();
     } else {
       await destination.update({ state: "deleted" });
-      await task.enqueue("destination:destroy", {
+      await api.cls.enqueueTask("destination:destroy", {
         destinationGuid: destination.guid,
       });
     }

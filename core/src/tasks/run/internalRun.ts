@@ -1,4 +1,4 @@
-import { task, config } from "actionhero";
+import { api, config } from "actionhero";
 import { Run } from "../../models/Run";
 import { Import } from "../../models/Import";
 import { Profile } from "../../models/Profile";
@@ -109,7 +109,7 @@ export class RunInternalRun extends CLSTask {
     await run.afterBatch();
 
     if (profiles.length > 0) {
-      await task.enqueueIn(config.tasks.timeout + 1, this.name, {
+      await api.cls.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
         runGuid: run.guid,
         offset: offset + limit,
         limit,

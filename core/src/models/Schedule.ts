@@ -1,4 +1,4 @@
-import { log, task } from "actionhero";
+import { log, api } from "actionhero";
 import {
   Table,
   Column,
@@ -174,7 +174,7 @@ export class Schedule extends LoggedModel<Schedule> {
       "notice"
     );
 
-    await task.enqueue(
+    await api.cls.enqueueTask(
       "schedule:run",
       { scheduleGuid: this.guid, runGuid: run.guid },
       "schedules"

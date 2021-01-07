@@ -1,4 +1,4 @@
-import { task, config } from "actionhero";
+import { api, config } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { Group } from "../../models/Group";
 import { Run } from "../../models/Run";
@@ -88,7 +88,7 @@ export class RunGroup extends CLSTask {
     await run.afterBatch();
 
     if (groupMembersCount === 0 && method === "runAddGroupMembers") {
-      await task.enqueueIn(config.tasks.timeout + 1, this.name, {
+      await api.cls.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
         runGuid: run.guid,
         groupGuid: group.guid,
         method: "runRemoveGroupMembers",
@@ -99,7 +99,7 @@ export class RunGroup extends CLSTask {
         destinationGuid,
       });
     } else if (groupMembersCount === 0 && method === "runRemoveGroupMembers") {
-      await task.enqueueIn(config.tasks.timeout + 1, this.name, {
+      await api.cls.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
         runGuid: run.guid,
         groupGuid: group.guid,
         method: "removePreviousRunGroupMembers",
@@ -110,7 +110,7 @@ export class RunGroup extends CLSTask {
         destinationGuid,
       });
     } else if (groupMembersCount > 0) {
-      await task.enqueueIn(config.tasks.timeout + 1, this.name, {
+      await api.cls.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
         runGuid: run.guid,
         groupGuid: group.guid,
         method,
@@ -130,7 +130,11 @@ export class RunGroup extends CLSTask {
         await run.afterBatch("complete");
         await group.update({ state: "ready" });
       } else {
-        await task.enqueueIn(config.tasks.timeout + 1, this.name, params);
+        await api.cls.enqueueTaskIn(
+          config.tasks.timeout + 1,
+          this.name,
+          params
+        );
       }
     }
 

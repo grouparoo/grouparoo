@@ -3,7 +3,7 @@ import { Profile } from "../../models/Profile";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { Property } from "../../models/Property";
 import { Op } from "sequelize";
-import { log, task } from "actionhero";
+import { log, api } from "actionhero";
 import { ProfilePropertiesPluginMethodResponse } from "../../classes/plugin";
 import { PropertyOps } from "../../modules/ops/property";
 
@@ -58,7 +58,7 @@ export class ImportProfileProperties extends RetryableTask {
       // if something goes wrong with the batch import, fall-back to per-profile/property imports
       await Promise.all(
         profilesWithDependenciesMet.map((profile) => {
-          task.enqueue("profileProperty:importProfileProperty", {
+          api.cls.enqueueTask("profileProperty:importProfileProperty", {
             profileGuid: profile.guid,
             propertyGuid: property.guid,
           });

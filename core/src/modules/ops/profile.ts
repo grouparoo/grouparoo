@@ -592,7 +592,7 @@ export namespace ProfileOps {
 
     await Promise.all(
       profiles.map((profile) =>
-        task.enqueue("profile:completeImport", {
+        api.cls.enqueueTask("profile:completeImport", {
           profileGuid: profile.guid,
         })
       )

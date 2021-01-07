@@ -1,8 +1,6 @@
-import { task } from "actionhero";
+import { api } from "actionhero";
 import { Profile } from "../../models/Profile";
 import { Property } from "../../models/Property";
-import { Run } from "../../models/Run";
-import { Op } from "sequelize";
 import { ProfilePropertyType } from "../../modules/ops/profile";
 import { RetryableTask } from "../../classes/tasks/retryableTask";
 
@@ -92,7 +90,7 @@ export class ProfileCompleteImport extends RetryableTask {
 
       let force = false;
 
-      await task.enqueue("profile:export", {
+      await api.cls.enqueueTask("profile:export", {
         profileGuid: profile.guid,
         force,
       });

@@ -123,7 +123,7 @@ export namespace ExportOps {
     if (_exports.length > 0) {
       if (pluginConnection.methods.exportProfiles) {
         // the plugin has a batch exportProfiles method
-        await task.enqueue(
+        await api.cls.enqueueTask(
           "export:sendBatch",
           {
             destinationGuid: destination.guid,
@@ -135,7 +135,7 @@ export namespace ExportOps {
         // the plugin has a per-profile exportProfile method
         await Promise.all(
           _exports.map((_export) =>
-            task.enqueue(
+            api.cls.enqueueTask(
               "export:send",
               {
                 destinationGuid: destination.guid,

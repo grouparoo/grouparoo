@@ -1,4 +1,4 @@
-import { task, log } from "actionhero";
+import { api, log } from "actionhero";
 import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
 import { CLSTask } from "../../classes/tasks/clsTask";
@@ -58,7 +58,7 @@ export class UpdateSchedules extends CLSTask {
           state: "running",
         });
 
-        await task.enqueue("schedule:run", {
+        await api.cls.enqueueTask("schedule:run", {
           scheduleGuid: schedule.guid,
           runGuid: run.guid,
         });

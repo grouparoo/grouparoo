@@ -32,7 +32,7 @@ export namespace GroupOps {
       "notice"
     );
 
-    await task.enqueue("group:run", {
+    await api.cls.enqueueTask("group:run", {
       groupGuid: group.guid,
       runGuid: run.guid,
       force,

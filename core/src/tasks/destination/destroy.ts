@@ -1,4 +1,4 @@
-import { task, config } from "actionhero";
+import { api, config } from "actionhero";
 import { Destination } from "../../models/Destination";
 import { Run } from "../../models/Run";
 import { Export } from "../../models/Export";
@@ -19,7 +19,7 @@ export class DestinationDestroy extends CLSTask {
   }
 
   async reEnqueue(destination: Destination, run: Run) {
-    return task.enqueueIn(config.tasks.timeout * 2, this.name, {
+    return api.cls.enqueueTaskIn(config.tasks.timeout * 2, this.name, {
       destinationGuid: destination.guid,
       runGuid: run.guid,
     });

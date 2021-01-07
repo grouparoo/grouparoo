@@ -1,4 +1,4 @@
-import { task, log, config } from "actionhero";
+import { api, log, config } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { Group } from "../../models/Group";
 import { Run } from "../../models/Run";
@@ -69,7 +69,7 @@ export class GroupDestroy extends CLSTask {
     await run.afterBatch();
 
     if (importsCounts > 0 || previousRunMembers > 0 || remainingMembers > 0) {
-      await task.enqueueIn(config.tasks.timeout + 1, this.name, {
+      await api.cls.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
         runGuid: run.guid,
         groupGuid: group.guid,
         offset: offset + limit,

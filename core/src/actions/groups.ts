@@ -350,7 +350,7 @@ export class GroupExport extends AuthenticatedAction {
     const group = await Group.findByGuid(params.guid);
 
     if (params.type === "csv") {
-      await task.enqueue("group:exportToCSV", { groupGuid: group.guid });
+      await api.cls.enqueueTask("group:exportToCSV", { groupGuid: group.guid });
     } else {
       throw new Error(`${params.type} is not a type of group export`);
     }
@@ -386,7 +386,7 @@ export class GroupDestroy extends AuthenticatedAction {
       await group.destroy(); // other related models are handled by hooks
     } else {
       await group.update({ state: "deleted" });
-      await task.enqueue("group:destroy", { groupGuid: group.guid });
+      await api.cls.enqueueTask("group:destroy", { groupGuid: group.guid });
     }
 
     return { success: true };

@@ -1,4 +1,4 @@
-import { task, config } from "actionhero";
+import { api, config } from "actionhero";
 import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
 import { RetryableTask } from "../../classes/tasks/retryableTask";
@@ -29,7 +29,7 @@ export class ScheduleRun extends RetryableTask {
     await run.afterBatch();
 
     if (importsCount > 0) {
-      await task.enqueueIn(config.tasks.timeout + 1, this.name, params);
+      await api.cls.enqueueTaskIn(config.tasks.timeout + 1, this.name, params);
     } else {
       await run.afterBatch("complete");
     }
