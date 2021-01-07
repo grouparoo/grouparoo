@@ -57,6 +57,11 @@ export namespace GrouparooCLI {
     await Log.truncate();
   }
 
+  export function disableWebServer() {
+    delete api.servers.servers.web;
+    delete api.servers.servers.websocket;
+  }
+
   /** Status */
 
   export async function getPendingStatus(): Promise<LogStatus> {

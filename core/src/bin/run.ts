@@ -32,7 +32,7 @@ export class RunCLI extends CLI {
     this.checkWorkers();
 
     if (!process.argv.slice(2).includes("--web")) {
-      this.disableWebServer();
+      GrouparooCLI.disableWebServer();
     }
 
     if (process.argv.slice(2).includes("--destroy")) {
@@ -61,11 +61,6 @@ export class RunCLI extends CLI {
       throw new Error(`The Task Scheduler is not enabled`);
     if (config.tasks.minTaskProcessors < 1)
       throw new Error(`No Task Workers are enabled`);
-  }
-
-  disableWebServer() {
-    delete api.servers.servers.web;
-    delete api.servers.servers.websocket;
   }
 
   async waitForReady() {
