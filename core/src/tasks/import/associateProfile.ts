@@ -1,9 +1,10 @@
-import { log, env } from "actionhero";
-import { CLSTask } from "../../classes/tasks/clsTask";
+import { log, env, Task } from "actionhero";
 import { Import } from "../../models/Import";
 import { ProfilePropertyType } from "../../modules/ops/profile";
 
-export class ImportAssociateProfile extends CLSTask {
+export class ImportAssociateProfile extends Task {
+  // This Task extends Task rather than CLSTask as we want to be able to view newly created profiles happening in parallel to this task/transaction
+  // This Task has no side effects
   constructor() {
     super();
     this.name = "import:associateProfile";
@@ -24,7 +25,7 @@ export class ImportAssociateProfile extends CLSTask {
     return simpleProperties;
   }
 
-  async runWithinTransaction(params) {
+  async run(params) {
     const { importGuid } = params;
     const _import = await Import.findByGuid(importGuid);
 

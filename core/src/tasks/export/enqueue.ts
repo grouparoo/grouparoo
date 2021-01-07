@@ -3,6 +3,7 @@ import { log } from "actionhero";
 import { ExportOps } from "../../modules/ops/export";
 import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { plugin } from "../../modules/plugin";
+import { CLS } from "../../modules/cls";
 
 export class EnqueueExports extends RetryableTask {
   constructor() {
@@ -12,33 +13,35 @@ export class EnqueueExports extends RetryableTask {
       "check for pending exports and enqueue other tasks to send them";
     this.frequency = 1000 * 10;
     this.queue = "exports";
-    this.inputs = {};
+    this.inputs = {
+      count: { required: false, default: 0 },
+    };
   }
 
-  async runWithinTransaction() {
+  async runWithinTransaction(params) {
+    const count = params.count || 0;
     const limit = parseInt(
       (await plugin.readSetting("core", "exports-profile-batch-size")).value
     );
 
+    let totalEnqueued = 0;
     const destinations = await Destination.scope(null).findAll();
 
-    let totalEnqueued = 0;
-
     for (const i in destinations) {
-      let enqueuedExportsCount = 1;
-
-      while (enqueuedExportsCount > 0) {
-        enqueuedExportsCount = await ExportOps.processPendingExportsForDestination(
-          destinations[i],
-          limit
+      const enqueuedExportsCount = await ExportOps.processPendingExportsForDestination(
+        destinations[i],
+        limit
+      );
+      totalEnqueued += enqueuedExportsCount;
+      if (enqueuedExportsCount > 0) {
+        log(
+          `enqueued ${enqueuedExportsCount} exports to send to ${destinations[i].name} (${destinations[i].guid})`
         );
-        totalEnqueued += enqueuedExportsCount;
-        if (enqueuedExportsCount > 0) {
-          log(
-            `enqueued ${enqueuedExportsCount} exports to send to ${destinations[i].name} (${destinations[i].guid})`
-          );
-        }
       }
+    }
+
+    if (totalEnqueued > 0) {
+      await CLS.enqueueTask(this.name, { count: count + 1 });
     }
 
     return totalEnqueued;

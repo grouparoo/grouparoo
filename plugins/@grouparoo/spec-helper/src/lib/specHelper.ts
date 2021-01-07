@@ -35,7 +35,7 @@ import ExportFactory from "./factories/export";
 import RunFactory from "./factories/run";
 import ApiKeyFactory from "./factories/apiKey";
 
-export { ImportWorkflow } from "./workflows/import";
+export * from "./workflows/import";
 
 import {
   // modules
