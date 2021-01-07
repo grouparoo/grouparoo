@@ -159,7 +159,11 @@ export function RunningRuns({ execApi }) {
       state: "running",
     });
 
-    if (runs) setRuns(runs);
+    if (runs) {
+      setRuns(runs);
+    } else {
+      setRuns([]);
+    }
   }
 
   if (runs.length === 0) {
@@ -407,6 +411,8 @@ export function PendingImports({ execApi }) {
     if (imports) setMostRecentImport(imports[0]);
     if (_pendingProfilesCount !== undefined) {
       setPendingProfilesCount(_pendingProfilesCount);
+    } else {
+      setPendingProfilesCount(0);
     }
   }
 
