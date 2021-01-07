@@ -35,6 +35,9 @@ export class Validate extends CLI {
     log(`applying ${configObjects.length} objects...`);
 
     await processConfigObjects(configObjects, !!params.externallyValidate);
+    log(
+      `✅ Config applied - ${configObjects.length} config objects up-to-date!`
+    );
 
     return true;
   }
