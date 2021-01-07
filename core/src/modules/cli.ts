@@ -47,7 +47,7 @@ export namespace GrouparooCLI {
   }
 
   export async function destroyProfiles() {
-    log("Destroying all Profile and Related data", "warning");
+    log("Destroying all Profiles and related data...", "warning");
     await Profile.truncate();
     await ProfileProperty.truncate();
     await GroupMember.truncate();
