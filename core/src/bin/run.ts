@@ -16,6 +16,11 @@ export class RunCLI extends CLI {
         description:
           "[DANGER] Empty the cluster of all Profile data before starting the run?",
       },
+      "reset-high-watermarks": {
+        required: true,
+        default: "false",
+        description: "Should we run all Schedules from the beginning?",
+      },
       web: {
         required: true,
         default: "false",
@@ -37,6 +42,10 @@ export class RunCLI extends CLI {
 
     if (process.argv.slice(2).includes("--destroy")) {
       await GrouparooCLI.destroyProfiles();
+    }
+
+    if (process.argv.slice(2).includes("--reset-high-watermarks")) {
+      await GrouparooCLI.resetHighWatermarks();
     }
 
     await import("../grouparoo"); // run the server
@@ -66,8 +75,8 @@ export class RunCLI extends CLI {
   async waitForReady() {
     return new Promise(async (resolve) => {
       async function check() {
-        if (api.process.running) return resolve(null);
-        setTimeout(() => check(), CHECK_TIMEOUT);
+        if (api.process.started) return resolve(null);
+        setTimeout(() => check(), CHECK_TIMEOUT / 2);
       }
 
       await check();
@@ -102,7 +111,7 @@ export class RunCLI extends CLI {
   async checkForComplete() {
     const pendingStatus = await GrouparooCLI.getPendingStatus();
     const runStatus = await GrouparooCLI.getRunsStatus();
-    GrouparooCLI.logStatus("Initial Status", [
+    GrouparooCLI.logStatus("Status", [
       { header: "Pending Items", status: pendingStatus },
       { header: "Active Runs", status: runStatus },
     ]);

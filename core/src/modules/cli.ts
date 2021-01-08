@@ -9,6 +9,7 @@ import {
   Import,
   Export,
   Log,
+  Schedule,
 } from "..";
 
 export namespace GrouparooCLI {
@@ -55,6 +56,21 @@ export namespace GrouparooCLI {
     await Export.truncate();
     await Run.truncate();
     await Log.truncate();
+  }
+
+  export async function resetHighWatermarks() {
+    log("Resetting Schedule high water marks...", "warning");
+    const schedules = await Schedule.findAll();
+    for (const i in schedules) {
+      const runs = await Run.findAll({
+        where: {
+          creatorGuid: schedules[i].guid,
+          state: { [Op.ne]: "running" },
+          highWaterMark: { [Op.ne]: null },
+        },
+      });
+      for (const j in runs) await runs[j].destroy();
+    }
   }
 
   export function disableWebServer() {

@@ -15,6 +15,7 @@ export class Destroy extends CLI {
   async run() {
     GrouparooCLI.logCLI(this, false);
     await GrouparooCLI.destroyProfiles();
+    await GrouparooCLI.resetHighWatermarks();
     log(`✅ Success!`);
 
     return true;
