@@ -263,9 +263,9 @@ async function deleteUser(
   const { removalMode } = destinationOptions;
   switch (removalMode) {
     case RemovalMode.Archive:
-      return client.users.archive(destinationId);
+      return client.contacts.archive(destinationId);
     case RemovalMode.Delete:
-      return client.users.delete(destinationId);
+      return client.contacts.delete(destinationId);
     case RemovalMode.Skip:
       // not removing
       throw new InfoError("Destination is not removing contacts.");

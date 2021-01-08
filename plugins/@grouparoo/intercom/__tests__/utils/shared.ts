@@ -78,7 +78,7 @@ export function setup(appOptions, newNock) {
   }, veryLongTime);
 
   afterAll(async () => {
-    // await cleanUp(true);
+    await cleanUp(true);
   }, veryLongTime);
 
   beforeAll(() => {
