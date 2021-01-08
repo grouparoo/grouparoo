@@ -1,5 +1,6 @@
 import { GrouparooCLI } from "../modules/cli";
 import { CLI, api, log } from "actionhero";
+import { CLS } from "../modules/cls";
 import { sortConfigurationObject } from "../classes/codeConfig";
 import {
   getConfigDir,
@@ -34,7 +35,10 @@ export class Validate extends CLI {
 
     log(`applying ${configObjects.length} objects...`);
 
-    await processConfigObjects(configObjects, !!params.externallyValidate);
+    await CLS.wrap(async () =>
+      processConfigObjects(configObjects, !!params.externallyValidate)
+    );
+
     log(
       `✅ Config applied - ${configObjects.length} config objects up-to-date!`
     );
