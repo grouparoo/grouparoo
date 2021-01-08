@@ -12,7 +12,7 @@ import {
 export class Validate extends CLI {
   constructor() {
     super();
-    this.name = "config-apply";
+    this.name = "apply";
     this.description = "Apply changes from code config";
     this.inputs = {
       "externally-validate": {
