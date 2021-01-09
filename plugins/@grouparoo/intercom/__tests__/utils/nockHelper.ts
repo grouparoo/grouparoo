@@ -9,7 +9,7 @@ const realPath = path.join(dirPath, ".env");
 
 function buildRandoms() {
   const out = [];
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 100; i++) {
     out.push(Math.floor(Math.random() * 9999999999));
   }
   return out;
@@ -33,8 +33,13 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
   };
 }
 
-export function getRandomNumbers() {
-  return JSON.parse(process.env.INTERCOM_RANDOM_NUMBERS || randomNumbers);
+export function getRandomNumbers(testNum: number): number[] {
+  // each test gets 10 numbers
+  const numbers: number[] = JSON.parse(
+    process.env.INTERCOM_RANDOM_NUMBERS || randomNumbers
+  );
+  const first = (testNum - 1) * 10;
+  return numbers.slice(first, first + 10);
 }
 export const updater = {
   prepend: function () {

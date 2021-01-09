@@ -2,9 +2,7 @@ import path from "path";
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
-import { exportProfile } from "../../src/lib/export-contacts/exportProfile";
 import { getTagId } from "../../src/lib/export-contacts/listMethods";
-import { connect } from "../../src/lib/connect";
 import { getRandomNumbers, loadAppOptions, updater } from "../utils/nockHelper";
 import { setup } from "../utils/shared";
 
@@ -33,7 +31,7 @@ let userId = null;
 let userId2 = null;
 let userId3 = null;
 
-const rand = getRandomNumbers(); // has to be after requiring nock
+const rand = getRandomNumbers(2); // has to be after requiring nock
 
 const email = `testuser1.${rand[1]}@demo.com`;
 const newEmail = `testother1b.${rand[9]}@demo.com`;
@@ -49,33 +47,6 @@ const externalId3 = `testuser3.${rand[3]}`;
 const exampleEpoch = 1597870204;
 const exampleDate = new Date(exampleEpoch * 1000);
 
-async function runExport({
-  oldProfileProperties,
-  newProfileProperties,
-  oldGroups,
-  newGroups,
-  toDelete,
-}) {
-  return exportProfile({
-    appGuid,
-    appOptions,
-    destinationOptions,
-    connection: null,
-    app: null,
-    destination: null,
-    destinationGuid: null,
-    export: {
-      profile: null,
-      profileGuid: null,
-      oldProfileProperties,
-      newProfileProperties,
-      oldGroups,
-      newGroups,
-      toDelete,
-    },
-  });
-}
-
 describe("intercom/contacts/exportProfile/lead", () => {
   const {
     getUser,
@@ -85,7 +56,8 @@ describe("intercom/contacts/exportProfile/lead", () => {
     guidRegex,
     indexContacts,
     getClient,
-  } = setup(appOptions, newNock);
+    runExport,
+  } = setup(appOptions, destinationOptions, newNock);
 
   test("can create profile on Intercom", async () => {
     userId = await findEmail(email);

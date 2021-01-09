@@ -1,10 +1,13 @@
 import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
+import { exportProfile } from "../../src/lib/export-contacts/exportProfile";
 
-const veryLongTime = 3 * 60 * 1000;
-const indexTime = 1 * 60 * 1000;
+const veryLongTime = 4 * 60 * 1000;
+const indexTime = 1.25 * 60 * 1000;
 
-export function setup(appOptions, newNock) {
+const appGuid = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8662f9";
+
+export function setup(appOptions, destinationOptions, newNock) {
   let client = null;
   const cleanUp = async function (suppressErrors) {
     const { body } = await client.contacts.list();
@@ -70,6 +73,33 @@ export function setup(appOptions, newNock) {
     return client;
   }
 
+  async function runExport({
+    oldProfileProperties,
+    newProfileProperties,
+    oldGroups,
+    newGroups,
+    toDelete,
+  }) {
+    return exportProfile({
+      appGuid,
+      appOptions,
+      destinationOptions,
+      connection: null,
+      app: null,
+      destination: null,
+      destinationGuid: null,
+      export: {
+        profile: null,
+        profileGuid: null,
+        oldProfileProperties,
+        newProfileProperties,
+        oldGroups,
+        newGroups,
+        toDelete,
+      },
+    });
+  }
+
   const guidRegex = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 
   beforeAll(async () => {
@@ -93,6 +123,7 @@ export function setup(appOptions, newNock) {
     findId,
     indexContacts,
     getClient,
+    runExport,
     guidRegex,
   };
 }

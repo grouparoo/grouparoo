@@ -373,13 +373,10 @@ function addUpdatePayload(
       break;
     case CreationMode.Lifecycle:
       // make sure it's the right one
-      let role;
       if (external_id) {
-        role = "user";
-      } else {
-        role = "lead";
+        extra.role = "user";
       }
-      extra.role = role;
+      // but note: can't convert user back to lead
       break;
 
     default:
