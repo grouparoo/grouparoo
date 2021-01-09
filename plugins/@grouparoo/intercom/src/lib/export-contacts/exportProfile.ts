@@ -9,16 +9,12 @@ import {
   getTagId,
   normalizeTagName,
   IntercomCacheData,
-  IntercomTag,
   getTagIdMap,
 } from "./listMethods";
 
-interface IntercomUser {
+interface IntercomContact {
   id: string;
   role: string;
-}
-
-interface IntercomContact extends IntercomUser {
   tags: {
     data: { id: string }[];
   };
@@ -86,14 +82,21 @@ export const sendProfile: ExportProfilePluginMethod = async ({
     throw new Error(`external_id or email is a required mapping`);
   }
 
-  const destinationId = await findDestinationId(
+  const found = await findContact(
     client,
     newProfileProperties,
     oldProfileProperties
   );
 
   if (toDelete) {
-    await deleteUser(client, destinationOptions, destinationId);
+    await deleteUser(
+      client,
+      destinationOptions,
+      cacheData,
+      found,
+      oldGroups,
+      newGroups
+    );
     return { success: true };
   }
 
@@ -108,7 +111,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   const contact = await createOrUpdateUser(
     client,
     destinationOptions,
-    destinationId,
+    found ? found.id : null,
     payload
   );
 
@@ -153,7 +156,7 @@ function trimLower(value) {
   return value;
 }
 
-function filterUser(users: IntercomUser[], key: string, value) {
+function filterUser(users: IntercomContact[], key: string, value) {
   const check = trimLower(value);
   if (!check) {
     return null;
@@ -170,11 +173,11 @@ function filterUser(users: IntercomUser[], key: string, value) {
   return null;
 }
 
-export async function findDestinationId(
+export async function findContact(
   client,
   newProfileProperties,
   oldProfileProperties
-): Promise<string> {
+): Promise<IntercomContact> {
   const newId = cleanExternalId(newProfileProperties.external_id);
   let oldId = cleanExternalId(oldProfileProperties.external_id);
   const newEmail = cleanEmail(newProfileProperties.email);
@@ -225,13 +228,13 @@ export async function findDestinationId(
   }
 
   const { body } = await client.contacts.search(query);
-  const users: IntercomUser[] = body.data;
+  const users: IntercomContact[] = body.data;
 
   if (!users || users.length === 0) {
     return null;
   }
 
-  let found = null;
+  let found: IntercomContact = null;
   // favor external_id match
   if (!found && newId) {
     found = filterUser(users, "external_id", newId);
@@ -248,26 +251,32 @@ export async function findDestinationId(
   if (!found) {
     found = users[0];
   }
-  return found.id;
+  return found;
 }
 
 async function deleteUser(
   client: any,
   destinationOptions: SimpleDestinationOptions,
-  destinationId: string
+  cacheData: IntercomCacheData,
+  user: IntercomContact,
+  oldGroups: string[],
+  newGroups: string[]
 ) {
-  if (!destinationId) {
+  if (!user) {
     return;
   }
 
   const { removalMode } = destinationOptions;
   switch (removalMode) {
     case RemovalMode.Archive:
-      return client.contacts.archive(destinationId);
+      return client.contacts.archive(user.id);
     case RemovalMode.Delete:
-      return client.contacts.delete(destinationId);
+      return client.contacts.delete(user.id);
     case RemovalMode.Skip:
-      // not removing
+      // not removing contact, but is clearing all tags grouparoo is in charge of
+      oldGroups = Array.from(new Set(oldGroups.concat(newGroups)));
+      newGroups = [];
+      await updateTags(client, cacheData, user, oldGroups, newGroups);
       throw new InfoError("Destination is not removing contacts.");
     default:
       throw new Error(`Unknown removalMode: ${removalMode}`);
