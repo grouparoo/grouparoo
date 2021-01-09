@@ -1,0 +1,30 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "Group",
+      id: "{{id}}",
+      name: "{{name}}",
+      type: "calculated",
+
+      /**
+       The Rules for this group.  This is an Array.  Learn more about the options @ www.grouparoo.com/TODO:
+        Examples:
+
+        rules: [
+          {
+            propertyId: "email",
+            operation: { op: "exists" },
+          },
+          {
+            propertyId: "ltv",
+            operation: { op: "gt" },
+            match: 100,
+          },
+        ]
+      */
+      rules: {{{rules}}},
+    },
+  ];
+};
+
+
