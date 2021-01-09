@@ -149,15 +149,19 @@ export namespace GrouparooCLI {
     console.log("");
   }
 
-  function blueBold(s: string) {
+  export function blueBold(s: string) {
     return Colors.blue(Colors.bold(s));
   }
 
-  function underlineBold(s: string) {
+  export function blue(s: string) {
+    return Colors.blue(s);
+  }
+
+  export function underlineBold(s: string) {
     return Colors.underline(Colors.bold(s));
   }
 
-  function deCamel(s: string) {
+  export function deCamel(s: string) {
     return s.replace(/([a-z])([A-Z])/g, "$1 $2");
   }
 }

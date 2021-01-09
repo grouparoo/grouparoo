@@ -1,12 +1,11 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, api, log } from "actionhero";
+import { CLI, log } from "actionhero";
 import { CLS } from "../modules/cls";
 import { sortConfigurationObject } from "../classes/codeConfig";
 import {
   getConfigDir,
   loadConfigObjects,
   processConfigObjects,
-  logFatalError,
 } from "../modules/configLoaders";
 
 export class Validate extends CLI {
