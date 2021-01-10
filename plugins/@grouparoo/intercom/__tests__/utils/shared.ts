@@ -2,8 +2,8 @@ import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
 import { exportProfile } from "../../src/lib/export-contacts/exportProfile";
 
-const veryLongTime = 4 * 60 * 1000;
-const indexTime = 1.25 * 60 * 1000;
+const veryLongTime = 5 * 60 * 1000;
+const indexTime = 2 * 60 * 1000;
 
 const appGuid = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8662f9";
 

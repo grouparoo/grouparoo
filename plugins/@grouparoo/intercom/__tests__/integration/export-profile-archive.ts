@@ -9,12 +9,12 @@ const nockFile = path.join(
   __dirname,
   "../",
   "fixtures",
-  "export-profile-skip.js"
+  "export-profile-archive.js"
 );
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profile-skip");
+require("./../fixtures/export-profile-archive");
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -22,13 +22,13 @@ require("./../fixtures/export-profile-skip");
 const appOptions = loadAppOptions(newNock);
 const destinationOptions = {
   creationMode: "Lifecycle",
-  removalMode: "Skip",
+  removalMode: "Archive",
 };
 
 let userId = null;
 let userId2 = null;
 
-const rand = getRandomNumbers(4); // has to be after requiring nock
+const rand = getRandomNumbers(5); // has to be after requiring nock
 
 const email = `testuser1.${rand[1]}@demo.com`;
 const newEmail = `testother1b.${rand[9]}@demo.com`;
@@ -36,10 +36,11 @@ const newEmail = `testother1b.${rand[9]}@demo.com`;
 const externalId2 = `testuser2.${rand[2]}`;
 const email2 = `testuser2.${rand[2]}@demo.com`;
 
-describe("intercom/contacts/exportProfile/skip", () => {
+describe("intercom/contacts/exportProfile/archive", () => {
   const {
     getUser,
     findEmail,
+    findId,
     getTags,
     guidRegex,
     indexContacts,
@@ -102,83 +103,53 @@ describe("intercom/contacts/exportProfile/skip", () => {
     expect(tags).toEqual([]);
   });
 
-  test("will not delete a user", async () => {
-    let error = null;
-    try {
-      await runExport({
-        oldProfileProperties: {
-          email: email2,
-          external_id: externalId2,
-          name: "A User",
-        },
-        newProfileProperties: {
-          email: email2,
-          external_id: externalId2,
-          name: "Delete User",
-        },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: true,
-      });
-    } catch (err) {
-      error = err;
-    }
+  test("will archive a user", async () => {
+    await runExport({
+      oldProfileProperties: {
+        email: email2,
+        external_id: externalId2,
+        name: "A User",
+      },
+      newProfileProperties: {
+        email: email2,
+        external_id: externalId2,
+        name: "Delete User",
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+    });
 
     await indexContacts();
 
-    expect(error).toBeTruthy();
-    expect(error.message).toMatch(/not removing/);
-    expect(error["errorLevel"]).toBe("info");
-
-    // still there!
-    const user = await getUser(userId2);
-    expect(user.email).toBe(email2);
-    expect(user.external_id).toBe(externalId2);
-    expect(user.name).toBe("A User"); // unchanged
-    expect(user.role).toBe("user");
-
-    const tags = await getTags(userId2);
-    expect(tags).toEqual([]);
+    await expect(getUser(userId2)).rejects.toThrow(/User Not Found/);
+    expect(await findEmail(email2)).toBeNull();
+    expect(await findId(externalId2)).toBeNull();
   });
 
   test("will not delete a lead", async () => {
-    let error = null;
-    try {
-      await runExport({
-        oldProfileProperties: {
-          email: email,
-          name: "A Lead",
-        },
-        newProfileProperties: {
-          email: newEmail, // pick up old address!
-          name: "Delete Lead",
-        },
-        oldGroups: ["another", "Test Group X", "no exist"],
-        newGroups: ["another", "Test Group X"],
-        toDelete: true,
-      });
-    } catch (err) {
-      error = err;
-    }
+    await runExport({
+      oldProfileProperties: {
+        email: email,
+        name: "A Lead",
+      },
+      newProfileProperties: {
+        email: newEmail, // pick up old address!
+        name: "Delete Lead",
+      },
+      oldGroups: ["another", "Test Group X", "no exist"],
+      newGroups: ["another", "Test Group X"],
+      toDelete: true,
+    });
 
     await indexContacts();
 
-    expect(error).toBeTruthy();
-    expect(error.message).toMatch(/not removing/);
-    expect(error["errorLevel"]).toBe("info");
-
-    // still there!
-    const user = await getUser(userId);
-    expect(user.email).toBe(email);
-    expect(user.external_id).toMatch(guidRegex);
-    expect(user.name).toBe("A Lead");
-    expect(user.role).toBe("lead");
-
-    const tags = await getTags(userId);
-    expect(tags).toEqual([]); // removed!
+    await expect(getUser(userId)).rejects.toThrow(/User Not Found/);
+    expect(await findEmail(email)).toBeNull();
+    expect(await findEmail(newEmail)).toBeNull();
   });
 
-  test("can start syncing lead again", async () => {
+  test("makes new lead with same email", async () => {
     await runExport({
       oldProfileProperties: {},
       newProfileProperties: {
@@ -192,28 +163,49 @@ describe("intercom/contacts/exportProfile/skip", () => {
 
     await indexContacts();
 
+    const test = await findEmail(email);
+    expect(test).toBeTruthy();
+    expect(test).not.toBe(userId); // new one!
+
+    userId = test;
+
     const user = await getUser(userId);
     expect(user.name).toBe("Back Lead");
     expect(user.role).toBe("lead");
+    expect(user.archived).toBeFalsy();
+
+    const tags = await getTags(userId);
+    expect(tags).toEqual([]);
   });
 
-  test("can start syncing contact again", async () => {
+  test("unarchives with same email and external_id", async () => {
     await runExport({
       oldProfileProperties: {},
       newProfileProperties: {
         email: email2,
         external_id: externalId2,
-        name: "Back Contact",
+        name: "Back User",
       },
       oldGroups: [],
-      newGroups: [],
+      newGroups: ["another"],
       toDelete: false,
     });
 
     await indexContacts();
 
+    const test = await findEmail(email2);
+    console.log({ unarchived: { test } });
+    expect(test).toBeTruthy();
+    expect(test).toBe(userId2); // unarchives!
+
+    userId2 = test;
+
     const user = await getUser(userId2);
-    expect(user.name).toBe("Back Contact");
+    expect(user.name).toBe("Back User");
     expect(user.role).toBe("user");
+    expect(user.archived).toBeFalsy();
+
+    const tags = await getTags(userId2);
+    expect(tags).toEqual(["another"]);
   });
 });

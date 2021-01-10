@@ -211,7 +211,7 @@ describe("intercom/contacts/exportProfile/user", () => {
       newProfileProperties: {
         external_id,
       },
-      oldGroups: ["another", "Test Group X"],
+      oldGroups: ["another", "Test Group X", "no exist"],
       newGroups: ["Test Group X"],
       toDelete: false,
     });

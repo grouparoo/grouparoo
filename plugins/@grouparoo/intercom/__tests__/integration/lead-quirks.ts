@@ -93,4 +93,6 @@ describe("intercom has weird things with leads - verify the behavior", () => {
     expect(user.email).toBe(email2);
     expect(user.role).toBe("user");
   });
+
+  // TODO: deleting behavior
 });

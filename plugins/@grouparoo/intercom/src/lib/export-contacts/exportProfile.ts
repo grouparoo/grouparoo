@@ -432,7 +432,14 @@ async function createOrUpdateUser(
           ) {
             // was it an archived match?
             if (archivedRegex.exec(message)) {
-              await client.contacts.unarchive(conflictDestinationId);
+              try {
+                await client.contacts.unarchive(conflictDestinationId);
+              } catch (err) {
+                const message = err.message;
+                err.message = `Error unarchiving. It may be a permanently deleted contact with the same external id (${payload.external_id}) and email (${payload.email}): ${message}`;
+
+                throw err;
+              }
             }
 
             // try again
