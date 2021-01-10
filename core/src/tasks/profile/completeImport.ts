@@ -1,10 +1,8 @@
-import { task } from "actionhero";
+import { CLS } from "../../modules/cls";
 import { Profile } from "../../models/Profile";
 import { Property } from "../../models/Property";
-import { Run } from "../../models/Run";
-import { Op } from "sequelize";
 import { ProfilePropertyType } from "../../modules/ops/profile";
-import { RetryableTask } from "../../classes/retryableTask";
+import { RetryableTask } from "../../classes/tasks/retryableTask";
 
 export class ProfileCompleteImport extends RetryableTask {
   constructor() {
@@ -28,7 +26,7 @@ export class ProfileCompleteImport extends RetryableTask {
     return simpleProperties;
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     const profile = await Profile.findOne({
       where: { guid: params.profileGuid },
     });
@@ -92,7 +90,7 @@ export class ProfileCompleteImport extends RetryableTask {
 
       let force = false;
 
-      await task.enqueue("profile:export", {
+      await CLS.enqueueTask("profile:export", {
         profileGuid: profile.guid,
         force,
       });

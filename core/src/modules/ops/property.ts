@@ -3,7 +3,8 @@ import { Group } from "../../models/Group";
 import { GroupRule } from "../../models/GroupRule";
 import { App } from "../../models/App";
 import { internalRun } from "../internalRun";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
+import { api } from "actionhero";
 import Mustache from "mustache";
 
 export namespace PropertyOps {
@@ -11,6 +12,7 @@ export namespace PropertyOps {
    * Enqueue Runs to update all Groups that rely on this Property
    */
   export async function enqueueRuns(property: Property) {
+    if (!api.process.running) return; // we are in an initializer (validating)
     await internalRun("property", property.guid); // update *all* profiles
 
     const groups = await Group.findAll({
@@ -32,12 +34,9 @@ export namespace PropertyOps {
   /**
    * Get the options for a Property from its plugin
    */
-  export async function pluginOptions(
-    property: Property,
-    transaction?: Transaction
-  ) {
-    const source = await property.$get("source", { scope: null, transaction });
-    const { pluginConnection } = await source.getPlugin(transaction);
+  export async function pluginOptions(property: Property) {
+    const source = await property.$get("source", { scope: null });
+    const { pluginConnection } = await source.getPlugin();
 
     if (!pluginConnection) {
       throw new Error(`cannot find a pluginConnection for type ${source.type}`);
@@ -59,11 +58,11 @@ export namespace PropertyOps {
         examples?: Array<any>;
       }>;
     }> = [];
-    const app = await App.findByGuid(source.appGuid, transaction);
-    const connection = await app.getConnection(transaction);
-    const appOptions = await app.getOptions(true, transaction);
-    const sourceOptions = await source.getOptions(true, transaction);
-    const sourceMapping = await source.getMapping(transaction);
+    const app = await App.findByGuid(source.appGuid);
+    const connection = await app.getConnection();
+    const appOptions = await app.getOptions(true);
+    const sourceOptions = await source.getOptions(true);
+    const sourceMapping = await source.getMapping();
 
     for (const i in pluginConnection.propertyOptions) {
       const opt = pluginConnection.propertyOptions[i];
@@ -130,36 +129,30 @@ export namespace PropertyOps {
   }
 
   /** Make this rule identifying */
-  export async function makeIdentifying(
-    rule: Property,
-    transaction?: Transaction
-  ) {
+  export async function makeIdentifying(rule: Property) {
     if (rule.identifying === true) return;
 
     await Property.update(
       { identifying: false },
-      { where: { guid: { [Op.ne]: rule.guid } }, transaction }
+      { where: { guid: { [Op.ne]: rule.guid } } }
     );
-    await rule.update({ identifying: true }, { transaction });
+    await rule.update({ identifying: true });
   }
 
   /**
    * Get the options for a Property's Filter from its plugin
    */
-  export async function pluginFilterOptions(
-    property: Property,
-    transaction: Transaction
-  ) {
-    const { pluginConnection } = await property.getPlugin(transaction);
+  export async function pluginFilterOptions(property: Property) {
+    const { pluginConnection } = await property.getPlugin();
     if (!pluginConnection.methods.sourceFilters) return [];
 
-    const propertyOptions = await property.getOptions(true, transaction);
-    const source = await property.$get("source", { scope: null, transaction });
-    const sourceOptions = await source.getOptions(true, transaction);
-    const sourceMapping = await source.getMapping(transaction);
-    const app = await App.findByGuid(source.appGuid, transaction);
-    const connection = await app.getConnection(transaction);
-    const appOptions = await app.getOptions(true, transaction);
+    const propertyOptions = await property.getOptions(true);
+    const source = await property.$get("source", { scope: null });
+    const sourceOptions = await source.getOptions(true);
+    const sourceMapping = await source.getMapping();
+    const app = await App.findByGuid(source.appGuid);
+    const connection = await app.getConnection();
+    const appOptions = await app.getOptions(true);
 
     const method = pluginConnection.methods.sourceFilters;
     const options = await method({

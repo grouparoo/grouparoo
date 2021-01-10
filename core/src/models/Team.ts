@@ -2,7 +2,6 @@ import {
   Table,
   Column,
   AllowNull,
-  Default,
   Length,
   AfterSave,
   BeforeDestroy,
@@ -15,7 +14,6 @@ import { LoggedModel } from "../classes/loggedModel";
 import { TeamMember } from "./TeamMember";
 import { Permission, PermissionTopics } from "./Permission";
 import { AsyncReturnType } from "type-fest";
-import { Transaction } from "sequelize";
 import { LockableHelper } from "../modules/lockableHelper";
 
 @Table({ tableName: "teams", paranoid: false })
@@ -69,22 +67,16 @@ export class Team extends LoggedModel<Team> {
     };
   }
 
-  async authorizeAction(
-    topic: string,
-    mode: "read" | "write",
-    transaction?: Transaction
-  ) {
-    return Permission.authorizeAction(this.guid, topic, mode, transaction);
+  async authorizeAction(topic: string, mode: "read" | "write") {
+    return Permission.authorizeAction(this.guid, topic, mode);
   }
 
   async setPermissions(
-    permissions: Array<{ guid: string; read: boolean; write: boolean }>,
-    transaction?: Transaction
+    permissions: Array<{ guid: string; read: boolean; write: boolean }>
   ) {
     for (const i in permissions) {
       const permission = await Permission.findOne({
         where: { ownerGuid: this.guid, guid: permissions[i].guid },
-        transaction,
       });
       if (!permission) {
         throw new Error(
@@ -102,17 +94,16 @@ export class Team extends LoggedModel<Team> {
             ? this.permissionAllWrite
             : permissions[i].write;
 
-        await permission.save({ transaction });
+        await permission.save();
       }
     }
   }
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
@@ -132,10 +123,7 @@ export class Team extends LoggedModel<Team> {
   }
 
   @AfterSave
-  static async buildPermissions(
-    instance: Team,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async buildPermissions(instance: Team) {
     const permissionsWithStatus: Array<{
       isNew: boolean;
       permission: Permission;
@@ -150,37 +138,27 @@ export class Team extends LoggedModel<Team> {
           ownerGuid: instance.guid,
           ownerType: "team",
         },
-        transaction,
       });
 
       if (!permission) {
         isNew = true;
-        permission = await Permission.create(
-          {
-            topic,
-            ownerGuid: instance.guid,
-            ownerType: "team",
-          },
-          { transaction }
-        );
+        permission = await Permission.create({
+          topic,
+          ownerGuid: instance.guid,
+          ownerType: "team",
+        });
       }
 
       if (isNew) {
         // default new teams to having full 'read' access
-        await permission.update({ read: true }, { transaction });
+        await permission.update({ read: true });
       }
 
       if (instance.permissionAllRead !== null) {
-        await permission.update(
-          { read: instance.permissionAllRead },
-          { transaction }
-        );
+        await permission.update({ read: instance.permissionAllRead });
       }
       if (instance.permissionAllWrite !== null) {
-        await permission.update(
-          { write: instance.permissionAllWrite },
-          { transaction }
-        );
+        await permission.update({ write: instance.permissionAllWrite });
       }
       if (instance.locked && !permission.locked) {
         await permission.update({ locked: instance.locked });
@@ -212,13 +190,9 @@ export class Team extends LoggedModel<Team> {
   }
 
   @AfterDestroy
-  static async deletePermissions(
-    instance: Team,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async deletePermissions(instance: Team) {
     return Permission.destroy({
       where: { ownerGuid: instance.guid },
-      transaction,
     });
   }
 }

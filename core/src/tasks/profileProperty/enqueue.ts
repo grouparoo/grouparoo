@@ -1,9 +1,10 @@
-import { Task, task } from "actionhero";
+import { CLSTask } from "../../classes/tasks/clsTask";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { Property } from "../../models/Property";
 import { plugin } from "../../modules/plugin";
+import { CLS } from "../../modules/cls";
 
-export class ProfilePropertiesEnqueue extends Task {
+export class ProfilePropertiesEnqueue extends CLSTask {
   constructor() {
     super();
     this.name = "profileProperties:enqueue";
@@ -14,7 +15,7 @@ export class ProfilePropertiesEnqueue extends Task {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     let count = 0;
     const limit = parseInt(
       (
@@ -51,7 +52,7 @@ export class ProfilePropertiesEnqueue extends Task {
 
       if (pendingProfileProperties.length > 0) {
         if (method === "ProfileProperties") {
-          await task.enqueue(`profileProperty:import${method}`, {
+          await CLS.enqueueTask(`profileProperty:import${method}`, {
             propertyGuid: property.guid,
             profileGuids: pendingProfileProperties.map(
               (ppp) => ppp.profileGuid
@@ -60,7 +61,7 @@ export class ProfilePropertiesEnqueue extends Task {
         } else {
           await Promise.all(
             pendingProfileProperties.map((ppp) =>
-              task.enqueue(`profileProperty:import${method}`, {
+              CLS.enqueueTask(`profileProperty:import${method}`, {
                 propertyGuid: property.guid,
                 profileGuid: ppp.profileGuid,
               })

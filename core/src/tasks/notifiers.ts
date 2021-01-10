@@ -1,6 +1,7 @@
-import { Task, api } from "actionhero";
+import { api } from "actionhero";
+import { CLSTask } from "../classes/tasks/clsTask";
 
-export class Notifier extends Task {
+export class Notifier extends CLSTask {
   constructor() {
     super();
     this.name = "notifier";
@@ -9,7 +10,7 @@ export class Notifier extends Task {
     this.queue = "default";
   }
 
-  async run() {
+  async runWithinTransaction() {
     for (const i in api.notifiers.notifiers) {
       const notifier = api.notifiers.notifiers[i];
       await notifier.run();

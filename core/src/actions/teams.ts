@@ -1,10 +1,11 @@
-import { Action, api } from "actionhero";
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { api } from "actionhero";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
+import { CLSAction } from "../classes/actions/clsAction";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
 import { GrouparooSubscription } from "../modules/grouparooSubscription";
 
-export class TeamInitialize extends Action {
+export class TeamInitialize extends CLSAction {
   constructor() {
     super();
     this.name = "team:initialize";
@@ -19,7 +20,7 @@ export class TeamInitialize extends Action {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     let team: Team;
     let teamMember: TeamMember;
 
@@ -70,7 +71,7 @@ export class TeamsList extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     const teams = await Team.findAll();
     return {
       teams: await Promise.all(teams.map(async (team) => team.apiData())),
@@ -92,7 +93,7 @@ export class TeamCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const team = new Team(params);
     await team.save();
     return { team: await team.apiData() };
@@ -117,7 +118,7 @@ export class TeamEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const team = await Team.findByGuid(params.guid);
     const updateParams = Object.assign({}, params);
     if (params.disabledPermissionAllRead) updateParams.permissionAllRead = null;
@@ -153,7 +154,7 @@ export class TeamView extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const team = await Team.findOne({
       where: { guid: params.guid },
       include: [{ model: TeamMember }],
@@ -185,7 +186,7 @@ export class TeamDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const team = await Team.findByGuid(params.guid);
     await team.destroy();
     return { success: true };

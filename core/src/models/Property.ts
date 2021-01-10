@@ -16,7 +16,7 @@ import {
   BeforeUpdate,
   BeforeCreate,
 } from "sequelize-typescript";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { env, api, config } from "actionhero";
 import { plugin } from "../modules/plugin";
 import { LoggedModel } from "../classes/loggedModel";
@@ -71,8 +71,7 @@ const STATE_TRANSITIONS = [
     from: "draft",
     to: "ready",
     checks: [
-      (instance: Property, transaction?: Transaction) =>
-        instance.validateOptions(null, null, null, transaction),
+      (instance: Property) => instance.validateOptions(null, null, null),
     ],
   },
 ];
@@ -191,19 +190,17 @@ export class Property extends LoggedModel<Property> {
   }
 
   async test(options?: SimplePropertyOptions) {
-    const profile = await Profile.findOne({ order: [["guid", "asc"]] });
+    const profile = await Profile.findOne({
+      order: [["guid", "asc"]],
+    });
     if (profile) {
       const source = await Source.findByGuid(this.sourceGuid);
       return source.importProfileProperty(profile, this, options);
     }
   }
 
-  async getOptions(sourceFromEnvironment = true, transaction?: Transaction) {
-    const options = await OptionHelper.getOptions(
-      this,
-      sourceFromEnvironment,
-      transaction
-    );
+  async getOptions(sourceFromEnvironment = true) {
+    const options = await OptionHelper.getOptions(this, sourceFromEnvironment);
     for (const i in options) {
       options[
         i
@@ -215,11 +212,7 @@ export class Property extends LoggedModel<Property> {
     return options;
   }
 
-  async setOptions(
-    options: SimplePropertyOptions,
-    test = true,
-    transaction?: Transaction
-  ) {
+  async setOptions(options: SimplePropertyOptions, test = true) {
     if (test) await this.test(options);
 
     for (const i in options) {
@@ -230,7 +223,7 @@ export class Property extends LoggedModel<Property> {
       );
     }
 
-    return OptionHelper.setOptions(this, options, transaction);
+    return OptionHelper.setOptions(this, options);
   }
 
   async afterSetOptions(hasChanges: boolean) {
@@ -240,8 +233,7 @@ export class Property extends LoggedModel<Property> {
   async validateOptions(
     options?: SimplePropertyOptions,
     allowEmpty = false,
-    useCache = false,
-    transaction?: Transaction
+    useCache = false
   ) {
     // This method is called on every Property, for every profile, before an import
     // caching that we are already valid can speed this up
@@ -252,13 +244,12 @@ export class Property extends LoggedModel<Property> {
       if (previouslyValidated === "true") return;
     }
 
-    if (!options) options = await this.getOptions(true, transaction);
+    if (!options) options = await this.getOptions(true);
 
     const response = await OptionHelper.validateOptions(
       this,
       options,
-      allowEmpty,
-      transaction
+      allowEmpty
     );
 
     if (CACHE_TTL > 0) {
@@ -269,15 +260,14 @@ export class Property extends LoggedModel<Property> {
     return response;
   }
 
-  async getPlugin(transaction?: Transaction) {
-    return OptionHelper.getPlugin(this, transaction);
+  async getPlugin() {
+    return OptionHelper.getPlugin(this);
   }
 
-  async getFilters(transaction?: Transaction) {
+  async getFilters() {
     const filtersWithCol: PropertyFiltersWithKey[] = [];
     const filters = await this.$get("propertyFilters", {
       order: [["position", "asc"]],
-      transaction,
     });
 
     for (const i in filters) {
@@ -297,11 +287,11 @@ export class Property extends LoggedModel<Property> {
 
   async setFilters(
     filters: PropertyFiltersWithKey[],
-    transaction?: Transaction,
+
     externallyValidate = true
   ) {
-    if (externallyValidate) await this.validateFilters(filters, transaction);
-    const existingFilters = await this.getFilters(transaction);
+    if (externallyValidate) await this.validateFilters(filters);
+    const existingFilters = await this.getFilters();
     const filtersAreEqual = await PropertyOps.filtersAreEqual(
       filters,
       existingFilters
@@ -310,45 +300,37 @@ export class Property extends LoggedModel<Property> {
 
     await PropertyFilter.destroy({
       where: { propertyGuid: this.guid },
-      transaction,
     });
 
     for (const i in filters) {
       const filter = filters[i];
 
-      await PropertyFilter.create(
-        {
-          position: parseInt(i) + 1,
-          propertyGuid: this.guid,
-          key: filter.key,
-          op: filter.op,
-          match: filter.match,
-          relativeMatchNumber: filter.relativeMatchNumber,
-          relativeMatchUnit: filter.relativeMatchUnit,
-          relativeMatchDirection: filter.relativeMatchDirection,
-        },
-        { transaction }
-      );
+      await PropertyFilter.create({
+        position: parseInt(i) + 1,
+        propertyGuid: this.guid,
+        key: filter.key,
+        op: filter.op,
+        match: filter.match,
+        relativeMatchNumber: filter.relativeMatchNumber,
+        relativeMatchUnit: filter.relativeMatchUnit,
+        relativeMatchDirection: filter.relativeMatchDirection,
+      });
     }
 
-    if (!transaction) return PropertyOps.enqueueRuns(this);
+    return PropertyOps.enqueueRuns(this);
   }
 
   async pluginOptions() {
     return PropertyOps.pluginOptions(this);
   }
 
-  async pluginFilterOptions(transaction?: Transaction) {
-    return PropertyOps.pluginFilterOptions(this, transaction);
+  async pluginFilterOptions() {
+    return PropertyOps.pluginFilterOptions(this);
   }
 
-  async validateFilters(
-    filters: PropertyFiltersWithKey[],
-    transaction?: Transaction
-  ) {
-    if (!filters) filters = await this.getFilters(transaction);
-
-    const pluginFilterOptions = await this.pluginFilterOptions(transaction);
+  async validateFilters(filters: PropertyFiltersWithKey[]) {
+    if (!filters) filters = await this.getFilters();
+    const pluginFilterOptions = await this.pluginFilterOptions();
 
     for (const i in filters) {
       const filter = filters[i];
@@ -364,8 +346,8 @@ export class Property extends LoggedModel<Property> {
     }
   }
 
-  async makeIdentifying(transaction?: Transaction) {
-    return PropertyOps.makeIdentifying(this, transaction);
+  async makeIdentifying() {
+    return PropertyOps.makeIdentifying(this);
   }
 
   async apiData() {
@@ -392,10 +374,9 @@ export class Property extends LoggedModel<Property> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
@@ -403,30 +384,23 @@ export class Property extends LoggedModel<Property> {
 
   @BeforeUpdate
   @BeforeCreate
-  static async determineDirectlyMapped(
-    instance: Property,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async determineDirectlyMapped(instance: Property) {
     if (instance.state === "draft") return;
 
-    const source = await instance.$get("source", { scope: null, transaction });
+    const source = await instance.$get("source", { scope: null });
     const mapping = await source.getMapping();
     const mappingValues = Object.values(mapping);
     instance.directlyMapped = mappingValues.includes(instance.key);
   }
 
   @BeforeSave
-  static async ensureUniqueKey(
-    instance: Property,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async ensureUniqueKey(instance: Property) {
     const count = await Property.count({
       where: {
         guid: { [Op.ne]: instance.guid },
         key: instance.key,
         state: { [Op.ne]: "draft" },
       },
-      transaction,
     });
     if (count > 0) {
       throw new Error(`key "${instance.key}" is already in use`);
@@ -434,20 +408,14 @@ export class Property extends LoggedModel<Property> {
   }
 
   @BeforeSave
-  static async ensureOptions(
-    instance: Property,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
-    const source = await Source.findByGuid(instance.sourceGuid, transaction);
-    await source.validateOptions(null, transaction);
+  static async ensureOptions(instance: Property) {
+    const source = await Source.findByGuid(instance.sourceGuid);
+    await source.validateOptions(null);
   }
 
   @BeforeSave
-  static async updateState(
-    instance: Property,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS, transaction);
+  static async updateState(instance: Property) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeSave
@@ -458,10 +426,7 @@ export class Property extends LoggedModel<Property> {
   }
 
   @BeforeSave
-  static async ensureUniqueProperties(
-    instance: Property,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async ensureUniqueProperties(instance: Property) {
     if (instance.changed("unique") && instance.unique) {
       const valueCounts = await ProfileProperty.findAll({
         attributes: [
@@ -476,7 +441,6 @@ export class Property extends LoggedModel<Property> {
         ),
         limit: 1,
         raw: true,
-        transaction,
       });
 
       if (valueCounts.length > 0) {
@@ -488,14 +452,10 @@ export class Property extends LoggedModel<Property> {
   }
 
   @BeforeSave
-  static async ensureOneIdentifyingProperty(
-    instance: Property,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async ensureOneIdentifyingProperty(instance: Property) {
     if (instance.identifying) {
       const otherIdentifyingRulesCount = await Property.count({
         where: { identifying: true, guid: { [Op.ne]: instance.guid } },
-        transaction,
       });
 
       if (otherIdentifyingRulesCount > 0) {
@@ -505,12 +465,15 @@ export class Property extends LoggedModel<Property> {
   }
 
   @BeforeSave
-  static async ensureSourceReady(
-    instance: Property,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
-    const source = await Source.findByGuid(instance.sourceGuid, transaction);
-    if (source.state !== "ready") throw new Error("source is not ready");
+  static async ensureSourceReady(instance: Property) {
+    const source = await Source.findByGuid(instance.sourceGuid);
+    const otherProperties = await Property.scope(null).count({
+      where: { guid: { [Op.ne]: instance.guid } },
+    });
+
+    if (otherProperties > 0 && source.state !== "ready") {
+      throw new Error("source is not ready");
+    }
   }
 
   @BeforeSave
@@ -577,50 +540,34 @@ export class Property extends LoggedModel<Property> {
   }
 
   @AfterDestroy
-  static async destroyOptions(
-    instance: Property,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async destroyOptions(instance: Property) {
     await Option.destroy({
       where: { ownerGuid: instance.guid },
-      transaction,
     });
   }
 
   @AfterDestroy
-  static async stopRuns(
-    instance: Property,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async stopRuns(instance: Property) {
     const runs = await Run.findAll({
       where: { creatorGuid: instance.guid, state: "running" },
-      transaction,
     });
 
     for (const i in runs) {
-      await runs[i].update({ state: "stopped" }, { transaction });
+      await runs[i].update({ state: "stopped" });
     }
   }
 
   @AfterDestroy
-  static async destroyPropertyFilters(
-    instance: Property,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async destroyPropertyFilters(instance: Property) {
     await PropertyFilter.destroy({
       where: { propertyGuid: instance.guid },
-      transaction,
     });
   }
 
   @AfterDestroy
-  static async destroyProfileProperties(
-    instance: Property,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async destroyProfileProperties(instance: Property) {
     await ProfileProperty.destroy({
       where: { propertyGuid: instance.guid },
-      transaction,
     });
   }
 }

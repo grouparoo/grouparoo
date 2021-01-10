@@ -1,14 +1,15 @@
-import { api, id, task, Action, actionheroVersion } from "actionhero";
+import { api, id, task, actionheroVersion } from "actionhero";
 import path from "path";
 import { plugin } from "../modules/plugin";
 import { Setting } from "../models/Setting";
+import { CLSAction } from "../classes/actions/clsAction";
 
 const packageJSON = require(path.join(__dirname, "..", "..", "package.json"));
 
 // These values are probably good starting points, but you should expect to tweak them for your application
 const maxMemoryAlloted = process.env.maxMemoryAlloted || 500;
 
-export class PublicStatus extends Action {
+export class PublicStatus extends CLSAction {
   constructor() {
     super();
     this.name = "status:public";
@@ -16,12 +17,12 @@ export class PublicStatus extends Action {
     this.outputExample = {};
   }
 
-  async run({ response }) {
+  async runWithinTransaction({ response }) {
     response.status = "ok";
   }
 }
 
-export class PrivateStatus extends Action {
+export class PrivateStatus extends CLSAction {
   constructor() {
     super();
     this.name = "status:private";
@@ -60,7 +61,7 @@ export class PrivateStatus extends Action {
     return { resqueTotalQueueLength: length };
   }
 
-  async run() {
+  async runWithinTransaction() {
     const problems: string[] = [];
 
     const clusterNameSetting = await Setting.findOne({

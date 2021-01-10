@@ -1,5 +1,5 @@
-import { task, api } from "actionhero";
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { CLS } from "../modules/cls";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Group, GROUP_RULE_LIMIT, TopLevelGroupRules } from "../models/Group";
 import { PropertyOpsDictionary } from "../modules/RuleOpsDictionary";
 import { Profile } from "../models/Profile";
@@ -27,7 +27,7 @@ export class GroupsList extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const where = {};
 
     if (params.state) where["state"] = params.state;
@@ -60,7 +60,7 @@ export class GroupsListByNewestMember extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const { groups, newestMembersAdded } = await GroupOps.newestGroupMembers(
       params.limit
     );
@@ -81,7 +81,7 @@ export class GroupsRuleOptions extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     return {
       ruleLimit: GROUP_RULE_LIMIT,
       ops: PropertyOpsDictionary,
@@ -106,7 +106,7 @@ export class GroupCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const group = await Group.create(params);
 
     if (params.rules) {
@@ -135,7 +135,7 @@ export class GroupEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const group = await Group.findByGuid(params.guid);
     await group.update(params);
 
@@ -159,7 +159,7 @@ export class GroupRun extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const group = await Group.findByGuid(params.guid);
     await group.run();
     return { success: true };
@@ -179,7 +179,7 @@ export class GroupAddProfile extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const group = await Group.findByGuid(params.guid);
     if (group.type !== "manual") {
       throw new Error(
@@ -205,7 +205,7 @@ export class GroupRemoveProfile extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const group = await Group.findByGuid(params.guid);
     if (group.type !== "manual") {
       throw new Error(
@@ -231,7 +231,7 @@ export class GroupView extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const group = await Group.findByGuid(params.guid);
     const responseGroup = await group.apiData();
     responseGroup.rules = group.toConvenientRules(await group.getRules());
@@ -253,7 +253,7 @@ export class GroupCountComponentMembers extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const group = await Group.findByGuid(params.guid);
 
     let rules;
@@ -290,7 +290,7 @@ export class GroupCountPotentialMembers extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const group = await Group.findByGuid(params.guid);
 
     let rules;
@@ -322,7 +322,7 @@ export class GroupListDestinations extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const group = await Group.findByGuid(params.guid);
 
     const destinations = await group.$get("destinations");
@@ -346,11 +346,11 @@ export class GroupExport extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const group = await Group.findByGuid(params.guid);
 
     if (params.type === "csv") {
-      await task.enqueue("group:exportToCSV", { groupGuid: group.guid });
+      await CLS.enqueueTask("group:exportToCSV", { groupGuid: group.guid });
     } else {
       throw new Error(`${params.type} is not a type of group export`);
     }
@@ -377,7 +377,7 @@ export class GroupDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const group = await Group.findByGuid(params.guid);
     await Group.checkDestinationTracking(group);
 
@@ -386,7 +386,7 @@ export class GroupDestroy extends AuthenticatedAction {
       await group.destroy(); // other related models are handled by hooks
     } else {
       await group.update({ state: "deleted" });
-      await task.enqueue("group:destroy", { groupGuid: group.guid });
+      await CLS.enqueueTask("group:destroy", { groupGuid: group.guid });
     }
 
     return { success: true };

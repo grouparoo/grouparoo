@@ -8,55 +8,41 @@ import {
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { Schedule, Source } from "../..";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 
 export async function loadSchedule(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
-  transaction?: Transaction
+  validate = false
 ) {
   let isNew = false;
   const guid = await validateAndFormatGuid(Schedule, configObject.id);
   validateConfigObjectKeys(Schedule, configObject);
-  const source: Source = await getParentByName(
-    Source,
-    configObject.sourceId,
-    transaction
-  );
+  const source: Source = await getParentByName(Source, configObject.sourceId);
 
   let schedule = await Schedule.scope(null).findOne({
     where: { guid, locked: getCodeConfigLockKey() },
-    transaction,
   });
   if (!schedule) {
     isNew = true;
-    schedule = await Schedule.create(
-      {
-        guid,
-        locked: getCodeConfigLockKey(),
-        sourceGuid: source.guid,
-      },
-      { transaction }
-    );
+    schedule = await Schedule.create({
+      guid,
+      locked: getCodeConfigLockKey(),
+      sourceGuid: source.guid,
+    });
   }
 
-  await schedule.update(
-    {
-      name: configObject.name,
-      recurring: configObject.recurring,
-      recurringFrequency: configObject.recurringFrequency,
-    },
-    { transaction }
-  );
+  await schedule.update({
+    name: configObject.name,
+    recurring: configObject.recurring,
+    recurringFrequency: configObject.recurringFrequency,
+  });
 
-  await schedule.setOptions(
-    extractNonNullParts(configObject, "options"),
-    transaction
-  );
+  await schedule.setOptions(extractNonNullParts(configObject, "options"));
 
-  await schedule.update({ state: "ready" }, { transaction });
+  await schedule.update({ state: "ready" });
 
-  logModel(schedule, transaction ? "validated" : isNew ? "created" : "updated");
+  logModel(schedule, validate ? "validated" : isNew ? "created" : "updated");
 
   return schedule;
 }

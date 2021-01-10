@@ -25,6 +25,14 @@ export default async function Initialize(workDir: string, program) {
     logger.succeed(`Created ${workDir}`);
   }
 
+  const configDir = path.join(workDir, "config");
+  if (!fs.existsSync(configDir) || opts.force) {
+    fs.mkdirpSync(configDir);
+    logger.succeed("Created config directory");
+  } else {
+    logger.warn("config directory already exists, not modifying");
+  }
+
   const packageJson = path.join(workDir, "package.json");
   if (!fs.existsSync(packageJson) || opts.force) {
     const localPackageJSONContents = JSON.parse(

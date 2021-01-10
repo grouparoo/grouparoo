@@ -5,8 +5,8 @@ import {
 import { ProfilePropertyOps } from "../../modules/ops/profileProperty";
 import { Export } from "../../models/Export";
 import { Destination } from "../../models/Destination";
-import { api, task } from "actionhero";
-import { Op, Transaction } from "sequelize";
+import { CLS } from "../../modules/cls";
+import { Op } from "sequelize";
 
 export namespace ExportOps {
   /** Count up the exports in each state, optionally filtered for a profile or destination */
@@ -97,44 +97,33 @@ export namespace ExportOps {
 
     let _exports: Export[];
 
-    const transaction: Transaction = await api.sequelize.transaction({});
+    _exports = await Export.findAll({
+      where: {
+        startedAt: null,
+        destinationGuid: destination.guid,
+      },
+      order: [["createdAt", "asc"]],
+      limit,
+    });
 
-    try {
-      _exports = await Export.findAll({
+    const updateResponse = await Export.update(
+      { startedAt: new Date() },
+      {
         where: {
+          guid: { [Op.in]: _exports.map((e) => e.guid) },
           startedAt: null,
-          destinationGuid: destination.guid,
         },
-        order: [["createdAt", "asc"]],
-        limit,
-        transaction,
-      });
+      }
+    );
 
-      const updateResponse = await Export.update(
-        { startedAt: new Date() },
-        {
-          where: {
-            guid: { [Op.in]: _exports.map((e) => e.guid) },
-            startedAt: null,
-          },
-          transaction,
-        }
-      );
-
-      transaction.commit();
-
-      // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer startedAt=null
-      // in SQLite this isn't possible, but contention is far less likely
-      if (updateResponse[1]) _exports = updateResponse[1];
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
-    }
+    // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer startedAt=null
+    // in SQLite this isn't possible, but contention is far less likely
+    if (updateResponse[1]) _exports = updateResponse[1];
 
     if (_exports.length > 0) {
       if (pluginConnection.methods.exportProfiles) {
         // the plugin has a batch exportProfiles method
-        await task.enqueue(
+        await CLS.enqueueTask(
           "export:sendBatch",
           {
             destinationGuid: destination.guid,
@@ -146,7 +135,7 @@ export namespace ExportOps {
         // the plugin has a per-profile exportProfile method
         await Promise.all(
           _exports.map((_export) =>
-            task.enqueue(
+            CLS.enqueueTask(
               "export:send",
               {
                 destinationGuid: destination.guid,

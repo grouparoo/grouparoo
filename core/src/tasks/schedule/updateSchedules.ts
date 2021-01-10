@@ -1,17 +1,20 @@
-import { Task, task, log } from "actionhero";
+import { log } from "actionhero";
 import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
+import { CLSTask } from "../../classes/tasks/clsTask";
+import { CLS } from "../../modules/cls";
 
-export class UpdateSchedules extends Task {
+export class UpdateSchedules extends CLSTask {
   constructor() {
     super();
     this.name = "schedule:updateSchedules";
     this.description = "check all schedules and run them if it is time";
-    this.frequency = 1000 * 60 * 5; // Run every 5 minutes
+    this.frequency =
+      process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60 * 5; // Run every 5 minutes
     this.queue = "schedules";
   }
 
-  async run() {
+  async runWithinTransaction() {
     const schedules = await Schedule.findAll({
       where: { recurring: true, state: "ready" },
     });
@@ -56,7 +59,7 @@ export class UpdateSchedules extends Task {
           state: "running",
         });
 
-        await task.enqueue("schedule:run", {
+        await CLS.enqueueTask("schedule:run", {
           scheduleGuid: schedule.guid,
           runGuid: run.guid,
         });

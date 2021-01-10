@@ -1,7 +1,7 @@
-import { Task } from "actionhero";
+import { CLSTask } from "../../classes/tasks/clsTask";
 import { Event } from "../../models/Event";
 
-export class ProfileDestroyEvents extends Task {
+export class ProfileDestroyEvents extends CLSTask {
   constructor() {
     super();
     this.name = "profile:destroyEvents";
@@ -13,7 +13,7 @@ export class ProfileDestroyEvents extends Task {
     };
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     const { guid } = params;
     const limit = 1000;
     let offset = 0;

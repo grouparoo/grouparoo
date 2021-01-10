@@ -124,9 +124,17 @@ describe("tasks/export:enqueue", () => {
 
     test("batch size is variable", async () => {
       await plugin.updateSetting("core", "exports-profile-batch-size", 1);
-      await specHelper.runTask("export:enqueue", {});
+      await specHelper.runTask("export:enqueue", {}); // first batch
 
-      const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      // another instance of the task should have been enqueued
+      let foundTasks = await specHelper.findEnqueuedTasks("export:enqueue");
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0]).toEqual({ count: 1 });
+
+      await specHelper.runTask("export:enqueue", {}); // second batch
+      await specHelper.runTask("export:enqueue", {}); // no one
+
+      foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
       expect(foundTasks.length).toBe(2);
     });
   });

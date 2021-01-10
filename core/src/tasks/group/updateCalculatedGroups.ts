@@ -1,20 +1,21 @@
-import { Task } from "actionhero";
 import { Group } from "../../models/Group";
 import { plugin } from "../../modules/plugin";
 import { Op } from "sequelize";
 import Moment from "moment";
+import { CLSTask } from "../../classes/tasks/clsTask";
 
-export class GroupsUpdateCalculatedGroups extends Task {
+export class GroupsUpdateCalculatedGroups extends CLSTask {
   constructor() {
     super();
     this.name = "group:updateCalculatedGroups";
     this.description =
       "enqueue an update of calculated groups that to be updated";
-    this.frequency = 1000 * 60 * 5; // Run every 5 minutes
+    this.frequency =
+      process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60 * 5; // Run every 5 minutes
     this.queue = "groups";
   }
 
-  async run() {
+  async runWithinTransaction() {
     const setting = await plugin.readSetting(
       "core",
       "groups-calculation-delay-minutes"

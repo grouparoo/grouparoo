@@ -1,6 +1,5 @@
 import bcryptjs from "bcryptjs";
 import { TeamMember } from "../../models/TeamMember";
-import { Transaction } from "sequelize";
 
 const SALT_ROUNDS = 10;
 
@@ -10,14 +9,14 @@ export namespace TeamMemberOps {
    */
   export async function updatePassword(
     teamMember: TeamMember,
-    password: string,
-    transaction?: Transaction
+    password: string
   ) {
     teamMember.passwordHash = bcryptjs.hashSync(
       password,
       bcryptjs.genSaltSync(SALT_ROUNDS)
     );
-    await teamMember.save({ transaction });
+    await teamMember.save();
+    return true;
   }
 
   /**

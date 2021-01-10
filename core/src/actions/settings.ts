@@ -1,4 +1,4 @@
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { plugin } from "../modules/plugin";
 import { Setting } from "../models/Setting";
 
@@ -21,7 +21,7 @@ export class SettingsList extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const setting = await Setting.findAll({ order: params.order });
     return {
       settings: await Promise.all(setting.map(async (s) => await s.apiData())),
@@ -42,7 +42,7 @@ export class SettingEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     let setting = await Setting.findByGuid(params.guid);
     setting = await plugin.updateSetting(
       setting.pluginName,

@@ -13,12 +13,13 @@ import {
   Default,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
-import { task, config } from "actionhero";
+import { config } from "actionhero";
+import { CLS } from "../modules/cls";
 import { Profile } from "./Profile";
 import { Run } from "./Run";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { ImportOps } from "../modules/ops/import";
 
 export interface ImportData {
@@ -213,10 +214,9 @@ export class Import extends Model<Import> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
@@ -232,7 +232,7 @@ export class Import extends Model<Import> {
   @AfterCreate
   static async enqueueTask(instance: Import) {
     if (!instance.profileGuid) {
-      await task.enqueueIn(
+      await CLS.enqueueTaskIn(
         config.tasks.timeout + 1,
         "import:associateProfile",
         {

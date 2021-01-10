@@ -1,9 +1,11 @@
-import { Task, task, config } from "actionhero";
+import { config } from "actionhero";
 import { Destination } from "../../models/Destination";
 import { Run } from "../../models/Run";
 import { Export } from "../../models/Export";
+import { CLSTask } from "../../classes/tasks/clsTask";
+import { CLS } from "../../modules/cls";
 
-export class DestinationDestroy extends Task {
+export class DestinationDestroy extends CLSTask {
   constructor() {
     super();
     this.name = "destination:destroy";
@@ -18,13 +20,13 @@ export class DestinationDestroy extends Task {
   }
 
   async reEnqueue(destination: Destination, run: Run) {
-    return task.enqueueIn(config.tasks.timeout * 2, this.name, {
+    return CLS.enqueueTaskIn(config.tasks.timeout * 2, this.name, {
       destinationGuid: destination.guid,
       runGuid: run.guid,
     });
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     const destination = await Destination.scope(null).findOne({
       where: { guid: params.destinationGuid, state: "deleted" },
     });

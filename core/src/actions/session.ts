@@ -1,5 +1,5 @@
 import { Action, api, Connection } from "actionhero";
-import { AuthenticatedAction } from "./../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { TeamMember } from "../models/TeamMember";
 
 export class SessionCreate extends Action {
@@ -48,7 +48,7 @@ export class SessionView extends AuthenticatedAction {
     this.outputExample = {};
   }
 
-  async run({
+  async runWithinTransaction({
     connection,
     session: { teamMember },
   }: {

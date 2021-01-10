@@ -1,5 +1,5 @@
 import { Schedule } from "../models/Schedule";
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 
 export class SchedulesList extends AuthenticatedAction {
   constructor() {
@@ -22,7 +22,7 @@ export class SchedulesList extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const where = {};
     if (params.state) where["state"] = params.state;
 
@@ -56,7 +56,7 @@ export class ScheduleRun extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const schedule = await Schedule.findByGuid(params.guid);
     await schedule.enqueueRun();
     return { success: true };
@@ -80,7 +80,7 @@ export class ScheduleCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const schedule = await Schedule.create({
       name: params.name,
       sourceGuid: params.sourceGuid,
@@ -116,7 +116,7 @@ export class ScheduleEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const schedule = await Schedule.findByGuid(params.guid);
     // these timing options are validated separately, and should be set first
     if (params.recurringFrequency || params.recurring) {
@@ -149,7 +149,7 @@ export class ScheduleView extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const schedule = await Schedule.findByGuid(params.guid);
     return {
       schedule: await schedule.apiData(),
@@ -170,7 +170,7 @@ export class ScheduleDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const schedule = await Schedule.findByGuid(params.guid);
     await schedule.destroy();
     return { success: true };

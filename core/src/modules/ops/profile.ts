@@ -5,10 +5,12 @@ import { Source } from "../../models/Source";
 import { Group } from "../../models/Group";
 import { Destination } from "../../models/Destination";
 import { Event } from "../../models/Event";
-import { log, api, task } from "actionhero";
-import { Op, Transaction } from "sequelize";
+import { api } from "actionhero";
+import { Op } from "sequelize";
 import { waitForLock } from "../locks";
 import { ProfilePropertyOps } from "./profileProperty";
+import { CLS } from "../../modules/cls";
+
 export interface ProfilePropertyType {
   [key: string]: {
     guid: ProfileProperty["guid"];
@@ -30,19 +32,15 @@ export namespace ProfileOps {
   /**
    * Get the Properties of this Profile
    */
-  export async function properties(
-    profile: Profile,
-    transaction?: Transaction
-  ) {
+  export async function properties(profile: Profile) {
     const profileProperties =
       profile.profileProperties ||
       (await ProfileProperty.findAll({
         where: { profileGuid: profile.guid },
         order: [["position", "ASC"]],
-        transaction,
       }));
 
-    const properties = await Property.findAll({ transaction });
+    const properties = await Property.findAll();
 
     const hash: ProfilePropertyType = {};
 
@@ -51,7 +49,7 @@ export namespace ProfileOps {
         (r) => r.guid === profileProperties[i].propertyGuid
       );
       if (!property) {
-        await profileProperties[i].destroy({ transaction });
+        await profileProperties[i].destroy();
         continue;
       }
 
@@ -106,8 +104,12 @@ export namespace ProfileOps {
     // ignore reserved profile property key
     if (key === "_meta") return;
 
-    let property = await Property.findOne({ where: { guid: key } });
-    if (!property) property = await Property.findOne({ where: { key } });
+    let property = await Property.findOne({
+      where: { guid: key },
+    });
+    if (!property) {
+      property = await Property.findOne({ where: { key } });
+    }
     if (!property) {
       throw new Error(`cannot find a property for guid or key \`${key}\``);
     }
@@ -279,29 +281,22 @@ export namespace ProfileOps {
     }
   }
 
-  export async function buildNullProperties(
-    profile: Profile,
-    state = "ready",
-    transaction?: Transaction
-  ) {
-    const profileProperties = await profile.properties(transaction);
-    const properties = await Property.findAll({ transaction });
+  export async function buildNullProperties(profile: Profile, state = "ready") {
+    const profileProperties = await profile.properties();
+    const properties = await Property.findAll();
 
     let newPropertiesCount = 0;
     for (const i in properties) {
       const property = properties[i];
       if (!profileProperties[property.key]) {
-        await ProfileProperty.create(
-          {
-            profileGuid: profile.guid,
-            propertyGuid: property.guid,
-            state,
-            stateChangedAt: new Date(),
-            valueChangedAt: new Date(),
-            confirmedAt: new Date(),
-          },
-          { transaction }
-        );
+        await ProfileProperty.create({
+          profileGuid: profile.guid,
+          propertyGuid: property.guid,
+          state,
+          stateChangedAt: new Date(),
+          valueChangedAt: new Date(),
+          confirmedAt: new Date(),
+        });
         newPropertiesCount++;
       }
     }
@@ -562,55 +557,44 @@ export namespace ProfileOps {
   export async function makeReady(limit = 100) {
     let profiles: Profile[];
 
-    const transaction: Transaction = await api.sequelize.transaction({});
+    const notInQuery = api.sequelize.dialect.QueryGenerator.selectQuery(
+      "profileProperties",
+      {
+        attributes: [
+          api.sequelize.fn("DISTINCT", api.sequelize.col("profileGuid")),
+        ],
+        where: { state: "pending" },
+      }
+    ).slice(0, -1);
 
-    try {
-      const notInQuery = api.sequelize.dialect.QueryGenerator.selectQuery(
-        "profileProperties",
-        {
-          attributes: [
-            api.sequelize.fn("DISTINCT", api.sequelize.col("profileGuid")),
-          ],
-          where: { state: "pending" },
-        }
-      ).slice(0, -1);
+    profiles = await Profile.findAll({
+      where: {
+        state: "pending",
+        guid: { [Op.notIn]: api.sequelize.literal(`(${notInQuery})`) },
+      },
+      limit,
+      order: [["guid", "asc"]],
+    });
 
-      profiles = await Profile.findAll({
+    const updateResponse = await Profile.update(
+      { state: "ready" },
+      {
         where: {
+          guid: { [Op.in]: profiles.map((p) => p.guid) },
           state: "pending",
-          guid: { [Op.notIn]: api.sequelize.literal(`(${notInQuery})`) },
         },
-        limit,
-        order: [["guid", "asc"]],
-        transaction,
-      });
+      }
+    );
 
-      const updateResponse = await Profile.update(
-        { state: "ready" },
-        {
-          where: {
-            guid: { [Op.in]: profiles.map((p) => p.guid) },
-            state: "pending",
-          },
-          transaction,
-        }
-      );
-
-      await transaction.commit();
-
-      // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer state=pending
-      // in SQLite this isn't possible, but contention is far less likely
-      if (updateResponse[1]) profiles = updateResponse[1];
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
-    }
+    // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer state=pending
+    // in SQLite this isn't possible, but contention is far less likely
+    if (updateResponse[1]) profiles = updateResponse[1];
 
     if (!profiles) return [];
 
     await Promise.all(
       profiles.map((profile) =>
-        task.enqueue("profile:completeImport", {
+        CLS.enqueueTask("profile:completeImport", {
           profileGuid: profile.guid,
         })
       )

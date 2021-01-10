@@ -1,4 +1,4 @@
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { api, config } from "actionhero";
 import { Event } from "../models/Event";
 import { EventData } from "../models/EventData";
@@ -27,7 +27,7 @@ export class EventsList extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const where = {};
     const includeWhere = {};
 
@@ -115,7 +115,7 @@ export class EventsCounts extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const where = {
       occurredAt: {
         [Op.gte]: params.startTime,
@@ -220,7 +220,7 @@ export class EventsTypes extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const types = await Event.findAll({
       attributes: [
         "type",
@@ -293,7 +293,7 @@ export class EventCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ session, connection, params }) {
+  async runWithinTransaction({ session, connection, params }) {
     if (!params.userId && !params.anonymousId) {
       throw new Error(`either anonymousId or userId is required`);
     }
@@ -348,7 +348,7 @@ export class EventAutocompleteType extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const where = {};
     if (params.match) {
       if (config.sequelize.dialect === "postgres") {
@@ -381,7 +381,7 @@ export class EventView extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const event = await Event.findByGuid(params.guid);
     return { event: await event.apiData() };
   }
@@ -399,7 +399,7 @@ export class EventDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const event = await Event.findByGuid(params.guid);
     await event.destroy();
     return { success: true };

@@ -38,34 +38,34 @@ importers:
       '@grouparoo/ui': 'link:../../ui'
       '@grouparoo/zendesk': 'link:../../plugins/@grouparoo/zendesk'
     specifiers:
-      '@grouparoo/bigquery': ^0.2.0-alpha.10
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/csv': ^0.2.0-alpha.10
-      '@grouparoo/demo': ^0.2.0-alpha.10
-      '@grouparoo/facebook': ^0.2.0-alpha.10
-      '@grouparoo/files-s3': ^0.2.0-alpha.10
-      '@grouparoo/google-sheets': ^0.2.0-alpha.10
-      '@grouparoo/hubspot': ^0.2.0-alpha.10
-      '@grouparoo/intercom': ^0.2.0-alpha.10
-      '@grouparoo/logger': ^0.2.0-alpha.10
-      '@grouparoo/mailchimp': ^0.2.0-alpha.10
-      '@grouparoo/marketo': ^0.2.0-alpha.10
-      '@grouparoo/mysql': ^0.2.0-alpha.10
-      '@grouparoo/newrelic': ^0.2.0-alpha.10
-      '@grouparoo/postgres': ^0.2.0-alpha.10
-      '@grouparoo/redshift': ^0.2.0-alpha.10
-      '@grouparoo/sailthru': ^0.2.0-alpha.10
-      '@grouparoo/salesforce': ^0.2.0-alpha.10
-      '@grouparoo/snowflake': ^0.2.0-alpha.10
-      '@grouparoo/ui': ^0.2.0-alpha.10
-      '@grouparoo/zendesk': ^0.2.0-alpha.10
+      '@grouparoo/bigquery': ^0.2.0-alpha.12
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/csv': ^0.2.0-alpha.12
+      '@grouparoo/demo': ^0.2.0-alpha.12
+      '@grouparoo/facebook': ^0.2.0-alpha.12
+      '@grouparoo/files-s3': ^0.2.0-alpha.12
+      '@grouparoo/google-sheets': ^0.2.0-alpha.12
+      '@grouparoo/hubspot': ^0.2.0-alpha.12
+      '@grouparoo/intercom': ^0.2.0-alpha.12
+      '@grouparoo/logger': ^0.2.0-alpha.12
+      '@grouparoo/mailchimp': ^0.2.0-alpha.12
+      '@grouparoo/marketo': ^0.2.0-alpha.12
+      '@grouparoo/mysql': ^0.2.0-alpha.12
+      '@grouparoo/newrelic': ^0.2.0-alpha.12
+      '@grouparoo/postgres': ^0.2.0-alpha.12
+      '@grouparoo/redshift': ^0.2.0-alpha.12
+      '@grouparoo/sailthru': ^0.2.0-alpha.12
+      '@grouparoo/salesforce': ^0.2.0-alpha.12
+      '@grouparoo/snowflake': ^0.2.0-alpha.12
+      '@grouparoo/ui': ^0.2.0-alpha.12
+      '@grouparoo/zendesk': ^0.2.0-alpha.12
   apps/ui-test:
     dependencies:
       '@grouparoo/core': 'link:../../core'
       '@grouparoo/ui': 'link:../../ui'
     specifiers:
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/ui': ^0.2.0-alpha.10
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/ui': ^0.2.0-alpha.12
   cli:
     dependencies:
       chalk: 4.1.0
@@ -126,6 +126,8 @@ importers:
       ah-next-plugin: 0.4.0_actionhero@25.0.2
       ah-sequelize-plugin: 2.2.4_d942fb36d97b052d8fff18743f3446f5
       bcryptjs: 2.4.3
+      cls-hooked: 4.2.2
+      colors: 1.4.0
       compare-versions: 3.6.0
       csv-stringify: 5.6.0
       date-fns: 2.16.1
@@ -169,8 +171,8 @@ importers:
       typedoc: 0.20.10_typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/client-web': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/client-web': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/bluebird': '*'
       '@types/faker': '*'
       '@types/fs-extra': '*'
@@ -181,6 +183,8 @@ importers:
       ah-next-plugin: 0.4.0
       ah-sequelize-plugin: 2.2.4
       bcryptjs: 2.4.3
+      cls-hooked: 4.2.2
+      colors: 1.4.0
       compare-versions: 3.6.0
       csv-parse: 4.14.2
       csv-stringify: 5.6.0
@@ -232,8 +236,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -261,9 +265,9 @@ importers:
       typescript: 4.1.3
     specifiers:
       '@google-cloud/bigquery': 5.5.0
-      '@grouparoo/app-templates': ^0.2.0-alpha.10
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/app-templates': ^0.2.0-alpha.12
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -289,8 +293,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -319,8 +323,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -355,9 +359,9 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/app-templates': ^0.2.0-alpha.10
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/app-templates': ^0.2.0-alpha.12
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -385,7 +389,7 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/core': ^0.2.0-alpha.10
+      '@grouparoo/core': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -408,7 +412,7 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/core': ^0.2.0-alpha.10
+      '@grouparoo/core': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -435,8 +439,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -466,8 +470,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -497,8 +501,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -521,7 +525,7 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/core': ^0.2.0-alpha.10
+      '@grouparoo/core': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -545,8 +549,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -575,9 +579,9 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/app-templates': ^0.2.0-alpha.10
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/app-templates': ^0.2.0-alpha.12
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -606,9 +610,9 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/app-templates': ^0.2.0-alpha.10
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/app-templates': ^0.2.0-alpha.12
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/mysql': '*'
       '@types/node': '*'
@@ -632,7 +636,7 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/core': ^0.2.0-alpha.10
+      '@grouparoo/core': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -661,9 +665,9 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/app-templates': ^0.2.0-alpha.10
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/app-templates': ^0.2.0-alpha.12
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       '@types/pg': '*'
@@ -693,10 +697,10 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/app-templates': ^0.2.0-alpha.10
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/postgres': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/app-templates': ^0.2.0-alpha.12
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/postgres': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       '@types/pg': '*'
@@ -722,8 +726,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -753,9 +757,9 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/app-templates': ^0.2.0-alpha.10
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/app-templates': ^0.2.0-alpha.12
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -786,9 +790,9 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/app-templates': ^0.2.0-alpha.10
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/app-templates': ^0.2.0-alpha.12
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -818,7 +822,7 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/core': ^0.2.0-alpha.10
+      '@grouparoo/core': ^0.2.0-alpha.12
       '@types/faker': '*'
       '@types/jest': '*'
       '@types/node': '*'
@@ -848,8 +852,8 @@ importers:
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       typescript: 4.1.3
     specifiers:
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.2
@@ -911,9 +915,9 @@ importers:
       '@fortawesome/fontawesome-svg-core': 1.2.32
       '@fortawesome/free-solid-svg-icons': 5.15.1
       '@fortawesome/react-fontawesome': 0.1.14
-      '@grouparoo/client-web': ^0.2.0-alpha.10
-      '@grouparoo/core': ^0.2.0-alpha.10
-      '@grouparoo/spec-helper': ^0.2.0-alpha.10
+      '@grouparoo/client-web': ^0.2.0-alpha.12
+      '@grouparoo/core': ^0.2.0-alpha.12
+      '@grouparoo/spec-helper': ^0.2.0-alpha.12
       '@nivo/line': 0.62.0
       '@types/jest': '*'
       '@types/react': '*'
@@ -1538,7 +1542,7 @@ packages:
   /@jest/console/26.6.2:
     dependencies:
       '@jest/types': 26.6.2
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
       chalk: 4.1.0
       jest-message-util: 26.6.2
       jest-util: 26.6.2
@@ -1555,7 +1559,7 @@ packages:
       '@jest/test-result': 26.6.2
       '@jest/transform': 26.6.2
       '@jest/types': 26.6.2
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
       ansi-escapes: 4.3.1
       chalk: 4.1.0
       exit: 0.1.2
@@ -1590,7 +1594,7 @@ packages:
       '@jest/test-result': 26.6.2
       '@jest/transform': 26.6.2
       '@jest/types': 26.6.2
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
       ansi-escapes: 4.3.1
       chalk: 4.1.0
       exit: 0.1.2
@@ -1624,7 +1628,7 @@ packages:
     dependencies:
       '@jest/fake-timers': 26.6.2
       '@jest/types': 26.6.2
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
       jest-mock: 26.6.2
     dev: true
     engines:
@@ -1635,7 +1639,7 @@ packages:
     dependencies:
       '@jest/types': 26.6.2
       '@sinonjs/fake-timers': 6.0.1
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
       jest-message-util: 26.6.2
       jest-mock: 26.6.2
       jest-util: 26.6.2
@@ -1760,7 +1764,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.3
       '@types/istanbul-reports': 3.0.0
-      '@types/node': 14.14.10
+      '@types/node': 14.14.7
       '@types/yargs': 15.0.9
       chalk: 4.1.0
     dev: true
@@ -3080,7 +3084,7 @@ packages:
       integrity: sha512-SEYeGAIQIQX8NN6LDKprLjbrd5dARM5EXsd8GI/A5l0apYI1fGMWgPHSe4ZKL4eozlAyI+doUE9XbYS4xCkQ1w==
   /@types/graceful-fs/4.1.4:
     dependencies:
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
     dev: true
     resolution:
       integrity: sha512-mWA/4zFQhfvOA8zWkXobwJvBD7vzcxgrOQ0J5CH1votGqdq9m7+FwtGaqyCZqC3NyyBkc9z4m+iry4LlqcMWJg==
@@ -3169,6 +3173,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-H5Wn24s/ZOukBmDn03nnGTp18A60ny9AmCwnEcgJiTgSGsCO7k+NWP7zjCCbhlcnVCoI+co52dUAt9GMhOSULw==
+  /@types/node/14.14.6:
+    dev: true
+    resolution:
+      integrity: sha512-6QlRuqsQ/Ox/aJEQWBEJG7A9+u7oSYl3mem/K8IzxXG/kAGbV1YPD9Bg9Zw3vyxC/YP+zONKwy8hGkSt1jxFMw==
   /@types/node/14.14.7:
     resolution:
       integrity: sha512-Zw1vhUSQZYw+7u5dAwNbIA9TuTotpzY/OF7sJM9FqPOF3SPjKnxrjoTktXDZgUjybf4cWVBP7O8wvKdSaGHweg==
@@ -3950,6 +3958,14 @@ packages:
     dev: false
     resolution:
       integrity: sha1-NhIfhFwFeBct5Bmpfb6x0W7DRUI=
+  /async-hook-jl/1.7.6:
+    dependencies:
+      stack-chain: 1.3.7
+    dev: false
+    engines:
+      node: ^4.7 || >=6.9 || >=7.3
+    resolution:
+      integrity: sha512-gFaHkFfSxTjvoxDMYqDuGHlcRyUuamF8s+ZTtJdDzqjws4mCt7v0vuV79/E2Wr2/riMQgtG4/yUtXWs1gZ7JMg==
   /async/1.5.2:
     dev: false
     resolution:
@@ -4962,6 +4978,16 @@ packages:
     dev: false
     resolution:
       integrity: sha1-N+8eCAqP+1XC9BZPU28ZGeeWiu4=
+  /cls-hooked/4.2.2:
+    dependencies:
+      async-hook-jl: 1.7.6
+      emitter-listener: 1.1.2
+      semver: 5.7.1
+    dev: false
+    engines:
+      node: ^4.7 || >=6.9 || >=7.3 || >=8.2.1
+    resolution:
+      integrity: sha512-J4Xj5f5wq/4jAvcdgoGsL3G103BtWpZrMo8NEinRltN+xpTZdI+M38pyQqhuFU/P792xkMFvnKSf+Lm81U1bxw==
   /cluster-key-slot/1.1.0:
     engines:
       node: '>=0.10.0'
@@ -6175,6 +6201,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-Bl4tvtaVm/RwZ57avq95gdEAOrY=
+  /emitter-listener/1.1.2:
+    dependencies:
+      shimmer: 1.2.1
+    dev: false
+    resolution:
+      integrity: sha512-Bt1sBAGFHY9DKY+4/2cV6izcKJUf5T7/gkdmkxzX/qv9CcGH8xSwVRW5mtX03SWJtRTWSOpzCuWN9rBFYZepZQ==
   /emittery/0.7.2:
     dev: true
     engines:
@@ -7177,7 +7209,7 @@ packages:
     resolution:
       integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==
   /fsevents/2.1.3:
-    deprecated: '"Please update to latest v2.3 or v2.2"'
+    deprecated: Please update to v 2.2.x
     engines:
       node: ^8.16.0 || ^10.6.0 || >=11.0.0
     optional: true
@@ -8944,7 +8976,7 @@ packages:
       jest-config: 26.6.3
       jest-util: 26.6.2
       jest-validate: 26.6.2
-      prompts: 2.4.0
+      prompts: 2.3.2
       yargs: 15.4.1
     dev: true
     engines:
@@ -8965,7 +8997,7 @@ packages:
       jest-config: 26.6.3_ts-node@9.1.0
       jest-util: 26.6.2
       jest-validate: 26.6.2
-      prompts: 2.4.0
+      prompts: 2.3.2
       yargs: 15.4.1
     dev: true
     engines:
@@ -9072,7 +9104,7 @@ packages:
       '@jest/environment': 26.6.2
       '@jest/fake-timers': 26.6.2
       '@jest/types': 26.6.2
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
       jest-mock: 26.6.2
       jest-util: 26.6.2
       jsdom: 16.4.0
@@ -9093,7 +9125,7 @@ packages:
       '@jest/environment': 26.6.2
       '@jest/fake-timers': 26.6.2
       '@jest/types': 26.6.2
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
       jest-mock: 26.6.2
       jest-util: 26.6.2
     dev: true
@@ -9130,7 +9162,7 @@ packages:
     dependencies:
       '@jest/types': 26.6.2
       '@types/graceful-fs': 4.1.4
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
       anymatch: 3.1.1
       fb-watchman: 2.0.1
       graceful-fs: 4.2.4
@@ -9155,7 +9187,7 @@ packages:
       '@jest/source-map': 26.6.2
       '@jest/test-result': 26.6.2
       '@jest/types': 26.6.2
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
       chalk: 4.1.0
       co: 4.6.0
       expect: 26.6.2
@@ -9180,7 +9212,7 @@ packages:
       '@jest/source-map': 26.6.2
       '@jest/test-result': 26.6.2
       '@jest/types': 26.6.2
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
       chalk: 4.1.0
       co: 4.6.0
       expect: 26.6.2
@@ -9259,7 +9291,7 @@ packages:
   /jest-mock/26.6.2:
     dependencies:
       '@jest/types': 26.6.2
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
     dev: true
     engines:
       node: '>= 10.14.2'
@@ -9315,7 +9347,7 @@ packages:
       '@jest/environment': 26.6.2
       '@jest/test-result': 26.6.2
       '@jest/types': 26.6.2
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
       chalk: 4.1.0
       emittery: 0.7.2
       exit: 0.1.2
@@ -9342,7 +9374,7 @@ packages:
       '@jest/environment': 26.6.2
       '@jest/test-result': 26.6.2
       '@jest/types': 26.6.2
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
       chalk: 4.1.0
       emittery: 0.7.2
       exit: 0.1.2
@@ -9439,7 +9471,7 @@ packages:
       integrity: sha512-lrzyR3N8sacTAMeonbqpnSka1dHNux2uk0qqDXVkMv2c/A3wYnvQ4EXuI013Y6+gSKSCxdaczvf4HF0mVXHRdw==
   /jest-serializer/26.6.2:
     dependencies:
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
       graceful-fs: 4.2.4
     dev: true
     engines:
@@ -9463,7 +9495,7 @@ packages:
       jest-resolve: 26.6.2
       natural-compare: 1.4.0
       pretty-format: 26.6.2
-      semver: 7.3.4
+      semver: 7.3.2
     dev: true
     engines:
       node: '>= 10.14.2'
@@ -9481,10 +9513,23 @@ packages:
     dev: true
     resolution:
       integrity: sha512-rfDfG8wyC5pDPNdcnAlZgwKnzHvZDu8Td2NJI/jAGKEGxJPYiE4F0ss/gSAkG4778Y23Hvbz+0GMrDJTeo7RjQ==
+  /jest-util/26.6.1:
+    dependencies:
+      '@jest/types': 26.6.2
+      '@types/node': 14.14.6
+      chalk: 4.1.0
+      graceful-fs: 4.2.4
+      is-ci: 2.0.0
+      micromatch: 4.0.2
+    dev: true
+    engines:
+      node: '>= 10.14.2'
+    resolution:
+      integrity: sha512-xCLZUqVoqhquyPLuDXmH7ogceGctbW8SMyQVjD9o+1+NPWI7t0vO08udcFLVPLgKWcvc+zotaUv/RuaR6l8HIA==
   /jest-util/26.6.2:
     dependencies:
       '@jest/types': 26.6.2
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
       chalk: 4.1.0
       graceful-fs: 4.2.4
       is-ci: 2.0.0
@@ -9511,7 +9556,7 @@ packages:
     dependencies:
       '@jest/test-result': 26.6.2
       '@jest/types': 26.6.2
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
       ansi-escapes: 4.3.1
       chalk: 4.1.0
       jest-util: 26.6.2
@@ -9532,7 +9577,7 @@ packages:
       integrity: sha512-51PE4haMSXcHohnSMdM42anbvZANYTqMrr52tVKPqqsPJMzoP6FYYDVqahX/HrAoKEKz3uUPzSvKs9A3qR4iVw==
   /jest-worker/26.6.2:
     dependencies:
-      '@types/node': 14.14.10
+      '@types/node': 14.14.6
       merge-stream: 2.0.0
       supports-color: 7.2.0
     dev: true
@@ -9624,7 +9669,7 @@ packages:
       whatwg-encoding: 1.0.5
       whatwg-mimetype: 2.3.0
       whatwg-url: 8.4.0
-      ws: 7.4.1
+      ws: 7.3.1
       xml-name-validator: 3.0.0
     dev: true
     engines:
@@ -11240,9 +11285,9 @@ packages:
     dependencies:
       growly: 1.3.0
       is-wsl: 2.2.0
-      semver: 7.3.4
+      semver: 7.3.2
       shellwords: 0.1.1
-      uuid: 8.3.2
+      uuid: 8.3.1
       which: 2.0.2
     dev: true
     optional: true
@@ -12710,6 +12755,15 @@ packages:
     dev: false
     resolution:
       integrity: sha512-nolQXZ/4L+bP/UGlkfaIujX9BKxGwmQ9OT4mOt5yvy8iK1h3wqTEJCijzGANTCCl9nWjY41juyAn2K3Q1hLLTg==
+  /prompts/2.3.2:
+    dependencies:
+      kleur: 3.0.3
+      sisteransi: 1.0.5
+    dev: true
+    engines:
+      node: '>= 6'
+    resolution:
+      integrity: sha512-Q06uKs2CkNYVID0VqwfAl9mipo99zkBv/n2JtWY89Yxa3ZabWSrs0e2KTudKVa3peLUvYXMefDqIleLPVUBZMA==
   /prompts/2.4.0:
     dependencies:
       kleur: 3.0.3
@@ -14259,6 +14313,13 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
+  /semver/7.3.2:
+    dev: true
+    engines:
+      node: '>=10'
+    hasBin: true
+    resolution:
+      integrity: sha512-OrOb32TeeambH6UrhtShmF7CRDqhL6/5XpPNp2DuRH6+9QLw/orhp72j87v8Qa1ScDkvrrBNpZcDejAirJmfXQ==
   /semver/7.3.4:
     dependencies:
       lru-cache: 6.0.0
@@ -14845,6 +14906,10 @@ packages:
       node: '>= 8'
     resolution:
       integrity: sha512-aq/pz989nxVYwn16Tsbj1TqFpD5LLrQxHf5zaHuieFV+R0Bbr4y8qUsOA45hXT/N4/9UNXTarBjnjVmjSOVaAA==
+  /stack-chain/1.3.7:
+    dev: false
+    resolution:
+      integrity: sha1-0ZLJ/06moiyUxN1FkXHj8AzqEoU=
   /stack-generator/2.0.5:
     dependencies:
       stackframe: 1.2.0
@@ -15741,12 +15806,12 @@ packages:
       buffer-from: 1.1.1
       fast-json-stable-stringify: 2.1.0
       jest: 26.6.3
-      jest-util: 26.6.2
+      jest-util: 26.6.1
       json5: 2.1.3
       lodash.memoize: 4.1.2
       make-error: 1.3.6
       mkdirp: 1.0.4
-      semver: 7.3.4
+      semver: 7.3.2
       typescript: 4.1.3
       yargs-parser: 20.2.3
     dev: true
@@ -16246,7 +16311,6 @@ packages:
     resolution:
       integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
   /uuid/8.3.1:
-    dev: false
     hasBin: true
     resolution:
       integrity: sha512-FOmRr+FmWEIG8uhZv6C2bTgEVXsHk08kE7mPlrBbEe+c3r9pjceVPgupIfNIhc4yx55H69OXANrUaSuu9eInKg==
@@ -16769,6 +16833,20 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-tX2ifZ0YqEFOF1wjRW2Pk93NLsj02+n1UP5RvO6rCs0K6R2g1padvf006cY74PQJKMGS2r42NK7FD0dG6Y6paw==
+  /ws/7.3.1:
+    dev: true
+    engines:
+      node: '>=8.3.0'
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: ^5.0.2
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    resolution:
+      integrity: sha512-D3RuNkynyHmEJIpD2qrgVkc9DQ23OrN/moAwZX4L8DfvszsJxpjQuUq3LMx6HoYji9fbIOBY18XWBsAux1ZZUA==
   /ws/7.4.1:
     engines:
       node: '>=8.3.0'

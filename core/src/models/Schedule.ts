@@ -1,4 +1,4 @@
-import { log, task } from "actionhero";
+import { log } from "actionhero";
 import {
   Table,
   Column,
@@ -17,7 +17,7 @@ import {
   DefaultScope,
   BeforeDestroy,
 } from "sequelize-typescript";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Source, SimpleSourceOptions } from "./Source";
 import { Property } from "./Property";
@@ -28,6 +28,7 @@ import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { ScheduleOps } from "../modules/ops/schedule";
 import { LockableHelper } from "../modules/lockableHelper";
+import { CLS } from "../modules/cls";
 
 /**
  * Metadata and methods to return the options a Schedule for this connection/app.
@@ -64,10 +65,7 @@ const STATE_TRANSITIONS = [
   {
     from: "draft",
     to: "ready",
-    checks: [
-      (instance: Schedule, transaction?: Transaction) =>
-        instance.validateOptions(null, transaction),
-    ],
+    checks: [(instance: Schedule) => instance.validateOptions(null)],
   },
 ];
 
@@ -114,12 +112,12 @@ export class Schedule extends LoggedModel<Schedule> {
   @BelongsTo(() => Source)
   source: Source;
 
-  async getOptions(sourceFromEnvironment = true, transaction?: Transaction) {
-    return OptionHelper.getOptions(this, sourceFromEnvironment, transaction);
+  async getOptions(sourceFromEnvironment = true) {
+    return OptionHelper.getOptions(this, sourceFromEnvironment);
   }
 
-  async setOptions(options: SimpleScheduleOptions, transaction?: Transaction) {
-    const existingOptions = await this.getOptions(true, transaction);
+  async setOptions(options: SimpleScheduleOptions) {
+    const existingOptions = await this.getOptions(true);
     for (const key in options) {
       if (existingOptions[key] && existingOptions[key] !== options[key]) {
         throw new Error(
@@ -128,15 +126,12 @@ export class Schedule extends LoggedModel<Schedule> {
       }
     }
 
-    return OptionHelper.setOptions(this, options, transaction);
+    return OptionHelper.setOptions(this, options);
   }
 
-  async validateOptions(
-    options?: SimpleScheduleOptions,
-    transaction?: Transaction
-  ) {
-    if (!options) options = await this.getOptions(true, transaction);
-    return OptionHelper.validateOptions(this, options, null, transaction);
+  async validateOptions(options?: SimpleScheduleOptions) {
+    if (!options) options = await this.getOptions(true);
+    return OptionHelper.validateOptions(this, options);
   }
 
   async getPlugin() {
@@ -152,7 +147,7 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   async apiData() {
-    const options = await this.getOptions();
+    const options = await this.getOptions(null);
 
     return {
       guid: this.guid,
@@ -180,7 +175,7 @@ export class Schedule extends LoggedModel<Schedule> {
       "notice"
     );
 
-    await task.enqueue(
+    await CLS.enqueueTask(
       "schedule:run",
       { scheduleGuid: this.guid, runGuid: run.guid },
       "schedules"
@@ -193,25 +188,24 @@ export class Schedule extends LoggedModel<Schedule> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
   @BeforeSave
-  static async ensureSourceOptions(instance: Schedule, { transaction }) {
-    const source = await Source.findByGuid(instance.sourceGuid, transaction);
-    const sourceOptions = await source.getOptions(true, transaction);
-    await source.validateOptions(sourceOptions, transaction);
+  static async ensureSourceOptions(instance: Schedule) {
+    const source = await Source.findByGuid(instance.sourceGuid);
+    const sourceOptions = await source.getOptions(true);
+    await source.validateOptions(sourceOptions);
   }
 
   @BeforeSave
-  static async ensureSourceMapping(instance: Schedule, { transaction }) {
-    const source = await Source.findByGuid(instance.sourceGuid, transaction);
+  static async ensureSourceMapping(instance: Schedule) {
+    const source = await Source.findByGuid(instance.sourceGuid);
     if (!source.scheduleAvailable()) {
       throw new Error(`a ${source.type} source cannot have a schedule`);
     }
@@ -238,20 +232,19 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   @BeforeValidate
-  static async ensureName(instance: Schedule, { transaction }) {
+  static async ensureName(instance: Schedule) {
     if (!instance.name) {
-      const source = await Source.findByGuid(instance.sourceGuid, transaction);
+      const source = await Source.findByGuid(instance.sourceGuid);
       instance.name = `${source.name} schedule`;
     }
   }
 
   @BeforeCreate
-  static async ensureOnePerSource(instance: Schedule, { transaction }) {
+  static async ensureOnePerSource(instance: Schedule) {
     const existingCount = await Schedule.scope(null).count({
       where: {
         sourceGuid: instance.sourceGuid,
       },
-      transaction,
     });
 
     if (existingCount > 0) {
@@ -260,8 +253,8 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   @BeforeCreate
-  static async ensureSourceCanUseSchedule(instance: Schedule, { transaction }) {
-    const source = await Source.findByGuid(instance.sourceGuid, transaction);
+  static async ensureSourceCanUseSchedule(instance: Schedule) {
+    const source = await Source.findByGuid(instance.sourceGuid);
 
     if (source.state !== "ready") throw new Error("source is not ready");
 
@@ -274,21 +267,20 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: Schedule, { transaction }) {
+  static async ensureUniqueName(instance: Schedule) {
     const count = await Schedule.scope(null).count({
       where: {
         guid: { [Op.ne]: instance.guid },
         name: instance.name,
         state: { [Op.ne]: "draft" },
       },
-      transaction,
     });
     if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
 
   @BeforeSave
-  static async updateState(instance: Schedule, { transaction }) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS, transaction);
+  static async updateState(instance: Schedule) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeDestroy
@@ -297,19 +289,18 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   @AfterDestroy
-  static async destroyAppOptions(instance: Schedule, { transaction }) {
-    return Option.destroy({ where: { ownerGuid: instance.guid }, transaction });
+  static async destroyAppOptions(instance: Schedule) {
+    return Option.destroy({ where: { ownerGuid: instance.guid } });
   }
 
   @AfterDestroy
-  static async stopRuns(instance: Schedule, { transaction }) {
+  static async stopRuns(instance: Schedule) {
     const runs = await Run.findAll({
       where: { creatorGuid: instance.guid, state: "running" },
-      transaction,
     });
 
     for (const i in runs) {
-      await runs[i].update({ state: "stopped" }, { transaction });
+      await runs[i].update({ state: "stopped" });
     }
   }
 }

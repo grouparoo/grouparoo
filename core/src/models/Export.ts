@@ -18,7 +18,7 @@ import { Destination } from "./Destination";
 import { Profile } from "./Profile";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { ExportOps } from "../modules/ops/export";
 
 /**
@@ -179,7 +179,9 @@ export class Export extends Model<Export> {
   }
 
   async apiData() {
-    const destination = await this.$get("destination", { scope: null });
+    const destination = await this.$get("destination", {
+      scope: null,
+    });
 
     return {
       guid: this.guid,
@@ -203,10 +205,9 @@ export class Export extends Model<Export> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;

@@ -1,9 +1,10 @@
-import { RetryableTask } from "../../classes/retryableTask";
+import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { Profile } from "../../models/Profile";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { Property } from "../../models/Property";
 import { Op } from "sequelize";
-import { log, task } from "actionhero";
+import { log } from "actionhero";
+import { CLS } from "../../modules/cls";
 import { ProfilePropertiesPluginMethodResponse } from "../../classes/plugin";
 import { PropertyOps } from "../../modules/ops/property";
 
@@ -20,7 +21,7 @@ export class ImportProfileProperties extends RetryableTask {
     };
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     const profiles = await Profile.findAll({
       where: { guid: { [Op.in]: params.profileGuids } },
       include: [ProfileProperty],
@@ -58,7 +59,7 @@ export class ImportProfileProperties extends RetryableTask {
       // if something goes wrong with the batch import, fall-back to per-profile/property imports
       await Promise.all(
         profilesWithDependenciesMet.map((profile) => {
-          task.enqueue("profileProperty:importProfileProperty", {
+          CLS.enqueueTask("profileProperty:importProfileProperty", {
             profileGuid: profile.guid,
             propertyGuid: property.guid,
           });

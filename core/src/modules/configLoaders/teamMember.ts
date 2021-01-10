@@ -7,27 +7,22 @@ import {
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { Team, TeamMember } from "../..";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 
 export async function loadTeamMember(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
-  transaction?: Transaction
+  validate = false
 ) {
   let isNew = false;
 
-  const team: Team = await getParentByName(
-    Team,
-    configObject.teamId,
-    transaction
-  );
+  const team: Team = await getParentByName(Team, configObject.teamId);
 
   const guid = await validateAndFormatGuid(TeamMember, configObject.id);
   validateConfigObjectKeys(TeamMember, configObject);
 
   let teamMember = await TeamMember.scope(null).findOne({
     where: { locked: getCodeConfigLockKey(), guid },
-    transaction,
   });
   if (!teamMember) {
     isNew = true;
@@ -46,16 +41,13 @@ export async function loadTeamMember(
   if (configObject?.options?.lastName) {
     teamMember.lastName = configObject.options.lastName;
   }
-  await teamMember.save({ transaction });
+  await teamMember.save();
 
   if (configObject?.options?.password) {
-    await teamMember.updatePassword(configObject.options.password, transaction);
+    await teamMember.updatePassword(configObject.options.password);
   }
 
-  logModel(
-    teamMember,
-    transaction ? "validated" : isNew ? "created" : "updated"
-  );
+  logModel(teamMember, validate ? "validated" : isNew ? "created" : "updated");
 
   return teamMember;
 }

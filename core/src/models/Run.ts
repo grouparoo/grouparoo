@@ -28,7 +28,6 @@ import { Property } from "./Property";
 import { TeamMember } from "./TeamMember";
 import { RunOps } from "../modules/ops/runs";
 import { plugin } from "../modules/plugin";
-import { Transaction } from "sequelize";
 import Moment from "moment";
 
 export interface HighWaterMark {
@@ -238,11 +237,13 @@ export class Run extends Model<Run> {
    * This method tries to import a random profile to check if the Properties are valid
    */
   async test() {
-    const profile = await Profile.findOne({ order: [["guid", "asc"]] });
+    const profile = await Profile.findOne({
+      order: [["guid", "asc"]],
+    });
 
     if (profile) {
       try {
-        await profile.import(false);
+        await profile.import(false, null);
       } catch (error) {
         this.error = error.toString();
         this.state = "stopped";
@@ -257,10 +258,12 @@ export class Run extends Model<Run> {
   }
 
   async apiData() {
+    const creatorName = await this.getCreatorName();
+
     return {
       guid: this.guid,
       creatorGuid: this.creatorGuid,
-      creatorName: await this.getCreatorName(),
+      creatorName,
       creatorType: this.creatorType,
       state: this.state,
       percentComplete: this.percentComplete,
@@ -310,10 +313,9 @@ export class Run extends Model<Run> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;

@@ -1,6 +1,6 @@
 import { readFileSync, unlinkSync, existsSync } from "fs";
 import { helper } from "@grouparoo/spec-helper";
-import { Validate } from "../../src/bin/validate";
+import { Validate } from "../../src/bin/config-validate";
 import os from "os";
 import { join } from "path";
 let actionhero;
@@ -26,7 +26,7 @@ function clearTestLog() {
   return unlinkSync(filename);
 }
 
-describe("bin/validate", () => {
+describe("bin/config-validate", () => {
   beforeAll(async () => {
     clearTestLog();
     const { Process } = await import("actionhero");
@@ -39,6 +39,20 @@ describe("bin/validate", () => {
   afterAll(async () => {
     await actionhero.start();
     await actionhero.stop();
+  });
+
+  let messages = [];
+  let spy;
+
+  beforeEach(() => {
+    messages = [];
+    spy = jest
+      .spyOn(console, "log")
+      .mockImplementation((message) => messages.push(message));
+  });
+
+  afterEach(() => {
+    spy.mockRestore();
   });
 
   test("the validate command can be run", async () => {

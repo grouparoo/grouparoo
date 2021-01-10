@@ -6,7 +6,6 @@ import { OptionHelper } from "../optionHelper";
 import { MappingHelper } from "../mappingHelper";
 import { log, utils } from "actionhero";
 import { LoggedModel } from "../../classes/loggedModel";
-import { Transaction } from "sequelize";
 
 export namespace SourceOps {
   /**
@@ -14,13 +13,12 @@ export namespace SourceOps {
    */
   export async function sourceConnectionOptions(
     source: Source,
-    sourceOptions: SimpleSourceOptions = {},
-    transaction?: Transaction
+    sourceOptions: SimpleSourceOptions = {}
   ) {
-    const { pluginConnection } = await source.getPlugin(transaction);
-    const app = await source.$get("app", { transaction });
-    const connection = await app.getConnection(transaction);
-    const appOptions = await app.getOptions(true, transaction);
+    const { pluginConnection } = await source.getPlugin();
+    const app = await source.$get("app");
+    const connection = await app.getConnection();
+    const appOptions = await app.getOptions(true);
 
     if (!pluginConnection.methods.sourceOptions) return {};
 
@@ -38,23 +36,21 @@ export namespace SourceOps {
    */
   export async function sourcePreview(
     source: Source,
-    sourceOptions?: SimpleSourceOptions,
-    transaction?: Transaction
+    sourceOptions?: SimpleSourceOptions
   ) {
-    if (!sourceOptions)
-      sourceOptions = await source.getOptions(true, transaction);
+    if (!sourceOptions) sourceOptions = await source.getOptions(true);
 
     try {
       // if the options aren't set yet, return an empty array of rows
-      await source.validateOptions(sourceOptions, transaction);
+      await source.validateOptions(sourceOptions);
     } catch {
       return [];
     }
 
-    const { pluginConnection } = await source.getPlugin(transaction);
-    const app = await source.$get("app", { transaction });
-    const connection = await app.getConnection(transaction);
-    const appOptions = await app.getOptions(true, transaction);
+    const { pluginConnection } = await source.getPlugin();
+    const app = await source.$get("app");
+    const connection = await app.getConnection();
+    const appOptions = await app.getOptions(true);
 
     if (!pluginConnection.methods.sourcePreview) {
       throw new Error(`cannot return a source preview for ${source.type}`);
@@ -88,9 +84,7 @@ export namespace SourceOps {
       profileProperties?: {};
     } = {}
   ) {
-    if (property.state !== "ready" && !propertyOptionsOverride) {
-      return;
-    }
+    if (property.state !== "ready" && !propertyOptionsOverride) return;
 
     await property.validateOptions(propertyOptionsOverride, false, true);
 
@@ -287,8 +281,7 @@ export namespace SourceOps {
     key: string,
     type: string,
     mappedColumn: string,
-    guid?: string,
-    transaction?: Transaction
+    guid?: string
   ) {
     const property = Property.build({
       guid,
@@ -304,14 +297,14 @@ export namespace SourceOps {
     try {
       // manually run the hooks we want
       Property.generateGuid(property);
-      await Property.ensureUniqueKey(property, { transaction });
+      await Property.ensureUniqueKey(property);
       await Property.ensureNonArrayAndUnique(property);
-      await Property.ensureOneIdentifyingProperty(property, { transaction });
+      await Property.ensureOneIdentifyingProperty(property);
 
       // danger zone!
-      await LoggedModel.logCreate(property, { transaction });
+      await LoggedModel.logCreate(property);
       // @ts-ignore
-      await property.save({ hooks: false, transaction });
+      await property.save({ hooks: false });
 
       // build the default options
       const { pluginConnection } = await source.getPlugin();
@@ -319,10 +312,10 @@ export namespace SourceOps {
         typeof pluginConnection.methods.uniquePropertyBootstrapOptions ===
         "function"
       ) {
-        const app = await source.$get("app", { transaction });
-        const connection = await app.getConnection(transaction);
-        const appOptions = await app.getOptions(true, transaction);
-        const options = await source.getOptions(true, transaction);
+        const app = await source.$get("app");
+        const connection = await app.getConnection();
+        const appOptions = await app.getOptions(true);
+        const options = await source.getOptions(true);
         const ruleOptions = await pluginConnection.methods.uniquePropertyBootstrapOptions(
           {
             app,
@@ -336,7 +329,7 @@ export namespace SourceOps {
           }
         );
 
-        await property.setOptions(ruleOptions, false, transaction);
+        await property.setOptions(ruleOptions, false);
       }
 
       return property;

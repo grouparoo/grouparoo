@@ -11,7 +11,6 @@ import {
   BeforeDestroy,
 } from "sequelize-typescript";
 import * as UUID from "uuid";
-import { Transaction } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Permission, PermissionTopics } from "./Permission";
 import { AsyncReturnType } from "type-fest";
@@ -78,22 +77,16 @@ export class ApiKey extends LoggedModel<ApiKey> {
     };
   }
 
-  async authorizeAction(
-    topic: string,
-    mode: "read" | "write",
-    transaction?: Transaction
-  ) {
-    return Permission.authorizeAction(this.guid, topic, mode, transaction);
+  async authorizeAction(topic: string, mode: "read" | "write") {
+    return Permission.authorizeAction(this.guid, topic, mode);
   }
 
   async setPermissions(
-    permissions: Array<{ guid: string; read: boolean; write: boolean }>,
-    transaction?: Transaction
+    permissions: Array<{ guid: string; read: boolean; write: boolean }>
   ) {
     for (const i in permissions) {
       const permission = await Permission.findOne({
         where: { ownerGuid: this.guid, guid: permissions[i].guid },
-        transaction,
       });
       if (!permission) {
         throw new Error(
@@ -111,17 +104,16 @@ export class ApiKey extends LoggedModel<ApiKey> {
             ? this.permissionAllWrite
             : permissions[i].write;
 
-        await permission.save({ transaction });
+        await permission.save({});
       }
     }
   }
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
@@ -133,10 +125,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
   }
 
   @AfterSave
-  static async buildPermissions(
-    instance: ApiKey,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async buildPermissions(instance: ApiKey) {
     for (const i in PermissionTopics) {
       const topic = PermissionTopics[i];
       let permission = await Permission.findOne({
@@ -145,34 +134,24 @@ export class ApiKey extends LoggedModel<ApiKey> {
           ownerGuid: instance.guid,
           ownerType: "apiKey",
         },
-        transaction,
       });
 
       if (!permission) {
-        permission = await Permission.create(
-          {
-            topic,
-            ownerGuid: instance.guid,
-            ownerType: "apiKey",
-          },
-          { transaction }
-        );
+        permission = await Permission.create({
+          topic,
+          ownerGuid: instance.guid,
+          ownerType: "apiKey",
+        });
       }
 
       if (instance.permissionAllRead !== null) {
-        await permission.update(
-          { read: instance.permissionAllRead },
-          { transaction }
-        );
+        await permission.update({ read: instance.permissionAllRead });
       }
       if (instance.permissionAllWrite !== null) {
-        await permission.update(
-          { write: instance.permissionAllWrite },
-          { transaction }
-        );
+        await permission.update({ write: instance.permissionAllWrite });
       }
       if (instance.locked && !permission.locked) {
-        await permission.update({ locked: instance.locked });
+        await permission.update({ locked: instance.locked }, {});
       }
     }
   }
@@ -183,10 +162,9 @@ export class ApiKey extends LoggedModel<ApiKey> {
   }
 
   @AfterDestroy
-  static async deletePermissions(instance: ApiKey, { transaction }) {
+  static async deletePermissions(instance: ApiKey, {}) {
     return Permission.destroy({
       where: { ownerGuid: instance.guid },
-      transaction,
     });
   }
 }

@@ -5,7 +5,6 @@ import {
   loadConfigObjects,
   processConfigObjects,
 } from "../../../src/modules/configLoaders";
-import { Transaction } from "sequelize";
 import { sortConfigurationObject } from "../../../src/classes/codeConfig";
 
 import { Property } from "../../../src/models/Property";
@@ -69,31 +68,36 @@ describe("modules/codeConfig", () => {
 
       const { configObjects } = await loadConfigObjects(dir);
       const sortedConfigObjects = sortConfigurationObject(configObjects);
-      const transaction: Transaction = await api.sequelize.transaction();
-      const { errors, seenGuids } = await processConfigObjects(
-        sortedConfigObjects,
-        true,
-        transaction
-      );
-      await transaction.rollback();
 
-      expect(errors).toEqual([]);
-      expect(seenGuids).toEqual({
-        apikey: ["key_website_api_key"],
-        app: ["app_data_warehouse", "app_events"],
-        destination: ["dst_test_destination"],
-        group: ["grp_email_group"],
-        property: [
-          "rul_user_id",
-          "rul_last_name",
-          "rul_first_name",
-          "rul_email",
-        ],
-        schedule: ["sch_users_table_schedule"],
-        source: ["src_users_table"],
-        team: ["tea_admin_team"],
-        teammember: ["tem_demo"],
-      });
+      await expect(
+        api.sequelize.transaction(async () => {
+          const { errors, seenGuids } = await processConfigObjects(
+            sortedConfigObjects,
+            true,
+            true
+          );
+
+          expect(errors).toEqual([]);
+          expect(seenGuids).toEqual({
+            apikey: ["key_website_api_key"],
+            app: ["app_data_warehouse", "app_events"],
+            destination: ["dst_test_destination"],
+            group: ["grp_email_group"],
+            property: [
+              "rul_user_id",
+              "rul_last_name",
+              "rul_first_name",
+              "rul_email",
+            ],
+            schedule: ["sch_users_table_schedule"],
+            source: ["src_users_table"],
+            team: ["tea_admin_team"],
+            teammember: ["tem_demo"],
+          });
+
+          throw new Error("test-rollback");
+        })
+      ).rejects.toThrow(/test-rollback/);
     });
 
     ensureNoSavedModels();
@@ -110,19 +114,24 @@ describe("modules/codeConfig", () => {
 
       const { configObjects } = await loadConfigObjects(dir);
       const sortedConfigObjects = sortConfigurationObject(configObjects);
-      const transaction: Transaction = await api.sequelize.transaction();
-      const { errors } = await processConfigObjects(
-        sortedConfigObjects,
-        true,
-        transaction
-      );
-      await transaction.rollback();
 
-      expect(errors.length).toBe(1);
-      expect(errors[0]).toMatch(
-        /Error: cannot find Property rul_missing_profile_property/
-      );
-      expect(errors[0]).toMatch(/error with Group/);
+      await expect(
+        api.sequelize.transaction(async () => {
+          const { errors } = await processConfigObjects(
+            sortedConfigObjects,
+            true,
+            true
+          );
+
+          expect(errors.length).toBe(1);
+          expect(errors[0]).toMatch(
+            /Error: cannot find Property rul_missing_profile_property/
+          );
+          expect(errors[0]).toMatch(/error with Group/);
+
+          throw new Error("test-rollback");
+        })
+      ).rejects.toThrow(/test-rollback/);
     });
 
     ensureNoSavedModels();
@@ -139,18 +148,23 @@ describe("modules/codeConfig", () => {
 
       const { configObjects } = await loadConfigObjects(dir);
       const sortedConfigObjects = sortConfigurationObject(configObjects);
-      const transaction: Transaction = await api.sequelize.transaction();
-      const { errors } = await processConfigObjects(
-        sortedConfigObjects,
-        false, // <-- here
-        transaction
-      );
-      await transaction.rollback();
 
-      expect(errors.length).toBe(1);
-      expect(errors[0]).toMatch(
-        /Error: cannot find Property rul_missing_profile_property/
-      );
+      await expect(
+        api.sequelize.transaction(async () => {
+          const { errors } = await processConfigObjects(
+            sortedConfigObjects,
+            false, // <-- here
+            true
+          );
+
+          expect(errors.length).toBe(1);
+          expect(errors[0]).toMatch(
+            /Error: cannot find Property rul_missing_profile_property/
+          );
+
+          throw new Error("test-rollback");
+        })
+      ).rejects.toThrow(/test-rollback/);
     });
 
     ensureNoSavedModels();

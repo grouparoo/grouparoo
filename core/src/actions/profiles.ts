@@ -1,5 +1,5 @@
 import { api, config } from "actionhero";
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { Group } from "../models/Group";
@@ -29,7 +29,7 @@ export class ProfilesList extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     let profiles: Profile[];
 
     const where: { [propertyGuid: string]: any } = {};
@@ -149,7 +149,7 @@ export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const op = config.sequelize.dialect === "postgres" ? Op.iLike : Op.like;
     const rawValueWhereClause = {};
     rawValueWhereClause[op] = `%${params.match}%`;
@@ -190,7 +190,7 @@ export class ProfilesImportAndUpdate extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run({ session }) {
+  async runWithinTransaction({ session }) {
     const run = await internalRun("teamMember", session.teamMember.guid);
     return { run: await run.apiData() };
   }
@@ -208,7 +208,7 @@ export class ProfileCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const profile = new Profile(params);
     await profile.save();
     await profile.addOrUpdateProperties(params.properties);
@@ -234,7 +234,7 @@ export class ProfileImportAndExport extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const profile = await Profile.findByGuid(params.guid);
 
     await profile.markPending();
@@ -267,7 +267,7 @@ export class ProfileEdit extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const profile = await Profile.findByGuid(params.guid);
     const oldGroups = await profile.$get("groups");
     await profile.update(params);
@@ -298,7 +298,7 @@ export class ProfileView extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const profile = await Profile.findByGuid(params.guid);
     const groups = await profile.$get("groups");
     return {
@@ -320,7 +320,7 @@ export class ProfileDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const profile = await Profile.findByGuid(params.guid);
     await profile.destroy();
     return { success: true };

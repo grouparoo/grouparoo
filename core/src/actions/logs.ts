@@ -1,4 +1,4 @@
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { Log } from "../models/Log";
 import { Op } from "sequelize";
@@ -26,7 +26,7 @@ export class LogsList extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const search = {
       limit: params.limit,
       offset: params.offset,

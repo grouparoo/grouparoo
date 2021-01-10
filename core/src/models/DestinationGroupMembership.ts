@@ -7,7 +7,7 @@ import {
   Length,
   BeforeSave,
 } from "sequelize-typescript";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Group } from "./Group";
 import { Destination } from "./Destination";
@@ -51,10 +51,9 @@ export class DestinationGroupMembership extends LoggedModel<DestinationGroupMemb
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
@@ -62,8 +61,7 @@ export class DestinationGroupMembership extends LoggedModel<DestinationGroupMemb
 
   @BeforeSave
   static async ensureOneDestinationPerGroup(
-    instance: DestinationGroupMembership,
-    { transaction }: { transaction?: Transaction } = {}
+    instance: DestinationGroupMembership
   ) {
     const existing = await DestinationGroupMembership.scope(null).findOne({
       where: {
@@ -71,7 +69,6 @@ export class DestinationGroupMembership extends LoggedModel<DestinationGroupMemb
         destinationGuid: instance.destinationGuid,
         groupGuid: instance.groupGuid,
       },
-      transaction,
     });
     if (existing) {
       throw new Error(
@@ -82,8 +79,7 @@ export class DestinationGroupMembership extends LoggedModel<DestinationGroupMemb
 
   @BeforeSave
   static async ensureOneDestinationPerRemoteKey(
-    instance: DestinationGroupMembership,
-    { transaction }: { transaction?: Transaction } = {}
+    instance: DestinationGroupMembership
   ) {
     const existing = await DestinationGroupMembership.scope(null).findOne({
       where: {
@@ -91,7 +87,6 @@ export class DestinationGroupMembership extends LoggedModel<DestinationGroupMemb
         destinationGuid: instance.destinationGuid,
         remoteKey: instance.remoteKey,
       },
-      transaction,
     });
     if (existing) {
       throw new Error(

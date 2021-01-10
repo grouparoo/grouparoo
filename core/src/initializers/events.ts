@@ -135,10 +135,9 @@ const eventSourcePreview: SourcePreviewMethod = async ({ sourceOptions }) => {
   return eventPreviews;
 };
 
-const testEventsApp: TestPluginMethod = async ({ appOptions, transaction }) => {
+const testEventsApp: TestPluginMethod = async ({ appOptions }) => {
   const identifyingProperty = await Property.findOne({
     where: { guid: appOptions.identifyingPropertyGuid },
-    transaction,
   });
   if (!identifyingProperty) {
     throw new Error(

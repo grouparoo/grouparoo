@@ -1,5 +1,5 @@
 import { api } from "actionhero";
-import { AuthenticatedAction } from "../classes/authenticatedAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { File } from "../models/File";
 import fs from "fs-extra";
 
@@ -24,7 +24,7 @@ export class FilesList extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const search = {
       limit: params.limit,
       offset: params.offset,
@@ -54,7 +54,7 @@ export class FileOptions extends AuthenticatedAction {
     this.inputs = {};
   }
 
-  async run() {
+  async runWithinTransaction() {
     return {
       options: { types: api.files.types },
     };
@@ -76,7 +76,7 @@ export class FileCreate extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const file = await api.files.set(
       params.type,
       params._file.name,
@@ -99,7 +99,7 @@ export class FileDetails extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const file = await File.findByGuid(params.guid);
     return { file: await file.apiData() };
   }
@@ -117,7 +117,7 @@ export class FileView extends AuthenticatedAction {
     };
   }
 
-  async run(data) {
+  async runWithinTransaction(data) {
     const { connection, params } = data;
 
     const file = await File.findByGuid(params.guid);
@@ -156,7 +156,7 @@ export class FileDestroy extends AuthenticatedAction {
     };
   }
 
-  async run({ params }) {
+  async runWithinTransaction({ params }) {
     const file = await File.findByGuid(params.guid);
     await api.files.destroy(file);
     return { success: true };

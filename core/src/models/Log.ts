@@ -12,7 +12,7 @@ import {
 import { DataTypes } from "sequelize";
 import * as uuid from "uuid";
 import Moment from "moment";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { chatRoom } from "actionhero";
 
 @Table({ tableName: "logs", paranoid: false })
@@ -80,10 +80,9 @@ export class Log extends Model<Log> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;

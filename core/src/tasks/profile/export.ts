@@ -3,7 +3,8 @@ import { Profile } from "../../models/Profile";
 import { Import } from "../../models/Import";
 import { Destination } from "../../models/Destination";
 import { Group } from "../../models/Group";
-import { RetryableTask } from "../../classes/retryableTask";
+import { RetryableTask } from "../../classes/tasks/retryableTask";
+import { env, log } from "actionhero";
 
 export class ProfileExport extends RetryableTask {
   constructor() {
@@ -19,7 +20,7 @@ export class ProfileExport extends RetryableTask {
     };
   }
 
-  async run(params) {
+  async runWithinTransaction(params) {
     const profile = await Profile.findOne({
       where: { guid: params.profileGuid },
     });
@@ -89,8 +90,8 @@ export class ProfileExport extends RetryableTask {
         imports.map((e) => e.update({ exportedAt: new Date() }))
       );
     } catch (error) {
+      if (env !== "test") log(`[EXPORT ERROR] ${error}`, "alert");
       await Promise.all(imports.map((e) => e.setError(error, this.name)));
-      throw error;
     }
   }
 }

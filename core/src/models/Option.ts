@@ -6,7 +6,7 @@ import {
   BelongsTo,
   BeforeSave,
 } from "sequelize-typescript";
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { App } from "./App";
 import { Source } from "./Source";
@@ -58,27 +58,22 @@ export class Option extends LoggedModel<Option> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string, transaction?: Transaction) {
+  static async findByGuid(guid: string) {
     const instance = await this.scope(null).findOne({
       where: { guid },
-      transaction,
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
   }
 
   @BeforeSave
-  static async ensureOneOwnerGuidPerKey(
-    instance: Option,
-    { transaction }: { transaction?: Transaction } = {}
-  ) {
+  static async ensureOneOwnerGuidPerKey(instance: Option) {
     const existing = await Option.scope(null).findOne({
       where: {
         guid: { [Op.ne]: instance.guid },
         ownerGuid: instance.ownerGuid,
         key: instance.key,
       },
-      transaction,
     });
     if (existing) {
       throw new Error(
