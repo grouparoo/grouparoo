@@ -61,7 +61,7 @@
     "mustache": "4.1.0",
     "node-resque": "8.2.0",
     "nodemon": "2.0.7",
-    "pacote": "11.1.11",
+    "pacote": "11.1.14",
     "pg": "8.5.1",
     "pg-hstore": "2.3.3",
     "reflect-metadata": "0.1.13",
