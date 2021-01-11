@@ -36,7 +36,6 @@ export class CalculatedGroupTemplate extends ConfigTemplate {
   }
 
   async run({ params }) {
-    console.log(params);
     if (params.rules) {
       params.rules = JSON.stringify(JSON.parse(params.rules), null, 2);
     }

@@ -16,7 +16,7 @@ export class Status extends CLI {
   }
 
   async run() {
-    GrouparooCLI.logCLI(this);
+    GrouparooCLI.logCLI(this.name);
 
     const { value: clusterName } = await plugin.readSetting(
       "core",

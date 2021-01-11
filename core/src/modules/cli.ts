@@ -39,11 +39,11 @@ export namespace GrouparooCLI {
     process.env.GROUPAROO_RUN_MODE = `cli:${cli.name}`;
   }
 
-  export function logCLI(cli: CLI, announcePlugins = true) {
+  export function logCLI(name: string, announcePlugins = true) {
     if (announcePlugins) api.plugins.announcePlugins();
 
     console.log("");
-    console.log(Colors.underline(Colors.bold(`🦘 Grouparoo: ${cli.name}`)));
+    console.log(Colors.underline(Colors.bold(`🦘 Grouparoo: ${name}`)));
     console.log("");
   }
 
@@ -76,6 +76,40 @@ export namespace GrouparooCLI {
   export function disableWebServer() {
     delete api.servers.servers.web;
     delete api.servers.servers.websocket;
+  }
+
+  export function parseTemplateOpts(argumentName: string) {
+    const hash: { [key: string]: string } = {};
+
+    const argument = process.argv.slice(3)[0]
+      ? process.argv.slice(3)[0].includes("--")
+        ? undefined
+        : process.argv.slice(3)[0]
+      : undefined;
+    if (argument) hash[argumentName] = argument;
+
+    const opts = process.argv.slice(2).includes("--")
+      ? process.argv.slice(2).slice(process.argv.slice(2).indexOf("--") + 1)
+      : [];
+
+    function cleanOpt(s: string) {
+      return s.replace(/^--/, "").replace(/^-/, "").toLowerCase();
+    }
+
+    while (opts.length > 0) {
+      const opt = opts.shift();
+      if (opt.includes("=")) {
+        const parts = opt.split("=");
+        hash[cleanOpt(parts.shift())] = parts.join("=");
+      } else if (opt.match(/^--/)) {
+        hash[cleanOpt(opt)] = opts.shift();
+      } else {
+        console.error(`cannot parse option ${opt}`);
+        process.exit(1);
+      }
+    }
+
+    return hash;
   }
 
   /** Status */

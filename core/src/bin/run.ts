@@ -33,7 +33,7 @@ export class RunCLI extends CLI {
   }
 
   async run() {
-    GrouparooCLI.logCLI(this, false);
+    GrouparooCLI.logCLI(this.name, false);
     this.checkWorkers();
 
     if (!process.argv.slice(2).includes("--web")) {

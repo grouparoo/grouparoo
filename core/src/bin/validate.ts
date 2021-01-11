@@ -29,7 +29,7 @@ export class Validate extends CLI {
   }
 
   async run({ params }) {
-    GrouparooCLI.logCLI(this);
+    GrouparooCLI.logCLI(this.name);
 
     const configDir = getConfigDir();
     let configObjects: ConfigurationObject[];
