@@ -15,6 +15,7 @@ export class EventAssociateProfile extends Task {
     this.description = "find or create the profile this event is about";
     this.frequency = 0;
     this.queue = "events";
+    this.plugins = ["QueueLock", "Retry"];
     this.inputs = {
       eventGuid: { required: true },
       count: { required: false },
