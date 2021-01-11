@@ -46,7 +46,7 @@
     "cls-hooked": "4.2.2",
     "colors": "1.4.0",
     "compare-versions": "3.6.0",
-    "csv-stringify": "5.6.0",
+    "csv-stringify": "5.6.1",
     "date-fns": "2.16.1",
     "dotenv": "8.2.0",
     "faker": "5.1.0",
