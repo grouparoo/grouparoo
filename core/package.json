@@ -60,7 +60,7 @@
     "moment": "2.29.1",
     "mustache": "4.1.0",
     "node-resque": "8.2.0",
-    "nodemon": "2.0.6",
+    "nodemon": "2.0.7",
     "pacote": "11.1.11",
     "pg": "8.5.1",
     "pg-hstore": "2.3.3",
