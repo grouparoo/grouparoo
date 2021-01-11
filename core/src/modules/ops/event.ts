@@ -4,7 +4,6 @@ import { ProfileProperty } from "../../models/ProfileProperty";
 import { Property } from "../../models/Property";
 import { ProfileOps } from "../ops/profile";
 import { Op } from "sequelize";
-import { utils } from "actionhero";
 import { waitForLock } from "../locks";
 
 export namespace EventOps {
@@ -26,34 +25,21 @@ export namespace EventOps {
     }
 
     let profile: Profile;
-    try {
-      if (event.profileGuid) {
-        profile = await associateEventWithProfileGuid(event, property);
-      } else if (event.userId) {
-        profile = await associateEventWithUserId(event, property);
-      } else if (event.anonymousId) {
-        profile = await associateEventWithAnonymousId(event, property);
-      } else {
-        throw new Error(
-          "cannot associate a profile without profileGuid, userId, or anonymousId"
-        );
-      }
 
-      await profile.markPending();
-      return profile;
-    } catch (error) {
-      // It's possible that 2 events for the same profile are getting processed at the same time, which would create a conflicting profile.
-      // In these cases, retry one more time
-      if (
-        isRetry === false &&
-        error.toString().match(/SequelizeUniqueConstraintError/)
-      ) {
-        await utils.sleep(100);
-        return associate(event, identifyingPropertyGuid, true);
-      } else {
-        throw error;
-      }
+    if (event.profileGuid) {
+      profile = await associateEventWithProfileGuid(event, property);
+    } else if (event.userId) {
+      profile = await associateEventWithUserId(event, property);
+    } else if (event.anonymousId) {
+      profile = await associateEventWithAnonymousId(event, property);
+    } else {
+      throw new Error(
+        "cannot associate a profile without profileGuid, userId, or anonymousId"
+      );
     }
+
+    await profile.markPending();
+    return profile;
   }
 
   async function associateEventWithProfileGuid(
@@ -61,19 +47,9 @@ export namespace EventOps {
     property: Property
   ) {
     // we are already identified
-    try {
-      const profile = await event.$get("profile");
-      await event.updateProfile(profile);
-      return profile;
-    } catch (error) {
-      // the event may have been moved to another profile
-      const updatedEvent = await event.reload();
-      if (updatedEvent.profileGuid !== event.profileGuid) {
-        return updatedEvent.associate(updatedEvent.profileGuid);
-      } else {
-        throw error;
-      }
-    }
+    const profile = await event.$get("profile");
+    await event.updateProfile(profile);
+    return profile;
   }
 
   async function associateEventWithUserId(event: Event, property: Property) {
@@ -97,16 +73,7 @@ export namespace EventOps {
     const profileProperties = {};
     profileProperties[property.guid] = event.userId;
 
-    try {
-      await profile.addOrUpdateProperties(profileProperties);
-    } catch (error) {
-      // the profile was created in the middle of this task; try again!
-      if (error.toString().match(/Another profile already has the value/)) {
-        return associateEventWithUserId(event, property);
-      } else {
-        throw error;
-      }
-    }
+    await profile.addOrUpdateProperties(profileProperties);
 
     event.profileGuid = profile.guid;
     event.profileAssociatedAt = new Date();
