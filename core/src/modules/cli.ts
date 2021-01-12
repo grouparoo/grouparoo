@@ -10,6 +10,7 @@ import {
   Export,
   Log,
   Schedule,
+  Event,
 } from "..";
 
 export namespace GrouparooCLI {
@@ -56,6 +57,10 @@ export namespace GrouparooCLI {
     await Export.truncate();
     await Run.truncate();
     await Log.truncate();
+    await Event.update(
+      { profileGuid: null, userId: null, profileAssociatedAt: null },
+      { where: { profileGuid: { [Op.ne]: null } } }
+    );
   }
 
   export async function resetHighWatermarks() {
