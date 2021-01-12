@@ -74,6 +74,7 @@ export abstract class ConfigTemplate {
     const response: ConfigTemplateRunResponse = {};
     const errorPrefix = "Missing required input";
     const fileNames = await ConfigTemplateUtils.resolveFiles(this);
+
     for (const i in fileNames) {
       const fileName = fileNames[i];
       const relativeFileName = this.formatForFilesystem(

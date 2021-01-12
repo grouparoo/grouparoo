@@ -66,7 +66,7 @@ describe("bin/generate", () => {
 
     const contents = fs.readFileSync(file).toString();
     expect(contents).toContain('id: "new-group"');
-    expect(contents).toContain('class: "Group"');
+    expect(contents).toContain('class: "group"');
   });
 
   test("the generate command will fail if the file exists", async () => {

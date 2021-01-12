@@ -50,7 +50,7 @@ describe("bin/generate", () => {
     const template = templates.find((t) => t.name === "group:manual");
 
     const fileData = await template.run({
-      params: template.assignDefaults({ path: tmpDir, id: "test_group" }),
+      params: template.prepareParams({ path: tmpDir, id: "test_group" }),
     });
 
     const newFile = `${tmpDir}/group/manual/new_group.js`;
@@ -62,7 +62,11 @@ describe("bin/generate", () => {
     test("group:manual", async () => {
       const template = templates.find((t) => t.name === "group:manual");
       const fileData = await template.run({
-        params: { path: tmpDir, id: "test_group", name: "test_name" },
+        params: template.prepareParams({
+          path: tmpDir,
+          id: "test_group",
+          name: "test_name",
+        }),
       });
 
       const newFile = `${tmpDir}/group/manual/test_name.js`;
@@ -73,7 +77,7 @@ describe("bin/generate", () => {
     test("group:calculated", async () => {
       const template = templates.find((t) => t.name === "group:calculated");
       const fileData = await template.run({
-        params: {
+        params: template.prepareParams({
           path: tmpDir,
           id: "test_group",
           name: "test_name",
@@ -82,7 +86,7 @@ describe("bin/generate", () => {
             operation: { op: "gt" },
             match: 100,
           }),
-        },
+        }),
       });
 
       const newFile = `${tmpDir}/group/calculated/test_name.js`;

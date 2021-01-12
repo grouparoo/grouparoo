@@ -24,7 +24,7 @@ export namespace MustacheUtils {
     errorPrefix = "missing mustache key"
   ) {
     Mustache.parse(string)
-      .filter((chunk) => chunk[0] === "name")
+      .filter((chunk) => chunk[0] === "name" || chunk[0] === "&")
       .map((chunk) => chunk[1])
       .map((key) => {
         const value = key.split(".").reduce((o, i) => o[i], data);

@@ -2,6 +2,7 @@ import glob from "glob";
 import path from "path";
 import { ConfigTemplate } from "../classes/configTemplate";
 import { getPluginManifest } from "../utils/pluginDetails";
+import { utils } from "actionhero";
 
 // in memory cache of templates
 let configTemplates: ConfigTemplate[] = [];
@@ -11,12 +12,14 @@ export namespace ConfigTemplateUtils {
     if (configTemplates.length > 0) return configTemplates;
 
     const pluginManifest = getPluginManifest();
-    const pluginIndexFiles = pluginManifest.plugins
-      .map((p) => path.join(p.path, "dist"))
-      .concat([path.join(__dirname, "..", "..", "dist")])
-      .map((p) => path.join(p, "templates", "**", "*.js"))
-      .map((p) => glob.sync(p))
-      .flat();
+    const pluginIndexFiles = utils.ensureNoTsHeaderFiles(
+      pluginManifest.plugins
+        .map((p) => path.join(p.path, "dist"))
+        .concat([path.join(__dirname, "..")])
+        .map((p) => path.join(p, "templates", "**", "+(*.js|*.ts)"))
+        .map((p) => glob.sync(p))
+        .flat()
+    );
 
     for (const i in pluginIndexFiles) {
       const _exports = require(pluginIndexFiles[i]);
