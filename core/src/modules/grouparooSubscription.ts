@@ -1,4 +1,5 @@
 import { TeamMember } from "../models/TeamMember";
+import { CLS } from "../modules/cls";
 import { log } from "actionhero";
 import path from "path";
 
@@ -19,23 +20,25 @@ const campaign = `v${packageJSON.version}`;
 export async function GrouparooSubscription(teamMember: TeamMember) {
   if (process.env.NODE_ENV === "test") return;
 
-  try {
-    const response = await fetch(`${host}${route}`, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: teamMember.email,
-        firstName: teamMember.firstName,
-        lastName: teamMember.lastName,
-        source,
-        medium,
-        campaign,
-      }),
-    }).then((r) => r.json());
+  CLS.afterCommit(async () => {
+    try {
+      const response = await fetch(`${host}${route}`, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: teamMember.email,
+          firstName: teamMember.firstName,
+          lastName: teamMember.lastName,
+          source,
+          medium,
+          campaign,
+        }),
+      }).then((r) => r.json());
 
-    if (response.error) throw response.error;
-    log(`Registered ${teamMember.email} for Grouparoo subscription`);
-  } catch (error) {
-    log(`Error subscribing to Grouparoo Subscription: ${error}`, "error");
-  }
+      if (response.error) throw response.error;
+      log(`Registered ${teamMember.email} for Grouparoo subscription`);
+    } catch (error) {
+      log(`Error subscribing to Grouparoo Subscription: ${error}`, "error");
+    }
+  });
 }

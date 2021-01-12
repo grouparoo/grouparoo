@@ -28,27 +28,21 @@ export class TeamInitialize extends CLSAction {
       throw new Error("an administration team already exists, please sign in");
     }
 
-    try {
-      team = await Team.create({
-        name: "Administrators",
-        locked: "team:initialize",
-        permissionAllRead: true,
-        permissionAllWrite: true,
-      });
+    team = await Team.create({
+      name: "Administrators",
+      locked: "team:initialize",
+      permissionAllRead: true,
+      permissionAllWrite: true,
+    });
 
-      teamMember = await TeamMember.create({
-        teamGuid: team.guid,
-        email: params.email,
-        firstName: params.firstName,
-        lastName: params.lastName,
-      });
+    teamMember = await TeamMember.create({
+      teamGuid: team.guid,
+      email: params.email,
+      firstName: params.firstName,
+      lastName: params.lastName,
+    });
 
-      await teamMember.updatePassword(params.password);
-    } catch (error) {
-      if (teamMember) await teamMember.destroy();
-      if (team) await team.destroy();
-      throw error;
-    }
+    await teamMember.updatePassword(params.password);
 
     if (params.subscribe) {
       await GrouparooSubscription(teamMember);

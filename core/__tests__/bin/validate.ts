@@ -1,6 +1,6 @@
 import { readFileSync, unlinkSync, existsSync } from "fs";
 import { helper } from "@grouparoo/spec-helper";
-import { Validate } from "../../src/bin/config-validate";
+import { Validate } from "../../src/bin/validate";
 import os from "os";
 import { join } from "path";
 let actionhero;

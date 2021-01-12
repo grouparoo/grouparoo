@@ -135,13 +135,16 @@ async function convertCLIToCommanderAction(cli, program) {
   const command = program
     .command(instance.name)
     .description(instance.description)
-    .action(async (_program) => {
-      await runCommand(instance, _program);
+    .action(async (_arg1, _arg2) => {
+      await runCommand(instance, _arg1, _arg2);
     })
     .on("--help", () => {
       if (instance.example) {
         console.log("");
         console.log("Example: \r\n" + "  " + instance.example);
+      }
+      if (typeof instance.help === "function") {
+        instance.help();
       }
     });
 
@@ -155,9 +158,14 @@ async function convertCLIToCommanderAction(cli, program) {
   }
 }
 
-async function runCommand(instance, _program) {
+async function runCommand(instance, _arg1, _arg2) {
+  // arg1 or arg2 might be the _program, depending on if there's an ARG in the command
+
   let toStop = false;
-  const params = _program.opts();
+
+  let params = {};
+  if (typeof _arg1?.opts === "function") params = _arg1.opts();
+  if (typeof _arg2?.opts === "function") params = _arg2.opts();
 
   if (instance.initialize === false && instance.start === false) {
     toStop = await instance.run({ params });

@@ -1,17 +1,17 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, api, log } from "actionhero";
+import { CLI, log } from "actionhero";
+import { CLS } from "../modules/cls";
 import { sortConfigurationObject } from "../classes/codeConfig";
 import {
   getConfigDir,
   loadConfigObjects,
   processConfigObjects,
-  logFatalError,
 } from "../modules/configLoaders";
 
 export class Validate extends CLI {
   constructor() {
     super();
-    this.name = "config-apply";
+    this.name = "apply";
     this.description = "Apply changes from code config";
     this.inputs = {
       "externally-validate": {
@@ -26,7 +26,7 @@ export class Validate extends CLI {
   }
 
   async run({ params }) {
-    GrouparooCLI.logCLI(this);
+    GrouparooCLI.logCLI(this.name);
 
     const configDir = getConfigDir();
     const loadResponse = await loadConfigObjects(configDir);
@@ -34,7 +34,10 @@ export class Validate extends CLI {
 
     log(`applying ${configObjects.length} objects...`);
 
-    await processConfigObjects(configObjects, !!params.externallyValidate);
+    await CLS.wrap(async () =>
+      processConfigObjects(configObjects, !!params.externallyValidate)
+    );
+
     log(
       `✅ Config applied - ${configObjects.length} config objects up-to-date!`
     );

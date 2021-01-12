@@ -1,6 +1,6 @@
 import { api } from "actionhero";
 import { GrouparooPlugin } from "../classes/plugin";
-import Mustache from "mustache";
+import { MustacheUtils } from "./mustacheUtils";
 
 import { App } from "../models/App";
 import { ApiKey } from "../models/ApiKey";
@@ -267,8 +267,7 @@ export namespace plugin {
       }
     }
 
-    validateMustacheVariables(string, data);
-    return Mustache.render(string, data);
+    return MustacheUtils.strictlyRender(string, data);
   }
 
   /**
@@ -309,8 +308,7 @@ export namespace plugin {
     if (string.indexOf("{{") < 0) return string;
 
     const data = await getProfileData(profile);
-    validateMustacheVariables(string, data);
-    return Mustache.render(string, data);
+    return MustacheUtils.strictlyRender(string, data);
   }
 
   /**
@@ -331,8 +329,7 @@ export namespace plugin {
       data[rule.key] = `{{ ${rule.guid} }}`;
     });
 
-    validateMustacheVariables(string, data);
-    return Mustache.render(string, data);
+    return MustacheUtils.strictlyRender(string, data);
   }
 
   /**
@@ -351,19 +348,6 @@ export namespace plugin {
       data[rule.guid] = `{{ ${rule.key} }}`;
     });
 
-    validateMustacheVariables(string, data);
-    return Mustache.render(string, data);
+    return MustacheUtils.strictlyRender(string, data);
   }
-}
-
-function validateMustacheVariables(string, data) {
-  Mustache.parse(string)
-    .filter((chunk) => chunk[0] === "name")
-    .map((chunk) => chunk[1])
-    .map((key) => {
-      const value = key.split(".").reduce((o, i) => o[i], data);
-      if (value === undefined || value === null) {
-        throw new Error(`missing mustache key "${key}"`);
-      }
-    });
 }

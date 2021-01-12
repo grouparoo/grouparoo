@@ -21,7 +21,7 @@ async function main() {
   await loadLocalCommands(program);
 
   program
-    .command("init [path]")
+    .command("init <path>")
     .description(
       'Initialize a new Grouparoo project.  Use "." for this directory.'
     )

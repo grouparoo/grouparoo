@@ -14,7 +14,7 @@ import {
 export class Validate extends CLI {
   constructor() {
     super();
-    this.name = "config-validate";
+    this.name = "validate";
     this.description = "Validate your code config";
     this.inputs = {
       "externally-validate": {
@@ -29,7 +29,7 @@ export class Validate extends CLI {
   }
 
   async run({ params }) {
-    GrouparooCLI.logCLI(this);
+    GrouparooCLI.logCLI(this.name);
 
     const configDir = getConfigDir();
     let configObjects: ConfigurationObject[];

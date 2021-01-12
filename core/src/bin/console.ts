@@ -14,7 +14,7 @@ export class Console extends CLI {
   }
 
   async run() {
-    GrouparooCLI.logCLI(this);
+    GrouparooCLI.logCLI(this.name);
 
     await new Promise((resolve, reject) => {
       const repl = REPL.start({

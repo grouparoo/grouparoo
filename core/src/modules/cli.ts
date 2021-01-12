@@ -9,6 +9,8 @@ import {
   Import,
   Export,
   Log,
+  Schedule,
+  Event,
 } from "..";
 
 export namespace GrouparooCLI {
@@ -38,11 +40,11 @@ export namespace GrouparooCLI {
     process.env.GROUPAROO_RUN_MODE = `cli:${cli.name}`;
   }
 
-  export function logCLI(cli: CLI, announcePlugins = true) {
+  export function logCLI(name: string, announcePlugins = true) {
     if (announcePlugins) api.plugins.announcePlugins();
 
     console.log("");
-    console.log(Colors.underline(Colors.bold(`🦘 Grouparoo: ${cli.name}`)));
+    console.log(Colors.underline(Colors.bold(`🦘 Grouparoo: ${name}`)));
     console.log("");
   }
 
@@ -55,11 +57,64 @@ export namespace GrouparooCLI {
     await Export.truncate();
     await Run.truncate();
     await Log.truncate();
+    await Event.update(
+      { profileGuid: null, userId: null, profileAssociatedAt: null },
+      { where: { profileGuid: { [Op.ne]: null } } }
+    );
+  }
+
+  export async function resetHighWatermarks() {
+    log("Resetting Schedule high water marks...", "warning");
+    const schedules = await Schedule.findAll();
+    for (const i in schedules) {
+      const runs = await Run.findAll({
+        where: {
+          creatorGuid: schedules[i].guid,
+          state: { [Op.ne]: "running" },
+          highWaterMark: { [Op.ne]: null },
+        },
+      });
+      for (const j in runs) await runs[j].destroy();
+    }
   }
 
   export function disableWebServer() {
     delete api.servers.servers.web;
     delete api.servers.servers.websocket;
+  }
+
+  export function parseTemplateOpts(argumentName: string) {
+    const hash: { [key: string]: string } = {};
+
+    const argument = process.argv.slice(3)[0]
+      ? process.argv.slice(3)[0].includes("--")
+        ? undefined
+        : process.argv.slice(3)[0]
+      : undefined;
+    if (argument) hash[argumentName] = argument;
+
+    const opts = process.argv.slice(2).includes("--")
+      ? process.argv.slice(2).slice(process.argv.slice(2).indexOf("--") + 1)
+      : [];
+
+    function cleanOpt(s: string) {
+      return s.replace(/^--/, "").replace(/^-/, "").toLowerCase();
+    }
+
+    while (opts.length > 0) {
+      const opt = opts.shift();
+      if (opt.includes("=")) {
+        const parts = opt.split("=");
+        hash[cleanOpt(parts.shift())] = parts.join("=");
+      } else if (opt.match(/^--/)) {
+        hash[cleanOpt(opt)] = opts.shift();
+      } else {
+        console.error(`cannot parse option ${opt}`);
+        process.exit(1);
+      }
+    }
+
+    return hash;
   }
 
   /** Status */
@@ -133,15 +188,19 @@ export namespace GrouparooCLI {
     console.log("");
   }
 
-  function blueBold(s: string) {
+  export function blueBold(s: string) {
     return Colors.blue(Colors.bold(s));
   }
 
-  function underlineBold(s: string) {
+  export function blue(s: string) {
+    return Colors.blue(s);
+  }
+
+  export function underlineBold(s: string) {
     return Colors.underline(Colors.bold(s));
   }
 
-  function deCamel(s: string) {
+  export function deCamel(s: string) {
     return s.replace(/([a-z])([A-Z])/g, "$1 $2");
   }
 }

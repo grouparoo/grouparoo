@@ -1,0 +1,10 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "group",
+      id: {{{id}}},
+      name: {{{name}}},
+      type: "manual",
+    },
+  ];
+};

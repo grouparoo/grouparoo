@@ -1,5 +1,6 @@
 import { api, Initializer } from "actionhero";
 import { getConfigDir, loadConfigDirectory } from "../modules/configLoaders";
+import { CLS } from "../modules/cls";
 
 declare module "actionhero" {
   export interface Api {
@@ -25,7 +26,7 @@ export class CodeConfig extends Initializer {
 
   async start() {
     const configDir = getConfigDir();
-    await loadConfigDirectory(configDir);
+    await CLS.wrap(async () => loadConfigDirectory(configDir));
 
     // after this point in the Actionhero boot lifecycle, locked models cannot be changed
     api.codeConfig.allowLockedModelChanges = false;
