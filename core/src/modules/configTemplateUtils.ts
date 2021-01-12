@@ -13,7 +13,7 @@ export namespace ConfigTemplateUtils {
     const pluginManifest = getPluginManifest();
     const pluginIndexFiles = pluginManifest.plugins
       .map((p) => path.join(p.path, "dist"))
-      .concat([path.join(__dirname, "..")])
+      .concat([path.join(__dirname, "..", "..", "dist")])
       .map((p) => path.join(p, "templates", "**", "*.js"))
       .map((p) => glob.sync(p))
       .flat();

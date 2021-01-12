@@ -9,7 +9,7 @@ import path from "path";
 import fs from "fs-extra";
 import prettier from "prettier";
 
-export class Validate extends CLI {
+export class Generate extends CLI {
   constructor() {
     super();
     this.name = "generate [template]"; // I will include the template ARG vs OPT
@@ -17,7 +17,7 @@ export class Validate extends CLI {
     this.inputs = {
       path: {
         required: true,
-        default: path.join(process.env.INIT_CWD, "config"),
+        default: path.join(process.env.INIT_CWD || process.cwd(), "config"),
         description: "The location of the config directory",
       },
       list: {
@@ -141,6 +141,6 @@ export class Validate extends CLI {
 
   fatalError(message: string) {
     console.error("❌ " + message);
-    process.exit(1);
+    if (process.env.NODE_ENV !== "test") process.exit(1);
   }
 }
