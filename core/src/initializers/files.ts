@@ -41,7 +41,9 @@ export class Files extends Initializer {
   async start() {
     // default to localFile if no file transport was loaded by a plugin
     if (!api.files.transport) {
-      const { FileTransportLocal } = require("../classes/fileTransportLocal");
+      const { FileTransportLocal } = await import(
+        "../classes/fileTransportLocal"
+      );
       const instance = new FileTransportLocal();
       api.files.downloadToServer = async (file) => {
         return instance.downloadToServer(file);

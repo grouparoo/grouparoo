@@ -97,9 +97,12 @@ export const DEFAULT = {
       migrations: [join(__dirname, "..", "migrations")],
       storage, // only used for sqlite
       pool: {
-        max: process.env.SEQUELIZE_POOL_SIZE
-          ? parseInt(process.env.SEQUELIZE_POOL_SIZE)
-          : 5,
+        max:
+          dialect === "sqlite"
+            ? 1
+            : process.env.SEQUELIZE_POOL_SIZE
+            ? parseInt(process.env.SEQUELIZE_POOL_SIZE)
+            : 5,
         min: 0,
         acquire: 30000,
         idle: 10000,
