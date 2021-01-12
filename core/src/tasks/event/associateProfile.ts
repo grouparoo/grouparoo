@@ -3,11 +3,10 @@ import { App } from "../../models/App";
 import { Task, log } from "actionhero";
 import { CLS } from "../../modules/cls";
 
-const MAX_ATTEMPTS = 2;
-
 export class EventAssociateProfile extends Task {
   // This Task extends Task rather than CLSTask as we want to be able to view newly created profiles happening in parallel to this task/transaction.
-  // Event creation does have side-effects, so we manually create our own transaction
+  // We modify the retryLimit here because we always want to allow for a retry here, even in test/dev mode.  We also shouldn't need that many retries.
+  // We use a custom CLS wrapper to simplify error logging
 
   constructor() {
     super();
@@ -16,15 +15,23 @@ export class EventAssociateProfile extends Task {
     this.frequency = 0;
     this.queue = "events";
     this.plugins = ["QueueLock", "Retry"];
+    this.pluginOptions = {
+      Retry: {
+        retryLimit: 3,
+        backoffStrategy: [
+          1000, // 1 second
+          1000 * 1, // 5 seconds
+          1000 * 10, // 10 seconds
+        ],
+      },
+    };
     this.inputs = {
       eventGuid: { required: true },
-      count: { required: false },
     };
   }
 
   async run(params: { eventGuid: string; count: number }) {
     const { eventGuid } = params;
-    const count = params.count || 0;
     const event = await Event.findByGuid(eventGuid);
 
     const app = await App.findOne({ where: { type: "events" } });
@@ -36,15 +43,10 @@ export class EventAssociateProfile extends Task {
         event.associate(appOptions.identifyingPropertyGuid)
       );
     } catch (error) {
-      if (count < MAX_ATTEMPTS) {
-        log(`re-enqueuing association of event ${eventGuid}`);
-        await CLS.enqueueTaskIn(500, this.name, {
-          eventGuid,
-          count: count + 1,
-        });
-      } else {
-        throw error;
-      }
+      log(`re-enqueuing association of event ${eventGuid}`);
+      throw new Error(
+        `Error associating event ${event.guid}: ${error.message}`
+      );
     }
   }
 }
