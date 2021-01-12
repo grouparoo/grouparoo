@@ -39,18 +39,32 @@ export abstract class ConfigTemplate {
     params: ConfigTemplateParams;
   }): Promise<ConfigTemplateRunResponse>;
 
-  assignDefaults(params: ConfigTemplateParams) {
+  prepareParams(params: ConfigTemplateParams) {
+    // assign defaults
     Object.keys(this.inputs).forEach((k) => {
       if (this.inputs[k].default && (!params[k] || params[k].length === 0)) {
         params[k] = this.inputs[k].default;
       }
     });
 
+    // escape for JSON/JS
+    for (const k in params) {
+      if (k === "path") continue;
+      if (typeof params[k] === "string") {
+        params[k] = JSON.stringify(params[k]);
+      }
+    }
+
     return params;
   }
 
   formatForFilesystem(s: string) {
-    return s.replace(/[^a-z0-9\\\//.]/gi, "_").toLowerCase();
+    return s
+      .toLowerCase()
+      .replace(/\\"/gi, "")
+      .replace(/[^a-z0-9\\\//.]/gi, "_")
+      .replace(/\/_/, "/")
+      .replace(/_\./, ".");
   }
 
   /**

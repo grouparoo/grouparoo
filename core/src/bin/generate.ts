@@ -78,7 +78,7 @@ export class Generate extends CLI {
     let fileData: ConfigTemplateRunResponse = {};
     try {
       fileData = await template.run({
-        params: template.assignDefaults(params),
+        params: template.prepareParams(params),
       });
     } catch (error) {
       this.fatalError(error.message);

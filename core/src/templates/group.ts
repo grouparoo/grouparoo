@@ -37,7 +37,7 @@ export class CalculatedGroupTemplate extends ConfigTemplate {
 
   async run({ params }) {
     if (params.rules) {
-      params.rules = JSON.stringify(JSON.parse(params.rules), null, 2);
+      params.rules = JSON.parse(params.rules);
     }
 
     return this.mustacheAllFiles(params);
