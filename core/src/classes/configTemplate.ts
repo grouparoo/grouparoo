@@ -15,8 +15,6 @@ export interface ConfigTemplateRunResponse {
 }
 
 export abstract class ConfigTemplate {
-  rootPath: string;
-  class: string;
   name: string;
   description: string;
   inputs?: {
@@ -29,9 +27,17 @@ export abstract class ConfigTemplate {
     };
   };
   files: string[]; // a list of files or a glob of files
+  destinationDir: string;
 
   constructor() {
-    this.inputs = {};
+    this.inputs = {
+      id: {
+        required: true,
+        description:
+          "The ID of the new object being generated.  Will be used to construct the object's guid",
+        formatter: (p) => this.formatForFilesystem(p),
+      },
+    };
   }
 
   /** The main 'do something' method.  Throw is there was an error */
@@ -103,18 +109,20 @@ export abstract class ConfigTemplate {
     const errorPrefix = "Missing required input";
     const fileNames = await this.resolveFiles(this);
 
+    if (!params.path) throw new Error(`params.path missing`);
+
     for (const i in fileNames) {
       const fileName = fileNames[i];
       const relativeFileName = this.formatForFilesystem(
         MustacheUtils.strictlyRender(
-          fileName.replace(this.rootPath + path.sep, ""),
+          path.basename(fileName),
           params,
           errorPrefix,
           false
         )
       );
       const newFilePath = path
-        .join(params.path.toString(), this.class, relativeFileName)
+        .join(params.path.toString(), this.destinationDir, relativeFileName)
         .replace(/.template$/, "");
       const content = fs.readFileSync(fileName).toString();
       const newContent = MustacheUtils.strictlyRender(
@@ -133,10 +141,12 @@ export abstract class ConfigTemplate {
     let files: string[] = [];
 
     for (const i in template.files) {
-      const foundFiles = glob.sync(
-        path.join(template.rootPath, template.files[i])
-      );
+      const foundFiles = glob.sync(template.files[i]);
       files = files.concat(foundFiles);
+    }
+
+    if (files.length === 0) {
+      console.error(`no files found matching ${template.files}`);
     }
 
     return files;

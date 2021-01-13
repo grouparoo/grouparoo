@@ -1,13 +1,11 @@
 exports.default = async function buildConfig() {
   return [
     {
-      class: "apiKey",
       id: {{{id}}},
-      name: {{{name}}},
-      options: {
-        permissionAllRead: {{{permission-all-read}}},
-        permissionAllWrite: {{{permission-all-write}}},
-      },
+      class: "setting",
+      pluginName: {{{plugin-name}}},
+      key: {{{key}}},
+      value: {{{value}}},
     },
   ];
 };

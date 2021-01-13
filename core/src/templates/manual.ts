@@ -4,30 +4,21 @@ import { ConfigTemplate } from "../classes/configTemplate";
 export class ManualAppTemplate extends ConfigTemplate {
   constructor() {
     super();
-    this.class = "app";
     this.name = "manual:app";
     this.description = "Config for a Grouparoo App with manual property values";
-    this.rootPath = path.join(
-      __dirname,
-      "..",
-      "..",
-      "public",
-      "templates",
-      "manual",
-      "app"
-    );
-    this.files = [path.join("*.template")];
-    this.inputs = {
-      id: {
-        required: true,
-        description: "The ID of this App, used to determine the guid",
-      },
-      name: {
-        required: true,
-        copyDefaultFrom: "id",
-        description: "The name of the App",
-      },
-    };
+    this.files = [
+      path.join(
+        __dirname,
+        "..",
+        "..",
+        "public",
+        "templates",
+        "manual",
+        "app",
+        "*.template"
+      ),
+    ];
+    this.destinationDir = "apps";
   }
 
   async run({ params }) {

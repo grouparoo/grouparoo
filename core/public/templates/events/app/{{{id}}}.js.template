@@ -3,10 +3,10 @@ exports.default = async function buildConfig() {
     {
       class: "app",
       id: {{{id}}},
-      name: {{{name}}},
+      name: {{{id}}},
       type: "events",
       options: {
-        identifyingPropertyGuid: {{{identifying-property-guid}}},
+        identifyingPropertyGuid: "user_id", // The guid of a Grouparoo property to be used to identify data in the 'identify' event to link those events to profiles.
       },
     },
   ];

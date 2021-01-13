@@ -11,14 +11,9 @@ import prettier from "prettier";
 export class Generate extends CLI {
   constructor() {
     super();
-    this.name = "generate [template]"; // I will include the template ARG vs OPT
+    this.name = "generate [template] [id]"; // I will include the template ARG vs OPT
     this.description = "Generate new code config files from templates";
     this.inputs = {
-      path: {
-        required: true,
-        default: path.join(process.env.INIT_CWD || process.cwd(), "config"),
-        description: "The location of the config directory",
-      },
       list: {
         required: false,
         description:
@@ -33,24 +28,31 @@ export class Generate extends CLI {
         default: "false",
         description: "Overwrite existing files?",
       },
+      path: {
+        required: true,
+        default: path.join(process.env.INIT_CWD || process.cwd(), "config"),
+        description: "The location of the config directory",
+      },
     };
     this.example =
-      'grouparoo generate templateName -- --id="the-id" --name="the-name" --app="app-id"';
+      'grouparoo generate templateName id -- --name="the-name" --app="app-id"';
 
     GrouparooCLI.setGrouparooRunMode(this);
   }
 
   async run({ params }) {
-    params = Object.assign(params, GrouparooCLI.parseTemplateOpts("template"));
+    params = Object.assign(
+      params,
+      GrouparooCLI.parseTemplateOpts("template", "id")
+    );
     GrouparooCLI.logCLI(
-      this.name.replace(
-        " [template]",
-        params.template ? " " + params.template : ""
-      )
+      this.name
+        .replace(" [template]", params.template ? " " + params.template : "")
+        .replace(" [id]", params.id ? " " + params.id : "")
     );
 
     if (process.argv.slice(2).includes("--list")) {
-      await this.list();
+      await this.list(params);
     } else if (process.argv.slice(2).includes("--describe")) {
       await this.describe(params);
     } else {
@@ -72,6 +74,9 @@ export class Generate extends CLI {
       this.fatalError(
         `template is required.  Learn more with \`grouparoo generate --help\` and \`grouparoo generate --list\``
       );
+    }
+    if (!params.id) {
+      this.fatalError(`id is required`);
     }
 
     const template = await this.getTemplate(params.template);
@@ -102,14 +107,22 @@ export class Generate extends CLI {
     });
   }
 
-  async list() {
-    console.log(`Available Templates:`);
+  async list(params) {
+    console.log(
+      `Available Templates:${
+        params.template ? ` matching "${params.template}"` : ""
+      }`
+    );
     console.log("");
 
     const templates = api.plugins.templates();
     for (const i in templates) {
       const template = templates[i];
-      this.logTemplateAndOptions(template, true);
+      if (params.template && template.name.match(params.template)) {
+        this.logTemplateAndOptions(template, true);
+      } else if (!params.template) {
+        this.logTemplateAndOptions(template, true);
+      }
     }
   }
 

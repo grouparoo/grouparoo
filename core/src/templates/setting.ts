@@ -1,26 +1,25 @@
 import path from "path";
 import { ConfigTemplate } from "../classes/configTemplate";
+import { plugin } from "../modules/plugin";
 
 export class SettingTemplate extends ConfigTemplate {
   constructor() {
     super();
-    this.class = "setting";
     this.name = "setting";
     this.description = "Config for a Grouparoo Setting";
-    this.rootPath = path.join(
-      __dirname,
-      "..",
-      "..",
-      "public",
-      "templates",
-      "settings"
-    );
-    this.files = [path.join("*.template")];
+    this.files = [
+      path.join(
+        __dirname,
+        "..",
+        "..",
+        "public",
+        "templates",
+        "settings",
+        "*.template"
+      ),
+    ];
+    this.destinationDir = "settings";
     this.inputs = {
-      id: {
-        required: true,
-        description: "The ID of the Setting configuration",
-      },
       "plugin-name": {
         required: true,
         description: "The name of the plugin which contains the Setting",
@@ -37,6 +36,13 @@ export class SettingTemplate extends ConfigTemplate {
   }
 
   async run({ params }) {
+    if (params["plugin-name"] && params.key) {
+      const setting = await plugin.readSetting(
+        params["plugin-name"],
+        params.key
+      );
+    }
+
     return this.mustacheAllFiles(params);
   }
 }
