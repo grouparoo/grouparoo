@@ -59,7 +59,7 @@ describe("bin/generate", () => {
     const toStop = await command.run({ params: { path: tmpDir } });
     expect(toStop).toBe(true);
 
-    const file = `${tmpDir}/group/calculated/new_group.js`;
+    const file = `${tmpDir}/group/calculated/new-group.js`;
     const output = messages.join(" ");
     expect(output).toContain("generate group:calculated");
     expect(output).toContain(`wrote ${file}`);
@@ -83,7 +83,7 @@ describe("bin/generate", () => {
     await command.run({ params: { path: tmpDir } });
 
     const output = messages.join(" ");
-    const file = `${tmpDir}/group/calculated/new_group.js`;
+    const file = `${tmpDir}/group/calculated/new-group.js`;
     expect(output).toContain(`${file} already exists`);
     expect(output).not.toContain(`wrote ${file}`);
   });
@@ -103,7 +103,7 @@ describe("bin/generate", () => {
     await command.run({ params: { path: tmpDir } });
 
     const output = messages.join(" ");
-    const file = `${tmpDir}/group/calculated/new_group.js`;
+    const file = `${tmpDir}/group/calculated/new-group.js`;
     expect(output).toContain(`wrote ${file}`);
   });
 });
