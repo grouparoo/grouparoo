@@ -108,7 +108,7 @@ export class Generate extends CLI {
     const templates = ConfigTemplateUtils.loadTemplates();
     for (const i in templates) {
       const template = templates[i];
-      this.logTemplateAndOptions(template);
+      this.logTemplateAndOptions(template, true);
     }
   }
 
@@ -121,22 +121,36 @@ export class Generate extends CLI {
     return template;
   }
 
-  logTemplateAndOptions(template: ConfigTemplate) {
-    console.log(GrouparooCLI.underlineBold(template.name));
-    console.log(`  ${template.description}`);
-    Object.keys(template.inputs).forEach((k) => {
-      const req = template.inputs[k].required && !template.inputs[k].default;
+  logTemplateAndOptions(template: ConfigTemplate, compact = false) {
+    if (compact) {
       console.log(
-        `  * ${k}${req ? " (required)" : ""} - ${
-          template.inputs[k].description
-        } ${
-          template.inputs[k].default
-            ? `(default: "${template.inputs[k].default}")`
-            : ""
-        }`
+        "  " +
+          GrouparooCLI.underlineBold(template.name) +
+          ` (${Object.keys(template.inputs).join(", ")}) - ${
+            template.description
+          }`
       );
-    });
-    console.log("");
+    } else {
+      console.log(GrouparooCLI.underlineBold(template.name));
+      console.log(`  ${template.description}`);
+      Object.keys(template.inputs).forEach((k) => {
+        const req =
+          template.inputs[k].required &&
+          (template.inputs[k].default === null ||
+            template.inputs[k].default === undefined);
+        console.log(
+          `  * ${k}${req ? " (required)" : ""} - ${
+            template.inputs[k].description
+          } ${
+            template.inputs[k].default !== null &&
+            template.inputs[k].default !== undefined
+              ? `(default: ${JSON.stringify(template.inputs[k].default)})`
+              : ""
+          }`
+        );
+      });
+      console.log("");
+    }
   }
 
   fatalError(message: string) {

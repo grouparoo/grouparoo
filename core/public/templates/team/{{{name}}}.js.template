@@ -1,0 +1,13 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "team",
+      id: {{{id}}},
+      name: {{{name}}},
+      options: {
+        permissionAllRead: {{{permission-all-read}}},
+        permissionAllWrite: {{{permission-all-write}}},
+      },
+    },
+  ];
+};

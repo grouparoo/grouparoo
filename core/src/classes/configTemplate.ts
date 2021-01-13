@@ -4,7 +4,7 @@ import path from "path";
 import fs from "fs-extra";
 
 export interface ConfigTemplateParams {
-  [key: string]: string;
+  [key: string]: string | number | boolean;
 }
 
 /**
@@ -22,8 +22,9 @@ export abstract class ConfigTemplate {
   inputs?: {
     [name: string]: {
       required: boolean;
-      default?: string;
+      default?: string | number | boolean;
       description: string;
+      formatter?: (param: string) => any;
     };
   };
   files: string[]; // a list of files or a glob of files
@@ -42,8 +43,19 @@ export abstract class ConfigTemplate {
   prepareParams(params: ConfigTemplateParams) {
     // assign defaults
     Object.keys(this.inputs).forEach((k) => {
-      if (this.inputs[k].default && (!params[k] || params[k].length === 0)) {
+      if (
+        this.inputs[k].default !== null &&
+        this.inputs[k].default !== undefined &&
+        (!params[k] || params[k].toString().length === 0)
+      ) {
         params[k] = this.inputs[k].default;
+      }
+    });
+
+    // format inputs
+    Object.keys(this.inputs).forEach((k) => {
+      if (typeof this.inputs[k].formatter === "function") {
+        params[k] = this.inputs[k].formatter(params[k].toString());
       }
     });
 
@@ -62,9 +74,12 @@ export abstract class ConfigTemplate {
     return s
       .toLowerCase()
       .replace(/\\"/gi, "")
-      .replace(/[^a-z0-9\\\//.]/gi, "_")
-      .replace(/\/_/, "/")
-      .replace(/_\./, ".");
+      .replace(/[^a-z0-9@\\\//.]/gi, "-")
+      .replace(/\/-/, "/")
+      .replace(/--/, "-")
+      .replace(/-\./, ".")
+      .replace(/^-/, "")
+      .replace(/-$/, "");
   }
 
   /**
@@ -85,7 +100,7 @@ export abstract class ConfigTemplate {
         )
       );
       const newFilePath = path
-        .join(params.path, this.class, relativeFileName)
+        .join(params.path.toString(), this.class, relativeFileName)
         .replace(/.template$/, "");
       const content = fs.readFileSync(fileName).toString();
       const newContent = MustacheUtils.strictlyRender(

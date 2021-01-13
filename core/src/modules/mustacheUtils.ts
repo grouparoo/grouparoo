@@ -29,7 +29,7 @@ export namespace MustacheUtils {
       .map((key) => {
         const value = key.split(".").reduce((o, i) => o[i], data);
         if (value === undefined || value === null) {
-          throw new Error(`${errorPrefix} "${key}"`);
+          throw new Error(`${errorPrefix} ${JSON.stringify(key)}`);
         }
       });
   }
