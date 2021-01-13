@@ -16,6 +16,7 @@ import {
   SimpleScheduleOptions,
   PluginConnectionScheduleOption,
 } from "../models/Schedule";
+import { ConfigTemplate } from "./configTemplate";
 
 export type {
   SimplePropertyOptions,
@@ -36,6 +37,7 @@ export interface GrouparooPlugin {
   icon?: string;
   apps?: Array<PluginApp>;
   connections?: Array<PluginConnection>;
+  templates?: Array<ConfigTemplateConstructor>;
 }
 
 /**
@@ -489,3 +491,9 @@ export interface ExportArrayPropertiesMethod {
 export type ExportArrayPropertiesMethodResponse = Array<string>;
 
 export type PluginOptionTypes = "string" | "list" | "typeahead" | "pending";
+
+/** Template Utils */
+
+export interface ConfigTemplateConstructor {
+  new (): ConfigTemplate;
+}

@@ -1,10 +1,9 @@
 import { GrouparooCLI } from "../modules/cli";
-import { ConfigTemplateUtils } from "../modules/configTemplateUtils";
 import {
   ConfigTemplate,
   ConfigTemplateRunResponse,
 } from "../classes/configTemplate";
-import { CLI } from "actionhero";
+import { CLI, api } from "actionhero";
 import path from "path";
 import fs from "fs-extra";
 import prettier from "prettier";
@@ -21,10 +20,13 @@ export class Generate extends CLI {
         description: "The location of the config directory",
       },
       list: {
-        required: true,
-        default: "false",
+        required: false,
         description:
           "Display the available config templates to use with config-generate",
+      },
+      describe: {
+        required: false,
+        description: "Display the options for the template in detail",
       },
       overwrite: {
         required: true,
@@ -49,6 +51,8 @@ export class Generate extends CLI {
 
     if (process.argv.slice(2).includes("--list")) {
       await this.list();
+    } else if (process.argv.slice(2).includes("--describe")) {
+      await this.describe(params);
     } else {
       await this.generate(params);
     }
@@ -56,13 +60,10 @@ export class Generate extends CLI {
     return true;
   }
 
-  help() {
-    const params = GrouparooCLI.parseTemplateOpts("template");
-    if (!params.template) return;
+  async describe(params) {
+    if (!params.template) this.fatalError(`no template provided`);
 
-    const template = this.getTemplate(params.template);
-
-    console.log("");
+    const template = await this.getTemplate(params.template);
     this.logTemplateAndOptions(template);
   }
 
@@ -73,7 +74,7 @@ export class Generate extends CLI {
       );
     }
 
-    const template = this.getTemplate(params.template);
+    const template = await this.getTemplate(params.template);
 
     let fileData: ConfigTemplateRunResponse = {};
     try {
@@ -105,15 +106,15 @@ export class Generate extends CLI {
     console.log(`Available Templates:`);
     console.log("");
 
-    const templates = ConfigTemplateUtils.loadTemplates();
+    const templates = api.plugins.templates();
     for (const i in templates) {
       const template = templates[i];
       this.logTemplateAndOptions(template, true);
     }
   }
 
-  getTemplate(templateName: string) {
-    const templates = ConfigTemplateUtils.loadTemplates();
+  async getTemplate(templateName: string) {
+    const templates = api.plugins.templates();
     const template = templates.find((t) => t.name === templateName);
     if (!template) {
       this.fatalError(`template for "${templateName}" not found`);
@@ -131,8 +132,9 @@ export class Generate extends CLI {
           }`
       );
     } else {
-      console.log(GrouparooCLI.underlineBold(template.name));
-      console.log(`  ${template.description}`);
+      console.log(`${template.description}`);
+      console.log("");
+      console.log("Options:");
       Object.keys(template.inputs).forEach((k) => {
         const req =
           template.inputs[k].required &&
@@ -145,6 +147,10 @@ export class Generate extends CLI {
             template.inputs[k].default !== null &&
             template.inputs[k].default !== undefined
               ? `(default: ${JSON.stringify(template.inputs[k].default)})`
+              : ""
+          }${
+            template.inputs[k].copyDefaultFrom
+              ? `(default copied from ${template.inputs[k].copyDefaultFrom})`
               : ""
           }`
         );

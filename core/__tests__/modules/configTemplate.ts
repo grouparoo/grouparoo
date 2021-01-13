@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { ConfigTemplate } from "../../src/classes/configTemplate";
-import { ConfigTemplateUtils } from "../../src/modules/configTemplateUtils";
+import { api } from "actionhero";
 import os from "os";
 import fs from "fs-extra";
 
@@ -16,7 +16,7 @@ describe("bin/generate", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     await helper.factories.properties();
-    templates = ConfigTemplateUtils.loadTemplates();
+    templates = api.plugins.templates();
   }, helper.setupTime);
 
   beforeAll(() => {

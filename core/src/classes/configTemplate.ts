@@ -1,7 +1,7 @@
-import { ConfigTemplateUtils } from "../modules/configTemplateUtils";
 import { MustacheUtils } from "../modules/mustacheUtils";
 import path from "path";
 import fs from "fs-extra";
+import glob from "glob";
 
 export interface ConfigTemplateParams {
   [key: string]: string | number | boolean;
@@ -24,6 +24,7 @@ export abstract class ConfigTemplate {
       required: boolean;
       default?: string | number | boolean;
       description: string;
+      copyDefaultFrom?: string;
       formatter?: (param: string) => any;
     };
   };
@@ -41,6 +42,16 @@ export abstract class ConfigTemplate {
   }): Promise<ConfigTemplateRunResponse>;
 
   prepareParams(params: ConfigTemplateParams) {
+    // source from other params
+    Object.keys(this.inputs).forEach((k) => {
+      if (
+        this.inputs[k].copyDefaultFrom &&
+        (!params[k] || params[k].toString().length === 0)
+      ) {
+        params[k] = params[this.inputs[k].copyDefaultFrom];
+      }
+    });
+
     // assign defaults
     Object.keys(this.inputs).forEach((k) => {
       if (
@@ -88,7 +99,7 @@ export abstract class ConfigTemplate {
   async mustacheAllFiles(params: ConfigTemplateParams) {
     const response: ConfigTemplateRunResponse = {};
     const errorPrefix = "Missing required input";
-    const fileNames = await ConfigTemplateUtils.resolveFiles(this);
+    const fileNames = await this.resolveFiles(this);
 
     for (const i in fileNames) {
       const fileName = fileNames[i];
@@ -112,5 +123,18 @@ export abstract class ConfigTemplate {
     }
 
     return response;
+  }
+
+  async resolveFiles(template: ConfigTemplate) {
+    let files: string[] = [];
+
+    for (const i in template.files) {
+      const foundFiles = glob.sync(
+        path.join(template.rootPath, template.files[i])
+      );
+      files = files.concat(foundFiles);
+    }
+
+    return files;
   }
 }

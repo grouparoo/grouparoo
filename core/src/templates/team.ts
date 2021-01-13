@@ -24,7 +24,7 @@ export class TeamTemplate extends ConfigTemplate {
       },
       name: {
         required: true,
-        default: "New Team",
+        copyDefaultFrom: "id",
         description: "The name of the Team",
       },
       "permission-all-read": {

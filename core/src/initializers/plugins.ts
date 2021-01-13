@@ -3,6 +3,14 @@ import { GrouparooPlugin } from "../classes/plugin";
 import { plugin } from "../modules/plugin";
 import { App } from "../models/App";
 import { getPluginManifest } from "../utils/pluginDetails";
+import { ConfigTemplate } from "../classes/configTemplate";
+
+import {
+  CalculatedGroupTemplate,
+  ManualGroupTemplate,
+} from "../templates/group";
+import { TeamTemplate } from "../templates/team";
+import { TeamMemberTemplate } from "../templates/teamMember";
 
 declare module "actionhero" {
   export interface Api {
@@ -11,6 +19,7 @@ declare module "actionhero" {
       validate: (plugin: GrouparooPlugin) => boolean;
       register: (plugin: GrouparooPlugin, validate: boolean) => void;
       announcePlugins: () => void;
+      templates: () => Array<ConfigTemplate>;
       persistentConnections: {
         [guid: string]: any;
       };
@@ -34,11 +43,23 @@ export class Plugins extends Initializer {
       validate: this.validatePlugin,
       register: this.registerPlugin,
       announcePlugins: this.announcePlugins,
+      templates: this.templates,
     };
 
     this.checkPluginEnvironmentVariables();
 
-    // --- Add the core plugin --- //
+    // --- Add the core plugins --- //
+
+    plugin.registerPlugin({
+      name: "@grouparoo/core",
+      icon: "/public/@grouparoo/logo.png",
+      templates: [
+        CalculatedGroupTemplate,
+        ManualGroupTemplate,
+        TeamTemplate,
+        TeamMemberTemplate,
+      ],
+    });
 
     plugin.registerPlugin({
       name: "@grouparoo/core/manual",
@@ -208,6 +229,19 @@ export class Plugins extends Initializer {
 
   announcePlugins() {
     log(`active plugins: ${api.plugins.plugins.map((p) => p.name).join(", ")}`);
+  }
+
+  templates() {
+    return api.plugins.plugins
+      .filter((p) => p.templates?.length > 0)
+      .map((p) => p.templates)
+      .flat()
+      .map((T) => new T())
+      .sort((a, b) => {
+        if (a.name > b.name) return 1;
+        if (a.name < b.name) return -1;
+        return 0;
+      });
   }
 
   /*

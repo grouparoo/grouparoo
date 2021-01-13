@@ -24,7 +24,7 @@ export class CalculatedGroupTemplate extends ConfigTemplate {
       },
       name: {
         required: true,
-        default: "New Group",
+        copyDefaultFrom: "id",
         description: "The name of the Group",
       },
       rules: {
