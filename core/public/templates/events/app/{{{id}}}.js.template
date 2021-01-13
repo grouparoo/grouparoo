@@ -1,0 +1,13 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "app",
+      id: {{{id}}},
+      name: {{{name}}},
+      type: "events",
+      options: {
+        identifyingPropertyGuid: {{{identifying-property-guid}}},
+      },
+    },
+  ];
+};
