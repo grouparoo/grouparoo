@@ -19,7 +19,7 @@ export class CalculatedGroupTemplate extends ConfigTemplate {
     this.inputs = {
       id: {
         required: true,
-        description: "The ID of this Group, used to determine it's guid",
+        description: "The ID of this Group, used to determine the guid",
       },
       name: {
         required: true,
@@ -61,7 +61,7 @@ export class ManualGroupTemplate extends ConfigTemplate {
     this.inputs = {
       id: {
         required: true,
-        description: "The ID of this group, used to determine it's guid",
+        description: "The ID of this group, used to determine the guid",
       },
       name: {
         required: true,

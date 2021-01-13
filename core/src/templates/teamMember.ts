@@ -19,7 +19,7 @@ export class TeamMemberTemplate extends ConfigTemplate {
     this.inputs = {
       id: {
         required: true,
-        description: "The ID of this Team Member, used to determine it's guid",
+        description: "The ID of this Team Member, used to determine the guid",
       },
       "team-id": {
         required: true,

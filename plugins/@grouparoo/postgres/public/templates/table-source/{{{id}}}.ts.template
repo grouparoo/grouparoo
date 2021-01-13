@@ -1,0 +1,27 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "source",
+      id: {{{id}}},
+      name: {{{name}}},
+      type: "postgres-table-import",
+      appId: {{{app-id}}},
+      options: {
+        table: {{{table}}},
+      },
+      mapping: {
+        {{{identifying-column}}}: {{{mapped-property-id}}},
+      },
+      {{#bootstrapped-property-id}}
+      bootstrappedProperty: {
+        id: {{{bootstrapped-property-id}}},
+        name: {{{bootstrapped-property-name}}},
+        type: {{{bootstrapped-property-type}}},
+        options: {
+          column: {{{bootstrapped-property-column}}},
+        },
+      },
+      {{/bootstrapped-property-id}}
+    },
+  ];
+};
