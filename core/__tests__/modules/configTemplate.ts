@@ -38,10 +38,6 @@ describe("bin/generate", () => {
     const template = templates.find((t) => t.name === "group:manual");
 
     await expect(() =>
-      template.run({ params: { path: tmpDir } })
-    ).rejects.toThrow(/Missing required input "name"/);
-
-    await expect(() =>
       template.run({ params: { path: tmpDir, name: "name" } })
     ).rejects.toThrow(/Missing required input "id"/);
   });
@@ -53,10 +49,10 @@ describe("bin/generate", () => {
       params: template.prepareParams({ path: tmpDir, id: "test_group" }),
     });
 
-    const newFile = `${tmpDir}/group/manual/new-group.js`;
+    const newFile = `${tmpDir}/groups/test-group.js`;
 
     expect(fileData[newFile]).toBeTruthy();
-    expect(fileData[newFile]).toContain('name: "New Group"');
+    expect(fileData[newFile]).toContain('name: "test-group"');
   });
 
   describe("templates", () => {
@@ -70,9 +66,9 @@ describe("bin/generate", () => {
         }),
       });
 
-      const newFile = `${tmpDir}/group/manual/test-name.js`;
+      const newFile = `${tmpDir}/groups/test-group.js`;
       expect(fileData[newFile]).toBeTruthy();
-      expect(fileData[newFile]).toContain('id: "test_group"');
+      expect(fileData[newFile]).toContain('id: "test-group"');
     });
 
     test("group:calculated", async () => {
@@ -90,9 +86,9 @@ describe("bin/generate", () => {
         }),
       });
 
-      const newFile = `${tmpDir}/group/calculated/test-name.js`;
+      const newFile = `${tmpDir}/groups/test-group.js`;
       expect(fileData[newFile]).toBeTruthy();
-      expect(fileData[newFile]).toContain('id: "test_group"');
+      expect(fileData[newFile]).toContain('id: "test-group"');
       expect(fileData[newFile]).toContain('propertyId: "ltv",');
     });
   });

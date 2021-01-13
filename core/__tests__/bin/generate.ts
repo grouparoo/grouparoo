@@ -46,20 +46,12 @@ describe("bin/generate", () => {
   });
 
   test("the generate command can write a new file", async () => {
-    process.argv = [
-      "",
-      "",
-      "generate",
-      "group:calculated",
-      "--",
-      "--id",
-      "new-group",
-    ];
+    process.argv = ["", "", "generate", "group:calculated", "new-group"];
     const command = new Generate();
     const toStop = await command.run({ params: { path: tmpDir } });
     expect(toStop).toBe(true);
 
-    const file = `${tmpDir}/group/calculated/new-group.js`;
+    const file = `${tmpDir}/groups/new-group.js`;
     const output = messages.join(" ");
     expect(output).toContain("generate group:calculated");
     expect(output).toContain(`wrote ${file}`);
@@ -70,20 +62,12 @@ describe("bin/generate", () => {
   });
 
   test("the generate command will fail if the file exists", async () => {
-    process.argv = [
-      "",
-      "",
-      "generate",
-      "group:calculated",
-      "--",
-      "--id",
-      "new-group",
-    ];
+    process.argv = ["", "", "generate", "group:calculated", "new-group"];
     const command = new Generate();
     await command.run({ params: { path: tmpDir } });
 
     const output = messages.join(" ");
-    const file = `${tmpDir}/group/calculated/new-group.js`;
+    const file = `${tmpDir}/groups/new-group.js`;
     expect(output).toContain(`${file} already exists`);
     expect(output).not.toContain(`wrote ${file}`);
   });
@@ -94,8 +78,6 @@ describe("bin/generate", () => {
       "",
       "generate",
       "group:calculated",
-      "--",
-      "--id",
       "new-group",
       "--overwrite",
     ];
@@ -103,7 +85,7 @@ describe("bin/generate", () => {
     await command.run({ params: { path: tmpDir } });
 
     const output = messages.join(" ");
-    const file = `${tmpDir}/group/calculated/new-group.js`;
+    const file = `${tmpDir}/groups/new-group.js`;
     expect(output).toContain(`wrote ${file}`);
   });
 });
