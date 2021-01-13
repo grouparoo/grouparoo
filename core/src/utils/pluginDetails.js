@@ -23,9 +23,11 @@ function getParentPath() {
     );
   }
 
-  return grouparooMonorepoApp
-    ? path.join(__dirname, "..", "..", "..", "apps", grouparooMonorepoApp)
-    : path.join(__dirname, "..", "..", "..", "..", "..");
+  if (grouparooMonorepoApp) {
+    return path.join(__dirname, "..", "..", "..", "apps", grouparooMonorepoApp);
+  }
+  if (runningCoreDirectly()) return getCoreRootPath();
+  return path.join(__dirname, "..", "..", "..", "..", "..");
 }
 
 function getCoreRootPath() {
@@ -108,7 +110,6 @@ function getPluginManifest() {
 function runningCoreDirectly() {
   const monorepoPackageJSON = path.join(
     __dirname,
-    "..",
     "..",
     "..",
     "..",

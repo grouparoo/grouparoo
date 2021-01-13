@@ -1,7 +1,8 @@
-import path from "path";
 import { log, env } from "actionhero";
+import { getParentPath } from "../utils/pluginDetails";
 import { FileTransport } from "./fileTransport";
 import fs from "fs-extra";
+import path from "path";
 import os from "os";
 
 export class FileTransportLocal extends FileTransport {
@@ -14,7 +15,7 @@ export class FileTransportLocal extends FileTransport {
     this.bucket =
       process.env.FILES_LOCAL_STORAGE ||
       path.join(
-        process.cwd(),
+        getParentPath(),
         "files",
         process.env.JEST_WORKER_ID
           ? `${env}-${process.env.JEST_WORKER_ID}`

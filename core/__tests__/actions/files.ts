@@ -1,4 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
+import { getParentPath } from "../../src/utils/pluginDetails";
 import { specHelper } from "actionhero";
 import fs from "fs-extra";
 import path from "path";
@@ -97,7 +98,11 @@ describe("actions/files", () => {
       expect(file.transport).toBe("local");
       expect(file.type).toBe("image");
       expect(file.bucket).toBe(
-        path.join(process.cwd(), "files", `test-${process.env.JEST_WORKER_ID}`)
+        path.join(
+          getParentPath(),
+          "files",
+          `test-${process.env.JEST_WORKER_ID}`
+        )
       );
       expect(file.path).toBe("image/logo.svg");
       expect(file.extension).toBe(".svg");
