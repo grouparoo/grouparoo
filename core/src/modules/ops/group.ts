@@ -91,7 +91,7 @@ export namespace GroupOps {
       oldGroupGuids,
     });
 
-    await profile.update({ state: "pending" });
+    await profile.markPending();
 
     return _import;
   }
@@ -123,9 +123,7 @@ export namespace GroupOps {
       const rules = await group.getRules();
 
       if (Object.keys(rules).length == 0) {
-        if (existingMembership) {
-          await existingMembership.destroy();
-        }
+        if (existingMembership) await existingMembership.destroy();
         return false;
       } else {
         const { where, include } = await group._buildGroupMemberQueryParts(
@@ -134,12 +132,8 @@ export namespace GroupOps {
         );
 
         // and includes this profile
-        if (!where[Op.and]) {
-          where[Op.and] = [];
-        }
-        where[Op.and].push({
-          guid: profile.guid,
-        });
+        if (!where[Op.and]) where[Op.and] = [];
+        where[Op.and].push({ guid: profile.guid });
 
         const matchedProfiles = await ProfileMultipleAssociationShim.findAll({
           attributes: ["guid"],
@@ -252,7 +246,10 @@ export namespace GroupOps {
 
       const { where, include } = await group._buildGroupMemberQueryParts(rules);
 
-      if (highWaterMark) where["createdAt"] = { [Op.gte]: highWaterMark };
+      where["createdAt"] = { [Op.and]: [{ [Op.lt]: run.createdAt }] };
+      if (highWaterMark) {
+        where["createdAt"][Op.and].push({ [Op.gte]: highWaterMark });
+      }
 
       profiles = await ProfileMultipleAssociationShim.findAll({
         attributes: ["guid", "createdAt"],
@@ -336,6 +333,7 @@ export namespace GroupOps {
       where: {
         groupGuid: group.guid,
         updatedAt: { [Op.lt]: run.createdAt },
+        createdAt: { [Op.lt]: run.createdAt },
         removedAt: null,
       },
       limit,

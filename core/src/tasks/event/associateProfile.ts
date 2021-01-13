@@ -20,7 +20,7 @@ export class EventAssociateProfile extends Task {
         retryLimit: 3,
         backoffStrategy: [
           1000, // 1 second
-          1000 * 1, // 5 seconds
+          1000 * 5, // 5 seconds
           1000 * 10, // 10 seconds
         ],
       },

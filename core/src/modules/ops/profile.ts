@@ -539,9 +539,7 @@ export namespace ProfileOps {
       }
 
       // re-import and update groups
-      delete profile.profileProperties; // remove any cached values from the instance
-      await profile.import(true, false);
-      await profile.updateGroupMembership();
+      await profile.markPending();
 
       return profile;
     } finally {
