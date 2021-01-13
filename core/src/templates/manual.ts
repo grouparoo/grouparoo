@@ -20,7 +20,6 @@ export class ManualAppTemplate extends ConfigTemplate {
     this.inputs = {
       id: {
         required: true,
-        default: null,
         description: "The ID of this App, used to determine it's guid",
       },
       name: {

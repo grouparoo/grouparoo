@@ -19,7 +19,6 @@ export class TeamTemplate extends ConfigTemplate {
     this.inputs = {
       id: {
         required: true,
-        default: null,
         description: "The ID of this Team, used to determine it's guid",
       },
       name: {

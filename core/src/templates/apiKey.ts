@@ -19,7 +19,6 @@ export class ApiKeyTemplate extends ConfigTemplate {
     this.inputs = {
       id: {
         required: true,
-        default: null,
         description: "The ID of this API Key, used to determine it's guid",
       },
       name: {

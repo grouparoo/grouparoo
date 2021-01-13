@@ -1,0 +1,24 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "app",
+      id: {{{id}}},
+      name: {{{name}}},
+      type: "postgres",
+      options: {
+        host: {{{host}}},
+        port: {{{port}}},
+        database: {{{database}}},
+        schema: {{{schema}}},
+        user: {{{user}}},
+        password: {{{password}}},
+
+        // you can also optionally set SSL options
+        ssl: false, // enforce SSL connections only.  Default "false" will be up to the server.
+        ssl_cert: null,
+        ssl_key: null,
+        ssl_ca: null,
+      }
+    },
+  ];
+};

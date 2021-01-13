@@ -19,7 +19,6 @@ export class SettingTemplate extends ConfigTemplate {
     this.inputs = {
       id: {
         required: true,
-        default: null,
         description: "The ID of the Setting configuration",
       },
       "plugin-name": {

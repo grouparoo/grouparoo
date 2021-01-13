@@ -55,11 +55,13 @@ export abstract class ConfigTemplate {
     // assign defaults
     Object.keys(this.inputs).forEach((k) => {
       if (
-        this.inputs[k].default !== null &&
         this.inputs[k].default !== undefined &&
         (!params[k] || params[k].toString().length === 0)
       ) {
         params[k] = this.inputs[k].default;
+      }
+      if (!params[k] && this.inputs[k].default === null) {
+        params[k] = "null";
       }
     });
 
@@ -73,7 +75,7 @@ export abstract class ConfigTemplate {
     // escape for JSON/JS
     for (const k in params) {
       if (k === "path") continue;
-      if (typeof params[k] === "string") {
+      if (typeof params[k] === "string" && params[k] !== "null") {
         params[k] = JSON.stringify(params[k]);
       }
     }
@@ -107,7 +109,8 @@ export abstract class ConfigTemplate {
         MustacheUtils.strictlyRender(
           fileName.replace(this.rootPath + path.sep, ""),
           params,
-          errorPrefix
+          errorPrefix,
+          false
         )
       );
       const newFilePath = path
@@ -117,7 +120,8 @@ export abstract class ConfigTemplate {
       const newContent = MustacheUtils.strictlyRender(
         content,
         params,
-        errorPrefix
+        errorPrefix,
+        true
       );
       response[newFilePath] = newContent;
     }

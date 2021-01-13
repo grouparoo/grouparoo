@@ -13,6 +13,8 @@ import { getConnection as getQueryConnection } from "../lib/query-import/connect
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 
+import { PostgresAppTemplate } from "../lib/templates";
+
 const packageJSON = require("./../../package.json");
 
 export class Plugins extends Initializer {
@@ -25,6 +27,7 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/postgres/postgres.svg",
+      templates: [PostgresAppTemplate],
       apps: [
         {
           name: "postgres",
