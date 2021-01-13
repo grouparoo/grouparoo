@@ -13,6 +13,7 @@ import { ApiKeyTemplate } from "../templates/apiKey";
 import { TeamTemplate } from "../templates/team";
 import { TeamMemberTemplate } from "../templates/teamMember";
 import { SettingTemplate } from "../templates/setting";
+import { ManualAppTemplate } from "../templates/manual";
 import { EventsAppTemplate } from "../templates/events";
 
 declare module "actionhero" {
@@ -64,6 +65,7 @@ export class Plugins extends Initializer {
         TeamTemplate,
         TeamMemberTemplate,
         EventsAppTemplate,
+        ManualAppTemplate,
       ],
     });
 
