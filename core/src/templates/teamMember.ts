@@ -13,7 +13,7 @@ export class TeamMemberTemplate extends ConfigTemplate {
       "..",
       "public",
       "templates",
-      "teamMember"
+      "teamMembers"
     );
     this.files = [path.join("*.template")];
     this.inputs = {

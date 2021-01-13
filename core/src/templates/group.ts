@@ -20,7 +20,7 @@ export class CalculatedGroupTemplate extends ConfigTemplate {
       id: {
         required: true,
         default: null,
-        description: "The ID of this group, used to determine it's guid",
+        description: "The ID of this Group, used to determine it's guid",
       },
       name: {
         required: true,
@@ -30,7 +30,7 @@ export class CalculatedGroupTemplate extends ConfigTemplate {
       rules: {
         required: true,
         default: "[]",
-        description: "The rules for the group, JSON-encoded",
+        description: "The rules for the Group, JSON-encoded",
       },
     };
   }

@@ -1,42 +1,42 @@
 import path from "path";
 import { ConfigTemplate } from "../classes/configTemplate";
 
-export class TeamTemplate extends ConfigTemplate {
+export class ApiKeyTemplate extends ConfigTemplate {
   constructor() {
     super();
-    this.class = "team";
-    this.name = "team";
-    this.description = "Config for a Grouparoo Team";
+    this.class = "apiKey";
+    this.name = "api-key";
+    this.description = "Config for a Grouparoo API Key";
     this.rootPath = path.join(
       __dirname,
       "..",
       "..",
       "public",
       "templates",
-      "teams"
+      "apiKeys"
     );
     this.files = [path.join("*.template")];
     this.inputs = {
       id: {
         required: true,
         default: null,
-        description: "The ID of this Team, used to determine it's guid",
+        description: "The ID of this API Key, used to determine it's guid",
       },
       name: {
         required: true,
         copyDefaultFrom: "id",
-        description: "The name of the Team",
+        description: "The name of the API Key",
       },
       "permission-all-read": {
         required: true,
         default: true,
-        description: "Grant read permission to all topics for this Team",
+        description: "Grant read permission to all topics for this API Key",
         formatter: (p) => p.toLowerCase() === "true",
       },
       "permission-all-write": {
         required: true,
         default: false,
-        description: "Grant write permission to all topics for this Team",
+        description: "Grant write permission to all topics for this API Key",
         formatter: (p) => p.toLowerCase() === "true",
       },
     };

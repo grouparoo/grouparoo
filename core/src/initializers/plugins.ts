@@ -9,8 +9,10 @@ import {
   CalculatedGroupTemplate,
   ManualGroupTemplate,
 } from "../templates/group";
+import { ApiKeyTemplate } from "../templates/apiKey";
 import { TeamTemplate } from "../templates/team";
 import { TeamMemberTemplate } from "../templates/teamMember";
+import { SettingTemplate } from "../templates/setting";
 
 declare module "actionhero" {
   export interface Api {
@@ -54,8 +56,10 @@ export class Plugins extends Initializer {
       name: "@grouparoo/core",
       icon: "/public/@grouparoo/logo.png",
       templates: [
+        SettingTemplate,
         CalculatedGroupTemplate,
         ManualGroupTemplate,
+        ApiKeyTemplate,
         TeamTemplate,
         TeamMemberTemplate,
       ],
