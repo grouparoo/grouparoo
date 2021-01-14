@@ -325,18 +325,9 @@ export default function Page(props) {
                 ))}
               </>
               <hr />
-              {schedule.state !== "draft" ? (
-                <Button disabled>Update</Button>
-              ) : (
-                <LoadingButton
-                  variant="primary"
-                  type="submit"
-                  disabled={loading}
-                >
-                  Update
-                </LoadingButton>
-              )}
-
+              <LoadingButton variant="primary" type="submit" disabled={loading}>
+                Update
+              </LoadingButton>
               <br />
               <br />
               <LoadingButton
