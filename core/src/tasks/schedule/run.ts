@@ -18,7 +18,11 @@ export class ScheduleRun extends RetryableTask {
   }
 
   async runWithinTransaction(params) {
-    const schedule = await Schedule.findByGuid(params.scheduleGuid);
+    const schedule = await Schedule.findOne({
+      where: { guid: params.scheduleGuid },
+    });
+    if (!schedule) return;
+
     if (schedule.state !== "ready") {
       throw new Error(`schedule ${params.scheduleGuid} is not ready`);
     }
