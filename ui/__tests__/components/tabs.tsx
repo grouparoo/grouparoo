@@ -24,13 +24,23 @@ describe("<PropertyTab />", () => {
   });
 
   it("renders the plural word properly", () => {
-    expect(component.html()).toContain(`<a href="/properties">Properties</a>`);
+    const links = component.find(".breadcrumb a");
+    const link = links.at(0);
+    const domNode = link.getDOMNode();
+
+    expect(link.text()).toBe("Properties");
+    expect(domNode.constructor.name).toBe("HTMLAnchorElement");
+    expect(domNode.getAttribute("href")).toBe("/properties");
   });
 
   it("shows the property key", () => {
-    expect(component.html()).toContain(
-      `<a href="/property/abc123/edit">${property.key}</a>`
-    );
+    const links = component.find(".breadcrumb a");
+    const link = links.at(1);
+    const domNode = link.getDOMNode();
+
+    expect(link.text()).toBe(property.key);
+    expect(domNode.constructor.name).toBe("HTMLAnchorElement");
+    expect(domNode.getAttribute("href")).toBe("/property/abc123/edit");
   });
 });
 
@@ -55,12 +65,22 @@ describe("<AppTab />", () => {
   });
 
   it("renders the plural word properly", () => {
-    expect(component.html()).toContain(`<a href="/apps">Apps</a>`);
+    const links = component.find(".breadcrumb a");
+    const link = links.at(0);
+    const domNode = link.getDOMNode();
+
+    expect(link.text()).toBe("Apps");
+    expect(domNode.constructor.name).toBe("HTMLAnchorElement");
+    expect(domNode.getAttribute("href")).toBe("/apps");
   });
 
   it("shows the name of the app", () => {
-    expect(component.html()).toContain(
-      `<a href="/app/abc123/edit">${app.name}</a>`
-    );
+    const links = component.find(".breadcrumb a");
+    const link = links.at(1);
+    const domNode = link.getDOMNode();
+
+    expect(link.text()).toBe(app.name);
+    expect(domNode.constructor.name).toBe("HTMLAnchorElement");
+    expect(domNode.getAttribute("href")).toBe("/app/abc123/edit");
   });
 });
