@@ -1,0 +1,11 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "source",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "postgres-query-import",
+      appId: "data_warehouse", // The id of the App this Source uses
+    },
+  ];
+};

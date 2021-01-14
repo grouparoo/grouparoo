@@ -1,0 +1,15 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      id: {{{id}}},
+      name: {{{id}}},
+      class: "schedule",
+      sourceId: "users_table", // The id of the Source this Schedule uses
+      recurring: true, // should this Schedule regularly run?
+      recurringFrequency: 1000 * 60 * 15, // 15 minutes, in ms
+      options: {
+        column: "updated_at", // the column to check for new records in table which this Schedule's Source is using
+      },
+    },
+  ];
+};

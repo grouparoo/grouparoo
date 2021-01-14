@@ -23,7 +23,7 @@ export { Option } from "./models/Option";
 export { Permission } from "./models/Permission";
 export { Profile } from "./models/Profile";
 export { ProfileProperty } from "./models/ProfileProperty";
-export { Property } from "./models/Property";
+export { Property, PropertyTypes } from "./models/Property";
 export { PropertyFilter } from "./models/PropertyFilter";
 export { Run } from "./models/Run";
 export { Schedule, SimpleScheduleOptions } from "./models/Schedule";

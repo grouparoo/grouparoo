@@ -11,7 +11,7 @@ exports.default = async function buildConfig() {
         database: "data_warehouse",
         schema: "public",
         user: "grouparoo_user", // the user to connect to the database.  If you are connecting to localhost, leave as `undefined`
-        password: "P@ssword", // the database password
+        password: "P@ssword", // the database password.  If you don't have a password, leave as `undefined`
 
         // you can also optionally set SSL options
         ssl: false, // enforce SSL connections only.  Default "false" will use ssl optionally if supported by the server.

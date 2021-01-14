@@ -17,7 +17,7 @@ export class Generate extends CLI {
       list: {
         required: false,
         description:
-          "Display the available config templates to use with config-generate",
+          'Display the available config templates to use with config-generate.  You can filter the list of templates by providing a string to match against, ie: `grouparoo generate app --list` to see templates which match "app"',
       },
       describe: {
         required: false,
