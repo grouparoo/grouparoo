@@ -51,7 +51,7 @@ export default function Page({
         <Col>
           <p>
             <strong>App</strong>:{" "}
-            <Link href="/app/[guid]" as={`/app/${source.app.guid}`}>
+            <Link href="/app/[guid]/edit" as={`/app/${source.app.guid}/edit`}>
               <a>{source.app.name}</a>
             </Link>
             <br />
@@ -123,6 +123,13 @@ export default function Page({
               <Row>
                 <Col>
                   <p>
+                    <Link
+                      href="/source/[guid]/schedule"
+                      as={`/source/${source.guid}/schedule`}
+                    >
+                      <a>{source.schedule.name}</a>
+                    </Link>
+                    <br />
                     <strong>Recurring</strong>:{" "}
                     <Badge
                       variant={
