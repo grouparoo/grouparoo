@@ -5,7 +5,7 @@ import cls from "cls-hooked";
  * This module is so you can delay the execution of side-effects within a transaction.
  * Say your new Model() creates a task... you don't want to enqueue it until after the transaction settles.
  * Use: `CLS.enqueueTaskIn(1000, taskName, args)`
- *   If you are in a CLS transaction, it will be un afterwords by CLSTask or CLSAction
+ *   If you are in a CLS transaction, it will be run afterwards by CLSTask or CLSAction
  *   If you aren't in a CLS transaction, it will be run now.
  *
  * The more generic usage is `CLS.afterCommit(() => {})` where you can supply any async function

@@ -44,12 +44,36 @@ describe("tasks/schedule:run", () => {
       expect(found[0].timestamp).toBeNull();
     });
 
-    test("throws without a runGuid", async () => {
+    test("throws without a scheduleGuid", async () => {
       await expect(
         task.enqueue("schedule:run", {
           runGuid: "abc123",
         })
       ).rejects.toThrow(/scheduleGuid is a required input/);
+    });
+
+    test("throws without a runGuid", async () => {
+      await expect(
+        task.enqueue("schedule:run", {
+          scheduleGuid: "abc123",
+        })
+      ).rejects.toThrow(/runGuid is a required input/);
+    });
+
+    test("doesn't throw when scheduleGuid is **found** in DB", async () => {
+      const run = await helper.factories.run(schedule);
+
+      specHelper.runTask("schedule:run", {
+        scheduleGuid: schedule.guid,
+        runGuid: run.guid,
+      }); // doesn't throw
+    });
+
+    test("doesn't throw when scheduleGuid is **not found** in DB", async () => {
+      specHelper.runTask("schedule:run", {
+        scheduleGuid: "abc123",
+        runGuid: "abc123",
+      }); // doesn't throw
     });
   });
 });
