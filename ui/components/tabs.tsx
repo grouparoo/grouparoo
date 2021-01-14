@@ -1,6 +1,7 @@
 import { Tab, Tabs, Breadcrumb } from "react-bootstrap";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { plural } from "pluralize";
 
 export default function GrouparooTabs({
   name,
@@ -27,8 +28,8 @@ export default function GrouparooTabs({
     <>
       <Breadcrumb>
         <li className="breadcrumb-item">
-          <Link href={`/${pluralize(topic)}`}>
-            <a>{capitalize(pluralize(topic))}</a>
+          <Link href={`/${plural(topic)}`}>
+            <a>{capitalize(plural(topic))}</a>
           </Link>
         </li>
         <li className="breadcrumb-item">
@@ -75,8 +76,4 @@ export function capitalize(s: string) {
       return word.charAt(0).toUpperCase() + word.slice(1);
     })
     .join(" ");
-}
-
-export function pluralize(s: string) {
-  return s + "s"; // TODO: is this good enough?
 }

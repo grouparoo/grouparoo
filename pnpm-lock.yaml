@@ -883,6 +883,7 @@ importers:
       moment: 2.29.1
       next: 10.0.5_b55cdf5aba003c0b8f6ee87ec1aeeee0
       node-sass: 4.14.1
+      pluralize: 8.0.0
       raw-loader: 4.0.2
       react: 16.14.0
       react-bootstrap: 1.4.3_react-dom@16.14.0+react@16.14.0
@@ -934,10 +935,11 @@ importers:
       jest-environment-webdriver: 0.2.0
       jest-fetch-mock: 3.0.3
       jest-mock-axios: 4.2.1
-      md5: ^2.3.0
+      md5: 2.3.0
       moment: 2.29.1
       next: 10.0.5
       node-sass: 4.14.1
+      pluralize: 8.0.0
       prettier: 2.2.1
       prop-types: 15.7.2
       raw-loader: 4.0.2
@@ -12279,6 +12281,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-fnWVljUchTro6RiCFvCXBbNhJc2NijN7oIQxbwsyL0buWJPG85v81ehlHI9fXrJsMNgTofEoWIQeClKpgxFLrg==
+  /pluralize/8.0.0:
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==
   /pnp-webpack-plugin/1.6.4_typescript@4.1.3:
     dependencies:
       ts-pnp: 1.2.0_typescript@4.1.3
