@@ -24,7 +24,8 @@
     "prepare": "rm -rf dist && tsc --declaration",
     "test": "jest",
     "pretest": "npm run lint && npm run prepare",
-    "lint": "prettier --check src"
+    "lint": "prettier --check src",
+    "watch": "rm -rf dist && tsc --watch"
   },
   "dependencies": {
     "@grouparoo/app-templates": "^0.2.0-alpha.13",
