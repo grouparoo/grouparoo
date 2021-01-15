@@ -1,9 +1,14 @@
+import path from "path";
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 import { test } from "./../lib/test";
 import { buildConnection as buildCustomConnection } from "../lib/export-custom/connection";
 
 const packageJSON = require("./../../package.json");
+
+const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
+import { AppTemplate } from "@grouparoo/app-templates/dist/app";
+import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 
 export class Plugins extends Initializer {
   constructor() {
@@ -15,6 +20,14 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/facebook/facebook.png",
+      templates: [
+        new AppTemplate("facebook", [
+          path.join(templateRoot, "app", "*.template"),
+        ]),
+        new DestinationTemplate("facebook", [
+          path.join(templateRoot, "destination", "*.template"),
+        ]),
+      ],
       apps: [
         {
           name: "facebook",

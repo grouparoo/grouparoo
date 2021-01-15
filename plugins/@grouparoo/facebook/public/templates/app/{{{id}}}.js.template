@@ -1,0 +1,14 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "app",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "{{{__pluginName}}}",
+      options: {
+        adAccountId: "562677826929881", // Number from your settings and in the URL
+        accessToken: "abc123", // The Access Token needs the ads_management permission
+      }
+    },
+  ];
+};
