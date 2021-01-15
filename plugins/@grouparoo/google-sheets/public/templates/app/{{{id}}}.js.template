@@ -1,0 +1,14 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "app",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "{{{__pluginName}}}",
+      options: {
+        client_email: "grouparoo-access@grouparoo-sources.iam.gserviceaccount.com", // Email of service account
+        private_key: "-----BEGIN PRIVATE KEY-----\nABC123", // Private key of service account
+      }
+    },
+  ];
+};

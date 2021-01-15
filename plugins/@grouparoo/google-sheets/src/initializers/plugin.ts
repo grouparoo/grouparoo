@@ -7,6 +7,12 @@ import { profiles } from "../lib/sheet-import/profiles";
 import { propertyOptions } from "../lib/sheet-import/propertyOptions";
 import { sourceRunPercentComplete } from "../lib/sheet-import/sourceRunPercentComplete";
 
+import {
+  GoogleSheetAppTemplate,
+  GoogleSheetSourceTemplate,
+  GoogleSheetPropertyTemplate,
+} from "../lib/sheet-import/templates";
+
 const packageJSON = require("./../../package.json");
 
 export class Plugins extends Initializer {
@@ -19,6 +25,11 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/google-sheets/google-sheets.png",
+      templates: [
+        GoogleSheetAppTemplate,
+        GoogleSheetSourceTemplate,
+        GoogleSheetPropertyTemplate,
+      ],
       apps: [
         {
           name: "google-sheets",
