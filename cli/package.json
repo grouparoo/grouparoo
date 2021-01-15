@@ -27,7 +27,8 @@
     "prepare": "rm -rf dist && tsc --declaration && chmod 0766 dist/grouparoo.js",
     "test": "./__tests__/test.sh",
     "pretest": "npm run lint && npm run prepare",
-    "lint": "prettier --check src"
+    "lint": "prettier --check src",
+    "watch": "rm -rf dist && tsc --watch"
   },
   "dependencies": {
     "chalk": "4.1.0",
