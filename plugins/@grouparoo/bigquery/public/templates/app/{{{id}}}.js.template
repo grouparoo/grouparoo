@@ -1,0 +1,16 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "app",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "{{{__pluginName}}}",
+      options: {
+        project_id: "data-warehouse", // Project id from Google
+        dataset: "dataset", // Default dataset id to use for sources
+        client_email: "grouparoo-access@grouparoo-sources.iam.gserviceaccount.com", // Client Email Address
+        private_key: "-----BEGIN PRIVATE KEY-----\nABC123", // Private key of service account
+      }
+    },
+  ];
+};

@@ -35,7 +35,7 @@ export abstract class ConfigTemplate {
         required: true,
         description:
           "The ID of the new object being generated.  Will be used to construct the object's guid",
-        formatter: (p) => this.formatForFilesystem(p),
+        formatter: (p) => this.formatId(p),
       },
     };
   }
@@ -99,6 +99,10 @@ export abstract class ConfigTemplate {
       .replace(/-\./, ".")
       .replace(/^-/, "")
       .replace(/-$/, "");
+  }
+
+  formatId(s: string) {
+    return s.toLowerCase().replace(/[^a-z0-9_]/gi, "_");
   }
 
   /**
