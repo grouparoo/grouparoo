@@ -1,5 +1,6 @@
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
+import path from "path";
 
 import { test } from "./../lib/test";
 import { connect } from "./../lib/connect";
@@ -13,6 +14,20 @@ import { getConnection as getQueryConnection } from "../lib/query-import/connect
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 
+const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
+import { AppTemplate } from "@grouparoo/app-templates/dist/app";
+import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
+import {
+  TableSourceTemplate,
+  TableScheduleTemplate,
+  TablePropertyTemplate,
+} from "@grouparoo/app-templates/dist/source/table";
+import {
+  QuerySourceTemplate,
+  QueryScheduleTemplate,
+  QueryPropertyTemplate,
+} from "@grouparoo/app-templates/dist/source/query";
+
 const packageJSON = require("./../../package.json");
 
 export class Plugins extends Initializer {
@@ -25,6 +40,20 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/mysql/mysql.png",
+      templates: [
+        new AppTemplate("mysql", [
+          path.join(templateRoot, "app", "*.template"),
+        ]),
+        new TableSourceTemplate("mysql"),
+        new TableScheduleTemplate("mysql"),
+        new TablePropertyTemplate("mysql"),
+        new QuerySourceTemplate("mysql"),
+        new QueryScheduleTemplate("mysql"),
+        new QueryPropertyTemplate("mysql"),
+        new DestinationTemplate("mysql", [
+          path.join(templateRoot, "destination", "*.template"),
+        ]),
+      ],
       apps: [
         {
           name: "mysql",
