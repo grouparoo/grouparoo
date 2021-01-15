@@ -14,12 +14,14 @@ import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 
 import {
-  PostgresAppTemplate,
-  PostgresSourceTable,
-  PostgresScheduleTable,
-  PostgresPropertyTable,
-  PostgresSourceQuery,
-  PostgresScheduleQuery,
+  AppTemplate,
+  TableSourceTemplate,
+  TableScheduleTemplate,
+  TablePropertyTemplate,
+  QuerySourceTemplate,
+  QueryScheduleTemplate,
+  QueryPropertyTemplate,
+  DestinationTemplate,
 } from "../lib/templates";
 
 const packageJSON = require("./../../package.json");
@@ -35,12 +37,14 @@ export class Plugins extends Initializer {
       name: packageJSON.name,
       icon: "/public/@grouparoo/postgres/postgres.svg",
       templates: [
-        PostgresAppTemplate,
-        PostgresSourceTable,
-        PostgresScheduleTable,
-        PostgresPropertyTable,
-        PostgresSourceQuery,
-        PostgresScheduleQuery,
+        AppTemplate,
+        TableSourceTemplate,
+        TableScheduleTemplate,
+        TablePropertyTemplate,
+        QuerySourceTemplate,
+        QueryScheduleTemplate,
+        QueryPropertyTemplate,
+        DestinationTemplate,
       ],
       apps: [
         {

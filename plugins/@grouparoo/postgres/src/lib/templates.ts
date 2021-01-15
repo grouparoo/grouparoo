@@ -5,7 +5,7 @@ import {
   FilterOperation,
 } from "@grouparoo/app-templates/dist/source/table";
 
-export class PostgresAppTemplate extends ConfigTemplate {
+export class AppTemplate extends ConfigTemplate {
   constructor() {
     super();
     this.name = "postgres:app";
@@ -29,10 +29,10 @@ export class PostgresAppTemplate extends ConfigTemplate {
   }
 }
 
-export class PostgresSourceTable extends ConfigTemplate {
+export class TableSourceTemplate extends ConfigTemplate {
   constructor() {
     super();
-    this.name = "postgres:source:table";
+    this.name = "postgres:table:source";
     this.description = "Config for a Postgres Table Source";
     this.files = [
       path.join(
@@ -53,10 +53,10 @@ export class PostgresSourceTable extends ConfigTemplate {
   }
 }
 
-export class PostgresScheduleTable extends ConfigTemplate {
+export class TableScheduleTemplate extends ConfigTemplate {
   constructor() {
     super();
-    this.name = "postgres:schedule:table";
+    this.name = "postgres:table:schedule";
     this.description = "Config for a Postgres Table Schedule";
     this.files = [
       path.join(
@@ -77,10 +77,10 @@ export class PostgresScheduleTable extends ConfigTemplate {
   }
 }
 
-export class PostgresPropertyTable extends ConfigTemplate {
+export class TablePropertyTemplate extends ConfigTemplate {
   constructor() {
     super();
-    this.name = "postgres:property:table";
+    this.name = "postgres:table:property";
     this.description = "Config for a Postgres Table Property";
     this.files = [
       path.join(
@@ -106,10 +106,10 @@ export class PostgresPropertyTable extends ConfigTemplate {
   }
 }
 
-export class PostgresSourceQuery extends ConfigTemplate {
+export class QuerySourceTemplate extends ConfigTemplate {
   constructor() {
     super();
-    this.name = "postgres:source:query";
+    this.name = "postgres:query:source";
     this.description = "Config for a Postgres Query Source";
     this.files = [
       path.join(
@@ -130,10 +130,10 @@ export class PostgresSourceQuery extends ConfigTemplate {
   }
 }
 
-export class PostgresScheduleQuery extends ConfigTemplate {
+export class QueryScheduleTemplate extends ConfigTemplate {
   constructor() {
     super();
-    this.name = "postgres:schedule:query";
+    this.name = "postgres:query:schedule";
     this.description = "Config for a Postgres Query Schedule";
     this.files = [
       path.join(
@@ -147,6 +147,59 @@ export class PostgresScheduleQuery extends ConfigTemplate {
       ),
     ];
     this.destinationDir = "schedules";
+  }
+
+  async run({ params }) {
+    return this.mustacheAllFiles(params);
+  }
+}
+
+export class QueryPropertyTemplate extends ConfigTemplate {
+  constructor() {
+    super();
+    this.name = "postgres:query:property";
+    this.description = "Config for a Postgres Query Property";
+    this.files = [
+      path.join(
+        __dirname,
+        "..",
+        "..",
+        "public",
+        "templates",
+        "query-property",
+        "*.template"
+      ),
+    ];
+    this.destinationDir = "properties";
+  }
+
+  async run({ params }) {
+    params["__typeOptions"] = PropertyTypes.map((v) => `"${v}"`).join(", ");
+    params["__aggregationMethodOptions"] = Object.values(AggregationMethod)
+      .map((v) => `"${v}"`)
+      .join(", ");
+    params["__filterOptions"] = Object.values(FilterOperation).join(", ");
+    return this.mustacheAllFiles(params);
+  }
+}
+
+export class DestinationTemplate extends ConfigTemplate {
+  constructor() {
+    super();
+    this.name = "postgres:destination";
+    this.description = "Config for a Postgres Destinatiojn";
+    this.files = [
+      path.join(
+        __dirname,
+        "..",
+        "..",
+        "public",
+        "templates",
+        "destination",
+        "*.template"
+      ),
+    ];
+    this.destinationDir = "destinations";
   }
 
   async run({ params }) {
