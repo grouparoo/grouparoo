@@ -1,0 +1,13 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "app",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "{{{__pluginName}}}",
+      options: {
+        token: "abc123", // Access token from your private app in the developer hub
+      }
+    },
+  ];
+};
