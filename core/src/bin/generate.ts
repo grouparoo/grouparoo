@@ -124,6 +124,13 @@ export class Generate extends CLI {
         this.logTemplateAndOptions(template, true);
       }
     }
+
+    if (!params.template) {
+      console.log("");
+      console.log(
+        "You can filter this list by providing a (partial) template to match template names against"
+      );
+    }
   }
 
   async getTemplate(templateName: string) {

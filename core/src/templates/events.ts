@@ -1,6 +1,6 @@
 import path from "path";
 import { ConfigTemplate } from "../classes/configTemplate";
-import { PropertyTypes } from "../..";
+import { PropertyTypes } from "..";
 
 const templateRoot = path.join(
   __dirname,
