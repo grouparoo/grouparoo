@@ -28,7 +28,7 @@
     "test": "./__tests__/test.sh",
     "pretest": "npm run lint && npm run prepare",
     "lint": "prettier --check src",
-    "watch": "rm -rf dist && tsc --watch"
+    "watch": "tsc --watch"
   },
   "dependencies": {
     "chalk": "4.1.0",
