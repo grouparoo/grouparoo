@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/core",
   "description": "The Grouparoo Core",
-  "version": "0.2.0-alpha.12",
+  "version": "0.2.0-alpha.13",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -34,7 +34,7 @@
     "postinstall": "npm run thank-you"
   },
   "dependencies": {
-    "@grouparoo/client-web": "^0.2.0-alpha.12",
+    "@grouparoo/client-web": "^0.2.0-alpha.13",
     "@types/bluebird": "*",
     "@types/fs-extra": "*",
     "@types/node": "*",
@@ -77,7 +77,7 @@
     "ws": "7.4.2"
   },
   "devDependencies": {
-    "@grouparoo/spec-helper": "^0.2.0-alpha.12",
+    "@grouparoo/spec-helper": "^0.2.0-alpha.13",
     "@types/faker": "*",
     "@types/jest": "*",
     "csv-parse": "4.14.2",
