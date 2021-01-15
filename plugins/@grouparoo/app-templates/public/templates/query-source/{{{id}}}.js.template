@@ -4,8 +4,8 @@ exports.default = async function buildConfig() {
       class: "source",
       id: {{{id}}},
       name: {{{id}}},
-      type: "postgres-query-import",
-      appId: "data_warehouse", // The id of the App this Source uses
+      type: "{{{__pluginName}}}-query-import",
+      appId: "dataWarehouse", // The id of the App this Source uses
     },
   ];
 };

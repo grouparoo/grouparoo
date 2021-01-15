@@ -244,7 +244,7 @@ export class Plugins extends Initializer {
       .filter((p) => p.templates?.length > 0)
       .map((p) => p.templates)
       .flat()
-      .map((T) => new T())
+      .map((T) => (typeof T === "function" ? new T() : T))
       .sort((a, b) => {
         if (a.name > b.name) return 1;
         if (a.name < b.name) return -1;

@@ -4,7 +4,7 @@ exports.default = async function buildConfig() {
       id: {{{id}}},
       name: {{{id}}},
       class: "destination",
-      type: "postgres-export",
+      type: "{{{__pluginName}}}-export",
       appId: "data_warehouse", // The id of the App this Source uses
       groupId: "high_value_customers", // The id of the group whose members you want to export
 
@@ -20,14 +20,14 @@ exports.default = async function buildConfig() {
       // Keys are the name to display in the destination, values are the IDs of the Properties in Grouparoo.
       mapping: {
         email: "email",
-        firstname: "first_name",
-        lastname: "last_name",
+        firstname: "firstName",
+        lastname: "lastName",
       },
 
       // You can export group memberships.
       // Keys are the name to display in the destination, values are the IDs of the Groups in Grouparoo.
       destinationGroupMemberships: {
-        "High Value Customers!": "high_value_customers",
+        "High Value Customers!": "highValueCustomers",
       },
     },
   ];

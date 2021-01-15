@@ -5,8 +5,8 @@ exports.default = async function buildConfig() {
       class: "source",
       id: {{{id}}},
       name: "Users Table",
-      type: "postgres-table-import",
-      appId: "data_warehouse", // The id of the App this Source uses
+      type: "{{{__pluginName}}}-table-import",
+      appId: "dataWarehouse", // The id of the App this Source uses
       options: {
         table: "users", // the table in your DB
       },
@@ -37,7 +37,7 @@ exports.default = async function buildConfig() {
   //     class: "source",
   //     id: "{{{id}}}",
   //     name: "{{{id}}}",
-  //     type: "postgres-table-import",
+  //     type: "{{{__pluginName}}}-table-import",
   //     appId: "data_warehouse", // The id of the app this source uses
   //     options: {
   //       table: "purchases", // the table in your DB
