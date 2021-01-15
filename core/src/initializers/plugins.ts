@@ -13,8 +13,11 @@ import { ApiKeyTemplate } from "../templates/apiKey";
 import { TeamTemplate } from "../templates/team";
 import { TeamMemberTemplate } from "../templates/teamMember";
 import { SettingTemplate } from "../templates/setting";
-import { ManualAppTemplate } from "../templates/manual";
-import { EventsAppTemplate } from "../templates/events";
+import {
+  ManualAppTemplate,
+  ManualSourceTemplate,
+  ManualPropertyTemplate,
+} from "../templates/manual";
 
 declare module "actionhero" {
   export interface Api {
@@ -64,14 +67,17 @@ export class Plugins extends Initializer {
         ApiKeyTemplate,
         TeamTemplate,
         TeamMemberTemplate,
-        EventsAppTemplate,
-        ManualAppTemplate,
       ],
     });
 
     plugin.registerPlugin({
       name: "@grouparoo/core/manual",
       icon: "/public/@grouparoo/manual/manual.png",
+      templates: [
+        ManualAppTemplate,
+        ManualSourceTemplate,
+        ManualPropertyTemplate,
+      ],
       apps: [
         {
           name: "manual",

@@ -16,6 +16,11 @@ import {
   ProfilePropertyPluginMethod,
   TestPluginMethod,
 } from "./../index";
+import {
+  EventsAppTemplate,
+  EventsSourceTemplate,
+  EventsPropertyTemplate,
+} from "../templates/events";
 
 export class Events extends Initializer {
   constructor() {
@@ -29,6 +34,11 @@ export class Events extends Initializer {
     plugin.registerPlugin({
       name: "@grouparoo/core/events",
       icon: "/public/@grouparoo/events/events.png",
+      templates: [
+        EventsAppTemplate,
+        EventsSourceTemplate,
+        EventsPropertyTemplate,
+      ],
       apps: [
         {
           name: "events",
@@ -182,7 +192,7 @@ const eventPropertyOptions: PluginConnectionPropertyOption[] = [
     key: "aggregationMethod",
     displayName: "Aggregation Method",
     required: true,
-    description: "how we combine the data",
+    description: "How we combine the data",
     type: "list",
     options: async () => {
       return [

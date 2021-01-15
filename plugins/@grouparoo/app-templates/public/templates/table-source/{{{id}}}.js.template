@@ -35,10 +35,10 @@ exports.default = async function buildConfig() {
   // return [
   //   {
   //     class: "source",
-  //     id: "{{{id}}}",
-  //     name: "{{{id}}}",
-  //     type: "{{{__pluginName}}}-table-import",
-  //     appId: "data_warehouse", // The id of the app this source uses
+  //     id: {{{id}}},
+  //     name: {{{id}}},
+  //     type: {{{__pluginName}}}-table-import,
+  //     appId: "dataWarehouse", // The id of the app this source uses
   //     options: {
   //       table: "purchases", // the table in your DB
   //     },
