@@ -5,13 +5,10 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       class: "destination",
       type: "{{{__pluginName}}}-export",
-      appId: "intercomApp", // The id of the App this Source uses
+      appId: "marketoApp", // The id of the App this Source uses
       groupId: "high_value_customers", // The id of the group whose members you want to export
 
-      options: {
-        creationMode: "User", // How should Grouparoo create Intercom contacts?  Options: "User", "Lead", "Enrich", "Lifecycle"
-        removalMode: "Archive", // How should Grouparoo remove Intercom contacts?  Options: "Archive", "Delete", "Skip"
-      },
+      options: {},
 
       // Mappings are how you choose which properties to export to this destination.
       // Keys are the name to display in the destination, values are the IDs of the Properties in Grouparoo.

@@ -1,0 +1,16 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "app",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "{{{__pluginName}}}",
+      options: {
+        endpoint: "https://123-ABC-456.mktorest.com/rest", // Found in Marketo Web Services
+        identity: "https://123-ABC-456.mktorest.com/identity", // Found in Marketo Web Services
+        clientId: "xxx", // Found in LaunchPoint for an API user
+        clientSecret: "xxx", // Found in LaunchPoint for an API user
+      }
+    },
+  ];
+};
