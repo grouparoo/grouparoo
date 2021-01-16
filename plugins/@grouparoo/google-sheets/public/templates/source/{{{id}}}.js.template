@@ -6,7 +6,7 @@ exports.default = async function buildConfig() {
       id: {{{id}}},
       name: "Users Table",
       type: "{{{__pluginName}}}-table-import",
-      appId: "dataWarehouse", // The id of the App this Source uses
+      appId: "googleSheetsApp", // The id of the App this Source uses
       options: {
         sheet_url: "https://sheets.google.com/....", // The URL of your sheet
       },
@@ -38,7 +38,7 @@ exports.default = async function buildConfig() {
   //     id: {{{id}}},
   //     name: {{{id}}},
   //     type: {{{__pluginName}}}-table-import,
-  //     appId: "dataWarehouse", // The id of the app this source uses
+  //     appId: "googleSheetsApp", // The id of the app this source uses
   //     options: {
   //       sheet_url: "https://sheets.google.com/....", // The URL of your sheet
   //     },

@@ -40,6 +40,21 @@ export class GoogleSheetSourceTemplate extends ConfigTemplate {
   }
 }
 
+export class GoogleSheetScheduleTemplate extends ConfigTemplate {
+  constructor() {
+    super();
+    this.name = `google-sheets:schedule`;
+    this.description = `Config for a Google Sheets Schedule`;
+    this.files = [path.join(templateRoot, "schedule", "*.template")];
+    this.destinationDir = "schedules";
+  }
+
+  async run({ params }) {
+    params["__pluginName"] = this.name.split(":")[0];
+    return this.mustacheAllFiles(params);
+  }
+}
+
 export class GoogleSheetPropertyTemplate extends ConfigTemplate {
   constructor() {
     super();

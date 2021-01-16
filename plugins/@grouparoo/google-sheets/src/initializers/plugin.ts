@@ -10,6 +10,7 @@ import { sourceRunPercentComplete } from "../lib/sheet-import/sourceRunPercentCo
 import {
   GoogleSheetAppTemplate,
   GoogleSheetSourceTemplate,
+  GoogleSheetScheduleTemplate,
   GoogleSheetPropertyTemplate,
 } from "../lib/sheet-import/templates";
 
@@ -28,6 +29,7 @@ export class Plugins extends Initializer {
       templates: [
         GoogleSheetAppTemplate,
         GoogleSheetSourceTemplate,
+        GoogleSheetScheduleTemplate,
         GoogleSheetPropertyTemplate,
       ],
       apps: [
