@@ -4,7 +4,7 @@ exports.default = async function buildConfig() {
     {
       class: "source",
       id: {{{id}}},
-      name: "Users Table",
+      name: {{{id}}},
       type: "{{{__pluginName}}}-import",
       appId: "mailchimpApp", // The id of the App this Source uses
       options: {

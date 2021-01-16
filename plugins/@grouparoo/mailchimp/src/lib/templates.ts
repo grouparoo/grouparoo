@@ -7,7 +7,7 @@ export class MailchimpAppTemplate extends ConfigTemplate {
   constructor() {
     super();
     this.name = `mailchimp:app`;
-    this.description = `Config for a Mailchimp Sheets App`;
+    this.description = `Config for a Mailchimp App`;
     this.files = [path.join(templateRoot, "app", "*.template")];
     this.destinationDir = "apps";
   }
@@ -38,8 +38,8 @@ export class MailchimpScheduleTemplate extends ConfigTemplate {
     super();
     this.name = `mailchimp:schedule`;
     this.description = `Config for a Mailchimp Schedule`;
-    this.files = [path.join(templateRoot, "source", "*.template")];
-    this.destinationDir = "sources";
+    this.files = [path.join(templateRoot, "schedule", "*.template")];
+    this.destinationDir = "schedules";
   }
 
   async run({ params }) {

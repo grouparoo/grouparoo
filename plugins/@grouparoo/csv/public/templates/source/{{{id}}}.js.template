@@ -5,18 +5,17 @@ exports.default = async function buildConfig() {
       class: "source",
       id: {{{id}}},
       name: {{{id}}},
-      type: "{{{__pluginName}}}-table-import",
-      appId: "dataWarehouse", // The id of the App this Source uses
+      type: "{{{__pluginName}}}-import",
+      appId: "csvApp", // The id of the App this Source uses
       options: {
-        table: "users", // the table in your DB
+        fileGuid: "fil_abc123" // The guid of a File already uploaded to Grouparoo
       },
 
       /*
-       * For example, if you want to say your users table has an ID and it maps to the Property `user_id` in grouparoo (defined below in bootstrappedProperty):
-       *   mapping: {id: 'user_id'}
+       * For example, if you want to say the column form the CSV "id" maps the Grouparoo Property "userId".
        */
       mapping: {
-        id: "user_id", // Looks like `remote column`:`grouparoo property id`
+        "id": "userId",
       },
 
       // If this is the first source, you will also need to make the first property.  This is a special first-time bootstrapping process/
@@ -37,18 +36,17 @@ exports.default = async function buildConfig() {
   //     class: "source",
   //     id: {{{id}}},
   //     name: {{{id}}},
-  //     type: {{{__pluginName}}}-table-import,
-  //     appId: "dataWarehouse", // The id of the app this source uses
+  //     type: {{{__pluginName}}}-import,
+  //     appId: "csvApp", // The id of the app this source uses
   //     options: {
-  //       table: "purchases", // the table in your DB
+  //       fileGuid: "fil_abc123" // The guid of a File already uploaded to Grouparoo
   //     },
   //
   //     /*
-  //      * For example, if you want to say your purchases table has a column user_id that maps to the Property `user_id` in Grouparoo:
-  //      *   mapping: {user_id: 'user_id'}
+  //      * For example, if you want to say the column form the CSV "id" maps the Grouparoo Property "userId".
   //      */
   //     mapping: {
-  //       user_id: "user_id", // Looks like `remote column`:`grouparoo property id`
+  //       "id": "userId",
   //     },
   //   },
   // ];

@@ -8,6 +8,13 @@ import { profiles } from "../lib/file-import/profiles";
 import { propertyOptions } from "../lib/file-import/propertyOptions";
 import { sourceRunPercentComplete } from "../lib/file-import/sourceRunPercentComplete";
 
+import {
+  CSVAppTemplate,
+  CSVSourceTemplate,
+  CSVScheduleTemplate,
+  CSVPropertyTemplate,
+} from "../lib/templates";
+
 const packageJSON = require("./../../package.json");
 
 export class Plugins extends Initializer {
@@ -20,6 +27,12 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/csv/csv.svg",
+      templates: [
+        CSVAppTemplate,
+        CSVSourceTemplate,
+        CSVScheduleTemplate,
+        CSVPropertyTemplate,
+      ],
       apps: [
         {
           name: "csv",
