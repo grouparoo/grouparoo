@@ -1,3 +1,4 @@
+import path from "path";
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
@@ -7,6 +8,15 @@ import { parallelism } from "./../lib/parallelism";
 import emailDestination from "../lib/export/connection";
 import idDestination from "../lib/export-id/connection";
 import importSource from "../lib/import/connection";
+
+import {
+  MailchimpAppTemplate,
+  MailchimpSourceTemplate,
+  MailchimpScheduleTemplate,
+  MailchimpPropertyTemplate,
+  MailchimpEmailDestinationTemplate,
+  MailchimpIdDestinationTemplate,
+} from "../lib/templates";
 
 const packageJSON = require("./../../package.json");
 
@@ -20,6 +30,14 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/mailchimp/mailchimp.svg",
+      templates: [
+        MailchimpAppTemplate,
+        MailchimpSourceTemplate,
+        MailchimpScheduleTemplate,
+        MailchimpPropertyTemplate,
+        MailchimpEmailDestinationTemplate,
+        MailchimpIdDestinationTemplate,
+      ],
       apps: [
         {
           name: "mailchimp",

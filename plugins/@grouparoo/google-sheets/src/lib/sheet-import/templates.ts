@@ -14,7 +14,7 @@ export class GoogleSheetAppTemplate extends ConfigTemplate {
   constructor() {
     super();
     this.name = `google-sheets:app`;
-    this.description = `Config for a Grouparoo Google Sheets App`;
+    this.description = `Config for a Google Sheets App`;
     this.files = [path.join(templateRoot, "app", "*.template")];
     this.destinationDir = "apps";
   }
@@ -29,7 +29,7 @@ export class GoogleSheetSourceTemplate extends ConfigTemplate {
   constructor() {
     super();
     this.name = `google-sheets:source`;
-    this.description = `Config for a Google Sheets Table Source`;
+    this.description = `Config for a Google Sheets Source`;
     this.files = [path.join(templateRoot, "source", "*.template")];
     this.destinationDir = "sources";
   }
@@ -44,7 +44,7 @@ export class GoogleSheetPropertyTemplate extends ConfigTemplate {
   constructor() {
     super();
     this.name = `google-sheets:property`;
-    this.description = `Config for a Google Sheets Table Property`;
+    this.description = `Config for a Google Sheets Property`;
     this.files = [path.join(templateRoot, "property", "*.template")];
     this.destinationDir = "properties";
   }

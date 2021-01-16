@@ -92,13 +92,9 @@ export abstract class ConfigTemplate {
   formatForFilesystem(s: string) {
     return s
       .toLowerCase()
-      .replace(/\\"/gi, "")
-      .replace(/[^a-z0-9@\\\//.]/gi, "-")
-      .replace(/\/-/, "/")
-      .replace(/--/, "-")
-      .replace(/-\./, ".")
-      .replace(/^-/, "")
-      .replace(/-$/, "");
+      .replace(/"/gi, "")
+      .replace(/'/gi, "")
+      .replace(/[^a-z0-9_\/.]/gi, "_");
   }
 
   formatId(s: string) {

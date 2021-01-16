@@ -7,7 +7,7 @@ exports.default = async function buildConfig() {
       type: "{{{__pluginName}}}",
       options: {
         host: "localhost",
-        port: 5432,
+        port: 3306,
         database: "data_warehouse",
         user: "grouparoo_user", // the user to connect to the database.  If you are connecting to localhost, leave as `undefined`
         password: "P@ssword", // the database password.  If you don't have a password, leave as `undefined`
