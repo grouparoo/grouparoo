@@ -32,7 +32,7 @@
     "import": "./api/bin/import",
     "thank-you": "./thank-you",
     "postinstall": "npm run thank-you",
-    "watch": "rm -rf dist && tsc --watch"
+    "watch": "tsc --watch"
   },
   "dependencies": {
     "@grouparoo/client-web": "^0.2.0-alpha.13",

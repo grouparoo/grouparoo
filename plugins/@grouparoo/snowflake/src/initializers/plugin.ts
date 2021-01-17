@@ -1,3 +1,4 @@
+import path from "path";
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
@@ -7,6 +8,19 @@ import { test } from "./../lib/test";
 
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
 import { getConnection as getQueryConnection } from "../lib/query-import/connection";
+
+const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
+import { AppTemplate } from "@grouparoo/app-templates/dist/app";
+import {
+  TableSourceTemplate,
+  TableScheduleTemplate,
+  TablePropertyTemplate,
+} from "@grouparoo/app-templates/dist/source/table";
+import {
+  QuerySourceTemplate,
+  QueryScheduleTemplate,
+  QueryPropertyTemplate,
+} from "@grouparoo/app-templates/dist/source/query";
 
 const packageJSON = require("./../../package.json");
 
@@ -20,6 +34,17 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/snowflake/snowflake.png",
+      templates: [
+        new AppTemplate("snowflake", [
+          path.join(templateRoot, "app", "*.template"),
+        ]),
+        new TableSourceTemplate("snowflake"),
+        new TableScheduleTemplate("snowflake"),
+        new TablePropertyTemplate("snowflake"),
+        new QuerySourceTemplate("snowflake"),
+        new QueryScheduleTemplate("snowflake"),
+        new QueryPropertyTemplate("snowflake"),
+      ],
       apps: [
         {
           name: "snowflake",
@@ -37,7 +62,7 @@ export class Plugins extends Initializer {
               displayName: "User Name",
               required: true,
               description: "Snowflake user login name to connect with.",
-              placeholder: "e.g. JDOE",
+              placeholder: "e.g. JOHN_DOE",
             },
             {
               key: "password",

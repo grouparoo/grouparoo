@@ -1,0 +1,16 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      id: {{{id}}},
+      name: {{{id}}},
+      class: "schedule",
+      sourceId: "queries_source", // The id of the Source this Schedule uses
+      recurring: true, // should this Schedule regularly run?
+      recurringFrequency: 1000 * 60 * 15, // 15 minutes, in ms
+      options: {
+        query: "SELECT id FROM users WHERE updated_at >= (NOW() - INTERVAL '2 day')", // A SQL query to return that includes only the IDs of properties to check.
+        propertyId: "userId" // The ID of the Grouparoo Property whose data is returned by options.query
+      },
+    },
+  ];
+};

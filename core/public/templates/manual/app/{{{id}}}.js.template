@@ -1,0 +1,12 @@
+// this app has no options
+
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "app",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "manual",
+    },
+  ];
+};

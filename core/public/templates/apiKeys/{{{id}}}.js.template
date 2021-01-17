@@ -1,0 +1,13 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "apiKey",
+      id: {{{id}}},
+      name: {{{id}}},
+      options: {
+        permissionAllRead: false, // Does this API Key have read permission to all topics?
+        permissionAllWrite: false, // Does this API Key have write permission to all topics?
+      },
+    },
+  ];
+};

@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { ConfigTemplate } from "../../src/classes/configTemplate";
-import { ConfigTemplateUtils } from "../../src/modules/configTemplateUtils";
+import { api } from "actionhero";
 import os from "os";
 import fs from "fs-extra";
 
@@ -16,7 +16,7 @@ describe("bin/generate", () => {
     const env = await helper.prepareForAPITest();
     actionhero = env.actionhero;
     await helper.factories.properties();
-    templates = ConfigTemplateUtils.loadTemplates();
+    templates = api.plugins.templates();
   }, helper.setupTime);
 
   beforeAll(() => {
@@ -38,10 +38,6 @@ describe("bin/generate", () => {
     const template = templates.find((t) => t.name === "group:manual");
 
     await expect(() =>
-      template.run({ params: { path: tmpDir } })
-    ).rejects.toThrow(/Missing required input "name"/);
-
-    await expect(() =>
       template.run({ params: { path: tmpDir, name: "name" } })
     ).rejects.toThrow(/Missing required input "id"/);
   });
@@ -53,9 +49,10 @@ describe("bin/generate", () => {
       params: template.prepareParams({ path: tmpDir, id: "test_group" }),
     });
 
-    const newFile = `${tmpDir}/group/manual/new_group.js`;
+    const newFile = `${tmpDir}/groups/test_group.js`;
+
     expect(fileData[newFile]).toBeTruthy();
-    expect(fileData[newFile]).toContain('name: "New Group"');
+    expect(fileData[newFile]).toContain('name: "test_group"');
   });
 
   describe("templates", () => {
@@ -69,7 +66,7 @@ describe("bin/generate", () => {
         }),
       });
 
-      const newFile = `${tmpDir}/group/manual/test_name.js`;
+      const newFile = `${tmpDir}/groups/test_group.js`;
       expect(fileData[newFile]).toBeTruthy();
       expect(fileData[newFile]).toContain('id: "test_group"');
     });
@@ -89,7 +86,7 @@ describe("bin/generate", () => {
         }),
       });
 
-      const newFile = `${tmpDir}/group/calculated/test_name.js`;
+      const newFile = `${tmpDir}/groups/test_group.js`;
       expect(fileData[newFile]).toBeTruthy();
       expect(fileData[newFile]).toContain('id: "test_group"');
       expect(fileData[newFile]).toContain('propertyId: "ltv",');

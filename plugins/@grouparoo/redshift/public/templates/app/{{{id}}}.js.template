@@ -1,0 +1,18 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "app",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "{{{__pluginName}}}",
+      options: {
+        host: "redshift.company.us-west-1.redshift.amazonaws.com",
+        port: 5432,
+        database: "data_warehouse",
+        schema: "public",
+        user: "grouparoo_user", // the user to connect to the database.  If you are connecting to localhost, leave as `undefined`
+        password: "P@ssword", // the database password.  If you don't have a password, leave as `undefined`
+      }
+    },
+  ];
+};

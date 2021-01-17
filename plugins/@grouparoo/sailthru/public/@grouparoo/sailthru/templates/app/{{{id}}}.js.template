@@ -1,0 +1,14 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "app",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "{{{__pluginName}}}",
+      options: {
+        apiKey: "abc123", // Sailthru API Key
+        apiSecret: "abc123", // Sailthru API Key Secret
+      }
+    },
+  ];
+};

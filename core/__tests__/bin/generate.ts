@@ -45,45 +45,53 @@ describe("bin/generate", () => {
     spies.map((s) => s.mockRestore());
   });
 
+  test("the generate command can list templates", async () => {
+    process.argv = ["", "", "generate", "--list"];
+    const command = new Generate();
+    await command.run({ params: { path: tmpDir } });
+
+    const output = messages.join(" ");
+    expect(output).toContain(`Available Templates:`);
+    expect(output).toContain(`group:calculated`);
+    expect(output).toContain(`group:manual`);
+    expect(output).toContain(`setting`);
+  });
+
+  test("the generate command can filter the list of templates", async () => {
+    process.argv = ["", "", "generate", "group", "--list"];
+    const command = new Generate();
+    await command.run({ params: { path: tmpDir } });
+
+    const output = messages.join(" ");
+    expect(output).toContain(`Available Templates:`);
+    expect(output).toContain(`group:calculated`);
+    expect(output).toContain(`group:manual`);
+    expect(output).not.toContain(`setting`);
+  });
+
   test("the generate command can write a new file", async () => {
-    process.argv = [
-      "",
-      "",
-      "generate",
-      "group:calculated",
-      "--",
-      "--id",
-      "new-group",
-    ];
+    process.argv = ["", "", "generate", "group:calculated", "new-group"];
     const command = new Generate();
     const toStop = await command.run({ params: { path: tmpDir } });
     expect(toStop).toBe(true);
 
-    const file = `${tmpDir}/group/calculated/new_group.js`;
+    const file = `${tmpDir}/groups/new_group.js`;
     const output = messages.join(" ");
     expect(output).toContain("generate group:calculated");
     expect(output).toContain(`wrote ${file}`);
 
     const contents = fs.readFileSync(file).toString();
-    expect(contents).toContain('id: "new-group"');
+    expect(contents).toContain('id: "new_group"');
     expect(contents).toContain('class: "group"');
   });
 
   test("the generate command will fail if the file exists", async () => {
-    process.argv = [
-      "",
-      "",
-      "generate",
-      "group:calculated",
-      "--",
-      "--id",
-      "new-group",
-    ];
+    process.argv = ["", "", "generate", "group:calculated", "new-group"];
     const command = new Generate();
     await command.run({ params: { path: tmpDir } });
 
     const output = messages.join(" ");
-    const file = `${tmpDir}/group/calculated/new_group.js`;
+    const file = `${tmpDir}/groups/new_group.js`;
     expect(output).toContain(`${file} already exists`);
     expect(output).not.toContain(`wrote ${file}`);
   });
@@ -94,8 +102,6 @@ describe("bin/generate", () => {
       "",
       "generate",
       "group:calculated",
-      "--",
-      "--id",
       "new-group",
       "--overwrite",
     ];
@@ -103,7 +109,7 @@ describe("bin/generate", () => {
     await command.run({ params: { path: tmpDir } });
 
     const output = messages.join(" ");
-    const file = `${tmpDir}/group/calculated/new_group.js`;
+    const file = `${tmpDir}/groups/new_group.js`;
     expect(output).toContain(`wrote ${file}`);
   });
 });

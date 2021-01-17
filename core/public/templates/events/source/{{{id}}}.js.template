@@ -1,0 +1,14 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "source",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "events-table-import",
+      appId: "eventsApp", // The id of the app this source uses
+      options: {
+        type: "pageview", // The type of event to use
+      }
+    }
+  ];
+};

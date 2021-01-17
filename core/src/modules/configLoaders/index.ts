@@ -67,6 +67,7 @@ export async function loadConfigObjects(configDir: string) {
   for (const i in configFiles) {
     configObjects = configObjects.concat(await loadConfigFile(configFiles[i]));
   }
+  configObjects = configObjects.filter((o) => Object.keys(o).length > 0); // skip empty files
   return { configObjects, configFiles };
 }
 

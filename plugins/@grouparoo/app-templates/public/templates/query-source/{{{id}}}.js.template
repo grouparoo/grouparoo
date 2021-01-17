@@ -1,0 +1,11 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "source",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "{{{__pluginName}}}-query-import",
+      appId: "dataWarehouse", // The id of the App this Source uses
+    },
+  ];
+};

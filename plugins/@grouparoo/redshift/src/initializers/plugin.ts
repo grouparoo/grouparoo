@@ -1,3 +1,4 @@
+import path from "path";
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
@@ -15,6 +16,20 @@ import { destinationMappingOptions } from "@grouparoo/postgres/dist/lib/export/d
 
 const packageJSON = require("./../../package.json");
 
+const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
+import { AppTemplate } from "@grouparoo/app-templates/dist/app";
+import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
+import {
+  TableSourceTemplate,
+  TableScheduleTemplate,
+  TablePropertyTemplate,
+} from "@grouparoo/app-templates/dist/source/table";
+import {
+  QuerySourceTemplate,
+  QueryScheduleTemplate,
+  QueryPropertyTemplate,
+} from "@grouparoo/app-templates/dist/source/query";
+
 export class Plugins extends Initializer {
   constructor() {
     super();
@@ -25,6 +40,20 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/redshift/redshift.svg",
+      templates: [
+        new AppTemplate("redshift", [
+          path.join(templateRoot, "app", "*.template"),
+        ]),
+        new TableSourceTemplate("redshift"),
+        new TableScheduleTemplate("redshift"),
+        new TablePropertyTemplate("redshift"),
+        new QuerySourceTemplate("redshift"),
+        new QueryScheduleTemplate("redshift"),
+        new QueryPropertyTemplate("redshift"),
+        new DestinationTemplate("redshift", [
+          path.join(templateRoot, "destination", "*.template"),
+        ]),
+      ],
       apps: [
         {
           name: "redshift",

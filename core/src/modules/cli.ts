@@ -83,20 +83,29 @@ export namespace GrouparooCLI {
     delete api.servers.servers.websocket;
   }
 
-  export function parseTemplateOpts(argumentName: string) {
+  export function parseTemplateOpts(command?: string, subCommand?: string) {
     const hash: { [key: string]: string } = {};
 
-    const argument = process.argv.slice(3)[0]
+    // handle additional arguments
+    const argument3 = process.argv.slice(3)[0]
       ? process.argv.slice(3)[0].includes("--")
         ? undefined
         : process.argv.slice(3)[0]
       : undefined;
-    if (argument) hash[argumentName] = argument;
+    if (command && argument3) hash[command] = argument3;
+
+    const argument4 = process.argv.slice(4)[0]
+      ? process.argv.slice(4)[0].includes("--")
+        ? undefined
+        : process.argv.slice(4)[0]
+      : undefined;
+    if (subCommand && argument4) hash[subCommand] = argument4;
 
     const opts = process.argv.slice(2).includes("--")
       ? process.argv.slice(2).slice(process.argv.slice(2).indexOf("--") + 1)
       : [];
 
+    // handle extra operands after the `--`
     function cleanOpt(s: string) {
       return s.replace(/^--/, "").replace(/^-/, "").toLowerCase();
     }

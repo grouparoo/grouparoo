@@ -1,0 +1,43 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      id: {{{id}}},
+      name: {{{id}}},
+      class: "destination",
+      type: "{{{__pluginName}}}-objects-export",
+      appId: "salesforceApp", // The id of the App this Source uses
+      groupId: "high_value_customers", // The id of the group whose members you want to export
+
+      // Note that depending on your Salesforce configuration, not all options are required
+      // Learn more @ https://www.grouparoo.com/blog/salesforce-destination
+
+      options: {
+        syncMode: "User", // How should Grouparoo modify Salesforce objects? Options: "Sync", "Enrich", "Additive"
+        profileObject: "Contact", // Which object in Salesforce represents a Grouparoo profile?
+        profileMatchField: "Email", // Which field in the profile Object is used to match Grouparoo profiles?
+        groupObject: "Account", // Which object in Salesforce represents a Grouparoo group?
+        groupNameField: "Name", // Which field in the group Object is used for the name of a Grouparoo group?
+        membershipObject: "AccountContactRole", // Which object in Salesforce maps the profile object to the group object?
+        membershipProfileField: "AccountId", // Which field in the membership Object is the reference to the profile?
+        membershipGroupField: "ContactId", // Which field in the membership Object is the reference to the group?
+        profileReferenceField: "AccountId", // Is there a reference field on the profile Object to fill out?
+        profileReferenceObject: "Account", // If there is a reference field, which Object should be created to apply to the profile?
+        profileReferenceMatchField: undefined, // If there is a reference field, how should it be matched to Grouparoo profiles?
+      },
+
+      // Mappings are how you choose which properties to export to this destination.
+      // Keys are the name to display in the destination, values are the IDs of the Properties in Grouparoo.
+      mapping: {
+        email: "email",
+        firstname: "firstName",
+        lastname: "lastName",
+      },
+
+      // You can export group memberships.
+      // Keys are the name to display in the destination, values are the IDs of the Groups in Grouparoo.
+      destinationGroupMemberships: {
+        "High Value Customers!": "highValueCustomers",
+      },
+    },
+  ];
+};

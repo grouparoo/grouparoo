@@ -3,7 +3,7 @@ exports.default = async function buildConfig() {
     {
       class: "group",
       id: {{{id}}},
-      name: {{{name}}},
+      name: {{{id}}},
       type: "manual",
     },
   ];

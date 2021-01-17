@@ -1,0 +1,53 @@
+exports.default = async function buildConfig() {
+  // Option 1: This is the first source and you need to bootstrap the first property as well
+  return [
+    {
+      class: "source",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "{{{__pluginName}}}-import",
+      appId: "csvApp", // The id of the App this Source uses
+      options: {
+        fileGuid: "fil_abc123" // The guid of a File already uploaded to Grouparoo
+      },
+
+      /*
+       * For example, if you want to say the column form the CSV "id" maps the Grouparoo Property "userId".
+       */
+      mapping: {
+        "id": "userId",
+      },
+
+      // If this is the first source, you will also need to make the first property.  This is a special first-time bootstrapping process/
+      bootstrappedProperty: {
+        id: "user_id",
+        name: "User Id",
+        type: "integer",
+        options: {
+          column: "id",
+        },
+      },
+    },
+  ];
+
+  // Option 2: This is not the first source, and you can reference other properties which already exist
+  // return [
+  //   {
+  //     class: "source",
+  //     id: {{{id}}},
+  //     name: {{{id}}},
+  //     type: {{{__pluginName}}}-import,
+  //     appId: "csvApp", // The id of the app this source uses
+  //     options: {
+  //       fileGuid: "fil_abc123" // The guid of a File already uploaded to Grouparoo
+  //     },
+  //
+  //     /*
+  //      * For example, if you want to say the column form the CSV "id" maps the Grouparoo Property "userId".
+  //      */
+  //     mapping: {
+  //       "id": "userId",
+  //     },
+  //   },
+  // ];
+};

@@ -3,6 +3,21 @@ import { GrouparooPlugin } from "../classes/plugin";
 import { plugin } from "../modules/plugin";
 import { App } from "../models/App";
 import { getPluginManifest } from "../utils/pluginDetails";
+import { ConfigTemplate } from "../classes/configTemplate";
+
+import {
+  CalculatedGroupTemplate,
+  ManualGroupTemplate,
+} from "../templates/group";
+import { ApiKeyTemplate } from "../templates/apiKey";
+import { TeamTemplate } from "../templates/team";
+import { TeamMemberTemplate } from "../templates/teamMember";
+import { SettingTemplate } from "../templates/setting";
+import {
+  ManualAppTemplate,
+  ManualSourceTemplate,
+  ManualPropertyTemplate,
+} from "../templates/manual";
 
 declare module "actionhero" {
   export interface Api {
@@ -11,6 +26,7 @@ declare module "actionhero" {
       validate: (plugin: GrouparooPlugin) => boolean;
       register: (plugin: GrouparooPlugin, validate: boolean) => void;
       announcePlugins: () => void;
+      templates: () => Array<ConfigTemplate>;
       persistentConnections: {
         [guid: string]: any;
       };
@@ -34,15 +50,34 @@ export class Plugins extends Initializer {
       validate: this.validatePlugin,
       register: this.registerPlugin,
       announcePlugins: this.announcePlugins,
+      templates: this.templates,
     };
 
     this.checkPluginEnvironmentVariables();
 
-    // --- Add the core plugin --- //
+    // --- Add the core plugins --- //
+
+    plugin.registerPlugin({
+      name: "@grouparoo/core",
+      icon: "/public/@grouparoo/logo.png",
+      templates: [
+        SettingTemplate,
+        CalculatedGroupTemplate,
+        ManualGroupTemplate,
+        ApiKeyTemplate,
+        TeamTemplate,
+        TeamMemberTemplate,
+      ],
+    });
 
     plugin.registerPlugin({
       name: "@grouparoo/core/manual",
       icon: "/public/@grouparoo/manual/manual.png",
+      templates: [
+        ManualAppTemplate,
+        ManualSourceTemplate,
+        ManualPropertyTemplate,
+      ],
       apps: [
         {
           name: "manual",
@@ -208,6 +243,19 @@ export class Plugins extends Initializer {
 
   announcePlugins() {
     log(`active plugins: ${api.plugins.plugins.map((p) => p.name).join(", ")}`);
+  }
+
+  templates() {
+    return api.plugins.plugins
+      .filter((p) => p.templates?.length > 0)
+      .map((p) => p.templates)
+      .flat()
+      .map((T) => (typeof T === "function" ? new T() : T))
+      .sort((a, b) => {
+        if (a.name > b.name) return 1;
+        if (a.name < b.name) return -1;
+        return 0;
+      });
   }
 
   /*

@@ -1,10 +1,9 @@
 import { GrouparooCLI } from "../modules/cli";
-import { ConfigTemplateUtils } from "../modules/configTemplateUtils";
 import {
   ConfigTemplate,
   ConfigTemplateRunResponse,
 } from "../classes/configTemplate";
-import { CLI } from "actionhero";
+import { CLI, api } from "actionhero";
 import path from "path";
 import fs from "fs-extra";
 import prettier from "prettier";
@@ -12,43 +11,50 @@ import prettier from "prettier";
 export class Generate extends CLI {
   constructor() {
     super();
-    this.name = "generate [template]"; // I will include the template ARG vs OPT
+    this.name = "generate [template] [id]"; // I will include the template ARG vs OPT
     this.description = "Generate new code config files from templates";
     this.inputs = {
-      path: {
-        required: true,
-        default: path.join(process.env.INIT_CWD || process.cwd(), "config"),
-        description: "The location of the config directory",
-      },
       list: {
-        required: true,
-        default: "false",
+        required: false,
         description:
-          "Display the available config templates to use with config-generate",
+          'Display the available config templates to use with config-generate.  You can filter the list of templates by providing a string to match against, ie: `grouparoo generate app --list` to see templates which match "app"',
+      },
+      describe: {
+        required: false,
+        description: "Display the options for the template in detail",
       },
       overwrite: {
         required: true,
         default: "false",
         description: "Overwrite existing files?",
       },
+      path: {
+        required: true,
+        default: path.join(process.env.INIT_CWD || process.cwd(), "config"),
+        description: "The location of the config directory",
+      },
     };
     this.example =
-      'grouparoo generate templateName -- --id="the-id" --name="the-name" --app="app-id"';
+      'grouparoo generate templateName id -- --name="the-name" --app="app-id"';
 
     GrouparooCLI.setGrouparooRunMode(this);
   }
 
   async run({ params }) {
-    params = Object.assign(params, GrouparooCLI.parseTemplateOpts("template"));
+    params = Object.assign(
+      params,
+      GrouparooCLI.parseTemplateOpts("template", "id")
+    );
     GrouparooCLI.logCLI(
-      this.name.replace(
-        " [template]",
-        params.template ? " " + params.template : ""
-      )
+      this.name
+        .replace(" [template]", params.template ? " " + params.template : "")
+        .replace(" [id]", params.id ? " " + params.id : "")
     );
 
     if (process.argv.slice(2).includes("--list")) {
-      await this.list();
+      await this.list(params);
+    } else if (process.argv.slice(2).includes("--describe")) {
+      await this.describe(params);
     } else {
       await this.generate(params);
     }
@@ -56,13 +62,10 @@ export class Generate extends CLI {
     return true;
   }
 
-  help() {
-    const params = GrouparooCLI.parseTemplateOpts("template");
-    if (!params.template) return;
+  async describe(params) {
+    if (!params.template) this.fatalError(`no template provided`);
 
-    const template = this.getTemplate(params.template);
-
-    console.log("");
+    const template = await this.getTemplate(params.template);
     this.logTemplateAndOptions(template);
   }
 
@@ -72,8 +75,11 @@ export class Generate extends CLI {
         `template is required.  Learn more with \`grouparoo generate --help\` and \`grouparoo generate --list\``
       );
     }
+    if (!params.id) {
+      this.fatalError(`id is required`);
+    }
 
-    const template = this.getTemplate(params.template);
+    const template = await this.getTemplate(params.template);
 
     let fileData: ConfigTemplateRunResponse = {};
     try {
@@ -101,19 +107,34 @@ export class Generate extends CLI {
     });
   }
 
-  async list() {
-    console.log(`Available Templates:`);
+  async list(params) {
+    console.log(
+      `Available Templates:${
+        params.template ? ` matching "${params.template}"` : ""
+      }`
+    );
     console.log("");
 
-    const templates = ConfigTemplateUtils.loadTemplates();
+    const templates = api.plugins.templates();
     for (const i in templates) {
       const template = templates[i];
-      this.logTemplateAndOptions(template);
+      if (params.template && template.name.match(params.template)) {
+        this.logTemplateAndOptions(template, true);
+      } else if (!params.template) {
+        this.logTemplateAndOptions(template, true);
+      }
+    }
+
+    if (!params.template) {
+      console.log("");
+      console.log(
+        "You can filter this list by providing a (partial) template to match template names against"
+      );
     }
   }
 
-  getTemplate(templateName: string) {
-    const templates = ConfigTemplateUtils.loadTemplates();
+  async getTemplate(templateName: string) {
+    const templates = api.plugins.templates();
     const template = templates.find((t) => t.name === templateName);
     if (!template) {
       this.fatalError(`template for "${templateName}" not found`);
@@ -121,22 +142,41 @@ export class Generate extends CLI {
     return template;
   }
 
-  logTemplateAndOptions(template: ConfigTemplate) {
-    console.log(GrouparooCLI.underlineBold(template.name));
-    console.log(`  ${template.description}`);
-    Object.keys(template.inputs).forEach((k) => {
-      const req = template.inputs[k].required && !template.inputs[k].default;
+  logTemplateAndOptions(template: ConfigTemplate, compact = false) {
+    if (compact) {
       console.log(
-        `  * ${k}${req ? " (required)" : ""} - ${
-          template.inputs[k].description
-        } ${
-          template.inputs[k].default
-            ? `(default: "${template.inputs[k].default}")`
-            : ""
-        }`
+        "  " +
+          GrouparooCLI.underlineBold(template.name) +
+          ` (${Object.keys(template.inputs).join(", ")}) - ${
+            template.description
+          }`
       );
-    });
-    console.log("");
+    } else {
+      console.log(`${template.description}`);
+      console.log("");
+      console.log("Options:");
+      Object.keys(template.inputs).forEach((k) => {
+        const req =
+          template.inputs[k].required &&
+          (template.inputs[k].default === null ||
+            template.inputs[k].default === undefined);
+        console.log(
+          `  * ${k}${req ? " (required)" : ""} - ${
+            template.inputs[k].description
+          } ${
+            template.inputs[k].default !== null &&
+            template.inputs[k].default !== undefined
+              ? `(default: ${JSON.stringify(template.inputs[k].default)})`
+              : ""
+          }${
+            template.inputs[k].copyDefaultFrom
+              ? `(default copied from ${template.inputs[k].copyDefaultFrom})`
+              : ""
+          }`
+        );
+      });
+      console.log("");
+    }
   }
 
   fatalError(message: string) {

@@ -1,10 +1,10 @@
-import { ConfigTemplateUtils } from "../modules/configTemplateUtils";
 import { MustacheUtils } from "../modules/mustacheUtils";
 import path from "path";
 import fs from "fs-extra";
+import glob from "glob";
 
 export interface ConfigTemplateParams {
-  [key: string]: string;
+  [key: string]: string | number | boolean;
 }
 
 /**
@@ -15,21 +15,29 @@ export interface ConfigTemplateRunResponse {
 }
 
 export abstract class ConfigTemplate {
-  rootPath: string;
-  class: string;
   name: string;
   description: string;
   inputs?: {
     [name: string]: {
       required: boolean;
-      default?: string;
+      default?: string | number | boolean;
       description: string;
+      copyDefaultFrom?: string;
+      formatter?: (param: string) => any;
     };
   };
   files: string[]; // a list of files or a glob of files
+  destinationDir: string;
 
   constructor() {
-    this.inputs = {};
+    this.inputs = {
+      id: {
+        required: true,
+        description:
+          "The ID of the new object being generated.  Will be used to construct the object's guid",
+        formatter: (p) => this.formatId(p),
+      },
+    };
   }
 
   /** The main 'do something' method.  Throw is there was an error */
@@ -40,17 +48,40 @@ export abstract class ConfigTemplate {
   }): Promise<ConfigTemplateRunResponse>;
 
   prepareParams(params: ConfigTemplateParams) {
+    // source from other params
+    Object.keys(this.inputs).forEach((k) => {
+      if (
+        this.inputs[k].copyDefaultFrom &&
+        (!params[k] || params[k].toString().length === 0)
+      ) {
+        params[k] = params[this.inputs[k].copyDefaultFrom];
+      }
+    });
+
     // assign defaults
     Object.keys(this.inputs).forEach((k) => {
-      if (this.inputs[k].default && (!params[k] || params[k].length === 0)) {
+      if (
+        this.inputs[k].default !== undefined &&
+        (!params[k] || params[k].toString().length === 0)
+      ) {
         params[k] = this.inputs[k].default;
+      }
+      if (!params[k] && this.inputs[k].default === null) {
+        params[k] = "null";
+      }
+    });
+
+    // format inputs
+    Object.keys(this.inputs).forEach((k) => {
+      if (typeof this.inputs[k].formatter === "function") {
+        params[k] = this.inputs[k].formatter(params[k].toString());
       }
     });
 
     // escape for JSON/JS
     for (const k in params) {
       if (k === "path") continue;
-      if (typeof params[k] === "string") {
+      if (typeof params[k] === "string" && params[k] !== "null") {
         params[k] = JSON.stringify(params[k]);
       }
     }
@@ -61,10 +92,13 @@ export abstract class ConfigTemplate {
   formatForFilesystem(s: string) {
     return s
       .toLowerCase()
-      .replace(/\\"/gi, "")
-      .replace(/[^a-z0-9\\\//.]/gi, "_")
-      .replace(/\/_/, "/")
-      .replace(/_\./, ".");
+      .replace(/"/gi, "")
+      .replace(/'/gi, "")
+      .replace(/[^a-z0-9_\/.]/gi, "_");
+  }
+
+  formatId(s: string) {
+    return s.toLowerCase().replace(/[^a-z0-9_]/gi, "_");
   }
 
   /**
@@ -73,29 +107,48 @@ export abstract class ConfigTemplate {
   async mustacheAllFiles(params: ConfigTemplateParams) {
     const response: ConfigTemplateRunResponse = {};
     const errorPrefix = "Missing required input";
-    const fileNames = await ConfigTemplateUtils.resolveFiles(this);
+    const fileNames = await this.resolveFiles(this);
+
+    if (!params.path) throw new Error(`params.path missing`);
 
     for (const i in fileNames) {
       const fileName = fileNames[i];
       const relativeFileName = this.formatForFilesystem(
         MustacheUtils.strictlyRender(
-          fileName.replace(this.rootPath + path.sep, ""),
+          path.basename(fileName),
           params,
-          errorPrefix
+          errorPrefix,
+          false
         )
       );
       const newFilePath = path
-        .join(params.path, this.class, relativeFileName)
+        .join(params.path.toString(), this.destinationDir, relativeFileName)
         .replace(/.template$/, "");
       const content = fs.readFileSync(fileName).toString();
       const newContent = MustacheUtils.strictlyRender(
         content,
         params,
-        errorPrefix
+        errorPrefix,
+        true
       );
       response[newFilePath] = newContent;
     }
 
     return response;
+  }
+
+  async resolveFiles(template: ConfigTemplate) {
+    let files: string[] = [];
+
+    for (const i in template.files) {
+      const foundFiles = glob.sync(template.files[i]);
+      files = files.concat(foundFiles);
+    }
+
+    if (files.length === 0) {
+      console.error(`no files found matching ${template.files}`);
+    }
+
+    return files;
   }
 }
