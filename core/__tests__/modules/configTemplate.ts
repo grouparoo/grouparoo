@@ -49,10 +49,10 @@ describe("bin/generate", () => {
       params: template.prepareParams({ path: tmpDir, id: "test_group" }),
     });
 
-    const newFile = `${tmpDir}/groups/test-group.js`;
+    const newFile = `${tmpDir}/groups/test_group.js`;
 
     expect(fileData[newFile]).toBeTruthy();
-    expect(fileData[newFile]).toContain('name: "test-group"');
+    expect(fileData[newFile]).toContain('name: "test_group"');
   });
 
   describe("templates", () => {
@@ -66,9 +66,9 @@ describe("bin/generate", () => {
         }),
       });
 
-      const newFile = `${tmpDir}/groups/test-group.js`;
+      const newFile = `${tmpDir}/groups/test_group.js`;
       expect(fileData[newFile]).toBeTruthy();
-      expect(fileData[newFile]).toContain('id: "test-group"');
+      expect(fileData[newFile]).toContain('id: "test_group"');
     });
 
     test("group:calculated", async () => {
@@ -86,9 +86,9 @@ describe("bin/generate", () => {
         }),
       });
 
-      const newFile = `${tmpDir}/groups/test-group.js`;
+      const newFile = `${tmpDir}/groups/test_group.js`;
       expect(fileData[newFile]).toBeTruthy();
-      expect(fileData[newFile]).toContain('id: "test-group"');
+      expect(fileData[newFile]).toContain('id: "test_group"');
       expect(fileData[newFile]).toContain('propertyId: "ltv",');
     });
   });
