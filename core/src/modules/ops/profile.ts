@@ -35,7 +35,7 @@ export namespace ProfileOps {
   export async function properties(profile: Profile) {
     const profileProperties =
       profile.profileProperties ||
-      (await ProfileProperty.findAll({
+      (await ProfileProperty.scope(null).findAll({
         where: { profileGuid: profile.guid },
         order: [["position", "ASC"]],
       }));
@@ -539,6 +539,7 @@ export namespace ProfileOps {
       }
 
       // re-import and update groups
+      delete profile.profileProperties;
       await profile.buildNullProperties();
       await profile.markPending();
 
