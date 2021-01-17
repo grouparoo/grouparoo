@@ -1,4 +1,4 @@
-import { helper } from "@grouparoo/spec-helper";
+import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 
 let actionhero;
@@ -320,12 +320,7 @@ describe("integration/happyPath", () => {
       expect(tasks.length).toBe(1);
       await specHelper.runTask("group:run", tasks[0].args[0]);
 
-      // profiles
-      await specHelper.runTask("profiles:checkReady", {});
-      tasks = await specHelper.findEnqueuedTasks("profile:completeImport");
-      expect(tasks.length).toBe(1);
-      expect(tasks[0].args[0].profileGuid).toBe(profileGuid);
-      await specHelper.runTask("profile:completeImport", tasks[0].args[0]);
+      await ImportWorkflow();
     });
 
     test("the profile will be in the calculated group", async () => {

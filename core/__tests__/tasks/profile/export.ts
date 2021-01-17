@@ -1,4 +1,4 @@
-import { helper } from "@grouparoo/spec-helper";
+import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import { Profile } from "./../../../src/models/Profile";
 import { Import } from "./../../../src/models/Import";
@@ -180,12 +180,7 @@ describe("tasks/profile:export", () => {
         profiles = await Profile.findAll();
         expect(profiles.length).toBe(1);
 
-        // mock the import pipeline
-        await profiles[0].import();
-        await profiles[0].updateGroupMembership();
-        await specHelper.runTask("profile:completeImport", {
-          profileGuid: profiles[0].guid,
-        });
+        await ImportWorkflow();
 
         const foundExportTasks = await specHelper.findEnqueuedTasks(
           "profile:export"
@@ -247,12 +242,7 @@ describe("tasks/profile:export", () => {
         const profiles = await Profile.findAll();
         expect(profiles.length).toBe(2);
 
-        // mock the import pipeline
-        await profiles[1].import();
-        await profiles[1].updateGroupMembership();
-        await specHelper.runTask("profile:completeImport", {
-          profileGuid: profiles[1].guid,
-        });
+        await ImportWorkflow();
 
         const foundExportTasks = await specHelper.findEnqueuedTasks(
           "profile:export"
