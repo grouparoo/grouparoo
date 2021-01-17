@@ -539,6 +539,7 @@ export namespace ProfileOps {
       }
 
       // re-import and update groups
+      await profile.buildNullProperties();
       await profile.markPending();
 
       return profile;
