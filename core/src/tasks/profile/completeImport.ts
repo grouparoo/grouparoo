@@ -33,7 +33,13 @@ export class ProfileCompleteImport extends RetryableTask {
     });
 
     if (!profile) return; // the profile may have been deleted or merged by the time this task ran
-    if (profile.state !== "ready") {
+    const profileProperties = await profile.properties();
+    const pendingProfileProperty = Object.keys(profileProperties).find(
+      // a property may have gone back into the pending state
+      (k) => profileProperties[k].state !== "ready"
+    );
+
+    if (profile.state !== "ready" || pendingProfileProperty) {
       return CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, params);
     }
 
