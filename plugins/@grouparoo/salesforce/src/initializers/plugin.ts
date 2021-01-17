@@ -1,3 +1,4 @@
+import path from "path";
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
@@ -8,6 +9,10 @@ import { exportProfiles } from "../lib/export-objects/exportProfiles";
 import { destinationOptions } from "../lib/export-objects/destinationOptions";
 import { destinationMappingOptions } from "../lib/export-objects/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export-objects/exportArrayProperties";
+
+const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
+import { AppTemplate } from "@grouparoo/app-templates/dist/app";
+import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 
 const packageJSON = require("./../../package.json");
 
@@ -21,6 +26,14 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/salesforce/salesforce.png",
+      templates: [
+        new AppTemplate("salesforce", [
+          path.join(templateRoot, "app", "*.template"),
+        ]),
+        new DestinationTemplate("salesforce", [
+          path.join(templateRoot, "destination", "*.template"),
+        ]),
+      ],
       apps: [
         {
           name: "salesforce",

@@ -1,0 +1,15 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "app",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "{{{__pluginName}}}",
+      options: {
+        username: "person@example.com", // Email address for logging into Salesforce
+        password: "P@ssw0rd!", // Password for logging into Salesforce
+        securityToken: "abc123", // To get a new security token, click on 'Reset My Security Token' in `personal settings`
+      }
+    },
+  ];
+};
