@@ -29,7 +29,7 @@
     "lint": "prettier --check pages components classes client utils hooks __tests__"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "1.2.32",
+    "@fortawesome/fontawesome-svg-core": "1.2.34",
     "@fortawesome/free-solid-svg-icons": "5.15.1",
     "@fortawesome/react-fontawesome": "0.1.14",
     "@grouparoo/client-web": "^0.2.0-alpha.13",
