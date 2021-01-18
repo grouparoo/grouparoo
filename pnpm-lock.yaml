@@ -123,7 +123,7 @@ importers:
       '@types/validator': 13.1.0
       actionhero: 25.0.4
       ah-next-plugin: 0.4.1_actionhero@25.0.4
-      ah-sequelize-plugin: 2.2.4_15eda34b360f339c98d8949a9b84a547
+      ah-sequelize-plugin: 3.0.1_15eda34b360f339c98d8949a9b84a547
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0
@@ -179,7 +179,7 @@ importers:
       '@types/validator': '*'
       actionhero: 25.0.4
       ah-next-plugin: 0.4.1
-      ah-sequelize-plugin: 2.2.4
+      ah-sequelize-plugin: 3.0.1
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0
@@ -3537,7 +3537,7 @@ packages:
       react-dom: '*'
     resolution:
       integrity: sha512-VlABaCWGSkgK0xW/f7sccGd4d13u5ks4+plIpCS1/vuWY4u8Y51+ov8vYxvFr6yPYVj6lVwCFaN7Gm/G8tDkKw==
-  /ah-sequelize-plugin/2.2.4_15eda34b360f339c98d8949a9b84a547:
+  /ah-sequelize-plugin/3.0.1_15eda34b360f339c98d8949a9b84a547:
     dependencies:
       actionhero: 25.0.4
       sequelize: 6.4.0_c55db9d303525f7e0f394507dac7d9be
@@ -3547,11 +3547,11 @@ packages:
     engines:
       node: '>=8.0.0'
     peerDependencies:
-      actionhero: '>=22.1.1'
-      sequelize: '>=5.21.11'
-      sequelize-typescript: '>=1.1.0'
+      actionhero: '>=22.0.0'
+      sequelize: '>=6.4.0'
+      sequelize-typescript: '>=2.0.0'
     resolution:
-      integrity: sha512-KOmWDjUpFxmdNN1Vge3UH2IhIljSN2PvbzB4gmQLyjwG0ZyfEpf8E+h3W/Ie/grxNjXYQsSCR9FJHV3FsmcyDA==
+      integrity: sha512-DzOCtsVd/cv99K6eQdawXLiwtpU60ctHRCTr6It557QOxOr20BnCBrbFSGDMHho9Ny0Y+Fc+oywFtzUyoC2QqA==
   /airbnb-prop-types/2.16.0_react@16.14.0:
     dependencies:
       array.prototype.find: 2.1.1

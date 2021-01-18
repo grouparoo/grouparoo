@@ -41,7 +41,7 @@
     "@types/validator": "*",
     "actionhero": "25.0.4",
     "ah-next-plugin": "0.4.1",
-    "ah-sequelize-plugin": "2.2.4",
+    "ah-sequelize-plugin": "3.0.1",
     "bcryptjs": "2.4.3",
     "cls-hooked": "4.2.2",
     "colors": "1.4.0",
