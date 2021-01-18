@@ -140,6 +140,7 @@ export namespace helper {
   export async function truncate() {
     await Promise.all(
       models.map(async (model) => {
+        // @ts-ignore
         return model.truncate();
       })
     );
