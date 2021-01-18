@@ -1,6 +1,6 @@
-import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
+import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Group, Profile } from "../../../src";
+import { Group, Profile, ProfileProperty, Property } from "../../../src";
 
 let actionhero;
 
@@ -54,6 +54,32 @@ describe("tasks/profile:completeImport", () => {
 
       await profile.reload();
       expect(profile.state).toBe("pending");
+
+      const foundTasks = await specHelper.findEnqueuedTasks(
+        "profile:completeImport"
+      );
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0]).toEqual({
+        profileGuid: profile.guid,
+      });
+
+      await profile.destroy();
+    });
+
+    test("it re-enqueues the task if a profile property becomes pending", async () => {
+      const profile = await helper.factories.profile();
+      await profile.import();
+      await profile.update({ state: "ready" });
+
+      const emailProperty = await Property.findOne({ where: { key: "email" } });
+      const profileProperty = await ProfileProperty.findOne({
+        where: { profileGuid: profile.guid, propertyGuid: emailProperty.guid },
+      });
+      await profileProperty.update({ state: "pending" });
+
+      await specHelper.runTask("profile:completeImport", {
+        profileGuid: profile.guid,
+      });
 
       const foundTasks = await specHelper.findEnqueuedTasks(
         "profile:completeImport"
