@@ -583,7 +583,7 @@ export class Group extends LoggedModel<Group> {
             );
             break;
         }
-        const whereClause: string = api.sequelize.queryInterface.QueryGenerator.getWhereConditions(
+        const whereClause: string = api.sequelize.queryInterface.queryGenerator.getWhereConditions(
           reverseMatchWhere
         );
 
