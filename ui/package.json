@@ -57,7 +57,7 @@
     "react-markdown": "5.0.3",
     "react-moment": "1.1.1",
     "stacktrace-js": "2.0.2",
-    "swagger-ui": "3.39.0",
+    "swagger-ui": "3.40.0",
     "type-fest": "0.20.2",
     "typescript": "4.1.3"
   },
