@@ -557,15 +557,14 @@ export namespace ProfileOps {
   export async function makeReady(limit = 100) {
     let profiles: Profile[];
 
-    const notInQuery = api.sequelize.dialect.QueryGenerator.selectQuery(
-      "profileProperties",
-      {
+    const notInQuery = api.sequelize.dialect.queryGenerator
+      .selectQuery("profileProperties", {
         attributes: [
           api.sequelize.fn("DISTINCT", api.sequelize.col("profileGuid")),
         ],
         where: { state: "pending" },
-      }
-    ).slice(0, -1);
+      })
+      .slice(0, -1);
 
     profiles = await Profile.findAll({
       where: {
