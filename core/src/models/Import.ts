@@ -31,7 +31,7 @@ export interface ImportProfileProperties {
 }
 
 @Table({ tableName: "imports", paranoid: false })
-export class Import extends Model<Import> {
+export class Import extends Model {
   guidPrefix() {
     return "imp";
   }

@@ -19,7 +19,7 @@ import { Profile } from "./Profile";
 import { Log } from "./Log";
 
 @Table({ tableName: "groupMembers", paranoid: false })
-export class GroupMember extends Model<GroupMember> {
+export class GroupMember extends Model {
   guidPrefix() {
     return "mem";
   }

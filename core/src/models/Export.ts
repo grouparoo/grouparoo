@@ -39,7 +39,7 @@ const ERROR_LEVELS = ["error", "info"] as const;
 export type ExportErrorLevel = typeof ERROR_LEVELS[number];
 
 @Table({ tableName: "exports", paranoid: false })
-export class Export extends Model<Export> {
+export class Export extends Model {
   guidPrefix() {
     return "exp";
   }

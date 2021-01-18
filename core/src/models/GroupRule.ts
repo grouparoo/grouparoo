@@ -15,7 +15,7 @@ import { Group } from "./Group";
 import { Property } from "./Property";
 
 @Table({ tableName: "groupRules", paranoid: false })
-export class GroupRule extends Model<GroupRule> {
+export class GroupRule extends Model {
   guidPrefix() {
     return "grr";
   }
