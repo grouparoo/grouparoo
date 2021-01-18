@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "chalk": "4.1.0",
-    "commander": "6.2.1",
+    "commander": "7.0.0",
     "fs-extra": "9.0.1",
     "glob": "7.1.6",
     "npm-check-updates": "10.2.5",

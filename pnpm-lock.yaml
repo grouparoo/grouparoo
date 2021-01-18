@@ -69,7 +69,7 @@ importers:
   cli:
     dependencies:
       chalk: 4.1.0
-      commander: 6.2.1
+      commander: 7.0.0
       fs-extra: 9.0.1
       glob: 7.1.6
       npm-check-updates: 10.2.5
@@ -85,7 +85,7 @@ importers:
       '@types/fs-extra': '*'
       '@types/node': '*'
       chalk: 4.1.0
-      commander: 6.2.1
+      commander: 7.0.0
       fs-extra: 9.0.1
       glob: 7.1.6
       npm-check-updates: 10.2.5
@@ -5077,6 +5077,7 @@ packages:
     resolution:
       integrity: sha512-zP4jEKbe8SHzKJYQmq8Y9gYjtO/POJLgIdKgV7B9qNmABVFVc+ctqSX6iXh4mCpJfRBOabiZ2YKPg8ciDw6C+Q==
   /commander/6.2.1:
+    dev: true
     engines:
       node: '>= 6'
     resolution:
