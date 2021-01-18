@@ -6,6 +6,7 @@ import { Group } from "./../../src/models/Group";
 import { GroupMember } from "./../../src/models/GroupMember";
 import { App } from "./../../src/models/App";
 import { Source } from "./../../src/models/Source";
+import { Log } from "./../../src/models/Log";
 import { plugin } from "./../../src/modules/plugin";
 import { ProfileOps } from "../../src/modules/ops/profile";
 import { api, specHelper } from "actionhero";
@@ -1169,6 +1170,25 @@ describe("models/profile", () => {
       // we can't be sure of the array-order for the combined profiles.  A re-import should be deterministic too
       const propertiesA = await profileA.properties();
       expect(propertiesA.purchases.values).toEqual(["shoe"]);
+    });
+
+    test("the merged profile is pending", async () => {
+      await profileA.reload();
+      expect(profileA.state).toBe("pending");
+      const properties = await profileA.properties();
+      for (const k in properties) {
+        k === "userId"
+          ? expect(properties[k].state).toBe("ready")
+          : expect(properties[k].state).toBe("pending");
+      }
+    });
+
+    test("the merged profile has a log entry about the merge", async () => {
+      const logs = await Log.findAll({
+        where: { ownerGuid: profileA.guid, verb: "merge" },
+      });
+      expect(logs.length).toEqual(1);
+      expect(logs[0].message).toEqual(`merged with profile ${profileB.guid}`);
     });
 
     test("merging profiles moved the anonymousId", async () => {

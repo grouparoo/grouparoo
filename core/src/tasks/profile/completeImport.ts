@@ -1,4 +1,5 @@
 import { CLS } from "../../modules/cls";
+import { config } from "actionhero";
 import { Profile } from "../../models/Profile";
 import { Property } from "../../models/Property";
 import { ProfilePropertyType } from "../../modules/ops/profile";
@@ -32,21 +33,14 @@ export class ProfileCompleteImport extends RetryableTask {
     });
 
     if (!profile) return; // the profile may have been deleted or merged by the time this task ran
+    const profileProperties = await profile.properties();
+    const pendingProfileProperty = Object.keys(profileProperties).find(
+      // a property may have gone back into the pending state
+      (k) => profileProperties[k].state !== "ready"
+    );
 
-    // calling this task implies we expect the profile to be in the ready state
-    if (profile.state !== "ready") {
-      try {
-        await profile.update({ state: "ready" });
-      } catch (error) {
-        if (
-          error.toString().match(/cannot transition profile .* to ready state/)
-        ) {
-          // it's OK.  The next run of profile:checkReady will check this profile again
-          return;
-        } else {
-          throw error;
-        }
-      }
+    if (profile.state !== "ready" || pendingProfileProperty) {
+      return CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, params);
     }
 
     const mergedValues = {};

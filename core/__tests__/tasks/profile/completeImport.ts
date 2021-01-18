@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Group, Profile } from "../../../src";
+import { Group, Profile, ProfileProperty, Property } from "../../../src";
 
 let actionhero;
 
@@ -43,7 +43,7 @@ describe("tasks/profile:completeImport", () => {
       expect(found.length).toEqual(1);
     });
 
-    test("it updates the profile state to ready", async () => {
+    test("it re-enqueues the task if the profile is not ready", async () => {
       const profile = await helper.factories.profile();
       await profile.import();
       await profile.update({ state: "pending" });
@@ -53,7 +53,41 @@ describe("tasks/profile:completeImport", () => {
       });
 
       await profile.reload();
-      expect(profile.state).toBe("ready");
+      expect(profile.state).toBe("pending");
+
+      const foundTasks = await specHelper.findEnqueuedTasks(
+        "profile:completeImport"
+      );
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0]).toEqual({
+        profileGuid: profile.guid,
+      });
+
+      await profile.destroy();
+    });
+
+    test("it re-enqueues the task if a profile property becomes pending", async () => {
+      const profile = await helper.factories.profile();
+      await profile.import();
+      await profile.update({ state: "ready" });
+
+      const emailProperty = await Property.findOne({ where: { key: "email" } });
+      const profileProperty = await ProfileProperty.findOne({
+        where: { profileGuid: profile.guid, propertyGuid: emailProperty.guid },
+      });
+      await profileProperty.update({ state: "pending" });
+
+      await specHelper.runTask("profile:completeImport", {
+        profileGuid: profile.guid,
+      });
+
+      const foundTasks = await specHelper.findEnqueuedTasks(
+        "profile:completeImport"
+      );
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0]).toEqual({
+        profileGuid: profile.guid,
+      });
 
       await profile.destroy();
     });
@@ -62,6 +96,7 @@ describe("tasks/profile:completeImport", () => {
       const profile = await helper.factories.profile();
       await profile.addOrUpdateProperties({ lastName: ["Mario"] });
       await profile.import();
+      await profile.update({ state: "ready" });
 
       let groups = await profile.$get("groups");
       expect(groups.length).toBe(0);
@@ -91,6 +126,7 @@ describe("tasks/profile:completeImport", () => {
 
       const profile = await Profile.findOne();
       await profile.import();
+      await profile.update({ state: "ready" });
 
       expect(_import.newGroupGuids).toEqual([]);
       expect(_import.newProfileProperties).toEqual({});
@@ -117,13 +153,18 @@ describe("tasks/profile:completeImport", () => {
     test("it will enqueue a profile:export task", async () => {
       const profile = await helper.factories.profile();
       await profile.import();
+      await profile.update({ state: "ready" });
 
       await specHelper.runTask("profile:completeImport", {
         profileGuid: profile.guid,
       });
 
-      const found = await specHelper.findEnqueuedTasks("profile:export");
-      expect(found.length).toEqual(1);
+      const foundTasks = await specHelper.findEnqueuedTasks("profile:export");
+      expect(foundTasks.length).toEqual(1);
+      expect(foundTasks[0].args[0]).toEqual({
+        force: false,
+        profileGuid: profile.guid,
+      });
     });
   });
 });

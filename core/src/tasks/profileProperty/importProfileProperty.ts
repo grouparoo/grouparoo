@@ -72,7 +72,5 @@ export class ImportProfileProperty extends RetryableTask {
         }
       );
     }
-
-    log(`imported ${property.key} (${property.guid}) for 1 profile`);
   }
 }

@@ -5,6 +5,7 @@ import { Source } from "../../models/Source";
 import { Group } from "../../models/Group";
 import { Destination } from "../../models/Destination";
 import { Event } from "../../models/Event";
+import { Log } from "../../models/Log";
 import { api } from "actionhero";
 import { Op } from "sequelize";
 import { waitForLock } from "../locks";
@@ -35,7 +36,7 @@ export namespace ProfileOps {
   export async function properties(profile: Profile) {
     const profileProperties =
       profile.profileProperties ||
-      (await ProfileProperty.findAll({
+      (await ProfileProperty.scope(null).findAll({
         where: { profileGuid: profile.guid },
         order: [["position", "ASC"]],
       }));
@@ -538,10 +539,19 @@ export namespace ProfileOps {
         await profile.update({ anonymousId: otherProfile.anonymousId });
       }
 
+      // log the merge
+      await Log.create({
+        topic: "profile",
+        verb: "merge",
+        message: `merged with profile ${otherProfile.guid}`,
+        ownerGuid: profile.guid,
+        data: { previousProperties: properties, otherProperties },
+      });
+
       // re-import and update groups
-      delete profile.profileProperties; // remove any cached values from the instance
-      await profile.import(true, false);
-      await profile.updateGroupMembership();
+      delete profile.profileProperties;
+      await profile.buildNullProperties();
+      await profile.markPending();
 
       return profile;
     } finally {

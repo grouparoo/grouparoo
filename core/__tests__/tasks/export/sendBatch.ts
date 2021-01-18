@@ -1,4 +1,4 @@
-import { helper } from "@grouparoo/spec-helper";
+import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import { Profile } from "../../../src/models/Profile";
 import { Group } from "../../../src/models/Group";
@@ -72,11 +72,7 @@ describe("tasks/export:sendBatch", () => {
     });
 
     test("the profile can be imported and exported", async () => {
-      await profile.import();
-      await profile.updateGroupMembership();
-      await specHelper.runTask("profile:completeImport", {
-        profileGuid: profile.guid,
-      });
+      await ImportWorkflow();
     });
 
     test("export:sendBatch will be enqueued after a batch from the run", async () => {

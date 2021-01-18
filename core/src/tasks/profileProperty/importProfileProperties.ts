@@ -90,9 +90,5 @@ export class ImportProfileProperties extends RetryableTask {
         },
       }
     );
-
-    log(
-      `imported ${property.key} (${property.guid}) for ${profilesWithDependenciesMet.length} profiles`
-    );
   }
 }
