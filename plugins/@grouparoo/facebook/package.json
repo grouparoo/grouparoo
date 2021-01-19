@@ -45,7 +45,7 @@
     "@types/node": "*",
     "actionhero": "25.0.4",
     "dotenv": "8.2.0",
-    "fs-extra": "9.0.1",
+    "fs-extra": "9.1.0",
     "jest": "26.6.3",
     "nock": "13.0.5",
     "prettier": "2.2.1",
