@@ -68,7 +68,7 @@ export async function loadDestination(
   }
   await destination.setDestinationGroupMemberships(destinationGroupMemberships);
 
-  if (destination.groupGuid !== group.guid) {
+  if (group && destination.groupGuid !== group.guid) {
     await destination.trackGroup(group);
   }
 
