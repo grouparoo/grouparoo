@@ -27,8 +27,8 @@
     "lint": "prettier --check src "
   },
   "dependencies": {
-    "csv-parse": "4.14.2",
-    "fs-extra": "9.0.1",
+    "csv-parse": "4.15.0",
+    "fs-extra": "9.1.0",
     "isomorphic-fetch": "3.0.0",
     "pg": "8.5.1",
     "prettier": "2.2.1",
