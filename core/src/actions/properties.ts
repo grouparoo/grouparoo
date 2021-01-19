@@ -148,17 +148,14 @@ export class PropertyCreate extends AuthenticatedAction {
       isArray: params.isArray,
       sourceGuid: params.sourceGuid,
     });
-
     if (params.options) await property.setOptions(params.options);
     if (params.filters) await property.setFilters(params.filters);
     if (params.state) await property.update({ state: params.state });
-
     const source = await property.$get("source");
-
     return {
       property: await property.apiData(),
       pluginOptions: await property.pluginOptions(),
-      source: source.apiData(),
+      source: await source.apiData(),
     };
   }
 }
@@ -196,7 +193,7 @@ export class PropertyEdit extends AuthenticatedAction {
     return {
       property: await property.apiData(),
       pluginOptions: await property.pluginOptions(),
-      source: source.apiData(),
+      source: await source.apiData(),
     };
   }
 }
