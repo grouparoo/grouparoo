@@ -887,8 +887,8 @@ importers:
       dotenv: 8.2.0
       md5: 2.3.0
       moment: 2.29.1
-      next: 10.0.5_b55cdf5aba003c0b8f6ee87ec1aeeee0
-      node-sass: 4.14.1
+      next: 10.0.5_19c094f04958f1216baf4da611b66b3e
+      node-sass: 5.0.0
       pluralize: 8.0.0
       raw-loader: 4.0.2
       react: 16.14.0
@@ -944,7 +944,7 @@ importers:
       md5: 2.3.0
       moment: 2.29.1
       next: 10.0.5
-      node-sass: 4.14.1
+      node-sass: 5.0.0
       pluralize: 8.0.0
       prettier: 2.2.1
       prop-types: 15.7.2
@@ -4212,6 +4212,7 @@ packages:
     dev: false
     engines:
       node: 0.4 || >=0.5.8
+    optional: true
     resolution:
       integrity: sha1-E+v+d4oDIFz+A3UUgeu0szAMEmo=
   /bluebird/2.3.11:
@@ -5387,13 +5388,6 @@ packages:
       node-fetch: 2.6.1
     resolution:
       integrity: sha512-KBPUbqgFjzWlVcURG+Svp9TlhA5uliYtiNx/0r8nv0pdypeQCRJ9IaSIc3q/x3q8t3F75cHuwxVql1HFGHCNJQ==
-  /cross-spawn/3.0.1:
-    dependencies:
-      lru-cache: 4.1.5
-      which: 1.3.1
-    dev: false
-    resolution:
-      integrity: sha1-ElYDfsufDF9549bvE14wdwGEuYI=
   /cross-spawn/6.0.5:
     dependencies:
       nice-try: 1.0.5
@@ -5411,7 +5405,6 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
-    dev: true
     engines:
       node: '>= 8'
     resolution:
@@ -7210,6 +7203,7 @@ packages:
     dev: false
     engines:
       node: '>=0.6'
+    optional: true
     resolution:
       integrity: sha512-WvJ193OHa0GHPEL+AycEJgxvBEwyfRkN1vhjca23OaPVMCaLCXTd5qAu82AjTcgP1UJmytkOKb63Ypde7raDIg==
   /ftp/0.3.10:
@@ -8175,11 +8169,6 @@ packages:
       node: '>=0.8.19'
     resolution:
       integrity: sha1-khi5srkoojixPcT7a21XbyMUU+o=
-  /in-publish/2.0.1:
-    dev: false
-    hasBin: true
-    resolution:
-      integrity: sha512-oDM0kUSNFC31ShNxHKUyfZKy8ZeXZBWMjMdZHKLOk13uvT27VTL/QzRGfRUcevJhpkZAvlhPYuXkF7eNWrtyxQ==
   /indent-string/2.1.0:
     dependencies:
       repeating: 2.0.1
@@ -10039,13 +10028,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-vmtBgYKD+QVNy7tIa7ulz5d//Il9R4MooOVh4nkOf9R9Cb/Dk5TXMSTieg/vDulkBkIWj59/BIlyFQxT9X1oAQ==
-  /lru-cache/4.1.5:
-    dependencies:
-      pseudomap: 1.0.2
-      yallist: 2.1.2
-    dev: false
-    resolution:
-      integrity: sha512-sWZlbEP2OsHNkXrMl5GYk/jKk70MBng6UU4YI/qGDYbgf6YbP4EvmqISbXCoJiRKs+1bSpFHVgQxvJ17F2li5g==
   /lru-cache/5.1.1:
     dependencies:
       yallist: 3.1.1
@@ -10884,7 +10866,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==
-  /next/10.0.5_b55cdf5aba003c0b8f6ee87ec1aeeee0:
+  /next/10.0.5_19c094f04958f1216baf4da611b66b3e:
     dependencies:
       '@ampproject/toolbox-optimizer': 2.7.1-alpha.0
       '@babel/runtime': 7.12.5
@@ -10912,7 +10894,7 @@ packages:
       native-url: 0.3.4
       node-fetch: 2.6.1
       node-html-parser: 1.4.9
-      node-sass: 4.14.1
+      node-sass: 5.0.0
       p-limit: 3.1.0
       path-browserify: 1.0.1
       pnp-webpack-plugin: 1.6.4_typescript@4.1.3
@@ -10925,7 +10907,7 @@ packages:
       react-is: 16.13.1
       react-refresh: 0.8.3
       resolve-url-loader: 3.1.2
-      sass-loader: 10.0.5_node-sass@4.14.1+webpack@4.44.1
+      sass-loader: 10.0.5_node-sass@5.0.0+webpack@4.44.1
       schema-utils: 2.7.1
       stream-browserify: 3.0.0
       style-loader: 1.2.1_webpack@4.44.1
@@ -11028,6 +11010,7 @@ packages:
     engines:
       node: '>= 0.8.0'
     hasBin: true
+    optional: true
     resolution:
       integrity: sha512-3g8lYefrRRzvGeSowdJKAKyks8oUpLEd/DyPV4eMhVlhJ0aNaZqIrNUIPuEWWTAoPqyFkfGrM67MC69baqn6vA==
   /node-gyp/5.1.1:
@@ -11148,20 +11131,19 @@ packages:
       node: '>= 8'
     resolution:
       integrity: sha512-7umkTbLSPoW1ZnKJx+F/ZSUMXDi4zi+eKXcIOg8uGlxXyjkAg3hT32cnEil96qonASeXJI67MhRDqlB211WBMA==
-  /node-sass/4.14.1:
+  /node-sass/5.0.0:
     dependencies:
       async-foreach: 0.1.3
       chalk: 1.1.3
-      cross-spawn: 3.0.1
+      cross-spawn: 7.0.3
       gaze: 1.1.3
       get-stdin: 4.0.1
       glob: 7.1.6
-      in-publish: 2.0.1
       lodash: 4.17.20
       meow: 3.7.0
       mkdirp: 0.5.5
       nan: 2.14.2
-      node-gyp: 3.8.0
+      node-gyp: 7.1.2
       npmlog: 4.1.2
       request: 2.88.2
       sass-graph: 2.2.5
@@ -11169,11 +11151,11 @@ packages:
       true-case-path: 1.0.3
     dev: false
     engines:
-      node: '>=0.10.0'
+      node: '>=10'
     hasBin: true
     requiresBuild: true
     resolution:
-      integrity: sha512-sjCuOlvGyCJS40R8BscF5vhVlQjNN069NtQ1gSxyK1u9iqvn6tf7O1R4GNowVZfiZUCRt5MmMs1xd+4V/7Yr0g==
+      integrity: sha512-opNgmlu83ZCF792U281Ry7tak9IbVC+AKnXGovcQ8LG8wFaJv6cLnRlc6DIHlmNxWEexB5bZxi9SZ9JyUuOYjw==
   /node-uuid/1.4.8:
     deprecated: Use uuid module instead
     dev: false
@@ -11225,6 +11207,7 @@ packages:
       abbrev: 1.1.1
     dev: false
     hasBin: true
+    optional: true
     resolution:
       integrity: sha1-xkZdvwirzU2zWTF/eaxopkayj/k=
   /nopt/4.0.3:
@@ -12116,7 +12099,6 @@ packages:
     resolution:
       integrity: sha1-QRyttXTFoUDTpLGRDUDYDMn0C0A=
   /path-key/3.1.1:
-    dev: true
     engines:
       node: '>=8'
     resolution:
@@ -12689,10 +12671,6 @@ packages:
   /prr/1.0.1:
     resolution:
       integrity: sha1-0/wRS6BplaRexok/SEzrHXj19HY=
-  /pseudomap/1.0.2:
-    dev: false
-    resolution:
-      integrity: sha1-8FKijacOYYkX7wqKw0wa5aaChrM=
   /psl/1.8.0:
     resolution:
       integrity: sha512-RIdOzyoavK+hA18OGGWDqUTsCLhtA7IcZ/6NCs4fFJaHBDab+pDDmDIByWFRQJq2Cd7r1OoQxBGKOaztq+hjIQ==
@@ -13995,12 +13973,12 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-VFWDAHOe6mRuT4mZRd4eKE+d8Uedrk6Xnh7Sh9b4NGufQLQjOrvf/MQoOdx+0s92L89FeyUUNfU597j/3uNpag==
-  /sass-loader/10.0.5_node-sass@4.14.1+webpack@4.44.1:
+  /sass-loader/10.0.5_node-sass@5.0.0+webpack@4.44.1:
     dependencies:
       klona: 2.0.4
       loader-utils: 2.0.0
       neo-async: 2.6.2
-      node-sass: 4.14.1
+      node-sass: 5.0.0
       schema-utils: 3.0.0
       semver: 7.3.4
       webpack: 4.44.1
@@ -14122,6 +14100,7 @@ packages:
   /semver/5.3.0:
     dev: false
     hasBin: true
+    optional: true
     resolution:
       integrity: sha1-myzl094C0XxgEq0yaqa00M9U+U8=
   /semver/5.7.1:
@@ -14339,7 +14318,6 @@ packages:
   /shebang-command/2.0.0:
     dependencies:
       shebang-regex: 3.0.0
-    dev: true
     engines:
       node: '>=8'
     resolution:
@@ -14351,7 +14329,6 @@ packages:
     resolution:
       integrity: sha1-2kL0l0DAtC2yypcoVxyxkMmO/qM=
   /shebang-regex/3.0.0:
-    dev: true
     engines:
       node: '>=8'
     resolution:
@@ -15276,6 +15253,7 @@ packages:
       fstream: 1.0.12
       inherits: 2.0.4
     dev: false
+    optional: true
     resolution:
       integrity: sha512-FCEhQ/4rE1zYv9rYXJw/msRqsnmlje5jHP6huWeBZ704jUTy02c5AZyWujpMR1ax6mVw9NyJMfuK2CMDWVIfgA==
   /tar/4.4.13:
@@ -16796,10 +16774,6 @@ packages:
   /y18n/4.0.0:
     resolution:
       integrity: sha512-r9S/ZyXu/Xu9q1tYlpsLIsa3EeLXXk0VwlxqTcFRfg9EhMW+17kbt9G0NrgCmhGb5vT2hyhJZLfDGx+7+5Uj/w==
-  /yallist/2.1.2:
-    dev: false
-    resolution:
-      integrity: sha1-HBH5IY8HYImkfdUS+TxmmaaoHVI=
   /yallist/3.1.1:
     resolution:
       integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==
