@@ -16,7 +16,7 @@ import { Op } from "sequelize";
 import { chatRoom } from "actionhero";
 
 @Table({ tableName: "logs", paranoid: false })
-export class Log extends Model<Log> {
+export class Log extends Model {
   guidPrefix() {
     return "log";
   }

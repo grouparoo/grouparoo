@@ -5,17 +5,16 @@ import { buildLogger } from "../utils/logger";
 import { ensurePath } from "../utils/ensurePath";
 import { NPM } from "../utils/npm";
 
-export default async function Initialize(workDir: string, program) {
+export default async function Initialize(
+  workDir: string,
+  opts: { force: boolean }
+) {
   const logger = buildLogger("Generating new Grouparoo Project");
 
   if (!workDir) {
     logger.fail("path is required");
     process.exit(1);
   }
-
-  const opts: {
-    force: boolean;
-  } = program.opts();
 
   fs.mkdirpSync(workDir);
   ensurePath(workDir, logger);

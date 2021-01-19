@@ -1,5 +1,4 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
-import { Op } from "sequelize";
 import { cache } from "actionhero";
 
 import { App } from "../models/App";
@@ -73,12 +72,11 @@ export class ClusterReset extends AuthenticatedAction {
     const counts: { [model: string]: number } = {};
 
     for (const i in models) {
-      const model = models[i];
+      //@ts-ignore
+      const model: typeof App = models[i]; // pick one of the Models so that the types are the same.  TODO: make this better
       const modelName = model.name;
       const count = await model.count();
-
       await model.truncate();
-
       counts[modelName] = count;
 
       await Log.create({

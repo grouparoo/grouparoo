@@ -19,7 +19,7 @@ function modelName(instance): string {
   return name;
 }
 
-export abstract class LoggedModel<T> extends Model<T> {
+export abstract class LoggedModel<T> extends Model {
   /**
    * return the prefix for this type of class' guid
    */

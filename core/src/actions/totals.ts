@@ -64,20 +64,22 @@ export class TotalsAction extends AuthenticatedAction {
 
   async runWithinTransaction({ params }: { params: { model: string } }) {
     const dates = generateDates();
-    const model = modelClasses[params.model];
+    const model: typeof Run = modelClasses[params.model]; // TODO: the type really could be any model
     if (!model) throw new Error(`cannot return totals for ${params.model}`);
 
-    const total: number = await model.count();
+    const total = await model.count();
 
     const groupStatement =
       config.sequelize.dialect === "postgres"
         ? api.sequelize.fn("date_trunc", "day", api.sequelize.col("createdAt"))
         : api.sequelize.literal(`strftime('%Y %m %d', \`createdAt\`)`);
-    const rolling: Array<{ date: string; count: number }> = await model
-      .count({
+    const rolling: Array<{ date: string; count: number }> = (
+      await model.count({
         where: { createdAt: { [Op.gte]: new Date(dates[0]) } },
         group: [groupStatement],
       })
+    )
+      // @ts-ignore We use a custom group-by clause which returns more than one row as a result
       .map((row) => {
         const dateKey = Object.keys(row).find((r) => r !== "count");
         return {

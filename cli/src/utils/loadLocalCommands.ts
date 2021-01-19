@@ -135,7 +135,7 @@ async function convertCLIToCommanderAction(cli, program) {
   const command = program
     .command(instance.name)
     .description(instance.description)
-    .action(async (_arg1, _arg2, _arg3) => {
+    .action(async (filename, _arg1, _arg2, _arg3) => {
       await runCommand(instance, _arg1, _arg2, _arg3);
     })
     .on("--help", () => {

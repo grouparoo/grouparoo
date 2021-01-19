@@ -96,6 +96,7 @@ export namespace TelemetryReporters {
   export namespace Totals {
     export async function Models() {
       const metrics: TelemetryMetric[] = [];
+
       const Models = [
         App,
         ApiKey,
@@ -116,11 +117,13 @@ export namespace TelemetryReporters {
         TeamMember,
       ];
       for (const i in Models) {
+        //@ts-ignore
+        const model: typeof App = Models[i]; // pick one of the Models so that the types are the same.  TODO: make this better
         metrics.push({
           collection: "totals",
-          topic: Models[i].name,
+          topic: model.name,
           aggregation: "count",
-          count: await Models[i].count(),
+          count: await model.count(),
         });
       }
 

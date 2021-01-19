@@ -13,7 +13,7 @@ import * as uuid from "uuid";
 import { Property } from "./Property";
 
 @Table({ tableName: "propertyFilters", paranoid: false })
-export class PropertyFilter extends Model<PropertyFilter> {
+export class PropertyFilter extends Model {
   guidPrefix() {
     return "prf";
   }

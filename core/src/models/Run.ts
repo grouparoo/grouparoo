@@ -45,7 +45,7 @@ const STATE_TRANSITIONS = [
 ];
 
 @Table({ tableName: "runs", paranoid: false })
-export class Run extends Model<Run> {
+export class Run extends Model {
   guidPrefix() {
     return "run";
   }

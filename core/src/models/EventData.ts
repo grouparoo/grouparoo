@@ -13,7 +13,7 @@ import { Event } from "./Event";
 import * as uuid from "uuid";
 
 @Table({ tableName: "eventData", paranoid: false })
-export class EventData extends Model<EventData> {
+export class EventData extends Model {
   guidPrefix() {
     return "evd";
   }
