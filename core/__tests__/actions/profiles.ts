@@ -112,7 +112,7 @@ describe("actions/profiles", () => {
       );
       expect(error).toBeUndefined();
       expect(profile.guid).toBeTruthy();
-      expect(profile.state).toBe("pending");
+      expect(profile.state).toBe("ready");
       expect(simpleProfileValues(profile.properties)).toEqual({
         userId: [999],
         email: ["luigi@example.com"],
@@ -138,7 +138,7 @@ describe("actions/profiles", () => {
       );
       expect(error).toBeUndefined();
       expect(profile.guid).toBeTruthy();
-      expect(profile.state).toBe("pending");
+      expect(profile.state).toBe("ready");
       expect(simpleProfileValues(profile.properties)).toEqual({
         userId: [999],
         email: ["luigi@example.com"],
@@ -175,8 +175,8 @@ describe("actions/profiles", () => {
         profiles: pendingProfiles,
         total: pendingTotal,
       } = await specHelper.runAction("profiles:list", connection);
-      expect(pendingProfiles.length).toBe(1);
-      expect(pendingTotal).toBe(1);
+      expect(pendingProfiles.length).toBe(0);
+      expect(pendingTotal).toBe(0);
 
       connection.params = {
         csrfToken,
@@ -186,8 +186,8 @@ describe("actions/profiles", () => {
         profiles: readyProfiles,
         total: readyTotal,
       } = await specHelper.runAction("profiles:list", connection);
-      expect(readyProfiles.length).toBe(0);
-      expect(readyTotal).toBe(0);
+      expect(readyProfiles.length).toBe(1);
+      expect(readyTotal).toBe(1);
     });
 
     test("a writer can get autocomplete results from properties", async () => {
