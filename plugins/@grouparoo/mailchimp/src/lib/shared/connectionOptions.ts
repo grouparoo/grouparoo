@@ -8,7 +8,6 @@ import {
   App,
 } from "@grouparoo/core";
 import { connect } from "../connect";
-import { getMergeVars } from "./getMergeVars";
 
 export type MailchimpOptionKey = "listId";
 export interface ConnectionOptionsMethod {
@@ -59,7 +58,7 @@ export const getConnectionOptions: GetConnectionOptionsMethod = (
 
     if (optionKeys.includes("listId")) {
       response.listId = { type: "list", options: [], descriptions: [] };
-      const { lists } = await client.get(`/lists`);
+      const { lists } = await client.get("/lists?count=1000");
       lists.map((list) => {
         response.listId.options.push(list.id);
         response.listId.descriptions.push(list.name);
