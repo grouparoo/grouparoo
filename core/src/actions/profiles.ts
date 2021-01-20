@@ -236,13 +236,7 @@ export class ProfileImportAndExport extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const profile = await Profile.findByGuid(params.guid);
-
-    await profile.markPending();
-    await profile.import();
-    await profile.updateGroupMembership();
-    await profile.update({ state: "ready" });
-    await profile.export(true);
-
+    await profile.sync();
     const groups = await profile.$get("groups");
 
     return {
@@ -269,13 +263,14 @@ export class ProfileEdit extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const profile = await Profile.findByGuid(params.guid);
+
     const oldGroups = await profile.$get("groups");
+
     await profile.update(params);
     await profile.addOrUpdateProperties(params.properties);
     await profile.removeProperties(params.removedProperties);
-    await profile.import();
-    await profile.updateGroupMembership();
-    await profile.export(false, oldGroups);
+
+    await profile.sync(false, oldGroups);
 
     const groups = await profile.$get("groups");
 

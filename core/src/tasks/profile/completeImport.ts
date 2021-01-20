@@ -18,15 +18,6 @@ export class ProfileCompleteImport extends RetryableTask {
     };
   }
 
-  simplifyProfileProperties(complexProperties: ProfilePropertyType) {
-    const simpleProperties = {};
-    for (let key in complexProperties) {
-      simpleProperties[key] = complexProperties[key].values;
-    }
-
-    return simpleProperties;
-  }
-
   async runWithinTransaction(params) {
     const profile = await Profile.findOne({
       where: { guid: params.profileGuid },
@@ -65,9 +56,7 @@ export class ProfileCompleteImport extends RetryableTask {
       await profile.addOrUpdateProperties(mergedValues);
       await profile.updateGroupMembership();
 
-      const newProfileProperties = this.simplifyProfileProperties(
-        await profile.properties()
-      );
+      const newProfileProperties = await profile.simplifiedProperties();
 
       const newGroups = await profile.$get("groups");
       const newGroupGuids = newGroups.map((g) => g.guid);

@@ -23,20 +23,11 @@ export class RunInternalRun extends CLSTask {
     };
   }
 
-  simplifyProfileProperties(complexProperties: ProfilePropertyType) {
-    const simpleProperties = {};
-    for (let key in complexProperties) {
-      simpleProperties[key] = complexProperties[key].values;
-    }
-
-    return simpleProperties;
-  }
-
   async updateProfileWithLock(profile: Profile, run: Run) {
     const { releaseLock } = await waitForLock(`profile:${profile.guid}`);
 
     try {
-      const oldProfileProperties = await profile.properties();
+      const oldProfileProperties = await profile.simplifiedProperties();
       const oldGroups = await profile.$get("groups");
 
       await profile.buildNullProperties("pending");
@@ -44,9 +35,7 @@ export class RunInternalRun extends CLSTask {
       await Import.create({
         profileGuid: profile.guid,
         profileAssociatedAt: new Date(),
-        oldProfileProperties: this.simplifyProfileProperties(
-          oldProfileProperties
-        ),
+        oldProfileProperties: oldProfileProperties,
         oldGroupGuids: oldGroups.map((g) => g.guid),
         rawData: {},
         data: {},

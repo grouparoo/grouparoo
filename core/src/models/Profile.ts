@@ -89,6 +89,16 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps.properties(this);
   }
 
+  async simplifiedProperties() {
+    const properties = await this.properties();
+    const simpleProperties: {
+      [key: string]: Array<string | boolean | number | Date>;
+    } = {};
+
+    for (const k in properties) simpleProperties[k] = properties[k].values;
+    return simpleProperties;
+  }
+
   async addOrUpdateProperty(properties: {
     [key: string]: Array<string | number | boolean | Date>;
   }) {
@@ -115,6 +125,10 @@ export class Profile extends LoggedModel<Profile> {
 
   async markPending() {
     return ProfileOps.markPending(this);
+  }
+
+  async sync(force = true, oldGroupsOverride?: Group[]) {
+    return ProfileOps.sync(this, force, oldGroupsOverride);
   }
 
   async updateGroupMembership() {
@@ -175,6 +189,12 @@ export class Profile extends LoggedModel<Profile> {
     });
     if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
     return instance;
+  }
+
+  static async findOrCreateByUniqueProfileProperties(hash: {
+    [key: string]: Array<string | number | boolean | Date>;
+  }) {
+    return ProfileOps.findOrCreateByUniqueProfileProperties(hash);
   }
 
   @BeforeSave

@@ -376,6 +376,21 @@ export namespace ProfileOps {
   }
 
   /**
+   * Fully Import and Export a profile
+   */
+  export async function sync(
+    profile: Profile,
+    force = true,
+    oldGroupsOverride?: Group[]
+  ) {
+    await profile.markPending();
+    await profile.import();
+    await profile.updateGroupMembership();
+    await profile.update({ state: "ready" });
+    await profile.export(force, oldGroupsOverride);
+  }
+
+  /**
    * The method you'll be using to create profiles with arbitrary data.
    * Hash looks like {email: "person@example.com", id: 123}
    */
