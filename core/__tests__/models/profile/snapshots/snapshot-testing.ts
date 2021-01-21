@@ -5,10 +5,10 @@ import { api } from "actionhero";
 let actionhero; // the running Grouparoo process
 
 function relaxedSnapshot(
-  object,
+  object: { [key: string]: any },
   fieldMatches = [/^guid$/, /^.+Guid$/, /^.+At$/]
 ) {
-  const matcherExceptions = {};
+  const matcherExceptions: { [key: string]: any } = {};
 
   function clean(object, key) {
     if (Object.keys(object[key]).length === 0) delete object[key];
