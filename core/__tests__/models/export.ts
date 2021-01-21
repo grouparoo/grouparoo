@@ -304,6 +304,59 @@ describe("models/export", () => {
     await destination.destroy();
   });
 
+  test("a profile.export can simulate the next export", async () => {
+    const profile = await helper.factories.profile();
+    await profile.addOrUpdateProperties({
+      userId: [123],
+      email: ["person@example.com"],
+      lastLoginAt: [new Date(10)],
+      ltv: [100.99],
+      isVIP: [true],
+    });
+    await profile.update({ state: "ready" });
+
+    const group = await helper.factories.group();
+    await group.addProfile(profile);
+
+    const destination = await helper.factories.destination();
+    await destination.trackGroup(group);
+    await destination.setMapping({
+      "primary-id": "userId",
+      email: "email",
+      lastLoginAt: "lastLoginAt",
+      ltv: "ltv",
+      isVIP: "isVIP",
+    });
+    await destination.update({ state: "ready" });
+
+    const _exports = await profile.export(false, [], false);
+    expect(_exports.length).toEqual(1);
+
+    const rawProperties = JSON.parse(
+      _exports[0]["dataValues"].newProfileProperties
+    );
+
+    expect(rawProperties["primary-id"]).toEqual({
+      type: "integer",
+      rawValue: "123",
+    });
+    expect(rawProperties.email).toEqual({
+      type: "email",
+      rawValue: "person@example.com",
+    });
+
+    // no exports were saved in the DB
+    expect(
+      await Export.count({ where: { profileGuid: profile.guid } })
+    ).toEqual(0);
+
+    // cleanup
+    await profile.destroy();
+    await destination.unTrackGroup();
+    await group.destroy();
+    await destination.destroy();
+  });
+
   test("an export can claim the most-recent spot", async () => {
     expect(_export.mostRecent).toBe(true);
 

@@ -355,7 +355,8 @@ export namespace ProfileOps {
   export async function _export(
     profile: Profile,
     force = false,
-    oldGroupsOverride: Group[] = []
+    oldGroupsOverride: Group[] = [],
+    saveExports = true
   ) {
     const groups = await profile.$get("groups");
 
@@ -364,12 +365,13 @@ export namespace ProfileOps {
       ...oldGroupsOverride,
     ]);
 
-    await Promise.all(
+    return Promise.all(
       destinations.map((destination) =>
         destination.exportProfile(
           profile,
           true, // sync = true -> do the export in-line
-          force // force = true -> do the export even if it looks like the data hasn't changed
+          force, // force = true -> do the export even if it looks like the data hasn't changed
+          saveExports // saveExports = true -> should we really save these exports, or do we just want examples for the next export?
         )
       )
     );

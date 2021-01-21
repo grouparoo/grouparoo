@@ -131,6 +131,20 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps.sync(this, force, oldGroupsOverride);
   }
 
+  async snapshot(toSync = false) {
+    if (toSync) await this.sync();
+
+    const properties = await this.properties();
+    const groups = await this.$get("groups");
+    const groupApiData = await Promise.all(groups.map((g) => g.apiData()));
+    const exports = await this.export(true, [], false);
+    const exportsApiData = await Promise.all(
+      exports.map((e) => e.apiData(false))
+    );
+
+    return { properties, groups: groupApiData, exports: exportsApiData };
+  }
+
   async updateGroupMembership() {
     const results = {};
     const groups = await Group.scope("notDraft").findAll();
@@ -148,8 +162,8 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps._import(this, toSave, toLock);
   }
 
-  async export(force = false, oldGroupsOverride?: Group[]) {
-    return ProfileOps._export(this, force, oldGroupsOverride);
+  async export(force = false, oldGroupsOverride?: Group[], saveExports = true) {
+    return ProfileOps._export(this, force, oldGroupsOverride, saveExports);
   }
 
   async logMessage(verb: "create" | "update" | "destroy") {
@@ -209,7 +223,7 @@ export class Profile extends LoggedModel<Profile> {
 
   @AfterDestroy
   static async removeFromDestinations(instance: Profile) {
-    await instance.export(false, []);
+    await instance.export();
   }
 
   @AfterDestroy

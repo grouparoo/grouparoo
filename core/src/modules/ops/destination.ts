@@ -244,7 +244,8 @@ export namespace DestinationOps {
     destination: Destination,
     profile: Profile,
     synchronous = false,
-    force = false
+    force = false,
+    saveExports = true
   ) {
     const app = await destination.$get("app");
     const appOptions = await app.getOptions();
@@ -352,7 +353,8 @@ export namespace DestinationOps {
       hasChanges = false;
     }
 
-    const _export = await Export.create({
+    let _export: Export;
+    const exportArgs = {
       destinationGuid: destination.guid,
       profileGuid: profile.guid,
       startedAt: synchronous ? new Date() : undefined,
@@ -363,13 +365,19 @@ export namespace DestinationOps {
       hasChanges,
       toDelete,
       force,
-    });
+    };
 
-    const { pluginConnection } = await destination.getPlugin();
-
-    if (synchronous) {
-      return destination.sendExports([_export], synchronous);
+    if (saveExports) {
+      _export = await Export.create(exportArgs);
+    } else {
+      _export = Export.build(exportArgs);
     }
+
+    if (synchronous && saveExports) {
+      await destination.sendExports([_export], synchronous);
+    }
+
+    return _export;
   }
 
   function transformError(
@@ -465,7 +473,7 @@ export namespace DestinationOps {
       const profile = await _export.$get("profile"); // PEFORMANCE: get all profiles at once
       exportedProfiles.push({
         profile,
-        profileGuid: profile.guid,
+        profileGuid: profile?.guid,
         oldProfileProperties: await formatProfilePropertiesForDestination(
           _export,
           destination,
