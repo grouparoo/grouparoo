@@ -31,7 +31,7 @@ module.exports = async function getConfig() {
         id: "user_id",
       },
       bootstrappedProperty: {
-        name: "User Id",
+        name: "userId",
         type: "integer",
         id: "user_id", // guid -> `rul_user_id`
         options: {
