@@ -643,6 +643,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
   );
 nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
   .get("/3.0/lists", {})
+  .query({ count: "1000" })
   .once()
   .reply(
     200,
@@ -1665,6 +1666,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
   );
 nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
   .get("/3.0/lists", {})
+  .query({ count: "1000" })
   .once()
   .reply(
     200,
