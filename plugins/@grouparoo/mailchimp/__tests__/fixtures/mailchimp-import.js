@@ -2,6 +2,7 @@ const nock = require("nock");
 
 nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
   .get("/3.0/lists", {})
+  .query({ count: "1000" })
   .once()
   .reply(
     200,
