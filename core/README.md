@@ -83,4 +83,20 @@ cd apps/staging-public
 (npx) grouparoo demo-event-stream
 ```
 
+## Running Tests
+
+Grouparoo uses [Jest](https://jestjs.io/) as our testing framework. To run tests, first make sure you've installed all dependencies in the root of the project.
+
+    cd ../
+    pnpm install
+
+Next, create the test databases:
+
+    cd core
+    ./bin/create_test_database
+
+Then you can run the tests. We recommend you run only the test files you're working on. Let our CI server do the bulk of the work:
+
+    npm run test path/to/test/file
+
 🦘
