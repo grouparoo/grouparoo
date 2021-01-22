@@ -1,4 +1,5 @@
 import { api } from "actionhero";
+import { Op } from "sequelize";
 import { GrouparooPlugin } from "../classes/plugin";
 import { MustacheUtils } from "./mustacheUtils";
 
@@ -72,6 +73,14 @@ export namespace plugin {
   export function mountModels() {
     models.map((model) => {
       if (!model.isInitialized) api.sequelize.addModels([model]);
+    });
+  }
+
+  export async function cleanSettings(inUseKeys: string[]) {
+    return await Setting.destroy({
+      where: {
+        key: { [Op.notIn]: inUseKeys },
+      },
     });
   }
 

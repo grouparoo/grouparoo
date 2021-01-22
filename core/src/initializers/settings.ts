@@ -171,6 +171,14 @@ export class Plugins extends Initializer {
       },
     ];
 
+    const settingKeys: string[] = [
+      ...coreSettings,
+      ...interfaceSettings,
+      ...telemetrySettings,
+    ].map(({ key }) => key);
+
+    await plugin.cleanSettings(settingKeys);
+
     await this.registerSettingsArray(coreSettings, "core");
     await this.registerSettingsArray(interfaceSettings, "interface");
     await this.registerSettingsArray(telemetrySettings, "telemetry");
