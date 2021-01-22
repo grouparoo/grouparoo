@@ -44,10 +44,9 @@ describe("modules/codeConfig", () => {
       const { profile } = await Profile.findOrCreateByUniqueProfileProperties({
         email: ["test-person@example.com"],
       });
-      await profile.import();
-      await profile.updateGroupMembership();
-      const snapshot = await profile.snapshot();
+      const snapshot = await profile.snapshot(true);
       expect(snapshot).toMatchSnapshot(relaxedSnapshot(snapshot));
+      console.log(snapshot);
     });
   });
 });

@@ -132,12 +132,12 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   async snapshot(toSync = false) {
-    if (toSync) await this.sync();
+    if (toSync) await this.sync(); // import the profile and recalculate groups
 
     const properties = await this.properties();
     const groups = await this.$get("groups");
     const groupApiData = await Promise.all(groups.map((g) => g.apiData()));
-    const exports = await this.export(true, [], false);
+    const exports = await this.export(true, [], false); // build the next exports for all groups, but to not save them
     const exportsApiData = await Promise.all(
       exports.map((e) => e.apiData(false))
     );
