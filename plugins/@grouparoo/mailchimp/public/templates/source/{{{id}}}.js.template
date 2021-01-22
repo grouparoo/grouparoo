@@ -1,53 +1,50 @@
 exports.default = async function buildConfig() {
-  // Option 1: This is the first source and you need to bootstrap the first property as well
   return [
     {
       class: "source",
       id: {{{id}}},
       name: {{{id}}},
       type: "{{{__pluginName}}}-import",
-      appId: "mailchimpApp", // The id of the App this Source uses
+      appId: "...", // Set this value to the ID of the App this Source uses.
       options: {
-        listId: "abc123" // The Mailchimp List ID
+        listId: "..." // The Mailchimp List ID
       },
 
-      /*
-       * For example, if you want to say your MERGE_VAR "id" maps the Grouparoo Property "userId".
+      /**
+       * A list of mappings for this source as:
+       *
+       *     "merge_var": "grouparoo_property_id"
+       *
+       * For example, if you want your MERGE_VAR `USER_ID` to map to the `user_id` property in this
+       * Grouparoo source, your mapping would look like:
+       *
+       *     mapping: { "merge_fields.USER_ID": "user_id" }
+       *
+       * Note that MERGE_VARS use a prefix `merge_fields`, while other properties like
+       * `email_address` can be used directly.
+       *
+       * If this is the first Source for this App, you'll want to create a property in the
+       * bootstrappedProperty section below. Otherwise, you can create properties with the Grouparoo
+       * CLI.
        */
       mapping: {
-        "merge_fields.USER_ID": "userId", // Merge vars look like "merge_fields.FNAME" while you can access "email_address" directly.
+        "email_address": "email",
+        "merge_fields.FNAME": "first_name",
       },
 
-      // If this is the first source, you will also need to make the first property.  This is a special first-time bootstrapping process/
-      bootstrappedProperty: {
-        id: "user_id",
-        name: "User Id",
-        type: "integer",
-        options: {
-          column: "id",
-        },
-      },
+      /**
+       * If this is the first Source for this App, you must bootstrap it with an initial property.
+       * To do so, uncomment the lines below and fill in the appropriate values. Otherwise, you can
+       * create properties with the Grouparoo CLI.
+       */
+      // bootstrappedProperty: {
+      //   id: "user_id",
+      //   name: "User Id",
+      //   type: "integer",
+      //   options: {
+      //     column: "id",
+      //   },
+      // },
     },
   ];
-
-  // Option 2: This is not the first source, and you can reference other properties which already exist
-  // return [
-  //   {
-  //     class: "source",
-  //     id: {{{id}}},
-  //     name: {{{id}}},
-  //     type: {{{__pluginName}}}-import,
-  //     appId: "mailchimpApp", // The id of the app this source uses
-  //     options: {
-  //       listId: "abc123" // The Mailchimp List ID
-  //     },
-  //
-  //     /*
-  //      * For example, if you want to say your MERGE_VAR "id" maps the Grouparoo Property "userId"
-  //      */
-  //     mapping: {
-  //       "merge_fields.USER_ID": "userId", // Merge vars look like "merge_fields.FNAME" while you can access "email_address" directly.
-  //     },
-  //   },
-  // ];
 };

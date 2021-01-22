@@ -1,55 +1,46 @@
 exports.default = async function buildConfig() {
-  // Option 1: This is the first source and you need to bootstrap the first property as well
   return [
     {
       class: "source",
       id: {{{id}}},
       name: {{{id}}},
       type: "{{{__pluginName}}}-table-import",
-      appId: "dataWarehouse", // The id of the App this Source uses
+      appId: "...", // Set this value to the ID of the App this Source uses.
       options: {
-        table: "users", // the table in your DB
+        table: "users", // Name of the table in your DB.
       },
 
-      /*
-       * For example, if you want to say your users table has an ID and it maps to the Property `user_id` in grouparoo (defined below in bootstrappedProperty):
-       *   mapping: {id: 'user_id'}
+      /**
+       * A list of mappings for this source as:
+       *
+       *     "remote_column": "grouparoo_property_id"
+       *
+       * For example, if your users table has an `id` column, and you want to map that to the
+       * `user_id` property in this Grouparoo source, your mapping would look like:
+       *
+       *     mapping: { id: "user_id" }
+       *
+       * If this is the first Source for this App, you'll want to create a property in the
+       * bootstrappedProperty section below. Otherwise, you can create properties with the Grouparoo
+       * CLI.
        */
       mapping: {
         id: "user_id", // Looks like `remote column`:`grouparoo property id`
       },
 
-      // If this is the first source, you will also need to make the first property.  This is a special first-time bootstrapping process/
-      bootstrappedProperty: {
-        id: "user_id",
-        name: "User Id",
-        type: "integer",
-        options: {
-          column: "id",
-        },
-      },
+      /**
+       * If this is the first Source for this App, you must bootstrap it with an initial property.
+       * To do so, uncomment the lines below and fill in the appropriate values. Otherwise, you can
+       * create properties with the Grouparoo CLI.
+       */
+      // bootstrappedProperty: {
+      //   id: "user_id",
+      //   name: "User Id",
+      //   type: "integer",
+      //   options: {
+      //     column: "id",
+      //   },
+      // },
     },
   ];
-
-  // Option 2: This is not the first source, and you can reference other properties which already exist
-  // return [
-  //   {
-  //     class: "source",
-  //     id: {{{id}}},
-  //     name: {{{id}}},
-  //     type: {{{__pluginName}}}-table-import,
-  //     appId: "dataWarehouse", // The id of the app this source uses
-  //     options: {
-  //       table: "purchases", // the table in your DB
-  //     },
-  //
-  //     /*
-  //      * For example, if you want to say your purchases table has a column user_id that maps to the Property `user_id` in Grouparoo:
-  //      *   mapping: {user_id: 'user_id'}
-  //      */
-  //     mapping: {
-  //       user_id: "user_id", // Looks like `remote column`:`grouparoo property id`
-  //     },
-  //   },
-  // ];
 };
