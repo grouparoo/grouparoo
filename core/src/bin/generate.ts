@@ -12,7 +12,8 @@ export class Generate extends CLI {
   constructor() {
     super();
     this.name = "generate [template] [id]"; // I will include the template ARG vs OPT
-    this.description = "Generate new code config files from templates";
+    this.description =
+      "Generate new code config files from templates. Each template requires an ID, a unique identifier that is used to linked templates to each other.";
     this.inputs = {
       list: {
         required: false,
@@ -70,13 +71,14 @@ export class Generate extends CLI {
   }
 
   async generate(params) {
+    const learnMoreText =
+      "Learn more with `grouparoo generate --help` and `grouparoo generate --list`";
+
     if (!params.template) {
-      this.fatalError(
-        `template is required.  Learn more with \`grouparoo generate --help\` and \`grouparoo generate --list\``
-      );
+      this.fatalError(`template is required. ${learnMoreText}`);
     }
     if (!params.id) {
-      this.fatalError(`id is required`);
+      this.fatalError(`id is required. ${learnMoreText}`);
     }
 
     const template = await this.getTemplate(params.template);
