@@ -76,10 +76,10 @@ export namespace plugin {
     });
   }
 
-  export async function cleanSettings(staleKeys: string[]) {
+  export async function cleanSettings(inUseKeys: string[]) {
     return await Setting.destroy({
       where: {
-        key: { [Op.notIn]: staleKeys },
+        key: { [Op.notIn]: inUseKeys },
       },
     });
   }
