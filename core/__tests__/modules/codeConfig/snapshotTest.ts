@@ -1,21 +1,11 @@
 import { api } from "actionhero";
 import path from "path";
-import { Setting, Profile } from "../../../src";
+import { Profile, GrouparooPlugin } from "../../../src";
 import { helper, relaxedSnapshot } from "@grouparoo/spec-helper";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
 
-let actionhero; // the running Grouparoo process
-
 describe("modules/codeConfig", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await Setting.truncate();
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ enableTestPlugin: true, truncate: true });
 
   describe("with code config", () => {
     beforeAll(async () => {
@@ -25,6 +15,29 @@ describe("modules/codeConfig", () => {
       await loadConfigDirectory(
         path.join(__dirname, "..", "..", "fixtures", "codeConfig", "initial")
       );
+
+      // mock the test-plugin to return static results
+      const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
+        (a) => a.name === "@grouparoo/test-plugin"
+      );
+      const testPluginConnection = testPlugin.connections.find(
+        (c) => c.name === "test-plugin-import"
+      );
+      testPluginConnection.methods.profileProperty = async ({ property }) => {
+        const data = {
+          userId: [100],
+          isVIP: [true],
+          email: [`example@example.com`],
+          firstName: ["Mario"],
+          lastName: ["Mario"],
+          ltv: [100.0],
+          lastLoginAt: [new Date(0)],
+          purchases: ["hat", "mushroom"],
+          purchaseAmounts: [100, 200],
+        };
+
+        return data[property.key];
+      };
     });
 
     test("a profile snapshot can be tested", async () => {
@@ -34,7 +47,7 @@ describe("modules/codeConfig", () => {
       await profile.import();
       await profile.updateGroupMembership();
       const snapshot = await profile.snapshot();
-      console.log(JSON.stringify(snapshot, null, 2));
+      expect(snapshot).toMatchSnapshot(relaxedSnapshot(snapshot));
     });
   });
 });

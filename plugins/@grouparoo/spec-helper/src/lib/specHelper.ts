@@ -195,6 +195,43 @@ export namespace helper {
     return { actionhero };
   }
 
+  /**
+   * I am used by clients who want to start and stop their server for profile snapshot testing.
+   * As an Arrow function, 'll be in the Jest namespace when used
+   */
+  export const grouparooTestServer = (
+    options: {
+      truncate?: boolean;
+      enableTestPlugin?: boolean;
+      resetSettings?: boolean;
+    } = { truncate: false, enableTestPlugin: false, resetSettings: false }
+  ) => {
+    let actionhero;
+
+    beforeAll(async () => {
+      const { Process } = await import("actionhero");
+      actionhero = new Process();
+      await actionhero.start();
+
+      // prepare models that we are using from /src
+      plugin.mountModels();
+      // prepare models that we are using from /dist
+      try {
+        require("@grouparoo/core").plugin.mountModels();
+      } catch (error) {}
+
+      if (options.truncate) await helper.truncate();
+      if (options.resetSettings) await helper.resetSettings();
+      if (options.enableTestPlugin) await helper.enableTestPlugin();
+    });
+
+    afterAll(async () => {
+      await actionhero.stop();
+    });
+
+    return actionhero;
+  };
+
   export function enableTestPlugin() {
     // create a test plugin to use only in when NODE_ENV=test
     plugin.registerPlugin({
