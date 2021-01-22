@@ -1,4 +1,5 @@
 import { GrouparooCLI } from "../modules/cli";
+import Colors from "colors/safe";
 import {
   ConfigTemplate,
   ConfigTemplateRunResponse,
@@ -83,11 +84,17 @@ export class Generate extends CLI {
 
     const template = await this.getTemplate(params.template);
 
+    const preparedParams = template.prepareParams({ ...params });
+
+    if (preparedParams.id !== params.id) {
+      console.log(
+        `${Colors.yellow("notice")}: ID was changed to ${preparedParams.id}`
+      );
+    }
+
     let fileData: ConfigTemplateRunResponse = {};
     try {
-      fileData = await template.run({
-        params: template.prepareParams(params),
-      });
+      fileData = await template.run({ params: preparedParams });
     } catch (error) {
       this.fatalError(error.message);
     }
