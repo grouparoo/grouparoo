@@ -118,7 +118,7 @@ describe("modules/plugin", () => {
   });
 
   describe("settings", () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
       await Setting.destroy({
         where: {
           pluginName: "test-plugin",
@@ -126,7 +126,7 @@ describe("modules/plugin", () => {
       });
     });
 
-    afterAll(async () => {
+    afterEach(async () => {
       await Setting.destroy({
         where: {
           pluginName: "test-plugin",
@@ -151,6 +151,37 @@ describe("modules/plugin", () => {
       await plugin.updateSetting("test-plugin", "sample-setting", 200);
       value = await plugin.readSetting("test-plugin", "sample-setting");
       expect(value.value).toBe("200");
+    });
+
+    test("stale settings can be deleted", async () => {
+      // Get current list of plugin keys.
+      const getAllSettingsKeys = async () => {
+        let settings = await Setting.findAll();
+        return settings.map(({ key }) => key);
+      };
+
+      // Stale setting is not in the db.
+      const settingsKeys = await getAllSettingsKeys();
+      expect(settingsKeys).not.toContain("sample-setting");
+
+      // Add stale setting.
+      await plugin.registerSetting(
+        "test-plugin",
+        "sample-setting",
+        "title",
+        "100",
+        "I am a test setting",
+        "string"
+      );
+
+      // Stale setting is in the db.
+      let updatedKeys = await getAllSettingsKeys();
+      expect(updatedKeys).toContain("sample-setting");
+
+      // Stale setting gets removed when cleaning.
+      await plugin.cleanSettings(settingsKeys);
+      updatedKeys = await getAllSettingsKeys();
+      expect(updatedKeys).not.toContain("sample-setting");
     });
   });
 
