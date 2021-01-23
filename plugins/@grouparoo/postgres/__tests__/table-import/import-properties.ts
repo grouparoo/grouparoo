@@ -16,7 +16,7 @@ const { appOptions, usersTableName, purchasesTableName } = getConfig();
 let profile: Profile;
 let otherProfile: Profile;
 
-let actionhero, client;
+let client;
 
 let sourceOptions;
 async function getPropertyValues(
@@ -62,11 +62,8 @@ async function getPropertyArrays(
 }
 
 describe("postgres/table/profileProperties", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    plugin.mountModels();
-  }, helper.setupTime);
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
 
   beforeAll(async () => {
     ({ client } = await beforeData());
@@ -74,8 +71,6 @@ describe("postgres/table/profileProperties", () => {
 
   beforeAll(async () => {
     jest.setTimeout(helper.mediumTime);
-    // all of these are in in the test plugin
-    await helper.factories.properties();
 
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({
@@ -93,13 +88,7 @@ describe("postgres/table/profileProperties", () => {
     });
   });
 
-  afterAll(async () => {
-    await afterData();
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  afterAll(async () => await afterData());
 
   describe("exact primary tables", () => {
     let aggregationMethod = "exact";

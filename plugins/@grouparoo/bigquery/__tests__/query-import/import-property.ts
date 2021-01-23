@@ -7,7 +7,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
 
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { plugin, Profile, SimpleAppOptions, Property } from "@grouparoo/core";
+import { Profile, SimpleAppOptions, Property } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/query-import/connection";
 const profileProperty = getConnection().methods.profileProperty;
@@ -29,8 +29,6 @@ require("./../fixtures/query-import-property");
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 let profile: Profile;
-
-let actionhero;
 
 async function getPropertyValue(query: string) {
   const propertyOptions = { query };
@@ -56,17 +54,7 @@ async function getPropertyValue(query: string) {
 }
 
 describe("bigquery/query/profileProperty", () => {
-  // models defined as the sequelize ones, not the types
-
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    plugin.mountModels();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
     // all of these are in in the test plugin

@@ -1,5 +1,4 @@
 import path from "path";
-import fs from "fs";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/postgres": { path: path.join(__dirname, "..", "..") },
 });
@@ -10,36 +9,20 @@ import { Property } from "@grouparoo/core";
 import { beforeData, afterData, getConfig } from "../utils/data";
 
 const { appOptions, usersTableName } = getConfig();
-let actionhero;
 
 describe("integration/runs/postgres", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => helper.disableTestPluginImport());
+  beforeAll(async () => await helper.factories.properties());
+  beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
+
   let session;
   let csrfToken;
   let app;
   let source;
 
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await api.resque.queue.connection.redis.flushdb();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
-
-  beforeAll(async () => {
-    await beforeData();
-  });
-
-  afterAll(async () => {
-    await afterData();
-  });
-
-  beforeAll(async () => {
-    await helper.factories.properties();
-    helper.disableTestPluginImport();
-  });
+  beforeAll(async () => await beforeData());
+  afterAll(async () => await afterData());
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {

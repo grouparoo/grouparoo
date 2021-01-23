@@ -16,6 +16,9 @@ if (
 }
 
 // normal pathway
+import fs from "fs";
+import path from "path";
+import nock from "nock";
 
 import LogFactory from "./factories/log";
 import GroupFactory from "./factories/group";
@@ -72,11 +75,6 @@ import {
   Team,
   TeamMember,
 } from "@grouparoo/core/src"; // we explicitly require the src (typescript) files
-
-import { Op } from "sequelize";
-import fs from "fs";
-import path from "path";
-import nock from "nock";
 
 const models = [
   App,
@@ -201,6 +199,16 @@ export namespace helper {
 
     return actionhero;
   };
+
+  /**
+   * To inject a plugin you are testing into core (as if it were enabled and installed in the package.json of a client app)
+   */
+  export function injectPlugin(name: string, path: string) {
+    process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
+      [name]: { path },
+    });
+    console.log(process.env.GROUPAROO_INJECTED_PLUGINS);
+  }
 
   export function enableTestPlugin() {
     // create a test plugin to use only in when NODE_ENV=test

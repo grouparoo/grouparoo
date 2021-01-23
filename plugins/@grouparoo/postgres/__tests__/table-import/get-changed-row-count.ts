@@ -10,28 +10,22 @@ import { getChangedRowCount } from "../../src/lib/table-import/getChangedRowCoun
 import { beforeData, afterData, getConfig } from "../utils/data";
 const { appOptions, usersTableName } = getConfig();
 
-let actionhero, client;
+let client;
 
 describe("postgres/table/scheduleOptions", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
+
   let app: App;
   let source: Source;
   let schedule: Schedule;
 
   beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
     const setupResp = await beforeData();
     client = setupResp.client;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    afterData();
-    await helper.shutdown(actionhero);
   });
 
   beforeAll(async () => {
-    await helper.factories.properties();
-
     app = await helper.factories.app({
       name: "PG",
       type: "postgres",

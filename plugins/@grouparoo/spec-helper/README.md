@@ -8,16 +8,7 @@ A typical test file's shape:
 import { helper } from "@grouparoo/spec-helper";
 
 describe("test suite", () => {
-  let actionhero;
-
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   test("it works", () => {
     expect(1 + 1).toBe(2);

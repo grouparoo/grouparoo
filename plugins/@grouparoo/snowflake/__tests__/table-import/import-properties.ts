@@ -30,7 +30,6 @@ require(nockFile);
 
 let profile: Profile;
 let otherProfile: Profile;
-let actionhero;
 let sourceOptions;
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 
@@ -78,16 +77,11 @@ async function getPropertyArrays(
 }
 
 describe("snowflake/table/profileProperties", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    plugin.mountModels();
-  }, helper.setupTime);
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
 
   beforeAll(async () => {
     jest.setTimeout(helper.mediumTime);
-    // all of these are in in the test plugin
-    await helper.factories.properties();
 
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({
@@ -103,10 +97,6 @@ describe("snowflake/table/profileProperties", () => {
       email: ["ceate1@example.com"],
       lastName: null,
     });
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
   });
 
   describe("exact primary tables", () => {

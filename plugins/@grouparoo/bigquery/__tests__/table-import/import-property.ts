@@ -6,7 +6,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { plugin, SimpleAppOptions, Profile, Property } from "@grouparoo/core";
+import { SimpleAppOptions, Profile, Property } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/table-import/connection";
 const profileProperty = getConnection().methods.profileProperty;
@@ -28,8 +28,6 @@ require("./../fixtures/table-import-property");
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 let profile: Profile;
-
-let actionhero;
 
 let sourceOptions;
 async function getPropertyValue(
@@ -71,15 +69,7 @@ async function getPropertyValue(
 }
 
 describe("bigquery/table/profileProperty", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    plugin.mountModels();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
     jest.setTimeout(helper.mediumTime);

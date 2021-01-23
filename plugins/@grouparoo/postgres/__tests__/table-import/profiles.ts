@@ -11,7 +11,7 @@ import { getConnection } from "../../src/lib/table-import/connection";
 const profiles = getConnection().methods.profiles;
 
 const { appOptions, usersTableName } = getConfig();
-let actionhero, client;
+let client;
 
 let source;
 let run;
@@ -60,27 +60,16 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
 }
 
 describe("postgres/table/profiles", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
 
   beforeAll(async () => {
     ({ client } = await beforeData());
   });
 
-  afterAll(async () => {
-    await afterData();
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  afterAll(async () => await afterData());
 
   beforeAll(async () => {
-    // make the userId and email and other properties
-    await helper.factories.properties();
-
     // setup the world
     const app = await helper.factories.app({
       name: "App",

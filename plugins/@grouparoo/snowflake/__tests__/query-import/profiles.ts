@@ -33,8 +33,6 @@ require(nockFile);
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 
-let actionhero;
-
 let source;
 let run;
 let schedule;
@@ -83,19 +81,10 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
 }
 
 describe("snowflake/query/profiles", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
 
   beforeAll(async () => {
-    // make the userId and email and other properties
-    await helper.factories.properties();
-
     // setup the world
     const app = await helper.factories.app({
       name: "SF",
