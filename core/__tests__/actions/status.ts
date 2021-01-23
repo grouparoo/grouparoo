@@ -2,7 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 
 describe("actions/status", () => {
-  helper.grouparooTestServer({ truncate: true });
+  helper.grouparooTestServer({ truncate: true, resetSettings: true });
 
   describe("status:public", () => {
     test("the public status action is OK", async () => {
