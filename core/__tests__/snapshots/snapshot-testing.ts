@@ -5,35 +5,35 @@ import { api } from "actionhero";
 describe("test grouparoo profiles", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
-  beforeAll(async () => {
-    // we need to ensure that we have static results for the import to snapshot
-    const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
-      (a) => a.name === "@grouparoo/test-plugin"
-    );
-    const testPluginConnection = testPlugin.connections.find(
-      (c) => c.name === "test-plugin-import"
-    );
-    testPluginConnection.methods.profileProperty = async ({ property }) => {
-      const data = {
-        userId: [100],
-        isVIP: [true],
-        email: [`example@example.com`],
-        firstName: ["Mario"],
-        lastName: ["Mario"],
-        ltv: [100.0],
-        lastLoginAt: [new Date(0)],
-        purchases: ["hat", "mushroom"],
-        purchaseAmounts: [100, 200],
-      };
-
-      return data[property.key];
-    };
-  });
-
   describe("within a mock environment", () => {
     let profile: Profile;
     let group: Group;
     let destination: Destination;
+
+    beforeAll(async () => {
+      // we need to ensure that we have static results for the import to snapshot
+      const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
+        (a) => a.name === "@grouparoo/test-plugin"
+      );
+      const testPluginConnection = testPlugin.connections.find(
+        (c) => c.name === "test-plugin-import"
+      );
+      testPluginConnection.methods.profileProperty = async ({ property }) => {
+        const data = {
+          userId: [100],
+          isVIP: [true],
+          email: [`example@example.com`],
+          firstName: ["Mario"],
+          lastName: ["Mario"],
+          ltv: [100.0],
+          lastLoginAt: [new Date(0)],
+          purchases: ["hat", "mushroom"],
+          purchaseAmounts: [100, 200],
+        };
+
+        return data[property.key];
+      };
+    });
 
     beforeAll(async () => {
       // make properties

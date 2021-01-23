@@ -1,6 +1,6 @@
 import { api } from "actionhero";
 import path from "path";
-import { Profile, GrouparooPlugin } from "../../../src";
+import { GrouparooPlugin } from "../../../src";
 import { helper, relaxedSnapshot } from "@grouparoo/spec-helper";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
 
@@ -41,11 +41,18 @@ describe("modules/codeConfig", () => {
     });
 
     test("a profile snapshot can be tested", async () => {
-      const { profile } = await Profile.findOrCreateByUniqueProfileProperties({
+      const { profile, snapshot } = await helper.getProfile({
         email: ["test-person@example.com"],
       });
-      const snapshot = await profile.snapshot(true);
+
+      // You can do snapshot testing
       expect(snapshot).toMatchSnapshot(relaxedSnapshot(snapshot));
+
+      // Or you can test the properties of the snapshot directly
+      expect(snapshot.properties.userId.values).toEqual([100]);
+      expect(snapshot.groups.length).toBe(1);
+      expect(snapshot.groups[0].name).toBe("People with Email Addresses");
+      expect(profile.state).toBe("ready");
     });
   });
 });

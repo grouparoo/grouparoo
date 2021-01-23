@@ -434,6 +434,24 @@ export namespace helper {
     };
   }
 
+  /**
+   * Find or Create a profile given the key of a unique property key and value ({email: 'person@example.com'}) and optional options.
+   * Returns bot the profile itself and a snapshot.
+   * Calls Profile.findOrCreateByUniqueProfileProperties() under the hood, as well as Profile.sync()
+   */
+  export async function getProfile(
+    args: { [key: string]: any },
+    opts: { sync?: boolean } = { sync: true }
+  ) {
+    const { profile } = await Profile.findOrCreateByUniqueProfileProperties(
+      args
+    );
+    const snapshot = await profile.snapshot(opts.sync);
+    await profile.reload();
+
+    return { profile, snapshot };
+  }
+
   export function recordNock(nockFile, updater: any) {
     nockFile = path.resolve(nockFile);
     if (fs.existsSync(nockFile)) {

@@ -189,6 +189,7 @@ export class Export extends Model {
         destination && includeDestination
           ? await destination.apiData(false, false)
           : null,
+      destinationName: destination ? destination.name : null,
       profileGuid: this.profileGuid,
       force: this.force,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,

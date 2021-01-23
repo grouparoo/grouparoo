@@ -52,6 +52,11 @@ describe("models/export", () => {
     });
   });
 
+  test("export apiData includes the destination name", async () => {
+    const apiData = await _export.apiData();
+    expect(apiData.destinationName).toBe(destination.name);
+  });
+
   test("an export can be deserialized returning Grouparoo types", async () => {
     const _export = await Export.findOne();
     expect(_export.oldProfileProperties).toEqual({
